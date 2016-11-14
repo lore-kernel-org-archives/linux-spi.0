@@ -1,55 +1,60 @@
-From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Subject: fsl-espi, m25p80 and max_transfer_size / max_message_size
-Date: Mon, 14 Nov 2016 15:22:59 +0100
-Message-ID: <17913d2dea0200f818af5f42a0b2ed42@walle.cc>
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [patch] spi: atmel: fix indenting in atmel_spi_gpio_cs()
+Date: Mon, 14 Nov 2016 15:49:58 +0100
+Message-ID: <aa6d8d17-13f7-632c-babb-2a7c062155f1@atmel.com>
+References: <20161114142644.GA6179@mwanda>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20161114142644.GA6179@mwanda>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Le 14/11/2016 à 15:26, Dan Carpenter a écrit :
+> These lines were indented one extra tab.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-since commit 02a595d5d6e4 (spi: fsl-espi: eliminate spi nor flash read 
-loop) the fsl-espi is (partly?) broken. Reading 64k from the flash 
-results in the following error:
-   fsl_espi ffe110000.spi: message too long, size is 65540 bytes
-   spi_master spi32766: failed to transfer one message from queue
+Oh yes: sorry for that:
+Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-We are using the m25p80 driver which checks the max_transfer_size. The 
-fsl-espi driver sets the max_message_size to 64k. As far as I understand 
-it, a message can contain multiple transfers. The m25p80 uses two 
-transfers (one 4 byte and one with max_transfer_size, that is 64k) and 
-thus the message has a total length of 65540 bytes which is too long for 
-the driver.
+Thanks, Dan. Best regards,
 
-I didn't find where the max_message_size is checked and I also don't 
-know which part is resposible to handle the correct sizes. The m25p80 
-driver? Should it use spi_max_message_size() instead of 
-spi_max_transfer_size() ?
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index d3affa6..b293149 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -1510,15 +1510,15 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
+>  		int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
+>  						"cs-gpios", i);
+>  
+> -			if (cs_gpio == -EPROBE_DEFER)
+> -				return cs_gpio;
+> -
+> -			if (gpio_is_valid(cs_gpio)) {
+> -				ret = devm_gpio_request(&pdev->dev, cs_gpio,
+> -							dev_name(&pdev->dev));
+> -				if (ret)
+> -					return ret;
+> -			}
+> +		if (cs_gpio == -EPROBE_DEFER)
+> +			return cs_gpio;
+> +
+> +		if (gpio_is_valid(cs_gpio)) {
+> +			ret = devm_gpio_request(&pdev->dev, cs_gpio,
+> +						dev_name(&pdev->dev));
+> +			if (ret)
+> +				return ret;
+> +		}
+>  	}
+>  
+>  	return 0;
+> 
 
-For example:
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -172,7 +172,7 @@ static ssize_t m25p80_read(struct spi_nor *nor, 
-loff_t from, size_t len,
 
-         t[1].rx_buf = buf;
-         t[1].rx_nbits = m25p80_rx_nbits(nor);
--       t[1].len = min(len, spi_max_transfer_size(spi) - t[0].len);
-+       t[1].len = min(len, spi_max_message_size(spi) - t[0].len);
-         spi_message_add_tail(&t[1], &m);
-
-         ret = spi_sync(spi, &m);
-
--michael
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Nicolas Ferre

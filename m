@@ -1,20 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: introduce struct fsl_espi_cs" to the spi tree
-Date: Mon, 14 Nov 2016 13:54:32 +0000
-Message-ID: <E1c6HiS-0003KM-Su@finisterre>
-References: <fcce5b10-4433-9ff2-2f17-bc0cf2f0f6b5@gmail.com>
+Subject: Applied "spi: fsl-espi: migrate relevant parts of mpc8xxx_spi_probe and of_mpc8xxx_spi_probe" to the spi tree
+Date: Mon, 14 Nov 2016 13:54:38 +0000
+Message-ID: <E1c6HiY-0003L8-68@finisterre>
+References: <a4319a57-c3fa-7f8b-3292-9e5dee3dd3d6@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fcce5b10-4433-9ff2-2f17-bc0cf2f0f6b5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <a4319a57-c3fa-7f8b-3292-9e5dee3dd3d6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: introduce struct fsl_espi_cs
+   spi: fsl-espi: migrate relevant parts of mpc8xxx_spi_probe and of_mpc8xxx_spi_probe
 
 has been applied to the spi tree at
 
@@ -39,62 +39,70 @@ to this mail.
 Thanks,
 Mark
 
->From 219b5e3b239226c50ff6c4de6abf0534407df620 Mon Sep 17 00:00:00 2001
+>From 7cb55577232fa07a089e0e0353fb445403f34697 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 13 Nov 2016 14:38:05 +0100
-Subject: [PATCH] spi: fsl-espi: introduce struct fsl_espi_cs
+Date: Sun, 13 Nov 2016 14:37:41 +0100
+Subject: [PATCH] spi: fsl-espi: migrate relevant parts of mpc8xxx_spi_probe
+ and of_mpc8xxx_spi_probe
 
-Very little from struct spi_mpc8xxx_cs is relevant for fsl-espi.
-Therefore replace it with struct fsl_espi_cs.
+Very little of the library functions mpc8xxx_spi_probe and
+of_mpc8xxx_spi_probe is relevant for fsl-espi.
+
+Therefore migrate the relevant parts to fsl-espi (considering
+that get_brgfreq() always returns -1 on systems with ESPI)
+and remove use of these functions.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 58314d775925..5d84694b7323 100644
+index e378622f4a60..58314d775925 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -93,6 +93,10 @@
+@@ -587,9 +587,9 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
  
- #define AUTOSUSPEND_TIMEOUT 2000
+ 	dev_set_drvdata(dev, master);
  
-+struct fsl_espi_cs {
-+	u32 hw_mode;
-+};
+-	mpc8xxx_spi_probe(dev, mem, irq);
+-
+-	master->mode_bits |= SPI_RX_DUAL;
++	master->mode_bits = SPI_RX_DUAL | SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
++			    SPI_LSB_FIRST | SPI_LOOP;
++	master->dev.of_node = dev->of_node;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
+ 	master->setup = fsl_espi_setup;
+ 	master->cleanup = fsl_espi_cleanup;
+@@ -601,6 +601,16 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	spin_lock_init(&mpc8xxx_spi->lock);
+ 
++	mpc8xxx_spi->dev = dev;
++	mpc8xxx_spi->spibrg = fsl_get_sys_freq();
++	if (mpc8xxx_spi->spibrg == -1) {
++		dev_err(dev, "Can't get sys frequency!\n");
++		ret = -EINVAL;
++		goto err_probe;
++	}
 +
- static inline u32 fsl_espi_read_reg(struct mpc8xxx_spi *mspi, int offset)
- {
- 	return ioread32be(mspi->reg_base + offset);
-@@ -280,7 +284,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	int bits_per_word = t ? t->bits_per_word : spi->bits_per_word;
- 	u32 pm, hz = t ? t->speed_hz : spi->max_speed_hz;
--	struct spi_mpc8xxx_cs *cs = spi->controller_state;
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
- 	u32 hw_mode_old = cs->hw_mode;
- 
- 	/* mask out bits we are going to set */
-@@ -437,7 +441,7 @@ static int fsl_espi_setup(struct spi_device *spi)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi;
- 	u32 loop_mode;
--	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
- 
- 	if (!spi->max_speed_hz)
++	init_completion(&mpc8xxx_spi->done);
++
+ 	mpc8xxx_spi->local_buf =
+ 		devm_kmalloc(dev, SPCOM_TRANLEN_MAX, GFP_KERNEL);
+ 	if (!mpc8xxx_spi->local_buf) {
+@@ -713,10 +723,6 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
  		return -EINVAL;
-@@ -483,7 +487,7 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	}
  
- static void fsl_espi_cleanup(struct spi_device *spi)
- {
--	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
- 
- 	kfree(cs);
- 	spi_set_ctldata(spi, NULL);
+-	ret = of_mpc8xxx_spi_probe(ofdev);
+-	if (ret)
+-		return ret;
+-
+ 	num_cs = of_fsl_espi_get_chipselects(dev);
+ 	if (!num_cs)
+ 		return -EINVAL;
 -- 
 2.10.2
 

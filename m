@@ -1,50 +1,52 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 01/10] spi: fsl-espi: remove usage of pdata->initial_spmode
-Date: Sun, 13 Nov 2016 14:36:01 +0100
-Message-ID: <87e8e8eb-d52b-e207-473b-423bcd2379a7@gmail.com>
-References: <882d05f1-a963-c03a-38ae-2dd701f561a6@gmail.com>
+From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Subject: [Patch v1 2/2] spi: imx: add devicetree binding for lpspi
+Date: Mon, 14 Nov 2016 13:22:47 +0800
+Message-ID: <1479100967-1894-2-git-send-email-pandy.gao@nxp.com>
+References: <1479100967-1894-1-git-send-email-pandy.gao@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <pandy.gao-3arQi8VN3Tc@public.gmane.org>,
+        <frank.li-3arQi8VN3Tc@public.gmane.org>, <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <882d05f1-a963-c03a-38ae-2dd701f561a6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1479100967-1894-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Remove pdata->initial_spmode as it is nowhere set.
+Add a binding document for lpspi driver
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt         | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 6624c5a..a1e1b68 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -661,7 +661,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	}
- 
- 	/* Enable SPI interface */
--	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
-+	regval = SPMODE_INIT_VAL | SPMODE_ENABLE;
- 
- 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, regval);
- 
-@@ -786,7 +786,7 @@ static int of_fsl_espi_resume(struct device *dev)
- 				      CSMODE_INIT_VAL);
- 
- 	/* Enable SPI interface */
--	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
-+	regval = SPMODE_INIT_VAL | SPMODE_ENABLE;
- 
- 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, regval);
- 
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+new file mode 100644
+index 0000000..225ace1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+@@ -0,0 +1,19 @@
++* Freescale Low Power SPI (LPSPI) for i.MX
++
++Required properties:
++- compatible :
++  - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
++- reg : address and length of the lpspi master registers
++- interrupt-parent : core interrupt controller
++- interrupts : lpspi interrupt
++- clocks : lpspi clock specifier
++
++Examples:
++
++lpspi2: lpspi@40290000 {
++	compatible = "fsl,imx7ulp-spi";
++	reg = <0x40290000 0x10000>;
++	interrupt-parent = <&intc>;
++	interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&clks IMX7ULP_CLK_LPSPI2>;
++};
 -- 
-2.10.1
-
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

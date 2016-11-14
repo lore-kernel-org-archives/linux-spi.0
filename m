@@ -1,39 +1,50 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi: spi-pxa2xx: Remove unused macro
-Date: Mon, 14 Nov 2016 13:24:20 +0200
-Message-ID: <20161114112420.16915-1-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Patch v1 1/2] spi: imx: add lpspi bus driver
+Date: Mon, 14 Nov 2016 12:09:42 +0000
+Message-ID: <20161114120942.uzswqewdyh3xgfse@sirena.org.uk>
+References: <1479100967-1894-1-git-send-email-pandy.gao@nxp.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="otlitxjf4g6hoizp"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, frank.li-3arQi8VN3Tc@public.gmane.org, fugang.duan-3arQi8VN3Tc@public.gmane.org
+To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1479100967-1894-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-IS_DMA_ALIGNED() became unused by the commit 6356437e65c2
-("spi: spi-pxa2xx: remove legacy PXA DMA bits").
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.h | 1 -
- 1 file changed, 1 deletion(-)
+--otlitxjf4g6hoizp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index ce31b8199bb3..2823a00a9405 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -109,7 +109,6 @@ static  inline void pxa2xx_spi_write(const struct driver_data *drv_data,
- #define DONE_STATE ((void *)2)
- #define ERROR_STATE ((void *)-1)
- 
--#define IS_DMA_ALIGNED(x)	IS_ALIGNED((unsigned long)(x), DMA_ALIGNMENT)
- #define DMA_ALIGNMENT		8
- 
- static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
--- 
-2.10.2
+On Mon, Nov 14, 2016 at 01:22:46PM +0800, Gao Pan wrote:
 
+> +config SPI_FSL_LPSPI
+> +	tristate "Freescale i.MX LPSPI controller"
+> +	depends on ARCH_MXC || COMPILE_TEST
+> +	select SPI_BITBANG
+
+Don't use SPI_BITBANG for anything that isn't actually bitbanging (which
+this clearly isn't).  Use the normal SPI interfaces, all the queue
+handling that people used to abuse SPI_BITBANG for is now in the core.
+
+--otlitxjf4g6hoizp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYKamGAAoJECTWi3JdVIfQatsH/1WqW9xLh6qrwLiD16KtwMhf
+wDlFkEUVfP6J3pl9YkfYCFqCciOmfxiaXq1R0PUOs3DRiVC1kob1LEeNb97PSM0u
+In/O1LK7WmAXNXbOrMMLGtsmLqugcYYxISdbMZFUjU1brvkVUKCaUksMfkWXHBIR
+RQi82OfG6zU0wcizaN1ZGDWRKbAgV08NsLGAnFSraZ3tAJz6iwhiaaqjckpQw0cz
+nomfqPysxFMIkV0asu46qBbjyqKDRZ99ywWAiqJnYkDQh7Jx267CcP4DWTpp8g8X
+Zy0/Hy8caTQMuvF/nLozauH/zbXd5x2pE2ttPIXHu1hjBMrKqqb0TJXhI+FZo7o=
+=B1m0
+-----END PGP SIGNATURE-----
+
+--otlitxjf4g6hoizp--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

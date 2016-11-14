@@ -1,53 +1,51 @@
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Subject: [Patch v1 2/2] spi: imx: add devicetree binding for lpspi
-Date: Mon, 14 Nov 2016 13:22:47 +0800
-Message-ID: <1479100967-1894-2-git-send-email-pandy.gao@nxp.com>
-References: <1479100967-1894-1-git-send-email-pandy.gao@nxp.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 03/10] spi: fsl-espi: remove remaining usage of struct
+ fsl_spi_platform_data
+Date: Mon, 14 Nov 2016 10:35:35 +0000
+Message-ID: <20161114103535.rz5pe4ul3esplvji@sirena.org.uk>
+References: <882d05f1-a963-c03a-38ae-2dd701f561a6@gmail.com>
+ <46d0ab77-d645-1db3-cca4-99b1b04d599c@gmail.com>
+ <75bd88e0-e1bf-9729-6cd0-e88633d940e6@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <pandy.gao-3arQi8VN3Tc@public.gmane.org>,
-        <frank.li-3arQi8VN3Tc@public.gmane.org>, <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="yij3dtmigczana7z"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1479100967-1894-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <75bd88e0-e1bf-9729-6cd0-e88633d940e6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add a binding document for lpspi driver
 
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-fsl-lpspi.txt         | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+--yij3dtmigczana7z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-new file mode 100644
-index 0000000..225ace1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-@@ -0,0 +1,19 @@
-+* Freescale Low Power SPI (LPSPI) for i.MX
-+
-+Required properties:
-+- compatible :
-+  - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
-+- reg : address and length of the lpspi master registers
-+- interrupt-parent : core interrupt controller
-+- interrupts : lpspi interrupt
-+- clocks : lpspi clock specifier
-+
-+Examples:
-+
-+lpspi2: lpspi@40290000 {
-+	compatible = "fsl,imx7ulp-spi";
-+	reg = <0x40290000 0x10000>;
-+	interrupt-parent = <&intc>;
-+	interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-+	clocks = <&clks IMX7ULP_CLK_LPSPI2>;
-+};
--- 
-1.9.1
+On Sun, Nov 13, 2016 at 02:36:39PM +0100, Heiner Kallweit wrote:
+> Use master->num_chipselect directly instead of pdata->max_chipselect.
+> In this context let of_fsl_espi_get_chipselects return max_chipselect.
 
+Something is screwed up with the way you're sending these - none of this
+series is threaded together except this which is threaded with patch 1.
+Generally it's best to use git send-email to send patches, it will get
+things right with little effort on your part.
+
+--yij3dtmigczana7z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYKZN2AAoJECTWi3JdVIfQRKQH/12RUTC2DbR0z01eytgKUJ1j
+L7MRwwyi8lMw5Fa4UzvHuT5QOMrzMfYRpDzPLtwfhgHvMQBqhDaDqsINqzsda7UH
+TD8qaHM/sBjm0+f6jh4KI961IaWGNwXj0oDX/dk+IvP72GJU1nubEM2bjDxqjwuG
+j/ov2TZgpEdETAebk98XlJ21UJL2myE70nntU3MMLPi8fgq7TV511AqcjmtNC4lZ
++rObxetINTCW6B532EQDr3Ga9j360gUXcCIpChVcUxRj/ILZ7bdMg3xj5YXxmECP
+208Vk+rtUFLvYpKz5Pl21YzbtK2iAJpMVKdsy6cglghiI1SG/G8IP/c0L38+iA4=
+=NlLL
+-----END PGP SIGNATURE-----
+
+--yij3dtmigczana7z--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

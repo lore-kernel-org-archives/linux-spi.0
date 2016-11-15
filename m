@@ -1,89 +1,80 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: fix indenting in atmel_spi_gpio_cs()" to the spi tree
-Date: Tue, 15 Nov 2016 18:53:42 +0000
-Message-ID: <E1c6irW-0006I9-8T@debutante>
-References: <20161114142644.GA6179@mwanda>
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20161114142644.GA6179@mwanda>
-Sender: kernel-janitors-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: fsl-espi: set spi_master members min_speed_hz and
+ max_speed_hz
+Date: Tue, 15 Nov 2016 21:56:33 +0100
+Message-ID: <e80a16db-fec3-0236-f2e1-b4818ab28e73@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+ESPI has a max and min supported SPI frequency, determined by the
+clock divider range. Set master->min_speed_hz/max_speed_hz to inform
+the SPI core about these limits.
+Then the SPI core handles cases where a transfer requests a frequency
+outside the supported range.
 
-   spi: atmel: fix indenting in atmel_spi_gpio_cs()
+So far the driver simply set the lowest supported frequency if the
+requested frequency was below the supported range. This is not
+necessarily an appropriate action as the device might not support
+frequencies greater than the requested one.
+With this patch the SPI core will reject transfers requesting a
+too low frequency.
 
-has been applied to the spi tree at
+The check in fsl_espi_setup can be removed because the SPI core sets
+spi->max_speed_hz to master->max_speed_hz if it's not set already.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b52b3484eec593a4fe75a68e57f0ade52b55ed8f Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Mon, 14 Nov 2016 17:26:44 +0300
-Subject: [PATCH] spi: atmel: fix indenting in atmel_spi_gpio_cs()
-
-These lines were indented one extra tab.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-atmel.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index d3affa6afe7e..b2931493cab2 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1510,15 +1510,15 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
- 		int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
- 						"cs-gpios", i);
- 
--			if (cs_gpio == -EPROBE_DEFER)
--				return cs_gpio;
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index b5feae3..28b6e7f 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -314,13 +314,6 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 	if (pm > 15) {
+ 		cs->hw_mode |= CSMODE_DIV16;
+ 		pm = DIV_ROUND_UP(espi->spibrg, hz * 16 * 4) - 1;
 -
--			if (gpio_is_valid(cs_gpio)) {
--				ret = devm_gpio_request(&pdev->dev, cs_gpio,
--							dev_name(&pdev->dev));
--				if (ret)
--					return ret;
--			}
-+		if (cs_gpio == -EPROBE_DEFER)
-+			return cs_gpio;
-+
-+		if (gpio_is_valid(cs_gpio)) {
-+			ret = devm_gpio_request(&pdev->dev, cs_gpio,
-+						dev_name(&pdev->dev));
-+			if (ret)
-+				return ret;
-+		}
+-		WARN_ONCE(pm > 15,
+-			  "%s: Requested speed is too low: %u Hz. Will use %u Hz instead.\n",
+-			  dev_name(&spi->dev), hz,
+-			  espi->spibrg / (4 * 16 * (15 + 1)));
+-		if (pm > 15)
+-			pm = 15;
  	}
  
- 	return 0;
+ 	cs->hw_mode |= CSMODE_PM(pm);
+@@ -460,9 +453,6 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	u32 loop_mode;
+ 	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
+ 
+-	if (!spi->max_speed_hz)
+-		return -EINVAL;
+-
+ 	if (!cs) {
+ 		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
+ 		if (!cs)
+@@ -673,6 +663,9 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 		ret = -EINVAL;
+ 		goto err_probe;
+ 	}
++	/* determined by clock divider fields DIV16/PM in register SPMODEx */
++	master->min_speed_hz = DIV_ROUND_UP(espi->spibrg, 4 * 16 * 16);
++	master->max_speed_hz = DIV_ROUND_UP(espi->spibrg, 4);
+ 
+ 	init_completion(&espi->done);
+ 
 -- 
 2.10.2
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,53 +1,42 @@
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Subject: [Patch V2 2/2] spi: imx: add devicetree binding for lpspi
-Date: Tue, 15 Nov 2016 21:33:51 +0800
-Message-ID: <1479216831-8709-2-git-send-email-pandy.gao@nxp.com>
-References: <1479216831-8709-1-git-send-email-pandy.gao@nxp.com>
+From: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [Patch v1 1/2] spi: imx: add lpspi bus driver
+Date: Tue, 15 Nov 2016 13:29:12 +0000
+Message-ID: <AM4PR0401MB1780AD8496E30FF58EF3898CF6BF0@AM4PR0401MB1780.eurprd04.prod.outlook.com>
+References: <1479100967-1894-1-git-send-email-pandy.gao@nxp.com>
+ <20161114120942.uzswqewdyh3xgfse@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <pandy.gao-3arQi8VN3Tc@public.gmane.org>,
-        <frank.li-3arQi8VN3Tc@public.gmane.org>, <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>, Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1479216831-8709-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <20161114120942.uzswqewdyh3xgfse-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add a binding document for lpspi driver
-
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-fsl-lpspi.txt         | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-new file mode 100644
-index 0000000..225ace1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-@@ -0,0 +1,19 @@
-+* Freescale Low Power SPI (LPSPI) for i.MX
-+
-+Required properties:
-+- compatible :
-+  - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
-+- reg : address and length of the lpspi master registers
-+- interrupt-parent : core interrupt controller
-+- interrupts : lpspi interrupt
-+- clocks : lpspi clock specifier
-+
-+Examples:
-+
-+lpspi2: lpspi@40290000 {
-+	compatible = "fsl,imx7ulp-spi";
-+	reg = <0x40290000 0x10000>;
-+	interrupt-parent = <&intc>;
-+	interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-+	clocks = <&clks IMX7ULP_CLK_LPSPI2>;
-+};
--- 
-1.9.1
-
+ From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>  Sent: Monday, November 14, 2=
+016 8:10 PM
+> To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>; Andy Duan
+> <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+> Subject: Re: [Patch v1 1/2] spi: imx: add lpspi bus driver
+>=20
+> On Mon, Nov 14, 2016 at 01:22:46PM +0800, Gao Pan wrote:
+>=20
+> > +config SPI_FSL_LPSPI
+> > +	tristate "Freescale i.MX LPSPI controller"
+> > +	depends on ARCH_MXC || COMPILE_TEST
+> > +	select SPI_BITBANG
+>=20
+> Don't use SPI_BITBANG for anything that isn't actually bitbanging (which =
+this
+> clearly isn't).  Use the normal SPI interfaces, all the queue handling th=
+at people
+> used to abuse SPI_BITBANG for is now in the core.
+=20
+Thanks,  will change it in next version.=20
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

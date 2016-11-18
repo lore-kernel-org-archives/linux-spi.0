@@ -1,113 +1,35 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: set spi_master members min_speed_hz and max_speed_hz" to the spi tree
-Date: Fri, 18 Nov 2016 12:02:14 +0000
-Message-ID: <E1c7hry-0005Qd-4P@debutante>
-References: <e80a16db-fec3-0236-f2e1-b4818ab28e73@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e80a16db-fec3-0236-f2e1-b4818ab28e73-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: atull <atull@opensource.altera.com>
+Subject: Re: [PATCH v8 2/3] Documentation: Add binding document for Lattice
+ iCE40 FPGA manager
+Date: Fri, 18 Nov 2016 12:56:12 -0600
+Message-ID: <alpine.DEB.2.20.1611181255120.3387@atull-VirtualBox2>
+References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk> <1478486962-26794-2-git-send-email-joel@airwebreathe.org.uk> <20161114161130.2arzmaev6ajsw4qt@rob-hp-laptop>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Cc: Joel Holdsworth <joel@airwebreathe.org.uk>,
+        <moritz.fischer@ettus.com>, <geert@linux-m68k.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <marex@denx.de>,
+        <clifford@clifford.at>
+To: Rob Herring <robh@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20161114161130.2arzmaev6ajsw4qt@rob-hp-laptop>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Mon, 14 Nov 2016, Rob Herring wrote:
 
-   spi: fsl-espi: set spi_master members min_speed_hz and max_speed_hz
+> On Sun, Nov 06, 2016 at 07:49:21PM -0700, Joel Holdsworth wrote:
+> > This adds documentation of the device tree bindings of the Lattice iCE40
+> > FPGA driver for the FPGA manager framework.
+> > 
+> > Signed-off-by: Joel Holdsworth <joel@airwebreathe.org.uk>
+> > ---
+> >  .../bindings/fpga/lattice-ice40-fpga-mgr.txt        | 21 +++++++++++++++++++++
+> >  1 file changed, 21 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/fpga/lattice-ice40-fpga-mgr.txt
+> 
+> Acked-by: Rob Herring <robh@kernel.org>
+> 
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f254e65ce20fda3c442ebc50ae1502281963a79b Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 15 Nov 2016 21:56:33 +0100
-Subject: [PATCH] spi: fsl-espi: set spi_master members min_speed_hz and
- max_speed_hz
-
-ESPI has a max and min supported SPI frequency, determined by the
-clock divider range. Set master->min_speed_hz/max_speed_hz to inform
-the SPI core about these limits.
-Then the SPI core handles cases where a transfer requests a frequency
-outside the supported range.
-
-So far the driver simply set the lowest supported frequency if the
-requested frequency was below the supported range. This is not
-necessarily an appropriate action as the device might not support
-frequencies greater than the requested one.
-With this patch the SPI core will reject transfers requesting a
-too low frequency.
-
-The check in fsl_espi_setup can be removed because the SPI core sets
-spi->max_speed_hz to master->max_speed_hz if it's not set already.
-
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 2635a33b8e98..4fbcc36fa891 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -314,13 +314,6 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 	if (pm > 15) {
- 		cs->hw_mode |= CSMODE_DIV16;
- 		pm = DIV_ROUND_UP(espi->spibrg, hz * 16 * 4) - 1;
--
--		WARN_ONCE(pm > 15,
--			  "%s: Requested speed is too low: %u Hz. Will use %u Hz instead.\n",
--			  dev_name(&spi->dev), hz,
--			  espi->spibrg / (4 * 16 * (15 + 1)));
--		if (pm > 15)
--			pm = 15;
- 	}
- 
- 	cs->hw_mode |= CSMODE_PM(pm);
-@@ -460,9 +453,6 @@ static int fsl_espi_setup(struct spi_device *spi)
- 	u32 loop_mode;
- 	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
- 
--	if (!spi->max_speed_hz)
--		return -EINVAL;
--
- 	if (!cs) {
- 		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
- 		if (!cs)
-@@ -673,6 +663,9 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 		ret = -EINVAL;
- 		goto err_probe;
- 	}
-+	/* determined by clock divider fields DIV16/PM in register SPMODEx */
-+	master->min_speed_hz = DIV_ROUND_UP(espi->spibrg, 4 * 16 * 16);
-+	master->max_speed_hz = DIV_ROUND_UP(espi->spibrg, 4);
- 
- 	init_completion(&espi->done);
- 
--- 
-2.10.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Acked-by: Alan Tull <atull@opensource.altera.com>

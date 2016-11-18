@@ -1,35 +1,39 @@
 From: atull <atull@opensource.altera.com>
-Subject: Re: [PATCH v8 2/3] Documentation: Add binding document for Lattice
- iCE40 FPGA manager
-Date: Fri, 18 Nov 2016 12:56:12 -0600
-Message-ID: <alpine.DEB.2.20.1611181255120.3387@atull-VirtualBox2>
-References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk> <1478486962-26794-2-git-send-email-joel@airwebreathe.org.uk> <20161114161130.2arzmaev6ajsw4qt@rob-hp-laptop>
+Subject: Re: [PATCH v4 1/2] of: Add vendor prefix for Lattice Semiconductor
+Date: Fri, 18 Nov 2016 12:59:24 -0600
+Message-ID: <alpine.DEB.2.20.1611181257340.3387@atull-VirtualBox2>
+References: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-Cc: Joel Holdsworth <joel@airwebreathe.org.uk>,
-        <moritz.fischer@ettus.com>, <geert@linux-m68k.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <marex@denx.de>,
-        <clifford@clifford.at>
-To: Rob Herring <robh@kernel.org>
+Cc: <moritz.fischer@ettus.com>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+To: Joel Holdsworth <joel@airwebreathe.org.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161114161130.2arzmaev6ajsw4qt@rob-hp-laptop>
+In-Reply-To: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 14 Nov 2016, Rob Herring wrote:
+On Sat, 29 Oct 2016, Joel Holdsworth wrote:
 
-> On Sun, Nov 06, 2016 at 07:49:21PM -0700, Joel Holdsworth wrote:
-> > This adds documentation of the device tree bindings of the Lattice iCE40
-> > FPGA driver for the FPGA manager framework.
-> > 
-> > Signed-off-by: Joel Holdsworth <joel@airwebreathe.org.uk>
-> > ---
-> >  .../bindings/fpga/lattice-ice40-fpga-mgr.txt        | 21 +++++++++++++++++++++
-> >  1 file changed, 21 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/fpga/lattice-ice40-fpga-mgr.txt
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> index 1992aa9..d64a835 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> @@ -146,6 +146,7 @@ kosagi	Sutajio Ko-Usagi PTE Ltd.
+>  kyo	Kyocera Corporation
+>  lacie	LaCie
+>  lantiq	Lantiq Semiconductor
+> +lattice	Lattice Semiconductor
+>  lenovo	Lenovo Group Ltd.
+>  lg	LG Corporation
+>  linux	Linux-specific binding
+> -- 
+> 2.7.4
+> 
 > 
 
 Acked-by: Alan Tull <atull@opensource.altera.com>

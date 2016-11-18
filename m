@@ -1,46 +1,43 @@
-From: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v8 2/3] Documentation: Add binding document for Lattice
- iCE40 FPGA manager
-Date: Fri, 18 Nov 2016 11:17:17 -0800
-Message-ID: <CAAtXAHcORUBHH-V98cK0CABtjXYB1afhLHb_2m-akn5tMcv5vQ@mail.gmail.com>
-References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
- <1478486962-26794-2-git-send-email-joel@airwebreathe.org.uk>
- <20161114161130.2arzmaev6ajsw4qt@rob-hp-laptop> <alpine.DEB.2.20.1611181255120.3387@atull-VirtualBox2>
+From: Moritz Fischer <moritz.fischer@ettus.com>
+Subject: Re: [PATCH v4 1/2] of: Add vendor prefix for Lattice Semiconductor
+Date: Fri, 18 Nov 2016 11:17:40 -0800
+Message-ID: <CAAtXAHdEJx=vojTBMK=huRwmnT7MkQ2nF_N4+sDH06RH7StNug@mail.gmail.com>
+References: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk> <alpine.DEB.2.20.1611181257340.3387@atull-VirtualBox2>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        Devicetree List <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex-ynQEQJNshbs@public.gmane.org>,
-        Clifford Wolf <clifford-cPpHkPqGOEfk7+2FdBfRIA@public.gmane.org>
-To: atull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <alpine.DEB.2.20.1611181255120.3387@atull-VirtualBox2>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Joel Holdsworth <joel@airwebreathe.org.uk>,
+        Devicetree List <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+To: atull <atull@opensource.altera.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <alpine.DEB.2.20.1611181257340.3387@atull-VirtualBox2>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 18, 2016 at 10:56 AM, atull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org> wrote:
-> On Mon, 14 Nov 2016, Rob Herring wrote:
+On Fri, Nov 18, 2016 at 10:59 AM, atull <atull@opensource.altera.com> wrote:
+> On Sat, 29 Oct 2016, Joel Holdsworth wrote:
 >
->> On Sun, Nov 06, 2016 at 07:49:21PM -0700, Joel Holdsworth wrote:
->> > This adds documentation of the device tree bindings of the Lattice iCE40
->> > FPGA driver for the FPGA manager framework.
->> >
->> > Signed-off-by: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
->> > ---
->> >  .../bindings/fpga/lattice-ice40-fpga-mgr.txt        | 21 +++++++++++++++++++++
->> >  1 file changed, 21 insertions(+)
->> >  create mode 100644 Documentation/devicetree/bindings/fpga/lattice-ice40-fpga-mgr.txt
+>> ---
+>>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>>  1 file changed, 1 insertion(+)
 >>
->> Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+>> index 1992aa9..d64a835 100644
+>> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+>> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+>> @@ -146,6 +146,7 @@ kosagi    Sutajio Ko-Usagi PTE Ltd.
+>>  kyo  Kyocera Corporation
+>>  lacie        LaCie
+>>  lantiq       Lantiq Semiconductor
+>> +lattice      Lattice Semiconductor
+>>  lenovo       Lenovo Group Ltd.
+>>  lg   LG Corporation
+>>  linux        Linux-specific binding
+>> --
+>> 2.7.4
+>>
 >>
 >
-> Acked-by: Alan Tull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Acked-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Acked-by: Alan Tull <atull@opensource.altera.com>
+Acked-by: Moritz Fischer <moritz.fischer@ettus.com>

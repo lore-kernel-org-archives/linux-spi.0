@@ -1,91 +1,83 @@
-From: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
-Subject: Re: [PATCH] spi: davinci: Allow device tree devices to use DMA
-Date: Sun, 20 Nov 2016 11:01:02 -0600
-Message-ID: <946d60bc-ac14-7934-c1b3-e2de03831459@lechnology.com>
-References: <1479530464-12538-1-git-send-email-david@lechnology.com>
- <79f186b5-ac71-189f-c19f-977670395043@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: make architecture specific hardware depend on the associated hardware
+Date: Sun, 20 Nov 2016 17:55:05 +0000
+Message-ID: <20161120175505.2910-1-pbrobinson@gmail.com>
+Cc: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <79f186b5-ac71-189f-c19f-977670395043-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 11/20/2016 06:59 AM, Sekhar Nori wrote:
-> On Saturday 19 November 2016 10:11 AM, David Lechner wrote:
->> This makes SPI devices specified in a device tree use DMA when the master
->> controller has DMA configured.
->>
->> Since device tree is supposed to only describe the hardware, adding a
->> configuration option to device tree to enable DMA per-device would not be
->> acceptable. So, this is the best we can do for now to get SPI devices
->> working with DMA when using device tree.
->>
->> Unfortunately, this excludes the possibility of using one SPI device with
->> DMA and one without on the same master.
->>
->> I have tested this on LEGO MINDSTORMS EV3 using the NOR flash. Reading the
->> flash memory would fail with -EIO when DMA is not enabled for the device.
->>
->> Signed-off-by: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
->> ---
->>  drivers/spi/spi-davinci.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
->> index d36c11b..c6cf73a 100644
->> --- a/drivers/spi/spi-davinci.c
->> +++ b/drivers/spi/spi-davinci.c
->> @@ -388,6 +388,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
->>  static int davinci_spi_of_setup(struct spi_device *spi)
->>  {
->>  	struct davinci_spi_config *spicfg = spi->controller_data;
->> +	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
->>  	struct device_node *np = spi->dev.of_node;
->>  	u32 prop;
->>
->> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
->>  		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
->>  			spicfg->wdelay = (u8)prop;
->>  		spi->controller_data = spicfg;
->> +		/* Use DMA for device if master supports it */
->> +		if (dspi->dma_rx)
->
-> This should be
->
-> 		if (!(IS_ERR(dpsi->dma_rx) || IS_ERR(dspi->dma_tx))
+There's not much point enabling hardware specific hardware drivers if the
+actual SoC architecture platforms aren't enabled as they're not much use
+with out it.
 
+Signed-off-by: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/Kconfig | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-There is the following code in davinci_spi_probe():
+v1->v2:
+        - Add COMPILE_TEST to changes missing the option
 
-	ret = davinci_spi_request_dma(dspi);
-	if (ret == -EPROBE_DEFER) {
-		goto free_clk;
-	} else if (ret) {
-		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
-		dspi->dma_rx = NULL;
-		dspi->dma_tx = NULL;
-	}
-
-So, I does not look like it is possible to get anything other than NULL 
-or a valid pointer for dpsi->dma_rx and that checking dpsi->dma_tx is 
-not necessary.
-
-So, I think if (dspi->dma_rx) is sufficient. In fact the same check is 
-used during unwinding if the probe function fails.
-
->
->> +			spicfg->io_type = SPI_IO_TYPE_DMA;
->
-> Otherwise looks good to me.
->
-> Thanks,
-> Sekhar
->
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b799547..69730ac 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -188,6 +188,7 @@ config SPI_BUTTERFLY
+ 
+ config SPI_CADENCE
+ 	tristate "Cadence SPI controller"
++	depends on ARCH_ZYNQ || ARCH_ZYNQMP || COMPILE_TEST
+ 	help
+ 	  This selects the Cadence SPI controller master driver
+ 	  used by Xilinx Zynq and ZynqMP.
+@@ -224,7 +225,7 @@ config SPI_DW_PCI
+ 
+ config SPI_DW_MID_DMA
+ 	bool "DMA support for DW SPI controller on Intel MID platform"
+-	depends on SPI_DW_PCI && DW_DMAC_PCI
++	depends on (X86 || COMPILE_TEST) && SPI_DW_PCI && DW_DMAC_PCI
+ 
+ config SPI_DW_MMIO
+ 	tristate "Memory-mapped io interface driver for DW SPI core"
+@@ -499,6 +500,7 @@ config SPI_PXA2XX_PCI
+ 
+ config SPI_ROCKCHIP
+ 	tristate "Rockchip SPI controller driver"
++	depends on ARCH_ROCKCHIP || COMPILE_TEST
+ 	help
+ 	  This selects a driver for Rockchip SPI controller.
+ 
+@@ -650,7 +652,7 @@ config SPI_TEGRA20_SLINK
+ 
+ config SPI_THUNDERX
+ 	tristate "Cavium ThunderX SPI controller"
+-	depends on PCI && 64BIT && (ARM64 || COMPILE_TEST)
++	depends on PCI && 64BIT && (ARCH_THUNDER || COMPILE_TEST)
+ 	help
+ 	  SPI host driver for the hardware found on Cavium ThunderX
+ 	  SOCs.
+@@ -680,7 +682,7 @@ config SPI_XCOMM
+ 
+ config SPI_XILINX
+ 	tristate "Xilinx SPI controller common module"
+-	depends on HAS_IOMEM
++	depends on HAS_IOMEM && (ARCH_ZYNQ || ARCH_ZYNQMP || COMPILE_TEST)
+ 	select SPI_BITBANG
+ 	help
+ 	  This exposes the SPI controller IP from the Xilinx EDK.
+@@ -715,7 +717,7 @@ config SPI_XTENSA_XTFPGA
+ 
+ config SPI_ZYNQMP_GQSPI
+ 	tristate "Xilinx ZynqMP GQSPI controller"
+-	depends on SPI_MASTER && HAS_DMA
++	depends on SPI_MASTER && HAS_DMA && (ARCH_ZYNQMP || COMPILE_TEST)
+ 	help
+ 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
+ 
+-- 
+2.9.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

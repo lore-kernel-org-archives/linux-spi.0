@@ -1,7 +1,7 @@
 From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple SPI_IOC_MESSAGE
-Date: Mon, 21 Nov 2016 11:24:01 +0530
-Message-ID: <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
+Subject: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix continuous selection format
+Date: Mon, 21 Nov 2016 11:24:02 +0530
+Message-ID: <1317eff8a40789c47311c219d9cfb4105863bd9f.1479706671.git.maitysanchayan@gmail.com>
 References: <cover.1479706671.git.maitysanchayan@gmail.com>
 Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -14,47 +14,30 @@ References: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.g
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current DMA implementation had a bug where the DMA transfer would
-exit the loop in dspi_transfer_one_message after the completion of
-a single transfer. This results in a multi message transfer submitted
-with SPI_IOC_MESSAGE to terminate incorrectly without an error.
+Current DMA implementation was not handling the continuous selection
+format viz. SPI chip select would be deasserted even between sequential
+serial transfers. Use the cs_change variable and correctly set or
+reset the CONT bit accordingly for case where peripherals require
+the chip select to be asserted between sequential transfers.
 
 Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index bc64700..b1ee1f5 100644
+index b1ee1f5..41422cd 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -714,7 +714,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 				SPI_RSER_TFFFE | SPI_RSER_TFFFD |
- 				SPI_RSER_RFDFE | SPI_RSER_RFDFD);
- 			status = dspi_dma_xfer(dspi);
--			goto out;
-+			break;
- 		default:
- 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
- 				trans_mode);
-@@ -722,9 +722,13 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			goto out;
- 		}
+@@ -261,6 +261,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
+ 					SPI_PUSHR_PCS(dspi->cs) |
+ 					SPI_PUSHR_CTAS(0);
++	if (!dspi->cs_change)
++		dspi->dma->tx_dma_buf[i] |= SPI_PUSHR_CONT;
+ 	dspi->tx += tx_word + 1;
  
--		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
--			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
--		dspi->waitflags = 0;
-+		if (trans_mode != DSPI_DMA_MODE) {
-+			if (wait_event_interruptible(dspi->waitq,
-+						dspi->waitflags))
-+				dev_err(&dspi->pdev->dev,
-+					"wait transfer complete fail!\n");
-+			dspi->waitflags = 0;
-+		}
- 
- 		if (transfer->delay_usecs)
- 			udelay(transfer->delay_usecs);
+ 	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
 -- 
 2.10.2
 

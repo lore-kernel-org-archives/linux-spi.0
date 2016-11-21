@@ -1,70 +1,77 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH] spi: davinci: Allow device tree devices to use DMA
-Date: Mon, 21 Nov 2016 14:07:53 +0530
-Message-ID: <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1@ti.com>
-References: <1479530464-12538-1-git-send-email-david@lechnology.com>
- <79f186b5-ac71-189f-c19f-977670395043@ti.com>
- <946d60bc-ac14-7934-c1b3-e2de03831459@lechnology.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Patch V2 1/2] spi: imx: add lpspi bus driver
+Date: Mon, 21 Nov 2016 17:24:15 +0000
+Message-ID: <20161121172415.vtx7gahbzfgxconf@sirena.org.uk>
+References: <1479216831-8709-1-git-send-email-pandy.gao@nxp.com>
+ <20161116173228.cqtt5j5eczgg26gn@sirena.org.uk>
+ <AM4PR0401MB1780CDE562EEA1CE202E9572F6B10@AM4PR0401MB1780.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mh7ev3k5wmticu4c"
+Cc: "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>, Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <946d60bc-ac14-7934-c1b3-e2de03831459-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AM4PR0401MB1780CDE562EEA1CE202E9572F6B10-4rsfagO7TJzc3fSXliz02I3W/0Ik+aLCnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sunday 20 November 2016 10:31 PM, David Lechner wrote:
 
-> On 11/20/2016 06:59 AM, Sekhar Nori wrote:
+--mh7ev3k5wmticu4c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> On Saturday 19 November 2016 10:11 AM, David Lechner wrote:
+On Thu, Nov 17, 2016 at 09:55:41AM +0000, Pandy Gao wrote:
 
->>> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device
->>> *spi)
->>>          if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
->>>              spicfg->wdelay = (u8)prop;
->>>          spi->controller_data = spicfg;
->>> +        /* Use DMA for device if master supports it */
->>> +        if (dspi->dma_rx)
->>
->> This should be
->>
->>         if (!(IS_ERR(dpsi->dma_rx) || IS_ERR(dspi->dma_tx))
-> 
-> 
-> There is the following code in davinci_spi_probe():
-> 
->     ret = davinci_spi_request_dma(dspi);
->     if (ret == -EPROBE_DEFER) {
->         goto free_clk;
->     } else if (ret) {
->         dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
->         dspi->dma_rx = NULL;
->         dspi->dma_tx = NULL;
->     }
-> 
-> So, I does not look like it is possible to get anything other than NULL
-> or a valid pointer for dpsi->dma_rx and that checking dpsi->dma_tx is
-> not necessary.
-> 
-> So, I think if (dspi->dma_rx) is sufficient. In fact the same check is
-> used during unwinding if the probe function fails.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-You are right, I see it now. Setting dma_rx to NULL overriding the error
-value is confusing since dma_request_chan() itself does not use NULL as
-an error value.
+> From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> Sent: Thursday, November 17, 2016 1:32 AM
 
-I think it is better to fix the existing code to remove the NULL
-overwrite and use IS_ERR() instead. You should probably wait for some
-feedback from the SPI maintainer though.
+> > Why are we not also unpreparing the clock when the driver is idle?
 
-Thanks,
-Sekhar
+> I use clk_enable()  rather than  clk_prepare_enable() here to avoid
+> potential sleeping in runtime cause by clk_prepare().  clk is prepare
+> in fsl_lpspi_probe() and unprepared in fsl_lpspi_remove().
+
+It's absolutely fine to sleep in runtime PM and in the SPI hardware
+prepare and unprepare.
+
+> > Why are we doing this linearization into a single buffer?
+
+> For a spi  transfer transmitted by lpspi,  the clk for the last bit is
+> incomplete.  The last rising edge never comes unless  we manually
+> de-assert SS.  In case that a spi message contains multiple transfers,
+> SS should be de-asserted for each transfer.
+
+> However, for spi device such as m25p80, SS should keep asserted during
+> a whole message.  So we need do this linearization here.
+
+And the hardware can't do any kind of scatter/gather?  There's two
+things here - one is the combining everything into one hardware
+operation which isn't that uncommon a limitation (though obviously it's
+disappointing) and the other is the fact that in order to do this
+everything gets copied into and out of this one buffer which obviously
+adds quite a bit of overhead.
+
+--mh7ev3k5wmticu4c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYMy2/AAoJECTWi3JdVIfQ7c4H/2a0JcwXmVcZZbNi7qv3ekfC
+Jv12+O/zado6/eN/w1QXoC18EFQVBdVOvEqNZuTx4NWjtMaKlw/9E4f+jNm3+hBL
+msX4YT5oLZ7/rwOjzsxJPEuMNVb0/QjR/xQdv/52k7jLFIvrtrVGtw7b5ZhEu+1+
+bCK2cdrkAqYYVw/RWOCZT+JLL+XZYZQTRjyj8ogqTTR75KYUPfPIBxkXjU4SQVSS
+0GTPBlTfFkElZAd6AOALDoeCeazfS7TCekHuCYHscQuvL2EwMZ5uDDOmLcpE2Dl1
+A5RHa0V7NvWMe9VzcXWdTIYw0IcMWdbSfjFpu2wjJpMoYSAvOKpA+Sm+vvDHRtM=
+=yeys
+-----END PGP SIGNATURE-----
+
+--mh7ev3k5wmticu4c--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

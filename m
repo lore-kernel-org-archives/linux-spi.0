@@ -1,43 +1,50 @@
 From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix continuous selection format
-Date: Mon, 21 Nov 2016 11:24:02 +0530
-Message-ID: <1317eff8a40789c47311c219d9cfb4105863bd9f.1479706671.git.maitysanchayan@gmail.com>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
+Subject: [PATCH v2 0/4] Fixes for Vybrid SPI DMA implementation
+Date: Mon, 21 Nov 2016 11:24:00 +0530
+Message-ID: <cover.1479706671.git.maitysanchayan@gmail.com>
 Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-In-Reply-To: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-References: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current DMA implementation was not handling the continuous selection
-format viz. SPI chip select would be deasserted even between sequential
-serial transfers. Use the cs_change variable and correctly set or
-reset the CONT bit accordingly for case where peripherals require
-the chip select to be asserted between sequential transfers.
+Hello,
 
-Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 2 ++
- 1 file changed, 2 insertions(+)
+The following set of patches have fixes for Vybrid SPI DMA
+implementation along with some minor clean ups requested
+at time when v3 version of SPI DMA support patch was accepted.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index b1ee1f5..41422cd 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -261,6 +261,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
- 					SPI_PUSHR_PCS(dspi->cs) |
- 					SPI_PUSHR_CTAS(0);
-+	if (!dspi->cs_change)
-+		dspi->dma->tx_dma_buf[i] |= SPI_PUSHR_CONT;
- 	dspi->tx += tx_word + 1;
- 
- 	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
+This series of patches is based on top of branch topic/fsl-dspi.
+http://git.kernel.org/cgit/linux/kernel/git/broonie/spi.git/log/?h=topic/fsl-dspi
+
+The patches have been tested on a Toradex Colibri Vybrid VF61 module
+and now incoporate feedback from Stefan on version 1 of patchset.
+
+Changes since v1:
+1. Place the continuous selection format patch second in order and remove
+code duplication
+2. Improve the use of curr_xfer_len and instead of converting from bytes
+to DMA transfers in every use, do it at a single place. Accordingly change
+it's use at other places
+3. Code cleanup patch has less to clean with change above 
+
+v1:
+http://www.mail-archive.com/linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg1274632.html
+
+Thanks & Regards,
+Sanchayan.
+
+Sanchayan Maity (4):
+  spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple SPI_IOC_MESSAGE
+  spi: spi-fsl-dspi: Fix continuous selection format
+  spi: spi-fsl-dspi: Fix incorrect DMA setup
+  spi: spi-fsl-dspi: Minor code cleanup and error path fixes
+
+ drivers/spi/spi-fsl-dspi.c | 71 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 27 deletions(-)
+
 -- 
 2.10.2
 

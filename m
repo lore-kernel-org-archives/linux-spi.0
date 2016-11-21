@@ -1,49 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: make architecture specific hardware depend on
- the associated hardware
-Date: Mon, 21 Nov 2016 19:24:05 +0000
-Message-ID: <20161121192405.isghvgat6yjavjgr@sirena.org.uk>
-References: <20161120175505.2910-1-pbrobinson@gmail.com>
+From: maitysanchayan@gmail.com
+Subject: Re: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when
+ using multiple SPI_IOC_MESSAGE
+Date: Tue, 22 Nov 2016 00:48:50 +0530
+Message-ID: <20161121191850.GB24521@Sanchayan-Arch.localdomain>
+References: <cover.1479706671.git.maitysanchayan@gmail.com>
+ <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
+ <20161121191847.vg32cwople4qmini@sirena.org.uk>
+ <20161121191430.GA24521@Sanchayan-Arch.localdomain>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="slbjbr7sk3d3eunu"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Cc: stefan@agner.ch, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20161120175505.2910-1-pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20161121191430.GA24521@Sanchayan-Arch.localdomain>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hello Mark,
 
---slbjbr7sk3d3eunu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 16-11-22 00:44:30, maitysanchayan@gmail.com wrote:
+> Hello Mark,
+> 
+> On 16-11-21 19:18:47, Mark Brown wrote:
+> > On Mon, Nov 21, 2016 at 11:24:01AM +0530, Sanchayan Maity wrote:
+> > > Current DMA implementation had a bug where the DMA transfer would
+> > > exit the loop in dspi_transfer_one_message after the completion of
+> > > a single transfer. This results in a multi message transfer submitted
+> > > with SPI_IOC_MESSAGE to terminate incorrectly without an error.
+> > 
+> > Please don't resend already applied patches.  If there are any changes
+> > needed please send incremental changes on top of what's already applied.
+> 
+> This is not a resend of an applied patch. The whole series applies on
+> top of your topic/fsl-dspi branch and has fixes for the SPI DMA as
+> incremental changes
+> 
+Sorry. I take that back. I now see you applied the patch and I got the applied
+mail after I replied.
 
-On Sun, Nov 20, 2016 at 05:55:05PM +0000, Peter Robinson wrote:
-> There's not much point enabling hardware specific hardware drivers if the
-> actual SoC architecture platforms aren't enabled as they're not much use
-> with out it.
-
-To repeat what I said last time please do make an effort to get this
-reviewed by the relevant driver maintainers.
-
---slbjbr7sk3d3eunu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAABCAAGBQJYM0nUAAoJECTWi3JdVIfQbYMH/3nPcdfIdyCV3QTu1MY/rvuC
-43n2GZ0M2iKtEnzPfsOPo+Y7tXAmwZ7F2UmT9xp82FpISVYLKh1WJIIgXSxAIlcr
-fAtbE+J6q6mufGeX3yUcoBAzFgYS6JU2Gqlos5txsdqLWo1W3N1+RlTpyhVie1sx
-QLss0Ounr/cCcxdjupEAQAsYMErBMxsQ55l+SrWCJw5wNlRSSA627yOhJaO/Wffs
-N7DEngSYHzdq/uB3YkT1XFQmiBqPOnsTfSqo4xKKAMUXBp8F4CBW2ISU8x29B4AE
-Xu91Bb1IymIzWVH88T7RVYnMjz+sdO55x05M2Mxe7Gft1BKX2N1bfzTreP/hwgI=
-=UJGy
------END PGP SIGNATURE-----
-
---slbjbr7sk3d3eunu--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+- Sanchayan.

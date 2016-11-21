@@ -1,43 +1,67 @@
-From: maitysanchayan@gmail.com
-Subject: Re: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when
- using multiple SPI_IOC_MESSAGE
-Date: Tue, 22 Nov 2016 00:48:50 +0530
-Message-ID: <20161121191850.GB24521@Sanchayan-Arch.localdomain>
+From: Stefan Agner <stefan@agner.ch>
+Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix continuous selection format
+Date: Mon, 21 Nov 2016 15:15:41 -0800
+Message-ID: <59ac10adfe92916770aa30146e958887@agner.ch>
 References: <cover.1479706671.git.maitysanchayan@gmail.com>
- <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
- <20161121191847.vg32cwople4qmini@sirena.org.uk>
- <20161121191430.GA24521@Sanchayan-Arch.localdomain>
+ <1317eff8a40789c47311c219d9cfb4105863bd9f.1479706671.git.maitysanchayan@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: stefan@agner.ch, linux-arm-kernel@lists.infradead.org,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+To: Sanchayan Maity <maitysanchayan@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20161121191430.GA24521@Sanchayan-Arch.localdomain>
+In-Reply-To: <1317eff8a40789c47311c219d9cfb4105863bd9f.1479706671.git.maitysanchayan@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Mark,
+On 2016-11-20 21:54, Sanchayan Maity wrote:
+> Current DMA implementation was not handling the continuous selection
+> format viz. SPI chip select would be deasserted even between sequential
+> serial transfers. Use the cs_change variable and correctly set or
+> reset the CONT bit accordingly for case where peripherals require
+> the chip select to be asserted between sequential transfers.
+> 
+> Signed-off-by: Sanchayan Maity <maitysanchayan@gmail.com>
+> ---
+>  drivers/spi/spi-fsl-dspi.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index b1ee1f5..41422cd 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -261,6 +261,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+>  	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
+>  					SPI_PUSHR_PCS(dspi->cs) |
+>  					SPI_PUSHR_CTAS(0);
+> +	if (!dspi->cs_change)
+> +		dspi->dma->tx_dma_buf[i] |= SPI_PUSHR_CONT;
+>  	dspi->tx += tx_word + 1;
+>  
+>  	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
 
-On 16-11-22 00:44:30, maitysanchayan@gmail.com wrote:
-> Hello Mark,
-> 
-> On 16-11-21 19:18:47, Mark Brown wrote:
-> > On Mon, Nov 21, 2016 at 11:24:01AM +0530, Sanchayan Maity wrote:
-> > > Current DMA implementation had a bug where the DMA transfer would
-> > > exit the loop in dspi_transfer_one_message after the completion of
-> > > a single transfer. This results in a multi message transfer submitted
-> > > with SPI_IOC_MESSAGE to terminate incorrectly without an error.
-> > 
-> > Please don't resend already applied patches.  If there are any changes
-> > needed please send incremental changes on top of what's already applied.
-> 
-> This is not a resend of an applied patch. The whole series applies on
-> top of your topic/fsl-dspi branch and has fixes for the SPI DMA as
-> incremental changes
-> 
-Sorry. I take that back. I now see you applied the patch and I got the applied
-mail after I replied.
+Other transfer mode use:
 
-- Sanchayan.
+if ((dspi->cs_change) && (!dspi->len))                                  
+                                                           
+        dspi_pushr &= ~SPI_PUSHR_CONT;
+
+which indicates that they only clear SPI_PUSHR_CONT at the very end of a
+transfer... The DMA code currently deselects after every DMA transfer if
+dspi->cs_change is set.
+
+Maybe we should use the helper dspi_data_to_pushr to fill the DMA buffer
+and _clear_ SPI_PUSHR_CONT if necessary like the other transfer modes
+do... Then we can use the for loop to fill the complete buffer and get
+rid of some code dupplication.
+
+I see that dspi_data_to_pushr does move len too, which we did not in the
+DMA case. dspi->len gets incremented only on successful DMA transfer in
+dspi_dma_xfer. However, I wonder if that is not even a bug: We increment
+dspi->tx always, but len only on success. This makes len go off sync
+with regards to the tx pointer which does not help anybody. So lets get
+rid of the update code in dspi_dma_xfer
+
+--
+Stefan

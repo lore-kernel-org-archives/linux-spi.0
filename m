@@ -1,98 +1,78 @@
-From: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] spi: spi-fsl-dspi: Minor code cleanup and error
- path fixes
-Date: Mon, 21 Nov 2016 15:22:09 -0800
-Message-ID: <43b518a92352986f09b0893646ff8016@agner.ch>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
- <971874d8e662622c0cfe478adaa4c75b08388d0e.1479706671.git.maitysanchayan@gmail.com>
+From: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH] spi: use sg_next for walking through the allocated scatterlist table
+Date: Mon, 21 Nov 2016 17:50:41 -0600
+Message-ID: <1479772241-16453-1-git-send-email-juan.gutierrez@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain
+Cc: <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>, <yibin.gong-3arQi8VN3Tc@public.gmane.org>,
+        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>, <alejandro.sierra-3arQi8VN3Tc@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <971874d8e662622c0cfe478adaa4c75b08388d0e.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2016-11-20 21:54, Sanchayan Maity wrote:
-> Code cleanup for improving code readability and error path fixes
-> and cleanup removing use of devm_kfree.
+A null dereference or Oops exception might occurs when reading at once the
+whole content of an spi-nor of big enough size that requires an scatterlist
+table that does not fit into one single page.
 
-Two things in one, not very nice. Especially the dma_free_coherent is
-really a bug and the other is a cleanup. Can you make a separate patch
-for the bug?
+The spi_map_buf function is ignoring the chained sg case by dereferenceing
+the scatterlist elements in an array fashion. This wrongly assumes that
+the allocation of the scatterlist elements are contiguous. This is true as
+long as the scatterlist table fits within a PAGE_SIZE. However, for
+allocation where the scatter table is bigger than that, the pages allocated
+by sg_alloc might not be contigous.
 
-As for the cleanup, I don't like the one line conditions too, but I
-don't think it is worth a patch. At least the TX path should be solved
-with my suggestion in patch 2.
+The sg table can be properly walked by sg_next instead of using an array.
 
---
-Stefan
+Signed-off-by: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
+---
+ drivers/spi/spi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> 
-> Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 08882f7..2987a16 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -226,8 +226,10 @@ static void dspi_rx_dma_callback(void *arg)
->  	if (!(dspi->dataflags & TRAN_STATE_RX_VOID)) {
->  		for (i = 0; i < dma->curr_xfer_len; i++) {
->  			d = dspi->dma->rx_dma_buf[i];
-> -			rx_word ? (*(u16 *)dspi->rx = d) :
-> -						(*(u8 *)dspi->rx = d);
-> +			if (rx_word)
-> +				*(u16 *)dspi->rx = d;
-> +			else
-> +				*(u8 *)dspi->rx = d;
->  			dspi->rx += rx_word + 1;
->  		}
->  	}
-> @@ -247,14 +249,20 @@ static int dspi_next_xfer_dma_submit(struct
-> fsl_dspi *dspi)
->  	tx_word = is_double_byte_mode(dspi);
->  
->  	for (i = 0; i < dma->curr_xfer_len - 1; i++) {
-> -		val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-> +		if (tx_word)
-> +			val = *(u16 *) dspi->tx;
-> +		else
-> +			val = *(u8 *) dspi->tx;
->  		dspi->dma->tx_dma_buf[i] =
->  			SPI_PUSHR_TXDATA(val) | SPI_PUSHR_PCS(dspi->cs) |
->  			SPI_PUSHR_CTAS(0) | SPI_PUSHR_CONT;
->  		dspi->tx += tx_word + 1;
->  	}
->  
-> -	val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-> +	if (tx_word)
-> +		val = *(u16 *) dspi->tx;
-> +	else
-> +		val = *(u8 *) dspi->tx;
->  	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
->  					SPI_PUSHR_PCS(dspi->cs) |
->  					SPI_PUSHR_CTAS(0);
-> @@ -430,9 +438,11 @@ static int dspi_request_dma(struct fsl_dspi
-> *dspi, phys_addr_t phy_addr)
->  	return 0;
->  
->  err_slave_config:
-> -	devm_kfree(dev, dma->rx_dma_buf);
-> +	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
-> +			dma->rx_dma_buf, dma->rx_dma_phys);
->  err_rx_dma_buf:
-> -	devm_kfree(dev, dma->tx_dma_buf);
-> +	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
-> +			dma->tx_dma_buf, dma->tx_dma_phys);
->  err_tx_dma_buf:
->  	dma_release_channel(dma->chan_tx);
->  err_tx_channel:
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 838783c..6435548 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -720,6 +720,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 	int desc_len;
+ 	int sgs;
+ 	struct page *vm_page;
++	struct scatterlist *sg;
+ 	void *sg_buf;
+ 	size_t min;
+ 	int i, ret;
+@@ -738,6 +739,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 	if (ret != 0)
+ 		return ret;
+ 
++	sg = &sgt->sgl[0];
+ 	for (i = 0; i < sgs; i++) {
+ 
+ 		if (vmalloced_buf || kmap_buf) {
+@@ -751,16 +753,17 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 				sg_free_table(sgt);
+ 				return -ENOMEM;
+ 			}
+-			sg_set_page(&sgt->sgl[i], vm_page,
++			sg_set_page(sg, vm_page,
+ 				    min, offset_in_page(buf));
+ 		} else {
+ 			min = min_t(size_t, len, desc_len);
+ 			sg_buf = buf;
+-			sg_set_buf(&sgt->sgl[i], sg_buf, min);
++			sg_set_buf(sg, sg_buf, min);
+ 		}
+ 
+ 		buf += min;
+ 		len -= min;
++		sg = sg_next(sg);
+ 	}
+ 
+ 	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
+-- 
+2.7.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

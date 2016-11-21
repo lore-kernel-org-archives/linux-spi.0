@@ -1,26 +1,62 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: Re: [PATCH v2] spi: make architecture specific hardware depend on the
- associated hardware
-Date: Sun, 20 Nov 2016 19:13:18 +0100
-Message-ID: <8c3ed8e2-9b91-d029-65e5-9965f1a097b7@metafoo.de>
-References: <20161120175505.2910-1-pbrobinson@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-To: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple SPI_IOC_MESSAGE
+Date: Mon, 21 Nov 2016 11:24:01 +0530
+Message-ID: <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
+References: <cover.1479706671.git.maitysanchayan@gmail.com>
+Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161120175505.2910-1-pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+References: <cover.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 11/20/2016 06:55 PM, Peter Robinson wrote:
->  config SPI_XILINX
->  	tristate "Xilinx SPI controller common module"
-> -	depends on HAS_IOMEM
-> +	depends on HAS_IOMEM && (ARCH_ZYNQ || ARCH_ZYNQMP || COMPILE_TEST)
+Current DMA implementation had a bug where the DMA transfer would
+exit the loop in dspi_transfer_one_message after the completion of
+a single transfer. This results in a multi message transfer submitted
+with SPI_IOC_MESSAGE to terminate incorrectly without an error.
 
-I'm using this one on X86, or anything really that has PCIe support.
+Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index bc64700..b1ee1f5 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -714,7 +714,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 				SPI_RSER_TFFFE | SPI_RSER_TFFFD |
+ 				SPI_RSER_RFDFE | SPI_RSER_RFDFD);
+ 			status = dspi_dma_xfer(dspi);
+-			goto out;
++			break;
+ 		default:
+ 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+ 				trans_mode);
+@@ -722,9 +722,13 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 			goto out;
+ 		}
+ 
+-		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
+-			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
+-		dspi->waitflags = 0;
++		if (trans_mode != DSPI_DMA_MODE) {
++			if (wait_event_interruptible(dspi->waitq,
++						dspi->waitflags))
++				dev_err(&dspi->pdev->dev,
++					"wait transfer complete fail!\n");
++			dspi->waitflags = 0;
++		}
+ 
+ 		if (transfer->delay_usecs)
+ 			udelay(transfer->delay_usecs);
+-- 
+2.10.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

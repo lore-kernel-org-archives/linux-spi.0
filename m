@@ -1,80 +1,77 @@
-From: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [Patch V2 1/2] spi: imx: add lpspi bus driver
-Date: Tue, 22 Nov 2016 13:39:24 +0000
-Message-ID: <AM4PR0401MB1780C8905FA43D2F392A7CE3F6B40@AM4PR0401MB1780.eurprd04.prod.outlook.com>
-References: <1479216831-8709-1-git-send-email-pandy.gao@nxp.com>
- <20161116173228.cqtt5j5eczgg26gn@sirena.org.uk>
- <AM4PR0401MB1780CDE562EEA1CE202E9572F6B10@AM4PR0401MB1780.eurprd04.prod.outlook.com>
- <20161121172415.vtx7gahbzfgxconf@sirena.org.uk>
+From: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH] spi: use sg_next for walking through the allocated scatterlist table
+Date: Mon, 21 Nov 2016 16:50:03 -0600
+Message-ID: <1479768603-15583-1-git-send-email-juan.gutierrez@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>, Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>, <yibin.gong-3arQi8VN3Tc@public.gmane.org>,
+        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161121172415.vtx7gahbzfgxconf-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
- From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> Sent: Tuesday, November 22, 2=
-016 1:24 AM
-> To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-> Cc: robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Frank Li
-> <frank.li-3arQi8VN3Tc@public.gmane.org>; Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-> Subject: Re: [Patch V2 1/2] spi: imx: add lpspi bus driver
->=20
-> On Thu, Nov 17, 2016 at 09:55:41AM +0000, Pandy Gao wrote:
->=20
-> Please fix your mail client to word wrap within paragraphs at something
-> substantially less than 80 columns.  Doing this makes your messages
-> much easier to read and reply to.
+A null dereference or Oops exception might occurs when reading at once the
+whole content of an spi-nor of big enough size that requires an scatterlist
+table that does not fit into one single page.
 
-Thanks for the advice.=20
+The spi_map_buf function is ignoring the chained sg case by dereferenceing
+the scatterlist elements in an array fashion. This wrongly assumes that
+the allocation of the scatterlist elements are contiguous. This is true as
+long as the scatterlist table fits within a PAGE_SIZE. However, for
+allocation where the scatter table is bigger than that, the pages allocated
+by sg_alloc might not be contigous.
 
-> > From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> Sent: Thursday,
-> November
-> > 17, 2016 1:32 AM
->=20
-> > > Why are we not also unpreparing the clock when the driver is idle?
->=20
-> > I use clk_enable()  rather than  clk_prepare_enable() here to avoid
-> > potential sleeping in runtime cause by clk_prepare().  clk is prepare
-> > in fsl_lpspi_probe() and unprepared in fsl_lpspi_remove().
->=20
-> It's absolutely fine to sleep in runtime PM and in the SPI hardware
-> prepare and unprepare.
+The sg table can be properly walked by sg_next instead of using an array.
 
-Thanks,  will change it in next version.=20
+Signed-off-by: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
+---
+ drivers/spi/spi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> > > Why are we doing this linearization into a single buffer?
->=20
-> > For a spi  transfer transmitted by lpspi,  the clk for the last bit is
-> > incomplete.  The last rising edge never comes unless  we manually
-> > de-assert SS.  In case that a spi message contains multiple transfers,
-> > SS should be de-asserted for each transfer.
->=20
-> > However, for spi device such as m25p80, SS should keep asserted
-> during
-> > a whole message.  So we need do this linearization here.
->=20
-> And the hardware can't do any kind of scatter/gather?  There's two
-> things here - one is the combining everything into one hardware
-> operation which isn't that uncommon a limitation (though obviously it's
-> disappointing) and the other is the fact that in order to do this everyth=
-ing
-> gets copied into and out of this one buffer which obviously adds quite a
-> bit of overhead.
-
-Thanks,  you are right. It's really not a good solution. Will change it in =
-next
-version.
-
-Best  Regards
-Gao Pan=20
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 838783c..6435548 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -720,6 +720,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 	int desc_len;
+ 	int sgs;
+ 	struct page *vm_page;
++	struct scatterlist *sg;
+ 	void *sg_buf;
+ 	size_t min;
+ 	int i, ret;
+@@ -738,6 +739,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 	if (ret != 0)
+ 		return ret;
+ 
++	sg = &sgt->sgl[0];
+ 	for (i = 0; i < sgs; i++) {
+ 
+ 		if (vmalloced_buf || kmap_buf) {
+@@ -751,16 +753,17 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 				sg_free_table(sgt);
+ 				return -ENOMEM;
+ 			}
+-			sg_set_page(&sgt->sgl[i], vm_page,
++			sg_set_page(sg, vm_page,
+ 				    min, offset_in_page(buf));
+ 		} else {
+ 			min = min_t(size_t, len, desc_len);
+ 			sg_buf = buf;
+-			sg_set_buf(&sgt->sgl[i], sg_buf, min);
++			sg_set_buf(sg, sg_buf, min);
+ 		}
+ 
+ 		buf += min;
+ 		len -= min;
++		sg = sg_next(sg);
+ 	}
+ 
+ 	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
+-- 
+2.7.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

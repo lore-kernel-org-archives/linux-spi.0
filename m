@@ -1,134 +1,71 @@
-From: Sanchayan Maity <maitysanchayan@gmail.com>
-Subject: [PATCH v2 3/4] spi: spi-fsl-dspi: Fix incorrect DMA setup
-Date: Mon, 21 Nov 2016 11:24:03 +0530
-Message-ID: <a36bac5f2499d1002693a7dbf95982bab186e51f.1479706671.git.maitysanchayan@gmail.com>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
-Cc: stefan@agner.ch, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Sanchayan Maity <maitysanchayan@gmail.com>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1479706671.git.maitysanchayan@gmail.com>
-In-Reply-To: <cover.1479706671.git.maitysanchayan@gmail.com>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH] spi: davinci: Allow device tree devices to use DMA
+Date: Mon, 21 Nov 2016 14:07:53 +0530
+Message-ID: <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1@ti.com>
+References: <1479530464-12538-1-git-send-email-david@lechnology.com>
+ <79f186b5-ac71-189f-c19f-977670395043@ti.com>
+ <946d60bc-ac14-7934-c1b3-e2de03831459@lechnology.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <946d60bc-ac14-7934-c1b3-e2de03831459-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Currently dmaengine_prep_slave_single was being called with length
-set to the complete DMA buffer size. This resulted in unwanted bytes
-being transferred to the SPI register leading to clock and MOSI lines
-having unwanted data even after chip select got deasserted and the
-required bytes having been transferred.
+On Sunday 20 November 2016 10:31 PM, David Lechner wrote:
 
-While at it also clean up the use of curr_xfer_len which is central
-to the DMA setup, from bytes to DMA transfers for every use.
+> On 11/20/2016 06:59 AM, Sekhar Nori wrote:
 
-Signed-off-by: Sanchayan Maity <maitysanchayan@gmail.com>
----
- drivers/spi/spi-fsl-dspi.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+>> On Saturday 19 November 2016 10:11 AM, David Lechner wrote:
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 41422cd..08882f7 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -151,6 +151,7 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
- };
- 
- struct fsl_dspi_dma {
-+	/* Length of transfer in words of DSPI_FIFO_SIZE */
- 	u32 curr_xfer_len;
- 
- 	u32 *tx_dma_buf;
-@@ -217,15 +218,13 @@ static void dspi_rx_dma_callback(void *arg)
- 	struct fsl_dspi *dspi = arg;
- 	struct fsl_dspi_dma *dma = dspi->dma;
- 	int rx_word;
--	int i, len;
-+	int i;
- 	u16 d;
- 
- 	rx_word = is_double_byte_mode(dspi);
- 
--	len = rx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
--
- 	if (!(dspi->dataflags & TRAN_STATE_RX_VOID)) {
--		for (i = 0; i < len; i++) {
-+		for (i = 0; i < dma->curr_xfer_len; i++) {
- 			d = dspi->dma->rx_dma_buf[i];
- 			rx_word ? (*(u16 *)dspi->rx = d) :
- 						(*(u8 *)dspi->rx = d);
-@@ -242,14 +241,12 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 	struct device *dev = &dspi->pdev->dev;
- 	int time_left;
- 	int tx_word;
--	int i, len;
-+	int i;
- 	u16 val;
- 
- 	tx_word = is_double_byte_mode(dspi);
- 
--	len = tx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
--
--	for (i = 0; i < len - 1; i++) {
-+	for (i = 0; i < dma->curr_xfer_len - 1; i++) {
- 		val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
- 		dspi->dma->tx_dma_buf[i] =
- 			SPI_PUSHR_TXDATA(val) | SPI_PUSHR_PCS(dspi->cs) |
-@@ -267,7 +264,9 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 
- 	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
- 					dma->tx_dma_phys,
--					DSPI_DMA_BUFSIZE, DMA_MEM_TO_DEV,
-+					dma->curr_xfer_len *
-+					DMA_SLAVE_BUSWIDTH_4_BYTES,
-+					DMA_MEM_TO_DEV,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!dma->tx_desc) {
- 		dev_err(dev, "Not able to get desc for DMA xfer\n");
-@@ -283,7 +282,9 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 
- 	dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
- 					dma->rx_dma_phys,
--					DSPI_DMA_BUFSIZE, DMA_DEV_TO_MEM,
-+					dma->curr_xfer_len *
-+					DMA_SLAVE_BUSWIDTH_4_BYTES,
-+					DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!dma->rx_desc) {
- 		dev_err(dev, "Not able to get desc for DMA xfer\n");
-@@ -330,17 +331,17 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
- 	struct device *dev = &dspi->pdev->dev;
- 	int curr_remaining_bytes;
- 	int bytes_per_buffer;
--	int tx_word;
-+	int word = 1;
- 	int ret = 0;
- 
--	tx_word = is_double_byte_mode(dspi);
-+	if (is_double_byte_mode(dspi))
-+		word = 2;
- 	curr_remaining_bytes = dspi->len;
-+	bytes_per_buffer = DSPI_DMA_BUFSIZE / DSPI_FIFO_SIZE;
- 	while (curr_remaining_bytes) {
- 		/* Check if current transfer fits the DMA buffer */
--		dma->curr_xfer_len = curr_remaining_bytes;
--		bytes_per_buffer = DSPI_DMA_BUFSIZE /
--				(DSPI_FIFO_SIZE / (tx_word ? 2 : 1));
--		if (curr_remaining_bytes > bytes_per_buffer)
-+		dma->curr_xfer_len = curr_remaining_bytes / word;
-+		if (dma->curr_xfer_len > bytes_per_buffer)
- 			dma->curr_xfer_len = bytes_per_buffer;
- 
- 		ret = dspi_next_xfer_dma_submit(dspi);
-@@ -349,7 +350,7 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
- 			goto exit;
- 
- 		} else {
--			curr_remaining_bytes -= dma->curr_xfer_len;
-+			curr_remaining_bytes -= dma->curr_xfer_len * word;
- 			if (curr_remaining_bytes < 0)
- 				curr_remaining_bytes = 0;
- 			dspi->len = curr_remaining_bytes;
--- 
-2.10.2
+>>> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device
+>>> *spi)
+>>>          if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
+>>>              spicfg->wdelay = (u8)prop;
+>>>          spi->controller_data = spicfg;
+>>> +        /* Use DMA for device if master supports it */
+>>> +        if (dspi->dma_rx)
+>>
+>> This should be
+>>
+>>         if (!(IS_ERR(dpsi->dma_rx) || IS_ERR(dspi->dma_tx))
+> 
+> 
+> There is the following code in davinci_spi_probe():
+> 
+>     ret = davinci_spi_request_dma(dspi);
+>     if (ret == -EPROBE_DEFER) {
+>         goto free_clk;
+>     } else if (ret) {
+>         dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
+>         dspi->dma_rx = NULL;
+>         dspi->dma_tx = NULL;
+>     }
+> 
+> So, I does not look like it is possible to get anything other than NULL
+> or a valid pointer for dpsi->dma_rx and that checking dpsi->dma_tx is
+> not necessary.
+> 
+> So, I think if (dspi->dma_rx) is sufficient. In fact the same check is
+> used during unwinding if the probe function fails.
+
+You are right, I see it now. Setting dma_rx to NULL overriding the error
+value is confusing since dma_request_chan() itself does not use NULL as
+an error value.
+
+I think it is better to fix the existing code to remove the NULL
+overwrite and use IS_ERR() instead. You should probably wait for some
+feedback from the SPI maintainer though.
+
+Thanks,
+Sekhar
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

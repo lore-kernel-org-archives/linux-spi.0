@@ -1,52 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when
- using multiple SPI_IOC_MESSAGE
-Date: Mon, 21 Nov 2016 19:18:47 +0000
-Message-ID: <20161121191847.vg32cwople4qmini@sirena.org.uk>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
- <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ztispalktchm4tng"
-Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sh-msiof: Add support for R-Car M3-W" to the spi tree
+Date: Mon, 21 Nov 2016 19:20:42 +0000
+Message-ID: <E1c8u8w-00080T-Qa@debutante>
+References: <1479749095-13548-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1479749095-13548-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---ztispalktchm4tng
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: sh-msiof: Add support for R-Car M3-W
 
-On Mon, Nov 21, 2016 at 11:24:01AM +0530, Sanchayan Maity wrote:
-> Current DMA implementation had a bug where the DMA transfer would
-> exit the loop in dspi_transfer_one_message after the completion of
-> a single transfer. This results in a multi message transfer submitted
-> with SPI_IOC_MESSAGE to terminate incorrectly without an error.
+has been applied to the spi tree at
 
-Please don't resend already applied patches.  If there are any changes
-needed please send incremental changes on top of what's already applied.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---ztispalktchm4tng
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAABCAAGBQJYM0iWAAoJECTWi3JdVIfQWHEIAIXGly+6Of0v3BM6CRLRnhMn
-V680cDJGQge+pvq9nQH8aH6/VAvOKGVAFtLcnj1uq6qCygKHW5oOrI+8mmC1pmcP
-jVJukXc6Y0Cc9bQsI/rp0PJT1ct6N5rzdUIqKoagK/Rs0/ntIbTXp3JyoMdAbLd5
-+GUwou0TeC8WBjTo/ynkVc0qtkZ5wA3kJz+1RJOgkQAzQYqx6D0ZVAwAI++5dS4T
-phSstfTaTJ0GtM3DE4wNDKzLNXFnzxJLbN7YvjYGO1AupbdEJwRgEBg19mA/EApZ
-V4eAJoJdQSdpI/W5LCe3Hf/2nkP4A+l2qmQgDTdKXrX9aUD2td2s978VUurDUVI=
-=yoNT
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---ztispalktchm4tng--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From eb51cffa743de5c78cfbf44f576b0f1eccc784f4 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 21 Nov 2016 18:24:55 +0100
+Subject: [PATCH] spi: sh-msiof: Add support for R-Car M3-W
+
+MSIOF in R-Car M3-W (r8a7796) is handled fine by the existing driver.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 1 +
+ drivers/spi/spi-sh-msiof.c                         | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index aa005c1d10d9..da6614c63796 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -10,6 +10,7 @@ Required properties:
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
++			 "renesas,msiof-r8a7796" (R-Car M3-W)
+ 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 1de3a772eb7d..0012ad02e569 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -980,6 +980,7 @@ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7793",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7794",   .data = &r8a779x_data },
++	{ .compatible = "renesas,msiof-r8a7796",   .data = &r8a779x_data },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, sh_msiof_match);
+-- 
+2.10.2

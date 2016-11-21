@@ -1,21 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sh-msiof: Add support for R-Car M3-W" to the spi tree
-Date: Mon, 21 Nov 2016 19:20:42 +0000
-Message-ID: <E1c8u8w-00080T-Qa@debutante>
-References: <1479749095-13548-1-git-send-email-geert+renesas@glider.be>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1479749095-13548-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple SPI_IOC_MESSAGE" to the spi tree
+Date: Mon, 21 Nov 2016 19:20:45 +0000
+Message-ID: <E1c8u8z-00081L-O7@debutante>
+References: <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479384571.git.maitysanchayan@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479384571.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sh-msiof: Add support for R-Car M3-W
+   spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple SPI_IOC_MESSAGE
 
 has been applied to the spi tree at
 
@@ -40,43 +39,58 @@ to this mail.
 Thanks,
 Mark
 
->From eb51cffa743de5c78cfbf44f576b0f1eccc784f4 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Mon, 21 Nov 2016 18:24:55 +0100
-Subject: [PATCH] spi: sh-msiof: Add support for R-Car M3-W
+>From 9811430465fccae17862213d07eba017c149eb9c Mon Sep 17 00:00:00 2001
+From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Thu, 17 Nov 2016 17:46:48 +0530
+Subject: [PATCH] spi: spi-fsl-dspi: Fix SPI transfer issue when using multiple
+ SPI_IOC_MESSAGE
 
-MSIOF in R-Car M3-W (r8a7796) is handled fine by the existing driver.
+Current DMA implementation had a bug where the DMA transfer would
+exit the loop in dspi_transfer_one_message after the completion of
+a single transfer. This results in a multi message transfer submitted
+with SPI_IOC_MESSAGE to terminate incorrectly without an error.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/sh-msiof.txt | 1 +
- drivers/spi/spi-sh-msiof.c                         | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-index aa005c1d10d9..da6614c63796 100644
---- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -10,6 +10,7 @@ Required properties:
- 			 "renesas,msiof-r8a7792" (R-Car V2H)
- 			 "renesas,msiof-r8a7793" (R-Car M2-N)
- 			 "renesas,msiof-r8a7794" (R-Car E2)
-+			 "renesas,msiof-r8a7796" (R-Car M3-W)
- 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
- - reg                  : A list of offsets and lengths of the register sets for
- 			 the device.
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 1de3a772eb7d..0012ad02e569 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -980,6 +980,7 @@ static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
- 	{ .compatible = "renesas,msiof-r8a7793",   .data = &r8a779x_data },
- 	{ .compatible = "renesas,msiof-r8a7794",   .data = &r8a779x_data },
-+	{ .compatible = "renesas,msiof-r8a7796",   .data = &r8a779x_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, sh_msiof_match);
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index bc64700b514d..b1ee1f521ba0 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -714,7 +714,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 				SPI_RSER_TFFFE | SPI_RSER_TFFFD |
+ 				SPI_RSER_RFDFE | SPI_RSER_RFDFD);
+ 			status = dspi_dma_xfer(dspi);
+-			goto out;
++			break;
+ 		default:
+ 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+ 				trans_mode);
+@@ -722,9 +722,13 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 			goto out;
+ 		}
+ 
+-		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
+-			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
+-		dspi->waitflags = 0;
++		if (trans_mode != DSPI_DMA_MODE) {
++			if (wait_event_interruptible(dspi->waitq,
++						dspi->waitflags))
++				dev_err(&dspi->pdev->dev,
++					"wait transfer complete fail!\n");
++			dspi->waitflags = 0;
++		}
+ 
+ 		if (transfer->delay_usecs)
+ 			udelay(transfer->delay_usecs);
 -- 
 2.10.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

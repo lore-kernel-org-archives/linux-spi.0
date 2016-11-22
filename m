@@ -1,59 +1,93 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when
- using multiple SPI_IOC_MESSAGE
-Date: Tue, 22 Nov 2016 16:22:51 +0000
-Message-ID: <20161122162251.x7uheu47426g3mpg@sirena.org.uk>
-References: <cover.1479706671.git.maitysanchayan@gmail.com>
- <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
- <20161121191847.vg32cwople4qmini@sirena.org.uk>
- <20161121191430.GA24521@Sanchayan-Arch.localdomain>
- <20161121191850.GB24521@Sanchayan-Arch.localdomain>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="nytvzblbt3cd3hzr"
-Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20161121191850.GB24521-2b/appYahYDPUjlVagVGR1Kr0EmMEXJSn9A1Ff6Mc9Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-topcliff-pch: Remove some dead code" to the spi tree
+Date: Tue, 22 Nov 2016 17:27:01 +0000
+Message-ID: <E1c9EqT-00060I-CX@debutante>
+References: <20161118224927.12889-1-christophe.jaillet@wanadoo.fr>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20161118224927.12889-1-christophe.jaillet@wanadoo.fr>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---nytvzblbt3cd3hzr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-topcliff-pch: Remove some dead code
 
-On Tue, Nov 22, 2016 at 12:48:50AM +0530, maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
-> On 16-11-22 00:44:30, maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
+has been applied to the spi tree at
 
-> > This is not a resend of an applied patch. The whole series applies on
-> > top of your topic/fsl-dspi branch and has fixes for the SPI DMA as
-> > incremental changes
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Sorry. I take that back. I now see you applied the patch and I got the applied
-> mail after I replied.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Ah, I did apply it on Friday but somehow it didn't get pushed until
-yesterday.  Sorry for the confusion.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---nytvzblbt3cd3hzr
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAABCAAGBQJYNHDbAAoJECTWi3JdVIfQrxgH/RLG+gnz7Slh0yiS7NdIQ4oS
-o4LRHsk/jLv8MN0K8phvZxZV36N5JfainQOBGznf9O/Uw871ATDwiyDfF1ivRKC6
-wipKzk6p1d3D4ef1CbrfdmQV+1C86tYQVXI3ZHXPgz6LadNXSxvfNNRNoFFtbZYV
-zNMpePkfPtW68596MChQZxCZnnoLK6ZzZrelFS/bXUaQw/Z/6wEBOekrYHYaNkX1
-mZCZ5FKmn4Vfoje33eDMVNiVmUl1oK60Ugg59PPQPrfuZdS2k84hwxqjixwz1FU7
-QTepgqnppDR8L+S/WSrskIsOfMmU2eF/qa63IeLtAG2lDp/enY9F4QZENi8+Dj8=
-=Pl+Z
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---nytvzblbt3cd3hzr--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From 9677e7dd1c799d1720d242d0aa0aee8490637eae Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Fri, 18 Nov 2016 23:49:27 +0100
+Subject: [PATCH] spi: spi-topcliff-pch: Remove some dead code
+
+Since commit 0d35773979b9 ("spi: spi-topcliff-pch: Remove deprecated
+create_singlethread_workqueue"), 'retval' is no more used in this function.
+
+So some now dead code can be removed.
+Also axe a debug message which looks useless now.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-topcliff-pch.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index c54ee6674471..fcb991034c3d 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1268,11 +1268,8 @@ static void pch_spi_free_resources(struct pch_spi_board_data *board_dat,
+ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
+ 				 struct pch_spi_data *data)
+ {
+-	int retval = 0;
+-
+ 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+ 
+-
+ 	/* reset PCH SPI h/w */
+ 	pch_spi_reset(data->master);
+ 	dev_dbg(&board_dat->pdev->dev,
+@@ -1280,15 +1277,7 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
+ 
+ 	dev_dbg(&board_dat->pdev->dev, "%s data->irq_reg_sts=true\n", __func__);
+ 
+-	if (retval != 0) {
+-		dev_err(&board_dat->pdev->dev,
+-			"%s FAIL:invoking pch_spi_free_resources\n", __func__);
+-		pch_spi_free_resources(board_dat, data);
+-	}
+-
+-	dev_dbg(&board_dat->pdev->dev, "%s Return=%d\n", __func__, retval);
+-
+-	return retval;
++	return 0;
+ }
+ 
+ static void pch_free_dma_buf(struct pch_spi_board_data *board_dat,
+-- 
+2.10.2

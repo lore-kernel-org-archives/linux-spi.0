@@ -1,78 +1,76 @@
-From: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH] spi: use sg_next for walking through the allocated scatterlist table
-Date: Mon, 21 Nov 2016 17:50:41 -0600
-Message-ID: <1479772241-16453-1-git-send-email-juan.gutierrez@nxp.com>
+From: maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix continuous selection format
+Date: Tue, 22 Nov 2016 11:41:53 +0530
+Message-ID: <20161122061153.GA2484@Sanchayan-Arch.localdomain>
+References: <cover.1479706671.git.maitysanchayan@gmail.com>
+ <1317eff8a40789c47311c219d9cfb4105863bd9f.1479706671.git.maitysanchayan@gmail.com>
+ <59ac10adfe92916770aa30146e958887@agner.ch>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>, <yibin.gong-3arQi8VN3Tc@public.gmane.org>,
-        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>, <alejandro.sierra-3arQi8VN3Tc@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <59ac10adfe92916770aa30146e958887-XLVq0VzYD2Y@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-A null dereference or Oops exception might occurs when reading at once the
-whole content of an spi-nor of big enough size that requires an scatterlist
-table that does not fit into one single page.
+On 16-11-21 15:15:41, Stefan Agner wrote:
+> On 2016-11-20 21:54, Sanchayan Maity wrote:
+> > Current DMA implementation was not handling the continuous selection
+> > format viz. SPI chip select would be deasserted even between sequential
+> > serial transfers. Use the cs_change variable and correctly set or
+> > reset the CONT bit accordingly for case where peripherals require
+> > the chip select to be asserted between sequential transfers.
+> > 
+> > Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-fsl-dspi.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> > index b1ee1f5..41422cd 100644
+> > --- a/drivers/spi/spi-fsl-dspi.c
+> > +++ b/drivers/spi/spi-fsl-dspi.c
+> > @@ -261,6 +261,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+> >  	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
+> >  					SPI_PUSHR_PCS(dspi->cs) |
+> >  					SPI_PUSHR_CTAS(0);
+> > +	if (!dspi->cs_change)
+> > +		dspi->dma->tx_dma_buf[i] |= SPI_PUSHR_CONT;
+> >  	dspi->tx += tx_word + 1;
+> >  
+> >  	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
+> 
+> Other transfer mode use:
+> 
+> if ((dspi->cs_change) && (!dspi->len))                                  
+>                                                            
+>         dspi_pushr &= ~SPI_PUSHR_CONT;
+> 
+> which indicates that they only clear SPI_PUSHR_CONT at the very end of a
+> transfer... The DMA code currently deselects after every DMA transfer if
+> dspi->cs_change is set.
+> 
+> Maybe we should use the helper dspi_data_to_pushr to fill the DMA buffer
+> and _clear_ SPI_PUSHR_CONT if necessary like the other transfer modes
+> do... Then we can use the for loop to fill the complete buffer and get
+> rid of some code dupplication.
+> 
+> I see that dspi_data_to_pushr does move len too, which we did not in the
+> DMA case. dspi->len gets incremented only on successful DMA transfer in
+> dspi_dma_xfer. However, I wonder if that is not even a bug: We increment
+> dspi->tx always, but len only on success. This makes len go off sync
+> with regards to the tx pointer which does not help anybody. So lets get
+> rid of the update code in dspi_dma_xfer
+> 
 
-The spi_map_buf function is ignoring the chained sg case by dereferenceing
-the scatterlist elements in an array fashion. This wrongly assumes that
-the allocation of the scatterlist elements are contiguous. This is true as
-long as the scatterlist table fits within a PAGE_SIZE. However, for
-allocation where the scatter table is bigger than that, the pages allocated
-by sg_alloc might not be contigous.
+Thanks for the feedback. Using dspi_data_to_pushr really cleans up that
+tx path very nicely. Why didn't I see it. Will send a follow up patch
+soon after testing again.
 
-The sg table can be properly walked by sg_next instead of using an array.
-
-Signed-off-by: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 838783c..6435548 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -720,6 +720,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	int desc_len;
- 	int sgs;
- 	struct page *vm_page;
-+	struct scatterlist *sg;
- 	void *sg_buf;
- 	size_t min;
- 	int i, ret;
-@@ -738,6 +739,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	if (ret != 0)
- 		return ret;
- 
-+	sg = &sgt->sgl[0];
- 	for (i = 0; i < sgs; i++) {
- 
- 		if (vmalloced_buf || kmap_buf) {
-@@ -751,16 +753,17 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 				sg_free_table(sgt);
- 				return -ENOMEM;
- 			}
--			sg_set_page(&sgt->sgl[i], vm_page,
-+			sg_set_page(sg, vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
- 			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
--			sg_set_buf(&sgt->sgl[i], sg_buf, min);
-+			sg_set_buf(sg, sg_buf, min);
- 		}
- 
- 		buf += min;
- 		len -= min;
-+		sg = sg_next(sg);
- 	}
- 
- 	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
--- 
-2.7.4
-
+- Sanchayan.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,45 +1,53 @@
-From: Sanchayan Maity <maitysanchayan@gmail.com>
-Subject: [PATCH v3 3/3] spi: spi-fsl-dspi: Fix incorrect freeing of DMA allocated buffers
-Date: Tue, 22 Nov 2016 12:31:32 +0530
-Message-ID: <fd3b1fa5d9fb2a0c2d1f6ded314acf20f5081a89.1479796821.git.maitysanchayan@gmail.com>
-References: <cover.1479796821.git.maitysanchayan@gmail.com>
-Cc: stefan@agner.ch, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Sanchayan Maity <maitysanchayan@gmail.com>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1479796821.git.maitysanchayan@gmail.com>
-In-Reply-To: <cover.1479796821.git.maitysanchayan@gmail.com>
-References: <cover.1479796821.git.maitysanchayan@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: prahlad venkata <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-ti-qspi: reinit of completion variable
+Date: Tue, 22 Nov 2016 12:54:06 +0530
+Message-ID: <CAFbo-qWmvm02wpkWT0hgX6qu6jOStmwAXHBWbjbAQ=fwv0WPng@mail.gmail.com>
+References: <20161115182643.32217-1-prahlad.eee@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161115182643.32217-1-prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Buffers allocated with a call to dma_alloc_coherent should be
-freed with dma_free_coherent instead of the currently used
-devm_kfree.
+Did anybody got chance to review this patch?
+I feel this is a trivial yet required fix.
 
-Signed-off-by: Sanchayan Maity <maitysanchayan@gmail.com>
----
- drivers/spi/spi-fsl-dspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+On Tue, Nov 15, 2016 at 11:56 PM, Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>
+> completion variable should be reinitialized before reusing.
+>
+> Signed-off-by: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-ti-qspi.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> index caeac66..ec6fb09 100644
+> --- a/drivers/spi/spi-ti-qspi.c
+> +++ b/drivers/spi/spi-ti-qspi.c
+> @@ -411,6 +411,7 @@ static int ti_qspi_dma_xfer(struct ti_qspi *qspi, dma_addr_t dma_dst,
+>         tx->callback = ti_qspi_dma_callback;
+>         tx->callback_param = qspi;
+>         cookie = tx->tx_submit(tx);
+> +       reinit_completion(&qspi->transfer_complete);
+>
+>         ret = dma_submit_error(cookie);
+>         if (ret) {
+> --
+> 2.9.2.729.ga42d7b6
+>
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8af3151..7ada112 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -420,9 +420,11 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
- 	return 0;
- 
- err_slave_config:
--	devm_kfree(dev, dma->rx_dma_buf);
-+	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
-+			dma->rx_dma_buf, dma->rx_dma_phys);
- err_rx_dma_buf:
--	devm_kfree(dev, dma->tx_dma_buf);
-+	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
-+			dma->tx_dma_buf, dma->tx_dma_phys);
- err_tx_dma_buf:
- 	dma_release_channel(dma->chan_tx);
- err_tx_channel:
+
+
 -- 
-2.10.2
+Regards,
+Prahlad.
++91-9663742838
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

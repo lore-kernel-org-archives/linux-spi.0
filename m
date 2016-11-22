@@ -1,20 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: use sg_next for walking through the allocated scatterlist table" to the spi tree
-Date: Tue, 22 Nov 2016 17:26:58 +0000
-Message-ID: <E1c9EqQ-0005zU-D9@debutante>
-References: <1479768603-15583-1-git-send-email-juan.gutierrez@nxp.com>
+Subject: Applied "spi: spi-fsl-dspi: Fix incorrect freeing of DMA allocated buffers" to the spi tree
+Date: Tue, 22 Nov 2016 17:26:55 +0000
+Message-ID: <E1c9EqN-0005yc-Dr@debutante>
+References: <fd3b1fa5d9fb2a0c2d1f6ded314acf20f5081a89.1479796821.git.maitysanchayan@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        juan.gutierrez@nxp.com, yibin.gong@nxp.com, fabio.estevam@nxp.com
-To: Juan Gutierrez <juan.gutierrez@nxp.com>
+        stefan@agner.ch, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Sanchayan Maity <maitysanchayan@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1479768603-15583-1-git-send-email-juan.gutierrez@nxp.com>
+In-Reply-To: <fd3b1fa5d9fb2a0c2d1f6ded314acf20f5081a89.1479796821.git.maitysanchayan@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: use sg_next for walking through the allocated scatterlist table
+   spi: spi-fsl-dspi: Fix incorrect freeing of DMA allocated buffers
 
 has been applied to the spi tree at
 
@@ -39,70 +39,39 @@ to this mail.
 Thanks,
 Mark
 
->From 8dd4a0163e7315d196e54780591b7426fa78e1fa Mon Sep 17 00:00:00 2001
-From: Juan Gutierrez <juan.gutierrez@nxp.com>
-Date: Mon, 21 Nov 2016 16:50:03 -0600
-Subject: [PATCH] spi: use sg_next for walking through the allocated
- scatterlist table
+>From 27d21e9f988e527982a7516fcf411994f498787d Mon Sep 17 00:00:00 2001
+From: Sanchayan Maity <maitysanchayan@gmail.com>
+Date: Tue, 22 Nov 2016 12:31:32 +0530
+Subject: [PATCH] spi: spi-fsl-dspi: Fix incorrect freeing of DMA allocated
+ buffers
 
-A null dereference or Oops exception might occurs when reading at once the
-whole content of an spi-nor of big enough size that requires an scatterlist
-table that does not fit into one single page.
+Buffers allocated with a call to dma_alloc_coherent should be
+freed with dma_free_coherent instead of the currently used
+devm_kfree.
 
-The spi_map_buf function is ignoring the chained sg case by dereferenceing
-the scatterlist elements in an array fashion. This wrongly assumes that
-the allocation of the scatterlist elements are contiguous. This is true as
-long as the scatterlist table fits within a PAGE_SIZE. However, for
-allocation where the scatter table is bigger than that, the pages allocated
-by sg_alloc might not be contigous.
-
-The sg table can be properly walked by sg_next instead of using an array.
-
-Signed-off-by: Juan Gutierrez <juan.gutierrez@nxp.com>
+Signed-off-by: Sanchayan Maity <maitysanchayan@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5787b723b593..2cfe67f73476 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -720,6 +720,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	int desc_len;
- 	int sgs;
- 	struct page *vm_page;
-+	struct scatterlist *sg;
- 	void *sg_buf;
- 	size_t min;
- 	int i, ret;
-@@ -738,6 +739,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	if (ret != 0)
- 		return ret;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index b1ee1f521ba0..22f7ce1279bd 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -427,9 +427,11 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 	return 0;
  
-+	sg = &sgt->sgl[0];
- 	for (i = 0; i < sgs; i++) {
- 
- 		if (vmalloced_buf || kmap_buf) {
-@@ -751,16 +753,17 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 				sg_free_table(sgt);
- 				return -ENOMEM;
- 			}
--			sg_set_page(&sgt->sgl[i], vm_page,
-+			sg_set_page(sg, vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
- 			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
--			sg_set_buf(&sgt->sgl[i], sg_buf, min);
-+			sg_set_buf(sg, sg_buf, min);
- 		}
- 
- 		buf += min;
- 		len -= min;
-+		sg = sg_next(sg);
- 	}
- 
- 	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
+ err_slave_config:
+-	devm_kfree(dev, dma->rx_dma_buf);
++	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
++			dma->rx_dma_buf, dma->rx_dma_phys);
+ err_rx_dma_buf:
+-	devm_kfree(dev, dma->tx_dma_buf);
++	dma_free_coherent(dev, DSPI_DMA_BUFSIZE,
++			dma->tx_dma_buf, dma->tx_dma_phys);
+ err_tx_dma_buf:
+ 	dma_release_channel(dma->chan_tx);
+ err_tx_channel:
 -- 
 2.10.2

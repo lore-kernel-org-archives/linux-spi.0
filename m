@@ -1,78 +1,58 @@
-From: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH] spi: use sg_next for walking through the allocated scatterlist table
-Date: Mon, 21 Nov 2016 16:50:03 -0600
-Message-ID: <1479768603-15583-1-git-send-email-juan.gutierrez@nxp.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/4] spi: spi-fsl-dspi: Fix SPI transfer issue when
+ using multiple SPI_IOC_MESSAGE
+Date: Tue, 22 Nov 2016 16:22:51 +0000
+Message-ID: <20161122162251.x7uheu47426g3mpg@sirena.org.uk>
+References: <cover.1479706671.git.maitysanchayan@gmail.com>
+ <bbdbc8df434dd2af74eb351b799a2812a1c1967e.1479706671.git.maitysanchayan@gmail.com>
+ <20161121191847.vg32cwople4qmini@sirena.org.uk>
+ <20161121191430.GA24521@Sanchayan-Arch.localdomain>
+ <20161121191850.GB24521@Sanchayan-Arch.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>, <yibin.gong-3arQi8VN3Tc@public.gmane.org>,
-        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nytvzblbt3cd3hzr"
+Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20161121191850.GB24521-2b/appYahYDPUjlVagVGR1Kr0EmMEXJSn9A1Ff6Mc9Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-A null dereference or Oops exception might occurs when reading at once the
-whole content of an spi-nor of big enough size that requires an scatterlist
-table that does not fit into one single page.
 
-The spi_map_buf function is ignoring the chained sg case by dereferenceing
-the scatterlist elements in an array fashion. This wrongly assumes that
-the allocation of the scatterlist elements are contiguous. This is true as
-long as the scatterlist table fits within a PAGE_SIZE. However, for
-allocation where the scatter table is bigger than that, the pages allocated
-by sg_alloc might not be contigous.
+--nytvzblbt3cd3hzr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The sg table can be properly walked by sg_next instead of using an array.
+On Tue, Nov 22, 2016 at 12:48:50AM +0530, maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
+> On 16-11-22 00:44:30, maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
 
-Signed-off-by: Juan Gutierrez <juan.gutierrez-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+> > This is not a resend of an applied patch. The whole series applies on
+> > top of your topic/fsl-dspi branch and has fixes for the SPI DMA as
+> > incremental changes
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 838783c..6435548 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -720,6 +720,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	int desc_len;
- 	int sgs;
- 	struct page *vm_page;
-+	struct scatterlist *sg;
- 	void *sg_buf;
- 	size_t min;
- 	int i, ret;
-@@ -738,6 +739,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	if (ret != 0)
- 		return ret;
- 
-+	sg = &sgt->sgl[0];
- 	for (i = 0; i < sgs; i++) {
- 
- 		if (vmalloced_buf || kmap_buf) {
-@@ -751,16 +753,17 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 				sg_free_table(sgt);
- 				return -ENOMEM;
- 			}
--			sg_set_page(&sgt->sgl[i], vm_page,
-+			sg_set_page(sg, vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
- 			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
--			sg_set_buf(&sgt->sgl[i], sg_buf, min);
-+			sg_set_buf(sg, sg_buf, min);
- 		}
- 
- 		buf += min;
- 		len -= min;
-+		sg = sg_next(sg);
- 	}
- 
- 	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
--- 
-2.7.4
+> Sorry. I take that back. I now see you applied the patch and I got the applied
+> mail after I replied.
 
+Ah, I did apply it on Friday but somehow it didn't get pushed until
+yesterday.  Sorry for the confusion.
+
+--nytvzblbt3cd3hzr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYNHDbAAoJECTWi3JdVIfQrxgH/RLG+gnz7Slh0yiS7NdIQ4oS
+o4LRHsk/jLv8MN0K8phvZxZV36N5JfainQOBGznf9O/Uw871ATDwiyDfF1ivRKC6
+wipKzk6p1d3D4ef1CbrfdmQV+1C86tYQVXI3ZHXPgz6LadNXSxvfNNRNoFFtbZYV
+zNMpePkfPtW68596MChQZxCZnnoLK6ZzZrelFS/bXUaQw/Z/6wEBOekrYHYaNkX1
+mZCZ5FKmn4Vfoje33eDMVNiVmUl1oK60Ugg59PPQPrfuZdS2k84hwxqjixwz1FU7
+QTepgqnppDR8L+S/WSrskIsOfMmU2eF/qa63IeLtAG2lDp/enY9F4QZENi8+Dj8=
+=Pl+Z
+-----END PGP SIGNATURE-----
+
+--nytvzblbt3cd3hzr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

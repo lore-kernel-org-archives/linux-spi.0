@@ -1,60 +1,76 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: [bug report] spi: imx: add lpspi bus driver
-Date: Thu, 24 Nov 2016 01:57:19 +0300
-Message-ID: <20161123225719.GA16302@mwanda>
+From: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [Patch V3 2/2] spi: imx: add lpspi bus driver
+Date: Thu, 24 Nov 2016 01:41:08 +0000
+Message-ID: <AM4PR0401MB178070BEAF1DD6D2EA104A0FF6B60@AM4PR0401MB1780.eurprd04.prod.outlook.com>
+References: <1479822737-8170-1-git-send-email-pandy.gao@nxp.com>
+ <1479822737-8170-2-git-send-email-pandy.gao@nxp.com>
+ <20161122191308.uuuiea54oi65jbu4@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: pandy.gao-3arQi8VN3Tc@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>, Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <20161122191308.uuuiea54oi65jbu4-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello Gao Pan,
+ From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>  Sent: Wednesday, November 23=
+, 2016 3:13 AM
+> To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+> Cc: robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Frank Li
+> <frank.li-3arQi8VN3Tc@public.gmane.org>; Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
+> Subject: Re: [Patch V3 2/2] spi: imx: add lpspi bus driver
+>=20
+> On Tue, Nov 22, 2016 at 09:52:17PM +0800, Gao Pan wrote:
+> > This patch adds lpspi driver to support new i.MX products which use
+> > lpspi instead of ecspi.
+>=20
+> I'll apply this but there's some small issues, can you please fix them up
+> with incremental patches:
+>
+> > +static int fsl_lpspi_prepare_message(struct spi_master *master,
+> > +				     struct spi_message *msg)
+> > +{
+> > +	struct fsl_lpspi_data *fsl_lpspi =3D
+> spi_master_get_devdata(master);
+> > +
+> > +	return clk_prepare_enable(fsl_lpspi->clk);
+> > +}
+>=20
+> Rather than doing this per message it's a bit better to do it in
+> prepare_transfer_hardware(), that way if there's a sequence of messages
+> queued one after another we don't turn the clock on and off all the time.
+> In practice it's likely to make a negligable difference to performance bu=
+t
+> it's just better practice.
+>=20
+> > +static int fsl_lpspi_txfifo_empty(struct fsl_lpspi_data *fsl_lpspi) {
+> > +	u32 txcnt;
+> > +	unsigned long orig_jiffies =3D jiffies;
+> > +
+> > +	do {
+> > +		txcnt =3D readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
+> > +
+> > +		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500)))
+> {
+> > +			dev_dbg(fsl_lpspi->dev, "txfifo empty
+> timeout\n");
+> > +			return -ETIMEDOUT;
+> > +		}
+> > +		schedule();
+>=20
+> Call cond_resched() instead, it has the effect you're looking for in a mo=
+re
+> modern way.
+=20
+Thanks, will submit  incremental patches to fix them up.
 
-The patch 5314987de5e5: "spi: imx: add lpspi bus driver" from Nov 22,
-2016, leads to the following static checker warning:
-
-	drivers/spi/spi-fsl-lpspi.c:220 fsl_lpspi_set_cmd()
-	warn: potential shift truncation.  '0x11 << 30'
-
-drivers/spi/spi-fsl-lpspi.c
-   213  static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi,
-   214                                bool is_first_xfer)
-   215  {
-   216          u32 temp = 0;
-   217  
-   218          temp |= fsl_lpspi->config.bpw - 1;
-   219          temp |= fsl_lpspi->config.prescale << 27;
-   220          temp |= (fsl_lpspi->config.mode & 0x11) << 30;
-
-Are you sure you didn't intend to write:
-
-		temp |= (fsl_lpspi->config.mode & 0x3) << 30;
-
-The current code doesn't make sense at any rate.
-
-   221          temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
-   222  
-   223          /*
-   224           * Set TCR_CONT will keep SS asserted after current transfer.
-   225           * For the first transfer, clear TCR_CONTC to assert SS.
-   226           * For subsequent transfer, set TCR_CONTC to keep SS asserted.
-   227           */
-   228          temp |= TCR_CONT;
-   229          if (is_first_xfer)
-   230                  temp &= ~TCR_CONTC;
-   231          else
-   232                  temp |= TCR_CONTC;
-   233  
-   234          writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-   235  
-   236          dev_dbg(fsl_lpspi->dev, "TCR=0x%x\n", temp);
-   237  }
-
-regards,
-dan carpenter
+Best Regards
+Gao Pan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

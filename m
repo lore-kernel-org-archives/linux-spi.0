@@ -1,48 +1,54 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/5] spi: atmel: enhance the DMA handling
-Date: Thu, 24 Nov 2016 12:24:56 +0100
-Message-ID: <cover.1479985886.git.nicolas.ferre@atmel.com>
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: [PATCH 1/5] spi: atmel: trivial: move info banner to latest probe action
+Date: Thu, 24 Nov 2016 12:24:57 +0100
+Message-ID: <e259bb1c87e32c67295747f868f8684c1e929d68.1479985886.git.nicolas.ferre@atmel.com>
+References: <cover.1479985886.git.nicolas.ferre@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <alexandre.belloni@free-electrons.com>,
+        <cyrille.pitchen@atmel.com>, <geert@linux-m68k.org>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>
+To: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1479985886.git.nicolas.ferre@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Use the dummy buffer handling and DMA mapping core infrastructure to simplify
-spi-atmel driver.
-By using these frameworks we also fix the use of any kind of memory with
-dmaengine. This work was triggered by issues encountered while using UBI/UBIFS
-on a serial flash.
+The info banner is here to tell that everything went well, so place
+it at the very end of the probe function.
 
-Some good ideas of this series have been inspired by spi-rspi.c and commits by
-Geert Uytterhoeven.
+Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+---
+ drivers/spi/spi-atmel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-I have a side question still: is the is_dma_mapped tag still used and considered into
-the core spi routines or is it always the driver itself that have to deal with
-it (so how to do with the can_dma() routine)?
-
-Cyrille Pitchen (1):
-  spi: atmel: Use SPI core DMA mapping framework
-
-Nicolas Ferre (4):
-  spi: atmel: trivial: move info banner to latest probe action
-  spi: atmel: Use core SPI_MASTER_MUST_[RT]X handling
-  spi: atmel: trivial: remove unused fields in DMA structure
-  spi: atmel: remove the use of private channel fields
-
- drivers/spi/spi-atmel.c | 268 ++++++++++++++++++------------------------------
- 1 file changed, 98 insertions(+), 170 deletions(-)
-
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index a038ffe90766..68e22bf94647 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1658,10 +1658,6 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ 	}
+ 
+-	/* go! */
+-	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+-			(unsigned long)regs->start, irq);
+-
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_active(&pdev->dev);
+@@ -1671,6 +1667,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_free_dma;
+ 
++	/* go! */
++	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
++			(unsigned long)regs->start, irq);
++
+ 	return 0;
+ 
+ out_free_dma:
 -- 
 2.9.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

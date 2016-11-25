@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/4] spi: fsl-espi: eliminate need for linearization when
- writing to hardware
-Date: Fri, 25 Nov 2016 23:59:24 +0100
-Message-ID: <fe019347-2d40-7e0a-4ee4-cadaa8930d5f@gmail.com>
+Subject: [PATCH 4/4] spi: fsl-espi: remove unused linearization code
+Date: Sat, 26 Nov 2016 00:00:28 +0100
+Message-ID: <4ce7fd3d-bdb2-3e28-a362-b4a61a207a89@gmail.com>
 References: <2424ba57-be1a-d32d-0c14-1662c2d02409@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,148 +13,166 @@ In-Reply-To: <2424ba57-be1a-d32d-0c14-1662c2d02409-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Eliminate need for linearization when writing to the hardware and
-read from the transfer buffers directly.
+After introducing direct transfers between hardware and transfer
+buffers remove all code which is unused now.
+
+This includes getting rid of the 64k linearization buffer.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 79 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 65 insertions(+), 14 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 80 ----------------------------------------------
+ 1 file changed, 80 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4222578..189ab36 100644
+index e93892d..cd28329 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -98,6 +98,11 @@ struct fsl_espi {
- 	const void *tx;
- 	void *rx;
+@@ -95,9 +95,6 @@ struct fsl_espi {
+ 	struct device *dev;
+ 	void __iomem *reg_base;
  
-+	struct list_head *m_transfers;
-+	struct spi_transfer *tx_t;
-+	unsigned int tx_pos;
-+	bool tx_done;
-+
- 	bool swab;
- 	unsigned int rx_len;
- 	unsigned int tx_len;
-@@ -131,6 +136,12 @@ static inline void fsl_espi_write_reg(struct fsl_espi *espi, int offset,
- 	iowrite32be(val, espi->reg_base + offset);
- }
- 
-+static inline void fsl_espi_write_reg16(struct fsl_espi *espi, int offset,
-+					u16 val)
-+{
-+	iowrite16(val, espi->reg_base + offset);
-+}
-+
- static inline void fsl_espi_write_reg8(struct fsl_espi *espi, int offset,
- 				       u8 val)
- {
-@@ -260,22 +271,58 @@ static unsigned int fsl_espi_check_rxskip_mode(struct spi_message *m)
- static void fsl_espi_fill_tx_fifo(struct fsl_espi *espi, u32 events)
- {
- 	u32 tx_fifo_avail;
-+	unsigned int tx_left;
-+	const void *tx_buf;
- 
- 	/* if events is zero transfer has not started and tx fifo is empty */
- 	tx_fifo_avail = events ? SPIE_TXCNT(events) :  FSL_ESPI_FIFO_SIZE;
+-	const void *tx;
+-	void *rx;
 -
--	while (tx_fifo_avail >= min(4U, espi->tx_len) && espi->tx_len)
--		if (espi->tx_len >= 4) {
--			fsl_espi_write_reg(espi, ESPI_SPITF, *(u32 *)espi->tx);
--			espi->tx += 4;
--			espi->tx_len -= 4;
-+start:
-+	tx_left = espi->tx_t->len - espi->tx_pos;
-+	tx_buf = espi->tx_t->tx_buf;
-+	while (tx_fifo_avail >= min(4U, tx_left) && tx_left) {
-+		if (tx_left >= 4) {
-+			if (!tx_buf)
-+				fsl_espi_write_reg(espi, ESPI_SPITF, 0);
-+			else if (espi->swab)
-+				fsl_espi_write_reg(espi, ESPI_SPITF,
-+					swahb32p(tx_buf + espi->tx_pos));
-+			else
-+				fsl_espi_write_reg(espi, ESPI_SPITF,
-+					*(u32 *)(tx_buf + espi->tx_pos));
-+			espi->tx_pos += 4;
-+			tx_left -= 4;
- 			tx_fifo_avail -= 4;
-+		} else if (tx_left >= 2 && tx_buf && espi->swab) {
-+			fsl_espi_write_reg16(espi, ESPI_SPITF,
-+					swab16p(tx_buf + espi->tx_pos));
-+			espi->tx_pos += 2;
-+			tx_left -= 2;
-+			tx_fifo_avail -= 2;
- 		} else {
--			fsl_espi_write_reg8(espi, ESPI_SPITF, *(u8 *)espi->tx);
--			espi->tx += 1;
--			espi->tx_len -= 1;
-+			if (!tx_buf)
-+				fsl_espi_write_reg8(espi, ESPI_SPITF, 0);
-+			else
-+				fsl_espi_write_reg8(espi, ESPI_SPITF,
-+					*(u8 *)(tx_buf + espi->tx_pos));
-+			espi->tx_pos += 1;
-+			tx_left -= 1;
- 			tx_fifo_avail -= 1;
- 		}
-+	}
-+
-+	if (!tx_left) {
-+		/* Last transfer finished, in rxskip mode only one is needed */
-+		if (list_is_last(&espi->tx_t->transfer_list,
-+		    espi->m_transfers) || espi->rxskip) {
-+			espi->tx_done = true;
-+			return;
-+		}
-+		espi->tx_t = list_next_entry(espi->tx_t, transfer_list);
-+		espi->tx_pos = 0;
-+		/* continue with next transfer if tx fifo is not full */
-+		if (tx_fifo_avail)
-+			goto start;
-+	}
+ 	struct list_head *m_transfers;
+ 	struct spi_transfer *tx_t;
+ 	unsigned int tx_pos;
+@@ -107,11 +104,8 @@ struct fsl_espi {
+ 	bool rx_done;
+ 
+ 	bool swab;
+-	unsigned int rx_len;
+-	unsigned int tx_len;
+ 	unsigned int rxskip;
+ 
+-	u8 *local_buf;
+ 	spinlock_t lock;
+ 
+ 	u32 spibrg;             /* SPIBRG input clock */
+@@ -156,61 +150,6 @@ static inline void fsl_espi_write_reg8(struct fsl_espi *espi, int offset,
+ 	iowrite8(val, espi->reg_base + offset);
  }
  
- static void fsl_espi_read_rx_fifo(struct fsl_espi *espi, u32 events)
-@@ -369,9 +416,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
- 	ret = wait_for_completion_timeout(&espi->done, 2 * HZ);
- 	if (ret == 0)
--		dev_err(espi->dev,
--			"Transaction hanging up (left %u tx bytes, %u rx bytes)\n",
--			espi->tx_len, espi->rx_len);
-+		dev_err(espi->dev, "Transfer timed out!\n");
+-static void fsl_espi_memcpy_swab(void *to, const void *from,
+-				 struct spi_message *m,
+-				 struct spi_transfer *t)
+-{
+-	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
+-	unsigned int len = t->len;
+-
+-	if (!espi->swab) {
+-		memcpy(to, from, len);
+-		return;
+-	}
+-
+-	while (len)
+-		if (len >= 4) {
+-			*(u32 *)to = swahb32p(from);
+-			to += 4;
+-			from += 4;
+-			len -= 4;
+-		} else {
+-			*(u16 *)to = swab16p(from);
+-			to += 2;
+-			from += 2;
+-			len -= 2;
+-		}
+-}
+-
+-static void fsl_espi_copy_to_buf(struct spi_message *m,
+-				 struct fsl_espi *espi)
+-{
+-	struct spi_transfer *t;
+-	u8 *buf = espi->local_buf;
+-
+-	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->tx_buf)
+-			fsl_espi_memcpy_swab(buf, t->tx_buf, m, t);
+-		/* In RXSKIP mode controller shifts out zeros internally */
+-		else if (!espi->rxskip)
+-			memset(buf, 0, t->len);
+-		buf += t->len;
+-	}
+-}
+-
+-static void fsl_espi_copy_from_buf(struct spi_message *m,
+-				   struct fsl_espi *espi)
+-{
+-	struct spi_transfer *t;
+-	u8 *buf = espi->local_buf;
+-
+-	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->rx_buf)
+-			fsl_espi_memcpy_swab(t->rx_buf, buf, m, t);
+-		buf += t->len;
+-	}
+-}
+-
+ static int fsl_espi_check_message(struct spi_message *m)
+ {
+ 	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
+@@ -421,12 +360,6 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	u32 mask, spcom;
+ 	int ret;
  
- 	/* disable rx ints */
- 	fsl_espi_write_reg(espi, ESPI_SPIM, 0);
-@@ -388,6 +433,12 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	/* In case of LSB-first and bits_per_word > 8 byte-swap all words */
- 	espi->swab = spi->mode & SPI_LSB_FIRST && trans->bits_per_word > 8;
+-	espi->rx_len = t->len;
+-	espi->tx_len = t->len;
+-
+-	espi->tx = t->tx_buf;
+-	espi->rx = t->rx_buf;
+-
+ 	reinit_completion(&espi->done);
  
-+	espi->m_transfers = &m->transfers;
-+	espi->tx_t = list_first_entry(&m->transfers, struct spi_transfer,
-+				      transfer_list);
-+	espi->tx_pos = 0;
-+	espi->tx_done = false;
-+
- 	espi->rxskip = fsl_espi_check_rxskip_mode(m);
- 	if (trans->rx_nbits == SPI_NBITS_DUAL && !espi->rxskip) {
- 		dev_err(espi->dev, "Dual output mode requires RXSKIP mode!\n");
-@@ -508,10 +559,10 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
- 	if (espi->rx_len)
- 		fsl_espi_read_rx_fifo(espi, events);
+ 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
+@@ -436,10 +369,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	/* configure RXSKIP mode */
+ 	if (espi->rxskip) {
+ 		spcom |= SPCOM_RXSKIP(espi->rxskip);
+-		espi->tx_len = espi->rxskip;
+-		espi->rx_len = t->len - espi->rxskip;
+ 		rx_len = t->len - espi->rxskip;
+-		espi->rx = t->rx_buf + espi->rxskip;
+ 		if (t->rx_nbits == SPI_NBITS_DUAL)
+ 			spcom |= SPCOM_DO;
+ 	}
+@@ -497,7 +427,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (espi->rxskip)
+ 		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
  
--	if (espi->tx_len)
-+	if (!espi->tx_done)
- 		fsl_espi_fill_tx_fifo(espi, events);
+-	fsl_espi_copy_to_buf(m, espi);
+ 	fsl_espi_setup_transfer(spi, trans);
  
--	if (espi->tx_len || espi->rx_len)
-+	if (!espi->tx_done || espi->rx_len)
- 		return;
+ 	ret = fsl_espi_bufs(spi, trans);
+@@ -511,7 +440,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+-	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
+ 	unsigned int delay_usecs = 0, rx_nbits = 0;
+ 	struct spi_transfer *t, trans = {};
+ 	int ret;
+@@ -534,8 +462,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	trans.speed_hz = t->speed_hz;
+ 	trans.bits_per_word = t->bits_per_word;
+ 	trans.delay_usecs = delay_usecs;
+-	trans.tx_buf = espi->local_buf;
+-	trans.rx_buf = espi->local_buf;
+ 	trans.rx_nbits = rx_nbits;
  
- 	/* we're done, but check for errors before returning */
+ 	if (trans.len)
+@@ -773,12 +699,6 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 
+ 	init_completion(&espi->done);
+ 
+-	espi->local_buf = devm_kmalloc(dev, SPCOM_TRANLEN_MAX, GFP_KERNEL);
+-	if (!espi->local_buf) {
+-		ret = -ENOMEM;
+-		goto err_probe;
+-	}
+-
+ 	espi->reg_base = devm_ioremap_resource(dev, mem);
+ 	if (IS_ERR(espi->reg_base)) {
+ 		ret = PTR_ERR(espi->reg_base);
 -- 
 2.10.2
 

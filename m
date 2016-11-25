@@ -1,20 +1,33 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: fix potential shift truncation" to the spi tree
-Date: Fri, 25 Nov 2016 13:10:34 +0000
-Message-ID: <E1cAGGw-0005JE-GG@debutante>
-References: <1479985484-6641-2-git-send-email-pandy.gao@nxp.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org, frank.li-3arQi8VN3Tc@public.gmane.org,
-        fugang.duan-3arQi8VN3Tc@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1479985484-6641-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: atmel: trivial: remove unused fields in DMA structure"
+ to the spi tree
+Date: Fri, 25 Nov 2016 13:10:19 +0000
+Message-ID: <E1cAGGh-0005Dz-62@debutante>
+References: <b9945f7ce52c8368843c7de850de302c34d828d7.1479985886.git.nicolas.ferre@atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, alexandre.belloni@free-electrons.com,
+ geert@linux-m68k.org, cyrille.pitchen@atmel.com,
+ linux-arm-kernel@lists.infradead.org
+To: Nicolas Ferre <nicolas.ferre@atmel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <b9945f7ce52c8368843c7de850de302c34d828d7.1479985886.git.nicolas.ferre@atmel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: fix potential shift truncation
+   spi: atmel: trivial: remove unused fields in DMA structure
 
 has been applied to the spi tree at
 
@@ -39,40 +52,34 @@ to this mail.
 Thanks,
 Mark
 
->From e3a49390ebefec6f7e3d447b5ba3ba253dd51145 Mon Sep 17 00:00:00 2001
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Thu, 24 Nov 2016 19:04:43 +0800
-Subject: [PATCH] spi: imx: fix potential shift truncation
+>From d5fab59cab1875b42b93f53da248cac90046547d Mon Sep 17 00:00:00 2001
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Date: Thu, 24 Nov 2016 12:25:00 +0100
+Subject: [PATCH] spi: atmel: trivial: remove unused fields in DMA structure
 
-There is a static checker warning in fsl_lpspi_set_cmd().
-I intended to write "temp |= (fsl_lpspi->config.mode & 0x3) << 30",
-but used "temp |= (fsl_lpspi->config.mode & 0x11) << 30" by mistake.
+The atmel_spi_dma structure was cluttered with unused fields relative
+to older DMA channel selection API. Remove them.
 
-This patch fixes this potential shift truncation.
-
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-atmel.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index d7ce32aa083b..18a269d2e2f8 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -215,7 +215,7 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi,
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 7e03e221d307..1a21bc6f7d7a 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -268,10 +268,6 @@
+ struct atmel_spi_dma {
+ 	struct dma_chan			*chan_rx;
+ 	struct dma_chan			*chan_tx;
+-	struct dma_async_tx_descriptor	*data_desc_rx;
+-	struct dma_async_tx_descriptor	*data_desc_tx;
+-
+-	struct at_dma_slave	dma_slave;
+ };
  
- 	temp |= fsl_lpspi->config.bpw - 1;
- 	temp |= fsl_lpspi->config.prescale << 27;
--	temp |= (fsl_lpspi->config.mode & 0x11) << 30;
-+	temp |= (fsl_lpspi->config.mode & 0x3) << 30;
- 	temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
- 
- 	/*
+ struct atmel_spi_caps {
 -- 
 2.10.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

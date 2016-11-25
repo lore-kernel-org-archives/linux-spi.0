@@ -1,50 +1,88 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: atmel: trivial: move info banner to latest
- probe action
-Date: Fri, 25 Nov 2016 13:05:40 +0000
-Message-ID: <20161125130540.twmacpqtuzz6imdn@sirena.org.uk>
-References: <cover.1479985886.git.nicolas.ferre@atmel.com>
- <e259bb1c87e32c67295747f868f8684c1e929d68.1479985886.git.nicolas.ferre@atmel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vvglwj5kyfm76hbf"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Subject: Applied "spi: atmel: trivial: move info banner to latest probe action" to the spi tree
+Date: Fri, 25 Nov 2016 13:10:28 +0000
+Message-ID: <E1cAGGq-0005HG-GG@debutante>
+References: <e259bb1c87e32c67295747f868f8684c1e929d68.1479985886.git.nicolas.ferre@atmel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
         cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <e259bb1c87e32c67295747f868f8684c1e929d68.1479985886.git.nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---vvglwj5kyfm76hbf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: atmel: trivial: move info banner to latest probe action
 
-On Thu, Nov 24, 2016 at 12:24:57PM +0100, Nicolas Ferre wrote:
-> The info banner is here to tell that everything went well, so place
-> it at the very end of the probe function.
+has been applied to the spi tree at
 
-Really we should just drop this, the banner is only telling us things
-enumerated from DT so it's adding noise to the boot.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---vvglwj5kyfm76hbf
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAABCAAGBQJYODckAAoJECTWi3JdVIfQ+F8H/jCEcZda1Hz/6nAk88ZE+h6t
-AABSPE9N4/uuQcSkICbpbMUG2ZlOgXrklsk6IvRTWcpSwqEyJK6p1nc1h8deDePf
-DTtHehb6mjqweww54fcQvzII++dYOUace3JuDRsskpAETmzqKQ+60BhrxXHhRlYL
-U43zLsYqmpO3/iGg9NLDCGtXRSHVvEljV5Ri4CIz9hKBwpga1ya9OcOMzhmBAm5N
-qzBXHw7sT/33wRcB7E/8FYpenKkB+S68uYbPjXknKSLkrlRkTk+dCtzTNOhqFT+P
-osJHZRgstt4MNpiqrZfnHpW+fFe1CZjQwO7ZJ5tUIem9e6MaHkmtF2o/6hC0U5Y=
-=i7mQ
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---vvglwj5kyfm76hbf--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From ce24a513fb142e855b4aa77f91334c2f203c0d99 Mon Sep 17 00:00:00 2001
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Date: Thu, 24 Nov 2016 12:24:57 +0100
+Subject: [PATCH] spi: atmel: trivial: move info banner to latest probe action
+
+The info banner is here to tell that everything went well, so place
+it at the very end of the probe function.
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index b2931493cab2..a9ae1836e1e2 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1654,10 +1654,6 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ 	}
+ 
+-	/* go! */
+-	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+-			(unsigned long)regs->start, irq);
+-
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_active(&pdev->dev);
+@@ -1667,6 +1663,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_free_dma;
+ 
++	/* go! */
++	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
++			(unsigned long)regs->start, irq);
++
+ 	return 0;
+ 
+ out_free_dma:
+-- 
+2.10.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

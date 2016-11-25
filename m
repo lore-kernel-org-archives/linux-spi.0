@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 4/4] spi: fsl-espi: remove unused linearization code
-Date: Sat, 26 Nov 2016 00:00:28 +0100
-Message-ID: <4ce7fd3d-bdb2-3e28-a362-b4a61a207a89@gmail.com>
+Subject: [PATCH 3/4] spi: fsl-espi: eliminate need for linearization when
+ reading from hardware
+Date: Fri, 25 Nov 2016 23:59:57 +0100
+Message-ID: <80a5a858-dc54-ea9d-3c6e-34fdedc516d7@gmail.com>
 References: <2424ba57-be1a-d32d-0c14-1662c2d02409@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,166 +14,175 @@ In-Reply-To: <2424ba57-be1a-d32d-0c14-1662c2d02409-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-After introducing direct transfers between hardware and transfer
-buffers remove all code which is unused now.
-
-This includes getting rid of the 64k linearization buffer.
+Eliminate need for linearization when reading from the hardware and
+write to the transfer buffers directly.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 80 ----------------------------------------------
- 1 file changed, 80 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 77 +++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 63 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index e93892d..cd28329 100644
+index 189ab36..e93892d 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -95,9 +95,6 @@ struct fsl_espi {
- 	struct device *dev;
- 	void __iomem *reg_base;
- 
--	const void *tx;
--	void *rx;
--
- 	struct list_head *m_transfers;
+@@ -102,6 +102,9 @@ struct fsl_espi {
  	struct spi_transfer *tx_t;
  	unsigned int tx_pos;
-@@ -107,11 +104,8 @@ struct fsl_espi {
- 	bool rx_done;
+ 	bool tx_done;
++	struct spi_transfer *rx_t;
++	unsigned int rx_pos;
++	bool rx_done;
  
  	bool swab;
--	unsigned int rx_len;
--	unsigned int tx_len;
- 	unsigned int rxskip;
- 
--	u8 *local_buf;
- 	spinlock_t lock;
- 
- 	u32 spibrg;             /* SPIBRG input clock */
-@@ -156,61 +150,6 @@ static inline void fsl_espi_write_reg8(struct fsl_espi *espi, int offset,
- 	iowrite8(val, espi->reg_base + offset);
+ 	unsigned int rx_len;
+@@ -125,6 +128,11 @@ static inline u32 fsl_espi_read_reg(struct fsl_espi *espi, int offset)
+ 	return ioread32be(espi->reg_base + offset);
  }
  
--static void fsl_espi_memcpy_swab(void *to, const void *from,
--				 struct spi_message *m,
--				 struct spi_transfer *t)
--{
--	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
--	unsigned int len = t->len;
--
--	if (!espi->swab) {
--		memcpy(to, from, len);
--		return;
--	}
--
--	while (len)
--		if (len >= 4) {
--			*(u32 *)to = swahb32p(from);
--			to += 4;
--			from += 4;
--			len -= 4;
--		} else {
--			*(u16 *)to = swab16p(from);
--			to += 2;
--			from += 2;
--			len -= 2;
--		}
--}
--
--static void fsl_espi_copy_to_buf(struct spi_message *m,
--				 struct fsl_espi *espi)
--{
--	struct spi_transfer *t;
--	u8 *buf = espi->local_buf;
--
--	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->tx_buf)
--			fsl_espi_memcpy_swab(buf, t->tx_buf, m, t);
--		/* In RXSKIP mode controller shifts out zeros internally */
--		else if (!espi->rxskip)
--			memset(buf, 0, t->len);
--		buf += t->len;
--	}
--}
--
--static void fsl_espi_copy_from_buf(struct spi_message *m,
--				   struct fsl_espi *espi)
--{
--	struct spi_transfer *t;
--	u8 *buf = espi->local_buf;
--
--	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->rx_buf)
--			fsl_espi_memcpy_swab(t->rx_buf, buf, m, t);
--		buf += t->len;
--	}
--}
--
- static int fsl_espi_check_message(struct spi_message *m)
++static inline u16 fsl_espi_read_reg16(struct fsl_espi *espi, int offset)
++{
++	return ioread16(espi->reg_base + offset);
++}
++
+ static inline u8 fsl_espi_read_reg8(struct fsl_espi *espi, int offset)
  {
- 	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
-@@ -421,12 +360,6 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return ioread8(espi->reg_base + offset);
+@@ -328,19 +336,53 @@ static void fsl_espi_fill_tx_fifo(struct fsl_espi *espi, u32 events)
+ static void fsl_espi_read_rx_fifo(struct fsl_espi *espi, u32 events)
+ {
+ 	u32 rx_fifo_avail = SPIE_RXCNT(events);
++	unsigned int rx_left;
++	void *rx_buf;
+ 
+-	while (rx_fifo_avail >= min(4U, espi->rx_len) && espi->rx_len)
+-		if (espi->rx_len >= 4) {
+-			*(u32 *)espi->rx = fsl_espi_read_reg(espi, ESPI_SPIRF);
+-			espi->rx += 4;
+-			espi->rx_len -= 4;
++start:
++	rx_left = espi->rx_t->len - espi->rx_pos;
++	rx_buf = espi->rx_t->rx_buf;
++	while (rx_fifo_avail >= min(4U, rx_left) && rx_left) {
++		if (rx_left >= 4) {
++			u32 val = fsl_espi_read_reg(espi, ESPI_SPIRF);
++
++			if (rx_buf && espi->swab)
++				*(u32 *)(rx_buf + espi->rx_pos) = swahb32(val);
++			else if (rx_buf)
++				*(u32 *)(rx_buf + espi->rx_pos) = val;
++			espi->rx_pos += 4;
++			rx_left -= 4;
+ 			rx_fifo_avail -= 4;
++		} else if (rx_left >= 2 && rx_buf && espi->swab) {
++			u16 val = fsl_espi_read_reg16(espi, ESPI_SPIRF);
++
++			*(u16 *)(rx_buf + espi->rx_pos) = swab16(val);
++			espi->rx_pos += 2;
++			rx_left -= 2;
++			rx_fifo_avail -= 2;
+ 		} else {
+-			*(u8 *)espi->rx = fsl_espi_read_reg8(espi, ESPI_SPIRF);
+-			espi->rx += 1;
+-			espi->rx_len -= 1;
++			u8 val = fsl_espi_read_reg8(espi, ESPI_SPIRF);
++
++			if (rx_buf)
++				*(u8 *)(rx_buf + espi->rx_pos) = val;
++			espi->rx_pos += 1;
++			rx_left -= 1;
+ 			rx_fifo_avail -= 1;
+ 		}
++	}
++
++	if (!rx_left) {
++		if (list_is_last(&espi->rx_t->transfer_list,
++		    espi->m_transfers)) {
++			espi->rx_done = true;
++			return;
++		}
++		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
++		espi->rx_pos = 0;
++		/* continue with next transfer if rx fifo is not empty */
++		if (rx_fifo_avail)
++			goto start;
++	}
+ }
+ 
+ static void fsl_espi_setup_transfer(struct spi_device *spi,
+@@ -375,6 +417,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct fsl_espi *espi = spi_master_get_devdata(spi->master);
++	unsigned int rx_len = t->len;
  	u32 mask, spcom;
  	int ret;
  
--	espi->rx_len = t->len;
--	espi->tx_len = t->len;
--
--	espi->tx = t->tx_buf;
--	espi->rx = t->rx_buf;
--
- 	reinit_completion(&espi->done);
- 
- 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
-@@ -436,10 +369,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	/* configure RXSKIP mode */
- 	if (espi->rxskip) {
+@@ -395,6 +438,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
  		spcom |= SPCOM_RXSKIP(espi->rxskip);
--		espi->tx_len = espi->rxskip;
--		espi->rx_len = t->len - espi->rxskip;
- 		rx_len = t->len - espi->rxskip;
--		espi->rx = t->rx_buf + espi->rxskip;
+ 		espi->tx_len = espi->rxskip;
+ 		espi->rx_len = t->len - espi->rxskip;
++		rx_len = t->len - espi->rxskip;
+ 		espi->rx = t->rx_buf + espi->rxskip;
  		if (t->rx_nbits == SPI_NBITS_DUAL)
  			spcom |= SPCOM_DO;
- 	}
-@@ -497,7 +427,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	if (espi->rxskip)
- 		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
+@@ -404,7 +448,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
  
--	fsl_espi_copy_to_buf(m, espi);
+ 	/* enable interrupts */
+ 	mask = SPIM_DON;
+-	if (espi->rx_len > FSL_ESPI_FIFO_SIZE)
++	if (rx_len > FSL_ESPI_FIFO_SIZE)
+ 		mask |= SPIM_RXT;
+ 	fsl_espi_write_reg(espi, ESPI_SPIM, mask);
+ 
+@@ -438,6 +482,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 				      transfer_list);
+ 	espi->tx_pos = 0;
+ 	espi->tx_done = false;
++	espi->rx_t = list_first_entry(&m->transfers, struct spi_transfer,
++				      transfer_list);
++	espi->rx_pos = 0;
++	espi->rx_done = false;
+ 
+ 	espi->rxskip = fsl_espi_check_rxskip_mode(m);
+ 	if (trans->rx_nbits == SPI_NBITS_DUAL && !espi->rxskip) {
+@@ -445,6 +493,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 		return -EINVAL;
+ 	}
+ 
++	/* In RXSKIP mode skip first transfer for reads */
++	if (espi->rxskip)
++		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
++
+ 	fsl_espi_copy_to_buf(m, espi);
  	fsl_espi_setup_transfer(spi, trans);
  
- 	ret = fsl_espi_bufs(spi, trans);
-@@ -511,7 +440,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
--	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
- 	unsigned int delay_usecs = 0, rx_nbits = 0;
- 	struct spi_transfer *t, trans = {};
- 	int ret;
-@@ -534,8 +462,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	trans.speed_hz = t->speed_hz;
- 	trans.bits_per_word = t->bits_per_word;
- 	trans.delay_usecs = delay_usecs;
--	trans.tx_buf = espi->local_buf;
--	trans.rx_buf = espi->local_buf;
- 	trans.rx_nbits = rx_nbits;
+@@ -453,9 +505,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
  
- 	if (trans.len)
-@@ -773,12 +699,6 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 
- 	init_completion(&espi->done);
- 
--	espi->local_buf = devm_kmalloc(dev, SPCOM_TRANLEN_MAX, GFP_KERNEL);
--	if (!espi->local_buf) {
--		ret = -ENOMEM;
--		goto err_probe;
--	}
+-	if (!ret)
+-		fsl_espi_copy_from_buf(m, espi);
 -
- 	espi->reg_base = devm_ioremap_resource(dev, mem);
- 	if (IS_ERR(espi->reg_base)) {
- 		ret = PTR_ERR(espi->reg_base);
+ 	return ret;
+ }
+ 
+@@ -556,13 +605,13 @@ static void fsl_espi_cleanup(struct spi_device *spi)
+ 
+ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
+ {
+-	if (espi->rx_len)
++	if (!espi->rx_done)
+ 		fsl_espi_read_rx_fifo(espi, events);
+ 
+ 	if (!espi->tx_done)
+ 		fsl_espi_fill_tx_fifo(espi, events);
+ 
+-	if (!espi->tx_done || espi->rx_len)
++	if (!espi->tx_done || !espi->rx_done)
+ 		return;
+ 
+ 	/* we're done, but check for errors before returning */
 -- 
 2.10.2
 

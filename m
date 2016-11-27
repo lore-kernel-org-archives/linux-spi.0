@@ -1,193 +1,362 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/4] spi: fsl-espi: eliminate need for linearization when
- reading from hardware
-Date: Fri, 25 Nov 2016 23:59:57 +0100
-Message-ID: <80a5a858-dc54-ea9d-3c6e-34fdedc516d7@gmail.com>
-References: <2424ba57-be1a-d32d-0c14-1662c2d02409@gmail.com>
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX RFC v4 3/4] mtd: spi-nor: add stripe support
+Date: Sun, 27 Nov 2016 14:03:36 +0530
+Message-ID: <1480235616-34038-1-git-send-email-nagasure@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2424ba57-be1a-d32d-0c14-1662c2d02409-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+To: <broonie@kernel.org>, <michal.simek@xilinx.com>,
+        <soren.brinkmann@xilinx.com>, <harinik@xilinx.com>,
+        <punnaia@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Eliminate need for linearization when reading from the hardware and
-write to the transfer buffers directly.
+This patch adds stripe support and it is needed for GQSPI parallel
+configuration mode by:
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+- Adding required parameters like stripe and shift to spi_nor
+  structure.
+- Initializing all added parameters in spi_nor_scan()
+- Updating read_sr() and read_fsr() for getting status from both
+  flashes
+- Increasing page_size, sector_size, erase_size and toatal flash
+  size as and when required.
+- Dividing address by 2
+- Updating spi->master->flags for qspi driver to change CS
+
+Signed-off-by: Naga Sureshkumar Relli <nagasure@xilinx.com>
 ---
- drivers/spi/spi-fsl-espi.c | 77 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 63 insertions(+), 14 deletions(-)
+Changes for v4:
+ - rename isparallel to stripe
+Changes for v3:
+ - No change
+Changes for v2:
+ - Splitted to separate MTD layer changes from SPI core changes
+---
+ drivers/mtd/spi-nor/spi-nor.c | 130 ++++++++++++++++++++++++++++++++----------
+ include/linux/mtd/spi-nor.h   |   2 +
+ 2 files changed, 103 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 189ab36..e93892d 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -102,6 +102,9 @@ struct fsl_espi {
- 	struct spi_transfer *tx_t;
- 	unsigned int tx_pos;
- 	bool tx_done;
-+	struct spi_transfer *rx_t;
-+	unsigned int rx_pos;
-+	bool rx_done;
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index d0fc165..4252239 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -22,6 +22,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/spi/flash.h>
+ #include <linux/mtd/spi-nor.h>
++#include <linux/spi/spi.h>
  
- 	bool swab;
- 	unsigned int rx_len;
-@@ -125,6 +128,11 @@ static inline u32 fsl_espi_read_reg(struct fsl_espi *espi, int offset)
- 	return ioread32be(espi->reg_base + offset);
- }
+ /* Define max times to check status register before we give up. */
  
-+static inline u16 fsl_espi_read_reg16(struct fsl_espi *espi, int offset)
-+{
-+	return ioread16(espi->reg_base + offset);
-+}
-+
- static inline u8 fsl_espi_read_reg8(struct fsl_espi *espi, int offset)
+@@ -89,15 +90,24 @@ static const struct flash_info *spi_nor_match_id(const char *name);
+ static int read_sr(struct spi_nor *nor)
  {
- 	return ioread8(espi->reg_base + offset);
-@@ -328,19 +336,53 @@ static void fsl_espi_fill_tx_fifo(struct fsl_espi *espi, u32 events)
- static void fsl_espi_read_rx_fifo(struct fsl_espi *espi, u32 events)
- {
- 	u32 rx_fifo_avail = SPIE_RXCNT(events);
-+	unsigned int rx_left;
-+	void *rx_buf;
- 
--	while (rx_fifo_avail >= min(4U, espi->rx_len) && espi->rx_len)
--		if (espi->rx_len >= 4) {
--			*(u32 *)espi->rx = fsl_espi_read_reg(espi, ESPI_SPIRF);
--			espi->rx += 4;
--			espi->rx_len -= 4;
-+start:
-+	rx_left = espi->rx_t->len - espi->rx_pos;
-+	rx_buf = espi->rx_t->rx_buf;
-+	while (rx_fifo_avail >= min(4U, rx_left) && rx_left) {
-+		if (rx_left >= 4) {
-+			u32 val = fsl_espi_read_reg(espi, ESPI_SPIRF);
-+
-+			if (rx_buf && espi->swab)
-+				*(u32 *)(rx_buf + espi->rx_pos) = swahb32(val);
-+			else if (rx_buf)
-+				*(u32 *)(rx_buf + espi->rx_pos) = val;
-+			espi->rx_pos += 4;
-+			rx_left -= 4;
- 			rx_fifo_avail -= 4;
-+		} else if (rx_left >= 2 && rx_buf && espi->swab) {
-+			u16 val = fsl_espi_read_reg16(espi, ESPI_SPIRF);
-+
-+			*(u16 *)(rx_buf + espi->rx_pos) = swab16(val);
-+			espi->rx_pos += 2;
-+			rx_left -= 2;
-+			rx_fifo_avail -= 2;
- 		} else {
--			*(u8 *)espi->rx = fsl_espi_read_reg8(espi, ESPI_SPIRF);
--			espi->rx += 1;
--			espi->rx_len -= 1;
-+			u8 val = fsl_espi_read_reg8(espi, ESPI_SPIRF);
-+
-+			if (rx_buf)
-+				*(u8 *)(rx_buf + espi->rx_pos) = val;
-+			espi->rx_pos += 1;
-+			rx_left -= 1;
- 			rx_fifo_avail -= 1;
- 		}
-+	}
-+
-+	if (!rx_left) {
-+		if (list_is_last(&espi->rx_t->transfer_list,
-+		    espi->m_transfers)) {
-+			espi->rx_done = true;
-+			return;
-+		}
-+		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
-+		espi->rx_pos = 0;
-+		/* continue with next transfer if rx fifo is not empty */
-+		if (rx_fifo_avail)
-+			goto start;
-+	}
- }
- 
- static void fsl_espi_setup_transfer(struct spi_device *spi,
-@@ -375,6 +417,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct fsl_espi *espi = spi_master_get_devdata(spi->master);
-+	unsigned int rx_len = t->len;
- 	u32 mask, spcom;
  	int ret;
+-	u8 val;
++	u8 val[2];
  
-@@ -395,6 +438,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		spcom |= SPCOM_RXSKIP(espi->rxskip);
- 		espi->tx_len = espi->rxskip;
- 		espi->rx_len = t->len - espi->rxskip;
-+		rx_len = t->len - espi->rxskip;
- 		espi->rx = t->rx_buf + espi->rxskip;
- 		if (t->rx_nbits == SPI_NBITS_DUAL)
- 			spcom |= SPCOM_DO;
-@@ -404,7 +448,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 
- 	/* enable interrupts */
- 	mask = SPIM_DON;
--	if (espi->rx_len > FSL_ESPI_FIFO_SIZE)
-+	if (rx_len > FSL_ESPI_FIFO_SIZE)
- 		mask |= SPIM_RXT;
- 	fsl_espi_write_reg(espi, ESPI_SPIM, mask);
- 
-@@ -438,6 +482,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 				      transfer_list);
- 	espi->tx_pos = 0;
- 	espi->tx_done = false;
-+	espi->rx_t = list_first_entry(&m->transfers, struct spi_transfer,
-+				      transfer_list);
-+	espi->rx_pos = 0;
-+	espi->rx_done = false;
- 
- 	espi->rxskip = fsl_espi_check_rxskip_mode(m);
- 	if (trans->rx_nbits == SPI_NBITS_DUAL && !espi->rxskip) {
-@@ -445,6 +493,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 		return -EINVAL;
+-	ret = nor->read_reg(nor, SPINOR_OP_RDSR, &val, 1);
+-	if (ret < 0) {
+-		pr_err("error %d reading SR\n", (int) ret);
+-		return ret;
++	if (nor->stripe) {
++		ret = nor->read_reg(nor, SPINOR_OP_RDSR, &val[0], 2);
++		if (ret < 0) {
++			pr_err("error %d reading SR\n", (int) ret);
++			return ret;
++		}
++		val[0] |= val[1];
++	} else {
++		ret = nor->read_reg(nor, SPINOR_OP_RDSR, &val[0], 1);
++		if (ret < 0) {
++			pr_err("error %d reading SR\n", (int) ret);
++			return ret;
++		}
  	}
  
-+	/* In RXSKIP mode skip first transfer for reads */
-+	if (espi->rxskip)
-+		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
-+
- 	fsl_espi_copy_to_buf(m, espi);
- 	fsl_espi_setup_transfer(spi, trans);
- 
-@@ -453,9 +505,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	if (trans->delay_usecs)
- 		udelay(trans->delay_usecs);
- 
--	if (!ret)
--		fsl_espi_copy_from_buf(m, espi);
--
- 	return ret;
+-	return val;
++	return val[0];
  }
  
-@@ -556,13 +605,13 @@ static void fsl_espi_cleanup(struct spi_device *spi)
- 
- static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
+ /*
+@@ -108,15 +118,24 @@ static int read_sr(struct spi_nor *nor)
+ static int read_fsr(struct spi_nor *nor)
  {
--	if (espi->rx_len)
-+	if (!espi->rx_done)
- 		fsl_espi_read_rx_fifo(espi, events);
+ 	int ret;
+-	u8 val;
++	u8 val[2];
  
- 	if (!espi->tx_done)
- 		fsl_espi_fill_tx_fifo(espi, events);
+-	ret = nor->read_reg(nor, SPINOR_OP_RDFSR, &val, 1);
+-	if (ret < 0) {
+-		pr_err("error %d reading FSR\n", ret);
+-		return ret;
++	if (nor->stripe) {
++		ret = nor->read_reg(nor, SPINOR_OP_RDFSR, &val[0], 2);
++		if (ret < 0) {
++			pr_err("error %d reading FSR\n", ret);
++			return ret;
++		}
++		val[0] &= val[1];
++	} else {
++		ret = nor->read_reg(nor, SPINOR_OP_RDFSR, &val[0], 1);
++		if (ret < 0) {
++			pr_err("error %d reading FSR\n", ret);
++			return ret;
++		}
+ 	}
  
--	if (!espi->tx_done || espi->rx_len)
-+	if (!espi->tx_done || !espi->rx_done)
- 		return;
+-	return val;
++	return val[0];
+ }
  
- 	/* we're done, but check for errors before returning */
+ /*
+@@ -290,9 +309,16 @@ static int spi_nor_wait_till_ready(struct spi_nor *nor)
+  */
+ static int erase_chip(struct spi_nor *nor)
+ {
++	u32 ret;
++
+ 	dev_dbg(nor->dev, " %lldKiB\n", (long long)(nor->mtd.size >> 10));
+ 
+-	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
++	ret = nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
++	if (ret)
++		return ret;
++
++	return ret;
++
+ }
+ 
+ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
+@@ -349,7 +375,7 @@ static int spi_nor_erase_sector(struct spi_nor *nor, u32 addr)
+ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
+ {
+ 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+-	u32 addr, len;
++	u32 addr, len, offset;
+ 	uint32_t rem;
+ 	int ret;
+ 
+@@ -399,9 +425,13 @@ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 	/* "sector"-at-a-time erase */
+ 	} else {
+ 		while (len) {
++
+ 			write_enable(nor);
++			offset = addr;
++			if (nor->stripe)
++				offset /= 2;
+ 
+-			ret = spi_nor_erase_sector(nor, addr);
++			ret = spi_nor_erase_sector(nor, offset);
+ 			if (ret)
+ 				goto erase_err;
+ 
+@@ -525,6 +555,8 @@ static int stm_lock(struct spi_nor *nor, loff_t ofs, uint64_t len)
+ 	bool use_top;
+ 	int ret;
+ 
++	ofs = ofs >> nor->shift;
++
+ 	status_old = read_sr(nor);
+ 	if (status_old < 0)
+ 		return status_old;
+@@ -610,6 +642,8 @@ static int stm_unlock(struct spi_nor *nor, loff_t ofs, uint64_t len)
+ 	bool use_top;
+ 	int ret;
+ 
++	ofs = ofs >> nor->shift;
++
+ 	status_old = read_sr(nor);
+ 	if (status_old < 0)
+ 		return status_old;
+@@ -709,6 +743,8 @@ static int spi_nor_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+ 	if (ret)
+ 		return ret;
+ 
++	ofs = ofs >> nor->shift;
++
+ 	ret = nor->flash_lock(nor, ofs, len);
+ 
+ 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_UNLOCK);
+@@ -724,6 +760,8 @@ static int spi_nor_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+ 	if (ret)
+ 		return ret;
+ 
++	ofs = ofs >> nor->shift;
++
+ 	ret = nor->flash_unlock(nor, ofs, len);
+ 
+ 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_LOCK);
+@@ -1018,6 +1056,9 @@ static const struct flash_info *spi_nor_read_id(struct spi_nor *nor)
+ 	u8			id[SPI_NOR_MAX_ID_LEN];
+ 	const struct flash_info	*info;
+ 
++	nor->spi->master->flags &= ~(SPI_MASTER_BOTH_CS |
++					SPI_MASTER_DATA_STRIPE);
++
+ 	tmp = nor->read_reg(nor, SPINOR_OP_RDID, id, SPI_NOR_MAX_ID_LEN);
+ 	if (tmp < 0) {
+ 		dev_dbg(nor->dev, "error %d reading JEDEC ID\n", tmp);
+@@ -1041,6 +1082,7 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ {
+ 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+ 	int ret;
++	u32 offset = from;
+ 
+ 	dev_dbg(nor->dev, "from 0x%08x, len %zd\n", (u32)from, len);
+ 
+@@ -1049,7 +1091,13 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 		return ret;
+ 
+ 	while (len) {
+-		ret = nor->read(nor, from, len, buf);
++
++		offset = from;
++
++		if (nor->stripe)
++			offset /= 2;
++
++		ret = nor->read(nor, offset, len, buf);
+ 		if (ret == 0) {
+ 			/* We shouldn't see 0-length reads */
+ 			ret = -EIO;
+@@ -1161,6 +1209,7 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+ 	size_t page_offset, page_remain, i;
+ 	ssize_t ret;
++	u32 offset;
+ 
+ 	dev_dbg(nor->dev, "to 0x%08x, len %zd\n", (u32)to, len);
+ 
+@@ -1178,9 +1227,13 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		/* the size of data remaining on the first page */
+ 		page_remain = min_t(size_t,
+ 				    nor->page_size - page_offset, len - i);
++		offset = (to + i);
++
++		if (nor->stripe)
++			offset /= 2;
+ 
+ 		write_enable(nor);
+-		ret = nor->write(nor, to + i, page_remain, buf + i);
++		ret = nor->write(nor, (offset), page_remain, buf + i);
+ 		if (ret < 0)
+ 			goto write_err;
+ 		written = ret;
+@@ -1302,22 +1355,22 @@ static int spi_nor_check(struct spi_nor *nor)
+ 
+ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ {
+-	const struct flash_info *info = NULL;
++	struct flash_info *info = NULL;
+ 	struct device *dev = nor->dev;
+ 	struct mtd_info *mtd = &nor->mtd;
+ 	struct device_node *np = spi_nor_get_flash_node(nor);
+-	int ret;
+-	int i;
++	struct device_node *np_spi;
++	int ret, i, xlnx_qspi_mode;
+ 
+ 	ret = spi_nor_check(nor);
+ 	if (ret)
+ 		return ret;
+ 
+ 	if (name)
+-		info = spi_nor_match_id(name);
++		info = (struct flash_info *)spi_nor_match_id(name);
+ 	/* Try to auto-detect if chip name wasn't specified or not found */
+ 	if (!info)
+-		info = spi_nor_read_id(nor);
++		info = (struct flash_info *)spi_nor_read_id(nor);
+ 	if (IS_ERR_OR_NULL(info))
+ 		return -ENOENT;
+ 
+@@ -1341,7 +1394,7 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 			 */
+ 			dev_warn(dev, "found %s, expected %s\n",
+ 				 jinfo->name, info->name);
+-			info = jinfo;
++			info = (struct flash_info *)jinfo;
+ 		}
+ 	}
+ 
+@@ -1370,6 +1423,27 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	mtd->size = info->sector_size * info->n_sectors;
+ 	mtd->_erase = spi_nor_erase;
+ 	mtd->_read = spi_nor_read;
++#ifdef CONFIG_OF
++	np_spi = of_get_next_parent(np);
++
++	if (of_property_read_u32(np_spi, "xlnx,qspi-mode",
++				&xlnx_qspi_mode) < 0) {
++		nor->shift = 0;
++		nor->stripe = 0;
++	} else if (xlnx_qspi_mode == 2) {
++		nor->shift = 1;
++		info->sector_size <<= nor->shift;
++		info->page_size <<= nor->shift;
++		mtd->size <<= nor->shift;
++		nor->stripe = 1;
++		nor->spi->master->flags |= (SPI_MASTER_BOTH_CS |
++						SPI_MASTER_DATA_STRIPE);
++	}
++#else
++	/* Default to single */
++	nor->shift = 0;
++	nor->stripe = 0;
++#endif
+ 
+ 	/* NOR protection support for STmicro/Micron chips and similar */
+ 	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
+@@ -1400,10 +1474,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	/* prefer "small sector" erase if possible */
+ 	if (info->flags & SECT_4K) {
+ 		nor->erase_opcode = SPINOR_OP_BE_4K;
+-		mtd->erasesize = 4096;
++		mtd->erasesize = 4096 << nor->shift;
+ 	} else if (info->flags & SECT_4K_PMC) {
+ 		nor->erase_opcode = SPINOR_OP_BE_4K_PMC;
+-		mtd->erasesize = 4096;
++		mtd->erasesize = 4096 << nor->shift;
+ 	} else
+ #endif
+ 	{
+@@ -1508,16 +1582,14 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
+ 			(long long)mtd->size >> 10);
+ 
+-	dev_dbg(dev,
+-		"mtd .name = %s, .size = 0x%llx (%lldMiB), "
++	dev_dbg(dev, "mtd .name = %s, .size = 0x%llx (%lldMiB), "
+ 		".erasesize = 0x%.8x (%uKiB) .numeraseregions = %d\n",
+ 		mtd->name, (long long)mtd->size, (long long)(mtd->size >> 20),
+ 		mtd->erasesize, mtd->erasesize / 1024, mtd->numeraseregions);
+ 
+ 	if (mtd->numeraseregions)
+ 		for (i = 0; i < mtd->numeraseregions; i++)
+-			dev_dbg(dev,
+-				"mtd.eraseregions[%d] = { .offset = 0x%llx, "
++			dev_dbg(dev, "mtd.eraseregions[%d] = { .offset = 0x%llx, "
+ 				".erasesize = 0x%.8x (%uKiB), "
+ 				".numblocks = %d }\n",
+ 				i, (long long)mtd->eraseregions[i].offset,
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index 84f3ce5..673ec68 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -165,6 +165,8 @@ struct spi_nor {
+ 	u8			read_dummy;
+ 	u8			program_opcode;
+ 	enum read_mode		flash_read;
++	bool			shift;
++	bool			stripe;
+ 	bool			sst_write_second;
+ 	u32			flags;
+ 	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
 -- 
 2.10.2
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

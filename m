@@ -1,124 +1,25 @@
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX RFC v4 4/4] spi: zynqmp: gqspi: add support for stripe feature
-Date: Sun, 27 Nov 2016 14:03:42 +0530
-Message-ID: <1480235622-34100-1-git-send-email-nagasure@xilinx.com>
+From: BMW <INFO-lJBlv7QZCRef0DUV/oxz1A@public.gmane.org>
+Subject: BMW PROMO
+Date: Mon, 28 Nov 2016 07:20:43 +0200
+Message-ID: <201611280444.uAS4dsg7026681__26952.2121678621$1480311702$gmane$org@mx1.nbrc.ac.in>
+Reply-To: tonyrichy26-fZsAqLoOLWc@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: <broonie@kernel.org>, <michal.simek@xilinx.com>,
- <soren.brinkmann@xilinx.com>, <harinik@xilinx.com>, <punnaia@xilinx.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+To: Recipients <INFO-lJBlv7QZCRef0DUV/oxz1A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Description: Mail message body
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds support of dual parallel mode configuration
-for Zynq Ultrascale+ MPSoC GQSPI controller driver.
-
-Signed-off-by: Naga Sureshkumar Relli <nagasure@xilinx.com>
----
-Changes for v4:
- - No changes
-Changes for v3:
- - No change
-Changes for v2:
- - No change
----
- drivers/spi/spi-zynqmp-gqspi.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 18aeace..dc7cf03 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -153,6 +153,7 @@ enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
-  * @dma_rx_bytes:	Remaining bytes to receive by DMA mode
-  * @dma_addr:		DMA address after mapping the kernel buffer
-  * @genfifoentry:	Used for storing the genfifoentry instruction.
-+ * @isinstr:		To determine whether the transfer is instruction
-  * @mode:		Defines the mode in which QSPI is operating
-  */
- struct zynqmp_qspi {
-@@ -170,6 +171,7 @@ struct zynqmp_qspi {
- 	u32 dma_rx_bytes;
- 	dma_addr_t dma_addr;
- 	u32 genfifoentry;
-+	bool isinstr;
- 	enum mode_type mode;
- };
- 
-@@ -404,11 +406,24 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
- 	u32 genfifoentry = 0x0, statusreg;
- 
- 	genfifoentry |= GQSPI_GENFIFO_MODE_SPI;
-+
-+
-+	if (qspi->master->flags & SPI_MASTER_BOTH_CS) {
-+		zynqmp_gqspi_selectslave(xqspi,
-+				GQSPI_SELECT_FLASH_CS_BOTH,
-+				GQSPI_SELECT_FLASH_BUS_BOTH);
-+	} else {
-+		zynqmp_gqspi_selectslave(xqspi,
-+				GQSPI_SELECT_FLASH_CS_LOWER,
-+				GQSPI_SELECT_FLASH_BUS_LOWER);
-+	}
-+
- 	genfifoentry |= xqspi->genfifobus;
- 
- 	if (!is_high) {
- 		genfifoentry |= xqspi->genfifocs;
- 		genfifoentry |= GQSPI_GENFIFO_CS_SETUP;
-+		xqspi->isinstr = true;
- 	} else {
- 		genfifoentry |= GQSPI_GENFIFO_CS_HOLD;
- 	}
-@@ -665,6 +680,7 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- 	if ((xqspi->bytes_to_receive == 0) && (xqspi->bytes_to_transfer == 0)
- 			&& ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
- 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
-+		xqspi->isinstr = false;
- 		spi_finalize_current_transfer(master);
- 		ret = IRQ_HANDLED;
- 	}
-@@ -828,6 +844,9 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
- 	genfifoentry |= xqspi->genfifocs;
- 	genfifoentry |= xqspi->genfifobus;
- 
-+	if ((!xqspi->isinstr) && (master->flags & SPI_MASTER_DATA_STRIPE))
-+		genfifoentry |= GQSPI_GENFIFO_STRIPE;
-+
- 	zynqmp_qspi_txrxsetup(xqspi, transfer, &genfifoentry);
- 
- 	if (xqspi->mode == GQSPI_MODE_DMA)
-@@ -980,6 +999,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	struct zynqmp_qspi *xqspi;
- 	struct resource *res;
- 	struct device *dev = &pdev->dev;
-+	u32 num_cs;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
- 	if (!master)
-@@ -1040,7 +1060,11 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
- 
--	master->num_chipselect = GQSPI_DEFAULT_NUM_CS;
-+	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
-+	if (ret < 0)
-+		master->num_chipselect = GQSPI_DEFAULT_NUM_CS;
-+	else
-+		master->num_chipselect = num_cs;
- 
- 	master->setup = zynqmp_qspi_setup;
- 	master->set_cs = zynqmp_qspi_chipselect;
--- 
-2.10.2
+Congratulations,
+Dear Mr. /Mrs. you are lucky to have been chosen in the BMW 2016 lottery draw.
+That was just concluded in an E lottery online machine draw and the  email with lotto number BMW216021653096 and ticket draw number 5000342. Has won $150,000(ONE HUNDRED AND FIFTHY THOUSAND DOLLARS)
+VERIFY TO CLAIM YOUR PRIZE .EMAIL THE PROMOTIONAL HEAD MANAGER ON (tonyrichy26-fZsAqLoOLWc@public.gmane.org) FOR YOUR CLAIMS.
+THANKS.
+tony richmond
+(promotional head)
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,130 +1,50 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6, 5/8] mtd: m25p80: Let m25p80_read() fallback to spi
- transfer
-Date: Tue, 29 Nov 2016 15:06:37 +0100
-Message-ID: <a0179d25-71a5-b47f-4272-49aa2a346b54@atmel.com>
-References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
- <1472076269-4731-6-git-send-email-kdasu.kdev@gmail.com>
- <4b3b3d3e-b3f8-1d5b-65e3-0c37b6a29096@gmail.com>
- <8309370e-f99f-ed51-4789-c1d97d9d8191@atmel.com>
- <CAKekbesq1deU_0TCV4STAi=o8jZwoc_u+9zkdZuEhmd+BGwU2A@mail.gmail.com>
- <ae2c984e-2bcf-380e-a257-dbe786973af1@atmel.com>
- <7697b2fa-4660-c791-e891-a22c8bc5390f@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <vigneshr-l0cyMroinI0@public.gmane.org>,
-        "Yendapally Reddy Dhananjaya Reddy" <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH 0/5] Add support for the Armada 3700 SPI controller
+Date: Tue, 29 Nov 2016 15:39:34 +0100
+Message-ID: <20161129143939.3191-1-romain.perier@free-electrons.com>
+Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+        Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <7697b2fa-4660-c791-e891-a22c8bc5390f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi all,
+The Marvell Armada 3700 SoC includes an SPI controller. This controller
+supports up to 4 SPI slave devices, with dedicated chip selects, CPIO or
+FIFO mode with DMA or CPU transfers and different SPI transfer modes
+(Standard single, Dual or Quad).
 
-+Marek
+This set of patches adds a basic support for the CPIO mode, then it
+enables the FIFO mode (CPU-side only, DMA not supported yet). It also
+adds the required definitions of the spi nodes to the devicetree.
 
-Le 29/11/2016 à 02:32, Florian Fainelli a écrit :
-> On 10/14/2016 06:17 AM, Cyrille Pitchen wrote:
->> Le 13/10/2016 à 23:15, Kamal Dasu a écrit :
->>> On Mon, Oct 10, 2016 at 4:29 AM, Cyrille Pitchen
->>> <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
->>>> Hi all,
->>>>
->>>>
->>>> Le 10/10/2016 à 10:04, Florian Fainelli a écrit :
->>>>> On 08/24/2016 03:04 PM, Kamal Dasu wrote:
->>>>>> In m25p80_read() even though spi_flash_read() is supported
->>>>>> by some drivers, under certain circumstances like unaligned
->>>>>> buffer, address or address range limitations on certain SoCs
->>>>>> let it fallback to core spi reads. Such drivers are expected
->>>>>> to return -EAGAIN so that the m25p80_read() uses standard
->>>>>> spi transfer.
->>>>>>
->>>>>> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>>>>
->>>>> MTD folks, any comments on this?
->>>>>
->>>>>> ---
->>>>>>  drivers/mtd/devices/m25p80.c | 11 +++++++++--
->>>>>>  1 file changed, 9 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
->>>>>> index 9cf7fcd..77c2d2c 100644
->>>>>> --- a/drivers/mtd/devices/m25p80.c
->>>>>> +++ b/drivers/mtd/devices/m25p80.c
->>>>>> @@ -155,9 +155,16 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
->>>>>>              msg.data_nbits = m25p80_rx_nbits(nor);
->>>>>>
->>>>>>              ret = spi_flash_read(spi, &msg);
->>>>>> -            if (ret < 0)
->>>>>> +
->>>>>> +            if (ret >= 0)
->>>>>> +                    return msg.retlen;
->>>>>> +
->>>>>> +            /*
->>>>>> +             * some spi master drivers might need to fallback to
->>>>>> +             * normal spi transfer
->>>>>> +             */
->>>>>> +            if (ret != -EAGAIN)
->>>> I just wonder whether EINVAL would be a better choice.
->>>
->>>  spi_flash_read calls the down stream controller driver with all
->>> params addresses however  accelerated transfer is not possible by the
->>> controller due to alignment issues, it needs to indicate to m25p call
->>> to try the normal transfer, hence use of EAGAIN seemed appropriate.
->>>
->>>
->>
->> Yes, I think I've understood the purpose of this patch. In the example you
->> gave, the actual implementation of spi_flash_read() works fine with aligned
->> addresses but doesn't support unaligned addresses. Hence, such unaligned
->> addresses are invalid argument for spi_flash_read() and we should fall back
->> to the legacy implementation of m25p80_read().
->>
->> My point is just that EINVAL clearly tells that the SPI controller driver
->> implementation of spi_flash_read() doesn't support the given input
->> parameters, here an unaligned address, whereas EAGAIN suggests that some
->> hardware resource is temporarily unavailable and we could call spi_flash_read()
->> again later. However, in this case, spi_flash_read() would still fail even if
->> called later.
->>
->> That's why I've suggested EINVAL might have been a better choice than EAGAIN,
->> but honestly it's not a big deal, only a detail. So if most people prefer to
->> keep EAGAIN, I'm perfectly fine with it! :)
->>
->> I don't want my comment to delay the integration of this patch.
-> 
-> So what are we going to do now, should Kamal resubmit and
-> s/EGAIN/EINVAL/ or is EAGAIN good enough? If EINVAL needs to be used,
-> which I agree with you seems like a valid error code to return, this
-> does imply changing the Broadcom QSPI driver though... so we have to
-> coordinate the two changes to be merged through the same cycle to avoid
-> regressions.
-> 
+Romain Perier (5):
+  spi: Add basic support for Armada 3700 SPI Controller
+  spi: armada-3700: Add support for the FIFO mode
+  dt-bindings: spi: Add documentation for the Armada 3700 SPI Controller
+  arm64: dts: marvell: Add definition of SPI controller for Armada 3700
+  arm64: dts: marvell: Enable spi0 on the board Armada-3720-db
 
-Please replace the EAGAIN error code by EINVAL then I agree to merge this
-patch in the github spi-nor tree.
+ .../devicetree/bindings/spi/spi-armada-3700.txt    |   25 +
+ arch/arm64/boot/dts/marvell/armada-3720-db.dts     |   30 +
+ arch/arm64/boot/dts/marvell/armada-37xx.dtsi       |   13 +
+ drivers/spi/Kconfig                                |    7 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-armada-3700.c                      | 1047 ++++++++++++++++++++
+ 6 files changed, 1123 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+ create mode 100644 drivers/spi/spi-armada-3700.c
 
-I know the EAGAIN error code has already been introduced in spi-bcm-qspi.c
-through the spi tree but since currently m25p280.c handles neither EAGAIN
-nor EINVAL as the returned code of spi_flash_read(), I guess no regression
-will be introduced. The feature will work as expected once both the m25p80.c
-and spi-bcm-qspi.c use the very same error code.
-
-Marek, any comment?
-
-Best regards,
-
-Cyrille
+-- 
+2.9.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

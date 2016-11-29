@@ -1,7 +1,7 @@
 From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 4/5] arm64: dts: marvell: Add definition of SPI controller for Armada 3700
-Date: Tue, 29 Nov 2016 15:39:38 +0100
-Message-ID: <20161129143939.3191-5-romain.perier@free-electrons.com>
+Subject: [PATCH 3/5] dt-bindings: spi: Add documentation for the Armada 3700 SPI Controller
+Date: Tue, 29 Nov 2016 15:39:37 +0100
+Message-ID: <20161129143939.3191-4-romain.perier@free-electrons.com>
 References: <20161129143939.3191-1-romain.perier@free-electrons.com>
 Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
         Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -19,38 +19,46 @@ In-Reply-To: <20161129143939.3191-1-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4C
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Armada 3700 SoC has an SPI Controller, this commit adds the definition
-of the SPI device node at the SoC level.
+This adds the devicetree bindings documentation for the SPI controller
+present in the Marvell Armada 3700 SoCs.
 
 Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- arch/arm64/boot/dts/marvell/armada-37xx.dtsi | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../devicetree/bindings/spi/spi-armada-3700.txt    | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-armada-3700.txt
 
-diff --git a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-index e9bd587..84e4f57 100644
---- a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
-@@ -98,6 +98,19 @@
- 			/* 32M internal register @ 0xd000_0000 */
- 			ranges = <0x0 0x0 0xd0000000 0x2000000>;
- 
-+			spi0: spi@10600 {
-+				compatible = "marvell,armada-3700-spi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x10600 0x5d>;
-+				clocks = <&nb_periph_clk 7>;
-+				clock-frequency = <200000000>;
-+				interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+				max-frequency = <66000000>;
-+				num-cs = <4>;
-+				status = "disabled";
-+			};
+diff --git a/Documentation/devicetree/bindings/spi/spi-armada-3700.txt b/Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+new file mode 100644
+index 0000000..1564aa8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+@@ -0,0 +1,25 @@
++* Marvell Armada 3700 SPI Controller
 +
- 			uart0: serial@12000 {
- 				compatible = "marvell,armada-3700-uart";
- 				reg = <0x12000 0x400>;
++Required Properties:
++
++- compatible: should be "marvell,armada-3700-spi"
++- reg: physical base address of the controller and length of memory mapped
++       region.
++- interrupts: The interrupt number. The interrupt specifier format depends on
++	      the interrupt controller and of its driver.
++- clocks: Must contain the clock source, usually from the North Bridge clocks.
++- num-cs: The number of chip selects that is supported by this SPI Controller
++- #address-cells: should be 1.
++- #size-cells: should be 0.
++
++Example:
++
++	spi0: spi@10600 {
++		compatible = "marvell,armada-3700-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x10600 0x5d>;
++		clocks = <&nb_perih_clk 7>;
++		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++		num-cs = <4>;
++	};
 -- 
 2.9.3
 

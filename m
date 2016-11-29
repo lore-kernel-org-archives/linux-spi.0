@@ -1,95 +1,67 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2, 1/1] mtd: devices: m25p80: Add PM suspend resume
- support
-Date: Mon, 28 Nov 2016 17:35:02 -0800
-Message-ID: <ad1d08cf-4846-9b77-f8c0-149edb17b7e5@gmail.com>
-References: <1473710494-4084-1-git-send-email-kdasu.kdev@gmail.com>
- <4fe502a4-ee01-3fb8-6697-161de814596e@atmel.com>
- <CAKekbeubczM5NpQy-Umqx-SmDM+deMcgYciyST2Sgrh2_dOsAw@mail.gmail.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] mtd: m25p80: consider max message size in m25p80_read
+Date: Tue, 29 Nov 2016 07:29:53 +0100
+Message-ID: <bd0da0b0-c2a1-eade-3b27-407b3842182c@gmail.com>
+References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
+ <20160816164204.GV9347@sirena.org.uk>
+ <b65240ff-7e28-5ecb-0670-abfca871246b@gmail.com>
+ <a5aad691-fb3b-39a5-943e-43068df74c44@gmail.com>
+ <e2e4ecfe-b888-f335-57f6-634f5c818252@gmail.com>
+ <0e38d1ed-af5c-160f-e02a-f1433c507d23@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAKekbeubczM5NpQy-Umqx-SmDM+deMcgYciyST2Sgrh2_dOsAw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <0e38d1ed-af5c-160f-e02a-f1433c507d23-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 10/24/2016 11:18 AM, Kamal Dasu wrote:
+Am 28.10.2016 um 07:58 schrieb Heiner Kallweit:
+> Consider a message size limit when calculating the maximum amount
+> of data that can be read.
 > 
-> Cyrille,
+> The message size limit has been introduced with 4.9, so cc it
+> to stable.
 > 
-> On Mon, Oct 17, 2016 at 1:08 PM, Cyrille Pitchen
-> <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org <mailto:cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>> wrote:
+> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.9.x
+> ---
+> v2:
+> - This patch was part of a series and the other patches of the
+>   series went into 4.9. It's needed to correctly support
+>   reads > 64k on fsl-espi as first user of spi_max_message_size.
+>   See commit 02a595d5d6e4 ("spi: fsl-espi: eliminate spi nor
+>   flash read loop"). CC it to stable.  
+> ---
+>  drivers/mtd/devices/m25p80.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
->     Hi Kamal,
-> 
->     Le 12/09/2016 à 22:01, Kamal Dasu a écrit :
->     > Adding PM support so as to be able to probe spi-nor flash
->     > on resume. There are vendor specific commands to setup
->     > the transfer mode and enable read/write as part of
->     > spi_nor_scan(), done on initial probe and needed on resume().
->     > The spi-nor structure is private to the m25p driver and hence
->     > is the only place this can be done without having to duplicate
->     > code in controller driver.
-> 
->     Just to be sure I've understood the purpose of this patch: here we
->     suppose
->     that the SPI NOR memory power supply was cut when the CPU entered
->     its suspend
->     mode. So when the CPU is resumed, the SPI NOR memory power supply is
->     enabled
->     again as well and the internal state of the memory is reset.
-> 
-> 
-> Memory could be intact and in refresh state. But generally the spi nor
-> part might be powered down. 
-> 
-> 
->     Depending on the manufacturer, we may need to send dedicated
->     commands so the
->     memory is ready again (for instance, a Global Unlock Block command
->     for SST
->     memories so we can perform Sector Erase and Page Program operations).
->     Those commands are sent from spi_nor_scan(). Hence you call
->     spi_nor_scan()
->     once again from the resume callback.
-> 
-> 
-> Yes there are are chain of calls that setup the state of the part from
-> spi_nor_scan that are vendor specific based on the jdec id. So yes some
-> of the unlock commands need to be sent before we can start using the
-> part again.
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 9cf7fcd..16a7df2 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -172,7 +172,8 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
 >  
+>  	t[1].rx_buf = buf;
+>  	t[1].rx_nbits = m25p80_rx_nbits(nor);
+> -	t[1].len = min(len, spi_max_transfer_size(spi));
+> +	t[1].len = min3(len, spi_max_transfer_size(spi),
+> +			spi_max_message_size(spi) - t[0].len);
+>  	spi_message_add_tail(&t[1], &m);
+>  
+>  	ret = spi_sync(spi, &m);
 > 
->     If so, your patch does make sense but I wonder whether some
->     operations done
->     inside spi_nor_scan() and not related to the memory itself but more
->     to other
->     layers like mtd (struct mtd_info) could always be safely performed a
->     second
->     time. I don't know if that issue already exists or would ever exist,
->     if so
->     it might be interesting to find a mean to tell spi_nor_scan()
->     whether it's
->     called for the first time on this memory (boot) or not (resume).
-> 
-> 
-> I do see the mtd settings that could be done a second time but should
-> not cause any issues IMHO.  I don't see a need to distinguish between a
-> (re)boot or a resume  and complicate the code. Unless somebody can point
+This one is still open and there have been reports already from
+people facing this issue. Can we still get it into 4.10 +
+into 4.9 ?
 
-Cyrille, are you okay with Kamal's response? I just saw the 4.10 pull
-request pass by and since this patch was still in flight, it did not get
-included, can it be queued for 4.11 or is there something else to work on?
--- 
-Florian
+Thanks
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

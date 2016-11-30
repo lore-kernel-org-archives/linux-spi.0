@@ -1,52 +1,222 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [Patch V1 2/2] imx: spi: read lpspi tx/rx fifo size in probe()
-Date: Wed, 30 Nov 2016 17:55:44 +0000
-Message-ID: <20161130175544.rdsl3wahswxewvyb@sirena.org.uk>
-References: <1480302180-15550-1-git-send-email-pandy.gao@nxp.com>
- <1480302180-15550-2-git-send-email-pandy.gao@nxp.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ycy3f3vbfmkunok6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, frank.li-3arQi8VN3Tc@public.gmane.org, fugang.duan-3arQi8VN3Tc@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Subject: Applied "spi: fsl-espi: eliminate need for linearization when reading from hardware" to the spi tree
+Date: Wed, 30 Nov 2016 18:07:58 +0000
+Message-ID: <E1cC9IU-0008OK-EV@debutante>
+References: <80a5a858-dc54-ea9d-3c6e-34fdedc516d7@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1480302180-15550-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <80a5a858-dc54-ea9d-3c6e-34fdedc516d7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---ycy3f3vbfmkunok6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: fsl-espi: eliminate need for linearization when reading from hardware
 
-On Mon, Nov 28, 2016 at 11:03:00AM +0800, Gao Pan wrote:
-> The lpspi tx/rx fifo size is a read only parameter resides
-> lpspi Parameter Register. It's better to read lpspi tx/rx
-> fifo size in probe().
+has been applied to the spi tree at
 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please submit patches using subject lines reflecting the style for the
-subsystem.  This makes it easier for people to identify relevant
-patches.  Look at what existing commits in the area you're changing are
-doing and make sure your subject lines visually resemble what they're
-doing.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---ycy3f3vbfmkunok6
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAABCAAGBQJYPxKfAAoJECTWi3JdVIfQjU8H/0/R7Ar2zUQue4mcMA0UGQC2
-445+ioD3DkD9V9QKRz3xaViX6R+wa7e1ev2EFfOXeje0qQOzXtvO6IXJpK4HaXBM
-PM7ElU8WHi02gqxB94Da9PYTnwD4Y8wG1r5EIshUjQ3GLB7XLlw6v4XTse+OxCrg
-3LfDfbzs4vhn9PtuZZucEr6cnQnR82YK1Ilp1NIJMHFf7dXsvuaY7uzF0XMaPbw9
-svpjuK4CnXKoCty0D8xIFn2SrdPzVTg7KQg7CsVh2sQah7HBTEbOvcxTNzILFbDv
-c3mWPTA474jInEdR8uYHSalS7P614fx0HyhD+XQHGtfxBZzBTiq0EsfV/qss/rI=
-=zG4S
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---ycy3f3vbfmkunok6--
+Thanks,
+Mark
+
+>From dcb425f3ba6ebee4269f68461420246ba9d4ec02 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 25 Nov 2016 23:59:57 +0100
+Subject: [PATCH] spi: fsl-espi: eliminate need for linearization when reading
+ from hardware
+
+Eliminate need for linearization when reading from the hardware and
+write to the transfer buffers directly.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 77 +++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 63 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 189ab36b787f..e93892dca90a 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -102,6 +102,9 @@ struct fsl_espi {
+ 	struct spi_transfer *tx_t;
+ 	unsigned int tx_pos;
+ 	bool tx_done;
++	struct spi_transfer *rx_t;
++	unsigned int rx_pos;
++	bool rx_done;
+ 
+ 	bool swab;
+ 	unsigned int rx_len;
+@@ -125,6 +128,11 @@ static inline u32 fsl_espi_read_reg(struct fsl_espi *espi, int offset)
+ 	return ioread32be(espi->reg_base + offset);
+ }
+ 
++static inline u16 fsl_espi_read_reg16(struct fsl_espi *espi, int offset)
++{
++	return ioread16(espi->reg_base + offset);
++}
++
+ static inline u8 fsl_espi_read_reg8(struct fsl_espi *espi, int offset)
+ {
+ 	return ioread8(espi->reg_base + offset);
+@@ -328,19 +336,53 @@ static void fsl_espi_fill_tx_fifo(struct fsl_espi *espi, u32 events)
+ static void fsl_espi_read_rx_fifo(struct fsl_espi *espi, u32 events)
+ {
+ 	u32 rx_fifo_avail = SPIE_RXCNT(events);
++	unsigned int rx_left;
++	void *rx_buf;
+ 
+-	while (rx_fifo_avail >= min(4U, espi->rx_len) && espi->rx_len)
+-		if (espi->rx_len >= 4) {
+-			*(u32 *)espi->rx = fsl_espi_read_reg(espi, ESPI_SPIRF);
+-			espi->rx += 4;
+-			espi->rx_len -= 4;
++start:
++	rx_left = espi->rx_t->len - espi->rx_pos;
++	rx_buf = espi->rx_t->rx_buf;
++	while (rx_fifo_avail >= min(4U, rx_left) && rx_left) {
++		if (rx_left >= 4) {
++			u32 val = fsl_espi_read_reg(espi, ESPI_SPIRF);
++
++			if (rx_buf && espi->swab)
++				*(u32 *)(rx_buf + espi->rx_pos) = swahb32(val);
++			else if (rx_buf)
++				*(u32 *)(rx_buf + espi->rx_pos) = val;
++			espi->rx_pos += 4;
++			rx_left -= 4;
+ 			rx_fifo_avail -= 4;
++		} else if (rx_left >= 2 && rx_buf && espi->swab) {
++			u16 val = fsl_espi_read_reg16(espi, ESPI_SPIRF);
++
++			*(u16 *)(rx_buf + espi->rx_pos) = swab16(val);
++			espi->rx_pos += 2;
++			rx_left -= 2;
++			rx_fifo_avail -= 2;
+ 		} else {
+-			*(u8 *)espi->rx = fsl_espi_read_reg8(espi, ESPI_SPIRF);
+-			espi->rx += 1;
+-			espi->rx_len -= 1;
++			u8 val = fsl_espi_read_reg8(espi, ESPI_SPIRF);
++
++			if (rx_buf)
++				*(u8 *)(rx_buf + espi->rx_pos) = val;
++			espi->rx_pos += 1;
++			rx_left -= 1;
+ 			rx_fifo_avail -= 1;
+ 		}
++	}
++
++	if (!rx_left) {
++		if (list_is_last(&espi->rx_t->transfer_list,
++		    espi->m_transfers)) {
++			espi->rx_done = true;
++			return;
++		}
++		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
++		espi->rx_pos = 0;
++		/* continue with next transfer if rx fifo is not empty */
++		if (rx_fifo_avail)
++			goto start;
++	}
+ }
+ 
+ static void fsl_espi_setup_transfer(struct spi_device *spi,
+@@ -375,6 +417,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct fsl_espi *espi = spi_master_get_devdata(spi->master);
++	unsigned int rx_len = t->len;
+ 	u32 mask, spcom;
+ 	int ret;
+ 
+@@ -395,6 +438,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		spcom |= SPCOM_RXSKIP(espi->rxskip);
+ 		espi->tx_len = espi->rxskip;
+ 		espi->rx_len = t->len - espi->rxskip;
++		rx_len = t->len - espi->rxskip;
+ 		espi->rx = t->rx_buf + espi->rxskip;
+ 		if (t->rx_nbits == SPI_NBITS_DUAL)
+ 			spcom |= SPCOM_DO;
+@@ -404,7 +448,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 	/* enable interrupts */
+ 	mask = SPIM_DON;
+-	if (espi->rx_len > FSL_ESPI_FIFO_SIZE)
++	if (rx_len > FSL_ESPI_FIFO_SIZE)
+ 		mask |= SPIM_RXT;
+ 	fsl_espi_write_reg(espi, ESPI_SPIM, mask);
+ 
+@@ -438,6 +482,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 				      transfer_list);
+ 	espi->tx_pos = 0;
+ 	espi->tx_done = false;
++	espi->rx_t = list_first_entry(&m->transfers, struct spi_transfer,
++				      transfer_list);
++	espi->rx_pos = 0;
++	espi->rx_done = false;
+ 
+ 	espi->rxskip = fsl_espi_check_rxskip_mode(m);
+ 	if (trans->rx_nbits == SPI_NBITS_DUAL && !espi->rxskip) {
+@@ -445,6 +493,10 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 		return -EINVAL;
+ 	}
+ 
++	/* In RXSKIP mode skip first transfer for reads */
++	if (espi->rxskip)
++		espi->rx_t = list_next_entry(espi->rx_t, transfer_list);
++
+ 	fsl_espi_copy_to_buf(m, espi);
+ 	fsl_espi_setup_transfer(spi, trans);
+ 
+@@ -453,9 +505,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
+ 
+-	if (!ret)
+-		fsl_espi_copy_from_buf(m, espi);
+-
+ 	return ret;
+ }
+ 
+@@ -556,13 +605,13 @@ static void fsl_espi_cleanup(struct spi_device *spi)
+ 
+ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
+ {
+-	if (espi->rx_len)
++	if (!espi->rx_done)
+ 		fsl_espi_read_rx_fifo(espi, events);
+ 
+ 	if (!espi->tx_done)
+ 		fsl_espi_fill_tx_fifo(espi, events);
+ 
+-	if (!espi->tx_done || espi->rx_len)
++	if (!espi->tx_done || !espi->rx_done)
+ 		return;
+ 
+ 	/* we're done, but check for errors before returning */
+-- 
+2.10.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

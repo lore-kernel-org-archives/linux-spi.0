@@ -1,8 +1,9 @@
 From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 0/5] Add support for the Armada 3700 SPI controller
-Date: Wed, 30 Nov 2016 15:30:35 +0100
-Message-ID: <87bmwxm450.fsf@free-electrons.com>
+Subject: Re: [PATCH v2 4/5] arm64: dts: marvell: Add definition of SPI controller for Armada 3700
+Date: Wed, 30 Nov 2016 15:55:29 +0100
+Message-ID: <877f7lm2zi.fsf@free-electrons.com>
 References: <20161130094351.2748-1-romain.perier@free-electrons.com>
+        <20161130094351.2748-5-romain.perier@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -19,57 +20,65 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79u
         Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
         dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
 To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161130094351.2748-1-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> (Romain
-        Perier's message of "Wed, 30 Nov 2016 10:43:46 +0100")
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161130094351.2748-5-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> (Romain
+        Perier's message of "Wed, 30 Nov 2016 10:43:50 +0100")
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 Hi Romain,
  
  On mer., nov. 30 2016, Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
 
-> The Marvell Armada 3700 SoC includes an SPI controller. This controller
-> supports up to 4 SPI slave devices, with dedicated chip selects, CPIO or
-> FIFO mode with DMA or CPU transfers and different SPI transfer modes
-> (Standard single, Dual or Quad).
+> Armada 3700 SoC has an SPI Controller, this commit adds the definition
+> of the SPI device node at the SoC level.
 >
-> This set of patches adds a basic support for the CPIO mode, then it
-> enables the FIFO mode (CPU-side only, DMA not supported yet). It also
-> adds the required definitions of the spi nodes to the devicetree.
+> Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> ---
 >
+> Changes in v2:
+>  - Removed properties max-frequency and clock-frequency, it is no
+>    longer required and not used by the DT-bindings.
+>
+>  arch/arm64/boot/dts/marvell/armada-37xx.dtsi | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
+> index e9bd587..63c2002 100644
+> --- a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
+> +++ b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
+> @@ -98,6 +98,17 @@
+>  			/* 32M internal register @ 0xd000_0000 */
+>  			ranges = <0x0 0x0 0xd0000000 0x2000000>;
+>  
+> +			spi0: spi@10600 {
+> +				compatible = "marvell,armada-3700-spi";
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <0x10600 0x5d>;
 
-I tested the series on the Rev 1.1 and the Rev 2.0 Armada 3720 Db board
-and it works on both of them: I managed at leat to read the spi
-dataflash.
+The last register is at the offset 0x1065C but according tot he
+datasheet the range address associated to this IP is from 0x10600 to
+0x10FFF.
 
-So for the series you can add my
-
-Tested-by: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In the first case the size of the register set should be 0x60 (each
+register is 32-bits). But I prefer that we register the full range so a
+size of 0xA00.
 
 Thanks,
 
 Gregory
 
 
-
-> Romain Perier (5):
->   spi: Add basic support for Armada 3700 SPI Controller
->   spi: armada-3700: Add support for the FIFO mode
->   dt-bindings: spi: Add documentation for the Armada 3700 SPI Controller
->   arm64: dts: marvell: Add definition of SPI controller for Armada 3700
->   arm64: dts: marvell: Enable spi0 on the board Armada-3720-db
->
->  .../devicetree/bindings/spi/spi-armada-3700.txt    |   25 +
->  arch/arm64/boot/dts/marvell/armada-3720-db.dts     |   30 +
->  arch/arm64/boot/dts/marvell/armada-37xx.dtsi       |   13 +
->  drivers/spi/Kconfig                                |    7 +
->  drivers/spi/Makefile                               |    1 +
->  drivers/spi/spi-armada-3700.c                      | 1040 ++++++++++++++++++++
->  6 files changed, 1116 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-armada-3700.txt
->  create mode 100644 drivers/spi/spi-armada-3700.c
->
+> +				clocks = <&nb_periph_clk 7>;
+> +				interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
+> +				num-cs = <4>;
+> +				status = "disabled";
+> +			};
+> +
+>  			uart0: serial@12000 {
+>  				compatible = "marvell,armada-3700-uart";
+>  				reg = <0x12000 0x400>;
 > -- 
 > 2.9.3
 >
@@ -80,6 +89,6 @@ Kernel, drivers, real-time and embedded Linux
 development, consulting, training and support.
 http://free-electrons.com
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

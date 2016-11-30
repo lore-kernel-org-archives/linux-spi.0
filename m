@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: determine need for byte swap only once" to the spi tree
-Date: Wed, 30 Nov 2016 18:08:04 +0000
-Message-ID: <E1cC9Ia-0008Po-FH@debutante>
-References: <bfa9887d-ed21-6d89-7e7b-d65c67571d85@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: fsl-lpspi: read lpspi tx/rx fifo size in probe()" to the spi tree
+Date: Wed, 30 Nov 2016 18:08:07 +0000
+Message-ID: <E1cC9Id-0008Qe-EJ@debutante>
+References: <1480302180-15550-2-git-send-email-pandy.gao@nxp.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org, frank.li-3arQi8VN3Tc@public.gmane.org,
+        fugang.duan-3arQi8VN3Tc@public.gmane.org
+To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <bfa9887d-ed21-6d89-7e7b-d65c67571d85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1480302180-15550-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: determine need for byte swap only once
+   spi: fsl-lpspi: read lpspi tx/rx fifo size in probe()
 
 has been applied to the spi tree at
 
@@ -38,59 +39,69 @@ to this mail.
 Thanks,
 Mark
 
->From e1cdee73dfcac393768117511e52a6142587dacf Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Fri, 25 Nov 2016 23:58:49 +0100
-Subject: [PATCH] spi: fsl-espi: determine need for byte swap only once
+>From b88a0deaaf97e394aa63818486b16dbc37273d6d Mon Sep 17 00:00:00 2001
+From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Date: Mon, 28 Nov 2016 11:03:00 +0800
+Subject: [PATCH] spi: fsl-lpspi: read lpspi tx/rx fifo size in probe()
 
-Determine need for byte swap only once and store it in new member
-swab in struct fsl_espi.
+The lpspi tx/rx fifo size is a read only parameter resides
+lpspi Parameter Register. It's better to read lpspi tx/rx
+fifo size in probe().
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4fbcc36fa891..4222578a4dd4 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -98,6 +98,7 @@ struct fsl_espi {
- 	const void *tx;
- 	void *rx;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 47a97add0639..71eca6e3fe32 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -236,15 +236,9 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi,
  
-+	bool swab;
- 	unsigned int rx_len;
- 	unsigned int tx_len;
- 	unsigned int rxskip;
-@@ -140,14 +141,14 @@ static void fsl_espi_memcpy_swab(void *to, const void *from,
- 				 struct spi_message *m,
- 				 struct spi_transfer *t)
+ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
  {
-+	struct fsl_espi *espi = spi_master_get_devdata(m->spi->master);
- 	unsigned int len = t->len;
+-	u8 txwatermark, rxwatermark;
+ 	u32 temp;
  
--	if (!(m->spi->mode & SPI_LSB_FIRST) || t->bits_per_word <= 8) {
-+	if (!espi->swab) {
- 		memcpy(to, from, len);
- 		return;
+-	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+-	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
+-	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
+-	rxwatermark = fsl_lpspi->txfifosize >> 1;
+-	txwatermark = fsl_lpspi->rxfifosize >> 1;
+-	temp = txwatermark | rxwatermark << 16;
++	temp = fsl_lpspi->txfifosize >> 1 | (fsl_lpspi->rxfifosize >> 1) << 16;
+ 
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
+ 
+@@ -427,6 +421,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct resource *res;
+ 	int ret, irq;
++	u32 temp;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_lpspi_data));
+ 	if (!master)
+@@ -476,6 +471,18 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		goto out_master_put;
  	}
  
--	/* In case of LSB-first and bits_per_word > 8 byte-swap all words */
- 	while (len)
- 		if (len >= 4) {
- 			*(u32 *)to = swahb32p(from);
-@@ -384,6 +385,9 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	struct spi_device *spi = m->spi;
- 	int ret;
- 
-+	/* In case of LSB-first and bits_per_word > 8 byte-swap all words */
-+	espi->swab = spi->mode & SPI_LSB_FIRST && trans->bits_per_word > 8;
++	ret = clk_prepare_enable(fsl_lpspi->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "can't enable lpspi clock, ret=%d\n", ret);
++		goto out_master_put;
++	}
 +
- 	espi->rxskip = fsl_espi_check_rxskip_mode(m);
- 	if (trans->rx_nbits == SPI_NBITS_DUAL && !espi->rxskip) {
- 		dev_err(espi->dev, "Dual output mode requires RXSKIP mode!\n");
++	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
++	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
++	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
++
++	clk_disable_unprepare(fsl_lpspi->clk);
++
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_master error.\n");
 -- 
 2.10.2
 

@@ -1,743 +1,138 @@
-From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v3 1/5] spi: Add basic support for Armada 3700 SPI Controller
-Date: Thu,  1 Dec 2016 11:27:15 +0100
-Message-ID: <20161201102719.4291-2-romain.perier@free-electrons.com>
-References: <20161201102719.4291-1-romain.perier@free-electrons.com>
-Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-        Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161201102719.4291-1-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v6, 5/8] mtd: m25p80: Let m25p80_read() fallback to spi
+ transfer
+Date: Thu, 1 Dec 2016 16:45:01 +0100
+Message-ID: <3260e7e5-fcf1-599a-e7b4-fd7aaef5be2e@gmail.com>
+References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
+ <1472076269-4731-6-git-send-email-kdasu.kdev@gmail.com>
+ <4b3b3d3e-b3f8-1d5b-65e3-0c37b6a29096@gmail.com>
+ <8309370e-f99f-ed51-4789-c1d97d9d8191@atmel.com>
+ <CAKekbesq1deU_0TCV4STAi=o8jZwoc_u+9zkdZuEhmd+BGwU2A@mail.gmail.com>
+ <ae2c984e-2bcf-380e-a257-dbe786973af1@atmel.com>
+ <7697b2fa-4660-c791-e891-a22c8bc5390f@gmail.com>
+ <a0179d25-71a5-b47f-4272-49aa2a346b54@atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: vigneshr-l0cyMroinI0@public.gmane.org, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Yendapally Reddy Dhananjaya Reddy
+        <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+        Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <a0179d25-71a5-b47f-4272-49aa2a346b54-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Marvell Armada 3700 SoC comprises an SPI Controller. This Controller
-supports up to 4 SPI slave devices, with dedicated chip selects, supports
-SPI mode 0/1/2 and 3, CPIO or Fifo mode with DMA transfers and different
-SPI transfer mode (Single, Dual or Quad).
+On 11/29/2016 03:06 PM, Cyrille Pitchen wrote:
+> Hi all,
+> 
+> +Marek
+> 
+> Le 29/11/2016 à 02:32, Florian Fainelli a écrit :
+>> On 10/14/2016 06:17 AM, Cyrille Pitchen wrote:
+>>> Le 13/10/2016 à 23:15, Kamal Dasu a écrit :
+>>>> On Mon, Oct 10, 2016 at 4:29 AM, Cyrille Pitchen
+>>>> <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+>>>>> Hi all,
+>>>>>
+>>>>>
+>>>>> Le 10/10/2016 à 10:04, Florian Fainelli a écrit :
+>>>>>> On 08/24/2016 03:04 PM, Kamal Dasu wrote:
+>>>>>>> In m25p80_read() even though spi_flash_read() is supported
+>>>>>>> by some drivers, under certain circumstances like unaligned
+>>>>>>> buffer, address or address range limitations on certain SoCs
+>>>>>>> let it fallback to core spi reads. Such drivers are expected
+>>>>>>> to return -EAGAIN so that the m25p80_read() uses standard
+>>>>>>> spi transfer.
+>>>>>>>
+>>>>>>> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>>>>>
+>>>>>> MTD folks, any comments on this?
+>>>>>>
+>>>>>>> ---
+>>>>>>>  drivers/mtd/devices/m25p80.c | 11 +++++++++--
+>>>>>>>  1 file changed, 9 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+>>>>>>> index 9cf7fcd..77c2d2c 100644
+>>>>>>> --- a/drivers/mtd/devices/m25p80.c
+>>>>>>> +++ b/drivers/mtd/devices/m25p80.c
+>>>>>>> @@ -155,9 +155,16 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+>>>>>>>              msg.data_nbits = m25p80_rx_nbits(nor);
+>>>>>>>
+>>>>>>>              ret = spi_flash_read(spi, &msg);
+>>>>>>> -            if (ret < 0)
+>>>>>>> +
+>>>>>>> +            if (ret >= 0)
+>>>>>>> +                    return msg.retlen;
+>>>>>>> +
+>>>>>>> +            /*
+>>>>>>> +             * some spi master drivers might need to fallback to
+>>>>>>> +             * normal spi transfer
+>>>>>>> +             */
+>>>>>>> +            if (ret != -EAGAIN)
+>>>>> I just wonder whether EINVAL would be a better choice.
+>>>>
+>>>>  spi_flash_read calls the down stream controller driver with all
+>>>> params addresses however  accelerated transfer is not possible by the
+>>>> controller due to alignment issues, it needs to indicate to m25p call
+>>>> to try the normal transfer, hence use of EAGAIN seemed appropriate.
+>>>>
+>>>>
+>>>
+>>> Yes, I think I've understood the purpose of this patch. In the example you
+>>> gave, the actual implementation of spi_flash_read() works fine with aligned
+>>> addresses but doesn't support unaligned addresses. Hence, such unaligned
+>>> addresses are invalid argument for spi_flash_read() and we should fall back
+>>> to the legacy implementation of m25p80_read().
+>>>
+>>> My point is just that EINVAL clearly tells that the SPI controller driver
+>>> implementation of spi_flash_read() doesn't support the given input
+>>> parameters, here an unaligned address, whereas EAGAIN suggests that some
+>>> hardware resource is temporarily unavailable and we could call spi_flash_read()
+>>> again later. However, in this case, spi_flash_read() would still fail even if
+>>> called later.
+>>>
+>>> That's why I've suggested EINVAL might have been a better choice than EAGAIN,
+>>> but honestly it's not a big deal, only a detail. So if most people prefer to
+>>> keep EAGAIN, I'm perfectly fine with it! :)
+>>>
+>>> I don't want my comment to delay the integration of this patch.
+>>
+>> So what are we going to do now, should Kamal resubmit and
+>> s/EGAIN/EINVAL/ or is EAGAIN good enough? If EINVAL needs to be used,
+>> which I agree with you seems like a valid error code to return, this
+>> does imply changing the Broadcom QSPI driver though... so we have to
+>> coordinate the two changes to be merged through the same cycle to avoid
+>> regressions.
+>>
+> 
+> Please replace the EAGAIN error code by EINVAL then I agree to merge this
+> patch in the github spi-nor tree.
+> 
+> I know the EAGAIN error code has already been introduced in spi-bcm-qspi.c
+> through the spi tree but since currently m25p280.c handles neither EAGAIN
+> nor EINVAL as the returned code of spi_flash_read(), I guess no regression
+> will be introduced. The feature will work as expected once both the m25p80.c
+> and spi-bcm-qspi.c use the very same error code.
+> 
+> Marek, any comment?
 
-This commit adds basic driver support for CPIO mode and single SPI
-transfer. In this mode, the CPU asserts cs, outputs or inputs data from
-the current SPI device. Data transfers are copied by 1 or 4 bytes using
-the SPI registers.
+I'm fine with this patch, but a patch for the broadcom controller would
+be great.
 
-Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Tested-by: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
-
-Changes in v3:
- - Fixed wrong variable passed as MODULE_DEVICE_TABLE
- - Added missing null terminated entry in a3700_spi_dt_ids
- - Added the tag "Tested-by" by Gregory
-
- drivers/spi/Kconfig           |   7 +
- drivers/spi/Makefile          |   1 +
- drivers/spi/spi-armada-3700.c | 652 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 660 insertions(+)
- create mode 100644 drivers/spi/spi-armada-3700.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index b799547..6ade1ca 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -67,6 +67,13 @@ config SPI_ATH79
- 	  This enables support for the SPI controller present on the
- 	  Atheros AR71XX/AR724X/AR913X SoCs.
- 
-+config SPI_ARMADA_3700
-+	tristate "Marvell Armada 3700 SPI Controller"
-+	depends on ARCH_MVEBU && OF
-+	help
-+	  This enables support for the SPI controller present on the
-+	  Marvell Armada 3700 SoCs.
-+
- config SPI_ATMEL
- 	tristate "Atmel SPI Controller"
- 	depends on HAS_DMA
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index aa939d9..140ca45 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_SPI_LOOPBACK_TEST)		+= spi-loopback-test.o
- 
- # SPI master controller drivers (bus)
- obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
-+obj-$(CONFIG_SPI_ARMADA_3700)		+= spi-armada-3700.o
- obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
- obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-new file mode 100644
-index 0000000..4115685
---- /dev/null
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -0,0 +1,652 @@
-+/*
-+ * Marvell Armada-3700 SPI controller driver
-+ *
-+ * Copyright (C) 2016 Marvell Ltd.
-+ *
-+ * Author: Wilson Ding <dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-+ * Author: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_irq.h>
-+#include <linux/of_device.h>
-+#include <linux/pinctrl/consumer.h>
-+#include <linux/spi/spi.h>
-+
-+#define DRIVER_NAME			"armada_3700_spi"
-+
-+#define A3700_SPI_TIMEOUT		10
-+
-+/* SPI Register Offest */
-+#define A3700_SPI_IF_CTRL_REG		0x00
-+#define A3700_SPI_IF_CFG_REG		0x04
-+#define A3700_SPI_DATA_OUT_REG		0x08
-+#define A3700_SPI_DATA_IN_REG		0x0C
-+#define A3700_SPI_IF_INST_REG		0x10
-+#define A3700_SPI_IF_ADDR_REG		0x14
-+#define A3700_SPI_IF_RMODE_REG		0x18
-+#define A3700_SPI_IF_HDR_CNT_REG	0x1C
-+#define A3700_SPI_IF_DIN_CNT_REG	0x20
-+#define A3700_SPI_IF_TIME_REG		0x24
-+#define A3700_SPI_INT_STAT_REG		0x28
-+#define A3700_SPI_INT_MASK_REG		0x2C
-+
-+/* A3700_SPI_IF_CTRL_REG */
-+#define A3700_SPI_EN			BIT(16)
-+#define A3700_SPI_ADDR_NOT_CONFIG	BIT(12)
-+#define A3700_SPI_WFIFO_OVERFLOW	BIT(11)
-+#define A3700_SPI_WFIFO_UNDERFLOW	BIT(10)
-+#define A3700_SPI_RFIFO_OVERFLOW	BIT(9)
-+#define A3700_SPI_RFIFO_UNDERFLOW	BIT(8)
-+#define A3700_SPI_WFIFO_FULL		BIT(7)
-+#define A3700_SPI_WFIFO_EMPTY		BIT(6)
-+#define A3700_SPI_RFIFO_FULL		BIT(5)
-+#define A3700_SPI_RFIFO_EMPTY		BIT(4)
-+#define A3700_SPI_WFIFO_RDY		BIT(3)
-+#define A3700_SPI_RFIFO_RDY		BIT(2)
-+#define A3700_SPI_XFER_RDY		BIT(1)
-+#define A3700_SPI_XFER_DONE		BIT(0)
-+
-+/* A3700_SPI_IF_CFG_REG */
-+#define A3700_SPI_WFIFO_THRS		BIT(28)
-+#define A3700_SPI_RFIFO_THRS		BIT(24)
-+#define A3700_SPI_AUTO_CS		BIT(20)
-+#define A3700_SPI_DMA_RD_EN		BIT(18)
-+#define A3700_SPI_FIFO_MODE		BIT(17)
-+#define A3700_SPI_SRST			BIT(16)
-+#define A3700_SPI_XFER_START		BIT(15)
-+#define A3700_SPI_XFER_STOP		BIT(14)
-+#define A3700_SPI_INST_PIN		BIT(13)
-+#define A3700_SPI_ADDR_PIN		BIT(12)
-+#define A3700_SPI_DATA_PIN1		BIT(11)
-+#define A3700_SPI_DATA_PIN0		BIT(10)
-+#define A3700_SPI_FIFO_FLUSH		BIT(9)
-+#define A3700_SPI_RW_EN			BIT(8)
-+#define A3700_SPI_CLK_POL		BIT(7)
-+#define A3700_SPI_CLK_PHA		BIT(6)
-+#define A3700_SPI_BYTE_LEN		BIT(5)
-+#define A3700_SPI_CLK_PRESCALE		BIT(0)
-+#define A3700_SPI_CLK_PRESCALE_MASK	(0x1f)
-+
-+#define A3700_SPI_WFIFO_THRS_BIT	28
-+#define A3700_SPI_RFIFO_THRS_BIT	24
-+#define A3700_SPI_FIFO_THRS_MASK	0x7
-+
-+#define A3700_SPI_DATA_PIN_MASK		0x3
-+
-+/* A3700_SPI_IF_HDR_CNT_REG */
-+#define A3700_SPI_DUMMY_CNT_BIT		12
-+#define A3700_SPI_DUMMY_CNT_MASK	0x7
-+#define A3700_SPI_RMODE_CNT_BIT		8
-+#define A3700_SPI_RMODE_CNT_MASK	0x3
-+#define A3700_SPI_ADDR_CNT_BIT		4
-+#define A3700_SPI_ADDR_CNT_MASK		0x7
-+#define A3700_SPI_INSTR_CNT_BIT		0
-+#define A3700_SPI_INSTR_CNT_MASK	0x3
-+
-+/* A3700_SPI_IF_TIME_REG */
-+#define A3700_SPI_CLK_CAPT_EDGE		BIT(7)
-+
-+struct a3700_spi {
-+	struct spi_master *master;
-+	void __iomem *base;
-+	struct clk *clk;
-+	unsigned int irq;
-+	unsigned int flags;
-+	bool last_xfer;
-+	const u8 *tx_buf;
-+	u8 *rx_buf;
-+	size_t buf_len;
-+	u8 byte_len;
-+	u32 wait_mask;
-+	struct completion done;
-+};
-+
-+static u32 spireg_read(struct a3700_spi *a3700_spi, u32 offset)
-+{
-+	return readl(a3700_spi->base + offset);
-+}
-+
-+static void spireg_write(struct a3700_spi *a3700_spi, u32 offset, u32 data)
-+{
-+	writel(data, a3700_spi->base + offset);
-+}
-+
-+static void a3700_spi_auto_cs_unset(struct a3700_spi *a3700_spi)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val &= ~A3700_SPI_AUTO_CS;
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+}
-+
-+static void a3700_spi_activate_cs(struct a3700_spi *a3700_spi, unsigned int cs)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG);
-+	val |= (A3700_SPI_EN << cs);
-+	spireg_write(a3700_spi, A3700_SPI_IF_CTRL_REG, val);
-+}
-+
-+static void a3700_spi_deactivate_cs(struct a3700_spi *a3700_spi,
-+				    unsigned int cs)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG);
-+	val &= ~(A3700_SPI_EN << cs);
-+	spireg_write(a3700_spi, A3700_SPI_IF_CTRL_REG, val);
-+}
-+
-+static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
-+				  unsigned int pin_mode)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val &= ~(A3700_SPI_INST_PIN | A3700_SPI_ADDR_PIN);
-+	val &= ~(A3700_SPI_DATA_PIN0 | A3700_SPI_DATA_PIN1);
-+
-+	switch (pin_mode) {
-+	case 1:
-+		break;
-+	case 2:
-+		val |= A3700_SPI_DATA_PIN0;
-+		break;
-+	case 4:
-+		val |= A3700_SPI_DATA_PIN1;
-+		break;
-+	default:
-+		dev_err(&a3700_spi->master->dev, "wrong pin mode %u", pin_mode);
-+		return -EINVAL;
-+	}
-+
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+
-+	return 0;
-+}
-+
-+static void a3700_spi_fifo_mode_unset(struct a3700_spi *a3700_spi)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val &= ~A3700_SPI_FIFO_MODE;
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+}
-+
-+static void a3700_spi_mode_set(struct a3700_spi *a3700_spi,
-+			       unsigned int mode_bits)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+
-+	if (mode_bits & SPI_CPOL)
-+		val |= A3700_SPI_CLK_POL;
-+	else
-+		val &= ~A3700_SPI_CLK_POL;
-+
-+	if (mode_bits & SPI_CPHA)
-+		val |= A3700_SPI_CLK_PHA;
-+	else
-+		val &= ~A3700_SPI_CLK_PHA;
-+
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+}
-+
-+static void a3700_spi_clock_set(struct a3700_spi *a3700_spi,
-+				unsigned int speed_hz, u16 mode)
-+{
-+	u32 val;
-+	u32 prescale;
-+
-+	prescale = DIV_ROUND_UP(clk_get_rate(a3700_spi->clk), speed_hz);
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val = val & ~A3700_SPI_CLK_PRESCALE_MASK;
-+
-+	val = val | (prescale & A3700_SPI_CLK_PRESCALE_MASK);
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+
-+	if (prescale <= 2) {
-+		val = spireg_read(a3700_spi, A3700_SPI_IF_TIME_REG);
-+		val |= A3700_SPI_CLK_CAPT_EDGE;
-+		spireg_write(a3700_spi, A3700_SPI_IF_TIME_REG, val);
-+	}
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val &= ~(A3700_SPI_CLK_POL | A3700_SPI_CLK_PHA);
-+
-+	if (mode & SPI_CPOL)
-+		val |= A3700_SPI_CLK_POL;
-+
-+	if (mode & SPI_CPHA)
-+		val |= A3700_SPI_CLK_PHA;
-+
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+}
-+
-+static void a3700_spi_bytelen_set(struct a3700_spi *a3700_spi, unsigned int len)
-+{
-+	u32 val;
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	if (len == 4)
-+		val |= A3700_SPI_BYTE_LEN;
-+	else
-+		val &= ~A3700_SPI_BYTE_LEN;
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+
-+	a3700_spi->byte_len = len;
-+}
-+
-+static int a3700_spi_init(struct a3700_spi *a3700_spi)
-+{
-+	struct spi_master *master = a3700_spi->master;
-+	u32 val;
-+	int i;
-+
-+	/* Reset SPI unit */
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val |= A3700_SPI_SRST;
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+
-+	for (i = 0; i < A3700_SPI_TIMEOUT; i++)
-+		udelay(1);
-+
-+	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-+	val &= ~A3700_SPI_SRST;
-+	spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-+
-+	/* Disable AUTO_CS and deactivate all chip-selects */
-+	a3700_spi_auto_cs_unset(a3700_spi);
-+	for (i = 0; i < master->num_chipselect; i++)
-+		a3700_spi_deactivate_cs(a3700_spi, i);
-+
-+	a3700_spi_pin_mode_set(a3700_spi, 0);
-+
-+	/* Be sure that FIFO mode is disabled */
-+	a3700_spi_fifo_mode_unset(a3700_spi);
-+
-+	/* Set SPI mode */
-+	a3700_spi_mode_set(a3700_spi, master->mode_bits);
-+
-+	/* Reset counters */
-+	spireg_write(a3700_spi, A3700_SPI_IF_HDR_CNT_REG, 0);
-+	spireg_write(a3700_spi, A3700_SPI_IF_DIN_CNT_REG, 0);
-+
-+	/* Mask the interrupts and clear cause bits */
-+	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
-+	spireg_write(a3700_spi, A3700_SPI_INT_STAT_REG, ~0U);
-+
-+	return 0;
-+}
-+
-+static irqreturn_t a3700_spi_interrupt(int irq, void *dev_id)
-+{
-+	struct spi_master *master = dev_id;
-+	struct a3700_spi *a3700_spi;
-+	u32 cause;
-+
-+	a3700_spi = spi_master_get_devdata(master);
-+
-+	/* Get interrupt causes */
-+	cause = spireg_read(a3700_spi, A3700_SPI_INT_STAT_REG);
-+
-+	/* mask and acknowledge the SPI interrupts */
-+	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
-+	spireg_write(a3700_spi, A3700_SPI_INT_STAT_REG, cause);
-+
-+	/* Wake up the transfer */
-+	if (a3700_spi->wait_mask & cause)
-+		complete(&a3700_spi->done);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static bool a3700_spi_wait_completion(struct spi_device *spi)
-+{
-+	struct a3700_spi *a3700_spi;
-+	unsigned int timeout;
-+	unsigned int ctrl_reg;
-+	unsigned long timeout_jiffies;
-+
-+	a3700_spi = spi_master_get_devdata(spi->master);
-+
-+	/* SPI interrupt is edge-triggered, which means an interrupt will
-+	 * be generated only when detecting a specific status bit changed
-+	 * from '0' to '1'. So when we start waiting for a interrupt, we
-+	 * need to check status bit in control reg first, if it is already 1,
-+	 * then we do not need to wait for interrupt
-+	 */
-+	ctrl_reg = spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG);
-+	if (a3700_spi->wait_mask & ctrl_reg)
-+		return true;
-+
-+	reinit_completion(&a3700_spi->done);
-+
-+	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG,
-+		     a3700_spi->wait_mask);
-+
-+	timeout_jiffies = msecs_to_jiffies(A3700_SPI_TIMEOUT);
-+	timeout = wait_for_completion_timeout(&a3700_spi->done,
-+					      timeout_jiffies);
-+
-+	a3700_spi->wait_mask = 0;
-+
-+	if (timeout)
-+		return true;
-+
-+	/* there might be the case that right after we checked the
-+	 * status bits in this routine and before start to wait for
-+	 * interrupt by wait_for_completion_timeout, the interrupt
-+	 * happens, to avoid missing it we need to double check
-+	 * status bits in control reg, if it is already 1, then
-+	 * consider that we have the interrupt successfully and
-+	 * return true.
-+	 */
-+	ctrl_reg = spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG);
-+	if (a3700_spi->wait_mask & ctrl_reg)
-+		return true;
-+
-+	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
-+
-+	return true;
-+}
-+
-+static bool a3700_spi_transfer_wait(struct spi_device *spi,
-+				    unsigned int bit_mask)
-+{
-+	struct a3700_spi *a3700_spi;
-+
-+	a3700_spi = spi_master_get_devdata(spi->master);
-+	a3700_spi->wait_mask = bit_mask;
-+
-+	return a3700_spi_wait_completion(spi);
-+}
-+
-+static void a3700_spi_transfer_setup(struct spi_device *spi,
-+				    struct spi_transfer *xfer)
-+{
-+	struct a3700_spi *a3700_spi;
-+
-+	a3700_spi = spi_master_get_devdata(spi->master);
-+
-+	a3700_spi_clock_set(a3700_spi, xfer->speed_hz, spi->mode);
-+}
-+
-+static int a3700_spi_read_data(struct a3700_spi *a3700_spi)
-+{
-+	u32 val, data;
-+
-+	if (a3700_spi->buf_len % a3700_spi->byte_len)
-+		return -EINVAL;
-+
-+	/* Read bytes from data in register */
-+	val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
-+
-+	if (a3700_spi->byte_len == 4)
-+		data = be32_to_cpu(val);
-+	else
-+		data = val;
-+
-+	memcpy(a3700_spi->rx_buf, &data, a3700_spi->byte_len);
-+
-+	a3700_spi->buf_len -= a3700_spi->byte_len;
-+	a3700_spi->rx_buf  += a3700_spi->byte_len;
-+
-+	/* Request next 1 or 4 bytes data */
-+	if (a3700_spi->buf_len)
-+		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, 0);
-+
-+	return 0;
-+}
-+
-+static int a3700_spi_write_data(struct a3700_spi *a3700_spi)
-+{
-+	u32 val = 0;
-+
-+	if (a3700_spi->buf_len % a3700_spi->byte_len)
-+		return -EINVAL;
-+
-+	/* Write bytes from data out register */
-+	if (a3700_spi->byte_len == 4)
-+		val = cpu_to_be32(*(u32 *)a3700_spi->tx_buf);
-+	else
-+		val = a3700_spi->tx_buf[0];
-+
-+	spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
-+	a3700_spi->buf_len -= a3700_spi->byte_len;
-+	a3700_spi->tx_buf  += a3700_spi->byte_len;
-+
-+	return 0;
-+}
-+
-+static void a3700_spi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct a3700_spi *a3700_spi = spi_master_get_devdata(spi->master);
-+
-+	if (!enable)
-+		a3700_spi_activate_cs(a3700_spi, spi->chip_select);
-+	else
-+		a3700_spi_deactivate_cs(a3700_spi, spi->chip_select);
-+}
-+
-+static int a3700_spi_prepare_message(struct spi_master *master,
-+				     struct spi_message *message)
-+{
-+	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	struct spi_device *spi = message->spi;
-+
-+	a3700_spi_bytelen_set(a3700_spi, 1);
-+
-+	if (!a3700_spi_transfer_wait(spi, A3700_SPI_XFER_RDY)) {
-+		dev_err(&spi->dev, "wait transfer ready timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int a3700_spi_transfer_one(struct spi_master *master,
-+				  struct spi_device *spi,
-+				  struct spi_transfer *xfer)
-+{
-+	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-+	int ret = 0;
-+
-+	a3700_spi_transfer_setup(spi, xfer);
-+
-+	a3700_spi->tx_buf  = xfer->tx_buf;
-+	a3700_spi->rx_buf  = xfer->rx_buf;
-+	a3700_spi->buf_len = xfer->len;
-+
-+	/* Start READ transfer by writing dummy data to DOUT register */
-+	if (xfer->rx_buf)
-+		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, 0);
-+
-+	while (a3700_spi->buf_len) {
-+		if (!a3700_spi_transfer_wait(spi, A3700_SPI_XFER_RDY)) {
-+			dev_err(&spi->dev, "wait transfer ready timed out\n");
-+			ret = -ETIMEDOUT;
-+			goto err;
-+		}
-+
-+		if (a3700_spi->tx_buf) {
-+			ret = a3700_spi_write_data(a3700_spi);
-+			if (ret)
-+				goto err;
-+		}
-+
-+		if (a3700_spi->rx_buf) {
-+			ret = a3700_spi_read_data(a3700_spi);
-+			if (ret)
-+				goto err;
-+		}
-+	}
-+
-+err:
-+	spi_finalize_current_transfer(master);
-+	return ret;
-+}
-+
-+static int a3700_spi_unprepare_message(struct spi_master *master,
-+				       struct spi_message *message)
-+{
-+	struct spi_device *spi = message->spi;
-+
-+	if (!a3700_spi_transfer_wait(spi, A3700_SPI_XFER_RDY)) {
-+		dev_err(&spi->dev, "wait transfer ready timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id a3700_spi_dt_ids[] = {
-+	{ .compatible = "marvell,armada-3700-spi", .data = NULL },
-+	{},
-+};
-+
-+MODULE_DEVICE_TABLE(of, a3700_spi_dt_ids);
-+
-+static int a3700_spi_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct device_node *of_node = dev->of_node;
-+	struct resource *res;
-+	struct spi_master *master;
-+	struct a3700_spi *spi;
-+	u32 num_cs = 0;
-+	int ret = 0;
-+
-+	master = spi_alloc_master(dev, sizeof(*spi));
-+	if (!master) {
-+		dev_err(dev, "master allocation failed\n");
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	if (of_property_read_u32(of_node, "num-cs", &num_cs)) {
-+		dev_err(dev, "could not find num-cs\n");
-+		ret = -ENXIO;
-+		goto error;
-+	}
-+
-+	master->bus_num = (pdev->id != -1) ? pdev->id : 0;
-+	master->dev.of_node = of_node;
-+	master->mode_bits = SPI_MODE_3;
-+	master->num_chipselect = num_cs;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(32);
-+	master->prepare_message =  a3700_spi_prepare_message;
-+	master->transfer_one = a3700_spi_transfer_one;
-+	master->unprepare_message = a3700_spi_unprepare_message;
-+	master->set_cs = a3700_spi_set_cs;
-+
-+	platform_set_drvdata(pdev, master);
-+
-+	spi = spi_master_get_devdata(master);
-+	memset(spi, 0, sizeof(struct a3700_spi));
-+
-+	spi->master = master;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	spi->base = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(spi->base)) {
-+		ret = PTR_ERR(spi->base);
-+		goto error;
-+	}
-+
-+	spi->irq = platform_get_irq(pdev, 0);
-+	if (spi->irq < 0) {
-+		dev_err(dev, "could not get irq: %d\n", spi->irq);
-+		ret = -ENXIO;
-+		goto error;
-+	}
-+
-+	init_completion(&spi->done);
-+
-+	spi->clk = devm_clk_get(dev, NULL);
-+	if (IS_ERR(spi->clk)) {
-+		dev_err(dev, "could not find clk: %ld\n", PTR_ERR(spi->clk));
-+		goto error;
-+	}
-+
-+	ret = clk_prepare_enable(spi->clk);
-+	if (ret) {
-+		dev_err(dev, "could not prepare clk: %d\n", ret);
-+		goto error;
-+	}
-+
-+	ret = a3700_spi_init(spi);
-+	if (ret)
-+		goto error_clk;
-+
-+	ret = devm_request_irq(dev, spi->irq, a3700_spi_interrupt, 0,
-+			       dev_name(dev), master);
-+	if (ret) {
-+		dev_err(dev, "could not request IRQ: %d\n", ret);
-+		goto error_clk;
-+	}
-+
-+	ret = devm_spi_register_master(dev, master);
-+	if (ret) {
-+		dev_err(dev, "Failed to register master\n");
-+		goto error_clk;
-+	}
-+
-+	dev_info(dev, "Marvell Armada 3700 SPI Controller at 0x%08lx, irq %d\n",
-+		 (unsigned long)res->start, spi->irq);
-+
-+	return 0;
-+
-+error_clk:
-+	clk_disable_unprepare(spi->clk);
-+error:
-+	spi_master_put(master);
-+out:
-+	return ret;
-+}
-+
-+static int a3700_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct a3700_spi *spi = spi_master_get_devdata(master);
-+
-+	clk_disable_unprepare(spi->clk);
-+	spi_master_put(master);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver a3700_spi_driver = {
-+	.driver = {
-+		.name	= DRIVER_NAME,
-+		.owner	= THIS_MODULE,
-+		.of_match_table = of_match_ptr(a3700_spi_dt_ids),
-+	},
-+	.probe		= a3700_spi_probe,
-+	.remove		= a3700_spi_remove,
-+};
-+
-+module_platform_driver(a3700_spi_driver);
-+
-+MODULE_DESCRIPTION("Armada-3700 SPI driver");
-+MODULE_AUTHOR("Wilson Ding <dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:" DRIVER_NAME);
 -- 
-2.9.3
-
+Best regards,
+Marek Vasut
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,46 +1,54 @@
-From: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [Patch V1 2/2] imx: spi: read lpspi tx/rx fifo size in probe()
-Date: Thu, 1 Dec 2016 01:49:45 +0000
-Message-ID: <AM4PR0401MB17809F9F60719D96B126A085F68F0@AM4PR0401MB1780.eurprd04.prod.outlook.com>
-References: <1480302180-15550-1-git-send-email-pandy.gao@nxp.com>
- <1480302180-15550-2-git-send-email-pandy.gao@nxp.com>
- <20161130175544.rdsl3wahswxewvyb@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>, Andy Duan <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161130175544.rdsl3wahswxewvyb-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH v3 0/5] Add support for the Armada 3700 SPI controller
+Date: Thu,  1 Dec 2016 11:27:14 +0100
+Message-ID: <20161201102719.4291-1-romain.perier@free-electrons.com>
+Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+        Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
- From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> Sent: Thursday, December 01, =
-2016 1:56 AM
-> To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Frank Li <frank.li-3arQi8VN3Tc@public.gmane.org>; Andy Duan
-> <fugang.duan-3arQi8VN3Tc@public.gmane.org>
-> Subject: Re: [Patch V1 2/2] imx: spi: read lpspi tx/rx fifo size in probe=
-()
->=20
-> On Mon, Nov 28, 2016 at 11:03:00AM +0800, Gao Pan wrote:
-> > The lpspi tx/rx fifo size is a read only parameter resides lpspi
-> > Parameter Register. It's better to read lpspi tx/rx fifo size in
-> > probe().
->=20
->=20
-> Please submit patches using subject lines reflecting the style for the
-> subsystem.  This makes it easier for people to identify relevant patches.
-> Look at what existing commits in the area you're changing are doing and
-> make sure your subject lines visually resemble what they're doing.
-=20
-Thanks,  will pay attention to it for incremental patches.
+The Marvell Armada 3700 SoC includes an SPI controller. This controller
+supports up to 4 SPI slave devices, with dedicated chip selects, CPIO or
+FIFO mode with DMA or CPU transfers and different SPI transfer modes
+(Standard single, Dual or Quad).
 
-Best  Regards
-Gao Pan
+This set of patches adds a basic support for the CPIO mode, then it
+enables the FIFO mode (CPU-side only, DMA not supported yet). It also
+adds the required definitions of the spi nodes to the devicetree.
+
+Romain Perier (5):
+  spi: Add basic support for Armada 3700 SPI Controller
+  spi: armada-3700: Add support for the FIFO mode
+  spi: armada-3700: Add documentation for the Armada 3700 SPI Controller
+  arm64: dts: marvell: Add definition of SPI controller for Armada 3700
+  arm64: dts: marvell: Enable spi0 on the board Armada-3720-db
+
+ .../devicetree/bindings/spi/spi-armada-3700.txt    |   25 +
+ arch/arm64/boot/dts/marvell/armada-3720-db.dts     |   30 +
+ arch/arm64/boot/dts/marvell/armada-37xx.dtsi       |   11 +
+ drivers/spi/Kconfig                                |    7 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-armada-3700.c                      | 1046 ++++++++++++++++++++
+ 6 files changed, 1120 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+ create mode 100644 drivers/spi/spi-armada-3700.c
+
+-- 
+2.9.3
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

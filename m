@@ -1,20 +1,23 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-lpspi: quit reading rx fifo under error condition" to the spi tree
-Date: Mon, 05 Dec 2016 12:10:00 +0000
-Message-ID: <E1cDs5o-0003wF-Mn@finisterre>
-References: <1480650601-12810-2-git-send-email-pandy.gao@nxp.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org,
+Subject: Applied "spi: spi-pxa2xx: Remove unused macro" to the spi tree
+Date: Mon, 05 Dec 2016 12:10:07 +0000
+Message-ID: <E1cDs5v-0003xt-Bq@finisterre>
+References: <20161114112420.16915-1-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1480650601-12810-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <20161114112420.16915-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-lpspi: quit reading rx fifo under error condition
+   spi: spi-pxa2xx: Remove unused macro
 
 has been applied to the spi tree at
 
@@ -39,38 +42,32 @@ to this mail.
 Thanks,
 Mark
 
->From d989eed20791534dc624c7b29568b263c67a286f Mon Sep 17 00:00:00 2001
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Fri, 2 Dec 2016 11:50:01 +0800
-Subject: [PATCH] spi: fsl-lpspi: quit reading rx fifo under error condition
+>From 6906b0ec5cdef784102e7699807df140eeaba133 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 14 Nov 2016 13:24:20 +0200
+Subject: [PATCH] spi: spi-pxa2xx: Remove unused macro
 
-In case that error occurs during waiting for txfifo empty, it is
-not necessary to read rx fifo. It's better to return directly.
+IS_DMA_ALIGNED() became unused by the commit 6356437e65c2
+("spi: spi-pxa2xx: remove legacy PXA DMA bits").
 
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index c4a4e2622a53..52551f6d0c7d 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -350,9 +350,12 @@ static int fsl_lpspi_transfer_one(struct spi_master *master,
- 	}
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index ce31b8199bb3..2823a00a9405 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -109,7 +109,6 @@ static  inline void pxa2xx_spi_write(const struct driver_data *drv_data,
+ #define DONE_STATE ((void *)2)
+ #define ERROR_STATE ((void *)-1)
  
- 	ret = fsl_lpspi_txfifo_empty(fsl_lpspi);
-+	if (ret)
-+		return ret;
-+
- 	fsl_lpspi_read_rx_fifo(fsl_lpspi);
+-#define IS_DMA_ALIGNED(x)	IS_ALIGNED((unsigned long)(x), DMA_ALIGNMENT)
+ #define DMA_ALIGNMENT		8
  
--	return ret;
-+	return 0;
- }
- 
- static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
+ static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
 -- 
 2.10.2
 

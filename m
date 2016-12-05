@@ -1,20 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-lpspi: use GPL as module license" to the spi tree
-Date: Mon, 05 Dec 2016 12:10:04 +0000
-Message-ID: <E1cDs5s-0003x2-2j@finisterre>
-References: <1480650601-12810-1-git-send-email-pandy.gao@nxp.com>
+Subject: Applied "spi: fsl-lpspi: quit reading rx fifo under error condition" to the spi tree
+Date: Mon, 05 Dec 2016 12:10:00 +0000
+Message-ID: <E1cDs5o-0003wF-Mn@finisterre>
+References: <1480650601-12810-2-git-send-email-pandy.gao@nxp.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1480650601-12810-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <1480650601-12810-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-lpspi: use GPL as module license
+   spi: fsl-lpspi: quit reading rx fifo under error condition
 
 has been applied to the spi tree at
 
@@ -39,33 +39,38 @@ to this mail.
 Thanks,
 Mark
 
->From b6787b6807fb01b13f0f1a07cbb8eaf7853d1a6e Mon Sep 17 00:00:00 2001
+>From d989eed20791534dc624c7b29568b263c67a286f Mon Sep 17 00:00:00 2001
 From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Fri, 2 Dec 2016 11:50:00 +0800
-Subject: [PATCH] spi: fsl-lpspi: use GPL as module license
+Date: Fri, 2 Dec 2016 11:50:01 +0800
+Subject: [PATCH] spi: fsl-lpspi: quit reading rx fifo under error condition
 
-At the beginning of lpspi driver, it is claimed that the dirver
-is under the terms of the GNU General Public License, either
-version 2 of the License. While at the end I only declared GPL V2.
-
-This patch make the license consistent.
+In case that error occurs during waiting for txfifo empty, it is
+not necessary to read rx fifo. It's better to return directly.
 
 Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 71eca6e3fe32..c4a4e2622a53 100644
+index c4a4e2622a53..52551f6d0c7d 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -519,4 +519,4 @@ module_platform_driver(fsl_lpspi_driver);
+@@ -350,9 +350,12 @@ static int fsl_lpspi_transfer_one(struct spi_master *master,
+ 	}
  
- MODULE_DESCRIPTION("LPSPI Master Controller driver");
- MODULE_AUTHOR("Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>");
--MODULE_LICENSE("GPL v2");
-+MODULE_LICENSE("GPL");
+ 	ret = fsl_lpspi_txfifo_empty(fsl_lpspi);
++	if (ret)
++		return ret;
++
+ 	fsl_lpspi_read_rx_fifo(fsl_lpspi);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
 -- 
 2.10.2
 

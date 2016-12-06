@@ -1,57 +1,209 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/2] mtd: spi-nor: add a stateless method to support memory size above 128Mib
-Date: Tue, 6 Dec 2016 17:52:30 +0100
-Message-ID: <cover.1481041702.git.cyrille.pitchen@atmel.com>
+From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Subject: [PATCH 1/2] mtd: spi-nor: rename SPINOR_OP_* macros of the 4-byte address op codes
+Date: Tue, 6 Dec 2016 17:52:31 +0100
+Message-ID: <54697ac9604b8e769f92dd4fb392db952df9eae4.1481041702.git.cyrille.pitchen@atmel.com>
+References: <cover.1481041702.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, <richard-/L3Ra7n9ekc@public.gmane.org>,
-        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-To: <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <computersforpeace@gmail.com>,
+        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <broonie@kernel.org>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>
+To: <marek.vasut@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1481041702.git.cyrille.pitchen@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+This patch renames the SPINOR_OP_* macros of the 4-byte address
+instruction set so the new names all share a common pattern: the 4-byte
+address name is built from the 3-byte address name appending the "_4B"
+suffix.
 
-this series of patches is based on next-20161206 and can also be applied
-to the git://github.com/spi-nor/linux.git tree.
-It has been extracted from the SFDP series and is resent as a standalone
-series.
+The patch also introduces new op codes to support other SPI protocols such
+as SPI 1-4-4 and SPI 1-2-2.
 
-This series fixes compatibility issue between Linux and many bootloaders
-when using SPI flash with size greater than 128Mib.
+This is a transitional patch and will help a later patch of spi-nor.c
+to automate the translation from the 3-byte address op codes into their
+4-byte address version.
 
-Indeed, before this series, Linux used to make the SPI flash memory enter
-its 4-byte address mode when its size is greater than 128Mib: The very
-same Fast Read 1-1-z op code is used, for instance Fast Read 1-1-4 (6Bh)
-but once in 4-byte address mode, the SPI flash memory now expects a 4-byte
-address following the op code instead of a 3-byte address.
-This solution is statefull: it changes the internal state of the memory.
+Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+---
+ drivers/mtd/devices/serial_flash_cmds.h |  7 -------
+ drivers/mtd/devices/st_spi_fsm.c        | 28 ++++++++++++++--------------
+ drivers/mtd/spi-nor/spi-nor.c           |  8 ++++----
+ drivers/spi/spi-bcm-qspi.c              |  6 +++---
+ include/linux/mtd/spi-nor.h             | 22 ++++++++++++++++------
+ 5 files changed, 37 insertions(+), 34 deletions(-)
 
-Hence, when the CPU is reset but not the memory, many bootloaders are not
-aware of this internal state change at the memory side, don't know how to
-handle this and still send one Fast Read op code followed by a 3-byte
-address. So the bootloader fails to read data from the SPI flash memory.
-
-Cyrille Pitchen (2):
-  mtd: spi-nor: rename SPINOR_OP_* macros of the 4-byte address op codes
-  mtd: spi-nor: add a stateless method to support memory size above
-    128Mib
-
- drivers/mtd/devices/serial_flash_cmds.h |   7 --
- drivers/mtd/devices/st_spi_fsm.c        |  28 ++++----
- drivers/mtd/spi-nor/spi-nor.c           | 114 ++++++++++++++++++++++++++------
- drivers/spi/spi-bcm-qspi.c              |   6 +-
- include/linux/mtd/spi-nor.h             |  22 ++++--
- 5 files changed, 126 insertions(+), 51 deletions(-)
-
+diff --git a/drivers/mtd/devices/serial_flash_cmds.h b/drivers/mtd/devices/serial_flash_cmds.h
+index f59a125295d0..8b81e15105dd 100644
+--- a/drivers/mtd/devices/serial_flash_cmds.h
++++ b/drivers/mtd/devices/serial_flash_cmds.h
+@@ -18,19 +18,12 @@
+ #define SPINOR_OP_RDVCR		0x85
+ 
+ /* JEDEC Standard - Serial Flash Discoverable Parmeters (SFDP) Commands */
+-#define SPINOR_OP_READ_1_2_2	0xbb	/* DUAL I/O READ */
+-#define SPINOR_OP_READ_1_4_4	0xeb	/* QUAD I/O READ */
+-
+ #define SPINOR_OP_WRITE		0x02	/* PAGE PROGRAM */
+ #define SPINOR_OP_WRITE_1_1_2	0xa2	/* DUAL INPUT PROGRAM */
+ #define SPINOR_OP_WRITE_1_2_2	0xd2	/* DUAL INPUT EXT PROGRAM */
+ #define SPINOR_OP_WRITE_1_1_4	0x32	/* QUAD INPUT PROGRAM */
+ #define SPINOR_OP_WRITE_1_4_4	0x12	/* QUAD INPUT EXT PROGRAM */
+ 
+-/* READ commands with 32-bit addressing */
+-#define SPINOR_OP_READ4_1_2_2	0xbc
+-#define SPINOR_OP_READ4_1_4_4	0xec
+-
+ /* Configuration flags */
+ #define FLASH_FLAG_SINGLE	0x000000ff
+ #define FLASH_FLAG_READ_WRITE	0x00000001
+diff --git a/drivers/mtd/devices/st_spi_fsm.c b/drivers/mtd/devices/st_spi_fsm.c
+index 5454b4113589..804313a33f2b 100644
+--- a/drivers/mtd/devices/st_spi_fsm.c
++++ b/drivers/mtd/devices/st_spi_fsm.c
+@@ -507,13 +507,13 @@ static struct seq_rw_config n25q_read3_configs[] = {
+  *	- 'FAST' variants configured for 8 dummy cycles (see note above.)
+  */
+ static struct seq_rw_config n25q_read4_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4, SPINOR_OP_READ4_1_4_4,	0, 4, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_4, SPINOR_OP_READ4_1_1_4,	0, 1, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_2_2, SPINOR_OP_READ4_1_2_2,	0, 2, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_2, SPINOR_OP_READ4_1_1_2,	0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,	SPINOR_OP_READ4_FAST,	0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE, SPINOR_OP_READ4,	0, 1, 1, 0x00, 0, 0},
+-	{0x00,			0,			0, 0, 0, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4, SPINOR_OP_READ_1_4_4_4B, 0, 4, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_4, SPINOR_OP_READ_1_1_4_4B, 0, 1, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_2_2, SPINOR_OP_READ_1_2_2_4B, 0, 2, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_2, SPINOR_OP_READ_1_1_2_4B, 0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,	SPINOR_OP_READ_FAST_4B,  0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE, SPINOR_OP_READ_4B,       0, 1, 1, 0x00, 0, 0},
++	{0x00,			0,                       0, 0, 0, 0x00, 0, 0},
+ };
+ 
+ /*
+@@ -553,13 +553,13 @@ static int stfsm_mx25_en_32bit_addr_seq(struct stfsm_seq *seq)
+  * entering a state that is incompatible with the SPIBoot Controller.
+  */
+ static struct seq_rw_config stfsm_s25fl_read4_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4,  SPINOR_OP_READ4_1_4_4,  0, 4, 4, 0x00, 2, 4},
+-	{FLASH_FLAG_READ_1_1_4,  SPINOR_OP_READ4_1_1_4,  0, 1, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_2_2,  SPINOR_OP_READ4_1_2_2,  0, 2, 2, 0x00, 4, 0},
+-	{FLASH_FLAG_READ_1_1_2,  SPINOR_OP_READ4_1_1_2,  0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,   SPINOR_OP_READ4_FAST,   0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE,  SPINOR_OP_READ4,        0, 1, 1, 0x00, 0, 0},
+-	{0x00,                   0,                      0, 0, 0, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4,  SPINOR_OP_READ_1_4_4_4B,  0, 4, 4, 0x00, 2, 4},
++	{FLASH_FLAG_READ_1_1_4,  SPINOR_OP_READ_1_1_4_4B,  0, 1, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_2_2,  SPINOR_OP_READ_1_2_2_4B,  0, 2, 2, 0x00, 4, 0},
++	{FLASH_FLAG_READ_1_1_2,  SPINOR_OP_READ_1_1_2_4B,  0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,   SPINOR_OP_READ_FAST_4B,   0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE,  SPINOR_OP_READ_4B,        0, 1, 1, 0x00, 0, 0},
++	{0x00,                   0,                        0, 0, 0, 0x00, 0, 0},
+ };
+ 
+ static struct seq_rw_config stfsm_s25fl_write4_configs[] = {
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 1fd32b991eb7..8abe134e174a 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -1490,16 +1490,16 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 			/* Dedicated 4-byte command set */
+ 			switch (nor->flash_read) {
+ 			case SPI_NOR_QUAD:
+-				nor->read_opcode = SPINOR_OP_READ4_1_1_4;
++				nor->read_opcode = SPINOR_OP_READ_1_1_4_4B;
+ 				break;
+ 			case SPI_NOR_DUAL:
+-				nor->read_opcode = SPINOR_OP_READ4_1_1_2;
++				nor->read_opcode = SPINOR_OP_READ_1_1_2_4B;
+ 				break;
+ 			case SPI_NOR_FAST:
+-				nor->read_opcode = SPINOR_OP_READ4_FAST;
++				nor->read_opcode = SPINOR_OP_READ_FAST_4B;
+ 				break;
+ 			case SPI_NOR_NORMAL:
+-				nor->read_opcode = SPINOR_OP_READ4;
++				nor->read_opcode = SPINOR_OP_READ_4B;
+ 				break;
+ 			}
+ 			nor->program_opcode = SPINOR_OP_PP_4B;
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 14f9dea3173f..d7843fd8c610 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -371,7 +371,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
+ 			/* default mode, does not need flex_cmd */
+ 			flex_mode = 0;
+ 		else
+-			command = SPINOR_OP_READ4_FAST;
++			command = SPINOR_OP_READ_FAST_4B;
+ 		break;
+ 	case SPI_NBITS_DUAL:
+ 		bpc = 0x00000001;
+@@ -384,7 +384,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
+ 		} else {
+ 			command = SPINOR_OP_READ_1_1_2;
+ 			if (spans_4byte)
+-				command = SPINOR_OP_READ4_1_1_2;
++				command = SPINOR_OP_READ_1_1_2_4B;
+ 		}
+ 		break;
+ 	case SPI_NBITS_QUAD:
+@@ -399,7 +399,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
+ 		} else {
+ 			command = SPINOR_OP_READ_1_1_4;
+ 			if (spans_4byte)
+-				command = SPINOR_OP_READ4_1_1_4;
++				command = SPINOR_OP_READ_1_1_4_4B;
+ 		}
+ 		break;
+ 	default:
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index c425c7b4c2a0..8b02fd7864d0 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -43,9 +43,13 @@
+ #define SPINOR_OP_WRSR		0x01	/* Write status register 1 byte */
+ #define SPINOR_OP_READ		0x03	/* Read data bytes (low frequency) */
+ #define SPINOR_OP_READ_FAST	0x0b	/* Read data bytes (high frequency) */
+-#define SPINOR_OP_READ_1_1_2	0x3b	/* Read data bytes (Dual SPI) */
+-#define SPINOR_OP_READ_1_1_4	0x6b	/* Read data bytes (Quad SPI) */
++#define SPINOR_OP_READ_1_1_2	0x3b	/* Read data bytes (Dual Output SPI) */
++#define SPINOR_OP_READ_1_2_2	0xbb	/* Read data bytes (Dual I/O SPI) */
++#define SPINOR_OP_READ_1_1_4	0x6b	/* Read data bytes (Quad Output SPI) */
++#define SPINOR_OP_READ_1_4_4	0xeb	/* Read data bytes (Quad I/O SPI) */
+ #define SPINOR_OP_PP		0x02	/* Page program (up to 256 bytes) */
++#define SPINOR_OP_PP_1_1_4	0x32	/* Quad page program */
++#define SPINOR_OP_PP_1_4_4	0x38	/* Quad page program */
+ #define SPINOR_OP_BE_4K		0x20	/* Erase 4KiB block */
+ #define SPINOR_OP_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
+ #define SPINOR_OP_BE_32K	0x52	/* Erase 32KiB block */
+@@ -56,11 +60,17 @@
+ #define SPINOR_OP_RDFSR		0x70	/* Read flag status register */
+ 
+ /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
+-#define SPINOR_OP_READ4		0x13	/* Read data bytes (low frequency) */
+-#define SPINOR_OP_READ4_FAST	0x0c	/* Read data bytes (high frequency) */
+-#define SPINOR_OP_READ4_1_1_2	0x3c	/* Read data bytes (Dual SPI) */
+-#define SPINOR_OP_READ4_1_1_4	0x6c	/* Read data bytes (Quad SPI) */
++#define SPINOR_OP_READ_4B	0x13	/* Read data bytes (low frequency) */
++#define SPINOR_OP_READ_FAST_4B	0x0c	/* Read data bytes (high frequency) */
++#define SPINOR_OP_READ_1_1_2_4B	0x3c	/* Read data bytes (Dual Output SPI) */
++#define SPINOR_OP_READ_1_2_2_4B	0xbc	/* Read data bytes (Dual I/O SPI) */
++#define SPINOR_OP_READ_1_1_4_4B	0x6c	/* Read data bytes (Quad Output SPI) */
++#define SPINOR_OP_READ_1_4_4_4B	0xec	/* Read data bytes (Quad I/O SPI) */
+ #define SPINOR_OP_PP_4B		0x12	/* Page program (up to 256 bytes) */
++#define SPINOR_OP_PP_1_1_4_4B	0x34	/* Quad page program */
++#define SPINOR_OP_PP_1_4_4_4B	0x3e	/* Quad page program */
++#define SPINOR_OP_BE_4K_4B	0x21	/* Erase 4KiB block */
++#define SPINOR_OP_BE_32K_4B	0x5c	/* Erase 32KiB block */
+ #define SPINOR_OP_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
+ 
+ /* Used for SST flashes only. */
 -- 
 2.7.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

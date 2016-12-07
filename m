@@ -1,178 +1,78 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH 2/2] mtd: spi-nor: add a stateless method to support memory size above 128Mib
-Date: Tue, 6 Dec 2016 17:52:32 +0100
-Message-ID: <97e02fd9d6328bc591f98d5ae3da98b0ad9051d2.1481041702.git.cyrille.pitchen@atmel.com>
-References: <cover.1481041702.git.cyrille.pitchen@atmel.com>
+From: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
+Subject: Re: [PATCH] spi: davinci: Allow device tree devices to use DMA
+Date: Tue, 6 Dec 2016 20:28:10 -0600
+Message-ID: <588633b2-99c2-528f-35f4-fef898a79961@lechnology.com>
+References: <1479530464-12538-1-git-send-email-david@lechnology.com>
+ <79f186b5-ac71-189f-c19f-977670395043@ti.com>
+ <946d60bc-ac14-7934-c1b3-e2de03831459@lechnology.com>
+ <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <computersforpeace@gmail.com>,
-        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <broonie@kernel.org>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>
-To: <marek.vasut@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1481041702.git.cyrille.pitchen@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch provides an alternative mean to support memory above 16MiB
-(128Mib) by replacing 3byte address op codes by their associated 4byte
-address versions.
+On 11/21/2016 02:37 AM, Sekhar Nori wrote:
+> On Sunday 20 November 2016 10:31 PM, David Lechner wrote:
+>
+>> On 11/20/2016 06:59 AM, Sekhar Nori wrote:
+>
+>>> On Saturday 19 November 2016 10:11 AM, David Lechner wrote:
+>
+>>>> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device
+>>>> *spi)
+>>>>          if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
+>>>>              spicfg->wdelay = (u8)prop;
+>>>>          spi->controller_data = spicfg;
+>>>> +        /* Use DMA for device if master supports it */
+>>>> +        if (dspi->dma_rx)
+>>>
+>>> This should be
+>>>
+>>>         if (!(IS_ERR(dpsi->dma_rx) || IS_ERR(dspi->dma_tx))
+>>
+>>
+>> There is the following code in davinci_spi_probe():
+>>
+>>     ret = davinci_spi_request_dma(dspi);
+>>     if (ret == -EPROBE_DEFER) {
+>>         goto free_clk;
+>>     } else if (ret) {
+>>         dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
+>>         dspi->dma_rx = NULL;
+>>         dspi->dma_tx = NULL;
+>>     }
+>>
+>> So, I does not look like it is possible to get anything other than NULL
+>> or a valid pointer for dpsi->dma_rx and that checking dpsi->dma_tx is
+>> not necessary.
+>>
+>> So, I think if (dspi->dma_rx) is sufficient. In fact the same check is
+>> used during unwinding if the probe function fails.
+>
+> You are right, I see it now. Setting dma_rx to NULL overriding the error
+> value is confusing since dma_request_chan() itself does not use NULL as
+> an error value.
+>
+> I think it is better to fix the existing code to remove the NULL
+> overwrite and use IS_ERR() instead. You should probably wait for some
+> feedback from the SPI maintainer though.
+>
+> Thanks,
+> Sekhar
+>
 
-Using the dedicated 4byte address op codes doesn't change the internal
-state of the SPI NOR memory as opposed to using other means such as
-updating a Base Address Register (BAR) and sending command to enter/leave
-the 4byte mode.
 
-Hence when a CPU reset occurs, early bootloaders don't need to be aware
-of BAR value or 4byte mode being enabled: they can still access the first
-16MiB of the SPI NOR memory using the regular 3byte address op codes.
+There don't seem to be any further comments. Using NULL here makes more 
+sense to me, so I am inclined to leave this patch as-is.
 
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Tested-by: Vignesh R <vigneshr@ti.com>
----
- drivers/mtd/spi-nor/spi-nor.c | 114 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 93 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 8abe134e174a..606c030c566d 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -75,6 +75,10 @@ struct flash_info {
- 					 * bit. Must be used with
- 					 * SPI_NOR_HAS_LOCK.
- 					 */
-+#define SPI_NOR_4B_OPCODES	BIT(10)	/*
-+					 * Use dedicated 4byte address op codes
-+					 * to support memory size above 128Mib.
-+					 */
- };
- 
- #define JEDEC_MFR(info)	((info)->id[0])
-@@ -188,6 +192,91 @@ static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
- 	return mtd->priv;
- }
- 
-+
-+struct spi_nor_address_entry {
-+	u8	src_opcode;
-+	u8	dst_opcode;
-+};
-+
-+static u8 spi_nor_convert_opcode(u8 opcode,
-+				 const struct spi_nor_address_entry *entries,
-+				 size_t num_entries)
-+{
-+	int min, max;
-+
-+	/*
-+	 * This function implements a dichotomic search in the entries[]
-+	 * array indexed by src_opcode. Hence we assume that the entries[]
-+	 * array is sorted by src_opcode.
-+	 * The dichotomic search has a logarithmic complexity as opposed
-+	 * to a simple loop on all entires, which has a linear complexity:
-+	 * it means that when n is the number of entries in the input array,
-+	 * the dichotomic search performs O(log2(n)) comparisons whereas
-+	 * a simple loop performs O(n) comparisons.
-+	 */
-+	min = 0;
-+	max = num_entries - 1;
-+	while (min <= max) {
-+		int mid = (min + max) >> 1;
-+		const struct spi_nor_address_entry *entry = &entries[mid];
-+
-+		if (opcode == entry->src_opcode)
-+			return entry->dst_opcode;
-+
-+		if (opcode < entry->src_opcode)
-+			max = mid - 1;
-+		else
-+			min = mid + 1;
-+	}
-+
-+	/* No conversion found */
-+	return opcode;
-+}
-+
-+static u8 spi_nor_3to4_opcode(u8 opcode)
-+{
-+	/* MUST be sorted by 3byte opcode (cf spi_nor_convert_opcode). */
-+#define ENTRY_3TO4(_opcode)	{ _opcode, _opcode##_4B }
-+	static const struct spi_nor_address_entry spi_nor_3to4_table[] = {
-+		ENTRY_3TO4(SPINOR_OP_PP),		/* 0x02 */
-+		ENTRY_3TO4(SPINOR_OP_READ),		/* 0x03 */
-+		ENTRY_3TO4(SPINOR_OP_READ_FAST),	/* 0x0b */
-+		ENTRY_3TO4(SPINOR_OP_BE_4K),		/* 0x20 */
-+		ENTRY_3TO4(SPINOR_OP_PP_1_1_4),		/* 0x32 */
-+		ENTRY_3TO4(SPINOR_OP_PP_1_4_4),		/* 0x38 */
-+		ENTRY_3TO4(SPINOR_OP_READ_1_1_2),	/* 0x3b */
-+		ENTRY_3TO4(SPINOR_OP_BE_32K),		/* 0x52 */
-+		ENTRY_3TO4(SPINOR_OP_READ_1_1_4),	/* 0x6b */
-+		ENTRY_3TO4(SPINOR_OP_READ_1_2_2),	/* 0xbb */
-+		ENTRY_3TO4(SPINOR_OP_SE),		/* 0xd8 */
-+		ENTRY_3TO4(SPINOR_OP_READ_1_4_4),	/* 0xeb */
-+	};
-+#undef ENTRY_3TO4
-+
-+	return spi_nor_convert_opcode(opcode, spi_nor_3to4_table,
-+				      ARRAY_SIZE(spi_nor_3to4_table));
-+}
-+
-+static void spi_nor_set_4byte_opcodes(struct spi_nor *nor,
-+				      const struct flash_info *info)
-+{
-+	/* Do some manufacturer fixups first */
-+	switch (JEDEC_MFR(info)) {
-+	case SNOR_MFR_SPANSION:
-+		/* No small sector erase for 4-byte command set */
-+		nor->erase_opcode = SPINOR_OP_SE;
-+		nor->mtd.erasesize = info->sector_size;
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	nor->read_opcode	= spi_nor_3to4_opcode(nor->read_opcode);
-+	nor->program_opcode	= spi_nor_3to4_opcode(nor->program_opcode);
-+	nor->erase_opcode	= spi_nor_3to4_opcode(nor->erase_opcode);
-+}
-+
- /* Enable/disable 4-byte addressing mode. */
- static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
- 			    int enable)
-@@ -1486,27 +1575,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 	else if (mtd->size > 0x1000000) {
- 		/* enable 4-byte addressing if the device exceeds 16MiB */
- 		nor->addr_width = 4;
--		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION) {
--			/* Dedicated 4-byte command set */
--			switch (nor->flash_read) {
--			case SPI_NOR_QUAD:
--				nor->read_opcode = SPINOR_OP_READ_1_1_4_4B;
--				break;
--			case SPI_NOR_DUAL:
--				nor->read_opcode = SPINOR_OP_READ_1_1_2_4B;
--				break;
--			case SPI_NOR_FAST:
--				nor->read_opcode = SPINOR_OP_READ_FAST_4B;
--				break;
--			case SPI_NOR_NORMAL:
--				nor->read_opcode = SPINOR_OP_READ_4B;
--				break;
--			}
--			nor->program_opcode = SPINOR_OP_PP_4B;
--			/* No small sector erase for 4-byte command set */
--			nor->erase_opcode = SPINOR_OP_SE_4B;
--			mtd->erasesize = info->sector_size;
--		} else
-+		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
-+		    info->flags & SPI_NOR_4B_OPCODES)
-+			spi_nor_set_4byte_opcodes(nor, info);
-+		else
- 			set_4byte(nor, info, 1);
- 	} else {
- 		nor->addr_width = 3;
--- 
-2.7.4
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

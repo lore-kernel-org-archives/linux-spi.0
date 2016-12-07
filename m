@@ -1,91 +1,256 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/5] spi: armada-3700: Add support for the FIFO mode
-Date: Wed, 7 Dec 2016 16:34:21 +0000
-Message-ID: <20161207163421.2efafvlpapgdsxwx@sirena.org.uk>
-References: <20161201102719.4291-1-romain.perier@free-electrons.com>
- <20161201102719.4291-3-romain.perier@free-electrons.com>
- <20161205133728.sza2pt4tfkywu35k@sirena.org.uk>
- <a9b86043-b631-8154-edc8-5abe49e47114@free-electrons.com>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] mtd: spi-nor: add a stateless method to support
+ memory size above 128Mib
+Date: Wed, 7 Dec 2016 17:59:37 +0100
+Message-ID: <679d301c-363a-e8fe-abed-c3ad00ea1fad@atmel.com>
+References: <cover.1481041702.git.cyrille.pitchen@atmel.com>
+ <97e02fd9d6328bc591f98d5ae3da98b0ad9051d2.1481041702.git.cyrille.pitchen@atmel.com>
+ <e1f9652e-4dda-0420-69d3-6fef606bc5dd@gmail.com>
+ <6623dc41-f7a8-9788-fe01-7fe3d5b2062f@atmel.com>
+ <6443cfb4-2d6d-c929-0d8a-053082bda506@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hgjkrzslmuctkbzu"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-        Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-        Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
-To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, <richard-/L3Ra7n9ekc@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <a9b86043-b631-8154-edc8-5abe49e47114-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <6443cfb4-2d6d-c929-0d8a-053082bda506-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Le 07/12/2016 à 17:32, Marek Vasut a écrit :
+> On 12/07/2016 05:29 PM, Cyrille Pitchen wrote:
+>> Le 07/12/2016 à 17:20, Marek Vasut a écrit :
+>>> On 12/06/2016 05:52 PM, Cyrille Pitchen wrote:
+>>>> This patch provides an alternative mean to support memory above 16MiB
+>>>> (128Mib) by replacing 3byte address op codes by their associated 4byte
+>>>> address versions.
+>>>>
+>>>> Using the dedicated 4byte address op codes doesn't change the internal
+>>>> state of the SPI NOR memory as opposed to using other means such as
+>>>> updating a Base Address Register (BAR) and sending command to enter/leave
+>>>> the 4byte mode.
+>>>>
+>>>> Hence when a CPU reset occurs, early bootloaders don't need to be aware
+>>>> of BAR value or 4byte mode being enabled: they can still access the first
+>>>> 16MiB of the SPI NOR memory using the regular 3byte address op codes.
+>>>>
+>>>> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+>>>> Tested-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+>>>> ---
+>>>>  drivers/mtd/spi-nor/spi-nor.c | 114 ++++++++++++++++++++++++++++++++++--------
+>>>>  1 file changed, 93 insertions(+), 21 deletions(-)
+>>>>
+>>>> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+>>>> index 8abe134e174a..606c030c566d 100644
+>>>> --- a/drivers/mtd/spi-nor/spi-nor.c
+>>>> +++ b/drivers/mtd/spi-nor/spi-nor.c
+>>>> @@ -75,6 +75,10 @@ struct flash_info {
+>>>>  					 * bit. Must be used with
+>>>>  					 * SPI_NOR_HAS_LOCK.
+>>>>  					 */
+>>>> +#define SPI_NOR_4B_OPCODES	BIT(10)	/*
+>>>> +					 * Use dedicated 4byte address op codes
+>>>> +					 * to support memory size above 128Mib.
+>>>> +					 */
+>>>>  };
+>>>>  
+>>>>  #define JEDEC_MFR(info)	((info)->id[0])
+>>>> @@ -188,6 +192,91 @@ static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
+>>>>  	return mtd->priv;
+>>>>  }
+>>>>  
+>>>> +
+>>>> +struct spi_nor_address_entry {
+>>>> +	u8	src_opcode;
+>>>> +	u8	dst_opcode;
+>>>> +};
+>>>> +
+>>>> +static u8 spi_nor_convert_opcode(u8 opcode,
+>>>> +				 const struct spi_nor_address_entry *entries,
+>>>> +				 size_t num_entries)
+>>>> +{
+>>>> +	int min, max;
+>>>> +
+>>>> +	/*
+>>>> +	 * This function implements a dichotomic search in the entries[]
+>>>> +	 * array indexed by src_opcode. Hence we assume that the entries[]
+>>>> +	 * array is sorted by src_opcode.
+>>>> +	 * The dichotomic search has a logarithmic complexity as opposed
+>>>> +	 * to a simple loop on all entires, which has a linear complexity:
+>>>> +	 * it means that when n is the number of entries in the input array,
+>>>> +	 * the dichotomic search performs O(log2(n)) comparisons whereas
+>>>> +	 * a simple loop performs O(n) comparisons.
+>>>> +	 */
+>>>> +	min = 0;
+>>>> +	max = num_entries - 1;
+>>>> +	while (min <= max) {
+>>>> +		int mid = (min + max) >> 1;
+>>>> +		const struct spi_nor_address_entry *entry = &entries[mid];
+>>>> +
+>>>> +		if (opcode == entry->src_opcode)
+>>>> +			return entry->dst_opcode;
+>>>> +
+>>>> +		if (opcode < entry->src_opcode)
+>>>> +			max = mid - 1;
+>>>> +		else
+>>>> +			min = mid + 1;
+>>>> +	}
+>>>
+>>> You have like 16 entries in that table, just do a linear search, this is
+>>> only complex for no benefit.
+>>
+>> Well ok, I agree with you, it's too much overkill for what it does.
+>> For readiness purpose, what about a simple and straight forward switch()
+>> statement? Let's forget about cache-line and other memory/time optimizations :)
+> 
+> If you do a switch, you cannot walk a table which you pass in, see below.
+> 
 
---hgjkrzslmuctkbzu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I meant I remove the table too, a hidden "table" would still be generated
+by the compiler in the assembly code to translate the switch statement:
 
-On Wed, Dec 07, 2016 at 05:19:57PM +0100, Romain Perier wrote:
-> Le 05/12/2016 =E0 14:37, Mark Brown a =E9crit :
+static u8 spi_nor_3to4_opcode(u8 3byte_address_opcode)
+{
+	#define CASE_3TO4(_opcode)	case _opcode: return _opcode##_4B
+	
+	switch (3_byte_address_opcode) {
+	/* Without macro. */
+	case SPINOR_OP_PP:
+		return SPINOR_OP_PP_4B;
 
-> > Why?  If the hardware supports a more efficient mode of operation it
-> > doesn't seem sensible not to use it.
+	case SPINOR_OP_READ:
+		return SPINOR_OP_READ_4B;
 
-> That's just that our customer want to keep both modes, this is why I deci=
-ded
-> to use the more efficient mode by default and disable it via a module
-> parameter. Previously the more efficient mode was always enabled, based on
-> the "compatible string" of the DT (the PIO mode was simply useless in this
-> case and dead code)
+	case SPINOR_OP_READ_FAST:
+		return SPINOR_OP_READ_FAST_4B;
 
-Keep that out of tree, if the user wants to do silly things then let
-them pay the cost.
+	/* With macro. */
+	CASE_3TO4(SPINOR_OP_READ_FAST);
 
-> > > +	if (xfer->rx_buf) {
-> > > +		/* Set read data length */
-> > > +		spireg_write(a3700_spi, A3700_SPI_IF_DIN_CNT_REG,
-> > > +			     a3700_spi->buf_len);
-> > > +		/* Start READ transfer */
-> > > +		val =3D spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-> > > +		val &=3D ~A3700_SPI_RW_EN;
-> > > +		val |=3D A3700_SPI_XFER_START;
-> > > +		spireg_write(a3700_spi, A3700_SPI_IF_CFG_REG, val);
-> > > +	} else if (xfer->tx_buf) {
-> > > +		/* Start Write transfer */
+	default:
+		break;
+	}
 
-> > So this only supports single duplex transfers but there doesn't seem to
-> > be anything that enforces this.
+	/* No conversion found */
+	return opcode;
+}
 
-> A flag or a capability, typically? I will investigate
+For readiness, I don't whether people prefer the version with macro or the
+version without. Just tell me :)
 
-SPI_MASTER_HALF_DUPLEX.
+Of course with the switch statement I no longer need the struct
+spi_nor_address_entry.
 
---hgjkrzslmuctkbzu
-Content-Type: application/pgp-signature; name="signature.asc"
+Also for now I don't need a 4TO3 translation.
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhIOgwACgkQJNaLcl1U
-h9Bbqgf9G7NNd2ByuHzojcHoCJcjPY6gaTjfNeksJ/7+h+XRJMHrW91Mq99dQziT
-sxGx0pZNLpXeM/KTu8HZmVevqij7LilWEAlfz8366shamSCcThWF1DWLRqMGq0eP
-KgU61RgMK/1BipwT8H0V1J4ltih20gyd2cGXOFDKa3eroduCR97B5c7YBVp51b7r
-ab4vwBKWbYWc7n0zBpJph4iMNUpCZoInw+YnoOsvL1Cqgzm89LciY/A8/6FlwzLg
-KHs/0ARHMJrGdaufFxb6o4wv97ZCFiaSkVoh+GsMuSkAgXwKrgFth6x0XHeNMPdl
-d7lHoNIoczXVA8BLoTbceuafo9Basw==
-=euU8
------END PGP SIGNATURE-----
+>>>> +	/* No conversion found */
+>>>> +	return opcode;
+>>>> +}
+>>>> +
+>>>> +static u8 spi_nor_3to4_opcode(u8 opcode)
+>>>> +{
+>>>> +	/* MUST be sorted by 3byte opcode (cf spi_nor_convert_opcode). */
+>>>> +#define ENTRY_3TO4(_opcode)	{ _opcode, _opcode##_4B }
+>>>> +	static const struct spi_nor_address_entry spi_nor_3to4_table[] = {
+>>>
+>>> You can make this static const struct const for extra constness :-)
+>>>
+>>>> +		ENTRY_3TO4(SPINOR_OP_PP),		/* 0x02 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ),		/* 0x03 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ_FAST),	/* 0x0b */
+>>>> +		ENTRY_3TO4(SPINOR_OP_BE_4K),		/* 0x20 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_PP_1_1_4),		/* 0x32 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_PP_1_4_4),		/* 0x38 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ_1_1_2),	/* 0x3b */
+>>>> +		ENTRY_3TO4(SPINOR_OP_BE_32K),		/* 0x52 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ_1_1_4),	/* 0x6b */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ_1_2_2),	/* 0xbb */
+>>>> +		ENTRY_3TO4(SPINOR_OP_SE),		/* 0xd8 */
+>>>> +		ENTRY_3TO4(SPINOR_OP_READ_1_4_4),	/* 0xeb */
+>>>
+>>> I'd probably break this into three smaller tables, read/program/erase
+>>> and then call something like:
+>>>
+>>> spi_nor_3to4_opcode(nor->read_opcode, read_opcode_table,
+>>>                     ARRAY_SIZE(read_opcode_table));
+>>>
+>>> This would further reduce the table size (heck, it'd probably fit into a
+>>> cacheline), so linear search would be more than enough.
+>>>
+>>>> +	};
+>>>> +#undef ENTRY_3TO4
+>>>> +
+>>>> +	return spi_nor_convert_opcode(opcode, spi_nor_3to4_table,
+>>>> +				      ARRAY_SIZE(spi_nor_3to4_table));
+>>>> +}
+>>>> +
+>>>> +static void spi_nor_set_4byte_opcodes(struct spi_nor *nor,
+>>>> +				      const struct flash_info *info)
+>>>> +{
+>>>> +	/* Do some manufacturer fixups first */
+>>>> +	switch (JEDEC_MFR(info)) {
+>>>> +	case SNOR_MFR_SPANSION:
+>>>> +		/* No small sector erase for 4-byte command set */
+>>>> +		nor->erase_opcode = SPINOR_OP_SE;
+>>>> +		nor->mtd.erasesize = info->sector_size;
+>>>> +		break;
+>>>> +
+>>>> +	default:
+>>>> +		break;
+>>>> +	}
+>>>> +
+>>>> +	nor->read_opcode	= spi_nor_3to4_opcode(nor->read_opcode);
+>>>> +	nor->program_opcode	= spi_nor_3to4_opcode(nor->program_opcode);
+>>>> +	nor->erase_opcode	= spi_nor_3to4_opcode(nor->erase_opcode);
+>>>> +}
+>>>> +
+>>>>  /* Enable/disable 4-byte addressing mode. */
+>>>>  static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
+>>>>  			    int enable)
+>>>> @@ -1486,27 +1575,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+>>>>  	else if (mtd->size > 0x1000000) {
+>>>>  		/* enable 4-byte addressing if the device exceeds 16MiB */
+>>>>  		nor->addr_width = 4;
+>>>> -		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION) {
+>>>> -			/* Dedicated 4-byte command set */
+>>>> -			switch (nor->flash_read) {
+>>>> -			case SPI_NOR_QUAD:
+>>>> -				nor->read_opcode = SPINOR_OP_READ_1_1_4_4B;
+>>>> -				break;
+>>>> -			case SPI_NOR_DUAL:
+>>>> -				nor->read_opcode = SPINOR_OP_READ_1_1_2_4B;
+>>>> -				break;
+>>>> -			case SPI_NOR_FAST:
+>>>> -				nor->read_opcode = SPINOR_OP_READ_FAST_4B;
+>>>> -				break;
+>>>> -			case SPI_NOR_NORMAL:
+>>>> -				nor->read_opcode = SPINOR_OP_READ_4B;
+>>>> -				break;
+>>>> -			}
+>>>> -			nor->program_opcode = SPINOR_OP_PP_4B;
+>>>> -			/* No small sector erase for 4-byte command set */
+>>>> -			nor->erase_opcode = SPINOR_OP_SE_4B;
+>>>> -			mtd->erasesize = info->sector_size;
+>>>> -		} else
+>>>> +		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
+>>>> +		    info->flags & SPI_NOR_4B_OPCODES)
+>>>> +			spi_nor_set_4byte_opcodes(nor, info);
+>>>> +		else
+>>>>  			set_4byte(nor, info, 1);
+>>>>  	} else {
+>>>>  		nor->addr_width = 3;
+>>>>
+>>>
+>>>
+>>
+> 
+> 
 
---hgjkrzslmuctkbzu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

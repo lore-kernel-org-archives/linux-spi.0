@@ -1,78 +1,74 @@
-From: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
-Subject: Re: [PATCH] spi: davinci: Allow device tree devices to use DMA
-Date: Tue, 6 Dec 2016 20:28:10 -0600
-Message-ID: <588633b2-99c2-528f-35f4-fef898a79961@lechnology.com>
-References: <1479530464-12538-1-git-send-email-david@lechnology.com>
- <79f186b5-ac71-189f-c19f-977670395043@ti.com>
- <946d60bc-ac14-7934-c1b3-e2de03831459@lechnology.com>
- <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] mtd: spi-nor: rename SPINOR_OP_* macros of the
+ 4-byte address op codes
+Date: Wed, 7 Dec 2016 09:51:48 +0000
+Message-ID: <20161207095148.glwlxbd2tatr7axo@sirena.org.uk>
+References: <cover.1481041702.git.cyrille.pitchen@atmel.com>
+ <54697ac9604b8e769f92dd4fb392db952df9eae4.1481041702.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: multipart/mixed; boundary="===============6760643277226893351=="
+Cc: boris.brezillon@free-electrons.com, richard@nod.at,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+ linux-mtd@lists.infradead.org, computersforpeace@gmail.com
+To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <54697ac9604b8e769f92dd4fb392db952df9eae4.1481041702.git.cyrille.pitchen@atmel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============6760643277226893351==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="b7e2fgw57bhrpspr"
+Content-Disposition: inline
+
+
+--b7e2fgw57bhrpspr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Dec 06, 2016 at 05:52:31PM +0100, Cyrille Pitchen wrote:
+> This patch renames the SPINOR_OP_* macros of the 4-byte address
+> instruction set so the new names all share a common pattern: the 4-byte
+> address name is built from the 3-byte address name appending the "_4B"
+> suffix.
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--b7e2fgw57bhrpspr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhH27MACgkQJNaLcl1U
+h9CeXQf/cxt7aSuHcfw2uLphnnyWPpXzLm+22Ydq2sFwdkq92IvWZnbFZMynJOZO
+pSjee1ixvsChh1pWU0/PDXxBTow8rPJ4pyxYisPIV0HF2X+/lfKye6WiZ+6d8PTY
+8rVRd2cNU2MPbx/Ko61ham1KQN7aEIYvFEfl7zdT85Bg9Z5yYMawFEGbKK++0DBD
+ccaZHQ6gGQLG6TAg1O5NV7Hss9//SphAXT0DACGU8gKLl1KiuKa4900XRFxGyM1O
+XODQKG/0rG8MZxWbCTmEdL+Y75kFCrtB5oXWrd1UA7vXSZXXpRdirl5BefiOkp4+
+bt2jPtl4JMF5s0k0X53ySvtpMNs4WQ==
+=RGts
+-----END PGP SIGNATURE-----
+
+--b7e2fgw57bhrpspr--
+
+
+--===============6760643277226893351==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Cc: khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fd697f3b-dba1-1e5f-c12c-45f71c0c07a1-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
-On 11/21/2016 02:37 AM, Sekhar Nori wrote:
-> On Sunday 20 November 2016 10:31 PM, David Lechner wrote:
->
->> On 11/20/2016 06:59 AM, Sekhar Nori wrote:
->
->>> On Saturday 19 November 2016 10:11 AM, David Lechner wrote:
->
->>>> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device
->>>> *spi)
->>>>          if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
->>>>              spicfg->wdelay = (u8)prop;
->>>>          spi->controller_data = spicfg;
->>>> +        /* Use DMA for device if master supports it */
->>>> +        if (dspi->dma_rx)
->>>
->>> This should be
->>>
->>>         if (!(IS_ERR(dpsi->dma_rx) || IS_ERR(dspi->dma_tx))
->>
->>
->> There is the following code in davinci_spi_probe():
->>
->>     ret = davinci_spi_request_dma(dspi);
->>     if (ret == -EPROBE_DEFER) {
->>         goto free_clk;
->>     } else if (ret) {
->>         dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
->>         dspi->dma_rx = NULL;
->>         dspi->dma_tx = NULL;
->>     }
->>
->> So, I does not look like it is possible to get anything other than NULL
->> or a valid pointer for dpsi->dma_rx and that checking dpsi->dma_tx is
->> not necessary.
->>
->> So, I think if (dspi->dma_rx) is sufficient. In fact the same check is
->> used during unwinding if the probe function fails.
->
-> You are right, I see it now. Setting dma_rx to NULL overriding the error
-> value is confusing since dma_request_chan() itself does not use NULL as
-> an error value.
->
-> I think it is better to fix the existing code to remove the NULL
-> overwrite and use IS_ERR() instead. You should probably wait for some
-> feedback from the SPI maintainer though.
->
-> Thanks,
-> Sekhar
->
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
-
-There don't seem to be any further comments. Using NULL here makes more 
-sense to me, so I am inclined to leave this patch as-is.
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--===============6760643277226893351==--

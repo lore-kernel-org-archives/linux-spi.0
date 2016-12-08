@@ -1,156 +1,81 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH v2 2/2] mtd: spi-nor: add a stateless method to support memory
- size above 128Mib
-Date: Thu, 8 Dec 2016 13:41:37 +0100
-Message-ID: <1362ba746fee8d8ad359d4fd67d2d6d8fd544a57.1481200454.git.cyrille.pitchen@atmel.com>
-References: <cover.1481200454.git.cyrille.pitchen@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: boris.brezillon@free-electrons.com, richard@nod.at,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- computersforpeace@gmail.com
-To: <marek.vasut@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <cover.1481200454.git.cyrille.pitchen@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH v4 2/4] spi: armada-3700: Add documentation for the Armada 3700 SPI Controller
+Date: Thu,  8 Dec 2016 15:58:45 +0100
+Message-ID: <20161208145847.7794-3-romain.perier@free-electrons.com>
+References: <20161208145847.7794-1-romain.perier@free-electrons.com>
+Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+        Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161208145847.7794-1-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch provides an alternative mean to support memory above 16MiB
-(128Mib) by replacing 3byte address op codes by their associated 4byte
-address versions.
+This adds the devicetree bindings documentation for the SPI controller
+present in the Marvell Armada 3700 SoCs.
 
-Using the dedicated 4byte address op codes doesn't change the internal
-state of the SPI NOR memory as opposed to using other means such as
-updating a Base Address Register (BAR) and sending command to enter/leave
-the 4byte mode.
-
-Hence when a CPU reset occurs, early bootloaders don't need to be aware
-of BAR value or 4byte mode being enabled: they can still access the first
-16MiB of the SPI NOR memory using the regular 3byte address op codes.
-
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Tested-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Tested-by: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 78 +++++++++++++++++++++++++++++++------------
- 1 file changed, 57 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 8abe134e174a..40b78ebb9900 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -75,6 +75,10 @@ struct flash_info {
- 					 * bit. Must be used with
- 					 * SPI_NOR_HAS_LOCK.
- 					 */
-+#define SPI_NOR_4B_OPCODES	BIT(10)	/*
-+					 * Use dedicated 4byte address op codes
-+					 * to support memory size above 128Mib.
-+					 */
- };
- 
- #define JEDEC_MFR(info)	((info)->id[0])
-@@ -188,6 +192,55 @@ static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
- 	return mtd->priv;
- }
- 
+Changes in v4:
+ - Added tag "Acked-by" by Rob Herring
+
+Changes in v3:
+ - Added tag "Tested-by" by Gregory
+ - Fixed commit title, as requested by Mark Brown
+
+ .../devicetree/bindings/spi/spi-armada-3700.txt    | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-armada-3700.txt b/Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+new file mode 100644
+index 0000000..1564aa8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-armada-3700.txt
+@@ -0,0 +1,25 @@
++* Marvell Armada 3700 SPI Controller
 +
-+static u8 spi_nor_3to4_opcode(u8 opcode)
-+{
-+#define ENTRY_3TO4(_opcode)	{ _opcode, _opcode##_4B }
-+	static const u8 spi_nor_3to4_table[][2] = {
-+		ENTRY_3TO4(SPINOR_OP_READ),
-+		ENTRY_3TO4(SPINOR_OP_READ_FAST),
-+		ENTRY_3TO4(SPINOR_OP_READ_1_1_2),
-+		ENTRY_3TO4(SPINOR_OP_READ_1_2_2),
-+		ENTRY_3TO4(SPINOR_OP_READ_1_1_4),
-+		ENTRY_3TO4(SPINOR_OP_READ_1_4_4),
-+		ENTRY_3TO4(SPINOR_OP_PP),
-+		ENTRY_3TO4(SPINOR_OP_PP_1_1_4),
-+		ENTRY_3TO4(SPINOR_OP_PP_1_4_4),
-+		ENTRY_3TO4(SPINOR_OP_BE_4K),
-+		ENTRY_3TO4(SPINOR_OP_BE_32K),
-+		ENTRY_3TO4(SPINOR_OP_SE),
++Required Properties:
++
++- compatible: should be "marvell,armada-3700-spi"
++- reg: physical base address of the controller and length of memory mapped
++       region.
++- interrupts: The interrupt number. The interrupt specifier format depends on
++	      the interrupt controller and of its driver.
++- clocks: Must contain the clock source, usually from the North Bridge clocks.
++- num-cs: The number of chip selects that is supported by this SPI Controller
++- #address-cells: should be 1.
++- #size-cells: should be 0.
++
++Example:
++
++	spi0: spi@10600 {
++		compatible = "marvell,armada-3700-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x10600 0x5d>;
++		clocks = <&nb_perih_clk 7>;
++		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++		num-cs = <4>;
 +	};
-+#undef ENTRY_3TO4
-+	size_t i;
-+
-+	for (i = 0; i < ARRAY_SIZE(spi_nor_3to4_table); ++i)
-+		if (spi_nor_3to4_table[i][0] == opcode)
-+			return spi_nor_3to4_table[i][1];
-+
-+	/* No conversion found, keep input op code. */
-+	return opcode;
-+}
-+
-+static void spi_nor_set_4byte_opcodes(struct spi_nor *nor,
-+				      const struct flash_info *info)
-+{
-+	/* Do some manufacturer fixups first */
-+	switch (JEDEC_MFR(info)) {
-+	case SNOR_MFR_SPANSION:
-+		/* No small sector erase for 4-byte command set */
-+		nor->erase_opcode = SPINOR_OP_SE;
-+		nor->mtd.erasesize = info->sector_size;
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	nor->read_opcode	= spi_nor_3to4_opcode(nor->read_opcode);
-+	nor->program_opcode	= spi_nor_3to4_opcode(nor->program_opcode);
-+	nor->erase_opcode	= spi_nor_3to4_opcode(nor->erase_opcode);
-+}
-+
- /* Enable/disable 4-byte addressing mode. */
- static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
- 			    int enable)
-@@ -1486,27 +1539,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 	else if (mtd->size > 0x1000000) {
- 		/* enable 4-byte addressing if the device exceeds 16MiB */
- 		nor->addr_width = 4;
--		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION) {
--			/* Dedicated 4-byte command set */
--			switch (nor->flash_read) {
--			case SPI_NOR_QUAD:
--				nor->read_opcode = SPINOR_OP_READ_1_1_4_4B;
--				break;
--			case SPI_NOR_DUAL:
--				nor->read_opcode = SPINOR_OP_READ_1_1_2_4B;
--				break;
--			case SPI_NOR_FAST:
--				nor->read_opcode = SPINOR_OP_READ_FAST_4B;
--				break;
--			case SPI_NOR_NORMAL:
--				nor->read_opcode = SPINOR_OP_READ_4B;
--				break;
--			}
--			nor->program_opcode = SPINOR_OP_PP_4B;
--			/* No small sector erase for 4-byte command set */
--			nor->erase_opcode = SPINOR_OP_SE_4B;
--			mtd->erasesize = info->sector_size;
--		} else
-+		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
-+		    info->flags & SPI_NOR_4B_OPCODES)
-+			spi_nor_set_4byte_opcodes(nor, info);
-+		else
- 			set_4byte(nor, info, 1);
- 	} else {
- 		nor->addr_width = 3;
 -- 
-2.7.4
+2.9.3
 
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

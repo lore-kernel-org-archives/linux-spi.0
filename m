@@ -1,23 +1,64 @@
-From: Western Union <info-Jkm/SPrVjP1BDgjK7y7TUQ@public.gmane.org>
-Subject: Western Union Spende
-Date: Wed, 07 Dec 2016 20:58:55 -0800
-Message-ID: <20161207195901.2F3A714C7660@mailserver.jgdm.gov.za>
-Reply-To: wu.transfer101-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 0/2]  mtd: spi-nor: add a stateless method to support memory size above 128Mib
+Date: Thu, 8 Dec 2016 13:41:35 +0100
+Message-ID: <cover.1481200454.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-To: Recipients <info-Jkm/SPrVjP1BDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain
+Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, <richard-/L3Ra7n9ekc@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Sir/Madam,
-Hereby we inform you that WESTERN UNION has international donations project you expressed as a cash grant of awarded [85,000.00 EURO], promoted as a charity donation by Western union international, United Kingdom, in conjunction with the children's Fund of the United Nations [UNICEF].
-To request more information about the processing and payment of your grants claims please contact Mr. Mike Morris, the National Secretary of the Foundation with your qualifying number [WNI/101/231/BDB] as soon as possible.
-Western Union District Manager (Mr Mike MORIS)
-Website: www.westernunion.com
-Email:  Wu.transfer101-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Hi all,
+
+this series of patches is based on next-20161208 and can also be applied
+to the git://github.com/spi-nor/linux.git tree.
+It has been extracted from the SFDP series and is resent as a standalone
+series.
+
+This series fixes compatibility issue between Linux and many bootloaders
+when using SPI flash with size greater than 128Mib.
+
+Indeed, before this series, Linux used to make the SPI flash memory enter
+its 4-byte address mode when its size is greater than 128Mib: The very
+same Fast Read 1-1-z op code is used, for instance Fast Read 1-1-4 (6Bh)
+but once in 4-byte address mode, the SPI flash memory now expects a 4-byte
+address following the op code instead of a 3-byte address.
+This solution is statefull: it changes the internal state of the memory.
+
+Hence, when the CPU is reset but not the memory, many bootloaders are not
+aware of this internal state change at the memory side, don't know how to
+handle this and still send one Fast Read op code followed by a 3-byte
+address. So the bootloader fails to read data from the SPI flash memory.
+
+
+ChangeLog:
+
+v1 -> v2:
+- collect Acked-by for patch 1.
+- replace the dichotomic search by a simple for() loop for better clarity
+  purpose in patch 2.
+
+Cyrille Pitchen (2):
+  mtd: spi-nor: rename SPINOR_OP_* macros of the 4-byte address op codes
+  mtd: spi-nor: add a stateless method to support memory size above
+    128Mib
+
+ drivers/mtd/devices/serial_flash_cmds.h |  7 ---
+ drivers/mtd/devices/st_spi_fsm.c        | 28 ++++++------
+ drivers/mtd/spi-nor/spi-nor.c           | 78 ++++++++++++++++++++++++---------
+ drivers/spi/spi-bcm-qspi.c              |  6 +--
+ include/linux/mtd/spi-nor.h             | 22 +++++++---
+ 5 files changed, 90 insertions(+), 51 deletions(-)
+
+-- 
+2.7.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

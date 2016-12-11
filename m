@@ -1,39 +1,71 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v2 0/2] spi: lantiq-ssc: add support for Lantiq SSC SPI controller
-Date: Sun, 11 Dec 2016 21:03:48 +0100
-Message-ID: <20161211200350.13590-1-hauke@hauke-m.de>
+Subject: [PATCH v2 1/2] spi: add check_finished() callback
+Date: Sun, 11 Dec 2016 21:03:49 +0100
+Message-ID: <20161211200350.13590-2-hauke@hauke-m.de>
+References: <20161211200350.13590-1-hauke@hauke-m.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
         thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161211200350.13590-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-It took me longer than expected to get this to work with the
-transfer_one() callback.
+This callback checks if the transfer really finished. This allows a
+driver to directly call the completion list in the irq handler and it
+does not have to bushy wait till the hardware is really finished in the
+IRQ handler. This is needed for the Lantiq driver.
 
-changes since v1:
- * renamed from Intel to Lantiq
- * make use of transfer_one and related functions
- * make use of check_finished function
- * use generic GPIO CS handling
- * enable IRQs only after the device was initialized
+Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+---
+ drivers/spi/spi.c       | 10 ++++++++++
+ include/linux/spi/spi.h |  4 ++++
+ 2 files changed, 14 insertions(+)
 
-Hauke Mehrtens (2):
-  spi: add check_finished() callback
-  spi: lantiq-ssc: add support for Lantiq SSC SPI controller
-
- .../devicetree/bindings/spi/spi-lantiq-ssc.txt     |  29 +
- drivers/spi/Kconfig                                |   8 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-lantiq-ssc.c                       | 947 +++++++++++++++++++++
- drivers/spi/spi.c                                  |  10 +
- include/linux/spi/spi.h                            |   4 +
- 6 files changed, 999 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-lantiq-ssc.txt
- create mode 100644 drivers/spi/spi-lantiq-ssc.c
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 838783c..8702cdf 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1013,6 +1013,16 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 								 msecs_to_jiffies(ms));
+ 			}
+ 
++			if (master->check_finished) {
++				ret = master->check_finished(master, ms);
++				if (ret) {
++					dev_err(&msg->spi->dev,
++						"SPI transfer not finished: %i\n",
++						ret);
++					msg->status = ret;
++				}
++			}
++
+ 			if (ms == 0) {
+ 				SPI_STATISTICS_INCREMENT_FIELD(statm,
+ 							       timedout);
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 4b743ac..2b851a6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -370,6 +370,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *                    transfer_one_message are mutually exclusive; when both
+  *                    are set, the generic subsystem does not call your
+  *                    transfer_one callback.
++ * @check_finished: This callback allows the driver to check if the message
++ *		    was fully transferred. return a negative value in case
++ *		    of an error.
+  * @handle_err: the subsystem calls the driver to handle an error that occurs
+  *		in the generic implementation of transfer_one_message().
+  * @unprepare_message: undo any work done by prepare_message().
+@@ -546,6 +549,7 @@ struct spi_master {
+ 	void (*set_cs)(struct spi_device *spi, bool enable);
+ 	int (*transfer_one)(struct spi_master *master, struct spi_device *spi,
+ 			    struct spi_transfer *transfer);
++	int (*check_finished)(struct spi_master *master, unsigned long timeout);
+ 	void (*handle_err)(struct spi_master *master,
+ 			   struct spi_message *message);
+ 
 -- 
 2.10.2
 

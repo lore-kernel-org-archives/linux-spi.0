@@ -1,54 +1,41 @@
-From: "Giuseppe Lippolis" <giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: spidev instantiated from DT
-Date: Sun, 11 Dec 2016 13:03:18 +0100
-Message-ID: <002b01d253a6$9026e3b0$b074ab10$@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: [PATCH v2 0/2] spi: lantiq-ssc: add support for Lantiq SSC SPI controller
+Date: Sun, 11 Dec 2016 21:03:48 +0100
+Message-ID: <20161211200350.13590-1-hauke@hauke-m.de>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: de
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Dear All,
-in the spidev.c driver there is a check preventing to export the SPI
-subsystem to the userspace.
-The commit message state:
+It took me longer than expected to get this to work with the
+transfer_one() callback.
 
-	spi: spidev: Warn loudly if instantiated from DT as "spidev"
+changes since v1:
+ * renamed from Intel to Lantiq
+ * make use of transfer_one and related functions
+ * make use of check_finished function
+ * use generic GPIO CS handling
+ * enable IRQs only after the device was initialized
 
-    Since spidev is a detail of how Linux controls a device rather than a
-    description of the hardware in the system we should never have a node
-    described as "spidev" in DT, any SPI device could be a spidev so this
-    is just not a useful description.
+Hauke Mehrtens (2):
+  spi: add check_finished() callback
+  spi: lantiq-ssc: add support for Lantiq SSC SPI controller
 
-    In order to help prevent users from writing such device trees generate a
-    warning if spidev is instantiated as a DT node without an ID in the
-match
-    table.
+ .../devicetree/bindings/spi/spi-lantiq-ssc.txt     |  29 +
+ drivers/spi/Kconfig                                |   8 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-lantiq-ssc.c                       | 947 +++++++++++++++++++++
+ drivers/spi/spi.c                                  |  10 +
+ include/linux/spi/spi.h                            |   4 +
+ 6 files changed, 999 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-lantiq-ssc.txt
+ create mode 100644 drivers/spi/spi-lantiq-ssc.c
 
-    Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
-Currently in the spidec.c are registered two devices to use "legally" this
-driver:
-    { .compatible = "rohm,dh2228fv" },
-    { .compatible = "lineartechnology,ltc2488" },
-
-I cannot fully understand the rationale.
-I have a board mounting an spi device. Currently no dedicated driver for
-this devices exists.
-So in my opinion, now, make sense to describe a device-tree with a "generic"
-driver, allowing the userspace to control the device. When at the end a
-dedicated driver will be available an update of the device tree will be
-possible.
-
-In alternative, make sense to add a dedicated .compatible = "xxx,yyy"
-statements to attach the spidev driver to the specific device and allowing
-the DT description as soon as a dedicated driver will be not available?
-
-Can someone clarify me these points?
+-- 
+2.10.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

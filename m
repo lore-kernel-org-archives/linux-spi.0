@@ -1,79 +1,104 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: spidev instantiated from DT
-Date: Mon, 12 Dec 2016 10:14:18 +0100
-Message-ID: <CAMuHMdWb_UzYqSQpr-30TDJgjH+-TsD1uXqPfhnY4Qj-MuiF7g@mail.gmail.com>
-References: <002b01d253a6$9026e3b0$b074ab10$@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Giuseppe Lippolis <giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <002b01d253a6$9026e3b0$b074ab10$@gmail.com>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Simon Horman <horms+renesas@verge.net.au>
+Subject: [PATCH spi/for-next] spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings
+Date: Mon, 12 Dec 2016 10:49:35 +0100
+Message-ID: <1481536175-17238-1-git-send-email-horms+renesas@verge.net.au>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Simon Horman <horms+renesas@verge.net.au>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Giuseppe,
+In the case of Renesas R-Car hardware we know that there are generations of
+SoCs, e.g. Gen 2 and Gen 3. But beyond that it's not clear what the
+relationship between IP blocks might be. For example, I believe that
+r8a7790 is older than r8a7791 but that doesn't imply that the latter is a
+descendant of the former or vice versa.
 
-On Sun, Dec 11, 2016 at 1:03 PM, Giuseppe Lippolis
-<giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> in the spidev.c driver there is a check preventing to export the SPI
-> subsystem to the userspace.
-> The commit message state:
->
->         spi: spidev: Warn loudly if instantiated from DT as "spidev"
->
->     Since spidev is a detail of how Linux controls a device rather than a
->     description of the hardware in the system we should never have a node
->     described as "spidev" in DT, any SPI device could be a spidev so this
->     is just not a useful description.
->
->     In order to help prevent users from writing such device trees generate a
->     warning if spidev is instantiated as a DT node without an ID in the
-> match
->     table.
->
->     Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->
-> Currently in the spidec.c are registered two devices to use "legally" this
-> driver:
->     { .compatible = "rohm,dh2228fv" },
->     { .compatible = "lineartechnology,ltc2488" },
->
-> I cannot fully understand the rationale.
-> I have a board mounting an spi device. Currently no dedicated driver for
-> this devices exists.
+We can, however, by examining the documentation and behaviour of the
+hardware at run-time observe that the current driver implementation appears
+to be compatible with the IP blocks on SoCs within a given generation.
 
-But you can still describe the SPI device in DT, right?
-Then you can add its compatible value to spidev.c now, until a dedicated
-driver becomes available.
+For the above reasons and convenience when enabling new SoCs a
+per-generation fallback compatibility string scheme is being adopted for
+drivers for Renesas SoCs.
 
-> So in my opinion, now, make sense to describe a device-tree with a "generic"
-> driver, allowing the userspace to control the device. When at the end a
-> dedicated driver will be available an update of the device tree will be
-> possible.
+Also:
+* Deprecate renesas,sh-msiof. It seems poorly named as it is only
+  compatible with SH-Mobile. It also appears unused in mainline.
 
-Hmm... So you would change DT, which describes the hardware, while the actual
-hardware hasn't changed?
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 19 +++++++++++++------
+ drivers/spi/spi-sh-msiof.c                         |  4 +++-
+ 2 files changed, 16 insertions(+), 7 deletions(-)
 
-Does that help to understand the rationale?
-
-> In alternative, make sense to add a dedicated .compatible = "xxx,yyy"
-> statements to attach the spidev driver to the specific device and allowing
-> the DT description as soon as a dedicated driver will be not available?
-
-Please add the dedicated compatible statement to spidev.c.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index da6614c63796..dc975064fa27 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -1,17 +1,23 @@
+ Renesas MSIOF spi controller
+ 
+ Required properties:
+-- compatible           : "renesas,msiof-<soctype>" for SoCs,
+-			 "renesas,sh-msiof" for SuperH, or
+-			 "renesas,sh-mobile-msiof" for SH Mobile series.
+-			 Examples with soctypes are:
+-			 "renesas,msiof-r8a7790" (R-Car H2)
++- compatible           : "renesas,msiof-r8a7790" (R-Car H2)
+ 			 "renesas,msiof-r8a7791" (R-Car M2-W)
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
+ 			 "renesas,msiof-r8a7796" (R-Car M3-W)
+ 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
++			 "renesas,sh-mobile-msiof" (generic SH-Mobile compatibile device)
++			 "renesas,rcar-gen2-msiof" (generic R-Car Gen2 compatible device)
++			 "renesas,rcar-gen3-msiof" (generic R-Car Gen3 compatible device)
++			 "renesas,sh-msiof"      (deprecated)
++
++			 When compatible with the generic version, nodes
++			 must list the SoC-specific version corresponding
++			 to the platform first followed by the generic
++			 version.
++
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+ 			 If only one register set is present, it is to be used
+@@ -61,7 +67,8 @@ Documentation/devicetree/bindings/pinctrl/renesas,*.
+ Example:
+ 
+ 	msiof0: spi@e6e20000 {
+-		compatible = "renesas,msiof-r8a7791";
++		compatible = "renesas,msiof-r8a7791",
++			     "renesas,rcar-gen2-msiof";
+ 		reg = <0 0xe6e20000 0 0x0064>;
+ 		interrupts = <0 156 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp0_clks R8A7791_CLK_MSIOF0>;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 0012ad02e569..471ca211b76c 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -973,14 +973,16 @@ static const struct sh_msiof_chipdata r8a779x_data = {
+ };
+ 
+ static const struct of_device_id sh_msiof_match[] = {
+-	{ .compatible = "renesas,sh-msiof",        .data = &sh_data },
+ 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
+ 	{ .compatible = "renesas,msiof-r8a7790",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7791",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7793",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7794",   .data = &r8a779x_data },
++	{ .compatible = "renesas,rcar-gen2-msiof", .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7796",   .data = &r8a779x_data },
++	{ .compatible = "renesas,rcar-gen3-msiof", .data = &r8a779x_data },
++	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, // Deprecated
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, sh_msiof_match);
+-- 
+2.7.0.rc3.207.g0ac5344

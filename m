@@ -1,45 +1,63 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: spidev instantiated from DT
-Date: Tue, 13 Dec 2016 09:27:32 +0100
-Message-ID: <CAMuHMdXgXBfBmp48i=ApzXrK5VmmL3_D2wr1GcHTCrJYPzp+Og@mail.gmail.com>
-References: <006d01d254b0$3d010520$b7030f60$@gmail.com>
+From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Subject: [PATCH] spi: armada-3700: fix unsigned compare than zero on irq
+Date: Tue, 13 Dec 2016 10:28:12 +0000
+Message-ID: <20161213102812.9029-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Giuseppe Lippolis <giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <006d01d254b0$3d010520$b7030f60$@gmail.com>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Guiseppe,
+From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 
-On Mon, Dec 12, 2016 at 8:45 PM, Giuseppe Lippolis
-<giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> So the rationale is to keep fixed the HW description (that make sense).
-> If a "generic" driver is required, the specific device compatible statement
-> shall be added in spidev like:
->         { .compatible = "lineartechnology,ltc2488" },
->
-> And if later a more specific driver will be available, the previous line
-> shall be removed.
->
-> Can you please confirm my understanding?
+spi->irq is an unsigned integer hence the check if status is less than
+zero has no effect.  Fix this by replacing spi->irq with an int irq
+so the less than zero compare will correctly detect errors.
 
-That's correct.
+Issue found with static analysis with CoverityScan, CID1388567
 
-Of course we prefer having a specific driver ;-)
+Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+---
+ drivers/spi/spi-armada-3700.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Gr{oetje,eeting}s,
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index e89da0a..4e92178 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -800,7 +800,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct a3700_spi *spi;
+ 	u32 num_cs = 0;
+-	int ret = 0;
++	int irq, ret = 0;
+ 
+ 	master = spi_alloc_master(dev, sizeof(*spi));
+ 	if (!master) {
+@@ -846,12 +846,13 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 		goto error;
+ 	}
+ 
+-	spi->irq = platform_get_irq(pdev, 0);
+-	if (spi->irq < 0) {
+-		dev_err(dev, "could not get irq: %d\n", spi->irq);
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "could not get irq: %d\n", irq);
+ 		ret = -ENXIO;
+ 		goto error;
+ 	}
++	spi->irq = irq;
+ 
+ 	init_completion(&spi->done);
+ 
+-- 
+2.10.2
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

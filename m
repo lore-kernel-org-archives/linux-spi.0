@@ -1,20 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl-lpspi: Pre-initialize ret in fsl_lpspi_transfer_one_msg()" to the spi tree
-Date: Wed, 14 Dec 2016 18:03:58 +0000
-Message-ID: <E1cHDuI-0007Gv-Vy@debutante>
-References: <1481714455-14224-1-git-send-email-geert@linux-m68k.org>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Gao Pan <pandy.gao@nxp.com>, linux-spi@vger.kernel.org,
+Subject: Applied "spi: armada-3700: fix unsigned compare than zero on irq" to the spi tree
+Date: Wed, 14 Dec 2016 18:03:34 +0000
+Message-ID: <E1cHDtu-0007BJ-Cm@debutante>
+References: <20161213102812.9029-1-colin.king@canonical.com>
+Cc: Romain Perier <romain.perier@free-electrons.com>,
+        Mark Brown <broonie@kernel.org>,
+        Romain Perier <romain.perier@free-electrons.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Colin Ian King <colin.king@canonical.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1481714455-14224-1-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <20161213102812.9029-1-colin.king@canonical.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fsl-lpspi: Pre-initialize ret in fsl_lpspi_transfer_one_msg()
+   spi: armada-3700: fix unsigned compare than zero on irq
 
 has been applied to the spi tree at
 
@@ -39,47 +41,53 @@ to this mail.
 Thanks,
 Mark
 
->From cc4a7ffe02c95f537541c91e9842e3710decae6e Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 14 Dec 2016 12:20:55 +0100
-Subject: [PATCH] spi: fsl-lpspi: Pre-initialize ret in
- fsl_lpspi_transfer_one_msg()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From f6f0083cca66e673cca6fa26b52b107b5570081d Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Tue, 13 Dec 2016 10:28:12 +0000
+Subject: [PATCH] spi: armada-3700: fix unsigned compare than zero on irq
 
-With gcc 4.1.2:
+spi->irq is an unsigned integer hence the check if status is less than
+zero has no effect.  Fix this by replacing spi->irq with an int irq
+so the less than zero compare will correctly detect errors.
 
-    drivers/spi/spi-fsl-lpspi.c: In function ‘fsl_lpspi_transfer_one_msg’:
-    drivers/spi/spi-fsl-lpspi.c:369: warning: ‘ret’ may be used uninitialized in this function
+Issue found with static analysis with CoverityScan, CID1388567
 
-If the message contains no transfers, the function will set the
-message's status to an uninitialized value, and will return that
-uninitialized value.
-
-While __spi_validate() should have been called in all paths leading to
-this, and thus have rejected such messages, we better pre-initialize ret
-to be safe for future modifications (spi_transfer_one_message() also
-does this).
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Romain Perier <romain.perier@free-electrons.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-armada-3700.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 52551f6d0c7d..2b93bc605b91 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -366,7 +366,7 @@ static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	bool is_first_xfer = true;
- 	u32 temp;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index e89da0af45d2..4e921782652f 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -800,7 +800,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct a3700_spi *spi;
+ 	u32 num_cs = 0;
+-	int ret = 0;
++	int irq, ret = 0;
  
- 	msg->status = 0;
- 	msg->actual_length = 0;
+ 	master = spi_alloc_master(dev, sizeof(*spi));
+ 	if (!master) {
+@@ -846,12 +846,13 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 		goto error;
+ 	}
+ 
+-	spi->irq = platform_get_irq(pdev, 0);
+-	if (spi->irq < 0) {
+-		dev_err(dev, "could not get irq: %d\n", spi->irq);
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "could not get irq: %d\n", irq);
+ 		ret = -ENXIO;
+ 		goto error;
+ 	}
++	spi->irq = irq;
+ 
+ 	init_completion(&spi->done);
+ 
 -- 
 2.11.0

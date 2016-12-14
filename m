@@ -1,19 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-ath79: support multiple internal chip select lines" to the spi tree
-Date: Wed, 14 Dec 2016 18:03:51 +0000
-Message-ID: <E1cHDuB-0007EP-8p@debutante>
-References: <20161209194853.71018-1-nbd@nbd.name>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161209194853.71018-1-nbd-Vt+b4OUoWG0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: fsl-lpspi: Pre-initialize ret in fsl_lpspi_transfer_one_msg()" to the spi tree
+Date: Wed, 14 Dec 2016 18:03:58 +0000
+Message-ID: <E1cHDuI-0007Gv-Vy@debutante>
+References: <1481714455-14224-1-git-send-email-geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Gao Pan <pandy.gao@nxp.com>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1481714455-14224-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-ath79: support multiple internal chip select lines
+   spi: fsl-lpspi: Pre-initialize ret in fsl_lpspi_transfer_one_msg()
 
 has been applied to the spi tree at
 
@@ -38,85 +39,47 @@ to this mail.
 Thanks,
 Mark
 
->From 22c76326bff810d220fffdbaab949d09e2564067 Mon Sep 17 00:00:00 2001
-From: Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>
-Date: Fri, 9 Dec 2016 20:48:52 +0100
-Subject: [PATCH] spi: spi-ath79: support multiple internal chip select lines
+>From cc4a7ffe02c95f537541c91e9842e3710decae6e Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 14 Dec 2016 12:20:55 +0100
+Subject: [PATCH] spi: fsl-lpspi: Pre-initialize ret in
+ fsl_lpspi_transfer_one_msg()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Several devices with multiple flash chips use the internal chip select
-lines. Don't assume that chip select 1 and above are GPIO lines.
+With gcc 4.1.2:
 
-Signed-off-by: Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+    drivers/spi/spi-fsl-lpspi.c: In function ‘fsl_lpspi_transfer_one_msg’:
+    drivers/spi/spi-fsl-lpspi.c:369: warning: ‘ret’ may be used uninitialized in this function
+
+If the message contains no transfers, the function will set the
+message's status to an uninitialized value, and will return that
+uninitialized value.
+
+While __spi_validate() should have been called in all paths leading to
+this, and thus have rejected such messages, we better pre-initialize ret
+to be safe for future modifications (spi_transfer_one_message() also
+does this).
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-ath79.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index f369174fbd88..3e9b928b563b 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -78,14 +78,16 @@ static void ath79_spi_chipselect(struct spi_device *spi, int is_active)
- 		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
- 	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 52551f6d0c7d..2b93bc605b91 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -366,7 +366,7 @@ static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
+ 	struct spi_transfer *xfer;
+ 	bool is_first_xfer = true;
+ 	u32 temp;
+-	int ret;
++	int ret = 0;
  
--	if (spi->chip_select) {
-+	if (gpio_is_valid(spi->cs_gpio)) {
- 		/* SPI is normally active-low */
- 		gpio_set_value(spi->cs_gpio, cs_high);
- 	} else {
-+		u32 cs_bit = AR71XX_SPI_IOC_CS(spi->chip_select);
-+
- 		if (cs_high)
--			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+			sp->ioc_base |= cs_bit;
- 		else
--			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+			sp->ioc_base &= ~cs_bit;
- 
- 		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
- 	}
-@@ -118,11 +120,8 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
- 	int status;
- 
--	if (spi->chip_select && !gpio_is_valid(spi->cs_gpio))
--		return -EINVAL;
--
- 	status = 0;
--	if (spi->chip_select) {
-+	if (gpio_is_valid(spi->cs_gpio)) {
- 		unsigned long flags;
- 
- 		flags = GPIOF_DIR_OUT;
-@@ -134,10 +133,12 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 		status = gpio_request_one(spi->cs_gpio, flags,
- 					  dev_name(&spi->dev));
- 	} else {
-+		u32 cs_bit = AR71XX_SPI_IOC_CS(spi->chip_select);
-+
- 		if (spi->mode & SPI_CS_HIGH)
--			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+			sp->ioc_base &= ~cs_bit;
- 		else
--			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+			sp->ioc_base |= cs_bit;
- 
- 		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
- 	}
-@@ -147,7 +148,7 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 
- static void ath79_spi_cleanup_cs(struct spi_device *spi)
- {
--	if (spi->chip_select) {
-+	if (gpio_is_valid(spi->cs_gpio)) {
- 		gpio_free(spi->cs_gpio);
- 	}
- }
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

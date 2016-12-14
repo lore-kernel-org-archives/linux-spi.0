@@ -1,22 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: armada-3700: fix unsigned compare than zero on irq" to the spi tree
-Date: Wed, 14 Dec 2016 18:03:34 +0000
-Message-ID: <E1cHDtu-0007BJ-Cm@debutante>
-References: <20161213102812.9029-1-colin.king@canonical.com>
-Cc: Romain Perier <romain.perier@free-electrons.com>,
-        Mark Brown <broonie@kernel.org>,
-        Romain Perier <romain.perier@free-electrons.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161213102812.9029-1-colin.king@canonical.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: SPI_FSL_DSPI should depend on HAS_DMA" to the spi tree
+Date: Wed, 14 Dec 2016 18:03:55 +0000
+Message-ID: <E1cHDuF-0007Fj-6J@debutante>
+References: <1481718485-6966-1-git-send-email-geert@linux-m68k.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1481718485-6966-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: armada-3700: fix unsigned compare than zero on irq
+   spi: SPI_FSL_DSPI should depend on HAS_DMA
 
 has been applied to the spi tree at
 
@@ -41,53 +39,39 @@ to this mail.
 Thanks,
 Mark
 
->From f6f0083cca66e673cca6fa26b52b107b5570081d Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Tue, 13 Dec 2016 10:28:12 +0000
-Subject: [PATCH] spi: armada-3700: fix unsigned compare than zero on irq
+>From dadab2d4e3cf708ceba22ecddd94aedfecb39199 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Date: Wed, 14 Dec 2016 13:28:05 +0100
+Subject: [PATCH] spi: SPI_FSL_DSPI should depend on HAS_DMA
 
-spi->irq is an unsigned integer hence the check if status is less than
-zero has no effect.  Fix this by replacing spi->irq with an int irq
-so the less than zero compare will correctly detect errors.
+If NO_DMA=y:
 
-Issue found with static analysis with CoverityScan, CID1388567
+    ERROR: "bad_dma_ops" [drivers/spi/spi-fsl-dspi.ko] undefined!
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Romain Perier <romain.perier@free-electrons.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add a dependency on HAS_DMA to fix this.
+
+Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-armada-3700.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index e89da0af45d2..4e921782652f 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -800,7 +800,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct a3700_spi *spi;
- 	u32 num_cs = 0;
--	int ret = 0;
-+	int irq, ret = 0;
- 
- 	master = spi_alloc_master(dev, sizeof(*spi));
- 	if (!master) {
-@@ -846,12 +846,13 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 		goto error;
- 	}
- 
--	spi->irq = platform_get_irq(pdev, 0);
--	if (spi->irq < 0) {
--		dev_err(dev, "could not get irq: %d\n", spi->irq);
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "could not get irq: %d\n", irq);
- 		ret = -ENXIO;
- 		goto error;
- 	}
-+	spi->irq = irq;
- 
- 	init_completion(&spi->done);
- 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ec4aa252d6e8..2922a9908302 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -378,6 +378,7 @@ config SPI_FSL_SPI
+ config SPI_FSL_DSPI
+ 	tristate "Freescale DSPI controller"
+ 	select REGMAP_MMIO
++	depends on HAS_DMA
+ 	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
+ 	help
+ 	  This enables support for the Freescale DSPI controller in master
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

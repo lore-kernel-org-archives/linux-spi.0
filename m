@@ -1,120 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: lantiq-ssc: add support for Lantiq SSC SPI
- controller
-Date: Wed, 14 Dec 2016 15:34:07 +0000
-Message-ID: <20161214153407.du2f63irwl2fi72h@sirena.org.uk>
+Subject: Re: [PATCH v2 1/2] spi: add check_finished() callback
+Date: Wed, 14 Dec 2016 15:21:56 +0000
+Message-ID: <20161214152156.uehjhqoxpng47pnh@sirena.org.uk>
 References: <20161211200350.13590-1-hauke@hauke-m.de>
- <20161211200350.13590-3-hauke@hauke-m.de>
+ <20161211200350.13590-2-hauke@hauke-m.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ngmimpbrtnwqq7o2"
+        protocol="application/pgp-signature"; boundary="i6zad4m4rotuy54i"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
         thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org
 To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20161211200350.13590-3-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+In-Reply-To: <20161211200350.13590-2-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---ngmimpbrtnwqq7o2
+--i6zad4m4rotuy54i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Dec 11, 2016 at 09:03:50PM +0100, Hauke Mehrtens wrote:
+On Sun, Dec 11, 2016 at 09:03:49PM +0100, Hauke Mehrtens wrote:
 
-> +config SPI_LANTIQ_SSC
-> +	tristate "Lantiq SSC SPI controller"
-> +	depends on LANTIQ
+> This callback checks if the transfer really finished. This allows a
+> driver to directly call the completion list in the irq handler and it
+> does not have to bushy wait till the hardware is really finished in the
+> IRQ handler. This is needed for the Lantiq driver.
 
-No || COMPILE_TEST?
+This is really hard to understand and does not seem like a good
+interface, it's going to be confusing for anyone who doesn't have
+hardware which is broken in whatever way your hardware is broken and it
+sounds like it's misnamed for your hardware since my guess is that you
+actually want to wait for something in the function rather than just
+check to see if the transfer completed.
 
-> +	if (t->speed_hz)
-> +		speed_hz = t->speed_hz;
-> +	else
-> +		speed_hz = spidev->max_speed_hz;
+Why not just have your interrupt handler schedule something on a
+workqueue to check whatever it is needs checking here?
 
-The core will ensure the transfers are always initialized.
-
-> +static int lantiq_ssc_unprepare_message(struct spi_master *master,
-> +					struct spi_message *message)
-> +{
-> +	struct lantiq_ssc_spi *spi = spi_master_get_devdata(master);
-> +
-> +	/* Disable transmitter and receiver while idle */
-> +	lantiq_ssc_maskl(spi, 0, SPI_CON_TXOFF | SPI_CON_RXOFF, SPI_CON);
-> +
-> +	return 0;
-> +}
-
-Why is this done per message and not when the device actually goes idle?
-
-> +		default:
-> +			WARN_ON(1);
-> +			data = 0;
-> +		}
-
-Missing break.
-
-> +		case 24:
-> +		case 32:
-> +			rx32 = (u32 *) spi->rx;
-> +			*rx32 = data;
-> +			spi->rx_todo -= 4;
-> +			spi->rx += 4;
-> +			break;
-
-This looks like the device doesn't actually support 24 bits per word or
-at least is expecting the data to be in memory with pad bytes which
-isn't what Linux expects.  You'd need to repack the data for the
-hardware or just not support it.
-
-> +static irqreturn_t lantiq_ssc_err_interrupt(int irq, void *data)
-> +{
-> +	struct lantiq_ssc_spi *spi = data;
-> +	u32 stat = lantiq_ssc_readl(spi, SPI_STAT);
-> +
-> +	if (stat & SPI_STAT_RUE)
-> +		dev_err(spi->dev, "receive underflow error\n");
-> +	if (stat & SPI_STAT_TUE)
-> +		dev_err(spi->dev, "transmit underflow error\n");
-> +	if (stat & SPI_STAT_RE)
-> +		dev_err(spi->dev, "receive overflow error\n");
-> +	if (stat & SPI_STAT_TE)
-> +		dev_err(spi->dev, "transmit overflow error\n");
-> +	if (stat & SPI_STAT_ME)
-> +		dev_err(spi->dev, "mode error\n");
-> +
-> +	/* Clear error flags */
-> +	lantiq_ssc_maskl(spi, 0, SPI_WHBSTATE_CLR_ERRORS, SPI_WHBSTATE);
-> +
-> +	/* set bad status so it can be retried */
-> +	spi->status = -EIO;
-> +	spi_finalize_current_transfer(spi->master);
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-This unconditionally returns IRQ_HANDLED even if nothing was flagged.
-
---ngmimpbrtnwqq7o2
+--i6zad4m4rotuy54i
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhRZm4ACgkQJNaLcl1U
-h9B0sgf+MUjsq2XEGC4pUJCqf/W0w/GIxcVgDToYg9SeVeNCg0+sNKucH5FWf5XT
-R4CbE+WCgalRTeUMSRGlpoVkan0XLeKuIJMCRYhxLMr7Di9Iez5ROvtCNw8AE4f6
-urGQ4KUoSl7nWLH5pMw6ZhvDkawIjorBvrgSMFj2VN0rp0nP3RElb/jtFkD/CdXJ
-xRwPJ4Y+oljNdpZzYi8WlYROKFakmCmHg4JuYP/T3wKOHg9gI1RFa1Ja2fVh3mPP
-moII/k4MfTHbt3okMocRxrRSC50ALqxR+JCmhy23pY/odKHxK2cCLWHy+VtieNR+
-7Ye6t6Nxfcx2lT6rL0LUyEmWg0yCbg==
-=CkND
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhRY5MACgkQJNaLcl1U
+h9C7Sgf+NQbi/gp5Kwx77M1uFPuXhaRLy9AMfjGXf0DpMQ4/FRDIv1VP8X3KLt+4
+HBW5QKWvWLRc94UHB680Y0YPRgwRUW1kHGaKbps+0zvTZI8SqeP45zyQ/yoEW2p4
+kqVn1s2pynYqGGCNsqXFHmNzuW+Z60AIjBCZonRQ+dAcEG4u7BeIcacBJRr3oxuG
+01jH2oU2UnaFRkaymUC/P8iwuwPOBoRMr/Cg0LUwFh3Qh3GvxL1uoRnj0l1hI9AV
+dA4Vj+eXA5B0AIng7YPb9HnVG90uot/zdYNEI9SLg2hEq/7RWREz2n5msmBYoZK2
+MWqrId7Cb/UKLiD5FVJOXto67VXxpg==
+=uAh+
 -----END PGP SIGNATURE-----
 
---ngmimpbrtnwqq7o2--
+--i6zad4m4rotuy54i--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

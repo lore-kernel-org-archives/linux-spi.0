@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: armada-3700: Set mode bits correctly" to the spi tree
-Date: Fri, 16 Dec 2016 12:31:53 +0000
-Message-ID: <E1cHrg1-0006LK-I7@debutante>
-References: <20161216093325.GA13942@elgon.mountain>
+Subject: Applied "spi: armada-3700: Remove unnecessary condition" to the spi tree
+Date: Fri, 16 Dec 2016 12:31:56 +0000
+Message-ID: <E1cHrg4-0006MV-Gt@debutante>
+References: <20161216093359.GB13942@elgon.mountain>
 Cc: Romain Perier <romain.perier@free-electrons.com>,
         Mark Brown <broonie@kernel.org>,
         Mark Brown <broonie@kernel.org>,
@@ -10,13 +10,13 @@ Cc: Romain Perier <romain.perier@free-electrons.com>,
         linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org
 To: Dan Carpenter <dan.carpenter@oracle.com>
 Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20161216093325.GA13942@elgon.mountain>
+In-Reply-To: <20161216093359.GB13942@elgon.mountain>
 Sender: kernel-janitors-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: armada-3700: Set mode bits correctly
+   spi: armada-3700: Remove unnecessary condition
 
 has been applied to the spi tree at
 
@@ -41,34 +41,35 @@ to this mail.
 Thanks,
 Mark
 
->From 42cd4ed888393b2bc8ddfd277aa2d0ec0c7e0259 Mon Sep 17 00:00:00 2001
+>From 0cc059abac0dc687dc714f3ec2c8d8a134132f56 Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 16 Dec 2016 12:33:25 +0300
-Subject: [PATCH] spi: armada-3700: Set mode bits correctly
+Date: Fri, 16 Dec 2016 12:33:59 +0300
+Subject: [PATCH] spi: armada-3700: Remove unnecessary condition
 
-We set SPI_RX_DUAL twice instead of setting SPI_TX_DUAL.
+We checked that "a3700_spi->wait_mask & cause" was set at the beginning
+of the function so we don't need to check again here.
 
-Fixes: 5762ab71eb24 ("spi: Add support for Armada 3700 SPI Controller")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Acked-by: Romain Perier <romain.perier@free-electrons.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-armada-3700.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-armada-3700.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 4e921782652f..0314c6b9e044 100644
+index 4e921782652f..4e68f34957cc 100644
 --- a/drivers/spi/spi-armada-3700.c
 +++ b/drivers/spi/spi-armada-3700.c
-@@ -825,7 +825,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 	master->unprepare_message = a3700_spi_unprepare_message;
- 	master->set_cs = a3700_spi_set_cs;
- 	master->flags = SPI_MASTER_HALF_DUPLEX;
--	master->mode_bits |= (SPI_RX_DUAL | SPI_RX_DUAL |
-+	master->mode_bits |= (SPI_RX_DUAL | SPI_TX_DUAL |
- 			      SPI_RX_QUAD | SPI_TX_QUAD);
+@@ -340,8 +340,7 @@ static irqreturn_t a3700_spi_interrupt(int irq, void *dev_id)
+ 	spireg_write(a3700_spi, A3700_SPI_INT_STAT_REG, cause);
  
- 	platform_set_drvdata(pdev, master);
+ 	/* Wake up the transfer */
+-	if (a3700_spi->wait_mask & cause)
+-		complete(&a3700_spi->done);
++	complete(&a3700_spi->done);
+ 
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.11.0
 

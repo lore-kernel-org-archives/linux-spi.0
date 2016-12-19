@@ -1,73 +1,49 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v10 2/3] Documentation: Add binding document for Lattice
- iCE40 FPGA manager
-Date: Mon, 19 Dec 2016 12:16:50 +0100
-Message-ID: <CAMuHMdVhbUFoswn8umWbfSuLmKSsb5hQbXfZWDLyNg24oYETYA@mail.gmail.com>
-References: <1482039234-21335-1-git-send-email-joel@airwebreathe.org.uk> <1482039234-21335-2-git-send-email-joel@airwebreathe.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: atull@opensource.altera.com,
-        Moritz Fischer <moritz.fischer@ettus.com>,
-        Rob Herring <robh@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marex@denx.de>, linux-fpga@vger.kernel.org
-To: Joel Holdsworth <joel@airwebreathe.org.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1482039234-21335-2-git-send-email-joel@airwebreathe.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Joakim Tjernlund <joakim.tjernlund-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] spi: spi-fsl-spi: Add OF bus-num property
+Date: Mon, 19 Dec 2016 13:09:42 +0100
+Message-ID: <20161219120942.29022-1-joakim.tjernlund@infinera.com>
+Cc: Joakim Tjernlund <joakim.tjernlund-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Joel,
+Allow OF to specify bus enumeration. This uses the same property
+as spi-fsl-dspi.
 
-On Sun, Dec 18, 2016 at 6:33 AM, Joel Holdsworth
-<joel@airwebreathe.org.uk> wrote:
-> This adds documentation of the device tree bindings of the Lattice iCE40
-> FPGA driver for the FPGA manager framework.
->
-> Signed-off-by: Joel Holdsworth <joel@airwebreathe.org.uk>
-> Acked-by: Rob Herring <robh@kernel.org>
-> Acked-by: Alan Tull <atull@opensource.altera.com>
-> Acked-by: Moritz Fischer <moritz.fischer@ettus.com>
-> Acked-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Joakim Tjernlund <joakim.tjernlund-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-lib.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/fpga/lattice-ice40-fpga-mgr.txt
-> @@ -0,0 +1,21 @@
-> +Lattice iCE40 FPGA Manager
-> +
-> +Required properties:
-> +- compatible:          Should contain "lattice,ice40-fpga-mgr"
-> +- reg:                 SPI chip select
-> +- spi-max-frequency:   Maximum SPI frequency (>=1000000, <=25000000)
-> +- cdone-gpios:         GPIO input connected to CDONE pin
-> +- reset-gpios:         Active-low GPIO output connected to CRESET_B pin. Note
-> +                       that unless the GPIO is held low during startup, the
-> +                       FPGA will enter Master SPI mode and drive SCK with a
-> +                       clock signal potentially jamming other devices on the
-> +                       bus until the firmware is loaded.
-> +
-> +Example:
-> +       ice40: ice40@0 {
-
-As per ePAPR, node names should be generic names, e.g. "fpga@0".
-Sorry for not noticing before.
-
-> +               compatible = "lattice,ice40-fpga-mgr";
-> +               reg = <0>;
-> +               spi-max-frequency = <1000000>;
-> +               cdone-gpios = <&gpio 24 GPIO_ACTIVE_HIGH>;
-> +               reset-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
-> +       };
-
-Gr{oetje,eeting}s,
-
-                        Geert
+diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
+index cb35d2f..3b06513 100644
+--- a/drivers/spi/spi-fsl-lib.c
++++ b/drivers/spi/spi-fsl-lib.c
+@@ -140,7 +140,7 @@ int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
+ 	struct mpc8xxx_spi_probe_info *pinfo;
+ 	struct fsl_spi_platform_data *pdata;
+ 	const void *prop;
+-	int ret = -ENOMEM;
++	int ret = -ENOMEM, bus_num;
+ 
+ 	pinfo = devm_kzalloc(&ofdev->dev, sizeof(*pinfo), GFP_KERNEL);
+ 	if (!pinfo)
+@@ -151,7 +151,9 @@ int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
+ 
+ 	/* Allocate bus num dynamically. */
+ 	pdata->bus_num = -1;
+-
++	ret = of_property_read_u32(np, "bus-num", &bus_num);
++	if (ret >= 0)
++		pdata->bus_num = bus_num;
+ #ifdef CONFIG_FSL_SOC
+ 	/* SPI controller is either clocked from QE or SoC clock. */
+ 	pdata->sysclk = get_brgfreq();
+-- 
+2.10.2
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

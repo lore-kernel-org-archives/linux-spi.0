@@ -1,66 +1,37 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH v3 0/2] mtd: spi-nor: add a stateless method to support memory size above 128Mib
-Date: Mon, 19 Dec 2016 16:05:55 +0100
-Message-ID: <cover.1482158909.git.cyrille.pitchen@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <computersforpeace@gmail.com>,
-        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>
-To: <marek.vasut@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Simon Horman <horms+renesas@verge.net.au>
+Subject: [PATCH spi/for-next] sip: sh-msiof: Do not use C++ style comment
+Date: Tue, 20 Dec 2016 11:21:16 +0100
+Message-ID: <1482229276-21655-1-git-send-email-horms+renesas@verge.net.au>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Simon Horman <horms+renesas@verge.net.au>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+4286db8456f4 ("spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings")
+added a C++ style comment. This is not in keeping with the style used
+for comments elsewhere in this fine. Update it accordingly.
 
-this series of patches is based on the git://github.com/spi-nor/linux.git
-tree. It has been extracted from the SFDP series and is resent as
-a standalone series.
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This series fixes compatibility issue between Linux and many bootloaders
-when using SPI flash with size greater than 128Mib.
-
-Indeed, before this series, Linux used to make the SPI flash memory enter
-its 4-byte address mode when its size is greater than 128Mib: The very
-same Fast Read 1-1-z op code is used, for instance Fast Read 1-1-4 (6Bh)
-but once in 4-byte address mode, the SPI flash memory now expects a 4-byte
-address following the op code instead of a 3-byte address.
-This solution is statefull: it changes the internal state of the memory.
-
-Hence, when the CPU is reset but not the memory, many bootloaders are not
-aware of this internal state change at the memory side, don't know how to
-handle this and still send one Fast Read op code followed by a 3-byte
-address. So the bootloader fails to read data from the SPI flash memory.
-
-ChangeLog:
-
-v2 -> v3:
-- no change on patch 1.
-- rebase patch 2 on the spi-nor tree: SPI_NOR_4B_OPCODES is changed from
-  BIT(10) to BIT(11), otherwise patch could be applied on linux-next.
-- remove helper macro such as ENTRY_3TO4()
-- split the 3to4 opcode table into 3 different tables for read, program
-  and erase op codes.
-
-v1 -> v2:
-- collect Acked-by for patch 1.
-- replace the dichotomic search by a simple for() loop for better clarity
-  purpose in patch 2.
-
-Cyrille Pitchen (2):
-  mtd: spi-nor: rename SPINOR_OP_* macros of the 4-byte address op codes
-  mtd: spi-nor: add a stateless method to support memory size above
-    128Mib
-
- drivers/mtd/devices/serial_flash_cmds.h |   7 ---
- drivers/mtd/devices/st_spi_fsm.c        |  28 ++++-----
- drivers/mtd/spi-nor/spi-nor.c           | 101 +++++++++++++++++++++++++-------
- drivers/spi/spi-bcm-qspi.c              |   6 +-
- include/linux/mtd/spi-nor.h             |  22 +++++--
- 5 files changed, 113 insertions(+), 51 deletions(-)
-
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 471ca211b76c..1f00eeb0b5a3 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -982,7 +982,7 @@ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7796",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &r8a779x_data },
+-	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, // Deprecated
++	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, sh_msiof_match);
 -- 
-2.7.4
+2.7.0.rc3.207.g0ac5344

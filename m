@@ -1,39 +1,62 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: fsl-espi, m25p80 and max_transfer_size / max_message_size
-Date: Wed, 21 Dec 2016 07:35:56 +0100
-Message-ID: <af987fb9-1229-2694-ad67-85e9f14de4e6@gmail.com>
-References: <17913d2dea0200f818af5f42a0b2ed42@walle.cc>
- <158a7129-52ca-79b3-69f9-d6de25483e01@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-mtd-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH 1/2] spi: armada-3700: Coding style fixes
+Date: Wed, 21 Dec 2016 11:10:29 +0100
+Message-ID: <20161221101030.10925-2-romain.perier@free-electrons.com>
+References: <20161221101030.10925-1-romain.perier@free-electrons.com>
+Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <158a7129-52ca-79b3-69f9-d6de25483e01-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20161221101030.10925-1-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 14.11.2016 um 20:06 schrieb Heiner Kallweit:
-> Am 14.11.2016 um 15:22 schrieb Michael Walle:
->> Hi,
->>
->> since commit 02a595d5d6e4 (spi: fsl-espi: eliminate spi nor flash read loop) the fsl-espi is (partly?) broken. Reading 64k from the flash results in the following error:
->>   fsl_espi ffe110000.spi: message too long, size is 65540 bytes
->>   spi_master spi32766: failed to transfer one message from queue
->>
->> We are using the m25p80 driver which checks the max_transfer_size. The fsl-espi driver sets the max_message_size to 64k. As far as I understand it, a message can contain multiple transfers. The m25p80 uses two transfers (one 4 byte and one with max_transfer_size, that is 64k) and thus the message has a total length of 65540 bytes which is too long for the driver.
->>
->> I didn't find where the max_message_size is checked and I also don't know which part is resposible to handle the correct sizes. The m25p80 driver? Should it use spi_max_message_size() instead of spi_max_transfer_size() ?
->>
-> Your mail actually doesn't come as a surprise. The patch addressing this scenario is waiting to be applied.
-> See here: https://www.spinics.net/lists/linux-spi/msg08844.html
-> 
-> Rgds, Heiner
-> 
-This issue is still open. Can we get the patch at least into 4.10?
+The following warning are reported by checkpatch.pl:
+
+CHECK: Alignment should match open parenthesis
++static void a3700_spi_transfer_setup(struct spi_device *spi,
++                                   struct spi_transfer *xfer)
+
+WARNING: Missing a blank line after declarations
++                       u32 data = le32_to_cpu(val);
++                       memcpy(a3700_spi->rx_buf, &data, 4);
+
+total: 0 errors, 1 warnings, 1 checks, 923 lines checked
+
+Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ drivers/spi/spi-armada-3700.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index ec5fb01..0bfe5ff 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -420,7 +420,7 @@ static void a3700_spi_fifo_thres_set(struct a3700_spi *a3700_spi,
+ }
+ 
+ static void a3700_spi_transfer_setup(struct spi_device *spi,
+-				    struct spi_transfer *xfer)
++				     struct spi_transfer *xfer)
+ {
+ 	struct a3700_spi *a3700_spi;
+ 	unsigned int byte_len;
+@@ -561,6 +561,7 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
+ 		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
+ 		if (a3700_spi->buf_len >= 4) {
+ 			u32 data = le32_to_cpu(val);
++
+ 			memcpy(a3700_spi->rx_buf, &data, 4);
+ 
+ 			a3700_spi->buf_len -= 4;
+-- 
+2.9.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

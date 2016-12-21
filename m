@@ -1,32 +1,40 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: rockchip: support "sleep" pin configuration
-Date: Tue, 20 Dec 2016 22:04:14 -0600
-Message-ID: <20161221040414.ogs2hj6gum772tuq@rob-hp-laptop>
-References: <1481936356-76161-1-git-send-email-briannorris@chromium.org>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: fsl-espi, m25p80 and max_transfer_size / max_message_size
+Date: Wed, 21 Dec 2016 07:35:56 +0100
+Message-ID: <af987fb9-1229-2694-ad67-85e9f14de4e6@gmail.com>
+References: <17913d2dea0200f818af5f42a0b2ed42@walle.cc>
+ <158a7129-52ca-79b3-69f9-d6de25483e01@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-mtd-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1481936356-76161-1-git-send-email-briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <158a7129-52ca-79b3-69f9-d6de25483e01-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Dec 16, 2016 at 04:59:16PM -0800, Brian Norris wrote:
-> In the pattern of many other devices, support a system-sleep pin
-> configuration.
+Am 14.11.2016 um 20:06 schrieb Heiner Kallweit:
+> Am 14.11.2016 um 15:22 schrieb Michael Walle:
+>> Hi,
+>>
+>> since commit 02a595d5d6e4 (spi: fsl-espi: eliminate spi nor flash read loop) the fsl-espi is (partly?) broken. Reading 64k from the flash results in the following error:
+>>   fsl_espi ffe110000.spi: message too long, size is 65540 bytes
+>>   spi_master spi32766: failed to transfer one message from queue
+>>
+>> We are using the m25p80 driver which checks the max_transfer_size. The fsl-espi driver sets the max_message_size to 64k. As far as I understand it, a message can contain multiple transfers. The m25p80 uses two transfers (one 4 byte and one with max_transfer_size, that is 64k) and thus the message has a total length of 65540 bytes which is too long for the driver.
+>>
+>> I didn't find where the max_message_size is checked and I also don't know which part is resposible to handle the correct sizes. The m25p80 driver? Should it use spi_max_message_size() instead of spi_max_transfer_size() ?
+>>
+> Your mail actually doesn't come as a surprise. The patch addressing this scenario is waiting to be applied.
+> See here: https://www.spinics.net/lists/linux-spi/msg08844.html
 > 
-> Signed-off-by: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/spi/spi-rockchip.txt | 7 +++++++
->  drivers/spi/spi-rockchip.c                             | 5 +++++
->  2 files changed, 12 insertions(+)
+> Rgds, Heiner
+> 
+This issue is still open. Can we get the patch at least into 4.10?
 
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

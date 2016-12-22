@@ -1,32 +1,40 @@
-From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 0/2] Cosmetic changes for the SPI driver of ARMADA 3700
-Date: Wed, 21 Dec 2016 11:10:28 +0100
-Message-ID: <20161221101030.10925-1-romain.perier@free-electrons.com>
-Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Subject: [PATCH 1/1] spi: dw: Make debugfs name unique between instances
+Date: Thu, 22 Dec 2016 17:18:12 +0800
+Message-ID: <1482398292-46946-1-git-send-email-preid@electromag.com.au>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org, jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This set of patches fixes coding style issues reported by checkpatch.pl, then it
-includes a second patch that replaces raw values by standardized macro constants.
+Some system have multiple dw devices. Currently the driver uses a
+fixed name for the debugfs dir. Append dev name to the debugfs dir
+name to make it unique.
 
-Romain Perier (2):
-  spi: armada-3700: Coding style fixes
-  spi: armada-3700: Replaced raw values for nbits by the SPI macros
+Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+---
+ drivers/spi/spi-dw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
- drivers/spi/spi-armada-3700.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 27960e4..c4226c0 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -107,7 +107,10 @@ static ssize_t dw_spi_show_regs(struct file *file, char __user *user_buf,
+ 
+ static int dw_spi_debugfs_init(struct dw_spi *dws)
+ {
+-	dws->debugfs = debugfs_create_dir("dw_spi", NULL);
++	char name[128];
++
++	snprintf(name, 128, "dw_spi-%s", dev_name(&dws->master->dev));
++	dws->debugfs = debugfs_create_dir(name, NULL);
+ 	if (!dws->debugfs)
+ 		return -ENOMEM;
+ 
 -- 
-2.9.3
+1.8.3.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,8 +1,8 @@
 From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v2 2/3] mtd: m25p80: consider max message size in
  m25p80_read
-Date: Fri, 23 Dec 2016 16:15:34 +0100
-Message-ID: <f39fad56-f229-3bbb-7bea-3a557cf94e49@atmel.com>
+Date: Fri, 23 Dec 2016 16:33:45 +0100
+Message-ID: <2e31fbe7-bbc7-8fed-ccbf-dd9ae4d220e1@atmel.com>
 References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
  <20160816164204.GV9347@sirena.org.uk>
  <b65240ff-7e28-5ecb-0670-abfca871246b@gmail.com>
@@ -24,7 +24,10 @@ Le 17/08/2016 à 21:09, Heiner Kallweit a écrit :
 > of data that can be read.
 > 
 > Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+
+Applied to git://github.com/spi-nor/linux.git
+
+Thanks!
 
 > ---
 > v2:

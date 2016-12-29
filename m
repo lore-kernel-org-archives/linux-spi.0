@@ -1,85 +1,143 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] mtd: m25p80: consider max message size in
- m25p80_read
-Date: Sun, 25 Dec 2016 00:47:09 +0100
-Message-ID: <a7de8f14-220b-6511-d3b9-3d0858f2565a@gmail.com>
-References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
- <20160816164204.GV9347@sirena.org.uk>
- <b65240ff-7e28-5ecb-0670-abfca871246b@gmail.com>
- <2e31fbe7-bbc7-8fed-ccbf-dd9ae4d220e1@atmel.com>
- <e7513817-c6d1-948d-19ff-617debfa1399@gmail.com>
- <CAOMqctTaPoMR=_dEF_j-WU178_i2tOp2sTfZJSDWWkohVxZn8A@mail.gmail.com>
- <1bd5f31a-a32e-12ce-10af-1a17955f5ab6@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1bd5f31a-a32e-12ce-10af-1a17955f5ab6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH] spi: s3c64xx: Don't request/release DMA channels for each SPI
+ transfer
+Date: Thu, 29 Dec 2016 13:19:31 +0100
+Message-ID: <1483013971-26446-1-git-send-email-m.szyprowski@samsung.com>
+References: <CGME20161229121937eucas1p11cd0bb98b21699b0f773ecaeb7c29d26@eucas1p1.samsung.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+        Andi Shyti <andi.shyti@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Inki Dae <inki.dae@samsung.com>,
+        Javier Martinez Canillas <javier@osg.samsung.com>
+To: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 24.12.2016 um 11:20 schrieb Marek Vasut:
-> On 12/23/2016 10:04 PM, Michal Suchanek wrote:
->> Hello,
-> 
-> Hi,
-> 
->> On 23 December 2016 at 19:53, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> On 12/23/2016 04:33 PM, Cyrille Pitchen wrote:
->>>> Le 17/08/2016 à 21:09, Heiner Kallweit a écrit :
->>>>> Consider a message size limit when calculating the maximum amount
->>>>> of data that can be read.
->>>>>
->>>>> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>>>
->>>> Applied to git://github.com/spi-nor/linux.git
->>>
->>> Is that the concensus now that we should fix controller crappiness on
->>> driver level ? Or did I miss the point of this patch ?
->>>
->>
->> In general most controllers do have some limit on the amount of data
->> they can transfer at once.
-> 
-> My observations suggest otherwise.
-> 
->> For some you can apply workaround at controller driver level and for
->> some it's not practical.
->>
->> Also for some the limit is lower so it is more likely hit.
->>
->> I guess you can call controllers that have both of these limitations
->> crappy but that's what's in the silicone out there.
->>
->> If you have better solution to the problem please share it in detail.
-> 
-> I don't have a solution, but I am quite sure that if we now set a
-> precedent that each and every device driver should take care of each and
-> every controller's quirk, we have a lot of unpleasant work ahead
-> of us and it will be quite the maintanance burden. The separations
-> between device driver and controller driver has been weakened and I
-> don't think that's good.
-> 
-The controller driver API has been extended to allow exposing certain
-types of controller limits (max tranfer size, max message size)
-to upper layers. And controller drivers rely on upper layers
-considering this information.
-W/o this patch certain combinations of protocol and controller drivers
-(e.g. m25p80 + fsl-espi) don't work for big transfer / message sizes.
+Requesting a DMA channel might be a time consuming operation, so there is
+no need to acquire and release DMA channel for each SPI transfer.
+DMA channels can be requested during driver probe and kept all the time,
+also because there are no shared nor dynamically allocated channels on
+Samsung S3C/S5P/Exynos platforms.
 
-The (most likely more ugly) alternative is controller drivers
-implementing protocol-specific hacks to deal with messages exceeding
-controller limits. One example was the fsl-espi drivers before the
-recent refactoring. It assumed all big messages to be m25p80.
+While moving dma_requrest_slave_channel calls, lets switch to
+dma_request_slave_channel_reason(), which returns error codes on failure,
+which can be properly propagated to the caller (this for example defers
+SPI probe when DMA controller is not yet available).
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 28dfdce4beae..849ee82483e4 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -341,43 +341,16 @@ static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
+ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
+ {
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
+-	struct device *dev = &sdd->pdev->dev;
+ 
+ 	if (is_polling(sdd))
+ 		return 0;
+ 
+-	/* Acquire DMA channels */
+-	sdd->rx_dma.ch = dma_request_slave_channel(dev, "rx");
+-	if (!sdd->rx_dma.ch) {
+-		dev_err(dev, "Failed to get RX DMA channel\n");
+-		return -EBUSY;
+-	}
+ 	spi->dma_rx = sdd->rx_dma.ch;
+-
+-	sdd->tx_dma.ch = dma_request_slave_channel(dev, "tx");
+-	if (!sdd->tx_dma.ch) {
+-		dev_err(dev, "Failed to get TX DMA channel\n");
+-		dma_release_channel(sdd->rx_dma.ch);
+-		return -EBUSY;
+-	}
+ 	spi->dma_tx = sdd->tx_dma.ch;
+ 
+ 	return 0;
+ }
+ 
+-static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
+-{
+-	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
+-
+-	/* Free DMA channels */
+-	if (!is_polling(sdd)) {
+-		dma_release_channel(sdd->rx_dma.ch);
+-		dma_release_channel(sdd->tx_dma.ch);
+-	}
+-
+-	return 0;
+-}
+-
+ static bool s3c64xx_spi_can_dma(struct spi_master *master,
+ 				struct spi_device *spi,
+ 				struct spi_transfer *xfer)
+@@ -1094,7 +1067,6 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	master->prepare_transfer_hardware = s3c64xx_spi_prepare_transfer;
+ 	master->prepare_message = s3c64xx_spi_prepare_message;
+ 	master->transfer_one = s3c64xx_spi_transfer_one;
+-	master->unprepare_transfer_hardware = s3c64xx_spi_unprepare_transfer;
+ 	master->num_chipselect = sci->num_cs;
+ 	master->dma_alignment = 8;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
+@@ -1161,6 +1133,24 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (!is_polling(sdd)) {
++		/* Acquire DMA channels */
++		sdd->rx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
++								  "rx");
++		if (IS_ERR(sdd->rx_dma.ch)) {
++			dev_err(&pdev->dev, "Failed to get RX DMA channel\n");
++			ret = PTR_ERR(sdd->rx_dma.ch);
++			goto err_disable_io_clk;
++		}
++		sdd->tx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
++								  "tx");
++		if (IS_ERR(sdd->tx_dma.ch)) {
++			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
++			ret = PTR_ERR(sdd->tx_dma.ch);
++			goto err_release_tx_dma;
++		}
++	}
++
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_active(&pdev->dev);
+@@ -1206,6 +1196,12 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 
++	if (!is_polling(sdd))
++		dma_release_channel(sdd->rx_dma.ch);
++err_release_tx_dma:
++	if (!is_polling(sdd))
++		dma_release_channel(sdd->tx_dma.ch);
++err_disable_io_clk:
+ 	clk_disable_unprepare(sdd->ioclk);
+ err_disable_src_clk:
+ 	clk_disable_unprepare(sdd->src_clk);
+@@ -1226,6 +1222,11 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+ 
++	if (!is_polling(sdd)) {
++		dma_release_channel(sdd->rx_dma.ch);
++		dma_release_channel(sdd->tx_dma.ch);
++	}
++
+ 	clk_disable_unprepare(sdd->ioclk);
+ 
+ 	clk_disable_unprepare(sdd->src_clk);
+-- 
+1.9.1

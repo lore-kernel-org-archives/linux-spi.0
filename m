@@ -1,99 +1,57 @@
-From: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm53xx: (re)license code to the GPL v2
-Date: Fri, 30 Dec 2016 10:16:15 +0530
-Message-ID: <CAK-LDbKEAxNCAcUsN7UabdPcbKxCw_ewEjN4smLMvKhL2V+kGg@mail.gmail.com>
-References: <20161229191313.21577-1-zajec5@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>,
-        Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>,
-        Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
-        Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
-To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161229191313.21577-1-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [v2 0/2] Add Broadcom STB SPI support
+Date: Fri, 30 Dec 2016 15:29:59 +0900
+Message-ID: <20161230063001.944-1-jaedon.shin@gmail.com>
+Cc: Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 30, 2016 at 12:43 AM, Rafa=C5=82 Mi=C5=82ecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org=
-> wrote:
-> From: Rafa=C5=82 Mi=C5=82ecki <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
->
-> My intention was to release this code under GPL v2 license. For some
-> reason my initial commit 0fc6a323e191 ("spi: bcm53xx: driver for SPI
-> controller on Broadcom bcma SoC") totally missed licensing info.
-> MODULE_LICENSE was later added by Axel specifying "GNU Public License
-> v2 or later".
->
-> This patch clarifies situation by adding a proper header (with Copyright
-> line) and adjusting MODULE_LICENSE. It should be acked by every driver
-> contributor.
->
-> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
-> ---
-> Guys, can I have your Acked-by for this patch, please?
+Hi all,
 
-I am no longer using this mail address for the kernel contribution, so
-adding acked by with the new mail address.
+This series adds dependency with BMIPS_GENERIC for Broadcom MIPS based SoCs
+and device nodes.
 
-Thanks.
+As far as I know the boards are booting from NAND by default except BCM97358,
+BCM97360 and BCM97425, and therefore the SPI nodes for boot (qspi) of the boards
+are disabled.
 
-> Vaishali: you are author of commit 6774eea6d7a6 ("spi: bcm53xx: Adjust
-> devm usage")
+Changes in v2:
+- Use upg_clk instead of new spi_clk.
 
-Acked-by: Vaishali Thakkar <vaishali.thakkar-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Jaedon Shin (2):
+  spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
+  MIPS: BMIPS: Add support SPI device nodes
 
-> Joe: you are author of commit f7219b527b57 ("treewide: Remove
-> unnecessary BCMA_CORETABLE_END macro")
->
-> Nicholas: you are author of commit b3e7766bc459 ("spi: bcm53xx: use
-> msecs_to_jiffies for conversion")
->
-> Axel: you are author of commit 61d38b9a823c ("spi: bcm53xx: Add missing
-> module information")
->
-> Jingoo: you are author of commit 050429a78b2d ("spi: bcm53xx: make local
-> symbol static")
-> ---
->  drivers/spi/spi-bcm53xx.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-> index 0c61ad4..6e409ea 100644
-> --- a/drivers/spi/spi-bcm53xx.c
-> +++ b/drivers/spi/spi-bcm53xx.c
-> @@ -1,3 +1,11 @@
-> +/*
-> + * Copyright (C) 2014-2016 Rafa=C5=82 Mi=C5=82ecki <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
->  #define pr_fmt(fmt)            KBUILD_MODNAME ": " fmt
->
->  #include <linux/kernel.h>
-> @@ -355,4 +363,4 @@ module_exit(bcm53xxspi_module_exit);
->
->  MODULE_DESCRIPTION("Broadcom BCM53xx SPI Controller driver");
->  MODULE_AUTHOR("Rafa=C5=82 Mi=C5=82ecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
-> -MODULE_LICENSE("GPL");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 2.10.1
->
+ arch/mips/boot/dts/brcm/bcm7125.dtsi      | 49 +++++++++++++++++++++++++++++--
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7420.dtsi      | 49 +++++++++++++++++++++++++++++--
+ arch/mips/boot/dts/brcm/bcm7425.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi      | 43 +++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97125cbmb.dts  |  4 +++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  4 +++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts  | 36 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  | 36 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 +++
+ arch/mips/boot/dts/brcm/bcm97420c.dts     |  4 +++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts  | 36 +++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  4 +++
+ drivers/spi/Kconfig                       |  3 +-
+ 17 files changed, 480 insertions(+), 7 deletions(-)
 
+-- 
+2.11.0
 
-
---=20
-Vaishali
-http://vaishalithakkar.in/
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

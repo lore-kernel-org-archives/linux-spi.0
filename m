@@ -1,50 +1,51 @@
-From: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: s3c64xx: Don't request/release DMA channels for
  each SPI transfer
-Date: Fri, 30 Dec 2016 17:39:54 +0200
-Message-ID: <20161230153954.fmx3l3jvqxlwlmfq@kozik-lap>
+Date: Sat, 31 Dec 2016 18:26:15 +0000
+Message-ID: <20161231182615.tuukfj5fa4wwkwvj@sirena.org.uk>
 References: <CGME20161229121937eucas1p11cd0bb98b21699b0f773ecaeb7c29d26@eucas1p1.samsung.com>
  <1483013971-26446-1-git-send-email-m.szyprowski@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Inki Dae <inki.dae-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-To: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="oqusqpokiiwc2g7t"
+Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        Andi Shyti <andi.shyti@samsung.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Inki Dae <inki.dae@samsung.com>,
+        Javier Martinez Canillas <javier@osg.samsung.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1483013971-26446-1-git-send-email-m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1483013971-26446-1-git-send-email-m.szyprowski@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--oqusqpokiiwc2g7t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 On Thu, Dec 29, 2016 at 01:19:31PM +0100, Marek Szyprowski wrote:
 > Requesting a DMA channel might be a time consuming operation, so there is
 > no need to acquire and release DMA channel for each SPI transfer.
-> DMA channels can be requested during driver probe and kept all the time,
-> also because there are no shared nor dynamically allocated channels on
-> Samsung S3C/S5P/Exynos platforms.
-> 
-> While moving dma_requrest_slave_channel calls, lets switch to
-> dma_request_slave_channel_reason(), which returns error codes on failure,
-> which can be properly propagated to the caller (this for example defers
-> SPI probe when DMA controller is not yet available).
-> 
-> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++-----------------------
->  1 file changed, 29 insertions(+), 28 deletions(-)
 
-Reviewed-by: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This doesn't apply against current code, please check and resend.
 
-Best regards,
-Krzysztof
+--oqusqpokiiwc2g7t
+Content-Type: application/pgp-signature; name="signature.asc"
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhn+EYACgkQJNaLcl1U
+h9D+mAf/R4mZuFtpT8CgxdVrya27EEOoc3h0A980GgeT1xCad/DA9xQSAbGH0LLn
+PNkDOCjfBcxIAwll47QkYai6ChW0nV0F1m+JhvspqvS0L5ub1nIGygTqHGNc26Zs
+pUmZTEpBCSr4X5u8jkViZL0urfE+A6AvN8TbbMdeZCRB0pFcS4CeB89ncVlbOm5J
+KxqOTPtQEjgfpbXpWtmpYh3C8NVmkVQGiIA4rMbV42Bm3wvRs7B7/FpOCgWvitu/
+pQYqnMm6XHHLH3QzGSIxRo/lBjd43pe2ego9dDE9nnL+EUC6Unksaj9QYFMlOiA9
+0YmILqwJ8LGK/29II7lbPmWLUZSyKQ==
+=mrLv
+-----END PGP SIGNATURE-----
+
+--oqusqpokiiwc2g7t--

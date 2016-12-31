@@ -1,51 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: Don't request/release DMA channels for
- each SPI transfer
-Date: Sat, 31 Dec 2016 18:26:15 +0000
-Message-ID: <20161231182615.tuukfj5fa4wwkwvj@sirena.org.uk>
-References: <CGME20161229121937eucas1p11cd0bb98b21699b0f773ecaeb7c29d26@eucas1p1.samsung.com>
- <1483013971-26446-1-git-send-email-m.szyprowski@samsung.com>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
+Date: Sat, 31 Dec 2016 10:42:52 -0800
+Message-ID: <09536633-9c81-9621-36af-665369e97a78@gmail.com>
+References: <20161230063001.944-1-jaedon.shin@gmail.com>
+ <20161230063001.944-3-jaedon.shin@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oqusqpokiiwc2g7t"
-Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        Andi Shyti <andi.shyti@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Inki Dae <inki.dae@samsung.com>,
-        Javier Martinez Canillas <javier@osg.samsung.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1483013971-26446-1-git-send-email-m.szyprowski@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161230063001.944-3-jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Jaedon,
 
---oqusqpokiiwc2g7t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 12/29/2016 10:30 PM, Jaedon Shin wrote:
+> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
+> 
+> Signed-off-by: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
 
-On Thu, Dec 29, 2016 at 01:19:31PM +0100, Marek Szyprowski wrote:
-> Requesting a DMA channel might be a time consuming operation, so there is
-> no need to acquire and release DMA channel for each SPI transfer.
+> +
+> +&qspi {
+> +	status = "okay";
+> +
+> +	m25p80@0 {
+> +		compatible = "m25p80";
+> +		reg = <0>;
+> +		spi-max-frequency = <0x2625a00>;
 
-This doesn't apply against current code, please check and resend.
+Sorry for not noticing this earlier, can we have the frequency in a
+decimal form?
 
---oqusqpokiiwc2g7t
-Content-Type: application/pgp-signature; name="signature.asc"
+With that fixed, feel free to add:
 
------BEGIN PGP SIGNATURE-----
+Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhn+EYACgkQJNaLcl1U
-h9D+mAf/R4mZuFtpT8CgxdVrya27EEOoc3h0A980GgeT1xCad/DA9xQSAbGH0LLn
-PNkDOCjfBcxIAwll47QkYai6ChW0nV0F1m+JhvspqvS0L5ub1nIGygTqHGNc26Zs
-pUmZTEpBCSr4X5u8jkViZL0urfE+A6AvN8TbbMdeZCRB0pFcS4CeB89ncVlbOm5J
-KxqOTPtQEjgfpbXpWtmpYh3C8NVmkVQGiIA4rMbV42Bm3wvRs7B7/FpOCgWvitu/
-pQYqnMm6XHHLH3QzGSIxRo/lBjd43pe2ego9dDE9nnL+EUC6Unksaj9QYFMlOiA9
-0YmILqwJ8LGK/29II7lbPmWLUZSyKQ==
-=mrLv
------END PGP SIGNATURE-----
-
---oqusqpokiiwc2g7t--
+Thanks!
+-- 
+Florian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

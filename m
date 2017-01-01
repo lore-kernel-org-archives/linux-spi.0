@@ -1,50 +1,47 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
-Date: Sat, 31 Dec 2016 10:42:52 -0800
-Message-ID: <09536633-9c81-9621-36af-665369e97a78@gmail.com>
-References: <20161230063001.944-1-jaedon.shin@gmail.com>
- <20161230063001.944-3-jaedon.shin@gmail.com>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi: dw: Make debugfs name unique between instances
+Date: Sun, 1 Jan 2017 17:46:48 +0200
+Message-ID: <CAHp75Ve9GOwUr8npvjrvvuvfE_jqzOy3hr_42wp8VvCh4OQ-eQ@mail.gmail.com>
+References: <1482398292-46946-1-git-send-email-preid@electromag.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org,
+        Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161230063001.944-3-jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1482398292-46946-1-git-send-email-preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jaedon,
+On Thu, Dec 22, 2016 at 11:18 AM, Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org> wrote:
+> Some system have multiple dw devices. Currently the driver uses a
+> fixed name for the debugfs dir. Append dev name to the debugfs dir
+> name to make it unique.
 
-On 12/29/2016 10:30 PM, Jaedon Shin wrote:
-> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
 
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -107,7 +107,10 @@ static ssize_t dw_spi_show_regs(struct file *file, char __user *user_buf,
+>
+>  static int dw_spi_debugfs_init(struct dw_spi *dws)
+>  {
+> -       dws->debugfs = debugfs_create_dir("dw_spi", NULL);
+> +       char name[128];
 > +
-> +&qspi {
-> +	status = "okay";
-> +
-> +	m25p80@0 {
-> +		compatible = "m25p80";
-> +		reg = <0>;
-> +		spi-max-frequency = <0x2625a00>;
+> +       snprintf(name, 128, "dw_spi-%s", dev_name(&dws->master->dev));
 
-Sorry for not noticing this earlier, can we have the frequency in a
-decimal form?
+128 is too much.
+Perhaps something like 32 and use bus number instead of dev_name().
 
-With that fixed, feel free to add:
+> +       dws->debugfs = debugfs_create_dir(name, NULL);
+>         if (!dws->debugfs)
+>                 return -ENOMEM;
 
-Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Thanks!
 -- 
-Florian
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

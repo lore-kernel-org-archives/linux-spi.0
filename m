@@ -1,61 +1,44 @@
-From: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
-Date: Tue, 3 Jan 2017 17:36:54 +0900
-Message-ID: <980BB972-94D0-4466-A888-3B65FBC5C851@gmail.com>
-References: <20161230063001.944-1-jaedon.shin@gmail.com>
- <20161230063001.944-3-jaedon.shin@gmail.com>
- <09536633-9c81-9621-36af-665369e97a78@gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
+Date: Tue,  3 Jan 2017 15:48:20 +0200
+Message-ID: <20170103134820.159600-1-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <09536633-9c81-9621-36af-665369e97a78-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Florian,
+The commit a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_*
+API") converted mid_spi_dma_exit() but missed mid_spi_dma_stop().
 
-> On 1 Jan 2017, at 3:42 AM, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 
-> Hi Jaedon,
-> 
-> On 12/29/2016 10:30 PM, Jaedon Shin wrote:
->> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
->> 
->> Signed-off-by: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
-> 
->> +
->> +&qspi {
->> +	status = "okay";
->> +
->> +	m25p80@0 {
->> +		compatible = "m25p80";
->> +		reg = <0>;
->> +		spi-max-frequency = <0x2625a00>;
-> 
-> Sorry for not noticing this earlier, can we have the frequency in a
-> decimal form?
+This is follow up to convert the rest.
 
-I will change to "spi-max-frequency = <40000000>" in v3.
+Fixes: a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_* API")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-mid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-Jaedon
-
-> 
-> With that fixed, feel free to add:
-> 
-> Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> Thanks!
-> -- 
-> Florian
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index e31971f91475..837cb8d0bac6 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -274,11 +274,11 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ static void mid_spi_dma_stop(struct dw_spi *dws)
+ {
+ 	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
+-		dmaengine_terminate_all(dws->txchan);
++		dmaengine_terminate_sync(dws->txchan);
+ 		clear_bit(TX_BUSY, &dws->dma_chan_busy);
+ 	}
+ 	if (test_bit(RX_BUSY, &dws->dma_chan_busy)) {
+-		dmaengine_terminate_all(dws->rxchan);
++		dmaengine_terminate_sync(dws->rxchan);
+ 		clear_bit(RX_BUSY, &dws->dma_chan_busy);
+ 	}
+ }
+-- 
+2.11.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

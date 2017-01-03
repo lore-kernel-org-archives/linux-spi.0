@@ -1,46 +1,61 @@
-From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
-Subject: [PATCH v2 1/1] spi: dw: Make debugfs name unique between instances
-Date: Tue,  3 Jan 2017 12:54:09 +0800
-Message-ID: <1483419249-88956-1-git-send-email-preid@electromag.com.au>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org, preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
+Date: Tue, 3 Jan 2017 17:36:54 +0900
+Message-ID: <980BB972-94D0-4466-A888-3B65FBC5C851@gmail.com>
+References: <20161230063001.944-1-jaedon.shin@gmail.com>
+ <20161230063001.944-3-jaedon.shin@gmail.com>
+ <09536633-9c81-9621-36af-665369e97a78@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <09536633-9c81-9621-36af-665369e97a78-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Some system have multiple dw devices. Currently the driver uses a
-fixed name for the debugfs dir. Append bus_num to the debugfs dir
-name to make it unique.
+Hi Florian,
 
-Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
----
+> On 1 Jan 2017, at 3:42 AM, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 
+> Hi Jaedon,
+> 
+> On 12/29/2016 10:30 PM, Jaedon Shin wrote:
+>> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
+>> 
+>> Signed-off-by: Jaedon Shin <jaedon.shin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> ---
+> 
+>> +
+>> +&qspi {
+>> +	status = "okay";
+>> +
+>> +	m25p80@0 {
+>> +		compatible = "m25p80";
+>> +		reg = <0>;
+>> +		spi-max-frequency = <0x2625a00>;
+> 
+> Sorry for not noticing this earlier, can we have the frequency in a
+> decimal form?
 
-Notes:
-    Changes from v1:
-    - Reduce buffer size to 32.
-    - Use bus_num instead of device name.
+I will change to "spi-max-frequency = <40000000>" in v3.
 
- drivers/spi/spi-dw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Thanks,
+Jaedon
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 27960e4..77439ac 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -107,7 +107,10 @@ static ssize_t dw_spi_show_regs(struct file *file, char __user *user_buf,
- 
- static int dw_spi_debugfs_init(struct dw_spi *dws)
- {
--	dws->debugfs = debugfs_create_dir("dw_spi", NULL);
-+	char name[32];
-+
-+	snprintf(name, 32, "dw_spi%d", dws->master->bus_num);
-+	dws->debugfs = debugfs_create_dir(name, NULL);
- 	if (!dws->debugfs)
- 		return -ENOMEM;
- 
--- 
-1.8.3.1
+> 
+> With that fixed, feel free to add:
+> 
+> Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> 
+> Thanks!
+> -- 
+> Florian
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

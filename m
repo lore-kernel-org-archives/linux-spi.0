@@ -1,81 +1,47 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v3 1/2] spi: add transfer_status() callback
-Date: Tue,  3 Jan 2017 18:20:14 +0100
-Message-ID: <20170103172015.13052-2-hauke@hauke-m.de>
-References: <20170103172015.13052-1-hauke@hauke-m.de>
+Subject: [PATCH v3 0/2] spi: lantiq-ssc: add support for Lantiq SSC SPI controller
+Date: Tue,  3 Jan 2017 18:20:13 +0100
+Message-ID: <20170103172015.13052-1-hauke@hauke-m.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
         thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170103172015.13052-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This callback allows a driver to return the status of the SPI transfer
-which was asynchronously scheduled by transfer_one().
+It took me longer than expected to get this to work with the
+transfer_one() callback.
 
-Currently a call to spi_finalize_current_transfer() will mark the
-transfer as transferred successfully. To return an error it is only
-possible to not call spi_finalize_current_transfer() at all and let
-this time out and result in a timeout error. With this callback the
-driver gets asked about the status of the last transfer.
+changes since v2:
+ * take bits_per_word and speed_hz from the transfer
+ * remove support for 24 bit transfer
+ * only mark the transfer as complete if the tx fifo is empty
+ * check if the error interrupt was really triggered
+ * rename check_finished to transfer_status
+ * improve some commit messages
 
-In the Lantiq driver I want to use this to circumvent a strange
-hardware design in addition.
+changes since v1:
+ * renamed from Intel to Lantiq
+ * make use of transfer_one and related functions
+ * make use of check_finished function
+ * use generic GPIO CS handling
+ * enable IRQs only after the device was initialized
 
-Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
----
- drivers/spi/spi.c       | 14 ++++++++++++++
- include/linux/spi/spi.h |  3 +++
- 2 files changed, 17 insertions(+)
+Hauke Mehrtens (2):
+  spi: add transfer_status() callback
+  spi: lantiq-ssc: add support for Lantiq SSC SPI controller
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 656dd3e3220c..745dc9c5fee2 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1021,6 +1021,20 @@ static int spi_transfer_one_message(struct spi_master *master,
- 								 msecs_to_jiffies(ms));
- 			}
- 
-+			if (master->transfer_status) {
-+				ret = master->transfer_status(master, ms);
-+				if (ret) {
-+					SPI_STATISTICS_INCREMENT_FIELD(statm,
-+								       errors);
-+					SPI_STATISTICS_INCREMENT_FIELD(stats,
-+								       errors);
-+					dev_err(&msg->spi->dev,
-+						"SPI transfer status: %d\n",
-+						ret);
-+					goto out;
-+				}
-+			}
-+
- 			if (ms == 0) {
- 				SPI_STATISTICS_INCREMENT_FIELD(statm,
- 							       timedout);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 75c6bd0ac605..5b90b3086de8 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -370,6 +370,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *                    transfer_one_message are mutually exclusive; when both
-  *                    are set, the generic subsystem does not call your
-  *                    transfer_one callback.
-+ * @transfer_status: This callback allows the driver to return an error code
-+ *		     in case the scheduled single spi transfer failed.
-  * @handle_err: the subsystem calls the driver to handle an error that occurs
-  *		in the generic implementation of transfer_one_message().
-  * @unprepare_message: undo any work done by prepare_message().
-@@ -547,6 +549,7 @@ struct spi_master {
- 	void (*set_cs)(struct spi_device *spi, bool enable);
- 	int (*transfer_one)(struct spi_master *master, struct spi_device *spi,
- 			    struct spi_transfer *transfer);
-+	int (*transfer_status)(struct spi_master *master, unsigned long timeout);
- 	void (*handle_err)(struct spi_master *master,
- 			   struct spi_message *message);
- 
+ .../devicetree/bindings/spi/spi-lantiq-ssc.txt     |  29 +
+ drivers/spi/Kconfig                                |   8 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-lantiq-ssc.c                       | 952 +++++++++++++++++++++
+ drivers/spi/spi.c                                  |  14 +
+ include/linux/spi/spi.h                            |   3 +
+ 6 files changed, 1007 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-lantiq-ssc.txt
+ create mode 100644 drivers/spi/spi-lantiq-ssc.c
+
 -- 
 2.11.0
 

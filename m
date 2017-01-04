@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:30 +0000
-Message-ID: <E1cOqRG-00023x-MG@debutante>
-References: <20170103134820.159600-1-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Subject: Applied "spi: dw: Make debugfs name unique between instances" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:39 +0000
+Message-ID: <E1cOqRP-00026r-Q6@debutante>
+References: <1482398292-46946-1-git-send-email-preid@electromag.com.au>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org, jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170103134820.159600-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1482398292-46946-1-git-send-email-preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
+   spi: dw: Make debugfs name unique between instances
 
 has been applied to the spi tree at
 
@@ -38,41 +39,37 @@ to this mail.
 Thanks,
 Mark
 
->From cf1716e9dae5b21b9bbcfe5eb0106c3b0aee37e8 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 3 Jan 2017 15:48:20 +0200
-Subject: [PATCH] spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
+>From 13288bdf4adbaa6bd1267f10044c1bc25d90ce7f Mon Sep 17 00:00:00 2001
+From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Date: Thu, 22 Dec 2016 17:18:12 +0800
+Subject: [PATCH] spi: dw: Make debugfs name unique between instances
 
-The commit a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_*
-API") converted mid_spi_dma_exit() but missed mid_spi_dma_stop().
+Some system have multiple dw devices. Currently the driver uses a
+fixed name for the debugfs dir. Append dev name to the debugfs dir
+name to make it unique.
 
-This is follow up to convert the rest.
-
-Fixes: a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_* API")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-dw-mid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index e31971f91475..837cb8d0bac6 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -274,11 +274,11 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
- static void mid_spi_dma_stop(struct dw_spi *dws)
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index b715a26a9148..054012f87567 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -107,7 +107,10 @@ static const struct file_operations dw_spi_regs_ops = {
+ 
+ static int dw_spi_debugfs_init(struct dw_spi *dws)
  {
- 	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
--		dmaengine_terminate_all(dws->txchan);
-+		dmaengine_terminate_sync(dws->txchan);
- 		clear_bit(TX_BUSY, &dws->dma_chan_busy);
- 	}
- 	if (test_bit(RX_BUSY, &dws->dma_chan_busy)) {
--		dmaengine_terminate_all(dws->rxchan);
-+		dmaengine_terminate_sync(dws->rxchan);
- 		clear_bit(RX_BUSY, &dws->dma_chan_busy);
- 	}
- }
+-	dws->debugfs = debugfs_create_dir("dw_spi", NULL);
++	char name[128];
++
++	snprintf(name, 128, "dw_spi-%s", dev_name(&dws->master->dev));
++	dws->debugfs = debugfs_create_dir(name, NULL);
+ 	if (!dws->debugfs)
+ 		return -ENOMEM;
+ 
 -- 
 2.11.0
 

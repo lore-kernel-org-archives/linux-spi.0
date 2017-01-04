@@ -1,19 +1,26 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rspi: Remove useless memory allocation failure message" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:27 +0000
-Message-ID: <E1cOqRD-00023C-NF@debutante>
-References: <1483524908-32497-1-git-send-email-geert+renesas@glider.be>
+Subject: Applied "spi: armada-3700: Replaced raw values for nbits by the SPI macros" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:36 +0000
+Message-ID: <E1cOqRM-000261-Mt@debutante>
+References: <20161221101030.10925-3-romain.perier@free-electrons.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+        Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
+        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
+To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1483524908-32497-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <20161221101030.10925-3-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: rspi: Remove useless memory allocation failure message
+   spi: armada-3700: Replaced raw values for nbits by the SPI macros
 
 has been applied to the spi tree at
 
@@ -38,35 +45,45 @@ to this mail.
 Thanks,
 Mark
 
->From ffcfae3823751c72b615b57f700e563667002d09 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Wed, 4 Jan 2017 11:15:07 +0100
-Subject: [PATCH] spi: rspi: Remove useless memory allocation failure message
+>From cfd6693c06324174ceeac7aed570a0df67db7c4f Mon Sep 17 00:00:00 2001
+From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Date: Wed, 21 Dec 2016 11:10:30 +0100
+Subject: [PATCH] spi: armada-3700: Replaced raw values for nbits by the SPI
+ macros
 
-Printing an error on memory allocation failure is unnecessary.
+Currently, function a3700_spi_pin_mode_set() configures the SPI transfer
+mode according to the value passed as second argument. This value is
+detected using the raw values from a switch case.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+This commit replaces these raw values by the corresponding macro
+constants in linux/spi/spi.h
+
+Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-armada-3700.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 9daf50031737..58b7e68013f3 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1227,10 +1227,8 @@ static int rspi_probe(struct platform_device *pdev)
- 	const struct spi_ops *ops;
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 4e68f34957cc..9bee56ddff39 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -170,12 +170,12 @@ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
+ 	val &= ~(A3700_SPI_DATA_PIN0 | A3700_SPI_DATA_PIN1);
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct rspi_data));
--	if (master == NULL) {
--		dev_err(&pdev->dev, "spi_alloc_master error.\n");
-+	if (master == NULL)
- 		return -ENOMEM;
--	}
- 
- 	of_id = of_match_device(rspi_of_match, &pdev->dev);
- 	if (of_id) {
+ 	switch (pin_mode) {
+-	case 1:
++	case SPI_NBITS_SINGLE:
+ 		break;
+-	case 2:
++	case SPI_NBITS_DUAL:
+ 		val |= A3700_SPI_DATA_PIN0;
+ 		break;
+-	case 4:
++	case SPI_NBITS_QUAD:
+ 		val |= A3700_SPI_DATA_PIN1;
+ 		break;
+ 	default:
 -- 
 2.11.0
 

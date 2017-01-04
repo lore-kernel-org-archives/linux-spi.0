@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sh-msiof: Remove useless memory allocation failure message" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:24 +0000
-Message-ID: <E1cOqRA-00022Q-Kf@debutante>
-References: <1483524908-32497-2-git-send-email-geert+renesas@glider.be>
+Subject: Applied "spi: rspi: Remove useless memory allocation failure message" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:27 +0000
+Message-ID: <E1cOqRD-00023C-NF@debutante>
+References: <1483524908-32497-1-git-send-email-geert+renesas@glider.be>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1483524908-32497-2-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <1483524908-32497-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sh-msiof: Remove useless memory allocation failure message
+   spi: rspi: Remove useless memory allocation failure message
 
 has been applied to the spi tree at
 
@@ -38,36 +38,35 @@ to this mail.
 Thanks,
 Mark
 
->From e7ad4a73364c21f40963a35631b285b60fa3198c Mon Sep 17 00:00:00 2001
+>From ffcfae3823751c72b615b57f700e563667002d09 Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Wed, 4 Jan 2017 11:15:08 +0100
-Subject: [PATCH] spi: sh-msiof: Remove useless memory allocation failure
- message
+Date: Wed, 4 Jan 2017 11:15:07 +0100
+Subject: [PATCH] spi: rspi: Remove useless memory allocation failure message
 
 Printing an error on memory allocation failure is unnecessary.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 4 +---
+ drivers/spi/spi-rspi.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 1f00eeb0b5a3..2ce15ca97782 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1164,10 +1164,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	int ret;
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 9daf50031737..58b7e68013f3 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1227,10 +1227,8 @@ static int rspi_probe(struct platform_device *pdev)
+ 	const struct spi_ops *ops;
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct rspi_data));
 -	if (master == NULL) {
--		dev_err(&pdev->dev, "failed to allocate spi master\n");
+-		dev_err(&pdev->dev, "spi_alloc_master error.\n");
 +	if (master == NULL)
  		return -ENOMEM;
 -	}
  
- 	p = spi_master_get_devdata(master);
- 
+ 	of_id = of_match_device(rspi_of_match, &pdev->dev);
+ 	if (of_id) {
 -- 
 2.11.0
 

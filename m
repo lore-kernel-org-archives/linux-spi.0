@@ -1,42 +1,48 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 2/2] spi: sh-msiof: Remove useless memory allocation failure message
-Date: Wed,  4 Jan 2017 11:15:08 +0100
-Message-ID: <1483524908-32497-2-git-send-email-geert+renesas@glider.be>
-References: <1483524908-32497-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] SPI: make falcon-spi bool
+Date: Wed, 4 Jan 2017 10:46:24 +0000
+Message-ID: <20170104104624.z4ijsadskpmd26p5@sirena.org.uk>
+References: <20170103170427.26120-1-hauke@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="alvbwffhnzzkx5qh"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1483524908-32497-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170103170427.26120-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Printing an error on memory allocation failure is unnecessary.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
- drivers/spi/spi-sh-msiof.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+--alvbwffhnzzkx5qh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index ca2f2f8e4d1b45e2..44b484870220a96d 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1214,10 +1214,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	int ret;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
--	if (master == NULL) {
--		dev_err(&pdev->dev, "failed to allocate spi master\n");
-+	if (master == NULL)
- 		return -ENOMEM;
--	}
- 
- 	p = spi_master_get_devdata(master);
- 
--- 
-1.9.1
+On Tue, Jan 03, 2017 at 06:04:27PM +0100, Hauke Mehrtens wrote:
+> Falcon spi accesses some ebu functions which are not exported and can
+> not be accessed when build as module. Make this module bool instead.
 
+Why is the fix here not to export these functions (or longer term to fix
+things so that we're not going through custom APIs)?
+
+--alvbwffhnzzkx5qh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhs0oAACgkQJNaLcl1U
+h9DcqAf+NFoqgpCACkCkJ+F5jEdbm3+X7iXidm5ipfkPoFs0xvatoDBZnOanErXo
+1k0Lq1seBtRRgdp/XcQso0NIA7dsUHjhZBmrI5Z+8IaCssR89Sq+XJlqrDuUonTX
+R3jGjlMo7oTEWwprjuA90tGnKFlJF8BeUWUTp5R9xQNIEAq0n9SO4ihkaDez4DVy
+MM+S4pGCGswLbtvp4NAAgy1tliu+loLgwu3ciPZ489gpv1SSRIhI9h1gh42rkw5Y
+hT6wh6g2J1+ALl8gtGges4yYC5GGNFpCETbiZqrnJB4VekLUd5cBvYMn+mLTwVzt
+4ONFDxHph5tboRlDFE2D0eVDiTDc8Q==
+=0E+p
+-----END PGP SIGNATURE-----
+
+--alvbwffhnzzkx5qh--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

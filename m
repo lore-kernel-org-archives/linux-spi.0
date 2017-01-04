@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: fix indentation of the comments in header" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:18 +0000
-Message-ID: <E1cOqR4-00020s-D4@debutante>
-References: <20170102114429.128094-2-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: pxa2xx-pci: Enable DMA for Intel Merrifield" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:15 +0000
+Message-ID: <E1cOqR1-000208-Cl@debutante>
+References: <20170102114731.128162-1-andriy.shevchenko@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170102114429.128094-2-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20170102114731.128162-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: fix indentation of the comments in header
+   spi: pxa2xx-pci: Enable DMA for Intel Merrifield
 
 has been applied to the spi tree at
 
@@ -38,60 +38,78 @@ to this mail.
 Thanks,
 Mark
 
->From 63971c5682bf89e15083733dcd7b4610e789e843 Mon Sep 17 00:00:00 2001
+>From 25014521603f70225c1e6fa232839614f7b4f692 Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 2 Jan 2017 13:44:29 +0200
-Subject: [PATCH] spi: pxa2xx: fix indentation of the comments in header
+Date: Mon, 2 Jan 2017 13:47:31 +0200
+Subject: [PATCH] spi: pxa2xx-pci: Enable DMA for Intel Merrifield
 
-Just for sake of readability fix the indentation of the comments in
-pxa2xx_ssp.h header file.
+SPI controller on Intel Merrifield is backed by DMA engine. Add necessary bits
+to support it.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- include/linux/pxa2xx_ssp.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-pxa2xx-pci.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 2d6f0c39ed68..a0522328d7aa 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -90,9 +90,9 @@
- #define SSSR_RFL_MASK	(0xf << 12)	/* Receive FIFO Level mask */
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 58d2d48e16a5..868452d8e3e1 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -41,6 +41,13 @@ struct pxa_spi_info {
+ static struct dw_dma_slave byt_tx_param = { .dst_id = 0 };
+ static struct dw_dma_slave byt_rx_param = { .src_id = 1 };
  
- #define SSCR1_TFT	(0x000003c0)	/* Transmit FIFO Threshold (mask) */
--#define SSCR1_TxTresh(x) (((x) - 1) << 6) /* level [1..16] */
-+#define SSCR1_TxTresh(x) (((x) - 1) << 6)	/* level [1..16] */
- #define SSCR1_RFT	(0x00003c00)	/* Receive FIFO Threshold (mask) */
--#define SSCR1_RxTresh(x) (((x) - 1) << 10) /* level [1..16] */
-+#define SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..16] */
++static struct dw_dma_slave mrfld3_tx_param = { .dst_id = 15 };
++static struct dw_dma_slave mrfld3_rx_param = { .src_id = 14 };
++static struct dw_dma_slave mrfld5_tx_param = { .dst_id = 13 };
++static struct dw_dma_slave mrfld5_rx_param = { .src_id = 12 };
++static struct dw_dma_slave mrfld6_tx_param = { .dst_id = 11 };
++static struct dw_dma_slave mrfld6_rx_param = { .src_id = 10 };
++
+ static struct dw_dma_slave bsw0_tx_param = { .dst_id = 0 };
+ static struct dw_dma_slave bsw0_rx_param = { .src_id = 1 };
+ static struct dw_dma_slave bsw1_tx_param = { .dst_id = 6 };
+@@ -93,22 +100,39 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
  
- #define RX_THRESH_CE4100_DFLT	2
- #define TX_THRESH_CE4100_DFLT	2
-@@ -106,9 +106,9 @@
- #define CE4100_SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..4] */
+ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ {
++	struct pci_dev *dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(21, 0));
++	struct dw_dma_slave *tx, *rx;
++
+ 	switch (PCI_FUNC(dev->devfn)) {
+ 	case 0:
+ 		c->port_id = 3;
+ 		c->num_chipselect = 1;
++		c->tx_param = &mrfld3_tx_param;
++		c->rx_param = &mrfld3_rx_param;
+ 		break;
+ 	case 1:
+ 		c->port_id = 5;
+ 		c->num_chipselect = 4;
++		c->tx_param = &mrfld5_tx_param;
++		c->rx_param = &mrfld5_rx_param;
+ 		break;
+ 	case 2:
+ 		c->port_id = 6;
+ 		c->num_chipselect = 1;
++		c->tx_param = &mrfld6_tx_param;
++		c->rx_param = &mrfld6_rx_param;
+ 		break;
+ 	default:
+ 		return -ENODEV;
+ 	}
++
++	tx = c->tx_param;
++	tx->dma_dev = &dma_dev->dev;
++
++	rx = c->rx_param;
++	rx->dma_dev = &dma_dev->dev;
++
++	c->dma_filter = lpss_dma_filter;
+ 	return 0;
+ }
  
- /* QUARK_X1000 SSCR0 bit definition */
--#define QUARK_X1000_SSCR0_DSS	(0x1F)		/* Data Size Select (mask) */
--#define QUARK_X1000_SSCR0_DataSize(x)  ((x) - 1)	/* Data Size Select [4..32] */
--#define QUARK_X1000_SSCR0_FRF	(0x3 << 5)	/* FRame Format (mask) */
-+#define QUARK_X1000_SSCR0_DSS		(0x1F << 0)	/* Data Size Select (mask) */
-+#define QUARK_X1000_SSCR0_DataSize(x)	((x) - 1)	/* Data Size Select [4..32] */
-+#define QUARK_X1000_SSCR0_FRF		(0x3 << 5)	/* FRame Format (mask) */
- #define QUARK_X1000_SSCR0_Motorola	(0x0 << 5)	/* Motorola's Serial Peripheral Interface (SPI) */
- 
- #define RX_THRESH_QUARK_X1000_DFLT	1
-@@ -121,8 +121,8 @@
- #define QUARK_X1000_SSCR1_TxTresh(x) (((x) - 1) << 6)	/* level [1..32] */
- #define QUARK_X1000_SSCR1_RFT	(0x1F << 11)	/* Receive FIFO Threshold (mask) */
- #define QUARK_X1000_SSCR1_RxTresh(x) (((x) - 1) << 11)	/* level [1..32] */
--#define QUARK_X1000_SSCR1_STRF       (1 << 17)		/* Select FIFO or EFWR */
--#define QUARK_X1000_SSCR1_EFWR	(1 << 16)		/* Enable FIFO Write/Read */
-+#define QUARK_X1000_SSCR1_STRF	(1 << 17)	/* Select FIFO or EFWR */
-+#define QUARK_X1000_SSCR1_EFWR	(1 << 16)	/* Enable FIFO Write/Read */
- 
- /* extra bits in PXA255, PXA26x and PXA27x SSP ports */
- #define SSCR0_TISSP		(1 << 4)	/* TI Sync Serial Protocol */
 -- 
 2.11.0
 

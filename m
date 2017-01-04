@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: add missed break" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:21 +0000
-Message-ID: <E1cOqR7-00021c-Ds@debutante>
-References: <20170102114429.128094-1-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: sh-msiof: Remove useless memory allocation failure message" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:24 +0000
+Message-ID: <E1cOqRA-00022Q-Kf@debutante>
+References: <1483524908-32497-2-git-send-email-geert+renesas@glider.be>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170102114429.128094-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1483524908-32497-2-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: add missed break
+   spi: sh-msiof: Remove useless memory allocation failure message
 
 has been applied to the spi tree at
 
@@ -38,37 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From a2dd8af00ca7fff4972425a4a6b19dd1840dc807 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 2 Jan 2017 13:44:28 +0200
-Subject: [PATCH] spi: pxa2xx: add missed break
+>From e7ad4a73364c21f40963a35631b285b60fa3198c Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Wed, 4 Jan 2017 11:15:08 +0100
+Subject: [PATCH] spi: sh-msiof: Remove useless memory allocation failure
+ message
 
-The commit 7c7289a40425 ("spi: pxa2xx: Default thresholds to PXA
-configuration") while splitting up CE4100 code obviously missed a break
-condition in one chunk. Add it here.
+Printing an error on memory allocation failure is unnecessary.
 
-Looks like we have no active user of CE4100, though better to fix this later
-than never.
-
-Fixes: commit 7c7289a40425 ("spi: pxa2xx: Default thresholds to PXA configuration")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-sh-msiof.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index dd7b5b47291d..d6239fa718be 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1690,6 +1690,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		pxa2xx_spi_write(drv_data, SSCR1, tmp);
- 		tmp = SSCR0_SCR(2) | SSCR0_Motorola | SSCR0_DataSize(8);
- 		pxa2xx_spi_write(drv_data, SSCR0, tmp);
-+		break;
- 	default:
- 		tmp = SSCR1_RxTresh(RX_THRESH_DFLT) |
- 		      SSCR1_TxTresh(TX_THRESH_DFLT);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 1f00eeb0b5a3..2ce15ca97782 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1164,10 +1164,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	int ret;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
+-	if (master == NULL) {
+-		dev_err(&pdev->dev, "failed to allocate spi master\n");
++	if (master == NULL)
+ 		return -ENOMEM;
+-	}
+ 
+ 	p = spi_master_get_devdata(master);
+ 
 -- 
 2.11.0
 

@@ -1,33 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Enable the driver on BMIPS_GENERIC" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:46 +0000
-Message-ID: <E1cOqRW-00028h-2T@debutante>
-References: <20161230063001.944-2-jaedon.shin@gmail.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
-To: Jaedon Shin <jaedon.shin@gmail.com>
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <20161230063001.944-2-jaedon.shin@gmail.com>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pxa2xx: fix indentation of the comments in header" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:18 +0000
+Message-ID: <E1cOqR4-00020s-D4@debutante>
+References: <20170102114429.128094-2-andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170102114429.128094-2-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
+   spi: pxa2xx: fix indentation of the comments in header
 
 has been applied to the spi tree at
 
@@ -52,34 +38,64 @@ to this mail.
 Thanks,
 Mark
 
->From 279e4af7b4bebc6a5bf2d0e5b3209f3dcea94a19 Mon Sep 17 00:00:00 2001
-From: Jaedon Shin <jaedon.shin@gmail.com>
-Date: Fri, 30 Dec 2016 15:30:00 +0900
-Subject: [PATCH] spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
+>From 63971c5682bf89e15083733dcd7b4610e789e843 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 2 Jan 2017 13:44:29 +0200
+Subject: [PATCH] spi: pxa2xx: fix indentation of the comments in header
 
-The Broadcom BCM7XXX ARM and MIPS based SoCs share a similar hardware
-block for SPI.
+Just for sake of readability fix the indentation of the comments in
+pxa2xx_ssp.h header file.
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/pxa2xx_ssp.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ec4aa252d6e8..c982a01022ba 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -162,7 +162,8 @@ config SPI_BCM63XX_HSSPI
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index 2d6f0c39ed68..a0522328d7aa 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -90,9 +90,9 @@
+ #define SSSR_RFL_MASK	(0xf << 12)	/* Receive FIFO Level mask */
  
- config SPI_BCM_QSPI
- 	tristate "Broadcom BSPI and MSPI controller support"
--	depends on ARCH_BRCMSTB || ARCH_BCM || ARCH_BCM_IPROC || COMPILE_TEST
-+	depends on ARCH_BRCMSTB || ARCH_BCM || ARCH_BCM_IPROC || \
-+			BMIPS_GENERIC || COMPILE_TEST
- 	default ARCH_BCM_IPROC
- 	help
- 	  Enables support for the Broadcom SPI flash and MSPI controller.
+ #define SSCR1_TFT	(0x000003c0)	/* Transmit FIFO Threshold (mask) */
+-#define SSCR1_TxTresh(x) (((x) - 1) << 6) /* level [1..16] */
++#define SSCR1_TxTresh(x) (((x) - 1) << 6)	/* level [1..16] */
+ #define SSCR1_RFT	(0x00003c00)	/* Receive FIFO Threshold (mask) */
+-#define SSCR1_RxTresh(x) (((x) - 1) << 10) /* level [1..16] */
++#define SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..16] */
+ 
+ #define RX_THRESH_CE4100_DFLT	2
+ #define TX_THRESH_CE4100_DFLT	2
+@@ -106,9 +106,9 @@
+ #define CE4100_SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..4] */
+ 
+ /* QUARK_X1000 SSCR0 bit definition */
+-#define QUARK_X1000_SSCR0_DSS	(0x1F)		/* Data Size Select (mask) */
+-#define QUARK_X1000_SSCR0_DataSize(x)  ((x) - 1)	/* Data Size Select [4..32] */
+-#define QUARK_X1000_SSCR0_FRF	(0x3 << 5)	/* FRame Format (mask) */
++#define QUARK_X1000_SSCR0_DSS		(0x1F << 0)	/* Data Size Select (mask) */
++#define QUARK_X1000_SSCR0_DataSize(x)	((x) - 1)	/* Data Size Select [4..32] */
++#define QUARK_X1000_SSCR0_FRF		(0x3 << 5)	/* FRame Format (mask) */
+ #define QUARK_X1000_SSCR0_Motorola	(0x0 << 5)	/* Motorola's Serial Peripheral Interface (SPI) */
+ 
+ #define RX_THRESH_QUARK_X1000_DFLT	1
+@@ -121,8 +121,8 @@
+ #define QUARK_X1000_SSCR1_TxTresh(x) (((x) - 1) << 6)	/* level [1..32] */
+ #define QUARK_X1000_SSCR1_RFT	(0x1F << 11)	/* Receive FIFO Threshold (mask) */
+ #define QUARK_X1000_SSCR1_RxTresh(x) (((x) - 1) << 11)	/* level [1..32] */
+-#define QUARK_X1000_SSCR1_STRF       (1 << 17)		/* Select FIFO or EFWR */
+-#define QUARK_X1000_SSCR1_EFWR	(1 << 16)		/* Enable FIFO Write/Read */
++#define QUARK_X1000_SSCR1_STRF	(1 << 17)	/* Select FIFO or EFWR */
++#define QUARK_X1000_SSCR1_EFWR	(1 << 16)	/* Enable FIFO Write/Read */
+ 
+ /* extra bits in PXA255, PXA26x and PXA27x SSP ports */
+ #define SSCR0_TISSP		(1 << 4)	/* TI Sync Serial Protocol */
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: armada-3700: Replaced raw values for nbits by the SPI macros" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:36 +0000
-Message-ID: <E1cOqRM-000261-Mt@debutante>
-References: <20161221101030.10925-3-romain.perier@free-electrons.com>
+Subject: Applied "spi: armada-3700: Coding style fixes" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:33 +0000
+Message-ID: <E1cOqRJ-00024z-MY@debutante>
+References: <20161221101030.10925-2-romain.perier@free-electrons.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
         Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
@@ -14,13 +14,13 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <br
         dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
 To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161221101030.10925-3-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20161221101030.10925-2-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: armada-3700: Replaced raw values for nbits by the SPI macros
+   spi: armada-3700: Coding style fixes
 
 has been applied to the spi tree at
 
@@ -45,45 +45,50 @@ to this mail.
 Thanks,
 Mark
 
->From cfd6693c06324174ceeac7aed570a0df67db7c4f Mon Sep 17 00:00:00 2001
+>From 85798e153e6c3834ab2d69ee9d4db7d85f13809d Mon Sep 17 00:00:00 2001
 From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Date: Wed, 21 Dec 2016 11:10:30 +0100
-Subject: [PATCH] spi: armada-3700: Replaced raw values for nbits by the SPI
- macros
+Date: Wed, 21 Dec 2016 11:10:29 +0100
+Subject: [PATCH] spi: armada-3700: Coding style fixes
 
-Currently, function a3700_spi_pin_mode_set() configures the SPI transfer
-mode according to the value passed as second argument. This value is
-detected using the raw values from a switch case.
+The following warning are reported by checkpatch.pl:
 
-This commit replaces these raw values by the corresponding macro
-constants in linux/spi/spi.h
+CHECK: Alignment should match open parenthesis
++static void a3700_spi_transfer_setup(struct spi_device *spi,
++                                   struct spi_transfer *xfer)
+
+WARNING: Missing a blank line after declarations
++                       u32 data = le32_to_cpu(val);
++                       memcpy(a3700_spi->rx_buf, &data, 4);
+
+total: 0 errors, 1 warnings, 1 checks, 923 lines checked
 
 Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-armada-3700.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-armada-3700.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 4e68f34957cc..9bee56ddff39 100644
+index 9bee56ddff39..0baa69325e78 100644
 --- a/drivers/spi/spi-armada-3700.c
 +++ b/drivers/spi/spi-armada-3700.c
-@@ -170,12 +170,12 @@ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
- 	val &= ~(A3700_SPI_DATA_PIN0 | A3700_SPI_DATA_PIN1);
+@@ -420,7 +420,7 @@ static void a3700_spi_fifo_thres_set(struct a3700_spi *a3700_spi,
+ }
  
- 	switch (pin_mode) {
--	case 1:
-+	case SPI_NBITS_SINGLE:
- 		break;
--	case 2:
-+	case SPI_NBITS_DUAL:
- 		val |= A3700_SPI_DATA_PIN0;
- 		break;
--	case 4:
-+	case SPI_NBITS_QUAD:
- 		val |= A3700_SPI_DATA_PIN1;
- 		break;
- 	default:
+ static void a3700_spi_transfer_setup(struct spi_device *spi,
+-				    struct spi_transfer *xfer)
++				     struct spi_transfer *xfer)
+ {
+ 	struct a3700_spi *a3700_spi;
+ 	unsigned int byte_len;
+@@ -561,6 +561,7 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
+ 		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
+ 		if (a3700_spi->buf_len >= 4) {
+ 			u32 data = le32_to_cpu(val);
++
+ 			memcpy(a3700_spi->rx_buf, &data, 4);
+ 
+ 			a3700_spi->buf_len -= 4;
 -- 
 2.11.0
 

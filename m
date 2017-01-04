@@ -1,49 +1,71 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] SPI: make falcon-spi bool
-Date: Wed, 4 Jan 2017 10:46:24 +0000
-Message-ID: <20170104104624.z4ijsadskpmd26p5@sirena.org.uk>
-References: <20170103170427.26120-1-hauke@hauke-m.de>
+From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Subject: [PATCH v4 0/2] mtd: spi-nor: add a stateless method to support memory size above 128Mib
+Date: Wed, 4 Jan 2017 13:20:53 +0100
+Message-ID: <cover.1483528931.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="alvbwffhnzzkx5qh"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170103170427.26120-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <computersforpeace@gmail.com>,
+        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>
+To: <marek.vasut@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi all,
 
---alvbwffhnzzkx5qh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+this series of patches is based on the git://github.com/spi-nor/linux.git
+tree. It has been extracted from the SFDP series and is resent as
+a standalone series.
 
-On Tue, Jan 03, 2017 at 06:04:27PM +0100, Hauke Mehrtens wrote:
-> Falcon spi accesses some ebu functions which are not exported and can
-> not be accessed when build as module. Make this module bool instead.
+This series fixes compatibility issue between Linux and many bootloaders
+when using SPI flash with size greater than 128Mib.
 
-Why is the fix here not to export these functions (or longer term to fix
-things so that we're not going through custom APIs)?
+Indeed, before this series, Linux used to make the SPI flash memory enter
+its 4-byte address mode when its size is greater than 128Mib: The very
+same Fast Read 1-1-z op code is used, for instance Fast Read 1-1-4 (6Bh)
+but once in 4-byte address mode, the SPI flash memory now expects a 4-byte
+address following the op code instead of a 3-byte address.
+This solution is statefull: it changes the internal state of the memory.
 
---alvbwffhnzzkx5qh
-Content-Type: application/pgp-signature; name="signature.asc"
+Hence, when the CPU is reset but not the memory, many bootloaders are not
+aware of this internal state change at the memory side, don't know how to
+handle this and still send one Fast Read op code followed by a 3-byte
+address. So the bootloader fails to read data from the SPI flash memory.
 
------BEGIN PGP SIGNATURE-----
+ChangeLog:
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhs0oAACgkQJNaLcl1U
-h9DcqAf+NFoqgpCACkCkJ+F5jEdbm3+X7iXidm5ipfkPoFs0xvatoDBZnOanErXo
-1k0Lq1seBtRRgdp/XcQso0NIA7dsUHjhZBmrI5Z+8IaCssR89Sq+XJlqrDuUonTX
-R3jGjlMo7oTEWwprjuA90tGnKFlJF8BeUWUTp5R9xQNIEAq0n9SO4ihkaDez4DVy
-MM+S4pGCGswLbtvp4NAAgy1tliu+loLgwu3ciPZ489gpv1SSRIhI9h1gh42rkw5Y
-hT6wh6g2J1+ALl8gtGges4yYC5GGNFpCETbiZqrnJB4VekLUd5cBvYMn+mLTwVzt
-4ONFDxHph5tboRlDFE2D0eVDiTDc8Q==
-=0E+p
------END PGP SIGNATURE-----
+v3 -> v4:
+- replace "++i" by "i++" in a "for" loop.
+- add a new "size" parameter to spi_nor_convert_opcode() and use the
+  ARRAY_SIZE() macro instead of a null sentinel at the end the table array.
 
---alvbwffhnzzkx5qh--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+v2 -> v3:
+- no change on patch 1.
+- rebase patch 2 on the spi-nor tree: SPI_NOR_4B_OPCODES is changed from
+  BIT(10) to BIT(11), otherwise patch could be applied on linux-next.
+- remove helper macro such as ENTRY_3TO4()
+- split the 3to4 opcode table into 3 different tables for read, program
+  and erase op codes.
+
+v1 -> v2:
+- collect Acked-by for patch 1.
+- replace the dichotomic search by a simple for() loop for better clarity
+  purpose in patch 2.
+
+Cyrille Pitchen (2):
+  mtd: spi-nor: rename SPINOR_OP_* macros of the 4-byte address op codes
+  mtd: spi-nor: add a stateless method to support memory size above
+    128Mib
+
+ drivers/mtd/devices/serial_flash_cmds.h |   7 ---
+ drivers/mtd/devices/st_spi_fsm.c        |  28 ++++-----
+ drivers/mtd/spi-nor/spi-nor.c           | 101 +++++++++++++++++++++++++-------
+ drivers/spi/spi-bcm-qspi.c              |   6 +-
+ include/linux/mtd/spi-nor.h             |  22 +++++--
+ 5 files changed, 113 insertions(+), 51 deletions(-)
+
+-- 
+2.7.4

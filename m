@@ -1,26 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: armada-3700: Coding style fixes" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:33 +0000
-Message-ID: <E1cOqRJ-00024z-MY@debutante>
-References: <20161221101030.10925-2-romain.perier@free-electrons.com>
+Subject: Applied "spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:30 +0000
+Message-ID: <E1cOqRG-00023x-MG@debutante>
+References: <20170103134820.159600-1-andriy.shevchenko@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-        Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-        Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, xigu-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        dingwei-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org
-To: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161221101030.10925-2-romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20170103134820.159600-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: armada-3700: Coding style fixes
+   spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
 
 has been applied to the spi tree at
 
@@ -45,50 +38,41 @@ to this mail.
 Thanks,
 Mark
 
->From 85798e153e6c3834ab2d69ee9d4db7d85f13809d Mon Sep 17 00:00:00 2001
-From: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Date: Wed, 21 Dec 2016 11:10:29 +0100
-Subject: [PATCH] spi: armada-3700: Coding style fixes
+>From cf1716e9dae5b21b9bbcfe5eb0106c3b0aee37e8 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 3 Jan 2017 15:48:20 +0200
+Subject: [PATCH] spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
 
-The following warning are reported by checkpatch.pl:
+The commit a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_*
+API") converted mid_spi_dma_exit() but missed mid_spi_dma_stop().
 
-CHECK: Alignment should match open parenthesis
-+static void a3700_spi_transfer_setup(struct spi_device *spi,
-+                                   struct spi_transfer *xfer)
+This is follow up to convert the rest.
 
-WARNING: Missing a blank line after declarations
-+                       u32 data = le32_to_cpu(val);
-+                       memcpy(a3700_spi->rx_buf, &data, 4);
-
-total: 0 errors, 1 warnings, 1 checks, 923 lines checked
-
-Signed-off-by: Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Fixes: a3ff9582369e ("spi: dw-mid: switch to new dmaengine_terminate_* API")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-armada-3700.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-mid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 9bee56ddff39..0baa69325e78 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -420,7 +420,7 @@ static void a3700_spi_fifo_thres_set(struct a3700_spi *a3700_spi,
- }
- 
- static void a3700_spi_transfer_setup(struct spi_device *spi,
--				    struct spi_transfer *xfer)
-+				     struct spi_transfer *xfer)
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index e31971f91475..837cb8d0bac6 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -274,11 +274,11 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ static void mid_spi_dma_stop(struct dw_spi *dws)
  {
- 	struct a3700_spi *a3700_spi;
- 	unsigned int byte_len;
-@@ -561,6 +561,7 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
- 		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
- 		if (a3700_spi->buf_len >= 4) {
- 			u32 data = le32_to_cpu(val);
-+
- 			memcpy(a3700_spi->rx_buf, &data, 4);
- 
- 			a3700_spi->buf_len -= 4;
+ 	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
+-		dmaengine_terminate_all(dws->txchan);
++		dmaengine_terminate_sync(dws->txchan);
+ 		clear_bit(TX_BUSY, &dws->dma_chan_busy);
+ 	}
+ 	if (test_bit(RX_BUSY, &dws->dma_chan_busy)) {
+-		dmaengine_terminate_all(dws->rxchan);
++		dmaengine_terminate_sync(dws->rxchan);
+ 		clear_bit(RX_BUSY, &dws->dma_chan_busy);
+ 	}
+ }
 -- 
 2.11.0
 

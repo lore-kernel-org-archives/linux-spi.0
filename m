@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx-pci: Enable DMA for Intel Merrifield" to the spi tree
-Date: Wed, 04 Jan 2017 18:37:15 +0000
-Message-ID: <E1cOqR1-000208-Cl@debutante>
-References: <20170102114731.128162-1-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: pxa2xx: add missed break" to the spi tree
+Date: Wed, 04 Jan 2017 18:37:21 +0000
+Message-ID: <E1cOqR7-00021c-Ds@debutante>
+References: <20170102114429.128094-1-andriy.shevchenko@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170102114731.128162-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20170102114429.128094-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx-pci: Enable DMA for Intel Merrifield
+   spi: pxa2xx: add missed break
 
 has been applied to the spi tree at
 
@@ -38,78 +38,37 @@ to this mail.
 Thanks,
 Mark
 
->From 25014521603f70225c1e6fa232839614f7b4f692 Mon Sep 17 00:00:00 2001
+>From a2dd8af00ca7fff4972425a4a6b19dd1840dc807 Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 2 Jan 2017 13:47:31 +0200
-Subject: [PATCH] spi: pxa2xx-pci: Enable DMA for Intel Merrifield
+Date: Mon, 2 Jan 2017 13:44:28 +0200
+Subject: [PATCH] spi: pxa2xx: add missed break
 
-SPI controller on Intel Merrifield is backed by DMA engine. Add necessary bits
-to support it.
+The commit 7c7289a40425 ("spi: pxa2xx: Default thresholds to PXA
+configuration") while splitting up CE4100 code obviously missed a break
+condition in one chunk. Add it here.
 
+Looks like we have no active user of CE4100, though better to fix this later
+than never.
+
+Fixes: commit 7c7289a40425 ("spi: pxa2xx: Default thresholds to PXA configuration")
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 58d2d48e16a5..868452d8e3e1 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -41,6 +41,13 @@ struct pxa_spi_info {
- static struct dw_dma_slave byt_tx_param = { .dst_id = 0 };
- static struct dw_dma_slave byt_rx_param = { .src_id = 1 };
- 
-+static struct dw_dma_slave mrfld3_tx_param = { .dst_id = 15 };
-+static struct dw_dma_slave mrfld3_rx_param = { .src_id = 14 };
-+static struct dw_dma_slave mrfld5_tx_param = { .dst_id = 13 };
-+static struct dw_dma_slave mrfld5_rx_param = { .src_id = 12 };
-+static struct dw_dma_slave mrfld6_tx_param = { .dst_id = 11 };
-+static struct dw_dma_slave mrfld6_rx_param = { .src_id = 10 };
-+
- static struct dw_dma_slave bsw0_tx_param = { .dst_id = 0 };
- static struct dw_dma_slave bsw0_rx_param = { .src_id = 1 };
- static struct dw_dma_slave bsw1_tx_param = { .dst_id = 6 };
-@@ -93,22 +100,39 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
- 
- static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
- {
-+	struct pci_dev *dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(21, 0));
-+	struct dw_dma_slave *tx, *rx;
-+
- 	switch (PCI_FUNC(dev->devfn)) {
- 	case 0:
- 		c->port_id = 3;
- 		c->num_chipselect = 1;
-+		c->tx_param = &mrfld3_tx_param;
-+		c->rx_param = &mrfld3_rx_param;
- 		break;
- 	case 1:
- 		c->port_id = 5;
- 		c->num_chipselect = 4;
-+		c->tx_param = &mrfld5_tx_param;
-+		c->rx_param = &mrfld5_rx_param;
- 		break;
- 	case 2:
- 		c->port_id = 6;
- 		c->num_chipselect = 1;
-+		c->tx_param = &mrfld6_tx_param;
-+		c->rx_param = &mrfld6_rx_param;
- 		break;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index dd7b5b47291d..d6239fa718be 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1690,6 +1690,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 		pxa2xx_spi_write(drv_data, SSCR1, tmp);
+ 		tmp = SSCR0_SCR(2) | SSCR0_Motorola | SSCR0_DataSize(8);
+ 		pxa2xx_spi_write(drv_data, SSCR0, tmp);
++		break;
  	default:
- 		return -ENODEV;
- 	}
-+
-+	tx = c->tx_param;
-+	tx->dma_dev = &dma_dev->dev;
-+
-+	rx = c->rx_param;
-+	rx->dma_dev = &dma_dev->dev;
-+
-+	c->dma_filter = lpss_dma_filter;
- 	return 0;
- }
- 
+ 		tmp = SSCR1_RxTresh(RX_THRESH_DFLT) |
+ 		      SSCR1_TxTresh(TX_THRESH_DFLT);
 -- 
 2.11.0
 

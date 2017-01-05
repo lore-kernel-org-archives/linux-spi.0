@@ -1,56 +1,84 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Applied "spi: dw: Make debugfs name unique between instances" to
- the spi tree
-Date: Thu, 5 Jan 2017 01:01:46 +0000
-Message-ID: <20170105010146.iyo5mvfjzd555egm@sirena.org.uk>
-References: <1482398292-46946-1-git-send-email-preid@electromag.com.au>
- <E1cOqRP-00026r-Q6@debutante>
- <CAHp75VccfSoo1yq60G9X=_WxKKR3pwiQvBkqA6vyFthDrKxPDA@mail.gmail.com>
+From: Jiada Wang <jiada_wang@mentor.com>
+Subject: [PATCH 1/1] spi: imx: support to set watermark level via DTS
+Date: Thu, 5 Jan 2017 15:10:15 +0900
+Message-ID: <20170105061015.7816-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="drrnfbd3hep2msjz"
-Cc: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org,
-        Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VccfSoo1yq60G9X=_WxKKR3pwiQvBkqA6vyFthDrKxPDA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jiada_wang@mentor.com>
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Previously watermark level is configured to fifosize/2,
+DMA mode can be used only when transfer length can be divided
+by 'watermark level * bpw', which makes DMA mode not practical.
 
---drrnfbd3hep2msjz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch adds new DTS property 'dma-wml', user can configure
+DMA watermark level, by specify 'dma-wml' in corresponding ecspi
+node.
 
-On Thu, Jan 05, 2017 at 12:45:48AM +0200, Andy Shevchenko wrote:
-> On Wed, Jan 4, 2017 at 8:37 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
+---
+ Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt |  2 ++
+ drivers/spi/spi-imx.c                                  | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-> > Please add any relevant lists and maintainers to the CCs when replying
-> > to this mail.
-
-> Hmm... We are still discussing the approach.
-
-I applied this before you started discussing the approach...
-
---drrnfbd3hep2msjz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhtmvYACgkQJNaLcl1U
-h9DFBQf9GJwB7IkyB76fP1hGhsunZX8LoaBcbLO40sA5F8aNpPfu6RpZlEWH2VLg
-KGjlvZlPUrZGAq3bK9YRfWD1W1pG7LNCDuwPizW4n5d1mhH7jPz0S0FyIQQAKlEW
-bdhpAELIBj5N+xpjP69HXS+MvNXl6qFHZKcy87Ug0K8gSYo6OPP1S5WA5N1qcV25
-/89pqTU5OU/Dafzs5hD3SR7711EKealH96w1DpLhPO7FNL/KIPkl4QlIzZDi61e8
-z6dVvSbPSB9sARtYICWlmHEcBOn3NDAWq1afWcxO4K9h2EEX+jjdYhsP9t3QWMBt
-JfUZrkRuPqVcjX9UJ5jaMqvBSj/B0Q==
-=DHwg
------END PGP SIGNATURE-----
-
---drrnfbd3hep2msjz--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 8bc95e2..1e9345f 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -19,6 +19,7 @@ See the clock consumer binding,
+ - dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
+ 		Documentation/devicetree/bindings/dma/dma.txt
+ - dma-names: DMA request names should include "tx" and "rx" if present.
++- dma-wml: Specifies DMA watermark level
+ 
+ Obsolete properties:
+ - fsl,spi-num-chipselects : Contains the number of the chipselect
+@@ -35,4 +36,5 @@ ecspi@70010000 {
+ 		   <&gpio3 25 0>; /* GPIO3_25 */
+ 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
+ 	dma-names = "rx", "tx";
++        dma-wml = <16>;
+ };
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index deb782f..5c0ce19 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -929,8 +929,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	if (of_machine_is_compatible("fsl,imx6dl"))
+ 		return 0;
+ 
+-	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+-
+ 	/* Prepare for TX DMA: */
+ 	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
+ 	if (IS_ERR(master->dma_tx)) {
+@@ -1155,6 +1153,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	struct spi_imx_data *spi_imx;
+ 	struct resource *res;
+ 	int i, ret, irq;
++	u32 wml;
+ 
+ 	if (!np && !mxc_platform_info) {
+ 		dev_err(&pdev->dev, "can't get the platform data\n");
+@@ -1177,6 +1176,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->devtype_data = of_id ? of_id->data :
+ 		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
+ 
++	if (of_property_read_u32(np, "dma-wml", &wml) == 0) {
++		if (wml > spi_imx_get_fifosize(spi_imx) || wml == 0) {
++			dev_warn(&pdev->dev, "mis-configured dma-wml\n");
++			spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
++		} else
++			spi_imx->wml = wml;
++	} else
++		spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
++
+ 	if (mxc_platform_info) {
+ 		master->num_chipselect = mxc_platform_info->num_chipselect;
+ 		master->cs_gpios = devm_kzalloc(&master->dev,
+-- 
+2.9.3

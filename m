@@ -1,72 +1,70 @@
-From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
-Subject: [PATCH 1/1] spi: dw: Make debugfs use bus num and make irq name unique
-Date: Fri,  6 Jan 2017 17:35:13 +0800
-Message-ID: <1483695313-97670-1-git-send-email-preid@electromag.com.au>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH v2 0/7] uapi: export all headers under uapi directories
+Date: Fri,  6 Jan 2017 10:43:52 +0100
+Message-ID: <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
+References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
+Cc: mmarek@suse.com, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.
+To: arnd@arndb.de
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
-Instead of using device name it was suggested that bus number was more
-appropriate to differentiate debugfs names. Also reduce buffer size to
-more realistic 32 bytes instead of 128.
 
-When request_irq is called the bus number may not be assigned. Therefore
-the irq name was not unique when dynamic bus number was being used.
-As per most of the spi drivers use the device name instead. No other
-use of dws->name could be found so it was removed.
+Here is the v2 of this series. The first 5 patches are just cleanup: some
+exported headers were still under a non-uapi directory.
+The patch 6 was spotted by code review: there is no in-tree user of this
+functionality.
+The last patch remove the use of header-y. Now all files under an uapi
+directory are exported.
 
-Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
----
- drivers/spi/spi-dw.c | 8 ++++----
- drivers/spi/spi-dw.h | 1 -
- 2 files changed, 4 insertions(+), 5 deletions(-)
+asm is a bit special, most of architectures export asm/<arch>/include/uapi/asm
+only, but there is two exceptions:
+ - cris which exports arch/cris/include/uapi/arch-v[10|32];
+ - tile which exports arch/tile/include/uapi/arch.
+Because I don't know if the output of 'make headers_install_all' can be changed,
+I introduce subdir-y in Kbuild file. The headers_install_all target copies all
+asm/<arch>/include/uapi/asm to usr/include/asm-<arch> but
+arch/cris/include/uapi/arch-v[10|32] and arch/tile/include/uapi/arch are not
+prefixed (they are put asis in usr/include/). If it's acceptable to modify the
+output of 'make headers_install_all' to export asm headers in
+usr/include/asm-<arch>/asm, then I could remove this new subdir-y and exports
+everything under arch/<arch>/include/uapi/.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 054012f..b217c22 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -107,9 +107,9 @@ static ssize_t dw_spi_show_regs(struct file *file, char __user *user_buf,
- 
- static int dw_spi_debugfs_init(struct dw_spi *dws)
- {
--	char name[128];
-+	char name[32];
- 
--	snprintf(name, 128, "dw_spi-%s", dev_name(&dws->master->dev));
-+	snprintf(name, 32, "dw_spi%d", dws->master->bus_num);
- 	dws->debugfs = debugfs_create_dir(name, NULL);
- 	if (!dws->debugfs)
- 		return -ENOMEM;
-@@ -486,9 +486,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	dws->type = SSI_MOTO_SPI;
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
--	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
- 
--	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dws->name, master);
-+	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
-+			  master);
- 	if (ret < 0) {
- 		dev_err(dev, "can not get IRQ\n");
- 		goto err_free_master;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index c21ca02..da5eab6 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -101,7 +101,6 @@ struct dw_spi_dma_ops {
- struct dw_spi {
- 	struct spi_master	*master;
- 	enum dw_ssi_type	type;
--	char			name[16];
- 
- 	void __iomem		*regs;
- 	unsigned long		paddr;
--- 
-1.8.3.1
+Note also that exported files for asm are a mix of files listed by:
+ - include/uapi/asm-generic/Kbuild.asm;
+ - arch/x86/include/uapi/asm/Kbuild;
+ - arch/x86/include/asm/Kbuild.
+This complicates a lot the processing (arch/x86/include/asm/Kbuild is also
+used by scripts/Makefile.asm-generic).
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This series has been tested with a 'make headers_install' on x86 and a
+'make headers_install_all'. I've checked the result of both commands.
+
+This patch is built against linus tree. I don't know if it should be
+made against antoher tree.
+
+Comments are welcomed,
+Nicolas

@@ -1,63 +1,38 @@
-From: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
-Subject: [RESEND] spi: davinci: Allow device tree devices to use DMA
-Date: Thu,  5 Jan 2017 21:26:17 -0600
-Message-ID: <1483673177-31516-1-git-send-email-david@lechnology.com>
-Cc: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>, nsekhar-l0cyMroinI0@public.gmane.org,
-        khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jiada Wang <jiada_wang@mentor.com>
+Subject: Re: [PATCH 1/1] spi: imx: support to set watermark level via DTS
+Date: Fri, 6 Jan 2017 01:00:00 -0800
+Message-ID: <586F5C90.5070108@mentor.com>
+References: <20170105061015.7816-1-jiada_wang@mentor.com> <20170105175854.gj5xr5drk5tddzyz@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+To: "Mark Brown vladimir_zapolskiy@mentor.com" <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170105175854.gj5xr5drk5tddzyz@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This allows SPI devices specified in a device tree to use DMA when the
-master controller.
+Hello Mark and Vladimir
 
-Since device tree is supposed to only describe the hardware, adding such
-a configuration option to device tree would not be acceptable. So, this
-is the best we can do for now to get SPI devices working with DMA.
+On 01/05/2017 09:58 AM, Mark Brown wrote:
+> On Thu, Jan 05, 2017 at 03:10:15PM +0900, Jiada Wang wrote:
+>
+>> Previously watermark level is configured to fifosize/2,
+>> DMA mode can be used only when transfer length can be divided
+>> by 'watermark level * bpw', which makes DMA mode not practical.
+>> This patch adds new DTS property 'dma-wml', user can configure
+>> DMA watermark level, by specify 'dma-wml' in corresponding ecspi
+>> node.
+> Doesn't this just move the problem around a bit - can we not have the
+> driver figure out a more sensible watermark for each transfer rather
+> than fixing one in the DT?
+I would like to submit another version of patch to adjust watermark level
+based on transfer length. to use largest number (< fifosize / 2 ) which 
+can divide
+(transfer_length / bytes_per_work).
 
-Unfortunately, this excludes the possibility of using one SPI device with
-DMA and one without on the same master.
-
-Signed-off-by: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
----
-
-When I originally submitted this patch, there was some discussion as to whether
-dspi->dma_rx should be changed to return an error rather than being null.
-
-However, I prefer it the way it is and don't see a compelling reason to change
-it.
-
- drivers/spi/spi-davinci.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index d36c11b..c6cf73a 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -388,6 +388,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- static int davinci_spi_of_setup(struct spi_device *spi)
- {
- 	struct davinci_spi_config *spicfg = spi->controller_data;
-+	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
- 	struct device_node *np = spi->dev.of_node;
- 	u32 prop;
- 
-@@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- 		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
- 			spicfg->wdelay = (u8)prop;
- 		spi->controller_data = spicfg;
-+		/* Use DMA for device if master supports it */
-+		if (dspi->dma_rx)
-+			spicfg->io_type = SPI_IO_TYPE_DMA;
- 	}
- 
- 	return 0;
--- 
-2.7.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Jiada

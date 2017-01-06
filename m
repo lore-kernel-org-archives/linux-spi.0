@@ -1,52 +1,80 @@
-From: Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v2 4/7] x86: put msr-index.h in uapi
-Date: Fri, 6 Jan 2017 13:14:46 +0100
-Message-ID: <20170106121446.aizmoxons5gpecnc@pd.tnic>
-References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
- <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
- <1483695839-18660-5-git-send-email-nicolas.dichtel@6wind.com>
+From: <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/1] spi: imx: adjust watermark level according to transfer length
+Date: Fri, 6 Jan 2017 04:22:18 -0800
+Message-ID: <1483705338-3797-1-git-send-email-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: arnd@arndb.de, mmarek@suse.com, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-ar
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <1483695839-18660-5-git-send-email-nicolas.dichtel@6wind.com>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 06, 2017 at 10:43:56AM +0100, Nicolas Dichtel wrote:
-> This header file is exported, thus move it to uapi.
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 
-It should rather not be exported - please remove it from
-arch/x86/include/uapi/asm/Kbuild instead.
+Previously DMA watermark level is configured to fifosize/2,
+DMA mode can be used only when transfer length can be divided
+by 'watermark level * bpw', which makes DMA mode not pratical.
 
-Thanks.
+This patch adjusts watermark level to largest number (no bigger
+than fifosize/2) which can divide 'tranfer length / bpw' for
+each transfer.
 
+Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 32ced64..9a7c62f 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -211,7 +211,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 			 struct spi_transfer *transfer)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+-	unsigned int bpw;
++	unsigned int bpw, i;
+ 
+ 	if (!master->dma_rx)
+ 		return false;
+@@ -228,12 +228,16 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	if (bpw != 1 && bpw != 2 && bpw != 4)
+ 		return false;
+ 
+-	if (transfer->len < spi_imx->wml * bpw)
+-		return false;
++	for (i = spi_imx_get_fifosize(spi_imx) / 2; i > 0; i--) {
++		if (!(transfer->len % (i * bpw)))
++			break;
++	}
+ 
+-	if (transfer->len % (spi_imx->wml * bpw))
++	if (i == 0)
+ 		return false;
+ 
++	spi_imx->wml = i;
++
+ 	return true;
+ }
+ 
+@@ -837,10 +841,6 @@ static int spi_imx_dma_configure(struct spi_master *master,
+ 	struct dma_slave_config rx = {}, tx = {};
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	if (bytes_per_word == spi_imx->bytes_per_word)
+-		/* Same as last time */
+-		return 0;
+-
+ 	switch (bytes_per_word) {
+ 	case 4:
+ 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
 -- 
-Regards/Gruss,
-    Boris.
+2.7.4
 
-Good mailing practices for 400: avoid top-posting and trim the reply.
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-lpspi: fix indentation error" to the spi tree
-Date: Mon, 09 Jan 2017 20:01:58 +0000
-Message-ID: <E1cQg8k-00073O-Oi@debutante>
-References: <1483522697-6691-1-git-send-email-pandy.gao@nxp.com>
+Subject: Applied "spi: dw: Make debugfs use bus num and make irq name unique" to the spi tree
+Date: Mon, 09 Jan 2017 20:02:04 +0000
+Message-ID: <E1cQg8q-00075H-RB@debutante>
+References: <1483695313-97670-1-git-send-email-preid@electromag.com.au>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+        preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1483522697-6691-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <1483695313-97670-1-git-send-email-preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-lpspi: fix indentation error
+   spi: dw: Make debugfs use bus num and make irq name unique
 
 has been applied to the spi tree at
 
@@ -38,36 +39,67 @@ to this mail.
 Thanks,
 Mark
 
->From 102ecc471b9d2f41f10c586f077a0d8e853335f8 Mon Sep 17 00:00:00 2001
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Wed, 4 Jan 2017 17:38:16 +0800
-Subject: [PATCH] spi: fsl-lpspi: fix indentation error
+>From e70002c80d4de20a5c61c16ecd4f40a48be3efcf Mon Sep 17 00:00:00 2001
+From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Date: Fri, 6 Jan 2017 17:35:13 +0800
+Subject: [PATCH] spi: dw: Make debugfs use bus num and make irq name unique
 
-This patch fixes the indentation error in spi-fsl-lpspi.c.
+Instead of using device name it was suggested that bus number was more
+appropriate to differentiate debugfs names. Also reduce buffer size to
+more realistic 32 bytes instead of 128.
 
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+When request_irq is called the bus number may not be assigned. Therefore
+the irq name was not unique when dynamic bus number was being used.
+As per most of the spi drivers use the device name instead. No other
+use of dws->name could be found so it was removed.
+
+Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-dw.c | 8 ++++----
+ drivers/spi/spi-dw.h | 1 -
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 2b93bc605b91..cb3c73007ca1 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -512,9 +512,9 @@ static int fsl_lpspi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 054012f87567..b217c22ff72f 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -107,9 +107,9 @@ static const struct file_operations dw_spi_regs_ops = {
  
- static struct platform_driver fsl_lpspi_driver = {
- 	.driver = {
--		   .name = DRIVER_NAME,
--		   .of_match_table = fsl_lpspi_dt_ids,
--		   },
-+		.name = DRIVER_NAME,
-+		.of_match_table = fsl_lpspi_dt_ids,
-+	},
- 	.probe = fsl_lpspi_probe,
- 	.remove = fsl_lpspi_remove,
- };
+ static int dw_spi_debugfs_init(struct dw_spi *dws)
+ {
+-	char name[128];
++	char name[32];
+ 
+-	snprintf(name, 128, "dw_spi-%s", dev_name(&dws->master->dev));
++	snprintf(name, 32, "dw_spi%d", dws->master->bus_num);
+ 	dws->debugfs = debugfs_create_dir(name, NULL);
+ 	if (!dws->debugfs)
+ 		return -ENOMEM;
+@@ -486,9 +486,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	dws->type = SSI_MOTO_SPI;
+ 	dws->dma_inited = 0;
+ 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
+-	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
+ 
+-	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dws->name, master);
++	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
++			  master);
+ 	if (ret < 0) {
+ 		dev_err(dev, "can not get IRQ\n");
+ 		goto err_free_master;
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index c21ca02f8ec5..da5eab62df34 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -101,7 +101,6 @@ struct dw_spi_dma_ops {
+ struct dw_spi {
+ 	struct spi_master	*master;
+ 	enum dw_ssi_type	type;
+-	char			name[16];
+ 
+ 	void __iomem		*regs;
+ 	unsigned long		paddr;
 -- 
 2.11.0
 

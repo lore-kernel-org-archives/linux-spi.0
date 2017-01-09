@@ -1,46 +1,47 @@
-From: Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] spi: spi-axi: Free resources on error path
-Date: Mon, 9 Jan 2017 01:11:44 +0100
-Message-ID: <5a377f44-f548-2167-51bf-4fb46890fae3@metafoo.de>
-References: <20170109000247.3215-1-christophe.jaillet@wanadoo.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170109000247.3215-1-christophe.jaillet@wanadoo.fr>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
+Subject: [PATCH v11 1/3] of: Add vendor prefix for Lattice Semiconductor
+Date: Sun,  8 Jan 2017 22:23:44 -0700
+Message-ID: <1483939426-4941-1-git-send-email-joel@airwebreathe.org.uk>
+Cc: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
+To: atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org,
+        robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        marex-ynQEQJNshbs@public.gmane.org, linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/09/2017 01:02 AM, Christophe JAILLET wrote:
-> We should go to 'err_put_master' here instead of returning directly.
-> Otherwise a call to 'spi_master_put' is missing.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Lattice Semiconductor Corporation is a manufacturer of integrated
+circuits and IP products, including low-power FPGAs, video connectivity
+devices and millimeter wave wireless products.
 
-Thanks.
+Website: http://latticesemi.com
 
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Acked-by: Alan Tull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Acked-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->  drivers/spi/spi-axi-spi-engine.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-> index 319225d7e761..6ab4c7700228 100644
-> --- a/drivers/spi/spi-axi-spi-engine.c
-> +++ b/drivers/spi/spi-axi-spi-engine.c
-> @@ -494,7 +494,8 @@ static int spi_engine_probe(struct platform_device *pdev)
->  			SPI_ENGINE_VERSION_MAJOR(version),
->  			SPI_ENGINE_VERSION_MINOR(version),
->  			SPI_ENGINE_VERSION_PATCH(version));
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto err_put_master;
->  	}
->  
->  	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
-> 
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index 4ec84b7..5f8e533 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -159,6 +159,7 @@ kosagi	Sutajio Ko-Usagi PTE Ltd.
+ kyo	Kyocera Corporation
+ lacie	LaCie
+ lantiq	Lantiq Semiconductor
++lattice	Lattice Semiconductor
+ lenovo	Lenovo Group Ltd.
+ lg	LG Corporation
+ licheepi	Lichee Pi
+-- 
+2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

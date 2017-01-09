@@ -1,67 +1,76 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RESEND] spi: davinci: Allow device tree devices to use DMA
-Date: Mon, 9 Jan 2017 19:48:11 +0000
-Message-ID: <20170109194811.p3if5pzvjjaez2g3@sirena.org.uk>
-References: <1483673177-31516-1-git-send-email-david@lechnology.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mt3mgm5kce34a3hd"
-Cc: nsekhar-l0cyMroinI0@public.gmane.org, khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
+Subject: Applied "spi: fsl-lpspi: fix indentation error" to the spi tree
+Date: Mon, 09 Jan 2017 20:01:58 +0000
+Message-ID: <E1cQg8k-00073O-Oi@debutante>
+References: <1483522697-6691-1-git-send-email-pandy.gao@nxp.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pandy.gao-3arQi8VN3Tc@public.gmane.org
+To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1483673177-31516-1-git-send-email-david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>
+In-Reply-To: <1483522697-6691-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---mt3mgm5kce34a3hd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: fsl-lpspi: fix indentation error
 
-On Thu, Jan 05, 2017 at 09:26:17PM -0600, David Lechner wrote:
+has been applied to the spi tree at
 
-> This allows SPI devices specified in a device tree to use DMA when the
-> master controller.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Since device tree is supposed to only describe the hardware, adding such
-> a configuration option to device tree would not be acceptable. So, this
-> is the best we can do for now to get SPI devices working with DMA.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Unfortunately, this excludes the possibility of using one SPI device with
-> DMA and one without on the same master.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Why would you ever want to do that?  What would ever make sense about
-not using DMA if it's available and the transfer is suitably large, or
-conversely why would one want to force DMA even if PIO would be more
-performant?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> When I originally submitted this patch, there was some discussion as to whether
-> dspi->dma_rx should be changed to return an error rather than being null.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> However, I prefer it the way it is and don't see a compelling reason to change
-> it.
+Thanks,
+Mark
 
-I don't know what the above comment means, sorry (and don't recall
-having seen any earlier versions of this).
+>From 102ecc471b9d2f41f10c586f077a0d8e853335f8 Mon Sep 17 00:00:00 2001
+From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Date: Wed, 4 Jan 2017 17:38:16 +0800
+Subject: [PATCH] spi: fsl-lpspi: fix indentation error
 
---mt3mgm5kce34a3hd
-Content-Type: application/pgp-signature; name="signature.asc"
+This patch fixes the indentation error in spi-fsl-lpspi.c.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhz6PoACgkQJNaLcl1U
-h9CkBwf+Kc0mzLwTwHQp+839pBHF2VluarLvWYDAI8EEgRBHNnOt5NTxVmGVwlT5
-dY+cdN3vm9MuGPb4mPDCVS/DVD0EdbSp4HgLxh0+PENN3gZlCRc7RW7oWuLCfb+3
-apC0qP/e1bsWtdhV2xJmbWbYPB6R6W4GdTmwhN5gyw/mGn3jkgZLNYoHpN3eLowo
-+v9lDPpZ3llwu32Y0V8L/8F6WK7H7xGUtA5VMTeE0PhawdTpe5rxOA4JZkozIicr
-iw5YoVEbK29u/K7B1iDPHwTjDItJJnae1Gl6kD7/+Q5zpf4Xu9k8yYdAFZ2vETOo
-+DCgy8ZQ62bWiUCJ18i7Ypxf9l7OUQ==
-=UPSL
------END PGP SIGNATURE-----
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 2b93bc605b91..cb3c73007ca1 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -512,9 +512,9 @@ static int fsl_lpspi_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver fsl_lpspi_driver = {
+ 	.driver = {
+-		   .name = DRIVER_NAME,
+-		   .of_match_table = fsl_lpspi_dt_ids,
+-		   },
++		.name = DRIVER_NAME,
++		.of_match_table = fsl_lpspi_dt_ids,
++	},
+ 	.probe = fsl_lpspi_probe,
+ 	.remove = fsl_lpspi_remove,
+ };
+-- 
+2.11.0
 
---mt3mgm5kce34a3hd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

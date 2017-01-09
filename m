@@ -1,58 +1,55 @@
-From: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v2 7/7] uapi: export all headers under uapi directories
-Date: Mon, 9 Jan 2017 04:56:38 -0800
-Message-ID: <20170109125638.GA15506@infradead.org>
-References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
- <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
- <1483695839-18660-8-git-send-email-nicolas.dichtel@6wind.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Patch V1 2/2] spi: fsl-lpspi: add VLLS mode support
+Date: Mon, 9 Jan 2017 19:33:50 +0000
+Message-ID: <20170109193350.aufenjuhtge5e3lu@sirena.org.uk>
+References: <1483522697-6691-1-git-send-email-pandy.gao@nxp.com>
+ <1483522697-6691-2-git-send-email-pandy.gao@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
- linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org, airlied@linux.ie,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-mtd@lists.infradead.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-am33-list@redhat.com, linux-c6x-dev@linux-c6x.org,
- linux-rdma@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-sh@vger.kernel.org, coreteam@netfilter.org, fcoe-devel@open-fcoe.org,
- xen-devel@lists.xenproject.org, linux-snps-arc@lists.infradead.org,
- linux-media@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
- linux-xtensa@linux-xtensa.org, arnd@arndb.de, linux-kbuild@vger.kernel.org,
- adi-buildroot-devel@lists.sourceforge.net, linux-raid@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-metag@vger.kernel.org, linux-arm
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Return-path: <linux-snps-arc-bounces+gla-linux-snps-arc=m.gmane.org@lists.infradead.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cobhi6l4omk4t4g2"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1483695839-18660-8-git-send-email-nicolas.dichtel@6wind.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-snps-arc>,
- <mailto:linux-snps-arc-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-snps-arc/>
-List-Post: <mailto:linux-snps-arc@lists.infradead.org>
-List-Help: <mailto:linux-snps-arc-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-snps-arc>,
- <mailto:linux-snps-arc-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-snps-arc" <linux-snps-arc-bounces@lists.infradead.org>
-Errors-To: linux-snps-arc-bounces+gla-linux-snps-arc=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1483522697-6691-2-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 06, 2017 at 10:43:59AM +0100, Nicolas Dichtel wrote:
-> Regularly, when a new header is created in include/uapi/, the developer
-> forgets to add it in the corresponding Kbuild file. This error is usually
-> detected after the release is out.
-> 
-> In fact, all headers under uapi directories should be exported, thus it's
-> useless to have an exhaustive list.
-> 
-> After this patch, the following files, which were not exported, are now
-> exported (with make headers_install_all):
 
-... snip ...
+--cobhi6l4omk4t4g2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> linux/genwqe/.install
-> linux/genwqe/..install.cmd
-> linux/cifs/.install
-> linux/cifs/..install.cmd
+On Wed, Jan 04, 2017 at 05:38:17PM +0800, Gao Pan wrote:
+> When system enters VLLS mode, module power is turned off. As a result,
+> all registers are reset to HW default value. After exiting VLLS mode,
+> registers are still in default mode. As a result, the pinctrl settings
+> are incorrect, which will affect the module function.
+>=20
+> The patch recovers the pinctrl setting when exit VLLS mode.
 
-I'm pretty sure these should not be exported!
+Why is this a change here and not in the pinctrl driver?  It sounds like
+it's the pinctrl driver that's forgetting the settings and should be
+restoring them on resume but perhaps I'm missing something here.
+
+--cobhi6l4omk4t4g2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhz5Z4ACgkQJNaLcl1U
+h9Cwwwf/YvtN+Xg1l/TDCdxFAm0QP7HG+XbebO5ahCgVhttgLmvEX7//QbG9QntR
+HMGn3tAnPdVMdfXFvu06mtO6F/Oss8APOMa5ibvx7IVHlJizzN3dwgr4DiMFY/jQ
+NHZx8jvO/zJQ5kJlw06AVb1ZydSneoxtkeGMPckjIe/rBcT7SzvVpGmq6HO9TX1z
+hfYF+eOi89k+NIdBKi1jp9AcYuBhQK9cDYBeQ885qcapIVQyBXR1LA2L6aYna7IT
+1FpHDJppTBkyjCIm0xXuyi4FrSsO7WjMMlSY0G7TEsEOzQnGocl4fjac02KT/zWA
+NXauy2ZCz/P2Za62RzVBTeCxM/Dyjg==
+=7rIG
+-----END PGP SIGNATURE-----
+
+--cobhi6l4omk4t4g2--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

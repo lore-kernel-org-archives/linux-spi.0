@@ -1,77 +1,65 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: make falcon-spi bool" to the spi tree
-Date: Tue, 10 Jan 2017 12:27:16 +0000
-Message-ID: <E1cQvWG-0003k0-Qd@finisterre>
-References: <20170103170427.26120-1-hauke@hauke-m.de>
-Cc: Thomas Langer <thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Re: [PATCH v2 1/2] spi: add check_finished() callback
+Date: Tue, 10 Jan 2017 12:34:29 +0000
+Message-ID: <20170110123429.t6vsyqtnavranbdn@sirena.org.uk>
+References: <20161211200350.13590-1-hauke@hauke-m.de>
+ <20161211200350.13590-2-hauke@hauke-m.de>
+ <20161214152156.uehjhqoxpng47pnh@sirena.org.uk>
+ <7b420e94-3c33-3304-f7a0-ed87c8db425a@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7hxnjv2sglapeioi"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org
 To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170103170427.26120-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <7b420e94-3c33-3304-f7a0-ed87c8db425a-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: make falcon-spi bool
+--7hxnjv2sglapeioi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Sat, Dec 17, 2016 at 11:16:17PM +0100, Hauke Mehrtens wrote:
+> On 12/14/2016 04:21 PM, Mark Brown wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> > Why not just have your interrupt handler schedule something on a
+> > workqueue to check whatever it is needs checking here?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> 2. When something went wrong and I got an error IRQ for example, I would
+> like to add this information to the spi message that was transfered, but
+> the only way I see it to not wake the completion and let it run into a
+> timeout.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Just set an error status in the message and then complete the current
+transfer or the message.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> I would like to have a function in which I can do some busy waiting till
+> the last word is really written to the wire and also return if the
+> transfer was successful or what error occurred.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+The busy waiting really is pretty specialist.
 
-Thanks,
-Mark
+--7hxnjv2sglapeioi
+Content-Type: application/pgp-signature; name="signature.asc"
 
->From 9c6a3af003c06ef1efc5e243cdbab1be4cb90753 Mon Sep 17 00:00:00 2001
-From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Date: Tue, 3 Jan 2017 18:04:27 +0100
-Subject: [PATCH] spi: make falcon-spi bool
+-----BEGIN PGP SIGNATURE-----
 
-Falcon spi accesses some ebu functions which are not exported and can
-not be accessed when build as module. Make this module bool instead.
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlh01NQACgkQJNaLcl1U
+h9B49Af+Mr2mqyTqlWpPYWOaAk4COkcvbQ7WFN9Of3MAqBKshkfoz4O6lECz6Syx
+qr3FURIpP+W8JyrVkDdSIb/GCUmEPq7PftPjxbwnI/YDLmaXIsiZqDXb3KhcL6LI
+iQNmYthFktrrHxR/RXMZ1bxaDncE1/5WGP3JXxTGpSCiudtHgggpeLaSLXSpOgOW
+cYdEzESgCB9/rewvlgQ3Sj/eRbXwN3EFVahg8GCiWZYqanJkbUzoYUqJosDOtjfX
+uNzBbkEHv51Fas2fSS+Da2BWdp1Xkn7BYg9IMQHkoAp0qE0T6e/X16H9T+ryPKjS
+LHg8CgrEdEHoVCEcRtDQTxOtAebVHw==
+=XOMG
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Acked-by: Thomas Langer <thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ec4aa252d6e8..e3c256685235 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -263,7 +263,7 @@ config SPI_EP93XX
- 	  mode.
- 
- config SPI_FALCON
--	tristate "Falcon SPI controller support"
-+	bool "Falcon SPI controller support"
- 	depends on SOC_FALCON
- 	help
- 	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
--- 
-2.11.0
-
+--7hxnjv2sglapeioi--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

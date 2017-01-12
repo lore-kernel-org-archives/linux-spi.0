@@ -1,73 +1,92 @@
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: Re: [PATCH v2 7/7] uapi: export all headers under uapi directories
-Date: Thu, 12 Jan 2017 17:32:09 +0100
-Message-ID: <9d68af8a-a609-d7b1-58a9-f1155313b077@6wind.com>
-References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
- <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
- <1483695839-18660-8-git-send-email-nicolas.dichtel@6wind.com>
- <20170109125638.GA15506@infradead.org>
- <464a1323-4450-e563-ff59-9e6d57b75959@6wind.com>
- <alpine.LSU.2.20.1701121727180.19188@erq.vanv.qr>
-Reply-To: nicolas.dichtel@6wind.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Christoph Hellwig <hch@infradead.org>, arnd@arndb.de,
-        mmarek@suse.com, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-To: Jan Engelhardt <jengelh@inai.de>
-Return-path: <linux-raid-owner@vger.kernel.org>
-In-Reply-To: <alpine.LSU.2.20.1701121727180.19188@erq.vanv.qr>
-Sender: linux-raid-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: davinci: use dma_mapping_error()" to the spi tree
+Date: Thu, 12 Jan 2017 17:46:23 +0000
+Message-ID: <E1cRjSB-0000C9-Ar@debutante>
+References: <20170112021840.21105-1-khilman@baylibre.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+        Axel Haslam <ahaslam-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        =?UTF-8?q?Bartosz=20Go=C5=82aszewski?= <bgolaszewski-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Alexandre Bailon <abailon-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        David Lechner <david-nq/r/kbU++upp/zk7JDF2g@public.gmane.org>,
+        Patrick Titiano <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170112021840.21105-1-khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Le 12/01/2017 à 17:28, Jan Engelhardt a écrit :
-> On Thursday 2017-01-12 16:52, Nicolas Dichtel wrote:
-> 
->> Le 09/01/2017 à 13:56, Christoph Hellwig a écrit :
->>> On Fri, Jan 06, 2017 at 10:43:59AM +0100, Nicolas Dichtel wrote:
->>>> Regularly, when a new header is created in include/uapi/, the developer
->>>> forgets to add it in the corresponding Kbuild file. This error is usually
->>>> detected after the release is out.
->>>>
->>>> In fact, all headers under uapi directories should be exported, thus it's
->>>> useless to have an exhaustive list.
->>>>
->>>> After this patch, the following files, which were not exported, are now
->>>> exported (with make headers_install_all):
->>>
->>> ... snip ...
->>>
->>>> linux/genwqe/.install
->>>> linux/genwqe/..install.cmd
->>>> linux/cifs/.install
->>>> linux/cifs/..install.cmd
->>>
->>> I'm pretty sure these should not be exported!
->>>
->> Those files are created in every directory:
->> $ find usr/include/ -name '\.\.install.cmd' | wc -l
->> 71
-> 
-> That still does not mean they should be exported.
-> 
-> Anything but headers (and directories as a skeleton structure) is maximally suspicious.
-> 
-What I was trying to say is that I export those directories like other are.
-Removing those files is not related to that series.
+The patch
 
+   spi: davinci: use dma_mapping_error()
 
-Regards,
-Nicolas
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c5a2a394835f473ae23931eda5066d3771d7b2f8 Mon Sep 17 00:00:00 2001
+From: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Date: Wed, 11 Jan 2017 18:18:40 -0800
+Subject: [PATCH] spi: davinci: use dma_mapping_error()
+
+The correct error checking for dma_map_single() is to use
+dma_mapping_error().
+
+Signed-off-by: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index d36c11b73a35..02fb96797ac8 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -646,7 +646,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			buf = t->rx_buf;
+ 		t->rx_dma = dma_map_single(&spi->dev, buf,
+ 				t->len, DMA_FROM_DEVICE);
+-		if (!t->rx_dma) {
++		if (dma_mapping_error(&spi->dev, !t->rx_dma)) {
+ 			ret = -EFAULT;
+ 			goto err_rx_map;
+ 		}
+@@ -660,7 +660,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			buf = (void *)t->tx_buf;
+ 		t->tx_dma = dma_map_single(&spi->dev, buf,
+ 				t->len, DMA_TO_DEVICE);
+-		if (!t->tx_dma) {
++		if (dma_mapping_error(&spi->dev, t->tx_dma)) {
+ 			ret = -EFAULT;
+ 			goto err_tx_map;
+ 		}
+-- 
+2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

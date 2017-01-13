@@ -1,38 +1,64 @@
-From: Tobias Klauser <tklauser@distanz.ch>
-Subject: Re: [PATCH v3 3/8] nios2: put setup.h in uapi
-Date: Fri, 13 Jan 2017 11:55:50 +0100
-Message-ID: <20170113105550.GD1201@distanz.ch>
-References: <3131144.4Ej3KFWRbz@wuerfel>
- <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
- <1484304406-10820-4-git-send-email-nicolas.dichtel@6wind.com>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: Re: [patch] spi: s3c64xx: potential oops on probe error
+Date: Fri, 13 Jan 2017 20:12:30 +0900
+Message-ID: <20170113111230.ybhmch7fcnng4oml@gangnam.samsung>
+References: <CGME20170113074318epcas5p29fb2fd41d46553b64a4423f37663fd44@epcas5p2.samsung.com>
+ <20170113074253.GA30524@mwanda>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: arnd@arndb.de, mmarek@suse.com, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-ar
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Return-path: <linux-m68k-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1484304406-10820-4-git-send-email-nicolas.dichtel@6wind.com>
-Sender: linux-m68k-owner@vger.kernel.org
+Cc: Kukjin Kim <kgene@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+Content-disposition: inline
+In-reply-to: <20170113074253.GA30524@mwanda>
+Sender: kernel-janitors-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2017-01-13 at 11:46:41 +0100, Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
-> This header file is exported, but from a userland pov, it's just a wrapper
-> to asm-generic/setup.h.
+On Fri, Jan 13, 2017 at 10:42:53AM +0300, Dan Carpenter wrote:
+> We accidentally mixed up freeing the rx and tx channels which would a
+> leak and an oops.
 > 
-> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Fixes: 3d63a47a380a ("spi: s3c64xx: Don't request/release DMA channels for each SPI transfer")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Reviewed-by: Tobias Klauser <tklauser@distanz.ch>
+Thanks, Dan.
+
+Acked-by: Andi Shyti <andi.shyti@samsung.com>
+
+Andi
+
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 849ee82..b8cd356 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1147,7 +1147,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  		if (IS_ERR(sdd->tx_dma.ch)) {
+>  			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
+>  			ret = PTR_ERR(sdd->tx_dma.ch);
+> -			goto err_release_tx_dma;
+> +			goto err_release_rx_dma;
+>  		}
+>  	}
+>  
+> @@ -1197,10 +1197,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  	pm_runtime_set_suspended(&pdev->dev);
+>  
+>  	if (!is_polling(sdd))
+> -		dma_release_channel(sdd->rx_dma.ch);
+> -err_release_tx_dma:
+> -	if (!is_polling(sdd))
+>  		dma_release_channel(sdd->tx_dma.ch);
+> +err_release_rx_dma:
+> +	if (!is_polling(sdd))
+> +		dma_release_channel(sdd->rx_dma.ch);
+>  err_disable_io_clk:
+>  	clk_disable_unprepare(sdd->ioclk);
+>  err_disable_src_clk:
+> 

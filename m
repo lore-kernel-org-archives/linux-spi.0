@@ -1,25 +1,25 @@
-From: SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH 06/17] spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
-Date: Fri, 13 Jan 2017 18:14:45 +0100
-Message-ID: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
+From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [PATCH 08/17] spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
+Date: Fri, 13 Jan 2017 18:16:57 +0100
+Message-ID: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 14:06:10 +0100
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Fri, 13 Jan 2017 14:30:43 +0100
 
 * A multiplication for the size determination of a memory allocation
   indicated that an array data structure should be processed.
-  Thus use the corresponding function "kmalloc_array".
+  Thus reuse the corresponding function "kcalloc".
 
   This issue was detected by using the Coccinelle software.
 
@@ -27,26 +27,28 @@ Date: Fri, 13 Jan 2017 14:06:10 +0100
   to make the corresponding size determination a bit safer according to
   the Linux coding style convention.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi-mpc52xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ppc4xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index c36002110c30..8cc129efe7ba 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -437,8 +437,9 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	ms->gpio_cs_count = of_gpio_count(op->dev.of_node);
- 	if (ms->gpio_cs_count > 0) {
- 		master->num_chipselect = ms->gpio_cs_count;
--		ms->gpio_cs = kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
--				GFP_KERNEL);
-+		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
-+					    sizeof(*ms->gpio_cs),
-+					    GFP_KERNEL);
- 		if (!ms->gpio_cs) {
- 			rc = -ENOMEM;
- 			goto err_alloc_gpio;
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index dd3d0a218d8b..e0c39734d6ef 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -411,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	if (num_gpios > 0) {
+ 		int i;
+ 
+-		hw->gpios = kzalloc(sizeof(int) * num_gpios, GFP_KERNEL);
++		hw->gpios = kcalloc(num_gpios, sizeof(*hw->gpios), GFP_KERNEL);
+ 		if (!hw->gpios) {
+ 			ret = -ENOMEM;
+ 			goto free_master;
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

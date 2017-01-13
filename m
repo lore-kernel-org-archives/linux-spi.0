@@ -1,52 +1,57 @@
-From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [PATCH 04/17] spi: fsl: Use kmalloc_array() in
- of_fsl_spi_get_chipselects()
-Date: Fri, 13 Jan 2017 18:12:23 +0100
-Message-ID: <2abbbc08-f5bf-28de-e513-5f1074996189@users.sourceforge.net>
+From: SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: [PATCH 07/17] spi/mpc52xx: Combine substrings for two messages
+Date: Fri, 13 Jan 2017 18:15:54 +0100
+Message-ID: <5c12cdac-8887-e5d0-ce80-ca4795354956@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 13:37:25 +0100
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 13 Jan 2017 14:14:45 +0100
 
-A multiplication for the size determination of a memory allocation
-indicated that an array data structure should be processed.
-Thus use the corresponding function "kmalloc_array".
+The script "checkpatch.pl" pointed information out like the following.
 
-This issue was detected by using the Coccinelle software.
+WARNING: quoted string split across lines
 
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Thus fix the affected source code places.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- drivers/spi/spi-fsl-spi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mpc52xx.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index d1b26c9fe950..cdee556037f9 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -727,7 +727,8 @@ static int of_fsl_spi_get_chipselects(struct device *dev)
- 		return 0;
- 	}
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index 8cc129efe7ba..e8b59ce4dc3a 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -449,8 +449,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 			gpio_cs = of_get_gpio(op->dev.of_node, i);
+ 			if (gpio_cs < 0) {
+ 				dev_err(&op->dev,
+-					"could not parse the gpio field "
+-					"in oftree\n");
++					"could not parse the gpio field in oftree\n");
+ 				rc = -ENODEV;
+ 				goto err_gpio;
+ 			}
+@@ -458,8 +457,8 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 			rc = gpio_request(gpio_cs, dev_name(&op->dev));
+ 			if (rc) {
+ 				dev_err(&op->dev,
+-					"can't request spi cs gpio #%d "
+-					"on gpio line %d\n", i, gpio_cs);
++					"can't request spi cs gpio #%d on gpio line %d\n",
++					i, gpio_cs);
+ 				goto err_gpio;
+ 			}
  
--	pinfo->gpios = kmalloc(ngpios * sizeof(*pinfo->gpios), GFP_KERNEL);
-+	pinfo->gpios = kmalloc_array(ngpios, sizeof(*pinfo->gpios),
-+				     GFP_KERNEL);
- 	if (!pinfo->gpios)
- 		return -ENOMEM;
- 	memset(pinfo->gpios, -1, ngpios * sizeof(*pinfo->gpios));
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

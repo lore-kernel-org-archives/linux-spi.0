@@ -1,64 +1,74 @@
-From: Andi Shyti <andi.shyti@samsung.com>
-Subject: Re: [patch] spi: s3c64xx: potential oops on probe error
-Date: Fri, 13 Jan 2017 20:12:30 +0900
-Message-ID: <20170113111230.ybhmch7fcnng4oml@gangnam.samsung>
-References: <CGME20170113074318epcas5p29fb2fd41d46553b64a4423f37663fd44@epcas5p2.samsung.com>
- <20170113074253.GA30524@mwanda>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RESEND] spi: davinci: Allow device tree devices to use DMA
+Date: Fri, 13 Jan 2017 12:04:08 +0000
+Message-ID: <20170113120408.3jtslvgifdpxchvp@sirena.org.uk>
+References: <1483673177-31516-1-git-send-email-david@lechnology.com>
+ <m24m146jzh.fsf@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Kukjin Kim <kgene@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-Content-disposition: inline
-In-reply-to: <20170113074253.GA30524@mwanda>
-Sender: kernel-janitors-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============1402603875176264447=="
+Cc: linux-kernel@vger.kernel.org, nsekhar@ti.com,
+ David Lechner <david@lechnology.com>, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Kevin Hilman <khilman@baylibre.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <m24m146jzh.fsf@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 13, 2017 at 10:42:53AM +0300, Dan Carpenter wrote:
-> We accidentally mixed up freeing the rx and tx channels which would a
-> leak and an oops.
-> 
-> Fixes: 3d63a47a380a ("spi: s3c64xx: Don't request/release DMA channels for each SPI transfer")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thanks, Dan.
+--===============1402603875176264447==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="atb5t5jcis6a65ku"
+Content-Disposition: inline
 
-Acked-by: Andi Shyti <andi.shyti@samsung.com>
 
-Andi
+--atb5t5jcis6a65ku
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 849ee82..b8cd356 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1147,7 +1147,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->  		if (IS_ERR(sdd->tx_dma.ch)) {
->  			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
->  			ret = PTR_ERR(sdd->tx_dma.ch);
-> -			goto err_release_tx_dma;
-> +			goto err_release_rx_dma;
->  		}
->  	}
->  
-> @@ -1197,10 +1197,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->  	pm_runtime_set_suspended(&pdev->dev);
->  
->  	if (!is_polling(sdd))
-> -		dma_release_channel(sdd->rx_dma.ch);
-> -err_release_tx_dma:
-> -	if (!is_polling(sdd))
->  		dma_release_channel(sdd->tx_dma.ch);
-> +err_release_rx_dma:
-> +	if (!is_polling(sdd))
-> +		dma_release_channel(sdd->rx_dma.ch);
->  err_disable_io_clk:
->  	clk_disable_unprepare(sdd->ioclk);
->  err_disable_src_clk:
-> 
+On Thu, Jan 12, 2017 at 01:34:10PM -0800, Kevin Hilman wrote:
+
+> I thinks this driver needs an update to use spi_map_buf() to be able to
+> handle vmalloc'd buffers before always enabling DMA.
+
+Right.  As I said elsewhere in the thread the driver looks like it needs
+some very serious TLC based on a quick scan through.
+
+--atb5t5jcis6a65ku
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlh4wjMACgkQJNaLcl1U
+h9CaQgf/SC38suTWLXipwit5LvAwHerMkSzKX7bq3rQMiQpiqxv6CdmEl09SoAUX
+wf5Frbd82cb8WGTlALczkiI+oojeY6rS/TANcFSgmiUJ+XBbiH4y4FLTh35HtY7K
+ZdZ/T/WA+RfgnkH9avZtmBPapGOUgEIS5yL6dhvELA25DmC7Gq7vHTiaELb6DU1K
+/i6z6Nuf9VXDcm7QzH7/oZewn5s4GqqCH2ejU4OF/FKTYl7izWdCvYMgFT9HBN+a
+PNUUq9raIVl0yvdzTNXeHe5eRnF1aWpCtZHFOIvWScj63kKa12DYCsi6V2fgOZ9X
+488Z3J4RBQ9WEcHR7Q9eefOwNpO4dw==
+=/+jI
+-----END PGP SIGNATURE-----
+
+--atb5t5jcis6a65ku--
+
+
+--===============1402603875176264447==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============1402603875176264447==--

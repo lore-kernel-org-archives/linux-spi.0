@@ -1,73 +1,47 @@
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [patch] spi: s3c64xx: potential oops on probe error
-Date: Fri, 13 Jan 2017 09:52:38 +0100
-Message-ID: <50005d2c-9a1d-45f5-fe6c-7877d35cf442@samsung.com>
-References: <CGME20170113074414epcas3p2474dd2512aa5b64989bee3696c7c48f8@epcas3p2.samsung.com>
- <20170113074253.GA30524@mwanda>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Andi Shyti <andi.shyti@samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>,
-        Kukjin Kim <kgene@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <20170113074253.GA30524@mwanda>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH v3 4/8] x86: stop exporting msr-index.h to userland
+Date: Fri, 13 Jan 2017 11:46:42 +0100
+Message-ID: <1484304406-10820-5-git-send-email-nicolas.dichtel@6wind.com>
+References: <3131144.4Ej3KFWRbz@wuerfel>
+ <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+Cc: mmarek@suse.com, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.
+To: arnd@arndb.de
+Return-path: <linux-arch-owner@vger.kernel.org>
+In-Reply-To: <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+Sender: linux-arch-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Dan,
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+---
+ arch/x86/include/uapi/asm/Kbuild | 1 -
+ 1 file changed, 1 deletion(-)
 
-
-On 2017-01-13 08:42, Dan Carpenter wrote:
-> We accidentally mixed up freeing the rx and tx channels which would a
-> leak and an oops.
->
-> Fixes: 3d63a47a380a ("spi: s3c64xx: Don't request/release DMA channels for each SPI transfer")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Right, my fault. Thanks for the fix!
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 849ee82..b8cd356 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1147,7 +1147,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->   		if (IS_ERR(sdd->tx_dma.ch)) {
->   			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
->   			ret = PTR_ERR(sdd->tx_dma.ch);
-> -			goto err_release_tx_dma;
-> +			goto err_release_rx_dma;
->   		}
->   	}
->   
-> @@ -1197,10 +1197,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->   	pm_runtime_set_suspended(&pdev->dev);
->   
->   	if (!is_polling(sdd))
-> -		dma_release_channel(sdd->rx_dma.ch);
-> -err_release_tx_dma:
-> -	if (!is_polling(sdd))
->   		dma_release_channel(sdd->tx_dma.ch);
-> +err_release_rx_dma:
-> +	if (!is_polling(sdd))
-> +		dma_release_channel(sdd->rx_dma.ch);
->   err_disable_io_clk:
->   	clk_disable_unprepare(sdd->ioclk);
->   err_disable_src_clk:
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-samsung-soc" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->
->
-
-Best regards
+diff --git a/arch/x86/include/uapi/asm/Kbuild b/arch/x86/include/uapi/asm/Kbuild
+index 3dec769cadf7..1c532b3f18ea 100644
+--- a/arch/x86/include/uapi/asm/Kbuild
++++ b/arch/x86/include/uapi/asm/Kbuild
+@@ -27,7 +27,6 @@ header-y += ldt.h
+ header-y += mce.h
+ header-y += mman.h
+ header-y += msgbuf.h
+-header-y += msr-index.h
+ header-y += msr.h
+ header-y += mtrr.h
+ header-y += param.h
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.8.1

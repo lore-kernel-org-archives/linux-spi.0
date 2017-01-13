@@ -1,7 +1,7 @@
 From: SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH 07/17] spi/mpc52xx: Combine substrings for two messages
-Date: Fri, 13 Jan 2017 18:15:54 +0100
-Message-ID: <5c12cdac-8887-e5d0-ce80-ca4795354956@users.sourceforge.net>
+Subject: [PATCH 06/17] spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
+Date: Fri, 13 Jan 2017 18:14:45 +0100
+Message-ID: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -15,43 +15,38 @@ Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 14:14:45 +0100
+Date: Fri, 13 Jan 2017 14:06:10 +0100
 
-The script "checkpatch.pl" pointed information out like the following.
+* A multiplication for the size determination of a memory allocation
+  indicated that an array data structure should be processed.
+  Thus use the corresponding function "kmalloc_array".
 
-WARNING: quoted string split across lines
+  This issue was detected by using the Coccinelle software.
 
-Thus fix the affected source code places.
+* Replace the specification of a data type by a pointer dereference
+  to make the corresponding size determination a bit safer according to
+  the Linux coding style convention.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- drivers/spi/spi-mpc52xx.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mpc52xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 8cc129efe7ba..e8b59ce4dc3a 100644
+index c36002110c30..8cc129efe7ba 100644
 --- a/drivers/spi/spi-mpc52xx.c
 +++ b/drivers/spi/spi-mpc52xx.c
-@@ -449,8 +449,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 			gpio_cs = of_get_gpio(op->dev.of_node, i);
- 			if (gpio_cs < 0) {
- 				dev_err(&op->dev,
--					"could not parse the gpio field "
--					"in oftree\n");
-+					"could not parse the gpio field in oftree\n");
- 				rc = -ENODEV;
- 				goto err_gpio;
- 			}
-@@ -458,8 +457,8 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 			rc = gpio_request(gpio_cs, dev_name(&op->dev));
- 			if (rc) {
- 				dev_err(&op->dev,
--					"can't request spi cs gpio #%d "
--					"on gpio line %d\n", i, gpio_cs);
-+					"can't request spi cs gpio #%d on gpio line %d\n",
-+					i, gpio_cs);
- 				goto err_gpio;
- 			}
- 
+@@ -437,8 +437,9 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	ms->gpio_cs_count = of_gpio_count(op->dev.of_node);
+ 	if (ms->gpio_cs_count > 0) {
+ 		master->num_chipselect = ms->gpio_cs_count;
+-		ms->gpio_cs = kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
+-				GFP_KERNEL);
++		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
++					    sizeof(*ms->gpio_cs),
++					    GFP_KERNEL);
+ 		if (!ms->gpio_cs) {
+ 			rc = -ENOMEM;
+ 			goto err_alloc_gpio;
 -- 
 2.11.0

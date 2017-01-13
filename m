@@ -1,74 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RESEND] spi: davinci: Allow device tree devices to use DMA
-Date: Fri, 13 Jan 2017 12:04:08 +0000
-Message-ID: <20170113120408.3jtslvgifdpxchvp@sirena.org.uk>
-References: <1483673177-31516-1-git-send-email-david@lechnology.com>
- <m24m146jzh.fsf@baylibre.com>
+From: David Howells <dhowells@redhat.com>
+Subject: (unknown)
+Date: Fri, 13 Jan 2017 15:36:43 +0000
+Message-ID: <25063.1484321803@warthog.procyon.org.uk>
+References: <1484304406-10820-2-git-send-email-nicolas.dichtel@6wind.com> <3131144.4Ej3KFWRbz@wuerfel> <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1402603875176264447=="
-Cc: linux-kernel@vger.kernel.org, nsekhar@ti.com,
- David Lechner <david@lechnology.com>, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Kevin Hilman <khilman@baylibre.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <m24m146jzh.fsf@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Cc: dhowells@redhat.com, arnd@arndb.de, linux-mips@linux-mips.org,
+        linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org, alsa-devel@alsa-project.org,
+        dri-devel@lists.freedesktop.org, linux-mtd@lists.infradead.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-c6x-dev@linux-c6x.org, linux-rdma@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux@armlinux.org.uk, coreteam@netfilter.org,
+        fcoe-devel@open-fcoe.org, xen-devel@lists.xenproject.org,
+        linux-snps-arc@lists.infradead.org, linux-media@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-xtensa@linux-xtensa.org, linux-kbuild@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <1484304406-10820-2-git-send-email-nicolas.dichtel@6wind.com>
+Content-ID: <25062.1484321803.1@warthog.procyon.org.uk>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
 
---===============1402603875176264447==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="atb5t5jcis6a65ku"
-Content-Disposition: inline
+> This header file is exported, thus move it to uapi.
 
+Exported how?
 
---atb5t5jcis6a65ku
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> +#ifdef __INT32_TYPE__
+> +#undef __INT32_TYPE__
+> +#define __INT32_TYPE__		int
+> +#endif
+> +
+> +#ifdef __UINT32_TYPE__
+> +#undef __UINT32_TYPE__
+> +#define __UINT32_TYPE__	unsigned int
+> +#endif
+> +
+> +#ifdef __UINTPTR_TYPE__
+> +#undef __UINTPTR_TYPE__
+> +#define __UINTPTR_TYPE__	unsigned long
+> +#endif
 
-On Thu, Jan 12, 2017 at 01:34:10PM -0800, Kevin Hilman wrote:
+These weren't defined by the kernel before, so why do we need to define them
+now?
 
-> I thinks this driver needs an update to use spi_map_buf() to be able to
-> handle vmalloc'd buffers before always enabling DMA.
+Will defining __UINTPTR_TYPE__ cause problems in compiling libboost by
+changing the signature on C++ functions that use uintptr_t?
 
-Right.  As I said elsewhere in the thread the driver looks like it needs
-some very serious TLC based on a quick scan through.
-
---atb5t5jcis6a65ku
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlh4wjMACgkQJNaLcl1U
-h9CaQgf/SC38suTWLXipwit5LvAwHerMkSzKX7bq3rQMiQpiqxv6CdmEl09SoAUX
-wf5Frbd82cb8WGTlALczkiI+oojeY6rS/TANcFSgmiUJ+XBbiH4y4FLTh35HtY7K
-ZdZ/T/WA+RfgnkH9avZtmBPapGOUgEIS5yL6dhvELA25DmC7Gq7vHTiaELb6DU1K
-/i6z6Nuf9VXDcm7QzH7/oZewn5s4GqqCH2ejU4OF/FKTYl7izWdCvYMgFT9HBN+a
-PNUUq9raIVl0yvdzTNXeHe5eRnF1aWpCtZHFOIvWScj63kKa12DYCsi6V2fgOZ9X
-488Z3J4RBQ9WEcHR7Q9eefOwNpO4dw==
-=/+jI
------END PGP SIGNATURE-----
-
---atb5t5jcis6a65ku--
-
-
---===============1402603875176264447==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============1402603875176264447==--
+David

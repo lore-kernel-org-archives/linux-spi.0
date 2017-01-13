@@ -1,49 +1,86 @@
-From: SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH 12/17] spi/topcliff-pch: Improve size determinations in
- pch_spi_probe()
-Date: Fri, 13 Jan 2017 18:21:55 +0100
-Message-ID: <d2471abf-1eca-037f-3d10-ba03d8e987af@users.sourceforge.net>
+From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [PATCH 15/17] spi/topcliff-pch: Combine substrings for four messages
+Date: Fri, 13 Jan 2017 18:25:42 +0100
+Message-ID: <e349e57e-ba9c-6f01-74c8-75f84cf8f4c8@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 15:46:35 +0100
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Fri, 13 Jan 2017 16:36:09 +0100
 
-Replace the specification of data structures by pointer dereferences
-as the parameter for the operator "sizeof" to make the corresponding size
-determination a bit safer.
+The script "checkpatch.pl" pointed information out like the following.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+WARNING: quoted string split across lines
+
+Thus fix the affected source code places.
+
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 0488b7c7cc19..4bba39e70c7b 100644
+index e4f1f66b751b..d36d42653087 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1541,11 +1541,11 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	int i;
- 	struct pch_pd_dev_save *pd_dev_save;
+@@ -621,8 +621,9 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 	if (n_writes > PCH_MAX_FIFO_DEPTH)
+ 		n_writes = PCH_MAX_FIFO_DEPTH;
  
--	pd_dev_save = kzalloc(sizeof(struct pch_pd_dev_save), GFP_KERNEL);
-+	pd_dev_save = kzalloc(sizeof(*pd_dev_save), GFP_KERNEL);
- 	if (!pd_dev_save)
- 		return -ENOMEM;
+-	dev_dbg(&data->master->dev, "\n%s:Pulling down SSN low - writing "
+-		"0x2 to SSNXCR\n", __func__);
++	dev_dbg(&data->master->dev,
++		"\n%s:Pulling down SSN low - writing 0x2 to SSNXCR\n",
++		__func__);
+ 	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_LOW);
  
--	board_dat = kzalloc(sizeof(struct pch_spi_board_data), GFP_KERNEL);
-+	board_dat = kzalloc(sizeof(*board_dat), GFP_KERNEL);
- 	if (!board_dat) {
- 		retval = -ENOMEM;
- 		goto err_no_mem;
+ 	for (j = 0; j < n_writes; j++)
+@@ -1179,14 +1180,16 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 			data->cur_trans =
+ 				list_entry(data->current_msg->transfers.next,
+ 					   struct spi_transfer, transfer_list);
+-			dev_dbg(&data->master->dev, "%s "
+-				":Getting 1st transfer message\n", __func__);
++			dev_dbg(&data->master->dev,
++				"%s :Getting 1st transfer message\n",
++				__func__);
+ 		} else {
+ 			data->cur_trans =
+ 				list_entry(data->cur_trans->transfer_list.next,
+ 					   struct spi_transfer, transfer_list);
+-			dev_dbg(&data->master->dev, "%s "
+-				":Getting next transfer message\n", __func__);
++			dev_dbg(&data->master->dev,
++				"%s :Getting next transfer message\n",
++				__func__);
+ 		}
+ 		spin_unlock(&data->lock);
+ 
+@@ -1231,9 +1234,8 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 
+ 		/* check for delay */
+ 		if (data->cur_trans->delay_usecs) {
+-			dev_dbg(&data->master->dev, "%s:"
+-				"delay in usec=%d\n", __func__,
+-				data->cur_trans->delay_usecs);
++			dev_dbg(&data->master->dev, "%s:delay in usec=%d\n",
++				__func__, data->cur_trans->delay_usecs);
+ 			udelay(data->cur_trans->delay_usecs);
+ 		}
+ 
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

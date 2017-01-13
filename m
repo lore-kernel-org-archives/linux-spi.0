@@ -1,67 +1,58 @@
-From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [PATCH 05/17] spi: fsl: Combine substrings for two messages
-Date: Fri, 13 Jan 2017 18:13:32 +0100
-Message-ID: <0ff54345-a877-fe39-0aa2-a3db617fba38@users.sourceforge.net>
+From: SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: [PATCH 11/17] spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
+Date: Fri, 13 Jan 2017 18:20:52 +0100
+Message-ID: <5c46b68f-192e-2982-6a0e-2017da26f83d@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 13:50:21 +0100
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 13 Jan 2017 15:25:22 +0100
 
-The script "checkpatch.pl" pointed information out like the following.
+* Multiplications for the size determination of memory allocations
+  indicated that array data structures should be processed.
+  Thus use the corresponding function "kcalloc".
 
-WARNING: quoted string split across lines
+  This issue was detected by using the Coccinelle software.
 
-Thus fix the affected source code places.
+* Replace the specification of a data structure by pointer dereferences
+  to make the corresponding size determination a bit safer according to
+  the Linux coding style convention.
 
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- drivers/spi/spi-fsl-spi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index cdee556037f9..0fc3452652ae 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -267,10 +267,9 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 	if ((mpc8xxx_spi->spibrg / hz) > 64) {
- 		cs->hw_mode |= SPMODE_DIV16;
- 		pm = (mpc8xxx_spi->spibrg - 1) / (hz * 64) + 1;
--
--		WARN_ONCE(pm > 16, "%s: Requested speed is too low: %d Hz. "
--			  "Will use %d Hz instead.\n", dev_name(&spi->dev),
--			  hz, mpc8xxx_spi->spibrg / 1024);
-+		WARN_ONCE(pm > 16,
-+			  "%s: Requested speed is too low: %d Hz. Will use %d Hz instead.\n",
-+			  dev_name(&spi->dev), hz, mpc8xxx_spi->spibrg / 1024);
- 		if (pm > 16)
- 			pm = 16;
- 	} else {
-@@ -763,8 +762,9 @@ static int of_fsl_spi_get_chipselects(struct device *dev)
- 		ret = gpio_direction_output(pinfo->gpios[i],
- 					    pinfo->alow_flags[i]);
- 		if (ret) {
--			dev_err(dev, "can't set output direction for gpio "
--				"#%d: %d\n", i, ret);
-+			dev_err(dev,
-+				"can't set output direction for gpio #%d: %d\n",
-+				i, ret);
- 			goto err_loop;
- 		}
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index fcb991034c3d..0488b7c7cc19 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1008,7 +1008,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 	spin_unlock_irqrestore(&data->lock, flags);
+ 
+ 	/* RX */
+-	dma->sg_rx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
++	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
+ 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_rx_p;
+@@ -1068,7 +1068,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 		head = 0;
  	}
+ 
+-	dma->sg_tx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
++	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
+ 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_tx_p;
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

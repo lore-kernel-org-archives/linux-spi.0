@@ -1,58 +1,43 @@
-From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [PATCH 13/17] spi/topcliff-pch: Delete an unnecessary return
- statement in two functions
-Date: Fri, 13 Jan 2017 18:23:15 +0100
-Message-ID: <64b7bf49-57fc-32a9-17e4-1b26b99bff13@users.sourceforge.net>
+From: SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: [PATCH 16/17] spi/topcliff-pch: Delete an error message for a failed
+ memory allocation in pch_spi_set_tx()
+Date: Fri, 13 Jan 2017 18:27:23 +0100
+Message-ID: <b72c78dc-32b2-0f8f-8d3d-575ce4bff02f@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>
+To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 15:57:03 +0100
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 13 Jan 2017 17:00:08 +0100
 
-The script "checkpatch.pl" pointed information out like the following.
+Omit an extra message for a memory allocation failure in this function.
 
-WARNING: void function return statements are not generally useful
-
-Thus remove such statements here.
-
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- drivers/spi/spi-topcliff-pch.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 4bba39e70c7b..0a876311b67b 100644
+index d36d42653087..97fd1ea9826b 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -915,7 +915,6 @@ static void pch_spi_release_dma(struct pch_spi_data *data)
- 		dma_release_channel(dma->chan_rx);
- 		dma->chan_rx = NULL;
- 	}
--	return;
- }
+@@ -590,7 +590,6 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
  
- static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
-@@ -1292,7 +1291,6 @@ static void pch_free_dma_buf(struct pch_spi_board_data *board_dat,
- 	if (dma->rx_buf_dma)
- 		dma_free_coherent(&board_dat->pdev->dev, PCH_BUF_SIZE,
- 				  dma->rx_buf_virt, dma->rx_buf_dma);
--	return;
- }
+ 	if (!data->pkt_rx_buff) {
+ 		/* flush queue and set status of all transfers to -ENOMEM */
+-		dev_err(&data->master->dev, "%s :kzalloc failed\n", __func__);
+ 		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
+ 			pmsg->status = -ENOMEM;
  
- static void pch_alloc_dma_buf(struct pch_spi_board_data *board_dat,
 -- 
 2.11.0
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

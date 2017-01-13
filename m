@@ -1,7 +1,8 @@
 From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [PATCH 08/17] spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
-Date: Fri, 13 Jan 2017 18:16:57 +0100
-Message-ID: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
+Subject: [PATCH 09/17] spi/ppc4xx: Combine substrings for a message in
+ spi_ppc4xx_of_probe()
+Date: Fri, 13 Jan 2017 18:18:15 +0100
+Message-ID: <e5ef99cc-fa83-8001-aeba-5d2f7852bd40@users.sourceforge.net>
 References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -15,36 +16,35 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 14:30:43 +0100
+Date: Fri, 13 Jan 2017 14:43:06 +0100
 
-* A multiplication for the size determination of a memory allocation
-  indicated that an array data structure should be processed.
-  Thus reuse the corresponding function "kcalloc".
+The script "checkpatch.pl" pointed information out like the following.
 
-  This issue was detected by using the Coccinelle software.
+WARNING: quoted string split across lines
 
-* Replace the specification of a data type by a pointer dereference
-  to make the corresponding size determination a bit safer according to
-  the Linux coding style convention.
+Thus fix the affected source code place.
 
 Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi-ppc4xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ppc4xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index dd3d0a218d8b..e0c39734d6ef 100644
+index e0c39734d6ef..967d94844b30 100644
 --- a/drivers/spi/spi-ppc4xx.c
 +++ b/drivers/spi/spi-ppc4xx.c
-@@ -411,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	if (num_gpios > 0) {
- 		int i;
+@@ -428,8 +428,9 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 				/* Real CS - set the initial state. */
+ 				ret = gpio_request(gpio, np->name);
+ 				if (ret < 0) {
+-					dev_err(dev, "can't request gpio "
+-							"#%d: %d\n", i, ret);
++					dev_err(dev,
++						"can't request gpio #%d: %d\n",
++						i, ret);
+ 					goto free_gpios;
+ 				}
  
--		hw->gpios = kzalloc(sizeof(int) * num_gpios, GFP_KERNEL);
-+		hw->gpios = kcalloc(num_gpios, sizeof(*hw->gpios), GFP_KERNEL);
- 		if (!hw->gpios) {
- 			ret = -ENOMEM;
- 			goto free_master;
 -- 
 2.11.0
 

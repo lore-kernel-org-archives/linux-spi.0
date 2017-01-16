@@ -1,93 +1,49 @@
 From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Mon, 16 Jan 2017 19:44:55 +0100
-Message-ID: <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
-References: <cover.1484592296.git.jan.kiszka@siemens.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Sascha Weisenberger <sascha.weisenberger@siemens.com>
+Subject: [PATCH v2 0/3] spi: pca2xx: Prepare for and enable MSI support
+Date: Mon, 16 Jan 2017 19:44:53 +0100
+Message-ID: <cover.1484592296.git.jan.kiszka@siemens.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Sascha Weisenberger <sascha.weisenberger@siemens.com>,
+ Daniel Mack <daniel@zonque.org>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1484592296.git.jan.kiszka@siemens.com>
-In-Reply-To: <cover.1484592296.git.jan.kiszka@siemens.com>
-References: <cover.1484592296.git.jan.kiszka@siemens.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-When using the a device with edge-triggered interrupts, such as MSIs,
-the interrupt handler has to ensure that there is a point in time during
-its execution where all interrupts sources are silent so that a new
-event can trigger a new interrupt again.
+This enhances the pca2xx driver's interrupt handler with support for
+edge-triggered interrupts and makes use of that for PCI-hosted variants,
+like the Intel Quark SoC.
 
-This is achieved here by looping over SSSR evaluation. We need to take
-into account that SSCR1 may be changed by the transfer handler, thus we
-need to redo the mask calculation, at least regarding the volatile
-interrupt enable bit (TIE).
+Changes in v2:
+- factored out handle_bad_msg (Andy)
+- reordered code in patch 3, avoiding unneeded pci_free_irq_vectors (Andy)
 
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
----
- drivers/spi/spi-pxa2xx.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+Jan
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 0d10090..ac49b80 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -751,6 +751,7 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 	struct driver_data *drv_data = dev_id;
- 	u32 sccr1_reg;
- 	u32 mask = drv_data->mask_sr;
-+	irqreturn_t ret = IRQ_NONE;
- 	u32 status;
- 
- 	/*
-@@ -774,24 +775,29 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 
- 	sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
- 
--	/* Ignore possible writes if we don't need to write */
--	if (!(sccr1_reg & SSCR1_TIE))
--		mask &= ~SSSR_TFS;
--
- 	/* Ignore RX timeout interrupt if it is disabled */
- 	if (!(sccr1_reg & SSCR1_TINTE))
- 		mask &= ~SSSR_TINT;
- 
--	if (!(status & mask))
--		return IRQ_NONE;
-+	while (1) {
-+		/* Ignore possible writes if we don't need to write */
-+		if (!(sccr1_reg & SSCR1_TIE))
-+			mask &= ~SSSR_TFS;
- 
--	if (!drv_data->master->cur_msg) {
--		handle_bad_msg(drv_data);
--		/* Never fail */
--		return IRQ_HANDLED;
--	}
-+		if (!(status & mask))
-+			return ret;
-+
-+		if (!drv_data->master->cur_msg) {
-+			handle_bad_msg(drv_data);
-+			/* Never fail */
-+			return IRQ_HANDLED;
-+		}
-+
-+		ret |= drv_data->transfer_handler(drv_data);
- 
--	return drv_data->transfer_handler(drv_data);
-+		status = pxa2xx_spi_read(drv_data, SSSR);
-+		sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
-+	}
- }
- 
- /*
+Jan Kiszka (3):
+  spi: pxa2xx: Factor out handle_bad_msg
+  spi: pxa2xx: Prepare for edge-triggered interrupts
+  spi: pca2xx-pci: Allow MSI
+
+ drivers/spi/spi-pxa2xx-pci.c |  8 ++++++-
+ drivers/spi/spi-pxa2xx.c     | 51 +++++++++++++++++++++++++-------------------
+ 2 files changed, 36 insertions(+), 23 deletions(-)
+
 -- 
 2.1.4

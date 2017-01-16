@@ -1,7 +1,7 @@
 From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: [PATCH v2 1/3] spi: pxa2xx: Factor out handle_bad_msg
-Date: Mon, 16 Jan 2017 19:44:54 +0100
-Message-ID: <776c72d3de4b75ff0a8b91791740389950d8abe8.1484592296.git.jan.kiszka@siemens.com>
+Subject: [PATCH v2 3/3] spi: pca2xx-pci: Allow MSI
+Date: Mon, 16 Jan 2017 19:44:56 +0100
+Message-ID: <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka@siemens.com>
 References: <cover.1484592296.git.jan.kiszka@siemens.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -30,60 +30,36 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-As suggested by Andy Shevchenko: Decouple this corner cause from the
-general handling logic in ssp_int.
+Now that the core is ready for edge-triggered interrupts, we can safely
+allow the PCI versions that provide this to enable the feature and,
+thus, have less shared interrupts.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- drivers/spi/spi-pxa2xx.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ drivers/spi/spi-pxa2xx-pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index dd7b5b4..0d10090 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -732,6 +732,20 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 	return IRQ_HANDLED;
- }
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 58d2d48..58dcadb 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -203,10 +203,16 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+ 	ssp->mmio_base = pcim_iomap_table(dev)[0];
+-	ssp->irq = dev->irq;
+ 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
+ 	ssp->type = c->type;
  
-+static void handle_bad_msg(struct driver_data *drv_data)
-+{
-+	pxa2xx_spi_write(drv_data, SSCR0,
-+			 pxa2xx_spi_read(drv_data, SSCR0) & ~SSCR0_SSE);
-+	pxa2xx_spi_write(drv_data, SSCR1,
-+			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
-+	if (!pxa25x_ssp_comp(drv_data))
-+		pxa2xx_spi_write(drv_data, SSTO, 0);
-+	write_SSSR_CS(drv_data, drv_data->clear_sr);
++	pci_set_master(dev);
 +
-+	dev_err(&drv_data->pdev->dev,
-+		"bad message state in interrupt handler\n");
-+}
++	ret = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		return ret;
++	ssp->irq = pci_irq_vector(dev, 0);
 +
- static irqreturn_t ssp_int(int irq, void *dev_id)
- {
- 	struct driver_data *drv_data = dev_id;
-@@ -772,20 +786,7 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 		return IRQ_NONE;
- 
- 	if (!drv_data->master->cur_msg) {
--
--		pxa2xx_spi_write(drv_data, SSCR0,
--				 pxa2xx_spi_read(drv_data, SSCR0)
--				 & ~SSCR0_SSE);
--		pxa2xx_spi_write(drv_data, SSCR1,
--				 pxa2xx_spi_read(drv_data, SSCR1)
--				 & ~drv_data->int_cr1);
--		if (!pxa25x_ssp_comp(drv_data))
--			pxa2xx_spi_write(drv_data, SSTO, 0);
--		write_SSSR_CS(drv_data, drv_data->clear_sr);
--
--		dev_err(&drv_data->pdev->dev,
--			"bad message state in interrupt handler\n");
--
-+		handle_bad_msg(drv_data);
- 		/* Never fail */
- 		return IRQ_HANDLED;
- 	}
+ 	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
+ 	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL, 0,
+ 					   c->max_clk_rate);
 -- 
 2.1.4

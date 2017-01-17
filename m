@@ -1,40 +1,69 @@
 From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH v2 3/3] spi: pca2xx-pci: Allow MSI
-Date: Tue, 17 Jan 2017 13:18:42 +0200
-Message-ID: <1a9ed825-2585-8c76-c6ea-866de2e33e50@linux.intel.com>
+Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
+Date: Tue, 17 Jan 2017 15:11:46 +0200
+Message-ID: <d6d9079e-f671-139e-42d8-75158ac9ee17@linux.intel.com>
 References: <cover.1484592296.git.jan.kiszka@siemens.com>
- <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka@siemens.com>
- <1484593718.2133.156.camel@linux.intel.com>
+ <cover.1484592296.git.jan.kiszka@siemens.com>
+ <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
+ <87vatedsn1.fsf@belgarion.home>
+ <bfebbcbc-3d02-137b-72c0-7664900fe279@siemens.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
         linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Sascha Weisenberger <sascha.weisenberger@siemens.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Mark Brown <broonie@kernel.org>
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1484593718.2133.156.camel@linux.intel.com>
+In-Reply-To: <bfebbcbc-3d02-137b-72c0-7664900fe279@siemens.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/16/2017 09:08 PM, Andy Shevchenko wrote:
-> On Mon, 2017-01-16 at 19:44 +0100, Jan Kiszka wrote:
->> Now that the core is ready for edge-triggered interrupts, we can
->> safely
->> allow the PCI versions that provide this to enable the feature and,
->> thus, have less shared interrupts.
+On 01/17/2017 10:10 AM, Jan Kiszka wrote:
+> On 2017-01-17 08:58, Robert Jarzmik wrote:
+>> Jan Kiszka <jan.kiszka@siemens.com> writes:
 >>
+>>> When using the a device with edge-triggered interrupts, such as MSIs,
+>>> the interrupt handler has to ensure that there is a point in time during
+>>> its execution where all interrupts sources are silent so that a new
+>>> event can trigger a new interrupt again.
+>>>
+>>> This is achieved here by looping over SSSR evaluation. We need to take
+>>> into account that SSCR1 may be changed by the transfer handler, thus we
+>>> need to redo the mask calculation, at least regarding the volatile
+>>> interrupt enable bit (TIE).
+>>
+>> I'd like moreover to add a question here.
+>>
+>> In pxa architecture, SPI interrupts are already edge-triggered, and it's working
+>> well. The interrupt source disabling is not disabled, but the interrupt
+>> controller doesn't trigger an interrupt anymore (as it is masked), yet it marks
+>> it as pending if an interrupt arrives while the interrupt handler is running.
+>>
+>> All of this is handled by the interrupt core. My question is why for Intel MSI's
+>> is it necessary to make a change in the driver instead or relying on the
+>> interrupt core as for the pxa ?
 >
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> If someone was using this driver with edge-triggered interrupt sources
+> so far, it was probably slower hardware and some luck (I've seen this
+> when driving fast-clocked devices vs. slower ones - only the latter
+> exposed the bug). Or that hardware did some temporary masking at
+> interrupt controller level while the handler was running. But that is
+> also not by design. It's the driver's task to ensure that all interrupt
+> sources are addressed once when returning from an edge-triggered
+> handler, and that is missing in this one.
 >
-I was looking at is there need to call pci_free_irq_vectors() but 
-pcim_release() takes care of that since this driver uses 
-pcim_enable_device().
+Are you seeing actual problem here or adding loop just in case? Is it 
+really so that PCI bridge doesn't generate another MSI interrupt if SPI 
+controller has interrupt pending when handler returns? I don't know but 
+I would expect irq line between SPI controller and PCI bridge is still 
+level sensitive even PCI bridge issues MSIs to the CPU.
 
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+-- 
+Jarkko

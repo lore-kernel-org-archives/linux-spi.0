@@ -1,162 +1,54 @@
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Tue, 17 Jan 2017 19:52:19 +0100
-Message-ID: <4253af0f-b2ea-a8ea-0f34-c7c5bc6555f9@siemens.com>
-References: <cover.1484592296.git.jan.kiszka@siemens.com>
- <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
- <1484593637.2133.152.camel@linux.intel.com>
- <7fd7a8eb-4302-523b-08dd-f2a28b845a5e@siemens.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: spi/ppc4xx: Adjust checks for null pointers in two functions
+Date: Tue, 17 Jan 2017 19:11:01 +0000
+Message-ID: <20170117191101.ndcmoafymhqixwnv@sirena.org.uk>
+References: <1413e173-dbac-7a6e-09cb-2287300a335e@users.sourceforge.net>
+ <d9bd24b0-d4d5-233c-756d-71aaed63c5ef@users.sourceforge.net>
+ <20170117183411.7isqrvu3o55ydjcb@sirena.org.uk>
+ <20ac3577-3b0e-e7d3-d5de-8e511a6e9fd2@users.sourceforge.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Daniel Mack <daniel@zonque.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mark Brown <broonie@kernel.org>, Robert Jarzmik <robert.jarzmik@free.fr>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <7fd7a8eb-4302-523b-08dd-f2a28b845a5e@siemens.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5egcoc5y2pxudxoq"
+Cc: linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+To: SF Markus Elfring <elfring@users.sourceforge.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20ac3577-3b0e-e7d3-d5de-8e511a6e9fd2@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2017-01-16 20:46, Jan Kiszka wrote:
-> On 2017-01-16 20:07, Andy Shevchenko wrote:
->> On Mon, 2017-01-16 at 19:44 +0100, Jan Kiszka wrote:
->>> When using the a device with edge-triggered interrupts, such as MSIs,
->>> the interrupt handler has to ensure that there is a point in time
->>> during
->>> its execution where all interrupts sources are silent so that a new
->>> event can trigger a new interrupt again.
->>>
->>> This is achieved here by looping over SSSR evaluation. We need to take
->>> into account that SSCR1 may be changed by the transfer handler, thus
->>> we
->>> need to redo the mask calculation, at least regarding the volatile
->>> interrupt enable bit (TIE).
->>>
->>
->> So, more comments/questions below.
->>
->>>  
->>>  	sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
->>>  
->>> -	/* Ignore possible writes if we don't need to write */
->>> -	if (!(sccr1_reg & SSCR1_TIE))
->>> -		mask &= ~SSSR_TFS;
->>> -
->>>  	/* Ignore RX timeout interrupt if it is disabled */
->>>  	if (!(sccr1_reg & SSCR1_TINTE))
->>>  		mask &= ~SSSR_TINT;
->>>  
->>> -	if (!(status & mask))
->>> -		return IRQ_NONE;
->>> +	while (1) {
->>
->> Can we switch to do-while and move previous block here?
-> 
-> Don't see how this would help (without duplicating more code).
-> 
->> Btw, can TINTE
->> bit be set again during a loop?
-> 
-> Nope, it's statically set, at least so far.
-> 
-> What we could do is simply restarting ssp_int
-> 
->>
->>> +		/* Ignore possible writes if we don't need to write
->>> */
->>> +		if (!(sccr1_reg & SSCR1_TIE))
->>> +			mask &= ~SSSR_TFS;
->>>  
->>> -	if (!drv_data->master->cur_msg) {
->>> -		handle_bad_msg(drv_data);
->>> -		/* Never fail */
->>> -		return IRQ_HANDLED;
->>> -	}
->>> +		if (!(status & mask))
->>> +			return ret;
->>> +
->>> +		if (!drv_data->master->cur_msg) {
->>> +			handle_bad_msg(drv_data);
->>> +			/* Never fail */
->>> +			return IRQ_HANDLED;
->>> +		}
->>> +
->>
->>> +		ret |= drv_data->transfer_handler(drv_data);
->>
->> So, we might call handler several times. This needs to be commented in
->> the code why you do so.
-> 
-> I can move the commit log into the code.
-> 
->>
->>>  
->>> -	return drv_data->transfer_handler(drv_data);
->>> +		status = pxa2xx_spi_read(drv_data, SSSR);
->>
->> Would it be possible to get all 1:s from the register
->> (something/autosuspend just powered off it by timeout?) ?
->>
-> 
-> Not sure if that can happen, but I guess it would be simpler and more
-> readable to simply do this instead:
-> 
-> 	while (1) {
-> 		/*
-> 		 * If the device is not yet in RPM suspended state and we get an
-> 		 * interrupt that is meant for another device, check if status
-> 		 * bits are all set to one. That means that the device is
-> 		 * already powered off.
-> 		 */
-> 		status = pxa2xx_spi_read(drv_data, SSSR);
-> 		if (status == ~0)
-> 			return ret;
-> 
-> 		sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
-> 
-> 		/* Ignore RX timeout interrupt if it is disabled */
-> 		if (!(sccr1_reg & SSCR1_TINTE))
-> 			mask &= ~SSSR_TINT;
-> 
-> 		/* Ignore possible writes if we don't need to write */
-> 		if (!(sccr1_reg & SSCR1_TIE))
-> 			mask &= ~SSSR_TFS;
-> 
-> 		if (!(status & mask))
-> 			return ret;
-> 
-> 		if (!drv_data->master->cur_msg) {
-> 			handle_bad_msg(drv_data);
-> 			/* Never fail */
-> 			return IRQ_HANDLED;
-> 		}
-> 
-> 		ret |= drv_data->transfer_handler(drv_data);
-> 	}
-> 
-> 
-> i.e. preserve the current structure, just add the loop.
-> 
 
-OK, please let me know if you want a v3 of this patch with the structure
-above. If there are further concerns/questions, just let me know as
-well, but I'd like to close this topic if possible.
+--5egcoc5y2pxudxoq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-Jan
+On Tue, Jan 17, 2017 at 07:48:26PM +0100, SF Markus Elfring wrote:
+> >> From: Markus Elfring <elfring@users.sourceforge.net>
+> >> Date: Fri, 13 Jan 2017 14:56:10 +0100
+> >> MIME-Version: 1.0
+> >> Content-Type: text/plain; charset=UTF-8
+> >> Content-Transfer-Encoding: 8bit
 
--- 
-Siemens AG, Corporate Technology, CT RDA ITP SES-DE
-Corporate Competence Center Embedded Linux
+> > This is also corrupted.
+
+> Would you like to explain this information a bit more?
+
+You've got MIME headers in the middle of the patch description.
+
+--5egcoc5y2pxudxoq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlh+bEQACgkQJNaLcl1U
+h9Ah3Af9E445aHVRYVd0wrPz3a8mWwqtaKrqSUiVrz56LiLUTpXYLS2ipOa0qyJE
+QIkDnfPPfFP9aJypfjtVPVqwf7AftvNaNlTb4taFc1G0DVJfGaXote4EiALuUrpx
+xLoYur30MwA/oC6x/qHtTjTyQCuL5B6ASQOCzZgadPLLRVEmKcP22jMG30DLnZH9
+eiZUnfF0hd8AijJH2+EEZPAPWP9uZXJeRzklRfzAnG9+iDpKE8jmlNLWA/nCynJP
+ITFaY9pyJS2jq/Je2dC2JURMzzTZVwgTkB1DJwZbF04JlSgWaSkiO79G47IKlGAu
+rRbTGZjlRyfdlYRK3nAEW2J1pNDGIA==
+=HGPb
+-----END PGP SIGNATURE-----
+
+--5egcoc5y2pxudxoq--

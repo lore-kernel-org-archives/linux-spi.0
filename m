@@ -1,151 +1,54 @@
-From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Mon, 16 Jan 2017 20:46:05 +0100
-Message-ID: <7fd7a8eb-4302-523b-08dd-f2a28b845a5e@siemens.com>
-References: <cover.1484592296.git.jan.kiszka@siemens.com>
- <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
- <1484593637.2133.152.camel@linux.intel.com>
+From: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [Patch V1 2/2] spi: fsl-lpspi: add VLLS mode support
+Date: Tue, 17 Jan 2017 07:03:28 +0000
+Message-ID: <AM4PR0401MB22737664A5030928464226C7F67C0@AM4PR0401MB2273.eurprd04.prod.outlook.com>
+References: <1483522697-6691-1-git-send-email-pandy.gao@nxp.com>
+ <1483522697-6691-2-git-send-email-pandy.gao@nxp.com>
+ <20170109193350.aufenjuhtge5e3lu@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1484593637.2133.152.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20170109193350.aufenjuhtge5e3lu-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2017-01-16 20:07, Andy Shevchenko wrote:
-> On Mon, 2017-01-16 at 19:44 +0100, Jan Kiszka wrote:
->> When using the a device with edge-triggered interrupts, such as MSIs,
->> the interrupt handler has to ensure that there is a point in time
->> during
->> its execution where all interrupts sources are silent so that a new
->> event can trigger a new interrupt again.
->>
->> This is achieved here by looping over SSSR evaluation. We need to take
->> into account that SSCR1 may be changed by the transfer handler, thus
->> we
->> need to redo the mask calculation, at least regarding the volatile
->> interrupt enable bit (TIE).
->>
-> 
-> So, more comments/questions below.
-> 
->>  
->>  	sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
->>  
->> -	/* Ignore possible writes if we don't need to write */
->> -	if (!(sccr1_reg & SSCR1_TIE))
->> -		mask &= ~SSSR_TFS;
->> -
->>  	/* Ignore RX timeout interrupt if it is disabled */
->>  	if (!(sccr1_reg & SSCR1_TINTE))
->>  		mask &= ~SSSR_TINT;
->>  
->> -	if (!(status & mask))
->> -		return IRQ_NONE;
->> +	while (1) {
-> 
-> Can we switch to do-while and move previous block here?
+ From: Mark Brown <mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>   Sent: Tuesday, January 10, =
+2017 3:34 AM
+> To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
+> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Subject: Re: [Patch V1 2/2] spi: fsl-lpspi: add VLLS mode support
+>=20
+> On Wed, Jan 04, 2017 at 05:38:17PM +0800, Gao Pan wrote:
+> > When system enters VLLS mode, module power is turned off. As a
+> result,
+> > all registers are reset to HW default value. After exiting VLLS mode,
+> > registers are still in default mode. As a result, the pinctrl settings
+> > are incorrect, which will affect the module function.
+> >
+> > The patch recovers the pinctrl setting when exit VLLS mode.
+>=20
+> Why is this a change here and not in the pinctrl driver?  It sounds like
+> it's the pinctrl driver that's forgetting the settings and should be
+> restoring them on resume but perhaps I'm missing something here.
+=20
+If the pinctrl driver restores the setting on resume, then all device node
+should be scanned,  which is irregular.=20
 
-Don't see how this would help (without duplicating more code).
+Even though the pinctrl driver can handle all the child node of iomuxc,
+it's still difficult for the pinctrl driver to know which device node is di=
+sabled
+and which device node is okay. Moreover, there may be some pin conflicts
+among the child node of iomuxc.
 
-> Btw, can TINTE
-> bit be set again during a loop?
+So it's better to do the restore in spi driver other than the pinctrl drive=
+r.
 
-Nope, it's statically set, at least so far.
-
-What we could do is simply restarting ssp_int
-
-> 
->> +		/* Ignore possible writes if we don't need to write
->> */
->> +		if (!(sccr1_reg & SSCR1_TIE))
->> +			mask &= ~SSSR_TFS;
->>  
->> -	if (!drv_data->master->cur_msg) {
->> -		handle_bad_msg(drv_data);
->> -		/* Never fail */
->> -		return IRQ_HANDLED;
->> -	}
->> +		if (!(status & mask))
->> +			return ret;
->> +
->> +		if (!drv_data->master->cur_msg) {
->> +			handle_bad_msg(drv_data);
->> +			/* Never fail */
->> +			return IRQ_HANDLED;
->> +		}
->> +
-> 
->> +		ret |= drv_data->transfer_handler(drv_data);
-> 
-> So, we might call handler several times. This needs to be commented in
-> the code why you do so.
-
-I can move the commit log into the code.
-
-> 
->>  
->> -	return drv_data->transfer_handler(drv_data);
->> +		status = pxa2xx_spi_read(drv_data, SSSR);
-> 
-> Would it be possible to get all 1:s from the register
-> (something/autosuspend just powered off it by timeout?) ?
-> 
-
-Not sure if that can happen, but I guess it would be simpler and more
-readable to simply do this instead:
-
-	while (1) {
-		/*
-		 * If the device is not yet in RPM suspended state and we get an
-		 * interrupt that is meant for another device, check if status
-		 * bits are all set to one. That means that the device is
-		 * already powered off.
-		 */
-		status = pxa2xx_spi_read(drv_data, SSSR);
-		if (status == ~0)
-			return ret;
-
-		sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1);
-
-		/* Ignore RX timeout interrupt if it is disabled */
-		if (!(sccr1_reg & SSCR1_TINTE))
-			mask &= ~SSSR_TINT;
-
-		/* Ignore possible writes if we don't need to write */
-		if (!(sccr1_reg & SSCR1_TIE))
-			mask &= ~SSSR_TFS;
-
-		if (!(status & mask))
-			return ret;
-
-		if (!drv_data->master->cur_msg) {
-			handle_bad_msg(drv_data);
-			/* Never fail */
-			return IRQ_HANDLED;
-		}
-
-		ret |= drv_data->transfer_handler(drv_data);
-	}
-
-
-i.e. preserve the current structure, just add the loop.
-
-Jan
-
--- 
-Siemens AG, Corporate Technology, CT RDA ITP SES-DE
-Corporate Competence Center Embedded Linux
+Best  Regards
+Gao  Pan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

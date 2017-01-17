@@ -1,21 +1,28 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Use kcalloc() in spi_register_board_info()" to the spi tree
-Date: Tue, 17 Jan 2017 18:46:17 +0000
-Message-ID: <E1cTYlt-0000U1-Ig@debutante>
-References: <26b9015b-7ba2-3e26-5075-9a78f3884392@users.sourceforge.net>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Factor out handle_bad_msg" to the spi tree
+Date: Tue, 17 Jan 2017 18:46:20 +0000
+Message-ID: <E1cTYlw-0000Vs-Kw@debutante>
+References: <776c72d3de4b75ff0a8b91791740389950d8abe8.1484592296.git.jan.kiszka@siemens.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Sascha Weisenberger <sascha.weisenberger-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <26b9015b-7ba2-3e26-5075-9a78f3884392-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <776c72d3de4b75ff0a8b91791740389950d8abe8.1484592296.git.jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Use kcalloc() in spi_register_board_info()
+   spi: pxa2xx: Factor out handle_bad_msg
 
 has been applied to the spi tree at
 
@@ -40,36 +47,68 @@ to this mail.
 Thanks,
 Mark
 
->From f9bdb7fdd2cac17bdc9c344b6036e6939fa087cd Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 12:28:04 +0100
-Subject: [PATCH] spi: Use kcalloc() in spi_register_board_info()
+>From b03124825b8612bf371e5b4ccc2cd812ed3c2dbb Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Date: Mon, 16 Jan 2017 19:44:54 +0100
+Subject: [PATCH] spi: pxa2xx: Factor out handle_bad_msg
 
-A multiplication for the size determination of a memory allocation
-indicated that an array data structure should be processed.
-Thus reuse the corresponding function "kcalloc".
+As suggested by Andy Shevchenko: Decouple this corner cause from the
+general handling logic in ssp_int.
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 656dd3e3220c..8c05f27bf642 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -672,7 +672,7 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
- 	if (!n)
- 		return -EINVAL;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index d6239fa718be..8c65bc1823f3 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -732,6 +732,20 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 	return IRQ_HANDLED;
+ }
  
--	bi = kzalloc(n * sizeof(*bi), GFP_KERNEL);
-+	bi = kcalloc(n, sizeof(*bi), GFP_KERNEL);
- 	if (!bi)
- 		return -ENOMEM;
++static void handle_bad_msg(struct driver_data *drv_data)
++{
++	pxa2xx_spi_write(drv_data, SSCR0,
++			 pxa2xx_spi_read(drv_data, SSCR0) & ~SSCR0_SSE);
++	pxa2xx_spi_write(drv_data, SSCR1,
++			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
++	if (!pxa25x_ssp_comp(drv_data))
++		pxa2xx_spi_write(drv_data, SSTO, 0);
++	write_SSSR_CS(drv_data, drv_data->clear_sr);
++
++	dev_err(&drv_data->pdev->dev,
++		"bad message state in interrupt handler\n");
++}
++
+ static irqreturn_t ssp_int(int irq, void *dev_id)
+ {
+ 	struct driver_data *drv_data = dev_id;
+@@ -772,20 +786,7 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+ 		return IRQ_NONE;
  
+ 	if (!drv_data->master->cur_msg) {
+-
+-		pxa2xx_spi_write(drv_data, SSCR0,
+-				 pxa2xx_spi_read(drv_data, SSCR0)
+-				 & ~SSCR0_SSE);
+-		pxa2xx_spi_write(drv_data, SSCR1,
+-				 pxa2xx_spi_read(drv_data, SSCR1)
+-				 & ~drv_data->int_cr1);
+-		if (!pxa25x_ssp_comp(drv_data))
+-			pxa2xx_spi_write(drv_data, SSTO, 0);
+-		write_SSSR_CS(drv_data, drv_data->clear_sr);
+-
+-		dev_err(&drv_data->pdev->dev,
+-			"bad message state in interrupt handler\n");
+-
++		handle_bad_msg(drv_data);
+ 		/* Never fail */
+ 		return IRQ_HANDLED;
+ 	}
 -- 
 2.11.0
 

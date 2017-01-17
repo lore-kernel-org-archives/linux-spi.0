@@ -1,21 +1,21 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()" to the spi tree
-Date: Tue, 17 Jan 2017 18:46:14 +0000
-Message-ID: <E1cTYlq-0000SM-KS@debutante>
-References: <2abbbc08-f5bf-28de-e513-5f1074996189@users.sourceforge.net>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
-To: Markus Elfring <elfring@users.sourceforge.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2abbbc08-f5bf-28de-e513-5f1074996189@users.sourceforge.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: Use kcalloc() in spi_register_board_info()" to the spi tree
+Date: Tue, 17 Jan 2017 18:46:17 +0000
+Message-ID: <E1cTYlt-0000U1-Ig@debutante>
+References: <26b9015b-7ba2-3e26-5075-9a78f3884392@users.sourceforge.net>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <26b9015b-7ba2-3e26-5075-9a78f3884392-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()
+   spi: Use kcalloc() in spi_register_board_info()
 
 has been applied to the spi tree at
 
@@ -40,36 +40,40 @@ to this mail.
 Thanks,
 Mark
 
->From d9bc4a8539a518636cd70d498e94787e32ea8fbe Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 13:37:25 +0100
-Subject: [PATCH] spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()
+>From f9bdb7fdd2cac17bdc9c344b6036e6939fa087cd Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Fri, 13 Jan 2017 12:28:04 +0100
+Subject: [PATCH] spi: Use kcalloc() in spi_register_board_info()
 
 A multiplication for the size determination of a memory allocation
 indicated that an array data structure should be processed.
-Thus use the corresponding function "kmalloc_array".
+Thus reuse the corresponding function "kcalloc".
 
 This issue was detected by using the Coccinelle software.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-spi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 8b290d9d7935..9873d39d1a95 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -727,7 +727,8 @@ static int of_fsl_spi_get_chipselects(struct device *dev)
- 		return 0;
- 	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 656dd3e3220c..8c05f27bf642 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -672,7 +672,7 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ 	if (!n)
+ 		return -EINVAL;
  
--	pinfo->gpios = kmalloc(ngpios * sizeof(*pinfo->gpios), GFP_KERNEL);
-+	pinfo->gpios = kmalloc_array(ngpios, sizeof(*pinfo->gpios),
-+				     GFP_KERNEL);
- 	if (!pinfo->gpios)
+-	bi = kzalloc(n * sizeof(*bi), GFP_KERNEL);
++	bi = kcalloc(n, sizeof(*bi), GFP_KERNEL);
+ 	if (!bi)
  		return -ENOMEM;
- 	memset(pinfo->gpios, -1, ngpios * sizeof(*pinfo->gpios));
+ 
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

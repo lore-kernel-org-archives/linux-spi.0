@@ -1,55 +1,61 @@
-From: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
-Date: Tue, 31 Jan 2017 22:18:30 +0100
-Message-ID: <CAJZ5v0iaD9WtGubF5G9NpXNNKWWhn-CNvawWpT37qkguzXi_HA@mail.gmail.com>
-References: <cover.1468409668.git.leonard.crestez@intel.com>
- <1485187737-22414-1-git-send-email-dan@emutex.com> <1485187737-22414-4-git-send-email-dan@emutex.com>
- <CAJZ5v0hAoOQN+d4iBSgSkkYHBOy-Pt9HLrKG4SjcQUB6Ya1bgA@mail.gmail.com> <20170131201736.cmiyq2obzrhgdsck@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Patch V1 2/2] spi: fsl-lpspi: add VLLS mode support
+Date: Tue, 17 Jan 2017 19:04:07 +0000
+Message-ID: <20170117190407.p5ad3dz7ixqm4vz6@sirena.org.uk>
+References: <1483522697-6691-1-git-send-email-pandy.gao@nxp.com>
+ <1483522697-6691-2-git-send-email-pandy.gao@nxp.com>
+ <20170109193350.aufenjuhtge5e3lu@sirena.org.uk>
+ <AM4PR0401MB22737664A5030928464226C7F67C0@AM4PR0401MB2273.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "Dan O'Donovan" <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>,
-        ACPI Devel Maling List <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ssxgtaym4udffnfl"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Pandy Gao <pandy.gao-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170131201736.cmiyq2obzrhgdsck-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AM4PR0401MB22737664A5030928464226C7F67C0-4rsfagO7TJw08dPJ0juu2Y3W/0Ik+aLCnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jan 31, 2017 at 9:17 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Jan 30, 2017 at 10:41:33AM +0100, Rafael J. Wysocki wrote:
->> On Mon, Jan 23, 2017 at 5:08 PM, Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org> wrote:
->
->> Mark, any objections here?
->
-> I've not looked yet, please allow a reasonable time for review
 
-Sure, no problem at all.
+--ssxgtaym4udffnfl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> (there still seemed to be ongoing discussion at the ACPI level).
+On Tue, Jan 17, 2017 at 07:03:28AM +0000, Pandy Gao wrote:
 
-Honestly, I'm not sure what you mean.
+> > > The patch recovers the pinctrl setting when exit VLLS mode.
 
-The first patch in the series (which is the ACPI level here) does not
-seem to be controversial at all and the i2c one has been acked
-already.
+> > Why is this a change here and not in the pinctrl driver?  It sounds like
+> > it's the pinctrl driver that's forgetting the settings and should be
+> > restoring them on resume but perhaps I'm missing something here.
 
-> I continue to be concerned about the amount of duplication and special casing that the
-> various firmware paths seem to entail.
+> If the pinctrl driver restores the setting on resume, then all device node
+> should be scanned,  which is irregular.=20
 
-Well, this particular change is relatively straightforward and one can
-argue that it fixes a bug.  It does address a problem for sure.
+What would restoring the configuration have to do with scanning the
+device tree?  The changelog says this is just reapplying the same
+settings we started out with so it's just a case of restoring the state
+of the device after a runtime resume which is a perfectly normal thing
+for a driver to do.
 
-Thanks,
-Rafael
+--ssxgtaym4udffnfl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlh+aqYACgkQJNaLcl1U
+h9BRdwf/bxQ9Wv+ad2w/+cU0Ojfot2EaxHSBudNn0XbXUSzAuTxZ6w1JacYD1oFk
+csQPP45ZpuwKbjNMLrnW2UZfEiskCO0+uizuqX7wjzYZaUGkHbc8zdp4evrBgS3F
+tUDzNGcvT6oaQbV68YkgjU27mLdcRxb6gYrJ8XKT4BO6a8tULZ8kPSwM6IbI31iz
+vN6GqNQxdwmRfOCeN1eYj8YRQtM8aqts40DeWPKcteLH9T7FMBJGS0hmUnOPWajS
+WBksU5pYNkdXSpqYjqdHJ1EavqkJeOo4OAtN1q7/bhtYRsDbGMer5sgmYGBXdSzX
+S/rkj1yK/X+T4eINbBeJ7EpdtZRvYw==
+=khs3
+-----END PGP SIGNATURE-----
+
+--ssxgtaym4udffnfl--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,21 +1,21 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/topcliff-pch: Improve size determinations in pch_spi_probe()" to the spi tree
-Date: Tue, 17 Jan 2017 18:45:43 +0000
-Message-ID: <E1cTYlL-0000Ik-HB@debutante>
-References: <d2471abf-1eca-037f-3d10-ba03d8e987af@users.sourceforge.net>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
-To: Markus Elfring <elfring@users.sourceforge.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <d2471abf-1eca-037f-3d10-ba03d8e987af@users.sourceforge.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()" to the spi tree
+Date: Tue, 17 Jan 2017 18:45:48 +0000
+Message-ID: <E1cTYlQ-0000Jh-Rl@debutante>
+References: <5c46b68f-192e-2982-6a0e-2017da26f83d@users.sourceforge.net>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <5c46b68f-192e-2982-6a0e-2017da26f83d-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/topcliff-pch: Improve size determinations in pch_spi_probe()
+   spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
 
 has been applied to the spi tree at
 
@@ -40,39 +40,53 @@ to this mail.
 Thanks,
 Mark
 
->From baa35f5734aa1c0207e4e6b8e15079475b1fa252 Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 15:46:35 +0100
-Subject: [PATCH] spi/topcliff-pch: Improve size determinations in
- pch_spi_probe()
+>From 84aa0ba12442fa46f461c491c42efdadf6995c96 Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Fri, 13 Jan 2017 15:25:22 +0100
+Subject: [PATCH] spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
 
-Replace the specification of data structures by pointer dereferences
-as the parameter for the operator "sizeof" to make the corresponding size
-determination a bit safer.
+* Multiplications for the size determination of memory allocations
+  indicated that array data structures should be processed.
+  Thus use the corresponding function "kcalloc".
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  This issue was detected by using the Coccinelle software.
+
+* Replace the specification of a data structure by pointer dereferences
+  to make the corresponding size determination a bit safer according to
+  the Linux coding style convention.
+
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
  drivers/spi/spi-topcliff-pch.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 1beeb16e836a..0a876311b67b 100644
+index 250452a6eead..1beeb16e836a 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1539,11 +1539,11 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	int i;
- 	struct pch_pd_dev_save *pd_dev_save;
+@@ -1007,7 +1007,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 	spin_unlock_irqrestore(&data->lock, flags);
  
--	pd_dev_save = kzalloc(sizeof(struct pch_pd_dev_save), GFP_KERNEL);
-+	pd_dev_save = kzalloc(sizeof(*pd_dev_save), GFP_KERNEL);
- 	if (!pd_dev_save)
- 		return -ENOMEM;
+ 	/* RX */
+-	dma->sg_rx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
++	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
+ 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_rx_p;
+@@ -1067,7 +1067,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 		head = 0;
+ 	}
  
--	board_dat = kzalloc(sizeof(struct pch_spi_board_data), GFP_KERNEL);
-+	board_dat = kzalloc(sizeof(*board_dat), GFP_KERNEL);
- 	if (!board_dat) {
- 		retval = -ENOMEM;
- 		goto err_no_mem;
+-	dma->sg_tx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
++	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
+ 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_tx_p;
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

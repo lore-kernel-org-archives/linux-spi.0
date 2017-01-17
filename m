@@ -1,21 +1,21 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()" to the spi tree
-Date: Tue, 17 Jan 2017 18:45:48 +0000
-Message-ID: <E1cTYlQ-0000Jh-Rl@debutante>
-References: <5c46b68f-192e-2982-6a0e-2017da26f83d@users.sourceforge.net>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5c46b68f-192e-2982-6a0e-2017da26f83d-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()" to the spi tree
+Date: Tue, 17 Jan 2017 18:46:03 +0000
+Message-ID: <E1cTYlf-0000ON-Nl@debutante>
+References: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
+To: Markus Elfring <elfring@users.sourceforge.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
+   spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
 
 has been applied to the spi tree at
 
@@ -40,53 +40,42 @@ to this mail.
 Thanks,
 Mark
 
->From 84aa0ba12442fa46f461c491c42efdadf6995c96 Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 13 Jan 2017 15:25:22 +0100
-Subject: [PATCH] spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
+>From 8b6c8955b5dc21358cb1f67cadc5514d2353375d Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 13 Jan 2017 14:06:10 +0100
+Subject: [PATCH] spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
 
-* Multiplications for the size determination of memory allocations
-  indicated that array data structures should be processed.
-  Thus use the corresponding function "kcalloc".
+* A multiplication for the size determination of a memory allocation
+  indicated that an array data structure should be processed.
+  Thus use the corresponding function "kmalloc_array".
 
   This issue was detected by using the Coccinelle software.
 
-* Replace the specification of a data structure by pointer dereferences
+* Replace the specification of a data type by a pointer dereference
   to make the corresponding size determination a bit safer according to
   the Linux coding style convention.
 
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc52xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 250452a6eead..1beeb16e836a 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1007,7 +1007,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	spin_unlock_irqrestore(&data->lock, flags);
- 
- 	/* RX */
--	dma->sg_rx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
-+	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
- 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
-@@ -1067,7 +1067,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 		head = 0;
- 	}
- 
--	dma->sg_tx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
-+	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_tx_p;
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index c36002110c30..8cc129efe7ba 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -437,8 +437,9 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	ms->gpio_cs_count = of_gpio_count(op->dev.of_node);
+ 	if (ms->gpio_cs_count > 0) {
+ 		master->num_chipselect = ms->gpio_cs_count;
+-		ms->gpio_cs = kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
+-				GFP_KERNEL);
++		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
++					    sizeof(*ms->gpio_cs),
++					    GFP_KERNEL);
+ 		if (!ms->gpio_cs) {
+ 			rc = -ENOMEM;
+ 			goto err_alloc_gpio;
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

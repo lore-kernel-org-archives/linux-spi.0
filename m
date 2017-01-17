@@ -1,21 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()" to the spi tree
-Date: Tue, 17 Jan 2017 18:45:54 +0000
-Message-ID: <E1cTYlW-0000LX-PS@debutante>
-References: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+Subject: Applied "spi: s3c64xx: potential oops on probe error" to the spi tree
+Date: Tue, 17 Jan 2017 18:46:25 +0000
+Message-ID: <E1cTYm1-0000XD-FR@debutante>
+References: <20170113074253.GA30524@mwanda>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+        Andi Shyti <andi.shyti@samsung.com>,
+        Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Andi Shyti <andi.shyti@samsung.com>,
         Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
-To: Markus Elfring <elfring@users.sourceforge.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
-Sender: linux-kernel-owner@vger.kernel.org
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20170113074253.GA30524@mwanda>
+Sender: kernel-janitors-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
+   spi: s3c64xx: potential oops on probe error
 
 has been applied to the spi tree at
 
@@ -40,39 +46,50 @@ to this mail.
 Thanks,
 Mark
 
->From 797236f10a095a1742373bca5f284c5ec8afb446 Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 14:30:43 +0100
-Subject: [PATCH] spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
+>From 72bc7ae0633e2b580217d254114ac6650380b7f6 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Fri, 13 Jan 2017 10:42:53 +0300
+Subject: [PATCH] spi: s3c64xx: potential oops on probe error
 
-* A multiplication for the size determination of a memory allocation
-  indicated that an array data structure should be processed.
-  Thus reuse the corresponding function "kcalloc".
+We accidentally mixed up freeing the rx and tx channels which would a
+leak and an oops.
 
-  This issue was detected by using the Coccinelle software.
-
-* Replace the specification of a data type by a pointer dereference
-  to make the corresponding size determination a bit safer according to
-  the Linux coding style convention.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Fixes: 3d63a47a380a ("spi: s3c64xx: Don't request/release DMA channels for each SPI transfer")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Andi Shyti <andi.shyti@samsung.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-ppc4xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index b2df63c66494..967d94844b30 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -411,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	if (num_gpios > 0) {
- 		int i;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 849ee82483e4..b8cd356d8d10 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1147,7 +1147,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 		if (IS_ERR(sdd->tx_dma.ch)) {
+ 			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
+ 			ret = PTR_ERR(sdd->tx_dma.ch);
+-			goto err_release_tx_dma;
++			goto err_release_rx_dma;
+ 		}
+ 	}
  
--		hw->gpios = kzalloc(sizeof(int) * num_gpios, GFP_KERNEL);
-+		hw->gpios = kcalloc(num_gpios, sizeof(*hw->gpios), GFP_KERNEL);
- 		if (!hw->gpios) {
- 			ret = -ENOMEM;
- 			goto free_master;
+@@ -1197,10 +1197,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	if (!is_polling(sdd))
+-		dma_release_channel(sdd->rx_dma.ch);
+-err_release_tx_dma:
+-	if (!is_polling(sdd))
+ 		dma_release_channel(sdd->tx_dma.ch);
++err_release_rx_dma:
++	if (!is_polling(sdd))
++		dma_release_channel(sdd->rx_dma.ch);
+ err_disable_io_clk:
+ 	clk_disable_unprepare(sdd->ioclk);
+ err_disable_src_clk:
 -- 
 2.11.0
+

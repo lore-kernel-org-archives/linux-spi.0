@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/ppc4xx: Combine substrings for a message in spi_ppc4xx_of_probe()" to the spi tree
-Date: Tue, 17 Jan 2017 18:45:57 +0000
-Message-ID: <E1cTYlZ-0000MR-P0@debutante>
-References: <e5ef99cc-fa83-8001-aeba-5d2f7852bd40@users.sourceforge.net>
+Subject: Applied "spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()" to the spi tree
+Date: Tue, 17 Jan 2017 18:45:54 +0000
+Message-ID: <E1cTYlW-0000LX-PS@debutante>
+References: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
 To: Markus Elfring <elfring@users.sourceforge.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <e5ef99cc-fa83-8001-aeba-5d2f7852bd40@users.sourceforge.net>
+In-Reply-To: <777d3bd9-4817-d688-d496-b871edbbc937@users.sourceforge.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/ppc4xx: Combine substrings for a message in spi_ppc4xx_of_probe()
+   spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
 
 has been applied to the spi tree at
 
@@ -40,39 +40,39 @@ to this mail.
 Thanks,
 Mark
 
->From ffcaef5ac27b62b480b94036615b3ae4f1b725fe Mon Sep 17 00:00:00 2001
+>From 797236f10a095a1742373bca5f284c5ec8afb446 Mon Sep 17 00:00:00 2001
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 14:43:06 +0100
-Subject: [PATCH] spi/ppc4xx: Combine substrings for a message in
- spi_ppc4xx_of_probe()
+Date: Fri, 13 Jan 2017 14:30:43 +0100
+Subject: [PATCH] spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
 
-The script "checkpatch.pl" pointed information out like the following.
+* A multiplication for the size determination of a memory allocation
+  indicated that an array data structure should be processed.
+  Thus reuse the corresponding function "kcalloc".
 
-WARNING: quoted string split across lines
+  This issue was detected by using the Coccinelle software.
 
-Thus fix the affected source code place.
+* Replace the specification of a data type by a pointer dereference
+  to make the corresponding size determination a bit safer according to
+  the Linux coding style convention.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-ppc4xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ppc4xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index dd3d0a218d8b..b2df63c66494 100644
+index b2df63c66494..967d94844b30 100644
 --- a/drivers/spi/spi-ppc4xx.c
 +++ b/drivers/spi/spi-ppc4xx.c
-@@ -428,8 +428,9 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 				/* Real CS - set the initial state. */
- 				ret = gpio_request(gpio, np->name);
- 				if (ret < 0) {
--					dev_err(dev, "can't request gpio "
--							"#%d: %d\n", i, ret);
-+					dev_err(dev,
-+						"can't request gpio #%d: %d\n",
-+						i, ret);
- 					goto free_gpios;
- 				}
+@@ -411,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	if (num_gpios > 0) {
+ 		int i;
  
+-		hw->gpios = kzalloc(sizeof(int) * num_gpios, GFP_KERNEL);
++		hw->gpios = kcalloc(num_gpios, sizeof(*hw->gpios), GFP_KERNEL);
+ 		if (!hw->gpios) {
+ 			ret = -ENOMEM;
+ 			goto free_master;
 -- 
 2.11.0

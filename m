@@ -1,21 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()" to the spi tree
-Date: Tue, 17 Jan 2017 18:46:03 +0000
-Message-ID: <E1cTYlf-0000ON-Nl@debutante>
-References: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
+Subject: Applied "spi/topcliff-pch: Delete an error message for a failed memory allocation in pch_spi_set_tx()" to the spi tree
+Date: Tue, 17 Jan 2017 18:45:36 +0000
+Message-ID: <E1cTYlE-0000G7-IW@debutante>
+References: <b72c78dc-32b2-0f8f-8d3d-575ce4bff02f@users.sourceforge.net>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
+        kernel-janitors@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+        linux-spi@vger.kernel.org
 To: Markus Elfring <elfring@users.sourceforge.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <eb433c31-35b0-14a6-8ded-6b14ba8752c2@users.sourceforge.net>
+In-Reply-To: <b72c78dc-32b2-0f8f-8d3d-575ce4bff02f@users.sourceforge.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
+   spi/topcliff-pch: Delete an error message for a failed memory allocation in pch_spi_set_tx()
 
 has been applied to the spi tree at
 
@@ -40,42 +41,32 @@ to this mail.
 Thanks,
 Mark
 
->From 8b6c8955b5dc21358cb1f67cadc5514d2353375d Mon Sep 17 00:00:00 2001
+>From 45e861a1c12cfd717b8e47103f1aaf2e34cc6688 Mon Sep 17 00:00:00 2001
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 13 Jan 2017 14:06:10 +0100
-Subject: [PATCH] spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
+Date: Fri, 13 Jan 2017 17:00:08 +0100
+Subject: [PATCH] spi/topcliff-pch: Delete an error message for a failed memory
+ allocation in pch_spi_set_tx()
 
-* A multiplication for the size determination of a memory allocation
-  indicated that an array data structure should be processed.
-  Thus use the corresponding function "kmalloc_array".
+Omit an extra message for a memory allocation failure in this function.
 
-  This issue was detected by using the Coccinelle software.
-
-* Replace the specification of a data type by a pointer dereference
-  to make the corresponding size determination a bit safer according to
-  the Linux coding style convention.
-
+Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mpc52xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index c36002110c30..8cc129efe7ba 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -437,8 +437,9 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	ms->gpio_cs_count = of_gpio_count(op->dev.of_node);
- 	if (ms->gpio_cs_count > 0) {
- 		master->num_chipselect = ms->gpio_cs_count;
--		ms->gpio_cs = kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
--				GFP_KERNEL);
-+		ms->gpio_cs = kmalloc_array(ms->gpio_cs_count,
-+					    sizeof(*ms->gpio_cs),
-+					    GFP_KERNEL);
- 		if (!ms->gpio_cs) {
- 			rc = -ENOMEM;
- 			goto err_alloc_gpio;
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 2b9405819075..97d137591b18 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -591,7 +591,6 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 
+ 	if (!data->pkt_rx_buff) {
+ 		/* flush queue and set status of all transfers to -ENOMEM */
+-		dev_err(&data->master->dev, "%s :kzalloc failed\n", __func__);
+ 		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
+ 			pmsg->status = -ENOMEM;
+ 
 -- 
 2.11.0

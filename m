@@ -1,7 +1,7 @@
 From: Robert Jarzmik <robert.jarzmik@free.fr>
 Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Tue, 17 Jan 2017 08:54:56 +0100
-Message-ID: <87ziiqdstr.fsf@belgarion.home>
+Date: Tue, 17 Jan 2017 08:58:58 +0100
+Message-ID: <87vatedsn1.fsf@belgarion.home>
 References: <cover.1484592296.git.jan.kiszka@siemens.com>
  <cover.1484592296.git.jan.kiszka@siemens.com>
  <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
@@ -42,55 +42,19 @@ Jan Kiszka <jan.kiszka@siemens.com> writes:
 > into account that SSCR1 may be changed by the transfer handler, thus we
 > need to redo the mask calculation, at least regarding the volatile
 > interrupt enable bit (TIE).
->
-> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Hi Jan,
 
-> +	while (1) {
-This bit worries me a bit, as this can be either :
- - hogging the SoC's CPU, endlessly running
- - or even worse, blocking the CPU for ever
+I'd like moreover to add a question here.
 
-The question behind is, should this be done in a top-half, or moved to a irq
-thread ?
+In pxa architecture, SPI interrupts are already edge-triggered, and it's working
+well. The interrupt source disabling is not disabled, but the interrupt
+controller doesn't trigger an interrupt anymore (as it is masked), yet it marks
+it as pending if an interrupt arrives while the interrupt handler is running.
 
-> +		/* Ignore possible writes if we don't need to write */
-> +		if (!(sccr1_reg & SSCR1_TIE))
-> +			mask &= ~SSSR_TFS;
->  
-> -	if (!drv_data->master->cur_msg) {
-> -		handle_bad_msg(drv_data);
-> -		/* Never fail */
-> -		return IRQ_HANDLED;
-> -	}
-> +		if (!(status & mask))
-> +			return ret;
-> +
-> +		if (!drv_data->master->cur_msg) {
-> +			handle_bad_msg(drv_data);
-> +			/* Never fail */
-> +			return IRQ_HANDLED;
-> +		}
-> +
-> +		ret |= drv_data->transfer_handler(drv_data);
-Mmm that looks weird to me, oring a irqreturn.
-
-Imagine that on first iteration the handler returns IRQ_NONE, and on second
-IRQ_HANDLED. This makes ret IRQ_HANDLED. Yet after the first iteration the
-handler should have exited, especially if the interrupt is shared with another
-driver.
-
-Another thing which is along what Andy already said : it would be better
-practice to have this loop in the form :
-do {
-...
-} while (exit_condition_not_met);
-
-Just for maintainability, it's better, and it concentrates the test on the
-"exit_condition_not_met" in one place, which will enable us to review better the
-algorithm.
+All of this is handled by the interrupt core. My question is why for Intel MSI's
+is it necessary to make a change in the driver instead or relying on the
+interrupt core as for the pxa ?
 
 Cheers.
 
--- 
+--
 Robert

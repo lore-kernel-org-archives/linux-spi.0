@@ -1,27 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: potential oops on probe error" to the spi tree
-Date: Tue, 17 Jan 2017 18:46:25 +0000
-Message-ID: <E1cTYm1-0000XD-FR@debutante>
-References: <20170113074253.GA30524@mwanda>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-        Andi Shyti <andi.shyti@samsung.com>,
-        Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Andi Shyti <andi.shyti@samsung.com>,
+Subject: Applied "spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()" to the spi tree
+Date: Tue, 17 Jan 2017 18:46:14 +0000
+Message-ID: <E1cTYlq-0000SM-KS@debutante>
+References: <2abbbc08-f5bf-28de-e513-5f1074996189@users.sourceforge.net>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20170113074253.GA30524@mwanda>
-Sender: kernel-janitors-owner@vger.kernel.org
+To: Markus Elfring <elfring@users.sourceforge.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <2abbbc08-f5bf-28de-e513-5f1074996189@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: s3c64xx: potential oops on probe error
+   spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()
 
 has been applied to the spi tree at
 
@@ -46,50 +40,36 @@ to this mail.
 Thanks,
 Mark
 
->From 72bc7ae0633e2b580217d254114ac6650380b7f6 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 13 Jan 2017 10:42:53 +0300
-Subject: [PATCH] spi: s3c64xx: potential oops on probe error
+>From d9bc4a8539a518636cd70d498e94787e32ea8fbe Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 13 Jan 2017 13:37:25 +0100
+Subject: [PATCH] spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()
 
-We accidentally mixed up freeing the rx and tx channels which would a
-leak and an oops.
+A multiplication for the size determination of a memory allocation
+indicated that an array data structure should be processed.
+Thus use the corresponding function "kmalloc_array".
 
-Fixes: 3d63a47a380a ("spi: s3c64xx: Don't request/release DMA channels for each SPI transfer")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Andi Shyti <andi.shyti@samsung.com>
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-fsl-spi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 849ee82483e4..b8cd356d8d10 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1147,7 +1147,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		if (IS_ERR(sdd->tx_dma.ch)) {
- 			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
- 			ret = PTR_ERR(sdd->tx_dma.ch);
--			goto err_release_tx_dma;
-+			goto err_release_rx_dma;
- 		}
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 8b290d9d7935..9873d39d1a95 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -727,7 +727,8 @@ static int of_fsl_spi_get_chipselects(struct device *dev)
+ 		return 0;
  	}
  
-@@ -1197,10 +1197,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_suspended(&pdev->dev);
- 
- 	if (!is_polling(sdd))
--		dma_release_channel(sdd->rx_dma.ch);
--err_release_tx_dma:
--	if (!is_polling(sdd))
- 		dma_release_channel(sdd->tx_dma.ch);
-+err_release_rx_dma:
-+	if (!is_polling(sdd))
-+		dma_release_channel(sdd->rx_dma.ch);
- err_disable_io_clk:
- 	clk_disable_unprepare(sdd->ioclk);
- err_disable_src_clk:
+-	pinfo->gpios = kmalloc(ngpios * sizeof(*pinfo->gpios), GFP_KERNEL);
++	pinfo->gpios = kmalloc_array(ngpios, sizeof(*pinfo->gpios),
++				     GFP_KERNEL);
+ 	if (!pinfo->gpios)
+ 		return -ENOMEM;
+ 	memset(pinfo->gpios, -1, ngpios * sizeof(*pinfo->gpios));
 -- 
 2.11.0
-

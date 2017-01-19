@@ -1,7 +1,7 @@
 From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Thu, 19 Jan 2017 16:34:31 +0100
-Message-ID: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
+Subject: [PATCH v3 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
+Date: Thu, 19 Jan 2017 20:37:40 +0100
+Message-ID: <e692c4a9-6320-b9e0-d6e7-f58bbe6ba867@siemens.com>
 References: <cover.1484592296.git.jan.kiszka@siemens.com>
  <cover.1484592296.git.jan.kiszka@siemens.com>
  <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
@@ -10,8 +10,9 @@ References: <cover.1484592296.git.jan.kiszka@siemens.com>
  <87r340eq28.fsf@belgarion.home>
  <b3e0d393-b841-1556-ddd2-5634f12b6f2c@siemens.com>
  <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
+ <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3819604222010403675=="
+Content-Type: multipart/mixed; boundary="===============3986329901022099234=="
 Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
  linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
  linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -22,7 +23,7 @@ Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
  Daniel Mack <daniel@zonque.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
+In-Reply-To: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -35,14 +36,14 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============3819604222010403675==
+--===============3986329901022099234==
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="4Qv9bgGvkTnlK3ApvA594fm3Pnm7sw1Le"
+ boundary="MGgmsnHF44KlqhMKGCaEhePwqsahqAVSH"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---4Qv9bgGvkTnlK3ApvA594fm3Pnm7sw1Le
-Content-Type: multipart/mixed; boundary="jGvsd5lo2euMXVm3DMJQc198Nwh4kSEXn";
+--MGgmsnHF44KlqhMKGCaEhePwqsahqAVSH
+Content-Type: multipart/mixed; boundary="moGk529TTXn4CMRnGsuCv5BeaFVxSas4O";
  protected-headers="v1"
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: Mark Brown <broonie@kernel.org>
@@ -53,8 +54,8 @@ Cc: Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org,
  Mika Westerberg <mika.westerberg@linux.intel.com>,
  Jarkko Nikula <jarkko.nikula@linux.intel.com>,
  Sascha Weisenberger <sascha.weisenberger@siemens.com>
-Message-ID: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
-Subject: Re: [PATCH v2 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
+Message-ID: <e692c4a9-6320-b9e0-d6e7-f58bbe6ba867@siemens.com>
+Subject: [PATCH v3 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
 References: <cover.1484592296.git.jan.kiszka@siemens.com>
  <cover.1484592296.git.jan.kiszka@siemens.com>
  <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
@@ -63,73 +64,34 @@ References: <cover.1484592296.git.jan.kiszka@siemens.com>
  <87r340eq28.fsf@belgarion.home>
  <b3e0d393-b841-1556-ddd2-5634f12b6f2c@siemens.com>
  <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
-In-Reply-To: <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
+ <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
+In-Reply-To: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
 
---jGvsd5lo2euMXVm3DMJQc198Nwh4kSEXn
+--moGk529TTXn4CMRnGsuCv5BeaFVxSas4O
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 
-On 2017-01-18 13:46, Mark Brown wrote:
-> On Wed, Jan 18, 2017 at 10:33:07AM +0100, Jan Kiszka wrote:
->> On 2017-01-18 09:21, Robert Jarzmik wrote:
->=20
->>>>>> +	while (1) {
->=20
->>>>> This bit worries me a bit, as this can be either :
->>>>>  - hogging the SoC's CPU, endlessly running
->>>>>  - or even worse, blocking the CPU for ever
->=20
->>>>> The question behind is, should this be done in a top-half, or moved=
- to a irq
->>>>> thread ?
->=20
->>>> Every device with a broken interrupt source can hog CPUs, nothing
->>>> special with this one. If you don't close the loop in the handler
->>>> itself, you close it over the hardware retriggering the interrupt ov=
-er
->>>> and over again.
->=20
->>> I'm not speaking of a broken interrupt source, I'm speaking of a brok=
-en code,
->>> such as in the handler, or broken status readback, or lack of underst=
-anding on
->>> the status register which may imply the while(1) to loop forever.
->=20
->>>> So, I don't see a point in offloading to a thread. The normal case i=
-s
->>>> some TX done (FIFO available) event followed by an RX event, then th=
-e
->>>> transfer is complete, isn't it?
->=20
->>> The point is if you stay forever in the while(1) loop, you can at lea=
-st have a
->>> print a backtrace (LOCKUP_DETECTOR).
->=20
->> I won't consider "debugability" as a good reason to move interrupt
->> handlers into threads. There should be real workload that requires
->> offloading or specific prioritization.
->=20
-> It's failure mitigation - you're translating a hard lockup into
-> something that will potentially allow the system to soldier on which is=
+When using the a device with edge-triggered interrupts, such as MSIs,
+the interrupt handler has to ensure that there is a point in time during
+its execution where all interrupts sources are silent so that a new
+event can trigger a new interrupt again.
 
-> likely to be less severe for the user as well as making things easier t=
-o
-> figure out.  If we're doing something like this I'd at least have a
-> limit on how long we allow the interrupt to scream.
->=20
+This is achieved here by disabling all interrupt sources for a moment
+before processing them according to the status register. If a new
+interrupt should have arrived after we read the status, it will now
+re-trigger the interrupt, even in edge mode.
 
-OK, OK, if that is the biggest worry, I can change the pattern from
-loop-based to SCCR1-based, i.e. mask all interrupt sources once per
-interrupt so that we enforce a falling edge. Fine.
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
 
-But now I'm looking at the driver, wondering who all is fiddling under
-which conditions with SCCR1. There are a lot of RMW patterns, but I do
-not see the locking pattern behind that. Are all RMW accesses run only
-in the interrupt handler context? Unlikely, at least with the dmaengine
-in the loop.
+Successfully tested by now.
 
-Closing my eyes regarding this potential issue for now, the patch could
-become as simple as
+Changes to v2:
+- avoid inner looping by making the hardware retrigger on "forgotten"
+  IRQ sources
+
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
 index 0d10090..f9c2329 100644
@@ -145,21 +107,13 @@ index 0d10090..f9c2329 100644
  	if (!drv_data->master->cur_msg) {
  		handle_bad_msg(drv_data);
  		/* Never fail */
-
-Not efficient /wrt register accesses, but that's apparently not yet
-a design goal anyway (I stumbled over the SSCR1 locking while
-considering to introduce a cache for that reg).
-
-Jan
-
 --=20
-Siemens AG, Corporate Technology, CT RDA ITP SES-DE
-Corporate Competence Center Embedded Linux
+2.1.4
 
 
---jGvsd5lo2euMXVm3DMJQc198Nwh4kSEXn--
+--moGk529TTXn4CMRnGsuCv5BeaFVxSas4O--
 
---4Qv9bgGvkTnlK3ApvA594fm3Pnm7sw1Le
+--MGgmsnHF44KlqhMKGCaEhePwqsahqAVSH
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -167,15 +121,15 @@ Content-Disposition: attachment; filename="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iEYEARECAAYFAliA3IgACgkQitSsb3rl5xR1ugCdH29+6CSdQT3ifwOWMmjtF6LH
-CH0AoOJZ7B6hVpmeQHEdClQHIKdIh2NX
-=/FsF
+iEYEARECAAYFAliBFYUACgkQitSsb3rl5xQ45wCgssrJ83vvNz5I08hR3Qo98TWa
+EM8AoO+7gM0G+htHEpHCNmsvlRLKhZZR
+=XO/8
 -----END PGP SIGNATURE-----
 
---4Qv9bgGvkTnlK3ApvA594fm3Pnm7sw1Le--
+--MGgmsnHF44KlqhMKGCaEhePwqsahqAVSH--
 
 
---===============3819604222010403675==
+--===============3986329901022099234==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -186,4 +140,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============3819604222010403675==--
+--===============3986329901022099234==--

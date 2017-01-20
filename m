@@ -1,136 +1,108 @@
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: Re: [PATCH v3 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-Date: Fri, 20 Jan 2017 16:29:28 +0100
-Message-ID: <df89519e-e01a-b88b-ca54-112bbf5346b8@siemens.com>
-References: <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
- <87ziiqdstr.fsf@belgarion.home>
- <4d97e416-4d32-3b9f-0695-de116a4b26bd@siemens.com>
- <87r340eq28.fsf@belgarion.home>
- <b3e0d393-b841-1556-ddd2-5634f12b6f2c@siemens.com>
- <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
- <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
- <e692c4a9-6320-b9e0-d6e7-f58bbe6ba867@siemens.com>
- <20170119195701.kueutgmahr6bmxhq@sirena.org.uk>
- <1484856272.2133.253.camel@linux.intel.com>
- <20170120122129.6cn5phrobeldpikp@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] SPI fixes for v4.10
+Date: Fri, 20 Jan 2017 15:11:40 +0000
+Message-ID: <20170120151140.qer24dbfp3sivysq@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1430738987688403144=="
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Sascha Weisenberger <sascha.weisenberger@siemens.com>,
- Daniel Mack <daniel@zonque.org>
-To: Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170120122129.6cn5phrobeldpikp@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1430738987688403144==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="tp2I6nifge93EDAU6Fhl5qIxBa1NFPgr0"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---tp2I6nifge93EDAU6Fhl5qIxBa1NFPgr0
-Content-Type: multipart/mixed; boundary="V70RoBfQprV3sMGT6CKci46tx23nJKH0K";
- protected-headers="v1"
-From: Jan Kiszka <jan.kiszka@siemens.com>
-To: Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-kernel@vger.kernel.org,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- Sascha Weisenberger <sascha.weisenberger@siemens.com>
-Message-ID: <df89519e-e01a-b88b-ca54-112bbf5346b8@siemens.com>
-Subject: Re: [PATCH v3 2/3] spi: pxa2xx: Prepare for edge-triggered interrupts
-References: <7b15a0910a3ad861fd32161c72559bafa7b71e29.1484592296.git.jan.kiszka@siemens.com>
- <87ziiqdstr.fsf@belgarion.home>
- <4d97e416-4d32-3b9f-0695-de116a4b26bd@siemens.com>
- <87r340eq28.fsf@belgarion.home>
- <b3e0d393-b841-1556-ddd2-5634f12b6f2c@siemens.com>
- <20170118124645.6ugjwbfeq5vsh2to@sirena.org.uk>
- <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
- <e692c4a9-6320-b9e0-d6e7-f58bbe6ba867@siemens.com>
- <20170119195701.kueutgmahr6bmxhq@sirena.org.uk>
- <1484856272.2133.253.camel@linux.intel.com>
- <20170120122129.6cn5phrobeldpikp@sirena.org.uk>
-In-Reply-To: <20170120122129.6cn5phrobeldpikp@sirena.org.uk>
-
---V70RoBfQprV3sMGT6CKci46tx23nJKH0K
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
-
-On 2017-01-20 13:21, Mark Brown wrote:
-> On Thu, Jan 19, 2017 at 10:04:32PM +0200, Andy Shevchenko wrote:
->> On Thu, 2017-01-19 at 19:57 +0000, Mark Brown wrote:
->=20
->>> I'm missing patches 1 and 3, what's going on here?
->=20
->> Patch 1 had been applied by you. I think Jan just needs to resend with=
-
->> proper version and set of patches.
->=20
-> OK - Jan, the purpose of numbering patches in a series is so we can tel=
-l
-> what order they come in.  That's it.  If the set of patches gets change=
-d
-> due to things being added or removed the numbers will be different but
-> that's totally OK as their only relevance is in ordering things within =
-a
-> given posting.
-
-Sorry if the numbering was confusing for you, it was, of course, a
-selective update. Just tell me, if you need a new round with of patches
-2 and 3 (as 1 and 2).
-
-Jan
-
---=20
-Siemens AG, Corporate Technology, CT RDA ITP SES-DE
-Corporate Competence Center Embedded Linux
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ijvkimhd7ly3x2id"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---V70RoBfQprV3sMGT6CKci46tx23nJKH0K--
-
---tp2I6nifge93EDAU6Fhl5qIxBa1NFPgr0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iEYEARECAAYFAliCLNgACgkQitSsb3rl5xRMCACg7+24N1ST5uQ46mep2xJYiNFB
-EhsAoKu5REMieZU/8YzT990cozOd1hrR
-=5LMA
------END PGP SIGNATURE-----
-
---tp2I6nifge93EDAU6Fhl5qIxBa1NFPgr0--
-
-
---===============1430738987688403144==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--ijvkimhd7ly3x2id
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+The following changes since commit fafd67940774733fa97f4b09412aea6981b82e0a:
 
---===============1430738987688403144==--
+  Merge remote-tracking branches 'spi/topic/spidev', 'spi/topic/sunxi', 'spi/topic/ti-qspi', 'spi/topic/topcliff-pch' and 'spi/topic/xlp' into spi-next (2016-12-12 15:54:20 +0000)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.10-rc4
+
+for you to fetch changes up to 52cc720c568efd8fd454053b98fe4b4fd94688fe:
+
+  Merge remote-tracking branch 'spi/fix/sh-msiof' into spi-linus (2017-01-17 18:48:13 +0000)
+
+----------------------------------------------------------------
+spi: Fixes for v4.10
+
+The usual small smattering of driver specific fixes.  A few bits that
+stand out here:
+
+ - The R-Car patches adding fallbacks are just adding new compatible
+   strings to the driver so that device trees are written in a more
+   robustly future proof fashion, this isn't strictly a fix but it's
+   just new IDs and it's better to get it into mainline sooner to
+   improve the ABI.
+ - The DesignWare "switch to new API part 2" patch is actually a
+   misleadingly titled fix for a bit that got missed in the original
+   conversion.
+
+----------------------------------------------------------------
+Andy Shevchenko (2):
+      spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
+      spi: pxa2xx: add missed break
+
+Christophe JAILLET (1):
+      spi: spi-axi: Free resources on error path
+
+Colin Ian King (1):
+      spi: armada-3700: fix unsigned compare than zero on irq
+
+Dan Carpenter (1):
+      spi: armada-3700: Set mode bits correctly
+
+Geert Uytterhoeven (1):
+      spi: SPI_FSL_DSPI should depend on HAS_DMA
+
+Kevin Hilman (1):
+      spi: davinci: use dma_mapping_error()
+
+Mark Brown (2):
+      Merge remote-tracking branches 'spi/fix/armada', 'spi/fix/axi', 'spi/fix/davinci', 'spi/fix/dw', 'spi/fix/fsl-dspi' and 'spi/fix/pxa2xx' into spi-linus
+      Merge remote-tracking branch 'spi/fix/sh-msiof' into spi-linus
+
+Phil Reid (1):
+      spi: dw: Make debugfs name unique between instances
+
+Simon Horman (2):
+      spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings
+      spi: sh-msiof: Do not use C++ style comment
+
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 19 +++++++++++++------
+ drivers/spi/Kconfig                                |  1 +
+ drivers/spi/spi-armada-3700.c                      | 11 ++++++-----
+ drivers/spi/spi-axi-spi-engine.c                   |  3 ++-
+ drivers/spi/spi-davinci.c                          |  4 ++--
+ drivers/spi/spi-dw-mid.c                           |  4 ++--
+ drivers/spi/spi-dw.c                               |  5 ++++-
+ drivers/spi/spi-pxa2xx.c                           |  1 +
+ drivers/spi/spi-sh-msiof.c                         |  4 +++-
+ 9 files changed, 34 insertions(+), 18 deletions(-)
+
+--ijvkimhd7ly3x2id
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliCKKwACgkQJNaLcl1U
+h9CZqgf/SRp/zTh5YQoP/YFOSozqhKlcSiEtWGD6o2dBbR5aNnZkOg7hooTZzJeA
+QC/hm8ZMPslYcCXVHuYeKu9s/bNMkyPh1X8JpINazqsolWohHrpGOE1BIX8MF5aI
+NO9rtWyt76pipDijJBC2qkMDNTjFAxr0LLqtGCGyQal8wnqb4ymjyKcLSVtjttg0
+JxmaHdhzjeZa/aHrywWNhsB0L15mpMFzmWbgNqn78FBtOJoqEdcseYfeVR0BTY22
+19d4YCJVts7RQQFnadUNAzVMHTbSXLtJFwd9OGfhns9gXOmAKKdAkkSdsKmSb5HT
+9fuPL+iYenQoLuEDGBkim0/EM0IoWg==
+=qFIl
+-----END PGP SIGNATURE-----
+
+--ijvkimhd7ly3x2id--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

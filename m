@@ -1,40 +1,70 @@
-From: Joyes Dadi <"YD."@biscuit.ocn.ne.jp>
-Subject: Urgent Please,,
-Date: Mon, 23 Jan 2017 23:07:54 +0900 (JST)
-Message-ID: <1307460608.25784291.1485180474314.JavaMail.root__23370.4944643707$1485181166$gmane$org@biscuit.ocn.ne.jp>
-Reply-To: Joyes Dadi <joyesdadi767-xnxYRYGmInRAgIPG3DZhQQ@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
-Content-Transfer-Encoding: 7bit
-To: unlisted-recipients:; (no To-header on input)
+From: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
+Date: Mon, 23 Jan 2017 16:08:57 +0000
+Message-ID: <1485187737-22414-4-git-send-email-dan@emutex.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+ <1485187737-22414-1-git-send-email-dan@emutex.com>
+Cc: Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>,
+        Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1485187737-22414-1-git-send-email-dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Good Day Dear,
+From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-My name is Ms. Joyes Dadi, I am glad you are reading this letter and I hope
-we will start our communication and I know that this message will look strange,
-surprising and probably unbelievable to you, but it is the reality. I want to
-make a donation of money to you.
+When using devicetree spi_device.modalias is set to the compatible
+string with the vendor prefix removed. For SPI devices described via
+ACPI the spi_device.modalias string is initialized by acpi_device_hid.
+When using ACPI and DT ids this string ends up something like "PRP0001".
 
-I contact you by the will of God. I am a firm German woman specialized in
-mining gold and diamonds in Africa. But now, I'm very sick of a cancer. My
-husband died in an accident two years ago with our two children and now I have
-cancer of the esophagus that damaged almost all the cells in my system/agencies
-and I'll die soon according to my doctor.
+Change acpi_register_spi_device to use the of_compatible property if
+present. This makes it easier to instantiate spi drivers through ACPI
+with DT ids.
 
-My most concern now is, we grew up in the orphanage and were married in
-orphanage. If I die this deposited fund will soon be left alone in the hand of
-the bank, and I do want to it that  way. Please, if you can be reliable and
-sincere to accept my humble proposal; I have (10.5Millions Euro) in a fixed
-deposit account; I will order the Bank to transfer the money into your account
-in your country immediately, and then you will take the fund to  your country
-and invest it to the orphanage homes Please, answer as quickly as possible.
+Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-God bless you.
-Ms. Joyes Dadi
-Email: joyesdadi767-xnxYRYGmInRAgIPG3DZhQQ@public.gmane.org
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 656dd3e..4b562e8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1722,13 +1722,21 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
+ 		return AE_OK;
+ 	}
+ 
++	/*
++	 * Populate modalias from compatible property if available,
++	 * otherwise use native ACPI information
++	 */
++	if ((!adev->data.of_compatible) ||
++	    acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias)))
++		strlcpy(spi->modalias, acpi_device_hid(adev),
++			sizeof(spi->modalias));
++
+ 	if (spi->irq < 0)
+ 		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+ 
+ 	acpi_device_set_enumerated(adev);
+ 
+ 	adev->power.flags.ignore_parent = true;
+-	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
+ 	if (spi_add_device(spi)) {
+ 		adev->power.flags.ignore_parent = false;
+ 		dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
+-- 
+2.7.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,57 +1,93 @@
 From: Dan O'Donovan <dan@emutex.com>
-Subject: [PATCH v3 2/3] i2c: acpi: Initialize info.type from of_compatible
-Date: Mon, 23 Jan 2017 16:08:56 +0000
-Message-ID: <1485187737-22414-3-git-send-email-dan@emutex.com>
+Subject: [PATCH v3 0/3] Init device ids from ACPI of_compatible
+Date: Mon, 23 Jan 2017 16:08:54 +0000
+Message-ID: <1485187737-22414-1-git-send-email-dan@emutex.com>
 References: <cover.1468409668.git.leonard.crestez@intel.com>
- <1485187737-22414-1-git-send-email-dan@emutex.com>
 Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
         Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>,
-        Crestez Dan Leonard <leonard.crestez@intel.com>
+        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>
 To: linux-acpi@vger.kernel.org,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jarkko Nikula <jarkko.nikula@intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1485187737-22414-1-git-send-email-dan@emutex.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez@intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
+(Re-submitting this patch set originally created by Leonard Crestez,
+possibly abandoned by Leonard due to a change in employment)
 
-When using devicetree i2c_board_info.type is set to the compatible
-string with the vendor prefix removed. For I2C devices described via
-ACPI the i2c_board_info.type string is set to the ACPI device name. When
-using ACPI and DT ids this string ends up something like "PRP0001:00".
+When using devicetree, stuff like i2c_client.name or spi_device.modalias
+is initialized to the first DT compatible id with the vendor prefix
+stripped. Since some drivers rely on this in order to differentiate between
+hardware variants try to replicate it when using ACPI with DT ids.
 
-If the of_compatible property is present try to use that instead. This
-makes it easier to instantiate i2c drivers through ACPI with DT ids.
+This also makes it so that the i2c_device_id parameter passed to probe is
+non-NULL when matching with ACPI and DT ids.
 
-Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
-Signed-off-by: Dan O'Donovan <dan@emutex.com>
----
- drivers/i2c/i2c-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Tested using ACPI overlays but there is no actual dependency. This series
+just extends the PRP0001 feature to be more useful for I2C/SPI.
 
-diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-index 583e950..a83dbc7 100644
---- a/drivers/i2c/i2c-core.c
-+++ b/drivers/i2c/i2c-core.c
-@@ -221,7 +221,13 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
- 
- 	acpi_dev_free_resource_list(&resource_list);
- 
--	strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
-+	/*
-+	 * Populate modalias from compatible property if available,
-+	 * otherwise use native ACPI information
-+	 */
-+	if ((!adev->data.of_compatible) ||
-+	    acpi_of_modalias(adev, info->type, sizeof(info->type)))
-+		strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
- 
- 	return 0;
- }
+The patches only touches the ACPI-specific parts of the i2c and spi core.
+
+Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
+
+Device (ACCL)
+{
+    Name (_ADR, Zero)
+    Name (_HID, "PRP0001")
+    Name (_UID, One)
+
+    Method (_CRS, 0, Serialized)
+    {
+	Name (RBUF, ResourceTemplate ()
+	{
+	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
+		    ControllerInitiated, 1000000, ClockPolarityLow,
+		    ClockPhaseFirst, "\\_SB.SPI1",)
+	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
+		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
+	    { // Pin list
+		    1
+	    }
+	})
+	Return (RBUF)
+    }
+    Name (_DSD, Package ()
+    {
+	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+	Package ()
+	{
+	    Package () {"compatible", "st,lis3dh"},
+	}
+    })
+}
+
+Link to v2: https://lkml.org/lkml/2016/7/13/392
+Changes:
+ * Use appropriate subject prefix for each subsystem (Mark Brown)
+ * Use ACPI info as before if getting OF info fails (Mark Brown)
+ * Minor cosmetic/readability improvements (Rafael J. Wysocki)
+
+Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
+Changes:
+ * Rebase on after acpi overlays got it.
+ * Change acpi_of_modalias outlen param to size_t
+ * Use {} after else
+
+Crestez Dan Leonard (3):
+  ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
+  i2c: acpi: Initialize info.type from of_compatible
+  spi: acpi: Initialize modalias from of_compatible
+
+ drivers/acpi/bus.c      | 35 +++++++++++++++++++++++++++++++++++
+ drivers/i2c/i2c-core.c  |  8 +++++++-
+ drivers/spi/spi.c       | 10 +++++++++-
+ include/acpi/acpi_bus.h |  1 +
+ 4 files changed, 52 insertions(+), 2 deletions(-)
+
 -- 
 2.7.4
+

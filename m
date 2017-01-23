@@ -1,71 +1,40 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH, 1/1] mtd: spi-nor: Added support for gd25q16
-Date: Mon, 23 Jan 2017 11:29:36 +0100
-Message-ID: <ffd3b461-fa79-8cc3-c214-67595f85b0c2@atmel.com>
-References: <1484940351-8145-1-git-send-email-kdasu.kdev@gmail.com>
- <8647a273-4ad8-264b-5dcd-a48662dae40d@gmail.com>
+From: Joyes Dadi <"YD."@biscuit.ocn.ne.jp>
+Subject: Urgent Please,,
+Date: Mon, 23 Jan 2017 23:07:54 +0900 (JST)
+Message-ID: <1307460608.25784291.1485180474314.JavaMail.root__23370.4944643707$1485181166$gmane$org@biscuit.ocn.ne.jp>
+Reply-To: Joyes Dadi <joyesdadi767-xnxYRYGmInRAgIPG3DZhQQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+To: unlisted-recipients:; (no To-header on input)
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8647a273-4ad8-264b-5dcd-a48662dae40d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Le 21/01/2017 à 12:36, Marek Vasut a écrit :
-> On 01/20/2017 08:25 PM, Kamal Dasu wrote:
->> Add GigaDevice GD25Q16 (16M-bit) to supported list.
->>
->> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> Acked-by: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->
+Good Day Dear,
 
-Applied to git://github.com/spi-nor/linux.git
+My name is Ms. Joyes Dadi, I am glad you are reading this letter and I hope
+we will start our communication and I know that this message will look strange,
+surprising and probably unbelievable to you, but it is the reality. I want to
+make a donation of money to you.
 
-Please note that in the subject line, I've replaced "Added support ..." by
-"Add support ...". Indeed, looking at submitting-patches.rst:
+I contact you by the will of God. I am a firm German woman specialized in
+mining gold and diamonds in Africa. But now, I'm very sick of a cancer. My
+husband died in an accident two years ago with our two children and now I have
+cancer of the esophagus that damaged almost all the cells in my system/agencies
+and I'll die soon according to my doctor.
 
-Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-to do frotz", as if you are giving orders to the codebase to change
-its behaviour.
+My most concern now is, we grew up in the orphanage and were married in
+orphanage. If I die this deposited fund will soon be left alone in the hand of
+the bank, and I do want to it that  way. Please, if you can be reliable and
+sincere to accept my humble proposal; I have (10.5Millions Euro) in a fixed
+deposit account; I will order the Bank to transfer the money into your account
+in your country immediately, and then you will take the fund to  your country
+and invest it to the orphanage homes Please, answer as quickly as possible.
 
-This is a very small detail so I thought there would be no need to send
-another version for that.
-
-Thanks!
-
->> ---
->>  drivers/mtd/spi-nor/spi-nor.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
->> index da7cd69..8530d51 100644
->> --- a/drivers/mtd/spi-nor/spi-nor.c
->> +++ b/drivers/mtd/spi-nor/spi-nor.c
->> @@ -833,6 +833,11 @@ static int spi_nor_is_locked(struct mtd_info *mtd, loff_t ofs, uint64_t len)
->>  
->>  	/* GigaDevice */
->>  	{
->> +		"gd25q16", INFO(0xc84015, 0, 64 * 1024,  32,
->> +			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
->> +			SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
->> +	},
->> +	{
->>  		"gd25q32", INFO(0xc84016, 0, 64 * 1024,  64,
->>  			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
->>  			SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
->>
-> 
-> 
-
-Applied to
+God bless you.
+Ms. Joyes Dadi
+Email: joyesdadi767-xnxYRYGmInRAgIPG3DZhQQ@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

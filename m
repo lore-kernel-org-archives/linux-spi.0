@@ -1,7 +1,7 @@
 From: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
-Date: Mon, 23 Jan 2017 16:08:57 +0000
-Message-ID: <1485187737-22414-4-git-send-email-dan@emutex.com>
+Subject: [PATCH v3 1/3] ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
+Date: Mon, 23 Jan 2017 16:08:55 +0000
+Message-ID: <1485187737-22414-2-git-send-email-dan@emutex.com>
 References: <cover.1468409668.git.leonard.crestez@intel.com>
  <1485187737-22414-1-git-send-email-dan@emutex.com>
 Cc: Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -20,48 +20,77 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-When using devicetree spi_device.modalias is set to the compatible
-string with the vendor prefix removed. For SPI devices described via
-ACPI the spi_device.modalias string is initialized by acpi_device_hid.
-When using ACPI and DT ids this string ends up something like "PRP0001".
-
-Change acpi_register_spi_device to use the of_compatible property if
-present. This makes it easier to instantiate spi drivers through ACPI
-with DT ids.
+When using devicetree stuff like i2c_client.name or spi_device.modalias
+is initialized to the first DT compatible id with the vendor prefix
+stripped. Since some drivers rely on this try to replicate it when using
+ACPI with DT ids.
 
 Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
+Reviewed-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/acpi/bus.c      | 35 +++++++++++++++++++++++++++++++++++
+ include/acpi/acpi_bus.h |  1 +
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 656dd3e..4b562e8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1722,13 +1722,21 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
- 		return AE_OK;
- 	}
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 95855cb..8b9657f 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -677,6 +677,41 @@ static bool acpi_of_match_device(struct acpi_device *adev,
+ 	return false;
+ }
  
-+	/*
-+	 * Populate modalias from compatible property if available,
-+	 * otherwise use native ACPI information
-+	 */
-+	if ((!adev->data.of_compatible) ||
-+	    acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias)))
-+		strlcpy(spi->modalias, acpi_device_hid(adev),
-+			sizeof(spi->modalias));
++/**
++ * acpi_of_modalias - Like of_modalias_node for ACPI with DT ids
++ * @adev:	ACPI device object to match.
++ * @outstr:	Pointer to buffer for result
++ * @outlen:	Length of outstr value
++ *
++ * This is a counterpart of of_modalias_node() for struct acpi_device
++ * objects. If there is a compatible string for @adev, copy it to the
++ * @outstr location with the vendor prefix stripped.
++ *
++ * Returns 0 on success or negative errno on failure.
++ */
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen)
++{
++	const union acpi_object *of_compatible;
++	const union acpi_object *obj;
++	const char *str, *chr;
 +
- 	if (spi->irq < 0)
- 		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++	of_compatible = adev->data.of_compatible;
++	if (!of_compatible)
++		return -ENODEV;
++
++	if (of_compatible->type == ACPI_TYPE_PACKAGE)
++		obj = of_compatible->package.elements;
++	else /* Must be ACPI_TYPE_STRING. */
++		obj = of_compatible;
++
++	str = obj->string.pointer;
++	chr = strchr(str, ',');
++	strlcpy(outstr, chr ? chr + 1 : str, outlen);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(acpi_of_modalias);
++
+ static bool __acpi_match_device_cls(const struct acpi_device_id *id,
+ 				    struct acpi_hardware_id *hwid)
+ {
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 4242c31..351b4a4 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -522,6 +522,7 @@ void acpi_bus_trim(struct acpi_device *start);
+ acpi_status acpi_bus_get_ejd(acpi_handle handle, acpi_handle * ejd);
+ int acpi_match_device_ids(struct acpi_device *device,
+ 			  const struct acpi_device_id *ids);
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen);
+ int acpi_create_dir(struct acpi_device *);
+ void acpi_remove_dir(struct acpi_device *);
  
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
--	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
- 	if (spi_add_device(spi)) {
- 		adev->power.flags.ignore_parent = false;
- 		dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
 -- 
 2.7.4
 

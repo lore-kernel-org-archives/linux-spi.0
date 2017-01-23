@@ -1,9 +1,9 @@
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 2/3] i2c: acpi: Initialize info.type from of_compatible
-Date: Mon, 23 Jan 2017 19:10:13 +0200
-Message-ID: <CAHp75VdzGLem7c6Ur9Bj1UtJ56XdEii7SgRbe5yT5hew8yQO0g@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
+Date: Mon, 23 Jan 2017 19:11:43 +0200
+Message-ID: <CAHp75Vf0NaEFnxWPt9NAa5-jWMM091Y+Tg8D=Du0uECDVoWW4Q@mail.gmail.com>
 References: <cover.1468409668.git.leonard.crestez@intel.com>
- <1485187737-22414-1-git-send-email-dan@emutex.com> <1485187737-22414-3-git-send-email-dan@emutex.com>
+ <1485187737-22414-1-git-send-email-dan@emutex.com> <1485187737-22414-4-git-send-email-dan@emutex.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
@@ -16,34 +16,36 @@ Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Crestez Dan Leonard <leonard.crestez@intel.com>
 To: "Dan O'Donovan" <dan@emutex.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1485187737-22414-3-git-send-email-dan@emutex.com>
-Sender: linux-acpi-owner@vger.kernel.org
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <1485187737-22414-4-git-send-email-dan@emutex.com>
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Mon, Jan 23, 2017 at 6:08 PM, Dan O'Donovan <dan@emutex.com> wrote:
 > From: Crestez Dan Leonard <leonard.crestez@intel.com>
 >
-> When using devicetree i2c_board_info.type is set to the compatible
-> string with the vendor prefix removed. For I2C devices described via
-> ACPI the i2c_board_info.type string is set to the ACPI device name. When
-> using ACPI and DT ids this string ends up something like "PRP0001:00".
+> When using devicetree spi_device.modalias is set to the compatible
+> string with the vendor prefix removed. For SPI devices described via
+> ACPI the spi_device.modalias string is initialized by acpi_device_hid.
+> When using ACPI and DT ids this string ends up something like "PRP0001".
 >
-> If the of_compatible property is present try to use that instead. This
-> makes it easier to instantiate i2c drivers through ACPI with DT ids.
+> Change acpi_register_spi_device to use the of_compatible property if
+> present. This makes it easier to instantiate spi drivers through ACPI
+> with DT ids.
 
-> -       strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
 > +       /*
 > +        * Populate modalias from compatible property if available,
 > +        * otherwise use native ACPI information
 > +        */
 > +       if ((!adev->data.of_compatible) ||
-> +           acpi_of_modalias(adev, info->type, sizeof(info->type)))
+> +           acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias)))
 
-Redundant parens in lvalue. After removing them is it possible to use
-one line for it?
+Same comment as in patch 2.
 
-> +               strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
+> +               strlcpy(spi->modalias, acpi_device_hid(adev),
+> +                       sizeof(spi->modalias));
+
+Could this be one line?
 
 -- 
 With Best Regards,

@@ -1,56 +1,89 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
-Date: Tue, 24 Jan 2017 15:48:10 +0000
-Message-ID: <20170124154810.ikbxaptvtg5wamzj@sirena.org.uk>
-References: <20170124132519.13271-1-djkurtz@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mcsshc5kysm7bzpr"
-Cc: Leilk Liu <leilk.liu@mediatek.com>, dtor@chromium.org,
-        groeck@chromium.org, Matthias Brugger <matthias.bgg@gmail.com>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek@lists.infradead.org>
-To: Daniel Kurtz <djkurtz@chromium.org>
+Subject: Applied "spi: pxa2xx: Prepare for edge-triggered interrupts" to the spi tree
+Date: Tue, 24 Jan 2017 18:39:51 +0000
+Message-ID: <E1cW60V-0006nH-NO@debutante>
+References: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Sascha Weisenberger <sascha.weisenberger@siemens.com>,
+        linux-spi@vger.kernel.org
+To: Jan Kiszka <jan.kiszka@siemens.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20170124132519.13271-1-djkurtz@chromium.org>
+In-Reply-To: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---mcsshc5kysm7bzpr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pxa2xx: Prepare for edge-triggered interrupts
 
-On Tue, Jan 24, 2017 at 09:25:19PM +0800, Daniel Kurtz wrote:
+has been applied to the spi tree at
 
-> The master_spi device is not a platform, rather it is created
-> in spi_alloc_device(), and its dma_ops are never set.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Which is good because it's not a physical device and doesn't do DMA.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Alternatively, perhaps we should be using master->dev.parent to dma map bufs
-> in the "no dma channel case".
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Yes, exactly.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---mcsshc5kysm7bzpr
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliHdzkACgkQJNaLcl1U
-h9DYFgf/RAP7LNat/ZiStAf6zAsauNnrsFdxwXxpji/rbrLtVViNwU+KkaS9Mwsd
-7gZzX8aY8aQXLvd7R2AucRgwXck+s7AnHB6s5o+ZP2Enxk7s1KxyjxV3f1O5dQBq
-FP74m+3QwtavhxSt7+9K6DytbnCOLRV4+w1KX3NEKvwyqZMIujhFpZor2oX/yhwU
-n1BsXSVrVpIdpBDhq0s/sWBx3YPuE+ukOKQLQmp8A61rW73lloVMpD9ePh5MrhFk
-biBI1ca1YGZMcaESZFsfywNLo9NxiFpeXQ10nrP6aqnHWa/sO4SqoQDM9/f7k2b1
-xDGgo5WvKyVmeHLTbnCwGZ9X4sxBpQ==
-=miIC
------END PGP SIGNATURE-----
+>From e51e9b93049f624c179bab2c651995bca22b5bb7 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Sat, 21 Jan 2017 10:06:38 +0100
+Subject: [PATCH] spi: pxa2xx: Prepare for edge-triggered interrupts
 
---mcsshc5kysm7bzpr--
+When using the a device with edge-triggered interrupts, such as MSIs,
+the interrupt handler has to ensure that there is a point in time during
+its execution where all interrupts sources are silent so that a new
+event can trigger a new interrupt again.
+
+This is achieved here by disabling all interrupt sources for a moment
+before processing them according to the status register. If a new
+interrupt should have arrived after we read the status, it will now
+re-trigger the interrupt, even in edge mode.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 8c65bc1823f3..06ade434c083 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -785,6 +785,9 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+ 	if (!(status & mask))
+ 		return IRQ_NONE;
+ 
++	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg & ~drv_data->int_cr1);
++	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
++
+ 	if (!drv_data->master->cur_msg) {
+ 		handle_bad_msg(drv_data);
+ 		/* Never fail */
+-- 
+2.11.0

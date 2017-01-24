@@ -1,109 +1,99 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3 0/3] Init device ids from ACPI of_compatible
-Date: Mon, 23 Jan 2017 19:13:11 +0200
-Message-ID: <CAHp75VdtbtGmcrPn2R-082b8Ohffke00oBzT0=W0vzBpaSV6iw@mail.gmail.com>
-References: <cover.1468409668.git.leonard.crestez@intel.com> <1485187737-22414-1-git-send-email-dan@emutex.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Dan O'Donovan" <dan@emutex.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1485187737-22414-1-git-send-email-dan@emutex.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
+Date: Tue, 24 Jan 2017 21:25:19 +0800
+Message-ID: <20170124132519.13271-1-djkurtz@chromium.org>
+Cc: dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM),
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list),
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org (moderated list:ARM/Mediatek SoC
+        support),
+        linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org (moderated list:ARM/Mediatek SoC
+        support)
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jan 23, 2017 at 6:08 PM, Dan O'Donovan <dan@emutex.com> wrote:
-> (Re-submitting this patch set originally created by Leonard Crestez,
-> possibly abandoned by Leonard due to a change in employment)
->
-> When using devicetree, stuff like i2c_client.name or spi_device.modalias
-> is initialized to the first DT compatible id with the vendor prefix
-> stripped. Since some drivers rely on this in order to differentiate between
-> hardware variants try to replicate it when using ACPI with DT ids.
->
-> This also makes it so that the i2c_device_id parameter passed to probe is
-> non-NULL when matching with ACPI and DT ids.
->
-> Tested using ACPI overlays but there is no actual dependency. This series
-> just extends the PRP0001 feature to be more useful for I2C/SPI.
->
-> The patches only touches the ACPI-specific parts of the i2c and spi core.
+Back before commit 1dccb598df54 ("arm64: simplify dma_get_ops"), for arm64,
+devices that do not manually set a dma_ops are automatically configured to
+use swiotlb_dma_ops, since this was hard-coded as the global "dma_ops" in
+arm64_dma_init().
 
-The series looks good. Few nitpicks in the comments of corresponding
-patches though.
-FWIW:
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Now, the global "dma_ops" has been removed, and all devices much have
+their dma_ops explicitly set by a call to arch_setup_dma_ops().  If
+arch_setup_dma_ops() is not called, the device is assigned dummy_dma_ops,
+and thus calls to map_sg for such a device will fail (return 0).
 
->
-> Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
->
-> Device (ACCL)
-> {
->     Name (_ADR, Zero)
->     Name (_HID, "PRP0001")
->     Name (_UID, One)
->
->     Method (_CRS, 0, Serialized)
->     {
->         Name (RBUF, ResourceTemplate ()
->         {
->             SPISerialBus(1, PolarityLow, FourWireMode, 16,
->                     ControllerInitiated, 1000000, ClockPolarityLow,
->                     ClockPhaseFirst, "\\_SB.SPI1",)
->             GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
->                      "\\_SB.GPO2", 0x00, ResourceConsumer, , )
->             { // Pin list
->                     1
->             }
->         })
->         Return (RBUF)
->     }
->     Name (_DSD, Package ()
->     {
->         ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->         Package ()
->         {
->             Package () {"compatible", "st,lis3dh"},
->         }
->     })
-> }
->
-> Link to v2: https://lkml.org/lkml/2016/7/13/392
-> Changes:
->  * Use appropriate subject prefix for each subsystem (Mark Brown)
->  * Use ACPI info as before if getting OF info fails (Mark Brown)
->  * Minor cosmetic/readability improvements (Rafael J. Wysocki)
->
-> Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
-> Changes:
->  * Rebase on after acpi overlays got it.
->  * Change acpi_of_modalias outlen param to size_t
->  * Use {} after else
->
-> Crestez Dan Leonard (3):
->   ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
->   i2c: acpi: Initialize info.type from of_compatible
->   spi: acpi: Initialize modalias from of_compatible
->
->  drivers/acpi/bus.c      | 35 +++++++++++++++++++++++++++++++++++
->  drivers/i2c/i2c-core.c  |  8 +++++++-
->  drivers/spi/spi.c       | 10 +++++++++-
->  include/acpi/acpi_bus.h |  1 +
->  4 files changed, 52 insertions(+), 2 deletions(-)
->
-> --
-> 2.7.4
->
+Mediatek SPI uses DMA but does not use a dma channel.  Support for this
+was added by commit c37f45b5f1cd ("spi: support spi without dma channel to
+use can_dma()"), which uses the master_spi dev to DMA map buffers.
 
+The master_spi device is not a platform, rather it is created
+in spi_alloc_device(), and its dma_ops are never set.
 
+Therefore, when the mediatek SPI driver when it does DMA (for large SPI
+transactions > 32 bytes), SPI will use spi_map_buf()->dma_map_sg() to map
+the buffer for use in DMA.  But dma_map_sg()->dma_map_sg_attrs() returns 0,
+because ops->map_sg is dummy_dma_ops->__dummy_map_sg, and hence
+spi_map_buf() returns -ENOMEM (-12).
 
+The solution in this patch is a bit of a hack.  To install dma_ops for
+its spi_master, we call of_dma_configure() during probe and pass in the
+of_node of the spi-mt65xx platform device.
+
+However, by default, of_dma_configure() will set the coherent_dma_mask
+to 0xffffffff.  In fact, using a non-zero dma_mask doesn't actually work
+and causes frequent SPI transaction errors.  To work around this, we
+also explicitly set coherent_dma_mask to 0.
+
+Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+
+I don't know the right place to configure the dma_ops for spi_master.
+It feels like this should actually be done in the spi core, as this might be
+needed by other drivers.
+
+Alternatively, perhaps we should be using master->dev.parent to dma map bufs
+in the "no dma channel case".
+
+And I really don't know why we needed to set the coherent_dma_mask to 0 to
+avoid SPI transaction errors.
+
+Any advice is welcome.
+
+ drivers/spi/spi-mt65xx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 8763eff13d3d..e768835bb67f 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -20,6 +20,7 @@
+ #include <linux/ioport.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/platform_data/spi-mt65xx.h>
+@@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		goto err_put_master;
+ 	}
+ 
++	/* Call of_dma_configure to set up spi_master's dma_ops */
++	of_dma_configure(&master->dev, master->dev.of_node);
++	/* But explicitly set the coherent_dma_mask to 0 */
++	master->dev.coherent_dma_mask = 0;
+ 	if (!pdev->dev.dma_mask)
+ 		pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.11.0.483.g087da7b7c-goog
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

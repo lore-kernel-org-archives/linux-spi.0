@@ -1,30 +1,28 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Prepare for edge-triggered interrupts" to the spi tree
-Date: Tue, 24 Jan 2017 18:39:51 +0000
-Message-ID: <E1cW60V-0006nH-NO@debutante>
-References: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Sascha Weisenberger <sascha.weisenberger@siemens.com>,
-        linux-spi@vger.kernel.org
-To: Jan Kiszka <jan.kiszka@siemens.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <7e5fb21d-35bd-6ac3-9e6f-cffed656997f@siemens.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pca2xx-pci: Allow MSI" to the spi tree
+Date: Tue, 24 Jan 2017 18:39:48 +0000
+Message-ID: <E1cW60S-0006m9-O2@debutante>
+References: <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka@siemens.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Sascha Weisenberger <sascha.weisenberger-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Prepare for edge-triggered interrupts
+   spi: pca2xx-pci: Allow MSI
 
 has been applied to the spi tree at
 
@@ -49,41 +47,49 @@ to this mail.
 Thanks,
 Mark
 
->From e51e9b93049f624c179bab2c651995bca22b5bb7 Mon Sep 17 00:00:00 2001
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Date: Sat, 21 Jan 2017 10:06:38 +0100
-Subject: [PATCH] spi: pxa2xx: Prepare for edge-triggered interrupts
+>From 64e02cb0bdfc7cef0a01e2ad4d567fdc0a74450e Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Date: Sat, 21 Jan 2017 10:06:39 +0100
+Subject: [PATCH] spi: pca2xx-pci: Allow MSI
 
-When using the a device with edge-triggered interrupts, such as MSIs,
-the interrupt handler has to ensure that there is a point in time during
-its execution where all interrupts sources are silent so that a new
-event can trigger a new interrupt again.
+Now that the core is ready for edge-triggered interrupts, we can safely
+allow the PCI versions that provide this to enable the feature and,
+thus, have less shared interrupts.
 
-This is achieved here by disabling all interrupt sources for a moment
-before processing them according to the status register. If a new
-interrupt should have arrived after we read the status, it will now
-re-trigger the interrupt, even in edge mode.
-
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-pxa2xx-pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 8c65bc1823f3..06ade434c083 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -785,6 +785,9 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 	if (!(status & mask))
- 		return IRQ_NONE;
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 868452d8e3e1..869f188b02eb 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -227,10 +227,16 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+ 	ssp->mmio_base = pcim_iomap_table(dev)[0];
+-	ssp->irq = dev->irq;
+ 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
+ 	ssp->type = c->type;
  
-+	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg & ~drv_data->int_cr1);
-+	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
++	pci_set_master(dev);
 +
- 	if (!drv_data->master->cur_msg) {
- 		handle_bad_msg(drv_data);
- 		/* Never fail */
++	ret = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		return ret;
++	ssp->irq = pci_irq_vector(dev, 0);
++
+ 	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
+ 	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL, 0,
+ 					   c->max_clk_rate);
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

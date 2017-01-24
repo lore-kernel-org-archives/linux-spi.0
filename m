@@ -1,132 +1,44 @@
-From: Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
-Date: Tue, 24 Jan 2017 15:14:14 +0000
-Message-ID: <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
-References: <20170124132519.13271-1-djkurtz@chromium.org>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 0/3] Init device ids from ACPI of_compatible
+Date: Tue, 24 Jan 2017 17:19:11 +0200
+Message-ID: <CAHp75VcvRFFUXphH9mXxKhXrDegeQpdAE+JqSHrJ5igoXrrFeQ@mail.gmail.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+ <1485187737-22414-1-git-send-email-dan@emutex.com> <6ff3138c-ac16-d310-28b7-cee0b0e5f11c@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Dan O'Donovan" <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>,
+        "linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170124132519.13271-1-djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <6ff3138c-ac16-d310-28b7-cee0b0e5f11c-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Dan,
+On Tue, Jan 24, 2017 at 5:11 PM, Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> After addressing comments from Andy
+>
+> Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Tested-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> ---------------------------------------------------------------------
+> Intel Finland Oy
+> Registered Address: PL 281, 00181 Helsinki Business Identity Code: 0357606 -
+> 4 Domiciled in Helsinki
+> This e-mail and any attachments may contain confidential material for
+> the sole use of the intended recipient(s). Any review or distribution
+> by others is strictly prohibited. If you are not the intended
+> recipient, please contact the sender and delete all copies.
 
-On 24/01/17 13:25, Daniel Kurtz wrote:
-> Back before commit 1dccb598df54 ("arm64: simplify dma_get_ops"), for arm64,
-> devices that do not manually set a dma_ops are automatically configured to
-> use swiotlb_dma_ops, since this was hard-coded as the global "dma_ops" in
-> arm64_dma_init().
-> 
-> Now, the global "dma_ops" has been removed, and all devices much have
-> their dma_ops explicitly set by a call to arch_setup_dma_ops().  If
-> arch_setup_dma_ops() is not called, the device is assigned dummy_dma_ops,
-> and thus calls to map_sg for such a device will fail (return 0).
-> 
-> Mediatek SPI uses DMA but does not use a dma channel.  Support for this
-> was added by commit c37f45b5f1cd ("spi: support spi without dma channel to
-> use can_dma()"), which uses the master_spi dev to DMA map buffers.
-> 
-> The master_spi device is not a platform, rather it is created
-> in spi_alloc_device(), and its dma_ops are never set.
+Ai-ai-ai ^^^
 
-Ugh, this isn't dwc3-usb all over again, is it?
-
-> Therefore, when the mediatek SPI driver when it does DMA (for large SPI
-> transactions > 32 bytes), SPI will use spi_map_buf()->dma_map_sg() to map
-> the buffer for use in DMA.  But dma_map_sg()->dma_map_sg_attrs() returns 0,
-> because ops->map_sg is dummy_dma_ops->__dummy_map_sg, and hence
-> spi_map_buf() returns -ENOMEM (-12).
-> 
-> The solution in this patch is a bit of a hack.  To install dma_ops for
-> its spi_master, we call of_dma_configure() during probe and pass in the
-> of_node of the spi-mt65xx platform device.
-> 
-> However, by default, of_dma_configure() will set the coherent_dma_mask
-> to 0xffffffff.  In fact, using a non-zero dma_mask doesn't actually work
-> and causes frequent SPI transaction errors.  To work around this, we
-> also explicitly set coherent_dma_mask to 0.
-
-That sound like it could do with more investigation before piling hacks
-on top of hacks. In theory, that would force dma_alloc_*() to always
-fail, whilst allowing dma_map_*() to still work - I imagine the actual
-SPI block is just a plain AXI master, meaning there oughtn't to be any
-fundamental difference between coherent and streaming DMA, but there can
-be differences in whatever functionality those API uses represent in the
-driver/SPI code (e.g. data buffers vs. control descriptors).
-
-> Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
-> 
-> I don't know the right place to configure the dma_ops for spi_master.
-> It feels like this should actually be done in the spi core, as this might be
-> needed by other drivers.
-> 
-> Alternatively, perhaps we should be using master->dev.parent to dma map bufs
-> in the "no dma channel case".
-
-AFAICS from a quick scan of the driver, that would be the correct thing
-to do - in general for a platform device, the guy described in the DT
-should be the guy being passed to DMA API calls.
-
-> And I really don't know why we needed to set the coherent_dma_mask to 0 to
-> avoid SPI transaction errors.
-
-Following what I mentioned above, "git grep dma_alloc drivers/spi" makes
-it seem like coherent DMA isn't used anywhere relevant, which is rather
-puzzling. Unless of course somewhere along the line somebody's done the
-dev->dma_mask = &dev->dma_coherent_mask hack, with the result that
-writing one mask hits both, making *all* DMA fail and big transfers fall
-back to PIO.
-
-And as a backup review comment in case any of the above musings go
-nowhere; at the very least please use dma_set_coherent_mask() rather
-than open-coding it ;)
-
-Robin.
-
-> Any advice is welcome.
-> 
->  drivers/spi/spi-mt65xx.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index 8763eff13d3d..e768835bb67f 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -20,6 +20,7 @@
->  #include <linux/ioport.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> +#include <linux/of_device.h>
->  #include <linux/of_gpio.h>
->  #include <linux/platform_device.h>
->  #include <linux/platform_data/spi-mt65xx.h>
-> @@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
->  		goto err_put_master;
->  	}
->  
-> +	/* Call of_dma_configure to set up spi_master's dma_ops */
-> +	of_dma_configure(&master->dev, master->dev.of_node);
-> +	/* But explicitly set the coherent_dma_mask to 0 */
-> +	master->dev.coherent_dma_mask = 0;
->  	if (!pdev->dev.dma_mask)
->  		pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
->  
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

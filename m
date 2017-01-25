@@ -1,94 +1,99 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pca2xx-pci: Allow MSI" to the spi tree
-Date: Tue, 24 Jan 2017 18:39:48 +0000
-Message-ID: <E1cW60S-0006m9-O2@debutante>
-References: <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka@siemens.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Sascha Weisenberger <sascha.weisenberger-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
+Date: Wed, 25 Jan 2017 18:24:12 +0800
+Message-ID: <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com>
+References: <20170124132519.13271-1-djkurtz@chromium.org> <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+        open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        Dmitry Torokhov <dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <9f5bc54a5842b383dc81fa8586d6774c03d2c452.1484592296.git.jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <b1180920-8ead-40e8-6155-8510226e719b-5wv7dgnIgG8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hi Robin,
 
-   spi: pca2xx-pci: Allow MSI
+On Tue, Jan 24, 2017 at 11:14 PM, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org> wrote:
+> Hi Dan,
 
-has been applied to the spi tree at
+[snip...]
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+>> And I really don't know why we needed to set the coherent_dma_mask to 0 to
+>> avoid SPI transaction errors.
+>
+> Following what I mentioned above, "git grep dma_alloc drivers/spi" makes
+> it seem like coherent DMA isn't used anywhere relevant, which is rather
+> puzzling. Unless of course somewhere along the line somebody's done the
+> dev->dma_mask = &dev->dma_coherent_mask hack, with the result that
+> writing one mask hits both, making *all* DMA fail and big transfers fall
+> back to PIO.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+You mean this last line?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+>> @@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
+>>               goto err_put_master;
+>>       }
+>>
+>> +     /* Call of_dma_configure to set up spi_master's dma_ops */
+>> +     of_dma_configure(&master->dev, master->dev.of_node);
+>> +     /* But explicitly set the coherent_dma_mask to 0 */
+>> +     master->dev.coherent_dma_mask = 0;
+>>       if (!pdev->dev.dma_mask)
+>>               pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
+                                  ^^^^^
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+As predicted, setting the dma_mask = 0 causes "all DMA to fail".  In
+particular, dma_capable() always returns false, so
+swiotlb_map_sg_attrs() takes the map_single() path, instead of just
+assigning:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+   sg->dma_address = dev_addr;
 
-Thanks,
-Mark
+swiotlb_map_sg_attrs(struct device *hwdev, struct scatterlist *sgl, int nelems,
+                     enum dma_data_direction dir, unsigned long attrs)
+{
+        struct scatterlist *sg;
+        int i;
 
->From 64e02cb0bdfc7cef0a01e2ad4d567fdc0a74450e Mon Sep 17 00:00:00 2001
-From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Date: Sat, 21 Jan 2017 10:06:39 +0100
-Subject: [PATCH] spi: pca2xx-pci: Allow MSI
+        BUG_ON(dir == DMA_NONE);
 
-Now that the core is ready for edge-triggered interrupts, we can safely
-allow the PCI versions that provide this to enable the feature and,
-thus, have less shared interrupts.
+        for_each_sg(sgl, sg, nelems, i) {
+                phys_addr_t paddr = sg_phys(sg);
+                dma_addr_t dev_addr = phys_to_dma(hwdev, paddr);
 
-Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx-pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+                if (swiotlb_force == SWIOTLB_FORCE ||
+                    !dma_capable(hwdev, dev_addr, sg->length)) {
+                        phys_addr_t map = map_single(hwdev, sg_phys(sg),
+                                                     sg->length, dir, attrs);
+                        ...
+                        }
+                        sg->dma_address = phys_to_dma(hwdev, map);
+                } else
+                        sg->dma_address = dev_addr;
+                sg_dma_len(sg) = sg->length;
+        }
+        return nelems;
+}
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 868452d8e3e1..869f188b02eb 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -227,10 +227,16 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	ssp = &spi_pdata.ssp;
- 	ssp->phys_base = pci_resource_start(dev, 0);
- 	ssp->mmio_base = pcim_iomap_table(dev)[0];
--	ssp->irq = dev->irq;
- 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
- 	ssp->type = c->type;
- 
-+	pci_set_master(dev);
-+
-+	ret = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0)
-+		return ret;
-+	ssp->irq = pci_irq_vector(dev, 0);
-+
- 	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
- 	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL, 0,
- 					   c->max_clk_rate);
--- 
-2.11.0
+So, I think this means that the only reason the MTK SPI driver ever
+worked before was that it was tested on an older kernel, so the
+spi_master was defaulting to swiotlb_dma_ops with a 0 dma_mask, and
+therefore it was using SWIOTLB bounce buffers (via 'map_single'), and
+not actually ever doing real DMA.
 
+I'm in a bit over my head here, any suggestions on how to fix this?
+
+-Dan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

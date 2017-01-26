@@ -1,26 +1,23 @@
 From: Dmitry Torokhov <dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
-Date: Thu, 26 Jan 2017 08:35:54 -0800
-Message-ID: <CAE_wzQ8ChZtLait3WWin1nyRY5CQCzs8VHTeAcP8y2DqSGmb7Q@mail.gmail.com>
-References: <20170124132519.13271-1-djkurtz@chromium.org>
- <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
- <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com>
- <0548db75-042b-4bef-02db-767ea9ccd7e4@arm.com>
- <CAGS+omDexcrnWL6v4bAQ3K2QSHKcwCs-WRCC+BUbGbXgVYbK9w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] spi: mediatek: Only do dma for 4-byte aligned buffers
+Date: Thu, 26 Jan 2017 08:42:20 -0800
+Message-ID: <CAE_wzQ_kC4nc28VU-msZkMAnChtkY6uWiSWFv8x4BHh3B7RJXA@mail.gmail.com>
+References: <20170126162154.124287-1-djkurtz@chromium.org>
+ <20170126162154.124287-2-djkurtz@chromium.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Dmitry Torokhov <dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
- open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Cc: drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+ Dmitry Torokhov <dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
  "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Guenter Roeck <groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
  "moderated list:ARM/Mediatek SoC support" <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>,
+ Guenter Roeck <groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>,
  "moderated list:ARM/Mediatek SoC support"
  <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <CAGS+omDexcrnWL6v4bAQ3K2QSHKcwCs-WRCC+BUbGbXgVYbK9w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20170126162154.124287-2-djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
  <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
@@ -32,101 +29,33 @@ Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7
 Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 26, 2017 at 8:29 AM, Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> Hi Robin,
->
-> On Thu, Jan 26, 2017 at 1:59 AM, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org> wrote:
->>
->> On 25/01/17 10:24, Daniel Kurtz wrote:
->> > Hi Robin,
->> >
->> > On Tue, Jan 24, 2017 at 11:14 PM, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org> wrote:
->> >> Hi Dan,
->> >
->> > [snip...]
->> >
->> >>> And I really don't know why we needed to set the coherent_dma_mask to 0 to
->> >>> avoid SPI transaction errors.
->> >>
->> >> Following what I mentioned above, "git grep dma_alloc drivers/spi" makes
->> >> it seem like coherent DMA isn't used anywhere relevant, which is rather
->> >> puzzling. Unless of course somewhere along the line somebody's done the
->> >> dev->dma_mask = &dev->dma_coherent_mask hack, with the result that
->> >> writing one mask hits both, making *all* DMA fail and big transfers fall
->> >> back to PIO.
->> >
->> > You mean this last line?
->> >
->> >>> @@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
->> >>>               goto err_put_master;
->> >>>       }
->> >>>
->> >>> +     /* Call of_dma_configure to set up spi_master's dma_ops */
->> >>> +     of_dma_configure(&master->dev, master->dev.of_node);
->> >>> +     /* But explicitly set the coherent_dma_mask to 0 */
->> >>> +     master->dev.coherent_dma_mask = 0;
->> >>>       if (!pdev->dev.dma_mask)
->> >>>               pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
->> >                                   ^^^^^
->>
->> Ha, I totally failed to spot that!
->>
->> > As predicted, setting the dma_mask = 0 causes "all DMA to fail".  In
->> > particular, dma_capable() always returns false, so
->> > swiotlb_map_sg_attrs() takes the map_single() path, instead of just
->> > assigning:
->> >
->> >    sg->dma_address = dev_addr;
->> >
->> > swiotlb_map_sg_attrs(struct device *hwdev, struct scatterlist *sgl, int nelems,
->> >                      enum dma_data_direction dir, unsigned long attrs)
->> > {
->> >         struct scatterlist *sg;
->> >         int i;
->> >
->> >         BUG_ON(dir == DMA_NONE);
->> >
->> >         for_each_sg(sgl, sg, nelems, i) {
->> >                 phys_addr_t paddr = sg_phys(sg);
->> >                 dma_addr_t dev_addr = phys_to_dma(hwdev, paddr);
->> >
->> >                 if (swiotlb_force == SWIOTLB_FORCE ||
->> >                     !dma_capable(hwdev, dev_addr, sg->length)) {
->> >                         phys_addr_t map = map_single(hwdev, sg_phys(sg),
->> >                                                      sg->length, dir, attrs);
->> >                         ...
->> >                         }
->> >                         sg->dma_address = phys_to_dma(hwdev, map);
->> >                 } else
->> >                         sg->dma_address = dev_addr;
->> >                 sg_dma_len(sg) = sg->length;
->> >         }
->> >         return nelems;
->> > }
->> >
->> > So, I think this means that the only reason the MTK SPI driver ever
->> > worked before was that it was tested on an older kernel, so the
->> > spi_master was defaulting to swiotlb_dma_ops with a 0 dma_mask, and
->> > therefore it was using SWIOTLB bounce buffers (via 'map_single'), and
->> > not actually ever doing real DMA.
->>
->> Well, it's still "real DMA" if the device is able to slurp data out of
->> the bounce buffer. That suggests there might be some mismatch between
->> the default DMA mask it's getting given and the actual hardware
->> capability (i.e. the bounce buffer happens to fall somewhere accessible,
->> but other addresses may not be) - is crazy 33-bit mode involved here?
->
-> AFAICT, the Mediatek SPI does not have a 33-bit mode.  The Mediatek
-> SPI DMA registers are only 32-bits wide, so the default 0xffffffff
-> dma_mask is correct.  For larger addresses, swiotlb properly falls
-> back to using a bounce buffer.
->
-> However, I did discover what the real problem was.  The Mediatek SPI
-> DMA does not like un-aligned addresses.
+Hi Daniel,
 
-Nobody doing DMA likes unaligned buffers. In fact, memory used for DMA
-must be cacheline aligned, or you going to have trouble. What
-component supplies unaligned buffers to SPI core for transfers?
+On Thu, Jan 26, 2017 at 8:21 AM, Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+> Mediatek SPI DMA only works when tx and rx buffer addresses are 4-byte
+> aligned.
+>
+> Unaligned DMA transactions appeared to work previously, since we the
+> spi core was incorrectly using the spi_master device for dma, which
+> had a 0 dma_mask, and therefore the swiotlb dma map operations were
+> falling back to using bounce buffers.  Since each DMA transaction would
+> use its own buffer, the mapped starting address of each transaction was
+> always aligned.  When doing real DMA, the mapped address will share the
+> alignment of the raw tx/rx buffer provided by the SPI user, which may or
+> may not be aligned.
+>
+> If a buffer is not aligned, we cannot use DMA, and must use FIFO based
+> transaction instead.
+
+>From spi.h:
+
+/**
+ * struct spi_transfer - a read/write buffer pair
+ * @tx_buf: data to be written (dma-safe memory), or NULL
+ * @rx_buf: data to be read (dma-safe memory), or NULL
+
+DMA-safe memory is ___cacheline_aligned, so it appears to be user (of
+the SPI) error providing "bad" memory for transfers.
 
 Thanks,
 Dmitry

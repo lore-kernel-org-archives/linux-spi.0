@@ -1,111 +1,90 @@
-From: Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
-Date: Wed, 25 Jan 2017 17:59:43 +0000
-Message-ID: <0548db75-042b-4bef-02db-767ea9ccd7e4@arm.com>
-References: <20170124132519.13271-1-djkurtz@chromium.org>
- <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
- <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Leilk Liu <leilk.liu@mediatek.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+From: Daniel Kurtz <djkurtz@chromium.org>
+Subject: [PATCH 1/2] spi: When no dma_chan map buffers with spi_master's parent
+Date: Fri, 27 Jan 2017 00:21:53 +0800
+Message-ID: <20170126162154.124287-1-djkurtz@chromium.org>
+Cc: dtor@chromium.org, groeck@chromium.org, drinkcat@chromium.org,
+        Robin Murphy <robin.murphy@arm.com>,
+        Daniel Kurtz <djkurtz@chromium.org>,
+        Leilk Liu <leilk.liu@mediatek.com>,
         Mark Brown <broonie@kernel.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek@lists.infradead.org>, groeck@chromium.org,
-        Dmitry Torokhov <dtor@chromium.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-arm-kernel@lists.infradead.org>
-To: Daniel Kurtz <djkurtz@chromium.org>
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+        linux-kernel@vger.kernel.org (open list),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support),
+        linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support)
+To: unlisted-recipients:; (no To-header on input)
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 25/01/17 10:24, Daniel Kurtz wrote:
-> Hi Robin,
-> 
-> On Tue, Jan 24, 2017 at 11:14 PM, Robin Murphy <robin.murphy@arm.com> wrote:
->> Hi Dan,
-> 
-> [snip...]
-> 
->>> And I really don't know why we needed to set the coherent_dma_mask to 0 to
->>> avoid SPI transaction errors.
->>
->> Following what I mentioned above, "git grep dma_alloc drivers/spi" makes
->> it seem like coherent DMA isn't used anywhere relevant, which is rather
->> puzzling. Unless of course somewhere along the line somebody's done the
->> dev->dma_mask = &dev->dma_coherent_mask hack, with the result that
->> writing one mask hits both, making *all* DMA fail and big transfers fall
->> back to PIO.
-> 
-> You mean this last line?
-> 
->>> @@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
->>>               goto err_put_master;
->>>       }
->>>
->>> +     /* Call of_dma_configure to set up spi_master's dma_ops */
->>> +     of_dma_configure(&master->dev, master->dev.of_node);
->>> +     /* But explicitly set the coherent_dma_mask to 0 */
->>> +     master->dev.coherent_dma_mask = 0;
->>>       if (!pdev->dev.dma_mask)
->>>               pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
->                                   ^^^^^
+Back before commit 1dccb598df54 ("arm64: simplify dma_get_ops"), for
+arm64, devices for which dma_ops were not explicitly set were automatically
+configured to use swiotlb_dma_ops, since this was hard-coded as the
+global "dma_ops" in arm64_dma_init().
 
-Ha, I totally failed to spot that!
+Now that global "dma_ops" has been removed, all devices much have their
+dma_ops explicitly set by a call to arch_setup_dma_ops(), otherwise the
+device is assigned dummy_dma_ops, and thus calls to map_sg for such a
+device will fail (return 0).
 
-> As predicted, setting the dma_mask = 0 causes "all DMA to fail".  In
-> particular, dma_capable() always returns false, so
-> swiotlb_map_sg_attrs() takes the map_single() path, instead of just
-> assigning:
-> 
->    sg->dma_address = dev_addr;
-> 
-> swiotlb_map_sg_attrs(struct device *hwdev, struct scatterlist *sgl, int nelems,
->                      enum dma_data_direction dir, unsigned long attrs)
-> {
->         struct scatterlist *sg;
->         int i;
-> 
->         BUG_ON(dir == DMA_NONE);
-> 
->         for_each_sg(sgl, sg, nelems, i) {
->                 phys_addr_t paddr = sg_phys(sg);
->                 dma_addr_t dev_addr = phys_to_dma(hwdev, paddr);
-> 
->                 if (swiotlb_force == SWIOTLB_FORCE ||
->                     !dma_capable(hwdev, dev_addr, sg->length)) {
->                         phys_addr_t map = map_single(hwdev, sg_phys(sg),
->                                                      sg->length, dir, attrs);
->                         ...
->                         }
->                         sg->dma_address = phys_to_dma(hwdev, map);
->                 } else
->                         sg->dma_address = dev_addr;
->                 sg_dma_len(sg) = sg->length;
->         }
->         return nelems;
-> }
-> 
-> So, I think this means that the only reason the MTK SPI driver ever
-> worked before was that it was tested on an older kernel, so the
-> spi_master was defaulting to swiotlb_dma_ops with a 0 dma_mask, and
-> therefore it was using SWIOTLB bounce buffers (via 'map_single'), and
-> not actually ever doing real DMA.
+Mediatek SPI uses DMA but does not use a dma channel.  Support for this
+was added by commit c37f45b5f1cd ("spi: support spi without dma channel
+to use can_dma()"), which uses the master_spi dev to DMA map buffers.
 
-Well, it's still "real DMA" if the device is able to slurp data out of
-the bounce buffer. That suggests there might be some mismatch between
-the default DMA mask it's getting given and the actual hardware
-capability (i.e. the bounce buffer happens to fall somewhere accessible,
-but other addresses may not be) - is crazy 33-bit mode involved here?
+The master_spi device is not a platform device, rather it is created
+in spi_alloc_device(), and therefore its dma_ops are never set.
 
-Robin.
+Therefore, when the mediatek SPI driver when it does DMA (for large SPI
+transactions > 32 bytes), SPI will use spi_map_buf()->dma_map_sg() to
+map the buffer for use in DMA.  But dma_map_sg()->dma_map_sg_attrs() returns
+0, because ops->map_sg is dummy_dma_ops->__dummy_map_sg, and hence
+spi_map_buf() returns -ENOMEM (-12).
 
-> I'm in a bit over my head here, any suggestions on how to fix this?
-> 
-> -Dan
-> 
+Fix this by using the real spi_master's parent device which should be a
+real physical device with DMA properties.
+
+Signed-off-by: Daniel Kurtz <djkurtz@chromium.org>
+Fixes: c37f45b5f1cd ("spi: support spi without dma channel to use can_dma()")
+Cc: Leilk Liu <leilk.liu@mediatek.com>
+---
+ drivers/spi/spi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 656dd3e3220c..f4d412e48e1c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -805,12 +805,12 @@ static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (master->dma_tx)
+ 		tx_dev = master->dma_tx->device->dev;
+ 	else
+-		tx_dev = &master->dev;
++		tx_dev = master->dev.parent;
+ 
+ 	if (master->dma_rx)
+ 		rx_dev = master->dma_rx->device->dev;
+ 	else
+-		rx_dev = &master->dev;
++		rx_dev = master->dev.parent;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
+@@ -852,12 +852,12 @@ static int __spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (master->dma_tx)
+ 		tx_dev = master->dma_tx->device->dev;
+ 	else
+-		tx_dev = &master->dev;
++		tx_dev = master->dev.parent;
+ 
+ 	if (master->dma_rx)
+ 		rx_dev = master->dma_rx->device->dev;
+ 	else
+-		rx_dev = &master->dev;
++		rx_dev = master->dev.parent;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
+-- 
+2.11.0.483.g087da7b7c-goog

@@ -1,124 +1,123 @@
-From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 2/2] spi: mediatek: Only do dma for 4-byte aligned buffers
-Date: Fri, 27 Jan 2017 00:21:54 +0800
-Message-ID: <20170126162154.124287-2-djkurtz@chromium.org>
-References: <20170126162154.124287-1-djkurtz@chromium.org>
-Cc: dtor-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>,
-        Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM),
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list),
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org (moderated list:ARM/Mediatek SoC
-        support),
-        linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org (moderated list:ARM/Mediatek SoC
-        support)
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170126162154.124287-1-djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Daniel Kurtz <djkurtz@chromium.org>
+Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
+Date: Fri, 27 Jan 2017 00:29:05 +0800
+Message-ID: <CAGS+omDexcrnWL6v4bAQ3K2QSHKcwCs-WRCC+BUbGbXgVYbK9w@mail.gmail.com>
+References: <20170124132519.13271-1-djkurtz@chromium.org> <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
+ <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com> <0548db75-042b-4bef-02db-767ea9ccd7e4@arm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Leilk Liu <leilk.liu@mediatek.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>, groeck@chromium.org,
+        Dmitry Torokhov <dtor@chromium.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-arm-kernel@lists.infradead.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <0548db75-042b-4bef-02db-767ea9ccd7e4@arm.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Mediatek SPI DMA only works when tx and rx buffer addresses are 4-byte
-aligned.
+Hi Robin,
 
-Unaligned DMA transactions appeared to work previously, since we the
-spi core was incorrectly using the spi_master device for dma, which
-had a 0 dma_mask, and therefore the swiotlb dma map operations were
-falling back to using bounce buffers.  Since each DMA transaction would
-use its own buffer, the mapped starting address of each transaction was
-always aligned.  When doing real DMA, the mapped address will share the
-alignment of the raw tx/rx buffer provided by the SPI user, which may or
-may not be aligned.
+On Thu, Jan 26, 2017 at 1:59 AM, Robin Murphy <robin.murphy@arm.com> wrote:
+>
+> On 25/01/17 10:24, Daniel Kurtz wrote:
+> > Hi Robin,
+> >
+> > On Tue, Jan 24, 2017 at 11:14 PM, Robin Murphy <robin.murphy@arm.com> wrote:
+> >> Hi Dan,
+> >
+> > [snip...]
+> >
+> >>> And I really don't know why we needed to set the coherent_dma_mask to 0 to
+> >>> avoid SPI transaction errors.
+> >>
+> >> Following what I mentioned above, "git grep dma_alloc drivers/spi" makes
+> >> it seem like coherent DMA isn't used anywhere relevant, which is rather
+> >> puzzling. Unless of course somewhere along the line somebody's done the
+> >> dev->dma_mask = &dev->dma_coherent_mask hack, with the result that
+> >> writing one mask hits both, making *all* DMA fail and big transfers fall
+> >> back to PIO.
+> >
+> > You mean this last line?
+> >
+> >>> @@ -575,6 +576,10 @@ static int mtk_spi_probe(struct platform_device *pdev)
+> >>>               goto err_put_master;
+> >>>       }
+> >>>
+> >>> +     /* Call of_dma_configure to set up spi_master's dma_ops */
+> >>> +     of_dma_configure(&master->dev, master->dev.of_node);
+> >>> +     /* But explicitly set the coherent_dma_mask to 0 */
+> >>> +     master->dev.coherent_dma_mask = 0;
+> >>>       if (!pdev->dev.dma_mask)
+> >>>               pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
+> >                                   ^^^^^
+>
+> Ha, I totally failed to spot that!
+>
+> > As predicted, setting the dma_mask = 0 causes "all DMA to fail".  In
+> > particular, dma_capable() always returns false, so
+> > swiotlb_map_sg_attrs() takes the map_single() path, instead of just
+> > assigning:
+> >
+> >    sg->dma_address = dev_addr;
+> >
+> > swiotlb_map_sg_attrs(struct device *hwdev, struct scatterlist *sgl, int nelems,
+> >                      enum dma_data_direction dir, unsigned long attrs)
+> > {
+> >         struct scatterlist *sg;
+> >         int i;
+> >
+> >         BUG_ON(dir == DMA_NONE);
+> >
+> >         for_each_sg(sgl, sg, nelems, i) {
+> >                 phys_addr_t paddr = sg_phys(sg);
+> >                 dma_addr_t dev_addr = phys_to_dma(hwdev, paddr);
+> >
+> >                 if (swiotlb_force == SWIOTLB_FORCE ||
+> >                     !dma_capable(hwdev, dev_addr, sg->length)) {
+> >                         phys_addr_t map = map_single(hwdev, sg_phys(sg),
+> >                                                      sg->length, dir, attrs);
+> >                         ...
+> >                         }
+> >                         sg->dma_address = phys_to_dma(hwdev, map);
+> >                 } else
+> >                         sg->dma_address = dev_addr;
+> >                 sg_dma_len(sg) = sg->length;
+> >         }
+> >         return nelems;
+> > }
+> >
+> > So, I think this means that the only reason the MTK SPI driver ever
+> > worked before was that it was tested on an older kernel, so the
+> > spi_master was defaulting to swiotlb_dma_ops with a 0 dma_mask, and
+> > therefore it was using SWIOTLB bounce buffers (via 'map_single'), and
+> > not actually ever doing real DMA.
+>
+> Well, it's still "real DMA" if the device is able to slurp data out of
+> the bounce buffer. That suggests there might be some mismatch between
+> the default DMA mask it's getting given and the actual hardware
+> capability (i.e. the bounce buffer happens to fall somewhere accessible,
+> but other addresses may not be) - is crazy 33-bit mode involved here?
 
-If a buffer is not aligned, we cannot use DMA, and must use FIFO based
-transaction instead.
+AFAICT, the Mediatek SPI does not have a 33-bit mode.  The Mediatek
+SPI DMA registers are only 32-bits wide, so the default 0xffffffff
+dma_mask is correct.  For larger addresses, swiotlb properly falls
+back to using a bounce buffer.
 
-So, this patch implements a scheme that allows using the FIFO for
-arbitrary length transactions (larger than the 32-byte FIFO size) by
-reloading the FIFO in the interrupt handler.
+However, I did discover what the real problem was.  The Mediatek SPI
+DMA does not like un-aligned addresses.
+Teaching the driver to use the FIFO even for large buffers, and
+forcing un-aligned buffers to use the FIFO makes the SPI very
+reliable:
 
-Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
----
- drivers/spi/spi-mt65xx.c | 37 +++++++++++++++++++++++++++++++++----
- 1 file changed, 33 insertions(+), 4 deletions(-)
+https://patchwork.kernel.org/patch/9539735/
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 899d7a8f0889..4b592fc25194 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -73,7 +73,7 @@
- #define MTK_SPI_IDLE 0
- #define MTK_SPI_PAUSED 1
- 
--#define MTK_SPI_MAX_FIFO_SIZE 32
-+#define MTK_SPI_MAX_FIFO_SIZE 32U
- #define MTK_SPI_PACKET_SIZE 1024
- 
- struct mtk_spi_compatible {
-@@ -333,7 +333,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
- 
- 	mdata->cur_transfer = xfer;
--	mdata->xfer_len = xfer->len;
-+	mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, xfer->len);
- 	mtk_spi_prepare_transfer(master, xfer);
- 	mtk_spi_setup_packet(master);
- 
-@@ -410,7 +410,10 @@ static bool mtk_spi_can_dma(struct spi_master *master,
- 			    struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
--	return xfer->len > MTK_SPI_MAX_FIFO_SIZE;
-+	/* Buffers for DMA transactions must be 4-byte aligned */
-+	return (xfer->len > MTK_SPI_MAX_FIFO_SIZE &&
-+		(unsigned long)xfer->tx_buf % 4 == 0 &&
-+		(unsigned long)xfer->rx_buf % 4 == 0);
- }
- 
- static int mtk_spi_setup(struct spi_device *spi)
-@@ -451,7 +454,33 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
- 					&reg_val, remainder);
- 			}
- 		}
--		spi_finalize_current_transfer(master);
-+
-+		trans->len -= mdata->xfer_len;
-+		if (!trans->len) {
-+			spi_finalize_current_transfer(master);
-+			return IRQ_HANDLED;
-+		}
-+
-+		if (trans->tx_buf)
-+			trans->tx_buf += mdata->xfer_len;
-+		if (trans->rx_buf)
-+			trans->rx_buf += mdata->xfer_len;
-+
-+		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, trans->len);
-+		mtk_spi_setup_packet(master);
-+
-+		cnt = trans->len / 4;
-+		iowrite32_rep(mdata->base + SPI_TX_DATA_REG, trans->tx_buf, cnt);
-+
-+		remainder = trans->len % 4;
-+		if (remainder > 0) {
-+			reg_val = 0;
-+			memcpy(&reg_val, trans->tx_buf + (cnt * 4), remainder);
-+			writel(reg_val, mdata->base + SPI_TX_DATA_REG);
-+		}
-+
-+		mtk_spi_enable_transfer(master);
-+
- 		return IRQ_HANDLED;
- 	}
- 
--- 
-2.11.0.483.g087da7b7c-goog
+Thanks for your help!
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-Dan

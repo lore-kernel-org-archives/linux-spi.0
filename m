@@ -1,69 +1,68 @@
-From: Dan O'Donovan <dan@emutex.com>
-Subject: [PATCH v4 3/3] spi: acpi: Initialize modalias from of_compatible
-Date: Fri, 27 Jan 2017 13:30:15 +0000
-Message-ID: <1485523815-9629-4-git-send-email-dan@emutex.com>
-References: <1485187737-22414-1-git-send-email-dan@emutex.com>
- <1485523815-9629-1-git-send-email-dan@emutex.com>
-Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-        Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>,
-        Crestez Dan Leonard <leonard.crestez@intel.com>
-To: linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: mediatek: Manually set dma_ops for spi_master device
+Date: Fri, 27 Jan 2017 13:36:21 +0000
+Message-ID: <20170127133621.bifp64y2cdljld65@sirena.org.uk>
+References: <20170124132519.13271-1-djkurtz@chromium.org>
+ <b1180920-8ead-40e8-6155-8510226e719b@arm.com>
+ <CAGS+omBV3o1hergAjU3_9ok5NTmk8Z315zo3yW9jU_jA+reZCQ@mail.gmail.com>
+ <0548db75-042b-4bef-02db-767ea9ccd7e4@arm.com>
+ <CAGS+omDexcrnWL6v4bAQ3K2QSHKcwCs-WRCC+BUbGbXgVYbK9w@mail.gmail.com>
+ <CAE_wzQ8ChZtLait3WWin1nyRY5CQCzs8VHTeAcP8y2DqSGmb7Q@mail.gmail.com>
+ <CAGS+omC-LnTx9Qt4Cv+7u-Oh=4syZy_mA-FqF8bUzN0DQmgAig@mail.gmail.com>
+ <20170126170747.r6gegu3buqeedp54@sirena.org.uk>
+ <CAE_wzQ-an3v_32E+JFzTQMKXf=J6BVGf56QZKL+YCV=mZk6-LA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="xpnaonzme5pcj7bd"
+Cc: Daniel Kurtz <djkurtz@chromium.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-arm-kernel@lists.infradead.org>
+To: Dmitry Torokhov <dtor@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1485523815-9629-1-git-send-email-dan@emutex.com>
+Content-Disposition: inline
+In-Reply-To: <CAE_wzQ-an3v_32E+JFzTQMKXf=J6BVGf56QZKL+YCV=mZk6-LA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
 
-When using devicetree spi_device.modalias is set to the compatible
-string with the vendor prefix removed. For SPI devices described via
-ACPI the spi_device.modalias string is initialized by acpi_device_hid.
-When using ACPI and DT ids this string ends up something like "PRP0001".
+--xpnaonzme5pcj7bd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Change acpi_register_spi_device to use the of_compatible property if
-present. This makes it easier to instantiate spi drivers through ACPI
-with DT ids.
+On Thu, Jan 26, 2017 at 09:26:13AM -0800, Dmitry Torokhov wrote:
 
-Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
-Signed-off-by: Dan O'Donovan <dan@emutex.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
----
- drivers/spi/spi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+> OTOH the full buffer used by cros ec *is* DMA-safe (allocated with
+> kmalloc), it is that cors ec uses it at offset while transferring data
+> piece by piece. Do we want to support this?
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 656dd3e..9a8c880 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1722,13 +1722,20 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
- 		return AE_OK;
- 	}
- 
-+	/*
-+	 * Populate modalias from compatible property if available,
-+	 * otherwise use native ACPI information
-+	 */
-+	if (acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias)))
-+		strlcpy(spi->modalias, acpi_device_hid(adev),
-+			sizeof(spi->modalias));
-+
- 	if (spi->irq < 0)
- 		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
- 
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
--	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
- 	if (spi_add_device(spi)) {
- 		adev->power.flags.ignore_parent = false;
- 		dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
--- 
-2.7.4
+I'm not sure the complexity is worth it as a general feature, I worry
+about the cost of worrying about cutting the transaction up to include a
+PIO portion.  That said that's just a gut feeling, if there were a
+sufficiently simple/nice implementation it'd definitely avoid bugs.
+
+To me part of DMA safety is the alignment restrictions.
+
+--xpnaonzme5pcj7bd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliLTNQACgkQJNaLcl1U
+h9Dr3Qf/VVrvMPsVYCD1XkQSruZBR0RrSl+0En4QGNHcUcx6wJB/z+5Gc6uui06k
+h9ByYlkXgkgECxT31BNphLJQ39ElrFgd5Cmxncx0uOIEZ+nwqmK3ai3xMde8sqwq
+fbb+bMyXWPQAlCKpnuB6B5cHHtcXcL1GJFDhxCDzhZMOrNpsO4irMrdb+bjEun1l
+Kzjmnmpe7zXpt7ZWdKLhLkAevrIjAkUZHQLwFY23VMEO6KANuzQilAHJmeGBF6mm
+0oU3gaGCIIds26oCkO4IKxLurVTIZ1bu1E1DEXl0DoYZUx/1N4HkLWZ+vPCNtZ3D
+bQ6K/wZWe4U183GQByLlZF5tp2zNSA==
+=JNGo
+-----END PGP SIGNATURE-----
+
+--xpnaonzme5pcj7bd--

@@ -1,94 +1,99 @@
-From: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
-Date: Fri, 27 Jan 2017 17:12:13 +0900
-Message-ID: <74ea1835-3ce3-612c-ece5-52c8dba0ca87@jinso.co.jp>
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="------------CA1D405169DC987F84F67A20"
-Cc: kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-        ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, inux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Dan O'Donovan <dan@emutex.com>
+Subject: [PATCH v4 1/3] ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
+Date: Fri, 27 Jan 2017 13:30:13 +0000
+Message-ID: <1485523815-9629-2-git-send-email-dan@emutex.com>
+References: <1485187737-22414-1-git-send-email-dan@emutex.com>
+ <1485523815-9629-1-git-send-email-dan@emutex.com>
+Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+        Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>,
+        Crestez Dan Leonard <leonard.crestez@intel.com>
+To: linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1485523815-9629-1-git-send-email-dan@emutex.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------CA1D405169DC987F84F67A20
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
 
-Dear Mark,
-cc:Geert
+When using devicetree stuff like i2c_client.name or spi_device.modalias
+is initialized to the first DT compatible id with the vendor prefix
+stripped. Since some drivers rely on this try to replicate it when using
+ACPI with DT ids.
 
-This patch fixes the output warning logs and data loss when performing 
-mount/umount then remount the device with jffs2 format.
-This patch is tested on Lager board at Linux uptream v4.10-rc5.
-Please consider the patch for Renesas-soc Gen2
-
-Best regards,
-Dong.
-
-------
-
-
---------------CA1D405169DC987F84F67A20
-Content-Type: text/x-patch;
- name="0001-spi-rspi-fix-the-bug-related-to-mount-remount-jffs2.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename*0="0001-spi-rspi-fix-the-bug-related-to-mount-remount-jffs2.pat";
- filename*1="ch"
-
->From 5513c6a02c911fcf9f99d5188fa46256aa1e41b4 Mon Sep 17 00:00:00 2001
-From: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Date: Fri, 27 Jan 2017 16:29:18 +0900
-Subject: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
-
-This patch fixes the output warning logs and data loss when
-performing mount/umount then remount the device with jffs2 format.
-
-This is the warning logs when performing mount/umount then remount the device with jffs2 format:
-"root@linaro-naro:~# mount -t jffs2 /dev/mtdblock2 /mnt/media
-[ 3839.928013] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
-[ 3839.956515] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead
-[ 3839.985009] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40008: 0xb0b1 instead
-[ 3840.013591] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4000c: 0x1900 instead
-[ 3840.042087] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40010: 0x0044 instead
-[ 3840.070566] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40014: 0xfb1d instead
-[ 3840.099159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40018: 0x0002 instead
-[ 3840.127604] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4001c: 0x0001 instead
-[ 3840.156043] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40020: 0x81a4 instead
-[ 3840.184472] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4002c: 0x6529 instead
-[ 3840.212900] jffs2: Further such events for this erase block will not be printed
-[ 3840.322915] jffs2: notice: (2008) read_dnode: node CRC failed on dnode at 0x3b40080: read 0xc40b5dfc, calculated 0x264be003
-root@linaro-naro[ 3840.356857] jffs2: warning: (2008) jffs2_do_read_inode_internal: no data nodes found for ino #2
-:~# [ 3840.386659] jffs2: Returned error for crccheck of ino #2. Expect badness...
-
-Signed-off-by: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+Signed-off-by: Dan O'Donovan <dan@emutex.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 ---
- drivers/spi/spi-rspi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/acpi/bus.c      | 35 +++++++++++++++++++++++++++++++++++
+ include/acpi/acpi_bus.h |  1 +
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 9daf500..2ee1301 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
- 			ret = rspi_pio_transfer(rspi, NULL, rx, n);
- 			if (ret < 0)
- 				return ret;
--			*rx++ = ret;
- 		}
- 		n -= len;
- 	}
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 95855cb..8b9657f 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -677,6 +677,41 @@ static bool acpi_of_match_device(struct acpi_device *adev,
+ 	return false;
+ }
+ 
++/**
++ * acpi_of_modalias - Like of_modalias_node for ACPI with DT ids
++ * @adev:	ACPI device object to match.
++ * @outstr:	Pointer to buffer for result
++ * @outlen:	Length of outstr value
++ *
++ * This is a counterpart of of_modalias_node() for struct acpi_device
++ * objects. If there is a compatible string for @adev, copy it to the
++ * @outstr location with the vendor prefix stripped.
++ *
++ * Returns 0 on success or negative errno on failure.
++ */
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen)
++{
++	const union acpi_object *of_compatible;
++	const union acpi_object *obj;
++	const char *str, *chr;
++
++	of_compatible = adev->data.of_compatible;
++	if (!of_compatible)
++		return -ENODEV;
++
++	if (of_compatible->type == ACPI_TYPE_PACKAGE)
++		obj = of_compatible->package.elements;
++	else /* Must be ACPI_TYPE_STRING. */
++		obj = of_compatible;
++
++	str = obj->string.pointer;
++	chr = strchr(str, ',');
++	strlcpy(outstr, chr ? chr + 1 : str, outlen);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(acpi_of_modalias);
++
+ static bool __acpi_match_device_cls(const struct acpi_device_id *id,
+ 				    struct acpi_hardware_id *hwid)
+ {
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 4242c31..351b4a4 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -522,6 +522,7 @@ void acpi_bus_trim(struct acpi_device *start);
+ acpi_status acpi_bus_get_ejd(acpi_handle handle, acpi_handle * ejd);
+ int acpi_match_device_ids(struct acpi_device *device,
+ 			  const struct acpi_device_id *ids);
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen);
+ int acpi_create_dir(struct acpi_device *);
+ void acpi_remove_dir(struct acpi_device *);
+ 
 -- 
-1.9.1
-
-
---------------CA1D405169DC987F84F67A20--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

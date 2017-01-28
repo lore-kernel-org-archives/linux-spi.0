@@ -1,110 +1,75 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
-Date: Fri, 27 Jan 2017 10:02:08 +0100
-Message-ID: <CAMuHMdWwHeVmgWc27z7L7cSE+CfPTzXPaKQDEzeJ=XGg+jPmkA@mail.gmail.com>
-References: <74ea1835-3ce3-612c-ece5-52c8dba0ca87@jinso.co.jp> <CAMuHMdVZOOLGziGm4YdHn_bRB_JOzWEeQ=Ogr8TiB47KTza7OA@mail.gmail.com>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH v4 2/3] i2c: acpi: Initialize info.type from of_compatible
+Date: Sat, 28 Jan 2017 22:38:51 +0100
+Message-ID: <20170128213851.7s5nloo2spumtevx@ninjato>
+References: <1485187737-22414-1-git-send-email-dan@emutex.com>
+ <1485523815-9629-1-git-send-email-dan@emutex.com>
+ <1485523815-9629-3-git-send-email-dan@emutex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Ryusuke Sakato <ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        =?UTF-8?B?RHVuZ++8muS6uuOCvQ==?= <nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>,
-        =?UTF-8?B?56iy5ZCJ?= <h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>,
-        Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>,
-        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVZOOLGziGm4YdHn_bRB_JOzWEeQ=Ogr8TiB47KTza7OA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="jy77lo326ymla2fk"
+Cc: linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Crestez Dan Leonard <leonard.crestez@intel.com>
+To: Dan O'Donovan <dan@emutex.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1485523815-9629-3-git-send-email-dan@emutex.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-CC correct linux-renesas-soc
 
-On Fri, Jan 27, 2017 at 10:00 AM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> Hi Dong,
->
-> On Fri, Jan 27, 2017 at 9:12 AM, DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org> wrote:
->> This patch fixes the output warning logs and data loss when performing
->> mount/umount then remount the device with jffs2 format.
->> This patch is tested on Lager board at Linux uptream v4.10-rc5.
->> Please consider the patch for Renesas-soc Gen2
->
-> Please send patches inline.
->
->> From 5513c6a02c911fcf9f99d5188fa46256aa1e41b4 Mon Sep 17 00:00:00 2001
->> From: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->> Date: Fri, 27 Jan 2017 16:29:18 +0900
->> Subject: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
->>
->> This patch fixes the output warning logs and data loss when
->> performing mount/umount then remount the device with jffs2 format.
->>
->> This is the warning logs when performing mount/umount then remount the device with jffs2 format:
->> "root@linaro-naro:~# mount -t jffs2 /dev/mtdblock2 /mnt/media
->> [ 3839.928013] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
->> [ 3839.956515] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead
->> [ 3839.985009] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40008: 0xb0b1 instead
->> [ 3840.013591] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4000c: 0x1900 instead
->> [ 3840.042087] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40010: 0x0044 instead
->> [ 3840.070566] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40014: 0xfb1d instead
->> [ 3840.099159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40018: 0x0002 instead
->> [ 3840.127604] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4001c: 0x0001 instead
->> [ 3840.156043] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40020: 0x81a4 instead
->> [ 3840.184472] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4002c: 0x6529 instead
->> [ 3840.212900] jffs2: Further such events for this erase block will not be printed
->> [ 3840.322915] jffs2: notice: (2008) read_dnode: node CRC failed on dnode at 0x3b40080: read 0xc40b5dfc, calculated 0x264be003
->> root@linaro-naro[ 3840.356857] jffs2: warning: (2008) jffs2_do_read_inode_internal: no data nodes found for ino #2
->> :~# [ 3840.386659] jffs2: Returned error for crccheck of ino #2. Expect badness...
->>
->> Signed-off-by: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->> ---
->>  drivers/spi/spi-rspi.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
->> index 9daf500..2ee1301 100644
->> --- a/drivers/spi/spi-rspi.c
->> +++ b/drivers/spi/spi-rspi.c
->> @@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
->>                       ret = rspi_pio_transfer(rspi, NULL, rx, n);
->>                       if (ret < 0)
->>                               return ret;
->> -                     *rx++ = ret;
->
-> Storing the success code (0) in the receive buffer is indeed wrong.
->
-> However, there are other bugs in that code:
->
-> rspi_pio_transfer(rspi, NULL, rx, n) transfers n bytes instead of len,
-> while n is decreased by len (which is <= n).
-> Furthermore rx is not incremented.
-> Hence if len < n, n will still be non-zero, and a new iteration of the
-> loop will be started, trying to receive more data, and overwriting the
-> just filled buffer.
->
-> The same bug is present in qspi_transfer_out().
->
->>               }
->>               n -= len;
->>       }
->> --
->> 1.9.1
+--jy77lo326ymla2fk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Gr{oetje,eeting}s,
+On Fri, Jan 27, 2017 at 01:30:14PM +0000, Dan O'Donovan wrote:
+> From: Crestez Dan Leonard <leonard.crestez@intel.com>
+>=20
+> When using devicetree i2c_board_info.type is set to the compatible
+> string with the vendor prefix removed. For I2C devices described via
+> ACPI the i2c_board_info.type string is set to the ACPI device name. When
+> using ACPI and DT ids this string ends up something like "PRP0001:00".
+>=20
+> If the of_compatible property is present try to use that instead. This
+> makes it easier to instantiate i2c drivers through ACPI with DT ids.
+>=20
+> Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+> Signed-off-by: Dan O'Donovan <dan@emutex.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-                        Geert
+I assume this shall go in as one series via ACPI tree, so:
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Acked-by: Wolfram Sang <wsa@the-dreams.de>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+--jy77lo326ymla2fk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAliND2oACgkQFA3kzBSg
+KbaOWxAApIsIFBJMYCsAfi2Odnkj/L6176Hr3NZt/hIYYqav4CrkkRewiOkJUY7I
+5F6l5YbwRDMhJvLOUODwz5+/Qzcb67KpS7uyDtcbJryXs84Bh4qLcPRcPI2698pZ
+S6EbukNPg4pzSXdLum8XAMHgRHG9h1aFo/DuV+QDLzZvKSiMSl8NhIM2itk1x5Lp
+Tw0wmjBx3xlKXQa0QlhEaMtng3KHlaRg1V1LxdhPvnynwXA8Gk8zw5rf0aa8ybPj
+BRMKWrYi8VKc80iL9PRAWWthPLJy77+F27iqaA2HlGRUCdzJURJs9Qmytg1Kz/XP
+VziDpmWxrvnzbqMnB+Y5warF4misEuoM3RAJLD0vgNqClXfTCNRCyto5P5VHLy7Q
+5OX0BsJfM4oMJa3ICe7NAzb0ZlQW+O5nVEFoC6HWMOqZcdrZhcnJ5knjYu61OkoM
+MVy7fsgG5etsK+PF99pp3lXrpsBcKYpf3q5+ChxXod3NOboU5+ZiGnkMrFoRfCWB
+aSm3M2AQBTA+1HKtWrpsFowiP9teFuaaVtH5uiSP7lXpvLom11cM6Y2mXL9ewNxq
+RWM5zp6o5ZdPvj/8MF7w9dAYZGbZQLMo2iaUUtvlXXzMGuzjasWB7MRpyZkk2gUR
+ihIyzzPXpsbr/a8o9x9u5f9t3pwXVbu8kT3dawu7omnCq9DHt4s=
+=K5NF
+-----END PGP SIGNATURE-----
+
+--jy77lo326ymla2fk--

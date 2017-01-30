@@ -1,45 +1,75 @@
-From: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi - Fix possible NULL derefrence.
-Date: Mon, 30 Jan 2017 10:25:13 +0530
-Message-ID: <1485752113-29581-1-git-send-email-shailendra.v@samsung.com>
-References: <CGME20170130045527epcas2p18ca90e9cd6b0a6153bf941eec4f40ddf@epcas2p1.samsung.com>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, p.shailesh-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-        ashish.kalra-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-        Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Shailendra Verma <shailendra.capricorn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
+Date: Mon, 30 Jan 2017 10:41:33 +0100
+Message-ID: <CAJZ5v0hAoOQN+d4iBSgSkkYHBOy-Pt9HLrKG4SjcQUB6Ya1bgA@mail.gmail.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+ <1485187737-22414-1-git-send-email-dan@emutex.com> <1485187737-22414-4-git-send-email-dan@emutex.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Crestez Dan Leonard <leonard.crestez@intel.com>
+To: "Dan O'Donovan" <dan@emutex.com>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1485187737-22414-4-git-send-email-dan@emutex.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-of_match_device could return NULL, and so can cause a NULL
-pointer dereference later.
+On Mon, Jan 23, 2017 at 5:08 PM, Dan O'Donovan <dan@emutex.com> wrote:
+> From: Crestez Dan Leonard <leonard.crestez@intel.com>
+>
+> When using devicetree spi_device.modalias is set to the compatible
+> string with the vendor prefix removed. For SPI devices described via
+> ACPI the spi_device.modalias string is initialized by acpi_device_hid.
+> When using ACPI and DT ids this string ends up something like "PRP0001".
+>
+> Change acpi_register_spi_device to use the of_compatible property if
+> present. This makes it easier to instantiate spi drivers through ACPI
+> with DT ids.
+>
+> Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+> Signed-off-by: Dan O'Donovan <dan@emutex.com>
+> ---
+>  drivers/spi/spi.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 656dd3e..4b562e8 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1722,13 +1722,21 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
+>                 return AE_OK;
+>         }
+>
+> +       /*
+> +        * Populate modalias from compatible property if available,
+> +        * otherwise use native ACPI information
+> +        */
+> +       if ((!adev->data.of_compatible) ||
+> +           acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias)))
+> +               strlcpy(spi->modalias, acpi_device_hid(adev),
+> +                       sizeof(spi->modalias));
+> +
+>         if (spi->irq < 0)
+>                 spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+>
+>         acpi_device_set_enumerated(adev);
+>
+>         adev->power.flags.ignore_parent = true;
+> -       strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
+>         if (spi_add_device(spi)) {
+>                 adev->power.flags.ignore_parent = false;
+>                 dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
+> --
 
-Signed-off-by: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-mxs.c |    5 +++++
- 1 file changed, 5 insertions(+)
+Mark, any objections here?
 
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 5b0e9a3..c3aea7e 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -470,6 +470,11 @@ static int mxs_spi_probe(struct platform_device *pdev)
- 	 */
- 	const int clk_freq_default = 160000000;
- 
-+	if (!of_id) {
-+		dev_err(&pdev->dev, "Error: No device match found\n");
-+		return -ENODEV;
-+	}
-+
- 	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	irq_err = platform_get_irq(pdev, 0);
- 	if (irq_err < 0)
--- 
-1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Rafael

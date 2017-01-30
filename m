@@ -1,59 +1,45 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 1/2] spi: When no dma_chan map buffers with spi_master's parent
-Date: Sun, 29 Jan 2017 00:17:32 +0200
-Message-ID: <CAHp75Vfzz7U3=R4dFSgr-eXuOfH1_eLDKcPSWmWdUcTS_tggdw@mail.gmail.com>
-References: <20170126162154.124287-1-djkurtz@chromium.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: dtor@chromium.org, groeck@chromium.org,
-        Nicolas Boichat <drinkcat@chromium.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Leilk Liu <leilk.liu@mediatek.com>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek@lists.infradead.org>
-To: Daniel Kurtz <djkurtz@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170126162154.124287-1-djkurtz@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi - Fix possible NULL derefrence.
+Date: Mon, 30 Jan 2017 10:25:13 +0530
+Message-ID: <1485752113-29581-1-git-send-email-shailendra.v@samsung.com>
+References: <CGME20170130045527epcas2p18ca90e9cd6b0a6153bf941eec4f40ddf@epcas2p1.samsung.com>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, p.shailesh-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+        ashish.kalra-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+        Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Shailendra Verma <shailendra.capricorn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jan 26, 2017 at 6:21 PM, Daniel Kurtz <djkurtz@chromium.org> wrote:
-> Back before commit 1dccb598df54 ("arm64: simplify dma_get_ops"), for
-> arm64, devices for which dma_ops were not explicitly set were automatically
-> configured to use swiotlb_dma_ops, since this was hard-coded as the
-> global "dma_ops" in arm64_dma_init().
->
-> Now that global "dma_ops" has been removed, all devices much have their
-> dma_ops explicitly set by a call to arch_setup_dma_ops(), otherwise the
-> device is assigned dummy_dma_ops, and thus calls to map_sg for such a
-> device will fail (return 0).
->
-> Mediatek SPI uses DMA but does not use a dma channel.  Support for this
-> was added by commit c37f45b5f1cd ("spi: support spi without dma channel
-> to use can_dma()"), which uses the master_spi dev to DMA map buffers.
->
-> The master_spi device is not a platform device, rather it is created
-> in spi_alloc_device(), and therefore its dma_ops are never set.
->
-> Therefore, when the mediatek SPI driver when it does DMA (for large SPI
-> transactions > 32 bytes), SPI will use spi_map_buf()->dma_map_sg() to
-> map the buffer for use in DMA.  But dma_map_sg()->dma_map_sg_attrs() returns
-> 0, because ops->map_sg is dummy_dma_ops->__dummy_map_sg, and hence
-> spi_map_buf() returns -ENOMEM (-12).
->
-> Fix this by using the real spi_master's parent device which should be a
-> real physical device with DMA properties.
+of_match_device could return NULL, and so can cause a NULL
+pointer dereference later.
 
-Wouldn't be better to copy necessary stuff from parent device to its
-child? Like DMA mask propagation (I dunno if there are such in SPI,
-but at least many other drivers are doing that).
+Signed-off-by: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi-mxs.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 5b0e9a3..c3aea7e 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -470,6 +470,11 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	 */
+ 	const int clk_freq_default = 160000000;
+ 
++	if (!of_id) {
++		dev_err(&pdev->dev, "Error: No device match found\n");
++		return -ENODEV;
++	}
++
+ 	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	irq_err = platform_get_irq(pdev, 0);
+ 	if (irq_err < 0)
 -- 
-With Best Regards,
-Andy Shevchenko
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

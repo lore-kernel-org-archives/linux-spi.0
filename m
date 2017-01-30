@@ -1,62 +1,74 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi - Fix possible NULL derefrence.
-Date: Mon, 30 Jan 2017 11:00:28 +0100
-Message-ID: <CAMuHMdXqvLAH6NJduThQ54Ygi91A53huUHgG0jtOtrjxyagthw@mail.gmail.com>
-References: <CGME20170130045527epcas2p18ca90e9cd6b0a6153bf941eec4f40ddf@epcas2p1.samsung.com>
- <1485752113-29581-1-git-send-email-shailendra.v@samsung.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH 1/2] spi: When no dma_chan map buffers with spi_master's
+ parent
+Date: Mon, 30 Jan 2017 11:44:30 +0000
+Message-ID: <81ab617f-95fb-17d1-88d2-5cf5f74bab03@arm.com>
+References: <20170126162154.124287-1-djkurtz@chromium.org>
+ <CAHp75Vfzz7U3=R4dFSgr-eXuOfH1_eLDKcPSWmWdUcTS_tggdw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        p.shailesh-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, ashish.kalra-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-        Shailendra Verma <shailendra.capricorn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1485752113-29581-1-git-send-email-shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Nicolas Boichat <drinkcat@chromium.org>, Leilk Liu <leilk.liu@mediatek.com>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>,
+ groeck@chromium.org, dtor@chromium.org,
+ "moderated list:ARM/Mediatek SoC support"
+ <linux-arm-kernel@lists.infradead.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Daniel Kurtz <djkurtz@chromium.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CAHp75Vfzz7U3=R4dFSgr-eXuOfH1_eLDKcPSWmWdUcTS_tggdw@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Shailendra,
+On 28/01/17 22:17, Andy Shevchenko wrote:
+> On Thu, Jan 26, 2017 at 6:21 PM, Daniel Kurtz <djkurtz@chromium.org> wrote:
+>> Back before commit 1dccb598df54 ("arm64: simplify dma_get_ops"), for
+>> arm64, devices for which dma_ops were not explicitly set were automatically
+>> configured to use swiotlb_dma_ops, since this was hard-coded as the
+>> global "dma_ops" in arm64_dma_init().
+>>
+>> Now that global "dma_ops" has been removed, all devices much have their
+>> dma_ops explicitly set by a call to arch_setup_dma_ops(), otherwise the
+>> device is assigned dummy_dma_ops, and thus calls to map_sg for such a
+>> device will fail (return 0).
+>>
+>> Mediatek SPI uses DMA but does not use a dma channel.  Support for this
+>> was added by commit c37f45b5f1cd ("spi: support spi without dma channel
+>> to use can_dma()"), which uses the master_spi dev to DMA map buffers.
+>>
+>> The master_spi device is not a platform device, rather it is created
+>> in spi_alloc_device(), and therefore its dma_ops are never set.
+>>
+>> Therefore, when the mediatek SPI driver when it does DMA (for large SPI
+>> transactions > 32 bytes), SPI will use spi_map_buf()->dma_map_sg() to
+>> map the buffer for use in DMA.  But dma_map_sg()->dma_map_sg_attrs() returns
+>> 0, because ops->map_sg is dummy_dma_ops->__dummy_map_sg, and hence
+>> spi_map_buf() returns -ENOMEM (-12).
+>>
+>> Fix this by using the real spi_master's parent device which should be a
+>> real physical device with DMA properties.
+> 
+> Wouldn't be better to copy necessary stuff from parent device to its
+> child? Like DMA mask propagation (I dunno if there are such in SPI,
+> but at least many other drivers are doing that).
 
-On Mon, Jan 30, 2017 at 5:55 AM, Shailendra Verma
-<shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> of_match_device could return NULL, and so can cause a NULL
-> pointer dereference later.
+Absolutely not. The "necessary stuff" includes arch-specific things
+which would require filling the SPI code with arch-specific #ifdefs, and
+may go as far as private data structures held by other drivers (e.g.
+IOMMUs) which the SPI code cannot even touch, let alone know what to do
+with. The "parent device" here *is* the real DMA master device (as
+described by firmware and configured by the arch code accordingly), so
+using any other device for DMA is just plain wrong.
 
-Can it? The driver uses DT exclusively.
-There is no legacy platform code creating "mxs-spi" platform devices.
-
-> Signed-off-by: Shailendra Verma <shailendra.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-mxs.c |    5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-> index 5b0e9a3..c3aea7e 100644
-> --- a/drivers/spi/spi-mxs.c
-> +++ b/drivers/spi/spi-mxs.c
-> @@ -470,6 +470,11 @@ static int mxs_spi_probe(struct platform_device *pdev)
->          */
->         const int clk_freq_default = 160000000;
->
-> +       if (!of_id) {
-> +               dev_err(&pdev->dev, "Error: No device match found\n");
-> +               return -ENODEV;
-> +       }
-> +
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Robin.

@@ -1,209 +1,159 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH  1/1] spi: bcm-qspi: Added mspi read fallback in bcm_qspi_flash_read()
-Date: Mon, 30 Jan 2017 16:11:16 -0500
-Message-ID: <1485810676-19742-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: mediatek: Only do dma for 4-byte aligned buffers" to
+ the spi tree
+Date: Tue, 31 Jan 2017 20:02:52 +0000
+Message-ID: <E1cYedg-0005l9-8F@debutante>
+References: <20170126162154.124287-2-djkurtz@chromium.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: , drinkcat@chromium.org, Leilk Liu <leilk.liu@mediatek.com>,
+ Robin Murphy <robin.murphy@arm.com>, open list <linux-kernel@vger.kernel.org>,
+ linux-spi@vger.kernel.org, Matthias Brugger <matthias.bgg@gmail.com>,
+ Mark Brown <broonie@kernel.org>, "moderated list:ARM/Mediatek SoC,
+ support" <linux-mediatek@lists.infradead.org>, groeck@chromium.org,
+ dtor@chromium.org, "moderated list:ARM/Mediatek SoC,
+ support" <linux-arm-kernel@lists.infradead.org>
+To: Daniel Kurtz <djkurtz@chromium.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170126162154.124287-2-djkurtz@chromium.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Added mspi read fallback under certain circumstances like unaligned
-buffer, address on short reads. Also takes care of version 3.0 spi
-controller where flash address crosses 4MB boundary on transfers the
-driver resorts to mspi reads.
+The patch
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+   spi: mediatek: Only do dma for 4-byte aligned buffers
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 1ce24864bff40e11500a699789412115fdf244bf Mon Sep 17 00:00:00 2001
+From: Daniel Kurtz <djkurtz@chromium.org>
+Date: Fri, 27 Jan 2017 00:21:54 +0800
+Subject: [PATCH] spi: mediatek: Only do dma for 4-byte aligned buffers
+
+Mediatek SPI DMA only works when tx and rx buffer addresses are 4-byte
+aligned.
+
+Unaligned DMA transactions appeared to work previously, since we the
+spi core was incorrectly using the spi_master device for dma, which
+had a 0 dma_mask, and therefore the swiotlb dma map operations were
+falling back to using bounce buffers.  Since each DMA transaction would
+use its own buffer, the mapped starting address of each transaction was
+always aligned.  When doing real DMA, the mapped address will share the
+alignment of the raw tx/rx buffer provided by the SPI user, which may or
+may not be aligned.
+
+If a buffer is not aligned, we cannot use DMA, and must use FIFO based
+transaction instead.
+
+So, this patch implements a scheme that allows using the FIFO for
+arbitrary length transactions (larger than the 32-byte FIFO size) by
+reloading the FIFO in the interrupt handler.
+
+Signed-off-by: Daniel Kurtz <djkurtz@chromium.org>
+Cc: Leilk Liu <leilk.liu@mediatek.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 116 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 85 insertions(+), 31 deletions(-)
+ drivers/spi/spi-mt65xx.c | 37 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 14f9dea..b50b6df 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -192,9 +192,11 @@ struct bcm_qspi_dev_id {
- 	void *dev;
- };
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 899d7a8f0889..278867a31950 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -73,7 +73,7 @@
+ #define MTK_SPI_IDLE 0
+ #define MTK_SPI_PAUSED 1
  
-+
- struct qspi_trans {
- 	struct spi_transfer *trans;
- 	int byte;
-+	bool mspi_last_trans;
- };
+-#define MTK_SPI_MAX_FIFO_SIZE 32
++#define MTK_SPI_MAX_FIFO_SIZE 32U
+ #define MTK_SPI_PACKET_SIZE 1024
  
- struct bcm_qspi {
-@@ -616,6 +618,16 @@ static int bcm_qspi_setup(struct spi_device *spi)
- 	return 0;
- }
+ struct mtk_spi_compatible {
+@@ -333,7 +333,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
-+static bool bcm_qspi_mspi_transfer_is_last(struct bcm_qspi *qspi,
-+					   struct qspi_trans *qt)
-+{
-+	if (qt->mspi_last_trans &&
-+	    spi_transfer_is_last(qspi->master, qt->trans))
-+		return true;
-+	else
-+		return false;
-+}
-+
- static int update_qspi_trans_byte_count(struct bcm_qspi *qspi,
- 					struct qspi_trans *qt, int flags)
+ 	mdata->cur_transfer = xfer;
+-	mdata->xfer_len = xfer->len;
++	mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, xfer->len);
+ 	mtk_spi_prepare_transfer(master, xfer);
+ 	mtk_spi_setup_packet(master);
+ 
+@@ -410,7 +410,10 @@ static bool mtk_spi_can_dma(struct spi_master *master,
+ 			    struct spi_device *spi,
+ 			    struct spi_transfer *xfer)
  {
-@@ -629,7 +641,6 @@ static int update_qspi_trans_byte_count(struct bcm_qspi *qspi,
- 
- 	if (qt->byte >= qt->trans->len) {
- 		/* we're at the end of the spi_transfer */
--
- 		/* in TX mode, need to pause for a delay or CS change */
- 		if (qt->trans->delay_usecs &&
- 		    (flags & TRANS_STATUS_BREAK_DELAY))
-@@ -641,7 +652,7 @@ static int update_qspi_trans_byte_count(struct bcm_qspi *qspi,
- 			goto done;
- 
- 		dev_dbg(&qspi->pdev->dev, "advance msg exit\n");
--		if (spi_transfer_is_last(qspi->master, qt->trans))
-+		if (bcm_qspi_mspi_transfer_is_last(qspi, qt))
- 			ret = TRANS_STATUS_BREAK_EOM;
- 		else
- 			ret = TRANS_STATUS_BREAK_NO_BYTES;
-@@ -885,6 +896,76 @@ static int bcm_qspi_bspi_flash_read(struct spi_device *spi,
- 	return ret;
+-	return xfer->len > MTK_SPI_MAX_FIFO_SIZE;
++	/* Buffers for DMA transactions must be 4-byte aligned */
++	return (xfer->len > MTK_SPI_MAX_FIFO_SIZE &&
++		(unsigned long)xfer->tx_buf % 4 == 0 &&
++		(unsigned long)xfer->rx_buf % 4 == 0);
  }
  
-+static int bcm_qspi_transfer_one(struct spi_master *master,
-+				 struct spi_device *spi,
-+				 struct spi_transfer *trans)
-+{
-+	struct bcm_qspi *qspi = spi_master_get_devdata(master);
-+	int slots;
-+	unsigned long timeo = msecs_to_jiffies(100);
+ static int mtk_spi_setup(struct spi_device *spi)
+@@ -451,7 +454,33 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ 					&reg_val, remainder);
+ 			}
+ 		}
+-		spi_finalize_current_transfer(master);
 +
-+	bcm_qspi_chip_select(qspi, spi->chip_select);
-+	qspi->trans_pos.trans = trans;
-+	qspi->trans_pos.byte = 0;
-+
-+	while (qspi->trans_pos.byte < trans->len) {
-+		reinit_completion(&qspi->mspi_done);
-+
-+		slots = write_to_hw(qspi, spi);
-+		if (!wait_for_completion_timeout(&qspi->mspi_done, timeo)) {
-+			dev_err(&qspi->pdev->dev, "timeout waiting for MSPI\n");
-+			return -ETIMEDOUT;
++		trans->len -= mdata->xfer_len;
++		if (!trans->len) {
++			spi_finalize_current_transfer(master);
++			return IRQ_HANDLED;
 +		}
 +
-+		read_from_hw(qspi, slots);
-+	}
++		if (trans->tx_buf)
++			trans->tx_buf += mdata->xfer_len;
++		if (trans->rx_buf)
++			trans->rx_buf += mdata->xfer_len;
 +
-+	return 0;
-+}
++		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, trans->len);
++		mtk_spi_setup_packet(master);
 +
-+static int bcm_qspi_mspi_flash_read(struct spi_device *spi,
-+				    struct spi_flash_read_message *msg)
-+{
-+	struct bcm_qspi *qspi = spi_master_get_devdata(spi->master);
-+	struct spi_transfer t[2];
-+	u8 cmd[6];
-+	int ret;
++		cnt = trans->len / 4;
++		iowrite32_rep(mdata->base + SPI_TX_DATA_REG, trans->tx_buf, cnt);
 +
-+	memset(cmd, 0, sizeof(cmd));
-+	memset(t, 0, sizeof(t));
++		remainder = trans->len % 4;
++		if (remainder > 0) {
++			reg_val = 0;
++			memcpy(&reg_val, trans->tx_buf + (cnt * 4), remainder);
++			writel(reg_val, mdata->base + SPI_TX_DATA_REG);
++		}
 +
-+	/* tx */
-+	/* opcode is in cmd[0] */
-+	cmd[0] = msg->read_opcode;
-+	cmd[1] = msg->from >> (msg->addr_width * 8 -  8);
-+	cmd[2] = msg->from >> (msg->addr_width * 8 - 16);
-+	cmd[3] = msg->from >> (msg->addr_width * 8 - 24);
-+	cmd[4] = msg->from >> (msg->addr_width * 8 - 32);
-+	t[0].tx_buf = cmd;
-+	t[0].len = msg->addr_width + msg->dummy_bytes + 1;
-+	t[0].bits_per_word = spi->bits_per_word;
-+	t[0].tx_nbits = msg->opcode_nbits;
-+	/* lets mspi know that this is not last transfer */
-+	qspi->trans_pos.mspi_last_trans = false;
-+	ret = bcm_qspi_transfer_one(spi->master, spi, &t[0]);
++		mtk_spi_enable_transfer(master);
 +
-+	/* rx */
-+	qspi->trans_pos.mspi_last_trans = true;
-+	if (!ret) {
-+		/* rx */
-+		t[1].rx_buf = msg->buf;
-+		t[1].len = msg->len;
-+		t[1].rx_nbits =  msg->data_nbits;
-+		t[1].bits_per_word = spi->bits_per_word;
-+		ret = bcm_qspi_transfer_one(spi->master, spi, &t[1]);
-+	}
-+
-+	if (!ret)
-+		msg->retlen = msg->len;
-+
-+	return ret;
-+}
-+
- static int bcm_qspi_flash_read(struct spi_device *spi,
- 			       struct spi_flash_read_message *msg)
- {
-@@ -918,8 +999,7 @@ static int bcm_qspi_flash_read(struct spi_device *spi,
- 		mspi_read = true;
+ 		return IRQ_HANDLED;
+ 	}
  
- 	if (mspi_read)
--		/* this will make the m25p80 read to fallback to mspi read */
--		return -EAGAIN;
-+		return bcm_qspi_mspi_flash_read(spi, msg);
- 
- 	io_width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
- 	addrlen = msg->addr_width;
-@@ -931,33 +1011,6 @@ static int bcm_qspi_flash_read(struct spi_device *spi,
- 	return ret;
- }
- 
--static int bcm_qspi_transfer_one(struct spi_master *master,
--				 struct spi_device *spi,
--				 struct spi_transfer *trans)
--{
--	struct bcm_qspi *qspi = spi_master_get_devdata(master);
--	int slots;
--	unsigned long timeo = msecs_to_jiffies(100);
--
--	bcm_qspi_chip_select(qspi, spi->chip_select);
--	qspi->trans_pos.trans = trans;
--	qspi->trans_pos.byte = 0;
--
--	while (qspi->trans_pos.byte < trans->len) {
--		reinit_completion(&qspi->mspi_done);
--
--		slots = write_to_hw(qspi, spi);
--		if (!wait_for_completion_timeout(&qspi->mspi_done, timeo)) {
--			dev_err(&qspi->pdev->dev, "timeout waiting for MSPI\n");
--			return -ETIMEDOUT;
--		}
--
--		read_from_hw(qspi, slots);
--	}
--
--	return 0;
--}
--
- static void bcm_qspi_cleanup(struct spi_device *spi)
- {
- 	struct bcm_qspi_parms *xp = spi_get_ctldata(spi);
-@@ -1187,6 +1240,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 	qspi->pdev = pdev;
- 	qspi->trans_pos.trans = NULL;
- 	qspi->trans_pos.byte = 0;
-+	qspi->trans_pos.mspi_last_trans = true;
- 	qspi->master = master;
- 
- 	master->bus_num = -1;
 -- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.11.0

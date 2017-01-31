@@ -1,60 +1,89 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 3/3] spi: acpi: Initialize modalias from of_compatible
-Date: Tue, 31 Jan 2017 20:17:36 +0000
-Message-ID: <20170131201736.cmiyq2obzrhgdsck@sirena.org.uk>
-References: <cover.1468409668.git.leonard.crestez@intel.com>
- <1485187737-22414-1-git-send-email-dan@emutex.com>
- <1485187737-22414-4-git-send-email-dan@emutex.com>
- <CAJZ5v0hAoOQN+d4iBSgSkkYHBOy-Pt9HLrKG4SjcQUB6Ya1bgA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uqhxt2ivtecyaxbk"
-Cc: Dan O'Donovan <dan@emutex.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Crestez Dan Leonard <leonard.crestez@intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hAoOQN+d4iBSgSkkYHBOy-Pt9HLrKG4SjcQUB6Ya1bgA@mail.gmail.com>
-Sender: linux-acpi-owner@vger.kernel.org
+Subject: Applied "spi: fix device-node leaks" to the spi tree
+Date: Tue, 31 Jan 2017 21:20:27 +0000
+Message-ID: <E1cYfql-00024F-Aj@debutante>
+References: <20170130164705.21727-1-johan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Johan Hovold <johan@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170130164705.21727-1-johan@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---uqhxt2ivtecyaxbk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: fix device-node leaks
 
-On Mon, Jan 30, 2017 at 10:41:33AM +0100, Rafael J. Wysocki wrote:
-> On Mon, Jan 23, 2017 at 5:08 PM, Dan O'Donovan <dan@emutex.com> wrote:
+has been applied to the spi tree at
 
-> Mark, any objections here?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-I've not looked yet, please allow a reasonable time for review (there
-still seemed to be ongoing discussion at the ACPI level).  I continue to
-be concerned about the amount of duplication and special casing that the
-various firmware paths seem to entail.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---uqhxt2ivtecyaxbk
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliQ8N8ACgkQJNaLcl1U
-h9Ae4gf+ODDmrMgXV0WdYVGzvVZy6F5RxZfi+DMinN1EPlWkN15P8SdpTtTK0ybg
-QNOhnn5VEF716LK+AIGnhiAehYCd9MX9nd5NxqbrI2eZpYYHBK6P1eUxtyzJp1Et
-QmcgCz/T63d0I9s2gSPIKnsQxwjRA2db6uiU8xy2DLAMZUcEJZgtOZxPoDvViZ/B
-/1/uNP/lfaOUEWO759N36dNYSROzX0JW3k66aB/xzGzGSU7Pd/tiuF+pnrjjoalV
-n+jYNzdzrfiTH6ZYDqzt4SSG1xu6f3cIYSx8r3ZYYmZBhMrRmVHP5x9c4Ya7WXHQ
-4YfuKff++dPCUBiVvcCGaMPFEzL2bA==
-=mvD9
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---uqhxt2ivtecyaxbk--
+Thanks,
+Mark
+
+>From 8324147f38019865b29d03baf28412d2ec0bd828 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Mon, 30 Jan 2017 17:47:05 +0100
+Subject: [PATCH] spi: fix device-node leaks
+
+Make sure to release the device-node reference taken in
+of_register_spi_device() on errors and when deregistering the device.
+
+Fixes: 284b01897340 ("spi: Add OF binding support for SPI busses")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8c05f27bf642..59cb26470d70 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -621,8 +621,10 @@ void spi_unregister_device(struct spi_device *spi)
+ 	if (!spi)
+ 		return;
+ 
+-	if (spi->dev.of_node)
++	if (spi->dev.of_node) {
+ 		of_node_clear_flag(spi->dev.of_node, OF_POPULATED);
++		of_node_put(spi->dev.of_node);
++	}
+ 	if (ACPI_COMPANION(&spi->dev))
+ 		acpi_device_clear_enumerated(ACPI_COMPANION(&spi->dev));
+ 	device_unregister(&spi->dev);
+@@ -1603,11 +1605,13 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	if (rc) {
+ 		dev_err(&master->dev, "spi_device register error %s\n",
+ 			nc->full_name);
+-		goto err_out;
++		goto err_of_node_put;
+ 	}
+ 
+ 	return spi;
+ 
++err_of_node_put:
++	of_node_put(nc);
+ err_out:
+ 	spi_dev_put(spi);
+ 	return ERR_PTR(rc);
+-- 
+2.11.0

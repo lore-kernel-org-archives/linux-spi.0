@@ -1,43 +1,45 @@
-From: "Giuseppe Lippolis" <giu.lippolis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: adding si3210 driver
-Date: Fri, 3 Feb 2017 08:08:11 +0100
-Message-ID: <001101d27dec$47f2bd10$d7d83730$@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v1 0/5] Added support for spi-nor device pm in m25p80
+Date: Fri,  3 Feb 2017 18:31:11 -0500
+Message-ID: <1486164676-12912-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: de
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi All,
-I have a router running linux (LEDE distribution) with an embedded 3G modem
-and a POTS telephone interface.
-The telephone interface uses the si3210 device interfaced with the uP
-through an spi IF.
-The si3210 ProSLIC integrates a subscriber line interface circuit (SLIC) and
-is commonly found in several router with telephone functions.
+The changes below implements power management support in m25p80.
+m25p80 pm resume() calls newly a implemented spi_nor_pm_rescan()
+function that sets up the spi-nor flash to its probed state. 
+This is needed on platfroms that turn off power to the spi-nor
+part on suspend, in such cases some parts might need to: 
+1. remove flash protection (if applicable)
+2. set the address width and/or
+3. set the read mode to quad mode depending on the probed configuration
 
-Because I was unable to find a driver for the si3210, I'm now using the
-spidev interface to control the device from the userspace. 
+The changes use existing spi-nor framework by refactoring code a bit so
+that it can be reused in scan and rescan functions. Changes also ensures
+that for platforms that do not need pm support shall not be affected. 
 
-Now I'm thinking to add a spi protocol char driver for that device.
+Kamal Dasu (5):
+  mtd: spi-nor: Added way to rescan spi-nor device
+  mtd: m25p80: Added pm ops support
+  spi: Added way to check for pm support for flash devices
+  mtd: m25p80: Check if the spi flash device has pm support
+  spi: bcm-qspi: Implement the master flash_pm_supported() call
 
-My first question is if make sense to do this; I see other similar tentative
-never embedded in the mainstream:
-https://github.com/stelhs/slic_tdm
-https://github.com/opennetworklinux/linux-3.8.13/tree/master/drivers/tdm/lin
-e_ctrl
+ drivers/mtd/devices/m25p80.c  | 21 ++++++++++
+ drivers/mtd/spi-nor/spi-nor.c | 93 +++++++++++++++++++++++++++++++++++++------
+ drivers/spi/spi-bcm-qspi.c    |  6 +++
+ include/linux/mtd/spi-nor.h   | 17 ++++++++
+ include/linux/spi/spi.h       |  8 ++++
+ 5 files changed, 133 insertions(+), 12 deletions(-)
 
-Second question is: What class the driver belong to? (in which drivers/
-subfolder shall I add the driver)?
-
-Thanks for the support.
-Bye.
-
-
+-- 
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

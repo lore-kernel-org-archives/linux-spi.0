@@ -1,77 +1,46 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: add check_finished() callback
-Date: Sat, 4 Feb 2017 16:37:31 +0100
-Message-ID: <20170204153731.vspkf57eap7gpoqj@sirena.org.uk>
-References: <20161211200350.13590-1-hauke@hauke-m.de>
- <20161211200350.13590-2-hauke@hauke-m.de>
- <20161214152156.uehjhqoxpng47pnh@sirena.org.uk>
- <7b420e94-3c33-3304-f7a0-ed87c8db425a@hauke-m.de>
- <20170110123429.t6vsyqtnavranbdn@sirena.org.uk>
- <1d4bfe6a-c5a6-8fd5-310b-748413f7c946@hauke-m.de>
- <2b2776c7-4322-e5c7-e169-7d60c1830518@hauke-m.de>
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v1 3/5] spi: Added way to check for pm support for flash devices
+Date: Sat, 4 Feb 2017 15:47:48 -0500
+Message-ID: <CAC=U0a0o21taio6jYzTCx1ix85aFNtikXHs=O99OW1pChbG4TA@mail.gmail.com>
+References: <1486164676-12912-1-git-send-email-kdasu.kdev@gmail.com>
+ <1486164676-12912-4-git-send-email-kdasu.kdev@gmail.com> <20170204112555.p77votp5m7klygbe@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wpnwuhimvbz57qwv"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
+        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2b2776c7-4322-e5c7-e169-7d60c1830518-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+In-Reply-To: <20170204112555.p77votp5m7klygbe-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Sat, Feb 4, 2017 at 6:25 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Feb 03, 2017 at 06:31:14PM -0500, Kamal Dasu wrote:
+>
+>> Device drivers can check if the master controller driver has to support
+>> flash pm. The controller driver indicates this using flash_pm_supported()
+>> spi master interface.
+>
+> What is "flash pm" and how would a client use it given that no API for
+> actually managing power is being added here?  Someone looking at the API
+> needs to be able to figure these things out and right now I can't see
+> how they'd do that...o
 
---wpnwuhimvbz57qwv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Feb 04, 2017 at 02:45:57PM +0100, Hauke Mehrtens wrote:
-> ping Mark,
->=20
-> What should I do in the driver now?
-
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
-
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
-
-> > I can add the transfer status in some other way, no problem, but how do
-> > I tell Linux that the transfer finished when it really finished. I also
-> > tried to just ignore the last word, but when the controller is
-> > configured for the next transfer, the old one gets corrupted.
-
-As I've now said three or four times this sounds like you should use a
-workqueue or something similar to do whatever is needed wait for the
-hardware to finish whatever it's doing.
-
---wpnwuhimvbz57qwv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliV9TgACgkQJNaLcl1U
-h9AMYQf/USLxBtzMkJP+YtXV4tQ6bfeQqwTiXTWYzHj616cM94jYIPLZStaCmxT1
-+ZM2Vh6zMcBOQ+41xejVPHADnAG8Ifrf65LeKW8PcEPpEqcI4myPtTAbo3OTDEpm
-HFbxR5WAbejcXUpLKFlDvC1Plt7+t9wkpNLh+TIcw6cnqwyzvgfYGVQJyvo1DEwm
-TelYOoFuZZoLq1aUr1Pl2vPVA0oc+BKW5U9pKo0ZtOUigcCk9049xmodvreo5YQz
-c9Hg/Mci+rz7qGuJXl8Fb02hqRqouQovL5iAlmnc5FLTWhg+8wu48zHJC4y66msS
-AtXgyiPLNk11IH0JGq9r4sfsw5sdaQ==
-=gb/J
------END PGP SIGNATURE-----
-
---wpnwuhimvbz57qwv--
+The flash_pm function just indicates if  m25p80 resume op that does a
+spi_nor_pm_rescan() is needed, and by default will do nothing for
+other platforms. So the basic idea of the patches was to execute the
+only necessary spi_nor_pm_rescan() on resume when flash parts are
+reset on suspend. So from controller perspective there is no
+additional pm activity to be done. Patches 1/5-2/5 is what is needed
+actually. And Patches 3/3 - 5/5 only add a check if m25p80 resume
+should call spi_nor_pm_rescan(). And the controller driver shall
+implement the flash_pm function and return true if it does need a
+rescan to be done on resume.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

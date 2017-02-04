@@ -1,57 +1,100 @@
-From: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v5 2/3] i2c: acpi: Initialize info.type from of_compatible
-Date: Sat,  4 Feb 2017 08:00:27 +0000
-Message-ID: <1486195228-10929-3-git-send-email-dan@emutex.com>
+From: Dan O'Donovan <dan@emutex.com>
+Subject: [PATCH v5 0/3] Init device ids from ACPI of_compatible
+Date: Sat,  4 Feb 2017 08:00:25 +0000
+Message-ID: <1486195228-10929-1-git-send-email-dan@emutex.com>
 References: <1485523815-9629-1-git-send-email-dan@emutex.com>
- <1486195228-10929-1-git-send-email-dan@emutex.com>
-Cc: Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-To: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1486195228-10929-1-git-send-email-dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+        Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>
+To: linux-acpi@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jarkko Nikula <jarkko.nikula@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1485523815-9629-1-git-send-email-dan@emutex.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-When using devicetree i2c_board_info.type is set to the compatible
-string with the vendor prefix removed. For I2C devices described via
-ACPI the i2c_board_info.type string is set to the ACPI device name. When
-using ACPI and DT ids this string ends up something like "PRP0001:00".
+When using devicetree, stuff like i2c_client.name or spi_device.modalias
+is initialized to the first DT compatible id with the vendor prefix
+stripped. Since some drivers rely on this in order to differentiate between
+hardware variants, try to replicate it when using ACPI with DT ids.
 
-If the of_compatible property is present try to use that instead. This
-makes it easier to instantiate i2c drivers through ACPI with DT ids.
+This also makes it so that the i2c_device_id parameter passed to probe is
+non-NULL when matching with ACPI and DT ids.
 
-Signed-off-by: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Tested-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
----
- drivers/i2c/i2c-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Tested using ACPI overlays but there is no actual dependency. This series
+just extends the PRP0001 feature to be more useful for I2C/SPI.
 
-diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-index 583e950..28d2181 100644
---- a/drivers/i2c/i2c-core.c
-+++ b/drivers/i2c/i2c-core.c
-@@ -221,7 +221,8 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
- 
- 	acpi_dev_free_resource_list(&resource_list);
- 
--	strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
-+	acpi_set_modalias(adev, dev_name(&adev->dev),
-+			  info->type, sizeof(info->type));
- 
- 	return 0;
- }
+The patches only touches the ACPI-specific parts of the i2c and spi core.
+
+Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
+
+Device (ACCL)
+{
+    Name (_ADR, Zero)
+    Name (_HID, "PRP0001")
+    Name (_UID, One)
+
+    Method (_CRS, 0, Serialized)
+    {
+	Name (RBUF, ResourceTemplate ()
+	{
+	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
+		    ControllerInitiated, 1000000, ClockPolarityLow,
+		    ClockPhaseFirst, "\\_SB.SPI1",)
+	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
+		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
+	    { // Pin list
+		    1
+	    }
+	})
+	Return (RBUF)
+    }
+    Name (_DSD, Package ()
+    {
+	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+	Package ()
+	{
+	    Package () {"compatible", "st,lis3dh"},
+	}
+    })
+}
+
+Credit to Leonard Crestez for the original version of this patch set.
+
+Link to v4: http://www.spinics.net/lists/linux-acpi/msg71657.html
+Changes:
+ * add acpi_set_modalias wrapper to handle fallback to ACPI ID (Mark Brown)
+
+Link to v3: http://www.spinics.net/lists/linux-acpi/msg71531.html
+Changes:
+ * Minor cosmetic/readability improvements (Andy Shevchenko)
+
+Link to v2: https://lkml.org/lkml/2016/7/13/392
+Changes:
+ * Use appropriate subject prefix for each subsystem (Mark Brown)
+ * Use ACPI info as before if getting OF info fails (Mark Brown)
+ * Minor cosmetic/readability improvements (Rafael J. Wysocki)
+
+Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
+Changes:
+ * Rebase on after acpi overlays got it.
+ * Change acpi_of_modalias outlen param to size_t
+ * Use {} after else
+
+Dan O'Donovan (3):
+  ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
+  i2c: acpi: Initialize info.type from of_compatible
+  spi: acpi: Initialize modalias from of_compatible
+
+ drivers/acpi/bus.c      | 42 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/i2c/i2c-core.c  |  3 ++-
+ drivers/spi/spi.c       |  4 +++-
+ include/acpi/acpi_bus.h |  2 ++
+ 4 files changed, 49 insertions(+), 2 deletions(-)
+
 -- 
 2.7.4
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

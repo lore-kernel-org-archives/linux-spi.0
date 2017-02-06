@@ -1,56 +1,80 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6 3/3] spi: acpi: Initialize modalias from of_compatible
-Date: Mon, 6 Feb 2017 16:31:48 +0000
-Message-ID: <20170206163148.sl7xoefrxjw3i3na@sirena.org.uk>
-References: <1486195228-10929-1-git-send-email-dan@emutex.com>
- <1486312214-20770-1-git-send-email-dan@emutex.com>
- <1486312214-20770-4-git-send-email-dan@emutex.com>
+Subject: Re: [PATCH v1 3/5] spi: Added way to check for pm support for flash
+ devices
+Date: Mon, 6 Feb 2017 16:46:34 +0000
+Message-ID: <20170206164634.awi4oe5e4o4w2kmj@sirena.org.uk>
+References: <1486164676-12912-1-git-send-email-kdasu.kdev@gmail.com>
+ <1486164676-12912-4-git-send-email-kdasu.kdev@gmail.com>
+ <20170204112555.p77votp5m7klygbe@sirena.org.uk>
+ <CAC=U0a0o21taio6jYzTCx1ix85aFNtikXHs=O99OW1pChbG4TA@mail.gmail.com>
+ <11cfd6da-c537-eca9-5c50-7789d5b672dd@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kzxie6xrpilthtcj"
-Cc: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="3gfo2cq3tygaroym"
+Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1486312214-20770-4-git-send-email-dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <11cfd6da-c537-eca9-5c50-7789d5b672dd-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---kzxie6xrpilthtcj
-Content-Type: text/plain; charset=us-ascii
+--3gfo2cq3tygaroym
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 05, 2017 at 04:30:14PM +0000, Dan O'Donovan wrote:
-> When using devicetree spi_device.modalias is set to the compatible
-> string with the vendor prefix removed. For SPI devices described via
-> ACPI the spi_device.modalias string is initialized by acpi_device_hid.
-> When using ACPI and DT ids this string ends up something like "PRP0001".
+On Mon, Feb 06, 2017 at 11:44:09AM +0100, Cyrille Pitchen wrote:
+> Le 04/02/2017 =E0 21:47, Kamal Dasu a =E9crit :
 
-Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> >> What is "flash pm" and how would a client use it given that no API for
+> >> actually managing power is being added here?  Someone looking at the A=
+PI
+> >> needs to be able to figure these things out and right now I can't see
+> >> how they'd do that...o
 
---kzxie6xrpilthtcj
+> > The flash_pm function just indicates if  m25p80 resume op that does a
+> > spi_nor_pm_rescan() is needed, and by default will do nothing for
+> > other platforms. So the basic idea of the patches was to execute the
+> > only necessary spi_nor_pm_rescan() on resume when flash parts are
+> > reset on suspend. So from controller perspective there is no
+
+I can't tell what this means, sorry, and writing this e-mail does not
+address the incomprehensibility of the API.  Why would the controller
+driver have anything to do with whatever this spi_nor_pm_rescan()
+operation does?
+
+> I don't understand why we extend in the SPI framework API to add power
+> management features but only for SPI flashes. I guess concerning the power
+> management, there is nothing special about SPI flashes: they are just SPI
+> devices like others. So why not extend the SPI framework, if needed, with
+> something working for all SPI devices, not just for SPI flashes.
+
+It's already possible for SPI devices to do runtime PM.
+
+--3gfo2cq3tygaroym
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliYpPQACgkQJNaLcl1U
-h9CeLQf/bXWk3S1vf4ttePrXbgFgQK4Z3E6yqBwQ+e42gW9K3XsmRthDfe/Mowc8
-q1+pBzU/EZylKYFZMLkVQc/PfM3GEth8Jdm+D+Jum0VVVFHHiFmJ2hqYdaSTe/zr
-/KCdQtvNjNi7ik0TySfNpWPqE7o7gP/gGXCMcgbRwzQQkW2FnrpJJIrV/du0HczY
-LyZ4ioJNwF3CWdnPonWrN1/a2qZaz0KVKhucDL7GWINEY1hXWdum+O7s11NyjSWY
-8QsIIR+ZayYwHJeYQIpkm2Q7qz2oy0qBdkQ1PIzv39Ny0FBkkWfy2OC9+W1scu23
-wSMHcU6FrDWLOe+cQGFBYMv8pWy7vQ==
-=ml/y
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliYqGkACgkQJNaLcl1U
+h9DtBwf8COlSE1A9lZBZw+8PUhaBp2LRJn6Vl5D5qQey+MtvioKGx8P+ffYIDy1g
++/rTon2HaJpKMAwmjb/5UbU1wmfCumi6XclcPIP8sfS1wJ9+AqAqvEuWBpSeHPMN
+GxoTir/2OG8GdIlpmHSGg3bM1tV8Y3Zs+n5VFk9TbEN2DW4gt6X+b1rIgqq7rKQO
+bbXpyPpu5e0TDl9a0J3HqpKydsCZayVB/vAdlft4rZs1Cs/PNNwDMdNfXkGxbvr0
+aEgDMu/O4R07lIUVRXYDt/+j99v7I93PJkO9jsbI8eAE1hn0qwTOJqFQ3uhqrWSq
+07xdcpBwxqdxTxvva8Pg3q6de1dogQ==
+=wjUW
 -----END PGP SIGNATURE-----
 
---kzxie6xrpilthtcj--
+--3gfo2cq3tygaroym--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

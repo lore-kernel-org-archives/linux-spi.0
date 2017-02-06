@@ -1,58 +1,74 @@
-From: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
-Date: Mon,  6 Feb 2017 10:02:13 +0900
-Message-ID: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp>
-Cc: kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-        ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v1 3/5] spi: Added way to check for pm support for flash
+ devices
+Date: Mon, 6 Feb 2017 11:44:09 +0100
+Message-ID: <11cfd6da-c537-eca9-5c50-7789d5b672dd@atmel.com>
+References: <1486164676-12912-1-git-send-email-kdasu.kdev@gmail.com>
+ <1486164676-12912-4-git-send-email-kdasu.kdev@gmail.com>
+ <20170204112555.p77votp5m7klygbe@sirena.org.uk>
+ <CAC=U0a0o21taio6jYzTCx1ix85aFNtikXHs=O99OW1pChbG4TA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAC=U0a0o21taio6jYzTCx1ix85aFNtikXHs=O99OW1pChbG4TA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Hi all,
 
-This patch fixes the output warning logs and data loss when
-performing mount/umount then remount the device with jffs2 format.
+Le 04/02/2017 à 21:47, Kamal Dasu a écrit :
+> On Sat, Feb 4, 2017 at 6:25 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> On Fri, Feb 03, 2017 at 06:31:14PM -0500, Kamal Dasu wrote:
+>>
+>>> Device drivers can check if the master controller driver has to support
+>>> flash pm. The controller driver indicates this using flash_pm_supported()
+>>> spi master interface.
+>>
+>> What is "flash pm" and how would a client use it given that no API for
+>> actually managing power is being added here?  Someone looking at the API
+>> needs to be able to figure these things out and right now I can't see
+>> how they'd do that...o
+> 
+> The flash_pm function just indicates if  m25p80 resume op that does a
+> spi_nor_pm_rescan() is needed, and by default will do nothing for
+> other platforms. So the basic idea of the patches was to execute the
+> only necessary spi_nor_pm_rescan() on resume when flash parts are
+> reset on suspend. So from controller perspective there is no
+> additional pm activity to be done. Patches 1/5-2/5 is what is needed
+> actually. And Patches 3/3 - 5/5 only add a check if m25p80 resume
+> should call spi_nor_pm_rescan(). And the controller driver shall
+> implement the flash_pm function and return true if it does need a
+> rescan to be done on resume.
+> 
 
-This is the warning logs when performing mount/umount then remount the device with jffs2 format:
-"root@linaro-naro:~# mount -t jffs2 /dev/mtdblock2 /mnt/media
-[ 3839.928013] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
-[ 3839.956515] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead
-[ 3839.985009] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40008: 0xb0b1 instead
-[ 3840.013591] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4000c: 0x1900 instead
-[ 3840.042087] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40010: 0x0044 instead
-[ 3840.070566] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40014: 0xfb1d instead
-[ 3840.099159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40018: 0x0002 instead
-[ 3840.127604] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4001c: 0x0001 instead
-[ 3840.156043] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40020: 0x81a4 instead
-[ 3840.184472] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4002c: 0x6529 instead
-[ 3840.212900] jffs2: Further such events for this erase block will not be printed
-[ 3840.322915] jffs2: notice: (2008) read_dnode: node CRC failed on dnode at 0x3b40080: read 0xc40b5dfc, calculated 0x264be003
-root@linaro-naro[ 3840.356857] jffs2: warning: (2008) jffs2_do_read_inode_internal: no data nodes found for ino #2
-:~# [ 3840.386659] jffs2: Returned error for crccheck of ino #2. Expect badness...
+I don't understand why we extend in the SPI framework API to add power
+management features but only for SPI flashes. I guess concerning the power
+management, there is nothing special about SPI flashes: they are just SPI
+devices like others. So why not extend the SPI framework, if needed, with
+something working for all SPI devices, not just for SPI flashes.
 
-Signed-off-by: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
----
- drivers/spi/spi-rspi.c | 1 -
- 1 file changed, 1 deletion(-)
+There was a good reason to create a flash specific API in the SPI
+framework: spi_flash_read(), flash_read_supported().
+The reason is that the SPI controller needs protocol info (op code,
+address, dummy cycles, SPI x-y-z protocol, ...) to handle the read
+operation correctly and those pieces of information were lost in m25p80.c
+when it used the regular SPI API with spi_transfer and spi_message
+structures. Hence spi_flash_read() is a mean to bypass the regular SPI API
+and provide the SPI controller driver with all the protocol info it needs.
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 9daf500..2ee1301 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
- 			ret = rspi_pio_transfer(rspi, NULL, rx, n);
- 			if (ret < 0)
- 				return ret;
--			*rx++ = ret;
- 		}
- 		n -= len;
- 	}
--- 
-1.9.1
+Back to the power management use case, I don't see any technical reason to
+create a SPI flash oriented solution.
 
+Best regards,
+
+Cyrille
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

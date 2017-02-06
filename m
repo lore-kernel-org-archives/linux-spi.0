@@ -1,55 +1,56 @@
-From: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/2] spi: davinci: enable DMA when channels are defined in DT
-Date: Mon,  6 Feb 2017 15:57:08 +0100
-Message-ID: <20170206145708.24356-2-fparent@baylibre.com>
-References: <20170206145708.24356-1-fparent@baylibre.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        nsekhar-l0cyMroinI0@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v6 3/3] spi: acpi: Initialize modalias from of_compatible
+Date: Mon, 6 Feb 2017 16:31:48 +0000
+Message-ID: <20170206163148.sl7xoefrxjw3i3na@sirena.org.uk>
+References: <1486195228-10929-1-git-send-email-dan@emutex.com>
+ <1486312214-20770-1-git-send-email-dan@emutex.com>
+ <1486312214-20770-4-git-send-email-dan@emutex.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kzxie6xrpilthtcj"
+Cc: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170206145708.24356-1-fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1486312214-20770-4-git-send-email-dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-When booting with DT the SPI driver is always using
-the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
-defined in the DT.
 
-This commit changes the behaviour to select the SPI_IO_TYPE_DMA mode
-if DMA channels are defined in the DT and will keep SPI_IO_TYPE_INTR
-if the channels are not defined in it.
+--kzxie6xrpilthtcj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
----
- drivers/spi/spi-davinci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On Sun, Feb 05, 2017 at 04:30:14PM +0000, Dan O'Donovan wrote:
+> When using devicetree spi_device.modalias is set to the compatible
+> string with the vendor prefix removed. For SPI devices described via
+> ACPI the spi_device.modalias string is initialized by acpi_device_hid.
+> When using ACPI and DT ids this string ends up something like "PRP0001".
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index cb80c1d3f86a..b73072ae8adb 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -389,6 +389,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- {
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	struct device_node *np = spi->dev.of_node;
-+	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
- 	u32 prop;
- 
- 	if (spicfg == NULL && np) {
-@@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- 		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
- 			spicfg->wdelay = (u8)prop;
- 		spi->controller_data = spicfg;
-+
-+		if (dspi->dma_rx && dspi->dma_tx)
-+			spicfg->io_type = SPI_IO_TYPE_DMA;
- 	}
- 
- 	return 0;
--- 
-2.11.0
+Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
+--kzxie6xrpilthtcj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAliYpPQACgkQJNaLcl1U
+h9CeLQf/bXWk3S1vf4ttePrXbgFgQK4Z3E6yqBwQ+e42gW9K3XsmRthDfe/Mowc8
+q1+pBzU/EZylKYFZMLkVQc/PfM3GEth8Jdm+D+Jum0VVVFHHiFmJ2hqYdaSTe/zr
+/KCdQtvNjNi7ik0TySfNpWPqE7o7gP/gGXCMcgbRwzQQkW2FnrpJJIrV/du0HczY
+LyZ4ioJNwF3CWdnPonWrN1/a2qZaz0KVKhucDL7GWINEY1hXWdum+O7s11NyjSWY
+8QsIIR+ZayYwHJeYQIpkm2Q7qz2oy0qBdkQ1PIzv39Ny0FBkkWfy2OC9+W1scu23
+wSMHcU6FrDWLOe+cQGFBYMv8pWy7vQ==
+=ml/y
+-----END PGP SIGNATURE-----
+
+--kzxie6xrpilthtcj--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

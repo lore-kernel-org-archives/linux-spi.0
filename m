@@ -1,104 +1,59 @@
-From: Dan O'Donovan <dan@emutex.com>
-Subject: [PATCH v6 0/3] Init device ids from ACPI of_compatible
-Date: Sun,  5 Feb 2017 16:30:11 +0000
-Message-ID: <1486312214-20770-1-git-send-email-dan@emutex.com>
-References: <1486195228-10929-1-git-send-email-dan@emutex.com>
-Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-        Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dan O'Donovan <dan@emutex.com>
-To: linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jarkko Nikula <jarkko.nikula@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1486195228-10929-1-git-send-email-dan@emutex.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Subject: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
+Date: Mon,  6 Feb 2017 10:02:13 +0900
+Message-ID: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp>
+Cc: kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
+        ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When using devicetree, stuff like i2c_client.name or spi_device.modalias
-is initialized to the first DT compatible id with the vendor prefix
-stripped. Since some drivers rely on this in order to differentiate between
-hardware variants, try to replicate it when using ACPI with DT ids.
+From: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 
-This also makes it so that the i2c_device_id parameter passed to probe is
-non-NULL when matching with ACPI and DT ids.
+This patch fixes the output warning logs and data loss when
+performing mount/umount then remount the device with jffs2 format.
 
-Tested using ACPI overlays but there is no actual dependency. This series
-just extends the PRP0001 feature to be more useful for I2C/SPI.
+This is the warning logs when performing mount/umount then remount the device with jffs2 format:
+"root@linaro-naro:~# mount -t jffs2 /dev/mtdblock2 /mnt/media
+[ 3839.928013] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
+[ 3839.956515] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead
+[ 3839.985009] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40008: 0xb0b1 instead
+[ 3840.013591] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4000c: 0x1900 instead
+[ 3840.042087] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40010: 0x0044 instead
+[ 3840.070566] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40014: 0xfb1d instead
+[ 3840.099159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40018: 0x0002 instead
+[ 3840.127604] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4001c: 0x0001 instead
+[ 3840.156043] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40020: 0x81a4 instead
+[ 3840.184472] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4002c: 0x6529 instead
+[ 3840.212900] jffs2: Further such events for this erase block will not be printed
+[ 3840.322915] jffs2: notice: (2008) read_dnode: node CRC failed on dnode at 0x3b40080: read 0xc40b5dfc, calculated 0x264be003
+root@linaro-naro[ 3840.356857] jffs2: warning: (2008) jffs2_do_read_inode_internal: no data nodes found for ino #2
+:~# [ 3840.386659] jffs2: Returned error for crccheck of ino #2. Expect badness...
 
-The patches only touches the ACPI-specific parts of the i2c and spi core.
+Signed-off-by: Dong <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+---
+ drivers/spi/spi-rspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
-
-Device (ACCL)
-{
-    Name (_ADR, Zero)
-    Name (_HID, "PRP0001")
-    Name (_UID, One)
-
-    Method (_CRS, 0, Serialized)
-    {
-	Name (RBUF, ResourceTemplate ()
-	{
-	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
-		    ControllerInitiated, 1000000, ClockPolarityLow,
-		    ClockPhaseFirst, "\\_SB.SPI1",)
-	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-	    { // Pin list
-		    1
-	    }
-	})
-	Return (RBUF)
-    }
-    Name (_DSD, Package ()
-    {
-	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-	Package ()
-	{
-	    Package () {"compatible", "st,lis3dh"},
-	}
-    })
-}
-
-Credit to Leonard Crestez for the original version of this patch set.
-
-Link to v5: http://www.spinics.net/lists/linux-acpi/msg71902.html
-Changes:
- * Change formatting of arguments passed to acpi_set_modalias (Mark Brown)
-
-Link to v4: http://www.spinics.net/lists/linux-acpi/msg71657.html
-Changes:
- * add acpi_set_modalias wrapper to handle fallback to ACPI ID (Mark Brown)
-
-Link to v3: http://www.spinics.net/lists/linux-acpi/msg71531.html
-Changes:
- * Minor cosmetic/readability improvements (Andy Shevchenko)
-
-Link to v2: https://lkml.org/lkml/2016/7/13/392
-Changes:
- * Use appropriate subject prefix for each subsystem (Mark Brown)
- * Use ACPI info as before if getting OF info fails (Mark Brown)
- * Minor cosmetic/readability improvements (Rafael J. Wysocki)
-
-Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
-Changes:
- * Rebase on after acpi overlays got it.
- * Change acpi_of_modalias outlen param to size_t
- * Use {} after else
-
-Dan O'Donovan (3):
-  ACPI / bus: Export acpi_of_modalias equiv of of_modalias_node
-  i2c: acpi: Initialize info.type from of_compatible
-  spi: acpi: Initialize modalias from of_compatible
-
- drivers/acpi/bus.c      | 42 ++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c-core.c  |  3 ++-
- drivers/spi/spi.c       |  4 +++-
- include/acpi/acpi_bus.h |  2 ++
- 4 files changed, 49 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 9daf500..2ee1301 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			ret = rspi_pio_transfer(rspi, NULL, rx, n);
+ 			if (ret < 0)
+ 				return ret;
+-			*rx++ = ret;
+ 		}
+ 		n -= len;
+ 	}
 -- 
-2.7.4
+1.9.1
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

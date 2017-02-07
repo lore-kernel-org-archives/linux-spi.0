@@ -1,52 +1,129 @@
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/2] spi: s3c64xx: fix potential division by zero
-Date: Tue, 07 Feb 2017 17:10:25 +0900
-Message-ID: <20170207081025.9671-2-andi.shyti@samsung.com>
-References: <20170207081025.9671-1-andi.shyti@samsung.com>
- <CGME20170207081032epcas5p3af837bbe00278da4029fc7bb9eba6961@epcas5p3.samsung.com>
-Cc: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-        linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <20170207081025.9671-1-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: DongCV <cv-dong@jinso.co.jp>
+Subject: Re: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
+Date: Tue, 7 Feb 2017 19:25:35 +0900
+Message-ID: <ed0b8422-8ab1-7d8d-318f-343e6e2de17d@jinso.co.jp>
+References: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp>
+ <CAMuHMdUyA9+KLaD9rY9gYjxjZcQ1bWKoDhP25mEAdZTr7E0uwA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        =?UTF-8?B?RHVuZ++8muS6uuOCvQ==?= <nv-dung@jinso.co.jp>,
+        =?UTF-8?B?56iy5ZCJ?= <h-inayoshi@jinso.co.jp>,
+        Cao Minh Hiep <cm-hiep@jinso.co.jp>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdUyA9+KLaD9rY9gYjxjZcQ1bWKoDhP25mEAdZTr7E0uwA@mail.gmail.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Even though it's quite unlikely to happen in this particular
-case, clk_get_rate can return '0' if sdd->src_clk is not set
-properly. In that case we would have a clear division by '0'.
+Dear Geert,
 
-Check the return value of clk_get_rate and fail in case it
-returns '0'.
+Thank you for your reply.
 
-This patch fixes '1397922 Division or modulo by zero' from
-scan.coverity.com
+>> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+>> index 9daf500..2ee1301 100644
+>> --- a/drivers/spi/spi-rspi.c
+>> +++ b/drivers/spi/spi-rspi.c
+>> @@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+>>                        ret = rspi_pio_transfer(rspi, NULL, rx, n);
+>>                        if (ret < 0)
+>>                                return ret;
+>> -                     *rx++ = ret;
+> Storing the success code (0) in the receive buffer is indeed wrong.
+>
+> However, there are other bugs in that code:
+>
+> rspi_pio_transfer(rspi, NULL, rx, n) transfers n bytes instead of len,
+> while n is decreased by len (which is <= n).
+> Furthermore rx is not incremented.
+> Hence if len < n, n will still be non-zero, and a new iteration of the
+> loop will be started, trying to receive more data, and overwriting the
+> just filled buffer.
+>
+> The same bug is present in qspi_transfer_out().
+>
+>>                }
+>>                n -= len;
+>>        }
+>> --
+>> 1.9.1
+>>
+(nip)
+> Apart from sending patches inline, my comments from
+> https://www.spinics.net/lists/linux-spi/msg09753.html are still valid.
 
-Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+Sorry I might not understand your explanation correctly. Could you 
+please explain it more details?
+(Because I've tried to understand your explanation then analyzed the 
+source code again as below:
+https://patchwork.kernel.org/patch/9541629/)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index f6ea9ae047ec..a2ec07f44e33 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -811,6 +811,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 		/* Max possible */
- 		speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1);
-+		if (!speed)
-+			goto setup_exit;
- 
- 		if (spi->max_speed_hz > speed)
- 			spi->max_speed_hz = speed;
--- 
-2.11.0
+Thank you.
+Dong
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+On 02/06/2017 08:02 PM, Geert Uytterhoeven wrote:
+> Hi Dong,
+>
+> On Mon, Feb 6, 2017 at 2:02 AM, DongCV <cv-dong@jinso.co.jp> wrote:
+>> From: Dong <cv-dong@jinso.co.jp>
+>>
+>> This patch fixes the output warning logs and data loss when
+>> performing mount/umount then remount the device with jffs2 format.
+>>
+>> This is the warning logs when performing mount/umount then remount the device with jffs2 format:
+>> "root@linaro-naro:~# mount -t jffs2 /dev/mtdblock2 /mnt/media
+>> [ 3839.928013] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
+>> [ 3839.956515] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead
+>> [ 3839.985009] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40008: 0xb0b1 instead
+>> [ 3840.013591] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4000c: 0x1900 instead
+>> [ 3840.042087] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40010: 0x0044 instead
+>> [ 3840.070566] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40014: 0xfb1d instead
+>> [ 3840.099159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40018: 0x0002 instead
+>> [ 3840.127604] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4001c: 0x0001 instead
+>> [ 3840.156043] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40020: 0x81a4 instead
+>> [ 3840.184472] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b4002c: 0x6529 instead
+>> [ 3840.212900] jffs2: Further such events for this erase block will not be printed
+>> [ 3840.322915] jffs2: notice: (2008) read_dnode: node CRC failed on dnode at 0x3b40080: read 0xc40b5dfc, calculated 0x264be003
+>> root@linaro-naro[ 3840.356857] jffs2: warning: (2008) jffs2_do_read_inode_internal: no data nodes found for ino #2
+>> :~# [ 3840.386659] jffs2: Returned error for crccheck of ino #2. Expect badness...
+>>
+>> Signed-off-by: Dong <cv-dong@jinso.co.jp>
+>> ---
+>>   drivers/spi/spi-rspi.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+>> index 9daf500..2ee1301 100644
+>> --- a/drivers/spi/spi-rspi.c
+>> +++ b/drivers/spi/spi-rspi.c
+>> @@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+>>                          ret = rspi_pio_transfer(rspi, NULL, rx, n);
+>>                          if (ret < 0)
+>>                                  return ret;
+>> -                       *rx++ = ret;
+>>                  }
+>>                  n -= len;
+>>          }
+> Apart from sending patches inline, my comments from
+> https://www.spinics.net/lists/linux-spi/msg09753.html are still valid.
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
+>

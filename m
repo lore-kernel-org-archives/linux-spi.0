@@ -1,7 +1,7 @@
 From: Jiada Wang <jiada_wang@mentor.com>
-Subject: [PATCH 2/2] spi: imx: dynamic burst length adjust for DMA mode
-Date: Wed, 8 Feb 2017 15:20:28 +0900
-Message-ID: <20170208062028.22313-3-jiada_wang@mentor.com>
+Subject: [PATCH 1/2] spi: imx: dynamic burst length adjust for PIO mode
+Date: Wed, 8 Feb 2017 15:20:27 +0900
+Message-ID: <20170208062028.22313-2-jiada_wang@mentor.com>
 References: <20170208062028.22313-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -18,269 +18,257 @@ to bits_per_word, causes a 10us gap between each word in
 transfer, which significantly affects performance.
 
 This patch uses 32 bits transfer to simulate lower bits transfer,
-and adjusts burst length to reduce the number of gaps in DMA
-transfer.
+and adjusts burst length runtimely to use biggeest burst length
+as possible to reduce the gaps in transfer for PIO mode.
 
 Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
 ---
- drivers/spi/spi-imx.c | 154 ++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 130 insertions(+), 24 deletions(-)
+ drivers/spi/spi-imx.c | 151 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 143 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 04b4ea8..68ff781 100644
+index 9a7c62f..04b4ea8 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -39,6 +39,8 @@
- #include <linux/of_device.h>
- #include <linux/of_gpio.h>
+@@ -56,9 +56,11 @@
  
-+#include <asm/cacheflush.h>
-+
- #include <linux/platform_data/dma-imx.h>
- #include <linux/platform_data/spi-imx.h>
+ /* The maximum  bytes that a sdma BD can transfer.*/
+ #define MAX_SDMA_BD_BYTES  (1 << 15)
++#define MX51_ECSPI_CTRL_MAX_BURST	512
+ struct spi_imx_config {
+ 	unsigned int speed_hz;
+ 	unsigned int bpw;
++	unsigned int len;
+ };
  
-@@ -216,6 +218,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 	unsigned int bpw, i;
-+	u32 length, div;
+ enum spi_imx_devtype {
+@@ -96,12 +98,14 @@ struct spi_imx_data {
  
- 	if (!master->dma_rx)
- 		return false;
-@@ -232,8 +235,18 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 	if (bpw != 1 && bpw != 2 && bpw != 4)
- 		return false;
+ 	unsigned int bytes_per_word;
  
-+	length = transfer->len;
-+
-+	if (spi_imx->dynamic_burst) {
-+		bpw = sizeof(u32);
-+		length = transfer->len - transfer->len % sizeof(u32);
-+		div = length / MX51_ECSPI_CTRL_MAX_BURST  + 1;
-+		length = (length / div) - (length / div) % sizeof(u32);
-+		spi_imx->count_index = transfer->len - length * div;
-+	}
-+
- 	for (i = spi_imx_get_fifosize(spi_imx) / 2; i > 0; i--) {
--		if (!(transfer->len % (i * bpw)))
-+		if (!(length % (i * bpw)))
- 			break;
- 	}
+-	unsigned int count;
++	unsigned int count, count_index;
+ 	void (*tx)(struct spi_imx_data *);
+ 	void (*rx)(struct spi_imx_data *);
+ 	void *rx_buf;
+ 	const void *tx_buf;
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
++	unsigned int dynamic_burst, bpw_rx;
++	unsigned int bpw_w;
  
-@@ -423,6 +436,7 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
- 	u32 clk = config->speed_hz, delay, reg;
- 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
-+	u32 div, length;
+ 	/* DMA */
+ 	bool usedma;
+@@ -250,6 +254,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+ #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
+ #define MX51_ECSPI_CTRL_BL_OFFSET	20
++#define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
  
- 	/*
- 	 * The hardware seems to have a race condition when changing modes. The
-@@ -441,9 +455,18 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 	ctrl |= MX51_ECSPI_CTRL_CS(spi->chip_select);
+ #define MX51_ECSPI_CONFIG	0x0c
+ #define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+@@ -277,6 +282,79 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_TESTREG	0x20
+ #define MX51_ECSPI_TESTREG_LBC	BIT(31)
  
- 	if (spi_imx->dynamic_burst) {
--		if (config->len > MX51_ECSPI_CTRL_MAX_BURST)
--			ctrl |= MX51_ECSPI_CTRL_BL_MASK;
--		else
-+		if (config->len > MX51_ECSPI_CTRL_MAX_BURST) {
-+			if (spi_imx->usedma) {
-+				length = config->len -
-+					 config->len % sizeof(u32);
-+				div = length / MX51_ECSPI_CTRL_MAX_BURST  + 1;
-+				length = (length / div) -
-+					 (length / div) % sizeof(u32);
-+				ctrl |= ((length * 8 - 1) <<
-+					MX51_ECSPI_CTRL_BL_OFFSET);
-+			} else
-+				ctrl |= MX51_ECSPI_CTRL_BL_MASK;
-+		} else
- 			ctrl |= (((config->len - config->len % 4) * 8 - 1) <<
- 				MX51_ECSPI_CTRL_BL_OFFSET);
- 	} else
-@@ -933,10 +956,16 @@ static int spi_imx_dma_configure(struct spi_master *master,
- 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 		break;
- 	case 2:
--		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		if (spi_imx->dynamic_burst)
-+			buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		else
-+			buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
- 		break;
- 	case 1:
--		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		if (spi_imx->dynamic_burst)
-+			buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		else
-+			buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -1122,6 +1151,32 @@ static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
- 	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
- }
- 
-+static int spi_imx_pio_txrx(struct spi_imx_data *spi_imx)
++static void spi_imx_u32_swap_u8(struct spi_transfer *transfer, u8 *buf)
 +{
-+	unsigned long transfer_timeout;
-+	unsigned long timeout;
++	int i;
 +
-+	spi_imx->txfifo = 0;
++	for (i = 0; i < transfer->len / 4; i++) {
++		u8 temp;
 +
-+	reinit_completion(&spi_imx->xfer_done);
++		temp = *(buf + i * 4);
++		*(buf + i * 4) = *(buf + i * 4 + 3);
++		*(buf + i * 4 + 3) = temp;
 +
-+	spi_imx_push(spi_imx);
-+
-+	spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE);
-+
-+	transfer_timeout = spi_imx_calculate_timeout(spi_imx, spi_imx->count);
-+
-+	timeout = wait_for_completion_timeout(&spi_imx->xfer_done,
-+					      transfer_timeout);
-+	if (!timeout) {
-+		dev_err(spi_imx->dev, "I/O Error in PIO\n");
-+		spi_imx->devtype_data->reset(spi_imx);
-+		return -ETIMEDOUT;
++		temp = *(buf + i * 4 + 1);
++		*(u8 *)(buf + i * 4 + 1) = *(buf + i * 4 + 2);
++		*(buf + i * 4 + 2) = temp;
 +	}
-+
-+	return 0;
 +}
 +
- static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 				struct spi_transfer *transfer)
- {
-@@ -1130,6 +1185,20 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-+	unsigned int old_nents = 0;
-+	int ret;
++static void spi_imx_u32_swap_u16(struct spi_transfer *transfer, u16 *buf)
++{
++	int i;
 +
-+	spi_imx->count = transfer->len - spi_imx->count_index;
-+	if (spi_imx->dynamic_burst && spi_imx->count_index) {
-+		/* Cut RX data tail */
-+		old_nents = rx->nents;
-+		WARN_ON(sg_dma_len(&rx->sgl[rx->nents - 1]) <
-+			spi_imx->count_index);
-+		sg_dma_len(&rx->sgl[rx->nents - 1]) -=
-+			spi_imx->count_index;
-+		if (sg_dma_len(&rx->sgl[rx->nents - 1]) == 0)
-+			--rx->nents;
++	for (i = 0; i < transfer->len / 4; i++) {
++		u16 temp;
++
++		temp = *(buf + i * 2);
++		*(buf + i * 2) = *(buf + i * 2 + 1);
++		*(buf + i * 2 + 1) = temp;
 +	}
++}
++
++static void spi_imx_buf_rx_swap(struct spi_imx_data *spi_imx)
++{
++	if (!spi_imx->bpw_rx) {
++		spi_imx_buf_rx_u32(spi_imx);
++		return;
++	}
++
++	if (spi_imx->bpw_w == 1)
++		spi_imx_buf_rx_u8(spi_imx);
++	else if (spi_imx->bpw_w == 2)
++		spi_imx_buf_rx_u16(spi_imx);
++}
++
++static void spi_imx_buf_tx_swap(struct spi_imx_data *spi_imx)
++{
++	u32 ctrl, val;
++
++	if (spi_imx->count == spi_imx->count_index) {
++		spi_imx->count_index = spi_imx->count > sizeof(u32) ?
++					spi_imx->count % sizeof(u32) : 0;
++		ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
++		ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
++		if (spi_imx->count >= sizeof(u32))
++			val = spi_imx->count - spi_imx->count_index;
++		else {
++			val = spi_imx->bpw_w;
++			spi_imx->bpw_rx = 1;
++		}
++		ctrl |= ((val * 8 - 1) << MX51_ECSPI_CTRL_BL_OFFSET);
++		writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
++	}
++
++	if (spi_imx->count >= sizeof(u32)) {
++		spi_imx_buf_tx_u32(spi_imx);
++		return;
++	}
++
++	if (spi_imx->bpw_w == 1)
++		spi_imx_buf_tx_u8(spi_imx);
++	else if (spi_imx->bpw_w == 2)
++		spi_imx_buf_tx_u16(spi_imx);
++}
++
+ /* MX51 eCSPI */
+ static unsigned int mx51_ecspi_clkdiv(struct spi_imx_data *spi_imx,
+ 				      unsigned int fspi, unsigned int *fres)
+@@ -362,7 +440,14 @@ static int mx51_ecspi_config(struct spi_device *spi,
+ 	/* set chip select to use */
+ 	ctrl |= MX51_ECSPI_CTRL_CS(spi->chip_select);
  
- 	/*
- 	 * The TX DMA setup starts the transfer, so make sure RX is configured
-@@ -1147,6 +1216,30 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_rx_completion);
- 	dma_async_issue_pending(master->dma_rx);
+-	ctrl |= (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
++	if (spi_imx->dynamic_burst) {
++		if (config->len > MX51_ECSPI_CTRL_MAX_BURST)
++			ctrl |= MX51_ECSPI_CTRL_BL_MASK;
++		else
++			ctrl |= (((config->len - config->len % 4) * 8 - 1) <<
++				MX51_ECSPI_CTRL_BL_OFFSET);
++	} else
++		ctrl |= (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
+ 
+ 	cfg |= MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
+ 
+@@ -797,6 +882,8 @@ static void spi_imx_push(struct spi_imx_data *spi_imx)
+ 	while (spi_imx->txfifo < spi_imx_get_fifosize(spi_imx)) {
+ 		if (!spi_imx->count)
+ 			break;
++		if (spi_imx->txfifo && (spi_imx->count == spi_imx->count_index))
++			break;
+ 		spi_imx->tx(spi_imx);
+ 		spi_imx->txfifo++;
+ 	}
+@@ -887,8 +974,12 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	struct spi_imx_config config;
+ 	int ret;
+ 
++	spi_imx->dynamic_burst = 0;
++	spi_imx->bpw_rx = 0;
++
+ 	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+ 	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
++	config.len = t->len;
+ 
+ 	if (!config.speed_hz)
+ 		config.speed_hz = spi->max_speed_hz;
+@@ -897,14 +988,32 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 
+ 	/* Initialize the functions for transfer */
+ 	if (config.bpw <= 8) {
+-		spi_imx->rx = spi_imx_buf_rx_u8;
+-		spi_imx->tx = spi_imx_buf_tx_u8;
++		if (t->len >= sizeof(u32) && is_imx51_ecspi(spi_imx)) {
++			spi_imx->dynamic_burst = 1;
++			spi_imx->rx = spi_imx_buf_rx_swap;
++			spi_imx->tx = spi_imx_buf_tx_swap;
++		} else {
++			spi_imx->rx = spi_imx_buf_rx_u8;
++			spi_imx->tx = spi_imx_buf_tx_u8;
++		}
+ 	} else if (config.bpw <= 16) {
+-		spi_imx->rx = spi_imx_buf_rx_u16;
+-		spi_imx->tx = spi_imx_buf_tx_u16;
++		if (t->len >= sizeof(u32) && is_imx51_ecspi(spi_imx)) {
++			spi_imx->dynamic_burst = 1;
++			spi_imx->rx = spi_imx_buf_rx_swap;
++			spi_imx->tx = spi_imx_buf_tx_swap;
++		} else {
++			spi_imx->rx = spi_imx_buf_rx_u16;
++			spi_imx->tx = spi_imx_buf_tx_u16;
++		}
+ 	} else {
+-		spi_imx->rx = spi_imx_buf_rx_u32;
+-		spi_imx->tx = spi_imx_buf_tx_u32;
++		if (is_imx51_ecspi(spi_imx)) {
++			spi_imx->dynamic_burst = 1;
++			spi_imx->rx = spi_imx_buf_rx_swap;
++			spi_imx->tx = spi_imx_buf_tx_swap;
++		} else {
++			spi_imx->rx = spi_imx_buf_rx_u32;
++			spi_imx->tx = spi_imx_buf_tx_u32;
++		}
+ 	}
+ 
+ 	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
+@@ -912,6 +1021,8 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	else
+ 		spi_imx->usedma = 0;
+ 
++	spi_imx->bpw_w = DIV_ROUND_UP(config.bpw, 8);
++
+ 	if (spi_imx->usedma) {
+ 		ret = spi_imx_dma_configure(spi->master,
+ 					    spi_imx_bytes_per_word(config.bpw));
+@@ -1086,6 +1197,20 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
+ 	spi_imx->count = transfer->len;
+ 	spi_imx->txfifo = 0;
  
 +	if (spi_imx->dynamic_burst) {
-+		dma_sync_sg_for_cpu(master->dma_tx->device->dev,
-+				    tx->sgl, tx->nents, DMA_TO_DEVICE);
++		spi_imx->count_index =
++				spi_imx->count > MX51_ECSPI_CTRL_MAX_BURST ?
++				spi_imx->count % MX51_ECSPI_CTRL_MAX_BURST :
++				spi_imx->count % sizeof(u32);
++
 +		if (spi_imx->bpw_w == 1)
-+			spi_imx_u32_swap_u8(transfer, (u8 *)transfer->tx_buf);
-+		if (spi_imx->bpw_w == 2)
++			spi_imx_u32_swap_u8(transfer,
++					(u8 *)transfer->tx_buf);
++		else if (spi_imx->bpw_w == 2)
 +			spi_imx_u32_swap_u16(transfer,
-+				(u16 *)transfer->tx_buf);
-+
-+		if (spi_imx->count_index) {
-+			/* Cut TX data tail */
-+			old_nents = tx->nents;
-+			WARN_ON(sg_dma_len(&tx->sgl[tx->nents - 1]) <
-+				spi_imx->count_index);
-+			sg_dma_len(&tx->sgl[tx->nents - 1]) -=
-+				spi_imx->count_index;
-+			if (sg_dma_len(&tx->sgl[tx->nents - 1]) == 0)
-+				--tx->nents;
-+		}
-+
-+		dma_sync_sg_for_device(master->dma_tx->device->dev,
-+				       tx->sgl, tx->nents, DMA_TO_DEVICE);
++					(u16 *)transfer->tx_buf);
 +	}
 +
- 	desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
- 				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-@@ -1161,6 +1254,12 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_tx_completion);
- 	dma_async_issue_pending(master->dma_tx);
+ 	reinit_completion(&spi_imx->xfer_done);
  
-+	if (spi_imx->dynamic_burst && spi_imx->count_index) {
-+		spi_imx->tx_buf = transfer->tx_buf + spi_imx->count;
-+		spi_imx->rx_buf = transfer->rx_buf + spi_imx->count;
-+		spi_imx->count = spi_imx->count_index;
-+	}
-+
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
- 	/* Wait SDMA to finish the data transfer.*/
-@@ -1182,6 +1281,27 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	spi_imx_push(spi_imx);
+@@ -1102,6 +1227,16 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
  		return -ETIMEDOUT;
  	}
  
 +	if (spi_imx->dynamic_burst) {
-+		spi_imx->dynamic_burst = 0;
-+
-+		if (spi_imx->count_index) {
-+			ret = spi_imx_pio_txrx(spi_imx);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
 +		if (spi_imx->bpw_w == 1)
-+			spi_imx_u32_swap_u8(transfer, (u8 *)transfer->rx_buf);
-+		if (spi_imx->bpw_w == 2)
++			spi_imx_u32_swap_u8(transfer,
++					(u8 *)transfer->rx_buf);
++		else if (spi_imx->bpw_w == 2)
 +			spi_imx_u32_swap_u16(transfer,
 +					(u16 *)transfer->rx_buf);
-+		dmac_flush_range(transfer->rx_buf,
-+				transfer->rx_buf + transfer->len);
-+		outer_flush_range(virt_to_phys(transfer->rx_buf),
-+				virt_to_phys(transfer->rx_buf) +
-+				transfer->len);
++		spi_imx->dynamic_burst = 0;
 +	}
 +
  	return transfer->len;
  }
  
-@@ -1189,13 +1309,11 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
--	unsigned long transfer_timeout;
--	unsigned long timeout;
-+	int ret;
- 
- 	spi_imx->tx_buf = transfer->tx_buf;
- 	spi_imx->rx_buf = transfer->rx_buf;
- 	spi_imx->count = transfer->len;
--	spi_imx->txfifo = 0;
- 
- 	if (spi_imx->dynamic_burst) {
- 		spi_imx->count_index =
-@@ -1211,21 +1329,9 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- 					(u16 *)transfer->tx_buf);
- 	}
- 
--	reinit_completion(&spi_imx->xfer_done);
--
--	spi_imx_push(spi_imx);
--
--	spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE);
--
--	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
--
--	timeout = wait_for_completion_timeout(&spi_imx->xfer_done,
--					      transfer_timeout);
--	if (!timeout) {
--		dev_err(&spi->dev, "I/O Error in PIO\n");
--		spi_imx->devtype_data->reset(spi_imx);
--		return -ETIMEDOUT;
--	}
-+	ret = spi_imx_pio_txrx(spi_imx);
-+	if (ret < 0)
-+		return ret;
- 
- 	if (spi_imx->dynamic_burst) {
- 		if (spi_imx->bpw_w == 1)
 -- 
 2.9.3

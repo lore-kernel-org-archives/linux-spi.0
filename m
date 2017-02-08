@@ -1,65 +1,34 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: s3c64xx: fix potential division by zero
-Date: Tue, 7 Feb 2017 22:49:24 +0200
-Message-ID: <20170207204924.4ns7di66fep3fwbi@kozik-lap>
+Date: Wed, 08 Feb 2017 13:19:08 +0900
+Message-ID: <20170208041908.ncy7vwf4j6cednmj@gangnam.samsung>
 References: <20170207081025.9671-1-andi.shyti@samsung.com>
  <CGME20170207081032epcas5p3af837bbe00278da4029fc7bb9eba6961@epcas5p3.samsung.com>
  <20170207081025.9671-2-andi.shyti@samsung.com>
+ <20170207204924.4ns7di66fep3fwbi@kozik-lap>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Mark Brown <broonie@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20170207081025.9671-2-andi.shyti@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+        linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-disposition: inline
+In-reply-to: <20170207204924.4ns7di66fep3fwbi@kozik-lap>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 07, 2017 at 05:10:25PM +0900, Andi Shyti wrote:
-> Even though it's quite unlikely to happen in this particular
-> case, clk_get_rate can return '0' if sdd->src_clk is not set
-> properly. In that case we would have a clear division by '0'.
+> > This patch fixes '1397922 Division or modulo by zero' from
+> > scan.coverity.com
 > 
+> It is a false positive.
 
-I do not think it is possible.
-	if (IS_ERR(sdd->src_clk)) {
-		ret = PTR_ERR(sdd->src_clk);
-		goto err_deref_master;
-	}
+Yes... sorry for these two spam/patches... they are just fast
+after holiday "fixes"... please ignore them.
 
-> Check the return value of clk_get_rate and fail in case it
-> returns '0'.
-> 
-> This patch fixes '1397922 Division or modulo by zero' from
-> scan.coverity.com
-
-It is a false positive.
-
-Best regards,
-Krzysztof
-
-> 
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> ---
->  drivers/spi/spi-s3c64xx.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index f6ea9ae047ec..a2ec07f44e33 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -811,6 +811,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
->  
->  		/* Max possible */
->  		speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1);
-> +		if (!speed)
-> +			goto setup_exit;
->  
->  		if (spi->max_speed_hz > speed)
->  			spi->max_speed_hz = speed;
-> -- 
-> 2.11.0
-> 
+Andi
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

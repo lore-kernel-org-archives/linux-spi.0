@@ -1,18 +1,21 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 Subject: Re: [PATCH v2 1/2] mtd: spi-nor: Added spi-nor reset function
-Date: Thu, 9 Feb 2017 18:49:56 +0100
-Message-ID: <b749da59-587e-c2a6-b08b-5c60f4b57101@atmel.com>
+Date: Thu, 9 Feb 2017 15:59:26 -0500
+Message-ID: <CAKekbesozj8OHvAQv_peiN7RThrdJ7nLY1-gz++Sc9_y6Yr=JQ@mail.gmail.com>
 References: <1486572781-28808-1-git-send-email-kdasu.kdev@gmail.com>
  <1486572781-28808-2-git-send-email-kdasu.kdev@gmail.com>
+ <b749da59-587e-c2a6-b08b-5c60f4b57101@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
- linux-mtd@lists.infradead.org
-To: Kamal Dasu <kdasu.kdev@gmail.com>, <linux-spi@vger.kernel.org>,
- <marex@denx.de>, <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Marek Vasut <marex@denx.de>, Florian Fainelli <f.fainelli@gmail.com>,
+ Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>,
+ MTD Maling List <linux-mtd@lists.infradead.org>,
+ bcm-kernel-feedback-list@broadcom.com
+To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1486572781-28808-2-git-send-email-kdasu.kdev@gmail.com>
+In-Reply-To: <b749da59-587e-c2a6-b08b-5c60f4b57101@atmel.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -24,261 +27,178 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Kamal,
-
-Le 08/02/2017 =E0 17:53, Kamal Dasu a =E9crit :
-> Refactored spi_nor_scan() code to add spi_nor_reset() function that
-> programs the nand device to:
-> 1) remove flash protection if applicable
-> 2) set read mode to quad mode if configured such
-> 3) set the address width based on the flash size and vendor
-> =
-
-> On pm resume spi-nor flash may need to be reconfigured after power
-> reset, there is no need to go through a full spi_nor_scan(), flash
-> device driver needs to call spi_nor_reset() to reprogram the flash
-> to its probed state.
-> =
-
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 62 ++++++++++++++++++++++++++++---------=
-------
->  include/linux/mtd/spi-nor.h   | 21 ++++++++++++++-
->  2 files changed, 61 insertions(+), 22 deletions(-)
-> =
-
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index da7cd69..8e3d8bd 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -1312,6 +1312,41 @@ static int spi_nor_check(struct spi_nor *nor)
->  	return 0;
->  }
->  =
-
-> +int spi_nor_reset(struct spi_nor *nor)
-> +{
-> +	int ret =3D 0;
-> +	const struct flash_info *info =3D nor->info;
-> +	struct device *dev =3D nor->dev;
-> +
-> +	/*
-> +	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-> +	 * with the software protection bits set
-> +	 */
-> +
-> +	if (JEDEC_MFR(info) =3D=3D SNOR_MFR_ATMEL ||
-> +	    JEDEC_MFR(info) =3D=3D SNOR_MFR_INTEL ||
-> +	    JEDEC_MFR(info) =3D=3D SNOR_MFR_SST ||
-> +	    info->flags & SPI_NOR_HAS_LOCK) {
-> +		write_enable(nor);
-> +		write_sr(nor, 0);
-> +		spi_nor_wait_till_ready(nor);
-> +	}
-> +
-> +	if (nor->flash_read =3D=3D SPI_NOR_QUAD) {
-> +		ret =3D set_quad_mode(nor, info);
-> +		if (ret) {
-> +			dev_err(dev, "quad mode not supported\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	if (nor->addr_width =3D=3D 4 && JEDEC_MFR(info) !=3D SNOR_MFR_SPANSION)
-> +		set_4byte(nor, info, 1);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_nor_reset);
-> +
->  int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode m=
-ode)
->  {
->  	const struct flash_info *info =3D NULL;
-> @@ -1357,22 +1392,9 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  		}
->  	}
->  =
-
-> +	nor->info =3D info;
->  	mutex_init(&nor->lock);
->  =
-
-> -	/*
-> -	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-> -	 * with the software protection bits set
-> -	 */
-> -
-> -	if (JEDEC_MFR(info) =3D=3D SNOR_MFR_ATMEL ||
-> -	    JEDEC_MFR(info) =3D=3D SNOR_MFR_INTEL ||
-> -	    JEDEC_MFR(info) =3D=3D SNOR_MFR_SST ||
-> -	    info->flags & SPI_NOR_HAS_LOCK) {
-> -		write_enable(nor);
-> -		write_sr(nor, 0);
-> -		spi_nor_wait_till_ready(nor);
-> -	}
-> -
->  	if (!mtd->name)
->  		mtd->name =3D dev_name(dev);
->  	mtd->priv =3D nor;
-> @@ -1447,11 +1469,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  =
-
->  	/* Quad/Dual-read mode takes precedence over fast/normal */
->  	if (mode =3D=3D SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
-> -		ret =3D set_quad_mode(nor, info);
-> -		if (ret) {
-> -			dev_err(dev, "quad mode not supported\n");
-> -			return ret;
-> -		}
->  		nor->flash_read =3D SPI_NOR_QUAD;
->  	} else if (mode =3D=3D SPI_NOR_DUAL && info->flags & SPI_NOR_DUAL_READ)=
- {
->  		nor->flash_read =3D SPI_NOR_DUAL;
-> @@ -1503,8 +1520,7 @@ int spi_nor_scan(struct spi_nor *nor, const char *n=
-ame, enum read_mode mode)
->  			/* No small sector erase for 4-byte command set */
->  			nor->erase_opcode =3D SPINOR_OP_SE_4B;
->  			mtd->erasesize =3D info->sector_size;
-
-It seems that you didn't base your patch on the spi-nor tree. Before your
-patch, you should have something like:
-
-	else if (mtd->size > 0x1000000) {
-		/* enable 4-byte addressing if the device exceeds 16MiB */
-		nor->addr_width =3D 4;
-		if (JEDEC_MFR(info) =3D=3D SNOR_MFR_SPANSION ||
-		    info->flags & SPI_NOR_4B_OPCODES)
-			spi_nor_set_4byte_opcodes(nor, info);
-		else
-			set_4byte(nor, info, 1);
-	} else {
-		nor->addr_width =3D 3;
-	}
-
-That's why in my comment of review 1, I was talking about handling the
-case where spi_nor_set_4byte_opcodes() is called instead of set_4byte():
-indeed when the manufacturer id is Spansion or when the SPI_NOR_4B_OPCODES
-flag is set.
-
-Hence in spi_nor_reset(), or whatever name you choose, set_4byte() must not
-be called if the SPI_NOR_4B_OPCODES flag is set in info->flags.
-
-Besides, for now I don't know that much about how power management is
-handled by the Linux kernel, especially which events trigger the call of
-.suspend() or .resume().
-I've started to read documentation about that topic so please be patient
-because I need some time to figure out the potential side effects this
-series may introduce.
-I know you test your patches before submitting them, so this is not a
-question of trust but I'd rather understand what patches actually do
-instead of blindly merge them! :)
-
-Also maybe this patch can help you:
-http://patchwork.ozlabs.org/patch/719777/
-
-It's not related to power management but it also reworks spi_nor_scan()
-so all settings (op codes, protocols, number of dummy cycles, ...) are
-chosen once for all by spi_nor_init_params() then the actual memory device
-is configured by spi_nor_setup().
-
-I can rework spi_nor_setup() a little bit as the first part of its code is
-needed to be done only once from spi_nor_scan() whereas the final part
-almost matches what's your "spi_nor_reset()" function will do in term.
-
-We should regroup {unlock sectors, enable_quad_io() and set_4byte() (if not
-set_nor_set_4byte_opcodes)} codes. That is to say, the minimum set of SPI
-commands we have to send to the memory at each power on.
-
-Best regards,
-
-Cyrille
-
-
-> -		} else
-> -			set_4byte(nor, info, 1);
-> +		}
->  	} else {
->  		nor->addr_width =3D 3;
->  	}
-> @@ -1517,6 +1533,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  =
-
->  	nor->read_dummy =3D spi_nor_read_dummy_cycles(nor);
->  =
-
-> +	ret =3D spi_nor_reset(nor);
-> +	if (ret)
-> +		return ret;
-> +
->  	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
->  			(long long)mtd->size >> 10);
->  =
-
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index c425c7b..4733c04 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -121,6 +121,8 @@ enum spi_nor_option_flags {
->  	SNOR_F_HAS_SR_TB	=3D BIT(1),
->  };
->  =
-
-> +struct flash_info;
-> +
->  /**
->   * struct spi_nor - Structure for defining a the SPI NOR layer
->   * @mtd:		point to a mtd_info structure
-> @@ -154,6 +156,7 @@ enum spi_nor_option_flags {
->   * @priv:		the private data
->   */
->  struct spi_nor {
-> +	const struct flash_info *info;
->  	struct mtd_info		mtd;
->  	struct mutex		lock;
->  	struct device		*dev;
-> @@ -198,12 +201,28 @@ static inline struct device_node *spi_nor_get_flash=
-_node(struct spi_nor *nor)
->  }
->  =
-
->  /**
-> + * spi_nor_reset() - reset scan the SPI NOR
-> + * @nor:	the spi_nor structure
-> + *
-> + * The drivers uses this function to reset the SPI NOR flash device to
-> + * its initial scanned state, it shall use all nor information set on po=
-weron
-> + * for the read mode, address width and enabling write mode for certain
-> + * manufacturers. This would be needed to be called for flash devices th=
-at are
-> + * reset during power management.
-> + *
-> + * The chip type name can be provided through the @name parameter.
-> + *
-> + * Return: 0 for success, others for failure.
-> + */
-> +int spi_nor_reset(struct spi_nor *nor);
-> +
-> +/**
->   * spi_nor_scan() - scan the SPI NOR
->   * @nor:	the spi_nor structure
->   * @name:	the chip type name
->   * @mode:	the read mode supported by the driver
->   *
-> - * The drivers can use this fuction to scan the SPI NOR.
-> + * The drivers can use this function to scan the SPI NOR.
->   * In the scanning, it will try to get all the necessary information to
->   * fill the mtd_info{} and the spi_nor{}.
->   *
-> =
-
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+T24gVGh1LCBGZWIgOSwgMjAxNyBhdCAxMjo0OSBQTSwgQ3lyaWxsZSBQaXRjaGVuCjxjeXJpbGxl
+LnBpdGNoZW5AYXRtZWwuY29tPiB3cm90ZToKPiBIaSBLYW1hbCwKPgo+IExlIDA4LzAyLzIwMTcg
+w6AgMTc6NTMsIEthbWFsIERhc3UgYSDDqWNyaXQgOgo+PiBSZWZhY3RvcmVkIHNwaV9ub3Jfc2Nh
+bigpIGNvZGUgdG8gYWRkIHNwaV9ub3JfcmVzZXQoKSBmdW5jdGlvbiB0aGF0Cj4+IHByb2dyYW1z
+IHRoZSBuYW5kIGRldmljZSB0bzoKPj4gMSkgcmVtb3ZlIGZsYXNoIHByb3RlY3Rpb24gaWYgYXBw
+bGljYWJsZQo+PiAyKSBzZXQgcmVhZCBtb2RlIHRvIHF1YWQgbW9kZSBpZiBjb25maWd1cmVkIHN1
+Y2gKPj4gMykgc2V0IHRoZSBhZGRyZXNzIHdpZHRoIGJhc2VkIG9uIHRoZSBmbGFzaCBzaXplIGFu
+ZCB2ZW5kb3IKPj4KPj4gT24gcG0gcmVzdW1lIHNwaS1ub3IgZmxhc2ggbWF5IG5lZWQgdG8gYmUg
+cmVjb25maWd1cmVkIGFmdGVyIHBvd2VyCj4+IHJlc2V0LCB0aGVyZSBpcyBubyBuZWVkIHRvIGdv
+IHRocm91Z2ggYSBmdWxsIHNwaV9ub3Jfc2NhbigpLCBmbGFzaAo+PiBkZXZpY2UgZHJpdmVyIG5l
+ZWRzIHRvIGNhbGwgc3BpX25vcl9yZXNldCgpIHRvIHJlcHJvZ3JhbSB0aGUgZmxhc2gKPj4gdG8g
+aXRzIHByb2JlZCBzdGF0ZS4KPj4KPj4gU2lnbmVkLW9mZi1ieTogS2FtYWwgRGFzdSA8a2Rhc3Uu
+a2RldkBnbWFpbC5jb20+Cj4+IC0tLQo+PiAgZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMg
+fCA2MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tCj4+ICBpbmNs
+dWRlL2xpbnV4L210ZC9zcGktbm9yLmggICB8IDIxICsrKysrKysrKysrKysrLQo+PiAgMiBmaWxl
+cyBjaGFuZ2VkLCA2MSBpbnNlcnRpb25zKCspLCAyMiBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIGIvZHJpdmVycy9tdGQvc3BpLW5v
+ci9zcGktbm9yLmMKPj4gaW5kZXggZGE3Y2Q2OS4uOGUzZDhiZCAxMDA2NDQKPj4gLS0tIGEvZHJp
+dmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKPj4gKysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9z
+cGktbm9yLmMKPj4gQEAgLTEzMTIsNiArMTMxMiw0MSBAQCBzdGF0aWMgaW50IHNwaV9ub3JfY2hl
+Y2soc3RydWN0IHNwaV9ub3IgKm5vcikKPj4gICAgICAgcmV0dXJuIDA7Cj4+ICB9Cj4+Cj4+ICtp
+bnQgc3BpX25vcl9yZXNldChzdHJ1Y3Qgc3BpX25vciAqbm9yKQo+PiArewo+PiArICAgICBpbnQg
+cmV0ID0gMDsKPj4gKyAgICAgY29uc3Qgc3RydWN0IGZsYXNoX2luZm8gKmluZm8gPSBub3ItPmlu
+Zm87Cj4+ICsgICAgIHN0cnVjdCBkZXZpY2UgKmRldiA9IG5vci0+ZGV2Owo+PiArCj4+ICsgICAg
+IC8qCj4+ICsgICAgICAqIEF0bWVsLCBTU1QsIEludGVsL051bW9ueXgsIGFuZCBvdGhlcnMgc2Vy
+aWFsIE5PUiB0ZW5kIHRvIHBvd2VyIHVwCj4+ICsgICAgICAqIHdpdGggdGhlIHNvZnR3YXJlIHBy
+b3RlY3Rpb24gYml0cyBzZXQKPj4gKyAgICAgICovCj4+ICsKPj4gKyAgICAgaWYgKEpFREVDX01G
+UihpbmZvKSA9PSBTTk9SX01GUl9BVE1FTCB8fAo+PiArICAgICAgICAgSkVERUNfTUZSKGluZm8p
+ID09IFNOT1JfTUZSX0lOVEVMIHx8Cj4+ICsgICAgICAgICBKRURFQ19NRlIoaW5mbykgPT0gU05P
+Ul9NRlJfU1NUIHx8Cj4+ICsgICAgICAgICBpbmZvLT5mbGFncyAmIFNQSV9OT1JfSEFTX0xPQ0sp
+IHsKPj4gKyAgICAgICAgICAgICB3cml0ZV9lbmFibGUobm9yKTsKPj4gKyAgICAgICAgICAgICB3
+cml0ZV9zcihub3IsIDApOwo+PiArICAgICAgICAgICAgIHNwaV9ub3Jfd2FpdF90aWxsX3JlYWR5
+KG5vcik7Cj4+ICsgICAgIH0KPj4gKwo+PiArICAgICBpZiAobm9yLT5mbGFzaF9yZWFkID09IFNQ
+SV9OT1JfUVVBRCkgewo+PiArICAgICAgICAgICAgIHJldCA9IHNldF9xdWFkX21vZGUobm9yLCBp
+bmZvKTsKPj4gKyAgICAgICAgICAgICBpZiAocmV0KSB7Cj4+ICsgICAgICAgICAgICAgICAgICAg
+ICBkZXZfZXJyKGRldiwgInF1YWQgbW9kZSBub3Qgc3VwcG9ydGVkXG4iKTsKPj4gKyAgICAgICAg
+ICAgICAgICAgICAgIHJldHVybiByZXQ7Cj4+ICsgICAgICAgICAgICAgfQo+PiArICAgICB9Cj4+
+ICsKPj4gKyAgICAgaWYgKG5vci0+YWRkcl93aWR0aCA9PSA0ICYmIEpFREVDX01GUihpbmZvKSAh
+PSBTTk9SX01GUl9TUEFOU0lPTikKPj4gKyAgICAgICAgICAgICBzZXRfNGJ5dGUobm9yLCBpbmZv
+LCAxKTsKPj4gKwo+PiArICAgICByZXR1cm4gcmV0Owo+PiArfQo+PiArRVhQT1JUX1NZTUJPTF9H
+UEwoc3BpX25vcl9yZXNldCk7Cj4+ICsKPj4gIGludCBzcGlfbm9yX3NjYW4oc3RydWN0IHNwaV9u
+b3IgKm5vciwgY29uc3QgY2hhciAqbmFtZSwgZW51bSByZWFkX21vZGUgbW9kZSkKPj4gIHsKPj4g
+ICAgICAgY29uc3Qgc3RydWN0IGZsYXNoX2luZm8gKmluZm8gPSBOVUxMOwo+PiBAQCAtMTM1Nywy
+MiArMTM5Miw5IEBAIGludCBzcGlfbm9yX3NjYW4oc3RydWN0IHNwaV9ub3IgKm5vciwgY29uc3Qg
+Y2hhciAqbmFtZSwgZW51bSByZWFkX21vZGUgbW9kZSkKPj4gICAgICAgICAgICAgICB9Cj4+ICAg
+ICAgIH0KPj4KPj4gKyAgICAgbm9yLT5pbmZvID0gaW5mbzsKPj4gICAgICAgbXV0ZXhfaW5pdCgm
+bm9yLT5sb2NrKTsKPj4KPj4gLSAgICAgLyoKPj4gLSAgICAgICogQXRtZWwsIFNTVCwgSW50ZWwv
+TnVtb255eCwgYW5kIG90aGVycyBzZXJpYWwgTk9SIHRlbmQgdG8gcG93ZXIgdXAKPj4gLSAgICAg
+ICogd2l0aCB0aGUgc29mdHdhcmUgcHJvdGVjdGlvbiBiaXRzIHNldAo+PiAtICAgICAgKi8KPj4g
+LQo+PiAtICAgICBpZiAoSkVERUNfTUZSKGluZm8pID09IFNOT1JfTUZSX0FUTUVMIHx8Cj4+IC0g
+ICAgICAgICBKRURFQ19NRlIoaW5mbykgPT0gU05PUl9NRlJfSU5URUwgfHwKPj4gLSAgICAgICAg
+IEpFREVDX01GUihpbmZvKSA9PSBTTk9SX01GUl9TU1QgfHwKPj4gLSAgICAgICAgIGluZm8tPmZs
+YWdzICYgU1BJX05PUl9IQVNfTE9DSykgewo+PiAtICAgICAgICAgICAgIHdyaXRlX2VuYWJsZShu
+b3IpOwo+PiAtICAgICAgICAgICAgIHdyaXRlX3NyKG5vciwgMCk7Cj4+IC0gICAgICAgICAgICAg
+c3BpX25vcl93YWl0X3RpbGxfcmVhZHkobm9yKTsKPj4gLSAgICAgfQo+PiAtCj4+ICAgICAgIGlm
+ICghbXRkLT5uYW1lKQo+PiAgICAgICAgICAgICAgIG10ZC0+bmFtZSA9IGRldl9uYW1lKGRldik7
+Cj4+ICAgICAgIG10ZC0+cHJpdiA9IG5vcjsKPj4gQEAgLTE0NDcsMTEgKzE0NjksNiBAQCBpbnQg
+c3BpX25vcl9zY2FuKHN0cnVjdCBzcGlfbm9yICpub3IsIGNvbnN0IGNoYXIgKm5hbWUsIGVudW0g
+cmVhZF9tb2RlIG1vZGUpCj4+Cj4+ICAgICAgIC8qIFF1YWQvRHVhbC1yZWFkIG1vZGUgdGFrZXMg
+cHJlY2VkZW5jZSBvdmVyIGZhc3Qvbm9ybWFsICovCj4+ICAgICAgIGlmIChtb2RlID09IFNQSV9O
+T1JfUVVBRCAmJiBpbmZvLT5mbGFncyAmIFNQSV9OT1JfUVVBRF9SRUFEKSB7Cj4+IC0gICAgICAg
+ICAgICAgcmV0ID0gc2V0X3F1YWRfbW9kZShub3IsIGluZm8pOwo+PiAtICAgICAgICAgICAgIGlm
+IChyZXQpIHsKPj4gLSAgICAgICAgICAgICAgICAgICAgIGRldl9lcnIoZGV2LCAicXVhZCBtb2Rl
+IG5vdCBzdXBwb3J0ZWRcbiIpOwo+PiAtICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsK
+Pj4gLSAgICAgICAgICAgICB9Cj4+ICAgICAgICAgICAgICAgbm9yLT5mbGFzaF9yZWFkID0gU1BJ
+X05PUl9RVUFEOwo+PiAgICAgICB9IGVsc2UgaWYgKG1vZGUgPT0gU1BJX05PUl9EVUFMICYmIGlu
+Zm8tPmZsYWdzICYgU1BJX05PUl9EVUFMX1JFQUQpIHsKPj4gICAgICAgICAgICAgICBub3ItPmZs
+YXNoX3JlYWQgPSBTUElfTk9SX0RVQUw7Cj4+IEBAIC0xNTAzLDggKzE1MjAsNyBAQCBpbnQgc3Bp
+X25vcl9zY2FuKHN0cnVjdCBzcGlfbm9yICpub3IsIGNvbnN0IGNoYXIgKm5hbWUsIGVudW0gcmVh
+ZF9tb2RlIG1vZGUpCj4+ICAgICAgICAgICAgICAgICAgICAgICAvKiBObyBzbWFsbCBzZWN0b3Ig
+ZXJhc2UgZm9yIDQtYnl0ZSBjb21tYW5kIHNldCAqLwo+PiAgICAgICAgICAgICAgICAgICAgICAg
+bm9yLT5lcmFzZV9vcGNvZGUgPSBTUElOT1JfT1BfU0VfNEI7Cj4+ICAgICAgICAgICAgICAgICAg
+ICAgICBtdGQtPmVyYXNlc2l6ZSA9IGluZm8tPnNlY3Rvcl9zaXplOwo+Cj4gSXQgc2VlbXMgdGhh
+dCB5b3UgZGlkbid0IGJhc2UgeW91ciBwYXRjaCBvbiB0aGUgc3BpLW5vciB0cmVlLiBCZWZvcmUg
+eW91cgo+IHBhdGNoLCB5b3Ugc2hvdWxkIGhhdmUgc29tZXRoaW5nIGxpa2U6CgpJIHJlYmFzZWQg
+dG8gdGhlIGxpbnVzIHRyZWUuIEkgd2lsbCByZWJhc2UgdG8gdGhlIHNwaS1ub3IgdHJlZSBmb3Ig
+dGhlCm5leHQgdmVyc2lvbi4KCj4KPiAgICAgICAgIGVsc2UgaWYgKG10ZC0+c2l6ZSA+IDB4MTAw
+MDAwMCkgewo+ICAgICAgICAgICAgICAgICAvKiBlbmFibGUgNC1ieXRlIGFkZHJlc3NpbmcgaWYg
+dGhlIGRldmljZSBleGNlZWRzIDE2TWlCICovCj4gICAgICAgICAgICAgICAgIG5vci0+YWRkcl93
+aWR0aCA9IDQ7Cj4gICAgICAgICAgICAgICAgIGlmIChKRURFQ19NRlIoaW5mbykgPT0gU05PUl9N
+RlJfU1BBTlNJT04gfHwKPiAgICAgICAgICAgICAgICAgICAgIGluZm8tPmZsYWdzICYgU1BJX05P
+Ul80Ql9PUENPREVTKQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHNwaV9ub3Jfc2V0XzRieXRl
+X29wY29kZXMobm9yLCBpbmZvKTsKPiAgICAgICAgICAgICAgICAgZWxzZQo+ICAgICAgICAgICAg
+ICAgICAgICAgICAgIHNldF80Ynl0ZShub3IsIGluZm8sIDEpOwo+ICAgICAgICAgfSBlbHNlIHsK
+PiAgICAgICAgICAgICAgICAgbm9yLT5hZGRyX3dpZHRoID0gMzsKPiAgICAgICAgIH0KPgo+IFRo
+YXQncyB3aHkgaW4gbXkgY29tbWVudCBvZiByZXZpZXcgMSwgSSB3YXMgdGFsa2luZyBhYm91dCBo
+YW5kbGluZyB0aGUKPiBjYXNlIHdoZXJlIHNwaV9ub3Jfc2V0XzRieXRlX29wY29kZXMoKSBpcyBj
+YWxsZWQgaW5zdGVhZCBvZiBzZXRfNGJ5dGUoKToKPiBpbmRlZWQgd2hlbiB0aGUgbWFudWZhY3R1
+cmVyIGlkIGlzIFNwYW5zaW9uIG9yIHdoZW4gdGhlIFNQSV9OT1JfNEJfT1BDT0RFUwo+IGZsYWcg
+aXMgc2V0Lgo+CgpPayAgSSBuZWVkIHRvIHVzZSB0aGUgc3BpLW5vciB0cmVlLgoKPiBIZW5jZSBp
+biBzcGlfbm9yX3Jlc2V0KCksIG9yIHdoYXRldmVyIG5hbWUgeW91IGNob29zZSwgc2V0XzRieXRl
+KCkgbXVzdCBub3QKPiBiZSBjYWxsZWQgaWYgdGhlIFNQSV9OT1JfNEJfT1BDT0RFUyBmbGFnIGlz
+IHNldCBpbiBpbmZvLT5mbGFncy4KPgo+IEJlc2lkZXMsIGZvciBub3cgSSBkb24ndCBrbm93IHRo
+YXQgbXVjaCBhYm91dCBob3cgcG93ZXIgbWFuYWdlbWVudCBpcwo+IGhhbmRsZWQgYnkgdGhlIExp
+bnV4IGtlcm5lbCwgZXNwZWNpYWxseSB3aGljaCBldmVudHMgdHJpZ2dlciB0aGUgY2FsbCBvZgo+
+IC5zdXNwZW5kKCkgb3IgLnJlc3VtZSgpLgo+IEkndmUgc3RhcnRlZCB0byByZWFkIGRvY3VtZW50
+YXRpb24gYWJvdXQgdGhhdCB0b3BpYyBzbyBwbGVhc2UgYmUgcGF0aWVudAo+IGJlY2F1c2UgSSBu
+ZWVkIHNvbWUgdGltZSB0byBmaWd1cmUgb3V0IHRoZSBwb3RlbnRpYWwgc2lkZSBlZmZlY3RzIHRo
+aXMKPiBzZXJpZXMgbWF5IGludHJvZHVjZS4KPiBJIGtub3cgeW91IHRlc3QgeW91ciBwYXRjaGVz
+IGJlZm9yZSBzdWJtaXR0aW5nIHRoZW0sIHNvIHRoaXMgaXMgbm90IGEKPiBxdWVzdGlvbiBvZiB0
+cnVzdCBidXQgSSdkIHJhdGhlciB1bmRlcnN0YW5kIHdoYXQgcGF0Y2hlcyBhY3R1YWxseSBkbwo+
+IGluc3RlYWQgb2YgYmxpbmRseSBtZXJnZSB0aGVtISA6KQo+CgpJIHdpbGwgbWFrZSBzdXJlIEkg
+dXNlIHRoZSByaWdodCBjb2RlYmFzZS4KCj4gQWxzbyBtYXliZSB0aGlzIHBhdGNoIGNhbiBoZWxw
+IHlvdToKPiBodHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcGF0Y2gvNzE5Nzc3Lwo+CgpJIGRv
+IHNlZSB0aGF0IHRoZSBtMjVwODAgYW5kIHNwaS1ub3IgZHJpdmVycyBhcmUgaW1wbGVtZW50aW5n
+IGFuZApkaXN0aW5ndWlzaGluZyBzcGkgcHJvdG9jb2wgYW5kIGNtZHMgYmFzZWQgb24gdGhlIGFk
+ZHJlc3Mgd2lkdGggYW5kCnRyYW5zZmVyIG1vZGVzLiBBbmQgaXMgc3BpLW5vciByZWZhY3Rvcmlu
+ZyB0aGUgc2FtZSBwYXJ0cyBvZiB0aGUgY29kZQp3aGljaCBJIGhhdmUgdG91Y2hlZC4gc28gd2ls
+bCBmb2xsb3cgdXAgaW4gdGhpcyBjaGFuZ2UuCgo+IEl0J3Mgbm90IHJlbGF0ZWQgdG8gcG93ZXIg
+bWFuYWdlbWVudCBidXQgaXQgYWxzbyByZXdvcmtzIHNwaV9ub3Jfc2NhbigpCj4gc28gYWxsIHNl
+dHRpbmdzIChvcCBjb2RlcywgcHJvdG9jb2xzLCBudW1iZXIgb2YgZHVtbXkgY3ljbGVzLCAuLi4p
+IGFyZQo+IGNob3NlbiBvbmNlIGZvciBhbGwgYnkgc3BpX25vcl9pbml0X3BhcmFtcygpIHRoZW4g
+dGhlIGFjdHVhbCBtZW1vcnkgZGV2aWNlCj4gaXMgY29uZmlndXJlZCBieSBzcGlfbm9yX3NldHVw
+KCkuCj4KPiBJIGNhbiByZXdvcmsgc3BpX25vcl9zZXR1cCgpIGEgbGl0dGxlIGJpdCBhcyB0aGUg
+Zmlyc3QgcGFydCBvZiBpdHMgY29kZSBpcwo+IG5lZWRlZCB0byBiZSBkb25lIG9ubHkgb25jZSBm
+cm9tIHNwaV9ub3Jfc2NhbigpIHdoZXJlYXMgdGhlIGZpbmFsIHBhcnQKPiBhbG1vc3QgbWF0Y2hl
+cyB3aGF0J3MgeW91ciAic3BpX25vcl9yZXNldCgpIiBmdW5jdGlvbiB3aWxsIGRvIGluIHRlcm0u
+Cj4KPiBXZSBzaG91bGQgcmVncm91cCB7dW5sb2NrIHNlY3RvcnMsIGVuYWJsZV9xdWFkX2lvKCkg
+YW5kIHNldF80Ynl0ZSgpIChpZiBub3QKPiBzZXRfbm9yX3NldF80Ynl0ZV9vcGNvZGVzKX0gY29k
+ZXMuIFRoYXQgaXMgdG8gc2F5LCB0aGUgbWluaW11bSBzZXQgb2YgU1BJCj4gY29tbWFuZHMgd2Ug
+aGF2ZSB0byBzZW5kIHRvIHRoZSBtZW1vcnkgYXQgZWFjaCBwb3dlciBvbi4KPgoKWWVzIHRoYXQg
+c291bmRzIHJpZ2h0LiBSZWdhcmRpbmcgdGhlIHBtICBkbyB3ZSB3YW50IHRvIHVzZSB0aGUgbTI1
+cDgwCnJlc3VtZSwgb3IgbGV0IHRoZSBzcGkgbWFzdGVyIHNvbWVob3cgaW52b2tlIHRoZSBzZXR1
+cCBmcm9tIGl0cwpyZXN1bWUuIElmIHRoZXJlIHdhcyBhIHdheSB0byBkbyB0aGF0IGNsZWFubHkg
+d2l0aGluIHRoZSBjdXJyZW50CmZyYW1ld29yayBvZiBtMjVwLCBzcGktbm9yLCBzcGkgbWFzdGVy
+IGl0IG1pZ2h0IGxlYXZlIHRoYXQgZGVjaXNpb24gdG8KdGhlIHNwaSBjb250cm9sbGVyIGRyaXZl
+ci4gQWxzbyBpbiBvdXIgY2FzZSB3ZSBhcmUgYSBzcGkgbWFzdGVyCmNvbnRyb2xsZXIgZHJpdmVy
+ICBtdGQgYW5kIHNwaS1ub3IgbTI1cDgwIHN0cnVjdHVyZXMgYW5kIGl0cyBvcHMgYXJlCnRyYW5z
+cGFyZW50LgoKPiBCZXN0IHJlZ2FyZHMsCj4KPiBDeXJpbGxlCj4KPgo+PiAtICAgICAgICAgICAg
+IH0gZWxzZQo+PiAtICAgICAgICAgICAgICAgICAgICAgc2V0XzRieXRlKG5vciwgaW5mbywgMSk7
+Cj4+ICsgICAgICAgICAgICAgfQo+PiAgICAgICB9IGVsc2Ugewo+PiAgICAgICAgICAgICAgIG5v
+ci0+YWRkcl93aWR0aCA9IDM7Cj4+ICAgICAgIH0KPj4gQEAgLTE1MTcsNiArMTUzMywxMCBAQCBp
+bnQgc3BpX25vcl9zY2FuKHN0cnVjdCBzcGlfbm9yICpub3IsIGNvbnN0IGNoYXIgKm5hbWUsIGVu
+dW0gcmVhZF9tb2RlIG1vZGUpCj4+Cj4+ICAgICAgIG5vci0+cmVhZF9kdW1teSA9IHNwaV9ub3Jf
+cmVhZF9kdW1teV9jeWNsZXMobm9yKTsKPj4KPj4gKyAgICAgcmV0ID0gc3BpX25vcl9yZXNldChu
+b3IpOwo+PiArICAgICBpZiAocmV0KQo+PiArICAgICAgICAgICAgIHJldHVybiByZXQ7Cj4+ICsK
+Pj4gICAgICAgZGV2X2luZm8oZGV2LCAiJXMgKCVsbGQgS2J5dGVzKVxuIiwgaW5mby0+bmFtZSwK
+Pj4gICAgICAgICAgICAgICAgICAgICAgIChsb25nIGxvbmcpbXRkLT5zaXplID4+IDEwKTsKPj4K
+Pj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbXRkL3NwaS1ub3IuaCBiL2luY2x1ZGUvbGlu
+dXgvbXRkL3NwaS1ub3IuaAo+PiBpbmRleCBjNDI1YzdiLi40NzMzYzA0IDEwMDY0NAo+PiAtLS0g
+YS9pbmNsdWRlL2xpbnV4L210ZC9zcGktbm9yLmgKPj4gKysrIGIvaW5jbHVkZS9saW51eC9tdGQv
+c3BpLW5vci5oCj4+IEBAIC0xMjEsNiArMTIxLDggQEAgZW51bSBzcGlfbm9yX29wdGlvbl9mbGFn
+cyB7Cj4+ICAgICAgIFNOT1JfRl9IQVNfU1JfVEIgICAgICAgID0gQklUKDEpLAo+PiAgfTsKPj4K
+Pj4gK3N0cnVjdCBmbGFzaF9pbmZvOwo+PiArCj4+ICAvKioKPj4gICAqIHN0cnVjdCBzcGlfbm9y
+IC0gU3RydWN0dXJlIGZvciBkZWZpbmluZyBhIHRoZSBTUEkgTk9SIGxheWVyCj4+ICAgKiBAbXRk
+OiAgICAgICAgICAgICBwb2ludCB0byBhIG10ZF9pbmZvIHN0cnVjdHVyZQo+PiBAQCAtMTU0LDYg
+KzE1Niw3IEBAIGVudW0gc3BpX25vcl9vcHRpb25fZmxhZ3Mgewo+PiAgICogQHByaXY6ICAgICAg
+ICAgICAgdGhlIHByaXZhdGUgZGF0YQo+PiAgICovCj4+ICBzdHJ1Y3Qgc3BpX25vciB7Cj4+ICsg
+ICAgIGNvbnN0IHN0cnVjdCBmbGFzaF9pbmZvICppbmZvOwo+PiAgICAgICBzdHJ1Y3QgbXRkX2lu
+Zm8gICAgICAgICBtdGQ7Cj4+ICAgICAgIHN0cnVjdCBtdXRleCAgICAgICAgICAgIGxvY2s7Cj4+
+ICAgICAgIHN0cnVjdCBkZXZpY2UgICAgICAgICAgICpkZXY7Cj4+IEBAIC0xOTgsMTIgKzIwMSwy
+OCBAQCBzdGF0aWMgaW5saW5lIHN0cnVjdCBkZXZpY2Vfbm9kZSAqc3BpX25vcl9nZXRfZmxhc2hf
+bm9kZShzdHJ1Y3Qgc3BpX25vciAqbm9yKQo+PiAgfQo+Pgo+PiAgLyoqCj4+ICsgKiBzcGlfbm9y
+X3Jlc2V0KCkgLSByZXNldCBzY2FuIHRoZSBTUEkgTk9SCj4+ICsgKiBAbm9yOiAgICAgdGhlIHNw
+aV9ub3Igc3RydWN0dXJlCj4+ICsgKgo+PiArICogVGhlIGRyaXZlcnMgdXNlcyB0aGlzIGZ1bmN0
+aW9uIHRvIHJlc2V0IHRoZSBTUEkgTk9SIGZsYXNoIGRldmljZSB0bwo+PiArICogaXRzIGluaXRp
+YWwgc2Nhbm5lZCBzdGF0ZSwgaXQgc2hhbGwgdXNlIGFsbCBub3IgaW5mb3JtYXRpb24gc2V0IG9u
+IHBvd2Vyb24KPj4gKyAqIGZvciB0aGUgcmVhZCBtb2RlLCBhZGRyZXNzIHdpZHRoIGFuZCBlbmFi
+bGluZyB3cml0ZSBtb2RlIGZvciBjZXJ0YWluCj4+ICsgKiBtYW51ZmFjdHVyZXJzLiBUaGlzIHdv
+dWxkIGJlIG5lZWRlZCB0byBiZSBjYWxsZWQgZm9yIGZsYXNoIGRldmljZXMgdGhhdCBhcmUKPj4g
+KyAqIHJlc2V0IGR1cmluZyBwb3dlciBtYW5hZ2VtZW50Lgo+PiArICoKPj4gKyAqIFRoZSBjaGlw
+IHR5cGUgbmFtZSBjYW4gYmUgcHJvdmlkZWQgdGhyb3VnaCB0aGUgQG5hbWUgcGFyYW1ldGVyLgo+
+PiArICoKPj4gKyAqIFJldHVybjogMCBmb3Igc3VjY2Vzcywgb3RoZXJzIGZvciBmYWlsdXJlLgo+
+PiArICovCj4+ICtpbnQgc3BpX25vcl9yZXNldChzdHJ1Y3Qgc3BpX25vciAqbm9yKTsKPj4gKwo+
+PiArLyoqCj4+ICAgKiBzcGlfbm9yX3NjYW4oKSAtIHNjYW4gdGhlIFNQSSBOT1IKPj4gICAqIEBu
+b3I6ICAgICB0aGUgc3BpX25vciBzdHJ1Y3R1cmUKPj4gICAqIEBuYW1lOiAgICB0aGUgY2hpcCB0
+eXBlIG5hbWUKPj4gICAqIEBtb2RlOiAgICB0aGUgcmVhZCBtb2RlIHN1cHBvcnRlZCBieSB0aGUg
+ZHJpdmVyCj4+ICAgKgo+PiAtICogVGhlIGRyaXZlcnMgY2FuIHVzZSB0aGlzIGZ1Y3Rpb24gdG8g
+c2NhbiB0aGUgU1BJIE5PUi4KPj4gKyAqIFRoZSBkcml2ZXJzIGNhbiB1c2UgdGhpcyBmdW5jdGlv
+biB0byBzY2FuIHRoZSBTUEkgTk9SLgo+PiAgICogSW4gdGhlIHNjYW5uaW5nLCBpdCB3aWxsIHRy
+eSB0byBnZXQgYWxsIHRoZSBuZWNlc3NhcnkgaW5mb3JtYXRpb24gdG8KPj4gICAqIGZpbGwgdGhl
+IG10ZF9pbmZve30gYW5kIHRoZSBzcGlfbm9ye30uCj4+ICAgKgo+Pgo+CgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXggTVREIGRpc2N1
+c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vbGludXgtbXRkLwo=

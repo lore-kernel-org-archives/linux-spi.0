@@ -1,60 +1,36 @@
-From: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] Add Master Sample Data Mode for SPI
-Date: Fri, 10 Feb 2017 19:02:47 -0300
-Message-ID: <20170210220247.8478-1-viniciusfre@gmail.com>
-Reply-To: viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-	wens-jdAy2FN1RRM@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Return-path: <linux-sunxi+bncBDNJJSMB6QFRBEHR7DCAKGQEUS3KNPY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 0/2]  Added support for spi-nor device pm in m25p80
+Date: Fri, 10 Feb 2017 16:49:27 -0500
+Message-ID: <1486763369-31969-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-In order to work appropriately, the max11043 ADC chip and probably
-others, needs SPI master samples the data at the correct edge. From
-max11043 datasheet: "The data at DIN is latched on the rising edge
-of SCLK". Same to DOUT.
+The V3 changes below implements power management support in m25p80 driver.
+m25p80 pm resume() calls newly a implemented spi_nor_init() function
+that sets up the spi-nor flash to its probed state. This is needed on
+platfroms that turn off power to the spi-nor flash on pm suspend.
+The code has been rebased to git://github.com/spi-nor/linux.git next
+branch.
 
-This patch add Master Sample Data Mode bit in normal sample mode.
+Kamal Dasu (2):
+  mtd: spi-nor: Added spi-nor reset function
+  mtd: m25p80: Added pm ops support
 
-Signed-off-by: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-sun4i.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/devices/m25p80.c  | 16 ++++++++++
+ drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
+ include/linux/mtd/spi-nor.h   | 21 ++++++++++++-
+ 3 files changed, 81 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index c5cd635c28f3..6325be2ce8d9 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -44,6 +44,7 @@
- #define SUN4I_CTL_CS_MANUAL			BIT(16)
- #define SUN4I_CTL_CS_LEVEL			BIT(17)
- #define SUN4I_CTL_TP				BIT(18)
-+#define SUN4I_CTL_SDM				BIT(20)
- 
- #define SUN4I_INT_CTL_REG		0x0c
- #define SUN4I_INT_CTL_RF_F34			BIT(4)
-@@ -407,7 +408,8 @@ static int sun4i_spi_runtime_resume(struct device *dev)
- 	}
- 
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
--			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
-+			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP |
-+			SUN4I_CTL_SDM);
- 
- 	return 0;
- 
 -- 
-2.11.0
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

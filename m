@@ -1,7 +1,7 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 1/2] mtd: spi-nor: Added spi-nor reset function
-Date: Fri, 10 Feb 2017 16:49:28 -0500
-Message-ID: <1486763369-31969-2-git-send-email-kdasu.kdev@gmail.com>
+Subject: [PATCH v3 2/2] mtd: m25p80: Added pm ops support
+Date: Fri, 10 Feb 2017 16:49:29 -0500
+Message-ID: <1486763369-31969-3-git-send-email-kdasu.kdev@gmail.com>
 References: <1486763369-31969-1-git-send-email-kdasu.kdev@gmail.com>
 Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
@@ -13,198 +13,48 @@ In-Reply-To: <1486763369-31969-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Refactored spi_nor_scan() code to add spi_nor_init() function that
-programs the spi-nor flash to:
-1) remove flash protection if applicable
-2) set read mode to quad mode if configured such
-3) set the address width based on the flash size and vendor
-
-On pm resume spi-nor flash may need to be reconfigured after power
-reset, there is no need to go through a full spi_nor_scan(), flash
-device driver needs to call spi_nor_reset() to reprogram the flash
-to its probed state.
+Added power management ops for resume to be able to resan spi-nor
+device and set it to right transfer modes in its probed state after
+poweron. Some SoC implementations might  power down the spi-nor flash
+and loose its initial settings on suspend. A resume should retore the
+part to its probed state.
 
 Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-Conflicts:
-	drivers/mtd/spi-nor/spi-nor.c
 ---
- drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
- include/linux/mtd/spi-nor.h   | 21 ++++++++++++-
- 2 files changed, 65 insertions(+), 28 deletions(-)
+ drivers/mtd/devices/m25p80.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 70e52ff..2bf7f4f 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1526,6 +1526,44 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
- 	return 0;
- }
- 
-+int spi_nor_init(struct spi_nor *nor)
-+{
-+	int ret = 0;
-+	const struct flash_info *info = nor->info;
-+	struct device *dev = nor->dev;
-+
-+	/*
-+	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-+	 * with the software protection bits set
-+	 */
-+
-+	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_SST ||
-+	    info->flags & SPI_NOR_HAS_LOCK) {
-+		write_enable(nor);
-+		write_sr(nor, 0);
-+		spi_nor_wait_till_ready(nor);
-+	}
-+
-+	if (nor->flash_read == SPI_NOR_QUAD) {
-+		ret = set_quad_mode(nor, info);
-+		if (ret) {
-+			dev_err(dev, "quad mode not supported\n");
-+			return ret;
-+		}
-+	}
-+
-+	if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
-+	    info->flags & SPI_NOR_4B_OPCODES)
-+		spi_nor_set_4byte_opcodes(nor, info);
-+	else
-+		set_4byte(nor, info, 1);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(spi_nor_init);
-+
- int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- {
- 	const struct flash_info *info = NULL;
-@@ -1571,6 +1609,7 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 		}
- 	}
- 
-+	nor->info = info;
- 	mutex_init(&nor->lock);
- 
- 	/*
-@@ -1581,20 +1620,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 	if (info->flags & SPI_S3AN)
- 		nor->flags |=  SNOR_F_READY_XSR_RDY;
- 
--	/*
--	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
--	 * with the software protection bits set
--	 */
--
--	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_SST ||
--	    info->flags & SPI_NOR_HAS_LOCK) {
--		write_enable(nor);
--		write_sr(nor, 0);
--		spi_nor_wait_till_ready(nor);
--	}
--
- 	if (!mtd->name)
- 		mtd->name = dev_name(dev);
- 	mtd->priv = nor;
-@@ -1669,11 +1694,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	/* Quad/Dual-read mode takes precedence over fast/normal */
- 	if (mode == SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
--		ret = set_quad_mode(nor, info);
--		if (ret) {
--			dev_err(dev, "quad mode not supported\n");
--			return ret;
--		}
- 		nor->flash_read = SPI_NOR_QUAD;
- 	} else if (mode == SPI_NOR_DUAL && info->flags & SPI_NOR_DUAL_READ) {
- 		nor->flash_read = SPI_NOR_DUAL;
-@@ -1702,17 +1722,11 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	if (info->addr_width)
- 		nor->addr_width = info->addr_width;
--	else if (mtd->size > 0x1000000) {
-+	else if (mtd->size > 0x1000000)
- 		/* enable 4-byte addressing if the device exceeds 16MiB */
- 		nor->addr_width = 4;
--		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
--		    info->flags & SPI_NOR_4B_OPCODES)
--			spi_nor_set_4byte_opcodes(nor, info);
--		else
--			set_4byte(nor, info, 1);
--	} else {
-+	else
- 		nor->addr_width = 3;
--	}
- 
- 	if (nor->addr_width > SPI_NOR_MAX_ADDR_WIDTH) {
- 		dev_err(dev, "address width is too large: %u\n",
-@@ -1728,6 +1742,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 			return ret;
- 	}
- 
-+	ret = spi_nor_init(nor);
-+	if (ret)
-+		return ret;
-+
- 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
- 			(long long)mtd->size >> 10);
- 
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index f2a7180..945b4d4 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -143,6 +143,8 @@ enum spi_nor_option_flags {
- 	SNOR_F_READY_XSR_RDY	= BIT(4),
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c4df3b1..be94fba 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -324,10 +324,26 @@ static int m25p_remove(struct spi_device *spi)
  };
+ MODULE_DEVICE_TABLE(of, m25p_of_table);
  
-+struct flash_info;
++#ifdef CONFIG_PM_SLEEP
++static int m25p_suspend(struct device *dev)
++{
++	return 0;
++}
 +
- /**
-  * struct spi_nor - Structure for defining a the SPI NOR layer
-  * @mtd:		point to a mtd_info structure
-@@ -176,6 +178,7 @@ enum spi_nor_option_flags {
-  * @priv:		the private data
-  */
- struct spi_nor {
-+	const struct flash_info *info;
- 	struct mtd_info		mtd;
- 	struct mutex		lock;
- 	struct device		*dev;
-@@ -220,12 +223,28 @@ static inline struct device_node *spi_nor_get_flash_node(struct spi_nor *nor)
- }
- 
- /**
-+ * spi_nor_init() - reset scan the SPI NOR
-+ * @nor:	the spi_nor structure
-+ *
-+ * The drivers uses this function to initialize the SPI NOR flash device to
-+ * its scanned state, it shall use all nor information set on poweron
-+ * for the read mode, address width and remove protection for certain spi-nor
-+ * manufacturers. This would be needed to be called for flash devices that are
-+ * reset during power management.
-+ *
-+ * The chip type name can be provided through the @name parameter.
-+ *
-+ * Return: 0 for success, others for failure.
-+ */
-+int spi_nor_init(struct spi_nor *nor);
++static int m25p_resume(struct device *dev)
++{
++	struct m25p *flash = dev_get_drvdata(dev);
 +
-+/**
-  * spi_nor_scan() - scan the SPI NOR
-  * @nor:	the spi_nor structure
-  * @name:	the chip type name
-  * @mode:	the read mode supported by the driver
-  *
-- * The drivers can use this fuction to scan the SPI NOR.
-+ * The drivers can use this function to scan the SPI NOR.
-  * In the scanning, it will try to get all the necessary information to
-  * fill the mtd_info{} and the spi_nor{}.
-  *
++	return spi_nor_init(&flash->spi_nor);
++}
++#endif
++static SIMPLE_DEV_PM_OPS(m25p_pm_ops, m25p_suspend, m25p_resume);
++
+ static struct spi_driver m25p80_driver = {
+ 	.driver = {
+ 		.name	= "m25p80",
+ 		.of_match_table = m25p_of_table,
++		.pm     = &m25p_pm_ops,
+ 	},
+ 	.id_table	= m25p_ids,
+ 	.probe	= m25p_probe,
 -- 
 1.9.1
 

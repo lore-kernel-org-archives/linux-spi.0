@@ -1,58 +1,51 @@
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/8] spi: davinci: enable DMA when channels are defined in DT
-Date: Fri, 10 Feb 2017 16:29:38 +0100
-Message-ID: <1486740584-17875-3-git-send-email-fisaksen@baylibre.com>
+From: Frode Isaksen <fisaksen@baylibre.com>
+Subject: [PATCH 6/8] spi: loopback-test: set HW loopback mode if loopback set
+Date: Fri, 10 Feb 2017 16:29:42 +0100
+Message-ID: <1486740584-17875-7-git-send-email-fisaksen@baylibre.com>
 References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-To: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1486740584-17875-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Frode Isaksen <fisaksen@baylibre.com>, broonie@kernel.org,
+ linux-spi@vger.kernel.org
+To: nsekhar@ti.com, khilman@baylibre.com, ptitiano@baylibre.com,
+ linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Set the internal HW loopback mode if the loopback option
+is set.
 
-When booting with DT the SPI driver is always using
-the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
-defined in the DT.
-
-This commit changes the behaviour to select the SPI_IO_TYPE_DMA mode
-if DMA channels are defined in the DT and will keep SPI_IO_TYPE_INTR
-if the channels are not defined in it.
-
-Signed-off-by: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
 ---
- drivers/spi/spi-davinci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-loopback-test.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 84c0d76..b7b2da1 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -389,6 +389,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- {
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	struct device_node *np = spi->dev.of_node;
-+	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
- 	u32 prop;
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 50e620f..ce552af 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -285,6 +285,11 @@ static int spi_loopback_test_probe(struct spi_device *spi)
  
- 	if (spicfg == NULL && np) {
-@@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- 		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
- 			spicfg->wdelay = (u8)prop;
- 		spi->controller_data = spicfg;
-+
-+		if (dspi->dma_rx && dspi->dma_tx)
-+			spicfg->io_type = SPI_IO_TYPE_DMA;
- 	}
+ 	dev_info(&spi->dev, "Executing spi-loopback-tests\n");
  
- 	return 0;
++	if (loopback) {
++		spi->mode |= SPI_LOOP;
++		ret = spi_setup(spi);
++		dev_info(&spi->dev, "configure loopback return: %i\n", ret);
++	}
+ 	ret = spi_test_run_tests(spi, spi_tests);
+ 
+ 	dev_info(&spi->dev, "Finished spi-loopback-tests with return: %i\n",
 -- 
 2.7.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

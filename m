@@ -1,83 +1,77 @@
-From: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Subject: Re: [PATCH v2] ARM: spi/sun7i: Add Master Sample Data
- Mode for SPI
-Date: Sat, 11 Feb 2017 14:58:54 +0800
-Message-ID: <20170212033109.V3xe2GIs@smtp2p.mail.yandex.net>
-Reply-To: icenowy-ymACFijhrKM@public.gmane.org
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
+Date: Mon, 13 Feb 2017 11:29:24 +0530
+Message-ID: <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
+References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
+ <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, siarhei.siamashka-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, wens-jdAy2FN1RRM@public.gmane.org,
- linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
-To: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBCZLPFN5Q4OBBVGZ73CAKGQEL5BTHBY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>, <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1486740584-17875-4-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
++ Peter
 
-ARM: is not needed.
+On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
+> Limit the transfer size to 20 scatter/gather pages if
+> DMA is enabled.
+> The eDMA DMA engine is limited to 20 SG entries in one DMA
+> transaction. If this number is exceeded, DMA receive fails.
+> This error occurs with large vmalloc'ed buffers.
 
-2017=E5=B9=B42=E6=9C=8811=E6=97=A5 11:54=E4=BA=8E Vinicius Maciel <vinicius=
-fre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>=E5=86=99=E9=81=93=EF=BC=9A
->
-> In order to work appropriately, the max11043 ADC chip and probably=20
-> others, needs SPI master samples the data at the correct edge. From=20
-> max11043 datasheet: "The data at DIN is latched on the rising edge=20
-> of SCLK". Same to DOUT.=20
->
-> This patch add Master Sample Data Mode bit in normal sample mode.=20
-> It will affect only A20.=20
->
-> Signed-off-by: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>=20
-> Reviewed-by: Siarhei Siamashka <siarhei.siamashka-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>=20
-> ---=20
-> drivers/spi/spi-sun4i.c | 4 +++-=20
-> 1 file changed, 3 insertions(+), 1 deletion(-)=20
->
-> diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c=20
-> index c5cd635c28f3..6325be2ce8d9 100644=20
-> --- a/drivers/spi/spi-sun4i.c=20
-> +++ b/drivers/spi/spi-sun4i.c=20
-> @@ -44,6 +44,7 @@=20
-> #define SUN4I_CTL_CS_MANUAL BIT(16)=20
-> #define SUN4I_CTL_CS_LEVEL BIT(17)=20
-> #define SUN4I_CTL_TP BIT(18)=20
-> +#define SUN4I_CTL_SDM BIT(20)=20
->
-> #define SUN4I_INT_CTL_REG 0x0c=20
-> #define SUN4I_INT_CTL_RF_F34 BIT(4)=20
-> @@ -407,7 +408,8 @@ static int sun4i_spi_runtime_resume(struct device *de=
-v)=20
-> }=20
->
-> sun4i_spi_write(sspi, SUN4I_CTL_REG,=20
-> - SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);=20
-> + SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP |=20
-> + SUN4I_CTL_SDM);=20
->
-> return 0;=20
->
-> --=20
-> 2.11.0=20
->
-> --=20
-> You received this message because you are subscribed to the Google Groups=
- "linux-sunxi" group.=20
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org=20
-> For more options, visit https://groups.google.com/d/optout.=20
+This needs more explanation because there is support available in edma
+driver for long SG lists by breaking them down into transfers using 20
+PaRAM entries at a time. If thats not working for you, that needs
+further debug.
 
---=20
-You received this message because you are subscribed to the Google Groups "=
-linux-sunxi" group.
-To unsubscribe from this group and stop receiving emails from it, send an e=
-mail to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit https://groups.google.com/d/optout.
+> 
+> Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+
+Thanks,
+Sekhar
+
+> ---
+>  drivers/spi/spi-davinci.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index b7b2da1..f1b46f6 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -485,6 +485,16 @@ static bool davinci_spi_can_dma(struct spi_master *master,
+>  	return __davinci_spi_can_dma(spi);
+>  }
+>  
+> +static size_t davinci_spi_max_transfer_size(struct spi_device *spi)
+> +{
+> +	/*
+> +	 * The eDMA DMA engine is limited to 20 SG entries in one DMA
+> +	 * transaction. If this number is exceeded, DMA receive fails.
+> +	 * An extra SG entry is needed when the buffer is not page aligned.
+> +	 */
+> +	return (__davinci_spi_can_dma(spi)) ? 19 * PAGE_SIZE : SIZE_MAX;
+> +}
+> +
+>  static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
+>  {
+>  	struct device *sdev = dspi->bitbang.master->dev.parent;
+> @@ -1010,6 +1020,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>  	master->setup = davinci_spi_setup;
+>  	master->cleanup = davinci_spi_cleanup;
+>  	master->can_dma = davinci_spi_can_dma;
+> +	master->max_transfer_size = davinci_spi_max_transfer_size;
+>  
+>  	dspi->bitbang.chipselect = davinci_spi_chipselect;
+>  	dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
+> 
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

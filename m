@@ -1,84 +1,92 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: fix inconsistency between binding and driver" to the spi tree
-Date: Mon, 13 Feb 2017 18:54:19 +0000
-Message-ID: <E1cdLlT-0001JZ-6b@debutante>
-References: <20170207080748.9524-1-andi.shyti@samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>,
-        linux-spi@vger.kernel.org
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20170207080748.9524-1-andi.shyti@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/sun6i: Add Master Sample Data Mode for SPI
+Date: Mon, 13 Feb 2017 16:00:09 -0300
+Message-ID: <CAEz5UgEAYB94mC-6Oste4-tRRq16iXqBnJmjjhQFkqDmVO-nog@mail.gmail.com>
+References: <20170213120553.6479-1-viniciusfre@gmail.com> <20170213183430.65vbm3cubid2ljkv@sirena.org.uk>
+Reply-To: viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/alternative; boundary=001a114b5b4872e15505486e0e9e
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBDNJJSMB6QFRBOUERDCQKGQE2CIMW6Q-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <20170213183430.65vbm3cubid2ljkv-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+--001a114b5b4872e15505486e0e9e
+Content-Type: text/plain; charset=UTF-8
 
-   spi: s3c64xx: fix inconsistency between binding and driver
+Hi Mark,
 
-has been applied to the spi tree at
+Sorry for the mess up. sun6i is a reference to the Allwinner A31 processor
+and sun7i is a reference to the Allwinner A20 processor. A31 uses
+spi-sun6i.c code, while A20 uses spi-sun4i.c code. Therefore, this is a
+different patch.
+About your recommedantion, I have to check with Maxine what can be done.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Thanks.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+2017-02-13 15:34 GMT-03:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> On Mon, Feb 13, 2017 at 09:05:53AM -0300, Vinicius Maciel wrote:
+> > In order to work appropriately, some SPI chips, such as
+> > max11043, require SPI master samples the data at the
+> > correct edge.
+>
+> As I said on another version of this patch this should really be done by
+> implementing the SPI modes - there isn't one universal configuration for
+> SPI devices unfortunately.
+>
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 379f831a927817c130a62e3ca0082ae685557324 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@samsung.com>
-Date: Fri, 10 Feb 2017 11:20:19 +0900
-Subject: [PATCH] spi: s3c64xx: fix inconsistency between binding and driver
-
-Commit a92e7c3d82a1 ("spi: s3c64xx: consider the case when the CS
-line is not connected") introduced an inconsistency between the
-binding, where the disconnected CS line was marked as
-'no-cs-readback', and the driver.
-
-The driver is erroneously checking for that attribute with
-property name of 'broken-cs'.
-
-Check for 'no-cs-readback' in the driver as well.
-
-Fixes: a92e7c3d82a1 ("spi: s3c64xx: consider the case when the CS line is not connected")
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi-s3c64xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 3c09e94cf827..186342b74141 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1003,7 +1003,7 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
- 		sci->num_cs = temp;
- 	}
- 
--	sci->no_cs = of_property_read_bool(dev->of_node, "broken-cs");
-+	sci->no_cs = of_property_read_bool(dev->of_node, "no-cs-readback");
- 
- 	return sci;
- }
 -- 
-2.11.0
+You received this message because you are subscribed to the Google Groups "linux-sunxi" group.
+To unsubscribe from this group and stop receiving emails from it, send an email to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
+For more options, visit https://groups.google.com/d/optout.
+
+--001a114b5b4872e15505486e0e9e
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Mark,<div><br></div><div><div>Sorry for the mess up. su=
+n6i is a reference to the Allwinner A31 processor and sun7i is a reference =
+to the Allwinner A20 processor. A31 uses spi-sun6i.c code, while A20 uses s=
+pi-sun4i.c=C2=A0code. Therefore, this is a different patch.=C2=A0</div><div=
+>About your recommedantion, I have to check with Maxine what can be done.</=
+div></div><div><br></div><div>Thanks.</div></div><div class=3D"gmail_extra"=
+><br><div class=3D"gmail_quote">2017-02-13 15:34 GMT-03:00 Mark Brown <span=
+ dir=3D"ltr">&lt;<a href=3D"mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" target=3D"_blank">br=
+oonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org</a>&gt;</span>:<br><blockquote class=3D"gmail_quote" style=
+=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><span cl=
+ass=3D"">On Mon, Feb 13, 2017 at 09:05:53AM -0300, Vinicius Maciel wrote:<b=
+r>
+&gt; In order to work appropriately, some SPI chips, such as<br>
+&gt; max11043, require SPI master samples the data at the<br>
+&gt; correct edge.<br>
+<br>
+</span>As I said on another version of this patch this should really be don=
+e by<br>
+implementing the SPI modes - there isn&#39;t one universal configuration fo=
+r<br>
+SPI devices unfortunately.<br>
+</blockquote></div><br></div>
+
+<p></p>
+
+-- <br />
+You received this message because you are subscribed to the Google Groups &=
+quot;linux-sunxi&quot; group.<br />
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org">linux-s=
+unxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org</a>.<br />
+For more options, visit <a href=3D"https://groups.google.com/d/optout">http=
+s://groups.google.com/d/optout</a>.<br />
+
+--001a114b5b4872e15505486e0e9e--

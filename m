@@ -1,210 +1,85 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v4 1/2] mtd: spi-nor: Added spi-nor init function
-Date: Tue, 14 Feb 2017 10:32:47 -0500
-Message-ID: <1487086368-4118-2-git-send-email-kdasu.kdev@gmail.com>
-References: <1487086368-4118-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
+Date: Tue, 14 Feb 2017 17:40:11 +0100
+Message-ID: <bc92a0b1-7d21-cd66-94e5-a09b35d251cb@baylibre.com>
+References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
+ <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
+ <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
+ <e7ea60b0-1088-3535-efcf-d6c595fb31d6@baylibre.com>
+ <c0d6c236-1302-e910-8c41-cd82e0fac39b@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
+        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1487086368-4118-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <c0d6c236-1302-e910-8c41-cd82e0fac39b-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Refactored spi_nor_scan() code to add spi_nor_init() function that
-programs the spi-nor flash to:
-1) remove flash protection if applicable
-2) set read mode to quad mode if configured such
-3) set the address width based on the flash size and vendor
 
-spi_nor_scan() now calls spi_nor_init() to setup nor flash.
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
- include/linux/mtd/spi-nor.h   | 18 ++++++++++-
- 2 files changed, 62 insertions(+), 28 deletions(-)
+On 14/02/2017 16:29, Sekhar Nori wrote:
+> On Tuesday 14 February 2017 04:57 PM, Frode Isaksen wrote:
+>>
+>> On 13/02/2017 06:59, Sekhar Nori wrote:
+>>> + Peter
+>>>
+>>> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
+>>>> Limit the transfer size to 20 scatter/gather pages if
+>>>> DMA is enabled.
+>>>> The eDMA DMA engine is limited to 20 SG entries in one DMA
+>>>> transaction. If this number is exceeded, DMA receive fails.
+>>>> This error occurs with large vmalloc'ed buffers.
+>>> This needs more explanation because there is support available in edma
+>>> driver for long SG lists by breaking them down into transfers using 20
+>>> PaRAM entries at a time. If thats not working for you, that needs
+>>> further debug.
+>> The SPI controller has a FIFO of only 1 word, so at 1Mbps, filling the
+>> FIFO will take only 8us. Handling the DMA interrupt and re-programming
+>> the PaRAM entries takes much longer than that. At 1Mbps, about 50 bytes
+>> is lost on Rx, @ 2Mbps 100 bytes and @ 5Mbps about 260 bytes hinting
+>> towards a time setting up a new DMA transfer > 400us. If the Tx and Rx
+>> buffers are identically aligned there are no errors, because the
+>> re-programming of the Tx and Rx PaRAM entries happens at the same time.
+>> I have also verified this with a scope. In the Tx direction, there is a
+>> pause in the transfer of 600us after the 20th SG entrey (when setting up
+>> new PaRAM entries). Since setting up Rx PaRAM is identical, this shows
+>> that breaking down the transfer is not working in the Rx direction for
+>> SPI caused by the relative high bit rate and small FIFO.
+> SPI is synchronous transfer so it does not need a large FIFO. If DMA is
+> not able to replenish the TX shift register, the master should hold the
+> clock until the time it is ready with data. On the scope do you see
+> master continuing to pulse the clock while it is waiting for data to
+> arrive from DMA to its TX shift register ? That should not be happening.
+Take the example of a long Rx-only transfer using vmalloc'ed buffer. The 
+dummy Tx buffer will be a contiguous buffer (1 SG entry) and clock and 
+dummy data will be continuous during the transfer with no pause. On the 
+Rx side, the PaRAM entries needs to be reloaded after 20*4096 bytes 
+Rx'ed. Handling the interrupt, reloading the PaRAM's and resuming DMA 
+takes ~600 us. Since the slave is still transmitting, data will be lost, 
+since the FIFO is only 1 word and 1 byte takes 8us @ 1MHz.
+The 600us came from timing a transmit with vmalloc'ed buffer. The time 
+between the last byte in the 20th SG entry and the next byte is 600us 
+measured with a scope. The assumption is that handling interrupt and 
+reloading PaRAM's is more or less the same on Tx and Rx side. This time 
+seems to be confirmed by the number of bytes lost on the Rx side as well 
+which is approximately 50 x XMHz.
+Hope this clarifies..
+Another solution to this would be to have the dummy Tx buffer and Rx 
+buffer to be identical (same type of allocation, same length, same 
+offset), but this requires changes in the SPI framework.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 70e52ff..2bf7f4f 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1526,6 +1526,44 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
- 	return 0;
- }
- 
-+int spi_nor_init(struct spi_nor *nor)
-+{
-+	int ret = 0;
-+	const struct flash_info *info = nor->info;
-+	struct device *dev = nor->dev;
-+
-+	/*
-+	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-+	 * with the software protection bits set
-+	 */
-+
-+	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_SST ||
-+	    info->flags & SPI_NOR_HAS_LOCK) {
-+		write_enable(nor);
-+		write_sr(nor, 0);
-+		spi_nor_wait_till_ready(nor);
-+	}
-+
-+	if (nor->flash_read == SPI_NOR_QUAD) {
-+		ret = set_quad_mode(nor, info);
-+		if (ret) {
-+			dev_err(dev, "quad mode not supported\n");
-+			return ret;
-+		}
-+	}
-+
-+	if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
-+	    info->flags & SPI_NOR_4B_OPCODES)
-+		spi_nor_set_4byte_opcodes(nor, info);
-+	else
-+		set_4byte(nor, info, 1);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(spi_nor_init);
-+
- int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- {
- 	const struct flash_info *info = NULL;
-@@ -1571,6 +1609,7 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 		}
- 	}
- 
-+	nor->info = info;
- 	mutex_init(&nor->lock);
- 
- 	/*
-@@ -1581,20 +1620,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 	if (info->flags & SPI_S3AN)
- 		nor->flags |=  SNOR_F_READY_XSR_RDY;
- 
--	/*
--	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
--	 * with the software protection bits set
--	 */
--
--	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_SST ||
--	    info->flags & SPI_NOR_HAS_LOCK) {
--		write_enable(nor);
--		write_sr(nor, 0);
--		spi_nor_wait_till_ready(nor);
--	}
--
- 	if (!mtd->name)
- 		mtd->name = dev_name(dev);
- 	mtd->priv = nor;
-@@ -1669,11 +1694,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	/* Quad/Dual-read mode takes precedence over fast/normal */
- 	if (mode == SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
--		ret = set_quad_mode(nor, info);
--		if (ret) {
--			dev_err(dev, "quad mode not supported\n");
--			return ret;
--		}
- 		nor->flash_read = SPI_NOR_QUAD;
- 	} else if (mode == SPI_NOR_DUAL && info->flags & SPI_NOR_DUAL_READ) {
- 		nor->flash_read = SPI_NOR_DUAL;
-@@ -1702,17 +1722,11 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	if (info->addr_width)
- 		nor->addr_width = info->addr_width;
--	else if (mtd->size > 0x1000000) {
-+	else if (mtd->size > 0x1000000)
- 		/* enable 4-byte addressing if the device exceeds 16MiB */
- 		nor->addr_width = 4;
--		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
--		    info->flags & SPI_NOR_4B_OPCODES)
--			spi_nor_set_4byte_opcodes(nor, info);
--		else
--			set_4byte(nor, info, 1);
--	} else {
-+	else
- 		nor->addr_width = 3;
--	}
- 
- 	if (nor->addr_width > SPI_NOR_MAX_ADDR_WIDTH) {
- 		dev_err(dev, "address width is too large: %u\n",
-@@ -1728,6 +1742,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 			return ret;
- 	}
- 
-+	ret = spi_nor_init(nor);
-+	if (ret)
-+		return ret;
-+
- 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
- 			(long long)mtd->size >> 10);
- 
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index f2a7180..29a8283 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -143,6 +143,8 @@ enum spi_nor_option_flags {
- 	SNOR_F_READY_XSR_RDY	= BIT(4),
- };
- 
-+struct flash_info;
-+
- /**
-  * struct spi_nor - Structure for defining a the SPI NOR layer
-  * @mtd:		point to a mtd_info structure
-@@ -174,6 +176,7 @@ enum spi_nor_option_flags {
-  * @flash_is_locked:	[FLASH-SPECIFIC] check if a region of the SPI NOR is
-  *			completely locked
-  * @priv:		the private data
-+ * @info:		points to the flash_info structure
-  */
- struct spi_nor {
- 	struct mtd_info		mtd;
-@@ -206,6 +209,7 @@ struct spi_nor {
- 	int (*flash_is_locked)(struct spi_nor *nor, loff_t ofs, uint64_t len);
- 
- 	void *priv;
-+	const struct flash_info *info;
- };
- 
- static inline void spi_nor_set_flash_node(struct spi_nor *nor,
-@@ -220,12 +224,24 @@ static inline struct device_node *spi_nor_get_flash_node(struct spi_nor *nor)
- }
- 
- /**
-+ * spi_nor_init() - initialize SPI NOR
-+ * @nor:	the spi_nor structure
-+ *
-+ * The drivers uses this function to initialize the SPI NOR flash device to
-+ * settings in spi_nor structure. The functions sets read mode, address width
-+ * and removes protection on the flash device based on those settings.
-+ *
-+ * Return: 0 for success, others for failure.
-+ */
-+int spi_nor_init(struct spi_nor *nor);
-+
-+/**
-  * spi_nor_scan() - scan the SPI NOR
-  * @nor:	the spi_nor structure
-  * @name:	the chip type name
-  * @mode:	the read mode supported by the driver
-  *
-- * The drivers can use this fuction to scan the SPI NOR.
-+ * The drivers can use this function to scan the SPI NOR.
-  * In the scanning, it will try to get all the necessary information to
-  * fill the mtd_info{} and the spi_nor{}.
-  *
--- 
-1.9.1
+Thanks,
+Frode
+
+Thanks,
+Frode
+>
+> Thanks,
+> Sekhar
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

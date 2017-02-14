@@ -1,86 +1,72 @@
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
-Date: Tue, 14 Feb 2017 17:40:11 +0100
-Message-ID: <bc92a0b1-7d21-cd66-94e5-a09b35d251cb@baylibre.com>
-References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
- <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
- <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
- <e7ea60b0-1088-3535-efcf-d6c595fb31d6@baylibre.com>
- <c0d6c236-1302-e910-8c41-cd82e0fac39b@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: imx: dynamic burst length adjust for PIO mode
+Date: Tue, 14 Feb 2017 18:20:19 +0000
+Message-ID: <20170214182019.s3o5uphsfz4bxlkq@sirena.org.uk>
+References: <20170208062028.22313-1-jiada_wang@mentor.com>
+ <20170208062028.22313-2-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="557rppaffxvm5vwf"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        fixed-term.Oleksij.Rempel-V5te9oGctAVWk0Htik3J/w@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <c0d6c236-1302-e910-8c41-cd82e0fac39b-l0cyMroinI0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170208062028.22313-2-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
+--557rppaffxvm5vwf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 14/02/2017 16:29, Sekhar Nori wrote:
-> On Tuesday 14 February 2017 04:57 PM, Frode Isaksen wrote:
->>
->> On 13/02/2017 06:59, Sekhar Nori wrote:
->>> + Peter
->>>
->>> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
->>>> Limit the transfer size to 20 scatter/gather pages if
->>>> DMA is enabled.
->>>> The eDMA DMA engine is limited to 20 SG entries in one DMA
->>>> transaction. If this number is exceeded, DMA receive fails.
->>>> This error occurs with large vmalloc'ed buffers.
->>> This needs more explanation because there is support available in edma
->>> driver for long SG lists by breaking them down into transfers using 20
->>> PaRAM entries at a time. If thats not working for you, that needs
->>> further debug.
->> The SPI controller has a FIFO of only 1 word, so at 1Mbps, filling the
->> FIFO will take only 8us. Handling the DMA interrupt and re-programming
->> the PaRAM entries takes much longer than that. At 1Mbps, about 50 bytes
->> is lost on Rx, @ 2Mbps 100 bytes and @ 5Mbps about 260 bytes hinting
->> towards a time setting up a new DMA transfer > 400us. If the Tx and Rx
->> buffers are identically aligned there are no errors, because the
->> re-programming of the Tx and Rx PaRAM entries happens at the same time.
->> I have also verified this with a scope. In the Tx direction, there is a
->> pause in the transfer of 600us after the 20th SG entrey (when setting up
->> new PaRAM entries). Since setting up Rx PaRAM is identical, this shows
->> that breaking down the transfer is not working in the Rx direction for
->> SPI caused by the relative high bit rate and small FIFO.
-> SPI is synchronous transfer so it does not need a large FIFO. If DMA is
-> not able to replenish the TX shift register, the master should hold the
-> clock until the time it is ready with data. On the scope do you see
-> master continuing to pulse the clock while it is waiting for data to
-> arrive from DMA to its TX shift register ? That should not be happening.
-Take the example of a long Rx-only transfer using vmalloc'ed buffer. The 
-dummy Tx buffer will be a contiguous buffer (1 SG entry) and clock and 
-dummy data will be continuous during the transfer with no pause. On the 
-Rx side, the PaRAM entries needs to be reloaded after 20*4096 bytes 
-Rx'ed. Handling the interrupt, reloading the PaRAM's and resuming DMA 
-takes ~600 us. Since the slave is still transmitting, data will be lost, 
-since the FIFO is only 1 word and 1 byte takes 8us @ 1MHz.
-The 600us came from timing a transmit with vmalloc'ed buffer. The time 
-between the last byte in the 20th SG entry and the next byte is 600us 
-measured with a scope. The assumption is that handling interrupt and 
-reloading PaRAM's is more or less the same on Tx and Rx side. This time 
-seems to be confirmed by the number of bytes lost on the Rx side as well 
-which is approximately 50 x XMHz.
-Hope this clarifies..
-Another solution to this would be to have the dummy Tx buffer and Rx 
-buffer to be identical (same type of allocation, same length, same 
-offset), but this requires changes in the SPI framework.
+On Wed, Feb 08, 2017 at 03:20:27PM +0900, Jiada Wang wrote:
 
-Thanks,
-Frode
+This looks basically fine, a couple of fairly minor things here:
 
-Thanks,
-Frode
->
-> Thanks,
-> Sekhar
+> +	for (i = 0; i < transfer->len / 4; i++) {
+> +		u8 temp;
+> +
+> +		temp = *(buf + i * 4);
+> +		*(buf + i * 4) = *(buf + i * 4 + 3);
+> +		*(buf + i * 4 + 3) = temp;
 
+Should this be using one of the cpu_to_ functions?  It's a bit unclear
+what the goal is here and if it'll work if the kernel is big endian
+(which people do do with i.MX systems IIRC).
+
+> +	if (spi_imx->bpw_w == 1)
+> +		spi_imx_buf_rx_u8(spi_imx);
+> +	else if (spi_imx->bpw_w == 2)
+> +		spi_imx_buf_rx_u16(spi_imx);
+
+switch statement please.
+
+> +	if (spi_imx->dynamic_burst) {
+> +		spi_imx->count_index =
+> +				spi_imx->count > MX51_ECSPI_CTRL_MAX_BURST ?
+> +				spi_imx->count % MX51_ECSPI_CTRL_MAX_BURST :
+> +				spi_imx->count % sizeof(u32);
+
+Just write a normal if statement please, it's easier to read.
+
+--557rppaffxvm5vwf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlijSmIACgkQJNaLcl1U
+h9BjeAf+MXpcqZVEn4O8iT3+abRFj4d4A1o+JiTlTD4LdLgkRYIWUyAN9uaQctf7
+jDSep47fA8ykbrR0eUQ/DbMzk/KGU2KxzKoAuK9xqMuMHnKp52pfp4+Bb096+HJL
+WamCT2AITgh1nJyWFCBDtzXn8PQ6gEajsDgO3OQTwMSll16z0+3Xe/OUhENAOmd6
+cmZHp+rJgUqM0UedWtDR8hIjxlbiVF4wxTNsAHRk1ACsqj7rvCLQHZZoJ910w8mu
+EUROETDIn60k7khuBwex38uptsQ5oS8hdrBQ0W76XvEdGxgUXjpbpJSufP3M/jVT
+hAA64J4NJU24vQgZ7xFPJ5a0pA76XA==
+=VXqC
+-----END PGP SIGNATURE-----
+
+--557rppaffxvm5vwf--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

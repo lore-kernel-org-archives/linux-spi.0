@@ -1,43 +1,55 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v4 0/2] Added support for spi-nor device pm in m25p80
-Date: Tue, 14 Feb 2017 10:32:46 -0500
-Message-ID: <1487086368-4118-1-git-send-email-kdasu.kdev@gmail.com>
+Subject: [PATCH v4 2/2] mtd: m25p80: Added pm ops support
+Date: Tue, 14 Feb 2017 10:32:48 -0500
+Message-ID: <1487086368-4118-3-git-send-email-kdasu.kdev@gmail.com>
+References: <1487086368-4118-1-git-send-email-kdasu.kdev@gmail.com>
 Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
         Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
         marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1487086368-4118-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Changes since v3 based on review comments:
-spi-nor.h
-- Moved flash_info field to end of structure
-- Added flash_info entry to the spi_nor structure description
-- Reworded the function description
-- Reworded the commit message
+Added power management ops for resume to be able to resan spi-nor
+device and set it to right transfer modes in its probed state after
+poweron. Some SoC implementations might  power down the spi-nor flash
+and loose its initial settings on suspend. A resume should retore the
+part to its probed state.
 
-m25p80.c:
-- Only implement and initialize the resume() pm_op
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/mtd/devices/m25p80.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-The V4 changes below implements power management support in m25p80 driver.
-m25p80 pm resume() calls newly a implemented spi_nor_init() function
-that sets up the spi-nor flash to its probed state. This is needed on
-platfroms that turn off power to the spi-nor flash on pm suspend.
-The code has been rebased to git://github.com/spi-nor/linux.git next
-branch.
-
-
-Kamal Dasu (2):
-  mtd: spi-nor: Added spi-nor init function
-  mtd: m25p80: Added pm ops support
-
- drivers/mtd/devices/m25p80.c  | 11 +++++++
- drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
- include/linux/mtd/spi-nor.h   | 18 ++++++++++-
- 3 files changed, 73 insertions(+), 28 deletions(-)
-
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c4df3b1..3ab30b2 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -324,10 +324,21 @@ static int m25p_remove(struct spi_device *spi)
+ };
+ MODULE_DEVICE_TABLE(of, m25p_of_table);
+ 
++#ifdef CONFIG_PM_SLEEP
++static int m25p_resume(struct device *dev)
++{
++	struct m25p *flash = dev_get_drvdata(dev);
++
++	return spi_nor_init(&flash->spi_nor);
++}
++#endif
++static SIMPLE_DEV_PM_OPS(m25p_pm_ops, NULL, m25p_resume);
++
+ static struct spi_driver m25p80_driver = {
+ 	.driver = {
+ 		.name	= "m25p80",
+ 		.of_match_table = m25p_of_table,
++		.pm     = &m25p_pm_ops,
+ 	},
+ 	.id_table	= m25p_ids,
+ 	.probe	= m25p_probe,
 -- 
 1.9.1
 

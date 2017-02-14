@@ -1,65 +1,47 @@
-From: Sekhar Nori <nsekhar@ti.com>
-Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
-Date: Tue, 14 Feb 2017 20:59:56 +0530
-Message-ID: <c0d6c236-1302-e910-8c41-cd82e0fac39b@ti.com>
-References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
- <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
- <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
- <e7ea60b0-1088-3535-efcf-d6c595fb31d6@baylibre.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org
-To: Frode Isaksen <fisaksen@baylibre.com>, <khilman@baylibre.com>,
- <ptitiano@baylibre.com>, <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <e7ea60b0-1088-3535-efcf-d6c595fb31d6@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v4 0/2] Added support for spi-nor device pm in m25p80
+Date: Tue, 14 Feb 2017 10:32:46 -0500
+Message-ID: <1487086368-4118-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 14 February 2017 04:57 PM, Frode Isaksen wrote:
-> 
-> 
-> On 13/02/2017 06:59, Sekhar Nori wrote:
->> + Peter
->>
->> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
->>> Limit the transfer size to 20 scatter/gather pages if
->>> DMA is enabled.
->>> The eDMA DMA engine is limited to 20 SG entries in one DMA
->>> transaction. If this number is exceeded, DMA receive fails.
->>> This error occurs with large vmalloc'ed buffers.
->> This needs more explanation because there is support available in edma
->> driver for long SG lists by breaking them down into transfers using 20
->> PaRAM entries at a time. If thats not working for you, that needs
->> further debug.
+Changes since v3 based on review comments:
+spi-nor.h
+- Moved flash_info field to end of structure
+- Added flash_info entry to the spi_nor structure description
+- Reworded the function description
+- Reworded the commit message
 
-> The SPI controller has a FIFO of only 1 word, so at 1Mbps, filling the
-> FIFO will take only 8us. Handling the DMA interrupt and re-programming
-> the PaRAM entries takes much longer than that. At 1Mbps, about 50 bytes
-> is lost on Rx, @ 2Mbps 100 bytes and @ 5Mbps about 260 bytes hinting
-> towards a time setting up a new DMA transfer > 400us. If the Tx and Rx
-> buffers are identically aligned there are no errors, because the
-> re-programming of the Tx and Rx PaRAM entries happens at the same time.
-> I have also verified this with a scope. In the Tx direction, there is a
-> pause in the transfer of 600us after the 20th SG entrey (when setting up
-> new PaRAM entries). Since setting up Rx PaRAM is identical, this shows
-> that breaking down the transfer is not working in the Rx direction for
-> SPI caused by the relative high bit rate and small FIFO.
+m25p80.c:
+- Only implement and initialize the resume() pm_op
 
-SPI is synchronous transfer so it does not need a large FIFO. If DMA is
-not able to replenish the TX shift register, the master should hold the
-clock until the time it is ready with data. On the scope do you see
-master continuing to pulse the clock while it is waiting for data to
-arrive from DMA to its TX shift register ? That should not be happening.
+The V4 changes below implements power management support in m25p80 driver.
+m25p80 pm resume() calls newly a implemented spi_nor_init() function
+that sets up the spi-nor flash to its probed state. This is needed on
+platfroms that turn off power to the spi-nor flash on pm suspend.
+The code has been rebased to git://github.com/spi-nor/linux.git next
+branch.
 
-Thanks,
-Sekhar
+
+Kamal Dasu (2):
+  mtd: spi-nor: Added spi-nor init function
+  mtd: m25p80: Added pm ops support
+
+ drivers/mtd/devices/m25p80.c  | 11 +++++++
+ drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
+ include/linux/mtd/spi-nor.h   | 18 ++++++++++-
+ 3 files changed, 73 insertions(+), 28 deletions(-)
+
+-- 
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,73 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: imx: dynamic burst length adjust for PIO mode
-Date: Tue, 14 Feb 2017 18:20:19 +0000
-Message-ID: <20170214182019.s3o5uphsfz4bxlkq@sirena.org.uk>
-References: <20170208062028.22313-1-jiada_wang@mentor.com>
- <20170208062028.22313-2-jiada_wang@mentor.com>
+From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+Subject: Re: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
+Date: Wed, 15 Feb 2017 09:26:25 +0900
+Message-ID: <58A3A031.3080307@jinso.co.jp>
+References: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp> <CAMuHMdUyA9+KLaD9rY9gYjxjZcQ1bWKoDhP25mEAdZTr7E0uwA@mail.gmail.com> <ed0b8422-8ab1-7d8d-318f-343e6e2de17d@jinso.co.jp> <CAMuHMdVDgjBF+c-z4=LH+PD00oiNFqhShQuZ0ELS0S4YpQ=npg@mail.gmail.com> <58A15724.1060901@jinso.co.jp> <CAMuHMdU4v=KszacVQ5GX-JVoov0TdfH=+fkpyC505eUWTGpEqg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="557rppaffxvm5vwf"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        fixed-term.Oleksij.Rempel-V5te9oGctAVWk0Htik3J/w@public.gmane.org
-To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170208062028.22313-2-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: DongCV <cv-dong@jinso.co.jp>, Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        =?UTF-8?B?RHVuZ++8muS6ug==?= =?UTF-8?B?44K9?=
+        <nv-dung@jinso.co.jp>,
+        =?UTF-8?B?56iy5ZCJ?= <h-inayoshi@jinso.co.jp>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdU4v=KszacVQ5GX-JVoov0TdfH=+fkpyC505eUWTGpEqg@mail.gmail.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+Hi Geert,
+
+Sorry for the delay.
+
+Thanks for your reply.
 
 
---557rppaffxvm5vwf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Mon, Feb 13, 2017 at 7:50 AM, Hiep Cao Minh <cm-hiep@jinso.co.jp> wrote:
+>> Sorry to bother you!
+> No, thank you for finally make me see my wrong reasoning!
+>
+>>> qspi_transfer_in() does:
+>>>
+>>>           while (n > 0) {
+>>>                   len = qspi_set_receive_trigger(rspi, n);
+>>>                   // len will be <= n
+>> I agree. This is len = min value of n and 32.
+>>>                   if (len == QSPI_BUFFER_SIZE) {
+>>>                           // receive blocks of len bytes
+>> Yes, This is len == 32 bytes
+>>>                           ...
+>>>                   } else {
+>>>                           // receive n (not len) bytes
+>> This is always n == len ( This case, len or n is always < 32)
+>> Because this is the last n bytes should be received.
+> Right.
+> Doh, I must have missed that if "len < n", the first branch is always taken.
+>
+>>>                           ret = rspi_pio_transfer(rspi, NULL, rx, n);
+> It would have been clearer to use "len" here instead of "n".
+I agree, Dong will update your suggestion at the patch.
 
-On Wed, Feb 08, 2017 at 03:20:27PM +0900, Jiada Wang wrote:
-
-This looks basically fine, a couple of fairly minor things here:
-
-> +	for (i = 0; i < transfer->len / 4; i++) {
-> +		u8 temp;
-> +
-> +		temp = *(buf + i * 4);
-> +		*(buf + i * 4) = *(buf + i * 4 + 3);
-> +		*(buf + i * 4 + 3) = temp;
-
-Should this be using one of the cpu_to_ functions?  It's a bit unclear
-what the goal is here and if it'll work if the kernel is big endian
-(which people do do with i.MX systems IIRC).
-
-> +	if (spi_imx->bpw_w == 1)
-> +		spi_imx_buf_rx_u8(spi_imx);
-> +	else if (spi_imx->bpw_w == 2)
-> +		spi_imx_buf_rx_u16(spi_imx);
-
-switch statement please.
-
-> +	if (spi_imx->dynamic_burst) {
-> +		spi_imx->count_index =
-> +				spi_imx->count > MX51_ECSPI_CTRL_MAX_BURST ?
-> +				spi_imx->count % MX51_ECSPI_CTRL_MAX_BURST :
-> +				spi_imx->count % sizeof(u32);
-
-Just write a normal if statement please, it's easier to read.
-
---557rppaffxvm5vwf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlijSmIACgkQJNaLcl1U
-h9BjeAf+MXpcqZVEn4O8iT3+abRFj4d4A1o+JiTlTD4LdLgkRYIWUyAN9uaQctf7
-jDSep47fA8ykbrR0eUQ/DbMzk/KGU2KxzKoAuK9xqMuMHnKp52pfp4+Bb096+HJL
-WamCT2AITgh1nJyWFCBDtzXn8PQ6gEajsDgO3OQTwMSll16z0+3Xe/OUhENAOmd6
-cmZHp+rJgUqM0UedWtDR8hIjxlbiVF4wxTNsAHRk1ACsqj7rvCLQHZZoJ910w8mu
-EUROETDIn60k7khuBwex38uptsQ5oS8hdrBQ0W76XvEdGxgUXjpbpJSufP3M/jVT
-hAA64J4NJU24vQgZ7xFPJ5a0pA76XA==
-=VXqC
------END PGP SIGNATURE-----
-
---557rppaffxvm5vwf--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thank you.
+Hiep.

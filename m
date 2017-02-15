@@ -1,7 +1,7 @@
 From: Hartley Sweeten <HartleyS-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Subject: RE: [PATCH] spi: spi-ep93xx: simplify GPIO chip selects
-Date: Wed, 15 Feb 2017 19:03:43 +0000
-Message-ID: <SN1PR0101MB156585A77872A1287FAAC135D05B0@SN1PR0101MB1565.prod.exchangelabs.com>
+Date: Wed, 15 Feb 2017 19:21:29 +0000
+Message-ID: <SN1PR0101MB15656D1BA2882A3321012678D05B0@SN1PR0101MB1565.prod.exchangelabs.com>
 References: <20170215164422.5957-1-hsweeten@visionengravers.com>
  <20170215190138.g7jsecekhtm4gvkr@sirena.org.uk>
 Mime-Version: 1.0
@@ -16,7 +16,7 @@ Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, February 15, 2017 12:02 PM,  Mark Brown wrote:
+On Wednesday, February 15, 2017 12:02 PM, Mark Brown wrote:
 > On Wed, Feb 15, 2017 at 09:44:22AM -0700, H Hartley Sweeten wrote:
 >> This driver requires a GPIO line to be used for the chip select of
 >> each SPI device.
@@ -28,9 +28,18 @@ On Wednesday, February 15, 2017 12:02 PM,  Mark Brown wrote:
 >
 > Why not also use the core GPIO handling?
 
-I didn't know the core had that functionality. I'll take a look.
+Mark,
 
+Unless I'm missing something, I don't think I can use the core GPIO
+handling with the spi-ep93xx driver.
+
+spi_set_cs() is only called to enable the chip select by the default
+implementation of transfer_one_message() and the spi-ep93xx
+driver does not use that.
+
+Regards,
 Hartley
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

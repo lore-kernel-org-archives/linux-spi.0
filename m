@@ -1,58 +1,59 @@
-From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
-Subject: Re: [PATCH] spi: rspi: fix the bug related to mount/remount jffs2
-Date: Wed, 15 Feb 2017 09:26:25 +0900
-Message-ID: <58A3A031.3080307@jinso.co.jp>
-References: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp> <CAMuHMdUyA9+KLaD9rY9gYjxjZcQ1bWKoDhP25mEAdZTr7E0uwA@mail.gmail.com> <ed0b8422-8ab1-7d8d-318f-343e6e2de17d@jinso.co.jp> <CAMuHMdVDgjBF+c-z4=LH+PD00oiNFqhShQuZ0ELS0S4YpQ=npg@mail.gmail.com> <58A15724.1060901@jinso.co.jp> <CAMuHMdU4v=KszacVQ5GX-JVoov0TdfH=+fkpyC505eUWTGpEqg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: DongCV <cv-dong@jinso.co.jp>, Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        =?UTF-8?B?RHVuZ++8muS6ug==?= =?UTF-8?B?44K9?=
-        <nv-dung@jinso.co.jp>,
-        =?UTF-8?B?56iy5ZCJ?= <h-inayoshi@jinso.co.jp>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdU4v=KszacVQ5GX-JVoov0TdfH=+fkpyC505eUWTGpEqg@mail.gmail.com>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Subject: [PATCH v3] spi: rspi: Fix bogus received byte in qspi_transfer_in()
+Date: Wed, 15 Feb 2017 16:33:55 +0900
+Message-ID: <1487144035-9075-1-git-send-email-cv-dong@jinso.co.jp>
+Cc: kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
+        ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
+In qspi_transfer_in(), when receiving the last n (or len) bytes of data,
+n(or len) bogus bytes were written in the receive buffer,
+This code leads to the following error that related to jffs2 format
+when trying to mount, unmount, and remount a jffs2-formatted device.
+Remove the bogus write to fix this.
 
-Sorry for the delay.
+"jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40000: 0x1900 instead
+ jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x03b40004: 0x000c instead"
 
-Thanks for your reply.
+Signed-off-by: DongCV <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+---
+ drivers/spi/spi-rspi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 9daf500..bc3c868 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -808,7 +808,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			for (i = 0; i < len; i++)
+ 				rspi_write_data(rspi, *tx++);
+ 		} else {
+-			ret = rspi_pio_transfer(rspi, tx, NULL, n);
++			ret = rspi_pio_transfer(rspi, tx, NULL, len);
+ 			if (ret < 0)
+ 				return ret;
+ 		}
+@@ -845,10 +845,9 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			for (i = 0; i < len; i++)
+ 				*rx++ = rspi_read_data(rspi);
+ 		} else {
+-			ret = rspi_pio_transfer(rspi, NULL, rx, n);
++			ret = rspi_pio_transfer(rspi, NULL, rx, len);
+ 			if (ret < 0)
+ 				return ret;
+-			*rx++ = ret;
+ 		}
+ 		n -= len;
+ 	}
+-- 
+1.9.1
 
-> On Mon, Feb 13, 2017 at 7:50 AM, Hiep Cao Minh <cm-hiep@jinso.co.jp> wrote:
->> Sorry to bother you!
-> No, thank you for finally make me see my wrong reasoning!
->
->>> qspi_transfer_in() does:
->>>
->>>           while (n > 0) {
->>>                   len = qspi_set_receive_trigger(rspi, n);
->>>                   // len will be <= n
->> I agree. This is len = min value of n and 32.
->>>                   if (len == QSPI_BUFFER_SIZE) {
->>>                           // receive blocks of len bytes
->> Yes, This is len == 32 bytes
->>>                           ...
->>>                   } else {
->>>                           // receive n (not len) bytes
->> This is always n == len ( This case, len or n is always < 32)
->> Because this is the last n bytes should be received.
-> Right.
-> Doh, I must have missed that if "len < n", the first branch is always taken.
->
->>>                           ret = rspi_pio_transfer(rspi, NULL, rx, n);
-> It would have been clearer to use "len" here instead of "n".
-I agree, Dong will update your suggestion at the patch.
-
-Thank you.
-Hiep.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

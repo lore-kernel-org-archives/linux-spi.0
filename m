@@ -1,7 +1,7 @@
 From: Hartley Sweeten <HartleyS-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Subject: RE: [PATCH] spi: spi-ep93xx: simplify GPIO chip selects
-Date: Wed, 15 Feb 2017 19:21:29 +0000
-Message-ID: <SN1PR0101MB15656D1BA2882A3321012678D05B0@SN1PR0101MB1565.prod.exchangelabs.com>
+Date: Thu, 16 Feb 2017 01:13:17 +0000
+Message-ID: <SN1PR0101MB1565E336989BB2BDC3ED995AD05A0@SN1PR0101MB1565.prod.exchangelabs.com>
 References: <20170215164422.5957-1-hsweeten@visionengravers.com>
  <20170215190138.g7jsecekhtm4gvkr@sirena.org.uk>
 Mime-Version: 1.0
@@ -28,16 +28,11 @@ On Wednesday, February 15, 2017 12:02 PM, Mark Brown wrote:
 >
 > Why not also use the core GPIO handling?
 
-Mark,
+Ignore the previous emails. I think I figured it out.
 
-Unless I'm missing something, I don't think I can use the core GPIO
-handling with the spi-ep93xx driver.
+I need to test it tomorrow then I will send an updated patch.
 
-spi_set_cs() is only called to enable the chip select by the default
-implementation of transfer_one_message() and the spi-ep93xx
-driver does not use that.
-
-Regards,
+Thanks,
 Hartley
 
 --

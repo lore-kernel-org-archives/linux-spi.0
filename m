@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rspi: Replaces "n" by "len" in qspi_transfer_*()" to the spi tree
-Date: Thu, 16 Feb 2017 19:05:11 +0000
-Message-ID: <E1ceRMd-0007vG-Uw@debutante>
-References: <1487155852-12102-3-git-send-email-cv-dong@jinso.co.jp>
+Subject: Applied "spi: rspi: Fixes bogus received byte in qspi_transfer_in()" to the spi tree
+Date: Thu, 16 Feb 2017 19:05:14 +0000
+Message-ID: <E1ceRMg-0007wK-V0@debutante>
+References: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp>
 Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         geert+renesas@glider.be, linux-spi@vger.kernel.org,
         kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         linux-spi@vger.kernel.org
 To: DongCV <cv-dong@jinso.co.jp>
 Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1487155852-12102-3-git-send-email-cv-dong@jinso.co.jp>
+In-Reply-To: <1486342933-5307-1-git-send-email-cv-dong@jinso.co.jp>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rspi: Replaces "n" by "len" in qspi_transfer_*()
+   spi: rspi: Fixes bogus received byte in qspi_transfer_in()
 
 has been applied to the spi tree at
 
@@ -42,42 +42,57 @@ to this mail.
 Thanks,
 Mark
 
->From ad16d4a83ddc86151b4a6efe257ba74eb30f9f8e Mon Sep 17 00:00:00 2001
+>From 7264abc7000d601726aefb05189ea524ee3995ba Mon Sep 17 00:00:00 2001
 From: DongCV <cv-dong@jinso.co.jp>
-Date: Wed, 15 Feb 2017 19:50:52 +0900
-Subject: [PATCH] spi: rspi: Replaces "n" by "len" in qspi_transfer_*()
+Date: Wed, 15 Feb 2017 19:50:51 +0900
+Subject: [PATCH] spi: rspi: Fixes bogus received byte in qspi_transfer_in()
 
-This patch replaced "n" by "len" bytes of data in qspi_transfer_in() and
-qspi_transfer_out() function. This will make improving readability.
+In qspi_transfer_in(), when receiving the last n (or len) bytes of data,
+one bogus byte was written in the receive buffer.
+This code leads to a buffer overflow.
+
+"jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found
+at 0x03b40000: 0x1900 instead
+jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found
+at 0x03b40004: 0x000c instead"
+
+The error message above happens when trying to mount, unmount,
+and remount a jffs2-formatted device.
+This patch removed the bogus write to fixes: 3be09bec42a800d4
+"spi: rspi: supports 32bytes buffer for DUAL and QUAD"
+
+And here is Geert's comment:
+
+"spi: rspi: Fix bogus received byte in qspi_transfer_in()
+When there are less than QSPI_BUFFER_SIZE remaining bytes to be received,
+qspi_transfer_in() writes one bogus byte in the receive buffer, possibly
+leading to a buffer overflow.
+This can be reproduced by mounting, unmounting, and remounting a
+jffs2-formatted device, causing lots of warnings like:
+
+"jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found
+at 0x03b40000: 0x1900 instead"
+
+Remove the bogus write to fix this. "
 
 Signed-off-by: DongCV <cv-dong@jinso.co.jp>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 2ee130138066..bc3c8686f4d9 100644
+index 9daf50031737..2ee130138066 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -808,7 +808,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
- 			for (i = 0; i < len; i++)
- 				rspi_write_data(rspi, *tx++);
- 		} else {
--			ret = rspi_pio_transfer(rspi, tx, NULL, n);
-+			ret = rspi_pio_transfer(rspi, tx, NULL, len);
+@@ -848,7 +848,6 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			ret = rspi_pio_transfer(rspi, NULL, rx, n);
  			if (ret < 0)
  				return ret;
+-			*rx++ = ret;
  		}
-@@ -845,7 +845,7 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
- 			for (i = 0; i < len; i++)
- 				*rx++ = rspi_read_data(rspi);
- 		} else {
--			ret = rspi_pio_transfer(rspi, NULL, rx, n);
-+			ret = rspi_pio_transfer(rspi, NULL, rx, len);
- 			if (ret < 0)
- 				return ret;
- 		}
+ 		n -= len;
+ 	}
 -- 
 2.11.0

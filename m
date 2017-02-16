@@ -1,14 +1,48 @@
-From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: [PATCH v3] spi: spi-ep93xx: simplify GPIO chip selects
-Date: Thu, 16 Feb 2017 13:07:37 -0700
-Message-ID: <20170216200737.48408-1-hsweeten@visionengravers.com>
-Cc: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-ep93xx: simplify GPIO chip selects" to the spi tree
+Date: Thu, 16 Feb 2017 20:11:08 +0000
+Message-ID: <E1ceSOS-0002cN-6x@debutante>
+References: <20170216200737.48408-1-hsweeten@visionengravers.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170216200737.48408-1-hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi: spi-ep93xx: simplify GPIO chip selects
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 55f0cd3fb9c29c20fb94c47e28a9ec8cf704f8c2 Mon Sep 17 00:00:00 2001
+From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Date: Thu, 16 Feb 2017 13:07:37 -0700
+Subject: [PATCH] spi: spi-ep93xx: simplify GPIO chip selects
 
 This driver requires a GPIO line to be used for the chip select of
 each SPI device.
@@ -20,8 +54,7 @@ Fix all the ep93xx platforms that use this driver and remove the
 old Documentation.
 
 Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
  Documentation/spi/ep93xx_spi             | 105 -----------------------
  arch/arm/mach-ep93xx/edb93xx.c           |  31 ++-----
@@ -34,7 +67,7 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
 diff --git a/Documentation/spi/ep93xx_spi b/Documentation/spi/ep93xx_spi
 deleted file mode 100644
-index 832ddce..0000000
+index 832ddce6e5fb..000000000000
 --- a/Documentation/spi/ep93xx_spi
 +++ /dev/null
 @@ -1,105 +0,0 @@
@@ -144,7 +177,7 @@ index 832ddce..0000000
 -the driver. Simplemachines.it donated me a Sim.One board which I used testing
 -the driver on EP9307.
 diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
-index ad92d9f..0ac1763 100644
+index ad92d9f7e4df..0ac176386789 100644
 --- a/arch/arm/mach-ep93xx/edb93xx.c
 +++ b/arch/arm/mach-ep93xx/edb93xx.c
 @@ -27,7 +27,6 @@
@@ -205,7 +238,7 @@ index ad92d9f..0ac1763 100644
  
  static void __init edb93xx_register_spi(void)
 diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
-index 7bb540c..c7a40f2 100644
+index 7bb540c421ee..c7a40f245892 100644
 --- a/arch/arm/mach-ep93xx/simone.c
 +++ b/arch/arm/mach-ep93xx/simone.c
 @@ -49,56 +49,6 @@ static struct ep93xxfb_mach_info __initdata simone_fb_info = {
@@ -294,7 +327,7 @@ index 7bb540c..c7a40f2 100644
  };
  
 diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
-index 5cced59..1daf944 100644
+index 5cced5988498..1daf9441058c 100644
 --- a/arch/arm/mach-ep93xx/vision_ep9307.c
 +++ b/arch/arm/mach-ep93xx/vision_ep9307.c
 @@ -175,33 +175,9 @@ static struct cs4271_platform_data vision_cs4271_data = {
@@ -444,7 +477,7 @@ index 5cced59..1daf944 100644
  };
  
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 17a6387..b5d7660 100644
+index 17a6387e20b5..b5d766064b7b 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
 @@ -28,6 +28,7 @@
@@ -658,7 +691,7 @@ index 17a6387..b5d7660 100644
  
  	espi = spi_master_get_devdata(master);
 diff --git a/include/linux/platform_data/spi-ep93xx.h b/include/linux/platform_data/spi-ep93xx.h
-index 9bb63ac..171a271 100644
+index 9bb63ac13f04..171a271c2cbd 100644
 --- a/include/linux/platform_data/spi-ep93xx.h
 +++ b/include/linux/platform_data/spi-ep93xx.h
 @@ -5,25 +5,14 @@ struct spi_device;
@@ -691,7 +724,7 @@ index 9bb63ac..171a271 100644
 -
  #endif /* __ASM_MACH_EP93XX_SPI_H */
 -- 
-2.10.0
+2.11.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

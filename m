@@ -1,48 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: spi-ep93xx: simplify GPIO chip selects
-Date: Thu, 16 Feb 2017 19:01:09 +0000
-Message-ID: <20170216190109.kvsgigo4wlnaacvm@sirena.org.uk>
-References: <20170216182614.47941-1-hsweeten@visionengravers.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fixrrqfhhc57eib4"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170216182614.47941-1-hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: rspi: Replaces "n" by "len" in qspi_transfer_*()" to the spi tree
+Date: Thu, 16 Feb 2017 19:05:11 +0000
+Message-ID: <E1ceRMd-0007vG-Uw@debutante>
+References: <1487155852-12102-3-git-send-email-cv-dong@jinso.co.jp>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        geert+renesas@glider.be, linux-spi@vger.kernel.org,
+        kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
+        ryusuke.sakato.bx@renesas.com, linux-renesas-soc@vger.kernel.org,
+        nv-dung@jinso.co.jp, h-inayoshi@jinso.co.jp, cm-hiep@jinso.co.jp,
+        linux-spi@vger.kernel.org
+To: DongCV <cv-dong@jinso.co.jp>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1487155852-12102-3-git-send-email-cv-dong@jinso.co.jp>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---fixrrqfhhc57eib4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: rspi: Replaces "n" by "len" in qspi_transfer_*()
 
-On Thu, Feb 16, 2017 at 11:26:14AM -0700, H Hartley Sweeten wrote:
-> This driver requires a GPIO line to be used for the chip select of
-> each SPI device.
+has been applied to the spi tree at
 
-This doesn't apply against current code, there's conflicts in the arch
-code.  What's the story here (should I just apply after -rc1?)?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---fixrrqfhhc57eib4
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlil9vQACgkQJNaLcl1U
-h9BIjwf+IamMiSJuc7sWtU52GNSMD34VW1UwHuR1vTb4xDZtZcCOnOxsuudLQ+eA
-e8M/R2nsd8dwek+z1m9STAuphg7vKUruRMS0XvaV8w1l+/NxCYUj7Xm9Qf7Cp4sA
-2mSGk+iJ79VhCw5V//ZgeOSOjdZ3CQZ8KIXurD76kxhhOEPt03Kzdd5rT9JTDqOL
-E3BfQtSUkRNXQoBxhcyyWmXlA2g0cdpj55+ChGzu3y+xhQNKZUTZHrxIrm3vax/Z
-vc2kBQXfn0RPV4aC+bJ556MoWLYN6Wc1BrAiU6gzS9rVSwIE54AwDPoct3H/p+fJ
-YgNu/e7ttuXmB2jW4o2wDLfqNeXOZA==
-=qyqP
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---fixrrqfhhc57eib4--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From ad16d4a83ddc86151b4a6efe257ba74eb30f9f8e Mon Sep 17 00:00:00 2001
+From: DongCV <cv-dong@jinso.co.jp>
+Date: Wed, 15 Feb 2017 19:50:52 +0900
+Subject: [PATCH] spi: rspi: Replaces "n" by "len" in qspi_transfer_*()
+
+This patch replaced "n" by "len" bytes of data in qspi_transfer_in() and
+qspi_transfer_out() function. This will make improving readability.
+
+Signed-off-by: DongCV <cv-dong@jinso.co.jp>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-rspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 2ee130138066..bc3c8686f4d9 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -808,7 +808,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			for (i = 0; i < len; i++)
+ 				rspi_write_data(rspi, *tx++);
+ 		} else {
+-			ret = rspi_pio_transfer(rspi, tx, NULL, n);
++			ret = rspi_pio_transfer(rspi, tx, NULL, len);
+ 			if (ret < 0)
+ 				return ret;
+ 		}
+@@ -845,7 +845,7 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 			for (i = 0; i < len; i++)
+ 				*rx++ = rspi_read_data(rspi);
+ 		} else {
+-			ret = rspi_pio_transfer(rspi, NULL, rx, n);
++			ret = rspi_pio_transfer(rspi, NULL, rx, len);
+ 			if (ret < 0)
+ 				return ret;
+ 		}
+-- 
+2.11.0

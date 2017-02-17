@@ -1,81 +1,114 @@
-From: Russell King - ARM Linux <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>
-Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
-Date: Fri, 17 Feb 2017 12:07:49 +0000
-Message-ID: <20170217120749.GF21222@n2100.armlinux.org.uk>
-References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
- <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
- <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
- <20170217112247.GE21222@n2100.armlinux.org.uk>
- <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: ti-qspi: revise ti_qspi_probe() failure flow" to the spi tree
+Date: Fri, 17 Feb 2017 13:22:30 +0000
+Message-ID: <E1ceiUY-00040s-5s@debutante>
+References: <20170216203335.27182-1-prahlad.eee@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <eaf93c6c-52a7-826b-9c53-2b13c0b280ca-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20170216203335.27182-1-prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Feb 17, 2017 at 12:36:17PM +0100, Frode Isaksen wrote:
-> On 17/02/2017 12:22, Russell King - ARM Linux wrote:
-> > The DMA API deals with the _kernel_ lowmem mapping.  It has no knowledge
-> > of any other aliases in the system.  When you have a VIVT cache (as all
-> > old ARM CPUs have) then if you access the memory through a different
-> > alias from the kernel lowmem mapping (iow, vmalloc) then the DMA API
-> > can't help you.
-> >
-> > However, the correct place to use flush_kernel_vmap_range() etc is not
-> > in drivers - it's supposed to be done in the callers that know that
-> > the memory is aliased.
-> 
-> OK, so this should be done in the ubifs layer instead ? xfs already does
-> this, but no other fs.
+The patch
 
-These APIs were created when XFS was being used on older ARMs and people
-experienced corruption.  XFS was the only filesystem driver which wanted
-to do this (horrid, imho) DMA to memory that it accessed via a vmalloc
-area mapping.
+   spi: ti-qspi: revise ti_qspi_probe() failure flow
 
-If ubifs is also doing this, it's followed XFS down the same route, but
-ignored the need for additional flushing.
+has been applied to the spi tree at
 
-The down-side to adding this at the filesystem layer is that you get the
-impact whether or not the driver does DMA.  However, for XFS that's
-absolutely necessary, as block devices will transfer to the kernel lowmem
-mapping, which itself will alias with the vmalloc area mapping.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-SPI is rather another special case - rather than SPI following the
-established mechanism of passing data references via scatterlists or
-similar, it also passes them via virtual addresses, which means SPI
-can directly access the vmalloc area when performing PIO.  This
-really makes the problem more complex, because it means that if you
-do have a SPI driver that does that, it's going to be reading/writing
-direct from vmalloc space.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-That's not a problem as long as the data is only accessed via vmalloc
-space, but it will definitely go totally wrong if the data is
-subsequently mapped into userspace.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-The other important thing to realise is that the interfaces in
-cachetlb.txt assume that it's the lowmem mapping that will be accessed,
-and the IO device will push that data out to physical memory (either via
-the DMA API, or flush_kernel_dcache_page()).  That's not true of SPI,
-as it passes virtual addresses around.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-So... overall, I'm not sure that this problem is properly solvable given
-SPIs insistance on passing virtual addresses and the differences in this
-area between SPI and block.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-What I'm quite sure about is that adding yet more cache flushing
-interfaces for legacy cache types really isn't the way forward.
+Thanks,
+Mark
 
+>From cce59c225920309e03c2ea350ed6a0e233e33963 Mon Sep 17 00:00:00 2001
+From: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 17 Feb 2017 02:03:35 +0530
+Subject: [PATCH] spi: ti-qspi: revise ti_qspi_probe() failure flow
+
+call spi_master_put() in case of failures after spi_alloc_master().
+call pm_runtime_disable() in case of failures after pm_runtime_enable().
+
+Signed-off-by: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-ti-qspi.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index ec6fb09e2e17..e784d0f64dc1 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -652,7 +652,8 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (r == NULL) {
+ 			dev_err(&pdev->dev, "missing platform data\n");
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto free_master;
+ 		}
+ 	}
+ 
+@@ -669,7 +670,8 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		dev_err(&pdev->dev, "no irq resource?\n");
+-		return irq;
++		ret = irq;
++		goto free_master;
+ 	}
+ 
+ 	mutex_init(&qspi->list_lock);
+@@ -685,15 +687,17 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		qspi->ctrl_base =
+ 		syscon_regmap_lookup_by_phandle(np,
+ 						"syscon-chipselects");
+-		if (IS_ERR(qspi->ctrl_base))
+-			return PTR_ERR(qspi->ctrl_base);
++		if (IS_ERR(qspi->ctrl_base)) {
++			ret = PTR_ERR(qspi->ctrl_base);
++			goto free_master;
++		}
+ 		ret = of_property_read_u32_index(np,
+ 						 "syscon-chipselects",
+ 						 1, &qspi->ctrl_reg);
+ 		if (ret) {
+ 			dev_err(&pdev->dev,
+ 				"couldn't get ctrl_mod reg index\n");
+-			return ret;
++			goto free_master;
+ 		}
+ 	}
+ 
+@@ -742,6 +746,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	if (!ret)
+ 		return 0;
+ 
++	pm_runtime_disable(&pdev->dev);
+ free_master:
+ 	spi_master_put(master);
+ 	return ret;
 -- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

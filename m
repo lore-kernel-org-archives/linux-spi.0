@@ -1,7 +1,7 @@
 From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2 6/6] spi: loopback-test: add option to use vmalloc'ed buffers
-Date: Fri, 17 Feb 2017 11:38:24 +0100
-Message-ID: <1487327904-28311-7-git-send-email-fisaksen@baylibre.com>
+Subject: [PATCH v2 3/6] spi: davinci: use rx buffer as dummy tx buffer
+Date: Fri, 17 Feb 2017 11:38:21 +0100
+Message-ID: <1487327904-28311-4-git-send-email-fisaksen@baylibre.com>
 References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
 Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
@@ -12,71 +12,47 @@ In-Reply-To: <1487327904-28311-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Using vmalloc'ed buffers will use one SG entry for each page,
-that may provoke DMA errors for large transfers.
-Also vmalloc'ed buffers may cause errors on CPU's with VIVT cache.
-Add this option to catch these errors when testing.
+When doing rx-only transfer, the transfer will fail
+if the number of SG entries exceeds 20.
+This happens because the eDMA DMA engine is limited
+to 20 SG entries in one transaction, and when the
+DMA transcation is resumed (which takes > 150us),
+rx errors occurs because the slave is still transmitting.
+Fix this by using the rx buffer as the dummy tx buffer,
+so that resuming the rx transcation happens at the same
+time as resuming the tx transcation.
 
 Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/spi/spi-davinci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 50e620f..86686dd 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -55,6 +55,12 @@ module_param(run_only_test, int, 0);
- MODULE_PARM_DESC(run_only_test,
- 		 "only run the test with this number (0-based !)");
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 9823908..2632ae0 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -656,6 +656,12 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		if (!rxdesc)
+ 			goto err_desc;
  
-+/* use vmalloc'ed buffers */
-+int use_vmalloc;
-+module_param(use_vmalloc, int, 0644);
-+MODULE_PARM_DESC(use_vmalloc,
-+		 "use vmalloc'ed buffers instead of kmalloc'ed");
++		if (!t->tx_buf) {
++			/* use rx buffer as dummy tx buffer */
++			t->tx_sg.sgl = t->rx_sg.sgl;
++			t->tx_sg.nents = t->rx_sg.nents;
++		}
 +
- /* the actual tests to execute */
- static struct spi_test spi_tests[] = {
- 	{
-@@ -965,13 +971,19 @@ int spi_test_run_tests(struct spi_device *spi,
- 	/* allocate rx/tx buffers of 128kB size without devm
- 	 * in the hope that is on a page boundary
- 	 */
--	rx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
-+	if (use_vmalloc)
-+		rx = vmalloc(SPI_TEST_MAX_SIZE_PLUS);
-+	else
-+		rx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
- 	if (!rx) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
--	tx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
-+	if (use_vmalloc)
-+		tx = vmalloc(SPI_TEST_MAX_SIZE_PLUS);
-+	else
-+		tx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
- 	if (!tx) {
- 		ret = -ENOMEM;
- 		goto out;
-@@ -999,8 +1011,13 @@ int spi_test_run_tests(struct spi_device *spi,
- 	}
- 
- out:
--	kfree(rx);
--	kfree(tx);
-+	if (use_vmalloc) {
-+		vfree(rx);
-+		vfree(tx);
-+	} else {
-+		kfree(rx);
-+		kfree(tx);
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_test_run_tests);
+ 		txdesc = dmaengine_prep_slave_sg(dspi->dma_tx,
+ 				t->tx_sg.sgl, t->tx_sg.nents, DMA_MEM_TO_DEV,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+@@ -958,7 +964,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = pdata->num_chipselect;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
+-	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
++	master->flags = SPI_MASTER_MUST_RX;
+ 	master->setup = davinci_spi_setup;
+ 	master->cleanup = davinci_spi_cleanup;
+ 	master->can_dma = davinci_spi_can_dma;
 -- 
 2.7.4
 

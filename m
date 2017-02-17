@@ -1,9 +1,10 @@
 From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2 3/6] spi: davinci: use rx buffer as dummy tx buffer
-Date: Fri, 17 Feb 2017 11:38:21 +0100
-Message-ID: <1487327904-28311-4-git-send-email-fisaksen@baylibre.com>
+Subject: [PATCH v2 2/6] spi: davinci: enable DMA when channels are defined in DT
+Date: Fri, 17 Feb 2017 11:38:20 +0100
+Message-ID: <1487327904-28311-3-git-send-email-fisaksen@baylibre.com>
 References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
 Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
         Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 To: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
         linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
@@ -12,47 +13,44 @@ In-Reply-To: <1487327904-28311-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-When doing rx-only transfer, the transfer will fail
-if the number of SG entries exceeds 20.
-This happens because the eDMA DMA engine is limited
-to 20 SG entries in one transaction, and when the
-DMA transcation is resumed (which takes > 150us),
-rx errors occurs because the slave is still transmitting.
-Fix this by using the rx buffer as the dummy tx buffer,
-so that resuming the rx transcation happens at the same
-time as resuming the tx transcation.
+From: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 
+When booting with DT the SPI driver is always using
+the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
+defined in the DT.
+
+This commit changes the behaviour to select the SPI_IO_TYPE_DMA mode
+if DMA channels are defined in the DT and will keep SPI_IO_TYPE_INTR
+if the channels are not defined in it.
+
+Signed-off-by: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-davinci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 9823908..2632ae0 100644
+index 5b164e5..9823908 100644
 --- a/drivers/spi/spi-davinci.c
 +++ b/drivers/spi/spi-davinci.c
-@@ -656,6 +656,12 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		if (!rxdesc)
- 			goto err_desc;
+@@ -389,6 +389,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
+ {
+ 	struct davinci_spi_config *spicfg = spi->controller_data;
+ 	struct device_node *np = spi->dev.of_node;
++	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
+ 	u32 prop;
  
-+		if (!t->tx_buf) {
-+			/* use rx buffer as dummy tx buffer */
-+			t->tx_sg.sgl = t->rx_sg.sgl;
-+			t->tx_sg.nents = t->rx_sg.nents;
-+		}
+ 	if (spicfg == NULL && np) {
+@@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
+ 		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
+ 			spicfg->wdelay = (u8)prop;
+ 		spi->controller_data = spicfg;
 +
- 		txdesc = dmaengine_prep_slave_sg(dspi->dma_tx,
- 				t->tx_sg.sgl, t->tx_sg.nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-@@ -958,7 +964,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
--	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
-+	master->flags = SPI_MASTER_MUST_RX;
- 	master->setup = davinci_spi_setup;
- 	master->cleanup = davinci_spi_cleanup;
- 	master->can_dma = davinci_spi_can_dma;
++		if (dspi->dma_rx && dspi->dma_tx)
++			spicfg->io_type = SPI_IO_TYPE_DMA;
+ 	}
+ 
+ 	return 0;
 -- 
 2.7.4
 

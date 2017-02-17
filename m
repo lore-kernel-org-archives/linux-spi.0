@@ -1,33 +1,78 @@
 From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2 0/6] Enable DMA for daVinci SPI controller
-Date: Fri, 17 Feb 2017 11:38:18 +0100
-Message-ID: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
+Date: Fri, 17 Feb 2017 11:38:22 +0100
+Message-ID: <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
+References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 To: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
         linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1487327904-28311-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Enable DMA for the daVinci SPI using the SPI framework DMA mapping
-function. Add fixes caused by large numer of SG entries
-and VIVT cache.
-Also, add some extra options to the spi-loopback-test
-module to catch errors caused by many SG entries.
-This has been tested using spidev_test, spi-loopback-test and
-mounting and read/write UBIFS volume over SPI flash.
+This CPU has VIVT caches, so need to flush the cache
+for vmalloc'ed buffers, since the address may be aliased
+(same phyiscal address used by multiple virtual addresses).
+This fixes errors when mounting and reading/writing UBIFS
+volumes with SPI NOR flash.
 
-v2 changes:
-- Use SPI_MASTER_MUST_ flag(s) for dummy buffer allocation (thanks
-Mark Brown).
-- For rx-only transfers, use rx buffer as dummy tx buffer to avoid
-errors with more than 20 SG entries.
-- Improved comments and use #define for contants.
-- Abandon patches to set loopback and limit transfer size in
-spi-loopback-test.
+Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Thanks,
-Frode
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 2632ae0..b69a370 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -29,6 +29,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/slab.h>
++#include <asm/cacheflush.h>
+ 
+ #include <linux/platform_data/spi-davinci.h>
+ 
+@@ -650,6 +651,10 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		dmaengine_slave_config(dspi->dma_rx, &dma_rx_conf);
+ 		dmaengine_slave_config(dspi->dma_tx, &dma_tx_conf);
+ 
++		if (is_vmalloc_addr(t->rx_buf))
++			/* VIVT cache: flush since addr. may be aliased */
++			flush_kernel_vmap_range((void *)t->rx_buf, t->len);
++
+ 		rxdesc = dmaengine_prep_slave_sg(dspi->dma_rx,
+ 				t->rx_sg.sgl, t->rx_sg.nents, DMA_DEV_TO_MEM,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+@@ -660,7 +665,9 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			/* use rx buffer as dummy tx buffer */
+ 			t->tx_sg.sgl = t->rx_sg.sgl;
+ 			t->tx_sg.nents = t->rx_sg.nents;
+-		}
++		} else if (is_vmalloc_addr(t->tx_buf))
++			/* VIVT cache: flush since addr. may be aliased */
++			flush_kernel_vmap_range((void *)t->tx_buf, t->len);
+ 
+ 		txdesc = dmaengine_prep_slave_sg(dspi->dma_tx,
+ 				t->tx_sg.sgl, t->tx_sg.nents, DMA_MEM_TO_DEV,
+@@ -699,8 +706,12 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	}
+ 
+ 	clear_io_bits(dspi->base + SPIINT, SPIINT_MASKALL);
+-	if (spicfg->io_type == SPI_IO_TYPE_DMA)
++	if (spicfg->io_type == SPI_IO_TYPE_DMA) {
+ 		clear_io_bits(dspi->base + SPIINT, SPIINT_DMA_REQ_EN);
++		if (is_vmalloc_addr(t->rx_buf))
++			/* VIVT cache: invalidate since addr. may be aliased */
++			invalidate_kernel_vmap_range((void *)t->rx_buf, t->len);
++	}
+ 
+ 	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
+ 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
+-- 
+2.7.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

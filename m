@@ -1,90 +1,83 @@
-From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: [PATCH 4/7] spi: spi-ep93xx: absorb the interrupt enable/disable helpers
-Date: Thu, 16 Feb 2017 16:48:48 -0700
-Message-ID: <20170216234851.97938-5-hsweeten@visionengravers.com>
-References: <20170216234851.97938-1-hsweeten@visionengravers.com>
-Cc: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Miguel Ojeda <miguel.ojeda.sandonis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] Add possibility to define bits-per-word property.
+Date: Fri, 17 Feb 2017 11:06:44 +0100
+Message-ID: <CANiq72n2+osAdJfRiQwaWuqz2rM0EinhMzqnbDuiRNwFXBuzEg@mail.gmail.com>
+References: <20170216133910.18278-1-adrian.fiergolski@cern.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170216234851.97938-1-hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+In-Reply-To: <20170216133910.18278-1-adrian.fiergolski-vJEk5272eHo@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-These are each only called once. Just absorb them into the callers.
+Hi Adrian,
 
-Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
----
- drivers/spi/spi-ep93xx.c | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+Please review the style to match the kernel's (and the rest of the
+code in the file). See an example below and
+https://github.com/torvalds/linux/blob/master/Documentation/process/coding-style.rst
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index dd179f3..e8f454b 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -111,24 +111,6 @@ struct ep93xx_spi {
- /* converts bits per word to CR0.DSS value */
- #define bits_per_word_to_dss(bpw)	((bpw) - 1)
- 
--static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
--{
--	unsigned int val;
--
--	val = readl(espi->mmio + SSPCR1);
--	val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
--	writel(val, espi->mmio + SSPCR1);
--}
--
--static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
--{
--	unsigned int val;
--
--	val = readl(espi->mmio + SSPCR1);
--	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
--	writel(val, espi->mmio + SSPCR1);
--}
--
- /**
-  * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
-  * @espi: ep93xx SPI controller struct
-@@ -282,7 +264,12 @@ static void ep93xx_spi_pio_transfer(struct ep93xx_spi *espi)
- 	 * FIFO, enable interrupts, and wait for the transfer to complete.
- 	 */
- 	if (ep93xx_spi_read_write(espi)) {
--		ep93xx_spi_enable_interrupts(espi);
-+		unsigned int val;
-+
-+		val = readl(espi->mmio + SSPCR1);
-+		val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
-+		writel(val, espi->mmio + SSPCR1);
-+
- 		wait_for_completion(&espi->wait);
- 	}
- }
-@@ -604,6 +591,7 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
- static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- {
- 	struct ep93xx_spi *espi = dev_id;
-+	unsigned int val;
- 
- 	/*
- 	 * If we got ROR (receive overrun) interrupt we know that something is
-@@ -635,8 +623,12 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- 	 * any case we disable interrupts and notify the worker to handle
- 	 * any post-processing of the message.
- 	 */
--	ep93xx_spi_disable_interrupts(espi);
-+	val = readl(espi->mmio + SSPCR1);
-+	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
-+	writel(val, espi->mmio + SSPCR1);
-+
- 	complete(&espi->wait);
-+
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.10.0
+(I have no idea regarding the functional changes on this patch, I just
+noticed the email coming from CERN and therefore I replied :-)
 
+Cheers,
+Miguel
+
+On Thu, Feb 16, 2017 at 2:39 PM, Adrian Fiergolski
+<adrian.fiergolski-vJEk5272eHo@public.gmane.org> wrote:
+>
+> Signed-off-by: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
+> ---
+>  drivers/spi/spi.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 0239b45..d2267e9 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1549,6 +1549,17 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+>         }
+>         spi->max_speed_hz = value;
+>
+> +       /* Device bits-per-word */
+> +       if( ! of_property_read_u32(nc, "spi-bits-per-word", &value) ){
+
+e.g.
+
+ if (!of_property_read_u32(nc, "spi-bits-per-word", &value)) {
+
+>
+> +         if( value > 32 )
+> +           dev_warn(&master->dev,
+> +                    "bits-per-word %d not supported\n",
+> +                    value);
+> +         else
+> +           spi->bits_per_word = value;
+> +       }
+> +
+> +
+>         /* Store a pointer to the node in the device structure */
+>         of_node_get(nc);
+>         spi->dev.of_node = nc;
+> @@ -1626,6 +1637,13 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+>
+>                         spi->max_speed_hz = sb->connection_speed;
+>
+> +                       if(sb->data_bit_length > 32)
+> +                                   dev_warn(&master->dev,
+> +                                            "bits-per-word %d not supported\n",
+> +                                            sb->data_bit_length);
+> +                       else
+> +                         spi->bits_per_word = sb->data_bit_length;
+> +
+>                         if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+>                                 spi->mode |= SPI_CPHA;
+>                         if (sb->clock_polarity == ACPI_SPI_START_HIGH)
+> --
+> 2.9.3
+>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

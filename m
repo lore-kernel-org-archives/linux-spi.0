@@ -1,36 +1,116 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v2 5/6] spi: davinci: do not use DMA if transfer length is
- less than 16
-Date: Fri, 17 Feb 2017 17:55:01 +0100
-Message-ID: <CAK8P3a2_FL2rBcHdmK040LMRMZCV-70pOBFVUh=VpO+q45nQ0Q@mail.gmail.com>
+From: Frode Isaksen <fisaksen@baylibre.com>
+Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
+Date: Fri, 17 Feb 2017 18:45:19 +0100
+Message-ID: <d7a6d1a1-5860-8788-be2e-7b68cebfaca0@baylibre.com>
 References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
- <1487327904-28311-6-git-send-email-fisaksen@baylibre.com> <CAK8P3a24HkxrU-6a727RY5JqwQgyf9SpprPXvurSqf1Q_W_AMQ@mail.gmail.com>
- <3358b5f1-c7b6-0955-0c36-6f135a585762@baylibre.com>
+ <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
+ <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
+ <20170217112247.GE21222@n2100.armlinux.org.uk>
+ <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
+ <20170217120749.GF21222@n2100.armlinux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: nsekhar-l0cyMroinI0@public.gmane.org, Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        Linux ARM <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3358b5f1-c7b6-0955-0c36-6f135a585762-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vignesh R <vigneshr@ti.com>, khilman@baylibre.com, nsekhar@ti.com,
+ linux-spi@vger.kernel.org, broonie@kernel.org, ptitiano@baylibre.com,
+ linux-arm-kernel@lists.infradead.org
+To: Russell King - ARM Linux <linux@armlinux.org.uk>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170217120749.GF21222@n2100.armlinux.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 17, 2017 at 5:43 PM, Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org> wrote:
-> On 17/02/2017 17:37, Arnd Bergmann wrote:
->> On Fri, Feb 17, 2017 at 11:38 AM, Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org> wrote:
->> 16 seems low as the cutoff. Have you found this experimentally and
->> tested that for e.g. 32
->> bytes there is actually an advantage in using DMA?
-> Yes, I have tested for different sizes. Actually 32 bytes is better @30MHz, but if the bit rate goes down, DMA wins over PIO. Do you prefer 32 bytes ?
 
-No, I don't care about the specific value, just making sure that you had
-actually tested this, as I had expected PIO to be faster here.
 
-     Arnd
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On 17/02/2017 13:07, Russell King - ARM Linux wrote:
+> On Fri, Feb 17, 2017 at 12:36:17PM +0100, Frode Isaksen wrote:
+>> On 17/02/2017 12:22, Russell King - ARM Linux wrote:
+>>> The DMA API deals with the _kernel_ lowmem mapping.  It has no knowledge
+>>> of any other aliases in the system.  When you have a VIVT cache (as all
+>>> old ARM CPUs have) then if you access the memory through a different
+>>> alias from the kernel lowmem mapping (iow, vmalloc) then the DMA API
+>>> can't help you.
+>>>
+>>> However, the correct place to use flush_kernel_vmap_range() etc is not
+>>> in drivers - it's supposed to be done in the callers that know that
+>>> the memory is aliased.
+>> OK, so this should be done in the ubifs layer instead ? xfs already does
+>> this, but no other fs.
+> These APIs were created when XFS was being used on older ARMs and people
+> experienced corruption.  XFS was the only filesystem driver which wanted
+> to do this (horrid, imho) DMA to memory that it accessed via a vmalloc
+> area mapping.
+>
+> If ubifs is also doing this, it's followed XFS down the same route, but
+> ignored the need for additional flushing.
+>
+> The down-side to adding this at the filesystem layer is that you get the
+> impact whether or not the driver does DMA.  However, for XFS that's
+> absolutely necessary, as block devices will transfer to the kernel lowmem
+> mapping, which itself will alias with the vmalloc area mapping.
+>
+> SPI is rather another special case - rather than SPI following the
+> established mechanism of passing data references via scatterlists or
+> similar, it also passes them via virtual addresses, which means SPI
+> can directly access the vmalloc area when performing PIO.  This
+> really makes the problem more complex, because it means that if you
+> do have a SPI driver that does that, it's going to be reading/writing
+> direct from vmalloc space.
+>
+> That's not a problem as long as the data is only accessed via vmalloc
+> space, but it will definitely go totally wrong if the data is
+> subsequently mapped into userspace.
+Thanks a lot for explaining...
+It often(2/5) goes wrong within this simple function called when mounting the UBIFS filesystem w/o a priori any userspace interaction:
+fs/ubifs/lpt.c:
+static int read_ltab(struct ubifs_info *c)
+{
+    int err;
+    void *buf;
+    int retry=1;
+
+    buf = vmalloc(c->ltab_sz);
+    if (!buf)
+        return -ENOMEM;
+    err = ubifs_leb_read(c, c->ltab_lnum, buf, c->ltab_offs, c->ltab_sz, 1);
+    if (err)
+        goto out;
+retry:
+    err = unpack_ltab(c, buf);
+    if (err && retry--) {
+        pr_err("%s: flush cache %p[%d] and retry\n", __func__, buf, c->ltab_sz);
+        invalidate_kernel_vmap_range(buf, c->ltab_sz);
+        goto retry;
+    }
+out:
+    vfree(buf);
+    return err;
+}
+The retry code is added by me and with this code there is no error when retrying after flushing the cache. As you can see, the vmalloc'es buffer is allocated and freed within this function.
+read_ltab: flush cache c9543000[11] and retry
+Ok after this !!
+
+Thanks again,
+Frode
+>
+> The other important thing to realise is that the interfaces in
+> cachetlb.txt assume that it's the lowmem mapping that will be accessed,
+> and the IO device will push that data out to physical memory (either via
+> the DMA API, or flush_kernel_dcache_page()).  That's not true of SPI,
+> as it passes virtual addresses around.
+>
+> So... overall, I'm not sure that this problem is properly solvable given
+> SPIs insistance on passing virtual addresses and the differences in this
+> area between SPI and block.
+>
+> What I'm quite sure about is that adding yet more cache flushing
+> interfaces for legacy cache types really isn't the way forward.
+>

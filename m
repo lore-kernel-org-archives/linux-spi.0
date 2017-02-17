@@ -1,83 +1,56 @@
-From: Miguel Ojeda <miguel.ojeda.sandonis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] Add possibility to define bits-per-word property.
-Date: Fri, 17 Feb 2017 11:06:44 +0100
-Message-ID: <CANiq72n2+osAdJfRiQwaWuqz2rM0EinhMzqnbDuiRNwFXBuzEg@mail.gmail.com>
+Date: Fri, 17 Feb 2017 10:11:51 +0000
+Message-ID: <20170217101151.hyzmz5a4lgdy7p5m@sirena.org.uk>
 References: <20170216133910.18278-1-adrian.fiergolski@cern.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rynao5wyzq4m4r6q"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <20170216133910.18278-1-adrian.fiergolski-vJEk5272eHo@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Adrian,
 
-Please review the style to match the kernel's (and the rest of the
-code in the file). See an example below and
-https://github.com/torvalds/linux/blob/master/Documentation/process/coding-style.rst
+--rynao5wyzq4m4r6q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-(I have no idea regarding the functional changes on this patch, I just
-noticed the email coming from CERN and therefore I replied :-)
-
-Cheers,
-Miguel
-
-On Thu, Feb 16, 2017 at 2:39 PM, Adrian Fiergolski
-<adrian.fiergolski-vJEk5272eHo@public.gmane.org> wrote:
->
+On Thu, Feb 16, 2017 at 02:39:10PM +0100, Adrian Fiergolski wrote:
 > Signed-off-by: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
 > ---
 >  drivers/spi/spi.c | 17 +++++++++++++++++
 >  1 file changed, 17 insertions(+)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 0239b45..d2267e9 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1549,6 +1549,17 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
->         }
->         spi->max_speed_hz = value;
->
-> +       /* Device bits-per-word */
-> +       if( ! of_property_read_u32(nc, "spi-bits-per-word", &value) ){
 
-e.g.
+Why would this property be useful?  You're also adding a new binding
+with no binding documentation, binding documentation is mandatory for
+all new bindings.
 
- if (!of_property_read_u32(nc, "spi-bits-per-word", &value)) {
+Please submit patches using subject lines reflecting the style for the
+subsystem.  This makes it easier for people to identify relevant
+patches.  Look at what existing commits in the area you're changing are
+doing and make sure your subject lines visually resemble what they're
+doing.
 
->
-> +         if( value > 32 )
-> +           dev_warn(&master->dev,
-> +                    "bits-per-word %d not supported\n",
-> +                    value);
-> +         else
-> +           spi->bits_per_word = value;
-> +       }
-> +
-> +
->         /* Store a pointer to the node in the device structure */
->         of_node_get(nc);
->         spi->dev.of_node = nc;
-> @@ -1626,6 +1637,13 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
->
->                         spi->max_speed_hz = sb->connection_speed;
->
-> +                       if(sb->data_bit_length > 32)
-> +                                   dev_warn(&master->dev,
-> +                                            "bits-per-word %d not supported\n",
-> +                                            sb->data_bit_length);
-> +                       else
-> +                         spi->bits_per_word = sb->data_bit_length;
-> +
->                         if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
->                                 spi->mode |= SPI_CPHA;
->                         if (sb->clock_polarity == ACPI_SPI_START_HIGH)
-> --
-> 2.9.3
->
+--rynao5wyzq4m4r6q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlimzGYACgkQJNaLcl1U
+h9DEeAf+KDMQDmQTAgEV5+kwXkN6PofPcloNYDdrHMBetJhqKyg/Sdn5cnmP7AS7
+jywXmn0l3SJoSIS0wco5sw3KFD51zP0FIlely4JV1ueC5Hozv746ESQyb6m6b78E
+h3mRldlJTKemT75kOlhQ5EXoNntrJe8ftpTIuqakili/A3yM4S+hrVbNtTwyldjA
+sPRtSCI9fBra9yYucCdbmiCXGaajgl9mVqRt5z2aFvRAHhey5l/qAXEpoB+khI1R
+g/9lfTNqgh0DP4OqBUtEFwFz52aKbafZj5aX1cTNIP2pFl9k2DQNxNsOwycCDl1d
+cf8l1xXxqj7iep13aObCpucj1BJg/w==
+=ydm7
+-----END PGP SIGNATURE-----
+
+--rynao5wyzq4m4r6q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

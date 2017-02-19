@@ -1,56 +1,77 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/6] spi: davinci: enable DMA when channels are
- defined in DT
-Date: Sun, 19 Feb 2017 16:30:52 +0000
-Message-ID: <20170219163052.hfs37ljvnt6sduai@sirena.org.uk>
-References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
- <1487327904-28311-3-git-send-email-fisaksen@baylibre.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yfgxnfdgjsmlcabf"
-Cc: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Applied "spi: armada-3700: Remove spi_master_put in a3700_spi_remove()" to the spi tree
+Date: Sun, 19 Feb 2017 16:35:05 +0000
+Message-ID: <E1cfUS1-0004tK-Le@finisterre>
+References: <20170205154940.965-1-weiyj.lk@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1487327904-28311-3-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20170205154940.965-1-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---yfgxnfdgjsmlcabf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: armada-3700: Remove spi_master_put in a3700_spi_remove()
 
-On Fri, Feb 17, 2017 at 11:38:20AM +0100, Frode Isaksen wrote:
-> From: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
->=20
-> When booting with DT the SPI driver is always using
-> the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
-> defined in the DT.
+has been applied to the spi tree at
 
-This looks good but I'll hold off on applying it without patch 1 in case
-it introduces regressions for existing systems due to switching to DMA
-but not handling vmalloc() mappings.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---yfgxnfdgjsmlcabf
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlipyDsACgkQJNaLcl1U
-h9DDNgf+KStEA8hg+Dphujo3Smr/aeduLWJvNzz31LOB2L0eE7On8L1dLEcVZUSD
-2ltqshN9J6MR4Q1oXfkxtvQR0hrFpu3pQa2RYNW2Isc8HBSI/m3gOA7PSWX4x6sn
-QBMWhADNSiwKbXDTWntfPL2IqMY8zId9OvF/Yb6ucAVI0HL2HhaRs22cNCprNqhG
-Wo4BPWF3772tph7zjv5+Hnxa18fN4Dvpb4I2d7ydvhamw57Ri5U/lemB8CC4sMTh
-h3IPjpc7qCPH0rUqwoY+Q+uX8CctY9h3bBgD2JfTzX3Jiu7wN0MyCQO0NgM4jltk
-/xg/IbvWMYYDkAjiaSgBq6VFpE+J9w==
-=N2B2
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---yfgxnfdgjsmlcabf--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From e92f0051c0c65d7bee989884a233cfcd80303bdf Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Date: Sun, 5 Feb 2017 15:49:40 +0000
+Subject: [PATCH] spi: armada-3700: Remove spi_master_put in a3700_spi_remove()
+
+The call to spi_master_put() in a3700_spi_remove() is redundant since
+the master is registered using devm_spi_register_master() and no
+reference hold by using spi_master_get() in a3700_spi_remove().
+
+This is detected by Coccinelle semantic patch.
+
+Fixes: 5762ab71eb24 ("spi: Add support for Armada 3700 SPI Controller")
+Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-armada-3700.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 3155ab7ad970..56acd3511f73 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -901,7 +901,6 @@ static int a3700_spi_remove(struct platform_device *pdev)
+ 	struct a3700_spi *spi = spi_master_get_devdata(master);
+ 
+ 	clk_unprepare(spi->clk);
+-	spi_master_put(master);
+ 
+ 	return 0;
+ }
+-- 
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

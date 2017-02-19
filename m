@@ -1,77 +1,32 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: lantiq-ssc: activate under COMPILE_TEST" to the spi tree
-Date: Sun, 19 Feb 2017 16:35:04 +0000
-Message-ID: <E1cfUS0-0004sX-0c@finisterre>
-References: <20170218160648.16251-1-hauke@hauke-m.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [spi:topic/lantiq-ssc 11/12] drivers/spi/spi-lantiq-ssc.c:973:3-8:
+ No need to set .owner here. The core will do it.
+Date: Mon, 20 Feb 2017 01:33:10 +0800
+Message-ID: <201702200104.ay31O32d%fengguang.wu@intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: kbuild-all-JC7UmRfGjtg@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170218160648.16251-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git topic/lantiq-ssc
+head:   30fb27239f987c53429f24297f5d46e28d0e16ed
+commit: 582c97f6868cf70720a17d2421d317333f3ad597 [11/12] spi: lantiq-ssc: activate under COMPILE_TEST
 
-   spi: lantiq-ssc: activate under COMPILE_TEST
 
-has been applied to the spi tree at
+coccinelle warnings: (new ones prefixed by >>)
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+>> drivers/spi/spi-lantiq-ssc.c:973:3-8: No need to set .owner here. The core will do it.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Please review and possibly fold the followup patch.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 582c97f6868cf70720a17d2421d317333f3ad597 Mon Sep 17 00:00:00 2001
-From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Date: Sat, 18 Feb 2017 17:06:48 +0100
-Subject: [PATCH] spi: lantiq-ssc: activate under COMPILE_TEST
-
-This driver should compile on all platforms, activate it under compile
-test. The Lantiq specific parts are under ifdef and should be removed
-when Lantiq platform supports common clock framework.
-
-Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1abba53c2334..5887beefab90 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -417,7 +417,7 @@ config SPI_NUC900
- 
- config SPI_LANTIQ_SSC
- 	tristate "Lantiq SSC SPI controller"
--	depends on LANTIQ
-+	depends on LANTIQ || COMPILE_TEST
- 	help
- 	  This driver supports the Lantiq SSC SPI controller in master
- 	  mode. This controller is found on Intel (former Lantiq) SoCs like
--- 
-2.11.0
-
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

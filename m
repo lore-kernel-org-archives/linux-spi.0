@@ -1,20 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-ti-qspi: Fix error handling" to the spi tree
-Date: Sun, 19 Feb 2017 16:35:01 +0000
-Message-ID: <E1cfURx-0004ql-O5@finisterre>
-References: <20170218094202.6454-1-christophe.jaillet@wanadoo.fr>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170218094202.6454-1-christophe.jaillet@wanadoo.fr>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: lantiq-ssc: activate under COMPILE_TEST" to the spi tree
+Date: Sun, 19 Feb 2017 16:35:04 +0000
+Message-ID: <E1cfUS0-0004sX-0c@finisterre>
+References: <20170218160648.16251-1-hauke@hauke-m.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170218160648.16251-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-ti-qspi: Fix error handling
+   spi: lantiq-ssc: activate under COMPILE_TEST
 
 has been applied to the spi tree at
 
@@ -39,36 +41,38 @@ to this mail.
 Thanks,
 Mark
 
->From 7abfe04c47d97243a7aeeb8fe211a15687bff67f Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Sat, 18 Feb 2017 10:42:02 +0100
-Subject: [PATCH] spi: spi-ti-qspi: Fix error handling
+>From 582c97f6868cf70720a17d2421d317333f3ad597 Mon Sep 17 00:00:00 2001
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Date: Sat, 18 Feb 2017 17:06:48 +0100
+Subject: [PATCH] spi: lantiq-ssc: activate under COMPILE_TEST
 
-'dma_request_chan_by_mask()' can not return NULL.
-Try to keep the logic in 'no_dma:' by resetting 'qspi->rx_chan' in case
-of error.
+This driver should compile on all platforms, activate it under compile
+test. The Lantiq specific parts are under ifdef and should be removed
+when Lantiq platform supports common clock framework.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ti-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index e784d0f64dc1..ad76a44fee6f 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -718,9 +718,10 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	dma_cap_set(DMA_MEMCPY, mask);
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 1abba53c2334..5887beefab90 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -417,7 +417,7 @@ config SPI_NUC900
  
- 	qspi->rx_chan = dma_request_chan_by_mask(&mask);
--	if (!qspi->rx_chan) {
-+	if (IS_ERR(qspi->rx_chan)) {
- 		dev_err(qspi->dev,
- 			"No Rx DMA available, trying mmap mode\n");
-+		qspi->rx_chan = NULL;
- 		ret = 0;
- 		goto no_dma;
- 	}
+ config SPI_LANTIQ_SSC
+ 	tristate "Lantiq SSC SPI controller"
+-	depends on LANTIQ
++	depends on LANTIQ || COMPILE_TEST
+ 	help
+ 	  This driver supports the Lantiq SSC SPI controller in master
+ 	  mode. This controller is found on Intel (former Lantiq) SoCs like
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

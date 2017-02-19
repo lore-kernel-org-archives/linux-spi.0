@@ -1,81 +1,156 @@
-From: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] mtd: m25p80: Added pm ops support
-Date: Sun, 19 Feb 2017 04:48:26 -0500
-Message-ID: <CAKekbesoBnEs0evM8OjhTEk+s2wREd6BgStkvTYdX68y_yQULA@mail.gmail.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v4 1/2] mtd: spi-nor: Added spi-nor init function
+Date: Sun, 19 Feb 2017 11:37:51 +0100
+Message-ID: <54393706-cd93-603a-193b-25fbf52b2d83@denx.de>
 References: <1487086368-4118-1-git-send-email-kdasu.kdev@gmail.com>
- <1487086368-4118-3-git-send-email-kdasu.kdev@gmail.com> <e5fb0bdf-0956-e364-14fb-c255471f371d@denx.de>
+ <1487086368-4118-2-git-send-email-kdasu.kdev@gmail.com>
+ <b6079dbb-82fc-7579-32b2-b8c071ef02ef@denx.de>
+ <CAKekbesKKS_s873D=xy2tQcVYei_26gYipn2ru1rVY4ihXbsXw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
         Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e5fb0bdf-0956-e364-14fb-c255471f371d-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <CAKekbesKKS_s873D=xy2tQcVYei_26gYipn2ru1rVY4ihXbsXw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sat, Feb 18, 2017 at 5:31 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> On 02/14/2017 04:32 PM, Kamal Dasu wrote:
->> Added power management ops for resume to be able to resan spi-nor
->
-> rescan ... but you're not really rescanning it, are you ? You're just
-> reconfiguring the pre-suspend parameters .
->
->> device and set it to right transfer modes in its probed state after
->> poweron. Some SoC implementations might  power down the spi-nor flash
->> and loose its initial settings on suspend. A resume should retore the
->
-> restore ...
->
->> part to its probed state.
+On 02/19/2017 10:47 AM, Kamal Dasu wrote:
+> On Sat, Feb 18, 2017 at 5:29 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> On 02/14/2017 04:32 PM, Kamal Dasu wrote:
+>>> Refactored spi_nor_scan() code to add spi_nor_init() function that
+>>> programs the spi-nor flash to:
+>>> 1) remove flash protection if applicable
+>>> 2) set read mode to quad mode if configured such
+>>> 3) set the address width based on the flash size and vendor
+>>>
+>>> spi_nor_scan() now calls spi_nor_init() to setup nor flash.
+>>>
+>>> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 >>
+>> Changelog missing ?
+> 
+> Yes will add it and resend.
+> 
+>>
+>>> ---
+>>>  drivers/mtd/spi-nor/spi-nor.c | 72 +++++++++++++++++++++++++++----------------
+>>>  include/linux/mtd/spi-nor.h   | 18 ++++++++++-
+>>>  2 files changed, 62 insertions(+), 28 deletions(-)
+>>>
+>>> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+>>> index 70e52ff..2bf7f4f 100644
+>>> --- a/drivers/mtd/spi-nor/spi-nor.c
+>>> +++ b/drivers/mtd/spi-nor/spi-nor.c
+>>> @@ -1526,6 +1526,44 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
+>>>       return 0;
+>>>  }
+>>>
+>>> +int spi_nor_init(struct spi_nor *nor)
+>>> +{
+>>> +     int ret = 0;
+>>> +     const struct flash_info *info = nor->info;
+>>> +     struct device *dev = nor->dev;
+>>> +
+>>> +     /*
+>>> +      * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
+>>> +      * with the software protection bits set
+>>> +      */
+>>> +
+>>> +     if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
+>>> +         JEDEC_MFR(info) == SNOR_MFR_INTEL ||
+>>> +         JEDEC_MFR(info) == SNOR_MFR_SST ||
+>>> +         info->flags & SPI_NOR_HAS_LOCK) {
+>>> +             write_enable(nor);
+>>> +             write_sr(nor, 0);
+>>> +             spi_nor_wait_till_ready(nor);
+>>> +     }
+>>> +
+>>> +     if (nor->flash_read == SPI_NOR_QUAD) {
+>>> +             ret = set_quad_mode(nor, info);
+>>> +             if (ret) {
+>>> +                     dev_err(dev, "quad mode not supported\n");
+>>> +                     return ret;
+>>> +             }
+>>> +     }
+> 
+> quad mode is being set in the above block of code.
+> 
+>>> +
+>>> +     if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
+>>> +         info->flags & SPI_NOR_4B_OPCODES)
+>>> +             spi_nor_set_4byte_opcodes(nor, info);
+>>> +     else
+>>> +             set_4byte(nor, info, 1);
+>>> +
+>>> +     return ret;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(spi_nor_init);
+>>> +
+>>>  int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+>>>  {
+>>>       const struct flash_info *info = NULL;
+>>> @@ -1571,6 +1609,7 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+>>>               }
+>>>       }
+>>>
+>>> +     nor->info = info;
+>>>       mutex_init(&nor->lock);
+>>>
+>>>       /*
+>>> @@ -1581,20 +1620,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+>>>       if (info->flags & SPI_S3AN)
+>>>               nor->flags |=  SNOR_F_READY_XSR_RDY;
+>>>
+>>> -     /*
+>>> -      * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
+>>> -      * with the software protection bits set
+>>> -      */
+>>> -
+>>> -     if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
+>>> -         JEDEC_MFR(info) == SNOR_MFR_INTEL ||
+>>> -         JEDEC_MFR(info) == SNOR_MFR_SST ||
+>>> -         info->flags & SPI_NOR_HAS_LOCK) {
+>>> -             write_enable(nor);
+>>> -             write_sr(nor, 0);
+>>> -             spi_nor_wait_till_ready(nor);
+>>> -     }
+>>> -
+>>>       if (!mtd->name)
+>>>               mtd->name = dev_name(dev);
+>>>       mtd->priv = nor;
+>>> @@ -1669,11 +1694,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+>>>
+>>>       /* Quad/Dual-read mode takes precedence over fast/normal */
+>>>       if (mode == SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
+>>> -             ret = set_quad_mode(nor, info);
+>>> -             if (ret) {
+>>> -                     dev_err(dev, "quad mode not supported\n");
+>>> -                     return ret;
+>>> -             }
+>>>               nor->flash_read = SPI_NOR_QUAD;
+>>
+>> So from here on, any user will expect quad mode to be correctly set, but
+>> it really isn't. Is that OK ?
+> 
+> It is being set in spi_nor_init() based on the  nor->flash_read == SPI_NOR_QUAD;
+> 
 
-Will fix typos.
+But that's invoked later, so whoever adds code between this place and
+the invocation of spi_nor_init() will be misled into believing the SPI
+NOR is set up in quad-mode, while it would not be, right ?
 
->> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
->>  drivers/mtd/devices/m25p80.c | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
->> index c4df3b1..3ab30b2 100644
->> --- a/drivers/mtd/devices/m25p80.c
->> +++ b/drivers/mtd/devices/m25p80.c
->> @@ -324,10 +324,21 @@ static int m25p_remove(struct spi_device *spi)
->>  };
->>  MODULE_DEVICE_TABLE(of, m25p_of_table);
->>
->> +#ifdef CONFIG_PM_SLEEP
->> +static int m25p_resume(struct device *dev)
->> +{
->> +     struct m25p *flash = dev_get_drvdata(dev);
->> +
->> +     return spi_nor_init(&flash->spi_nor);
->> +}
->> +#endif
->> +static SIMPLE_DEV_PM_OPS(m25p_pm_ops, NULL, m25p_resume);
->> +
->>  static struct spi_driver m25p80_driver = {
->>       .driver = {
->>               .name   = "m25p80",
->>               .of_match_table = m25p_of_table,
->> +             .pm     = &m25p_pm_ops,
->>       },
->>       .id_table       = m25p_ids,
->>       .probe  = m25p_probe,
->>
->
->
-> --
-> Best regards,
-> Marek Vasut
+[...]
 
-Thanks
-Kamal
+-- 
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

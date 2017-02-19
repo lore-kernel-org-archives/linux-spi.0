@@ -1,20 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: armada-3700: Remove spi_master_put in a3700_spi_remove()" to the spi tree
-Date: Sun, 19 Feb 2017 16:35:05 +0000
-Message-ID: <E1cfUS1-0004tK-Le@finisterre>
-References: <20170205154940.965-1-weiyj.lk@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Romain Perier <romain.perier-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170205154940.965-1-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-ti-qspi: Fix error handling" to the spi tree
+Date: Sun, 19 Feb 2017 16:35:02 +0000
+Message-ID: <E1cfURy-0004ra-Q2@finisterre>
+References: <20170218094202.6454-1-christophe.jaillet@wanadoo.fr>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170218094202.6454-1-christophe.jaillet@wanadoo.fr>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: armada-3700: Remove spi_master_put in a3700_spi_remove()
+   spi: spi-ti-qspi: Fix error handling
 
 has been applied to the spi tree at
 
@@ -39,40 +39,36 @@ to this mail.
 Thanks,
 Mark
 
->From e92f0051c0c65d7bee989884a233cfcd80303bdf Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Date: Sun, 5 Feb 2017 15:49:40 +0000
-Subject: [PATCH] spi: armada-3700: Remove spi_master_put in a3700_spi_remove()
+>From 30fb27239f987c53429f24297f5d46e28d0e16ed Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sat, 18 Feb 2017 10:42:02 +0100
+Subject: [PATCH] spi: spi-ti-qspi: Fix error handling
 
-The call to spi_master_put() in a3700_spi_remove() is redundant since
-the master is registered using devm_spi_register_master() and no
-reference hold by using spi_master_get() in a3700_spi_remove().
+'dma_request_chan_by_mask()' can not return NULL.
+Try to keep the logic in 'no_dma:' by resetting 'qspi->rx_chan' in case
+of error.
 
-This is detected by Coccinelle semantic patch.
-
-Fixes: 5762ab71eb24 ("spi: Add support for Armada 3700 SPI Controller")
-Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-armada-3700.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 3155ab7ad970..56acd3511f73 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -901,7 +901,6 @@ static int a3700_spi_remove(struct platform_device *pdev)
- 	struct a3700_spi *spi = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index ec6fb09e2e17..0fefa6423ff4 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -714,9 +714,10 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	dma_cap_set(DMA_MEMCPY, mask);
  
- 	clk_unprepare(spi->clk);
--	spi_master_put(master);
- 
- 	return 0;
- }
+ 	qspi->rx_chan = dma_request_chan_by_mask(&mask);
+-	if (!qspi->rx_chan) {
++	if (IS_ERR(qspi->rx_chan)) {
+ 		dev_err(qspi->dev,
+ 			"No Rx DMA available, trying mmap mode\n");
++		qspi->rx_chan = NULL;
+ 		ret = 0;
+ 		goto no_dma;
+ 	}
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

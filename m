@@ -1,56 +1,81 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/bcm63xx: make spi subsystem aware of message size limits
-Date: Mon, 20 Feb 2017 11:50:09 +0100
-Message-ID: <20170220105009.7944-1-jonas.gorski@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
+Date: Mon, 20 Feb 2017 16:57:43 +0530
+Message-ID: <954333da-4d15-ce77-4021-268530365edc@ti.com>
+References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
+ <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
+ <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
+ <20170217112247.GE21222@n2100.armlinux.org.uk>
+ <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
+ <20170217120749.GF21222@n2100.armlinux.org.uk>
+ <0f3607fd-4542-be92-da2e-b2da6f8ac26f@ti.com>
+ <f0fcc000-6c07-647a-ada2-04b61f0e2e3b@baylibre.com>
+ <57721a60-52bb-c9d1-d5a7-ae450e7adcc0@ti.com>
+ <2a1954a3-edbd-7ac4-6fde-9b6d046a6560@baylibre.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Russell King - ARM Linux <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2a1954a3-edbd-7ac4-6fde-9b6d046a6560-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The bcm63xx SPI controller does not allow manual control of the CS
-lines and will toggle it automatically before and after sending data,
-so we are limited to messages that fit in the FIFO buffer. Since the CS
-lines aren't available as GPIOs either, we will need to make slave
-drivers aware of this limitation so they can handle them accordingly.
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index fee747030ee6..caa733ec405c 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -428,6 +428,13 @@ static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+static size_t bcm63xx_spi_max_length(struct spi_device *dev)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-+
-+	return bs->fifo_size;
-+}
-+
- static const unsigned long bcm6348_spi_reg_offsets[] = {
- 	[SPI_CMD]		= SPI_6348_CMD,
- 	[SPI_INT_STATUS]	= SPI_6348_INT_STATUS,
-@@ -541,6 +548,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->max_transfer_size = bcm63xx_spi_max_length;
-+	master->max_message_size = bcm63xx_spi_max_length;
- 	master->auto_runtime_pm = true;
- 	bs->msg_type_shift = bs->reg_offsets[SPI_MSG_TYPE_SHIFT];
- 	bs->msg_ctl_width = bs->reg_offsets[SPI_MSG_CTL_WIDTH];
+On Monday 20 February 2017 04:04 PM, Frode Isaksen wrote:
+> 
+> 
+> On 20/02/2017 10:47, Vignesh R wrote:
+>>
+>> On Monday 20 February 2017 02:56 PM, Frode Isaksen wrote:
+>>>
+>>> On 20/02/2017 07:55, Vignesh R wrote:
+>>>> On Friday 17 February 2017 05:37 PM, Russell King - ARM Linux wrote:
+[...]
+>>>> I am debugging another issue with UBIFS wherein pages allocated by
+>>>> vmalloc are in highmem region that are not addressable using 32 bit
+>>>> addresses and is backed by LPAE. So, a 32 bit DMA cannot access these
+>>>> buffers at all.
+>>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
+>>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
+>>>> dma_map_sg() call). This results in random crashes as DMA starts
+>>>> accessing random memory during SPI read.
+>>>>
+>>>> Given, the above problem and also issue surrounding VIVT caches, I am
+>>>> thinking of may be using pre-allocated fixed size bounce buffer to
+>>>> handle buffers not in lowmem mapping.
+>>>> I have tried using 64KB pre-allocated buffer on TI DRA74 EVM with QSPI
+>>>> running at 76.8MHz and do not see any significant degradation in
+>>>> performance with UBIFS. Mainly because UBIFS seems to use vmalloc'd
+>>>> buffers only during initial preparing and mounting phase and not during
+>>>> file read/write.
+>>> I am seeing a bug caused by VIVT cache in 'read_ltab()' function. In this function, the vmalloc'ed buffer is of size 11. Isn't it better to use kmalloc in this case ?
+>> read_ltab() isn't the only place where vmalloc() is used. A quick grep
+>> for vmalloc on fs/ubifs/ shows about ~19 occurrence. I guess every
+>> vmalloc() call can potentially allocate memory from highmem and might
+>> potentially cause issue for VIVT and such aliasing caches.
+>> Fixing just one such case isn't going to help IMHO.
+> Of course fixing it only in one place is of course not going to help..
+> For the moment there are 3 solutions to the UBIFS DMA problem:
+> 1) Always use bounce buffer for vmalloc'ed buffers - impacts everyone.
+> 2) Remove use of vmalloc'ed buffers in UBIFS - is it possible ?
+
+Maybe. But what about mtdblock with JFFS2 on top of it, mtdblock still
+uses vmalloc'd buffers?
+
+
 -- 
-2.11.0
-
+Regards
+Vignesh
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

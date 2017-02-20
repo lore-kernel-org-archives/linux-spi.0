@@ -1,81 +1,127 @@
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
-Date: Mon, 20 Feb 2017 16:57:43 +0530
-Message-ID: <954333da-4d15-ce77-4021-268530365edc@ti.com>
-References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
- <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
- <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
- <20170217112247.GE21222@n2100.armlinux.org.uk>
- <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
- <20170217120749.GF21222@n2100.armlinux.org.uk>
- <0f3607fd-4542-be92-da2e-b2da6f8ac26f@ti.com>
- <f0fcc000-6c07-647a-ada2-04b61f0e2e3b@baylibre.com>
- <57721a60-52bb-c9d1-d5a7-ae450e7adcc0@ti.com>
- <2a1954a3-edbd-7ac4-6fde-9b6d046a6560@baylibre.com>
+From: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
+Subject: [PATCH] spi: Add spi-bits-per-word binding.
+Date: Mon, 20 Feb 2017 16:35:12 +0100
+Message-ID: <20170220153512.6563-1-adrian.fiergolski@cern.ch>
+References: <20170217101151.hyzmz5a4lgdy7p5m>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King - ARM Linux <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        "khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <miguel.ojeda.sandonis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2a1954a3-edbd-7ac4-6fde-9b6d046a6560-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20170217101151.hyzmz5a4lgdy7p5m>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+If an SPI controller doesn't support 8 bit transfers
+(master->bits_per_word_mask), it will be never registered (tested with
+spidev):
+of_register_spi_device calls spi_add_device which calls spi_setup. The last
+takes as an argument spi_device struct, which, in case of spidev, has
+bits_per_word set to 0. Thus, the spi_setup function will set it to default
+8. Further, the same function will call __spi_validate_bits_per_word which
+will fail the whole registration for controllers not supporting 8 bit
+transfers (i.e. xilinx-spi).
 
+Signed-off-by: Adrian Fiergolski <adrian.fiergolski-vJEk5272eHo@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 40 ++++++++++++-----------
+ drivers/spi/spi.c                                 | 18 ++++++++++
+ 2 files changed, 39 insertions(+), 19 deletions(-)
 
-On Monday 20 February 2017 04:04 PM, Frode Isaksen wrote:
-> 
-> 
-> On 20/02/2017 10:47, Vignesh R wrote:
->>
->> On Monday 20 February 2017 02:56 PM, Frode Isaksen wrote:
->>>
->>> On 20/02/2017 07:55, Vignesh R wrote:
->>>> On Friday 17 February 2017 05:37 PM, Russell King - ARM Linux wrote:
-[...]
->>>> I am debugging another issue with UBIFS wherein pages allocated by
->>>> vmalloc are in highmem region that are not addressable using 32 bit
->>>> addresses and is backed by LPAE. So, a 32 bit DMA cannot access these
->>>> buffers at all.
->>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
->>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
->>>> dma_map_sg() call). This results in random crashes as DMA starts
->>>> accessing random memory during SPI read.
->>>>
->>>> Given, the above problem and also issue surrounding VIVT caches, I am
->>>> thinking of may be using pre-allocated fixed size bounce buffer to
->>>> handle buffers not in lowmem mapping.
->>>> I have tried using 64KB pre-allocated buffer on TI DRA74 EVM with QSPI
->>>> running at 76.8MHz and do not see any significant degradation in
->>>> performance with UBIFS. Mainly because UBIFS seems to use vmalloc'd
->>>> buffers only during initial preparing and mounting phase and not during
->>>> file read/write.
->>> I am seeing a bug caused by VIVT cache in 'read_ltab()' function. In this function, the vmalloc'ed buffer is of size 11. Isn't it better to use kmalloc in this case ?
->> read_ltab() isn't the only place where vmalloc() is used. A quick grep
->> for vmalloc on fs/ubifs/ shows about ~19 occurrence. I guess every
->> vmalloc() call can potentially allocate memory from highmem and might
->> potentially cause issue for VIVT and such aliasing caches.
->> Fixing just one such case isn't going to help IMHO.
-> Of course fixing it only in one place is of course not going to help..
-> For the moment there are 3 solutions to the UBIFS DMA problem:
-> 1) Always use bounce buffer for vmalloc'ed buffers - impacts everyone.
-> 2) Remove use of vmalloc'ed buffers in UBIFS - is it possible ?
-
-Maybe. But what about mtdblock with JFFS2 on top of it, mtdblock still
-uses vmalloc'd buffers?
-
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 4b1d6e7..8401741 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -43,26 +43,28 @@ cs3 : &gpio1 2 0
+ 
+ SPI slave nodes must be children of the SPI master node and can
+ contain the following properties.
+-- reg             - (required) chip select address of device.
+-- compatible      - (required) name of SPI device following generic names
+-		recommended practice.
++- reg               - (required) chip select address of device.
++- compatible        - (required) name of SPI device following generic names
++		      recommended practice.
+ - spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
+-- spi-cpol        - (optional) Empty property indicating device requires
+-		inverse clock polarity (CPOL) mode.
+-- spi-cpha        - (optional) Empty property indicating device requires
+-		shifted clock phase (CPHA) mode.
+-- spi-cs-high     - (optional) Empty property indicating device requires
+-		chip select active high.
+-- spi-3wire       - (optional) Empty property indicating device requires
+-		3-wire mode.
+-- spi-lsb-first   - (optional) Empty property indicating device requires
+-		LSB first mode.
+-- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MOSI. Defaults to 1 if not present.
+-- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MISO. Defaults to 1 if not present.
+-- spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
+-- spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
++- spi-cpol          - (optional) Empty property indicating device requires
++		      inverse clock polarity (CPOL) mode.
++- spi-cpha          - (optional) Empty property indicating device requires
++		      shifted clock phase (CPHA) mode.
++- spi-cs-high       - (optional) Empty property indicating device requires
++		      chip select active high.
++- spi-3wire         - (optional) Empty property indicating device requires
++		      3-wire mode.
++- spi-lsb-first     - (optional) Empty property indicating device requires
++		      LSB first mode.
++- spi-tx-bus-width  - (optional) The bus width (number of data wires) that is
++                       used for MOSI. Defaults to 1 if not present.
++- spi-rx-bus-width  - (optional) The bus width (number of data wires) that is
++                       used for MISO. Defaults to 1 if not present.
++- spi-rx-delay-us   - (optional) Microsecond delay after a read transfer.
++- spi-tx-delay-us   - (optional) Microsecond delay after a write transfer.
++- spi-bits-per-word - (optional) Word size for a data transfer. Defaults is 8
++                      if not present.
+ 
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+ It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 656dd3e..57fe058 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1594,6 +1594,17 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	}
+ 	spi->max_speed_hz = value;
+ 
++	/* Device bits-per-word */
++	if (!of_property_read_u32(nc, "spi-bits-per-word", &value)) {
++		if (value > 32)
++			dev_warn(&master->dev,
++				 "bits-per-word %d not supported\n",
++				 value);
++		else
++			spi->bits_per_word = value;
++	}
++
++
+ 	/* Store a pointer to the node in the device structure */
+ 	of_node_get(nc);
+ 	spi->dev.of_node = nc;
+@@ -1673,6 +1684,13 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 
+ 			spi->max_speed_hz = sb->connection_speed;
+ 
++			if (sb->data_bit_length > 32)
++				dev_warn(&master->dev,
++					 "bits-per-word %d not supported\n",
++					 sb->data_bit_length);
++			else
++				spi->bits_per_word = sb->data_bit_length;
++
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+ 				spi->mode |= SPI_CPHA;
+ 			if (sb->clock_polarity == ACPI_SPI_START_HIGH)
 -- 
-Regards
-Vignesh
+2.9.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

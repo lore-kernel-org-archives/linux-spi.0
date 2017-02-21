@@ -1,91 +1,51 @@
 From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
-Date: Tue, 21 Feb 2017 10:38:27 +0530
-Message-ID: <e713a1da-5774-a489-343f-de9aa0f0a141@ti.com>
-References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
- <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
- <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
- <20170217112247.GE21222@n2100.armlinux.org.uk>
- <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
- <20170217120749.GF21222@n2100.armlinux.org.uk>
- <0f3607fd-4542-be92-da2e-b2da6f8ac26f@ti.com>
- <f0fcc000-6c07-647a-ada2-04b61f0e2e3b@baylibre.com>
- <57721a60-52bb-c9d1-d5a7-ae450e7adcc0@ti.com>
- <2a1954a3-edbd-7ac4-6fde-9b6d046a6560@baylibre.com>
- <954333da-4d15-ce77-4021-268530365edc@ti.com>
- <69d41f8a-371b-abd9-7e78-f8701652877f@baylibre.com>
+Subject: Handling vmalloc'd buffers in spi-nor
+Date: Tue, 21 Feb 2017 14:07:08 +0530
+Message-ID: <8cf1d1d9-38a1-cbef-9a9b-07d2ecf2727f@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: Russell King - ARM Linux <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        "khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <69d41f8a-371b-abd9-7e78-f8701652877f-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi all,
 
+I have come across couple of problems[1] when using m25p80 driver with
+SPI flash over SPI bus with DMA. Basically filesystems like UBIFS may
+pass vmalloc'd buffers to SPI NOR layer which will end up in SPI layer.
+SPI core does try to handle such buffers (see spi_map_buf()) by doing
+vmalloc_to_page() and creating scatterlist.
+But, its known that this does not work well with VIVT/aliasing cache
+architectures.
+This also fails when buffers are addressed using LPAE (buffers in region
+higher than 32 bit addressable region), if DMA is 32bit only.
 
-On Monday 20 February 2017 09:19 PM, Frode Isaksen wrote:
-> 
-> 
-> On 20/02/2017 12:27, Vignesh R wrote:
->>
->> On Monday 20 February 2017 04:04 PM, Frode Isaksen wrote:
->>>
->>> On 20/02/2017 10:47, Vignesh R wrote:
->>>> On Monday 20 February 2017 02:56 PM, Frode Isaksen wrote:
->>>>> On 20/02/2017 07:55, Vignesh R wrote:
->>>>>> On Friday 17 February 2017 05:37 PM, Russell King - ARM Linux wrote:
->> [...]
->>>>>> I am debugging another issue with UBIFS wherein pages allocated by
->>>>>> vmalloc are in highmem region that are not addressable using 32 bit
->>>>>> addresses and is backed by LPAE. So, a 32 bit DMA cannot access these
->>>>>> buffers at all.
->>>>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
->>>>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
->>>>>> dma_map_sg() call). This results in random crashes as DMA starts
->>>>>> accessing random memory during SPI read.
->>>>>>
->>>>>> Given, the above problem and also issue surrounding VIVT caches, I am
->>>>>> thinking of may be using pre-allocated fixed size bounce buffer to
->>>>>> handle buffers not in lowmem mapping.
->>>>>> I have tried using 64KB pre-allocated buffer on TI DRA74 EVM with QSPI
->>>>>> running at 76.8MHz and do not see any significant degradation in
->>>>>> performance with UBIFS. Mainly because UBIFS seems to use vmalloc'd
->>>>>> buffers only during initial preparing and mounting phase and not during
->>>>>> file read/write.
->>>>> I am seeing a bug caused by VIVT cache in 'read_ltab()' function. In this function, the vmalloc'ed buffer is of size 11. Isn't it better to use kmalloc in this case ?
->>>> read_ltab() isn't the only place where vmalloc() is used. A quick grep
->>>> for vmalloc on fs/ubifs/ shows about ~19 occurrence. I guess every
->>>> vmalloc() call can potentially allocate memory from highmem and might
->>>> potentially cause issue for VIVT and such aliasing caches.
->>>> Fixing just one such case isn't going to help IMHO.
->>> Of course fixing it only in one place is of course not going to help..
->>> For the moment there are 3 solutions to the UBIFS DMA problem:
->>> 1) Always use bounce buffer for vmalloc'ed buffers - impacts everyone.
->>> 2) Remove use of vmalloc'ed buffers in UBIFS - is it possible ?
->> Maybe. But what about mtdblock with JFFS2 on top of it, mtdblock still
->> uses vmalloc'd buffers?
-> That's why I put the cache flush in the SPI driver in the first try..
-> FYI, I replaced the use of vmalloc with kmalloc in a few places in the UBIFS layer and it seems to work. The size of the buffers allocated varies from 11 (?) to 65408 bytes.
+IMO, it would be better if vmalloc'd buffers are handled in SPI NOR
+layer, just like nand, instead of passing them onto SPI layer.
+In order to deal with vmalloc'd buffers passed by higher layers (like
+UBIFS), I propose to use pre-allocated per flash bounce buffer equal to
+the sector size of the flash. This feature can be enabled using a flag
+similar to NAND_USE_BOUNCE_BUFFER. The changes will be mostly restricted
+to spi_nor_read/write functions. This will help SPI drivers to use DMA
+with NOR flashes with filesystems.
 
-FYI, here is the discussion on DMA + UBIFS:
-http://lists.infradead.org/pipermail/linux-mtd/2016-October/069856.html
+This would also enable other SPI NOR drivers to safely use DMA in their
+read/write callbacks.
 
-> Maybe the best place to handle this is in the SPI flash drivers(s). These drivers knows that they may handle vmalloc'ed buffers and the should assume that the underlying SPI driver may use DMA.
-> 
+Any thoughts/comments?
 
-I guess so, NAND core already seems to use bounce buffer for vmalloc'd
-addresses.
+Thanks!
 
+[1]https://www.spinics.net/lists/arm-kernel/msg563773.html
 
 -- 
 Regards

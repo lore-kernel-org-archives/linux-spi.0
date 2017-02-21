@@ -1,81 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: lantiq-ssc: fix platform_no_drv_owner.cocci warnings" to the spi tree
-Date: Tue, 21 Feb 2017 09:52:07 -0800
-Message-ID: <E1cgEbf-0002Kk-D6@finisterre>
-References: <20170219173310.GA64236@lkp-hsx03.lkp.intel.com>
-Cc: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>, kbuild-all-JC7UmRfGjtg@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170219173310.GA64236-zqhkPGYYkloFTpe94t1N+dh3ngVCH38I@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: Add spi-bits-per-word binding.
+Date: Tue, 21 Feb 2017 11:08:30 -0800
+Message-ID: <20170221190830.xyubgimyc2w5p5v6@sirena.org.uk>
+References: <20170217101151.hyzmz5a4lgdy7p5m>
+ <20170220153512.6563-1-adrian.fiergolski@cern.ch>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="asagskmbns337sh2"
+Cc: linux-spi@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com
+To: Adrian Fiergolski <adrian.fiergolski@cern.ch>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20170220153512.6563-1-adrian.fiergolski@cern.ch>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: lantiq-ssc: fix platform_no_drv_owner.cocci warnings
+--asagskmbns337sh2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Mon, Feb 20, 2017 at 04:35:12PM +0100, Adrian Fiergolski wrote:
+> If an SPI controller doesn't support 8 bit transfers
+> (master->bits_per_word_mask), it will be never registered (tested with
+> spidev):
+> of_register_spi_device calls spi_add_device which calls spi_setup. The last
+> takes as an argument spi_device struct, which, in case of spidev, has
+> bits_per_word set to 0. Thus, the spi_setup function will set it to default
+> 8. Further, the same function will call __spi_validate_bits_per_word which
+> will fail the whole registration for controllers not supporting 8 bit
+> transfers (i.e. xilinx-spi).
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+This doens't make much sense, if a device driver requires a given number
+of bits per word forcing a different value via device tree is not going
+to result in the driver actually working.  If you want to use a device
+with a controller with restricted bits per word support you need to
+change the device driver to support the limited capabilities of the
+controller.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--asagskmbns337sh2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlisj/IACgkQJNaLcl1U
+h9A4VAf/U2V7Cll5qdDE/CFUkDfvSV0bKnU7aLgA9RHDrhWO6QmyaNmaOehgKb5B
+xWfK1tQ5vRm8fixhH4BJoLkTGmXltg0gAK4L8mRIBCMnVtspvqEuVTt1VyTw8pZx
+CwIwiiNhWNU8UTGxHJyYxUoe0qnfksEVRLh6htvAEMJ5mJL87fBWdZX/haXgM8fm
+1qLrT42Z+g6n1jXsMB5PJzHRdG6AZ8TwgkoQLvUnxJ+zcTiURst1laftkIC9PXb3
+Va4KUi4absozz//xNklTi0CkBwXiXKq0iVvbiRZ1xnM/MwK5YEwHfujghByclWZK
+tmAUJjkCkElKHPujwBcVuLGf1e8n/Q==
+=Kekn
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From a5b0443c9bf42173f0847889d880a45de67e0f8f Mon Sep 17 00:00:00 2001
-From: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Mon, 20 Feb 2017 01:33:10 +0800
-Subject: [PATCH] spi: lantiq-ssc: fix platform_no_drv_owner.cocci warnings
-
-drivers/spi/spi-lantiq-ssc.c:973:3-8: No need to set .owner here. The core will do it.
-
- Remove .owner field if calls are used which set it automatically
-
-Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
-
-Signed-off-by: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Acked-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-lantiq-ssc.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 8a626f7fccea..fe3986fa2f23 100644
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -970,7 +970,6 @@ static struct platform_driver lantiq_ssc_driver = {
- 	.remove = lantiq_ssc_remove,
- 	.driver = {
- 		.name = "spi-lantiq-ssc",
--		.owner = THIS_MODULE,
- 		.of_match_table = lantiq_ssc_match,
- 	},
- };
--- 
-2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--asagskmbns337sh2--

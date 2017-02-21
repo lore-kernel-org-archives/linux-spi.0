@@ -1,33 +1,54 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: document bcm63xx SPI devicetree
- bindings
-Date: Tue, 21 Feb 2017 15:08:38 -0800
-Message-ID: <e1c6737a-e169-456e-6bd5-b93edbe818b1@gmail.com>
-References: <20170221105822.10437-1-jonas.gorski@gmail.com>
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/bcm63xx: fix typo in bcm63xx_spi_max_length breaking compilation
+Date: Wed, 22 Feb 2017 00:30:40 +0100
+Message-ID: <20170221233040.24241-1-jonas.gorski@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170221105822.10437-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Fix compilation by renaming argument dev to spi as expected by the code.
 
+Fixes the following error:
 
-On 02/21/2017 02:58 AM, Jonas Gorski wrote:
-> Add documentation for the bindings of the low speed SPI controller found
-> on most bcm63xx SoCs.
-> 
-> Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+drivers/spi/spi-bcm63xx.c: In function ‘bcm63xx_spi_max_length’:
+drivers/spi/spi-bcm63xx.c:434:50: error: ‘spi’ undeclared (first use in this function)
+  struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
+                                                  ^~~
 
-Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Fixes: 0135c03df914 ("spi/bcm63xx: make spi subsystem aware of message size limits")
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+Oops, fixed it up in the wrong tree. And I forgot I can compile test it,
+and can do compile tests directly.
+
+Anyway, Done on top of topic/bcm63xx.
+
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 325131370941..247f71b02235 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -429,7 +429,7 @@ static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static size_t bcm63xx_spi_max_length(struct spi_device *dev)
++static size_t bcm63xx_spi_max_length(struct spi_device *spi)
+ {
+ 	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
+ 
 -- 
-Florian
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

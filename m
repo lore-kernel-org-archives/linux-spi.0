@@ -1,56 +1,68 @@
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Handling vmalloc'd buffers in spi-nor
-Date: Tue, 21 Feb 2017 14:07:08 +0530
-Message-ID: <8cf1d1d9-38a1-cbef-9a9b-07d2ecf2727f@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/2] dt-bindings: spi: document bcm63xx SPI devicetree bindings
+Date: Tue, 21 Feb 2017 11:58:21 +0100
+Message-ID: <20170221105822.10437-1-jonas.gorski@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+Add documentation for the bindings of the low speed SPI controller found
+on most bcm63xx SoCs.
 
-I have come across couple of problems[1] when using m25p80 driver with
-SPI flash over SPI bus with DMA. Basically filesystems like UBIFS may
-pass vmalloc'd buffers to SPI NOR layer which will end up in SPI layer.
-SPI core does try to handle such buffers (see spi_map_buf()) by doing
-vmalloc_to_page() and creating scatterlist.
-But, its known that this does not work well with VIVT/aliasing cache
-architectures.
-This also fails when buffers are addressed using LPAE (buffers in region
-higher than 32 bit addressable region), if DMA is 32bit only.
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
 
-IMO, it would be better if vmalloc'd buffers are handled in SPI NOR
-layer, just like nand, instead of passing them onto SPI layer.
-In order to deal with vmalloc'd buffers passed by higher layers (like
-UBIFS), I propose to use pre-allocated per flash bounce buffer equal to
-the sector size of the flash. This feature can be enabled using a flag
-similar to NAND_USE_BOUNCE_BUFFER. The changes will be mostly restricted
-to spi_nor_read/write functions. This will help SPI drivers to use DMA
-with NOR flashes with filesystems.
-
-This would also enable other SPI NOR drivers to safely use DMA in their
-read/write callbacks.
-
-Any thoughts/comments?
-
-Thanks!
-
-[1]https://www.spinics.net/lists/arm-kernel/msg563773.html
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+new file mode 100644
+index 000000000000..1c16f6692613
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+@@ -0,0 +1,33 @@
++Binding for Broadcom BCM6348/BCM6358 SPI controller
++
++Required properties:
++- compatible: must contain one of "brcm,bcm6348-spi", "brcm,bcm6358-spi".
++- reg: Base address and size of the controllers memory area.
++- interrupts: Interrupt for the SPI block.
++- clocks: phandle of the SPI clock.
++- clock-names: has to be "spi".
++- #address-cells: <1>, as required by generic SPI binding.
++- #size-cells: <0>, also as required by generic SPI binding.
++
++Optional properties:
++- num-cs: some controllers have less than 8 cs signals. Defaults to 8
++  if absent.
++
++Child nodes as per the generic SPI binding.
++
++Example:
++
++	spi@10000800 {
++		compatible = "brcm,bcm6368-spi", "brcm,bcm6358-spi";
++		reg = <0x10000800 0x70c>;
++
++		interrupts = <1>;
++
++		clocks = <&clkctl 9>;
++		clock-names = "spi";
++
++		num-cs = <5>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
 -- 
-Regards
-Vignesh
+2.11.0
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

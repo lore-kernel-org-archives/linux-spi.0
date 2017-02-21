@@ -1,117 +1,76 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/2] spi/bcm63xx: allow for probing through devicetree
-Date: Tue, 21 Feb 2017 11:58:22 +0100
-Message-ID: <20170221105822.10437-2-jonas.gorski@gmail.com>
-References: <20170221105822.10437-1-jonas.gorski@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170221105822.10437-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-fsl-dspi: Fix error handling" to the spi tree
+Date: Tue, 21 Feb 2017 09:52:08 -0800
+Message-ID: <E1cgEbg-0002LZ-1L@finisterre>
+References: <20170219131902.12269-1-christophe.jaillet@wanadoo.fr>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170219131902.12269-1-christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add required binding support to probe through device tree.
+The patch
 
-Use the compatible instead of the resource size for identifiying the
-block type, and allow reducing the number of cs lines through OF.
+   spi: spi-fsl-dspi: Fix error handling
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From fbad6c24396b265d4e19cc78aef9b1c7e7e6de64 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Date: Sun, 19 Feb 2017 14:19:02 +0100
+Subject: [PATCH] spi: spi-fsl-dspi: Fix error handling
+
+According to error handling in this function, it is likely that going to
+'out_master_put' was expected here.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 42 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 36 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index caa733ec405c..325131370941 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -26,6 +26,7 @@
- #include <linux/completion.h>
- #include <linux/err.h>
- #include <linux/pm_runtime.h>
-+#include <linux/of.h>
- 
- /* BCM 6338/6348 SPI core */
- #define SPI_6348_RSET_SIZE		64
-@@ -484,21 +485,48 @@ static const struct platform_device_id bcm63xx_spi_dev_match[] = {
- 	},
- };
- 
-+static const struct of_device_id bcm63xx_spi_of_match[] = {
-+	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
-+	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
-+	{ },
-+};
-+
- static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource *r;
- 	const unsigned long *bcm63xx_spireg;
- 	struct device *dev = &pdev->dev;
--	int irq;
-+	int irq, bus_num;
- 	struct spi_master *master;
- 	struct clk *clk;
- 	struct bcm63xx_spi *bs;
- 	int ret;
-+	u32 num_cs = BCM63XX_SPI_MAX_CS;
- 
--	if (!pdev->id_entry->driver_data)
--		return -EINVAL;
-+	if (dev->of_node) {
-+		const struct of_device_id *match;
- 
--	bcm63xx_spireg = (const unsigned long *)pdev->id_entry->driver_data;
-+		match = of_match_node(bcm63xx_spi_of_match, dev->of_node);
-+		if (!match)
-+			return -EINVAL;
-+		bcm63xx_spireg = match->data;
-+
-+		of_property_read_u32(dev->of_node, "num-cs", &num_cs);
-+		if (num_cs > BCM63XX_SPI_MAX_CS) {
-+			dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
-+				 num_cs);
-+			num_cs = BCM63XX_SPI_MAX_CS;
-+		}
-+
-+		bus_num = -1;
-+	} else if (pdev->id_entry->driver_data) {
-+		const struct platform_device_id *match = pdev->id_entry;
-+
-+		bcm63xx_spireg = (const unsigned long *)match->driver_data;
-+		bus_num = BCM63XX_SPI_BUS_NUM;
-+	} else {
-+		return -EINVAL;
-+	}
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -543,8 +571,9 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		goto out_err;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 14c8e7ce1913..15201645bdc4 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1002,7 +1002,8 @@ static int dspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(dspi->regmap)) {
+ 		dev_err(&pdev->dev, "failed to init regmap: %ld\n",
+ 				PTR_ERR(dspi->regmap));
+-		return PTR_ERR(dspi->regmap);
++		ret = PTR_ERR(dspi->regmap);
++		goto out_master_put;
  	}
  
--	master->bus_num = BCM63XX_SPI_BUS_NUM;
--	master->num_chipselect = BCM63XX_SPI_MAX_CS;
-+	master->dev.of_node = dev->of_node;
-+	master->bus_num = bus_num;
-+	master->num_chipselect = num_cs;
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
-@@ -633,6 +662,7 @@ static struct platform_driver bcm63xx_spi_driver = {
- 	.driver = {
- 		.name	= "bcm63xx-spi",
- 		.pm	= &bcm63xx_spi_pm_ops,
-+		.of_match_table = bcm63xx_spi_of_match,
- 	},
- 	.id_table	= bcm63xx_spi_dev_match,
- 	.probe		= bcm63xx_spi_probe,
+ 	dspi_init(dspi);
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

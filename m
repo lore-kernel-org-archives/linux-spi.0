@@ -1,8 +1,8 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx: allow for probing through devicetree" to the spi tree
-Date: Tue, 21 Feb 2017 15:05:17 -0800
-Message-ID: <E1cgJUj-0004rm-Al@finisterre>
-References: <20170221105822.10437-2-jonas.gorski@gmail.com>
+Subject: Applied "spi/bcm63xx: document bcm63xx SPI devicetree bindings" to the spi tree
+Date: Tue, 21 Feb 2017 15:05:16 -0800
+Message-ID: <E1cgJUi-0004qr-RS@finisterre>
+References: <20170221105822.10437-1-jonas.gorski@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -10,14 +10,14 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79u
         Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170221105822.10437-2-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170221105822.10437-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/bcm63xx: allow for probing through devicetree
+   spi/bcm63xx: document bcm63xx SPI devicetree bindings
 
 has been applied to the spi tree at
 
@@ -42,111 +42,64 @@ to this mail.
 Thanks,
 Mark
 
->From c29f08890ae337e398becf5ba586114553e99771 Mon Sep 17 00:00:00 2001
+>From 54e43b6085f12bec3718806d0bf6ba4a3e4b2078 Mon Sep 17 00:00:00 2001
 From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 21 Feb 2017 11:58:22 +0100
-Subject: [PATCH] spi/bcm63xx: allow for probing through devicetree
+Date: Tue, 21 Feb 2017 11:58:21 +0100
+Subject: [PATCH] spi/bcm63xx: document bcm63xx SPI devicetree bindings
 
-Add required binding support to probe through device tree.
-
-Use the compatible instead of the resource size for identifiying the
-block type, and allow reducing the number of cs lines through OF.
+Add documentation for the bindings of the low speed SPI controller found
+on most bcm63xx SoCs.
 
 Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 42 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 36 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index caa733ec405c..325131370941 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -26,6 +26,7 @@
- #include <linux/completion.h>
- #include <linux/err.h>
- #include <linux/pm_runtime.h>
-+#include <linux/of.h>
- 
- /* BCM 6338/6348 SPI core */
- #define SPI_6348_RSET_SIZE		64
-@@ -484,21 +485,48 @@ static const struct platform_device_id bcm63xx_spi_dev_match[] = {
- 	},
- };
- 
-+static const struct of_device_id bcm63xx_spi_of_match[] = {
-+	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
-+	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
-+	{ },
-+};
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+new file mode 100644
+index 000000000000..1c16f6692613
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+@@ -0,0 +1,33 @@
++Binding for Broadcom BCM6348/BCM6358 SPI controller
 +
- static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource *r;
- 	const unsigned long *bcm63xx_spireg;
- 	struct device *dev = &pdev->dev;
--	int irq;
-+	int irq, bus_num;
- 	struct spi_master *master;
- 	struct clk *clk;
- 	struct bcm63xx_spi *bs;
- 	int ret;
-+	u32 num_cs = BCM63XX_SPI_MAX_CS;
- 
--	if (!pdev->id_entry->driver_data)
--		return -EINVAL;
-+	if (dev->of_node) {
-+		const struct of_device_id *match;
- 
--	bcm63xx_spireg = (const unsigned long *)pdev->id_entry->driver_data;
-+		match = of_match_node(bcm63xx_spi_of_match, dev->of_node);
-+		if (!match)
-+			return -EINVAL;
-+		bcm63xx_spireg = match->data;
++Required properties:
++- compatible: must contain one of "brcm,bcm6348-spi", "brcm,bcm6358-spi".
++- reg: Base address and size of the controllers memory area.
++- interrupts: Interrupt for the SPI block.
++- clocks: phandle of the SPI clock.
++- clock-names: has to be "spi".
++- #address-cells: <1>, as required by generic SPI binding.
++- #size-cells: <0>, also as required by generic SPI binding.
 +
-+		of_property_read_u32(dev->of_node, "num-cs", &num_cs);
-+		if (num_cs > BCM63XX_SPI_MAX_CS) {
-+			dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
-+				 num_cs);
-+			num_cs = BCM63XX_SPI_MAX_CS;
-+		}
++Optional properties:
++- num-cs: some controllers have less than 8 cs signals. Defaults to 8
++  if absent.
 +
-+		bus_num = -1;
-+	} else if (pdev->id_entry->driver_data) {
-+		const struct platform_device_id *match = pdev->id_entry;
++Child nodes as per the generic SPI binding.
 +
-+		bcm63xx_spireg = (const unsigned long *)match->driver_data;
-+		bus_num = BCM63XX_SPI_BUS_NUM;
-+	} else {
-+		return -EINVAL;
-+	}
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -543,8 +571,9 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		goto out_err;
- 	}
- 
--	master->bus_num = BCM63XX_SPI_BUS_NUM;
--	master->num_chipselect = BCM63XX_SPI_MAX_CS;
-+	master->dev.of_node = dev->of_node;
-+	master->bus_num = bus_num;
-+	master->num_chipselect = num_cs;
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
-@@ -633,6 +662,7 @@ static struct platform_driver bcm63xx_spi_driver = {
- 	.driver = {
- 		.name	= "bcm63xx-spi",
- 		.pm	= &bcm63xx_spi_pm_ops,
-+		.of_match_table = bcm63xx_spi_of_match,
- 	},
- 	.id_table	= bcm63xx_spi_dev_match,
- 	.probe		= bcm63xx_spi_probe,
++Example:
++
++	spi@10000800 {
++		compatible = "brcm,bcm6368-spi", "brcm,bcm6358-spi";
++		reg = <0x10000800 0x70c>;
++
++		interrupts = <1>;
++
++		clocks = <&clkctl 9>;
++		clock-names = "spi";
++
++		num-cs = <5>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

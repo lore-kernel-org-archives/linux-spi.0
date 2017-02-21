@@ -1,257 +1,95 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI updates for v4.11
-Date: Mon, 20 Feb 2017 11:23:11 -0800
-Message-ID: <20170220192311.pktmf6sn57p4ym7a@sirena.org.uk>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v2 4/6] spi: davinci: flush caches when performing DMA
+Date: Tue, 21 Feb 2017 10:38:27 +0530
+Message-ID: <e713a1da-5774-a489-343f-de9aa0f0a141@ti.com>
+References: <1487327904-28311-1-git-send-email-fisaksen@baylibre.com>
+ <1487327904-28311-5-git-send-email-fisaksen@baylibre.com>
+ <5fab0c33-6e1d-c63a-8758-6672236045a7@ti.com>
+ <20170217112247.GE21222@n2100.armlinux.org.uk>
+ <eaf93c6c-52a7-826b-9c53-2b13c0b280ca@baylibre.com>
+ <20170217120749.GF21222@n2100.armlinux.org.uk>
+ <0f3607fd-4542-be92-da2e-b2da6f8ac26f@ti.com>
+ <f0fcc000-6c07-647a-ada2-04b61f0e2e3b@baylibre.com>
+ <57721a60-52bb-c9d1-d5a7-ae450e7adcc0@ti.com>
+ <2a1954a3-edbd-7ac4-6fde-9b6d046a6560@baylibre.com>
+ <954333da-4d15-ce77-4021-268530365edc@ti.com>
+ <69d41f8a-371b-abd9-7e78-f8701652877f@baylibre.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="swidjugzjo3ujvrk"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Russell King - ARM Linux <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org" <ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <69d41f8a-371b-abd9-7e78-f8701652877f-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---swidjugzjo3ujvrk
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 7ce7d89f48834cefece7804d38fc5d85382edf77:
+On Monday 20 February 2017 09:19 PM, Frode Isaksen wrote:
+> 
+> 
+> On 20/02/2017 12:27, Vignesh R wrote:
+>>
+>> On Monday 20 February 2017 04:04 PM, Frode Isaksen wrote:
+>>>
+>>> On 20/02/2017 10:47, Vignesh R wrote:
+>>>> On Monday 20 February 2017 02:56 PM, Frode Isaksen wrote:
+>>>>> On 20/02/2017 07:55, Vignesh R wrote:
+>>>>>> On Friday 17 February 2017 05:37 PM, Russell King - ARM Linux wrote:
+>> [...]
+>>>>>> I am debugging another issue with UBIFS wherein pages allocated by
+>>>>>> vmalloc are in highmem region that are not addressable using 32 bit
+>>>>>> addresses and is backed by LPAE. So, a 32 bit DMA cannot access these
+>>>>>> buffers at all.
+>>>>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
+>>>>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
+>>>>>> dma_map_sg() call). This results in random crashes as DMA starts
+>>>>>> accessing random memory during SPI read.
+>>>>>>
+>>>>>> Given, the above problem and also issue surrounding VIVT caches, I am
+>>>>>> thinking of may be using pre-allocated fixed size bounce buffer to
+>>>>>> handle buffers not in lowmem mapping.
+>>>>>> I have tried using 64KB pre-allocated buffer on TI DRA74 EVM with QSPI
+>>>>>> running at 76.8MHz and do not see any significant degradation in
+>>>>>> performance with UBIFS. Mainly because UBIFS seems to use vmalloc'd
+>>>>>> buffers only during initial preparing and mounting phase and not during
+>>>>>> file read/write.
+>>>>> I am seeing a bug caused by VIVT cache in 'read_ltab()' function. In this function, the vmalloc'ed buffer is of size 11. Isn't it better to use kmalloc in this case ?
+>>>> read_ltab() isn't the only place where vmalloc() is used. A quick grep
+>>>> for vmalloc on fs/ubifs/ shows about ~19 occurrence. I guess every
+>>>> vmalloc() call can potentially allocate memory from highmem and might
+>>>> potentially cause issue for VIVT and such aliasing caches.
+>>>> Fixing just one such case isn't going to help IMHO.
+>>> Of course fixing it only in one place is of course not going to help..
+>>> For the moment there are 3 solutions to the UBIFS DMA problem:
+>>> 1) Always use bounce buffer for vmalloc'ed buffers - impacts everyone.
+>>> 2) Remove use of vmalloc'ed buffers in UBIFS - is it possible ?
+>> Maybe. But what about mtdblock with JFFS2 on top of it, mtdblock still
+>> uses vmalloc'd buffers?
+> That's why I put the cache flush in the SPI driver in the first try..
+> FYI, I replaced the use of vmalloc with kmalloc in a few places in the UBIFS layer and it seems to work. The size of the buffers allocated varies from 11 (?) to 65408 bytes.
 
-  Linux 4.10-rc1 (2016-12-25 16:13:08 -0800)
+FYI, here is the discussion on DMA + UBIFS:
+http://lists.infradead.org/pipermail/linux-mtd/2016-October/069856.html
 
-are available in the git repository at:
+> Maybe the best place to handle this is in the SPI flash drivers(s). These drivers knows that they may handle vmalloc'ed buffers and the should assume that the underlying SPI driver may use DMA.
+> 
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4=
-=2E11
+I guess so, NAND core already seems to use bounce buffer for vmalloc'd
+addresses.
 
-for you to fetch changes up to 57f22cd29cf1b4ff2aea8505eae2d3ed71ca5de4:
 
-  Merge remote-tracking branches 'spi/topic/ti-qspi' and 'spi/topic/topclif=
-f-pch' into spi-next (2017-02-19 16:41:17 +0000)
-
-----------------------------------------------------------------
-spi: Updates for v4.11
-
-This release is mainly a collection of driver specific updates,
-including a few nice cleanups to make drivers use more core features.
-There
-
- - Automatically use the parent device to allocate DMA buffers if there
-   wasn't an explicitly configured device.
- - Fixes for leaks on allocation.
- - A small piece of the start of SPI slave support, a feature that's
-   been on the cards for over a decade!
-
-----------------------------------------------------------------
-Andi Shyti (1):
-      spi: s3c64xx: fix inconsistency between binding and driver
-
-Andy Shevchenko (4):
-      spi: dw-mid: switch to new dmaengine_terminate_* API (part 2)
-      spi: pxa2xx: add missed break
-      spi: pxa2xx: fix indentation of the comments in header
-      spi: pxa2xx-pci: Enable DMA for Intel Merrifield
-
-Brian Norris (1):
-      spi: rockchip: support "sleep" pin configuration
-
-Christophe JAILLET (3):
-      spi: spi-axi: Free resources on error path
-      spi: spi-ti-qspi: Fix error handling
-      spi: spi-ti-qspi: Fix error handling
-
-Colin Ian King (1):
-      spi: armada-3700: fix unsigned compare than zero on irq
-
-Dan Carpenter (3):
-      spi: armada-3700: Remove unnecessary condition
-      spi: armada-3700: Set mode bits correctly
-      spi: s3c64xx: potential oops on probe error
-
-Daniel Kurtz (2):
-      spi: When no dma_chan map buffers with spi_master's parent
-      spi: mediatek: Only do dma for 4-byte aligned buffers
-
-David E. Box (1):
-      spi: pxa2xx: Add support for Intel Gemini Lake
-
-DongCV (2):
-      spi: rspi: Fixes bogus received byte in qspi_transfer_in()
-      spi: rspi: Replaces "n" by "len" in qspi_transfer_*()
-
-Felix Fietkau (2):
-      spi: spi-ath79: support multiple internal chip select lines
-      spi: spi-ath79: use gpio_set_value_cansleep for GPIO chip select
-
-Gao Pan (1):
-      spi: fsl-lpspi: fix indentation error
-
-Geert Uytterhoeven (5):
-      spi: fsl-lpspi: Pre-initialize ret in fsl_lpspi_transfer_one_msg()
-      spi: SPI_FSL_DSPI should depend on HAS_DMA
-      spi: core: Extract of_spi_parse_dt()
-      spi: rspi: Remove useless memory allocation failure message
-      spi: sh-msiof: Remove useless memory allocation failure message
-
-H Hartley Sweeten (1):
-      spi: spi-ep93xx: simplify GPIO chip selects
-
-Hauke Mehrtens (3):
-      spi: make falcon-spi bool
-      spi: lantiq-ssc: add support for Lantiq SSC SPI controller
-      spi: lantiq-ssc: activate under COMPILE_TEST
-
-Jaedon Shin (1):
-      spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
-
-Jan Kiszka (3):
-      spi: pxa2xx: Factor out handle_bad_msg
-      spi: pxa2xx: Prepare for edge-triggered interrupts
-      spi: pca2xx-pci: Allow MSI
-
-Jiada Wang (1):
-      spi: imx: adjust watermark level according to transfer length
-
-Johan Hovold (1):
-      spi: fix device-node leaks
-
-Kamal Dasu (2):
-      spi: bcm-qspi: Added mspi read fallback in bcm_qspi_flash_read()
-      spi: bcm-qspi: Fix bcm_qspi_bspi_read() performance
-
-Kevin Hilman (1):
-      spi: davinci: use dma_mapping_error()
-
-Marek Szyprowski (1):
-      spi: s3c64xx: Don't request/release DMA channels for each SPI transfer
-
-Mark Brown (12):
-      Merge tag 'v4.10-rc1' into spi-s3c64xx
-      Merge remote-tracking branches 'spi/fix/armada', 'spi/fix/axi', 'spi/=
-fix/davinci', 'spi/fix/dw', 'spi/fix/fsl-dspi' and 'spi/fix/pxa2xx' into sp=
-i-linus
-      Merge remote-tracking branch 'spi/fix/sh-msiof' into spi-linus
-      Merge tag 'spi-fix-v4.10-rc4' into spi-linus
-      Merge remote-tracking branches 'spi/fix/pxa2xx', 'spi/fix/rspi' and '=
-spi/fix/s3c64xx' into spi-linus
-      Merge remote-tracking branch 'spi/topic/core' into spi-next
-      Merge remote-tracking branch 'spi/topic/dma' into spi-next
-      Merge remote-tracking branches 'spi/topic/armada', 'spi/topic/ath79',=
- 'spi/topic/bcm-qspi' and 'spi/topic/bcm53xx' into spi-next
-      Merge remote-tracking branches 'spi/topic/dw', 'spi/topic/ep93xx', 's=
-pi/topic/falcon' and 'spi/topic/fsl-lpspi' into spi-next
-      Merge remote-tracking branches 'spi/topic/imx', 'spi/topic/lantiq-ssc=
-', 'spi/topic/mpc52xx', 'spi/topic/ppc4xx' and 'spi/topic/pxa2xx' into spi-=
-next
-      Merge remote-tracking branches 'spi/topic/rockchip', 'spi/topic/rspi'=
-, 'spi/topic/s3c64xx', 'spi/topic/sh-msiof' and 'spi/topic/slave' into spi-=
-next
-      Merge remote-tracking branches 'spi/topic/ti-qspi' and 'spi/topic/top=
-cliff-pch' into spi-next
-
-Markus Elfring (13):
-      spi: Use kcalloc() in spi_register_board_info()
-      spi: fsl: Use kmalloc_array() in of_fsl_spi_get_chipselects()
-      spi: fsl: Use kcalloc() in of_fsl_spi_get_chipselects()
-      spi: fsl: Combine substrings for two messages
-      spi/mpc52xx: Use kmalloc_array() in mpc52xx_spi_probe()
-      spi/mpc52xx: Combine substrings for two messages
-      spi/ppc4xx: Combine substrings for a message in spi_ppc4xx_of_probe()
-      spi/ppc4xx: Use kcalloc() in spi_ppc4xx_of_probe()
-      spi/topcliff-pch: Delete an unnecessary return statement in two funct=
-ions
-      spi/topcliff-pch: Use kcalloc() in pch_spi_handle_dma()
-      spi/topcliff-pch: Improve size determinations in pch_spi_probe()
-      spi/topcliff-pch: Combine substrings for four messages
-      spi/topcliff-pch: Delete an error message for a failed memory allocat=
-ion in pch_spi_set_tx()
-
-Phil Reid (2):
-      spi: dw: Make debugfs name unique between instances
-      spi: dw: Make debugfs use bus num and make irq name unique
-
-Prahlad V (1):
-      spi: ti-qspi: revise ti_qspi_probe() failure flow
-
-Rafa=C5=82 Mi=C5=82ecki (2):
-      spi: bcm53xx: set of_node to let DT specify device(s)
-      spi: bcm53xx: (re)license code to the GPL v2
-
-Romain Perier (2):
-      spi: armada-3700: Replaced raw values for nbits by the SPI macros
-      spi: armada-3700: Coding style fixes
-
-Simon Horman (2):
-      spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings
-      spi: sh-msiof: Do not use C++ style comment
-
-Wei Yongjun (3):
-      spi: armada-3700: Remove .owner field for driver
-      spi: bcm-qspi: Remove unnecessary platform_set_drvdata()
-      spi: armada-3700: Remove spi_master_put in a3700_spi_remove()
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |  19 +-
- .../devicetree/bindings/spi/spi-lantiq-ssc.txt     |  29 +
- .../devicetree/bindings/spi/spi-rockchip.txt       |   7 +
- Documentation/spi/ep93xx_spi                       | 105 ---
- arch/arm/mach-ep93xx/edb93xx.c                     |  31 +-
- arch/arm/mach-ep93xx/simone.c                      |  63 +-
- arch/arm/mach-ep93xx/vision_ep9307.c               |  88 +-
- drivers/spi/Kconfig                                |  14 +-
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-armada-3700.c                      |  25 +-
- drivers/spi/spi-ath79.c                            |  23 +-
- drivers/spi/spi-axi-spi-engine.c                   |   3 +-
- drivers/spi/spi-bcm-qspi.c                         | 194 ++--
- drivers/spi/spi-bcm53xx.c                          |  18 +-
- drivers/spi/spi-davinci.c                          |   4 +-
- drivers/spi/spi-dw-mid.c                           |   4 +-
- drivers/spi/spi-dw.c                               |   9 +-
- drivers/spi/spi-dw.h                               |   1 -
- drivers/spi/spi-ep93xx.c                           | 139 +--
- drivers/spi/spi-fsl-lpspi.c                        |   8 +-
- drivers/spi/spi-fsl-spi.c                          |  17 +-
- drivers/spi/spi-imx.c                              |  16 +-
- drivers/spi/spi-lantiq-ssc.c                       | 983 +++++++++++++++++=
-++++
- drivers/spi/spi-mpc52xx.c                          |  12 +-
- drivers/spi/spi-mt65xx.c                           |  37 +-
- drivers/spi/spi-ppc4xx.c                           |   7 +-
- drivers/spi/spi-pxa2xx-pci.c                       |  32 +-
- drivers/spi/spi-pxa2xx.c                           |  37 +-
- drivers/spi/spi-rockchip.c                         |   5 +
- drivers/spi/spi-rspi.c                             |   9 +-
- drivers/spi/spi-s3c64xx.c                          |  59 +-
- drivers/spi/spi-sh-msiof.c                         |   8 +-
- drivers/spi/spi-ti-qspi.c                          |  18 +-
- drivers/spi/spi-topcliff-pch.c                     |  31 +-
- drivers/spi/spi.c                                  |  78 +-
- include/linux/platform_data/spi-ep93xx.h           |  17 +-
- include/linux/pxa2xx_ssp.h                         |  14 +-
- 37 files changed, 1534 insertions(+), 631 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-lantiq-ssc.txt
- delete mode 100644 Documentation/spi/ep93xx_spi
- create mode 100644 drivers/spi/spi-lantiq-ssc.c
-
---swidjugzjo3ujvrk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlirQh8ACgkQJNaLcl1U
-h9CyYwf+JVufUi/l9Pzjlq2uFdPesiVsLQrv1U1WCcSjGEYIhi4AwKCS1dQkazdv
-DyIRtOlEBsXklFayEQgKHYjx/bm91iUDcwlkSCn0cpFxYUHmZi10WpBhWuMlpOz8
-x0kybShuIV4oOcYyx/VBZibgfWp5zSOlLK4OXzfWhV6bBWXrbFx+oR28aJQIaC67
-rdT7vs/0inV2MAZ/TUhH3saCiTAlsEvC9GSpYp62JEYhp0PuyVzVlyizLolKGomO
-hYbU5tZPqJHCoGYkk/IcPx4NOI0iczNLF+VpSxc4eB7pAvZ7hdH8OtpQbS5Jv3eZ
-2VrhDeyprVUySZkcuAb0kc5D16Lcag==
-=pwdJ
------END PGP SIGNATURE-----
-
---swidjugzjo3ujvrk--
+-- 
+Regards
+Vignesh
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

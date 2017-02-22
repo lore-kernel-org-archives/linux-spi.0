@@ -1,68 +1,47 @@
 From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3] dt-bindings: spi: document bcm63xx HS SPI devicetree bindings
-Date: Wed, 22 Feb 2017 14:19:39 +0100
-Message-ID: <20170222131940.31085-2-jonas.gorski@gmail.com>
-References: <20170222131940.31085-1-jonas.gorski@gmail.com>
+Subject: [PATCH 1/3] spi/bcm63xx-hsspi: allow providing clock rate through a second clock
+Date: Wed, 22 Feb 2017 14:19:38 +0100
+Message-ID: <20170222131940.31085-1-jonas.gorski@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
         Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add documentation for the bindings of the high speed SPI controller found
-on newer bcm63xx SoCs.
+Instead of requiring the hsspi clock to have a rate, allow using a second
+clock for providing the Hz rate, which is probably more correct anyway.
 
 Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- .../devicetree/bindings/spi/spi-bcm63xx-hsspi.txt  | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+ drivers/spi/spi-bcm63xx-hsspi.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-new file mode 100644
-index 000000000000..3b0a2220b896
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-@@ -0,0 +1,35 @@
-+Binding for Broadcom BCM6328 SPI controller
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 55789f7cda92..79096d17ebde 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -351,8 +351,16 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
+ 
+ 	rate = clk_get_rate(clk);
+-	if (!rate)
+-		return -EINVAL;
++	if (!rate) {
++		struct clk *pll_clk = devm_clk_get(dev, "pll");
 +
-+Required properties:
-+- compatible: must contain of "brcm,bcm6328-hsspi".
-+- reg: Base address and size of the controllers memory area.
-+- interrupts: Interrupt for the SPI block.
-+- clocks: phandle of the SPI clock.
-+- clock-names: must be "hsspi".
-+- #address-cells: <1>, as required by generic SPI binding.
-+- #size-cells: <0>, also as required by generic SPI binding.
++		if (IS_ERR(pll_clk))
++			return PTR_ERR(pll_clk);
 +
-+Optional properties:
-+- num-cs: some controllers have less than 8 cs signals. Defaults to 8
-+  if absent.
-+- clocks: a second handle for the PLL clock.
-+- clock-names: must be named "pll", if present.
-+
-+Child nodes as per the generic SPI binding.
-+
-+Example:
-+
-+	spi@10001000 {
-+		compatible = "brcm,bcm6328-hsspi";
-+		reg = <0x10001000 0x600>;
-+
-+		interrupts = <29>;
-+
-+		clocks = <&clkctl 9>, <&hsspi_pll>;
-+		clock-names = "hsspi", "pll";
-+
-+		num-cs = <2>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
++		rate = clk_get_rate(pll_clk);
++		if (!rate)
++			return -EINVAL;
++	}
+ 
+ 	ret = clk_prepare_enable(clk);
+ 	if (ret)
 -- 
 2.11.0
 

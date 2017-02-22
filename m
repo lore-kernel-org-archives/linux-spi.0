@@ -1,96 +1,82 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/3] spi/bcm63xx-hsspi: allow for probing through devicetree
-Date: Wed, 22 Feb 2017 14:19:40 +0100
-Message-ID: <20170222131940.31085-3-jonas.gorski@gmail.com>
-References: <20170222131940.31085-1-jonas.gorski@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Subject: [PATCH] spi: sc18is602: Add OF device ID table
+Date: Wed, 22 Feb 2017 15:14:20 -0300
+Message-ID: <20170222181420.25420-1-javier@osg.samsung.com>
+Cc: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add required binding support to probe through device tree.
+The driver doesn't have a struct of_device_id table but supported devices
+are registered via Device Trees. This is working on the assumption that a
+I2C device registered via OF will always match a legacy I2C device ID and
+that the MODALIAS reported will always be of the form i2c:<device>.
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+But this could change in the future so the correct approach is to have an
+OF device ID table if the devices are registered via OF.
+
+Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 79096d17ebde..77c249a22c9b 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -19,6 +19,7 @@
- #include <linux/interrupt.h>
- #include <linux/spi/spi.h>
- #include <linux/mutex.h>
-+#include <linux/of.h>
+ drivers/spi/spi-sc18is602.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index f63714ffb62f..52cf0e9189c2 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -21,6 +21,7 @@
+ #include <linux/i2c.h>
+ #include <linux/delay.h>
+ #include <linux/pm_runtime.h>
++#include <linux/of_device.h>
+ #include <linux/of.h>
+ #include <linux/platform_data/sc18is602.h>
+ #include <linux/gpio/consumer.h>
+@@ -271,7 +272,10 @@ static int sc18is602_probe(struct i2c_client *client,
+ 	hw->dev = dev;
+ 	hw->ctrl = 0xff;
  
- #define HSSPI_GLOBAL_CTRL_REG			0x0
- #define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
-@@ -91,6 +92,7 @@
+-	hw->id = id->driver_data;
++	if (client->dev.of_node)
++		hw->id = (enum chips)of_device_get_match_data(&client->dev);
++	else
++		hw->id = id->driver_data;
  
- #define HSSPI_MAX_SYNC_CLOCK			30000000
+ 	switch (hw->id) {
+ 	case sc18is602:
+@@ -323,9 +327,27 @@ static const struct i2c_device_id sc18is602_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, sc18is602_id);
  
-+#define HSSPI_SPI_MAX_CS			8
- #define HSSPI_BUS_NUM				1 /* 0 is legacy SPI */
- 
- struct bcm63xx_hsspi {
-@@ -332,7 +334,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct clk *clk;
- 	int irq, ret;
--	u32 reg, rate;
-+	u32 reg, rate, num_cs = HSSPI_SPI_MAX_CS;
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -382,8 +384,20 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	mutex_init(&bs->bus_mutex);
- 	init_completion(&bs->done);
- 
--	master->bus_num = HSSPI_BUS_NUM;
--	master->num_chipselect = 8;
-+	if (dev->of_node) {
-+		master->dev.of_node = dev->of_node;
-+
-+		of_property_read_u32(dev->of_node, "num-cs", &num_cs);
-+		if (num_cs > 8) {
-+			dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
-+				 num_cs);
-+			num_cs = HSSPI_SPI_MAX_CS;
-+		}
-+	} else {
-+		master->bus_num = HSSPI_BUS_NUM;
-+	}
-+
-+	master->num_chipselect = num_cs;
- 	master->setup = bcm63xx_hsspi_setup;
- 	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
-@@ -469,10 +483,16 @@ static int bcm63xx_hsspi_resume(struct device *dev)
- static SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
- 			 bcm63xx_hsspi_resume);
- 
-+static const struct of_device_id bcm63xx_hsspi_of_match[] = {
-+	{ .compatible = "brcm,bcm6328-hsspi", },
++static const struct of_device_id sc18is602_of_match[] = {
++	{
++		.compatible = "nxp,sc18is602",
++		.data = (void *)sc18is602
++	},
++	{
++		.compatible = "nxp,sc18is602b",
++		.data = (void *)sc18is602b
++	},
++	{
++		.compatible = "nxp,sc18is603",
++		.data = (void *)sc18is603
++	},
 +	{ },
 +};
++MODULE_DEVICE_TABLE(of, sc18is602_of_match);
 +
- static struct platform_driver bcm63xx_hsspi_driver = {
+ static struct i2c_driver sc18is602_driver = {
  	.driver = {
- 		.name	= "bcm63xx-hsspi",
- 		.pm	= &bcm63xx_hsspi_pm_ops,
-+		.of_match_table = bcm63xx_hsspi_of_match,
+ 		.name = "sc18is602",
++		.of_match_table = of_match_ptr(sc18is602_of_match),
  	},
- 	.probe		= bcm63xx_hsspi_probe,
- 	.remove		= bcm63xx_hsspi_remove,
+ 	.probe = sc18is602_probe,
+ 	.id_table = sc18is602_id,
 -- 
-2.11.0
+2.9.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

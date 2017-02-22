@@ -1,289 +1,163 @@
-From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
-Subject: Re: [PATCH v5 1/2] mtd: spi-nor: Added spi-nor init function
-Date: Wed, 22 Feb 2017 21:56:57 +0100
-Message-ID: <96a6c1a1-984b-ecdf-047c-4ed6feb7283a@wedev4u.fr>
-References: <1487791173-22159-1-git-send-email-kdasu.kdev@gmail.com>
- <1487791173-22159-2-git-send-email-kdasu.kdev@gmail.com>
+From: Dan Sneddon <dan.sneddon@gmail.com>
+Subject: Re: SPI fix needed in kernel (DragonBoard 410c)
+Date: Wed, 22 Feb 2017 14:08:10 -0700
+Message-ID: <CACceFXeoV5DjekfDSbEhGOKrztwqSa9jLQ-pknCVaXQMkPOyqg@mail.gmail.com>
+References: <6857de0f674548d09ecad023211b3d1f@NASANEXM01D.na.qualcomm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-mtd@lists.infradead.org, f.fainelli@gmail.com,
- bcm-kernel-feedback-list@broadcom.com
-To: Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org,
- cyrille.pitchen@atmel.com, marex@denx.de, broonie@kernel.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1487791173-22159-2-git-send-email-kdasu.kdev@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, "Sedlak Grinbaum,
+ Anna Hanna" <c_asedla@qti.qualcomm.com>,
+ "pawel.moll@arm.com" <pawel.moll@arm.com>,
+ "ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "stanimir.varbanov@linaro.org" <stanimir.varbanov@linaro.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "todor.tomov@linaro.org" <todor.tomov@linaro.org>,
+ "nicolas.dechesne@linaro.org" <nicolas.dechesne@linaro.org>,
+ "ill.deacon@arm.com" <ill.deacon@arm.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "srinivas.kandagatla@linaro.org" <srinivas.kandagatla@linaro.org>, "Elster,
+ Constantine" <celster@qti.qualcomm.com>,
+ "galak@codeaurora.org" <
+To: "King, Lawrence" <lking@qti.qualcomm.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <6857de0f674548d09ecad023211b3d1f@NASANEXM01D.na.qualcomm.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Kamal,
-
-just few comments, maybe not a full review, sorry!
-
-First, about the subject line, I know this a small detail but according
-to Documentation/SubmittingPatches, it should be "mtd: spi-nor: add ..."
-
-"""
-Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-to do frotz", as if you are giving orders to the codebase to change
-its behaviour.
-"""
-
-Le 22/02/2017 =E0 20:19, Kamal Dasu a =E9crit :
-> Refactored spi_nor_scan() code to add spi_nor_init() function that
-> programs the spi-nor flash to:
-> 1) remove flash protection if applicable
-> 2) set read mode to quad mode if configured such
-> 3) set the address width based on the flash size and vendor
-> =
-
-> spi_nor_scan() now calls spi_nor_init() to setup nor flash.
-> The init function can also be called by flash device driver
-> to reinitialize spi-nor flash.
-> =
-
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 77 ++++++++++++++++++++++++++++---------=
-------
->  include/linux/mtd/spi-nor.h   | 18 +++++++++-
->  2 files changed, 67 insertions(+), 28 deletions(-)
-> =
-
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 70e52ff..8b71c11 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -1526,6 +1526,44 @@ static int s3an_nor_scan(const struct flash_info *=
-info, struct spi_nor *nor)
->  	return 0;
->  }
->  =
-
-> +int spi_nor_init(struct spi_nor *nor)
-> +{
-> +	int ret =3D 0;
-> +	const struct flash_info *info =3D nor->info;
-> +	struct device *dev =3D nor->dev;
-> +
-> +	/*
-> +	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-> +	 * with the software protection bits set
-> +	 */
-> +
-> +	if (JEDEC_MFR(info) =3D=3D SNOR_MFR_ATMEL ||
-> +	    JEDEC_MFR(info) =3D=3D SNOR_MFR_INTEL ||
-> +	    JEDEC_MFR(info) =3D=3D SNOR_MFR_SST ||
-> +	    info->flags & SPI_NOR_HAS_LOCK) {
-> +		write_enable(nor);
-> +		write_sr(nor, 0);
-> +		spi_nor_wait_till_ready(nor);
-> +	}
-> +
-> +	if (nor->flash_read =3D=3D SPI_NOR_QUAD) {
-> +		ret =3D set_quad_mode(nor, info);
-> +		if (ret) {
-> +			dev_err(dev, "quad mode not supported\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	if (JEDEC_MFR(info) =3D=3D SNOR_MFR_SPANSION ||
-> +	    info->flags & SPI_NOR_4B_OPCODES)
-> +		spi_nor_set_4byte_opcodes(nor, info);
-> +	else
-> +		set_4byte(nor, info, 1);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_nor_init);
-> +
-
-When this code was called only from spi_nor_scan(), the nor->mtd object
-has not been registered yet into the MTD sub-system. There was no need
-to lock the 'nor->lock' mutex because spi_nor_scan() can't compete with
-spi_nor_read(), spi_nor_write(), and so on...
-
-However, now you plan to call this new spi_nor_init() function from the
-resume() handler in m25p80: the MTD device has already been registered
-so spi_nor_init() can now compete with spi_nor_read() and other
-nor->mtd.<handlers>. I guess locking the mutex might be needed now
-unless we have another mechanism to guarantee nor->mtd._<handlers> could
-never be called by the MTD sub-system when the SPI device is suspended.
-So, as said in my comment of patch 2 of this series, synchronization of
-their power states is needed between the SPI and MTD devices.
-
-
->  int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode m=
-ode)
->  {
->  	const struct flash_info *info =3D NULL;
-> @@ -1571,6 +1609,8 @@ int spi_nor_scan(struct spi_nor *nor, const char *n=
-ame, enum read_mode mode)
->  		}
->  	}
->  =
-
-> +	/* update pointer to flash_info in the nor structure */
-> +	nor->info =3D info;
->  	mutex_init(&nor->lock);
->  =
-
->  	/*
-> @@ -1581,20 +1621,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  	if (info->flags & SPI_S3AN)
->  		nor->flags |=3D  SNOR_F_READY_XSR_RDY;
->  =
-
-> -	/*
-> -	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-> -	 * with the software protection bits set
-> -	 */
-> -
-> -	if (JEDEC_MFR(info) =3D=3D SNOR_MFR_ATMEL ||
-> -	    JEDEC_MFR(info) =3D=3D SNOR_MFR_INTEL ||
-> -	    JEDEC_MFR(info) =3D=3D SNOR_MFR_SST ||
-> -	    info->flags & SPI_NOR_HAS_LOCK) {
-> -		write_enable(nor);
-> -		write_sr(nor, 0);
-> -		spi_nor_wait_till_ready(nor);
-> -	}
-> -
->  	if (!mtd->name)
->  		mtd->name =3D dev_name(dev);
->  	mtd->priv =3D nor;
-> @@ -1669,11 +1695,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  =
-
->  	/* Quad/Dual-read mode takes precedence over fast/normal */
->  	if (mode =3D=3D SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
-> -		ret =3D set_quad_mode(nor, info);
-> -		if (ret) {
-> -			dev_err(dev, "quad mode not supported\n");
-> -			return ret;
-> -		}
->  		nor->flash_read =3D SPI_NOR_QUAD;
->  	} else if (mode =3D=3D SPI_NOR_DUAL && info->flags & SPI_NOR_DUAL_READ)=
- {
->  		nor->flash_read =3D SPI_NOR_DUAL;
-> @@ -1702,17 +1723,11 @@ int spi_nor_scan(struct spi_nor *nor, const char =
-*name, enum read_mode mode)
->  =
-
->  	if (info->addr_width)
->  		nor->addr_width =3D info->addr_width;
-> -	else if (mtd->size > 0x1000000) {
-> +	else if (mtd->size > 0x1000000)
->  		/* enable 4-byte addressing if the device exceeds 16MiB */
->  		nor->addr_width =3D 4;
-> -		if (JEDEC_MFR(info) =3D=3D SNOR_MFR_SPANSION ||
-> -		    info->flags & SPI_NOR_4B_OPCODES)
-> -			spi_nor_set_4byte_opcodes(nor, info);
-> -		else
-> -			set_4byte(nor, info, 1);
-> -	} else {
-> +	else
->  		nor->addr_width =3D 3;
-> -	}
->  =
-
->  	if (nor->addr_width > SPI_NOR_MAX_ADDR_WIDTH) {
->  		dev_err(dev, "address width is too large: %u\n",
-> @@ -1728,6 +1743,14 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
-name, enum read_mode mode)
->  			return ret;
->  	}
->  =
-
-> +	/*
-> +	 * call init function to send necessary spi-nor read/write config
-> +	 * commands to nor flash based on above nor settings
-> +	 */
-> +	ret =3D spi_nor_init(nor);
-> +	if (ret)
-> +		return ret;
-> +
->  	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
->  			(long long)mtd->size >> 10);
->  =
-
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index f2a7180..29a8283 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -143,6 +143,8 @@ enum spi_nor_option_flags {
->  	SNOR_F_READY_XSR_RDY	=3D BIT(4),
->  };
->  =
-
-> +struct flash_info;
-> +
->  /**
->   * struct spi_nor - Structure for defining a the SPI NOR layer
->   * @mtd:		point to a mtd_info structure
-> @@ -174,6 +176,7 @@ enum spi_nor_option_flags {
->   * @flash_is_locked:	[FLASH-SPECIFIC] check if a region of the SPI NOR is
->   *			completely locked
->   * @priv:		the private data
-> + * @info:		points to the flash_info structure
->   */
->  struct spi_nor {
->  	struct mtd_info		mtd;
-> @@ -206,6 +209,7 @@ struct spi_nor {
->  	int (*flash_is_locked)(struct spi_nor *nor, loff_t ofs, uint64_t len);
->  =
-
->  	void *priv;
-> +	const struct flash_info *info;
->  };
->  =
-
->  static inline void spi_nor_set_flash_node(struct spi_nor *nor,
-> @@ -220,12 +224,24 @@ static inline struct device_node *spi_nor_get_flash=
-_node(struct spi_nor *nor)
->  }
->  =
-
->  /**
-> + * spi_nor_init() - initialize SPI NOR
-> + * @nor:	the spi_nor structure
-> + *
-> + * The drivers uses this function to initialize the SPI NOR flash device=
- to
-> + * settings in spi_nor structure. The functions sets read mode, address =
-width
-> + * and removes protection on the flash device based on those settings.
-> + *
-> + * Return: 0 for success, others for failure.
-> + */
-> +int spi_nor_init(struct spi_nor *nor);
-> +
-> +/**
->   * spi_nor_scan() - scan the SPI NOR
->   * @nor:	the spi_nor structure
->   * @name:	the chip type name
->   * @mode:	the read mode supported by the driver
->   *
-> - * The drivers can use this fuction to scan the SPI NOR.
-> + * The drivers can use this function to scan the SPI NOR.
->   * In the scanning, it will try to get all the necessary information to
->   * fill the mtd_info{} and the spi_nor{}.
->   *
-> =
-
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+PHNuaXA+Cgo+IEkgaGF2ZSBiZWVuIHVzaW5nIFNQSSBvbiB0aGUgRHJhZ29uYm9hcmQgNDEwYyBh
+bmQgZm91bmQgc29tZSBpc3N1ZXMuIFNwZWNpZmljYWxseSBIYXJkd2FyZSBDaGlwIFNlbGVjdCBp
+cyBub3Qgd29ya2luZyBvbiB0aGUgRGViaWFuIGtlcm5lbCBmcm9tIExpbmFybyAoQnVpbGQgIzIw
+MikuIEl0IHR1cm5zIG91dCB0aGF0IHRoZSBTUElfSU9fQ19NWF9DU19NT0RFIGJpdCBpbiB0aGUg
+U1BJX0lPX0NPTlRST0wgcmVnaXN0ZXIgbmVlZHMgdG8gYmUgc2V0LiBNeSAncGF0Y2gnIGlzIHZl
+cnkgc2ltcGxpc3RpYywgYW5kIEkgY2VydGFpbmx5IGhhdmVuJ3QgdGVzdGVkIGl0IGFnYWluc3Qg
+YWxsIGNhc2VzIG9mIERNQS9ub24tRE1BIGFuZCB2YXJpb3VzIHRyYW5zZmVyIGxlbmd0aHMsIGJ1
+dCBpdCBkb2VzIGZpeCBteSBvbmUgY2FzZS4KClNpbmNlIHRoZSBzcGktcXVwIGRyaXZlciB1c2Vk
+IHRoZSBnZW5lcmljIHNwaSB0cmFuc2Zlcl9vbmVfbWVzc2FnZSBJIHdvdWxkIGtlZXAKdGhlIENT
+IHBpbiBhcyBhIEdQSU8gZnVuY3Rpb24gcmF0aGVyIHRoYW4gdGhlIGJsc3Bfc3BpNSBmdW5jdGlv
+biBhbmQgbGV0IHRoZQpmcmFtZXdvcmsgYXNzZXJ0L2RlYXNzZXJ0IGl0LgoKPiBGaXJzdCBJIGNo
+YW5nZWQgb25seSB0aGUgZHRzaSBmaWxlcyB0byBlbmFibGUgYSBzcGlkZXYgZHJpdmVyIHdpdGgg
+aGFyZHdhcmUgY2hpcCBzZWxlY3QgKGFuZCBzZXQgdGhlIGRyaXZlIHN0cmVuZ3RoIGNvcnJlY3Rs
+eSk6Cj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm02NC9ib290L2R0cy9xY29tL2FwcTgwMTYtc2Jj
+LmR0c2kgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL3Fjb20vYXBxODAxNi1zYmMuZHRzaQo+IGluZGV4
+IGY2ZDJiY2I2ZGJkMS4uODc0MTUwYTQxMmEyIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtNjQvYm9v
+dC9kdHMvcWNvbS9hcHE4MDE2LXNiYy5kdHNpCj4gKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9x
+Y29tL2FwcTgwMTYtc2JjLmR0c2kKPiBAQCAtMjA4LDggKzIwOCwxNCBAQAo+ICAgICAgICAgICAg
+ICAgICAvKiBPbiBMb3cgc3BlZWQgZXhwYW5zaW9uICovCj4gICAgICAgICAgICAgICAgICAgICAg
+ICAgbGFiZWwgPSAiTFMtU1BJMCI7Cj4gKy8qICAgICAgICAgICAgICAgICAgICAgICAgY3MtZ3Bp
+b3MgPSA8Jm1zbWdwaW8gMTggMD4gKi8KPiAgICAgICAgICAgICAgICAgICAgICAgICBzdGF0dXMg
+PSAib2theSI7Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgc3BpZGV2QDAgewo+ICsgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgY29tcGF0aWJsZSA9ICJzcGlkZXYiOwo+ICsgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgc3BpLW1heC1mcmVxdWVuY3kgPSA8MTAwMDAwPjsKPiAr
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlZyA9IDwwPjsKPiArICAgICAgICAgICAg
+ICAgICAgICAgICB9Owo+ICAgICAgICAgICAgICAgICB9Owo+Cj4gICAgICAgICAgICAgICAgIGxl
+ZHMgewo+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL3Fjb20vbXNtODkxNi1waW5z
+LmR0c2kgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL3Fjb20vbXNtODkxNi1waW5zLmR0c2kKPiBpbmRl
+eCA4OTlmMmIyOGE5YzkuLjFjMjJiNDQxNGVkZiAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybTY0L2Jv
+b3QvZHRzL3Fjb20vbXNtODkxNi1waW5zLmR0c2kKPiArKysgYi9hcmNoL2FybTY0L2Jvb3QvZHRz
+L3Fjb20vbXNtODkxNi1waW5zLmR0c2kKPiBAQCAtMjA4LDcgKzIwOCw3IEBACj4gICAgICAgICAg
+ICAgICAgICAgICAgICAgcGlucyA9ICJncGlvMTYiLCAiZ3BpbzE3IiwgImdwaW8xOSI7Cj4gICAg
+ICAgICAgICAgICAgIH07Cj4gICAgICAgICAgICAgICAgIHBpbm11eF9jcyB7Cj4gLSAgICAgICAg
+ICAgICAgICAgICAgICAgZnVuY3Rpb24gPSAiZ3BpbyI7Cj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgZnVuY3Rpb24gPSAiYmxzcF9zcGk1IjsKPiAgICAgICAgICAgICAgICAgICAgICAgICBwaW5z
+ID0gImdwaW8xOCI7Cj4gICAgICAgICAgICAgICAgIH07Cj4gICAgICAgICAgICAgICAgIHBpbmNv
+bmYgewo+IEBAIC0yMTgsNyArMjE4LDcgQEAKPiAgICAgICAgICAgICAgICAgfTsKPiAgICAgICAg
+ICAgICAgICAgcGluY29uZl9jcyB7Cj4gICAgICAgICAgICAgICAgICAgICAgICAgcGlucyA9ICJn
+cGlvMTgiOwo+IC0gICAgICAgICAgICAgICAgICAgICAgIGRyaXZlLXN0cmVuZ3RoID0gPDI+Owo+
+ICsgICAgICAgICAgICAgICAgICAgICAgIGRyaXZlLXN0cmVuZ3RoID0gPDEyPjsKPiAgICAgICAg
+ICAgICAgICAgICAgICAgICBiaWFzLWRpc2FibGU7Cj4gICAgICAgICAgICAgICAgICAgICAgICAg
+b3V0cHV0LWhpZ2g7Cj4gICAgICAgICAgICAgICAgIH07Cj4KPiBIZXJlIGlzIHdoYXQgbXkgMy1i
+eXRlIHRyYW5zYWN0aW9ucyBlbmQgdXAgbG9va2luZyBsaWtlIChZZWxsb3cgLSBDbG9jaywgR3Jl
+ZW4g4oCTIERhdGEgT3V0LCBNYWdlbnRhLSBDaGlwIFNlbGVjdCkgOgo+Cj4KPiBBcyB5b3UgY2Fu
+IHNlZSB0aGUgY2hpcCBzZWxlY3QgaXMgZ29pbmcgaGlnaCBiZXR3ZWVuIGVhY2ggYnl0ZSBvZiBk
+YXRhLiBUaGlzIHZpb2xhdGVzIHRoZSBTUEkgcHJvdG9jb2wgYW5kIEkgYW0gdW5hYmxlIHRvIHRy
+YW5zZmVyIGRhdGEgZnJvbSB0aGUgZGV2aWNlLgo+Cj4gTmV4dCBJIGNoYW5nZWQgdGhlIFNQSSBk
+cml2ZXI6Cj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLXF1cC5jIGIvZHJpdmVycy9z
+cGkvc3BpLXF1cC5jCj4gaW5kZXggNjhmOTVhY2Y3OTcxLi5hZWQ3MWVmN2UzZmQgMTAwNjQ0Cj4g
+LS0tIGEvZHJpdmVycy9zcGkvc3BpLXF1cC5jCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLXF1cC5j
+Cj4gQEAgLTU4MCw2ICs1ODAsNyBAQCBzdGF0aWMgaW50IHNwaV9xdXBfaW9fY29uZmlnKHN0cnVj
+dCBzcGlfZGV2aWNlICpzcGksIHN0cnVjdCBzcGlfdHJhbnNmZXIgKnhmZXIpCj4gICAgICAgICBl
+bHNlCj4gICAgICAgICAgICAgICAgIGNvbnRyb2wgJj0gflNQSV9JT19DX0NMS19JRExFX0hJR0g7
+Cj4KPiArICAgICAgIGNvbmZpZyB8PSBTUElfSU9fQ19NWF9DU19NT0RFOwo+ICAgICAgICAgd3Jp
+dGVsX3JlbGF4ZWQoY29udHJvbCwgY29udHJvbGxlci0+YmFzZSArIFNQSV9JT19DT05UUk9MKTsK
+Pgo+ICAgICAgICAgY29uZmlnID0gcmVhZGxfcmVsYXhlZChjb250cm9sbGVyLT5iYXNlICsgU1BJ
+X0NPTkZJRyk7Cj4gQEAgLTkyOCw3ICs5MjksNyBAQCBzdGF0aWMgaW50IHNwaV9xdXBfcHJvYmUo
+c3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKPiAgICAgICAgICAgICAgICAgICAgICAgICBi
+YXNlICsgUVVQX0VSUk9SX0ZMQUdTX0VOKTsKPgo+ICAgICAgICAgd3JpdGVsX3JlbGF4ZWQoMCwg
+YmFzZSArIFNQSV9DT05GSUcpOwo+IC0gICAgICAgd3JpdGVsX3JlbGF4ZWQoU1BJX0lPX0NfTk9f
+VFJJX1NUQVRFLCBiYXNlICsgU1BJX0lPX0NPTlRST0wpOwo+ICsgICAgICAgd3JpdGVsX3JlbGF4
+ZWQoU1BJX0lPX0NfTk9fVFJJX1NUQVRFfFNQSV9JT19DX01YX0NTX01PREUsIGJhc2UgKyBTUElf
+SU9fQ09OVFJPTCk7Cj4KPiAgICAgICAgIHJldCA9IGRldm1fcmVxdWVzdF9pcnEoZGV2LCBpcnEs
+IHNwaV9xdXBfcXVwX2lycSwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSVJRRl9U
+UklHR0VSX0hJR0gsIHBkZXYtPm5hbWUsIGNvbnRyb2xsZXIpOwo+Cj4gVGhpcyBzZXRzIHRoZSBT
+UElfSU9fQ19NWF9NT0RFIGJpdCBpbiB0aGUgU1BJX0lPX0NPTlRST0wgcmVnaXN0ZXIuIE9uY2Ug
+dGhpcyBpcyBkb25lIHRoZSBTUEkgdHJhbnNhY3Rpb25zIGxvb2sgbGlrZSB0aGlzOgo+Cj4KPgo+
+IEFzIHlvdSBjYW4gc2VlIHRoZSBDaGlwIFNlbGVjdCBzdGF5cyBsb3cgZm9yIHRoZSBlbnRpcmUg
+dHJhbnNhY3Rpb24gYW5kIHRoZSBkZXZpY2Ugc3VjY2Vzc2Z1bGx5IHRyYW5zZmVycyBkYXRhLgo+
+Cj4gSSBoYXZlIE5PVCB0ZXN0ZWQgdGhpcyBjaGFuZ2UgdmVyeSBjYXJlZnVsbHkgYW5kIEkgaGF2
+ZSBub3QgY292ZXJlZCBhbGwgb2YgdGhlIHBvc3NpYmxlIGNhc2VzIChkaWZmZXJlbnQgcHJvY2Vz
+c29ycywgRE1BIHZzIG5vbi1ETUEsIGV0YykuIFRoaXMg4oCYcGF0Y2jigJkgaXMgb25seSBrbm93
+biB0byB3b3JrIHdpdGggTVNNODkxNi9BUFE4MDE2LCBhbmQgb25seSB3aXRoIDMtYnl0ZSB0cmFu
+c2ZlcnMgYXQgMTAwa0h6Lgo+Cj4gTGF3cmVuY2UgS2luZwo+IFNlbmlvciBTdGFmZiBFbmcuL21n
+cgo+IFF1YWxjb21tIENhbmFkYSBJbmMuCj4gU3VpdGUgMTAwLCAxMDUgQ29tbWVyY2UgVmFsbGV5
+IERyaXZlIFdlc3QKPiBNYXJraGFtIE9udGFyaW8gQ2FuYWRhIEwzVCA3VzMKPiArMSg5MDUpNDgy
+LTU0MDMg4oCTIG9mZmljZQo+ICsxKDQxNik2MjctNzMwMiAtIGNlbGwKPgo+Cj4gLS0tLS1Pcmln
+aW5hbCBNZXNzYWdlLS0tLS0KPiBGcm9tOiBBbmR5IEdyb3NzIFttYWlsdG86YW5keS5ncm9zc0Bs
+aW5hcm8ub3JnXQo+IFNlbnQ6IFR1ZXNkYXksIEZlYnJ1YXJ5IDE0LCAyMDE3IDQ6MjEgUE0KPiBU
+bzogS2luZywgTGF3cmVuY2UgPGxraW5nQHF0aS5xdWFsY29tbS5jb20+Cj4gQ2M6IEZyYWRraW4s
+IEFsZXggPGFsZXhmQHF0aS5xdWFsY29tbS5jb20+OyBuaWNvbGFzLmRlY2hlc25lQGxpbmFyby5v
+cmc7IEJqb3JuIEFuZGVyc3NvbiA8Ympvcm4uYW5kZXJzc29uQGxpbmFyby5vcmc+OyBTcmluaXZh
+cyBLYW5kYWdhdGxhIDxzcmluaXZhcy5rYW5kYWdhdGxhQGxpbmFyby5vcmc+OyBFbHN0ZXIsIENv
+bnN0YW50aW5lIDxjZWxzdGVyQHF0aS5xdWFsY29tbS5jb20+OyBTZWRsYWsgR3JpbmJhdW0sIEFu
+bmEgSGFubmEgPGNfYXNlZGxhQHF0aS5xdWFsY29tbS5jb20+Cj4gU3ViamVjdDogUmU6IFNQSSBm
+aXggbmVlZGVkIGluIGtlcm5lbAo+Cj4gT24gMTQgRmVicnVhcnkgMjAxNyBhdCAxNDozNywgS2lu
+ZywgTGF3cmVuY2UgPGxraW5nQHF0aS5xdWFsY29tbS5jb20+IHdyb3RlOgo+PiBEZWFyIEFsbDoK
+Pj4KPj4KPj4KPj4gSSBhbSBiYWNrIG9uIHRoZSBjYXNlIG9mIHRoZSBTUEkgZHJpdmVyIGZvciB0
+aGUgQVBRODAxNi4gVGhpcyB0aW1lIEkKPj4gYW0gdXNpbmcgdGhlICdsYXRlc3QnIGJ1aWxkICMy
+MDIgb2YgRGViaWFuLgo+Pgo+Pgo+Pgo+PiBJbiBvcmRlciB0byBnZXQgdGhlIGhhcmR3YXJlIENo
+aXAgU2VsZWN0IHRvIG9wZXJhdGUgY29ycmVjdGx5IEkgdHJpZWQKPj4gdGhlIHNhbWUgJ3RyaWNr
+JyBJIGhhZCBiZWVuIGRvaW5nIGJlZm9yZSwgSSBhZGRlZCB0aGUgbGluZSBvZiBjb2RlCj4+IHRo
+YXQgc2V0cyB0aGUgU1BJX0lPX0NfTVhfQ1NfTU9ERSBiaXQgaW4gdGhlIFNQSV9JT19DT05UUk9M
+IHJlZ2lzdGVyCj4+IGluIHRoZSBmdW5jdGlvbiBzcGlfcXVwX2lvX2NvbmZpZygpLiBCdXQgdG8g
+bXkgYW5ub3lhbmNlIGl0IGRpZG4ndCBmaXggdGhlIHByb2JsZW0uCj4KPiBMb29raW5nIGF0IHRo
+ZSBzcGlfcXNkLmMgaW4gMy4xOCwgdGhlcmUgaXMgYSBwcmV0dHkgY29tcGxleCBkYW5jZSBpbnZv
+bHZlZCB3aXRoIGRlY2lkaW5nIHdoZXRoZXIgb3Igbm90IHRvIHNldCB0aGUgTVhfQ1MuICBQcm9i
+YWJseSBiZWNhdXNlIG9mIHRoZSB3ZWlyZCB0cmFuc2ZlciBjb2FsZXNjaW5nIHRoZXkgZG8uCj4K
+PiBJbiBhZGRpdGlvbiwgdGhleSBhcmUgZG9pbmcgYSBGT1JDRV9DUyB3aGVuIHRoZSBzcGkgY29y
+ZSBjYWxscyBzZXRfY3MuCj4KPj4KPj4KPj4gSW4gb3JkZXIgdG8gZ2V0IGhhcmR3YXJlIENTIGNv
+bnRyb2wgdG8gd29yayBJIGFsc28gaGFkIHRvIGNoYW5nZSB0aGUKPj4gU1BJX0lPX0NPTlRST0wg
+aW4gdGhlIGZ1bmN0aW9uIHNwaV9xdXBfcHJvYmUoKSAgZnJvbQo+Pgo+PiB3cml0ZWxfcmVsYXhl
+ZChTUElfSU9fQ19OT19UUklfU1RBVEUsIGJhc2UgKyBTUElfSU9fQ09OVFJPTCk7Cj4+Cj4+IHRv
+Cj4+Cj4+IHdyaXRlbF9yZWxheGVkKFNQSV9JT19DX05PX1RSSV9TVEFURXxTUElfSU9fQ19NWF9D
+U19NT0RFLCBiYXNlICsKPj4gU1BJX0lPX0NPTlRST0wpOwo+Pgo+Pgo+Pgo+PiBJIHdvdWxkIGhh
+dmUgdGhvdWdodCB0aGF0IHRoZSBzcGlfcXVwX2lvX2NvbmZpZygpIHJhbiBhZnRlciB0aGUKPj4g
+c3BpX3F1cF9wcm9iZSgpLCBidXQgdGhpcyBpcyBhcHBhcmVudGx5IG5vdCB0aGUgY2FzZS4KPgo+
+IFRoZSBzcGlfcXVwX2lvX2NvbmZpZygpIGlzIHJ1biBldmVyeSB0aW1lIHRoZXJlIGlzIGEgc3Bp
+IHRyYW5zYWN0aW9uLgo+IEl0IGlzIGNhbGxlZCBmcm9tIHNwaV9xdXBfdHJhbnNmZXJfb25lKCku
+Cj4KPj4KPj4KPj4gV2h5IGlzIHRoZSBTUElfSU9fQ19NWF9DU19NT0RFIGJpdCBzdGlsbCBub3Qg
+c2V0IGluIHRoZSBjb2RlPyBXaXRob3V0Cj4+IHRoaXMgYml0IHNldCBoYXJkd2FyZSBDUyB3aWxs
+IG5ldmVyIHdvcmsgcHJvcGVybHkuIE5vdyB0aGF0IHlvdSBoYXZlCj4+IHNlcGFyYXRlZCBvdXQg
+dGhlIG9sZCBjb250cm9sbGVyIGZyb20gdGhlIG5ldyBjb250cm9sbGVyIHdpdGggdGhlCj4+IHF1
+cF92MSBmbGFnIGl0IHNob3VsZCBiZSBlYXN54oCmCj4KPiBJIHByZXN1bWUgbm8gb25lIHNlbnQg
+YSBwYXRjaCB0byB0aGUgbWFpbGluZyBsaXN0IGZvciB0aGlzLiAgSWYgeW91IGRvLCBwbGVhc2Ug
+Q0MgbGludXgtbXNtLiAgQnV0IGR1ZSB0byB0aGUgZGV0YWlscyBhYm92ZSwgaXQgbWlnaHQgYmUg
+YSBnb29kIGlkZWEgdG8gYXNrIHNvbWVvbmUgaW4gQm91bGRlciBhYm91dCBhbGwgdGhlIGRpZmZl
+cmVudCBzdGF0ZXMgd2hlcmUgeW91IG5lZWQgc29tZSBmbGFncyBzZXQgYW5kIG90aGVycyBub3Qg
+c2V0IGlmIHlvdSB3YW50IHRvIHVzZSBhdXRvIGNoaXAgc2VsZWN0LiAgU2FnYXIgRGhhcmlhIG1p
+Z2h0IGJlIGEgZ29vZCBzdGFydGluZyBwb2ludC4KPgo+Cj4gUmVnYXJkcywKPgo+IEFuZHkKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1r
+ZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJu
+ZWwK

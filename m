@@ -1,83 +1,54 @@
-From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Subject: [PATCH] spi: sc18is602: Add OF device ID table
-Date: Wed, 22 Feb 2017 15:14:20 -0300
-Message-ID: <20170222181420.25420-1-javier@osg.samsung.com>
-Cc: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi/bcm63xx-hsspi: allow providing clock rate
+ through a second clock
+Date: Wed, 22 Feb 2017 10:26:02 -0800
+Message-ID: <20170222182602.p4wlcjfkxx6ulj4x@sirena.org.uk>
+References: <20170222131940.31085-1-jonas.gorski@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="3xwia6sgjr3aza2x"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The driver doesn't have a struct of_device_id table but supported devices
-are registered via Device Trees. This is working on the assumption that a
-I2C device registered via OF will always match a legacy I2C device ID and
-that the MODALIAS reported will always be of the form i2c:<device>.
 
-But this could change in the future so the correct approach is to have an
-OF device ID table if the devices are registered via OF.
+--3xwia6sgjr3aza2x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
----
+On Wed, Feb 22, 2017 at 02:19:38PM +0100, Jonas Gorski wrote:
+> Instead of requiring the hsspi clock to have a rate, allow using a second
+> clock for providing the Hz rate, which is probably more correct anyway.
 
- drivers/spi/spi-sc18is602.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+I'm sorry but I just can't follow the logic here at all - why would we
+use "a second clock" to get the rate of a clock and why would that be
+more correct?  There's a few steps in the reasoning missing here I
+think!
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index f63714ffb62f..52cf0e9189c2 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -21,6 +21,7 @@
- #include <linux/i2c.h>
- #include <linux/delay.h>
- #include <linux/pm_runtime.h>
-+#include <linux/of_device.h>
- #include <linux/of.h>
- #include <linux/platform_data/sc18is602.h>
- #include <linux/gpio/consumer.h>
-@@ -271,7 +272,10 @@ static int sc18is602_probe(struct i2c_client *client,
- 	hw->dev = dev;
- 	hw->ctrl = 0xff;
- 
--	hw->id = id->driver_data;
-+	if (client->dev.of_node)
-+		hw->id = (enum chips)of_device_get_match_data(&client->dev);
-+	else
-+		hw->id = id->driver_data;
- 
- 	switch (hw->id) {
- 	case sc18is602:
-@@ -323,9 +327,27 @@ static const struct i2c_device_id sc18is602_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, sc18is602_id);
- 
-+static const struct of_device_id sc18is602_of_match[] = {
-+	{
-+		.compatible = "nxp,sc18is602",
-+		.data = (void *)sc18is602
-+	},
-+	{
-+		.compatible = "nxp,sc18is602b",
-+		.data = (void *)sc18is602b
-+	},
-+	{
-+		.compatible = "nxp,sc18is603",
-+		.data = (void *)sc18is603
-+	},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, sc18is602_of_match);
-+
- static struct i2c_driver sc18is602_driver = {
- 	.driver = {
- 		.name = "sc18is602",
-+		.of_match_table = of_match_ptr(sc18is602_of_match),
- 	},
- 	.probe = sc18is602_probe,
- 	.id_table = sc18is602_id,
--- 
-2.9.3
+--3xwia6sgjr3aza2x
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlit17kACgkQJNaLcl1U
+h9AYtAf+KZqRZkawjaCxCt27lznchtEv8uL9KMWAbRG4mVYD1aKz4lBmqg7X0GKw
+FqZEWpMh+4vlLC5vs2ih+HIz/Ucc3QM9T1Ry5tO8Gk/vz/a46NuodIx+NndeNkW1
+X/PAl7zoFhBbsvjuUM2VD7TH22wDKBT00VxCEcO6/bGt0jVep6akvPaUcMJr6Gq2
+w4T2j2Qh1G5vwVGOhXw1GdLc8DaY9mYd34Bef6NXen4/o1EaEC0qUmwgFwYoggg0
+cXTiID7+yd/DwywK0I1et5PWR4dzypZFpdz2/pX4GlDdACc8QBAVYtlEA79a2RoL
+E7Ew1JCLSRa+OxzaCRBoMrPXv8gJSQ==
+=Qsq8
+-----END PGP SIGNATURE-----
+
+--3xwia6sgjr3aza2x--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

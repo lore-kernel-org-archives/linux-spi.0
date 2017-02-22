@@ -1,17 +1,53 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/bcm63xx: fix typo in bcm63xx_spi_max_length breaking compilation
-Date: Wed, 22 Feb 2017 00:30:40 +0100
-Message-ID: <20170221233040.24241-1-jonas.gorski@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi/bcm63xx: fix typo in bcm63xx_spi_max_length breaking compilation" to the spi tree
+Date: Tue, 21 Feb 2017 16:26:10 -0800
+Message-ID: <E1cgKl0-0005WH-Rm@finisterre>
+References: <20170221233040.24241-1-jonas.gorski@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170221233040.24241-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi/bcm63xx: fix typo in bcm63xx_spi_max_length breaking compilation
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From ccd0657c33b2c3701c5b14725284b7e671d3fb93 Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 22 Feb 2017 00:30:40 +0100
+Subject: [PATCH] spi/bcm63xx: fix typo in bcm63xx_spi_max_length breaking
+ compilation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Fix compilation by renaming argument dev to spi as expected by the code.
 
@@ -24,12 +60,8 @@ drivers/spi/spi-bcm63xx.c:434:50: error: ‘spi’ undeclared (first use in this
 
 Fixes: 0135c03df914 ("spi/bcm63xx: make spi subsystem aware of message size limits")
 Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
-Oops, fixed it up in the wrong tree. And I forgot I can compile test it,
-and can do compile tests directly.
-
-Anyway, Done on top of topic/bcm63xx.
-
  drivers/spi/spi-bcm63xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 

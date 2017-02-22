@@ -1,55 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi/bcm63xx-hsspi: allow providing clock rate
- through a second clock
-Date: Wed, 22 Feb 2017 10:26:02 -0800
-Message-ID: <20170222182602.p4wlcjfkxx6ulj4x@sirena.org.uk>
-References: <20170222131940.31085-1-jonas.gorski@gmail.com>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
+Subject: [PATCH v5 0/2] Added support for spi-nor device pm in m25p80
+Date: Wed, 22 Feb 2017 14:19:31 -0500
+Message-ID: <1487791173-22159-1-git-send-email-kdasu.kdev@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3xwia6sgjr3aza2x"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
+ linux-mtd@lists.infradead.org, Kamal Dasu <kdasu.kdev@gmail.com>
+To: linux-spi@vger.kernel.org, cyrille.pitchen@atmel.com, marex@denx.de,
+ broonie@kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+Changes since v4 based on review comments:
+
+spi-nor.c
+- Added comments to make it clear that spi_nor_init() sends all spi-nor
+  flash configuration commands based on nor stucture settings for read
+  in the refactored code
+
+m25p80.c:
+- fix typos
+- Updated description
+
+The V4 changes below implements power management support in m25p80 driver.
+m25p80 pm resume() calls newly a implemented spi_nor_init() function
+that sets up the spi-nor flash to its pre-suspend state. This is needed on
+platfroms that turn off power to the spi-nor flash on pm suspend.
+The code has been rebased to git://github.com/spi-nor/linux.git next
+branch.
+
+Kamal Dasu (2):
+  mtd: spi-nor: Added spi-nor init function
+  mtd: m25p80: Added pm ops support
+
+ drivers/mtd/devices/m25p80.c  | 11 +++++++
+ drivers/mtd/spi-nor/spi-nor.c | 77 ++++++++++++++++++++++++++++---------------
+ include/linux/mtd/spi-nor.h   | 18 +++++++++-
+ 3 files changed, 78 insertions(+), 28 deletions(-)
+
+-- 
+1.9.1
 
 
---3xwia6sgjr3aza2x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Feb 22, 2017 at 02:19:38PM +0100, Jonas Gorski wrote:
-> Instead of requiring the hsspi clock to have a rate, allow using a second
-> clock for providing the Hz rate, which is probably more correct anyway.
-
-I'm sorry but I just can't follow the logic here at all - why would we
-use "a second clock" to get the rate of a clock and why would that be
-more correct?  There's a few steps in the reasoning missing here I
-think!
-
---3xwia6sgjr3aza2x
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlit17kACgkQJNaLcl1U
-h9AYtAf+KZqRZkawjaCxCt27lznchtEv8uL9KMWAbRG4mVYD1aKz4lBmqg7X0GKw
-FqZEWpMh+4vlLC5vs2ih+HIz/Ucc3QM9T1Ry5tO8Gk/vz/a46NuodIx+NndeNkW1
-X/PAl7zoFhBbsvjuUM2VD7TH22wDKBT00VxCEcO6/bGt0jVep6akvPaUcMJr6Gq2
-w4T2j2Qh1G5vwVGOhXw1GdLc8DaY9mYd34Bef6NXen4/o1EaEC0qUmwgFwYoggg0
-cXTiID7+yd/DwywK0I1et5PWR4dzypZFpdz2/pX4GlDdACc8QBAVYtlEA79a2RoL
-E7Ew1JCLSRa+OxzaCRBoMrPXv8gJSQ==
-=Qsq8
------END PGP SIGNATURE-----
-
---3xwia6sgjr3aza2x--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

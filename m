@@ -1,63 +1,75 @@
-From: Kamal Dasu <kdasu.kdev@gmail.com>
-Subject: [PATCH v6 0/3] Add spi-nor flash device pm support
-Date: Fri, 24 Feb 2017 15:16:36 -0500
-Message-ID: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
- linux-mtd@lists.infradead.org, Kamal Dasu <kdasu.kdev@gmail.com>
-To: linux-spi@vger.kernel.org, cyrille.pitchen@atmel.com, marex@denx.de,
- broonie@kernel.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v6 3/3] mtd: spi-nor: Add spi-nor mtd suspend and resume handlers
+Date: Fri, 24 Feb 2017 15:16:39 -0500
+Message-ID: <1487967399-28967-4-git-send-email-kdasu.kdev@gmail.com>
+References: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+        marex-ynQEQJNshbs@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1487967399-28967-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Changes since v5 based on review comments:
+Implemented and populated spi-nor mtd PM handlers for suspend and resume ops.
+spi-nor suspend op set's the flash state to FL_PM_SUSPENDED state and resume
+op re-initializes spi-nor flash and set's flash state to FL_READY. The handlers
+ensures synchronization between the spi-nor and the mtd layer by calling
+spi_nor_get/release_device() and setting respective flash states.
 
-spi-nor.h
-- Added flash state field
-- Added spin_lock for flash state change 
-- Added wait queue for synchronization of spi-nor ops between 
-  mtd and spi-nor driver
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-spi-nor.c
-- Added spi_nor_get/release_device() flash state syncronization functions
-- Added mtd suspend and resume handlers
-
-rerverted m25p80.c changes 
-
-The V5 changes below implements power management support using the mtd
-handlers for resume and suspend in the spi-nor driver. Implemented flash
-state synchronization methods based on other mtd device drivers.
-spi-nor mtd pm resume() calls newly implemented spi_nor_init() function
-that sets up the spi-nor flash to its pre-suspend state. This is needed
-on platfroms that turn off power to the spi-nor flash on pm suspend. 
-The code has been rebased to git://github.com/spi-nor/linux.git next
-branch.
-
-Kamal Dasu (3):
-  mtd: spi-nor: Add spi-nor init function
-  mtd: spi-nor: Add spi-nor flash device synchronization between flash
-    states
-  mtd: spi-nor: Add spi-nor mtd suspend and resume handlers
-
- drivers/mtd/spi-nor/spi-nor.c | 170 +++++++++++++++++++++++++++++++++++-------
- include/linux/mtd/spi-nor.h   |  22 +++++-
- 2 files changed, 164 insertions(+), 28 deletions(-)
-
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 5363807..8e38895 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -1629,6 +1629,28 @@ int spi_nor_init(struct spi_nor *nor)
+ }
+ EXPORT_SYMBOL_GPL(spi_nor_init);
+ 
++/* mtd suspend handler */
++static int spi_nor_suspend(struct mtd_info *mtd)
++{
++	return spi_nor_get_device(mtd, FL_PM_SUSPENDED);
++}
++
++/* mtd resume handler */
++static void spi_nor_resume(struct mtd_info *mtd)
++{
++	struct spi_nor *nor = mtd_to_spi_nor(mtd);
++	struct device *dev = nor->dev;
++
++	if (nor->state == FL_PM_SUSPENDED) {
++		/* re-initialize the nor chip */
++		spi_nor_init(nor);
++		/* mtd can resume transfers */
++		spi_nor_release_device(mtd);
++	} else {
++	       dev_err(dev, "resume() called, chip not in suspended state\n");
++	}
++}
++
+ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ {
+ 	const struct flash_info *info = NULL;
+@@ -1695,6 +1717,8 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	mtd->size = info->sector_size * info->n_sectors;
+ 	mtd->_erase = spi_nor_erase;
+ 	mtd->_read = spi_nor_read;
++	mtd->_suspend = spi_nor_suspend;
++	mtd->_resume = spi_nor_resume;
+ 
+ 	/* NOR protection support for STmicro/Micron chips and similar */
+ 	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
 -- 
 1.9.1
 
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

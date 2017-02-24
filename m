@@ -1,7 +1,8 @@
 From: Kamal Dasu <kdasu.kdev@gmail.com>
-Subject: [PATCH v6 1/3] mtd: spi-nor: Add spi-nor init function
-Date: Fri, 24 Feb 2017 15:16:37 -0500
-Message-ID: <1487967399-28967-2-git-send-email-kdasu.kdev@gmail.com>
+Subject: [PATCH v6 2/3] mtd: spi-nor: Add spi-nor flash device synchronization
+ between flash states
+Date: Fri, 24 Feb 2017 15:16:38 -0500
+Message-ID: <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
 References: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,203 +24,155 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Refactored spi_nor_scan() code to add spi_nor_init() function that
-programs the spi-nor flash to:
-1) remove flash protection if applicable for certain vendors
-2) set read mode to quad mode if configured such
-3) set the address width based on the flash size
-
-spi_nor_scan() now calls spi_nor_init() to setup nor flash.
-The init function can also be called by flash device driver
-to reinitialize spi-nor flash.
+Added flash access synchronization methods spi_nor_get/release_device(). This
+change allows spi-nor driver to maintain flash states in spi-nor stucture for
+read, write, erase, lock, unlock nor ops. Only when the flash state is FL_READY
+a new state is set and spi-nor flash op is initiated. The state change is done
+with a spin_lock held and released as soon as the state is changed. Else the
+current process for spi-nor transfer is queued till the flash is in FL_READY
+state. This change allows us to add mtd layer synchronization when the mtd
+resume suspend handlers are added.
 
 Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 77 ++++++++++++++++++++++++++++---------------
- include/linux/mtd/spi-nor.h   | 18 +++++++++-
- 2 files changed, 67 insertions(+), 28 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 69 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spi-nor.h   |  4 +++
+ 2 files changed, 73 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 70e52ff..8b71c11 100644
+index 8b71c11..5363807 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1526,6 +1526,44 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
- 	return 0;
+@@ -89,6 +89,15 @@ struct flash_info {
+ 
+ #define JEDEC_MFR(info)	((info)->id[0])
+ 
++/* map table for spi_nor op to flashchip state  */
++static int spi_nor_state[] = {
++	[SPI_NOR_OPS_READ]	= FL_READING,
++	[SPI_NOR_OPS_WRITE]	= FL_WRITING,
++	[SPI_NOR_OPS_ERASE]	= FL_ERASING,
++	[SPI_NOR_OPS_LOCK]	= FL_LOCKING,
++	[SPI_NOR_OPS_UNLOCK]	= FL_UNLOCKING,
++};
++
+ static const struct flash_info *spi_nor_match_id(const char *name);
+ 
+ /*
+@@ -396,10 +405,64 @@ static int erase_chip(struct spi_nor *nor)
+ 	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
  }
  
-+int spi_nor_init(struct spi_nor *nor)
++/**
++ * spi_nor_get_device - [GENERIC] Get chip for selected access
++ * @param mtd		MTD device structure
++ * @param new_state	the state which is requested
++ *
++ * Get the nor flash device and lock it for exclusive access
++ */
++static int spi_nor_get_device(struct mtd_info *mtd, int new_state)
 +{
-+	int ret = 0;
-+	const struct flash_info *info = nor->info;
-+	struct device *dev = nor->dev;
++	struct spi_nor *nor = mtd_to_spi_nor(mtd);
++	DECLARE_WAITQUEUE(wait, current);
 +
 +	/*
-+	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
-+	 * with the software protection bits set
++	 * Grab the lock and see if the device is available
 +	 */
-+
-+	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
-+	    JEDEC_MFR(info) == SNOR_MFR_SST ||
-+	    info->flags & SPI_NOR_HAS_LOCK) {
-+		write_enable(nor);
-+		write_sr(nor, 0);
-+		spi_nor_wait_till_ready(nor);
-+	}
-+
-+	if (nor->flash_read == SPI_NOR_QUAD) {
-+		ret = set_quad_mode(nor, info);
-+		if (ret) {
-+			dev_err(dev, "quad mode not supported\n");
-+			return ret;
++	while (1) {
++		spin_lock(&nor->chip_lock);
++		if (nor->state == FL_READY) {
++			nor->state = new_state;
++			spin_unlock(&nor->chip_lock);
++			break;
 +		}
++		if (new_state == FL_PM_SUSPENDED) {
++			spin_unlock(&nor->chip_lock);
++			return (nor->state == FL_PM_SUSPENDED) ? 0 : -EAGAIN;
++		}
++		set_current_state(TASK_UNINTERRUPTIBLE);
++		add_wait_queue(&nor->wq, &wait);
++		spin_unlock(&nor->chip_lock);
++		schedule();
++		remove_wait_queue(&nor->wq, &wait);
 +	}
 +
-+	if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
-+	    info->flags & SPI_NOR_4B_OPCODES)
-+		spi_nor_set_4byte_opcodes(nor, info);
-+	else
-+		set_4byte(nor, info, 1);
-+
-+	return ret;
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(spi_nor_init);
 +
- int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
++/**
++ * spi_nor_release_device - [GENERIC] release chip
++ * @mtd: MTD device structure
++ *
++ * Release nor flash chip lock and wake up anyone waiting on the device.
++ */
++static void spi_nor_release_device(struct mtd_info *mtd)
++{
++	struct spi_nor *nor = mtd_to_spi_nor(mtd);
++
++	/* Release the controller and the chip */
++	spin_lock(&nor->chip_lock);
++	nor->state = FL_READY;
++	wake_up(&nor->wq);
++	spin_unlock(&nor->chip_lock);
++}
++
+ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
  {
- 	const struct flash_info *info = NULL;
-@@ -1571,6 +1609,8 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	int ret = 0;
+ 
++	spi_nor_get_device(&nor->mtd, spi_nor_state[ops]);
+ 	mutex_lock(&nor->lock);
+ 
+ 	if (nor->prepare) {
+@@ -407,6 +470,7 @@ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
+ 		if (ret) {
+ 			dev_err(nor->dev, "failed in the preparation.\n");
+ 			mutex_unlock(&nor->lock);
++			spi_nor_release_device(&nor->mtd);
+ 			return ret;
  		}
  	}
+@@ -418,6 +482,7 @@ static void spi_nor_unlock_and_unprep(struct spi_nor *nor, enum spi_nor_ops ops)
+ 	if (nor->unprepare)
+ 		nor->unprepare(nor, ops);
+ 	mutex_unlock(&nor->lock);
++	spi_nor_release_device(&nor->mtd);
+ }
  
-+	/* update pointer to flash_info in the nor structure */
-+	nor->info = info;
- 	mutex_init(&nor->lock);
- 
- 	/*
-@@ -1581,20 +1621,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 	if (info->flags & SPI_S3AN)
- 		nor->flags |=  SNOR_F_READY_XSR_RDY;
- 
--	/*
--	 * Atmel, SST, Intel/Numonyx, and others serial NOR tend to power up
--	 * with the software protection bits set
--	 */
--
--	if (JEDEC_MFR(info) == SNOR_MFR_ATMEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_INTEL ||
--	    JEDEC_MFR(info) == SNOR_MFR_SST ||
--	    info->flags & SPI_NOR_HAS_LOCK) {
--		write_enable(nor);
--		write_sr(nor, 0);
--		spi_nor_wait_till_ready(nor);
--	}
--
- 	if (!mtd->name)
- 		mtd->name = dev_name(dev);
- 	mtd->priv = nor;
-@@ -1669,11 +1695,6 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	/* Quad/Dual-read mode takes precedence over fast/normal */
- 	if (mode == SPI_NOR_QUAD && info->flags & SPI_NOR_QUAD_READ) {
--		ret = set_quad_mode(nor, info);
--		if (ret) {
--			dev_err(dev, "quad mode not supported\n");
--			return ret;
--		}
- 		nor->flash_read = SPI_NOR_QUAD;
- 	} else if (mode == SPI_NOR_DUAL && info->flags & SPI_NOR_DUAL_READ) {
- 		nor->flash_read = SPI_NOR_DUAL;
-@@ -1702,17 +1723,11 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 
- 	if (info->addr_width)
- 		nor->addr_width = info->addr_width;
--	else if (mtd->size > 0x1000000) {
-+	else if (mtd->size > 0x1000000)
- 		/* enable 4-byte addressing if the device exceeds 16MiB */
- 		nor->addr_width = 4;
--		if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
--		    info->flags & SPI_NOR_4B_OPCODES)
--			spi_nor_set_4byte_opcodes(nor, info);
--		else
--			set_4byte(nor, info, 1);
--	} else {
-+	else
- 		nor->addr_width = 3;
--	}
- 
- 	if (nor->addr_width > SPI_NOR_MAX_ADDR_WIDTH) {
- 		dev_err(dev, "address width is too large: %u\n",
-@@ -1728,6 +1743,14 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ /*
+@@ -1743,6 +1808,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
  			return ret;
  	}
  
-+	/*
-+	 * call init function to send necessary spi-nor read/write config
-+	 * commands to nor flash based on above nor settings
-+	 */
-+	ret = spi_nor_init(nor);
-+	if (ret)
-+		return ret;
++	nor->state = FL_READY;
++	init_waitqueue_head(&nor->wq);
++	spin_lock_init(&nor->chip_lock);
 +
- 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
- 			(long long)mtd->size >> 10);
- 
+ 	/*
+ 	 * call init function to send necessary spi-nor read/write config
+ 	 * commands to nor flash based on above nor settings
 diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index f2a7180..29a8283 100644
+index 29a8283..244d98d 100644
 --- a/include/linux/mtd/spi-nor.h
 +++ b/include/linux/mtd/spi-nor.h
-@@ -143,6 +143,8 @@ enum spi_nor_option_flags {
- 	SNOR_F_READY_XSR_RDY	= BIT(4),
- };
+@@ -13,6 +13,7 @@
+ #include <linux/bitops.h>
+ #include <linux/mtd/cfi.h>
+ #include <linux/mtd/mtd.h>
++#include <linux/mtd/flashchip.h>
  
-+struct flash_info;
-+
- /**
-  * struct spi_nor - Structure for defining a the SPI NOR layer
-  * @mtd:		point to a mtd_info structure
-@@ -174,6 +176,7 @@ enum spi_nor_option_flags {
-  * @flash_is_locked:	[FLASH-SPECIFIC] check if a region of the SPI NOR is
-  *			completely locked
-  * @priv:		the private data
-+ * @info:		points to the flash_info structure
-  */
- struct spi_nor {
- 	struct mtd_info		mtd;
-@@ -206,6 +209,7 @@ struct spi_nor {
- 	int (*flash_is_locked)(struct spi_nor *nor, loff_t ofs, uint64_t len);
+ /*
+  * Manufacturer IDs
+@@ -210,6 +211,9 @@ struct spi_nor {
  
  	void *priv;
-+	const struct flash_info *info;
+ 	const struct flash_info *info;
++	spinlock_t		chip_lock;
++	wait_queue_head_t	wq;
++	flstate_t		state;
  };
  
  static inline void spi_nor_set_flash_node(struct spi_nor *nor,
-@@ -220,12 +224,24 @@ static inline struct device_node *spi_nor_get_flash_node(struct spi_nor *nor)
- }
- 
- /**
-+ * spi_nor_init() - initialize SPI NOR
-+ * @nor:	the spi_nor structure
-+ *
-+ * The drivers uses this function to initialize the SPI NOR flash device to
-+ * settings in spi_nor structure. The functions sets read mode, address width
-+ * and removes protection on the flash device based on those settings.
-+ *
-+ * Return: 0 for success, others for failure.
-+ */
-+int spi_nor_init(struct spi_nor *nor);
-+
-+/**
-  * spi_nor_scan() - scan the SPI NOR
-  * @nor:	the spi_nor structure
-  * @name:	the chip type name
-  * @mode:	the read mode supported by the driver
-  *
-- * The drivers can use this fuction to scan the SPI NOR.
-+ * The drivers can use this function to scan the SPI NOR.
-  * In the scanning, it will try to get all the necessary information to
-  * fill the mtd_info{} and the spi_nor{}.
-  *
 -- 
 1.9.1
 

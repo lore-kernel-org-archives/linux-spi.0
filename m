@@ -1,19 +1,18 @@
 From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v6 2/3] mtd: spi-nor: Add spi-nor flash device
- synchronization between flash states
-Date: Sun, 26 Feb 2017 13:18:14 +0100
-Message-ID: <7500eaf2-082d-2902-b6b5-768189d1aae9@denx.de>
-References: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
- <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
+Subject: Re: Handling vmalloc'd buffers in spi-nor
+Date: Sun, 26 Feb 2017 16:55:58 +0100
+Message-ID: <14c04e25-cba3-ce68-3177-5afb4fab6cc2@denx.de>
+References: <8cf1d1d9-38a1-cbef-9a9b-07d2ecf2727f@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
- linux-mtd@lists.infradead.org
-To: Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org,
- cyrille.pitchen@atmel.com, broonie@kernel.org
+Cc: Frode Isaksen <fisaksen@baylibre.com>, Sekhar Nori <nsekhar@ti.com>,
+ Russell King <linux@armlinux.org.uk>, linux-spi <linux-spi@vger.kernel.org>,
+ Mark Brown <broonie@kernel.org>,
+ MTD Maling List <linux-mtd@lists.infradead.org>
+To: Vignesh R <vigneshr@ti.com>, Cyrille Pitchen <cyrille.pitchen@atmel.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
+In-Reply-To: <8cf1d1d9-38a1-cbef-9a9b-07d2ecf2727f@ti.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -25,166 +24,43 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/24/2017 09:16 PM, Kamal Dasu wrote:
-> Added flash access synchronization methods spi_nor_get/release_device(). This
+On 02/21/2017 09:37 AM, Vignesh R wrote:
+> Hi all,
 
-Should be get/put to be consistent with the rest of the kernel ...
+Hi!
 
-> change allows spi-nor driver to maintain flash states in spi-nor stucture for
-> read, write, erase, lock, unlock nor ops. Only when the flash state is FL_READY
-> a new state is set and spi-nor flash op is initiated. The state change is done
-> with a spin_lock held and released as soon as the state is changed. Else the
-> current process for spi-nor transfer is queued till the flash is in FL_READY
-> state. This change allows us to add mtd layer synchronization when the mtd
-> resume suspend handlers are added.
+> I have come across couple of problems[1] when using m25p80 driver with
+> SPI flash over SPI bus with DMA. Basically filesystems like UBIFS may
+> pass vmalloc'd buffers to SPI NOR layer which will end up in SPI layer.
+> SPI core does try to handle such buffers (see spi_map_buf()) by doing
+> vmalloc_to_page() and creating scatterlist.
+> But, its known that this does not work well with VIVT/aliasing cache
+> architectures.
+> This also fails when buffers are addressed using LPAE (buffers in region
+> higher than 32 bit addressable region), if DMA is 32bit only.
 > 
-> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 69 +++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mtd/spi-nor.h   |  4 +++
->  2 files changed, 73 insertions(+)
+> IMO, it would be better if vmalloc'd buffers are handled in SPI NOR
+> layer, just like nand, instead of passing them onto SPI layer.
+> In order to deal with vmalloc'd buffers passed by higher layers (like
+> UBIFS), I propose to use pre-allocated per flash bounce buffer equal to
+> the sector size of the flash. This feature can be enabled using a flag
+> similar to NAND_USE_BOUNCE_BUFFER. The changes will be mostly restricted
+> to spi_nor_read/write functions. This will help SPI drivers to use DMA
+> with NOR flashes with filesystems.
 > 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 8b71c11..5363807 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -89,6 +89,15 @@ struct flash_info {
->  
->  #define JEDEC_MFR(info)	((info)->id[0])
->  
-> +/* map table for spi_nor op to flashchip state  */
-> +static int spi_nor_state[] = {
-> +	[SPI_NOR_OPS_READ]	= FL_READING,
-> +	[SPI_NOR_OPS_WRITE]	= FL_WRITING,
-> +	[SPI_NOR_OPS_ERASE]	= FL_ERASING,
-> +	[SPI_NOR_OPS_LOCK]	= FL_LOCKING,
-> +	[SPI_NOR_OPS_UNLOCK]	= FL_UNLOCKING,
-> +};
+> This would also enable other SPI NOR drivers to safely use DMA in their
+> read/write callbacks.
+> 
+> Any thoughts/comments?
 
-Can't you just retain which instruction is in progress instead of adding
-yet another orthogonal FL_FOO ?
+Code please :-)
 
->  static const struct flash_info *spi_nor_match_id(const char *name);
->  
->  /*
-> @@ -396,10 +405,64 @@ static int erase_chip(struct spi_nor *nor)
->  	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
->  }
->  
-> +/**
-> + * spi_nor_get_device - [GENERIC] Get chip for selected access
-> + * @param mtd		MTD device structure
-> + * @param new_state	the state which is requested
-> + *
-> + * Get the nor flash device and lock it for exclusive access
-> + */
-> +static int spi_nor_get_device(struct mtd_info *mtd, int new_state)
-> +{
-> +	struct spi_nor *nor = mtd_to_spi_nor(mtd);
-> +	DECLARE_WAITQUEUE(wait, current);
-> +
-> +	/*
-> +	 * Grab the lock and see if the device is available
-> +	 */
-> +	while (1) {
-> +		spin_lock(&nor->chip_lock);
-> +		if (nor->state == FL_READY) {
-> +			nor->state = new_state;
-> +			spin_unlock(&nor->chip_lock);
-> +			break;
-> +		}
-> +		if (new_state == FL_PM_SUSPENDED) {
-> +			spin_unlock(&nor->chip_lock);
-> +			return (nor->state == FL_PM_SUSPENDED) ? 0 : -EAGAIN;
-> +		}
-> +		set_current_state(TASK_UNINTERRUPTIBLE);
-> +		add_wait_queue(&nor->wq, &wait);
-> +		spin_unlock(&nor->chip_lock);
-> +		schedule();
-> +		remove_wait_queue(&nor->wq, &wait);
+Let's discuss this over a patch. With the recent spi-nor and spi-nand
+controllers, I think this makes sense though.
 
-Somehow, I have to wonder, doesn't runtime PM implement this sort of
-functionality already ?
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * spi_nor_release_device - [GENERIC] release chip
-> + * @mtd: MTD device structure
-> + *
-> + * Release nor flash chip lock and wake up anyone waiting on the device.
-> + */
-> +static void spi_nor_release_device(struct mtd_info *mtd)
-> +{
-> +	struct spi_nor *nor = mtd_to_spi_nor(mtd);
-> +
-> +	/* Release the controller and the chip */
-> +	spin_lock(&nor->chip_lock);
-> +	nor->state = FL_READY;
-> +	wake_up(&nor->wq);
-> +	spin_unlock(&nor->chip_lock);
-> +}
-> +
->  static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
->  {
->  	int ret = 0;
->  
-> +	spi_nor_get_device(&nor->mtd, spi_nor_state[ops]);
->  	mutex_lock(&nor->lock);
->  
->  	if (nor->prepare) {
-> @@ -407,6 +470,7 @@ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
->  		if (ret) {
->  			dev_err(nor->dev, "failed in the preparation.\n");
->  			mutex_unlock(&nor->lock);
-> +			spi_nor_release_device(&nor->mtd);
->  			return ret;
->  		}
->  	}
-> @@ -418,6 +482,7 @@ static void spi_nor_unlock_and_unprep(struct spi_nor *nor, enum spi_nor_ops ops)
->  	if (nor->unprepare)
->  		nor->unprepare(nor, ops);
->  	mutex_unlock(&nor->lock);
-> +	spi_nor_release_device(&nor->mtd);
->  }
->  
->  /*
-> @@ -1743,6 +1808,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
->  			return ret;
->  	}
->  
-> +	nor->state = FL_READY;
-> +	init_waitqueue_head(&nor->wq);
-> +	spin_lock_init(&nor->chip_lock);
-> +
->  	/*
->  	 * call init function to send necessary spi-nor read/write config
->  	 * commands to nor flash based on above nor settings
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index 29a8283..244d98d 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -13,6 +13,7 @@
->  #include <linux/bitops.h>
->  #include <linux/mtd/cfi.h>
->  #include <linux/mtd/mtd.h>
-> +#include <linux/mtd/flashchip.h>
->  
->  /*
->   * Manufacturer IDs
-> @@ -210,6 +211,9 @@ struct spi_nor {
->  
->  	void *priv;
->  	const struct flash_info *info;
-> +	spinlock_t		chip_lock;
-> +	wait_queue_head_t	wq;
-> +	flstate_t		state;
->  };
->  
->  static inline void spi_nor_set_flash_node(struct spi_nor *nor,
+> Thanks!
+> 
+> [1]https://www.spinics.net/lists/arm-kernel/msg563773.html
 > 
 
 

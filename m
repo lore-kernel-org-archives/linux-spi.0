@@ -1,182 +1,97 @@
-From: Kamal Dasu <kdasu.kdev@gmail.com>
-Subject: [PATCH v6 2/3] mtd: spi-nor: Add spi-nor flash device synchronization
- between flash states
-Date: Fri, 24 Feb 2017 15:16:38 -0500
-Message-ID: <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
-References: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
+From: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] ARM: spi/sun7i: Add Master Sample Data
+ Mode for SPI
+Date: Sun, 26 Feb 2017 06:10:50 -0800 (PST)
+Message-ID: <186c0f31-01d0-4a1b-889b-a390a57bd1d9@googlegroups.com>
+References: <20170211035447.3819-1-viniciusfre@gmail.com>
+ <20170213125239.f5vsxrfwz5t6gqyp@sirena.org.uk>
+Reply-To: viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
- linux-mtd@lists.infradead.org, Kamal Dasu <kdasu.kdev@gmail.com>
-To: linux-spi@vger.kernel.org, cyrille.pitchen@atmel.com, marex@denx.de,
- broonie@kernel.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/mixed;
+	boundary="----=_Part_641_968153869.1488118250300"
+Cc: viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, wens-jdAy2FN1RRM@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	siarhei.siamashka-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBDNJJSMB6QFRB26DZPCQKGQEC7BGBLY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <20170213125239.f5vsxrfwz5t6gqyp-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-Added flash access synchronization methods spi_nor_get/release_device(). This
-change allows spi-nor driver to maintain flash states in spi-nor stucture for
-read, write, erase, lock, unlock nor ops. Only when the flash state is FL_READY
-a new state is set and spi-nor flash op is initiated. The state change is done
-with a spin_lock held and released as soon as the state is changed. Else the
-current process for spi-nor transfer is queued till the flash is in FL_READY
-state. This change allows us to add mtd layer synchronization when the mtd
-resume suspend handlers are added.
+------=_Part_641_968153869.1488118250300
+Content-Type: multipart/alternative;
+	boundary="----=_Part_642_662790194.1488118250300"
 
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
----
- drivers/mtd/spi-nor/spi-nor.c | 69 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/spi-nor.h   |  4 +++
- 2 files changed, 73 insertions(+)
+------=_Part_642_662790194.1488118250300
+Content-Type: text/plain; charset=UTF-8
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 8b71c11..5363807 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -89,6 +89,15 @@ struct flash_info {
- 
- #define JEDEC_MFR(info)	((info)->id[0])
- 
-+/* map table for spi_nor op to flashchip state  */
-+static int spi_nor_state[] = {
-+	[SPI_NOR_OPS_READ]	= FL_READING,
-+	[SPI_NOR_OPS_WRITE]	= FL_WRITING,
-+	[SPI_NOR_OPS_ERASE]	= FL_ERASING,
-+	[SPI_NOR_OPS_LOCK]	= FL_LOCKING,
-+	[SPI_NOR_OPS_UNLOCK]	= FL_UNLOCKING,
-+};
-+
- static const struct flash_info *spi_nor_match_id(const char *name);
- 
- /*
-@@ -396,10 +405,64 @@ static int erase_chip(struct spi_nor *nor)
- 	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
- }
- 
-+/**
-+ * spi_nor_get_device - [GENERIC] Get chip for selected access
-+ * @param mtd		MTD device structure
-+ * @param new_state	the state which is requested
-+ *
-+ * Get the nor flash device and lock it for exclusive access
-+ */
-+static int spi_nor_get_device(struct mtd_info *mtd, int new_state)
-+{
-+	struct spi_nor *nor = mtd_to_spi_nor(mtd);
-+	DECLARE_WAITQUEUE(wait, current);
-+
-+	/*
-+	 * Grab the lock and see if the device is available
-+	 */
-+	while (1) {
-+		spin_lock(&nor->chip_lock);
-+		if (nor->state == FL_READY) {
-+			nor->state = new_state;
-+			spin_unlock(&nor->chip_lock);
-+			break;
-+		}
-+		if (new_state == FL_PM_SUSPENDED) {
-+			spin_unlock(&nor->chip_lock);
-+			return (nor->state == FL_PM_SUSPENDED) ? 0 : -EAGAIN;
-+		}
-+		set_current_state(TASK_UNINTERRUPTIBLE);
-+		add_wait_queue(&nor->wq, &wait);
-+		spin_unlock(&nor->chip_lock);
-+		schedule();
-+		remove_wait_queue(&nor->wq, &wait);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * spi_nor_release_device - [GENERIC] release chip
-+ * @mtd: MTD device structure
-+ *
-+ * Release nor flash chip lock and wake up anyone waiting on the device.
-+ */
-+static void spi_nor_release_device(struct mtd_info *mtd)
-+{
-+	struct spi_nor *nor = mtd_to_spi_nor(mtd);
-+
-+	/* Release the controller and the chip */
-+	spin_lock(&nor->chip_lock);
-+	nor->state = FL_READY;
-+	wake_up(&nor->wq);
-+	spin_unlock(&nor->chip_lock);
-+}
-+
- static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
- {
- 	int ret = 0;
- 
-+	spi_nor_get_device(&nor->mtd, spi_nor_state[ops]);
- 	mutex_lock(&nor->lock);
- 
- 	if (nor->prepare) {
-@@ -407,6 +470,7 @@ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
- 		if (ret) {
- 			dev_err(nor->dev, "failed in the preparation.\n");
- 			mutex_unlock(&nor->lock);
-+			spi_nor_release_device(&nor->mtd);
- 			return ret;
- 		}
- 	}
-@@ -418,6 +482,7 @@ static void spi_nor_unlock_and_unprep(struct spi_nor *nor, enum spi_nor_ops ops)
- 	if (nor->unprepare)
- 		nor->unprepare(nor, ops);
- 	mutex_unlock(&nor->lock);
-+	spi_nor_release_device(&nor->mtd);
- }
- 
- /*
-@@ -1743,6 +1808,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
- 			return ret;
- 	}
- 
-+	nor->state = FL_READY;
-+	init_waitqueue_head(&nor->wq);
-+	spin_lock_init(&nor->chip_lock);
-+
- 	/*
- 	 * call init function to send necessary spi-nor read/write config
- 	 * commands to nor flash based on above nor settings
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 29a8283..244d98d 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -13,6 +13,7 @@
- #include <linux/bitops.h>
- #include <linux/mtd/cfi.h>
- #include <linux/mtd/mtd.h>
-+#include <linux/mtd/flashchip.h>
- 
- /*
-  * Manufacturer IDs
-@@ -210,6 +211,9 @@ struct spi_nor {
- 
- 	void *priv;
- 	const struct flash_info *info;
-+	spinlock_t		chip_lock;
-+	wait_queue_head_t	wq;
-+	flstate_t		state;
- };
- 
- static inline void spi_nor_set_flash_node(struct spi_nor *nor,
+
+
+Em segunda-feira, 13 de fevereiro de 2017 09:52:53 UTC-3, Mark Brown 
+escreveu:
+>
+> This should be controlled by the SPI mode settings, different chips have 
+> different requirements.  If the controller supports multiple modes then 
+> it should expose that and let the drivers and system integrations 
+> choose. 
+>
+Do you mean SPI_CPHA/SPI_CPOL, right? Well, I don't know how this mode can 
+to fit in existing modes. Since this bit is to control when the data will 
+be sampled, in the same clock edge or at the edge that is half cycle 
+delayed. That has nothing to do with SPI_CPHA/SPI_CPOL.
+
 -- 
-1.9.1
+You received this message because you are subscribed to the Google Groups "linux-sunxi" group.
+To unsubscribe from this group and stop receiving emails from it, send an email to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
+For more options, visit https://groups.google.com/d/optout.
 
+------=_Part_642_662790194.1488118250300
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+<div dir=3D"ltr"><br><br>Em segunda-feira, 13 de fevereiro de 2017 09:52:53=
+ UTC-3, Mark Brown  escreveu:<blockquote class=3D"gmail_quote" style=3D"mar=
+gin: 0;margin-left: 0.8ex;border-left: 1px #ccc solid;padding-left: 1ex;">T=
+his should be controlled by the SPI mode settings, different chips have
+<br>different requirements. =C2=A0If the controller supports multiple modes=
+ then
+<br>it should expose that and let the drivers and system integrations
+<br>choose.
+<br></blockquote><div>Do you mean=C2=A0<span style=3D"color: rgb(51, 51, 51=
+); font-family: SFMono-Regular, Consolas, &quot;Liberation Mono&quot;, Menl=
+o, Courier, monospace; font-size: 12px; white-space: pre;">SPI_CPHA/</span>=
+<span style=3D"color: rgb(51, 51, 51); font-family: SFMono-Regular, Consola=
+s, &quot;Liberation Mono&quot;, Menlo, Courier, monospace; font-size: 12px;=
+ white-space: pre;">SPI_CPOL, right? Well, </span><font color=3D"#333333" f=
+ace=3D"SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace=
+"><span style=3D"font-size: 12px; white-space: pre;">I don&#39;t know how t=
+his mode can to fit in existing modes.</span></font>=C2=A0Since this bit is=
+ to control when the data will be sampled, in the same clock edge or at the=
+ edge that is half cycle delayed. That has nothing to do with=C2=A0<span st=
+yle=3D"color: rgb(51, 51, 51); font-family: SFMono-Regular, Consolas, &quot=
+;Liberation Mono&quot;, Menlo, Courier, monospace; font-size: 12px; white-s=
+pace: pre;">SPI_CPHA/</span><span style=3D"color: rgb(51, 51, 51); font-fam=
+ily: SFMono-Regular, Consolas, &quot;Liberation Mono&quot;, Menlo, Courier,=
+ monospace; font-size: 12px; white-space: pre;">SPI_CPOL.</span></div></div=
+>
+
+<p></p>
+
+-- <br />
+You received this message because you are subscribed to the Google Groups &=
+quot;linux-sunxi&quot; group.<br />
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org">linux-s=
+unxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org</a>.<br />
+For more options, visit <a href=3D"https://groups.google.com/d/optout">http=
+s://groups.google.com/d/optout</a>.<br />
+
+------=_Part_642_662790194.1488118250300--
+
+------=_Part_641_968153869.1488118250300--

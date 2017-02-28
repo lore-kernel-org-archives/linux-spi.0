@@ -1,7 +1,7 @@
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH v2 2/3] spi: allocate spi_board_info entries one by one
-Date: Mon, 27 Feb 2017 20:18:56 -0800
-Message-ID: <20170228041857.13292-3-dmitry.torokhov@gmail.com>
+Subject: [PATCH v2 3/3] spi: allow registering empty spi_board_info lists
+Date: Mon, 27 Feb 2017 20:18:57 -0800
+Message-ID: <20170228041857.13292-4-dmitry.torokhov@gmail.com>
 References: <20170228041857.13292-1-dmitry.torokhov@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
@@ -10,40 +10,28 @@ In-Reply-To: <20170228041857.13292-1-dmitry.torokhov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Lists of spi_board_info entries registered with spi_register_board_info()
-can be quite long; instead of forcing memory allocator find contagious
-chunk of memory, let;s allocate them one-by-one, so they can be packed as
-needed.
+Many boards form list of spi_board_info entries depending on config,
+and it is possible to end up with empty list. Do not report error
+in such cases.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/spi/spi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b948d8cdbace..1b66e0497327 100644
+index 1b66e0497327..dbc4f00dc2fc 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -686,14 +686,14 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
- 	if (!n)
- 		return -EINVAL;
+@@ -683,9 +683,6 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ 	struct boardinfo *bi;
+ 	int i;
  
--	bi = kzalloc(n * sizeof(*bi), GFP_KERNEL);
--	if (!bi)
--		return -ENOMEM;
+-	if (!n)
+-		return -EINVAL;
 -
--	for (i = 0; i < n; i++, bi++, info++) {
-+	for (i = 0; i < n; i++, info++) {
+ 	for (i = 0; i < n; i++, info++) {
  		struct spi_master *master;
  
--		memcpy(&bi->board_info, info, sizeof(*info));
-+		bi = kmalloc(sizeof(*bi), GFP_KERNEL);
-+		if (!bi)
-+			return -ENOMEM;
-+
-+		bi->board_info = *info;
- 		bi->board_info.properties =
- 			property_entries_dup(info->properties);
- 		if (IS_ERR(bi->board_info.properties))
 -- 
 2.11.0.483.g087da7b7c-goog

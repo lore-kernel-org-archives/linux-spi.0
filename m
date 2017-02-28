@@ -1,50 +1,66 @@
-From: Richard Weinberger <richard@nod.at>
-Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
- buffer support
-Date: Tue, 28 Feb 2017 22:41:11 +0100
-Message-ID: <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
-References: <20170227120839.16545-1-vigneshr@ti.com>
- <20170227120839.16545-3-vigneshr@ti.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH v2 2/3] spi: allocate spi_board_info entries one by one
+Date: Tue, 28 Feb 2017 14:12:45 -0800
+Message-ID: <20170228221245.GL20776@dtor-ws>
+References: <20170228041857.13292-1-dmitry.torokhov@gmail.com>
+ <20170228041857.13292-3-dmitry.torokhov@gmail.com>
+ <20170228091650.eiypppxblfhh33pb@sirena.org.uk>
+ <20170228182417.GA20776@dtor-ws>
+ <20170228185455.mdmvuc232chlveve@sirena.org.uk>
+ <CAMuHMdVTxDLnnVE0S7VfGKNB1EPnKv_7B8rgA2c+Ub7KgZHn1A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Frode Isaksen <fisaksen@baylibre.com>,
-        linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>, David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170227120839.16545-3-vigneshr@ti.com>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVTxDLnnVE0S7VfGKNB1EPnKv_7B8rgA2c+Ub7KgZHn1A@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vignesh,
-
-Am 27.02.2017 um 13:08 schrieb Vignesh R:
-> Many SPI controller drivers use DMA to read/write from m25p80 compatible
-> flashes. Therefore enable bounce buffers support provided by spi-nor
-> framework to take care of handling vmalloc'd buffers which may not be
-> DMA'able.
+On Tue, Feb 28, 2017 at 09:15:12PM +0100, Geert Uytterhoeven wrote:
+> On Tue, Feb 28, 2017 at 7:54 PM, Mark Brown <broonie@kernel.org> wrote:
+> > On Tue, Feb 28, 2017 at 10:24:17AM -0800, Dmitry Torokhov wrote:
+> >> On Tue, Feb 28, 2017 at 09:16:50AM +0000, Mark Brown wrote:
+> >> > On Mon, Feb 27, 2017 at 08:18:56PM -0800, Dmitry Torokhov wrote:
+> >> > > Lists of spi_board_info entries registered with spi_register_board_info()
+> >> > > can be quite long; instead of forcing memory allocator find contagious
+> >
+> >> > Do you have numbers on that?
+> >
+> >> Hm, so the largest array seems to be in
+> >> arch/blackfin/mach-bf537/boards/stamp.c at max of 43 entries. The new
+> >> board info is ether 60 or 72 bytes, so we get 2 or 3K table. Not above
+> >> page, but still could be packed I think.
+> >
+> > Oh wow, that's impressively large.  Still not sure the optimization is
+> > particularly worth it though, it's small change in the grand scheme of
+> > things.  OTOH it's a small change.
 > 
-> Signed-off-by: Vignesh R <vigneshr@ti.com>
-> ---
->  drivers/mtd/devices/m25p80.c | 1 +
->  1 file changed, 1 insertion(+)
+> Given this is done during early boot, what's the probability of not having
+> sufficient contiguous memory?
 > 
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index c4df3b1bded0..d05acf22eadf 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -241,6 +241,7 @@ static int m25p_probe(struct spi_device *spi)
->  	else
->  		flash_name = spi->modalias;
->  
-> +	nor->flags |= SNOR_F_USE_BOUNCE_BUFFER;
+> >> If we decide that we want to keep single chunk I'll just change the
+> >> allocation to kcalloc. Let me know.
+> >
+> > I'd be inclined to do that because it requires less thinking about the
+> > value of what should be a very small optimization either way but
+> > whatever :)
+> 
+> Tada...
+> 
+> commit f9bdb7fdd2cac17bdc9c344b6036e6939fa087cd
+> Author: Markus Elfring <elfring@users.sourceforge.net>
+> Date:   Fri Jan 13 12:28:04 2017 +0100
+> 
+>     spi: Use kcalloc() in spi_register_board_info()
 
-Isn't there a better way to detect whether a bounce buffer is needed or not?
+Or even kmalloc_array() as zeroing out memory is not needed. But I'll
+let Mark sort it out and drop my patch #2.
 
-Thanks,
-//richard
+Thanks.
+
+-- 
+Dmitry

@@ -1,43 +1,74 @@
-From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] spi: allocate spi_board_info entries one by one
-Date: Tue, 28 Feb 2017 10:24:17 -0800
-Message-ID: <20170228182417.GA20776@dtor-ws>
-References: <20170228041857.13292-1-dmitry.torokhov@gmail.com>
- <20170228041857.13292-3-dmitry.torokhov@gmail.com>
- <20170228091650.eiypppxblfhh33pb@sirena.org.uk>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Wed, 1 Mar 2017 10:24:18 +0530
+Message-ID: <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+References: <20170227120839.16545-1-vigneshr@ti.com>
+ <20170227120839.16545-3-vigneshr@ti.com>
+ <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170228091650.eiypppxblfhh33pb-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+To: Richard Weinberger <richard@nod.at>, David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>, Boris
+ Brezillon <boris.brezillon@free-electrons.com>, Marek Vasut
+ <marek.vasut@gmail.com>, Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 28, 2017 at 09:16:50AM +0000, Mark Brown wrote:
-> On Mon, Feb 27, 2017 at 08:18:56PM -0800, Dmitry Torokhov wrote:
-> > Lists of spi_board_info entries registered with spi_register_board_info()
-> > can be quite long; instead of forcing memory allocator find contagious
+
+
+On Wednesday 01 March 2017 03:11 AM, Richard Weinberger wrote:
+> Vignesh,
 > 
-> Do you have numbers on that?
+> Am 27.02.2017 um 13:08 schrieb Vignesh R:
+>> Many SPI controller drivers use DMA to read/write from m25p80 compatible
+>> flashes. Therefore enable bounce buffers support provided by spi-nor
+>> framework to take care of handling vmalloc'd buffers which may not be
+>> DMA'able.
+>>
+>> Signed-off-by: Vignesh R <vigneshr@ti.com>
+>> ---
+>>  drivers/mtd/devices/m25p80.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+>> index c4df3b1bded0..d05acf22eadf 100644
+>> --- a/drivers/mtd/devices/m25p80.c
+>> +++ b/drivers/mtd/devices/m25p80.c
+>> @@ -241,6 +241,7 @@ static int m25p_probe(struct spi_device *spi)
+>>  	else
+>>  		flash_name = spi->modalias;
+>>  
+>> +	nor->flags |= SNOR_F_USE_BOUNCE_BUFFER;
+> 
+> Isn't there a better way to detect whether a bounce buffer is needed or not?
 
-Hm, so the largest array seems to be in
-arch/blackfin/mach-bf537/boards/stamp.c at max of 43 entries. The new
-board info is ether 60 or 72 bytes, so we get 2 or 3K table. Not above
-page, but still could be packed I think.
+Yes, I can poke the spi->master struct to see of dma channels are
+populated and request SNOR_F_USE_BOUNCE_BUFFER accordingly:
 
-If we decide that we want to keep single chunk I'll just change the
-allocation to kcalloc. Let me know.
-
-We should probably redo patch #1 to avoid allocating empty property sets
-anyway.
-
-Thanks.
+-       nor->flags |= SNOR_F_USE_BOUNCE_BUFFER;
++       if (spi->master->dma_tx || spi->master->dma_rx)
++               nor->flags |= SNOR_F_USE_BOUNCE_BUFFER;
++
 
 -- 
-Dmitry
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards
+Vignesh
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,83 +1,74 @@
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: Re: [RFC PATCH 1/2] mtd: spi-nor: Introduce bounce buffer to handle
- vmalloc'd buffers
-Date: Wed, 1 Mar 2017 11:18:05 +0100
-Message-ID: <20170301111805.0eb23b76@bbrezillon>
-References: <20170227120839.16545-1-vigneshr@ti.com>
- <20170227120839.16545-2-vigneshr@ti.com>
- <8e441369-5c15-d711-1789-b55eadf33c8f@nod.at>
- <65b4a156-f2a8-4c5e-4399-2024a147d5ec@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
- Vignesh R <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>, linux-mtd@lists.infradead.org,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <65b4a156-f2a8-4c5e-4399-2024a147d5ec@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH V2 2/3] dt-bindings: spi: document bcm63xx HS SPI devicetree bindings
+Date: Wed,  1 Mar 2017 10:08:13 +0100
+Message-ID: <20170301090814.7097-2-jonas.gorski@gmail.com>
+References: <20170301090814.7097-1-jonas.gorski@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170301090814.7097-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-T24gV2VkLCAxIE1hciAyMDE3IDExOjA5OjU3ICswMTAwCkN5cmlsbGUgUGl0Y2hlbiA8Y3lyaWxs
-ZS5waXRjaGVuQGF0bWVsLmNvbT4gd3JvdGU6Cgo+IExlIDI4LzAyLzIwMTcgw6AgMjI6MzksIFJp
-Y2hhcmQgV2VpbmJlcmdlciBhIMOpY3JpdCA6Cj4gPiBWaWduZXNoLAo+ID4gCj4gPiBBbSAyNy4w
-Mi4yMDE3IHVtIDEzOjA4IHNjaHJpZWIgVmlnbmVzaCBSOiAgCj4gPj4gRmlsZXN5c3RlbXMgbGlr
-ZSBVQklGUyBtYXkgcGFzcyB2bWFsbG9jJ2QgYnVmZmVycyB0byBTUEkgTk9SIGxheWVyIHdoaWNo
-Cj4gPj4gd2lsbCBlbmQgdXAgaW4gU1BJIGxheWVyLiBTUEkgY29yZSBkb2VzIHRyeSB0byBoYW5k
-bGUgc3VjaCBidWZmZXJzIChzZWUKPiA+PiBzcGlfbWFwX2J1ZigpKSBieSBkb2luZyB2bWFsbG9j
-X3RvX3BhZ2UoKSBhbmQgY3JlYXRpbmcgc2NhdHRlcmxpc3QuIEJ1dCwKPiA+PiBpdHMga25vd24g
-dGhhdCB0aGlzIGRvZXMgbm90IHdvcmsgd2VsbCB3aXRoIFZJVlQvYWxpYXNpbmcgY2FjaGUKPiA+
-PiBhcmNoaXRlY3R1cmVzLgo+ID4+IFRoaXMgYWxzbyBmYWlscyB3aGVuIGJ1ZmZlcnMgYXJlIGFk
-ZHJlc3NlZCB1c2luZyBMUEFFIChidWZmZXJzIGluIHJlZ2lvbgo+ID4+IGhpZ2hlciB0aGFuIDMy
-IGJpdCBhZGRyZXNzYWJsZSByZWdpb24pLCBpZiBETUEgaXMgMzJiaXQgb25seS4KPiA+Pgo+ID4+
-IEludHJvZHVjZSBib3VuY2UgYnVmZmVycyBzdXBwb3J0IGluIFNQSSBOT1IgZnJhbWV3b3JrIHRv
-IGhhbmRsZQo+ID4+IHZtYWxsb2MnZCBidWZmZXJzLiBVc2UgYSBwcmUtYWxsb2NhdGVkIHBlciBm
-bGFzaCBib3VuY2UgYnVmZmVyIGVxdWFsIHRvCj4gPj4gdGhlIHNlY3RvciBzaXplIG9mIHRoZSBm
-bGFzaC4gRmxhc2ggZHJpdmVycyBjYW4gZW5hYmxlIHRoaXMgZmVhdHVyZSBieQo+ID4+IHNldHRp
-bmcgU05PUl9GX1VTRV9CT1VOQ0VfQlVGRkVSIGZsYWcuCj4gPj4gVGhpcyB3b3VsZCBhbHNvIGVu
-YWJsZSBTUEkgTk9SIGRyaXZlcnMgdG8gc2FmZWx5IHVzZSBETUEgaW4gdGhlaXIKPiA+PiByZWFk
-L3dyaXRlIGNhbGxiYWNrcy4KPiA+Pgo+ID4+IFNpZ25lZC1vZmYtYnk6IFZpZ25lc2ggUiA8dmln
-bmVzaHJAdGkuY29tPgo+ID4+IC0tLQo+ID4+ICBkcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3Iu
-YyB8IDMwICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLQo+ID4+ICBpbmNsdWRlL2xpbnV4
-L210ZC9zcGktbm9yLmggICB8ICA0ICsrKysKPiA+PiAgMiBmaWxlcyBjaGFuZ2VkLCAzMSBpbnNl
-cnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bXRkL3NwaS1ub3Ivc3BpLW5vci5jIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKPiA+
-PiBpbmRleCA3NDc2NDVjNzQxMzQuLmMyNDFmZWZhNWFmZiAxMDA2NDQKPiA+PiAtLS0gYS9kcml2
-ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYwo+ID4+ICsrKyBiL2RyaXZlcnMvbXRkL3NwaS1ub3Iv
-c3BpLW5vci5jCj4gPj4gQEAgLTE3LDYgKzE3LDcgQEAKPiA+PiAgI2luY2x1ZGUgPGxpbnV4L211
-dGV4Lmg+Cj4gPj4gICNpbmNsdWRlIDxsaW51eC9tYXRoNjQuaD4KPiA+PiAgI2luY2x1ZGUgPGxp
-bnV4L3NpemVzLmg+Cj4gPj4gKyNpbmNsdWRlIDxsaW51eC9tbS5oPgo+ID4+ICAKPiA+PiAgI2lu
-Y2x1ZGUgPGxpbnV4L210ZC9tdGQuaD4KPiA+PiAgI2luY2x1ZGUgPGxpbnV4L29mX3BsYXRmb3Jt
-Lmg+Cj4gPj4gQEAgLTEyMDUsMTEgKzEyMDYsMjEgQEAgc3RhdGljIGludCBzcGlfbm9yX3JlYWQo
-c3RydWN0IG10ZF9pbmZvICptdGQsIGxvZmZfdCBmcm9tLCBzaXplX3QgbGVuLAo+ID4+ICAKPiA+
-PiAgCXdoaWxlIChsZW4pIHsKPiA+PiAgCQlsb2ZmX3QgYWRkciA9IGZyb207Cj4gPj4gKwkJYm9v
-bCB1c2VfYmIgPSBmYWxzZTsKPiA+PiArCQl1X2NoYXIgKmRzdF9idWYgPSBidWY7Cj4gPj4gKwkJ
-c2l6ZV90IGJ1Zl9sZW4gPSBsZW47Cj4gPj4gIAo+ID4+ICAJCWlmIChub3ItPmZsYWdzICYgU05P
-Ul9GX1MzQU5fQUREUl9ERUZBVUxUKQo+ID4+ICAJCQlhZGRyID0gc3BpX25vcl9zM2FuX2FkZHJf
-Y29udmVydChub3IsIGFkZHIpOwo+ID4+ICAKPiA+PiAtCQlyZXQgPSBub3ItPnJlYWQobm9yLCBh
-ZGRyLCBsZW4sIGJ1Zik7Cj4gPj4gKwkJaWYgKCF2aXJ0X2FkZHJfdmFsaWQoYnVmKSAmJiBub3It
-PmJvdW5jZV9idWYpIHsgIAo+IAo+IFNob3VsZCB3ZSB1c2UgaXNfdm1hbGxvY19hZGRyKCkgaW5z
-dGVhZCBvZiB2aXJ0X2FkZHJfdmFsaWQoKSA/Cj4gCj4gSSBndWVzcyB2aXJ0X2FkZHJfdmFsaWQo
-KSByZXR1cm5zIHRydWUgZXZlbiBmb3Iga21hbGxvYydlZCBidWZmZXJzCj4gaG93ZXZlciB0aGUg
-Y29weSBpbnRvIHRoZSBib3VuY2UgYnVmZmVyIHNob3VsZCBiZSBhdm9pZGVkIGZvciBrbWFsbG9j
-J2VkCj4gbWVtb3J5LgoKVGhlIHRlc3QgaXMgIXZpcnRfYWRkcl92YWxpZCgpLCBzbyB3ZSB3b24n
-dCB1c2UgdGhlIGJvdW5jZSBidWZmZXIgZm9yCmttYWxsb2MtZWQgcmVnaW9ucy4gSSBkb24ndCBy
-ZW1lbWJlciB3aHkgd2UgdXNlIHZpcnRfYWRkcl92YWxpZCgpCmluc3RlYWQgb2YgaXNfdm1hbGxv
-Y19hZGRyKCkgaW4gdGhlIE5BTkQgZnJhbWV3b3JrLCBidXQgdGhlcmUgd2FzIGEKZ29vZCByZWFz
-b24gKHZpcnRfYWRkcl92YWxpZCgpIGlzIG1vcmUgcmVzdHJpY3RpdmUsIGJ1dCBJIGRvbid0CnJl
-bWVtYmVyIHdoeSBpdCdzIHNhZmVyIDopKQoKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcg
-bGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10
-ZC8K
+Add documentation for the bindings of the high speed SPI controller found
+on newer bcm63xx SoCs.
+
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+Changes v1 -> v2
+* made the pll clock required
+* added "High speed" (HS) to the first line
+
+ .../devicetree/bindings/spi/spi-bcm63xx-hsspi.txt  | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+new file mode 100644
+index 000000000000..37b29ee13860
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+@@ -0,0 +1,33 @@
++Binding for Broadcom BCM6328 High Speed SPI controller
++
++Required properties:
++- compatible: must contain of "brcm,bcm6328-hsspi".
++- reg: Base address and size of the controllers memory area.
++- interrupts: Interrupt for the SPI block.
++- clocks: phandles of the SPI clock and the PLL clock.
++- clock-names: must be "hsspi", "pll".
++- #address-cells: <1>, as required by generic SPI binding.
++- #size-cells: <0>, also as required by generic SPI binding.
++
++Optional properties:
++- num-cs: some controllers have less than 8 cs signals. Defaults to 8
++  if absent.
++
++Child nodes as per the generic SPI binding.
++
++Example:
++
++	spi@10001000 {
++		compatible = "brcm,bcm6328-hsspi";
++		reg = <0x10001000 0x600>;
++
++		interrupts = <29>;
++
++		clocks = <&clkctl 9>, <&hsspi_pll>;
++		clock-names = "hsspi", "pll";
++
++		num-cs = <2>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
+-- 
+2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

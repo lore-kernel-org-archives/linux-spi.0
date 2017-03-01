@@ -1,74 +1,111 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 2/3] dt-bindings: spi: document bcm63xx HS SPI devicetree bindings
-Date: Wed,  1 Mar 2017 10:08:13 +0100
-Message-ID: <20170301090814.7097-2-jonas.gorski@gmail.com>
-References: <20170301090814.7097-1-jonas.gorski@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170301090814.7097-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Wed, 1 Mar 2017 11:43:48 +0100
+Message-ID: <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
+References: <20170227120839.16545-1-vigneshr@ti.com>
+ <20170227120839.16545-3-vigneshr@ti.com>
+ <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+ <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>, David
+ Woodhouse <dwmw2@infradead.org>, Brian Norris <computersforpeace@gmail.com>,
+ Boris Brezillon <boris.brezillon@free-electrons.com>, Marek Vasut
+ <marek.vasut@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Add documentation for the bindings of the high speed SPI controller found
-on newer bcm63xx SoCs.
+Le 01/03/2017 =E0 05:54, Vignesh R a =E9crit :
+> =
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-Changes v1 -> v2
-* made the pll clock required
-* added "High speed" (HS) to the first line
+> =
 
- .../devicetree/bindings/spi/spi-bcm63xx-hsspi.txt  | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+> On Wednesday 01 March 2017 03:11 AM, Richard Weinberger wrote:
+>> Vignesh,
+>>
+>> Am 27.02.2017 um 13:08 schrieb Vignesh R:
+>>> Many SPI controller drivers use DMA to read/write from m25p80 compatible
+>>> flashes. Therefore enable bounce buffers support provided by spi-nor
+>>> framework to take care of handling vmalloc'd buffers which may not be
+>>> DMA'able.
+>>>
+>>> Signed-off-by: Vignesh R <vigneshr@ti.com>
+>>> ---
+>>>  drivers/mtd/devices/m25p80.c | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+>>> index c4df3b1bded0..d05acf22eadf 100644
+>>> --- a/drivers/mtd/devices/m25p80.c
+>>> +++ b/drivers/mtd/devices/m25p80.c
+>>> @@ -241,6 +241,7 @@ static int m25p_probe(struct spi_device *spi)
+>>>  	else
+>>>  		flash_name =3D spi->modalias;
+>>>  =
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-new file mode 100644
-index 000000000000..37b29ee13860
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-@@ -0,0 +1,33 @@
-+Binding for Broadcom BCM6328 High Speed SPI controller
-+
-+Required properties:
-+- compatible: must contain of "brcm,bcm6328-hsspi".
-+- reg: Base address and size of the controllers memory area.
-+- interrupts: Interrupt for the SPI block.
-+- clocks: phandles of the SPI clock and the PLL clock.
-+- clock-names: must be "hsspi", "pll".
-+- #address-cells: <1>, as required by generic SPI binding.
-+- #size-cells: <0>, also as required by generic SPI binding.
-+
-+Optional properties:
-+- num-cs: some controllers have less than 8 cs signals. Defaults to 8
-+  if absent.
-+
-+Child nodes as per the generic SPI binding.
-+
-+Example:
-+
-+	spi@10001000 {
-+		compatible = "brcm,bcm6328-hsspi";
-+		reg = <0x10001000 0x600>;
-+
-+		interrupts = <29>;
-+
-+		clocks = <&clkctl 9>, <&hsspi_pll>;
-+		clock-names = "hsspi", "pll";
-+
-+		num-cs = <2>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
--- 
-2.11.0
+>>> +	nor->flags |=3D SNOR_F_USE_BOUNCE_BUFFER;
+>>
+>> Isn't there a better way to detect whether a bounce buffer is needed or =
+not?
+>
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I agree with Richard: the bounce buffer should be enabled only if needed
+by the SPI controller.
+
+> Yes, I can poke the spi->master struct to see of dma channels are
+> populated and request SNOR_F_USE_BOUNCE_BUFFER accordingly:
+> =
+
+> -       nor->flags |=3D SNOR_F_USE_BOUNCE_BUFFER;
+> +       if (spi->master->dma_tx || spi->master->dma_rx)
+> +               nor->flags |=3D SNOR_F_USE_BOUNCE_BUFFER;
+> +
+> =
+
+
+However I don't agree with this solution: master->dma_{tx|rx} can be set
+for SPI controllers which already rely on spi_map_msg() to handle
+vmalloc'ed memory during DMA transfers.
+Such SPI controllers don't need the spi-nor bounce buffer.
+
+spi_map_msg() can build a scatter-gather list from vmalloc'ed buffer
+then map this sg list with dma_map_sg(). AFAIK, It is safe to do so for
+architectures using PIPT caches since the possible cache aliases issue
+present for VIPT or VIVT caches is always avoided for PIPT caches.
+
+For instance, the drivers/spi/spi-atmel.c driver relies on spi_map_sg()
+to be called from the SPI sub-system to handle vmalloc'ed buffers and
+both master->dma_tx and master->dma_rx are set by the this driver.
+
+
+By the way, Is there any case where the same physical page is actually
+mapped into two different virtual addresses for the buffers allocated by
+the MTD sub-system? Because for a long time now I wonder whether the
+cache aliases issue is a real or only theoretical issue but I have no
+answer to that question.
+
+Then my next question: is spi_map_msg() enough in every case, even with
+VIPT or VIVT caches?
+
+Best regards,
+
+Cyrille
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

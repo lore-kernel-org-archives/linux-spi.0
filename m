@@ -1,124 +1,206 @@
-From: Frode Isaksen <fisaksen@baylibre.com>
-Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
- buffer support
-Date: Thu, 2 Mar 2017 10:06:59 +0100
-Message-ID: <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
-References: <20170227120839.16545-1-vigneshr@ti.com>
- <20170227120839.16545-3-vigneshr@ti.com>
- <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
- <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
- <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
- <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
- <20170301175506.202cb478@bbrezillon>
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: zynqmp: Add runtime support
+Date: Thu, 2 Mar 2017 14:52:32 +0530
+Message-ID: <1488446552-15689-1-git-send-email-shubhrajyoti.datta@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-omap@vger.kernel.org, Richard Weinberger <richard@nod.at>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>, linux-mtd@lists.infradead.org,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@free-electrons.com>,
- Vignesh R <vigneshr@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20170301175506.202cb478@bbrezillon>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+        <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-CgpPbiAwMS8wMy8yMDE3IDE3OjU1LCBCb3JpcyBCcmV6aWxsb24gd3JvdGU6Cj4gT24gV2VkLCAx
-IE1hciAyMDE3IDE3OjE2OjMwICswNTMwCj4gVmlnbmVzaCBSIDx2aWduZXNockB0aS5jb20+IHdy
-b3RlOgo+Cj4+IE9uIFdlZG5lc2RheSAwMSBNYXJjaCAyMDE3IDA0OjEzIFBNLCBDeXJpbGxlIFBp
-dGNoZW4gd3JvdGU6Cj4+PiBMZSAwMS8wMy8yMDE3IMOgIDA1OjU0LCBWaWduZXNoIFIgYSDDqWNy
-aXQgOiAgCj4+Pj4KPj4+PiBPbiBXZWRuZXNkYXkgMDEgTWFyY2ggMjAxNyAwMzoxMSBBTSwgUmlj
-aGFyZCBXZWluYmVyZ2VyIHdyb3RlOiAgCj4+Pj4+IFZpZ25lc2gsCj4+Pj4+Cj4+Pj4+IEFtIDI3
-LjAyLjIwMTcgdW0gMTM6MDggc2NocmllYiBWaWduZXNoIFI6ICAKPj4+Pj4+IE1hbnkgU1BJIGNv
-bnRyb2xsZXIgZHJpdmVycyB1c2UgRE1BIHRvIHJlYWQvd3JpdGUgZnJvbSBtMjVwODAgY29tcGF0
-aWJsZQo+Pj4+Pj4gZmxhc2hlcy4gVGhlcmVmb3JlIGVuYWJsZSBib3VuY2UgYnVmZmVycyBzdXBw
-b3J0IHByb3ZpZGVkIGJ5IHNwaS1ub3IKPj4+Pj4+IGZyYW1ld29yayB0byB0YWtlIGNhcmUgb2Yg
-aGFuZGxpbmcgdm1hbGxvYydkIGJ1ZmZlcnMgd2hpY2ggbWF5IG5vdCBiZQo+Pj4+Pj4gRE1BJ2Fi
-bGUuCj4+Pj4+Pgo+Pj4+Pj4gU2lnbmVkLW9mZi1ieTogVmlnbmVzaCBSIDx2aWduZXNockB0aS5j
-b20+Cj4+Pj4+PiAtLS0KPj4+Pj4+ICBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jIHwgMSAr
-Cj4+Pj4+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4+Pj4+Pgo+Pj4+Pj4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMgYi9kcml2ZXJzL210ZC9kZXZp
-Y2VzL20yNXA4MC5jCj4+Pj4+PiBpbmRleCBjNGRmM2IxYmRlZDAuLmQwNWFjZjIyZWFkZiAxMDA2
-NDQKPj4+Pj4+IC0tLSBhL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMKPj4+Pj4+ICsrKyBi
-L2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMKPj4+Pj4+IEBAIC0yNDEsNiArMjQxLDcgQEAg
-c3RhdGljIGludCBtMjVwX3Byb2JlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCj4+Pj4+PiAgCWVs
-c2UKPj4+Pj4+ICAJCWZsYXNoX25hbWUgPSBzcGktPm1vZGFsaWFzOwo+Pj4+Pj4gIAo+Pj4+Pj4g
-Kwlub3ItPmZsYWdzIHw9IFNOT1JfRl9VU0VfQk9VTkNFX0JVRkZFUjsgIAo+Pj4+PiBJc24ndCB0
-aGVyZSBhIGJldHRlciB3YXkgdG8gZGV0ZWN0IHdoZXRoZXIgYSBib3VuY2UgYnVmZmVyIGlzIG5l
-ZWRlZCBvciBub3Q/ICAKPj4+PiAgCj4+PiBJIGFncmVlIHdpdGggUmljaGFyZDogdGhlIGJvdW5j
-ZSBidWZmZXIgc2hvdWxkIGJlIGVuYWJsZWQgb25seSBpZiBuZWVkZWQKPj4+IGJ5IHRoZSBTUEkg
-Y29udHJvbGxlci4KPj4+ICAgCj4+Pj4gWWVzLCBJIGNhbiBwb2tlIHRoZSBzcGktPm1hc3RlciBz
-dHJ1Y3QgdG8gc2VlIG9mIGRtYSBjaGFubmVscyBhcmUKPj4+PiBwb3B1bGF0ZWQgYW5kIHJlcXVl
-c3QgU05PUl9GX1VTRV9CT1VOQ0VfQlVGRkVSIGFjY29yZGluZ2x5Ogo+Pj4+Cj4+Pj4gLSAgICAg
-ICBub3ItPmZsYWdzIHw9IFNOT1JfRl9VU0VfQk9VTkNFX0JVRkZFUjsKPj4+PiArICAgICAgIGlm
-IChzcGktPm1hc3Rlci0+ZG1hX3R4IHx8IHNwaS0+bWFzdGVyLT5kbWFfcngpCj4+Pj4gKyAgICAg
-ICAgICAgICAgIG5vci0+ZmxhZ3MgfD0gU05PUl9GX1VTRV9CT1VOQ0VfQlVGRkVSOwo+Pj4+ICsK
-Pj4+PiAgCj4+PiBIb3dldmVyIEkgZG9uJ3QgYWdyZWUgd2l0aCB0aGlzIHNvbHV0aW9uOiBtYXN0
-ZXItPmRtYV97dHh8cnh9IGNhbiBiZSBzZXQKPj4+IGZvciBTUEkgY29udHJvbGxlcnMgd2hpY2gg
-YWxyZWFkeSByZWx5IG9uIHNwaV9tYXBfbXNnKCkgdG8gaGFuZGxlCj4+PiB2bWFsbG9jJ2VkIG1l
-bW9yeSBkdXJpbmcgRE1BIHRyYW5zZmVycy4KPj4+IFN1Y2ggU1BJIGNvbnRyb2xsZXJzIGRvbid0
-IG5lZWQgdGhlIHNwaS1ub3IgYm91bmNlIGJ1ZmZlci4KPj4+Cj4+PiBzcGlfbWFwX21zZygpIGNh
-biBidWlsZCBhIHNjYXR0ZXItZ2F0aGVyIGxpc3QgZnJvbSB2bWFsbG9jJ2VkIGJ1ZmZlcgo+Pj4g
-dGhlbiBtYXAgdGhpcyBzZyBsaXN0IHdpdGggZG1hX21hcF9zZygpLiBBRkFJSywgSXQgaXMgc2Fm
-ZSB0byBkbyBzbyBmb3IKPj4+IGFyY2hpdGVjdHVyZXMgdXNpbmcgUElQVCBjYWNoZXMgc2luY2Ug
-dGhlIHBvc3NpYmxlIGNhY2hlIGFsaWFzZXMgaXNzdWUKPj4+IHByZXNlbnQgZm9yIFZJUFQgb3Ig
-VklWVCBjYWNoZXMgaXMgYWx3YXlzIGF2b2lkZWQgZm9yIFBJUFQgY2FjaGVzLgo+Pj4KPj4+IEZv
-ciBpbnN0YW5jZSwgdGhlIGRyaXZlcnMvc3BpL3NwaS1hdG1lbC5jIGRyaXZlciByZWxpZXMgb24g
-c3BpX21hcF9zZygpCj4+PiB0byBiZSBjYWxsZWQgZnJvbSB0aGUgU1BJIHN1Yi1zeXN0ZW0gdG8g
-aGFuZGxlIHZtYWxsb2MnZWQgYnVmZmVycyBhbmQKPj4+IGJvdGggbWFzdGVyLT5kbWFfdHggYW5k
-IG1hc3Rlci0+ZG1hX3J4IGFyZSBzZXQgYnkgdGhlIHRoaXMgZHJpdmVyLgo+Pj4KPj4+Cj4+PiBC
-eSB0aGUgd2F5LCBJcyB0aGVyZSBhbnkgY2FzZSB3aGVyZSB0aGUgc2FtZSBwaHlzaWNhbCBwYWdl
-IGlzIGFjdHVhbGx5Cj4+PiBtYXBwZWQgaW50byB0d28gZGlmZmVyZW50IHZpcnR1YWwgYWRkcmVz
-c2VzIGZvciB0aGUgYnVmZmVycyBhbGxvY2F0ZWQgYnkKPj4+IHRoZSBNVEQgc3ViLXN5c3RlbT8g
-QmVjYXVzZSBmb3IgYSBsb25nIHRpbWUgbm93IEkgd29uZGVyIHdoZXRoZXIgdGhlCj4+PiBjYWNo
-ZSBhbGlhc2VzIGlzc3VlIGlzIGEgcmVhbCBvciBvbmx5IHRoZW9yZXRpY2FsIGlzc3VlIGJ1dCBJ
-IGhhdmUgbm8KPj4+IGFuc3dlciB0byB0aGF0IHF1ZXN0aW9uLgo+Pj4gICAKPj4gSSBoYXZlIGF0
-bGVhc3Qgb25lIGV2aWRlbmNlIG9mIFZJVlQgYWxpYXNpbmcgY2F1c2luZyBwcm9ibGVtLiBQbGVh
-c2Ugc2VlCj4+IHRoaXMgdGhyZWFkIG9uIERNQSBpc3N1ZXMgd2l0aCBkYXZpbmNpLXNwaSBkcml2
-ZXIKPj4gaHR0cHM6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvYXJtLWtlcm5lbC9tc2c1NjM0MjAu
-aHRtbAo+PiBodHRwczovL3d3dy5zcGluaWNzLm5ldC9saXN0cy9hcm0ta2VybmVsL21zZzU2MzQ0
-NS5odG1sCj4+Cj4+PiBUaGVuIG15IG5leHQgcXVlc3Rpb246IGlzIHNwaV9tYXBfbXNnKCkgZW5v
-dWdoIGluIGV2ZXJ5IGNhc2UsIGV2ZW4gd2l0aAo+Pj4gVklQVCBvciBWSVZUIGNhY2hlcz8KPj4+
-ICAgCj4+IE5vdCByZWFsbHksIEkgYW0gZGVidWdnaW5nIGFub3RoZXIgaXNzdWUgd2l0aCBVQklG
-UyBvbiBEUkE3NCBFVk0gKEFSTQo+PiBjb3J0ZXgtYTE1KSB3aGVyZWluIHBhZ2VzIGFsbG9jYXRl
-ZCBieSB2bWFsbG9jIGFyZSBpbiBoaWdobWVtIHJlZ2lvbgo+PiB0aGF0IGFyZSBub3QgYWRkcmVz
-c2FibGUgdXNpbmcgMzIgYml0IGFkZHJlc3NlcyBhbmQgaXMgYmFja2VkIGJ5IExQQUUuCj4+IFNv
-LCBhIDMyIGJpdCBETUEgY2Fubm90IGFjY2VzcyB0aGVzZSBidWZmZXJzIGF0IGFsbC4KPj4gV2hl
-biBkbWFfbWFwX3NnKCkgaXMgY2FsbGVkIHRvIG1hcCB0aGVzZSBwYWdlcyBieSBzcGlfbWFwX2J1
-ZigpIHRoZQo+PiBwaHlzaWNhbCBhZGRyZXNzIGlzIGp1c3QgdHJ1bmNhdGVkIHRvIDMyIGJpdCBp
-biBwZm5fdG9fZG1hKCkgKGFzIHBhcnQgb2YKPj4gZG1hX21hcF9zZygpIGNhbGwpLiBUaGlzIHJl
-c3VsdHMgaW4gcmFuZG9tIGNyYXNoZXMgYXMgRE1BIHN0YXJ0cwo+PiBhY2Nlc3NpbmcgcmFuZG9t
-IG1lbW9yeSBkdXJpbmcgU1BJIHJlYWQuCj4+Cj4+IElNTywgdGhlcmUgbWF5IGJlIG1vcmUgdW5k
-aXNjb3ZlcmVkIGNhdmVhdCB3aXRoIHVzaW5nIGRtYV9tYXBfc2coKSBmb3IKPj4gbm9uIGttYWxs
-b2MnZCBidWZmZXJzIGFuZCBpdHMgYmV0dGVyIHRoYXQgc3BpLW5vciBzdGFydHMgaGFuZGxpbmcg
-dGhlc2UKPj4gYnVmZmVycyBpbnN0ZWFkIG9mIHJlbHlpbmcgb24gc3BpX21hcF9tc2coKSBhbmQg
-d29ya2luZyBhcm91bmQgZXZlcnkKPj4gdGltZSBzb21ldGhpbmcgcG9wcyB1cC4KPj4KPiBPaywg
-SSBoYWQgYSBjbG9zZXIgbG9vayBhdCB0aGUgU1BJIGZyYW1ld29yaywgYW5kIGl0IHNlZW1zIHRo
-ZXJlJ3MgYQo+IHdheSB0byB0ZWxsIHRvIHRoZSBjb3JlIHRoYXQgYSBzcGVjaWZpYyB0cmFuc2Zl
-ciBjYW5ub3QgdXNlIERNQQo+ICgtPmNhbl9kYW0oKSkuIFRoZSBmaXJzdCB0aGluZyB5b3Ugc2hv
-dWxkIGRvIGlzIGZpeCB0aGUgc3BpLWRhdmluY2kKPiBkcml2ZXI6Cj4KPiAxLyBpbXBsZW1lbnQg
-LT5jYW5fZG1hKCkKPiAyLyBwYXRjaCBkYXZpbmNpX3NwaV9idWZzKCkgdG8gdGFrZSB0aGUgZGVj
-aXNpb24gdG8gZG8gRE1BIG9yIG5vdCBvbiBhCj4gICAgcGVyLXhmZXIgYmFzaXMgYW5kIG5vdCBv
-biBhIHBlci1kZXZpY2UgYmFzaXMKPgo+IFRoZW4gd2UgY2FuIHN0YXJ0IHRoaW5raW5nIGFib3V0
-IGhvdyB0byBpbXByb3ZlIHBlcmZzIGJ5IHVzaW5nIGEgYm91bmNlCj4gYnVmZmVyIGZvciBsYXJn
-ZSB0cmFuc2ZlcnMsIGJ1dCBJJ20gc3RpbGwgbm90IHN1cmUgdGhpcyBzaG91bGQgYmUgZG9uZQo+
-IGF0IHRoZSBNVEQgbGV2ZWwuLi4KVGhpcyBoYXMgYWxyZWFkeSBiZWVuIGRvbmUsIHNlZSBodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwvbGludXgtYXJtLWtlcm5lbC8yMDE3LUZl
-YnJ1YXJ5LzQ4OTc2MS5odG1sLiBJIHJldHVybiBmYWxzZSBmb3IgY2FuX2RtYSgpIGlmIHRoZSBy
-eCBvciB0eCBidWZmZXIgaXMgYSB2bWFsbG9jJ2VkIG9uZS4KSW4gdGhhdCBjYXNlIHRoZSB0cmFu
-c2ZlciBnb3MgYmFjayB0byBQSU8gYW5kIHlvdSBsb29zZSBwZXJmb3JtYW5jZSwgYnV0IG5vIGRh
-dGEgY29ycnVwdGlvbi4KClRoYW5rcywKRnJvZGUKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXggTVREIGRpc2N1c3Npb24gbWFpbGlu
-ZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgt
-bXRkLwo=
+Add runtime support for the zynqmp qspi driver.
+
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-zynqmp-gqspi.c | 90 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 74 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 0b3ba7a..980877a 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -20,6 +20,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+@@ -156,6 +157,7 @@
+ #define GQSPI_FREQ_150MHZ	150000000
+ #define IOU_TAPDLY_BYPASS_MASK	0x7
+ 
++#define SPI_AUTOSUSPEND_TIMEOUT		3000
+ enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
+ 
+ /**
+@@ -424,21 +426,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
+ static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
+ {
+ 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+-	int ret;
+-
+-	ret = clk_enable(xqspi->refclk);
+-	if (ret)
+-		return ret;
+-
+-	ret = clk_enable(xqspi->pclk);
+-	if (ret)
+-		goto clk_err;
+ 
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
+ 	return 0;
+-clk_err:
+-	clk_disable(xqspi->refclk);
+-	return ret;
+ }
+ 
+ /**
+@@ -455,8 +445,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
+ 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+ 
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
+-	clk_disable(xqspi->refclk);
+-	clk_disable(xqspi->pclk);
+ 	return 0;
+ }
+ 
+@@ -1054,11 +1042,14 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+ 
+ 	spi_master_suspend(master);
+ 
+ 	zynqmp_unprepare_transfer_hardware(master);
+ 
++	clk_disable(xqspi->refclk);
++	clk_disable(xqspi->pclk);
+ 	return 0;
+ }
+ 
+@@ -1097,8 +1088,62 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(zynqmp_qspi_dev_pm_ops, zynqmp_qspi_suspend,
+-			 zynqmp_qspi_resume);
++/**
++ * zynqmp_runtime_suspend - Runtime suspend method for the SPI driver
++ * @dev:	Address of the platform_device structure
++ *
++ * This function disables the clocks
++ *
++ * Return:	Always 0
++ */
++static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
++
++	clk_disable(xqspi->refclk);
++	clk_disable(xqspi->pclk);
++
++	return 0;
++}
++
++/**
++ * zynqmp_runtime_resume - Runtime resume method for the SPI driver
++ * @dev:	Address of the platform_device structure
++ *
++ * This function enables the clocks
++ *
++ * Return:	0 on success and error value on error
++ */
++static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
++	int ret;
++
++	ret = clk_enable(xqspi->pclk);
++	if (ret) {
++		dev_err(dev, "Cannot enable APB clock.\n");
++		return ret;
++	}
++
++	ret = clk_enable(xqspi->refclk);
++	if (ret) {
++		dev_err(dev, "Cannot enable device clock.\n");
++		clk_disable(xqspi->pclk);
++		return ret;
++	}
++
++	return 0;
++}
++
++static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
++	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
++			   zynqmp_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
++};
+ 
+ /**
+  * zynqmp_qspi_probe:	Probe method for the QSPI driver
+@@ -1161,12 +1206,20 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_pclk;
+ 	}
+ 
++	pm_runtime_use_autosuspend(&pdev->dev);
++	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
+ 	if (of_property_read_bool(pdev->dev.of_node, "has-io-mode"))
+ 		xqspi->io_mode = true;
+ 
+ 	/* QSPI controller initializations */
+ 	zynqmp_qspi_init_hw(xqspi);
+ 
++	pm_runtime_mark_last_busy(&pdev->dev);
++	pm_runtime_put_autosuspend(&pdev->dev);
++
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -1210,6 +1263,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+ 			    SPI_TX_DUAL | SPI_TX_QUAD;
+ 	xqspi->speed_hz = master->max_speed_hz;
++	master->auto_runtime_pm = true;
+ 
+ 	if (master->dev.parent == NULL)
+ 		master->dev.parent = &master->dev;
+@@ -1223,6 +1277,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ clk_dis_all:
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+ clk_dis_pclk:
+ 	clk_disable_unprepare(xqspi->pclk);
+@@ -1250,6 +1306,8 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
+ 	clk_disable_unprepare(xqspi->refclk);
+ 	clk_disable_unprepare(xqspi->pclk);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 
+ 	spi_unregister_master(master);
+ 
+-- 
+2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,108 +1,90 @@
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
-Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
- buffer support
-Date: Thu, 2 Mar 2017 20:49:00 +0100
-Message-ID: <20170302204900.2ab4bf65@bbrezillon>
-References: <20170227120839.16545-1-vigneshr@ti.com>
- <20170227120839.16545-3-vigneshr@ti.com>
- <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
- <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
- <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
- <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
- <20170301175506.202cb478@bbrezillon>
- <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
- <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
- <20170302152921.1c031b57@bbrezillon>
- <20170302170041.hfix33mhzgqydmvh@sirena.org.uk>
+From: Siarhei Siamashka <siarhei.siamashka-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] ARM: spi/sun7i: Add Master Sample Data
+ Mode for SPI
+Date: Thu, 2 Mar 2017 22:44:10 +0200
+Message-ID: <20170302224410.31dea7a9@i7>
+References: <20170211035447.3819-1-viniciusfre@gmail.com>
+	<20170213125239.f5vsxrfwz5t6gqyp@sirena.org.uk>
+	<186c0f31-01d0-4a1b-889b-a390a57bd1d9@googlegroups.com>
+Reply-To: siarhei.siamashka-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
- Vignesh R <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>, linux-mtd@lists.infradead.org,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20170302170041.hfix33mhzgqydmvh@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, wens-jdAy2FN1RRM@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBCH4DA7NUEBBBHMI4LCQKGQEQ7ZPTBA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <186c0f31-01d0-4a1b-889b-a390a57bd1d9-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2 Mar 2017 17:00:41 +0000
-Mark Brown <broonie@kernel.org> wrote:
+On Sun, 26 Feb 2017 06:10:50 -0800 (PST)
+Vinicius Maciel <viniciusfre-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
-> On Thu, Mar 02, 2017 at 03:29:21PM +0100, Boris Brezillon wrote:
-> > Vignesh R <vigneshr@ti.com> wrote:  
-> 
-> > > Or SPI core can be extended in a way similar to this RFC. That is, SPI
-> > > master driver will set a flag to request SPI core to use of bounce
-> > > buffer for vmalloc'd buffers. And spi_map_buf() just uses bounce buffer
-> > > in case buf does not belong to kmalloc region based on the flag.  
-> 
-> > That's a better approach IMHO. Note that the decision should not only  
-> 
-> I don't understand how the driver is supposed to tell if it might need a
-> bounce buffer due to where the memory is allocated and the caches used
-> by the particular system it is used on?
+> Em segunda-feira, 13 de fevereiro de 2017 09:52:53 UTC-3, Mark Brown 
+> escreveu:
+> >
+> > This should be controlled by the SPI mode settings, different chips have 
+> > different requirements.  If the controller supports multiple modes then 
+> > it should expose that and let the drivers and system integrations 
+> > choose. 
+> >  
+> Do you mean SPI_CPHA/SPI_CPOL, right? Well, I don't know how this mode can 
+> to fit in existing modes. Since this bit is to control when the data will 
+> be sampled, in the same clock edge or at the edge that is half cycle 
+> delayed. That has nothing to do with SPI_CPHA/SPI_CPOL.
 
-That's true, but if the SPI controller driver can't decide that, how
-could a SPI device driver guess?
+I'm not sure if it is realistic to make any progress with this issue
+any time soon, but I would suggest you to re-send the patch with an
+updated commit message, which could better explain what's going on.
 
-We could patch dma_map_sg() to create a bounce buffer when it's given a
-vmalloc-ed buffer and we are running on a system using VIVT or VIPT
-caches (it's already allocating bounce buffers when the peripheral
-device cannot access the memory region, so why not in this case).
+I still think that your bugfix is good, that's why you got my
+Reviewed-by tag. And we had an older discussion about it (Mark
+was not participating there, so probably he missed it):
 
-This still leaves 2 problems:
-1/ for big transfers, dynamically allocating a bounce buffer on demand
-   (and freeing it after the DMA operation) might fail, or might induce
-   some latency, especially when the system is under high mem pressure.
-   Allocating these bounce buffers once during the SPI device driver
-   ->probe() guarantees that the bounce buffer will always be available
-   when needed, but OTOH, we don't know if it's really needed.
-2/ only the SPI and/or DMA engine know when using DMA with a bounce
-   buffer is better than using PIO mode. The limit is probably
-   different from the DMA vs PIO mode (dma_min_len <
-   dma_bounce_min_len). Thanks to ->can_dma() we can let drivers decide
-   when preparing the buffer for a DMA transfer is needed.
-3/ if the DMA engine does not support chaining DMA descriptor, and the
-   vmalloc-ed buffer spans several non-contiguous pages, doing DMA
-   is simply not possible. That one can probably handled with the
-   ->can_dma() hook too.
+   https://patchwork.kernel.org/patch/9567547/
 
->  The suggestion to pass via
-> scatterlists seems a bit more likely to work but even then I'm not clear
-> that drivers doing PIO would play well.
+Here is a short summary. Older Allwinner A10/A13 SoCs used to have
+reserved RAZ/WI (Read-As-Zero, Writes Ignored) bits 20-31 in the
+SPI_CTL register. Newer Allwinner A20 SoC introduced some sort of
+a wacky half-cycle delay mode and used the previously reserved bit
+20 from the SPI_CTL to enable/disable it. Now the tricky part is that
+the meaning of this new bit is inverted for some unknown reason: the
+wacky mode is activated when the bit is set to zero, while the standard
+behaviour (same as A10/A13) is preserved when this bit is set to 1. The
+reset default of this bit is 1 on A20 (normal SPI behaviour). The
+problem of the current SPI driver is that it clears bits 20-31 of
+SPI_CTL, which results in normal SPI behaviour on A10/A13, and a wacky
+half-cycle delayed mode on A20. Your bugfix just makes A20 behave in
+the same way as A10/A13.
 
-You mean that SPI device drivers would directly pass an sg list instead
-of a virtual pointer? Not sure that would help, we're just moving the
-decision one level up without providing more information to help decide
-what to do.
+We have exactly zero users of the wacky half-cycle delayed mode.
+Moreover, if it gets enabled accidentally (due to a bug in the
+SPI_CTL register initialization in the SPI driver as explained
+above), then it breaks your max11043 ADC chip. Also even if we
+assume that there is some hypothetical equipment, which actually
+needs this wacky mode to function preperly, then this equipment
+is not compatible with older A10/A13 SoCs because the older SoCs
+did not implement this mode at all.
 
-> 
-> > be based on the buffer type, but also on the transfer length and/or
-> > whether the controller supports transferring non physically contiguous
-> > buffers.  
-> 
-> The reason most drivers only look at the transfer length when deciding
-> that they can DMA is that most controllers are paired with DMA
-> controllers that are sensibly implemented, the only factor they're
-> selecting on is the copybreak for performance.
+You could rephrase the above two paragraphs and use them as the
+commit message for the v3 patch. And maybe also add an extra
+comment to the SPI driver code.
 
-Of course, the checks I mentioned (especially the physically contiguous
-one) are SPI controller and/or DMA engine dependent. Some of them might
-be irrelevant.
+If Mark has any comments on this, then I would be very happy
+to hear them. So far his suggestion looks like he prefers to
+see a support for this wacky mode implemented in the SPI driver
+(a *new feature*, which has no actual users and can't be
+realistically tested). While your patch just prevents accidental
+and undesired activation of the wacky mode (an *important bugfix*
+for a real problem encountered in the wild).
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+-- 
+Best regards,
+Siarhei Siamashka

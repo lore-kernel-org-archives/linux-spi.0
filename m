@@ -1,206 +1,86 @@
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: zynqmp: Add runtime support
-Date: Thu, 2 Mar 2017 14:52:32 +0530
-Message-ID: <1488446552-15689-1-git-send-email-shubhrajyoti.datta@xilinx.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Thu, 2 Mar 2017 19:24:43 +0530
+Message-ID: <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
+References: <20170227120839.16545-1-vigneshr@ti.com>
+ <20170227120839.16545-3-vigneshr@ti.com>
+ <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+ <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+ <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
+ <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
+ <20170301175506.202cb478@bbrezillon>
+ <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-        <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-omap@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Marek Vasut <marek.vasut@gmail.com>, linux-mtd@lists.infradead.org,
+ Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Frode Isaksen <fisaksen@baylibre.com>, Boris Brezillon
+ <boris.brezillon@free-electrons.com>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Add runtime support for the zynqmp qspi driver.
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-zynqmp-gqspi.c | 90 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 74 insertions(+), 16 deletions(-)
+>>>>   
+>>> Not really, I am debugging another issue with UBIFS on DRA74 EVM (ARM
+>>> cortex-a15) wherein pages allocated by vmalloc are in highmem region
+>>> that are not addressable using 32 bit addresses and is backed by LPAE.
+>>> So, a 32 bit DMA cannot access these buffers at all.
+>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
+>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
+>>> dma_map_sg() call). This results in random crashes as DMA starts
+>>> accessing random memory during SPI read.
+>>>
+>>> IMO, there may be more undiscovered caveat with using dma_map_sg() for
+>>> non kmalloc'd buffers and its better that spi-nor starts handling these
+>>> buffers instead of relying on spi_map_msg() and working around every
+>>> time something pops up.
+>>>
+>> Ok, I had a closer look at the SPI framework, and it seems there's a
+>> way to tell to the core that a specific transfer cannot use DMA
+>> (->can_dam()). The first thing you should do is fix the spi-davinci
+>> driver:
+>>
+>> 1/ implement ->can_dma()
+>> 2/ patch davinci_spi_bufs() to take the decision to do DMA or not on a
+>>    per-xfer basis and not on a per-device basis
+>>
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 0b3ba7a..980877a 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -20,6 +20,7 @@
- #include <linux/of_irq.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
-@@ -156,6 +157,7 @@
- #define GQSPI_FREQ_150MHZ	150000000
- #define IOU_TAPDLY_BYPASS_MASK	0x7
- 
-+#define SPI_AUTOSUSPEND_TIMEOUT		3000
- enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
- 
- /**
-@@ -424,21 +426,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
- static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
- {
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
--	int ret;
--
--	ret = clk_enable(xqspi->refclk);
--	if (ret)
--		return ret;
--
--	ret = clk_enable(xqspi->pclk);
--	if (ret)
--		goto clk_err;
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
- 	return 0;
--clk_err:
--	clk_disable(xqspi->refclk);
--	return ret;
- }
- 
- /**
-@@ -455,8 +445,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
--	clk_disable(xqspi->refclk);
--	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
-@@ -1054,11 +1042,14 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 
- 	spi_master_suspend(master);
- 
- 	zynqmp_unprepare_transfer_hardware(master);
- 
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
-@@ -1097,8 +1088,62 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(zynqmp_qspi_dev_pm_ops, zynqmp_qspi_suspend,
--			 zynqmp_qspi_resume);
-+/**
-+ * zynqmp_runtime_suspend - Runtime suspend method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function disables the clocks
-+ *
-+ * Return:	Always 0
-+ */
-+static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
-+
-+	return 0;
-+}
-+
-+/**
-+ * zynqmp_runtime_resume - Runtime resume method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function enables the clocks
-+ *
-+ * Return:	0 on success and error value on error
-+ */
-+static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+	int ret;
-+
-+	ret = clk_enable(xqspi->pclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable APB clock.\n");
-+		return ret;
-+	}
-+
-+	ret = clk_enable(xqspi->refclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable device clock.\n");
-+		clk_disable(xqspi->pclk);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
-+	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
-+			   zynqmp_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
-+};
- 
- /**
-  * zynqmp_qspi_probe:	Probe method for the QSPI driver
-@@ -1161,12 +1206,20 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_pclk;
- 	}
- 
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	if (of_property_read_bool(pdev->dev.of_node, "has-io-mode"))
- 		xqspi->io_mode = true;
- 
- 	/* QSPI controller initializations */
- 	zynqmp_qspi_init_hw(xqspi);
- 
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
-@@ -1210,6 +1263,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
- 			    SPI_TX_DUAL | SPI_TX_QUAD;
- 	xqspi->speed_hz = master->max_speed_hz;
-+	master->auto_runtime_pm = true;
- 
- 	if (master->dev.parent == NULL)
- 		master->dev.parent = &master->dev;
-@@ -1223,6 +1277,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_dis_all:
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
-@@ -1250,6 +1306,8 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 
- 	spi_unregister_master(master);
- 
+This would lead to poor perf defeating entire purpose of using DMA.
+
+>> Then we can start thinking about how to improve perfs by using a bounce
+>> buffer for large transfers, but I'm still not sure this should be done
+>> at the MTD level...
+
+If its at SPI level, then I guess each individual drivers which cannot
+handle vmalloc'd buffers will have to implement bounce buffer logic.
+
+Or SPI core can be extended in a way similar to this RFC. That is, SPI
+master driver will set a flag to request SPI core to use of bounce
+buffer for vmalloc'd buffers. And spi_map_buf() just uses bounce buffer
+in case buf does not belong to kmalloc region based on the flag.
+
+Mark, Cyrille, Is that what you prefer?
+
 -- 
-2.7.4
+Regards
+Vignesh
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

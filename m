@@ -1,91 +1,178 @@
-From: =?utf-8?B?U8O2cmVu?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: zynqmp: Add runtime support
-Date: Thu, 2 Mar 2017 07:09:56 -0800
-Message-ID: <20170302150956.ogsvx7nrpkwbu33k@xsjsorenbubuntu.xilinx.com>
-References: <1488446552-15689-1-git-send-email-shubhrajyoti.datta@xilinx.com>
+From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Thu, 2 Mar 2017 17:45:41 +0100
+Message-ID: <5e83b0c0-f1c3-399f-f4f5-afb92af7d7ae@atmel.com>
+References: <20170227120839.16545-1-vigneshr@ti.com>
+ <20170227120839.16545-3-vigneshr@ti.com>
+ <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+ <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+ <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
+ <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
+ <20170301175506.202cb478@bbrezillon>
+ <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
+ <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
+ <20170302152921.1c031b57@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-        <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1488446552-15689-1-git-send-email-shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@free-electrons.com>, Vignesh R
+ <vigneshr@ti.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20170302152921.1c031b57@bbrezillon>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2017-03-02 at 14:52:32 +0530, Shubhrajyoti Datta wrote:
-> Add runtime support for the zynqmp qspi driver.
+Le 02/03/2017 =E0 15:29, Boris Brezillon a =E9crit :
+> On Thu, 2 Mar 2017 19:24:43 +0530
+> Vignesh R <vigneshr@ti.com> wrote:
+> =
 
-runtime PM
+>>>>>>     =
 
-A little more detail about why, what and how things are changed would be
-nice.
+>>>>> Not really, I am debugging another issue with UBIFS on DRA74 EVM (ARM
+>>>>> cortex-a15) wherein pages allocated by vmalloc are in highmem region
+>>>>> that are not addressable using 32 bit addresses and is backed by LPAE.
+>>>>> So, a 32 bit DMA cannot access these buffers at all.
+>>>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
+>>>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part=
+ of
+>>>>> dma_map_sg() call). This results in random crashes as DMA starts
+>>>>> accessing random memory during SPI read.
+>>>>>
+>>>>> IMO, there may be more undiscovered caveat with using dma_map_sg() for
+>>>>> non kmalloc'd buffers and its better that spi-nor starts handling the=
+se
+>>>>> buffers instead of relying on spi_map_msg() and working around every
+>>>>> time something pops up.
+>>>>>  =
 
-> 
-> Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-zynqmp-gqspi.c | 90 ++++++++++++++++++++++++++++++++++--------
->  1 file changed, 74 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-> index 0b3ba7a..980877a 100644
-> --- a/drivers/spi/spi-zynqmp-gqspi.c
-> +++ b/drivers/spi/spi-zynqmp-gqspi.c
-> @@ -20,6 +20,7 @@
->  #include <linux/of_irq.h>
->  #include <linux/of_address.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/spi/spi.h>
->  #include <linux/spinlock.h>
->  #include <linux/workqueue.h>
-> @@ -156,6 +157,7 @@
->  #define GQSPI_FREQ_150MHZ	150000000
->  #define IOU_TAPDLY_BYPASS_MASK	0x7
->  
-> +#define SPI_AUTOSUSPEND_TIMEOUT		3000
->  enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
->  
->  /**
-> @@ -424,21 +426,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
->  static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
->  {
->  	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-> -	int ret;
-> -
-> -	ret = clk_enable(xqspi->refclk);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = clk_enable(xqspi->pclk);
-> -	if (ret)
-> -		goto clk_err;
+>>>> Ok, I had a closer look at the SPI framework, and it seems there's a
+>>>> way to tell to the core that a specific transfer cannot use DMA
+>>>> (->can_dam()). The first thing you should do is fix the spi-davinci
+>>>> driver:
+>>>>
+>>>> 1/ implement ->can_dma()
+>>>> 2/ patch davinci_spi_bufs() to take the decision to do DMA or not on a
+>>>>    per-xfer basis and not on a per-device basis
+>>>>  =
 
-Isn't there a pm_runtime_get_sync() needed now? Or how is the
-clk_enable/resume triggered now?
+>>
+>> This would lead to poor perf defeating entire purpose of using DMA.
+> =
 
->  
->  	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
->  	return 0;
-> -clk_err:
-> -	clk_disable(xqspi->refclk);
-> -	return ret;
->  }
->  
->  /**
-> @@ -455,8 +445,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
->  	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
->  
->  	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
-> -	clk_disable(xqspi->refclk);
-> -	clk_disable(xqspi->pclk);
+> Hm, that's not really true. For all cases where you have a DMA-able
+> buffer it would still use DMA. For other cases (like the UBI+SPI-NOR
+> case we're talking about here), yes, it will be slower, but slower is
+> still better than buggy.
+> So, in any case, I think the fixes pointed by Frode are needed.
+> =
 
-Similar here, shouldn't the device be pm_runtime_put() here?
+>>
+>>>> Then we can start thinking about how to improve perfs by using a bounce
+>>>> buffer for large transfers, but I'm still not sure this should be done
+>>>> at the MTD level...  =
 
-	Sören
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>
+>> If its at SPI level, then I guess each individual drivers which cannot
+>> handle vmalloc'd buffers will have to implement bounce buffer logic.
+> =
+
+> Well, that's my opinion. The only one that can decide when to do
+> PIO, when to use DMA or when to use a bounce buffer+DMA is the SPI
+> controller.
+> If you move this logic to the SPI NOR layer, you'll have to guess what
+> is the best approach, and I fear the decision will be wrong on some
+> platforms (leading to perf degradation).
+>
+
+True. For instance, Atmel SAMA5* SoCs don't need this bounce buffer
+since their L1 data cache uses a PIPT scheme.
+
+http://infocenter.arm.com/help/index.jsp?topic=3D/com.arm.doc.ddi0433c/CHDF=
+AHBD.html
+
+"""
+2.1.4. Data side memory system
+
+Data Cache Unit
+
+The Data Cache Unit (DCU) consists of the following sub-blocks:
+
+    The Level 1 (L1) data cache controller, which generates the control
+signals for the associated embedded tag, data, and dirty memory (RAMs)
+and arbitrates between the different sources requesting access to the
+memory resources. The data cache is 4-way set associative and uses a
+Physically Indexed Physically Tagged (PIPT) scheme for lookup which
+enables unambiguous address management in the system.
+"""
+
+So for those SoCs, spi_map_msg() should be safe to handle vmalloc'ed
+buffers since they don't have to worry about the cache aliases issue or
+address truncation.
+
+That's why I don't think setting the SNOR_F_USE_BOUNCE_BUFFER in *all*
+cases in m25p80 is the right solution since it would not fair to degrade
+the performances of some devices when it's not needed hence not justified.
+
+I still agree with the idea of patch 1 but about patch 2, if m25p80
+users want to take advantage of this new spi-nor bounce buffer, we have
+to agree on a reliable mechanism that clearly tells whether or not the
+SNOR_F_USE_BOUNCE_BUFFER is to be set from m25p80.
+
+
+> You're mentioning code duplication in each SPI controller, I agree,
+> this is far from ideal, but what you're suggesting is not necessarily
+> better. What if another SPI user starts passing vmalloc-ed buffers to
+> the SPI controller? You'll have to duplicate the bounce-buffer logic in
+> this user as well.
+> =
+
+>>
+>> Or SPI core can be extended in a way similar to this RFC. That is, SPI
+>> master driver will set a flag to request SPI core to use of bounce
+>> buffer for vmalloc'd buffers. And spi_map_buf() just uses bounce buffer
+>> in case buf does not belong to kmalloc region based on the flag.
+> =
+
+> That's a better approach IMHO. Note that the decision should not only
+> be based on the buffer type, but also on the transfer length and/or
+> whether the controller supports transferring non physically contiguous
+> buffers.
+> =
+
+> Maybe we should just extend ->can_dma() to let the core know if it
+> should use a bounce buffer.
+> =
+
+> Regarding the bounce buffer allocation logic, I'm not sure how it
+> should be done. The SPI user should be able to determine a max transfer
+> len (at least this is the case for SPI NORs) and inform the SPI layer
+> about this boundary so that the SPI core can allocate a bounce buffer
+> of this size. But we also have limitations at the SPI master level
+> (->max_transfer_size(), ->max_message_size()).
+> =
+
+> =
+
+> =
+
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

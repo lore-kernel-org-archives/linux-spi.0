@@ -1,212 +1,126 @@
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCHv2] spi: zynqmp: Add runtime support
-Date: Fri, 3 Mar 2017 10:41:24 +0530
-Message-ID: <1488517884-31977-1-git-send-email-shubhrajyoti.datta@xilinx.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Fri, 3 Mar 2017 12:50:07 +0000
+Message-ID: <20170303125007.xekpiyvvvfgwto6p@sirena.org.uk>
+References: <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+ <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+ <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
+ <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
+ <20170301175506.202cb478@bbrezillon>
+ <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
+ <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
+ <20170302152921.1c031b57@bbrezillon>
+ <20170302170041.hfix33mhzgqydmvh@sirena.org.uk>
+ <20170302204900.2ab4bf65@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-        <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/mixed; boundary="===============0025993703843556284=="
+Cc: Frode Isaksen <fisaksen@baylibre.com>, linux-omap@vger.kernel.org,
+ Vignesh R <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Marek Vasut <marek.vasut@gmail.com>, linux-mtd@lists.infradead.org,
+ Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@free-electrons.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20170302204900.2ab4bf65@bbrezillon>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Add PM runtime support for the zynqmp qspi driver.
-spi core has the runtime support register to the spi core auto runtime pm.
-Also removes the clock enable and disable as the spi core will
-now do it for us.
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
----
-v2:
-Update the commit message.
+--===============0025993703843556284==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="orjnje3x2lgg3nh7"
+Content-Disposition: inline
 
- drivers/spi/spi-zynqmp-gqspi.c | 90 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 74 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 0b3ba7a..980877a 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -20,6 +20,7 @@
- #include <linux/of_irq.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
-@@ -156,6 +157,7 @@
- #define GQSPI_FREQ_150MHZ	150000000
- #define IOU_TAPDLY_BYPASS_MASK	0x7
- 
-+#define SPI_AUTOSUSPEND_TIMEOUT		3000
- enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
- 
- /**
-@@ -424,21 +426,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
- static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
- {
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
--	int ret;
--
--	ret = clk_enable(xqspi->refclk);
--	if (ret)
--		return ret;
--
--	ret = clk_enable(xqspi->pclk);
--	if (ret)
--		goto clk_err;
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
- 	return 0;
--clk_err:
--	clk_disable(xqspi->refclk);
--	return ret;
- }
- 
- /**
-@@ -455,8 +445,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
--	clk_disable(xqspi->refclk);
--	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
-@@ -1054,11 +1042,14 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 
- 	spi_master_suspend(master);
- 
- 	zynqmp_unprepare_transfer_hardware(master);
- 
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
-@@ -1097,8 +1088,62 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(zynqmp_qspi_dev_pm_ops, zynqmp_qspi_suspend,
--			 zynqmp_qspi_resume);
-+/**
-+ * zynqmp_runtime_suspend - Runtime suspend method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function disables the clocks
-+ *
-+ * Return:	Always 0
-+ */
-+static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
-+
-+	return 0;
-+}
-+
-+/**
-+ * zynqmp_runtime_resume - Runtime resume method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function enables the clocks
-+ *
-+ * Return:	0 on success and error value on error
-+ */
-+static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+	int ret;
-+
-+	ret = clk_enable(xqspi->pclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable APB clock.\n");
-+		return ret;
-+	}
-+
-+	ret = clk_enable(xqspi->refclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable device clock.\n");
-+		clk_disable(xqspi->pclk);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
-+	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
-+			   zynqmp_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
-+};
- 
- /**
-  * zynqmp_qspi_probe:	Probe method for the QSPI driver
-@@ -1161,12 +1206,20 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_pclk;
- 	}
- 
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	if (of_property_read_bool(pdev->dev.of_node, "has-io-mode"))
- 		xqspi->io_mode = true;
- 
- 	/* QSPI controller initializations */
- 	zynqmp_qspi_init_hw(xqspi);
- 
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
-@@ -1210,6 +1263,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
- 			    SPI_TX_DUAL | SPI_TX_QUAD;
- 	xqspi->speed_hz = master->max_speed_hz;
-+	master->auto_runtime_pm = true;
- 
- 	if (master->dev.parent == NULL)
- 		master->dev.parent = &master->dev;
-@@ -1223,6 +1277,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_dis_all:
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
-@@ -1250,6 +1306,8 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 
- 	spi_unregister_master(master);
- 
--- 
-2.7.4
+--orjnje3x2lgg3nh7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Thu, Mar 02, 2017 at 08:49:00PM +0100, Boris Brezillon wrote:
+
+> 1/ for big transfers, dynamically allocating a bounce buffer on demand
+>    (and freeing it after the DMA operation) might fail, or might induce
+>    some latency, especially when the system is under high mem pressure.
+>    Allocating these bounce buffers once during the SPI device driver
+>    ->probe() guarantees that the bounce buffer will always be available
+>    when needed, but OTOH, we don't know if it's really needed.
+
+Yeah, but then the bounces are going to slow things down anyway.  This
+does seem fixable if we do something with caching the buffer once we
+create it, and if it's implemented elsewhere the same problem will
+exist.  We can't just allocate the maximum possible buffer size because
+some devices have effectively unlimited transfer sizes so you could
+waste huge amounts of memory, especially in the common case where we
+don't use vmalloc() at all.
+
+> 2/ only the SPI and/or DMA engine know when using DMA with a bounce
+>    buffer is better than using PIO mode. The limit is probably
+>    different from the DMA vs PIO mode (dma_min_len <
+>    dma_bounce_min_len). Thanks to ->can_dma() we can let drivers decide
+>    when preparing the buffer for a DMA transfer is needed.
+
+I'm not so worried about that, the numbers are basically an educated
+guess anyway.  It's a concern though, yes.
+
+> 3/ if the DMA engine does not support chaining DMA descriptor, and the
+>    vmalloc-ed buffer spans several non-contiguous pages, doing DMA
+>    is simply not possible. That one can probably handled with the
+>    ->can_dma() hook too.
+
+Anything that doesn't support chaining is in trouble already (or should
+be soon hopefully), but mostly the controllers will have no idea about
+that as they're just asking their DMA controller to do things.  We'd be
+better off having the core query the capabilities of the DMA controllers
+directly.
+
+> >  The suggestion to pass via
+> > scatterlists seems a bit more likely to work but even then I'm not clear
+> > that drivers doing PIO would play well.
+
+> You mean that SPI device drivers would directly pass an sg list instead
+> of a virtual pointer? Not sure that would help, we're just moving the
+> decision one level up without providing more information to help decide
+> what to do.
+
+I think the idea was to ensure you only use one mapping type at once.
+
+--orjnje3x2lgg3nh7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAli5Zn8ACgkQJNaLcl1U
+h9CTXAf+Lu3iYHxq+1CUTFPDcoKroaC9B1Mhpj3vG1ZON/K+ZUjtd4kGF/tGQLDk
+yYu6zqv7KgeDvmet4WirUwuFXzirtExPAyJmTAz4Hgc/vc2mJr9owcjzsrdIZAIY
+rIAKRR17qCrbebKJPivvgMANgyMHX8yqoeeHQu1dLdPJmqhokUdLvjr800oTHK7q
+cm+uAqkzbhYIUBrkutYG3SYFoTy/m1+8b2B6Fpl+yIBkVumGpKSxqehTouP2jtmh
+cku0qICvexRBUntESgU5XQo8A6uocElEu00+QWbDS3xXWM08F04+GgXNCCz+kyFl
+wTY/hjjj8i5Zo6IeOM1G35pfZ65blg==
+=gugT
+-----END PGP SIGNATURE-----
+
+--orjnje3x2lgg3nh7--
+
+
+--===============0025993703843556284==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============0025993703843556284==--

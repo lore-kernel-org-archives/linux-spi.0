@@ -1,116 +1,210 @@
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
- buffer support
-Date: Fri, 3 Mar 2017 10:02:44 +0100
-Message-ID: <ff1c3411-f551-6b9e-db7c-7646ee41bbe5@baylibre.com>
-References: <20170227120839.16545-1-vigneshr@ti.com>
- <20170227120839.16545-3-vigneshr@ti.com>
- <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
- <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
- <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
- <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
- <20170301175506.202cb478@bbrezillon>
- <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
- <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
- <20170302152921.1c031b57@bbrezillon>
- <341ef45d-bad5-fd7c-aa05-807041c35f42@baylibre.com>
- <20170302162556.76b0ae8c@bbrezillon>
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCHv2] spi: zynqmp: Add runtime support
+Date: Fri, 3 Mar 2017 10:41:24 +0530
+Message-ID: <1488517884-31977-1-git-send-email-shubhrajyoti.datta@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain
+Cc: <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+        <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170302162556.76b0ae8c@bbrezillon>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Add PM runtime support for the zynqmp qspi driver.
+spi core has the runtime support register to the spi core auto runtime pm.
+Also removes the clock enable and disable as the spi core will
+now do it for us.
 
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+v2:
+Update the commit message.
 
-On 02/03/2017 16:25, Boris Brezillon wrote:
-> On Thu, 2 Mar 2017 16:03:17 +0100
-> Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org> wrote:
->
->> On 02/03/2017 15:29, Boris Brezillon wrote:
->>> On Thu, 2 Mar 2017 19:24:43 +0530
->>> Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
->>>  
->>>>>>>>       
->>>>>>> Not really, I am debugging another issue with UBIFS on DRA74 EVM (ARM
->>>>>>> cortex-a15) wherein pages allocated by vmalloc are in highmem region
->>>>>>> that are not addressable using 32 bit addresses and is backed by LPAE.
->>>>>>> So, a 32 bit DMA cannot access these buffers at all.
->>>>>>> When dma_map_sg() is called to map these pages by spi_map_buf() the
->>>>>>> physical address is just truncated to 32 bit in pfn_to_dma() (as part of
->>>>>>> dma_map_sg() call). This results in random crashes as DMA starts
->>>>>>> accessing random memory during SPI read.
->>>>>>>
->>>>>>> IMO, there may be more undiscovered caveat with using dma_map_sg() for
->>>>>>> non kmalloc'd buffers and its better that spi-nor starts handling these
->>>>>>> buffers instead of relying on spi_map_msg() and working around every
->>>>>>> time something pops up.
->>>>>>>    
->>>>>> Ok, I had a closer look at the SPI framework, and it seems there's a
->>>>>> way to tell to the core that a specific transfer cannot use DMA
->>>>>> (->can_dam()). The first thing you should do is fix the spi-davinci
->>>>>> driver:
->>>>>>
->>>>>> 1/ implement ->can_dma()
->>>>>> 2/ patch davinci_spi_bufs() to take the decision to do DMA or not on a
->>>>>>    per-xfer basis and not on a per-device basis
->>>>>>    
->>>> This would lead to poor perf defeating entire purpose of using DMA.  
->>> Hm, that's not really true. For all cases where you have a DMA-able
->>> buffer it would still use DMA. For other cases (like the UBI+SPI-NOR
->>> case we're talking about here), yes, it will be slower, but slower is
->>> still better than buggy.
->>> So, in any case, I think the fixes pointed by Frode are needed.  
->> Also, I think the UBIFS layer only uses vmalloc'ed buffers during
->> mount/unmount and not for read/write, so the performance hit is not
->> that big.
-> It's a bit more complicated than that. You may have operations running
-> in background that are using those big vmalloc-ed buffers at runtime.
-> To optimize things, we really need to split LEB/PEB buffers into
-> multiple ->max_write_size (or ->min_io_size) kmalloc-ed buffers.
->
->> In most cases the buffer is the size of the erase block, but I've seen
->> vmalloc'ed buffer of size only 11 bytes ! So, to optimize this, the
->> best solution is probably to change how the UBIFS layer is using
->> vmalloc'ed vs kmalloc'ed buffers, since vmalloc'ed should only be used
->> for large (> 128K) buffers.
-> Hm, the buffer itself is bigger than 11 bytes, it's just that the
-> same buffer is used in different use cases, and sometime we're only
-> partially filling it.
-There are at least one place in the UBIFS layer where a small buffer is vmalloc'ed:
+ drivers/spi/spi-zynqmp-gqspi.c | 90 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 74 insertions(+), 16 deletions(-)
 
-static int read_ltab(struct ubifs_info *c)
-{
-    int err;
-    void *buf;
-
-    buf = vmalloc(c->ltab_sz);
-    if (!buf)
-        return -ENOMEM;
-    err = ubifs_leb_read(c, c->ltab_lnum, buf, c->ltab_offs, c->ltab_sz, 1);
-    if (err)
-        goto out;
-    err = unpack_ltab(c, buf);
-out:
-    vfree(buf);
-    return err;
-}
-
-On my board, the buffer size is 11 bytes.
-
-Frode
-
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 0b3ba7a..980877a 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -20,6 +20,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+@@ -156,6 +157,7 @@
+ #define GQSPI_FREQ_150MHZ	150000000
+ #define IOU_TAPDLY_BYPASS_MASK	0x7
+ 
++#define SPI_AUTOSUSPEND_TIMEOUT		3000
+ enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
+ 
+ /**
+@@ -424,21 +426,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
+ static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
+ {
+ 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+-	int ret;
+-
+-	ret = clk_enable(xqspi->refclk);
+-	if (ret)
+-		return ret;
+-
+-	ret = clk_enable(xqspi->pclk);
+-	if (ret)
+-		goto clk_err;
+ 
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
+ 	return 0;
+-clk_err:
+-	clk_disable(xqspi->refclk);
+-	return ret;
+ }
+ 
+ /**
+@@ -455,8 +445,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
+ 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+ 
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
+-	clk_disable(xqspi->refclk);
+-	clk_disable(xqspi->pclk);
+ 	return 0;
+ }
+ 
+@@ -1054,11 +1042,14 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+ 
+ 	spi_master_suspend(master);
+ 
+ 	zynqmp_unprepare_transfer_hardware(master);
+ 
++	clk_disable(xqspi->refclk);
++	clk_disable(xqspi->pclk);
+ 	return 0;
+ }
+ 
+@@ -1097,8 +1088,62 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(zynqmp_qspi_dev_pm_ops, zynqmp_qspi_suspend,
+-			 zynqmp_qspi_resume);
++/**
++ * zynqmp_runtime_suspend - Runtime suspend method for the SPI driver
++ * @dev:	Address of the platform_device structure
++ *
++ * This function disables the clocks
++ *
++ * Return:	Always 0
++ */
++static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
++
++	clk_disable(xqspi->refclk);
++	clk_disable(xqspi->pclk);
++
++	return 0;
++}
++
++/**
++ * zynqmp_runtime_resume - Runtime resume method for the SPI driver
++ * @dev:	Address of the platform_device structure
++ *
++ * This function enables the clocks
++ *
++ * Return:	0 on success and error value on error
++ */
++static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
++	int ret;
++
++	ret = clk_enable(xqspi->pclk);
++	if (ret) {
++		dev_err(dev, "Cannot enable APB clock.\n");
++		return ret;
++	}
++
++	ret = clk_enable(xqspi->refclk);
++	if (ret) {
++		dev_err(dev, "Cannot enable device clock.\n");
++		clk_disable(xqspi->pclk);
++		return ret;
++	}
++
++	return 0;
++}
++
++static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
++	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
++			   zynqmp_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
++};
+ 
+ /**
+  * zynqmp_qspi_probe:	Probe method for the QSPI driver
+@@ -1161,12 +1206,20 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_pclk;
+ 	}
+ 
++	pm_runtime_use_autosuspend(&pdev->dev);
++	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
+ 	if (of_property_read_bool(pdev->dev.of_node, "has-io-mode"))
+ 		xqspi->io_mode = true;
+ 
+ 	/* QSPI controller initializations */
+ 	zynqmp_qspi_init_hw(xqspi);
+ 
++	pm_runtime_mark_last_busy(&pdev->dev);
++	pm_runtime_put_autosuspend(&pdev->dev);
++
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -1210,6 +1263,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+ 			    SPI_TX_DUAL | SPI_TX_QUAD;
+ 	xqspi->speed_hz = master->max_speed_hz;
++	master->auto_runtime_pm = true;
+ 
+ 	if (master->dev.parent == NULL)
+ 		master->dev.parent = &master->dev;
+@@ -1223,6 +1277,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ clk_dis_all:
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+ clk_dis_pclk:
+ 	clk_disable_unprepare(xqspi->pclk);
+@@ -1250,6 +1306,8 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
+ 	clk_disable_unprepare(xqspi->refclk);
+ 	clk_disable_unprepare(xqspi->pclk);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 
+ 	spi_unregister_master(master);
+ 
+-- 
+2.7.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

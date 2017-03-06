@@ -1,20 +1,17 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sc18is602: Add OF device ID table" to the spi tree
-Date: Mon, 06 Mar 2017 11:47:11 +0100
-Message-ID: <E1ckqAZ-0002bo-Es@finisterre>
-References: <20170222181420.25420-1-javier@osg.samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Javier Martinez Canillas <javier@osg.samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170222181420.25420-1-javier@osg.samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: allow registering empty spi_board_info lists" to the spi tree
+Date: Mon, 06 Mar 2017 11:47:05 +0100
+Message-ID: <E1ckqAT-0002aK-Tw@finisterre>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: 
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sc18is602: Add OF device ID table
+   spi: allow registering empty spi_board_info lists
 
 has been applied to the spi tree at
 
@@ -39,76 +36,38 @@ to this mail.
 Thanks,
 Mark
 
->From 68c97b92c0a0dfdc134564f1f1c04b1c8ed27bba Mon Sep 17 00:00:00 2001
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Date: Wed, 22 Feb 2017 15:14:20 -0300
-Subject: [PATCH] spi: sc18is602: Add OF device ID table
+>From f974cf57b1b95839b224b01335c45347f746a365 Mon Sep 17 00:00:00 2001
+From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Tue, 28 Feb 2017 14:25:19 -0800
+Subject: [PATCH] spi: allow registering empty spi_board_info lists
 
-The driver doesn't have a struct of_device_id table but supported devices
-are registered via Device Trees. This is working on the assumption that a
-I2C device registered via OF will always match a legacy I2C device ID and
-that the MODALIAS reported will always be of the form i2c:<device>.
+Many boards form list of spi_board_info entries depending on config,
+and it is possible to end up with empty list. Do not report error
+in such cases.
 
-But this could change in the future so the correct approach is to have an
-OF device ID table if the devices are registered via OF.
-
-Signed-off-by: Javier Martinez Canillas <javier@osg.samsung.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sc18is602.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index f63714ffb62f..52cf0e9189c2 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -21,6 +21,7 @@
- #include <linux/i2c.h>
- #include <linux/delay.h>
- #include <linux/pm_runtime.h>
-+#include <linux/of_device.h>
- #include <linux/of.h>
- #include <linux/platform_data/sc18is602.h>
- #include <linux/gpio/consumer.h>
-@@ -271,7 +272,10 @@ static int sc18is602_probe(struct i2c_client *client,
- 	hw->dev = dev;
- 	hw->ctrl = 0xff;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6cc86060d22f..f699ea530b88 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -690,7 +690,7 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ 	int i;
  
--	hw->id = id->driver_data;
-+	if (client->dev.of_node)
-+		hw->id = (enum chips)of_device_get_match_data(&client->dev);
-+	else
-+		hw->id = id->driver_data;
+ 	if (!n)
+-		return -EINVAL;
++		return 0;
  
- 	switch (hw->id) {
- 	case sc18is602:
-@@ -323,9 +327,27 @@ static const struct i2c_device_id sc18is602_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, sc18is602_id);
- 
-+static const struct of_device_id sc18is602_of_match[] = {
-+	{
-+		.compatible = "nxp,sc18is602",
-+		.data = (void *)sc18is602
-+	},
-+	{
-+		.compatible = "nxp,sc18is602b",
-+		.data = (void *)sc18is602b
-+	},
-+	{
-+		.compatible = "nxp,sc18is603",
-+		.data = (void *)sc18is603
-+	},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, sc18is602_of_match);
-+
- static struct i2c_driver sc18is602_driver = {
- 	.driver = {
- 		.name = "sc18is602",
-+		.of_match_table = of_match_ptr(sc18is602_of_match),
- 	},
- 	.probe = sc18is602_probe,
- 	.id_table = sc18is602_id,
+ 	bi = kcalloc(n, sizeof(*bi), GFP_KERNEL);
+ 	if (!bi)
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

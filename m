@@ -1,18 +1,32 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sun6i: Allow transfers larger than FIFO size" to the spi tree
-Date: Tue, 07 Mar 2017 13:27:39 +0100
-Message-ID: <E1clEDL-0003yr-8Q@finisterre>
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: davinci: Use SPI framework to handle DMA mapping" to
+ the spi tree
+Date: Tue, 07 Mar 2017 15:22:10 +0100
+Message-ID: <E1clG0A-0006nR-Dq@finisterre>
+References: <1487872921-26628-2-git-send-email-fisaksen@baylibre.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Frode Isaksen <fisaksen@baylibre.com>, khilman@baylibre.com, nsekhar@ti.com,
+ linux-spi@vger.kernel.org, broonie@kernel.org, ptitiano@baylibre.com,
+ linux-arm-kernel@lists.infradead.org
+To: Fabien Parent <fparent@baylibre.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1487872921-26628-2-git-send-email-fisaksen@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sun6i: Allow transfers larger than FIFO size
+   spi: davinci: Use SPI framework to handle DMA mapping
 
 has been applied to the spi tree at
 
@@ -37,211 +51,154 @@ to this mail.
 Thanks,
 Mark
 
->From 913f536c6c18a2e19e32f06971101c1d0ae3739c Mon Sep 17 00:00:00 2001
-From: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Date: Mon, 6 Mar 2017 20:14:43 +0800
-Subject: [PATCH] spi: sun6i: Allow transfers larger than FIFO size
+>From 8aedbf580d21121d2a032e4c8ea12d8d2d85e275 Mon Sep 17 00:00:00 2001
+From: Fabien Parent <fparent@baylibre.com>
+Date: Thu, 23 Feb 2017 19:01:56 +0100
+Subject: [PATCH] spi: davinci: Use SPI framework to handle DMA mapping
 
-The spi-sun6i driver have the same problem that spi-sun4i used to have
--- SPI transfers are limited to one FIFO depth.
+Uppers layers like MTD can pass vmalloc'd buffers to the SPI driver,
+and the current implementation will fail to map these kind of buffers.
+The SPI framework is able to detect the best way to handle and map
+buffers.
+This commit updates the davinci SPI driver in order to use the SPI
+framework to handle the DMA mapping of buffers coming from an upper
+layer.
 
-This commit fixes this problem in the same way it's fixed in spi-sun4i.
-See commit 196737912da5 ("spi: sun4i: Allow transfers larger than FIFO size")
-for more information.
-
-The sun6i SPI controllers features changeable interrupt trigger level, but I
-set it to 3/4 of fifo depth, as same as the the sun4i SPI controllers.
-
-Signed-off-by: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Fabien Parent <fparent@baylibre.com>
+Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sun6i.c | 90 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 81 insertions(+), 9 deletions(-)
+ drivers/spi/spi-davinci.c | 69 +++++++++++++----------------------------------
+ 1 file changed, 18 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index e3114832c485..6e9ca93db9bf 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -46,13 +46,19 @@
- #define SUN6I_TFR_CTL_XCH			BIT(31)
- 
- #define SUN6I_INT_CTL_REG		0x10
-+#define SUN6I_INT_CTL_RF_RDY			BIT(0)
-+#define SUN6I_INT_CTL_TF_ERQ			BIT(4)
- #define SUN6I_INT_CTL_RF_OVF			BIT(8)
- #define SUN6I_INT_CTL_TC			BIT(12)
- 
- #define SUN6I_INT_STA_REG		0x14
- 
- #define SUN6I_FIFO_CTL_REG		0x18
-+#define SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_MASK	0xff
-+#define SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS	0
- #define SUN6I_FIFO_CTL_RF_RST			BIT(15)
-+#define SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_MASK	0xff
-+#define SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_BITS	16
- #define SUN6I_FIFO_CTL_TF_RST			BIT(31)
- 
- #define SUN6I_FIFO_STA_REG		0x1c
-@@ -68,14 +74,16 @@
- #define SUN6I_CLK_CTL_CDR1(div)			(((div) & SUN6I_CLK_CTL_CDR1_MASK) << 8)
- #define SUN6I_CLK_CTL_DRS			BIT(12)
- 
-+#define SUN6I_MAX_XFER_SIZE		0xffffff
-+
- #define SUN6I_BURST_CNT_REG		0x30
--#define SUN6I_BURST_CNT(cnt)			((cnt) & 0xffffff)
-+#define SUN6I_BURST_CNT(cnt)			((cnt) & SUN6I_MAX_XFER_SIZE)
- 
- #define SUN6I_XMIT_CNT_REG		0x34
--#define SUN6I_XMIT_CNT(cnt)			((cnt) & 0xffffff)
-+#define SUN6I_XMIT_CNT(cnt)			((cnt) & SUN6I_MAX_XFER_SIZE)
- 
- #define SUN6I_BURST_CTL_CNT_REG		0x38
--#define SUN6I_BURST_CTL_CNT_STC(cnt)		((cnt) & 0xffffff)
-+#define SUN6I_BURST_CTL_CNT_STC(cnt)		((cnt) & SUN6I_MAX_XFER_SIZE)
- 
- #define SUN6I_TXDATA_REG		0x200
- #define SUN6I_RXDATA_REG		0x300
-@@ -105,6 +113,31 @@ static inline void sun6i_spi_write(struct sun6i_spi *sspi, u32 reg, u32 value)
- 	writel(value, sspi->base_addr + reg);
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 02fb96797ac8..164cc719be54 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -467,6 +467,19 @@ static void davinci_spi_cleanup(struct spi_device *spi)
+ 		kfree(spicfg);
  }
  
-+static inline u32 sun6i_spi_get_tx_fifo_count(struct sun6i_spi *sspi)
++static bool davinci_spi_can_dma(struct spi_master *master,
++				struct spi_device *spi,
++				struct spi_transfer *xfer)
 +{
-+	u32 reg = sun6i_spi_read(sspi, SUN6I_FIFO_STA_REG);
++	struct davinci_spi_config *spicfg = spi->controller_data;
++	bool can_dma = false;
 +
-+	reg >>= SUN6I_FIFO_STA_TF_CNT_BITS;
++	if (spicfg)
++		can_dma = spicfg->io_type == SPI_IO_TYPE_DMA;
 +
-+	return reg & SUN6I_FIFO_STA_TF_CNT_MASK;
++	return can_dma;
 +}
 +
-+static inline void sun6i_spi_enable_interrupt(struct sun6i_spi *sspi, u32 mask)
-+{
-+	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
-+
-+	reg |= mask;
-+	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
-+}
-+
-+static inline void sun6i_spi_disable_interrupt(struct sun6i_spi *sspi, u32 mask)
-+{
-+	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
-+
-+	reg &= ~mask;
-+	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
-+}
-+
- static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int len)
+ static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
  {
- 	u32 reg, cnt;
-@@ -127,10 +160,13 @@ static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int len)
+ 	struct device *sdev = dspi->bitbang.master->dev.parent;
+@@ -581,8 +594,6 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	struct davinci_spi_config *spicfg;
+ 	struct davinci_spi_platform_data *pdata;
+ 	unsigned uninitialized_var(rx_buf_count);
+-	void *dummy_buf = NULL;
+-	struct scatterlist sg_rx, sg_tx;
  
- static inline void sun6i_spi_fill_fifo(struct sun6i_spi *sspi, int len)
- {
-+	u32 cnt;
- 	u8 byte;
- 
--	if (len > sspi->len)
--		len = sspi->len;
-+	/* See how much data we can fit */
-+	cnt = sspi->fifo_depth - sun6i_spi_get_tx_fifo_count(sspi);
-+
-+	len = min3(len, (int)cnt, sspi->len);
- 
- 	while (len--) {
- 		byte = sspi->tx_buf ? *sspi->tx_buf++ : 0;
-@@ -170,12 +206,12 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	struct sun6i_spi *sspi = spi_master_get_devdata(master);
- 	unsigned int mclk_rate, div, timeout;
- 	unsigned int start, end, tx_time;
-+	unsigned int trig_level;
- 	unsigned int tx_len = 0;
- 	int ret = 0;
- 	u32 reg;
- 
--	/* We don't support transfer larger than the FIFO */
--	if (tfr->len > sspi->fifo_depth)
-+	if (tfr->len > SUN6I_MAX_XFER_SIZE)
- 		return -EINVAL;
- 
- 	reinit_completion(&sspi->done);
-@@ -191,6 +227,17 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 			SUN6I_FIFO_CTL_RF_RST | SUN6I_FIFO_CTL_TF_RST);
- 
- 	/*
-+	 * Setup FIFO interrupt trigger level
-+	 * Here we choose 3/4 of the full fifo depth, as it's the hardcoded
-+	 * value used in old generation of Allwinner SPI controller.
-+	 * (See spi-sun4i.c)
-+	 */
-+	trig_level = sspi->fifo_depth / 4 * 3;
-+	sun6i_spi_write(sspi, SUN6I_FIFO_CTL_REG,
-+			(trig_level << SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS) |
-+			(trig_level << SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_BITS));
-+
-+	/*
- 	 * Setup the transfer control register: Chip Select,
- 	 * polarities, etc.
- 	 */
-@@ -274,6 +321,10 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 
- 	/* Enable the interrupts */
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
-+	sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TC |
-+					 SUN6I_INT_CTL_RF_RDY);
-+	if (tx_len > sspi->fifo_depth)
-+		sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TF_ERQ);
- 
- 	/* Start the transfer */
- 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
-@@ -293,8 +344,6 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 		goto out;
- 	}
- 
--	sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
+ 	dspi = spi_master_get_devdata(spi->master);
+ 	pdata = &dspi->pdata;
+@@ -630,51 +641,18 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		};
+ 		struct dma_async_tx_descriptor *rxdesc;
+ 		struct dma_async_tx_descriptor *txdesc;
+-		void *buf;
 -
- out:
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
+-		dummy_buf = kzalloc(t->len, GFP_KERNEL);
+-		if (!dummy_buf)
+-			goto err_alloc_dummy_buf;
  
-@@ -309,10 +358,33 @@ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
- 	/* Transfer complete */
- 	if (status & SUN6I_INT_CTL_TC) {
- 		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TC);
-+		sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
- 		complete(&sspi->done);
- 		return IRQ_HANDLED;
+ 		dmaengine_slave_config(dspi->dma_rx, &dma_rx_conf);
+ 		dmaengine_slave_config(dspi->dma_tx, &dma_tx_conf);
+ 
+-		sg_init_table(&sg_rx, 1);
+-		if (!t->rx_buf)
+-			buf = dummy_buf;
+-		else
+-			buf = t->rx_buf;
+-		t->rx_dma = dma_map_single(&spi->dev, buf,
+-				t->len, DMA_FROM_DEVICE);
+-		if (dma_mapping_error(&spi->dev, !t->rx_dma)) {
+-			ret = -EFAULT;
+-			goto err_rx_map;
+-		}
+-		sg_dma_address(&sg_rx) = t->rx_dma;
+-		sg_dma_len(&sg_rx) = t->len;
+-
+-		sg_init_table(&sg_tx, 1);
+-		if (!t->tx_buf)
+-			buf = dummy_buf;
+-		else
+-			buf = (void *)t->tx_buf;
+-		t->tx_dma = dma_map_single(&spi->dev, buf,
+-				t->len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(&spi->dev, t->tx_dma)) {
+-			ret = -EFAULT;
+-			goto err_tx_map;
+-		}
+-		sg_dma_address(&sg_tx) = t->tx_dma;
+-		sg_dma_len(&sg_tx) = t->len;
+-
+ 		rxdesc = dmaengine_prep_slave_sg(dspi->dma_rx,
+-				&sg_rx, 1, DMA_DEV_TO_MEM,
++				t->rx_sg.sgl, t->rx_sg.nents, DMA_DEV_TO_MEM,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!rxdesc)
+ 			goto err_desc;
+ 
+ 		txdesc = dmaengine_prep_slave_sg(dspi->dma_tx,
+-				&sg_tx, 1, DMA_MEM_TO_DEV,
++				t->tx_sg.sgl, t->tx_sg.nents, DMA_MEM_TO_DEV,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!txdesc)
+ 			goto err_desc;
+@@ -710,16 +688,9 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
  	}
  
-+	/* Receive FIFO 3/4 full */
-+	if (status & SUN6I_INT_CTL_RF_RDY) {
-+		sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
-+		/* Only clear the interrupt _after_ draining the FIFO */
-+		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_RF_RDY);
-+		return IRQ_HANDLED;
-+	}
-+
-+	/* Transmit FIFO 3/4 empty */
-+	if (status & SUN6I_INT_CTL_TF_ERQ) {
-+		sun6i_spi_fill_fifo(sspi, SUN6I_FIFO_DEPTH);
-+
-+		if (!sspi->len)
-+			/* nothing left to transmit */
-+			sun6i_spi_disable_interrupt(sspi, SUN6I_INT_CTL_TF_ERQ);
-+
-+		/* Only clear the interrupt _after_ re-seeding the FIFO */
-+		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TF_ERQ);
-+
-+		return IRQ_HANDLED;
-+	}
-+
- 	return IRQ_NONE;
+ 	clear_io_bits(dspi->base + SPIINT, SPIINT_MASKALL);
+-	if (spicfg->io_type == SPI_IO_TYPE_DMA) {
++	if (spicfg->io_type == SPI_IO_TYPE_DMA)
+ 		clear_io_bits(dspi->base + SPIINT, SPIINT_DMA_REQ_EN);
+ 
+-		dma_unmap_single(&spi->dev, t->rx_dma,
+-				t->len, DMA_FROM_DEVICE);
+-		dma_unmap_single(&spi->dev, t->tx_dma,
+-				t->len, DMA_TO_DEVICE);
+-		kfree(dummy_buf);
+-	}
+-
+ 	clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
+ 	set_io_bits(dspi->base + SPIGCR1, SPIGCR1_POWERDOWN_MASK);
+ 
+@@ -742,12 +713,6 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return t->len;
+ 
+ err_desc:
+-	dma_unmap_single(&spi->dev, t->tx_dma, t->len, DMA_TO_DEVICE);
+-err_tx_map:
+-	dma_unmap_single(&spi->dev, t->rx_dma, t->len, DMA_FROM_DEVICE);
+-err_rx_map:
+-	kfree(dummy_buf);
+-err_alloc_dummy_buf:
+ 	return ret;
  }
  
+@@ -988,8 +953,10 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = pdata->num_chipselect;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
++	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
+ 	master->setup = davinci_spi_setup;
+ 	master->cleanup = davinci_spi_cleanup;
++	master->can_dma = davinci_spi_can_dma;
+ 
+ 	dspi->bitbang.chipselect = davinci_spi_chipselect;
+ 	dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

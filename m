@@ -1,87 +1,261 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: davinci: enable DMA when channels are defined in DT" to the spi tree
-Date: Tue, 07 Mar 2017 15:22:07 +0100
-Message-ID: <E1clG07-0006mU-6x@finisterre>
-References: <20170206145708.24356-2-fparent@baylibre.com>
-Cc: Frode Isaksen <fisaksen@baylibre.com>,
-        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        nsekhar@ti.com, ptitiano@baylibre.com, khilman@baylibre.com,
-        linux-spi@vger.kernel.org
-To: Fabien Parent <fparent@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170206145708.24356-2-fparent@baylibre.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+Subject: Re: [PATCH v6 2/3] mtd: spi-nor: Add spi-nor flash device
+ synchronization between flash states
+Date: Wed, 8 Mar 2017 00:08:26 +0100
+Message-ID: <79e81e11-3073-7078-05ca-3201f6dac15f@wedev4u.fr>
+References: <1487967399-28967-1-git-send-email-kdasu.kdev@gmail.com>
+ <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-mtd@lists.infradead.org, f.fainelli@gmail.com,
+ bcm-kernel-feedback-list@broadcom.com
+To: Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org,
+ cyrille.pitchen@atmel.com, marex@denx.de, broonie@kernel.org,
+ Boris Brezillon <boris.brezillon@free-electrons.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <1487967399-28967-3-git-send-email-kdasu.kdev@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Kamal,
 
-   spi: davinci: enable DMA when channels are defined in DT
++Boris for his knowledge on power management.
 
-has been applied to the spi tree at
+Le 24/02/2017 =E0 21:16, Kamal Dasu a =E9crit :
+> Added flash access synchronization methods spi_nor_get/release_device(). =
+This
+> change allows spi-nor driver to maintain flash states in spi-nor stucture=
+ for
+> read, write, erase, lock, unlock nor ops. Only when the flash state is FL=
+_READY
+> a new state is set and spi-nor flash op is initiated. The state change is=
+ done
+> with a spin_lock held and released as soon as the state is changed. Else =
+the
+> current process for spi-nor transfer is queued till the flash is in FL_RE=
+ADY
+> state. This change allows us to add mtd layer synchronization when the mtd
+> resume suspend handlers are added.
+>
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+This version goes the wrong way, IMHO. This is not what I meant when I
+was talking about synchronizing MTD and SPI devices: when accessing the
+MTD device we should wake the SPI device up instead of blocking the MTD
+handlers when the SPI device enters its suspended mode.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+However, the good news is that looking closer at how the runtime pm
+works, this synchronization should already be managed:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+in drivers/mtd/devices/m25p80.c:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+	nor->dev =3D &spi->dev;
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+and in drivers/mtd/spi-nor/spi-nor.c:
 
-Thanks,
-Mark
+	struct device *dev =3D nor->dev;
+	[...]
+	mtd->dev.parent =3D dev;
 
->From 3e2e1258443ea97e40dfb4a3cf15108d17939066 Mon Sep 17 00:00:00 2001
-From: Fabien Parent <fparent@baylibre.com>
-Date: Thu, 23 Feb 2017 19:01:57 +0100
-Subject: [PATCH] spi: davinci: enable DMA when channels are defined in DT
+Hence the SPI device is the parent of the MTD device.
+Then by default, when resuming a device, the runtime pm framework wakes
+the device parent up too: see rmp_resume() from drivers/base/power/runtime.c
 
-When booting with DT the SPI driver is always using
-the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
-defined in the DT.
+About the SPI controller, by default SPI masters ignore their children,
+so the SPI controller won't be resumed by the m25p80 SPI device. However
+spi_sync() can resume the controller when master->auto_runtime_pm is true.
 
-This commit changes the behaviour to select the SPI_IO_TYPE_DMA mode
-if DMA channels are defined in the DT and will keep SPI_IO_TYPE_INTR
-if the channels are not defined in it.
+Then back to the MTD subsystem, maybe you should patch the mtdcore.c
+file rather than m25p80.c so the whole MTD subsystem could take
+advantage of your work on power management:
+you could update the .pm member of 'struct class' mtd_class to add
+runtime pm support to the already existing system-wide power management
+support. I guess you will have to add new hooks such mtd->_pm_suspend
+and mtd->_pm_resume. Finally spi-nor.c will implement those 2 hooks (and
+the NAND subsystem may also implement them as needed).
 
-Signed-off-by: Fabien Parent <fparent@baylibre.com>
-Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-davinci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Boris, does it make sense?
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 164cc719be54..1e24395a04f2 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -389,6 +389,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- {
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	struct device_node *np = spi->dev.of_node;
-+	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
- 	u32 prop;
- 
- 	if (spicfg == NULL && np) {
-@@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
- 		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
- 			spicfg->wdelay = (u8)prop;
- 		spi->controller_data = spicfg;
-+
-+		if (dspi->dma_rx && dspi->dma_tx)
-+			spicfg->io_type = SPI_IO_TYPE_DMA;
- 	}
- 
- 	return 0;
--- 
-2.11.0
+Also, one last comment: I guess a call to pm_runtime_enable() is missing
+somewhere is this series, otherwise I don't think this could work.
+Besides, depending on where it will be added, we should not call
+pm_runtime_enable() unconditionally thinking of users who don't want to
+use this feature sending unneeded SPI commands to the memory.
+
+Best regards,
+
+Cyrille
+
+
+> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+> ---
+>  drivers/mtd/spi-nor/spi-nor.c | 69 +++++++++++++++++++++++++++++++++++++=
+++++++
+>  include/linux/mtd/spi-nor.h   |  4 +++
+>  2 files changed, 73 insertions(+)
+> =
+
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 8b71c11..5363807 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -89,6 +89,15 @@ struct flash_info {
+>  =
+
+>  #define JEDEC_MFR(info)	((info)->id[0])
+>  =
+
+> +/* map table for spi_nor op to flashchip state  */
+> +static int spi_nor_state[] =3D {
+> +	[SPI_NOR_OPS_READ]	=3D FL_READING,
+> +	[SPI_NOR_OPS_WRITE]	=3D FL_WRITING,
+> +	[SPI_NOR_OPS_ERASE]	=3D FL_ERASING,
+> +	[SPI_NOR_OPS_LOCK]	=3D FL_LOCKING,
+> +	[SPI_NOR_OPS_UNLOCK]	=3D FL_UNLOCKING,
+> +};
+> +
+>  static const struct flash_info *spi_nor_match_id(const char *name);
+>  =
+
+>  /*
+> @@ -396,10 +405,64 @@ static int erase_chip(struct spi_nor *nor)
+>  	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
+>  }
+>  =
+
+> +/**
+> + * spi_nor_get_device - [GENERIC] Get chip for selected access
+> + * @param mtd		MTD device structure
+> + * @param new_state	the state which is requested
+> + *
+> + * Get the nor flash device and lock it for exclusive access
+> + */
+> +static int spi_nor_get_device(struct mtd_info *mtd, int new_state)
+> +{
+> +	struct spi_nor *nor =3D mtd_to_spi_nor(mtd);
+> +	DECLARE_WAITQUEUE(wait, current);
+> +
+> +	/*
+> +	 * Grab the lock and see if the device is available
+> +	 */
+> +	while (1) {
+> +		spin_lock(&nor->chip_lock);
+> +		if (nor->state =3D=3D FL_READY) {
+> +			nor->state =3D new_state;
+> +			spin_unlock(&nor->chip_lock);
+> +			break;
+> +		}
+> +		if (new_state =3D=3D FL_PM_SUSPENDED) {
+> +			spin_unlock(&nor->chip_lock);
+> +			return (nor->state =3D=3D FL_PM_SUSPENDED) ? 0 : -EAGAIN;
+> +		}
+> +		set_current_state(TASK_UNINTERRUPTIBLE);
+> +		add_wait_queue(&nor->wq, &wait);
+> +		spin_unlock(&nor->chip_lock);
+> +		schedule();
+> +		remove_wait_queue(&nor->wq, &wait);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * spi_nor_release_device - [GENERIC] release chip
+> + * @mtd: MTD device structure
+> + *
+> + * Release nor flash chip lock and wake up anyone waiting on the device.
+> + */
+> +static void spi_nor_release_device(struct mtd_info *mtd)
+> +{
+> +	struct spi_nor *nor =3D mtd_to_spi_nor(mtd);
+> +
+> +	/* Release the controller and the chip */
+> +	spin_lock(&nor->chip_lock);
+> +	nor->state =3D FL_READY;
+> +	wake_up(&nor->wq);
+> +	spin_unlock(&nor->chip_lock);
+> +}
+> +
+>  static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops o=
+ps)
+>  {
+>  	int ret =3D 0;
+>  =
+
+> +	spi_nor_get_device(&nor->mtd, spi_nor_state[ops]);
+>  	mutex_lock(&nor->lock);
+>  =
+
+>  	if (nor->prepare) {
+> @@ -407,6 +470,7 @@ static int spi_nor_lock_and_prep(struct spi_nor *nor,=
+ enum spi_nor_ops ops)
+>  		if (ret) {
+>  			dev_err(nor->dev, "failed in the preparation.\n");
+>  			mutex_unlock(&nor->lock);
+> +			spi_nor_release_device(&nor->mtd);
+>  			return ret;
+>  		}
+>  	}
+> @@ -418,6 +482,7 @@ static void spi_nor_unlock_and_unprep(struct spi_nor =
+*nor, enum spi_nor_ops ops)
+>  	if (nor->unprepare)
+>  		nor->unprepare(nor, ops);
+>  	mutex_unlock(&nor->lock);
+> +	spi_nor_release_device(&nor->mtd);
+>  }
+>  =
+
+>  /*
+> @@ -1743,6 +1808,10 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
+name, enum read_mode mode)
+>  			return ret;
+>  	}
+>  =
+
+> +	nor->state =3D FL_READY;
+> +	init_waitqueue_head(&nor->wq);
+> +	spin_lock_init(&nor->chip_lock);
+> +
+>  	/*
+>  	 * call init function to send necessary spi-nor read/write config
+>  	 * commands to nor flash based on above nor settings
+> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+> index 29a8283..244d98d 100644
+> --- a/include/linux/mtd/spi-nor.h
+> +++ b/include/linux/mtd/spi-nor.h
+> @@ -13,6 +13,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/mtd/cfi.h>
+>  #include <linux/mtd/mtd.h>
+> +#include <linux/mtd/flashchip.h>
+>  =
+
+>  /*
+>   * Manufacturer IDs
+> @@ -210,6 +211,9 @@ struct spi_nor {
+>  =
+
+>  	void *priv;
+>  	const struct flash_info *info;
+> +	spinlock_t		chip_lock;
+> +	wait_queue_head_t	wq;
+> +	flstate_t		state;
+>  };
+>  =
+
+>  static inline void spi_nor_set_flash_node(struct spi_nor *nor,
+> =
+
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

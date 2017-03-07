@@ -1,95 +1,247 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH] spi: sun6i: Allow transfers larger than FIFO size
-Date: Tue, 7 Mar 2017 11:18:52 +0100
-Message-ID: <20170307101852.uuxiu5ycd7zbgrxm@lukather>
-References: <20170306121443.36954-1-icenowy@aosc.xyz>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0893829086322692611=="
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
- Alexandru Gagniuc <mr.nuke.me@gmail.com>, linux-arm-kernel@lists.infradead.org
-To: Icenowy Zheng <icenowy@aosc.xyz>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170306121443.36954-1-icenowy@aosc.xyz>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: sun6i: Allow transfers larger than FIFO size" to the spi tree
+Date: Tue, 07 Mar 2017 13:27:39 +0100
+Message-ID: <E1clEDL-0003yr-8Q@finisterre>
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: 
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---===============0893829086322692611==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vptwfxvc7j4c66tt"
-Content-Disposition: inline
+   spi: sun6i: Allow transfers larger than FIFO size
 
+has been applied to the spi tree at
 
---vptwfxvc7j4c66tt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Mon, Mar 06, 2017 at 08:14:43PM +0800, Icenowy Zheng wrote:
-> The spi-sun6i driver have the same problem that spi-sun4i used to have
-> -- SPI transfers are limited to one FIFO depth.
->=20
-> This commit fixes this problem in the same way it's fixed in spi-sun4i.
-> See commit 196737912da5 ("spi: sun4i: Allow transfers larger than FIFO si=
-ze")
-> for more information.
->=20
-> The sun6i SPI controllers features changeable interrupt trigger level, bu=
-t I
-> set it to 3/4 of fifo depth, as same as the the sun4i SPI controllers.
->=20
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Maxime
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---vptwfxvc7j4c66tt
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From 913f536c6c18a2e19e32f06971101c1d0ae3739c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
+Date: Mon, 6 Mar 2017 20:14:43 +0800
+Subject: [PATCH] spi: sun6i: Allow transfers larger than FIFO size
 
-iQIcBAEBCAAGBQJYvokMAAoJEBx+YmzsjxAgTv0P/jfyDyvh79zhCzq8j2GT4iDK
-wgIUxNEtWCFBUaX9bgwtNdeKoBntuL1ZpkzQI8ORgHo4Y4jFWLm6dcdkNzQIOVLY
-LEp/z7cRziaVuNMv/VdIuM5jTeaY7TYfOXUEtCN8R1mIYppPsFzFTqUGB+K20IFN
-laOCPs31IHkWzRs984f8Y0KVYvAMyAs1b3CrWyAJxByfJ6Q0sn2Dm3A+toRhT501
-i9E3Iy9k09OrdQIBpQfsd8iescYn7xn8iQv6/UTyD0BtfitQ5/a2ix7YOcDnw1WW
-2YuK2oawpyExqorcDMq1Z6D/+oUh+EGBAg8taW/vKRme6ERxFj9MpnonhIEMrL1O
-K/2LiL18rqQ1DnBR7lnn51HQlAIrqcYhXXTPvflQWgPqCS8Cs63dIBZoFQnrYWA8
-3n+mCNkduAvPo54RBffaCfr0I+Lk8vNhVbnXNs82yuHfjuV1+e7X1GqXiA4uLqVo
-i2B7vI2kXDp7yr8XxfSKggrbwsgtf+mFTcz2Hg2c0Sw0ZrkKrlcKBlnaoGq3RZRt
-Ahe+fdfCJWGSLgNfd82AcnE9PCA6+xvNCvVUTnhNSji51HZ7M3IdThMJJbuorTxD
-B7VksQGc/3wLRj3HCeC3cv9kK+RA+9nBplxMRU1+ZcfWI9hTutTrqR6RCTbbLO2o
-AG+dyJJ4kAjBHRBzDldH
-=kEoD
------END PGP SIGNATURE-----
+The spi-sun6i driver have the same problem that spi-sun4i used to have
+-- SPI transfers are limited to one FIFO depth.
 
---vptwfxvc7j4c66tt--
+This commit fixes this problem in the same way it's fixed in spi-sun4i.
+See commit 196737912da5 ("spi: sun4i: Allow transfers larger than FIFO size")
+for more information.
 
+The sun6i SPI controllers features changeable interrupt trigger level, but I
+set it to 3/4 of fifo depth, as same as the the sun4i SPI controllers.
 
---===============0893829086322692611==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
+Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-sun6i.c | 90 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 81 insertions(+), 9 deletions(-)
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index e3114832c485..6e9ca93db9bf 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -46,13 +46,19 @@
+ #define SUN6I_TFR_CTL_XCH			BIT(31)
+ 
+ #define SUN6I_INT_CTL_REG		0x10
++#define SUN6I_INT_CTL_RF_RDY			BIT(0)
++#define SUN6I_INT_CTL_TF_ERQ			BIT(4)
+ #define SUN6I_INT_CTL_RF_OVF			BIT(8)
+ #define SUN6I_INT_CTL_TC			BIT(12)
+ 
+ #define SUN6I_INT_STA_REG		0x14
+ 
+ #define SUN6I_FIFO_CTL_REG		0x18
++#define SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_MASK	0xff
++#define SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS	0
+ #define SUN6I_FIFO_CTL_RF_RST			BIT(15)
++#define SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_MASK	0xff
++#define SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_BITS	16
+ #define SUN6I_FIFO_CTL_TF_RST			BIT(31)
+ 
+ #define SUN6I_FIFO_STA_REG		0x1c
+@@ -68,14 +74,16 @@
+ #define SUN6I_CLK_CTL_CDR1(div)			(((div) & SUN6I_CLK_CTL_CDR1_MASK) << 8)
+ #define SUN6I_CLK_CTL_DRS			BIT(12)
+ 
++#define SUN6I_MAX_XFER_SIZE		0xffffff
++
+ #define SUN6I_BURST_CNT_REG		0x30
+-#define SUN6I_BURST_CNT(cnt)			((cnt) & 0xffffff)
++#define SUN6I_BURST_CNT(cnt)			((cnt) & SUN6I_MAX_XFER_SIZE)
+ 
+ #define SUN6I_XMIT_CNT_REG		0x34
+-#define SUN6I_XMIT_CNT(cnt)			((cnt) & 0xffffff)
++#define SUN6I_XMIT_CNT(cnt)			((cnt) & SUN6I_MAX_XFER_SIZE)
+ 
+ #define SUN6I_BURST_CTL_CNT_REG		0x38
+-#define SUN6I_BURST_CTL_CNT_STC(cnt)		((cnt) & 0xffffff)
++#define SUN6I_BURST_CTL_CNT_STC(cnt)		((cnt) & SUN6I_MAX_XFER_SIZE)
+ 
+ #define SUN6I_TXDATA_REG		0x200
+ #define SUN6I_RXDATA_REG		0x300
+@@ -105,6 +113,31 @@ static inline void sun6i_spi_write(struct sun6i_spi *sspi, u32 reg, u32 value)
+ 	writel(value, sspi->base_addr + reg);
+ }
+ 
++static inline u32 sun6i_spi_get_tx_fifo_count(struct sun6i_spi *sspi)
++{
++	u32 reg = sun6i_spi_read(sspi, SUN6I_FIFO_STA_REG);
++
++	reg >>= SUN6I_FIFO_STA_TF_CNT_BITS;
++
++	return reg & SUN6I_FIFO_STA_TF_CNT_MASK;
++}
++
++static inline void sun6i_spi_enable_interrupt(struct sun6i_spi *sspi, u32 mask)
++{
++	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
++
++	reg |= mask;
++	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
++}
++
++static inline void sun6i_spi_disable_interrupt(struct sun6i_spi *sspi, u32 mask)
++{
++	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
++
++	reg &= ~mask;
++	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
++}
++
+ static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int len)
+ {
+ 	u32 reg, cnt;
+@@ -127,10 +160,13 @@ static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int len)
+ 
+ static inline void sun6i_spi_fill_fifo(struct sun6i_spi *sspi, int len)
+ {
++	u32 cnt;
+ 	u8 byte;
+ 
+-	if (len > sspi->len)
+-		len = sspi->len;
++	/* See how much data we can fit */
++	cnt = sspi->fifo_depth - sun6i_spi_get_tx_fifo_count(sspi);
++
++	len = min3(len, (int)cnt, sspi->len);
+ 
+ 	while (len--) {
+ 		byte = sspi->tx_buf ? *sspi->tx_buf++ : 0;
+@@ -170,12 +206,12 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	struct sun6i_spi *sspi = spi_master_get_devdata(master);
+ 	unsigned int mclk_rate, div, timeout;
+ 	unsigned int start, end, tx_time;
++	unsigned int trig_level;
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
+ 	u32 reg;
+ 
+-	/* We don't support transfer larger than the FIFO */
+-	if (tfr->len > sspi->fifo_depth)
++	if (tfr->len > SUN6I_MAX_XFER_SIZE)
+ 		return -EINVAL;
+ 
+ 	reinit_completion(&sspi->done);
+@@ -191,6 +227,17 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 			SUN6I_FIFO_CTL_RF_RST | SUN6I_FIFO_CTL_TF_RST);
+ 
+ 	/*
++	 * Setup FIFO interrupt trigger level
++	 * Here we choose 3/4 of the full fifo depth, as it's the hardcoded
++	 * value used in old generation of Allwinner SPI controller.
++	 * (See spi-sun4i.c)
++	 */
++	trig_level = sspi->fifo_depth / 4 * 3;
++	sun6i_spi_write(sspi, SUN6I_FIFO_CTL_REG,
++			(trig_level << SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS) |
++			(trig_level << SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_BITS));
++
++	/*
+ 	 * Setup the transfer control register: Chip Select,
+ 	 * polarities, etc.
+ 	 */
+@@ -274,6 +321,10 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* Enable the interrupts */
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
++	sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TC |
++					 SUN6I_INT_CTL_RF_RDY);
++	if (tx_len > sspi->fifo_depth)
++		sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TF_ERQ);
+ 
+ 	/* Start the transfer */
+ 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+@@ -293,8 +344,6 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 		goto out;
+ 	}
+ 
+-	sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
+-
+ out:
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
+ 
+@@ -309,10 +358,33 @@ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
+ 	/* Transfer complete */
+ 	if (status & SUN6I_INT_CTL_TC) {
+ 		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TC);
++		sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
+ 		complete(&sspi->done);
+ 		return IRQ_HANDLED;
+ 	}
+ 
++	/* Receive FIFO 3/4 full */
++	if (status & SUN6I_INT_CTL_RF_RDY) {
++		sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
++		/* Only clear the interrupt _after_ draining the FIFO */
++		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_RF_RDY);
++		return IRQ_HANDLED;
++	}
++
++	/* Transmit FIFO 3/4 empty */
++	if (status & SUN6I_INT_CTL_TF_ERQ) {
++		sun6i_spi_fill_fifo(sspi, SUN6I_FIFO_DEPTH);
++
++		if (!sspi->len)
++			/* nothing left to transmit */
++			sun6i_spi_disable_interrupt(sspi, SUN6I_INT_CTL_TF_ERQ);
++
++		/* Only clear the interrupt _after_ re-seeding the FIFO */
++		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TF_ERQ);
++
++		return IRQ_HANDLED;
++	}
++
+ 	return IRQ_NONE;
+ }
+ 
+-- 
+2.11.0
 
---===============0893829086322692611==--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

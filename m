@@ -1,66 +1,106 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: spi-sun4i: how/where to set the bus number of spi_master ?
-Date: Wed, 8 Mar 2017 08:16:00 +0100
-Message-ID: <20170308071600.lcaajbpvok2s3kzz@lukather>
-References: <d8190d82-c2bc-2ed0-79d6-d326248944aa@googlemail.com>
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Re: Applied "spi: davinci: enable DMA when channels are defined in
+ DT" to the spi tree
+Date: Wed, 8 Mar 2017 11:35:02 +0100
+Message-ID: <11df78f1-7b4e-5093-f166-b3af21c03abc@baylibre.com>
+References: <E1clG07-0006mU-6x@finisterre>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="5u5qwcehjcvgltkw"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Frank =?iso-8859-1?Q?Sch=E4fer?= <fschaefer.oss-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        nsekhar-l0cyMroinI0@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <d8190d82-c2bc-2ed0-79d6-d326248944aa-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <E1clG07-0006mU-6x@finisterre>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello Mark,
 
---5u5qwcehjcvgltkw
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+To avoid data corruption issues with UBIFS volume over SPI NOR, DMA should not be used for vmalloc'ed buffers. The 5'th patch in my series fixes that:
 
-On Tue, Mar 07, 2017 at 07:21:14PM +0100, Frank Sch=E4fer wrote:
-> trying to get a TFT display working on a Banana Pi M1 board, I noticed th=
-at
-> the spi-sun4i driver doesn't set the bus number of the spi_master (which
-> leaves it at its default value -1).
-> fbtft_device driver fails to load for that reason.
-> What's the right fix for this ? Is this something that needs to be added =
-to
-> the boards device tree file ?
+0003-spi-davinci-use-rx-buffer-as-dummy-tx-buffer.patch
+0004-spi-davinci-do-not-use-DMA-if-transfer-length-is-les.patch
+0005-spi-davinci-do-not-use-DMA-for-vmalloc-ed-buffers.patch
 
-Yes, you need to set an alias.
-https://linux-sunxi.org/SPIdev#Configuring_your_device-tree_.28mainline.29
+Thanks,
 
-Maxime
+Frode
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
 
---5u5qwcehjcvgltkw
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+On 07/03/2017 15:22, Mark Brown wrote:
+> The patch
+>
+>    spi: davinci: enable DMA when channels are defined in DT
+>
+> has been applied to the spi tree at
+>
+>    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+>
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.  
+>
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+>
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+>
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+>
+> Thanks,
+> Mark
+>
+> From 3e2e1258443ea97e40dfb4a3cf15108d17939066 Mon Sep 17 00:00:00 2001
+> From: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> Date: Thu, 23 Feb 2017 19:01:57 +0100
+> Subject: [PATCH] spi: davinci: enable DMA when channels are defined in DT
+>
+> When booting with DT the SPI driver is always using
+> the SPI_IO_TYPE_INTR mode to transfer data even if DMA channels are
+> defined in the DT.
+>
+> This commit changes the behaviour to select the SPI_IO_TYPE_DMA mode
+> if DMA channels are defined in the DT and will keep SPI_IO_TYPE_INTR
+> if the channels are not defined in it.
+>
+> Signed-off-by: Fabien Parent <fparent-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi-davinci.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index 164cc719be54..1e24395a04f2 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -389,6 +389,7 @@ static int davinci_spi_of_setup(struct spi_device *spi)
+>  {
+>  	struct davinci_spi_config *spicfg = spi->controller_data;
+>  	struct device_node *np = spi->dev.of_node;
+> +	struct davinci_spi *dspi = spi_master_get_devdata(spi->master);
+>  	u32 prop;
+>  
+>  	if (spicfg == NULL && np) {
+> @@ -400,6 +401,9 @@ static int davinci_spi_of_setup(struct spi_device *spi)
+>  		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
+>  			spicfg->wdelay = (u8)prop;
+>  		spi->controller_data = spicfg;
+> +
+> +		if (dspi->dma_rx && dspi->dma_tx)
+> +			spicfg->io_type = SPI_IO_TYPE_DMA;
+>  	}
+>  
+>  	return 0;
 
-iQIcBAEBCAAGBQJYv6+sAAoJEBx+YmzsjxAgug0P/Rqet+qxSGIaP7Ngu/mt57Ip
-8HQwgDMOGO3j8sArQoOx/Lgumg4dEmvIhylDnmQICWSJ0mwQ+cSlQYdmqn9CtsMv
-u3xx9DRA0EsBoopORpKOuXCRxn9Ud+Nm1EFPo8FDqAzpaViiOoHcuEugFAHw85SG
-Y988lZ06cjchFw+p4JOPyzi3ZUjpXCsmFZ9BSn70bK4MAN1r07WwMHabqdwdEIXH
-u/CUbxEgqp6mY8W/Ch0X7C1CWUIrLjFU7LXY7nylRzpjXVxRuO7Bt8c9FPKlWqDI
-/uYbpp8X44xXiRVBWBLK4PRv9FobhcS3giMd3beTeTsG52XD3hq0d8NsllP49Iid
-guL8LJfiwcm8kyXceVLQvnHn1+0QiJWkov9KxpylEb36d+/GayYbZMjfpTOQmmmO
-zWw88fRhSHrjgWUnrsT2Zs504TLTENklPLyub1s0pLpqBPoJEj/6s4sU+PLINGYD
-U7hHidiUViTs3kODeoY4t+5etbpeDWWR9rmlMBfkD78TYmU1h/KtnxQ+9pwJk0z9
-OyJCioAe4ieZ6dxvk+tQb25wlZtRe2KSaT1YLcUAu+J4Oyh+/jxsDrRm+GMBXlwS
-88e4iZiWPt5NX1aHAWo7SAZYQJixeKKKhehc3FaeOMA/S7L2r70PbW6SCaimAVXB
-bFS8YhzOFp2Im0o61ra+
-=HPPC
------END PGP SIGNATURE-----
-
---5u5qwcehjcvgltkw--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

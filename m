@@ -1,48 +1,46 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: davinci: enable DMA when channels are defined in
- DT" to the spi tree
-Date: Wed, 8 Mar 2017 13:43:16 +0100
-Message-ID: <20170308124316.56vn2qijllu6mi3v@sirena.org.uk>
-References: <E1clG07-0006mU-6x@finisterre>
- <11df78f1-7b4e-5093-f166-b3af21c03abc@baylibre.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ad7vpasrwnav4phg"
-Cc: Fabien Parent <fparent@baylibre.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nsekhar@ti.com,
-        ptitiano@baylibre.com, khilman@baylibre.com
-To: Frode Isaksen <fisaksen@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <11df78f1-7b4e-5093-f166-b3af21c03abc@baylibre.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
+Subject: [PATCH] spi: fsl: Call irq_dispose_mapping in err path
+Date: Thu,  9 Mar 2017 22:40:01 +0800
+Message-ID: <1489070401-5663-1-git-send-email-liu.xiang6@zte.com.cn>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Irq_dispose_mapping should be called in err path to release
+the resources that irq_of_parse_and_map requested.
 
---ad7vpasrwnav4phg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-spi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Wed, Mar 08, 2017 at 11:35:02AM +0100, Frode Isaksen wrote:
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 8b290d9..5920343 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -813,7 +813,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct spi_master *master;
+ 	struct resource mem;
+-	int irq, type;
++	int irq = 0, type;
+ 	int ret = -ENOMEM;
+ 
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+@@ -846,6 +846,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	return 0;
+ 
+ err:
++	irq_dispose_mapping(irq);
+ 	if (type == TYPE_FSL)
+ 		of_fsl_spi_free_chipselects(dev);
+ 	return ret;
+-- 
+1.9.1
 
-> To avoid data corruption issues with UBIFS volume over SPI NOR, DMA should not be used for vmalloc'ed buffers. The 5'th patch in my series fixes that:
-
-It's best to always try to ensure that your patch serieses are
-bisectable...
-
---ad7vpasrwnav4phg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAli//GMACgkQJNaLcl1U
-h9D9BQf9E5QKvVHtDgUizVN7yVtSoPidiTwOBtNYsh5Y2WiQjkzsjMgc8rRtSrYR
-LORw2SGI8dGMRFiCQ7FPd38gzmYf/Tu2H21rpLSjtySdJgBVXBGmcf3cCeC47LEp
-DsjwpRDOQo32Tjc0pobRdKcy4Me0UzcXkK2tVOnpCiWjACacO4e/GAU3U/TBMvXB
-bHn6igM0nj3GiL3mIce6pBdAplHDorhS/JFuBtEmrKL4/YS2mOILQCfXWJIhUsrW
-0AocT29suWJpcHB7hxyE1FtwUiUPjV8ACZi9lrbT5shRXYRABM5SNuvpP4FIt945
-o0I2i33XYyTpwgNOsaQlB3+m+P0woA==
-=1uS4
------END PGP SIGNATURE-----
-
---ad7vpasrwnav4phg--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

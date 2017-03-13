@@ -1,24 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree bindings" to the spi tree
-Date: Mon, 13 Mar 2017 16:57:18 +0000
-Message-ID: <E1cnTHa-0004tq-MY@debutante>
-References: <20170301090814.7097-2-jonas.gorski@gmail.com>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: fsl: Call irq_dispose_mapping in err path" to the spi tree
+Date: Mon, 13 Mar 2017 16:57:12 +0000
+Message-ID: <E1cnTHU-0004rn-N8@debutante>
+References: <1489070401-5663-1-git-send-email-liu.xiang6@zte.com.cn>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170301090814.7097-2-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1489070401-5663-1-git-send-email-liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree bindings
+   spi: fsl: Call irq_dispose_mapping in err path
 
 has been applied to the spi tree at
 
@@ -43,62 +38,41 @@ to this mail.
 Thanks,
 Mark
 
->From 8c0951afd8a7585a4281980b9a21dcc8a419cad9 Mon Sep 17 00:00:00 2001
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 1 Mar 2017 10:08:13 +0100
-Subject: [PATCH] spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree
- bindings
+>From 500a32abaf818b3f4afe5b7f0ba9ca9b7a3aa65e Mon Sep 17 00:00:00 2001
+From: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
+Date: Thu, 9 Mar 2017 22:40:01 +0800
+Subject: [PATCH] spi: fsl: Call irq_dispose_mapping in err path
 
-Add documentation for the bindings of the high speed SPI controller found
-on newer bcm63xx SoCs.
+Irq_dispose_mapping should be called in err path to release
+the resources that irq_of_parse_and_map requested.
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/spi/spi-bcm63xx-hsspi.txt  | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+ drivers/spi/spi-fsl-spi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-new file mode 100644
-index 000000000000..37b29ee13860
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
-@@ -0,0 +1,33 @@
-+Binding for Broadcom BCM6328 High Speed SPI controller
-+
-+Required properties:
-+- compatible: must contain of "brcm,bcm6328-hsspi".
-+- reg: Base address and size of the controllers memory area.
-+- interrupts: Interrupt for the SPI block.
-+- clocks: phandles of the SPI clock and the PLL clock.
-+- clock-names: must be "hsspi", "pll".
-+- #address-cells: <1>, as required by generic SPI binding.
-+- #size-cells: <0>, also as required by generic SPI binding.
-+
-+Optional properties:
-+- num-cs: some controllers have less than 8 cs signals. Defaults to 8
-+  if absent.
-+
-+Child nodes as per the generic SPI binding.
-+
-+Example:
-+
-+	spi@10001000 {
-+		compatible = "brcm,bcm6328-hsspi";
-+		reg = <0x10001000 0x600>;
-+
-+		interrupts = <29>;
-+
-+		clocks = <&clkctl 9>, <&hsspi_pll>;
-+		clock-names = "hsspi", "pll";
-+
-+		num-cs = <2>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 8b290d9d7935..592034320a41 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -813,7 +813,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct spi_master *master;
+ 	struct resource mem;
+-	int irq, type;
++	int irq = 0, type;
+ 	int ret = -ENOMEM;
+ 
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+@@ -846,6 +846,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	return 0;
+ 
+ err:
++	irq_dispose_mapping(irq);
+ 	if (type == TYPE_FSL)
+ 		of_fsl_spi_free_chipselects(dev);
+ 	return ret;
 -- 
 2.11.0
 

@@ -1,144 +1,106 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [RFC] spi: imx: fix use of native chip-selects with devicetree
-Date: Mon, 13 Mar 2017 22:26:31 +1000
-Message-ID: <1d60ce9b-3320-1395-863c-3e7bbecf4273@linux-m68k.org>
-References: <1489378139-11707-1-git-send-email-gerg@linux-m68k.org>
- <CAMuHMdVmNYq0Wf60P2GbfVpRLDv+c65A+R=Z=gfgr=_VE6BAQA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree bindings" to the spi tree
+Date: Mon, 13 Mar 2017 16:57:18 +0000
+Message-ID: <E1cnTHa-0004tq-MY@debutante>
+References: <20170301090814.7097-2-jonas.gorski@gmail.com>
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVmNYq0Wf60P2GbfVpRLDv+c65A+R=Z=gfgr=_VE6BAQA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20170301090814.7097-2-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
+The patch
 
-On 13/03/17 18:29, Geert Uytterhoeven wrote:
-> On Mon, Mar 13, 2017 at 5:08 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->> I have an iMX253 based system with 2 SPI buses, one with a flash hanging
->> of it, and one with a SLIC. On modern kernels (I am using 4.9 - but I
->> think current mainline 4.11-rc2 is the same) the SPI bus with the SLIC
->> device can't be configured to work with a devicetree setup.
->>
->> The problem is that the SLIC device hardware arrangement needs to use the
->> iMX SPI native chipselect to provide the neccessary hardware cycles.
->> Maybe I am missing something but I can't see how that can be made to work
->> with the current devicetree setup required on this platform.
->>
->> It would appear that using a cs_gpio field of "<0>" is meant to indicate
->> use of a native chipselect - though I couldn't find that documented
->> anywhere. In any case I couldn't see any other way to do it either.
->
-> There's no need to use "cs-gpios = <0>".  You should just leave out the
-> "cs-gpios" property for SPI slaves using native chip select, and the driver
-> should use the native chip select, based on the value of the "reg" property.
+   spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree bindings
 
-I agree, and that was my first thought. But the spi-imx.c driver
-will explicitly fail in the probe with:
+has been applied to the spi tree at
 
-   spi.1: No CS GPIOs available
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-if you don't have a "cs-gpios" tag in the devicetree entry.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
->> But with a cs_gpio field set to "<0>" the config code doesn't correctly
->> configure the iMX SPI registers to use a native chipselect. In fact it
->> actively looks wrong in the way it mangles the cs_gpio to calculate a
->> native chipselect when using a devicetree (it looks like it would be
->> correct for the platform setup case though).
->
-> I cannot comment on the iMX hardware specifics.
->
->> The commonly used mechanism of specifying the native chipselect on an
->> SPI device in devicetree (that is "cs-gpios = <0> ...") does not result
->> in the native chipselect being configured for use. So external SPI
->> devices that require use of the native chipselect will not work.
->>
->> You can successfully specify native chipselects if using a platform
->> setup by specifying the cs-gpio as negative offset by 32. And that
->> looks to be working correctly.
->
-> Just don't use "cs-gpios", cfr. above.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-In addition to fixing the actual register setting code, I
-think the spi-imx.c driver needs to be fixed to allow this too.
-But that is for another patch.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark
 
->> The logic in the spi-imx.c driver during probe uses core spi function
->> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
->> For valid GPIO values that will be recorded for use, all other entries in
->> cs_gpios list will be set to -ENOENT. So entries like "<0>" will be set
->> to -ENOENT in the cs_gpios list.
->
-> Yep, that's what the core SPI code does.
->
->> When the SPI device registers are setup the code will use the GPIO
->> listed in the cs_gpios list for the desired chipselect. If the cs_gpio
->> is less then 0 then it is intended to be for a native chipselect, and
->> its cs_gpio value is added to 32 to get the chipselect number to use.
->> Problem is that with devicetree this can only ever be -ENOENT (which
->> is -2), and that alone results in an invalid chipselect number. But also
->> doesn't allow selection of the native chipselect at all.
->
-> Ugh, that's indeed wrong.
->
->> To fix I modified the setup logic so that if cs_gpio is less than 0,
->> and it is -ENOENT, then we use the chipselect number associated with
->> this spi device. This will allow platform setups to continue to be able
->> to specify the chipselect number they want, and on devicetree systems
->> the absence of a valid GPIO will use the native chipselect.
->
-> Ah, the real issue is that spi_new_device() / spi_add_device() (called
-> from spi_register_board_info()) don't seem to support mixing cs_gpio
-> and native CS?
->
->> Acked-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->
-> SoB? (Wrong preprogrammed key? ;-)
+>From 8c0951afd8a7585a4281980b9a21dcc8a419cad9 Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 1 Mar 2017 10:08:13 +0100
+Subject: [PATCH] spi/bcm63xx-hsspi: document bcm63xx HS SPI devicetree
+ bindings
 
-Ah... brain not engaged after debugging this :-)
+Add documentation for the bindings of the high speed SPI controller found
+on newer bcm63xx SoCs.
 
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ .../devicetree/bindings/spi/spi-bcm63xx-hsspi.txt  | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
 
->> ---
->>  drivers/spi/spi-imx.c | 17 +++++++++++------
->>  1 file changed, 11 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->> index 9a7c62f..c6e13f7 100644
->> --- a/drivers/spi/spi-imx.c
->> +++ b/drivers/spi/spi-imx.c
->> @@ -516,10 +516,12 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
->>                 reg |= MX31_CSPICTRL_POL;
->>         if (spi->mode & SPI_CS_HIGH)
->>                 reg |= MX31_CSPICTRL_SSPOL;
->> -       if (spi->cs_gpio < 0)
->> -               reg |= (spi->cs_gpio + 32) <<
->> -                       (is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
->> -                                                 MX31_CSPICTRL_CS_SHIFT);
->> +       if (spi->cs_gpio < 0) {
->
-> if (!gpio_is_valid(spi->cs_gpio)) {
->
->> +               int cs = (spi->cs_gpio == -ENOENT) ? spi->chip_select :
->> +                                                    spi->cs_gpio + 32;
->
-> I don't think the check for -ENOENT is needed, and thus you can always
-> just use spi->chip-select directly.
->
-> Same comments for the mx21 code.
-
-I suspect that is the case. I didn't check back through all the
-platform setups that currently rely on this "+ 32" mapping logic.
-I would expect that they should all end up with spi->chip_select
-being correct (and not needing cs_gpio here at all).
-
-Regards
-Greg
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+new file mode 100644
+index 000000000000..37b29ee13860
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx-hsspi.txt
+@@ -0,0 +1,33 @@
++Binding for Broadcom BCM6328 High Speed SPI controller
++
++Required properties:
++- compatible: must contain of "brcm,bcm6328-hsspi".
++- reg: Base address and size of the controllers memory area.
++- interrupts: Interrupt for the SPI block.
++- clocks: phandles of the SPI clock and the PLL clock.
++- clock-names: must be "hsspi", "pll".
++- #address-cells: <1>, as required by generic SPI binding.
++- #size-cells: <0>, also as required by generic SPI binding.
++
++Optional properties:
++- num-cs: some controllers have less than 8 cs signals. Defaults to 8
++  if absent.
++
++Child nodes as per the generic SPI binding.
++
++Example:
++
++	spi@10001000 {
++		compatible = "brcm,bcm6328-hsspi";
++		reg = <0x10001000 0x600>;
++
++		interrupts = <29>;
++
++		clocks = <&clkctl 9>, <&hsspi_pll>;
++		clock-names = "hsspi", "pll";
++
++		num-cs = <2>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
+-- 
+2.11.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

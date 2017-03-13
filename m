@@ -1,74 +1,112 @@
-From: Jayachandran C <jnair-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH] spi: xlp: update for ARCH_VULCAN2
-Date: Sun, 12 Mar 2017 11:11:43 +0000
-Message-ID: <1489317103-5329-1-git-send-email-jnair@caviumnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Jayachandran C <jnair-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>, Kamlakant.Patel-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [RFC] spi: imx: fix use of native chip-selects with devicetree
+Date: Mon, 13 Mar 2017 14:08:59 +1000
+Message-ID: <1489378139-11707-1-git-send-email-gerg@linux-m68k.org>
+Cc: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-ARCH_VULCAN arm64 platform (for Broadcom Vulcan ARM64 processors) has
-been discontinued. Cavium's ThunderX2 CN99XX (ARCH_THUNDER2) will be
-the next revision of the platform.
+I have an iMX253 based system with 2 SPI buses, one with a flash hanging
+of it, and one with a SLIC. On modern kernels (I am using 4.9 - but I
+think current mainline 4.11-rc2 is the same) the SPI bus with the SLIC
+device can't be configured to work with a devicetree setup.
 
-Update compile dependencies and ACPI ID to reflect this change. There
-is not need to retain ARCH_VULCAN since the Vulcan processor was never
-in production and ARCH_VULCAN will be deleted soon.
+The problem is that the SLIC device hardware arrangement needs to use the
+iMX SPI native chipselect to provide the neccessary hardware cycles.
+Maybe I am missing something but I can't see how that can be made to work
+with the current devicetree setup required on this platform.
 
-Signed-off-by: Jayachandran C <jnair-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+It would appear that using a cs_gpio field of "<0>" is meant to indicate
+use of a native chipselect - though I couldn't find that documented
+anywhere. In any case I couldn't see any other way to do it either.
+
+But with a cs_gpio field set to "<0>" the config code doesn't correctly
+configure the iMX SPI registers to use a native chipselect. In fact it
+actively looks wrong in the way it mangles the cs_gpio to calculate a
+native chipselect when using a devicetree (it looks like it would be
+correct for the platform setup case though).
+
+Below is the patch I came up with to fix it for my hardware. This results
+in the correct native chipselect being set for my SLIC hardware and it
+all works nicely.
+
+Is this on the right track or have I missed something comepletely?
+
+--------
+
+The commonly used mechanism of specifying the native chipselect on an
+SPI device in devicetree (that is "cs-gpios = <0> ...") does not result
+in the native chipselect being configured for use. So external SPI
+devices that require use of the native chipselect will not work.
+
+You can successfully specify native chipselects if using a platform
+setup by specifying the cs-gpio as negative offset by 32. And that
+looks to be working correctly.
+
+The logic in the spi-imx.c driver during probe uses core spi function
+of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+For valid GPIO values that will be recorded for use, all other entries in
+cs_gpios list will be set to -ENOENT. So entries like "<0>" will be set
+to -ENOENT in the cs_gpios list.
+
+When the SPI device registers are setup the code will use the GPIO
+listed in the cs_gpios list for the desired chipselect. If the cs_gpio
+is less then 0 then it is intended to be for a native chipselect, and
+its cs_gpio value is added to 32 to get the chipselect number to use.
+Problem is that with devicetree this can only ever be -ENOENT (which
+is -2), and that alone results in an invalid chipselect number. But also
+doesn't allow selection of the native chipselect at all.
+
+To fix I modified the setup logic so that if cs_gpio is less than 0,
+and it is -ENOENT, then we use the chipselect number associated with
+this spi device. This will allow platform setups to continue to be able
+to specify the chipselect number they want, and on devicetree systems
+the absence of a valid GPIO will use the native chipselect.
+
+Acked-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
-[ I am keeping both changes in the same patch hoping it will go in thru
- the SPI maintainer, but I can split this to 2 if needed]
+ drivers/spi/spi-imx.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
- drivers/acpi/acpi_apd.c | 1 +
- drivers/spi/Kconfig     | 2 +-
- drivers/spi/spi-xlp.c   | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 26696b6..17a1eb1 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -169,6 +169,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
- #ifdef CONFIG_ARM64
- 	{ "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
- 	{ "BRCM900D", APD_ADDR(vulcan_spi_desc) },
-+	{ "CAV900D",  APD_ADDR(vulcan_spi_desc) },
- #endif
- 	{ }
- };
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 25ae7f2e..1761c90 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -715,7 +715,7 @@ config SPI_XILINX
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 9a7c62f..c6e13f7 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -516,10 +516,12 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX31_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX31_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) <<
+-			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+-						  MX31_CSPICTRL_CS_SHIFT);
++	if (spi->cs_gpio < 0) {
++		int cs = (spi->cs_gpio == -ENOENT) ? spi->chip_select :
++						     spi->cs_gpio + 32;
++		reg |= cs << (is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
++						       MX31_CSPICTRL_CS_SHIFT);
++	}
  
- config SPI_XLP
- 	tristate "Netlogic XLP SPI controller driver"
--	depends on CPU_XLP || ARCH_VULCAN || COMPILE_TEST
-+	depends on CPU_XLP || ARCH_THUNDER2 || COMPILE_TEST
- 	help
- 	  Enable support for the SPI controller on the Netlogic XLP SoCs.
- 	  Currently supported XLP variants are XLP8XX, XLP3XX, XLP2XX, XLP9XX
-diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
-index bea7a93..80cb4d6 100644
---- a/drivers/spi/spi-xlp.c
-+++ b/drivers/spi/spi-xlp.c
-@@ -442,6 +442,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
- #ifdef CONFIG_ACPI
- static const struct acpi_device_id xlp_spi_acpi_match[] = {
- 	{ "BRCM900D", 0 },
-+	{ "CAV900D",  0 },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
+ 	if (spi_imx->usedma)
+ 		reg |= MX31_CSPICTRL_SMC;
+@@ -608,8 +610,11 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX21_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX21_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
++	if (spi->cs_gpio < 0) {
++		int cs = (spi->cs_gpio == -ENOENT) ? spi->chip_select :
++						     spi->cs_gpio + 32;
++		reg |= cs << MX21_CSPICTRL_CS_SHIFT;
++	}
+ 
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 
 -- 
-2.7.4
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

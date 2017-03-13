@@ -1,24 +1,21 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx-hsspi: allow providing clock rate through a second clock" to the spi tree
-Date: Mon, 13 Mar 2017 16:57:21 +0000
-Message-ID: <E1cnTHd-0004up-MC@debutante>
-References: <20170222131940.31085-1-jonas.gorski@gmail.com>
-Cc: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: xlp: update for ARCH_VULCAN2" to the spi tree
+Date: Mon, 13 Mar 2017 16:57:09 +0000
+Message-ID: <E1cnTHR-0004r0-Ni@debutante>
+References: <1489317103-5329-1-git-send-email-jnair@caviumnetworks.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kamlakant.Patel@cavium.com, linux-spi@vger.kernel.org
+To: Jayachandran C <jnair@caviumnetworks.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1489317103-5329-1-git-send-email-jnair@caviumnetworks.com>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/bcm63xx-hsspi: allow providing clock rate through a second clock
+   spi: xlp: update for ARCH_VULCAN2
 
 has been applied to the spi tree at
 
@@ -43,51 +40,64 @@ to this mail.
 Thanks,
 Mark
 
->From ff18e1ef04e2073889569b07a5ddd54a6527917f Mon Sep 17 00:00:00 2001
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 1 Mar 2017 10:08:12 +0100
-Subject: [PATCH] spi/bcm63xx-hsspi: allow providing clock rate through a
- second clock
+>From 251831bd4f4903415da7f0ce04dc0de26bc43f1d Mon Sep 17 00:00:00 2001
+From: Jayachandran C <jnair@caviumnetworks.com>
+Date: Sun, 12 Mar 2017 11:11:43 +0000
+Subject: [PATCH] spi: xlp: update for ARCH_VULCAN2
 
-The HSSPI block actually has two clock inputs, one for gating the block,
-and one for the PLL rate. To allow these to be represented as two clocks,
-add support for retrieving the rate from a separate "pll" clock, if the
-"hsspi" clock does not provide one.
+ARCH_VULCAN arm64 platform (for Broadcom Vulcan ARM64 processors) has
+been discontinued. Cavium's ThunderX2 CN99XX (ARCH_THUNDER2) will be
+the next revision of the platform.
 
-Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Update compile dependencies and ACPI ID to reflect this change. There
+is not need to retain ARCH_VULCAN since the Vulcan processor was never
+in production and ARCH_VULCAN will be deleted soon.
+
+Signed-off-by: Jayachandran C <jnair@caviumnetworks.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_apd.c | 1 +
+ drivers/spi/Kconfig     | 2 +-
+ drivers/spi/spi-xlp.c   | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 55789f7cda92..79096d17ebde 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -351,8 +351,16 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 		return PTR_ERR(clk);
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 7dd70927991e..89e74d0a6c33 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -164,6 +164,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ #ifdef CONFIG_ARM64
+ 	{ "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
+ 	{ "BRCM900D", APD_ADDR(vulcan_spi_desc) },
++	{ "CAV900D",  APD_ADDR(vulcan_spi_desc) },
+ #endif
+ 	{ }
+ };
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ec4aa252d6e8..8c40b5216ad6 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -705,7 +705,7 @@ config SPI_XILINX
  
- 	rate = clk_get_rate(clk);
--	if (!rate)
--		return -EINVAL;
-+	if (!rate) {
-+		struct clk *pll_clk = devm_clk_get(dev, "pll");
-+
-+		if (IS_ERR(pll_clk))
-+			return PTR_ERR(pll_clk);
-+
-+		rate = clk_get_rate(pll_clk);
-+		if (!rate)
-+			return -EINVAL;
-+	}
- 
- 	ret = clk_prepare_enable(clk);
- 	if (ret)
+ config SPI_XLP
+ 	tristate "Netlogic XLP SPI controller driver"
+-	depends on CPU_XLP || ARCH_VULCAN || COMPILE_TEST
++	depends on CPU_XLP || ARCH_THUNDER2 || COMPILE_TEST
+ 	help
+ 	  Enable support for the SPI controller on the Netlogic XLP SoCs.
+ 	  Currently supported XLP variants are XLP8XX, XLP3XX, XLP2XX, XLP9XX
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index bea7a93a6046..80cb4d6af892 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -442,6 +442,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id xlp_spi_acpi_match[] = {
+ 	{ "BRCM900D", 0 },
++	{ "CAV900D",  0 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
 -- 
 2.11.0
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

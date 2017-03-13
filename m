@@ -1,53 +1,77 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: davinci: enable DMA when channels are defined in
- DT" to the spi tree
-Date: Mon, 13 Mar 2017 16:43:02 +0000
-Message-ID: <20170313164302.7m6clt7ohnipuhjh@sirena.org.uk>
-References: <E1clG07-0006mU-6x@finisterre>
- <11df78f1-7b4e-5093-f166-b3af21c03abc@baylibre.com>
- <20170308124316.56vn2qijllu6mi3v@sirena.org.uk>
- <8ba9a2e0-6666-958f-b5a7-b73b047bb6ac@baylibre.com>
+From: Adrian Fiergolski <Adrian.Fiergolski-vJEk5272eHo@public.gmane.org>
+Subject: Re: [PATCH] spi: Add spi-bits-per-word binding.
+Date: Mon, 13 Mar 2017 18:25:53 +0100
+Message-ID: <983e943b-30f2-7d80-294a-df29bca11738@cern.ch>
+References: <20170217101151.hyzmz5a4lgdy7p5m>
+ <20170220153512.6563-1-adrian.fiergolski@cern.ch>
+ <20170221190830.xyubgimyc2w5p5v6@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wfl4aixo27jllgtv"
-Cc: Fabien Parent <fparent@baylibre.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nsekhar@ti.com,
-        ptitiano@baylibre.com, khilman@baylibre.com
-To: Frode Isaksen <fisaksen@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <8ba9a2e0-6666-958f-b5a7-b73b047bb6ac@baylibre.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <miguel.ojeda.sandonis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170221190830.xyubgimyc2w5p5v6-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---wfl4aixo27jllgtv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I think, we misunderstand. Any line of spidev (or device driver in
+general) is called, if master, setting its bit_per_word_mask, doesn't
+cover 8 bits per word. Thus, in such a case, any device driver has a
+possibility to be registered and handle the "limited capabilities of the
+controller". IMHO, the problem is in the spi core itself. I will try to
+be more clear.
 
-On Fri, Mar 10, 2017 at 11:24:43AM +0100, Frode Isaksen wrote:
+In my case, xilinx_spi_probe function (of spi-xilinx controller) sets
+bits_per_word_mask of spi_master struct only to 16 bits support. Later,
+xilinx_spi_probe calls of_register_spi_devices, which calls
+of_register_spi_devices. The last one allocates an empty spi_device
+struct and configures different options of the spi_device according to a
+device tree. bits_per_word are not covered here (why?), thus it is left
+0 (value after allocation), which, by convention, means 8 bits support.
+At the end, the same function (of_register_spi_device) calls
+spi_add_device which finally calls spi_setup. The last call, according
+to convention, changes bits_per_word to 8 and calls
+__spi_validate_bits_per_word which fails, as master doesn't support 8
+bit transmission. This fails registration sequence of a device driver.
+As you see, the device driver doesn't have possibility to modify
+bits_per_word during the registration process, thus it can't provide
+support for such limited controllers.
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+Regards,
+Adrian
 
-> My wrong - do you want me to re-submit the patch series with the the last patch in the series that really enabled DMA ?
 
-I'm still reviewing the rest of the series.
+On 21.02.2017 at 20:08, Mark Brown wrote:
+> On Mon, Feb 20, 2017 at 04:35:12PM +0100, Adrian Fiergolski wrote:
+>> If an SPI controller doesn't support 8 bit transfers
+>> (master->bits_per_word_mask), it will be never registered (tested with=
 
---wfl4aixo27jllgtv
-Content-Type: application/pgp-signature; name="signature.asc"
+>> spidev):
+>> of_register_spi_device calls spi_add_device which calls spi_setup. The=
+ last
+>> takes as an argument spi_device struct, which, in case of spidev, has
+>> bits_per_word set to 0. Thus, the spi_setup function will set it to de=
+fault
+>> 8. Further, the same function will call __spi_validate_bits_per_word w=
+hich
+>> will fail the whole registration for controllers not supporting 8 bit
+>> transfers (i.e. xilinx-spi).
+> This doens't make much sense, if a device driver requires a given numbe=
+r
+> of bits per word forcing a different value via device tree is not going=
 
------BEGIN PGP SIGNATURE-----
+> to result in the driver actually working.  If you want to use a device
+> with a controller with restricted bits per word support you need to
+> change the device driver to support the limited capabilities of the
+> controller.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAljGzBUACgkQJNaLcl1U
-h9D8twf8CuPIwxPd1nJrracUy6+apxhcYcyeWU4tmeapziCJGHzN9lck8HWJjL0Q
-YjR4nCpMh8iDfCvsfyucWzsN145K7TZtE68phVmSdGL9nRTf0DmrDafOUKDPb/fP
-TPa6K7QHda7th0rF3dmUtVYieyau1ZUAWHBi4Z4iaWAhuHgKV9dQFm9dUFo1IMWc
-oVoi1wWpqOB3uMGOnU/ndJbTKfJvjRoVfK2F4uCgY/D5NFh2kAk9f4zF6OpFOgGr
-3/7Ncfl8YjuFYL7RHSwYo/5WQB0b5yxp1VqsSzZM5AAHYod0gw18nV8fZoABtV4F
-b6WTKPAmi5VydkrZCp5/cNV+DPd4jA==
-=azOR
------END PGP SIGNATURE-----
 
---wfl4aixo27jllgtv--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

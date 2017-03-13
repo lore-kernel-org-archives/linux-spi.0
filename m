@@ -1,19 +1,24 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl: Call irq_dispose_mapping in err path" to the spi tree
-Date: Mon, 13 Mar 2017 16:57:12 +0000
-Message-ID: <E1cnTHU-0004rn-N8@debutante>
-References: <1489070401-5663-1-git-send-email-liu.xiang6@zte.com.cn>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489070401-5663-1-git-send-email-liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Subject: Applied "spi/bcm63xx-hsspi: allow providing clock rate through a second clock" to the spi tree
+Date: Mon, 13 Mar 2017 16:57:21 +0000
+Message-ID: <E1cnTHd-0004up-MC@debutante>
+References: <20170222131940.31085-1-jonas.gorski@gmail.com>
+Cc: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170222131940.31085-1-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fsl: Call irq_dispose_mapping in err path
+   spi/bcm63xx-hsspi: allow providing clock rate through a second clock
 
 has been applied to the spi tree at
 
@@ -38,45 +43,51 @@ to this mail.
 Thanks,
 Mark
 
->From 500a32abaf818b3f4afe5b7f0ba9ca9b7a3aa65e Mon Sep 17 00:00:00 2001
-From: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
-Date: Thu, 9 Mar 2017 22:40:01 +0800
-Subject: [PATCH] spi: fsl: Call irq_dispose_mapping in err path
+>From ff18e1ef04e2073889569b07a5ddd54a6527917f Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 1 Mar 2017 10:08:12 +0100
+Subject: [PATCH] spi/bcm63xx-hsspi: allow providing clock rate through a
+ second clock
 
-Irq_dispose_mapping should be called in err path to release
-the resources that irq_of_parse_and_map requested.
+The HSSPI block actually has two clock inputs, one for gating the block,
+and one for the PLL rate. To allow these to be represented as two clocks,
+add support for retrieving the rate from a separate "pll" clock, if the
+"hsspi" clock does not provide one.
 
-Signed-off-by: Liu Xiang <liu.xiang6-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org>
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-spi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 8b290d9d7935..592034320a41 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -813,7 +813,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	struct device_node *np = ofdev->dev.of_node;
- 	struct spi_master *master;
- 	struct resource mem;
--	int irq, type;
-+	int irq = 0, type;
- 	int ret = -ENOMEM;
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 55789f7cda92..79096d17ebde 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -351,8 +351,16 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
  
- 	ret = of_mpc8xxx_spi_probe(ofdev);
-@@ -846,6 +846,7 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	return 0;
+ 	rate = clk_get_rate(clk);
+-	if (!rate)
+-		return -EINVAL;
++	if (!rate) {
++		struct clk *pll_clk = devm_clk_get(dev, "pll");
++
++		if (IS_ERR(pll_clk))
++			return PTR_ERR(pll_clk);
++
++		rate = clk_get_rate(pll_clk);
++		if (!rate)
++			return -EINVAL;
++	}
  
- err:
-+	irq_dispose_mapping(irq);
- 	if (type == TYPE_FSL)
- 		of_fsl_spi_free_chipselects(dev);
- 	return ret;
+ 	ret = clk_prepare_enable(clk);
+ 	if (ret)
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

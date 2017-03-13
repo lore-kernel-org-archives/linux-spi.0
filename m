@@ -1,21 +1,24 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: xlp: update for ARCH_VULCAN2" to the spi tree
-Date: Mon, 13 Mar 2017 16:57:09 +0000
-Message-ID: <E1cnTHR-0004r0-Ni@debutante>
-References: <1489317103-5329-1-git-send-email-jnair@caviumnetworks.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kamlakant.Patel@cavium.com, linux-spi@vger.kernel.org
-To: Jayachandran C <jnair@caviumnetworks.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1489317103-5329-1-git-send-email-jnair@caviumnetworks.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi/bcm63xx-hsspi: allow for probing through devicetree" to the spi tree
+Date: Mon, 13 Mar 2017 16:57:15 +0000
+Message-ID: <E1cnTHX-0004sp-NP@debutante>
+References: <20170301090814.7097-3-jonas.gorski@gmail.com>
+Cc: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170301090814.7097-3-jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: xlp: update for ARCH_VULCAN2
+   spi/bcm63xx-hsspi: allow for probing through devicetree
 
 has been applied to the spi tree at
 
@@ -40,64 +43,90 @@ to this mail.
 Thanks,
 Mark
 
->From 251831bd4f4903415da7f0ce04dc0de26bc43f1d Mon Sep 17 00:00:00 2001
-From: Jayachandran C <jnair@caviumnetworks.com>
-Date: Sun, 12 Mar 2017 11:11:43 +0000
-Subject: [PATCH] spi: xlp: update for ARCH_VULCAN2
+>From 7ab2463550e2a3a5b97dfa82e5bf8038b986f007 Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 1 Mar 2017 10:08:14 +0100
+Subject: [PATCH] spi/bcm63xx-hsspi: allow for probing through devicetree
 
-ARCH_VULCAN arm64 platform (for Broadcom Vulcan ARM64 processors) has
-been discontinued. Cavium's ThunderX2 CN99XX (ARCH_THUNDER2) will be
-the next revision of the platform.
+Add required binding support to probe through device tree.
 
-Update compile dependencies and ACPI ID to reflect this change. There
-is not need to retain ARCH_VULCAN since the Vulcan processor was never
-in production and ARCH_VULCAN will be deleted soon.
-
-Signed-off-by: Jayachandran C <jnair@caviumnetworks.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/acpi/acpi_apd.c | 1 +
- drivers/spi/Kconfig     | 2 +-
- drivers/spi/spi-xlp.c   | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 7dd70927991e..89e74d0a6c33 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -164,6 +164,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
- #ifdef CONFIG_ARM64
- 	{ "APMC0D0F", APD_ADDR(xgene_i2c_desc) },
- 	{ "BRCM900D", APD_ADDR(vulcan_spi_desc) },
-+	{ "CAV900D",  APD_ADDR(vulcan_spi_desc) },
- #endif
- 	{ }
- };
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ec4aa252d6e8..8c40b5216ad6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -705,7 +705,7 @@ config SPI_XILINX
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 79096d17ebde..5514cd02e93a 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -19,6 +19,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/spi/spi.h>
+ #include <linux/mutex.h>
++#include <linux/of.h>
  
- config SPI_XLP
- 	tristate "Netlogic XLP SPI controller driver"
--	depends on CPU_XLP || ARCH_VULCAN || COMPILE_TEST
-+	depends on CPU_XLP || ARCH_THUNDER2 || COMPILE_TEST
- 	help
- 	  Enable support for the SPI controller on the Netlogic XLP SoCs.
- 	  Currently supported XLP variants are XLP8XX, XLP3XX, XLP2XX, XLP9XX
-diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
-index bea7a93a6046..80cb4d6af892 100644
---- a/drivers/spi/spi-xlp.c
-+++ b/drivers/spi/spi-xlp.c
-@@ -442,6 +442,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
- #ifdef CONFIG_ACPI
- static const struct acpi_device_id xlp_spi_acpi_match[] = {
- 	{ "BRCM900D", 0 },
-+	{ "CAV900D",  0 },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
+ #define HSSPI_GLOBAL_CTRL_REG			0x0
+ #define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
+@@ -91,6 +92,7 @@
+ 
+ #define HSSPI_MAX_SYNC_CLOCK			30000000
+ 
++#define HSSPI_SPI_MAX_CS			8
+ #define HSSPI_BUS_NUM				1 /* 0 is legacy SPI */
+ 
+ struct bcm63xx_hsspi {
+@@ -332,7 +334,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct clk *clk;
+ 	int irq, ret;
+-	u32 reg, rate;
++	u32 reg, rate, num_cs = HSSPI_SPI_MAX_CS;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+@@ -382,8 +384,17 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	mutex_init(&bs->bus_mutex);
+ 	init_completion(&bs->done);
+ 
+-	master->bus_num = HSSPI_BUS_NUM;
+-	master->num_chipselect = 8;
++	master->dev.of_node = dev->of_node;
++	if (!dev->of_node)
++		master->bus_num = HSSPI_BUS_NUM;
++
++	of_property_read_u32(dev->of_node, "num-cs", &num_cs);
++	if (num_cs > 8) {
++		dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
++			 num_cs);
++		num_cs = HSSPI_SPI_MAX_CS;
++	}
++	master->num_chipselect = num_cs;
+ 	master->setup = bcm63xx_hsspi_setup;
+ 	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
+@@ -469,10 +480,16 @@ static int bcm63xx_hsspi_resume(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
+ 			 bcm63xx_hsspi_resume);
+ 
++static const struct of_device_id bcm63xx_hsspi_of_match[] = {
++	{ .compatible = "brcm,bcm6328-hsspi", },
++	{ },
++};
++
+ static struct platform_driver bcm63xx_hsspi_driver = {
+ 	.driver = {
+ 		.name	= "bcm63xx-hsspi",
+ 		.pm	= &bcm63xx_hsspi_pm_ops,
++		.of_match_table = bcm63xx_hsspi_of_match,
+ 	},
+ 	.probe		= bcm63xx_hsspi_probe,
+ 	.remove		= bcm63xx_hsspi_remove,
 -- 
 2.11.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

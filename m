@@ -1,78 +1,109 @@
-From: Greg Ungerer <gregungerer-ncau/BB9MAPvnOemgxGiVw@public.gmane.org>
-Subject: Re: [RFC] spi: imx: fix use of native chip-selects with devicetree
-Date: Tue, 14 Mar 2017 18:32:15 +1000
-Message-ID: <52a094ac-18e4-c03a-799d-7f56d4a1f969@westnet.com.au>
-References: <1489378139-11707-1-git-send-email-gerg@linux-m68k.org>
- <CAMuHMdVmNYq0Wf60P2GbfVpRLDv+c65A+R=Z=gfgr=_VE6BAQA@mail.gmail.com>
- <1d60ce9b-3320-1395-863c-3e7bbecf4273@linux-m68k.org>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [RFC PATCH 2/2] mtd: devices: m25p80: Enable spi-nor bounce
+ buffer support
+Date: Tue, 14 Mar 2017 18:51:38 +0530
+Message-ID: <40a824c2-012c-df55-feb4-ded1fff543cb@ti.com>
+References: <20170227120839.16545-1-vigneshr@ti.com>
+ <20170227120839.16545-3-vigneshr@ti.com>
+ <aa967f6a-0526-3e33-1de7-fbe7d4264f34@nod.at>
+ <8f999a27-c3ce-2650-452c-b21c3e44989d@ti.com>
+ <aeaf87ca-e8f5-72d0-997d-494df86abf68@atmel.com>
+ <a6c61bf7-1f26-41db-9a6b-bcae87274cb9@ti.com>
+ <20170301175506.202cb478@bbrezillon>
+ <09ffe06d-565d-afe8-8b7d-d1a0b575595b@baylibre.com>
+ <4cd22ddd-b108-f697-0bde-ad844a386e62@ti.com>
+ <20170302152921.1c031b57@bbrezillon>
+ <03b185f6-e70a-beda-5b7f-776a03fa14c0@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1d60ce9b-3320-1395-863c-3e7bbecf4273-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Frode Isaksen <fisaksen@baylibre.com>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Richard Weinberger <richard@nod.at>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <03b185f6-e70a-beda-5b7f-776a03fa14c0@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
 
-On 13/03/17 22:26, Greg Ungerer wrote:
-> On 13/03/17 18:29, Geert Uytterhoeven wrote:
->> On Mon, Mar 13, 2017 at 5:08 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->> wrote:
-[snip]
->>> ---
->>>  drivers/spi/spi-imx.c | 17 +++++++++++------
->>>  1 file changed, 11 insertions(+), 6 deletions(-)
+
+On 3/6/2017 5:17 PM, Vignesh R wrote:
+> 
+> 
+> On Thursday 02 March 2017 07:59 PM, Boris Brezillon wrote:
+>> On Thu, 2 Mar 2017 19:24:43 +0530
+>> Vignesh R <vigneshr@ti.com> wrote:
+[...]
 >>>
->>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->>> index 9a7c62f..c6e13f7 100644
->>> --- a/drivers/spi/spi-imx.c
->>> +++ b/drivers/spi/spi-imx.c
->>> @@ -516,10 +516,12 @@ static int mx31_config(struct spi_device *spi,
->>> struct spi_imx_config *config)
->>>                 reg |= MX31_CSPICTRL_POL;
->>>         if (spi->mode & SPI_CS_HIGH)
->>>                 reg |= MX31_CSPICTRL_SSPOL;
->>> -       if (spi->cs_gpio < 0)
->>> -               reg |= (spi->cs_gpio + 32) <<
->>> -                       (is_imx35_cspi(spi_imx) ?
->>> MX35_CSPICTRL_CS_SHIFT :
->>> -
->>> MX31_CSPICTRL_CS_SHIFT);
->>> +       if (spi->cs_gpio < 0) {
+>>> If its at SPI level, then I guess each individual drivers which cannot
+>>> handle vmalloc'd buffers will have to implement bounce buffer logic.
 >>
->> if (!gpio_is_valid(spi->cs_gpio)) {
+>> Well, that's my opinion. The only one that can decide when to do
+>> PIO, when to use DMA or when to use a bounce buffer+DMA is the SPI
+>> controller.
+>> If you move this logic to the SPI NOR layer, you'll have to guess what
+>> is the best approach, and I fear the decision will be wrong on some
+>> platforms (leading to perf degradation).
 >>
->>> +               int cs = (spi->cs_gpio == -ENOENT) ? spi->chip_select :
->>> +                                                    spi->cs_gpio + 32;
+>> You're mentioning code duplication in each SPI controller, I agree,
+>> this is far from ideal, but what you're suggesting is not necessarily
+>> better. What if another SPI user starts passing vmalloc-ed buffers to
+>> the SPI controller? You'll have to duplicate the bounce-buffer logic in
+>> this user as well.
 >>
->> I don't think the check for -ENOENT is needed, and thus you can always
->> just use spi->chip-select directly.
- >>
->> Same comments for the mx21 code.
->
-> I suspect that is the case. I didn't check back through all the
-> platform setups that currently rely on this "+ 32" mapping logic.
-> I would expect that they should all end up with spi->chip_select
-> being correct (and not needing cs_gpio here at all).
+> 
+> Hmm... Yes, there are ways to by pass SPI core.
+> 
+>>>
+>>> Or SPI core can be extended in a way similar to this RFC. That is, SPI
+>>> master driver will set a flag to request SPI core to use of bounce
+>>> buffer for vmalloc'd buffers. And spi_map_buf() just uses bounce buffer
+>>> in case buf does not belong to kmalloc region based on the flag.
+>>
+>> That's a better approach IMHO. Note that the decision should not only
+>> be based on the buffer type, but also on the transfer length and/or
+>> whether the controller supports transferring non physically contiguous
+>> buffers.
+>>
+>> Maybe we should just extend ->can_dma() to let the core know if it
+>> should use a bounce buffer.
+>>
+> 
+> Yes, this is definitely needed. ->can_dma() currently returns bool. We
+> need a better interface that returns different error codes for
+> restriction on buffer length vs buffer type (I dont see any appropriate
+> error codes) or make ->can_dma() return flag asking for bounce buffer.
+> SPI controller drivers may use cache_is_*() and virt_addr_valid() to
+> decide whether or not request bounce buffer.
+> 
+>> Regarding the bounce buffer allocation logic, I'm not sure how it
+>> should be done. The SPI user should be able to determine a max transfer
+>> len (at least this is the case for SPI NORs) and inform the SPI layer
+>> about this boundary so that the SPI core can allocate a bounce buffer
+>> of this size. But we also have limitations at the SPI master level
+>> (->max_transfer_size(), ->max_message_size()).
+>>
+> 
+> Again, I guess only SPI controller can suggest the appropriate size of
+> bounce buffer based on its internal constraints and use cases that its
+> known to support.
+> 
 
-It looks as if some platform setups don't map the appropriate
-chipselect to entries in the cs-gpios array. For example in
-arch/arm/mach-imx/mach-mx31_3ds.c it sets chipselect=1 but the
-cs-gpio equivalent entry is actually for native chipselect 2.
+I will work on a patch series implementing bounce buffer support in SPI
+core and extend ->can_dma() to inform when bounce buffer needs to be
+used. This will make sure that SPI controller drivers that are not
+affected by cache aliasing problem or LPAE buffers don't have
+performance impact. Any comments appreciated!
 
-There are a few other examples of this too.
-
-Now, these could be fixed to. Harder to test properly though
-without access to the effected boards.
-
+-- 
 Regards
-Greg
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Vignesh

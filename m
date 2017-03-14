@@ -1,66 +1,78 @@
-From: Adrian Fiergolski <Adrian.Fiergolski-vJEk5272eHo@public.gmane.org>
-Subject: Re: [PATCH] spi: Add spi-bits-per-word binding.
-Date: Mon, 13 Mar 2017 21:26:04 +0100
-Message-ID: <5f86da77-c3f9-24e4-6c9a-3e2554bb49d3@cern.ch>
-References: <20170220153512.6563-1-adrian.fiergolski@cern.ch>
- <20170221190830.xyubgimyc2w5p5v6@sirena.org.uk>
- <983e943b-30f2-7d80-294a-df29bca11738@cern.ch>
- <20170313175504.mpwjxqbhc4yxk434@sirena.org.uk>
- <12c66ecf-8472-c108-d2b4-1d6c3a8e6e74@cern.ch>
- <CAMuHMdVLUrFnTY+swpxd0yUZ3iMR0_Wi1Dn05NQpYc_4=rA19Q@mail.gmail.com>
+From: Greg Ungerer <gregungerer-ncau/BB9MAPvnOemgxGiVw@public.gmane.org>
+Subject: Re: [RFC] spi: imx: fix use of native chip-selects with devicetree
+Date: Tue, 14 Mar 2017 18:32:15 +1000
+Message-ID: <52a094ac-18e4-c03a-799d-7f56d4a1f969@westnet.com.au>
+References: <1489378139-11707-1-git-send-email-gerg@linux-m68k.org>
+ <CAMuHMdVmNYq0Wf60P2GbfVpRLDv+c65A+R=Z=gfgr=_VE6BAQA@mail.gmail.com>
+ <1d60ce9b-3320-1395-863c-3e7bbecf4273@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "Miguel Ojeda Sandonis" <miguel.ojeda.sandonis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVLUrFnTY+swpxd0yUZ3iMR0_Wi1Dn05NQpYc_4=rA19Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1d60ce9b-3320-1395-863c-3e7bbecf4273-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 Hi Geert,
 
-On 13.03.2017 at 20:57, Geert Uytterhoeven wrote:
-> On Mon, Mar 13, 2017 at 7:12 PM, Adrian Fiergolski
-> <Adrian.Fiergolski-vJEk5272eHo@public.gmane.org> wrote:
->> On 13.03.2017 at 18:55, Mark Brown wrote:
->>>> In my case, xilinx_spi_probe function (of spi-xilinx controller) sets
->>>> bits_per_word_mask of spi_master struct only to 16 bits support. Later,
->>>> xilinx_spi_probe calls of_register_spi_devices, which calls
->>>> of_register_spi_devices. The last one allocates an empty spi_device
->>>> struct and configures different options of the spi_device according to a
->>>> device tree. bits_per_word are not covered here (why?), thus it is left
->>>> 0 (value after allocation), which, by convention, means 8 bits support.
->>>> At the end, the same function (of_register_spi_device) calls
->>>> spi_add_device which finally calls spi_setup. The last call, according
->>>> to convention, changes bits_per_word to 8 and calls
->>>> __spi_validate_bits_per_word which fails, as master doesn't support 8
->>>> bit transmission. This fails registration sequence of a device driver.
->>>> As you see, the device driver doesn't have possibility to modify
->>>> bits_per_word during the registration process, thus it can't provide
->>>> support for such limited controllers.
->>> I can't see any way in which it follows from the above that it's a good
->>> idea to try to override bits per word settings in the device tree, that
->>> just wastes user time and is an abstraction failure.  We need better
->>> handling of defaults done purely in the kernel.
->> If enforcing by device tree specific for a given device driver SPI_CPHA,
->> SPIC_CPOL, SPI_CS_HIGH, max_speed_hz, etc. if fine form the abstraction
->> point of view, why it doesn't apply to bits_per_word ?
-> Because unlike polarity, phase, and speed, bits_per_word is a property
-> of the communication protocol.
+On 13/03/17 22:26, Greg Ungerer wrote:
+> On 13/03/17 18:29, Geert Uytterhoeven wrote:
+>> On Mon, Mar 13, 2017 at 5:08 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>> wrote:
+[snip]
+>>> ---
+>>>  drivers/spi/spi-imx.c | 17 +++++++++++------
+>>>  1 file changed, 11 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>>> index 9a7c62f..c6e13f7 100644
+>>> --- a/drivers/spi/spi-imx.c
+>>> +++ b/drivers/spi/spi-imx.c
+>>> @@ -516,10 +516,12 @@ static int mx31_config(struct spi_device *spi,
+>>> struct spi_imx_config *config)
+>>>                 reg |= MX31_CSPICTRL_POL;
+>>>         if (spi->mode & SPI_CS_HIGH)
+>>>                 reg |= MX31_CSPICTRL_SSPOL;
+>>> -       if (spi->cs_gpio < 0)
+>>> -               reg |= (spi->cs_gpio + 32) <<
+>>> -                       (is_imx35_cspi(spi_imx) ?
+>>> MX35_CSPICTRL_CS_SHIFT :
+>>> -
+>>> MX31_CSPICTRL_CS_SHIFT);
+>>> +       if (spi->cs_gpio < 0) {
+>>
+>> if (!gpio_is_valid(spi->cs_gpio)) {
+>>
+>>> +               int cs = (spi->cs_gpio == -ENOENT) ? spi->chip_select :
+>>> +                                                    spi->cs_gpio + 32;
+>>
+>> I don't think the check for -ENOENT is needed, and thus you can always
+>> just use spi->chip-select directly.
+ >>
+>> Same comments for the mx21 code.
 >
-> E.g. you can talk to the same EEPROM using different polarities, phase, or
-> speed, but bits_per_word is fixed.
-In this case, currently, what is the proper way to handle SPI
-controllers (spi-xilinx) without 8-bit transmission support ?
+> I suspect that is the case. I didn't check back through all the
+> platform setups that currently rely on this "+ 32" mapping logic.
+> I would expect that they should all end up with spi->chip_select
+> being correct (and not needing cs_gpio here at all).
+
+It looks as if some platform setups don't map the appropriate
+chipselect to entries in the cs-gpios array. For example in
+arch/arm/mach-imx/mach-mx31_3ds.c it sets chipselect=1 but the
+cs-gpio equivalent entry is actually for native chipselect 2.
+
+There are a few other examples of this too.
+
+Now, these could be fixed to. Harder to test properly though
+without access to the effected boards.
+
+Regards
+Greg
+
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

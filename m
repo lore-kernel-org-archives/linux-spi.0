@@ -1,96 +1,36 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: use rx buffer as dummy tx buffer" to the spi tree
-Date: Wed, 15 Mar 2017 19:37:19 +0000
-Message-ID: <E1coEjX-0004ho-PR@debutante>
-References: <1487327904-28311-4-git-send-email-fisaksen@baylibre.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, nsekhar-l0cyMroinI0@public.gmane.org,
-        khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1487327904-28311-4-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ben Whitten <ben.whitten@gmail.com>
+Subject: [PATCH] spi: spidev: Add sx1301 to device tree compatibility list
+Date: Thu, 16 Mar 2017 11:00:30 +0000
+Message-ID: <1489662030-11567-1-git-send-email-ben.whitten@lairdtech.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        Steve deRosier <derosier@gmail.com>
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+Add entry for the semtech sx1301 baseband processor implementing a LoRa
+concentrator IP.
+At this time this chip requires an spidev userspace driver.
 
-   spi: davinci: use rx buffer as dummy tx buffer
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 6b3a631e7f8eca75a987ed760898d28fb3628143 Mon Sep 17 00:00:00 2001
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Date: Thu, 23 Feb 2017 19:01:58 +0100
-Subject: [PATCH] spi: davinci: use rx buffer as dummy tx buffer
-
-When doing rx-only transfer, the transfer will fail
-if the number of SG entries exceeds 20.
-This happens because the eDMA DMA engine is limited
-to 20 SG entries in one transaction, and when the
-DMA transcation is resumed (which takes > 150us),
-rx errors occurs because the slave is still transmitting.
-Fix this by using the rx buffer as the dummy tx buffer,
-so that resuming the rx transcation happens at the same
-time as resuming the tx transcation.
-
-Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Ben Whitten <ben.whitten@lairdtech.com>
+Signed-off-by: Steve deRosier <derosier@gmail.com>
 ---
- drivers/spi/spi-davinci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 1e24395a04f2..ca122165a3c6 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -655,6 +655,12 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		if (!rxdesc)
- 			goto err_desc;
- 
-+		if (!t->tx_buf) {
-+			/* use rx buffer as dummy tx buffer */
-+			t->tx_sg.sgl = t->rx_sg.sgl;
-+			t->tx_sg.nents = t->rx_sg.nents;
-+		}
-+
- 		txdesc = dmaengine_prep_slave_sg(dspi->dma_tx,
- 				t->tx_sg.sgl, t->tx_sg.nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-@@ -957,7 +963,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 16);
--	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
-+	master->flags = SPI_MASTER_MUST_RX;
- 	master->setup = davinci_spi_setup;
- 	master->cleanup = davinci_spi_cleanup;
- 	master->can_dma = davinci_spi_can_dma;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 9e2e099..9a2a79a 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -697,6 +697,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
+ 	{ .compatible = "lineartechnology,ltc2488" },
+ 	{ .compatible = "ge,achc" },
++	{ .compatible = "semtech,sx1301" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 -- 
-2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

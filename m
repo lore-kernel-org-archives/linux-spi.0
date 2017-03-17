@@ -1,20 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: correct mismatched test description and configuration" to the spi tree
-Date: Fri, 17 Mar 2017 21:55:02 +0000
-Message-ID: <E1cozpu-00029Q-RH@debutante>
-References: <1489774651-30170-2-git-send-email-akinobu.mita@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: loopback-test: fix compile error on x86" to the spi tree
+Date: Fri, 17 Mar 2017 21:55:05 +0000
+Message-ID: <E1cozpx-0002AM-Pb@debutante>
+References: <1489748878-15020-1-git-send-email-fisaksen@baylibre.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, nsekhar-l0cyMroinI0@public.gmane.org,
+        khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489774651-30170-2-git-send-email-akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1489748878-15020-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: loopback-test: correct mismatched test description and configuration
+   spi: loopback-test: fix compile error on x86
 
 has been applied to the spi tree at
 
@@ -39,47 +40,32 @@ to this mail.
 Thanks,
 Mark
 
->From c4e121aeb754f1ac5f2bcc791aa4177dcfb3b401 Mon Sep 17 00:00:00 2001
-From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 18 Mar 2017 03:17:26 +0900
-Subject: [PATCH] spi: loopback-test: correct mismatched test description and
- configuration
+>From e542f7e63cb17242fcfc1be5edd69532cf434697 Mon Sep 17 00:00:00 2001
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Date: Fri, 17 Mar 2017 12:07:58 +0100
+Subject: [PATCH] spi: loopback-test: fix compile error on x86
 
-The test "two tx-transfers - alter first" actually alters the second
-not the first transfer.  Similarly the test "two tx-transfers - alter
-second" actually alters the first not the second transfer.
+Fix compile error caused by missing vmalloc() definition
+on x86 (and maybe other platforms) by including vmalloc.h.
 
-The mismatches for the two symmetrical tests cancel each other's
-mistakes.  But it's better to fix the mismatches to avoid confusion.
-
-Signed-off-by: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-loopback-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 50e620f4e8fe..99422f3a15e0 100644
+index 35960515382e..4e7843ec8aac 100644
 --- a/drivers/spi/spi-loopback-test.c
 +++ b/drivers/spi/spi-loopback-test.c
-@@ -132,7 +132,7 @@ static struct spi_test spi_tests[] = {
- 		.fill_option	= FILL_COUNT_8,
- 		.iterate_len    = { ITERATE_MAX_LEN },
- 		.iterate_tx_align = ITERATE_ALIGN,
--		.iterate_transfer_mask = BIT(1),
-+		.iterate_transfer_mask = BIT(0),
- 		.transfers		= {
- 			{
- 				.len = 1,
-@@ -149,7 +149,7 @@ static struct spi_test spi_tests[] = {
- 		.fill_option	= FILL_COUNT_8,
- 		.iterate_len    = { ITERATE_MAX_LEN },
- 		.iterate_tx_align = ITERATE_ALIGN,
--		.iterate_transfer_mask = BIT(0),
-+		.iterate_transfer_mask = BIT(1),
- 		.transfers		= {
- 			{
- 				.len = 16,
+@@ -25,6 +25,7 @@
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/printk.h>
++#include <linux/vmalloc.h>
+ #include <linux/spi/spi.h>
+ 
+ #include "spi-test.h"
 -- 
 2.11.0
 

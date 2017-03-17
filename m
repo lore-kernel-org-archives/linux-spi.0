@@ -1,21 +1,32 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: fix compile error on x86" to the spi tree
-Date: Fri, 17 Mar 2017 21:55:05 +0000
-Message-ID: <E1cozpx-0002AM-Pb@debutante>
-References: <1489748878-15020-1-git-send-email-fisaksen@baylibre.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, nsekhar-l0cyMroinI0@public.gmane.org,
-        khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489748878-15020-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: davinci: add comment about dummy tx buffer usage" to
+ the spi tree
+Date: Fri, 17 Mar 2017 22:01:10 +0000
+Message-ID: <E1cozvq-0002ly-L9@debutante>
+References: <1489765270-17950-1-git-send-email-fisaksen@baylibre.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: khilman@baylibre.com, nsekhar@ti.com, linux-spi@vger.kernel.org,
+ broonie@kernel.org, ptitiano@baylibre.com,
+ linux-arm-kernel@lists.infradead.org
+To: Frode Isaksen <fisaksen@baylibre.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1489765270-17950-1-git-send-email-fisaksen@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: loopback-test: fix compile error on x86
+   spi: davinci: add comment about dummy tx buffer usage
 
 has been applied to the spi tree at
 
@@ -40,36 +51,36 @@ to this mail.
 Thanks,
 Mark
 
->From e542f7e63cb17242fcfc1be5edd69532cf434697 Mon Sep 17 00:00:00 2001
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Date: Fri, 17 Mar 2017 12:07:58 +0100
-Subject: [PATCH] spi: loopback-test: fix compile error on x86
+>From 1234e8398fe03267bf2e353e36825dbd0abc2fc6 Mon Sep 17 00:00:00 2001
+From: Frode Isaksen <fisaksen@baylibre.com>
+Date: Fri, 17 Mar 2017 16:41:10 +0100
+Subject: [PATCH] spi: davinci: add comment about dummy tx buffer usage
 
-Fix compile error caused by missing vmalloc() definition
-on x86 (and maybe other platforms) by including vmalloc.h.
+Add explanation about using the the rx buffer as the
+dummy tx buffer.
 
-Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-davinci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 35960515382e..4e7843ec8aac 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -25,6 +25,7 @@
- #include <linux/module.h>
- #include <linux/of_device.h>
- #include <linux/printk.h>
-+#include <linux/vmalloc.h>
- #include <linux/spi/spi.h>
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index f37bbdd18d61..595acdcfc7d0 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -660,7 +660,11 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			goto err_desc;
  
- #include "spi-test.h"
+ 		if (!t->tx_buf) {
+-			/* use rx buffer as dummy tx buffer */
++			/* To avoid errors when doing rx-only transfers with
++			 * many SG entries (> 20), use the rx buffer as the
++			 * dummy tx buffer so that dma reloads are done at the
++			 * same time for rx and tx.
++			 */
+ 			t->tx_sg.sgl = t->rx_sg.sgl;
+ 			t->tx_sg.nents = t->rx_sg.nents;
+ 		}
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

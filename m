@@ -1,79 +1,45 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 2/2] spi: imx: fix use of native chip-selects with devicetree
-Date: Fri, 17 Mar 2017 15:03:03 +1000
-Message-ID: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
-Cc: shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
-        Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489726983-17706-1-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Frode Isaksen <fisaksen@baylibre.com>
+Subject: [PATCH] spi: loopback-test: fix compile error on x86
+Date: Fri, 17 Mar 2017 12:07:58 +0100
+Message-ID: <1489748878-15020-1-git-send-email-fisaksen@baylibre.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Frode Isaksen <fisaksen@baylibre.com>, broonie@kernel.org,
+ linux-spi@vger.kernel.org
+To: nsekhar@ti.com, khilman@baylibre.com, ptitiano@baylibre.com,
+ linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-The commonly used mechanism of specifying the hardware or native
-chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
-does not result in the native chip-select being configured for use.
-So external SPI devices that require use of the native chip-select
-will not work.
+Fix compile error caused by missing vmalloc() definition
+on x86 (and maybe other platforms) by including vmalloc.h.
 
-You can successfully specify native chip-selects if using a platform
-setup by specifying the cs-gpio as negative offset by 32. And that
-works correctly. You cannot use the same method in devicetree.
-
-The logic in the spi-imx.c driver during probe uses core spi function
-of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
-For valid GPIO values that will be recorded for use, all other entries in
-the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
-set to -ENOENT in the cs_gpios list.
-
-When the SPI device registers are setup the code will use the GPIO
-listed in the cs_gpios list for the desired chip-select. If the cs_gpio
-is less then 0 then it is intended to be for a native chip-select, and
-its cs_gpio value is added to 32 to get the chipselect number to use.
-Problem is that with devicetree this can only ever be -ENOENT (which
-is -2), and that alone results in an invalid chip-select number. But also
-doesn't allow selection of the native chip-select at all.
-
-To fix, if the cs_gpio specified for this spi device is not a
-valid GPIO then use the "chip_select" (that is the native chip-select
-number) for hardware setup.
-
-Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
 ---
- drivers/spi/spi-imx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-loopback-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 9a7c62f..dbb482c 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -516,8 +516,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
- 		reg |= MX31_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX31_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) <<
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= (spi->chip_select) <<
- 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
- 						  MX31_CSPICTRL_CS_SHIFT);
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 3596051..4e7843e 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -25,6 +25,7 @@
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/printk.h>
++#include <linux/vmalloc.h>
+ #include <linux/spi/spi.h>
  
-@@ -608,8 +608,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
- 		reg |= MX21_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX21_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
- 
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
- 
+ #include "spi-test.h"
 -- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

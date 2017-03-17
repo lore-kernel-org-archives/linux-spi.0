@@ -1,68 +1,79 @@
-From: Greg Ungerer <gerg@linux-m68k.org>
-Subject: [PATCH 0/2] spi: imx: native chip selects and devicetree
-Date: Fri, 17 Mar 2017 15:03:01 +1000
-Message-ID: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: fabio.estevam@nxp.com, shawnguo@kernel.org,
- Greg Ungerer <gerg@linux-m68k.org>, kernel@pengutronix.de
-To: linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 2/2] spi: imx: fix use of native chip-selects with devicetree
+Date: Fri, 17 Mar 2017 15:03:03 +1000
+Message-ID: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
+Cc: shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1489726983-17706-1-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The commonly used mechanism of specifying the hardware or native
+chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+does not result in the native chip-select being configured for use.
+So external SPI devices that require use of the native chip-select
+will not work.
 
-Selecting native chip selects for iMX SPI devices in a devicetree
-configuration does not work. That is the case for imx25 based SoC
-parts, and I think for imx31 SoC as well. There is no problem with
-configuring SPI ports to use a GPIO as chip select.
+You can successfully specify native chip-selects if using a platform
+setup by specifying the cs-gpio as negative offset by 32. And that
+works correctly. You cannot use the same method in devicetree.
 
-Selecting native chip selects via the old platform setup code will
-work, it is only devicetree configurations that are broken.
+The logic in the spi-imx.c driver during probe uses core spi function
+of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+For valid GPIO values that will be recorded for use, all other entries in
+the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+set to -ENOENT in the cs_gpios list.
 
-With platform configuration you specify a native chip select by
-setting the cs_gpio for the SPI device to be "32 - chipselect",
-This will be a negative number - and thus not a valid GPIO number.
-And that "chipselect" is the actual hardware native chip select
-number.
+When the SPI device registers are setup the code will use the GPIO
+listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+is less then 0 then it is intended to be for a native chip-select, and
+its cs_gpio value is added to 32 to get the chipselect number to use.
+Problem is that with devicetree this can only ever be -ENOENT (which
+is -2), and that alone results in an invalid chip-select number. But also
+doesn't allow selection of the native chip-select at all.
 
-You cannot specify the cs_gpio in dvicetree as a negative number,
-so this whole scheme does not work. The common method in devicetree
-is to set the cs_gpio entry for your device to be "<0>". If you do
-this to configure your SPI device to use a native chip select it is
-valid, but the SPI device cannot be accessed (no valid read data
-returned from it).
+To fix, if the cs_gpio specified for this spi device is not a
+valid GPIO then use the "chip_select" (that is the native chip-select
+number) for hardware setup.
 
-The problem lies in the way the spi-imx.c driver sets up the
-controlling registers of the iMX SPI block. It doesn't have the
-correct logic for using nativce chip selects in the devicetree case.
-
-The best fix is to use the "chip_select" associated with the SPI
-device as passed in from the devicetree (as the "reg" tag) or directly
-in the platform data structure. The hitch with that is that field is
-not set correctly by some platform device code.
-
-The following patches fix the platform setup code to correctly set
-the "chip_select" for the SPI device and to set the SPI registers
-correctly based on that.
-
-These changes affect the iMX machine code and drivers/spi subsystem so
-I have sent this to both lists for feedback.
-
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- arch/arm/mach-imx/mach-mx31_3ds.c    |    7 +++++--
- arch/arm/mach-imx/mach-mx31moboard.c |    4 ++--
- arch/arm/mach-imx/mach-pcm037_eet.c  |    4 ++--
- drivers/spi/spi-imx.c                |    8 ++++----
- 4 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/spi/spi-imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 9a7c62f..dbb482c 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -516,8 +516,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX31_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX31_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) <<
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= (spi->chip_select) <<
+ 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+ 						  MX31_CSPICTRL_CS_SHIFT);
+ 
+@@ -608,8 +608,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX21_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX21_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+ 
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 
+-- 
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

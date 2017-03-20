@@ -1,82 +1,185 @@
-From: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 1/4] spi: pl022: remove nonexistent properties from DT
- binding example
-Date: Mon, 20 Mar 2017 13:42:17 +0000
-Message-ID: <20170320134217.GB31213@leverpostej>
-References: <20170320095721.6724-1-borneo.antonio@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
- Brijesh Singh <brijeshkumar.singh@amd.com>,
- Scott Branden <sbranden@broadcom.com>, devicetree@vger.kernel.org,
- Jon Mason <jonmason@broadcom.com>, Viresh Kumar <vireshk@kernel.org>,
- Will Deacon <will.deacon@arm.com>, Russell King <linux@armlinux.org.uk>,
- Rob Herring <robh+dt@kernel.org>, Ray Jui <rjui@broadcom.com>,
- Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-arm-kernel@lists.infradead.org,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-spi@vger.kernel.org,
- Shiraz Hashim <shiraz.linux.kernel@gmail.com>, linux-kernel@vger.kernel.org
-To: Antonio Borneo <borneo.antonio@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20170320095721.6724-1-borneo.antonio@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] spi: spidev_test: add option to continously transfer data
+Date: Mon, 20 Mar 2017 14:45:35 +0100
+Message-ID: <1490017535-31546-1-git-send-email-fisaksen@baylibre.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+To: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Mar 20, 2017 at 10:57:18AM +0100, Antonio Borneo wrote:
-> The properties "pl022,hierarchy" and "pl022,slave-tx-disable" were
-> initially proposed till patch V4 [1] but then discarded in V5 [2]
-> when the patch set was taken over by another developer, as
-> explained in patch history in [3].
-> The above properties never landed in mainline code but were then
-> listed in the binding example by a following commit dc715452e914
-> ("spi: pl022: use generic DMA slave configuration if possible")
-> and later on they were copy-paste in some board's DT.
-> 
-> Remove the nonexistent properties from the example.
-> Also remove a spaces-only line at the end of the file.
-> 
-> [1] https://lkml.org/lkml/2012/7/9/421
-> [2] https://lkml.org/lkml/2012/8/21/427
-> [3] https://lkml.org/lkml/2012/8/21/436
-> 
-> Signed-off-by: Antonio Borneo <borneo.antonio@gmail.com>
+Add option to send+recv <size> bytes with <iter> iterations
+and show the transfer rate every 5 seconds.
 
-For the series:
+Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+---
+ tools/spi/spidev_test.c | 95 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 91 insertions(+), 4 deletions(-)
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 816f119..4375f58 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -18,6 +18,7 @@
+ #include <string.h>
+ #include <getopt.h>
+ #include <fcntl.h>
++#include <time.h>
+ #include <sys/ioctl.h>
+ #include <linux/ioctl.h>
+ #include <sys/stat.h>
+@@ -40,6 +41,9 @@ static char *output_file;
+ static uint32_t speed = 500000;
+ static uint16_t delay;
+ static int verbose;
++static int transfer_size;
++static int iterations;
++static int interval = 5; /* interval in seconds for showing transfer rate */
+ 
+ uint8_t default_tx[] = {
+ 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+@@ -156,7 +160,7 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
+ 		close(out_fd);
+ 	}
+ 
+-	if (verbose || !output_file)
++	if (verbose)
+ 		hex_dump(rx, len, 32, "RX");
+ }
+ 
+@@ -180,7 +184,9 @@ static void print_usage(const char *prog)
+ 	     "  -N --no-cs    no chip select\n"
+ 	     "  -R --ready    slave pulls low to pause\n"
+ 	     "  -2 --dual     dual transfer\n"
+-	     "  -4 --quad     quad transfer\n");
++	     "  -4 --quad     quad transfer\n"
++	     "  -S --size     transfer size\n"
++	     "  -I --iter     iterations\n");
+ 	exit(1);
+ }
+ 
+@@ -205,11 +211,13 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "dual",    0, 0, '2' },
+ 			{ "verbose", 0, 0, 'v' },
+ 			{ "quad",    0, 0, '4' },
++			{ "size",    1, 0, 'S' },
++			{ "iter",    1, 0, 'I' },
+ 			{ NULL, 0, 0, 0 },
+ 		};
+ 		int c;
+ 
+-		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:v",
++		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:vS:I:",
+ 				lopts, NULL);
+ 
+ 		if (c == -1)
+@@ -270,6 +278,12 @@ static void parse_opts(int argc, char *argv[])
+ 		case '4':
+ 			mode |= SPI_TX_QUAD;
+ 			break;
++		case 'S':
++			transfer_size = atoi(optarg);
++			break;
++		case 'I':
++			iterations = atoi(optarg);
++			break;
+ 		default:
+ 			print_usage(argv[0]);
+ 			break;
+@@ -336,6 +350,61 @@ static void transfer_file(int fd, char *filename)
+ 	close(tx_fd);
+ }
+ 
++static uint64_t _read_count;
++static uint64_t _write_count;
++
++static void show_transfer_rate(void)
++{
++	static int first = 1;
++	static uint64_t prev_read_count, prev_write_count;
++	double rx_rate, tx_rate;
++
++	if (first) {
++		first = 0;
++	} else {
++		rx_rate = ((_read_count - prev_read_count) * 8) / (interval*1000.0);
++		tx_rate = ((_write_count - prev_write_count) * 8) / (interval*1000.0);
++
++		printf("rate: tx %.1fkbps, rx %.1fkbps\n", rx_rate, tx_rate);
++	}
++	prev_read_count = _read_count;
++	prev_write_count = _write_count;
++}
++
++static void transfer_buf(int fd, int len)
++{
++	uint8_t *tx;
++	uint8_t *rx;
++	int i;
++
++	tx = malloc(len);
++	if (!tx)
++		pabort("can't allocate tx buffer");
++	for (i=0; i < len; i++)
++		tx[i] = random();
++
++	rx = malloc(len);
++	if (!rx)
++		pabort("can't allocate rx buffer");
++
++	transfer(fd, tx, rx, len);
++
++	_write_count += len;
++	_read_count += 	len;
++
++	if (mode & SPI_LOOP) {
++		if (memcmp(tx, rx, len)) {
++			fprintf(stderr, "transfer error !\n");
++			hex_dump(tx, len, 32, "TX");
++			hex_dump(tx, len, 32, "RX");
++			exit(-1);
++		}
++	}
++
++	free(rx);
++	free(tx);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int ret = 0;
+@@ -391,7 +460,25 @@ int main(int argc, char *argv[])
+ 		transfer_escaped_string(fd, input_tx);
+ 	else if (input_file)
+ 		transfer_file(fd, input_file);
+-	else
++	else if (transfer_size) {
++		struct timespec last_stat;
++
++		clock_gettime(CLOCK_MONOTONIC, &last_stat);
++		show_transfer_rate(); /* initialize */
++
++		while (iterations-- > 0) {
++			struct timespec current;
++
++			transfer_buf(fd, transfer_size);
++
++			clock_gettime(CLOCK_MONOTONIC, &current);
++			if (current.tv_sec - last_stat.tv_sec > interval) {
++				show_transfer_rate();
++				last_stat = current;
++			}
++		}
++		printf("total: tx %.1fKB, rx %.1fKB\n",  _write_count/1024.0, _read_count/1024.0);
++	} else
+ 		transfer(fd, default_tx, default_rx, sizeof(default_tx));
+ 
+ 	close(fd);
+-- 
+2.7.4
 
-Mark.
-
-> diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
-> index 4d1673ca8cf8..2692a5726c3f 100644
-> --- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
-> @@ -56,9 +56,7 @@ Example:
->  			spi-max-frequency = <12000000>;
->  			spi-cpol;
->  			spi-cpha;
-> -			pl022,hierarchy = <0>;
->  			pl022,interface = <0>;
-> -			pl022,slave-tx-disable;
->  			pl022,com-mode = <0x2>;
->  			pl022,rx-level-trig = <0>;
->  			pl022,tx-level-trig = <0>;
-> @@ -67,4 +65,3 @@ Example:
->  			pl022,duplex = <0>;
->  		};
->  	};
-> -	
-> -- 
-> 2.12.0
-> 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

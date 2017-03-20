@@ -1,64 +1,88 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: imx: set correct chip_select in platform setup
-Date: Mon, 20 Mar 2017 21:52:29 +1000
-Message-ID: <b68d4ab2-67e5-e97f-5439-6c880c993249@linux-m68k.org>
+From: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Mon, 20 Mar 2017 15:22:15 +0200
+Message-ID: <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
 References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-2-git-send-email-gerg@linux-m68k.org>
- <20170320073815.GD3443@dragon>
+ <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        fabio.estevam-3arQi8VN3Tc@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170320073815.GD3443@dragon>
+In-Reply-To: <1489726983-17706-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 20/03/17 17:38, Shawn Guo wrote:
-> On Fri, Mar 17, 2017 at 03:03:02PM +1000, Greg Ungerer wrote:
->> Some platform based configuration setup of spi-imx SPI devices does
->> not set the "chip_select" to the actual hardware chip select used.
->> This works because the cs_gpio mapping that is associated with this
->> platform setup maps the chip_select offset used to the appropriate
->> hardware chip select. The spi-imx driver uses the chip_select as an
->> index into the cs_gpio array and ultimately gets the correct hardware
->> chip select for its hardware setup.
->>
->> The motivation is to be able to eventually modify the spi-imx code to
->> use the "chip_select" directly for harwdare setup instead of indirectly
->> via the cs_gpio mapping array.
->>
->> This change only affects platforms using the hardware chip select
->> addressing method for their SPI devices (sometimes called native chip
->> select). The majority of devices using the spi-imx driver use the GPIO
->> addressing method.
->>
->> The change to use the correct "chip_select" is strait forward. But the
->> cs_gpio mapping arrary also needs to be modifed to match that change. In
->> simple terms the cs_gpio mapping should always have the hardware chip
->> select number at its same index offset.
->>
->> There is no functional change with these patches. The three affected
->> platforms should work exactly as before. However I don't have any of
->> these platforms (or access to them) and so I can't test them. So this
->> patch is compile tested only.
->>
->> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->
-> The subject prefix should be 'ARM: imx: ...'.
->
-> Since the patch can go independently, I fix up the prefix and applied
-> the patch.  Thanks.
+Hi Greg,
 
-Thanks Shawn.
+On 03/17/2017 07:03 AM, Greg Ungerer wrote:
+> The commonly used mechanism of specifying the hardware or native
+> chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+> does not result in the native chip-select being configured for use.
+> So external SPI devices that require use of the native chip-select
+> will not work.
+> 
+> You can successfully specify native chip-selects if using a platform
+> setup by specifying the cs-gpio as negative offset by 32. And that
+> works correctly. You cannot use the same method in devicetree.
+> 
+> The logic in the spi-imx.c driver during probe uses core spi function
+> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+> For valid GPIO values that will be recorded for use, all other entries in
+> the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+> set to -ENOENT in the cs_gpios list.
+> 
+> When the SPI device registers are setup the code will use the GPIO
+> listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+> is less then 0 then it is intended to be for a native chip-select, and
+> its cs_gpio value is added to 32 to get the chipselect number to use.
+> Problem is that with devicetree this can only ever be -ENOENT (which
+> is -2), and that alone results in an invalid chip-select number. But also
+> doesn't allow selection of the native chip-select at all.
+> 
+> To fix, if the cs_gpio specified for this spi device is not a
+> valid GPIO then use the "chip_select" (that is the native chip-select
+> number) for hardware setup.
+> 
 
-Regards
-Greg
+Can you please share an example of "cs-gpios" property for a particular
+case, which I'm able to test? It is an Atmel AT93C66A EEPROM connected
+to CSPI1 and sitting on chip select 2 (= selected by CSPI1_SS2), there
+is no other SPI devices on CSPI1.
 
+Since I raise the question, please add the correspondent updates and
+and an example to Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
 
+In fact my expectation would be to have a device description like one
+below:
 
+&spi1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_cspi1>;
+
+	eeprom@2 {
+		compatible = "atmel,at93c66a";
+		reg = <2>;
+		spi-cs-high;
+		spi-max-frequency = <1000000>;
+	};
+};
+
+Note, that there is no cs-gpios property at all, which is mandatory
+at the moment, and unit address / reg property defines chip select
+number.
+
+For that type of bindings locally I have a hackish spi-imx driver change,
+which supports this option, but I'm unsure if it is universal enough.
+
+--
+With best wishes,
+Vladimir
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

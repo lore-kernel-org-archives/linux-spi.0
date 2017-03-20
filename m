@@ -1,89 +1,82 @@
-From: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Mon, 20 Mar 2017 15:22:15 +0200
-Message-ID: <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+From: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/4] spi: pl022: remove nonexistent properties from DT
+ binding example
+Date: Mon, 20 Mar 2017 13:42:17 +0000
+Message-ID: <20170320134217.GB31213@leverpostej>
+References: <20170320095721.6724-1-borneo.antonio@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489726983-17706-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+ Brijesh Singh <brijeshkumar.singh@amd.com>,
+ Scott Branden <sbranden@broadcom.com>, devicetree@vger.kernel.org,
+ Jon Mason <jonmason@broadcom.com>, Viresh Kumar <vireshk@kernel.org>,
+ Will Deacon <will.deacon@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Rob Herring <robh+dt@kernel.org>, Ray Jui <rjui@broadcom.com>,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ linux-arm-kernel@lists.infradead.org,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-spi@vger.kernel.org,
+ Shiraz Hashim <shiraz.linux.kernel@gmail.com>, linux-kernel@vger.kernel.org
+To: Antonio Borneo <borneo.antonio@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20170320095721.6724-1-borneo.antonio@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Greg,
-
-On 03/17/2017 07:03 AM, Greg Ungerer wrote:
-> The commonly used mechanism of specifying the hardware or native
-> chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
-> does not result in the native chip-select being configured for use.
-> So external SPI devices that require use of the native chip-select
-> will not work.
+On Mon, Mar 20, 2017 at 10:57:18AM +0100, Antonio Borneo wrote:
+> The properties "pl022,hierarchy" and "pl022,slave-tx-disable" were
+> initially proposed till patch V4 [1] but then discarded in V5 [2]
+> when the patch set was taken over by another developer, as
+> explained in patch history in [3].
+> The above properties never landed in mainline code but were then
+> listed in the binding example by a following commit dc715452e914
+> ("spi: pl022: use generic DMA slave configuration if possible")
+> and later on they were copy-paste in some board's DT.
 > 
-> You can successfully specify native chip-selects if using a platform
-> setup by specifying the cs-gpio as negative offset by 32. And that
-> works correctly. You cannot use the same method in devicetree.
+> Remove the nonexistent properties from the example.
+> Also remove a spaces-only line at the end of the file.
 > 
-> The logic in the spi-imx.c driver during probe uses core spi function
-> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
-> For valid GPIO values that will be recorded for use, all other entries in
-> the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
-> set to -ENOENT in the cs_gpios list.
+> [1] https://lkml.org/lkml/2012/7/9/421
+> [2] https://lkml.org/lkml/2012/8/21/427
+> [3] https://lkml.org/lkml/2012/8/21/436
 > 
-> When the SPI device registers are setup the code will use the GPIO
-> listed in the cs_gpios list for the desired chip-select. If the cs_gpio
-> is less then 0 then it is intended to be for a native chip-select, and
-> its cs_gpio value is added to 32 to get the chipselect number to use.
-> Problem is that with devicetree this can only ever be -ENOENT (which
-> is -2), and that alone results in an invalid chip-select number. But also
-> doesn't allow selection of the native chip-select at all.
+> Signed-off-by: Antonio Borneo <borneo.antonio@gmail.com>
+
+For the series:
+
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+
+Mark.
+
+> diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+> index 4d1673ca8cf8..2692a5726c3f 100644
+> --- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+> @@ -56,9 +56,7 @@ Example:
+>  			spi-max-frequency = <12000000>;
+>  			spi-cpol;
+>  			spi-cpha;
+> -			pl022,hierarchy = <0>;
+>  			pl022,interface = <0>;
+> -			pl022,slave-tx-disable;
+>  			pl022,com-mode = <0x2>;
+>  			pl022,rx-level-trig = <0>;
+>  			pl022,tx-level-trig = <0>;
+> @@ -67,4 +65,3 @@ Example:
+>  			pl022,duplex = <0>;
+>  		};
+>  	};
+> -	
+> -- 
+> 2.12.0
 > 
-> To fix, if the cs_gpio specified for this spi device is not a
-> valid GPIO then use the "chip_select" (that is the native chip-select
-> number) for hardware setup.
-> 
-
-Can you please share an example of "cs-gpios" property for a particular
-case, which I'm able to test? It is an Atmel AT93C66A EEPROM connected
-to CSPI1 and sitting on chip select 2 (= selected by CSPI1_SS2), there
-is no other SPI devices on CSPI1.
-
-Since I raise the question, please add the correspondent updates and
-and an example to Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-
-In fact my expectation would be to have a device description like one
-below:
-
-&spi1 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_cspi1>;
-
-	eeprom@2 {
-		compatible = "atmel,at93c66a";
-		reg = <2>;
-		spi-cs-high;
-		spi-max-frequency = <1000000>;
-	};
-};
-
-Note, that there is no cs-gpios property at all, which is mandatory
-at the moment, and unit address / reg property defines chip select
-number.
-
-For that type of bindings locally I have a hackish spi-imx driver change,
-which supports this option, but I'm unsure if it is universal enough.
-
---
-With best wishes,
-Vladimir
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

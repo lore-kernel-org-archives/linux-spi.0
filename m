@@ -1,70 +1,65 @@
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [PATCH 2/4] ARM: SPEAr: DT: Remove nonexistent properties
-Date: Mon, 20 Mar 2017 16:35:16 +0530
-Message-ID: <20170320110516.GG25659@vireshk-i7>
-References: <20170320095721.6724-1-borneo.antonio@gmail.com>
- <20170320095721.6724-2-borneo.antonio@gmail.com>
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: imx: set correct chip_select in platform setup
+Date: Mon, 20 Mar 2017 21:52:29 +1000
+Message-ID: <b68d4ab2-67e5-e97f-5439-6c880c993249@linux-m68k.org>
+References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
+ <1489726983-17706-2-git-send-email-gerg@linux-m68k.org>
+ <20170320073815.GD3443@dragon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Brijesh Singh <brijeshkumar.singh@amd.com>,
- Scott Branden <sbranden@broadcom.com>, devicetree@vger.kernel.org,
- Jon Mason <jonmason@broadcom.com>, Viresh Kumar <vireshk@kernel.org>,
- Will Deacon <will.deacon@arm.com>, Russell King <linux@armlinux.org.uk>,
- Rob Herring <robh+dt@kernel.org>, Ray Jui <rjui@broadcom.com>,
- Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-arm-kernel@lists.infradead.org,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-spi@vger.kernel.org,
- Shiraz Hashim <shiraz.linux.kernel@gmail.com>, linux-kernel@vger.kernel.org
-To: Antonio Borneo <borneo.antonio@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20170320095721.6724-2-borneo.antonio@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        fabio.estevam-3arQi8VN3Tc@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170320073815.GD3443@dragon>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 20-03-17, 10:57, Antonio Borneo wrote:
-> The properties "pl022,hierarchy" and "pl022,slave-tx-disable" are
-> not documented in DT binding and don't exist in the driver code.
-> They have no effect and can be removed.
-> 
-> Signed-off-by: Antonio Borneo <borneo.antonio@gmail.com>
-> ---
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> To: Viresh Kumar <vireshk@kernel.org>
-> To: Shiraz Hashim <shiraz.linux.kernel@gmail.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Brijesh Singh <brijeshkumar.singh@amd.com>
-> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: Ray Jui <rjui@broadcom.com>
-> Cc: Scott Branden <sbranden@broadcom.com>
-> Cc: Jon Mason <jonmason@broadcom.com>
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: linux-spi@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  arch/arm/boot/dts/spear1310-evb.dts | 6 ------
->  arch/arm/boot/dts/spear1340-evb.dts | 6 ------
->  2 files changed, 12 deletions(-)
+On 20/03/17 17:38, Shawn Guo wrote:
+> On Fri, Mar 17, 2017 at 03:03:02PM +1000, Greg Ungerer wrote:
+>> Some platform based configuration setup of spi-imx SPI devices does
+>> not set the "chip_select" to the actual hardware chip select used.
+>> This works because the cs_gpio mapping that is associated with this
+>> platform setup maps the chip_select offset used to the appropriate
+>> hardware chip select. The spi-imx driver uses the chip_select as an
+>> index into the cs_gpio array and ultimately gets the correct hardware
+>> chip select for its hardware setup.
+>>
+>> The motivation is to be able to eventually modify the spi-imx code to
+>> use the "chip_select" directly for harwdare setup instead of indirectly
+>> via the cs_gpio mapping array.
+>>
+>> This change only affects platforms using the hardware chip select
+>> addressing method for their SPI devices (sometimes called native chip
+>> select). The majority of devices using the spi-imx driver use the GPIO
+>> addressing method.
+>>
+>> The change to use the correct "chip_select" is strait forward. But the
+>> cs_gpio mapping arrary also needs to be modifed to match that change. In
+>> simple terms the cs_gpio mapping should always have the hardware chip
+>> select number at its same index offset.
+>>
+>> There is no functional change with these patches. The three affected
+>> platforms should work exactly as before. However I don't have any of
+>> these platforms (or access to them) and so I can't test them. So this
+>> patch is compile tested only.
+>>
+>> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>
+> The subject prefix should be 'ARM: imx: ...'.
+>
+> Since the patch can go independently, I fix up the prefix and applied
+> the patch.  Thanks.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Thanks Shawn.
 
--- 
-viresh
+Regards
+Greg
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

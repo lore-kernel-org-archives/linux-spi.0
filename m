@@ -1,44 +1,53 @@
-From: Colin King <colin.king@canonical.com>
-Subject: [PATCH] spi: loopback-test: fix potential integer overflow on multiple
-Date: Mon, 20 Mar 2017 13:58:05 +0000
-Message-ID: <20170320135805.10182-1-colin.king@canonical.com>
+From: Icenowy Zheng <icenowy@aosc.xyz>
+Subject: [PATCH] spi: sun6i: update max transfer size reported
+Date: Mon, 20 Mar 2017 22:38:49 +0800
+Message-ID: <20170320143849.13213-1-icenowy@aosc.xyz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Ayotte <martinayotte@gmail.com>, Icenowy Zheng <icenowy@aosc.xyz>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+ Maxime Ripard <maxime.ripard@free-electrons.com>,
+ Chen-Yu Tsai <wens@csie.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The spi-sun6i driver have already got the ability to do large transfers.
+However, the max transfer size reported is still fifo depth - 1.
 
-A multiplication of 8U * xfer-len with the type of a 32 bit unsigned int
-is evaluated using 32 bit arithmetic and then used in a context that
-expects an expression of type unsigned long long (64 bits).  Avoid any
-potential overflow by casting BITS_PER_BYTE to unsigned long long.
+Update the max transfer size reported to the max value possible.
 
-Detected by CoverityScan, CID#1419691 ("Unintentional integer overflow")
-
-Fixes: ea9936f324356 ("spi: loopback-test: add elapsed time check")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reported-by: Martin Ayotte <martinayotte@gmail.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
 ---
- drivers/spi/spi-loopback-test.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sun6i.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 0d0739142cd3..51c0ceab04cc 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -521,7 +521,8 @@ static int spi_test_check_elapsed_time(struct spi_device *spi,
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 6e9ca93db9bf..03a773a9531a 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -194,9 +194,7 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
  
- 	for (i = 0; i < test->transfer_count; i++) {
- 		struct spi_transfer *xfer = test->transfers + i;
--		unsigned long long nbits = BITS_PER_BYTE * xfer->len;
-+		unsigned long long nbits = (unsigned long long)BITS_PER_BYTE *
-+					   xfer->len;
+ static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
+ {
+-	struct sun6i_spi *sspi = spi_master_get_devdata(spi->master);
+-
+-	return sspi->fifo_depth - 1;
++	return SUN6I_MAX_XFER_SIZE - 1;
+ }
  
- 		delay_usecs += xfer->delay_usecs;
- 		if (!xfer->speed_hz)
+ static int sun6i_spi_transfer_one(struct spi_master *master,
 -- 
-2.11.0
+2.12.0

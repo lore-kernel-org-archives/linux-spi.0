@@ -1,21 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev_test: add option to continuously transfer data" to the spi tree
-Date: Tue, 21 Mar 2017 18:46:06 +0000
-Message-ID: <E1cqOnG-0001Ga-3G@debutante>
-References: <1490111326-21215-2-git-send-email-fisaksen@baylibre.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, nsekhar-l0cyMroinI0@public.gmane.org,
-        khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Applied "spi: sun6i: update max transfer size reported" to the spi tree
+Date: Tue, 21 Mar 2017 18:46:11 +0000
+Message-ID: <E1cqOnL-0001IG-NE@debutante>
+Cc: Martin Ayotte <martinayotte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1490111326-21215-2-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev_test: add option to continuously transfer data
+   spi: sun6i: update max transfer size reported
 
 has been applied to the spi tree at
 
@@ -40,185 +37,38 @@ to this mail.
 Thanks,
 Mark
 
->From 9006a7b3220e7293ef8bc1ac9bba6c54411051c1 Mon Sep 17 00:00:00 2001
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Date: Tue, 21 Mar 2017 16:48:46 +0100
-Subject: [PATCH] spi: spidev_test: add option to continuously transfer data
+>From 3288d5cb40c09213e86d67b5cab09de1deb65a5c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
+Date: Mon, 20 Mar 2017 22:38:49 +0800
+Subject: [PATCH] spi: sun6i: update max transfer size reported
 
-Add option to send+recv <size> bytes with <iter> iterations
-and show the transfer rate every 5 seconds.
-Example:
-rate: tx 4235.2kbps, rx 4235.2kbps
-total: tx 4882.8KB, rx 4882.8KB
+The spi-sun6i driver have already got the ability to do large transfers.
+However, the max transfer size reported is still fifo depth - 1.
 
-Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Update the max transfer size reported to the max value possible.
+
+Reported-by: Martin Ayotte <martinayotte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- tools/spi/spidev_test.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 88 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sun6i.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index 816f119c9b7b..8c590cd1171a 100644
---- a/tools/spi/spidev_test.c
-+++ b/tools/spi/spidev_test.c
-@@ -18,6 +18,7 @@
- #include <string.h>
- #include <getopt.h>
- #include <fcntl.h>
-+#include <time.h>
- #include <sys/ioctl.h>
- #include <linux/ioctl.h>
- #include <sys/stat.h>
-@@ -40,6 +41,9 @@ static char *output_file;
- static uint32_t speed = 500000;
- static uint16_t delay;
- static int verbose;
-+static int transfer_size;
-+static int iterations;
-+static int interval = 5; /* interval in seconds for showing transfer rate */
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 6e9ca93db9bf..03a773a9531a 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -194,9 +194,7 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
  
- uint8_t default_tx[] = {
- 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-@@ -156,13 +160,13 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
- 		close(out_fd);
- 	}
- 
--	if (verbose || !output_file)
-+	if (verbose)
- 		hex_dump(rx, len, 32, "RX");
- }
- 
- static void print_usage(const char *prog)
+ static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
  {
--	printf("Usage: %s [-DsbdlHOLC3]\n", prog);
-+	printf("Usage: %s [-DsbdlHOLC3vpNR24SI]\n", prog);
- 	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
- 	     "  -s --speed    max speed (Hz)\n"
- 	     "  -d --delay    delay (usec)\n"
-@@ -180,7 +184,9 @@ static void print_usage(const char *prog)
- 	     "  -N --no-cs    no chip select\n"
- 	     "  -R --ready    slave pulls low to pause\n"
- 	     "  -2 --dual     dual transfer\n"
--	     "  -4 --quad     quad transfer\n");
-+	     "  -4 --quad     quad transfer\n"
-+	     "  -S --size     transfer size\n"
-+	     "  -I --iter     iterations\n");
- 	exit(1);
+-	struct sun6i_spi *sspi = spi_master_get_devdata(spi->master);
+-
+-	return sspi->fifo_depth - 1;
++	return SUN6I_MAX_XFER_SIZE - 1;
  }
  
-@@ -205,11 +211,13 @@ static void parse_opts(int argc, char *argv[])
- 			{ "dual",    0, 0, '2' },
- 			{ "verbose", 0, 0, 'v' },
- 			{ "quad",    0, 0, '4' },
-+			{ "size",    1, 0, 'S' },
-+			{ "iter",    1, 0, 'I' },
- 			{ NULL, 0, 0, 0 },
- 		};
- 		int c;
- 
--		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:v",
-+		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:vS:I:",
- 				lopts, NULL);
- 
- 		if (c == -1)
-@@ -270,6 +278,12 @@ static void parse_opts(int argc, char *argv[])
- 		case '4':
- 			mode |= SPI_TX_QUAD;
- 			break;
-+		case 'S':
-+			transfer_size = atoi(optarg);
-+			break;
-+		case 'I':
-+			iterations = atoi(optarg);
-+			break;
- 		default:
- 			print_usage(argv[0]);
- 			break;
-@@ -336,6 +350,57 @@ static void transfer_file(int fd, char *filename)
- 	close(tx_fd);
- }
- 
-+static uint64_t _read_count;
-+static uint64_t _write_count;
-+
-+static void show_transfer_rate(void)
-+{
-+	static uint64_t prev_read_count, prev_write_count;
-+	double rx_rate, tx_rate;
-+
-+	rx_rate = ((_read_count - prev_read_count) * 8) / (interval*1000.0);
-+	tx_rate = ((_write_count - prev_write_count) * 8) / (interval*1000.0);
-+
-+	printf("rate: tx %.1fkbps, rx %.1fkbps\n", rx_rate, tx_rate);
-+
-+	prev_read_count = _read_count;
-+	prev_write_count = _write_count;
-+}
-+
-+static void transfer_buf(int fd, int len)
-+{
-+	uint8_t *tx;
-+	uint8_t *rx;
-+	int i;
-+
-+	tx = malloc(len);
-+	if (!tx)
-+		pabort("can't allocate tx buffer");
-+	for (i = 0; i < len; i++)
-+		tx[i] = random();
-+
-+	rx = malloc(len);
-+	if (!rx)
-+		pabort("can't allocate rx buffer");
-+
-+	transfer(fd, tx, rx, len);
-+
-+	_write_count += len;
-+	_read_count += len;
-+
-+	if (mode & SPI_LOOP) {
-+		if (memcmp(tx, rx, len)) {
-+			fprintf(stderr, "transfer error !\n");
-+			hex_dump(tx, len, 32, "TX");
-+			hex_dump(rx, len, 32, "RX");
-+			exit(1);
-+		}
-+	}
-+
-+	free(rx);
-+	free(tx);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int ret = 0;
-@@ -391,7 +456,25 @@ int main(int argc, char *argv[])
- 		transfer_escaped_string(fd, input_tx);
- 	else if (input_file)
- 		transfer_file(fd, input_file);
--	else
-+	else if (transfer_size) {
-+		struct timespec last_stat;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &last_stat);
-+
-+		while (iterations-- > 0) {
-+			struct timespec current;
-+
-+			transfer_buf(fd, transfer_size);
-+
-+			clock_gettime(CLOCK_MONOTONIC, &current);
-+			if (current.tv_sec - last_stat.tv_sec > interval) {
-+				show_transfer_rate();
-+				last_stat = current;
-+			}
-+		}
-+		printf("total: tx %.1fKB, rx %.1fKB\n",
-+		       _write_count/1024.0, _read_count/1024.0);
-+	} else
- 		transfer(fd, default_tx, default_rx, sizeof(default_tx));
- 
- 	close(fd);
+ static int sun6i_spi_transfer_one(struct spi_master *master,
 -- 
 2.11.0
 

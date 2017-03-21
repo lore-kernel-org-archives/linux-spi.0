@@ -1,62 +1,191 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Tue, 21 Mar 2017 23:22:27 +1000
-Message-ID: <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
- <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
- <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
- <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
- <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
- <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2] spi: spidev_test: add option to continuously transfer data
+Date: Tue, 21 Mar 2017 16:48:46 +0100
+Message-ID: <1490111326-21215-2-git-send-email-fisaksen@baylibre.com>
+References: <1490111326-21215-1-git-send-email-fisaksen@baylibre.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+To: nsekhar-l0cyMroinI0@public.gmane.org, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170321121133.jcmhhbszj2d42h3w-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1490111326-21215-1-git-send-email-fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Uwe,
+Add option to send+recv <size> bytes with <iter> iterations
+and show the transfer rate every 5 seconds.
+Example:
+rate: tx 4235.2kbps, rx 4235.2kbps
+total: tx 4882.8KB, rx 4882.8KB
 
-On 21/03/17 22:11, Uwe Kleine-König wrote:
-> On Tue, Mar 21, 2017 at 09:53:52PM +1000, Greg Ungerer wrote:
->> On 21/03/17 18:05, Uwe Kleine-König wrote:
->>> On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
->>>> On 20/03/17 23:22, Vladimir Zapolskiy wrote:
->>>>> For that type of bindings locally I have a hackish spi-imx driver change,
->>>>> which supports this option, but I'm unsure if it is universal enough.
->>>>
->>>> Do you mean supporting no cs-gpios tag?
->>>> That would be nice, but it would seem not many users of this are
->>>> using native chip selects.
->>>
->>> The reason for this is that the native chip selects are less flexible
->>> than gpios because you cannot control when they deassert. IIRC they do
->>> it too much for some chips. So the only reason to stick to them is that
->>> on some SoCs not all pins have a GPIO function. Not sure if transfer
->>> speed is another reason, but I would expect that the gain isn't that
->>> big.
->>
->> For the particular SPI device I am using, a Silicon Labs 32260,
->> it actually wants the assertion and de-assertion of the chip-select
->> between each byte. So it is the only way it can work for me.
->
-> That should be doable with gpio-cs, too. You just need the right flags
-> in your spi transfer IIRC.
+Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+---
+ tools/spi/spidev_test.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 88 insertions(+), 5 deletions(-)
 
-Do you know which flag(s)  do that?
-
-Regards
-Greg
-
-
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 816f119..8c590cd 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -18,6 +18,7 @@
+ #include <string.h>
+ #include <getopt.h>
+ #include <fcntl.h>
++#include <time.h>
+ #include <sys/ioctl.h>
+ #include <linux/ioctl.h>
+ #include <sys/stat.h>
+@@ -40,6 +41,9 @@ static char *output_file;
+ static uint32_t speed = 500000;
+ static uint16_t delay;
+ static int verbose;
++static int transfer_size;
++static int iterations;
++static int interval = 5; /* interval in seconds for showing transfer rate */
+ 
+ uint8_t default_tx[] = {
+ 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+@@ -156,13 +160,13 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
+ 		close(out_fd);
+ 	}
+ 
+-	if (verbose || !output_file)
++	if (verbose)
+ 		hex_dump(rx, len, 32, "RX");
+ }
+ 
+ static void print_usage(const char *prog)
+ {
+-	printf("Usage: %s [-DsbdlHOLC3]\n", prog);
++	printf("Usage: %s [-DsbdlHOLC3vpNR24SI]\n", prog);
+ 	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+ 	     "  -s --speed    max speed (Hz)\n"
+ 	     "  -d --delay    delay (usec)\n"
+@@ -180,7 +184,9 @@ static void print_usage(const char *prog)
+ 	     "  -N --no-cs    no chip select\n"
+ 	     "  -R --ready    slave pulls low to pause\n"
+ 	     "  -2 --dual     dual transfer\n"
+-	     "  -4 --quad     quad transfer\n");
++	     "  -4 --quad     quad transfer\n"
++	     "  -S --size     transfer size\n"
++	     "  -I --iter     iterations\n");
+ 	exit(1);
+ }
+ 
+@@ -205,11 +211,13 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "dual",    0, 0, '2' },
+ 			{ "verbose", 0, 0, 'v' },
+ 			{ "quad",    0, 0, '4' },
++			{ "size",    1, 0, 'S' },
++			{ "iter",    1, 0, 'I' },
+ 			{ NULL, 0, 0, 0 },
+ 		};
+ 		int c;
+ 
+-		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:v",
++		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:vS:I:",
+ 				lopts, NULL);
+ 
+ 		if (c == -1)
+@@ -270,6 +278,12 @@ static void parse_opts(int argc, char *argv[])
+ 		case '4':
+ 			mode |= SPI_TX_QUAD;
+ 			break;
++		case 'S':
++			transfer_size = atoi(optarg);
++			break;
++		case 'I':
++			iterations = atoi(optarg);
++			break;
+ 		default:
+ 			print_usage(argv[0]);
+ 			break;
+@@ -336,6 +350,57 @@ static void transfer_file(int fd, char *filename)
+ 	close(tx_fd);
+ }
+ 
++static uint64_t _read_count;
++static uint64_t _write_count;
++
++static void show_transfer_rate(void)
++{
++	static uint64_t prev_read_count, prev_write_count;
++	double rx_rate, tx_rate;
++
++	rx_rate = ((_read_count - prev_read_count) * 8) / (interval*1000.0);
++	tx_rate = ((_write_count - prev_write_count) * 8) / (interval*1000.0);
++
++	printf("rate: tx %.1fkbps, rx %.1fkbps\n", rx_rate, tx_rate);
++
++	prev_read_count = _read_count;
++	prev_write_count = _write_count;
++}
++
++static void transfer_buf(int fd, int len)
++{
++	uint8_t *tx;
++	uint8_t *rx;
++	int i;
++
++	tx = malloc(len);
++	if (!tx)
++		pabort("can't allocate tx buffer");
++	for (i = 0; i < len; i++)
++		tx[i] = random();
++
++	rx = malloc(len);
++	if (!rx)
++		pabort("can't allocate rx buffer");
++
++	transfer(fd, tx, rx, len);
++
++	_write_count += len;
++	_read_count += len;
++
++	if (mode & SPI_LOOP) {
++		if (memcmp(tx, rx, len)) {
++			fprintf(stderr, "transfer error !\n");
++			hex_dump(tx, len, 32, "TX");
++			hex_dump(rx, len, 32, "RX");
++			exit(1);
++		}
++	}
++
++	free(rx);
++	free(tx);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int ret = 0;
+@@ -391,7 +456,25 @@ int main(int argc, char *argv[])
+ 		transfer_escaped_string(fd, input_tx);
+ 	else if (input_file)
+ 		transfer_file(fd, input_file);
+-	else
++	else if (transfer_size) {
++		struct timespec last_stat;
++
++		clock_gettime(CLOCK_MONOTONIC, &last_stat);
++
++		while (iterations-- > 0) {
++			struct timespec current;
++
++			transfer_buf(fd, transfer_size);
++
++			clock_gettime(CLOCK_MONOTONIC, &current);
++			if (current.tv_sec - last_stat.tv_sec > interval) {
++				show_transfer_rate();
++				last_stat = current;
++			}
++		}
++		printf("total: tx %.1fKB, rx %.1fKB\n",
++		       _write_count/1024.0, _read_count/1024.0);
++	} else
+ 		transfer(fd, default_tx, default_rx, sizeof(default_tx));
+ 
+ 	close(fd);
+-- 
+2.7.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

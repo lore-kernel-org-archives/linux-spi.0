@@ -1,82 +1,78 @@
-From: Antonio Borneo <borneo.antonio@gmail.com>
-Subject: Re: [PATCH] arm64: dts: hi6220: enable DMA in spi0
-Date: Tue, 21 Mar 2017 20:13:29 +0100
-Message-ID: <CAAj6DX3kvc-wy+xSPBC26Xw0s6BBApTJQGrVS1BsiFgfDybBbw@mail.gmail.com>
-References: <20170321070818.3247-1-guodong.xu@linaro.org>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Tue, 21 Mar 2017 20:23:42 +0100
+Message-ID: <20170321192342.4fxlb2zjcas53uow@pengutronix.de>
+References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
+ <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+ <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
+ <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
+ <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
+ <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
+ <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
+ <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Zhong Kaihua <zhongkaihua@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- xuwei5@hisilicon.com, linux-spi@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>,
- linux-arm-kernel@lists.infradead.org
-To: Guodong Xu <guodong.xu@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170321070818.3247-1-guodong.xu@linaro.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20678cef-f667-9915-aa00-8877ad152a8c-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 21, 2017 at 8:08 AM, Guodong Xu <guodong.xu@linaro.org> wrote:
-> From: Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>
->
-> Enable DMA in spi0.
+On Tue, Mar 21, 2017 at 11:22:27PM +1000, Greg Ungerer wrote:
+> Hi Uwe,
+> 
+> On 21/03/17 22:11, Uwe Kleine-König wrote:
+> > On Tue, Mar 21, 2017 at 09:53:52PM +1000, Greg Ungerer wrote:
+> > > On 21/03/17 18:05, Uwe Kleine-König wrote:
+> > > > On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
+> > > > > On 20/03/17 23:22, Vladimir Zapolskiy wrote:
+> > > > > > For that type of bindings locally I have a hackish spi-imx driver change,
+> > > > > > which supports this option, but I'm unsure if it is universal enough.
+> > > > > 
+> > > > > Do you mean supporting no cs-gpios tag?
+> > > > > That would be nice, but it would seem not many users of this are
+> > > > > using native chip selects.
+> > > > 
+> > > > The reason for this is that the native chip selects are less flexible
+> > > > than gpios because you cannot control when they deassert. IIRC they do
+> > > > it too much for some chips. So the only reason to stick to them is that
+> > > > on some SoCs not all pins have a GPIO function. Not sure if transfer
+> > > > speed is another reason, but I would expect that the gain isn't that
+> > > > big.
+> > > 
+> > > For the particular SPI device I am using, a Silicon Labs 32260,
+> > > it actually wants the assertion and de-assertion of the chip-select
+> > > between each byte. So it is the only way it can work for me.
+> > 
+> > That should be doable with gpio-cs, too. You just need the right flags
+> > in your spi transfer IIRC.
+> 
+> Do you know which flag(s)  do that?
 
-Hi Guodong, Xiaoyin,
+Looking at the source it's not about flags, but you have to split your
+transfer into several messages. AFAICT that's how the spi stuff is
+supposed to work. That is, at the start of a message CS is asserted and
+(only) at it's end CS is deasserted. So the imx core with native chip
+select actually misbehaves by toggling CS between each word.
 
-added linux-spi in copy.
+@broonie: Can you confirm or contradict please?
 
-Actually the patch does not enable the DMA. The commit message is not correct.
+Best regards
+Uwe
 
-> Cc: Antonio Borneo <borneo.antonio@gmail.com>
-> Signed-off-by: Zhong Kaihua <zhongkaihua@huawei.com>
-> Signed-off-by: Guodong Xu <guodong.xu@linaro.org>
-> Signed-off-by: Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>
-> ---
->  arch/arm64/boot/dts/hisilicon/hi6220.dtsi | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/boot/dts/hisilicon/hi6220.dtsi b/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
-> index 470461d..e40625f 100644
-> --- a/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
-> +++ b/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
-> @@ -682,7 +682,8 @@
->                         reg = <0x0 0xf7106000 0x0 0x1000>;
->                         interrupts = <0 50 4>;
->                         bus-id = <0>;
-> -                       enable-dma = <0>;
-> +                       dmas =  <&dma0 0 &dma0 1>;
-> +                       dma-names = "rx", "tx";
-
-The controller spi0 is a standard ARM PL022.
-This patch removes the nonexistent property "enable-dma" and specifies
-which DMA controller and which DMA channels are connected to spi0.
-The values are coherent with the documentation available for hi6220.
-
-Apart from the commit message, I'm fine with this patch.
-
-On PL022 the DMA is not enabled in the DT node of the controller but
-in the DT node of each spi device, through the property
-"pl022,com-mode".
-A separate patch should eventually enable the DMA for those spi
-devices that require it.
-
-Best Regards,
-Antonio
-
->                         clocks = <&sys_ctrl HI6220_SPI_CLK>;
->                         clock-names = "apb_pclk";
->                         pinctrl-names = "default";
-> --
-> 2.10.2
->
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

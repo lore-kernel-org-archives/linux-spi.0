@@ -1,52 +1,62 @@
 From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCHv2 2/2] spi: imx: document use of native chip-selects in devicetree
-Date: Tue, 21 Mar 2017 22:43:25 +1000
-Message-ID: <1490100205-31309-3-git-send-email-gerg@linux-m68k.org>
-References: <1490100205-31309-1-git-send-email-gerg@linux-m68k.org>
-Cc: shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
-        Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Tue, 21 Mar 2017 23:22:27 +1000
+Message-ID: <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
+References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
+ <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+ <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
+ <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
+ <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
+ <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
+ <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1490100205-31309-1-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <20170321121133.jcmhhbszj2d42h3w-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Document the "<0>" notation for specifying use of a native chip-select
-in the "cs-gpios" tag of an SPI device in devicetree. This isn't unique
-to the spi-imx driver, but this clearly spells out that you can use it
-with this driver.
+Hi Uwe,
 
-Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On 21/03/17 22:11, Uwe Kleine-König wrote:
+> On Tue, Mar 21, 2017 at 09:53:52PM +1000, Greg Ungerer wrote:
+>> On 21/03/17 18:05, Uwe Kleine-König wrote:
+>>> On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
+>>>> On 20/03/17 23:22, Vladimir Zapolskiy wrote:
+>>>>> For that type of bindings locally I have a hackish spi-imx driver change,
+>>>>> which supports this option, but I'm unsure if it is universal enough.
+>>>>
+>>>> Do you mean supporting no cs-gpios tag?
+>>>> That would be nice, but it would seem not many users of this are
+>>>> using native chip selects.
+>>>
+>>> The reason for this is that the native chip selects are less flexible
+>>> than gpios because you cannot control when they deassert. IIRC they do
+>>> it too much for some chips. So the only reason to stick to them is that
+>>> on some SoCs not all pins have a GPIO function. Not sure if transfer
+>>> speed is another reason, but I would expect that the gain isn't that
+>>> big.
+>>
+>> For the particular SPI device I am using, a Silicon Labs 32260,
+>> it actually wants the assertion and de-assertion of the chip-select
+>> between each byte. So it is the only way it can work for me.
+>
+> That should be doable with gpio-cs, too. You just need the right flags
+> in your spi transfer IIRC.
 
-v2: added documentation to patch set
+Do you know which flag(s)  do that?
 
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 8bc95e2..cfc60cb 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -12,6 +12,7 @@ Required properties:
- - reg : Offset and length of the register set for the device
- - interrupts : Should contain CSPI/eCSPI interrupt
- - cs-gpios : Specifies the gpio pins to be used for chipselects.
-+	Specify use of native chipselects with "<0>" in place of a gpio.
- - clocks : Clock specifiers for both ipg and per clocks.
- - clock-names : Clock names should include both "ipg" and "per"
- See the clock consumer binding,
-@@ -32,7 +33,8 @@ ecspi@70010000 {
- 	reg = <0x70010000 0x4000>;
- 	interrupts = <36>;
- 	cs-gpios = <&gpio3 24 0>, /* GPIO3_24 */
--		   <&gpio3 25 0>; /* GPIO3_25 */
-+		   <&gpio3 25 0>, /* GPIO3_25 */
-+		   <0>;           /* Native chip select */
- 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
- 	dma-names = "rx", "tx";
- };
--- 
-1.9.1
+Regards
+Greg
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

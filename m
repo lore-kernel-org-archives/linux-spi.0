@@ -1,78 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sun6i: update max transfer size reported" to the spi tree
-Date: Tue, 21 Mar 2017 18:46:11 +0000
-Message-ID: <E1cqOnL-0001IG-NE@debutante>
-Cc: Martin Ayotte <martinayotte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Antonio Borneo <borneo.antonio@gmail.com>
+Subject: Re: [PATCH] arm64: dts: hi6220: enable DMA in spi0
+Date: Tue, 21 Mar 2017 20:13:29 +0100
+Message-ID: <CAAj6DX3kvc-wy+xSPBC26Xw0s6BBApTJQGrVS1BsiFgfDybBbw@mail.gmail.com>
+References: <20170321070818.3247-1-guodong.xu@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Zhong Kaihua <zhongkaihua@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ xuwei5@hisilicon.com, linux-spi@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Guodong Xu <guodong.xu@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170321070818.3247-1-guodong.xu@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Tue, Mar 21, 2017 at 8:08 AM, Guodong Xu <guodong.xu@linaro.org> wrote:
+> From: Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>
+>
+> Enable DMA in spi0.
 
-   spi: sun6i: update max transfer size reported
+Hi Guodong, Xiaoyin,
 
-has been applied to the spi tree at
+added linux-spi in copy.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Actually the patch does not enable the DMA. The commit message is not correct.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> Cc: Antonio Borneo <borneo.antonio@gmail.com>
+> Signed-off-by: Zhong Kaihua <zhongkaihua@huawei.com>
+> Signed-off-by: Guodong Xu <guodong.xu@linaro.org>
+> Signed-off-by: Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>
+> ---
+>  arch/arm64/boot/dts/hisilicon/hi6220.dtsi | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/hisilicon/hi6220.dtsi b/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
+> index 470461d..e40625f 100644
+> --- a/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
+> +++ b/arch/arm64/boot/dts/hisilicon/hi6220.dtsi
+> @@ -682,7 +682,8 @@
+>                         reg = <0x0 0xf7106000 0x0 0x1000>;
+>                         interrupts = <0 50 4>;
+>                         bus-id = <0>;
+> -                       enable-dma = <0>;
+> +                       dmas =  <&dma0 0 &dma0 1>;
+> +                       dma-names = "rx", "tx";
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The controller spi0 is a standard ARM PL022.
+This patch removes the nonexistent property "enable-dma" and specifies
+which DMA controller and which DMA channels are connected to spi0.
+The values are coherent with the documentation available for hi6220.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Apart from the commit message, I'm fine with this patch.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+On PL022 the DMA is not enabled in the DT node of the controller but
+in the DT node of each spi device, through the property
+"pl022,com-mode".
+A separate patch should eventually enable the DMA for those spi
+devices that require it.
 
-Thanks,
-Mark
+Best Regards,
+Antonio
 
->From 3288d5cb40c09213e86d67b5cab09de1deb65a5c Mon Sep 17 00:00:00 2001
-From: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Date: Mon, 20 Mar 2017 22:38:49 +0800
-Subject: [PATCH] spi: sun6i: update max transfer size reported
-
-The spi-sun6i driver have already got the ability to do large transfers.
-However, the max transfer size reported is still fifo depth - 1.
-
-Update the max transfer size reported to the max value possible.
-
-Reported-by: Martin Ayotte <martinayotte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-sun6i.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 6e9ca93db9bf..03a773a9531a 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -194,9 +194,7 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
- 
- static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
- {
--	struct sun6i_spi *sspi = spi_master_get_devdata(spi->master);
--
--	return sspi->fifo_depth - 1;
-+	return SUN6I_MAX_XFER_SIZE - 1;
- }
- 
- static int sun6i_spi_transfer_one(struct spi_master *master,
--- 
-2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>                         clocks = <&sys_ctrl HI6220_SPI_CLK>;
+>                         clock-names = "apb_pclk";
+>                         pinctrl-names = "default";
+> --
+> 2.10.2
+>

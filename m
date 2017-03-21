@@ -1,29 +1,19 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Tue, 21 Mar 2017 21:15:42 +0100
-Message-ID: <CAMuHMdW+KcPCAweneu4pTg1Pb-uAvYGz1+Z=oEDYoOt4gWrjhA@mail.gmail.com>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
- <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
- <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
- <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
- <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
- <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
- <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
- <20170321192342.4fxlb2zjcas53uow@pengutronix.de>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
+Date: Wed, 22 Mar 2017 00:02:20 +0200
+Message-ID: <b4d8bd90-cd33-560f-5102-20c2375dac70@ti.com>
+References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
+ <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
+ <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- linux-spi <linux-spi@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Sascha Hauer <kernel@pengutronix.de>, Fabio Estevam <fabio.estevam@nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org
+To: Sekhar Nori <nsekhar@ti.com>, Frode Isaksen <fisaksen@baylibre.com>,
+ <khilman@baylibre.com>, <ptitiano@baylibre.com>,
+ <linux-arm-kernel@lists.infradead.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170321192342.4fxlb2zjcas53uow@pengutronix.de>
+In-Reply-To: <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -35,48 +25,77 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVXdlLAoKT24gVHVlLCBNYXIgMjEsIDIwMTcgYXQgODoyMyBQTSwgVXdlIEtsZWluZS1Lw7Zu
-aWcKPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gT24gVHVlLCBNYXIg
-MjEsIDIwMTcgYXQgMTE6MjI6MjdQTSArMTAwMCwgR3JlZyBVbmdlcmVyIHdyb3RlOgo+PiBPbiAy
-MS8wMy8xNyAyMjoxMSwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4+ID4gT24gVHVlLCBNYXIg
-MjEsIDIwMTcgYXQgMDk6NTM6NTJQTSArMTAwMCwgR3JlZyBVbmdlcmVyIHdyb3RlOgo+PiA+ID4g
-T24gMjEvMDMvMTcgMTg6MDUsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+PiA+ID4gPiBPbiBU
-dWUsIE1hciAyMSwgMjAxNyBhdCAxMjowNToyMFBNICsxMDAwLCBHcmVnIFVuZ2VyZXIgd3JvdGU6
-Cj4+ID4gPiA+ID4gT24gMjAvMDMvMTcgMjM6MjIsIFZsYWRpbWlyIFphcG9sc2tpeSB3cm90ZToK
-Pj4gPiA+ID4gPiA+IEZvciB0aGF0IHR5cGUgb2YgYmluZGluZ3MgbG9jYWxseSBJIGhhdmUgYSBo
-YWNraXNoIHNwaS1pbXggZHJpdmVyIGNoYW5nZSwKPj4gPiA+ID4gPiA+IHdoaWNoIHN1cHBvcnRz
-IHRoaXMgb3B0aW9uLCBidXQgSSdtIHVuc3VyZSBpZiBpdCBpcyB1bml2ZXJzYWwgZW5vdWdoLgo+
-PiA+ID4gPiA+Cj4+ID4gPiA+ID4gRG8geW91IG1lYW4gc3VwcG9ydGluZyBubyBjcy1ncGlvcyB0
-YWc/Cj4+ID4gPiA+ID4gVGhhdCB3b3VsZCBiZSBuaWNlLCBidXQgaXQgd291bGQgc2VlbSBub3Qg
-bWFueSB1c2VycyBvZiB0aGlzIGFyZQo+PiA+ID4gPiA+IHVzaW5nIG5hdGl2ZSBjaGlwIHNlbGVj
-dHMuCj4+ID4gPiA+Cj4+ID4gPiA+IFRoZSByZWFzb24gZm9yIHRoaXMgaXMgdGhhdCB0aGUgbmF0
-aXZlIGNoaXAgc2VsZWN0cyBhcmUgbGVzcyBmbGV4aWJsZQo+PiA+ID4gPiB0aGFuIGdwaW9zIGJl
-Y2F1c2UgeW91IGNhbm5vdCBjb250cm9sIHdoZW4gdGhleSBkZWFzc2VydC4gSUlSQyB0aGV5IGRv
-Cj4+ID4gPiA+IGl0IHRvbyBtdWNoIGZvciBzb21lIGNoaXBzLiBTbyB0aGUgb25seSByZWFzb24g
-dG8gc3RpY2sgdG8gdGhlbSBpcyB0aGF0Cj4+ID4gPiA+IG9uIHNvbWUgU29DcyBub3QgYWxsIHBp
-bnMgaGF2ZSBhIEdQSU8gZnVuY3Rpb24uIE5vdCBzdXJlIGlmIHRyYW5zZmVyCj4+ID4gPiA+IHNw
-ZWVkIGlzIGFub3RoZXIgcmVhc29uLCBidXQgSSB3b3VsZCBleHBlY3QgdGhhdCB0aGUgZ2FpbiBp
-c24ndCB0aGF0Cj4+ID4gPiA+IGJpZy4KPj4gPiA+Cj4+ID4gPiBGb3IgdGhlIHBhcnRpY3VsYXIg
-U1BJIGRldmljZSBJIGFtIHVzaW5nLCBhIFNpbGljb24gTGFicyAzMjI2MCwKPj4gPiA+IGl0IGFj
-dHVhbGx5IHdhbnRzIHRoZSBhc3NlcnRpb24gYW5kIGRlLWFzc2VydGlvbiBvZiB0aGUgY2hpcC1z
-ZWxlY3QKPj4gPiA+IGJldHdlZW4gZWFjaCBieXRlLiBTbyBpdCBpcyB0aGUgb25seSB3YXkgaXQg
-Y2FuIHdvcmsgZm9yIG1lLgo+PiA+Cj4+ID4gVGhhdCBzaG91bGQgYmUgZG9hYmxlIHdpdGggZ3Bp
-by1jcywgdG9vLiBZb3UganVzdCBuZWVkIHRoZSByaWdodCBmbGFncwo+PiA+IGluIHlvdXIgc3Bp
-IHRyYW5zZmVyIElJUkMuCj4+Cj4+IERvIHlvdSBrbm93IHdoaWNoIGZsYWcocykgIGRvIHRoYXQ/
-Cj4KPiBMb29raW5nIGF0IHRoZSBzb3VyY2UgaXQncyBub3QgYWJvdXQgZmxhZ3MsIGJ1dCB5b3Ug
-aGF2ZSB0byBzcGxpdCB5b3VyCj4gdHJhbnNmZXIgaW50byBzZXZlcmFsIG1lc3NhZ2VzLgoKLi4u
-IGFuZCBzZXQgc3BpX3RyYW5zZmVyLmNzX2NoYW5nZS4KCj4gQUZBSUNUIHRoYXQncyBob3cgdGhl
-IHNwaSBzdHVmZiBpcwo+IHN1cHBvc2VkIHRvIHdvcmsuIFRoYXQgaXMsIGF0IHRoZSBzdGFydCBv
-ZiBhIG1lc3NhZ2UgQ1MgaXMgYXNzZXJ0ZWQgYW5kCj4gKG9ubHkpIGF0IGl0J3MgZW5kIENTIGlz
-IGRlYXNzZXJ0ZWQuIFNvIHRoZSBpbXggY29yZSB3aXRoIG5hdGl2ZSBjaGlwCj4gc2VsZWN0IGFj
-dHVhbGx5IG1pc2JlaGF2ZXMgYnkgdG9nZ2xpbmcgQ1MgYmV0d2VlbiBlYWNoIHdvcmQuCgpJbmRl
-ZWQuCgpHcntvZXRqZSxlZXRpbmd9cywKCiAgICAgICAgICAgICAgICAgICAgICAgIEdlZXJ0Cgot
-LQpHZWVydCBVeXR0ZXJob2V2ZW4gLS0gVGhlcmUncyBsb3RzIG9mIExpbnV4IGJleW9uZCBpYTMy
-IC0tIGdlZXJ0QGxpbnV4LW02OGsub3JnCgpJbiBwZXJzb25hbCBjb252ZXJzYXRpb25zIHdpdGgg
-dGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0CndoZW4gSSdtIHRh
-bGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Igc29tZXRoaW5n
-IGxpa2UgdGhhdC4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtLSBMaW51cyBUb3J2
-YWxkcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGlu
-dXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgt
-YXJtLWtlcm5lbAo=
+
+
+On 02/13/2017 07:59 AM, Sekhar Nori wrote:
+> + Peter
+>
+> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
+>> Limit the transfer size to 20 scatter/gather pages if
+>> DMA is enabled.
+>> The eDMA DMA engine is limited to 20 SG entries in one DMA
+>> transaction. If this number is exceeded, DMA receive fails.
+>> This error occurs with large vmalloc'ed buffers.
+>
+> This needs more explanation because there is support available in edma
+> driver for long SG lists by breaking them down into transfers using 20
+> PaRAM entries at a time. If thats not working for you, that needs
+> further debug.
+
+While breaking down long SG list works in the eDMA driver, it is not w/o =
+
+it's limitation. It might take (to) long to re-configure the paRAM slots =
+
+for the next batch. We see missed events with MMC/SD in case of long SG =
+
+list, so I would not be surprised if this is not causing issues in other =
+
+places...
+
+>
+>>
+>> Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
+>
+> Thanks,
+> Sekhar
+>
+>> ---
+>>  drivers/spi/spi-davinci.c | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>
+>> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+>> index b7b2da1..f1b46f6 100644
+>> --- a/drivers/spi/spi-davinci.c
+>> +++ b/drivers/spi/spi-davinci.c
+>> @@ -485,6 +485,16 @@ static bool davinci_spi_can_dma(struct spi_master *=
+master,
+>>  	return __davinci_spi_can_dma(spi);
+>>  }
+>>
+>> +static size_t davinci_spi_max_transfer_size(struct spi_device *spi)
+>> +{
+>> +	/*
+>> +	 * The eDMA DMA engine is limited to 20 SG entries in one DMA
+>> +	 * transaction. If this number is exceeded, DMA receive fails.
+>> +	 * An extra SG entry is needed when the buffer is not page aligned.
+>> +	 */
+>> +	return (__davinci_spi_can_dma(spi)) ? 19 * PAGE_SIZE : SIZE_MAX;
+>> +}
+>> +
+>>  static int davinci_spi_check_error(struct davinci_spi *dspi, int int_st=
+atus)
+>>  {
+>>  	struct device *sdev =3D dspi->bitbang.master->dev.parent;
+>> @@ -1010,6 +1020,7 @@ static int davinci_spi_probe(struct platform_devic=
+e *pdev)
+>>  	master->setup =3D davinci_spi_setup;
+>>  	master->cleanup =3D davinci_spi_cleanup;
+>>  	master->can_dma =3D davinci_spi_can_dma;
+>> +	master->max_transfer_size =3D davinci_spi_max_transfer_size;
+>>
+>>  	dspi->bitbang.chipselect =3D davinci_spi_chipselect;
+>>  	dspi->bitbang.setup_transfer =3D davinci_spi_setup_transfer;
+>>
+>
+
+- P=E9ter

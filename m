@@ -1,89 +1,51 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH] spi: sun6i: update max transfer size reported
-Date: Tue, 21 Mar 2017 08:24:35 +0100
-Message-ID: <20170321072435.vmr3p77vh5af2ysh@lukather>
-References: <20170320143849.13213-1-icenowy@aosc.xyz>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Tue, 21 Mar 2017 09:05:51 +0100
+Message-ID: <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
+References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
+ <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+ <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
+ <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4000136424722427509=="
-Cc: Martin Ayotte <martinayotte@gmail.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
- Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org
-To: Icenowy Zheng <icenowy@aosc.xyz>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170320143849.13213-1-icenowy@aosc.xyz>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-
---===============4000136424722427509==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5elbrzt2yzrnefrj"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Cc: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        fabio.estevam-3arQi8VN3Tc@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <4a8449d9-cc38-d642-0853-246f46ee7059-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hello,
 
---5elbrzt2yzrnefrj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
+> On 20/03/17 23:22, Vladimir Zapolskiy wrote:
+> > For that type of bindings locally I have a hackish spi-imx driver change,
+> > which supports this option, but I'm unsure if it is universal enough.
+> 
+> Do you mean supporting no cs-gpios tag?
+> That would be nice, but it would seem not many users of this are
+> using native chip selects. 
 
-On Mon, Mar 20, 2017 at 10:38:49PM +0800, Icenowy Zheng wrote:
-> The spi-sun6i driver have already got the ability to do large transfers.
-> However, the max transfer size reported is still fifo depth - 1.
->=20
-> Update the max transfer size reported to the max value possible.
->=20
-> Reported-by: Martin Ayotte <martinayotte@gmail.com>
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
+The reason for this is that the native chip selects are less flexible
+than gpios because you cannot control when they deassert. IIRC they do
+it too much for some chips. So the only reason to stick to them is that
+on some SoCs not all pins have a GPIO function. Not sure if transfer
+speed is another reason, but I would expect that the gain isn't that
+big.
 
-Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Best regards
+Uwe
 
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
-
---5elbrzt2yzrnefrj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJY0NUvAAoJEBx+YmzsjxAgpREQAK5Ku0KmqsM921fHSZwMW5up
-ws0DyKoEd7yDIQVKzzxTDVt0EcpmXV8Q2PZZOcMtdUqlXqFJDDPFOuCYJFJCltUH
-zp/KIyZ2TCDKOofL6he+3oM2QnzHDhm3f22EUqoFopGpPU8RxQaoeQI8t5mUJk22
-GF9LZ5oAducWr6/nqlzThPrgesDaK4j9zMheyfEvfm7qfXZxnq/g/6w3+TXyUl/A
-SZjLKP6CW5hsc3F8YGfWDjkwR0DG644PZhIOj3PXez7uCrg3VSiLti3ufi0gegYW
-ps4Xt8gXRrvZ1NdE/V6X5xaLBFOdqCjgJx2vKyu9BmTJJ5uKeqRtl6L5gqcDJ0Qg
-aW9hyOds70Ah4uQD007kbbLpU5c4RMnM8ADfG9liLxpA3F5FNtIhH9yRnm2GVEju
-TRDeDCjUr/L1BPJQ+FYXdTqlJdKTWdK0kfeN10IaPzVFTqldq9iQPwFfidUxJ4F4
-nID1M9cyHKSFIovyTdsI+fRwQBLzypGTaJ+DQuH/rz0WKjYqWHctx3dao+E0aAs1
-E8g8NfgMl9HxsjR78MGwZZ8C3LBmkANSbN8wKnaBIm8DCPuEZhzMqV4QNijMZOHG
-QNtC88Vfw0APQO9oc/N/92zzaldC9aNX/11aET6amVO8j59cvUfq8z79NRbgezqY
-jMaPeGok7eVH/gsBenhm
-=VyNg
------END PGP SIGNATURE-----
-
---5elbrzt2yzrnefrj--
-
-
---===============4000136424722427509==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============4000136424722427509==--
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

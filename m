@@ -1,60 +1,80 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Tue, 21 Mar 2017 13:11:33 +0100
-Message-ID: <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
- <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
- <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
- <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
- <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCHv2 1/2] spi: imx: fix use of native chip-selects with devicetree
+Date: Tue, 21 Mar 2017 22:43:24 +1000
+Message-ID: <1490100205-31309-2-git-send-email-gerg@linux-m68k.org>
+References: <1490100205-31309-1-git-send-email-gerg@linux-m68k.org>
+Cc: shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <942cfc4b-445b-ca51-1823-2391cea62abf-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1490100205-31309-1-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 21, 2017 at 09:53:52PM +1000, Greg Ungerer wrote:
-> On 21/03/17 18:05, Uwe Kleine-König wrote:
-> > On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
-> > > On 20/03/17 23:22, Vladimir Zapolskiy wrote:
-> > > > For that type of bindings locally I have a hackish spi-imx driver change,
-> > > > which supports this option, but I'm unsure if it is universal enough.
-> > > 
-> > > Do you mean supporting no cs-gpios tag?
-> > > That would be nice, but it would seem not many users of this are
-> > > using native chip selects.
-> > 
-> > The reason for this is that the native chip selects are less flexible
-> > than gpios because you cannot control when they deassert. IIRC they do
-> > it too much for some chips. So the only reason to stick to them is that
-> > on some SoCs not all pins have a GPIO function. Not sure if transfer
-> > speed is another reason, but I would expect that the gain isn't that
-> > big.
-> 
-> For the particular SPI device I am using, a Silicon Labs 32260,
-> it actually wants the assertion and de-assertion of the chip-select
-> between each byte. So it is the only way it can work for me.
+The commonly used mechanism of specifying the hardware or native
+chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+does not result in the native chip-select being configured for use.
+So external SPI devices that require use of the native chip-select
+will not work.
 
-That should be doable with gpio-cs, too. You just need the right flags
-in your spi transfer IIRC.
+You can successfully specify native chip-selects if using a platform
+setup by specifying the cs-gpio as negative offset by 32. And that
+works correctly. You cannot use the same method in devicetree.
 
-Best regards
-Uwe
+The logic in the spi-imx.c driver during probe uses core spi function
+of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+For valid GPIO values that will be recorded for use, all other entries in
+the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+set to -ENOENT in the cs_gpios list.
 
+When the SPI device registers are setup the code will use the GPIO
+listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+is less then 0 then it is intended to be for a native chip-select, and
+its cs_gpio value is added to 32 to get the chipselect number to use.
+Problem is that with devicetree this can only ever be -ENOENT (which
+is -2), and that alone results in an invalid chip-select number. But also
+doesn't allow selection of the native chip-select at all.
+
+To fix, if the cs_gpio specified for this spi device is not a
+valid GPIO then use the "chip_select" (that is the native chip-select
+number) for hardware setup.
+
+Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+v2: added documentation to patch set
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 9a7c62f..dbb482c 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -516,8 +516,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX31_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX31_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) <<
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= (spi->chip_select) <<
+ 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+ 						  MX31_CSPICTRL_CS_SHIFT);
+ 
+@@ -608,8 +608,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg |= MX21_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX21_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+ 
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

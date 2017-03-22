@@ -1,101 +1,67 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
-Date: Wed, 22 Mar 2017 00:02:20 +0200
-Message-ID: <b4d8bd90-cd33-560f-5102-20c2375dac70@ti.com>
-References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
- <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
- <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
-Content-Transfer-Encoding: quoted-printable
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org
-To: Sekhar Nori <nsekhar@ti.com>, Frode Isaksen <fisaksen@baylibre.com>,
- <khilman@baylibre.com>, <ptitiano@baylibre.com>,
- <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: poll OMAP2_MCSPI_CHSTAT_RXS for PIO transfer
+Date: Wed, 22 Mar 2017 09:18:26 +0900
+Message-ID: <1490141906-8908-1-git-send-email-akinobu.mita@gmail.com>
+Cc: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+When running the spi-loopback-test with slower clock rate like 10 KHz,
+the test for 251 bytes transfer was failed.  This failure triggered an
+spi-omap2-mcspi's error message "DMA RX last word empty".
 
+This message means that PIO for reading the remaining bytes due to the
+DMA transfer length reduction is failed.  This problem can be fixed by
+polling OMAP2_MCSPI_CHSTAT_RXS bit in channel status register to wait
+until the receive buffer register is filled.
 
-On 02/13/2017 07:59 AM, Sekhar Nori wrote:
-> + Peter
->
-> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
->> Limit the transfer size to 20 scatter/gather pages if
->> DMA is enabled.
->> The eDMA DMA engine is limited to 20 SG entries in one DMA
->> transaction. If this number is exceeded, DMA receive fails.
->> This error occurs with large vmalloc'ed buffers.
->
-> This needs more explanation because there is support available in edma
-> driver for long SG lists by breaking them down into transfers using 20
-> PaRAM entries at a time. If thats not working for you, that needs
-> further debug.
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-While breaking down long SG list works in the eDMA driver, it is not w/o =
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 79800e9..7275223 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -454,6 +454,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	int			elements = 0;
+ 	int			word_len, element_count;
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	void __iomem		*chstat_reg = cs->base + OMAP2_MCSPI_CHSTAT0;
++
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 	count = xfer->len;
+@@ -549,8 +551,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+ 		elements--;
+ 
+-		if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				   & OMAP2_MCSPI_CHSTAT_RXS)) {
++		if (!mcspi_wait_for_reg_bit(chstat_reg,
++					    OMAP2_MCSPI_CHSTAT_RXS)) {
+ 			u32 w;
+ 
+ 			w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+@@ -568,8 +570,7 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			return count;
+ 		}
+ 	}
+-	if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				& OMAP2_MCSPI_CHSTAT_RXS)) {
++	if (!mcspi_wait_for_reg_bit(chstat_reg, OMAP2_MCSPI_CHSTAT_RXS)) {
+ 		u32 w;
+ 
+ 		w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+-- 
+2.7.4
 
-it's limitation. It might take (to) long to re-configure the paRAM slots =
-
-for the next batch. We see missed events with MMC/SD in case of long SG =
-
-list, so I would not be surprised if this is not causing issues in other =
-
-places...
-
->
->>
->> Signed-off-by: Frode Isaksen <fisaksen@baylibre.com>
->
-> Thanks,
-> Sekhar
->
->> ---
->>  drivers/spi/spi-davinci.c | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
->> index b7b2da1..f1b46f6 100644
->> --- a/drivers/spi/spi-davinci.c
->> +++ b/drivers/spi/spi-davinci.c
->> @@ -485,6 +485,16 @@ static bool davinci_spi_can_dma(struct spi_master *=
-master,
->>  	return __davinci_spi_can_dma(spi);
->>  }
->>
->> +static size_t davinci_spi_max_transfer_size(struct spi_device *spi)
->> +{
->> +	/*
->> +	 * The eDMA DMA engine is limited to 20 SG entries in one DMA
->> +	 * transaction. If this number is exceeded, DMA receive fails.
->> +	 * An extra SG entry is needed when the buffer is not page aligned.
->> +	 */
->> +	return (__davinci_spi_can_dma(spi)) ? 19 * PAGE_SIZE : SIZE_MAX;
->> +}
->> +
->>  static int davinci_spi_check_error(struct davinci_spi *dspi, int int_st=
-atus)
->>  {
->>  	struct device *sdev =3D dspi->bitbang.master->dev.parent;
->> @@ -1010,6 +1020,7 @@ static int davinci_spi_probe(struct platform_devic=
-e *pdev)
->>  	master->setup =3D davinci_spi_setup;
->>  	master->cleanup =3D davinci_spi_cleanup;
->>  	master->can_dma =3D davinci_spi_can_dma;
->> +	master->max_transfer_size =3D davinci_spi_max_transfer_size;
->>
->>  	dspi->bitbang.chipselect =3D davinci_spi_chipselect;
->>  	dspi->bitbang.setup_transfer =3D davinci_spi_setup_transfer;
->>
->
-
-- P=E9ter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

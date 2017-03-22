@@ -1,102 +1,102 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Wed, 22 Mar 2017 08:09:35 +0100
-Message-ID: <CAMuHMdW+sqSyoQUE7sGPKoXy7n9Bh2QGg5BNA1EP5=eW4GKTVA@mail.gmail.com>
-References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
- <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
- <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
- <4a8449d9-cc38-d642-0853-246f46ee7059@linux-m68k.org>
- <20170321080551.ie4xm5hr3fki365s@pengutronix.de>
- <942cfc4b-445b-ca51-1823-2391cea62abf@linux-m68k.org>
- <20170321121133.jcmhhbszj2d42h3w@pengutronix.de>
- <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
- <20170321192342.4fxlb2zjcas53uow@pengutronix.de>
- <CAMuHMdW+KcPCAweneu4pTg1Pb-uAvYGz1+Z=oEDYoOt4gWrjhA@mail.gmail.com>
- <51a48190-9edb-093e-a6fc-a7cb8c1e0ce0@linux-m68k.org>
+From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
+Date: Wed, 22 Mar 2017 12:11:20 +0100
+Message-ID: <44a615b6-97ab-0ab8-c2ba-013fdd40ffd7@baylibre.com>
+References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
+ <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
+ <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
+ <b4d8bd90-cd33-560f-5102-20c2375dac70@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- linux-spi <linux-spi@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Sascha Hauer <kernel@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
-To: Greg Ungerer <gerg@linux-m68k.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <51a48190-9edb-093e-a6fc-a7cb8c1e0ce0@linux-m68k.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>,
+        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
+        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <b4d8bd90-cd33-560f-5102-20c2375dac70-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGkgR3JlZywKCk9uIFdlZCwgTWFyIDIyLCAyMDE3IGF0IDE6NTAgQU0sIEdyZWcgVW5nZXJlciA8
-Z2VyZ0BsaW51eC1tNjhrLm9yZz4gd3JvdGU6Cj4gT24gMjIvMDMvMTcgMDY6MTUsIEdlZXJ0IFV5
-dHRlcmhvZXZlbiB3cm90ZToKPj4gT24gVHVlLCBNYXIgMjEsIDIwMTcgYXQgODoyMyBQTSwgVXdl
-IEtsZWluZS1Lw7ZuaWcKPj4gPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6
-Cj4+PiBPbiBUdWUsIE1hciAyMSwgMjAxNyBhdCAxMToyMjoyN1BNICsxMDAwLCBHcmVnIFVuZ2Vy
-ZXIgd3JvdGU6Cj4+Pj4gT24gMjEvMDMvMTcgMjI6MTEsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3Rl
-Ogo+Pj4+PiBPbiBUdWUsIE1hciAyMSwgMjAxNyBhdCAwOTo1Mzo1MlBNICsxMDAwLCBHcmVnIFVu
-Z2VyZXIgd3JvdGU6Cj4+Pj4+PiBPbiAyMS8wMy8xNyAxODowNSwgVXdlIEtsZWluZS1Lw7ZuaWcg
-d3JvdGU6Cj4+Pj4+Pj4gT24gVHVlLCBNYXIgMjEsIDIwMTcgYXQgMTI6MDU6MjBQTSArMTAwMCwg
-R3JlZyBVbmdlcmVyIHdyb3RlOgo+Pj4+Pj4+PiBPbiAyMC8wMy8xNyAyMzoyMiwgVmxhZGltaXIg
-WmFwb2xza2l5IHdyb3RlOgo+Pj4+Pj4+Pj4gRm9yIHRoYXQgdHlwZSBvZiBiaW5kaW5ncyBsb2Nh
-bGx5IEkgaGF2ZSBhIGhhY2tpc2ggc3BpLWlteCBkcml2ZXIgY2hhbmdlLAo+Pj4+Pj4+Pj4gd2hp
-Y2ggc3VwcG9ydHMgdGhpcyBvcHRpb24sIGJ1dCBJJ20gdW5zdXJlIGlmIGl0IGlzIHVuaXZlcnNh
-bCBlbm91Z2guCj4+Pj4+Pj4+Cj4+Pj4+Pj4+IERvIHlvdSBtZWFuIHN1cHBvcnRpbmcgbm8gY3Mt
-Z3Bpb3MgdGFnPwo+Pj4+Pj4+PiBUaGF0IHdvdWxkIGJlIG5pY2UsIGJ1dCBpdCB3b3VsZCBzZWVt
-IG5vdCBtYW55IHVzZXJzIG9mIHRoaXMgYXJlCj4+Pj4+Pj4+IHVzaW5nIG5hdGl2ZSBjaGlwIHNl
-bGVjdHMuCj4+Pj4+Pj4KPj4+Pj4+PiBUaGUgcmVhc29uIGZvciB0aGlzIGlzIHRoYXQgdGhlIG5h
-dGl2ZSBjaGlwIHNlbGVjdHMgYXJlIGxlc3MgZmxleGlibGUKPj4+Pj4+PiB0aGFuIGdwaW9zIGJl
-Y2F1c2UgeW91IGNhbm5vdCBjb250cm9sIHdoZW4gdGhleSBkZWFzc2VydC4gSUlSQyB0aGV5IGRv
-Cj4+Pj4+Pj4gaXQgdG9vIG11Y2ggZm9yIHNvbWUgY2hpcHMuIFNvIHRoZSBvbmx5IHJlYXNvbiB0
-byBzdGljayB0byB0aGVtIGlzIHRoYXQKPj4+Pj4+PiBvbiBzb21lIFNvQ3Mgbm90IGFsbCBwaW5z
-IGhhdmUgYSBHUElPIGZ1bmN0aW9uLiBOb3Qgc3VyZSBpZiB0cmFuc2Zlcgo+Pj4+Pj4+IHNwZWVk
-IGlzIGFub3RoZXIgcmVhc29uLCBidXQgSSB3b3VsZCBleHBlY3QgdGhhdCB0aGUgZ2FpbiBpc24n
-dCB0aGF0Cj4+Pj4+Pj4gYmlnLgo+Pj4+Pj4KPj4+Pj4+IEZvciB0aGUgcGFydGljdWxhciBTUEkg
-ZGV2aWNlIEkgYW0gdXNpbmcsIGEgU2lsaWNvbiBMYWJzIDMyMjYwLAo+Pj4+Pj4gaXQgYWN0dWFs
-bHkgd2FudHMgdGhlIGFzc2VydGlvbiBhbmQgZGUtYXNzZXJ0aW9uIG9mIHRoZSBjaGlwLXNlbGVj
-dAo+Pj4+Pj4gYmV0d2VlbiBlYWNoIGJ5dGUuIFNvIGl0IGlzIHRoZSBvbmx5IHdheSBpdCBjYW4g
-d29yayBmb3IgbWUuCj4+Pj4+Cj4+Pj4+IFRoYXQgc2hvdWxkIGJlIGRvYWJsZSB3aXRoIGdwaW8t
-Y3MsIHRvby4gWW91IGp1c3QgbmVlZCB0aGUgcmlnaHQgZmxhZ3MKPj4+Pj4gaW4geW91ciBzcGkg
-dHJhbnNmZXIgSUlSQy4KPj4+Pgo+Pj4+IERvIHlvdSBrbm93IHdoaWNoIGZsYWcocykgIGRvIHRo
-YXQ/Cj4+Pgo+Pj4gTG9va2luZyBhdCB0aGUgc291cmNlIGl0J3Mgbm90IGFib3V0IGZsYWdzLCBi
-dXQgeW91IGhhdmUgdG8gc3BsaXQgeW91cgo+Pj4gdHJhbnNmZXIgaW50byBzZXZlcmFsIG1lc3Nh
-Z2VzLgo+Pgo+PiAuLi4gYW5kIHNldCBzcGlfdHJhbnNmZXIuY3NfY2hhbmdlLgo+Cj4gWWVwLCB0
-aGF0IGxvb2tzIGxpa2UgdGhlIG9uZS4gVGhvdWdoIGl0IHdvdWxkIGFwcGVhciBub3QgYWxsCj4g
-c3BpIGRyaXZlcnMgc3VwcG9ydCBpdC4gVGhlIHNwaS1pbXggZHJpdmVyIGZvciBvbmUgZG9lc24n
-dCBsb29rCj4gYXQgaXQgYXQgYWxsLgoKQ29ycmVjdC4gV2l0aCBtYW55IGRyaXZlcnMsIHlvdSBt
-dXN0IHVzZSBjcy1ncGlvcyB0byBzdXBwb3J0IHRoYXQgZmVhdHVyZS4KUmVtZW1iZXIsIFNQSSBp
-cyBhIG1peGVkIGJhZyBvZiBmZWF0dXJlcywgYW5kIG5vdCBhbGwgb2YgdGhlbSBhcmUgc3VwcG9y
-dGVkCm9uIGFsbCBjb250cm9sbGVycy4KCj4+PiBBRkFJQ1QgdGhhdCdzIGhvdyB0aGUgc3BpIHN0
-dWZmIGlzCj4+PiBzdXBwb3NlZCB0byB3b3JrLiBUaGF0IGlzLCBhdCB0aGUgc3RhcnQgb2YgYSBt
-ZXNzYWdlIENTIGlzIGFzc2VydGVkIGFuZAo+Pj4gKG9ubHkpIGF0IGl0J3MgZW5kIENTIGlzIGRl
-YXNzZXJ0ZWQuIFNvIHRoZSBpbXggY29yZSB3aXRoIG5hdGl2ZSBjaGlwCj4+PiBzZWxlY3QgYWN0
-dWFsbHkgbWlzYmVoYXZlcyBieSB0b2dnbGluZyBDUyBiZXR3ZWVuIGVhY2ggd29yZC4KPj4KPj4g
-SW5kZWVkLgo+Cj4gSWYgeW91IGxvb2sgYXJvdW5kIHRoZSBrZXJuZWwgc291cmNlIGZvciBjc19j
-aGFuZ2UgdGhlcmUgaXMKPiBhIG51bWJlciBvZiBkZXZpY2VzIHRoYXQgdXNlIGl0LiBBIGJ1bmNo
-IG9kIEFEQy9EQUNzIGluCj4gcGFydGljdWxhciAoaW5jbHVkaW5nIGluIGJhY2tsaWdodCBzdXBw
-b3J0KS4KPgo+IFNvIEkgZG9uJ3Qga25vdyB0aGF0IEkgd291bGQgY2hhcmFjdGVyaXplIHRoZSBp
-TVggb25lIGFzCj4gbWlzYmVoYXZpbmcgc28gbXVjaCBhcyBvbmx5IG5hdGl2ZWx5IHN1cHBvcnRp
-bmcgdGhlIG1vZGVsCj4gd2hlcmUgY2hpcCBzZWxlY3QgaXMgYXNzZXJ0ZWQvZGVhc3NlcnRlZCBw
-ZXIgYnVyc3QuIEl0IGlzCj4gc3RyYWl0IGZvcndhcmQgdG8gaW1wbGVtZW50IHRoZSBHUElPIG1l
-dGhvZCBpbnN0ZWFkIG9mIHRoZQo+IG5hdGl2ZSBjaGlwIHNlbGVjdCB3aXRoIHRoZSBpTVggcGlu
-IG11bHRpcGxleGluZy4KCkl0J3MgdXAgdG8gdGhlIHN5c3RlbSBpbnRlZ3JhdG9yIHRvIHNwZWNp
-ZnkgY3MtZ3Bpb3Mgd2hlbiBuZWVkZWQuCgpHcntvZXRqZSxlZXRpbmd9cywKCiAgICAgICAgICAg
-ICAgICAgICAgICAgIEdlZXJ0CgotLQpHZWVydCBVeXR0ZXJob2V2ZW4gLS0gVGhlcmUncyBsb3Rz
-IG9mIExpbnV4IGJleW9uZCBpYTMyIC0tIGdlZXJ0QGxpbnV4LW02OGsub3JnCgpJbiBwZXJzb25h
-bCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhh
-Y2tlci4gQnV0CndoZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJv
-Z3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4KICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAtLSBMaW51cyBUb3J2YWxkcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJt
-LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=
+
+
+On 21/03/2017 23:02, Peter Ujfalusi wrote:
+>
+>
+> On 02/13/2017 07:59 AM, Sekhar Nori wrote:
+>> + Peter
+>>
+>> On Friday 10 February 2017 08:59 PM, Frode Isaksen wrote:
+>>> Limit the transfer size to 20 scatter/gather pages if
+>>> DMA is enabled.
+>>> The eDMA DMA engine is limited to 20 SG entries in one DMA
+>>> transaction. If this number is exceeded, DMA receive fails.
+>>> This error occurs with large vmalloc'ed buffers.
+>>
+>> This needs more explanation because there is support available in edma
+>> driver for long SG lists by breaking them down into transfers using 20
+>> PaRAM entries at a time. If thats not working for you, that needs
+>> further debug.
+>
+> While breaking down long SG list works in the eDMA driver, it is not w/o it's
+> limitation. It might take (to) long to re-configure the paRAM slots for the
+> next batch. We see missed events with MMC/SD in case of long SG list, so I
+> would not be surprised if this is not causing issues in other places...
+>
+I checked the time to re-configure the paRAM slots with an oscillo and it takes
+about 160uS. Since the slave is still transmitting, the number of bytes lost is
+about 160/8=20. With the spi-loopback-test I saw about 30bytes lost when
+re-configuring.
+
+Thanks,
+Frode
+>>
+>>>
+>>> Signed-off-by: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+>>
+>> Thanks,
+>> Sekhar
+>>
+>>> ---
+>>>  drivers/spi/spi-davinci.c | 11 +++++++++++
+>>>  1 file changed, 11 insertions(+)
+>>>
+>>> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+>>> index b7b2da1..f1b46f6 100644
+>>> --- a/drivers/spi/spi-davinci.c
+>>> +++ b/drivers/spi/spi-davinci.c
+>>> @@ -485,6 +485,16 @@ static bool davinci_spi_can_dma(struct spi_master *master,
+>>>      return __davinci_spi_can_dma(spi);
+>>>  }
+>>>
+>>> +static size_t davinci_spi_max_transfer_size(struct spi_device *spi)
+>>> +{
+>>> +    /*
+>>> +     * The eDMA DMA engine is limited to 20 SG entries in one DMA
+>>> +     * transaction. If this number is exceeded, DMA receive fails.
+>>> +     * An extra SG entry is needed when the buffer is not page aligned.
+>>> +     */
+>>> +    return (__davinci_spi_can_dma(spi)) ? 19 * PAGE_SIZE : SIZE_MAX;
+>>> +}
+>>> +
+>>>  static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
+>>>  {
+>>>      struct device *sdev = dspi->bitbang.master->dev.parent;
+>>> @@ -1010,6 +1020,7 @@ static int davinci_spi_probe(struct platform_device
+>>> *pdev)
+>>>      master->setup = davinci_spi_setup;
+>>>      master->cleanup = davinci_spi_cleanup;
+>>>      master->can_dma = davinci_spi_can_dma;
+>>> +    master->max_transfer_size = davinci_spi_max_transfer_size;
+>>>
+>>>      dspi->bitbang.chipselect = davinci_spi_chipselect;
+>>>      dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
+>>>
+>>
+>
+> - Péter
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

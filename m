@@ -1,8 +1,8 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH 2/2] spi: imx: fix use of native chip-selects with
  devicetree
-Date: Wed, 22 Mar 2017 10:50:44 +1000
-Message-ID: <51a48190-9edb-093e-a6fc-a7cb8c1e0ce0@linux-m68k.org>
+Date: Wed, 22 Mar 2017 08:09:35 +0100
+Message-ID: <CAMuHMdW+sqSyoQUE7sGPKoXy7n9Bh2QGg5BNA1EP5=eW4GKTVA@mail.gmail.com>
 References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
  <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
  <f1cf2001-28b4-6a74-b98a-13336d74ff9d@mentor.com>
@@ -13,90 +13,90 @@ References: <1489726983-17706-1-git-send-email-gerg@linux-m68k.org>
  <20678cef-f667-9915-aa00-8877ad152a8c@linux-m68k.org>
  <20170321192342.4fxlb2zjcas53uow@pengutronix.de>
  <CAMuHMdW+KcPCAweneu4pTg1Pb-uAvYGz1+Z=oEDYoOt4gWrjhA@mail.gmail.com>
+ <51a48190-9edb-093e-a6fc-a7cb8c1e0ce0@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdW+KcPCAweneu4pTg1Pb-uAvYGz1+Z=oEDYoOt4gWrjhA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-spi <linux-spi@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Sascha Hauer <kernel@pengutronix.de>,
+ =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <51a48190-9edb-093e-a6fc-a7cb8c1e0ce0@linux-m68k.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert, Uwe,
-
-On 22/03/17 06:15, Geert Uytterhoeven wrote:
-> On Tue, Mar 21, 2017 at 8:23 PM, Uwe Kleine-König
-> <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
->> On Tue, Mar 21, 2017 at 11:22:27PM +1000, Greg Ungerer wrote:
->>> On 21/03/17 22:11, Uwe Kleine-König wrote:
->>>> On Tue, Mar 21, 2017 at 09:53:52PM +1000, Greg Ungerer wrote:
->>>>> On 21/03/17 18:05, Uwe Kleine-König wrote:
->>>>>> On Tue, Mar 21, 2017 at 12:05:20PM +1000, Greg Ungerer wrote:
->>>>>>> On 20/03/17 23:22, Vladimir Zapolskiy wrote:
->>>>>>>> For that type of bindings locally I have a hackish spi-imx driver change,
->>>>>>>> which supports this option, but I'm unsure if it is universal enough.
->>>>>>>
->>>>>>> Do you mean supporting no cs-gpios tag?
->>>>>>> That would be nice, but it would seem not many users of this are
->>>>>>> using native chip selects.
->>>>>>
->>>>>> The reason for this is that the native chip selects are less flexible
->>>>>> than gpios because you cannot control when they deassert. IIRC they do
->>>>>> it too much for some chips. So the only reason to stick to them is that
->>>>>> on some SoCs not all pins have a GPIO function. Not sure if transfer
->>>>>> speed is another reason, but I would expect that the gain isn't that
->>>>>> big.
->>>>>
->>>>> For the particular SPI device I am using, a Silicon Labs 32260,
->>>>> it actually wants the assertion and de-assertion of the chip-select
->>>>> between each byte. So it is the only way it can work for me.
->>>>
->>>> That should be doable with gpio-cs, too. You just need the right flags
->>>> in your spi transfer IIRC.
->>>
->>> Do you know which flag(s)  do that?
->>
->> Looking at the source it's not about flags, but you have to split your
->> transfer into several messages.
-> 
-> ... and set spi_transfer.cs_change.
-
-Yep, that looks like the one. Though it would appear not all
-spi drivers support it. The spi-imx driver for one doesn't look
-at it at all.
-
-
->> AFAICT that's how the spi stuff is
->> supposed to work. That is, at the start of a message CS is asserted and
->> (only) at it's end CS is deasserted. So the imx core with native chip
->> select actually misbehaves by toggling CS between each word.
-> 
-> Indeed.
-
-If you look around the kernel source for cs_change there is
-a number of devices that use it. A bunch od ADC/DACs in
-particular (including in backlight support). 
-
-So I don't know that I would characterize the iMX one as
-misbehaving so much as only natively supporting the model
-where chip select is asserted/deasserted per burst. It is
-strait forward to implement the GPIO method instead of the
-native chip select with the iMX pin multiplexing.
-
-Regards
-Greg
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SGkgR3JlZywKCk9uIFdlZCwgTWFyIDIyLCAyMDE3IGF0IDE6NTAgQU0sIEdyZWcgVW5nZXJlciA8
+Z2VyZ0BsaW51eC1tNjhrLm9yZz4gd3JvdGU6Cj4gT24gMjIvMDMvMTcgMDY6MTUsIEdlZXJ0IFV5
+dHRlcmhvZXZlbiB3cm90ZToKPj4gT24gVHVlLCBNYXIgMjEsIDIwMTcgYXQgODoyMyBQTSwgVXdl
+IEtsZWluZS1Lw7ZuaWcKPj4gPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6
+Cj4+PiBPbiBUdWUsIE1hciAyMSwgMjAxNyBhdCAxMToyMjoyN1BNICsxMDAwLCBHcmVnIFVuZ2Vy
+ZXIgd3JvdGU6Cj4+Pj4gT24gMjEvMDMvMTcgMjI6MTEsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3Rl
+Ogo+Pj4+PiBPbiBUdWUsIE1hciAyMSwgMjAxNyBhdCAwOTo1Mzo1MlBNICsxMDAwLCBHcmVnIFVu
+Z2VyZXIgd3JvdGU6Cj4+Pj4+PiBPbiAyMS8wMy8xNyAxODowNSwgVXdlIEtsZWluZS1Lw7ZuaWcg
+d3JvdGU6Cj4+Pj4+Pj4gT24gVHVlLCBNYXIgMjEsIDIwMTcgYXQgMTI6MDU6MjBQTSArMTAwMCwg
+R3JlZyBVbmdlcmVyIHdyb3RlOgo+Pj4+Pj4+PiBPbiAyMC8wMy8xNyAyMzoyMiwgVmxhZGltaXIg
+WmFwb2xza2l5IHdyb3RlOgo+Pj4+Pj4+Pj4gRm9yIHRoYXQgdHlwZSBvZiBiaW5kaW5ncyBsb2Nh
+bGx5IEkgaGF2ZSBhIGhhY2tpc2ggc3BpLWlteCBkcml2ZXIgY2hhbmdlLAo+Pj4+Pj4+Pj4gd2hp
+Y2ggc3VwcG9ydHMgdGhpcyBvcHRpb24sIGJ1dCBJJ20gdW5zdXJlIGlmIGl0IGlzIHVuaXZlcnNh
+bCBlbm91Z2guCj4+Pj4+Pj4+Cj4+Pj4+Pj4+IERvIHlvdSBtZWFuIHN1cHBvcnRpbmcgbm8gY3Mt
+Z3Bpb3MgdGFnPwo+Pj4+Pj4+PiBUaGF0IHdvdWxkIGJlIG5pY2UsIGJ1dCBpdCB3b3VsZCBzZWVt
+IG5vdCBtYW55IHVzZXJzIG9mIHRoaXMgYXJlCj4+Pj4+Pj4+IHVzaW5nIG5hdGl2ZSBjaGlwIHNl
+bGVjdHMuCj4+Pj4+Pj4KPj4+Pj4+PiBUaGUgcmVhc29uIGZvciB0aGlzIGlzIHRoYXQgdGhlIG5h
+dGl2ZSBjaGlwIHNlbGVjdHMgYXJlIGxlc3MgZmxleGlibGUKPj4+Pj4+PiB0aGFuIGdwaW9zIGJl
+Y2F1c2UgeW91IGNhbm5vdCBjb250cm9sIHdoZW4gdGhleSBkZWFzc2VydC4gSUlSQyB0aGV5IGRv
+Cj4+Pj4+Pj4gaXQgdG9vIG11Y2ggZm9yIHNvbWUgY2hpcHMuIFNvIHRoZSBvbmx5IHJlYXNvbiB0
+byBzdGljayB0byB0aGVtIGlzIHRoYXQKPj4+Pj4+PiBvbiBzb21lIFNvQ3Mgbm90IGFsbCBwaW5z
+IGhhdmUgYSBHUElPIGZ1bmN0aW9uLiBOb3Qgc3VyZSBpZiB0cmFuc2Zlcgo+Pj4+Pj4+IHNwZWVk
+IGlzIGFub3RoZXIgcmVhc29uLCBidXQgSSB3b3VsZCBleHBlY3QgdGhhdCB0aGUgZ2FpbiBpc24n
+dCB0aGF0Cj4+Pj4+Pj4gYmlnLgo+Pj4+Pj4KPj4+Pj4+IEZvciB0aGUgcGFydGljdWxhciBTUEkg
+ZGV2aWNlIEkgYW0gdXNpbmcsIGEgU2lsaWNvbiBMYWJzIDMyMjYwLAo+Pj4+Pj4gaXQgYWN0dWFs
+bHkgd2FudHMgdGhlIGFzc2VydGlvbiBhbmQgZGUtYXNzZXJ0aW9uIG9mIHRoZSBjaGlwLXNlbGVj
+dAo+Pj4+Pj4gYmV0d2VlbiBlYWNoIGJ5dGUuIFNvIGl0IGlzIHRoZSBvbmx5IHdheSBpdCBjYW4g
+d29yayBmb3IgbWUuCj4+Pj4+Cj4+Pj4+IFRoYXQgc2hvdWxkIGJlIGRvYWJsZSB3aXRoIGdwaW8t
+Y3MsIHRvby4gWW91IGp1c3QgbmVlZCB0aGUgcmlnaHQgZmxhZ3MKPj4+Pj4gaW4geW91ciBzcGkg
+dHJhbnNmZXIgSUlSQy4KPj4+Pgo+Pj4+IERvIHlvdSBrbm93IHdoaWNoIGZsYWcocykgIGRvIHRo
+YXQ/Cj4+Pgo+Pj4gTG9va2luZyBhdCB0aGUgc291cmNlIGl0J3Mgbm90IGFib3V0IGZsYWdzLCBi
+dXQgeW91IGhhdmUgdG8gc3BsaXQgeW91cgo+Pj4gdHJhbnNmZXIgaW50byBzZXZlcmFsIG1lc3Nh
+Z2VzLgo+Pgo+PiAuLi4gYW5kIHNldCBzcGlfdHJhbnNmZXIuY3NfY2hhbmdlLgo+Cj4gWWVwLCB0
+aGF0IGxvb2tzIGxpa2UgdGhlIG9uZS4gVGhvdWdoIGl0IHdvdWxkIGFwcGVhciBub3QgYWxsCj4g
+c3BpIGRyaXZlcnMgc3VwcG9ydCBpdC4gVGhlIHNwaS1pbXggZHJpdmVyIGZvciBvbmUgZG9lc24n
+dCBsb29rCj4gYXQgaXQgYXQgYWxsLgoKQ29ycmVjdC4gV2l0aCBtYW55IGRyaXZlcnMsIHlvdSBt
+dXN0IHVzZSBjcy1ncGlvcyB0byBzdXBwb3J0IHRoYXQgZmVhdHVyZS4KUmVtZW1iZXIsIFNQSSBp
+cyBhIG1peGVkIGJhZyBvZiBmZWF0dXJlcywgYW5kIG5vdCBhbGwgb2YgdGhlbSBhcmUgc3VwcG9y
+dGVkCm9uIGFsbCBjb250cm9sbGVycy4KCj4+PiBBRkFJQ1QgdGhhdCdzIGhvdyB0aGUgc3BpIHN0
+dWZmIGlzCj4+PiBzdXBwb3NlZCB0byB3b3JrLiBUaGF0IGlzLCBhdCB0aGUgc3RhcnQgb2YgYSBt
+ZXNzYWdlIENTIGlzIGFzc2VydGVkIGFuZAo+Pj4gKG9ubHkpIGF0IGl0J3MgZW5kIENTIGlzIGRl
+YXNzZXJ0ZWQuIFNvIHRoZSBpbXggY29yZSB3aXRoIG5hdGl2ZSBjaGlwCj4+PiBzZWxlY3QgYWN0
+dWFsbHkgbWlzYmVoYXZlcyBieSB0b2dnbGluZyBDUyBiZXR3ZWVuIGVhY2ggd29yZC4KPj4KPj4g
+SW5kZWVkLgo+Cj4gSWYgeW91IGxvb2sgYXJvdW5kIHRoZSBrZXJuZWwgc291cmNlIGZvciBjc19j
+aGFuZ2UgdGhlcmUgaXMKPiBhIG51bWJlciBvZiBkZXZpY2VzIHRoYXQgdXNlIGl0LiBBIGJ1bmNo
+IG9kIEFEQy9EQUNzIGluCj4gcGFydGljdWxhciAoaW5jbHVkaW5nIGluIGJhY2tsaWdodCBzdXBw
+b3J0KS4KPgo+IFNvIEkgZG9uJ3Qga25vdyB0aGF0IEkgd291bGQgY2hhcmFjdGVyaXplIHRoZSBp
+TVggb25lIGFzCj4gbWlzYmVoYXZpbmcgc28gbXVjaCBhcyBvbmx5IG5hdGl2ZWx5IHN1cHBvcnRp
+bmcgdGhlIG1vZGVsCj4gd2hlcmUgY2hpcCBzZWxlY3QgaXMgYXNzZXJ0ZWQvZGVhc3NlcnRlZCBw
+ZXIgYnVyc3QuIEl0IGlzCj4gc3RyYWl0IGZvcndhcmQgdG8gaW1wbGVtZW50IHRoZSBHUElPIG1l
+dGhvZCBpbnN0ZWFkIG9mIHRoZQo+IG5hdGl2ZSBjaGlwIHNlbGVjdCB3aXRoIHRoZSBpTVggcGlu
+IG11bHRpcGxleGluZy4KCkl0J3MgdXAgdG8gdGhlIHN5c3RlbSBpbnRlZ3JhdG9yIHRvIHNwZWNp
+ZnkgY3MtZ3Bpb3Mgd2hlbiBuZWVkZWQuCgpHcntvZXRqZSxlZXRpbmd9cywKCiAgICAgICAgICAg
+ICAgICAgICAgICAgIEdlZXJ0CgotLQpHZWVydCBVeXR0ZXJob2V2ZW4gLS0gVGhlcmUncyBsb3Rz
+IG9mIExpbnV4IGJleW9uZCBpYTMyIC0tIGdlZXJ0QGxpbnV4LW02OGsub3JnCgpJbiBwZXJzb25h
+bCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhh
+Y2tlci4gQnV0CndoZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJv
+Z3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4KICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAtLSBMaW51cyBUb3J2YWxkcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJt
+LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

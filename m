@@ -1,57 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: bcm2835: Allow platform to set realtime priority
-Date: Thu, 23 Mar 2017 11:07:18 +0000
-Message-ID: <20170323110718.sncw32gspvls75u7@sirena.org.uk>
+Date: Thu, 23 Mar 2017 12:24:03 +0100
+Message-ID: <20170323112403.GA20546@h08.hostsharing.net>
 References: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas@wunner.de>
  <1503363fcfb92adfa765d1c1c3e69fc673e72dde.1490264661.git.lukas@wunner.de>
+ <8946695.jF9BQzhoEd@ws-stein>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hpz52vvcmroon77w"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
-        linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
         Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1503363fcfb92adfa765d1c1c3e69fc673e72dde.1490264661.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <8946695.jF9BQzhoEd@ws-stein>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Thu, Mar 23, 2017 at 11:51:33AM +0100, Alexander Stein wrote:
+> interesting, but why is this property specific to bcm2835 when the priority is 
+> used in generic code only?
 
---hpz52vvcmroon77w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Well, I'd be happy to rework the patches to introduce a generic "rt-prio"
+property if that is preferred?  Maybe Mark or some driver maintainers can
+chime in?
 
-On Thu, Mar 23, 2017 at 11:36:45AM +0100, Lukas Wunner wrote:
+For pl022, I guess I could let the legacy "pl022,rt" property take
+precedence over a generic "rt-prio" property.
 
-> +Optional properties:
-> +- bcm2835,rt_prio: Realtime priority of the message pump to minimize latency
-> +                   on the bus (0..99).
-> +
+Thanks,
 
-This is going to depend on the software running on the board, I'd expect
-it to be something configured at runtime rather than fixed in DT.
+Lukas
 
---hpz52vvcmroon77w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAljTrGUACgkQJNaLcl1U
-h9BnwQf/Xy5JFaeMamWe7Nx0meATzxWLWHyz0lf1p9KW3G8lQRWbFrYpI8aJyIh3
-sD0JbfVQ81JoZ/uD5dhi5LKjyXl7QO0AGbMj2REH2FjH/hp0Kd3OZPR2nz3lyZUK
-xIAQg2DOk3IrNs7zgkB5+FlPI+NNezzIy/5jh2DAfWcinTW4kmGWpg+XOA9Ymo9d
-rvldD5sIiRJDROvvRhzYAHDBhccT1oAfVQQ7taqke625X3vl0ORdcSys6dctmJ+x
-Ux2tLu4xaqy/HWif06Dw1KhGicYN2R2Vc9/17DMzhnGZRuAnuj9Jdu6yWG5aHVh/
-QS/SmAp5BFdGp/dkdEldopgTc3ZZiw==
-=WFOX
------END PGP SIGNATURE-----
-
---hpz52vvcmroon77w--
+> 
+> Best regards,
+> Alexander
+> 
+> On Thursday 23 March 2017 11:36:45, Lukas Wunner wrote:
+> > Revolution Pi (a set of IoT products based on the Raspberry Pi and
+> > geared towards industrial usage) uses the bcm2835's SPI master to
+> > interface with an IEC 61158 fieldbus, which requires its kworker thread
+> > to run at a realtime priority.  To this end, allow the platform to
+> > specify the desired priority.
+> > 
+> > Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> > Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+> > Cc: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+> > Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
+> > Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+> > ---
+> >  Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt | 4 ++++
+> >  drivers/spi/spi-bcm2835.c                                  | 2 ++
+> >  2 files changed, 6 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
+> > b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt index
+> > f11f295c8450..13ffc2b15e7d 100644
+> > --- a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
+> > +++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
+> > @@ -10,6 +10,10 @@ Required properties:
+> >  - interrupts: Should contain interrupt.
+> >  - clocks: The clock feeding the SPI controller.
+> > 
+> > +Optional properties:
+> > +- bcm2835,rt_prio: Realtime priority of the message pump to minimize
+> > latency +                   on the bus (0..99).
+> > +
+> >  Example:
+> > 
+> >  spi@20204000 {
+> > diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+> > index f35cc10772f6..319523686f73 100644
+> > --- a/drivers/spi/spi-bcm2835.c
+> > +++ b/drivers/spi/spi-bcm2835.c
+> > @@ -755,6 +755,8 @@ static int bcm2835_spi_probe(struct platform_device
+> > *pdev) master->handle_err = bcm2835_spi_handle_err;
+> >  	master->prepare_message = bcm2835_spi_prepare_message;
+> >  	master->dev.of_node = pdev->dev.of_node;
+> > +	of_property_read_u32(pdev->dev.of_node,
+> > +			     "bcm2835,rt_prio", &master->rt_prio);
+> > 
+> >  	bs = spi_master_get_devdata(master);
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

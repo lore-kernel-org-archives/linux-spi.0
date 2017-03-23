@@ -1,58 +1,126 @@
-From: Frode Isaksen <fisaksen-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 3/8] spi: davinci: limit the transfer size if DMA enabled
-Date: Wed, 22 Mar 2017 14:30:01 +0100
-Message-ID: <e6930698-b843-1ed0-d621-879e0b8bacb7@baylibre.com>
-References: <1486740584-17875-1-git-send-email-fisaksen@baylibre.com>
- <1486740584-17875-4-git-send-email-fisaksen@baylibre.com>
- <a17cca3a-d029-a2cd-583c-2672287d191c@ti.com>
- <b4d8bd90-cd33-560f-5102-20c2375dac70@ti.com>
- <44a615b6-97ab-0ab8-c2ba-013fdd40ffd7@baylibre.com>
- <95c7bc96-2de9-043d-880e-4de9f0b2308a@ti.com>
- <c85c9e88-c40b-88b3-f47d-6d5f5cc1fa00@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>,
-        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org,
-        ptitiano-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 1/2] spi: Allow master drivers to set realtime priority
+Date: Thu, 23 Mar 2017 11:36:45 +0100
+Message-ID: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas@wunner.de>
+Cc: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+        linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+        Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <c85c9e88-c40b-88b3-f47d-6d5f5cc1fa00-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Commit 14af60b6fb3b ("spi/pl022: Add high priority message pump
+support") extended the pl022 driver to optionally run the message pump
+kworker thread with realtime priority, subject to a bool set by the
+platform.
 
+Commit ffbbdd21329f ("spi: create a message queueing infrastructure")
+moved a large portion of pl022 to generic code, making the realtime
+priority support available to other drivers.
 
-On 22/03/2017 13:20, Peter Ujfalusi wrote:
-> On 03/22/2017 01:35 PM, Sekhar Nori wrote:
->> On Wednesday 22 March 2017 04:41 PM, Frode Isaksen wrote:
->> I guess this means that most IPs continue to get more missed sync events
->> even after the first sync event is generated at end of MAX_NR_SG PaRAMs.
->> And may be even that first sync event miss is a problem because the IP
->> does not pause and ends up shifting data in the shift register anyway.
->>
->> If this is so broken, should edma driver not refuse to handle more than
->> MAX_NR_SG for all transfers but mem-to-mem transfers?
->
-> DM355, OMAP-L138, etc have only 128 paRAM slots. If we lift the restriction on
-> the number of paRAM slots a channel can take, then DMA will most likely going
-> to stop working: If any peripherals request 128 long SG transfer (and MMC
-> easily does that alone) then we will have no available paRAM slot for other
-> clients.
->
-> It might be possible to start the paRAM slot update for the next batch already
-> when we have 1 or 2 slots to be processed, but that is going to be tricky and
-> not even reliable.
-Note that with SPI, a workaround for this issue has been found by using the rx
-buffer as the dummy tx buffer when doing read-only transfers (this is the case
-that fails). With this, the rx and tx paRAM slots are reconfigured at the same time.
+However the priority is set to MAX_RT_PRIO - 1, higher than most IRQs
+and identical to the CPU timer clock threads.  This seems excessive so
+make the priority configurable.
 
-Thanks,
-Frode
->
-> Note: audio also sets limit on the number of periods to avoid this
-> reconfiguration of paRAM slots.
->
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c | 4 +++-
+ drivers/spi/spi.c       | 8 +++++---
+ include/linux/spi/spi.h | 4 ++--
+ 3 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index f7f7ba17b40e..f66cc3b6d489 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2153,9 +2153,11 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	master->auto_runtime_pm = true;
+ 	master->transfer_one_message = pl022_transfer_one_message;
+ 	master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
+-	master->rt = platform_info->rt;
+ 	master->dev.of_node = dev->of_node;
+ 
++	if (platform_info->rt)
++		master->rt_prio = MAX_RT_PRIO - 1;
++
+ 	if (platform_info->num_chipselect && platform_info->chipselects) {
+ 		for (i = 0; i < num_cs; i++)
+ 			pl022->chipselects[i] = platform_info->chipselects[i];
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f699ea530b88..3220f6d87a66 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1286,7 +1286,7 @@ static void spi_pump_messages(struct kthread_work *work)
+ 
+ static int spi_init_queue(struct spi_master *master)
+ {
+-	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
++	struct sched_param param = { .sched_priority = master->rt_prio };
+ 
+ 	master->running = false;
+ 	master->busy = false;
+@@ -1308,9 +1308,10 @@ static int spi_init_queue(struct spi_master *master)
+ 	 * request and the scheduling of the message pump thread. Without this
+ 	 * setting the message pump thread will remain at default priority.
+ 	 */
+-	if (master->rt) {
++	if (master->rt_prio >= 0 && master->rt_prio < MAX_RT_PRIO) {
+ 		dev_info(&master->dev,
+-			"will run message pump with realtime priority\n");
++			 "will run message pump with realtime priority %d\n",
++			 master->rt_prio);
+ 		sched_setscheduler(master->kworker_task, SCHED_FIFO, &param);
+ 	}
+ 
+@@ -1862,6 +1863,7 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
+ 
+ 	device_initialize(&master->dev);
+ 	master->bus_num = -1;
++	master->rt_prio = -1;
+ 	master->num_chipselect = 1;
+ 	master->dev.class = &spi_master_class;
+ 	master->dev.parent = dev;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 5a8c4b24f2dc..5ec405669668 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -341,11 +341,11 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @xfer_completion: used by core transfer_one_message()
+  * @busy: message pump is busy
+  * @running: message pump is running
+- * @rt: whether this queue is set to run as a realtime task
+  * @auto_runtime_pm: the core should ensure a runtime PM reference is held
+  *                   while the hardware is prepared, using the parent
+  *                   device for the spidev
+  * @max_dma_len: Maximum length of a DMA transfer for the device.
++ * @rt_prio: realtime priority of the message pump (-1 to use default prio)
+  * @prepare_transfer_hardware: a message will soon arrive from the queue
+  *	so the subsystem requests the driver to prepare the transfer hardware
+  *	by issuing this call
+@@ -522,12 +522,12 @@ struct spi_master {
+ 	bool				idling;
+ 	bool				busy;
+ 	bool				running;
+-	bool				rt;
+ 	bool				auto_runtime_pm;
+ 	bool                            cur_msg_prepared;
+ 	bool				cur_msg_mapped;
+ 	struct completion               xfer_completion;
+ 	size_t				max_dma_len;
++	int				rt_prio;
+ 
+ 	int (*prepare_transfer_hardware)(struct spi_master *master);
+ 	int (*transfer_one_message)(struct spi_master *master,
+-- 
+2.11.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

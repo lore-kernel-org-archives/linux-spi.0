@@ -1,49 +1,47 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: Allow master drivers to set realtime priority
-Date: Thu, 23 Mar 2017 14:10:35 +0100
-Message-ID: <CACRpkdbbLr5xWUEFpH4SZEEg3jw__XcK97n6crGu3yuM1P0sgg@mail.gmail.com>
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: bcm2835: Allow platform to set realtime priority
+Date: Thu, 23 Mar 2017 14:43:36 +0100
+Message-ID: <20170323134336.GA10576@h08.hostsharing.net>
 References: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas@wunner.de>
+ <1503363fcfb92adfa765d1c1c3e69fc673e72dde.1490264661.git.lukas@wunner.de>
+ <20170323110718.sncw32gspvls75u7@sirena.org.uk>
+ <20170323120257.GC20546@h08.hostsharing.net>
+ <20170323122118.i2gc77debz4eu5hq@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
-        linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-        Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+        Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170323122118.i2gc77debz4eu5hq-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Mar 23, 2017 at 11:36 AM, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
+On Thu, Mar 23, 2017 at 12:21:18PM +0000, Mark Brown wrote:
+> > Also, if you question setting the RT priority in the devicetree, why
+> > was that functionality allowed for pl022 in the first place?
+> 
+> This was being done via platform data not via device tree, unlike
+> platform data device tree should provide a long term stable OS neutral
+> ABI.
 
-> Commit 14af60b6fb3b ("spi/pl022: Add high priority message pump
-> support") extended the pl022 driver to optionally run the message pump
-> kworker thread with realtime priority, subject to a bool set by the
-> platform.
->
-> Commit ffbbdd21329f ("spi: create a message queueing infrastructure")
-> moved a large portion of pl022 to generic code, making the realtime
-> priority support available to other drivers.
->
-> However the priority is set to MAX_RT_PRIO - 1, higher than most IRQs
-> and identical to the CPU timer clock threads.  This seems excessive so
-> make the priority configurable.
->
-> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Cc: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-> Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+No, specifying it via the device tree was subsequently added with
+commit 39a6ac11df65 ("spi/pl022: Devicetree support w/o platform data"),
+sorry for not mentioning this in the commit message.
 
-Looks reasonable to me.
-Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+There's already a bool in struct spi_master for this functionality and
+device tree support for pl022, so I don't quite understand why converting
+the bool to an int and adding device tree support for bcm2835 would be
+the wrong approach?
 
-Yours,
-Linus Walleij
+Thanks,
+
+Lukas
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

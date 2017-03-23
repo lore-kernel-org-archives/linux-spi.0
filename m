@@ -1,115 +1,75 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: bcm2835: Allow platform to set realtime priority
-Date: Thu, 23 Mar 2017 15:08:01 +0100
-Message-ID: <36CAED84-34BB-43E8-8716-0187F3B7EFE0@martin.sperl.org>
+Date: Thu, 23 Mar 2017 15:28:16 +0100
+Message-ID: <20170323142816.GA19878@h08.hostsharing.net>
 References: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas@wunner.de>
  <1503363fcfb92adfa765d1c1c3e69fc673e72dde.1490264661.git.lukas@wunner.de>
  <20170323110718.sncw32gspvls75u7@sirena.org.uk>
  <20170323120257.GC20546@h08.hostsharing.net>
  <20170323122118.i2gc77debz4eu5hq@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
- Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20170323122118.i2gc77debz4eu5hq-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+ <20170323134336.GA10576@h08.hostsharing.net>
+ <CACRpkdY2QKLNbW_+i=qBCYr8iOHckYmukePOHUHtVpdW5xpjWw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+        linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+        Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdY2QKLNbW_+i=qBCYr8iOHckYmukePOHUHtVpdW5xpjWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Cj4gT24gMjMuMDMuMjAxNywgYXQgMTM6MjEsIE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9y
-Zz4gd3JvdGU6Cj4gCj4gT24gVGh1LCBNYXIgMjMsIDIwMTcgYXQgMDE6MDI6NTdQTSArMDEwMCwg
-THVrYXMgV3VubmVyIHdyb3RlOgo+PiBPbiBUaHUsIE1hciAyMywgMjAxNyBhdCAxMTowNzoxOEFN
-ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOgo+IAo+Pj4gVGhpcyBpcyBnb2luZyB0byBkZXBlbmQg
-b24gdGhlIHNvZnR3YXJlIHJ1bm5pbmcgb24gdGhlIGJvYXJkLCBJJ2QgZXhwZWN0Cj4+PiBpdCB0
-byBiZSBzb21ldGhpbmcgY29uZmlndXJlZCBhdCBydW50aW1lIHJhdGhlciB0aGFuIGZpeGVkIGlu
-IERULgo+IAo+PiBPbiB0aGUgUmV2b2x1dGlvbiBQaSwgdGhlIFNQSSBtYXN0ZXIgaXMgaGFyZHdp
-cmVkIHRvIHR3byBLU1o4ODUxIEV0aGVybmV0Cj4+IGNvbnRyb2xsZXJzIHdoaWNoIGFyZSBjb25u
-ZWN0ZWQgdG8gdmFyaW91cyBmaWVsZGJ1cyBnYXRld2F5cyBpbiBhCj4+IHBsdWctYW5kLXBsYXkg
-ZmFzaGlvbi4gIExvdyBsYXRlbmNpZXMgYXJlIG5lZWRlZCB0byBhY2hpZXZlIGEgZGVjZW50Cj4+
-IGN5Y2xlIHJhdGUgd2hlbiByZWFkaW5nL3dyaXRpbmcgZGF0YSB0byB0aGUgZmllbGRidXMgZGV2
-aWNlcy4KPiAKPj4gSGVuY2UgZm9yIHRoaXMgdXNlIGNhc2UsIHRoZSBSVCBwcmlvcml0eSBpcyBt
-YW5kYXRlZCBieSB0aGUgaGFyZHdhcmUKPj4gcGxhdGZvcm0sIHdoaWNoIGlzIHdoeSBJIHB1dCBp
-dCBpbiB0aGUgZGV2aWNldHJlZS4gIEl0IGlzIG5lZWRlZAo+PiByZWdhcmRsZXNzIG9mIHdoaWNo
-IHNvZnR3YXJlIGlzIHJ1bm5pbmcuCj4gCj4gQ2FyaW5nIGFib3V0IGhhdmluZyBsb3cgbGF0ZW5j
-eSBhY2Nlc3MgdG8gZmllbGRidXMgZGV2aWNlcyBpcyBhIHByb3BlcnR5Cj4gb2YgdGhlIGFwcGxp
-Y2F0aW9uLCBhbmQgYWNoaWV2aW5nIHRoYXQgdmlhIHRoZSB1c2Ugb2YgUlQgcHJpb3JpdHkgZm9y
-Cj4gdGhlIFNQSSBwdW1wIHRocmVhZCBpcyBhIHByb3BlcnR5IG9mIGN1cnJlbnQgTGludXggaW1w
-bGVtZW50YXRpb25zLgo+IE5laXRoZXIgb2YgdGhlc2UgdGhpbmdzIGlzIGEgZGVzY3JpcHRpb24g
-b2YgdGhlIGhhcmR3YXJlLCB0aGUgU1BJIHB1bXAKPiB0aHJlYWQgYml0IGlzIGFscmVhZHkgY2hh
-bmdpbmcgKGZvciBhIHZlcnkgbGFyZ2UgcHJvcG9ydGlvbiBvZiB1c2UgY2FzZXMKPiB3ZSBvbmx5
-IHVzZSB0aGUgdGhyZWFkIHRvIHNodXQgZG93biBkZXZpY2VzIG9uY2UgdGhleSBiZWNvbWUgaWRs
-ZSB0aGVzZQo+IGRheXMpLgoKU29tZSBvYnNlcnZhdGlvbnM6Ciogd2UgdXNlIGFuIOKAnGlubGlu
-ZeKAnSBzcGktcHVtcCBpZiB0aGVyZSBhcmUgbm8gbWVzc2FnZXMgaW4gdGhlIG1lc3NhZ2UKICBx
-dWV1ZSAtIHRoZSBzcGktbWVzc2FnZS1wdW1wLXRocmVhZCBpcyBub3QgdXNlZCBpbiB0aG9zZSBj
-YXNlcy4KICBTbyB0aG9zZSBzcGkgbWVzc2FnZXMgYXJlIE5PVCBoYW5kbGVkIHdpdGggdGhlIHBy
-b3Bvc2VkIFJUIHByaW9yaXR5LAogIGFzIHRoZXkgcnVuIHdpdGhpbiB0aGUgY29udGV4dCBvZiB0
-aGUg4oCcY2FsbGVy4oCdIC0gd2hpY2ggbWF5IGV2ZW4gYmUKICB0aGUgcHJpb3JpdHkgb2YgdXNl
-cnNwYWNlIGlmIHNwaWRldiBpcyB1c2VkLgoqIHRoZSBvbmx5IHBsYWNlIHdoZXJlIHRoZSBtYWlu
-IG1lc3NhZ2UtcHVtcCBpcyB1c2VkIGlzIHdoZW4gdGhlcmUgYXJlCiAgc3BpX21lc3NhZ2VzIHF1
-ZXVlZC4gQW5kIHRoZW4geW91IGhhdmUgYSBsYXRlbmN5IHdha2luZyB1cCB0aGUgY2FsbGluZwog
-IHRocmVhZCAod2hpY2ggdHlwaWNhbGx5IGRvZXMgbm90IHJ1biB3aXRoIFJUIHByaW9yaXR5LCBz
-byBpdCBpcyBub3QKICBuZWNlc3NhcmlseSB3b2tlbiB1cCBpbW1lZGlhdGVseSBieSB0aGUgc2No
-ZWR1bGVyIGVpdGhlcikgLSB0aGF0IGlzCiAgdW5sZXNzIHRoZSBjYWxsZXIgdXNlIHRoZSBzcGlf
-YXN5bmMgd2l0aCBjdXN0b20gY2FsbGJhY2tzLCB0aGF0IGRvIG5vdAogIHJlcXVpcmUgYSB3YWtl
-dXAuCiogVGhlcmUgYXJlIGEgZmV3IG1vcmUgdGhpbmdzIHRvIHRha2UgaW50byBhY2NvdW50IG9u
-IHRoZSBiY20yODNYOgogICogZm9yIHNob3J0IFNQSSBtZXNzYWdlcyAoPDEwbXMgSSBiZWxpZXZl
-KSBpZGxlIGxvb3BpbmcgaXMgdXNlZCB0byBnZXQKICAgIHRoZSBmYXN0ZXN0IHJlc3BvbnNlIHRp
-bWUgd2l0aG91dCBhbnkgcmVzY2hlZHVsaW5nIG92ZXJoZWFkIGFuZCB0aHVzCiAgICB0byByZWR1
-Y2UgbGF0ZW5jaWVzLgogICogZm9yIGxvbmcgdHJhbnNmZXJzIChieXRlLXdpc2UgPjk2IGJ5dGVz
-KSB0aGUgZHJpdmVyIHVzZXMgRE1BIHRvIGF2b2lkCiAgICBpbnRlcnJ1cHQtc2NoZWR1bGluZyBs
-YXRlbmNpZXMgKHNldHVwIHRpbWUgb2YgdGhlIERNQSBpcyBhIGJpdAogICAgZXhwZW5zaXZlLCBz
-byAyIGludGVycnVwdHMgaW4gaW50ZXJydXB0LWRyaXZlbiBtb2RlIGFyZSBhY2NlcHRhYmxlLAog
-ICAgYnV0IGFueXRoaW5nIGVsc2UgaXMgaGFuZGxlZCB2aWEgRE1BIHRvIHJlZHVjZSB0aGUgaW50
-ZXJydXB0cyB0byAxIC0KICAgIE9LLCBpdCBpcyBhY3R1YWxseSAyIERNQSBpbnRlcnJ1cHRzLCBi
-dXQgdGhhdCBpcyBhIGxpbWl0YXRpb24gb2YgdGhlCiAgICBETUEgZnJhbWV3b3JrIChyZXF1aXJp
-bmcgSU5UIGZvciBSWCBhbmQgVFggRE1BIGVuZCAtIHdoaWxlIHdlIG9ubHkKICAgIHJlYWxseSBy
-ZXF1aXJlIFJYLURNQSBpbnRlcnJ1cHRzLCBidXQgdGhhdCBpcyBmb3Ig4oCcZWFzZeKAnSBvZgog
-ICAgcmVsZWFzaW5nIG1lbW9yeSBjb3JyZWN0bHnigKYpCgpTbyBhIGxvdCBvZiBjYXJlIGhhcyBh
-bHJlYWR5IGJlZW4gdGFrZW4gdG8gaW1wcm92ZSB0aGUgbGF0ZW5jaWVzCm9mIHRoZSBkcml2ZXIg
-YW5kIHRoZSBmcmFtZXdvcmsuCgpGcm9tIG15IGV4cGVyaWVuY2UgdGhlIG1haW4gaXNzdWUgaXMg
-bW9yZSB0aGUgc2lkZSBvZiBpbnRlcnJ1cHQtc2NoZWR1bGluZwphbmQgd2FrZXVwIHdoaWNoIHRo
-aXMgcnQgcGF0Y2ggZG9lcyBub3Qgc29sdmUgLSBlc3BlY2lhbGx5IGlmIGEgZHJpdmVyIGhhcwp0
-byByZXNwb25kIGFzIGZhc3QgYXMgcG9zc2libGUgdG8gYSBHUElPIGNoYW5nZSAoaW50ZXJydXB0
-IHJlcXVlc3QgZnJvbSB0aGUKZGV2aWNlKSB0aGlzIGlzIHR5cGljYWxseSB0aGUgbGltaXRpbmcg
-ZmFjdG9yLgoKSSByZW1lbWJlciBJIGhhZCBhIHNpbWlsYXIgcGF0Y2ggdGhhdCB1c2VkIGEgbW9k
-dWxlIHBhcmFtZXRlciB0byBjb250cm9sIGl0Cmluc3RlYWQsIGJ1dCBJIGhhZCBkcm9wcGVkIGl0
-IGJlY2F1c2Ugb2YgYWxsIHRoZSBhYm92ZSBhcyBtb3N0bHkgbm90Cm5lY2Vzc2FyeSAobWVhc3Vy
-ZW1lbnRzIHdpdGggYSBsb2dpYyBhbmFseXplciBteSBDQU4gc2V0dXAgZGlkIG5vdCBzaG93IGFu
-eQpyZWFsIGltcHJvdmVtZW50KS4KCkFzIGEgY29uc2VxdWVuY2Ugb2YgYWxsIHRoaXMgdG8gbWFr
-ZSBpdCByZWFsbHkgd29yayB5b3Ugd291bGQgbmVlZCBSVApwcmlvcml0eSBmb3I6CiogY2FsbGlu
-ZyB0aHJlYWQgKHdoZW4gdXNpbmcgdGhlIOKAnGlubGluZSIgbWVzc2FnZSBwdW1wKQoqIHNwaS1t
-ZXNzYWdlIHB1bXAgKGZvciBxdWV1ZWQgU1BJX21lc3NhZ2VzKQoqIGRtYS10ZXJtaW5hdGlvbi10
-aHJlYWQgKGZvciBETUEgdHJhbnNmZXJzKSwgYXMgdGhpcyBnZXRzIHdva2VuCiAgZnJvbSBETUEg
-aW50ZXJydXB0IGZvciB0ZXJtaW5hdGlvbiBvZiB0aGUgRE1BIHRyYW5zZmVyLAogIHdoaWNoIHRo
-ZW4gd2FrZXMgdGhlIHRocmVhZCBydW5uaW5nIHRoZSBzcGktbWVzc2FnZSBwdW1wLgoKPiAKPj4g
-V2UgY291bGQgYWNjb21tb2RhdGUgdG8gc2V0dGluZyB0aGUgUlQgcHJpb3JpdHkgb24gdGhlIGNv
-bW1hbmQgbGluZSBidXQKPj4gd2UnZCBsaWtlIHRvIGF2b2lkIGFsd2F5cyBoYXZpbmcgdG8gc2V0
-IGl0IGF0IHJ1bnRpbWUuICBUaGF0IGlzIGFscmVhZHkKPj4gcG9zc2libGUgYnkgaW52b2tpbmcg
-Y2hydCgxKSBmcm9tIHVzZXIgc3BhY2UgYWZ0ZXIgdGhlIFNQSSBtYXN0ZXIgZHJpdmVyCj4+IGhh
-cyBsb2FkZWQgYW5kIHdvdWxkbid0IHJlcXVpcmUgYSBrZXJuZWwgcGF0Y2guCj4gCj4gUmlnaHQs
-IHRoZXJlJ3MgYWxyZWFkeSBtZWNoYW5pc21zIHRvIGRvIHRoaXMgYXQgcnVudGltZS4KPiAKPj4g
-QWxzbywgaWYgeW91IHF1ZXN0aW9uIHNldHRpbmcgdGhlIFJUIHByaW9yaXR5IGluIHRoZSBkZXZp
-Y2V0cmVlLCB3aHkKPj4gd2FzIHRoYXQgZnVuY3Rpb25hbGl0eSBhbGxvd2VkIGZvciBwbDAyMiBp
-biB0aGUgZmlyc3QgcGxhY2U/Cj4gCj4gVGhpcyB3YXMgYmVpbmcgZG9uZSB2aWEgcGxhdGZvcm0g
-ZGF0YSBub3QgdmlhIGRldmljZSB0cmVlLCB1bmxpa2UKPiBwbGF0Zm9ybSBkYXRhIGRldmljZSB0
-cmVlIHNob3VsZCBwcm92aWRlIGEgbG9uZyB0ZXJtIHN0YWJsZSBPUyBuZXV0cmFsCj4gQUJJLgoK
-V2VsbCAtIGlmIGl0IGlzIHJlYWxseSBhIG5lY2Vzc2l0eSBhbmQgYXMgdGhlIG1hbnRyYSBmb3Ig
-RFQgaXM6CiJpdCBzaG91bGQgZGVzY3JpYmUgdGhlIEhXIG9ubHkiLCB3aHkgbm90IHVzZSBhIG1v
-ZHVsZSBwYXJhbWV0ZXIKaW5zdGVhZCBvciB1c2UgY2hydCgpIGZyb20gdXNlcnNwYWNlPwoKTWFy
-dGluCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4
-LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJw
-aS1rZXJuZWwK
+On Thu, Mar 23, 2017 at 02:48:01PM +0100, Linus Walleij wrote:
+> On Thu, Mar 23, 2017 at 2:43 PM, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
+> > On Thu, Mar 23, 2017 at 12:21:18PM +0000, Mark Brown wrote:
+> >> > Also, if you question setting the RT priority in the devicetree, why
+> >> > was that functionality allowed for pl022 in the first place?
+> >>
+> >> This was being done via platform data not via device tree, unlike
+> >> platform data device tree should provide a long term stable OS neutral
+> >> ABI.
+> >
+> > No, specifying it via the device tree was subsequently added with
+> > commit 39a6ac11df65 ("spi/pl022: Devicetree support w/o platform data"),
+> > sorry for not mentioning this in the commit message.
+> 
+> This was in 2012 when we were walking around like zombies in
+> devicetreeland and walking into the wall and breaking things to the
+> left and right, just trying to comply with the recent decision to move
+> all of ARM development over to using device tree.
+> 
+> If the property would be allowed today it would at *least* be prefixed
+> with "linux,*" so "linux,realtime-priority".
+> 
+> Even though linux-specific DT properties are generally frowned upon
+> they do have their place sometimes.
+> 
+> If this DT property was suggested today it would get a very different
+> treatment than in 2012. We are older and wiser now. Mistakes were
+> made, also by me.
+
+Thanks a lot Linus for providing the historic background, which was
+unbeknown to me.
+
+I'm still wondering though:  If the master thread is supposed to be
+run at a realtime priority *always*, 100%, all the time, what is the
+best way to achieve this?  Setting it with chrt from an initscript
+seems clumsy to me.  It's racy as the spi driver module needs to be
+loaded, whenever the driver module is removed and re-inserted, the
+priority needs to be updated again, there's always the difficulty of
+uniquely identifying the right thread, and so on.  Setting this from
+the device tree is much more elegant so I intend to keep the commits
+at least on our own branch.
+
+Thanks,
+
+Lukas
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

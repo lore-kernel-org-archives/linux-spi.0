@@ -1,91 +1,58 @@
 From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: bcm2835: Allow platform to set realtime priority
-Date: Thu, 23 Mar 2017 12:24:03 +0100
-Message-ID: <20170323112403.GA20546@h08.hostsharing.net>
+Date: Thu, 23 Mar 2017 13:02:57 +0100
+Message-ID: <20170323120257.GC20546@h08.hostsharing.net>
 References: <c1ca8a5522272d06f5c3fb67d8442f148b2d6cfb.1490264661.git.lukas@wunner.de>
  <1503363fcfb92adfa765d1c1c3e69fc673e72dde.1490264661.git.lukas@wunner.de>
- <8946695.jF9BQzhoEd@ws-stein>
+ <20170323110718.sncw32gspvls75u7@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-        Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+ Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <8946695.jF9BQzhoEd@ws-stein>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20170323110718.sncw32gspvls75u7-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 23, 2017 at 11:51:33AM +0100, Alexander Stein wrote:
-> interesting, but why is this property specific to bcm2835 when the priority is 
-> used in generic code only?
+On Thu, Mar 23, 2017 at 11:07:18AM +0000, Mark Brown wrote:
+> On Thu, Mar 23, 2017 at 11:36:45AM +0100, Lukas Wunner wrote:
+> > +Optional properties:
+> > +- bcm2835,rt_prio: Realtime priority of the message pump to minimize latency
+> > +                   on the bus (0..99).
+> > +
+> 
+> This is going to depend on the software running on the board, I'd expect
+> it to be something configured at runtime rather than fixed in DT.
 
-Well, I'd be happy to rework the patches to introduce a generic "rt-prio"
-property if that is preferred?  Maybe Mark or some driver maintainers can
-chime in?
+On the Revolution Pi, the SPI master is hardwired to two KSZ8851 Ethernet
+controllers which are connected to various fieldbus gateways in a
+plug-and-play fashion.  Low latencies are needed to achieve a decent
+cycle rate when reading/writing data to the fieldbus devices.
 
-For pl022, I guess I could let the legacy "pl022,rt" property take
-precedence over a generic "rt-prio" property.
+Hence for this use case, the RT priority is mandated by the hardware
+platform, which is why I put it in the devicetree.  It is needed
+regardless of which software is running.
+
+We could accommodate to setting the RT priority on the command line but
+we'd like to avoid always having to set it at runtime.  That is already
+possible by invoking chrt(1) from user space after the SPI master driver
+has loaded and wouldn't require a kernel patch.
+
+Also, if you question setting the RT priority in the devicetree, why
+was that functionality allowed for pl022 in the first place?
 
 Thanks,
 
 Lukas
-
-> 
-> Best regards,
-> Alexander
-> 
-> On Thursday 23 March 2017 11:36:45, Lukas Wunner wrote:
-> > Revolution Pi (a set of IoT products based on the Raspberry Pi and
-> > geared towards industrial usage) uses the bcm2835's SPI master to
-> > interface with an IEC 61158 fieldbus, which requires its kworker thread
-> > to run at a realtime priority.  To this end, allow the platform to
-> > specify the desired priority.
-> > 
-> > Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-> > Cc: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-> > Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-> > Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-> > ---
-> >  Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt | 4 ++++
-> >  drivers/spi/spi-bcm2835.c                                  | 2 ++
-> >  2 files changed, 6 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-> > b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt index
-> > f11f295c8450..13ffc2b15e7d 100644
-> > --- a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-> > +++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-> > @@ -10,6 +10,10 @@ Required properties:
-> >  - interrupts: Should contain interrupt.
-> >  - clocks: The clock feeding the SPI controller.
-> > 
-> > +Optional properties:
-> > +- bcm2835,rt_prio: Realtime priority of the message pump to minimize
-> > latency +                   on the bus (0..99).
-> > +
-> >  Example:
-> > 
-> >  spi@20204000 {
-> > diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> > index f35cc10772f6..319523686f73 100644
-> > --- a/drivers/spi/spi-bcm2835.c
-> > +++ b/drivers/spi/spi-bcm2835.c
-> > @@ -755,6 +755,8 @@ static int bcm2835_spi_probe(struct platform_device
-> > *pdev) master->handle_err = bcm2835_spi_handle_err;
-> >  	master->prepare_message = bcm2835_spi_prepare_message;
-> >  	master->dev.of_node = pdev->dev.of_node;
-> > +	of_property_read_u32(pdev->dev.of_node,
-> > +			     "bcm2835,rt_prio", &master->rt_prio);
-> > 
-> >  	bs = spi_master_get_devdata(master);
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

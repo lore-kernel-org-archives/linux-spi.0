@@ -1,20 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-ti-qspi: Use dma_engine wrapper for dma memcpy call" to the spi tree
-Date: Fri, 24 Mar 2017 19:17:06 +0000
-Message-ID: <E1crUhu-0006HD-39@debutante>
-References: <20170324064215.7326-1-vigneshr@ti.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170324064215.7326-1-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: omap2-mcspi: poll OMAP2_MCSPI_CHSTAT_RXS for PIO transfer" to the spi tree
+Date: Fri, 24 Mar 2017 19:16:59 +0000
+Message-ID: <E1crUhn-0006G9-ND@debutante>
+References: <1490141906-8908-1-git-send-email-akinobu.mita@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1490141906-8908-1-git-send-email-akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-ti-qspi: Use dma_engine wrapper for dma memcpy call
+   spi: omap2-mcspi: poll OMAP2_MCSPI_CHSTAT_RXS for PIO transfer
 
 has been applied to the spi tree at
 
@@ -39,34 +39,66 @@ to this mail.
 Thanks,
 Mark
 
->From 1351aaeb50b2ae5eb5469b3d3d0a84073a127a39 Mon Sep 17 00:00:00 2001
-From: Vignesh R <vigneshr@ti.com>
-Date: Fri, 24 Mar 2017 12:12:15 +0530
-Subject: [PATCH] spi: spi-ti-qspi: Use dma_engine wrapper for dma memcpy call
+>From 812613591cb652344186c4cd912304ed02138566 Mon Sep 17 00:00:00 2001
+From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 22 Mar 2017 09:18:26 +0900
+Subject: [PATCH] spi: omap2-mcspi: poll OMAP2_MCSPI_CHSTAT_RXS for PIO
+ transfer
 
-Instead of calling device_prep_dma_memcpy() directly with dma_device
-pointer, use the newly introduced dmaengine_prep_dma_memcpy() wrapper
-API.
+When running the spi-loopback-test with slower clock rate like 10 KHz,
+the test for 251 bytes transfer was failed.  This failure triggered an
+spi-omap2-mcspi's error message "DMA RX last word empty".
 
-Signed-off-by: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This message means that PIO for reading the remaining bytes due to the
+DMA transfer length reduction is failed.  This problem can be fixed by
+polling OMAP2_MCSPI_CHSTAT_RXS bit in channel status register to wait
+until the receive buffer register is filled.
+
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ti-qspi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index ec6fb09e2e17..bd19a20a122e 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -401,8 +401,7 @@ static int ti_qspi_dma_xfer(struct ti_qspi *qspi, dma_addr_t dma_dst,
- 	struct dma_async_tx_descriptor *tx;
- 	int ret;
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 79800e991ccd..7275223dbcd4 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -454,6 +454,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	int			elements = 0;
+ 	int			word_len, element_count;
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	void __iomem		*chstat_reg = cs->base + OMAP2_MCSPI_CHSTAT0;
++
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 	count = xfer->len;
+@@ -549,8 +551,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+ 		elements--;
  
--	tx = dma_dev->device_prep_dma_memcpy(chan, dma_dst, dma_src,
--					     len, flags);
-+	tx = dmaengine_prep_dma_memcpy(chan, dma_dst, dma_src, len, flags);
- 	if (!tx) {
- 		dev_err(qspi->dev, "device_prep_dma_memcpy error\n");
- 		return -EIO;
+-		if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				   & OMAP2_MCSPI_CHSTAT_RXS)) {
++		if (!mcspi_wait_for_reg_bit(chstat_reg,
++					    OMAP2_MCSPI_CHSTAT_RXS)) {
+ 			u32 w;
+ 
+ 			w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+@@ -568,8 +570,7 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			return count;
+ 		}
+ 	}
+-	if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				& OMAP2_MCSPI_CHSTAT_RXS)) {
++	if (!mcspi_wait_for_reg_bit(chstat_reg, OMAP2_MCSPI_CHSTAT_RXS)) {
+ 		u32 w;
+ 
+ 		w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

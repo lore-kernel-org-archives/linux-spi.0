@@ -1,70 +1,36 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: loopback-test: fix spelling mistake: "minimam" -> "minimum"" to the spi tree
-Date: Thu, 30 Mar 2017 22:23:29 +0100
-Message-ID: <E1cthXV-0008LK-3V@debutante>
-References: <20170330100125.19703-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170330100125.19703-1-colin.king@canonical.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/2] spi-ti-qspi: Handle vmalloc'd buffers
+Date: Fri, 31 Mar 2017 17:19:48 +0530
+Message-ID: <20170331114950.21489-1-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+First patch, adds can_dma() like interface for spi_flash_read() interface,
+this will enable controller drivers to selectively use DMA based on
+buffer type, alignment, size or other limitations.
+Second patch implements bounce buffer support for ti-qspi driver to
+handle buffers that are not DMA'able, like vmalloc'd buffers that belong
+to LPAE region. This is required to work with UBIFS 
 
-   spi: loopback-test: fix spelling mistake: "minimam" -> "minimum"
+Vignesh R (2):
+  spi: Add can_dma like interface for spi_flash_read
+  spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble
 
-has been applied to the spi tree at
+ drivers/spi/spi-ti-qspi.c | 64 +++++++++++++++++++++++++++++++++++++++++------
+ drivers/spi/spi.c         |  2 +-
+ include/linux/spi/spi.h   |  4 +++
+ 3 files changed, 62 insertions(+), 8 deletions(-)
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 905e0b5ef9690c5433b642f46f1d756bb374da17 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 30 Mar 2017 11:01:25 +0100
-Subject: [PATCH] spi: loopback-test: fix spelling mistake: "minimam" ->
- "minimum"
-
-trivial fix to spelling mistake in dev_err error message
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 6888d5c34ac4..e6041539afed 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -520,7 +520,7 @@ static int spi_test_check_elapsed_time(struct spi_device *spi,
- 	estimated_time += delay_usecs * NSEC_PER_USEC;
- 	if (test->elapsed_time < estimated_time) {
- 		dev_err(&spi->dev,
--			"elapsed time %lld ns is shorter than minimam estimated time %lld ns\n",
-+			"elapsed time %lld ns is shorter than minimum estimated time %lld ns\n",
- 			test->elapsed_time, estimated_time);
- 
- 		return -EINVAL;
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

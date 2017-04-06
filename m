@@ -1,66 +1,75 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: don't use uninitialized variable
-Date: Thu, 6 Apr 2017 11:55:02 +0100
-Message-ID: <20170406105502.baaj4c2xcetp5z6p@sirena.org.uk>
+Subject: Applied "spi: pl022: don't use uninitialized variable" to the spi tree
+Date: Thu, 06 Apr 2017 11:58:31 +0100
+Message-ID: <E1cw57X-00050x-Id@debutante>
 References: <1491466583-6121-1-git-send-email-rabin.vincent@axis.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="xhczc5yados7macr"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
-To: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <1491466583-6121-1-git-send-email-rabin.vincent-VrBV9hrLPhE@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---xhczc5yados7macr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: pl022: don't use uninitialized variable
 
-On Thu, Apr 06, 2017 at 10:16:23AM +0200, Rabin Vincent wrote:
-> From: Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
->=20
-> The num-cs property is a required property according to the binding
-> documentation.  However, if it is not present, the driver currently
-> simply uses random junk from the stack for the num-cs since the variable
-> whose pointer is passed to of_property_read_u32() is not initialized.
+has been applied to the spi tree at
 
-> @@ -2074,7 +2074,7 @@ pl022_platform_data_dt_get(struct device *dev)
->  {
->  	struct device_node *np =3D dev->of_node;
->  	struct pl022_ssp_controller *pd;
-> -	u32 tmp;
-> +	u32 tmp =3D 0;
-> =20
->  	if (!np) {
->  		dev_err(dev, "no dt node defined\n");
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-This shuts the warning up but since it's a required property shouldn't
-we be failing the probe instead of using the value?  Looking at the code
-we end up actually doing that since we end up with zero chipselects
-which is flagged as an error during the main probe but it'd be good to
-note this in the changelog since it looks like we just silently ignore
-the required property.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---xhczc5yados7macr
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAljmHoYACgkQJNaLcl1U
-h9DiTAf9FVZicKq7/yEBOUtdLWDHOvT7PwM35KkcJPy5jp/lgEazNbIEPnhGdoxU
-lFYWK6LKYx60VUCgsoROCxD/k9dLycpx3hNmKcYGcUI+zlPiVeMJOi4vHPHXYjLq
-xyn0+7+wEoUez8l1M9boc26abrPjoyUW+9JUTUZjXCPXELZ7Fz7iBbb0tVqeOjqY
-7lJs841IL0LFepdmNLVUfDjJfh0sNYMAEsoI9J6vrdKn4zsRwVUvtypL1XoDakvs
-VsAP94HfbS0e6veXGlLA3h/V4qeSKWMObhR5gYPoajnupblSj1e1PkDUG0edvYfT
-5MllRKBaVMOovew10sPfmuw4jMDNbg==
-=K8ba
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---xhczc5yados7macr--
+Thanks,
+Mark
+
+>From 849794c50b24b93676b939028c811d6e116ef335 Mon Sep 17 00:00:00 2001
+From: Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
+Date: Thu, 6 Apr 2017 10:16:23 +0200
+Subject: [PATCH] spi: pl022: don't use uninitialized variable
+
+The num-cs property is a required property according to the binding
+documentation.  However, if it is not present, the driver currently
+simply uses random junk from the stack for the num-cs since the variable
+whose pointer is passed to of_property_read_u32() is not initialized.
+
+Signed-off-by: Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index f7f7ba17b40e..2f76e022cc59 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2074,7 +2074,7 @@ pl022_platform_data_dt_get(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+ 	struct pl022_ssp_controller *pd;
+-	u32 tmp;
++	u32 tmp = 0;
+ 
+ 	if (!np) {
+ 		dev_err(dev, "no dt node defined\n");
+-- 
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

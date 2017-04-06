@@ -1,57 +1,60 @@
-From: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi: pl022: don't use uninitialized variable
-Date: Thu, 6 Apr 2017 13:39:24 +0200
-Message-ID: <20170406113924.GA7801@axis.com>
+Date: Thu, 6 Apr 2017 19:12:16 +0100
+Message-ID: <20170406181216.m4rke6smv2bajdqv@sirena.org.uk>
 References: <1491466583-6121-1-git-send-email-rabin.vincent@axis.com>
  <20170406105502.baaj4c2xcetp5z6p@sirena.org.uk>
+ <20170406113924.GA7801@axis.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vjl6qsurfbepmyik"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20170406105502.baaj4c2xcetp5z6p-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20170406113924.GA7801-VrBV9hrLPhE@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 06, 2017 at 11:55:02AM +0100, Mark Brown wrote:
-> On Thu, Apr 06, 2017 at 10:16:23AM +0200, Rabin Vincent wrote:
-> > From: Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
-> > 
-> > The num-cs property is a required property according to the binding
-> > documentation.  However, if it is not present, the driver currently
-> > simply uses random junk from the stack for the num-cs since the variable
-> > whose pointer is passed to of_property_read_u32() is not initialized.
-> 
-> > @@ -2074,7 +2074,7 @@ pl022_platform_data_dt_get(struct device *dev)
-> >  {
-> >  	struct device_node *np = dev->of_node;
-> >  	struct pl022_ssp_controller *pd;
-> > -	u32 tmp;
-> > +	u32 tmp = 0;
-> >  
-> >  	if (!np) {
-> >  		dev_err(dev, "no dt node defined\n");
-> 
-> This shuts the warning up but since it's a required property shouldn't
-> we be failing the probe instead of using the value?  Looking at the code
-> we end up actually doing that since we end up with zero chipselects
-> which is flagged as an error during the main probe but it'd be good to
-> note this in the changelog since it looks like we just silently ignore
-> the required property.
 
-Yes, I could add something like:
+--vjl6qsurfbepmyik
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- By setting the default value to zero, we ensure that the probe fails if
- the num-cs property is missing.
+On Thu, Apr 06, 2017 at 01:39:24PM +0200, Rabin Vincent wrote:
 
-But I noticed that you already applied this and your automated email says:
+> Yes, I could add something like:
 
- If any updates are required or you are submitting further changes they should
- be sent as incremental updates against current git, existing patches will not
- be replaced.
+>  By setting the default value to zero, we ensure that the probe fails if
+>  the num-cs property is missing.
 
-So I guess it's too late to submit a new changelog?
+> But I noticed that you already applied this and your automated email says:
+
+>  If any updates are required or you are submitting further changes they should
+>  be sent as incremental updates against current git, existing patches will not
+>  be replaced.
+
+> So I guess it's too late to submit a new changelog?
+
+Yes, this is more for future reference - I already did the checking to
+figure out that this does the right thing.
+
+--vjl6qsurfbepmyik
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAljmhP8ACgkQJNaLcl1U
+h9DExgf/cC1MQWR2EN7T6pG/ioD76zmvaWc/+vODmAVlJ4x2tRS4+OvQpocS+F9E
+dI363CN4+vRg0KevcjEnH/Env9GAnrI52afz78cE1dYFn3mU1cv4NLDsye3sZevS
+obKSRm8IW7j0npGUcWT3TcSYGBJ38Y93LH1yv708sAl6lTMyOzDLtflXtyBKzKfR
+rbJcHvq8Hnp/SIZDyS0xaVDlLAn5dCzEBhokY9umXDLfiQ3MEphbcRfVqVDjyZy/
+YNX0UGbDeGK4lwB4z80nLwCouf8C46VxI7TCS4eKbLqlQvRJk8vHN4toaMUPOUs2
+lPkjIzgn0nsvVpu3KoZb4YD9xuUi3A==
+=el4J
+-----END PGP SIGNATURE-----
+
+--vjl6qsurfbepmyik--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

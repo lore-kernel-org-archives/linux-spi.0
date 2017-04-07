@@ -1,60 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: don't use uninitialized variable
-Date: Thu, 6 Apr 2017 19:12:16 +0100
-Message-ID: <20170406181216.m4rke6smv2bajdqv@sirena.org.uk>
-References: <1491466583-6121-1-git-send-email-rabin.vincent@axis.com>
- <20170406105502.baaj4c2xcetp5z6p@sirena.org.uk>
- <20170406113924.GA7801@axis.com>
+From: Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: orion: add LSB support
+Date: Fri,  7 Apr 2017 15:52:33 +0200
+Message-ID: <20170407135233.28028-1-bst@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vjl6qsurfbepmyik"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170406113924.GA7801-VrBV9hrLPhE@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The orion spi driver currently only supports the normal (i.e. MSB) mode.
+This patch adds LSB first mode.
 
---vjl6qsurfbepmyik
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Also correct the comment about supported SPI modes that was left over by
+b15d5d7004e2 ("spi/orion: Add SPI_CHPA and SPI_CPOL support to kirkwood
+driver.").
 
-On Thu, Apr 06, 2017 at 01:39:24PM +0200, Rabin Vincent wrote:
+Signed-off-by: Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Acked-by: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-orion.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> Yes, I could add something like:
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 6b001c4a5640..be2e87ee8b31 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -39,6 +39,8 @@
+ 
+ #define ORION_SPI_IF_CTRL_REG		0x00
+ #define ORION_SPI_IF_CONFIG_REG		0x04
++#define ORION_SPI_IF_RXLSBF		BIT(14)
++#define ORION_SPI_IF_TXLSBF		BIT(13)
+ #define ORION_SPI_DATA_OUT_REG		0x08
+ #define ORION_SPI_DATA_IN_REG		0x0c
+ #define ORION_SPI_INT_CAUSE_REG		0x10
+@@ -234,6 +236,11 @@ orion_spi_mode_set(struct spi_device *spi)
+ 		reg |= ORION_SPI_MODE_CPOL;
+ 	if (spi->mode & SPI_CPHA)
+ 		reg |= ORION_SPI_MODE_CPHA;
++	if (spi->mode & SPI_LSB_FIRST)
++		reg |= ORION_SPI_IF_RXLSBF | ORION_SPI_IF_TXLSBF;
++	else
++		reg &= ~(ORION_SPI_IF_RXLSBF | ORION_SPI_IF_TXLSBF);
++
+ 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+ }
+ 
+@@ -591,8 +598,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 			master->bus_num = cell_index;
+ 	}
+ 
+-	/* we support only mode 0, and no options */
+-	master->mode_bits = SPI_CPHA | SPI_CPOL;
++	/* we support all 4 SPI modes and LSB first option */
++	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
+ 	master->set_cs = orion_spi_set_cs;
+ 	master->transfer_one = orion_spi_transfer_one;
+ 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
+-- 
+2.11.0
 
->  By setting the default value to zero, we ensure that the probe fails if
->  the num-cs property is missing.
-
-> But I noticed that you already applied this and your automated email says:
-
->  If any updates are required or you are submitting further changes they should
->  be sent as incremental updates against current git, existing patches will not
->  be replaced.
-
-> So I guess it's too late to submit a new changelog?
-
-Yes, this is more for future reference - I already did the checking to
-figure out that this does the right thing.
-
---vjl6qsurfbepmyik
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAljmhP8ACgkQJNaLcl1U
-h9DExgf/cC1MQWR2EN7T6pG/ioD76zmvaWc/+vODmAVlJ4x2tRS4+OvQpocS+F9E
-dI363CN4+vRg0KevcjEnH/Env9GAnrI52afz78cE1dYFn3mU1cv4NLDsye3sZevS
-obKSRm8IW7j0npGUcWT3TcSYGBJ38Y93LH1yv708sAl6lTMyOzDLtflXtyBKzKfR
-rbJcHvq8Hnp/SIZDyS0xaVDlLAn5dCzEBhokY9umXDLfiQ3MEphbcRfVqVDjyZy/
-YNX0UGbDeGK4lwB4z80nLwCouf8C46VxI7TCS4eKbLqlQvRJk8vHN4toaMUPOUs2
-lPkjIzgn0nsvVpu3KoZb4YD9xuUi3A==
-=el4J
------END PGP SIGNATURE-----
-
---vjl6qsurfbepmyik--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

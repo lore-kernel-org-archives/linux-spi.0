@@ -1,67 +1,66 @@
-From: Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] spi: orion: add LSB support
-Date: Fri,  7 Apr 2017 15:52:33 +0200
-Message-ID: <20170407135233.28028-1-bst@pengutronix.de>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v2 1/2] spi: Add can_dma like interface for spi_flash_read
+Date: Tue, 11 Apr 2017 17:22:24 +0530
+Message-ID: <20170411115225.31709-2-vigneshr@ti.com>
+References: <20170411115225.31709-1-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
-        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-        Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170411115225.31709-1-vigneshr-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The orion spi driver currently only supports the normal (i.e. MSB) mode.
-This patch adds LSB first mode.
+Add an interface analogous to ->can_dma() for spi_flash_read()
+interface. This will enable SPI controller drivers to inform SPI core
+when not to do DMA mappings.
 
-Also correct the comment about supported SPI modes that was left over by
-b15d5d7004e2 ("spi/orion: Add SPI_CHPA and SPI_CPOL support to kirkwood
-driver.").
-
-Signed-off-by: Bastian Stender <bst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Acked-by: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-orion.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 6b001c4a5640..be2e87ee8b31 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -39,6 +39,8 @@
+v2: No changes.
+
+ drivers/spi/spi.c       | 2 +-
+ include/linux/spi/spi.h | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f699ea530b88..57b64d2128e5 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2854,7 +2854,7 @@ int spi_flash_read(struct spi_device *spi,
  
- #define ORION_SPI_IF_CTRL_REG		0x00
- #define ORION_SPI_IF_CONFIG_REG		0x04
-+#define ORION_SPI_IF_RXLSBF		BIT(14)
-+#define ORION_SPI_IF_TXLSBF		BIT(13)
- #define ORION_SPI_DATA_OUT_REG		0x08
- #define ORION_SPI_DATA_IN_REG		0x0c
- #define ORION_SPI_INT_CAUSE_REG		0x10
-@@ -234,6 +236,11 @@ orion_spi_mode_set(struct spi_device *spi)
- 		reg |= ORION_SPI_MODE_CPOL;
- 	if (spi->mode & SPI_CPHA)
- 		reg |= ORION_SPI_MODE_CPHA;
-+	if (spi->mode & SPI_LSB_FIRST)
-+		reg |= ORION_SPI_IF_RXLSBF | ORION_SPI_IF_TXLSBF;
-+	else
-+		reg &= ~(ORION_SPI_IF_RXLSBF | ORION_SPI_IF_TXLSBF);
-+
- 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
- }
+ 	mutex_lock(&master->bus_lock_mutex);
+ 	mutex_lock(&master->io_mutex);
+-	if (master->dma_rx) {
++	if (master->dma_rx && master->spi_flash_can_dma(spi, msg)) {
+ 		rx_dev = master->dma_rx->device->dev;
+ 		ret = spi_map_buf(master, rx_dev, &msg->rx_sg,
+ 				  msg->buf, msg->len,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 805878d61a8f..935bd2854ff1 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -376,6 +376,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @unprepare_message: undo any work done by prepare_message().
+  * @spi_flash_read: to support spi-controller hardwares that provide
+  *                  accelerated interface to read from flash devices.
++ * @spi_flash_can_dma: analogous to can_dma() interface, but for
++ *		       controllers implementing spi_flash_read.
+  * @flash_read_supported: spi device supports flash read
+  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
+  *	number. Any individual value may be -ENOENT for CS lines that
+@@ -539,6 +541,8 @@ struct spi_master {
+ 				 struct spi_message *message);
+ 	int (*spi_flash_read)(struct  spi_device *spi,
+ 			      struct spi_flash_read_message *msg);
++	bool (*spi_flash_can_dma)(struct spi_device *spi,
++				  struct spi_flash_read_message *msg);
+ 	bool (*flash_read_supported)(struct spi_device *spi);
  
-@@ -591,8 +598,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 			master->bus_num = cell_index;
- 	}
- 
--	/* we support only mode 0, and no options */
--	master->mode_bits = SPI_CPHA | SPI_CPOL;
-+	/* we support all 4 SPI modes and LSB first option */
-+	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
- 	master->set_cs = orion_spi_set_cs;
- 	master->transfer_one = orion_spi_transfer_one;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
+ 	/*
 -- 
 2.11.0
 

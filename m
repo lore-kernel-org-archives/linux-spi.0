@@ -1,54 +1,101 @@
-From: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 2/2] spi: atmel: add PM support to SAMA5D2
-Date: Wed, 12 Apr 2017 09:05:20 +0200
-Message-ID: <20170412070520.29621-2-quentin.schulz@free-electrons.com>
+From: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: atmel: factorize reusable code for SPI
+ controller init
+Date: Wed, 12 Apr 2017 10:40:23 +0200
+Message-ID: <c349c3b4-5ac8-c4f8-6112-ade885bc6b82@microchip.com>
 References: <20170412070520.29621-1-quentin.schulz@free-electrons.com>
-Cc: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-        thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
-To: nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 8bit
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170412070520.29621-1-quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This adds PM support to the ATMEL SAMA5D2 Xplained.
+Le 12/04/2017 à 09:05, Quentin Schulz a écrit :
+> The SPI controller configuration during the init can be reused, for the
+> resume function for example.
+> 
+> Let's move this configuration to a separate function.
+> 
+> Signed-off-by: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-When suspending, VDDCore is shut down and the SPI registers are lost.
-Thus, the SPI controller needs to be re-initialized after resuming from
-a system suspend.
+Okay:
+Acked-by: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 
-Signed-off-by: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> ---
+>  drivers/spi/spi-atmel.c | 35 +++++++++++++++++++++--------------
+>  1 file changed, 21 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 0e7712b..247d920 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -1464,6 +1464,25 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> +static void atmel_spi_init(struct atmel_spi *as)
+> +{
+> +	spi_writel(as, CR, SPI_BIT(SWRST));
+> +	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
+> +	if (as->caps.has_wdrbt) {
+> +		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
+> +				| SPI_BIT(MSTR));
+> +	} else {
+> +		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
+> +	}
+> +
+> +	if (as->use_pdc)
+> +		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
+> +	spi_writel(as, CR, SPI_BIT(SPIEN));
+> +
+> +	if (as->fifo_size)
+> +		spi_writel(as, CR, SPI_BIT(FIFOEN));
+> +}
+> +
+>  static int atmel_spi_probe(struct platform_device *pdev)
+>  {
+>  	struct resource		*regs;
+> @@ -1572,26 +1591,14 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  
+>  	as->spi_clk = clk_get_rate(clk);
+>  
+> -	spi_writel(as, CR, SPI_BIT(SWRST));
+> -	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
+> -	if (as->caps.has_wdrbt) {
+> -		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
+> -				| SPI_BIT(MSTR));
+> -	} else {
+> -		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
+> -	}
+> -
+> -	if (as->use_pdc)
+> -		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
+> -	spi_writel(as, CR, SPI_BIT(SPIEN));
+> -
+>  	as->fifo_size = 0;
+>  	if (!of_property_read_u32(pdev->dev.of_node, "atmel,fifo-size",
+>  				  &as->fifo_size)) {
+>  		dev_info(&pdev->dev, "Using FIFO (%u data)\n", as->fifo_size);
+> -		spi_writel(as, CR, SPI_BIT(FIFOEN));
+>  	}
+>  
+> +	atmel_spi_init(as);
+> +
+>  	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+>  	pm_runtime_use_autosuspend(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+> 
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 247d920..1eb83c9 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1702,8 +1702,17 @@ static int atmel_spi_suspend(struct device *dev)
- static int atmel_spi_resume(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-+	struct atmel_spi *as = spi_master_get_devdata(master);
- 	int ret;
- 
-+	ret = clk_prepare_enable(as->clk);
-+	if (ret)
-+		return ret;
-+
-+	atmel_spi_init(as);
-+
-+	clk_disable_unprepare(as->clk);
-+
- 	if (!pm_runtime_suspended(dev)) {
- 		ret = atmel_spi_runtime_resume(dev);
- 		if (ret)
+
 -- 
-2.9.3
-
+Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

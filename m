@@ -1,124 +1,56 @@
 From: <jiada_wang@mentor.com>
-Subject: [PATCH RFC 3/5] spi: imx: add selection for iMX53 and iMX6 controller
-Date: Thu, 13 Apr 2017 05:14:02 -0700
-Message-ID: <1492085644-4195-4-git-send-email-jiada_wang@mentor.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+Subject: [PATCH RFC 0/5] *** SPI Slave mode support ***
+Date: Thu, 13 Apr 2017 05:13:59 -0700
+Message-ID: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Jiada Wang <jiada_wang@mentor.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Jiada Wang <jiada_wang@mentor.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
 To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <shawnguo@kernel.org>, <kernel@pengutronix.de>,
-        <fabio.estevam@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
+ <shawnguo@kernel.org>, <kernel@pengutronix.de>, <fabio.estevam@nxp.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Jiada Wang <jiada_wang@mentor.com>
 
-ECSPI contorller for iMX53 and iMX6 has few hardware issues
-comparing to iMX51.
-The change add possibility to detect which controller is used
-to apply possible workaround and limitations.
+v1:
+  add Slave mode support in SPI core
+  spidev create slave device when SPI controller work in slave mode
+  spi-imx support to work in slave mode
 
-Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
----
- drivers/spi/spi-imx.c | 43 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 40 insertions(+), 3 deletions(-)
+Jiada Wang (5):
+  spi: core: add support to work in Slave mode
+  spi: spidev: use different name for SPI controller slave mode device
+  spi: imx: add selection for iMX53 and iMX6 controller
+  ARM: dts: imx: change compatiblity for SPI controllers on imx53 later
+    soc
+  spi: imx: Add support for SPI Slave mode for imx53 and imx6 chips
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 9a7c62f..b2323b9 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -67,7 +67,8 @@ enum spi_imx_devtype {
- 	IMX27_CSPI,
- 	IMX31_CSPI,
- 	IMX35_CSPI,	/* CSPI on all i.mx except above */
--	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
-+	IMX51_ECSPI,	/* ECSPI on i.mx51 */
-+	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
- };
- 
- struct spi_imx_data;
-@@ -127,9 +128,32 @@ static inline int is_imx51_ecspi(struct spi_imx_data *d)
- 	return d->devtype_data->devtype == IMX51_ECSPI;
- }
- 
-+static inline int is_imx53_ecspi(struct spi_imx_data *d)
-+{
-+	return d->devtype_data->devtype == IMX53_ECSPI;
-+}
-+
- static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
- {
--	return is_imx51_ecspi(d) ? 64 : 8;
-+	switch (d->devtype_data->devtype) {
-+	case IMX51_ECSPI:
-+	case IMX53_ECSPI:
-+		return 64;
-+	default:
-+		return 8;
-+	}
-+}
-+
-+static inline bool spi_imx_has_dmamode(struct spi_imx_data *d)
-+{
-+	switch (d->devtype_data->devtype) {
-+	case IMX35_CSPI:
-+	case IMX51_ECSPI:
-+	case IMX53_ECSPI:
-+		return true;
-+	default:
-+		return false;
-+	}
- }
- 
- #define MXC_SPI_BUF_RX(type)						\
-@@ -746,6 +770,15 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
- 	.devtype = IMX51_ECSPI,
- };
- 
-+static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
-+	.intctrl = mx51_ecspi_intctrl,
-+	.config = mx51_ecspi_config,
-+	.trigger = mx51_ecspi_trigger,
-+	.rx_available = mx51_ecspi_rx_available,
-+	.reset = mx51_ecspi_reset,
-+	.devtype = IMX53_ECSPI,
-+};
-+
- static const struct platform_device_id spi_imx_devtype[] = {
- 	{
- 		.name = "imx1-cspi",
-@@ -766,6 +799,9 @@ static const struct platform_device_id spi_imx_devtype[] = {
- 		.name = "imx51-ecspi",
- 		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
- 	}, {
-+		.name = "imx53-ecspi",
-+		.driver_data = (kernel_ulong_t) &imx53_ecspi_devtype_data,
-+	}, {
- 		/* sentinel */
- 	}
- };
-@@ -777,6 +813,7 @@ static const struct of_device_id spi_imx_dt_ids[] = {
- 	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
- 	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
- 	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
-+	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, spi_imx_dt_ids);
-@@ -1266,7 +1303,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx35 and i.mx6 now, can remove the constraint
- 	 * if validated on other chips.
- 	 */
--	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx)) {
-+	if (spi_imx_has_dmamode(spi_imx)) {
- 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
- 		if (ret == -EPROBE_DEFER)
- 			goto out_clk_put;
+ Documentation/devicetree/bindings/spi/spi-bus.txt |  27 ++-
+ Documentation/spi/spi-summary                     |  19 +-
+ arch/arm/boot/dts/imx53.dtsi                      |   4 +-
+ arch/arm/boot/dts/imx6q.dtsi                      |   2 +-
+ arch/arm/boot/dts/imx6qdl.dtsi                    |   8 +-
+ arch/arm/boot/dts/imx6sl.dtsi                     |   8 +-
+ arch/arm/boot/dts/imx6sx.dtsi                     |   8 +-
+ arch/arm/boot/dts/imx6ul.dtsi                     |   8 +-
+ drivers/spi/Kconfig                               |  14 +-
+ drivers/spi/spi-imx.c                             | 216 ++++++++++++++++++++--
+ drivers/spi/spi.c                                 |  23 ++-
+ drivers/spi/spidev.c                              |  15 +-
+ include/linux/spi/spi.h                           |  15 ++
+ 13 files changed, 310 insertions(+), 57 deletions(-)
+
 -- 
 2.7.4

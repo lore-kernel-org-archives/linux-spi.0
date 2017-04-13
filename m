@@ -1,126 +1,124 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: atmel: factorize reusable code for SPI controller init" to the spi tree
-Date: Wed, 12 Apr 2017 10:48:22 +0100
-Message-ID: <E1cyEsw-0004Wq-DF@debutante>
-References: <20170412070520.29621-1-quentin.schulz@free-electrons.com>
-Cc: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-        thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170412070520.29621-1-quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: <jiada_wang@mentor.com>
+Subject: [PATCH RFC 3/5] spi: imx: add selection for iMX53 and iMX6 controller
+Date: Thu, 13 Apr 2017 05:14:02 -0700
+Message-ID: <1492085644-4195-4-git-send-email-jiada_wang@mentor.com>
+References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Jiada Wang <jiada_wang@mentor.com>
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <shawnguo@kernel.org>, <kernel@pengutronix.de>,
+        <fabio.estevam@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+From: Jiada Wang <jiada_wang@mentor.com>
 
-   spi: atmel: factorize reusable code for SPI controller init
+ECSPI contorller for iMX53 and iMX6 has few hardware issues
+comparing to iMX51.
+The change add possibility to detect which controller is used
+to apply possible workaround and limitations.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 05514c86965f98f9b0e57f73700771fa267050a7 Mon Sep 17 00:00:00 2001
-From: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Date: Wed, 12 Apr 2017 09:05:19 +0200
-Subject: [PATCH] spi: atmel: factorize reusable code for SPI controller init
-
-The SPI controller configuration during the init can be reused, for the
-resume function for example.
-
-Let's move this configuration to a separate function.
-
-Signed-off-by: Quentin Schulz <quentin.schulz-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Acked-by: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
 ---
- drivers/spi/spi-atmel.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ drivers/spi/spi-imx.c | 43 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 40 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 0e7712bac3b6..247d920a512f 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1464,6 +1464,25 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 9a7c62f..b2323b9 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -67,7 +67,8 @@ enum spi_imx_devtype {
+ 	IMX27_CSPI,
+ 	IMX31_CSPI,
+ 	IMX35_CSPI,	/* CSPI on all i.mx except above */
+-	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
++	IMX51_ECSPI,	/* ECSPI on i.mx51 */
++	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
+ };
+ 
+ struct spi_imx_data;
+@@ -127,9 +128,32 @@ static inline int is_imx51_ecspi(struct spi_imx_data *d)
+ 	return d->devtype_data->devtype == IMX51_ECSPI;
  }
  
-+static void atmel_spi_init(struct atmel_spi *as)
++static inline int is_imx53_ecspi(struct spi_imx_data *d)
 +{
-+	spi_writel(as, CR, SPI_BIT(SWRST));
-+	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
-+	if (as->caps.has_wdrbt) {
-+		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
-+				| SPI_BIT(MSTR));
-+	} else {
-+		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
-+	}
-+
-+	if (as->use_pdc)
-+		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
-+	spi_writel(as, CR, SPI_BIT(SPIEN));
-+
-+	if (as->fifo_size)
-+		spi_writel(as, CR, SPI_BIT(FIFOEN));
++	return d->devtype_data->devtype == IMX53_ECSPI;
 +}
 +
- static int atmel_spi_probe(struct platform_device *pdev)
+ static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
  {
- 	struct resource		*regs;
-@@ -1572,26 +1591,14 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 
- 	as->spi_clk = clk_get_rate(clk);
- 
--	spi_writel(as, CR, SPI_BIT(SWRST));
--	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
--	if (as->caps.has_wdrbt) {
--		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
--				| SPI_BIT(MSTR));
--	} else {
--		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
--	}
--
--	if (as->use_pdc)
--		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
--	spi_writel(as, CR, SPI_BIT(SPIEN));
--
- 	as->fifo_size = 0;
- 	if (!of_property_read_u32(pdev->dev.of_node, "atmel,fifo-size",
- 				  &as->fifo_size)) {
- 		dev_info(&pdev->dev, "Using FIFO (%u data)\n", as->fifo_size);
--		spi_writel(as, CR, SPI_BIT(FIFOEN));
- 	}
- 
-+	atmel_spi_init(as);
+-	return is_imx51_ecspi(d) ? 64 : 8;
++	switch (d->devtype_data->devtype) {
++	case IMX51_ECSPI:
++	case IMX53_ECSPI:
++		return 64;
++	default:
++		return 8;
++	}
++}
 +
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
++static inline bool spi_imx_has_dmamode(struct spi_imx_data *d)
++{
++	switch (d->devtype_data->devtype) {
++	case IMX35_CSPI:
++	case IMX51_ECSPI:
++	case IMX53_ECSPI:
++		return true;
++	default:
++		return false;
++	}
+ }
+ 
+ #define MXC_SPI_BUF_RX(type)						\
+@@ -746,6 +770,15 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.devtype = IMX51_ECSPI,
+ };
+ 
++static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
++	.intctrl = mx51_ecspi_intctrl,
++	.config = mx51_ecspi_config,
++	.trigger = mx51_ecspi_trigger,
++	.rx_available = mx51_ecspi_rx_available,
++	.reset = mx51_ecspi_reset,
++	.devtype = IMX53_ECSPI,
++};
++
+ static const struct platform_device_id spi_imx_devtype[] = {
+ 	{
+ 		.name = "imx1-cspi",
+@@ -766,6 +799,9 @@ static const struct platform_device_id spi_imx_devtype[] = {
+ 		.name = "imx51-ecspi",
+ 		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
+ 	}, {
++		.name = "imx53-ecspi",
++		.driver_data = (kernel_ulong_t) &imx53_ecspi_devtype_data,
++	}, {
+ 		/* sentinel */
+ 	}
+ };
+@@ -777,6 +813,7 @@ static const struct of_device_id spi_imx_dt_ids[] = {
+ 	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
++	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, spi_imx_dt_ids);
+@@ -1266,7 +1303,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * Only validated on i.mx35 and i.mx6 now, can remove the constraint
+ 	 * if validated on other chips.
+ 	 */
+-	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx)) {
++	if (spi_imx_has_dmamode(spi_imx)) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+ 		if (ret == -EPROBE_DEFER)
+ 			goto out_clk_put;
 -- 
-2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

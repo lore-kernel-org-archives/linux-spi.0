@@ -1,85 +1,56 @@
 From: Quentin Schulz <quentin.schulz@free-electrons.com>
-Subject: [PATCH 1/2] spi: atmel: factorize reusable code for SPI controller init
-Date: Fri, 14 Apr 2017 10:22:42 +0200
-Message-ID: <20170414082243.23002-1-quentin.schulz@free-electrons.com>
+Subject: [PATCH 2/2] spi: atmel: add deepest PM support to SAMA5D2
+Date: Fri, 14 Apr 2017 10:22:43 +0200
+Message-ID: <20170414082243.23002-2-quentin.schulz@free-electrons.com>
+References: <20170414082243.23002-1-quentin.schulz@free-electrons.com>
 Cc: Quentin Schulz <quentin.schulz@free-electrons.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         alexandre.belloni@free-electrons.com,
         thomas.petazzoni@free-electrons.com
 To: nicolas.ferre@microchip.com, broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170414082243.23002-1-quentin.schulz@free-electrons.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI controller configuration during the init can be reused, for the
-resume function for example.
+This adds deepest (Backup+Self-Refresh) PM support to the ATMEL SAMA5D2
+SoC's SPI controller.
 
-Let's move this configuration to a separate function.
+When resuming from deepest state, it is required to restore MR register
+as the registers are lost since VDD core has been shut down when
+entering deepest state on the SAMA5D2.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@free-electrons.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 ---
- drivers/spi/spi-atmel.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+
+v2:
+  - fix commit log explanation on why restoring the registers is required
+  after resuming from deepest state,
+
+ drivers/spi/spi-atmel.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 0e7712b..247d920 100644
+index 247d920..1eb83c9 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -1464,6 +1464,25 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void atmel_spi_init(struct atmel_spi *as)
-+{
-+	spi_writel(as, CR, SPI_BIT(SWRST));
-+	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
-+	if (as->caps.has_wdrbt) {
-+		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
-+				| SPI_BIT(MSTR));
-+	} else {
-+		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
-+	}
-+
-+	if (as->use_pdc)
-+		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
-+	spi_writel(as, CR, SPI_BIT(SPIEN));
-+
-+	if (as->fifo_size)
-+		spi_writel(as, CR, SPI_BIT(FIFOEN));
-+}
-+
- static int atmel_spi_probe(struct platform_device *pdev)
+@@ -1702,8 +1702,17 @@ static int atmel_spi_suspend(struct device *dev)
+ static int atmel_spi_resume(struct device *dev)
  {
- 	struct resource		*regs;
-@@ -1572,26 +1591,14 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
+ 	int ret;
  
- 	as->spi_clk = clk_get_rate(clk);
- 
--	spi_writel(as, CR, SPI_BIT(SWRST));
--	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
--	if (as->caps.has_wdrbt) {
--		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
--				| SPI_BIT(MSTR));
--	} else {
--		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
--	}
--
--	if (as->use_pdc)
--		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
--	spi_writel(as, CR, SPI_BIT(SPIEN));
--
- 	as->fifo_size = 0;
- 	if (!of_property_read_u32(pdev->dev.of_node, "atmel,fifo-size",
- 				  &as->fifo_size)) {
- 		dev_info(&pdev->dev, "Using FIFO (%u data)\n", as->fifo_size);
--		spi_writel(as, CR, SPI_BIT(FIFOEN));
- 	}
- 
++	ret = clk_prepare_enable(as->clk);
++	if (ret)
++		return ret;
++
 +	atmel_spi_init(as);
 +
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
++	clk_disable_unprepare(as->clk);
++
+ 	if (!pm_runtime_suspended(dev)) {
+ 		ret = atmel_spi_runtime_resume(dev);
+ 		if (ret)
 -- 
 2.9.3

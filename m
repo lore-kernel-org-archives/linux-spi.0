@@ -1,84 +1,85 @@
-From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
-Date: Thu, 13 Apr 2017 22:39:30 -0700
-Message-ID: <58F06092.9080409@mentor.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com> <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Quentin Schulz <quentin.schulz@free-electrons.com>
+Subject: [PATCH 1/2] spi: atmel: factorize reusable code for SPI controller init
+Date: Fri, 14 Apr 2017 10:22:42 +0200
+Message-ID: <20170414082243.23002-1-quentin.schulz@free-electrons.com>
+Cc: Quentin Schulz <quentin.schulz@free-electrons.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alexandre.belloni@free-electrons.com,
+        thomas.petazzoni@free-electrons.com
+To: nicolas.ferre@microchip.com, broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Geert
+The SPI controller configuration during the init can be reused, for the
+resume function for example.
 
-On 04/13/2017 12:47 PM, Geert Uytterhoeven wrote:
-> On Thu, Apr 13, 2017 at 2:59 PM, Mark Brown<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>  wrote:
->> On Thu, Apr 13, 2017 at 05:13:59AM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
->>> From: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
->>>
->>> v1:
->>>    add Slave mode support in SPI core
->>>    spidev create slave device when SPI controller work in slave mode
->>>    spi-imx support to work in slave mode
->> Adding Geert who also had a series doing this in progress that was
->> getting very near to being merged.
-> Thank you!
->
-> Actually my plan is to fix the last remaining issues and resubmit for v4.13.
-I noticed your patch set for SPI slave support,
-(I am sure you can find out some of the change
-in this patch set is based on your work).
-we have similar requirement to add slave mode support to ecspi IP on 
-imx6 Soc.
+Let's move this configuration to a separate function.
 
-Our use case is to use spidev as an interface to communicate with 
-external SPI master devices.
-meanwhile the SPI bus controller can also act as master device to send 
-data to other
-SPI slave devices on the board.
+Signed-off-by: Quentin Schulz <quentin.schulz@free-electrons.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+---
+ drivers/spi/spi-atmel.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-I found in your implementation, SPI bus controller is limited to either 
-work in master mode or
-slave mode, is there any reasoning to not configure SPI mode based on 
-SPI devices use case?
-
-
-Thanks,
-Jiada
-
-> References:
->    - v2: https://lkml.org/lkml/2016/9/12/1065
->    - v1: https://lkml.org/lkml/2016/6/22/423
->
-> BTW Jiada, what's your use case? Just spidev?
->
-> Thx!
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 0e7712b..247d920 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1464,6 +1464,25 @@ static int atmel_spi_gpio_cs(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static void atmel_spi_init(struct atmel_spi *as)
++{
++	spi_writel(as, CR, SPI_BIT(SWRST));
++	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
++	if (as->caps.has_wdrbt) {
++		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
++				| SPI_BIT(MSTR));
++	} else {
++		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
++	}
++
++	if (as->use_pdc)
++		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
++	spi_writel(as, CR, SPI_BIT(SPIEN));
++
++	if (as->fifo_size)
++		spi_writel(as, CR, SPI_BIT(FIFOEN));
++}
++
+ static int atmel_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource		*regs;
+@@ -1572,26 +1591,14 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 
+ 	as->spi_clk = clk_get_rate(clk);
+ 
+-	spi_writel(as, CR, SPI_BIT(SWRST));
+-	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
+-	if (as->caps.has_wdrbt) {
+-		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
+-				| SPI_BIT(MSTR));
+-	} else {
+-		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
+-	}
+-
+-	if (as->use_pdc)
+-		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
+-	spi_writel(as, CR, SPI_BIT(SPIEN));
+-
+ 	as->fifo_size = 0;
+ 	if (!of_property_read_u32(pdev->dev.of_node, "atmel,fifo-size",
+ 				  &as->fifo_size)) {
+ 		dev_info(&pdev->dev, "Using FIFO (%u data)\n", as->fifo_size);
+-		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ 	}
+ 
++	atmel_spi_init(as);
++
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_active(&pdev->dev);
+-- 
+2.9.3

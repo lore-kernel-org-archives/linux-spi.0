@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH 06/13] MIPS: lantiq: Convert the xbar driver to a platform_driver
-Date: Mon, 17 Apr 2017 21:29:35 +0200
-Message-ID: <20170417192942.32219-7-hauke@hauke-m.de>
+Subject: [PATCH 08/13] reset: Add a reset controller driver for the Lantiq XWAY based SoCs
+Date: Mon, 17 Apr 2017 21:29:37 +0200
+Message-ID: <20170417192942.32219-9-hauke@hauke-m.de>
 References: <20170417192942.32219-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -16,280 +16,420 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 
-This allows using the xbar driver on ARX300 based SoCs which require the
-same xbar setup as the xRX200 chipsets because the xbar driver
-initialization is not guarded by an xRX200 specific
-of_machine_is_compatible condition anymore. Additionally the new driver
-takes a syscon phandle to configure the XBAR endianness bits in RCU
-(before this was done in arch/mips/lantiq/xway/reset.c and also
-guarded by an xRX200 specific if-statement).
+The reset controllers (on xRX200 and newer SoCs have two of them) are
+provided by the RCU module. This was initially implemented as a simple
+reset controller. However, the RCU module provides more functionality
+(ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
+The old reset controller driver implementation from
+arch/mips/lantiq/xway/reset.c did not honor this fact.
+
+For some devices the request and the status bits are different.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 ---
- .../devicetree/bindings/mips/lantiq/xbar.txt       |  22 +++++
- MAINTAINERS                                        |   1 +
- arch/mips/lantiq/xway/reset.c                      |   4 -
- arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
- drivers/soc/Makefile                               |   1 +
- drivers/soc/lantiq/Makefile                        |   1 +
- drivers/soc/lantiq/xbar.c                          | 100 +++++++++++++++++++++
- 7 files changed, 125 insertions(+), 45 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mips/lantiq/xbar.txt
- create mode 100644 drivers/soc/lantiq/Makefile
- create mode 100644 drivers/soc/lantiq/xbar.c
+ .../devicetree/bindings/reset/lantiq,rcu-reset.txt |  43 ++++
+ arch/mips/lantiq/xway/reset.c                      |  68 ------
+ drivers/reset/Kconfig                              |   6 +
+ drivers/reset/Makefile                             |   1 +
+ drivers/reset/reset-lantiq-rcu.c                   | 231 +++++++++++++++++++++
+ 5 files changed, 281 insertions(+), 68 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
+ create mode 100644 drivers/reset/reset-lantiq-rcu.c
 
-diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+diff --git a/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt b/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
 new file mode 100644
-index 000000000000..86e53ff3b0d5
+index 000000000000..7f097d16bbb7
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
-@@ -0,0 +1,22 @@
-+Lantiq XWAY SoC XBAR binding
-+============================
++++ b/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
+@@ -0,0 +1,43 @@
++Lantiq XWAY SoC RCU reset controller binding
++============================================
++
++This binding describes a reset-controller found on the RCU module on Lantiq
++XWAY SoCs.
 +
 +
 +-------------------------------------------------------------------------------
-+Required properties:
-+- compatible	: Should be "lantiq,xbar-xway"
-+- reg		: The address and length of the XBAR registers
++Required properties (controller (parent) node):
++- compatible		: Should be "lantiq,rcu-reset"
++- lantiq,rcu-syscon	: A phandle to the RCU syscon, the reset register
++			  offset and the status register offset.
++- #reset-cells		: Specifies the number of cells needed to encode the
++			  reset line, should be 1.
 +
 +Optional properties:
-+- lantiq,rcu-syscon	: A phandle and offset to the endianness configuration
-+			  registers in the RCU module
++- reset-status		: The request status bit. For some bits the request bit
++			  and the status bit are different. This is depending
++			  on the SoC. If the reset-status bit does not match
++			  the reset-request bit, put the reset number into the
++			  reset-request property and the status bit at the same
++			  index into the reset-status property. If no
++			  reset-request bit is given here, the driver assume
++			  status and request bit are the same.
++- reset-request		: The reset request bit, to map it to the reset-status
++			  bit.
 +
 +
 +-------------------------------------------------------------------------------
-+Example for the XBAR on the xRX200 SoCs:
-+	xbar0: xbar@400000 {
-+		compatible = "lantiq,xbar-xway";
-+		reg = <0x400000 0x1000>;
-+		big-endian;
-+		lantiq,rcu-syscon = <&rcu0 0x4c>;
++Example for the reset-controllers on the xRX200 SoCs:
++	rcu_reset0: rcu_reset {
++		compatible = "lantiq,rcu-reset";
++		lantiq,rcu-syscon = <&rcu0 0x10 0x14>;
++		#reset-cells = <1>;
++		reset-request = <31>, <29>, <21>, <19>, <16>, <12>;
++		reset-status  = <30>, <28>, <16>, <25>, <5>,  <24>;
 +	};
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 676c139bc883..7c03776a56e9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7321,6 +7321,7 @@ M:	John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
- L:	linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
- S:	Maintained
- F:	arch/mips/lantiq
-+F:	drivers/soc/lantiq
- 
- LAPB module
- L:	linux-x25-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
++
++	rcu_reset1: rcu_reset {
++		compatible = "lantiq,rcu-reset";
++		lantiq,rcu-syscon = <&rcu0 0x48 0x24>;
++		#reset-cells = <1>;
++	};
 diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index 83fd65d76e81..b6752c95a600 100644
+index 2dedcf939901..5cb9309b0047 100644
 --- a/arch/mips/lantiq/xway/reset.c
 +++ b/arch/mips/lantiq/xway/reset.c
-@@ -373,10 +373,6 @@ static int __init mips_reboot_setup(void)
- 	    of_machine_is_compatible("lantiq,vr9"))
- 		ltq_usb_init();
- 
--	if (of_machine_is_compatible("lantiq,vr9"))
--		ltq_rcu_w32(ltq_rcu_r32(RCU_AHB_ENDIAN) | RCU_VR9_BE_AHB1S,
--			    RCU_AHB_ENDIAN);
--
- 	_machine_restart = ltq_machine_restart;
- 	_machine_halt = ltq_machine_halt;
- 	pm_power_off = ltq_machine_power_off;
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 95bec460b651..706639a343bc 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -145,15 +145,7 @@ static u32 pmu_clk_cr_b[] = {
- #define pmu_w32(x, y)	ltq_w32((x), pmu_membase + (y))
- #define pmu_r32(x)	ltq_r32(pmu_membase + (x))
- 
--#define XBAR_ALWAYS_LAST	0x430
--#define XBAR_FPI_BURST_EN	BIT(1)
--#define XBAR_AHB_BURST_EN	BIT(2)
--
--#define xbar_w32(x, y)	ltq_w32((x), ltq_xbar_membase + (y))
--#define xbar_r32(x)	ltq_r32(ltq_xbar_membase + (x))
--
- static void __iomem *pmu_membase;
--static void __iomem *ltq_xbar_membase;
- void __iomem *ltq_cgu_membase;
- void __iomem *ltq_ebu_membase;
- 
-@@ -293,16 +285,6 @@ static void pci_ext_disable(struct clk *clk)
- 	ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
+@@ -194,74 +194,6 @@ int xrx200_gphy_boot(struct device *dev, unsigned int id, dma_addr_t dev_addr)
+ 	return 0;
  }
  
--static void xbar_fpi_burst_disable(void)
+-/* reset a io domain for u micro seconds */
+-void ltq_reset_once(unsigned int module, ulong u)
 -{
--	u32 reg;
--
--	/* bit 1 as 1 --burst; bit 1 as 0 -- single */
--	reg = xbar_r32(XBAR_ALWAYS_LAST);
--	reg &= ~XBAR_FPI_BURST_EN;
--	xbar_w32(reg, XBAR_ALWAYS_LAST);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) | module, RCU_RST_REQ);
+-	udelay(u);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) & ~module, RCU_RST_REQ);
 -}
 -
- /* enable a clockout source */
- static int clkout_enable(struct clk *clk)
+-static int ltq_assert_device(struct reset_controller_dev *rcdev,
+-				unsigned long id)
+-{
+-	u32 val;
+-
+-	if (id < 8)
+-		return -1;
+-
+-	val = ltq_rcu_r32(RCU_RST_REQ);
+-	val |= BIT(id);
+-	ltq_rcu_w32(val, RCU_RST_REQ);
+-
+-	return 0;
+-}
+-
+-static int ltq_deassert_device(struct reset_controller_dev *rcdev,
+-				  unsigned long id)
+-{
+-	u32 val;
+-
+-	if (id < 8)
+-		return -1;
+-
+-	val = ltq_rcu_r32(RCU_RST_REQ);
+-	val &= ~BIT(id);
+-	ltq_rcu_w32(val, RCU_RST_REQ);
+-
+-	return 0;
+-}
+-
+-static int ltq_reset_device(struct reset_controller_dev *rcdev,
+-			       unsigned long id)
+-{
+-	ltq_assert_device(rcdev, id);
+-	return ltq_deassert_device(rcdev, id);
+-}
+-
+-static const struct reset_control_ops reset_ops = {
+-	.reset = ltq_reset_device,
+-	.assert = ltq_assert_device,
+-	.deassert = ltq_deassert_device,
+-};
+-
+-static struct reset_controller_dev reset_dev = {
+-	.ops			= &reset_ops,
+-	.owner			= THIS_MODULE,
+-	.nr_resets		= 32,
+-	.of_reset_n_cells	= 1,
+-};
+-
+-void ltq_rst_init(void)
+-{
+-	reset_dev.of_node = of_find_compatible_node(NULL, NULL,
+-						"lantiq,xway-reset");
+-	if (!reset_dev.of_node)
+-		pr_err("Failed to find reset controller node");
+-	else
+-		reset_controller_register(&reset_dev);
+-}
+-
+ static void ltq_machine_restart(char *command)
  {
-@@ -459,26 +441,6 @@ void __init ltq_soc_init(void)
- 	if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
- 		panic("Failed to remap core resources");
+ 	u32 val = ltq_rcu_r32(RCU_RST_REQ);
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index f4cdfe94b9ec..8962ba44248c 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -27,6 +27,12 @@ config RESET_BERLIN
+ 	help
+ 	  This enables the reset controller driver for Marvell Berlin SoCs.
  
--	if (of_machine_is_compatible("lantiq,vr9")) {
--		struct resource res_xbar;
--		struct device_node *np_xbar =
--				of_find_compatible_node(NULL, NULL,
--							"lantiq,xbar-xway");
--
--		if (!np_xbar)
--			panic("Failed to load xbar nodes from devicetree");
--		if (of_address_to_resource(np_xbar, 0, &res_xbar))
--			panic("Failed to get xbar resources");
--		if (!request_mem_region(res_xbar.start, resource_size(&res_xbar),
--			res_xbar.name))
--			panic("Failed to get xbar resources");
--
--		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
--						   resource_size(&res_xbar));
--		if (!ltq_xbar_membase)
--			panic("Failed to remap xbar resources");
--	}
--
- 	/* make sure to unprotect the memory region where flash is located */
- 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
- 
-@@ -605,7 +567,4 @@ void __init ltq_soc_init(void)
- 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
- 		clkdev_add_pmu("1e100400.serial", NULL, 1, 0, PMU_ASC0);
- 	}
--
--	if (of_machine_is_compatible("lantiq,vr9"))
--		xbar_fpi_burst_disable();
- }
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index 05eae52a30b4..8775d37ac158 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -6,6 +6,7 @@ obj-y				+= bcm/
- obj-$(CONFIG_ARCH_DOVE)		+= dove/
- obj-$(CONFIG_MACH_DOVE)		+= dove/
- obj-y				+= fsl/
-+obj-$(CONFIG_SOC_XWAY)		+= lantiq/
- obj-$(CONFIG_ARCH_MEDIATEK)	+= mediatek/
- obj-$(CONFIG_ARCH_QCOM)		+= qcom/
- obj-$(CONFIG_ARCH_RENESAS)	+= renesas/
-diff --git a/drivers/soc/lantiq/Makefile b/drivers/soc/lantiq/Makefile
++config RESET_LANTIQ_RCU
++	bool "Lantiq XWAY Reset Driver" if COMPILE_TEST
++	default SOC_TYPE_XWAY
++	help
++	  This enables the reset controller driver for Lantiq / Intel XWAY SoCs.
++
+ config RESET_LPC18XX
+ 	bool "LPC18xx/43xx Reset Driver" if COMPILE_TEST
+ 	default ARCH_LPC18XX
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 2cd3f6c45165..97b0a844b849 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_ARCH_STI) += sti/
+ obj-$(CONFIG_ARCH_TEGRA) += tegra/
+ obj-$(CONFIG_RESET_ATH79) += reset-ath79.o
+ obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
++obj-$(CONFIG_RESET_LANTIQ_RCU) += reset-lantiq-rcu.o
+ obj-$(CONFIG_RESET_LPC18XX) += reset-lpc18xx.o
+ obj-$(CONFIG_RESET_MESON) += reset-meson.o
+ obj-$(CONFIG_RESET_OXNAS) += reset-oxnas.o
+diff --git a/drivers/reset/reset-lantiq-rcu.c b/drivers/reset/reset-lantiq-rcu.c
 new file mode 100644
-index 000000000000..7411bd23d58e
+index 000000000000..6178112ca5b4
 --- /dev/null
-+++ b/drivers/soc/lantiq/Makefile
-@@ -0,0 +1 @@
-+obj-y				+= xbar.o
-diff --git a/drivers/soc/lantiq/xbar.c b/drivers/soc/lantiq/xbar.c
-new file mode 100644
-index 000000000000..dcd087817435
---- /dev/null
-+++ b/drivers/soc/lantiq/xbar.c
-@@ -0,0 +1,100 @@
++++ b/drivers/reset/reset-lantiq-rcu.c
+@@ -0,0 +1,231 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
-+ *  Copyright (C) 2011-2015 John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ *  Copyright (C) 2015 Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
++ *  Copyright (C) 2010 John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
++ *  Copyright (C) 2013-2015 Lantiq Beteiligungs-GmbH & Co.KG
++ *  Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
++ *  Copyright (C) 2017 Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 + */
 +
-+#include <linux/ioport.h>
 +#include <linux/mfd/syscon.h>
 +#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_address.h>
 +#include <linux/regmap.h>
++#include <linux/reset-controller.h>
++#include <linux/of_platform.h>
 +
-+#include <lantiq_soc.h>
++#define LANTIQ_RCU_RESET_TIMEOUT	1000000
 +
-+#define XBAR_ALWAYS_LAST	0x430
-+#define XBAR_FPI_BURST_EN	BIT(1)
-+#define XBAR_AHB_BURST_EN	BIT(2)
++struct lantiq_rcu_reset_translation {
++	int request;
++	int status;
++};
 +
-+#define RCU_VR9_BE_AHB1S	0x00000008
++struct lantiq_rcu_reset_priv {
++	struct reset_controller_dev rcdev;
++	struct device *dev;
++	struct regmap *regmap;
++	u32 reset_offset;
++	u32 status_offset;
++	int trans_number;
++	struct lantiq_rcu_reset_translation *trans;
++};
 +
-+static int ltq_xbar_probe(struct platform_device *pdev)
++static struct lantiq_rcu_reset_priv *to_lantiq_rcu_reset_priv(
++	struct reset_controller_dev *rcdev)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = dev->of_node;
-+	struct resource res_xbar;
-+	struct regmap *rcu_regmap;
-+	void __iomem *xbar_membase;
-+	u32 rcu_ahb_endianness_reg_offset;
-+	u32 rcu_ahb_endianness_val;
-+	int ret;
++	return container_of(rcdev, struct lantiq_rcu_reset_priv, rcdev);
++}
 +
-+	ret = of_address_to_resource(np, 0, &res_xbar);
++static int lantiq_rcu_reset_status(struct reset_controller_dev *rcdev,
++			     unsigned long id)
++{
++	struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
++	u32 val;
++	int ret, i;
++
++	if (id >= rcdev->nr_resets)
++		return -EINVAL;
++
++	for (i = 0; i < priv->trans_number; i++) {
++		if (id == priv->trans[i].request) {
++			id = priv->trans[i].status;
++			break;
++		}
++	}
++
++	ret = regmap_read(priv->regmap, priv->status_offset, &val);
++	if (ret)
++		return ret;
++
++	return !!(val & BIT(id));
++}
++
++static int lantiq_rcu_reset_update(struct reset_controller_dev *rcdev,
++				   unsigned long id, bool assert)
++{
++	struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
++	u32 val;
++	int ret, retry = LANTIQ_RCU_RESET_TIMEOUT;
++
++	if (id >= rcdev->nr_resets)
++		return -EINVAL;
++
++	if (assert)
++		val = BIT(id);
++	else
++		val = 0;
++
++	ret = regmap_update_bits(priv->regmap, priv->reset_offset, BIT(id),
++				 val);
 +	if (ret) {
-+		dev_err(dev, "Failed to get xbar resources");
++		dev_err(priv->dev, "Failed to set reset bit %lu\n", id);
 +		return ret;
 +	}
 +
-+	if (!devm_request_mem_region(dev, res_xbar.start,
-+				     resource_size(&res_xbar),
-+		res_xbar.name)) {
-+		dev_err(dev, "Failed to get xbar resources");
-+		return -ENODEV;
++	do {} while (--retry && lantiq_rcu_reset_status(rcdev, id) != assert);
++	if (!retry) {
++		dev_err(priv->dev, "Failed to %s bit %lu\n",
++			assert ? "assert" : "deassert", id);
++		return -EIO;
 +	}
-+
-+	xbar_membase = devm_ioremap_nocache(dev, res_xbar.start,
-+						resource_size(&res_xbar));
-+	if (!xbar_membase) {
-+		dev_err(dev, "Failed to remap xbar resources");
-+		return -ENODEV;
-+	}
-+
-+	/* RCU configuration is optional */
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(np, "lantiq,rcu-syscon");
-+	if (!IS_ERR_OR_NULL(rcu_regmap)) {
-+		if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
-+			&rcu_ahb_endianness_reg_offset)) {
-+			dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
-+			return -EINVAL;
-+		}
-+
-+		if (of_device_is_big_endian(np))
-+			rcu_ahb_endianness_val = RCU_VR9_BE_AHB1S;
-+		else
-+			rcu_ahb_endianness_val = 0;
-+
-+		if (regmap_update_bits(rcu_regmap,
-+					rcu_ahb_endianness_reg_offset,
-+					RCU_VR9_BE_AHB1S,
-+					rcu_ahb_endianness_val))
-+			dev_warn(&pdev->dev,
-+				"Failed to configure RCU AHB endianness\n");
-+	}
-+
-+	/* disable fpi burst */
-+	ltq_w32_mask(XBAR_FPI_BURST_EN, 0,
-+		     xbar_membase + XBAR_ALWAYS_LAST);
 +
 +	return 0;
 +}
 +
-+static const struct of_device_id xbar_match[] = {
-+	{ .compatible = "lantiq,xbar-xway" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, xbar_match);
++static int lantiq_rcu_reset_assert(struct reset_controller_dev *rcdev,
++			     unsigned long id)
++{
++	return lantiq_rcu_reset_update(rcdev, id, true);
++}
 +
-+static struct platform_driver xbar_driver = {
-+	.probe = ltq_xbar_probe,
++static int lantiq_rcu_reset_deassert(struct reset_controller_dev *rcdev,
++			       unsigned long id)
++{
++	return lantiq_rcu_reset_update(rcdev, id, false);
++}
++
++static int lantiq_rcu_reset_reset(struct reset_controller_dev *rcdev,
++			    unsigned long id)
++{
++	int ret;
++
++	ret = lantiq_rcu_reset_assert(rcdev, id);
++	if (ret)
++		return ret;
++
++	return lantiq_rcu_reset_deassert(rcdev, id);
++}
++
++static struct reset_control_ops lantiq_rcu_reset_ops = {
++	.assert = lantiq_rcu_reset_assert,
++	.deassert = lantiq_rcu_reset_deassert,
++	.status = lantiq_rcu_reset_status,
++	.reset	= lantiq_rcu_reset_reset,
++};
++
++static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
++			       struct lantiq_rcu_reset_priv *priv)
++{
++	struct device_node *np = pdev->dev.of_node;
++	int cnt, i, ret;
++
++	priv->regmap = syscon_regmap_lookup_by_phandle(np,
++							"lantiq,rcu-syscon");
++	if (IS_ERR(priv->regmap)) {
++		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
++		return PTR_ERR(priv->regmap);
++	}
++
++	if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
++		&priv->reset_offset)) {
++		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
++		return -EINVAL;
++	}
++
++	if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 2,
++		&priv->status_offset)) {
++		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
++		return -EINVAL;
++	}
++
++	cnt = of_property_count_elems_of_size(np, "reset-request", sizeof(u32));
++	if (cnt <= 0)
++		return 0;
++
++	priv->trans = devm_kmalloc_array(&pdev->dev, cnt, sizeof(*priv->trans),
++					 GFP_KERNEL);
++	if (!priv->trans)
++		return -ENOMEM;
++
++	for (i = 0; i < cnt; i++) {
++		ret = of_property_read_u32_index(np, "reset-request", i,
++						 &priv->trans[i].request);
++		if (ret) {
++			dev_err(&pdev->dev,
++				"Failed to get reset-request at index %i\n",
++				i);
++			return ret;
++		}
++		ret = of_property_read_u32_index(np, "reset-status", i,
++						 &priv->trans[i].status);
++		if (ret) {
++			dev_err(&pdev->dev,
++				"Failed to get reset-status at index %i\n",
++				i);
++			return ret;
++		}
++	}
++	priv->trans_number = cnt;
++
++	return 0;
++}
++
++static int lantiq_rcu_reset_probe(struct platform_device *pdev)
++{
++	struct lantiq_rcu_reset_priv *priv;
++	int err;
++
++	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->dev = &pdev->dev;
++	platform_set_drvdata(pdev, priv);
++
++	err = lantiq_rcu_reset_of_probe(pdev, priv);
++	if (err)
++		return err;
++
++	priv->rcdev.ops = &lantiq_rcu_reset_ops;
++	priv->rcdev.owner = THIS_MODULE;
++	priv->rcdev.of_node = pdev->dev.of_node;
++	priv->rcdev.of_reset_n_cells = 1;
++	priv->rcdev.nr_resets = 32;
++
++	err = reset_controller_register(&priv->rcdev);
++	if (err)
++		return err;
++
++	return 0;
++}
++
++static const struct of_device_id lantiq_rcu_reset_dt_ids[] = {
++	{ .compatible = "lantiq,rcu-reset", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, lantiq_rcu_reset_dt_ids);
++
++static struct platform_driver lantiq_rcu_reset_driver = {
++	.probe	= lantiq_rcu_reset_probe,
 +	.driver = {
-+		.name = "xbar-xway",
-+		.of_match_table = xbar_match,
++		.name		= "lantiq-rcu-reset",
++		.of_match_table	= lantiq_rcu_reset_dt_ids,
 +	},
 +};
++module_platform_driver(lantiq_rcu_reset_driver);
 +
-+builtin_platform_driver(xbar_driver);
++MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>");
++MODULE_DESCRIPTION("Lantiq XWAY RCU Reset Controller Driver");
++MODULE_LICENSE("GPL");
 -- 
 2.11.0
 

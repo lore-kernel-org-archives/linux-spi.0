@@ -1,19 +1,23 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: double time out tolerance" to the spi tree
-Date: Tue, 18 Apr 2017 19:00:27 +0100
-Message-ID: <E1d0XQR-0007MV-8c@debutante>
-References: <20170416233805.15973-1-hauke@hauke-m.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170416233805.15973-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: atmel: add deepest PM support to SAMA5D2" to the spi tree
+Date: Tue, 18 Apr 2017 19:00:34 +0100
+Message-ID: <E1d0XQY-0007Nw-5o@debutante>
+References: <20170412070520.29621-2-quentin.schulz@free-electrons.com>
+Cc: Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Mark Brown <broonie@kernel.org>, nicolas.ferre@microchip.com,
+        broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alexandre.belloni@free-electrons.com,
+        thomas.petazzoni@free-electrons.com, linux-spi@vger.kernel.org
+To: Quentin Schulz <quentin.schulz@free-electrons.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170412070520.29621-2-quentin.schulz@free-electrons.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: double time out tolerance
+   spi: atmel: add deepest PM support to SAMA5D2
 
 has been applied to the spi tree at
 
@@ -38,49 +42,47 @@ to this mail.
 Thanks,
 Mark
 
->From 833bfade96561216aa2129516a5926a0326860a2 Mon Sep 17 00:00:00 2001
-From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Date: Mon, 17 Apr 2017 01:38:05 +0200
-Subject: [PATCH] spi: double time out tolerance
+>From e53800787a251d67e532fadf72886be0661aba12 Mon Sep 17 00:00:00 2001
+From: Quentin Schulz <quentin.schulz@free-electrons.com>
+Date: Fri, 14 Apr 2017 10:22:43 +0200
+Subject: [PATCH] spi: atmel: add deepest PM support to SAMA5D2
 
-The generic SPI code calculates how long the issued transfer would take
-and adds 100ms in addition to the timeout as tolerance. On my 500 MHz
-Lantiq Mips SoC I am getting timeouts from the SPI like this when the
-system boots up:
+This adds deepest (Backup+Self-Refresh) PM support to the ATMEL SAMA5D2
+SoC's SPI controller.
 
-m25p80 spi32766.4: SPI transfer timed out
-blk_update_request: I/O error, dev mtdblock3, sector 2
-SQUASHFS error: squashfs_read_data failed to read block 0x6e
+When resuming from deepest state, it is required to restore MR register
+as the registers are lost since VDD core has been shut down when
+entering deepest state on the SAMA5D2.
 
-After increasing the tolerance for the timeout to 200ms I haven't seen
-these SPI transfer time outs any more.
-The Lantiq SPI driver in use here has an extra work queue in between,
-which gets triggered when the controller send the last word and the
-hardware FIFOs used for reading and writing are only 8 words long.
-
-Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Quentin Schulz <quentin.schulz@free-electrons.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-atmel.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 656dd3e3220c..0af62c6f93a8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1012,7 +1012,7 @@ static int spi_transfer_one_message(struct spi_master *master,
- 				ret = 0;
- 				ms = 8LL * 1000LL * xfer->len;
- 				do_div(ms, xfer->speed_hz);
--				ms += ms + 100; /* some tolerance */
-+				ms += ms + 200; /* some tolerance */
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 247d920a512f..1eb83c9613d5 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1702,8 +1702,17 @@ static int atmel_spi_suspend(struct device *dev)
+ static int atmel_spi_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
+ 	int ret;
  
- 				if (ms > UINT_MAX)
- 					ms = UINT_MAX;
++	ret = clk_prepare_enable(as->clk);
++	if (ret)
++		return ret;
++
++	atmel_spi_init(as);
++
++	clk_disable_unprepare(as->clk);
++
+ 	if (!pm_runtime_suspended(dev)) {
+ 		ret = atmel_spi_runtime_resume(dev);
+ 		if (ret)
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

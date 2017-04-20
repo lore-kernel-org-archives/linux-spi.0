@@ -1,84 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw: Disable clock after unregistering the host" to the spi tree
-Date: Tue, 18 Apr 2017 19:17:07 +0100
-Message-ID: <E1d0XgZ-0000Pi-Mt@debutante>
-References: <20170418180906.29844-1-marex@denx.de>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 06/13] MIPS: lantiq: Convert the xbar driver to a
+ platform_driver
+Date: Thu, 20 Apr 2017 09:48:48 -0500
+Message-ID: <20170420144848.hwvtrhnwxcsxyv7x@rob-hp-laptop>
+References: <20170417192942.32219-1-hauke@hauke-m.de>
+ <20170417192942.32219-7-hauke@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170418180906.29844-1-marex-ynQEQJNshbs@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170417192942.32219-7-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Mon, Apr 17, 2017 at 09:29:35PM +0200, Hauke Mehrtens wrote:
+> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+> 
+> This allows using the xbar driver on ARX300 based SoCs which require the
+> same xbar setup as the xRX200 chipsets because the xbar driver
+> initialization is not guarded by an xRX200 specific
+> of_machine_is_compatible condition anymore. Additionally the new driver
+> takes a syscon phandle to configure the XBAR endianness bits in RCU
+> (before this was done in arch/mips/lantiq/xway/reset.c and also
+> guarded by an xRX200 specific if-statement).
+> 
+> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+> ---
+>  .../devicetree/bindings/mips/lantiq/xbar.txt       |  22 +++++
+>  MAINTAINERS                                        |   1 +
+>  arch/mips/lantiq/xway/reset.c                      |   4 -
+>  arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
+>  drivers/soc/Makefile                               |   1 +
+>  drivers/soc/lantiq/Makefile                        |   1 +
+>  drivers/soc/lantiq/xbar.c                          | 100 +++++++++++++++++++++
+>  7 files changed, 125 insertions(+), 45 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>  create mode 100644 drivers/soc/lantiq/Makefile
+>  create mode 100644 drivers/soc/lantiq/xbar.c
+> 
+> diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+> new file mode 100644
+> index 000000000000..86e53ff3b0d5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+> @@ -0,0 +1,22 @@
+> +Lantiq XWAY SoC XBAR binding
+> +============================
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible	: Should be "lantiq,xbar-xway"
 
-   spi: dw: Disable clock after unregistering the host
+This compatible is already in use so it is fine, but you should also 
+have per SoC compatible strings.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 400c18e3dc86e04ef5afec9b86a8586ca629b9e9 Mon Sep 17 00:00:00 2001
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Date: Tue, 18 Apr 2017 20:09:06 +0200
-Subject: [PATCH] spi: dw: Disable clock after unregistering the host
-
-The dw_mmio driver disables the block clock before unregistering
-the host. The code unregistering the host may access the SPI block
-registers. If register access happens with block clock disabled,
-this may lead to a bus hang. Disable the clock after unregistering
-the host to prevent such situation.
-
-This bug was observed on Altera Cyclone V SoC.
-
-Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-dw-mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 447497e9124c..d25cc4037e23 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -115,8 +115,8 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- {
- 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
- 
--	clk_disable_unprepare(dwsmmio->clk);
- 	dw_spi_remove_host(&dwsmmio->dws);
-+	clk_disable_unprepare(dwsmmio->clk);
- 
- 	return 0;
- }
--- 
-2.11.0
-
+> +- reg		: The address and length of the XBAR registers
+> +
+> +Optional properties:
+> +- lantiq,rcu-syscon	: A phandle and offset to the endianness configuration
+> +			  registers in the RCU module
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the XBAR on the xRX200 SoCs:
+> +	xbar0: xbar@400000 {
+> +		compatible = "lantiq,xbar-xway";
+> +		reg = <0x400000 0x1000>;
+> +		big-endian;
+> +		lantiq,rcu-syscon = <&rcu0 0x4c>;
+> +	};
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

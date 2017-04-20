@@ -1,142 +1,122 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 12/13] Documentation: DT: MIPS: lantiq: Add docs for the
- RCU bindings
-Date: Thu, 20 Apr 2017 10:42:22 -0500
-Message-ID: <20170420154222.wr6njt4kpfmkibh6@rob-hp-laptop>
-References: <20170417192942.32219-1-hauke@hauke-m.de>
- <20170417192942.32219-13-hauke@hauke-m.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170417192942.32219-13-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi-imx: Implements handling of the SPI_READY mode flag.
+Date: Thu, 20 Apr 2017 18:53:22 +0200
+Message-ID: <20170420165322.4356-1-Leif.Middelschulte@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Apr 17, 2017 at 09:29:41PM +0200, Hauke Mehrtens wrote:
-> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-> 
-> This adds the initial documentation for the RCU module (a MFD device
-> which provides USB PHYs, reset controllers and more).
+From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-This should come before the other patches.
+This patch implements consideration of the SPI_READY mode flag as
+defined in spi.h. It extends the device tree bindings to support
+the values defined by the reference manual for the DRCTL field.
 
-> 
-> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-> ---
->  .../devicetree/bindings/mips/lantiq/rcu.txt        | 82 ++++++++++++++++++++++
->  1 file changed, 82 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
-> new file mode 100644
-> index 000000000000..9e5b1e7493e4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
-> @@ -0,0 +1,82 @@
-> +Lantiq XWAY SoC RCU binding
-> +===========================
-> +
-> +This binding describes the RCU (reset controller unit) multifunction device,
-> +where each sub-device has it's own set of registers.
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties:
-> +- compatible	: The first and second values must be: "simple-mfd", "syscon"
-> +- reg		: The address and length of the system control registers
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Example of the RCU bindings on a xRX200 SoC:
-> +	rcu0: rcu@203000 {
-> +		compatible = "simple-mfd", "syscon";
+Thus supporting edge-triggered and level-triggered bursts.
 
-Needs an SoC specific compatible string here.
+Signed-off-by: Leif Middelschulte <Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  5 +++++
+ drivers/spi/spi-imx.c                              | 24 ++++++++++++++++++++--
+ 2 files changed, 27 insertions(+), 2 deletions(-)
 
-> +		reg = <0x203000 0x100>;
-> +		big-endian;
-> +
-> +		gphy0: rcu_gphy@0 {
-> +			compatible = "lantiq,xrx200a2x-rcu-gphy";
-> +			lantiq,rcu-syscon = <&rcu0 0x20>;
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 523341a0e113..52336558a121 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -21,6 +21,10 @@ See the clock consumer binding,
+ 		Documentation/devicetree/bindings/dma/dma.txt
+ - dma-names: DMA request names should include "tx" and "rx" if present.
+ 
++Optional properties:
++- fsl,spi-drctl: Integer, representing the value of DRCTL. Note that to
++enable the DRCTL consideration, the SPI_READY mode-flag needs to be set.
++
+ Example:
+ 
+ ecspi@70010000 {
+@@ -34,4 +38,5 @@ ecspi@70010000 {
+ 		   <&gpio3 25 0>; /* GPIO3_25 */
+ 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
+ 	dma-names = "rx", "tx";
++	fsl,spi-drctl = <1>;
+ };
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index f0b10219ee63..95f22dd7aa8b 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -92,6 +92,7 @@ struct spi_imx_data {
+ 	struct clk *clk_per;
+ 	struct clk *clk_ipg;
+ 	unsigned long spi_clk;
++	unsigned int spi_drctl;
+ 
+ 	unsigned int count;
+ 	void (*tx)(struct spi_imx_data *);
+@@ -213,6 +214,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
+ #define MX51_ECSPI_CTRL_SMC		(1 << 3)
+ #define MX51_ECSPI_CTRL_MODE_MASK	(0xf << 4)
++#define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
+ #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+ #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
+@@ -324,6 +326,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	 */
+ 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
+ 
++	/*
++	 * Enable SPI_RDY handling (falling edge/level triggered).
++	 */
++	if (config->mode & SPI_READY)
++		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
++
+ 	/* set clock speed */
+ 	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
+ 
+@@ -1089,13 +1097,22 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct spi_imx_data *spi_imx;
+ 	struct resource *res;
+-	int i, ret, num_cs, irq;
++	int i, ret, num_cs, irq, spi_drctl;
+ 
+ 	if (!np && !mxc_platform_info) {
+ 		dev_err(&pdev->dev, "can't get the platform data\n");
+ 		return -EINVAL;
+ 	}
+ 
++	ret = of_property_read_u32(np, "fsl,spi-drctl", &spi_drctl);
++	if ((ret < 0) || (spi_drctl == 0x3)) {
++		// '11' is reserved
++		spi_drctl = 0;
++	} else {
++		// only the values '00', '01' and '11' are valid
++		spi_drctl &= 0x3;
++	}
++
+ 	ret = of_property_read_u32(np, "fsl,spi-num-chipselects", &num_cs);
+ 	if (ret < 0) {
+ 		if (mxc_platform_info)
+@@ -1142,7 +1159,10 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+-	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH
++					   | SPI_READY;
++
++	spi_imx->spi_drctl = spi_drctl;
+ 
+ 	init_completion(&spi_imx->xfer_done);
+ 
+-- 
+2.12.2
 
-So these are already child nodes. You can get rid of this and use 
-reg/ranges instead.
-
-> +			resets = <&rcu_reset0 31>;
-> +			reset-names = "gphy";
-> +			lantiq,gphy-mode = <GPHY_MODE_GE>;
-> +			clocks = <&pmu0 XRX200_PMU_GATE_GPHY>;
-> +			clock-names = "gphy";
-> +		};
-> +
-> +		gphy1: rcu_gphy@1 {
-> +			compatible = "lantiq,xrx200a2x-rcu-gphy";
-> +			lantiq,rcu-syscon = <&rcu0 0x68>;
-> +			resets = <&rcu_reset0 29>;
-> +			reset-names = "gphy";
-> +			lantiq,gphy-mode = <GPHY_MODE_FE>;
-> +			clocks = <&pmu0 XRX200_PMU_GATE_GPHY>;
-> +			clock-names = "gphy";
-> +		};
-> +
-> +		rcu_reset0: rcu_reset@0 {
-> +			compatible = "lantiq,rcu-reset";
-> +			lantiq,rcu-syscon = <&rcu0 0x10 0x14>;
-> +			#reset-cells = <1>;
-> +			reset-request = <31>, <29>, <21>, <19>, <16>, <12>;
-> +			reset-status  = <30>, <28>, <16>, <25>, <5>,  <24>;
-> +		};
-> +
-> +		rcu_reset1: rcu_reset@1 {
-> +			compatible = "lantiq,rcu-reset";
-> +			lantiq,rcu-syscon = <&rcu0 0x48 0x24>;
-> +			#reset-cells = <1>;
-> +		};
-> +
-> +		usb_phys0: rcu-usb2-phy@0 {
-> +			compatible = "lantiq,xrx200-rcu-usb2-phy";
-> +
-> +			lantiq,rcu-syscon = <&rcu0 0x18 0x38>;
-> +			resets = <&rcu_reset1 4>, <&rcu_reset0 4>;
-> +			reset-names = "phy", "ctrl";
-> +			#phy-cells = <0>;
-> +		};
-> +
-> +		usb_phys1: rcu-usb2-phy@1 {
-> +			compatible = "lantiq,xrx200-rcu-usb2-phy";
-> +
-> +			lantiq,rcu-syscon = <&rcu0 0x34 0x3C>;
-> +			resets = <&rcu_reset1 5>, <&rcu_reset0 4>;
-> +			reset-names = "phy", "ctrl";
-> +			#phy-cells = <0>;
-> +		};
-> +
-> +		reboot {
-> +			compatible = "syscon-reboot";
-> +			regmap = <&rcu0>;
-> +			offset = <0x10>;
-> +			mask = <0x40000000>;
-> +		};
-> +
-> +		/* more sub-device nodes (USB PHY, etc.) */
-> +	};
-> +
-> -- 
-> 2.11.0
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

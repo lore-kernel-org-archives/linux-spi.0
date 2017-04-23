@@ -1,119 +1,73 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: Re: [04/13] watchdog: lantiq: access boot cause register through
- regmap
-Date: Sun, 23 Apr 2017 08:48:12 -0700
-Message-ID: <20170423154812.GA20428@roeck-us.net>
-References: <20170417192942.32219-5-hauke@hauke-m.de>
+From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Subject: [PATCH] spi: tegra: fix spelling mistake: "trasfer" -> "transfer"
+Date: Sun, 23 Apr 2017 18:14:36 +0100
+Message-ID: <20170423171436.6717-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170417192942.32219-5-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Apr 17, 2017 at 09:29:33PM +0200, Hauke Mehrtens wrote:
-> This patch avoids accessing the function ltq_reset_cause() and directly
-> accesses the register given over the syscon interface. The syscon
-> interface will be implemented for the xway SoCs for the falcon SoCs the
-> ltq_reset_cause() function never worked, because a wrong offset was used.
-> 
-> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 
-Acked-by: Guenter Roeck <linux-cYGBoTPqujPR7s880joybQ@public.gmane.org>
+trivial fix to spelling mistake in dbg_err messages
 
-> ---
->  drivers/watchdog/lantiq_wdt.c | 47 +++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 43 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-> index e0823677d8c1..0e349ad03fdf 100644
-> --- a/drivers/watchdog/lantiq_wdt.c
-> +++ b/drivers/watchdog/lantiq_wdt.c
-> @@ -17,9 +17,14 @@
->  #include <linux/uaccess.h>
->  #include <linux/clk.h>
->  #include <linux/io.h>
-> +#include <linux/regmap.h>
-> +#include <linux/mfd/syscon.h>
->  
->  #include <lantiq_soc.h>
->  
-> +#define LTQ_RST_CAUSE_WDT_XRX		BIT(31)
-> +#define LTQ_RST_CAUSE_WDT_FALCON	0x02
-> +
->  /*
->   * Section 3.4 of the datasheet
->   * The password sequence protects the WDT control register from unintended
-> @@ -186,6 +191,40 @@ static struct miscdevice ltq_wdt_miscdev = {
->  	.fops	= &ltq_wdt_fops,
->  };
->  
-> +static void ltq_set_wdt_bootstatus(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	struct regmap *rcu_regmap;
-> +	u32 status_reg_offset;
-> +	u32 val;
-> +	int err;
-> +
-> +	rcu_regmap = syscon_regmap_lookup_by_phandle(np,
-> +						     "lantiq,rcu-syscon");
-> +	if (IS_ERR_OR_NULL(rcu_regmap))
-> +		return;
-> +
-> +	err = of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
-> +					 &status_reg_offset);
-> +	if (err) {
-> +		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
-> +		return;
-> +	}
-> +
-> +	err = regmap_read(rcu_regmap, status_reg_offset, &val);
-> +	if (err)
-> +		return;
-> +
-> +	/* find out if the watchdog caused the last reboot */
-> +	if (of_device_is_compatible(np, "lantiq,wdt-xrx100")) {
-> +		if (val & LTQ_RST_CAUSE_WDT_XRX)
-> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	} else if  (of_device_is_compatible(np, "lantiq,wdt-falcon")) {
-> +		if ((val & 0x7) == LTQ_RST_CAUSE_WDT_FALCON)
-> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	}
-> +}
-> +
->  static int
->  ltq_wdt_probe(struct platform_device *pdev)
->  {
-> @@ -205,9 +244,7 @@ ltq_wdt_probe(struct platform_device *pdev)
->  	ltq_io_region_clk_rate = clk_get_rate(clk);
->  	clk_put(clk);
->  
-> -	/* find out if the watchdog caused the last reboot */
-> -	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
-> -		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	ltq_set_wdt_bootstatus(pdev);
->  
->  	dev_info(&pdev->dev, "Init done\n");
->  	return misc_register(&ltq_wdt_miscdev);
-> @@ -222,7 +259,9 @@ ltq_wdt_remove(struct platform_device *pdev)
->  }
->  
->  static const struct of_device_id ltq_wdt_match[] = {
-> -	{ .compatible = "lantiq,wdt" },
-> +	{ .compatible = "lantiq,wdt"},
-> +	{ .compatible = "lantiq,wdt-xrx100"},
-> +	{ .compatible = "lantiq,wdt-falcon"},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, ltq_wdt_match);
+Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+---
+ drivers/spi/spi-tegra114.c       | 2 +-
+ drivers/spi/spi-tegra20-sflash.c | 2 +-
+ drivers/spi/spi-tegra20-slink.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 73779cecc3bb..08012ae5aa66 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -837,7 +837,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 						SPI_DMA_TIMEOUT);
+ 		if (WARN_ON(ret == 0)) {
+ 			dev_err(tspi->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++				"spi transfer timeout, err %d\n", ret);
+ 			ret = -EIO;
+ 			goto complete_xfer;
+ 		}
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index b6558bb6f9df..2c797ee2664d 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -341,7 +341,7 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
+ 						SPI_DMA_TIMEOUT);
+ 		if (WARN_ON(ret == 0)) {
+ 			dev_err(tsd->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++				"spi transfer timeout, err %d\n", ret);
+ 			ret = -EIO;
+ 			goto exit;
+ 		}
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 85c91f58b42f..0c06ce424210 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -824,7 +824,7 @@ static int tegra_slink_transfer_one(struct spi_master *master,
+ 					  SLINK_DMA_TIMEOUT);
+ 	if (WARN_ON(ret == 0)) {
+ 		dev_err(tspi->dev,
+-			"spi trasfer timeout, err %d\n", ret);
++			"spi transfer timeout, err %d\n", ret);
+ 		return -EIO;
+ 	}
+ 
+-- 
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

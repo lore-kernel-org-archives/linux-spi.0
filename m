@@ -1,121 +1,119 @@
-From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi-imx: Implements handling of the SPI_READY mode flag.
-Date: Sun, 23 Apr 2017 13:18:37 +0200
-Message-ID: <20170423111837.19460-1-Leif.Middelschulte@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: Re: [04/13] watchdog: lantiq: access boot cause register through
+ regmap
+Date: Sun, 23 Apr 2017 08:48:12 -0700
+Message-ID: <20170423154812.GA20428@roeck-us.net>
+References: <20170417192942.32219-5-hauke@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170417192942.32219-5-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Mon, Apr 17, 2017 at 09:29:33PM +0200, Hauke Mehrtens wrote:
+> This patch avoids accessing the function ltq_reset_cause() and directly
+> accesses the register given over the syscon interface. The syscon
+> interface will be implemented for the xway SoCs for the falcon SoCs the
+> ltq_reset_cause() function never worked, because a wrong offset was used.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 
-This patch implements consideration of the SPI_READY mode flag as
-defined in spi.h. It extends the device tree bindings to support
-the values defined by the reference manual for the DRCTL field.
+Acked-by: Guenter Roeck <linux-cYGBoTPqujPR7s880joybQ@public.gmane.org>
 
-Thus supporting edge-triggered and level-triggered bursts.
-
-Signed-off-by: Leif Middelschulte <Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  5 +++++
- drivers/spi/spi-imx.c                              | 23 ++++++++++++++++++++--
- 2 files changed, 26 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 8bc95e2fc47f..890b3ff3325f 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -23,6 +23,10 @@ See the clock consumer binding,
- Obsolete properties:
- - fsl,spi-num-chipselects : Contains the number of the chipselect
- 
-+Optional properties:
-+- fsl,spi-drctl: Integer, representing the value of DRCTL. Note that to
-+enable the DRCTL consideration, the SPI_READY mode-flag needs to be set.
-+
- Example:
- 
- ecspi@70010000 {
-@@ -35,4 +39,5 @@ ecspi@70010000 {
- 		   <&gpio3 25 0>; /* GPIO3_25 */
- 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
- 	dma-names = "rx", "tx";
-+	fsl,spi-drctl = <1>;
- };
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 9a7c62f471dc..647a4bf18705 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -95,6 +95,7 @@ struct spi_imx_data {
- 	unsigned int spi_bus_clk;
- 
- 	unsigned int bytes_per_word;
-+	unsigned int spi_drctl;
- 
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -246,6 +247,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
- #define MX51_ECSPI_CTRL_SMC		(1 << 3)
- #define MX51_ECSPI_CTRL_MODE_MASK	(0xf << 4)
-+#define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
- #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-@@ -355,6 +357,12 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 	 */
- 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
- 
-+	/*
-+	 * Enable SPI_RDY handling (falling edge/level triggered).
-+	 */
-+	if (spi->mode & SPI_READY)
-+		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
-+
- 	/* set clock speed */
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
- 	spi_imx->spi_bus_clk = clk;
-@@ -1173,7 +1181,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
--	int i, ret, irq;
-+	int i, ret, irq, spi_drctl;
- 
- 	if (!np && !mxc_platform_info) {
- 		dev_err(&pdev->dev, "can't get the platform data\n");
-@@ -1181,6 +1189,15 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	}
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
-+	ret = of_property_read_u32(np, "fsl,spi-drctl", &spi_drctl);
-+	if ((ret < 0) || (spi_drctl == 0x3)) {
-+		// '11' is reserved
-+		spi_drctl = 0;
-+	} else {
-+		// only the values '00', '01' and '11' are valid
-+		spi_drctl &= 0x3;
-+	}
-+
- 	if (!master)
- 		return -ENOMEM;
- 
-@@ -1216,7 +1233,9 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
--		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
-+		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
-+
-+	spi_imx->spi_drctl = spi_drctl;
- 
- 	init_completion(&spi_imx->xfer_done);
- 
--- 
-2.12.2
-
+> ---
+>  drivers/watchdog/lantiq_wdt.c | 47 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 43 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+> index e0823677d8c1..0e349ad03fdf 100644
+> --- a/drivers/watchdog/lantiq_wdt.c
+> +++ b/drivers/watchdog/lantiq_wdt.c
+> @@ -17,9 +17,14 @@
+>  #include <linux/uaccess.h>
+>  #include <linux/clk.h>
+>  #include <linux/io.h>
+> +#include <linux/regmap.h>
+> +#include <linux/mfd/syscon.h>
+>  
+>  #include <lantiq_soc.h>
+>  
+> +#define LTQ_RST_CAUSE_WDT_XRX		BIT(31)
+> +#define LTQ_RST_CAUSE_WDT_FALCON	0x02
+> +
+>  /*
+>   * Section 3.4 of the datasheet
+>   * The password sequence protects the WDT control register from unintended
+> @@ -186,6 +191,40 @@ static struct miscdevice ltq_wdt_miscdev = {
+>  	.fops	= &ltq_wdt_fops,
+>  };
+>  
+> +static void ltq_set_wdt_bootstatus(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	struct regmap *rcu_regmap;
+> +	u32 status_reg_offset;
+> +	u32 val;
+> +	int err;
+> +
+> +	rcu_regmap = syscon_regmap_lookup_by_phandle(np,
+> +						     "lantiq,rcu-syscon");
+> +	if (IS_ERR_OR_NULL(rcu_regmap))
+> +		return;
+> +
+> +	err = of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
+> +					 &status_reg_offset);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
+> +		return;
+> +	}
+> +
+> +	err = regmap_read(rcu_regmap, status_reg_offset, &val);
+> +	if (err)
+> +		return;
+> +
+> +	/* find out if the watchdog caused the last reboot */
+> +	if (of_device_is_compatible(np, "lantiq,wdt-xrx100")) {
+> +		if (val & LTQ_RST_CAUSE_WDT_XRX)
+> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	} else if  (of_device_is_compatible(np, "lantiq,wdt-falcon")) {
+> +		if ((val & 0x7) == LTQ_RST_CAUSE_WDT_FALCON)
+> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	}
+> +}
+> +
+>  static int
+>  ltq_wdt_probe(struct platform_device *pdev)
+>  {
+> @@ -205,9 +244,7 @@ ltq_wdt_probe(struct platform_device *pdev)
+>  	ltq_io_region_clk_rate = clk_get_rate(clk);
+>  	clk_put(clk);
+>  
+> -	/* find out if the watchdog caused the last reboot */
+> -	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
+> -		ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	ltq_set_wdt_bootstatus(pdev);
+>  
+>  	dev_info(&pdev->dev, "Init done\n");
+>  	return misc_register(&ltq_wdt_miscdev);
+> @@ -222,7 +259,9 @@ ltq_wdt_remove(struct platform_device *pdev)
+>  }
+>  
+>  static const struct of_device_id ltq_wdt_match[] = {
+> -	{ .compatible = "lantiq,wdt" },
+> +	{ .compatible = "lantiq,wdt"},
+> +	{ .compatible = "lantiq,wdt-xrx100"},
+> +	{ .compatible = "lantiq,wdt-falcon"},
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(of, ltq_wdt_match);
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

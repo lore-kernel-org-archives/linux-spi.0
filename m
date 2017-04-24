@@ -1,99 +1,101 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
-Date: Mon, 24 Apr 2017 15:10:28 +0200
-Message-ID: <CAMuHMdVQS494-BAc-W-XOOLK8Xow85n+Cgih0FG+t4QxCFxhMA@mail.gmail.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
- <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
- <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com>
- <58FDF430.5090306@mentor.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Jiada Wang <jiada_wang@mentor.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: tegra: fix spelling mistake: "trasfer" -> "transfer"" to the spi tree
+Date: Mon, 24 Apr 2017 19:21:08 +0100
+Message-ID: <E1d2ibk-0000s7-7P@debutante>
+References: <20170423171436.6717-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <58FDF430.5090306@mentor.com>
+In-Reply-To: <20170423171436.6717-1-colin.king@canonical.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jiada,
+The patch
 
-On Mon, Apr 24, 2017 at 2:48 PM, Jiada Wang <jiada_wang@mentor.com> wrote:
-> On 04/24/2017 03:55 AM, Geert Uytterhoeven wrote:
->> On Fri, Apr 14, 2017 at 7:39 AM, Jiada Wang<jiada_wang@mentor.com>  wrote:
->>> On 04/13/2017 12:47 PM, Geert Uytterhoeven wrote:
->>>> On Thu, Apr 13, 2017 at 2:59 PM, Mark Brown<broonie@kernel.org>   wrote:
->>>>> On Thu, Apr 13, 2017 at 05:13:59AM -0700, jiada_wang@mentor.com wrote:
->>>>>> From: Jiada Wang<jiada_wang@mentor.com>
->>>>>>
->>>>>> v1:
->>>>>>     add Slave mode support in SPI core
->>>>>>     spidev create slave device when SPI controller work in slave mode
->>>>>>     spi-imx support to work in slave mode
->>>>>
->>>>> Adding Geert who also had a series doing this in progress that was
->>>>> getting very near to being merged.
->>>>
->>>> Thank you!
->>>>
->>>> Actually my plan is to fix the last remaining issues and resubmit for
->>>> v4.13.
->>>
->>> I noticed your patch set for SPI slave support,
->>> (I am sure you can find out some of the change
->>> in this patch set is based on your work).
->>> we have similar requirement to add slave mode support to ecspi IP on imx6
->>> Soc.
->>>
->>> Our use case is to use spidev as an interface to communicate with
->>> external
->>> SPI master devices.
->>> meanwhile the SPI bus controller can also act as master device to send
->>> data
->>> to other
->>> SPI slave devices on the board.
->>
->> That sounds a bit hackish to me. SPI was never meant to be a multi-master
->> bus.
->> While it can be done, you will need external synchronization (signals) to
->> avoid conflicts between the SPI masters.
->
-> It doesn't need to be a multi-master bus,
-> for example A is master device for slave device B.
-> while B has its own slave device C
-> for each SPI connection A <=> B, and B <=> C, there is only one master
-> device.
->
-> and I think from use case point of view, it's very normal,
-> one CPU upon receives command from external SPI master device,
-> it writes data to its own slave device (EEPROM) connected to it.
+   spi: tegra: fix spelling mistake: "trasfer" -> "transfer"
 
-So "A <=> B" and "B <=> C" are two distinct SPI buses?
-Or do they share some signals?
+has been applied to the spi tree at
 
-Your comment seems to suggest otherwise:
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > > I found in your implementation, SPI bus controller is limited to either work in master mode or
-> > > slave mode, is there any reasoning to not configure SPI mode based on SPI devices use case?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-If they are distinct, it should work. Then B has two SPI controllers: one slave
-controller controlled by A, and one master controller to control C.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Gr{oetje,eeting}s,
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-                        Geert
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks,
+Mark
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>From bfca76185d9bd5b3de562bf5023e5d3dddaa9dce Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Sun, 23 Apr 2017 18:14:36 +0100
+Subject: [PATCH] spi: tegra: fix spelling mistake: "trasfer" -> "transfer"
+
+trivial fix to spelling mistake in dbg_err messages
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-tegra114.c       | 2 +-
+ drivers/spi/spi-tegra20-sflash.c | 2 +-
+ drivers/spi/spi-tegra20-slink.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 73779cecc3bb..08012ae5aa66 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -837,7 +837,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 						SPI_DMA_TIMEOUT);
+ 		if (WARN_ON(ret == 0)) {
+ 			dev_err(tspi->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++				"spi transfer timeout, err %d\n", ret);
+ 			ret = -EIO;
+ 			goto complete_xfer;
+ 		}
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index b6558bb6f9df..2c797ee2664d 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -341,7 +341,7 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
+ 						SPI_DMA_TIMEOUT);
+ 		if (WARN_ON(ret == 0)) {
+ 			dev_err(tsd->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++				"spi transfer timeout, err %d\n", ret);
+ 			ret = -EIO;
+ 			goto exit;
+ 		}
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 85c91f58b42f..0c06ce424210 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -824,7 +824,7 @@ static int tegra_slink_transfer_one(struct spi_master *master,
+ 					  SLINK_DMA_TIMEOUT);
+ 	if (WARN_ON(ret == 0)) {
+ 		dev_err(tspi->dev,
+-			"spi trasfer timeout, err %d\n", ret);
++			"spi transfer timeout, err %d\n", ret);
+ 		return -EIO;
+ 	}
+ 
+-- 
+2.11.0

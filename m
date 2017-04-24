@@ -1,120 +1,87 @@
-From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3] spi-imx: Implements handling of the SPI_READY mode flag.
-Date: Sun, 23 Apr 2017 21:19:58 +0200
-Message-ID: <20170423191958.32724-1-Leif.Middelschulte@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
+Date: Mon, 24 Apr 2017 12:55:21 +0200
+Message-ID: <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com>
+References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+ <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
+ <58F06092.9080409@mentor.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <58F06092.9080409-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Hi Jiada,
 
-This patch implements consideration of the SPI_READY mode flag as
-defined in spi.h. It extends the device tree bindings to support
-the values defined by the reference manual for the DRCTL field.
+On Fri, Apr 14, 2017 at 7:39 AM, Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org> wrote:
+> On 04/13/2017 12:47 PM, Geert Uytterhoeven wrote:
+>> On Thu, Apr 13, 2017 at 2:59 PM, Mark Brown<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>  wrote:
+>>> On Thu, Apr 13, 2017 at 05:13:59AM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
+>>>> From: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>>>>
+>>>> v1:
+>>>>    add Slave mode support in SPI core
+>>>>    spidev create slave device when SPI controller work in slave mode
+>>>>    spi-imx support to work in slave mode
+>>>
+>>> Adding Geert who also had a series doing this in progress that was
+>>> getting very near to being merged.
+>>
+>> Thank you!
+>>
+>> Actually my plan is to fix the last remaining issues and resubmit for
+>> v4.13.
+>
+> I noticed your patch set for SPI slave support,
+> (I am sure you can find out some of the change
+> in this patch set is based on your work).
+> we have similar requirement to add slave mode support to ecspi IP on imx6
+> Soc.
+>
+> Our use case is to use spidev as an interface to communicate with external
+> SPI master devices.
+> meanwhile the SPI bus controller can also act as master device to send data
+> to other
+> SPI slave devices on the board.
 
-Thus supporting edge-triggered and level-triggered bursts.
+That sounds a bit hackish to me. SPI was never meant to be a multi-master bus.
+While it can be done, you will need external synchronization (signals) to
+avoid conflicts between the SPI masters.
 
-Signed-off-by: Leif Middelschulte <Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- .../devicetree/bindings/spi/fsl-imx-cspi.txt         |  7 +++++++
- drivers/spi/spi-imx.c                                | 20 ++++++++++++++++++--
- 2 files changed, 25 insertions(+), 2 deletions(-)
+> I found in your implementation, SPI bus controller is limited to either work
+> in master mode or
+> slave mode, is there any reasoning to not configure SPI mode based on SPI
+> devices use case?
 
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 8bc95e2fc47f..31b5b21598ff 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -23,6 +23,12 @@ See the clock consumer binding,
- Obsolete properties:
- - fsl,spi-num-chipselects : Contains the number of the chipselect
- 
-+Optional properties:
-+- fsl,spi-rdy-drctl: Integer, representing the value of DRCTL, the register
-+controlling the SPI_READY handling. Note that to enable the DRCTL consideration,
-+the SPI_READY mode-flag needs to be set too.
-+Valid values are: 0 (disabled), 1 (edge-triggered burst) and 2 (level-triggered burst).
-+
- Example:
- 
- ecspi@70010000 {
-@@ -35,4 +41,5 @@ ecspi@70010000 {
- 		   <&gpio3 25 0>; /* GPIO3_25 */
- 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
- 	dma-names = "rx", "tx";
-+	fsl,spi-rdy-drctl = <1>;
- };
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 9a7c62f471dc..b402530a7a9a 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -95,6 +95,7 @@ struct spi_imx_data {
- 	unsigned int spi_bus_clk;
- 
- 	unsigned int bytes_per_word;
-+	unsigned int spi_drctl;
- 
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -246,6 +247,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
- #define MX51_ECSPI_CTRL_SMC		(1 << 3)
- #define MX51_ECSPI_CTRL_MODE_MASK	(0xf << 4)
-+#define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
- #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-@@ -355,6 +357,12 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 	 */
- 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
- 
-+	/*
-+	 * Enable SPI_RDY handling (falling edge/level triggered).
-+	 */
-+	if (spi->mode & SPI_READY)
-+		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
-+
- 	/* set clock speed */
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
- 	spi_imx->spi_bus_clk = clk;
-@@ -1173,7 +1181,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
--	int i, ret, irq;
-+	int i, ret, irq, spi_drctl;
- 
- 	if (!np && !mxc_platform_info) {
- 		dev_err(&pdev->dev, "can't get the platform data\n");
-@@ -1181,6 +1189,12 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	}
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
-+	ret = of_property_read_u32(np, "fsl,spi-rdy-drctl", &spi_drctl);
-+	if ((ret < 0) || (spi_drctl >= 0x3)) {
-+		/* '11' is reserved */
-+		spi_drctl = 0;
-+	}
-+
- 	if (!master)
- 		return -ENOMEM;
- 
-@@ -1216,7 +1230,9 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
--		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
-+		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
-+
-+	spi_imx->spi_drctl = spi_drctl;
- 
- 	init_completion(&spi_imx->xfer_done);
- 
--- 
-2.12.2
+If you really need both master and slave support, you can use 2 subnodes
+in DT, the first representing the master, the second the slave.
 
+Mark, what's your opinion about this?
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

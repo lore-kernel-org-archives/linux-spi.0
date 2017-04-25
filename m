@@ -1,141 +1,108 @@
-From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: Re: [PATCH 11/13] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-Date: Tue, 25 Apr 2017 09:06:56 +0200
-Message-ID: <f15b576e-36bf-657d-97ff-99ea174c1d00@hauke-m.de>
-References: <20170417192942.32219-1-hauke@hauke-m.de>
- <20170417192942.32219-12-hauke@hauke-m.de>
- <20170420153606.fdhedc7ovvhc66qd@rob-hp-laptop>
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
+Date: Tue, 25 Apr 2017 00:56:23 -0700
+Message-ID: <58FF0127.7070703@mentor.com>
+References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com> <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com> <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com> <58FDF430.5090306@mentor.com> <CAMuHMdVQS494-BAc-W-XOOLK8Xow85n+Cgih0FG+t4QxCFxhMA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170420153606.fdhedc7ovvhc66qd@rob-hp-laptop>
+In-Reply-To: <CAMuHMdVQS494-BAc-W-XOOLK8Xow85n+Cgih0FG+t4QxCFxhMA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Geert
 
-
-On 04/20/2017 05:36 PM, Rob Herring wrote:
-> On Mon, Apr 17, 2017 at 09:29:40PM +0200, Hauke Mehrtens wrote:
->> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+On 04/24/2017 06:10 AM, Geert Uytterhoeven wrote:
+> Hi Jiada,
+>
+> On Mon, Apr 24, 2017 at 2:48 PM, Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>  wrote:
+>> On 04/24/2017 03:55 AM, Geert Uytterhoeven wrote:
+>>> On Fri, Apr 14, 2017 at 7:39 AM, Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>   wrote:
+>>>> On 04/13/2017 12:47 PM, Geert Uytterhoeven wrote:
+>>>>> On Thu, Apr 13, 2017 at 2:59 PM, Mark Brown<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>    wrote:
+>>>>>> On Thu, Apr 13, 2017 at 05:13:59AM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
+>>>>>>> From: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>>>>>>>
+>>>>>>> v1:
+>>>>>>>      add Slave mode support in SPI core
+>>>>>>>      spidev create slave device when SPI controller work in slave mode
+>>>>>>>      spi-imx support to work in slave mode
+>>>>>> Adding Geert who also had a series doing this in progress that was
+>>>>>> getting very near to being merged.
+>>>>> Thank you!
+>>>>>
+>>>>> Actually my plan is to fix the last remaining issues and resubmit for
+>>>>> v4.13.
+>>>> I noticed your patch set for SPI slave support,
+>>>> (I am sure you can find out some of the change
+>>>> in this patch set is based on your work).
+>>>> we have similar requirement to add slave mode support to ecspi IP on imx6
+>>>> Soc.
+>>>>
+>>>> Our use case is to use spidev as an interface to communicate with
+>>>> external
+>>>> SPI master devices.
+>>>> meanwhile the SPI bus controller can also act as master device to send
+>>>> data
+>>>> to other
+>>>> SPI slave devices on the board.
+>>> That sounds a bit hackish to me. SPI was never meant to be a multi-master
+>>> bus.
+>>> While it can be done, you will need external synchronization (signals) to
+>>> avoid conflicts between the SPI masters.
+>> It doesn't need to be a multi-master bus,
+>> for example A is master device for slave device B.
+>> while B has its own slave device C
+>> for each SPI connection A<=>  B, and B<=>  C, there is only one master
+>> device.
 >>
->> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
->> the PHY interfaces for each core. The phy instances can be passed to the
->> dwc2 driver, which already supports the generic phy interface.
->>
->> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
->> ---
->>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  59 ++++
->>  arch/mips/lantiq/xway/reset.c                      |  43 ---
->>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->>  drivers/phy/Kconfig                                |   8 +
->>  drivers/phy/Makefile                               |   1 +
->>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 325 +++++++++++++++++++++
->>  6 files changed, 405 insertions(+), 55 deletions(-)
->>  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->>  create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
->>
->> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->> new file mode 100644
->> index 000000000000..0ec9f790b6e0
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->> @@ -0,0 +1,59 @@
->> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
->> +===========================================
->> +
->> +This binding describes the USB PHY hardware provided by the RCU module on the
->> +Lantiq XWAY SoCs.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties (controller (parent) node):
->> +- compatible		: Should be one of
->> +				"lantiq,ase-rcu-usb2-phy"
->> +				"lantiq,danube-rcu-usb2-phy"
->> +				"lantiq,xrx100-rcu-usb2-phy"
->> +				"lantiq,xrx200-rcu-usb2-phy"
->> +				"lantiq,xrx300-rcu-usb2-phy"
-> 
-> The first x in xrx seems to be a wildcard. Don't use wildcards in 
-> compatible strings.
+>> and I think from use case point of view, it's very normal,
+>> one CPU upon receives command from external SPI master device,
+>> it writes data to its own slave device (EEPROM) connected to it.
+> So "A<=>  B" and "B<=>  C" are two distinct SPI buses?
+> Or do they share some signals?
+>
+> Your comment seems to suggest otherwise:
+the use case of
+"A (master) <=> B (slave)", "B (master) <=> C(slave)", do share MISO and 
+MOSI lines,
+but there is no SS line between A and C. so for each SPI slave device, 
+there is only one
+master device.
 
-Yes that is correct, I will replace it in the newly introduced
-compatible strings with the full names without wild cards.
+so I think the question becomes whether the above mentioned hardware 
+setup is valid or not.
 
-> 
->> +- lantiq,rcu-syscon	: A phandle to the RCU module and the offsets to the
->> +			  USB PHY configuration and USB MAC registers.
-> 
-> Same comment as gphy.
-> 
->> +- address-cells		: should be 1
->> +- size-cells		: should be 0
->> +- phy-cells		: from the generic PHY bindings, must be 1
-> 
-> Missing the '#'
-> 
->> +
->> +Optional properties (controller (parent) node):
->> +- vbus-gpio		: References a GPIO which enables VBUS all given USB
->> +			  ports.
-> 
-> -gpios is preferred form.
-> 
->> +
->> +Required nodes		:  A sub-node is required for each USB PHY port.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties (port (child) node):
-> 
-> Where's the sub nodes in the example?
+Thanks,
+Jiada
+>>>> I found in your implementation, SPI bus controller is limited to either work in master mode or
+>>>> slave mode, is there any reasoning to not configure SPI mode based on SPI devices use case?
+> If they are distinct, it should work. Then B has two SPI controllers: one slave
+> controller controlled by A, and one master controller to control C.
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
 
-Sorry, this was from an older version, I will update this.
-
-> 
->> +- reg        	: The ID of the USB port, usually 0 or 1.
->> +- clocks	: References to the (PMU) "ctrl" and "phy" clk gates.
->> +- clock-names	: Must be one of the following:
->> +			"ctrl"
->> +			"phy"
->> +- resets	: References to the RCU USB configuration reset bits.
->> +- reset-names	: Must be one of the following:
->> +			"analog-config" (optional)
->> +			"statemachine-soft" (optional)
->> +
->> +Optional properties (port (child) node):
->> +- vbus-gpio	: References a GPIO which enables VBUS for the USB port.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Example for the USB PHYs on an xRX200 SoC:
->> +	usb_phys0: rcu-usb2-phy@0 {
-> 
-> usb-phy@...
-> 
->> +		compatible      = "lantiq,xrx200-rcu-usb2-phy";
-> 
-> Extra spaces.
-> 
->> +		reg = <0>;
->> +
->> +		lantiq,rcu-syscon = <&rcu0 0x18 0x38>;
->> +		clocks = <&pmu PMU_GATE_USB0_CTRL>,
->> +			 <&pmu PMU_GATE_USB0_PHY>;
->> +		clock-names = "ctrl", "phy";
->> +		vbus-gpios = <&gpio 32 GPIO_ACTIVE_HIGH>;
->> +		resets = <&rcu_reset1 4>, <&rcu_reset0 4>;
->> +		reset-names = "phy", "ctrl";
->> +		#phy-cells = <0>;
->> +	};
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

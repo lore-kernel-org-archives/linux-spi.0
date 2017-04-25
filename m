@@ -1,156 +1,94 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi-imx: Implements handling of the SPI_READY mode flag." to the spi tree
-Date: Tue, 25 Apr 2017 16:46:25 +0100
-Message-ID: <E1d32fZ-000247-9G@debutante>
-References: <20170423191958.32724-1-Leif.Middelschulte@gmail.com>
-Cc: Leif Middelschulte <Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170423191958.32724-1-Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 06/13] MIPS: lantiq: Convert the xbar driver to a platform_driver
+Date: Tue, 25 Apr 2017 11:57:58 -0500
+Message-ID: <CAL_JsqLdtyc_w5CWW9YTN6+xnYVQemSbVEmjJbhH8kP_8a-wkA@mail.gmail.com>
+References: <20170417192942.32219-1-hauke@hauke-m.de> <20170417192942.32219-7-hauke@hauke-m.de>
+ <20170420144848.hwvtrhnwxcsxyv7x@rob-hp-laptop> <8742e3b3-4dc2-bc74-f607-00d96f74512c@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Linux-MIPS <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        LINUX-WATCHDOG <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+        John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8742e3b3-4dc2-bc74-f607-00d96f74512c-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Tue, Apr 25, 2017 at 1:56 AM, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org> wrote:
+>
+>
+> On 04/20/2017 04:48 PM, Rob Herring wrote:
+>> On Mon, Apr 17, 2017 at 09:29:35PM +0200, Hauke Mehrtens wrote:
+>>> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+>>>
+>>> This allows using the xbar driver on ARX300 based SoCs which require the
+>>> same xbar setup as the xRX200 chipsets because the xbar driver
+>>> initialization is not guarded by an xRX200 specific
+>>> of_machine_is_compatible condition anymore. Additionally the new driver
+>>> takes a syscon phandle to configure the XBAR endianness bits in RCU
+>>> (before this was done in arch/mips/lantiq/xway/reset.c and also
+>>> guarded by an xRX200 specific if-statement).
+>>>
+>>> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+>>> ---
+>>>  .../devicetree/bindings/mips/lantiq/xbar.txt       |  22 +++++
+>>>  MAINTAINERS                                        |   1 +
+>>>  arch/mips/lantiq/xway/reset.c                      |   4 -
+>>>  arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
+>>>  drivers/soc/Makefile                               |   1 +
+>>>  drivers/soc/lantiq/Makefile                        |   1 +
+>>>  drivers/soc/lantiq/xbar.c                          | 100 +++++++++++++++++++++
+>>>  7 files changed, 125 insertions(+), 45 deletions(-)
+>>>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>>  create mode 100644 drivers/soc/lantiq/Makefile
+>>>  create mode 100644 drivers/soc/lantiq/xbar.c
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>> new file mode 100644
+>>> index 000000000000..86e53ff3b0d5
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>> @@ -0,0 +1,22 @@
+>>> +Lantiq XWAY SoC XBAR binding
+>>> +============================
+>>> +
+>>> +
+>>> +-------------------------------------------------------------------------------
+>>> +Required properties:
+>>> +- compatible        : Should be "lantiq,xbar-xway"
+>>
+>> This compatible is already in use so it is fine, but you should also
+>> have per SoC compatible strings.
+>
+> I will add a new SoC specific one.
+> What does per SoC device tree mean? Does it mean for the same silicon,
+> for the same silicon revision, for the same fusing of a silicon or for
+> the same marketing name?
 
-   spi-imx: Implements handling of the SPI_READY mode flag.
+Depends how specific you need to some extent. For fusing, packaging,
+metal fixes, speed grading, etc. probably use the same compatible.
+Different design and dies from the start, then they should have
+different compatibles.
 
-has been applied to the spi tree at
+> I would like to make it per silicon or per silicon revision for the IP
+> cores which I know are different.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Being "the same IP" doesn't really matter. The errata can be different
+and often there is no visibility into what h/w designers may have
+changed. On some IP you can rely on revision/feature registers though
+forgetting to rev revision registers is not uncommon. You need to have
+sufficient information that you can work-around a problem in the
+future without requiring a new dtb.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f72efa7e690ab5c4068ccba31c4da032bc45c29c Mon Sep 17 00:00:00 2001
-From: Leif Middelschulte <leif.middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 23 Apr 2017 21:19:58 +0200
-Subject: [PATCH] spi-imx: Implements handling of the SPI_READY mode flag.
-
-This patch implements consideration of the SPI_READY mode flag as
-defined in spi.h. It extends the device tree bindings to support
-the values defined by the reference manual for the DRCTL field.
-
-Thus supporting edge-triggered and level-triggered bursts.
-
-Signed-off-by: Leif Middelschulte <Leif.Middelschulte-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- .../devicetree/bindings/spi/fsl-imx-cspi.txt         |  7 +++++++
- drivers/spi/spi-imx.c                                | 20 ++++++++++++++++++--
- 2 files changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 8bc95e2fc47f..31b5b21598ff 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -23,6 +23,12 @@ See the clock consumer binding,
- Obsolete properties:
- - fsl,spi-num-chipselects : Contains the number of the chipselect
- 
-+Optional properties:
-+- fsl,spi-rdy-drctl: Integer, representing the value of DRCTL, the register
-+controlling the SPI_READY handling. Note that to enable the DRCTL consideration,
-+the SPI_READY mode-flag needs to be set too.
-+Valid values are: 0 (disabled), 1 (edge-triggered burst) and 2 (level-triggered burst).
-+
- Example:
- 
- ecspi@70010000 {
-@@ -35,4 +41,5 @@ ecspi@70010000 {
- 		   <&gpio3 25 0>; /* GPIO3_25 */
- 	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
- 	dma-names = "rx", "tx";
-+	fsl,spi-rdy-drctl = <1>;
- };
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 9a7c62f471dc..b402530a7a9a 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -95,6 +95,7 @@ struct spi_imx_data {
- 	unsigned int spi_bus_clk;
- 
- 	unsigned int bytes_per_word;
-+	unsigned int spi_drctl;
- 
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -246,6 +247,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
- #define MX51_ECSPI_CTRL_SMC		(1 << 3)
- #define MX51_ECSPI_CTRL_MODE_MASK	(0xf << 4)
-+#define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
- #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-@@ -355,6 +357,12 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 	 */
- 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
- 
-+	/*
-+	 * Enable SPI_RDY handling (falling edge/level triggered).
-+	 */
-+	if (spi->mode & SPI_READY)
-+		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
-+
- 	/* set clock speed */
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
- 	spi_imx->spi_bus_clk = clk;
-@@ -1173,7 +1181,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
--	int i, ret, irq;
-+	int i, ret, irq, spi_drctl;
- 
- 	if (!np && !mxc_platform_info) {
- 		dev_err(&pdev->dev, "can't get the platform data\n");
-@@ -1181,6 +1189,12 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	}
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
-+	ret = of_property_read_u32(np, "fsl,spi-rdy-drctl", &spi_drctl);
-+	if ((ret < 0) || (spi_drctl >= 0x3)) {
-+		/* '11' is reserved */
-+		spi_drctl = 0;
-+	}
-+
- 	if (!master)
- 		return -ENOMEM;
- 
-@@ -1216,7 +1230,9 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
--		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
-+		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
-+
-+	spi_imx->spi_drctl = spi_drctl;
- 
- 	init_completion(&spi_imx->xfer_done);
- 
--- 
-2.11.0
-
+Rob
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

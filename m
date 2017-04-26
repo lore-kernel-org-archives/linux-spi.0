@@ -1,46 +1,159 @@
-From: <bflove1-ntQ8I44N4zM@public.gmane.org>
-Subject: 14171 linux-spi
-Date: Tue, 25 Apr 2017 18:32:53 -0000
-Message-ID: <149314517333.16693.4348024057635302441@u16563822.onlinehome-server.com>
-Mime-Version: 1.0
-Content-Type: application/zip; name="894338.zip"
-Content-Transfer-Encoding: base64
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: cadence: Allow for GPIO pins to be used as chipselects" to the spi tree
+Date: Wed, 26 Apr 2017 15:50:16 +0100
+Message-ID: <E1d3OGm-0000co-4p@finisterre>
+References: <1493145014-3163-1-git-send-email-mdf@kernel.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org, alex.williams-acOepvfBmUk@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Moritz Fischer <mdf-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: attachment
+In-Reply-To: <1493145014-3163-1-git-send-email-mdf-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-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
+The patch
+
+   spi: cadence: Allow for GPIO pins to be used as chipselects
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From b42a33bd93fe0b2438511b1c7c00cfd47e17841b Mon Sep 17 00:00:00 2001
+From: Moritz Fischer <mdf-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date: Tue, 25 Apr 2017 11:30:14 -0700
+Subject: [PATCH] spi: cadence: Allow for GPIO pins to be used as chipselects
+
+This adds support for using GPIOs for chipselects as described by the
+default dt-bindings.
+
+Signed-off-by: Moritz Fischer <mdf-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-cadence.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 1c57ce64abba..f0b5c7b91f37 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/gpio.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -127,6 +128,10 @@ struct cdns_spi {
+ 	u32 is_decoded_cs;
+ };
+ 
++struct cdns_spi_device_data {
++	bool gpio_requested;
++};
++
+ /* Macros for the SPI controller read/write */
+ static inline u32 cdns_spi_read(struct cdns_spi *xspi, u32 offset)
+ {
+@@ -456,6 +461,64 @@ static int cdns_unprepare_transfer_hardware(struct spi_master *master)
+ 	return 0;
+ }
+ 
++static int cdns_spi_setup(struct spi_device *spi)
++{
++
++	int ret = -EINVAL;
++	struct cdns_spi_device_data *cdns_spi_data = spi_get_ctldata(spi);
++
++	/* this is a pin managed by the controller, leave it alone */
++	if (spi->cs_gpio == -ENOENT)
++		return 0;
++
++	/* this seems to be the first time we're here */
++	if (!cdns_spi_data) {
++		cdns_spi_data = kzalloc(sizeof(*cdns_spi_data), GFP_KERNEL);
++		if (!cdns_spi_data)
++			return -ENOMEM;
++		cdns_spi_data->gpio_requested = false;
++		spi_set_ctldata(spi, cdns_spi_data);
++	}
++
++	/* if we haven't done so, grab the gpio */
++	if (!cdns_spi_data->gpio_requested && gpio_is_valid(spi->cs_gpio)) {
++		ret = gpio_request_one(spi->cs_gpio,
++				       (spi->mode & SPI_CS_HIGH) ?
++				       GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH,
++				       dev_name(&spi->dev));
++		if (ret)
++			dev_err(&spi->dev, "can't request chipselect gpio %d\n",
++				spi->cs_gpio);
++		else
++			cdns_spi_data->gpio_requested = true;
++	} else {
++		if (gpio_is_valid(spi->cs_gpio)) {
++			int mode = ((spi->mode & SPI_CS_HIGH) ?
++				    GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH);
++
++			ret = gpio_direction_output(spi->cs_gpio, mode);
++			if (ret)
++				dev_err(&spi->dev, "chipselect gpio %d setup failed (%d)\n",
++					spi->cs_gpio, ret);
++		}
++	}
++
++	return ret;
++}
++
++static void cdns_spi_cleanup(struct spi_device *spi)
++{
++	struct cdns_spi_device_data *cdns_spi_data = spi_get_ctldata(spi);
++
++	if (cdns_spi_data) {
++		if (cdns_spi_data->gpio_requested)
++			gpio_free(spi->cs_gpio);
++		kfree(cdns_spi_data);
++		spi_set_ctldata(spi, NULL);
++	}
++
++}
++
+ /**
+  * cdns_spi_probe - Probe method for the SPI driver
+  * @pdev:	Pointer to the platform_device structure
+@@ -555,6 +618,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one = cdns_transfer_one;
+ 	master->unprepare_transfer_hardware = cdns_unprepare_transfer_hardware;
+ 	master->set_cs = cdns_spi_chipselect;
++	master->setup = cdns_spi_setup;
++	master->cleanup = cdns_spi_cleanup;
+ 	master->auto_runtime_pm = true;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA;
+ 
+-- 
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

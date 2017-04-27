@@ -1,63 +1,57 @@
-From: Jiada Wang <jiada_wang@mentor.com>
-Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
-Date: Wed, 26 Apr 2017 23:43:18 -0700
-Message-ID: <59019306.2050309@mentor.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com> <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com> <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com> <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk>
+From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v1] spi: mxs: implement runtime pm
+Date: Thu, 27 Apr 2017 10:49:09 +0200
+Message-ID: <1493282949.13947.8.camel@pengutronix.de>
+References: <20170426201028.19217-1-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170426201028.19217-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Geert and Mark
+Hi Uwe,
 
-On 04/25/2017 03:31 AM, Mark Brown wrote:
-> On Mon, Apr 24, 2017 at 12:55:21PM +0200, Geert Uytterhoeven wrote:
->> On Fri, Apr 14, 2017 at 7:39 AM, Jiada Wang<jiada_wang@mentor.com>  wrote:
->>> Our use case is to use spidev as an interface to communicate with external
->>> SPI master devices.
->>> meanwhile the SPI bus controller can also act as master device to send data
->>> to other
->>> SPI slave devices on the board.
->> That sounds a bit hackish to me. SPI was never meant to be a multi-master bus.
->> While it can be done, you will need external synchronization (signals) to
->> avoid conflicts between the SPI masters.
->>> I found in your implementation, SPI bus controller is limited to either work
->>> in master mode or
->>> slave mode, is there any reasoning to not configure SPI mode based on SPI
->>> devices use case?
->> If you really need both master and slave support, you can use 2 subnodes
->> in DT, the first representing the master, the second the slave.
->> Mark, what's your opinion about this?
-> That sounds like a mess...   we *could* put the slave flag on the device
-> rather than the controller I guess but there's also going to need to be
-> something representing whatever avoids collisions on the bus somewhere.
-The reason I gave the example use case is want to point out that
-with Geert's patch set, a SPI device (with only one controller) can no 
-longer
-act as master and slave at the same time. because IMO as a SPI core 
-function,
-it needs to cover all the use cases, and to be as generic as possible.
+Am Mittwoch, den 26.04.2017, 22:10 +0200 schrieb Uwe Kleine-König:
+> This is a straight forward addition of runtime and system sleep pm operations
+> that handle clk and pinctrl (for runtime pm) and spi_master_{suspend,resume}
+> (for system sleep).
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-mxs.c | 129 ++++++++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 119 insertions(+), 10 deletions(-)
+> 
+> Hello,
+> 
+> this is my first patch since several years that has to do with PM stuff.
+> So I'm sure you can find something I got wrong ;-)
+> 
+> Best regards
+> Uwe
+> 
+[...]
 
-BUT if you think the use case don't need to be supported from SPI core,
-then I don't have objection either, I will only submit imx SPI slave 
-support patch,
-after your SPI slave support patch set been applied
+> +static const struct dev_pm_ops mxs_spi_pm = {
+> +	SET_RUNTIME_PM_OPS(mxs_spi_runtime_suspend,
+> +			   mxs_spi_runtime_resume, NULL)
+> +	SET_SYSTEM_SLEEP_PM_OPS(mxs_spi_suspend, mxs_spi_resume)
+> +};
 
+This would be UNIVERSAL_DEV_PM_OPS, but it bears the question if your
+suspend callback is really prepared to be used a system suspend
+callback. See the comment above the definition of the
+UNIVERSAL_DEV_PM_OPS macro.
 
-Thanks,
-Jiada
+Regards,
+Lucas
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v3 2/6] spi: core: Add support for registering SPI slave controllers
-Date: Thu,  4 May 2017 19:45:47 +0200
-Message-ID: <1493919951-32122-3-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v3 6/6] spi: slave: Add SPI slave handler controlling system state
+Date: Thu,  4 May 2017 19:45:51 +0200
+Message-ID: <1493919951-32122-7-git-send-email-geert+renesas@glider.be>
 References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be>
 Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
@@ -18,467 +18,215 @@ In-Reply-To: <1493919951-32122-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add support for registering SPI slave controllers using the existing SPI
-master framework:
-  - SPI slave controllers must use spi_alloc_slave() instead of
-    spi_alloc_master(), and should provide an additional callback
-    "slave_abort" to abort an ongoing SPI transfer request,
-  - SPI slave controllers are added to a new "spi_slave" device class,
-  - SPI slave handlers can be bound to the SPI slave device represented
-    by an SPI slave controller using a DT child node named "slave",
-  - Alternatively, (un)binding an SPI slave handler to the SPI slave
-    device represented by an SPI slave controller can be done by
-    (un)registering the slave device through a sysfs virtual file named
-    "slave".
-
->From the point of view of an SPI slave protocol handler, an SPI slave
-controller looks almost like an ordinary SPI master controller. The only
-exception is that a transfer request will block on the remote SPI
-master, and may be cancelled using spi_slave_abort().
+Add an example SPI slave handler to allow remote control of system
+reboot, power off, halt, and suspend.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
 v3:
-  - Introduce a separate spi_alloc_slave() function, which sets up the
-    spi_slave_class instead of the spi_master class, to avoid the WARN()
-    in device_release(),
-  - Wrap spi_alloc_{master,slave}() around __spi_alloc_controller(),
-  - Replace the SPI_CONTROLLER_IS_SLAVE flag in spi_master.flags (set by
-    the SPI controller driver) by a bool in spi_master (set by
-    __spi_alloc_controller()),
-  - Revert parsing of slave-specific mode properties in the SPI slave
-    controller DT node for the (single) slave device,
-  - Register again children from DT or ACPI for SPI slave controllers;
-    the single optional slave child node must be called "slave",
-  - Let {acpi,of}_spi_notify() also search spi_slave_class devices,
-  - Use octal instead of symbolic permissions,
-  - s/hander/handler/,
+  - No changes,
 
 v2:
-  - Attach SPI slave controllers to a new "spi_slave" device class,
-  - Don't call of_spi_register_master() instead of letting it return
-    early for SPI slave controllers,
-  - Skip registration of children from DT or ACPI for SPI slave
-    controllers,
-  - Use a "slave" virtual file in sysfs to (un)register the (single)
-    slave device for an SPI slave controller, incl. specifying the slave
-    protocol handler,
-  - Parse slave-specific mode properties in the SPI slave controller DT
-    node for the (single) slave device using of_spi_parse_dt(),
-  - Add cancellation support using spi_master.slave_abort() and
-    spi_slave_abort(),
-  - Rename flag SPI_MASTER_IS_SLAVE to SPI_CONTROLLER_IS_SLAVE,
-  - Introduce helper function spi_controller_is_slave(), making it easy
-    to leave out SPI slave support where appropriate.
+  - Use spi_async() instead of spi_read(),
+  - Submit the next transfer from the previous transfer's completion
+    callback, removing the need for a thread,
+  - Let .remove() call spi_slave_abort() to cancel the current ongoing
+    transfer, and wait for the completion to terminate,
+  - Remove FIXME about hanging kthread_stop(),
+  - Fix copy-and-pasted module description.
 ---
- drivers/spi/Kconfig     |  14 +++-
- drivers/spi/Makefile    |   2 +
- drivers/spi/spi.c       | 179 +++++++++++++++++++++++++++++++++++++++++-------
- include/linux/spi/spi.h |  33 +++++++--
- 4 files changed, 199 insertions(+), 29 deletions(-)
+ drivers/spi/Kconfig                    |   6 ++
+ drivers/spi/Makefile                   |   1 +
+ drivers/spi/spi-slave-system-control.c | 154 +++++++++++++++++++++++++++++++++
+ 3 files changed, 161 insertions(+)
+ create mode 100644 drivers/spi/spi-slave-system-control.c
 
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1761c9004fc1149e..df8ddec24b5d7e88 100644
+index ade542c5bfd87e37..e6d9e329a3801d6d 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -784,6 +784,18 @@ config SPI_TLE62X0
+@@ -802,6 +802,12 @@ config SPI_SLAVE_TIME
+ 	  SPI slave handler responding with the time of reception of the last
+ 	  SPI message.
  
- endif # SPI_MASTER
- 
--# (slave support would go here)
-+#
-+# SLAVE side ... listening to other SPI masters
-+#
-+
-+config SPI_SLAVE
-+	bool "SPI slave protocol handlers"
++config SPI_SLAVE_SYSTEM_CONTROL
++	tristate "SPI slave handler controlling system state"
 +	help
-+	  If your system has a slave-capable SPI controller, you can enable
-+	  slave protocol handlers.
++	  SPI slave handler to allow remote control of system reboot, power
++	  off, halt, and suspend.
 +
-+if SPI_SLAVE
-+
-+endif # SPI_SLAVE
+ endif # SPI_SLAVE
  
  endif # SPI
 diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index b375a7a892160b76..e50852c6fcb87d8b 100644
+index fb078693dbe40da4..1d7923e8c63bc22b 100644
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -105,3 +105,5 @@ obj-$(CONFIG_SPI_XILINX)		+= spi-xilinx.o
- obj-$(CONFIG_SPI_XLP)			+= spi-xlp.o
- obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
- obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
-+
-+# SPI slave protocol handlers
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6f87fec409b5f6fd..c3f6b524b3ceb6c1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1535,15 +1535,6 @@ static int of_spi_parse_dt(struct spi_master *master, struct spi_device *spi,
- 	u32 value;
- 	int rc;
+@@ -108,3 +108,4 @@ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
  
--	/* Device address */
--	rc = of_property_read_u32(nc, "reg", &value);
--	if (rc) {
--		dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
--			nc->full_name, rc);
--		return rc;
--	}
--	spi->chip_select = value;
--
- 	/* Mode (clock phase/polarity/etc.) */
- 	if (of_find_property(nc, "spi-cpha", NULL))
- 		spi->mode |= SPI_CPHA;
-@@ -1593,6 +1584,24 @@ static int of_spi_parse_dt(struct spi_master *master, struct spi_device *spi,
- 		}
- 	}
- 
-+	if (spi_controller_is_slave(master)) {
-+		if (strcmp(nc->name, "slave")) {
-+			dev_err(&master->dev, "%s is not called 'slave'\n",
-+				nc->full_name);
-+			return -EINVAL;
-+		}
-+		return 0;
-+	}
-+
-+	/* Device address */
-+	rc = of_property_read_u32(nc, "reg", &value);
-+	if (rc) {
-+		dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
-+			nc->full_name, rc);
-+		return rc;
-+	}
-+	spi->chip_select = value;
-+
- 	/* Device speed */
- 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
- 	if (rc) {
-@@ -1658,8 +1667,8 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
-  * of_register_spi_devices() - Register child devices onto the SPI bus
-  * @master:	Pointer to spi_master device
-  *
-- * Registers an spi_device for each child node of master node which has a 'reg'
-- * property.
-+ * Registers an spi_device for each child node of controller node which
-+ * represents a valid SPI slave.
-  */
- static void of_register_spi_devices(struct spi_master *master)
- {
-@@ -1828,28 +1837,129 @@ static struct class spi_master_class = {
- 	.dev_groups	= spi_master_groups,
- };
- 
-+#ifdef CONFIG_SPI_SLAVE
-+/**
-+ * spi_slave_abort - abort the ongoing transfer request on an SPI slave
-+ *		     controller
-+ * @spi: device used for the current transfer
+ # SPI slave protocol handlers
+ obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
++obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
+diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
+new file mode 100644
+index 0000000000000000..736dd59928cb3bc3
+--- /dev/null
++++ b/drivers/spi/spi-slave-system-control.c
+@@ -0,0 +1,154 @@
++/*
++ * SPI slave handler controlling system state
++ *
++ * This SPI slave handler allows remote control of system reboot, power off,
++ * halt, and suspend.
++ *
++ * Copyright (C) 2016 Glider bvba
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + */
-+int spi_slave_abort(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
 +
-+	if (spi_controller_is_slave(master) && master->slave_abort)
-+		return master->slave_abort(master);
++#include <linux/completion.h>
++#include <linux/module.h>
++#include <linux/reboot.h>
++#include <linux/suspend.h>
++#include <linux/spi/spi.h>
 +
-+	return -ENOTSUPP;
-+}
-+EXPORT_SYMBOL_GPL(spi_slave_abort);
++/*
++ * The numbers are chosen to display something human-readable on two 7-segment
++ * displays connected to two 74HC595 shift registers
++ */
++#define CMD_REBOOT	0x507c	/* rb */
++#define CMD_POWEROFF	0x3f71	/* OF */
++#define CMD_HALT	0x7638	/* HL */
++#define CMD_SUSPEND	0x1b1b	/* ZZ */
 +
-+static int match_true(struct device *dev, void *data)
-+{
-+	return 1;
-+}
-+
-+static ssize_t spi_slave_show(struct device *dev,
-+			      struct device_attribute *attr, char *buf)
-+{
-+	struct spi_master *ctlr = container_of(dev, struct spi_master, dev);
-+	struct device *child;
-+
-+	child = device_find_child(&ctlr->dev, NULL, match_true);
-+	return sprintf(buf, "%s\n",
-+		       child ? to_spi_device(child)->modalias : NULL);
-+}
-+
-+static ssize_t spi_slave_store(struct device *dev,
-+			       struct device_attribute *attr, const char *buf,
-+			       size_t count)
-+{
-+	struct spi_master *ctlr = container_of(dev, struct spi_master, dev);
++struct spi_slave_system_control_priv {
 +	struct spi_device *spi;
-+	struct device *child;
-+	char name[32];
-+	int rc;
-+
-+	rc = sscanf(buf, "%31s", name);
-+	if (rc != 1 || !name[0])
-+		return -EINVAL;
-+
-+	child = device_find_child(&ctlr->dev, NULL, match_true);
-+	if (child) {
-+		/* Remove registered slave */
-+		device_unregister(child);
-+		put_device(child);
-+	}
-+
-+	if (strcmp(name, "(null)")) {
-+		/* Register new slave */
-+		spi = spi_alloc_device(ctlr);
-+		if (!spi)
-+			return -ENOMEM;
-+
-+		strlcpy(spi->modalias, name, sizeof(spi->modalias));
-+
-+		rc = spi_add_device(spi);
-+		if (rc) {
-+			spi_dev_put(spi);
-+			return rc;
-+		}
-+	}
-+
-+	return count;
-+}
-+
-+static DEVICE_ATTR(slave, 0644, spi_slave_show, spi_slave_store);
-+
-+static struct attribute *spi_slave_attrs[] = {
-+	&dev_attr_slave.attr,
-+	NULL,
++	struct completion finished;
++	struct spi_transfer xfer;
++	struct spi_message msg;
++	__le16 cmd;
 +};
 +
-+static const struct attribute_group spi_slave_group = {
-+	.attrs = spi_slave_attrs,
-+};
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv);
 +
-+static const struct attribute_group *spi_slave_groups[] = {
-+	&spi_master_statistics_group,
-+	&spi_slave_group,
-+	NULL,
-+};
-+
-+static struct class spi_slave_class = {
-+	.name		= "spi_slave",
-+	.owner		= THIS_MODULE,
-+	.dev_release	= spi_master_release,
-+	.dev_groups	= spi_slave_groups,
-+};
-+#else
-+extern struct class spi_slave_class;	/* dummy */
-+#endif
- 
- /**
-- * spi_alloc_master - allocate SPI master controller
-+ * __spi_alloc_controller - allocate an SPI master or slave controller
-  * @dev: the controller, possibly using the platform_bus
-  * @size: how much zeroed driver-private data to allocate; the pointer to this
-  *	memory is in the driver_data field of the returned device,
-  *	accessible with spi_master_get_devdata().
-+ * @slave: flag indicating whether to allocate an SPI master (false) or SPI
-+ *	slave (true) controller
-  * Context: can sleep
-  *
-- * This call is used only by SPI master controller drivers, which are the
-+ * This call is used only by SPI controller drivers, which are the
-  * only ones directly touching chip registers.  It's how they allocate
-  * an spi_master structure, prior to calling spi_register_master().
-  *
-  * This must be called from context that can sleep.
-  *
-- * The caller is responsible for assigning the bus number and initializing
-- * the master's methods before calling spi_register_master(); and (after errors
-+ * The caller is responsible for assigning the bus number and initializing the
-+ * controller's methods before calling spi_register_master(); and (after errors
-  * adding the device) calling spi_master_put() to prevent a memory leak.
-  *
-- * Return: the SPI master structure on success, else NULL.
-+ * Return: the SPI controller structure on success, else NULL.
-  */
--struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
-+struct spi_master *__spi_alloc_controller(struct device *dev,
-+					  unsigned int size, bool slave)
- {
- 	struct spi_master	*master;
- 
-@@ -1863,14 +1973,18 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- 	device_initialize(&master->dev);
- 	master->bus_num = -1;
- 	master->num_chipselect = 1;
--	master->dev.class = &spi_master_class;
-+	master->slave = slave;
-+	if (IS_ENABLED(CONFIG_SPI_SLAVE) && slave)
-+		master->dev.class = &spi_slave_class;
-+	else
-+		master->dev.class = &spi_master_class;
- 	master->dev.parent = dev;
- 	pm_suspend_ignore_children(&master->dev, true);
- 	spi_master_set_devdata(master, &master[1]);
- 
- 	return master;
- }
--EXPORT_SYMBOL_GPL(spi_alloc_master);
-+EXPORT_SYMBOL_GPL(__spi_alloc_controller);
- 
- #ifdef CONFIG_OF
- static int of_spi_register_master(struct spi_master *master)
-@@ -1946,9 +2060,11 @@ int spi_register_master(struct spi_master *master)
- 	if (!dev)
- 		return -ENODEV;
- 
--	status = of_spi_register_master(master);
--	if (status)
--		return status;
-+	if (!spi_controller_is_slave(master)) {
-+		status = of_spi_register_master(master);
-+		if (status)
-+			return status;
-+	}
- 
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
-@@ -1985,8 +2101,9 @@ int spi_register_master(struct spi_master *master)
- 	status = device_add(&master->dev);
- 	if (status < 0)
- 		goto done;
--	dev_dbg(dev, "registered master %s%s\n", dev_name(&master->dev),
--			dynamic ? " (dynamic)" : "");
-+	dev_dbg(dev, "registered %s %s%s\n",
-+			spi_controller_is_slave(master) ? "slave" : "master",
-+			dev_name(&master->dev), dynamic ? " (dynamic)" : "");
- 
- 	/* If we're using a queued driver, start the queue */
- 	if (master->transfer)
-@@ -3159,6 +3276,9 @@ static struct spi_master *of_find_spi_master_by_node(struct device_node *node)
- 
- 	dev = class_find_device(&spi_master_class, NULL, node,
- 				__spi_of_master_match);
-+	if (!dev && IS_ENABLED(CONFIG_SPI_SLAVE))
-+		dev = class_find_device(&spi_slave_class, NULL, node,
-+					__spi_of_master_match);
- 	if (!dev)
- 		return NULL;
- 
-@@ -3240,6 +3360,9 @@ static struct spi_master *acpi_spi_find_master_by_adev(struct acpi_device *adev)
- 
- 	dev = class_find_device(&spi_master_class, NULL, adev,
- 				spi_acpi_master_match);
-+	if (!dev && IS_ENABLED(CONFIG_SPI_SLAVE))
-+		dev = class_find_device(&spi_slave_class, NULL, adev,
-+					spi_acpi_master_match);
- 	if (!dev)
- 		return NULL;
- 
-@@ -3312,6 +3435,12 @@ static int __init spi_init(void)
- 	if (status < 0)
- 		goto err2;
- 
-+	if (IS_ENABLED(CONFIG_SPI_SLAVE)) {
-+		status = class_register(&spi_slave_class);
-+		if (status < 0)
-+			goto err3;
-+	}
-+
- 	if (IS_ENABLED(CONFIG_OF_DYNAMIC))
- 		WARN_ON(of_reconfig_notifier_register(&spi_of_notifier));
- 	if (IS_ENABLED(CONFIG_ACPI))
-@@ -3319,6 +3448,8 @@ static int __init spi_init(void)
- 
- 	return 0;
- 
-+err3:
-+	class_unregister(&spi_master_class);
- err2:
- 	bus_unregister(&spi_bus_type);
- err1:
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 935bd2854ff19b2a..2c73165a441fa001 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -29,8 +29,8 @@ struct spi_transfer;
- struct spi_flash_read_message;
- 
- /*
-- * INTERFACES between SPI master-side drivers and SPI infrastructure.
-- * (There's no SPI slave support for Linux yet...)
-+ * INTERFACES between SPI master-side drivers and SPI slave protocol handlers,
-+ * and SPI infrastructure.
-  */
- extern struct bus_type spi_bus_type;
- 
-@@ -374,6 +374,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @handle_err: the subsystem calls the driver to handle an error that occurs
-  *		in the generic implementation of transfer_one_message().
-  * @unprepare_message: undo any work done by prepare_message().
-+ * @slave_abort: abort the ongoing transfer request on an SPI slave controller
-  * @spi_flash_read: to support spi-controller hardwares that provide
-  *                  accelerated interface to read from flash devices.
-  * @spi_flash_can_dma: analogous to can_dma() interface, but for
-@@ -447,6 +448,8 @@ struct spi_master {
- #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
- #define SPI_MASTER_GPIO_SS      BIT(5)		/* GPIO CS must select slave */
- 
-+	bool			slave;		/* SPI slave controller */
-+
- 	/*
- 	 * on some hardware transfer / message size may be constrained
- 	 * the limit may depend on device transfer settings
-@@ -539,6 +542,7 @@ struct spi_master {
- 			       struct spi_message *message);
- 	int (*unprepare_message)(struct spi_master *master,
- 				 struct spi_message *message);
-+	int (*slave_abort)(struct spi_master *spi);
- 	int (*spi_flash_read)(struct  spi_device *spi,
- 			      struct spi_flash_read_message *msg);
- 	bool (*spi_flash_can_dma)(struct spi_device *spi,
-@@ -595,6 +599,11 @@ static inline void spi_master_put(struct spi_master *master)
- 		put_device(&master->dev);
- }
- 
-+static inline bool spi_controller_is_slave(struct spi_master *ctlr)
++static void spi_slave_system_control_complete(void *arg)
 +{
-+	return IS_ENABLED(CONFIG_SPI_SLAVE) && ctlr->slave;
++	struct spi_slave_system_control_priv *priv = arg;
++	u16 cmd;
++	int ret;
++
++	if (priv->msg.status)
++		goto terminate;
++
++	cmd = le16_to_cpu(priv->cmd);
++	switch (cmd) {
++	case CMD_REBOOT:
++		pr_info("Rebooting system...\n");
++		kernel_restart(NULL);
++
++	case CMD_POWEROFF:
++		pr_info("Powering off system...\n");
++		kernel_power_off();
++		break;
++
++	case CMD_HALT:
++		pr_info("Halting system...\n");
++		kernel_halt();
++		break;
++
++	case CMD_SUSPEND:
++		pr_info("Suspending system...\n");
++		pm_suspend(PM_SUSPEND_MEM);
++		break;
++
++	default:
++		pr_warn("%s: Unknown command 0x%x\n", __func__, cmd);
++		break;
++	}
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		goto terminate;
++
++	return;
++
++terminate:
++	pr_info("%s: Terminating\n", __func__);
++	complete(&priv->finished);
 +}
 +
- /* PM calls that need to be issued by the driver */
- extern int spi_master_suspend(struct spi_master *master);
- extern int spi_master_resume(struct spi_master *master);
-@@ -605,8 +614,23 @@ extern void spi_finalize_current_message(struct spi_master *master);
- extern void spi_finalize_current_transfer(struct spi_master *master);
- 
- /* the spi driver core manages memory for the spi_master classdev */
--extern struct spi_master *
--spi_alloc_master(struct device *host, unsigned size);
-+extern struct spi_master *__spi_alloc_controller(struct device *host,
-+						 unsigned int size, bool slave);
-+
-+static inline struct spi_master *spi_alloc_master(struct device *host,
-+						  unsigned int size)
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv)
 +{
-+	return __spi_alloc_controller(host, size, false);
++	int ret;
++
++	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
++
++	priv->msg.complete = spi_slave_system_control_complete;
++	priv->msg.context = priv;
++
++	ret = spi_async(priv->spi, &priv->msg);
++	if (ret)
++		pr_err("%s: spi_async() failed %d\n", __func__, ret);
++
++	return ret;
 +}
 +
-+static inline struct spi_master *spi_alloc_slave(struct device *host,
-+						 unsigned int size)
++static int spi_slave_system_control_probe(struct spi_device *spi)
 +{
-+	if (!IS_ENABLED(CONFIG_SPI_SLAVE))
-+		return NULL;
++	struct spi_slave_system_control_priv *priv;
++	int ret;
 +
-+	return __spi_alloc_controller(host, size, true);
++	/*
++	 * bits_per_word cannot be configured in platform data
++	 */
++	spi->bits_per_word = 8;
++
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
++
++	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->spi = spi;
++	init_completion(&priv->finished);
++	priv->xfer.rx_buf = &priv->cmd;
++	priv->xfer.len = sizeof(priv->cmd);
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		return ret;
++
++	spi_set_drvdata(spi, priv);
++	return 0;
 +}
- 
- extern int spi_register_master(struct spi_master *master);
- extern int devm_spi_register_master(struct device *dev,
-@@ -912,6 +936,7 @@ extern int spi_setup(struct spi_device *spi);
- extern int spi_async(struct spi_device *spi, struct spi_message *message);
- extern int spi_async_locked(struct spi_device *spi,
- 			    struct spi_message *message);
-+extern int spi_slave_abort(struct spi_device *spi);
- 
- static inline size_t
- spi_max_message_size(struct spi_device *spi)
++
++static int spi_slave_system_control_remove(struct spi_device *spi)
++{
++	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
++
++	spi_slave_abort(spi);
++	wait_for_completion(&priv->finished);
++	return 0;
++}
++
++static struct spi_driver spi_slave_system_control_driver = {
++	.driver = {
++		.name	= "spi-slave-system-control",
++	},
++	.probe		= spi_slave_system_control_probe,
++	.remove		= spi_slave_system_control_remove,
++};
++module_spi_driver(spi_slave_system_control_driver);
++
++MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>");
++MODULE_DESCRIPTION("SPI slave handler controlling system state");
++MODULE_LICENSE("GPL v2");
 -- 
 2.7.4
 

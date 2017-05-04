@@ -1,10 +1,8 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v3 0/6] spi: Add slave mode support
-Date: Thu,  4 May 2017 19:45:45 +0200
-Message-ID: <1493919951-32122-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH v3 1/6] spi: Document DT bindings for SPI controllers in slave mode
+Date: Thu,  4 May 2017 19:45:46 +0200
+Message-ID: <1493919951-32122-2-git-send-email-geert+renesas@glider.be>
+References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be>
 Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
         Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
@@ -15,207 +13,136 @@ Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1493919951-32122-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-	Hi all,
-
-This patch series adds support for SPI slave controllers to the Linux
-SPI subsystem, including:
-  - DT binding updates for SPI slave support,
-  - Core support for SPI slave controllers,
-  - SPI slave support for the Renesas MSIOF device driver (thanks to
-    Nakamura-san for the initial implementation in the R-Car BSP!),
-  - Sample SPI slave handlers.
-
-Due to the nature of SPI slave (simultaneous transmit and receive, while
-everything runs at the pace of the master), it has hard real-time
-requirements: once an SPI transfer is started by the SPI master, a
-software SPI slave must have prepared all data to be sent back to the
-SPI master.  Hence without additional hardware support, an SPI slave
-response can never be a reply to a command being simultaneously
-transmitted, and SPI slave replies must be received by the SPI master in
-a subsequent SPI transfer.
-
-Examples of possible use cases:
-  - Receiving streams of data in fixed-size messages (e.g. from a
-    tuner),
-  - Receiving and transmitting fixed-size messages of data (e.g. network
-    frames),
-  - Sending commands, and querying for responses,
-  - ...
-
-Binding an SPI slave handler to the SPI slave device represented by an
-SPI slave controller can either be done from DT, or through sysfs.
-The latter, which also allows unregistering, is done through a sysfs
-virtual file named "slave", cfr. Documentation/spi/spi-summary.
-
-Originally I wanted to implement a simple SPI slave handler that could
-interface with an existing Linux SPI slave driver, cfr. Wolfram Sang's
-I2C slave mode EEPROM simulator for the i2c subsystem.
-Unfortunately I couldn't find any existing driver using an SPI slave
-protocol that fulfills the above requirements. The Nordic Semiconductor
-nRF8001 BLE controller seems to use a suitable protocol, but I couldn't
-find a Linux driver for it.  Hence I created two sample SPI slave
-protocols and drivers myself:
-  1. "spi-slave-time" responds with the system uptime at the time of
-     reception of the last SPI message, which can be used by an external
-     microcontroller as a dead man's switch.
-  2. "spi-slave-system-control" allows remote control of system reboot,
-     power off, halt, and suspend.
-
-For some use cases, using spidev from user space may be a more appropriate
-solution than an in-kernel SPI protocol handler, and this is fully
-supported.
-
->From the point of view of an SPI slave protocol handler, an SPI slave
-controller looks almost like an ordinary SPI master controller. The only
-exception is that a transfer request will block on the remote SPI
-master, and may be cancelled using spi_slave_abort().
-Hence "struct spi_master" has become a misnomer.  I'll send an RFC
-follow-up patch to fix that.
-
-For now, the MSIOF SPI slave driver only supports the transmission of
-messages with a size that is known in advance (the hardware can provide
-an interrupt when CS is deasserted before, though).
-I.e. when the SPI master sends a shorter message, the slave won't
-receive it.  When the SPI master sends a longer message, the slave will
-receive the first part, and the rest will remain in the FIFO.
-
-Handshaking (5-pin SPI, RDY-signal) is optional, and not yet
-implemented.  An RDY-signal may be used for one or both of:
-  1. The SPI slave asserts RDY when it has data available, and wants to
-     be queried by the SPI master.
-       -> This can be handled on top, in the SPI slave protocol handler,
-	  using a GPIO.
-  2. After the SPI master has asserted CS, the SPI slave asserts RDY
-     when it is ready to accept the transfer.
-       -> This may need hardware support in the SPI slave controller,
-	  or dynamic GPIO vs. CS pinmuxing.
-
-Changes compared to v2 (highlights only, see individual patches for
-more details):
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+v3:
   - In SPI slave mode, represent the (single) slave device again as a
     child of the controller node, which is now optional, and must be
     named "slave" if present,
-  - Introduce a separate spi_alloc_slave() function,
-  - Replace the SPI_CONTROLLER_IS_SLAVE flag in spi_master.flags by a
-    bool in spi_master,
-  - Fix cancellation in the spi-sh-msiof driver,
-  - Drop "spi: core: Extract of_spi_parse_dt()", which was applied,
+  - Split slave node properties in master mode, slave mode, and common
+    properties,
 
-Changes compared to v1 (highlights only, see individual patches for
-more details):
+v2:
   - Do not create a child node in SPI slave mode. Instead, add an
     "spi-slave" property, and put the mode properties in the controller
     node.
-  - Attach SPI slave controllers to a new "spi_slave" device class,
-  - Use a "slave" virtual file in sysfs to (un)register the (single)
-    slave device for an SPI slave controller, incl. specifying the slave
-    protocol handler,
-  - Add cancellation support using spi_master.slave_abort() and
-    spi_slave_abort(),
-  - Please see the individual patches for more detailed changelog
-    information.
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 76 ++++++++++++++---------
+ 1 file changed, 45 insertions(+), 31 deletions(-)
 
-Dependencies:
-  - Today's spi/for-next,
-  - "[PATCH] spi: core: Fix devm_spi_register_master() function name in
-    kerneldoc",
-  - "[PATCH] spi: core: Replace S_IRUGO permissions by 0444".
-
-For your convenience, I've pushed this series and its dependencies to
-the topic/spi-slave-v3 branch of the git repository at
-https://git.kernel.org/cgit/linux/kernel/git/geert/renesas-drivers.git
-
-Full test information is also available on the eLinux wiki
-(http://elinux.org/Tests:MSIOF-SPI-Slave).
-
-For testing, device tree overlays enabling SPI master and slave
-controllers on an expansion I/O connector on r8a7791/koelsch are
-available in the topic/renesas-overlays branch of my renesas-drivers git
-repository.  Please see http://elinux.org/R-Car/DT-Overlays for more
-information about using these overlays.
-
-Test wiring on r8a7791/koelsch, between MSIOF1 and MSIOF2 on EXIO
-connector A:
-   - Connect pin 48 (MSIOF1 CS#) to pin 63 (MSIOF2 CS#),
-   - Connect pin 46 (MSIOF1 SCK) to pin 61 (MSIOF2 SCK),
-   - Connect pin 54 (MSIOF1 TX/MOSI) to pin 70 (MSIOF2 RX/MOSI),
-   - Connect pin 56 (MSIOF1 RX/MISO) to pin 68 (MSIOF2 TX/MISO).
-
-Preparation for all examples below:
-    # overlay add a-msiof1-spidev # buggy DT: spidev listed directly in DT
-    # overlay add a-msiof2-slave
-
-Example 1:
-
-    # echo spi-slave-time > /sys/class/spi_slave/spi3/slave 
-    # spidev_test -D /dev/spidev2.0 -p dummy-8B
-    spi mode: 0x0
-    bits per word: 8
-    max speed: 500000 Hz (500 KHz)
-    RX | 00 00 04 6D 00 09 5B BB __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __  | ...m..[�
-               ^^^^^    ^^^^^^^^
-	       seconds  microseconds
-
-Example 2:
-
-    # echo spi-slave-system-control > /sys/class/spi_slave/spi3/slave 
-    # reboot='\x7c\x50'
-    # poweroff='\x71\x3f'
-    # halt='\x38\x76'
-    # suspend='\x1b\x1b'
-    # spidev_test -D /dev/spidev2.0 -p $suspend # or $reboot, $poweroff, $halt
-
-Example 3:
-
-    # echo spidev > /sys/class/spi_slave/spi3/slave 
-    # spidev_test -D /dev/spidev3.0 -p slave-hello-to-master &
-    # spidev_test -D /dev/spidev2.0 -p master-hello-to-slave
-
-Thanks!
-
-Geert Uytterhoeven (5):
-  spi: Document DT bindings for SPI controllers in slave mode
-  spi: core: Add support for registering SPI slave controllers
-  spi: Document SPI slave controller support
-  spi: slave: Add SPI slave handler reporting uptime at previous message
-  spi: slave: Add SPI slave handler controlling system state
-
-Hisashi Nakamura (1):
-  spi: sh-msiof: Add slave mode support
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |   2 +
- Documentation/devicetree/bindings/spi/spi-bus.txt  |  76 +++++----
- Documentation/spi/spi-summary                      |  27 +++-
- drivers/spi/Kconfig                                |  26 ++-
- drivers/spi/Makefile                               |   4 +
- drivers/spi/spi-sh-msiof.c                         | 121 ++++++++++----
- drivers/spi/spi-slave-system-control.c             | 154 ++++++++++++++++++
- drivers/spi/spi-slave-time.c                       | 127 +++++++++++++++
- drivers/spi/spi.c                                  | 179 ++++++++++++++++++---
- include/linux/spi/sh_msiof.h                       |   6 +
- include/linux/spi/spi.h                            |  33 +++-
- 11 files changed, 655 insertions(+), 100 deletions(-)
- create mode 100644 drivers/spi/spi-slave-system-control.c
- create mode 100644 drivers/spi/spi-slave-time.c
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 4b1d6e74c744fe96..1f6e86f787efd229 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -1,17 +1,23 @@
+ SPI (Serial Peripheral Interface) busses
+ 
+-SPI busses can be described with a node for the SPI master device
+-and a set of child nodes for each SPI slave on the bus.  For this
+-discussion, it is assumed that the system's SPI controller is in
+-SPI master mode.  This binding does not describe SPI controllers
+-in slave mode.
++SPI busses can be described with a node for the SPI controller device
++and a set of child nodes for each SPI slave on the bus.  The system's SPI
++controller may be described for use in SPI master mode or in SPI slave mode,
++but not for both at the same time.
+ 
+-The SPI master node requires the following properties:
++The SPI controller node requires the following properties:
++- compatible      - Name of SPI bus controller following generic names
++		    recommended practice.
++
++In master mode, the SPI controller node requires the following additional
++properties:
+ - #address-cells  - number of cells required to define a chip select
+ 		address on the SPI bus.
+ - #size-cells     - should be zero.
+-- compatible      - name of SPI bus controller following generic names
+-		recommended practice.
++
++In slave mode, the SPI controller node requires one additional property:
++- spi-slave       - Empty property.
++
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
+ 
+-Optional properties:
++Optional properties (master mode only):
+ - cs-gpios	  - gpios chip select.
+ - num-cs	  - total number of chipselects.
+ 
+@@ -41,28 +47,36 @@ cs1 : native
+ cs2 : &gpio1 1 0
+ cs3 : &gpio1 2 0
+ 
+-SPI slave nodes must be children of the SPI master node and can
+-contain the following properties.
+-- reg             - (required) chip select address of device.
+-- compatible      - (required) name of SPI device following generic names
+-		recommended practice.
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
+-- spi-cpol        - (optional) Empty property indicating device requires
+-		inverse clock polarity (CPOL) mode.
+-- spi-cpha        - (optional) Empty property indicating device requires
+-		shifted clock phase (CPHA) mode.
+-- spi-cs-high     - (optional) Empty property indicating device requires
+-		chip select active high.
+-- spi-3wire       - (optional) Empty property indicating device requires
+-		3-wire mode.
+-- spi-lsb-first   - (optional) Empty property indicating device requires
+-		LSB first mode.
+-- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MOSI. Defaults to 1 if not present.
+-- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MISO. Defaults to 1 if not present.
+-- spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
+-- spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
++
++SPI slave nodes must be children of the SPI controller node.
++
++In master mode, one or more slave nodes (up to the number of chip selects) can
++be present.  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
++- reg             - Chip select address of device.
++- spi-max-frequency - Maximum SPI clocking speed of device in Hz.
++
++In slave mode, the (single) slave node is optional.
++If present, it must be called "slave".  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
++
++All slave nodes can contain the following optional properties:
++- spi-cpol        - Empty property indicating device requires inverse clock
++		    polarity (CPOL) mode.
++- spi-cpha        - Empty property indicating device requires shifted clock
++		    phase (CPHA) mode.
++- spi-cs-high     - Empty property indicating device requires chip select
++		    active high.
++- spi-3wire       - Empty property indicating device requires 3-wire mode.
++- spi-lsb-first   - Empty property indicating device requires LSB first mode.
++- spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
++		    Defaults to 1 if not present.
++- spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
++		    Defaults to 1 if not present.
++- spi-rx-delay-us - Microsecond delay after a read transfer.
++- spi-tx-delay-us - Microsecond delay after a write transfer.
+ 
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+ It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
 -- 
 2.7.4
 
-Gr{oetje,eeting}s,
-
-						Geert
-
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

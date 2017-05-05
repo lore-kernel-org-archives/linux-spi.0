@@ -1,53 +1,83 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v3 2/6] spi: core: Add support for registering SPI slave controllers
-Date: Fri, 5 May 2017 11:07:31 +0200
-Message-ID: <CAMuHMdUf5Oea8seHLBdEEhFKLUB+W7ib8FWTMFJNPJAr2xZ77w@mail.gmail.com>
-References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be> <1493919951-32122-3-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v3 4/6] spi: sh-msiof: Add slave mode support
+Date: Fri, 5 May 2017 11:42:15 +0200
+Message-ID: <CAMuHMdUBXtsLZYDx6Lbabp=qAnpWMbo3N6z0CMYd=YP=wJdmXg@mail.gmail.com>
+References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be> <1493919951-32122-5-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-        Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Wu Fengguang <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1493919951-32122-3-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+        Jiada Wang <jiada_wang@mentor.com>,
+        Matt Porter <mporter@konsulko.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Wu Fengguang <fengguang.wu@intel.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1493919951-32122-5-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Thu, May 4, 2017 at 7:45 PM, Geert Uytterhoeven
-<geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org> wrote:
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-
-> @@ -447,6 +448,8 @@ struct spi_master {
->  #define SPI_MASTER_MUST_TX      BIT(4)         /* requires tx */
->  #define SPI_MASTER_GPIO_SS      BIT(5)         /* GPIO CS must select slave */
+<geert+renesas@glider.be> wrote:
+> From: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>
 >
-> +       bool                    slave;          /* SPI slave controller */
+> Add slave mode support to the MSIOF driver, in both PIO and DMA mode.
+>
+> For now this only supports the transmission of messages with a size
+> that is known in advance.
+>
+> Signed-off-by: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>
+> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+> [geert: Timeout handling cleanup, spi core integration, cancellation,
+>         rewording]
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-0day reported I forgot to document this new field in kerneldoc, thanks!
-Will fix in v4.
+> index 2ce15ca977828668..7c4e8c4f3a9bddfd 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+
+> +static int sh_msiof_slave_abort(struct spi_master *master)
+> +{
+> +       struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+> +       unsigned long flags;
+> +
+> +       spin_lock_irqsave(&p->done.wait.lock, flags);
+> +       if (!p->done.done) {
+> +               wait_queue_t *curr, *next;
+> +
+> +               list_for_each_entry_safe(curr, next, &p->done.wait.task_list,
+> +                                        task_list) {
+> +                       signal_wake_up(curr->private, 1);
+
+0day reported a build failure in the modular case (thanks!):
+
+    ERROR: "signal_wake_up_state" [drivers/spi/spi-sh-msiof.ko] undefined!
+
+signal_wake_up() is a static inline function calling signal_wake_up_state(),
+but the latter is not exported to modules.
+
+I'll bring it up with the scheduler people...
+
+> +                       break;
+> +               }
+> +       }
+> +       spin_unlock_irqrestore(&p->done.wait.lock, flags);
+> +       return 0;
+> +}
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

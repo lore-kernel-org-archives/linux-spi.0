@@ -1,51 +1,45 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH/RFC] signal: Export signal_wake_up_state() to modules
-Date: Fri, 5 May 2017 13:35:02 +0200
-Message-ID: <CAMuHMdV6FhwUvUgVJ_knsHHXiV_t45bouTHQccmQF6vd6sbUmw@mail.gmail.com>
-References: <1493977751-19340-1-git-send-email-geert+renesas@glider.be>
- <20170505100729.GA21589@infradead.org> <CAMuHMdWDyKxoDUNaqjsr8e+=rwO2p2oY_AyP3-_gWvt51DmAwQ@mail.gmail.com>
- <CAMuHMdVUymKQzt9Rk1mgXxJdVD1O8yFQ6CxFAZDiLRDM795-Ew@mail.gmail.com> <20170505112200.GA2939@infradead.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170505112200.GA2939@infradead.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spidev: remove unused completion
+Date: Fri,  5 May 2017 14:30:49 +0200
+Message-ID: <20170505123049.7500-1-kirkseraph@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Christoph,
+This removes an unused completion from spidev_sync.
 
-On Fri, May 5, 2017 at 1:22 PM, Christoph Hellwig <hch@infradead.org> wrote:
-> On Fri, May 05, 2017 at 01:08:47PM +0200, Geert Uytterhoeven wrote:
->> Of course I can add a flag to indicate abortion, and just call complete_all(),
->> but IMHO that's a bit silly, given wait_for_completion_interruptible() already
->> provides this side channel information through -ERESTARTSYS.
->
-> Even if this was the right channel (which I'm not sure about) it
-> should be provided as an abstract API operating on the completion.
+It was introduced in
 
-Hence my other question in the patch comments:
+	commit 25d5cb4b0375e ("spi: remove some spidev oops-on-rmmod paths")
 
-| Is exporting signal_wake_up_state() an acceptable solution?
-| Alternatively, I can extract the code to abort an completion into a
-| generic abort_completion() function, and export that.
+and it was no longer used after:
 
-Thanks!
+	commit 98d6f47958001 ("spi: spidev: use spi_sync instead of spi_async")
 
-Gr{oetje,eeting}s,
+Signed-off-by: Seraphime Kirkovski (Haapie) <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spidev.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-                        Geert
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 9e2e099baf8c..b2abf89e61db 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -99,7 +99,6 @@ MODULE_PARM_DESC(bufsiz, "data bytes in biggest supported SPI message");
+ static ssize_t
+ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+ {
+-	DECLARE_COMPLETION_ONSTACK(done);
+ 	int status;
+ 	struct spi_device *spi;
+ 
+-- 
+2.13.0.rc1
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

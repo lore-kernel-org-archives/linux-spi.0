@@ -1,46 +1,30 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: remove unused completion
-Date: Fri, 5 May 2017 15:08:45 +0200
-Message-ID: <CAMuHMdXu+xfJmW6sReaURUf1kXxpCuO9TzMwv=J0UVeCOWj23Q@mail.gmail.com>
-References: <20170505123049.7500-1-kirkseraph@gmail.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [RESEND PATCH] spi: bcm63xx-hsspi: Export OF device ID table as
+ module aliases
+Date: Fri, 5 May 2017 14:07:47 -0700
+Message-ID: <e8ef8838-156c-a9be-7079-c0b4e645f500@gmail.com>
+References: <20170501201338.5368-1-andresgalacho@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170505123049.7500-1-kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Andres Galacho <andresgalacho@gmail.com>,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170501201338.5368-1-andresgalacho@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 5, 2017 at 2:30 PM, Seraphime Kirkovski
-<kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> This removes an unused completion from spidev_sync.
->
-> It was introduced in
->
->         commit 25d5cb4b0375e ("spi: remove some spidev oops-on-rmmod paths")
->
-> and it was no longer used after:
->
->         commit 98d6f47958001 ("spi: spidev: use spi_sync instead of spi_async")
->
-> Signed-off-by: Seraphime Kirkovski (Haapie) <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On 05/01/2017 01:13 PM, Andres Galacho wrote:
+> The device table is required to load modules based on
+> modaliases. After adding MODULE_DEVICE_TABLE, below entries
+> for example will be added to module.alias:
+> alias:          of:N*T*Cbrcm,bcm6328-hsspiC*
+> alias:          of:N*T*Cbrcm,bcm6328-hsspi
+> 
+> Signed-off-by: Andres Galacho <andresgalacho@gmail.com>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian

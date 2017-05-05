@@ -1,36 +1,51 @@
-From: Christoph Hellwig <hch-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH/RFC] signal: Export signal_wake_up_state() to modules
-Date: Fri, 5 May 2017 04:22:00 -0700
-Message-ID: <20170505112200.GA2939@infradead.org>
+Date: Fri, 5 May 2017 13:35:02 +0200
+Message-ID: <CAMuHMdV6FhwUvUgVJ_knsHHXiV_t45bouTHQccmQF6vd6sbUmw@mail.gmail.com>
 References: <1493977751-19340-1-git-send-email-geert+renesas@glider.be>
- <20170505100729.GA21589@infradead.org>
- <CAMuHMdWDyKxoDUNaqjsr8e+=rwO2p2oY_AyP3-_gWvt51DmAwQ@mail.gmail.com>
- <CAMuHMdVUymKQzt9Rk1mgXxJdVD1O8yFQ6CxFAZDiLRDM795-Ew@mail.gmail.com>
+ <20170505100729.GA21589@infradead.org> <CAMuHMdWDyKxoDUNaqjsr8e+=rwO2p2oY_AyP3-_gWvt51DmAwQ@mail.gmail.com>
+ <CAMuHMdVUymKQzt9Rk1mgXxJdVD1O8yFQ6CxFAZDiLRDM795-Ew@mail.gmail.com> <20170505112200.GA2939@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Christoph Hellwig <hch-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Peter Zijlstra <peterz-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        Oleg Nesterov <oleg-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-        Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVUymKQzt9Rk1mgXxJdVD1O8yFQ6CxFAZDiLRDM795-Ew-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170505112200.GA2939@infradead.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 05, 2017 at 01:08:47PM +0200, Geert Uytterhoeven wrote:
-> Of course I can add a flag to indicate abortion, and just call complete_all(),
-> but IMHO that's a bit silly, given wait_for_completion_interruptible() already
-> provides this side channel information through -ERESTARTSYS.
+Hi Christoph,
 
-Even if this was the right channel (which I'm not sure about) it
-should be provided as an abstract API operating on the completion.
+On Fri, May 5, 2017 at 1:22 PM, Christoph Hellwig <hch@infradead.org> wrote:
+> On Fri, May 05, 2017 at 01:08:47PM +0200, Geert Uytterhoeven wrote:
+>> Of course I can add a flag to indicate abortion, and just call complete_all(),
+>> but IMHO that's a bit silly, given wait_for_completion_interruptible() already
+>> provides this side channel information through -ERESTARTSYS.
+>
+> Even if this was the right channel (which I'm not sure about) it
+> should be provided as an abstract API operating on the completion.
+
+Hence my other question in the patch comments:
+
+| Is exporting signal_wake_up_state() an acceptable solution?
+| Alternatively, I can extract the code to abort an completion into a
+| generic abort_completion() function, and export that.
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,30 +1,24 @@
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [RESEND PATCH] spi: bcm63xx-hsspi: Export OF device ID table as
- module aliases
-Date: Fri, 5 May 2017 14:07:47 -0700
-Message-ID: <e8ef8838-156c-a9be-7079-c0b4e645f500@gmail.com>
-References: <20170501201338.5368-1-andresgalacho@gmail.com>
+From: Info <information-eshH1AjLspA@public.gmane.org>
+Subject: Information.
+Date: Fri, 05 May 2017 19:29:16 -0700
+Message-ID: <20170506024002.96FAC1F622FB@unionlifesales.lk>
+Reply-To: yong.yu-QX8HBAmSmoPQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, bcm-kernel-feedback-list@broadcom.com,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Andres Galacho <andresgalacho@gmail.com>,
-        linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170501201338.5368-1-andresgalacho@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+To: Recipients <information-eshH1AjLspA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Description: Mail message body
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05/01/2017 01:13 PM, Andres Galacho wrote:
-> The device table is required to load modules based on
-> modaliases. After adding MODULE_DEVICE_TABLE, below entries
-> for example will be added to module.alias:
-> alias:          of:N*T*Cbrcm,bcm6328-hsspiC*
-> alias:          of:N*T*Cbrcm,bcm6328-hsspi
-> 
-> Signed-off-by: Andres Galacho <andresgalacho@gmail.com>
+I want to inquire if you can be our regional representative in your region. It would by no Means interfere with your current job. If you are interested please contact Mr. Yu Yong
+Email: yong.yu-QX8HBAmSmoPQT0dZR+AlfA@public.gmane.org for more information on the job. I look forward to hearing from you.
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+
+Sincerely,
+Yu Yong.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,66 +1,81 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: use memdup_user
-Date: Mon, 8 May 2017 11:28:21 +0200
-Message-ID: <CAMuHMdV9sLR9RqHpXFb_ZGMVzUMGaUVBDH3ZF6OH_iUbxWro+w@mail.gmail.com>
-References: <df8091d4c64a0d5a7ab0a5989f34552a5eebd15e.1493778999.git.geliangtang@gmail.com>
- <1028812604e64cd8e1ca2e25b119200fdbec2049.1493781496.git.geliangtang@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v3 1/6] spi: Document DT bindings for SPI controllers in
+ slave mode
+Date: Mon, 8 May 2017 11:55:02 -0500
+Message-ID: <20170508165502.gkse5jdm56gzo5bm@rob-hp-laptop>
+References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be>
+ <1493919951-32122-2-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geliang Tang <geliangtang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1028812604e64cd8e1ca2e25b119200fdbec2049.1493781496.git.geliangtang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+        Jiada Wang <jiada_wang@mentor.com>,
+        Matt Porter <mporter@konsulko.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1493919951-32122-2-git-send-email-geert+renesas@glider.be>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 6, 2017 at 5:42 PM, Geliang Tang <geliangtang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Use memdup_user() helper instead of open-coding to simplify the code.
->
-> Signed-off-by: Geliang Tang <geliangtang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Thu, May 04, 2017 at 07:45:46PM +0200, Geert Uytterhoeven wrote:
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> v3:
+>   - In SPI slave mode, represent the (single) slave device again as a
+>     child of the controller node, which is now optional, and must be
+>     named "slave" if present,
+>   - Split slave node properties in master mode, slave mode, and common
+>     properties,
+> 
+> v2:
+>   - Do not create a child node in SPI slave mode. Instead, add an
+>     "spi-slave" property, and put the mode properties in the controller
+>     node.
+> ---
+>  Documentation/devicetree/bindings/spi/spi-bus.txt | 76 ++++++++++++++---------
+>  1 file changed, 45 insertions(+), 31 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> index 4b1d6e74c744fe96..1f6e86f787efd229 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> @@ -1,17 +1,23 @@
+>  SPI (Serial Peripheral Interface) busses
+>  
+> -SPI busses can be described with a node for the SPI master device
+> -and a set of child nodes for each SPI slave on the bus.  For this
+> -discussion, it is assumed that the system's SPI controller is in
+> -SPI master mode.  This binding does not describe SPI controllers
+> -in slave mode.
+> +SPI busses can be described with a node for the SPI controller device
+> +and a set of child nodes for each SPI slave on the bus.  The system's SPI
+> +controller may be described for use in SPI master mode or in SPI slave mode,
+> +but not for both at the same time.
+>  
+> -The SPI master node requires the following properties:
+> +The SPI controller node requires the following properties:
+> +- compatible      - Name of SPI bus controller following generic names
+> +		    recommended practice.
+> +
+> +In master mode, the SPI controller node requires the following additional
+> +properties:
+>  - #address-cells  - number of cells required to define a chip select
+>  		address on the SPI bus.
+>  - #size-cells     - should be zero.
+> -- compatible      - name of SPI bus controller following generic names
+> -		recommended practice.
+> +
+> +In slave mode, the SPI controller node requires one additional property:
+> +- spi-slave       - Empty property.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Do we still need this if we have a child node called "slave".
 
-> --- a/drivers/spi/spidev.c
-> +++ b/drivers/spi/spidev.c
-> @@ -325,7 +325,6 @@ static struct spi_ioc_transfer *
->  spidev_get_ioc_message(unsigned int cmd, struct spi_ioc_transfer __user *u_ioc,
->                 unsigned *n_ioc)
->  {
-> -       struct spi_ioc_transfer *ioc;
->         u32     tmp;
->
->         /* Check type, command number and direction */
-> @@ -342,14 +341,7 @@ spidev_get_ioc_message(unsigned int cmd, struct spi_ioc_transfer __user *u_ioc,
->                 return NULL;
->
->         /* copy into scratch area */
-> -       ioc = kmalloc(tmp, GFP_KERNEL);
-> -       if (!ioc)
-> -               return ERR_PTR(-ENOMEM);
-> -       if (__copy_from_user(ioc, u_ioc, tmp)) {
+Otherwise,
 
-Note that as memdup_user() calls copy_from_user(), it repeats the access_ok()
-check already done by spidev_ioctl().
-
-> -               kfree(ioc);
-> -               return ERR_PTR(-EFAULT);
-> -       }
-> -       return ioc;
-> +       return memdup_user(u_ioc, tmp);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Reviewed-by: Rob Herring <robh@kernel.org>

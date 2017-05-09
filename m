@@ -1,76 +1,53 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v3 1/6] spi: Document DT bindings for SPI controllers in
- slave mode
-Date: Mon, 8 May 2017 22:42:27 +0200
-Message-ID: <CAMuHMdXAFxSBcGD5UMb__uacyBXyNtM-fLw7y966r67ohTLVhA@mail.gmail.com>
-References: <1493919951-32122-1-git-send-email-geert+renesas@glider.be>
- <1493919951-32122-2-git-send-email-geert+renesas@glider.be> <20170508165502.gkse5jdm56gzo5bm@rob-hp-laptop>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-        Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2] spi: spidev: Introduce SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
+Date: Tue,  9 May 2017 14:23:59 +0200
+Message-ID: <20170509122401.2561-1-kirkseraph@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170508165502.gkse5jdm56gzo5bm@rob-hp-laptop>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Rob,
+Historically SPI_IOC_WR_MAX_SPEED_HZ was changing the ->max_speed_hz field
+of the underlying struct spi_dev, which made the effects last way after
+releasing one particular /dev/spidev* fd.
 
-On Mon, May 8, 2017 at 6:55 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, May 04, 2017 at 07:45:46PM +0200, Geert Uytterhoeven wrote:
->> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
->> ---
->> v3:
->>   - In SPI slave mode, represent the (single) slave device again as a
->>     child of the controller node, which is now optional, and must be
->>     named "slave" if present,
->>   - Split slave node properties in master mode, slave mode, and common
->>     properties,
->>
->> v2:
->>   - Do not create a child node in SPI slave mode. Instead, add an
->>     "spi-slave" property, and put the mode properties in the controller
->>     node.
+This changed in 9169051617df7 ("spi: spidev: Don't mangle max_speed_hz
+in underlying spi device") or 7 years after the introduction of
+SPI_IOC_WR_MAX_SPEED_HZ ! In the mean time there were userspace tools
+developped with the assumptions that the effects of this particular
+command are system-wide. [1] is a suite of two small programs for
+reading, writing and configuring SPI interfaces. The `spi-config -s`
+part was working good in our setup with old 3.x kernels. We discovered
+this "regression" when we tried to port our workflow to newer kernels.
 
->> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+I think, this change is necessary, on the one hand, because there are still
+a lot of longterm[2] supported kernels out there, whose users may be relying on
+SPI_IOC_WR_MAX_SPEED being system-wide and, on the other hand, this
+same command has been exhibiting a different behaviour for 3 years now,
+so its users may break, if 9169051617df7 is reverted in one way or
+another.
 
->> +In slave mode, the SPI controller node requires one additional property:
->> +- spi-slave       - Empty property.
->
-> Do we still need this if we have a child node called "slave".
+The semantics of the proposed command are the same as the old
+SPI_IOC_WR_MAX_SPEED_HZ.
 
-Yes, as the child node called "slave" is optional.
-In that case, configuration of the slave protocol is done through sysfs, but
-that is Linux-specific and thus doesn't belong in the DT bindings.
+[1] https://github.com/cpb-/spi-tools
+[2] A quick check on kernel.org shows that all 3.x with longterm support
+    have not applied 9169051617df7
 
-> Otherwise,
->
-> Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Seraphime Kirkovski (2):
+  spi: spidev: introduce SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
+  spi: spidev: document SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ
 
-Thank you!
+ Documentation/spi/spidev        | 7 +++++++
+ drivers/spi/spidev.c            | 8 ++++++--
+ include/uapi/linux/spi/spidev.h | 4 +++-
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-Gr{oetje,eeting}s,
+-- 
+2.13.0.rc1
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

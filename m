@@ -1,40 +1,33 @@
-From: Seraphime Kirkovski <kirkseraph@gmail.com>
-Subject: [PATCH 2/2] spi: spidev: document SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ
-Date: Tue,  9 May 2017 14:24:01 +0200
-Message-ID: <20170509122401.2561-3-kirkseraph@gmail.com>
-References: <20170509122401.2561-1-kirkseraph@gmail.com>
-Cc: linux-spi@vger.kernel.org, broonie@kernel.org,
-        Seraphime Kirkovski <kirkseraph@gmail.com>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170509122401.2561-1-kirkseraph@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: "Thomas Credit Firm" <miorellana-vi5+Lki80Kb3na0VFQiK3Q@public.gmane.org>
+Subject: APPLY FOR YOUR URGENT LOAN AT 2%
+Date: Fri, 12 May 2017 11:53:56 +0100
+Message-ID: <20170512105410.0245F4807243__30224.0145778798$1494587159$gmane$org@mail.salud.gob.sv>
+Reply-To: thomascreditfirm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: receipt <miorellana-vi5+Lki80Kb3na0VFQiK3Q@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Description: Mail message body
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This adds documentation of the new spidev ioctl.
+* Do you need an urgent loan? We offer all kinds of loan
+* Very fast and urgent transfer to your bank account. 
+* Payment begins (6) months after you get the money in your bank account 
+* Low interest rates 2% 
+* Payment of long-term (1-30 years) duration 
+For more information and loan application form through the Contact now 
 
-Signed-off-by: Seraphime Kirkovski (Haapie) <kirkseraph@gmail.com>
+E-mail:  Thomascreditfirm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org 
+Thomas B. Dawson 
+THOMAS CREDIT FIRM
+
 ---
- Documentation/spi/spidev | 7 +++++++
- 1 file changed, 7 insertions(+)
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
 
-diff --git a/Documentation/spi/spidev b/Documentation/spi/spidev
-index 3d14035b1766..c67a00594dce 100644
---- a/Documentation/spi/spidev
-+++ b/Documentation/spi/spidev
-@@ -108,6 +108,13 @@ settings for data transfer parameters:
- 	speed, in Hz.  The controller can't necessarily assign that specific
- 	clock speed.
- 
-+    SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ ... pass a pointer to a u32 which will
-+	assign the maximum speed in Hz directly to the underlying device.
-+	The controller can't necessarily assign that clock speed.
-+	Any subsequent open() to the same /dev/spidevB.D will be configured
-+	by default to use the maximum speed assigned by the last successful
-+	call to SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ.
-+
- NOTES:
- 
-     - At this time there is no async I/O support; everything is purely
--- 
-2.13.0.rc1
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

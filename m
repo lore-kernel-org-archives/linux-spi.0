@@ -1,57 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spidev: introduce
- SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
-Date: Sun, 14 May 2017 18:27:16 +0900
-Message-ID: <20170514092716.kqx634djffgj32r6@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] spi: spidev: document SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ
+Date: Sun, 14 May 2017 18:27:43 +0900
+Message-ID: <20170514092743.scs7eyjndjuobg22@sirena.org.uk>
 References: <20170509122401.2561-1-kirkseraph@gmail.com>
- <20170509122401.2561-2-kirkseraph@gmail.com>
+ <20170509122401.2561-3-kirkseraph@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rih5johw3t72ljkg"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="jx64f5a6yjdmjhgb"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Seraphime Kirkovski <kirkseraph@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20170509122401.2561-2-kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20170509122401.2561-3-kirkseraph@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---rih5johw3t72ljkg
+--jx64f5a6yjdmjhgb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 09, 2017 at 02:24:00PM +0200, Seraphime Kirkovski wrote:
+On Tue, May 09, 2017 at 02:24:01PM +0200, Seraphime Kirkovski wrote:
+> This adds documentation of the new spidev ioctl.
 
-> I think, this change is necessary, on the one hand, because there are sti=
-ll
-> a lot of longterm[2] supported kernels out there, whose users may be rely=
-ing on
-> SPI_IOC_WR_MAX_SPEED being system-wide and, on the other hand, this
-> same command has been exhibiting a different behaviour for 3 years now,
-> so its users may break, if 9169051617df7 is reverted in one way or
-> another.
+This should have been part of the first path adding the new ioctl() :(
 
-Do we have any evidence that such users exist? =20
-
---rih5johw3t72ljkg
+--jx64f5a6yjdmjhgb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYIvMACgkQJNaLcl1U
-h9Ckiwf/TA23WcQuwJL+hDApL1sNiGCaLqNdBsq3VRUxssKbCXOfCy+EoR6b7DF7
-J8PK3BCUowBIAomsRw02kxdmZ2d7WN2/ylhMgZpzNzeYd9ddh4TSVQg24FadcKvF
-BHFmu1E8xsFuWW0AshEO7saxfvXcSkOtSAlPhCSR+ijbErOhGQWdVLzMgM07mZPN
-MgcRuBg2tBp8wdYpsQduazve1oQTAhmj59yRqBpZI55Voyyzp6JwWiI2e9B94NVi
-WDyJhuSkwltto0uPlDCEr//Fkk3Qicv07hpP7oYBnONJmTL9Ao/BLPOcXI6nAPyj
-R/uBhOl6UIbkez/KQT3465sAJYou4A==
-=Qig6
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYIw4ACgkQJNaLcl1U
+h9CIuwf/VfWeCoU9Jxi9iX/ETGprGV0UrzJGaCCChGbZsTjSy5X0UzZBzrG+p9hY
+zV9XNJQnMRx0s07S1JbRnOv/FBW7vQKKgE9q/UBDjP0YfCauj3ERdhdQzLUq0xYE
+37T+L4ie4c5HAGJzdE+yrREbg3QfKxnOivDGmLlOmX/CnQ7ECZbrU+nXSmb7lKcw
+1DJJpaxY6DN+PjtLZG2gV2m3Rvsl8ORspzYCF03JNYXvnRFDshIdi+ObBQyi16NQ
+p3I84yblnGbTNeK1G6fI56CmjyhW1Vt3LTzZdK0malnSYYFdAe2uJlobGuIzCD6J
+zrbHAppEZC0oKwONd9h+GrIGxCMMAg==
+=Yu2W
 -----END PGP SIGNATURE-----
 
---rih5johw3t72ljkg--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--jx64f5a6yjdmjhgb--

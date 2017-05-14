@@ -1,54 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH linux-next v2 0/1] improve imx spi performance
-Date: Sun, 14 May 2017 19:06:08 +0900
-Message-ID: <20170514100608.twzbopohbzidmunr@sirena.org.uk>
-References: <1493634704-3545-1-git-send-email-jiada_wang@mentor.com>
+Subject: Re: [PATCH 1/2] spi: spidev: introduce
+ SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
+Date: Sun, 14 May 2017 18:27:16 +0900
+Message-ID: <20170514092716.kqx634djffgj32r6@sirena.org.uk>
+References: <20170509122401.2561-1-kirkseraph@gmail.com>
+ <20170509122401.2561-2-kirkseraph@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cd4xb2eaylfx6g2f"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
+        protocol="application/pgp-signature"; boundary="rih5johw3t72ljkg"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1493634704-3545-1-git-send-email-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20170509122401.2561-2-kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cd4xb2eaylfx6g2f
+--rih5johw3t72ljkg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 01, 2017 at 03:31:43AM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
-> From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
->=20
-> previously burst length (BURST_LENGTH) is always set to equal
-> to bits_per_word, causes a 10us gap between each word in transfer,
-> which significantly affects performance.
+On Tue, May 09, 2017 at 02:24:00PM +0200, Seraphime Kirkovski wrote:
 
-Please don't send cover letters for single patches, if there is anything
-that needs saying put it in the changelog of the patch or after the ---
-if it's administrative stuff.  This reduces mail volume and ensures that=20
-any important information is recorded in the changelog rather than being
-lost.=20
+> I think, this change is necessary, on the one hand, because there are sti=
+ll
+> a lot of longterm[2] supported kernels out there, whose users may be rely=
+ing on
+> SPI_IOC_WR_MAX_SPEED being system-wide and, on the other hand, this
+> same command has been exhibiting a different behaviour for 3 years now,
+> so its users may break, if 9169051617df7 is reverted in one way or
+> another.
 
---cd4xb2eaylfx6g2f
+Do we have any evidence that such users exist? =20
+
+--rih5johw3t72ljkg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYLA8ACgkQJNaLcl1U
-h9AatQf9G9Og4PNwcZyuLesVnT45yYsqi0VoAip2e7JrlwRS+NGN1iGFcObqNavn
-1OlTfi2tnsma92XdOjS0p1IwB5hMSMrHkM5yC5VggVbTOtHq5a0J12aEJpLJtaAM
-lYA1Q1YzJ4pBHF0M/7sdJE43avgCUSAg7xbZRwi85tpTCD3ZPSqJOGxkTpkC3UDW
-223F9ieA5Sii0U/uETMy5AHmJkSAw012a0IEVyMO2uv6qIqvrEegCzjYMgXqF2Jt
-SMXWfAZOA+mxQE6p57SC/s3MetVXcMMAzV8fhWCDTgc/lsyJJ3IgmKgfoWCydfP0
-pUKUV8vi2ROq89uezE3wtcv2K8cefg==
-=mDb8
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYIvMACgkQJNaLcl1U
+h9Ckiwf/TA23WcQuwJL+hDApL1sNiGCaLqNdBsq3VRUxssKbCXOfCy+EoR6b7DF7
+J8PK3BCUowBIAomsRw02kxdmZ2d7WN2/ylhMgZpzNzeYd9ddh4TSVQg24FadcKvF
+BHFmu1E8xsFuWW0AshEO7saxfvXcSkOtSAlPhCSR+ijbErOhGQWdVLzMgM07mZPN
+MgcRuBg2tBp8wdYpsQduazve1oQTAhmj59yRqBpZI55Voyyzp6JwWiI2e9B94NVi
+WDyJhuSkwltto0uPlDCEr//Fkk3Qicv07hpP7oYBnONJmTL9Ao/BLPOcXI6nAPyj
+R/uBhOl6UIbkez/KQT3465sAJYou4A==
+=Qig6
 -----END PGP SIGNATURE-----
 
---cd4xb2eaylfx6g2f--
+--rih5johw3t72ljkg--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

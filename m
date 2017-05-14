@@ -1,43 +1,49 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: spidev: document SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ
-Date: Sun, 14 May 2017 18:27:43 +0900
-Message-ID: <20170514092743.scs7eyjndjuobg22@sirena.org.uk>
-References: <20170509122401.2561-1-kirkseraph@gmail.com>
- <20170509122401.2561-3-kirkseraph@gmail.com>
+Subject: Re: [PATCH] spi: SPI_TI_QSPI should depend on HAS_DMA
+Date: Sun, 14 May 2017 18:50:20 +0900
+Message-ID: <20170514095020.roqoeohylvrgoad7@sirena.org.uk>
+References: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jx64f5a6yjdmjhgb"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Seraphime Kirkovski <kirkseraph@gmail.com>
+        protocol="application/pgp-signature"; boundary="ptb4pqnxpa66vw3k"
+Cc: Vignesh R <vigneshr@ti.com>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20170509122401.2561-3-kirkseraph@gmail.com>
+In-Reply-To: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---jx64f5a6yjdmjhgb
+--ptb4pqnxpa66vw3k
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 09, 2017 at 02:24:01PM +0200, Seraphime Kirkovski wrote:
-> This adds documentation of the new spidev ioctl.
+On Thu, May 04, 2017 at 09:37:18AM +0200, Geert Uytterhoeven wrote:
+> If NO_DMA=3Dy:
+>=20
+>     ERROR: "bad_dma_ops" [drivers/spi/spi-ti-qspi.ko] undefined!
+>=20
+> Add a dependency on HAS_DMA to fix this.
 
-This should have been part of the first path adding the new ioctl() :(
+There's no progress on fixing the architectures that don't do DMA to
+stub it out?  :(
 
---jx64f5a6yjdmjhgb
+--ptb4pqnxpa66vw3k
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYIw4ACgkQJNaLcl1U
-h9CIuwf/VfWeCoU9Jxi9iX/ETGprGV0UrzJGaCCChGbZsTjSy5X0UzZBzrG+p9hY
-zV9XNJQnMRx0s07S1JbRnOv/FBW7vQKKgE9q/UBDjP0YfCauj3ERdhdQzLUq0xYE
-37T+L4ie4c5HAGJzdE+yrREbg3QfKxnOivDGmLlOmX/CnQ7ECZbrU+nXSmb7lKcw
-1DJJpaxY6DN+PjtLZG2gV2m3Rvsl8ORspzYCF03JNYXvnRFDshIdi+ObBQyi16NQ
-p3I84yblnGbTNeK1G6fI56CmjyhW1Vt3LTzZdK0malnSYYFdAe2uJlobGuIzCD6J
-zrbHAppEZC0oKwONd9h+GrIGxCMMAg==
-=Yu2W
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkYKFsACgkQJNaLcl1U
+h9CV6gf9F7uo1sLmeJ2XD4nl6c3DSHPZ0Ru4mzUU/X/KBhsSxpawH+HD8S9DtIWA
+g6tpK3m7ERfa590AUHq1NDZo5QR6IlW+pzblX499Kj+WFabZ3F0m867xeQMnf9iO
+y/PuR13XNoUFZgwCfITKLBYnhv5Z8giysBVzTJEAXKOzFGtWJ39RXWDt5usbCC7H
+gPNMShrXgxz//Vqc97BYxaNEarIkT7Aea+22VUEBgY7ZdYaZ49VJdyy6QLy6cF2e
+HgYeVXfXhGuwZ7nKwUPzUml3fln2cRIjClpAvRVtAPN3dEOflTGrwHgpaaS0NGsk
+WzOKHz9KHDbDUFVlEZP0+c5DSYXMRg==
+=Pesp
 -----END PGP SIGNATURE-----
 
---jx64f5a6yjdmjhgb--
+--ptb4pqnxpa66vw3k--

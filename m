@@ -1,21 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spidev: remove unused completion" to the spi tree
-Date: Mon, 15 May 2017 09:05:06 +0100
-Message-ID: <E1dAB06-0002jK-Uw@finisterre>
-References: <20170505123049.7500-1-kirkseraph@gmail.com>
-Cc: Seraphime Kirkovski (Haapie) <kirkseraph@gmail.com>,
-        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Seraphime Kirkovski <kirkseraph@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170505123049.7500-1-kirkseraph@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: core: Fix devm_spi_register_master() function name in kerneldoc" to the spi tree
+Date: Mon, 15 May 2017 09:04:57 +0100
+Message-ID: <E1dAAzx-0002hY-7f@finisterre>
+References: <1493902708-19181-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1493902708-19181-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev: remove unused completion
+   spi: core: Fix devm_spi_register_master() function name in kerneldoc
 
 has been applied to the spi tree at
 
@@ -40,39 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From 76bf569466c68fb3705a3b38cdee026df9861101 Mon Sep 17 00:00:00 2001
-From: Seraphime Kirkovski <kirkseraph@gmail.com>
-Date: Fri, 5 May 2017 14:30:49 +0200
-Subject: [PATCH] spi: spidev: remove unused completion
+>From b56ffae8998f7c3fc892f11b32b4dd1975efd993 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Thu, 4 May 2017 14:58:28 +0200
+Subject: [PATCH] spi: core: Fix devm_spi_register_master() function name in
+ kerneldoc
 
-This removes an unused completion from spidev_sync.
-
-It was introduced in
-
-	commit 25d5cb4b0375e ("spi: remove some spidev oops-on-rmmod paths")
-
-and it was no longer used after:
-
-	commit 98d6f47958001 ("spi: spidev: use spi_sync instead of spi_async")
-
-Signed-off-by: Seraphime Kirkovski (Haapie) <kirkseraph@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 666d5b4c742ba666 ("spi: core: Add devm_spi_register_master()")
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spidev.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 9a2a79a871ba..3b570018705c 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -99,7 +99,6 @@ MODULE_PARM_DESC(bufsiz, "data bytes in biggest supported SPI message");
- static ssize_t
- spidev_sync(struct spidev_data *spidev, struct spi_message *message)
- {
--	DECLARE_COMPLETION_ONSTACK(done);
- 	int status;
- 	struct spi_device *spi;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 89254a55eb2e..7bb733d91519 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2021,7 +2021,7 @@ static void devm_spi_unregister(struct device *dev, void *res)
+ }
  
+ /**
+- * dev_spi_register_master - register managed SPI master controller
++ * devm_spi_register_master - register managed SPI master controller
+  * @dev:    device managing SPI master
+  * @master: initialized master, originally from spi_alloc_master()
+  * Context: can sleep
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

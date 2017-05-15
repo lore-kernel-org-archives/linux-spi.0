@@ -1,22 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm63xx-hsspi: Export OF device ID table as module aliases" to the spi tree
-Date: Mon, 15 May 2017 17:04:35 +0900
-Message-ID: <E1dAAzb-0002el-44@finisterre>
-References: <20170501201338.5368-1-andresgalacho@gmail.com>
-Cc: Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        broonie@kernel.org, f.fainelli@gmail.com,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Andres Galacho <andresgalacho@gmail.com>
+Subject: Applied "spi: SPI_TI_QSPI should depend on HAS_DMA" to the spi tree
+Date: Mon, 15 May 2017 17:04:42 +0900
+Message-ID: <E1dAAzj-0002fa-01@finisterre>
+References: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>, Vignesh R <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170501201338.5368-1-andresgalacho@gmail.com>
+In-Reply-To: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm63xx-hsspi: Export OF device ID table as module aliases
+   spi: SPI_TI_QSPI should depend on HAS_DMA
 
 has been applied to the spi tree at
 
@@ -41,37 +39,34 @@ to this mail.
 Thanks,
 Mark
 
->From 0b85a84217903e6d24342cc50bc5a685f8355711 Mon Sep 17 00:00:00 2001
-From: Andres Galacho <andresgalacho@gmail.com>
-Date: Mon, 1 May 2017 16:13:38 -0400
-Subject: [PATCH] spi: bcm63xx-hsspi: Export OF device ID table as module
- aliases
+>From 967d6941f49f1ddd5764d3a09423a63841b9394c Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 4 May 2017 09:37:18 +0200
+Subject: [PATCH] spi: SPI_TI_QSPI should depend on HAS_DMA
 
-The device table is required to load modules based on
-modaliases. After adding MODULE_DEVICE_TABLE, below entries
-for example will be added to module.alias:
-alias:          of:N*T*Cbrcm,bcm6328-hsspiC*
-alias:          of:N*T*Cbrcm,bcm6328-hsspi
+If NO_DMA=y:
 
-Signed-off-by: Andres Galacho <andresgalacho@gmail.com>
-Acked-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+    ERROR: "bad_dma_ops" [drivers/spi/spi-ti-qspi.ko] undefined!
+
+Add a dependency on HAS_DMA to fix this.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 1 +
+ drivers/spi/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 5514cd02e93a..4da2d4a524ca 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -484,6 +484,7 @@ static const struct of_device_id bcm63xx_hsspi_of_match[] = {
- 	{ .compatible = "brcm,bcm6328-hsspi", },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, bcm63xx_hsspi_of_match);
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 1761c9004fc1..097883362036 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -457,6 +457,7 @@ config SPI_OMAP24XX
  
- static struct platform_driver bcm63xx_hsspi_driver = {
- 	.driver = {
+ config SPI_TI_QSPI
+ 	tristate "DRA7xxx QSPI controller support"
++	depends on HAS_DMA
+ 	depends on ARCH_OMAP2PLUS || COMPILE_TEST
+ 	help
+ 	  QSPI master controller for DRA7xxx used for flash devices.
 -- 
 2.11.0

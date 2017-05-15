@@ -1,20 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: SPI_TI_QSPI should depend on HAS_DMA" to the spi tree
-Date: Mon, 15 May 2017 17:04:42 +0900
-Message-ID: <E1dAAzj-0002fa-01@finisterre>
-References: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
-Cc: Mark Brown <broonie@kernel.org>, Vignesh R <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: core: Replace S_IRUGO permissions by 0444" to the spi tree
+Date: Mon, 15 May 2017 17:04:51 +0900
+Message-ID: <E1dAAzr-0002gb-G6@finisterre>
+References: <1493908196-13001-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1493908196-13001-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: SPI_TI_QSPI should depend on HAS_DMA
+   spi: core: Replace S_IRUGO permissions by 0444
 
 has been applied to the spi tree at
 
@@ -39,34 +38,45 @@ to this mail.
 Thanks,
 Mark
 
->From 967d6941f49f1ddd5764d3a09423a63841b9394c Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 4 May 2017 09:37:18 +0200
-Subject: [PATCH] spi: SPI_TI_QSPI should depend on HAS_DMA
+>From ad25c92ecb160235668cdeaff26f5907a6fbf6b3 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Thu, 4 May 2017 16:29:56 +0200
+Subject: [PATCH] spi: core: Replace S_IRUGO permissions by 0444
 
-If NO_DMA=y:
+Octal permissions are preferred over symbolic permissions.
 
-    ERROR: "bad_dma_ops" [drivers/spi/spi-ti-qspi.ko] undefined!
-
-Add a dependency on HAS_DMA to fix this.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1761c9004fc1..097883362036 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -457,6 +457,7 @@ config SPI_OMAP24XX
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 89254a55eb2e..bd7a546f5d9b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -80,7 +80,7 @@ static ssize_t spi_master_##field##_show(struct device *dev,		\
+ 	return spi_statistics_##field##_show(&master->statistics, buf);	\
+ }									\
+ static struct device_attribute dev_attr_spi_master_##field = {		\
+-	.attr = { .name = file, .mode = S_IRUGO },			\
++	.attr = { .name = file, .mode = 0444 },				\
+ 	.show = spi_master_##field##_show,				\
+ };									\
+ static ssize_t spi_device_##field##_show(struct device *dev,		\
+@@ -91,7 +91,7 @@ static ssize_t spi_device_##field##_show(struct device *dev,		\
+ 	return spi_statistics_##field##_show(&spi->statistics, buf);	\
+ }									\
+ static struct device_attribute dev_attr_spi_device_##field = {		\
+-	.attr = { .name = file, .mode = S_IRUGO },			\
++	.attr = { .name = file, .mode = 0444 },				\
+ 	.show = spi_device_##field##_show,				\
+ }
  
- config SPI_TI_QSPI
- 	tristate "DRA7xxx QSPI controller support"
-+	depends on HAS_DMA
- 	depends on ARCH_OMAP2PLUS || COMPILE_TEST
- 	help
- 	  QSPI master controller for DRA7xxx used for flash devices.
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

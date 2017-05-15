@@ -1,20 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spidev: use memdup_user" to the spi tree
-Date: Mon, 15 May 2017 09:05:02 +0100
-Message-ID: <E1dAB02-0002iT-L8@finisterre>
-References: <1028812604e64cd8e1ca2e25b119200fdbec2049.1493781496.git.geliangtang@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+Subject: Applied "spi: spidev: remove unused completion" to the spi tree
+Date: Mon, 15 May 2017 09:05:06 +0100
+Message-ID: <E1dAB06-0002jK-Uw@finisterre>
+References: <20170505123049.7500-1-kirkseraph@gmail.com>
+Cc: Seraphime Kirkovski (Haapie) <kirkseraph@gmail.com>,
+        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Geliang Tang <geliangtang@gmail.com>
+To: Seraphime Kirkovski <kirkseraph@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1028812604e64cd8e1ca2e25b119200fdbec2049.1493781496.git.geliangtang@gmail.com>
+In-Reply-To: <20170505123049.7500-1-kirkseraph@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spidev: use memdup_user
+   spi: spidev: remove unused completion
 
 has been applied to the spi tree at
 
@@ -39,47 +40,39 @@ to this mail.
 Thanks,
 Mark
 
->From f7929436a286ca31f0365a7013de968017f76818 Mon Sep 17 00:00:00 2001
-From: Geliang Tang <geliangtang@gmail.com>
-Date: Sat, 6 May 2017 23:42:17 +0800
-Subject: [PATCH] spi: spidev: use memdup_user
+>From 76bf569466c68fb3705a3b38cdee026df9861101 Mon Sep 17 00:00:00 2001
+From: Seraphime Kirkovski <kirkseraph@gmail.com>
+Date: Fri, 5 May 2017 14:30:49 +0200
+Subject: [PATCH] spi: spidev: remove unused completion
 
-Use memdup_user() helper instead of open-coding to simplify the code.
+This removes an unused completion from spidev_sync.
 
-Signed-off-by: Geliang Tang <geliangtang@gmail.com>
+It was introduced in
+
+	commit 25d5cb4b0375e ("spi: remove some spidev oops-on-rmmod paths")
+
+and it was no longer used after:
+
+	commit 98d6f47958001 ("spi: spidev: use spi_sync instead of spi_async")
+
+Signed-off-by: Seraphime Kirkovski (Haapie) <kirkseraph@gmail.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spidev.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/spi/spidev.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 3b570018705c..d4d2d8d9f3e7 100644
+index 9a2a79a871ba..3b570018705c 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -324,7 +324,6 @@ static struct spi_ioc_transfer *
- spidev_get_ioc_message(unsigned int cmd, struct spi_ioc_transfer __user *u_ioc,
- 		unsigned *n_ioc)
+@@ -99,7 +99,6 @@ MODULE_PARM_DESC(bufsiz, "data bytes in biggest supported SPI message");
+ static ssize_t
+ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
  {
--	struct spi_ioc_transfer	*ioc;
- 	u32	tmp;
+-	DECLARE_COMPLETION_ONSTACK(done);
+ 	int status;
+ 	struct spi_device *spi;
  
- 	/* Check type, command number and direction */
-@@ -341,14 +340,7 @@ spidev_get_ioc_message(unsigned int cmd, struct spi_ioc_transfer __user *u_ioc,
- 		return NULL;
- 
- 	/* copy into scratch area */
--	ioc = kmalloc(tmp, GFP_KERNEL);
--	if (!ioc)
--		return ERR_PTR(-ENOMEM);
--	if (__copy_from_user(ioc, u_ioc, tmp)) {
--		kfree(ioc);
--		return ERR_PTR(-EFAULT);
--	}
--	return ioc;
-+	return memdup_user(u_ioc, tmp);
- }
- 
- static long
 -- 
 2.11.0

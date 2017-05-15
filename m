@@ -1,38 +1,46 @@
-From: Seraphime Kirkovski <kirkseraph@gmail.com>
-Subject: [PATCH 1/2] spi: spidev: introduce SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ
- command
-Date: Mon, 15 May 2017 10:17:11 +0200
-Message-ID: <20170515081711.fcvexppqkjzlc7at@macchiaveli>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi: SPI_TI_QSPI should depend on HAS_DMA
+Date: Mon, 15 May 2017 10:46:15 +0200
+Message-ID: <CAMuHMdUOMk9zpaVS9gj=jC5Cy2WFpj50+ut5TG=T69mYjMZ7hQ@mail.gmail.com>
+References: <1493883438-19462-1-git-send-email-geert@linux-m68k.org> <20170514095020.roqoeohylvrgoad7@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170514095020.roqoeohylvrgoad7-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-christophe.blaess@gmail.com, fred@haapie.com
-Bcc: Subject: Re: [PATCH 1/2] spi: spidev: introduce
- SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
-Reply-To: 
-In-Reply-To: <20170514092716.kqx634djffgj32r6@sirena.org.uk>
+Hi Mark,
 
-On Sun, May 14, 2017 at 06:27:16PM +0900, Mark Brown wrote:
-> On Tue, May 09, 2017 at 02:24:00PM +0200, Seraphime Kirkovski wrote:
-> 
-> > I think, this change is necessary, on the one hand, because there are still
-> > a lot of longterm[2] supported kernels out there, whose users may be relying on
-> > SPI_IOC_WR_MAX_SPEED being system-wide and, on the other hand, this
-> > same command has been exhibiting a different behaviour for 3 years now,
-> > so its users may break, if 9169051617df7 is reverted in one way or
-> > another.
-> 
-> Do we have any evidence that such users exist?  
+On Sun, May 14, 2017 at 11:50 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, May 04, 2017 at 09:37:18AM +0200, Geert Uytterhoeven wrote:
+>> If NO_DMA=y:
+>>
+>>     ERROR: "bad_dma_ops" [drivers/spi/spi-ti-qspi.ko] undefined!
+>>
+>> Add a dependency on HAS_DMA to fix this.
+>
+> There's no progress on fixing the architectures that don't do DMA to
+> stub it out?  :(
 
-I can't guarantee for other such users, but this change did disturb our 
-workflow. We were using this feature to prototype and test 
-hardware/firmware at different speeds.
+Then it has to become "depends on HAS_DMA || COMPILE_TEST"?
 
-I was thinking this morning that maybe a sysfs interface will be better 
-for setting global settings. Do you prefer ?
+Even more typing work for me ;-)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

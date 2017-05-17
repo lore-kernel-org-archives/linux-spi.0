@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v4 3/6] spi: Document SPI slave controller support
-Date: Wed, 17 May 2017 14:47:49 +0200
-Message-ID: <1495025272-23930-4-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v4 6/6] spi: slave: Add SPI slave handler controlling system state
+Date: Wed, 17 May 2017 14:47:52 +0200
+Message-ID: <1495025272-23930-7-git-send-email-geert+renesas@glider.be>
 References: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -18,70 +18,214 @@ In-Reply-To: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Add an example SPI slave handler to allow remote control of system
+reboot, power off, halt, and suspend.
+
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v3, v4:
   - No changes,
 
 v2:
-  - New.
+  - Use spi_async() instead of spi_read(),
+  - Submit the next transfer from the previous transfer's completion
+    callback, removing the need for a thread,
+  - Let .remove() call spi_slave_abort() to cancel the current ongoing
+    transfer, and wait for the completion to terminate,
+  - Remove FIXME about hanging kthread_stop(),
+  - Fix copy-and-pasted module description.
 ---
- Documentation/spi/spi-summary | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ drivers/spi/Kconfig                    |   6 ++
+ drivers/spi/Makefile                   |   1 +
+ drivers/spi/spi-slave-system-control.c | 154 +++++++++++++++++++++++++++++++++
+ 3 files changed, 161 insertions(+)
+ create mode 100644 drivers/spi/spi-slave-system-control.c
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index d1824b399b2d1d79..1721c1b570c32466 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -62,8 +62,8 @@ chips described as using "three wire" signaling: SCK, data, nCSx.
- (That data line is sometimes called MOMI or SISO.)
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9972ee2a8454a2fc..82cd818aa06293f5 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -803,6 +803,12 @@ config SPI_SLAVE_TIME
+ 	  SPI slave handler responding with the time of reception of the last
+ 	  SPI message.
  
- Microcontrollers often support both master and slave sides of the SPI
--protocol.  This document (and Linux) currently only supports the master
--side of SPI interactions.
-+protocol.  This document (and Linux) supports both the master and slave
-+sides of SPI interactions.
- 
- 
- Who uses it?  On what kinds of systems?
-@@ -154,9 +154,8 @@ control audio interfaces, present touchscreen sensors as input interfaces,
- or monitor temperature and voltage levels during industrial processing.
- And those might all be sharing the same controller driver.
- 
--A "struct spi_device" encapsulates the master-side interface between
--those two types of driver.  At this writing, Linux has no slave side
--programming interface.
-+A "struct spi_device" encapsulates the controller-side interface between
-+those two types of drivers.
- 
- There is a minimal core of SPI programming interfaces, focussing on
- using the driver model to connect controller and protocol drivers using
-@@ -177,10 +176,24 @@ shows up in sysfs in several locations:
-    /sys/bus/spi/drivers/D ... driver for one or more spi*.* devices
- 
-    /sys/class/spi_master/spiB ... symlink (or actual device node) to
--	a logical node which could hold class related state for the
--	controller managing bus "B".  All spiB.* devices share one
-+	a logical node which could hold class related state for the SPI
-+	master controller managing bus "B".  All spiB.* devices share one
- 	physical SPI bus segment, with SCLK, MOSI, and MISO.
- 
-+   /sys/devices/.../CTLR/slave ... virtual file for (un)registering the
-+	slave device for an SPI slave controller.
-+	Writing the driver name of an SPI slave handler to this file
-+	registers the slave device; writing "(null)" unregisters the slave
-+	device.
-+	Reading from this file shows the name of the slave device ("(null)"
-+	if not registered).
++config SPI_SLAVE_SYSTEM_CONTROL
++	tristate "SPI slave handler controlling system state"
++	help
++	  SPI slave handler to allow remote control of system reboot, power
++	  off, halt, and suspend.
 +
-+   /sys/class/spi_slave/spiB ... symlink (or actual device node) to
-+	a logical node which could hold class related state for the SPI
-+	slave controller on bus "B".  When registered, a single spiB.*
-+	device is present here, possible sharing the physical SPI bus
-+	segment with other SPI slave devices.
+ endif # SPI_SLAVE
+ 
+ endif # SPI
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index fb078693dbe40da4..1d7923e8c63bc22b 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -108,3 +108,4 @@ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
+ 
+ # SPI slave protocol handlers
+ obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
++obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
+diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
+new file mode 100644
+index 0000000000000000..736dd59928cb3bc3
+--- /dev/null
++++ b/drivers/spi/spi-slave-system-control.c
+@@ -0,0 +1,154 @@
++/*
++ * SPI slave handler controlling system state
++ *
++ * This SPI slave handler allows remote control of system reboot, power off,
++ * halt, and suspend.
++ *
++ * Copyright (C) 2016 Glider bvba
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
 +
- Note that the actual location of the controller's class state depends
- on whether you enabled CONFIG_SYSFS_DEPRECATED or not.  At this time,
- the only class-specific state is the bus number ("B" in "spiB"), so
++#include <linux/completion.h>
++#include <linux/module.h>
++#include <linux/reboot.h>
++#include <linux/suspend.h>
++#include <linux/spi/spi.h>
++
++/*
++ * The numbers are chosen to display something human-readable on two 7-segment
++ * displays connected to two 74HC595 shift registers
++ */
++#define CMD_REBOOT	0x507c	/* rb */
++#define CMD_POWEROFF	0x3f71	/* OF */
++#define CMD_HALT	0x7638	/* HL */
++#define CMD_SUSPEND	0x1b1b	/* ZZ */
++
++struct spi_slave_system_control_priv {
++	struct spi_device *spi;
++	struct completion finished;
++	struct spi_transfer xfer;
++	struct spi_message msg;
++	__le16 cmd;
++};
++
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv);
++
++static void spi_slave_system_control_complete(void *arg)
++{
++	struct spi_slave_system_control_priv *priv = arg;
++	u16 cmd;
++	int ret;
++
++	if (priv->msg.status)
++		goto terminate;
++
++	cmd = le16_to_cpu(priv->cmd);
++	switch (cmd) {
++	case CMD_REBOOT:
++		pr_info("Rebooting system...\n");
++		kernel_restart(NULL);
++
++	case CMD_POWEROFF:
++		pr_info("Powering off system...\n");
++		kernel_power_off();
++		break;
++
++	case CMD_HALT:
++		pr_info("Halting system...\n");
++		kernel_halt();
++		break;
++
++	case CMD_SUSPEND:
++		pr_info("Suspending system...\n");
++		pm_suspend(PM_SUSPEND_MEM);
++		break;
++
++	default:
++		pr_warn("%s: Unknown command 0x%x\n", __func__, cmd);
++		break;
++	}
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		goto terminate;
++
++	return;
++
++terminate:
++	pr_info("%s: Terminating\n", __func__);
++	complete(&priv->finished);
++}
++
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv)
++{
++	int ret;
++
++	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
++
++	priv->msg.complete = spi_slave_system_control_complete;
++	priv->msg.context = priv;
++
++	ret = spi_async(priv->spi, &priv->msg);
++	if (ret)
++		pr_err("%s: spi_async() failed %d\n", __func__, ret);
++
++	return ret;
++}
++
++static int spi_slave_system_control_probe(struct spi_device *spi)
++{
++	struct spi_slave_system_control_priv *priv;
++	int ret;
++
++	/*
++	 * bits_per_word cannot be configured in platform data
++	 */
++	spi->bits_per_word = 8;
++
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
++
++	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->spi = spi;
++	init_completion(&priv->finished);
++	priv->xfer.rx_buf = &priv->cmd;
++	priv->xfer.len = sizeof(priv->cmd);
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		return ret;
++
++	spi_set_drvdata(spi, priv);
++	return 0;
++}
++
++static int spi_slave_system_control_remove(struct spi_device *spi)
++{
++	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
++
++	spi_slave_abort(spi);
++	wait_for_completion(&priv->finished);
++	return 0;
++}
++
++static struct spi_driver spi_slave_system_control_driver = {
++	.driver = {
++		.name	= "spi-slave-system-control",
++	},
++	.probe		= spi_slave_system_control_probe,
++	.remove		= spi_slave_system_control_remove,
++};
++module_spi_driver(spi_slave_system_control_driver);
++
++MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
++MODULE_DESCRIPTION("SPI slave handler controlling system state");
++MODULE_LICENSE("GPL v2");
 -- 
 2.7.4

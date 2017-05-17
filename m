@@ -1,147 +1,215 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v4 1/6] spi: Document DT bindings for SPI controllers in slave mode
-Date: Wed, 17 May 2017 14:47:47 +0200
-Message-ID: <1495025272-23930-2-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH v4 5/6] spi: slave: Add SPI slave handler reporting uptime at previous message
+Date: Wed, 17 May 2017 14:47:51 +0200
+Message-ID: <1495025272-23930-6-git-send-email-geert+renesas@glider.be>
 References: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        Jiada Wang <jiada_wang@mentor.com>,
-        Matt Porter <mporter@konsulko.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1495025272-23930-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Add an example SPI slave handler responding with the uptime at the time
+of reception of the last SPI message.
+
+This can be used by an external microcontroller as a dead man's switch.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
 v4:
-  - Add Reviewed-by,
+  - No changes,
 
 v3:
-  - In SPI slave mode, represent the (single) slave device again as a
-    child of the controller node, which is now optional, and must be
-    named "slave" if present,
-  - Split slave node properties in master mode, slave mode, and common
-    properties,
+  - Add #include <linux/sched/clock.h>,
 
 v2:
-  - Do not create a child node in SPI slave mode. Instead, add an
-    "spi-slave" property, and put the mode properties in the controller
-    node.
+  - Resolve semantic differences in patch description, file header, and
+    module description,
+  - Use spi_async() instead of spi_read(),
+  - Submit the next transfer from the previous transfer's completion
+    callback, removing the need for a thread,
+  - Let .remove() call spi_slave_abort() to cancel the current ongoing
+    transfer, and wait for the completion to terminate,
+  - Remove FIXME about hanging kthread_stop().
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt | 76 ++++++++++++++---------
- 1 file changed, 45 insertions(+), 31 deletions(-)
+ drivers/spi/Kconfig          |   6 ++
+ drivers/spi/Makefile         |   1 +
+ drivers/spi/spi-slave-time.c | 127 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 134 insertions(+)
+ create mode 100644 drivers/spi/spi-slave-time.c
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 4b1d6e74c744fe96..1f6e86f787efd229 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -1,17 +1,23 @@
- SPI (Serial Peripheral Interface) busses
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index f21499b1f71ab7c3..9972ee2a8454a2fc 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -797,6 +797,12 @@ config SPI_SLAVE
  
--SPI busses can be described with a node for the SPI master device
--and a set of child nodes for each SPI slave on the bus.  For this
--discussion, it is assumed that the system's SPI controller is in
--SPI master mode.  This binding does not describe SPI controllers
--in slave mode.
-+SPI busses can be described with a node for the SPI controller device
-+and a set of child nodes for each SPI slave on the bus.  The system's SPI
-+controller may be described for use in SPI master mode or in SPI slave mode,
-+but not for both at the same time.
+ if SPI_SLAVE
  
--The SPI master node requires the following properties:
-+The SPI controller node requires the following properties:
-+- compatible      - Name of SPI bus controller following generic names
-+		    recommended practice.
++config SPI_SLAVE_TIME
++	tristate "SPI slave handler reporting boot up time"
++	help
++	  SPI slave handler responding with the time of reception of the last
++	  SPI message.
 +
-+In master mode, the SPI controller node requires the following additional
-+properties:
- - #address-cells  - number of cells required to define a chip select
- 		address on the SPI bus.
- - #size-cells     - should be zero.
--- compatible      - name of SPI bus controller following generic names
--		recommended practice.
-+
-+In slave mode, the SPI controller node requires one additional property:
-+- spi-slave       - Empty property.
-+
- No other properties are required in the SPI bus node.  It is assumed
- that a driver for an SPI bus device will understand that it is an SPI bus.
- However, the binding does not attempt to define the specific method for
-@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
- chip selects.  Individual drivers can define additional properties to
- support describing the chip select layout.
+ endif # SPI_SLAVE
  
--Optional properties:
-+Optional properties (master mode only):
- - cs-gpios	  - gpios chip select.
- - num-cs	  - total number of chipselects.
+ endif # SPI
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index e50852c6fcb87d8b..fb078693dbe40da4 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -107,3 +107,4 @@ obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
+ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
  
-@@ -41,28 +47,36 @@ cs1 : native
- cs2 : &gpio1 1 0
- cs3 : &gpio1 2 0
- 
--SPI slave nodes must be children of the SPI master node and can
--contain the following properties.
--- reg             - (required) chip select address of device.
--- compatible      - (required) name of SPI device following generic names
--		recommended practice.
--- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
--- spi-cpol        - (optional) Empty property indicating device requires
--		inverse clock polarity (CPOL) mode.
--- spi-cpha        - (optional) Empty property indicating device requires
--		shifted clock phase (CPHA) mode.
--- spi-cs-high     - (optional) Empty property indicating device requires
--		chip select active high.
--- spi-3wire       - (optional) Empty property indicating device requires
--		3-wire mode.
--- spi-lsb-first   - (optional) Empty property indicating device requires
--		LSB first mode.
--- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
--                      used for MOSI. Defaults to 1 if not present.
--- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
--                      used for MISO. Defaults to 1 if not present.
--- spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
--- spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
+ # SPI slave protocol handlers
++obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
+diff --git a/drivers/spi/spi-slave-time.c b/drivers/spi/spi-slave-time.c
+new file mode 100644
+index 0000000000000000..c2940f3f18ecd22e
+--- /dev/null
++++ b/drivers/spi/spi-slave-time.c
+@@ -0,0 +1,127 @@
++/*
++ * SPI slave handler reporting uptime at reception of previous SPI message
++ *
++ * This SPI slave handler sends the time of reception of the last SPI message
++ * as two 32-bit unsigned integers in binary format and in network byte order,
++ * representing the number of seconds and fractional seconds (in microseconds)
++ * since boot up.
++ *
++ * Copyright (C) 2016 Glider bvba
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
 +
-+SPI slave nodes must be children of the SPI controller node.
++#include <linux/completion.h>
++#include <linux/module.h>
++#include <linux/sched/clock.h>
++#include <linux/spi/spi.h>
 +
-+In master mode, one or more slave nodes (up to the number of chip selects) can
-+be present.  Required properties are:
-+- compatible      - Name of SPI device following generic names recommended
-+		    practice.
-+- reg             - Chip select address of device.
-+- spi-max-frequency - Maximum SPI clocking speed of device in Hz.
 +
-+In slave mode, the (single) slave node is optional.
-+If present, it must be called "slave".  Required properties are:
-+- compatible      - Name of SPI device following generic names recommended
-+		    practice.
++struct spi_slave_time_priv {
++	struct spi_device *spi;
++	struct completion finished;
++	struct spi_transfer xfer;
++	struct spi_message msg;
++	__be32 buf[2];
++};
 +
-+All slave nodes can contain the following optional properties:
-+- spi-cpol        - Empty property indicating device requires inverse clock
-+		    polarity (CPOL) mode.
-+- spi-cpha        - Empty property indicating device requires shifted clock
-+		    phase (CPHA) mode.
-+- spi-cs-high     - Empty property indicating device requires chip select
-+		    active high.
-+- spi-3wire       - Empty property indicating device requires 3-wire mode.
-+- spi-lsb-first   - Empty property indicating device requires LSB first mode.
-+- spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
-+		    Defaults to 1 if not present.
-+- spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
-+		    Defaults to 1 if not present.
-+- spi-rx-delay-us - Microsecond delay after a read transfer.
-+- spi-tx-delay-us - Microsecond delay after a write transfer.
- 
- Some SPI controllers and devices support Dual and Quad SPI transfer mode.
- It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
++static int spi_slave_time_submit(struct spi_slave_time_priv *priv);
++
++static void spi_slave_time_complete(void *arg)
++{
++	struct spi_slave_time_priv *priv = arg;
++	int ret;
++
++	ret = priv->msg.status;
++	if (ret)
++		goto terminate;
++
++	ret = spi_slave_time_submit(priv);
++	if (ret)
++		goto terminate;
++
++	return;
++
++terminate:
++	pr_info("%s: Terminating\n", __func__);
++	complete(&priv->finished);
++}
++
++static int spi_slave_time_submit(struct spi_slave_time_priv *priv)
++{
++	u32 rem_ns;
++	int ret;
++	u64 ts;
++
++	ts = local_clock();
++	rem_ns = do_div(ts, 1000000000) / 1000;
++
++	priv->buf[0] = cpu_to_be32(ts);
++	priv->buf[1] = cpu_to_be32(rem_ns);
++
++	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
++
++	priv->msg.complete = spi_slave_time_complete;
++	priv->msg.context = priv;
++
++	ret = spi_async(priv->spi, &priv->msg);
++	if (ret)
++		pr_err("%s: spi_async() failed %d\n", __func__, ret);
++
++	return ret;
++}
++
++static int spi_slave_time_probe(struct spi_device *spi)
++{
++	struct spi_slave_time_priv *priv;
++	int ret;
++
++	/*
++	 * bits_per_word cannot be configured in platform data
++	 */
++	spi->bits_per_word = 8;
++
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
++
++	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->spi = spi;
++	init_completion(&priv->finished);
++	priv->xfer.tx_buf = priv->buf;
++	priv->xfer.len = sizeof(priv->buf);
++
++	ret = spi_slave_time_submit(priv);
++	if (ret)
++		return ret;
++
++	spi_set_drvdata(spi, priv);
++	return 0;
++}
++
++static int spi_slave_time_remove(struct spi_device *spi)
++{
++	struct spi_slave_time_priv *priv = spi_get_drvdata(spi);
++
++	spi_slave_abort(spi);
++	wait_for_completion(&priv->finished);
++	return 0;
++}
++
++static struct spi_driver spi_slave_time_driver = {
++	.driver = {
++		.name	= "spi-slave-time",
++	},
++	.probe		= spi_slave_time_probe,
++	.remove		= spi_slave_time_remove,
++};
++module_spi_driver(spi_slave_time_driver);
++
++MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>");
++MODULE_DESCRIPTION("SPI slave reporting uptime at previous SPI message");
++MODULE_LICENSE("GPL v2");
 -- 
 2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v4 5/6] spi: slave: Add SPI slave handler reporting uptime at previous message
-Date: Wed, 17 May 2017 14:47:51 +0200
-Message-ID: <1495025272-23930-6-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v4 4/6] spi: sh-msiof: Add slave mode support
+Date: Wed, 17 May 2017 14:47:50 +0200
+Message-ID: <1495025272-23930-5-git-send-email-geert+renesas@glider.be>
 References: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
@@ -13,203 +13,335 @@ Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1495025272-23930-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add an example SPI slave handler responding with the uptime at the time
-of reception of the last SPI message.
+From: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 
-This can be used by an external microcontroller as a dead man's switch.
+Add slave mode support to the MSIOF driver, in both PIO and DMA mode.
 
+For now this only supports the transmission of messages with a size
+that is known in advance.
+
+Signed-off-by: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+[geert: Timeout handling cleanup, spi core integration, cancellation,
+	rewording]
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
 v4:
-  - No changes,
+  - Add Acked-by,
+  - Use slave_aborted flag and complete() instead of messing with
+    internal completion and thread state,
 
 v3:
-  - Add #include <linux/sched/clock.h>,
+  - Clear TIF_SIGPENDING when interrupted to fix cancellation,
+  - Extract sh_msiof_wait_for_completion(),
+  - Add #include <linux/sched/signal.h>,
+  - Convert to use spi_alloc_slave(),
 
 v2:
-  - Resolve semantic differences in patch description, file header, and
-    module description,
-  - Use spi_async() instead of spi_read(),
-  - Submit the next transfer from the previous transfer's completion
-    callback, removing the need for a thread,
-  - Let .remove() call spi_slave_abort() to cancel the current ongoing
-    transfer, and wait for the completion to terminate,
-  - Remove FIXME about hanging kthread_stop().
+  - Document "spi-slave" property in DT bindings,
+  - Use spi_controller_is_slave() helper,
+  - Check for "spi-slave" property instead of "slave" child node,
+  - Replace SPI_MASTER_IS_SLAVE by SPI_CONTROLLER_IS_SLAVE,
+  - Implement cancellation.
 ---
- drivers/spi/Kconfig          |   6 ++
- drivers/spi/Makefile         |   1 +
- drivers/spi/spi-slave-time.c | 127 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 134 insertions(+)
- create mode 100644 drivers/spi/spi-slave-time.c
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |   2 +
+ drivers/spi/spi-sh-msiof.c                         | 111 +++++++++++++++------
+ include/linux/spi/sh_msiof.h                       |   6 ++
+ 3 files changed, 86 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index f21499b1f71ab7c3..9972ee2a8454a2fc 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -797,6 +797,12 @@ config SPI_SLAVE
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index dc975064fa273c36..64ee489571c42f88 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -38,6 +38,8 @@ Optional properties:
+ 			 specifiers, one for transmission, and one for
+ 			 reception.
+ - dma-names            : Must contain a list of two DMA names, "tx" and "rx".
++- spi-slave            : Empty property indicating the SPI controller is used
++			 in slave mode.
+ - renesas,dtdl         : delay sync signal (setup) in transmit mode.
+ 			 Must contain one of the following values:
+ 			 0   (no bit delay)
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2ce15ca977828668..c304c7167866d2db 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -2,7 +2,8 @@
+  * SuperH MSIOF SPI Master Interface
+  *
+  * Copyright (c) 2009 Magnus Damm
+- * Copyright (C) 2014 Glider bvba
++ * Copyright (C) 2014 Renesas Electronics Corporation
++ * Copyright (C) 2014-2017 Glider bvba
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 as
+@@ -33,7 +34,6 @@
  
- if SPI_SLAVE
+ #include <asm/unaligned.h>
  
-+config SPI_SLAVE_TIME
-+	tristate "SPI slave handler reporting boot up time"
-+	help
-+	  SPI slave handler responding with the time of reception of the last
-+	  SPI message.
-+
- endif # SPI_SLAVE
+-
+ struct sh_msiof_chipdata {
+ 	u16 tx_fifo_size;
+ 	u16 rx_fifo_size;
+@@ -53,6 +53,7 @@ struct sh_msiof_spi_priv {
+ 	void *rx_dma_page;
+ 	dma_addr_t tx_dma_addr;
+ 	dma_addr_t rx_dma_addr;
++	bool slave_aborted;
+ };
  
- endif # SPI
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index e50852c6fcb87d8b..fb078693dbe40da4 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -107,3 +107,4 @@ obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
- obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
+ #define TMDR1	0x00	/* Transmit Mode Register 1 */
+@@ -337,7 +338,10 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	tmp |= !cs_high << MDR1_SYNCAC_SHIFT;
+ 	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
+ 	tmp |= sh_msiof_spi_get_dtdl_and_syncdl(p);
+-	sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
++	if (spi_controller_is_slave(p->master))
++		sh_msiof_write(p, TMDR1, tmp | TMDR1_PCON);
++	else
++		sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
+ 	if (p->master->flags & SPI_MASTER_MUST_TX) {
+ 		/* These bits are reserved if RX needs TX */
+ 		tmp &= ~0x0000ffff;
+@@ -564,17 +568,19 @@ static int sh_msiof_prepare_message(struct spi_master *master,
  
- # SPI slave protocol handlers
-+obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
-diff --git a/drivers/spi/spi-slave-time.c b/drivers/spi/spi-slave-time.c
-new file mode 100644
-index 0000000000000000..c2940f3f18ecd22e
---- /dev/null
-+++ b/drivers/spi/spi-slave-time.c
-@@ -0,0 +1,127 @@
-+/*
-+ * SPI slave handler reporting uptime at reception of previous SPI message
-+ *
-+ * This SPI slave handler sends the time of reception of the last SPI message
-+ * as two 32-bit unsigned integers in binary format and in network byte order,
-+ * representing the number of seconds and fractional seconds (in microseconds)
-+ * since boot up.
-+ *
-+ * Copyright (C) 2016 Glider bvba
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ */
-+
-+#include <linux/completion.h>
-+#include <linux/module.h>
-+#include <linux/sched/clock.h>
-+#include <linux/spi/spi.h>
-+
-+
-+struct spi_slave_time_priv {
-+	struct spi_device *spi;
-+	struct completion finished;
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+	__be32 buf[2];
-+};
-+
-+static int spi_slave_time_submit(struct spi_slave_time_priv *priv);
-+
-+static void spi_slave_time_complete(void *arg)
+ static int sh_msiof_spi_start(struct sh_msiof_spi_priv *p, void *rx_buf)
+ {
+-	int ret;
++	bool slave = spi_controller_is_slave(p->master);
++	int ret = 0;
+ 
+ 	/* setup clock and rx/tx signals */
+-	ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
++	if (!slave)
++		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
+ 	if (rx_buf && !ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_RXE);
+ 	if (!ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TXE);
+ 
+ 	/* start by setting frame bit */
+-	if (!ret)
++	if (!ret && !slave)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TFSE);
+ 
+ 	return ret;
+@@ -582,20 +588,49 @@ static int sh_msiof_spi_start(struct sh_msiof_spi_priv *p, void *rx_buf)
+ 
+ static int sh_msiof_spi_stop(struct sh_msiof_spi_priv *p, void *rx_buf)
+ {
+-	int ret;
++	bool slave = spi_controller_is_slave(p->master);
++	int ret = 0;
+ 
+ 	/* shut down frame, rx/tx and clock signals */
+-	ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
++	if (!slave)
++		ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
+ 	if (!ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_TXE, 0);
+ 	if (rx_buf && !ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_RXE, 0);
+-	if (!ret)
++	if (!ret && !slave)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_TSCKE, 0);
+ 
+ 	return ret;
+ }
+ 
++static int sh_msiof_slave_abort(struct spi_master *master)
 +{
-+	struct spi_slave_time_priv *priv = arg;
-+	int ret;
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
 +
-+	ret = priv->msg.status;
-+	if (ret)
-+		goto terminate;
-+
-+	ret = spi_slave_time_submit(priv);
-+	if (ret)
-+		goto terminate;
-+
-+	return;
-+
-+terminate:
-+	pr_info("%s: Terminating\n", __func__);
-+	complete(&priv->finished);
++	p->slave_aborted = true;
++	complete(&p->done);
++	return 0;
 +}
 +
-+static int spi_slave_time_submit(struct spi_slave_time_priv *priv)
++static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p)
 +{
-+	u32 rem_ns;
-+	int ret;
-+	u64 ts;
++	if (spi_controller_is_slave(p->master)) {
++		if (wait_for_completion_interruptible(&p->done) ||
++		    p->slave_aborted) {
++			dev_dbg(&p->pdev->dev, "interrupted\n");
++			return -EINTR;
++		}
++	} else {
++		if (!wait_for_completion_timeout(&p->done, HZ)) {
++			dev_err(&p->pdev->dev, "timeout\n");
++			return -ETIMEDOUT;
++		}
++	}
 +
-+	ts = local_clock();
-+	rem_ns = do_div(ts, 1000000000) / 1000;
-+
-+	priv->buf[0] = cpu_to_be32(ts);
-+	priv->buf[1] = cpu_to_be32(rem_ns);
-+
-+	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
-+
-+	priv->msg.complete = spi_slave_time_complete;
-+	priv->msg.context = priv;
-+
-+	ret = spi_async(priv->spi, &priv->msg);
-+	if (ret)
-+		pr_err("%s: spi_async() failed %d\n", __func__, ret);
-+
-+	return ret;
++	return 0;
 +}
 +
-+static int spi_slave_time_probe(struct spi_device *spi)
-+{
-+	struct spi_slave_time_priv *priv;
-+	int ret;
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+ 						  const void *, int, int),
+@@ -628,6 +663,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 		tx_fifo(p, tx_buf, words, fifo_shift);
+ 
+ 	reinit_completion(&p->done);
++	p->slave_aborted = false;
+ 
+ 	ret = sh_msiof_spi_start(p, rx_buf);
+ 	if (ret) {
+@@ -636,11 +672,9 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+-	if (!wait_for_completion_timeout(&p->done, HZ)) {
+-		dev_err(&p->pdev->dev, "PIO timeout\n");
+-		ret = -ETIMEDOUT;
++	ret = sh_msiof_wait_for_completion(p);
++	if (ret)
+ 		goto stop_reset;
+-	}
+ 
+ 	/* read rx fifo */
+ 	if (rx_buf)
+@@ -732,6 +766,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 	sh_msiof_write(p, IER, ier_bits);
+ 
+ 	reinit_completion(&p->done);
++	p->slave_aborted = false;
+ 
+ 	/* Now start DMA */
+ 	if (rx)
+@@ -746,11 +781,9 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+-	if (!wait_for_completion_timeout(&p->done, HZ)) {
+-		dev_err(&p->pdev->dev, "DMA timeout\n");
+-		ret = -ETIMEDOUT;
++	ret = sh_msiof_wait_for_completion(p);
++	if (ret)
+ 		goto stop_reset;
+-	}
+ 
+ 	/* clear status bits */
+ 	sh_msiof_reset_str(p);
+@@ -843,7 +876,8 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 	int ret;
+ 
+ 	/* setup clocks (clock already enabled in chipselect()) */
+-	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
++	if (!spi_controller_is_slave(p->master))
++		sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+ 
+ 	while (master->dma_tx && len > 15) {
+ 		/*
+@@ -998,8 +1032,12 @@ static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
+ 	if (!info)
+ 		return NULL;
+ 
++	info->mode = of_property_read_bool(np, "spi-slave") ? MSIOF_SPI_SLAVE
++							    : MSIOF_SPI_MASTER;
 +
-+	/*
-+	 * bits_per_word cannot be configured in platform data
-+	 */
-+	spi->bits_per_word = 8;
-+
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return ret;
-+
-+	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
+ 	/* Parse the MSIOF properties */
+-	of_property_read_u32(np, "num-cs", &num_cs);
++	if (info->mode == MSIOF_SPI_MASTER)
++		of_property_read_u32(np, "num-cs", &num_cs);
+ 	of_property_read_u32(np, "renesas,tx-fifo-size",
+ 					&info->tx_fifo_override);
+ 	of_property_read_u32(np, "renesas,rx-fifo-size",
+@@ -1159,34 +1197,40 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	const struct sh_msiof_chipdata *chipdata;
+ 	const struct of_device_id *of_id;
++	struct sh_msiof_spi_info *info;
+ 	struct sh_msiof_spi_priv *p;
+ 	int i;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
+-	if (master == NULL)
+-		return -ENOMEM;
+-
+-	p = spi_master_get_devdata(master);
+-
+-	platform_set_drvdata(pdev, p);
+-	p->master = master;
+-
+ 	of_id = of_match_device(sh_msiof_match, &pdev->dev);
+ 	if (of_id) {
+ 		chipdata = of_id->data;
+-		p->info = sh_msiof_spi_parse_dt(&pdev->dev);
++		info = sh_msiof_spi_parse_dt(&pdev->dev);
+ 	} else {
+ 		chipdata = (const void *)pdev->id_entry->driver_data;
+-		p->info = dev_get_platdata(&pdev->dev);
++		info = dev_get_platdata(&pdev->dev);
+ 	}
+ 
+-	if (!p->info) {
++	if (!info) {
+ 		dev_err(&pdev->dev, "failed to obtain device info\n");
+-		ret = -ENXIO;
+-		goto err1;
++		return -ENXIO;
+ 	}
+ 
++	if (info->mode == MSIOF_SPI_SLAVE)
++		master = spi_alloc_slave(&pdev->dev,
++					 sizeof(struct sh_msiof_spi_priv));
++	else
++		master = spi_alloc_master(&pdev->dev,
++					  sizeof(struct sh_msiof_spi_priv));
++	if (master == NULL)
 +		return -ENOMEM;
 +
-+	priv->spi = spi;
-+	init_completion(&priv->finished);
-+	priv->xfer.tx_buf = priv->buf;
-+	priv->xfer.len = sizeof(priv->buf);
++	p = spi_master_get_devdata(master);
 +
-+	ret = spi_slave_time_submit(priv);
-+	if (ret)
-+		return ret;
++	platform_set_drvdata(pdev, p);
++	p->master = master;
++	p->info = info;
 +
-+	spi_set_drvdata(spi, priv);
-+	return 0;
-+}
-+
-+static int spi_slave_time_remove(struct spi_device *spi)
-+{
-+	struct spi_slave_time_priv *priv = spi_get_drvdata(spi);
-+
-+	spi_slave_abort(spi);
-+	wait_for_completion(&priv->finished);
-+	return 0;
-+}
-+
-+static struct spi_driver spi_slave_time_driver = {
-+	.driver = {
-+		.name	= "spi-slave-time",
-+	},
-+	.probe		= spi_slave_time_probe,
-+	.remove		= spi_slave_time_remove,
+ 	init_completion(&p->done);
+ 
+ 	p->clk = devm_clk_get(&pdev->dev, NULL);
+@@ -1237,6 +1281,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = p->info->num_chipselect;
+ 	master->setup = sh_msiof_spi_setup;
+ 	master->prepare_message = sh_msiof_prepare_message;
++	master->slave_abort = sh_msiof_slave_abort;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	master->auto_runtime_pm = true;
+ 	master->transfer_one = sh_msiof_transfer_one;
+diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
+index b087a85f5f72a351..f74b581f242f8c43 100644
+--- a/include/linux/spi/sh_msiof.h
++++ b/include/linux/spi/sh_msiof.h
+@@ -1,10 +1,16 @@
+ #ifndef __SPI_SH_MSIOF_H__
+ #define __SPI_SH_MSIOF_H__
+ 
++enum {
++	MSIOF_SPI_MASTER,
++	MSIOF_SPI_SLAVE,
 +};
-+module_spi_driver(spi_slave_time_driver);
 +
-+MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>");
-+MODULE_DESCRIPTION("SPI slave reporting uptime at previous SPI message");
-+MODULE_LICENSE("GPL v2");
+ struct sh_msiof_spi_info {
+ 	int tx_fifo_override;
+ 	int rx_fifo_override;
+ 	u16 num_chipselect;
++	int mode;
+ 	unsigned int dma_tx_id;
+ 	unsigned int dma_rx_id;
+ 	u32 dtdl;
 -- 
 2.7.4
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

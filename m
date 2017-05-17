@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v4 6/6] spi: slave: Add SPI slave handler controlling system state
-Date: Wed, 17 May 2017 14:47:52 +0200
-Message-ID: <1495025272-23930-7-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v4 1/6] spi: Document DT bindings for SPI controllers in slave mode
+Date: Wed, 17 May 2017 14:47:47 +0200
+Message-ID: <1495025272-23930-2-git-send-email-geert+renesas@glider.be>
 References: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -18,214 +18,130 @@ In-Reply-To: <1495025272-23930-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add an example SPI slave handler to allow remote control of system
-reboot, power off, halt, and suspend.
-
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
-v3, v4:
-  - No changes,
+v4:
+  - Add Reviewed-by,
+
+v3:
+  - In SPI slave mode, represent the (single) slave device again as a
+    child of the controller node, which is now optional, and must be
+    named "slave" if present,
+  - Split slave node properties in master mode, slave mode, and common
+    properties,
 
 v2:
-  - Use spi_async() instead of spi_read(),
-  - Submit the next transfer from the previous transfer's completion
-    callback, removing the need for a thread,
-  - Let .remove() call spi_slave_abort() to cancel the current ongoing
-    transfer, and wait for the completion to terminate,
-  - Remove FIXME about hanging kthread_stop(),
-  - Fix copy-and-pasted module description.
+  - Do not create a child node in SPI slave mode. Instead, add an
+    "spi-slave" property, and put the mode properties in the controller
+    node.
 ---
- drivers/spi/Kconfig                    |   6 ++
- drivers/spi/Makefile                   |   1 +
- drivers/spi/spi-slave-system-control.c | 154 +++++++++++++++++++++++++++++++++
- 3 files changed, 161 insertions(+)
- create mode 100644 drivers/spi/spi-slave-system-control.c
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 76 ++++++++++++++---------
+ 1 file changed, 45 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9972ee2a8454a2fc..82cd818aa06293f5 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -803,6 +803,12 @@ config SPI_SLAVE_TIME
- 	  SPI slave handler responding with the time of reception of the last
- 	  SPI message.
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 4b1d6e74c744fe96..1f6e86f787efd229 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -1,17 +1,23 @@
+ SPI (Serial Peripheral Interface) busses
  
-+config SPI_SLAVE_SYSTEM_CONTROL
-+	tristate "SPI slave handler controlling system state"
-+	help
-+	  SPI slave handler to allow remote control of system reboot, power
-+	  off, halt, and suspend.
-+
- endif # SPI_SLAVE
+-SPI busses can be described with a node for the SPI master device
+-and a set of child nodes for each SPI slave on the bus.  For this
+-discussion, it is assumed that the system's SPI controller is in
+-SPI master mode.  This binding does not describe SPI controllers
+-in slave mode.
++SPI busses can be described with a node for the SPI controller device
++and a set of child nodes for each SPI slave on the bus.  The system's SPI
++controller may be described for use in SPI master mode or in SPI slave mode,
++but not for both at the same time.
  
- endif # SPI
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index fb078693dbe40da4..1d7923e8c63bc22b 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -108,3 +108,4 @@ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
+-The SPI master node requires the following properties:
++The SPI controller node requires the following properties:
++- compatible      - Name of SPI bus controller following generic names
++		    recommended practice.
++
++In master mode, the SPI controller node requires the following additional
++properties:
+ - #address-cells  - number of cells required to define a chip select
+ 		address on the SPI bus.
+ - #size-cells     - should be zero.
+-- compatible      - name of SPI bus controller following generic names
+-		recommended practice.
++
++In slave mode, the SPI controller node requires one additional property:
++- spi-slave       - Empty property.
++
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
  
- # SPI slave protocol handlers
- obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
-+obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
-diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
-new file mode 100644
-index 0000000000000000..736dd59928cb3bc3
---- /dev/null
-+++ b/drivers/spi/spi-slave-system-control.c
-@@ -0,0 +1,154 @@
-+/*
-+ * SPI slave handler controlling system state
-+ *
-+ * This SPI slave handler allows remote control of system reboot, power off,
-+ * halt, and suspend.
-+ *
-+ * Copyright (C) 2016 Glider bvba
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ */
+-Optional properties:
++Optional properties (master mode only):
+ - cs-gpios	  - gpios chip select.
+ - num-cs	  - total number of chipselects.
+ 
+@@ -41,28 +47,36 @@ cs1 : native
+ cs2 : &gpio1 1 0
+ cs3 : &gpio1 2 0
+ 
+-SPI slave nodes must be children of the SPI master node and can
+-contain the following properties.
+-- reg             - (required) chip select address of device.
+-- compatible      - (required) name of SPI device following generic names
+-		recommended practice.
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
+-- spi-cpol        - (optional) Empty property indicating device requires
+-		inverse clock polarity (CPOL) mode.
+-- spi-cpha        - (optional) Empty property indicating device requires
+-		shifted clock phase (CPHA) mode.
+-- spi-cs-high     - (optional) Empty property indicating device requires
+-		chip select active high.
+-- spi-3wire       - (optional) Empty property indicating device requires
+-		3-wire mode.
+-- spi-lsb-first   - (optional) Empty property indicating device requires
+-		LSB first mode.
+-- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MOSI. Defaults to 1 if not present.
+-- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MISO. Defaults to 1 if not present.
+-- spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
+-- spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
 +
-+#include <linux/completion.h>
-+#include <linux/module.h>
-+#include <linux/reboot.h>
-+#include <linux/suspend.h>
-+#include <linux/spi/spi.h>
++SPI slave nodes must be children of the SPI controller node.
 +
-+/*
-+ * The numbers are chosen to display something human-readable on two 7-segment
-+ * displays connected to two 74HC595 shift registers
-+ */
-+#define CMD_REBOOT	0x507c	/* rb */
-+#define CMD_POWEROFF	0x3f71	/* OF */
-+#define CMD_HALT	0x7638	/* HL */
-+#define CMD_SUSPEND	0x1b1b	/* ZZ */
++In master mode, one or more slave nodes (up to the number of chip selects) can
++be present.  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
++- reg             - Chip select address of device.
++- spi-max-frequency - Maximum SPI clocking speed of device in Hz.
 +
-+struct spi_slave_system_control_priv {
-+	struct spi_device *spi;
-+	struct completion finished;
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+	__le16 cmd;
-+};
++In slave mode, the (single) slave node is optional.
++If present, it must be called "slave".  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
 +
-+static
-+int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv);
-+
-+static void spi_slave_system_control_complete(void *arg)
-+{
-+	struct spi_slave_system_control_priv *priv = arg;
-+	u16 cmd;
-+	int ret;
-+
-+	if (priv->msg.status)
-+		goto terminate;
-+
-+	cmd = le16_to_cpu(priv->cmd);
-+	switch (cmd) {
-+	case CMD_REBOOT:
-+		pr_info("Rebooting system...\n");
-+		kernel_restart(NULL);
-+
-+	case CMD_POWEROFF:
-+		pr_info("Powering off system...\n");
-+		kernel_power_off();
-+		break;
-+
-+	case CMD_HALT:
-+		pr_info("Halting system...\n");
-+		kernel_halt();
-+		break;
-+
-+	case CMD_SUSPEND:
-+		pr_info("Suspending system...\n");
-+		pm_suspend(PM_SUSPEND_MEM);
-+		break;
-+
-+	default:
-+		pr_warn("%s: Unknown command 0x%x\n", __func__, cmd);
-+		break;
-+	}
-+
-+	ret = spi_slave_system_control_submit(priv);
-+	if (ret)
-+		goto terminate;
-+
-+	return;
-+
-+terminate:
-+	pr_info("%s: Terminating\n", __func__);
-+	complete(&priv->finished);
-+}
-+
-+static
-+int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv)
-+{
-+	int ret;
-+
-+	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
-+
-+	priv->msg.complete = spi_slave_system_control_complete;
-+	priv->msg.context = priv;
-+
-+	ret = spi_async(priv->spi, &priv->msg);
-+	if (ret)
-+		pr_err("%s: spi_async() failed %d\n", __func__, ret);
-+
-+	return ret;
-+}
-+
-+static int spi_slave_system_control_probe(struct spi_device *spi)
-+{
-+	struct spi_slave_system_control_priv *priv;
-+	int ret;
-+
-+	/*
-+	 * bits_per_word cannot be configured in platform data
-+	 */
-+	spi->bits_per_word = 8;
-+
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return ret;
-+
-+	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->spi = spi;
-+	init_completion(&priv->finished);
-+	priv->xfer.rx_buf = &priv->cmd;
-+	priv->xfer.len = sizeof(priv->cmd);
-+
-+	ret = spi_slave_system_control_submit(priv);
-+	if (ret)
-+		return ret;
-+
-+	spi_set_drvdata(spi, priv);
-+	return 0;
-+}
-+
-+static int spi_slave_system_control_remove(struct spi_device *spi)
-+{
-+	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
-+
-+	spi_slave_abort(spi);
-+	wait_for_completion(&priv->finished);
-+	return 0;
-+}
-+
-+static struct spi_driver spi_slave_system_control_driver = {
-+	.driver = {
-+		.name	= "spi-slave-system-control",
-+	},
-+	.probe		= spi_slave_system_control_probe,
-+	.remove		= spi_slave_system_control_remove,
-+};
-+module_spi_driver(spi_slave_system_control_driver);
-+
-+MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
-+MODULE_DESCRIPTION("SPI slave handler controlling system state");
-+MODULE_LICENSE("GPL v2");
++All slave nodes can contain the following optional properties:
++- spi-cpol        - Empty property indicating device requires inverse clock
++		    polarity (CPOL) mode.
++- spi-cpha        - Empty property indicating device requires shifted clock
++		    phase (CPHA) mode.
++- spi-cs-high     - Empty property indicating device requires chip select
++		    active high.
++- spi-3wire       - Empty property indicating device requires 3-wire mode.
++- spi-lsb-first   - Empty property indicating device requires LSB first mode.
++- spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
++		    Defaults to 1 if not present.
++- spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
++		    Defaults to 1 if not present.
++- spi-rx-delay-us - Microsecond delay after a read transfer.
++- spi-tx-delay-us - Microsecond delay after a write transfer.
+ 
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+ It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
 -- 
 2.7.4

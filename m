@@ -1,60 +1,62 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: SPI_TI_QSPI should depend on HAS_DMA
-Date: Mon, 15 May 2017 11:53:19 +0100
-Message-ID: <20170515105319.5vm46modegh3gfke@sirena.org.uk>
-References: <1493883438-19462-1-git-send-email-geert@linux-m68k.org>
- <20170514095020.roqoeohylvrgoad7@sirena.org.uk>
- <CAMuHMdUOMk9zpaVS9gj=jC5Cy2WFpj50+ut5TG=T69mYjMZ7hQ@mail.gmail.com>
- <20170515101235.uy776lopdsyd4h73@sirena.org.uk>
- <CAMuHMdUs31Bq5SU5uMcmoRtPd7zpop18XYRF9mAOzJ8e62JHaQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] spi: spidev: introduce
+ SPI_IOC_WR_DEFAULT_MAX_SPEED_HZ command
+Date: Wed, 17 May 2017 10:04:07 +0100
+Message-ID: <20170517090407.oc7d2hmydrsieli7@sirena.org.uk>
+References: <20170515081711.fcvexppqkjzlc7at@macchiaveli>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oena2zzbyvehanrw"
-Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="dk3md7hlq2zohmxu"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Seraphime Kirkovski <kirkseraph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUs31Bq5SU5uMcmoRtPd7zpop18XYRF9mAOzJ8e62JHaQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20170515081711.fcvexppqkjzlc7at@macchiaveli>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---oena2zzbyvehanrw
+--dk3md7hlq2zohmxu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 15, 2017 at 12:21:33PM +0200, Geert Uytterhoeven wrote:
-> On Mon, May 15, 2017 at 12:12 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Mon, May 15, 2017 at 10:17:11AM +0200, Seraphime Kirkovski wrote:
+> On Sun, May 14, 2017 at 06:27:16PM +0900, Mark Brown wrote:
 
-> > No, I was thinking more just not needing the dependency at all.
+> > Do we have any evidence that such users exist? =20
 
-> Then what's the point of the existence of COMPILE_TEST?
-> We can just have stubs for everything, and always build everything.
+> I can't guarantee for other such users, but this change did disturb our=
+=20
+> workflow. We were using this feature to prototype and test=20
+> hardware/firmware at different speeds.
 
-It's useful for platform specific devices (like this one should be) but
-having to add dependencies for basic kernel APIs like the DMA one is
-just making for a lot of noise.  There's plenty of platforms without DMA
-that also have no real use for this driver, it's not really a relevant
-thing when deciding if the driver might be useful if what you're trying
-to do is hide drivers that aren't useful on the platform.
+> I was thinking this morning that maybe a sysfs interface will be better=
+=20
+> for setting global settings. Do you prefer ?
 
---oena2zzbyvehanrw
+I just don't see this as something that should be being varied at
+runtime; it is supposed to be the maximum speed that the bus can be run
+at, that's not something that should vary at runtime.  Possibly a sysfs
+thing but honestly if you're prototyping via spidev I'd just set the
+speed in your application each time it starts.
+
+--dk3md7hlq2zohmxu
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkZiJ4ACgkQJNaLcl1U
-h9Ds2Af/QX2ralGx2fjEH+tnbq8kRgkp71sS7kdbS/pi4Jhdux5a4zoSfqOc74a8
-qxxsxQe3yBnY/Yzbp1gUFHlCNyTmcz3MY5p3MfMTpM+dJ45/4E4/NPwAVsTtbB3U
-S595rMhfjFJmTUyiqSmIxZWAPITGqqs+oVDgc+FLGoN7ncgR2NyFmzKua8LG6exV
-0XQrZxGdlED3DYp82DJGIIt2fv8qS6NEuHP9oaNLk5AOFl13s3SDsHFR3neyP4wB
-PfMlJax1QzsSwA8vrLYrDW8YNFwGkzd5AxRZ5+Mef8KaxFQrIhRtER0rMG+KcCLf
-uowM64sRt0cmWFX+kK+IQ0be/W3jXQ==
-=nZ9i
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkcEgYACgkQJNaLcl1U
+h9ArYgf9EuSwRkj9En7Yv89QcgdkbN1oFEgy/c9W0oCM1Y00dEwX8Ye6NxqWGPc7
+0VSTQuDctMJXrbTNPvyVO0Kq8MvrN4p/atKtWg04u6XM7WB3LCRY3lir3uLja5mM
+D7WgXneRuuCoE/a0Xpu1WBsU88sI6ndDOEeCCiXOkf4tBL+egHTsvR9U9B4EYS/m
+NEXp0hnSXg9K/T/ha2TvTWSDYiNlL+YjqkCe4q0oQyVDkw6VpzXZbRdY3moEeKzI
+/QfyGJR53k+aWXHVCvqeRq9zY6ca/RrQPJZIIY8FqS4h+OzoRxTTPX0Gt82SE8/4
+sSFm504ncY/GOVLS880MiQ+XXqM2ow==
+=dNGi
 -----END PGP SIGNATURE-----
 
---oena2zzbyvehanrw--
+--dk3md7hlq2zohmxu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

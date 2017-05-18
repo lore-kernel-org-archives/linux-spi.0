@@ -1,45 +1,47 @@
-From: SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: Re: spidev: Adjust five checks for null pointers
-Date: Thu, 18 May 2017 16:34:45 +0200
-Message-ID: <5d9f71d4-2f0d-7083-fd28-fb505841b502@users.sourceforge.net>
-References: <c5452d8c-d123-d5e9-b2cc-a386d1325aec@users.sourceforge.net>
- <df3e58c6-f70d-a5d3-102e-4fab2f7df126@users.sourceforge.net>
- <20170518112846.tcirhguyps3kk3ra@sirena.org.uk>
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: imx: Revert "spi: imx: dynamic burst length adjust
+ for PIO mode"
+Date: Thu, 18 May 2017 08:37:54 -0700
+Message-ID: <591DBFD2.4090601@mentor.com>
+References: <1495113735-11891-1-git-send-email-fabio.estevam@nxp.com> <1495115958.26925.23.camel@nxp.com> <CAOMZO5Adj+sgxgoO9gN232EEH=NtjTHpKfB+EaUAbRXyaPD_Gg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170518112846.tcirhguyps3kk3ra@sirena.org.uk>
-Content-Language: en-GB
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Leonard Crestez <leonard.crestez-3arQi8VN3Tc@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAOMZO5Adj+sgxgoO9gN232EEH=NtjTHpKfB+EaUAbRXyaPD_Gg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
->> MIME-Version: 1.0
->> Content-Type: text/plain; charset=UTF-8
->> Content-Transfer-Encoding: 8bit
-> 
-> Please fix however you're sending things out to avoid this noise.
+Hello Fabio
 
-The Git software generated such extra information because my commit message
-contained a few special characters.
+On 05/18/2017 07:22 AM, Fabio Estevam wrote:
+> Hi Leonard,
+>
+> On Thu, May 18, 2017 at 10:59 AM, Leonard Crestez
+> <leonard.crestez-3arQi8VN3Tc@public.gmane.org>  wrote:
+>
+>> A fix was already posted: https://lkml.org/lkml/2017/5/18/264. Can you
+>> check it in your scenario? I don't know if a revert or a fix is more
+>> appropriate.
+> I have tested this patch and it does not solve the SPI NOR detection issue.
+>
+> That's why I sent a revert.
+>
+> Thanks
+Which kernel and HW version are you using for test?
 
+with the test on my imx6q sabresd board,
+no matter using upstream kernel or our internal kernel,
+the issue exists with or without the patch.
 
->> The script “checkpatch.pl” pointed information out like the following.
->>
->> Comparison to NULL could be written !…
->>
->> Thus fix the affected source code places.
-> 
-> This changelog does not describe any purpose in making this change,
-> we could equally well say the exact opposite.  Why should we do this?
-
-How do you think about to reduce the usage of the preprocessor symbol “NULL”?
-
-Can it help if the source code is a little bit shorter after the
-proposed adjustment?
-
-Regards,
-Markus
+Thanks,
+Jiada
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

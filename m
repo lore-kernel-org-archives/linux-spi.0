@@ -1,87 +1,80 @@
-From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: Revert "spi: imx: dynamic burst length adjust
- for PIO mode"
-Date: Fri, 19 May 2017 03:55:55 -0700
-Message-ID: <591ECF3B.4040001@mentor.com>
-References: <1495113735-11891-1-git-send-email-fabio.estevam@nxp.com> <1495115958.26925.23.camel@nxp.com> <CAOMZO5Adj+sgxgoO9gN232EEH=NtjTHpKfB+EaUAbRXyaPD_Gg@mail.gmail.com> <591DBFD2.4090601@mentor.com> <CAOMZO5BZvp_iWoJCTkZL-buSu6pscv1U-6XLjjEm8PjVOjf9wQ@mail.gmail.com>
+From: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi: imx: fix issue when tx_buf or rx_buf is NULL
+Date: Fri, 19 May 2017 20:45:18 +0800
+Message-ID: <94de6e6d-a2fa-6589-151b-660bbcb42773@gtsys.com.hk>
+References: <1495101672-3384-1-git-send-email-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Leonard Crestez <leonard.crestez-3arQi8VN3Tc@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        leonard.crestez-3arQi8VN3Tc@public.gmane.org
+To: jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOMZO5BZvp_iWoJCTkZL-buSu6pscv1U-6XLjjEm8PjVOjf9wQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1495101672-3384-1-git-send-email-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello Fabio
 
-Although I don't have this spi-nor chip populated on my sabresd,
-but I think I managed to re-create similar scenario,
-
-could you help to check if the following change address the spi-nor 
-detection issue
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 782045f..a097a8d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -242,6 +242,7 @@ static bool spi_imx_can_dma(struct spi_master 
-*master, struct spi_device *spi,
-                 return false;
-
-         spi_imx->wml = i;
-+       spi_imx->dynamic_burst = 0;
-
-         return true;
-  }
-@@ -288,6 +289,9 @@ static void spi_imx_u32_swap_u8(struct spi_transfer 
-*transfer, u32 *buf)
-  {
-         int i;
-
-+       if (!buf)
-+               return;
-+
-         for (i = 0; i < transfer->len / 4; i++)
-                 *(buf + i) = cpu_to_be32(*(buf + i));
-  }
-@@ -296,6 +300,9 @@ static void spi_imx_u32_swap_u16(struct spi_transfer 
-*transfer, u32 *buf)
-  {
-         int i;
-
-+       if (!buf)
-+               return;
-+
-         for (i = 0; i < transfer->len / 4; i++) {
-
-Thanks,
-Jiada
-
-On 05/18/2017 08:41 AM, Fabio Estevam wrote:
-> Hi Jiada,
+On Thursday, May 18, 2017 06:01 PM, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
+> From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 >
-> On Thu, May 18, 2017 at 12:37 PM, Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>  wrote:
+> In case either transfer->tx_buf or transfer->rx_buf is NULL,
+> manipulation of buffer in spi_imx_u32_swap_u[8|16]() will cause
+> NULL pointer dereference crash.
 >
->> Which kernel and HW version are you using for test?
-> I am running linux-next 20170518 on a imx6q sabresd revB board.
+> Add buffer check at very beginning of spi_imx_u32_swap_u[8|16](),
+> to avoid such crash.
 >
->> with the test on my imx6q sabresd board,
->> no matter using upstream kernel or our internal kernel,
->> the issue exists with or without the patch.
-> There are some imx6q sabresd boards that does not come with the SPI
-> NOR flash populated.
+> Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> Reported-by: Leonard Crestez <leonard.crestez-3arQi8VN3Tc@public.gmane.org>
+> ---
+>  drivers/spi/spi-imx.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> I assume your board does not have the SPI NOR populated, so that's why
-> you always get the same message.
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 782045f..19b30cf 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -288,6 +288,9 @@ static void spi_imx_u32_swap_u8(struct spi_transfer *transfer, u32 *buf)
+>  {
+>  	int i;
 >
-> Reverting 8d4a6cad7adb ("spi: imx: dynamic burst length adjust for PIO
-> mode") makes the SPI NOR to work again here.
+> +	if (!buf)
+> +		return;
+> +
+>  	for (i = 0; i < transfer->len / 4; i++)
+>  		*(buf + i) = cpu_to_be32(*(buf + i));
+>  }
+> @@ -296,6 +299,9 @@ static void spi_imx_u32_swap_u16(struct spi_transfer *transfer, u32 *buf)
+>  {
+>  	int i;
+>
+> +	if (!buf)
+> +		return;
+> +
+>  	for (i = 0; i < transfer->len / 4; i++) {
+>  		u16 *temp = (u16 *)buf;
+>
+>
 
+Hi, thanks for the patch.
+
+But I think we missing something here. We return from a void function()
+so the error keeps hidden. The root cause is calling this functions with a NULL 
+pointer. See if you can fix this by find the caller and check if the parameter 
+hand over are valid.
+
+Cheers
+Chris
+
+
+-- 
+GTSYS Limited RFID Technology
+9/F, Unit E, R07, Kwai Shing Industrial Building Phase 2,
+42-46 Tai Lin Pai Road, Kwai Chung, N.T., Hong Kong
+Tel (852) 9079 9521
+
+Disclaimer: http://www.gtsys.com.hk/email/classified.html
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

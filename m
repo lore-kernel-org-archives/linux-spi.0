@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v2 07/15] MIPS: lantiq: Convert the xbar driver to a platform_driver
-Date: Sun, 21 May 2017 15:09:10 +0200
-Message-ID: <20170521130918.27446-8-hauke@hauke-m.de>
+Subject: [PATCH v2 15/15] MIPS: lantiq: Remove the arch/mips/lantiq/xway/reset.c implementation
+Date: Sun, 21 May 2017 15:09:18 +0200
+Message-ID: <20170521130918.27446-16-hauke@hauke-m.de>
 References: <20170521130918.27446-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -9,295 +9,207 @@ Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uu
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
         robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170521130918.27446-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 
-This allows using the xbar driver on ARX300 based SoCs which require the
-same xbar setup as the xRX200 chipsets because the xbar driver
-initialization is not guarded by an xRX200 specific
-of_machine_is_compatible condition anymore. Additionally the new driver
-takes a syscon phandle to configure the XBAR endianness bits in RCU
-(before this was done in arch/mips/lantiq/xway/reset.c and also
-guarded by an VRX200 specific if-statement).
+The RCU register are now access through separates drivers. remove the
+last pieces of the old implementation.
+
+The GPHY reset bits are now set by the GPHY driver which registers a
+reboot notifier. The reboot is triggered by a syscon-reboot driver and
+the MIPS specific parts are done by the generic MIPS implementation in
+arch/mips/kernel/reset.c.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 ---
- .../devicetree/bindings/mips/lantiq/xbar.txt       |  24 +++++
- MAINTAINERS                                        |   1 +
- arch/mips/lantiq/xway/reset.c                      |   4 -
- arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
- drivers/soc/Makefile                               |   1 +
- drivers/soc/lantiq/Makefile                        |   1 +
- drivers/soc/lantiq/xbar.c                          | 101 +++++++++++++++++++++
- 7 files changed, 128 insertions(+), 45 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mips/lantiq/xbar.txt
- create mode 100644 drivers/soc/lantiq/Makefile
- create mode 100644 drivers/soc/lantiq/xbar.c
+ arch/mips/lantiq/Kconfig       |   1 +
+ arch/mips/lantiq/xway/Makefile |   2 +-
+ arch/mips/lantiq/xway/reset.c  | 147 -----------------------------------------
+ 3 files changed, 2 insertions(+), 148 deletions(-)
+ delete mode 100644 arch/mips/lantiq/xway/reset.c
 
-diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
-new file mode 100644
-index 000000000000..7e1ea5299744
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
-@@ -0,0 +1,24 @@
-+Lantiq XWAY SoC XBAR binding
-+============================
-+
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible	: Should be one of
-+				"lantiq,xbar-xway"
-+				"lantiq,xbar-xrx200"
-+- reg		: The address and length of the XBAR registers
-+
-+Optional properties:
-+- lantiq,rcu-syscon	: A phandle and offset to the endianness configuration
-+			  registers in the RCU module
-+
-+
-+-------------------------------------------------------------------------------
-+Example for the XBAR on the xRX200 SoCs:
-+	xbar0: xbar@400000 {
-+		compatible = "lantiq,xbar-xway";
-+		reg = <0x400000 0x1000>;
-+		big-endian;
-+		lantiq,rcu-syscon = <&rcu0 0x4c>;
-+	};
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f7d568b8f133..11c33f7d63ba 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7434,6 +7434,7 @@ M:	John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
- L:	linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
- S:	Maintained
- F:	arch/mips/lantiq
-+F:	drivers/soc/lantiq
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index f5db4a426568..35bc69b78268 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -18,6 +18,7 @@ config SOC_XWAY
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
+ 	select MFD_SYSCON
++	select MFD_CORE
  
- LAPB module
- L:	linux-x25-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+ config SOC_FALCON
+ 	bool "FALCON"
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 6daf3149e7ca..fbb0747c70b7 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,3 +1,3 @@
+-obj-y := prom.o sysctrl.o clk.o reset.o dma.o gptu.o dcdc.o
++obj-y := prom.o sysctrl.o clk.o dma.o gptu.o dcdc.o
+ 
+ obj-y += vmmc.o
 diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index 83fd65d76e81..b6752c95a600 100644
+deleted file mode 100644
+index 04cd9a7c04a3..000000000000
 --- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -373,10 +373,6 @@ static int __init mips_reboot_setup(void)
- 	    of_machine_is_compatible("lantiq,vr9"))
- 		ltq_usb_init();
- 
--	if (of_machine_is_compatible("lantiq,vr9"))
--		ltq_rcu_w32(ltq_rcu_r32(RCU_AHB_ENDIAN) | RCU_VR9_BE_AHB1S,
--			    RCU_AHB_ENDIAN);
++++ /dev/null
+@@ -1,147 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
+- *  Copyright (C) 2013-2015 Lantiq Beteiligungs-GmbH & Co.KG
+- */
 -
- 	_machine_restart = ltq_machine_restart;
- 	_machine_halt = ltq_machine_halt;
- 	pm_power_off = ltq_machine_power_off;
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 95bec460b651..706639a343bc 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -145,15 +145,7 @@ static u32 pmu_clk_cr_b[] = {
- #define pmu_w32(x, y)	ltq_w32((x), pmu_membase + (y))
- #define pmu_r32(x)	ltq_r32(pmu_membase + (x))
- 
--#define XBAR_ALWAYS_LAST	0x430
--#define XBAR_FPI_BURST_EN	BIT(1)
--#define XBAR_AHB_BURST_EN	BIT(2)
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/ioport.h>
+-#include <linux/pm.h>
+-#include <linux/export.h>
+-#include <linux/delay.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
+-#include <linux/reset-controller.h>
 -
--#define xbar_w32(x, y)	ltq_w32((x), ltq_xbar_membase + (y))
--#define xbar_r32(x)	ltq_r32(ltq_xbar_membase + (x))
+-#include <asm/reboot.h>
 -
- static void __iomem *pmu_membase;
--static void __iomem *ltq_xbar_membase;
- void __iomem *ltq_cgu_membase;
- void __iomem *ltq_ebu_membase;
- 
-@@ -293,16 +285,6 @@ static void pci_ext_disable(struct clk *clk)
- 	ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
- }
- 
--static void xbar_fpi_burst_disable(void)
+-#include <lantiq_soc.h>
+-
+-#include "../prom.h"
+-
+-/* reset request register */
+-#define RCU_RST_REQ		0x0010
+-/* reset status register */
+-#define RCU_RST_STAT		0x0014
+-
+-/* xbar BE flag */
+-#define RCU_AHB_ENDIAN          0x004C
+-#define RCU_VR9_BE_AHB1S        0x00000008
+-
+-/* reboot bit */
+-#define RCU_RD_GPHY0_XRX200	BIT(31)
+-#define RCU_RD_SRST		BIT(30)
+-#define RCU_RD_GPHY1_XRX200	BIT(29)
+-
+-/* reset cause */
+-#define RCU_STAT_SHIFT		26
+-/* boot selection */
+-#define RCU_BOOT_SEL(x)		((x >> 18) & 0x7)
+-#define RCU_BOOT_SEL_XRX200(x)	(((x >> 17) & 0xf) | ((x >> 8) & 0x10))
+-
+-/* dwc2 USB configuration registers */
+-#define RCU_USB1CFG		0x0018
+-#define RCU_USB2CFG		0x0034
+-
+-/* USB DMA endianness bits */
+-#define RCU_USBCFG_HDSEL_BIT	BIT(11)
+-#define RCU_USBCFG_HOST_END_BIT	BIT(10)
+-#define RCU_USBCFG_SLV_END_BIT	BIT(9)
+-
+-/* USB reset bits */
+-#define RCU_USBRESET		0x0010
+-
+-#define USBRESET_BIT		BIT(4)
+-
+-#define RCU_USBRESET2		0x0048
+-
+-#define USB1RESET_BIT		BIT(4)
+-#define USB2RESET_BIT		BIT(5)
+-
+-#define RCU_CFG1A		0x0038
+-#define RCU_CFG1B		0x003C
+-
+-/* USB PMU devices */
+-#define PMU_AHBM		BIT(15)
+-#define PMU_USB0		BIT(6)
+-#define PMU_USB1		BIT(27)
+-
+-/* USB PHY PMU devices */
+-#define PMU_USB0_P		BIT(0)
+-#define PMU_USB1_P		BIT(26)
+-
+-/* remapped base addr of the reset control unit */
+-static void __iomem *ltq_rcu_membase;
+-static struct device_node *ltq_rcu_np;
+-
+-static void ltq_rcu_w32(uint32_t val, uint32_t reg_off)
 -{
--	u32 reg;
--
--	/* bit 1 as 1 --burst; bit 1 as 0 -- single */
--	reg = xbar_r32(XBAR_ALWAYS_LAST);
--	reg &= ~XBAR_FPI_BURST_EN;
--	xbar_w32(reg, XBAR_ALWAYS_LAST);
+-	ltq_w32(val, ltq_rcu_membase + reg_off);
 -}
 -
- /* enable a clockout source */
- static int clkout_enable(struct clk *clk)
- {
-@@ -459,26 +441,6 @@ void __init ltq_soc_init(void)
- 	if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
- 		panic("Failed to remap core resources");
- 
--	if (of_machine_is_compatible("lantiq,vr9")) {
--		struct resource res_xbar;
--		struct device_node *np_xbar =
--				of_find_compatible_node(NULL, NULL,
--							"lantiq,xbar-xway");
+-static uint32_t ltq_rcu_r32(uint32_t reg_off)
+-{
+-	return ltq_r32(ltq_rcu_membase + reg_off);
+-}
 -
--		if (!np_xbar)
--			panic("Failed to load xbar nodes from devicetree");
--		if (of_address_to_resource(np_xbar, 0, &res_xbar))
--			panic("Failed to get xbar resources");
--		if (!request_mem_region(res_xbar.start, resource_size(&res_xbar),
--			res_xbar.name))
--			panic("Failed to get xbar resources");
+-static void ltq_machine_restart(char *command)
+-{
+-	u32 val = ltq_rcu_r32(RCU_RST_REQ);
 -
--		ltq_xbar_membase = ioremap_nocache(res_xbar.start,
--						   resource_size(&res_xbar));
--		if (!ltq_xbar_membase)
--			panic("Failed to remap xbar resources");
--	}
+-	if (of_device_is_compatible(ltq_rcu_np, "lantiq,rcu-xrx200"))
+-		val |= RCU_RD_GPHY1_XRX200 | RCU_RD_GPHY0_XRX200;
 -
- 	/* make sure to unprotect the memory region where flash is located */
- 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
- 
-@@ -605,7 +567,4 @@ void __init ltq_soc_init(void)
- 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
- 		clkdev_add_pmu("1e100400.serial", NULL, 1, 0, PMU_ASC0);
- 	}
+-	val |= RCU_RD_SRST;
 -
--	if (of_machine_is_compatible("lantiq,vr9"))
--		xbar_fpi_burst_disable();
- }
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index 824b44281efa..009b5de74a24 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_ARCH_DOVE)		+= dove/
- obj-$(CONFIG_MACH_DOVE)		+= dove/
- obj-y				+= fsl/
- obj-$(CONFIG_ARCH_MXC)		+= imx/
-+obj-$(CONFIG_SOC_XWAY)		+= lantiq/
- obj-$(CONFIG_ARCH_MEDIATEK)	+= mediatek/
- obj-$(CONFIG_ARCH_QCOM)		+= qcom/
- obj-$(CONFIG_ARCH_RENESAS)	+= renesas/
-diff --git a/drivers/soc/lantiq/Makefile b/drivers/soc/lantiq/Makefile
-new file mode 100644
-index 000000000000..7411bd23d58e
---- /dev/null
-+++ b/drivers/soc/lantiq/Makefile
-@@ -0,0 +1 @@
-+obj-y				+= xbar.o
-diff --git a/drivers/soc/lantiq/xbar.c b/drivers/soc/lantiq/xbar.c
-new file mode 100644
-index 000000000000..89590e189efc
---- /dev/null
-+++ b/drivers/soc/lantiq/xbar.c
-@@ -0,0 +1,101 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2011-2015 John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ *  Copyright (C) 2015 Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-+ */
-+
-+#include <linux/ioport.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_address.h>
-+#include <linux/regmap.h>
-+
-+#include <lantiq_soc.h>
-+
-+#define XBAR_ALWAYS_LAST	0x430
-+#define XBAR_FPI_BURST_EN	BIT(1)
-+#define XBAR_AHB_BURST_EN	BIT(2)
-+
-+#define RCU_VR9_BE_AHB1S	0x00000008
-+
-+static int ltq_xbar_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = dev->of_node;
-+	struct resource res_xbar;
-+	struct regmap *rcu_regmap;
-+	void __iomem *xbar_membase;
-+	u32 rcu_ahb_endianness_reg_offset;
-+	u32 rcu_ahb_endianness_val;
-+	int ret;
-+
-+	ret = of_address_to_resource(np, 0, &res_xbar);
-+	if (ret) {
-+		dev_err(dev, "Failed to get xbar resources");
-+		return ret;
-+	}
-+
-+	if (!devm_request_mem_region(dev, res_xbar.start,
-+				     resource_size(&res_xbar),
-+		res_xbar.name)) {
-+		dev_err(dev, "Failed to get xbar resources");
-+		return -ENODEV;
-+	}
-+
-+	xbar_membase = devm_ioremap_nocache(dev, res_xbar.start,
-+						resource_size(&res_xbar));
-+	if (!xbar_membase) {
-+		dev_err(dev, "Failed to remap xbar resources");
-+		return -ENODEV;
-+	}
-+
-+	/* RCU configuration is optional */
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(np, "lantiq,rcu-syscon");
-+	if (!IS_ERR_OR_NULL(rcu_regmap)) {
-+		if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
-+			&rcu_ahb_endianness_reg_offset)) {
-+			dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
-+			return -EINVAL;
-+		}
-+
-+		if (of_device_is_big_endian(np))
-+			rcu_ahb_endianness_val = RCU_VR9_BE_AHB1S;
-+		else
-+			rcu_ahb_endianness_val = 0;
-+
-+		if (regmap_update_bits(rcu_regmap,
-+					rcu_ahb_endianness_reg_offset,
-+					RCU_VR9_BE_AHB1S,
-+					rcu_ahb_endianness_val))
-+			dev_warn(&pdev->dev,
-+				"Failed to configure RCU AHB endianness\n");
-+	}
-+
-+	/* disable fpi burst */
-+	ltq_w32_mask(XBAR_FPI_BURST_EN, 0,
-+		     xbar_membase + XBAR_ALWAYS_LAST);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id xbar_match[] = {
-+	{ .compatible = "lantiq,xbar-xway" },
-+	{ .compatible = "lantiq,xbar-xrx200" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, xbar_match);
-+
-+static struct platform_driver xbar_driver = {
-+	.probe = ltq_xbar_probe,
-+	.driver = {
-+		.name = "xbar-xway",
-+		.of_match_table = xbar_match,
-+	},
-+};
-+
-+builtin_platform_driver(xbar_driver);
+-	local_irq_disable();
+-	ltq_rcu_w32(val, RCU_RST_REQ);
+-	unreachable();
+-}
+-
+-static void ltq_machine_halt(void)
+-{
+-	local_irq_disable();
+-	unreachable();
+-}
+-
+-static void ltq_machine_power_off(void)
+-{
+-	local_irq_disable();
+-	unreachable();
+-}
+-
+-static int __init mips_reboot_setup(void)
+-{
+-	struct resource res;
+-
+-	ltq_rcu_np = of_find_compatible_node(NULL, NULL, "lantiq,rcu-xway");
+-	if (!ltq_rcu_np)
+-		ltq_rcu_np = of_find_compatible_node(NULL, NULL,
+-							"lantiq,rcu-xrx200");
+-
+-	/* check if all the reset register range is available */
+-	if (!ltq_rcu_np)
+-		panic("Failed to load reset resources from devicetree");
+-
+-	if (of_address_to_resource(ltq_rcu_np, 0, &res))
+-		panic("Failed to get rcu memory range");
+-
+-	if (!request_mem_region(res.start, resource_size(&res), res.name))
+-		pr_err("Failed to request rcu memory");
+-
+-	ltq_rcu_membase = ioremap_nocache(res.start, resource_size(&res));
+-	if (!ltq_rcu_membase)
+-		panic("Failed to remap core memory");
+-
+-	_machine_restart = ltq_machine_restart;
+-	_machine_halt = ltq_machine_halt;
+-	pm_power_off = ltq_machine_power_off;
+-
+-	return 0;
+-}
+-
+-arch_initcall(mips_reboot_setup);
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

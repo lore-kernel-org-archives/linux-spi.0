@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v5 3/6] spi: Document SPI slave controller support
-Date: Mon, 22 May 2017 15:11:42 +0200
-Message-ID: <1495458705-11692-4-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH v5 1/6] spi: Document DT bindings for SPI controllers in slave mode
+Date: Mon, 22 May 2017 15:11:40 +0200
+Message-ID: <1495458705-11692-2-git-send-email-geert+renesas@glider.be>
 References: <1495458705-11692-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -13,75 +13,138 @@ Cc: Rob Herring <robh+dt@kernel.org>,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-kernel@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1495458705-11692-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
-v3, v4, v5:
+v5:
   - No changes,
 
-v2:
-  - New.
----
- Documentation/spi/spi-summary | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+v4:
+  - Add Reviewed-by,
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index d1824b399b2d1d79..1721c1b570c32466 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -62,8 +62,8 @@ chips described as using "three wire" signaling: SCK, data, nCSx.
- (That data line is sometimes called MOMI or SISO.)
+v3:
+  - In SPI slave mode, represent the (single) slave device again as a
+    child of the controller node, which is now optional, and must be
+    named "slave" if present,
+  - Split slave node properties in master mode, slave mode, and common
+    properties,
+
+v2:
+  - Do not create a child node in SPI slave mode. Instead, add an
+    "spi-slave" property, and put the mode properties in the controller
+    node.
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 76 ++++++++++++++---------
+ 1 file changed, 45 insertions(+), 31 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 4b1d6e74c744fe96..1f6e86f787efd229 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -1,17 +1,23 @@
+ SPI (Serial Peripheral Interface) busses
  
- Microcontrollers often support both master and slave sides of the SPI
--protocol.  This document (and Linux) currently only supports the master
--side of SPI interactions.
-+protocol.  This document (and Linux) supports both the master and slave
-+sides of SPI interactions.
+-SPI busses can be described with a node for the SPI master device
+-and a set of child nodes for each SPI slave on the bus.  For this
+-discussion, it is assumed that the system's SPI controller is in
+-SPI master mode.  This binding does not describe SPI controllers
+-in slave mode.
++SPI busses can be described with a node for the SPI controller device
++and a set of child nodes for each SPI slave on the bus.  The system's SPI
++controller may be described for use in SPI master mode or in SPI slave mode,
++but not for both at the same time.
  
- 
- Who uses it?  On what kinds of systems?
-@@ -154,9 +154,8 @@ control audio interfaces, present touchscreen sensors as input interfaces,
- or monitor temperature and voltage levels during industrial processing.
- And those might all be sharing the same controller driver.
- 
--A "struct spi_device" encapsulates the master-side interface between
--those two types of driver.  At this writing, Linux has no slave side
--programming interface.
-+A "struct spi_device" encapsulates the controller-side interface between
-+those two types of drivers.
- 
- There is a minimal core of SPI programming interfaces, focussing on
- using the driver model to connect controller and protocol drivers using
-@@ -177,10 +176,24 @@ shows up in sysfs in several locations:
-    /sys/bus/spi/drivers/D ... driver for one or more spi*.* devices
- 
-    /sys/class/spi_master/spiB ... symlink (or actual device node) to
--	a logical node which could hold class related state for the
--	controller managing bus "B".  All spiB.* devices share one
-+	a logical node which could hold class related state for the SPI
-+	master controller managing bus "B".  All spiB.* devices share one
- 	physical SPI bus segment, with SCLK, MOSI, and MISO.
- 
-+   /sys/devices/.../CTLR/slave ... virtual file for (un)registering the
-+	slave device for an SPI slave controller.
-+	Writing the driver name of an SPI slave handler to this file
-+	registers the slave device; writing "(null)" unregisters the slave
-+	device.
-+	Reading from this file shows the name of the slave device ("(null)"
-+	if not registered).
+-The SPI master node requires the following properties:
++The SPI controller node requires the following properties:
++- compatible      - Name of SPI bus controller following generic names
++		    recommended practice.
 +
-+   /sys/class/spi_slave/spiB ... symlink (or actual device node) to
-+	a logical node which could hold class related state for the SPI
-+	slave controller on bus "B".  When registered, a single spiB.*
-+	device is present here, possible sharing the physical SPI bus
-+	segment with other SPI slave devices.
++In master mode, the SPI controller node requires the following additional
++properties:
+ - #address-cells  - number of cells required to define a chip select
+ 		address on the SPI bus.
+ - #size-cells     - should be zero.
+-- compatible      - name of SPI bus controller following generic names
+-		recommended practice.
 +
- Note that the actual location of the controller's class state depends
- on whether you enabled CONFIG_SYSFS_DEPRECATED or not.  At this time,
- the only class-specific state is the bus number ("B" in "spiB"), so
++In slave mode, the SPI controller node requires one additional property:
++- spi-slave       - Empty property.
++
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
+ 
+-Optional properties:
++Optional properties (master mode only):
+ - cs-gpios	  - gpios chip select.
+ - num-cs	  - total number of chipselects.
+ 
+@@ -41,28 +47,36 @@ cs1 : native
+ cs2 : &gpio1 1 0
+ cs3 : &gpio1 2 0
+ 
+-SPI slave nodes must be children of the SPI master node and can
+-contain the following properties.
+-- reg             - (required) chip select address of device.
+-- compatible      - (required) name of SPI device following generic names
+-		recommended practice.
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
+-- spi-cpol        - (optional) Empty property indicating device requires
+-		inverse clock polarity (CPOL) mode.
+-- spi-cpha        - (optional) Empty property indicating device requires
+-		shifted clock phase (CPHA) mode.
+-- spi-cs-high     - (optional) Empty property indicating device requires
+-		chip select active high.
+-- spi-3wire       - (optional) Empty property indicating device requires
+-		3-wire mode.
+-- spi-lsb-first   - (optional) Empty property indicating device requires
+-		LSB first mode.
+-- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MOSI. Defaults to 1 if not present.
+-- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
+-                      used for MISO. Defaults to 1 if not present.
+-- spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
+-- spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
++
++SPI slave nodes must be children of the SPI controller node.
++
++In master mode, one or more slave nodes (up to the number of chip selects) can
++be present.  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
++- reg             - Chip select address of device.
++- spi-max-frequency - Maximum SPI clocking speed of device in Hz.
++
++In slave mode, the (single) slave node is optional.
++If present, it must be called "slave".  Required properties are:
++- compatible      - Name of SPI device following generic names recommended
++		    practice.
++
++All slave nodes can contain the following optional properties:
++- spi-cpol        - Empty property indicating device requires inverse clock
++		    polarity (CPOL) mode.
++- spi-cpha        - Empty property indicating device requires shifted clock
++		    phase (CPHA) mode.
++- spi-cs-high     - Empty property indicating device requires chip select
++		    active high.
++- spi-3wire       - Empty property indicating device requires 3-wire mode.
++- spi-lsb-first   - Empty property indicating device requires LSB first mode.
++- spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
++		    Defaults to 1 if not present.
++- spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
++		    Defaults to 1 if not present.
++- spi-rx-delay-us - Microsecond delay after a read transfer.
++- spi-tx-delay-us - Microsecond delay after a write transfer.
+ 
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+ It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
 -- 
 2.7.4

@@ -1,71 +1,52 @@
-From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [PATCH 1/2] spi: orion: Handle GPIO chip-selects
-Date: Tue, 23 May 2017 16:03:21 +1200
-Message-ID: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
-Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 2/2] spi: use gpio_desc instead of numeric gpio
+Date: Tue, 23 May 2017 16:03:22 +1200
+Message-ID: <20170523040322.10433-2-chris.packham@alliedtelesis.co.nz>
+References: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Some hardware designs use GPIOs to add (or supplement) the SPI
-chip-select so that more than one SPI slave device can be used.
+By using a gpio_desc and gpiod_set_value() instead of a numeric gpio and
+gpio_set_value() the gpio flags are taken into account. This is useful
+when using a gpio chip-select to supplement a controllers native
+chip-select.
 
-For this to work with the spi-orion driver the SPI_MASTER_GPIO_SS flag
-needs to be set (because the other outputs are gated internally by the
-CS) and the correct chip-select (in this case CS0) needs to be driven by
-the controller.
-
-Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-orion.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index be2e87ee8b31..28fc9f161b9d 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -22,6 +22,7 @@
- #include <linux/of_device.h>
- #include <linux/clk.h>
- #include <linux/sizes.h>
-+#include <linux/gpio.h>
- #include <asm/unaligned.h>
+Notes:
+    My specific use-case is I have a board that uses the spi-orion driver but
+    only has one CS pin available. In order to access two spi slave devices the
+    board has a 1-of-2 decoder/demultiplexer which is driven via a gpio.
+    
+    The problem is that for one of the 2 slave devices the gpio level required
+    is opposite to the chip-select so I can't simply specify "spi-cs-high".
+    With this change I can flag the gpio as active low and the gpio subsystem
+    takes care of the additional inversion required.
+
+ drivers/spi/spi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6f87fec409b5..b39c0f9956dd 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -725,7 +725,10 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 		enable = !enable;
  
- #define DRIVER_NAME			"orion_spi"
-@@ -320,12 +321,18 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- static void orion_spi_set_cs(struct spi_device *spi, bool enable)
- {
- 	struct orion_spi *orion_spi;
-+	int cs;
+ 	if (gpio_is_valid(spi->cs_gpio)) {
+-		gpio_set_value(spi->cs_gpio, !enable);
++		struct gpio_desc *gpio = gpio_to_desc(spi->cs_gpio);
 +
-+	if (gpio_is_valid(spi->cs_gpio))
-+		cs = 0;
-+	else
-+		cs = spi->chip_select;
- 
- 	orion_spi = spi_master_get_devdata(spi->master);
- 
- 	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, ORION_SPI_CS_MASK);
- 	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
--				ORION_SPI_CS(spi->chip_select));
-+				ORION_SPI_CS(cs));
- 
- 	/* Chip select logic is inverted from spi_set_cs */
- 	if (!enable)
-@@ -606,6 +613,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	master->setup = orion_spi_setup;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
- 	master->auto_runtime_pm = true;
-+	master->flags = SPI_MASTER_GPIO_SS;
- 
- 	platform_set_drvdata(pdev, master);
- 
++		if (gpio)
++			gpiod_set_value(gpio, !enable);
+ 		/* Some SPI masters need both GPIO CS & slave_select */
+ 		if ((spi->master->flags & SPI_MASTER_GPIO_SS) &&
+ 		    spi->master->set_cs)
 -- 
 2.13.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

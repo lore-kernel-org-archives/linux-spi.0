@@ -1,21 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: ensure non-zero return on error path" to the spi tree
-Date: Tue, 23 May 2017 19:22:45 +0100
-Message-ID: <E1dDESD-000357-CH@debutante>
-References: <20170522131920.4828-1-nikita.yoush@cogentembedded.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Subject: Applied "spi: imx: only allow dynamic burst in PIO mode" to the spi tree
+Date: Tue, 23 May 2017 19:22:48 +0100
+Message-ID: <E1dDESG-000368-Ay@debutante>
+References: <20170522045155.9406-1-jiada_wang@mentor.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Chris Healy <Chris.Healy-c8ZVq/bFV1I@public.gmane.org>,
-        Jeff White <Jeff.White-c8ZVq/bFV1I@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nikita Yushchenko <nikita.yoush-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170522131920.4828-1-nikita.yoush-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20170522045155.9406-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-fsl-dspi: ensure non-zero return on error path
+   spi: imx: only allow dynamic burst in PIO mode
 
 has been applied to the spi tree at
 
@@ -40,34 +39,37 @@ to this mail.
 Thanks,
 Mark
 
->From cddebdd19c8e6cc41e04ac91c68000ff8c48383c Mon Sep 17 00:00:00 2001
-From: Nikita Yushchenko <nikita.yoush-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Date: Mon, 22 May 2017 16:19:20 +0300
-Subject: [PATCH] spi: spi-fsl-dspi: ensure non-zero return on error path
+>From 1ce1c618e6b51e80ed1fc8838c01ae8f41582155 Mon Sep 17 00:00:00 2001
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Date: Mon, 22 May 2017 13:51:55 +0900
+Subject: [PATCH] spi: imx: only allow dynamic burst in PIO mode
 
-Propagate error return from dspi_request_dma() into probe routine's
-return.
+Currently only PIO mode supports dynamic burst length adjust,
+in DMA mode, bpw (bytes per word) value still has to be used
+as burst length, other wise transfer issue will be caused.
 
-Signed-off-by: Nikita Yushchenko <nikita.yoush-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+This patch avoid using dynamic burst in DMA mode by set
+reset dynamic_burst when DMA mode is used.
+
+Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Reported-and-tested-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 15201645bdc4..d89127f4a46d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1032,7 +1032,8 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto out_master_put;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index b402530a7a9a..2ecbbd04aa55 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -238,6 +238,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 		return false;
  
- 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
--		if (dspi_request_dma(dspi, res->start)) {
-+		ret = dspi_request_dma(dspi, res->start);
-+		if (ret < 0) {
- 			dev_err(&pdev->dev, "can't get dma channels\n");
- 			goto out_clk_put;
- 		}
+ 	spi_imx->wml = i;
++	spi_imx->dynamic_burst = 0;
+ 
+ 	return true;
+ }
 -- 
 2.11.0
 

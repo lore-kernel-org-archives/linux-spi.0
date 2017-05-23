@@ -1,100 +1,231 @@
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Subject: Re: [PATCH 2/2] spi: use gpio_desc instead of numeric gpio
-Date: Tue, 23 May 2017 20:43:13 +0000
-Message-ID: <ca3b3f5247624a35b8203472a53df79a@svr-chch-ex1.atlnz.lc>
-References: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
- <20170523040322.10433-2-chris.packham@alliedtelesis.co.nz>
- <CAHp75VcHktwnXg26sq6x=EqM6TFAEc6yQrRFZQu1CCpYYfq6wQ@mail.gmail.com>
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH v2 07/15] MIPS: lantiq: Convert the xbar driver to a
+ platform_driver
+Date: Tue, 23 May 2017 22:56:42 +0200
+Message-ID: <181f21fa-14ac-5d3c-d9b1-543c43869fb5@hauke-m.de>
+References: <20170521130918.27446-1-hauke@hauke-m.de>
+ <20170521130918.27446-8-hauke@hauke-m.de>
+ <71c88b1c-3ed1-8f30-1dbd-dbd4c7bb5cdc@phrozen.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>, ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <71c88b1c-3ed1-8f30-1dbd-dbd4c7bb5cdc-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Andy,=0A=
-=0A=
-On 24/05/17 06:28, Andy Shevchenko wrote:=0A=
-> On Tue, May 23, 2017 at 7:03 AM, Chris Packham=0A=
-> <chris.packham@alliedtelesis.co.nz> wrote:=0A=
->> By using a gpio_desc and gpiod_set_value() instead of a numeric gpio and=
-=0A=
->> gpio_set_value() the gpio flags are taken into account. This is useful=
-=0A=
->> when using a gpio chip-select to supplement a controllers native=0A=
->> chip-select.=0A=
->=0A=
-> I think would be better to move everything in SPI core to GPIO descriptor=
-s.=0A=
-=0A=
-I did consider it but it's a big change and I don't have access a lot of =
-=0A=
-gear to test on (maybe 2 or 3 SoCs with a SPI host controller and the =0A=
-same SPI-NOR chips).=0A=
-=0A=
-I can give it a try. Perhaps converting the spi core structures over and =
-=0A=
-leaving the slaves using numeric gpios. Then later converting the slaves.=
-=0A=
-=0A=
->=0A=
->>=0A=
->> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>=0A=
->> ---=0A=
->>=0A=
->> Notes:=0A=
->>      My specific use-case is I have a board that uses the spi-orion driv=
-er but=0A=
->>      only has one CS pin available. In order to access two spi slave dev=
-ices the=0A=
->>      board has a 1-of-2 decoder/demultiplexer which is driven via a gpio=
-.=0A=
->>=0A=
->>      The problem is that for one of the 2 slave devices the gpio level r=
-equired=0A=
->>      is opposite to the chip-select so I can't simply specify "spi-cs-hi=
-gh".=0A=
->>      With this change I can flag the gpio as active low and the gpio sub=
-system=0A=
->>      takes care of the additional inversion required.=0A=
->>=0A=
->>   drivers/spi/spi.c | 5 ++++-=0A=
->>   1 file changed, 4 insertions(+), 1 deletion(-)=0A=
->>=0A=
->> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c=0A=
->> index 6f87fec409b5..b39c0f9956dd 100644=0A=
->> --- a/drivers/spi/spi.c=0A=
->> +++ b/drivers/spi/spi.c=0A=
->> @@ -725,7 +725,10 @@ static void spi_set_cs(struct spi_device *spi, bool=
- enable)=0A=
->>                  enable =3D !enable;=0A=
->>=0A=
->>          if (gpio_is_valid(spi->cs_gpio)) {=0A=
->> -               gpio_set_value(spi->cs_gpio, !enable);=0A=
->> +               struct gpio_desc *gpio =3D gpio_to_desc(spi->cs_gpio);=
-=0A=
->> +=0A=
->> +               if (gpio)=0A=
->> +                       gpiod_set_value(gpio, !enable);=0A=
->>                  /* Some SPI masters need both GPIO CS & slave_select */=
-=0A=
->>                  if ((spi->master->flags & SPI_MASTER_GPIO_SS) &&=0A=
->>                      spi->master->set_cs)=0A=
->> --=0A=
->> 2.13.0=0A=
->>=0A=
->> --=0A=
->> To unsubscribe from this list: send the line "unsubscribe linux-spi" in=
-=0A=
->> the body of a message to majordomo@vger.kernel.org=0A=
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html=0A=
->=0A=
->=0A=
->=0A=
-=0A=
-=0A=
+On 05/22/2017 07:30 AM, John Crispin wrote:
+> 
+> 
+> On 21/05/17 15:09, Hauke Mehrtens wrote:
+>> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+>>
+>> This allows using the xbar driver on ARX300 based SoCs which require the
+>> same xbar setup as the xRX200 chipsets because the xbar driver
+>> initialization is not guarded by an xRX200 specific
+>> of_machine_is_compatible condition anymore. Additionally the new driver
+>> takes a syscon phandle to configure the XBAR endianness bits in RCU
+>> (before this was done in arch/mips/lantiq/xway/reset.c and also
+>> guarded by an VRX200 specific if-statement).
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+>> Signed-off-by: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+>> ---
+>>   .../devicetree/bindings/mips/lantiq/xbar.txt       |  24 +++++
+>>   MAINTAINERS                                        |   1 +
+>>   arch/mips/lantiq/xway/reset.c                      |   4 -
+>>   arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
+>>   drivers/soc/Makefile                               |   1 +
+>>   drivers/soc/lantiq/Makefile                        |   1 +
+>>   drivers/soc/lantiq/xbar.c                          | 101
+>> +++++++++++++++++++++
+>>   7 files changed, 128 insertions(+), 45 deletions(-)
+>>   create mode 100644
+>> Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>   create mode 100644 drivers/soc/lantiq/Makefile
+>>   create mode 100644 drivers/soc/lantiq/xbar.c
+>>
+>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> new file mode 100644
+>> index 000000000000..7e1ea5299744
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> @@ -0,0 +1,24 @@
+>> +Lantiq XWAY SoC XBAR binding
+>> +============================
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>>
+>> +Required properties:
+>> +- compatible    : Should be one of
+>> +                "lantiq,xbar-xway"
+>> +                "lantiq,xbar-xrx200"
+>> +- reg        : The address and length of the XBAR registers
+>> +
+>> +Optional properties:
+>> +- lantiq,rcu-syscon    : A phandle and offset to the endianness
+>> configuration
+>> +              registers in the RCU module
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>>
+>> +Example for the XBAR on the xRX200 SoCs:
+>> +    xbar0: xbar@400000 {
+>> +        compatible = "lantiq,xbar-xway";
+>> +        reg = <0x400000 0x1000>;
+>> +        big-endian;
+>> +        lantiq,rcu-syscon = <&rcu0 0x4c>;
+>> +    };
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index f7d568b8f133..11c33f7d63ba 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -7434,6 +7434,7 @@ M:    John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
+>>   L:    linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+>>   S:    Maintained
+>>   F:    arch/mips/lantiq
+>> +F:    drivers/soc/lantiq
+>>     LAPB module
+>>   L:    linux-x25-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>> diff --git a/arch/mips/lantiq/xway/reset.c
+>> b/arch/mips/lantiq/xway/reset.c
+>> index 83fd65d76e81..b6752c95a600 100644
+>> --- a/arch/mips/lantiq/xway/reset.c
+>> +++ b/arch/mips/lantiq/xway/reset.c
+>> @@ -373,10 +373,6 @@ static int __init mips_reboot_setup(void)
+>>           of_machine_is_compatible("lantiq,vr9"))
+>>           ltq_usb_init();
+>>   -    if (of_machine_is_compatible("lantiq,vr9"))
+>> -        ltq_rcu_w32(ltq_rcu_r32(RCU_AHB_ENDIAN) | RCU_VR9_BE_AHB1S,
+>> -                RCU_AHB_ENDIAN);
+>> -
+>>       _machine_restart = ltq_machine_restart;
+>>       _machine_halt = ltq_machine_halt;
+>>       pm_power_off = ltq_machine_power_off;
+>> diff --git a/arch/mips/lantiq/xway/sysctrl.c
+>> b/arch/mips/lantiq/xway/sysctrl.c
+>> index 95bec460b651..706639a343bc 100644
+>> --- a/arch/mips/lantiq/xway/sysctrl.c
+>> +++ b/arch/mips/lantiq/xway/sysctrl.c
+>> @@ -145,15 +145,7 @@ static u32 pmu_clk_cr_b[] = {
+>>   #define pmu_w32(x, y)    ltq_w32((x), pmu_membase + (y))
+>>   #define pmu_r32(x)    ltq_r32(pmu_membase + (x))
+>>   -#define XBAR_ALWAYS_LAST    0x430
+>> -#define XBAR_FPI_BURST_EN    BIT(1)
+>> -#define XBAR_AHB_BURST_EN    BIT(2)
+>> -
+>> -#define xbar_w32(x, y)    ltq_w32((x), ltq_xbar_membase + (y))
+>> -#define xbar_r32(x)    ltq_r32(ltq_xbar_membase + (x))
+>> -
+>>   static void __iomem *pmu_membase;
+>> -static void __iomem *ltq_xbar_membase;
+>>   void __iomem *ltq_cgu_membase;
+>>   void __iomem *ltq_ebu_membase;
+>>   @@ -293,16 +285,6 @@ static void pci_ext_disable(struct clk *clk)
+>>       ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
+>>   }
+>>   -static void xbar_fpi_burst_disable(void)
+>> -{
+>> -    u32 reg;
+>> -
+>> -    /* bit 1 as 1 --burst; bit 1 as 0 -- single */
+>> -    reg = xbar_r32(XBAR_ALWAYS_LAST);
+>> -    reg &= ~XBAR_FPI_BURST_EN;
+>> -    xbar_w32(reg, XBAR_ALWAYS_LAST);
+>> -}
+>> -
+>>   /* enable a clockout source */
+>>   static int clkout_enable(struct clk *clk)
+>>   {
+>> @@ -459,26 +441,6 @@ void __init ltq_soc_init(void)
+>>       if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
+>>           panic("Failed to remap core resources");
+>>   -    if (of_machine_is_compatible("lantiq,vr9")) {
+>> -        struct resource res_xbar;
+>> -        struct device_node *np_xbar =
+>> -                of_find_compatible_node(NULL, NULL,
+>> -                            "lantiq,xbar-xway");
+>> -
+>> -        if (!np_xbar)
+>> -            panic("Failed to load xbar nodes from devicetree");
+>> -        if (of_address_to_resource(np_xbar, 0, &res_xbar))
+>> -            panic("Failed to get xbar resources");
+>> -        if (!request_mem_region(res_xbar.start,
+>> resource_size(&res_xbar),
+>> -            res_xbar.name))
+>> -            panic("Failed to get xbar resources");
+>> -
+>> -        ltq_xbar_membase = ioremap_nocache(res_xbar.start,
+>> -                           resource_size(&res_xbar));
+>> -        if (!ltq_xbar_membase)
+>> -            panic("Failed to remap xbar resources");
+>> -    }
+>> -
+>>       /* make sure to unprotect the memory region where flash is
+>> located */
+>>       ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS,
+>> LTQ_EBU_BUSCON0);
+>>   @@ -605,7 +567,4 @@ void __init ltq_soc_init(void)
+>>           clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+>>           clkdev_add_pmu("1e100400.serial", NULL, 1, 0, PMU_ASC0);
+>>       }
+>> -
+>> -    if (of_machine_is_compatible("lantiq,vr9"))
+>> -        xbar_fpi_burst_disable();
+>>   }
+>> diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
+>> index 824b44281efa..009b5de74a24 100644
+>> --- a/drivers/soc/Makefile
+>> +++ b/drivers/soc/Makefile
+>> @@ -8,6 +8,7 @@ obj-$(CONFIG_ARCH_DOVE)        += dove/
+>>   obj-$(CONFIG_MACH_DOVE)        += dove/
+>>   obj-y                += fsl/
+>>   obj-$(CONFIG_ARCH_MXC)        += imx/
+>> +obj-$(CONFIG_SOC_XWAY)        += lantiq/
+>>   obj-$(CONFIG_ARCH_MEDIATEK)    += mediatek/
+>>   obj-$(CONFIG_ARCH_QCOM)        += qcom/
+>>   obj-$(CONFIG_ARCH_RENESAS)    += renesas/
+>> diff --git a/drivers/soc/lantiq/Makefile b/drivers/soc/lantiq/Makefile
+>> new file mode 100644
+>> index 000000000000..7411bd23d58e
+>> --- /dev/null
+>> +++ b/drivers/soc/lantiq/Makefile
+>> @@ -0,0 +1 @@
+>> +obj-y                += xbar.o
+>> diff --git a/drivers/soc/lantiq/xbar.c b/drivers/soc/lantiq/xbar.c
+>> new file mode 100644
+>> index 000000000000..89590e189efc
+>> --- /dev/null
+>> +++ b/drivers/soc/lantiq/xbar.c
+>> @@ -0,0 +1,101 @@
+>> +/*
+>> + *  This program is free software; you can redistribute it and/or
+>> modify it
+>> + *  under the terms of the GNU General Public License version 2 as
+>> published
+>> + *  by the Free Software Foundation.
+>> + *
+>> + *  Copyright (C) 2011-2015 John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> 
+> Hi Hauke,
+> 
+> my openwrt email addr is no longer valid. please use my phrozen.org one.
+> 
+>     John
+
+Sorry, I fixed that in all patches.
+
+Hauke
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

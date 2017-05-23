@@ -1,13 +1,13 @@
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH] spi: orion: Handle GPIO chip-selects
-Date: Tue, 23 May 2017 12:45:31 +1200
-Message-ID: <20170523004531.17538-1-chris.packham@alliedtelesis.co.nz>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Subject: [PATCH 1/2] spi: orion: Handle GPIO chip-selects
+Date: Tue, 23 May 2017 16:03:21 +1200
+Message-ID: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
+Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 Some hardware designs use GPIOs to add (or supplement) the SPI
 chip-select so that more than one SPI slave device can be used.
@@ -17,7 +17,7 @@ needs to be set (because the other outputs are gated internally by the
 CS) and the correct chip-select (in this case CS0) needs to be driven by
 the controller.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 ---
  drivers/spi/spi-orion.c | 10 +++++++++-
  1 file changed, 9 insertions(+), 1 deletion(-)
@@ -63,4 +63,9 @@ index be2e87ee8b31..28fc9f161b9d 100644
  	platform_set_drvdata(pdev, master);
  
 -- 
-2.11.0.24.ge6920cf
+2.13.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

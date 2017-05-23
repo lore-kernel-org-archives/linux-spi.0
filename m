@@ -1,70 +1,122 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: add null check before pointer dereference
-Date: Tue, 23 May 2017 09:33:25 +0200
-Message-ID: <CAMuHMdVNTT9JJvZ_SuSUkAPMqYOmdG-4zLggwaT_ObStbGG_ow@mail.gmail.com>
-References: <20170523002507.GA16670@embeddedgus> <CAJKOXPepyk6KtSUNXymjMkT6qTX9PnCC1LvTC4y_2dL0nZ-kMA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 11/15] MIPS: lantiq: Add a GPHY driver which uses the
+ RCU syscon-mfd
+Date: Tue, 23 May 2017 10:52:12 +0300
+Message-ID: <CAHp75VdSAGv0md8YsvwdZJX4Eo-K6Tv3TcyAVKfOmdk6De1iGQ@mail.gmail.com>
+References: <20170521130918.27446-1-hauke@hauke-m.de> <20170521130918.27446-12-hauke@hauke-m.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: "Gustavo A. R. Silva" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-        <linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAJKOXPepyk6KtSUNXymjMkT6qTX9PnCC1LvTC4y_2dL0nZ-kMA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Linux MIPS Mailing List <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "martin.blumenstingl" <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+        john <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "hauke.mehrtens" <hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170521130918.27446-12-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 23, 2017 at 9:24 AM, Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, May 23, 2017 at 2:25 AM, Gustavo A. R. Silva
-> <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org> wrote:
->> Add null check before dereferencing pointer desc
->>
->> Addresses-Coverity-ID: 1397997
->> Signed-off-by: Gustavo A. R. Silva <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>
->> ---
->>  drivers/spi/spi-s3c64xx.c | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
->> index b392cca..9f1013e 100644
->> --- a/drivers/spi/spi-s3c64xx.c
->> +++ b/drivers/spi/spi-s3c64xx.c
->> @@ -306,6 +306,12 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
->>         desc = dmaengine_prep_slave_sg(dma->ch, sgt->sgl, sgt->nents,
->>                                        dma->direction, DMA_PREP_INTERRUPT);
->>
->> +       if (!desc) {
->> +               dev_err(&sdd->master->dev,
->> +                       "%s:dmaengine_prep_slave_sg Failed\n", __func__);
->> +               return;
->> +       }
->
-> Although the check itself looks needed, but I think you did not handle
-> the error at all. You just bail out before submitting dma descriptor
-> but except that, everything else goes like there was no error. It
-> might work, might not... did you test this error path? How does it
-> behave?
+On Sun, May 21, 2017 at 4:09 PM, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org> wrote:
 
-I.e. does it fall back to PIO?
+> Compared to the old xrx200_phy_fw driver the new version has multiple
+> enhancements. The name of the firmware files does not have to be added
+> to all .dts files anymore - one now configures the GPHY mode (FE or GE)
+> instead. Each GPHY can now also boot separate firmware (thus mixing of
+> GE and FE GPHYs is now possible).
+> The new implementation is based on the RCU syscon-mfd and uses the
+> reeset_controller framework instead of raw RCU register reads/writes.
 
-Gr{oetje,eeting}s,
+> +static int xway_gphy_load(struct platform_device *pdev,
+> +                         const char *fw_name, dma_addr_t *dev_addr)
+> +{
+> +       const struct firmware *fw;
+> +       void *fw_addr;
+> +       size_t size;
+> +       int ret;
+> +
 
-                        Geert
+> +       dev_info(&pdev->dev, "requesting %s\n", fw_name);
 
+Noise.
+
+> +       ret = request_firmware(&fw, fw_name, &pdev->dev);
+> +       if (ret) {
+> +               dev_err(&pdev->dev, "failed to load firmware: %s, error: %i\n",
+> +                       fw_name, ret);
+> +               return ret;
+> +       }
+> +
+
+> +       /*
+> +        * GPHY cores need the firmware code in a persistent and contiguous
+> +        * memory area with a 16 kB boundary aligned start address
+
+Add period to the end.
+
+> +        */
+
+> +static int xway_gphy_of_probe(struct platform_device *pdev,
+> +                               struct xway_gphy_priv *priv)
+> +{
+
+> +       priv->gphy_reset = devm_reset_control_get(&pdev->dev, "gphy");
+> +       if (IS_ERR_OR_NULL(priv->gphy_reset)) {
+
+_OR_NULL part looks suspicious.
+There is _optional() variant of reset API, AFAIR.
+
+> +               if (PTR_ERR(priv->gphy_reset) != -EPROBE_DEFER)
+> +                       dev_err(&pdev->dev, "Failed to lookup gphy reset\n");
+> +               return PTR_ERR(priv->gphy_reset);
+> +       }
+
+> +       priv->gphy_reset2 = devm_reset_control_get_optional(&pdev->dev, "gphy2");
+> +       if (IS_ERR(priv->gphy_reset2)) {
+> +               if (PTR_ERR(priv->gphy_reset2) == -EPROBE_DEFER)
+> +                       return PTR_ERR(priv->gphy_reset2);
+
+> +               priv->gphy_reset2 = NULL;
+
+Why?
+
+If there is a problem in reset framework it should be fixed there, not here.
+
+> +       }
+> +
+> +       if (of_property_read_u32(np, "lantiq,gphy-mode", &gphy_mode))
+
+> +               /* Default to GE mode */
+
+If you put more lines in the branch you perhaps need {}.
+
+> +               gphy_mode = GPHY_MODE_GE;
+
+> +static int xway_gphy_probe(struct platform_device *pdev)
+> +{
+> +       struct xway_gphy_priv *priv;
+> +       dma_addr_t fw_addr = 0;
+> +       int ret;
+
+> +       if (!IS_ERR_OR_NULL(priv->gphy_clk_gate))
+
+_OR_NULL is redundant.
+IS_ERR should not happen here if clock is mandatory.
+
+Thus, complete line is redundant.
+
+> +               clk_prepare_enable(priv->gphy_clk_gate);
+
+You need to check return value.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

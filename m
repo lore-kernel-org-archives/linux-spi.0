@@ -1,44 +1,53 @@
-From: <jiada_wang@mentor.com>
-Subject: [PATCH linux-next v2 1/2] spi: imx: only allow dynamic burst in PIO mode
-Date: Tue, 23 May 2017 07:35:28 -0700
-Message-ID: <1495550129-3489-2-git-send-email-jiada_wang@mentor.com>
-References: <1495550129-3489-1-git-send-email-jiada_wang@mentor.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] Revert "spi: imx: dynamic burst length adjust for PIO
+ mode"
+Date: Tue, 23 May 2017 19:22:38 +0100
+Message-ID: <20170523182238.fekbuuzgah6occrz@sirena.org.uk>
+References: <20170523123827.22408-1-s.hauer@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Jiada Wang <jiada_wang@mentor.com>
-To: <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1495550129-3489-1-git-send-email-jiada_wang@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7nx5jt7rwbfb5afk"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170523123827.22408-1-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Jiada Wang <jiada_wang@mentor.com>
 
-Currently only PIO mode supports dynamic burst length adjust,
-in DMA mode, bpw (bytes per word) value still has to be used
-as burst length, other wise transfer issue will be caused.
+--7nx5jt7rwbfb5afk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch avoid using dynamic burst in DMA mode by set
-reset dynamic_burst when DMA mode is used.
+On Tue, May 23, 2017 at 02:38:27PM +0200, Sascha Hauer wrote:
+> This reverts commits 8d4a6cad7adb3ddac32cd52635f20e11de11a658 and
+> 179547e143e773f9f866ad3536275ab627711f3a.
 
-Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
-Reported-and-tested-by: Fabio Estevam <fabio.estevam@nxp.com>
----
- drivers/spi/spi-imx.c | 1 +
- 1 file changed, 1 insertion(+)
+Please submit patches using subject lines reflecting the style for the
+subsystem.  This makes it easier for people to identify relevant
+patches.  Look at what existing commits in the area you're changing are
+doing and make sure your subject lines visually resemble what they're
+doing.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 19b30cf..2768e64 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -242,6 +242,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 		return false;
- 
- 	spi_imx->wml = i;
-+	spi_imx->dynamic_burst = 0;
- 
- 	return true;
- }
--- 
-2.7.4
+--7nx5jt7rwbfb5afk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkkfe0ACgkQJNaLcl1U
+h9AGewf/XyW438NCvYPCrDK22Ki10/Db+DhQbnYfPrW/eIyK4F54hdl+VZUI1EI0
+g6sSCu/pYmvlXYtRJd849/RZ9BnzSnjBoGPhSiJKGe3OjbHBg0iN5wufmcxEh6RV
+Tnv630p1ZkhUCumT/Uc9U9JZfvw2fCzmvCw4iak9hKCCzj7pLrziyEyIVpaTMpN7
+NJkG4EsJ/t7nMYK80BmYcocbzVrO7egbFwHnSbFd6WDLlbQQJWSgS3fjMJLfX2eo
+jiKggEslK3GGLtGVkA1Stzq5t5Hdo007UmWR7lte4GE4Lt4xrvRryfaNIRYKi+Mr
+4kPD4/kNfR+0CdZ6KUjHHRxudTO0Pw==
+=awOI
+-----END PGP SIGNATURE-----
+
+--7nx5jt7rwbfb5afk--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

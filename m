@@ -1,417 +1,304 @@
-From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: Re: [PATCH v2 09/15] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-Date: Tue, 23 May 2017 23:25:25 +0200
-Message-ID: <2f809dc7-53c6-ebf9-53c1-466bf34e39db@hauke-m.de>
-References: <20170521130918.27446-1-hauke@hauke-m.de>
- <20170521130918.27446-10-hauke@hauke-m.de>
- <1495445613.3558.67.camel@pengutronix.de>
+From: kbuild test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: use gpio_desc instead of numeric gpio
+Date: Wed, 24 May 2017 10:23:54 +0800
+Message-ID: <201705241058.MgeUe0J5%fengguang.wu@intel.com>
+References: <20170523040322.10433-2-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1495445613.3558.67.camel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/mixed; boundary="HlL+5n6rz5pIUxbD"
+Cc: kbuild-all-JC7UmRfGjtg@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170523040322.10433-2-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05/22/2017 11:33 AM, Philipp Zabel wrote:
-> Hi Hauke,
-> 
-> thank you for the patch. I have a few questions and comments below:
-> 
-> On Sun, 2017-05-21 at 15:09 +0200, Hauke Mehrtens wrote:
->> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
->>
->> The reset controllers (on xRX200 and newer SoCs have two of them) are
->> provided by the RCU module. This was initially implemented as a simple
->> reset controller. However, the RCU module provides more functionality
->> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
->> The old reset controller driver implementation from
->> arch/mips/lantiq/xway/reset.c did not honor this fact.
-> 
-> Does this driver replace arch/mips/lantiq/xway/reset.c?
 
-This serial consists of multiple patches which are all together
-replacing this code. The RCU register block does controls multiple
-blocks in the SoC. One is the reset controller, but also the GPHY FW
-loading and some other unrelated stuff.
+--HlL+5n6rz5pIUxbD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> For some devices the request and the status bits are different.
->>
->> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
->> Cc: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->> ---
->>  .../devicetree/bindings/reset/lantiq,rcu-reset.txt |  30 +++
->>  drivers/reset/Kconfig                              |   6 +
->>  drivers/reset/Makefile                             |   1 +
->>  drivers/reset/reset-lantiq-rcu.c                   | 201 +++++++++++++++++++++
->>  4 files changed, 238 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
->>  create mode 100644 drivers/reset/reset-lantiq-rcu.c
->>
->> diff --git a/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt b/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
->> new file mode 100644
->> index 000000000000..ac57c4a1b191
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/reset/lantiq,rcu-reset.txt
->> @@ -0,0 +1,30 @@
->> +Lantiq XWAY SoC RCU reset controller binding
->> +============================================
->> +
->> +This binding describes a reset-controller found on the RCU module on Lantiq
->> +XWAY SoCs.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties (controller (parent) node):
->> +- compatible		: Should be "lantiq,rcu-reset"
->> +- lantiq,rcu-syscon	: A phandle to the RCU syscon, the reset register
->> +			  offset and the status register offset.
->> +- #reset-cells		: Specifies the number of cells needed to encode the
->> +			  reset line, should be 2.
->> +			  The first cell takes the reset set bit and the
->> +			  second cell takes the status bit.
->> +
->> +-------------------------------------------------------------------------------
->> +Example for the reset-controllers on the xRX200 SoCs:
->> +	rcu_reset0: rcu_reset {
-> 
-> I'd prefer
-> 	rcu_reset0: reset-controller {
+Hi Chris,
 
-Ok I will change this
+[auto build test ERROR on spi/for-next]
+[also build test ERROR on v4.12-rc2 next-20170523]
+[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 
->> +		compatible = "lantiq,rcu-reset";
->> +		lantiq,rcu-syscon = <&rcu0 0x10 0x14>;
->> +		#reset-cells = <2>;
->> +	};
->> +
->> +	rcu_reset1: rcu_reset {
->> +		compatible = "lantiq,rcu-reset";
->> +		lantiq,rcu-syscon = <&rcu0 0x48 0x24>;
->> +		#reset-cells = <2>;
->> +	};
-> 
-> I think these should be children of the &rcu0 node. Then you could use
-> the reg property to specify the registers.
+url:    https://github.com/0day-ci/linux/commits/Chris-Packham/spi-orion-Handle-GPIO-chip-selects/20170524-074032
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+config: sparc-defconfig (attached as .config)
+compiler: sparc-linux-gcc (GCC) 6.2.0
+reproduce:
+        wget https://raw.githubusercontent.com/01org/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # save the attached .config to linux build tree
+        make.cross ARCH=sparc 
 
-The problem is that the RCU registers at offset 0x10 and 0x14 also have
-bits to indicate what caused the last hardware reset and which boot mode
-was selected by putting some pins to low or high level. I want to access
-the same register from the watchdog driver and probably form more
-positions which do not have anything to do with a reset controller.
+All error/warnings (new ones prefixed by >>):
 
-> Also, have you considered using a binding like the ti-syscon-reset? 
-> That could remove the need for a rcu_reset node per register pair
-> altogether, but might not make sense if the reset registers are densely
-> populated.
+   drivers/spi/spi.c: In function 'spi_set_cs':
+>> drivers/spi/spi.c:728:28: error: implicit declaration of function 'gpio_to_desc' [-Werror=implicit-function-declaration]
+      struct gpio_desc *gpio = gpio_to_desc(spi->cs_gpio);
+                               ^~~~~~~~~~~~
+>> drivers/spi/spi.c:728:28: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+>> drivers/spi/spi.c:731:4: error: implicit declaration of function 'gpiod_set_value' [-Werror=implicit-function-declaration]
+       gpiod_set_value(gpio, !enable);
+       ^~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
-Would your suggestion be something like this?
+vim +/gpio_to_desc +728 drivers/spi/spi.c
 
-rcu_reset0: reset-controller {
-	compatible = "lantiq,rcu-reset";
-	lantiq,rcu-syscon = <&rcu0>;
-	#reset-cells = <2>;
-	ti,reset-bits = <
-		0x48 0x24
-		0x10 0x14
-	>;
-};
+   722	static void spi_set_cs(struct spi_device *spi, bool enable)
+   723	{
+   724		if (spi->mode & SPI_CS_HIGH)
+   725			enable = !enable;
+   726	
+   727		if (gpio_is_valid(spi->cs_gpio)) {
+ > 728			struct gpio_desc *gpio = gpio_to_desc(spi->cs_gpio);
+   729	
+   730			if (gpio)
+ > 731				gpiod_set_value(gpio, !enable);
+   732			/* Some SPI masters need both GPIO CS & slave_select */
+   733			if ((spi->master->flags & SPI_MASTER_GPIO_SS) &&
+   734			    spi->master->set_cs)
 
-I prefer to have two device tree nodes entries for these two register
-blocks.
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
->> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
->> index d21c07ccc94e..632e82155590 100644
->> --- a/drivers/reset/Kconfig
->> +++ b/drivers/reset/Kconfig
->> @@ -41,6 +41,12 @@ config RESET_IMX7
->>  	help
->>  	  This enables the reset controller driver for i.MX7 SoCs.
->>  
->> +config RESET_LANTIQ_RCU
->> +	bool "Lantiq XWAY Reset Driver" if COMPILE_TEST
->> +	default SOC_TYPE_XWAY
->> +	help
->> +	  This enables the reset controller driver for Lantiq / Intel XWAY SoCs.
->> +
->>  config RESET_LPC18XX
->>  	bool "LPC18xx/43xx Reset Driver" if COMPILE_TEST
->>  	default ARCH_LPC18XX
->> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
->> index 02a74db94339..b19e77847b98 100644
->> --- a/drivers/reset/Makefile
->> +++ b/drivers/reset/Makefile
->> @@ -6,6 +6,7 @@ obj-$(CONFIG_RESET_A10SR) += reset-a10sr.o
->>  obj-$(CONFIG_RESET_ATH79) += reset-ath79.o
->>  obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
->>  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
->> +obj-$(CONFIG_RESET_LANTIQ_RCU) += reset-lantiq-rcu.o
->>  obj-$(CONFIG_RESET_LPC18XX) += reset-lpc18xx.o
->>  obj-$(CONFIG_RESET_MESON) += reset-meson.o
->>  obj-$(CONFIG_RESET_OXNAS) += reset-oxnas.o
->> diff --git a/drivers/reset/reset-lantiq-rcu.c b/drivers/reset/reset-lantiq-rcu.c
->> new file mode 100644
->> index 000000000000..f24191beed56
->> --- /dev/null
->> +++ b/drivers/reset/reset-lantiq-rcu.c
->> @@ -0,0 +1,201 @@
->> +/*
->> + *  This program is free software; you can redistribute it and/or modify it
->> + *  under the terms of the GNU General Public License version 2 as published
->> + *  by the Free Software Foundation.
->> + *
->> + *  Copyright (C) 2010 John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
->> + *  Copyright (C) 2013-2015 Lantiq Beteiligungs-GmbH & Co.KG
->> + *  Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
->> + *  Copyright (C) 2017 Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
->> + */
->> +
->> +#include <linux/mfd/syscon.h>
->> +#include <linux/module.h>
->> +#include <linux/regmap.h>
->> +#include <linux/reset-controller.h>
->> +#include <linux/of_platform.h>
->> +
->> +#define LANTIQ_RCU_RESET_TIMEOUT	1000000
->> +
->> +struct lantiq_rcu_reset_priv {
->> +	struct reset_controller_dev rcdev;
->> +	struct device *dev;
->> +	struct regmap *regmap;
->> +	u32 reset_offset;
->> +	u32 status_offset;
->> +};
->> +
->> +static struct lantiq_rcu_reset_priv *to_lantiq_rcu_reset_priv(
->> +	struct reset_controller_dev *rcdev)
->> +{
->> +	return container_of(rcdev, struct lantiq_rcu_reset_priv, rcdev);
->> +}
->> +
->> +static int lantiq_rcu_reset_status(struct reset_controller_dev *rcdev,
->> +			     unsigned long id)
-> 
-> Please align with the opening parenthesis above, or use consistent
-> indentation for broken lines, also in the other cases below.
+--HlL+5n6rz5pIUxbD
+Content-Type: application/gzip
+Content-Disposition: attachment; filename=".config.gz"
+Content-Transfer-Encoding: base64
 
-Will change this
+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
 
->> +{
->> +	struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
->> +	unsigned int status = (id >> 8) & 0x1f;
->> +	u32 val;
->> +	int ret;
->> +
->> +	if (status >= rcdev->nr_resets)
->> +		return -EINVAL;
-> 
-> This should be checked in lantiq_rcu_reset_xlate instead.
-
-Ok will do
-
->> +	ret = regmap_read(priv->regmap, priv->status_offset, &val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return !!(val & BIT(status));
->> +}
->> +
->> +static int lantiq_rcu_reset_update(struct reset_controller_dev *rcdev,
->> +				   unsigned long id, bool assert)
->> +{
->> +	struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
->> +	int ret, retry = LANTIQ_RCU_RESET_TIMEOUT;
->> +	unsigned int set = id & 0x1f;
->> +	u32 val;
->> +
->> +	if (set >= rcdev->nr_resets)
->> +		return -EINVAL;
-> 
-> This should be checked in lantiq_rcu_reset_xlate instead.
-
-Ok will do
-
->> +	if (assert)
->> +		val = BIT(set);
->> +	else
->> +		val = 0;
->> +
->> +	ret = regmap_update_bits(priv->regmap, priv->reset_offset, BIT(set),
->> +				 val);
->> +	if (ret) {
->> +		dev_err(priv->dev, "Failed to set reset bit %u\n", set);
->> +		return ret;
->> +	}
->> +
->> +	do {} while (--retry && lantiq_rcu_reset_status(rcdev, id) != assert);
-> 
-> This ignores errors returned by lantiq_rcu_reset_status. Consider using
-> regmap_read_poll_timeout() instead of open-coding the timeout.
-
-Thanks for the hint wil use that function.
-
->> +	if (!retry) {
->> +		dev_err(priv->dev, "Failed to %s bit %u\n",
->> +			assert ? "assert" : "deassert", set);
->> +		return -EIO;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int lantiq_rcu_reset_assert(struct reset_controller_dev *rcdev,
->> +			     unsigned long id)
->> +{
->> +	return lantiq_rcu_reset_update(rcdev, id, true);
->> +}
->> +
->> +static int lantiq_rcu_reset_deassert(struct reset_controller_dev *rcdev,
->> +			       unsigned long id)
->> +{
->> +	return lantiq_rcu_reset_update(rcdev, id, false);
->> +}
->> +
->> +static int lantiq_rcu_reset_reset(struct reset_controller_dev *rcdev,
->> +			    unsigned long id)
->> +{
->> +	int ret;
->> +
->> +	ret = lantiq_rcu_reset_assert(rcdev, id);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return lantiq_rcu_reset_deassert(rcdev, id);
->> +}
->> +
->> +static struct reset_control_ops lantiq_rcu_reset_ops = {
-> 
-> reset_control_ops should be const.
-
-Ok
-
->> +	.assert = lantiq_rcu_reset_assert,
->> +	.deassert = lantiq_rcu_reset_deassert,
->> +	.status = lantiq_rcu_reset_status,
->> +	.reset	= lantiq_rcu_reset_reset,
->> +};
->> +
->> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
->> +			       struct lantiq_rcu_reset_priv *priv)
->> +{
->> +	struct device_node *np = pdev->dev.of_node;
->> +
->> +	priv->regmap = syscon_regmap_lookup_by_phandle(np,
->> +							"lantiq,rcu-syscon");
-> 
-> This could be
-> 	priv->regmap = syscon_node_to_regmap(np->parent);
-> if the reset controller device node is a child of the MFD device node.
-
-I will look into this.
-
->> +	if (IS_ERR(priv->regmap)) {
->> +		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
->> +		return PTR_ERR(priv->regmap);
->> +	}
->> +
->> +	if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
->> +		&priv->reset_offset)) {
->> +		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	if (of_property_read_u32_index(np, "lantiq,rcu-syscon", 2,
->> +		&priv->status_offset)) {
->> +		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int lantiq_rcu_reset_xlate(struct reset_controller_dev *rcdev,
->> +				  const struct of_phandle_args *reset_spec)
->> +{
->> +	unsigned int status, set;
->> +
->> +	set = reset_spec->args[0];
->> +	status = reset_spec->args[1];
-> 
-> Check that set and status are valid here.
-
-Will do this.
-
->> +	return (status << 8) | set;
->> +}
->> +
->> +static int lantiq_rcu_reset_probe(struct platform_device *pdev)
->> +{
->> +	struct lantiq_rcu_reset_priv *priv;
->> +	int err;
->> +
->> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
->> +	if (!priv)
->> +		return -ENOMEM;
->> +
->> +	priv->dev = &pdev->dev;
->> +	platform_set_drvdata(pdev, priv);
->> +
->> +	err = lantiq_rcu_reset_of_probe(pdev, priv);
->> +	if (err)
->> +		return err;
->> +
->> +	priv->rcdev.ops = &lantiq_rcu_reset_ops;
->> +	priv->rcdev.owner = THIS_MODULE;
->> +	priv->rcdev.of_node = pdev->dev.of_node;
->> +	priv->rcdev.nr_resets = 32;
->> +	priv->rcdev.of_xlate = lantiq_rcu_reset_xlate;
->> +	priv->rcdev.of_reset_n_cells = 2;
->> +
->> +	err = reset_controller_register(&priv->rcdev);
->> +	if (err)
->> +		return err;
->> +
->> +	return 0;
-> 
-> You can just
-> 	return reset_controller_register(&priv->rcdev);
-> here.
-
-Yes
-
->> +}
->> +
->> +static const struct of_device_id lantiq_rcu_reset_dt_ids[] = {
->> +	{ .compatible = "lantiq,rcu-reset", },
->> +	{ },
->> +};
->> +MODULE_DEVICE_TABLE(of, lantiq_rcu_reset_dt_ids);
->> +
->> +static struct platform_driver lantiq_rcu_reset_driver = {
->> +	.probe	= lantiq_rcu_reset_probe,
->> +	.driver = {
->> +		.name		= "lantiq-rcu-reset",
->> +		.of_match_table	= lantiq_rcu_reset_dt_ids,
->> +	},
->> +};
->> +module_platform_driver(lantiq_rcu_reset_driver);
->> +
->> +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>");
->> +MODULE_DESCRIPTION("Lantiq XWAY RCU Reset Controller Driver");
->> +MODULE_LICENSE("GPL");
-> 
-> regards
-> Philipp
-> 
-
+--HlL+5n6rz5pIUxbD--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

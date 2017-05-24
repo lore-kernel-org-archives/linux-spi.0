@@ -1,52 +1,74 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi-meson: Add SPICC bindings
-Date: Wed, 24 May 2017 18:18:52 +0100
-Message-ID: <20170524171852.gktg6sek67vrt7gs@sirena.org.uk>
-References: <1495546773-20479-1-git-send-email-narmstrong@baylibre.com>
- <1495546773-20479-2-git-send-email-narmstrong@baylibre.com>
+Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
+Date: Wed, 24 May 2017 18:29:40 +0100
+Message-ID: <20170524172940.6vypisacs3rmmjws@sirena.org.uk>
+References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+ <20170413125929.dygodgj6c35ydh5p@sirena.org.uk>
+ <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
+ <58F06092.9080409@mentor.com>
+ <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com>
+ <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk>
+ <59019306.2050309@mentor.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="v453cxbt5wvlebu7"
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="mgdh43wcnsoiuwtw"
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1495546773-20479-2-git-send-email-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <59019306.2050309-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---v453cxbt5wvlebu7
+--mgdh43wcnsoiuwtw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, May 23, 2017 at 03:39:32PM +0200, Neil Armstrong wrote:
-> Add the SPICC (SPI Communications Controller) bindings variant.
+On Wed, Apr 26, 2017 at 11:43:18PM -0700, Jiada Wang wrote:
 
-Please submit patches using subject lines reflecting the style for the
-subsystem.  This makes it easier for people to identify relevant
-patches.  Look at what existing commits in the area you're changing are
-doing and make sure your subject lines visually resemble what they're
-doing.
+> The reason I gave the example use case is want to point out that
+> with Geert's patch set, a SPI device (with only one controller) can no
+> longer
+> act as master and slave at the same time. because IMO as a SPI core
+> function,
+> it needs to cover all the use cases, and to be as generic as possible.
 
---v453cxbt5wvlebu7
+> BUT if you think the use case don't need to be supported from SPI core,
+> then I don't have objection either, I will only submit imx SPI slave support
+> patch,
+> after your SPI slave support patch set been applied
+
+I think there's a bunch of other problems with how that works reliably
+that'd need to be addressed before someone could actually do that, and
+it seems like such hardware will be very unusual.
+
+--mgdh43wcnsoiuwtw
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlklwHsACgkQJNaLcl1U
-h9CpJgf/cPbeJ58tYOq6nonEHNpNH5oPIbEQ8x/P06qcRCHFB3LC2TKZgj1WjHLn
-Z/Dj91RWz+L4sgSTUxsglv32mY+fnIiTRUD8u6nc3+VO2z1HRDVB/1pbxkvyfeQ5
-aOU/W4yWH+jar3UrRyVmaBsnz/fPll15iyCt/HTKFsEEAPatFERWg2tWbgVY8Ulx
-dXPRI2/Fmx4HcLFZ7Etv5mUmcWK+poUUQl7IvkurtiI+a3t8qs2BrsK8uQ3z0ema
-w6kGHqmpbxD55tNNuqdac9SQg23DpsgKJLig8g8ZAeQCmuqorM6FacFi028CSSv5
-Yp+4RaVjU2gJopr/jfDieGZq3A8uhw==
-=RFlC
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlklwwMACgkQJNaLcl1U
+h9CqZwf/V8h7gKz4OzsrRdGWD6M7HOKcrIsaVsVSBlqfRzWuQjwZygr8EGIOfwKP
+TgURwqNMVfgRP1zWFjvTJcWrBdrO2rE9bZ5igFzSQ7Y+9IHmQ/S9XmND8Sbmp8yu
+iXnBMs1Qza18ZH84t1X72me8rwyho6TdWOiJfcR5VFrWRuT5lb6U0lQmkmgEd4CG
+g1n6g20jXlx1AOYhZTEmceD6KHqt5ZYTQ6TaCxw08+wk85gSI4IsPbWZu8CykFtJ
+JDc0S623T4eeYWA15xb6edCaKLNB3Tew0vJMrmG+97ysD0KmKPej/uF1r5Kl9Y5E
+fT8aGR537I9llX/GQT+i76duNG9tkQ==
+=7JNs
 -----END PGP SIGNATURE-----
 
---v453cxbt5wvlebu7--
+--mgdh43wcnsoiuwtw--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,60 +1,102 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: use gpio_desc instead of numeric gpio
-Date: Wed, 24 May 2017 18:00:22 +0100
-Message-ID: <20170524170022.7rlib5c6ijw4aakg@sirena.org.uk>
-References: <20170523040322.10433-1-chris.packham@alliedtelesis.co.nz>
- <20170523040322.10433-2-chris.packham@alliedtelesis.co.nz>
- <CAHp75VcHktwnXg26sq6x=EqM6TFAEc6yQrRFZQu1CCpYYfq6wQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6b465kbdxucgcqvf"
-Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VcHktwnXg26sq6x=EqM6TFAEc6yQrRFZQu1CCpYYfq6wQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: orion: Handle GPIO chip-selects" to the spi tree
+Date: Wed, 24 May 2017 18:03:09 +0100
+Message-ID: <E1dDZgj-00005U-BT@debutante>
+References: <20170523004531.17538-1-chris.packham@alliedtelesis.co.nz>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170523004531.17538-1-chris.packham@alliedtelesis.co.nz>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---6b465kbdxucgcqvf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: orion: Handle GPIO chip-selects
 
-On Tue, May 23, 2017 at 09:28:22PM +0300, Andy Shevchenko wrote:
-> On Tue, May 23, 2017 at 7:03 AM, Chris Packham
+has been applied to the spi tree at
 
-> > By using a gpio_desc and gpiod_set_value() instead of a numeric gpio and
-> > gpio_set_value() the gpio flags are taken into account. This is useful
-> > when using a gpio chip-select to supplement a controllers native
-> > chip-select.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> I think would be better to move everything in SPI core to GPIO descriptor=
-s.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Yes, this sort of bodge is just far too ugly and I'd not trust it to
-continue to work. =20
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---6b465kbdxucgcqvf
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlklvCUACgkQJNaLcl1U
-h9BmkQf/fvzShh80+bYiPLES8wolUI3HTaAQtuVftYbXX/RjhqKxBhhZ2TDGuqgx
-Gg1dZ0d6TnXeYO7T2SlPgJ2ZMvuXxtjSaVaYMcvbpG5Z0R+rF9bcyLwempUoTa0K
-lXy3edkH9+sjLJgPqpxBHTVZaK0SQ63f5FWN/bFu4dkGPB/sQ90TUGOj3TmF4TEC
-0/euwEfWn4geDfFkiQDEeYTsVt0jjIyR+1O0+YHkAYzlliknpHTYd/zv0jSARrkL
-VDxSz7UopzBqb++OttpAoCPli9izqNy07D2kB+C7UyWEu+6boT/FPqUNDKkZMmCe
-35BNVQd6NFBIWUY2Ki89SMFSebrgaQ==
-=2aFR
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---6b465kbdxucgcqvf--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From b28b9149b37f909a05f1e06e5a8b262a519dbd2b Mon Sep 17 00:00:00 2001
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Date: Tue, 23 May 2017 16:03:21 +1200
+Subject: [PATCH] spi: orion: Handle GPIO chip-selects
+
+Some hardware designs use GPIOs to add (or supplement) the SPI
+chip-select so that more than one SPI slave device can be used.
+
+For this to work with the spi-orion driver the SPI_MASTER_GPIO_SS flag
+needs to be set (because the other outputs are gated internally by the
+CS) and the correct chip-select (in this case CS0) needs to be driven by
+the controller.
+
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-orion.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index be2e87ee8b31..28fc9f161b9d 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -22,6 +22,7 @@
+ #include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/sizes.h>
++#include <linux/gpio.h>
+ #include <asm/unaligned.h>
+ 
+ #define DRIVER_NAME			"orion_spi"
+@@ -320,12 +321,18 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ static void orion_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+ 	struct orion_spi *orion_spi;
++	int cs;
++
++	if (gpio_is_valid(spi->cs_gpio))
++		cs = 0;
++	else
++		cs = spi->chip_select;
+ 
+ 	orion_spi = spi_master_get_devdata(spi->master);
+ 
+ 	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, ORION_SPI_CS_MASK);
+ 	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
+-				ORION_SPI_CS(spi->chip_select));
++				ORION_SPI_CS(cs));
+ 
+ 	/* Chip select logic is inverted from spi_set_cs */
+ 	if (!enable)
+@@ -606,6 +613,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	master->setup = orion_spi_setup;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
+ 	master->auto_runtime_pm = true;
++	master->flags = SPI_MASTER_GPIO_SS;
+ 
+ 	platform_set_drvdata(pdev, master);
+ 
+-- 
+2.11.0

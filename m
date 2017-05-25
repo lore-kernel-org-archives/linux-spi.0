@@ -1,91 +1,129 @@
-From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [PATCH] spi: st-ssc4: whitespace cleanup
-Date: Thu, 25 May 2017 16:05:05 +1200
-Message-ID: <20170525040505.30633-1-chris.packham@alliedtelesis.co.nz>
-Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH 3/5] ARM: imx: add gpiod_lookup_table for spi chip-selects
+Date: Thu, 25 May 2017 16:30:41 +1200
+Message-ID: <20170525043043.1930-4-chris.packham@alliedtelesis.co.nz>
+References: <20170525043043.1930-1-chris.packham@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam@nxp.com>,
+ Chris Packham <chris.packham@alliedtelesis.co.nz>, linux@armlinux.org.uk,
+ Sascha Hauer <kernel@pengutronix.de>, linux-arm-kernel@lists.infradead.org
+To: broonie@kernel.org, andy.shevchenko@gmail.com, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rmallon@gmail.com, shawnguo@kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170525043043.1930-1-chris.packham@alliedtelesis.co.nz>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Remove stray single spaces after a leading hard-tab.
+This is a preparatory step which will allow the conversion of
+spi-imx.c to gpiod.
 
-Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-st-ssc4.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ arch/arm/mach-imx/mach-mx27_3ds.c | 21 +++++++++++++++++++++
+ arch/arm/mach-imx/mach-pca100.c   | 13 +++++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index e54b59638458..a4e43fc19ece 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -229,42 +229,42 @@ static int spi_st_setup(struct spi_device *spi)
- 		"setting baudrate:target= %u hz, actual= %u hz, sscbrg= %u\n",
- 		hz, spi_st->baud, sscbrg);
+diff --git a/arch/arm/mach-imx/mach-mx27_3ds.c b/arch/arm/mach-imx/mach-mx27_3ds.c
+index 45e16bd7e2f2..46d67be124f0 100644
+--- a/arch/arm/mach-imx/mach-mx27_3ds.c
++++ b/arch/arm/mach-imx/mach-mx27_3ds.c
+@@ -22,6 +22,7 @@
  
--	 /* Set SSC_CTL and enable SSC */
--	 var = readl_relaxed(spi_st->base + SSC_CTL);
--	 var |= SSC_CTL_MS;
-+	/* Set SSC_CTL and enable SSC */
-+	var = readl_relaxed(spi_st->base + SSC_CTL);
-+	var |= SSC_CTL_MS;
+ #include <linux/platform_device.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/irq.h>
+ #include <linux/usb/otg.h>
+ #include <linux/usb/ulpi.h>
+@@ -313,6 +314,15 @@ static struct imx_ssi_platform_data mx27_3ds_ssi_pdata = {
+ };
  
--	 if (spi->mode & SPI_CPOL)
-+	if (spi->mode & SPI_CPOL)
- 		var |= SSC_CTL_PO;
--	 else
-+	else
- 		var &= ~SSC_CTL_PO;
+ /* SPI */
++static struct gpiod_lookup_table spi1_cs_gpio_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP("gpio-mxc", SPI1_SS0,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{ },
++	},
++};
++
+ static int spi1_chipselect[] = {SPI1_SS0};
  
--	 if (spi->mode & SPI_CPHA)
-+	if (spi->mode & SPI_CPHA)
- 		var |= SSC_CTL_PH;
--	 else
-+	else
- 		var &= ~SSC_CTL_PH;
+ static const struct spi_imx_master spi1_pdata __initconst = {
+@@ -320,6 +330,15 @@ static const struct spi_imx_master spi1_pdata __initconst = {
+ 	.num_chipselect	= ARRAY_SIZE(spi1_chipselect),
+ };
  
--	 if ((spi->mode & SPI_LSB_FIRST) == 0)
-+	if ((spi->mode & SPI_LSB_FIRST) == 0)
- 		var |= SSC_CTL_HB;
--	 else
-+	else
- 		var &= ~SSC_CTL_HB;
++static struct gpiod_lookup_table spi2_cs_gpio_table = {
++	.dev_id = "spi.1",
++	.table = {
++		GPIO_LOOKUP("gpio-mxc", SPI2_SS0,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{ },
++	},
++};
++
+ static int spi2_chipselect[] = {SPI2_SS0};
  
--	 if (spi->mode & SPI_LOOP)
-+	if (spi->mode & SPI_LOOP)
- 		var |= SSC_CTL_LPB;
--	 else
-+	else
- 		var &= ~SSC_CTL_LPB;
+ static const struct spi_imx_master spi2_pdata __initconst = {
+@@ -398,7 +417,9 @@ static void __init mx27pdk_init(void)
+ 	imx27_add_imx_keypad(&mx27_3ds_keymap_data);
+ 	imx27_add_imx2_wdt();
  
--	 var &= ~SSC_CTL_DATA_WIDTH_MSK;
--	 var |= (spi->bits_per_word - 1);
-+	var &= ~SSC_CTL_DATA_WIDTH_MSK;
-+	var |= (spi->bits_per_word - 1);
++	gpiod_add_lookup_table(&spi2_cs_gpio_table);
+ 	imx27_add_spi_imx1(&spi2_pdata);
++	gpiod_add_lookup_table(&spi1_cs_gpio_table);
+ 	imx27_add_spi_imx0(&spi1_pdata);
  
--	 var |= SSC_CTL_EN_TX_FIFO | SSC_CTL_EN_RX_FIFO;
--	 var |= SSC_CTL_EN;
-+	var |= SSC_CTL_EN_TX_FIFO | SSC_CTL_EN_RX_FIFO;
-+	var |= SSC_CTL_EN;
+ 	imx27_add_imx_i2c(0, &mx27_3ds_i2c0_data);
+diff --git a/arch/arm/mach-imx/mach-pca100.c b/arch/arm/mach-imx/mach-pca100.c
+index ed675863655b..8a2b5860f327 100644
+--- a/arch/arm/mach-imx/mach-pca100.c
++++ b/arch/arm/mach-imx/mach-pca100.c
+@@ -27,6 +27,7 @@
+ #include <linux/irq.h>
+ #include <linux/delay.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/usb/otg.h>
+ #include <linux/usb/ulpi.h>
  
--	 writel_relaxed(var, spi_st->base + SSC_CTL);
-+	writel_relaxed(var, spi_st->base + SSC_CTL);
+@@ -202,6 +203,17 @@ static struct spi_board_info pca100_spi_board_info[] __initdata = {
+ 	},
+ };
  
--	 /* Clear the status register */
--	 readl_relaxed(spi_st->base + SSC_RBUF);
-+	/* Clear the status register */
-+	readl_relaxed(spi_st->base + SSC_RBUF);
++static struct gpiod_lookup_table pca100_spi_cs_gpio_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP_IDX("gpio-mxc", SPI1_SS0,
++				"spi-cs", 0, GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("gpio-mxc", SPI1_SS1,
++				"spi-cs", 1, GPIO_ACTIVE_HIGH),
++		{ },
++	},
++};
++
+ static int pca100_spi_cs[] = {SPI1_SS0, SPI1_SS1};
  
--	 return 0;
-+	return 0;
+ static const struct spi_imx_master pca100_spi0_data __initconst = {
+@@ -376,6 +388,7 @@ static void __init pca100_init(void)
+ 	mxc_gpio_mode(GPIO_PORTD | 27 | GPIO_GPIO | GPIO_IN);
+ 	spi_register_board_info(pca100_spi_board_info,
+ 				ARRAY_SIZE(pca100_spi_board_info));
++	gpiod_add_lookup_table(&pca100_spi_cs_gpio_table);
+ 	imx27_add_spi_imx0(&pca100_spi0_data);
  
- out_free_gpio:
- 	gpio_free(cs);
+ 	imx27_add_imx_fb(&pca100_fb_data);
 -- 
 2.13.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,10 +1,12 @@
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [RFC PATCH 4/5] spi: core: convert spi_master to use gpio_desc
-Date: Thu, 25 May 2017 16:30:42 +1200
-Message-ID: <20170525043043.1930-5-chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH 2/5] ARM: ep93xx: add gpiod_lookup_table for spi chip-selects
+Date: Thu, 25 May 2017 16:30:40 +1200
+Message-ID: <20170525043043.1930-3-chris.packham@alliedtelesis.co.nz>
 References: <20170525043043.1930-1-chris.packham@alliedtelesis.co.nz>
 Cc: linux@armlinux.org.uk,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        linux-arm-kernel@lists.infradead.org
 To: broonie@kernel.org, andy.shevchenko@gmail.com,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         rmallon@gmail.com, shawnguo@kernel.org
@@ -13,205 +15,128 @@ In-Reply-To: <20170525043043.1930-1-chris.packham@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Instead of numeric gpios make struct spi_master hold an array of struct
-gpio_desc. For now struct spi_device still maintains a numeric gpio
-which will be updated in a subsequent change.
+This is a preparatory step which will allow the conversion of
+spi-ep93xx.c to gpiod.
 
 Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-ep93xx.c | 18 ++++++++----------
- drivers/spi/spi-imx.c    | 25 +++++++++----------------
- drivers/spi/spi-mt65xx.c | 13 -------------
- drivers/spi/spi.c        | 24 +++++++++++++++++-------
- include/linux/spi/spi.h  |  2 +-
- 5 files changed, 35 insertions(+), 47 deletions(-)
+ arch/arm/mach-ep93xx/edb93xx.c       | 12 ++++++++++++
+ arch/arm/mach-ep93xx/simone.c        | 11 +++++++++++
+ arch/arm/mach-ep93xx/vision_ep9307.c | 15 +++++++++++++++
+ 3 files changed, 38 insertions(+)
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index b5d766064b7b..8ff795e65b38 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -816,7 +816,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
+index 0ac176386789..9042adfe03de 100644
+--- a/arch/arm/mach-ep93xx/edb93xx.c
++++ b/arch/arm/mach-ep93xx/edb93xx.c
+@@ -27,6 +27,8 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
++#include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/i2c.h>
+ #include <linux/i2c-gpio.h>
+ #include <linux/spi/spi.h>
+@@ -116,6 +118,15 @@ static struct spi_board_info edb93xx_spi_board_info[] __initdata = {
+ 	},
+ };
  
- 	master->num_chipselect = info->num_chipselect;
- 	master->cs_gpios = devm_kzalloc(&master->dev,
--					sizeof(int) * master->num_chipselect,
-+					sizeof(*master->cs_gpios) * master->num_chipselect,
- 					GFP_KERNEL);
- 	if (!master->cs_gpios) {
- 		error = -ENOMEM;
-@@ -824,19 +824,17 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
--		master->cs_gpios[i] = info->chipselect[i];
-+		struct gpio_desc *cs;
- 
--		if (!gpio_is_valid(master->cs_gpios[i]))
--			continue;
--
--		error = devm_gpio_request_one(&pdev->dev, master->cs_gpios[i],
--					      GPIOF_OUT_INIT_HIGH,
--					      "ep93xx-spi");
--		if (error) {
-+		cs = devm_gpiod_get_index(&pdev->dev, "spi-cs", i,
-+					  GPIOD_OUT_HIGH);
-+		if (IS_ERR(cs)) {
- 			dev_err(&pdev->dev, "could not request cs gpio %d\n",
--				master->cs_gpios[i]);
-+				i);
-+			error = PTR_ERR(cs);
- 			goto fail_release_master;
- 		}
-+		master->cs_gpios[i] = cs;
- 	}
- 
- 	platform_set_drvdata(pdev, master);
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 19b30cf7d2b7..efbf03ac7cf1 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1360,12 +1360,18 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	if (mxc_platform_info) {
- 		master->num_chipselect = mxc_platform_info->num_chipselect;
- 		master->cs_gpios = devm_kzalloc(&master->dev,
--			sizeof(int) * master->num_chipselect, GFP_KERNEL);
-+			sizeof(*master->cs_gpios) * master->num_chipselect, GFP_KERNEL);
- 		if (!master->cs_gpios)
- 			return -ENOMEM;
- 
--		for (i = 0; i < master->num_chipselect; i++)
--			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
-+		for (i = 0; i < master->num_chipselect; i++) {
-+			struct gpio_desc *cs;
++static struct gpiod_lookup_table edb93xx_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
 +
-+			cs = devm_gpiod_get_index(&pdev->dev, "spi-cs", i,
-+						  GPIOD_OUT_HIGH);
-+			if (!IS_ERR(cs))
-+				master->cs_gpios[i] = cs;
-+		}
-  	}
+ static int edb93xx_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO6,
+ };
+@@ -134,6 +145,7 @@ static void __init edb93xx_register_spi(void)
+ 	else if (machine_is_edb9315a())
+ 		edb93xx_cs4271_data.gpio_nreset = EP93XX_GPIO_LINE_EGPIO14;
  
- 	spi_imx->bitbang.chipselect = spi_imx_chipselect;
-@@ -1456,19 +1462,6 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		goto out_clk_put;
- 	}
- 
--	for (i = 0; i < master->num_chipselect; i++) {
--		if (!gpio_is_valid(master->cs_gpios[i]))
--			continue;
--
--		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
--					DRIVER_NAME);
--		if (ret) {
--			dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
--				master->cs_gpios[i]);
--			goto out_clk_put;
--		}
--	}
--
- 	dev_info(&pdev->dev, "probed\n");
- 
- 	clk_disable(spi_imx->clk_ipg);
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 278867a31950..36e0d865fd02 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -681,19 +681,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 			ret = -EINVAL;
- 			goto err_disable_runtime_pm;
- 		}
--
--		if (master->cs_gpios) {
--			for (i = 0; i < master->num_chipselect; i++) {
--				ret = devm_gpio_request(&pdev->dev,
--							master->cs_gpios[i],
--							dev_name(&pdev->dev));
--				if (ret) {
--					dev_err(&pdev->dev,
--						"can't get CS GPIO %i\n", i);
--					goto err_disable_runtime_pm;
--				}
--			}
--		}
- 	}
- 
- 	return 0;
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b39c0f9956dd..8be01520b02e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -40,6 +40,7 @@
- #include <linux/ioport.h>
- #include <linux/acpi.h>
- #include <linux/highmem.h>
-+#include <linux/gpio/consumer.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
-@@ -531,8 +532,10 @@ int spi_add_device(struct spi_device *spi)
- 		goto done;
- 	}
- 
--	if (master->cs_gpios)
--		spi->cs_gpio = master->cs_gpios[spi->chip_select];
-+	if (master->cs_gpios[spi->chip_select])
-+		spi->cs_gpio = desc_to_gpio(master->cs_gpios[spi->chip_select]);
-+	else
-+		spi->cs_gpio = -ENOENT;
- 
- 	/* Drivers may modify this initial i/o setup, but will
- 	 * normally rely on the device being setup.  Devices
-@@ -1878,7 +1881,8 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
- #ifdef CONFIG_OF
- static int of_spi_register_master(struct spi_master *master)
- {
--	int nb, i, *cs;
-+	int nb, i;
-+	struct gpio_desc **cs;
- 	struct device_node *np = master->dev.of_node;
- 
- 	if (!np)
-@@ -1894,7 +1898,7 @@ static int of_spi_register_master(struct spi_master *master)
- 		return nb;
- 
- 	cs = devm_kzalloc(&master->dev,
--			  sizeof(int) * master->num_chipselect,
-+			  sizeof(*master->cs_gpios) * master->num_chipselect,
- 			  GFP_KERNEL);
- 	master->cs_gpios = cs;
- 
-@@ -1902,10 +1906,16 @@ static int of_spi_register_master(struct spi_master *master)
- 		return -ENOMEM;
- 
- 	for (i = 0; i < master->num_chipselect; i++)
--		cs[i] = -ENOENT;
-+		cs[i] = NULL;
-+
-+	for (i = 0; i < nb; i++) {
-+		struct gpio_desc *gpio;
- 
--	for (i = 0; i < nb; i++)
--		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+		gpio = devm_gpiod_get_index(&master->dev, "cs", i,
-+					    GPIOD_OUT_HIGH);
-+		if (!IS_ERR(gpio))
-+			cs[i] = gpio;
-+	}
- 
- 	return 0;
++	gpiod_add_lookup_table(&edb93xx_gpios_table);
+ 	ep93xx_register_spi(&edb93xx_spi_info, edb93xx_spi_board_info,
+ 			    ARRAY_SIZE(edb93xx_spi_board_info));
  }
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 935bd2854ff1..46960ca62d5b 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -556,7 +556,7 @@ struct spi_master {
- 			   struct spi_message *message);
+diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
+index c7a40f245892..f297a7a89ed9 100644
+--- a/arch/arm/mach-ep93xx/simone.c
++++ b/arch/arm/mach-ep93xx/simone.c
+@@ -26,6 +26,7 @@
+ #include <linux/platform_data/video-ep93xx.h>
+ #include <linux/platform_data/spi-ep93xx.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
  
- 	/* gpio chip select */
--	int			*cs_gpios;
-+	struct gpio_desc	**cs_gpios;
+ #include <mach/hardware.h>
+ #include <mach/gpio-ep93xx.h>
+@@ -119,6 +120,15 @@ static struct spi_board_info simone_spi_devices[] __initdata = {
+  * low between multi-message command blocks. From v1.4, it uses a GPIO instead.
+  * v1.3 parts will still work, since the signal on SFRMOUT is automatic.
+  */
++static struct gpiod_lookup_table simone_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO1,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
++
+ static int simone_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO1,
+ };
+@@ -163,6 +173,7 @@ static void __init simone_init_machine(void)
+ 	ep93xx_register_fb(&simone_fb_info);
+ 	ep93xx_register_i2c(&simone_i2c_gpio_data, simone_i2c_board_info,
+ 			    ARRAY_SIZE(simone_i2c_board_info));
++	gpiod_add_lookup_table(&simone_gpios_table);
+ 	ep93xx_register_spi(&simone_spi_info, simone_spi_devices,
+ 			    ARRAY_SIZE(simone_spi_devices));
+ 	simone_register_audio();
+diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
+index 1daf9441058c..3d9c66bbf2af 100644
+--- a/arch/arm/mach-ep93xx/vision_ep9307.c
++++ b/arch/arm/mach-ep93xx/vision_ep9307.c
+@@ -18,6 +18,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/irq.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/fb.h>
+ #include <linux/io.h>
+ #include <linux/mtd/partitions.h>
+@@ -242,6 +243,19 @@ static struct spi_board_info vision_spi_board_info[] __initdata = {
+ 	},
+ };
  
- 	/* statistics */
- 	struct spi_statistics	statistics;
++static struct gpiod_lookup_table vision_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
++				"spi-cs", 0, GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO7,
++				"spi-cs", 1, GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_G(2),
++				"spi-cs", 2, GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
++
+ static int vision_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO6,
+ 	EP93XX_GPIO_LINE_EGPIO7,
+@@ -291,6 +305,7 @@ static void __init vision_init_machine(void)
+ 
+ 	ep93xx_register_i2c(&vision_i2c_gpio_data, vision_i2c_info,
+ 				ARRAY_SIZE(vision_i2c_info));
++	gpiod_add_lookup_table(&vision_gpios_table);
+ 	ep93xx_register_spi(&vision_spi_master, vision_spi_board_info,
+ 				ARRAY_SIZE(vision_spi_board_info));
+ 	vision_register_i2s();
 -- 
 2.13.0

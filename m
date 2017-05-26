@@ -1,20 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: omap2-mcspi: remove redundant check for error status" to the spi tree
-Date: Fri, 26 May 2017 12:42:18 +0100
-Message-ID: <E1dEDdK-0000r7-Nf@debutante>
-References: <20170525165134.18103-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20170525165134.18103-1-colin.king@canonical.com>
-Sender: kernel-janitors-owner@vger.kernel.org
+Subject: Applied "spi: st-ssc4: whitespace cleanup" to the spi tree
+Date: Fri, 26 May 2017 12:42:11 +0100
+Message-ID: <E1dEDdD-0000qF-SE@debutante>
+References: <20170525040505.30633-1-chris.packham@alliedtelesis.co.nz>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170525040505.30633-1-chris.packham@alliedtelesis.co.nz>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: omap2-mcspi: remove redundant check for error status
+   spi: st-ssc4: whitespace cleanup
 
 has been applied to the spi tree at
 
@@ -39,37 +39,84 @@ to this mail.
 Thanks,
 Mark
 
->From ad7449969d827965484306ad8cc56edc7e55687c Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 25 May 2017 17:51:34 +0100
-Subject: [PATCH] spi: omap2-mcspi: remove redundant check for error status
+>From 0b0cda4102de7a3dbcedfb5f943a5d08e4ec8500 Mon Sep 17 00:00:00 2001
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Date: Thu, 25 May 2017 16:05:05 +1200
+Subject: [PATCH] spi: st-ssc4: whitespace cleanup
 
-The check to see if status is less than zero is actually redundant
-as all previous places where it is -ve have already branched to the
-exit paths, so it is never less than zero at the check.
+Remove stray single spaces after a leading hard-tab.
 
-Detected by CoverityScan, CID#1357119 ("Logically dead code")
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-st-ssc4.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 7275223dbcd4..e048268d8ba2 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1412,9 +1412,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 		sprintf(mcspi->dma_channels[i].dma_tx_ch_name, "tx%d", i);
- 	}
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index e54b59638458..a4e43fc19ece 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -229,42 +229,42 @@ static int spi_st_setup(struct spi_device *spi)
+ 		"setting baudrate:target= %u hz, actual= %u hz, sscbrg= %u\n",
+ 		hz, spi_st->baud, sscbrg);
  
--	if (status < 0)
--		goto free_master;
--
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_enable(&pdev->dev);
+-	 /* Set SSC_CTL and enable SSC */
+-	 var = readl_relaxed(spi_st->base + SSC_CTL);
+-	 var |= SSC_CTL_MS;
++	/* Set SSC_CTL and enable SSC */
++	var = readl_relaxed(spi_st->base + SSC_CTL);
++	var |= SSC_CTL_MS;
+ 
+-	 if (spi->mode & SPI_CPOL)
++	if (spi->mode & SPI_CPOL)
+ 		var |= SSC_CTL_PO;
+-	 else
++	else
+ 		var &= ~SSC_CTL_PO;
+ 
+-	 if (spi->mode & SPI_CPHA)
++	if (spi->mode & SPI_CPHA)
+ 		var |= SSC_CTL_PH;
+-	 else
++	else
+ 		var &= ~SSC_CTL_PH;
+ 
+-	 if ((spi->mode & SPI_LSB_FIRST) == 0)
++	if ((spi->mode & SPI_LSB_FIRST) == 0)
+ 		var |= SSC_CTL_HB;
+-	 else
++	else
+ 		var &= ~SSC_CTL_HB;
+ 
+-	 if (spi->mode & SPI_LOOP)
++	if (spi->mode & SPI_LOOP)
+ 		var |= SSC_CTL_LPB;
+-	 else
++	else
+ 		var &= ~SSC_CTL_LPB;
+ 
+-	 var &= ~SSC_CTL_DATA_WIDTH_MSK;
+-	 var |= (spi->bits_per_word - 1);
++	var &= ~SSC_CTL_DATA_WIDTH_MSK;
++	var |= (spi->bits_per_word - 1);
+ 
+-	 var |= SSC_CTL_EN_TX_FIFO | SSC_CTL_EN_RX_FIFO;
+-	 var |= SSC_CTL_EN;
++	var |= SSC_CTL_EN_TX_FIFO | SSC_CTL_EN_RX_FIFO;
++	var |= SSC_CTL_EN;
+ 
+-	 writel_relaxed(var, spi_st->base + SSC_CTL);
++	writel_relaxed(var, spi_st->base + SSC_CTL);
+ 
+-	 /* Clear the status register */
+-	 readl_relaxed(spi_st->base + SSC_RBUF);
++	/* Clear the status register */
++	readl_relaxed(spi_st->base + SSC_RBUF);
+ 
+-	 return 0;
++	return 0;
+ 
+ out_free_gpio:
+ 	gpio_free(cs);
 -- 
 2.11.0
-

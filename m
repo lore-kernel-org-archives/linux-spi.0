@@ -1,60 +1,139 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH/RFC] spi: Generalize SPI "master" to "controller"
-Date: Fri, 26 May 2017 18:35:28 +0100
-Message-ID: <20170526173528.fgdda6u4tzw3g7rr@sirena.org.uk>
-References: <1493920140-32497-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7lmh6k6ytdq3zahu"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: [PATCH v3 00/16] MIPS: lantiq: handle RCU register by separate drivers
+Date: Sun, 28 May 2017 20:39:50 +0200
+Message-ID: <20170528184006.31668-1-hauke@hauke-m.de>
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1493920140-32497-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The RCU (Reset controller Unit) register block provides many different 
+functionalities. Before they were handed by the code in arch/mips/lantiq
+/xway/reset.c, now there are separate drivers for the functionality.
+This block provides support for reset controller, GPHY firmware 
+loading, USB PHY initialization and cross bar configuration. 
 
---7lmh6k6ytdq3zahu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+These changes are making the old device tree incompatible with the 
+current kernel. The upstream Linux kernel supports loading the device 
+tree blob from the boot loader since about one year, the latest 
+released vendor kernel does not support loading the device tree from a 
+bot loader.
 
-On Thu, May 04, 2017 at 07:49:00PM +0200, Geert Uytterhoeven wrote:
-> Now struct spi_master is used for both SPI master and slave controllers,
-> it makes sense to rename it to struct spi_controller, and replace
-> "master" by "controller" where appropriate.
+I would prefer if this would go through the mips tree.
+There are more patches planed which would convert the Lantiq code 
+to the common clock framework.
 
-> For now this conversion is done for SPI core infrastructure only.
-> Wrappers are provided for backwards compatibility, until all SPI drivers
-> have been converted.
+This is based on patches from Martin Blumenstingl and is a preparation 
+to convert the Lantiq target to the common clock framework which was 
+also started by Martin Blumenstingl.
 
-This makes sense to me.  The patch needs a rebase though.
+Changelog:
+v3:
+ * renamed xbar driver into fpi-bus driver and make it manage the bus,
+   this way we make sure it is initialized before the child drivers.
+ * converted the lantiq,rcu-syscon into a "regmap" and an "offset"
+   property, this way we have a offset property for each register we
+   want to access on the regmap.
+ * make the gphy PUM clock mandatory.
+ * renamed the lantiq,rcu-reset to lantiq,reset-xrx200
+ * add binding description for watchdog driver
+ * make watchdog driver use offset and mask to find the correct
+   register to get the watchdog reset cause bit.
+ * use of_platform_default_populate() instead of of_platform_populate()
+ * use device_property_read_u32() instead of
+   of_property_read_u32_index()
+ * changed John's email address to blogic-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org
+ * check the reset bit numbers in the xlate function
+ * use platform_get_resource() in FPI bus driver
+ * make it possible to unload the GPHY driver
 
-> I guess we don't need an spi_busnum_to_slave()?
-> There's also only one user of spi_busnum_to_master(), in
-> drivers/staging/fbtft/fbtft_device.c
+v2:
+ * remove the rcu_ prefix for device names in device tree
+ * add both clocks to the gphy driver documentation
+ * use 2 cells for the reset controller, one for the status bit and one
+   for the set bit, they are different for some reset bits.
+   reset-status and reset-request attribute were removed then.
+ * remove the documentation of the not existing sub nodes of the usb phy
+ * remove manual gpio vbus handling in the usb phy driver and use the
+   generic phy regulator now.
+ * do not check if the usb phy reset is not null, the reset framework does this.
+ * do not print an error message when -EPROBE_DEFER was returned
 
-Hrm, I'm not sure that either of those functions has a strong use case.
-I'm not quite sure from a quick glance at that staging driver what
-exactly it's trying to do there, it looks like it's something that'd
-need refactoring to go out of staging.
+Hauke Mehrtens (8):
+  mtd: lantiq-flash: drop check of boot select
+  mtd: spi-falcon: drop check of boot select
+  watchdog: lantiq: access boot cause register through regmap
+  watchdog: lantiq: add device tree binding documentation
+  MIPS: lantiq: remove ltq_reset_cause() and ltq_boot_select()
+  MIPS: lantiq: remove old reset controller implementation
+  MIPS: lantiq: remove old GPHY loader code
+  MIPS: lantiq: remove old USB PHY initialisation
 
---7lmh6k6ytdq3zahu
-Content-Type: application/pgp-signature; name="signature.asc"
+Martin Blumenstingl (8):
+  MIPS: lantiq: Use of_platform_default_populate instead of
+    __dt_register_buses
+  MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+  Documentation: DT: MIPS: lantiq: Add docs for the RCU bindings
+  MIPS: lantiq: Convert the fpi bus driver to a platform_driver
+  reset: Add a reset controller driver for the Lantiq XWAY based SoCs
+  MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd
+  phy: Add an USB PHY driver for the Lantiq SoCs using the RCU module
+  MIPS: lantiq: Remove the arch/mips/lantiq/xway/reset.c implementation
 
------BEGIN PGP SIGNATURE-----
+ .../devicetree/bindings/mips/lantiq/fpi-bus.txt    |  33 ++
+ .../devicetree/bindings/mips/lantiq/rcu-gphy.txt   |  38 ++
+ .../devicetree/bindings/mips/lantiq/rcu.txt        |  97 ++++++
+ .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  42 +++
+ .../devicetree/bindings/reset/lantiq,reset.txt     |  30 ++
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    |  28 ++
+ MAINTAINERS                                        |   1 +
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |   4 -
+ arch/mips/lantiq/Kconfig                           |   2 +
+ arch/mips/lantiq/falcon/reset.c                    |  22 --
+ arch/mips/lantiq/prom.c                            |   2 +-
+ arch/mips/lantiq/xway/Makefile                     |   4 +-
+ arch/mips/lantiq/xway/reset.c                      | 387 ---------------------
+ arch/mips/lantiq/xway/sysctrl.c                    |  71 +---
+ arch/mips/lantiq/xway/xrx200_phy_fw.c              | 113 ------
+ drivers/mtd/maps/lantiq-flash.c                    |   6 -
+ drivers/phy/Kconfig                                |   8 +
+ drivers/phy/Makefile                               |   1 +
+ drivers/phy/phy-lantiq-rcu-usb2.c                  | 275 +++++++++++++++
+ drivers/reset/Kconfig                              |   6 +
+ drivers/reset/Makefile                             |   1 +
+ drivers/reset/reset-lantiq.c                       | 205 +++++++++++
+ drivers/soc/Makefile                               |   1 +
+ drivers/soc/lantiq/Makefile                        |   2 +
+ drivers/soc/lantiq/fpi-bus.c                       |  91 +++++
+ drivers/soc/lantiq/gphy.c                          | 277 +++++++++++++++
+ drivers/spi/spi-falcon.c                           |   5 -
+ drivers/watchdog/lantiq_wdt.c                      |  45 ++-
+ include/dt-bindings/mips/lantiq_rcu_gphy.h         |  15 +
+ 29 files changed, 1212 insertions(+), 600 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu-gphy.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+ create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
+ create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ delete mode 100644 arch/mips/lantiq/xway/reset.c
+ delete mode 100644 arch/mips/lantiq/xway/xrx200_phy_fw.c
+ create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
+ create mode 100644 drivers/reset/reset-lantiq.c
+ create mode 100644 drivers/soc/lantiq/Makefile
+ create mode 100644 drivers/soc/lantiq/fpi-bus.c
+ create mode 100644 drivers/soc/lantiq/gphy.c
+ create mode 100644 include/dt-bindings/mips/lantiq_rcu_gphy.h
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlkoZ2AACgkQJNaLcl1U
-h9Ctsgf9HL2kNHGtIsO6sX3az/7tpAhwuM2OMVKBzZEpn3oVFCm5umxXyxmmZeF8
-i07hMkbl3slXGDdFv12lGvFk+3RtfIpAFSywlBLN4HYJ5tpvjVr6ZWlnNeJqLeKM
-XZ7RnSeK/mLgQUZp+d86HWQrkY24w0TBiCHWyfTMm739h0M0BbgH7qclyOpZSAUz
-27H3f1XqdfyfJUl8XeRRGsi6POekcjvZz/R48yNSDdcQG9cST1EEYplIipN2HnkU
-+BO2R33fuvjl5Jfo/AGmYpwhNc4rgiTwnNwmyw9s7g75856fPC60oBcq8og/9x1a
-qJhPNRKjWHYLcylGz16gltxyDVKObA==
-=tBUQ
------END PGP SIGNATURE-----
+-- 
+2.11.0
 
---7lmh6k6ytdq3zahu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

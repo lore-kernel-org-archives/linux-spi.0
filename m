@@ -1,42 +1,56 @@
-From: Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
-Date: Mon, 29 May 2017 09:01:27 -0300
-Message-ID: <CAOMZO5A-31iC5NrGePZCcgsNNwpvURq4LpztQai4GaWRrJXbmA@mail.gmail.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
- <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
- <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com>
- <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk> <59019306.2050309@mentor.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH 0/5] spi: moving to struct gpio_desc
+Date: Mon, 29 May 2017 14:36:43 +0100
+Message-ID: <20170529133643.smdiwfvcdbwsbci2@sirena.org.uk>
+References: <20170525043043.1930-1-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Jiada Wang <jiada_wang@mentor.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <59019306.2050309@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7hcihlpxbeolayns"
+Cc: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org
+To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170525043043.1930-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jiada,
 
-On Thu, Apr 27, 2017 at 3:43 AM, Jiada Wang <jiada_wang@mentor.com> wrote:
+--7hcihlpxbeolayns
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> BUT if you think the use case don't need to be supported from SPI core,
-> then I don't have objection either, I will only submit imx SPI slave support
-> patch,
-> after your SPI slave support patch set been applied
+On Thu, May 25, 2017 at 04:30:38PM +1200, Chris Packham wrote:
 
-Geert's SPI slave series has been applied.
+> ep93xx wasn't as hard as I'd expected so I'm pretty happy with those
+> changes. imx on the other hand has an annoying habit of conflating the GPIO
+> and native chip-select so I'm pretty sure that's broken.
 
-Do you still plan to send imx spi slave support on top of it?
+So, I was just looking at the list archives and I found that there's a
+series that Hartley posted back in February modernizing the ep93xx
+driver which didn't get copied to me so it's not being reviewed.  Can
+you take a look and see if that helps with your updates to the driver?
+The subject for the cover letter is "spi: spi-ep93xx: cleanup and update
+driver to modern API".
 
-Thanks
+--7hcihlpxbeolayns
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlksI+AACgkQJNaLcl1U
+h9BsUQf/RoxiLtc1jChHYP6nbJidVPnXWBfslBqtrfem2S2aTG8hjdMRCzzu+8T2
+DpDlYPUMl1aXM+wBx8IadrOICXcljhVz408IAY+7rfn1MCoNuvbtgWisdpVEvv2M
+qgSPURCTM+Uj0LFjENdPdne+kSKvWH/7tNYcm12js7m34Cp+mHBuayZn7pvH2KvW
+2cTkz2YoZO877RVndxMLH7bK7PWWD/o99cYMkh6L1fIhhMKRCsZcGM3MeZYeD2cu
+0F4JNNSYEfslyd9Sg0r2uLRBjUarpyb2LQflH7IR0k3zHsfT1KRZi3AB8AwgISTy
+Px+yYJE8g4YikUYwMklXiAGAoaQXuQ==
+=7VdZ
+-----END PGP SIGNATURE-----
+
+--7hcihlpxbeolayns--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

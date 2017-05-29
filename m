@@ -1,50 +1,122 @@
-From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
-Date: Mon, 29 May 2017 19:53:16 -0700
-Message-ID: <592CDE9C.60608@mentor.com>
-References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com> <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com> <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com> <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk> <59019306.2050309@mentor.com> <CAOMZO5A-31iC5NrGePZCcgsNNwpvURq4LpztQai4GaWRrJXbmA@mail.gmail.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH v3 10/16] reset: Add a reset controller driver for the
+ Lantiq XWAY based SoCs
+Date: Mon, 29 May 2017 12:20:14 +0200
+Message-ID: <1496053214.17695.49.camel@pengutronix.de>
+References: <20170528184006.31668-1-hauke@hauke-m.de>
+         <20170528184006.31668-11-hauke@hauke-m.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOMZO5A-31iC5NrGePZCcgsNNwpvURq4LpztQai4GaWRrJXbmA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
+        john@phrozen.org, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com, robh@kernel.org,
+        andy.shevchenko@gmail.com
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <20170528184006.31668-11-hauke@hauke-m.de>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
-Hi Fabio
+Hi Hauke,
 
-On 05/29/2017 05:01 AM, Fabio Estevam wrote:
-> Hi Jiada,
->
-> On Thu, Apr 27, 2017 at 3:43 AM, Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>  wrote:
->
->> BUT if you think the use case don't need to be supported from SPI core,
->> then I don't have objection either, I will only submit imx SPI slave support
->> patch,
->> after your SPI slave support patch set been applied
-> Geert's SPI slave series has been applied.
->
-> Do you still plan to send imx spi slave support on top of it?
-Yes, I am working on it
+On Sun, 2017-05-28 at 20:40 +0200, Hauke Mehrtens wrote:
+[...]
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
+> @@ -0,0 +1,30 @@
+> +Lantiq XWAY SoC RCU reset controller binding
+> +============================================
+> +
+> +This binding describes a reset-controller found on the RCU module on Lantiq
+> +XWAY SoCs.
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible		: Should be one of
+> +				"lantiq,reset-danube"
+> +				"lantiq,reset-xrx200"
+> +- regmap		: A phandle to the RCU syscon
+> +- offset-set		: Offset of the reset set register
+> +- offset-status		: Offset of the reset status register
+> +- #reset-cells		: Specifies the number of cells needed to encode the
+> +			  reset line, should be 2.
+> +			  The first cell takes the reset set bit and the
+> +			  second cell takes the status bit.
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the reset-controllers on the xRX200 SoCs:
+> +	reset0: reset-controller@0 {
+> +		compatible = "lantiq,reset-xrx200";
+> +
+> +		regmap = <&rcu0>;
 
-Thanks,
-Jiada
-> Thanks
+Why not place these nodes as children of &rcu0 ? This property would be
+superfluous then.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> +		offset-set = <0x10>;
+> +		offset-status = <0x14>;
+> +		#reset-cells = <2>;
+> +	};
+[...]
+> --- /dev/null
+> +++ b/drivers/reset/reset-lantiq.c
+> @@ -0,0 +1,205 @@
+[...]
+> +static int lantiq_rcu_reset_update(struct reset_controller_dev *rcdev,
+> +				   unsigned long id, bool assert)
+> +{
+> +	struct lantiq_rcu_reset_priv *priv = to_lantiq_rcu_reset_priv(rcdev);
+> +	int ret, retry = LANTIQ_RCU_RESET_TIMEOUT;
+> +	unsigned int set = id & 0x1f;
+> +	u32 val;
+> +
+> +	if (assert)
+> +		val = BIT(set);
+> +	else
+> +		val = 0;
+> +
+> +	ret = regmap_update_bits(priv->regmap, priv->reset_offset, BIT(set),
+> +				 val);
+> +	if (ret) {
+> +		dev_err(priv->dev, "Failed to set reset bit %u\n", set);
+> +		return ret;
+> +	}
+> +
+> +	do {
+> +		ret = lantiq_rcu_reset_status(rcdev, id);
+> +		if (ret < 0)
+> +			return ret;
+> +		if (ret == assert)
+> +			break;
+> +		usleep_range(20, 40);
+> +	} while (--retry);
+
+How about wrapping this in a lantiq_rcu_poll_status(_timeout) function?
+I still think this is a case where regmap_read_poll_timeout could be
+used.
+
+[...]
+> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
+> +			       struct lantiq_rcu_reset_priv *priv)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	int ret;
+> +
+> +	priv->regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
+
+Why not use syscon_node_to_regmap(dev->of_node->parent) ?
+
+regards
+Philipp

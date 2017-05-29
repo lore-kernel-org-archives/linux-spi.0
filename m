@@ -1,36 +1,42 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH linux-next v3 1/1] spi: imx: dynamic burst length adjust
- for PIO mode
-Date: Mon, 29 May 2017 08:07:42 -0300
-Message-ID: <CAOMZO5D4O38M3ZQYxcT2w+oW=HBuk2WPMN7Ue4Va_gz3zbKZ=Q@mail.gmail.com>
-References: <1495774962-2981-1-git-send-email-jiada_wang@mentor.com>
+From: Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH RFC 0/5] *** SPI Slave mode support ***
+Date: Mon, 29 May 2017 09:01:27 -0300
+Message-ID: <CAOMZO5A-31iC5NrGePZCcgsNNwpvURq4LpztQai4GaWRrJXbmA@mail.gmail.com>
+References: <1492085644-4195-1-git-send-email-jiada_wang@mentor.com>
+ <20170413125929.dygodgj6c35ydh5p@sirena.org.uk> <CAMuHMdUm=90ddNWM5KWqT+W0hqZ-QO6vPHj5OisbYquDYq1ZmA@mail.gmail.com>
+ <58F06092.9080409@mentor.com> <CAMuHMdXa_O6RsqUciiNWQ0Zp6dniS47AUmPN9UWAWitP0csx=Q@mail.gmail.com>
+ <20170425103113.lxpwoq6sbxvg3ihl@sirena.org.uk> <59019306.2050309@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1495774962-2981-1-git-send-email-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Jiada Wang <jiada_wang@mentor.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <59019306.2050309@mentor.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Hi Jiada,
 
-On Fri, May 26, 2017 at 2:02 AM,  <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org> wrote:
-> From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
->
-> previously burst length (BURST_LENGTH) is always set to equal
-> to bits_per_word, causes a 10us gap between each word in
-> transfer, which significantly affects performance.
->
-> This patch uses 32 bits transfer to simulate lower bits transfer,
-> and adjusts burst length runtimely to use biggeest burst length
-> as possible to reduce the gaps in transfer for PIO mode.
+On Thu, Apr 27, 2017 at 3:43 AM, Jiada Wang <jiada_wang@mentor.com> wrote:
 
-Just curious: what is the performance gain you observe with this patch?
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> BUT if you think the use case don't need to be supported from SPI core,
+> then I don't have objection either, I will only submit imx SPI slave support
+> patch,
+> after your SPI slave support patch set been applied
+
+Geert's SPI slave series has been applied.
+
+Do you still plan to send imx spi slave support on top of it?
+
+Thanks

@@ -1,105 +1,58 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 07/16] Documentation: DT: MIPS: lantiq: Add docs for
- the RCU bindings
-Date: Wed, 31 May 2017 16:04:17 -0500
-Message-ID: <CAL_JsqL=iapYifAhDcYSLRGyevx7RxGiUtji72NJD-uYCQnCdw@mail.gmail.com>
-References: <20170528184006.31668-1-hauke@hauke-m.de> <20170528184006.31668-8-hauke@hauke-m.de>
- <20170531200540.joludfqpy35yc5yy@rob-hp-laptop> <6b8bb1cd-c090-435d-d150-d53edf04d2df@hauke-m.de>
+From: Jiada Wang <jiada_wang@mentor.com>
+Subject: Re: [PATCH linux-next v3 1/1] spi: imx: dynamic burst length adjust
+ for PIO mode
+Date: Thu, 1 Jun 2017 00:55:53 -0700
+Message-ID: <592FC889.3020001@mentor.com>
+References: <1495774962-2981-1-git-send-email-jiada_wang@mentor.com> <CAOMZO5D4O38M3ZQYxcT2w+oW=HBuk2WPMN7Ue4Va_gz3zbKZ=Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Linux-MIPS <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        LINUX-WATCHDOG <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-        John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <6b8bb1cd-c090-435d-d150-d53edf04d2df-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAOMZO5D4O38M3ZQYxcT2w+oW=HBuk2WPMN7Ue4Va_gz3zbKZ=Q@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 31, 2017 at 3:13 PM, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org> wrote:
-> On 05/31/2017 10:05 PM, Rob Herring wrote:
->> On Sun, May 28, 2017 at 08:39:57PM +0200, Hauke Mehrtens wrote:
->>> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
->>>
->>> This adds the initial documentation for the RCU module (a MFD device
->>> which provides USB PHYs, reset controllers and more).
->>>
->>> The RCU register range is used for multiple purposes. Mostly one device
->>> uses one or multiple register exclusively, but for some registers some
->>> bits are for one driver and some other bits are for a different driver.
->>> With this patch all accesses to the RCU registers will go through
->>> syscon.
->>>
->>> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
->>> ---
->>>  .../devicetree/bindings/mips/lantiq/rcu.txt        | 97 ++++++++++++++++++++++
->>>  1 file changed, 97 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->>>
->>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->>> new file mode 100644
->>> index 000000000000..3e2461262218
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->>> @@ -0,0 +1,97 @@
->>> +Lantiq XWAY SoC RCU binding
->>> +===========================
->>> +
->>> +This binding describes the RCU (reset controller unit) multifunction device,
->>> +where each sub-device has it's own set of registers.
->>> +
->>> +The RCU register range is used for multiple purposes. Mostly one device
->>> +uses one or multiple register exclusively, but for some registers some
->>> +bits are for one driver and some other bits are for a different driver.
->>> +With this patch all accesses to the RCU registers will go through
->>> +syscon.
->>> +
->>> +
->>> +-------------------------------------------------------------------------------
->>> +Required properties:
->>> +- compatible        : The first and second values must be: "simple-mfd", "syscon"
->>> +- reg               : The address and length of the system control registers
->>> +
->>> +
->>> +-------------------------------------------------------------------------------
->>> +Example of the RCU bindings on a xRX200 SoC:
->>> +    rcu0: rcu@203000 {
->>> +            compatible = "lantiq,rcu-xrx200", "simple-mfd", "syscon";
->>> +            reg = <0x203000 0x100>;
->>> +            big-endian;
->>> +
->>> +            gphy0: gphy@0 {
->>
->> Unit address without reg address is not valid.
->>
->>> +                    compatible = "lantiq,xrx200a2x-rcu-gphy";
->>> +
->>> +                    regmap = <&rcu0>;
->>> +                    offset = <0x20>;
->>
->> Does reg not work instead?
+Hello Fabio
+
+On 05/29/2017 04:07 AM, Fabio Estevam wrote:
+> Hi Jiada,
 >
-> Is it ok to access some registers in this range with a reg = <0x20 0x04>
-> setting and some others through syscon? This specific register is only
-> used by this gphy, but the reset controller shares the register with
-> some other drivers like the watchdog driver.
+> On Fri, May 26, 2017 at 2:02 AM,<jiada_wang@mentor.com>  wrote:
+>> From: Jiada Wang<jiada_wang@mentor.com>
+>>
+>> previously burst length (BURST_LENGTH) is always set to equal
+>> to bits_per_word, causes a 10us gap between each word in
+>> transfer, which significantly affects performance.
+>>
+>> This patch uses 32 bits transfer to simulate lower bits transfer,
+>> and adjusts burst length runtimely to use biggeest burst length
+>> as possible to reduce the gaps in transfer for PIO mode.
+> Just curious: what is the performance gain you observe with this patch?
+I did some performance test with 576/384/192 bytes data,
+following is the result between the test w & w/o this patch
+(ecspi controller works in PIO and loopback mode)
 
-Yes. The main thing is you need to use reg where you have unit addresses.
+with this patch:
+bytes      bpw      time (ms)
+576         8           9.2
+576         16         9.2
+384         8            6.2
+192          8           3.1
 
-For the syscon-reboot, you could also just not describe in DT and have
-the reset ctrlr driver register reboot driver. DT is not the only way
-to instantiate drivers.
+without this patch
+bytes      bpw      time(ms)
+576           8           14.4
+576           16          11.6
+384           8            9.6
+384           16          7.8
+192           8            4.8
+192           16          3.9
 
-Rob
---
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+Thanks,
+Jiada

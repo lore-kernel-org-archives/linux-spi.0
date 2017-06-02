@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 3/6] spi: imx: put struct spi_imx_config members into driver private struct
-Date: Fri,  2 Jun 2017 07:38:01 +0200
-Message-ID: <20170602053804.3238-4-s.hauer@pengutronix.de>
+Subject: [PATCH 5/6] spi: imx: remove bytes_per_word from private driver struct
+Date: Fri,  2 Jun 2017 07:38:03 +0200
+Message-ID: <20170602053804.3238-6-s.hauer@pengutronix.de>
 References: <20170602053804.3238-1-s.hauer@pengutronix.de>
 Cc: Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
         linux-kernel@vger.kernel.org, festevam@gmail.com,
@@ -13,188 +13,73 @@ In-Reply-To: <20170602053804.3238-1-s.hauer@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-struct spi_imx_config used to hold data specific to the current
-transfer. However, other data is in the drivers private data struct.
-Let's drop struct spi_imx_config and put the variables into the
-drivers private data struct aswell.
+We already have bits_per_word in the private driver struct and
+bytes_per_word can be calculated from it, so remove bits_per_word.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/spi-imx.c | 50 +++++++++++++++++++++++---------------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e3bc3d51a2d6..3fa5ccfb45a1 100644
+index 0ec8d816e033..12e5ef7beb0b 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -56,10 +56,6 @@
+@@ -92,7 +92,6 @@ struct spi_imx_data {
  
- /* The maximum  bytes that a sdma BD can transfer.*/
- #define MAX_SDMA_BD_BYTES  (1 << 15)
--struct spi_imx_config {
--	unsigned int speed_hz;
--	unsigned int bpw;
--};
- 
- enum spi_imx_devtype {
- 	IMX1_CSPI,
-@@ -74,7 +70,7 @@ struct spi_imx_data;
- 
- struct spi_imx_devtype_data {
- 	void (*intctrl)(struct spi_imx_data *, int);
--	int (*config)(struct spi_device *, struct spi_imx_config *);
-+	int (*config)(struct spi_device *);
- 	void (*trigger)(struct spi_imx_data *);
- 	int (*rx_available)(struct spi_imx_data *);
- 	void (*reset)(struct spi_imx_data *);
-@@ -94,6 +90,8 @@ struct spi_imx_data {
- 	unsigned long spi_clk;
- 	unsigned int spi_bus_clk;
- 
-+	unsigned int speed_hz;
-+	unsigned int bits_per_word;
- 	unsigned int bytes_per_word;
+ 	unsigned int speed_hz;
+ 	unsigned int bits_per_word;
+-	unsigned int bytes_per_word;
  	unsigned int spi_drctl;
  
-@@ -335,12 +333,11 @@ static void mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- 	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
+ 	unsigned int count;
+@@ -215,9 +214,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	if (!master->dma_rx)
+ 		return false;
+ 
+-	bpw = transfer->bits_per_word;
+-
+-	bpw = spi_imx_bytes_per_word(bpw);
++	bpw = spi_imx_bytes_per_word(transfer->bits_per_word);
+ 
+ 	if (bpw != 1 && bpw != 2 && bpw != 4)
+ 		return false;
+@@ -833,15 +830,14 @@ static irqreturn_t spi_imx_isr(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
  }
  
--static int mx51_ecspi_config(struct spi_device *spi,
--			     struct spi_imx_config *config)
-+static int mx51_ecspi_config(struct spi_device *spi)
+-static int spi_imx_dma_configure(struct spi_master *master,
+-				 int bytes_per_word)
++static int spi_imx_dma_configure(struct spi_master *master)
  {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
--	u32 clk = config->speed_hz, delay, reg;
-+	u32 clk = spi_imx->speed_hz, delay, reg;
- 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
+ 	int ret;
+ 	enum dma_slave_buswidth buswidth;
+ 	struct dma_slave_config rx = {}, tx = {};
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
  
- 	/*
-@@ -359,13 +356,13 @@ static int mx51_ecspi_config(struct spi_device *spi,
- 		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
- 
- 	/* set clock speed */
--	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
-+	ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->speed_hz, &clk);
- 	spi_imx->spi_bus_clk = clk;
- 
- 	/* set chip select to use */
- 	ctrl |= MX51_ECSPI_CTRL_CS(spi->chip_select);
- 
--	ctrl |= (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
-+	ctrl |= (spi_imx->bits_per_word - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
- 
- 	cfg |= MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
- 
-@@ -496,21 +493,21 @@ static void mx31_trigger(struct spi_imx_data *spi_imx)
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
- }
- 
--static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
-+static int mx31_config(struct spi_device *spi)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	unsigned int reg = MX31_CSPICTRL_ENABLE | MX31_CSPICTRL_MASTER;
- 	unsigned int clk;
- 
--	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz, &clk) <<
-+	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, spi_imx->speed_hz, &clk) <<
- 		MX31_CSPICTRL_DR_SHIFT;
- 	spi_imx->spi_bus_clk = clk;
- 
- 	if (is_imx35_cspi(spi_imx)) {
--		reg |= (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
-+		reg |= (spi_imx->bits_per_word - 1) << MX35_CSPICTRL_BL_SHIFT;
- 		reg |= MX31_CSPICTRL_SSCTL;
- 	} else {
--		reg |= (config->bpw - 1) << MX31_CSPICTRL_BC_SHIFT;
-+		reg |= (spi_imx->bits_per_word - 1) << MX31_CSPICTRL_BC_SHIFT;
+-	switch (bytes_per_word) {
++	switch (spi_imx_bytes_per_word(spi_imx->bits_per_word)) {
+ 	case 4:
+ 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 		break;
+@@ -875,8 +871,6 @@ static int spi_imx_dma_configure(struct spi_master *master,
+ 		return ret;
  	}
  
- 	if (spi->mode & SPI_CPHA)
-@@ -592,18 +589,18 @@ static void mx21_trigger(struct spi_imx_data *spi_imx)
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+-	spi_imx->bytes_per_word = bytes_per_word;
+-
+ 	return 0;
  }
  
--static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
-+static int mx21_config(struct spi_device *spi)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	unsigned int reg = MX21_CSPICTRL_ENABLE | MX21_CSPICTRL_MASTER;
- 	unsigned int max = is_imx27_cspi(spi_imx) ? 16 : 18;
- 	unsigned int clk;
- 
--	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max, &clk)
-+	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, spi_imx->speed_hz, max, &clk)
- 		<< MX21_CSPICTRL_DR_SHIFT;
- 	spi_imx->spi_bus_clk = clk;
- 
--	reg |= config->bpw - 1;
-+	reg |= spi_imx->bits_per_word - 1;
- 
- 	if (spi->mode & SPI_CPHA)
- 		reg |= MX21_CSPICTRL_PHA;
-@@ -661,17 +658,17 @@ static void mx1_trigger(struct spi_imx_data *spi_imx)
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
- }
- 
--static int mx1_config(struct spi_device *spi, struct spi_imx_config *config)
-+static int mx1_config(struct spi_device *spi)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	unsigned int reg = MX1_CSPICTRL_ENABLE | MX1_CSPICTRL_MASTER;
- 	unsigned int clk;
- 
--	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz, &clk) <<
-+	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, spi_imx->speed_hz, &clk) <<
- 		MX1_CSPICTRL_DR_SHIFT;
- 	spi_imx->spi_bus_clk = clk;
- 
--	reg |= config->bpw - 1;
-+	reg |= spi_imx->bits_per_word - 1;
- 
- 	if (spi->mode & SPI_CPHA)
- 		reg |= MX1_CSPICTRL_PHA;
-@@ -887,20 +884,19 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 				 struct spi_transfer *t)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
--	struct spi_imx_config config;
- 	int ret;
- 
- 	if (!t)
- 		return 0;
- 
--	config.bpw = t->bits_per_word;
--	config.speed_hz  = t->speed_hz;
-+	spi_imx->bits_per_word = t->bits_per_word;
-+	spi_imx->speed_hz  = t->speed_hz;
- 
- 	/* Initialize the functions for transfer */
--	if (config.bpw <= 8) {
-+	if (spi_imx->bits_per_word <= 8) {
- 		spi_imx->rx = spi_imx_buf_rx_u8;
- 		spi_imx->tx = spi_imx_buf_tx_u8;
--	} else if (config.bpw <= 16) {
-+	} else if (spi_imx->bits_per_word <= 16) {
- 		spi_imx->rx = spi_imx_buf_rx_u16;
- 		spi_imx->tx = spi_imx_buf_tx_u16;
- 	} else {
-@@ -915,12 +911,12 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+@@ -910,8 +904,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 		spi_imx->usedma = 0;
  
  	if (spi_imx->usedma) {
- 		ret = spi_imx_dma_configure(spi->master,
--					    spi_imx_bytes_per_word(config.bpw));
-+					    spi_imx_bytes_per_word(spi_imx->bits_per_word));
+-		ret = spi_imx_dma_configure(spi->master,
+-					    spi_imx_bytes_per_word(spi_imx->bits_per_word));
++		ret = spi_imx_dma_configure(spi->master);
  		if (ret)
  			return ret;
  	}
- 
--	spi_imx->devtype_data->config(spi, &config);
-+	spi_imx->devtype_data->config(spi);
- 
- 	return 0;
- }
 -- 
 2.11.0

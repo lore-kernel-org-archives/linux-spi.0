@@ -1,69 +1,143 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH linux-next v3 1/1] spi: imx: dynamic burst length adjust
- for PIO mode
-Date: Fri, 2 Jun 2017 07:38:52 +0200
-Message-ID: <20170602053852.7w4c35tn5daq7omy@pengutronix.de>
-References: <1495774962-2981-1-git-send-email-jiada_wang@mentor.com>
- <20170529095043.mytrgtyfne4dfmae@pengutronix.de>
- <59300177.5030908@mentor.com>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH 2/3] spi: mediatek: support adjust register define
+Date: Fri, 2 Jun 2017 15:18:42 +0800
+Message-ID: <1496387923-31674-3-git-send-email-leilk.liu@mediatek.com>
+References: <1496387923-31674-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <59300177.5030908-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <sean.wang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1496387923-31674-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 01, 2017 at 04:58:47AM -0700, Jiada Wang wrote:
-> Hi Sascha
-> 
-> On 05/29/2017 02:50 AM, Sascha Hauer wrote:
-> > Hi,
-> > 
-> > On Thu, May 25, 2017 at 10:02:42PM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
-> > > From: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-> > > 
-> > > previously burst length (BURST_LENGTH) is always set to equal
-> > > to bits_per_word, causes a 10us gap between each word in
-> > > transfer, which significantly affects performance.
-> > > 
-> > > This patch uses 32 bits transfer to simulate lower bits transfer,
-> > > and adjusts burst length runtimely to use biggeest burst length
-> > > as possible to reduce the gaps in transfer for PIO mode.
-> > > 
-> > First let me say that I'm not really looking forward to have this patch
-> > in the driver. It adds quite some code to already hairy code pathes in
-> > the imx-spi driver and I saw you have the same patch for DMA mode
-> > aswell.
-> > 
-> > The driver has different function hooks for the different controllers.
-> > This patch breaks that. In some places it assumes that dynamic burst
-> > is only possible on i.MX51 type controllers and also that in case
-> > dynamic burst is enabled it must be an i.MX51 type controller.
-> > 
-> > We should really see how this patch can be better integrated into the
-> > driver, or, how the driver can be changed to better support the dynamic
-> > burst usecase.
->  Yes, I can understand your concern, as this patch brings in a bunch of
-> change,
-> and changes the behaviour of data transfer.
-> how about introduce a new DTS property like "fsl,spi-dynamic-burst",
-> and only enables dynamic burst when this property is added.
+this patch adds support for adjust register design.
 
-This will only reduce the testing coverage of the feature, not a good
-option.
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c                 |   45 ++++++++++++++++++++++++++----
+ include/linux/platform_data/spi-mt65xx.h |    2 ++
+ 2 files changed, 42 insertions(+), 5 deletions(-)
 
-Sascha
-
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 278867a..3d7cd2d 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -35,11 +35,15 @@
+ #define SPI_CMD_REG                       0x0018
+ #define SPI_STATUS0_REG                   0x001c
+ #define SPI_PAD_SEL_REG                   0x0024
++#define SPI_CFG2_REG                      0x0028
+ 
+ #define SPI_CFG0_SCK_HIGH_OFFSET          0
+ #define SPI_CFG0_SCK_LOW_OFFSET           8
+ #define SPI_CFG0_CS_HOLD_OFFSET           16
+ #define SPI_CFG0_CS_SETUP_OFFSET          24
++#define SPI_ADJUST_CFG0_SCK_LOW_OFFSET    16
++#define SPI_ADJUST_CFG0_CS_HOLD_OFFSET    0
++#define SPI_ADJUST_CFG0_CS_SETUP_OFFSET   16
+ 
+ #define SPI_CFG1_CS_IDLE_OFFSET           0
+ #define SPI_CFG1_PACKET_LOOP_OFFSET       8
+@@ -55,6 +59,8 @@
+ #define SPI_CMD_RST                  BIT(2)
+ #define SPI_CMD_PAUSE_EN             BIT(4)
+ #define SPI_CMD_DEASSERT             BIT(5)
++#define SPI_CMD_SAMPLE_SEL           BIT(6)
++#define SPI_CMD_CS_POL               BIT(7)
+ #define SPI_CMD_CPHA                 BIT(8)
+ #define SPI_CMD_CPOL                 BIT(9)
+ #define SPI_CMD_RX_DMA               BIT(10)
+@@ -80,6 +86,8 @@ struct mtk_spi_compatible {
+ 	bool need_pad_sel;
+ 	/* Must explicitly send dummy Tx bytes to do Rx only transfer */
+ 	bool must_tx;
++	/* some IC design adjust register define */
++	bool adjust_reg;
+ };
+ 
+ struct mtk_spi {
+@@ -108,6 +116,8 @@ struct mtk_spi {
+ static const struct mtk_chip_config mtk_default_chip_info = {
+ 	.rx_mlsb = 1,
+ 	.tx_mlsb = 1,
++	.cs_pol = 0,
++	.sample_sel = 0,
+ };
+ 
+ static const struct of_device_id mtk_spi_of_match[] = {
+@@ -182,6 +192,17 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 	reg_val |= SPI_CMD_RX_ENDIAN;
+ #endif
+ 
++	if (mdata->dev_comp->adjust_reg) {
++		if (chip_config->cs_pol)
++			reg_val |= SPI_CMD_CS_POL;
++		else
++			reg_val &= ~SPI_CMD_CS_POL;
++		if (chip_config->sample_sel)
++			reg_val |= SPI_CMD_SAMPLE_SEL;
++		else
++			reg_val &= ~SPI_CMD_SAMPLE_SEL;
++	}
++
+ 	/* set finish and pause interrupt always enable */
+ 	reg_val |= SPI_CMD_FINISH_IE | SPI_CMD_PAUSE_IE;
+ 
+@@ -233,11 +254,25 @@ static void mtk_spi_prepare_transfer(struct spi_master *master,
+ 	sck_time = (div + 1) / 2;
+ 	cs_time = sck_time * 2;
+ 
+-	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_HIGH_OFFSET);
+-	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
+-	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
+-	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
+-	writel(reg_val, mdata->base + SPI_CFG0_REG);
++	if (mdata->dev_comp->adjust_reg) {
++		reg_val |= (((sck_time - 1) & 0xffff)
++			   << SPI_CFG0_SCK_HIGH_OFFSET);
++		reg_val |= (((sck_time - 1) & 0xffff)
++			   << SPI_ADJUST_CFG0_SCK_LOW_OFFSET);
++		writel(reg_val, mdata->base + SPI_CFG2_REG);
++		reg_val |= (((cs_time - 1) & 0xffff)
++			   << SPI_ADJUST_CFG0_CS_HOLD_OFFSET);
++		reg_val |= (((cs_time - 1) & 0xffff)
++			   << SPI_ADJUST_CFG0_CS_SETUP_OFFSET);
++		writel(reg_val, mdata->base + SPI_CFG0_REG);
++	} else {
++		reg_val |= (((sck_time - 1) & 0xff)
++			   << SPI_CFG0_SCK_HIGH_OFFSET);
++		reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
++		reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
++		reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
++		writel(reg_val, mdata->base + SPI_CFG0_REG);
++	}
+ 
+ 	reg_val = readl(mdata->base + SPI_CFG1_REG);
+ 	reg_val &= ~SPI_CFG1_CS_IDLE_MASK;
+diff --git a/include/linux/platform_data/spi-mt65xx.h b/include/linux/platform_data/spi-mt65xx.h
+index 54b0448..ba4e4bb 100644
+--- a/include/linux/platform_data/spi-mt65xx.h
++++ b/include/linux/platform_data/spi-mt65xx.h
+@@ -16,5 +16,7 @@
+ struct mtk_chip_config {
+ 	u32 tx_mlsb;
+ 	u32 rx_mlsb;
++	u32 cs_pol;
++	u32 sample_sel;
+ };
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

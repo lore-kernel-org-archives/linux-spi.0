@@ -1,33 +1,58 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: spi: i.MX: Some cleanup patches
-Date: Fri,  2 Jun 2017 07:37:58 +0200
-Message-ID: <20170602053804.3238-1-s.hauer@pengutronix.de>
+Subject: [PATCH 1/6] spi: imx: Nothing to do in setupxfer when transfer is NULL
+Date: Fri,  2 Jun 2017 07:37:59 +0200
+Message-ID: <20170602053804.3238-2-s.hauer@pengutronix.de>
+References: <20170602053804.3238-1-s.hauer@pengutronix.de>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170602053804.3238-1-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This series contains some drive-by cleanup patches I came up with
-while reviewing other patches for this driver, Jiada, please consider
-basing your next round of patches on this when Mark signals he is
-ok with this series.
+When the spi_transfer given in spi_imx_setupxfer is NULL then
+we have nothing to do. Bail out early in this case so that
+we do not have to test for t != NULL multiple times later.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (6):
-      spi: imx: Nothing to do in setupxfer when transfer is NULL
-      spi: imx: Drop unnecessary check
-      spi: imx: put struct spi_imx_config members into driver private struct
-      spi: imx: drop bogus unnecessary dma config
-      spi: imx: remove bytes_per_word from private driver struct
-      spi: imx: rename 'bpw' variables
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index b402530a7a9a..4b5cd0c84450 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -217,9 +217,6 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	if (!master->dma_rx)
+ 		return false;
+ 
+-	if (!transfer)
+-		return false;
+-
+ 	bpw = transfer->bits_per_word;
+ 	if (!bpw)
+ 		bpw = spi->bits_per_word;
+@@ -895,8 +892,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	struct spi_imx_config config;
+ 	int ret;
+ 
+-	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+-	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
++	if (!t)
++		return 0;
++
++	config.bpw = t->bits_per_word;
++	config.speed_hz  = t->speed_hz;
+ 
+ 	if (!config.speed_hz)
+ 		config.speed_hz = spi->max_speed_hz;
+-- 
+2.11.0
 
- drivers/spi/spi-imx.c | 86 ++++++++++++++++++++-------------------------------
- 1 file changed, 33 insertions(+), 53 deletions(-)
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

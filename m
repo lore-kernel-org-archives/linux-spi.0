@@ -1,56 +1,50 @@
 From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH 3/3] spi: mediatek: add compatible support for mt7622 IC
-Date: Fri, 2 Jun 2017 15:18:43 +0800
-Message-ID: <1496387923-31674-4-git-send-email-leilk.liu@mediatek.com>
+Subject: [PATCH 1/3] dt-bindings: spi: mediatek: Add bindings for mediatek
+ MT7622 soc platform
+Date: Fri, 2 Jun 2017 15:18:41 +0800
+Message-ID: <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
 References: <1496387923-31674-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <sean.wang@mediatek.com>, Leilk Liu <leilk.liu@mediatek.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Leilk Liu <leilk.liu@mediatek.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ sean.wang@mediatek.com, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1496387923-31674-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-this patch add compatible support for mt7622 IC.
+This patch adds a DT binding documentation for the MT7622 soc.
 
 Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 ---
- drivers/spi/spi-mt65xx.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 3d7cd2d..ebc4b1a 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -104,6 +104,12 @@ struct mtk_spi {
- };
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index e43f4cf..c0b1f01 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -4,6 +4,7 @@ Required properties:
+ - compatible: should be one of the following.
+     - mediatek,mt2701-spi: for mt2701 platforms
+     - mediatek,mt6589-spi: for mt6589 platforms
++    - mediatek,mt7622-spi: for mt7622 platforms
+     - mediatek,mt8135-spi: for mt8135 platforms
+     - mediatek,mt8173-spi: for mt8173 platforms
  
- static const struct mtk_spi_compatible mtk_common_compat;
-+
-+static const struct mtk_spi_compatible mt7622_compat = {
-+	.must_tx = true,
-+	.adjust_reg = true,
-+};
-+
- static const struct mtk_spi_compatible mt8173_compat = {
- 	.need_pad_sel = true,
- 	.must_tx = true,
-@@ -127,6 +133,9 @@ struct mtk_spi {
- 	{ .compatible = "mediatek,mt6589-spi",
- 		.data = (void *)&mtk_common_compat,
- 	},
-+	{ .compatible = "mediatek,mt7622-spi",
-+		.data = (void *)&mt7622_compat,
-+	},
- 	{ .compatible = "mediatek,mt8135-spi",
- 		.data = (void *)&mtk_common_compat,
- 	},
 -- 
 1.7.9.5

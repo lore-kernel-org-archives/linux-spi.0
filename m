@@ -1,35 +1,40 @@
 From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: davinci: Handle return value of clk_prepare_enable
-Date: Mon,  5 Jun 2017 17:36:28 +0530
-Message-ID: <29e25f858e455379c529a33842bcfafcbb110337.1496664276.git.arvind.yadav.cs@gmail.com>
+Subject: [PATCH] spi: davinci: Fix compilation warning.
+Date: Mon,  5 Jun 2017 17:44:09 +0530
+Message-ID: <b6b0d421633c6ea51cdaf3e582f8bebd2034251c.1496664791.git.arvind.yadav.cs@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-clk_prepare_enable() can fail here and we must check its return value.
+If CONFIG_OF is disable, it'll through compilation warning.
+
+drivers/spi/spi-davinci.c: In function ‘spi_davinci_get_pdata’:
+drivers/spi/spi-davinci.c:880:2: warning: return makes pointer from integer without a cast [enabled by default]
+  return -ENODEV;
 
 Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-davinci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 595acdc..2b0805d 100644
+index 2b0805d..93a4009 100644
 --- a/drivers/spi/spi-davinci.c
 +++ b/drivers/spi/spi-davinci.c
-@@ -965,7 +965,9 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		ret = -ENODEV;
- 		goto free_master;
- 	}
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		goto free_master;
+@@ -877,7 +877,7 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
+ 	*spi_davinci_get_pdata(struct platform_device *pdev,
+ 		struct davinci_spi *dspi)
+ {
+-	return -ENODEV;
++	return ERR_PTR(-ENODEV);
+ }
+ #endif
  
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->bus_num = pdev->id;
 -- 
 1.9.1
 

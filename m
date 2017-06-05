@@ -1,7 +1,7 @@
 From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH linux-next v3 1/4] spi: imx: introduce fifo_size and has_dmamode in spi_imx_devtype_data
-Date: Mon, 5 Jun 2017 12:38:06 +0900
-Message-ID: <20170605033809.13726-2-jiada_wang@mentor.com>
+Subject: [PATCH linux-next v3 2/4] spi: imx: add selection for iMX53 and iMX6 controller
+Date: Mon, 5 Jun 2017 12:38:07 +0900
+Message-ID: <20170605033809.13726-3-jiada_wang@mentor.com>
 References: <20170605033809.13726-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,131 +16,101 @@ In-Reply-To: <20170605033809.13726-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gm
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Different ECSPI controller has different fifosize and DMA capability,
-instead of calling functions to identify these information by check
-devtype. add fifo_size and has_dmamode to spi_imx_devtype_data.
-so that these information can be directly accessed.
+ECSPI contorller for iMX53 and iMX6 has few hardware issues
+comparing to iMX51.
+The change add possibility to detect which controller is used
+to apply possible workaround and limitations.
 
 Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  1 +
+ drivers/spi/spi-imx.c                              | 26 ++++++++++++++++++++--
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 31b5b21..5bf1396 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -9,6 +9,7 @@ Required properties:
+   - "fsl,imx31-cspi" for SPI compatible with the one integrated on i.MX31
+   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
++  - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+ - cs-gpios : Specifies the gpio pins to be used for chipselects.
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index b402530..e48989a 100644
+index e48989a..5034f89 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -78,6 +78,8 @@ struct spi_imx_devtype_data {
- 	void (*trigger)(struct spi_imx_data *);
- 	int (*rx_available)(struct spi_imx_data *);
- 	void (*reset)(struct spi_imx_data *);
-+	bool has_dmamode;
-+	unsigned int fifo_size;
- 	enum spi_imx_devtype devtype;
+@@ -67,7 +67,8 @@ enum spi_imx_devtype {
+ 	IMX27_CSPI,
+ 	IMX31_CSPI,
+ 	IMX35_CSPI,	/* CSPI on all i.mx except above */
+-	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
++	IMX51_ECSPI,	/* ECSPI on i.mx51 */
++	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
  };
  
-@@ -128,11 +130,6 @@ static inline int is_imx51_ecspi(struct spi_imx_data *d)
+ struct spi_imx_data;
+@@ -130,6 +131,11 @@ static inline int is_imx51_ecspi(struct spi_imx_data *d)
  	return d->devtype_data->devtype == IMX51_ECSPI;
  }
  
--static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
--{
--	return is_imx51_ecspi(d) ? 64 : 8;
--}
--
++static inline int is_imx53_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX53_ECSPI;
++}
++
  #define MXC_SPI_BUF_RX(type)						\
  static void spi_imx_buf_rx_##type(struct spi_imx_data *spi_imx)		\
  {									\
-@@ -229,7 +226,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 	if (bpw != 1 && bpw != 2 && bpw != 4)
- 		return false;
- 
--	for (i = spi_imx_get_fifosize(spi_imx) / 2; i > 0; i--) {
-+	for (i = spi_imx->devtype_data->fifo_size / 2; i > 0; i--) {
- 		if (!(transfer->len % (i * bpw)))
- 			break;
- 	}
-@@ -704,6 +701,8 @@ static struct spi_imx_devtype_data imx1_cspi_devtype_data = {
- 	.trigger = mx1_trigger,
- 	.rx_available = mx1_rx_available,
- 	.reset = mx1_reset,
-+	.fifo_size = 8,
-+	.has_dmamode = false,
- 	.devtype = IMX1_CSPI,
- };
- 
-@@ -713,6 +712,8 @@ static struct spi_imx_devtype_data imx21_cspi_devtype_data = {
- 	.trigger = mx21_trigger,
- 	.rx_available = mx21_rx_available,
- 	.reset = mx21_reset,
-+	.fifo_size = 8,
-+	.has_dmamode = false,
- 	.devtype = IMX21_CSPI,
- };
- 
-@@ -723,6 +724,8 @@ static struct spi_imx_devtype_data imx27_cspi_devtype_data = {
- 	.trigger = mx21_trigger,
- 	.rx_available = mx21_rx_available,
- 	.reset = mx21_reset,
-+	.fifo_size = 8,
-+	.has_dmamode = false,
- 	.devtype = IMX27_CSPI,
- };
- 
-@@ -732,6 +735,8 @@ static struct spi_imx_devtype_data imx31_cspi_devtype_data = {
- 	.trigger = mx31_trigger,
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
-+	.fifo_size = 8,
-+	.has_dmamode = false,
- 	.devtype = IMX31_CSPI,
- };
- 
-@@ -742,6 +747,8 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.trigger = mx31_trigger,
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
-+	.fifo_size = 8,
-+	.has_dmamode = true,
- 	.devtype = IMX35_CSPI,
- };
- 
-@@ -751,6 +758,8 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
- 	.trigger = mx51_ecspi_trigger,
- 	.rx_available = mx51_ecspi_rx_available,
- 	.reset = mx51_ecspi_reset,
-+	.fifo_size = 64,
-+	.has_dmamode = true,
+@@ -763,6 +769,17 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
  	.devtype = IMX51_ECSPI,
  };
  
-@@ -802,7 +811,7 @@ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
++static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
++	.intctrl = mx51_ecspi_intctrl,
++	.config = mx51_ecspi_config,
++	.trigger = mx51_ecspi_trigger,
++	.rx_available = mx51_ecspi_rx_available,
++	.reset = mx51_ecspi_reset,
++	.fifo_size = 64,
++	.has_dmamode = true,
++	.devtype = IMX53_ECSPI,
++};
++
+ static const struct platform_device_id spi_imx_devtype[] = {
+ 	{
+ 		.name = "imx1-cspi",
+@@ -783,6 +800,9 @@ static const struct platform_device_id spi_imx_devtype[] = {
+ 		.name = "imx51-ecspi",
+ 		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
+ 	}, {
++		.name = "imx53-ecspi",
++		.driver_data = (kernel_ulong_t) &imx53_ecspi_devtype_data,
++	}, {
+ 		/* sentinel */
+ 	}
+ };
+@@ -794,6 +814,7 @@ static const struct of_device_id spi_imx_dt_ids[] = {
+ 	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
++	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, spi_imx_dt_ids);
+@@ -1238,7 +1259,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+ 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
++	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
++	    is_imx53_ecspi(spi_imx))
+ 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
  
- static void spi_imx_push(struct spi_imx_data *spi_imx)
- {
--	while (spi_imx->txfifo < spi_imx_get_fifosize(spi_imx)) {
-+	while (spi_imx->txfifo < spi_imx->devtype_data->fifo_size) {
- 		if (!spi_imx->count)
- 			break;
- 		spi_imx->tx(spi_imx);
-@@ -956,7 +965,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	if (of_machine_is_compatible("fsl,imx6dl"))
- 		return 0;
- 
--	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
-+	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
- 
- 	/* Prepare for TX DMA: */
- 	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-@@ -1282,7 +1291,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx35 and i.mx6 now, can remove the constraint
- 	 * if validated on other chips.
- 	 */
--	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx)) {
-+	if (spi_imx->devtype_data->has_dmamode) {
- 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
- 		if (ret == -EPROBE_DEFER)
- 			goto out_clk_put;
+ 	spi_imx->spi_drctl = spi_drctl;
 -- 
 2.9.3
 

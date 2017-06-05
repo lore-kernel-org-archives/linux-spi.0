@@ -1,82 +1,54 @@
-From: Arvind Yadav <arvind.yadav.cs@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: davinci: Fix compilation warning.
-Date: Mon, 5 Jun 2017 18:59:15 +0530
-Message-ID: <211a274a-e7c2-6f74-7ab0-e122240dc8f7@gmail.com>
+Date: Mon, 5 Jun 2017 14:37:16 +0100
+Message-ID: <20170605133716.srpxai3i6uyva4go@sirena.org.uk>
 References: <b6b0d421633c6ea51cdaf3e582f8bebd2034251c.1496664791.git.arvind.yadav.cs@gmail.com>
  <CAMuHMdU-o1zw5ETY3d7tV4kQ7K5wf4KuPBhZL3akQwiKj3+cHQ@mail.gmail.com>
+ <211a274a-e7c2-6f74-7ab0-e122240dc8f7@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Murali Karicheri <m-karicheri2@ti.com>,
-        Mark Brown <broonie@kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="obrbwebrmd2ty7bv"
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Murali Karicheri <m-karicheri2@ti.com>,
         linux-spi <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Arvind Yadav <arvind.yadav.cs@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdU-o1zw5ETY3d7tV4kQ7K5wf4KuPBhZL3akQwiKj3+cHQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <211a274a-e7c2-6f74-7ab0-e122240dc8f7@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-  yes, You are right. we are getting this warning.
-drivers/spi/spi-davinci.c: In function ‘davinci_spi_probe’:
-drivers/spi/spi-davinci.c:919:7: warning: assignment makes integer from 
-pointer without a cast [enabled by default]
-    ret = spi_davinci_get_pdata(pdev, dspi);
 
-We should return 'int' in both the case.
+--obrbwebrmd2ty7bv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  Thanks
-  ~arvind
+On Mon, Jun 05, 2017 at 06:59:15PM +0530, Arvind Yadav wrote:
+> Hi,
+>  yes, You are right. we are getting this warning.
+> drivers/spi/spi-davinci.c: In function =E2=80=98davinci_spi_probe=E2=80=
+=99:
 
-On Monday 05 June 2017 06:37 PM, Geert Uytterhoeven wrote:
-> Hi Arvind,
->
-> On Mon, Jun 5, 2017 at 2:14 PM, Arvind Yadav <arvind.yadav.cs@gmail.com> wrote:
->> If CONFIG_OF is disable, it'll through compilation warning.
->>
->> drivers/spi/spi-davinci.c: In function ‘spi_davinci_get_pdata’:
->> drivers/spi/spi-davinci.c:880:2: warning: return makes pointer from integer without a cast [enabled by default]
->>    return -ENODEV;
->>
->> Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
->> ---
->>   drivers/spi/spi-davinci.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
->> index 2b0805d..93a4009 100644
->> --- a/drivers/spi/spi-davinci.c
->> +++ b/drivers/spi/spi-davinci.c
->> @@ -877,7 +877,7 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
->>          *spi_davinci_get_pdata(struct platform_device *pdev,
->>                  struct davinci_spi *dspi)
->>   {
->> -       return -ENODEV;
->> +       return ERR_PTR(-ENODEV);
->>   }
->>   #endif
-> And you don't get a warning for spi_davinci_probe() doing
->
->      int ret;
->
->      ret = spi_davinci_get_pdata(pdev, dspi);
->
-> ?
->
-> spi_davinci_get_pdata() returns int if CONFIG_OF, else a pointer.
-> I guess it always should return int instead.
->
-> It's been like this since the function was introduced, in commit
-> aae7147dfc522062 ("spi/davinci: add OF support for the spi controller").
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
+
+--obrbwebrmd2ty7bv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlk1XosACgkQJNaLcl1U
+h9CXbwf/ZdK9YdtJDc6hQo3wP1+4V+b/K5PFC1h84Qzc20SYvjbPn2Sa6dApyl71
+QuAbG717bnVeLOethCzrl06mbLXXKsDvjDbvHUFWCUU1zzumSYYHDGwGF/MyWI1t
+rmam9WYd+UfPkVmmu5pgW0vRNUAv7qHSJZw/NQzA1f69ZV7o8HvsRqIgZjjRtsK1
+oL87uw0dN96SciBHW3cIfAsykagHz5ytLQyqmdn4o7P1uhtcVhbTLOGyXOcptXCk
+G4oPBNG+z5KUuLaV0kXgNtDR07JV3tmsIG6xcC7dAZa4bbaxKO7dRQJVSkdBeoWV
+blpQOkYUSd5QX1S0+Cdb3b1cxrclJw==
+=MgBO
+-----END PGP SIGNATURE-----
+
+--obrbwebrmd2ty7bv--

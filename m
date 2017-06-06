@@ -1,23 +1,22 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Add support for Intel Cannonlake" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:11 +0100
-Message-ID: <E1dIJot-0007Xh-TH@debutante>
-References: <20170530143121.11313-1-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Subject: Applied "spi: atmel: print version only after successful registration" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:08 +0100
+Message-ID: <E1dIJoq-0007We-Sx@debutante>
+References: <0ddb655ce326344aa32334e343ed4f0ba2996f72.1496122410.git.baruch@tkos.co.il>
+Cc: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170530143121.11313-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <0ddb655ce326344aa32334e343ed4f0ba2996f72.1496122410.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Add support for Intel Cannonlake
+   spi: atmel: print version only after successful registration
 
 has been applied to the spi tree at
 
@@ -42,91 +41,45 @@ to this mail.
 Thanks,
 Mark
 
->From fc0b2acc754a183aa79e2abb8bca8fd915832694 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 30 May 2017 17:31:21 +0300
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Cannonlake
+>From 6aba9c65649e5ef137bce7a958c0749f13af88a1 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Date: Tue, 30 May 2017 08:33:30 +0300
+Subject: [PATCH] spi: atmel: print version only after successful registration
 
-Intel Cannonlake LPSS SPI has up to four chip selects per port like in
-Broxton and is clocked like Sunrisepoint and Kaby Lake. Add a new type
-LPSS_CNL_SSP and configuration that enable runtime chip select detection
-and use the same FIFO thresholds than in Sunrisepoint.
+Don't print the version at the beginning of atmel_spi_probe(). This avoids
+spamming the log whenever a deferred probe runs.
 
-Patch adds support for both Cannonlake SoC and PCH.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Acked-by: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c   | 22 ++++++++++++++++++++++
- include/linux/pxa2xx_ssp.h |  1 +
- 2 files changed, 23 insertions(+)
+ drivers/spi/spi-atmel.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 47b65d7c4072..38d053682892 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -151,6 +151,18 @@ static const struct lpss_config lpss_platforms[] = {
- 		.cs_sel_shift = 8,
- 		.cs_sel_mask = 3 << 8,
- 	},
-+	{	/* LPSS_CNL_SSP */
-+		.offset = 0x200,
-+		.reg_general = -1,
-+		.reg_ssp = 0x20,
-+		.reg_cs_ctrl = 0x24,
-+		.reg_capabilities = 0xfc,
-+		.rx_threshold = 1,
-+		.tx_threshold_lo = 32,
-+		.tx_threshold_hi = 56,
-+		.cs_sel_shift = 8,
-+		.cs_sel_mask = 3 << 8,
-+	},
- };
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 1eb83c9613d5..4e5e51fe6f73 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1422,7 +1422,6 @@ static void atmel_get_caps(struct atmel_spi *as)
+ 	unsigned int version;
  
- static inline const struct lpss_config
-@@ -167,6 +179,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
-+	case LPSS_CNL_SSP:
- 		return true;
- 	default:
- 		return false;
-@@ -1275,6 +1288,7 @@ static int setup(struct spi_device *spi)
- 	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
-+	case LPSS_CNL_SSP:
- 		config = lpss_get_config(drv_data);
- 		tx_thres = config->tx_threshold_lo;
- 		tx_hi_thres = config->tx_threshold_hi;
-@@ -1470,6 +1484,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0x5ac2), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x5ac4), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x5ac6), LPSS_BXT_SSP },
-+	/* CNL-LP */
-+	{ PCI_VDEVICE(INTEL, 0x9daa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x9dab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x9dfb), LPSS_CNL_SSP },
-+	/* CNL-H */
-+	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
- 	{ },
- };
+ 	version = atmel_get_version(as);
+-	dev_info(&as->pdev->dev, "version: 0x%x\n", version);
  
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index a0522328d7aa..8461b18e4608 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -196,6 +196,7 @@ enum pxa_ssp_type {
- 	LPSS_BSW_SSP,
- 	LPSS_SPT_SSP,
- 	LPSS_BXT_SSP,
-+	LPSS_CNL_SSP,
- };
+ 	as->caps.is_spi2 = version > 0x121;
+ 	as->caps.has_wdrbt = version >= 0x210;
+@@ -1609,8 +1608,9 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		goto out_free_dma;
  
- struct ssp_device {
+ 	/* go! */
+-	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+-			(unsigned long)regs->start, irq);
++	dev_info(&pdev->dev, "Atmel SPI Controller version 0x%x at 0x%08lx (irq %d)\n",
++			atmel_get_version(as), (unsigned long)regs->start,
++			irq);
+ 
+ 	return 0;
+ 
 -- 
 2.11.0
 

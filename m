@@ -1,51 +1,69 @@
-From: Arvind Yadav <arvind.yadav.cs@gmail.com>
-Subject: [PATCH v2] spi: davinci: Fix compilation warning.
-Date: Mon,  5 Jun 2017 19:20:40 +0530
-Message-ID: <97178a72ee129abbf918562cd22a508bc1cf0e1a.1496670502.git.arvind.yadav.cs@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: broonie@kernel.org, geert@linux-m68k.org, m-karicheri2@ti.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Handle return value of clk_prepare_enable
+Date: Tue,  6 Jun 2017 15:14:15 +0530
+Message-ID: <4e16c0aba047b068aaa41c1d180d98ccb441afd0.1496668108.git.arvind.yadav.cs@gmail.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org, haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        robert.jarzmik-GANU6spQydw@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-If CONFIG_OF is disable, it'll through compilation warning.
+clk_prepare_enable() can fail here and we must check its return value.
 
-drivers/spi/spi-davinci.c: In function ‘spi_davinci_get_pdata’:
-drivers/spi/spi-davinci.c:880:2: warning: return makes pointer from integer without a cast [enabled by default]
-  return -ENODEV;
-
-drivers/spi/spi-davinci.c: In function ‘davinci_spi_probe’:
-drivers/spi/spi-davinci.c:919:7: warning: assignment makes integer from pointer without a cast [enabled by default]
-   ret = spi_davinci_get_pdata(pdev, dspi);
-
-Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
-
-Changes in v2:
-             Add fix for both the warning.
-Changes in v1:
-             It has fix for first warning.
+Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 2b0805d..6ddb6ef 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -873,9 +873,8 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
- 	return 0;
- }
- #else
--static struct davinci_spi_platform_data
--	*spi_davinci_get_pdata(struct platform_device *pdev,
--		struct davinci_spi *dspi)
-+static int spi_davinci_get_pdata(struct platform_device *pdev,
-+			struct davinci_spi *dspi)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 47b65d7..e9c0fe5 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1676,7 +1676,11 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Enable SOC clock */
+-	clk_prepare_enable(ssp->clk);
++	status = clk_prepare_enable(ssp->clk);
++	if (status) {
++		dev_err(&pdev->dev, "Failed to prepare clock\n");
++		goto out_error_master_alloc;
++	}
+ 
+ 	master->max_speed_hz = clk_get_rate(ssp->clk);
+ 
+@@ -1855,8 +1859,13 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	int status;
+ 
+ 	/* Enable the SSP clock */
+-	if (!pm_runtime_suspended(dev))
+-		clk_prepare_enable(ssp->clk);
++	if (!pm_runtime_suspended(dev)) {
++		status = clk_prepare_enable(ssp->clk);
++		if (status) {
++			dev_err(dev, "Failed to prepare clock\n");
++			return status;
++		}
++	}
+ 
+ 	/* Restore LPSS private register bits */
+ 	if (is_lpss_ssp(drv_data))
+@@ -1886,8 +1895,7 @@ static int pxa2xx_spi_runtime_resume(struct device *dev)
  {
- 	return -ENODEV;
+ 	struct driver_data *drv_data = dev_get_drvdata(dev);
+ 
+-	clk_prepare_enable(drv_data->ssp->clk);
+-	return 0;
++	return clk_prepare_enable(drv_data->ssp->clk);
  }
+ #endif
+ 
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

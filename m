@@ -1,21 +1,23 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: Drop unnecessary check" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:40 +0100
-Message-ID: <E1dIJpM-0007fn-Jx@debutante>
-References: <20170602053804.3238-3-s.hauer@pengutronix.de>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, festevam@gmail.com,
-        Jiada Wang <jiada_wang@mentor.com>, linux-spi@vger.kernel.org
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170602053804.3238-3-s.hauer@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Add support for Intel Cannonlake" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:11 +0100
+Message-ID: <E1dIJot-0007Xh-TH@debutante>
+References: <20170530143121.11313-1-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170530143121.11313-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: Drop unnecessary check
+   spi: pxa2xx: Add support for Intel Cannonlake
 
 has been applied to the spi tree at
 
@@ -40,45 +42,95 @@ to this mail.
 Thanks,
 Mark
 
->From 494f3193bd8ca6a15a813bf0f8b5552ec0d173f3 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 2 Jun 2017 07:38:00 +0200
-Subject: [PATCH] spi: imx: Drop unnecessary check
+>From fc0b2acc754a183aa79e2abb8bca8fd915832694 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 30 May 2017 17:31:21 +0300
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Cannonlake
 
-__spi_validate makes sure that every transfer has a valid bits_per_word
-and speed_hz setting. We do not need to fallback to values from the
-spi_device.
+Intel Cannonlake LPSS SPI has up to four chip selects per port like in
+Broxton and is clocked like Sunrisepoint and Kaby Lake. Add a new type
+LPSS_CNL_SSP and configuration that enable runtime chip select detection
+and use the same FIFO thresholds than in Sunrisepoint.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Patch adds support for both Cannonlake SoC and PCH.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/spi/spi-pxa2xx.c   | 22 ++++++++++++++++++++++
+ include/linux/pxa2xx_ssp.h |  1 +
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 4b5cd0c84450..e3bc3d51a2d6 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -218,8 +218,6 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 47b65d7c4072..38d053682892 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -151,6 +151,18 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.cs_sel_shift = 8,
+ 		.cs_sel_mask = 3 << 8,
+ 	},
++	{	/* LPSS_CNL_SSP */
++		.offset = 0x200,
++		.reg_general = -1,
++		.reg_ssp = 0x20,
++		.reg_cs_ctrl = 0x24,
++		.reg_capabilities = 0xfc,
++		.rx_threshold = 1,
++		.tx_threshold_lo = 32,
++		.tx_threshold_hi = 56,
++		.cs_sel_shift = 8,
++		.cs_sel_mask = 3 << 8,
++	},
+ };
+ 
+ static inline const struct lpss_config
+@@ -167,6 +179,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
+ 	case LPSS_BSW_SSP:
+ 	case LPSS_SPT_SSP:
+ 	case LPSS_BXT_SSP:
++	case LPSS_CNL_SSP:
+ 		return true;
+ 	default:
  		return false;
+@@ -1275,6 +1288,7 @@ static int setup(struct spi_device *spi)
+ 	case LPSS_BSW_SSP:
+ 	case LPSS_SPT_SSP:
+ 	case LPSS_BXT_SSP:
++	case LPSS_CNL_SSP:
+ 		config = lpss_get_config(drv_data);
+ 		tx_thres = config->tx_threshold_lo;
+ 		tx_hi_thres = config->tx_threshold_hi;
+@@ -1470,6 +1484,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x5ac2), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x5ac4), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x5ac6), LPSS_BXT_SSP },
++	/* CNL-LP */
++	{ PCI_VDEVICE(INTEL, 0x9daa), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x9dab), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x9dfb), LPSS_CNL_SSP },
++	/* CNL-H */
++	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
+ 	{ },
+ };
  
- 	bpw = transfer->bits_per_word;
--	if (!bpw)
--		bpw = spi->bits_per_word;
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index a0522328d7aa..8461b18e4608 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -196,6 +196,7 @@ enum pxa_ssp_type {
+ 	LPSS_BSW_SSP,
+ 	LPSS_SPT_SSP,
+ 	LPSS_BXT_SSP,
++	LPSS_CNL_SSP,
+ };
  
- 	bpw = spi_imx_bytes_per_word(bpw);
- 
-@@ -898,11 +896,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 	config.bpw = t->bits_per_word;
- 	config.speed_hz  = t->speed_hz;
- 
--	if (!config.speed_hz)
--		config.speed_hz = spi->max_speed_hz;
--	if (!config.bpw)
--		config.bpw = spi->bits_per_word;
--
- 	/* Initialize the functions for transfer */
- 	if (config.bpw <= 8) {
- 		spi_imx->rx = spi_imx_buf_rx_u8;
+ struct ssp_device {
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

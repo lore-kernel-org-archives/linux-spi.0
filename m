@@ -1,63 +1,54 @@
-From: Arvind Yadav <arvind.yadav.cs@gmail.com>
-Subject: Re: [PATCH] spi: pxa2xx: Handle return value of clk_prepare_enable
-Date: Tue, 6 Jun 2017 17:03:29 +0530
-Message-ID: <e4762e92-2142-56a5-c037-e88e4b5dece6@gmail.com>
-References: <4e16c0aba047b068aaa41c1d180d98ccb441afd0.1496668108.git.arvind.yadav.cs@gmail.com>
- <CAHp75Vf+cm_-V4jcqJqcmMRdGA9j19RQYfyjJ8YRz3w1A+gRYQ@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: support adjust register define
+Date: Tue, 6 Jun 2017 19:57:30 +0100
+Message-ID: <20170606185730.mrvgvp4hynftwahx@sirena.org.uk>
+References: <1496387923-31674-1-git-send-email-leilk.liu@mediatek.com>
+ <1496387923-31674-3-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="s5q23k2nvqkztuhz"
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, sean.wang@mediatek.com
+To: Leilk Liu <leilk.liu@mediatek.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAHp75Vf+cm_-V4jcqJqcmMRdGA9j19RQYfyjJ8YRz3w1A+gRYQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1496387923-31674-3-git-send-email-leilk.liu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
+--s5q23k2nvqkztuhz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tuesday 06 June 2017 04:24 PM, Andy Shevchenko wrote:
-> On Tue, Jun 6, 2017 at 12:44 PM, Arvind Yadav <arvind.yadav.cs@gmail.com> wrote:
->> clk_prepare_enable() can fail here and we must check its return value.
->> @@ -1676,7 +1676,11 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
->> -       clk_prepare_enable(ssp->clk);
->> +       status = clk_prepare_enable(ssp->clk);
-> This one looks fine.
->
->> @@ -1855,8 +1859,13 @@ static int pxa2xx_spi_resume(struct device *dev)
->>          /* Enable the SSP clock */
->> -       if (!pm_runtime_suspended(dev))
->> -               clk_prepare_enable(ssp->clk);
->> +       if (!pm_runtime_suspended(dev)) {
->> +               status = clk_prepare_enable(ssp->clk);
->> +               if (status) {
->> +                       dev_err(dev, "Failed to prepare clock\n");
->> +                       return status;
->> +               }
-> This...
->
->> @@ -1886,8 +1895,7 @@ static int pxa2xx_spi_runtime_resume(struct device *dev)
->>   {
->>          struct driver_data *drv_data = dev_get_drvdata(dev);
->>
->> -       clk_prepare_enable(drv_data->ssp->clk);
->> -       return 0;
->> +       return clk_prepare_enable(drv_data->ssp->clk);
-> ...and especially this should be carefully checked since there are
-> differences in behaviour how system or driver will be resumed.
-yes true, here clk_prepare_enable will return 0 on successful attempt.
-what do you suggest here, we should not return like this.?
->
-> So, the question is how did you test it?
-It can fail, I am not able to produce clock failure issue. If you have 
-any suggestion.
-please let me know.
->
--arvind
+On Fri, Jun 02, 2017 at 03:18:42PM +0800, Leilk Liu wrote:
+
+> +	/* some IC design adjust register define */
+> +	bool adjust_reg;
+
+Can we have a name that's more specific to the particular quirk please?
+The current name will get confusing if some future chip also needs
+slightly different register settings.
+
+Otherwise this looks good.
+
+--s5q23k2nvqkztuhz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlk2+xkACgkQJNaLcl1U
+h9Cglgf/QmdHkkLNKqhxHzwztZYbtNDf6seGxLmC59VRyYAkFnKRKoCdibGw8OO5
+fRJiYTQ4GL0EcfVkNzC9RE39MLzsw8ebKqLBjYurz0EfhxziOS0OxveHmJi+4clO
+DVwN1WfC4h9p137fJOctKWynoA75vItaZgZuab7sWwOA2wv33TN1isAcPXGkNIOX
+s7xCyMM7nhk1XGZD9epVGqhlKwJaRobDGEjaz4P6OWwIrpyVOQfv+xcDgBM4MiK7
+/15uv20/hLfZXIfcgfuB/eUEV+UHSgfgI7AzZgpfyEkA+WRsn15Npds9TbEk9PTw
+mVIZYMdnsQzPV0ODFCxhuNP64A9BfA==
+=o7Oq
+-----END PGP SIGNATURE-----
+
+--s5q23k2nvqkztuhz--

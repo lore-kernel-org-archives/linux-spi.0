@@ -1,21 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: Fix compilation warning." to the spi tree
-Date: Tue, 06 Jun 2017 20:07:51 +0100
-Message-ID: <E1dIJpX-0007jT-PL@debutante>
-References: <97178a72ee129abbf918562cd22a508bc1cf0e1a.1496670502.git.arvind.yadav.cs@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org, m-karicheri2-l0cyMroinI0@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: imx: rename 'bpw' variables" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:18 +0100
+Message-ID: <E1dIJp0-0007ap-LH@debutante>
+References: <20170602053804.3238-7-s.hauer@pengutronix.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <97178a72ee129abbf918562cd22a508bc1cf0e1a.1496670502.git.arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20170602053804.3238-7-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: davinci: Fix compilation warning.
+   spi: imx: rename 'bpw' variables
 
 has been applied to the spi tree at
 
@@ -40,51 +40,59 @@ to this mail.
 Thanks,
 Mark
 
->From 2b747a5f04fbb26ad09241506704ddce462e581b Mon Sep 17 00:00:00 2001
-From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Mon, 5 Jun 2017 19:20:40 +0530
-Subject: [PATCH] spi: davinci: Fix compilation warning.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From 2e312f6cdb02a2707870172473b9dee34f620b93 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Date: Fri, 2 Jun 2017 07:38:04 +0200
+Subject: [PATCH] spi: imx: rename 'bpw' variables
 
-If CONFIG_OF is disable, it'll through compilation warning.
+'bpw' is ambiguous and only the context makes sure if bytes_per_word
+or bits_per_word is meant. Use the full names instead to make reading
+the code easier.
 
-drivers/spi/spi-davinci.c: In function ‘spi_davinci_get_pdata’:
-drivers/spi/spi-davinci.c:880:2: warning: return makes pointer from integer without a cast [enabled by default]
-  return -ENODEV;
-
-drivers/spi/spi-davinci.c: In function ‘davinci_spi_probe’:
-drivers/spi/spi-davinci.c:919:7: warning: assignment makes integer from pointer without a cast [enabled by default]
-   ret = spi_davinci_get_pdata(pdev, dspi);
-
-Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-Changes in v2:
-             Add fix for both the warning.
-Changes in v1:
-             It has fix for first warning.
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 595acdcfc7d0..0b4493e7fe9e 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -873,9 +873,8 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
- 	return 0;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 12e5ef7beb0b..e544f45348cc 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -200,27 +200,27 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+ 	return i;
  }
- #else
--static struct davinci_spi_platform_data
--	*spi_davinci_get_pdata(struct platform_device *pdev,
--		struct davinci_spi *dspi)
-+static int spi_davinci_get_pdata(struct platform_device *pdev,
-+			struct davinci_spi *dspi)
+ 
+-static int spi_imx_bytes_per_word(const int bpw)
++static int spi_imx_bytes_per_word(const int bits_per_word)
  {
- 	return -ENODEV;
+-	return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
++	return DIV_ROUND_UP(bits_per_word, BITS_PER_BYTE);
  }
+ 
+ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 			 struct spi_transfer *transfer)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+-	unsigned int bpw, i;
++	unsigned int bytes_per_word, i;
+ 
+ 	if (!master->dma_rx)
+ 		return false;
+ 
+-	bpw = spi_imx_bytes_per_word(transfer->bits_per_word);
++	bytes_per_word = spi_imx_bytes_per_word(transfer->bits_per_word);
+ 
+-	if (bpw != 1 && bpw != 2 && bpw != 4)
++	if (bytes_per_word != 1 && bytes_per_word != 2 && bytes_per_word != 4)
+ 		return false;
+ 
+ 	for (i = spi_imx_get_fifosize(spi_imx) / 2; i > 0; i--) {
+-		if (!(transfer->len % (i * bpw)))
++		if (!(transfer->len % (i * bytes_per_word)))
+ 			break;
+ 	}
+ 
 -- 
 2.11.0
 

@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: remove bytes_per_word from private driver struct" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:21 +0100
-Message-ID: <E1dIJp3-0007bq-Ly@debutante>
-References: <20170602053804.3238-6-s.hauer@pengutronix.de>
+Subject: Applied "spi: imx: drop bogus unnecessary dma config" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:24 +0100
+Message-ID: <E1dIJp6-0007dI-N3@debutante>
+References: <20170602053804.3238-5-s.hauer@pengutronix.de>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
         linux-kernel@vger.kernel.org, festevam@gmail.com,
         Jiada Wang <jiada_wang@mentor.com>, linux-spi@vger.kernel.org
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170602053804.3238-6-s.hauer@pengutronix.de>
+In-Reply-To: <20170602053804.3238-5-s.hauer@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: remove bytes_per_word from private driver struct
+   spi: imx: drop bogus unnecessary dma config
 
 has been applied to the spi tree at
 
@@ -40,79 +40,32 @@ to this mail.
 Thanks,
 Mark
 
->From 65017ee2cd69bfd9ccdaa1f61b220e9717408106 Mon Sep 17 00:00:00 2001
+>From d6be7d1db51799fb510458b8ede6e5bef96ab1f0 Mon Sep 17 00:00:00 2001
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 2 Jun 2017 07:38:03 +0200
-Subject: [PATCH] spi: imx: remove bytes_per_word from private driver struct
+Date: Fri, 2 Jun 2017 07:38:02 +0200
+Subject: [PATCH] spi: imx: drop bogus unnecessary dma config
 
-We already have bits_per_word in the private driver struct and
-bytes_per_word can be calculated from it, so remove bits_per_word.
+It's unnecessary to call spi_imx_dma_configure() from probe(). It will
+be called later anyway again when an actual DMA transfer is prepared.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/spi/spi-imx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0ec8d816e033..12e5ef7beb0b 100644
+index 3fa5ccfb45a1..0ec8d816e033 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -92,7 +92,6 @@ struct spi_imx_data {
- 
- 	unsigned int speed_hz;
- 	unsigned int bits_per_word;
--	unsigned int bytes_per_word;
- 	unsigned int spi_drctl;
- 
- 	unsigned int count;
-@@ -215,9 +214,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 	if (!master->dma_rx)
- 		return false;
- 
--	bpw = transfer->bits_per_word;
--
--	bpw = spi_imx_bytes_per_word(bpw);
-+	bpw = spi_imx_bytes_per_word(transfer->bits_per_word);
- 
- 	if (bpw != 1 && bpw != 2 && bpw != 4)
- 		return false;
-@@ -833,15 +830,14 @@ static irqreturn_t spi_imx_isr(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static int spi_imx_dma_configure(struct spi_master *master,
--				 int bytes_per_word)
-+static int spi_imx_dma_configure(struct spi_master *master)
- {
- 	int ret;
- 	enum dma_slave_buswidth buswidth;
- 	struct dma_slave_config rx = {}, tx = {};
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 
--	switch (bytes_per_word) {
-+	switch (spi_imx_bytes_per_word(spi_imx->bits_per_word)) {
- 	case 4:
- 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 		break;
-@@ -875,8 +871,6 @@ static int spi_imx_dma_configure(struct spi_master *master,
- 		return ret;
+@@ -965,8 +965,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 		goto err;
  	}
  
--	spi_imx->bytes_per_word = bytes_per_word;
+-	spi_imx_dma_configure(master, 1);
 -
- 	return 0;
- }
- 
-@@ -910,8 +904,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		spi_imx->usedma = 0;
- 
- 	if (spi_imx->usedma) {
--		ret = spi_imx_dma_configure(spi->master,
--					    spi_imx_bytes_per_word(spi_imx->bits_per_word));
-+		ret = spi_imx_dma_configure(spi->master);
- 		if (ret)
- 			return ret;
- 	}
+ 	init_completion(&spi_imx->dma_rx_completion);
+ 	init_completion(&spi_imx->dma_tx_completion);
+ 	master->can_dma = spi_imx_can_dma;
 -- 
 2.11.0

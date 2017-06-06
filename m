@@ -1,21 +1,21 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: rename 'bpw' variables" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:18 +0100
-Message-ID: <E1dIJp0-0007ap-LH@debutante>
-References: <20170602053804.3238-7-s.hauer@pengutronix.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170602053804.3238-7-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: imx: remove bytes_per_word from private driver struct" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:21 +0100
+Message-ID: <E1dIJp3-0007bq-Ly@debutante>
+References: <20170602053804.3238-6-s.hauer@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org, festevam@gmail.com,
+        Jiada Wang <jiada_wang@mentor.com>, linux-spi@vger.kernel.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170602053804.3238-6-s.hauer@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: rename 'bpw' variables
+   spi: imx: remove bytes_per_word from private driver struct
 
 has been applied to the spi tree at
 
@@ -40,63 +40,79 @@ to this mail.
 Thanks,
 Mark
 
->From 2e312f6cdb02a2707870172473b9dee34f620b93 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Date: Fri, 2 Jun 2017 07:38:04 +0200
-Subject: [PATCH] spi: imx: rename 'bpw' variables
+>From 65017ee2cd69bfd9ccdaa1f61b220e9717408106 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 2 Jun 2017 07:38:03 +0200
+Subject: [PATCH] spi: imx: remove bytes_per_word from private driver struct
 
-'bpw' is ambiguous and only the context makes sure if bytes_per_word
-or bits_per_word is meant. Use the full names instead to make reading
-the code easier.
+We already have bits_per_word in the private driver struct and
+bytes_per_word can be calculated from it, so remove bits_per_word.
 
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 12e5ef7beb0b..e544f45348cc 100644
+index 0ec8d816e033..12e5ef7beb0b 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -200,27 +200,27 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
- 	return i;
- }
+@@ -92,7 +92,6 @@ struct spi_imx_data {
  
--static int spi_imx_bytes_per_word(const int bpw)
-+static int spi_imx_bytes_per_word(const int bits_per_word)
- {
--	return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
-+	return DIV_ROUND_UP(bits_per_word, BITS_PER_BYTE);
- }
+ 	unsigned int speed_hz;
+ 	unsigned int bits_per_word;
+-	unsigned int bytes_per_word;
+ 	unsigned int spi_drctl;
  
- static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 			 struct spi_transfer *transfer)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
--	unsigned int bpw, i;
-+	unsigned int bytes_per_word, i;
- 
+ 	unsigned int count;
+@@ -215,9 +214,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
  	if (!master->dma_rx)
  		return false;
  
--	bpw = spi_imx_bytes_per_word(transfer->bits_per_word);
-+	bytes_per_word = spi_imx_bytes_per_word(transfer->bits_per_word);
+-	bpw = transfer->bits_per_word;
+-
+-	bpw = spi_imx_bytes_per_word(bpw);
++	bpw = spi_imx_bytes_per_word(transfer->bits_per_word);
  
--	if (bpw != 1 && bpw != 2 && bpw != 4)
-+	if (bytes_per_word != 1 && bytes_per_word != 2 && bytes_per_word != 4)
+ 	if (bpw != 1 && bpw != 2 && bpw != 4)
  		return false;
+@@ -833,15 +830,14 @@ static irqreturn_t spi_imx_isr(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
  
- 	for (i = spi_imx_get_fifosize(spi_imx) / 2; i > 0; i--) {
--		if (!(transfer->len % (i * bpw)))
-+		if (!(transfer->len % (i * bytes_per_word)))
- 			break;
+-static int spi_imx_dma_configure(struct spi_master *master,
+-				 int bytes_per_word)
++static int spi_imx_dma_configure(struct spi_master *master)
+ {
+ 	int ret;
+ 	enum dma_slave_buswidth buswidth;
+ 	struct dma_slave_config rx = {}, tx = {};
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	switch (bytes_per_word) {
++	switch (spi_imx_bytes_per_word(spi_imx->bits_per_word)) {
+ 	case 4:
+ 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 		break;
+@@ -875,8 +871,6 @@ static int spi_imx_dma_configure(struct spi_master *master,
+ 		return ret;
  	}
  
+-	spi_imx->bytes_per_word = bytes_per_word;
+-
+ 	return 0;
+ }
+ 
+@@ -910,8 +904,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 		spi_imx->usedma = 0;
+ 
+ 	if (spi_imx->usedma) {
+-		ret = spi_imx_dma_configure(spi->master,
+-					    spi_imx_bytes_per_word(spi_imx->bits_per_word));
++		ret = spi_imx_dma_configure(spi->master);
+ 		if (ret)
+ 			return ret;
+ 	}
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

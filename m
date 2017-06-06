@@ -1,20 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: Handle return value of clk_prepare_enable" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:48 +0100
-Message-ID: <E1dIJpU-0007iY-Oy@debutante>
-References: <29e25f858e455379c529a33842bcfafcbb110337.1496664276.git.arvind.yadav.cs@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: imx: Nothing to do in setupxfer when transfer is NULL" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:44 +0100
+Message-ID: <E1dIJpQ-0007h3-L9@debutante>
+References: <20170602053804.3238-2-s.hauer@pengutronix.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <29e25f858e455379c529a33842bcfafcbb110337.1496664276.git.arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20170602053804.3238-2-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: davinci: Handle return value of clk_prepare_enable
+   spi: imx: Nothing to do in setupxfer when transfer is NULL
 
 has been applied to the spi tree at
 
@@ -39,34 +40,49 @@ to this mail.
 Thanks,
 Mark
 
->From 35fc3b9ff66b907ca7a75c971decf291adf78131 Mon Sep 17 00:00:00 2001
-From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Mon, 5 Jun 2017 17:36:28 +0530
-Subject: [PATCH] spi: davinci: Handle return value of clk_prepare_enable
+>From abb1ff195a21094f3bfb1cf8d425ff360d8a89ee Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Date: Fri, 2 Jun 2017 07:37:59 +0200
+Subject: [PATCH] spi: imx: Nothing to do in setupxfer when transfer is NULL
 
-clk_prepare_enable() can fail here and we must check its return value.
+When the spi_transfer given in spi_imx_setupxfer is NULL then
+we have nothing to do. Bail out early in this case so that
+we do not have to test for t != NULL multiple times later.
 
-Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 0b4493e7fe9e..6ddb6ef1fda4 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -964,7 +964,9 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		ret = -ENODEV;
- 		goto free_master;
- 	}
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		goto free_master;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index b402530a7a9a..4b5cd0c84450 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -217,9 +217,6 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	if (!master->dma_rx)
+ 		return false;
  
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->bus_num = pdev->id;
+-	if (!transfer)
+-		return false;
+-
+ 	bpw = transfer->bits_per_word;
+ 	if (!bpw)
+ 		bpw = spi->bits_per_word;
+@@ -895,8 +892,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	struct spi_imx_config config;
+ 	int ret;
+ 
+-	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+-	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
++	if (!t)
++		return 0;
++
++	config.bpw = t->bits_per_word;
++	config.speed_hz  = t->speed_hz;
+ 
+ 	if (!config.speed_hz)
+ 		config.speed_hz = spi->max_speed_hz;
 -- 
 2.11.0
 

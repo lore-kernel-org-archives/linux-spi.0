@@ -1,53 +1,83 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: spi: mediatek: Add bindings for
- mediatek MT7622 soc platform
-Date: Tue, 6 Jun 2017 19:57:46 +0100
-Message-ID: <20170606185746.t5cp374p2b6lkfhx@sirena.org.uk>
-References: <1496387923-31674-1-git-send-email-leilk.liu@mediatek.com>
- <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: Add bindings for mediatek MT7622 soc
+ platform" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:14 +0100
+Message-ID: <E1dIJow-0007ZA-UM@debutante>
+References: <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yxjrxpnkwllnn3iu"
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, sean.wang@mediatek.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Sascha Hauer <s.hauer@pengutronix.de>, sean.wang@mediatek.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
 To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---yxjrxpnkwllnn3iu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: mediatek: Add bindings for mediatek MT7622 soc platform
 
-On Fri, Jun 02, 2017 at 03:18:41PM +0800, Leilk Liu wrote:
-> This patch adds a DT binding documentation for the MT7622 soc.
+has been applied to the spi tree at
 
-Please submit patches using subject lines reflecting the style for the
-subsystem.  This makes it easier for people to identify relevant
-patches.  Look at what existing commits in the area you're changing are
-doing and make sure your subject lines visually resemble what they're
-doing.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---yxjrxpnkwllnn3iu
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlk2+ykACgkQJNaLcl1U
-h9CIUQf+JmcxhWFsQ82Dl3UYGXQmfvWIx4uefGeNYLfOi6GhngBl8jlX5hqviZBT
-iZcyr6QbUBD7ETPetWgzLOi+K1q1WVksE94Ogn8B8nJtUVVtNKrPl2RPbNJgOwX9
-Mj5PDox+EYWQuXWhfx/2JfvGn7uAhSri2HnW2+HCd3VadKUe1xOJJUWmwFK8sMFQ
-Dr7V2BUY9/59/jGrNAk96FTVD1YJ0k6KI44V+Qmssw2Qw1OMUlj8pm8ZLbTCi7dC
-y93Nek0Vdi7rNQgmRG2aUeaV3QbryDteAylTZ2P28/tczurVnBUuVl/pOQOMMouI
-JUMfh+3Cg/MOPoR6ENVj0aMSertG2w==
-=eDKR
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---yxjrxpnkwllnn3iu--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From d27ae103bf89a0ed28976da58a8f5e1c4c85ecb5 Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu@mediatek.com>
+Date: Fri, 2 Jun 2017 15:18:41 +0800
+Subject: [PATCH] spi: mediatek: Add bindings for mediatek MT7622 soc platform
+
+This patch adds a DT binding documentation for the MT7622 soc.
+
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index e43f4cf4cf35..c0b1f0134390 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -4,6 +4,7 @@ Required properties:
+ - compatible: should be one of the following.
+     - mediatek,mt2701-spi: for mt2701 platforms
+     - mediatek,mt6589-spi: for mt6589 platforms
++    - mediatek,mt7622-spi: for mt7622 platforms
+     - mediatek,mt8135-spi: for mt8135 platforms
+     - mediatek,mt8173-spi: for mt8173 platforms
+ 
+-- 
+2.11.0

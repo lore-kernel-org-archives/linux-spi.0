@@ -1,35 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mediatek: Add bindings for mediatek MT7622 soc
- platform" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:14 +0100
-Message-ID: <E1dIJow-0007ZA-UM@debutante>
-References: <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Sascha Hauer <s.hauer@pengutronix.de>, sean.wang@mediatek.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
- Matthias Brugger <matthias.bgg@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1496387923-31674-2-git-send-email-leilk.liu@mediatek.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: davinci: Handle return value of clk_prepare_enable" to the spi tree
+Date: Tue, 06 Jun 2017 20:07:48 +0100
+Message-ID: <E1dIJpU-0007iY-Oy@debutante>
+References: <29e25f858e455379c529a33842bcfafcbb110337.1496664276.git.arvind.yadav.cs@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <29e25f858e455379c529a33842bcfafcbb110337.1496664276.git.arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: Add bindings for mediatek MT7622 soc platform
+   spi: davinci: Handle return value of clk_prepare_enable
 
 has been applied to the spi tree at
 
@@ -54,30 +39,38 @@ to this mail.
 Thanks,
 Mark
 
->From d27ae103bf89a0ed28976da58a8f5e1c4c85ecb5 Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu@mediatek.com>
-Date: Fri, 2 Jun 2017 15:18:41 +0800
-Subject: [PATCH] spi: mediatek: Add bindings for mediatek MT7622 soc platform
+>From 35fc3b9ff66b907ca7a75c971decf291adf78131 Mon Sep 17 00:00:00 2001
+From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Mon, 5 Jun 2017 17:36:28 +0530
+Subject: [PATCH] spi: davinci: Handle return value of clk_prepare_enable
 
-This patch adds a DT binding documentation for the MT7622 soc.
+clk_prepare_enable() can fail here and we must check its return value.
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-davinci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index e43f4cf4cf35..c0b1f0134390 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -4,6 +4,7 @@ Required properties:
- - compatible: should be one of the following.
-     - mediatek,mt2701-spi: for mt2701 platforms
-     - mediatek,mt6589-spi: for mt6589 platforms
-+    - mediatek,mt7622-spi: for mt7622 platforms
-     - mediatek,mt8135-spi: for mt8135 platforms
-     - mediatek,mt8173-spi: for mt8173 platforms
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 0b4493e7fe9e..6ddb6ef1fda4 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -964,7 +964,9 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		ret = -ENODEV;
+ 		goto free_master;
+ 	}
+-	clk_prepare_enable(dspi->clk);
++	ret = clk_prepare_enable(dspi->clk);
++	if (ret)
++		goto free_master;
  
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->bus_num = pdev->id;
 -- 
 2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

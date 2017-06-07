@@ -1,89 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: atmel: print version only after successful registration" to the spi tree
-Date: Tue, 06 Jun 2017 20:07:08 +0100
-Message-ID: <E1dIJoq-0007We-Sx@debutante>
-References: <0ddb655ce326344aa32334e343ed4f0ba2996f72.1496122410.git.baruch@tkos.co.il>
-Cc: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0ddb655ce326344aa32334e343ed4f0ba2996f72.1496122410.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v2 linux-next 3/3] spi: imx: Add support for SPI Slave
+ mode
+Date: Wed, 7 Jun 2017 10:33:34 +0200
+Message-ID: <20170607083334.uk6pmgzdpgzfkn2i@pengutronix.de>
+References: <1496222398-3192-1-git-send-email-jiada_wang@mentor.com>
+ <1496222398-3192-4-git-send-email-jiada_wang@mentor.com>
+ <20170531121037.pgs5yysveiu54nwo@pengutronix.de>
+ <59316463.9030209@mentor.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <59316463.9030209-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Fri, Jun 02, 2017 at 06:13:07AM -0700, Jiada Wang wrote:
+> Hi Sascha
+> 
+> On 05/31/2017 05:10 AM, Sascha Hauer wrote:
+> >> +
+> >> +static void mx53_ecspi_tx_slave(struct spi_imx_data *spi_imx)
+> >> +{
+> >> +	u32 val = 0;
+> >> +	int shift = spi_imx->count % sizeof(val);
+> >> +
+> >> +	if (spi_imx->tx_buf) {
+> >> +		if (shift) {
+> >> +			memcpy(((u8 *)&val) + sizeof(val) - shift,
+> >> +			       spi_imx->tx_buf, shift);
+> >> +		} else {
+> >> +			val = *((u32 *)spi_imx->tx_buf);
+> >> +			shift = sizeof(val);
+> >> +		}
+> >> +		val = cpu_to_be32(val);
+> >> +		spi_imx->tx_buf += shift;
+> >> +	}
+> >> +
+> >> +	if (!shift)
+> >> +		shift = sizeof(val);
+> > A better name for 'shift' is n_bytes. Its value should be calculated
+> > before the if (spi_imx->tx_buf) block. Then you can use memcpy for the
+> > four byte case aswell.
+> >
+> >
+> > But anyway, have you tested this function for anything with
+> > spi_imx->count % sizeof(val) != 0? In this case you have to put the fill
+> > the FIFO only partly somewhere. I would assume you have to do this at
+> > the end of the transfer, but you do this at the beginning. Can this
+> > work?
+> Yes, I have tested the case when "spi_imx->count % sizeof(val) != 0", it
+> works.
 
-   spi: atmel: print version only after successful registration
+For the record: Yes, this seems to be right. I misread the datasheet.
+When the controller is programmed to transfer 5 bytes, then it seemed
+fairly logical to me that it first expects four bytes in its 32bit FIFO
+and then the remaining single byte. In fact it's the other way round,
+how the example of the BURST_LENGTH register description says:
 
-has been applied to the spi tree at
+0x021 A SPI burst contains the 2 LSB in first word and all 32 bits in
+second word.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+So the part that doesn't fill a whole FIFO width goes out first, not
+last.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Sascha
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 6aba9c65649e5ef137bce7a958c0749f13af88a1 Mon Sep 17 00:00:00 2001
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Date: Tue, 30 May 2017 08:33:30 +0300
-Subject: [PATCH] spi: atmel: print version only after successful registration
-
-Don't print the version at the beginning of atmel_spi_probe(). This avoids
-spamming the log whenever a deferred probe runs.
-
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Acked-by: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 1eb83c9613d5..4e5e51fe6f73 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1422,7 +1422,6 @@ static void atmel_get_caps(struct atmel_spi *as)
- 	unsigned int version;
- 
- 	version = atmel_get_version(as);
--	dev_info(&as->pdev->dev, "version: 0x%x\n", version);
- 
- 	as->caps.is_spi2 = version > 0x121;
- 	as->caps.has_wdrbt = version >= 0x210;
-@@ -1609,8 +1608,9 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 		goto out_free_dma;
- 
- 	/* go! */
--	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
--			(unsigned long)regs->start, irq);
-+	dev_info(&pdev->dev, "Atmel SPI Controller version 0x%x at 0x%08lx (irq %d)\n",
-+			atmel_get_version(as), (unsigned long)regs->start,
-+			irq);
- 
- 	return 0;
- 
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

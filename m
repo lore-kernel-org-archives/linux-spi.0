@@ -1,240 +1,72 @@
-From: Jiada Wang <jiada_wang@mentor.com>
-Subject: [PATCH linux-next v4 3/4] ARM: dts: imx: change compatibility for SPI
- controllers on imx53 later soc
-Date: Thu, 8 Jun 2017 14:16:02 +0900
-Message-ID: <20170608051603.16070-4-jiada_wang@mentor.com>
-References: <20170608051603.16070-1-jiada_wang@mentor.com>
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH linux-next v3 1/1] spi: imx: dynamic burst length adjust
+ for PIO mode
+Date: Thu, 8 Jun 2017 22:09:07 -0700
+Message-ID: <593A2D73.4070800@mentor.com>
+References: <1495774962-2981-1-git-send-email-jiada_wang@mentor.com> <20170529095043.mytrgtyfne4dfmae@pengutronix.de> <59300177.5030908@mentor.com> <20170602053852.7w4c35tn5daq7omy@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
- <shawnguo@kernel.org>, <kernel@pengutronix.de>, <fabio.estevam@nxp.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170608051603.16070-1-jiada_wang@mentor.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170602053852.7w4c35tn5daq7omy-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-for SPI controllers on imx53 and later SoCs, there is HW issue when
-work in slave mode, as new device type 'IMX53_ECSPI' has been added
-for these SPI controllers which is compatible with 'fsl,imx53-ecspi'.
+On 06/01/2017 10:38 PM, Sascha Hauer wrote:
+> On Thu, Jun 01, 2017 at 04:58:47AM -0700, Jiada Wang wrote:
+>> Hi Sascha
+>>
+>> On 05/29/2017 02:50 AM, Sascha Hauer wrote:
+>>> Hi,
+>>>
+>>> On Thu, May 25, 2017 at 10:02:42PM -0700, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org wrote:
+>>>> From: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>>>>
+>>>> previously burst length (BURST_LENGTH) is always set to equal
+>>>> to bits_per_word, causes a 10us gap between each word in
+>>>> transfer, which significantly affects performance.
+>>>>
+>>>> This patch uses 32 bits transfer to simulate lower bits transfer,
+>>>> and adjusts burst length runtimely to use biggeest burst length
+>>>> as possible to reduce the gaps in transfer for PIO mode.
+>>>>
+>>> First let me say that I'm not really looking forward to have this patch
+>>> in the driver. It adds quite some code to already hairy code pathes in
+>>> the imx-spi driver and I saw you have the same patch for DMA mode
+>>> aswell.
+>>>
+>>> The driver has different function hooks for the different controllers.
+>>> This patch breaks that. In some places it assumes that dynamic burst
+>>> is only possible on i.MX51 type controllers and also that in case
+>>> dynamic burst is enabled it must be an i.MX51 type controller.
+>>>
+>>> We should really see how this patch can be better integrated into the
+>>> driver, or, how the driver can be changed to better support the dynamic
+>>> burst usecase.
+>>   Yes, I can understand your concern, as this patch brings in a bunch of
+>> change,
+>> and changes the behaviour of data transfer.
+>> how about introduce a new DTS property like "fsl,spi-dynamic-burst",
+>> and only enables dynamic burst when this property is added.
+> This will only reduce the testing coverage of the feature, not a good
+> option.
+As an improvement, I am thinking about the following
+1. introduce a 'fsl,spi-dynamic-burst' property in dts as mentioned before
+2. remove all change in specific functions hooks, for example 
+"mx51_ecspi_config"
+3. introduce spi_imx_pio_dynamic_burst_transfer(), which will handle 
+actual swapped data transfer,
+     and burst length adjustment.
 
-This patch updates DTS to make imx53 later SPI controller only be
-compatibile with 'fsl,imx53-ecspi'.
 
-Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
----
- arch/arm/boot/dts/imx53.dtsi   | 4 ++--
- arch/arm/boot/dts/imx6q.dtsi   | 2 +-
- arch/arm/boot/dts/imx6qdl.dtsi | 8 ++++----
- arch/arm/boot/dts/imx6sl.dtsi  | 8 ++++----
- arch/arm/boot/dts/imx6sx.dtsi  | 8 ++++----
- arch/arm/boot/dts/imx6ul.dtsi  | 8 ++++----
- 6 files changed, 19 insertions(+), 19 deletions(-)
+What do you think ?
+> Sascha
+>
 
-diff --git a/arch/arm/boot/dts/imx53.dtsi b/arch/arm/boot/dts/imx53.dtsi
-index 2e516f4..9eeafb9 100644
---- a/arch/arm/boot/dts/imx53.dtsi
-+++ b/arch/arm/boot/dts/imx53.dtsi
-@@ -243,7 +243,7 @@
- 				ecspi1: ecspi@50010000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx53-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx53-ecspi";
- 					reg = <0x50010000 0x4000>;
- 					interrupts = <36>;
- 					clocks = <&clks IMX5_CLK_ECSPI1_IPG_GATE>,
-@@ -662,7 +662,7 @@
- 			ecspi2: ecspi@63fac000 {
- 				#address-cells = <1>;
- 				#size-cells = <0>;
--				compatible = "fsl,imx53-ecspi", "fsl,imx51-ecspi";
-+				compatible = "fsl,imx53-ecspi";
- 				reg = <0x63fac000 0x4000>;
- 				interrupts = <37>;
- 				clocks = <&clks IMX5_CLK_ECSPI2_IPG_GATE>,
-diff --git a/arch/arm/boot/dts/imx6q.dtsi b/arch/arm/boot/dts/imx6q.dtsi
-index dd33849..b214442 100644
---- a/arch/arm/boot/dts/imx6q.dtsi
-+++ b/arch/arm/boot/dts/imx6q.dtsi
-@@ -90,7 +90,7 @@
- 				ecspi5: ecspi@02018000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6q-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02018000 0x4000>;
- 					interrupts = <0 35 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6Q_CLK_ECSPI5>,
-diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
-index f325411..ac19c58 100644
---- a/arch/arm/boot/dts/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl.dtsi
-@@ -266,7 +266,7 @@
- 				ecspi1: ecspi@02008000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6q-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02008000 0x4000>;
- 					interrupts = <0 31 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6QDL_CLK_ECSPI1>,
-@@ -280,7 +280,7 @@
- 				ecspi2: ecspi@0200c000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6q-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x0200c000 0x4000>;
- 					interrupts = <0 32 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6QDL_CLK_ECSPI2>,
-@@ -294,7 +294,7 @@
- 				ecspi3: ecspi@02010000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6q-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02010000 0x4000>;
- 					interrupts = <0 33 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6QDL_CLK_ECSPI3>,
-@@ -308,7 +308,7 @@
- 				ecspi4: ecspi@02014000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6q-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02014000 0x4000>;
- 					interrupts = <0 34 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6QDL_CLK_ECSPI4>,
-diff --git a/arch/arm/boot/dts/imx6sl.dtsi b/arch/arm/boot/dts/imx6sl.dtsi
-index 3243af4..d9b9053 100644
---- a/arch/arm/boot/dts/imx6sl.dtsi
-+++ b/arch/arm/boot/dts/imx6sl.dtsi
-@@ -168,7 +168,7 @@
- 				ecspi1: ecspi@02008000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sl-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02008000 0x4000>;
- 					interrupts = <0 31 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SL_CLK_ECSPI1>,
-@@ -180,7 +180,7 @@
- 				ecspi2: ecspi@0200c000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sl-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x0200c000 0x4000>;
- 					interrupts = <0 32 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SL_CLK_ECSPI2>,
-@@ -192,7 +192,7 @@
- 				ecspi3: ecspi@02010000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sl-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02010000 0x4000>;
- 					interrupts = <0 33 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SL_CLK_ECSPI3>,
-@@ -204,7 +204,7 @@
- 				ecspi4: ecspi@02014000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sl-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02014000 0x4000>;
- 					interrupts = <0 34 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SL_CLK_ECSPI4>,
-diff --git a/arch/arm/boot/dts/imx6sx.dtsi b/arch/arm/boot/dts/imx6sx.dtsi
-index f16b9df..149ef79 100644
---- a/arch/arm/boot/dts/imx6sx.dtsi
-+++ b/arch/arm/boot/dts/imx6sx.dtsi
-@@ -251,7 +251,7 @@
- 				ecspi1: ecspi@02008000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sx-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sx-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02008000 0x4000>;
- 					interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SX_CLK_ECSPI1>,
-@@ -263,7 +263,7 @@
- 				ecspi2: ecspi@0200c000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sx-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sx-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x0200c000 0x4000>;
- 					interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SX_CLK_ECSPI2>,
-@@ -275,7 +275,7 @@
- 				ecspi3: ecspi@02010000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sx-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sx-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02010000 0x4000>;
- 					interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SX_CLK_ECSPI3>,
-@@ -287,7 +287,7 @@
- 				ecspi4: ecspi@02014000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6sx-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6sx-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02014000 0x4000>;
- 					interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6SX_CLK_ECSPI4>,
-diff --git a/arch/arm/boot/dts/imx6ul.dtsi b/arch/arm/boot/dts/imx6ul.dtsi
-index 6da2b77..7226061 100644
---- a/arch/arm/boot/dts/imx6ul.dtsi
-+++ b/arch/arm/boot/dts/imx6ul.dtsi
-@@ -204,7 +204,7 @@
- 				ecspi1: ecspi@02008000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6ul-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02008000 0x4000>;
- 					interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6UL_CLK_ECSPI1>,
-@@ -216,7 +216,7 @@
- 				ecspi2: ecspi@0200c000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6ul-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x0200c000 0x4000>;
- 					interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6UL_CLK_ECSPI2>,
-@@ -228,7 +228,7 @@
- 				ecspi3: ecspi@02010000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6ul-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02010000 0x4000>;
- 					interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6UL_CLK_ECSPI3>,
-@@ -240,7 +240,7 @@
- 				ecspi4: ecspi@02014000 {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
--					compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-+					compatible = "fsl,imx6ul-ecspi", "fsl,imx53-ecspi";
- 					reg = <0x02014000 0x4000>;
- 					interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
- 					clocks = <&clks IMX6UL_CLK_ECSPI4>,
--- 
-2.9.3
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

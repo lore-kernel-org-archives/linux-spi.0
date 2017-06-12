@@ -1,30 +1,47 @@
-From: <"Azim Hash"@correo.hlbm.gob.ec>
-Subject: Congratulation
-Date: Sat, 10 Jun 2017 23:34:55 -0700
-Message-ID: <20170610203507.9AF20EF5ED2__18312.0343521752$1497223048$gmane$org@correo.hlbm.gob.ec>
-Reply-To: azimpremjicharityfoundation-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v3 0/2] add mt7622 spi support
+Date: Mon, 12 Jun 2017 09:24:38 +0800
+Message-ID: <1497230680-20448-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-To: Recipients <AzimHash-KHLU9HPj4Z8t4yYV8LOTvz/laDblWjpS@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Description: Mail message body
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <sean.wang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello,
+This series are based on 4.12-rc1 and provide 2 patches to support mt7622 IC.
 
-I'm Azim Hashim Premji, an Indian business tycoon, investor, and philanthropist. I'm the chairman of Wipro Limited. I gave away 25 per cent of my personal wealth to charity. And I also pledged to give away the rest of 25% this year 2017.. I have decided to donate 750,000.00USD to you. If you are interested in my donation, do contact me for more info. I will also want you to be part of my Charity Foundation once you receive this Cash Donation if you don't mind..
+Change in v3:
+fix build error.
 
-You can also read more about me via the link below
+Change in v2:
+1. rename patch title;
+2. use enhance_timing to instead of adjust_reg.
 
-http://en.wikipedia.org/wiki/Azim_Premji
+Change in v1:
+1. update document to add mt7622;
+2. add adjust register define support;
+3. add mt7622_compat.
 
-whatsapp:+91-886-718-2831
+Leilk Liu (2):
+  spi: mediatek: adjust register to enhance time accuracy
+  spi: mediatek: add spi support for mt7622 IC
 
-CEO Wipro Limited
-Azim Hashim Premji
+ drivers/spi/spi-mt65xx.c                 |   54 +++++++++++++++++++++++++++---
+ include/linux/platform_data/spi-mt65xx.h |    2 ++
+ 2 files changed, 51 insertions(+), 5 deletions(-)
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,56 +1,142 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH v3 2/2] spi: mediatek: add spi support for mt7622 IC
-Date: Mon, 12 Jun 2017 09:24:40 +0800
-Message-ID: <1497230680-20448-3-git-send-email-leilk.liu@mediatek.com>
-References: <1497230680-20448-1-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <sean.wang@mediatek.com>, Leilk Liu <leilk.liu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1497230680-20448-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH 1/2] spi: rockchip: add support for "cs-gpios" dts property
+Date: Mon, 12 Jun 2017 14:14:15 +0800
+Message-ID: <1497248057-16550-1-git-send-email-jeffy.chen@rock-chips.com>
+Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
+        Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-this patch add support for mt7622 IC.
+Support using "cs-gpios" property to specify cs gpios.
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index eae73b5..ec7755b 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -104,6 +104,12 @@ struct mtk_spi {
+ .../devicetree/bindings/spi/spi-rockchip.txt       |  2 +
+ drivers/spi/spi-rockchip.c                         | 52 ++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+index 83da493..02171b2 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -17,6 +17,7 @@ Required Properties:
+        region.
+ - interrupts: The interrupt number to the cpu. The interrupt specifier format
+               depends on the interrupt controller.
++- cs-gpios : Specifies the gpio pins to be used for chipselects.
+ - clocks: Must contain an entry for each entry in clock-names.
+ - clock-names: Shall be "spiclk" for the transfer-clock, and "apb_pclk" for
+ 			   the peripheral clock.
+@@ -48,6 +49,7 @@ Example:
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
++		cs-gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+ 		clocks = <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
+ 		clock-names = "spiclk", "apb_pclk";
+ 		pinctrl-0 = <&spi1_pins>;
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index acf31f3..04694e1 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -15,6 +15,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/dmaengine.h>
++#include <linux/gpio.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/pinctrl/consumer.h>
+@@ -201,6 +202,10 @@ struct rockchip_spi {
+ 	struct dma_slave_caps dma_caps;
  };
  
- static const struct mtk_spi_compatible mtk_common_compat;
-+
-+static const struct mtk_spi_compatible mt7622_compat = {
-+	.must_tx = true,
-+	.enhance_timing = true,
++struct rockchip_spi_data {
++	bool cs_gpio_requested;
 +};
 +
- static const struct mtk_spi_compatible mt8173_compat = {
- 	.need_pad_sel = true,
- 	.must_tx = true,
-@@ -127,6 +133,9 @@ struct mtk_spi {
- 	{ .compatible = "mediatek,mt6589-spi",
- 		.data = (void *)&mtk_common_compat,
- 	},
-+	{ .compatible = "mediatek,mt7622-spi",
-+		.data = (void *)&mt7622_compat,
-+	},
- 	{ .compatible = "mediatek,mt8135-spi",
- 		.data = (void *)&mtk_common_compat,
- 	},
+ static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
+ {
+ 	writel_relaxed((enable ? 1 : 0), rs->regs + ROCKCHIP_SPI_SSIENR);
+@@ -297,6 +302,50 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 	pm_runtime_put_sync(rs->dev);
+ }
+ 
++static int rockchip_spi_setup(struct spi_device *spi)
++{
++	int ret = 0;
++	unsigned long flags = (spi->mode & SPI_CS_HIGH) ?
++			      GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH;
++	struct rockchip_spi_data *data = spi_get_ctldata(spi);
++
++	if (!gpio_is_valid(spi->cs_gpio))
++		return 0;
++
++	if (!data) {
++		data = kzalloc(sizeof(*data), GFP_KERNEL);
++		if (!data)
++			return -ENOMEM;
++		spi_set_ctldata(spi, data);
++	}
++
++	if (!data->cs_gpio_requested) {
++		ret = gpio_request_one(spi->cs_gpio, flags,
++				       dev_name(&spi->dev));
++		if (!ret)
++			data->cs_gpio_requested = 1;
++	} else
++		ret = gpio_direction_output(spi->cs_gpio, flags);
++
++	if (ret < 0)
++		dev_err(&spi->dev, "Failed to setup cs gpio(%d): %d\n",
++			spi->cs_gpio, ret);
++
++	return ret;
++}
++
++static void rockchip_spi_cleanup(struct spi_device *spi)
++{
++	struct rockchip_spi_data *data = spi_get_ctldata(spi);
++
++	if (data) {
++		if (data->cs_gpio_requested)
++			gpio_free(spi->cs_gpio);
++		kfree(data);
++		spi_set_ctldata(spi, NULL);
++	}
++}
++
+ static int rockchip_spi_prepare_message(struct spi_master *master,
+ 					struct spi_message *msg)
+ {
+@@ -744,11 +793,14 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
+ 
+ 	master->set_cs = rockchip_spi_set_cs;
++	master->setup = rockchip_spi_setup;
++	master->cleanup = rockchip_spi_cleanup;
+ 	master->prepare_message = rockchip_spi_prepare_message;
+ 	master->unprepare_message = rockchip_spi_unprepare_message;
+ 	master->transfer_one = rockchip_spi_transfer_one;
+ 	master->max_transfer_size = rockchip_spi_max_transfer_size;
+ 	master->handle_err = rockchip_spi_handle_err;
++	master->flags = SPI_MASTER_GPIO_SS;
+ 
+ 	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
+ 	if (IS_ERR(rs->dma_tx.ch)) {
 -- 
-1.7.9.5
+2.1.4
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

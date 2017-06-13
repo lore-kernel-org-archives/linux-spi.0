@@ -1,76 +1,123 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: rockchip: add support for "cs-gpios" dts
- property
-Date: Mon, 12 Jun 2017 17:38:14 +0100
-Message-ID: <20170612163814.rgbvb54hgxsdj6tf@sirena.org.uk>
-References: <1497248057-16550-1-git-send-email-jeffy.chen@rock-chips.com>
- <dfe87919-b2cc-37e8-1598-6b3c730ff356@rock-chips.com>
- <CAMuHMdUDjtSNRiBxcBnAMdUEaCZbioPoRE1h=p9=BqHMGmQaEQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="v4puphklnlp5dxxt"
-Cc: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v2 1/4] spi: rockchip: fix error handling when probe
+Date: Tue, 13 Jun 2017 13:25:40 +0800
+Message-ID: <1497331543-8565-1-git-send-email-jeffy.chen@rock-chips.com>
+Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
         Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUDjtSNRiBxcBnAMdUEaCZbioPoRE1h=p9=BqHMGmQaEQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+After failed to request dma tx chain, we need to disable pm_runtime.
+Also cleanup error labels for better readability.
 
---v4puphklnlp5dxxt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+---
 
-On Mon, Jun 12, 2017 at 10:18:06AM +0200, Geert Uytterhoeven wrote:
-> On Mon, Jun 12, 2017 at 9:15 AM, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org> wrote:
-> > On 2017/6/12 14:14, Jeffy Chen wrote:
+Changes in v2: None
 
-> >>   +static int rockchip_spi_setup(struct spi_device *spi)
-> >> +{
-> >> +       int ret = 0;
-> >> +       unsigned long flags = (spi->mode & SPI_CS_HIGH) ?
-> >> +                             GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH;
-> >> +       struct rockchip_spi_data *data = spi_get_ctldata(spi);
-> >> +
-> >> +       if (!gpio_is_valid(spi->cs_gpio))
-> >> +               return 0;
+ drivers/spi/spi-rockchip.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-> > return -EINVAL?
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index acf31f3..bab9b13 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -684,33 +684,33 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	rs->regs = devm_ioremap_resource(&pdev->dev, mem);
+ 	if (IS_ERR(rs->regs)) {
+ 		ret =  PTR_ERR(rs->regs);
+-		goto err_ioremap_resource;
++		goto err_put_master;
+ 	}
+ 
+ 	rs->apb_pclk = devm_clk_get(&pdev->dev, "apb_pclk");
+ 	if (IS_ERR(rs->apb_pclk)) {
+ 		dev_err(&pdev->dev, "Failed to get apb_pclk\n");
+ 		ret = PTR_ERR(rs->apb_pclk);
+-		goto err_ioremap_resource;
++		goto err_put_master;
+ 	}
+ 
+ 	rs->spiclk = devm_clk_get(&pdev->dev, "spiclk");
+ 	if (IS_ERR(rs->spiclk)) {
+ 		dev_err(&pdev->dev, "Failed to get spi_pclk\n");
+ 		ret = PTR_ERR(rs->spiclk);
+-		goto err_ioremap_resource;
++		goto err_put_master;
+ 	}
+ 
+ 	ret = clk_prepare_enable(rs->apb_pclk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to enable apb_pclk\n");
+-		goto err_ioremap_resource;
++		goto err_put_master;
+ 	}
+ 
+ 	ret = clk_prepare_enable(rs->spiclk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to enable spi_clk\n");
+-		goto err_spiclk_enable;
++		goto err_disable_apbclk;
+ 	}
+ 
+ 	spi_enable_chip(rs, 0);
+@@ -728,7 +728,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	if (!rs->fifo_len) {
+ 		dev_err(&pdev->dev, "Failed to get fifo length\n");
+ 		ret = -EINVAL;
+-		goto err_get_fifo_len;
++		goto err_disable_spiclk;
+ 	}
+ 
+ 	spin_lock_init(&rs->lock);
+@@ -755,7 +755,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		/* Check tx to see if we need defer probing driver */
+ 		if (PTR_ERR(rs->dma_tx.ch) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto err_get_fifo_len;
++			goto err_disable_pm_runtime;
+ 		}
+ 		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
+ 		rs->dma_tx.ch = NULL;
+@@ -786,23 +786,24 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register master\n");
+-		goto err_register_master;
++		goto err_free_dma_rx;
+ 	}
+ 
+ 	return 0;
+ 
+-err_register_master:
+-	pm_runtime_disable(&pdev->dev);
++err_free_dma_rx:
+ 	if (rs->dma_rx.ch)
+ 		dma_release_channel(rs->dma_rx.ch);
+ err_free_dma_tx:
+ 	if (rs->dma_tx.ch)
+ 		dma_release_channel(rs->dma_tx.ch);
+-err_get_fifo_len:
++err_disable_pm_runtime:
++	pm_runtime_disable(&pdev->dev);
++err_disable_spiclk:
+ 	clk_disable_unprepare(rs->spiclk);
+-err_spiclk_enable:
++err_disable_apbclk:
+ 	clk_disable_unprepare(rs->apb_pclk);
+-err_ioremap_resource:
++err_put_master:
+ 	spi_master_put(master);
+ 
+ 	return ret;
+-- 
+2.1.4
 
-> Isn't this check meant to fall back to hardware CS if no cs-gpios property
-> is present?
 
-I'd expect it to, otherwise the cs-gpios property is actualy mandatory.
-
---v4puphklnlp5dxxt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlk+w3UACgkQJNaLcl1U
-h9DnCgf+OXg2QggBSu3RqoWjZVm0900QROcD7N8+ji9tg5o2HlW11YKPh7FkgdYf
-UmQBFFfXP4PBvAztwodoGXFxL4s6WcUhf5xvGr0F0CXEThlI3ljWUYXyFVOm60BX
-pTSUiQgToe4Z5lnMcc17T5cQ54TFNYFsP5b4U+bM4ZfVwCqbGyTSI8itXkh9eAxA
-gHNkATAQgRfFtuJvo0jgryOA0cLZj7wqMWqSpk2H6V2LwuOR9bdhL36vRLt6DZP6
-vUaCl99sA3IFyk70stYbuFpn9/f1U/TQjLP8UJvHKuR5TQhjERXo83BXC0tmbDKE
-/QH6k+n6SzyBi5zLZnkurv0e523LUA==
-=Vd63
------END PGP SIGNATURE-----
-
---v4puphklnlp5dxxt--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,7 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 08/18] spi: qup: Handle v1 dma completion differently
-Date: Wed, 14 Jun 2017 11:22:21 +0530
-Message-ID: <1497419551-21834-9-git-send-email-varada@codeaurora.org>
+Subject: [PATCH 10/18] spi: qup: Fix DMA mode interrupt handling
+Date: Wed, 14 Jun 2017 11:22:23 +0530
+Message-ID: <1497419551-21834-11-git-send-email-varada@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -14,43 +14,56 @@ In-Reply-To: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Do not assign i/o completion callbacks while running
-on v1 of QUP.
+This is needed for v1, where the i/o completion is not
+handled in the dma driver.
 
+Signed-off-by: Andy Gross <andy.gross@linaro.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-qup.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 7c22ee4..0f6a4c7 100644
+index 872de28..bd53e82 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -334,6 +334,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
- 	struct spi_qup *qup = spi_master_get_devdata(master);
-+	dma_async_tx_callback done = qup->qup_v1 ? NULL : spi_qup_dma_done;
- 	int ret;
+@@ -510,9 +510,9 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
  
- 	/* before issuing the descriptors, set the QUP to run */
-@@ -346,7 +347,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+ 	writel_relaxed(qup_err, controller->base + QUP_ERROR_FLAGS);
+ 	writel_relaxed(spi_err, controller->base + SPI_ERROR_FLAGS);
+-	writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
  
- 	if (xfer->rx_buf) {
- 		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
--					spi_qup_dma_done, &qup->rxc);
-+					done, &qup->rxc);
- 		if (ret)
- 			return ret;
+ 	if (!xfer) {
++		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
+ 		dev_err_ratelimited(controller->dev, "unexpected irq %08x %08x %08x\n",
+ 				    qup_err, spi_err, opflags);
+ 		return IRQ_HANDLED;
+@@ -540,7 +540,15 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 		error = -EIO;
+ 	}
  
-@@ -355,7 +356,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+-	if (!spi_qup_is_dma_xfer(controller->mode)) {
++	if (spi_qup_is_dma_xfer(controller->mode)) {
++		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
++		if (opflags & QUP_OP_IN_SERVICE_FLAG &&
++		    opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
++			complete(&controller->rxc);
++		if (opflags & QUP_OP_OUT_SERVICE_FLAG &&
++		    opflags & QUP_OP_MAX_OUTPUT_DONE_FLAG)
++			complete(&controller->txc);
++	} else {
+ 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
+ 			spi_qup_read(controller, xfer);
  
- 	if (xfer->tx_buf) {
- 		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
--					spi_qup_dma_done, &qup->txc);
-+					done, &qup->txc);
- 		if (ret)
- 			return ret;
+@@ -553,6 +561,9 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 	controller->xfer = xfer;
+ 	spin_unlock_irqrestore(&controller->lock, flags);
  
++	/* re-read opflags as flags may have changed due to actions above */
++	opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
++
+ 	if ((controller->rx_bytes == xfer->len &&
+ 		(opflags & QUP_OP_MAX_INPUT_DONE_FLAG)) ||  error)
+ 		complete(&controller->done);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

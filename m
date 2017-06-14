@@ -1,55 +1,74 @@
-From: Sricharan R <sricharan@codeaurora.org>
-Subject: Re: [PATCH 07/18] spi: qup: Fix transaction done signaling
-Date: Wed, 14 Jun 2017 12:43:43 +0530
-Message-ID: <4b81a4c7-b85c-a35d-15fb-4aaaec3c7e8c@codeaurora.org>
+From: Sricharan R <sricharan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [PATCH 08/18] spi: qup: Handle v1 dma completion differently
+Date: Wed, 14 Jun 2017 12:45:51 +0530
+Message-ID: <a0e499a7-8f89-96d6-9463-c2b3f774cd6d@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
- <1497419551-21834-8-git-send-email-varada@codeaurora.org>
+ <1497419551-21834-9-git-send-email-varada@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-To: Varadarajan Narayanan <varada@codeaurora.org>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com, andy.gross@linaro.org,
-        david.brown@linaro.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1497419551-21834-8-git-send-email-varada@codeaurora.org>
+To: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1497419551-21834-9-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Content-Language: en-US
-Sender: linux-arm-msm-owner@vger.kernel.org
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Varada,
 
 On 6/14/2017 11:22 AM, Varadarajan Narayanan wrote:
-> Wait to signal done until we get all of the interrupts we are expecting
-> to get for a transaction.  If we don't wait for the input done flag, we
-> can be inbetween transactions when the done flag comes in and this can
-> mess up the next transaction.
+> Do not assign i/o completion callbacks while running
+> on v1 of QUP.
 > 
-> Signed-off-by: Andy Gross <andy.gross@linaro.org>
-> Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+> Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 > ---
->  drivers/spi/spi-qup.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/spi/spi-qup.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-> index 2124815..7c22ee4 100644
+> index 7c22ee4..0f6a4c7 100644
 > --- a/drivers/spi/spi-qup.c
 > +++ b/drivers/spi/spi-qup.c
-> @@ -465,7 +465,8 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
->  	controller->xfer = xfer;
->  	spin_unlock_irqrestore(&controller->lock, flags);
+> @@ -334,6 +334,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+>  			  unsigned long timeout)
+>  {
+>  	struct spi_qup *qup = spi_master_get_devdata(master);
+> +	dma_async_tx_callback done = qup->qup_v1 ? NULL : spi_qup_dma_done;
+>  	int ret;
 >  
-> -	if (controller->rx_bytes == xfer->len || error)
-> +	if ((controller->rx_bytes == xfer->len &&
-> +		(opflags & QUP_OP_MAX_INPUT_DONE_FLAG)) ||  error)
+>  	/* before issuing the descriptors, set the QUP to run */
+> @@ -346,7 +347,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+>  
+>  	if (xfer->rx_buf) {
+>  		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
+> -					spi_qup_dma_done, &qup->rxc);
+> +					done, &qup->rxc);
+>  		if (ret)
+>  			return ret;
+>  
+> @@ -355,7 +356,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+>  
+>  	if (xfer->tx_buf) {
+>  		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
+> -					spi_qup_dma_done, &qup->txc);
+> +					done, &qup->txc);
+>  		if (ret)
+>  			return ret;
+>  
+> 
 
- Not sure why we need this additional check, because having read all the
- bytes implies transfer complete (or) why not just check only for
- QUP_OP_MAX_INPUT_DONE_FLAG ?
+ Not sure why we cannot use dma callback for V1 ?
 
 Regards,
  Sricharan
 
 -- 
 "QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

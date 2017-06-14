@@ -1,74 +1,75 @@
-From: Sricharan R <sricharan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: Re: [PATCH 08/18] spi: qup: Handle v1 dma completion differently
-Date: Wed, 14 Jun 2017 12:45:51 +0530
-Message-ID: <a0e499a7-8f89-96d6-9463-c2b3f774cd6d@codeaurora.org>
+From: Sricharan R <sricharan@codeaurora.org>
+Subject: Re: [PATCH 10/18] spi: qup: Fix DMA mode interrupt handling
+Date: Wed, 14 Jun 2017 12:51:11 +0530
+Message-ID: <66ba7dfb-6ff3-884e-6db0-8d5191f87c93@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
- <1497419551-21834-9-git-send-email-varada@codeaurora.org>
+ <1497419551-21834-11-git-send-email-varada@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-To: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1497419551-21834-9-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Varadarajan Narayanan <varada@codeaurora.org>, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, andy.gross@linaro.org,
+        david.brown@linaro.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <1497419551-21834-11-git-send-email-varada@codeaurora.org>
 Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Varada,
 
 On 6/14/2017 11:22 AM, Varadarajan Narayanan wrote:
-> Do not assign i/o completion callbacks while running
-> on v1 of QUP.
+> This is needed for v1, where the i/o completion is not
+> handled in the dma driver.
 > 
-> Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> Signed-off-by: Andy Gross <andy.gross@linaro.org>
+> Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 > ---
->  drivers/spi/spi-qup.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/spi/spi-qup.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-> index 7c22ee4..0f6a4c7 100644
+> index 872de28..bd53e82 100644
 > --- a/drivers/spi/spi-qup.c
 > +++ b/drivers/spi/spi-qup.c
-> @@ -334,6 +334,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
->  			  unsigned long timeout)
->  {
->  	struct spi_qup *qup = spi_master_get_devdata(master);
-> +	dma_async_tx_callback done = qup->qup_v1 ? NULL : spi_qup_dma_done;
->  	int ret;
+> @@ -510,9 +510,9 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
 >  
->  	/* before issuing the descriptors, set the QUP to run */
-> @@ -346,7 +347,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+>  	writel_relaxed(qup_err, controller->base + QUP_ERROR_FLAGS);
+>  	writel_relaxed(spi_err, controller->base + SPI_ERROR_FLAGS);
+> -	writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
 >  
->  	if (xfer->rx_buf) {
->  		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
-> -					spi_qup_dma_done, &qup->rxc);
-> +					done, &qup->rxc);
->  		if (ret)
->  			return ret;
->  
-> @@ -355,7 +356,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
->  
->  	if (xfer->tx_buf) {
->  		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
-> -					spi_qup_dma_done, &qup->txc);
-> +					done, &qup->txc);
->  		if (ret)
->  			return ret;
->  
-> 
+>  	if (!xfer) {
+> +		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
 
- Not sure why we cannot use dma callback for V1 ?
+ This does look correct to remove acknowledging the QUP in normal case and
+  do it conditionally only when xfer = NULL.
+
+>  		dev_err_ratelimited(controller->dev, "unexpected irq %08x %08x %08x\n",
+>  				    qup_err, spi_err, opflags);
+>  		return IRQ_HANDLED;
+> @@ -540,7 +540,15 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+>  		error = -EIO;
+>  	}
+>  
+> -	if (!spi_qup_is_dma_xfer(controller->mode)) {
+> +	if (spi_qup_is_dma_xfer(controller->mode)) {
+> +		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
+> +		if (opflags & QUP_OP_IN_SERVICE_FLAG &&
+> +		    opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
+> +			complete(&controller->rxc);
+> +		if (opflags & QUP_OP_OUT_SERVICE_FLAG &&
+> +		    opflags & QUP_OP_MAX_OUTPUT_DONE_FLAG)
+> +			complete(&controller->txc);
+> +	} else {
+
+ Is this because in patch #8 that we do not populate the dma callback
+ for v1. If that is done, this should not be required at all, as the
+ complete would be signalled from the dma callback.
 
 Regards,
  Sricharan
 
 -- 
 "QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

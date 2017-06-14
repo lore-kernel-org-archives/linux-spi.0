@@ -1,7 +1,7 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 03/18] spi: qup: Add completion timeout for dma mode
-Date: Wed, 14 Jun 2017 11:22:16 +0530
-Message-ID: <1497419551-21834-4-git-send-email-varada@codeaurora.org>
+Subject: [PATCH 04/18] spi: qup: Add completion timeout for fifo/block mode
+Date: Wed, 14 Jun 2017 11:22:17 +0530
+Message-ID: <1497419551-21834-5-git-send-email-varada@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -14,131 +14,66 @@ In-Reply-To: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use different 'completion' structures to track the completion
-of DMA Tx/Rx and PIO.
-
 Signed-off-by: Andy Gross <andy.gross@linaro.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 41 ++++++++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 17 deletions(-)
+ drivers/spi/spi-qup.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index abe799b..272e48e 100644
+index 272e48e..d3ccf53 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -142,6 +142,8 @@ struct spi_qup {
- 
- 	struct spi_transfer	*xfer;
- 	struct completion	done;
-+	struct completion	txc;
-+	struct completion	rxc;
- 	int			error;
- 	int			w_size;	/* bytes per SPI word */
- 	int			n_words;
-@@ -283,16 +285,13 @@ static void spi_qup_fifo_write(struct spi_qup *controller,
- 
- static void spi_qup_dma_done(void *data)
- {
--	struct spi_qup *qup = data;
--
--	complete(&qup->done);
-+	complete(data);
+@@ -330,7 +330,8 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
- static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
- 			   enum dma_transfer_direction dir,
--			   dma_async_tx_callback callback)
-+			   dma_async_tx_callback callback, void *data)
+-static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
++static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
++			  unsigned long timeout)
  {
--	struct spi_qup *qup = spi_master_get_devdata(master);
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
- 	struct dma_async_tx_descriptor *desc;
- 	struct scatterlist *sgl;
-@@ -315,7 +314,7 @@ static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
- 		return -EINVAL;
- 
- 	desc->callback = callback;
--	desc->callback_param = qup;
-+	desc->callback_param = data;
- 
- 	cookie = dmaengine_submit(desc);
- 
-@@ -333,16 +332,12 @@ static void spi_qup_dma_terminate(struct spi_master *master,
- 
- static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
- {
--	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
-+	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
  	int ret;
+@@ -362,7 +363,8 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
+ 	return 0;
+ }
  
--	if (xfer->rx_buf)
--		rx_done = spi_qup_dma_done;
--	else if (xfer->tx_buf)
--		tx_done = spi_qup_dma_done;
--
- 	if (xfer->rx_buf) {
--		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM, rx_done);
-+		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
-+					spi_qup_dma_done, &qup->rxc);
- 		if (ret)
- 			return ret;
+-static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer)
++static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
++			  unsigned long timeout)
+ {
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	int ret;
+@@ -381,6 +383,9 @@ static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer)
  
-@@ -350,13 +345,20 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
- 	}
+ 	spi_qup_fifo_write(qup, xfer);
  
- 	if (xfer->tx_buf) {
--		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV, tx_done);
-+		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
-+					spi_qup_dma_done, &qup->txc);
- 		if (ret)
- 			return ret;
- 
- 		dma_async_issue_pending(master->dma_tx);
- 	}
- 
-+	if (xfer->rx_buf && !wait_for_completion_timeout(&qup->rxc, timeout))
-+		return -ETIMEDOUT;
-+
-+	if (xfer->tx_buf && !wait_for_completion_timeout(&qup->txc, timeout))
++	if (!wait_for_completion_timeout(&qup->done, timeout))
 +		return -ETIMEDOUT;
 +
  	return 0;
  }
  
-@@ -622,7 +624,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
+@@ -624,7 +629,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
  	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
  	timeout = 100 * msecs_to_jiffies(timeout);
  
--	reinit_completion(&controller->done);
- 
+-
  	spin_lock_irqsave(&controller->lock, flags);
  	controller->xfer     = xfer;
-@@ -631,10 +632,14 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	controller->tx_bytes = 0;
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
--	if (spi_qup_is_dma_xfer(controller->mode))
-+	if (spi_qup_is_dma_xfer(controller->mode)) {
-+		reinit_completion(&controller->rxc);
-+		reinit_completion(&controller->txc);
- 		ret = spi_qup_do_dma(master, xfer);
--	else
-+	} else {
-+		reinit_completion(&controller->done);
- 		ret = spi_qup_do_pio(master, xfer);
-+	}
+ 	controller->error    = 0;
+@@ -635,10 +639,10 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	if (spi_qup_is_dma_xfer(controller->mode)) {
+ 		reinit_completion(&controller->rxc);
+ 		reinit_completion(&controller->txc);
+-		ret = spi_qup_do_dma(master, xfer);
++		ret = spi_qup_do_dma(master, xfer, timeout);
+ 	} else {
+ 		reinit_completion(&controller->done);
+-		ret = spi_qup_do_pio(master, xfer);
++		ret = spi_qup_do_pio(master, xfer, timeout);
+ 	}
  
  	if (ret)
- 		goto exit;
-@@ -860,6 +865,8 @@ static int spi_qup_probe(struct platform_device *pdev)
- 		master->set_cs = spi_qup_set_cs;
- 
- 	spin_lock_init(&controller->lock);
-+	init_completion(&controller->rxc);
-+	init_completion(&controller->txc);
- 	init_completion(&controller->done);
- 
- 	iomode = readl_relaxed(base + QUP_IO_M_MODES);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

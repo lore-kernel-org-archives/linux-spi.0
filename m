@@ -1,10 +1,10 @@
 From: Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 07/18] spi: qup: Fix transaction done signaling
-Date: Wed, 14 Jun 2017 15:51:55 -0400
-Message-ID: <20170614195155.GB32733@hector.wework.com>
+Subject: Re: [PATCH 08/18] spi: qup: Handle v1 dma completion differently
+Date: Wed, 14 Jun 2017 15:53:58 -0400
+Message-ID: <20170614195358.GC32733@hector.wework.com>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
- <1497419551-21834-8-git-send-email-varada@codeaurora.org>
- <4b81a4c7-b85c-a35d-15fb-4aaaec3c7e8c@codeaurora.org>
+ <1497419551-21834-9-git-send-email-varada@codeaurora.org>
+ <a0e499a7-8f89-96d6-9463-c2b3f774cd6d@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
@@ -15,48 +15,58 @@ Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broo
 To: Sricharan R <sricharan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <4b81a4c7-b85c-a35d-15fb-4aaaec3c7e8c-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+In-Reply-To: <a0e499a7-8f89-96d6-9463-c2b3f774cd6d-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Jun 14, 2017 at 12:43:43PM +0530, Sricharan R wrote:
+On Wed, Jun 14, 2017 at 12:45:51PM +0530, Sricharan R wrote:
 > Hi Varada,
 > 
 > On 6/14/2017 11:22 AM, Varadarajan Narayanan wrote:
-> > Wait to signal done until we get all of the interrupts we are expecting
-> > to get for a transaction.  If we don't wait for the input done flag, we
-> > can be inbetween transactions when the done flag comes in and this can
-> > mess up the next transaction.
+> > Do not assign i/o completion callbacks while running
+> > on v1 of QUP.
 > > 
-> > Signed-off-by: Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > > Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 > > ---
-> >  drivers/spi/spi-qup.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >  drivers/spi/spi-qup.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
 > > 
 > > diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-> > index 2124815..7c22ee4 100644
+> > index 7c22ee4..0f6a4c7 100644
 > > --- a/drivers/spi/spi-qup.c
 > > +++ b/drivers/spi/spi-qup.c
-> > @@ -465,7 +465,8 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
-> >  	controller->xfer = xfer;
-> >  	spin_unlock_irqrestore(&controller->lock, flags);
+> > @@ -334,6 +334,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+> >  			  unsigned long timeout)
+> >  {
+> >  	struct spi_qup *qup = spi_master_get_devdata(master);
+> > +	dma_async_tx_callback done = qup->qup_v1 ? NULL : spi_qup_dma_done;
+> >  	int ret;
 > >  
-> > -	if (controller->rx_bytes == xfer->len || error)
-> > +	if ((controller->rx_bytes == xfer->len &&
-> > +		(opflags & QUP_OP_MAX_INPUT_DONE_FLAG)) ||  error)
+> >  	/* before issuing the descriptors, set the QUP to run */
+> > @@ -346,7 +347,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+> >  
+> >  	if (xfer->rx_buf) {
+> >  		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
+> > -					spi_qup_dma_done, &qup->rxc);
+> > +					done, &qup->rxc);
+> >  		if (ret)
+> >  			return ret;
+> >  
+> > @@ -355,7 +356,7 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+> >  
+> >  	if (xfer->tx_buf) {
+> >  		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
+> > -					spi_qup_dma_done, &qup->txc);
+> > +					done, &qup->txc);
+> >  		if (ret)
+> >  			return ret;
+> >  
+> > 
 > 
->  Not sure why we need this additional check, because having read all the
->  bytes implies transfer complete (or) why not just check only for
->  QUP_OP_MAX_INPUT_DONE_FLAG ?
+>  Not sure why we cannot use dma callback for V1 ?
 
-So you can receive an interrupt for the last data without it having also
-signalled the INPUT_DONE.  That means you'd have one more IRQ come in and if you
-don't wait for that, you could start up the next transaction and have an irq
-come in that screws up that transaction.
+V1 is for ADMA.  V2+ is BAM.  We only needed the callback for BAM
 
-It might be sufficient to just wait for the INPUT_DONE_FLAG.  That cannot be
-signalled unless the rx_bytes == xfer->len.
 
 Regards,
 

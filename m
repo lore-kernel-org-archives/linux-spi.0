@@ -1,10 +1,9 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 01/18] spi: qup: Enable chip select support
-Date: Wed, 14 Jun 2017 11:22:14 +0530
-Message-ID: <1497419551-21834-2-git-send-email-varada@codeaurora.org>
+Subject: [PATCH 03/18] spi: qup: Add completion timeout for dma mode
+Date: Wed, 14 Jun 2017 11:22:16 +0530
+Message-ID: <1497419551-21834-4-git-send-email-varada@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Sham Muthayyan <smuthayy@codeaurora.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
         andy.gross@linaro.org, david.brown@linaro.org,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -15,52 +14,131 @@ In-Reply-To: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable chip select support for QUP versions later than v1
+Use different 'completion' structures to track the completion
+of DMA Tx/Rx and PIO.
 
-Signed-off-by: Sham Muthayyan <smuthayy@codeaurora.org>
+Signed-off-by: Andy Gross <andy.gross@linaro.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/spi/spi-qup.c | 41 ++++++++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 1bfa889..c0d4def 100644
+index abe799b..272e48e 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -750,6 +750,24 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	return ret;
+@@ -142,6 +142,8 @@ struct spi_qup {
+ 
+ 	struct spi_transfer	*xfer;
+ 	struct completion	done;
++	struct completion	txc;
++	struct completion	rxc;
+ 	int			error;
+ 	int			w_size;	/* bytes per SPI word */
+ 	int			n_words;
+@@ -283,16 +285,13 @@ static void spi_qup_fifo_write(struct spi_qup *controller,
+ 
+ static void spi_qup_dma_done(void *data)
+ {
+-	struct spi_qup *qup = data;
+-
+-	complete(&qup->done);
++	complete(data);
  }
  
-+static void spi_qup_set_cs(struct spi_device *spi, bool val)
-+{
-+	struct spi_qup *controller;
-+	u32 spi_ioc;
-+	u32 spi_ioc_orig;
-+
-+	controller = spi_master_get_devdata(spi->master);
-+	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
-+	spi_ioc_orig = spi_ioc;
-+	if (!val)
-+		spi_ioc |= SPI_IO_C_FORCE_CS;
-+	else
-+		spi_ioc &= ~SPI_IO_C_FORCE_CS;
-+
-+	if (spi_ioc != spi_ioc_orig)
-+		writel_relaxed(spi_ioc, controller->base + SPI_IO_CONTROL);
-+}
-+
- static int spi_qup_probe(struct platform_device *pdev)
+ static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
+ 			   enum dma_transfer_direction dir,
+-			   dma_async_tx_callback callback)
++			   dma_async_tx_callback callback, void *data)
  {
- 	struct spi_master *master;
-@@ -846,6 +864,9 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
- 		controller->qup_v1 = 1;
+-	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
+ 	struct dma_async_tx_descriptor *desc;
+ 	struct scatterlist *sgl;
+@@ -315,7 +314,7 @@ static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
+ 		return -EINVAL;
  
-+	if (!controller->qup_v1)
-+		master->set_cs = spi_qup_set_cs;
+ 	desc->callback = callback;
+-	desc->callback_param = qup;
++	desc->callback_param = data;
+ 
+ 	cookie = dmaengine_submit(desc);
+ 
+@@ -333,16 +332,12 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 
+ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
+ {
+-	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
++	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	int ret;
+ 
+-	if (xfer->rx_buf)
+-		rx_done = spi_qup_dma_done;
+-	else if (xfer->tx_buf)
+-		tx_done = spi_qup_dma_done;
+-
+ 	if (xfer->rx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM, rx_done);
++		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
++					spi_qup_dma_done, &qup->rxc);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -350,13 +345,20 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
+ 	}
+ 
+ 	if (xfer->tx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV, tx_done);
++		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV,
++					spi_qup_dma_done, &qup->txc);
+ 		if (ret)
+ 			return ret;
+ 
+ 		dma_async_issue_pending(master->dma_tx);
+ 	}
+ 
++	if (xfer->rx_buf && !wait_for_completion_timeout(&qup->rxc, timeout))
++		return -ETIMEDOUT;
 +
++	if (xfer->tx_buf && !wait_for_completion_timeout(&qup->txc, timeout))
++		return -ETIMEDOUT;
++
+ 	return 0;
+ }
+ 
+@@ -622,7 +624,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
+ 	timeout = 100 * msecs_to_jiffies(timeout);
+ 
+-	reinit_completion(&controller->done);
+ 
+ 	spin_lock_irqsave(&controller->lock, flags);
+ 	controller->xfer     = xfer;
+@@ -631,10 +632,14 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	controller->tx_bytes = 0;
+ 	spin_unlock_irqrestore(&controller->lock, flags);
+ 
+-	if (spi_qup_is_dma_xfer(controller->mode))
++	if (spi_qup_is_dma_xfer(controller->mode)) {
++		reinit_completion(&controller->rxc);
++		reinit_completion(&controller->txc);
+ 		ret = spi_qup_do_dma(master, xfer);
+-	else
++	} else {
++		reinit_completion(&controller->done);
+ 		ret = spi_qup_do_pio(master, xfer);
++	}
+ 
+ 	if (ret)
+ 		goto exit;
+@@ -860,6 +865,8 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		master->set_cs = spi_qup_set_cs;
+ 
  	spin_lock_init(&controller->lock);
++	init_completion(&controller->rxc);
++	init_completion(&controller->txc);
  	init_completion(&controller->done);
  
+ 	iomode = readl_relaxed(base + QUP_IO_M_MODES);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

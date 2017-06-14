@@ -1,10 +1,10 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 14/18] spi: qup: allow block mode to generate multiple transactions
-Date: Wed, 14 Jun 2017 11:22:27 +0530
-Message-ID: <1497419551-21834-15-git-send-email-varada@codeaurora.org>
+Subject: [PATCH 18/18] spi: qup: support for qup v1 dma
+Date: Wed, 14 Jun 2017 11:22:31 +0530
+Message-ID: <1497419551-21834-19-git-send-email-varada@codeaurora.org>
 References: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Matthew McClintock <mmcclint@codeaurora.org>
+        Abhishek Sahu <absahu@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
         andy.gross@linaro.org, david.brown@linaro.org,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -15,277 +15,128 @@ In-Reply-To: <1497419551-21834-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This let's you write more to the SPI bus than 64K-1 which is important
-if the block size of a SPI device is >= 64K or some other device wants
-to do something larger.
+Currently the QUP Version v1 does not work with DMA so added
+the support for the same.
 
-This has the benefit of completely removing spi_message from the spi-qup
-transactions
+1. It uses ADM DMA which requires TX and RX CRCI
+2. DMA channel initialization need to be done after setting
+   block size for having valid values in maxburst
+3. QUP mode should be DMOV instead of BAM.
 
-Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
+Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 127 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 80 insertions(+), 47 deletions(-)
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
+ drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+index 5c09077..e754181 100644
+--- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+@@ -38,6 +38,12 @@ Optional properties:
+ - dma-names:    Names for the dma channels, if present. There must be at
+                 least one channel named "tx" for transmit and named "rx" for
+                 receive.
++- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
++		used with TX DMA channel. Required when using DMA for
++		transmission with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
++- qcom,rx-crci: Identificator for Client Rate Control Interface (CRCI) to be
++		used with RX DMA channel. Required when using DMA for
++		receiving with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
+ 
+ SPI slave nodes must be children of the SPI master node and can contain
+ properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index f085e36..02d4e10 100644
+index 4ef9301..10666e7 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -120,7 +120,7 @@
+@@ -691,7 +691,8 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ 	else if (spi->master->can_dma &&
+ 		 spi->master->can_dma(spi->master, spi, xfer) &&
+ 		 spi->master->cur_msg_mapped)
+-		controller->mode = QUP_IO_M_MODE_BAM;
++		controller->mode = controller->qup_v1 ? QUP_IO_M_MODE_DMOV :
++							QUP_IO_M_MODE_BAM;
+ 	else
+ 		controller->mode = QUP_IO_M_MODE_BLOCK;
  
- #define SPI_NUM_CHIPSELECTS		4
+@@ -730,6 +731,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
+ 		break;
+ 	case QUP_IO_M_MODE_BAM:
++	case QUP_IO_M_MODE_DMOV:
+ 		reinit_completion(&controller->txc);
+ 		reinit_completion(&controller->rxc);
+ 		writel_relaxed(controller->n_words,
+@@ -934,6 +936,7 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	struct dma_slave_config *rx_conf = &spi->rx_conf,
+ 				*tx_conf = &spi->tx_conf;
+ 	struct device *dev = spi->dev;
++	u32 tx_crci = 0, rx_crci = 0;
+ 	int ret;
  
--#define SPI_MAX_DMA_XFER		(SZ_64K - 64)
-+#define SPI_MAX_XFER			(SZ_64K - 64)
- 
- /* high speed mode is when bus rate is greater then 26MHz */
- #define SPI_HS_MIN_RATE			26000000
-@@ -151,6 +151,8 @@ struct spi_qup {
- 	int			n_words;
- 	int			tx_bytes;
- 	int			rx_bytes;
-+	const u8		*tx_buf;
-+	u8			*rx_buf;
- 	int			qup_v1;
- 
- 	int			mode;
-@@ -175,6 +177,12 @@ static inline bool spi_qup_is_dma_xfer(int mode)
- 	return false;
- }
- 
-+/* get's the transaction size length */
-+static inline unsigned int spi_qup_len(struct spi_qup *controller)
-+{
-+	return controller->n_words * controller->w_size;
-+}
-+
- static inline bool spi_qup_is_valid_state(struct spi_qup *controller)
- {
- 	u32 opstate = readl_relaxed(controller->base + QUP_STATE);
-@@ -227,10 +235,9 @@ static int spi_qup_set_state(struct spi_qup *controller, u32 state)
- 	return 0;
- }
- 
--static void spi_qup_read_from_fifo(struct spi_qup *controller,
--	struct spi_transfer *xfer, u32 num_words)
-+static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
- {
--	u8 *rx_buf = xfer->rx_buf;
-+	u8 *rx_buf = controller->rx_buf;
- 	int i, shift, num_bytes;
- 	u32 word;
- 
-@@ -238,8 +245,9 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller,
- 
- 		word = readl_relaxed(controller->base + QUP_INPUT_FIFO);
- 
--		num_bytes = min_t(int, xfer->len - controller->rx_bytes,
--					controller->w_size);
-+		num_bytes = min_t(int, spi_qup_len(controller) -
-+				       controller->rx_bytes,
-+				       controller->w_size);
- 
- 		if (!rx_buf) {
- 			controller->rx_bytes += num_bytes;
-@@ -260,13 +268,12 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller,
- 	}
- }
- 
--static void spi_qup_read(struct spi_qup *controller,
--			    struct spi_transfer *xfer)
-+static void spi_qup_read(struct spi_qup *controller)
- {
- 	u32 remainder, words_per_block, num_words;
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
- 
--	remainder = DIV_ROUND_UP(xfer->len - controller->rx_bytes,
-+	remainder = DIV_ROUND_UP(spi_qup_len(controller) - controller->rx_bytes,
- 				 controller->w_size);
- 	words_per_block = controller->in_blk_sz >> 2;
- 
-@@ -287,7 +294,7 @@ static void spi_qup_read(struct spi_qup *controller,
- 		}
- 
- 		/* read up to the maximum transfer size available */
--		spi_qup_read_from_fifo(controller, xfer, num_words);
-+		spi_qup_read_from_fifo(controller, num_words);
- 
- 		remainder -= num_words;
- 
-@@ -309,18 +316,18 @@ static void spi_qup_read(struct spi_qup *controller,
- 
- }
- 
--static void spi_qup_write_to_fifo(struct spi_qup *controller,
--	struct spi_transfer *xfer, u32 num_words)
-+static void spi_qup_write_to_fifo(struct spi_qup *controller, u32 num_words)
- {
--	const u8 *tx_buf = xfer->tx_buf;
-+	const u8 *tx_buf = controller->tx_buf;
- 	int i, num_bytes;
- 	u32 word, data;
- 
- 	for (; num_words; num_words--) {
- 		word = 0;
- 
--		num_bytes = min_t(int, xfer->len - controller->tx_bytes,
--				    controller->w_size);
-+		num_bytes = min_t(int, spi_qup_len(controller) -
-+				       controller->tx_bytes,
-+				       controller->w_size);
- 		if (tx_buf)
- 			for (i = 0; i < num_bytes; i++) {
- 				data = tx_buf[controller->tx_bytes + i];
-@@ -338,13 +345,12 @@ static void spi_qup_dma_done(void *data)
- 	complete(data);
- }
- 
--static void spi_qup_write(struct spi_qup *controller,
--			    struct spi_transfer *xfer)
-+static void spi_qup_write(struct spi_qup *controller)
- {
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
- 	u32 remainder, words_per_block, num_words;
- 
--	remainder = DIV_ROUND_UP(xfer->len - controller->tx_bytes,
-+	remainder = DIV_ROUND_UP(spi_qup_len(controller) - controller->tx_bytes,
- 				 controller->w_size);
- 	words_per_block = controller->out_blk_sz >> 2;
- 
-@@ -364,7 +370,7 @@ static void spi_qup_write(struct spi_qup *controller,
- 			num_words = 1;
- 		}
- 
--		spi_qup_write_to_fifo(controller, xfer, num_words);
-+		spi_qup_write_to_fifo(controller, num_words);
- 
- 		remainder -= num_words;
- 
-@@ -470,36 +476,62 @@ static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- {
- 	struct spi_master *master = spi->master;
- 	struct spi_qup *qup = spi_master_get_devdata(master);
--	int ret;
-+	int ret, n_words, iterations, offset = 0;
- 
--	ret = spi_qup_io_config(spi, xfer);
--	if (ret)
--		return ret;
-+	n_words = qup->n_words;
-+	iterations = n_words / SPI_MAX_XFER; /* round down */
-+	qup->rx_buf = xfer->rx_buf;
-+	qup->tx_buf = xfer->tx_buf;
- 
--	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n");
--		return ret;
--	}
-+	do {
-+		if (iterations)
-+			qup->n_words = SPI_MAX_XFER;
-+		else
-+			qup->n_words = n_words % SPI_MAX_XFER;
- 
--	ret = spi_qup_set_state(qup, QUP_STATE_PAUSE);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set PAUSE state\n");
--		return ret;
--	}
-+		if (qup->tx_buf && offset)
-+			qup->tx_buf = xfer->tx_buf + offset * SPI_MAX_XFER;
- 
--	if (qup->mode == QUP_IO_M_MODE_FIFO)
--		spi_qup_write(qup, xfer);
-+		if (qup->rx_buf && offset)
-+			qup->rx_buf = xfer->rx_buf + offset * SPI_MAX_XFER;
- 
--	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n");
--		return ret;
--	}
-+		/*
-+		 * if the transaction is small enough, we need
-+		 * to fallback to FIFO mode
-+		 */
-+		if (qup->n_words <= (qup->in_fifo_sz / sizeof(u32)))
-+			qup->mode = QUP_IO_M_MODE_FIFO;
- 
--	if (!wait_for_completion_timeout(&qup->done, timeout))
--		return -ETIMEDOUT;
-+		ret = spi_qup_io_config(spi, xfer);
-+		if (ret)
-+			return ret;
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set RUN state\n");
-+			return ret;
-+		}
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_PAUSE);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set PAUSE state\n");
-+			return ret;
-+		}
-+
-+		if (qup->mode == QUP_IO_M_MODE_FIFO)
-+			spi_qup_write(qup);
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set RUN state\n");
-+			return ret;
-+		}
-+
-+		if (!wait_for_completion_timeout(&qup->done, timeout))
-+			return -ETIMEDOUT;
- 
-+		offset++;
-+	} while (iterations--);
- 	return 0;
- }
- 
-@@ -562,16 +594,16 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 			complete(&controller->txc);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_read(controller, xfer);
-+			spi_qup_read(controller);
- 
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
--			spi_qup_write(controller, xfer);
-+			spi_qup_write(controller);
+ 	/* allocate dma resources, if available */
+@@ -947,16 +950,34 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 		goto err_tx;
  	}
  
- 	/* re-read opflags as flags may have changed due to actions above */
- 	opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
++	if (spi->qup_v1) {
++		ret = of_property_read_u32(dev->of_node, "qcom,tx-crci",
++					   &tx_crci);
++		if (ret) {
++			dev_err(dev, "missing property qcom,tx-crci\n");
++			goto err;
++		}
++
++		ret = of_property_read_u32(dev->of_node, "qcom,rx-crci",
++					   &rx_crci);
++		if (ret) {
++			dev_err(dev, "missing property qcom,rx-crci\n");
++			goto err;
++		}
++	}
++
+ 	/* set DMA parameters */
+ 	rx_conf->direction = DMA_DEV_TO_MEM;
+ 	rx_conf->device_fc = 1;
+ 	rx_conf->src_addr = base + QUP_INPUT_FIFO;
+ 	rx_conf->src_maxburst = spi->in_blk_sz;
++	rx_conf->slave_id = rx_crci;
  
--	if ((controller->rx_bytes == xfer->len &&
-+	if ((controller->rx_bytes == spi_qup_len(controller) &&
- 		(opflags & QUP_OP_MAX_INPUT_DONE_FLAG)) ||  error)
- 		done = true;
+ 	tx_conf->direction = DMA_MEM_TO_DEV;
+ 	tx_conf->device_fc = 1;
+ 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
+ 	tx_conf->dst_maxburst = spi->out_blk_sz;
++	tx_conf->slave_id = tx_crci;
  
-@@ -787,7 +819,8 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 		return ret;
+ 	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
+ 	if (ret) {
+@@ -1083,12 +1104,6 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	controller->cclk = cclk;
+ 	controller->irq = irq;
  
- 	timeout = DIV_ROUND_UP(xfer->speed_hz, MSEC_PER_SEC);
--	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
-+	timeout = DIV_ROUND_UP(min_t(unsigned long, SPI_MAX_XFER,
-+				     xfer->len) * 8, timeout);
- 	timeout = 100 * msecs_to_jiffies(timeout);
+-	ret = spi_qup_init_dma(master, res->start);
+-	if (ret == -EPROBE_DEFER)
+-		goto error;
+-	else if (!ret)
+-		master->can_dma = spi_qup_can_dma;
+-
+ 	/* set v1 flag if device is version 1 */
+ 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+ 		controller->qup_v1 = 1;
+@@ -1125,6 +1140,12 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		 controller->in_blk_sz, controller->in_fifo_sz,
+ 		 controller->out_blk_sz, controller->out_fifo_sz);
  
- 	if (spi_qup_is_dma_xfer(controller->mode))
-@@ -992,7 +1025,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->auto_runtime_pm = true;
- 	master->dma_alignment = dma_get_cache_alignment();
--	master->max_dma_len = SPI_MAX_DMA_XFER;
-+	master->max_dma_len = SPI_MAX_XFER;
++	ret = spi_qup_init_dma(master, res->start);
++	if (ret == -EPROBE_DEFER)
++		goto error;
++	else if (!ret)
++		master->can_dma = spi_qup_can_dma;
++
+ 	writel_relaxed(1, base + QUP_SW_RESET);
  
- 	platform_set_drvdata(pdev, master);
- 
+ 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

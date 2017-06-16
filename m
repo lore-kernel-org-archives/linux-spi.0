@@ -1,135 +1,81 @@
-From: Caesar Wang <wxt@rock-chips.com>
-Subject: Re: [PATCH v3 1/3] spi: rockchip: add support for "cs-gpios" dts
- property
-Date: Fri, 16 Jun 2017 18:09:31 +0800
-Message-ID: <3beb9f49-5275-b14f-02f7-55ff5ca01e90@rock-chips.com>
-References: <1497411483-23377-1-git-send-email-jeffy.chen@rock-chips.com>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: spi-ti-qspi: Use bounce buffer if read buffer
+ is not DMA'ble
+Date: Fri, 16 Jun 2017 17:54:57 +0200
+Message-ID: <c9dbe3d1-549c-f510-fa76-8e326601ecdc@atmel.com>
+References: <20170411115225.31709-1-vigneshr@ti.com>
+ <20170411115225.31709-3-vigneshr@ti.com>
+ <20170421170655.dpyxlwipfwnwjjwy@sirena.org.uk>
+ <3955ad22-28a2-5222-4ae3-aa34dc69cde6@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 8bit
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
-        heiko@sntech.de, dianders@chromium.org, linux-spi@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-To: Jeffy Chen <jeffy.chen@rock-chips.com>, broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1497411483-23377-1-git-send-email-jeffy.chen@rock-chips.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Boris BREZILLON <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <3955ad22-28a2-5222-4ae3-aa34dc69cde6-l0cyMroinI0@public.gmane.org>
+Content-Language: en-GB
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+Hi all,
 
-As the previous discussed on http://crosreview.com/379681, we have hit a 
-failure [0] of ec's xfer, when we support the spi's pd to turn on/off. 
-(Says: support the Sdioaudio pd of rk3399 on http://crosreview.com/378562)
++ Richard and Boris as MTD maintainers
 
-[0]:
-..
-[ 5.579694 ] cros-ec-spi spi5.0: EC failed to respond in time
-[ 5.585784 ] cros-ec-spi spi5.0: Transfer error 1/3: -110
-..
-
-
-Feels like that a workaround way to fix it, but that should be a good 
-solution.
-
-
-ÔÚ 2017Äê06ÔÂ14ÈÕ 11:38, Jeffy Chen Ð´µÀ:
-> Support using "cs-gpios" property to specify cs gpios.
+Le 25/04/2017 à 14:18, Vignesh R a écrit :
 > 
-> Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
-
-Tested-by: Caesar Wang <wxt@rock-chips.com>
-
-I have fetched these patches to test S2R with my board for chromeos4.4.
-
-localhost ~ # cat /sys/kernel/debug/pm_genpd/pm_genpd_summary
-...
-pd_sdioaudio                    on
-     /devices/platform/ff200000.spi                      suspended
-     /devices/platform/ff880000.i2s                      active
-     /devices/platform/ff8a0000.i2s                      suspended
-
--Caesar
-
-> ---
 > 
-> Changes in v3:
-> include linux/gpio/consumer.h for compile errors on ARCH_X86
-> (reported by kbuild test robot <lkp@intel.com>)
+> On Friday 21 April 2017 10:36 PM, Mark Brown wrote:
+>> On Tue, Apr 11, 2017 at 05:22:25PM +0530, Vignesh R wrote:
+>>> Flash filesystems like JFFS2, UBIFS and MTD block layer can provide
+>>> vmalloc'd or kmap'd buffers that cannot be mapped using dma_map_sg() and
+>>> can potentially be in memory region above 32bit addressable region(ie
+>>> buffers belonging to memory region backed by LPAE) of DMA, implement
+>>> spi_flash_can_dma() interface to inform SPI core not to map such
+>>> buffers.
+>>
+>> I'll apply this since it fixes bugs for your systems but it feels like
+>> something that we should be moving further into the core since LPAE
+>> isn't specific to your devices.  We should ideally have something
+>> (possibly in the DMA mapping code even) which does the remapping without
+>> the driver needing to know about it.
+>>
 > 
-> Changes in v2:
-> 1/ request cs gpios in probe for better error handling
-> 2/ use gpiod* function
-> (suggested by Heiko Stuebner)
-> 3/ split dt-binding changes to new patch
-> (suggested by Shawn Lin & Heiko Stuebner)
+> I agree, there is a need to have generic remapping code. Also, I guess,
+> once UBIFS is moved to use kmalloc'd buffers SPI flash devices will not
+> have to worry much about vmalloc'd buffers.
 > 
->   drivers/spi/spi-rockchip.c | 31 ++++++++++++++++++++++++++++++-
->   1 file changed, 30 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index bab9b13..4bcf251 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -16,7 +16,8 @@
->   #include <linux/clk.h>
->   #include <linux/dmaengine.h>
->   #include <linux/module.h>
-> -#include <linux/of.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/of_gpio.h>
->   #include <linux/pinctrl/consumer.h>
->   #include <linux/platform_device.h>
->   #include <linux/spi/spi.h>
-> @@ -663,6 +664,27 @@ static bool rockchip_spi_can_dma(struct spi_master *master,
->   	return (xfer->len > rs->fifo_len);
->   }
->   
-> +static int rockchip_spi_setup_cs_gpios(struct device *dev)
-> +{
-> +	struct device_node *np = dev->of_node;
-> +	struct gpio_desc *cs_gpio;
-> +	int i, nb;
-> +
-> +	if (!np)
-> +		return 0;
-> +
-> +	nb = of_gpio_named_count(np, "cs-gpios");
-> +	for (i = 0; i < nb; i++) {
-> +		/* We support both GPIO CS and HW CS */
-> +		cs_gpio = devm_gpiod_get_index_optional(dev, "cs",
-> +							i, GPIOD_ASIS);
-> +		if (IS_ERR(cs_gpio))
-> +			return PTR_ERR(cs_gpio);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   static int rockchip_spi_probe(struct platform_device *pdev)
->   {
->   	int ret = 0;
-> @@ -749,6 +771,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
->   	master->transfer_one = rockchip_spi_transfer_one;
->   	master->max_transfer_size = rockchip_spi_max_transfer_size;
->   	master->handle_err = rockchip_spi_handle_err;
-> +	master->flags = SPI_MASTER_GPIO_SS;
->   
->   	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
->   	if (IS_ERR(rs->dma_tx.ch)) {
-> @@ -783,6 +806,12 @@ static int rockchip_spi_probe(struct platform_device *pdev)
->   		master->dma_rx = rs->dma_rx.ch;
->   	}
->   
-> +	ret = rockchip_spi_setup_cs_gpios(&pdev->dev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Failed to setup cs gpios\n");
-> +		goto err_free_dma_rx;
-> +	}
-> +
->   	ret = devm_spi_register_master(&pdev->dev, master);
->   	if (ret) {
->   		dev_err(&pdev->dev, "Failed to register master\n");
-> 
+
+I've just discussed with Richard and Boris and AFAIK, nothing is planned
+at the UBIFS side to replace vmalloc'd buffers by kmalloc'd buffers.
+There are reasons for using vmalloc() but Richard can explain better
+than me :)
+
+Also, depending on the cache model used by Atmel SoCs, the spi-atmel.c
+driver may suffer from the same issue too: using spi_map_buf() hence
+mapping vmalloc'ed buffers for DMA usage will be OK with ARM Cortex A5
+(PIPT data cache, so no cache aliasing issue at all) hence with SAMA5
+series but is not OK for some older cores like ARM926 (VIVT data cache)
+hence the SAM9 series.
+
+So to fix the spi-atmel.c driver when used with SAM9 SoCs, we are
+thinking about sending a first patch to simply disable the use of DMA
+transfers on SAM9 SoCs in case of vmalloc'ed buffers and use CPU
+transfers instead.
+The code will be left unchanged for SAMA5 SoCs so there would be no
+performance loss on those SoCs.
+It won't be optimal on SAM9 SoCs but at least it would work.
+
+Then in a new series, if nobody has started to work on this topic yet,
+we could propose a generic solution using a bounce buffer at the SPI
+core level. however we first need to think how we could do this.
+
+Best regards,
+
+Cyrille
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

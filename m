@@ -1,7 +1,7 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 11/15] spi: qup: allow block mode to generate multiple transactions
-Date: Fri, 16 Jun 2017 14:28:54 +0530
-Message-ID: <1497603538-12750-12-git-send-email-varada@codeaurora.org>
+Subject: [PATCH 13/15] spi: qup: allow multiple DMA transactions per spi xfer
+Date: Fri, 16 Jun 2017 14:28:56 +0530
+Message-ID: <1497603538-12750-14-git-send-email-varada@codeaurora.org>
 References: <1497603538-12750-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>,
         Matthew McClintock <mmcclint@codeaurora.org>
@@ -15,270 +15,145 @@ In-Reply-To: <1497603538-12750-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This let's you write more to the SPI bus than 64K-1 which is important
-if the block size of a SPI device is >= 64K or some other device wants
-to do something larger.
-
-This has the benefit of completely removing spi_message from the spi-qup
-transactions
+Much like the block mode changes, we are breaking up DMA transactions
+into 64K chunks so we can reset the QUP engine.
 
 Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 125 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 79 insertions(+), 46 deletions(-)
+ drivers/spi/spi-qup.c | 104 ++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 76 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index ac85969..e6a43df 100644
+index adf16e4..fb8e77a 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -120,7 +120,7 @@
- 
- #define SPI_NUM_CHIPSELECTS		4
- 
--#define SPI_MAX_DMA_XFER		(SZ_64K - 64)
-+#define SPI_MAX_XFER			(SZ_64K - 64)
- 
- /* high speed mode is when bus rate is greater then 26MHz */
- #define SPI_HS_MIN_RATE			26000000
-@@ -151,6 +151,8 @@ struct spi_qup {
- 	int			n_words;
- 	int			tx_bytes;
- 	int			rx_bytes;
-+	const u8		*tx_buf;
-+	u8			*rx_buf;
- 	int			qup_v1;
- 
- 	int			mode;
-@@ -175,6 +177,12 @@ static inline bool spi_qup_is_dma_xfer(int mode)
- 	return false;
+@@ -417,50 +417,98 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
-+/* get's the transaction size length */
-+static inline unsigned int spi_qup_len(struct spi_qup *controller)
++static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
++				     u32 *nents)
 +{
-+	return controller->n_words * controller->w_size;
++	struct scatterlist *sg;
++	u32 total = 0;
++
++	*nents = 0;
++
++	for (sg = sgl; sg; sg = sg_next(sg)) {
++		unsigned int len = sg_dma_len(sg);
++
++		/* check for overflow as well as limit */
++		if (((total + len) < total) || ((total + len) > max))
++			break;
++
++		total += len;
++		(*nents)++;
++	}
++
++	return total;
 +}
 +
- static inline bool spi_qup_is_valid_state(struct spi_qup *controller)
- {
- 	u32 opstate = readl_relaxed(controller->base + QUP_STATE);
-@@ -227,10 +235,9 @@ static int spi_qup_set_state(struct spi_qup *controller, u32 state)
- 	return 0;
- }
- 
--static void spi_qup_read_from_fifo(struct spi_qup *controller,
--	struct spi_transfer *xfer, u32 num_words)
-+static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
- {
--	u8 *rx_buf = xfer->rx_buf;
-+	u8 *rx_buf = controller->rx_buf;
- 	int i, shift, num_bytes;
- 	u32 word;
- 
-@@ -238,8 +245,9 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller,
- 
- 		word = readl_relaxed(controller->base + QUP_INPUT_FIFO);
- 
--		num_bytes = min_t(int, xfer->len - controller->rx_bytes,
--					controller->w_size);
-+		num_bytes = min_t(int, spi_qup_len(controller) -
-+				       controller->rx_bytes,
-+				       controller->w_size);
- 
- 		if (!rx_buf) {
- 			controller->rx_bytes += num_bytes;
-@@ -260,13 +268,12 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller,
- 	}
- }
- 
--static void spi_qup_read(struct spi_qup *controller,
--			    struct spi_transfer *xfer)
-+static void spi_qup_read(struct spi_qup *controller)
- {
- 	u32 remainder, words_per_block, num_words;
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
- 
--	remainder = DIV_ROUND_UP(xfer->len - controller->rx_bytes,
-+	remainder = DIV_ROUND_UP(spi_qup_len(controller) - controller->rx_bytes,
- 				 controller->w_size);
- 	words_per_block = controller->in_blk_sz >> 2;
- 
-@@ -287,7 +294,7 @@ static void spi_qup_read(struct spi_qup *controller,
- 		}
- 
- 		/* read up to the maximum transfer size available */
--		spi_qup_read_from_fifo(controller, xfer, num_words);
-+		spi_qup_read_from_fifo(controller, num_words);
- 
- 		remainder -= num_words;
- 
-@@ -309,18 +316,18 @@ static void spi_qup_read(struct spi_qup *controller,
- 
- }
- 
--static void spi_qup_write_to_fifo(struct spi_qup *controller,
--	struct spi_transfer *xfer, u32 num_words)
-+static void spi_qup_write_to_fifo(struct spi_qup *controller, u32 num_words)
- {
--	const u8 *tx_buf = xfer->tx_buf;
-+	const u8 *tx_buf = controller->tx_buf;
- 	int i, num_bytes;
- 	u32 word, data;
- 
- 	for (; num_words; num_words--) {
- 		word = 0;
- 
--		num_bytes = min_t(int, xfer->len - controller->tx_bytes,
--				    controller->w_size);
-+		num_bytes = min_t(int, spi_qup_len(controller) -
-+				       controller->tx_bytes,
-+				       controller->w_size);
- 		if (tx_buf)
- 			for (i = 0; i < num_bytes; i++) {
- 				data = tx_buf[controller->tx_bytes + i];
-@@ -338,13 +345,12 @@ static void spi_qup_dma_done(void *data)
- 	complete(data);
- }
- 
--static void spi_qup_write(struct spi_qup *controller,
--			    struct spi_transfer *xfer)
-+static void spi_qup_write(struct spi_qup *controller)
- {
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
- 	u32 remainder, words_per_block, num_words;
- 
--	remainder = DIV_ROUND_UP(xfer->len - controller->tx_bytes,
-+	remainder = DIV_ROUND_UP(spi_qup_len(controller) - controller->tx_bytes,
- 				 controller->w_size);
- 	words_per_block = controller->out_blk_sz >> 2;
- 
-@@ -364,7 +370,7 @@ static void spi_qup_write(struct spi_qup *controller,
- 			num_words = 1;
- 		}
- 
--		spi_qup_write_to_fifo(controller, xfer, num_words);
-+		spi_qup_write_to_fifo(controller, num_words);
- 
- 		remainder -= num_words;
- 
-@@ -469,36 +475,62 @@ static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
+ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
  {
  	struct spi_master *master = spi->master;
  	struct spi_qup *qup = spi_master_get_devdata(master);
--	int ret;
-+	int ret, n_words, iterations, offset = 0;
++	struct scatterlist *tx_sgl, *rx_sgl;
+ 	int ret;
  
 -	ret = spi_qup_io_config(spi, xfer);
 -	if (ret)
 -		return ret;
-+	n_words = qup->n_words;
-+	iterations = n_words / SPI_MAX_XFER; /* round down */
-+	qup->rx_buf = xfer->rx_buf;
-+	qup->tx_buf = xfer->tx_buf;
++	rx_sgl = xfer->rx_sg.sgl;
++	tx_sgl = xfer->tx_sg.sgl;
  
+-	/* before issuing the descriptors, set the QUP to run */
 -	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
 -	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n");
+-		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
+-				__func__, __LINE__);
 -		return ret;
 -	}
 +	do {
-+		if (iterations)
-+			qup->n_words = SPI_MAX_XFER;
-+		else
-+			qup->n_words = n_words % SPI_MAX_XFER;
++		u32 rx_nents, tx_nents;
++
++		if (rx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
++					SPI_MAX_XFER, &rx_nents) / qup->w_size;
++		if (tx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(tx_sgl,
++					SPI_MAX_XFER, &tx_nents) / qup->w_size;
++		if (!qup->n_words)
++			return -EIO;
  
--	ret = spi_qup_set_state(qup, QUP_STATE_PAUSE);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set PAUSE state\n");
--		return ret;
--	}
-+		if (qup->tx_buf && offset)
-+			qup->tx_buf = xfer->tx_buf + offset * SPI_MAX_XFER;
- 
--	if (qup->mode == QUP_IO_M_MODE_FIFO)
--		spi_qup_write(qup, xfer);
-+		if (qup->rx_buf && offset)
-+			qup->rx_buf = xfer->rx_buf + offset * SPI_MAX_XFER;
- 
--	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n");
--		return ret;
--	}
-+		/*
-+		 * if the transaction is small enough, we need
-+		 * to fallback to FIFO mode
-+		 */
-+		if (qup->n_words <= (qup->in_fifo_sz / sizeof(u32)))
-+			qup->mode = QUP_IO_M_MODE_FIFO;
- 
--	if (!wait_for_completion_timeout(&qup->done, timeout))
--		return -ETIMEDOUT;
+-	if (xfer->rx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->rx_sg.sgl,
+-				      xfer->rx_sg.nents, DMA_DEV_TO_MEM,
+-				      spi_qup_dma_done, &qup->rxc);
 +		ret = spi_qup_io_config(spi, xfer);
-+		if (ret)
-+			return ret;
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set RUN state\n");
-+			return ret;
-+		}
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_PAUSE);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set PAUSE state\n");
-+			return ret;
-+		}
-+
-+		if (qup->mode == QUP_IO_M_MODE_FIFO)
-+			spi_qup_write(qup);
-+
-+		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+		if (ret) {
-+			dev_warn(qup->dev, "cannot set RUN state\n");
-+			return ret;
-+		}
-+
-+		if (!wait_for_completion_timeout(&qup->done, timeout))
-+			return -ETIMEDOUT;
+ 		if (ret)
+ 			return ret;
  
-+		offset++;
-+	} while (iterations--);
+-		dma_async_issue_pending(master->dma_rx);
+-	}
+-
+-	if (xfer->tx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->tx_sg.sgl,
+-				      xfer->tx_sg.nents, DMA_MEM_TO_DEV,
+-				      spi_qup_dma_done, &qup->txc);
+-		if (ret)
++		/* before issuing the descriptors, set the QUP to run */
++		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
++		if (ret) {
++			dev_warn(qup->dev, "cannot set RUN state\n");
+ 			return ret;
++		}
++		if (rx_sgl) {
++			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
++					      DMA_DEV_TO_MEM,
++					      spi_qup_dma_done, &qup->rxc);
++			if (ret)
++				return ret;
++			dma_async_issue_pending(master->dma_rx);
++		}
+ 
+-		dma_async_issue_pending(master->dma_tx);
+-	}
++		if (tx_sgl) {
++			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
++					      DMA_MEM_TO_DEV,
++					      spi_qup_dma_done, &qup->txc);
++			if (ret)
++				return ret;
++
++			dma_async_issue_pending(master->dma_tx);
++		}
++
++		if (rx_sgl &&
++		    !wait_for_completion_timeout(&qup->rxc, timeout)) {
++			pr_emerg(" rx timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		if (tx_sgl &&
++		    !wait_for_completion_timeout(&qup->txc, timeout)) {
++			pr_emerg(" tx timed out\n");
++			return -ETIMEDOUT;
++		}
+ 
+-	if (xfer->rx_buf && !wait_for_completion_timeout(&qup->rxc, timeout))
+-		return -ETIMEDOUT;
++		for (; rx_sgl && rx_nents--; rx_sgl = sg_next(rx_sgl))
++			;
++		for (; tx_sgl && tx_nents--; tx_sgl = sg_next(tx_sgl))
++			;
+ 
+-	if (xfer->tx_buf && !wait_for_completion_timeout(&qup->txc, timeout))
+-		return -ETIMEDOUT;
++	} while (rx_sgl || tx_sgl);
+ 
  	return 0;
  }
- 
-@@ -541,10 +573,10 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_read(controller, xfer);
-+			spi_qup_read(controller);
- 
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
--			spi_qup_write(controller, xfer);
-+			spi_qup_write(controller);
- 	}
- 
- 	if ((opflags & QUP_OP_MAX_INPUT_DONE_FLAG) || error)
-@@ -754,7 +786,8 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 		return ret;
- 
- 	timeout = DIV_ROUND_UP(xfer->speed_hz, MSEC_PER_SEC);
--	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
-+	timeout = DIV_ROUND_UP(min_t(unsigned long, SPI_MAX_XFER,
-+				     xfer->len) * 8, timeout);
- 	timeout = 100 * msecs_to_jiffies(timeout);
- 
- 	if (spi_qup_is_dma_xfer(controller->mode))
-@@ -959,7 +992,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->auto_runtime_pm = true;
- 	master->dma_alignment = dma_get_cache_alignment();
--	master->max_dma_len = SPI_MAX_DMA_XFER;
-+	master->max_dma_len = SPI_MAX_XFER;
- 
- 	platform_set_drvdata(pdev, master);
- 
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

@@ -1,260 +1,135 @@
-From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH 08/15] spi: qup: Do block sized read/write in block mode
-Date: Fri, 16 Jun 2017 14:28:51 +0530
-Message-ID: <1497603538-12750-9-git-send-email-varada@codeaurora.org>
-References: <1497603538-12750-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        andy.gross@linaro.org, david.brown@linaro.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org
+From: Caesar Wang <wxt@rock-chips.com>
+Subject: Re: [PATCH v3 1/3] spi: rockchip: add support for "cs-gpios" dts
+ property
+Date: Fri, 16 Jun 2017 18:09:31 +0800
+Message-ID: <3beb9f49-5275-b14f-02f7-55ff5ca01e90@rock-chips.com>
+References: <1497411483-23377-1-git-send-email-jeffy.chen@rock-chips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
+        heiko@sntech.de, dianders@chromium.org, linux-spi@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+To: Jeffy Chen <jeffy.chen@rock-chips.com>, broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1497603538-12750-1-git-send-email-varada@codeaurora.org>
+In-Reply-To: <1497411483-23377-1-git-send-email-jeffy.chen@rock-chips.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch corrects the behavior of the BLOCK
-transactions.  During block transactions, the controller
-must be read/written to in block size transactions.
+Hi,
 
-Signed-off-by: Andy Gross <andy.gross@linaro.org>
-Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
----
- drivers/spi/spi-qup.c | 151 +++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 119 insertions(+), 32 deletions(-)
+As the previous discussed on http://crosreview.com/379681, we have hit a 
+failure [0] of ec's xfer, when we support the spi's pd to turn on/off. 
+(Says: support the Sdioaudio pd of rk3399 on http://crosreview.com/378562)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 9324093..16f9a2f0 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -82,6 +82,8 @@
- #define QUP_IO_M_MODE_BAM		3
- 
- /* QUP_OPERATIONAL fields */
-+#define QUP_OP_IN_BLOCK_READ_REQ	BIT(13)
-+#define QUP_OP_OUT_BLOCK_WRITE_REQ	BIT(12)
- #define QUP_OP_MAX_INPUT_DONE_FLAG	BIT(11)
- #define QUP_OP_MAX_OUTPUT_DONE_FLAG	BIT(10)
- #define QUP_OP_IN_SERVICE_FLAG		BIT(9)
-@@ -156,6 +158,13 @@ struct spi_qup {
- 	struct dma_slave_config	tx_conf;
- };
- 
-+static inline bool spi_qup_is_flag_set(struct spi_qup *controller, u32 flag)
-+{
-+	u32 opflag = readl_relaxed(controller->base + QUP_OPERATIONAL);
-+
-+	return (opflag & flag) != 0;
-+}
-+
- static inline bool spi_qup_is_dma_xfer(int mode)
- {
- 	if (mode == QUP_IO_M_MODE_DMOV || mode == QUP_IO_M_MODE_BAM)
-@@ -216,29 +225,26 @@ static int spi_qup_set_state(struct spi_qup *controller, u32 state)
- 	return 0;
- }
- 
--static void spi_qup_fifo_read(struct spi_qup *controller,
--			    struct spi_transfer *xfer)
-+static void spi_qup_read_from_fifo(struct spi_qup *controller,
-+	struct spi_transfer *xfer, u32 num_words)
- {
- 	u8 *rx_buf = xfer->rx_buf;
--	u32 word, state;
--	int idx, shift, w_size;
-+	int i, shift, num_bytes;
-+	u32 word;
- 
--	w_size = controller->w_size;
--
--	while (controller->rx_bytes < xfer->len) {
--
--		state = readl_relaxed(controller->base + QUP_OPERATIONAL);
--		if (0 == (state & QUP_OP_IN_FIFO_NOT_EMPTY))
--			break;
-+	for (; num_words; num_words--) {
- 
- 		word = readl_relaxed(controller->base + QUP_INPUT_FIFO);
- 
-+		num_bytes = min_t(int, xfer->len - controller->rx_bytes,
-+					controller->w_size);
-+
- 		if (!rx_buf) {
--			controller->rx_bytes += w_size;
-+			controller->rx_bytes += num_bytes;
- 			continue;
- 		}
- 
--		for (idx = 0; idx < w_size; idx++, controller->rx_bytes++) {
-+		for (i = 0; i < num_bytes; i++, controller->rx_bytes++) {
- 			/*
- 			 * The data format depends on bytes per SPI word:
- 			 *  4 bytes: 0x12345678
-@@ -246,38 +252,80 @@ static void spi_qup_fifo_read(struct spi_qup *controller,
- 			 *  1 byte : 0x00000012
- 			 */
- 			shift = BITS_PER_BYTE;
--			shift *= (w_size - idx - 1);
-+			shift *= (controller->w_size - i - 1);
- 			rx_buf[controller->rx_bytes] = word >> shift;
- 		}
- 	}
- }
- 
--static void spi_qup_fifo_write(struct spi_qup *controller,
-+static void spi_qup_read(struct spi_qup *controller,
- 			    struct spi_transfer *xfer)
- {
--	const u8 *tx_buf = xfer->tx_buf;
--	u32 word, state, data;
--	int idx, w_size;
-+	u32 remainder, words_per_block, num_words;
-+	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
-+
-+	remainder = DIV_ROUND_UP(xfer->len - controller->rx_bytes,
-+				 controller->w_size);
-+	words_per_block = controller->in_blk_sz >> 2;
-+
-+	do {
-+		/* ACK by clearing service flag */
-+		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
-+			       controller->base + QUP_OPERATIONAL);
-+
-+		if (is_block_mode) {
-+			num_words = (remainder > words_per_block) ?
-+					words_per_block : remainder;
-+		} else {
-+			if (!spi_qup_is_flag_set(controller,
-+						 QUP_OP_IN_FIFO_NOT_EMPTY))
-+				break;
- 
--	w_size = controller->w_size;
-+			num_words = 1;
-+		}
- 
--	while (controller->tx_bytes < xfer->len) {
-+		/* read up to the maximum transfer size available */
-+		spi_qup_read_from_fifo(controller, xfer, num_words);
- 
--		state = readl_relaxed(controller->base + QUP_OPERATIONAL);
--		if (state & QUP_OP_OUT_FIFO_FULL)
-+		remainder -= num_words;
-+
-+		/* if block mode, check to see if next block is available */
-+		if (is_block_mode && !spi_qup_is_flag_set(controller,
-+					QUP_OP_IN_BLOCK_READ_REQ))
- 			break;
- 
-+	} while (remainder);
-+
-+	/*
-+	 * Due to extra stickiness of the QUP_OP_IN_SERVICE_FLAG during block
-+	 * mode reads, it has to be cleared again at the very end
-+	 */
-+	if (is_block_mode && spi_qup_is_flag_set(controller,
-+				QUP_OP_MAX_INPUT_DONE_FLAG))
-+		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
-+			       controller->base + QUP_OPERATIONAL);
-+
-+}
-+
-+static void spi_qup_write_to_fifo(struct spi_qup *controller,
-+	struct spi_transfer *xfer, u32 num_words)
-+{
-+	const u8 *tx_buf = xfer->tx_buf;
-+	int i, num_bytes;
-+	u32 word, data;
-+
-+	for (; num_words; num_words--) {
- 		word = 0;
--		for (idx = 0; idx < w_size; idx++, controller->tx_bytes++) {
- 
--			if (!tx_buf) {
--				controller->tx_bytes += w_size;
--				break;
-+		num_bytes = min_t(int, xfer->len - controller->tx_bytes,
-+				    controller->w_size);
-+		if (tx_buf)
-+			for (i = 0; i < num_bytes; i++) {
-+				data = tx_buf[controller->tx_bytes + i];
-+				word |= data << (BITS_PER_BYTE * (3 - i));
- 			}
- 
--			data = tx_buf[controller->tx_bytes];
--			word |= data << (BITS_PER_BYTE * (3 - idx));
--		}
-+		controller->tx_bytes += num_bytes;
- 
- 		writel_relaxed(word, controller->base + QUP_OUTPUT_FIFO);
- 	}
-@@ -288,6 +336,44 @@ static void spi_qup_dma_done(void *data)
- 	complete(data);
- }
- 
-+static void spi_qup_write(struct spi_qup *controller,
-+			    struct spi_transfer *xfer)
-+{
-+	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
-+	u32 remainder, words_per_block, num_words;
-+
-+	remainder = DIV_ROUND_UP(xfer->len - controller->tx_bytes,
-+				 controller->w_size);
-+	words_per_block = controller->out_blk_sz >> 2;
-+
-+	do {
-+		/* ACK by clearing service flag */
-+		writel_relaxed(QUP_OP_OUT_SERVICE_FLAG,
-+			       controller->base + QUP_OPERATIONAL);
-+
-+		if (is_block_mode) {
-+			num_words = (remainder > words_per_block) ?
-+				words_per_block : remainder;
-+		} else {
-+			if (spi_qup_is_flag_set(controller,
-+						QUP_OP_OUT_FIFO_FULL))
-+				break;
-+
-+			num_words = 1;
-+		}
-+
-+		spi_qup_write_to_fifo(controller, xfer, num_words);
-+
-+		remainder -= num_words;
-+
-+		/* if block mode, check to see if next block is available */
-+		if (is_block_mode && !spi_qup_is_flag_set(controller,
-+					QUP_OP_OUT_BLOCK_WRITE_REQ))
-+			break;
-+
-+	} while (remainder);
-+}
-+
- static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
- 			   enum dma_transfer_direction dir,
- 			   dma_async_tx_callback callback, void *data)
-@@ -389,7 +475,8 @@ static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
- 		return ret;
- 	}
- 
--	spi_qup_fifo_write(qup, xfer);
-+	if (qup->mode == QUP_IO_M_MODE_FIFO)
-+		spi_qup_write(qup, xfer);
- 
- 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
- 	if (ret) {
-@@ -442,10 +529,10 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_fifo_read(controller, xfer);
-+			spi_qup_read(controller, xfer);
- 
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
--			spi_qup_fifo_write(controller, xfer);
-+			spi_qup_write(controller, xfer);
- 	}
- 
- 	if ((opflags & QUP_OP_MAX_INPUT_DONE_FLAG) || error)
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+[0]:
+..
+[ 5.579694 ] cros-ec-spi spi5.0: EC failed to respond in time
+[ 5.585784 ] cros-ec-spi spi5.0: Transfer error 1/3: -110
+..
+
+
+Feels like that a workaround way to fix it, but that should be a good 
+solution.
+
+
+在 2017年06月14日 11:38, Jeffy Chen 写道:
+> Support using "cs-gpios" property to specify cs gpios.
+> 
+> Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
+
+Tested-by: Caesar Wang <wxt@rock-chips.com>
+
+I have fetched these patches to test S2R with my board for chromeos4.4.
+
+localhost ~ # cat /sys/kernel/debug/pm_genpd/pm_genpd_summary
+...
+pd_sdioaudio                    on
+     /devices/platform/ff200000.spi                      suspended
+     /devices/platform/ff880000.i2s                      active
+     /devices/platform/ff8a0000.i2s                      suspended
+
+-Caesar
+
+> ---
+> 
+> Changes in v3:
+> include linux/gpio/consumer.h for compile errors on ARCH_X86
+> (reported by kbuild test robot <lkp@intel.com>)
+> 
+> Changes in v2:
+> 1/ request cs gpios in probe for better error handling
+> 2/ use gpiod* function
+> (suggested by Heiko Stuebner)
+> 3/ split dt-binding changes to new patch
+> (suggested by Shawn Lin & Heiko Stuebner)
+> 
+>   drivers/spi/spi-rockchip.c | 31 ++++++++++++++++++++++++++++++-
+>   1 file changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+> index bab9b13..4bcf251 100644
+> --- a/drivers/spi/spi-rockchip.c
+> +++ b/drivers/spi/spi-rockchip.c
+> @@ -16,7 +16,8 @@
+>   #include <linux/clk.h>
+>   #include <linux/dmaengine.h>
+>   #include <linux/module.h>
+> -#include <linux/of.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/of_gpio.h>
+>   #include <linux/pinctrl/consumer.h>
+>   #include <linux/platform_device.h>
+>   #include <linux/spi/spi.h>
+> @@ -663,6 +664,27 @@ static bool rockchip_spi_can_dma(struct spi_master *master,
+>   	return (xfer->len > rs->fifo_len);
+>   }
+>   
+> +static int rockchip_spi_setup_cs_gpios(struct device *dev)
+> +{
+> +	struct device_node *np = dev->of_node;
+> +	struct gpio_desc *cs_gpio;
+> +	int i, nb;
+> +
+> +	if (!np)
+> +		return 0;
+> +
+> +	nb = of_gpio_named_count(np, "cs-gpios");
+> +	for (i = 0; i < nb; i++) {
+> +		/* We support both GPIO CS and HW CS */
+> +		cs_gpio = devm_gpiod_get_index_optional(dev, "cs",
+> +							i, GPIOD_ASIS);
+> +		if (IS_ERR(cs_gpio))
+> +			return PTR_ERR(cs_gpio);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int rockchip_spi_probe(struct platform_device *pdev)
+>   {
+>   	int ret = 0;
+> @@ -749,6 +771,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+>   	master->transfer_one = rockchip_spi_transfer_one;
+>   	master->max_transfer_size = rockchip_spi_max_transfer_size;
+>   	master->handle_err = rockchip_spi_handle_err;
+> +	master->flags = SPI_MASTER_GPIO_SS;
+>   
+>   	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
+>   	if (IS_ERR(rs->dma_tx.ch)) {
+> @@ -783,6 +806,12 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+>   		master->dma_rx = rs->dma_rx.ch;
+>   	}
+>   
+> +	ret = rockchip_spi_setup_cs_gpios(&pdev->dev);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to setup cs gpios\n");
+> +		goto err_free_dma_rx;
+> +	}
+> +
+>   	ret = devm_spi_register_master(&pdev->dev, master);
+>   	if (ret) {
+>   		dev_err(&pdev->dev, "Failed to register master\n");
+> 

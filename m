@@ -1,50 +1,68 @@
-From: Aravind Thokala <aravind.thk@gmail.com>
-Subject: [PATCH v2] spi/bcm63xx: Fix checkpatch warnings
-Date: Mon, 19 Jun 2017 23:47:48 +0530
-Message-ID: <1497896268-5613-1-git-send-email-aravind.thk@gmail.com>
+From: Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v2] spi/bcm63xx: Fix checkpatch warnings
+Date: Mon, 19 Jun 2017 12:42:18 -0700
+Message-ID: <1497901338.8495.50.camel@perches.com>
+References: <1497896268-5613-1-git-send-email-aravind.thk@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
 Cc: bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Aravind Thokala <aravind.thk@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Aravind Thokala <aravind.thk@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Florian Fainelli <f.fainelli@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1497896268-5613-1-git-send-email-aravind.thk@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes the checkpatch.pl warnings on the driver
-file.
+On Mon, 2017-06-19 at 23:47 +0530, Aravind Thokala wrote:
+> This patch fixes the checkpatch.pl warnings on the driver
+> file.
+[]
+> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+[]
+> @@ -191,7 +191,7 @@ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
+>  #endif
+>  }
+>  
+> -static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
+> +static const unsigned int bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
+>  	{ 20000000, SPI_CLK_20MHZ },
+>  	{ 12500000, SPI_CLK_12_50MHZ },
+>  	{  6250000, SPI_CLK_6_250MHZ },
 
-Signed-off-by: Aravind Thokala <aravind.thk@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+It's probably better to change this array into a struct
+to make the indexing more obvious.
 
+Also the SPI_CLK_MASK uses are a bit obscure.
+
+Perhaps:
 ---
-Changes in v2:
-- change the subject of the patch as suggested by Florian.
----
- drivers/spi/spi-bcm63xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 247f71b..84c7356 100644
+index 247f71b02235..3cb8d92ee870 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -147,7 +147,7 @@ struct bcm63xx_spi {
- 
- 	/* Platform data */
- 	const unsigned long	*reg_offsets;
--	unsigned		fifo_size;
-+	unsigned int		fifo_size;
- 	unsigned int		msg_type_shift;
- 	unsigned int		msg_ctl_width;
- 
-@@ -191,7 +191,7 @@ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
- #endif
- }
- 
+@@ -191,7 +191,10 @@ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
+ #endif
+ }
+ 
 -static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
-+static const unsigned int bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
- 	{ 20000000, SPI_CLK_20MHZ },
- 	{ 12500000, SPI_CLK_12_50MHZ },
- 	{  6250000, SPI_CLK_6_250MHZ },
--- 
-2.7.4
++static const struct {
++	unsigned int speed;
++	unsigned int index;
++} bcm63xx_spi_freq_table[] = {
+ 	{ 20000000, SPI_CLK_20MHZ },
+ 	{ 12500000, SPI_CLK_12_50MHZ },
+ 	{  6250000, SPI_CLK_6_250MHZ },
+@@ -213,8 +216,8 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
+ 
+ 	/* Find the closest clock configuration */
+ 	for (i = 0; i < SPI_CLK_MASK; i++) {
+-		if (t->speed_hz >= bcm63xx_spi_freq_table[i][0]) {
+-			clk_cfg = bcm63xx_spi_freq_table[i][1];
++		if (t->speed_hz >= bcm63xx_spi_freq_table[i].speed) {
++			clk_cfg = bcm63xx_spi_freq_table[i].index;
+ 			break;
+ 		}
+ 	}

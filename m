@@ -1,164 +1,142 @@
-From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v3 13/15] spi: qup: allow multiple DMA transactions per spi xfer
-Date: Tue, 20 Jun 2017 14:40:55 +0530
-Message-ID: <1497949857-1852-14-git-send-email-varada@codeaurora.org>
+From: Varadarajan Narayanan <varada@codeaurora.org>
+Subject: [PATCH v3 15/15] spi: qup: support for qup v1 dma
+Date: Tue, 20 Jun 2017 14:40:57 +0530
+Message-ID: <1497949857-1852-16-git-send-email-varada@codeaurora.org>
 References: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-        Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1497949857-1852-1-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>,
+        Abhishek Sahu <absahu@codeaurora.org>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Much like the block mode changes, we are breaking up DMA transactions
-into 64K chunks so we can reset the QUP engine.
+Currently the QUP Version v1 does not work with DMA so added
+the support for the same.
 
-Signed-off-by: Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+1. It uses ADM DMA which requires TX and RX CRCI
+2. DMA channel initialization need to be done after setting
+   block size for having valid values in maxburst
+3. QUP mode should be DMOV instead of BAM.
+
+Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
+Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 104 ++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 76 insertions(+), 28 deletions(-)
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
+ drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+index 5c09077..e754181 100644
+--- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+@@ -38,6 +38,12 @@ Optional properties:
+ - dma-names:    Names for the dma channels, if present. There must be at
+                 least one channel named "tx" for transmit and named "rx" for
+                 receive.
++- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
++		used with TX DMA channel. Required when using DMA for
++		transmission with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
++- qcom,rx-crci: Identificator for Client Rate Control Interface (CRCI) to be
++		used with RX DMA channel. Required when using DMA for
++		receiving with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
+ 
+ SPI slave nodes must be children of the SPI master node and can contain
+ properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 2423ee5..a39a0d2 100644
+index ca5206e..b608efa3 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -417,50 +417,98 @@ static void spi_qup_dma_terminate(struct spi_master *master,
- 		dmaengine_terminate_all(master->dma_rx);
- }
+@@ -658,7 +658,8 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ 	else if (spi->master->can_dma &&
+ 		 spi->master->can_dma(spi->master, spi, xfer) &&
+ 		 spi->master->cur_msg_mapped)
+-		controller->mode = QUP_IO_M_MODE_BAM;
++		controller->mode = controller->qup_v1 ? QUP_IO_M_MODE_DMOV :
++							QUP_IO_M_MODE_BAM;
+ 	else
+ 		controller->mode = QUP_IO_M_MODE_BLOCK;
  
-+static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
-+				     u32 *nents)
-+{
-+	struct scatterlist *sg;
-+	u32 total = 0;
-+
-+	*nents = 0;
-+
-+	for (sg = sgl; sg; sg = sg_next(sg)) {
-+		unsigned int len = sg_dma_len(sg);
-+
-+		/* check for overflow as well as limit */
-+		if (((total + len) < total) || ((total + len) > max))
-+			break;
-+
-+		total += len;
-+		(*nents)++;
-+	}
-+
-+	return total;
-+}
-+
- static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
- 	struct spi_master *master = spi->master;
- 	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct scatterlist *tx_sgl, *rx_sgl;
+@@ -697,6 +698,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
+ 		break;
+ 	case QUP_IO_M_MODE_BAM:
++	case QUP_IO_M_MODE_DMOV:
+ 		reinit_completion(&controller->txc);
+ 		reinit_completion(&controller->rxc);
+ 		writel_relaxed(controller->n_words,
+@@ -901,6 +903,7 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	struct dma_slave_config *rx_conf = &spi->rx_conf,
+ 				*tx_conf = &spi->tx_conf;
+ 	struct device *dev = spi->dev;
++	u32 tx_crci = 0, rx_crci = 0;
  	int ret;
  
--	ret = spi_qup_io_config(spi, xfer);
--	if (ret)
--		return ret;
-+	rx_sgl = xfer->rx_sg.sgl;
-+	tx_sgl = xfer->tx_sg.sgl;
+ 	/* allocate dma resources, if available */
+@@ -914,16 +917,34 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 		goto err_tx;
+ 	}
  
--	/* before issuing the descriptors, set the QUP to run */
--	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
--	if (ret) {
--		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
--				__func__, __LINE__);
--		return ret;
--	}
-+	do {
-+		u32 rx_nents, tx_nents;
-+
-+		if (rx_sgl)
-+			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
-+					SPI_MAX_XFER, &rx_nents) / qup->w_size;
-+		if (tx_sgl)
-+			qup->n_words = spi_qup_sgl_get_nents_len(tx_sgl,
-+					SPI_MAX_XFER, &tx_nents) / qup->w_size;
-+		if (!qup->n_words)
-+			return -EIO;
- 
--	if (xfer->rx_buf) {
--		ret = spi_qup_prep_sg(master, xfer->rx_sg.sgl,
--				      xfer->rx_sg.nents, DMA_DEV_TO_MEM,
--				      spi_qup_dma_done, &qup->rxc);
-+		ret = spi_qup_io_config(spi, xfer);
- 		if (ret)
- 			return ret;
- 
--		dma_async_issue_pending(master->dma_rx);
--	}
--
--	if (xfer->tx_buf) {
--		ret = spi_qup_prep_sg(master, xfer->tx_sg.sgl,
--				      xfer->tx_sg.nents, DMA_MEM_TO_DEV,
--				      spi_qup_dma_done, &qup->txc);
--		if (ret)
-+		/* before issuing the descriptors, set the QUP to run */
-+		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
++	if (spi->qup_v1) {
++		ret = of_property_read_u32(dev->of_node, "qcom,tx-crci",
++					   &tx_crci);
 +		if (ret) {
-+			dev_warn(qup->dev, "cannot set RUN state\n");
- 			return ret;
-+		}
-+		if (rx_sgl) {
-+			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
-+					      DMA_DEV_TO_MEM,
-+					      spi_qup_dma_done, &qup->rxc);
-+			if (ret)
-+				return ret;
-+			dma_async_issue_pending(master->dma_rx);
-+		}
- 
--		dma_async_issue_pending(master->dma_tx);
--	}
-+		if (tx_sgl) {
-+			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
-+					      DMA_MEM_TO_DEV,
-+					      spi_qup_dma_done, &qup->txc);
-+			if (ret)
-+				return ret;
-+
-+			dma_async_issue_pending(master->dma_tx);
++			dev_err(dev, "missing property qcom,tx-crci\n");
++			goto err;
 +		}
 +
-+		if (rx_sgl &&
-+		    !wait_for_completion_timeout(&qup->rxc, timeout)) {
-+			pr_emerg(" rx timed out\n");
-+			return -ETIMEDOUT;
++		ret = of_property_read_u32(dev->of_node, "qcom,rx-crci",
++					   &rx_crci);
++		if (ret) {
++			dev_err(dev, "missing property qcom,rx-crci\n");
++			goto err;
 +		}
++	}
 +
-+		if (tx_sgl &&
-+		    !wait_for_completion_timeout(&qup->txc, timeout)) {
-+			pr_emerg(" tx timed out\n");
-+			return -ETIMEDOUT;
-+		}
+ 	/* set DMA parameters */
+ 	rx_conf->direction = DMA_DEV_TO_MEM;
+ 	rx_conf->device_fc = 1;
+ 	rx_conf->src_addr = base + QUP_INPUT_FIFO;
+ 	rx_conf->src_maxburst = spi->in_blk_sz;
++	rx_conf->slave_id = rx_crci;
  
--	if (xfer->rx_buf && !wait_for_completion_timeout(&qup->rxc, timeout))
--		return -ETIMEDOUT;
-+		for (; rx_sgl && rx_nents--; rx_sgl = sg_next(rx_sgl))
-+			;
-+		for (; tx_sgl && tx_nents--; tx_sgl = sg_next(tx_sgl))
-+			;
+ 	tx_conf->direction = DMA_MEM_TO_DEV;
+ 	tx_conf->device_fc = 1;
+ 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
+ 	tx_conf->dst_maxburst = spi->out_blk_sz;
++	tx_conf->slave_id = tx_crci;
  
--	if (xfer->tx_buf && !wait_for_completion_timeout(&qup->txc, timeout))
--		return -ETIMEDOUT;
-+	} while (rx_sgl || tx_sgl);
+ 	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
+ 	if (ret) {
+@@ -1050,12 +1071,6 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	controller->cclk = cclk;
+ 	controller->irq = irq;
  
- 	return 0;
- }
+-	ret = spi_qup_init_dma(master, res->start);
+-	if (ret == -EPROBE_DEFER)
+-		goto error;
+-	else if (!ret)
+-		master->can_dma = spi_qup_can_dma;
+-
+ 	/* set v1 flag if device is version 1 */
+ 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+ 		controller->qup_v1 = 1;
+@@ -1092,6 +1107,12 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		 controller->in_blk_sz, controller->in_fifo_sz,
+ 		 controller->out_blk_sz, controller->out_fifo_sz);
+ 
++	ret = spi_qup_init_dma(master, res->start);
++	if (ret == -EPROBE_DEFER)
++		goto error;
++	else if (!ret)
++		master->can_dma = spi_qup_can_dma;
++
+ 	writel_relaxed(1, base + QUP_SW_RESET);
+ 
+ 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

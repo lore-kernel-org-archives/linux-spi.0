@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v5 04/16] watchdog: lantiq: access boot cause register through regmap
-Date: Wed, 21 Jun 2017 00:37:31 +0200
-Message-ID: <20170620223743.13735-5-hauke@hauke-m.de>
+Subject: [PATCH v5 07/16] Documentation: DT: MIPS: lantiq: Add docs for the RCU bindings
+Date: Wed, 21 Jun 2017 00:37:34 +0200
+Message-ID: <20170620223743.13735-8-hauke@hauke-m.de>
 References: <20170620223743.13735-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -10,151 +10,133 @@ Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uu
         robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
         Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170620223743.13735-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-This patch avoids accessing the function ltq_reset_cause() and directly
-accesses the register given over the syscon interface. The syscon
-interface will be implemented for the xway SoCs for the falcon SoCs the
-ltq_reset_cause() function never worked, because a wrong offset was used.
+From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+
+This adds the initial documentation for the RCU module (a MFD device
+which provides USB PHYs, reset controllers and more).
+
+The RCU register range is used for multiple purposes. Mostly one device
+uses one or multiple register exclusively, but for some registers some
+bits are for one driver and some other bits are for a different driver.
+With this patch all accesses to the RCU registers will go through
+syscon.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Acked-by: Guenter Roeck <linux-cYGBoTPqujPR7s880joybQ@public.gmane.org>
 ---
- drivers/watchdog/lantiq_wdt.c | 73 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 68 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/mips/lantiq/rcu.txt        | 95 ++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
 
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index e0823677d8c1..f5822cf44f29 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -4,6 +4,7 @@
-  *  by the Free Software Foundation.
-  *
-  *  Copyright (C) 2010 John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
-+ *  Copyright (C) 2017 Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-  *  Based on EP93xx wdt driver
-  */
- 
-@@ -17,9 +18,20 @@
- #include <linux/uaccess.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <linux/regmap.h>
-+#include <linux/mfd/syscon.h>
- 
- #include <lantiq_soc.h>
- 
-+#define LTQ_XRX_RCU_RST_STAT		0x0014
-+#define LTQ_XRX_RCU_RST_STAT_WDT	BIT(31)
+diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+new file mode 100644
+index 000000000000..9c875f4f3c90
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+@@ -0,0 +1,95 @@
++Lantiq XWAY SoC RCU binding
++===========================
 +
-+/* CPU0 Reset Source Register */
-+#define LTQ_FALCON_SYS1_CPU0RS		0x0060
-+/* reset cause mask */
-+#define LTQ_FALCON_SYS1_CPU0RS_MASK	0x0007
-+#define LTQ_FALCON_SYS1_CPU0RS_WDT	0x02
++This binding describes the RCU (reset controller unit) multifunction device,
++where each sub-device has it's own set of registers.
 +
- /*
-  * Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
-@@ -186,16 +198,69 @@ static struct miscdevice ltq_wdt_miscdev = {
- 	.fops	= &ltq_wdt_fops,
- };
- 
-+typedef int (*ltq_wdt_bootstatus_set)(struct platform_device *pdev);
++The RCU register range is used for multiple purposes. Mostly one device
++uses one or multiple register exclusively, but for some registers some
++bits are for one driver and some other bits are for a different driver.
++With this patch all accesses to the RCU registers will go through
++syscon.
 +
-+static int ltq_wdt_bootstatus_xrx(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
 +
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
++-------------------------------------------------------------------------------
++Required properties:
++- compatible	: The first and second values must be:
++		  "lantiq,xrx200-rcu", "simple-mfd", "syscon"
++- reg		: The address and length of the system control registers
 +
-+	err = regmap_read(rcu_regmap, LTQ_XRX_RCU_RST_STAT, &val);
-+	if (err)
-+		return err;
 +
-+	if (val & LTQ_XRX_RCU_RST_STAT_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
++-------------------------------------------------------------------------------
++Example of the RCU bindings on a xRX200 SoC:
++	rcu0: rcu@203000 {
++		compatible = "lantiq,xrx200-rcu", "simple-mfd", "syscon";
++		reg = <0x203000 0x100>;
++		ranges = <0x0 0x203000 0x100>;
++		big-endian;
 +
-+	return 0;
-+}
++		gphy0: gphy@0 {
++			compatible = "lantiq,xrx200a2x-gphy";
++			reg = <0x20 0x4>;
 +
-+static int ltq_wdt_bootstatus_falcon(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
++			resets = <&reset0 31 30>, <&reset1 7 7>;
++			reset-names = "gphy", "gphy2";
++			lantiq,gphy-mode = <GPHY_MODE_GE>;
++		};
 +
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
++		gphy1: gphy@1 {
++			compatible = "lantiq,xrx200a2x-gphy";
++			reg = <0x68 0x4>;
 +
-+	err = regmap_read(rcu_regmap, LTQ_FALCON_SYS1_CPU0RS, &val);
-+	if (err)
-+		return err;
++			resets = <&reset0 29 28>, <&reset1 6 6>;
++			reset-names = "gphy", "gphy2";
++			lantiq,gphy-mode = <GPHY_MODE_GE>;
++		};
 +
-+	if ((val & LTQ_FALCON_SYS1_CPU0RS_MASK) == LTQ_FALCON_SYS1_CPU0RS_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
++		reset0: reset-controller@0 {
++			compatible = "lantiq,xrx200-reset";
 +
-+	return 0;
-+}
++			offset-set = <0x10>;
++			offset-status = <0x14>;
++			#reset-cells = <2>;
++		};
 +
- static int
- ltq_wdt_probe(struct platform_device *pdev)
- {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	struct clk *clk;
-+	ltq_wdt_bootstatus_set ltq_wdt_bootstatus_set;
-+	int ret;
- 
- 	ltq_wdt_membase = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(ltq_wdt_membase))
- 		return PTR_ERR(ltq_wdt_membase);
- 
-+	ltq_wdt_bootstatus_set = of_device_get_match_data(&pdev->dev);
-+	if (ltq_wdt_bootstatus_set) {
-+		ret = ltq_wdt_bootstatus_set(pdev);
-+		if (ret)
-+			return ret;
-+	}
++		reset1: reset-controller@1 {
++			compatible = "lantiq,xrx200-reset";
 +
- 	/* we do not need to enable the clock as it is always running */
- 	clk = clk_get_io();
- 	if (IS_ERR(clk)) {
-@@ -205,10 +270,6 @@ ltq_wdt_probe(struct platform_device *pdev)
- 	ltq_io_region_clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
- 
--	/* find out if the watchdog caused the last reboot */
--	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
--		ltq_wdt_bootstatus = WDIOF_CARDRESET;
--
- 	dev_info(&pdev->dev, "Init done\n");
- 	return misc_register(&ltq_wdt_miscdev);
- }
-@@ -222,7 +283,9 @@ ltq_wdt_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id ltq_wdt_match[] = {
--	{ .compatible = "lantiq,wdt" },
-+	{ .compatible = "lantiq,wdt", .data = NULL},
-+	{ .compatible = "lantiq,xrx100-wdt", .data = ltq_wdt_bootstatus_xrx },
-+	{ .compatible = "lantiq,falcon-wdt", .data = ltq_wdt_bootstatus_falcon },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, ltq_wdt_match);
++			offset-set = <0x48>;
++			offset-status = <0x24>;
++			#reset-cells = <2>;
++		};
++
++		usb_phy0: usb2-phy@0 {
++			compatible = "lantiq,xrx200-usb2-phy";
++			status = "disabled";
++
++			regmap = <&rcu0>;
++			offset-phy = <0x18>;
++			offset-ana = <0x38>;
++			resets = <&reset1 4 4>, <&reset0 4 4>;
++			reset-names = "phy", "ctrl";
++			#phy-cells = <0>;
++		};
++
++		usb_phy1: usb2-phy@1 {
++			compatible = "lantiq,xrx200-usb2-phy";
++			status = "disabled";
++
++			regmap = <&rcu0>;
++			offset-phy = <0x34>;
++			offset-ana = <0x3C>;
++			resets = <&reset1 5 4>, <&reset0 4 4>;
++			reset-names = "phy", "ctrl";
++			#phy-cells = <0>;
++		};
++
++		reboot {
++			compatible = "syscon-reboot";
++
++			regmap = <&rcu0>;
++			offset = <0x10>;
++			mask = <0x40000000>;
++		};
++	};
++
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

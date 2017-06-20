@@ -1,142 +1,80 @@
-From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v3 15/15] spi: qup: support for qup v1 dma
-Date: Tue, 20 Jun 2017 14:40:57 +0530
-Message-ID: <1497949857-1852-16-git-send-email-varada@codeaurora.org>
+From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: [PATCH v3 14/15] spi: qup: Ensure done detection
+Date: Tue, 20 Jun 2017 14:40:56 +0530
+Message-ID: <1497949857-1852-15-git-send-email-varada@codeaurora.org>
 References: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Abhishek Sahu <absahu@codeaurora.org>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        andy.gross@linaro.org, david.brown@linaro.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1497949857-1852-1-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently the QUP Version v1 does not work with DMA so added
-the support for the same.
+This patch fixes an issue where a SPI transaction has completed, but the
+done condition is missed.  This occurs because at the time of interrupt the
+MAX_INPUT_DONE_FLAG is not asserted.  However, in the process of reading
+blocks of data from the FIFO, the last portion of data comes in.
 
-1. It uses ADM DMA which requires TX and RX CRCI
-2. DMA channel initialization need to be done after setting
-   block size for having valid values in maxburst
-3. QUP mode should be DMOV instead of BAM.
+The opflags read at the beginning of the irq handler no longer matches the
+current opflag state.  To get around this condition, the block read
+function should update the opflags so that done detection is correct after
+the return.
 
-Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
-Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+Signed-off-by: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Signed-off-by: Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 ---
- .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
- drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
- 2 files changed, 34 insertions(+), 7 deletions(-)
+ drivers/spi/spi-qup.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-index 5c09077..e754181 100644
---- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-@@ -38,6 +38,12 @@ Optional properties:
- - dma-names:    Names for the dma channels, if present. There must be at
-                 least one channel named "tx" for transmit and named "rx" for
-                 receive.
-+- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
-+		used with TX DMA channel. Required when using DMA for
-+		transmission with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
-+- qcom,rx-crci: Identificator for Client Rate Control Interface (CRCI) to be
-+		used with RX DMA channel. Required when using DMA for
-+		receiving with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
- 
- SPI slave nodes must be children of the SPI master node and can contain
- properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index ca5206e..b608efa3 100644
+index a39a0d2..ca5206e 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -658,7 +658,8 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- 	else if (spi->master->can_dma &&
- 		 spi->master->can_dma(spi->master, spi, xfer) &&
- 		 spi->master->cur_msg_mapped)
--		controller->mode = QUP_IO_M_MODE_BAM;
-+		controller->mode = controller->qup_v1 ? QUP_IO_M_MODE_DMOV :
-+							QUP_IO_M_MODE_BAM;
- 	else
- 		controller->mode = QUP_IO_M_MODE_BLOCK;
- 
-@@ -697,6 +698,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
- 		break;
- 	case QUP_IO_M_MODE_BAM:
-+	case QUP_IO_M_MODE_DMOV:
- 		reinit_completion(&controller->txc);
- 		reinit_completion(&controller->rxc);
- 		writel_relaxed(controller->n_words,
-@@ -901,6 +903,7 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	struct dma_slave_config *rx_conf = &spi->rx_conf,
- 				*tx_conf = &spi->tx_conf;
- 	struct device *dev = spi->dev;
-+	u32 tx_crci = 0, rx_crci = 0;
- 	int ret;
- 
- 	/* allocate dma resources, if available */
-@@ -914,16 +917,34 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 		goto err_tx;
+@@ -268,7 +268,7 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
  	}
+ }
  
-+	if (spi->qup_v1) {
-+		ret = of_property_read_u32(dev->of_node, "qcom,tx-crci",
-+					   &tx_crci);
-+		if (ret) {
-+			dev_err(dev, "missing property qcom,tx-crci\n");
-+			goto err;
-+		}
-+
-+		ret = of_property_read_u32(dev->of_node, "qcom,rx-crci",
-+					   &rx_crci);
-+		if (ret) {
-+			dev_err(dev, "missing property qcom,rx-crci\n");
-+			goto err;
-+		}
-+	}
-+
- 	/* set DMA parameters */
- 	rx_conf->direction = DMA_DEV_TO_MEM;
- 	rx_conf->device_fc = 1;
- 	rx_conf->src_addr = base + QUP_INPUT_FIFO;
- 	rx_conf->src_maxburst = spi->in_blk_sz;
-+	rx_conf->slave_id = rx_crci;
+-static void spi_qup_read(struct spi_qup *controller)
++static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
+ {
+ 	u32 remainder, words_per_block, num_words;
+ 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
+@@ -307,10 +307,12 @@ static void spi_qup_read(struct spi_qup *controller)
  
- 	tx_conf->direction = DMA_MEM_TO_DEV;
- 	tx_conf->device_fc = 1;
- 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
- 	tx_conf->dst_maxburst = spi->out_blk_sz;
-+	tx_conf->slave_id = tx_crci;
+ 	/*
+ 	 * Due to extra stickiness of the QUP_OP_IN_SERVICE_FLAG during block
+-	 * mode reads, it has to be cleared again at the very end
++	 * reads, it has to be cleared again at the very end.  However, be sure
++	 * to refresh opflags value because MAX_INPUT_DONE_FLAG may now be
++	 * present and this is used to determine if transaction is complete
+ 	 */
+-	if (is_block_mode && spi_qup_is_flag_set(controller,
+-				QUP_OP_MAX_INPUT_DONE_FLAG))
++	*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
++	if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
+ 		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
+ 			       controller->base + QUP_OPERATIONAL);
  
- 	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
- 	if (ret) {
-@@ -1050,12 +1071,6 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	controller->cclk = cclk;
- 	controller->irq = irq;
+@@ -617,7 +619,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
+ 	} else {
+ 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
+-			spi_qup_read(controller);
++			spi_qup_read(controller, &opflags);
  
--	ret = spi_qup_init_dma(master, res->start);
--	if (ret == -EPROBE_DEFER)
--		goto error;
--	else if (!ret)
--		master->can_dma = spi_qup_can_dma;
--
- 	/* set v1 flag if device is version 1 */
- 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
- 		controller->qup_v1 = 1;
-@@ -1092,6 +1107,12 @@ static int spi_qup_probe(struct platform_device *pdev)
- 		 controller->in_blk_sz, controller->in_fifo_sz,
- 		 controller->out_blk_sz, controller->out_fifo_sz);
- 
-+	ret = spi_qup_init_dma(master, res->start);
-+	if (ret == -EPROBE_DEFER)
-+		goto error;
-+	else if (!ret)
-+		master->can_dma = spi_qup_can_dma;
-+
- 	writel_relaxed(1, base + QUP_SW_RESET);
- 
- 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
+ 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
+ 			spi_qup_write(controller);
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

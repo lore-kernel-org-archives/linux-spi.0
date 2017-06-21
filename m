@@ -1,61 +1,66 @@
 From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [RFC PATCH v3 0/6] Report wakeup events in cros_ec_keyb and make cros-ec-spi wakeup optional
-Date: Wed, 21 Jun 2017 18:01:47 +0800
-Message-ID: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
+Subject: [RFC PATCH v3 1/6] spi: core: add support for wakeup-source dts property
+Date: Wed, 21 Jun 2017 18:01:48 +0800
+Message-ID: <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
+References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
 Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
         dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Vic Yang <victoryang-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
-        linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        linux-arm-kerne
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1498039313-24220-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Use generic wakeup-source property to enable spi device wakeup.
 
-We are enabling wakeup unconditionally for cros-ec-spi, it would be good to make it optional.
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+---
 
-And we also need to enable wakeup for cros_ec_keyb, so the userspace could disable keyboard wakeup along with other cros-ec sub devices.
+Changes in v3: None
 
+ drivers/spi/spi.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Changes in v3:
-Use wakeup-source property to enable wakeup.
-  Suggested by Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>.
-
-Jeffy Chen (6):
-  spi: core: add support for wakeup-source dts property
-  dt-bindings: spi/core: add wakeup-source optional property
-  ARM/arm64: dts: enable wakeup for cros-ec-spi devices
-  mfd: cros ec: spi: remove unconditionally wakeup enable
-  input: cros_ec_keyb: report wakeup events
-  ARM: dts: cros-ec-keyboard: enable as wakeup source
-
- Documentation/devicetree/bindings/spi/spi-bus.txt |  1 +
- arch/arm/boot/dts/cros-ec-keyboard.dtsi           |  1 +
- arch/arm/boot/dts/exynos5420-peach-pit.dts        |  1 +
- arch/arm/boot/dts/exynos5800-peach-pi.dts         |  1 +
- arch/arm/boot/dts/rk3288-veyron-chromebook.dtsi   |  1 +
- arch/arm/boot/dts/tegra124-nyan.dtsi              |  1 +
- arch/arm/boot/dts/tegra124-venice2.dts            |  1 +
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts    |  1 +
- arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi      |  1 +
- drivers/input/keyboard/cros_ec_keyb.c             |  8 ++++++++
- drivers/mfd/cros_ec_spi.c                         |  2 --
- drivers/spi/spi.c                                 | 15 +++++++++++----
- 12 files changed, 28 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c3f6b52..a510bba 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -547,11 +547,16 @@ int spi_add_device(struct spi_device *spi)
+ 
+ 	/* Device may be bound to an active driver when this returns */
+ 	status = device_add(&spi->dev);
+-	if (status < 0)
++	if (status < 0) {
+ 		dev_err(dev, "can't add %s, status %d\n",
+-				dev_name(&spi->dev), status);
+-	else
+-		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
++			dev_name(&spi->dev), status);
++		goto done;
++	}
++
++	dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
++
++	if (device_property_read_bool(&spi->dev, "wakeup-source"))
++		device_init_wakeup(&spi->dev, true);
+ 
+ done:
+ 	mutex_unlock(&spi_add_lock);
+@@ -638,6 +643,8 @@ void spi_unregister_device(struct spi_device *spi)
+ 	if (!spi)
+ 		return;
+ 
++	device_init_wakeup(&spi->dev, false);
++
+ 	if (spi->dev.of_node) {
+ 		of_node_clear_flag(spi->dev.of_node, OF_POPULATED);
+ 		of_node_put(spi->dev.of_node);
 -- 
 2.1.4
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

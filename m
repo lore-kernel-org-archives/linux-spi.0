@@ -1,66 +1,40 @@
-From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [RFC PATCH v3 1/6] spi: core: add support for wakeup-source dts property
-Date: Wed, 21 Jun 2017 18:01:48 +0800
-Message-ID: <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
+From: Jeffy Chen <jeffy.chen@rock-chips.com>
+Subject: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source optional property
+Date: Wed, 21 Jun 2017 18:01:49 +0800
+Message-ID: <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com>
 References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
-Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498039313-24220-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: briannorris@chromium.org, dmitry.torokhov@gmail.com,
+        dianders@chromium.org, Jeffy Chen <jeffy.chen@rock-chips.com>,
+        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Use generic wakeup-source property to enable spi device wakeup.
+Update document devicetree bindings to support "wakeup-source" property.
 
-Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
 
 Changes in v3: None
 
- drivers/spi/spi.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c3f6b52..a510bba 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -547,11 +547,16 @@ int spi_add_device(struct spi_device *spi)
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 1f6e86f..0fa1ccf 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
+ 		    Defaults to 1 if not present.
+ - spi-rx-delay-us - Microsecond delay after a read transfer.
+ - spi-tx-delay-us - Microsecond delay after a write transfer.
++- wakeup-source   - Device can be used as a wakeup source.
  
- 	/* Device may be bound to an active driver when this returns */
- 	status = device_add(&spi->dev);
--	if (status < 0)
-+	if (status < 0) {
- 		dev_err(dev, "can't add %s, status %d\n",
--				dev_name(&spi->dev), status);
--	else
--		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
-+			dev_name(&spi->dev), status);
-+		goto done;
-+	}
-+
-+	dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
-+
-+	if (device_property_read_bool(&spi->dev, "wakeup-source"))
-+		device_init_wakeup(&spi->dev, true);
- 
- done:
- 	mutex_unlock(&spi_add_lock);
-@@ -638,6 +643,8 @@ void spi_unregister_device(struct spi_device *spi)
- 	if (!spi)
- 		return;
- 
-+	device_init_wakeup(&spi->dev, false);
-+
- 	if (spi->dev.of_node) {
- 		of_node_clear_flag(spi->dev.of_node, OF_POPULATED);
- 		of_node_put(spi->dev.of_node);
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+ It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
 -- 
 2.1.4
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

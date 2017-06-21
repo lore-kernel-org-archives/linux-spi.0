@@ -1,19 +1,22 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: Check for allocation failure earlier" to the spi tree
-Date: Wed, 21 Jun 2017 12:16:58 +0100
-Message-ID: <E1dNdd4-0004P5-W6@debutante>
-References: <1497977455-15964-1-git-send-email-fabio.estevam@nxp.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1497977455-15964-1-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi/bcm63xx: Fix checkpatch warnings" to the spi tree
+Date: Wed, 21 Jun 2017 12:16:55 +0100
+Message-ID: <E1dNdd1-0004O6-8u@debutante>
+References: <1497890980-4334-1-git-send-email-aravind.thk@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Aravind Thokala <aravind.thk@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1497890980-4334-1-git-send-email-aravind.thk@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: Check for allocation failure earlier
+   spi/bcm63xx: Fix checkpatch warnings
 
 has been applied to the spi tree at
 
@@ -38,47 +41,42 @@ to this mail.
 Thanks,
 Mark
 
->From 2c147776dc8b3d67ec42605dcba4deb98f2d0536 Mon Sep 17 00:00:00 2001
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Date: Tue, 20 Jun 2017 13:50:55 -0300
-Subject: [PATCH] spi: imx: Check for allocation failure earlier
+>From b85d65dd47e1606299dc054d2162b795df65c94a Mon Sep 17 00:00:00 2001
+From: Aravind Thokala <aravind.thk@gmail.com>
+Date: Mon, 19 Jun 2017 23:47:48 +0530
+Subject: [PATCH] spi/bcm63xx: Fix checkpatch warnings
 
-In case of spi_alloc_master() failure it is better to return the
-error immediately, so move the error check right after the allocation.
+This patch fixes the checkpatch.pl warnings on the driver
+file.
 
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Aravind Thokala <aravind.thk@gmail.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e544f45348cc..f9698b7aeb3b 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1169,15 +1169,15 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 247f71b02235..84c7356ce5b4 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -147,7 +147,7 @@ struct bcm63xx_spi {
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
-+	if (!master)
-+		return -ENOMEM;
-+
- 	ret = of_property_read_u32(np, "fsl,spi-rdy-drctl", &spi_drctl);
- 	if ((ret < 0) || (spi_drctl >= 0x3)) {
- 		/* '11' is reserved */
- 		spi_drctl = 0;
- 	}
+ 	/* Platform data */
+ 	const unsigned long	*reg_offsets;
+-	unsigned		fifo_size;
++	unsigned int		fifo_size;
+ 	unsigned int		msg_type_shift;
+ 	unsigned int		msg_ctl_width;
  
--	if (!master)
--		return -ENOMEM;
--
- 	platform_set_drvdata(pdev, master);
+@@ -191,7 +191,7 @@ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
+ #endif
+ }
  
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+-static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
++static const unsigned int bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
+ 	{ 20000000, SPI_CLK_20MHZ },
+ 	{ 12500000, SPI_CLK_12_50MHZ },
+ 	{  6250000, SPI_CLK_6_250MHZ },
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,47 +1,84 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH v3 1/6] spi: core: add support for wakeup-source dts
- property
-Date: Wed, 21 Jun 2017 11:52:55 +0100
-Message-ID: <20170621105255.fon65wco27qh36jj@sirena.org.uk>
-References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
- <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cw4hnrl6643bbfl7"
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
-        dmitry.torokhov@gmail.com, dianders@chromium.org,
-        linux-spi@vger.kernel.org
-To: Jeffy Chen <jeffy.chen@rock-chips.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: Check for allocation failure earlier" to the spi tree
+Date: Wed, 21 Jun 2017 12:16:58 +0100
+Message-ID: <E1dNdd4-0004P5-W6@debutante>
+References: <1497977455-15964-1-git-send-email-fabio.estevam@nxp.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1497977455-15964-1-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---cw4hnrl6643bbfl7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: Check for allocation failure earlier
 
-On Wed, Jun 21, 2017 at 06:01:48PM +0800, Jeffy Chen wrote:
-> Use generic wakeup-source property to enable spi device wakeup.
+has been applied to the spi tree at
 
-If this is a generic property shouldn't it be in the driver core rather
-than individual subsystems?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---cw4hnrl6643bbfl7
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllKUAYACgkQJNaLcl1U
-h9BOBgf9Fc+VRbAFJDQTHW0D7yT7h0ugbn30mdZZen4I/r2595XNExC6PMllzDFZ
-LIN+YZfOR0aE+8F75WmpeYmxMRkvO1kTJcNMM5muQECV5VmREV1gpHLloQXLmoRo
-rw1+eV48hRXKG9pUMTZzIR0d6CXLraYHdnmMQVWxVbd1q4Aw/fM6QxVVCV3QYqOi
-0cywCrY9ZBQYJs9xD6QqZlfUhXZlpjpnjaEbSlRHEo3cXzRZKVckVjhHlQXB44eA
-Cmr2Xqz9IlqOg9+ee8O4bhYX86xMmC9cPI07fPoI4GWJnmeU9HtGvlMspJ7CySI2
-e8jeYXOEUM1pGnYzTBL/fUQDnJBDJA==
-=7te/
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---cw4hnrl6643bbfl7--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 2c147776dc8b3d67ec42605dcba4deb98f2d0536 Mon Sep 17 00:00:00 2001
+From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Date: Tue, 20 Jun 2017 13:50:55 -0300
+Subject: [PATCH] spi: imx: Check for allocation failure earlier
+
+In case of spi_alloc_master() failure it is better to return the
+error immediately, so move the error check right after the allocation.
+
+Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index e544f45348cc..f9698b7aeb3b 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1169,15 +1169,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
++	if (!master)
++		return -ENOMEM;
++
+ 	ret = of_property_read_u32(np, "fsl,spi-rdy-drctl", &spi_drctl);
+ 	if ((ret < 0) || (spi_drctl >= 0x3)) {
+ 		/* '11' is reserved */
+ 		spi_drctl = 0;
+ 	}
+ 
+-	if (!master)
+-		return -ENOMEM;
+-
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+-- 
+2.11.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

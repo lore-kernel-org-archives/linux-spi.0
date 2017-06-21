@@ -1,112 +1,150 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 3/3] spi: Use Apple device properties in absence of ACPI
- resources
-Date: Wed, 21 Jun 2017 20:05:53 +0200
-Message-ID: <19c49c0351e452bff28199abcc6b3a11ec6949b2.1498044532.git.lukas@wunner.de>
-References: <cover.1498044532.git.lukas@wunner.de>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH 2/3] ACPI / property: Support Apple _DSM properties
+Date: Thu, 22 Jun 2017 01:05:24 +0200
+Message-ID: <2340666.WAr8RzfG0T@aspire.rjw.lan>
+References: <cover.1498044532.git.lukas@wunner.de> <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Leif Liddy <leif.liddy@gmail.com>,
         Daniel Roschka <danielroschka@phoenitydawn.de>,
         linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>
+To: Lukas Wunner <lukas@wunner.de>
 Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <cover.1498044532.git.lukas@wunner.de>
+In-Reply-To: <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
 Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-MacBooks and MacBook Pros introduced since 2015 return empty _CRS data
-for SPI slaves, causing device initialization to fail.  Most of the
-information that would normally be conveyed via _CRS is available
-through ACPI device properties instead, so take advantage of them.
+On Wednesday, June 21, 2017 08:05:53 PM Lukas Wunner wrote:
+> While the rest of the world has standardized on _DSD as the way to store
+> device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
+> been using a custom _DSM to achieve the same for much longer (ever since
+> they switched from DeviceTree-based PowerPC to Intel in 2005, verified
+> with MacOS X 10.4.11).
+> 
+> The theory of operation on macOS is as follows:  AppleACPIPlatform.kext
+> invokes mergeEFIproperties() and mergeDSMproperties() for each device to
+> merge properties conveyed by EFI drivers as well as properties stored in
+> AML into the I/O Kit registry from which they can be retrieved by
+> drivers.  We've been supporting EFI properties since commit 58c5475aba67
+> ("x86/efi: Retrieve and assign Apple device properties").  The present
+> commit adds support for _DSM properties, thereby completing our support
+> for Apple device properties.  The _DSM properties are made available
+> under the primary fwnode, the EFI properties under the secondary fwnode.
+> So for devices which possess both property types, they can all be
+> elegantly accessed with the uniform API in <linux/property.h>.
+> 
+> Until recently we had no need to support _DSM properties, they contained
+> only uninteresting garbage.  The situation has changed with MacBooks and
+> MacBook Pros introduced since 2015:  Their keyboard is attached with SPI
+> instead of USB and the _CRS data which is necessary to initialize the
+> spi driver only contains valid information if OSPM responds "false" to
+> _OSI("Darwin").  If OSPM responds "true", _CRS is empty and the spi
+> driver fails to initialize.  The rationale is very simple, Apple only
+> cares about macOS and Windows:  On Windows, _CRS contains valid data,
+> whereas on macOS it is empty.  Instead, macOS gleans the necessary data
+> from the _DSM properties.
+> 
+> Since Linux deliberately defaults to responding "true" to _OSI("Darwin"),
+> we need to emulate macOS' behaviour by initializing the spi driver with
+> data returned by the _DSM.
+> 
+> An out-of-tree driver for the SPI keyboard exists which currently binds
+> to the ACPI device, invokes the _DSM, parses the returned package and
+> instantiates an SPI device with the data gleaned from the _DSM:
+> https://github.com/cb22/macbook12-spi-driver/commit/9a416d699ef4
+> https://github.com/cb22/macbook12-spi-driver/commit/0c34936ed9a1
+> 
+> By adding support for Apple's _DSM properties in generic ACPI code, the
+> out-of-tree driver will be able to register as a regular SPI device,
+> significantly reducing its amount of code and improving its chances to
+> be mainlined.
+> 
+> The SPI keyboard will not be the only user of this commit:  E.g. on the
+> MacBook8,1, the UART-attached Bluetooth device likewise returns empty
+> _CRS data if OSPM returns "true" to _OSI("Darwin").
+> 
+> The _DSM returns a Package whose format unfortunately deviates slightly
+> from the _DSD spec:  The properties are marshalled up in a single Package
+> as alternating key/value elements, unlike _DSD which stores them as a
+> Package of 2-element Packages.  The present commit therefore converts
+> the Package to _DSD format and the ACPI core can then treat the data as
+> if Apple would follow the standard.
+> 
+> Well, except for one small annoyance:  The properties returned by the
+> _DSM only ever have one of two types, Integer or Buffer.  The former is
+> retrievable as usual with device_property_read_u64(), but the latter is
+> not part of the _DSD spec and it is not possible to retrieve Buffer
+> properties with the device_property_read_*() functions due to the type
+> checking performed in drivers/acpi/property.c.  It is however possible
+> to retrieve them with acpi_dev_get_property().  Apple is using the
+> Buffer type somewhat sloppily to store null-terminated strings but also
+> integers.  The real data type is not distinguishable by the ACPI core
+> and the onus is on the caller to use the contents of the Buffer in an
+> appropriate way.
+> 
+> In case Apple moves to _DSD in the future, this commit first checks for
+> _DSD and falls back to _DSM only if _DSD is not found.
+> 
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Federico Lorenzi <florenzi@gmail.com>
+> Cc: Ronald Tschal�r <ronald@innovation.ch>
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+>  drivers/acpi/property.c | 120 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 27a9294c843c..545188207b8d 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -15,6 +15,7 @@
+>  
+>  #include <linux/acpi.h>
+>  #include <linux/device.h>
+> +#include <linux/dmi.h>
+>  #include <linux/export.h>
+>  
+>  #include "internal.h"
+> @@ -34,6 +35,121 @@ static const u8 ads_uuid[16] = {
+>  	0xe6, 0xe3, 0xb8, 0xdb, 0x86, 0x58, 0xa6, 0x4b,
+>  	0x87, 0x95, 0x13, 0x19, 0xf5, 0x2a, 0x96, 0x6b
+>  };
+> +/* Apple _DSM device properties GUID: a0b5b7c6-1318-441c-b0c9-fe695eaf949b */
+> +static const u8 apple_prp_uuid[16] = {
+> +	0xc6, 0xb7, 0xb5, 0xa0, 0x18, 0x13, 0x1c, 0x44,
+> +	0xb0, 0xc9, 0xfe, 0x69, 0x5e, 0xaf, 0x94, 0x9b
+> +};
+> +
+> +/**
+> + * acpi_retrieve_apple_properties - retrieve and convert Apple _DSM properties
+> + * @adev: ACPI device for which to retrieve the properties
+> + *
+> + * Invoke Apple's custom _DSM once to check the protocol version and once more
+> + * to retrieve the properties.  They are marshalled up in a single package as
+> + * alternating key/value elements, unlike _DSD which stores them as a package
+> + * of 2-element packages.  Convert to _DSD format and make them available under
+> + * the primary fwnode.
+> + */
+> +static void acpi_retrieve_apple_properties(struct acpi_device *adev)
+> +{
+> +	unsigned int i, j, version, newsize = 0, numprops, skipped = 0;
+> +	union acpi_object *props, *newprops;
+> +	void *free_space;
+> +
+> +	props = acpi_evaluate_dsm_typed(adev->handle, apple_prp_uuid, 1, 0,
+> +					NULL, ACPI_TYPE_BUFFER);
 
-The meaning and appropriate usage of the device properties was reverse
-engineered by Ronald Tschalär and carried over from these commits
-authored by him:
+The handling of UUIDs is going to change in 4.13, so this needs to be rebased.
 
-https://github.com/cb22/macbook12-spi-driver/commit/9a416d699ef4
-https://github.com/cb22/macbook12-spi-driver/commit/0c34936ed9a1
-
-According to Ronald, the device properties have the following meaning:
-
-spiSclkPeriod   /* period in ns */
-spiWordSize     /* in number of bits */
-spiBitOrder     /* 1 = MSB_FIRST, 0 = LSB_FIRST */
-spiSPO          /* clock polarity: 0 = low, 1 = high */
-spiSPH          /* clock phase: 0 = first, 1 = second */
-spiCSDelay      /* delay between cs and receive on reads in 10 us */
-resetA2RUsec    /* active-to-receive delay? */
-resetRecUsec    /* receive delay? */
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Federico Lorenzi <florenzi@gmail.com>
-Cc: Ronald Tschalär <ronald@innovation.ch>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- drivers/spi/spi.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 89254a55eb2e..a4066b75d02b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -21,6 +21,8 @@
- #include <linux/cache.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-+#include <linux/dmi.h>
-+#include <linux/math64.h>
- #include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
-@@ -1685,6 +1687,29 @@ static void of_register_spi_devices(struct spi_master *master) { }
- #endif
- 
- #ifdef CONFIG_ACPI
-+static void acpi_spi_parse_apple_properties(struct spi_device *spi)
-+{
-+	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
-+	const union acpi_object *o;
-+
-+	if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &o))
-+		spi->max_speed_hz  = div64_u64(NSEC_PER_SEC,
-+					       *(u64 *)o->buffer.pointer);
-+
-+	if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &o))
-+		spi->bits_per_word = *(u64 *)o->buffer.pointer;
-+
-+	if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &o) &&
-+	    !*(u64 *)o->buffer.pointer)
-+		spi->mode |= SPI_LSB_FIRST;
-+	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER, &o) &&
-+	     *(u64 *)o->buffer.pointer)
-+		spi->mode |= SPI_CPOL;
-+	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER, &o) &&
-+	     *(u64 *)o->buffer.pointer)
-+		spi->mode |= SPI_CPHA;
-+}
-+
- static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
- {
- 	struct spi_device *spi = data;
-@@ -1758,6 +1783,11 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
- 				     acpi_spi_add_resource, spi);
- 	acpi_dev_free_resource_list(&resource_list);
- 
-+	/* Zero ACPI resources?  Try Apple device properties instead. */
-+	if (!ret && IS_ENABLED(CONFIG_X86) &&
-+	    dmi_match(DMI_SYS_VENDOR, "Apple Inc."))
-+		acpi_spi_parse_apple_properties(spi);
-+
- 	if (ret < 0 || !spi->max_speed_hz) {
- 		spi_dev_put(spi);
- 		return AE_OK;
--- 
-2.11.0
+Thanks,
+Rafael
 

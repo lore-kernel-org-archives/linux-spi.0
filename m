@@ -1,40 +1,47 @@
-From: Jeffy Chen <jeffy.chen@rock-chips.com>
-Subject: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source optional property
-Date: Wed, 21 Jun 2017 18:01:49 +0800
-Message-ID: <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH v3 1/6] spi: core: add support for wakeup-source dts
+ property
+Date: Wed, 21 Jun 2017 11:52:55 +0100
+Message-ID: <20170621105255.fon65wco27qh36jj@sirena.org.uk>
 References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
-Cc: briannorris@chromium.org, dmitry.torokhov@gmail.com,
-        dianders@chromium.org, Jeffy Chen <jeffy.chen@rock-chips.com>,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-To: linux-kernel@vger.kernel.org
+ <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cw4hnrl6643bbfl7"
+Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
+        dmitry.torokhov@gmail.com, dianders@chromium.org,
+        linux-spi@vger.kernel.org
+To: Jeffy Chen <jeffy.chen@rock-chips.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
+Content-Disposition: inline
+In-Reply-To: <1498039313-24220-2-git-send-email-jeffy.chen@rock-chips.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Update document devicetree bindings to support "wakeup-source" property.
 
-Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
----
+--cw4hnrl6643bbfl7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Changes in v3: None
+On Wed, Jun 21, 2017 at 06:01:48PM +0800, Jeffy Chen wrote:
+> Use generic wakeup-source property to enable spi device wakeup.
 
- Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
- 1 file changed, 1 insertion(+)
+If this is a generic property shouldn't it be in the driver core rather
+than individual subsystems?
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 1f6e86f..0fa1ccf 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
- 		    Defaults to 1 if not present.
- - spi-rx-delay-us - Microsecond delay after a read transfer.
- - spi-tx-delay-us - Microsecond delay after a write transfer.
-+- wakeup-source   - Device can be used as a wakeup source.
- 
- Some SPI controllers and devices support Dual and Quad SPI transfer mode.
- It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
--- 
-2.1.4
+--cw4hnrl6643bbfl7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllKUAYACgkQJNaLcl1U
+h9BOBgf9Fc+VRbAFJDQTHW0D7yT7h0ugbn30mdZZen4I/r2595XNExC6PMllzDFZ
+LIN+YZfOR0aE+8F75WmpeYmxMRkvO1kTJcNMM5muQECV5VmREV1gpHLloQXLmoRo
+rw1+eV48hRXKG9pUMTZzIR0d6CXLraYHdnmMQVWxVbd1q4Aw/fM6QxVVCV3QYqOi
+0cywCrY9ZBQYJs9xD6QqZlfUhXZlpjpnjaEbSlRHEo3cXzRZKVckVjhHlQXB44eA
+Cmr2Xqz9IlqOg9+ee8O4bhYX86xMmC9cPI07fPoI4GWJnmeU9HtGvlMspJ7CySI2
+e8jeYXOEUM1pGnYzTBL/fUQDnJBDJA==
+=7te/
+-----END PGP SIGNATURE-----
+
+--cw4hnrl6643bbfl7--

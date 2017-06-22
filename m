@@ -1,67 +1,58 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH 2/3] ACPI / property: Support Apple _DSM properties
-Date: Thu, 22 Jun 2017 10:57:10 +0200
-Message-ID: <20170622085710.fmuftzt2soqpppyk@wunner.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/3] spi: Use Apple device properties in absence of ACPI
+ resources
+Date: Thu, 22 Jun 2017 10:28:06 +0100
+Message-ID: <20170622092806.pyj7ganyeoerqr6k@sirena.org.uk>
 References: <cover.1498044532.git.lukas@wunner.de>
- <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
- <2340666.WAr8RzfG0T@aspire.rjw.lan>
+ <19c49c0351e452bff28199abcc6b3a11ec6949b2.1498044532.git.lukas@wunner.de>
+ <20170622081048.GT629@lahna.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mgfllhks6wa67wbo"
+Cc: Lukas Wunner <lukas@wunner.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Ronald Tschalaer <ronald@innovation.ch>,
         Federico Lorenzi <florenzi@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Leif Liddy <leif.liddy@gmail.com>,
         Daniel Roschka <danielroschka@phoenitydawn.de>,
         linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
 Return-path: <linux-acpi-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <2340666.WAr8RzfG0T@aspire.rjw.lan>
+In-Reply-To: <20170622081048.GT629@lahna.fi.intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 22, 2017 at 01:05:24AM +0200, Rafael J. Wysocki wrote:
-> On Wednesday, June 21, 2017 08:05:53 PM Lukas Wunner wrote:
-> > +/* Apple _DSM device properties GUID: a0b5b7c6-1318-441c-b0c9-fe695eaf949b */
-> > +static const u8 apple_prp_uuid[16] = {
-> > +	0xc6, 0xb7, 0xb5, 0xa0, 0x18, 0x13, 0x1c, 0x44,
-> > +	0xb0, 0xc9, 0xfe, 0x69, 0x5e, 0xaf, 0x94, 0x9b
-> > +};
-> > +
-> > +/**
-> > + * acpi_retrieve_apple_properties - retrieve and convert Apple _DSM properties
-> > + * @adev: ACPI device for which to retrieve the properties
-> > + *
-> > + * Invoke Apple's custom _DSM once to check the protocol version and once more
-> > + * to retrieve the properties.  They are marshalled up in a single package as
-> > + * alternating key/value elements, unlike _DSD which stores them as a package
-> > + * of 2-element packages.  Convert to _DSD format and make them available under
-> > + * the primary fwnode.
-> > + */
-> > +static void acpi_retrieve_apple_properties(struct acpi_device *adev)
-> > +{
-> > +	unsigned int i, j, version, newsize = 0, numprops, skipped = 0;
-> > +	union acpi_object *props, *newprops;
-> > +	void *free_space;
-> > +
-> > +	props = acpi_evaluate_dsm_typed(adev->handle, apple_prp_uuid, 1, 0,
-> > +					NULL, ACPI_TYPE_BUFFER);
-> 
-> The handling of UUIDs is going to change in 4.13, so this needs to be rebased.
 
-Right.  The series is based on your "bleeding-edge" branch, which hasn't
-merged the "uuid-types" branch into it.  I'll base future revisions on
-"bleeding-edge" with "uuid-types" manually merged into it, but then you'll
-have to remember not to apply the series until the uuid-types branch
-has landed in Linus' tree and you've backmerged Linus' master branch.
+--mgfllhks6wa67wbo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Alternatively, you could merge the uuid-types branch.  There are no conflicts
-and Andy says it's to be considered immutable:
+On Thu, Jun 22, 2017 at 11:10:48AM +0300, Mika Westerberg wrote:
+> On Wed, Jun 21, 2017 at 08:05:53PM +0200, Lukas Wunner wrote:
+> > MacBooks and MacBook Pros introduced since 2015 return empty _CRS data
+> > for SPI slaves, causing device initialization to fail.  Most of the
+> > information that would normally be conveyed via _CRS is available
 
-http://git.infradead.org/users/hch/uuid.git/shortlog/refs/heads/uuid-types
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
 
-Thanks!
+--mgfllhks6wa67wbo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Lukas
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllLjaYACgkQJNaLcl1U
+h9AQlAf+IlSeHe4CghYYCAz4ddy3LdcrnOiAcnDX752a4/8VlcVp4jQdizVpk9kX
+NjAWenIxP9pZ/nX8hHy1MItF3SwkWL1EXixHcpwk4ACjv14PhzbKtxMAO3TjIrbX
+9LfXxsb3maZgTPDGE7m56cD2HRl7Ke+ttgMi9N8efxI+UFlE+598jOsYOGMbIFDx
+dWcRq5YmA7D/VL4xF/omajXFdPeSKf2S+/5Oj5oaYz9zWrrdJE23wWW1OwRvAaK/
+i7JftEgb2PVIhwVTjVpVpMLSsPHjJzPeqeGUMKNi/KA173oxsFDC/SDyi0aOQKwt
+JVGfQ1q/GGMm5VwC2z+TL16G4HGdKw==
+=09sr
+-----END PGP SIGNATURE-----
+
+--mgfllhks6wa67wbo--

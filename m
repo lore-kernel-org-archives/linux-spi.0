@@ -1,27 +1,28 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 Subject: Re: [PATCH 2/3] ACPI / property: Support Apple _DSM properties
-Date: Thu, 22 Jun 2017 01:05:24 +0200
-Message-ID: <2340666.WAr8RzfG0T@aspire.rjw.lan>
-References: <cover.1498044532.git.lukas@wunner.de> <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
+Date: Thu, 22 Jun 2017 11:06:55 +0300
+Message-ID: <20170622080655.GS629@lahna.fi.intel.com>
+References: <cover.1498044532.git.lukas@wunner.de>
+ <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Mark Brown <broonie@kernel.org>,
         Ronald Tschalaer <ronald@innovation.ch>,
         Federico Lorenzi <florenzi@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Leif Liddy <leif.liddy@gmail.com>,
         Daniel Roschka <danielroschka@phoenitydawn.de>,
         linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
 To: Lukas Wunner <lukas@wunner.de>
 Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
 Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, June 21, 2017 08:05:53 PM Lukas Wunner wrote:
+On Wed, Jun 21, 2017 at 08:05:53PM +0200, Lukas Wunner wrote:
 > While the rest of the world has standardized on _DSD as the way to store
 > device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
 > been using a custom _DSM to achieve the same for much longer (ever since
@@ -142,9 +143,136 @@ On Wednesday, June 21, 2017 08:05:53 PM Lukas Wunner wrote:
 > +
 > +	props = acpi_evaluate_dsm_typed(adev->handle, apple_prp_uuid, 1, 0,
 > +					NULL, ACPI_TYPE_BUFFER);
+> +	if (!props || !props->buffer.length)
+> +		goto out_free;
+> +
+> +	version = props->buffer.pointer[0];
+> +	ACPI_FREE(props);
+> +	if (version != 3) {
+> +		acpi_handle_err(adev->handle,
+> +				"unsupported properties version %u\n", version);
 
-The handling of UUIDs is going to change in 4.13, so this needs to be rebased.
+I don't think this is error. More like debug if anything.
 
-Thanks,
-Rafael
+> +		return;
+> +	}
+> +
+> +	props = acpi_evaluate_dsm_typed(adev->handle, apple_prp_uuid, 1, 1,
+> +					NULL, ACPI_TYPE_PACKAGE);
+> +	if (!props)
+> +		return;
+> +
+> +	/* newsize = key length + value length of each tuple */
+> +	numprops = props->package.count / 2;
+> +	for (i = 0; i < numprops; i++) {
+> +		union acpi_object *key = &props->package.elements[i * 2];
+> +		union acpi_object *val = &props->package.elements[i * 2 + 1];
+> +
+> +		if ( key->type != ACPI_TYPE_STRING ||
+> +		    (val->type != ACPI_TYPE_INTEGER &&
+> +		     val->type != ACPI_TYPE_BUFFER)) {
+> +			key->type = ACPI_TYPE_ANY; /* mark as to be skipped */
+> +			skipped++;
+> +			continue;
+> +		}
+> +		newsize += key->string.length + 1;
+> +		if ( val->type == ACPI_TYPE_BUFFER)
+> +			newsize += val->buffer.length;
+> +	}
+> +
+> +	if (skipped)
+> +		acpi_handle_err(adev->handle,
+> +				"skipped %u properties: wrong type\n", skipped);
 
+Same here.
+
+> +	if (skipped == numprops)
+> +		goto out_free;
+> +
+> +	/* newsize += top-level package + 3 objects for each key/value tuple */
+> +	newsize	+= (1 + 3 * (numprops - skipped)) * sizeof(union acpi_object);
+> +	newprops = ACPI_ALLOCATE_ZEROED(newsize);
+> +	if (!newprops)
+> +		goto out_free;
+> +
+> +	/* layout: top-level package | packages | key/value tuples | strings */
+> +	newprops->type		   = ACPI_TYPE_PACKAGE;
+> +	newprops->package.count	   = numprops - skipped;
+> +	newprops->package.elements = &newprops[1];
+> +	free_space		   = &newprops[1 + 3 * (numprops - skipped)];
+
+I would prefer you you don't align the assignments:
+
+	/* layout: top-level package | packages | key/value tuples | strings */
+	newprops->type = ACPI_TYPE_PACKAGE;
+	newprops->package.count = numprops - skipped;
+	newprops->package.elements = &newprops[1];
+	free_space = &newprops[1 + 3 * (numprops - skipped)];
+
+This is consistent with the rest of the file.
+
+> +
+> +	for (i = 0, j = 0; i < numprops; i++) {
+> +		union acpi_object *key = &props->package.elements[i * 2];
+> +		union acpi_object *val = &props->package.elements[i * 2 + 1];
+> +		unsigned int k	       = (1 + numprops - skipped) + j * 2;
+> +		unsigned int v	       = k + 1; /* index into newprops */
+> +
+> +		if (key->type == ACPI_TYPE_ANY)
+> +			continue; /* skipped */
+> +
+> +		newprops[1 + j].type		   = ACPI_TYPE_PACKAGE;
+> +		newprops[1 + j].package.count	   = 2;
+> +		newprops[1 + j].package.elements   = &newprops[k];
+
+Ditto.
+
+> +
+> +		newprops[k].type		   = ACPI_TYPE_STRING;
+> +		newprops[k].string.length	   = key->string.length;
+> +		newprops[k].string.pointer	   = free_space;
+> +		memcpy(free_space, key->string.pointer, key->string.length);
+> +		free_space			  += key->string.length + 1;
+> +
+> +		newprops[v].type		   = val->type;
+> +		if (val->type == ACPI_TYPE_INTEGER)
+> +			newprops[v].integer.value  = val->integer.value;
+> +		else {
+> +			newprops[v].buffer.length  = val->buffer.length;
+> +			newprops[v].buffer.pointer = free_space;
+> +			memcpy(free_space, val->buffer.pointer,
+> +						     val->buffer.length);
+> +			free_space		  += val->buffer.length;
+> +		}
+> +		j++; /* not incremented for skipped properties */
+> +	}
+> +	WARN_ON(free_space != (void *)newprops + newsize);
+
+Again, there is not need to scare the user if we can't parse these. We
+can log an error here and give up but definitely no need to trigger
+backtrace and register dump.
+
+> +
+> +	adev->data.properties = newprops;
+> +	adev->data.pointer = newprops;
+> +
+> +out_free:
+> +	ACPI_FREE(props);
+> +}
+>  
+>  static bool acpi_enumerate_nondev_subnodes(acpi_handle scope,
+>  					   const union acpi_object *desc,
+> @@ -375,6 +491,10 @@ void acpi_init_properties(struct acpi_device *adev)
+>  	if (acpi_of && !adev->flags.of_compatible_ok)
+>  		acpi_handle_info(adev->handle,
+>  			 ACPI_DT_NAMESPACE_HID " requires 'compatible' property\n");
+> +
+> +	if (!adev->data.pointer && IS_ENABLED(CONFIG_X86) &&
+> +	    dmi_match(DMI_SYS_VENDOR, "Apple Inc."))
+> +		acpi_retrieve_apple_properties(adev);
+
+I think it looks nicer if you move all those conditionals to
+acpi_retrieve_apple_properties() and then do:
+
+	if (!adev->data.pointer)
+		acpi_retrieve_apple_properties(adev);

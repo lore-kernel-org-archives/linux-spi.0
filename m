@@ -1,141 +1,71 @@
-From: Amelie DELAUNAY <amelie.delaunay@st.com>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Document the STM32 SPI bindings
-Date: Thu, 22 Jun 2017 13:51:51 +0200
-Message-ID: <af653847-8850-5ca3-17a1-63cb23e74ad6@st.com>
-References: <1498055526-6918-1-git-send-email-amelie.delaunay@st.com>
- <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
- <5df6d07a-59b7-6460-75c5-c3b239067616@baylibre.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/3] ACPI / property: Support Apple _DSM properties
+Date: Thu, 22 Jun 2017 14:25:41 +0100
+Message-ID: <20170622132541.qvnkngd4nmwvlbnk@sirena.org.uk>
+References: <cover.1498044532.git.lukas@wunner.de>
+ <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
+ <20170622080655.GS629@lahna.fi.intel.com>
+ <20170622095439.vquuet562i5scl3n@wunner.de>
+ <20170622100422.GX629@lahna.fi.intel.com>
+ <20170622112428.q3hpwpfs4xwumued@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Neil Armstrong <narmstrong@baylibre.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <5df6d07a-59b7-6460-75c5-c3b239067616@baylibre.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="j3s7sbuy5gqemui4"
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Ronald Tschalaer <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>,
+        Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Daniel Roschka <danielroschka-d2qyoUQsf3ABe69/dCFm4g@public.gmane.org>,
+        linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170622112428.q3hpwpfs4xwumued-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
+--j3s7sbuy5gqemui4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 06/21/2017 05:20 PM, Neil Armstrong wrote:
-> On 06/21/2017 04:32 PM, Amelie Delaunay wrote:
->> This patch adds the documentation of device tree bindings
->> for the STM32 SPI controller.
->>
->> Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
->> ---
->>   .../devicetree/bindings/spi/spi-stm32.txt          | 60 ++++++++++++++++++++++
->>   1 file changed, 60 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
->> new file mode 100644
->> index 0000000..3958bf6
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
->> @@ -0,0 +1,60 @@
->> +STMicroelectronics STM32 SPI Controller
->> +
->> +The STM32 SPI controller is used to communicate with external devices using
->> +the Serial Peripheral Interface. It supports full-duplex, half-duplex and
->> +simplex synchronous serial communication with external devices. It supports
->> +from 4 to 32-bit data size. Although it can be configured as master or slave,
->> +only master is supported by the driver.
->> +
->> +Required properties:
->> +- compatible: Must be "st,stm32-spi".
-> 
-> Hi Amelie,
-> 
-> What about the gen1 SPI devices like the F4 ?
-> 
-> It should have been better to use SoC specific compatible, or specify the SPI HW gen like gen1 or gen2.
-> 
-> Neil
-> 
+On Thu, Jun 22, 2017 at 01:24:28PM +0200, Lukas Wunner wrote:
+> On Thu, Jun 22, 2017 at 01:04:22PM +0300, Mika Westerberg wrote:
+> > On Thu, Jun 22, 2017 at 11:54:39AM +0200, Lukas Wunner wrote:
 
-Hi Neil,
+> > > It would be good to be able to google for this message to detect if there
+> > > are ever Macs out there which return something different than "3" to this
+> > > _DSM call.  How about KERN_WARN or KERN_INFO?
 
-The gen1 SPI controller embedded on F4/F7 is different from gen2 
-embedded on H7 and just to illustrate this, there are 5 main registers 
-(16-bit) on gen1 versus 10 main registers on gen2 (32-bit)! Their 
-operating modes are different, fifo management and so on... Moreover, I 
-know that the community is working on an SPI driver for F4.
+> > Well, this is something the user might see and then gets confused on the
+> > grounds: is my machine somehow broken?
 
-I agree with you on the fact that it would be better to use a SoC 
-specific compatible: I will send a v2 with "st,stm32h7-spi". This way, 
-this will be aligned with what have been done for the I2S part of this 
-controller: https://patchwork.kernel.org/patch/9737799/
+> And indeed it might be:  Conceivably, Apple may change the format of the
+> properties and then once again the SPI slave won't be able to initialize.
+> In that case it seems beneficial to provide a clue as to the cause in dmesg.
 
-By the way, I also noticed that my optional property "st,spi-midi-ns" 
-doesn't fit with the example "st,spi-midi". I will fix that in the v2 
-and keep "st,spi-midi-ns".
+This seems especially important when we're working with a reverse
+engineered binding.
 
-Regards,
-Amelie
+--j3s7sbuy5gqemui4
+Content-Type: application/pgp-signature; name="signature.asc"
 
->> +- reg: Offset and length of the device's register set.
->> +- interrupts: Must contain the interrupt id.
->> +- clocks: Must contain an entry for spiclk (which feeds the internal clock
->> +	  generator).
->> +- #address-cells:  Number of cells required to define a chip select address.
->> +- #size-cells: Should be zero.
->> +
->> +Optional properties:
->> +- resets: Must contain the phandle to the reset controller.
->> +- A pinctrl state named "default" may be defined to set pins in mode of
->> +  operation for SPI transfer.
->> +- dmas: DMA specifiers for tx and rx dma. DMA fifo mode must be used. See the
->> +  STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt.
->> +- dma-names: DMA request names should include "tx" and "rx" if present.
->> +- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
->> +  Documentation/devicetree/bindings/spi/spi-bus.txt
->> +
->> +
->> +Child nodes represent devices on the SPI bus
->> +  See ../spi/spi-bus.txt
->> +
->> +Optional properties:
->> +- st,spi-midi-ns: (Master Inter-Data Idleness) minimum time delay in
->> +		  nanoseconds inserted between two consecutive data frames.
->> +
->> +
->> +Example:
->> +	spi2: spi@40003800 {
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +		compatible = "st,stm32-spi";
->> +		reg = <0x40003800 0x400>;
->> +		interrupts = <36>;
->> +		clocks = <&rcc SPI2_CK>;
->> +		resets = <&rcc 1166>;
->> +		dmas = <&dmamux1 0 39 0x400 0x01>,
->> +		       <&dmamux1 1 40 0x400 0x01>;
->> +		dma-names = "rx", "tx";
->> +		pinctrl-0 = <&spi2_pins_b>;
->> +		pinctrl-names = "default";
->> +		status = "okay";
->> +		cs-gpios = <&gpioa 11 0>;
->> +
->> +		spidev@0 {
->> +			compatible = "spidev";
->> +			reg = <0>;
->> +			spi-max-frequency = <4000000>;
->> +			st,spi-midi = <4000>;
->> +		};
->> +	};
->>
-> 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllLxVQACgkQJNaLcl1U
+h9BeyAf/aAyU6IO0seK92R1Rq34nQ3Uf5330Gkd8CpyRXG4S7tBlYyLXWKnkQLBE
+8FNJ/5n7IwwcM4l/ExVwdjlcFpJ3jeQ0je/ZzndcvXFrPh1HLSRiE6oDClfpQ2jN
+nSDFkiIwiNgSKSlUS9iwMD4/vEsVw6VOENh/9MeT/47/HisErVg9USEB1Ak+9rIP
+GI0Byo+o9pldf1vaDhx0EthEKVmy0pESx4cnQByTjSKgGeSxI8D0Ytj4Ef5KGh/D
+wZx2mp7OZfcMnhGIwxn3811Nvr7VvWWP/9yVvsFgNi2fdxmKwTHlWpkDF6vA7Dhp
+d516nptO/0Am1DPqHmZqVQeDW08Hjg==
+=SLKy
+-----END PGP SIGNATURE-----
+
+--j3s7sbuy5gqemui4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

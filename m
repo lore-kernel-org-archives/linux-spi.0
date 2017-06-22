@@ -1,57 +1,93 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH 2/3] ACPI / property: Support Apple _DSM properties
-Date: Thu, 22 Jun 2017 13:24:28 +0200
-Message-ID: <20170622112428.q3hpwpfs4xwumued@wunner.de>
-References: <cover.1498044532.git.lukas@wunner.de>
- <8ce38be1389dfb0527961ccd0dedb609802b59c1.1498044532.git.lukas@wunner.de>
- <20170622080655.GS629@lahna.fi.intel.com>
- <20170622095439.vquuet562i5scl3n@wunner.de>
- <20170622100422.GX629@lahna.fi.intel.com>
+From: Amelie DELAUNAY <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: add driver for STM32 SPI controller
+Date: Thu, 22 Jun 2017 13:51:56 +0200
+Message-ID: <f27456b6-8abc-8e72-0fbb-bb0829adb7b0@st.com>
+References: <1498055526-6918-1-git-send-email-amelie.delaunay@st.com>
+ <1498055526-6918-3-git-send-email-amelie.delaunay@st.com>
+ <20170621151300.s74lbymyisvde2zo@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Leif Liddy <leif.liddy@gmail.com>,
-        Daniel Roschka <danielroschka@phoenitydawn.de>,
-        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20170622100422.GX629@lahna.fi.intel.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170621151300.s74lbymyisvde2zo-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jun 22, 2017 at 01:04:22PM +0300, Mika Westerberg wrote:
-> On Thu, Jun 22, 2017 at 11:54:39AM +0200, Lukas Wunner wrote:
-> > On Thu, Jun 22, 2017 at 11:06:55AM +0300, Mika Westerberg wrote:
-> > > On Wed, Jun 21, 2017 at 08:05:53PM +0200, Lukas Wunner wrote:
-> > > > +	props = acpi_evaluate_dsm_typed(adev->handle, apple_prp_uuid, 1, 0,
-> > > > +					NULL, ACPI_TYPE_BUFFER);
-> > > > +	if (!props || !props->buffer.length)
-> > > > +		goto out_free;
-> > > > +
-> > > > +	version = props->buffer.pointer[0];
-> > > > +	ACPI_FREE(props);
-> > > > +	if (version != 3) {
-> > > > +		acpi_handle_err(adev->handle,
-> > > > +				"unsupported properties version %u\n", version);
-> > > 
-> > > I don't think this is error. More like debug if anything.
-> > 
-> > It would be good to be able to google for this message to detect if there
-> > are ever Macs out there which return something different than "3" to this
-> > _DSM call.  How about KERN_WARN or KERN_INFO?
+Hi Mark,
+
+Thanks for your review.
+
+On 06/21/2017 05:13 PM, Mark Brown wrote:
+> On Wed, Jun 21, 2017 at 04:32:06PM +0200, Amelie Delaunay wrote:
 > 
-> Well, this is something the user might see and then gets confused on the
-> grounds: is my machine somehow broken?
+> A few minor stylistic things but overall this looks really nice, please
+> send followup patches fixing these style things.
+> 
+>> +	/* Determine the first power of 2 greater than or equal to div */
+>> +	mbrdiv = (div & (div - 1)) ? fls(div) : fls(div) - 1;
+> 
+> Please write normal conditional statements, it makes things much easier
+> to read.
+> OK, I'll fix it in v2.
 
-And indeed it might be:  Conceivably, Apple may change the format of the
-properties and then once again the SPI slave won't be able to initialize.
-In that case it seems beneficial to provide a clue as to the cause in dmesg.
+>> +static bool stm32_spi_can_dma(struct spi_master *master,
+>> +			      struct spi_device *spi_dev,
+>> +			      struct spi_transfer *transfer)
+>> +{
+>> +	struct stm32_spi *spi = spi_master_get_devdata(master);
+>> +
+>> +	dev_dbg(spi->dev, "%s: %s\n", __func__,
+>> +		(!!(transfer->len > spi->fifo_size)) ? "true" : "false");
+>> +
+>> +	return !!(transfer->len > spi->fifo_size);
+> 
+> This !! is redundant, you're converting a boolean value into a boolean
+> value.
+> 
+You're right.
 
-Thanks,
+>> +	buswidth = (spi->cur_bpw <= 8) ? DMA_SLAVE_BUSWIDTH_1_BYTE :
+>> +		   (spi->cur_bpw <= 16) ? DMA_SLAVE_BUSWIDTH_2_BYTES :
+>> +		   DMA_SLAVE_BUSWIDTH_4_BYTES;
+>> +
+>> +	/* Valid for DMA Half or Full Fifo threshold */
+>> +	maxburst = (spi->cur_fthlv == 2) ? 1 : spi->cur_fthlv;
+> 
+> Again, please use normal conditional statements - people have to read
+> things.
+> 
+OK.
+>> +static int stm32_spi_suspend(struct device *dev)
+>> +{
+>> +	struct spi_master *master = dev_get_drvdata(dev);
+>> +	struct stm32_spi *spi = spi_master_get_devdata(master);
+>> +	int ret;
+>> +
+>> +	ret = spi_master_suspend(master);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	clk_disable_unprepare(spi->clk);
+> 
+> It'd be good to also have the clock disabled by runtime PM, that will
+> save a little more power.  There's support for enabling and disabling
+> the device in the core so it should just be adding callbacks.  Not
+> essential though.
+> 
+OK I'll have a look.
 
-Lukas
+Regards,
+Amelie
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

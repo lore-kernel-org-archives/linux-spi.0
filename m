@@ -1,81 +1,51 @@
 From: Amelie Delaunay <amelie.delaunay@st.com>
-Subject: [PATCH 8/8] spi: stm32: fix potential dereference null return value
-Date: Fri, 23 Jun 2017 14:55:50 +0200
-Message-ID: <1498222550-19092-9-git-send-email-amelie.delaunay@st.com>
+Subject: [PATCH 2/8] spi: stm32: fix compatible to fit with new bindings
+Date: Fri, 23 Jun 2017 14:55:44 +0200
+Message-ID: <1498222550-19092-3-git-send-email-amelie.delaunay@st.com>
 References: <1498222550-19092-1-git-send-email-amelie.delaunay@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Amelie Delaunay <amelie.delaunay@st.com>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, Amelie Delaunay <amelie.delaunay@st.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1498222550-19092-1-git-send-email-amelie.delaunay@st.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes the usage of rx_dma_desc and tx_dma_desc pointers
-returned by dmaengine_prep_slave_sg, which can be null.
+This patch updates of_device_id compatible string to fit with new
+bindings.
 
-Detected by CoverityScan, CID#1446587 ("Dereference null return value")
-
-Reported-by: Colin Ian King <colin.king@canonical.com>
 Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
 ---
- drivers/spi/spi-stm32.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 63af9d9..076a720 100644
+index 82a6616f..ca38c24 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -775,9 +775,6 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 					xfer->rx_sg.nents,
- 					rx_dma_conf.direction,
- 					DMA_PREP_INTERRUPT);
--
--		rx_dma_desc->callback = stm32_spi_dma_cb;
--		rx_dma_desc->callback_param = spi;
- 	}
+@@ -1038,7 +1038,7 @@ static int stm32_spi_config(struct stm32_spi *spi)
+ }
  
- 	tx_dma_desc = NULL;
-@@ -790,11 +787,6 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 					xfer->tx_sg.nents,
- 					tx_dma_conf.direction,
- 					DMA_PREP_INTERRUPT);
--
--		if (spi->cur_comm == SPI_SIMPLEX_TX) {
--			tx_dma_desc->callback = stm32_spi_dma_cb;
--			tx_dma_desc->callback_param = spi;
--		}
- 	}
- 
- 	if ((spi->tx_buf && !tx_dma_desc) ||
-@@ -802,6 +794,9 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 		goto dma_desc_error;
- 
- 	if (rx_dma_desc) {
-+		rx_dma_desc->callback = stm32_spi_dma_cb;
-+		rx_dma_desc->callback_param = spi;
-+
- 		if (dma_submit_error(dmaengine_submit(rx_dma_desc))) {
- 			dev_err(spi->dev, "Rx DMA submit failed\n");
- 			goto dma_desc_error;
-@@ -811,6 +806,11 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 	}
- 
- 	if (tx_dma_desc) {
-+		if (spi->cur_comm == SPI_SIMPLEX_TX) {
-+			tx_dma_desc->callback = stm32_spi_dma_cb;
-+			tx_dma_desc->callback_param = spi;
-+		}
-+
- 		if (dma_submit_error(dmaengine_submit(tx_dma_desc))) {
- 			dev_err(spi->dev, "Tx DMA submit failed\n");
- 			goto dma_submit_error;
+ static const struct of_device_id stm32_spi_of_match[] = {
+-	{ .compatible = "st,stm32-spi", },
++	{ .compatible = "st,stm32h7-spi", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, stm32_spi_of_match);
 -- 
 1.9.1

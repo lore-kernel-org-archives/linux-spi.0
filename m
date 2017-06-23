@@ -1,164 +1,62 @@
-From: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH v3 1/3] spi: rockchip: add support for "cs-gpios" dts
- property
-Date: Fri, 23 Jun 2017 12:02:09 +0800
-Message-ID: <594C92C1.1040704@rock-chips.com>
-References: <1497411483-23377-1-git-send-email-jeffy.chen@rock-chips.com> <CAD=FV=WqhOUqf+JP2=m0Jt5dHqB_FqKLEw2SZTQtBbEv41+u_A@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH][spi-next] spi: stm32: fix range limit checks on div
+Date: Fri, 23 Jun 2017 12:11:17 +0100
+Message-ID: <20170623111117.yj33dqr4eg4v43wt@sirena.org.uk>
+References: <20170622154142.22481-1-colin.king@canonical.com>
+ <0133c805-c919-f115-7c94-65d88bed8ca2@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        =?UTF-8?B?SGVpa28gU3TDvGJuZXI=?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cpbv432ypy7adrwo"
+Cc: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Amelie DELAUNAY <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAD=FV=WqhOUqf+JP2=m0Jt5dHqB_FqKLEw2SZTQtBbEv41+u_A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <0133c805-c919-f115-7c94-65d88bed8ca2-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi doug,
 
-Thanx for your comments.
+--cpbv432ypy7adrwo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 06/23/2017 05:41 AM, Doug Anderson wrote:
-> Hi,
->
-> On Tue, Jun 13, 2017 at 8:38 PM, Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org> wrote:
->> Support using "cs-gpios" property to specify cs gpios.
->>
->> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
->> ---
->>
->> Changes in v3:
->> include linux/gpio/consumer.h for compile errors on ARCH_X86
->> (reported by kbuild test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>)
->>
->> Changes in v2:
->> 1/ request cs gpios in probe for better error handling
->> 2/ use gpiod* function
->> (suggested by Heiko Stuebner)
->> 3/ split dt-binding changes to new patch
->> (suggested by Shawn Lin & Heiko Stuebner)
->>
->>   drivers/spi/spi-rockchip.c | 31 ++++++++++++++++++++++++++++++-
->>   1 file changed, 30 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
->> index bab9b13..4bcf251 100644
->> --- a/drivers/spi/spi-rockchip.c
->> +++ b/drivers/spi/spi-rockchip.c
->> @@ -16,7 +16,8 @@
->>   #include <linux/clk.h>
->>   #include <linux/dmaengine.h>
->>   #include <linux/module.h>
->> -#include <linux/of.h>
->> +#include <linux/gpio/consumer.h>
->> +#include <linux/of_gpio.h>
->>   #include <linux/pinctrl/consumer.h>
->>   #include <linux/platform_device.h>
->>   #include <linux/spi/spi.h>
->> @@ -663,6 +664,27 @@ static bool rockchip_spi_can_dma(struct spi_master *master,
->>          return (xfer->len > rs->fifo_len);
->>   }
->>
->> +static int rockchip_spi_setup_cs_gpios(struct device *dev)
->> +{
->> +       struct device_node *np = dev->of_node;
->> +       struct gpio_desc *cs_gpio;
->> +       int i, nb;
->> +
->> +       if (!np)
->> +               return 0;
->
-> Not sure you really to check for NULL "np".  Do we really run properly
-> without device tree?  We already call of_property_read_u32()
-> unconditionally...
-hmm, right
->
->
->> +
->> +       nb = of_gpio_named_count(np, "cs-gpios");
->> +       for (i = 0; i < nb; i++) {
->
-> Implicitly if there is any error getting "cs-gpios" (AKA if it doesn't
-> exist) you'll return a negative value here, then return "0" for the
-> function.  AKA cs-gpios is optional...  The behavior is correct, but
-> it's a bit non-obvious.  Personally I would have at least put a
-> comment even if you didn't put an explicit check.
-ok
->
->
->> +               /* We support both GPIO CS and HW CS */
->> +               cs_gpio = devm_gpiod_get_index_optional(dev, "cs",
->> +                                                       i, GPIOD_ASIS);
->> +               if (IS_ERR(cs_gpio))
->> +                       return PTR_ERR(cs_gpio);
->
-> As per your discussion with Brian, your whole reason for having this
-> function is that:
->
-> 1. Core SPI framework treats errors getting the GPIO as non-fatal (SPI
-> framework falls back on using the HW chip select).
->
-> Mark is the expert, but IMHO that seems like a bug in the core SPI
-> framework and you should fix it there rather than hacking around in
-> the driver.  _In theory_ you could break backward compatibility
-> (someone could have been relying on the old behavior that an error
-> caused you to fallback to the HW chip select), but I think that's not
-> likely as long as you handle things like:
->
->    cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
->
-> AKA if someone has explicitly specified <0> for the GPIO then _that_
-> shouldn't be an error and we should do the fallback to HW chip select.
-> If we really expect old buggy DTS files that get broken by the old
-> behavior then we'd have to ask for advice from Mark and/or device tree
-> experts...
-right, it would be good to be handled in the spi core.
-and i think devm_gpiod_get_index_optional would take care of the <0> 
-fallback case
->
->
-> As evidence that the current SPI core is broken in the way it is and
-> could use a patch, it would be easy to "fall back" to a chip select
-> that's greater than "master->num_chipselect", which seems to me like a
-> clear bug.
->
-> --
->
-> 2. The SPI framework doesn't end up calling gpiod_request().  It seems
-> like it ought to.  Requiring the sub driver to do this seems wrong.
->
->
->> +       }
->> +
->> +       return 0;
->> +}
->> +
->>   static int rockchip_spi_probe(struct platform_device *pdev)
->>   {
->>          int ret = 0;
->> @@ -749,6 +771,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
->>          master->transfer_one = rockchip_spi_transfer_one;
->>          master->max_transfer_size = rockchip_spi_max_transfer_size;
->>          master->handle_err = rockchip_spi_handle_err;
->> +       master->flags = SPI_MASTER_GPIO_SS;
->
-> IMHO this one line in your patch makes total sense and it seems like
-> you could post it by itself and it could land.  All the error check
-> and gpiod_request() bikeshedding could be deferred to a separate
-> patch.
-ok, that make sense, will do in next version.
->
->
->
+On Thu, Jun 22, 2017 at 05:49:10PM +0200, Amelie DELAUNAY wrote:
 
+> I'm preparing a v2 for the initial patchset introducing spi-stm32, if you
+> agree, I can directly add your fix.
 
+Please don't resubmit patches that have already been applied, you should
+submit patches against current code in the tree you're expecting things
+to be applied to.  If any updates are needed to a patch that's already
+been applied you should submit incremental patches which make those
+updates.  This avoids having to change published git commits which could
+cause problems for people working against git.
+
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
+
+--cpbv432ypy7adrwo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllM91IACgkQJNaLcl1U
+h9AMiwf/ZDVix5Gpa85aSIgX0I8O+40zuxf0t8oivixjWBUP1/2vUeQhlud/Hwm0
+VawRNm6rsQ8GoZkF1ZVvGRjjTHyvchxXhvJtX4VjYbUtYq+13uecN+AM5STr4EtD
+7Yb6BKhr9EBAtudQH4fBX9azEbEd7aNUYqcCXMeu7A6Ya7ES3B/Uzd1QtZUT4gYt
+iCvROTsRi1EOa546UTVEKucf/YVJrgzMY2jQcCO5FTAug5AK7+h3sG3/OpzD+0B3
+k/ALQPYLqjPGBNAxP1mRUXYp+vW08c55puiQZjHn23yf5eg4kZAvmP9AveuC9OpF
+hMlplpuXv/joCslD9PEtdymaYhUvJg==
+=diu2
+-----END PGP SIGNATURE-----
+
+--cpbv432ypy7adrwo--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

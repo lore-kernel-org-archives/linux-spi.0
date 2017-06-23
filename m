@@ -1,63 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: spi-ti-qspi: Use bounce buffer if read
- buffer is not DMA'ble
-Date: Fri, 23 Jun 2017 13:12:21 +0100
-Message-ID: <20170623121221.3zrxziqjuwb47cwq@sirena.org.uk>
-References: <20170411115225.31709-1-vigneshr@ti.com>
- <20170411115225.31709-3-vigneshr@ti.com>
- <20170421170655.dpyxlwipfwnwjjwy@sirena.org.uk>
- <3955ad22-28a2-5222-4ae3-aa34dc69cde6@ti.com>
- <c9dbe3d1-549c-f510-fa76-8e326601ecdc@atmel.com>
- <faa7fdc4-25d1-aa9e-762b-25d5e89a771f@ti.com>
+From: Amelie DELAUNAY <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH][spi-next] spi: stm32: fix range limit checks on div
+Date: Fri, 23 Jun 2017 14:42:07 +0200
+Message-ID: <1c40b653-2b52-f631-5f54-57e68270d141@st.com>
+References: <20170622154142.22481-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="i5lubso6u3fjsmzh"
-Cc: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Boris BREZILLON <boris.brezillon@free-electrons.com>
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <faa7fdc4-25d1-aa9e-762b-25d5e89a771f@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170622154142.22481-1-colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---i5lubso6u3fjsmzh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 06/22/2017 05:41 PM, Colin King wrote:
+> From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+> 
+> Currently the check for range limits on div is incorrect and will
+> never return -EINVAL. Fix this by replacing && with ||
+> 
+> Detected by CoverityScan, CID#1446580 ("Structurally dead code")
+> 
+> Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+> ---
+>   drivers/spi/spi-stm32.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index 0553f61ab3b7..b75909e7b117 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -262,7 +262,7 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
+>   	 * no need to check it there.
+>   	 * However, we need to ensure the following calculations.
+>   	 */
+> -	if ((div < SPI_MBR_DIV_MIN) &&
+> +	if ((div < SPI_MBR_DIV_MIN) ||
+>   	    (div > SPI_MBR_DIV_MAX))
+>   		return -EINVAL;
+>   
+> 
 
-On Tue, Jun 20, 2017 at 03:15:34PM +0530, Vignesh R wrote:
-> On Friday 16 June 2017 09:24 PM, Cyrille Pitchen wrote:
-
-> > Then in a new series, if nobody has started to work on this topic yet,
-> > we could propose a generic solution using a bounce buffer at the SPI
-> > core level. however we first need to think how we could do this.
-
-> One of the questions that was hovering around when this issue was
-> discussed last time around was where should the code to detect whether
-> or not to use bounce buffer reside? Some extension to generic DMA APIs
-> or SPI drivers or somewhere else?
-
-It seems like it's a generic DMA thing - presumably it's going to be an
-issue for other devices as well sometimes.
-
---i5lubso6u3fjsmzh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllNBaQACgkQJNaLcl1U
-h9B2RAf/dt+Z7PCBzfFRNjn1499OcyBSPIsVV381XJQl0e35HzXyPkI17i+icLdC
-9wubJgD2PZplg32frF+pnfuLGAlsVUWkycxg5V9v9UvcXFU9cXZIa23Jv7joETus
-yjyrVZ1boavUkwn8rj1LrzTG41sv6RVjLGRKOhnzIkh/+oQ8uSfDdSF6FYDnjhBj
-4UE007dgacpFanYwfqqLLGHOCYK8+mvqp1hQNItQN1C5X7D83pmpWmg85Qj967i2
-8BuvbK+HaN4kT3/EfmLPwcMLzIcLx9FRtvH+ByALzFycXRcgYE1adBqRlx8JHoQ4
-wCLCF3ZlRkDSrR4AZNrjFEQ+vZMShg==
-=vk8U
------END PGP SIGNATURE-----
-
---i5lubso6u3fjsmzh--
+Reviewed-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

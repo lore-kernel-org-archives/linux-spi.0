@@ -1,86 +1,63 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: fix error check on mbr being -ve" to the spi tree
-Date: Fri, 23 Jun 2017 13:04:37 +0100
-Message-ID: <E1dONKH-0006aB-Py@debutante>
-References: <20170622163449.23925-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20170622163449.23925-1-colin.king@canonical.com>
-Sender: kernel-janitors-owner@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] spi: spi-ti-qspi: Use bounce buffer if read
+ buffer is not DMA'ble
+Date: Fri, 23 Jun 2017 13:12:21 +0100
+Message-ID: <20170623121221.3zrxziqjuwb47cwq@sirena.org.uk>
+References: <20170411115225.31709-1-vigneshr@ti.com>
+ <20170411115225.31709-3-vigneshr@ti.com>
+ <20170421170655.dpyxlwipfwnwjjwy@sirena.org.uk>
+ <3955ad22-28a2-5222-4ae3-aa34dc69cde6@ti.com>
+ <c9dbe3d1-549c-f510-fa76-8e326601ecdc@atmel.com>
+ <faa7fdc4-25d1-aa9e-762b-25d5e89a771f@ti.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="i5lubso6u3fjsmzh"
+Cc: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Boris BREZILLON <boris.brezillon@free-electrons.com>
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <faa7fdc4-25d1-aa9e-762b-25d5e89a771f@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: stm32: fix error check on mbr being -ve
+--i5lubso6u3fjsmzh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Tue, Jun 20, 2017 at 03:15:34PM +0530, Vignesh R wrote:
+> On Friday 16 June 2017 09:24 PM, Cyrille Pitchen wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> > Then in a new series, if nobody has started to work on this topic yet,
+> > we could propose a generic solution using a bounce buffer at the SPI
+> > core level. however we first need to think how we could do this.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> One of the questions that was hovering around when this issue was
+> discussed last time around was where should the code to detect whether
+> or not to use bounce buffer reside? Some extension to generic DMA APIs
+> or SPI drivers or somewhere else?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+It seems like it's a generic DMA thing - presumably it's going to be an
+issue for other devices as well sometimes.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--i5lubso6u3fjsmzh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllNBaQACgkQJNaLcl1U
+h9B2RAf/dt+Z7PCBzfFRNjn1499OcyBSPIsVV381XJQl0e35HzXyPkI17i+icLdC
+9wubJgD2PZplg32frF+pnfuLGAlsVUWkycxg5V9v9UvcXFU9cXZIa23Jv7joETus
+yjyrVZ1boavUkwn8rj1LrzTG41sv6RVjLGRKOhnzIkh/+oQ8uSfDdSF6FYDnjhBj
+4UE007dgacpFanYwfqqLLGHOCYK8+mvqp1hQNItQN1C5X7D83pmpWmg85Qj967i2
+8BuvbK+HaN4kT3/EfmLPwcMLzIcLx9FRtvH+ByALzFycXRcgYE1adBqRlx8JHoQ4
+wCLCF3ZlRkDSrR4AZNrjFEQ+vZMShg==
+=vk8U
+-----END PGP SIGNATURE-----
 
->From a2f07d38d6981ed220d86b7df07e4ac6a1734443 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 22 Jun 2017 17:34:49 +0100
-Subject: [PATCH] spi: stm32: fix error check on mbr being -ve
-
-The error check of mbr < 0 is always false because mbr is a u32. Make
-mbt an int so that a -ve error return from stm32_spi_prepare_mbr can be
-detected.
-
-Detected by CoverityScan, CID#1446586 ("Unsigned compared against 0")
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-stm32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 0553f61ab3b7..305ecd5334fc 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -857,7 +857,7 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	}
- 
- 	if (spi->cur_speed != transfer->speed_hz) {
--		u32 mbr;
-+		int mbr;
- 
- 		/* Update spi->cur_speed with real clock speed */
- 		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz);
-@@ -869,7 +869,7 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 		transfer->speed_hz = spi->cur_speed;
- 
- 		cfg1_clrb |= SPI_CFG1_MBR;
--		cfg1_setb |= (mbr << SPI_CFG1_MBR_SHIFT) & SPI_CFG1_MBR;
-+		cfg1_setb |= ((u32)mbr << SPI_CFG1_MBR_SHIFT) & SPI_CFG1_MBR;
- 	}
- 
- 	if (cfg1_clrb || cfg1_setb)
--- 
-2.13.1
-
+--i5lubso6u3fjsmzh--

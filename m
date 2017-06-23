@@ -1,54 +1,60 @@
-From: Amelie DELAUNAY <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH][spi-next] spi: stm32: fix range limit checks on div
-Date: Fri, 23 Jun 2017 14:42:07 +0200
-Message-ID: <1c40b653-2b52-f631-5f54-57e68270d141@st.com>
-References: <20170622154142.22481-1-colin.king@canonical.com>
+From: Amelie Delaunay <amelie.delaunay@st.com>
+Subject: [PATCH 1/8] dt-bindings: spi: stm32: use SoC specific compatible
+Date: Fri, 23 Jun 2017 14:55:43 +0200
+Message-ID: <1498222550-19092-2-git-send-email-amelie.delaunay@st.com>
+References: <1498222550-19092-1-git-send-email-amelie.delaunay@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170622154142.22481-1-colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: devicetree@vger.kernel.org, Amelie Delaunay <amelie.delaunay@st.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1498222550-19092-1-git-send-email-amelie.delaunay@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
+This patch replaces st,stm32-spi compatible with st,stm32h7-spi SoC
+specific compatible and updates the example accondingly.
 
-On 06/22/2017 05:41 PM, Colin King wrote:
-> From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-> 
-> Currently the check for range limits on div is incorrect and will
-> never return -EINVAL. Fix this by replacing && with ||
-> 
-> Detected by CoverityScan, CID#1446580 ("Structurally dead code")
-> 
-> Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-> ---
->   drivers/spi/spi-stm32.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-> index 0553f61ab3b7..b75909e7b117 100644
-> --- a/drivers/spi/spi-stm32.c
-> +++ b/drivers/spi/spi-stm32.c
-> @@ -262,7 +262,7 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
->   	 * no need to check it there.
->   	 * However, we need to ensure the following calculations.
->   	 */
-> -	if ((div < SPI_MBR_DIV_MIN) &&
-> +	if ((div < SPI_MBR_DIV_MIN) ||
->   	    (div > SPI_MBR_DIV_MAX))
->   		return -EINVAL;
->   
-> 
+Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
+---
+ Documentation/devicetree/bindings/spi/spi-stm32.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+index 3958bf6..415378b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
++++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+@@ -7,7 +7,7 @@ from 4 to 32-bit data size. Although it can be configured as master or slave,
+ only master is supported by the driver.
+ 
+ Required properties:
+-- compatible: Must be "st,stm32-spi".
++- compatible: Must be "st,stm32h7-spi".
+ - reg: Offset and length of the device's register set.
+ - interrupts: Must contain the interrupt id.
+ - clocks: Must contain an entry for spiclk (which feeds the internal clock
+@@ -38,7 +38,7 @@ Example:
+ 	spi2: spi@40003800 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+-		compatible = "st,stm32-spi";
++		compatible = "st,stm32h7-spi";
+ 		reg = <0x40003800 0x400>;
+ 		interrupts = <36>;
+ 		clocks = <&rcc SPI2_CK>;
+-- 
+1.9.1

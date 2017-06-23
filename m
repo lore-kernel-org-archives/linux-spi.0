@@ -1,63 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH][spi-next] spi: stm32: fix range limit checks on div
-Date: Fri, 23 Jun 2017 12:11:17 +0100
-Message-ID: <20170623111117.yj33dqr4eg4v43wt@sirena.org.uk>
-References: <20170622154142.22481-1-colin.king@canonical.com>
- <0133c805-c919-f115-7c94-65d88bed8ca2@st.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cpbv432ypy7adrwo"
-Cc: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Amelie DELAUNAY <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <0133c805-c919-f115-7c94-65d88bed8ca2-qxv4g6HH51o@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: stm32: fix error check on mbr being -ve" to the spi tree
+Date: Fri, 23 Jun 2017 13:04:37 +0100
+Message-ID: <E1dONKH-0006aB-Py@debutante>
+References: <20170622163449.23925-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20170622163449.23925-1-colin.king@canonical.com>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---cpbv432ypy7adrwo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: stm32: fix error check on mbr being -ve
 
-On Thu, Jun 22, 2017 at 05:49:10PM +0200, Amelie DELAUNAY wrote:
+has been applied to the spi tree at
 
-> I'm preparing a v2 for the initial patchset introducing spi-stm32, if you
-> agree, I can directly add your fix.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please don't resubmit patches that have already been applied, you should
-submit patches against current code in the tree you're expecting things
-to be applied to.  If any updates are needed to a patch that's already
-been applied you should submit incremental patches which make those
-updates.  This avoids having to change published git commits which could
-cause problems for people working against git.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---cpbv432ypy7adrwo
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllM91IACgkQJNaLcl1U
-h9AMiwf/ZDVix5Gpa85aSIgX0I8O+40zuxf0t8oivixjWBUP1/2vUeQhlud/Hwm0
-VawRNm6rsQ8GoZkF1ZVvGRjjTHyvchxXhvJtX4VjYbUtYq+13uecN+AM5STr4EtD
-7Yb6BKhr9EBAtudQH4fBX9azEbEd7aNUYqcCXMeu7A6Ya7ES3B/Uzd1QtZUT4gYt
-iCvROTsRi1EOa546UTVEKucf/YVJrgzMY2jQcCO5FTAug5AK7+h3sG3/OpzD+0B3
-k/ALQPYLqjPGBNAxP1mRUXYp+vW08c55puiQZjHn23yf5eg4kZAvmP9AveuC9OpF
-hMlplpuXv/joCslD9PEtdymaYhUvJg==
-=diu2
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---cpbv432ypy7adrwo--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From a2f07d38d6981ed220d86b7df07e4ac6a1734443 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Thu, 22 Jun 2017 17:34:49 +0100
+Subject: [PATCH] spi: stm32: fix error check on mbr being -ve
+
+The error check of mbr < 0 is always false because mbr is a u32. Make
+mbt an int so that a -ve error return from stm32_spi_prepare_mbr can be
+detected.
+
+Detected by CoverityScan, CID#1446586 ("Unsigned compared against 0")
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-stm32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 0553f61ab3b7..305ecd5334fc 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -857,7 +857,7 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 	}
+ 
+ 	if (spi->cur_speed != transfer->speed_hz) {
+-		u32 mbr;
++		int mbr;
+ 
+ 		/* Update spi->cur_speed with real clock speed */
+ 		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz);
+@@ -869,7 +869,7 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 		transfer->speed_hz = spi->cur_speed;
+ 
+ 		cfg1_clrb |= SPI_CFG1_MBR;
+-		cfg1_setb |= (mbr << SPI_CFG1_MBR_SHIFT) & SPI_CFG1_MBR;
++		cfg1_setb |= ((u32)mbr << SPI_CFG1_MBR_SHIFT) & SPI_CFG1_MBR;
+ 	}
+ 
+ 	if (cfg1_clrb || cfg1_setb)
+-- 
+2.13.1
+

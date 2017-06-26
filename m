@@ -1,7 +1,7 @@
 From: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Subject: Re: [PATCH v2 4/4] arm64: dts: rockchip: use cs-gpios for cros_ec_spi
-Date: Mon, 26 Jun 2017 11:26:22 +0800
-Message-ID: <59507EDE.2010409@rock-chips.com>
+Date: Mon, 26 Jun 2017 11:27:32 +0800
+Message-ID: <59507F24.4000309@rock-chips.com>
 References: <1497331543-8565-1-git-send-email-jeffy.chen@rock-chips.com> <1497331543-8565-4-git-send-email-jeffy.chen@rock-chips.com> <20170613175043.GC9026@google.com> <20170613182225.smahsf3jzvbc7w7z@sirena.org.uk> <20170620004739.GA67314@google.com> <CAD=FV=UKe5M-M=gXwdjp25vpR0CHtk1APRF0_b4PXQrGOc40+A@mail.gmail.com> <594C905E.1040208@rock-chips.com> <CAD=FV=VWjbGpY4nj2L0_6xaYY2_tp0pJ5q=BgppL9GWefBUGog@mail.gmail.com> <594D0723.7010108@rock-chips.com> <CAD=FV=XjW4a9mqH0UtUAmHkj-aAO75bpSXuyy__jBB7YC8PBVg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8; format=flowed

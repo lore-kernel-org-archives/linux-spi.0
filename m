@@ -1,41 +1,48 @@
-From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Subject: [PATCH] spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"
-Date: Mon, 26 Jun 2017 14:42:31 +0100
-Message-ID: <20170626134231.23958-1-colin.king@canonical.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source
+ optional property
+Date: Mon, 26 Jun 2017 11:00:11 -0500
+Message-ID: <20170626160011.qi3bliz5jt6d5wgb@rob-hp-laptop>
+References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
+ <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1498039313-24220-3-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+On Wed, Jun 21, 2017 at 06:01:49PM +0800, Jeffy Chen wrote:
+> Update document devicetree bindings to support "wakeup-source" property.
+> 
+> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+> ---
+> 
+> Changes in v3: None
+> 
+>  Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> index 1f6e86f..0fa1ccf 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> @@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
+>  		    Defaults to 1 if not present.
+>  - spi-rx-delay-us - Microsecond delay after a read transfer.
+>  - spi-tx-delay-us - Microsecond delay after a write transfer.
+> +- wakeup-source   - Device can be used as a wakeup source.
 
-trivial fix to spelling mistake in dev_info error message
+wakeup-source is valid for any device with an interrupts property 
+already, so I don't think this is necessary.
 
-Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
----
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index f4875f177df0..514997a143dc 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -894,7 +894,7 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 		test->elapsed_time = ktime_to_ns(ktime_sub(ktime_get(), start));
- 		if (ret == -ETIMEDOUT) {
- 			dev_info(&spi->dev,
--				 "spi-message timed out - reruning...\n");
-+				 "spi-message timed out - rerunning...\n");
- 			/* rerun after a few explicit schedules */
- 			for (i = 0; i < 16; i++)
- 				schedule();
--- 
-2.11.0
-
+Rob
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

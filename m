@@ -1,59 +1,107 @@
-From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source
- optional property
-Date: Mon, 26 Jun 2017 09:40:16 -0700
-Message-ID: <20170626164016.GA4965@dtor-ws>
-References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com>
- <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com>
- <20170626160011.qi3bliz5jt6d5wgb@rob-hp-laptop>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Document the STM32 SPI bindings
+Date: Mon, 26 Jun 2017 13:21:30 -0500
+Message-ID: <20170626182130.px4sjfxuvdl2br42@rob-hp-laptop>
+References: <1498055526-6918-1-git-send-email-amelie.delaunay@st.com>
+ <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Amelie Delaunay <amelie.delaunay@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <20170626160011.qi3bliz5jt6d5wgb@rob-hp-laptop>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jun 26, 2017 at 11:00:11AM -0500, Rob Herring wrote:
-> On Wed, Jun 21, 2017 at 06:01:49PM +0800, Jeffy Chen wrote:
-> > Update document devicetree bindings to support "wakeup-source" property.
-> > 
-> > Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-> > ---
-> > 
-> > Changes in v3: None
-> > 
-> >  Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > index 1f6e86f..0fa1ccf 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > @@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
-> >  		    Defaults to 1 if not present.
-> >  - spi-rx-delay-us - Microsecond delay after a read transfer.
-> >  - spi-tx-delay-us - Microsecond delay after a write transfer.
-> > +- wakeup-source   - Device can be used as a wakeup source.
+On Wed, Jun 21, 2017 at 04:32:05PM +0200, Amelie Delaunay wrote:
+> This patch adds the documentation of device tree bindings
+> for the STM32 SPI controller.
 > 
-> wakeup-source is valid for any device with an interrupts property 
-> already, so I don't think this is necessary.
+> Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
+> ---
+>  .../devicetree/bindings/spi/spi-stm32.txt          | 60 ++++++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+> new file mode 100644
+> index 0000000..3958bf6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+> @@ -0,0 +1,60 @@
+> +STMicroelectronics STM32 SPI Controller
+> +
+> +The STM32 SPI controller is used to communicate with external devices using
+> +the Serial Peripheral Interface. It supports full-duplex, half-duplex and
+> +simplex synchronous serial communication with external devices. It supports
+> +from 4 to 32-bit data size. Although it can be configured as master or slave,
+> +only master is supported by the driver.
+> +
+> +Required properties:
+> +- compatible: Must be "st,stm32-spi".
+> +- reg: Offset and length of the device's register set.
+> +- interrupts: Must contain the interrupt id.
+> +- clocks: Must contain an entry for spiclk (which feeds the internal clock
+> +	  generator).
+> +- #address-cells:  Number of cells required to define a chip select address.
+> +- #size-cells: Should be zero.
+> +
+> +Optional properties:
+> +- resets: Must contain the phandle to the reset controller.
+> +- A pinctrl state named "default" may be defined to set pins in mode of
+> +  operation for SPI transfer.
+> +- dmas: DMA specifiers for tx and rx dma. DMA fifo mode must be used. See the
+> +  STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt.
+> +- dma-names: DMA request names should include "tx" and "rx" if present.
+> +- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+> +  Documentation/devicetree/bindings/spi/spi-bus.txt
+> +
+> +
+> +Child nodes represent devices on the SPI bus
+> +  See ../spi/spi-bus.txt
+> +
+> +Optional properties:
+> +- st,spi-midi-ns: (Master Inter-Data Idleness) minimum time delay in
+> +		  nanoseconds inserted between two consecutive data frames.
+> +
+> +
+> +Example:
+> +	spi2: spi@40003800 {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		compatible = "st,stm32-spi";
+> +		reg = <0x40003800 0x400>;
+> +		interrupts = <36>;
+> +		clocks = <&rcc SPI2_CK>;
+> +		resets = <&rcc 1166>;
+> +		dmas = <&dmamux1 0 39 0x400 0x01>,
+> +		       <&dmamux1 1 40 0x400 0x01>;
+> +		dma-names = "rx", "tx";
+> +		pinctrl-0 = <&spi2_pins_b>;
+> +		pinctrl-names = "default";
+> +		status = "okay";
 
-Do you mean it is not necessary on SPI level or not necessary at all? Or
-you disagree with wording? Because we do need a way to say that on given
-platform the device is supposed to be configured as a wakeup source.
+Don't show status in examples.
 
-Thanks.
+> +		cs-gpios = <&gpioa 11 0>;
+> +
+> +		spidev@0 {
+> +			compatible = "spidev";
 
--- 
-Dmitry
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This is not a valid compatible. Pick a real device.
+
+Rob

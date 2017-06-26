@@ -1,107 +1,60 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Document the STM32 SPI bindings
-Date: Mon, 26 Jun 2017 13:21:30 -0500
-Message-ID: <20170626182130.px4sjfxuvdl2br42@rob-hp-laptop>
-References: <1498055526-6918-1-git-send-email-amelie.delaunay@st.com>
- <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Applied "spi: Document the STM32 SPI bindings" to the spi tree
+Date: Mon, 26 Jun 2017 13:22:40 -0500
+Message-ID: <20170626182240.vcv4wwu7cavgu4na@rob-hp-laptop>
+References: <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
+ <E1dNhMj-0001FC-Ay@debutante>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-To: Amelie Delaunay <amelie.delaunay@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1498055526-6918-2-git-send-email-amelie.delaunay@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <E1dNhMj-0001FC-Ay@debutante>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Jun 21, 2017 at 04:32:05PM +0200, Amelie Delaunay wrote:
-> This patch adds the documentation of device tree bindings
-> for the STM32 SPI controller.
+On Wed, Jun 21, 2017 at 04:16:21PM +0100, Mark Brown wrote:
+> The patch
 > 
-> Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
-> ---
->  .../devicetree/bindings/spi/spi-stm32.txt          | 60 ++++++++++++++++++++++
->  1 file changed, 60 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
+>    spi: Document the STM32 SPI bindings
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-> new file mode 100644
-> index 0000000..3958bf6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-> @@ -0,0 +1,60 @@
-> +STMicroelectronics STM32 SPI Controller
-> +
-> +The STM32 SPI controller is used to communicate with external devices using
-> +the Serial Peripheral Interface. It supports full-duplex, half-duplex and
-> +simplex synchronous serial communication with external devices. It supports
-> +from 4 to 32-bit data size. Although it can be configured as master or slave,
-> +only master is supported by the driver.
-> +
-> +Required properties:
-> +- compatible: Must be "st,stm32-spi".
-> +- reg: Offset and length of the device's register set.
-> +- interrupts: Must contain the interrupt id.
-> +- clocks: Must contain an entry for spiclk (which feeds the internal clock
-> +	  generator).
-> +- #address-cells:  Number of cells required to define a chip select address.
-> +- #size-cells: Should be zero.
-> +
-> +Optional properties:
-> +- resets: Must contain the phandle to the reset controller.
-> +- A pinctrl state named "default" may be defined to set pins in mode of
-> +  operation for SPI transfer.
-> +- dmas: DMA specifiers for tx and rx dma. DMA fifo mode must be used. See the
-> +  STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt.
-> +- dma-names: DMA request names should include "tx" and "rx" if present.
-> +- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
-> +  Documentation/devicetree/bindings/spi/spi-bus.txt
-> +
-> +
-> +Child nodes represent devices on the SPI bus
-> +  See ../spi/spi-bus.txt
-> +
-> +Optional properties:
-> +- st,spi-midi-ns: (Master Inter-Data Idleness) minimum time delay in
-> +		  nanoseconds inserted between two consecutive data frames.
-> +
-> +
-> +Example:
-> +	spi2: spi@40003800 {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		compatible = "st,stm32-spi";
-> +		reg = <0x40003800 0x400>;
-> +		interrupts = <36>;
-> +		clocks = <&rcc SPI2_CK>;
-> +		resets = <&rcc 1166>;
-> +		dmas = <&dmamux1 0 39 0x400 0x01>,
-> +		       <&dmamux1 1 40 0x400 0x01>;
-> +		dma-names = "rx", "tx";
-> +		pinctrl-0 = <&spi2_pins_b>;
-> +		pinctrl-names = "default";
-> +		status = "okay";
+> has been applied to the spi tree at
+> 
+>    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> 
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.  
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+> 
+> From 82a29bf9952acd1be7e76783604686abeb4e5b1d Mon Sep 17 00:00:00 2001
+> From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+> Date: Wed, 21 Jun 2017 16:32:05 +0200
 
-Don't show status in examples.
-
-> +		cs-gpios = <&gpioa 11 0>;
-> +
-> +		spidev@0 {
-> +			compatible = "spidev";
-
-This is not a valid compatible. Pick a real device.
+A bit quick on the applying as there are several comments...
 
 Rob
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

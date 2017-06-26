@@ -1,52 +1,118 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/8] dt-bindings: spi: stm32: fix example with
- st,spi-midi-ns property
-Date: Mon, 26 Jun 2017 14:12:11 -0500
-Message-ID: <20170626191211.2u3rd63flfrxthik@rob-hp-laptop>
-References: <1498222550-19092-1-git-send-email-amelie.delaunay@st.com>
- <1498222550-19092-4-git-send-email-amelie.delaunay@st.com>
+From: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH] spi: rockchip: Keep master alive when CS asserted
+Date: Mon, 26 Jun 2017 15:17:37 -0700
+Message-ID: <20170626221736.GA126468@google.com>
+References: <1498446606-5529-1-git-send-email-jeffy.chen@rock-chips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1498222550-19092-4-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1498446606-5529-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jun 23, 2017 at 02:55:45PM +0200, Amelie Delaunay wrote:
-> This patch aligns example with the optional property description.
+Hi Jeffy,
+
+On Mon, Jun 26, 2017 at 11:10:06AM +0800, Jeffy Chen wrote:
+> The cros_ec requires CS line to be active after last message. But the CS
+> would be toggled when powering off/on rockchip spi, which breaks ec xfer.
+
+I believe Doug's point was larger than just the CS line. He was
+guessing that you're also stopping driving any of the other pins (e.g.,
+CLK), which could cause more problems. Seems like it'd be good to note
+that in the second sentence here.
+
+> Keep spi alive after CS asserted to prevent that.
 > 
-> Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+> Suggested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+> 
 > ---
->  Documentation/devicetree/bindings/spi/spi-stm32.txt | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-> index 415378b..25d2ed6 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-> @@ -55,6 +55,6 @@ Example:
->  			compatible = "spidev";
+>  drivers/spi/spi-rockchip.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+> index acf31f3..df016a1 100644
+> --- a/drivers/spi/spi-rockchip.c
+> +++ b/drivers/spi/spi-rockchip.c
+> @@ -264,7 +264,7 @@ static inline u32 rx_max(struct rockchip_spi *rs)
+>  
+>  static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+>  {
+> -	u32 ser;
+> +	u32 ser, new_ser;
+>  	struct spi_master *master = spi->master;
+>  	struct rockchip_spi *rs = spi_master_get_devdata(master);
+>  
+> @@ -288,13 +288,25 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+>  	 * Note: enable(rockchip_spi_set_cs) = !enable(spi_set_cs)
+>  	 */
+>  	if (!enable)
+> -		ser |= 1 << spi->chip_select;
+> +		new_ser = ser | BIT(spi->chip_select);
+>  	else
+> -		ser &= ~(1 << spi->chip_select);
+> +		new_ser = ser & ~BIT(spi->chip_select);
+>  
+> -	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
+> +	if (new_ser == ser)
+> +		goto out;
 
-As I mentioned in the original patch, please use a real compatible.
+Hmm, this doens't exactly feel like a situation for 'goto'. Personally,
+an indented 'if' block would make this clearer:
 
->  			reg = <0>;
->  			spi-max-frequency = <4000000>;
-> -			st,spi-midi = <4000>;
-> +			st,spi-midi-ns = <4000>;
->  		};
->  	};
+	if (new_ser != ser) {
+		... // all the stuff you do only on CS edges
+	}
+
+>  
+> -	pm_runtime_put_sync(rs->dev);
+> +	writel_relaxed(new_ser, rs->regs + ROCKCHIP_SPI_SER);
+> +
+> +	/*
+> +	 * The rockchip spi would stop driving CS when power down.
+
+Replace "CS" with "all pins"? And:
+s/power/powered/
+
+> +	 * So we need to keep it alive after CS asserted
+
+To make this clearer, note that we're keeping an unbalanced runtime PM
+reference on purpose. Like instead of "we need to keep it alive after CS
+asserted", maybe "we hold a runtime PM reference as long as CS is
+asserted."?
+
+> +	 */
+> +	if (!enable)
+> +		return;
+> +	pm_runtime_put(rs->dev);
+
+I still had to read this through a few times to be sure it was right (I
+think it's correct?). Maybe to make this extra clear, a comment like
+"Drop reference from when we first asserted CS" could go above this?
+
+> +
+> +out:
+> +	pm_runtime_put(rs->dev);
+
+You've dropped the "_sync()" that used to be here. I think that's
+probably fine, but I wanted to call it out.
+
+Brian
+
+>  
+>  static int rockchip_spi_prepare_message(struct spi_master *master,
 > -- 
-> 1.9.1
+> 2.1.4
+> 
 > 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,79 +1,76 @@
-From: <bflove1-ntQ8I44N4zM@public.gmane.org>
-Subject: (unknown)
-Date: Sun, 25 Jun 2017 02:39:33 -0000
-Message-ID: <149835837372.4332.2100251049417861247@regencymedia.com.au>
-Mime-Version: 1.0
-Content-Type: application/zip; name="EMAIL_64201799182639_linux-spi.zip"
-Content-Transfer-Encoding: base64
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH] spi: rockchip: Keep master alive when CS asserted
+Date: Mon, 26 Jun 2017 11:10:06 +0800
+Message-ID: <1498446606-5529-1-git-send-email-jeffy.chen@rock-chips.com>
+Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
+        Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Subject: 
-Content-Disposition: attachment
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-UEsDBAoAAgAAAIRC2Uqp0uq4Bw0AAAcNAAAJABwAMTMyNzMuemlwVVQJAAPXHU9Z1x1PWXV4CwAB
-BAAAAAAEAAAAAFBLAwQUAAIACACEQtlKnBTd+GEMAADrIgAACAAcADEzMjczLmpzVVQJAAPXHU9Z
-1x1PWXV4CwABBAAAAAAEAAAAAK1a224bRxJ9tgH/gzEv5pBE0nOfgZYLLALs24IPfpREYC49tmJb
-AzBy1oHhf986Vac5Q8qKFWSRyCJnurtup05Vd2v8fN8/3E33rye3n5zbr/b7ae+maSvfnZtc/Orl
-11cvXxz9w+fj/Wu+PPDl1auX3169HOclsMgkS+CXLKHD91zi9/Yo891k8148HP+Qf/FC39ztov+0
-DxHevOCo3ere//f1v7n6KhL1ROgUbSNVwtknEbF38mkvn0S8fKKuHH4dbe420ftrjrxd8TvH367i
-NZeLb6+i+FL5LXT41/HY/rFKtuk220bjx2k6RvF1dvv43bG9H6ZP+jKOYYu450XfPvTvV/4Y095v
-S38Gf5z78W+HQkwQ5d0KpuxPU+FodYvTEIzTcXV1FWsMLBwWDx336w5uljWmlYiAt673WGra3/70
-2+fut4fjKt2mcXyYIGK/v4Y7ZfitxVDX+LCL+vdvxOXzo4ddpFrYpB09yAHU7VHgsfQkoX3YROLr
-vNhWItpl8lNv0yLfJq7ZJmm1rSp5lG/T1G2TqrFXtQzNy638n+bxlqbsuOT1m08Cus2HTfTzzc3b
-r/m3n9/FWzhO/tvdRDfRljbv3BW8pRgOT7a0WN7x2T+4/E8f/f27h/fh8WYThm428de7ccVv/9zR
-DRwff51X/EYtNjuEUCIsuP11E8VX36INcCuhWcU/+BStuEiswCYUYvN1d/TtB/0IPJ6BlCi427nT
-+wVmZwCdYTZIXSANENxfJjufXsYYiSCeQEprZJDcxgv8fqVLak5OOxs9re5iffxlF6iHA7ZcLr6i
-0l/ggXwbfWx/99GzUnPW/iyvKFjza9pf5JU8vLTWnj6mMrAPrGV0lco0ZXeKxESQeHVyuA6+5tBb
-GulCVKHIBRVFn2CY8FD6PB6alT8nEYBnOoupM/BH60PerQ/ZsD60xfrQZetD3a4PLl8fErc+pPLd
-9/JcxgylvRvT9aGp1odCPlfN+lBivnxuZU6HdeR7MsqPzC2xpoxpvcyXZwPmyjqNPM/leyVz8kTk
-YH5r8vVdbjpkMrfzpltfi3z5GUR2jffyvBQdc+gp3+vMdICOiehRYH1H/VPq35j8TtbIZUzZm6zM
-m45YvxN9HPQXmal8b+VzK78b+EDGj53pU8k6hfwuZXwlMn3B+aJHKs8ykZFAHvSWeU1C3UVuLbLy
-zOyHjzLoCDmi7yA/LjUdVL58HnObD1+OmT1zMieDHwaLH951vfkYtkF22tuasAH2P1d+Iu+T1uIP
-21W+fO8Li2PjzP+ZMx+k8tNWtLU12dC/zLhubXrhXQ+MFTYf84CzEjJkjpfPvbeYIH5ZafGHbT10
-F9/3uclxPtoImgXBlTzNe0MBtEC0m9EkJLSwyy2y0L6TVXtoIz+FNykVvA0v1uYFeNtl5mVEAR5D
-ZNWDlXkDHs1rywKgOOsMRbCkp2XqxcS8oFYQDUNG+TKnbC0a8EJLBDaIcGJI1iiOhlqgEN6HF6FD
-ni5Q0DPbChsHLyq6na3ZjXMUBozxcxRhB7JYUTSajqcsRAQb060vqX9N+4fZfvV/Q/3luUOGVIYi
-Xdeds4DaL2uVg8lHJo1A62DZ7MQGF1AYUNQyk4J8WbdCtjcWq5ZMhPjniEE/Z4HKT+yd2g8dK0Mp
-5qv9qTFYg/Vq6tCYTgHFwIiisLG45WQb2O8zMmTJLCC7jqVlbtOb3AHM0AUEw3tAccGcUC7MmYuN
-IQmrYHVwLFDYZMxFaMkcgsUZ81VRntmaxWDeVS5sLYpAEbyAKOSyXlURhY7RKowrktq4PGN+jj25
-tJ+9gChmCVFIfoL8wZtOaldNLvfGo8qJo8nA/BDFE5d5m69Z7C2LNIqeCIIfBhtzmu9ZyypDwbO4
-sLMaCC5UPQdDSsg2zEVmYz4iD/+PBbOgsTFVyOLE/OcbG7vkQvhX0ZFZXBXFRJrWoo61rDEdR89a
-zFpQpoZCrAubUYM1C2rTG7UOcYYcjPPy0w9WZ4vMskyzozG/wX89mVLxJz5xBWs54pSZb8BCQPEJ
-P2CxJNgfEKwVuTL0FSWjNVg+a572xoXgko5c2rMiQkvMRxRQkQtyEXgM8zVPe0OhruuZBc66BfDY
-aX5n85GL4DFFqzcLAooCF4eK1neWTeBSjUJNFPfMgtaigvkZuUDnJnMU4S1FYW5eBBrai44EmYAo
-elZFZIFmcWN2aPQK1rLeOoqWlV87GkcUs0YoFzpWXfi4NBZIREbqjXMgC3IQYeWojtmVmv+0FoxE
-oWNFX9bCwmoRUHxCETu6YD9YYGC9BZeibkC+F1ljzXc12WGkX7z5EJ2AskhmHWUZuLS0+doRjqyF
-iP/ILBjnGnCaP7CWJFYLfUX81DN+tNNrmMHwWxYQPLCiahQGQ/EpF3LLBe1rE3phJApH89CQW05q
-RcwMBWnoX3obE6Jw6mubx1wEL4NLE8gvjEeXHQX4oBRZI/I8YRaMzOXCUIAsVPnkUvCxomikXX/a
-Vz2vo8Kaqj/tDx2RRrFlFoKHUoskKnrCepaxr0UUIV+5rFnIH5mFrBHIQkQYWQDfqV6sUz5b2O+t
-64D/1M7QETWGtIQsABSeaqEzhqi5x0EWaPxby6a6Pd8XoRtALWuIOu0ocuKnsHnIIt1DdJatLfdM
-0B9MpPqntq9qAqeP7OhYj4rc6k63sD9N2RFW7LTUfycE01vg04J9KdAGKzqiFX0sOCAJHN0QvSmt
-ycwLmis1rSCy0ddoRS9tXecWfVFnSOxDFsCLvXEqOhqtfM15R4NIKMf4mcvgTchQK715vCwXXNTb
-PO2rEEX0XJ49HaI4zlwEDgfnlNydKZeXxkWa5aUhAH7pKVdRxE6s4E5Eo4W1mWmqf2UsMCasMeyW
-GnJzqGWVJ9pZ8+CbwEWOdUP7UnYbyqXe+tbQUYFTkUFt/nQWjAN9wFqWsAaFLFK2Sc3HeUChIzO1
-9H9q8W9L6xp0d1wYm4GFAher/T3j2lu3+VRH+EMWVf+fEMx+EFooinmG8JwzijbsbmpaQb4Fj8EL
-0LZjRYLFiIJjX3fqaxlh9UZrc3V34ymHuwOt6CO55nsoKhdnJM6iiMquFW3RVyITdY+fWLeBqqRc
-2FoUgR7N4saiFbIItUDtb8yLyIK2X+zueN6i5xPe7EAUPPkEWYRuDbaHWgQUBRbA7gVdkXIxd7ma
-bZ3VkYY9tdaojvyamw+xduhswhlL6IigW8OdeMpevySqdHeZ8JyFPnL9XAtPnNca62hfPdB/w7zr
-xG/1fzZ3NPBVxW5MaxnPfAKL6LrcSwADiDOYRPvq4Tx+PqH/F1zcjAHB37XCsQsfF/1nYTnjLvrK
-0JdoX5mbNyt6MfRlbTv3v/Cg7g55Sva9PXLg8mT4i14gGrWWcJ+fslPpWDeUSytm57IWcA/cc1+Q
-sr/Wk77EuoGQRXpG0ttz1Bjt2VLrCOqQ/Ysonnanre1OFQXhpDKcL6T0Q86Txo79sTMWAEqURYrz
-3VHo6AILDTwJVBYK+4qa8fOGzIBCrVHcHWlf/pyTzsK4MKvnM4pQy/SMKrczIkVhPnNxO8z7ImUx
-8qtmYDfXkppySzJm9qT/AoKf60VFWzGfVAUvhoquOdgtOpK/wuXkMnAwejrtCxe7yz+tKKl5oQ4d
-QWW66HljNXcEOMe97GiCfE/+QBRPZwQ/Oml6Rl+rJ22NcZ+yQLI4o3hid6wnZQPPaDz1R3a2jGJP
-+x05mmexfdgXONaS1s4GNIsHq/Kte4KFOAd69/y9PC9XLi7m3T2Y5TQ/X8x/AoXakbJzCWuDRbD+
-U7tLrWVkQdQEzIcN2pEouwYE6zneaCdo0KJnRVNJ6MtG86LjmWbLnlV3B63lO/hJT5p4whNOyhzR
-B28+1d2HitaxLwpZNCy4UHcJ7P9w0gPE60lbYlmCnrYjgjULau5xy7kilRVP54nSpJl3N8jCMdw6
-eJ6Wlaxoy45isTsLJ20ZT6CC/3SHmpGLekOR7isS9qWL3d3l7hSn+ba71bvh+SoM10+Xd4+8p97j
-5fml3KTX+Y+vIPUW8fIKcq8Xa7x4/LK7idyXm2jDx9dvHqa3D8e7+3dvblfn94pB7jOvFanRxXW9
-3vHqXZ6blhbs9db2O38x8WUXQR27Ouewxzfnjn8ecad3jeEbr/L0KvxttPmyid5d30TjDf424iZ6
-3x5/geE2/HbFVeLlhaTMhOlUeBsdp0+/RGe3kNE0+Ci+Tp55A3my8//zlxDzH0DwDjO++h9QSwEC
-HgMUAAIACACEQtlKnBTd+GEMAADrIgAACAAYAAAAAAABAAAApIEAAAAAMTMyNzMuanNVVAUAA9cd
-T1l1eAsAAQQAAAAABAAAAABQSwUGAAAAAAEAAQBOAAAAowwAAAAAUEsBAh4DCgACAAAAhELZSqnS
-6rgHDQAABw0AAAkAGAAAAAAAAAAAAKSBAAAAADEzMjczLnppcFVUBQAD1x1PWXV4CwABBAAAAAAE
-AAAAAFBLBQYAAAAAAQABAE8AAABKDQAAAAA=
+The cros_ec requires CS line to be active after last message. But the CS
+would be toggled when powering off/on rockchip spi, which breaks ec xfer.
+
+Keep spi alive after CS asserted to prevent that.
+
+Suggested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+
+---
+
+ drivers/spi/spi-rockchip.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index acf31f3..df016a1 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -264,7 +264,7 @@ static inline u32 rx_max(struct rockchip_spi *rs)
+ 
+ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+-	u32 ser;
++	u32 ser, new_ser;
+ 	struct spi_master *master = spi->master;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+@@ -288,13 +288,25 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 * Note: enable(rockchip_spi_set_cs) = !enable(spi_set_cs)
+ 	 */
+ 	if (!enable)
+-		ser |= 1 << spi->chip_select;
++		new_ser = ser | BIT(spi->chip_select);
+ 	else
+-		ser &= ~(1 << spi->chip_select);
++		new_ser = ser & ~BIT(spi->chip_select);
+ 
+-	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
++	if (new_ser == ser)
++		goto out;
+ 
+-	pm_runtime_put_sync(rs->dev);
++	writel_relaxed(new_ser, rs->regs + ROCKCHIP_SPI_SER);
++
++	/*
++	 * The rockchip spi would stop driving CS when power down.
++	 * So we need to keep it alive after CS asserted
++	 */
++	if (!enable)
++		return;
++	pm_runtime_put(rs->dev);
++
++out:
++	pm_runtime_put(rs->dev);
+ }
+ 
+ static int rockchip_spi_prepare_message(struct spi_master *master,
+-- 
+2.1.4
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

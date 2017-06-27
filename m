@@ -1,7 +1,7 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v4 09/14] spi: qup: refactor spi_qup_io_config into two functions
-Date: Tue, 27 Jun 2017 15:15:26 +0530
-Message-ID: <1498556731-13087-10-git-send-email-varada@codeaurora.org>
+Subject: [PATCH v4 13/14] spi: qup: allow multiple DMA transactions per spi xfer
+Date: Tue, 27 Jun 2017 15:15:30 +0530
+Message-ID: <1498556731-13087-14-git-send-email-varada@codeaurora.org>
 References: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>,
         Matthew McClintock <mmcclint@codeaurora.org>
@@ -15,188 +15,145 @@ In-Reply-To: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
 Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is in preparation for handling transactions larger than
-64K-1 bytes in block mode, which is currently unsupported and
-quietly fails.
-
-We need to break these into two functions 1) prep is
-called once per spi_message and 2) io_config is called
-once per spi-qup bus transaction
-
-This is just refactoring, there should be no functional
-change
+Much like the block mode changes, we are breaking up DMA transactions
+into 64K chunks so we can reset the QUP engine.
 
 Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 109 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 67 insertions(+), 42 deletions(-)
+ drivers/spi/spi-qup.c | 104 ++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 76 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 1a83248..bfb6d27 100644
+index 2423ee5..a39a0d2 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -543,12 +543,11 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
+@@ -417,50 +417,98 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
--/* set clock freq ... bits per word */
--static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
-+/* set clock freq ... bits per word, determine mode */
-+static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- {
- 	struct spi_qup *controller = spi_master_get_devdata(spi->master);
--	u32 config, iomode, control;
--	int ret, n_words;
-+	int ret;
- 
- 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
- 		dev_err(controller->dev, "too big size for loopback %d > %d\n",
-@@ -563,32 +562,59 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		return -EIO;
- 	}
- 
--	if (spi_qup_set_state(controller, QUP_STATE_RESET)) {
--		dev_err(controller->dev, "cannot set RESET state\n");
--		return -EIO;
--	}
--
- 	controller->w_size = DIV_ROUND_UP(xfer->bits_per_word, 8);
- 	controller->n_words = xfer->len / controller->w_size;
--	n_words = controller->n_words;
--
--	if (n_words <= (controller->in_fifo_sz / sizeof(u32))) {
- 
-+	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
- 		controller->mode = QUP_IO_M_MODE_FIFO;
-+	else if (spi->master->can_dma &&
-+		 spi->master->can_dma(spi->master, spi, xfer) &&
-+		 spi->master->cur_msg_mapped)
-+		controller->mode = QUP_IO_M_MODE_BAM;
-+	else
-+		controller->mode = QUP_IO_M_MODE_BLOCK;
++static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
++				     u32 *nents)
++{
++	struct scatterlist *sg;
++	u32 total = 0;
 +
-+	return 0;
++	*nents = 0;
++
++	for (sg = sgl; sg; sg = sg_next(sg)) {
++		unsigned int len = sg_dma_len(sg);
++
++		/* check for overflow as well as limit */
++		if (((total + len) < total) || ((total + len) > max))
++			break;
++
++		total += len;
++		(*nents)++;
++	}
++
++	return total;
 +}
 +
-+/* prep qup for another spi transaction of specific type */
-+static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
-+{
-+	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	u32 config, iomode, control;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&controller->lock, flags);
-+	controller->xfer     = xfer;
-+	controller->error    = 0;
-+	controller->rx_bytes = 0;
-+	controller->tx_bytes = 0;
-+	spin_unlock_irqrestore(&controller->lock, flags);
-+
-+
-+	if (spi_qup_set_state(controller, QUP_STATE_RESET)) {
-+		dev_err(controller->dev, "cannot set RESET state\n");
-+		return -EIO;
-+	}
+ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
+ 	struct spi_master *master = spi->master;
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct scatterlist *tx_sgl, *rx_sgl;
+ 	int ret;
  
--		writel_relaxed(n_words, controller->base + QUP_MX_READ_CNT);
--		writel_relaxed(n_words, controller->base + QUP_MX_WRITE_CNT);
-+	switch (controller->mode) {
-+	case QUP_IO_M_MODE_FIFO:
-+		reinit_completion(&controller->done);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_READ_CNT);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_WRITE_CNT);
- 		/* must be zero for FIFO */
- 		writel_relaxed(0, controller->base + QUP_MX_INPUT_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
--	} else if (spi->master->can_dma &&
--		   spi->master->can_dma(spi->master, spi, xfer) &&
--		   spi->master->cur_msg_mapped) {
--
--		controller->mode = QUP_IO_M_MODE_BAM;
--
--		writel_relaxed(n_words, controller->base + QUP_MX_INPUT_CNT);
--		writel_relaxed(n_words, controller->base + QUP_MX_OUTPUT_CNT);
-+		break;
-+	case QUP_IO_M_MODE_BAM:
-+		reinit_completion(&controller->txc);
-+		reinit_completion(&controller->rxc);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_INPUT_CNT);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_OUTPUT_CNT);
- 		/* must be zero for BLOCK and BAM */
- 		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
-@@ -606,19 +632,25 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 			if (xfer->tx_buf)
- 				writel_relaxed(0, input_cnt);
- 			else
--				writel_relaxed(n_words, input_cnt);
-+				writel_relaxed(controller->n_words, input_cnt);
+-	ret = spi_qup_io_config(spi, xfer);
+-	if (ret)
+-		return ret;
++	rx_sgl = xfer->rx_sg.sgl;
++	tx_sgl = xfer->tx_sg.sgl;
  
- 			writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
- 		}
--	} else {
--
--		controller->mode = QUP_IO_M_MODE_BLOCK;
--
--		writel_relaxed(n_words, controller->base + QUP_MX_INPUT_CNT);
--		writel_relaxed(n_words, controller->base + QUP_MX_OUTPUT_CNT);
-+		break;
-+	case QUP_IO_M_MODE_BLOCK:
-+		reinit_completion(&controller->done);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_INPUT_CNT);
-+		writel_relaxed(controller->n_words,
-+			       controller->base + QUP_MX_OUTPUT_CNT);
- 		/* must be zero for BLOCK and BAM */
- 		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
-+		break;
-+	default:
-+		dev_err(controller->dev, "unknown mode = %d\n",
-+				controller->mode);
-+		return -EIO;
- 	}
- 
- 	iomode = readl_relaxed(controller->base + QUP_IO_M_MODES);
-@@ -707,6 +739,10 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	unsigned long timeout, flags;
- 	int ret = -EIO;
- 
-+	ret = spi_qup_io_prep(spi, xfer);
-+	if (ret)
-+		return ret;
-+
- 	ret = spi_qup_io_config(spi, xfer);
- 	if (ret)
- 		return ret;
-@@ -715,21 +751,10 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
- 	timeout = 100 * msecs_to_jiffies(timeout);
- 
--	spin_lock_irqsave(&controller->lock, flags);
--	controller->xfer     = xfer;
--	controller->error    = 0;
--	controller->rx_bytes = 0;
--	controller->tx_bytes = 0;
--	spin_unlock_irqrestore(&controller->lock, flags);
--
--	if (spi_qup_is_dma_xfer(controller->mode)) {
--		reinit_completion(&controller->rxc);
--		reinit_completion(&controller->txc);
-+	if (spi_qup_is_dma_xfer(controller->mode))
- 		ret = spi_qup_do_dma(master, xfer, timeout);
--	} else {
--		reinit_completion(&controller->done);
-+	else
- 		ret = spi_qup_do_pio(master, xfer, timeout);
+-	/* before issuing the descriptors, set the QUP to run */
+-	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
+-	if (ret) {
+-		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
+-				__func__, __LINE__);
+-		return ret;
 -	}
++	do {
++		u32 rx_nents, tx_nents;
++
++		if (rx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
++					SPI_MAX_XFER, &rx_nents) / qup->w_size;
++		if (tx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(tx_sgl,
++					SPI_MAX_XFER, &tx_nents) / qup->w_size;
++		if (!qup->n_words)
++			return -EIO;
  
- 	if (ret)
- 		goto exit;
+-	if (xfer->rx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->rx_sg.sgl,
+-				      xfer->rx_sg.nents, DMA_DEV_TO_MEM,
+-				      spi_qup_dma_done, &qup->rxc);
++		ret = spi_qup_io_config(spi, xfer);
+ 		if (ret)
+ 			return ret;
+ 
+-		dma_async_issue_pending(master->dma_rx);
+-	}
+-
+-	if (xfer->tx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->tx_sg.sgl,
+-				      xfer->tx_sg.nents, DMA_MEM_TO_DEV,
+-				      spi_qup_dma_done, &qup->txc);
+-		if (ret)
++		/* before issuing the descriptors, set the QUP to run */
++		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
++		if (ret) {
++			dev_warn(qup->dev, "cannot set RUN state\n");
+ 			return ret;
++		}
++		if (rx_sgl) {
++			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
++					      DMA_DEV_TO_MEM,
++					      spi_qup_dma_done, &qup->rxc);
++			if (ret)
++				return ret;
++			dma_async_issue_pending(master->dma_rx);
++		}
+ 
+-		dma_async_issue_pending(master->dma_tx);
+-	}
++		if (tx_sgl) {
++			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
++					      DMA_MEM_TO_DEV,
++					      spi_qup_dma_done, &qup->txc);
++			if (ret)
++				return ret;
++
++			dma_async_issue_pending(master->dma_tx);
++		}
++
++		if (rx_sgl &&
++		    !wait_for_completion_timeout(&qup->rxc, timeout)) {
++			pr_emerg(" rx timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		if (tx_sgl &&
++		    !wait_for_completion_timeout(&qup->txc, timeout)) {
++			pr_emerg(" tx timed out\n");
++			return -ETIMEDOUT;
++		}
+ 
+-	if (xfer->rx_buf && !wait_for_completion_timeout(&qup->rxc, timeout))
+-		return -ETIMEDOUT;
++		for (; rx_sgl && rx_nents--; rx_sgl = sg_next(rx_sgl))
++			;
++		for (; tx_sgl && tx_nents--; tx_sgl = sg_next(tx_sgl))
++			;
+ 
+-	if (xfer->tx_buf && !wait_for_completion_timeout(&qup->txc, timeout))
+-		return -ETIMEDOUT;
++	} while (rx_sgl || tx_sgl);
+ 
+ 	return 0;
+ }
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

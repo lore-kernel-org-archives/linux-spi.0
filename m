@@ -1,75 +1,104 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v4 14/14] spi: qup: Ensure done detection
-Date: Tue, 27 Jun 2017 15:15:31 +0530
-Message-ID: <1498556731-13087-15-git-send-email-varada@codeaurora.org>
+Subject: [PATCH v4 10/14] spi: qup: call io_config in mode specific function
+Date: Tue, 27 Jun 2017 15:15:27 +0530
+Message-ID: <1498556731-13087-11-git-send-email-varada@codeaurora.org>
 References: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
 Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Andy Gross <agross@codeaurora.org>,
-        Abhishek Sahu <absahu@codeaurora.org>
+        Matthew McClintock <mmcclint@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
         andy.gross@linaro.org, david.brown@linaro.org,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-soc@vger.kernel.org
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes an issue where a SPI transaction has completed, but the
-done condition is missed.  This occurs because at the time of interrupt the
-MAX_INPUT_DONE_FLAG is not asserted.  However, in the process of reading
-blocks of data from the FIFO, the last portion of data comes in.
+DMA transactions should only only need to call io_config only once, but
+block mode might call it several times to setup several transactions so
+it can handle reads/writes larger than the max size per transaction, so
+we move the call to the do_ functions.
 
-The opflags read at the beginning of the irq handler no longer matches the
-current opflag state.  To get around this condition, the block read
-function should update the opflags so that done detection is correct after
-the return.
+This is just refactoring, there should be no functional change
 
-Signed-off-by: Andy Gross <agross@codeaurora.org>
-Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
+Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-qup.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index a39a0d2..ca5206e 100644
+index bfb6d27..37b51e3 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -268,7 +268,7 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
- 	}
+@@ -158,6 +158,8 @@ struct spi_qup {
+ 	struct dma_slave_config	tx_conf;
+ };
+ 
++static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer);
++
+ static inline bool spi_qup_is_flag_set(struct spi_qup *controller, u32 flag)
+ {
+ 	u32 opflag = readl_relaxed(controller->base + QUP_OPERATIONAL);
+@@ -416,12 +418,17 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
--static void spi_qup_read(struct spi_qup *controller)
-+static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
+-static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
++static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
  {
- 	u32 remainder, words_per_block, num_words;
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
-@@ -307,10 +307,12 @@ static void spi_qup_read(struct spi_qup *controller)
++	struct spi_master *master = spi->master;
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	int ret;
  
- 	/*
- 	 * Due to extra stickiness of the QUP_OP_IN_SERVICE_FLAG during block
--	 * mode reads, it has to be cleared again at the very end
-+	 * reads, it has to be cleared again at the very end.  However, be sure
-+	 * to refresh opflags value because MAX_INPUT_DONE_FLAG may now be
-+	 * present and this is used to determine if transaction is complete
- 	 */
--	if (is_block_mode && spi_qup_is_flag_set(controller,
--				QUP_OP_MAX_INPUT_DONE_FLAG))
-+	*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
-+	if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
- 		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
- 			       controller->base + QUP_OPERATIONAL);
++	ret = spi_qup_io_config(spi, xfer);
++	if (ret)
++		return ret;
++
+ 	/* before issuing the descriptors, set the QUP to run */
+ 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
+ 	if (ret) {
+@@ -457,12 +464,17 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
+ 	return 0;
+ }
  
-@@ -617,7 +619,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_read(controller);
-+			spi_qup_read(controller, &opflags);
+-static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
++static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
++	struct spi_master *master = spi->master;
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	int ret;
  
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
- 			spi_qup_write(controller);
++	ret = spi_qup_io_config(spi, xfer);
++	if (ret)
++		return ret;
++
+ 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
+ 	if (ret) {
+ 		dev_warn(qup->dev, "cannot set RUN state\n");
+@@ -743,18 +755,14 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spi_qup_io_config(spi, xfer);
+-	if (ret)
+-		return ret;
+-
+ 	timeout = DIV_ROUND_UP(xfer->speed_hz, MSEC_PER_SEC);
+ 	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
+ 	timeout = 100 * msecs_to_jiffies(timeout);
+ 
+ 	if (spi_qup_is_dma_xfer(controller->mode))
+-		ret = spi_qup_do_dma(master, xfer, timeout);
++		ret = spi_qup_do_dma(spi, xfer, timeout);
+ 	else
+-		ret = spi_qup_do_pio(master, xfer, timeout);
++		ret = spi_qup_do_pio(spi, xfer, timeout);
+ 
+ 	if (ret)
+ 		goto exit;
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

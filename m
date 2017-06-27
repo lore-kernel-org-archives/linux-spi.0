@@ -1,8 +1,7 @@
 From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCHv2 1/9] dt-bindings: spi: stm32: use SoC specific compatible
-Date: Tue, 27 Jun 2017 17:45:13 +0200
-Message-ID: <1498578321-13980-2-git-send-email-amelie.delaunay@st.com>
-References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
+Subject: [PATCHv2 0/9] STM32 SPI various fixes
+Date: Tue, 27 Jun 2017 17:45:12 +0200
+Message-ID: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -14,41 +13,28 @@ To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <r
         Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498578321-13980-1-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch replaces st,stm32-spi compatible with st,stm32h7-spi SoC
-specific compatible and updates the example accondingly.
+This patchset answers to the reviews done after STM32 SPI driver introduction.
 
-Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-stm32.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Amelie Delaunay (9):
+  dt-bindings: spi: stm32: use SoC specific compatible
+  spi: stm32: fix compatible to fit with new bindings
+  dt-bindings: spi: stm32: fix example with st,spi-midi-ns property
+  spi: stm32: replace st,spi-midi with st,spi-midi-ns to fit bindings
+  spi: stm32: use normal conditional statements instead of ternary
+    operator
+  spi: stm32: add runtime PM support
+  spi: stm32: enhance DMA error management
+  spi: stm32: fix potential dereference null return value
+  spi: spidev: add Aardvark to device tree compatibility list
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-index 3958bf6..415378b 100644
---- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-@@ -7,7 +7,7 @@ from 4 to 32-bit data size. Although it can be configured as master or slave,
- only master is supported by the driver.
- 
- Required properties:
--- compatible: Must be "st,stm32-spi".
-+- compatible: Must be "st,stm32h7-spi".
- - reg: Offset and length of the device's register set.
- - interrupts: Must contain the interrupt id.
- - clocks: Must contain an entry for spiclk (which feeds the internal clock
-@@ -38,7 +38,7 @@ Example:
- 	spi2: spi@40003800 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "st,stm32-spi";
-+		compatible = "st,stm32h7-spi";
- 		reg = <0x40003800 0x400>;
- 		interrupts = <36>;
- 		clocks = <&rcc SPI2_CK>;
+ .../devicetree/bindings/spi/spi-stm32.txt          |  11 +-
+ drivers/spi/spi-stm32.c                            | 130 +++++++++++++++------
+ drivers/spi/spidev.c                               |   1 +
+ 3 files changed, 99 insertions(+), 43 deletions(-)
+
 -- 
 1.9.1
 

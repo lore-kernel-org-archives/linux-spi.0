@@ -1,78 +1,76 @@
-From: Russell King - ARM Linux <linux@armlinux.org.uk>
-Subject: Re: Applied "spi: atmel: fix corrupted data issue on SAM9 family
- SoCs" to the spi tree
-Date: Tue, 27 Jun 2017 10:19:43 +0100
-Message-ID: <20170627091942.GO4902@n2100.armlinux.org.uk>
-References: <d174da00f48503eba84dd0f4068749b968628bbb.1498231873.git.cyrille.pitchen@microchip.com>
- <E1dORFW-00037E-N8@debutante>
- <20170623171830.GV4902@n2100.armlinux.org.uk>
- <f2eb4994-2cea-4ad4-58ee-24a174d53f93@microchip.com>
+From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [PATCH v3 15/15] spi: qup: support for qup v1 dma
+Date: Tue, 27 Jun 2017 15:06:46 +0530
+Message-ID: <20170627093645.GA21936@codeaurora.org>
+References: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
+ <1497949857-1852-16-git-send-email-varada@codeaurora.org>
+ <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie@kernel.org>, nicolas.ferre@atmel.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Cyrille Pitchen <cyrille.pitchen@microchip.com>
-Return-path: <stable-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <f2eb4994-2cea-4ad4-58ee-24a174d53f93@microchip.com>
-Sender: stable-owner@vger.kernel.org
+In-Reply-To: <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jun 27, 2017 at 11:05:56AM +0200, Cyrille Pitchen wrote:
-> Hi Russell,
-> 
-> Le 23/06/2017 à 19:18, Russell King - ARM Linux a écrit :
-> > On Fri, Jun 23, 2017 at 05:15:58PM +0100, Mark Brown wrote:
-> >> +#ifdef CONFIG_SOC_SAM_V4_V5
-> >> +	/*
-> >> +	 * Atmel SoCs based on ARM9 (SAM9x) cores should not use spi_map_buf()
-> >> +	 * since this later function tries to map buffers with dma_map_sg()
-> >> +	 * even if they have not been allocated inside DMA-safe areas.
-> >> +	 * On SoCs based on Cortex A5 (SAMA5Dx), it works anyway because for
-> >> +	 * those ARM cores, the data cache follows the PIPT model.
-> >> +	 * Also the L2 cache controller of SAMA5D2 uses the PIPT model too.
-> >> +	 * In case of PIPT caches, there cannot be cache aliases.
-> >> +	 * However on ARM9 cores, the data cache follows the VIVT model, hence
-> >> +	 * the cache aliases issue can occur when buffers are allocated from
-> >> +	 * DMA-unsafe areas, by vmalloc() for instance, where cache coherency is
-> >> +	 * not taken into account or at least not handled completely (cache
-> >> +	 * lines of aliases are not invalidated).
-> > 
-> > There is a solution to this - code (iow, callers of functions that perform
-> > IO) are expected to use flush_kernel_vmap_range() and
-> > invalidate_kernel_vmap_range() as documented in Documentation/cachetlb.txt
-> > to ensure that their "special" views are properly handled.
-> > 
-> > These are no-ops for PIPT caches, but aliasing caches have to implement
-> > them.
-> > 
-> 
-> So if I understand, calling those two functions at the right places, we
-> could use DMA transfer again without the need of copying data into a
-> bounce buffer? It sounds great, I will study that.
+Rob,
 
-Yes.  The down-side is that you don't have any idea from the higher
-levels whether the driver used DMA or PIO, and in the case of PIO,
-it's extra work that the CPU ends up doing.
+On Fri, Jun 23, 2017 at 04:49:23PM -0500, Rob Herring wrote:
+> On Tue, Jun 20, 2017 at 02:40:57PM +0530, Varadarajan Narayanan wrote:
+> > Currently the QUP Version v1 does not work with DMA so added
+> > the support for the same.
+> >
+> > 1. It uses ADM DMA which requires TX and RX CRCI
+> > 2. DMA channel initialization need to be done after setting
+> >    block size for having valid values in maxburst
+> > 3. QUP mode should be DMOV instead of BAM.
+> >
+> > Signed-off-by: Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> > Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> > ---
+> >  .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
+> >  drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
+> >  2 files changed, 34 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > index 5c09077..e754181 100644
+> > --- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > @@ -38,6 +38,12 @@ Optional properties:
+> >  - dma-names:    Names for the dma channels, if present. There must be at
+> >                  least one channel named "tx" for transmit and named "rx" for
+> >                  receive.
+> > +- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
+>
+> Identificator is not a word.
+>
+> This sounds like something that should be a cell in the dmas property.
 
-These were introduced for XFS, since it does IO and expects to be
-able to see the results via vmalloc space.  Since it's working with
-the block layer, the expectation there is that PIO drivers will
-always ensure that data read by PIO reaches the point of coherence,
-so it can do a cache invalidate after the read in every case without
-losing data.
+I will hold this patch for now. This depends on the ADM driver, which
+is not upstreamed yet. Will incorporate your feedback and re-post the
+patch later.
 
-That's not true of SPI, so you need to be extra careful about how
-you're using these - I think you can only use flush_kernel_vmap_range()
-before writes and flush_kernel_vmap_range() both before and after reads.
-You need it before a read to ensure that any dirty cache lines from
-the vmalloc mapping won't overwrite the data you're reading via the
-non-vmalloc mapping, and the one after caters for any speculatively
-prefetching that may have occurred.
+Thanks
+Varada
 
--- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+> > +		used with TX DMA channel. Required when using DMA for
+> > +		transmission with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
+> > +- qcom,rx-crci: Identificator for Client Rate Control Interface (CRCI) to be
+> > +		used with RX DMA channel. Required when using DMA for
+> > +		receiving with QUP Version 1 i.e qcom,spi-qup-v1.1.1.
+> >
+> >  SPI slave nodes must be children of the SPI master node and can contain
+> >  properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
+
+--
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

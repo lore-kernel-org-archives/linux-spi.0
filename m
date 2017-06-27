@@ -1,99 +1,77 @@
-From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH linux-next v4 2/4] spi: imx: add selection for iMX53 and
- iMX6 controller
-Date: Mon, 26 Jun 2017 18:25:52 -0700
-Message-ID: <5951B420.9080400@mentor.com>
-References: <20170608051603.16070-1-jiada_wang@mentor.com> <20170608051603.16070-3-jiada_wang@mentor.com> <20170612155345.qtgaq4wjj2vidohd@rob-hp-laptop> <a4d5d8e2-c50d-4856-e14f-34ead774824e@mentor.com> <CAL_JsqJeh=M0qB2m6DPLo1_WJsUKowvS0FpUgsmEuF5KuKPTRw@mail.gmail.com>
+From: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: Re: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source optional
+ property
+Date: Tue, 27 Jun 2017 10:04:07 +0800
+Message-ID: <5951BD17.305@rock-chips.com>
+References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com> <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com> <20170626160011.qi3bliz5jt6d5wgb@rob-hp-laptop> <20170626164016.GA4965@dtor-ws>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAL_JsqJeh=M0qB2m6DPLo1_WJsUKowvS0FpUgsmEuF5KuKPTRw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+To: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170626164016.GA4965@dtor-ws>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Mark and Sascha
+Hi Rob,
 
-Could you please review my v4 patch set for i.MX SPI slave support
-
-Thanks,
-Jiada
-
-On 06/13/2017 07:29 AM, Rob Herring wrote:
-> On Tue, Jun 13, 2017 at 12:28 AM, Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>  wrote:
->> Hello Rob
->>
->>
->> On 06/13/2017 12:53 AM, Rob Herring wrote:
->>> On Thu, Jun 08, 2017 at 02:16:01PM +0900, Jiada Wang wrote:
->>>> ECSPI contorller for iMX53 and iMX6 has few hardware issues
->>>> comparing to iMX51.
->>>> The change add possibility to detect which controller is used
->>>> to apply possible workaround and limitations.
->>>>
->>>> Signed-off-by: Jiada Wang<jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
->>>> ---
->>>>   .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  1 +
->>>>   drivers/spi/spi-imx.c                              | 26
->>>> ++++++++++++++++++++--
->>>>   2 files changed, 25 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
->>>> b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
->>>> index 31b5b21..5bf1396 100644
->>>> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
->>>> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
->>>> @@ -9,6 +9,7 @@ Required properties:
->>>>     - "fsl,imx31-cspi" for SPI compatible with the one integrated on
->>>> i.MX31
->>>>     - "fsl,imx35-cspi" for SPI compatible with the one integrated on
->>>> i.MX35
->>>>     - "fsl,imx51-ecspi" for SPI compatible with the one integrated on
->>>> i.MX51
->>>> +  - "fsl,imx53-ecspi" for SPI compatible with the one integrated on
->>>> i.MX53 and later Soc
->>>>   - reg : Offset and length of the register set for the device
->>>>   - interrupts : Should contain CSPI/eCSPI interrupt
->>>>   - cs-gpios : Specifies the gpio pins to be used for chipselects.
->>>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->>>> index 4469121..8e6f339 100644
->>>> --- a/drivers/spi/spi-imx.c
->>>> +++ b/drivers/spi/spi-imx.c
->>>> @@ -63,7 +63,8 @@ enum spi_imx_devtype {
->>>>          IMX27_CSPI,
->>>>          IMX31_CSPI,
->>>>          IMX35_CSPI,     /* CSPI on all i.mx except above */
->>>> -       IMX51_ECSPI,    /* ECSPI on i.mx51 and later */
->>>> +       IMX51_ECSPI,    /* ECSPI on i.mx51 */
->>>> +       IMX53_ECSPI,    /* ECSPI on i.mx53 and later */
+On 06/27/2017 12:40 AM, Dmitry Torokhov wrote:
+> On Mon, Jun 26, 2017 at 11:00:11AM -0500, Rob Herring wrote:
+>> On Wed, Jun 21, 2017 at 06:01:49PM +0800, Jeffy Chen wrote:
+>>> Update document devicetree bindings to support "wakeup-source" property.
 >>>
->>> Looks like i.MX51 and i.MX53 are the same. While the DT should have
->>> different compatibles (with fallbacks), the driver should map them to
->>> the same type until there's some difference found.
+>>> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+>>> ---
 >>>
->> the difference between i.MX51 and i.MX53 is introduced in the
->> 4th patch "spi: imx: Add support for SPI Slave mode" in this patch set
-> Okay, I missed that.
+>>> Changes in v3: None
+>>>
+>>>   Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+>>> index 1f6e86f..0fa1ccf 100644
+>>> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+>>> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+>>> @@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
+>>>   		    Defaults to 1 if not present.
+>>>   - spi-rx-delay-us - Microsecond delay after a read transfer.
+>>>   - spi-tx-delay-us - Microsecond delay after a write transfer.
+>>> +- wakeup-source   - Device can be used as a wakeup source.
+>>
+>> wakeup-source is valid for any device with an interrupts property
+>> already, so I don't think this is necessary.
+i saw http://lkml.iu.edu/hypermail/linux/kernel/1510.2/04553.html add a 
+Documentation/devicetree/bindings/power/wakeup-source.txt for this, but 
+that serial didn't remove all wakeup-source property from other 
+bindings, but standardize them, for example:
+71a0151 Documentation: devicetree: fix reference to legacy wakeup properties
+
++++ b/Documentation/devicetree/bindings/input/gpio-keys.txt
+@@ -24,6 +24,7 @@ Optional subnode-properties:
+         - debounce-interval: Debouncing interval time in milliseconds.
+           If not specified defaults to 5.
+         - wakeup-source: Boolean, button can wake-up the system.
++                        (Legacy property supported: "gpio-key,wakeup")
+
 >
->> do you think, I need to merge the two patches into one?
-> No, not necessary.
+> Do you mean it is not necessary on SPI level or not necessary at all? Or
+> you disagree with wording? Because we do need a way to say that on given
+> platform the device is supposed to be configured as a wakeup source.
 >
-> Acked-by: Rob Herring<robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Thanks.
 >
-> Rob
+
+Hi guys,
+
+Mark Brown suggested to put wakeup-source support in some common place 
+instead of sub drivers, should we do that?
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

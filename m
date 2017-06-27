@@ -1,57 +1,48 @@
-From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v4 05/14] spi: qup: Place the QUP in run mode before DMA
-Date: Tue, 27 Jun 2017 15:15:22 +0530
-Message-ID: <1498556731-13087-6-git-send-email-varada@codeaurora.org>
-References: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        andy.gross@linaro.org, david.brown@linaro.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCHv2 2/9] spi: stm32: fix compatible to fit with new bindings
+Date: Tue, 27 Jun 2017 17:45:14 +0200
+Message-ID: <1498578321-13980-3-git-send-email-amelie.delaunay@st.com>
+References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1498578321-13980-1-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Andy Gross <andy.gross@linaro.org>
-Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+This patch updates of_device_id compatible string to fit with new
+bindings.
+
+Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/spi/spi-qup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index d3ccf53..0683e47 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -336,6 +336,14 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 	struct spi_qup *qup = spi_master_get_devdata(master);
- 	int ret;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 82a6616f..ca38c24 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1038,7 +1038,7 @@ static int stm32_spi_config(struct stm32_spi *spi)
+ }
  
-+	/* before issuing the descriptors, set the QUP to run */
-+	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+	if (ret) {
-+		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
-+				__func__, __LINE__);
-+		return ret;
-+	}
-+
- 	if (xfer->rx_buf) {
- 		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM,
- 					spi_qup_dma_done, &qup->rxc);
-@@ -383,6 +391,13 @@ static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
- 
- 	spi_qup_fifo_write(qup, xfer);
- 
-+	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+	if (ret) {
-+		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
-+				__func__, __LINE__);
-+		return ret;
-+	}
-+
- 	if (!wait_for_completion_timeout(&qup->done, timeout))
- 		return -ETIMEDOUT;
- 
+ static const struct of_device_id stm32_spi_of_match[] = {
+-	{ .compatible = "st,stm32-spi", },
++	{ .compatible = "st,stm32h7-spi", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, stm32_spi_of_match);
 -- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

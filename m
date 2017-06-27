@@ -1,71 +1,71 @@
-From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v4 00/14] spi: qup: Fixes and add support for >64k transfers
-Date: Tue, 27 Jun 2017 15:15:17 +0530
-Message-ID: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Varadarajan Narayanan <varada@codeaurora.org>
+Subject: [PATCH v4 01/14] spi: qup: Enable chip select support
+Date: Tue, 27 Jun 2017 15:15:18 +0530
+Message-ID: <1498556731-13087-2-git-send-email-varada@codeaurora.org>
+References: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>,
+        Sham Muthayyan <smuthayy@codeaurora.org>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <1498556731-13087-1-git-send-email-varada@codeaurora.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-v4:
-	Discard patch #15, 'spi: qup: support for qup v1 dma'.
-	This depends on ADM driver, which is not upstreamed yet.
+Enable chip select support for QUP versions later than v1.
+The chip select support was broken in QUP version 1. Hence
+the chip select support was removed earlier in commit
+4a8573abe965115bc5b064401fd669b74e985258. Since the chip
+select support is functional in recent versions of QUP,
+re-enabling it for QUP versions later than v1.
 
-v3:
-	Fix git bisect-ability issues in
-		spi: qup: Add completion structures for DMA
-		spi: qup: Add completion timeout
-		spi: qup: Place the QUP in run mode before DMA
-		spi: qup: Fix transaction done signaling
+Signed-off-by: Sham Muthayyan <smuthayy@codeaurora.org>
+Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+---
+ drivers/spi/spi-qup.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-v2:
-	Incorporate feedback from Andy Gross, Sricharan, Stanimir Varbanov
-
-	Modified the QUP-v1 dma completion sequence to QUP-v2 as per feedback.
-
-	Removed code that used controller->xfer to identify extra interrupts,
-	since with the fixes done to handle i/o completion we don't see
-	extra interrupts.
-
-v1:
-	This series fixes some existing issues in the code for both
-	interrupt and dma mode. Patches 1 - 11 are the fixes.
-	Random failures/timeout are observed without these fixes.
-	Also, the current driver does not support block transfers > 64K
-	and the driver quietly fails. Patches 12 - 18 add support for this
-	in both interrupt and dma mode.
-
-	The entire series has been tested on ipq4019 with
-	SPI-NOR flash for block sizes > 64k.
-
-Varadarajan Narayanan (14):
-  spi: qup: Enable chip select support
-  spi: qup: Setup DMA mode correctly
-  spi: qup: Add completion structures for DMA
-  spi: qup: Add completion timeout
-  spi: qup: Place the QUP in run mode before DMA
-  spi: qup: Fix error handling in spi_qup_prep_sg
-  spi: qup: Fix transaction done signaling
-  spi: qup: Do block sized read/write in block mode
-  spi: qup: refactor spi_qup_io_config into two functions
-  spi: qup: call io_config in mode specific function
-  spi: qup: allow block mode to generate multiple transactions
-  spi: qup: refactor spi_qup_prep_sg
-  spi: qup: allow multiple DMA transactions per spi xfer
-  spi: qup: Ensure done detection
-
- drivers/spi/spi-qup.c | 597 ++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 408 insertions(+), 189 deletions(-)
-
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 1bfa889..c0d4def 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -750,6 +750,24 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	return ret;
+ }
+ 
++static void spi_qup_set_cs(struct spi_device *spi, bool val)
++{
++	struct spi_qup *controller;
++	u32 spi_ioc;
++	u32 spi_ioc_orig;
++
++	controller = spi_master_get_devdata(spi->master);
++	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
++	spi_ioc_orig = spi_ioc;
++	if (!val)
++		spi_ioc |= SPI_IO_C_FORCE_CS;
++	else
++		spi_ioc &= ~SPI_IO_C_FORCE_CS;
++
++	if (spi_ioc != spi_ioc_orig)
++		writel_relaxed(spi_ioc, controller->base + SPI_IO_CONTROL);
++}
++
+ static int spi_qup_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+@@ -846,6 +864,9 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+ 		controller->qup_v1 = 1;
+ 
++	if (!controller->qup_v1)
++		master->set_cs = spi_qup_set_cs;
++
+ 	spin_lock_init(&controller->lock);
+ 	init_completion(&controller->done);
+ 
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

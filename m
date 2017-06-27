@@ -1,77 +1,86 @@
-From: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [RFC PATCH v3 2/6] dt-bindings: spi/core: add wakeup-source optional
- property
-Date: Tue, 27 Jun 2017 10:04:07 +0800
-Message-ID: <5951BD17.305@rock-chips.com>
-References: <1498039313-24220-1-git-send-email-jeffy.chen@rock-chips.com> <1498039313-24220-3-git-send-email-jeffy.chen@rock-chips.com> <20170626160011.qi3bliz5jt6d5wgb@rob-hp-laptop> <20170626164016.GA4965@dtor-ws>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170626164016.GA4965@dtor-ws>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v2] spi: rockchip: Disable Runtime PM when chip select is asserted
+Date: Tue, 27 Jun 2017 10:20:35 +0800
+Message-ID: <1498530035-22070-1-git-send-email-jeffy.chen@rock-chips.com>
+Cc: briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
+        Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Rob,
+The rockchip spi would stop driving pins when runtime suspended, which
+might break slave's xfer(for example cros_ec).
 
-On 06/27/2017 12:40 AM, Dmitry Torokhov wrote:
-> On Mon, Jun 26, 2017 at 11:00:11AM -0500, Rob Herring wrote:
->> On Wed, Jun 21, 2017 at 06:01:49PM +0800, Jeffy Chen wrote:
->>> Update document devicetree bindings to support "wakeup-source" property.
->>>
->>> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
->>> ---
->>>
->>> Changes in v3: None
->>>
->>>   Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
->>> index 1f6e86f..0fa1ccf 100644
->>> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->>> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
->>> @@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
->>>   		    Defaults to 1 if not present.
->>>   - spi-rx-delay-us - Microsecond delay after a read transfer.
->>>   - spi-tx-delay-us - Microsecond delay after a write transfer.
->>> +- wakeup-source   - Device can be used as a wakeup source.
->>
->> wakeup-source is valid for any device with an interrupts property
->> already, so I don't think this is necessary.
-i saw http://lkml.iu.edu/hypermail/linux/kernel/1510.2/04553.html add a 
-Documentation/devicetree/bindings/power/wakeup-source.txt for this, but 
-that serial didn't remove all wakeup-source property from other 
-bindings, but standardize them, for example:
-71a0151 Documentation: devicetree: fix reference to legacy wakeup properties
+Since we have pullups on those pins, we only need to care about the CS
+asserted case.
 
-+++ b/Documentation/devicetree/bindings/input/gpio-keys.txt
-@@ -24,6 +24,7 @@ Optional subnode-properties:
-         - debounce-interval: Debouncing interval time in milliseconds.
-           If not specified defaults to 5.
-         - wakeup-source: Boolean, button can wake-up the system.
-+                        (Legacy property supported: "gpio-key,wakeup")
+So let's keep the spi alive when chip select is asserted for that.
 
->
-> Do you mean it is not necessary on SPI level or not necessary at all? Or
-> you disagree with wording? Because we do need a way to say that on given
-> platform the device is supposed to be configured as a wakeup source.
->
-> Thanks.
->
+Also change use pm_runtime_put instead of pm_runtime_put_sync.
 
-Hi guys,
+Suggested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 
-Mark Brown suggested to put wakeup-source support in some common place 
-instead of sub drivers, should we do that?
+---
+
+Changes in v2:
+Improve commit message and comments and coding style.
+
+ drivers/spi/spi-rockchip.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index acf31f3..ea0edd7 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -264,7 +264,7 @@ static inline u32 rx_max(struct rockchip_spi *rs)
+ 
+ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+-	u32 ser;
++	u32 ser, new_ser;
+ 	struct spi_master *master = spi->master;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+@@ -288,13 +288,26 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 * Note: enable(rockchip_spi_set_cs) = !enable(spi_set_cs)
+ 	 */
+ 	if (!enable)
+-		ser |= 1 << spi->chip_select;
++		new_ser = ser | BIT(spi->chip_select);
+ 	else
+-		ser &= ~(1 << spi->chip_select);
++		new_ser = ser & ~BIT(spi->chip_select);
+ 
+-	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
++	if (new_ser != ser) {
++		writel_relaxed(new_ser, rs->regs + ROCKCHIP_SPI_SER);
+ 
+-	pm_runtime_put_sync(rs->dev);
++		/*
++		 * The rockchip spi would stop driving all pins when powered
++		 * down.
++		 * So hold a runtime PM reference as long as CS is asserted.
++		 */
++		if (!enable)
++			return;
++
++		/* Drop reference from when we first asserted CS */
++		pm_runtime_put(rs->dev);
++	}
++
++	pm_runtime_put(rs->dev);
+ }
+ 
+ static int rockchip_spi_prepare_message(struct spi_master *master,
+-- 
+2.1.4
+
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

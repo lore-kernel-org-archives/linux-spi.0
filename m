@@ -1,134 +1,55 @@
-From: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH] spi: rockchip: Keep master alive when CS asserted
-Date: Tue, 27 Jun 2017 10:22:47 +0800
-Message-ID: <5951C177.4000600@rock-chips.com>
-References: <1498446606-5529-1-git-send-email-jeffy.chen@rock-chips.com> <20170626221736.GA126468@google.com>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH linux-next v4 0/4] i.MX ECSPI controller slave mode
+ support
+Date: Tue, 27 Jun 2017 08:53:14 +0200
+Message-ID: <20170627065314.jo63yzikv3cbvi2j@pengutronix.de>
+References: <20170608051603.16070-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170626221736.GA126468-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170608051603.16070-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi brian,
+On Thu, Jun 08, 2017 at 02:15:59PM +0900, Jiada Wang wrote:
+> Changes in v4:
+> * rebased to head of linux-next to resolve conflict
+> * optimized mx53_ecspi_rx_slave()
+> 
+> Changes in v3:
+> * renamed several variables for for better readability
+> * created spi_imx_pio_transfer_slave() for slave pio transfer
+> * added fifo_size, has_dmamode and has_slavemode in spi_imx_devtype_data
+> 
+> Changes in v2:
+> * re-workd i.MX ECSPI controller slave mode support based on Geert's work
+> 
+> Jiada Wang (4):
+>   spi: imx: introduce fifo_size and has_dmamode in spi_imx_devtype_data
+>   spi: imx: add selection for iMX53 and iMX6 controller
+>   ARM: dts: imx: change compatibility for SPI controllers on imx53 later
+>     soc
+>   spi: imx: Add support for SPI Slave mode
 
-thanx for your comments.
+For the series:
 
-On 06/27/2017 06:17 AM, Brian Norris wrote:
-> Hi Jeffy,
->
-> On Mon, Jun 26, 2017 at 11:10:06AM +0800, Jeffy Chen wrote:
->> The cros_ec requires CS line to be active after last message. But the CS
->> would be toggled when powering off/on rockchip spi, which breaks ec xfer.
->
-> I believe Doug's point was larger than just the CS line. He was
-> guessing that you're also stopping driving any of the other pins (e.g.,
-> CLK), which could cause more problems. Seems like it'd be good to note
-> that in the second sentence here.
-right, i need to rewrite this.
->
->> Keep spi alive after CS asserted to prevent that.
->>
->> Suggested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
->>
->> ---
->>
->>   drivers/spi/spi-rockchip.c | 22 +++++++++++++++++-----
->>   1 file changed, 17 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
->> index acf31f3..df016a1 100644
->> --- a/drivers/spi/spi-rockchip.c
->> +++ b/drivers/spi/spi-rockchip.c
->> @@ -264,7 +264,7 @@ static inline u32 rx_max(struct rockchip_spi *rs)
->>
->>   static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
->>   {
->> -	u32 ser;
->> +	u32 ser, new_ser;
->>   	struct spi_master *master = spi->master;
->>   	struct rockchip_spi *rs = spi_master_get_devdata(master);
->>
->> @@ -288,13 +288,25 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
->>   	 * Note: enable(rockchip_spi_set_cs) = !enable(spi_set_cs)
->>   	 */
->>   	if (!enable)
->> -		ser |= 1 << spi->chip_select;
->> +		new_ser = ser | BIT(spi->chip_select);
->>   	else
->> -		ser &= ~(1 << spi->chip_select);
->> +		new_ser = ser & ~BIT(spi->chip_select);
->>
->> -	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
->> +	if (new_ser == ser)
->> +		goto out;
->
-> Hmm, this doens't exactly feel like a situation for 'goto'. Personally,
-> an indented 'if' block would make this clearer:
->
-> 	if (new_ser != ser) {
-> 		... // all the stuff you do only on CS edges
-> 	}
->
-ok, will do.
->>
->> -	pm_runtime_put_sync(rs->dev);
->> +	writel_relaxed(new_ser, rs->regs + ROCKCHIP_SPI_SER);
->> +
->> +	/*
->> +	 * The rockchip spi would stop driving CS when power down.
->
-> Replace "CS" with "all pins"? And:
-> s/power/powered/
-done
->
->> +	 * So we need to keep it alive after CS asserted
->
-> To make this clearer, note that we're keeping an unbalanced runtime PM
-> reference on purpose. Like instead of "we need to keep it alive after CS
-> asserted", maybe "we hold a runtime PM reference as long as CS is
-> asserted."?
-done
->
->> +	 */
->> +	if (!enable)
->> +		return;
->> +	pm_runtime_put(rs->dev);
->
-> I still had to read this through a few times to be sure it was right (I
-> think it's correct?). Maybe to make this extra clear, a comment like
-> "Drop reference from when we first asserted CS" could go above this?
->
-done
->> +
->> +out:
->> +	pm_runtime_put(rs->dev);
->
-> You've dropped the "_sync()" that used to be here. I think that's
-> probably fine, but I wanted to call it out.
-right, i'll mention it in commit message too.
->
-> Brian
->
->>
->>   static int rockchip_spi_prepare_message(struct spi_master *master,
->> --
->> 2.1.4
->>
->>
->
->
->
+Reviewed-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+Sascha
 
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

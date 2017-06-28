@@ -1,53 +1,64 @@
-From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v3 1/2] spi: rockchip: Set GPIO_SS flag to enable Slave
- Select with GPIO CS
-Date: Tue, 27 Jun 2017 22:38:41 -0700
-Message-ID: <CAD=FV=V3_jntAn=qSzV-Lvs1qz5-EuWRNYT1=SsUuNqhHpsoJA@mail.gmail.com>
-References: <1498624723-17332-1-git-send-email-jeffy.chen@rock-chips.com>
+From: Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 15/15] spi: qup: support for qup v1 dma
+Date: Wed, 28 Jun 2017 01:47:38 -0500
+Message-ID: <20170628064738.GD5203@hector.attlocal.net>
+References: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
+ <1497949857-1852-16-git-send-email-varada@codeaurora.org>
+ <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498624723-17332-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+On Fri, Jun 23, 2017 at 04:49:23PM -0500, Rob Herring wrote:
+> On Tue, Jun 20, 2017 at 02:40:57PM +0530, Varadarajan Narayanan wrote:
+> > Currently the QUP Version v1 does not work with DMA so added
+> > the support for the same.
+> > 
+> > 1. It uses ADM DMA which requires TX and RX CRCI
+> > 2. DMA channel initialization need to be done after setting
+> >    block size for having valid values in maxburst
+> > 3. QUP mode should be DMOV instead of BAM.
+> > 
+> > Signed-off-by: Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> > Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> > ---
+> >  .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
+> >  drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
+> >  2 files changed, 34 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > index 5c09077..e754181 100644
+> > --- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+> > @@ -38,6 +38,12 @@ Optional properties:
+> >  - dma-names:    Names for the dma channels, if present. There must be at
+> >                  least one channel named "tx" for transmit and named "rx" for
+> >                  receive.
+> > +- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
+> 
+> Identificator is not a word.
+> 
+> This sounds like something that should be a cell in the dmas property.
 
-On Tue, Jun 27, 2017 at 9:38 PM, Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org> wrote:
-> The rockchip spi still requires slave selection when using GPIO CS.
->
-> Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-> ---
->
-> Changes in v3: None
-> Changes in v2: None
->
->  drivers/spi/spi-rockchip.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index bab9b13..52ea160 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -749,6 +749,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
->         master->transfer_one = rockchip_spi_transfer_one;
->         master->max_transfer_size = rockchip_spi_max_transfer_size;
->         master->handle_err = rockchip_spi_handle_err;
-> +       master->flags = SPI_MASTER_GPIO_SS;
->
->         rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
->         if (IS_ERR(rs->dma_tx.ch)) {
+Yes, the CRCI should be part of the dma cells for the ADM.  That would make a
+channel + crci work as a virtual channel that is backed by a hardware channel.
 
-Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+The only thing that has to be dealt with is the protocol difference between the
+BAM and ADM dma blocks, which is what the v1 compatible tells us.
+
+
+Regards,
+Andy
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

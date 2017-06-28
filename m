@@ -1,25 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: fix example with st, spi-midi-ns property" to the spi tree
-Date: Wed, 28 Jun 2017 20:25:43 +0100
-Message-ID: <E1dQIat-0004fK-1x@finisterre>
-References: <1498578321-13980-4-git-send-email-amelie.delaunay@st.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
+Subject: Applied "spi: stm32: add runtime PM support" to the spi tree
+Date: Wed, 28 Jun 2017 20:25:17 +0100
+Message-ID: <E1dQIaT-0004cD-Qg@finisterre>
+References: <1498222550-19092-7-git-send-email-amelie.delaunay@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
 To: Amelie Delaunay <amelie.delaunay@st.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1498578321-13980-4-git-send-email-amelie.delaunay@st.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1498222550-19092-7-git-send-email-amelie.delaunay@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: fix example with st, spi-midi-ns property
+   spi: stm32: add runtime PM support
 
 has been applied to the spi tree at
 
@@ -44,45 +52,123 @@ to this mail.
 Thanks,
 Mark
 
->From 5fd3d9433217908e1e8e1c2f841c3b28c75509d6 Mon Sep 17 00:00:00 2001
+>From 038ac869c9d27fceb6197e775d780ad6aeb45b1f Mon Sep 17 00:00:00 2001
 From: Amelie Delaunay <amelie.delaunay@st.com>
-Date: Tue, 27 Jun 2017 17:45:15 +0200
-Subject: [PATCH] spi: stm32: fix example with st, spi-midi-ns property
+Date: Tue, 27 Jun 2017 17:45:18 +0200
+Subject: [PATCH] spi: stm32: add runtime PM support
 
-This patch aligns example with the optional property description,
-removes status and replace spidev unvalid compatible with
-Aarvark SPI Host Adapter one.
-
-In slave mode, Aardvark SPI Host Adapter requires 4ms delay
-between the end of byte n and the start of byte n+1, hence the
-use of the optional property st,spi-midi-ns.
+This patch reworks suspend and resume callbacks and add runtime_suspend
+and runtime_resume callbacks.
 
 Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-stm32.txt | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-stm32.c | 43 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-index 415378bca480..1b3fa2c119d5 100644
---- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-@@ -48,13 +48,12 @@ Example:
- 		dma-names = "rx", "tx";
- 		pinctrl-0 = <&spi2_pins_b>;
- 		pinctrl-names = "default";
--		status = "okay";
- 		cs-gpios = <&gpioa 11 0>;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 123529a1b40d..392c9453c2e6 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -27,6 +27,7 @@
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
++#include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spi/spi.h>
  
--		spidev@0 {
--			compatible = "spidev";
-+		aardvark@0 {
-+			compatible = "totalphase,aardvark";
- 			reg = <0>;
- 			spi-max-frequency = <4000000>;
--			st,spi-midi = <4000>;
-+			st,spi-midi-ns = <4000>;
- 		};
- 	};
+@@ -1164,6 +1165,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	if (spi->dma_tx || spi->dma_rx)
+ 		master->can_dma = stm32_spi_can_dma;
+ 
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi master registration failed: %d\n",
+@@ -1203,6 +1207,8 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		dma_release_channel(spi->dma_tx);
+ 	if (spi->dma_rx)
+ 		dma_release_channel(spi->dma_rx);
++
++	pm_runtime_disable(&pdev->dev);
+ err_clk_disable:
+ 	clk_disable_unprepare(spi->clk);
+ err_master_put:
+@@ -1225,23 +1231,42 @@ static int stm32_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(spi->clk);
+ 
++	pm_runtime_disable(&pdev->dev);
++
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM
++static int stm32_spi_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct stm32_spi *spi = spi_master_get_devdata(master);
++
++	clk_disable_unprepare(spi->clk);
++
++	return 0;
++}
++
++static int stm32_spi_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct stm32_spi *spi = spi_master_get_devdata(master);
++
++	return clk_prepare_enable(spi->clk);
++}
++#endif
++
+ #ifdef CONFIG_PM_SLEEP
+ static int stm32_spi_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+-	struct stm32_spi *spi = spi_master_get_devdata(master);
+ 	int ret;
+ 
+ 	ret = spi_master_suspend(master);
+ 	if (ret)
+ 		return ret;
+ 
+-	clk_disable_unprepare(spi->clk);
+-
+-	return ret;
++	return pm_runtime_force_suspend(dev);
+ }
+ 
+ static int stm32_spi_resume(struct device *dev)
+@@ -1250,9 +1275,10 @@ static int stm32_spi_resume(struct device *dev)
+ 	struct stm32_spi *spi = spi_master_get_devdata(master);
+ 	int ret;
+ 
+-	ret = clk_prepare_enable(spi->clk);
++	ret = pm_runtime_force_resume(dev);
+ 	if (ret)
+ 		return ret;
++
+ 	ret = spi_master_resume(master);
+ 	if (ret)
+ 		clk_disable_unprepare(spi->clk);
+@@ -1261,8 +1287,11 @@ static int stm32_spi_resume(struct device *dev)
+ }
+ #endif
+ 
+-static SIMPLE_DEV_PM_OPS(stm32_spi_pm_ops,
+-			 stm32_spi_suspend, stm32_spi_resume);
++static const struct dev_pm_ops stm32_spi_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(stm32_spi_suspend, stm32_spi_resume)
++	SET_RUNTIME_PM_OPS(stm32_spi_runtime_suspend,
++			   stm32_spi_runtime_resume, NULL)
++};
+ 
+ static struct platform_driver stm32_spi_driver = {
+ 	.probe = stm32_spi_probe,
 -- 
 2.13.2

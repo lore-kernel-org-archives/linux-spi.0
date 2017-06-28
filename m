@@ -1,22 +1,25 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rockchip: Set GPIO_SS flag to enable Slave Select with GPIO CS" to the spi tree
-Date: Wed, 28 Jun 2017 20:26:07 +0100
-Message-ID: <E1dQIbH-0004jF-Kd@finisterre>
-References: <1498624723-17332-1-git-send-email-jeffy.chen@rock-chips.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498624723-17332-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: stm32: fix example with st, spi-midi-ns property" to the spi tree
+Date: Wed, 28 Jun 2017 20:25:43 +0100
+Message-ID: <E1dQIat-0004fK-1x@finisterre>
+References: <1498578321-13980-4-git-send-email-amelie.delaunay@st.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Amelie Delaunay <amelie.delaunay@st.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1498578321-13980-4-git-send-email-amelie.delaunay@st.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: Set GPIO_SS flag to enable Slave Select with GPIO CS
+   spi: stm32: fix example with st, spi-midi-ns property
 
 has been applied to the spi tree at
 
@@ -41,37 +44,45 @@ to this mail.
 Thanks,
 Mark
 
->From c863795c4c0787e5f885099e3b673e1433448b82 Mon Sep 17 00:00:00 2001
-From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Date: Wed, 28 Jun 2017 12:38:42 +0800
-Subject: [PATCH] spi: rockchip: Set GPIO_SS flag to enable Slave Select with
- GPIO CS
+>From 5fd3d9433217908e1e8e1c2f841c3b28c75509d6 Mon Sep 17 00:00:00 2001
+From: Amelie Delaunay <amelie.delaunay@st.com>
+Date: Tue, 27 Jun 2017 17:45:15 +0200
+Subject: [PATCH] spi: stm32: fix example with st, spi-midi-ns property
 
-The rockchip spi still requires slave selection when using GPIO CS.
+This patch aligns example with the optional property description,
+removes status and replace spidev unvalid compatible with
+Aarvark SPI Host Adapter one.
 
-Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In slave mode, Aardvark SPI Host Adapter requires 4ms delay
+between the end of byte n and the start of byte n+1, hence the
+use of the optional property st,spi-midi-ns.
+
+Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/spi/spi-stm32.txt | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index bab9b13f0ad0..52ea1605d4c6 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -749,6 +749,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	master->transfer_one = rockchip_spi_transfer_one;
- 	master->max_transfer_size = rockchip_spi_max_transfer_size;
- 	master->handle_err = rockchip_spi_handle_err;
-+	master->flags = SPI_MASTER_GPIO_SS;
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+index 415378bca480..1b3fa2c119d5 100644
+--- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
++++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+@@ -48,13 +48,12 @@ Example:
+ 		dma-names = "rx", "tx";
+ 		pinctrl-0 = <&spi2_pins_b>;
+ 		pinctrl-names = "default";
+-		status = "okay";
+ 		cs-gpios = <&gpioa 11 0>;
  
- 	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
- 	if (IS_ERR(rs->dma_tx.ch)) {
+-		spidev@0 {
+-			compatible = "spidev";
++		aardvark@0 {
++			compatible = "totalphase,aardvark";
+ 			reg = <0>;
+ 			spi-max-frequency = <4000000>;
+-			st,spi-midi = <4000>;
++			st,spi-midi-ns = <4000>;
+ 		};
+ 	};
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

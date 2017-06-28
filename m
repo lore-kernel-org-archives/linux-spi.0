@@ -1,65 +1,66 @@
-From: Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 15/15] spi: qup: support for qup v1 dma
-Date: Wed, 28 Jun 2017 01:47:38 -0500
-Message-ID: <20170628064738.GD5203@hector.attlocal.net>
-References: <1497949857-1852-1-git-send-email-varada@codeaurora.org>
- <1497949857-1852-16-git-send-email-varada@codeaurora.org>
- <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH v2 0/4] Apple SPI properties
+Date: Wed, 28 Jun 2017 19:20:19 +0200
+Message-ID: <cover.1498636759.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170623214923.ratchkoay73ytlv3@rob-hp-laptop>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 23, 2017 at 04:49:23PM -0500, Rob Herring wrote:
-> On Tue, Jun 20, 2017 at 02:40:57PM +0530, Varadarajan Narayanan wrote:
-> > Currently the QUP Version v1 does not work with DMA so added
-> > the support for the same.
-> > 
-> > 1. It uses ADM DMA which requires TX and RX CRCI
-> > 2. DMA channel initialization need to be done after setting
-> >    block size for having valid values in maxburst
-> > 3. QUP mode should be DMOV instead of BAM.
-> > 
-> > Signed-off-by: Abhishek Sahu <absahu-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-> > Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-> > ---
-> >  .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 ++++
-> >  drivers/spi/spi-qup.c                              | 35 +++++++++++++++++-----
-> >  2 files changed, 34 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> > index 5c09077..e754181 100644
-> > --- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> > +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> > @@ -38,6 +38,12 @@ Optional properties:
-> >  - dma-names:    Names for the dma channels, if present. There must be at
-> >                  least one channel named "tx" for transmit and named "rx" for
-> >                  receive.
-> > +- qcom,tx-crci: Identificator for Client Rate Control Interface (CRCI) to be
-> 
-> Identificator is not a word.
-> 
-> This sounds like something that should be a cell in the dmas property.
+Retrieve device properties on Macs with an Apple-specific _DSM and
+use them in lieu of _CRS data upon SPI slave initialization, v2.
 
-Yes, the CRCI should be part of the dma cells for the ADM.  That would make a
-channel + crci work as a virtual channel that is backed by a hardware channel.
+Please refer to the cover letter of v1 for further details:
+http://www.spinics.net/lists/linux-acpi/msg75537.html
 
-The only thing that has to be dealt with is the protocol difference between the
-BAM and ADM dma blocks, which is what the v1 compatible tells us.
+The series has now been tested successfully by Ronald.
+
+Changes v1 -> v2:
+
+Patch 2:
+- Rebase on uuid-types branch. (Andy, Rafael)
+- Don't align assignments. (Mika)
+- Move IS_ENABLED() and dmi_match() conditionals into callee. (Mika)
+- Tone down messages indicating an unsupported properties version or
+  illegal property type to KERN_INFO to avoid scaring or annoying users
+  who may see it on every boot despite "quiet", but still allowing
+  diagnosis of issues that may ensue. (Mika)
+
+Patch 3:
+- Newly inserted patch in v2 to fix an enumeration issue. (Ronald)
+
+Patch 4 (was patch 3 in v1):
+- Move IS_ENABLED() and dmi_match() conditionals into callee. (Mika)
+- Allow acpi_spi_parse_apple_properties() to augment or override _CRS
+  by calling it unconditionally rather than only if _CRS is empty.
+
+Thanks,
+
+Lukas
 
 
-Regards,
-Andy
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Lukas Wunner (4):
+  ACPI / property: Don't evaluate objects for devices w/o handle
+  ACPI / property: Support Apple _DSM properties
+  ACPI / scan: Recognize Apple SPI and I2C slaves
+  spi: Use Apple device properties in absence of ACPI resources
+
+ drivers/acpi/property.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/scan.c     |   6 +++
+ drivers/spi/spi.c       |  30 ++++++++++++
+ 3 files changed, 162 insertions(+)
+
+-- 
+2.11.0
+

@@ -1,25 +1,22 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: stm32: replace st, spi-midi with st, spi-midi-ns to fit bindings" to the spi tree
-Date: Wed, 28 Jun 2017 20:25:36 +0100
-Message-ID: <E1dQIam-0004eK-Tq@finisterre>
-References: <1498222550-19092-5-git-send-email-amelie.delaunay@st.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Subject: Applied "spi: rockchip: Set GPIO_SS flag to enable Slave Select with GPIO CS" to the spi tree
+Date: Wed, 28 Jun 2017 20:26:07 +0100
+Message-ID: <E1dQIbH-0004jF-Kd@finisterre>
+References: <1498624723-17332-1-git-send-email-jeffy.chen@rock-chips.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498222550-19092-5-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+In-Reply-To: <1498624723-17332-1-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: stm32: replace st, spi-midi with st, spi-midi-ns to fit bindings
+   spi: rockchip: Set GPIO_SS flag to enable Slave Select with GPIO CS
 
 has been applied to the spi tree at
 
@@ -44,34 +41,33 @@ to this mail.
 Thanks,
 Mark
 
->From 042c1c60df7b85488de28574e7917b7977be3b00 Mon Sep 17 00:00:00 2001
-From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Date: Tue, 27 Jun 2017 17:45:16 +0200
-Subject: [PATCH] spi: stm32: replace st, spi-midi with st, spi-midi-ns to fit
- bindings
+>From c863795c4c0787e5f885099e3b673e1433448b82 Mon Sep 17 00:00:00 2001
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Date: Wed, 28 Jun 2017 12:38:42 +0800
+Subject: [PATCH] spi: rockchip: Set GPIO_SS flag to enable Slave Select with
+ GPIO CS
 
-This patch fixes the optional dt property used to set master inter-data
-idleness.
+The rockchip spi still requires slave selection when using GPIO CS.
 
-Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 1eb07bef043e..3df4baa68d63 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -582,7 +582,7 @@ static int stm32_spi_prepare_msg(struct spi_master *master,
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index bab9b13f0ad0..52ea1605d4c6 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -749,6 +749,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one = rockchip_spi_transfer_one;
+ 	master->max_transfer_size = rockchip_spi_max_transfer_size;
+ 	master->handle_err = rockchip_spi_handle_err;
++	master->flags = SPI_MASTER_GPIO_SS;
  
- 	/* SPI slave device may need time between data frames */
- 	spi->cur_midi = 0;
--	if (np && !of_property_read_u32(np, "st,spi-midi", &spi->cur_midi))
-+	if (np && !of_property_read_u32(np, "st,spi-midi-ns", &spi->cur_midi))
- 		dev_dbg(spi->dev, "%dns inter-data idleness\n", spi->cur_midi);
- 
- 	if (spi_dev->mode & SPI_CPOL)
+ 	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
+ 	if (IS_ERR(rs->dma_tx.ch)) {
 -- 
 2.13.2
 

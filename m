@@ -1,64 +1,46 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] spi: Use Apple device properties in absence of
- ACPI resources
-Date: Wed, 28 Jun 2017 22:14:23 +0300
-Message-ID: <CAHp75Ved89cCzTCt-7VnNp+xAgpkFxUmG2v9=5Mn=VBB_WzD5A@mail.gmail.com>
-References: <cover.1498636759.git.lukas@wunner.de> <bca7fb9e406bbfa9ee7e8457cacd34418ef689be.1498636759.git.lukas@wunner.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: loopback-test: Fix kfree() NULL pointer error.
+Date: Wed, 28 Jun 2017 20:14:52 +0100
+Message-ID: <20170628191452.vjylivjghzzpk3g7@sirena.org.uk>
+References: <36969f0624050d0ca6262e79bf4935698d063d84.1497950982.git.arvind.yadav.cs@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ronald Tschalaer <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>,
-        Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Daniel Roschka <danielroschka-d2qyoUQsf3ABe69/dCFm4g@public.gmane.org>,
-        "linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5j2nuyw7nm5ikvkw"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <bca7fb9e406bbfa9ee7e8457cacd34418ef689be.1498636759.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <36969f0624050d0ca6262e79bf4935698d063d84.1497950982.git.arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Jun 28, 2017 at 8:20 PM, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
-> MacBooks and MacBook Pros introduced since 2015 return empty _CRS data
-> for SPI slaves, causing device initialization to fail.  Most of the
-> information that would normally be conveyed via _CRS is available
-> through ACPI device properties instead, so take advantage of them.
 
-> spiSclkPeriod   /* period in ns */
+--5j2nuyw7nm5ikvkw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> +#include <linux/math64.h>
+On Tue, Jun 20, 2017 at 03:00:53PM +0530, Arvind Yadav wrote:
+> Here, rx/tx allocation can fail. So avoid kvfree call
+> with NULL pointer.
 
-> +       if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &o))
-> +               spi->max_speed_hz  = div64_u64(NSEC_PER_SEC,
-> +                                              *(u64 *)o->buffer.pointer);
+It's not an error to free NULL, the APIs will just ignore the value.
 
-Why do you need 64 bit division here? It's obviously 32. It makes
-nonsense to have variable more than NSEC_PER_SEC (if one paranoid
-enough it could be checked).
+--5j2nuyw7nm5ikvkw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +       if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &o))
-> +               spi->bits_per_word = *(u64 *)o->buffer.pointer;
-> +
+-----BEGIN PGP SIGNATURE-----
 
-> +       if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &o) &&
-> +           !*(u64 *)o->buffer.pointer)
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllUACsACgkQJNaLcl1U
+h9BsXgf/XZdf4j/HZlLzazj5OAz1NmbvJen7zK4gYvtcZJweV6+3ZKDP+NB63OIJ
+7HF8IB51eWm3ZsyEAMMgVxA+MfC56b9Qwejsqc9USFZr+8f30W/xZcGWjS5X+8BQ
+uQVW0rDVOpHkVSzzBb2OwDCf+8cqU3r42k6hEbFWg20tAYgMg2Bm+sKocInCvPt5
+QCu4+J57M1Ix3y+b0Ul6VcRteEItKhqYqRG7j/hn5tg/ur9NR6kQbCUYKFnH2W8l
+3AwWCpDBBRjKx/BnUgcsIHOn72Tk0u1LAMphsIGlFwqSyhafXATbCEoK7AcOYYX2
+pzP6C4KXiwv3UAM64O7N0A90GkFskQ==
+=gd4b
+-----END PGP SIGNATURE-----
 
-In such cases I would prefer the notation like
-ret = func();
-if (!ret && ...)
- ...
-
-Also we usually name object variable as obj, though it's minor here.
-
-> +               spi->mode |= SPI_LSB_FIRST;
-
--- 
-With Best Regards,
-Andy Shevchenko
+--5j2nuyw7nm5ikvkw--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

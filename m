@@ -1,20 +1,32 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"" to the spi tree
-Date: Wed, 28 Jun 2017 20:24:53 +0100
-Message-ID: <E1dQIa5-0004YN-MP@finisterre>
-References: <20170626134231.23958-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
+Subject: Applied "spi: sirf: fix spelling mistake: "registerred" ->
+ "registered"" to the spi tree
+Date: Wed, 28 Jun 2017 20:24:59 +0100
+Message-ID: <E1dQIaB-0004ZE-0m@finisterre>
+References: <20170626133912.23808-1-colin.king@canonical.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Barry Song <baohua@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
 To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170626134231.23958-1-colin.king@canonical.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170626133912.23808-1-colin.king@canonical.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"
+   spi: sirf: fix spelling mistake: "registerred" -> "registered"
 
 has been applied to the spi tree at
 
@@ -39,32 +51,32 @@ to this mail.
 Thanks,
 Mark
 
->From 478de2ba0d2dafcd460b17f032139e2b6b4eb1ac Mon Sep 17 00:00:00 2001
+>From 2d781e89e2b2f2195a8ef06fdc5325e46f26c8eb Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
-Date: Mon, 26 Jun 2017 14:42:31 +0100
-Subject: [PATCH] spi: loopback-test: fix spelling mistake: "reruning" ->
- "rerunning"
+Date: Mon, 26 Jun 2017 14:39:12 +0100
+Subject: [PATCH] spi: sirf: fix spelling mistake: "registerred" ->
+ "registered"
 
-trivial fix to spelling mistake in dev_info error message
+Trivial fix to spelling mistake in dev_info message
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
+ drivers/spi/spi-sirf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index f4875f177df0..514997a143dc 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -894,7 +894,7 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 		test->elapsed_time = ktime_to_ns(ktime_sub(ktime_get(), start));
- 		if (ret == -ETIMEDOUT) {
- 			dev_info(&spi->dev,
--				 "spi-message timed out - reruning...\n");
-+				 "spi-message timed out - rerunning...\n");
- 			/* rerun after a few explicit schedules */
- 			for (i = 0; i < 16; i++)
- 				schedule();
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index 7072276ad354..bbb1a275f718 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -1158,7 +1158,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	ret = spi_bitbang_start(&sspi->bitbang);
+ 	if (ret)
+ 		goto free_clk;
+-	dev_info(&pdev->dev, "registerred, bus number = %d\n", master->bus_num);
++	dev_info(&pdev->dev, "registered, bus number = %d\n", master->bus_num);
+ 
+ 	return 0;
+ free_clk:
 -- 
 2.13.2

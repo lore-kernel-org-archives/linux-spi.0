@@ -1,65 +1,157 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] spi: rockchip: Disable Runtime PM when chip
- select is asserted
-Date: Wed, 28 Jun 2017 19:42:28 +0100
-Message-ID: <20170628184228.qdj7oslnljv6e2iy@sirena.org.uk>
-References: <1498624723-17332-1-git-send-email-jeffy.chen@rock-chips.com>
- <1498624723-17332-2-git-send-email-jeffy.chen@rock-chips.com>
- <CAD=FV=UzDHfTNJgs8vvbKGd0RpY__Q9V27aSQiR5ugv6ff5gfQ@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2 2/4] ACPI / property: Support Apple _DSM properties
+Date: Wed, 28 Jun 2017 21:53:49 +0300
+Message-ID: <CAHp75VdjOcPkd0_g05_OW6amxHjf2zdJ9jKyH7q2AgzGMr-h4w@mail.gmail.com>
+References: <cover.1498636759.git.lukas@wunner.de> <e72ce423489dd604ae98ad3b76e07caf944cb581.1498636759.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="w5uxnqcyip22z3qm"
-Cc: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Heiko =?iso-8859-1?Q?St=FCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=UzDHfTNJgs8vvbKGd0RpY__Q9V27aSQiR5ugv6ff5gfQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <e72ce423489dd604ae98ad3b76e07caf944cb581.1498636759.git.lukas@wunner.de>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jun 28, 2017 at 8:20 PM, Lukas Wunner <lukas@wunner.de> wrote:
+> While the rest of the world has standardized on _DSD as the way to store
+> device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
+> been using a custom _DSM to achieve the same for much longer (ever since
+> they switched from DeviceTree-based PowerPC to Intel in 2005, verified
+> with MacOS X 10.4.11).
 
---w5uxnqcyip22z3qm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> +/**
+> + * acpi_retrieve_apple_properties - retrieve and convert Apple _DSM properties
+> + * @adev: ACPI device for which to retrieve the properties
+> + *
+> + * Invoke Apple's custom _DSM once to check the protocol version and once more
+> + * to retrieve the properties.  They are marshalled up in a single package as
+> + * alternating key/value elements, unlike _DSD which stores them as a package
+> + * of 2-element packages.  Convert to _DSD format and make them available under
+> + * the primary fwnode.
+> + */
+> +static void acpi_retrieve_apple_properties(struct acpi_device *adev)
+> +{
+> +       unsigned int i, j, newsize = 0, numprops, skipped = 0;
+> +       union acpi_object *props, *newprops;
+> +       void *free_space;
+> +
 
-On Tue, Jun 27, 2017 at 10:30:10PM -0700, Doug Anderson wrote:
-> Jeffy,
->=20
-> On Tue, Jun 27, 2017 at 9:38 PM, Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org> w=
-rote:
-> > The rockchip spi would stop driving pins when runtime suspended, which
-> > might break slave's xfer(for example cros_ec).
+> +       if (!IS_ENABLED(CONFIG_X86) || !dmi_match(DMI_SYS_VENDOR, "Apple Inc."))
+> +               return;
 
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
+You are using this in few places, perhaps it makes sense to do in
+(maybe) header like
+drivers/acpi/apple.h
 
---w5uxnqcyip22z3qm
-Content-Type: application/pgp-signature; name="signature.asc"
+static inline bool is_apple_system(void)
+{
+   return IS_ENABLED(CONFIG_X86) && dmi_match(DMI_SYS_VENDOR, "Apple Inc.");
+}
 
------BEGIN PGP SIGNATURE-----
+I know this makes more LOCs, the rationale is to keep such
+deterministic things in one place (basically maintenance).
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllT+JQACgkQJNaLcl1U
-h9CCNwf/exy0157PdbitfrMUHULKgSM+SMp2uJzj8ylcVXeAoPOQBOFIqeYbf8P4
-RwSrX+QEdO3RjbEjJZgVYH4Lv5oSqv2bELCfjG6/verPRQJUDfm34djrXeLjGimz
-ejCy/5BRrCBiPhU7ogXQ9ANiXRWZSsLS9oPN+o/6ghsTLw5RffEy21adM51E2znB
-l1ex/jp96x75D/AfrXFGzwP9Mdz8svW+Id7iiPkvV8jVinGbHH+qFmzvZ7yi75LR
-RdDngiSa4R7lYd1lJHCnjlH6esMdV3v5Ij3TNlTXNOZ7K1q5jwVSHmeWnm9mmgmz
-7sO2br6r2L4Fc0s4Gf+hR9HpMHM+nw==
-=TAYp
------END PGP SIGNATURE-----
+Rafael, Mika?
 
---w5uxnqcyip22z3qm--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> +       /* newsize = key length + value length of each tuple */
+> +       numprops = props->package.count / 2;
+> +       for (i = 0; i < numprops; i++) {
+> +               union acpi_object *key = &props->package.elements[i * 2];
+> +               union acpi_object *val = &props->package.elements[i * 2 + 1];
+> +
+> +               if ( key->type != ACPI_TYPE_STRING ||
+> +                   (val->type != ACPI_TYPE_INTEGER &&
+> +                    val->type != ACPI_TYPE_BUFFER)) {
+> +                       key->type = ACPI_TYPE_ANY; /* mark as to be skipped */
+> +                       skipped++;
+> +                       continue;
+> +               }
+> +               newsize += key->string.length + 1;
+> +               if ( val->type == ACPI_TYPE_BUFFER)
+> +                       newsize += val->buffer.length;
+> +       }
+> +
+> +       if (skipped)
+> +               acpi_handle_info(adev->handle, FW_INFO
+> +                                "skipped %u properties: wrong type\n",
+> +                                skipped);
+> +       if (skipped == numprops)
+> +               goto out_free;
+> +
+> +       /* newsize += top-level package + 3 objects for each key/value tuple */
+> +       newsize += (1 + 3 * (numprops - skipped)) * sizeof(union acpi_object);
+> +       newprops = ACPI_ALLOCATE_ZEROED(newsize);
+> +       if (!newprops)
+> +               goto out_free;
+> +
+> +       /* layout: top-level package | packages | key/value tuples | strings */
+> +       newprops->type = ACPI_TYPE_PACKAGE;
+> +       newprops->package.count = numprops - skipped;
+> +       newprops->package.elements = &newprops[1];
+> +       free_space = &newprops[1 + 3 * (numprops - skipped)];
+> +
+
+> +       for (i = 0, j = 0; i < numprops; i++) {
+
+Instead I would rather to create a bitmask above and do here something like
+
+for_each_bit_set()
+
+(Note, we have a lot of helpers to work with bitmaps)
+
+> +               union acpi_object *key = &props->package.elements[i * 2];
+> +               union acpi_object *val = &props->package.elements[i * 2 + 1];
+
+> +               unsigned int k = (1 + numprops - skipped) + j * 2;
+> +               unsigned int v = k + 1; /* index into newprops */
+
+...and this rather complex arithmetics will go away.
+
+> +
+> +               if (key->type == ACPI_TYPE_ANY)
+> +                       continue; /* skipped */
+
+...and this.
+
+> +
+> +               newprops[1 + j].type = ACPI_TYPE_PACKAGE;
+> +               newprops[1 + j].package.count = 2;
+> +               newprops[1 + j].package.elements = &newprops[k];
+> +
+> +               newprops[k].type = ACPI_TYPE_STRING;
+> +               newprops[k].string.length = key->string.length;
+> +               newprops[k].string.pointer = free_space;
+> +               memcpy(free_space, key->string.pointer, key->string.length);
+> +               free_space += key->string.length + 1;
+> +
+> +               newprops[v].type = val->type;
+> +               if (val->type == ACPI_TYPE_INTEGER)
+> +                       newprops[v].integer.value = val->integer.value;
+
+> +               else {
+
+checkpatch.pl ?
+
+> +                       newprops[v].buffer.length = val->buffer.length;
+> +                       newprops[v].buffer.pointer = free_space;
+> +                       memcpy(free_space, val->buffer.pointer,
+> +                              val->buffer.length);
+> +                       free_space += val->buffer.length;
+> +               }
+
+> +               j++; /* not incremented for skipped properties */
+
+> +       }
+
+-- 
+With Best Regards,
+Andy Shevchenko

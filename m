@@ -1,33 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: add runtime PM support" to the spi tree
-Date: Wed, 28 Jun 2017 20:25:17 +0100
-Message-ID: <E1dQIaT-0004cD-Qg@finisterre>
-References: <1498222550-19092-7-git-send-email-amelie.delaunay@st.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-To: Amelie Delaunay <amelie.delaunay@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1498222550-19092-7-git-send-email-amelie.delaunay@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: rockchip: Disable Runtime PM when chip select is asserted" to the spi tree
+Date: Wed, 28 Jun 2017 20:25:59 +0100
+Message-ID: <E1dQIb9-0004iH-1G@finisterre>
+References: <1498624723-17332-2-git-send-email-jeffy.chen@rock-chips.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1498624723-17332-2-git-send-email-jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: stm32: add runtime PM support
+   spi: rockchip: Disable Runtime PM when chip select is asserted
 
 has been applied to the spi tree at
 
@@ -52,123 +41,131 @@ to this mail.
 Thanks,
 Mark
 
->From 038ac869c9d27fceb6197e775d780ad6aeb45b1f Mon Sep 17 00:00:00 2001
-From: Amelie Delaunay <amelie.delaunay@st.com>
-Date: Tue, 27 Jun 2017 17:45:18 +0200
-Subject: [PATCH] spi: stm32: add runtime PM support
+>From aa099382ac0cda27e10fa8f45bf91edea0d1d35e Mon Sep 17 00:00:00 2001
+From: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Date: Wed, 28 Jun 2017 12:38:43 +0800
+Subject: [PATCH] spi: rockchip: Disable Runtime PM when chip select is
+ asserted
 
-This patch reworks suspend and resume callbacks and add runtime_suspend
-and runtime_resume callbacks.
+The rockchip spi would stop driving pins when runtime suspended, which
+might break slave's xfer(for example cros_ec).
 
-Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since we have pullups on those pins, we only need to care about this
+when the CS asserted.
+
+So let's keep the spi alive when chip select is asserted.
+
+Also use pm_runtime_put instead of pm_runtime_put_sync.
+
+Suggested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Jeffy Chen <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-stm32.c | 43 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ drivers/spi/spi-rockchip.c | 51 +++++++++++++++++++++++-----------------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 123529a1b40d..392c9453c2e6 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -27,6 +27,7 @@
- #include <linux/iopoll.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
-+#include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/spi/spi.h>
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 52ea1605d4c6..0b4a52b3e1dc 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -25,6 +25,11 @@
  
-@@ -1164,6 +1165,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	if (spi->dma_tx || spi->dma_rx)
- 		master->can_dma = stm32_spi_can_dma;
+ #define DRIVER_NAME "rockchip-spi"
  
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
++#define ROCKCHIP_SPI_CLR_BITS(reg, bits) \
++		writel_relaxed(readl_relaxed(reg) & ~(bits), reg)
++#define ROCKCHIP_SPI_SET_BITS(reg, bits) \
++		writel_relaxed(readl_relaxed(reg) | (bits), reg)
 +
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi master registration failed: %d\n",
-@@ -1203,6 +1207,8 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		dma_release_channel(spi->dma_tx);
- 	if (spi->dma_rx)
- 		dma_release_channel(spi->dma_rx);
-+
-+	pm_runtime_disable(&pdev->dev);
- err_clk_disable:
- 	clk_disable_unprepare(spi->clk);
- err_master_put:
-@@ -1225,23 +1231,42 @@ static int stm32_spi_remove(struct platform_device *pdev)
+ /* SPI register offsets */
+ #define ROCKCHIP_SPI_CTRLR0			0x0000
+ #define ROCKCHIP_SPI_CTRLR1			0x0004
+@@ -149,6 +154,8 @@
+  */
+ #define ROCKCHIP_SPI_MAX_TRANLEN		0xffff
  
- 	clk_disable_unprepare(spi->clk);
++#define ROCKCHIP_SPI_MAX_CS_NUM			2
++
+ enum rockchip_ssi_type {
+ 	SSI_MOTO_SPI = 0,
+ 	SSI_TI_SSP,
+@@ -193,6 +200,8 @@ struct rockchip_spi {
+ 	/* protect state */
+ 	spinlock_t lock;
  
-+	pm_runtime_disable(&pdev->dev);
++	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
 +
- 	return 0;
- }
+ 	u32 use_dma;
+ 	struct sg_table tx_sg;
+ 	struct sg_table rx_sg;
+@@ -264,37 +273,29 @@ static inline u32 rx_max(struct rockchip_spi *rs)
  
-+#ifdef CONFIG_PM
-+static int stm32_spi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct stm32_spi *spi = spi_master_get_devdata(master);
-+
-+	clk_disable_unprepare(spi->clk);
-+
-+	return 0;
-+}
-+
-+static int stm32_spi_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct stm32_spi *spi = spi_master_get_devdata(master);
-+
-+	return clk_prepare_enable(spi->clk);
-+}
-+#endif
-+
- #ifdef CONFIG_PM_SLEEP
- static int stm32_spi_suspend(struct device *dev)
+ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
  {
- 	struct spi_master *master = dev_get_drvdata(dev);
--	struct stm32_spi *spi = spi_master_get_devdata(master);
- 	int ret;
+-	u32 ser;
+ 	struct spi_master *master = spi->master;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
++	bool cs_asserted = !enable;
  
- 	ret = spi_master_suspend(master);
- 	if (ret)
- 		return ret;
+-	pm_runtime_get_sync(rs->dev);
++	/* Return immediately for no-op */
++	if (cs_asserted == rs->cs_asserted[spi->chip_select])
++		return;
  
--	clk_disable_unprepare(spi->clk);
--
--	return ret;
-+	return pm_runtime_force_suspend(dev);
+-	ser = readl_relaxed(rs->regs + ROCKCHIP_SPI_SER) & SER_MASK;
++	if (cs_asserted) {
++		/* Keep things powered as long as CS is asserted */
++		pm_runtime_get_sync(rs->dev);
+ 
+-	/*
+-	 * drivers/spi/spi.c:
+-	 * static void spi_set_cs(struct spi_device *spi, bool enable)
+-	 * {
+-	 *		if (spi->mode & SPI_CS_HIGH)
+-	 *			enable = !enable;
+-	 *
+-	 *		if (spi->cs_gpio >= 0)
+-	 *			gpio_set_value(spi->cs_gpio, !enable);
+-	 *		else if (spi->master->set_cs)
+-	 *		spi->master->set_cs(spi, !enable);
+-	 * }
+-	 *
+-	 * Note: enable(rockchip_spi_set_cs) = !enable(spi_set_cs)
+-	 */
+-	if (!enable)
+-		ser |= 1 << spi->chip_select;
+-	else
+-		ser &= ~(1 << spi->chip_select);
++		ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER,
++				      BIT(spi->chip_select));
++	} else {
++		ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER,
++				      BIT(spi->chip_select));
+ 
+-	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
++		/* Drop reference from when we first asserted CS */
++		pm_runtime_put(rs->dev);
++	}
+ 
+-	pm_runtime_put_sync(rs->dev);
++	rs->cs_asserted[spi->chip_select] = cs_asserted;
  }
  
- static int stm32_spi_resume(struct device *dev)
-@@ -1250,9 +1275,10 @@ static int stm32_spi_resume(struct device *dev)
- 	struct stm32_spi *spi = spi_master_get_devdata(master);
- 	int ret;
+ static int rockchip_spi_prepare_message(struct spi_master *master,
+@@ -739,7 +740,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->auto_runtime_pm = true;
+ 	master->bus_num = pdev->id;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
+-	master->num_chipselect = 2;
++	master->num_chipselect = ROCKCHIP_SPI_MAX_CS_NUM;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
  
--	ret = clk_prepare_enable(spi->clk);
-+	ret = pm_runtime_force_resume(dev);
- 	if (ret)
- 		return ret;
-+
- 	ret = spi_master_resume(master);
- 	if (ret)
- 		clk_disable_unprepare(spi->clk);
-@@ -1261,8 +1287,11 @@ static int stm32_spi_resume(struct device *dev)
- }
- #endif
- 
--static SIMPLE_DEV_PM_OPS(stm32_spi_pm_ops,
--			 stm32_spi_suspend, stm32_spi_resume);
-+static const struct dev_pm_ops stm32_spi_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(stm32_spi_suspend, stm32_spi_resume)
-+	SET_RUNTIME_PM_OPS(stm32_spi_runtime_suspend,
-+			   stm32_spi_runtime_resume, NULL)
-+};
- 
- static struct platform_driver stm32_spi_driver = {
- 	.probe = stm32_spi_probe,
 -- 
 2.13.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

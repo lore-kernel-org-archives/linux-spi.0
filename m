@@ -1,54 +1,79 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2 9/9] spi: spidev: add Aardvark to device tree
- compatibility list
-Date: Wed, 28 Jun 2017 19:54:45 +0100
-Message-ID: <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
-References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
- <1498578321-13980-10-git-send-email-amelie.delaunay@st.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rsfwamjmmxrfiyu3"
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Subject: Applied "spi: stm32: fix compatible to fit with new bindings" to the spi tree
+Date: Wed, 28 Jun 2017 20:25:48 +0100
+Message-ID: <E1dQIay-0004gJ-DK@finisterre>
+References: <1498222550-19092-3-git-send-email-amelie.delaunay@st.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
         Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1498578321-13980-10-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+In-Reply-To: <1498222550-19092-3-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---rsfwamjmmxrfiyu3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: stm32: fix compatible to fit with new bindings
 
-On Tue, Jun 27, 2017 at 05:45:21PM +0200, Amelie Delaunay wrote:
-> This patch adds an entry for the TotalPhase Aardvark SPI Host Adapter,
-> which can operate as an SPI Slave.
+has been applied to the spi tree at
 
-What does this device actually do and why is spidev a sensible fit for
-it?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---rsfwamjmmxrfiyu3
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllT+3UACgkQJNaLcl1U
-h9BU/Qf/UhIhQ1zK30aVgTdR4biW8ie5MNqXZLtRIJx/xyrZPeWhWbTbUIlnw+7F
-bwXmRIvhD0uSG1k4i68XFOcVNfNcU26pWj+VOnV8Fw9Zp6g/7B8SU8Bi5k2tb53K
-n12ORuccgWHRpjkKOdEMjX0VhHENIy9EhtIAPN5TiY+OaiockZTd1gmZKIV6fjOc
-UhIpeA1imsu2EIE7q3rKMPwD5Q6DsQpkmlt1D1oItsHQMMc+F+UQVrBErHxBVv5I
-sjHG3SGtIquKqzaP9ORzLGn7ETlKos03h3JvArecMWWOqnBGUNNTTOZncmo7SuZv
-VM9XFvL5K/i/sSZdi1Q2sL6ZKzBYXA==
-=Vhkz
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---rsfwamjmmxrfiyu3--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c5fe2faabad41737fa36cedc1c6e15cbc9ddff11 Mon Sep 17 00:00:00 2001
+From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Date: Tue, 27 Jun 2017 17:45:14 +0200
+Subject: [PATCH] spi: stm32: fix compatible to fit with new bindings
+
+This patch updates of_device_id compatible string to fit with new
+bindings.
+
+Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 305ecd5334fc..1eb07bef043e 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1038,7 +1038,7 @@ static int stm32_spi_config(struct stm32_spi *spi)
+ }
+ 
+ static const struct of_device_id stm32_spi_of_match[] = {
+-	{ .compatible = "st,stm32-spi", },
++	{ .compatible = "st,stm32h7-spi", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, stm32_spi_of_match);
+-- 
+2.13.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

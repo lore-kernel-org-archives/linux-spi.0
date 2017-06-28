@@ -1,66 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH linux-next v4 2/4] spi: imx: add selection for iMX53 and
- iMX6 controller
-Date: Wed, 28 Jun 2017 20:17:29 +0100
-Message-ID: <20170628191729.faaba4k2kgvticzt@sirena.org.uk>
-References: <20170608051603.16070-1-jiada_wang@mentor.com>
- <20170608051603.16070-3-jiada_wang@mentor.com>
- <20170612155345.qtgaq4wjj2vidohd@rob-hp-laptop>
- <a4d5d8e2-c50d-4856-e14f-34ead774824e@mentor.com>
- <CAL_JsqJeh=M0qB2m6DPLo1_WJsUKowvS0FpUgsmEuF5KuKPTRw@mail.gmail.com>
- <5951B420.9080400@mentor.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCHv2 9/9] spi: spidev: add Aardvark to device tree
+ compatibility list
+Date: Wed, 28 Jun 2017 19:54:45 +0100
+Message-ID: <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
+References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
+ <1498578321-13980-10-git-send-email-amelie.delaunay@st.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vzktp4cb6f6pfruf"
-Cc: Rob Herring <robh@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Jiada Wang <jiada_wang@mentor.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="rsfwamjmmxrfiyu3"
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5951B420.9080400@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1498578321-13980-10-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---vzktp4cb6f6pfruf
+--rsfwamjmmxrfiyu3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 26, 2017 at 06:25:52PM -0700, Jiada Wang wrote:
-> Hello Mark and Sascha
->=20
-> Could you please review my v4 patch set for i.MX SPI slave support
+On Tue, Jun 27, 2017 at 05:45:21PM +0200, Amelie Delaunay wrote:
+> This patch adds an entry for the TotalPhase Aardvark SPI Host Adapter,
+> which can operate as an SPI Slave.
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
+What does this device actually do and why is spidev a sensible fit for
+it?
 
---vzktp4cb6f6pfruf
+--rsfwamjmmxrfiyu3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllUAMgACgkQJNaLcl1U
-h9AgOAf/Q0yQA/ojw0LUp8n6aPabmBctlB9iAGiGFsy7R9lxwX+vc/EVhO6tJd/S
-JM9xK5UEGpuzVZSyTC6a9ntMca1baHR7xtNgdKEk9EYxQEZ2ybbsApC3ymnX48kT
-sCJsSKY/ZGwifJiHl+H1dkJYTYELdlXWYqxm6DC9CmjDaxT/BWcSLiuled2Kjbvu
-VSSCt9Bbm9GRLX1VmCMP6aejBaqr+LDJji4/2OCcr6yo8VEsjoIj1j+LDT+ub+Ej
-WJ9/7Bvha5w0KxpHJz02KeBy+IufJFMykpp/VcKGqHWrygQUYBnk52atPstTPVcw
-lO75+UeuTo6bH/BXMpEJIyMvwi9GGw==
-=fyDv
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllT+3UACgkQJNaLcl1U
+h9BU/Qf/UhIhQ1zK30aVgTdR4biW8ie5MNqXZLtRIJx/xyrZPeWhWbTbUIlnw+7F
+bwXmRIvhD0uSG1k4i68XFOcVNfNcU26pWj+VOnV8Fw9Zp6g/7B8SU8Bi5k2tb53K
+n12ORuccgWHRpjkKOdEMjX0VhHENIy9EhtIAPN5TiY+OaiockZTd1gmZKIV6fjOc
+UhIpeA1imsu2EIE7q3rKMPwD5Q6DsQpkmlt1D1oItsHQMMc+F+UQVrBErHxBVv5I
+sjHG3SGtIquKqzaP9ORzLGn7ETlKos03h3JvArecMWWOqnBGUNNTTOZncmo7SuZv
+VM9XFvL5K/i/sSZdi1Q2sL6ZKzBYXA==
+=Vhkz
 -----END PGP SIGNATURE-----
 
---vzktp4cb6f6pfruf--
+--rsfwamjmmxrfiyu3--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

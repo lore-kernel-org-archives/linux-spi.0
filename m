@@ -1,20 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: Fix kfree() NULL pointer error." to the spi tree
-Date: Wed, 28 Jun 2017 20:24:46 +0100
-Message-ID: <E1dQIZy-0004Xa-UJ@finisterre>
-References: <36969f0624050d0ca6262e79bf4935698d063d84.1497950982.git.arvind.yadav.cs@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <36969f0624050d0ca6262e79bf4935698d063d84.1497950982.git.arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"" to the spi tree
+Date: Wed, 28 Jun 2017 20:24:53 +0100
+Message-ID: <E1dQIa5-0004YN-MP@finisterre>
+References: <20170626134231.23958-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170626134231.23958-1-colin.king@canonical.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: loopback-test: Fix kfree() NULL pointer error.
+   spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"
 
 has been applied to the spi tree at
 
@@ -39,62 +39,32 @@ to this mail.
 Thanks,
 Mark
 
->From 704c3098e4c55a409eaf5ec89cee1bccc8d44f4c Mon Sep 17 00:00:00 2001
-From: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 20 Jun 2017 15:00:53 +0530
-Subject: [PATCH] spi: loopback-test: Fix kfree() NULL pointer error.
+>From 478de2ba0d2dafcd460b17f032139e2b6b4eb1ac Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Mon, 26 Jun 2017 14:42:31 +0100
+Subject: [PATCH] spi: loopback-test: fix spelling mistake: "reruning" ->
+ "rerunning"
 
-Here, rx/tx allocation can fail. So avoid kvfree call
-with NULL pointer.
+trivial fix to spelling mistake in dev_info error message
 
-Signed-off-by: Arvind Yadav <arvind.yadav.cs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 514997a143dc..3459965004f8 100644
+index f4875f177df0..514997a143dc 100644
 --- a/drivers/spi/spi-loopback-test.c
 +++ b/drivers/spi/spi-loopback-test.c
-@@ -1021,10 +1021,9 @@ int spi_test_run_tests(struct spi_device *spi,
- 		rx = vmalloc(SPI_TEST_MAX_SIZE_PLUS);
- 	else
- 		rx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
--	if (!rx) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!rx)
-+		return -ENOMEM;
-+
- 
- 	if (use_vmalloc)
- 		tx = vmalloc(SPI_TEST_MAX_SIZE_PLUS);
-@@ -1032,7 +1031,7 @@ int spi_test_run_tests(struct spi_device *spi,
- 		tx = kzalloc(SPI_TEST_MAX_SIZE_PLUS, GFP_KERNEL);
- 	if (!tx) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto err_tx;
- 	}
- 
- 	/* now run the individual tests in the table */
-@@ -1057,8 +1056,9 @@ int spi_test_run_tests(struct spi_device *spi,
- 	}
- 
- out:
--	kvfree(rx);
- 	kvfree(tx);
-+err_tx:
-+	kvfree(rx);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_test_run_tests);
+@@ -894,7 +894,7 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
+ 		test->elapsed_time = ktime_to_ns(ktime_sub(ktime_get(), start));
+ 		if (ret == -ETIMEDOUT) {
+ 			dev_info(&spi->dev,
+-				 "spi-message timed out - reruning...\n");
++				 "spi-message timed out - rerunning...\n");
+ 			/* rerun after a few explicit schedules */
+ 			for (i = 0; i < 16; i++)
+ 				schedule();
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

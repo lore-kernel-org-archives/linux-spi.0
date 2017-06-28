@@ -1,66 +1,60 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH v2 0/4] Apple SPI properties
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH v2 1/4] ACPI / property: Don't evaluate objects for devices
+ w/o handle
 Date: Wed, 28 Jun 2017 19:20:19 +0200
-Message-ID: <cover.1498636759.git.lukas@wunner.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Leif Liddy <leif.liddy@gmail.com>,
-        Daniel Roschka <danielroschka@phoenitydawn.de>,
-        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Message-ID: <f3596c7e5add8803a6022c04cedbaace11d70288.1498636759.git.lukas@wunner.de>
+References: <cover.1498636759.git.lukas@wunner.de>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Daniel Roschka <danielroschka-d2qyoUQsf3ABe69/dCFm4g@public.gmane.org>,
+        linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Ronald Tschalaer <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>,
+        Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1498636759.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Retrieve device properties on Macs with an Apple-specific _DSM and
-use them in lieu of _CRS data upon SPI slave initialization, v2.
+Fabricated devices such as LNXPWRBN lack a handle, causing evaluation
+of _CCA and _DSD to always fail with AE_BAD_PARAMETER.  While that is
+merely a (negligible) waste of processing power, evaluating a _DSM for
+them (such as Apple's device properties _DSM which we're about to add)
+results in an ugly error:
 
-Please refer to the cover letter of v1 for further details:
-http://www.spinics.net/lists/linux-acpi/msg75537.html
+    ACPI: \: failed to evaluate _DSM (0x1001)
 
-The series has now been tested successfully by Ronald.
+Avoid by not evaluating _DSD and the upcoming _DSM for devices without
+handle.
 
-Changes v1 -> v2:
+Cc: Rafael J. Wysocki <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+---
+ drivers/acpi/property.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Patch 2:
-- Rebase on uuid-types branch. (Andy, Rafael)
-- Don't align assignments. (Mika)
-- Move IS_ENABLED() and dmi_match() conditionals into callee. (Mika)
-- Tone down messages indicating an unsupported properties version or
-  illegal property type to KERN_INFO to avoid scaring or annoying users
-  who may see it on every boot despite "quiet", but still allowing
-  diagnosis of issues that may ensue. (Mika)
-
-Patch 3:
-- Newly inserted patch in v2 to fix an enumeration issue. (Ronald)
-
-Patch 4 (was patch 3 in v1):
-- Move IS_ENABLED() and dmi_match() conditionals into callee. (Mika)
-- Allow acpi_spi_parse_apple_properties() to augment or override _CRS
-  by calling it unconditionally rather than only if _CRS is empty.
-
-Thanks,
-
-Lukas
-
-
-Lukas Wunner (4):
-  ACPI / property: Don't evaluate objects for devices w/o handle
-  ACPI / property: Support Apple _DSM properties
-  ACPI / scan: Recognize Apple SPI and I2C slaves
-  spi: Use Apple device properties in absence of ACPI resources
-
- drivers/acpi/property.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/scan.c     |   6 +++
- drivers/spi/spi.c       |  30 ++++++++++++
- 3 files changed, 162 insertions(+)
-
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 917c789f953d..116bfc1937b5 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -339,6 +339,9 @@ void acpi_init_properties(struct acpi_device *adev)
+ 
+ 	INIT_LIST_HEAD(&adev->data.subnodes);
+ 
++	if (!adev->handle)
++		return;
++
+ 	/*
+ 	 * Check if ACPI_DT_NAMESPACE_HID is present and inthat case we fill in
+ 	 * Device Tree compatible properties for this device.
 -- 
 2.11.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

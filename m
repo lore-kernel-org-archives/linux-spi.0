@@ -1,54 +1,54 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v2 3/4] ACPI / scan: Recognize Apple SPI and I2C slaves
-Date: Thu, 29 Jun 2017 12:22:22 +0300
-Message-ID: <20170629092222.GC629@lahna.fi.intel.com>
-References: <cover.1498636759.git.lukas@wunner.de>
- <9f06a7ce1cc6dd4cb33004c7d37adc1a5c0f80e2.1498636759.git.lukas@wunner.de>
- <20170629073420.GZ629@lahna.fi.intel.com>
- <20170629084604.swuzzxsdiiosqurz@wunner.de>
+From: Amelie DELAUNAY <amelie.delaunay@st.com>
+Subject: Re: [PATCHv2 9/9] spi: spidev: add Aardvark to device tree
+ compatibility list
+Date: Thu, 29 Jun 2017 14:58:43 +0200
+Message-ID: <67764839-889b-e398-16eb-de583d82cbf3@st.com>
+References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
+ <1498578321-13980-10-git-send-email-amelie.delaunay@st.com>
+ <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ronald Tschalaer <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>,
-        Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Daniel Roschka <danielroschka-d2qyoUQsf3ABe69/dCFm4g@public.gmane.org>,
-        linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170629084604.swuzzxsdiiosqurz-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Alexandre TORGUE <alexandre.torgue@st.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 29, 2017 at 10:46:04AM +0200, Lukas Wunner wrote:
-> On Thu, Jun 29, 2017 at 10:34:20AM +0300, Mika Westerberg wrote:
-> > On Wed, Jun 28, 2017 at 07:20:19PM +0200, Lukas Wunner wrote:
-> > > --- a/drivers/acpi/scan.c
-> > > +++ b/drivers/acpi/scan.c
-> > > @@ -1444,6 +1444,12 @@ static bool acpi_is_spi_i2c_slave(struct acpi_device *device)
-> > >  	struct list_head resource_list;
-> > >  	bool is_spi_i2c_slave = false;
-> > >  
-> > > +	/* Macs use device properties in lieu of _CRS resources */
-> > > +	if (IS_ENABLED(CONFIG_X86) && dmi_match(DMI_SYS_VENDOR, "Apple Inc.") &&
-> > 
-> > Do we really need these checks?
+
+
+On 06/28/2017 08:54 PM, Mark Brown wrote:
+> On Tue, Jun 27, 2017 at 05:45:21PM +0200, Amelie Delaunay wrote:
+>> This patch adds an entry for the TotalPhase Aardvark SPI Host Adapter,
+>> which can operate as an SPI Slave.
 > 
-> With these checks present, searching for the properties can be optimized
-> away on ARM and skipped on x86 non-Macs.  (Each property query requires
-> decoding the _DSD Package and performing an O(n) search of the properties.)
+> What does this device actually do and why is spidev a sensible fit for
+> it?
+> 
+This device is actually a debugging tool [1] which can work on SPI bus 
+(and also I2C). Connected via USB on a PC, it can either acts as an SPI 
+master or SPI slave and it can transmit/receive serial data using SPI 
+protocol. Polarity, Phase, Bit Order, Frequency can be configured. So 
+this tool is really useful during SPI driver development to 
+troubleshoot. And that's why spidev driver totally fit for it when used 
+as an SPI slave, for the reason described in spidev Documentation: 
+"Developing simple protocols used to talk to" Aardvark "acting as SPI 
+slaves, which you may need to change quite often".
 
-Well, you add dmi_match() that gets called every time and I was under
-the impression that we already performed _DSD decode when the property
-set was initially parsed.
-
-Those checks just uglify the code IMHO.
-
-No strong feelings though, so up to Rafael to decide :-)
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+[1] https://www.totalphase.com/products/aardvark-i2cspi/

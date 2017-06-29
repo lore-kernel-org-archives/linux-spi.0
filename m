@@ -1,54 +1,207 @@
-From: Amelie DELAUNAY <amelie.delaunay@st.com>
-Subject: Re: [PATCHv2 9/9] spi: spidev: add Aardvark to device tree
- compatibility list
-Date: Thu, 29 Jun 2017 14:58:43 +0200
-Message-ID: <67764839-889b-e398-16eb-de583d82cbf3@st.com>
-References: <1498578321-13980-1-git-send-email-amelie.delaunay@st.com>
- <1498578321-13980-10-git-send-email-amelie.delaunay@st.com>
- <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH v5 07/16] Documentation: DT: MIPS: lantiq: Add docs for
+ the RCU bindings
+Date: Thu, 29 Jun 2017 22:27:19 +0200
+Message-ID: <1171930b-769b-f0ea-778e-ddcd11b20775@hauke-m.de>
+References: <20170620223743.13735-1-hauke@hauke-m.de>
+ <20170620223743.13735-8-hauke@hauke-m.de>
+ <20170623221224.fhfc6ezydd3uglfr@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Alexandre TORGUE <alexandre.torgue@st.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170628185445.fsnqs2tlqqeqzl57@sirena.org.uk>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170623221224.fhfc6ezydd3uglfr@rob-hp-laptop>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-On 06/28/2017 08:54 PM, Mark Brown wrote:
-> On Tue, Jun 27, 2017 at 05:45:21PM +0200, Amelie Delaunay wrote:
->> This patch adds an entry for the TotalPhase Aardvark SPI Host Adapter,
->> which can operate as an SPI Slave.
+On 06/24/2017 12:12 AM, Rob Herring wrote:
+> On Wed, Jun 21, 2017 at 12:37:34AM +0200, Hauke Mehrtens wrote:
+>> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+>>
+>> This adds the initial documentation for the RCU module (a MFD device
+>> which provides USB PHYs, reset controllers and more).
+>>
+>> The RCU register range is used for multiple purposes. Mostly one device
+>> uses one or multiple register exclusively, but for some registers some
+>> bits are for one driver and some other bits are for a different driver.
+>> With this patch all accesses to the RCU registers will go through
+>> syscon.
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+>> ---
+>>  .../devicetree/bindings/mips/lantiq/rcu.txt        | 95 ++++++++++++++++++++++
+>>  1 file changed, 95 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+>> new file mode 100644
+>> index 000000000000..9c875f4f3c90
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+>> @@ -0,0 +1,95 @@
+>> +Lantiq XWAY SoC RCU binding
+>> +===========================
+>> +
+>> +This binding describes the RCU (reset controller unit) multifunction device,
+>> +where each sub-device has it's own set of registers.
+>> +
+>> +The RCU register range is used for multiple purposes. Mostly one device
+>> +uses one or multiple register exclusively, but for some registers some
+>> +bits are for one driver and some other bits are for a different driver.
+>> +With this patch all accesses to the RCU registers will go through
+>> +syscon.
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>> +Required properties:
+>> +- compatible	: The first and second values must be:
+>> +		  "lantiq,xrx200-rcu", "simple-mfd", "syscon"
+>> +- reg		: The address and length of the system control registers
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>> +Example of the RCU bindings on a xRX200 SoC:
+>> +	rcu0: rcu@203000 {
+>> +		compatible = "lantiq,xrx200-rcu", "simple-mfd", "syscon";
+>> +		reg = <0x203000 0x100>;
+>> +		ranges = <0x0 0x203000 0x100>;
+>> +		big-endian;
+>> +
+>> +		gphy0: gphy@0 {
 > 
-> What does this device actually do and why is spidev a sensible fit for
-> it?
-> 
-This device is actually a debugging tool [1] which can work on SPI bus 
-(and also I2C). Connected via USB on a PC, it can either acts as an SPI 
-master or SPI slave and it can transmit/receive serial data using SPI 
-protocol. Polarity, Phase, Bit Order, Frequency can be configured. So 
-this tool is really useful during SPI driver development to 
-troubleshoot. And that's why spidev driver totally fit for it when used 
-as an SPI slave, for the reason described in spidev Documentation: 
-"Developing simple protocols used to talk to" Aardvark "acting as SPI 
-slaves, which you may need to change quite often".
+> unit address should match reg, so "phy@20"
 
-[1] https://www.totalphase.com/products/aardvark-i2cspi/
+done
+
+>> +			compatible = "lantiq,xrx200a2x-gphy";
+>> +			reg = <0x20 0x4>;
+>> +
+>> +			resets = <&reset0 31 30>, <&reset1 7 7>;
+>> +			reset-names = "gphy", "gphy2";
+>> +			lantiq,gphy-mode = <GPHY_MODE_GE>;
+>> +		};
+>> +
+>> +		gphy1: gphy@1 {
+> 
+> phy@68
+
+done
+
+>> +			compatible = "lantiq,xrx200a2x-gphy";
+>> +			reg = <0x68 0x4>;
+>> +
+>> +			resets = <&reset0 29 28>, <&reset1 6 6>;
+>> +			reset-names = "gphy", "gphy2";
+>> +			lantiq,gphy-mode = <GPHY_MODE_GE>;
+>> +		};
+>> +
+>> +		reset0: reset-controller@0 {
+> 
+> ...@10
+
+done
+
+
+>> +			compatible = "lantiq,xrx200-reset";
+>> +
+>> +			offset-set = <0x10>;
+>> +			offset-status = <0x14>;
+> 
+> reg = <0x10 8>;
+
+done
+
+>> +			#reset-cells = <2>;
+>> +		};
+>> +
+>> +		reset1: reset-controller@1 {
+>> +			compatible = "lantiq,xrx200-reset";
+>> +
+>> +			offset-set = <0x48>;
+>> +			offset-status = <0x24>;
+> 
+> reg = <0x48 4>, <0x24 4>;
+
+done
+
+>> +			#reset-cells = <2>;
+>> +		};
+>> +
+>> +		usb_phy0: usb2-phy@0 {
+>> +			compatible = "lantiq,xrx200-usb2-phy";
+>> +			status = "disabled";
+>> +
+>> +			regmap = <&rcu0>;
+> 
+> This should be dropped.
+
+I will get this from the parent device now.
+
+>> +			offset-phy = <0x18>;
+>> +			offset-ana = <0x38>;
+> 
+> Use reg.
+
+There is also one bit used to reset the DSL digital frontend at offset
+0x38. This has nothing to do with USB.
+
+>> +			resets = <&reset1 4 4>, <&reset0 4 4>;
+>> +			reset-names = "phy", "ctrl";
+>> +			#phy-cells = <0>;
+>> +		};
+>> +
+>> +		usb_phy1: usb2-phy@1 {
+>> +			compatible = "lantiq,xrx200-usb2-phy";
+>> +			status = "disabled";
+>> +
+>> +			regmap = <&rcu0>;
+> 
+> Drop.
+
+done
+
+>> +			offset-phy = <0x34>;
+>> +			offset-ana = <0x3C>;
+> 
+> Use reg.
+
+There is also a bits to configure something with the DSL dying gasp at
+offset 0x34. This has nothing to do with USB.
+
+> 
+>> +			resets = <&reset1 5 4>, <&reset0 4 4>;
+>> +			reset-names = "phy", "ctrl";
+>> +			#phy-cells = <0>;
+>> +		};
+>> +
+>> +		reboot {
+>> +			compatible = "syscon-reboot";
+>> +
+>> +			regmap = <&rcu0>;
+> 
+> Drop.
+
+The syscon-reboot driver uses this code to get the regmap:
+ctx->map = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
+This driver was not added by me.
+
+>> +			offset = <0x10>;
+>> +			mask = <0x40000000>;
+>> +		};
+>> +	};
+>> +
+>> -- 
+>> 2.11.0
+>>
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,80 +1,40 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: stm32: fix compatible to fit with new bindings" to the spi tree
-Date: Wed, 28 Jun 2017 20:25:48 +0100
-Message-ID: <E1dQIay-0004gJ-DK@finisterre>
-References: <1498222550-19092-3-git-send-email-amelie.delaunay@st.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1498222550-19092-3-git-send-email-amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] ACPI / property: Don't evaluate objects for
+ devices w/o handle
+Date: Thu, 29 Jun 2017 10:30:58 +0300
+Message-ID: <20170629073058.GY629@lahna.fi.intel.com>
+References: <cover.1498636759.git.lukas@wunner.de>
+ <f3596c7e5add8803a6022c04cedbaace11d70288.1498636759.git.lukas@wunner.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org
+To: Lukas Wunner <lukas@wunner.de>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <f3596c7e5add8803a6022c04cedbaace11d70288.1498636759.git.lukas@wunner.de>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Wed, Jun 28, 2017 at 07:20:19PM +0200, Lukas Wunner wrote:
+> Fabricated devices such as LNXPWRBN lack a handle, causing evaluation
+> of _CCA and _DSD to always fail with AE_BAD_PARAMETER.  While that is
+> merely a (negligible) waste of processing power, evaluating a _DSM for
+> them (such as Apple's device properties _DSM which we're about to add)
+> results in an ugly error:
+> 
+>     ACPI: \: failed to evaluate _DSM (0x1001)
+> 
+> Avoid by not evaluating _DSD and the upcoming _DSM for devices without
+> handle.
+> 
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-   spi: stm32: fix compatible to fit with new bindings
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c5fe2faabad41737fa36cedc1c6e15cbc9ddff11 Mon Sep 17 00:00:00 2001
-From: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Date: Tue, 27 Jun 2017 17:45:14 +0200
-Subject: [PATCH] spi: stm32: fix compatible to fit with new bindings
-
-This patch updates of_device_id compatible string to fit with new
-bindings.
-
-Signed-off-by: Amelie Delaunay <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 305ecd5334fc..1eb07bef043e 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1038,7 +1038,7 @@ static int stm32_spi_config(struct stm32_spi *spi)
- }
- 
- static const struct of_device_id stm32_spi_of_match[] = {
--	{ .compatible = "st,stm32-spi", },
-+	{ .compatible = "st,stm32h7-spi", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, stm32_spi_of_match);
--- 
-2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>

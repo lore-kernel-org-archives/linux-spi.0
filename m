@@ -1,76 +1,50 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v2 2/4] ACPI / property: Support Apple _DSM properties
-Date: Sun, 2 Jul 2017 13:07:19 +0200
-Message-ID: <20170702110719.GA825@wunner.de>
-References: <cover.1498636759.git.lukas@wunner.de>
- <e72ce423489dd604ae98ad3b76e07caf944cb581.1498636759.git.lukas@wunner.de>
- <CAHp75VdjOcPkd0_g05_OW6amxHjf2zdJ9jKyH7q2AgzGMr-h4w@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Leif Liddy <leif.liddy@gmail.com>,
-        Daniel Roschka <danielroschka@phoenitydawn.de>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>, x86@kernel.org
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdjOcPkd0_g05_OW6amxHjf2zdJ9jKyH7q2AgzGMr-h4w@mail.gmail.com>
-Sender: linux-acpi-owner@vger.kernel.org
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: [PATCH v7 03/16] mtd: spi-falcon: drop check of boot select
+Date: Mon,  3 Jul 2017 00:40:38 +0200
+Message-ID: <20170702224051.15109-4-hauke@hauke-m.de>
+References: <20170702224051.15109-1-hauke@hauke-m.de>
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170702224051.15109-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 28, 2017 at 09:53:49PM +0300, Andy Shevchenko wrote:
-> On Wed, Jun 28, 2017 at 8:20 PM, Lukas Wunner <lukas@wunner.de> wrote:
-> > While the rest of the world has standardized on _DSD as the way to store
-> > device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
-> > been using a custom _DSM to achieve the same for much longer (ever since
-> > they switched from DeviceTree-based PowerPC to Intel in 2005, verified
-> > with MacOS X 10.4.11).
-[snip]
-> > +static void acpi_retrieve_apple_properties(struct acpi_device *adev)
-> > +{
-> > +       unsigned int i, j, newsize = 0, numprops, skipped = 0;
-> > +       union acpi_object *props, *newprops;
-> > +       void *free_space;
-> > +
-> > +       if (!IS_ENABLED(CONFIG_X86) || !dmi_match(DMI_SYS_VENDOR, "Apple Inc."))
-> > +               return;
-> 
-> You are using this in few places, perhaps it makes sense to do in
-> (maybe) header like
-> drivers/acpi/apple.h
-> 
-> static inline bool is_apple_system(void)
-> {
->    return IS_ENABLED(CONFIG_X86) && dmi_match(DMI_SYS_VENDOR, "Apple Inc.");
-> }
-> 
-> I know this makes more LOCs, the rationale is to keep such
-> deterministic things in one place (basically maintenance).
+Do not check which flash type the SoC was booted from before
+using this driver. Assume that the device tree is correct and use this
+driver when it was added to device tree. This also removes a build
+dependency to the SoC code.
 
-You mean like is_uv_system() for SGI UltraViolet?
+Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+---
+ drivers/spi/spi-falcon.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-I could add a global bool is_apple_system which is set early during boot,
-then the DMI check would only have to be performed once.  The bool would
-be #defined to false on non-x86 arches via a header file which would have
-to live in include/linux/.  I could add an x86-specific config option
-such as CONFIG_X86_APPLE which would allow removal of all Mac-specific
-quirks and behaviour by likewise #defining is_apple_system to false.
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index 286b2c81fc6b..f8638e82e5db 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	int ret;
+ 
+-	if (ltq_boot_select() != BS_SPI) {
+-		dev_err(&pdev->dev, "invalid bootstrap options\n");
+-		return -ENODEV;
+-	}
+-
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+ 	if (!master)
+ 		return -ENOMEM;
+-- 
+2.11.0
 
-I'm not sure if the x86 maintainers will approve of this.  Next thing
-you know, someone wants to add the same thing for Dell or whatever.
-OTOH the amount of code to deal with Apple quirks may justify it.
-Adding x86 maintainers to cc.  Ingo, Thomas, Peter, any opinion?
-
-My concern is that this series is bikeshedded / postponed indefinitely
-if it is made to depend on such bigger changes.  (The discussion of
-which is legitimate of course.)
-
-Thanks,
-
-Lukas
+--
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

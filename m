@@ -1,60 +1,76 @@
-From: Aravind Thokala <aravind.thk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/bcm63xx-hspi: Fix checkpatch warnings
-Date: Fri, 30 Jun 2017 23:08:15 +0530
-Message-ID: <CAAUiYHf6n+C9Q7TdApG_7mOdc7fJyTKq9To=4PvgXARQ5eOAOg@mail.gmail.com>
-References: <1498579630-10109-1-git-send-email-aravind.thk@gmail.com> <20170628184507.tnl7jc4wvtt5op5q@sirena.org.uk>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2 2/4] ACPI / property: Support Apple _DSM properties
+Date: Sun, 2 Jul 2017 13:07:19 +0200
+Message-ID: <20170702110719.GA825@wunner.de>
+References: <cover.1498636759.git.lukas@wunner.de>
+ <e72ce423489dd604ae98ad3b76e07caf944cb581.1498636759.git.lukas@wunner.de>
+ <CAHp75VdjOcPkd0_g05_OW6amxHjf2zdJ9jKyH7q2AgzGMr-h4w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170628184507.tnl7jc4wvtt5op5q-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>, x86@kernel.org
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdjOcPkd0_g05_OW6amxHjf2zdJ9jKyH7q2AgzGMr-h4w@mail.gmail.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Mark,
+On Wed, Jun 28, 2017 at 09:53:49PM +0300, Andy Shevchenko wrote:
+> On Wed, Jun 28, 2017 at 8:20 PM, Lukas Wunner <lukas@wunner.de> wrote:
+> > While the rest of the world has standardized on _DSD as the way to store
+> > device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
+> > been using a custom _DSM to achieve the same for much longer (ever since
+> > they switched from DeviceTree-based PowerPC to Intel in 2005, verified
+> > with MacOS X 10.4.11).
+[snip]
+> > +static void acpi_retrieve_apple_properties(struct acpi_device *adev)
+> > +{
+> > +       unsigned int i, j, newsize = 0, numprops, skipped = 0;
+> > +       union acpi_object *props, *newprops;
+> > +       void *free_space;
+> > +
+> > +       if (!IS_ENABLED(CONFIG_X86) || !dmi_match(DMI_SYS_VENDOR, "Apple Inc."))
+> > +               return;
+> 
+> You are using this in few places, perhaps it makes sense to do in
+> (maybe) header like
+> drivers/acpi/apple.h
+> 
+> static inline bool is_apple_system(void)
+> {
+>    return IS_ENABLED(CONFIG_X86) && dmi_match(DMI_SYS_VENDOR, "Apple Inc.");
+> }
+> 
+> I know this makes more LOCs, the rationale is to keep such
+> deterministic things in one place (basically maintenance).
 
-Thank you for reviewing the patch. I've used the checkpatch tool and
-fixed the warnings provided by the tool. The warnings are in the
-function definitions:
+You mean like is_uv_system() for SGI UltraViolet?
 
-1) static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned
- cs, bool active)
+I could add a global bool is_apple_system which is set early during boot,
+then the DMI check would only have to be performed once.  The bool would
+be #defined to false on non-x86 arches via a header file which would have
+to live in include/linux/.  I could add an x86-specific config option
+such as CONFIG_X86_APPLE which would allow removal of all Mac-specific
+quirks and behaviour by likewise #defining is_apple_system to false.
 
-2) static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
-                                  struct spi_device *spi, int hz)
-{
-        unsigned profile = spi->chip_select;
+I'm not sure if the x86 maintainers will approve of this.  Next thing
+you know, someone wants to add the same thing for Dell or whatever.
+OTOH the amount of code to deal with Apple quirks may justify it.
+Adding x86 maintainers to cc.  Ingo, Thomas, Peter, any opinion?
 
-3) static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct
-spi_transfer *t)
-{
-        struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
-        unsigned chip_select = spi->chip_select;
+My concern is that this series is bikeshedded / postponed indefinitely
+if it is made to depend on such bigger changes.  (The discussion of
+which is legitimate of course.)
 
-These warnings looked straightforward for me so I've fixed those and
-sent the patch.
+Thanks,
 
-Kindly let me know if you want to record the warnings in the patch so
-that I could send v2 patch as soon as possible.
-
-Thank you,
-
-Aravind.
-
-
-On 29 June 2017 at 00:15, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Jun 27, 2017 at 09:37:10PM +0530, Aravind Thokala wrote:
->> This patch fixes the checkpatch.pl warnings on the driver
->> file.
->
-> This isn't a good changelog, what are the warnings and why are we fixing
-> them?  The fact that checkpatch complains isn't meaningful in and of
-> itself - it's OK to say that checkpatch helped identify issues but it's
-> not perfect and we need to understand what is being changed and why.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Lukas

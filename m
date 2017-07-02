@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v7 05/16] watchdog: lantiq: add device tree binding documentation
-Date: Mon,  3 Jul 2017 00:40:40 +0200
-Message-ID: <20170702224051.15109-6-hauke@hauke-m.de>
+Subject: [PATCH v7 02/16] mtd: lantiq-flash: drop check of boot select
+Date: Mon,  3 Jul 2017 00:40:37 +0200
+Message-ID: <20170702224051.15109-3-hauke@hauke-m.de>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -10,53 +10,43 @@ Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uu
         robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
         Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170702224051.15109-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The binding was not documented before, add the documentation now.
+Do not check which flash type the SoC was booted from before
+using this driver. Assume that the device tree is correct and use this
+driver when it was added to device tree. This also removes a build
+dependency to the SoC code.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Acked-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ drivers/mtd/maps/lantiq-flash.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-new file mode 100644
-index 000000000000..c3967feebb6c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-@@ -0,0 +1,24 @@
-+Lantiq WTD watchdog binding
-+============================
-+
-+This describes the binding of the Lantiq watchdog driver.
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible		: Should be one of
-+				"lantiq,wdt"
-+				"lantiq,xrx100-wdt"
-+				"lantiq,xrx200-wdt"
-+				"lantiq,falcon-wdt"
-+- lantiq,rcu		: A phandle to the RCU syscon (required for
-+			  "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
-+			  "lantiq,xrx100-wdt")
-+
-+-------------------------------------------------------------------------------
-+Example for the watchdog on the xRX200 SoCs:
-+		watchdog@803f0 {
-+			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
-+			reg = <0x803f0 0x10>;
-+
-+			lantiq,rcu = <&rcu0>;
-+		};
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index 3e33ab66eb24..77b1d8013295 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -114,12 +114,6 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	struct cfi_private *cfi;
+ 	int err;
+ 
+-	if (of_machine_is_compatible("lantiq,falcon") &&
+-			(ltq_boot_select() != BS_FLASH)) {
+-		dev_err(&pdev->dev, "invalid bootstrap options\n");
+-		return -ENODEV;
+-	}
+-
+ 	ltq_mtd = devm_kzalloc(&pdev->dev, sizeof(struct ltq_mtd), GFP_KERNEL);
+ 	if (!ltq_mtd)
+ 		return -ENOMEM;
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

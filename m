@@ -1,216 +1,325 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI updates for v4.13
-Date: Tue, 4 Jul 2017 16:20:52 +0100
-Message-ID: <20170704152052.nsain5p2oel6keab@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pjnybb7dp62awnlt"
-Cc: linux-spi-p8RBGIrYaKw76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Applied "spi: imx: dynamic burst length adjust for PIO mode" to the spi tree
+Date: Fri, 07 Jul 2017 13:53:18 +0100
+Message-ID: <E1dTSl4-0002xx-DJ@finisterre>
+References: <20170613083402.22324-1-jiada_wang@mentor.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <20170613083402.22324-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---pjnybb7dp62awnlt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: dynamic burst length adjust for PIO mode
 
-The following changes since commit 6f7da290413ba713f0cdd9ff1a2a9bb129ef4f6c:
+has been applied to the spi tree at
 
-  Linux 4.12 (2017-07-02 16:07:02 -0700)
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-are available in the git repository at:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4.13
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-for you to fetch changes up to 082f6968bb204d1a3d8b2da3c53d6b7a59bbd985:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  Merge remote-tracking branches 'spi/topic/spidev', 'spi/topic/st-ssc4' and 'spi/topic/stm32' into spi-next (2017-07-03 16:21:12 +0100)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-----------------------------------------------------------------
-spi: Updates for v4.13
+Thanks,
+Mark
 
-There's only one big change in this release but it's a very big change,
-Geert Uytterhoeven has implemented support for SPI slave mode.  This
-feature has been on the cards since the subsystem was originally merged
-back in the mists of time so it's great that Geert stepped up and
-finally implemented it.
+>From a0cc330240c9dae8e3080bd6dc59adb2bdc792ce Mon Sep 17 00:00:00 2001
+From: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Date: Tue, 13 Jun 2017 17:34:02 +0900
+Subject: [PATCH] spi: imx: dynamic burst length adjust for PIO mode
 
- - SPI slave support, together with wholesale renaming of SPI
-   controllers from master to controller which went surprisingly
-   smoothly.  This is already used with Renesas SoCs and support is in
-   the works for i.MX too.
- - New drivers for Meson SPICC and ST STM32
+previously burst length (BURST_LENGTH) is always set to equal
+to bits_per_word, causes a 10us gap between each word in
+transfer, which significantly affects performance.
 
-----------------------------------------------------------------
-Amelie Delaunay (10):
-      spi: Document the STM32 SPI bindings
-      spi: add driver for STM32 SPI controller
-      spi: stm32: use SoC specific compatible
-      spi: stm32: fix compatible to fit with new bindings
-      spi: stm32: fix example with st, spi-midi-ns property
-      spi: stm32: replace st, spi-midi with st, spi-midi-ns to fit bindings
-      spi: stm32: use normal conditional statements instead of ternary operator
-      spi: stm32: add runtime PM support
-      spi: stm32: enhance DMA error management
-      spi: stm32: fix potential dereference null return value
+This patch uses 32 bits transfer to simulate lower bits transfer,
+and adjusts burst length runtimely to use biggeest burst length
+as possible to reduce the gaps in transfer for PIO mode.
 
-Andres Galacho (1):
-      spi: bcm63xx-hsspi: Export OF device ID table as module aliases
+Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 150 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 141 insertions(+), 9 deletions(-)
 
-Aravind Thokala (1):
-      spi/bcm63xx: Fix checkpatch warnings
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index f9698b7aeb3b..88f52d24e2ab 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -56,6 +56,7 @@
+ 
+ /* The maximum  bytes that a sdma BD can transfer.*/
+ #define MAX_SDMA_BD_BYTES  (1 << 15)
++#define MX51_ECSPI_CTRL_MAX_BURST	512
+ 
+ enum spi_imx_devtype {
+ 	IMX1_CSPI,
+@@ -74,6 +75,7 @@ struct spi_imx_devtype_data {
+ 	void (*trigger)(struct spi_imx_data *);
+ 	int (*rx_available)(struct spi_imx_data *);
+ 	void (*reset)(struct spi_imx_data *);
++	bool dynamic_burst;
+ 	enum spi_imx_devtype devtype;
+ };
+ 
+@@ -94,12 +96,14 @@ struct spi_imx_data {
+ 	unsigned int bits_per_word;
+ 	unsigned int spi_drctl;
+ 
+-	unsigned int count;
++	unsigned int count, remainder;
+ 	void (*tx)(struct spi_imx_data *);
+ 	void (*rx)(struct spi_imx_data *);
+ 	void *rx_buf;
+ 	const void *tx_buf;
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
++	unsigned int dynamic_burst, read_u32;
++	unsigned int word_mask;
+ 
+ 	/* DMA */
+ 	bool usedma;
+@@ -228,6 +232,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 		return false;
+ 
+ 	spi_imx->wml = i;
++	spi_imx->dynamic_burst = 0;
+ 
+ 	return true;
+ }
+@@ -242,6 +247,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+ #define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
+ #define MX51_ECSPI_CTRL_BL_OFFSET	20
++#define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
+ 
+ #define MX51_ECSPI_CONFIG	0x0c
+ #define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+@@ -269,6 +275,102 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_TESTREG	0x20
+ #define MX51_ECSPI_TESTREG_LBC	BIT(31)
+ 
++static void spi_imx_buf_rx_swap_u32(struct spi_imx_data *spi_imx)
++{
++	unsigned int val = readl(spi_imx->base + MXC_CSPIRXDATA);
++	unsigned int bytes_per_word;
++
++	if (spi_imx->rx_buf) {
++#ifdef __LITTLE_ENDIAN
++		bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
++		if (bytes_per_word == 1)
++			val = cpu_to_be32(val);
++		else if (bytes_per_word == 2)
++			val = (val << 16) | (val >> 16);
++#endif
++		val &= spi_imx->word_mask;
++		*(u32 *)spi_imx->rx_buf = val;
++		spi_imx->rx_buf += sizeof(u32);
++	}
++}
++
++static void spi_imx_buf_rx_swap(struct spi_imx_data *spi_imx)
++{
++	unsigned int bytes_per_word;
++
++	bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
++	if (spi_imx->read_u32) {
++		spi_imx_buf_rx_swap_u32(spi_imx);
++		return;
++	}
++
++	if (bytes_per_word == 1)
++		spi_imx_buf_rx_u8(spi_imx);
++	else if (bytes_per_word == 2)
++		spi_imx_buf_rx_u16(spi_imx);
++}
++
++static void spi_imx_buf_tx_swap_u32(struct spi_imx_data *spi_imx)
++{
++	u32 val = 0;
++	unsigned int bytes_per_word;
++
++	if (spi_imx->tx_buf) {
++		val = *(u32 *)spi_imx->tx_buf;
++		val &= spi_imx->word_mask;
++		spi_imx->tx_buf += sizeof(u32);
++	}
++
++	spi_imx->count -= sizeof(u32);
++#ifdef __LITTLE_ENDIAN
++	bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
++
++	if (bytes_per_word == 1)
++		val = cpu_to_be32(val);
++	else if (bytes_per_word == 2)
++		val = (val << 16) | (val >> 16);
++#endif
++	writel(val, spi_imx->base + MXC_CSPITXDATA);
++}
++
++static void spi_imx_buf_tx_swap(struct spi_imx_data *spi_imx)
++{
++	u32 ctrl, val;
++	unsigned int bytes_per_word;
++
++	if (spi_imx->count == spi_imx->remainder) {
++		ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
++		ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
++		if (spi_imx->count > MX51_ECSPI_CTRL_MAX_BURST) {
++			spi_imx->remainder = spi_imx->count %
++					     MX51_ECSPI_CTRL_MAX_BURST;
++			val = MX51_ECSPI_CTRL_MAX_BURST;
++		} else if (spi_imx->count >= sizeof(u32)) {
++			spi_imx->remainder = spi_imx->count % sizeof(u32);
++			val = (spi_imx->count - spi_imx->remainder) * 8 - 1;
++		} else {
++			spi_imx->remainder = 0;
++			val = spi_imx->bits_per_word - 1;
++			spi_imx->read_u32 = 0;
++		}
++
++		ctrl |= (val << MX51_ECSPI_CTRL_BL_OFFSET);
++		writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
++	}
++
++	if (spi_imx->count >= sizeof(u32)) {
++		spi_imx_buf_tx_swap_u32(spi_imx);
++		return;
++	}
++
++	bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
++
++	if (bytes_per_word == 1)
++		spi_imx_buf_tx_u8(spi_imx);
++	else if (bytes_per_word == 2)
++		spi_imx_buf_tx_u16(spi_imx);
++}
++
+ /* MX51 eCSPI */
+ static unsigned int mx51_ecspi_clkdiv(struct spi_imx_data *spi_imx,
+ 				      unsigned int fspi, unsigned int *fres)
+@@ -693,6 +795,7 @@ static struct spi_imx_devtype_data imx1_cspi_devtype_data = {
+ 	.trigger = mx1_trigger,
+ 	.rx_available = mx1_rx_available,
+ 	.reset = mx1_reset,
++	.dynamic_burst = false,
+ 	.devtype = IMX1_CSPI,
+ };
+ 
+@@ -702,6 +805,7 @@ static struct spi_imx_devtype_data imx21_cspi_devtype_data = {
+ 	.trigger = mx21_trigger,
+ 	.rx_available = mx21_rx_available,
+ 	.reset = mx21_reset,
++	.dynamic_burst = false,
+ 	.devtype = IMX21_CSPI,
+ };
+ 
+@@ -712,6 +816,7 @@ static struct spi_imx_devtype_data imx27_cspi_devtype_data = {
+ 	.trigger = mx21_trigger,
+ 	.rx_available = mx21_rx_available,
+ 	.reset = mx21_reset,
++	.dynamic_burst = false,
+ 	.devtype = IMX27_CSPI,
+ };
+ 
+@@ -721,6 +826,7 @@ static struct spi_imx_devtype_data imx31_cspi_devtype_data = {
+ 	.trigger = mx31_trigger,
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
++	.dynamic_burst = false,
+ 	.devtype = IMX31_CSPI,
+ };
+ 
+@@ -731,6 +837,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.trigger = mx31_trigger,
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
++	.dynamic_burst = false,
+ 	.devtype = IMX35_CSPI,
+ };
+ 
+@@ -740,6 +847,7 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.trigger = mx51_ecspi_trigger,
+ 	.rx_available = mx51_ecspi_rx_available,
+ 	.reset = mx51_ecspi_reset,
++	.dynamic_burst = true,
+ 	.devtype = IMX51_ECSPI,
+ };
+ 
+@@ -794,6 +902,8 @@ static void spi_imx_push(struct spi_imx_data *spi_imx)
+ 	while (spi_imx->txfifo < spi_imx_get_fifosize(spi_imx)) {
+ 		if (!spi_imx->count)
+ 			break;
++		if (spi_imx->txfifo && (spi_imx->count == spi_imx->remainder))
++			break;
+ 		spi_imx->tx(spi_imx);
+ 		spi_imx->txfifo++;
+ 	}
+@@ -887,15 +997,37 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	spi_imx->speed_hz  = t->speed_hz;
+ 
+ 	/* Initialize the functions for transfer */
+-	if (spi_imx->bits_per_word <= 8) {
+-		spi_imx->rx = spi_imx_buf_rx_u8;
+-		spi_imx->tx = spi_imx_buf_tx_u8;
+-	} else if (spi_imx->bits_per_word <= 16) {
+-		spi_imx->rx = spi_imx_buf_rx_u16;
+-		spi_imx->tx = spi_imx_buf_tx_u16;
++	if (spi_imx->devtype_data->dynamic_burst) {
++		u32 mask;
++
++		spi_imx->dynamic_burst = 0;
++		spi_imx->remainder = 0;
++		spi_imx->read_u32  = 1;
++
++		mask = (1 << config.bpw) - 1;
++		spi_imx->rx = spi_imx_buf_rx_swap;
++		spi_imx->tx = spi_imx_buf_tx_swap;
++		spi_imx->dynamic_burst = 1;
++		spi_imx->remainder = t->len;
++
++		if (spi_imx->bits_per_word <= 8)
++			spi_imx->word_mask = mask << 24 | mask << 16
++					     | mask << 8 | mask;
++		else if (spi_imx->bits_per_word <= 16)
++			spi_imx->word_mask = mask << 16 | mask;
++		else
++			spi_imx->word_mask = mask;
+ 	} else {
+-		spi_imx->rx = spi_imx_buf_rx_u32;
+-		spi_imx->tx = spi_imx_buf_tx_u32;
++		if (spi_imx->bits_per_word <= 8) {
++			spi_imx->rx = spi_imx_buf_rx_u8;
++			spi_imx->tx = spi_imx_buf_tx_u8;
++		} else if (spi_imx->bits_per_word <= 16) {
++			spi_imx->rx = spi_imx_buf_rx_u16;
++			spi_imx->tx = spi_imx_buf_tx_u16;
++		} else {
++			spi_imx->rx = spi_imx_buf_rx_u32;
++			spi_imx->tx = spi_imx_buf_tx_u32;
++		}
+ 	}
+ 
+ 	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
+-- 
+2.13.2
 
-Arvind Yadav (3):
-      spi: davinci: Fix compilation warning.
-      spi: davinci: Handle return value of clk_prepare_enable
-      spi: loopback-test: Fix kfree() NULL pointer error.
-
-Baruch Siach (1):
-      spi: atmel: print version only after successful registration
-
-Chris Packham (2):
-      spi: orion: Handle GPIO chip-selects
-      spi: st-ssc4: whitespace cleanup
-
-Colin Ian King (4):
-      spi: omap2-mcspi: remove redundant check for error status
-      spi: stm32: fix error check on mbr being -ve
-      spi: sirf: fix spelling mistake: "registerred" -> "registered"
-      spi: loopback-test: fix spelling mistake: "reruning" -> "rerunning"
-
-Cyrille Pitchen (1):
-      spi: atmel: fix corrupted data issue on SAM9 family SoCs
-
-Fabio Estevam (1):
-      spi: imx: Check for allocation failure earlier
-
-Geert Uytterhoeven (9):
-      spi: core: Fix devm_spi_register_master() function name in kerneldoc
-      spi: core: Replace S_IRUGO permissions by 0444
-      spi: SPI_TI_QSPI should depend on HAS_DMA
-      spi: Document DT bindings for SPI controllers in slave mode
-      spi: core: Add support for registering SPI slave controllers
-      spi: Document SPI slave controller support
-      spi: slave: Add SPI slave handler reporting uptime at previous message
-      spi: slave: Add SPI slave handler controlling system state
-      spi: Generalize SPI "master" to "controller"
-
-Geliang Tang (1):
-      spi: spidev: use memdup_user
-
-Hisashi Nakamura (1):
-      spi: sh-msiof: Add slave mode support
-
-Jarkko Nikula (1):
-      spi: pxa2xx: Add support for Intel Cannonlake
-
-Jeffy Chen (3):
-      spi: rockchip: fix error handling when probe
-      spi: rockchip: Set GPIO_SS flag to enable Slave Select with GPIO CS
-      spi: rockchip: Disable Runtime PM when chip select is asserted
-
-Jiada Wang (2):
-      spi: imx: dynamic burst length adjust for PIO mode
-      spi: imx: fix issue when tx_buf or rx_buf is NULL
-
-Leilk Liu (3):
-      spi: mediatek: Add bindings for mediatek MT7622 soc platform
-      spi: mediatek: adjust register to enhance time accuracy
-      spi: mediatek: add spi support for mt7622 IC
-
-Mark Brown (8):
-      Merge branches 'topic/core', 'topic/slave' and 'fix/doc' of git://git.kernel.org/.../broonie/spi into spi-master
-      Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/bcm63xx', 'spi/fix/doc', 'spi/fix/fsl-dspi' and 'spi/fix/ti-qspi' into spi-linus
-      Merge remote-tracking branch 'spi/topic/core' into spi-next
-      Merge remote-tracking branch 'spi/topic/master' into spi-next
-      Merge remote-tracking branches 'spi/topic/atmel', 'spi/topic/bcm63xx', 'spi/topic/davinci' and 'spi/topic/imx' into spi-next
-      Merge remote-tracking branches 'spi/topic/loopback', 'spi/topic/meson-spicc', 'spi/topic/mtk' and 'spi/topic/omap2-mcspi' into spi-next
-      Merge remote-tracking branches 'spi/topic/orion', 'spi/topic/pxa2xx', 'spi/topic/rockchip', 'spi/topic/sh-msiof' and 'spi/topic/sirf' into spi-next
-      Merge remote-tracking branches 'spi/topic/spidev', 'spi/topic/st-ssc4' and 'spi/topic/stm32' into spi-next
-
-Neil Armstrong (2):
-      spi: meson: Add SPICC bindings
-      spi: Add Meson SPICC driver
-
-Nikita Yushchenko (1):
-      spi: spi-fsl-dspi: ensure non-zero return on error path
-
-Sascha Hauer (7):
-      spi: imx: Revert "spi: imx: dynamic burst length adjust for PIO mode"
-      spi: imx: Nothing to do in setupxfer when transfer is NULL
-      spi: imx: Drop unnecessary check
-      spi: imx: put struct spi_imx_config members into driver private struct
-      spi: imx: drop bogus unnecessary dma config
-      spi: imx: remove bytes_per_word from private driver struct
-      spi: imx: rename 'bpw' variables
-
-Seraphime Kirkovski (1):
-      spi: spidev: remove unused completion
-
-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org (2):
-      spi: mediatek: Add bindings for mediatek MT2712 soc platform
-      spi: mediatek: add spi support for mt2712 IC
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |    2 +
- Documentation/devicetree/bindings/spi/spi-bus.txt  |   76 +-
- .../devicetree/bindings/spi/spi-meson.txt          |   31 +
- .../devicetree/bindings/spi/spi-mt65xx.txt         |    2 +
- .../devicetree/bindings/spi/spi-stm32.txt          |   59 +
- Documentation/spi/spi-summary                      |   27 +-
- drivers/spi/Kconfig                                |   44 +-
- drivers/spi/Makefile                               |    6 +
- drivers/spi/spi-atmel.c                            |   30 +-
- drivers/spi/spi-bcm63xx-hsspi.c                    |    1 +
- drivers/spi/spi-bcm63xx.c                          |    4 +-
- drivers/spi/spi-davinci.c                          |    9 +-
- drivers/spi/spi-fsl-dspi.c                         |    3 +-
- drivers/spi/spi-imx.c                              |   92 +-
- drivers/spi/spi-loopback-test.c                    |   14 +-
- drivers/spi/spi-meson-spicc.c                      |  619 +++++++++
- drivers/spi/spi-mt65xx.c                           |   61 +-
- drivers/spi/spi-omap2-mcspi.c                      |    3 -
- drivers/spi/spi-orion.c                            |   10 +-
- drivers/spi/spi-pxa2xx.c                           |   22 +
- drivers/spi/spi-rockchip.c                         |   79 +-
- drivers/spi/spi-sh-msiof.c                         |  111 +-
- drivers/spi/spi-sirf.c                             |    2 +-
- drivers/spi/spi-slave-system-control.c             |  154 +++
- drivers/spi/spi-slave-time.c                       |  129 ++
- drivers/spi/spi-st-ssc4.c                          |   38 +-
- drivers/spi/spi-stm32.c                            | 1322 ++++++++++++++++++++
- drivers/spi/spi.c                                  | 1220 ++++++++++--------
- drivers/spi/spidev.c                               |   11 +-
- include/linux/platform_data/spi-mt65xx.h           |    2 +
- include/linux/pxa2xx_ssp.h                         |    1 +
- include/linux/spi/sh_msiof.h                       |    6 +
- include/linux/spi/spi.h                            |  217 ++--
- include/trace/events/spi.h                         |   26 +-
- 34 files changed, 3573 insertions(+), 860 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
- create mode 100644 drivers/spi/spi-meson-spicc.c
- create mode 100644 drivers/spi/spi-slave-system-control.c
- create mode 100644 drivers/spi/spi-slave-time.c
- create mode 100644 drivers/spi/spi-stm32.c
-
---pjnybb7dp62awnlt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllbslMACgkQJNaLcl1U
-h9BIaAf/c4gDQb/Y0Jl6r+tphMENLL/HHa7sl/Ls8lIqiMqamgTm9Q2HsRG7sevA
-4c7Grfn/TgWQYIIvhCPAS6xFTm5tSM+WdS7N6hud0KlNh4lFcBYsTQzu/+hikuOL
-9Z9mNc6/CYrhYUUB0dc8ovxHCm4eZRk/SLn8wFQb6g21m5lj2Adi62mA9VSUoUfy
-pmeI+Szt2g78DEhro+DlOrLjSfI4sF0O4DLpBlSegGADB4jM7UURj92DonSoASob
-Z59ooacUsZBsD1c4OrpqfYi2DM3L690ks7RfE4phuPeDXmqYOzUP26LCO4iWYAPQ
-kgeg4FvJIZ+eSZl+7BhXd4n6tFhAaw==
-=sxmq
------END PGP SIGNATURE-----
-
---pjnybb7dp62awnlt--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,53 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: imx: dynamic burst length adjust for PIO mode" to
- the spi tree
-Date: Fri, 7 Jul 2017 13:58:10 +0100
-Message-ID: <20170707125809.6zstz3pxk53wxnyy@sirena.org.uk>
-References: <20170613083402.22324-1-jiada_wang@mentor.com>
- <E1dTSl4-0002xx-DJ@finisterre>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v7 05/16] watchdog: lantiq: add device tree binding
+ documentation
+Date: Fri, 7 Jul 2017 09:08:34 -0500
+Message-ID: <20170707140834.nugjw5jxkyzwrmzq@rob-hp-laptop>
+References: <20170702224051.15109-1-hauke@hauke-m.de>
+ <20170702224051.15109-6-hauke@hauke-m.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vgn4ykxin5a6gfx5"
-Cc: s.hauer@pengutronix.de, festevam@gmail.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Jiada Wang <jiada_wang@mentor.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <E1dTSl4-0002xx-DJ@finisterre>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20170702224051.15109-6-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Jul 03, 2017 at 12:40:40AM +0200, Hauke Mehrtens wrote:
+> The binding was not documented before, add the documentation now.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+> ---
+>  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> new file mode 100644
+> index 000000000000..c3967feebb6c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> @@ -0,0 +1,24 @@
+> +Lantiq WTD watchdog binding
+> +============================
+> +
+> +This describes the binding of the Lantiq watchdog driver.
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible		: Should be one of
+> +				"lantiq,wdt"
+> +				"lantiq,xrx100-wdt"
+> +				"lantiq,xrx200-wdt"
+> +				"lantiq,falcon-wdt"
+> +- lantiq,rcu		: A phandle to the RCU syscon (required for
+> +			  "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
+> +			  "lantiq,xrx100-wdt")
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the watchdog on the xRX200 SoCs:
+> +		watchdog@803f0 {
+> +			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
 
---vgn4ykxin5a6gfx5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is still mismatched. If the example is correct, then the compatible 
+list should be:
 
-On Fri, Jul 07, 2017 at 01:53:18PM +0100, Mark Brown wrote:
-> The patch
->=20
->    spi: imx: dynamic burst length adjust for PIO mode
->=20
-> has been applied to the spi tree at
->=20
->    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git=20
+"lantiq,wdt"
+"lantiq,xrx100-wdt"
+"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
+"lantiq,falcon-wdt"
 
-Sorry, this was lurking on my laptop apparently not having been pushed
-at some point before - dropped again.
+You can also remove "lantiq,xrx200-wdt" from the driver if you want as 
+"lantiq,xrx100-wdt" is good enough to match on.
 
---vgn4ykxin5a6gfx5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllfhWAACgkQJNaLcl1U
-h9CZjQgAhaIUhBNyAw53O6cmoY/aG5Y6hGYt7OiOOlbuE6DghDh/skSZseRgqkUZ
-OrHY9XpTm7Ifv2ZyxMpk767JzS0UK4ltk1gBkVE1G3AVby/W5P+znatnnLIDZx2d
-jiMXDHqFKgwd0L0CDzl17utxOX3V3Uaoev2o1I5pIzCC1cV6cw6XNb9A9RJkbeVJ
-nOZNNhIbbtzB1UiIQUJGj1q6Ema1VklM9YJMJyM44d2QSCwDt7NGVjNuKil9Lyd+
-kuQok9aX5AVk+CH1AOW54QK8/2q1fyPQjDmLGhEfZHirL2XbCuk6yYMDZOeaD6Gq
-747XPY17x8KUd+PYtTtPhY0lcKS4Rw==
-=Hhao
------END PGP SIGNATURE-----
-
---vgn4ykxin5a6gfx5--
+Rob
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

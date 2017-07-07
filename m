@@ -1,10 +1,10 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v7 07/16] Documentation: DT: MIPS: lantiq: Add docs for
- the RCU bindings
-Date: Fri, 7 Jul 2017 09:10:40 -0500
-Message-ID: <20170707141040.nidxo4qn2a5uyr6u@rob-hp-laptop>
+Subject: Re: [PATCH v7 08/16] MIPS: lantiq: Convert the fpi bus driver to a
+ platform_driver
+Date: Fri, 7 Jul 2017 09:11:55 -0500
+Message-ID: <20170707141155.tcwhiortc2dqnnwa@rob-hp-laptop>
 References: <20170702224051.15109-1-hauke@hauke-m.de>
- <20170702224051.15109-8-hauke@hauke-m.de>
+ <20170702224051.15109-9-hauke@hauke-m.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
@@ -16,29 +16,34 @@ Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9Mq
 To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20170702224051.15109-8-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+In-Reply-To: <20170702224051.15109-9-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jul 03, 2017 at 12:40:42AM +0200, Hauke Mehrtens wrote:
-> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-> 
-> This adds the initial documentation for the RCU module (a MFD device
-> which provides USB PHYs, reset controllers and more).
-> 
-> The RCU register range is used for multiple purposes. Mostly one device
-> uses one or multiple register exclusively, but for some registers some
-> bits are for one driver and some other bits are for a different driver.
-> With this patch all accesses to the RCU registers will go through
-> syscon.
+On Mon, Jul 03, 2017 at 12:40:43AM +0200, Hauke Mehrtens wrote:
+> Instead of hacking the configuration of the FPI bus into the arch code
+> add an own bus driver for this internal bus. The FPI bus is the main
+> bus of the SoC. This bus driver makes sure the bus is configured
+> correctly before the child drivers are getting initialized. This driver
+> will probably also be used on different SoC later.
 > 
 > Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 > ---
->  .../devicetree/bindings/mips/lantiq/rcu.txt        | 98 ++++++++++++++++++++++
->  1 file changed, 98 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+>  .../devicetree/bindings/mips/lantiq/fpi-bus.txt    | 31 ++++++++
 
 Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+>  MAINTAINERS                                        |  1 +
+>  arch/mips/lantiq/xway/reset.c                      |  4 -
+>  arch/mips/lantiq/xway/sysctrl.c                    | 41 ----------
+>  drivers/soc/Makefile                               |  1 +
+>  drivers/soc/lantiq/Makefile                        |  1 +
+>  drivers/soc/lantiq/fpi-bus.c                       | 87 ++++++++++++++++++++++
+>  7 files changed, 121 insertions(+), 45 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+>  create mode 100644 drivers/soc/lantiq/Makefile
+>  create mode 100644 drivers/soc/lantiq/fpi-bus.c
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

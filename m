@@ -1,99 +1,137 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v7 05/16] watchdog: lantiq: add device tree binding documentation
-Date: Fri, 7 Jul 2017 15:18:31 -0500
-Message-ID: <CAL_JsqKM329HsQHCe4i6UK6SQZqRvJ-BPxOsv-1z0h=EDe2C-Q@mail.gmail.com>
-References: <20170702224051.15109-1-hauke@hauke-m.de> <20170702224051.15109-6-hauke@hauke-m.de>
- <20170707140834.nugjw5jxkyzwrmzq@rob-hp-laptop> <704b3b8b-3f33-3d51-82d7-a9515fc39742@hauke-m.de>
+From: Jan Kiszka <jan.kiszka@web.de>
+Subject: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is
+ created
+Date: Sat, 8 Jul 2017 10:41:18 +0200
+Message-ID: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Linux-MIPS <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        LINUX-WATCHDOG <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-        John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "hauke.mehrtens" <hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <704b3b8b-3f33-3d51-82d7-a9515fc39742-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-spi@vger.kernel.org
+To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang
+ <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 7, 2017 at 2:01 PM, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org> wrote:
->
->
-> On 07/07/2017 04:08 PM, Rob Herring wrote:
->> On Mon, Jul 03, 2017 at 12:40:40AM +0200, Hauke Mehrtens wrote:
->>> The binding was not documented before, add the documentation now.
->>>
->>> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
->>> ---
->>>  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
->>>  1 file changed, 24 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
->>>
->>> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
->>> new file mode 100644
->>> index 000000000000..c3967feebb6c
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
->>> @@ -0,0 +1,24 @@
->>> +Lantiq WTD watchdog binding
->>> +============================
->>> +
->>> +This describes the binding of the Lantiq watchdog driver.
->>> +
->>> +-------------------------------------------------------------------------------
->>> +Required properties:
->>> +- compatible                : Should be one of
->>> +                            "lantiq,wdt"
->>> +                            "lantiq,xrx100-wdt"
->>> +                            "lantiq,xrx200-wdt"
->>> +                            "lantiq,falcon-wdt"
->>> +- lantiq,rcu                : A phandle to the RCU syscon (required for
->>> +                      "lantiq,falcon-wdt", "lantiq,xrx200-wdt" and
->>> +                      "lantiq,xrx100-wdt")
->>> +
->>> +-------------------------------------------------------------------------------
->>> +Example for the watchdog on the xRX200 SoCs:
->>> +            watchdog@803f0 {
->>> +                    compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
->>
->> This is still mismatched. If the example is correct, then the compatible
->> list should be:
->>
->> "lantiq,wdt"
->> "lantiq,xrx100-wdt"
->> "lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
->> "lantiq,falcon-wdt"
->>
->> You can also remove "lantiq,xrx200-wdt" from the driver if you want as
->> "lantiq,xrx100-wdt" is good enough to match on.
->>
->> Rob
->>
-> Ok thank you.
->
-> All the features that are supported by the wtd drivers use the same
-> register offsets on the xrx100 and xrx200 SoCs. I added the xrx200 only
-> if in the future we find some mismatch and I want to be able to use some
-> other code for this SoC.
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Yes, the dts should have the xrx200 compatible. The driver can use the
-xrx100 one until you need it.
+Avoid hogging chip select GPIOs just because they are listed for the
+master. They might be mulitplexed and, if no slave device is attached,
+used for different purposes. Moreover, this strategy avoids having to
+allocate a cs_gpiods structure.
 
-> In this case I would then list complete compatible line which should be
-> used for this SoC in the description of the compatible line, is that
-> correct?
+Tested on the IOT2000 where the second SPI bus is connected to an
+Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
+usage.
 
-Yes.
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++-------------------------------
+ 1 file changed, 21 insertions(+), 38 deletions(-)
 
-Rob
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 38d053682892..be991266a6ce 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1213,21 +1213,33 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 		    struct pxa2xx_spi_chip *chip_info)
+ {
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
++	struct device *pdev = &drv_data->pdev->dev;
++	struct gpio_desc *gpiod;
+ 	int err = 0;
++	int count;
+ 
+ 	if (chip == NULL)
+ 		return 0;
+ 
+-	if (drv_data->cs_gpiods) {
+-		struct gpio_desc *gpiod;
++	count = gpiod_count(pdev, "cs");
++	if (count > 0) {
++		if (spi->chip_select >= count)
++			return -EINVAL;
++
++		gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
++					GPIOD_OUT_HIGH);
++		if (IS_ERR(gpiod)) {
++			/* Means use native chip select */
++			if (PTR_ERR(gpiod) == -ENOENT)
++				return 0;
+ 
+-		gpiod = drv_data->cs_gpiods[spi->chip_select];
+-		if (gpiod) {
+-			chip->gpio_cs = desc_to_gpio(gpiod);
+-			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+-			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
++			return PTR_ERR(gpiod);
+ 		}
+ 
++		chip->gpio_cs = desc_to_gpio(gpiod);
++		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
++		gpiod_set_value(gpiod, chip->gpio_cs_inverted);
++
+ 		return 0;
+ 	}
+ 
+@@ -1415,8 +1427,7 @@ static void cleanup(struct spi_device *spi)
+ 	if (!chip)
+ 		return;
+ 
+-	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
+-	    gpio_is_valid(chip->gpio_cs))
++	if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
+ 		gpio_free(chip->gpio_cs);
+ 
+ 	kfree(chip);
+@@ -1752,38 +1763,10 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = platform_info->num_chipselect;
+ 
+ 	count = gpiod_count(&pdev->dev, "cs");
+-	if (count > 0) {
+-		int i;
+-
++	if (count > 0)
+ 		master->num_chipselect = max_t(int, count,
+ 			master->num_chipselect);
+ 
+-		drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
+-			master->num_chipselect, sizeof(struct gpio_desc *),
+-			GFP_KERNEL);
+-		if (!drv_data->cs_gpiods) {
+-			status = -ENOMEM;
+-			goto out_error_clock_enabled;
+-		}
+-
+-		for (i = 0; i < master->num_chipselect; i++) {
+-			struct gpio_desc *gpiod;
+-
+-			gpiod = devm_gpiod_get_index(dev, "cs", i,
+-						     GPIOD_OUT_HIGH);
+-			if (IS_ERR(gpiod)) {
+-				/* Means use native chip select */
+-				if (PTR_ERR(gpiod) == -ENOENT)
+-					continue;
+-
+-				status = (int)PTR_ERR(gpiod);
+-				goto out_error_clock_enabled;
+-			} else {
+-				drv_data->cs_gpiods[i] = gpiod;
+-			}
+-		}
+-	}
+-
+ 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
+ 		     (unsigned long)drv_data);

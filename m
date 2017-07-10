@@ -1,124 +1,59 @@
-From: Jan Kiszka <jan.kiszka@web.de>
-Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is
- created
-Date: Mon, 10 Jul 2017 19:31:24 +0200
-Message-ID: <cb21c69b-6f22-4c06-b308-16bd6895f1a9@web.de>
-References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
- <CAHp75Vd8GRCwGp8eDFOL=dsgxCR+VqqUy+O50PEW=p99a8xAwQ@mail.gmail.com>
- <20170710120913.g35ftcbs7pngrtsm@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi/bcm63xx-hspi: Fix checkpatch warnings
+Date: Mon, 10 Jul 2017 19:32:44 +0100
+Message-ID: <20170710183244.hds7lyoxoymiza7r@sirena.org.uk>
+References: <1498579630-10109-1-git-send-email-aravind.thk@gmail.com>
+ <20170628184507.tnl7jc4wvtt5op5q@sirena.org.uk>
+ <CAAUiYHf6n+C9Q7TdApG_7mOdc7fJyTKq9To=4PvgXARQ5eOAOg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7347265260974226208=="
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi <linux-spi@vger.kernel.org>, Daniel Mack <daniel@zonque.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170710120913.g35ftcbs7pngrtsm@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2x4fmnuk72u5bpbp"
+Cc: Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Aravind Thokala <aravind.thk@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAAUiYHf6n+C9Q7TdApG_7mOdc7fJyTKq9To=4PvgXARQ5eOAOg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============7347265260974226208==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="CwuGboeE3PACFF32XlGmIQ8KNID3HT9hA"
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---CwuGboeE3PACFF32XlGmIQ8KNID3HT9hA
-Content-Type: multipart/mixed; boundary="xPr0vVIInS9p2DJ7mMcD0a75jK7O4CNGS";
- protected-headers="v1"
-From: Jan Kiszka <jan.kiszka@web.de>
-To: Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Daniel Mack <daniel@zonque.org>, Haojian Zhuang
- <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-spi <linux-spi@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Message-ID: <cb21c69b-6f22-4c06-b308-16bd6895f1a9@web.de>
-Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is
- created
-References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
- <CAHp75Vd8GRCwGp8eDFOL=dsgxCR+VqqUy+O50PEW=p99a8xAwQ@mail.gmail.com>
- <20170710120913.g35ftcbs7pngrtsm@sirena.org.uk>
-In-Reply-To: <20170710120913.g35ftcbs7pngrtsm@sirena.org.uk>
-
---xPr0vVIInS9p2DJ7mMcD0a75jK7O4CNGS
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-On 2017-07-10 14:09, Mark Brown wrote:
-> On Sun, Jul 09, 2017 at 12:48:10AM +0300, Andy Shevchenko wrote:
->> On Sat, Jul 8, 2017 at 11:41 AM, Jan Kiszka <jan.kiszka@web.de> wrote:=
-
->=20
->>> Tested on the IOT2000 where the second SPI bus is connected to an
->>> Arduino-compatible connector and multiplexed between SPI, GPIO and PW=
-M
->>> usage.
->=20
->> Can we first switch the driver to use GPIO descriptors instead of
->> plain integers?
->=20
-> Only if you also convert the SPI core to use descriptors, Chris Packham=
-
-> was looking at that but he needed update the ep93xx drivers among other=
-s
-> and getting reviewers was hard.
->=20
-
-IIUC, we can't convert completely due to some legacy boards providing
-their CS lines as integers. But even then, a few more API usages can be
-converted.
-
-While looking into this, I noticed that this patch violated the formal
-rule to never release a GPIO with the old API when it was requested with
-the new one. That's at least stated in the docs, even though gpio_free
-is equivalent to gpiod_put. Fixed that already, but I need to find some
-time to retest.
-
-Jan
-
-
---xPr0vVIInS9p2DJ7mMcD0a75jK7O4CNGS--
-
---CwuGboeE3PACFF32XlGmIQ8KNID3HT9hA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iEYEARECAAYFAlljufEACgkQitSsb3rl5xT2GgCg69FfU53V1W2p9VcahSFmy9Ni
-TW4AoIkL7HGviaPOX2l8i7qUZuc06oY9
-=XznT
------END PGP SIGNATURE-----
-
---CwuGboeE3PACFF32XlGmIQ8KNID3HT9hA--
-
-
---===============7347265260974226208==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--2x4fmnuk72u5bpbp
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+On Fri, Jun 30, 2017 at 11:08:15PM +0530, Aravind Thokala wrote:
+> Hello Mark,
 
---===============7347265260974226208==--
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
+
+> These warnings looked straightforward for me so I've fixed those and
+> sent the patch.
+
+> Kindly let me know if you want to record the warnings in the patch so
+> that I could send v2 patch as soon as possible.
+
+It's not just a case of quoting the warnings, it's a case of explaining
+what your patch changes which usually requires more than just quoting
+the warning.
+
+--2x4fmnuk72u5bpbp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlljyEsACgkQJNaLcl1U
+h9CEiQf/fbfRCjLq8vZYurKZrTHn0maDAoBhdZoMFFJ1HN0gzPKIggW6eWm9Zook
+4hlbaa4cYxnmnDvsjKe5V71yf7ez3Qtz2bXhctBDvklsB+TQ0ZyoqFSplRoCUW1i
++0OuLC9nhjbT5LwMXEqJuAl9bxbhWi9KBvlnuQXUld6el3D9kQp/tRsw9+j6zQ2Y
+HoQWrBRZVYlLw6mgicY5ii0M5fai1MIVFh0ehGDFzClXAN3HtpQ6/JWyuLQ88PXZ
+Fez/GTP5h2Vdgl3TdOh5sDEGQ25e/KktjWFLdiaP1k5SsSmbSBLKIhDOfXzL4tUY
+9R0jiomsYRjwAhF5M9UzrP6RLOx1eQ==
+=9f22
+-----END PGP SIGNATURE-----
+
+--2x4fmnuk72u5bpbp--

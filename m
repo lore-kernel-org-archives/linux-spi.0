@@ -1,59 +1,109 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/bcm63xx-hspi: Fix checkpatch warnings
-Date: Mon, 10 Jul 2017 19:32:44 +0100
-Message-ID: <20170710183244.hds7lyoxoymiza7r@sirena.org.uk>
-References: <1498579630-10109-1-git-send-email-aravind.thk@gmail.com>
- <20170628184507.tnl7jc4wvtt5op5q@sirena.org.uk>
- <CAAUiYHf6n+C9Q7TdApG_7mOdc7fJyTKq9To=4PvgXARQ5eOAOg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2x4fmnuk72u5bpbp"
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Applied "spi/ath79: Fix checkpatch warnings" to the spi tree
+Date: Mon, 10 Jul 2017 19:42:36 +0100
+Message-ID: <E1dUddk-0000Lt-Ih@debutante>
+References: <1498579857-10236-1-git-send-email-aravind.thk@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: Aravind Thokala <aravind.thk@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAAUiYHf6n+C9Q7TdApG_7mOdc7fJyTKq9To=4PvgXARQ5eOAOg@mail.gmail.com>
+In-Reply-To: <1498579857-10236-1-git-send-email-aravind.thk@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---2x4fmnuk72u5bpbp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi/ath79: Fix checkpatch warnings
 
-On Fri, Jun 30, 2017 at 11:08:15PM +0530, Aravind Thokala wrote:
-> Hello Mark,
+has been applied to the spi tree at
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> These warnings looked straightforward for me so I've fixed those and
-> sent the patch.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Kindly let me know if you want to record the warnings in the patch so
-> that I could send v2 patch as soon as possible.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-It's not just a case of quoting the warnings, it's a case of explaining
-what your patch changes which usually requires more than just quoting
-the warning.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---2x4fmnuk72u5bpbp
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlljyEsACgkQJNaLcl1U
-h9CEiQf/fbfRCjLq8vZYurKZrTHn0maDAoBhdZoMFFJ1HN0gzPKIggW6eWm9Zook
-4hlbaa4cYxnmnDvsjKe5V71yf7ez3Qtz2bXhctBDvklsB+TQ0ZyoqFSplRoCUW1i
-+0OuLC9nhjbT5LwMXEqJuAl9bxbhWi9KBvlnuQXUld6el3D9kQp/tRsw9+j6zQ2Y
-HoQWrBRZVYlLw6mgicY5ii0M5fai1MIVFh0ehGDFzClXAN3HtpQ6/JWyuLQ88PXZ
-Fez/GTP5h2Vdgl3TdOh5sDEGQ25e/KktjWFLdiaP1k5SsSmbSBLKIhDOfXzL4tUY
-9R0jiomsYRjwAhF5M9UzrP6RLOx1eQ==
-=9f22
------END PGP SIGNATURE-----
+>From 5426ff7f89629f8c1368519d3a7835cc648e70fc Mon Sep 17 00:00:00 2001
+From: Aravind Thokala <aravind.thk@gmail.com>
+Date: Tue, 27 Jun 2017 22:01:11 +0530
+Subject: [PATCH] spi/ath79: Fix checkpatch warnings
 
---2x4fmnuk72u5bpbp--
+This patch fixes the checkpatch.pl warnings on the driver
+file.
+
+Signed-off-by: Aravind Thokala <aravind.thk@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-ath79.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index b89cee11f418..0719bd484891 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -39,15 +39,15 @@ struct ath79_spi {
+ 	u32			reg_ctrl;
+ 	void __iomem		*base;
+ 	struct clk		*clk;
+-	unsigned		rrw_delay;
++	unsigned int		rrw_delay;
+ };
+ 
+-static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
++static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned int reg)
+ {
+ 	return ioread32(sp->base + reg);
+ }
+ 
+-static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
++static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned int reg, u32 val)
+ {
+ 	iowrite32(val, sp->base + reg);
+ }
+@@ -57,7 +57,7 @@ static inline struct ath79_spi *ath79_spidev_to_sp(struct spi_device *spi)
+ 	return spi_master_get_devdata(spi->master);
+ }
+ 
+-static inline void ath79_spi_delay(struct ath79_spi *sp, unsigned nsecs)
++static inline void ath79_spi_delay(struct ath79_spi *sp, unsigned int nsecs)
+ {
+ 	if (nsecs > sp->rrw_delay)
+ 		ndelay(nsecs - sp->rrw_delay);
+@@ -148,9 +148,8 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
+ 
+ static void ath79_spi_cleanup_cs(struct spi_device *spi)
+ {
+-	if (gpio_is_valid(spi->cs_gpio)) {
++	if (gpio_is_valid(spi->cs_gpio))
+ 		gpio_free(spi->cs_gpio);
+-	}
+ }
+ 
+ static int ath79_spi_setup(struct spi_device *spi)
+@@ -176,7 +175,7 @@ static void ath79_spi_cleanup(struct spi_device *spi)
+ 	spi_bitbang_cleanup(spi);
+ }
+ 
+-static u32 ath79_spi_txrx_mode0(struct spi_device *spi, unsigned nsecs,
++static u32 ath79_spi_txrx_mode0(struct spi_device *spi, unsigned int nsecs,
+ 			       u32 word, u8 bits)
+ {
+ 	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
+-- 
+2.13.2

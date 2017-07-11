@@ -1,49 +1,155 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH linux-next v4 4/4] spi: imx: Add support for SPI Slave
- mode
-Date: Tue, 11 Jul 2017 15:42:46 +0100
-Message-ID: <20170711144246.v7xlik7ab7l462b7@sirena.org.uk>
-References: <20170608051603.16070-1-jiada_wang@mentor.com>
- <20170608051603.16070-5-jiada_wang@mentor.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="i76luiayfnbdi3qf"
-Cc: robh+dt@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
-        kernel@pengutronix.de, fabio.estevam@nxp.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Jiada Wang <jiada_wang@mentor.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20170608051603.16070-5-jiada_wang@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: add selection for iMX53 and iMX6 controller" to the spi tree
+Date: Tue, 11 Jul 2017 15:43:30 +0100
+Message-ID: <E1dUwNu-0005Q8-HY@debutante>
+References: <20170605033809.13726-3-jiada_wang@mentor.com>
+Cc: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: jiada wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170605033809.13726-3-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---i76luiayfnbdi3qf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: add selection for iMX53 and iMX6 controller
 
-On Thu, Jun 08, 2017 at 02:16:03PM +0900, Jiada Wang wrote:
-> Previously i.MX SPI controller only works in Master mode.
-> This patch adds support to i.MX51, i.MX53 and i.MX6 ECSPI
-> controller to work also in Slave mode.
+has been applied to the spi tree at
 
-This doesn't apply against current code, please check and resend.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---i76luiayfnbdi3qf
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAllk4+UACgkQJNaLcl1U
-h9BGLgf8CvfL57N6avYCahIgdGurgm1n75HeloIviSenPEZJmeBtRDte9TGg/yEM
-MgbW6uB/ssNJofughJPv+20TVHZTN+0ycJyxMPt+q8eevQ6ujpy3TdKakV8dGWQa
-s5uiSsoan41cQtN0IkGqCRkq1yFrh2lwJp4rLvw122o3UVpBPHEZZaW0bt0AQHrT
-69DC8GLj/FLvvmfzxCWFfTmySHhy7MLqv3D47dMMzK/j60rGW1fFFrV5rHIuXl/E
-/ttgZGM1HKa0/gXSwiwCSjMq8BAKqgF/lWCqtUOdYPQ8GpUkEpkbes8KsFh+TwwH
-whlpQ7dqjm+KZ4qBg79YlcGj8B6jSw==
-=UDgU
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---i76luiayfnbdi3qf--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 65c60d7184df14be97d82fee77810901579493aa Mon Sep 17 00:00:00 2001
+From: jiada wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Date: Thu, 8 Jun 2017 14:16:01 +0900
+Subject: [PATCH] spi: imx: add selection for iMX53 and iMX6 controller
+
+ECSPI contorller for iMX53 and iMX6 has few hardware issues
+comparing to iMX51.
+The change add possibility to detect which controller is used
+to apply possible workaround and limitations.
+
+Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Reviewed-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  1 +
+ drivers/spi/spi-imx.c                              | 26 ++++++++++++++++++++--
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 31b5b21598ff..5bf13960f7f4 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -9,6 +9,7 @@ Required properties:
+   - "fsl,imx31-cspi" for SPI compatible with the one integrated on i.MX31
+   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
++  - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+ - cs-gpios : Specifies the gpio pins to be used for chipselects.
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index d3093f355dfb..424dd013451e 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -63,7 +63,8 @@ enum spi_imx_devtype {
+ 	IMX27_CSPI,
+ 	IMX31_CSPI,
+ 	IMX35_CSPI,	/* CSPI on all i.mx except above */
+-	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
++	IMX51_ECSPI,	/* ECSPI on i.mx51 */
++	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
+ };
+ 
+ struct spi_imx_data;
+@@ -127,6 +128,11 @@ static inline int is_imx51_ecspi(struct spi_imx_data *d)
+ 	return d->devtype_data->devtype == IMX51_ECSPI;
+ }
+ 
++static inline int is_imx53_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX53_ECSPI;
++}
++
+ #define MXC_SPI_BUF_RX(type)						\
+ static void spi_imx_buf_rx_##type(struct spi_imx_data *spi_imx)		\
+ {									\
+@@ -752,6 +758,17 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.devtype = IMX51_ECSPI,
+ };
+ 
++static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
++	.intctrl = mx51_ecspi_intctrl,
++	.config = mx51_ecspi_config,
++	.trigger = mx51_ecspi_trigger,
++	.rx_available = mx51_ecspi_rx_available,
++	.reset = mx51_ecspi_reset,
++	.fifo_size = 64,
++	.has_dmamode = true,
++	.devtype = IMX53_ECSPI,
++};
++
+ static const struct platform_device_id spi_imx_devtype[] = {
+ 	{
+ 		.name = "imx1-cspi",
+@@ -772,6 +789,9 @@ static const struct platform_device_id spi_imx_devtype[] = {
+ 		.name = "imx51-ecspi",
+ 		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
+ 	}, {
++		.name = "imx53-ecspi",
++		.driver_data = (kernel_ulong_t) &imx53_ecspi_devtype_data,
++	}, {
+ 		/* sentinel */
+ 	}
+ };
+@@ -783,6 +803,7 @@ static const struct of_device_id spi_imx_dt_ids[] = {
+ 	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
++	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, spi_imx_dt_ids);
+@@ -1218,7 +1239,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+ 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
++	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
++	    is_imx53_ecspi(spi_imx))
+ 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
+ 
+ 	spi_imx->spi_drctl = spi_drctl;
+-- 
+2.13.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

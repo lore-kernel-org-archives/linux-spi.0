@@ -1,78 +1,56 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCHv3 1/2] spi: imx: fix use of native chip-selects with devicetree
-Date: Tue, 11 Jul 2017 14:22:11 +1000
-Message-ID: <1499746932-14850-2-git-send-email-gerg@linux-m68k.org>
-References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1499746932-14850-1-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Kishon Vijay Abraham I <kishon@ti.com>
+Subject: Re: [PATCH v7 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
+ using the RCU module
+Date: Tue, 11 Jul 2017 12:08:01 +0530
+Message-ID: <30adb3f5-50b5-35e3-685f-9fe0fa8c31f8@ti.com>
+References: <20170702224051.15109-1-hauke@hauke-m.de>
+ <20170702224051.15109-15-hauke@hauke-m.de>
+ <20170707142312.5pwily3gbntvesbm@rob-hp-laptop>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-mtd@lists.infradead.org>, <linux-watchdog@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <martin.blumenstingl@googlemail.com>,
+        <john@phrozen.org>, <linux-spi@vger.kernel.org>,
+        <hauke.mehrtens@intel.com>, <andy.shevchenko@gmail.com>,
+        <p.zabel@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, Hauke Mehrtens <hauke@hauke-m.de>
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <20170707142312.5pwily3gbntvesbm@rob-hp-laptop>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
-The commonly used mechanism of specifying the hardware or native
-chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
-does not result in the native chip-select being configured for use.
-So external SPI devices that require use of the native chip-select
-will not work.
+Hi,
 
-You can successfully specify native chip-selects if using a platform
-setup by specifying the cs-gpio as negative offset by 32. And that
-works correctly. You cannot use the same method in devicetree.
+On Friday 07 July 2017 07:53 PM, Rob Herring wrote:
+> On Mon, Jul 03, 2017 at 12:40:49AM +0200, Hauke Mehrtens wrote:
+>> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
+>> the PHY interfaces for each core. The phy instances can be passed to the
+>> dwc2 driver, which already supports the generic phy interface.
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> Cc: Kishon Vijay Abraham I <kishon@ti.com>
 
-The logic in the spi-imx.c driver during probe uses core spi function
-of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
-For valid GPIO values that will be recorded for use, all other entries in
-the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
-set to -ENOENT in the cs_gpios list.
+I see you have added my name in cc but for some reason I don't have the patch
+in my mailbox. Can you resend it please?
 
-When the SPI device registers are setup the code will use the GPIO
-listed in the cs_gpios list for the desired chip-select. If the cs_gpio
-is less then 0 then it is intended to be for a native chip-select, and
-its cs_gpio value is added to 32 to get the chipselect number to use.
-Problem is that with devicetree this can only ever be -ENOENT (which
-is -2), and that alone results in an invalid chip-select number. But also
-doesn't allow selection of the native chip-select at all.
+>> ---
+>>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  42 ++++
+>>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
+>>  drivers/phy/Kconfig                                |   8 +
+>>  drivers/phy/Makefile                               |   1 +
+>>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 275 +++++++++++++++++++++
 
-To fix, if the cs_gpio specified for this spi device is not a
-valid GPIO then use the "chip_select" (that is the native chip-select
-number) for hardware setup.
+Please create a new directory withing phy for adding a phy driver.
 
-Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
----
- drivers/spi/spi-imx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index b402530..f4fe66c 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -524,8 +524,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
- 		reg |= MX31_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX31_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) <<
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= (spi->chip_select) <<
- 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
- 						  MX31_CSPICTRL_CS_SHIFT);
- 
-@@ -616,8 +616,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
- 		reg |= MX21_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX21_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
- 
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
- 
--- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks
+Kishon

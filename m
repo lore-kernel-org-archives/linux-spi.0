@@ -1,90 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/bcm63xx-hspi: Fix checkpatch warnings" to the spi tree
-Date: Mon, 10 Jul 2017 19:42:44 +0100
-Message-ID: <E1dUdds-0000NA-Dt@debutante>
-References: <1498579630-10109-1-git-send-email-aravind.thk@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Aravind Thokala <aravind.thk@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1498579630-10109-1-git-send-email-aravind.thk@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCHv3 0/2] spi: imx: native chip selects and devicetree
+Date: Tue, 11 Jul 2017 14:22:10 +1000
+Message-ID: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi/bcm63xx-hspi: Fix checkpatch warnings
+Selecting native chip selects for iMX SPI devices in a devicetree
+configuration does not work. That is the case for imx25 based SoC
+parts, and I think for imx31 SoC as well. There is no problem with
+configuring SPI ports to use a GPIO as chip select.
 
-has been applied to the spi tree at
+Selecting native chip selects via the old platform setup code will
+work, it is only devicetree configurations that are broken.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+With platform configuration you specify a native chip select by
+setting the cs_gpio for the SPI device to be "32 - chipselect",
+This will be a negative number - and thus not a valid GPIO number.
+And that "chipselect" is the actual hardware native chip select
+number.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+You cannot specify the cs_gpio in dvicetree as a negative number,
+so this whole scheme does not work. The common method in devicetree
+is to set the cs_gpio entry for your device to be "<0>". If you do
+this to configure your SPI device to use a native chip select it is
+valid, but the SPI device cannot be accessed (no valid read data
+returned from it).
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The problem lies in the way the spi-imx.c driver sets up the
+controlling registers of the iMX SPI block. It doesn't have the
+correct logic for using native chip selects in the devicetree case.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+v1 of this patch set contained the fixes for some platform setups to
+make sure that the correct "chip_select" is used that is associated with
+the required native chip select. This was dropped in v2, since Shawn 
+picked that change up for arch/arm/imx and that is now in mainline.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+This v3 series is just an up to date rebase of the v2 patches.
 
-Thanks,
-Mark
+The following patches fix use of native chip selects in the spi-imx
+driver for the devicetree case, and also document the use of the "<0>"
+notation in devicetree.
 
->From 92bd7c3b8612f6e753b8d8805d89a2e425a88fec Mon Sep 17 00:00:00 2001
-From: Aravind Thokala <aravind.thk@gmail.com>
-Date: Tue, 27 Jun 2017 21:37:10 +0530
-Subject: [PATCH] spi/bcm63xx-hspi: Fix checkpatch warnings
-
-This patch fixes the checkpatch.pl warnings on the driver
-file.
-
-Signed-off-by: Aravind Thokala <aravind.thk@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt |    4 +++-
+ drivers/spi/spi-imx.c                                  |    8 ++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 4da2d4a524ca..475a79015aa6 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -108,7 +108,7 @@ struct bcm63xx_hsspi {
- 	u8 cs_polarity;
- };
- 
--static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned cs,
-+static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned int cs,
- 				 bool active)
- {
- 	u32 reg;
-@@ -127,7 +127,7 @@ static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned cs,
- static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
- 				  struct spi_device *spi, int hz)
- {
--	unsigned profile = spi->chip_select;
-+	unsigned int profile = spi->chip_select;
- 	u32 reg;
- 
- 	reg = DIV_ROUND_UP(2048, DIV_ROUND_UP(bs->speed_hz, hz));
-@@ -154,7 +154,7 @@ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
- static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
--	unsigned chip_select = spi->chip_select;
-+	unsigned int chip_select = spi->chip_select;
- 	u16 opcode = 0;
- 	int pending = t->len;
- 	int step_size = HSSPI_BUFFER_LEN;
--- 
-2.13.2
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

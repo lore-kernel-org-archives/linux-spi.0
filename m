@@ -1,82 +1,83 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v1] spi: loopback-test: provide loop request option.
-Date: Thu, 13 Jul 2017 09:42:43 +0200
-Message-ID: <20170713074243.lvrxjpt7pfksg4xl@pengutronix.de>
-References: <20170712134020.17927-1-o.rempel@pengutronix.de>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH v3 0/6] Apple SPI properties
+Date: Fri, 14 Jul 2017 00:36:19 +0200
+Message-ID: <cover.1499983092.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-To: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170712134020.17927-1-o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lv Zheng <lv.zheng@intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 12, 2017 at 03:40:20PM +0200, Oleksij Rempel wrote:
-> From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-> 
-> Provide a module parameter to request internal
-> loop by the SPI master controller.
+Retrieve device properties on Macs with an Apple-specific _DSM and
+use them in lieu of _CRS data upon SPI slave initialization, v3.
 
-> This should make loop testing easier without extra HW modification.
-> 
-> Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-> ---
->  drivers/spi/spi-loopback-test.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-> index f4875f177df0..34e1544d7d0e 100644
-> --- a/drivers/spi/spi-loopback-test.c
-> +++ b/drivers/spi/spi-loopback-test.c
-> @@ -51,6 +51,14 @@ MODULE_PARM_DESC(loopback,
->  		 "is checked to match tx_buf after the spi_message "	\
->  		 "is executed");
->  
-> +/* the device is jumpered for loopback - enabling some rx_buf tests */
-> +int loop_req;
-> +module_param(loop_req, int, 0);
-> +MODULE_PARM_DESC(loop_req,
-> +		 "if set enable controller will be asked to enable "	\
-> +		 "test loop mode. If supported, MISO and MOSI will be "  \
-> +		 "jumpered by SPI controller");
-> +
->  /* run only a specific test */
->  int run_only_test = -1;
->  module_param(run_only_test, int, 0);
-> @@ -313,6 +321,16 @@ static int spi_loopback_test_probe(struct spi_device *spi)
->  {
->  	int ret;
->  
-> +	if (loop_req) {
-> +		spi->mode = SPI_LOOP | spi->mode;
-> +		ret = spi_setup(spi);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "SPI setup wasn't successful %d\n", ret);
-> +			dev_err(&spi->dev, "SPI_LOOP is not supported by SPI master.");
+Please refer to the cover letters of v1 and v2 for further details:
+http://www.spinics.net/lists/linux-acpi/msg75537.html
+http://www.spinics.net/lists/linux-acpi/msg75735.html
 
-Why two error messages here? What about:
+Special thanks to Ronald TschalÃ¤r for patient testing/debugging
+and Andy Shevchenko for equally patient reviewing on GitHub.
 
-	dev_err(&spi->dev, "SPI setup with SPI_LOOP failed (%d)\n", ret);
+Changes v2 -> v3:
 
-These lines are > 80 chars, so you should break them.
+Patch 1 + 2:
+- Newly inserted patches in v3 to avoid repeated DMI checks for Apple
+  hardware:  The result of the first DMI check in osi.c is cached.
+  Two other existing DMI checks are converted to use the result.
+  Because one of them is in a module (sbs.ko), the bool is_apple_system
+  needs to be exported.  On non-x86, the DMI checks and Apple-specific
+  code are omitted altogether. (Andy, Rafael)
 
-> +			return -ENODEV;
+Patch 4:
+- Use bitmap to keep track of valid properties.  Move to x86/apple.c
+  to avoid cluttering up generic ACPI code. (Andy, Rafael)
 
-return ret?
+Patch 5:
+- Use fwnode_property_present() instead of device_property_present(),
+  the latter doesn't work as the fwnode pointer of the struct device
+  embedded in a struct acpi_device is always NULL. (Ronald)
 
-Best regards
-Uwe
+Patch 6:
+- Check buffer length for extra safety.  Rename "o" to "obj",
+  use 32 bit division to calculate max_speed_hz. (Andy)
+
+Thanks,
+
+Lukas
+
+
+Lukas Wunner (6):
+  ACPI / osi: Exclude x86 DMI quirks on other arches
+  ACPI / x86: Consolidate Apple DMI checks
+  ACPI / property: Don't evaluate objects for devices w/o handle
+  ACPI / property: Support Apple _DSM properties
+  ACPI / scan: Recognize Apple SPI and I2C slaves
+  spi: Use Apple device properties in absence of ACPI resources
+
+ drivers/acpi/Makefile    |   1 +
+ drivers/acpi/internal.h  |   6 +++
+ drivers/acpi/osi.c       |   8 +++
+ drivers/acpi/pci_root.c  |   3 +-
+ drivers/acpi/property.c  |   6 +++
+ drivers/acpi/sbs.c       |  24 +--------
+ drivers/acpi/scan.c      |   6 +++
+ drivers/acpi/x86/apple.c | 137 +++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi.c        |  31 +++++++++++
+ include/linux/acpi.h     |   6 +++
+ 10 files changed, 203 insertions(+), 25 deletions(-)
+ create mode 100644 drivers/acpi/x86/apple.c
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.11.0
+

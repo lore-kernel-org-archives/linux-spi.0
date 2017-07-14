@@ -1,8 +1,8 @@
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH v3 2/6] ACPI / x86: Consolidate Apple DMI checks
-Date: Sat, 15 Jul 2017 00:03:31 +0200
-Message-ID: <14565365.Cyeb0SINmK@aspire.rjw.lan>
-References: <cover.1499983092.git.lukas@wunner.de> <a0c795358306954294e7fe31ec974f3c51b56f4c.1499983092.git.lukas@wunner.de>
+Subject: Re: [PATCH v3 3/6] ACPI / property: Don't evaluate objects for devices w/o handle
+Date: Sat, 15 Jul 2017 00:04:19 +0200
+Message-ID: <24196256.m9Mta9fufR@aspire.rjw.lan>
+References: <cover.1499983092.git.lukas@wunner.de> <5bb94a3e70e38b5a40933878dc52d8b5deeb6ae6.1499983092.git.lukas@wunner.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
@@ -18,58 +18,46 @@ Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         linux-spi@vger.kernel.org
 To: Lukas Wunner <lukas@wunner.de>
 Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <a0c795358306954294e7fe31ec974f3c51b56f4c.1499983092.git.lukas@wunner.de>
+In-Reply-To: <5bb94a3e70e38b5a40933878dc52d8b5deeb6ae6.1499983092.git.lukas@wunner.de>
 Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Friday, July 14, 2017 12:36:19 AM Lukas Wunner wrote:
-> We're about to amend device scan with multiple checks whether we're
-> running on a Mac.  Speed that up by performing the DMI match only once
-> and caching the result.
+> Fabricated devices such as LNXPWRBN lack a handle, causing evaluation
+> of _CCA and _DSD to always fail with AE_BAD_PARAMETER.  While that is
+> merely a (negligible) waste of processing power, evaluating a _DSM for
+> them (such as Apple's device properties _DSM which we're about to add)
+> results in an ugly error:
 > 
-> Switch over existing Apple DMI checks, thereby fixing two deficiencies:
+>     ACPI: \: failed to evaluate _DSM (0x1001)
 > 
-> * They only match "Apple Inc." but not "Apple Computer, Inc.", which is
->   used by BIOSes released between January 2006 (when the first x86 Macs
->   started shipping) and January 2007 (when the company name changed upon
->   introduction of the iPhone).
+> Avoid by not evaluating _DSD and the upcoming _DSM for devices without
+> handle.
 > 
-> * They are now #defined to false on non-x86 arches and can thus be
->   optimized away by the compiler.
-> 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
 > ---
-> Changes v2 -> v3:
-> - Newly inserted patch in v3 to avoid repeated DMI checks for Apple
->   hardware:  The result of the first DMI check in osi.c is cached.
->   Two other existing DMI checks are converted to use the result.
->   Because one of them is in a module (sbs.ko), the bool is_apple_system
->   needs to be exported.  On non-x86, the DMI checks and Apple-specific
->   code are omitted altogether. (Andy, Rafael)
+>  drivers/acpi/property.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
->  drivers/acpi/osi.c      |  4 ++++
->  drivers/acpi/pci_root.c |  3 +--
->  drivers/acpi/sbs.c      | 24 +-----------------------
->  include/linux/acpi.h    |  6 ++++++
->  4 files changed, 12 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-> index cd953ae10238..6c253d4006b4 100644
-> --- a/drivers/acpi/osi.c
-> +++ b/drivers/acpi/osi.c
-> @@ -258,12 +258,16 @@ bool acpi_osi_is_win8(void)
->  EXPORT_SYMBOL(acpi_osi_is_win8);
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 9364398204e9..27a9294c843c 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -338,6 +338,9 @@ void acpi_init_properties(struct acpi_device *adev)
 >  
->  #ifdef CONFIG_X86
-> +bool is_apple_system;
-> +EXPORT_SYMBOL(is_apple_system);
+>  	INIT_LIST_HEAD(&adev->data.subnodes);
+>  
+> +	if (!adev->handle)
+> +		return;
+> +
+>  	/*
+>  	 * Check if ACPI_DT_NAMESPACE_HID is present and inthat case we fill in
+>  	 * Device Tree compatible properties for this device.
+> 
 
-Maybe prepend the name of this variable with acpi_ to indicate that this is
-ACPI-specific.
-
-Other than that, I'm basically fine with the changes in this series, but
-I need to have a closer look at them.
+This can go in separately AFAICS.
 
 Thanks,
 Rafael

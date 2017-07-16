@@ -1,361 +1,137 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 4/6] ACPI / property: Support Apple _DSM properties
-Date: Sun, 16 Jul 2017 20:55:39 +0300
-Message-ID: <1500227739.29303.23.camel@linux.intel.com>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v3 6/6] spi: Use Apple device properties in absence of
+ ACPI resources
+Date: Sun, 16 Jul 2017 20:57:28 +0300
+Message-ID: <1500227848.29303.24.camel@linux.intel.com>
 References: <cover.1499983092.git.lukas@wunner.de>
-         <039c6190c4edbd55fd765ff79b8c3028d66a43ab.1499983092.git.lukas@wunner.de>
+         <c137d15be96c954f405bda5acaaf730cccc8e601.1499983092.git.lukas@wunner.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Cc: Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Lv Zheng <lv.zheng@intel.com>,
-        Leif Liddy <leif.liddy@gmail.com>,
-        Daniel Roschka <danielroschka@phoenitydawn.de>,
-        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Lukas Wunner <lukas@wunner.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <039c6190c4edbd55fd765ff79b8c3028d66a43ab.1499983092.git.lukas@wunner.de>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Ronald Tschalaer <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>,
+        Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Lv Zheng <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Daniel Roschka <danielroschka-d2qyoUQsf3ABe69/dCFm4g@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <c137d15be96c954f405bda5acaaf730cccc8e601.1499983092.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 On Fri, 2017-07-14 at 00:36 +0200, Lukas Wunner wrote:
-> While the rest of the world has standardized on _DSD as the way to
-> store
-> device properties in AML (introduced with ACPI 5.1 in 2014), Apple has
-> been using a custom _DSM to achieve the same for much longer (ever
-> since
-> they switched from DeviceTree-based PowerPC to Intel in 2005, verified
-> with MacOS X 10.4.11).
+> MacBooks and MacBook Pros introduced since 2015 return empty _CRS data
+> for SPI slaves, causing device initialization to fail.  Most of the
+> information that would normally be conveyed via _CRS is available
+> through ACPI device properties instead, so take advantage of them.
 > 
-> The theory of operation on macOS is as
-> follows:  AppleACPIPlatform.kext
-> invokes mergeEFIproperties() and mergeDSMproperties() for each device
-> to
-> merge properties conveyed by EFI drivers as well as properties stored
-> in
-> AML into the I/O Kit registry from which they can be retrieved by
-> drivers.  We've been supporting EFI properties since commit
-> 58c5475aba67
-> ("x86/efi: Retrieve and assign Apple device properties").  The present
-> commit adds support for _DSM properties, thereby completing our
-> support
-> for Apple device properties.  The _DSM properties are made available
-> under the primary fwnode, the EFI properties under the secondary
-> fwnode.
-> So for devices which possess both property types, they can all be
-> elegantly accessed with the uniform API in <linux/property.h>.
+> The meaning and appropriate usage of the device properties was reverse
+> engineered by Ronald Tschalär and carried over from these commits
+> authored by him:
 > 
-> Until recently we had no need to support _DSM properties, they
-> contained
-> only uninteresting garbage.  The situation has changed with MacBooks
-> and
-> MacBook Pros introduced since 2015:  Their keyboard is attached with
-> SPI
-> instead of USB and the _CRS data which is necessary to initialize the
-> spi driver only contains valid information if OSPM responds "false" to
-> _OSI("Darwin").  If OSPM responds "true", _CRS is empty and the spi
-> driver fails to initialize.  The rationale is very simple, Apple only
-> cares about macOS and Windows:  On Windows, _CRS contains valid data,
-> whereas on macOS it is empty.  Instead, macOS gleans the necessary
-> data
-> from the _DSM properties.
-> 
-> Since Linux deliberately defaults to responding "true" to
-> _OSI("Darwin"),
-> we need to emulate macOS' behaviour by initializing the spi driver
-> with
-> data returned by the _DSM.
-> 
-> An out-of-tree driver for the SPI keyboard exists which currently
-> binds
-> to the ACPI device, invokes the _DSM, parses the returned package and
-> instantiates an SPI device with the data gleaned from the _DSM:
 > https://github.com/cb22/macbook12-spi-driver/commit/9a416d699ef4
 > https://github.com/cb22/macbook12-spi-driver/commit/0c34936ed9a1
 > 
-> By adding support for Apple's _DSM properties in generic ACPI code,
-> the
-> out-of-tree driver will be able to register as a regular SPI device,
-> significantly reducing its amount of code and improving its chances to
-> be mainlined.
+> According to Ronald, the device properties have the following meaning:
 > 
-> The SPI keyboard will not be the only user of this commit:  E.g. on
-> the
-> MacBook8,1, the UART-attached Bluetooth device likewise returns empty
-> _CRS data if OSPM returns "true" to _OSI("Darwin").
-> 
-> The _DSM returns a Package whose format unfortunately deviates
-> slightly
-> from the _DSD spec:  The properties are marshalled up in a single
-> Package
-> as alternating key/value elements, unlike _DSD which stores them as a
-> Package of 2-element Packages.  The present commit therefore converts
-> the Package to _DSD format and the ACPI core can then treat the data
-> as
-> if Apple would follow the standard.
-> 
-> Well, except for one small annoyance:  The properties returned by the
-> _DSM only ever have one of two types, Integer or Buffer.  The former
-> is
-> retrievable as usual with device_property_read_u64(), but the latter
-> is
-> not part of the _DSD spec and it is not possible to retrieve Buffer
-> properties with the device_property_read_*() functions due to the type
-> checking performed in drivers/acpi/property.c.  It is however possible
-> to retrieve them with acpi_dev_get_property().  Apple is using the
-> Buffer type somewhat sloppily to store null-terminated strings but
-> also
-> integers.  The real data type is not distinguishable by the ACPI core
-> and the onus is on the caller to use the contents of the Buffer in an
-> appropriate way.
-> 
-> In case Apple moves to _DSD in the future, this commit first checks
-> for
-> _DSD and falls back to _DSM only if _DSD is not found.
+> spiSclkPeriod   /* period in ns */
+> spiWordSize     /* in number of bits */
+> spiBitOrder     /* 1 = MSB_FIRST, 0 = LSB_FIRST */
+> spiSPO          /* clock polarity: 0 = low, 1 = high */
+> spiSPH          /* clock phase: 0 = first, 1 = second */
+> spiCSDelay      /* delay between cs and receive on reads in 10 us */
+> resetA2RUsec    /* active-to-receive delay? */
+> resetRecUsec    /* receive delay? */
 > 
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-(though most of the comments were given on Github page)
+(obj is better than o)
 
-> Cc: Federico Lorenzi <florenzi@gmail.com>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Tested-by: Ronald Tschalär <ronald@innovation.ch>
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Cc: Federico Lorenzi <florenzi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Reported-by: Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Tested-by: Ronald Tschalär <ronald-Cgq6lnktLNMTaf21n8AfGQ@public.gmane.org>
+> Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 > ---
 > Changes v2 -> v3:
-> - Use bitmap to keep track of valid properties.  Move to x86/apple.c
->   to avoid cluttering up generic ACPI code. (Andy, Rafael)
+> - Check buffer length for extra safety.  Rename "o" to "obj",
+>   use 32 bit division to calculate max_speed_hz. (Andy)
 > 
->  drivers/acpi/Makefile    |   1 +
->  drivers/acpi/internal.h  |   6 +++
->  drivers/acpi/property.c  |   3 ++
->  drivers/acpi/x86/apple.c | 137
-> +++++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 147 insertions(+)
->  create mode 100644 drivers/acpi/x86/apple.c
+>  drivers/spi/spi.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
 > 
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index b1aacfc62b1f..90265ab4437a 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -50,6 +50,7 @@ acpi-$(CONFIG_ACPI_REDUCED_HARDWARE_ONLY) += evged.o
->  acpi-y				+= sysfs.o
->  acpi-y				+= property.o
->  acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
-> +acpi-$(CONFIG_X86)		+= x86/apple.o
->  acpi-$(CONFIG_X86)		+= x86/utils.o
->  acpi-$(CONFIG_DEBUG_FS)		+= debugfs.o
->  acpi-$(CONFIG_ACPI_NUMA)	+= numa.o
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index be79f7db1850..79ee29777909 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -229,6 +229,12 @@ static inline void suspend_nvs_restore(void) {}
->  void acpi_init_properties(struct acpi_device *adev);
->  void acpi_free_properties(struct acpi_device *adev);
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 4fcbb0aa71d3..cce133057700 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1693,6 +1693,35 @@ static void of_register_spi_devices(struct
+> spi_controller *ctlr) { }
+>  #endif
 >  
-> +#ifdef CONFIG_X86
-> +void acpi_extract_apple_properties(struct acpi_device *adev);
-> +#else
-> +static inline void acpi_extract_apple_properties(struct acpi_device
-> *adev) {}
-> +#endif
-> +
->  /*-------------------------------------------------------------------
-> -------
->  				Watchdog
->    -------------------------------------------------------------------
-> ------- */
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index 27a9294c843c..d05f4f97c963 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -375,6 +375,9 @@ void acpi_init_properties(struct acpi_device
-> *adev)
->  	if (acpi_of && !adev->flags.of_compatible_ok)
->  		acpi_handle_info(adev->handle,
->  			 ACPI_DT_NAMESPACE_HID " requires
-> 'compatible' property\n");
-> +
-> +	if (is_apple_system && !adev->data.pointer)
-> +		acpi_extract_apple_properties(adev);
->  }
->  
->  static void acpi_destroy_nondev_subnodes(struct list_head *list)
-> diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
-> new file mode 100644
-> index 000000000000..bffa38f7460e
-> --- /dev/null
-> +++ b/drivers/acpi/x86/apple.c
-> @@ -0,0 +1,137 @@
-> +/*
-> + * apple.c - Apple ACPI quirks
-> + * Copyright (C) 2017 Lukas Wunner <lukas@wunner.de>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> modify
-> + * it under the terms of the GNU General Public License (version 2)
-> as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/bitmap.h>
-> +#include <linux/uuid.h>
-> +
-> +/* Apple _DSM device properties GUID */
-> +static const guid_t apple_prp_guid =
-> +	GUID_INIT(0xA0B5B7C6, 0x1318, 0x441C,
-> +		  0xB0, 0xC9, 0xFE, 0x69, 0x5E, 0xAF, 0x94, 0x9B);
-> +
-> +/**
-> + * acpi_extract_apple_properties - retrieve and convert Apple _DSM
-> properties
-> + * @adev: ACPI device for which to retrieve the properties
-> + *
-> + * Invoke Apple's custom _DSM once to check the protocol version and
-> once more
-> + * to retrieve the properties.  They are marshalled up in a single
-> package as
-> + * alternating key/value elements, unlike _DSD which stores them as a
-> package
-> + * of 2-element packages.  Convert to _DSD format and make them
-> available under
-> + * the primary fwnode.
-> + */
-> +void acpi_extract_apple_properties(struct acpi_device *adev)
+>  #ifdef CONFIG_ACPI
+> +static void acpi_spi_parse_apple_properties(struct spi_device *spi)
 > +{
-> +	unsigned int i, j = 0, newsize = 0, numprops, numvalid;
-> +	union acpi_object *props, *newprops;
-> +	unsigned long *valid = NULL;
-> +	void *free_space;
+> +	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
+> +	const union acpi_object *obj;
 > +
-> +	props = acpi_evaluate_dsm_typed(adev->handle,
-> &apple_prp_guid, 1, 0,
-> +					NULL, ACPI_TYPE_BUFFER);
-> +	if (!props)
+> +	if (!is_apple_system)
 > +		return;
 > +
-> +	if (!props->buffer.length)
-> +		goto out_free;
+> +	if (!acpi_dev_get_property(dev, "spiSclkPeriod",
+> ACPI_TYPE_BUFFER, &obj)
+> +	    && obj->buffer.length >= 4)
+> +		spi->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj-
+> >buffer.pointer;
 > +
-> +	if (props->buffer.pointer[0] != 3) {
-> +		acpi_handle_info(adev->handle, FW_INFO
-> +				 "unsupported properties version
-> %*ph\n",
-> +				 props->buffer.length, props-
-> >buffer.pointer);
-> +		goto out_free;
-> +	}
+> +	if (!acpi_dev_get_property(dev, "spiWordSize",
+> ACPI_TYPE_BUFFER, &obj)
+> +	    && obj->buffer.length == 8)
+> +		spi->bits_per_word = *(u64 *)obj->buffer.pointer;
 > +
-> +	ACPI_FREE(props);
-> +	props = acpi_evaluate_dsm_typed(adev->handle,
-> &apple_prp_guid, 1, 1,
-> +					NULL, ACPI_TYPE_PACKAGE);
-> +	if (!props)
-> +		return;
+> +	if (!acpi_dev_get_property(dev, "spiBitOrder",
+> ACPI_TYPE_BUFFER, &obj)
+> +	    && obj->buffer.length == 8 && !*(u64 *)obj-
+> >buffer.pointer)
+> +		spi->mode |= SPI_LSB_FIRST;
 > +
-> +	numprops = props->package.count / 2;
-> +	if (!numprops)
-> +		goto out_free;
+> +	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER,
+> &obj)
+> +	    && obj->buffer.length == 8 &&  *(u64 *)obj-
+> >buffer.pointer)
+> +		spi->mode |= SPI_CPOL;
 > +
-> +	valid = kcalloc(BITS_TO_LONGS(numprops), sizeof(long),
-> GFP_KERNEL);
-> +	if (!valid)
-> +		goto out_free;
-> +
-> +	/* newsize = key length + value length of each tuple */
-> +	for (i = 0; i < numprops; i++) {
-> +		union acpi_object *key = &props->package.elements[i *
-> 2];
-> +		union acpi_object *val = &props->package.elements[i *
-> 2 + 1];
-> +
-> +		if ( key->type != ACPI_TYPE_STRING ||
-> +		    (val->type != ACPI_TYPE_INTEGER &&
-> +		     val->type != ACPI_TYPE_BUFFER))
-> +			continue; /* skip invalid properties */
-> +
-> +		__set_bit(i, valid);
-> +		newsize += key->string.length + 1;
-> +		if ( val->type == ACPI_TYPE_BUFFER)
-> +			newsize += val->buffer.length;
-> +	}
-> +
-> +	numvalid = bitmap_weight(valid, numprops);
-> +	if (numprops > numvalid)
-> +		acpi_handle_info(adev->handle, FW_INFO
-> +				 "skipped %u properties: wrong
-> type\n",
-> +				 numprops - numvalid);
-> +	if (numvalid == 0)
-> +		goto out_free;
-> +
-> +	/* newsize += top-level package + 3 objects for each
-> key/value tuple */
-> +	newsize	+= (1 + 3 * numvalid) * sizeof(union
-> acpi_object);
-> +	newprops = ACPI_ALLOCATE_ZEROED(newsize);
-> +	if (!newprops)
-> +		goto out_free;
-> +
-> +	/* layout: top-level package | packages | key/value tuples |
-> strings */
-> +	newprops->type = ACPI_TYPE_PACKAGE;
-> +	newprops->package.count = numvalid;
-> +	newprops->package.elements = &newprops[1];
-> +	free_space = &newprops[1 + 3 * numvalid];
-> +
-> +	for_each_set_bit(i, valid, numprops) {
-> +		union acpi_object *key = &props->package.elements[i *
-> 2];
-> +		union acpi_object *val = &props->package.elements[i *
-> 2 + 1];
-> +		unsigned int k = 1 + numvalid + j * 2; /* index into
-> newprops */
-> +		unsigned int v = k + 1;
-> +
-> +		newprops[1 + j].type = ACPI_TYPE_PACKAGE;
-> +		newprops[1 + j].package.count = 2;
-> +		newprops[1 + j].package.elements = &newprops[k];
-> +
-> +		newprops[k].type = ACPI_TYPE_STRING;
-> +		newprops[k].string.length = key->string.length;
-> +		newprops[k].string.pointer = free_space;
-> +		memcpy(free_space, key->string.pointer, key-
-> >string.length);
-> +		free_space += key->string.length + 1;
-> +
-> +		newprops[v].type = val->type;
-> +		if (val->type == ACPI_TYPE_INTEGER) {
-> +			newprops[v].integer.value = val-
-> >integer.value;
-> +		} else {
-> +			newprops[v].buffer.length = val-
-> >buffer.length;
-> +			newprops[v].buffer.pointer = free_space;
-> +			memcpy(free_space, val->buffer.pointer,
-> +			       val->buffer.length);
-> +			free_space += val->buffer.length;
-> +		}
-> +		j++; /* count valid properties */
-> +	}
-> +	WARN_ON(free_space != (void *)newprops + newsize);
-> +
-> +	adev->data.properties = newprops;
-> +	adev->data.pointer = newprops;
-> +
-> +out_free:
-> +	ACPI_FREE(props);
-> +	kfree(valid);
+> +	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER,
+> &obj)
+> +	    && obj->buffer.length == 8 &&  *(u64 *)obj-
+> >buffer.pointer)
+> +		spi->mode |= SPI_CPHA;
 > +}
+> +
+>  static int acpi_spi_add_resource(struct acpi_resource *ares, void
+> *data)
+>  {
+>  	struct spi_device *spi = data;
+> @@ -1766,6 +1795,8 @@ static acpi_status
+> acpi_register_spi_device(struct spi_controller *ctlr,
+>  				     acpi_spi_add_resource, spi);
+>  	acpi_dev_free_resource_list(&resource_list);
+>  
+> +	acpi_spi_parse_apple_properties(spi);
+> +
+>  	if (ret < 0 || !spi->max_speed_hz) {
+>  		spi_dev_put(spi);
+>  		return AE_OK;
 
 -- 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Intel Finland Oy
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

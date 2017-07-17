@@ -1,24 +1,21 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Only claim CS GPIOs when the slave device is created" to the spi tree
-Date: Mon, 17 Jul 2017 17:07:02 +0100
-Message-ID: <E1dX8Y2-0005II-GS@debutante>
-References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <90b3e14d-0077-9a25-9d90-ab340577af57-S0/GAf8tV78@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: loopback-test: provide loop_req option." to the spi tree
+Date: Mon, 17 Jul 2017 17:06:52 +0100
+Message-ID: <E1dX8Xs-0005FU-1r@debutante>
+References: <20170714091936.22440-1-o.rempel@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@rempel-privat.de,
+        linux-spi@vger.kernel.org
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170714091936.22440-1-o.rempel@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: Only claim CS GPIOs when the slave device is created
+   spi: loopback-test: provide loop_req option.
 
 has been applied to the spi tree at
 
@@ -43,126 +40,71 @@ to this mail.
 Thanks,
 Mark
 
->From 676a4e3bab445d53fca4756865e2c0e2a87c38d6 Mon Sep 17 00:00:00 2001
-From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Date: Sat, 8 Jul 2017 10:41:18 +0200
-Subject: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is
- created
+>From f12a616e0cdee71440b72f7602825db424d37879 Mon Sep 17 00:00:00 2001
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 14 Jul 2017 11:42:46 +0200
+Subject: [PATCH] spi: loopback-test: provide loop_req option.
 
-Avoid hogging chip select GPIOs just because they are listed for the
-master. They might be mulitplexed and, if no slave device is attached,
-used for different purposes. Moreover, this strategy avoids having to
-allocate a cs_gpiods structure.
+Provide a module parameter to request internal loop by the SPI master
+controller.
+This should make loop testing easier without extra HW modification.
 
-Tested on the IOT2000 where the second SPI bus is connected to an
-Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
-usage.
+For test automation a logic analyzer is recommended for host
+controller-independent verification.
+An example test rig configuration and procedure:
+  i.MX6S RIoRBoard           Logic Analyzer
+  -----------------------------------------
+  (J13  4) GND ------------- GND
+  (J13  6) CSPI3-CLK ------> PIN 3
+  (J13  8) CSPI3-MOSI <----- PIN 2
+     ^ - internal loop configured by SPI_LOOP
+     |   or can be user external jamper.
+  (J13 10) CSPI3-MISO -----> PIN 1
 
-Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+grab some data and decode it:
+sigrok-cli -d fx2lafw --time 160000 --config samplerate=10m  \
+  --channels 0-2 -o dump.sr
+sigrok-cli -i dump.sr -P spi:mosi=1:clk=2 > result_for_regression_tests
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++-------------------------------
- 1 file changed, 21 insertions(+), 38 deletions(-)
+ drivers/spi/spi-loopback-test.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 38d053682892..be991266a6ce 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1213,21 +1213,33 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
- 		    struct pxa2xx_spi_chip *chip_info)
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 3459965004f8..0d3c56e2526c 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -51,6 +51,12 @@ MODULE_PARM_DESC(loopback,
+ 		 "is checked to match tx_buf after the spi_message "	\
+ 		 "is executed");
+ 
++int loop_req;
++module_param(loop_req, int, 0);
++MODULE_PARM_DESC(loop_req,
++		 "if set controller will be asked to enable test loop mode. " \
++		 "If controller supported it, MISO and MOSI will be connected");
++
+ /* run only a specific test */
+ int run_only_test = -1;
+ module_param(run_only_test, int, 0);
+@@ -313,6 +319,16 @@ static int spi_loopback_test_probe(struct spi_device *spi)
  {
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-+	struct device *pdev = &drv_data->pdev->dev;
-+	struct gpio_desc *gpiod;
- 	int err = 0;
-+	int count;
+ 	int ret;
  
- 	if (chip == NULL)
- 		return 0;
- 
--	if (drv_data->cs_gpiods) {
--		struct gpio_desc *gpiod;
-+	count = gpiod_count(pdev, "cs");
-+	if (count > 0) {
-+		if (spi->chip_select >= count)
-+			return -EINVAL;
++	if (loop_req) {
++		spi->mode = SPI_LOOP | spi->mode;
++		ret = spi_setup(spi);
++		if (ret) {
++			dev_err(&spi->dev, "SPI setup with SPI_LOOP failed (%d)\n",
++				ret);
++			return ret;
++		}
++	}
 +
-+		gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
-+					GPIOD_OUT_HIGH);
-+		if (IS_ERR(gpiod)) {
-+			/* Means use native chip select */
-+			if (PTR_ERR(gpiod) == -ENOENT)
-+				return 0;
+ 	dev_info(&spi->dev, "Executing spi-loopback-tests\n");
  
--		gpiod = drv_data->cs_gpiods[spi->chip_select];
--		if (gpiod) {
--			chip->gpio_cs = desc_to_gpio(gpiod);
--			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
--			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
-+			return PTR_ERR(gpiod);
- 		}
- 
-+		chip->gpio_cs = desc_to_gpio(gpiod);
-+		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
-+		gpiod_set_value(gpiod, chip->gpio_cs_inverted);
-+
- 		return 0;
- 	}
- 
-@@ -1415,8 +1427,7 @@ static void cleanup(struct spi_device *spi)
- 	if (!chip)
- 		return;
- 
--	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
--	    gpio_is_valid(chip->gpio_cs))
-+	if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
- 		gpio_free(chip->gpio_cs);
- 
- 	kfree(chip);
-@@ -1752,38 +1763,10 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	master->num_chipselect = platform_info->num_chipselect;
- 
- 	count = gpiod_count(&pdev->dev, "cs");
--	if (count > 0) {
--		int i;
--
-+	if (count > 0)
- 		master->num_chipselect = max_t(int, count,
- 			master->num_chipselect);
- 
--		drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
--			master->num_chipselect, sizeof(struct gpio_desc *),
--			GFP_KERNEL);
--		if (!drv_data->cs_gpiods) {
--			status = -ENOMEM;
--			goto out_error_clock_enabled;
--		}
--
--		for (i = 0; i < master->num_chipselect; i++) {
--			struct gpio_desc *gpiod;
--
--			gpiod = devm_gpiod_get_index(dev, "cs", i,
--						     GPIOD_OUT_HIGH);
--			if (IS_ERR(gpiod)) {
--				/* Means use native chip select */
--				if (PTR_ERR(gpiod) == -ENOENT)
--					continue;
--
--				status = (int)PTR_ERR(gpiod);
--				goto out_error_clock_enabled;
--			} else {
--				drv_data->cs_gpiods[i] = gpiod;
--			}
--		}
--	}
--
- 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
- 		     (unsigned long)drv_data);
- 
+ 	ret = spi_test_run_tests(spi, spi_tests);
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

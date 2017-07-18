@@ -1,56 +1,117 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH][next] spi: loopback-test: make several module parameters
- static
-Date: Tue, 18 Jul 2017 14:27:04 +0100
-Message-ID: <20170718132704.uy2moeeyvq7uywbn@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: loopback-test: make several module parameters static" to the spi tree
+Date: Tue, 18 Jul 2017 14:49:10 +0100
+Message-ID: <E1dXSsA-0008I0-2f@debutante>
 References: <20170718124232.24644-1-colin.king@canonical.com>
- <20170718130939.5knxusi4d6e32wh4@sirena.org.uk>
- <362dce57-c28b-3258-7411-1c0724545c3f@canonical.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="nwaev355ao3hu5an"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <362dce57-c28b-3258-7411-1c0724545c3f-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20170718124232.24644-1-colin.king@canonical.com>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---nwaev355ao3hu5an
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: loopback-test: make several module parameters static
 
-On Tue, Jul 18, 2017 at 02:13:35PM +0100, Colin Ian King wrote:
-> On 18/07/17 14:09, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > It would be very helpful if you could ensure your commit author and
-> > e-mail From: line up so that git doesn't make your patches look like
-> > non-author signoffs.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> ACK, will do. Want me to resend this patch?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-No, it's fine - I've already applied it.  Thanks!
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---nwaev355ao3hu5an
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlluDKgACgkQJNaLcl1U
-h9BxzAgAgP2xmtvwuoLIxlD4TNKLwdTCquo+0hOnHPKTlWPb9o7WsYu0k4quIOpa
-SXg9N4u/pIT+C8wBAZJa/QqeEAG06PRUagwl3giSKjAJDlMbeqVpTybY4c2biO5r
-5t2Ey97znXL/NuvNtPaE9XNRRh7gEHI+WIGslHXS16VAkg6NMols+aIHhU80e3WC
-zjZd0Ny+brcfurcHSwpleIfrXoAhzgDWFhzncC4T0NFWhaUsGHFSjePLDxhWViCo
-p5E2vbeADR61jNIafMMPt2Mk+WRlvGFqVihWU9qq8NmFw5i6vSwR3teLO2WixJxd
-nNvHmODrRl8AzXdgcVGlLFam5n+Xvg==
-=TXfM
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---nwaev355ao3hu5an--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From 59a8831da31ebdabf82cac82bf01270d215bf149 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Tue, 18 Jul 2017 13:42:32 +0100
+Subject: [PATCH] spi: loopback-test: make several module parameters static
+
+Several module parameters are local to the source, so make them
+static. Cleans up several sparse warnings such as:
+
+"symbol 'loop_req' was not declared. Should it be static?"
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-loopback-test.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 0d3c56e2526c..64a1e6f212c1 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -32,45 +32,45 @@
+ #include "spi-test.h"
+ 
+ /* flag to only simulate transfers */
+-int simulate_only;
++static int simulate_only;
+ module_param(simulate_only, int, 0);
+ MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
+ 
+ /* dump spi messages */
+-int dump_messages;
++static int dump_messages;
+ module_param(dump_messages, int, 0);
+ MODULE_PARM_DESC(dump_messages,
+ 		 "=1 dump the basic spi_message_structure, " \
+ 		 "=2 dump the spi_message_structure including data, " \
+ 		 "=3 dump the spi_message structure before and after execution");
+ /* the device is jumpered for loopback - enabling some rx_buf tests */
+-int loopback;
++static int loopback;
+ module_param(loopback, int, 0);
+ MODULE_PARM_DESC(loopback,
+ 		 "if set enable loopback mode, where the rx_buf "	\
+ 		 "is checked to match tx_buf after the spi_message "	\
+ 		 "is executed");
+ 
+-int loop_req;
++static int loop_req;
+ module_param(loop_req, int, 0);
+ MODULE_PARM_DESC(loop_req,
+ 		 "if set controller will be asked to enable test loop mode. " \
+ 		 "If controller supported it, MISO and MOSI will be connected");
+ 
+ /* run only a specific test */
+-int run_only_test = -1;
++static int run_only_test = -1;
+ module_param(run_only_test, int, 0);
+ MODULE_PARM_DESC(run_only_test,
+ 		 "only run the test with this number (0-based !)");
+ 
+ /* use vmalloc'ed buffers */
+-int use_vmalloc;
++static int use_vmalloc;
+ module_param(use_vmalloc, int, 0644);
+ MODULE_PARM_DESC(use_vmalloc,
+ 		 "use vmalloc'ed buffers instead of kmalloc'ed");
+ 
+ /* check rx ranges */
+-int check_ranges = 1;
++static int check_ranges = 1;
+ module_param(check_ranges, int, 0644);
+ MODULE_PARM_DESC(check_ranges,
+ 		 "checks rx_buffer pattern are valid");
+-- 
+2.13.2
+

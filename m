@@ -1,117 +1,127 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: loopback-test: make several module parameters static" to the spi tree
-Date: Tue, 18 Jul 2017 14:49:10 +0100
-Message-ID: <E1dXSsA-0008I0-2f@debutante>
-References: <20170718124232.24644-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20170718124232.24644-1-colin.king@canonical.com>
-Sender: kernel-janitors-owner@vger.kernel.org
+From: Rob Herring <robh@kernel.org>
+Subject: [PATCH] spi: Convert to using %pOF instead of full_name
+Date: Tue, 18 Jul 2017 16:43:31 -0500
+Message-ID: <20170718214339.7774-51-robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Now that we have a custom printf format specifier, convert users of
+full_name to use %pOF instead. This is preparation to remove storing
+of the full path string for each node.
 
-   spi: loopback-test: make several module parameters static
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 59a8831da31ebdabf82cac82bf01270d215bf149 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Tue, 18 Jul 2017 13:42:32 +0100
-Subject: [PATCH] spi: loopback-test: make several module parameters static
-
-Several module parameters are local to the source, so make them
-static. Cleans up several sparse warnings such as:
-
-"symbol 'loop_req' was not declared. Should it be static?"
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
 ---
- drivers/spi/spi-loopback-test.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-orion.c |  4 ++--
+ drivers/spi/spi.c       | 27 +++++++++++----------------
+ 2 files changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 0d3c56e2526c..64a1e6f212c1 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -32,45 +32,45 @@
- #include "spi-test.h"
- 
- /* flag to only simulate transfers */
--int simulate_only;
-+static int simulate_only;
- module_param(simulate_only, int, 0);
- MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
- 
- /* dump spi messages */
--int dump_messages;
-+static int dump_messages;
- module_param(dump_messages, int, 0);
- MODULE_PARM_DESC(dump_messages,
- 		 "=1 dump the basic spi_message_structure, " \
- 		 "=2 dump the spi_message_structure including data, " \
- 		 "=3 dump the spi_message structure before and after execution");
- /* the device is jumpered for loopback - enabling some rx_buf tests */
--int loopback;
-+static int loopback;
- module_param(loopback, int, 0);
- MODULE_PARM_DESC(loopback,
- 		 "if set enable loopback mode, where the rx_buf "	\
- 		 "is checked to match tx_buf after the spi_message "	\
- 		 "is executed");
- 
--int loop_req;
-+static int loop_req;
- module_param(loop_req, int, 0);
- MODULE_PARM_DESC(loop_req,
- 		 "if set controller will be asked to enable test loop mode. " \
- 		 "If controller supported it, MISO and MOSI will be connected");
- 
- /* run only a specific test */
--int run_only_test = -1;
-+static int run_only_test = -1;
- module_param(run_only_test, int, 0);
- MODULE_PARM_DESC(run_only_test,
- 		 "only run the test with this number (0-based !)");
- 
- /* use vmalloc'ed buffers */
--int use_vmalloc;
-+static int use_vmalloc;
- module_param(use_vmalloc, int, 0644);
- MODULE_PARM_DESC(use_vmalloc,
- 		 "use vmalloc'ed buffers instead of kmalloc'ed");
- 
- /* check rx ranges */
--int check_ranges = 1;
-+static int check_ranges = 1;
- module_param(check_ranges, int, 0644);
- MODULE_PARM_DESC(check_ranges,
- 		 "checks rx_buffer pattern are valid");
--- 
-2.13.2
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 28fc9f161b9d..4b6dd73b80da 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -669,8 +669,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		status = of_property_read_u32(np, "reg", &cs);
+ 		if (status) {
+ 			dev_err(&pdev->dev,
+-				"%s has no valid 'reg' property (%d)\n",
+-				np->full_name, status);
++				"%pOF has no valid 'reg' property (%d)\n",
++				np, status);
+ 			status = 0;
+ 			continue;
+ 		}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4fcbb0aa71d3..0725c78b0de6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1583,8 +1583,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
 
+ 	if (spi_controller_is_slave(ctlr)) {
+ 		if (strcmp(nc->name, "slave")) {
+-			dev_err(&ctlr->dev, "%s is not called 'slave'\n",
+-				nc->full_name);
++			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
++				nc);
+ 			return -EINVAL;
+ 		}
+ 		return 0;
+@@ -1593,8 +1593,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	/* Device address */
+ 	rc = of_property_read_u32(nc, "reg", &value);
+ 	if (rc) {
+-		dev_err(&ctlr->dev, "%s has no valid 'reg' property (%d)\n",
+-			nc->full_name, rc);
++		dev_err(&ctlr->dev, "%pOF has no valid 'reg' property (%d)\n",
++			nc, rc);
+ 		return rc;
+ 	}
+ 	spi->chip_select = value;
+@@ -1603,8 +1603,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+ 	if (rc) {
+ 		dev_err(&ctlr->dev,
+-			"%s has no valid 'spi-max-frequency' property (%d)\n",
+-			nc->full_name, rc);
++			"%pOF has no valid 'spi-max-frequency' property (%d)\n", nc, rc);
+ 		return rc;
+ 	}
+ 	spi->max_speed_hz = value;
+@@ -1621,8 +1620,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
+ 	/* Alloc an spi_device */
+ 	spi = spi_alloc_device(ctlr);
+ 	if (!spi) {
+-		dev_err(&ctlr->dev, "spi_device alloc error for %s\n",
+-			nc->full_name);
++		dev_err(&ctlr->dev, "spi_device alloc error for %pOF\n", nc);
+ 		rc = -ENOMEM;
+ 		goto err_out;
+ 	}
+@@ -1631,8 +1629,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
+ 	rc = of_modalias_node(nc, spi->modalias,
+ 				sizeof(spi->modalias));
+ 	if (rc < 0) {
+-		dev_err(&ctlr->dev, "cannot find modalias for %s\n",
+-			nc->full_name);
++		dev_err(&ctlr->dev, "cannot find modalias for %pOF\n", nc);
+ 		goto err_out;
+ 	}
+
+@@ -1647,8 +1644,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
+ 	/* Register the new device */
+ 	rc = spi_add_device(spi);
+ 	if (rc) {
+-		dev_err(&ctlr->dev, "spi_device register error %s\n",
+-			nc->full_name);
++		dev_err(&ctlr->dev, "spi_device register error %pOF\n", nc);
+ 		goto err_of_node_put;
+ 	}
+
+@@ -1682,8 +1678,7 @@ static void of_register_spi_devices(struct spi_controller *ctlr)
+ 		spi = of_register_spi_device(ctlr, nc);
+ 		if (IS_ERR(spi)) {
+ 			dev_warn(&ctlr->dev,
+-				 "Failed to create SPI device for %s\n",
+-				 nc->full_name);
++				 "Failed to create SPI device for %pOF\n", nc);
+ 			of_node_clear_flag(nc, OF_POPULATED);
+ 		}
+ 	}
+@@ -3311,8 +3306,8 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 		put_device(&ctlr->dev);
+
+ 		if (IS_ERR(spi)) {
+-			pr_err("%s: failed to create for '%s'\n",
+-					__func__, rd->dn->full_name);
++			pr_err("%s: failed to create for '%pOF'\n",
++					__func__, rd->dn);
+ 			of_node_clear_flag(rd->dn, OF_POPULATED);
+ 			return notifier_from_errno(PTR_ERR(spi));
+ 		}
+--
+2.11.0

@@ -1,84 +1,53 @@
-From: Colin King <colin.king@canonical.com>
-Subject: [PATCH][next] spi: loopback-test: make several module parameters static
-Date: Tue, 18 Jul 2017 13:42:32 +0100
-Message-ID: <20170718124232.24644-1-colin.king@canonical.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH][next] spi: loopback-test: make several module parameters
+ static
+Date: Tue, 18 Jul 2017 14:09:39 +0100
+Message-ID: <20170718130939.5knxusi4d6e32wh4@sirena.org.uk>
+References: <20170718124232.24644-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="y4smm2sioyvsjjtf"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170718124232.24644-1-colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Colin Ian King <colin.king@canonical.com>
 
-Several module parameters are local to the source, so make them
-static. Cleans up several sparse warnings such as:
+--y4smm2sioyvsjjtf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-"symbol 'loop_req' was not declared. Should it be static?"
+On Tue, Jul 18, 2017 at 01:42:32PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/spi/spi-loopback-test.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+It would be very helpful if you could ensure your commit author and
+e-mail From: line up so that git doesn't make your patches look like
+non-author signoffs.
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 0d3c56e2526c..64a1e6f212c1 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -32,45 +32,45 @@
- #include "spi-test.h"
- 
- /* flag to only simulate transfers */
--int simulate_only;
-+static int simulate_only;
- module_param(simulate_only, int, 0);
- MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
- 
- /* dump spi messages */
--int dump_messages;
-+static int dump_messages;
- module_param(dump_messages, int, 0);
- MODULE_PARM_DESC(dump_messages,
- 		 "=1 dump the basic spi_message_structure, " \
- 		 "=2 dump the spi_message_structure including data, " \
- 		 "=3 dump the spi_message structure before and after execution");
- /* the device is jumpered for loopback - enabling some rx_buf tests */
--int loopback;
-+static int loopback;
- module_param(loopback, int, 0);
- MODULE_PARM_DESC(loopback,
- 		 "if set enable loopback mode, where the rx_buf "	\
- 		 "is checked to match tx_buf after the spi_message "	\
- 		 "is executed");
- 
--int loop_req;
-+static int loop_req;
- module_param(loop_req, int, 0);
- MODULE_PARM_DESC(loop_req,
- 		 "if set controller will be asked to enable test loop mode. " \
- 		 "If controller supported it, MISO and MOSI will be connected");
- 
- /* run only a specific test */
--int run_only_test = -1;
-+static int run_only_test = -1;
- module_param(run_only_test, int, 0);
- MODULE_PARM_DESC(run_only_test,
- 		 "only run the test with this number (0-based !)");
- 
- /* use vmalloc'ed buffers */
--int use_vmalloc;
-+static int use_vmalloc;
- module_param(use_vmalloc, int, 0644);
- MODULE_PARM_DESC(use_vmalloc,
- 		 "use vmalloc'ed buffers instead of kmalloc'ed");
- 
- /* check rx ranges */
--int check_ranges = 1;
-+static int check_ranges = 1;
- module_param(check_ranges, int, 0644);
- MODULE_PARM_DESC(check_ranges,
- 		 "checks rx_buffer pattern are valid");
--- 
-2.11.0
+The [next] isn't needed in the subject line either, it just makes more
+of the subject line get hidden.
+
+--y4smm2sioyvsjjtf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlluCJIACgkQJNaLcl1U
+h9DPYQf+OfZGQhWUT3l7Sf53A3dXsjY2Pz2JfMp8k7sHqTanxJ5J4zWkI7vEjjIb
+Gn8u7eNhfIE230mYmz+F1VgNTVnxqV3NLpnOzDPJ2sbOYknNBUhlcsh+WpSYE5DD
+wTSm0C4SjNo76JlPq8nh/qcxiwpzbP5/bubO0IkI7psCHdfV2bDFzPflxssLRHM3
+fx3O2ShYzFNwELxnGSferuNBuObeder45wtk7iPSMG3IQuc5sgHHwwLlA7jn7qxG
+QEojq0PdKSbj6d9L5eYPszL2VMgQ1X7GJ124oJMhKkDkHrRoCT43NB459m2gPiob
+kAQ/s1U/YFqKl3ipt9OGCTa5ZAXI/g==
+=HdwN
+-----END PGP SIGNATURE-----
+
+--y4smm2sioyvsjjtf--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

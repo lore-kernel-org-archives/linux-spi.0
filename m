@@ -1,68 +1,33 @@
-From: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCHv3 2/2] spi: imx: document use of native chip-selects in
- devicetree
-Date: Wed, 19 Jul 2017 03:32:41 +0300
-Message-ID: <c985824e-0a84-33ec-4960-6b84b3de8653@mleia.com>
-References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
- <1499746932-14850-3-git-send-email-gerg@linux-m68k.org>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCHv3 2/2] spi: imx: document use of native chip-selects in devicetree
+Date: Tue, 18 Jul 2017 21:37:37 -0300
+Message-ID: <CAOMZO5A6CZAQUh3mBpH3AdEtcTH-=tdMdqL-SV+4=zcstVQEaQ@mail.gmail.com>
+References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org> <1499746932-14850-3-git-send-email-gerg@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1499746932-14850-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Greg,
+Hi Greg,
 
-On 07/11/2017 07:22 AM, Greg Ungerer wrote:
+On Tue, Jul 11, 2017 at 1:22 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
 > Document the "<0>" notation for specifying use of a native chip-select
 > in the "cs-gpios" tag of an SPI device in devicetree. This isn't unique
 > to the spi-imx driver, but this clearly spells out that you can use it
 > with this driver.
-> 
+>
 > Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> index 31b5b21..cf616ea 100644
-> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> @@ -12,6 +12,7 @@ Required properties:
->  - reg : Offset and length of the register set for the device
->  - interrupts : Should contain CSPI/eCSPI interrupt
->  - cs-gpios : Specifies the gpio pins to be used for chipselects.
-> +	Specify use of native chipselects with "<0>" in place of a gpio.
->  - clocks : Clock specifiers for both ipg and per clocks.
->  - clock-names : Clock names should include both "ipg" and "per"
->  See the clock consumer binding,
-> @@ -38,7 +39,8 @@ ecspi@70010000 {
->  	reg = <0x70010000 0x4000>;
->  	interrupts = <36>;
->  	cs-gpios = <&gpio3 24 0>, /* GPIO3_24 */
-> -		   <&gpio3 25 0>; /* GPIO3_25 */
-> +		   <&gpio3 25 0>, /* GPIO3_25 */
-> +		   <0>;           /* Native chip select */
->  	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
->  	dma-names = "rx", "tx";
->  	fsl,spi-rdy-drctl = <1>;
-> 
 
-Adding Rob to Cc.
+Whic SoC did you use to test the native chip-select?
 
-Reviewed-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
-
-Rob, if you find the change acceptable, can you ack it?
-
+I remember that some old SoCs (mx27/mx31) used to have issues with
+native chip-select.
 --
-With best wishes,
-Vladimir
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

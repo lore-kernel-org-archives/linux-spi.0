@@ -1,14 +1,12 @@
 From: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 080/102] spi: tegra20-sflash: explicitly request exclusive reset control
-Date: Wed, 19 Jul 2017 17:26:24 +0200
-Message-ID: <20170719152646.25903-81-p.zabel@pengutronix.de>
+Subject: [PATCH 077/102] spi: sun6i: explicitly request exclusive reset control
+Date: Wed, 19 Jul 2017 17:26:21 +0200
+Message-ID: <20170719152646.25903-78-p.zabel@pengutronix.de>
 References: <20170719152646.25903-1-p.zabel@pengutronix.de>
 Cc: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170719152646.25903-1-p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
@@ -23,30 +21,28 @@ explicit API call so the temporary transition helpers can be removed.
 
 No functional changes.
 
-Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Signed-off-by: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 2 +-
+ drivers/spi/spi-sun6i.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 2c797ee2664de..22893a7e0aa0e 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -485,7 +485,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		goto exit_free_irq;
- 	}
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 03a773a9531a9..fb38234249a80 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -502,7 +502,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
  
--	tsd->rst = devm_reset_control_get(&pdev->dev, "spi");
-+	tsd->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
- 	if (IS_ERR(tsd->rst)) {
- 		dev_err(&pdev->dev, "can not get reset\n");
- 		ret = PTR_ERR(tsd->rst);
+ 	init_completion(&sspi->done);
+ 
+-	sspi->rstc = devm_reset_control_get(&pdev->dev, NULL);
++	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(sspi->rstc)) {
+ 		dev_err(&pdev->dev, "Couldn't get reset controller\n");
+ 		ret = PTR_ERR(sspi->rstc);
 -- 
 2.11.0
 

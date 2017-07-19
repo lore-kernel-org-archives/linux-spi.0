@@ -1,17 +1,58 @@
-From: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 077/102] spi: sun6i: explicitly request exclusive reset control
-Date: Wed, 19 Jul 2017 17:26:21 +0200
-Message-ID: <20170719152646.25903-78-p.zabel@pengutronix.de>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170719152646.25903-1-p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: tegra20-sflash: explicitly request exclusive reset control" to the spi tree
+Date: Wed, 19 Jul 2017 17:08:35 +0100
+Message-ID: <E1dXrWd-0001HT-W4@debutante>
+References: <20170719152646.25903-81-p.zabel@pengutronix.de>
+Cc: Laxman Dewangan <ldewangan@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170719152646.25903-81-p.zabel@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+The patch
+
+   spi: tegra20-sflash: explicitly request exclusive reset control
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From e60dfe0782f251bb529f233e259dffdc8d786624 Mon Sep 17 00:00:00 2001
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Wed, 19 Jul 2017 17:26:24 +0200
+Subject: [PATCH] spi: tegra20-sflash: explicitly request exclusive reset
+ control
 
 Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
 reset lines") started to transition the reset control request API calls
@@ -21,32 +62,30 @@ explicit API call so the temporary transition helpers can be removed.
 
 No functional changes.
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: Laxman Dewangan <ldewangan@nvidia.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sun6i.c | 2 +-
+ drivers/spi/spi-tegra20-sflash.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 03a773a9531a9..fb38234249a80 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -502,7 +502,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index 2c797ee2664d..22893a7e0aa0 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -485,7 +485,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 		goto exit_free_irq;
+ 	}
  
- 	init_completion(&sspi->done);
- 
--	sspi->rstc = devm_reset_control_get(&pdev->dev, NULL);
-+	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(sspi->rstc)) {
- 		dev_err(&pdev->dev, "Couldn't get reset controller\n");
- 		ret = PTR_ERR(sspi->rstc);
+-	tsd->rst = devm_reset_control_get(&pdev->dev, "spi");
++	tsd->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+ 	if (IS_ERR(tsd->rst)) {
+ 		dev_err(&pdev->dev, "can not get reset\n");
+ 		ret = PTR_ERR(tsd->rst);
 -- 
-2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.13.2

@@ -1,25 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: explicitly request exclusive reset control" to the spi tree
-Date: Wed, 19 Jul 2017 17:08:55 +0100
-Message-ID: <E1dXrWx-0001MA-Lj@debutante>
-References: <20170719152646.25903-77-p.zabel@pengutronix.de>
+Subject: Applied "spi: sun6i: explicitly request exclusive reset control" to the spi tree
+Date: Wed, 19 Jul 2017 17:08:52 +0100
+Message-ID: <E1dXrWu-0001Ko-J2@debutante>
+References: <20170719152646.25903-78-p.zabel@pengutronix.de>
 Cc: Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: Philipp Zabel <p.zabel@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170719152646.25903-77-p.zabel@pengutronix.de>
+In-Reply-To: <20170719152646.25903-78-p.zabel@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: explicitly request exclusive reset control
+   spi: sun6i: explicitly request exclusive reset control
 
 has been applied to the spi tree at
 
@@ -44,10 +44,10 @@ to this mail.
 Thanks,
 Mark
 
->From d5e9a4a433f7d082538268501fa684ada2c76552 Mon Sep 17 00:00:00 2001
+>From 36bc7491f9558efef9a678f7d2555b3ecafd6d82 Mon Sep 17 00:00:00 2001
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 19 Jul 2017 17:26:20 +0200
-Subject: [PATCH] spi: stm32: explicitly request exclusive reset control
+Date: Wed, 19 Jul 2017 17:26:21 +0200
+Subject: [PATCH] spi: sun6i: explicitly request exclusive reset control
 
 Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
 reset lines") started to transition the reset control request API calls
@@ -58,27 +58,27 @@ explicit API call so the temporary transition helpers can be removed.
 No functional changes.
 
 Cc: Mark Brown <broonie@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
 Cc: linux-spi@vger.kernel.org
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 2 +-
+ drivers/spi/spi-sun6i.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 75644bcd938b..680cdf549506 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1132,7 +1132,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		goto err_master_put;
- 	}
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 03a773a9531a..fb38234249a8 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -502,7 +502,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
  
--	spi->rst = devm_reset_control_get(&pdev->dev, NULL);
-+	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (!IS_ERR(spi->rst)) {
- 		reset_control_assert(spi->rst);
- 		udelay(2);
+ 	init_completion(&sspi->done);
+ 
+-	sspi->rstc = devm_reset_control_get(&pdev->dev, NULL);
++	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(sspi->rstc)) {
+ 		dev_err(&pdev->dev, "Couldn't get reset controller\n");
+ 		ret = PTR_ERR(sspi->rstc);
 -- 
 2.13.2

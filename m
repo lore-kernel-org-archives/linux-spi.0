@@ -1,29 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: explicitly request exclusive reset control" to the spi tree
-Date: Wed, 19 Jul 2017 17:08:39 +0100
-Message-ID: <E1dXrWh-0001Id-Mn@debutante>
-References: <20170719152646.25903-80-p.zabel@pengutronix.de>
-Cc: Laxman Dewangan <ldewangan@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-spi@vger.kernel.org
+Subject: Applied "spi: stm32: explicitly request exclusive reset control" to the spi tree
+Date: Wed, 19 Jul 2017 17:08:55 +0100
+Message-ID: <E1dXrWx-0001MA-Lj@debutante>
+References: <20170719152646.25903-77-p.zabel@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
 To: Philipp Zabel <p.zabel@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170719152646.25903-80-p.zabel@pengutronix.de>
+In-Reply-To: <20170719152646.25903-77-p.zabel@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: explicitly request exclusive reset control
+   spi: stm32: explicitly request exclusive reset control
 
 has been applied to the spi tree at
 
@@ -48,10 +44,10 @@ to this mail.
 Thanks,
 Mark
 
->From d006edb4202fc8160e7b5ba10c264b153e1f3e2d Mon Sep 17 00:00:00 2001
+>From d5e9a4a433f7d082538268501fa684ada2c76552 Mon Sep 17 00:00:00 2001
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 19 Jul 2017 17:26:23 +0200
-Subject: [PATCH] spi: tegra114: explicitly request exclusive reset control
+Date: Wed, 19 Jul 2017 17:26:20 +0200
+Subject: [PATCH] spi: stm32: explicitly request exclusive reset control
 
 Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
 reset lines") started to transition the reset control request API calls
@@ -61,30 +57,28 @@ explicit API call so the temporary transition helpers can be removed.
 
 No functional changes.
 
-Cc: Laxman Dewangan <ldewangan@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>
 Cc: linux-spi@vger.kernel.org
-Cc: linux-tegra@vger.kernel.org
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 2 +-
+ drivers/spi/spi-stm32.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 08012ae5aa66..44550182a4a3 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1083,7 +1083,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 		goto exit_free_irq;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 75644bcd938b..680cdf549506 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1132,7 +1132,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		goto err_master_put;
  	}
  
--	tspi->rst = devm_reset_control_get(&pdev->dev, "spi");
-+	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
- 	if (IS_ERR(tspi->rst)) {
- 		dev_err(&pdev->dev, "can not get reset\n");
- 		ret = PTR_ERR(tspi->rst);
+-	spi->rst = devm_reset_control_get(&pdev->dev, NULL);
++	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (!IS_ERR(spi->rst)) {
+ 		reset_control_assert(spi->rst);
+ 		udelay(2);
 -- 
 2.13.2

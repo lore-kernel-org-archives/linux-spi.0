@@ -1,50 +1,62 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCHv3 2/2] spi: imx: document use of native chip-selects in
  devicetree
-Date: Wed, 19 Jul 2017 11:05:08 +1000
-Message-ID: <e0dfbf49-c738-d2ad-9228-f1c6b6a7d029@linux-m68k.org>
+Date: Wed, 19 Jul 2017 04:07:00 +0300
+Message-ID: <63f017b2-3cf3-d219-5935-8543bd5af32b@mleia.com>
 References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
  <1499746932-14850-3-git-send-email-gerg@linux-m68k.org>
  <CAOMZO5A6CZAQUh3mBpH3AdEtcTH-=tdMdqL-SV+4=zcstVQEaQ@mail.gmail.com>
+ <42e1aad1-ca53-ba70-2922-25e2b083d971@mleia.com>
+ <CAOMZO5B55NzBpZscqQECt=2nUQatnU7s2Oc8YLkxFa-dbaB=bA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Cc: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOMZO5A6CZAQUh3mBpH3AdEtcTH-=tdMdqL-SV+4=zcstVQEaQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <CAOMZO5B55NzBpZscqQECt=2nUQatnU7s2Oc8YLkxFa-dbaB=bA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Fabio,
-
-On 19/07/17 10:37, Fabio Estevam wrote:
-> Hi Greg,
+On 07/19/2017 03:42 AM, Fabio Estevam wrote:
+> Hi Vladimir,
 > 
-> On Tue, Jul 11, 2017 at 1:22 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->> Document the "<0>" notation for specifying use of a native chip-select
->> in the "cs-gpios" tag of an SPI device in devicetree. This isn't unique
->> to the spi-imx driver, but this clearly spells out that you can use it
->> with this driver.
->>
->> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> On Tue, Jul 18, 2017 at 9:39 PM, Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org> wrote:
 > 
-> Whic SoC did you use to test the native chip-select?
+>> FWIW I tested on DT-only i.MX31, the change works acceptable.
 > 
-> I remember that some old SoCs (mx27/mx31) used to have issues with
-> native chip-select.
+> MX31 has an issue with native chip select as far as I remember. Please
+> check DSPhl22960 from the chip errata:
+> http://www.nxp.com/docs/en/errata/MCIMX31CE.pdf
 
-I tested on an iMX253. I have a board with a Silicon Labs 32260 SLIC
-hooked up to an SPI interface on the 253 and I need the native chip
-select timing for it.
+Oh, it's unpleasant, I didn't know or experience the issue, thank you
+for information.
 
-Regards
-Greg
+I can definitely tell that
 
+a) my hardware (Logitech i.MX31 Litekit) does not allow to use GPIOs
+instead of native chip selects for two SPI devices on board:
+  Atmel AT93C66A EEPROM on CSPI1 pads selected by CS2,
+  Freescale MC13783 PMIC on CSPI2 pads selected by CS0.
 
+There is no option to mux CSPI1_SS2 or CSPI2_SS0 pad to GPIOs, so some
+kind of native chip select support is needed for legacy hardware, even
+if it is exposed to the errata item,
 
+b) MC13783 PMIC on CS0 works fine with Greg's change,
+
+c) actually there is no AT93C66A driver for better testing, but I do
+experience issues with the native CS2, however as I said in another
+email it is not related to Greg's change.
+
+By the way I'm going to unrestrict DMA support on i.MX31, due to my
+loose tests (only to/from MC13783) DMA transfers seem to work properly.
+
+--
+With best wishes,
+Vladimir
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

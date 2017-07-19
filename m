@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra20-sflash: explicitly request exclusive reset control" to the spi tree
-Date: Wed, 19 Jul 2017 17:08:35 +0100
-Message-ID: <E1dXrWd-0001HT-W4@debutante>
-References: <20170719152646.25903-81-p.zabel@pengutronix.de>
+Subject: Applied "spi: tegra20-slink: explicitly request exclusive reset control" to the spi tree
+Date: Wed, 19 Jul 2017 17:08:42 +0100
+Message-ID: <E1dXrWk-0001Jn-Ni@debutante>
+References: <20170719152646.25903-79-p.zabel@pengutronix.de>
 Cc: Laxman Dewangan <ldewangan@nvidia.com>,
         Mark Brown <broonie@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -17,13 +17,13 @@ Cc: Laxman Dewangan <ldewangan@nvidia.com>,
         linux-spi@vger.kernel.org
 To: Philipp Zabel <p.zabel@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170719152646.25903-81-p.zabel@pengutronix.de>
+In-Reply-To: <20170719152646.25903-79-p.zabel@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra20-sflash: explicitly request exclusive reset control
+   spi: tegra20-slink: explicitly request exclusive reset control
 
 has been applied to the spi tree at
 
@@ -48,10 +48,10 @@ to this mail.
 Thanks,
 Mark
 
->From e60dfe0782f251bb529f233e259dffdc8d786624 Mon Sep 17 00:00:00 2001
+>From 73b32756cec3128882165bd845956fe467a23ad4 Mon Sep 17 00:00:00 2001
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 19 Jul 2017 17:26:24 +0200
-Subject: [PATCH] spi: tegra20-sflash: explicitly request exclusive reset
+Date: Wed, 19 Jul 2017 17:26:22 +0200
+Subject: [PATCH] spi: tegra20-slink: explicitly request exclusive reset
  control
 
 Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
@@ -71,21 +71,21 @@ Cc: linux-tegra@vger.kernel.org
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 2 +-
+ drivers/spi/spi-tegra20-slink.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 2c797ee2664d..22893a7e0aa0 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -485,7 +485,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 0c06ce424210..3e12d5f87ee4 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1081,7 +1081,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
  		goto exit_free_irq;
  	}
  
--	tsd->rst = devm_reset_control_get(&pdev->dev, "spi");
-+	tsd->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
- 	if (IS_ERR(tsd->rst)) {
+-	tspi->rst = devm_reset_control_get(&pdev->dev, "spi");
++	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->rst)) {
  		dev_err(&pdev->dev, "can not get reset\n");
- 		ret = PTR_ERR(tsd->rst);
+ 		ret = PTR_ERR(tspi->rst);
 -- 
 2.13.2

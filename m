@@ -1,127 +1,68 @@
-From: Rob Herring <robh@kernel.org>
-Subject: [PATCH] spi: Convert to using %pOF instead of full_name
-Date: Tue, 18 Jul 2017 16:43:31 -0500
-Message-ID: <20170718214339.7774-51-robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCHv3 2/2] spi: imx: document use of native chip-selects in
+ devicetree
+Date: Wed, 19 Jul 2017 03:32:41 +0300
+Message-ID: <c985824e-0a84-33ec-4960-6b84b3de8653@mleia.com>
+References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
+ <1499746932-14850-3-git-send-email-gerg@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1499746932-14850-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Now that we have a custom printf format specifier, convert users of
-full_name to use %pOF instead. This is preparation to remove storing
-of the full path string for each node.
+Hello Greg,
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
----
- drivers/spi/spi-orion.c |  4 ++--
- drivers/spi/spi.c       | 27 +++++++++++----------------
- 2 files changed, 13 insertions(+), 18 deletions(-)
+On 07/11/2017 07:22 AM, Greg Ungerer wrote:
+> Document the "<0>" notation for specifying use of a native chip-select
+> in the "cs-gpios" tag of an SPI device in devicetree. This isn't unique
+> to the spi-imx driver, but this clearly spells out that you can use it
+> with this driver.
+> 
+> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> index 31b5b21..cf616ea 100644
+> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> @@ -12,6 +12,7 @@ Required properties:
+>  - reg : Offset and length of the register set for the device
+>  - interrupts : Should contain CSPI/eCSPI interrupt
+>  - cs-gpios : Specifies the gpio pins to be used for chipselects.
+> +	Specify use of native chipselects with "<0>" in place of a gpio.
+>  - clocks : Clock specifiers for both ipg and per clocks.
+>  - clock-names : Clock names should include both "ipg" and "per"
+>  See the clock consumer binding,
+> @@ -38,7 +39,8 @@ ecspi@70010000 {
+>  	reg = <0x70010000 0x4000>;
+>  	interrupts = <36>;
+>  	cs-gpios = <&gpio3 24 0>, /* GPIO3_24 */
+> -		   <&gpio3 25 0>; /* GPIO3_25 */
+> +		   <&gpio3 25 0>, /* GPIO3_25 */
+> +		   <0>;           /* Native chip select */
+>  	dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
+>  	dma-names = "rx", "tx";
+>  	fsl,spi-rdy-drctl = <1>;
+> 
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 28fc9f161b9d..4b6dd73b80da 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -669,8 +669,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		status = of_property_read_u32(np, "reg", &cs);
- 		if (status) {
- 			dev_err(&pdev->dev,
--				"%s has no valid 'reg' property (%d)\n",
--				np->full_name, status);
-+				"%pOF has no valid 'reg' property (%d)\n",
-+				np, status);
- 			status = 0;
- 			continue;
- 		}
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4fcbb0aa71d3..0725c78b0de6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1583,8 +1583,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+Adding Rob to Cc.
 
- 	if (spi_controller_is_slave(ctlr)) {
- 		if (strcmp(nc->name, "slave")) {
--			dev_err(&ctlr->dev, "%s is not called 'slave'\n",
--				nc->full_name);
-+			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
-+				nc);
- 			return -EINVAL;
- 		}
- 		return 0;
-@@ -1593,8 +1593,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 	/* Device address */
- 	rc = of_property_read_u32(nc, "reg", &value);
- 	if (rc) {
--		dev_err(&ctlr->dev, "%s has no valid 'reg' property (%d)\n",
--			nc->full_name, rc);
-+		dev_err(&ctlr->dev, "%pOF has no valid 'reg' property (%d)\n",
-+			nc, rc);
- 		return rc;
- 	}
- 	spi->chip_select = value;
-@@ -1603,8 +1603,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
- 	if (rc) {
- 		dev_err(&ctlr->dev,
--			"%s has no valid 'spi-max-frequency' property (%d)\n",
--			nc->full_name, rc);
-+			"%pOF has no valid 'spi-max-frequency' property (%d)\n", nc, rc);
- 		return rc;
- 	}
- 	spi->max_speed_hz = value;
-@@ -1621,8 +1620,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
- 	/* Alloc an spi_device */
- 	spi = spi_alloc_device(ctlr);
- 	if (!spi) {
--		dev_err(&ctlr->dev, "spi_device alloc error for %s\n",
--			nc->full_name);
-+		dev_err(&ctlr->dev, "spi_device alloc error for %pOF\n", nc);
- 		rc = -ENOMEM;
- 		goto err_out;
- 	}
-@@ -1631,8 +1629,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
- 	rc = of_modalias_node(nc, spi->modalias,
- 				sizeof(spi->modalias));
- 	if (rc < 0) {
--		dev_err(&ctlr->dev, "cannot find modalias for %s\n",
--			nc->full_name);
-+		dev_err(&ctlr->dev, "cannot find modalias for %pOF\n", nc);
- 		goto err_out;
- 	}
+Reviewed-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
 
-@@ -1647,8 +1644,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
- 	/* Register the new device */
- 	rc = spi_add_device(spi);
- 	if (rc) {
--		dev_err(&ctlr->dev, "spi_device register error %s\n",
--			nc->full_name);
-+		dev_err(&ctlr->dev, "spi_device register error %pOF\n", nc);
- 		goto err_of_node_put;
- 	}
+Rob, if you find the change acceptable, can you ack it?
 
-@@ -1682,8 +1678,7 @@ static void of_register_spi_devices(struct spi_controller *ctlr)
- 		spi = of_register_spi_device(ctlr, nc);
- 		if (IS_ERR(spi)) {
- 			dev_warn(&ctlr->dev,
--				 "Failed to create SPI device for %s\n",
--				 nc->full_name);
-+				 "Failed to create SPI device for %pOF\n", nc);
- 			of_node_clear_flag(nc, OF_POPULATED);
- 		}
- 	}
-@@ -3311,8 +3306,8 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		put_device(&ctlr->dev);
-
- 		if (IS_ERR(spi)) {
--			pr_err("%s: failed to create for '%s'\n",
--					__func__, rd->dn->full_name);
-+			pr_err("%s: failed to create for '%pOF'\n",
-+					__func__, rd->dn);
- 			of_node_clear_flag(rd->dn, OF_POPULATED);
- 			return notifier_from_errno(PTR_ERR(spi));
- 		}
 --
-2.11.0
+With best wishes,
+Vladimir
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

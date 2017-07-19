@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra20-slink: explicitly request exclusive reset control" to the spi tree
-Date: Wed, 19 Jul 2017 17:08:42 +0100
-Message-ID: <E1dXrWk-0001Jn-Ni@debutante>
-References: <20170719152646.25903-79-p.zabel@pengutronix.de>
+Subject: Applied "spi: tegra114: explicitly request exclusive reset control" to the spi tree
+Date: Wed, 19 Jul 2017 17:08:39 +0100
+Message-ID: <E1dXrWh-0001Id-Mn@debutante>
+References: <20170719152646.25903-80-p.zabel@pengutronix.de>
 Cc: Laxman Dewangan <ldewangan@nvidia.com>,
         Mark Brown <broonie@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -17,13 +17,13 @@ Cc: Laxman Dewangan <ldewangan@nvidia.com>,
         linux-spi@vger.kernel.org
 To: Philipp Zabel <p.zabel@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170719152646.25903-79-p.zabel@pengutronix.de>
+In-Reply-To: <20170719152646.25903-80-p.zabel@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra20-slink: explicitly request exclusive reset control
+   spi: tegra114: explicitly request exclusive reset control
 
 has been applied to the spi tree at
 
@@ -48,11 +48,10 @@ to this mail.
 Thanks,
 Mark
 
->From 73b32756cec3128882165bd845956fe467a23ad4 Mon Sep 17 00:00:00 2001
+>From d006edb4202fc8160e7b5ba10c264b153e1f3e2d Mon Sep 17 00:00:00 2001
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed, 19 Jul 2017 17:26:22 +0200
-Subject: [PATCH] spi: tegra20-slink: explicitly request exclusive reset
- control
+Date: Wed, 19 Jul 2017 17:26:23 +0200
+Subject: [PATCH] spi: tegra114: explicitly request exclusive reset control
 
 Commit a53e35db70d1 ("reset: Ensure drivers are explicit when requesting
 reset lines") started to transition the reset control request API calls
@@ -71,14 +70,14 @@ Cc: linux-tegra@vger.kernel.org
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 2 +-
+ drivers/spi/spi-tegra114.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 0c06ce424210..3e12d5f87ee4 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1081,7 +1081,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 08012ae5aa66..44550182a4a3 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1083,7 +1083,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
  		goto exit_free_irq;
  	}
  

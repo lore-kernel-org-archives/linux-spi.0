@@ -1,135 +1,48 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH] spi: document broadcom qspi driver as broken
-Date: Sat, 22 Jul 2017 00:00:20 +0200
-Message-ID: <20170721220142.3400093-1-arnd@arndb.de>
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+Date: Thu, 20 Jul 2017 22:32:49 +0200
+Message-ID: <1687646.TMvigZNUOP__23329.3554898866$1500745025$gmane$org@phil>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Prashant Gaikwad <pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+ Peter Chen <Peter.Chen-3arQi8VN3Tc@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+ dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, Marc Dietrich <marvin24-Mmb7MZpHnFY@public.gmane.org>,
+ Rakesh Iyer <riyer-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Peter Meerwald-Stadler <pmeerw-jW+XmwGofnusTnJN9+BGXg@public.gmane.org>,
+ linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wim Van Sebroeck <wim-IQzOog9fTRqzQB+pC5nmwQ@public.gmane.org>,
+ Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, Xinliang Liu <z.liuxinliang-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org>,
+ Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Alan Stern <stern-nwvwT67g6+6dFdvTe/nMLpVzexx5G7lz@public.gmane.org>,
+ Jiri Slaby <jslaby-IBi9RG/b67k@public.gmane.org>, Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+ Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, Ohad Ben-Cohen <ohad-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org>,
+ linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+ Vincent Abriou <vincent.abriou-qxv4g6HH51o@public.gmane.org>, Bin Liu <b-liu-l0cyMroinI0@public.gmane.org>,
+ Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+To: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <nouveau-bounces-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>
+In-Reply-To: <20170719152646.25903-1-p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/nouveau>,
+ <mailto:nouveau-request-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/nouveau>
+List-Post: <mailto:nouveau-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>
+List-Help: <mailto:nouveau-request-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/nouveau>,
+ <mailto:nouveau-request-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org?subject=subscribe>
+Errors-To: nouveau-bounces-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org
+Sender: "Nouveau" <nouveau-bounces-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
-The newly broadcom qspi driver in drivers/spi produces a build
-warning when CONFIG_MTD is disabled:
-
-include/linux/mtd/cfi.h:76:2: #warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support can work. [-Werror=cpp]
-
-I had suggested a workaround earlier, but Cyrille Pitchen explained
-that actually the broadcom qspi is broken here and needs to be
-fixed, see the lenghthy reply in patchwork.
-
-As nothing has happened on that driver, this tries to at least
-avoid the build failure, by marking the driver as broken unless
-CONFIG_MTD is enabled. Also, I add a WARN_ON_ONCE runtime
-that triggers when the spi-nor framework and the driver disagree
-about the command opcode, which was one of several issues that
-Cyrille pointed out.
-
-My patch does not attempt to fix any of the actual bugs though,
-it just tries to avoid the build error while highlighting the
-problems. Ideally, someone would step up to create a tested
-fix. If that doesn't happen, please merge my version instead
-as a workaround.
-
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Link: https://patchwork.kernel.org/patch/9334097/
-Link: https://patchwork.kernel.org/patch/9624585/
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Cc: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
----
----
- drivers/spi/Kconfig        |  1 +
- drivers/spi/spi-bcm-qspi.c | 23 ++++++++++++-----------
- 2 files changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9b31351fe429..c7a80f9d6dd0 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -164,6 +164,7 @@ config SPI_BCM_QSPI
- 	tristate "Broadcom BSPI and MSPI controller support"
- 	depends on ARCH_BRCMSTB || ARCH_BCM || ARCH_BCM_IPROC || \
- 			BMIPS_GENERIC || COMPILE_TEST
-+	depends on BROKEN || MTD
- 	default ARCH_BCM_IPROC
- 	help
- 	  Enables support for the Broadcom SPI flash and MSPI controller.
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index b19722ba908c..a388a3873552 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -349,12 +349,13 @@ static void bcm_qspi_bspi_set_xfer_params(struct bcm_qspi *qspi, u8 cmd_byte,
- 	bcm_qspi_write(qspi, BSPI, BSPI_FLEX_MODE_ENABLE, flex_mode);
- }
- 
--static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
--				       int addrlen, int hp)
-+static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi,
-+				       struct spi_flash_read_message *msg,
-+				       int width, int addrlen, int hp)
- {
- 	int bpc = 0, bpp = 0;
- 	u8 command = SPINOR_OP_READ_FAST;
--	int flex_mode = 1, rv = 0;
-+	int flex_mode = 1;
- 	bool spans_4byte = false;
- 
- 	dev_dbg(&qspi->pdev->dev, "set flex mode w %x addrlen %x hp %d\n",
-@@ -405,15 +406,14 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
- 		}
- 		break;
- 	default:
--		rv = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
- 
--	if (rv == 0)
--		bcm_qspi_bspi_set_xfer_params(qspi, command, bpp, bpc,
--					      flex_mode);
-+	WARN_ON_ONCE(command != msg->read_opcode);
- 
--	return rv;
-+	bcm_qspi_bspi_set_xfer_params(qspi, command, bpp, bpc,
-+					      flex_mode);
-+	return 0;
- }
- 
- static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi, int width,
-@@ -461,6 +461,7 @@ static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi, int width,
- }
- 
- static int bcm_qspi_bspi_set_mode(struct bcm_qspi *qspi,
-+				  struct spi_flash_read_message *msg,
- 				  int width, int addrlen, int hp)
- {
- 	int error = 0;
-@@ -491,7 +492,7 @@ static int bcm_qspi_bspi_set_mode(struct bcm_qspi *qspi,
- 	}
- 
- 	if (qspi->xfer_mode.flex_mode)
--		error = bcm_qspi_bspi_set_flex_mode(qspi, width, addrlen, hp);
-+		error = bcm_qspi_bspi_set_flex_mode(qspi, msg, width, addrlen, hp);
- 
- 	if (error) {
- 		dev_warn(&qspi->pdev->dev,
-@@ -1012,7 +1013,7 @@ static int bcm_qspi_flash_read(struct spi_device *spi,
- 
- 	io_width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
- 	addrlen = msg->addr_width;
--	ret = bcm_qspi_bspi_set_mode(qspi, io_width, addrlen, -1);
-+	ret = bcm_qspi_bspi_set_mode(qspi, msg, io_width, addrlen, -1);
- 
- 	if (!ret)
- 		ret = bcm_qspi_bspi_flash_read(spi, msg);
--- 
-2.9.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SGksCgo+ICAgY3J5cHRvOiByb2NrY2hpcDogZXhwbGljaXRseSByZXF1ZXN0IGV4Y2x1c2l2ZSBy
+ZXNldCBjb250cm9sCj4gICBpaW86IGFkYzogcm9ja2NoaXBfc2FyYWRjOiBleHBsaWNpdGx5IHJl
+cXVlc3QgZXhjbHVzaXZlIHJlc2V0IGNvbnRyb2wKPiAgIFBDSTogcm9ja2NoaXA6IGV4cGxpY2l0
+bHkgcmVxdWVzdCBleGNsdXNpdmUgcmVzZXQgY29udHJvbAo+ICAgcGh5OiByb2NrY2hpcC1wY2ll
+OiBleHBsaWNpdGx5IHJlcXVlc3QgZXhjbHVzaXZlIHJlc2V0IGNvbnRyb2wKPiAgIHBoeTogcm9j
+a2NoaXAtdHlwZWM6IGV4cGxpY2l0bHkgcmVxdWVzdCBleGNsdXNpdmUgcmVzZXQgY29udHJvbAo+
+ICAgcGh5OiByb2NrY2hpcC11c2I6IGV4cGxpY2l0bHkgcmVxdWVzdCBleGNsdXNpdmUgcmVzZXQg
+Y29udHJvbAo+ICAgdGhlcm1hbDogcm9ja2NoaXA6IGV4cGxpY2l0bHkgcmVxdWVzdCBleGNsdXNp
+dmUgcmVzZXQgY29udHJvbAoKZm9yIHRoZSBkcml2ZXItcmVsYXRlZCBSb2NrY2hpcCBjaGFuZ2Vz
+CgpBY2tlZC1ieTogSGVpa28gU3R1ZWJuZXIgPGhlaWtvQHNudGVjaC5kZT4KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTm91dmVhdSBtYWlsaW5nIGxpc3QK
+Tm91dmVhdUBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9ub3V2ZWF1Cg==

@@ -1,93 +1,128 @@
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
-Date: Thu, 20 Jul 2017 14:55:12 +0200
-Message-ID: <1500555312.2354.75.camel@pengutronix.de>
-References: <20170719152646.25903-1-p.zabel@pengutronix.de>
-         <20170719211515.46a1196c@windsurf>
-         <1500543415.2354.37.camel@pengutronix.de>
-         <20170720123640.43c2ce01@windsurf>
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCHv3 1/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Thu, 20 Jul 2017 23:00:49 +1000
+Message-ID: <2892f819-f1a2-b68d-be01-e8ac7f4b4222@linux-m68k.org>
+References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
+ <1499746932-14850-2-git-send-email-gerg@linux-m68k.org>
+ <CAOMZO5Dq8mAULR+L6HJUMc6f=-d9QPZmn92+jzwKLuGYDA_AaA@mail.gmail.com>
+ <20170720063449.qvi3s7faapcncoqm@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Peter Chen <Peter.Chen@nxp.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        dri-devel@lists.freedesktop.org, Marc Dietrich <marvin24@gmx.de>,
-        Rakesh Iyer <riyer@nvidia.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-clk@vger.kernel.org, Wim Van Sebroeck <wim@iguana.be>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Xinliang Liu <z.liuxinliang@hisilicon.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Jiri Slaby <jslaby@suse.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ohad Ben-Cohen <ohad@wizery.com>, linux-pm@vger.kernel.org,
-        Thomas Gleixner <tglx
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <20170720123640.43c2ce01@windsurf>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170720063449.qvi3s7faapcncoqm-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Thomas,
+Hi Oleksij,
 
-On Thu, 2017-07-20 at 12:36 +0200, Thomas Petazzoni wrote:
-> Hello,
+On 20/07/17 16:34, Oleksij Rempel wrote:
+> Hi Greg,
 > 
-> On Thu, 20 Jul 2017 11:36:55 +0200, Philipp Zabel wrote:
+> On Tue, Jul 18, 2017 at 09:53:58PM -0300, Fabio Estevam wrote:
+>> Adding Pengutronix folks on Cc.
+>>
+>> On Tue, Jul 11, 2017 at 1:22 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+>>> The commonly used mechanism of specifying the hardware or native
+>>> chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+>>> does not result in the native chip-select being configured for use.
+>>> So external SPI devices that require use of the native chip-select
+>>> will not work.
+>>>
+>>> You can successfully specify native chip-selects if using a platform
+>>> setup by specifying the cs-gpio as negative offset by 32. And that
+>>> works correctly. You cannot use the same method in devicetree.
+>>>
+>>> The logic in the spi-imx.c driver during probe uses core spi function
+>>> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+>>> For valid GPIO values that will be recorded for use, all other entries in
+>>> the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+>>> set to -ENOENT in the cs_gpios list.
+>>>
+>>> When the SPI device registers are setup the code will use the GPIO
+>>> listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+>>> is less then 0 then it is intended to be for a native chip-select, and
+>>> its cs_gpio value is added to 32 to get the chipselect number to use.
+>>> Problem is that with devicetree this can only ever be -ENOENT (which
+>>> is -2), and that alone results in an invalid chip-select number. But also
+>>> doesn't allow selection of the native chip-select at all.
+>>>
+>>> To fix, if the cs_gpio specified for this spi device is not a
+>>> valid GPIO then use the "chip_select" (that is the native chip-select
+>>> number) for hardware setup.
+>>>
+>>> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>>> ---
+>>>   drivers/spi/spi-imx.c | 8 ++++----
+>>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>>> index b402530..f4fe66c 100644
+>>> --- a/drivers/spi/spi-imx.c
+>>> +++ b/drivers/spi/spi-imx.c
+>>> @@ -524,8 +524,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+>>>                  reg |= MX31_CSPICTRL_POL;
+>>>          if (spi->mode & SPI_CS_HIGH)
+>>>                  reg |= MX31_CSPICTRL_SSPOL;
+>>> -       if (spi->cs_gpio < 0)
+>>> -               reg |= (spi->cs_gpio + 32) <<
+>>> +       if (!gpio_is_valid(spi->cs_gpio))
+>>> +               reg |= (spi->chip_select) <<
+>>>                          (is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+>>>                                                    MX31_CSPICTRL_CS_SHIFT);
+>>>
+>>> @@ -616,8 +616,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+>>>                  reg |= MX21_CSPICTRL_POL;
+>>>          if (spi->mode & SPI_CS_HIGH)
+>>>                  reg |= MX21_CSPICTRL_SSPOL;
+>>> -       if (spi->cs_gpio < 0)
+>>> -               reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
+>>> +       if (!gpio_is_valid(spi->cs_gpio))
+>>> +               reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+>>>
+>>>          writel(reg, spi_imx->base + MXC_CSPICTRL);
+>>>
 > 
-> > > I don't know if it has been discussed in the past, so forgive me if it
-> > > has been. Have you considered adding a "int flags" argument to the
-> > > existing reset_control_get_*() functions, rather than introducing
-> > > separate exclusive variants ?
-> > > 
-> > > Indeed, with a "int flags" argument you could in the future add more
-> > > variants/behaviors without actually multiplying the number of
-> > > functions. Something like the "flags" argument for request_irq() for
-> > > example.  
-> > 
-> > I can't find the discussion right now, but I remember we had talked
-> > about this in the past.
-> > Behind the scenes, all the inline API functions already call common
-> > entry points with flags (well, currently separate bool parameters for
-> > shared and optional).
-> > One reason against exposing those as an int flags in the user facing API
-> > is the possibility to accidentally provide a wrong value.
+> hm... do I see this correctly, all native chip_selects should
+> be registered before gpio based CS?
+
+I don't follow. The "<0>" must be in the position in the list where
+you want to use the native chip select. You can't arbitrarily change
+the order.
+
+
+> For example like this?
+> cs-gpios = <0>, <&gpio1 1 0>, <&gpio1 2 0>;
 > 
-> This is a quite strange argument. You could also accidentally use the
-> wrong variant of the function, just like you could use the wrong flag.
+> Looks like we don't have any sanity checks for this kind of
+> configuration:
+> cs-gpios = <&gpio1 1 0>, <&gpio1 2 0>, <0>;
 
-You can't accidentally use no flag at all or a completely bogus value
-with the "plethora of inline functions" variant.
+The chip_select is sanity checked in spi_add_device().
 
-> Once again, the next time you have another parameter for those reset
-> functions, beyond the exclusive/shared variant, you will multiply again
-> by two the number of functions ? You already have the  exclusive/shared
-> and optional/mandatory variants, so 4 variants. When you'll add a new
-> parameter, you'll have 8 variants. Doesn't seem really good.
 
-I'd rather avoid adding more variants, if possible. The complexity
-increases regardless of whether the API is expressed as a bunch of
-functions or as a single function with a bunch of flags.
+> We may shift some wired numbers here:
+> reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
 
-> What about reset_control_get(struct device *, const char *, int flags)
-> to replace all those variants ?
+I am not sure I see how that can be the case?
 
-While I like how this looks, unfortunately (devm_)reset_control_get
-already exists without the flags, so we can't change to that with a
-gentle transition.
+Regards
+Greg
 
-regards
-Philipp
+
+
+> this should be reflected in the documentation too:
+> Documentation/devicetree/bindings/spi/spi-bus.txt
+> 
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

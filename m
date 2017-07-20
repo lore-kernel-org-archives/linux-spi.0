@@ -1,128 +1,67 @@
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCHv3 1/2] spi: imx: fix use of native chip-selects with
- devicetree
-Date: Thu, 20 Jul 2017 23:00:49 +1000
-Message-ID: <2892f819-f1a2-b68d-be01-e8ac7f4b4222@linux-m68k.org>
-References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
- <1499746932-14850-2-git-send-email-gerg@linux-m68k.org>
- <CAOMZO5Dq8mAULR+L6HJUMc6f=-d9QPZmn92+jzwKLuGYDA_AaA@mail.gmail.com>
- <20170720063449.qvi3s7faapcncoqm@pengutronix.de>
+From: Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+Subject: Re: [PATCH] powerpc/asm/cacheflush: Cleanup cacheflush function params
+Date: Thu, 20 Jul 2017 23:01:56 +1000
+Message-ID: <87h8y7gt2z.fsf@concordia.ellerman.id.au>
+References: <20170720062850.2195-1-matthew.brown.dev@gmail.com> <87mv7zgwpl.fsf@concordia.ellerman.id.au> <CAMuHMdXU-R8kBs_xp7XDK0pnC5fakpghchuEPD8jtEcHLmgyHg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170720063449.qvi3s7faapcncoqm-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Matt Brown <matthew.brown.dev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "linuxppc-dev\@lists.ozlabs.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        "linux-ide\@vger.kernel.org" <linux-ide-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        DRI Development <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
+        "adi-buildroot-devel\@lists.sourceforge.net"
+        <adi-buildroot-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-arm-kernel\@lists.infradead.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-serial\@vger.kernel.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        USB list <linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdXU-R8kBs_xp7XDK0pnC5fakpghchuEPD8jtEcHLmgyHg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Oleksij,
+Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> writes:
 
-On 20/07/17 16:34, Oleksij Rempel wrote:
-> Hi Greg,
-> 
-> On Tue, Jul 18, 2017 at 09:53:58PM -0300, Fabio Estevam wrote:
->> Adding Pengutronix folks on Cc.
+> On Thu, Jul 20, 2017 at 1:43 PM, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org> wrote:
+>> Matt Brown <matthew.brown.dev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> writes:
+>>> The cacheflush prototypes currently use start and stop values and each
+>>> call requires typecasting the address to an unsigned long.
+>>> This patch changes the cacheflush prototypes to follow the x86 style of
+>>> using a base and size values, with base being a void pointer.
+>>>
+>>> All callers of the cacheflush functions, including drivers, have been
+>>> modified to conform to the new prototypes.
+>>>
+>>> The 64 bit cacheflush functions which were implemented in assembly code
+>>> (flush_dcache_range, flush_inval_dcache_range) have been translated into
+>>> C for readability and coherence.
+>
+>>> --- a/arch/powerpc/include/asm/cacheflush.h
+>>> +++ b/arch/powerpc/include/asm/cacheflush.h
+>>> @@ -51,13 +51,13 @@ static inline void __flush_dcache_icache_phys(unsigned long physaddr)
+>>>   * Write any modified data cache blocks out to memory and invalidate them.
+>>>   * Does not invalidate the corresponding instruction cache blocks.
+>>>   */
+>>> -static inline void flush_dcache_range(unsigned long start, unsigned long stop)
+>>> +static inline void flush_dcache_range(void *start, unsigned long size)
+>>>  {
+>>> -     void *addr = (void *)(start & ~(L1_CACHE_BYTES - 1));
+>>> -     unsigned long size = stop - (unsigned long)addr + (L1_CACHE_BYTES - 1);
+>>> +     void *addr = (void *)((u32)start & ~(L1_CACHE_BYTES - 1));
 >>
->> On Tue, Jul 11, 2017 at 1:22 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->>> The commonly used mechanism of specifying the hardware or native
->>> chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
->>> does not result in the native chip-select being configured for use.
->>> So external SPI devices that require use of the native chip-select
->>> will not work.
->>>
->>> You can successfully specify native chip-selects if using a platform
->>> setup by specifying the cs-gpio as negative offset by 32. And that
->>> works correctly. You cannot use the same method in devicetree.
->>>
->>> The logic in the spi-imx.c driver during probe uses core spi function
->>> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
->>> For valid GPIO values that will be recorded for use, all other entries in
->>> the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
->>> set to -ENOENT in the cs_gpios list.
->>>
->>> When the SPI device registers are setup the code will use the GPIO
->>> listed in the cs_gpios list for the desired chip-select. If the cs_gpio
->>> is less then 0 then it is intended to be for a native chip-select, and
->>> its cs_gpio value is added to 32 to get the chipselect number to use.
->>> Problem is that with devicetree this can only ever be -ENOENT (which
->>> is -2), and that alone results in an invalid chip-select number. But also
->>> doesn't allow selection of the native chip-select at all.
->>>
->>> To fix, if the cs_gpio specified for this spi device is not a
->>> valid GPIO then use the "chip_select" (that is the native chip-select
->>> number) for hardware setup.
->>>
->>> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->>> ---
->>>   drivers/spi/spi-imx.c | 8 ++++----
->>>   1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->>> index b402530..f4fe66c 100644
->>> --- a/drivers/spi/spi-imx.c
->>> +++ b/drivers/spi/spi-imx.c
->>> @@ -524,8 +524,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
->>>                  reg |= MX31_CSPICTRL_POL;
->>>          if (spi->mode & SPI_CS_HIGH)
->>>                  reg |= MX31_CSPICTRL_SSPOL;
->>> -       if (spi->cs_gpio < 0)
->>> -               reg |= (spi->cs_gpio + 32) <<
->>> +       if (!gpio_is_valid(spi->cs_gpio))
->>> +               reg |= (spi->chip_select) <<
->>>                          (is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
->>>                                                    MX31_CSPICTRL_CS_SHIFT);
->>>
->>> @@ -616,8 +616,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
->>>                  reg |= MX21_CSPICTRL_POL;
->>>          if (spi->mode & SPI_CS_HIGH)
->>>                  reg |= MX21_CSPICTRL_SSPOL;
->>> -       if (spi->cs_gpio < 0)
->>> -               reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
->>> +       if (!gpio_is_valid(spi->cs_gpio))
->>> +               reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
->>>
->>>          writel(reg, spi_imx->base + MXC_CSPICTRL);
->>>
-> 
-> hm... do I see this correctly, all native chip_selects should
-> be registered before gpio based CS?
+>> unsigned long would be nicer than u32.
+>
+> Indeed. That would make this work on ppc64, too.
+> After which ppc64 has an identical copy (u64 = unsigned long on ppc64) below?
 
-I don't follow. The "<0>" must be in the position in the list where
-you want to use the native chip select. You can't arbitrarily change
-the order.
+That was Matt's homework to notice that ;)
 
-
-> For example like this?
-> cs-gpios = <0>, <&gpio1 1 0>, <&gpio1 2 0>;
-> 
-> Looks like we don't have any sanity checks for this kind of
-> configuration:
-> cs-gpios = <&gpio1 1 0>, <&gpio1 2 0>, <0>;
-
-The chip_select is sanity checked in spi_add_device().
-
-
-> We may shift some wired numbers here:
-> reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
-
-I am not sure I see how that can be the case?
-
-Regards
-Greg
-
-
-
-> this should be reflected in the documentation too:
-> Documentation/devicetree/bindings/spi/spi-bus.txt
-> 
-
+cheers
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe linux-usb" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

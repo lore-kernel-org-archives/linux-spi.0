@@ -1,67 +1,66 @@
-From: Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
-Subject: Re: [PATCH] powerpc/asm/cacheflush: Cleanup cacheflush function params
-Date: Thu, 20 Jul 2017 23:01:56 +1000
-Message-ID: <87h8y7gt2z.fsf@concordia.ellerman.id.au>
-References: <20170720062850.2195-1-matthew.brown.dev@gmail.com> <87mv7zgwpl.fsf@concordia.ellerman.id.au> <CAMuHMdXU-R8kBs_xp7XDK0pnC5fakpghchuEPD8jtEcHLmgyHg@mail.gmail.com>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v3 2/6] ACPI / x86: Consolidate Apple DMI checks
+Date: Thu, 20 Jul 2017 16:03:53 +0200
+Message-ID: <20170720140353.GA4761@wunner.de>
+References: <cover.1499983092.git.lukas@wunner.de>
+ <a0c795358306954294e7fe31ec974f3c51b56f4c.1499983092.git.lukas@wunner.de>
+ <14565365.Cyeb0SINmK@aspire.rjw.lan>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Matt Brown <matthew.brown.dev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "linuxppc-dev\@lists.ozlabs.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        "linux-ide\@vger.kernel.org" <linux-ide-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        DRI Development <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
-        "adi-buildroot-devel\@lists.sourceforge.net"
-        <adi-buildroot-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-arm-kernel\@lists.infradead.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-serial\@vger.kernel.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        USB list <linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdXU-R8kBs_xp7XDK0pnC5fakpghchuEPD8jtEcHLmgyHg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Ronald Tschalaer <ronald@innovation.ch>,
+        Federico Lorenzi <florenzi@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lv Zheng <lv.zheng@intel.com>,
+        Leif Liddy <leif.liddy@gmail.com>,
+        Daniel Roschka <danielroschka@phoenitydawn.de>,
+        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <14565365.Cyeb0SINmK@aspire.rjw.lan>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> writes:
+On Sat, Jul 15, 2017 at 12:03:31AM +0200, Rafael J. Wysocki wrote:
+> On Friday, July 14, 2017 12:36:19 AM Lukas Wunner wrote:
+> > --- a/drivers/acpi/osi.c
+> > +++ b/drivers/acpi/osi.c
+> > @@ -258,12 +258,16 @@ bool acpi_osi_is_win8(void)
+> >  EXPORT_SYMBOL(acpi_osi_is_win8);
+> >  
+> >  #ifdef CONFIG_X86
+> > +bool is_apple_system;
+> > +EXPORT_SYMBOL(is_apple_system);
+> 
+> Maybe prepend the name of this variable with acpi_ to indicate that this is
+> ACPI-specific.
 
-> On Thu, Jul 20, 2017 at 1:43 PM, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org> wrote:
->> Matt Brown <matthew.brown.dev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> writes:
->>> The cacheflush prototypes currently use start and stop values and each
->>> call requires typecasting the address to an unsigned long.
->>> This patch changes the cacheflush prototypes to follow the x86 style of
->>> using a base and size values, with base being a void pointer.
->>>
->>> All callers of the cacheflush functions, including drivers, have been
->>> modified to conform to the new prototypes.
->>>
->>> The 64 bit cacheflush functions which were implemented in assembly code
->>> (flush_dcache_range, flush_inval_dcache_range) have been translated into
->>> C for readability and coherence.
->
->>> --- a/arch/powerpc/include/asm/cacheflush.h
->>> +++ b/arch/powerpc/include/asm/cacheflush.h
->>> @@ -51,13 +51,13 @@ static inline void __flush_dcache_icache_phys(unsigned long physaddr)
->>>   * Write any modified data cache blocks out to memory and invalidate them.
->>>   * Does not invalidate the corresponding instruction cache blocks.
->>>   */
->>> -static inline void flush_dcache_range(unsigned long start, unsigned long stop)
->>> +static inline void flush_dcache_range(void *start, unsigned long size)
->>>  {
->>> -     void *addr = (void *)(start & ~(L1_CACHE_BYTES - 1));
->>> -     unsigned long size = stop - (unsigned long)addr + (L1_CACHE_BYTES - 1);
->>> +     void *addr = (void *)((u32)start & ~(L1_CACHE_BYTES - 1));
->>
->> unsigned long would be nicer than u32.
->
-> Indeed. That would make this work on ppc64, too.
-> After which ppc64 has an identical copy (u64 = unsigned long on ppc64) below?
+It's not really ACPI-specific, osi.c just happens to be the best place
+to set the variable because the acpi_osi_dmi_table[] is checked very
+early during boot.  So early in fact, that I could even replace the
+existing Apple DMI check in arch/x86/kernel/early-quirks.c with
+"is_apple_system".
 
-That was Matt's homework to notice that ;)
+These non-ACPI files currently contain an Apple DMI check:
+arch/x86/kernel/early-quirks.c
+drivers/pci/quirks.c (2x)
+drivers/firmware/efi/apple-properties.c
+drivers/thunderbolt/tb.c
+drivers/thunderbolt/icm.c
 
-cheers
---
-To unsubscribe from this list: send the line "unsubscribe linux-usb" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The latter three do not #include <linux/acpi.h> yet.  Somehow it feels
+odd to include that header to check for presence of an Apple system
+because that's not really ACPI-related.
+
+I guess I could introduce a new <linux/apple.h> but I hate the insane
+proliferation of additional files in include/linux/.  I could merge
+the contents of apple_bl.h and apple-gmux.h into that new header to
+reduce the number of files a bit.
+
+Struggling to find a solution that's nice and clean.  Any ideas?
+
+Thanks,
+
+Lukas

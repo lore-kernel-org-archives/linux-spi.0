@@ -1,59 +1,61 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] powerpc/asm/cacheflush: Cleanup cacheflush function params
-Date: Thu, 20 Jul 2017 09:00:41 +0200
-Message-ID: <CAMuHMdVxnqD-90fDH+dqo8iJ94etcLHih27cqdVppi_AbFzbbw@mail.gmail.com>
-References: <20170720062850.2195-1-matthew.brown.dev@gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH v4 01/14] spi: qup: Enable chip select support
+Date: Thu, 20 Jul 2017 09:03:13 +0200
+Message-ID: <CAMuHMdUrHszPkUqWd8y5rhEVERnz1j3UGeO55cSg1K9XX1S9dg@mail.gmail.com>
+References: <1498556731-13087-1-git-send-email-varada@codeaurora.org> <1498556731-13087-2-git-send-email-varada@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: USB list <linux-usb@vger.kernel.org>,
- Linux MMC List <linux-mmc@vger.kernel.org>,
- "adi-buildroot-devel@lists.sourceforge.net"
- <adi-buildroot-devel@lists.sourceforge.net>,
- DRI Development <dri-devel@lists.freedesktop.org>,
- linux-spi <linux-spi@vger.kernel.org>,
- "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
- MTD Maling List <linux-mtd@lists.infradead.org>,
- "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Matt Brown <matthew.brown.dev@gmail.com>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20170720062850.2195-1-matthew.brown.dev@gmail.com>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        David Brown <david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "open list:ARM/QUALCOMM SUPPORT" <linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Sham Muthayyan <smuthayy-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1498556731-13087-2-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBKdWwgMjAsIDIwMTcgYXQgODoyOCBBTSwgTWF0dCBCcm93biA8bWF0dGhldy5icm93
-bi5kZXZAZ21haWwuY29tPiB3cm90ZToKPiBUaGUgY2FjaGVmbHVzaCBwcm90b3R5cGVzIGN1cnJl
-bnRseSB1c2Ugc3RhcnQgYW5kIHN0b3AgdmFsdWVzIGFuZCBlYWNoCj4gY2FsbCByZXF1aXJlcyB0
-eXBlY2FzdGluZyB0aGUgYWRkcmVzcyB0byBhbiB1bnNpZ25lZCBsb25nLgo+IFRoaXMgcGF0Y2gg
-Y2hhbmdlcyB0aGUgY2FjaGVmbHVzaCBwcm90b3R5cGVzIHRvIGZvbGxvdyB0aGUgeDg2IHN0eWxl
-IG9mCj4gdXNpbmcgYSBiYXNlIGFuZCBzaXplIHZhbHVlcywgd2l0aCBiYXNlIGJlaW5nIGEgdm9p
-ZCBwb2ludGVyLgo+Cj4gQWxsIGNhbGxlcnMgb2YgdGhlIGNhY2hlZmx1c2ggZnVuY3Rpb25zLCBp
-bmNsdWRpbmcgZHJpdmVycywgaGF2ZSBiZWVuCj4gbW9kaWZpZWQgdG8gY29uZm9ybSB0byB0aGUg
-bmV3IHByb3RvdHlwZXMuCj4KPiBUaGUgNjQgYml0IGNhY2hlZmx1c2ggZnVuY3Rpb25zIHdoaWNo
-IHdlcmUgaW1wbGVtZW50ZWQgaW4gYXNzZW1ibHkgY29kZQo+IChmbHVzaF9kY2FjaGVfcmFuZ2Us
-IGZsdXNoX2ludmFsX2RjYWNoZV9yYW5nZSkgaGF2ZSBiZWVuIHRyYW5zbGF0ZWQgaW50bwo+IEMg
-Zm9yIHJlYWRhYmlsaXR5IGFuZCBjb2hlcmVuY2UuCj4KPiBTaWduZWQtb2ZmLWJ5OiBNYXR0IEJy
-b3duIDxtYXR0aGV3LmJyb3duLmRldkBnbWFpbC5jb20+Cgo+ICBkcml2ZXJzL3NwaS9zcGktYmZp
-bjV4eC5jICAgICAgICAgICAgICAgICAgICB8IDEwICsrKy0tLQo+ICBkcml2ZXJzL3VzYi9tdXNi
-L2JsYWNrZmluLmMgICAgICAgICAgICAgICAgICB8ICA2ICsrLS0KClRoZXNlIGFyZSB1c2VkIG9u
-IGJsYWNrZmluLCBzbyBjaGFuZ2luZyB0aGVtIHdpdGhvdXQgY2hhbmdpbmcgdGhlIGJsYWNrZmlu
-CmNhY2hlIG9wcyB3aWxsIGJyZWFrIHRoZSBidWlsZC4KCkdye29ldGplLGVldGluZ31zLAoKICAg
-ICAgICAgICAgICAgICAgICAgICAgR2VlcnQKCi0tCkdlZXJ0IFV5dHRlcmhvZXZlbiAtLSBUaGVy
-ZSdzIGxvdHMgb2YgTGludXggYmV5b25kIGlhMzIgLS0gZ2VlcnRAbGludXgtbTY4ay5vcmcKCklu
-IHBlcnNvbmFsIGNvbnZlcnNhdGlvbnMgd2l0aCB0ZWNobmljYWwgcGVvcGxlLCBJIGNhbGwgbXlz
-ZWxmIGEgaGFja2VyLiBCdXQKd2hlbiBJJ20gdGFsa2luZyB0byBqb3VybmFsaXN0cyBJIGp1c3Qg
-c2F5ICJwcm9ncmFtbWVyIiBvciBzb21ldGhpbmcgbGlrZSB0aGF0LgogICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIC0tIExpbnVzIFRvcnZhbGRzCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVs
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=
+Hi Varadarajan,
+
+On Tue, Jun 27, 2017 at 11:45 AM, Varadarajan Narayanan
+<varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote:
+> Enable chip select support for QUP versions later than v1.
+> The chip select support was broken in QUP version 1. Hence
+> the chip select support was removed earlier in commit
+> 4a8573abe965115bc5b064401fd669b74e985258. Since the chip
+> select support is functional in recent versions of QUP,
+> re-enabling it for QUP versions later than v1.
+>
+> Signed-off-by: Sham Muthayyan <smuthayy-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+
+> --- a/drivers/spi/spi-qup.c
+> +++ b/drivers/spi/spi-qup.c
+
+> @@ -846,6 +864,9 @@ static int spi_qup_probe(struct platform_device *pdev)
+>         if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+>                 controller->qup_v1 = 1;
+
+I know it was not introduced by your patch, but the proper way is to obtain
+the version flag from spi_qup_dt_match[].data.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

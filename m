@@ -1,101 +1,44 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 1/2] tools/spi: move to tools buildsystem
-Date: Sun, 23 Jul 2017 00:47:39 +0300
-Message-ID: <20170722214740.57322-1-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is created
+Date: Sun, 23 Jul 2017 01:07:10 +0300
+Message-ID: <CAHp75Ve5yrURc3HGHz3nPR1K_+hYdH1mUuBhm_FuFCt8q=DnQQ@mail.gmail.com>
+References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+To: Jan Kiszka <jan.kiszka@web.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-There is a nice buildsystem dedicated for userspace tools in Linux kernel tree.
-Switch gpio target to be built by it.
+On Sat, Jul 8, 2017 at 11:41 AM, Jan Kiszka <jan.kiszka@web.de> wrote:
+> From: Jan Kiszka <jan.kiszka@siemens.com>
+>
+> Avoid hogging chip select GPIOs just because they are listed for the
+> master. They might be mulitplexed and, if no slave device is attached,
+> used for different purposes. Moreover, this strategy avoids having to
+> allocate a cs_gpiods structure.
+>
+> Tested on the IOT2000 where the second SPI bus is connected to an
+> Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
+> usage.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- tools/spi/Build    |  2 ++
- tools/spi/Makefile | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 56 insertions(+), 2 deletions(-)
- create mode 100644 tools/spi/Build
+Sorry for late reply, this patch makes impossible to use GPIO
+descriptors. Now it's broken in two ways as I can see.
+I fixed one, and is right now hunting another problem.
 
-diff --git a/tools/spi/Build b/tools/spi/Build
-new file mode 100644
-index 000000000000..8e8466033d99
---- /dev/null
-+++ b/tools/spi/Build
-@@ -0,0 +1,2 @@
-+spidev_test-y += spidev_test.o
-+spidev_fdx-y += spidev_fdx.o
-diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-index 3815b18ba070..aa9517260715 100644
---- a/tools/spi/Makefile
-+++ b/tools/spi/Makefile
-@@ -1,6 +1,58 @@
-+include ../scripts/Makefile.include
-+
-+ifeq ($(srctree),)
-+srctree := $(patsubst %/,%,$(dir $(CURDIR)))
-+srctree := $(patsubst %/,%,$(dir $(srctree)))
-+endif
-+
-+# Do not use make's built-in rules
-+# (this improves performance and avoids hard-to-debug behaviour);
-+MAKEFLAGS += -r
-+
- CC = $(CROSS_COMPILE)gcc
-+LD = $(CROSS_COMPILE)ld
-+CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
-+
-+ALL_TARGETS := spidev_test spidev_fdx
-+ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
-+
-+all: $(ALL_PROGRAMS)
-+
-+export srctree OUTPUT CC LD CFLAGS
-+include $(srctree)/tools/build/Makefile.include
- 
--all: spidev_test spidev_fdx
-+#
-+# We need the following to be outside of kernel tree
-+#
-+$(OUTPUT)include/linux/spi/spidev.h: ../../include/uapi/linux/spi/spidev.h
-+	mkdir -p $(OUTPUT)include/linux/spi 2>&1 || true
-+	ln -sf $(CURDIR)/../../include/uapi/linux/spi/spidev.h $@
-+
-+prepare: $(OUTPUT)include/linux/spi/spidev.h
-+
-+#
-+# spidev_test
-+#
-+SPIDEV_TEST_IN := $(OUTPUT)spidev_test-in.o
-+$(SPIDEV_TEST_IN): prepare FORCE
-+	$(Q)$(MAKE) $(build)=spidev_test
-+$(OUTPUT)spidev_test: $(SPIDEV_TEST_IN)
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
-+
-+#
-+# spidev_fdx
-+#
-+SPIDEV_FDX_IN := $(OUTPUT)spidev_fdx-in.o
-+$(SPIDEV_FDX_IN): prepare FORCE
-+	$(Q)$(MAKE) $(build)=spidev_fdx
-+$(OUTPUT)spidev_fdx: $(SPIDEV_FDX_IN)
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
- 
- clean:
--	$(RM) spidev_test spidev_fdx
-+	rm -f $(ALL_PROGRAMS)
-+	rm -f $(OUTPUT)include/linux/spi/spidev.h
-+	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-+
-+FORCE:
-+
-+.PHONY: all clean FORCE prepare
+P.S. Perhaps no need to revert, just heads up.
+
+(That's why would be better to have GPIO descriptors everywhere in
+this driver and tested)
+
 -- 
-2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+With Best Regards,
+Andy Shevchenko

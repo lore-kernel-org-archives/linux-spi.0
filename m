@@ -1,61 +1,64 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is created
-Date: Mon, 24 Jul 2017 14:14:48 +0300
-Message-ID: <CAHp75Vc9hVRCEgmjMNO0wDRzMB7SvyJAzr3BPQr5L909xzn5Ow@mail.gmail.com>
-References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de> <CAHp75VfpJzOdhMyZoMGnC4CQc5kGxq1k-__dpmVAOaxaD04w6Q@mail.gmail.com>
- <59066818-a284-4da0-d05f-d2503aeee44b@web.de> <CAHp75Vf0NuOAvsJDxeB=5uqhMFpQ54vZzegJe=EYZDd3Bd6erw@mail.gmail.com>
- <db94e41e-5772-ec74-8587-3192dc866040@web.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
+Date: Mon, 24 Jul 2017 13:01:48 +0100
+Message-ID: <20170724120148.avqvi53wkdgctsir@sirena.org.uk>
+References: <20170724095327.18602-1-mnhu@prevas.dk>
+ <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ivayjwsukej2n2sm"
+Cc: Martin =?iso-8859-1?Q?Hundeb=F8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <db94e41e-5772-ec74-8587-3192dc866040-S0/GAf8tV78@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jul 24, 2017 at 2:06 PM, Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org> wrote:
-> On 2017-07-24 13:02, Andy Shevchenko wrote:
->> On Mon, Jul 24, 2017 at 1:53 PM, Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org> wrote:
->>> On 2017-07-24 12:44, Andy Shevchenko wrote:
->>>> +Cc: Mika
->>>>
->>>> On Sat, Jul 8, 2017 at 11:41 AM, Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org> wrote:
->>>>> From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
->>>>>
->>>>> Avoid hogging chip select GPIOs just because they are listed for the
->>>>> master. They might be mulitplexed and, if no slave device is attached,
->>>>> used for different purposes. Moreover, this strategy avoids having to
->>>>> allocate a cs_gpiods structure.
->>>>>
->>>>> Tested on the IOT2000 where the second SPI bus is connected to an
->>>>> Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
->>>>> usage.
->>
->>>> This breaks all systems which are using _DSD.
->>>
->>> Err, can you elaborate? Worked fine here with _DSD on the IOT2000.
->>
->> Sure, the setup() function can be called several times for the same
->> chip (as written in the comment inside the function).
->> Definitely your code doesn't follow this, since gpiod_get_index() is
->> returning -EBUSY when called 2+ time, that's what I got on all my
->> tests.
->
-> Ah, multiple devices on the same controller - I only had one.
 
-Nope, one. Since we are talking about recurrent call to
-gpiod_get_index() with the same index.
+--ivayjwsukej2n2sm
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-With Best Regards,
-Andy Shevchenko
+On Mon, Jul 24, 2017 at 01:49:14PM +0300, Andy Shevchenko wrote:
+> On Mon, Jul 24, 2017 at 12:53 PM, Martin Hundeb=F8ll <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org> wro=
+te:
+> > Some gpio controllers requires lines to be configured as outputs to make
+> > subsequent calls to `gpio_set_value()` have any effect.
+
+> > Add a call to `gpio_request_one()` for configured gpio chip-selects to
+> > make it work on (at least) mvebu gpio controllers.
+
+> More and more hacks around plain GPIO integers... :-(
+
+> Perhaps we need to discuss how to convert SPI core to use GPIO
+> descriptors everywhere.
+
+The best way would be to test the work that Chris Packham submitted in
+May to do this, it'll need a refresh now and it ought to get some
+testing on ep93xx but sadly nobody working on ep93xx has responded - I
+think at this point I'd probably just apply and let people test -next.
+
+--ivayjwsukej2n2sm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAll14asACgkQJNaLcl1U
+h9Bvgwf+OUzzH0kJlmZsEuKGg5QQKWQIqxkOcKMUcSdp1jCnJN6gTCzR3DXP3Ufm
+U8fUk2rTDFKVYLBFhbYepuZTrrBuoxMDJ7ZXNptUwG0Up1qD3VRU3luFMnDuuw3H
+8qYc8Q7GMABj7U+5dsf/H32dNvoEFuboPOtiBK9wv6uhq98Za6EsnBOmCsDJNSby
+Lod4rVWM6M5VEoxDKjVFnlzX7M2NzZIN6J68m/BY7Bx00LWUJDzzDJ/rt2FMgxln
+da9EQ3ymETOI6MBqL9fltMu4HcRW3WJoehFX3rt9eNBTU7YGGYkWonUoQhra5GlM
+p6NKHu9a3a+cgVRAK96G5Zj/aArmEw==
+=dXXI
+-----END PGP SIGNATURE-----
+
+--ivayjwsukej2n2sm--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

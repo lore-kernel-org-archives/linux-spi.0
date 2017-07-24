@@ -1,38 +1,64 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Mon, 24 Jul 2017 15:26:26 +0300
-Message-ID: <CAHp75Vd-2iNVyYgnT9UXGPdOck6WozJ-7tC666751s5mFNxMaQ@mail.gmail.com>
-References: <20170724095327.18602-1-mnhu@prevas.dk> <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
- <20170724120249.mpyv7f3t4q3eihrg@sirena.org.uk>
+From: Anton Volkov <avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org>
+Subject: Possible race in spi-tegra114.ko
+Date: Mon, 24 Jul 2017 15:30:36 +0300
+Message-ID: <2cf0b5d2-1b04-1380-0930-b7a28b35bf99@ispras.ru>
+References: <2a037d00f975d05e41fb1164711e6813@rainloop.ispras.ru>
+ <81025e89755197b09309794e3e08795b@rainloop.ispras.ru>
+ <1013edec2ddb1fb49a0d5503179b20d6@rainloop.ispras.ru>
+ <8a2122f5efa1082943906a44af8d23cd@rainloop.ispras.ru>
+ <5db42bb986f91d2a55ffdd9b5253ad7c@rainloop.ispras.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: =?UTF-8?Q?Martin_Hundeb=C3=B8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170724120249.mpyv7f3t4q3eihrg-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ldv-project-tpLiQldItUH5n4uC9ZG1Ww@public.gmane.org,
+        khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org
+To: ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <5db42bb986f91d2a55ffdd9b5253ad7c-DwCxqXnXFIIDQsdXxHp7QS8mxiWnj2XH@public.gmane.org>
+Content-Language: en-US
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 24, 2017 at 3:02 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Jul 24, 2017 at 01:49:14PM +0300, Andy Shevchenko wrote:
->
->> More and more hacks around plain GPIO integers... :-(
->
-> I have to say now I've looked at the patch I'm also struggling to see
-> how this is a hack around anything...
+Hello.
+While searching for races in Linux kernel I've come across 
+drivers/spi/spi-tegra114.ko module. Here is the question that I came up 
+with while analysing results. Lines are given using the info from Linux 
+v4.12.
 
-In case we switch to GPIO descriptors we can do a generic CS
-allocation / request. The part in the patch does something witch would
-be used only in OF case, while ACPI or built-in device properties are
-missing.
+Consider the following case:
+Thread 1:                                  Thread 2:
+tegra_spi_probe
+   -> request_threaded_irq
+       (spi-tegra114.c: line 1070)
+   ------------interrupt comes------------- tegra_spi_isr_thread
+                                              -> handle_dma_based_xfer
+                                                   -> 
+tegra_spi_start_dma_based_transfer
+                                                        -> 
+tegra_spi_copy_client_txbuf_to_spi_txbuf
+                                                             -> 
+dma_sync_single_for_cpu(tspi->dev, tspi->tx_dma_phys, ...) 
+(spi-tegra114.c: line 368)
+   -> tspi->tx_dma_phys = ...
+      (spi-tegra114.c: line 621 or 625)
 
--- 
-With Best Regards,
-Andy Shevchenko
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+If the situation above is feasible then the value of tspi->tx_dma_phys 
+(which is 0) is passed to dma_sync_single_for_cpu and further down the 
+callstack. This is probably not good.
+Note that other fields of tspi structure can also be affected using the 
+similar templates.
+Similar cases can occur also for tspi structure in 
+drivers/spi/spi-tegra20-slink.ko module and for tsd structure in 
+drivers/spi/spi-tegra20-sflash.ko module.
+So the question is: is there a possibility of interrupt triggering 
+before the registration of master (spi-tegra114.c: line 1125) or a write 
+to tspi->def_command1_reg (spi-tegra114.c: line 1121)?
+
+Thank you for your time.
+
+-- Anton Volkov
+Linux Verification Center, ISPRAS
+web: http://linuxtesting.org
+e-mail: avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org <mailto:avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org>

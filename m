@@ -1,50 +1,155 @@
-From: =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>
-Subject: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Mon, 24 Jul 2017 11:53:27 +0200
-Message-ID: <20170724095327.18602-1-mnhu@prevas.dk>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is created
+Date: Mon, 24 Jul 2017 13:44:54 +0300
+Message-ID: <CAHp75VfpJzOdhMyZoMGnC4CQc5kGxq1k-__dpmVAOaxaD04w6Q@mail.gmail.com>
+References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Cc: =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <90b3e14d-0077-9a25-9d90-ab340577af57-S0/GAf8tV78@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Some gpio controllers requires lines to be configured as outputs to make
-subsequent calls to `gpio_set_value()` have any effect.
++Cc: Mika
 
-Add a call to `gpio_request_one()` for configured gpio chip-selects to
-make it work on (at least) mvebu gpio controllers.
+On Sat, Jul 8, 2017 at 11:41 AM, Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org> wrote:
+> From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+>
+> Avoid hogging chip select GPIOs just because they are listed for the
+> master. They might be mulitplexed and, if no slave device is attached,
+> used for different purposes. Moreover, this strategy avoids having to
+> allocate a cs_gpiods structure.
+>
+> Tested on the IOT2000 where the second SPI bus is connected to an
+> Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
+> usage.
+>
 
-Signed-off-by: Martin Hundebøll <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>
----
- drivers/spi/spi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+This breaks all systems which are using _DSD.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0725c78b0de6..b7bfc52525aa 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2010,8 +2010,13 @@ static int of_spi_register_master(struct spi_controller *ctlr)
- 	for (i = 0; i < ctlr->num_chipselect; i++)
- 		cs[i] = -ENOENT;
- 
--	for (i = 0; i < nb; i++)
-+	for (i = 0; i < nb; i++) {
- 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+		if (gpio_is_valid(cs[i]) &&
-+		    gpio_request_one(cs[i], 0, "spi-cs") < 0)
-+			dev_warn(&master->dev,
-+				 "gpio_request_one failed for chipselect %i\n", i);
-+	}
- 
- 	return 0;
- }
+While I'm looking for fix, I get feeling that the approach itself is not right,
+
+So, for now I would vote for immediate revert and then rethink what we
+can do here.
+
+> Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++-------------------------------
+>  1 file changed, 21 insertions(+), 38 deletions(-)
+>
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 38d053682892..be991266a6ce 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1213,21 +1213,33 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+>                     struct pxa2xx_spi_chip *chip_info)
+>  {
+>         struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+> +       struct device *pdev = &drv_data->pdev->dev;
+> +       struct gpio_desc *gpiod;
+>         int err = 0;
+> +       int count;
+>
+>         if (chip == NULL)
+>                 return 0;
+>
+> -       if (drv_data->cs_gpiods) {
+> -               struct gpio_desc *gpiod;
+> +       count = gpiod_count(pdev, "cs");
+> +       if (count > 0) {
+> +               if (spi->chip_select >= count)
+> +                       return -EINVAL;
+> +
+> +               gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
+> +                                       GPIOD_OUT_HIGH);
+> +               if (IS_ERR(gpiod)) {
+> +                       /* Means use native chip select */
+> +                       if (PTR_ERR(gpiod) == -ENOENT)
+> +                               return 0;
+>
+> -               gpiod = drv_data->cs_gpiods[spi->chip_select];
+> -               if (gpiod) {
+> -                       chip->gpio_cs = desc_to_gpio(gpiod);
+> -                       chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+> -                       gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+> +                       return PTR_ERR(gpiod);
+>                 }
+>
+> +               chip->gpio_cs = desc_to_gpio(gpiod);
+> +               chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+> +               gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+> +
+>                 return 0;
+>         }
+>
+> @@ -1415,8 +1427,7 @@ static void cleanup(struct spi_device *spi)
+>         if (!chip)
+>                 return;
+>
+> -       if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
+> -           gpio_is_valid(chip->gpio_cs))
+> +       if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
+>                 gpio_free(chip->gpio_cs);
+>
+>         kfree(chip);
+> @@ -1752,38 +1763,10 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+>         master->num_chipselect = platform_info->num_chipselect;
+>
+>         count = gpiod_count(&pdev->dev, "cs");
+> -       if (count > 0) {
+> -               int i;
+> -
+> +       if (count > 0)
+>                 master->num_chipselect = max_t(int, count,
+>                         master->num_chipselect);
+>
+> -               drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
+> -                       master->num_chipselect, sizeof(struct gpio_desc *),
+> -                       GFP_KERNEL);
+> -               if (!drv_data->cs_gpiods) {
+> -                       status = -ENOMEM;
+> -                       goto out_error_clock_enabled;
+> -               }
+> -
+> -               for (i = 0; i < master->num_chipselect; i++) {
+> -                       struct gpio_desc *gpiod;
+> -
+> -                       gpiod = devm_gpiod_get_index(dev, "cs", i,
+> -                                                    GPIOD_OUT_HIGH);
+> -                       if (IS_ERR(gpiod)) {
+> -                               /* Means use native chip select */
+> -                               if (PTR_ERR(gpiod) == -ENOENT)
+> -                                       continue;
+> -
+> -                               status = (int)PTR_ERR(gpiod);
+> -                               goto out_error_clock_enabled;
+> -                       } else {
+> -                               drv_data->cs_gpiods[i] = gpiod;
+> -                       }
+> -               }
+> -       }
+> -
+>         tasklet_init(&drv_data->pump_transfers, pump_transfers,
+>                      (unsigned long)drv_data);
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
 -- 
-2.13.3
-
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

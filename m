@@ -1,75 +1,159 @@
-From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v5 13/14] spi: qup: Ensure done detection
-Date: Mon, 24 Jul 2017 13:17:24 +0530
-Message-ID: <1500882445-29008-14-git-send-email-varada@codeaurora.org>
+From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: [PATCH v5 12/14] spi: qup: allow multiple DMA transactions per spi xfer
+Date: Mon, 24 Jul 2017 13:17:23 +0530
+Message-ID: <1500882445-29008-13-git-send-email-varada@codeaurora.org>
 References: <1500882445-29008-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Andy Gross <agross@codeaurora.org>,
-        Abhishek Sahu <absahu@codeaurora.org>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        andy.gross@linaro.org, david.brown@linaro.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1500882445-29008-1-git-send-email-varada@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1500882445-29008-1-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes an issue where a SPI transaction has completed, but the
-done condition is missed.  This occurs because at the time of interrupt the
-MAX_INPUT_DONE_FLAG is not asserted.  However, in the process of reading
-blocks of data from the FIFO, the last portion of data comes in.
+Much like the block mode changes, we are breaking up DMA transactions
+into 64K chunks so we can reset the QUP engine.
 
-The opflags read at the beginning of the irq handler no longer matches the
-current opflag state.  To get around this condition, the block read
-function should update the opflags so that done detection is correct after
-the return.
-
-Signed-off-by: Andy Gross <agross@codeaurora.org>
-Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
-Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+Signed-off-by: Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 ---
- drivers/spi/spi-qup.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-qup.c | 93 +++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 65 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 3c2c2c0..4c3c938 100644
+index 3ac9b25..3c2c2c0 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -266,7 +266,7 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
- 	}
+@@ -418,12 +418,35 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
--static void spi_qup_read(struct spi_qup *controller)
-+static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
++static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
++				     u32 *nents)
++{
++	struct scatterlist *sg;
++	u32 total = 0;
++
++	*nents = 0;
++
++	for (sg = sgl; sg; sg = sg_next(sg)) {
++		unsigned int len = sg_dma_len(sg);
++
++		/* check for overflow as well as limit */
++		if (((total + len) < total) || ((total + len) > max))
++			break;
++
++		total += len;
++		(*nents)++;
++	}
++
++	return total;
++}
++
+ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
  {
- 	u32 remainder, words_per_block, num_words;
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
-@@ -305,10 +305,12 @@ static void spi_qup_read(struct spi_qup *controller)
+ 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
+ 	struct spi_master *master = spi->master;
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct scatterlist *tx_sgl, *rx_sgl;
+ 	int ret;
  
- 	/*
- 	 * Due to extra stickiness of the QUP_OP_IN_SERVICE_FLAG during block
--	 * mode reads, it has to be cleared again at the very end
-+	 * reads, it has to be cleared again at the very end.  However, be sure
-+	 * to refresh opflags value because MAX_INPUT_DONE_FLAG may now be
-+	 * present and this is used to determine if transaction is complete
- 	 */
--	if (is_block_mode && spi_qup_is_flag_set(controller,
--				QUP_OP_MAX_INPUT_DONE_FLAG))
-+	*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
-+	if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
- 		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
- 			       controller->base + QUP_OPERATIONAL);
+ 	if (xfer->rx_buf)
+@@ -431,43 +454,57 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	else if (xfer->tx_buf)
+ 		tx_done = spi_qup_dma_done;
  
-@@ -613,7 +615,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_read(controller);
-+			spi_qup_read(controller, &opflags);
+-	ret = spi_qup_io_config(spi, xfer);
+-	if (ret)
+-		return ret;
++	rx_sgl = xfer->rx_sg.sgl;
++	tx_sgl = xfer->tx_sg.sgl;
  
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
- 			spi_qup_write(controller);
+-	/* before issuing the descriptors, set the QUP to run */
+-	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
+-	if (ret) {
+-		dev_warn(qup->dev, "%s(%d): cannot set RUN state\n",
+-				__func__, __LINE__);
+-		return ret;
+-	}
++	do {
++		u32 rx_nents, tx_nents;
++
++		if (rx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
++					SPI_MAX_XFER, &rx_nents) / qup->w_size;
++		if (tx_sgl)
++			qup->n_words = spi_qup_sgl_get_nents_len(tx_sgl,
++					SPI_MAX_XFER, &tx_nents) / qup->w_size;
++		if (!qup->n_words)
++			return -EIO;
+ 
+-	if (xfer->rx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->rx_sg.sgl,
+-				      xfer->rx_sg.nents, DMA_DEV_TO_MEM,
+-				      rx_done);
++		ret = spi_qup_io_config(spi, xfer);
+ 		if (ret)
+ 			return ret;
+ 
+-		dma_async_issue_pending(master->dma_rx);
+-	}
+-
+-	if (xfer->tx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer->tx_sg.sgl,
+-				      xfer->tx_sg.nents, DMA_MEM_TO_DEV,
+-				      tx_done);
+-		if (ret)
++		/* before issuing the descriptors, set the QUP to run */
++		ret = spi_qup_set_state(qup, QUP_STATE_RUN);
++		if (ret) {
++			dev_warn(qup->dev, "cannot set RUN state\n");
+ 			return ret;
++		}
++		if (rx_sgl) {
++			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
++					      DMA_DEV_TO_MEM, rx_done);
++			if (ret)
++				return ret;
++			dma_async_issue_pending(master->dma_rx);
++		}
+ 
+-		dma_async_issue_pending(master->dma_tx);
+-	}
++		if (tx_sgl) {
++			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
++					      DMA_MEM_TO_DEV, tx_done);
++			if (ret)
++				return ret;
++
++			dma_async_issue_pending(master->dma_tx);
++		}
++
++		if (!wait_for_completion_timeout(&qup->done, timeout))
++			return -ETIMEDOUT;
+ 
+-	if (rx_done && !wait_for_completion_timeout(&qup->done, timeout))
+-		return -ETIMEDOUT;
++		for (; rx_sgl && rx_nents--; rx_sgl = sg_next(rx_sgl))
++			;
++		for (; tx_sgl && tx_nents--; tx_sgl = sg_next(tx_sgl))
++			;
+ 
+-	if (tx_done && !wait_for_completion_timeout(&qup->done, timeout))
+-		return -ETIMEDOUT;
++	} while (rx_sgl || tx_sgl);
+ 
+ 	return 0;
+ }
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

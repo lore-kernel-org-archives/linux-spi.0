@@ -1,64 +1,149 @@
-From: Anton Volkov <avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org>
-Subject: Possible race in spi-tegra114.ko
-Date: Mon, 24 Jul 2017 15:30:36 +0300
-Message-ID: <2cf0b5d2-1b04-1380-0930-b7a28b35bf99@ispras.ru>
-References: <2a037d00f975d05e41fb1164711e6813@rainloop.ispras.ru>
- <81025e89755197b09309794e3e08795b@rainloop.ispras.ru>
- <1013edec2ddb1fb49a0d5503179b20d6@rainloop.ispras.ru>
- <8a2122f5efa1082943906a44af8d23cd@rainloop.ispras.ru>
- <5db42bb986f91d2a55ffdd9b5253ad7c@rainloop.ispras.ru>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: pxa2xx: Only claim CS GPIOs when the slave device is created
+Date: Mon, 24 Jul 2017 16:03:31 +0300
+Message-ID: <CAHp75VfL8RK57sxKH4UVQ0-u9gGnJ-DaqOKYcq7DrdsFhpecwQ@mail.gmail.com>
+References: <90b3e14d-0077-9a25-9d90-ab340577af57@web.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ldv-project-tpLiQldItUH5n4uC9ZG1Ww@public.gmane.org,
-        khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org
-To: ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5db42bb986f91d2a55ffdd9b5253ad7c-DwCxqXnXFIIDQsdXxHp7QS8mxiWnj2XH@public.gmane.org>
-Content-Language: en-US
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <90b3e14d-0077-9a25-9d90-ab340577af57-S0/GAf8tV78@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello.
-While searching for races in Linux kernel I've come across 
-drivers/spi/spi-tegra114.ko module. Here is the question that I came up 
-with while analysing results. Lines are given using the info from Linux 
-v4.12.
++Cc: Mika (for real this time)
 
-Consider the following case:
-Thread 1:                                  Thread 2:
-tegra_spi_probe
-   -> request_threaded_irq
-       (spi-tegra114.c: line 1070)
-   ------------interrupt comes------------- tegra_spi_isr_thread
-                                              -> handle_dma_based_xfer
-                                                   -> 
-tegra_spi_start_dma_based_transfer
-                                                        -> 
-tegra_spi_copy_client_txbuf_to_spi_txbuf
-                                                             -> 
-dma_sync_single_for_cpu(tspi->dev, tspi->tx_dma_phys, ...) 
-(spi-tegra114.c: line 368)
-   -> tspi->tx_dma_phys = ...
-      (spi-tegra114.c: line 621 or 625)
+On Sat, Jul 8, 2017 at 11:41 AM, Jan Kiszka <jan.kiszka-S0/GAf8tV78@public.gmane.org> wrote:
+> From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+>
+> Avoid hogging chip select GPIOs just because they are listed for the
+> master. They might be mulitplexed and, if no slave device is attached,
+> used for different purposes. Moreover, this strategy avoids having to
+> allocate a cs_gpiods structure.
+>
+> Tested on the IOT2000 where the second SPI bus is connected to an
+> Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
+> usage.
+>
+> Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++-------------------------------
+>  1 file changed, 21 insertions(+), 38 deletions(-)
+>
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 38d053682892..be991266a6ce 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1213,21 +1213,33 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+>                     struct pxa2xx_spi_chip *chip_info)
+>  {
+>         struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+> +       struct device *pdev = &drv_data->pdev->dev;
+> +       struct gpio_desc *gpiod;
+>         int err = 0;
+> +       int count;
+>
+>         if (chip == NULL)
+>                 return 0;
+>
+> -       if (drv_data->cs_gpiods) {
+> -               struct gpio_desc *gpiod;
+> +       count = gpiod_count(pdev, "cs");
+> +       if (count > 0) {
+> +               if (spi->chip_select >= count)
+> +                       return -EINVAL;
+> +
+> +               gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
+> +                                       GPIOD_OUT_HIGH);
+> +               if (IS_ERR(gpiod)) {
+> +                       /* Means use native chip select */
+> +                       if (PTR_ERR(gpiod) == -ENOENT)
+> +                               return 0;
+>
+> -               gpiod = drv_data->cs_gpiods[spi->chip_select];
+> -               if (gpiod) {
+> -                       chip->gpio_cs = desc_to_gpio(gpiod);
+> -                       chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+> -                       gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+> +                       return PTR_ERR(gpiod);
+>                 }
+>
+> +               chip->gpio_cs = desc_to_gpio(gpiod);
+> +               chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+> +               gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+> +
+>                 return 0;
+>         }
+>
+> @@ -1415,8 +1427,7 @@ static void cleanup(struct spi_device *spi)
+>         if (!chip)
+>                 return;
+>
+> -       if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
+> -           gpio_is_valid(chip->gpio_cs))
+> +       if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
+>                 gpio_free(chip->gpio_cs);
+>
+>         kfree(chip);
+> @@ -1752,38 +1763,10 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+>         master->num_chipselect = platform_info->num_chipselect;
+>
+>         count = gpiod_count(&pdev->dev, "cs");
+> -       if (count > 0) {
+> -               int i;
+> -
+> +       if (count > 0)
+>                 master->num_chipselect = max_t(int, count,
+>                         master->num_chipselect);
+>
+> -               drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
+> -                       master->num_chipselect, sizeof(struct gpio_desc *),
+> -                       GFP_KERNEL);
+> -               if (!drv_data->cs_gpiods) {
+> -                       status = -ENOMEM;
+> -                       goto out_error_clock_enabled;
+> -               }
+> -
+> -               for (i = 0; i < master->num_chipselect; i++) {
+> -                       struct gpio_desc *gpiod;
+> -
+> -                       gpiod = devm_gpiod_get_index(dev, "cs", i,
+> -                                                    GPIOD_OUT_HIGH);
+> -                       if (IS_ERR(gpiod)) {
+> -                               /* Means use native chip select */
+> -                               if (PTR_ERR(gpiod) == -ENOENT)
+> -                                       continue;
+> -
+> -                               status = (int)PTR_ERR(gpiod);
+> -                               goto out_error_clock_enabled;
+> -                       } else {
+> -                               drv_data->cs_gpiods[i] = gpiod;
+> -                       }
+> -               }
+> -       }
+> -
+>         tasklet_init(&drv_data->pump_transfers, pump_transfers,
+>                      (unsigned long)drv_data);
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-If the situation above is feasible then the value of tspi->tx_dma_phys 
-(which is 0) is passed to dma_sync_single_for_cpu and further down the 
-callstack. This is probably not good.
-Note that other fields of tspi structure can also be affected using the 
-similar templates.
-Similar cases can occur also for tspi structure in 
-drivers/spi/spi-tegra20-slink.ko module and for tsd structure in 
-drivers/spi/spi-tegra20-sflash.ko module.
-So the question is: is there a possibility of interrupt triggering 
-before the registration of master (spi-tegra114.c: line 1125) or a write 
-to tspi->def_command1_reg (spi-tegra114.c: line 1121)?
 
-Thank you for your time.
 
--- Anton Volkov
-Linux Verification Center, ISPRAS
-web: http://linuxtesting.org
-e-mail: avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org <mailto:avolkov-ufN2psIa012HXe+LvDLADg@public.gmane.org>
+-- 
+With Best Regards,
+Andy Shevchenko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,117 +1,58 @@
-From: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v5 09/14] spi: qup: call io_config in mode specific function
-Date: Mon, 24 Jul 2017 13:17:20 +0530
-Message-ID: <1500882445-29008-10-git-send-email-varada@codeaurora.org>
+From: Varadarajan Narayanan <varada@codeaurora.org>
+Subject: [PATCH v5 14/14] spi: qup: Fix QUP version identify method
+Date: Mon, 24 Jul 2017 13:17:25 +0530
+Message-ID: <1500882445-29008-15-git-send-email-varada@codeaurora.org>
 References: <1500882445-29008-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-        Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1500882445-29008-1-git-send-email-varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1500882445-29008-1-git-send-email-varada@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-DMA transactions should only only need to call io_config only once, but
-block mode might call it several times to setup several transactions so
-it can handle reads/writes larger than the max size per transaction, so
-we move the call to the do_ functions.
+Use of_device_get_match_data to identify QUP version instead
+of of_device_is_compatible.
 
-This is just refactoring, there should be no functional change
-
-Signed-off-by: Matthew McClintock <mmcclint-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Signed-off-by: Varadarajan Narayanan <varada-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/spi/spi-qup.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 82593f6..b2bda47 100644
+index 4c3c938..1364516 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -156,6 +156,8 @@ struct spi_qup {
- 	struct dma_slave_config	tx_conf;
- };
+@@ -19,6 +19,7 @@
+ #include <linux/list.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+@@ -1058,9 +1059,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	else if (!ret)
+ 		master->can_dma = spi_qup_can_dma;
  
-+static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer);
-+
- static inline bool spi_qup_is_flag_set(struct spi_qup *controller, u32 flag)
- {
- 	u32 opflag = readl_relaxed(controller->base + QUP_OPERATIONAL);
-@@ -417,10 +419,12 @@ static void spi_qup_dma_terminate(struct spi_master *master,
- 		dmaengine_terminate_all(master->dma_rx);
+-	/* set v1 flag if device is version 1 */
+-	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+-		controller->qup_v1 = 1;
++	controller->qup_v1 = (int)of_device_get_match_data(dev);
+ 
+ 	if (!controller->qup_v1)
+ 		master->set_cs = spi_qup_set_cs;
+@@ -1256,7 +1255,7 @@ static int spi_qup_remove(struct platform_device *pdev)
  }
  
--static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
-+static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
- 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
-+	struct spi_master *master = spi->master;
-+	struct spi_qup *qup = spi_master_get_devdata(master);
- 	int ret;
- 
- 	if (xfer->rx_buf)
-@@ -428,6 +432,10 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 	else if (xfer->tx_buf)
- 		tx_done = spi_qup_dma_done;
- 
-+	ret = spi_qup_io_config(spi, xfer);
-+	if (ret)
-+		return ret;
-+
- 	/* before issuing the descriptors, set the QUP to run */
- 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
- 	if (ret) {
-@@ -461,12 +469,17 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 	return 0;
- }
- 
--static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
-+static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
-+	struct spi_master *master = spi->master;
- 	struct spi_qup *qup = spi_master_get_devdata(master);
- 	int ret;
- 
-+	ret = spi_qup_io_config(spi, xfer);
-+	if (ret)
-+		return ret;
-+
- 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
- 	if (ret) {
- 		dev_warn(qup->dev, "cannot set RUN state\n");
-@@ -744,10 +757,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	if (ret)
- 		return ret;
- 
--	ret = spi_qup_io_config(spi, xfer);
--	if (ret)
--		return ret;
--
- 	timeout = DIV_ROUND_UP(xfer->speed_hz, MSEC_PER_SEC);
- 	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
- 	timeout = 100 * msecs_to_jiffies(timeout);
-@@ -762,9 +771,9 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
- 	if (spi_qup_is_dma_xfer(controller->mode))
--		ret = spi_qup_do_dma(master, xfer, timeout);
-+		ret = spi_qup_do_dma(spi, xfer, timeout);
- 	else
--		ret = spi_qup_do_pio(master, xfer, timeout);
-+		ret = spi_qup_do_pio(spi, xfer, timeout);
- 
- 	if (ret)
- 		goto exit;
+ static const struct of_device_id spi_qup_dt_match[] = {
+-	{ .compatible = "qcom,spi-qup-v1.1.1", },
++	{ .compatible = "qcom,spi-qup-v1.1.1", .data = (void *)1, },
+ 	{ .compatible = "qcom,spi-qup-v2.1.1", },
+ 	{ .compatible = "qcom,spi-qup-v2.2.1", },
+ 	{ }
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

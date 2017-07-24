@@ -1,76 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Mon, 24 Jul 2017 22:28:34 +0100
-Message-ID: <20170724212834.yskzvc76tpxixe3u@sirena.org.uk>
+Date: Mon, 24 Jul 2017 21:44:33 +0000
+Message-ID: <3027e39333a24fa7a4ce540d96b0e6f3@svr-chch-ex1.atlnz.lc>
 References: <20170724095327.18602-1-mnhu@prevas.dk>
  <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
  <20170724120148.avqvi53wkdgctsir@sirena.org.uk>
  <e668b7529837444085b9df3a563c3fe3@svr-chch-ex1.atlnz.lc>
+ <DBFEECA3-E21E-4DC5-B6B9-D1B12AD48E7A@prevas.dk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="xbi7jjbzwy7h3ul2"
-Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Martin =?iso-8859-1?Q?Hundeb=F8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
         Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
         Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
         linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <martin.hundeboll-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
+        "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <e668b7529837444085b9df3a563c3fe3-5g7mGxlPNYb6GjIOKuZY+ItlCAj8ZROq@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---xbi7jjbzwy7h3ul2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jul 24, 2017 at 09:16:17PM +0000, Chris Packham wrote:
-> On 25/07/17 00:42, Mark Brown wrote:
-
-> > The best way would be to test the work that Chris Packham submitted in
-> > May to do this, it'll need a refresh now and it ought to get some
-> > testing on ep93xx but sadly nobody working on ep93xx has responded - I
-> > think at this point I'd probably just apply and let people test -next.
-
-> My patchset kind of stalled. I can do a refresh if there's interest. But=
-=20
-> I really do need some help from people with access to hardware (I can=20
-> cover spi-orion and spi-fsl-espi but that's about it). After the initial=
-=20
-
-It's definitely something that'd be really helpful.  If we get it merged
-near the start of a development cycle that should give plenty of
-opportunities for people to test.
-
-> RFC series I posted in May I found that iMX platforms use the integer=20
-> cs_gpio field for both native chipselects and gpio based ones (values <=
-=20
-> 0 indicate native CS) so again I'd be coding blind trying to disentangle=
-=20
-> that.
-
-i.MX is actively developed (even the SPI driver in particular) so that
-should be no problem at least.
-
---xbi7jjbzwy7h3ul2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAll2ZoEACgkQJNaLcl1U
-h9AhSgf+KyDK+jYitm/sgBjmBFdlHdUhHyuOo2dZrGJYQ0q35TanxyhGpGYWC6I4
-QnZdDwhDZfyoHSAjHCdQ0GYVnKMZiYKo4FPak34Lqtq1judHT6z8cXUMm8cY7DvV
-zP79GXjldeznCGIGSwAedhEZzTP+mrnK3OxJxTbGGy8Y5BvIL9vBmzU2PGqfoaeu
-VYtpJadYmqwUhvl4e3fQqfwdva1mKq998EiDxI9XWMdVBJEEuO8D5DPnCOW+GWde
-8EYN49YnFJUueKNz6ABBR39q7GT9oJM6LJBJgQxoKspGoAOu/b9mdelybgQiIwZh
-epv9PDi4YrAm6y3rP2eoacPDwpFt1g==
-=grnE
------END PGP SIGNATURE-----
-
---xbi7jjbzwy7h3ul2--
+On 25/07/17 09:28, Martin Hundeb=F8ll wrote:=0A=
+>> My patchset kind of stalled. I can do a refresh if there's interest.=0A=
+>> But I really do need some help from people with access to hardware (I ca=
+n=0A=
+>> cover spi-orion and spi-fsl-espi but that's about it). After the=0A=
+>> initial RFC series I posted in May I found that iMX platforms use the in=
+teger=0A=
+>> cs_gpio field for both native chipselects and gpio based ones (values <=
+=0A=
+>> 0 indicate native CS) so again I'd be coding blind trying to=0A=
+>> disentangle that.=0A=
+ >=0A=
+> My submission was more or less a fly-by patch, but I'd be happy to=0A=
+> test/debug patches on spi-imx if you CC me on the series.=0A=
+=0A=
+Thanks for the offer. Now I just need to get a few round tuits.=0A=
+=0A=
+> =0A=
+> Any other drivers with special gpio-cs handling?=0A=
+ >=0A=
+=0A=
+Based on a quick grep spi-{atmel,davinci,ep93xx,gpio,imx,mt65xx,stm32} =0A=
+all do stuff with cs_gpios outside of the spi core. I think at least =0A=
+some of those a trivially handled if we let the core code do the gpio =0A=
+management.=0A=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

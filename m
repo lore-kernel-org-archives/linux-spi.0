@@ -1,52 +1,54 @@
-From: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Mon, 24 Jul 2017 21:44:33 +0000
-Message-ID: <3027e39333a24fa7a4ce540d96b0e6f3@svr-chch-ex1.atlnz.lc>
-References: <20170724095327.18602-1-mnhu@prevas.dk>
- <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
- <20170724120148.avqvi53wkdgctsir@sirena.org.uk>
- <e668b7529837444085b9df3a563c3fe3@svr-chch-ex1.atlnz.lc>
- <DBFEECA3-E21E-4DC5-B6B9-D1B12AD48E7A@prevas.dk>
+From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Subject: [PATCH] spi: pic32: fix spelling mistakes on macro names
+Date: Mon, 24 Jul 2017 22:44:45 +0100
+Message-ID: <20170724214445.15383-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <martin.hundeboll-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 25/07/17 09:28, Martin Hundeb=F8ll wrote:=0A=
->> My patchset kind of stalled. I can do a refresh if there's interest.=0A=
->> But I really do need some help from people with access to hardware (I ca=
-n=0A=
->> cover spi-orion and spi-fsl-espi but that's about it). After the=0A=
->> initial RFC series I posted in May I found that iMX platforms use the in=
-teger=0A=
->> cs_gpio field for both native chipselects and gpio based ones (values <=
-=0A=
->> 0 indicate native CS) so again I'd be coding blind trying to=0A=
->> disentangle that.=0A=
- >=0A=
-> My submission was more or less a fly-by patch, but I'd be happy to=0A=
-> test/debug patches on spi-imx if you CC me on the series.=0A=
-=0A=
-Thanks for the offer. Now I just need to get a few round tuits.=0A=
-=0A=
-> =0A=
-> Any other drivers with special gpio-cs handling?=0A=
- >=0A=
-=0A=
-Based on a quick grep spi-{atmel,davinci,ep93xx,gpio,imx,mt65xx,stm32} =0A=
-all do stuff with cs_gpios outside of the spi core. I think at least =0A=
-some of those a trivially handled if we let the core code do the gpio =0A=
-management.=0A=
+From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+
+Trivial fix to spelling mistakes macros; fix EMPTY spellings:
+RX_FIFO_EMTPY -> RX_FIFO_EMPTY
+TX_FIFO_EMTPY -> TX_FIFO_EMPTY
+
+Note that there are no other occurrances of these macros in the
+source.
+
+Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+---
+ drivers/spi/spi-pic32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index fefb688a3432..f8a45af1fa9f 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -52,14 +52,14 @@ struct pic32_spi_regs {
+ 
+ /* Bit fields of SPI Control Register */
+ #define CTRL_RX_INT_SHIFT	0  /* Rx interrupt generation */
+-#define  RX_FIFO_EMTPY		0
++#define  RX_FIFO_EMPTY		0
+ #define  RX_FIFO_NOT_EMPTY	1 /* not empty */
+ #define  RX_FIFO_HALF_FULL	2 /* full by half or more */
+ #define  RX_FIFO_FULL		3 /* completely full */
+ 
+ #define CTRL_TX_INT_SHIFT	2  /* TX interrupt generation */
+ #define  TX_FIFO_ALL_EMPTY	0 /* completely empty */
+-#define  TX_FIFO_EMTPY		1 /* empty */
++#define  TX_FIFO_EMPTY		1 /* empty */
+ #define  TX_FIFO_HALF_EMPTY	2 /* empty by half or more */
+ #define  TX_FIFO_NOT_FULL	3 /* atleast one empty */
+ 
+-- 
+2.11.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

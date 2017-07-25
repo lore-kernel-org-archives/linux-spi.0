@@ -1,59 +1,58 @@
-From: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH v1 1/2] spi: loopback-test: implement testing with no CS
-Date: Tue, 25 Jul 2017 09:57:08 +0200
-Message-ID: <20170725075709.27438-1-o.rempel@pengutronix.de>
-Cc: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH v1 2/2] spi: imx: add SPI_NO_CS support
+Date: Tue, 25 Jul 2017 09:57:09 +0200
+Message-ID: <20170725075709.27438-2-o.rempel@pengutronix.de>
+References: <20170725075709.27438-1-o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170725075709.27438-1-o.rempel@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 To run spi-loopback-tests on HW without modifications, we need to
-disable Chip Select. This should avoid surprising side effects for
-SPI devices by testing patterns.
+disable Chip Select. This should avoid surprising side effects for SPI devices
+by testing patterns.
 
-Signed-off-by: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/spi/spi-loopback-test.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 64a1e6f212c1..bed7403bb6b3 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -57,6 +57,11 @@ MODULE_PARM_DESC(loop_req,
- 		 "if set controller will be asked to enable test loop mode. " \
- 		 "If controller supported it, MISO and MOSI will be connected");
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 424dd013451e..930e47597db3 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -813,6 +813,9 @@ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
+ 	int active = is_active != BITBANG_CS_INACTIVE;
+ 	int dev_is_lowactive = !(spi->mode & SPI_CS_HIGH);
  
-+static int no_cs;
-+module_param(no_cs, int, 0);
-+MODULE_PARM_DESC(no_cs,
-+		 "if set Chip Select (CS) will not be used");
++	if (spi->mode & SPI_NO_CS)
++		return;
 +
- /* run only a specific test */
- static int run_only_test = -1;
- module_param(run_only_test, int, 0);
-@@ -319,11 +324,12 @@ static int spi_loopback_test_probe(struct spi_device *spi)
- {
- 	int ret;
+ 	if (!gpio_is_valid(spi->cs_gpio))
+ 		return;
  
--	if (loop_req) {
--		spi->mode = SPI_LOOP | spi->mode;
-+	if (loop_req || no_cs) {
-+		spi->mode |= loop_req ? SPI_LOOP : 0;
-+		spi->mode |= no_cs ? SPI_NO_CS : 0;
- 		ret = spi_setup(spi);
- 		if (ret) {
--			dev_err(&spi->dev, "SPI setup with SPI_LOOP failed (%d)\n",
-+			dev_err(&spi->dev, "SPI setup with SPI_LOOP or SPI_NO_CS failed (%d)\n",
- 				ret);
- 			return ret;
- 		}
+@@ -1139,6 +1142,9 @@ static int spi_imx_setup(struct spi_device *spi)
+ 	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n", __func__,
+ 		 spi->mode, spi->bits_per_word, spi->max_speed_hz);
+ 
++	if (spi->mode & SPI_NO_CS)
++		return 0;
++
+ 	if (gpio_is_valid(spi->cs_gpio))
+ 		gpio_direction_output(spi->cs_gpio,
+ 				      spi->mode & SPI_CS_HIGH ? 0 : 1);
+@@ -1238,7 +1244,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+-	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
++					     | SPI_NO_CS;
+ 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
+ 	    is_imx53_ecspi(spi_imx))
+ 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
 -- 
 2.11.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

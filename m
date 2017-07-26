@@ -1,21 +1,21 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: tools: add install section" to the spi tree
-Date: Wed, 26 Jul 2017 15:18:12 +0100
-Message-ID: <E1daN8e-0003vE-CR@debutante>
-References: <20170722214740.57322-2-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170722214740.57322-2-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: pic32: fix spelling mistakes on macro names" to the spi tree
+Date: Wed, 26 Jul 2017 15:18:09 +0100
+Message-ID: <E1daN8b-0003uP-D6@debutante>
+References: <20170724214445.15383-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170724214445.15383-1-colin.king@canonical.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tools: add install section
+   spi: pic32: fix spelling mistakes on macro names
 
 has been applied to the spi tree at
 
@@ -40,72 +40,44 @@ to this mail.
 Thanks,
 Mark
 
->From e9d4650dcc59092b8cc35e6e7a54184d6f124173 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 26 Jul 2017 12:59:30 +0300
-Subject: [PATCH] spi: tools: add install section
+>From 808f5154a75669fb08e1cc7019a4707836e21870 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Mon, 24 Jul 2017 22:44:45 +0100
+Subject: [PATCH] spi: pic32: fix spelling mistakes on macro names
 
-Allow user to call install target.
+Trivial fix to spelling mistakes macros; fix EMPTY spellings:
+RX_FIFO_EMTPY -> RX_FIFO_EMPTY
+TX_FIFO_EMTPY -> TX_FIFO_EMPTY
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Note that there are no other occurrances of these macros in the
+source.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- tools/Makefile     |  4 ++--
- tools/spi/Makefile | 10 +++++++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pic32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/Makefile b/tools/Makefile
-index 221e1ce78b06..616e7722b327 100644
---- a/tools/Makefile
-+++ b/tools/Makefile
-@@ -91,7 +91,7 @@ kvm_stat: FORCE
- 	$(call descend,kvm/$@)
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index fefb688a3432..f8a45af1fa9f 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -52,14 +52,14 @@ struct pic32_spi_regs {
  
- all: acpi cgroup cpupower gpio hv firewire lguest liblockdep \
--		perf selftests turbostat usb \
-+		perf selftests spi turbostat usb \
- 		virtio vm net x86_energy_perf_policy \
- 		tmon freefall objtool kvm_stat
+ /* Bit fields of SPI Control Register */
+ #define CTRL_RX_INT_SHIFT	0  /* Rx interrupt generation */
+-#define  RX_FIFO_EMTPY		0
++#define  RX_FIFO_EMPTY		0
+ #define  RX_FIFO_NOT_EMPTY	1 /* not empty */
+ #define  RX_FIFO_HALF_FULL	2 /* full by half or more */
+ #define  RX_FIFO_FULL		3 /* completely full */
  
-@@ -101,7 +101,7 @@ acpi_install:
- cpupower_install:
- 	$(call descend,power/$(@:_install=),install)
+ #define CTRL_TX_INT_SHIFT	2  /* TX interrupt generation */
+ #define  TX_FIFO_ALL_EMPTY	0 /* completely empty */
+-#define  TX_FIFO_EMTPY		1 /* empty */
++#define  TX_FIFO_EMPTY		1 /* empty */
+ #define  TX_FIFO_HALF_EMPTY	2 /* empty by half or more */
+ #define  TX_FIFO_NOT_FULL	3 /* atleast one empty */
  
--cgroup_install firewire_install gpio_install hv_install lguest_install perf_install usb_install virtio_install vm_install net_install objtool_install:
-+cgroup_install firewire_install gpio_install hv_install lguest_install perf_install spi_install usb_install virtio_install vm_install net_install objtool_install:
- 	$(call descend,$(@:_install=),install)
- 
- liblockdep_install:
-diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-index aa9517260715..90615e10c79a 100644
---- a/tools/spi/Makefile
-+++ b/tools/spi/Makefile
-@@ -1,5 +1,7 @@
- include ../scripts/Makefile.include
- 
-+bindir ?= /usr/bin
-+
- ifeq ($(srctree),)
- srctree := $(patsubst %/,%,$(dir $(CURDIR)))
- srctree := $(patsubst %/,%,$(dir $(srctree)))
-@@ -53,6 +55,12 @@ clean:
- 	rm -f $(OUTPUT)include/linux/spi/spidev.h
- 	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
- 
-+install: $(ALL_PROGRAMS)
-+	install -d -m 755 $(DESTDIR)$(bindir);		\
-+	for program in $(ALL_PROGRAMS); do		\
-+		install $$program $(DESTDIR)$(bindir);	\
-+	done
-+
- FORCE:
- 
--.PHONY: all clean FORCE prepare
-+.PHONY: all install clean FORCE prepare
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

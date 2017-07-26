@@ -1,65 +1,42 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
 Subject: Re: [PATCH] spi: document broadcom qspi driver as broken
-Date: Wed, 26 Jul 2017 17:24:33 +0100
-Message-ID: <20170726162433.wwnnc2rxecemkjtf@sirena.org.uk>
-References: <20170721220142.3400093-1-arnd@arndb.de>
- <CAC=U0a3jaNxRbScy27L+BFCs872F0kLAH80ieZNc7Uq6LwOyEQ@mail.gmail.com>
+Date: Wed, 26 Jul 2017 15:43:03 -0400
+Message-ID: <CAC=U0a19FVoEhvUJg3Hyiau0+C1J74GhAy7J0Bwozm1MXKuuyg@mail.gmail.com>
+References: <20170721220142.3400093-1-arnd@arndb.de> <CAC=U0a3jaNxRbScy27L+BFCs872F0kLAH80ieZNc7Uq6LwOyEQ@mail.gmail.com>
+ <CAK8P3a0AegjQW9bOw9G9F=za5RALgYEzETngH0U2i049oLpmbw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zgkkisnrlo6q5tsv"
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAC=U0a3jaNxRbScy27L+BFCs872F0kLAH80ieZNc7Uq6LwOyEQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAK8P3a0AegjQW9bOw9G9F=za5RALgYEzETngH0U2i049oLpmbw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jul 26, 2017 at 3:03 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Tue, Jul 25, 2017 at 11:39 PM, Kamal Dasu <kdasu.kdev@gmail.com> wrote:
+>> Arnd, Cyrille,
+>>
+>> I am working on fixing spi-bcm-qspi.c as per Cyrill's suggestion as
+>> mentioned here : https://patchwork.kernel.org/patch/9624585/.
+>>  And remove the use of SPINOR_OP_READ* and there by remove need to
+>> include spi-nor.h.
+>
+> Ok, thanks a lot!
+>
+> Do you think your fix will be applicable to stable backports, or should we
+> add a simple dependency first for the stable kernels and remove that
+> dependency again with the proper fix?
+>
 
---zgkkisnrlo6q5tsv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The  fix would be applicable to stable backport, we don't need to add
+a dependency.
 
-On Tue, Jul 25, 2017 at 05:39:57PM -0400, Kamal Dasu wrote:
-> Arnd, Cyrille,
->=20
-> I am working on fixing spi-bcm-qspi.c as per Cyrill's suggestion as
-> mentioned here : https://patchwork.kernel.org/patch/9624585/.
->  And remove the use of SPINOR_OP_READ* and there by remove need to
-> include spi-nor.h.
+>        Arnd
 
-That's great - any ETA?  I'm tempted to apply Arnd's patch for now to
-help anyone who runs into problems with it, your fix could then revert
-it when you've got a proper fix.
-
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
-
---zgkkisnrlo6q5tsv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAll4wkAACgkQJNaLcl1U
-h9Ao2Af+PvNVHVr/z88fdWKukgL/fZjWcsovRbbZhkiiay89f5cAu1EyvYIMLpeF
-FdwTwViGseHQVPVn0ELsHaQYl3jH+QQQhIjfMaZ4BdpW9sLTQhFgSc9CRyPI+Jb4
-6RhesqdH58c0GjTmY1jTHwAHHi9NwnkNehvz0K0RhhlEM9nuy9oVSvWxpADsfwzy
-UYY6feUY6p5KVhOhaXjadPLQreoZjzKHRRpe693qU656967A5JplO+03rxuBP57S
-MPdDzr47SQ0Rp4E7qSgf35mHvhVQA0z1BbdXbbon0rs3TwMWJS/IVqBRPvUUe1Ir
-NqUlMuTqeMnii6gWQGaA+7JI0ny1fQ==
-=bY6I
------END PGP SIGNATURE-----
-
---zgkkisnrlo6q5tsv--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Kamal

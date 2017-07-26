@@ -1,83 +1,65 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pic32: fix spelling mistakes on macro names" to the spi tree
-Date: Wed, 26 Jul 2017 15:18:09 +0100
-Message-ID: <E1daN8b-0003uP-D6@debutante>
-References: <20170724214445.15383-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170724214445.15383-1-colin.king@canonical.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: document broadcom qspi driver as broken
+Date: Wed, 26 Jul 2017 17:24:33 +0100
+Message-ID: <20170726162433.wwnnc2rxecemkjtf@sirena.org.uk>
+References: <20170721220142.3400093-1-arnd@arndb.de>
+ <CAC=U0a3jaNxRbScy27L+BFCs872F0kLAH80ieZNc7Uq6LwOyEQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zgkkisnrlo6q5tsv"
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAC=U0a3jaNxRbScy27L+BFCs872F0kLAH80ieZNc7Uq6LwOyEQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: pic32: fix spelling mistakes on macro names
+--zgkkisnrlo6q5tsv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Jul 25, 2017 at 05:39:57PM -0400, Kamal Dasu wrote:
+> Arnd, Cyrille,
+>=20
+> I am working on fixing spi-bcm-qspi.c as per Cyrill's suggestion as
+> mentioned here : https://patchwork.kernel.org/patch/9624585/.
+>  And remove the use of SPINOR_OP_READ* and there by remove need to
+> include spi-nor.h.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+That's great - any ETA?  I'm tempted to apply Arnd's patch for now to
+help anyone who runs into problems with it, your fix could then revert
+it when you've got a proper fix.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--zgkkisnrlo6q5tsv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAll4wkAACgkQJNaLcl1U
+h9Ao2Af+PvNVHVr/z88fdWKukgL/fZjWcsovRbbZhkiiay89f5cAu1EyvYIMLpeF
+FdwTwViGseHQVPVn0ELsHaQYl3jH+QQQhIjfMaZ4BdpW9sLTQhFgSc9CRyPI+Jb4
+6RhesqdH58c0GjTmY1jTHwAHHi9NwnkNehvz0K0RhhlEM9nuy9oVSvWxpADsfwzy
+UYY6feUY6p5KVhOhaXjadPLQreoZjzKHRRpe693qU656967A5JplO+03rxuBP57S
+MPdDzr47SQ0Rp4E7qSgf35mHvhVQA0z1BbdXbbon0rs3TwMWJS/IVqBRPvUUe1Ir
+NqUlMuTqeMnii6gWQGaA+7JI0ny1fQ==
+=bY6I
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From 808f5154a75669fb08e1cc7019a4707836e21870 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Mon, 24 Jul 2017 22:44:45 +0100
-Subject: [PATCH] spi: pic32: fix spelling mistakes on macro names
-
-Trivial fix to spelling mistakes macros; fix EMPTY spellings:
-RX_FIFO_EMTPY -> RX_FIFO_EMPTY
-TX_FIFO_EMTPY -> TX_FIFO_EMPTY
-
-Note that there are no other occurrances of these macros in the
-source.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-pic32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index fefb688a3432..f8a45af1fa9f 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -52,14 +52,14 @@ struct pic32_spi_regs {
- 
- /* Bit fields of SPI Control Register */
- #define CTRL_RX_INT_SHIFT	0  /* Rx interrupt generation */
--#define  RX_FIFO_EMTPY		0
-+#define  RX_FIFO_EMPTY		0
- #define  RX_FIFO_NOT_EMPTY	1 /* not empty */
- #define  RX_FIFO_HALF_FULL	2 /* full by half or more */
- #define  RX_FIFO_FULL		3 /* completely full */
- 
- #define CTRL_TX_INT_SHIFT	2  /* TX interrupt generation */
- #define  TX_FIFO_ALL_EMPTY	0 /* completely empty */
--#define  TX_FIFO_EMTPY		1 /* empty */
-+#define  TX_FIFO_EMPTY		1 /* empty */
- #define  TX_FIFO_HALF_EMPTY	2 /* empty by half or more */
- #define  TX_FIFO_NOT_FULL	3 /* atleast one empty */
- 
--- 
-2.13.2
+--zgkkisnrlo6q5tsv--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

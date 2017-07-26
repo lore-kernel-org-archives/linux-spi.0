@@ -1,20 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: add SPI_NO_CS support" to the spi tree
-Date: Wed, 26 Jul 2017 15:18:03 +0100
-Message-ID: <E1daN8V-0003sL-FR@debutante>
-References: <20170725075709.27438-2-o.rempel@pengutronix.de>
+Subject: Applied "spi: loopback-test: implement testing with no CS" to the spi tree
+Date: Wed, 26 Jul 2017 15:18:06 +0100
+Message-ID: <E1daN8Y-0003tW-Ee@debutante>
+References: <20170725075709.27438-1-o.rempel@pengutronix.de>
 Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
         kernel@pengutronix.de, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170725075709.27438-2-o.rempel@pengutronix.de>
+In-Reply-To: <20170725075709.27438-1-o.rempel@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: add SPI_NO_CS support
+   spi: loopback-test: implement testing with no CS
 
 has been applied to the spi tree at
 
@@ -39,54 +39,52 @@ to this mail.
 Thanks,
 Mark
 
->From ab2f357223eb8fa6acc96bfa002053b6f1f92341 Mon Sep 17 00:00:00 2001
+>From 8bc85a871436525cc38f819bbc122d216730e905 Mon Sep 17 00:00:00 2001
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 25 Jul 2017 09:57:09 +0200
-Subject: [PATCH] spi: imx: add SPI_NO_CS support
+Date: Tue, 25 Jul 2017 09:57:08 +0200
+Subject: [PATCH] spi: loopback-test: implement testing with no CS
 
 To run spi-loopback-tests on HW without modifications, we need to
-disable Chip Select. This should avoid surprising side effects for SPI devices
-by testing patterns.
+disable Chip Select. This should avoid surprising side effects for
+SPI devices by testing patterns.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-loopback-test.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 424dd013451e..930e47597db3 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -813,6 +813,9 @@ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
- 	int active = is_active != BITBANG_CS_INACTIVE;
- 	int dev_is_lowactive = !(spi->mode & SPI_CS_HIGH);
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 64a1e6f212c1..bed7403bb6b3 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -57,6 +57,11 @@ MODULE_PARM_DESC(loop_req,
+ 		 "if set controller will be asked to enable test loop mode. " \
+ 		 "If controller supported it, MISO and MOSI will be connected");
  
-+	if (spi->mode & SPI_NO_CS)
-+		return;
++static int no_cs;
++module_param(no_cs, int, 0);
++MODULE_PARM_DESC(no_cs,
++		 "if set Chip Select (CS) will not be used");
 +
- 	if (!gpio_is_valid(spi->cs_gpio))
- 		return;
+ /* run only a specific test */
+ static int run_only_test = -1;
+ module_param(run_only_test, int, 0);
+@@ -319,11 +324,12 @@ static int spi_loopback_test_probe(struct spi_device *spi)
+ {
+ 	int ret;
  
-@@ -1139,6 +1142,9 @@ static int spi_imx_setup(struct spi_device *spi)
- 	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n", __func__,
- 		 spi->mode, spi->bits_per_word, spi->max_speed_hz);
- 
-+	if (spi->mode & SPI_NO_CS)
-+		return 0;
-+
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_direction_output(spi->cs_gpio,
- 				      spi->mode & SPI_CS_HIGH ? 0 : 1);
-@@ -1238,7 +1244,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
- 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
--	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
-+					     | SPI_NO_CS;
- 	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
- 	    is_imx53_ecspi(spi_imx))
- 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP | SPI_READY;
+-	if (loop_req) {
+-		spi->mode = SPI_LOOP | spi->mode;
++	if (loop_req || no_cs) {
++		spi->mode |= loop_req ? SPI_LOOP : 0;
++		spi->mode |= no_cs ? SPI_NO_CS : 0;
+ 		ret = spi_setup(spi);
+ 		if (ret) {
+-			dev_err(&spi->dev, "SPI setup with SPI_LOOP failed (%d)\n",
++			dev_err(&spi->dev, "SPI setup with SPI_LOOP or SPI_NO_CS failed (%d)\n",
+ 				ret);
+ 			return ret;
+ 		}
 -- 
 2.13.2

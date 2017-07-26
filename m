@@ -1,21 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: tools: move to tools buildsystem" to the spi tree
-Date: Wed, 26 Jul 2017 15:18:15 +0100
-Message-ID: <E1daN8h-0003w4-O2@debutante>
-References: <20170722214740.57322-1-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: tools: add install section" to the spi tree
+Date: Wed, 26 Jul 2017 15:18:12 +0100
+Message-ID: <E1daN8e-0003vE-CR@debutante>
+References: <20170722214740.57322-2-andriy.shevchenko@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170722214740.57322-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20170722214740.57322-2-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: tools: move to tools buildsystem
+   spi: tools: add install section
 
 has been applied to the spi tree at
 
@@ -40,95 +40,68 @@ to this mail.
 Thanks,
 Mark
 
->From f325b73dc4db9d6c2393805b4f468e82d730764e Mon Sep 17 00:00:00 2001
+>From e9d4650dcc59092b8cc35e6e7a54184d6f124173 Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 26 Jul 2017 12:59:29 +0300
-Subject: [PATCH] spi: tools: move to tools buildsystem
+Date: Wed, 26 Jul 2017 12:59:30 +0300
+Subject: [PATCH] spi: tools: add install section
 
-There is a nice buildsystem dedicated for userspace tools in Linux kernel tree.
-Switch spi target to be built by it.
+Allow user to call install target.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- tools/spi/Build    |  2 ++
- tools/spi/Makefile | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 56 insertions(+), 2 deletions(-)
- create mode 100644 tools/spi/Build
+ tools/Makefile     |  4 ++--
+ tools/spi/Makefile | 10 +++++++++-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/spi/Build b/tools/spi/Build
-new file mode 100644
-index 000000000000..8e8466033d99
---- /dev/null
-+++ b/tools/spi/Build
-@@ -0,0 +1,2 @@
-+spidev_test-y += spidev_test.o
-+spidev_fdx-y += spidev_fdx.o
+diff --git a/tools/Makefile b/tools/Makefile
+index 221e1ce78b06..616e7722b327 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -91,7 +91,7 @@ kvm_stat: FORCE
+ 	$(call descend,kvm/$@)
+ 
+ all: acpi cgroup cpupower gpio hv firewire lguest liblockdep \
+-		perf selftests turbostat usb \
++		perf selftests spi turbostat usb \
+ 		virtio vm net x86_energy_perf_policy \
+ 		tmon freefall objtool kvm_stat
+ 
+@@ -101,7 +101,7 @@ acpi_install:
+ cpupower_install:
+ 	$(call descend,power/$(@:_install=),install)
+ 
+-cgroup_install firewire_install gpio_install hv_install lguest_install perf_install usb_install virtio_install vm_install net_install objtool_install:
++cgroup_install firewire_install gpio_install hv_install lguest_install perf_install spi_install usb_install virtio_install vm_install net_install objtool_install:
+ 	$(call descend,$(@:_install=),install)
+ 
+ liblockdep_install:
 diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-index 3815b18ba070..aa9517260715 100644
+index aa9517260715..90615e10c79a 100644
 --- a/tools/spi/Makefile
 +++ b/tools/spi/Makefile
-@@ -1,6 +1,58 @@
-+include ../scripts/Makefile.include
-+
-+ifeq ($(srctree),)
-+srctree := $(patsubst %/,%,$(dir $(CURDIR)))
-+srctree := $(patsubst %/,%,$(dir $(srctree)))
-+endif
-+
-+# Do not use make's built-in rules
-+# (this improves performance and avoids hard-to-debug behaviour);
-+MAKEFLAGS += -r
-+
- CC = $(CROSS_COMPILE)gcc
-+LD = $(CROSS_COMPILE)ld
-+CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
-+
-+ALL_TARGETS := spidev_test spidev_fdx
-+ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
-+
-+all: $(ALL_PROGRAMS)
-+
-+export srctree OUTPUT CC LD CFLAGS
-+include $(srctree)/tools/build/Makefile.include
+@@ -1,5 +1,7 @@
+ include ../scripts/Makefile.include
  
--all: spidev_test spidev_fdx
-+#
-+# We need the following to be outside of kernel tree
-+#
-+$(OUTPUT)include/linux/spi/spidev.h: ../../include/uapi/linux/spi/spidev.h
-+	mkdir -p $(OUTPUT)include/linux/spi 2>&1 || true
-+	ln -sf $(CURDIR)/../../include/uapi/linux/spi/spidev.h $@
++bindir ?= /usr/bin
 +
-+prepare: $(OUTPUT)include/linux/spi/spidev.h
-+
-+#
-+# spidev_test
-+#
-+SPIDEV_TEST_IN := $(OUTPUT)spidev_test-in.o
-+$(SPIDEV_TEST_IN): prepare FORCE
-+	$(Q)$(MAKE) $(build)=spidev_test
-+$(OUTPUT)spidev_test: $(SPIDEV_TEST_IN)
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
-+
-+#
-+# spidev_fdx
-+#
-+SPIDEV_FDX_IN := $(OUTPUT)spidev_fdx-in.o
-+$(SPIDEV_FDX_IN): prepare FORCE
-+	$(Q)$(MAKE) $(build)=spidev_fdx
-+$(OUTPUT)spidev_fdx: $(SPIDEV_FDX_IN)
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+ ifeq ($(srctree),)
+ srctree := $(patsubst %/,%,$(dir $(CURDIR)))
+ srctree := $(patsubst %/,%,$(dir $(srctree)))
+@@ -53,6 +55,12 @@ clean:
+ 	rm -f $(OUTPUT)include/linux/spi/spidev.h
+ 	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
  
- clean:
--	$(RM) spidev_test spidev_fdx
-+	rm -f $(ALL_PROGRAMS)
-+	rm -f $(OUTPUT)include/linux/spi/spidev.h
-+	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
++install: $(ALL_PROGRAMS)
++	install -d -m 755 $(DESTDIR)$(bindir);		\
++	for program in $(ALL_PROGRAMS); do		\
++		install $$program $(DESTDIR)$(bindir);	\
++	done
 +
-+FORCE:
-+
-+.PHONY: all clean FORCE prepare
+ FORCE:
+ 
+-.PHONY: all clean FORCE prepare
++.PHONY: all install clean FORCE prepare
 -- 
 2.13.2
 

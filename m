@@ -1,7 +1,7 @@
 From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [RFC PATCH v2 07/12] spi: use gpio_desc instead of numeric gpio
-Date: Fri, 28 Jul 2017 10:03:17 +1200
-Message-ID: <20170727220322.26654-8-chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH v2 11/12] ARM: ep93xx: remove chipselect from ep93xx_spi_info
+Date: Fri, 28 Jul 2017 10:03:21 +1200
+Message-ID: <20170727220322.26654-12-chris.packham@alliedtelesis.co.nz>
 References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
@@ -10,46 +10,95 @@ In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkH
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-By using a gpio_desc and gpiod_set_value() instead of a numeric gpio and
-gpio_set_value() the gpio flags are taken into account. This is useful
-when using a gpio chip-select to supplement a controllers native
-chip-select.
+Now that the driver has been updated to use gpiod there is no need to
+have platform data to define the SPI chipselects. We still need to
+define the number of chipselects used.
 
 Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 ---
+ arch/arm/mach-ep93xx/edb93xx.c           | 7 +------
+ arch/arm/mach-ep93xx/simone.c            | 7 +------
+ arch/arm/mach-ep93xx/vision_ep9307.c     | 9 +--------
+ include/linux/platform_data/spi-ep93xx.h | 4 +---
+ 4 files changed, 4 insertions(+), 23 deletions(-)
 
-Notes:
-    (I've included this in this series for context, ultimately it should not be
-    needed once everything is using gpio_desc)
-    
-    My specific use-case is I have a board that uses the spi-orion driver but
-    only has one CS pin available. In order to access two spi slave devices the
-    board has a 1-of-2 decoder/demultiplexer which is driven via a gpio.
-    
-    The problem is that for one of the 2 slave devices the gpio level required
-    is opposite to the chip-select so I can't simply specify "spi-cs-high".
-    With this change I can flag the gpio as active low and the gpio subsystem
-    takes care of the additional inversion required.
-
- drivers/spi/spi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0725c78b0de6..918a53c884dd 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -725,7 +725,10 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 		enable = !enable;
+diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
+index 9042adfe03de..b8d354fc27f5 100644
+--- a/arch/arm/mach-ep93xx/edb93xx.c
++++ b/arch/arm/mach-ep93xx/edb93xx.c
+@@ -127,13 +127,8 @@ static struct gpiod_lookup_table edb93xx_gpios_table = {
+ 	},
+ };
  
- 	if (gpio_is_valid(spi->cs_gpio)) {
--		gpio_set_value(spi->cs_gpio, !enable);
-+		struct gpio_desc *gpio = gpio_to_desc(spi->cs_gpio);
-+
-+		if (gpio)
-+			gpiod_set_value(gpio, !enable);
- 		/* Some SPI masters need both GPIO CS & slave_select */
- 		if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
- 		    spi->controller->set_cs)
+-static int edb93xx_spi_chipselects[] __initdata = {
+-	EP93XX_GPIO_LINE_EGPIO6,
+-};
+-
+ static struct ep93xx_spi_info edb93xx_spi_info __initdata = {
+-	.chipselect	= edb93xx_spi_chipselects,
+-	.num_chipselect	= ARRAY_SIZE(edb93xx_spi_chipselects),
++	.num_chipselect	= 1,
+ };
+ 
+ static void __init edb93xx_register_spi(void)
+diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
+index f297a7a89ed9..cb6bc2e1670a 100644
+--- a/arch/arm/mach-ep93xx/simone.c
++++ b/arch/arm/mach-ep93xx/simone.c
+@@ -129,13 +129,8 @@ static struct gpiod_lookup_table simone_gpios_table = {
+ 	},
+ };
+ 
+-static int simone_spi_chipselects[] __initdata = {
+-	EP93XX_GPIO_LINE_EGPIO1,
+-};
+-
+ static struct ep93xx_spi_info simone_spi_info __initdata = {
+-	.chipselect	= simone_spi_chipselects,
+-	.num_chipselect	= ARRAY_SIZE(simone_spi_chipselects),
++	.num_chipselect	= 1,
+ 	.use_dma = 1,
+ };
+ 
+diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
+index 3d9c66bbf2af..494c55080472 100644
+--- a/arch/arm/mach-ep93xx/vision_ep9307.c
++++ b/arch/arm/mach-ep93xx/vision_ep9307.c
+@@ -256,15 +256,8 @@ static struct gpiod_lookup_table vision_gpios_table = {
+ 	},
+ };
+ 
+-static int vision_spi_chipselects[] __initdata = {
+-	EP93XX_GPIO_LINE_EGPIO6,
+-	EP93XX_GPIO_LINE_EGPIO7,
+-	EP93XX_GPIO_LINE_G(2),
+-};
+-
+ static struct ep93xx_spi_info vision_spi_master __initdata = {
+-	.chipselect	= vision_spi_chipselects,
+-	.num_chipselect	= ARRAY_SIZE(vision_spi_chipselects),
++	.num_chipselect	= 3,
+ 	.use_dma	= 1,
+ };
+ 
+diff --git a/include/linux/platform_data/spi-ep93xx.h b/include/linux/platform_data/spi-ep93xx.h
+index 171a271c2cbd..efcf33eff851 100644
+--- a/include/linux/platform_data/spi-ep93xx.h
++++ b/include/linux/platform_data/spi-ep93xx.h
+@@ -5,12 +5,10 @@ struct spi_device;
+ 
+ /**
+  * struct ep93xx_spi_info - EP93xx specific SPI descriptor
+- * @chipselect: array of gpio numbers to use as chip selects
+- * @num_chipselect: ARRAY_SIZE(chipselect)
++ * @num_chipselect: number chip selects supported
+  * @use_dma: use DMA for the transfers
+  */
+ struct ep93xx_spi_info {
+-	int	*chipselect;
+ 	int	num_chipselect;
+ 	bool	use_dma;
+ };
 -- 
 2.13.0
 

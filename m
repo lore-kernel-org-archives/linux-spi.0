@@ -1,59 +1,130 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Thu, 27 Jul 2017 12:47:30 +0300
-Message-ID: <CAHp75VepKV1MyGqur7Nq-R+TA_cDdD7BuE4HtpgYCdSRBxg92A@mail.gmail.com>
-References: <20170724095327.18602-1-mnhu@prevas.dk> <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
- <20170724120148.avqvi53wkdgctsir@sirena.org.uk> <e668b7529837444085b9df3a563c3fe3@svr-chch-ex1.atlnz.lc>
- <DBFEECA3-E21E-4DC5-B6B9-D1B12AD48E7A@prevas.dk> <3027e39333a24fa7a4ce540d96b0e6f3@svr-chch-ex1.atlnz.lc>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: =?UTF-8?Q?Martin_Hundeb=C3=B8ll?= <martin.hundeboll-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        =?UTF-8?Q?Martin_Hundeb=C3=B8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1] Revert "spi: pxa2xx: Only claim CS GPIOs when the slave device is created"
+Date: Thu, 27 Jul 2017 13:09:54 +0300
+Message-ID: <20170727100954.46801-1-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3027e39333a24fa7a4ce540d96b0e6f3-5g7mGxlPNYb6GjIOKuZY+ItlCAj8ZROq@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jul 25, 2017 at 12:44 AM, Chris Packham
-<Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
-> On 25/07/17 09:28, Martin Hundeb=C3=B8ll wrote:
->>> My patchset kind of stalled. I can do a refresh if there's interest.
->>> But I really do need some help from people with access to hardware (I c=
-an
->>> cover spi-orion and spi-fsl-espi but that's about it). After the
->>> initial RFC series I posted in May I found that iMX platforms use the i=
-nteger
->>> cs_gpio field for both native chipselects and gpio based ones (values <
->>> 0 indicate native CS) so again I'd be coding blind trying to
->>> disentangle that.
->  >
->> My submission was more or less a fly-by patch, but I'd be happy to
->> test/debug patches on spi-imx if you CC me on the series.
->
-> Thanks for the offer. Now I just need to get a few round tuits.
+There is a valid case to call setup() following by setup_cs() several
+times for the same chip.
 
-Can you please, resend the latest you have with Cc'ing me?
+With the commit
 
->> Any other drivers with special gpio-cs handling?
->  >
->
-> Based on a quick grep spi-{atmel,davinci,ep93xx,gpio,imx,mt65xx,stm32}
-> all do stuff with cs_gpios outside of the spi core. I think at least
-> some of those a trivially handled if we let the core code do the gpio
-> management.
+	676a4e3bab44 ("spi: pxa2xx: Only claim CS GPIOs when the slave device is created")
 
-I have got ep93xx board from Mika to test, so, I can perhaps perform
-tests later, after I got pxa2xx working.
+it is not possible anymore due to GPIO line being requested already
+during the first call to setup_cs().
 
---=20
-With Best Regards,
-Andy Shevchenko
+For now, revert the commit to make things work again.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index be991266a6ce..38d053682892 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1213,33 +1213,21 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 		    struct pxa2xx_spi_chip *chip_info)
+ {
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+-	struct device *pdev = &drv_data->pdev->dev;
+-	struct gpio_desc *gpiod;
+ 	int err = 0;
+-	int count;
+ 
+ 	if (chip == NULL)
+ 		return 0;
+ 
+-	count = gpiod_count(pdev, "cs");
+-	if (count > 0) {
+-		if (spi->chip_select >= count)
+-			return -EINVAL;
+-
+-		gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
+-					GPIOD_OUT_HIGH);
+-		if (IS_ERR(gpiod)) {
+-			/* Means use native chip select */
+-			if (PTR_ERR(gpiod) == -ENOENT)
+-				return 0;
++	if (drv_data->cs_gpiods) {
++		struct gpio_desc *gpiod;
+ 
+-			return PTR_ERR(gpiod);
++		gpiod = drv_data->cs_gpiods[spi->chip_select];
++		if (gpiod) {
++			chip->gpio_cs = desc_to_gpio(gpiod);
++			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
++			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+ 		}
+ 
+-		chip->gpio_cs = desc_to_gpio(gpiod);
+-		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+-		gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+-
+ 		return 0;
+ 	}
+ 
+@@ -1427,7 +1415,8 @@ static void cleanup(struct spi_device *spi)
+ 	if (!chip)
+ 		return;
+ 
+-	if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
++	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
++	    gpio_is_valid(chip->gpio_cs))
+ 		gpio_free(chip->gpio_cs);
+ 
+ 	kfree(chip);
+@@ -1763,10 +1752,38 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = platform_info->num_chipselect;
+ 
+ 	count = gpiod_count(&pdev->dev, "cs");
+-	if (count > 0)
++	if (count > 0) {
++		int i;
++
+ 		master->num_chipselect = max_t(int, count,
+ 			master->num_chipselect);
+ 
++		drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
++			master->num_chipselect, sizeof(struct gpio_desc *),
++			GFP_KERNEL);
++		if (!drv_data->cs_gpiods) {
++			status = -ENOMEM;
++			goto out_error_clock_enabled;
++		}
++
++		for (i = 0; i < master->num_chipselect; i++) {
++			struct gpio_desc *gpiod;
++
++			gpiod = devm_gpiod_get_index(dev, "cs", i,
++						     GPIOD_OUT_HIGH);
++			if (IS_ERR(gpiod)) {
++				/* Means use native chip select */
++				if (PTR_ERR(gpiod) == -ENOENT)
++					continue;
++
++				status = (int)PTR_ERR(gpiod);
++				goto out_error_clock_enabled;
++			} else {
++				drv_data->cs_gpiods[i] = gpiod;
++			}
++		}
++	}
++
+ 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
+ 		     (unsigned long)drv_data);
+ 
+-- 
+2.13.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

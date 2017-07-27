@@ -1,52 +1,132 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1] Revert "spi: pxa2xx: Only claim CS GPIOs when the
- slave device is created"
-Date: Thu, 27 Jul 2017 11:15:41 +0100
-Message-ID: <20170727101541.wpulhph3nckb4bxo@sirena.org.uk>
-References: <20170727100954.46801-1-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fpkcvvb4j2j4fwu6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v2] spi: pxa2xx: Revert "Only claim CS GPIOs when the slave device is created"
+Date: Thu, 27 Jul 2017 14:37:08 +0300
+Message-ID: <20170727113708.87214-1-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>,
         Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170727100954.46801-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+There is a valid case to call setup() following by setup_cs() several
+times for the same chip.
 
---fpkcvvb4j2j4fwu6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+With the commit
 
-On Thu, Jul 27, 2017 at 01:09:54PM +0300, Andy Shevchenko wrote:
-> There is a valid case to call setup() following by setup_cs() several
-> times for the same chip.
+  676a4e3bab44 ("spi: pxa2xx: Only claim CS GPIOs when the slave device is created")
 
-Please submit patches using subject lines reflecting the style for the
-subsystem.  This makes it easier for people to identify relevant
-patches.  Look at what existing commits in the area you're changing are
-doing and make sure your subject lines visually resemble what they're
-doing.
+it is not possible anymore due to GPIO line being requested already
+during the first call to setup_cs().
 
---fpkcvvb4j2j4fwu6
-Content-Type: application/pgp-signature; name="signature.asc"
+For now, revert the commit to make things work again.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+- rephrase subject line to follow subsystem's pattern
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAll5vUwACgkQJNaLcl1U
-h9C7Qwf/UMEaDo9BRwDfiwpNkngBMc7dEVwcfg1/onE+97efMrOD3qNj8uI7+VRG
-mnq/2sclxldBJjxX2tT7E8zJvtYp0Og3rBKx4a9VSautOHjVjvn3UtdMCq+rmLW/
-pXtastZoTljvugLmOWIdg+z/lhOhJOBLV4Fxj6rLgahBAUZ8Ylp3wcQQ6rvwcscF
-0QU0rq3RZFSevMj9EvPXhx0EsmEdVZER+LFsIdGv3sYTsyHt16RixlLOa8A1lyOB
-+cvdxyo5a+plocfMbecII4q8+7a6rjB7L6OqiqMltFlkzSwfXkFA6bN41cU2K4pl
-gAjWzUrgCtbVWjnZ4s4CxCEJVFSMGA==
-=/5UT
------END PGP SIGNATURE-----
+ drivers/spi/spi-pxa2xx.c | 59 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 21 deletions(-)
 
---fpkcvvb4j2j4fwu6--
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index be991266a6ce..38d053682892 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1213,33 +1213,21 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 		    struct pxa2xx_spi_chip *chip_info)
+ {
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+-	struct device *pdev = &drv_data->pdev->dev;
+-	struct gpio_desc *gpiod;
+ 	int err = 0;
+-	int count;
+ 
+ 	if (chip == NULL)
+ 		return 0;
+ 
+-	count = gpiod_count(pdev, "cs");
+-	if (count > 0) {
+-		if (spi->chip_select >= count)
+-			return -EINVAL;
+-
+-		gpiod = gpiod_get_index(pdev, "cs", spi->chip_select,
+-					GPIOD_OUT_HIGH);
+-		if (IS_ERR(gpiod)) {
+-			/* Means use native chip select */
+-			if (PTR_ERR(gpiod) == -ENOENT)
+-				return 0;
++	if (drv_data->cs_gpiods) {
++		struct gpio_desc *gpiod;
+ 
+-			return PTR_ERR(gpiod);
++		gpiod = drv_data->cs_gpiods[spi->chip_select];
++		if (gpiod) {
++			chip->gpio_cs = desc_to_gpio(gpiod);
++			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
++			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+ 		}
+ 
+-		chip->gpio_cs = desc_to_gpio(gpiod);
+-		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+-		gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+-
+ 		return 0;
+ 	}
+ 
+@@ -1427,7 +1415,8 @@ static void cleanup(struct spi_device *spi)
+ 	if (!chip)
+ 		return;
+ 
+-	if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
++	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
++	    gpio_is_valid(chip->gpio_cs))
+ 		gpio_free(chip->gpio_cs);
+ 
+ 	kfree(chip);
+@@ -1763,10 +1752,38 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = platform_info->num_chipselect;
+ 
+ 	count = gpiod_count(&pdev->dev, "cs");
+-	if (count > 0)
++	if (count > 0) {
++		int i;
++
+ 		master->num_chipselect = max_t(int, count,
+ 			master->num_chipselect);
+ 
++		drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
++			master->num_chipselect, sizeof(struct gpio_desc *),
++			GFP_KERNEL);
++		if (!drv_data->cs_gpiods) {
++			status = -ENOMEM;
++			goto out_error_clock_enabled;
++		}
++
++		for (i = 0; i < master->num_chipselect; i++) {
++			struct gpio_desc *gpiod;
++
++			gpiod = devm_gpiod_get_index(dev, "cs", i,
++						     GPIOD_OUT_HIGH);
++			if (IS_ERR(gpiod)) {
++				/* Means use native chip select */
++				if (PTR_ERR(gpiod) == -ENOENT)
++					continue;
++
++				status = (int)PTR_ERR(gpiod);
++				goto out_error_clock_enabled;
++			} else {
++				drv_data->cs_gpiods[i] = gpiod;
++			}
++		}
++	}
++
+ 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
+ 		     (unsigned long)drv_data);
+ 
+-- 
+2.13.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

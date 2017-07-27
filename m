@@ -1,7 +1,7 @@
 From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [RFC PATCH v2 05/12] spi: spi-ep93xx: remove private data 'current_msg'
-Date: Fri, 28 Jul 2017 10:03:15 +1200
-Message-ID: <20170727220322.26654-6-chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH v2 02/12] spi: spi-ep93xx: add spi master prepare_transfer_hardware()
+Date: Fri, 28 Jul 2017 10:03:12 +1200
+Message-ID: <20170727220322.26654-3-chris.packham@alliedtelesis.co.nz>
 References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
@@ -12,96 +12,128 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 
-The currently in-flight message can be found from the spi master.
-Use that instead and remove the private data pointer.
+This driver currently enables the hardware at the start of every
+message and disabled it when the message is complete. Make it a
+bit smarter by adding the prepare_transfer_hardware() and
+unprepare_transfer_hardware() callbacks so that the core can
+enable/disable the hardware based on spi message queue.
 
 Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 ---
- drivers/spi/spi-ep93xx.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/spi/spi-ep93xx.c | 72 ++++++++++++++++++++++--------------------------
+ 1 file changed, 33 insertions(+), 39 deletions(-)
 
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index f276ddee5a2e..dd376266d77e 100644
+index bc1db022d353..dd179f3fbeeb 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
-@@ -74,7 +74,6 @@
-  * @mmio: pointer to ioremap()'d registers
-  * @sspdr_phys: physical address of the SSPDR register
-  * @wait: wait here until given transfer is completed
-- * @current_msg: message that is currently processed (or %NULL if none)
-  * @tx: current byte in transfer to transmit
-  * @rx: current byte in transfer to receive
-  * @fifo_level: how full is FIFO (%0..%SPI_FIFO_SIZE - %1). Receiving one
-@@ -93,7 +92,6 @@ struct ep93xx_spi {
- 	void __iomem			*mmio;
- 	unsigned long			sspdr_phys;
- 	struct completion		wait;
--	struct spi_message		*current_msg;
- 	size_t				tx;
- 	size_t				rx;
- 	size_t				fifo_level;
-@@ -236,8 +234,7 @@ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
- static int ep93xx_spi_read_write(struct spi_master *master)
+@@ -111,33 +111,6 @@ struct ep93xx_spi {
+ /* converts bits per word to CR0.DSS value */
+ #define bits_per_word_to_dss(bpw)	((bpw) - 1)
+ 
+-static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
+-{
+-	unsigned int val;
+-	int err;
+-
+-	err = clk_enable(espi->clk);
+-	if (err)
+-		return err;
+-
+-	val = readl(espi->mmio + SSPCR1);
+-	val |= SSPCR1_SSE;
+-	writel(val, espi->mmio + SSPCR1);
+-
+-	return 0;
+-}
+-
+-static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
+-{
+-	unsigned int val;
+-
+-	val = readl(espi->mmio + SSPCR1);
+-	val &= ~SSPCR1_SSE;
+-	writel(val, espi->mmio + SSPCR1);
+-
+-	clk_disable(espi->clk);
+-}
+-
+ static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
  {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
--	struct spi_message *msg = espi->current_msg;
--	struct spi_transfer *t = msg->state;
-+	struct spi_transfer *t = master->cur_msg->state;
- 
- 	/* read as long as RX FIFO has frames in it */
- 	while ((readl(espi->mmio + SSPSR) & SSPSR_RNE)) {
-@@ -290,7 +287,7 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
- 		       enum dma_transfer_direction dir)
+ 	unsigned int val;
+@@ -571,17 +544,6 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
  {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
--	struct spi_transfer *t = espi->current_msg->state;
-+	struct spi_transfer *t = master->cur_msg->state;
- 	struct dma_async_tx_descriptor *txd;
- 	enum dma_slave_buswidth buswidth;
- 	struct dma_slave_config conf;
-@@ -415,13 +412,12 @@ static void ep93xx_spi_dma_callback(void *callback_param)
- static void ep93xx_spi_dma_transfer(struct spi_master *master)
+ 	unsigned long timeout;
+ 	struct spi_transfer *t;
+-	int err;
+-
+-	/*
+-	 * Enable the SPI controller and its clock.
+-	 */
+-	err = ep93xx_spi_enable(espi);
+-	if (err) {
+-		dev_err(&espi->pdev->dev, "failed to enable SPI controller\n");
+-		msg->status = err;
+-		return;
+-	}
+ 
+ 	/*
+ 	 * Just to be sure: flush any data from RX FIFO.
+@@ -619,7 +581,6 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	 * deselect the device and disable the SPI controller.
+ 	 */
+ 	ep93xx_spi_cs_control(msg->spi, false);
+-	ep93xx_spi_disable(espi);
+ }
+ 
+ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
+@@ -679,6 +640,37 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int ep93xx_spi_prepare_hardware(struct spi_master *master)
++{
++	struct ep93xx_spi *espi = spi_master_get_devdata(master);
++	unsigned int val;
++	int ret;
++
++	ret = clk_enable(espi->clk);
++	if (ret)
++		return ret;
++
++	val = readl(espi->mmio + SSPCR1);
++	val |= SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
++
++	return 0;
++}
++
++static int ep93xx_spi_unprepare_hardware(struct spi_master *master)
++{
++	struct ep93xx_spi *espi = spi_master_get_devdata(master);
++	unsigned int val;
++
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
++
++	clk_disable(espi->clk);
++
++	return 0;
++}
++
+ static bool ep93xx_spi_dma_filter(struct dma_chan *chan, void *filter_param)
  {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
--	struct spi_message *msg = espi->current_msg;
- 	struct dma_async_tx_descriptor *rxd, *txd;
+ 	if (ep93xx_dma_chan_is_m2p(chan))
+@@ -780,6 +772,8 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
  
- 	rxd = ep93xx_spi_dma_prepare(master, DMA_DEV_TO_MEM);
- 	if (IS_ERR(rxd)) {
- 		dev_err(&master->dev, "DMA RX failed: %ld\n", PTR_ERR(rxd));
--		msg->status = PTR_ERR(rxd);
-+		master->cur_msg->status = PTR_ERR(rxd);
- 		return;
- 	}
- 
-@@ -429,7 +425,7 @@ static void ep93xx_spi_dma_transfer(struct spi_master *master)
- 	if (IS_ERR(txd)) {
- 		ep93xx_spi_dma_finish(master, DMA_DEV_TO_MEM);
- 		dev_err(&master->dev, "DMA TX failed: %ld\n", PTR_ERR(txd));
--		msg->status = PTR_ERR(txd);
-+		master->cur_msg->status = PTR_ERR(txd);
- 		return;
- 	}
- 
-@@ -587,9 +583,7 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
- 	msg->status = 0;
- 	msg->actual_length = 0;
- 
--	espi->current_msg = msg;
- 	ep93xx_spi_process_message(master, msg);
--	espi->current_msg = NULL;
- 
- 	spi_finalize_current_message(master);
- 
-@@ -611,7 +605,7 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- 		writel(0, espi->mmio + SSPICR);
- 		dev_warn(&master->dev,
- 			 "receive overrun, aborting the message\n");
--		espi->current_msg->status = -EIO;
-+		master->cur_msg->status = -EIO;
- 	} else {
- 		/*
- 		 * Interrupt is either RX (RIS) or TX (TIS). For both cases we
++	master->prepare_transfer_hardware = ep93xx_spi_prepare_hardware;
++	master->unprepare_transfer_hardware = ep93xx_spi_unprepare_hardware;
+ 	master->transfer_one_message = ep93xx_spi_transfer_one_message;
+ 	master->bus_num = pdev->id;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
 -- 
 2.13.0
 

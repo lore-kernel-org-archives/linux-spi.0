@@ -1,69 +1,216 @@
-From: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: Re: [PATCH] spi: core: use gpio_request_one for configured gpio cs
-Date: Thu, 27 Jul 2017 21:01:59 +0000
-Message-ID: <98ee93f9883744f685b082aeb600a582@svr-chch-ex1.atlnz.lc>
-References: <20170724095327.18602-1-mnhu@prevas.dk>
- <CAHp75VdQbw9rkxq0tvYquacYViZqWKAqOTKHjLPtP=uZi8zzsg@mail.gmail.com>
- <20170724120148.avqvi53wkdgctsir@sirena.org.uk>
- <e668b7529837444085b9df3a563c3fe3@svr-chch-ex1.atlnz.lc>
- <DBFEECA3-E21E-4DC5-B6B9-D1B12AD48E7A@prevas.dk>
- <3027e39333a24fa7a4ce540d96b0e6f3@svr-chch-ex1.atlnz.lc>
- <CAHp75VepKV1MyGqur7Nq-R+TA_cDdD7BuE4HtpgYCdSRBxg92A@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <martin.hundeboll-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        =?iso-8859-1?Q?Martin_Hundeb=F8ll?= <mnhu-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "Jarkko Nikula" <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Subject: [RFC PATCH v2 01/12] spi: spi-ep93xx: use 32-bit read/write for all registers
+Date: Fri, 28 Jul 2017 10:03:11 +1200
+Message-ID: <20170727220322.26654-2-chris.packham@alliedtelesis.co.nz>
+References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 27/07/17 21:47, Andy Shevchenko wrote:=0A=
-> On Tue, Jul 25, 2017 at 12:44 AM, Chris Packham=0A=
-> <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:=0A=
->> On 25/07/17 09:28, Martin Hundeb=F8ll wrote:=0A=
->>>> My patchset kind of stalled. I can do a refresh if there's interest.=
-=0A=
->>>> But I really do need some help from people with access to hardware (I =
-can=0A=
->>>> cover spi-orion and spi-fsl-espi but that's about it). After the=0A=
->>>> initial RFC series I posted in May I found that iMX platforms use the =
-integer=0A=
->>>> cs_gpio field for both native chipselects and gpio based ones (values =
-<=0A=
->>>> 0 indicate native CS) so again I'd be coding blind trying to=0A=
->>>> disentangle that.=0A=
->>   >=0A=
->>> My submission was more or less a fly-by patch, but I'd be happy to=0A=
->>> test/debug patches on spi-imx if you CC me on the series.=0A=
->>=0A=
->> Thanks for the offer. Now I just need to get a few round tuits.=0A=
-> =0A=
-> Can you please, resend the latest you have with Cc'ing me?=0A=
-> =0A=
->>> Any other drivers with special gpio-cs handling?=0A=
->>   >=0A=
->>=0A=
->> Based on a quick grep spi-{atmel,davinci,ep93xx,gpio,imx,mt65xx,stm32}=
-=0A=
->> all do stuff with cs_gpios outside of the spi core. I think at least=0A=
->> some of those a trivially handled if we let the core code do the gpio=0A=
->> management.=0A=
-> =0A=
-> I have got ep93xx board from Mika to test, so, I can perhaps perform=0A=
-> tests later, after I got pxa2xx working.=0A=
-> =0A=
-=0A=
-Sure I'll rebase the series against linux-next#master I notice there is =0A=
-a rename of some variables in areas I'm touching.=0A=
-=0A=
-Should come through shortly.=0A=
+From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+
+All the EP93xx SSP registers are 32-bit. Since most of the upper bits
+are unused, this driver tries to be tricky and uses 8 or 16-bit I/O to
+access the registers. This really just adds a bit of confusion.
+
+Simplify the I/O by using 32-bit read/write's for all of the registers.
+
+Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+---
+ drivers/spi/spi-ep93xx.c | 83 ++++++++++++++++++++++--------------------------
+ 1 file changed, 38 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index 49c42a6c2be1..bc1db022d353 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -113,47 +113,47 @@ struct ep93xx_spi {
+ 
+ static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	unsigned int val;
+ 	int err;
+ 
+ 	err = clk_enable(espi->clk);
+ 	if (err)
+ 		return err;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval |= SSPCR1_SSE;
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val |= SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
+ 
+ 	return 0;
+ }
+ 
+ static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	unsigned int val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval &= ~SSPCR1_SSE;
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
+ 
+ 	clk_disable(espi->clk);
+ }
+ 
+ static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	unsigned int val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++	writel(val, espi->mmio + SSPCR1);
+ }
+ 
+ static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	unsigned int val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++	writel(val, espi->mmio + SSPCR1);
+ }
+ 
+ /**
+@@ -230,47 +230,41 @@ static int ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
+ 		spi->mode, div_cpsr, div_scr, dss);
+ 	dev_dbg(&espi->pdev->dev, "setup: cr0 %#x\n", cr0);
+ 
+-	writeb(div_cpsr, espi->mmio + SSPCPSR);
+-	writew(cr0, espi->mmio + SSPCR0);
++	writel(div_cpsr, espi->mmio + SSPCPSR);
++	writel(cr0, espi->mmio + SSPCR0);
+ 
+ 	return 0;
+ }
+ 
+ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (t->bits_per_word > 8) {
+-		u16 tx_val = 0;
++	unsigned int val = 0;
+ 
++	if (t->bits_per_word > 8) {
+ 		if (t->tx_buf)
+-			tx_val = ((u16 *)t->tx_buf)[espi->tx];
+-		writew(tx_val, espi->mmio + SSPDR);
+-		espi->tx += sizeof(tx_val);
++			val = ((u16 *)t->tx_buf)[espi->tx];
++		espi->tx += 2;
+ 	} else {
+-		u8 tx_val = 0;
+-
+ 		if (t->tx_buf)
+-			tx_val = ((u8 *)t->tx_buf)[espi->tx];
+-		writeb(tx_val, espi->mmio + SSPDR);
+-		espi->tx += sizeof(tx_val);
++			val = ((u8 *)t->tx_buf)[espi->tx];
++		espi->tx += 1;
+ 	}
++	writel(val, espi->mmio + SSPDR);
+ }
+ 
+ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (t->bits_per_word > 8) {
+-		u16 rx_val;
++	unsigned int val;
+ 
+-		rx_val = readw(espi->mmio + SSPDR);
++	val = readl(espi->mmio + SSPDR);
++	if (t->bits_per_word > 8) {
+ 		if (t->rx_buf)
+-			((u16 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
++			((u16 *)t->rx_buf)[espi->rx] = val;
++		espi->rx += 2;
+ 	} else {
+-		u8 rx_val;
+-
+-		rx_val = readb(espi->mmio + SSPDR);
+ 		if (t->rx_buf)
+-			((u8 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
++			((u8 *)t->rx_buf)[espi->rx] = val;
++		espi->rx += 1;
+ 	}
+ }
+ 
+@@ -291,7 +285,7 @@ static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
+ 	struct spi_transfer *t = msg->state;
+ 
+ 	/* read as long as RX FIFO has frames in it */
+-	while ((readb(espi->mmio + SSPSR) & SSPSR_RNE)) {
++	while ((readl(espi->mmio + SSPSR) & SSPSR_RNE)) {
+ 		ep93xx_do_read(espi, t);
+ 		espi->fifo_level--;
+ 	}
+@@ -593,14 +587,14 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	 * Just to be sure: flush any data from RX FIFO.
+ 	 */
+ 	timeout = jiffies + msecs_to_jiffies(SPI_TIMEOUT);
+-	while (readw(espi->mmio + SSPSR) & SSPSR_RNE) {
++	while (readl(espi->mmio + SSPSR) & SSPSR_RNE) {
+ 		if (time_after(jiffies, timeout)) {
+ 			dev_warn(&espi->pdev->dev,
+ 				 "timeout while flushing RX FIFO\n");
+ 			msg->status = -ETIMEDOUT;
+ 			return;
+ 		}
+-		readw(espi->mmio + SSPDR);
++		readl(espi->mmio + SSPDR);
+ 	}
+ 
+ 	/*
+@@ -649,15 +643,14 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
+ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ {
+ 	struct ep93xx_spi *espi = dev_id;
+-	u8 irq_status = readb(espi->mmio + SSPIIR);
+ 
+ 	/*
+ 	 * If we got ROR (receive overrun) interrupt we know that something is
+ 	 * wrong. Just abort the message.
+ 	 */
+-	if (unlikely(irq_status & SSPIIR_RORIS)) {
++	if (readl(espi->mmio + SSPIIR) & SSPIIR_RORIS) {
+ 		/* clear the overrun interrupt */
+-		writeb(0, espi->mmio + SSPICR);
++		writel(0, espi->mmio + SSPICR);
+ 		dev_warn(&espi->pdev->dev,
+ 			 "receive overrun, aborting the message\n");
+ 		espi->current_msg->status = -EIO;
+@@ -857,7 +850,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
+ 
+ 	/* make sure that the hardware is disabled */
+-	writeb(0, espi->mmio + SSPCR1);
++	writel(0, espi->mmio + SSPCR1);
+ 
+ 	error = devm_spi_register_master(&pdev->dev, master);
+ 	if (error) {
+-- 
+2.13.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

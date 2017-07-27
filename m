@@ -1,7 +1,7 @@
 From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [RFC PATCH v2 11/12] ARM: ep93xx: remove chipselect from ep93xx_spi_info
-Date: Fri, 28 Jul 2017 10:03:21 +1200
-Message-ID: <20170727220322.26654-12-chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH v2 03/12] spi: spi-ep93xx: absorb the interrupt enable/disable helpers
+Date: Fri, 28 Jul 2017 10:03:13 +1200
+Message-ID: <20170727220322.26654-4-chris.packham@alliedtelesis.co.nz>
 References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
@@ -10,95 +10,80 @@ In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkH
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Now that the driver has been updated to use gpiod there is no need to
-have platform data to define the SPI chipselects. We still need to
-define the number of chipselects used.
+From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 
-Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+These are each only called once. Just absorb them into the callers.
+
+Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 ---
- arch/arm/mach-ep93xx/edb93xx.c           | 7 +------
- arch/arm/mach-ep93xx/simone.c            | 7 +------
- arch/arm/mach-ep93xx/vision_ep9307.c     | 9 +--------
- include/linux/platform_data/spi-ep93xx.h | 4 +---
- 4 files changed, 4 insertions(+), 23 deletions(-)
+ drivers/spi/spi-ep93xx.c | 32 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
-index 9042adfe03de..b8d354fc27f5 100644
---- a/arch/arm/mach-ep93xx/edb93xx.c
-+++ b/arch/arm/mach-ep93xx/edb93xx.c
-@@ -127,13 +127,8 @@ static struct gpiod_lookup_table edb93xx_gpios_table = {
- 	},
- };
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index dd179f3fbeeb..e8f454b55b69 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -111,24 +111,6 @@ struct ep93xx_spi {
+ /* converts bits per word to CR0.DSS value */
+ #define bits_per_word_to_dss(bpw)	((bpw) - 1)
  
--static int edb93xx_spi_chipselects[] __initdata = {
--	EP93XX_GPIO_LINE_EGPIO6,
--};
+-static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
+-{
+-	unsigned int val;
 -
- static struct ep93xx_spi_info edb93xx_spi_info __initdata = {
--	.chipselect	= edb93xx_spi_chipselects,
--	.num_chipselect	= ARRAY_SIZE(edb93xx_spi_chipselects),
-+	.num_chipselect	= 1,
- };
- 
- static void __init edb93xx_register_spi(void)
-diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
-index f297a7a89ed9..cb6bc2e1670a 100644
---- a/arch/arm/mach-ep93xx/simone.c
-+++ b/arch/arm/mach-ep93xx/simone.c
-@@ -129,13 +129,8 @@ static struct gpiod_lookup_table simone_gpios_table = {
- 	},
- };
- 
--static int simone_spi_chipselects[] __initdata = {
--	EP93XX_GPIO_LINE_EGPIO1,
--};
+-	val = readl(espi->mmio + SSPCR1);
+-	val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writel(val, espi->mmio + SSPCR1);
+-}
 -
- static struct ep93xx_spi_info simone_spi_info __initdata = {
--	.chipselect	= simone_spi_chipselects,
--	.num_chipselect	= ARRAY_SIZE(simone_spi_chipselects),
-+	.num_chipselect	= 1,
- 	.use_dma = 1,
- };
- 
-diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
-index 3d9c66bbf2af..494c55080472 100644
---- a/arch/arm/mach-ep93xx/vision_ep9307.c
-+++ b/arch/arm/mach-ep93xx/vision_ep9307.c
-@@ -256,15 +256,8 @@ static struct gpiod_lookup_table vision_gpios_table = {
- 	},
- };
- 
--static int vision_spi_chipselects[] __initdata = {
--	EP93XX_GPIO_LINE_EGPIO6,
--	EP93XX_GPIO_LINE_EGPIO7,
--	EP93XX_GPIO_LINE_G(2),
--};
+-static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
+-{
+-	unsigned int val;
 -
- static struct ep93xx_spi_info vision_spi_master __initdata = {
--	.chipselect	= vision_spi_chipselects,
--	.num_chipselect	= ARRAY_SIZE(vision_spi_chipselects),
-+	.num_chipselect	= 3,
- 	.use_dma	= 1,
- };
- 
-diff --git a/include/linux/platform_data/spi-ep93xx.h b/include/linux/platform_data/spi-ep93xx.h
-index 171a271c2cbd..efcf33eff851 100644
---- a/include/linux/platform_data/spi-ep93xx.h
-+++ b/include/linux/platform_data/spi-ep93xx.h
-@@ -5,12 +5,10 @@ struct spi_device;
- 
+-	val = readl(espi->mmio + SSPCR1);
+-	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writel(val, espi->mmio + SSPCR1);
+-}
+-
  /**
-  * struct ep93xx_spi_info - EP93xx specific SPI descriptor
-- * @chipselect: array of gpio numbers to use as chip selects
-- * @num_chipselect: ARRAY_SIZE(chipselect)
-+ * @num_chipselect: number chip selects supported
-  * @use_dma: use DMA for the transfers
-  */
- struct ep93xx_spi_info {
--	int	*chipselect;
- 	int	num_chipselect;
- 	bool	use_dma;
- };
+  * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
+  * @espi: ep93xx SPI controller struct
+@@ -282,7 +264,12 @@ static void ep93xx_spi_pio_transfer(struct ep93xx_spi *espi)
+ 	 * FIFO, enable interrupts, and wait for the transfer to complete.
+ 	 */
+ 	if (ep93xx_spi_read_write(espi)) {
+-		ep93xx_spi_enable_interrupts(espi);
++		unsigned int val;
++
++		val = readl(espi->mmio + SSPCR1);
++		val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++		writel(val, espi->mmio + SSPCR1);
++
+ 		wait_for_completion(&espi->wait);
+ 	}
+ }
+@@ -604,6 +591,7 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
+ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ {
+ 	struct ep93xx_spi *espi = dev_id;
++	unsigned int val;
+ 
+ 	/*
+ 	 * If we got ROR (receive overrun) interrupt we know that something is
+@@ -635,8 +623,12 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 	 * any case we disable interrupts and notify the worker to handle
+ 	 * any post-processing of the message.
+ 	 */
+-	ep93xx_spi_disable_interrupts(espi);
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++	writel(val, espi->mmio + SSPCR1);
++
+ 	complete(&espi->wait);
++
+ 	return IRQ_HANDLED;
+ }
+ 
 -- 
 2.13.0
 

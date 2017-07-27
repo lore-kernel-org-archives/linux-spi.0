@@ -1,7 +1,7 @@
 From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [RFC PATCH v2 02/12] spi: spi-ep93xx: add spi master prepare_transfer_hardware()
-Date: Fri, 28 Jul 2017 10:03:12 +1200
-Message-ID: <20170727220322.26654-3-chris.packham@alliedtelesis.co.nz>
+Subject: [RFC PATCH v2 08/12] ARM: ep93xx: add gpiod_lookup_table for spi chip-selects
+Date: Fri, 28 Jul 2017 10:03:18 +1200
+Message-ID: <20170727220322.26654-9-chris.packham@alliedtelesis.co.nz>
 References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
@@ -10,130 +10,129 @@ In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkH
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+This is a preparatory step which will allow the conversion of
+spi-ep93xx.c to gpiod.
 
-This driver currently enables the hardware at the start of every
-message and disabled it when the message is complete. Make it a
-bit smarter by adding the prepare_transfer_hardware() and
-unprepare_transfer_hardware() callbacks so that the core can
-enable/disable the hardware based on spi message queue.
-
-Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 ---
- drivers/spi/spi-ep93xx.c | 72 ++++++++++++++++++++++--------------------------
- 1 file changed, 33 insertions(+), 39 deletions(-)
+ arch/arm/mach-ep93xx/edb93xx.c       | 12 ++++++++++++
+ arch/arm/mach-ep93xx/simone.c        | 11 +++++++++++
+ arch/arm/mach-ep93xx/vision_ep9307.c | 15 +++++++++++++++
+ 3 files changed, 38 insertions(+)
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index bc1db022d353..dd179f3fbeeb 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -111,33 +111,6 @@ struct ep93xx_spi {
- /* converts bits per word to CR0.DSS value */
- #define bits_per_word_to_dss(bpw)	((bpw) - 1)
+diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
+index 0ac176386789..9042adfe03de 100644
+--- a/arch/arm/mach-ep93xx/edb93xx.c
++++ b/arch/arm/mach-ep93xx/edb93xx.c
+@@ -27,6 +27,8 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
++#include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/i2c.h>
+ #include <linux/i2c-gpio.h>
+ #include <linux/spi/spi.h>
+@@ -116,6 +118,15 @@ static struct spi_board_info edb93xx_spi_board_info[] __initdata = {
+ 	},
+ };
  
--static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
--{
--	unsigned int val;
--	int err;
--
--	err = clk_enable(espi->clk);
--	if (err)
--		return err;
--
--	val = readl(espi->mmio + SSPCR1);
--	val |= SSPCR1_SSE;
--	writel(val, espi->mmio + SSPCR1);
--
--	return 0;
--}
--
--static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
--{
--	unsigned int val;
--
--	val = readl(espi->mmio + SSPCR1);
--	val &= ~SSPCR1_SSE;
--	writel(val, espi->mmio + SSPCR1);
--
--	clk_disable(espi->clk);
--}
--
- static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
- {
- 	unsigned int val;
-@@ -571,17 +544,6 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
- {
- 	unsigned long timeout;
- 	struct spi_transfer *t;
--	int err;
--
--	/*
--	 * Enable the SPI controller and its clock.
--	 */
--	err = ep93xx_spi_enable(espi);
--	if (err) {
--		dev_err(&espi->pdev->dev, "failed to enable SPI controller\n");
--		msg->status = err;
--		return;
--	}
++static struct gpiod_lookup_table edb93xx_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
++
+ static int edb93xx_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO6,
+ };
+@@ -134,6 +145,7 @@ static void __init edb93xx_register_spi(void)
+ 	else if (machine_is_edb9315a())
+ 		edb93xx_cs4271_data.gpio_nreset = EP93XX_GPIO_LINE_EGPIO14;
  
- 	/*
- 	 * Just to be sure: flush any data from RX FIFO.
-@@ -619,7 +581,6 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
- 	 * deselect the device and disable the SPI controller.
- 	 */
- 	ep93xx_spi_cs_control(msg->spi, false);
--	ep93xx_spi_disable(espi);
++	gpiod_add_lookup_table(&edb93xx_gpios_table);
+ 	ep93xx_register_spi(&edb93xx_spi_info, edb93xx_spi_board_info,
+ 			    ARRAY_SIZE(edb93xx_spi_board_info));
  }
+diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
+index c7a40f245892..f297a7a89ed9 100644
+--- a/arch/arm/mach-ep93xx/simone.c
++++ b/arch/arm/mach-ep93xx/simone.c
+@@ -26,6 +26,7 @@
+ #include <linux/platform_data/video-ep93xx.h>
+ #include <linux/platform_data/spi-ep93xx.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
  
- static int ep93xx_spi_transfer_one_message(struct spi_master *master,
-@@ -679,6 +640,37 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
+ #include <mach/hardware.h>
+ #include <mach/gpio-ep93xx.h>
+@@ -119,6 +120,15 @@ static struct spi_board_info simone_spi_devices[] __initdata = {
+  * low between multi-message command blocks. From v1.4, it uses a GPIO instead.
+  * v1.3 parts will still work, since the signal on SFRMOUT is automatic.
+  */
++static struct gpiod_lookup_table simone_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO1,
++			    "spi-cs", GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
++
+ static int simone_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO1,
+ };
+@@ -163,6 +173,7 @@ static void __init simone_init_machine(void)
+ 	ep93xx_register_fb(&simone_fb_info);
+ 	ep93xx_register_i2c(&simone_i2c_gpio_data, simone_i2c_board_info,
+ 			    ARRAY_SIZE(simone_i2c_board_info));
++	gpiod_add_lookup_table(&simone_gpios_table);
+ 	ep93xx_register_spi(&simone_spi_info, simone_spi_devices,
+ 			    ARRAY_SIZE(simone_spi_devices));
+ 	simone_register_audio();
+diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
+index 1daf9441058c..3d9c66bbf2af 100644
+--- a/arch/arm/mach-ep93xx/vision_ep9307.c
++++ b/arch/arm/mach-ep93xx/vision_ep9307.c
+@@ -18,6 +18,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/irq.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/fb.h>
+ #include <linux/io.h>
+ #include <linux/mtd/partitions.h>
+@@ -242,6 +243,19 @@ static struct spi_board_info vision_spi_board_info[] __initdata = {
+ 	},
+ };
  
-+static int ep93xx_spi_prepare_hardware(struct spi_master *master)
-+{
-+	struct ep93xx_spi *espi = spi_master_get_devdata(master);
-+	unsigned int val;
-+	int ret;
++static struct gpiod_lookup_table vision_gpios_table = {
++	.dev_id = "spi.0",
++	.table = {
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
++				"spi-cs", 0, GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO7,
++				"spi-cs", 1, GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_G(2),
++				"spi-cs", 2, GPIO_ACTIVE_HIGH),
++		{},
++	},
++};
 +
-+	ret = clk_enable(espi->clk);
-+	if (ret)
-+		return ret;
-+
-+	val = readl(espi->mmio + SSPCR1);
-+	val |= SSPCR1_SSE;
-+	writel(val, espi->mmio + SSPCR1);
-+
-+	return 0;
-+}
-+
-+static int ep93xx_spi_unprepare_hardware(struct spi_master *master)
-+{
-+	struct ep93xx_spi *espi = spi_master_get_devdata(master);
-+	unsigned int val;
-+
-+	val = readl(espi->mmio + SSPCR1);
-+	val &= ~SSPCR1_SSE;
-+	writel(val, espi->mmio + SSPCR1);
-+
-+	clk_disable(espi->clk);
-+
-+	return 0;
-+}
-+
- static bool ep93xx_spi_dma_filter(struct dma_chan *chan, void *filter_param)
- {
- 	if (ep93xx_dma_chan_is_m2p(chan))
-@@ -780,6 +772,8 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
+ static int vision_spi_chipselects[] __initdata = {
+ 	EP93XX_GPIO_LINE_EGPIO6,
+ 	EP93XX_GPIO_LINE_EGPIO7,
+@@ -291,6 +305,7 @@ static void __init vision_init_machine(void)
  
-+	master->prepare_transfer_hardware = ep93xx_spi_prepare_hardware;
-+	master->unprepare_transfer_hardware = ep93xx_spi_unprepare_hardware;
- 	master->transfer_one_message = ep93xx_spi_transfer_one_message;
- 	master->bus_num = pdev->id;
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	ep93xx_register_i2c(&vision_i2c_gpio_data, vision_i2c_info,
+ 				ARRAY_SIZE(vision_i2c_info));
++	gpiod_add_lookup_table(&vision_gpios_table);
+ 	ep93xx_register_spi(&vision_spi_master, vision_spi_board_info,
+ 				ARRAY_SIZE(vision_spi_board_info));
+ 	vision_register_i2s();
 -- 
 2.13.0
 

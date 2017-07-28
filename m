@@ -1,142 +1,86 @@
-From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [RFC PATCH v2 08/12] ARM: ep93xx: add gpiod_lookup_table for spi chip-selects
-Date: Fri, 28 Jul 2017 10:03:18 +1200
-Message-ID: <20170727220322.26654-9-chris.packham@alliedtelesis.co.nz>
-References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Varadarajan Narayanan <varada@codeaurora.org>
+Subject: [PATCH v6 00/14] spi: qup: Fixes and add support for >64k transfers
+Date: Fri, 28 Jul 2017 12:22:47 +0530
+Message-ID: <1501224781-19519-1-git-send-email-varada@codeaurora.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-soc@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This is a preparatory step which will allow the conversion of
-spi-ep93xx.c to gpiod.
+v6:
+	Fix git bisect-ability issues in
+		spi: qup: Add completion timeout
+		spi: qup: call io_config in mode specific function
+		spi: qup: allow multiple DMA transactions per spi xfer
 
-Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
----
- arch/arm/mach-ep93xx/edb93xx.c       | 12 ++++++++++++
- arch/arm/mach-ep93xx/simone.c        | 11 +++++++++++
- arch/arm/mach-ep93xx/vision_ep9307.c | 15 +++++++++++++++
- 3 files changed, 38 insertions(+)
+v5:
+	Incorporate feedback from Mark Brown and Geert Uytterhoeven
 
-diff --git a/arch/arm/mach-ep93xx/edb93xx.c b/arch/arm/mach-ep93xx/edb93xx.c
-index 0ac176386789..9042adfe03de 100644
---- a/arch/arm/mach-ep93xx/edb93xx.c
-+++ b/arch/arm/mach-ep93xx/edb93xx.c
-@@ -27,6 +27,8 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- #include <linux/i2c.h>
- #include <linux/i2c-gpio.h>
- #include <linux/spi/spi.h>
-@@ -116,6 +118,15 @@ static struct spi_board_info edb93xx_spi_board_info[] __initdata = {
- 	},
- };
- 
-+static struct gpiod_lookup_table edb93xx_gpios_table = {
-+	.dev_id = "spi.0",
-+	.table = {
-+		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
-+			    "spi-cs", GPIO_ACTIVE_HIGH),
-+		{},
-+	},
-+};
-+
- static int edb93xx_spi_chipselects[] __initdata = {
- 	EP93XX_GPIO_LINE_EGPIO6,
- };
-@@ -134,6 +145,7 @@ static void __init edb93xx_register_spi(void)
- 	else if (machine_is_edb9315a())
- 		edb93xx_cs4271_data.gpio_nreset = EP93XX_GPIO_LINE_EGPIO14;
- 
-+	gpiod_add_lookup_table(&edb93xx_gpios_table);
- 	ep93xx_register_spi(&edb93xx_spi_info, edb93xx_spi_board_info,
- 			    ARRAY_SIZE(edb93xx_spi_board_info));
- }
-diff --git a/arch/arm/mach-ep93xx/simone.c b/arch/arm/mach-ep93xx/simone.c
-index c7a40f245892..f297a7a89ed9 100644
---- a/arch/arm/mach-ep93xx/simone.c
-+++ b/arch/arm/mach-ep93xx/simone.c
-@@ -26,6 +26,7 @@
- #include <linux/platform_data/video-ep93xx.h>
- #include <linux/platform_data/spi-ep93xx.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- 
- #include <mach/hardware.h>
- #include <mach/gpio-ep93xx.h>
-@@ -119,6 +120,15 @@ static struct spi_board_info simone_spi_devices[] __initdata = {
-  * low between multi-message command blocks. From v1.4, it uses a GPIO instead.
-  * v1.3 parts will still work, since the signal on SFRMOUT is automatic.
-  */
-+static struct gpiod_lookup_table simone_gpios_table = {
-+	.dev_id = "spi.0",
-+	.table = {
-+		GPIO_LOOKUP("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO1,
-+			    "spi-cs", GPIO_ACTIVE_HIGH),
-+		{},
-+	},
-+};
-+
- static int simone_spi_chipselects[] __initdata = {
- 	EP93XX_GPIO_LINE_EGPIO1,
- };
-@@ -163,6 +173,7 @@ static void __init simone_init_machine(void)
- 	ep93xx_register_fb(&simone_fb_info);
- 	ep93xx_register_i2c(&simone_i2c_gpio_data, simone_i2c_board_info,
- 			    ARRAY_SIZE(simone_i2c_board_info));
-+	gpiod_add_lookup_table(&simone_gpios_table);
- 	ep93xx_register_spi(&simone_spi_info, simone_spi_devices,
- 			    ARRAY_SIZE(simone_spi_devices));
- 	simone_register_audio();
-diff --git a/arch/arm/mach-ep93xx/vision_ep9307.c b/arch/arm/mach-ep93xx/vision_ep9307.c
-index 1daf9441058c..3d9c66bbf2af 100644
---- a/arch/arm/mach-ep93xx/vision_ep9307.c
-+++ b/arch/arm/mach-ep93xx/vision_ep9307.c
-@@ -18,6 +18,7 @@
- #include <linux/platform_device.h>
- #include <linux/irq.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- #include <linux/fb.h>
- #include <linux/io.h>
- #include <linux/mtd/partitions.h>
-@@ -242,6 +243,19 @@ static struct spi_board_info vision_spi_board_info[] __initdata = {
- 	},
- };
- 
-+static struct gpiod_lookup_table vision_gpios_table = {
-+	.dev_id = "spi.0",
-+	.table = {
-+		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO6,
-+				"spi-cs", 0, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_EGPIO7,
-+				"spi-cs", 1, GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP_IDX("gpio-ep93xx", EP93XX_GPIO_LINE_G(2),
-+				"spi-cs", 2, GPIO_ACTIVE_HIGH),
-+		{},
-+	},
-+};
-+
- static int vision_spi_chipselects[] __initdata = {
- 	EP93XX_GPIO_LINE_EGPIO6,
- 	EP93XX_GPIO_LINE_EGPIO7,
-@@ -291,6 +305,7 @@ static void __init vision_init_machine(void)
- 
- 	ep93xx_register_i2c(&vision_i2c_gpio_data, vision_i2c_info,
- 				ARRAY_SIZE(vision_i2c_info));
-+	gpiod_add_lookup_table(&vision_gpios_table);
- 	ep93xx_register_spi(&vision_spi_master, vision_spi_board_info,
- 				ARRAY_SIZE(vision_spi_board_info));
- 	vision_register_i2s();
+	spi: qup: Enable chip select support
+		Update commit log. Include the commit's description
+
+	Removed "spi: qup: Add completion structures for DMA". This
+	introduced separate completion structures for DMA based rx/tx
+	and FIFO based i/os. This was not needed.
+
+	Added "spi: qup: Fix QUP version identify method" to identify
+	qup version using of_device_get_match_data instead of
+	of_device_is_compatible.
+
+v4:
+	Discard patch #15, 'spi: qup: support for qup v1 dma'.
+	This depends on ADM driver, which is not upstreamed yet.
+
+v3:
+	Fix git bisect-ability issues in
+		spi: qup: Add completion structures for DMA
+		spi: qup: Add completion timeout
+		spi: qup: Place the QUP in run mode before DMA
+		spi: qup: Fix transaction done signaling
+
+v2:
+	Incorporate feedback from Andy Gross, Sricharan, Stanimir Varbanov
+
+	Modified the QUP-v1 dma completion sequence to QUP-v2 as per feedback.
+
+	Removed code that used controller->xfer to identify extra interrupts,
+	since with the fixes done to handle i/o completion we don't see
+	extra interrupts.
+
+v1:
+	This series fixes some existing issues in the code for both
+	interrupt and dma mode. Patches 1 - 11 are the fixes.
+	Random failures/timeout are observed without these fixes.
+	Also, the current driver does not support block transfers > 64K
+	and the driver quietly fails. Patches 12 - 18 add support for this
+	in both interrupt and dma mode.
+
+	The entire series has been tested on ipq4019 with
+	SPI-NOR flash for block sizes > 64k.
+
+Varadarajan Narayanan (14):
+  spi: qup: Enable chip select support
+  spi: qup: Setup DMA mode correctly
+  spi: qup: Add completion timeout
+  spi: qup: Place the QUP in run mode before DMA
+  spi: qup: Fix error handling in spi_qup_prep_sg
+  spi: qup: Fix transaction done signaling
+  spi: qup: Do block sized read/write in block mode
+  spi: qup: refactor spi_qup_io_config into two functions
+  spi: qup: call io_config in mode specific function
+  spi: qup: allow block mode to generate multiple transactions
+  spi: qup: refactor spi_qup_prep_sg
+  spi: qup: allow multiple DMA transactions per spi xfer
+  spi: qup: Ensure done detection
+  spi: qup: Fix QUP version identify method
+
+ drivers/spi/spi-qup.c | 566 ++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 392 insertions(+), 174 deletions(-)
+
 -- 
-2.13.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

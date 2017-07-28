@@ -1,263 +1,270 @@
-From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v6 02/14] spi: qup: Setup DMA mode correctly
-Date: Fri, 28 Jul 2017 12:22:49 +0530
-Message-ID: <1501224781-19519-3-git-send-email-varada@codeaurora.org>
-References: <1501224781-19519-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        andy.gross@linaro.org, david.brown@linaro.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-soc@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1501224781-19519-1-git-send-email-varada@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm-qspi: Remove hardcoded settings and spi-nor.h dependency" to the spi tree
+Date: Fri, 28 Jul 2017 11:18:40 +0100
+Message-ID: <E1db2Lw-0003w8-SS@debutante>
+References: <1501111215-2654-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, rnd-r2nGTMty4D4@public.gmane.org,
+        cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
+        hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1501111215-2654-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-To operate in DMA mode, the buffer should be aligned and
-the size of the transfer should be a multiple of block size
-(for v1). And the no. of words being transferred should
-be programmed in the count registers appropriately.
+The patch
 
-Signed-off-by: Andy Gross <andy.gross@linaro.org>
-Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
+   spi: bcm-qspi: Remove hardcoded settings and spi-nor.h dependency
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 054e532f8f90daaf9d70a2cf2ce31e69a4e68031 Mon Sep 17 00:00:00 2001
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 26 Jul 2017 19:20:15 -0400
+Subject: [PATCH] spi: bcm-qspi: Remove hardcoded settings and spi-nor.h
+ dependency
+
+The newly added broadcom qspi driver in drivers/spi produces a build
+warning when CONFIG_MTD is disabled:
+include/linux/mtd/cfi.h:76:2: #warning No CONFIG_MTD_CFI_Ix selected. No NOR chip support can work. [-Werror=cpp]
+
+There has been discussion on this in the link provided below. This fix in
+SPI controller drivers implementing the ->spi_flash_read handler, now uses the
+settings provided inside the 'struct spi_flash_read_message' parameter instead
+of hardcoding them. Made changes to bcm_qspi_bspi_set_flex_mode() to set the BSPI
+controller using the passed msg structure and remove the need to include
+<linux/mtd/spi-nor.h> file by removing all use of SPINOR_OP_READ* macros.
+
+Fixes: 4e3b2d236fe0 ("spi: bcm-qspi: Add BSPI spi-nor flash controller driver")
+Link: https://patchwork.kernel.org/patch/9624585/
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-qup.c | 118 +++++++++++++++++++++++---------------------------
- 1 file changed, 55 insertions(+), 63 deletions(-)
+ drivers/spi/spi-bcm-qspi.c | 89 +++++++++++++++++-----------------------------
+ 1 file changed, 33 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index c0d4def..abe799b 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -149,11 +149,18 @@ struct spi_qup {
- 	int			rx_bytes;
- 	int			qup_v1;
- 
--	int			use_dma;
-+	int			mode;
- 	struct dma_slave_config	rx_conf;
- 	struct dma_slave_config	tx_conf;
- };
- 
-+static inline bool spi_qup_is_dma_xfer(int mode)
-+{
-+	if (mode == QUP_IO_M_MODE_DMOV || mode == QUP_IO_M_MODE_BAM)
-+		return true;
-+
-+	return false;
-+}
- 
- static inline bool spi_qup_is_valid_state(struct spi_qup *controller)
- {
-@@ -424,7 +431,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		error = -EIO;
- 	}
- 
--	if (!controller->use_dma) {
-+	if (!spi_qup_is_dma_xfer(controller->mode)) {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
- 			spi_qup_fifo_read(controller, xfer);
- 
-@@ -443,34 +450,11 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index b19722ba908c..6ef6c44f39f5 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -25,7 +25,6 @@
+ #include <linux/ioport.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/mtd/spi-nor.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+@@ -349,76 +348,60 @@ static void bcm_qspi_bspi_set_xfer_params(struct bcm_qspi *qspi, u8 cmd_byte,
+ 	bcm_qspi_write(qspi, BSPI, BSPI_FLEX_MODE_ENABLE, flex_mode);
  }
  
--static u32
--spi_qup_get_mode(struct spi_master *master, struct spi_transfer *xfer)
--{
--	struct spi_qup *qup = spi_master_get_devdata(master);
--	u32 mode;
--
--	qup->w_size = 4;
--
--	if (xfer->bits_per_word <= 8)
--		qup->w_size = 1;
--	else if (xfer->bits_per_word <= 16)
--		qup->w_size = 2;
--
--	qup->n_words = xfer->len / qup->w_size;
--
--	if (qup->n_words <= (qup->in_fifo_sz / sizeof(u32)))
--		mode = QUP_IO_M_MODE_FIFO;
--	else
--		mode = QUP_IO_M_MODE_BLOCK;
--
--	return mode;
--}
--
- /* set clock freq ... bits per word */
- static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+-static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi, int width,
+-				       int addrlen, int hp)
++static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi,
++				       struct spi_flash_read_message *msg,
++				       int hp)
  {
- 	struct spi_qup *controller = spi_master_get_devdata(spi->master);
--	u32 config, iomode, mode, control;
-+	u32 config, iomode, control;
- 	int ret, n_words;
+ 	int bpc = 0, bpp = 0;
+-	u8 command = SPINOR_OP_READ_FAST;
+-	int flex_mode = 1, rv = 0;
+-	bool spans_4byte = false;
++	u8 command = msg->read_opcode;
++	int width  = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
++	int addrlen = msg->addr_width;
++	int addr_nbits = msg->addr_nbits ? msg->addr_nbits : SPI_NBITS_SINGLE;
++	int flex_mode = 1;
  
- 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
-@@ -491,25 +475,30 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		return -EIO;
- 	}
+ 	dev_dbg(&qspi->pdev->dev, "set flex mode w %x addrlen %x hp %d\n",
+ 		width, addrlen, hp);
  
--	mode = spi_qup_get_mode(spi->master, xfer);
-+	controller->w_size = DIV_ROUND_UP(xfer->bits_per_word, 8);
-+	controller->n_words = xfer->len / controller->w_size;
- 	n_words = controller->n_words;
- 
--	if (mode == QUP_IO_M_MODE_FIFO) {
-+	if (n_words <= (controller->in_fifo_sz / sizeof(u32))) {
-+
-+		controller->mode = QUP_IO_M_MODE_FIFO;
-+
- 		writel_relaxed(n_words, controller->base + QUP_MX_READ_CNT);
- 		writel_relaxed(n_words, controller->base + QUP_MX_WRITE_CNT);
- 		/* must be zero for FIFO */
- 		writel_relaxed(0, controller->base + QUP_MX_INPUT_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
--	} else if (!controller->use_dma) {
-+	} else if (spi->master->can_dma &&
-+		   spi->master->can_dma(spi->master, spi, xfer) &&
-+		   spi->master->cur_msg_mapped) {
-+
-+		controller->mode = QUP_IO_M_MODE_BAM;
-+
- 		writel_relaxed(n_words, controller->base + QUP_MX_INPUT_CNT);
- 		writel_relaxed(n_words, controller->base + QUP_MX_OUTPUT_CNT);
- 		/* must be zero for BLOCK and BAM */
- 		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
--	} else {
--		mode = QUP_IO_M_MODE_BAM;
--		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
--		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
- 
- 		if (!controller->qup_v1) {
- 			void __iomem *input_cnt;
-@@ -528,19 +517,28 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 
- 			writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
- 		}
-+	} else {
-+
-+		controller->mode = QUP_IO_M_MODE_BLOCK;
-+
-+		writel_relaxed(n_words, controller->base + QUP_MX_INPUT_CNT);
-+		writel_relaxed(n_words, controller->base + QUP_MX_OUTPUT_CNT);
-+		/* must be zero for BLOCK and BAM */
-+		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
-+		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
- 	}
- 
- 	iomode = readl_relaxed(controller->base + QUP_IO_M_MODES);
- 	/* Set input and output transfer mode */
- 	iomode &= ~(QUP_IO_M_INPUT_MODE_MASK | QUP_IO_M_OUTPUT_MODE_MASK);
- 
--	if (!controller->use_dma)
-+	if (!spi_qup_is_dma_xfer(controller->mode))
- 		iomode &= ~(QUP_IO_M_PACK_EN | QUP_IO_M_UNPACK_EN);
- 	else
- 		iomode |= QUP_IO_M_PACK_EN | QUP_IO_M_UNPACK_EN;
- 
--	iomode |= (mode << QUP_IO_M_OUTPUT_MODE_MASK_SHIFT);
--	iomode |= (mode << QUP_IO_M_INPUT_MODE_MASK_SHIFT);
-+	iomode |= (controller->mode << QUP_IO_M_OUTPUT_MODE_MASK_SHIFT);
-+	iomode |= (controller->mode << QUP_IO_M_INPUT_MODE_MASK_SHIFT);
- 
- 	writel_relaxed(iomode, controller->base + QUP_IO_M_MODES);
- 
-@@ -581,7 +579,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 	config |= xfer->bits_per_word - 1;
- 	config |= QUP_CONFIG_SPI_MODE;
- 
--	if (controller->use_dma) {
-+	if (spi_qup_is_dma_xfer(controller->mode)) {
- 		if (!xfer->tx_buf)
- 			config |= QUP_CONFIG_NO_OUTPUT;
- 		if (!xfer->rx_buf)
-@@ -599,7 +597,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		 * status change in BAM mode
- 		 */
- 
--		if (mode == QUP_IO_M_MODE_BAM)
-+		if (spi_qup_is_dma_xfer(controller->mode))
- 			mask = QUP_OP_IN_SERVICE_FLAG | QUP_OP_OUT_SERVICE_FLAG;
- 
- 		writel_relaxed(mask, controller->base + QUP_OPERATIONAL_MASK);
-@@ -633,7 +631,7 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	controller->tx_bytes = 0;
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
--	if (controller->use_dma)
-+	if (spi_qup_is_dma_xfer(controller->mode))
- 		ret = spi_qup_do_dma(master, xfer);
- 	else
- 		ret = spi_qup_do_pio(master, xfer);
-@@ -641,14 +639,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	if (ret)
- 		goto exit;
- 
--	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
--		dev_warn(controller->dev, "cannot set EXECUTE state\n");
--		goto exit;
+-	if (addrlen == BSPI_ADDRLEN_4BYTES) {
++	if (addrlen == BSPI_ADDRLEN_4BYTES)
+ 		bpp = BSPI_BPP_ADDR_SELECT_MASK;
+-		spans_4byte = true;
 -	}
--
--	if (!wait_for_completion_timeout(&controller->done, timeout))
--		ret = -ETIMEDOUT;
--
- exit:
- 	spi_qup_set_state(controller, QUP_STATE_RESET);
- 	spin_lock_irqsave(&controller->lock, flags);
-@@ -657,7 +647,7 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 		ret = controller->error;
- 	spin_unlock_irqrestore(&controller->lock, flags);
  
--	if (ret && controller->use_dma)
-+	if (ret && spi_qup_is_dma_xfer(controller->mode))
- 		spi_qup_dma_terminate(master, xfer);
+-	bpp |= 8;
++	bpp |= msg->dummy_bytes * (8/addr_nbits);
  
- 	return ret;
-@@ -668,26 +658,28 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_qup *qup = spi_master_get_devdata(master);
- 	size_t dma_align = dma_get_cache_alignment();
--	u32 mode;
--
--	qup->use_dma = 0;
-+	int n_words;
+ 	switch (width) {
+ 	case SPI_NBITS_SINGLE:
+ 		if (addrlen == BSPI_ADDRLEN_3BYTES)
+ 			/* default mode, does not need flex_cmd */
+ 			flex_mode = 0;
+-		else
+-			command = SPINOR_OP_READ_FAST_4B;
+ 		break;
+ 	case SPI_NBITS_DUAL:
+ 		bpc = 0x00000001;
+ 		if (hp) {
+ 			bpc |= 0x00010100; /* address and mode are 2-bit */
+ 			bpp = BSPI_BPP_MODE_SELECT_MASK;
+-			command = OPCODE_DIOR;
+-			if (spans_4byte)
+-				command = OPCODE_DIOR_4B;
+-		} else {
+-			command = SPINOR_OP_READ_1_1_2;
+-			if (spans_4byte)
+-				command = SPINOR_OP_READ_1_1_2_4B;
+ 		}
+ 		break;
+ 	case SPI_NBITS_QUAD:
+ 		bpc = 0x00000002;
+ 		if (hp) {
+ 			bpc |= 0x00020200; /* address and mode are 4-bit */
+-			bpp = 4; /* dummy cycles */
+-			bpp |= BSPI_BPP_ADDR_SELECT_MASK;
+-			command = OPCODE_QIOR;
+-			if (spans_4byte)
+-				command = OPCODE_QIOR_4B;
+-		} else {
+-			command = SPINOR_OP_READ_1_1_4;
+-			if (spans_4byte)
+-				command = SPINOR_OP_READ_1_1_4_4B;
++			bpp |= BSPI_BPP_MODE_SELECT_MASK;
+ 		}
+ 		break;
+ 	default:
+-		rv = -EINVAL;
+-		break;
++		return -EINVAL;
+ 	}
  
--	if (xfer->rx_buf && (xfer->len % qup->in_blk_sz ||
--	    IS_ERR_OR_NULL(master->dma_rx) ||
--	    !IS_ALIGNED((size_t)xfer->rx_buf, dma_align)))
--		return false;
-+	if (xfer->rx_buf) {
-+		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
-+		    IS_ERR_OR_NULL(master->dma_rx))
-+			return false;
-+		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
-+			return false;
-+	}
+-	if (rv == 0)
+-		bcm_qspi_bspi_set_xfer_params(qspi, command, bpp, bpc,
+-					      flex_mode);
++	bcm_qspi_bspi_set_xfer_params(qspi, command, bpp, bpc, flex_mode);
  
--	if (xfer->tx_buf && (xfer->len % qup->out_blk_sz ||
--	    IS_ERR_OR_NULL(master->dma_tx) ||
--	    !IS_ALIGNED((size_t)xfer->tx_buf, dma_align)))
--		return false;
-+	if (xfer->tx_buf) {
-+		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
-+		    IS_ERR_OR_NULL(master->dma_tx))
-+			return false;
-+		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
-+			return false;
-+	}
- 
--	mode = spi_qup_get_mode(master, xfer);
--	if (mode == QUP_IO_M_MODE_FIFO)
-+	n_words = xfer->len / DIV_ROUND_UP(xfer->bits_per_word, 8);
-+	if (n_words <= (qup->in_fifo_sz / sizeof(u32)))
- 		return false;
- 
--	qup->use_dma = 1;
--
- 	return true;
+-	return rv;
++	return 0;
  }
  
+-static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi, int width,
+-				      int addrlen, int hp)
++static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi,
++				      struct spi_flash_read_message *msg,
++				      int hp)
+ {
++	int width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
++	int addrlen = msg->addr_width;
+ 	u32 data = bcm_qspi_read(qspi, BSPI, BSPI_STRAP_OVERRIDE_CTRL);
+ 
+ 	dev_dbg(&qspi->pdev->dev, "set override mode w %x addrlen %x hp %d\n",
+@@ -430,7 +413,6 @@ static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi, int width,
+ 		data &= ~(BSPI_STRAP_OVERRIDE_CTRL_DATA_QUAD |
+ 			  BSPI_STRAP_OVERRIDE_CTRL_DATA_DUAL);
+ 		break;
+-
+ 	case SPI_NBITS_QUAD:
+ 		/* clear dual mode and set quad mode */
+ 		data &= ~BSPI_STRAP_OVERRIDE_CTRL_DATA_DUAL;
+@@ -455,15 +437,17 @@ static int bcm_qspi_bspi_set_override(struct bcm_qspi *qspi, int width,
+ 	/* set the override mode */
+ 	data |=	BSPI_STRAP_OVERRIDE_CTRL_OVERRIDE;
+ 	bcm_qspi_write(qspi, BSPI, BSPI_STRAP_OVERRIDE_CTRL, data);
+-	bcm_qspi_bspi_set_xfer_params(qspi, SPINOR_OP_READ_FAST, 0, 0, 0);
++	bcm_qspi_bspi_set_xfer_params(qspi, msg->read_opcode, 0, 0, 0);
+ 
+ 	return 0;
+ }
+ 
+ static int bcm_qspi_bspi_set_mode(struct bcm_qspi *qspi,
+-				  int width, int addrlen, int hp)
++				  struct spi_flash_read_message *msg, int hp)
+ {
+ 	int error = 0;
++	int width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
++	int addrlen = msg->addr_width;
+ 
+ 	/* default mode */
+ 	qspi->xfer_mode.flex_mode = true;
+@@ -475,23 +459,13 @@ static int bcm_qspi_bspi_set_mode(struct bcm_qspi *qspi,
+ 		mask = BSPI_STRAP_OVERRIDE_CTRL_OVERRIDE;
+ 		if (val & mask || qspi->s3_strap_override_ctrl & mask) {
+ 			qspi->xfer_mode.flex_mode = false;
+-			bcm_qspi_write(qspi, BSPI, BSPI_FLEX_MODE_ENABLE,
+-				       0);
+-
+-			if ((val | qspi->s3_strap_override_ctrl) &
+-			    BSPI_STRAP_OVERRIDE_CTRL_DATA_DUAL)
+-				width = SPI_NBITS_DUAL;
+-			else if ((val |  qspi->s3_strap_override_ctrl) &
+-				 BSPI_STRAP_OVERRIDE_CTRL_DATA_QUAD)
+-				width = SPI_NBITS_QUAD;
+-
+-			error = bcm_qspi_bspi_set_override(qspi, width, addrlen,
+-							   hp);
++			bcm_qspi_write(qspi, BSPI, BSPI_FLEX_MODE_ENABLE, 0);
++			error = bcm_qspi_bspi_set_override(qspi, msg, hp);
+ 		}
+ 	}
+ 
+ 	if (qspi->xfer_mode.flex_mode)
+-		error = bcm_qspi_bspi_set_flex_mode(qspi, width, addrlen, hp);
++		error = bcm_qspi_bspi_set_flex_mode(qspi, msg, hp);
+ 
+ 	if (error) {
+ 		dev_warn(&qspi->pdev->dev,
+@@ -981,7 +955,7 @@ static int bcm_qspi_flash_read(struct spi_device *spi,
+ 	struct bcm_qspi *qspi = spi_master_get_devdata(spi->master);
+ 	int ret = 0;
+ 	bool mspi_read = false;
+-	u32 io_width, addrlen, addr, len;
++	u32 addr, len;
+ 	u_char *buf;
+ 
+ 	buf = msg->buf;
+@@ -1010,9 +984,7 @@ static int bcm_qspi_flash_read(struct spi_device *spi,
+ 	if (mspi_read)
+ 		return bcm_qspi_mspi_flash_read(spi, msg);
+ 
+-	io_width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
+-	addrlen = msg->addr_width;
+-	ret = bcm_qspi_bspi_set_mode(qspi, io_width, addrlen, -1);
++	ret = bcm_qspi_bspi_set_mode(qspi, msg, -1);
+ 
+ 	if (!ret)
+ 		ret = bcm_qspi_bspi_flash_read(spi, msg);
+@@ -1422,6 +1394,11 @@ static int __maybe_unused bcm_qspi_suspend(struct device *dev)
+ {
+ 	struct bcm_qspi *qspi = dev_get_drvdata(dev);
+ 
++	/* store the override strap value */
++	if (!bcm_qspi_bspi_ver_three(qspi))
++		qspi->s3_strap_override_ctrl =
++			bcm_qspi_read(qspi, BSPI, BSPI_STRAP_OVERRIDE_CTRL);
++
+ 	spi_master_suspend(qspi->master);
+ 	clk_disable(qspi->clk);
+ 	bcm_qspi_hw_uninit(qspi);
 -- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+2.13.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,11 +1,9 @@
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Subject: [PATCH v6 13/14] spi: qup: Ensure done detection
-Date: Fri, 28 Jul 2017 12:23:00 +0530
-Message-ID: <1501224781-19519-14-git-send-email-varada@codeaurora.org>
+Subject: [PATCH v6 14/14] spi: qup: Fix QUP version identify method
+Date: Fri, 28 Jul 2017 12:23:01 +0530
+Message-ID: <1501224781-19519-15-git-send-email-varada@codeaurora.org>
 References: <1501224781-19519-1-git-send-email-varada@codeaurora.org>
-Cc: Varadarajan Narayanan <varada@codeaurora.org>,
-        Andy Gross <agross@codeaurora.org>,
-        Abhishek Sahu <absahu@codeaurora.org>
+Cc: Varadarajan Narayanan <varada@codeaurora.org>
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
         andy.gross@linaro.org, david.brown@linaro.org,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -16,60 +14,45 @@ In-Reply-To: <1501224781-19519-1-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes an issue where a SPI transaction has completed, but the
-done condition is missed.  This occurs because at the time of interrupt the
-MAX_INPUT_DONE_FLAG is not asserted.  However, in the process of reading
-blocks of data from the FIFO, the last portion of data comes in.
+Use of_device_get_match_data to identify QUP version instead
+of of_device_is_compatible.
 
-The opflags read at the beginning of the irq handler no longer matches the
-current opflag state.  To get around this condition, the block read
-function should update the opflags so that done detection is correct after
-the return.
-
-Signed-off-by: Andy Gross <agross@codeaurora.org>
-Signed-off-by: Abhishek Sahu <absahu@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 ---
- drivers/spi/spi-qup.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-qup.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 3c2c2c0..4c3c938 100644
+index 4c3c938..1364516 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -266,7 +266,7 @@ static void spi_qup_read_from_fifo(struct spi_qup *controller, u32 num_words)
- 	}
+@@ -19,6 +19,7 @@
+ #include <linux/list.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+@@ -1058,9 +1059,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	else if (!ret)
+ 		master->can_dma = spi_qup_can_dma;
+ 
+-	/* set v1 flag if device is version 1 */
+-	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
+-		controller->qup_v1 = 1;
++	controller->qup_v1 = (int)of_device_get_match_data(dev);
+ 
+ 	if (!controller->qup_v1)
+ 		master->set_cs = spi_qup_set_cs;
+@@ -1256,7 +1255,7 @@ static int spi_qup_remove(struct platform_device *pdev)
  }
  
--static void spi_qup_read(struct spi_qup *controller)
-+static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
- {
- 	u32 remainder, words_per_block, num_words;
- 	bool is_block_mode = controller->mode == QUP_IO_M_MODE_BLOCK;
-@@ -305,10 +305,12 @@ static void spi_qup_read(struct spi_qup *controller)
- 
- 	/*
- 	 * Due to extra stickiness of the QUP_OP_IN_SERVICE_FLAG during block
--	 * mode reads, it has to be cleared again at the very end
-+	 * reads, it has to be cleared again at the very end.  However, be sure
-+	 * to refresh opflags value because MAX_INPUT_DONE_FLAG may now be
-+	 * present and this is used to determine if transaction is complete
- 	 */
--	if (is_block_mode && spi_qup_is_flag_set(controller,
--				QUP_OP_MAX_INPUT_DONE_FLAG))
-+	*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
-+	if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
- 		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
- 			       controller->base + QUP_OPERATIONAL);
- 
-@@ -613,7 +615,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
- 	} else {
- 		if (opflags & QUP_OP_IN_SERVICE_FLAG)
--			spi_qup_read(controller);
-+			spi_qup_read(controller, &opflags);
- 
- 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
- 			spi_qup_write(controller);
+ static const struct of_device_id spi_qup_dt_match[] = {
+-	{ .compatible = "qcom,spi-qup-v1.1.1", },
++	{ .compatible = "qcom,spi-qup-v1.1.1", .data = (void *)1, },
+ 	{ .compatible = "qcom,spi-qup-v2.1.1", },
+ 	{ .compatible = "qcom,spi-qup-v2.2.1", },
+ 	{ }
 -- 
 QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation

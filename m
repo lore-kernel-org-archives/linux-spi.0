@@ -1,83 +1,89 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Don't touch CS pin until we have a transfer pending" to the spi tree
-Date: Fri, 28 Jul 2017 13:38:16 +0100
-Message-ID: <E1db4X2-0004yD-6b@finisterre>
-References: <20170727154933.14143-1-andriy.shevchenko@linux.intel.com>
-Cc: Mika Westeberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH v2 00/12] spi: moving to struct gpio_desc
+Date: Sat, 29 Jul 2017 16:15:42 +0300
+Message-ID: <CAHp75VeVijF13AO=SqkxtAaiYhss92gwrtCZ2WnxkkKtvjVS3A@mail.gmail.com>
+References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170727154933.14143-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20170727220322.26654-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Fri, Jul 28, 2017 at 1:03 AM, Chris Packham
+<chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
+> Hi Andy,
+>
+> As requested here's my WIP series. I've included the ep93xx changes from H
+> Hartley Sweeten. I had these locally to use as a base, I was kind of
+> surprised they hadn't made it into linux-next.
+>
+> I tried to account for the master -> ctlr rename as I was rebasing but I
+> wouldn't be surprised if I missed some occurrences. This is very much an
+> untested WIP it will probably crash and burn in unexpected ways.
+>
 
-   spi: pxa2xx: Don't touch CS pin until we have a transfer pending
+I briefly looked at the code, first 6 patches for my taste could be
+submitted w/o RFC tag.
+One comment to them though, better to use u32 instead of unsigned int
+when operate with 32-bit registers.
 
-has been applied to the spi tree at
+> Chris Packham (6):
+>   spi: use gpio_desc instead of numeric gpio
+>   ARM: ep93xx: add gpiod_lookup_table for spi chip-selects
+>   ARM: imx: add gpiod_lookup_table for spi chip-selects
+>   spi: core: convert spi_master to use gpio_desc
+>   ARM: ep93xx: remove chipselect from ep93xx_spi_info
+>   wip: convert struct spi_device to gpio_desc
+>
+> H Hartley Sweeten (6):
+>   spi: spi-ep93xx: use 32-bit read/write for all registers
+>   spi: spi-ep93xx: add spi master prepare_transfer_hardware()
+>   spi: spi-ep93xx: absorb the interrupt enable/disable helpers
+>   spi: spi-ep93xx: pass the spi_master pointer around
+>   spi: spi-ep93xx: remove private data 'current_msg'
+>   spi: spi-ep93xx: use the default master transfer queueing mechanism
+>
+>  arch/arm/mach-ep93xx/edb93xx.c           |  15 +-
+>  arch/arm/mach-ep93xx/simone.c            |  14 +-
+>  arch/arm/mach-ep93xx/vision_ep9307.c     |  20 +-
+>  arch/arm/mach-imx/mach-mx27_3ds.c        |  21 ++
+>  arch/arm/mach-imx/mach-pca100.c          |  13 +
+>  drivers/spi/spi-ath79.c                  |  26 +-
+>  drivers/spi/spi-atmel.c                  |   4 +-
+>  drivers/spi/spi-bcm2835.c                |   8 +-
+>  drivers/spi/spi-cadence.c                |  29 +-
+>  drivers/spi/spi-clps711x.c               |  13 +-
+>  drivers/spi/spi-davinci.c                |  10 +-
+>  drivers/spi/spi-dw.c                     |   7 -
+>  drivers/spi/spi-ep93xx.c                 | 487 ++++++++++++-------------------
+>  drivers/spi/spi-fsl-spi.c                |  29 +-
+>  drivers/spi/spi-img-spfi.c               |  25 +-
+>  drivers/spi/spi-imx.c                    |  25 +-
+>  drivers/spi/spi-lantiq-ssc.c             |   2 +-
+>  drivers/spi/spi-mpc512x-psc.c            |  20 +-
+>  drivers/spi/spi-mt65xx.c                 |  16 -
+>  drivers/spi/spi-omap2-mcspi.c            |  17 +-
+>  drivers/spi/spi-orion.c                  |   2 +-
+>  drivers/spi/spi-pic32.c                  |  11 +-
+>  drivers/spi/spi-s3c64xx.c                |  16 +-
+>  drivers/spi/spi-st-ssc4.c                |  29 +-
+>  drivers/spi/spi.c                        |  26 +-
+>  include/linux/platform_data/spi-ep93xx.h |   4 +-
+>  include/linux/spi/spi.h                  |   4 +-
+>  27 files changed, 312 insertions(+), 581 deletions(-)
+>
+> --
+> 2.13.0
+>
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d35f2dc9a2a84f4985d8b16b47040fd6291788ad Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 27 Jul 2017 18:49:33 +0300
-Subject: [PATCH] spi: pxa2xx: Don't touch CS pin until we have a transfer
- pending
-
-GPIO descriptors, when being requested, may configure pin at the same
-time. In case of SPI chip select we shouldn't do any assumptions of the
-state of pin since we don't know yet what chip is connected there and if
-it uses high or low active state. So, leave the state of pin as is until
-transfer will start.
-
-Fixes: 99f499cd6504 ("spi: pxa2xx: Add support for GPIO descriptor chip selects")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Mika Westeberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 38d053682892..6e5af88b7c6f 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1769,8 +1769,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		for (i = 0; i < master->num_chipselect; i++) {
- 			struct gpio_desc *gpiod;
- 
--			gpiod = devm_gpiod_get_index(dev, "cs", i,
--						     GPIOD_OUT_HIGH);
-+			gpiod = devm_gpiod_get_index(dev, "cs", i, GPIOD_ASIS);
- 			if (IS_ERR(gpiod)) {
- 				/* Means use native chip select */
- 				if (PTR_ERR(gpiod) == -ENOENT)
 -- 
-2.13.2
-
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

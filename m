@@ -1,54 +1,57 @@
-From: Andy Yan <andy.yan@rock-chips.com>
-Subject: [PATCH 00/14] Support more devices on rockchip rv1108
-Date: Mon, 31 Jul 2017 18:04:09 +0800
-Message-ID: <1501495449-21290-1-git-send-email-andy.yan@rock-chips.com>
-Cc: devicetree@vger.kernel.org, linus.walleij@linaro.org,
-        mturquette@baylibre.com, linux-gpio@vger.kernel.org,
-        sboyd@codeaurora.org, broonie@kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wsa@the-dreams.de, linux-rockchip@lists.infradead.org,
-        robh+dt@kernel.org, linux-i2c@vger.kernel.org,
-        shawn.lin@rock-chips.com, linux-spi@vger.kernel.org,
-        zhangqing@rock-chips.com, linux-arm-kernel@lists.infradead.org,
-        Andy Yan <andy.yan@rock-chips.com>
-To: heiko@sntech.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Andy Yan <andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH 07/14] spi: rockchip: add compatible string for rv1108 spi
+Date: Mon, 31 Jul 2017 18:15:03 +0800
+Message-ID: <1501496103-21713-1-git-send-email-andy.yan@rock-chips.com>
+References: <1501495449-21290-1-git-send-email-andy.yan@rock-chips.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        Andy Yan <andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1501495449-21290-1-git-send-email-andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+The spi on rv1108 is the same as other rockchip based
+socs, add compatible string for it.
 
-This series try to support i2c/spi/pwm/saradc/pmic/watchdog and
-the full clk tree on rockchip rv1108 soc.
+Signed-off-by: Andy Yan <andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+---
 
+ Documentation/devicetree/bindings/spi/spi-rockchip.txt | 1 +
+ drivers/spi/spi-rockchip.c                             | 1 +
+ 2 files changed, 2 insertions(+)
 
-Andy Yan (12):
-  pinctrl: rockchip: add input schmitt support for rv1108
-  dt-bindings: i2c: rk3x: add support for rv1108
-  i2c: rk3x: add support for rv1108
-  ARM: dts: rockchip: add i2c dt node for rv1108
-  spi: rockchip: add compatible string for rv1108 spi
-  ARM: dts: rockchip: add spi dt node for rv1108
-  ARM: dts: rockchip: add pwm dt node for rv1108
-  ARM: dts: rockchip: add watchdog dt node for rv1108
-  ARM: dts: rockchip: add saradc support for rv1108
-  ARM: dts: rockchip: add pwm backlight for rv1108 evb
-  ARM: dts: rockchip: add pmic rk805 dt node for rv1108 evb
-  ARM: dts: rockchip: add accelerometer bma250e dt node for rv1108 evb
-
-Elaine Zhang (2):
-  clk: rockchip: add more clk ids for rv1108
-  clk: rockchip: support more clks for rv1108
-
- Documentation/devicetree/bindings/i2c/i2c-rk3x.txt |   1 +
- .../devicetree/bindings/spi/spi-rockchip.txt       |   1 +
- arch/arm/boot/dts/rv1108-evb.dts                   | 158 +++++++
- arch/arm/boot/dts/rv1108.dtsi                      | 249 ++++++++++
- drivers/clk/rockchip/clk-rv1108.c                  | 513 ++++++++++++++++-----
- drivers/i2c/busses/i2c-rk3x.c                      |   9 +
- drivers/pinctrl/pinctrl-rockchip.c                 |  31 ++
- drivers/spi/spi-rockchip.c                         |   1 +
- include/dt-bindings/clock/rv1108-cru.h             | 128 ++++-
- 9 files changed, 964 insertions(+), 127 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+index 83da493..6e3ffac 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -6,6 +6,7 @@ and display controllers using the SPI communication interface.
+ Required Properties:
+ 
+ - compatible: should be one of the following.
++    "rockchip,rv1108-spi" for rv1108 SoCs.
+     "rockchip,rk3036-spi" for rk3036 SoCS.
+     "rockchip,rk3066-spi" for rk3066 SoCs.
+     "rockchip,rk3188-spi" for rk3188 SoCs.
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 0b4a52b..6235b14 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -919,6 +919,7 @@ static const struct dev_pm_ops rockchip_spi_pm = {
+ };
+ 
+ static const struct of_device_id rockchip_spi_dt_match[] = {
++	{ .compatible = "rockchip,rv1108-spi", }
+ 	{ .compatible = "rockchip,rk3036-spi", },
+ 	{ .compatible = "rockchip,rk3066-spi", },
+ 	{ .compatible = "rockchip,rk3188-spi", },
 -- 
 2.7.4
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,33 +1,73 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v4 4/5] ACPI / scan: Recognize Apple SPI and I2C slaves
-Date: Tue, 1 Aug 2017 16:12:22 +0300
-Message-ID: <20170801131222.GN2369@lahna.fi.intel.com>
-References: <cover.1501570421.git.lukas@wunner.de>
- <a113ce387bb9af7aaf804359561178d8f1499ef0.1501570421.git.lukas@wunner.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ronald Tschalaer <ronald@innovation.ch>,
-        Federico Lorenzi <florenzi@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Leif Liddy <leif.liddy@gmail.com>,
-        Daniel Roschka <danielroschka@phoenitydawn.de>,
-        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Lukas Wunner <lukas@wunner.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <a113ce387bb9af7aaf804359561178d8f1499ef0.1501570421.git.lukas@wunner.de>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Andy Yan <andy.yan@rock-chips.com>
+Subject: [PATCH v2 00/23] Support more devices on rockchip rv1108
+Date: Wed,  2 Aug 2017 16:25:03 +0800
+Message-ID: <1501662303-11687-1-git-send-email-andy.yan@rock-chips.com>
+Cc: linus.walleij@linaro.org, linux-pwm@vger.kernel.org,
+        robh+dt@kernel.org, david.wu@rock-chips.com,
+        shawn.lin@rock-chips.com, linux-i2c@vger.kernel.org,
+        zhangqing@rock-chips.com, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, mturquette@baylibre.com,
+        sboyd@codeaurora.org, wsa@the-dreams.de,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        broonie@kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
+        Andy Yan <andy.yan@rock-chips.com>
+To: heiko@sntech.de
+Return-path: <linux-gpio-owner@vger.kernel.org>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 01, 2017 at 02:10:41PM +0200, Lukas Wunner wrote:
-> SPI and I2C slaves are enumerated by their respective parents rather
-> than the ACPI core.  They are recognized by presence of _CRS resources,
-> which however are missing on Macs.  Check for presence of device
-> properties instead.
-> 
-> Cc: Federico Lorenzi <florenzi@gmail.com>
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+This series try to support i2c/spi/pwm/saradc/pmic/watchdog and
+the full clk tree on rockchip rv1108 soc.
+
+Changes in v2:
+- split the rename and intentation fix part from id patch
+- split the new added clks and rename.
+- add compatible string "rockchip,rv1108-pwm"
+- add compatible string "rockchip,rv1108-saradc"
+
+Andy Yan (14):
+  pinctrl: rockchip: add schmitt input mode support for rv1108
+  dt-bindings: i2c: rk3x: add support for rv1108
+  i2c: rk3x: add support for rv1108
+  ARM: dts: rockchip: add i2c dt node for rv1108
+  spi: rockchip: add compatible string for rv1108 spi
+  ARM: dts: rockchip: add spi dt node for rv1108
+  dt-bindings: pwm: add description for rv1108 pwm
+  ARM: dts: rockchip: add pwm dt node for rv1108
+  ARM: dts: rockchip: add watchdog dt node for rv1108
+  dt-bindings: adc: add description for rv1108 saradc
+  ARM: dts: rockchip: add saradc support for rv1108
+  ARM: dts: rockchip: add pwm backlight for rv1108 evb
+  ARM: dts: rockchip: add pmic rk805 dt node for rv1108 evb
+  ARM: dts: rockchip: add accelerometer bma250e dt node for rv1108 evb
+
+Elaine Zhang (9):
+  clk: rockchip: add more clk ids for rv1108
+  clk: rockchip: rename the clk id for HCLK_I2S1_2CH
+  clk: rockchip: fix up the indentation stuff for RV1108 SoC
+  clk: rockchip: support more rates for cpuclk
+  clk: rockchip: fix up the pll clks error for rv1108 SoC
+  clk: rockchip: support more clks for rv1108
+  clk: rockchip: fix up some clks describe error for rv1108 SoC
+  clk: rockchip: rename some of clks for rv1108 SoC
+  clk: rockchip: add some critical clocks for rv1108 SoC
+
+ Documentation/devicetree/bindings/i2c/i2c-rk3x.txt |   1 +
+ .../bindings/iio/adc/rockchip-saradc.txt           |   1 +
+ .../devicetree/bindings/pwm/pwm-rockchip.txt       |   2 +-
+ .../devicetree/bindings/spi/spi-rockchip.txt       |   1 +
+ arch/arm/boot/dts/rv1108-evb.dts                   | 158 +++++++
+ arch/arm/boot/dts/rv1108.dtsi                      | 249 ++++++++++
+ drivers/clk/rockchip/clk-rv1108.c                  | 514 ++++++++++++++++-----
+ drivers/i2c/busses/i2c-rk3x.c                      |   9 +
+ drivers/pinctrl/pinctrl-rockchip.c                 |  31 ++
+ drivers/spi/spi-rockchip.c                         |   1 +
+ include/dt-bindings/clock/rv1108-cru.h             | 123 ++++-
+ 11 files changed, 964 insertions(+), 126 deletions(-)
+
+-- 
+2.7.4
+
+

@@ -1,179 +1,104 @@
-From: sunil.m@techveda.org
-Subject: [PATCH] drivers: spi: Pick spi bus number from Linux idr or spi alias
-Date: Thu,  3 Aug 2017 10:05:57 +0530
-Message-ID: <1501734957-20725-1-git-send-email-sunil.m@techveda.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        karthik@techveda.org, Suniel Mahesh <sunil.m@techveda.org>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v8 10/16] reset: Add a reset controller driver for the
+ Lantiq XWAY based SoCs
+Date: Thu, 03 Aug 2017 10:33:42 +0200
+Message-ID: <1501749222.23911.4.camel@pengutronix.de>
+References: <20170802225717.24408-1-hauke@hauke-m.de>
+         <20170802225717.24408-11-hauke@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170802225717.24408-11-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Suniel Mahesh <sunil.m@techveda.org>
+Hi Hauke,
 
-Modify existing code, for automatically picking the spi bus number based
-on Linux idr scheme as mentioned in FIXME.
-This patch does the following:
-(a) Remove the now unnecessary code which was allocating bus numbers using
-ATOMIC_INIT and atomic_dec_return macro's.
-(b) If we have an alias, pick the bus number from alias ID
-(c) Convert to linux idr interface
+On Thu, 2017-08-03 at 00:57 +0200, Hauke Mehrtens wrote:
+> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+> 
+> The reset controllers (on xRX200 and newer SoCs have two of them) are
+> provided by the RCU module. This was initially implemented as a simple
+> reset controller. However, the RCU module provides more functionality
+> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
+> The old reset controller driver implementation from
+> arch/mips/lantiq/xway/reset.c did not honor this fact.
+> 
+> For some devices the request and the status bits are different.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+> Cc: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  .../devicetree/bindings/reset/lantiq,reset.txt     |  30 +++
+>  drivers/reset/Kconfig                              |   6 +
+>  drivers/reset/Makefile                             |   1 +
+>  drivers/reset/reset-lantiq.c                       | 224 +++++++++++++++++++++
+>  4 files changed, 261 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
+>  create mode 100644 drivers/reset/reset-lantiq.c
+> 
+[...]
+> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
+> new file mode 100644
+> index 000000000000..b84c45e7e6b8
+> --- /dev/null
+> +++ b/drivers/reset/reset-lantiq.c
+> @@ -0,0 +1,224 @@
+[...]
+> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
+> +			       struct lantiq_rcu_reset_priv *priv)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct resource *res;
+> +	struct resource res_parent;
+> +	int ret;
+> +
+> +	priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
+> +	if (IS_ERR(priv->regmap)) {
+> +		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
+> +		return PTR_ERR(priv->regmap);
+> +	}
+> +
+> +	ret = of_address_to_resource(dev->of_node->parent, 0, &res_parent);
+> +	if (ret)
+> +		return ret;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
+> +		return ret;
 
-Signed-off-by: Suniel Mahesh <sunil.m@techveda.org>
-Signed-off-by: Karthik Tummala <karthik@techveda.org>
-Tested-by: Karthik Tummala <karthik@techveda.org>
----
-Note:
-- Patch was compile tested and built(ARCH=arm) on next-20170802.
-- Patch was hardware tested on AM335x (McSPI controller) with
-  memory chips as slaves.
-- Added spi aliases in aliases node, device tree and tested.
-- No build/run-time issues reported.
----
- drivers/spi/spi.c | 71 +++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 56 insertions(+), 15 deletions(-)
+This should return -EINVAL instead of 0.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index ec69293..17bec04d 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -40,9 +40,13 @@
- #include <linux/ioport.h>
- #include <linux/acpi.h>
- #include <linux/highmem.h>
-+#include <linux/idr.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
-+#define SPI_DYN_FIRST_BUS_NUM 0
-+
-+static DEFINE_IDR(spi_master_idr);
- 
- static void spidev_release(struct device *dev)
- {
-@@ -420,6 +424,7 @@ struct boardinfo {
- /*
-  * Used to protect add/del opertion for board_info list and
-  * spi_controller list, and their matching process
-+ * also used to protect object of type struct idr 
-  */
- static DEFINE_MUTEX(board_lock);
- 
-@@ -2046,11 +2051,10 @@ static int of_spi_register_master(struct spi_controller *ctlr)
-  */
- int spi_register_controller(struct spi_controller *ctlr)
- {
--	static atomic_t		dyn_bus_id = ATOMIC_INIT((1<<15) - 1);
- 	struct device		*dev = ctlr->dev.parent;
- 	struct boardinfo	*bi;
- 	int			status = -ENODEV;
--	int			dynamic = 0;
-+	int			id;
- 
- 	if (!dev)
- 		return -ENODEV;
-@@ -2066,17 +2070,29 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	 */
- 	if (ctlr->num_chipselect == 0)
- 		return -EINVAL;
--
--	if ((ctlr->bus_num < 0) && ctlr->dev.of_node)
--		ctlr->bus_num = of_alias_get_id(ctlr->dev.of_node, "spi");
--
--	/* convention:  dynamically assigned bus IDs count down from the max */
-+	
-+	/* allocate dynamic bus number using Linux idr */
-+	if ((ctlr->bus_num < 0) && ctlr->dev.of_node) {
-+		id = of_alias_get_id(ctlr->dev.of_node, "spi");
-+		if (id >= 0) {
-+			ctlr->bus_num = id;
-+			mutex_lock(&board_lock);
-+			id = idr_alloc(&spi_master_idr, ctlr, ctlr->bus_num,
-+				       ctlr->bus_num + 1, GFP_KERNEL);
-+			mutex_unlock(&board_lock);
-+			if (WARN(id < 0, "couldn't get idr"))
-+				return id == -ENOSPC ? -EBUSY : id;
-+		}
-+	}
- 	if (ctlr->bus_num < 0) {
--		/* FIXME switch to an IDR based scheme, something like
--		 * I2C now uses, so we can't run out of "dynamic" IDs
--		 */
--		ctlr->bus_num = atomic_dec_return(&dyn_bus_id);
--		dynamic = 1;
-+			mutex_lock(&board_lock);
-+			id = idr_alloc(&spi_master_idr, ctlr,
-+				       SPI_DYN_FIRST_BUS_NUM, 0, GFP_KERNEL);
-+                        mutex_unlock(&board_lock);
-+			if (WARN(id < 0, "couldn't get idr"))
-+				return id;
-+
-+			ctlr->bus_num = id;
- 	}
- 
- 	INIT_LIST_HEAD(&ctlr->queue);
-@@ -2094,11 +2110,16 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	 */
- 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
- 	status = device_add(&ctlr->dev);
--	if (status < 0)
-+	if (status < 0) {
-+		/* free bus id */
-+		mutex_lock(&board_lock);
-+		idr_remove(&spi_master_idr, ctlr->bus_num);
-+		mutex_unlock(&board_lock);
- 		goto done;
--	dev_dbg(dev, "registered %s %s%s\n",
-+	}
-+	dev_dbg(dev, "registered %s %s\n",
- 			spi_controller_is_slave(ctlr) ? "slave" : "master",
--			dev_name(&ctlr->dev), dynamic ? " (dynamic)" : "");
-+			dev_name(&ctlr->dev));
- 
- 	/* If we're using a queued driver, start the queue */
- 	if (ctlr->transfer)
-@@ -2107,6 +2128,10 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		status = spi_controller_initialize_queue(ctlr);
- 		if (status) {
- 			device_del(&ctlr->dev);
-+			/* free bus id */
-+			mutex_lock(&board_lock);
-+			idr_remove(&spi_master_idr, ctlr->bus_num);
-+			mutex_unlock(&board_lock);
- 			goto done;
- 		}
- 	}
-@@ -2185,8 +2210,20 @@ static int __unregister(struct device *dev, void *null)
-  */
- void spi_unregister_controller(struct spi_controller *ctlr)
- {
-+	struct spi_controller *found;
- 	int dummy;
- 
-+	/* First make sure that this controller was ever added */
-+	mutex_lock(&board_lock);
-+	found = idr_find(&spi_master_idr, ctlr->bus_num);
-+	mutex_unlock(&board_lock);
-+        if (found != ctlr) {
-+                dev_dbg(&ctlr->dev, 
-+			"attempting to delete unregistered controller [%s]\n",
-+			dev_name(&ctlr->dev));
-+                return;
-+        }
-+
- 	if (ctlr->queued) {
- 		if (spi_destroy_queue(ctlr))
- 			dev_err(&ctlr->dev, "queue remove failed\n");
-@@ -2198,6 +2235,10 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 
- 	dummy = device_for_each_child(&ctlr->dev, NULL, __unregister);
- 	device_unregister(&ctlr->dev);
-+	/* free bus id */
-+	mutex_lock(&board_lock);
-+	idr_remove(&spi_master_idr, ctlr->bus_num);
-+	mutex_unlock(&board_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
- 
--- 
-1.9.1
+> +	}
+> +
+> +	if (res->start < res_parent.start)
+> +		return -ENOENT;
+> +	priv->reset_offset = res->start - res_parent.start;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
+> +		return ret;
+
+Same here.
+
+With this fixed,
+Acked-by: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+regards
+Philipp
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

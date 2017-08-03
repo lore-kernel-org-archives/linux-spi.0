@@ -1,104 +1,155 @@
-From: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v8 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-Date: Thu, 03 Aug 2017 10:33:42 +0200
-Message-ID: <1501749222.23911.4.camel@pengutronix.de>
-References: <20170802225717.24408-1-hauke@hauke-m.de>
-         <20170802225717.24408-11-hauke@hauke-m.de>
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Subject: [PATCH RFC 1/2] spi: pxa2xx: Convert to GPIO descriptor API where
+ possible
+Date: Thu,  3 Aug 2017 13:40:32 +0200
+Message-ID: <6bfd2b29b888c14f1a6feb9dee5bb54b74e761b0.1501760433.git.jan.kiszka@siemens.com>
+References: <cover.1501760433.git.jan.kiszka@siemens.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170802225717.24408-11-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-spi <linux-spi@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1501760433.git.jan.kiszka@siemens.com>
+In-Reply-To: <cover.1501760433.git.jan.kiszka@siemens.com>
+References: <cover.1501760433.git.jan.kiszka@siemens.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Hauke,
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-On Thu, 2017-08-03 at 00:57 +0200, Hauke Mehrtens wrote:
-> From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-> 
-> The reset controllers (on xRX200 and newer SoCs have two of them) are
-> provided by the RCU module. This was initially implemented as a simple
-> reset controller. However, the RCU module provides more functionality
-> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
-> The old reset controller driver implementation from
-> arch/mips/lantiq/xway/reset.c did not honor this fact.
-> 
-> For some devices the request and the status bits are different.
-> 
-> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-> Cc: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  .../devicetree/bindings/reset/lantiq,reset.txt     |  30 +++
->  drivers/reset/Kconfig                              |   6 +
->  drivers/reset/Makefile                             |   1 +
->  drivers/reset/reset-lantiq.c                       | 224 +++++++++++++++++++++
->  4 files changed, 261 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
->  create mode 100644 drivers/reset/reset-lantiq.c
-> 
-[...]
-> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
-> new file mode 100644
-> index 000000000000..b84c45e7e6b8
-> --- /dev/null
-> +++ b/drivers/reset/reset-lantiq.c
-> @@ -0,0 +1,224 @@
-[...]
-> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
-> +			       struct lantiq_rcu_reset_priv *priv)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct resource *res;
-> +	struct resource res_parent;
-> +	int ret;
-> +
-> +	priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> +	if (IS_ERR(priv->regmap)) {
-> +		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
-> +		return PTR_ERR(priv->regmap);
-> +	}
-> +
-> +	ret = of_address_to_resource(dev->of_node->parent, 0, &res_parent);
-> +	if (ret)
-> +		return ret;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
-> +		return ret;
+We still need to request/free GPIOs passed via the legacy path of
+pxa2xx_spi_chip::gpio_cs, but we can use the gpiod API otherwise.
 
-This should return -EINVAL instead of 0.
+Consistently use the descriptor API instead of the legacy one.
 
-> +	}
-> +
-> +	if (res->start < res_parent.start)
-> +		return -ENOENT;
-> +	priv->reset_offset = res->start - res_parent.start;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
-> +		return ret;
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/spi/spi-pxa2xx.c | 32 ++++++++++++++++----------------
+ drivers/spi/spi-pxa2xx.h |  2 +-
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-Same here.
-
-With this fixed,
-Acked-by: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-
-regards
-Philipp
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 38d053682892..7faba738110c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -402,8 +402,8 @@ static void cs_assert(struct driver_data *drv_data)
+ 		return;
+ 	}
+ 
+-	if (gpio_is_valid(chip->gpio_cs)) {
+-		gpio_set_value(chip->gpio_cs, chip->gpio_cs_inverted);
++	if (chip->gpiod_cs) {
++		gpiod_set_value(chip->gpiod_cs, chip->gpio_cs_inverted);
+ 		return;
+ 	}
+ 
+@@ -424,8 +424,8 @@ static void cs_deassert(struct driver_data *drv_data)
+ 		return;
+ 	}
+ 
+-	if (gpio_is_valid(chip->gpio_cs)) {
+-		gpio_set_value(chip->gpio_cs, !chip->gpio_cs_inverted);
++	if (chip->gpiod_cs) {
++		gpiod_set_value(chip->gpiod_cs, !chip->gpio_cs_inverted);
+ 		return;
+ 	}
+ 
+@@ -1213,17 +1213,16 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 		    struct pxa2xx_spi_chip *chip_info)
+ {
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
++	struct gpio_desc *gpiod;
+ 	int err = 0;
+ 
+ 	if (chip == NULL)
+ 		return 0;
+ 
+ 	if (drv_data->cs_gpiods) {
+-		struct gpio_desc *gpiod;
+-
+ 		gpiod = drv_data->cs_gpiods[spi->chip_select];
+ 		if (gpiod) {
+-			chip->gpio_cs = desc_to_gpio(gpiod);
++			chip->gpiod_cs = gpiod;
+ 			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+ 			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
+ 		}
+@@ -1237,8 +1236,10 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 	/* NOTE: setup() can be called multiple times, possibly with
+ 	 * different chip_info, release previously requested GPIO
+ 	 */
+-	if (gpio_is_valid(chip->gpio_cs))
+-		gpio_free(chip->gpio_cs);
++	if (chip->gpiod_cs) {
++		gpio_free(desc_to_gpio(chip->gpiod_cs));
++		chip->gpiod_cs = NULL;
++	}
+ 
+ 	/* If (*cs_control) is provided, ignore GPIO chip select */
+ 	if (chip_info->cs_control) {
+@@ -1254,11 +1255,11 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 			return err;
+ 		}
+ 
+-		chip->gpio_cs = chip_info->gpio_cs;
++		gpiod = gpio_to_desc(chip_info->gpio_cs);
++		chip->gpiod_cs = gpiod;
+ 		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
+ 
+-		err = gpio_direction_output(chip->gpio_cs,
+-					!chip->gpio_cs_inverted);
++		err = gpiod_direction_output(gpiod, !chip->gpio_cs_inverted);
+ 	}
+ 
+ 	return err;
+@@ -1317,8 +1318,7 @@ static int setup(struct spi_device *spi)
+ 			}
+ 
+ 			chip->frm = spi->chip_select;
+-		} else
+-			chip->gpio_cs = -1;
++		}
+ 		chip->enable_dma = drv_data->master_info->enable_dma;
+ 		chip->timeout = TIMOUT_DFLT;
+ 	}
+@@ -1416,8 +1416,8 @@ static void cleanup(struct spi_device *spi)
+ 		return;
+ 
+ 	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
+-	    gpio_is_valid(chip->gpio_cs))
+-		gpio_free(chip->gpio_cs);
++	    chip->gpiod_cs)
++		gpio_free(desc_to_gpio(chip->gpiod_cs));
+ 
+ 	kfree(chip);
+ }
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 2823a00a9405..94f7b0713281 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -83,7 +83,7 @@ struct chip_data {
+ 	u16 lpss_tx_threshold;
+ 	u8 enable_dma;
+ 	union {
+-		int gpio_cs;
++		struct gpio_desc *gpiod_cs;
+ 		unsigned int frm;
+ 	};
+ 	int gpio_cs_inverted;
+-- 
+2.12.3

@@ -1,12 +1,10 @@
 From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH RFC 1/2] spi: pxa2xx: Convert to GPIO descriptor API
- where possible
-Date: Fri, 4 Aug 2017 13:24:08 +0300
-Message-ID: <20170804102408.GX2369@lahna.fi.intel.com>
+Subject: Re: [PATCH RFC 2/2] spi: pxa2xx: Only claim CS GPIOs when the slave
+ device is created
+Date: Fri, 4 Aug 2017 13:29:29 +0300
+Message-ID: <20170804102929.GY2369@lahna.fi.intel.com>
 References: <cover.1501760433.git.jan.kiszka@siemens.com>
- <6bfd2b29b888c14f1a6feb9dee5bb54b74e761b0.1501760433.git.jan.kiszka@siemens.com>
- <20170804101029.GV2369@lahna.fi.intel.com>
- <b411858d-6a09-a3bc-555d-b1e648b9c8ed@siemens.com>
+ <5a691263ccf9d61134d6184861b37eaf37b13b77.1501760433.git.jan.kiszka@siemens.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
@@ -19,33 +17,23 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <d
 To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <b411858d-6a09-a3bc-555d-b1e648b9c8ed-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <5a691263ccf9d61134d6184861b37eaf37b13b77.1501760433.git.jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Aug 04, 2017 at 12:18:28PM +0200, Jan Kiszka wrote:
-> On 2017-08-04 12:10, Mika Westerberg wrote:
-> > On Thu, Aug 03, 2017 at 01:40:32PM +0200, Jan Kiszka wrote:
-> >> From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-> >>
-> >> We still need to request/free GPIOs passed via the legacy path of
-> >> pxa2xx_spi_chip::gpio_cs, but we can use the gpiod API otherwise.
-> >>
-> >> Consistently use the descriptor API instead of the legacy one.
-> >>
-> >> Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-> > 
-> > There are some PXA2xx platforms under arch/arm/* which use this driver
-> > and legacy GPIOs. I wonder if this causes any problems with them?
-> > 
-> > That was one of the reasons I did not convert the whole driver over GPIO
-> > descriptors.
+On Thu, Aug 03, 2017 at 01:40:33PM +0200, Jan Kiszka wrote:
+> From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 > 
-> It shouldn't cause problems (famous last words) because I refrained from
-> changing the interfaces to them. References that come in as legacy GPIO
-> are still treated like that.
-
-OK. I hope someone with a PXA2xx machine could still test it.
+> Avoid hogging chip select GPIOs just because they are listed for the
+> master. They might be mulitplexed and, if no slave device is attached,
+> used for different purposes. Moreover, this strategy avoids having to
+> allocate a cs_gpiods structure.
+> 
+> Tested on the IOT2000 where the second SPI bus is connected to an
+> Arduino-compatible connector and multiplexed between SPI, GPIO and PWM
+> usage.
+> 
+> Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
 
 Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 --

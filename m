@@ -1,118 +1,222 @@
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: [PATCH v8 10/16] reset: Add a reset controller driver for the
- Lantiq XWAY based SoCs
-Date: Thu, 3 Aug 2017 23:41:15 +0200
-Message-ID: <4f7f41ad-b6fe-082e-085f-119ad959b817@hauke-m.de>
-References: <20170802225717.24408-1-hauke@hauke-m.de>
- <20170802225717.24408-11-hauke@hauke-m.de>
- <1501749222.23911.4.camel@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, robh@kernel.org,
-        andy.shevchenko@gmail.com
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <1501749222.23911.4.camel@pengutronix.de>
-Content-Language: en-US
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Subject: [PATCH v2 2/7] spi: spi-ep93xx: use 32-bit read/write for all registers
+Date: Fri,  4 Aug 2017 12:00:18 +1200
+Message-ID: <20170804000023.15624-3-chris.packham@alliedtelesis.co.nz>
+References: <20170804000023.15624-1-chris.packham@alliedtelesis.co.nz>
+Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170804000023.15624-1-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 08/03/2017 10:33 AM, Philipp Zabel wrote:
-> Hi Hauke,
-> 
-> On Thu, 2017-08-03 at 00:57 +0200, Hauke Mehrtens wrote:
->> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->>
->> The reset controllers (on xRX200 and newer SoCs have two of them) are
->> provided by the RCU module. This was initially implemented as a simple
->> reset controller. However, the RCU module provides more functionality
->> (ethernet GPHYs, USB PHY, etc.), which makes it a MFD device.
->> The old reset controller driver implementation from
->> arch/mips/lantiq/xway/reset.c did not honor this fact.
->>
->> For some devices the request and the status bits are different.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> Cc: Philipp Zabel <p.zabel@pengutronix.de>
->> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->> ---
->>  .../devicetree/bindings/reset/lantiq,reset.txt     |  30 +++
->>  drivers/reset/Kconfig                              |   6 +
->>  drivers/reset/Makefile                             |   1 +
->>  drivers/reset/reset-lantiq.c                       | 224 +++++++++++++++++++++
->>  4 files changed, 261 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/reset/lantiq,reset.txt
->>  create mode 100644 drivers/reset/reset-lantiq.c
->>
-> [...]
->> diff --git a/drivers/reset/reset-lantiq.c b/drivers/reset/reset-lantiq.c
->> new file mode 100644
->> index 000000000000..b84c45e7e6b8
->> --- /dev/null
->> +++ b/drivers/reset/reset-lantiq.c
->> @@ -0,0 +1,224 @@
-> [...]
->> +static int lantiq_rcu_reset_of_probe(struct platform_device *pdev,
->> +			       struct lantiq_rcu_reset_priv *priv)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	struct resource *res;
->> +	struct resource res_parent;
->> +	int ret;
->> +
->> +	priv->regmap = syscon_node_to_regmap(dev->of_node->parent);
->> +	if (IS_ERR(priv->regmap)) {
->> +		dev_err(&pdev->dev, "Failed to lookup RCU regmap\n");
->> +		return PTR_ERR(priv->regmap);
->> +	}
->> +
->> +	ret = of_address_to_resource(dev->of_node->parent, 0, &res_parent);
->> +	if (ret)
->> +		return ret;
->> +
->> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +	if (!res) {
->> +		dev_err(&pdev->dev, "Failed to get RCU reset offset\n");
->> +		return ret;
-> 
-> This should return -EINVAL instead of 0.
+From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 
-I will fix this in the next round, I am still waiting for Rob's feedback.
+All the EP93xx SSP registers are 32-bit. Since most of the upper bits
+are unused, this driver tries to be tricky and uses 8 or 16-bit I/O to
+access the registers. This really just adds a bit of confusion.
 
-The same problem exists in the USB PHY driver, I will also fix it there.
+Simplify the I/O by using 32-bit read/write's for all of the registers.
 
-> 
->> +	}
->> +
->> +	if (res->start < res_parent.start)
->> +		return -ENOENT;
->> +	priv->reset_offset = res->start - res_parent.start;
->> +
->> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
->> +	if (!res) {
->> +		dev_err(&pdev->dev, "Failed to get RCU status offset\n");
->> +		return ret;
-> 
-> Same here.
-> 
-> With this fixed,
-> Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
-> 
-> regards
-> Philipp
-> 
+Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+[chris: use u32 instead of unsigned int]
+Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-ep93xx.c | 83 ++++++++++++++++++++++--------------------------
+ 1 file changed, 38 insertions(+), 45 deletions(-)
 
-Hauke
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index 49c42a6c2be1..0bd792020471 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -113,47 +113,47 @@ struct ep93xx_spi {
+ 
+ static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	u32 val;
+ 	int err;
+ 
+ 	err = clk_enable(espi->clk);
+ 	if (err)
+ 		return err;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval |= SSPCR1_SSE;
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val |= SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
+ 
+ 	return 0;
+ }
+ 
+ static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	u32 val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval &= ~SSPCR1_SSE;
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~SSPCR1_SSE;
++	writel(val, espi->mmio + SSPCR1);
+ 
+ 	clk_disable(espi->clk);
+ }
+ 
+ static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	u32 val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++	writel(val, espi->mmio + SSPCR1);
+ }
+ 
+ static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
+ {
+-	u8 regval;
++	u32 val;
+ 
+-	regval = readb(espi->mmio + SSPCR1);
+-	regval &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
+-	writeb(regval, espi->mmio + SSPCR1);
++	val = readl(espi->mmio + SSPCR1);
++	val &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
++	writel(val, espi->mmio + SSPCR1);
+ }
+ 
+ /**
+@@ -230,47 +230,41 @@ static int ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
+ 		spi->mode, div_cpsr, div_scr, dss);
+ 	dev_dbg(&espi->pdev->dev, "setup: cr0 %#x\n", cr0);
+ 
+-	writeb(div_cpsr, espi->mmio + SSPCPSR);
+-	writew(cr0, espi->mmio + SSPCR0);
++	writel(div_cpsr, espi->mmio + SSPCPSR);
++	writel(cr0, espi->mmio + SSPCR0);
+ 
+ 	return 0;
+ }
+ 
+ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (t->bits_per_word > 8) {
+-		u16 tx_val = 0;
++	u32 val = 0;
+ 
++	if (t->bits_per_word > 8) {
+ 		if (t->tx_buf)
+-			tx_val = ((u16 *)t->tx_buf)[espi->tx];
+-		writew(tx_val, espi->mmio + SSPDR);
+-		espi->tx += sizeof(tx_val);
++			val = ((u16 *)t->tx_buf)[espi->tx];
++		espi->tx += 2;
+ 	} else {
+-		u8 tx_val = 0;
+-
+ 		if (t->tx_buf)
+-			tx_val = ((u8 *)t->tx_buf)[espi->tx];
+-		writeb(tx_val, espi->mmio + SSPDR);
+-		espi->tx += sizeof(tx_val);
++			val = ((u8 *)t->tx_buf)[espi->tx];
++		espi->tx += 1;
+ 	}
++	writel(val, espi->mmio + SSPDR);
+ }
+ 
+ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (t->bits_per_word > 8) {
+-		u16 rx_val;
++	u32 val;
+ 
+-		rx_val = readw(espi->mmio + SSPDR);
++	val = readl(espi->mmio + SSPDR);
++	if (t->bits_per_word > 8) {
+ 		if (t->rx_buf)
+-			((u16 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
++			((u16 *)t->rx_buf)[espi->rx] = val;
++		espi->rx += 2;
+ 	} else {
+-		u8 rx_val;
+-
+-		rx_val = readb(espi->mmio + SSPDR);
+ 		if (t->rx_buf)
+-			((u8 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
++			((u8 *)t->rx_buf)[espi->rx] = val;
++		espi->rx += 1;
+ 	}
+ }
+ 
+@@ -291,7 +285,7 @@ static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
+ 	struct spi_transfer *t = msg->state;
+ 
+ 	/* read as long as RX FIFO has frames in it */
+-	while ((readb(espi->mmio + SSPSR) & SSPSR_RNE)) {
++	while ((readl(espi->mmio + SSPSR) & SSPSR_RNE)) {
+ 		ep93xx_do_read(espi, t);
+ 		espi->fifo_level--;
+ 	}
+@@ -593,14 +587,14 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	 * Just to be sure: flush any data from RX FIFO.
+ 	 */
+ 	timeout = jiffies + msecs_to_jiffies(SPI_TIMEOUT);
+-	while (readw(espi->mmio + SSPSR) & SSPSR_RNE) {
++	while (readl(espi->mmio + SSPSR) & SSPSR_RNE) {
+ 		if (time_after(jiffies, timeout)) {
+ 			dev_warn(&espi->pdev->dev,
+ 				 "timeout while flushing RX FIFO\n");
+ 			msg->status = -ETIMEDOUT;
+ 			return;
+ 		}
+-		readw(espi->mmio + SSPDR);
++		readl(espi->mmio + SSPDR);
+ 	}
+ 
+ 	/*
+@@ -649,15 +643,14 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
+ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ {
+ 	struct ep93xx_spi *espi = dev_id;
+-	u8 irq_status = readb(espi->mmio + SSPIIR);
+ 
+ 	/*
+ 	 * If we got ROR (receive overrun) interrupt we know that something is
+ 	 * wrong. Just abort the message.
+ 	 */
+-	if (unlikely(irq_status & SSPIIR_RORIS)) {
++	if (readl(espi->mmio + SSPIIR) & SSPIIR_RORIS) {
+ 		/* clear the overrun interrupt */
+-		writeb(0, espi->mmio + SSPICR);
++		writel(0, espi->mmio + SSPICR);
+ 		dev_warn(&espi->pdev->dev,
+ 			 "receive overrun, aborting the message\n");
+ 		espi->current_msg->status = -EIO;
+@@ -857,7 +850,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
+ 
+ 	/* make sure that the hardware is disabled */
+-	writeb(0, espi->mmio + SSPCR1);
++	writel(0, espi->mmio + SSPCR1);
+ 
+ 	error = devm_spi_register_master(&pdev->dev, master);
+ 	if (error) {
+-- 
+2.13.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

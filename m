@@ -1,181 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Convert to GPIO descriptor API where possible" to the spi tree
-Date: Fri, 04 Aug 2017 12:44:29 +0100
-Message-ID: <E1ddb1p-0007H9-IR@debutante>
-References: <6bfd2b29b888c14f1a6feb9dee5bb54b74e761b0.1501760433.git.jan.kiszka@siemens.com>
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] spi: use of_property_read_bool()
+Date: Sun, 06 Aug 2017 23:15:31 +0300
+Message-ID: <20170806201546.905810410@cogentembedded.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-15
+Cc: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <6bfd2b29b888c14f1a6feb9dee5bb54b74e761b0.1501760433.git.jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
+Content-Disposition: inline; filename=spi-use-of_property_read_bool.patch
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Use a bit more compact of_property_read_bool() calls instead of the
+of_find_property() calls -- symmetrically with the of_property_read_u32()
+calls already done in of_spi_parse_dt().
 
-   spi: pxa2xx: Convert to GPIO descriptor API where possible
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c18d925fca20d33c3d04e5002a883f62d699543e Mon Sep 17 00:00:00 2001
-From: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Date: Thu, 3 Aug 2017 13:40:32 +0200
-Subject: [PATCH] spi: pxa2xx: Convert to GPIO descriptor API where possible
-
-We still need to request/free GPIOs passed via the legacy path of
-pxa2xx_spi_chip::gpio_cs, but we can use the gpiod API otherwise.
-
-Consistently use the descriptor API instead of the legacy one.
-
-Signed-off-by: Jan Kiszka <jan.kiszka-kv7WeFo6aLtBDgjK7y7TUQ@public.gmane.org>
-Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 32 ++++++++++++++++----------------
- drivers/spi/spi-pxa2xx.h |  2 +-
- 2 files changed, 17 insertions(+), 17 deletions(-)
+The patch is against the 'for-next' branch of Mark Brown's 'spi.git' repo.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6e5af88b7c6f..4cb515a3104c 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -402,8 +402,8 @@ static void cs_assert(struct driver_data *drv_data)
- 		return;
- 	}
+ drivers/spi/spi.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+Index: spi/drivers/spi/spi.c
+===================================================================
+--- spi.orig/drivers/spi/spi.c
++++ spi/drivers/spi/spi.c
+@@ -1532,15 +1532,15 @@ static int of_spi_parse_dt(struct spi_co
+ 	int rc;
  
--	if (gpio_is_valid(chip->gpio_cs)) {
--		gpio_set_value(chip->gpio_cs, chip->gpio_cs_inverted);
-+	if (chip->gpiod_cs) {
-+		gpiod_set_value(chip->gpiod_cs, chip->gpio_cs_inverted);
- 		return;
- 	}
+ 	/* Mode (clock phase/polarity/etc.) */
+-	if (of_find_property(nc, "spi-cpha", NULL))
++	if (of_property_read_bool(nc, "spi-cpha"))
+ 		spi->mode |= SPI_CPHA;
+-	if (of_find_property(nc, "spi-cpol", NULL))
++	if (of_property_read_bool(nc, "spi-cpol"))
+ 		spi->mode |= SPI_CPOL;
+-	if (of_find_property(nc, "spi-cs-high", NULL))
++	if (of_property_read_bool(nc, "spi-cs-high"))
+ 		spi->mode |= SPI_CS_HIGH;
+-	if (of_find_property(nc, "spi-3wire", NULL))
++	if (of_property_read_bool(nc, "spi-3wire"))
+ 		spi->mode |= SPI_3WIRE;
+-	if (of_find_property(nc, "spi-lsb-first", NULL))
++	if (of_property_read_bool(nc, "spi-lsb-first"))
+ 		spi->mode |= SPI_LSB_FIRST;
  
-@@ -424,8 +424,8 @@ static void cs_deassert(struct driver_data *drv_data)
- 		return;
- 	}
- 
--	if (gpio_is_valid(chip->gpio_cs)) {
--		gpio_set_value(chip->gpio_cs, !chip->gpio_cs_inverted);
-+	if (chip->gpiod_cs) {
-+		gpiod_set_value(chip->gpiod_cs, !chip->gpio_cs_inverted);
- 		return;
- 	}
- 
-@@ -1213,17 +1213,16 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
- 		    struct pxa2xx_spi_chip *chip_info)
- {
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-+	struct gpio_desc *gpiod;
- 	int err = 0;
- 
- 	if (chip == NULL)
- 		return 0;
- 
- 	if (drv_data->cs_gpiods) {
--		struct gpio_desc *gpiod;
--
- 		gpiod = drv_data->cs_gpiods[spi->chip_select];
- 		if (gpiod) {
--			chip->gpio_cs = desc_to_gpio(gpiod);
-+			chip->gpiod_cs = gpiod;
- 			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
- 			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
- 		}
-@@ -1237,8 +1236,10 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
- 	/* NOTE: setup() can be called multiple times, possibly with
- 	 * different chip_info, release previously requested GPIO
- 	 */
--	if (gpio_is_valid(chip->gpio_cs))
--		gpio_free(chip->gpio_cs);
-+	if (chip->gpiod_cs) {
-+		gpio_free(desc_to_gpio(chip->gpiod_cs));
-+		chip->gpiod_cs = NULL;
-+	}
- 
- 	/* If (*cs_control) is provided, ignore GPIO chip select */
- 	if (chip_info->cs_control) {
-@@ -1254,11 +1255,11 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
- 			return err;
- 		}
- 
--		chip->gpio_cs = chip_info->gpio_cs;
-+		gpiod = gpio_to_desc(chip_info->gpio_cs);
-+		chip->gpiod_cs = gpiod;
- 		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
- 
--		err = gpio_direction_output(chip->gpio_cs,
--					!chip->gpio_cs_inverted);
-+		err = gpiod_direction_output(gpiod, !chip->gpio_cs_inverted);
- 	}
- 
- 	return err;
-@@ -1317,8 +1318,7 @@ static int setup(struct spi_device *spi)
- 			}
- 
- 			chip->frm = spi->chip_select;
--		} else
--			chip->gpio_cs = -1;
-+		}
- 		chip->enable_dma = drv_data->master_info->enable_dma;
- 		chip->timeout = TIMOUT_DFLT;
- 	}
-@@ -1416,8 +1416,8 @@ static void cleanup(struct spi_device *spi)
- 		return;
- 
- 	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
--	    gpio_is_valid(chip->gpio_cs))
--		gpio_free(chip->gpio_cs);
-+	    chip->gpiod_cs)
-+		gpio_free(desc_to_gpio(chip->gpiod_cs));
- 
- 	kfree(chip);
- }
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 2823a00a9405..94f7b0713281 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -83,7 +83,7 @@ struct chip_data {
- 	u16 lpss_tx_threshold;
- 	u8 enable_dma;
- 	union {
--		int gpio_cs;
-+		struct gpio_desc *gpiod_cs;
- 		unsigned int frm;
- 	};
- 	int gpio_cs_inverted;
--- 
-2.13.3
+ 	/* Device DUAL/QUAD mode */
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

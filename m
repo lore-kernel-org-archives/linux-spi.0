@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: Fix clock handling in suspend/resume" to the spi tree
-Date: Mon, 07 Aug 2017 16:53:26 +0100
-Message-ID: <E1dekLO-0005bc-H0@debutante>
-References: <1502109620-26813-4-git-send-email-jeffy.chen@rock-chips.com>
+Subject: Applied "spi: rockchip: Slightly rework return value handling" to the spi tree
+Date: Mon, 07 Aug 2017 16:53:37 +0100
+Message-ID: <E1dekLZ-0005dc-Ed@debutante>
+References: <1502109620-26813-2-git-send-email-jeffy.chen@rock-chips.com>
 Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
         broonie@kernel.org, briannorris@chromium.org,
         dianders@chromium.org, heiko@sntech.de, linux-spi@vger.kernel.org,
@@ -10,13 +10,13 @@ Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
 To: Jeffy Chen <jeffy.chen@rock-chips.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1502109620-26813-4-git-send-email-jeffy.chen@rock-chips.com>
+In-Reply-To: <1502109620-26813-2-git-send-email-jeffy.chen@rock-chips.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: Fix clock handling in suspend/resume
+   spi: rockchip: Slightly rework return value handling
 
 has been applied to the spi tree at
 
@@ -41,62 +41,113 @@ to this mail.
 Thanks,
 Mark
 
->From d38c4ae194bb8a3d8cf7d95378c5b2799cdd0a3b Mon Sep 17 00:00:00 2001
+>From 43de979ddc099c57858b243619c66e2f663a2f97 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
-Date: Mon, 7 Aug 2017 20:40:20 +0800
-Subject: [PATCH] spi: rockchip: Fix clock handling in suspend/resume
+Date: Mon, 7 Aug 2017 20:40:18 +0800
+Subject: [PATCH] spi: rockchip: Slightly rework return value handling
 
-The runtime suspend callback might be called by pm domain framework at
-suspend_noirq stage. It would try to disable the clocks which already
-been disabled by rockchip_spi_suspend.
-
-Call pm_runtime_force_suspend/pm_runtime_force_resume when
-suspend/resume to avoid that.
+Slightly rework return value handling, no functional changes.
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/spi/spi-rockchip.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index a75fd9bb76de..34f6440a5255 100644
+index 0b4a52b3e1dc..5497650992c7 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -846,10 +846,9 @@ static int rockchip_spi_suspend(struct device *dev)
- 	if (ret < 0)
+@@ -666,7 +666,7 @@ static bool rockchip_spi_can_dma(struct spi_master *master,
+ 
+ static int rockchip_spi_probe(struct platform_device *pdev)
+ {
+-	int ret = 0;
++	int ret;
+ 	struct rockchip_spi *rs;
+ 	struct spi_master *master;
+ 	struct resource *mem;
+@@ -703,13 +703,13 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = clk_prepare_enable(rs->apb_pclk);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to enable apb_pclk\n");
+ 		goto err_put_master;
+ 	}
+ 
+ 	ret = clk_prepare_enable(rs->spiclk);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to enable spi_clk\n");
+ 		goto err_disable_apbclk;
+ 	}
+@@ -786,7 +786,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register master\n");
+ 		goto err_free_dma_rx;
+ 	}
+@@ -834,12 +834,12 @@ static int rockchip_spi_remove(struct platform_device *pdev)
+ #ifdef CONFIG_PM_SLEEP
+ static int rockchip_spi_suspend(struct device *dev)
+ {
+-	int ret = 0;
++	int ret;
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+ 	ret = spi_master_suspend(rs->master);
+-	if (ret)
++	if (ret < 0)
  		return ret;
  
--	if (!pm_runtime_suspended(dev)) {
--		clk_disable_unprepare(rs->spiclk);
--		clk_disable_unprepare(rs->apb_pclk);
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret < 0)
-+		return ret;
+ 	if (!pm_runtime_suspended(dev)) {
+@@ -849,12 +849,12 @@ static int rockchip_spi_suspend(struct device *dev)
  
  	pinctrl_pm_select_sleep_state(dev);
  
-@@ -864,17 +863,9 @@ static int rockchip_spi_resume(struct device *dev)
+-	return ret;
++	return 0;
+ }
  
- 	pinctrl_pm_select_default_state(dev);
+ static int rockchip_spi_resume(struct device *dev)
+ {
+-	int ret = 0;
++	int ret;
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
  
--	if (!pm_runtime_suspended(dev)) {
--		ret = clk_prepare_enable(rs->apb_pclk);
--		if (ret < 0)
--			return ret;
--
--		ret = clk_prepare_enable(rs->spiclk);
--		if (ret < 0) {
--			clk_disable_unprepare(rs->apb_pclk);
--			return ret;
--		}
--	}
-+	ret = pm_runtime_force_resume(dev);
+@@ -878,7 +878,7 @@ static int rockchip_spi_resume(struct device *dev)
+ 		clk_disable_unprepare(rs->apb_pclk);
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
+@@ -901,14 +901,14 @@ static int rockchip_spi_runtime_resume(struct device *dev)
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+ 	ret = clk_prepare_enable(rs->apb_pclk);
+-	if (ret)
 +	if (ret < 0)
-+		return ret;
+ 		return ret;
  
- 	ret = spi_master_resume(rs->master);
- 	if (ret < 0) {
+ 	ret = clk_prepare_enable(rs->spiclk);
+-	if (ret)
++	if (ret < 0)
+ 		clk_disable_unprepare(rs->apb_pclk);
+ 
+-	return ret;
++	return 0;
+ }
+ #endif /* CONFIG_PM */
+ 
 -- 
 2.13.3

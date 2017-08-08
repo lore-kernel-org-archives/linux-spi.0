@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/bcm63xx-hspi: fix error return code in
- bcm63xx_hsspi_probe()" to the spi tree
-Date: Tue, 08 Aug 2017 12:06:39 +0100
-Message-ID: <E1df2LP-00055E-6Q@finisterre>
-References: <20170808045944.GA19600@embeddedgus>
+Subject: Applied "spi/bcm63xx: fix error return code in bcm63xx_spi_probe()"
+ to the spi tree
+Date: Tue, 08 Aug 2017 12:06:43 +0100
+Message-ID: <E1df2LT-000569-E6@finisterre>
+References: <20170808045234.GA18065@embeddedgus>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,7 +13,7 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
  bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org
 To: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170808045944.GA19600@embeddedgus>
+In-Reply-To: <20170808045234.GA18065@embeddedgus>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,7 +27,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi/bcm63xx-hspi: fix error return code in bcm63xx_hsspi_probe()
+   spi/bcm63xx: fix error return code in bcm63xx_spi_probe()
 
 has been applied to the spi tree at
 
@@ -52,14 +52,13 @@ to this mail.
 Thanks,
 Mark
 
->From 378da4a65f3a0390837b38145bb5d8c2d20c2cf7 Mon Sep 17 00:00:00 2001
+>From ba8afe94723e9ba665aee9cca649fb2c80f7304c Mon Sep 17 00:00:00 2001
 From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Date: Mon, 7 Aug 2017 23:59:44 -0500
-Subject: [PATCH] spi/bcm63xx-hspi: fix error return code in
- bcm63xx_hsspi_probe()
+Date: Mon, 7 Aug 2017 23:52:34 -0500
+Subject: [PATCH] spi/bcm63xx: fix error return code in bcm63xx_spi_probe()
 
-platform_get_irq() returns an error code, but the spi-bcm63xx-hsspi
-driver ignores it and always returns -ENXIO. This is not correct and,
+platform_get_irq() returns an error code, but the spi-bcm63xx driver
+ignores it and always returns -ENXIO. This is not correct and,
 prevents -EPROBE_DEFER from being propagated properly.
 
 Notice that platform_get_irq() no longer returns 0 on error:
@@ -72,14 +71,14 @@ This issue was detected with the help of Coccinelle.
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 4 ++--
+ drivers/spi/spi-bcm63xx.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 4da2d4a524ca..b03fc1850ae9 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -338,8 +338,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 84c7356ce5b4..bfe5754768f9 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -530,8 +530,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
  
  	irq = platform_get_irq(pdev, 0);
  	if (irq < 0) {
@@ -89,6 +88,6 @@ index 4da2d4a524ca..b03fc1850ae9 100644
 +		return irq;
  	}
  
- 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	clk = devm_clk_get(dev, "spi");
 -- 
 2.13.2

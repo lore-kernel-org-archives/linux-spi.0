@@ -1,21 +1,22 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: cadence: Add support for context loss" to the spi tree
-Date: Tue, 08 Aug 2017 12:06:50 +0100
-Message-ID: <E1df2La-000594-CQ@finisterre>
-References: <41f50cff7fd229448eb725f9d8ee97ec497457b2.1502182800.git.michal.simek@xilinx.com>
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <41f50cff7fd229448eb725f9d8ee97ec497457b2.1502182800.git.michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: cadence: change sequence of calling runtime_enable" to the spi tree
+Date: Tue, 08 Aug 2017 12:06:53 +0100
+Message-ID: <E1df2Ld-0005AW-SS@finisterre>
+References: <61b5819082ab2128754f37b7a3440a03f7a90248.1502182771.git.michal.simek@xilinx.com>
+Cc: Naga Sureshkumar Relli <nagasure@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        monstr@monstr.eu, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <61b5819082ab2128754f37b7a3440a03f7a90248.1502182771.git.michal.simek@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: cadence: Add support for context loss
+   spi: cadence: change sequence of calling runtime_enable
 
 has been applied to the spi tree at
 
@@ -40,39 +41,36 @@ to this mail.
 Thanks,
 Mark
 
->From 802740890c4200c9266aee3139c5bd8e9b154e8f Mon Sep 17 00:00:00 2001
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 8 Aug 2017 11:00:03 +0200
-Subject: [PATCH] spi: cadence: Add support for context loss
+>From 48767fd8982d39d90a9e83b1461dc5feedf73e29 Mon Sep 17 00:00:00 2001
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Date: Tue, 8 Aug 2017 10:59:33 +0200
+Subject: [PATCH] spi: cadence: change sequence of calling runtime_enable
 
-Context could be lost across the suspend and resume.
-Reinit the driver to tide over.
+call pm_runtime_enable after set_active other wise it will
+enable clock always.
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Naga Sureshkumar Relli <nagasure@xilinx.com>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-cadence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 5e02f9b91688..5c9516ae4942 100644
+index f0b5c7b91f37..5e02f9b91688 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -704,7 +704,9 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct cdns_spi *xspi = spi_master_get_devdata(master);
+@@ -576,10 +576,10 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 		goto clk_dis_apb;
+ 	}
  
-+	cdns_spi_init_hw(xspi);
- 	return spi_master_resume(master);
- }
+-	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
  
+ 	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
+ 	if (ret < 0)
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

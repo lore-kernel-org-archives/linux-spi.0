@@ -1,22 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: cadence: change sequence of calling runtime_enable" to the spi tree
-Date: Tue, 08 Aug 2017 12:06:53 +0100
-Message-ID: <E1df2Ld-0005AW-SS@finisterre>
-References: <61b5819082ab2128754f37b7a3440a03f7a90248.1502182771.git.michal.simek@xilinx.com>
-Cc: Naga Sureshkumar Relli <nagasure@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        monstr@monstr.eu, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
-To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <61b5819082ab2128754f37b7a3440a03f7a90248.1502182771.git.michal.simek@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi/bcm63xx-hspi: fix error return code in
+ bcm63xx_hsspi_probe()" to the spi tree
+Date: Tue, 08 Aug 2017 12:06:39 +0100
+Message-ID: <E1df2LP-00055E-6Q@finisterre>
+References: <20170808045944.GA19600@embeddedgus>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Florian Fainelli <f.fainelli@gmail.com>,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org
+To: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20170808045944.GA19600@embeddedgus>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: cadence: change sequence of calling runtime_enable
+   spi/bcm63xx-hspi: fix error return code in bcm63xx_hsspi_probe()
 
 has been applied to the spi tree at
 
@@ -41,36 +52,43 @@ to this mail.
 Thanks,
 Mark
 
->From 48767fd8982d39d90a9e83b1461dc5feedf73e29 Mon Sep 17 00:00:00 2001
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Date: Tue, 8 Aug 2017 10:59:33 +0200
-Subject: [PATCH] spi: cadence: change sequence of calling runtime_enable
+>From 378da4a65f3a0390837b38145bb5d8c2d20c2cf7 Mon Sep 17 00:00:00 2001
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Date: Mon, 7 Aug 2017 23:59:44 -0500
+Subject: [PATCH] spi/bcm63xx-hspi: fix error return code in
+ bcm63xx_hsspi_probe()
 
-call pm_runtime_enable after set_active other wise it will
-enable clock always.
+platform_get_irq() returns an error code, but the spi-bcm63xx-hsspi
+driver ignores it and always returns -ENXIO. This is not correct and,
+prevents -EPROBE_DEFER from being propagated properly.
 
-Signed-off-by: Naga Sureshkumar Relli <nagasure@xilinx.com>
-Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Notice that platform_get_irq() no longer returns 0 on error:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e330b9a6bb35dc7097a4f02cb1ae7b6f96df92af
+
+Print and propagate the return value of platform_get_irq on failure.
+
+This issue was detected with the help of Coccinelle.
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index f0b5c7b91f37..5e02f9b91688 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -576,10 +576,10 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 		goto clk_dis_apb;
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 4da2d4a524ca..b03fc1850ae9 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -338,8 +338,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+-		dev_err(dev, "no irq\n");
+-		return -ENXIO;
++		dev_err(dev, "no irq: %d\n", irq);
++		return irq;
  	}
  
--	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
- 
- 	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
- 	if (ret < 0)
+ 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -- 
 2.13.2

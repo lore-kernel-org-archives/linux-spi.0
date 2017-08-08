@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: call io_config in mode specific function" to the spi tree
-Date: Tue, 08 Aug 2017 12:18:13 +0100
-Message-ID: <E1df2Wb-0006If-0G@finisterre>
-References: <1501224781-19519-10-git-send-email-varada@codeaurora.org>
+Subject: Applied "spi: qup: refactor spi_qup_prep_sg" to the spi tree
+Date: Tue, 08 Aug 2017 12:18:05 +0100
+Message-ID: <E1df2WT-0006GV-Ms@finisterre>
+References: <1500882445-29008-12-git-send-email-varada@codeaurora.org>
 Cc: Matthew McClintock <mmcclint@codeaurora.org>,
         Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         robh+dt@kernel.org, mark.rutland@arm.com, andy.gross@linaro.org,
@@ -13,13 +13,13 @@ Cc: Matthew McClintock <mmcclint@codeaurora.org>,
         linux-spi@vger.kernel.org
 To: Varadarajan Narayanan <varada@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1501224781-19519-10-git-send-email-varada@codeaurora.org>
+In-Reply-To: <1500882445-29008-12-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: qup: call io_config in mode specific function
+   spi: qup: refactor spi_qup_prep_sg
 
 has been applied to the spi tree at
 
@@ -44,105 +44,79 @@ to this mail.
 Thanks,
 Mark
 
->From 3b5ea2c981dd470882bdc83e548dd15a942dbf4d Mon Sep 17 00:00:00 2001
+>From a841b24e627ca2d3b6a23ca00a4908bfe8f3a5ef Mon Sep 17 00:00:00 2001
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Date: Fri, 28 Jul 2017 12:22:56 +0530
-Subject: [PATCH] spi: qup: call io_config in mode specific function
+Date: Fri, 28 Jul 2017 12:22:58 +0530
+Subject: [PATCH] spi: qup: refactor spi_qup_prep_sg
 
-DMA transactions should only only need to call io_config only once, but
-block mode might call it several times to setup several transactions so
-it can handle reads/writes larger than the max size per transaction, so
-we move the call to the do_ functions.
-
-This is just refactoring, there should be no functional change
+Take specific sgl and nent to be prepared.  This is in
+preparation for splitting DMA into multiple transacations, this
+contains no code changes just refactoring.
 
 Signed-off-by: Matthew McClintock <mmcclint@codeaurora.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-qup.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/spi/spi-qup.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index ff5aa08b5725..1aa60785bf98 100644
+index 707b1ec427fa..1af3b41ac12d 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -156,6 +156,8 @@ struct spi_qup {
- 	struct dma_slave_config	tx_conf;
- };
- 
-+static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer);
-+
- static inline bool spi_qup_is_flag_set(struct spi_qup *controller, u32 flag)
- {
- 	u32 opflag = readl_relaxed(controller->base + QUP_OPERATIONAL);
-@@ -417,11 +419,12 @@ static void spi_qup_dma_terminate(struct spi_master *master,
- 		dmaengine_terminate_all(master->dma_rx);
+@@ -382,27 +382,20 @@ static void spi_qup_write(struct spi_qup *controller)
+ 	} while (remainder);
  }
  
--static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
-+static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
+-static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
+-			   enum dma_transfer_direction dir,
++static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
++			   unsigned int nents, enum dma_transfer_direction dir,
+ 			   dma_async_tx_callback callback)
  {
--	struct spi_qup *qup = spi_master_get_devdata(master);
- 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
-+	struct spi_master *master = spi->master;
-+	struct spi_qup *qup = spi_master_get_devdata(master);
- 	int ret;
- 
- 	if (xfer->rx_buf)
-@@ -429,6 +432,10 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 	else if (xfer->tx_buf)
- 		tx_done = spi_qup_dma_done;
- 
-+	ret = spi_qup_io_config(spi, xfer);
-+	if (ret)
-+		return ret;
-+
- 	/* before issuing the descriptors, set the QUP to run */
- 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
- 	if (ret) {
-@@ -459,12 +466,17 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
- 	return 0;
- }
- 
--static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
-+static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
-+	struct spi_master *master = spi->master;
  	struct spi_qup *qup = spi_master_get_devdata(master);
- 	int ret;
+ 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
+ 	struct dma_async_tx_descriptor *desc;
+-	struct scatterlist *sgl;
+ 	struct dma_chan *chan;
+ 	dma_cookie_t cookie;
+-	unsigned int nents;
  
-+	ret = spi_qup_io_config(spi, xfer);
-+	if (ret)
-+		return ret;
-+
- 	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
- 	if (ret) {
- 		dev_warn(qup->dev, "cannot set RUN state\n");
-@@ -742,10 +754,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	if (ret)
- 		return ret;
+-	if (dir == DMA_MEM_TO_DEV) {
++	if (dir == DMA_MEM_TO_DEV)
+ 		chan = master->dma_tx;
+-		nents = xfer->tx_sg.nents;
+-		sgl = xfer->tx_sg.sgl;
+-	} else {
++	else
+ 		chan = master->dma_rx;
+-		nents = xfer->rx_sg.nents;
+-		sgl = xfer->rx_sg.sgl;
+-	}
  
--	ret = spi_qup_io_config(spi, xfer);
--	if (ret)
--		return ret;
--
- 	timeout = DIV_ROUND_UP(xfer->speed_hz, MSEC_PER_SEC);
- 	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
- 	timeout = 100 * msecs_to_jiffies(timeout);
-@@ -760,9 +768,9 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	spin_unlock_irqrestore(&controller->lock, flags);
+ 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
+ 	if (IS_ERR_OR_NULL(desc))
+@@ -451,7 +444,9 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	}
  
- 	if (spi_qup_is_dma_xfer(controller->mode))
--		ret = spi_qup_do_dma(master, xfer, timeout);
-+		ret = spi_qup_do_dma(spi, xfer, timeout);
- 	else
--		ret = spi_qup_do_pio(master, xfer, timeout);
-+		ret = spi_qup_do_pio(spi, xfer, timeout);
+ 	if (xfer->rx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM, rx_done);
++		ret = spi_qup_prep_sg(master, xfer->rx_sg.sgl,
++				      xfer->rx_sg.nents, DMA_DEV_TO_MEM,
++				      rx_done);
+ 		if (ret)
+ 			return ret;
  
- 	if (ret)
- 		goto exit;
+@@ -459,7 +454,9 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	}
+ 
+ 	if (xfer->tx_buf) {
+-		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV, tx_done);
++		ret = spi_qup_prep_sg(master, xfer->tx_sg.sgl,
++				      xfer->tx_sg.nents, DMA_MEM_TO_DEV,
++				      tx_done);
+ 		if (ret)
+ 			return ret;
+ 
 -- 
 2.13.2

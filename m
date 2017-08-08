@@ -1,25 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: Enable chip select support" to the spi tree
-Date: Tue, 08 Aug 2017 12:18:43 +0100
-Message-ID: <E1df2X5-0006R8-H4@finisterre>
-References: <1497419551-21834-2-git-send-email-varada@codeaurora.org>
-Cc: Sham Muthayyan <smuthayy@codeaurora.org>,
+Subject: Applied "spi: qup: Add completion timeout" to the spi tree
+Date: Tue, 08 Aug 2017 12:18:35 +0100
+Message-ID: <E1df2Wx-0006Ox-Nn@finisterre>
+References: <1501224781-19519-4-git-send-email-varada@codeaurora.org>
+Cc: Andy Gross <andy.gross@linaro.org>,
         Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         robh+dt@kernel.org, mark.rutland@arm.com, andy.gross@linaro.org,
         david.brown@linaro.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org,
-        Sham Muthayyan <smuthayy@codeaurora.org>,
         linux-spi@vger.kernel.org
 To: Varadarajan Narayanan <varada@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1497419551-21834-2-git-send-email-varada@codeaurora.org>
+In-Reply-To: <1501224781-19519-4-git-send-email-varada@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: qup: Enable chip select support
+   spi: qup: Add completion timeout
 
 has been applied to the spi tree at
 
@@ -44,63 +43,73 @@ to this mail.
 Thanks,
 Mark
 
->From b702b9fb393ed1c19ab3ecb1552757522c982746 Mon Sep 17 00:00:00 2001
+>From 5f13fd60b1e709b9387877b0b65d605df9fff1d6 Mon Sep 17 00:00:00 2001
 From: Varadarajan Narayanan <varada@codeaurora.org>
-Date: Fri, 28 Jul 2017 12:22:48 +0530
-Subject: [PATCH] spi: qup: Enable chip select support
+Date: Fri, 28 Jul 2017 12:22:50 +0530
+Subject: [PATCH] spi: qup: Add completion timeout
 
-Enable chip select support for QUP versions later than v1. The
-chip select support was broken in QUP version 1. Hence the chip
-select support was removed earlier in an earlier commit
-(4a8573abe "spi: qup: Remove chip select function"). Since the
-chip select support is functional in recent versions of QUP,
-re-enabling it for QUP versions later than v1.
+Add i/o completion timeout for DMA and PIO modes.
 
-Signed-off-by: Sham Muthayyan <smuthayy@codeaurora.org>
+Signed-off-by: Andy Gross <andy.gross@linaro.org>
 Signed-off-by: Varadarajan Narayanan <varada@codeaurora.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-qup.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/spi/spi-qup.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 1bfa889b8427..c0d4defc1c13 100644
+index abe799bbc67f..fdd34c3ce426 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -750,6 +750,24 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	return ret;
+@@ -331,8 +331,10 @@ static void spi_qup_dma_terminate(struct spi_master *master,
+ 		dmaengine_terminate_all(master->dma_rx);
  }
  
-+static void spi_qup_set_cs(struct spi_device *spi, bool val)
-+{
-+	struct spi_qup *controller;
-+	u32 spi_ioc;
-+	u32 spi_ioc_orig;
-+
-+	controller = spi_master_get_devdata(spi->master);
-+	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
-+	spi_ioc_orig = spi_ioc;
-+	if (!val)
-+		spi_ioc |= SPI_IO_C_FORCE_CS;
-+	else
-+		spi_ioc &= ~SPI_IO_C_FORCE_CS;
-+
-+	if (spi_ioc != spi_ioc_orig)
-+		writel_relaxed(spi_ioc, controller->base + SPI_IO_CONTROL);
-+}
-+
- static int spi_qup_probe(struct platform_device *pdev)
+-static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
++static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer,
++			  unsigned long timeout)
  {
- 	struct spi_master *master;
-@@ -846,6 +864,9 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	if (of_device_is_compatible(dev->of_node, "qcom,spi-qup-v1.1.1"))
- 		controller->qup_v1 = 1;
++	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
+ 	int ret;
  
-+	if (!controller->qup_v1)
-+		master->set_cs = spi_qup_set_cs;
+@@ -357,10 +359,14 @@ static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
+ 		dma_async_issue_pending(master->dma_tx);
+ 	}
+ 
++	if (!wait_for_completion_timeout(&qup->done, timeout))
++		return -ETIMEDOUT;
 +
- 	spin_lock_init(&controller->lock);
- 	init_completion(&controller->done);
+ 	return 0;
+ }
  
+-static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer)
++static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer,
++			  unsigned long timeout)
+ {
+ 	struct spi_qup *qup = spi_master_get_devdata(master);
+ 	int ret;
+@@ -379,6 +385,9 @@ static int spi_qup_do_pio(struct spi_master *master, struct spi_transfer *xfer)
+ 
+ 	spi_qup_fifo_write(qup, xfer);
+ 
++	if (!wait_for_completion_timeout(&qup->done, timeout))
++		return -ETIMEDOUT;
++
+ 	return 0;
+ }
+ 
+@@ -632,9 +641,9 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	spin_unlock_irqrestore(&controller->lock, flags);
+ 
+ 	if (spi_qup_is_dma_xfer(controller->mode))
+-		ret = spi_qup_do_dma(master, xfer);
++		ret = spi_qup_do_dma(master, xfer, timeout);
+ 	else
+-		ret = spi_qup_do_pio(master, xfer);
++		ret = spi_qup_do_pio(master, xfer, timeout);
+ 
+ 	if (ret)
+ 		goto exit;
 -- 
 2.13.2

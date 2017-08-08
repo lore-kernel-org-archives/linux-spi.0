@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v9 04/16] watchdog: lantiq: access boot cause register through regmap
-Date: Wed,  9 Aug 2017 00:52:35 +0200
-Message-ID: <20170808225247.32266-5-hauke@hauke-m.de>
+Subject: [PATCH v9 05/16] watchdog: lantiq: add device tree binding documentation
+Date: Wed,  9 Aug 2017 00:52:36 +0200
+Message-ID: <20170808225247.32266-6-hauke@hauke-m.de>
 References: <20170808225247.32266-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -16,143 +16,44 @@ In-Reply-To: <20170808225247.32266-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.o
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch avoids accessing the function ltq_reset_cause() and directly
-accesses the register given over the syscon interface. The syscon
-interface will be implemented for the xway SoCs for the falcon SoCs the
-ltq_reset_cause() function never worked, because a wrong offset was used.
+The binding was not documented before, add the documentation now.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Acked-by: Guenter Roeck <linux-cYGBoTPqujPR7s880joybQ@public.gmane.org>
 ---
- drivers/watchdog/lantiq_wdt.c | 74 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 69 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index e0823677d8c1..7f43cefa0eae 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -4,6 +4,7 @@
-  *  by the Free Software Foundation.
-  *
-  *  Copyright (C) 2010 John Crispin <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>
-+ *  Copyright (C) 2017 Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-  *  Based on EP93xx wdt driver
-  */
- 
-@@ -17,9 +18,20 @@
- #include <linux/uaccess.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <linux/regmap.h>
-+#include <linux/mfd/syscon.h>
- 
- #include <lantiq_soc.h>
- 
-+#define LTQ_XRX_RCU_RST_STAT		0x0014
-+#define LTQ_XRX_RCU_RST_STAT_WDT	BIT(31)
+diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+new file mode 100644
+index 000000000000..18d4d8302702
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+@@ -0,0 +1,24 @@
++Lantiq WTD watchdog binding
++============================
 +
-+/* CPU0 Reset Source Register */
-+#define LTQ_FALCON_SYS1_CPU0RS		0x0060
-+/* reset cause mask */
-+#define LTQ_FALCON_SYS1_CPU0RS_MASK	0x0007
-+#define LTQ_FALCON_SYS1_CPU0RS_WDT	0x02
++This describes the binding of the Lantiq watchdog driver.
 +
- /*
-  * Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
-@@ -186,16 +198,70 @@ static struct miscdevice ltq_wdt_miscdev = {
- 	.fops	= &ltq_wdt_fops,
- };
- 
-+typedef int (*ltq_wdt_bootstatus_set)(struct platform_device *pdev);
++-------------------------------------------------------------------------------
++Required properties:
++- compatible		: Should be one of
++				"lantiq,wdt"
++				"lantiq,xrx100-wdt"
++				"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
++				"lantiq,falcon-wdt"
++- reg			: Address of the watchdog block
++- lantiq,rcu		: A phandle to the RCU syscon (required for
++			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
 +
-+static int ltq_wdt_bootstatus_xrx(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
++-------------------------------------------------------------------------------
++Example for the watchdog on the xRX200 SoCs:
++		watchdog@803f0 {
++			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
++			reg = <0x803f0 0x10>;
 +
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
-+
-+	err = regmap_read(rcu_regmap, LTQ_XRX_RCU_RST_STAT, &val);
-+	if (err)
-+		return err;
-+
-+	if (val & LTQ_XRX_RCU_RST_STAT_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-+
-+	return 0;
-+}
-+
-+static int ltq_wdt_bootstatus_falcon(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regmap *rcu_regmap;
-+	u32 val;
-+	int err;
-+
-+	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node,
-+						     "lantiq,rcu");
-+	if (IS_ERR(rcu_regmap))
-+		return PTR_ERR(rcu_regmap);
-+
-+	err = regmap_read(rcu_regmap, LTQ_FALCON_SYS1_CPU0RS, &val);
-+	if (err)
-+		return err;
-+
-+	if ((val & LTQ_FALCON_SYS1_CPU0RS_MASK) == LTQ_FALCON_SYS1_CPU0RS_WDT)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-+
-+	return 0;
-+}
-+
- static int
- ltq_wdt_probe(struct platform_device *pdev)
- {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	struct clk *clk;
-+	ltq_wdt_bootstatus_set ltq_wdt_bootstatus_set;
-+	int ret;
- 
- 	ltq_wdt_membase = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(ltq_wdt_membase))
- 		return PTR_ERR(ltq_wdt_membase);
- 
-+	ltq_wdt_bootstatus_set = of_device_get_match_data(&pdev->dev);
-+	if (ltq_wdt_bootstatus_set) {
-+		ret = ltq_wdt_bootstatus_set(pdev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* we do not need to enable the clock as it is always running */
- 	clk = clk_get_io();
- 	if (IS_ERR(clk)) {
-@@ -205,10 +271,6 @@ ltq_wdt_probe(struct platform_device *pdev)
- 	ltq_io_region_clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
- 
--	/* find out if the watchdog caused the last reboot */
--	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
--		ltq_wdt_bootstatus = WDIOF_CARDRESET;
--
- 	dev_info(&pdev->dev, "Init done\n");
- 	return misc_register(&ltq_wdt_miscdev);
- }
-@@ -222,7 +284,9 @@ ltq_wdt_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id ltq_wdt_match[] = {
--	{ .compatible = "lantiq,wdt" },
-+	{ .compatible = "lantiq,wdt", .data = NULL},
-+	{ .compatible = "lantiq,xrx100-wdt", .data = ltq_wdt_bootstatus_xrx },
-+	{ .compatible = "lantiq,falcon-wdt", .data = ltq_wdt_bootstatus_falcon },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, ltq_wdt_match);
++			lantiq,rcu = <&rcu0>;
++		};
 -- 
 2.11.0
 

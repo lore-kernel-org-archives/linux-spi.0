@@ -1,57 +1,149 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-Date: Wed, 9 Aug 2017 12:44:21 +0100
-Message-ID: <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
-References: <20170808225247.32266-1-hauke@hauke-m.de>
- <20170808225247.32266-4-hauke@hauke-m.de>
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCHv3 1/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Wed, 9 Aug 2017 23:00:55 +1000
+Message-ID: <239ae959-ce96-711b-dbfb-4e892b7eab3b@linux-m68k.org>
+References: <1499746932-14850-1-git-send-email-gerg@linux-m68k.org>
+ <1499746932-14850-2-git-send-email-gerg@linux-m68k.org>
+ <CAOMZO5Dq8mAULR+L6HJUMc6f=-d9QPZmn92+jzwKLuGYDA_AaA@mail.gmail.com>
+ <20170720063449.qvi3s7faapcncoqm@pengutronix.de>
+ <2892f819-f1a2-b68d-be01-e8ac7f4b4222@linux-m68k.org>
+ <20170724062147.o7tccwskxfuls3ej@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="76oohoz2fusi4hjt"
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kishon-l0cyMroinI0@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170808225247.32266-4-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170724062147.o7tccwskxfuls3ej-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Hi Qleksij,
+
+On 24/07/17 16:21, Oleksij Rempel wrote:
+> On Thu, Jul 20, 2017 at 11:00:49PM +1000, Greg Ungerer wrote:
+>> Hi Oleksij,
+>>
+>> On 20/07/17 16:34, Oleksij Rempel wrote:
+>>> Hi Greg,
+>>>
+>>> On Tue, Jul 18, 2017 at 09:53:58PM -0300, Fabio Estevam wrote:
+>>>> Adding Pengutronix folks on Cc.
+>>>>
+>>>> On Tue, Jul 11, 2017 at 1:22 AM, Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+>>>>> The commonly used mechanism of specifying the hardware or native
+>>>>> chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+>>>>> does not result in the native chip-select being configured for use.
+>>>>> So external SPI devices that require use of the native chip-select
+>>>>> will not work.
+>>>>>
+>>>>> You can successfully specify native chip-selects if using a platform
+>>>>> setup by specifying the cs-gpio as negative offset by 32. And that
+>>>>> works correctly. You cannot use the same method in devicetree.
+>>>>>
+>>>>> The logic in the spi-imx.c driver during probe uses core spi function
+>>>>> of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+>>>>> For valid GPIO values that will be recorded for use, all other entries in
+>>>>> the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+>>>>> set to -ENOENT in the cs_gpios list.
+>>>>>
+>>>>> When the SPI device registers are setup the code will use the GPIO
+>>>>> listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+>>>>> is less then 0 then it is intended to be for a native chip-select, and
+>>>>> its cs_gpio value is added to 32 to get the chipselect number to use.
+>>>>> Problem is that with devicetree this can only ever be -ENOENT (which
+>>>>> is -2), and that alone results in an invalid chip-select number. But also
+>>>>> doesn't allow selection of the native chip-select at all.
+>>>>>
+>>>>> To fix, if the cs_gpio specified for this spi device is not a
+>>>>> valid GPIO then use the "chip_select" (that is the native chip-select
+>>>>> number) for hardware setup.
+>>>>>
+>>>>> Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>>>>> ---
+>>>>>    drivers/spi/spi-imx.c | 8 ++++----
+>>>>>    1 file changed, 4 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>>>>> index b402530..f4fe66c 100644
+>>>>> --- a/drivers/spi/spi-imx.c
+>>>>> +++ b/drivers/spi/spi-imx.c
+>>>>> @@ -524,8 +524,8 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+>>>>>                   reg |= MX31_CSPICTRL_POL;
+>>>>>           if (spi->mode & SPI_CS_HIGH)
+>>>>>                   reg |= MX31_CSPICTRL_SSPOL;
+>>>>> -       if (spi->cs_gpio < 0)
+>>>>> -               reg |= (spi->cs_gpio + 32) <<
+>>>>> +       if (!gpio_is_valid(spi->cs_gpio))
+>>>>> +               reg |= (spi->chip_select) <<
+>>>>>                           (is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+>>>>>                                                     MX31_CSPICTRL_CS_SHIFT);
+>>>>>
+>>>>> @@ -616,8 +616,8 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+>>>>>                   reg |= MX21_CSPICTRL_POL;
+>>>>>           if (spi->mode & SPI_CS_HIGH)
+>>>>>                   reg |= MX21_CSPICTRL_SSPOL;
+>>>>> -       if (spi->cs_gpio < 0)
+>>>>> -               reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
+>>>>> +       if (!gpio_is_valid(spi->cs_gpio))
+>>>>> +               reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+>>>>>
+>>>>>           writel(reg, spi_imx->base + MXC_CSPICTRL);
+>>>>>
+>>>
+>>> hm... do I see this correctly, all native chip_selects should
+>>> be registered before gpio based CS?
+>>
+>> I don't follow. The "<0>" must be in the position in the list where
+>> you want to use the native chip select. You can't arbitrarily change
+>> the order.
+>>
+>>
+>>> For example like this?
+>>> cs-gpios = <0>, <&gpio1 1 0>, <&gpio1 2 0>;
+>>>
+>>> Looks like we don't have any sanity checks for this kind of
+>>> configuration:
+>>> cs-gpios = <&gpio1 1 0>, <&gpio1 2 0>, <0>;
+>>
+>> The chip_select is sanity checked in spi_add_device().
+>>
+>>
+>>> We may shift some wired numbers here:
+>>> reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+>>
+>> I am not sure I see how that can be the case?
+> 
+> old and new version of iMX have different amount of native CS.
+> I can't find the code which is actually checking if we use right native
+> CS-index.
+> May be i'm blind :)
+
+I don't think I entirely understand what you are saying. The code at the
+top of spi_add_device() [drivers/spi/spi.c] looks like this:
+
+         /* Chipselects are numbered 0..max; validate. */
+         if (spi->chip_select >= ctlr->num_chipselect) {
+                 dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
+                         ctlr->num_chipselect);
+                 return -EINVAL;
+         }
+
+So it will range check the spi device (spi->chip_select) to be within
+the range valid for this SPI controller. That is the very same
+spi->chip_select that is used in spi-imx.c to set the register bits
+when using a native chip select.
+
+Regards
+Greg
 
 
---76oohoz2fusi4hjt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
-
-> Do not check which flash type the SoC was booted from before
-> using this driver. Assume that the device tree is correct and use this
-> driver when it was added to device tree. This also removes a build
-> dependency to the SoC code.
-
-Why?  Is this assumption reliably true?
-
---76oohoz2fusi4hjt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmK9ZQACgkQJNaLcl1U
-h9AHSwf9Fq1OGMyZ9pNQve/uU1k7zR3YCjYuG4FAiLJ7uyu52Gbu6Jhy2kZNIn4Z
-CthKUBdR/SdY6Qfhm0kk82z5Q2Jg6gc0FNzVPjXHe0nRL6oFvGyO8Zs8UL0hfJsn
-8TMv7S+ApJMSjM7Aayj/Gx1bCq1GBG2s9LLhllMVfOgY0JVh5ofTzy4Egt1cfY26
-SK/DTBgpOJc66xrLAOV7Z6GluBSvyOpFvoobbH8YvKEM+iV+QALKZ4u4UjKI8UJG
-BNUTEqnljsgLIL8wvoEHFSwh9DSenQbKdzI1sUNkFF0cA7MnrrSez3vfuigi0nZo
-Cwhde95F1WGQNdz3R2Cf83JlTMrOBw==
-=fsAd
------END PGP SIGNATURE-----
-
---76oohoz2fusi4hjt--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

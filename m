@@ -1,63 +1,44 @@
-From: "Langer, Thomas" <thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-Date: Wed, 9 Aug 2017 14:02:16 +0000
-Message-ID: <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385@IRSMSX101.ger.corp.intel.com>
-References: <20170808225247.32266-1-hauke@hauke-m.de>
- <20170808225247.32266-4-hauke@hauke-m.de>
- <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] spi: spi-sh: fix error return code in spi_sh_probe()
+Date: Wed, 9 Aug 2017 10:46:48 -0500
+Message-ID: <20170809154648.GA23748@embeddedgus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org"
-        <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-        "john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org" <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "Mehrtens, Hauke" <hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "kishon-l0cyMroinI0@public.gmane.org" <kishon-l0cyMroinI0@public.gmane.org>,
-        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170809114421.oo2bunardgw3p4tk-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+platform_get_irq() returns an error code, but the spi-sh driver
+ignores it and always returns -ENODEV. This is not correct and,
+prevents -EPROBE_DEFER from being propagated properly.
 
+Print and propagate the return value of platform_get_irq on failure.
 
-> -----Original Message-----
-> From: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org [mailto:linux-spi-
-> owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org] On Behalf Of Mark Brown
-> Sent: Wednesday, August 9, 2017 1:44 PM
-> To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-> Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org; linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org; linux-
-> mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
-> devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org;
-> john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Mehrtens, Hauke
-> <hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>; robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
-> p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org; kishon-l0cyMroinI0@public.gmane.org; mark.rutland-5wv7dgnIgG8@public.gmane.org
-> Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-> 
-> On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
-> 
-> > Do not check which flash type the SoC was booted from before
-> > using this driver. Assume that the device tree is correct and use this
-> > driver when it was added to device tree. This also removes a build
-> > dependency to the SoC code.
-> 
-> Why?  Is this assumption reliably true?
+This issue was detected with the help of Coccinelle.
 
-Yes. We only have one type of flash interface in the device tree, as they 
-are connected to the shared EBU (External Bus Unit).
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/spi/spi-sh.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index 2bf53f0..50e0ea9 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -446,8 +446,8 @@ static int spi_sh_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+-		dev_err(&pdev->dev, "platform_get_irq error\n");
+-		return -ENODEV;
++		dev_err(&pdev->dev, "platform_get_irq error: %d\n", irq);
++		return irq;
+ 	}
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_sh_data));
+-- 
+2.5.0

@@ -1,44 +1,146 @@
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] spi: spi-sh: fix error return code in spi_sh_probe()
-Date: Wed, 9 Aug 2017 10:46:48 -0500
-Message-ID: <20170809154648.GA23748@embeddedgus>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-ep93xx: remove private data 'current_msg'" to the spi tree
+Date: Wed, 09 Aug 2017 17:57:05 +0100
+Message-ID: <E1dfUI5-0005UP-Ah@debutante>
+References: <20170216234851.97938-7-hsweeten@visionengravers.com>
+Cc: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170216234851.97938-7-hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-platform_get_irq() returns an error code, but the spi-sh driver
-ignores it and always returns -ENODEV. This is not correct and,
-prevents -EPROBE_DEFER from being propagated properly.
+The patch
 
-Print and propagate the return value of platform_get_irq on failure.
+   spi: spi-ep93xx: remove private data 'current_msg'
 
-This issue was detected with the help of Coccinelle.
+has been applied to the spi tree at
 
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c7a909cf25c6e1198f5a261d2af0503985871e1a Mon Sep 17 00:00:00 2001
+From: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Date: Wed, 9 Aug 2017 08:51:30 +1200
+Subject: [PATCH] spi: spi-ep93xx: remove private data 'current_msg'
+
+The currently in-flight message can be found from the spi master.
+Use that instead and remove the private data pointer.
+
+Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sh.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ep93xx.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index 2bf53f0..50e0ea9 100644
---- a/drivers/spi/spi-sh.c
-+++ b/drivers/spi/spi-sh.c
-@@ -446,8 +446,8 @@ static int spi_sh_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index 2d80e36f5015..cf7d8175bf79 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -74,7 +74,6 @@
+  * @mmio: pointer to ioremap()'d registers
+  * @sspdr_phys: physical address of the SSPDR register
+  * @wait: wait here until given transfer is completed
+- * @current_msg: message that is currently processed (or %NULL if none)
+  * @tx: current byte in transfer to transmit
+  * @rx: current byte in transfer to receive
+  * @fifo_level: how full is FIFO (%0..%SPI_FIFO_SIZE - %1). Receiving one
+@@ -93,7 +92,6 @@ struct ep93xx_spi {
+ 	void __iomem			*mmio;
+ 	unsigned long			sspdr_phys;
+ 	struct completion		wait;
+-	struct spi_message		*current_msg;
+ 	size_t				tx;
+ 	size_t				rx;
+ 	size_t				fifo_level;
+@@ -236,8 +234,7 @@ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+ static int ep93xx_spi_read_write(struct spi_master *master)
+ {
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+-	struct spi_message *msg = espi->current_msg;
+-	struct spi_transfer *t = msg->state;
++	struct spi_transfer *t = master->cur_msg->state;
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
--		dev_err(&pdev->dev, "platform_get_irq error\n");
--		return -ENODEV;
-+		dev_err(&pdev->dev, "platform_get_irq error: %d\n", irq);
-+		return irq;
+ 	/* read as long as RX FIFO has frames in it */
+ 	while ((readl(espi->mmio + SSPSR) & SSPSR_RNE)) {
+@@ -290,7 +287,7 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
+ 		       enum dma_transfer_direction dir)
+ {
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+-	struct spi_transfer *t = espi->current_msg->state;
++	struct spi_transfer *t = master->cur_msg->state;
+ 	struct dma_async_tx_descriptor *txd;
+ 	enum dma_slave_buswidth buswidth;
+ 	struct dma_slave_config conf;
+@@ -415,13 +412,12 @@ static void ep93xx_spi_dma_callback(void *callback_param)
+ static void ep93xx_spi_dma_transfer(struct spi_master *master)
+ {
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+-	struct spi_message *msg = espi->current_msg;
+ 	struct dma_async_tx_descriptor *rxd, *txd;
+ 
+ 	rxd = ep93xx_spi_dma_prepare(master, DMA_DEV_TO_MEM);
+ 	if (IS_ERR(rxd)) {
+ 		dev_err(&master->dev, "DMA RX failed: %ld\n", PTR_ERR(rxd));
+-		msg->status = PTR_ERR(rxd);
++		master->cur_msg->status = PTR_ERR(rxd);
+ 		return;
  	}
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_sh_data));
+@@ -429,7 +425,7 @@ static void ep93xx_spi_dma_transfer(struct spi_master *master)
+ 	if (IS_ERR(txd)) {
+ 		ep93xx_spi_dma_finish(master, DMA_DEV_TO_MEM);
+ 		dev_err(&master->dev, "DMA TX failed: %ld\n", PTR_ERR(txd));
+-		msg->status = PTR_ERR(txd);
++		master->cur_msg->status = PTR_ERR(txd);
+ 		return;
+ 	}
+ 
+@@ -587,9 +583,7 @@ static int ep93xx_spi_transfer_one_message(struct spi_master *master,
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+ 
+-	espi->current_msg = msg;
+ 	ep93xx_spi_process_message(master, msg);
+-	espi->current_msg = NULL;
+ 
+ 	spi_finalize_current_message(master);
+ 
+@@ -611,7 +605,7 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 		writel(0, espi->mmio + SSPICR);
+ 		dev_warn(&master->dev,
+ 			 "receive overrun, aborting the message\n");
+-		espi->current_msg->status = -EIO;
++		master->cur_msg->status = -EIO;
+ 	} else {
+ 		/*
+ 		 * Interrupt is either RX (RIS) or TX (TIS). For both cases we
 -- 
-2.5.0
+2.13.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

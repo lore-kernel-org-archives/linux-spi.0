@@ -1,7 +1,8 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 1/2] spi: qup: hide warning for uninitialized variable
-Date: Thu, 10 Aug 2017 14:13:26 +0200
-Message-ID: <20170810121335.2581513-1-arnd@arndb.de>
+Subject: [PATCH 2/2] spi: qup: fix 64-bit build warning
+Date: Thu, 10 Aug 2017 14:13:27 +0200
+Message-ID: <20170810121335.2581513-2-arnd@arndb.de>
+References: <20170810121335.2581513-1-arnd@arndb.de>
 Cc: Arnd Bergmann <arnd@arndb.de>,
         Varadarajan Narayanan <varada@codeaurora.org>,
         Matthew McClintock <mmcclint@codeaurora.org>,
@@ -12,49 +13,35 @@ To: Andy Gross <andy.gross@linaro.org>,
         David Brown <david.brown@linaro.org>,
         Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170810121335.2581513-1-arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The added conditionals in this function apparently confused
-gcc to the point that it no longer sees the code is safe and
-instead shows a false-positive warning:
+On 64-bit systems, pointers are wider than 'int' variables,
+so we get a warning about a cast between them:
 
-drivers/spi/spi-qup.c: In function 'spi_qup_transfer_one':
-drivers/spi/spi-qup.c:507:28: error: 'tx_nents' may be used uninitialized in this function [-Werror=maybe-uninitialized]
-drivers/spi/spi-qup.c:464:17: note: 'tx_nents' was declared here
-drivers/spi/spi-qup.c:505:28: error: 'rx_nents' may be used uninitialized in this function [-Werror=maybe-uninitialized]
-drivers/spi/spi-qup.c:464:7: note: 'rx_nents' was declared here
+drivers/spi/spi-qup.c:1060:23: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
 
-This moves the initialization to a place that makes it obvious
-to the compiler.
+This changes the code to use the correct uintptr_t cast.
 
-Fixes: 5884e17ef3cb ("spi: qup: allow multiple DMA transactions per spi xfer")
+Fixes: 4d023737b2ef ("spi: qup: Fix QUP version identify method")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/spi/spi-qup.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-qup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 1364516e87c2..e9ecd67cd817 100644
+index e9ecd67cd817..974a8ce58b68 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -427,8 +427,6 @@ static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
- 	struct scatterlist *sg;
- 	u32 total = 0;
+@@ -1057,7 +1057,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	else if (!ret)
+ 		master->can_dma = spi_qup_can_dma;
  
--	*nents = 0;
--
- 	for (sg = sgl; sg; sg = sg_next(sg)) {
- 		unsigned int len = sg_dma_len(sg);
+-	controller->qup_v1 = (int)of_device_get_match_data(dev);
++	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
  
-@@ -461,7 +459,7 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 	tx_sgl = xfer->tx_sg.sgl;
- 
- 	do {
--		u32 rx_nents, tx_nents;
-+		u32 rx_nents = 0, tx_nents = 0;
- 
- 		if (rx_sgl)
- 			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
+ 	if (!controller->qup_v1)
+ 		master->set_cs = spi_qup_set_cs;
 -- 
 2.9.0

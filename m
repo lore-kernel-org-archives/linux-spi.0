@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: fix 64-bit build warning" to the spi tree
-Date: Thu, 10 Aug 2017 16:43:13 +0100
-Message-ID: <E1dfpc9-0001ut-6M@finisterre>
-References: <20170810121335.2581513-2-arnd@arndb.de>
+Subject: Applied "spi: qup: hide warning for uninitialized variable" to the spi tree
+Date: Thu, 10 Aug 2017 16:43:24 +0100
+Message-ID: <E1dfpcK-0001w2-F0@finisterre>
+References: <20170810121335.2581513-1-arnd@arndb.de>
 Cc: Mark Brown <broonie@kernel.org>,
         Andy Gross <andy.gross@linaro.org>,
         David Brown <david.brown@linaro.org>,
@@ -15,13 +15,13 @@ Cc: Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170810121335.2581513-2-arnd@arndb.de>
+In-Reply-To: <20170810121335.2581513-1-arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: qup: fix 64-bit build warning
+   spi: qup: hide warning for uninitialized variable
 
 has been applied to the spi tree at
 
@@ -46,37 +46,52 @@ to this mail.
 Thanks,
 Mark
 
->From 88a19814de71aafe4de4868e1e13cd8b9a06a861 Mon Sep 17 00:00:00 2001
+>From 6f38f125ffc4d87768129644fb485eca7382f0b1 Mon Sep 17 00:00:00 2001
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 10 Aug 2017 14:13:27 +0200
-Subject: [PATCH] spi: qup: fix 64-bit build warning
+Date: Thu, 10 Aug 2017 14:13:26 +0200
+Subject: [PATCH] spi: qup: hide warning for uninitialized variable
 
-On 64-bit systems, pointers are wider than 'int' variables,
-so we get a warning about a cast between them:
+The added conditionals in this function apparently confused
+gcc to the point that it no longer sees the code is safe and
+instead shows a false-positive warning:
 
-drivers/spi/spi-qup.c:1060:23: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+drivers/spi/spi-qup.c: In function 'spi_qup_transfer_one':
+drivers/spi/spi-qup.c:507:28: error: 'tx_nents' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+drivers/spi/spi-qup.c:464:17: note: 'tx_nents' was declared here
+drivers/spi/spi-qup.c:505:28: error: 'rx_nents' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+drivers/spi/spi-qup.c:464:7: note: 'rx_nents' was declared here
 
-This changes the code to use the correct uintptr_t cast.
+This moves the initialization to a place that makes it obvious
+to the compiler.
 
-Fixes: 4d023737b2ef ("spi: qup: Fix QUP version identify method")
+Fixes: 5884e17ef3cb ("spi: qup: allow multiple DMA transactions per spi xfer")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-qup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-qup.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index e9ecd67cd817..974a8ce58b68 100644
+index 1364516e87c2..e9ecd67cd817 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -1057,7 +1057,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	else if (!ret)
- 		master->can_dma = spi_qup_can_dma;
+@@ -427,8 +427,6 @@ static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
+ 	struct scatterlist *sg;
+ 	u32 total = 0;
  
--	controller->qup_v1 = (int)of_device_get_match_data(dev);
-+	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
+-	*nents = 0;
+-
+ 	for (sg = sgl; sg; sg = sg_next(sg)) {
+ 		unsigned int len = sg_dma_len(sg);
  
- 	if (!controller->qup_v1)
- 		master->set_cs = spi_qup_set_cs;
+@@ -461,7 +459,7 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	tx_sgl = xfer->tx_sg.sgl;
+ 
+ 	do {
+-		u32 rx_nents, tx_nents;
++		u32 rx_nents = 0, tx_nents = 0;
+ 
+ 		if (rx_sgl)
+ 			qup->n_words = spi_qup_sgl_get_nents_len(rx_sgl,
 -- 
 2.13.2

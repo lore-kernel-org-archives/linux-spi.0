@@ -1,77 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v9 03/16] mtd: spi-falcon: drop check of boot select
-Date: Thu, 10 Aug 2017 16:05:15 +0100
-Message-ID: <20170810150515.w66ksbfexbcegy6z@sirena.org.uk>
-References: <20170808225247.32266-1-hauke@hauke-m.de>
- <20170808225247.32266-4-hauke@hauke-m.de>
- <20170809114421.oo2bunardgw3p4tk@sirena.org.uk>
- <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385@IRSMSX101.ger.corp.intel.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCHv3 1/2] spi: imx: fix use of native chip-selects with
+ devicetree
+Date: Thu, 10 Aug 2017 17:17:33 +0200
+Message-ID: <20170810151733.u6r7ex3ng5kolgfb@pengutronix.de>
+References: <2892f819-f1a2-b68d-be01-e8ac7f4b4222@linux-m68k.org>
+ <20170724062147.o7tccwskxfuls3ej@pengutronix.de>
+ <239ae959-ce96-711b-dbfb-4e892b7eab3b@linux-m68k.org>
+ <8ccba0c6-cd35-db2e-6a3f-32b79609271d@pengutronix.de>
+ <b3e80e47-d1e5-41f9-a744-dc01e51d779e@mentor.com>
+ <b0b60f4a-7ee9-c0e5-9eb0-ac6a29555e5c@linux-m68k.org>
+ <20170810114938.bsuztdxmngys2ekg@pengutronix.de>
+ <6dea9014-6e45-199b-16de-418728757662@linux-m68k.org>
+ <20170810124049.msmi2pfqmpoafsml@pengutronix.de>
+ <ac92f8ad-3ba6-a577-dc9c-9e8b6689afd4@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="s6uae5i4hoypg7dc"
-Cc: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        "ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org"
-        <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-        "john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org" <john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "Mehrtens, Hauke" <hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "kishon-l0cyMroinI0@public.gmane.org" <kishon-l0cyMroinI0@public.gmane.org>,
-        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: "Langer, Thomas" <thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Cc: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <0DAF21CFE1B20740AE23D6AF6E54843F1EA0A385-kPTMFJFq+rF9qrmMLTLiibfspsVTdybXVpNB7YpNyf8@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <ac92f8ad-3ba6-a577-dc9c-9e8b6689afd4-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hello,
 
---s6uae5i4hoypg7dc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Aug 10, 2017 at 11:21:14PM +1000, Greg Ungerer wrote:
+> > If I understood correctly the current state is the following:
+> > 
+> > The spi-imx driver supports GPIOs as CS and a "native" mode where the
+> > hardware drives the CS line. If you write:
+> > 
+> > 	cs-gpios = <&gpio2 0 0>, <0>, <&gpio1 17 0>
+> > 
+> > That means: Use gpio2.0 as CS 0, native CS as CS 1 and gpio1.17 as CS 2.
+> 
+> That is correct, yes. But the current driver is buggy and does not
+> handle the "native" mode correctly - the intention of the patch
+> at the start of this thread is to fix this.
 
-On Wed, Aug 09, 2017 at 02:02:16PM +0000, Langer, Thomas wrote:
-> > On Wed, Aug 09, 2017 at 12:52:34AM +0200, Hauke Mehrtens wrote:
+Right, and I had the impression, that this "fix" was discussed away with
+"if the dtb is broken, there is no hope and so nothing to fix". That's
+what I wanted to speak up against.
+ 
+> > So what the driver can check here: Does the dtb request a native CS at a
+> > position that is not supported by the hardware. Of course even if there
+> 
+> How does the driver know how many chip-selects are natively supported
+> by the hardware?
+> 
+> I am not familar with all iMX parts and their spi controllers, but
+> Oleksij suggested in an earlier email that some have 3 native chip
+> selects, some have 4, other variants may have some other number.
 
-> > > Do not check which flash type the SoC was booted from before
-> > > using this driver. Assume that the device tree is correct and use this
-> > > driver when it was added to device tree. This also removes a build
-> > > dependency to the SoC code.
+Via the compatible is the obvious way to determine that.
+ 
+Best regards
+Uwe
 
-> > Why?  Is this assumption reliably true?
-
-> Yes. We only have one type of flash interface in the device tree, as they=
-=20
-> are connected to the shared EBU (External Bus Unit).
-
-That sounds board specific but this is a driver for a SoC?  In any case
-this needs to end up in the commit log.
-
---s6uae5i4hoypg7dc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmMdioACgkQJNaLcl1U
-h9BYlAgAgCDu3huZzBs6oYvZZ+POaY/GV5Cs55enzpxuT8F87rnOrYbTGQw66HzP
-+4Foc1xogiJOKDNSs+BpPiuFTo/zvwu+ApKkEE8OeaDOQh4gVhCag/OUKz9z5hAZ
-ZvSHQud2xiO1FjFZeLFB1KGEA9jb9ltOjWdJxqdiv1S9mV4ITiVho//mhTNf6HcL
-RMiKTeDmSz37Q3X1vgrnQehpTYgqUHYCzr/NjUjsJ3nATLZpr8bLbLhh4YKalxqj
-Elnt3lXSauR4/LfcfwpSqRYfeMP/LhWAHMRRJpSMLqFVAyWgndZP9IXm9mP4fXia
-R3yhSmQxzNY7qhWMoY1vQAfNsr4hwA==
-=HdUK
------END PGP SIGNATURE-----
-
---s6uae5i4hoypg7dc--
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 --
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

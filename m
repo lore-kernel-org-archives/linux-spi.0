@@ -1,51 +1,59 @@
-From: Andy Yan <andy.yan@rock-chips.com>
-Subject: [PATCH v3 05/13] ARM: dts: rockchip: add spi dt node for rv1108
-Date: Fri, 11 Aug 2017 11:42:26 +0800
-Message-ID: <1502422946-30885-1-git-send-email-andy.yan@rock-chips.com>
-References: <1502422578-30611-1-git-send-email-andy.yan@rock-chips.com>
-Cc: robh+dt@kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Andy Yan <andy.yan@rock-chips.com>
-To: heiko@sntech.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1502422578-30611-1-git-send-email-andy.yan@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: modalias for OF-declared I2C/SPI devices
+Date: Fri, 11 Aug 2017 10:14:29 +0200
+Message-ID: <20170811081429.GA9957@wunner.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Lennart Poettering <lennart-mdGvqq1h2p+GdvJs77BJ7Q@public.gmane.org>,
+        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add SPI device tree node for rv1108.
+Hi Javier,
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
----
+you proposed an RFC patch a while ago which lets the I2C and SPI core
+report an "of:" modalias to user space for devices declared in a
+device tree (vs. a legacy machine description), instead of an "i2c:"
+or "spi:" modalias:
 
-Changes in v3: None
-Changes in v2: None
+https://lkml.org/lkml/2014/9/11/458
+https://lkml.org/lkml/2015/8/20/98
 
- arch/arm/boot/dts/rv1108.dtsi | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I justed wanted to ask what the status of the patch is?  Looking at
+linux-next I notice that you've been fixing up drivers, machine
+descriptions and device trees as recently as July.  Apparently you're
+still busy landing all the prep work necessary for the patch, is that
+correct?
 
-diff --git a/arch/arm/boot/dts/rv1108.dtsi b/arch/arm/boot/dts/rv1108.dtsi
-index 663f2f2..b688f4a 100644
---- a/arch/arm/boot/dts/rv1108.dtsi
-+++ b/arch/arm/boot/dts/rv1108.dtsi
-@@ -200,6 +200,19 @@
- 		status = "disabled";
- 	};
- 
-+	spi: spi@10270000 {
-+		compatible = "rockchip,rv1108-spi";
-+		reg = <0x10270000 0x1000>;
-+		interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		clocks = <&cru SCLK_SPI>, <&cru PCLK_SPI>;
-+		clock-names = "spiclk", "apb_pclk";
-+		dmas = <&pdma 8>, <&pdma 9>;
-+		#dma-cells = <2>;
-+		status = "disabled";
-+	};
-+
- 	grf: syscon@10300000 {
- 		compatible = "rockchip,rv1108-grf", "syscon";
- 		reg = <0x10300000 0x1000>;
--- 
-2.7.4
+It seems to be an awful lot of work cleaning up this mess and I assume
+there is plenty of out-of-tree stuff that may break once the patch lands,
+so I've been wondering if a simpler solution might be to change user
+space, given that we already communicate all the OF_COMPATIBLE_* uevent
+variables.  So I opened an issue for systemd-udevd but so far Lennart
+remains unconvinced:
+
+https://github.com/systemd/systemd/issues/6555
+
+I still think that evaluation of OF_COMPATIBLE_* by user space would be
+the best solution since it seems impossible to cram the degrees of
+freedom afforded by compatible strings into a single modalias string.
+
+The reason I came across this issue is that module autoloading fails for
+drivers/gpio/gpio-74x164.c as it only declares an "of" MODULE_DEVICE_TABLE.
+I was going to upstream a GPIO and an IIO driver, both SPI-based, and was
+wondering what the current best practice is:  Should I only declare an
+"of" MODULE_DEVICE_TABLE or should I also provide an "spi"
+MODULE_DEVICE_TABLE?
+
+Thanks!
+
+Lukas
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,95 +1,107 @@
-From: Hector Palacios <hector.palacios-i7dp0qKlBMg@public.gmane.org>
-Subject: Re: [PATCH linux-next v5 1/1] spi: imx: Add support for SPI Slave
- mode
-Date: Fri, 11 Aug 2017 13:49:55 +0200
-Message-ID: <ee87ddf5-7e7d-f935-f933-a05dc2150321@digi.com>
-References: <20170718044048.29736-1-jiada_wang@mentor.com>
+From: Javier Martinez Canillas <javierm-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Subject: Re: modalias for OF-declared I2C/SPI devices
+Date: Fri, 11 Aug 2017 16:11:51 +0200
+Message-ID: <1fcd1d99-39ca-6db6-51fc-148c84f66297@redhat.com>
+References: <20170811081429.GA9957@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-        "Palacios, Hector" <Hector.Palacios-i7dp0qKlBMg@public.gmane.org>
-To: <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Cc: Lennart Poettering <lennart-mdGvqq1h2p+GdvJs77BJ7Q@public.gmane.org>,
+        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>,
+        Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170718044048.29736-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20170811081429.GA9957-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jiada,
+[adding the I2C and SPI subsystem maintainers]
 
-On 07/18/2017 06:40 AM, Jiada Wang wrote:
-> Previously i.MX SPI controller only works in Master mode.
-> This patch adds support to i.MX51, i.MX53 and i.MX6 ECSPI
-> controller to work also in Slave mode.
+Hello Lukas,
+
+On 08/11/2017 10:14 AM, Lukas Wunner wrote:
+> Hi Javier,
 > 
-> Currently SPI Slave mode support patch has the following limitations:
-> 1. The stale data in RXFIFO will be dropped when the Slave does any new
->    transfer.
-> 2. One transfer can be finished only after all transfer->len data been
->    transferred to master device
-> 3. Slave device only accepts transfer->len data. Any data longer than this
->    from master device will be dropped. Any data shorter than this from
->    master will cause SPI to stuck due to mentioned HW limitation 2.
-> 4. Only PIO transfer is supported in Slave mode.
+> you proposed an RFC patch a while ago which lets the I2C and SPI core
+> report an "of:" modalias to user space for devices declared in a
+> device tree (vs. a legacy machine description), instead of an "i2c:"
+> or "spi:" modalias:
+> 
+> https://lkml.org/lkml/2014/9/11/458
+> https://lkml.org/lkml/2015/8/20/98
+> 
+> I justed wanted to ask what the status of the patch is?  Looking at
+> linux-next I notice that you've been fixing up drivers, machine
+> descriptions and device trees as recently as July.  Apparently you're
+> still busy landing all the prep work necessary for the patch, is that
+> correct?
+>
 
-Does DMA not work in slave mode?
+That's partially correct. I'm still pushing the remaining fixes for I2C but I'm
+not doing any changes to SPI drivers anymore. It's just too much work and churn
+for maintainers.
 
-I have tried your patch with some modifications to use DMA but got weird results when
-working with 8 bits per word. For example, when I prepare the slave to send 4 bytes:
- - BURST_LENGTH is set to 0x1F (32 bits)
- - RX_DMA_LENGTH, RX_THRESHOLD, TX_THRESHOLD in DMA Control Register are all set to 4
-bytes
+> It seems to be an awful lot of work cleaning up this mess and I assume
 
-which looks correct but then, when I send 4 bytes from the master I see the following:
- - the TX FIFO of the slave seems to be filled in with each byte on a 32-bit word of
-its own.
- - the master must send four transfers of four bytes each, for the DMA RX to trigger
-on the slave.
- - The RX buffer is filled with the last byte of the master repeated four times
+I would also give up on I2C but I'm just keep doing it since we are so close to
+finally fix it (only fixes for a couple of drivers are remaining to be merged).
 
+> there is plenty of out-of-tree stuff that may break once the patch lands,
 
-Graphically:
-- Slave is prepared to send 4 bytes:  53 4C 41 56 ("SLAV")
+That's correct, but IMHO that's not a problem for mainline. It's the out-of-tree
+drivers that were relying on a broken behavior and so what they are doing wasn't
+ever expected to work (the fact that works is just due an implementation detail).
 
-	 spidev_test -D /dev/spidev0.0 -p "SLAV" -v
+Once the I2C and SPI subsystems are fixed to report the proper OF modalias, then
+we should document clearly that this may break out-of-tree drivers for courtesy
+but I think that's all that mainline should do IMHO.
 
-- Master sends 4d 41 53 54 ("MAST")
-			Slave is waiting (DMA RX does not trigger)
-- Master receives 00 00 00 53 (first byte of slave in a 32-bit word)
+> so I've been wondering if a simpler solution might be to change user
+> space, given that we already communicate all the OF_COMPATIBLE_* uevent
+> variables.  So I opened an issue for systemd-udevd but so far Lennart
+> remains unconvinced:
+> 
+> https://github.com/systemd/systemd/issues/6555
+> 
+> I still think that evaluation of OF_COMPATIBLE_* by user space would be
+> the best solution since it seems impossible to cram the degrees of
+> freedom afforded by compatible strings into a single modalias string.
+>
 
-If I repeat the sending from the master three times more:
-- Master sends 4d 41 53 54 ("MAST")
+I agree with Lennart on this. User-space is doing the correct thing and should
+not be changed. I'll comment on the Github issue as well.
+ 
+> The reason I came across this issue is that module autoloading fails for
+> drivers/gpio/gpio-74x164.c as it only declares an "of" MODULE_DEVICE_TABLE.
+> I was going to upstream a GPIO and an IIO driver, both SPI-based, and was
+> wondering what the current best practice is:  Should I only declare an
+> "of" MODULE_DEVICE_TABLE or should I also provide an "spi"
+> MODULE_DEVICE_TABLE?
+>
 
-			Slave is waiting (DMA RX does not trigger)
+That's a question for Mark Brown. My opinion (since I'm not a maintainer) is
+that you should add a SPI device ID table and export it as spi:<foo> aliases
+until this is properly fixed.
 
-- Master receives 00 00 00 4C (second byte of slave in a 32-bit word)
-- Master sends 4d 41 53 54 ("MAST")
+The correct way to fix this is to move this into the device model instead of
+all subsystem types duplicating the same uevent logic and requiring a table
+per each firmware interface. But that's a much bigger task...
+ 
+> Thanks!
+> 
+> Lukas
+> 
 
-			Slave is waiting (DMA RX does not trigger)
-
-- Master receives 00 00 00 41 (third byte of slave in a 32-bit word)
-- Master sends 4d 41 53 54 ("MAST")
-
-			DMA RX finally triggers on slave
-
-- Master receives 00 00 00 56 (fourth byte of slave in a 32-bit word)
-- Slave receives 54 54 54 54 ("TTTT", last byte sent by master, repeated)
-
-
-If I use 32 bits per word, then it all works in one message:
-
-~# spidev_test -D /dev/spidev0.0 -p "SLAV" -v -b 32
-Master receives 56 41 4C 53 ("VALS")
-Slave receives 54 53 41 4D ("TSAM)
-
-Is it a known problem that DMA doesn't work properly with 8 bits per word when SPI is
-configured as slave?
-
-Thanks
---
-Hector Palacios
+Best regards,
+-- 
+Javier Martinez Canillas
+Software Engineer - Desktop Hardware Enablement
+Red Hat
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

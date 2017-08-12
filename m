@@ -1,108 +1,100 @@
-From: Javier Martinez Canillas <javierm-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: modalias for OF-declared I2C/SPI devices
-Date: Fri, 11 Aug 2017 16:11:51 +0200
-Message-ID: <1fcd1d99-39ca-6db6-51fc-148c84f66297@redhat.com>
-References: <20170811081429.GA9957@wunner.de>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+Date: Sat, 12 Aug 2017 13:43:57 +0200
+Message-ID: <20170812114357.v4ru75dw5hq7wemx@ninjato>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+ <20170719211515.46a1196c@windsurf>
+ <1500543415.2354.37.camel@pengutronix.de>
+ <20170720123640.43c2ce01@windsurf>
+ <1500555312.2354.75.camel@pengutronix.de>
+ <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+ <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+ <1500885221.2391.50.camel@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/mixed; boundary="===============7165033882226333407=="
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Prashant Gaikwad <pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+ Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Peter Chen <Peter.Chen-3arQi8VN3Tc@public.gmane.org>,
+ Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+ DRI <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>, Marc Dietrich <marvin24-Mmb7MZpHnFY@public.gmane.org>,
+ Rakesh Iyer <riyer-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Peter Meerwald-Stadler <pmeerw-jW+XmwGofnusTnJN9+BGXg@public.gmane.org>,
+ linux-clk <linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Xinliang Liu <z.liuxinliang-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org>,
+ Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Alan Stern <stern-nwvwT67g6+6dFdvTe/nMLpVzexx5G7lz@public.gmane.org>,
+ Jiri Slaby <jslaby-IBi9RG/b67k@public.gmane.org>, Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+ Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, Ohad Ben-Cohen <ohad-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org>,
+ "linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>, Vincent Abriou <vincent.abriou-qxv4g6HH51o@public.gmane.org>,
+ Bin Liu <b-liu-l0cyMroinI0@public.gmane.org>, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+ USB list <linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ linux
+To: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1500885221.2391.50.camel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
+List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============7165033882226333407==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ya5itqvemst3o4e7"
+Content-Disposition: inline
+
+
+--ya5itqvemst3o4e7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+
+> Thanks for the hint and the references. It seems this turned out okay,
+> but I wouldn't dare to introduce such macro horror^Wmagic.
+> I'd rather have all users converted to the _exclusive/_shared function
+> calls and maybe then replace the internal __reset_control_get with
+> Thomas' suggestion.
+
+I didn't follow the discussion closely. Shall I still apply the i2c
+patches?
+
+
+--ya5itqvemst3o4e7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlmO6f0ACgkQFA3kzBSg
+KbYSDw//cXJWh0R/3hL6jnBlw+6I5dbp1tZ9oKChNr2r4yN5M2w5s5CTcGdaO8dM
+UwF9vYlg/rs2t+2VsPDOLzYDRuZRcNuJMFCAF1mU1ZlPA6JJBLaQNVrKM1EROR67
+oslTA46qVHphTZjUBbPSwe4f1Q+KKfgKqOq/16dLq5yO/ZYrPxjP/rUcurd/haYl
+MIPsJ0KBqI90zV744gYGruOO8aykoeC5TmUNkQLJg9LCqhNH2qEp63PJYyBrsgeZ
+dZKvcZwzqaWI9cNzqAdCD320bBfStL3sF/B4jJzHLHy2JUbFGO9yXxoKaJKr3NpN
+fRhsqqCyF0mfzjxccXR22sioSllqbmy6ZnxpRnnIEi+AQHvbRxCYhy/62qRdk0X1
+XApulPWKQo2cJKBeRGSmSYxL5I1wnJDlNuCEuVUyekGajocLfnEGpPFvs8EB2+tu
+kHP96bLxWIA6iwwYTNwjLEabbQ+Zba8P5evWVJg8soKI2S5KHQoNjV8KWGYLP7XX
++ibLSHV1IqsBDwNzVEOLFGzrP/xsqjMWqhdcfeDELCHA4iKlS/W/eQpxDjuKBWHn
+U8aM26YWAq7W/c5h6pz1my9yYNvRehpQR+lcehb69cCDsBwwBgyj2jwGcDPDsT0O
+rgEaw9CJV07s0eK4D9XLOjFjhzTCUor7Ykz6zknwFYn1l8iL/ck=
+=sXni
+-----END PGP SIGNATURE-----
+
+--ya5itqvemst3o4e7--
+
+
+--===============7165033882226333407==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Cc: Lennart Poettering <lennart-mdGvqq1h2p+GdvJs77BJ7Q@public.gmane.org>,
-        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>,
-        Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170811081429.GA9957-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
-[adding the I2C and SPI subsystem maintainers]
+_______________________________________________
+Linux-mediatek mailing list
+Linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-mediatek
 
-Hello Lukas,
-
-On 08/11/2017 10:14 AM, Lukas Wunner wrote:
-> Hi Javier,
-> 
-> you proposed an RFC patch a while ago which lets the I2C and SPI core
-> report an "of:" modalias to user space for devices declared in a
-> device tree (vs. a legacy machine description), instead of an "i2c:"
-> or "spi:" modalias:
-> 
-> https://lkml.org/lkml/2014/9/11/458
-> https://lkml.org/lkml/2015/8/20/98
-> 
-> I justed wanted to ask what the status of the patch is?  Looking at
-> linux-next I notice that you've been fixing up drivers, machine
-> descriptions and device trees as recently as July.  Apparently you're
-> still busy landing all the prep work necessary for the patch, is that
-> correct?
->
-
-That's partially correct. I'm still pushing the remaining fixes for I2C but I'm
-not doing any changes to SPI drivers anymore. It's just too much work and churn
-for maintainers.
-
-> It seems to be an awful lot of work cleaning up this mess and I assume
-
-I would also give up on I2C but I'm just keep doing it since we are so close to
-finally fix it (only fixes for a couple of drivers are remaining to be merged).
-
-> there is plenty of out-of-tree stuff that may break once the patch lands,
-
-That's correct, but IMHO that's not a problem for mainline. It's the out-of-tree
-drivers that were relying on a broken behavior and so what they are doing wasn't
-ever expected to work (the fact that works is just due an implementation detail).
-
-Once the I2C and SPI subsystems are fixed to report the proper OF modalias, then
-we should document clearly that this may break out-of-tree drivers for courtesy
-but I think that's all that mainline should do IMHO.
-
-> so I've been wondering if a simpler solution might be to change user
-> space, given that we already communicate all the OF_COMPATIBLE_* uevent
-> variables.  So I opened an issue for systemd-udevd but so far Lennart
-> remains unconvinced:
-> 
-> https://github.com/systemd/systemd/issues/6555
-> 
-> I still think that evaluation of OF_COMPATIBLE_* by user space would be
-> the best solution since it seems impossible to cram the degrees of
-> freedom afforded by compatible strings into a single modalias string.
->
-
-I agree with Lennart on this. User-space is doing the correct thing and should
-not be changed. I'll comment on the Github issue as well.
- 
-> The reason I came across this issue is that module autoloading fails for
-> drivers/gpio/gpio-74x164.c as it only declares an "of" MODULE_DEVICE_TABLE.
-> I was going to upstream a GPIO and an IIO driver, both SPI-based, and was
-> wondering what the current best practice is:  Should I only declare an
-> "of" MODULE_DEVICE_TABLE or should I also provide an "spi"
-> MODULE_DEVICE_TABLE?
->
-
-That's a question for Mark Brown. My opinion (since I'm not a maintainer) is
-that you should add a SPI device ID table and export it as spi:<foo> aliases
-until this is properly fixed.
-
-The correct way to fix this is to move this into the device model instead of
-all subsystem types duplicating the same uevent logic and requiring a table
-per each firmware interface. But that's a much bigger task...
- 
-> Thanks!
-> 
-> Lukas
-> 
-
-Best regards,
--- 
-Javier Martinez Canillas
-Software Engineer - Desktop Hardware Enablement
-Red Hat
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--===============7165033882226333407==--

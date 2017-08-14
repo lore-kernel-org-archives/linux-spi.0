@@ -1,86 +1,73 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: add compatible string for rv1108 spi" to the spi tree
-Date: Mon, 14 Aug 2017 17:45:18 +0100
-Message-ID: <E1dhIUQ-0005k7-1c@finisterre>
-References: <1501663563-12482-1-git-send-email-andy.yan@rock-chips.com>
-Cc: Rob Herring <robh@kernel.org>, Mark Brown <broonie@kernel.org>,
-        heiko@sntech.de, linux-kernel@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Andy Yan <andy.yan@rock-chips.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1501663563-12482-1-git-send-email-andy.yan@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: add exclusive bus access lock via ioctls
+Date: Mon, 14 Aug 2017 19:38:57 +0100
+Message-ID: <20170814183857.tsy3ybrgqh7zv6jh@sirena.org.uk>
+References: <1502538843-3283-1-git-send-email-vicky773@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fvrkb2uuzichj7md"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1502538843-3283-1-git-send-email-vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: rockchip: add compatible string for rv1108 spi
+--fvrkb2uuzichj7md
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Sat, Aug 12, 2017 at 05:24:03PM +0530, Vikram N wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+>  	else
+> -		status = spi_sync(spi, message);
+> +		status = spidev->bus_locked ? spi_sync_locked(spi, message) :
+> +				spi_sync(spi, message);
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Please don't abuse the ternery operator, people need to be able to read
+the code.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> +	case SPI_IOC_BUS_LOCK:
+> +		spi_bus_lock(spi->master);
+> +		spidev->bus_locked = true;
+> +		break;
+> +
+> +	case SPI_IOC_BUS_UNLOCK:
+> +		spi_bus_unlock(spi->master);
+> +		spidev->bus_locked = false;
+> +		break;
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I'm not super convinced that this API is a good idea in general - it
+seems extremely niche to be using multiple userspace programs that don't
+need to coordinate at all except for a single lock (which they will all
+need to use to avoid just bouncing off with errors).  That all seems
+very narrow.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I'm also worried that even if there is such a use case this code is very
+fragile as it stands.  If an application crashes then nothing will free
+a lock it holds and any application can through simple error drop locks
+that are supposed to be held by other applications.  This isn't going to
+be terribly robust.
 
-Thanks,
-Mark
+--fvrkb2uuzichj7md
+Content-Type: application/pgp-signature; name="signature.asc"
 
->From 6b860e69e873be247d19174ab6b24d0b5741bf8c Mon Sep 17 00:00:00 2001
-From: Andy Yan <andy.yan@rock-chips.com>
-Date: Mon, 14 Aug 2017 16:34:22 +0800
-Subject: [PATCH] spi: rockchip: add compatible string for rv1108 spi
+-----BEGIN PGP SIGNATURE-----
 
-The spi on rv1108 is the same as other rockchip based
-socs, add compatible string for it.
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmR7kAACgkQJNaLcl1U
+h9ALfQf+L40bgfP5S3KbXlEPGtXW2K+NFLMyvJzJhJ4yf5Rj7fPPOfPXbxo72hDA
+lQJ/jNwgc7G/5g0nJTXcDaAyIwd+HX4ya8w4NMLjidu8jBJg/CS7LxNVTDlwwKRV
+3iatHcd8RDXrvUbUU4IMPXqpqKCeQZGylbdk4C7qlAN1/jYidOmlkJn5HwiOWBks
+Nqe0IkbNXkrKrO4044kJMng8ZvV05KYOcJczEpyj8caqSQiHqiN1rBRaDTMTXF41
+wAcz9Rn9VXbcewxWm10V4LL9JtUnfP2SJXdnZ7DYXVumO7CDhCvU+p2mw4D/blWf
+l5cx4CaMgWIWJproMcNbFP5MZcssdA==
+=oMor
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-rockchip.txt | 1 +
- drivers/spi/spi-rockchip.c                             | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-index 83da4931d832..6e3ffacbba32 100644
---- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-@@ -6,6 +6,7 @@ and display controllers using the SPI communication interface.
- Required Properties:
- 
- - compatible: should be one of the following.
-+    "rockchip,rv1108-spi" for rv1108 SoCs.
-     "rockchip,rk3036-spi" for rk3036 SoCS.
-     "rockchip,rk3066-spi" for rk3066 SoCs.
-     "rockchip,rk3188-spi" for rk3188 SoCs.
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 34f6440a5255..474033e2149e 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -914,6 +914,7 @@ static const struct dev_pm_ops rockchip_spi_pm = {
- };
- 
- static const struct of_device_id rockchip_spi_dt_match[] = {
-+	{ .compatible = "rockchip,rv1108-spi", },
- 	{ .compatible = "rockchip,rk3036-spi", },
- 	{ .compatible = "rockchip,rk3066-spi", },
- 	{ .compatible = "rockchip,rk3188-spi", },
--- 
-2.13.2
+--fvrkb2uuzichj7md--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

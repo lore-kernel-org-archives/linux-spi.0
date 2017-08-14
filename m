@@ -1,54 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 1/8] spi: rockchip: add compatible string for rv1108
- spi
-Date: Mon, 14 Aug 2017 16:20:14 +0100
-Message-ID: <20170814152014.unj5iij474ito27s@sirena.org.uk>
-References: <1502699477-8063-1-git-send-email-andy.yan@rock-chips.com>
- <1502699662-8181-1-git-send-email-andy.yan@rock-chips.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="y4zwyzjwqy6jtq3i"
-Cc: heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andy Yan <andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1502699662-8181-1-git-send-email-andy.yan-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: rockchip: add compatible string for rv1108 spi" to the spi tree
+Date: Mon, 14 Aug 2017 17:45:18 +0100
+Message-ID: <E1dhIUQ-0005k7-1c@finisterre>
+References: <1501663563-12482-1-git-send-email-andy.yan@rock-chips.com>
+Cc: Rob Herring <robh@kernel.org>, Mark Brown <broonie@kernel.org>,
+        heiko@sntech.de, linux-kernel@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Andy Yan <andy.yan@rock-chips.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1501663563-12482-1-git-send-email-andy.yan@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---y4zwyzjwqy6jtq3i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: rockchip: add compatible string for rv1108 spi
 
-On Mon, Aug 14, 2017 at 04:34:22PM +0800, Andy Yan wrote:
+has been applied to the spi tree at
 
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-That's hopefully not true, v1 didn't build due to a syntax error...
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---y4zwyzjwqy6jtq3i
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmRv60ACgkQJNaLcl1U
-h9D9kQf/QIDYBHVxBxEIdXVByJebswaMPWlFhnIL2NJedv6TiU5GLCNnOaIc7UDM
-mNkM5tzPE2EGWIhP7T1lAsykz2OFpDAY8+FjIzjdohklEBo7Js3/7RhfwBOSHfYr
-zE7h3yCt5oJnlIpKIhBy01TrgNdPNFgaHgufML+kmvPatr5uDAR72qQGcnL2+vco
-uGtczbBnLckG345tzgADYKpldpPTKrOgF20K4lPe3YHbzm65who5FkKDDsSbC1zB
-z6NatjNKEASBSWzGz91U0M2E3FcmfqRjSWHAY334k0NrEgxPoSqn3BUSNeIVn2J2
-HyqH4MhRT3B0uoUYzzgNvz/hGbLYlg==
-=YmuQ
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---y4zwyzjwqy6jtq3i--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Mark
+
+>From 6b860e69e873be247d19174ab6b24d0b5741bf8c Mon Sep 17 00:00:00 2001
+From: Andy Yan <andy.yan@rock-chips.com>
+Date: Mon, 14 Aug 2017 16:34:22 +0800
+Subject: [PATCH] spi: rockchip: add compatible string for rv1108 spi
+
+The spi on rv1108 is the same as other rockchip based
+socs, add compatible string for it.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-rockchip.txt | 1 +
+ drivers/spi/spi-rockchip.c                             | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+index 83da4931d832..6e3ffacbba32 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -6,6 +6,7 @@ and display controllers using the SPI communication interface.
+ Required Properties:
+ 
+ - compatible: should be one of the following.
++    "rockchip,rv1108-spi" for rv1108 SoCs.
+     "rockchip,rk3036-spi" for rk3036 SoCS.
+     "rockchip,rk3066-spi" for rk3066 SoCs.
+     "rockchip,rk3188-spi" for rk3188 SoCs.
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 34f6440a5255..474033e2149e 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -914,6 +914,7 @@ static const struct dev_pm_ops rockchip_spi_pm = {
+ };
+ 
+ static const struct of_device_id rockchip_spi_dt_match[] = {
++	{ .compatible = "rockchip,rv1108-spi", },
+ 	{ .compatible = "rockchip,rk3036-spi", },
+ 	{ .compatible = "rockchip,rk3066-spi", },
+ 	{ .compatible = "rockchip,rk3188-spi", },
+-- 
+2.13.2

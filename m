@@ -1,91 +1,66 @@
-From: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spidev: add exclusive bus access lock via ioctls
-Date: Sat, 12 Aug 2017 17:24:03 +0530
-Message-ID: <1502538843-3283-1-git-send-email-vicky773@gmail.com>
-Cc: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH 000/102] Convert drivers to explicit reset API
+Date: Mon, 14 Aug 2017 09:36:38 +0200
+Message-ID: <1502696198.2287.7.camel@pengutronix.de>
+References: <20170719152646.25903-1-p.zabel@pengutronix.de>
+         <20170719211515.46a1196c@windsurf>
+         <1500543415.2354.37.camel@pengutronix.de>
+         <20170720123640.43c2ce01@windsurf>
+         <1500555312.2354.75.camel@pengutronix.de>
+         <CAKdAkRTx8jd8UToz5_EgMmdW3V47i2uo++YvVB_yzytqSA=P1Q@mail.gmail.com>
+         <CACRpkdaXOv7mX+b-q1K34CB5w0SWPXCKa21wHaxL7qjf91PJXQ@mail.gmail.com>
+         <1500885221.2391.50.camel@pengutronix.de>
+         <20170812114357.v4ru75dw5hq7wemx@ninjato>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Peter Chen <Peter.Chen@nxp.com>,
+        DRI <dri-devel@lists.freedesktop.org>,
+        Marc Dietrich <marvin24@gmx.de>,
+        Rakesh Iyer <riyer@nvidia.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Xinliang Liu <z.liuxinliang@hisilicon.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Jiri Slaby <jslaby@suse.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Guenter R
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <20170812114357.v4ru75dw5hq7wemx@ninjato>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
-There are use-cases wherein one or more applications wants to communicate
-with the same spi slave chip and they wish to have exclusive bus access.
-May to serialize their command,response patterns.
-This can be realized in two ways,
- - Identify different applications using same spi channel and implement
-   synchronization mechanisms to get exclusive bus access
- - Provide some mechanism through spidev driver to get exclusive spi bus
-   access like via ioctls
+On Sat, 2017-08-12 at 13:43 +0200, Wolfram Sang wrote:
+> > Thanks for the hint and the references. It seems this turned out
+> > okay,
+> > but I wouldn't dare to introduce such macro horror^Wmagic.
+> > I'd rather have all users converted to the _exclusive/_shared
+> > function
+> > calls and maybe then replace the internal __reset_control_get with
+> > Thomas' suggestion.
+> 
+> I didn't follow the discussion closely. Shall I still apply the i2c
+> patches?
 
-This patch implements the second approach which eliminates the need for
-implementing complex IPC mechanisms in the applications which shares the
-spi bus. This becomes even harder if we don't have access to the source
-code of the application which is using the spi channel.
+Yes, please.
 
-Signed-off-by: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spidev.c            |   14 +++++++++++++-
- include/uapi/linux/spi/spidev.h |    4 +++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index cda1071..d14a8c1 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -85,6 +85,7 @@ struct spidev_data {
- 	u8			*tx_buffer;
- 	u8			*rx_buffer;
- 	u32			speed_hz;
-+	bool			bus_locked;
- };
- 
- static LIST_HEAD(device_list);
-@@ -109,7 +110,8 @@ struct spidev_data {
- 	if (spi == NULL)
- 		status = -ESHUTDOWN;
- 	else
--		status = spi_sync(spi, message);
-+		status = spidev->bus_locked ? spi_sync_locked(spi, message) :
-+				spi_sync(spi, message);
- 
- 	if (status == 0)
- 		status = message->actual_length;
-@@ -462,6 +464,16 @@ static int spidev_message(struct spidev_data *spidev,
- 		}
- 		break;
- 
-+	case SPI_IOC_BUS_LOCK:
-+		spi_bus_lock(spi->master);
-+		spidev->bus_locked = true;
-+		break;
-+
-+	case SPI_IOC_BUS_UNLOCK:
-+		spi_bus_unlock(spi->master);
-+		spidev->bus_locked = false;
-+		break;
-+
- 	default:
- 		/* segmented and/or full-duplex I/O request */
- 		/* Check message and copy into scratch area */
-diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
-index dd5f21e..1f776fe 100644
---- a/include/uapi/linux/spi/spidev.h
-+++ b/include/uapi/linux/spi/spidev.h
-@@ -136,6 +136,8 @@ struct spi_ioc_transfer {
- #define SPI_IOC_RD_MODE32		_IOR(SPI_IOC_MAGIC, 5, __u32)
- #define SPI_IOC_WR_MODE32		_IOW(SPI_IOC_MAGIC, 5, __u32)
- 
--
-+/* Exclusive bus access lock */
-+#define SPI_IOC_BUS_LOCK		_IO(SPI_IOC_MAGIC, 6)
-+#define SPI_IOC_BUS_UNLOCK		_IO(SPI_IOC_MAGIC, 7)
- 
- #endif /* SPIDEV_H */
--- 
-1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+regards
+Philipp

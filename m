@@ -1,13 +1,48 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: [PATCH 1/2] spi: altera: Switch to SPI core transfer queue management
-Date: Wed, 16 Aug 2017 11:33:11 +0200
-Message-ID: <20170816093312.23048-1-lars@metafoo.de>
-Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: altera: Switch to SPI core transfer queue management" to the spi tree
+Date: Wed, 16 Aug 2017 12:21:11 +0100
+Message-ID: <E1dhwNr-0003kF-EL@finisterre>
+References: <20170816093312.23048-1-lars@metafoo.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170816093312.23048-1-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi: altera: Switch to SPI core transfer queue management
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From e19b63cd3cb7ebf1ca73d9c4f58934149337ed24 Mon Sep 17 00:00:00 2001
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Date: Wed, 16 Aug 2017 11:33:11 +0200
+Subject: [PATCH] spi: altera: Switch to SPI core transfer queue management
 
 The Altera SPI driver currently uses the spi-bitbang infrastructure for
 transfer queue management, but non of the bitbang functionality itself.
@@ -21,13 +56,14 @@ of indirection.
 Switch the driver over to using the core queue management directly.
 
 Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
  drivers/spi/Kconfig      |  1 -
  drivers/spi/spi-altera.c | 94 ++++++++++++++----------------------------------
  2 files changed, 27 insertions(+), 68 deletions(-)
 
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index f9f9b0940746..a75f2a2cf780 100644
+index 9b31351fe429..acf566f06241 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
 @@ -55,7 +55,6 @@ comment "SPI Master Controller Drivers"
@@ -233,7 +269,7 @@ index b95010e72452..bfac34068999 100644
  		.name = DRV_NAME,
  		.pm = NULL,
 -- 
-2.11.0
+2.13.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

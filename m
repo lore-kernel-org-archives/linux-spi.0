@@ -1,49 +1,31 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: Applied "spi: Pick spi bus number from Linux idr or spi alias" to
- the spi tree
-Date: Wed, 16 Aug 2017 22:31:11 +0200
-Message-ID: <CAMuHMdW5NPQ39j=8di0t-fxkOPyn7pVkJs31ySJcsxw51sSTFQ@mail.gmail.com>
-References: <E1di0ly-0003WF-HD@debutante> <CAMuHMdX0Z8prbMivN5pC+-PycDSEx1tzkjGpRKK4=3RC5aYegQ@mail.gmail.com>
- <20170816200908.lv6rxxzhvubj2b3p@sirena.org.uk>
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: Re: linux-next: manual merge of the spi tree with the pm tree
+Date: Thu, 17 Aug 2017 09:21:42 +0200
+Message-ID: <20170817072142.GA11056@wunner.de>
+References: <20170817132308.090d4b88@canb.auug.org.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>,
-        Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>,
+        Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170816200908.lv6rxxzhvubj2b3p-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20170817132308.090d4b88-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Hi Sunil, Hi Karthik,
 
-On Wed, Aug 16, 2017 at 10:09 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Aug 16, 2017 at 06:48:07PM +0200, Geert Uytterhoeven wrote:
->> On Wed, Aug 16, 2017 at 6:02 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> > Modify existing code, for automatically picking the spi bus number based
->> > on Linux idr scheme as mentioned in FIXME.
->
->> FIXME?
->
-> It's fixing a FIXME that was in the code rather than a note to fix the
-> commit message!  Slightly awkward phrasing but it makes sense if you
-> look at the diff.
+On Thu, Aug 17, 2017 at 01:23:08PM +1000, Stephen Rothwell wrote:
+>   9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
 
-Thanks for the explanation! I did read the patch, but didn't realize it talked
-about that FIXME (I guess my mind was too busy complaining to myself that
-of_alias_get_id() is still being used ;-)
+This commit contains numerous trailing whitespace and space as indentation
+issues.  Please be sure to run your patches through scripts/checkpatch.pl
+before submission to avoid this.
 
-Gr{oetje,eeting}s,
+Thanks,
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Lukas
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

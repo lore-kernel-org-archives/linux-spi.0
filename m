@@ -1,66 +1,133 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v9 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-Date: Thu, 17 Aug 2017 10:10:16 -0500
-Message-ID: <20170817151016.2ujg6v4n7dstydo2@rob-hp-laptop>
-References: <20170808225247.32266-1-hauke@hauke-m.de>
- <20170808225247.32266-15-hauke@hauke-m.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kishon-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170808225247.32266-15-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Kernel coding style fixes" to the spi tree
+Date: Thu, 17 Aug 2017 18:14:02 +0100
+Message-ID: <E1diOMs-0000Kx-0P@debutante>
+References: <1502974102-4033-1-git-send-email-sunil.m@techveda.org>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        lukas@wunner.de, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, karthik@techveda.org,
+        linux-spi@vger.kernel.org
+To: Suniel Mahesh <sunil.m@techveda.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1502974102-4033-1-git-send-email-sunil.m@techveda.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 09, 2017 at 12:52:45AM +0200, Hauke Mehrtens wrote:
-> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
-> the PHY interfaces for each core. The phy instances can be passed to the
-> dwc2 driver, which already supports the generic phy interface.
-> 
-> Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-> Cc: Kishon Vijay Abraham I <kishon-l0cyMroinI0@public.gmane.org>
-> ---
->  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  40 ++++
->  arch/mips/lantiq/xway/sysctrl.c                    |  36 +--
->  drivers/phy/Kconfig                                |   1 +
->  drivers/phy/Makefile                               |   2 +-
->  drivers/phy/lantiq/Kconfig                         |   9 +
->  drivers/phy/lantiq/Makefile                        |   1 +
->  drivers/phy/lantiq/phy-lantiq-rcu-usb2.c           | 254 +++++++++++++++++++++
->  7 files changed, 324 insertions(+), 19 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->  create mode 100644 drivers/phy/lantiq/Kconfig
->  create mode 100644 drivers/phy/lantiq/Makefile
->  create mode 100644 drivers/phy/lantiq/phy-lantiq-rcu-usb2.c
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> new file mode 100644
-> index 000000000000..d8d25063dd5d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> @@ -0,0 +1,40 @@
-> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
-> +===========================================
-> +
-> +This binding describes the USB PHY hardware provided by the RCU module on the
-> +Lantiq XWAY SoCs.
-> +
-> +This driver has to be a sub node of the Lantiq RCU block.
+The patch
 
-s/driver/node/
+   spi: Kernel coding style fixes
 
-With that,
+has been applied to the spi tree at
 
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
---
-To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 9a9a047a39d9173b0639017e5ba249443e76dd9e Mon Sep 17 00:00:00 2001
+From: Suniel Mahesh <sunil.m@techveda.org>
+Date: Thu, 17 Aug 2017 18:18:22 +0530
+Subject: [PATCH] spi: Kernel coding style fixes
+
+Earlier commit:
+"spi: Pick spi bus number from Linux idr or spi alias"
+(SHA1:9b61e302210eba55768962f2f11e96bb508c2408)
+has introduced some checkpatch issues. As pointed by
+Lukas Wunner this patch does the following:
+- remove whitespaces
+- fix warnings, suspect code indent for conditional statements
+- fix errors, code indent should use tabs
+- remove spaces at the start of the line
+
+Signed-off-by: Suniel Mahesh <sunil.m@techveda.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b851888a0a0b..f47d1ccdf292 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -424,7 +424,7 @@ static LIST_HEAD(spi_controller_list);
+ /*
+  * Used to protect add/del opertion for board_info list and
+  * spi_controller list, and their matching process
+- * also used to protect object of type struct idr 
++ * also used to protect object of type struct idr
+  */
+ static DEFINE_MUTEX(board_lock);
+ 
+@@ -2075,7 +2075,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 */
+ 	if (ctlr->num_chipselect == 0)
+ 		return -EINVAL;
+-	
+ 	/* allocate dynamic bus number using Linux idr */
+ 	if ((ctlr->bus_num < 0) && ctlr->dev.of_node) {
+ 		id = of_alias_get_id(ctlr->dev.of_node, "spi");
+@@ -2090,16 +2089,14 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 		}
+ 	}
+ 	if (ctlr->bus_num < 0) {
+-			mutex_lock(&board_lock);
+-			id = idr_alloc(&spi_master_idr, ctlr,
+-				       SPI_DYN_FIRST_BUS_NUM, 0, GFP_KERNEL);
+-			mutex_unlock(&board_lock);
+-			if (WARN(id < 0, "couldn't get idr"))
+-				return id;
+-
+-			ctlr->bus_num = id;
++		mutex_lock(&board_lock);
++		id = idr_alloc(&spi_master_idr, ctlr, SPI_DYN_FIRST_BUS_NUM, 0,
++			       GFP_KERNEL);
++		mutex_unlock(&board_lock);
++		if (WARN(id < 0, "couldn't get idr"))
++			return id;
++		ctlr->bus_num = id;
+ 	}
+-
+ 	INIT_LIST_HEAD(&ctlr->queue);
+ 	spin_lock_init(&ctlr->queue_lock);
+ 	spin_lock_init(&ctlr->bus_lock_spinlock);
+@@ -2222,18 +2219,16 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	mutex_lock(&board_lock);
+ 	found = idr_find(&spi_master_idr, ctlr->bus_num);
+ 	mutex_unlock(&board_lock);
+-        if (found != ctlr) {
+-                dev_dbg(&ctlr->dev, 
++	if (found != ctlr) {
++		dev_dbg(&ctlr->dev,
+ 			"attempting to delete unregistered controller [%s]\n",
+ 			dev_name(&ctlr->dev));
+-                return;
+-        }
+-
++		return;
++	}
+ 	if (ctlr->queued) {
+ 		if (spi_destroy_queue(ctlr))
+ 			dev_err(&ctlr->dev, "queue remove failed\n");
+ 	}
+-
+ 	mutex_lock(&board_lock);
+ 	list_del(&ctlr->list);
+ 	mutex_unlock(&board_lock);
+-- 
+2.13.3

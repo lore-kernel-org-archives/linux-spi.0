@@ -1,42 +1,39 @@
-From: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Subject: Re: linux-next: manual merge of the spi tree with the pm tree
-Date: Fri, 18 Aug 2017 11:17:20 +0530
-Message-ID: <f986d7eb-78b0-f4e8-4d5d-aa13b5fdc200@techveda.org>
-References: <20170817132308.090d4b88@canb.auug.org.au>
- <20170817072142.GA11056@wunner.de>
+From: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH linux-next v5 1/1] spi: imx: dynamic burst length adjust
+ for PIO mode
+Date: Fri, 18 Aug 2017 12:45:01 +0200
+Message-ID: <20170818104500.ixuiy7ghvyuavbdh@pengutronix.de>
+References: <20170810045008.7532-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>,
-        Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170817072142.GA11056-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20170810045008.7532-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 17 August 2017 12:51 PM, Lukas Wunner wrote:
-> Hi Sunil, Hi Karthik,
+On Thu, Aug 10, 2017 at 01:50:08PM +0900, Jiada Wang wrote:
 > 
-> On Thu, Aug 17, 2017 at 01:23:08PM +1000, Stephen Rothwell wrote:
->>   9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
+> previously burst length (BURST_LENGTH) is always set to equal
+> to bits_per_word, causes a 10us gap between each word in
+> transfer, which significantly affects performance.
 > 
-> This commit contains numerous trailing whitespace and space as indentation
-> issues.  Please be sure to run your patches through scripts/checkpatch.pl
-> before submission to avoid this.
+> This patch uses 32 bits transfer to simulate lower bits transfer,
+> and adjusts burst length runtimely to use biggeest burst length
+> as possible to reduce the gaps in transfer for PIO mode.
 > 
+> Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 
-Hi Lukas,
+Tested-by: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-Thanks for pointing out checkpatch issues. checkpatch clean-up is done 
-and a patch has been sent which is now applied to broonie's spi tree.
- 
-> Thanks,
-> 
-> Lukas
-> 
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

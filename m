@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v10 07/16] Documentation: DT: MIPS: lantiq: Add docs for the RCU bindings
-Date: Sun, 20 Aug 2017 00:18:14 +0200
-Message-ID: <20170819221823.13850-8-hauke@hauke-m.de>
+Subject: [PATCH v10 15/16] MIPS: lantiq: remove old USB PHY initialisation
+Date: Sun, 20 Aug 2017 00:18:22 +0200
+Message-ID: <20170819221823.13850-16-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -11,129 +11,83 @@ Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uu
         kishon-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
         Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170819221823.13850-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-
-This adds the initial documentation for the RCU module (a MFD device
-which provides USB PHYs, reset controllers and more).
-
-The RCU register range is used for multiple purposes. Mostly one device
-uses one or multiple register exclusively, but for some registers some
-bits are for one driver and some other bits are for a different driver.
-With this patch all accesses to the RCU registers will go through
-syscon.
+This is now done in a PHY driver.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/mips/lantiq/rcu.txt        | 90 ++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
+ arch/mips/lantiq/xway/reset.c | 43 -------------------------------------------
+ 1 file changed, 43 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
-new file mode 100644
-index 000000000000..7b9be2d13c53
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
-@@ -0,0 +1,90 @@
-+Lantiq XWAY SoC RCU binding
-+===========================
-+
-+This binding describes the RCU (reset controller unit) multifunction device,
-+where each sub-device has it's own set of registers.
-+
-+The RCU register range is used for multiple purposes. Mostly one device
-+uses one or multiple register exclusively, but for some registers some
-+bits are for one driver and some other bits are for a different driver.
-+With this patch all accesses to the RCU registers will go through
-+syscon.
-+
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible	: The first and second values must be:
-+		  "lantiq,xrx200-rcu", "simple-mfd", "syscon"
-+- reg		: The address and length of the system control registers
-+
-+
-+-------------------------------------------------------------------------------
-+Example of the RCU bindings on a xRX200 SoC:
-+	rcu0: rcu@203000 {
-+		compatible = "lantiq,xrx200-rcu", "simple-mfd", "syscon";
-+		reg = <0x203000 0x100>;
-+		ranges = <0x0 0x203000 0x100>;
-+		big-endian;
-+
-+		gphy0: gphy@20 {
-+			compatible = "lantiq,xrx200a2x-gphy";
-+			reg = <0x20 0x4>;
-+
-+			resets = <&reset0 31 30>, <&reset1 7 7>;
-+			reset-names = "gphy", "gphy2";
-+			lantiq,gphy-mode = <GPHY_MODE_GE>;
-+		};
-+
-+		gphy1: gphy@68 {
-+			compatible = "lantiq,xrx200a2x-gphy";
-+			reg = <0x68 0x4>;
-+
-+			resets = <&reset0 29 28>, <&reset1 6 6>;
-+			reset-names = "gphy", "gphy2";
-+			lantiq,gphy-mode = <GPHY_MODE_GE>;
-+		};
-+
-+		reset0: reset-controller@10 {
-+			compatible = "lantiq,xrx200-reset";
-+			reg = <0x10 4>, <0x14 4>;
-+
-+			#reset-cells = <2>;
-+		};
-+
-+		reset1: reset-controller@48 {
-+			compatible = "lantiq,xrx200-reset";
-+			reg = <0x48 4>, <0x24 4>;
-+
-+			#reset-cells = <2>;
-+		};
-+
-+		usb_phy0: usb2-phy@18 {
-+			compatible = "lantiq,xrx200-usb2-phy";
-+			reg = <0x18 4>, <0x38 4>;
-+			status = "disabled";
-+
-+			resets = <&reset1 4 4>, <&reset0 4 4>;
-+			reset-names = "phy", "ctrl";
-+			#phy-cells = <0>;
-+		};
-+
-+		usb_phy1: usb2-phy@34 {
-+			compatible = "lantiq,xrx200-usb2-phy";
-+			reg = <0x34 4>, <0x3C 4>;
-+			status = "disabled";
-+
-+			resets = <&reset1 5 4>, <&reset0 4 4>;
-+			reset-names = "phy", "ctrl";
-+			#phy-cells = <0>;
-+		};
-+
-+		reboot@10 {
-+			compatible = "syscon-reboot";
-+			reg = <0x10 4>;
-+
-+			regmap = <&rcu0>;
-+			offset = <0x10>;
-+			mask = <0x40000000>;
-+		};
-+	};
-+
+diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+index be5fd29de523..04cd9a7c04a3 100644
+--- a/arch/mips/lantiq/xway/reset.c
++++ b/arch/mips/lantiq/xway/reset.c
+@@ -114,45 +114,6 @@ static void ltq_machine_power_off(void)
+ 	unreachable();
+ }
+ 
+-static void ltq_usb_init(void)
+-{
+-	/* Power for USB cores 1 & 2 */
+-	ltq_pmu_enable(PMU_AHBM);
+-	ltq_pmu_enable(PMU_USB0);
+-	ltq_pmu_enable(PMU_USB1);
+-
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1A) | BIT(0), RCU_CFG1A);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1B) | BIT(0), RCU_CFG1B);
+-
+-	/* Enable USB PHY power for cores 1 & 2 */
+-	ltq_pmu_enable(PMU_USB0_P);
+-	ltq_pmu_enable(PMU_USB1_P);
+-
+-	/* Configure cores to host mode */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_HDSEL_BIT,
+-		RCU_USB1CFG);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USB2CFG) & ~RCU_USBCFG_HDSEL_BIT,
+-		RCU_USB2CFG);
+-
+-	/* Select DMA endianness (Host-endian: big-endian) */
+-	ltq_rcu_w32((ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_SLV_END_BIT)
+-		| RCU_USBCFG_HOST_END_BIT, RCU_USB1CFG);
+-	ltq_rcu_w32(ltq_rcu_r32((RCU_USB2CFG) & ~RCU_USBCFG_SLV_END_BIT)
+-		| RCU_USBCFG_HOST_END_BIT, RCU_USB2CFG);
+-
+-	/* Hard reset USB state machines */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) | USBRESET_BIT, RCU_USBRESET);
+-	udelay(50 * 1000);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) & ~USBRESET_BIT, RCU_USBRESET);
+-
+-	/* Soft reset USB state machines */
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
+-		| USB1RESET_BIT | USB2RESET_BIT, RCU_USBRESET2);
+-	udelay(50 * 1000);
+-	ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
+-		& ~(USB1RESET_BIT | USB2RESET_BIT), RCU_USBRESET2);
+-}
+-
+ static int __init mips_reboot_setup(void)
+ {
+ 	struct resource res;
+@@ -176,10 +137,6 @@ static int __init mips_reboot_setup(void)
+ 	if (!ltq_rcu_membase)
+ 		panic("Failed to remap core memory");
+ 
+-	if (of_machine_is_compatible("lantiq,ar9") ||
+-	    of_machine_is_compatible("lantiq,vr9"))
+-		ltq_usb_init();
+-
+ 	_machine_restart = ltq_machine_restart;
+ 	_machine_halt = ltq_machine_halt;
+ 	pm_power_off = ltq_machine_power_off;
 -- 
 2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v10 03/16] spi: spi-falcon: drop check of boot select
-Date: Sun, 20 Aug 2017 00:18:10 +0200
-Message-ID: <20170819221823.13850-4-hauke@hauke-m.de>
+Subject: [PATCH v10 05/16] watchdog: lantiq: add device tree binding documentation
+Date: Sun, 20 Aug 2017 00:18:12 +0200
+Message-ID: <20170819221823.13850-6-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -9,51 +9,52 @@ Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uu
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
         robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
         kishon-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
 Return-path: <linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170819221823.13850-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do not check which flash type the SoC was booted from before
-using this driver. Assume that the device tree is correct and use this
-driver when it was added to device tree. This also removes a build
-dependency to the SoC code.
-
-All device trees I am aware of only have one correct flash device entry
-in it. The device tree is anyway bundled with the kernel in all systems
-using device tree I know of.
-
-The boot mode can be specified with some pin straps and will select the
-flash type the rom code will boot from. One SPI, NOR or NAND flash chip
-can be connect to the EBU and used to load the first stage boot loader
-from.
+The binding was not documented before, add the documentation now.
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-falcon.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
 
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-index 286b2c81fc6b..f8638e82e5db 100644
---- a/drivers/spi/spi-falcon.c
-+++ b/drivers/spi/spi-falcon.c
-@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	int ret;
- 
--	if (ltq_boot_select() != BS_SPI) {
--		dev_err(&pdev->dev, "invalid bootstrap options\n");
--		return -ENODEV;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
- 	if (!master)
- 		return -ENOMEM;
+diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+new file mode 100644
+index 000000000000..18d4d8302702
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+@@ -0,0 +1,24 @@
++Lantiq WTD watchdog binding
++============================
++
++This describes the binding of the Lantiq watchdog driver.
++
++-------------------------------------------------------------------------------
++Required properties:
++- compatible		: Should be one of
++				"lantiq,wdt"
++				"lantiq,xrx100-wdt"
++				"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
++				"lantiq,falcon-wdt"
++- reg			: Address of the watchdog block
++- lantiq,rcu		: A phandle to the RCU syscon (required for
++			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
++
++-------------------------------------------------------------------------------
++Example for the watchdog on the xRX200 SoCs:
++		watchdog@803f0 {
++			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
++			reg = <0x803f0 0x10>;
++
++			lantiq,rcu = <&rcu0>;
++		};
 -- 
 2.11.0
 

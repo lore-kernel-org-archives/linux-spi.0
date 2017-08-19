@@ -1,7 +1,7 @@
 From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v10 05/16] watchdog: lantiq: add device tree binding documentation
-Date: Sun, 20 Aug 2017 00:18:12 +0200
-Message-ID: <20170819221823.13850-6-hauke@hauke-m.de>
+Subject: [PATCH v10 06/16] MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+Date: Sun, 20 Aug 2017 00:18:13 +0200
+Message-ID: <20170819221823.13850-7-hauke@hauke-m.de>
 References: <20170819221823.13850-1-hauke@hauke-m.de>
 Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -16,45 +16,25 @@ In-Reply-To: <20170819221823.13850-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.o
 Sender: linux-watchdog-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The binding was not documented before, add the documentation now.
+From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 
 Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+ arch/mips/lantiq/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-new file mode 100644
-index 000000000000..18d4d8302702
---- /dev/null
-+++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
-@@ -0,0 +1,24 @@
-+Lantiq WTD watchdog binding
-+============================
-+
-+This describes the binding of the Lantiq watchdog driver.
-+
-+-------------------------------------------------------------------------------
-+Required properties:
-+- compatible		: Should be one of
-+				"lantiq,wdt"
-+				"lantiq,xrx100-wdt"
-+				"lantiq,xrx200-wdt", "lantiq,xrx100-wdt"
-+				"lantiq,falcon-wdt"
-+- reg			: Address of the watchdog block
-+- lantiq,rcu		: A phandle to the RCU syscon (required for
-+			  "lantiq,falcon-wdt" and "lantiq,xrx100-wdt")
-+
-+-------------------------------------------------------------------------------
-+Example for the watchdog on the xRX200 SoCs:
-+		watchdog@803f0 {
-+			compatible = "lantiq,xrx200-wdt", "lantiq,xrx100-wdt";
-+			reg = <0x803f0 0x10>;
-+
-+			lantiq,rcu = <&rcu0>;
-+		};
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 177769dbb0e8..f5db4a426568 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -17,6 +17,7 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
++	select MFD_SYSCON
+ 
+ config SOC_FALCON
+ 	bool "FALCON"
 -- 
 2.11.0
 

@@ -1,95 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: omap: Allocate bus number from spi framework" to the spi tree
-Date: Fri, 18 Aug 2017 12:49:10 +0100
-Message-ID: <E1difm2-00011V-L5@finisterre>
-References: <1503035020-4347-1-git-send-email-sunil.m@techveda.org>
-Cc: Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>,
-        Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1503035020-4347-1-git-send-email-sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: [PATCH v10 01/16] MIPS: lantiq: Use of_platform_default_populate instead of __dt_register_buses
+Date: Sun, 20 Aug 2017 00:18:08 +0200
+Message-ID: <20170819221823.13850-2-hauke@hauke-m.de>
+References: <20170819221823.13850-1-hauke@hauke-m.de>
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org, john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        kishon-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170819221823.13850-1-hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+From: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 
-   spi: omap: Allocate bus number from spi framework
+This allows populating syscon devices which are using "simple-mfd"
+instead of "simple-bus".
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b590782afe0a99fca84f451252ed7e2d64b2f155 Mon Sep 17 00:00:00 2001
-From: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Date: Fri, 18 Aug 2017 11:13:40 +0530
-Subject: [PATCH] spi: omap: Allocate bus number from spi framework
-
-spi framework should allocate bus number dynamically either
-via Linux IDR or spi alias for master drivers. This patch deletes
-code pertaining to manual allocation of spi bus number in spi omap2
-master driver.
-
-Signed-off-by: Suniel Mahesh <sunil.m-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Tested-by: Karthik Tummala <karthik-fINqtvHxh+hg9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/mips/lantiq/prom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index e048268d8ba2..9bf64e6eca9b 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1338,7 +1338,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	struct resource		*r;
- 	int			status = 0, i;
- 	u32			regs_offset = 0;
--	static int		bus_num = 1;
- 	struct device_node	*node = pdev->dev.of_node;
- 	const struct of_device_id *match;
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 96773bed8a8a..9ff7ccde9de0 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -117,7 +117,7 @@ void __init prom_init(void)
  
-@@ -1374,14 +1373,11 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ int __init plat_of_setup(void)
+ {
+-	return __dt_register_buses(soc_info.compatible, "simple-bus");
++	return of_platform_default_populate(NULL, NULL, NULL);
+ }
  
- 		of_property_read_u32(node, "ti,spi-num-cs", &num_cs);
- 		master->num_chipselect = num_cs;
--		master->bus_num = bus_num++;
- 		if (of_get_property(node, "ti,pindir-d0-out-d1-in", NULL))
- 			mcspi->pin_dir = MCSPI_PINDIR_D0_OUT_D1_IN;
- 	} else {
- 		pdata = dev_get_platdata(&pdev->dev);
- 		master->num_chipselect = pdata->num_cs;
--		if (pdev->id != -1)
--			master->bus_num = pdev->id;
- 		mcspi->pin_dir = pdata->pin_dir;
- 	}
- 	regs_offset = pdata->regs_offset;
+ arch_initcall(plat_of_setup);
 -- 
-2.13.2
+2.11.0
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

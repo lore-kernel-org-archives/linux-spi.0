@@ -1,47 +1,107 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: Suggestion Needed on Demuxer to Select Slave Devices
-Date: Tue, 22 Aug 2017 13:56:18 +0200
-Message-ID: <CAMuHMdWNTy=ofTvRkMioC+1f9m1JLDXj+JNEP2E9m06=cRybww@mail.gmail.com>
-References: <CA+V-a8tXatbmx4F0uHOjE6dMyb2n0gBVLpn3hjW-reT6gFykOw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "Lad, Prabhakar" <prabhakar.csengg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CA+V-a8tXatbmx4F0uHOjE6dMyb2n0gBVLpn3hjW-reT6gFykOw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Anton Volkov <avolkov@ispras.ru>
+Subject: [PATCH] tegra114: fix to a race condition due to early registration of interrupt handler
+Date: Tue, 22 Aug 2017 16:58:24 +0300
+Message-ID: <1503410304-8083-1-git-send-email-avolkov@ispras.ru>
+References: <20170731104105.GF26667@ulmo>
+Cc: jonathanh@nvidia.com, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org, khoroshilov@ispras.ru,
+        Anton Volkov <avolkov@ispras.ru>
+To: ldewangan@nvidia.com, thierry.reding@gmail.com, broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170731104105.GF26667@ulmo>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Lad,
+The early registration of interrupt handler made possible a race
+condition leading to the usage of an incorrect physical address
+obtained by reading uninitialized tspi->tx_dma_phys.
 
-On Tue, Aug 22, 2017 at 1:06 PM, Lad, Prabhakar
-<prabhakar.csengg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> I am writing a Linux SPI slave driver, on the latest kernel, and
-> wanted a suggestion on how the driver could fit in the latest kernel
-> with DT.
->
-> I have SPI controller which is connected to decoder [1], the SPI
-> controller has 2 chip selects, but only one (cs0) is connected to the
-> decoder.
+This patch moves the registration of an interrupt handler further
+down the code of tegra_spi_probe to make the race infeasible.
 
-... to e.g. G2A of the decoder?
+Found by by Linux Driver Verification project (linuxtesting.org).
 
-> The decoder has 8 slave devices connected to it, which can be can be
-> selected by gpios from the muxer.
+Signed-off-by: Anton Volkov <avolkov@ispras.ru>
+---
+ drivers/spi/spi-tegra114.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-So the A/B/C inputs of the decoder are connected to GPIOs?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 08012ae..9a88dca 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1065,29 +1065,18 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	}
+ 	tspi->phys = r->start;
+ 
+-	spi_irq = platform_get_irq(pdev, 0);
+-	tspi->irq = spi_irq;
+-	ret = request_threaded_irq(tspi->irq, tegra_spi_isr,
+-			tegra_spi_isr_thread, IRQF_ONESHOT,
+-			dev_name(&pdev->dev), tspi);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
+-					tspi->irq);
+-		goto exit_free_master;
+-	}
+-
+ 	tspi->clk = devm_clk_get(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->clk)) {
+ 		dev_err(&pdev->dev, "can not get clock\n");
+ 		ret = PTR_ERR(tspi->clk);
+-		goto exit_free_irq;
++		goto exit_free_master;
+ 	}
+ 
+ 	tspi->rst = devm_reset_control_get(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->rst)) {
+ 		dev_err(&pdev->dev, "can not get reset\n");
+ 		ret = PTR_ERR(tspi->rst);
+-		goto exit_free_irq;
++		goto exit_free_master;
+ 	}
+ 
+ 	tspi->max_buf_size = SPI_FIFO_DEPTH << 2;
+@@ -1095,7 +1084,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = tegra_spi_init_dma_param(tspi, true);
+ 	if (ret < 0)
+-		goto exit_free_irq;
++		goto exit_free_master;
+ 	ret = tegra_spi_init_dma_param(tspi, false);
+ 	if (ret < 0)
+ 		goto exit_rx_dma_free;
+@@ -1105,6 +1094,17 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 
+ 	init_completion(&tspi->xfer_completion);
+ 
++	spi_irq = platform_get_irq(pdev, 0);
++	tspi->irq = spi_irq;
++	ret = request_threaded_irq(tspi->irq, tegra_spi_isr,
++			tegra_spi_isr_thread, IRQF_ONESHOT,
++			dev_name(&pdev->dev), tspi);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
++					tspi->irq);
++		goto exit_rx_dma_free;
++	}
++
+ 	pm_runtime_enable(&pdev->dev);
+ 	if (!pm_runtime_enabled(&pdev->dev)) {
+ 		ret = tegra_spi_runtime_resume(&pdev->dev);
+@@ -1133,11 +1133,10 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_spi_runtime_suspend(&pdev->dev);
++	free_irq(spi_irq, tspi);
+ 	tegra_spi_deinit_dma_param(tspi, false);
+ exit_rx_dma_free:
+ 	tegra_spi_deinit_dma_param(tspi, true);
+-exit_free_irq:
+-	free_irq(spi_irq, tspi);
+ exit_free_master:
+ 	spi_master_put(master);
+ 	return ret;
+-- 
+2.7.4

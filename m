@@ -1,104 +1,103 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Marcin Wojtas <mw-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org>
 Subject: Re: [PATCH 1/2] mtd: spi-nor: add an option to force 3byte adressing mode
-Date: Mon, 28 Aug 2017 23:18:25 +0200
-Message-ID: <CAMuHMdX0b=J9AuPAvdRXGGVXvc7f9n7TJ0_VKR13P05toq9REw@mail.gmail.com>
-References: <1503954854-30963-1-git-send-email-mw@semihalf.com> <1503954854-30963-2-git-send-email-mw@semihalf.com>
+Date: Mon, 28 Aug 2017 23:54:03 +0200
+Message-ID: <CAPv3WKf3ra5tiK2gjQYUaTpiiM=kg=UGqceVesinqtjjk=RUnA@mail.gmail.com>
+References: <1503954854-30963-1-git-send-email-mw@semihalf.com>
+ <1503954854-30963-2-git-send-email-mw@semihalf.com> <CAMuHMdX0b=J9AuPAvdRXGGVXvc7f9n7TJ0_VKR13P05toq9REw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Nadav Haklai <nadavh@marvell.com>, neta@marvell.com,
-        omrii@marvell.com, Hanna Hawa <hannah@marvell.com>,
-        Grzegorz Jaszczyk <jaz@semihalf.com>, tn@semihalf.com
-To: Marcin Wojtas <mw@semihalf.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1503954854-30963-2-git-send-email-mw@semihalf.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        Neta Zur Hershkovits <neta-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        Omri Itach <omrii-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        Hanna Hawa <hannah-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        Grzegorz Jaszczyk <jaz-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org>,
+        Tomasz Now
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdX0b=J9AuPAvdRXGGVXvc7f9n7TJ0_VKR13P05toq9REw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Aug 28, 2017 at 11:14 PM, Marcin Wojtas <mw@semihalf.com> wrote:
-> Hitherto code set 4B addressing mode for all SPI flashes whose
-> size exceeds 16MB. However, changing the default 3B access
-> in some cases may be harmful - it may happen that the Boot ROM
-> is not capable of handling non-default state of the SPI NOR
-> (e.g. after soft reset). Some flash devices allow to access the
-> memory above 128Mib without changing mode to 4byte thanks
-> to special op codes (see SPI_NOR_4B_OPCODES flag). Unfortunately
-> for those which don't support them, the problem persists.
+Hi Geert,
+
+>> +- spi-3byte-addressing - Empty property indicating device access to be done
+>> +                   only in 3byte addressing mode.
 >
-> This patch adds optional property that can be added to the
-> SPI flash node and which will force to use 3B addressing mode,
-> limiting the accessible memory size to 16MiB.
-> Binding documentation is updated accordingly.
+> spi-force-3byte-addressing?
+
+I can change it, no problem. I thought of this, but was affraid if the
+property wouldn't be too long.
+
 >
-> Signed-off-by: Marcin Wojtas <mw@semihalf.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-bus.txt |  2 ++
->  drivers/mtd/spi-nor/spi-nor.c                     | 12 +++++++++++-
->  2 files changed, 13 insertions(+), 1 deletion(-)
+>>  Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+>>  It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
+>> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+>> index 1413828..029c87d 100644
+>> --- a/drivers/mtd/spi-nor/spi-nor.c
+>> +++ b/drivers/mtd/spi-nor/spi-nor.c
+>> @@ -2002,7 +2002,17 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
+>>                 if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
+>>                     info->flags & SPI_NOR_4B_OPCODES)
+>>                         spi_nor_set_4byte_opcodes(nor, info);
+>> -               else
+>> +               else if (of_property_read_bool(np, "spi-3byte-addressing")) {
+>> +                       /*
+>> +                        * Do not enter 4byte mode in order to prevent
+>> +                        * the early bootloader to come up on non-default
+>> +                        * SPI NOR memory during boot. Limit accessible
+>> +                        * size to 16MiB.
+>> +                        */
+>> +                       nor->addr_width = 3;
+>> +                       mtd->size = 0x1000000;
 >
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> index 1f6e86f..f13b773 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> @@ -77,6 +77,8 @@ All slave nodes can contain the following optional properties:
->                     Defaults to 1 if not present.
->  - spi-rx-delay-us - Microsecond delay after a read transfer.
->  - spi-tx-delay-us - Microsecond delay after a write transfer.
-> +- spi-3byte-addressing - Empty property indicating device access to be done
-> +                   only in 3byte addressing mode.
+> What if the device is smaller than 16 MiB?
+>
+> mtd->size = min(mtd->size, 0x1000000);
 
-spi-force-3byte-addressing?
+Not needed - this code is executed only for mtd->size > 0x1000000. See
+bigger context:
 
->  Some SPI controllers and devices support Dual and Quad SPI transfer mode.
->  It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 1413828..029c87d 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -2002,7 +2002,17 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
->                 if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
->                     info->flags & SPI_NOR_4B_OPCODES)
->                         spi_nor_set_4byte_opcodes(nor, info);
-> -               else
-> +               else if (of_property_read_bool(np, "spi-3byte-addressing")) {
-> +                       /*
-> +                        * Do not enter 4byte mode in order to prevent
-> +                        * the early bootloader to come up on non-default
-> +                        * SPI NOR memory during boot. Limit accessible
-> +                        * size to 16MiB.
-> +                        */
-> +                       nor->addr_width = 3;
-> +                       mtd->size = 0x1000000;
+        if (info->addr_width)
+                nor->addr_width = info->addr_width;
+        else if (mtd->size > 0x1000000) {
+                /* enable 4-byte addressing if the device exceeds 16MiB */
+                nor->addr_width = 4;
+                if (JEDEC_MFR(info) == SNOR_MFR_SPANSION ||
+                    info->flags & SPI_NOR_4B_OPCODES)
+                        spi_nor_set_4byte_opcodes(nor, info);
+                else if (of_property_read_bool(np, "spi-3byte-addressing")) {
+                        /*
+                         * Do not enter 4byte mode in order to prevent
+                         * the early bootloader to come up on non-default
+                         * SPI NOR memory during boot. Limit accessible
+                         * size to 16MiB.
+                         */
+                        nor->addr_width = 3;
+                        mtd->size = 0x1000000;
+                        dev_info(dev, "Force 3B addressing mode\n");
+                } else
+                        set_4byte(nor, info, 1);
+        } else {
+                nor->addr_width = 3;
+        }
 
-What if the device is smaller than 16 MiB?
 
-mtd->size = min(mtd->size, 0x1000000);
-
-> +                       dev_info(dev, "Force 3B addressing mode\n");
-> +               } else
->                         set_4byte(nor, info, 1);
->         } else {
->                 nor->addr_width = 3;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Best regards,
+Marcin
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

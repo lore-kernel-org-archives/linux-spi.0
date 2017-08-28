@@ -1,48 +1,47 @@
-From: Marcin Wojtas <mw-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 0/2] SPI NOR - force 3byte addressing mode
-Date: Mon, 28 Aug 2017 23:14:12 +0200
-Message-ID: <1503954854-30963-1-git-send-email-mw@semihalf.com>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, will.deacon-5wv7dgnIgG8@public.gmane.org,
-        cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-        gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        neta-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, omrii-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, hannah-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org,
-        mw-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org, jaz-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org, tn-nYOzD4b6Jr9Wk0Htik3J/w@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Marcin Wojtas <mw@semihalf.com>
+Subject: [PATCH 2/2] arm64: dts: marvell: Force 3byte addressing mode for SPI on A7040 DB
+Date: Mon, 28 Aug 2017 23:14:14 +0200
+Message-ID: <1503954854-30963-3-git-send-email-mw@semihalf.com>
+References: <1503954854-30963-1-git-send-email-mw@semihalf.com>
+Cc: robh+dt@kernel.org, mark.rutland@arm.com, will.deacon@arm.com,
+        cyrille.pitchen@wedev4u.fr, marek.vasut@gmail.com,
+        broonie@kernel.org, thomas.petazzoni@free-electrons.com,
+        gregory.clement@free-electrons.com, nadavh@marvell.com,
+        neta@marvell.com, omrii@marvell.com, hannah@marvell.com,
+        mw@semihalf.com, jaz@semihalf.com, tn@semihalf.com
+To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1503954854-30963-1-git-send-email-mw@semihalf.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Armada 7040 DB boards can be shipped with various models of
+boot SPI flash devices. An issue can emerge, when their size
+exceeds 16MB - in such case the kernel driver will switch automatically
+to 4B addressing mode. Later, in case of soft reset, the Boot ROM
+will fail to fetch the firmware during the board initialization.
 
-This very short patchset introduces optional forcing via DT
-3byte addressing mode for accessing the SPI flash, whose
-size exceeds 16MiB.
+In order to prevent such behavior, this patch forces 3B addressing
+mode used on affected boards by adding newly introduced
+'spi-3byte-addressing' property to the SPI flash nodes.
 
-It can be used in case the device does not support
-SPI_NOR_4B_OPCODES and helps overcome an issue, when
-the Boot ROM cannot handle non-default settings
-that could be enabled in the kernel and remain after soft reset.
+Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+---
+ arch/arm64/boot/dts/marvell/armada-7040-db.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-I'm looking forward to any comments or remarks.
-
-Best regards,
-Marcin
-
-Marcin Wojtas (2):
-  mtd: spi-nor: add an option to force 3byte adressing mode
-  arm64: dts: marvell: Force 3byte addressing mode for SPI on A7040 DB
-
- Documentation/devicetree/bindings/spi/spi-bus.txt |  2 ++
- arch/arm64/boot/dts/marvell/armada-7040-db.dts    |  1 +
- drivers/mtd/spi-nor/spi-nor.c                     | 12 +++++++++++-
- 3 files changed, 14 insertions(+), 1 deletion(-)
-
+diff --git a/arch/arm64/boot/dts/marvell/armada-7040-db.dts b/arch/arm64/boot/dts/marvell/armada-7040-db.dts
+index 92c761c..d0bd296 100644
+--- a/arch/arm64/boot/dts/marvell/armada-7040-db.dts
++++ b/arch/arm64/boot/dts/marvell/armada-7040-db.dts
+@@ -116,6 +116,7 @@
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0x0>;
+ 		spi-max-frequency = <20000000>;
++		spi-3byte-addressing;
+ 
+ 		partitions {
+ 			compatible = "fixed-partitions";
 -- 
 1.8.3.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

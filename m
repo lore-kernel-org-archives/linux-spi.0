@@ -1,116 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: fix use of native chip-selects with devicetree" to the spi tree
-Date: Mon,  4 Sep 2017 13:47:10 +0100 (BST)
-Message-ID: <20170904124710.B69CA4400FC@finisterre.ee.mobilebroadband>
-References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
-Cc: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1489726983-17706-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH 1/2] mtd: spi-nor: add an option to force 3byte adressing
+ mode
+Date: Mon, 4 Sep 2017 18:26:02 +0200
+Message-ID: <20170904162602.GC21849@amd>
+References: <1503954854-30963-1-git-send-email-mw@semihalf.com>
+ <1503954854-30963-2-git-send-email-mw@semihalf.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="hOcCNbCCxyk/YU74"
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, will.deacon@arm.com,
+        cyrille.pitchen@wedev4u.fr, marek.vasut@gmail.com,
+        broonie@kernel.org, thomas.petazzoni@free-electrons.com,
+        gregory.clement@free-electrons.com, nadavh@marvell.com,
+        neta@marvell.com, omrii@marvell.com, hannah@marvell.com,
+        jaz@semihalf.com, tn@semihalf.com
+To: Marcin Wojtas <mw@semihalf.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1503954854-30963-2-git-send-email-mw@semihalf.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: imx: fix use of native chip-selects with devicetree
+--hOcCNbCCxyk/YU74
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+Hi!
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> index 1413828..029c87d 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -2002,7 +2002,17 @@ int spi_nor_scan(struct spi_nor *nor, const char *=
+name,
+>  		if (JEDEC_MFR(info) =3D=3D SNOR_MFR_SPANSION ||
+>  		    info->flags & SPI_NOR_4B_OPCODES)
+>  			spi_nor_set_4byte_opcodes(nor, info);
+> -		else
+> +		else if (of_property_read_bool(np, "spi-3byte-addressing")) {
+> +			/*
+> +			 * Do not enter 4byte mode in order to prevent
+> +			 * the early bootloader to come up on non-default
+> +			 * SPI NOR memory during boot. Limit accessible
+> +			 * size to 16MiB.
+> +			 */
+> +			nor->addr_width =3D 3;
+> +			mtd->size =3D 0x1000000;
+> +			dev_info(dev, "Force 3B addressing mode\n");
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I'd append "limiting access to first 16MiB" .. because otherwise
+people will wonder where their flash went.
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--hOcCNbCCxyk/YU74
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iEYEARECAAYFAlmtfpoACgkQMOfwapXb+vIroACffO9X/PgTB78Lap7a67L4ktNh
+Um4AoLYdOzK2KItNHTvYmMsBVuX3624u
+=Bpyw
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From 602c8f4485cd1e6de67e41c78db96fa4f6808e53 Mon Sep 17 00:00:00 2001
-From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Date: Tue, 11 Jul 2017 14:22:11 +1000
-Subject: [PATCH] spi: imx: fix use of native chip-selects with devicetree
-
-The commonly used mechanism of specifying the hardware or native
-chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
-does not result in the native chip-select being configured for use.
-So external SPI devices that require use of the native chip-select
-will not work.
-
-You can successfully specify native chip-selects if using a platform
-setup by specifying the cs-gpio as negative offset by 32. And that
-works correctly. You cannot use the same method in devicetree.
-
-The logic in the spi-imx.c driver during probe uses core spi function
-of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
-For valid GPIO values that will be recorded for use, all other entries in
-the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
-set to -ENOENT in the cs_gpios list.
-
-When the SPI device registers are setup the code will use the GPIO
-listed in the cs_gpios list for the desired chip-select. If the cs_gpio
-is less then 0 then it is intended to be for a native chip-select, and
-its cs_gpio value is added to 32 to get the chipselect number to use.
-Problem is that with devicetree this can only ever be -ENOENT (which
-is -2), and that alone results in an invalid chip-select number. But also
-doesn't allow selection of the native chip-select at all.
-
-To fix, if the cs_gpio specified for this spi device is not a
-valid GPIO then use the "chip_select" (that is the native chip-select
-number) for hardware setup.
-
-Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Reviewed-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
-Tested-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-imx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 6fcb6adf9565..babb15f07995 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -622,8 +622,8 @@ static int mx31_config(struct spi_device *spi)
- 		reg |= MX31_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX31_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) <<
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= (spi->chip_select) <<
- 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
- 						  MX31_CSPICTRL_CS_SHIFT);
- 
-@@ -714,8 +714,8 @@ static int mx21_config(struct spi_device *spi)
- 		reg |= MX21_CSPICTRL_POL;
- 	if (spi->mode & SPI_CS_HIGH)
- 		reg |= MX21_CSPICTRL_SSPOL;
--	if (spi->cs_gpio < 0)
--		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
-+	if (!gpio_is_valid(spi->cs_gpio))
-+		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
- 
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
- 
--- 
-2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--hOcCNbCCxyk/YU74--

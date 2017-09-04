@@ -1,172 +1,116 @@
-From: Jonathan Cameron <Jonathan.Cameron-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 5/6] dt-bindings: iio: adc: mcp320x: Update for
- mcp3550/1/3
-Date: Mon, 4 Sep 2017 13:36:43 +0100
-Message-ID: <20170904133643.00004c84@huawei.com>
-References: <cover.1503407738.git.lukas@wunner.de>
-        <87644503b0397248c06fbe0058f292955dd10f79.1503407738.git.lukas@wunner.de>
-        <20170825195941.iylf4w5hitjwniio@rob-hp-laptop>
-        <20170827153405.GA13399@wunner.de>
-        <CABjU8GvCB61envBiR0ei3gHEPadd5VDZ7FGysDjhCrJcQrEXDg@mail.gmail.com>
-        <20170903143429.749be480@archlinux>
-        <20170903182046.GA1511@wunner.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-Cc: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Adriana Reus <adi.reus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Hartmut Knaack <knaack.h-Mmb7MZpHnFY@public.gmane.org>,
-        "Lars-Peter Clausen" <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-        Peter Meerwald-Stadler <pmeerw-jW+XmwGofnusTnJN9+BGXg@public.gmane.org>,
-        Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
-        Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>,
-        Oskar Andero <oskar.andero-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Andrea Galbusera <gizero-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Manfred Schlaegl <manfred.schlaegl-RbZlAiThDcE@public.gmane.org>,
-        Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>,
-        "Soeren Andersen" <san-KGKi0rHxN0fKWSuBa/xFvVpr/1R2p/CL@public.gmane.org>,
-        <linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "Abhisit Sangjan" <s.abhisit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170903182046.GA1511-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: fix use of native chip-selects with devicetree" to the spi tree
+Date: Mon,  4 Sep 2017 13:47:10 +0100 (BST)
+Message-ID: <20170904124710.B69CA4400FC@finisterre.ee.mobilebroadband>
+References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+Cc: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, fabio.estevam-3arQi8VN3Tc@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1489726983-17706-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, 3 Sep 2017 20:20:46 +0200
-Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
+The patch
 
-> On Sun, Sep 03, 2017 at 02:37:49PM +0100, Jonathan Cameron wrote:
-> > On Tue, Aug 22, 2017 at 03:33:00PM +0200, Lukas Wunner wrote:    
-> > > --- a/Documentation/devicetree/bindings/iio/adc/mcp320x.txt
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/mcp320x.txt
-> > > +Optional properties:
-> > > +   - microchip,continuous-conversion (boolean):
-> > > +           Only applicable to MCP3550/1/3:  These ADCs have long
-> > > +           conversion times and therefore support "continuous
-> > > +           conversion mode" to allow retrieval of conversions
-> > > +           at any time without observing a delay.  The mode is
-> > > +           enabled by permanently driving CS low, e.g. by wiring
-> > > +           it to ground.    
-> > 
-> > hmm.  This is odd.  We probably need to make the SPI subsystem aware
-> > of this. It is possible to ask for exclusive use of an SPI bus and
-> > I think we should be doing this here.  It may be wired low on your
-> > board, but it may be wired to a controllable chip select on other
-> > boards and we can still force it low to trigger this mode if it makes
-> > sense for the current application.
-> > 
-> > So I'd argue what we actually need to represent here is that the CS line
-> > is not controllable.  What this means to the driver should be handled
-> > in the driver - ideally also dealing with the case where it is controllable
-> > appropriately (via exclusive bus usage).  Spi devices have the SPI_NO_CS
-> > bit in the mode member of the spi device but I'm not sure about bindings.  
-> [...]
-> > The one case where we normally want to flip to continuous modes is when
-> > we have a chardev access going on to the device.  In IIO that reflects
-> > the fact we are in a push mode rather than userspace polling for new data.  
-> 
-> It seems there is no DT binding so far to set SPI_NO_CS.
+   spi: imx: fix use of native chip-selects with devicetree
 
-Time to add one perhaps ;)
+has been applied to the spi tree at
 
-> 
-> Conceivably, continuous mode could be used even with multiple devices
-> on the bus if CLK and MISO is AND-gated with the CS signal coming from
-> the SPI master.  (And the CS of the ADC is pulled low.)  In that case,
-> the notion that "continuous mode == CS not controllable" would be
-> incorrect, hence the approach I've chosen.
-> 
-> On the Revolution Pi we don't use continuous mode.  I merely included
-> it in the driver for completeness.  If it is too controversial I'd be
-> inclined to drop the feature.
-> 
-> On-demand switching to continuous mode by keeping CS low would be
-> possible by setting the cs_change bit of struct mcp320x ->transfer[1],
-> but that might not work if there are other devices on the bus.
-> 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-spi has exclusive bus access functions.  Doing this sort of thing isn't
-that unusual.  Some devices require that the cs is held low whilst they
-take a single reading, but provide an interrupt for when they are done.
-For those we have to hold it for some time.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> 
-> > Personally I don't think we are in a position yet to make this a generic
-> > property - this is the first device where it is actually to do with the
-> > physical circuit (and arguably it isn't really - see above).  
-> 
-> Okay.
-> 
-> 
-> > Reference voltages are an oddity as the supply naming typically should match
-> > that on the datasheet. It's 'fairly' consistent but some devices
-> > have a set of relatively obscure references to different parts of the
-> > input circuitry.  We can document it as a 'default' assuming nothing
-> > strange is going on though.  This is why we have the vagueness below
-> > on VDD and VCC.  
-> 
-> That is new to me, I believe it's not documented or am I missing something?
-> I'd be happy to respin the below patch without the "Continuous mode"
-> portion if you want?  (Amended with the info you gave above.)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-It might make sense to drop continuous mode with the intent to add it
-as a follow up patch.  Lets see what Mark and co come back with on how
-to support the hard wired cs on the spi.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> Do you think iio-bindings.txt is the right place to put this or would
-> a separate common.txt be more appropriate? (See e.g. leds/common.txt)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Perhaps a question best directed to the devicetree binding maintainers.
-I can't say that I personally care either way ;)
+Thanks,
+Mark
 
-> 
-> Thanks,
-> 
-> Lukas
-> 
-> > -- >8 --    
-> > Subject: [PATCH] dt-bindings: iio: Document common properties
-> >
-> > It's about time we standardize on common names for frequently used IIO
-> > properties.  For starters, document "vref-supply" and "continuous".
-> >
-> > Suggested-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-> > ---
-> >  Documentation/devicetree/bindings/iio/iio-bindings.txt | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/iio-bindings.txt b/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> > index 68d6f8c..c3e87e15 100644
-> > --- a/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> > +++ b/Documentation/devicetree/bindings/iio/iio-bindings.txt
-> > @@ -95,3 +95,18 @@ vdd channel is connected to output 0 of the &ref device.
-> >                 io-channels = <&adc 10>, <&adc 11>;
-> >                 io-channel-names = "adc1", "adc2";
-> >         };
-> > +
-> > +==Common IIO properties==
-> > +
-> > +Reference voltage:
-> > +ADCs, DACs and several other IIO devices require a reference voltage.
-> > +By convention the property specifying this regulator is named "vref-supply".
-> > +If the chip lacks a dedicated Vref pin and instead uses its own power supply
-> > +as reference, the property specifying the regulator is commonly named
-> > +"vdd-supply" or "vcc-supply".
-> > +
-> > +Continuous mode:
-> > +Some sensors can be configured to perform continuous (versus one-shot)
-> > +measurements.  Continuous mode may require more energy in return for faster
-> > +or more reliable measurements.  A boolean property named "continuous"
-> > +signifies that the device is configured for this mode.
-> > --
-> > 2.11.0    
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From 602c8f4485cd1e6de67e41c78db96fa4f6808e53 Mon Sep 17 00:00:00 2001
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Date: Tue, 11 Jul 2017 14:22:11 +1000
+Subject: [PATCH] spi: imx: fix use of native chip-selects with devicetree
+
+The commonly used mechanism of specifying the hardware or native
+chip-select on an SPI device in devicetree (that is "cs-gpios = <0>")
+does not result in the native chip-select being configured for use.
+So external SPI devices that require use of the native chip-select
+will not work.
+
+You can successfully specify native chip-selects if using a platform
+setup by specifying the cs-gpio as negative offset by 32. And that
+works correctly. You cannot use the same method in devicetree.
+
+The logic in the spi-imx.c driver during probe uses core spi function
+of_spi_register_master() in spi.c to parse the "cs-gpios" devicetree tag.
+For valid GPIO values that will be recorded for use, all other entries in
+the cs_gpios list will be set to -ENOENT. So entries like "<0>" will be
+set to -ENOENT in the cs_gpios list.
+
+When the SPI device registers are setup the code will use the GPIO
+listed in the cs_gpios list for the desired chip-select. If the cs_gpio
+is less then 0 then it is intended to be for a native chip-select, and
+its cs_gpio value is added to 32 to get the chipselect number to use.
+Problem is that with devicetree this can only ever be -ENOENT (which
+is -2), and that alone results in an invalid chip-select number. But also
+doesn't allow selection of the native chip-select at all.
+
+To fix, if the cs_gpio specified for this spi device is not a
+valid GPIO then use the "chip_select" (that is the native chip-select
+number) for hardware setup.
+
+Signed-off-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Reviewed-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
+Tested-by: Vladimir Zapolskiy <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 6fcb6adf9565..babb15f07995 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -622,8 +622,8 @@ static int mx31_config(struct spi_device *spi)
+ 		reg |= MX31_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX31_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) <<
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= (spi->chip_select) <<
+ 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+ 						  MX31_CSPICTRL_CS_SHIFT);
+ 
+@@ -714,8 +714,8 @@ static int mx21_config(struct spi_device *spi)
+ 		reg |= MX21_CSPICTRL_POL;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		reg |= MX21_CSPICTRL_SSPOL;
+-	if (spi->cs_gpio < 0)
+-		reg |= (spi->cs_gpio + 32) << MX21_CSPICTRL_CS_SHIFT;
++	if (!gpio_is_valid(spi->cs_gpio))
++		reg |= spi->chip_select << MX21_CSPICTRL_CS_SHIFT;
+ 
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 
+-- 
+2.13.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

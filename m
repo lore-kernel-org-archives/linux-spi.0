@@ -1,522 +1,376 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH linux-next v6 1/1] spi: imx: Add support for SPI Slave mode
-Date: Tue, 5 Sep 2017 11:15:42 -0300
-Message-ID: <CAOMZO5Bi1HdU-ksAc=8EbiNK7mkjrsu0EpSoVN3F_C8UcinSdg@mail.gmail.com>
+From: "Palacios, Hector" <Hector.Palacios-i7dp0qKlBMg@public.gmane.org>
+Subject: RE: [PATCH linux-next v6 1/1] spi: imx: Add support for SPI Slave
+ mode
+Date: Tue, 5 Sep 2017 14:28:53 +0000
+Message-ID: <52F917CEA1B9C64C94833D53889D478C017FF5FB@dor-sms-xch01.digi.com>
 References: <20170905051232.21203-1-jiada_wang@mentor.com>
+ <CAOMZO5Bi1HdU-ksAc=8EbiNK7mkjrsu0EpSoVN3F_C8UcinSdg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
         Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Hector Palacios <hector.palacios-i7dp0qKlBMg@public.gmane.org>
-To: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170905051232.21203-1-jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <CAOMZO5Bi1HdU-ksAc=8EbiNK7mkjrsu0EpSoVN3F_C8UcinSdg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-[Adding Hector on Cc in case he could send his Tested-by tag]
-
-On Tue, Sep 5, 2017 at 2:12 AM, Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org> wrote:
-> Previously i.MX SPI controller only works in Master mode.
-> This patch adds support to i.MX51, i.MX53 and i.MX6 ECSPI
-> controller to work also in Slave mode.
->
-> Currently SPI Slave mode support patch has the following limitations:
-> 1. The stale data in RXFIFO will be dropped when the Slave does any new
->    transfer.
-> 2. One transfer can be finished only after all transfer->len data been
->    transferred to master device
-> 3. Slave device only accepts transfer->len data. Any data longer than this
->    from master device will be dropped. Any data shorter than this from
->    master will cause SPI to stuck due to mentioned HW limitation 2.
-> 4. Only PIO transfer is supported in Slave mode.
-> 5. Dynamic burst size adjust isn't supported in Slave mode.
->
-> Following HW limitation applies:
-> 1.  ECSPI has a HW issue when works in Slave mode, after 64
->     words written to TXFIFO, even TXFIFO becomes empty,
->     ECSPI_TXDATA keeps shift out the last word data,
->     so we have to disable ECSPI when in slave mode after the
->     transfer completes
-> 2.  Due to Freescale errata ERR003775 "eCSPI: Burst completion by Chip
->     Select (SS) signal in Slave mode is not functional" burst size must
->     be set exactly to the size of the transfer. This limit SPI transaction
->     with maximum 2^12 bits. This errata affects i.MX53 and i.MX6 ECSPI
->     controllers.
->
-> Signed-off-by: Jiada Wang <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-> ---
-> Changes in v6:
-> * rebased to HEAD of linux-next tree
-> * avoid to enable dynamic burst adjust when in slave mode.
->
-> Changes in v5:
-> * rebased to HEAD of linux-next tree
->
-> Changes in v4:
-> * rebased to head of linux-next to resolve conflict
-> * optimized mx53_ecspi_rx_slave()
->
-> Changes in v3:
-> * renamed several variables for for better readability
-> * created spi_imx_pio_transfer_slave() for slave pio transfer
-> * added fifo_size, has_dmamode and has_slavemode in spi_imx_devtype_data
->
-> Changes in v2:
-> * re-workd i.MX ECSPI controller slave mode support based on Geert's work
->
->  drivers/spi/spi-imx.c | 227 +++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 196 insertions(+), 31 deletions(-)
->
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 6fcb6ad..401951c 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -53,10 +53,13 @@
->  /* generic defines to abstract from the different register layouts */
->  #define MXC_INT_RR     (1 << 0) /* Receive data ready interrupt */
->  #define MXC_INT_TE     (1 << 1) /* Transmit FIFO empty interrupt */
-> +#define MXC_INT_RDR    BIT(4) /* Receive date threshold interrupt */
->
->  /* The maximum  bytes that a sdma BD can transfer.*/
->  #define MAX_SDMA_BD_BYTES  (1 << 15)
->  #define MX51_ECSPI_CTRL_MAX_BURST      512
-> +/* The maximum bytes that IMX53_ECSPI can transfer in slave mode.*/
-> +#define MX53_MAX_TRANSFER_BYTES                512
->
->  enum spi_imx_devtype {
->         IMX1_CSPI,
-> @@ -76,7 +79,9 @@ struct spi_imx_devtype_data {
->         void (*trigger)(struct spi_imx_data *);
->         int (*rx_available)(struct spi_imx_data *);
->         void (*reset)(struct spi_imx_data *);
-> +       void (*disable)(struct spi_imx_data *);
->         bool has_dmamode;
-> +       bool has_slavemode;
->         unsigned int fifo_size;
->         bool dynamic_burst;
->         enum spi_imx_devtype devtype;
-> @@ -108,6 +113,11 @@ struct spi_imx_data {
->         unsigned int dynamic_burst, read_u32;
->         unsigned int word_mask;
->
-> +       /* Slave mode */
-> +       bool slave_mode;
-> +       bool slave_aborted;
-> +       unsigned int slave_burst;
-> +
->         /* DMA */
->         bool usedma;
->         u32 wml;
-> @@ -221,6 +231,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->         if (!master->dma_rx)
->                 return false;
->
-> +       if (spi_imx->slave_mode)
-> +               return false;
-> +
->         bytes_per_word = spi_imx_bytes_per_word(transfer->bits_per_word);
->
->         if (bytes_per_word != 1 && bytes_per_word != 2 && bytes_per_word != 4)
-> @@ -262,6 +275,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->  #define MX51_ECSPI_INT         0x10
->  #define MX51_ECSPI_INT_TEEN            (1 <<  0)
->  #define MX51_ECSPI_INT_RREN            (1 <<  3)
-> +#define MX51_ECSPI_INT_RDREN           (1 <<  4)
->
->  #define MX51_ECSPI_DMA      0x14
->  #define MX51_ECSPI_DMA_TX_WML(wml)     ((wml) & 0x3f)
-> @@ -378,6 +392,44 @@ static void spi_imx_buf_tx_swap(struct spi_imx_data *spi_imx)
->                 spi_imx_buf_tx_u16(spi_imx);
->  }
->
-> +static void mx53_ecspi_rx_slave(struct spi_imx_data *spi_imx)
-> +{
-> +       u32 val = be32_to_cpu(readl(spi_imx->base + MXC_CSPIRXDATA));
-> +
-> +       if (spi_imx->rx_buf) {
-> +               int n_bytes = spi_imx->slave_burst % sizeof(val);
-> +
-> +               if (!n_bytes)
-> +                       n_bytes = sizeof(val);
-> +
-> +               memcpy(spi_imx->rx_buf,
-> +                      ((u8 *)&val) + sizeof(val) - n_bytes, n_bytes);
-> +
-> +               spi_imx->rx_buf += n_bytes;
-> +               spi_imx->slave_burst -= n_bytes;
-> +       }
-> +}
-> +
-> +static void mx53_ecspi_tx_slave(struct spi_imx_data *spi_imx)
-> +{
-> +       u32 val = 0;
-> +       int n_bytes = spi_imx->count % sizeof(val);
-> +
-> +       if (!n_bytes)
-> +               n_bytes = sizeof(val);
-> +
-> +       if (spi_imx->tx_buf) {
-> +               memcpy(((u8 *)&val) + sizeof(val) - n_bytes,
-> +                      spi_imx->tx_buf, n_bytes);
-> +               val = cpu_to_be32(val);
-> +               spi_imx->tx_buf += n_bytes;
-> +       }
-> +
-> +       spi_imx->count -= n_bytes;
-> +
-> +       writel(val, spi_imx->base + MXC_CSPITXDATA);
-> +}
-> +
->  /* MX51 eCSPI */
->  static unsigned int mx51_ecspi_clkdiv(struct spi_imx_data *spi_imx,
->                                       unsigned int fspi, unsigned int *fres)
-> @@ -427,6 +479,9 @@ static void mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int enable)
->         if (enable & MXC_INT_RR)
->                 val |= MX51_ECSPI_INT_RREN;
->
-> +       if (enable & MXC_INT_RDR)
-> +               val |= MX51_ECSPI_INT_RDREN;
-> +
->         writel(val, spi_imx->base + MX51_ECSPI_INT);
->  }
->
-> @@ -439,6 +494,15 @@ static void mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
->         writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
->  }
->
-> +static void mx51_ecspi_disable(struct spi_imx_data *spi_imx)
-> +{
-> +       u32 ctrl;
-> +
-> +       ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
-> +       ctrl &= ~MX51_ECSPI_CTRL_ENABLE;
-> +       writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-> +}
-> +
->  static int mx51_ecspi_config(struct spi_device *spi)
->  {
->         struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
-> @@ -446,14 +510,11 @@ static int mx51_ecspi_config(struct spi_device *spi)
->         u32 clk = spi_imx->speed_hz, delay, reg;
->         u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
->
-> -       /*
-> -        * The hardware seems to have a race condition when changing modes. The
-> -        * current assumption is that the selection of the channel arrives
-> -        * earlier in the hardware than the mode bits when they are written at
-> -        * the same time.
-> -        * So set master mode for all channels as we do not support slave mode.
-> -        */
-> -       ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
-> +       /* set Master or Slave mode */
-> +       if (spi_imx->slave_mode)
-> +               ctrl &= ~MX51_ECSPI_CTRL_MODE_MASK;
-> +       else
-> +               ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
->
->         /*
->          * Enable SPI_RDY handling (falling edge/level triggered).
-> @@ -468,9 +529,22 @@ static int mx51_ecspi_config(struct spi_device *spi)
->         /* set chip select to use */
->         ctrl |= MX51_ECSPI_CTRL_CS(spi->chip_select);
->
-> -       ctrl |= (spi_imx->bits_per_word - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
-> +       if (spi_imx->slave_mode && is_imx53_ecspi(spi_imx))
-> +               ctrl |= (spi_imx->slave_burst * 8 - 1)
-> +                       << MX51_ECSPI_CTRL_BL_OFFSET;
-> +       else
-> +               ctrl |= (spi_imx->bits_per_word - 1)
-> +                       << MX51_ECSPI_CTRL_BL_OFFSET;
->
-> -       cfg |= MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
-> +       /*
-> +        * eCSPI burst completion by Chip Select signal in Slave mode
-> +        * is not functional for imx53 Soc, config SPI burst completed when
-> +        * BURST_LENGTH + 1 bits are received
-> +        */
-> +       if (spi_imx->slave_mode && is_imx53_ecspi(spi_imx))
-> +               cfg &= ~MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
-> +       else
-> +               cfg |= MX51_ECSPI_CONFIG_SBBCTRL(spi->chip_select);
->
->         if (spi->mode & SPI_CPHA)
->                 cfg |= MX51_ECSPI_CONFIG_SCLKPHA(spi->chip_select);
-> @@ -805,6 +879,7 @@ static struct spi_imx_devtype_data imx1_cspi_devtype_data = {
->         .fifo_size = 8,
->         .has_dmamode = false,
->         .dynamic_burst = false,
-> +       .has_slavemode = false,
->         .devtype = IMX1_CSPI,
->  };
->
-> @@ -817,6 +892,7 @@ static struct spi_imx_devtype_data imx21_cspi_devtype_data = {
->         .fifo_size = 8,
->         .has_dmamode = false,
->         .dynamic_burst = false,
-> +       .has_slavemode = false,
->         .devtype = IMX21_CSPI,
->  };
->
-> @@ -830,6 +906,7 @@ static struct spi_imx_devtype_data imx27_cspi_devtype_data = {
->         .fifo_size = 8,
->         .has_dmamode = false,
->         .dynamic_burst = false,
-> +       .has_slavemode = false,
->         .devtype = IMX27_CSPI,
->  };
->
-> @@ -842,6 +919,7 @@ static struct spi_imx_devtype_data imx31_cspi_devtype_data = {
->         .fifo_size = 8,
->         .has_dmamode = false,
->         .dynamic_burst = false,
-> +       .has_slavemode = false,
->         .devtype = IMX31_CSPI,
->  };
->
-> @@ -855,6 +933,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
->         .fifo_size = 8,
->         .has_dmamode = true,
->         .dynamic_burst = false,
-> +       .has_slavemode = false,
->         .devtype = IMX35_CSPI,
->  };
->
-> @@ -867,6 +946,8 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
->         .fifo_size = 64,
->         .has_dmamode = true,
->         .dynamic_burst = true,
-> +       .has_slavemode = true,
-> +       .disable = mx51_ecspi_disable,
->         .devtype = IMX51_ECSPI,
->  };
->
-> @@ -878,6 +959,8 @@ static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
->         .reset = mx51_ecspi_reset,
->         .fifo_size = 64,
->         .has_dmamode = true,
-> +       .has_slavemode = true,
-> +       .disable = mx51_ecspi_disable,
->         .devtype = IMX53_ECSPI,
->  };
->
-> @@ -945,14 +1028,16 @@ static void spi_imx_push(struct spi_imx_data *spi_imx)
->                 spi_imx->txfifo++;
->         }
->
-> -       spi_imx->devtype_data->trigger(spi_imx);
-> +       if (!spi_imx->slave_mode)
-> +               spi_imx->devtype_data->trigger(spi_imx);
->  }
->
->  static irqreturn_t spi_imx_isr(int irq, void *dev_id)
->  {
->         struct spi_imx_data *spi_imx = dev_id;
->
-> -       while (spi_imx->devtype_data->rx_available(spi_imx)) {
-> +       while (spi_imx->txfifo &&
-> +              spi_imx->devtype_data->rx_available(spi_imx)) {
->                 spi_imx->rx(spi_imx);
->                 spi_imx->txfifo--;
->         }
-> @@ -1034,7 +1119,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
->         spi_imx->speed_hz  = t->speed_hz;
->
->         /* Initialize the functions for transfer */
-> -       if (spi_imx->devtype_data->dynamic_burst) {
-> +       if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode) {
->                 u32 mask;
->
->                 spi_imx->dynamic_burst = 0;
-> @@ -1078,6 +1163,12 @@ static int spi_imx_setupxfer(struct spi_device *spi,
->                         return ret;
->         }
->
-> +       if (is_imx53_ecspi(spi_imx) && spi_imx->slave_mode) {
-> +               spi_imx->rx = mx53_ecspi_rx_slave;
-> +               spi_imx->tx = mx53_ecspi_tx_slave;
-> +               spi_imx->slave_burst = t->len;
-> +       }
-> +
->         spi_imx->devtype_data->config(spi);
->
->         return 0;
-> @@ -1262,11 +1353,61 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
->         return transfer->len;
->  }
->
-> +static int spi_imx_pio_transfer_slave(struct spi_device *spi,
-> +                                     struct spi_transfer *transfer)
-> +{
-> +       struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
-> +       int ret = transfer->len;
-> +
-> +       if (is_imx53_ecspi(spi_imx) &&
-> +           transfer->len > MX53_MAX_TRANSFER_BYTES) {
-> +               dev_err(&spi->dev, "Transaction too big, max size is %d bytes\n",
-> +                       MX53_MAX_TRANSFER_BYTES);
-> +               return -EMSGSIZE;
-> +       }
-> +
-> +       spi_imx->tx_buf = transfer->tx_buf;
-> +       spi_imx->rx_buf = transfer->rx_buf;
-> +       spi_imx->count = transfer->len;
-> +       spi_imx->txfifo = 0;
-> +
-> +       reinit_completion(&spi_imx->xfer_done);
-> +       spi_imx->slave_aborted = false;
-> +
-> +       spi_imx_push(spi_imx);
-> +
-> +       spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE | MXC_INT_RDR);
-> +
-> +       if (wait_for_completion_interruptible(&spi_imx->xfer_done) ||
-> +           spi_imx->slave_aborted) {
-> +               dev_dbg(&spi->dev, "interrupted\n");
-> +               ret = -EINTR;
-> +       }
-> +
-> +       /* ecspi has a HW issue when works in Slave mode,
-> +        * after 64 words writtern to TXFIFO, even TXFIFO becomes empty,
-> +        * ECSPI_TXDATA keeps shift out the last word data,
-> +        * so we have to disable ECSPI when in slave mode after the
-> +        * transfer completes
-> +        */
-> +       if (spi_imx->devtype_data->disable)
-> +               spi_imx->devtype_data->disable(spi_imx);
-> +
-> +       return ret;
-> +}
-> +
->  static int spi_imx_transfer(struct spi_device *spi,
->                                 struct spi_transfer *transfer)
->  {
->         struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
->
-> +       /* flush rxfifo before transfer */
-> +       while (spi_imx->devtype_data->rx_available(spi_imx))
-> +               spi_imx->rx(spi_imx);
-> +
-> +       if (spi_imx->slave_mode)
-> +               return spi_imx_pio_transfer_slave(spi, transfer);
-> +
->         if (spi_imx->usedma)
->                 return spi_imx_dma_transfer(spi_imx, transfer);
->         else
-> @@ -1323,6 +1464,16 @@ spi_imx_unprepare_message(struct spi_master *master, struct spi_message *msg)
->         return 0;
->  }
->
-> +static int spi_imx_slave_abort(struct spi_master *master)
-> +{
-> +       struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> +
-> +       spi_imx->slave_aborted = true;
-> +       complete(&spi_imx->xfer_done);
-> +
-> +       return 0;
-> +}
-> +
->  static int spi_imx_probe(struct platform_device *pdev)
->  {
->         struct device_node *np = pdev->dev.of_node;
-> @@ -1334,13 +1485,23 @@ static int spi_imx_probe(struct platform_device *pdev)
->         struct spi_imx_data *spi_imx;
->         struct resource *res;
->         int i, ret, irq, spi_drctl;
-> +       const struct spi_imx_devtype_data *devtype_data = of_id ? of_id->data :
-> +               (struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
-> +       bool slave_mode;
->
->         if (!np && !mxc_platform_info) {
->                 dev_err(&pdev->dev, "can't get the platform data\n");
->                 return -EINVAL;
->         }
->
-> -       master = spi_alloc_master(&pdev->dev, sizeof(struct spi_imx_data));
-> +       slave_mode = devtype_data->has_slavemode &&
-> +                       of_property_read_bool(np, "spi-slave");
-> +       if (slave_mode)
-> +               master = spi_alloc_slave(&pdev->dev,
-> +                                        sizeof(struct spi_imx_data));
-> +       else
-> +               master = spi_alloc_master(&pdev->dev,
-> +                                         sizeof(struct spi_imx_data));
->         if (!master)
->                 return -ENOMEM;
->
-> @@ -1358,9 +1519,9 @@ static int spi_imx_probe(struct platform_device *pdev)
->         spi_imx = spi_master_get_devdata(master);
->         spi_imx->bitbang.master = master;
->         spi_imx->dev = &pdev->dev;
-> +       spi_imx->slave_mode = slave_mode;
->
-> -       spi_imx->devtype_data = of_id ? of_id->data :
-> -               (struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
-> +       spi_imx->devtype_data = devtype_data;
->
->         if (mxc_platform_info) {
->                 master->num_chipselect = mxc_platform_info->num_chipselect;
-> @@ -1380,6 +1541,7 @@ static int spi_imx_probe(struct platform_device *pdev)
->         spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
->         spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
->         spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
-> +       spi_imx->bitbang.master->slave_abort = spi_imx_slave_abort;
->         spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
->                                              | SPI_NO_CS;
->         if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx) ||
-> @@ -1457,23 +1619,26 @@ static int spi_imx_probe(struct platform_device *pdev)
->                 goto out_clk_put;
->         }
->
-> -       if (!master->cs_gpios) {
-> -               dev_err(&pdev->dev, "No CS GPIOs available\n");
-> -               ret = -EINVAL;
-> -               goto out_clk_put;
-> -       }
-> -
-> -       for (i = 0; i < master->num_chipselect; i++) {
-> -               if (!gpio_is_valid(master->cs_gpios[i]))
-> -                       continue;
-> -
-> -               ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
-> -                                       DRIVER_NAME);
-> -               if (ret) {
-> -                       dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
-> -                               master->cs_gpios[i]);
-> +       if (!spi_imx->slave_mode) {
-> +               if (!master->cs_gpios) {
-> +                       dev_err(&pdev->dev, "No CS GPIOs available\n");
-> +                       ret = -EINVAL;
->                         goto out_clk_put;
->                 }
-> +
-> +               for (i = 0; i < master->num_chipselect; i++) {
-> +                       if (!gpio_is_valid(master->cs_gpios[i]))
-> +                               continue;
-> +
-> +                       ret = devm_gpio_request(&pdev->dev,
-> +                                               master->cs_gpios[i],
-> +                                               DRIVER_NAME);
-> +                       if (ret) {
-> +                               dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
-> +                                       master->cs_gpios[i]);
-> +                               goto out_clk_put;
-> +                       }
-> +               }
->         }
->
->         dev_info(&pdev->dev, "probed\n");
-> --
-> 2.9.3
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SGksDQoNCk9uIFR1ZSwgNSBTZXAgMjAxNyAxNjoxNSwgRmFiaW8gRXN0ZXZhbSB3cm90ZToNCj4g
+W0FkZGluZyBIZWN0b3Igb24gQ2MgaW4gY2FzZSBoZSBjb3VsZCBzZW5kIGhpcyBUZXN0ZWQtYnkg
+dGFnXQ0KDQpJIGJhY2twb3J0ZWQgYW5kIHRlc3RlZCB0aGlzIG9uIGEgdjQuMSBzbyBJJ20gbm90
+IHN1cmUgaXQgcXVhbGlmaWVzIGZvciBhIFRlc3RlZC1ieS4gOi0oDQoNCg0KPiBPbiBUdWUsIFNl
+cCA1LCAyMDE3IGF0IDI6MTIgQU0sIEppYWRhIFdhbmcgPGppYWRhX3dhbmdAbWVudG9yLmNvbT4g
+d3JvdGU6DQo+PiBQcmV2aW91c2x5IGkuTVggU1BJIGNvbnRyb2xsZXIgb25seSB3b3JrcyBpbiBN
+YXN0ZXIgbW9kZS4NCj4+IFRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IHRvIGkuTVg1MSwgaS5NWDUz
+IGFuZCBpLk1YNiBFQ1NQSQ0KPj4gY29udHJvbGxlciB0byB3b3JrIGFsc28gaW4gU2xhdmUgbW9k
+ZS4NCj4+IA0KPj4gQ3VycmVudGx5IFNQSSBTbGF2ZSBtb2RlIHN1cHBvcnQgcGF0Y2ggaGFzIHRo
+ZSBmb2xsb3dpbmcgbGltaXRhdGlvbnM6DQo+PiAxLiBUaGUgc3RhbGUgZGF0YSBpbiBSWEZJRk8g
+d2lsbCBiZSBkcm9wcGVkIHdoZW4gdGhlIFNsYXZlIGRvZXMgYW55IG5ldw0KPj4gICAgdHJhbnNm
+ZXIuIDIuIE9uZSB0cmFuc2ZlciBjYW4gYmUgZmluaXNoZWQgb25seSBhZnRlciBhbGwgdHJhbnNm
+ZXItPmxlbiBkYXRhIGJlZW4gdHJhbnNmZXJyZWQNCj4+ICAgIHRvIG1hc3RlciBkZXZpY2UNCj4+
+IDMuIFNsYXZlIGRldmljZSBvbmx5IGFjY2VwdHMgdHJhbnNmZXItPmxlbiBkYXRhLiBBbnkgZGF0
+YSBsb25nZXIgdGhhbg0KPiB0aGlzDQo+PiAgICBmcm9tIG1hc3RlciBkZXZpY2Ugd2lsbCBiZSBk
+cm9wcGVkLiBBbnkgZGF0YSBzaG9ydGVyIHRoYW4gdGhpcyBmcm9tDQo+PiAgICBtYXN0ZXIgd2ls
+bCBjYXVzZSBTUEkgdG8gc3R1Y2sgZHVlIHRvIG1lbnRpb25lZCBIVyBsaW1pdGF0aW9uIDIuDQo+
+PiA0LiBPbmx5IFBJTyB0cmFuc2ZlciBpcyBzdXBwb3J0ZWQgaW4gU2xhdmUgbW9kZS4NCj4+IDUu
+IER5bmFtaWMgYnVyc3Qgc2l6ZSBhZGp1c3QgaXNuJ3Qgc3VwcG9ydGVkIGluIFNsYXZlIG1vZGUu
+DQo+PiANCj4+IEZvbGxvd2luZyBIVyBsaW1pdGF0aW9uIGFwcGxpZXM6DQo+PiAxLiAgRUNTUEkg
+aGFzIGEgSFcgaXNzdWUgd2hlbiB3b3JrcyBpbiBTbGF2ZSBtb2RlLCBhZnRlciA2NA0KPj4gICAg
+IHdvcmRzIHdyaXR0ZW4gdG8gVFhGSUZPLCBldmVuIFRYRklGTyBiZWNvbWVzIGVtcHR5LCBFQ1NQ
+SV9UWERBVEEga2VlcHMgc2hpZnQgb3V0IHRoZSBsYXN0DQo+PiAgICAgd29yZCBkYXRhLCBzbyB3
+ZSBoYXZlIHRvIGRpc2FibGUgRUNTUEkgd2hlbiBpbiBzbGF2ZSBtb2RlIGFmdGVyIHRoZSB0cmFu
+c2ZlciBjb21wbGV0ZXMgMi4gDQo+PiAgICAgRHVlIHRvIEZyZWVzY2FsZSBlcnJhdGEgRVJSMDAz
+Nzc1ICJlQ1NQSTogQnVyc3QgY29tcGxldGlvbiBieSBDaGlwIFNlbGVjdCAoU1MpIHNpZ25hbCBp
+bg0KPj4gICAgIFNsYXZlIG1vZGUgaXMgbm90IGZ1bmN0aW9uYWwiIGJ1cnN0IHNpemUgbXVzdCBi
+ZSBzZXQgZXhhY3RseSB0byB0aGUgc2l6ZSBvZiB0aGUgdHJhbnNmZXIuDQo+PiAgICAgVGhpcyBs
+aW1pdCBTUEkgdHJhbnNhY3Rpb24gd2l0aCBtYXhpbXVtIDJeMTIgYml0cy4gVGhpcyBlcnJhdGEg
+YWZmZWN0cyBpLk1YNTMgYW5kIGkuTVg2DQo+PiAgICAgRUNTUEkgY29udHJvbGxlcnMuDQo+PiBT
+aWduZWQtb2ZmLWJ5OiBKaWFkYSBXYW5nIDxqaWFkYV93YW5nQG1lbnRvci5jb20+DQo+PiAtLS0N
+Cj4+IENoYW5nZXMgaW4gdjY6DQo+PiAqIHJlYmFzZWQgdG8gSEVBRCBvZiBsaW51eC1uZXh0IHRy
+ZWUNCj4+ICogYXZvaWQgdG8gZW5hYmxlIGR5bmFtaWMgYnVyc3QgYWRqdXN0IHdoZW4gaW4gc2xh
+dmUgbW9kZS4NCj4+IA0KPj4gQ2hhbmdlcyBpbiB2NToNCj4+ICogcmViYXNlZCB0byBIRUFEIG9m
+IGxpbnV4LW5leHQgdHJlZQ0KPj4gDQo+PiBDaGFuZ2VzIGluIHY0Og0KPj4gKiByZWJhc2VkIHRv
+IGhlYWQgb2YgbGludXgtbmV4dCB0byByZXNvbHZlIGNvbmZsaWN0DQo+PiAqIG9wdGltaXplZCBt
+eDUzX2Vjc3BpX3J4X3NsYXZlKCkNCj4+IA0KPj4gQ2hhbmdlcyBpbiB2MzoNCj4+ICogcmVuYW1l
+ZCBzZXZlcmFsIHZhcmlhYmxlcyBmb3IgZm9yIGJldHRlciByZWFkYWJpbGl0eQ0KPj4gKiBjcmVh
+dGVkIHNwaV9pbXhfcGlvX3RyYW5zZmVyX3NsYXZlKCkgZm9yIHNsYXZlIHBpbyB0cmFuc2Zlcg0K
+Pj4gKiBhZGRlZCBmaWZvX3NpemUsIGhhc19kbWFtb2RlIGFuZCBoYXNfc2xhdmVtb2RlIGluIHNw
+aV9pbXhfZGV2dHlwZV9kYXRhDQo+PiANCj4+IENoYW5nZXMgaW4gdjI6DQo+PiAqIHJlLXdvcmtk
+IGkuTVggRUNTUEkgY29udHJvbGxlciBzbGF2ZSBtb2RlIHN1cHBvcnQgYmFzZWQgb24gR2VlcnQn
+cyB3b3JrDQo+PiANCj4+ICBkcml2ZXJzL3NwaS9zcGktaW14LmMgfCAyMjcgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0gLS0tLS0tIDEgZmlsZSBjaGFuZ2VkLA0K
+Pj4gIDE5NiBpbnNlcnRpb25zKCspLCAzMSBkZWxldGlvbnMoLSkNCj4+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL3NwaS9zcGktaW14LmMgYi9kcml2ZXJzL3NwaS9zcGktaW14LmMNCj4+IGluZGV4IDZm
+Y2I2YWQuLjQwMTk1MWMgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktaW14LmMNCj4+
+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYw0KPj4gQEAgLTUzLDEwICs1MywxMyBAQA0KPj4g
+IC8qIGdlbmVyaWMgZGVmaW5lcyB0byBhYnN0cmFjdCBmcm9tIHRoZSBkaWZmZXJlbnQgcmVnaXN0
+ZXIgbGF5b3V0cyAqLw0KPj4gICNkZWZpbmUgTVhDX0lOVF9SUiAgICAgKDEgPDwgMCkgLyogUmVj
+ZWl2ZSBkYXRhIHJlYWR5IGludGVycnVwdCAqLw0KPj4gICNkZWZpbmUgTVhDX0lOVF9URSAgICAg
+KDEgPDwgMSkgLyogVHJhbnNtaXQgRklGTyBlbXB0eSBpbnRlcnJ1cHQgKi8NCj4+ICsjZGVmaW5l
+IE1YQ19JTlRfUkRSICAgIEJJVCg0KSAvKiBSZWNlaXZlIGRhdGUgdGhyZXNob2xkIGludGVycnVw
+dCAqLw0KPj4gDQo+PiAgLyogVGhlIG1heGltdW0gIGJ5dGVzIHRoYXQgYSBzZG1hIEJEIGNhbiB0
+cmFuc2Zlci4qLw0KPj4gICNkZWZpbmUgTUFYX1NETUFfQkRfQllURVMgICgxIDw8IDE1KQ0KPj4g
+ICNkZWZpbmUgTVg1MV9FQ1NQSV9DVFJMX01BWF9CVVJTVCAgICAgIDUxMg0KPj4gKy8qIFRoZSBt
+YXhpbXVtIGJ5dGVzIHRoYXQgSU1YNTNfRUNTUEkgY2FuIHRyYW5zZmVyIGluIHNsYXZlIG1vZGUu
+Ki8NCj4+ICsjZGVmaW5lIE1YNTNfTUFYX1RSQU5TRkVSX0JZVEVTICAgICAgICAgICAgICAgIDUx
+Mg0KPj4gDQo+PiAgZW51bSBzcGlfaW14X2RldnR5cGUgew0KPj4gICAgICAgICBJTVgxX0NTUEks
+IEBAIC03Niw3ICs3OSw5IEBAIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSB7IHZvaWQgKCp0
+cmlnZ2VyKShzdHJ1Y3QNCj4+ICAgICAgICAgc3BpX2lteF9kYXRhICopOyBpbnQgKCpyeF9hdmFp
+bGFibGUpKHN0cnVjdCBzcGlfaW14X2RhdGEgKik7IHZvaWQgKCpyZXNldCkoc3RydWN0DQo+PiAg
+ICAgICAgIHNwaV9pbXhfZGF0YSAqKTsgKyAgICAgICB2b2lkICgqZGlzYWJsZSkoc3RydWN0IHNw
+aV9pbXhfZGF0YSAqKTsgYm9vbCBoYXNfZG1hbW9kZTsgKyAgICANCj4+ICAgICAgICAgICBib29s
+IGhhc19zbGF2ZW1vZGU7IHVuc2lnbmVkIGludCBmaWZvX3NpemU7IGJvb2wgZHluYW1pY19idXJz
+dDsgZW51bSBzcGlfaW14X2RldnR5cGUNCj4+ICAgICAgICAgZGV2dHlwZTsgQEAgLTEwOCw2ICsx
+MTMsMTEgQEAgc3RydWN0IHNwaV9pbXhfZGF0YSB7IHVuc2lnbmVkIGludCBkeW5hbWljX2J1cnN0
+LA0KPj4gICAgICAgICByZWFkX3UzMjsgdW5zaWduZWQgaW50IHdvcmRfbWFzazsNCj4+ICsgICAg
+ICAgLyogU2xhdmUgbW9kZSAqLw0KPj4gKyAgICAgICBib29sIHNsYXZlX21vZGU7DQo+PiArICAg
+ICAgIGJvb2wgc2xhdmVfYWJvcnRlZDsNCj4+ICsgICAgICAgdW5zaWduZWQgaW50IHNsYXZlX2J1
+cnN0Ow0KPj4gKw0KPj4gICAgICAgICAvKiBETUEgKi8NCj4+ICAgICAgICAgYm9vbCB1c2VkbWE7
+DQo+PiAgICAgICAgIHUzMiB3bWw7DQo+PiBAQCAtMjIxLDYgKzIzMSw5IEBAIHN0YXRpYyBib29s
+IHNwaV9pbXhfY2FuX2RtYShzdHJ1Y3Qgc3BpX21hc3Rlcg0KPiAqbWFzdGVyLCBzdHJ1Y3Qgc3Bp
+X2RldmljZSAqc3BpLA0KPj4gICAgICAgICBpZiAoIW1hc3Rlci0+ZG1hX3J4KQ0KPj4gICAgICAg
+ICAgICAgICAgIHJldHVybiBmYWxzZTsNCj4+ICsgICAgICAgaWYgKHNwaV9pbXgtPnNsYXZlX21v
+ZGUpDQo+PiArICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPj4gKw0KPj4gICAgICAgICBi
+eXRlc19wZXJfd29yZCA9IHNwaV9pbXhfYnl0ZXNfcGVyX3dvcmQodHJhbnNmZXItPmJpdHNfcGVy
+X3dvcmQpOw0KPj4gICAgICAgICANCj4+ICAgICAgICAgaWYgKGJ5dGVzX3Blcl93b3JkICE9IDEg
+JiYgYnl0ZXNfcGVyX3dvcmQgIT0gMiAmJiBieXRlc19wZXJfd29yZA0KPiAhPSA0KQ0KPj4gQEAg
+LTI2Miw2ICsyNzUsNyBAQCBzdGF0aWMgYm9vbCBzcGlfaW14X2Nhbl9kbWEoc3RydWN0IHNwaV9t
+YXN0ZXINCj4gKm1hc3Rlciwgc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwNCj4+ICAjZGVmaW5lIE1Y
+NTFfRUNTUElfSU5UICAgICAgICAgMHgxMA0KPj4gICNkZWZpbmUgTVg1MV9FQ1NQSV9JTlRfVEVF
+TiAgICAgICAgICAgICgxIDw8ICAwKQ0KPj4gICNkZWZpbmUgTVg1MV9FQ1NQSV9JTlRfUlJFTiAg
+ICAgICAgICAgICgxIDw8ICAzKQ0KPj4gKyNkZWZpbmUgTVg1MV9FQ1NQSV9JTlRfUkRSRU4gICAg
+ICAgICAgICgxIDw8ICA0KQ0KPj4gDQo+PiAgI2RlZmluZSBNWDUxX0VDU1BJX0RNQSAgICAgIDB4
+MTQNCj4+ICAjZGVmaW5lIE1YNTFfRUNTUElfRE1BX1RYX1dNTCh3bWwpICAgICAoKHdtbCkgJiAw
+eDNmKQ0KPj4gQEAgLTM3OCw2ICszOTIsNDQgQEAgc3RhdGljIHZvaWQgc3BpX2lteF9idWZfdHhf
+c3dhcChzdHJ1Y3Qgc3BpX2lteF9kYXRhDQo+ICpzcGlfaW14KQ0KPj4gICAgICAgICAgICAgICAg
+IHNwaV9pbXhfYnVmX3R4X3UxNihzcGlfaW14KTsNCj4+ICB9DQo+PiArc3RhdGljIHZvaWQgbXg1
+M19lY3NwaV9yeF9zbGF2ZShzdHJ1Y3Qgc3BpX2lteF9kYXRhICpzcGlfaW14KQ0KPj4gK3sNCj4+
+ICsgICAgICAgdTMyIHZhbCA9IGJlMzJfdG9fY3B1KHJlYWRsKHNwaV9pbXgtPmJhc2UgKyBNWENf
+Q1NQSVJYREFUQSkpOw0KPj4gKw0KPj4gKyAgICAgICBpZiAoc3BpX2lteC0+cnhfYnVmKSB7DQo+
+PiArICAgICAgICAgICAgICAgaW50IG5fYnl0ZXMgPSBzcGlfaW14LT5zbGF2ZV9idXJzdCAlIHNp
+emVvZih2YWwpOw0KPj4gKw0KPj4gKyAgICAgICAgICAgICAgIGlmICghbl9ieXRlcykNCj4+ICsg
+ICAgICAgICAgICAgICAgICAgICAgIG5fYnl0ZXMgPSBzaXplb2YodmFsKTsNCj4+ICsNCj4+ICsg
+ICAgICAgICAgICAgICBtZW1jcHkoc3BpX2lteC0+cnhfYnVmLA0KPj4gKyAgICAgICAgICAgICAg
+ICAgICAgICAoKHU4ICopJnZhbCkgKyBzaXplb2YodmFsKSAtIG5fYnl0ZXMsIG5fYnl0ZXMpOw0K
+Pj4gKw0KPj4gKyAgICAgICAgICAgICAgIHNwaV9pbXgtPnJ4X2J1ZiArPSBuX2J5dGVzOw0KPj4g
+KyAgICAgICAgICAgICAgIHNwaV9pbXgtPnNsYXZlX2J1cnN0IC09IG5fYnl0ZXM7DQo+PiArICAg
+ICAgIH0NCj4+ICt9DQo+PiArDQo+PiArc3RhdGljIHZvaWQgbXg1M19lY3NwaV90eF9zbGF2ZShz
+dHJ1Y3Qgc3BpX2lteF9kYXRhICpzcGlfaW14KQ0KPj4gK3sNCj4+ICsgICAgICAgdTMyIHZhbCA9
+IDA7DQo+PiArICAgICAgIGludCBuX2J5dGVzID0gc3BpX2lteC0+Y291bnQgJSBzaXplb2YodmFs
+KTsNCj4+ICsNCj4+ICsgICAgICAgaWYgKCFuX2J5dGVzKQ0KPj4gKyAgICAgICAgICAgICAgIG5f
+Ynl0ZXMgPSBzaXplb2YodmFsKTsNCj4+ICsNCj4+ICsgICAgICAgaWYgKHNwaV9pbXgtPnR4X2J1
+Zikgew0KPj4gKyAgICAgICAgICAgICAgIG1lbWNweSgoKHU4ICopJnZhbCkgKyBzaXplb2YodmFs
+KSAtIG5fYnl0ZXMsDQo+PiArICAgICAgICAgICAgICAgICAgICAgIHNwaV9pbXgtPnR4X2J1Ziwg
+bl9ieXRlcyk7DQo+PiArICAgICAgICAgICAgICAgdmFsID0gY3B1X3RvX2JlMzIodmFsKTsNCj4+
+ICsgICAgICAgICAgICAgICBzcGlfaW14LT50eF9idWYgKz0gbl9ieXRlczsNCj4+ICsgICAgICAg
+fQ0KPj4gKw0KPj4gKyAgICAgICBzcGlfaW14LT5jb3VudCAtPSBuX2J5dGVzOw0KPj4gKw0KPj4g
+KyAgICAgICB3cml0ZWwodmFsLCBzcGlfaW14LT5iYXNlICsgTVhDX0NTUElUWERBVEEpOw0KPj4g
+K30NCj4+ICsNCj4+ICAvKiBNWDUxIGVDU1BJICovDQo+PiAgc3RhdGljIHVuc2lnbmVkIGludCBt
+eDUxX2Vjc3BpX2Nsa2RpdihzdHJ1Y3Qgc3BpX2lteF9kYXRhICpzcGlfaW14LA0KPj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNpZ25lZCBpbnQgZnNwaSwgdW5zaWdu
+ZWQgaW50DQo+ICpmcmVzKQ0KPj4gQEAgLTQyNyw2ICs0NzksOSBAQCBzdGF0aWMgdm9pZCBteDUx
+X2Vjc3BpX2ludGN0cmwoc3RydWN0IHNwaV9pbXhfZGF0YQ0KPiAqc3BpX2lteCwgaW50IGVuYWJs
+ZSkNCj4+ICAgICAgICAgaWYgKGVuYWJsZSAmIE1YQ19JTlRfUlIpDQo+PiAgICAgICAgICAgICAg
+ICAgdmFsIHw9IE1YNTFfRUNTUElfSU5UX1JSRU47DQo+PiArICAgICAgIGlmIChlbmFibGUgJiBN
+WENfSU5UX1JEUikNCj4+ICsgICAgICAgICAgICAgICB2YWwgfD0gTVg1MV9FQ1NQSV9JTlRfUkRS
+RU47DQo+PiArDQo+PiAgICAgICAgIHdyaXRlbCh2YWwsIHNwaV9pbXgtPmJhc2UgKyBNWDUxX0VD
+U1BJX0lOVCk7DQo+PiAgfQ0KPj4gQEAgLTQzOSw2ICs0OTQsMTUgQEAgc3RhdGljIHZvaWQgbXg1
+MV9lY3NwaV90cmlnZ2VyKHN0cnVjdCBzcGlfaW14X2RhdGENCj4gKnNwaV9pbXgpDQo+PiAgICAg
+ICAgIHdyaXRlbChyZWcsIHNwaV9pbXgtPmJhc2UgKyBNWDUxX0VDU1BJX0NUUkwpOw0KPj4gIH0N
+Cj4+ICtzdGF0aWMgdm9pZCBteDUxX2Vjc3BpX2Rpc2FibGUoc3RydWN0IHNwaV9pbXhfZGF0YSAq
+c3BpX2lteCkNCj4+ICt7DQo+PiArICAgICAgIHUzMiBjdHJsOw0KPj4gKw0KPj4gKyAgICAgICBj
+dHJsID0gcmVhZGwoc3BpX2lteC0+YmFzZSArIE1YNTFfRUNTUElfQ1RSTCk7DQo+PiArICAgICAg
+IGN0cmwgJj0gfk1YNTFfRUNTUElfQ1RSTF9FTkFCTEU7DQo+PiArICAgICAgIHdyaXRlbChjdHJs
+LCBzcGlfaW14LT5iYXNlICsgTVg1MV9FQ1NQSV9DVFJMKTsNCj4+ICt9DQo+PiArDQo+PiAgc3Rh
+dGljIGludCBteDUxX2Vjc3BpX2NvbmZpZyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQ0KPj4gIHsN
+Cj4+ICAgICAgICAgc3RydWN0IHNwaV9pbXhfZGF0YSAqc3BpX2lteCA9IHNwaV9tYXN0ZXJfZ2V0
+X2RldmRhdGEoc3BpLQ0KPj4gbWFzdGVyKTsNCj4+IEBAIC00NDYsMTQgKzUxMCwxMSBAQCBzdGF0
+aWMgaW50IG14NTFfZWNzcGlfY29uZmlnKHN0cnVjdCBzcGlfZGV2aWNlDQo+ICpzcGkpDQo+PiAg
+ICAgICAgIHUzMiBjbGsgPSBzcGlfaW14LT5zcGVlZF9oeiwgZGVsYXksIHJlZzsNCj4+ICAgICAg
+ICAgdTMyIGNmZyA9IHJlYWRsKHNwaV9pbXgtPmJhc2UgKyBNWDUxX0VDU1BJX0NPTkZJRyk7DQo+
+PiAtICAgICAgIC8qIC0gICAgICAgICogVGhlIGhhcmR3YXJlIHNlZW1zIHRvIGhhdmUgYSByYWNl
+IGNvbmRpdGlvbiB3aGVuIGNoYW5naW5nIG1vZGVzLiBUaGUgLSAgICANCj4+ICAgICogY3VycmVu
+dCBhc3N1bXB0aW9uIGlzIHRoYXQgdGhlIHNlbGVjdGlvbiBvZiB0aGUgY2hhbm5lbCBhcnJpdmVz
+IC0gICAgICAgICogZWFybGllciBpbiB0aGUNCj4+IGhhcmR3YXJlIHRoYW4gdGhlIG1vZGUgYml0
+cyB3aGVuIHRoZXkgYXJlIHdyaXR0ZW4gYXQgLSAgICAgICAgKiB0aGUgc2FtZSB0aW1lLiAtICAg
+ICAgICAqIFNvIHNldA0KPj4gbWFzdGVyIG1vZGUgZm9yIGFsbCBjaGFubmVscyBhcyB3ZSBkbyBu
+b3Qgc3VwcG9ydCBzbGF2ZSBtb2RlLiAtICAgICAgICAqLyAtICAgICAgIGN0cmwgfD0NCj4+IE1Y
+NTFfRUNTUElfQ1RSTF9NT0RFX01BU0s7ICsgICAgICAgLyogc2V0IE1hc3RlciBvciBTbGF2ZSBt
+b2RlICovICsgICAgICAgaWYNCj4+IChzcGlfaW14LT5zbGF2ZV9tb2RlKSArICAgICAgICAgICAg
+ICAgY3RybCAmPSB+TVg1MV9FQ1NQSV9DVFJMX01PREVfTUFTSzsgKyAgICAgICBlbHNlICsgICAg
+ICAgIA0KPj4gICAgICAgY3RybCB8PSBNWDUxX0VDU1BJX0NUUkxfTU9ERV9NQVNLOw0KPj4gDQo+
+PiAgICAgICAgIC8qDQo+PiAgICAgICAgICAqIEVuYWJsZSBTUElfUkRZIGhhbmRsaW5nIChmYWxs
+aW5nIGVkZ2UvbGV2ZWwgdHJpZ2dlcmVkKS4NCj4+IEBAIC00NjgsOSArNTI5LDIyIEBAIHN0YXRp
+YyBpbnQgbXg1MV9lY3NwaV9jb25maWcoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkNCj4+ICAgICAg
+ICAgLyogc2V0IGNoaXAgc2VsZWN0IHRvIHVzZSAqLw0KPj4gICAgICAgICBjdHJsIHw9IE1YNTFf
+RUNTUElfQ1RSTF9DUyhzcGktPmNoaXBfc2VsZWN0KTsNCj4+IC0gICAgICAgY3RybCB8PSAoc3Bp
+X2lteC0+Yml0c19wZXJfd29yZCAtIDEpIDw8IE1YNTFfRUNTUElfQ1RSTF9CTF9PRkZTRVQ7ICsg
+ICAgICAgaWYNCj4+IChzcGlfaW14LT5zbGF2ZV9tb2RlICYmIGlzX2lteDUzX2Vjc3BpKHNwaV9p
+bXgpKSArICAgICAgICAgICAgICAgY3RybCB8PSAoc3BpX2lteC0+c2xhdmVfYnVyc3QgKg0KPj4g
+OCAtIDEpICsgICAgICAgICAgICAgICAgICAgICAgIDw8IE1YNTFfRUNTUElfQ1RSTF9CTF9PRkZT
+RVQ7ICsgICAgICAgZWxzZSArICAgICAgICAgICAgICAgY3RybA0KPj4gfD0gKHNwaV9pbXgtPmJp
+dHNfcGVyX3dvcmQgLSAxKSArICAgICAgICAgICAgICAgICAgICAgICA8PCBNWDUxX0VDU1BJX0NU
+UkxfQkxfT0ZGU0VUOw0KPj4gDQo+PiAtICAgICAgIGNmZyB8PSBNWDUxX0VDU1BJX0NPTkZJR19T
+QkJDVFJMKHNwaS0+Y2hpcF9zZWxlY3QpOyArICAgICAgIC8qICsgICAgICAgICogZUNTUEkgYnVy
+c3QNCj4+IGNvbXBsZXRpb24gYnkgQ2hpcCBTZWxlY3Qgc2lnbmFsIGluIFNsYXZlIG1vZGUgKyAg
+ICAgICAgKiBpcyBub3QgZnVuY3Rpb25hbCBmb3IgaW14NTMgU29jLA0KPj4gY29uZmlnIFNQSSBi
+dXJzdCBjb21wbGV0ZWQgd2hlbiArICAgICAgICAqIEJVUlNUX0xFTkdUSCArIDEgYml0cyBhcmUg
+cmVjZWl2ZWQgKyAgICAgICAgKi8gKyAgICAgDQo+PiAgaWYgKHNwaV9pbXgtPnNsYXZlX21vZGUg
+JiYgaXNfaW14NTNfZWNzcGkoc3BpX2lteCkpICsgICAgICAgICAgICAgICBjZmcgJj0NCj4+IH5N
+WDUxX0VDU1BJX0NPTkZJR19TQkJDVFJMKHNwaS0+Y2hpcF9zZWxlY3QpOyArICAgICAgIGVsc2Ug
+KyAgICAgICAgICAgICAgIGNmZyB8PQ0KPj4gTVg1MV9FQ1NQSV9DT05GSUdfU0JCQ1RSTChzcGkt
+PmNoaXBfc2VsZWN0KTsNCj4+IA0KPj4gICAgICAgICBpZiAoc3BpLT5tb2RlICYgU1BJX0NQSEEp
+DQo+PiAgICAgICAgICAgICAgICAgY2ZnIHw9IE1YNTFfRUNTUElfQ09ORklHX1NDTEtQSEEoc3Bp
+LT5jaGlwX3NlbGVjdCk7DQo+PiBAQCAtODA1LDYgKzg3OSw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3Bp
+X2lteF9kZXZ0eXBlX2RhdGENCj4gaW14MV9jc3BpX2RldnR5cGVfZGF0YSA9IHsNCj4+ICAgICAg
+ICAgLmZpZm9fc2l6ZSA9IDgsIC5oYXNfZG1hbW9kZSA9IGZhbHNlLCAuZHluYW1pY19idXJzdCA9
+IGZhbHNlLCArICAgICAgIC5oYXNfc2xhdmVtb2RlID0NCj4+ICAgICAgICAgZmFsc2UsIC5kZXZ0
+eXBlID0gSU1YMV9DU1BJLA0KPj4gIH07DQo+PiBAQCAtODE3LDYgKzg5Miw3IEBAIHN0YXRpYyBz
+dHJ1Y3Qgc3BpX2lteF9kZXZ0eXBlX2RhdGENCj4gaW14MjFfY3NwaV9kZXZ0eXBlX2RhdGEgPSB7
+DQo+PiAgICAgICAgIC5maWZvX3NpemUgPSA4LCAuaGFzX2RtYW1vZGUgPSBmYWxzZSwgLmR5bmFt
+aWNfYnVyc3QgPSBmYWxzZSwgKyAgICAgICAuaGFzX3NsYXZlbW9kZSA9DQo+PiAgICAgICAgIGZh
+bHNlLCAuZGV2dHlwZSA9IElNWDIxX0NTUEksDQo+PiAgfTsNCj4+IEBAIC04MzAsNiArOTA2LDcg
+QEAgc3RhdGljIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YQ0KPiBpbXgyN19jc3BpX2RldnR5
+cGVfZGF0YSA9IHsNCj4+ICAgICAgICAgLmZpZm9fc2l6ZSA9IDgsIC5oYXNfZG1hbW9kZSA9IGZh
+bHNlLCAuZHluYW1pY19idXJzdCA9IGZhbHNlLCArICAgICAgIC5oYXNfc2xhdmVtb2RlID0NCj4+
+ICAgICAgICAgZmFsc2UsIC5kZXZ0eXBlID0gSU1YMjdfQ1NQSSwNCj4+ICB9Ow0KPj4gQEAgLTg0
+Miw2ICs5MTksNyBAQCBzdGF0aWMgc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhDQo+IGlteDMx
+X2NzcGlfZGV2dHlwZV9kYXRhID0gew0KPj4gICAgICAgICAuZmlmb19zaXplID0gOCwgLmhhc19k
+bWFtb2RlID0gZmFsc2UsIC5keW5hbWljX2J1cnN0ID0gZmFsc2UsICsgICAgICAgLmhhc19zbGF2
+ZW1vZGUgPQ0KPj4gICAgICAgICBmYWxzZSwgLmRldnR5cGUgPSBJTVgzMV9DU1BJLA0KPj4gIH07
+DQo+PiBAQCAtODU1LDYgKzkzMyw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBlX2Rh
+dGENCj4gaW14MzVfY3NwaV9kZXZ0eXBlX2RhdGEgPSB7DQo+PiAgICAgICAgIC5maWZvX3NpemUg
+PSA4LCAuaGFzX2RtYW1vZGUgPSB0cnVlLCAuZHluYW1pY19idXJzdCA9IGZhbHNlLCArICAgICAg
+IC5oYXNfc2xhdmVtb2RlID0NCj4+ICAgICAgICAgZmFsc2UsIC5kZXZ0eXBlID0gSU1YMzVfQ1NQ
+SSwNCj4+ICB9Ow0KPj4gQEAgLTg2Nyw2ICs5NDYsOCBAQCBzdGF0aWMgc3RydWN0IHNwaV9pbXhf
+ZGV2dHlwZV9kYXRhDQo+IGlteDUxX2Vjc3BpX2RldnR5cGVfZGF0YSA9IHsNCj4+ICAgICAgICAg
+LmZpZm9fc2l6ZSA9IDY0LA0KPj4gICAgICAgICAuaGFzX2RtYW1vZGUgPSB0cnVlLA0KPj4gICAg
+ICAgICAuZHluYW1pY19idXJzdCA9IHRydWUsDQo+PiArICAgICAgIC5oYXNfc2xhdmVtb2RlID0g
+dHJ1ZSwNCj4+ICsgICAgICAgLmRpc2FibGUgPSBteDUxX2Vjc3BpX2Rpc2FibGUsDQo+PiAgICAg
+ICAgIC5kZXZ0eXBlID0gSU1YNTFfRUNTUEksDQo+PiAgfTsNCj4+IEBAIC04NzgsNiArOTU5LDgg
+QEAgc3RhdGljIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YQ0KPiBpbXg1M19lY3NwaV9kZXZ0
+eXBlX2RhdGEgPSB7DQo+PiAgICAgICAgIC5yZXNldCA9IG14NTFfZWNzcGlfcmVzZXQsDQo+PiAg
+ICAgICAgIC5maWZvX3NpemUgPSA2NCwNCj4+ICAgICAgICAgLmhhc19kbWFtb2RlID0gdHJ1ZSwN
+Cj4+ICsgICAgICAgLmhhc19zbGF2ZW1vZGUgPSB0cnVlLA0KPj4gKyAgICAgICAuZGlzYWJsZSA9
+IG14NTFfZWNzcGlfZGlzYWJsZSwNCj4+ICAgICAgICAgLmRldnR5cGUgPSBJTVg1M19FQ1NQSSwN
+Cj4+ICB9Ow0KPj4gQEAgLTk0NSwxNCArMTAyOCwxNiBAQCBzdGF0aWMgdm9pZCBzcGlfaW14X3B1
+c2goc3RydWN0IHNwaV9pbXhfZGF0YQ0KPiAqc3BpX2lteCkNCj4+ICAgICAgICAgICAgICAgICBz
+cGlfaW14LT50eGZpZm8rKzsNCj4+ICAgICAgICAgfQ0KPj4gLSAgICAgICBzcGlfaW14LT5kZXZ0
+eXBlX2RhdGEtPnRyaWdnZXIoc3BpX2lteCk7DQo+PiArICAgICAgIGlmICghc3BpX2lteC0+c2xh
+dmVfbW9kZSkNCj4+ICsgICAgICAgICAgICAgICBzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPnRyaWdn
+ZXIoc3BpX2lteCk7DQo+PiAgfQ0KPj4gIA0KPj4gIHN0YXRpYyBpcnFyZXR1cm5fdCBzcGlfaW14
+X2lzcihpbnQgaXJxLCB2b2lkICpkZXZfaWQpDQo+PiAgew0KPj4gICAgICAgICBzdHJ1Y3Qgc3Bp
+X2lteF9kYXRhICpzcGlfaW14ID0gZGV2X2lkOw0KPj4gLSAgICAgICB3aGlsZSAoc3BpX2lteC0+
+ZGV2dHlwZV9kYXRhLT5yeF9hdmFpbGFibGUoc3BpX2lteCkpIHsNCj4+ICsgICAgICAgd2hpbGUg
+KHNwaV9pbXgtPnR4ZmlmbyAmJg0KPj4gKyAgICAgICAgICAgICAgc3BpX2lteC0+ZGV2dHlwZV9k
+YXRhLT5yeF9hdmFpbGFibGUoc3BpX2lteCkpIHsNCj4+ICAgICAgICAgICAgICAgICBzcGlfaW14
+LT5yeChzcGlfaW14KTsNCj4+ICAgICAgICAgICAgICAgICBzcGlfaW14LT50eGZpZm8tLTsNCj4+
+ICAgICAgICAgfQ0KPj4gQEAgLTEwMzQsNyArMTExOSw3IEBAIHN0YXRpYyBpbnQgc3BpX2lteF9z
+ZXR1cHhmZXIoc3RydWN0IHNwaV9kZXZpY2UNCj4gKnNwaSwNCj4+ICAgICAgICAgc3BpX2lteC0+
+c3BlZWRfaHogID0gdC0+c3BlZWRfaHo7DQo+PiAgICAgICAgIA0KPj4gICAgICAgICAvKiBJbml0
+aWFsaXplIHRoZSBmdW5jdGlvbnMgZm9yIHRyYW5zZmVyICovDQo+PiAtICAgICAgIGlmIChzcGlf
+aW14LT5kZXZ0eXBlX2RhdGEtPmR5bmFtaWNfYnVyc3QpIHsNCj4+ICsgICAgICAgaWYgKHNwaV9p
+bXgtPmRldnR5cGVfZGF0YS0+ZHluYW1pY19idXJzdCAmJiAhc3BpX2lteC0+c2xhdmVfbW9kZSkN
+Cj4gew0KPj4gICAgICAgICAgICAgICAgIHUzMiBtYXNrOw0KPj4gICAgICAgICAgICAgICAgIA0K
+Pj4gICAgICAgICAgICAgICAgIHNwaV9pbXgtPmR5bmFtaWNfYnVyc3QgPSAwOw0KPj4gQEAgLTEw
+NzgsNiArMTE2MywxMiBAQCBzdGF0aWMgaW50IHNwaV9pbXhfc2V0dXB4ZmVyKHN0cnVjdCBzcGlf
+ZGV2aWNlDQo+ICpzcGksDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0K
+Pj4gICAgICAgICB9DQo+PiArICAgICAgIGlmIChpc19pbXg1M19lY3NwaShzcGlfaW14KSAmJiBz
+cGlfaW14LT5zbGF2ZV9tb2RlKSB7DQo+PiArICAgICAgICAgICAgICAgc3BpX2lteC0+cnggPSBt
+eDUzX2Vjc3BpX3J4X3NsYXZlOw0KPj4gKyAgICAgICAgICAgICAgIHNwaV9pbXgtPnR4ID0gbXg1
+M19lY3NwaV90eF9zbGF2ZTsNCj4+ICsgICAgICAgICAgICAgICBzcGlfaW14LT5zbGF2ZV9idXJz
+dCA9IHQtPmxlbjsNCj4+ICsgICAgICAgfQ0KPj4gKw0KPj4gICAgICAgICBzcGlfaW14LT5kZXZ0
+eXBlX2RhdGEtPmNvbmZpZyhzcGkpOw0KPj4gICAgICAgICANCj4+ICAgICAgICAgcmV0dXJuIDA7
+DQo+PiBAQCAtMTI2MiwxMSArMTM1Myw2MSBAQCBzdGF0aWMgaW50IHNwaV9pbXhfcGlvX3RyYW5z
+ZmVyKHN0cnVjdCBzcGlfZGV2aWNlDQo+ICpzcGksDQo+PiAgICAgICAgIHJldHVybiB0cmFuc2Zl
+ci0+bGVuOw0KPj4gIH0NCj4+ICtzdGF0aWMgaW50IHNwaV9pbXhfcGlvX3RyYW5zZmVyX3NsYXZl
+KHN0cnVjdCBzcGlfZGV2aWNlICpzcGksICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IA0KPj4gICAgIHN0cnVjdCBzcGlfdHJhbnNmZXIgKnRyYW5zZmVyKSAreyArICAgICAgIHN0cnVj
+dCBzcGlfaW14X2RhdGEgKnNwaV9pbXggPQ0KPj4gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShzcGkt
+IG1hc3Rlcik7ICsgICAgICAgaW50IHJldCA9IHRyYW5zZmVyLT5sZW47ICsgKyAgICAgICBpZg0K
+Pj4gKGlzX2lteDUzX2Vjc3BpKHNwaV9pbXgpICYmICsgICAgICAgICAgIHRyYW5zZmVyLT5sZW4g
+PiBNWDUzX01BWF9UUkFOU0ZFUl9CWVRFUykgeyArICAgICAgICAgICAgDQo+PiAgIGRldl9lcnIo
+JnNwaS0+ZGV2LCAiVHJhbnNhY3Rpb24gdG9vIGJpZywgbWF4IHNpemUgaXMgJWQgYnl0ZXNcbiIs
+ICsgICAgICAgICAgICAgICAgICAgICAgDQo+PiBNWDUzX01BWF9UUkFOU0ZFUl9CWVRFUyk7ICsg
+ICAgICAgICAgICAgICByZXR1cm4gLUVNU0dTSVpFOyArICAgICAgIH0gKyArICAgICAgIHNwaV9p
+bXgtPnR4X2J1Zg0KPj4gPSB0cmFuc2Zlci0+dHhfYnVmOyArICAgICAgIHNwaV9pbXgtPnJ4X2J1
+ZiA9IHRyYW5zZmVyLT5yeF9idWY7ICsgICAgICAgc3BpX2lteC0+Y291bnQgPQ0KPj4gdHJhbnNm
+ZXItPmxlbjsgKyAgICAgICBzcGlfaW14LT50eGZpZm8gPSAwOyArICsgICAgICAgcmVpbml0X2Nv
+bXBsZXRpb24oJnNwaV9pbXgtPnhmZXJfZG9uZSk7ICsgDQo+PiAgICAgIHNwaV9pbXgtPnNsYXZl
+X2Fib3J0ZWQgPSBmYWxzZTsgKyArICAgICAgIHNwaV9pbXhfcHVzaChzcGlfaW14KTsgKyArICAg
+ICAgDQo+PiBzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPmludGN0cmwoc3BpX2lteCwgTVhDX0lOVF9U
+RSB8IE1YQ19JTlRfUkRSKTsgKyArICAgICAgIGlmDQo+PiAod2FpdF9mb3JfY29tcGxldGlvbl9p
+bnRlcnJ1cHRpYmxlKCZzcGlfaW14LT54ZmVyX2RvbmUpIHx8ICsgICAgICAgICAgIHNwaV9pbXgt
+PnNsYXZlX2Fib3J0ZWQpIHsNCj4+ICsgICAgICAgICAgICAgICBkZXZfZGJnKCZzcGktPmRldiwg
+ImludGVycnVwdGVkXG4iKTsgKyAgICAgICAgICAgICAgIHJldCA9IC1FSU5UUjsgKyAgICAgICB9
+ICsgKw0KPj4gICAgICAgLyogZWNzcGkgaGFzIGEgSFcgaXNzdWUgd2hlbiB3b3JrcyBpbiBTbGF2
+ZSBtb2RlLCArICAgICAgICAqIGFmdGVyIDY0IHdvcmRzIHdyaXR0ZXJuIHRvDQo+PiBUWEZJRk8s
+IGV2ZW4gVFhGSUZPIGJlY29tZXMgZW1wdHksICsgICAgICAgICogRUNTUElfVFhEQVRBIGtlZXBz
+IHNoaWZ0IG91dCB0aGUgbGFzdCB3b3JkIGRhdGEsICsNCj4+ICAgICAgICAqIHNvIHdlIGhhdmUg
+dG8gZGlzYWJsZSBFQ1NQSSB3aGVuIGluIHNsYXZlIG1vZGUgYWZ0ZXIgdGhlICsgICAgICAgICog
+dHJhbnNmZXIgY29tcGxldGVzDQo+PiArICAgICAgICAqLyArICAgICAgIGlmIChzcGlfaW14LT5k
+ZXZ0eXBlX2RhdGEtPmRpc2FibGUpICsgICAgICAgICAgICAgIA0KPj4gc3BpX2lteC0+ZGV2dHlw
+ZV9kYXRhLT5kaXNhYmxlKHNwaV9pbXgpOyArICsgICAgICAgcmV0dXJuIHJldDsgK30gKw0KPj4g
+IHN0YXRpYyBpbnQgc3BpX2lteF90cmFuc2ZlcihzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLA0KPj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0cmFu
+c2ZlcikNCj4+ICB7DQo+PiAgICAgICAgIHN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXggPSBz
+cGlfbWFzdGVyX2dldF9kZXZkYXRhKHNwaS0NCj4+IG1hc3Rlcik7DQo+PiANCj4+ICsgICAgICAg
+LyogZmx1c2ggcnhmaWZvIGJlZm9yZSB0cmFuc2ZlciAqLw0KPj4gKyAgICAgICB3aGlsZSAoc3Bp
+X2lteC0+ZGV2dHlwZV9kYXRhLT5yeF9hdmFpbGFibGUoc3BpX2lteCkpDQo+PiArICAgICAgICAg
+ICAgICAgc3BpX2lteC0+cngoc3BpX2lteCk7DQo+PiArDQo+PiArICAgICAgIGlmIChzcGlfaW14
+LT5zbGF2ZV9tb2RlKQ0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiBzcGlfaW14X3Bpb190cmFu
+c2Zlcl9zbGF2ZShzcGksIHRyYW5zZmVyKTsNCj4+ICsNCj4+ICAgICAgICAgaWYgKHNwaV9pbXgt
+PnVzZWRtYSkNCj4+ICAgICAgICAgICAgICAgICByZXR1cm4gc3BpX2lteF9kbWFfdHJhbnNmZXIo
+c3BpX2lteCwgdHJhbnNmZXIpOw0KPj4gICAgICAgICBlbHNlDQo+PiBAQCAtMTMyMyw2ICsxNDY0
+LDE2IEBAIHNwaV9pbXhfdW5wcmVwYXJlX21lc3NhZ2Uoc3RydWN0IHNwaV9tYXN0ZXINCj4gKm1h
+c3Rlciwgc3RydWN0IHNwaV9tZXNzYWdlICptc2cpDQo+PiAgICAgICAgIHJldHVybiAwOw0KPj4g
+IH0NCj4+ICtzdGF0aWMgaW50IHNwaV9pbXhfc2xhdmVfYWJvcnQoc3RydWN0IHNwaV9tYXN0ZXIg
+Km1hc3RlcikNCj4+ICt7DQo+PiArICAgICAgIHN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXgg
+PSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7DQo+PiArDQo+PiArICAgICAgIHNwaV9p
+bXgtPnNsYXZlX2Fib3J0ZWQgPSB0cnVlOw0KPj4gKyAgICAgICBjb21wbGV0ZSgmc3BpX2lteC0+
+eGZlcl9kb25lKTsNCj4+ICsNCj4+ICsgICAgICAgcmV0dXJuIDA7DQo+PiArfQ0KPj4gKw0KPj4g
+IHN0YXRpYyBpbnQgc3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0K
+Pj4gIHsNCj4+ICAgICAgICAgc3RydWN0IGRldmljZV9ub2RlICpucCA9IHBkZXYtPmRldi5vZl9u
+b2RlOw0KPj4gQEAgLTEzMzQsMTMgKzE0ODUsMjMgQEAgc3RhdGljIGludCBzcGlfaW14X3Byb2Jl
+KHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UNCj4gKnBkZXYpDQo+PiAgICAgICAgIHN0cnVjdCBzcGlf
+aW14X2RhdGEgKnNwaV9pbXg7DQo+PiAgICAgICAgIHN0cnVjdCByZXNvdXJjZSAqcmVzOw0KPj4g
+ICAgICAgICBpbnQgaSwgcmV0LCBpcnEsIHNwaV9kcmN0bDsNCj4+ICsgICAgICAgY29uc3Qgc3Ry
+dWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhICpkZXZ0eXBlX2RhdGEgPSBvZl9pZCA/IG9mX2lkLQ0K
+Pj4gZGF0YSA6DQo+PiArICAgICAgICAgICAgICAgKHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0
+YSAqKXBkZXYtPmlkX2VudHJ5LQ0KPj4gZHJpdmVyX2RhdGE7DQo+PiArICAgICAgIGJvb2wgc2xh
+dmVfbW9kZTsNCj4+IA0KPj4gICAgICAgICBpZiAoIW5wICYmICFteGNfcGxhdGZvcm1faW5mbykg
+ew0KPj4gICAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYtPmRldiwgImNhbid0IGdldCB0aGUg
+cGxhdGZvcm0gZGF0YVxuIik7DQo+PiAgICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7DQo+
+PiAgICAgICAgIH0NCj4+IC0gICAgICAgbWFzdGVyID0gc3BpX2FsbG9jX21hc3RlcigmcGRldi0+
+ZGV2LCBzaXplb2Yoc3RydWN0IHNwaV9pbXhfZGF0YSkpOyArICAgICAgIHNsYXZlX21vZGUgPQ0K
+Pj4gZGV2dHlwZV9kYXRhLT5oYXNfc2xhdmVtb2RlICYmICsgICAgICAgICAgICAgICAgICAgICAg
+IG9mX3Byb3BlcnR5X3JlYWRfYm9vbChucCwgInNwaS1zbGF2ZSIpOyArDQo+PiAgICAgICBpZiAo
+c2xhdmVfbW9kZSkgKyAgICAgICAgICAgICAgIG1hc3RlciA9IHNwaV9hbGxvY19zbGF2ZSgmcGRl
+di0+ZGV2LCArICAgICAgICAgICAgICAgICAgICANCj4+ICAgICAgICAgICAgICAgICAgICBzaXpl
+b2Yoc3RydWN0IHNwaV9pbXhfZGF0YSkpOyArICAgICAgIGVsc2UgKyAgICAgICAgICAgICAgIG1h
+c3RlciA9DQo+PiBzcGlfYWxsb2NfbWFzdGVyKCZwZGV2LT5kZXYsICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVvZihzdHJ1Y3QNCj4+IHNwaV9pbXhfZGF0YSkp
+Ow0KPj4gICAgICAgICBpZiAoIW1hc3RlcikNCj4+ICAgICAgICAgICAgICAgICByZXR1cm4gLUVO
+T01FTTsNCj4+IEBAIC0xMzU4LDkgKzE1MTksOSBAQCBzdGF0aWMgaW50IHNwaV9pbXhfcHJvYmUo
+c3RydWN0IHBsYXRmb3JtX2RldmljZQ0KPiAqcGRldikNCj4+ICAgICAgICAgc3BpX2lteCA9IHNw
+aV9tYXN0ZXJfZ2V0X2RldmRhdGEobWFzdGVyKTsNCj4+ICAgICAgICAgc3BpX2lteC0+Yml0YmFu
+Zy5tYXN0ZXIgPSBtYXN0ZXI7DQo+PiAgICAgICAgIHNwaV9pbXgtPmRldiA9ICZwZGV2LT5kZXY7
+DQo+PiArICAgICAgIHNwaV9pbXgtPnNsYXZlX21vZGUgPSBzbGF2ZV9tb2RlOw0KPj4gDQo+PiAt
+ICAgICAgIHNwaV9pbXgtPmRldnR5cGVfZGF0YSA9IG9mX2lkID8gb2ZfaWQtPmRhdGEgOg0KPj4g
+LSAgICAgICAgICAgICAgIChzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBlX2RhdGEgKilwZGV2LT5pZF9l
+bnRyeS0NCj4+IGRyaXZlcl9kYXRhOw0KPj4gKyAgICAgICBzcGlfaW14LT5kZXZ0eXBlX2RhdGEg
+PSBkZXZ0eXBlX2RhdGE7DQo+PiANCj4+ICAgICAgICAgaWYgKG14Y19wbGF0Zm9ybV9pbmZvKSB7
+DQo+PiAgICAgICAgICAgICAgICAgbWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9IG14Y19wbGF0Zm9y
+bV9pbmZvLQ0KPj4gbnVtX2NoaXBzZWxlY3Q7DQo+PiBAQCAtMTM4MCw2ICsxNTQxLDcgQEAgc3Rh
+dGljIGludCBzcGlfaW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UNCj4gKnBkZXYpDQo+
+PiAgICAgICAgIHNwaV9pbXgtPmJpdGJhbmcubWFzdGVyLT5jbGVhbnVwID0gc3BpX2lteF9jbGVh
+bnVwOw0KPj4gICAgICAgICBzcGlfaW14LT5iaXRiYW5nLm1hc3Rlci0+cHJlcGFyZV9tZXNzYWdl
+ID0gc3BpX2lteF9wcmVwYXJlX21lc3NhZ2U7DQo+PiAgICAgICAgIHNwaV9pbXgtPmJpdGJhbmcu
+bWFzdGVyLT51bnByZXBhcmVfbWVzc2FnZSA9DQo+IHNwaV9pbXhfdW5wcmVwYXJlX21lc3NhZ2U7
+DQo+PiArICAgICAgIHNwaV9pbXgtPmJpdGJhbmcubWFzdGVyLT5zbGF2ZV9hYm9ydCA9IHNwaV9p
+bXhfc2xhdmVfYWJvcnQ7DQo+PiAgICAgICAgIHNwaV9pbXgtPmJpdGJhbmcubWFzdGVyLT5tb2Rl
+X2JpdHMgPSBTUElfQ1BPTCB8IFNQSV9DUEhBIHwNCj4gU1BJX0NTX0hJR0ggXA0KPj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBTUElfTk9fQ1M7DQo+PiAg
+ICAgICAgIGlmIChpc19pbXgzNV9jc3BpKHNwaV9pbXgpIHx8IGlzX2lteDUxX2Vjc3BpKHNwaV9p
+bXgpIHx8DQo+PiBAQCAtMTQ1NywyMyArMTYxOSwyNiBAQCBzdGF0aWMgaW50IHNwaV9pbXhfcHJv
+YmUoc3RydWN0IHBsYXRmb3JtX2RldmljZQ0KPiAqcGRldikNCj4+ICAgICAgICAgICAgICAgICBn
+b3RvIG91dF9jbGtfcHV0Ow0KPj4gICAgICAgICB9DQo+PiAtICAgICAgIGlmICghbWFzdGVyLT5j
+c19ncGlvcykgew0KPj4gLSAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYtPmRldiwgIk5vIENT
+IEdQSU9zIGF2YWlsYWJsZVxuIik7DQo+PiAtICAgICAgICAgICAgICAgcmV0ID0gLUVJTlZBTDsN
+Cj4+IC0gICAgICAgICAgICAgICBnb3RvIG91dF9jbGtfcHV0Ow0KPj4gLSAgICAgICB9DQo+PiAt
+DQo+PiAtICAgICAgIGZvciAoaSA9IDA7IGkgPCBtYXN0ZXItPm51bV9jaGlwc2VsZWN0OyBpKysp
+IHsNCj4+IC0gICAgICAgICAgICAgICBpZiAoIWdwaW9faXNfdmFsaWQobWFzdGVyLT5jc19ncGlv
+c1tpXSkpDQo+PiAtICAgICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsNCj4+IC0NCj4+IC0g
+ICAgICAgICAgICAgICByZXQgPSBkZXZtX2dwaW9fcmVxdWVzdCgmcGRldi0+ZGV2LCBtYXN0ZXIt
+PmNzX2dwaW9zW2ldLA0KPj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IERSSVZFUl9OQU1FKTsNCj4+IC0gICAgICAgICAgICAgICBpZiAocmV0KSB7DQo+PiAtICAgICAg
+ICAgICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsICJDYW4ndCBnZXQgQ1MgR1BJTyAl
+aVxuIiwNCj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWFzdGVyLT5jc19ncGlv
+c1tpXSk7DQo+PiArICAgICAgIGlmICghc3BpX2lteC0+c2xhdmVfbW9kZSkgew0KPj4gKyAgICAg
+ICAgICAgICAgIGlmICghbWFzdGVyLT5jc19ncGlvcykgew0KPj4gKyAgICAgICAgICAgICAgICAg
+ICAgICAgZGV2X2VycigmcGRldi0+ZGV2LCAiTm8gQ1MgR1BJT3MgYXZhaWxhYmxlXG4iKTsNCj4+
+ICsgICAgICAgICAgICAgICAgICAgICAgIHJldCA9IC1FSU5WQUw7DQo+PiAgICAgICAgICAgICAg
+ICAgICAgICAgICBnb3RvIG91dF9jbGtfcHV0Ow0KPj4gICAgICAgICAgICAgICAgIH0NCj4+ICsg
+KyAgICAgICAgICAgICAgIGZvciAoaSA9IDA7IGkgPCBtYXN0ZXItPm51bV9jaGlwc2VsZWN0OyBp
+KyspIHsgKyAgICAgICAgICAgICAgICAgICAgICAgaWYNCj4+ICghZ3Bpb19pc192YWxpZChtYXN0
+ZXItPmNzX2dwaW9zW2ldKSkgKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250aW51
+ZTsgKyArICAgICAgICAgICAgIA0KPj4gICAgICAgICAgcmV0ID0gZGV2bV9ncGlvX3JlcXVlc3Qo
+JnBkZXYtPmRldiwgKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICANCj4+IG1hc3Rlci0+Y3NfZ3Bpb3NbaV0sICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIERSSVZFUl9OQU1FKTsgKyAgICAgICAgICAgIA0KPj4gICAgICAg
+ICAgIGlmIChyZXQpIHsgKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZXZfZXJyKCZw
+ZGV2LT5kZXYsICJDYW4ndCBnZXQgQ1MgR1BJTw0KPj4gJWlcbiIsICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBtYXN0ZXItPmNzX2dwaW9zW2ldKTsgKyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgDQo+PiAgICAgZ290byBvdXRfY2xrX3B1dDsgKyAgICAgICAgICAgICAg
+ICAgICAgICAgfSArICAgICAgICAgICAgICAgfQ0KPj4gICAgICAgICB9DQo+PiAgICAgICAgIA0K
+Pj4gICAgICAgICBkZXZfaW5mbygmcGRldi0+ZGV2LCAicHJvYmVkXG4iKTsNCj4+IC0tDQo+PiAy
+LjkuMw0KPj4gDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,50 +1,59 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Use ida to manage SPI bus number
-Date: Wed, 6 Sep 2017 14:28:46 +0100
-Message-ID: <20170906132846.il4ycaxu75ezsyt4@sirena.co.uk>
-References: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum ADI controller
+ documentation
+Date: Wed, 6 Sep 2017 15:59:00 +0100
+Message-ID: <20170906145900.yesyfyruv5wd3wxj@sirena.co.uk>
+References: <ccbb0641fa123021249c7a51cbe2dcd975c41f39.1504677110.git.baolin.wang@spreadtrum.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3guhzl5rqptqybw3"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="oluwjvarstogn7iq"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <ccbb0641fa123021249c7a51cbe2dcd975c41f39.1504677110.git.baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---3guhzl5rqptqybw3
+--oluwjvarstogn7iq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Sep 06, 2017 at 07:26:51PM +0800, Baolin Wang wrote:
-> This patch adds one static ida variable to manage SPI bus number, moreover
-> we can get dynamic bus number from ida instead of one "dynamic" IDs, which
-> can be removed.
+On Wed, Sep 06, 2017 at 02:10:43PM +0800, Baolin Wang wrote:
 
-Someone else actually addressed this TODO item just in the last
-development cycle, v4.14 should contain an equivalent patch.  Always
-best to check linux-next for the latest development state!
+> +- hwlocks: Reference to a phandle of a hwlock provider node.
+> +- hwlock-names: Reference to hwlock name strings defined in the same order
+> +	as the hwlocks.
 
---3guhzl5rqptqybw3
+What are these hwlocks protecting, and what names are expected?
+
+> +Optional properties:
+> +- sprd,hw-channels: Specify the hardware channel number and mapped address
+> +	for hardware channel accessing.
+
+What do these mean and how are the numbers and how will the binding be
+interpreted?
+
+--oluwjvarstogn7iq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmv+A4ACgkQJNaLcl1U
-h9BFhQf/Y0zAEJjGTDFX/tOfF2Cz0WZSX1z0rJ6gMy5roCiFwIf9eKSJ33H25pGs
-sNGA7snBhDfApWeOCZm3xHamSozsBm99QSby9cIiX4JLfTalTrJrP7VyB8GdCnsK
-uNC/sU2xPNlY2PRApvT4qrf359t4Muz4e67pegE0a9949OhUqOwskYGQlo/XUjmY
-7XDoKM9mqD2y0uXvZ+/v72kg/pZSIT1vnRkSreyi7ChYF66kJ5OReomRPZrRHuhA
-RN4+GaHzyMhzPTkGIQj2baZx5Vl490/Fi291dVRWCOiqfiSSsaVq42NGtcKDQQHB
-4H8BbldigOv1rCkc5ocahOG4JrV4mw==
-=VdK/
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmwDTMACgkQJNaLcl1U
+h9CUGQf+O/pj2u8KYc4c7NKGnX2sYesWBFu+gQMoQfhC76+ywLmTgfx4yAOm2KiE
+qEn6UCAncZv51aj2nRz/TVTWCuiwo1W8oaw0lgfdB26PhvNMuwSSJznyh2P75Pd9
+MG1gsR67OPykgHYut8SHgobqn3mIP2JylSqgeUxej3Ajn3HcGejo2g44cZdYbejZ
+iQ3DHd3Gzt+KhykOsFuPaG5pGFtaXoNgHC1QbLojHGfpEWeKny10gZTsrigEK/iE
+wImsLJmUTd4SbO0GAtPC1lA7O7H6qzlNa5vpAx9Ox/Zsa/W0t8AkBv4jJtcMS874
+A24WTsl6w3/3XQQJ0pdsYskkLyzUIw==
+=u39S
 -----END PGP SIGNATURE-----
 
---3guhzl5rqptqybw3--
+--oluwjvarstogn7iq--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

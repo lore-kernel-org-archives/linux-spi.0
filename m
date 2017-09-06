@@ -1,7 +1,7 @@
 From: Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 1/8] spi: sh-msiof: Add sleep before master transfer for test
-Date: Wed, 6 Sep 2017 09:05:00 +0200
-Message-ID: <20170906070507.26223-2-dirk.behme@de.bosch.com>
+Subject: [PATCH 5/8] spi: sh-msiof: Wait for Tx FIFO empty after DMA
+Date: Wed, 6 Sep 2017 09:05:04 +0200
+Message-ID: <20170906070507.26223-6-dirk.behme@de.bosch.com>
 References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,88 +16,46 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
 
-This patch is for debug of transfer between master and slave.
-Since the slave needs to complete a preparation in data transfer
-before the master working, the sleep wait is put before
-the data transfer of the master.
+When Tx DMA is only used, Tx FIFO is still not empty after DMA callback.
+This patch waits for sweeping data out of the Tx FIFO.
 
 Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+[adjust context]
 Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 ---
- drivers/spi/Kconfig        | 20 ++++++++++++++++++++
- drivers/spi/spi-sh-msiof.c | 15 +++++++++++++++
- 2 files changed, 35 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index a75f2a2cf780..0139ecf8f42e 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -600,6 +600,26 @@ config SPI_SH_MSIOF
- 	help
- 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
- 
-+config SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
-+	bool "Transfer Synchronization Debug support for MSIOF"
-+	depends on SPI_SH_MSIOF
-+	default n
-+	help
-+	  In data transfer, the slave needs to have completed
-+	  a transfer preparation before the master.
-+	  As a test environment, it was to be able to put a sleep wait
-+	  before the data transfer of the master.
-+
-+config SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG_MSLEEP
-+	int "Master of sleep latency (msec time)"
-+	default 1
-+	depends on SPI_SH_MSIOF && SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
-+	help
-+	  Select Sleep latency of the previous data transfer
-+	  at the time of master mode.
-+	  Examples:
-+	    N => N msec
-+
- config SPI_SH
- 	tristate "SuperH SPI controller"
- 	depends on SUPERH || COMPILE_TEST
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 0eb1e9583485..2b4d3a520176 100644
+index 660b03ed6770..a960e8da123d 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -41,6 +41,10 @@ struct sh_msiof_chipdata {
- 	u16 min_div;
- };
+@@ -638,6 +638,17 @@ static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p,
+ 				dev_err(&p->pdev->dev, "Tx DMA timeout\n");
+ 				return -ETIMEDOUT;
+ 			}
++			if (!rx) {
++				sh_msiof_write(p, IER, IER_TEOFE);
++
++				/* wait for tx fifo to be emptied */
++				if (!wait_for_completion_timeout(&p->done,
++								 HZ)) {
++					dev_err(&p->pdev->dev,
++					"Tx fifo to be emptied timeout\n");
++					return -ETIMEDOUT;
++				}
++			}
+ 		}
+ 		if (rx) {
+ 			if (!wait_for_completion_timeout(&p->done_dma_rx,
+@@ -805,7 +816,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 		goto stop_dma;
+ 	}
  
-+#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
-+#define TRANSFAR_SYNC_DELAY (CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG_MSLEEP)
-+#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
-+
- struct sh_msiof_spi_priv {
- 	struct spi_master *master;
- 	void __iomem *mapbase;
-@@ -910,6 +914,11 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 		if (tx_buf)
- 			copy32(p->tx_dma_page, tx_buf, l / 4);
- 
-+#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
-+		if (p->mode == SPI_MSIOF_MASTER)
-+			msleep(TRANSFAR_SYNC_DELAY);
-+#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
-+
- 		ret = sh_msiof_dma_once(p, tx_buf, rx_buf, l);
- 		if (ret == -EAGAIN) {
- 			pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
-@@ -983,6 +992,12 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 	words = len / bytes_per_word;
- 
- 	while (words > 0) {
-+
-+#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
-+		if (p->mode == SPI_MSIOF_MASTER)
-+			msleep(TRANSFAR_SYNC_DELAY);
-+#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
-+
- 		n = sh_msiof_spi_txrx_once(p, tx_fifo, rx_fifo, tx_buf, rx_buf,
- 					   words, bits);
- 		if (n < 0)
+-	/* wait for tx fifo to be emptied / rx fifo to be filled */
++	/* wait for Tx/Rx DMA completion */
+ 	ret = sh_msiof_wait_for_completion(p, tx, rx);
+ 	if (ret)
+ 		goto stop_reset;
 -- 
 2.14.1

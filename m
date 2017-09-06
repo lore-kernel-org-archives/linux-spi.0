@@ -1,12 +1,11 @@
 From: Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 4/8] spi: sh-msiof: Fix DMA completion
-Date: Wed, 6 Sep 2017 09:05:03 +0200
-Message-ID: <20170906070507.26223-5-dirk.behme@de.bosch.com>
+Subject: [PATCH 1/8] spi: sh-msiof: Add sleep before master transfer for test
+Date: Wed, 6 Sep 2017 09:05:00 +0200
+Message-ID: <20170906070507.26223-2-dirk.behme@de.bosch.com>
 References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Ryo Kataoka <ryo.kataoka.wt@renesas.com>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+Cc: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
         Dirk Behme <dirk.behme@de.bosch.com>
 To: <linux-renesas-soc@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>
@@ -15,154 +14,90 @@ In-Reply-To: <20170906070507.26223-1-dirk.behme@de.bosch.com>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
+From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
 
-When reception DMA completes before transmission DMA, next transmission
-DMA may not be able to start. This patch adds wait_for_completion_timeout()
-to both of reception DMA and transmission DMA.
+This patch is for debug of transfer between master and slave.
+Since the slave needs to complete a preparation in data transfer
+before the master working, the sleep wait is put before
+the data transfer of the master.
 
-If the driver waits only for the Rx DMA completion, the Tx DMA completion
-thread of DMA Engine may be still processing.
-
-Signed-off-by: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
-[reword commit message]
 Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-[adjust context]
 Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 ---
- drivers/spi/spi-sh-msiof.c | 53 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 17 deletions(-)
+ drivers/spi/Kconfig        | 20 ++++++++++++++++++++
+ drivers/spi/spi-sh-msiof.c | 15 +++++++++++++++
+ 2 files changed, 35 insertions(+)
 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a75f2a2cf780..0139ecf8f42e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -600,6 +600,26 @@ config SPI_SH_MSIOF
+ 	help
+ 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
+ 
++config SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
++	bool "Transfer Synchronization Debug support for MSIOF"
++	depends on SPI_SH_MSIOF
++	default n
++	help
++	  In data transfer, the slave needs to have completed
++	  a transfer preparation before the master.
++	  As a test environment, it was to be able to put a sleep wait
++	  before the data transfer of the master.
++
++config SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG_MSLEEP
++	int "Master of sleep latency (msec time)"
++	default 1
++	depends on SPI_SH_MSIOF && SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
++	help
++	  Select Sleep latency of the previous data transfer
++	  at the time of master mode.
++	  Examples:
++	    N => N msec
++
+ config SPI_SH
+ 	tristate "SuperH SPI controller"
+ 	depends on SUPERH || COMPILE_TEST
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 24b49d3ca9a8..660b03ed6770 100644
+index 0eb1e9583485..2b4d3a520176 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -52,6 +52,7 @@ struct sh_msiof_spi_priv {
- 	struct platform_device *pdev;
- 	struct sh_msiof_spi_info *info;
- 	struct completion done;
-+	struct completion done_dma_tx, done_dma_rx;
- 	unsigned int tx_fifo_size;
- 	unsigned int rx_fifo_size;
- 	unsigned int min_div;
-@@ -621,7 +622,8 @@ static int sh_msiof_slave_abort(struct spi_master *master)
- 	return 0;
- }
+@@ -41,6 +41,10 @@ struct sh_msiof_chipdata {
+ 	u16 min_div;
+ };
  
--static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p)
-+static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p,
-+					const void *tx, void *rx)
- {
- 	if (spi_controller_is_slave(p->master)) {
- 		if (wait_for_completion_interruptible(&p->done) ||
-@@ -630,10 +632,22 @@ static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p)
- 			return -EINTR;
- 		}
- 	} else {
--		if (!wait_for_completion_timeout(&p->done, HZ)) {
--			dev_err(&p->pdev->dev, "timeout\n");
--			return -ETIMEDOUT;
-+		if (tx) {
-+			if (!wait_for_completion_timeout(&p->done_dma_tx,
-+							 HZ)) {
-+				dev_err(&p->pdev->dev, "Tx DMA timeout\n");
-+				return -ETIMEDOUT;
-+			}
- 		}
-+		if (rx) {
-+			if (!wait_for_completion_timeout(&p->done_dma_rx,
-+							 HZ)) {
-+				dev_err(&p->pdev->dev, "Rx DMA timeout\n");
-+				return -ETIMEDOUT;
-+			}
-+		}
++#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
++#define TRANSFAR_SYNC_DELAY (CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG_MSLEEP)
++#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
 +
-+		sh_msiof_write(p, IER, 0);
- 	}
+ struct sh_msiof_spi_priv {
+ 	struct spi_master *master;
+ 	void __iomem *mapbase;
+@@ -910,6 +914,11 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 		if (tx_buf)
+ 			copy32(p->tx_dma_page, tx_buf, l / 4);
  
- 	return 0;
-@@ -680,7 +694,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	}
- 
- 	/* wait for tx fifo to be emptied / rx fifo to be filled */
--	ret = sh_msiof_wait_for_completion(p);
-+	ret = sh_msiof_wait_for_completion(p, tx_buf, rx_buf);
- 	if (ret)
- 		goto stop_reset;
- 
-@@ -707,12 +721,18 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	return ret;
- }
- 
--static void sh_msiof_dma_complete(void *arg)
-+static void sh_msiof_tx_dma_complete(void *arg)
- {
- 	struct sh_msiof_spi_priv *p = arg;
- 
--	sh_msiof_write(p, IER, 0);
--	complete(&p->done);
-+	complete(&p->done_dma_tx);
-+}
++#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
++		if (p->mode == SPI_MSIOF_MASTER)
++			msleep(TRANSFAR_SYNC_DELAY);
++#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
 +
-+static void sh_msiof_rx_dma_complete(void *arg)
-+{
-+	struct sh_msiof_spi_priv *p = arg;
+ 		ret = sh_msiof_dma_once(p, tx_buf, rx_buf, l);
+ 		if (ret == -EAGAIN) {
+ 			pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
+@@ -983,6 +992,12 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 	words = len / bytes_per_word;
+ 
+ 	while (words > 0) {
 +
-+	complete(&p->done_dma_rx);
- }
- 
- static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
-@@ -732,7 +752,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 		if (!desc_rx)
- 			return -EAGAIN;
- 
--		desc_rx->callback = sh_msiof_dma_complete;
-+		desc_rx->callback = sh_msiof_rx_dma_complete;
- 		desc_rx->callback_param = p;
- 		cookie = dmaengine_submit(desc_rx);
- 		if (dma_submit_error(cookie))
-@@ -751,13 +771,8 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 			goto no_dma_tx;
- 		}
- 
--		if (rx) {
--			/* No callback */
--			desc_tx->callback = NULL;
--		} else {
--			desc_tx->callback = sh_msiof_dma_complete;
--			desc_tx->callback_param = p;
--		}
-+		desc_tx->callback = sh_msiof_tx_dma_complete;
-+		desc_tx->callback_param = p;
- 		cookie = dmaengine_submit(desc_tx);
- 		if (dma_submit_error(cookie)) {
- 			ret = cookie;
-@@ -774,6 +789,8 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 	sh_msiof_write(p, IER, ier_bits);
- 
- 	reinit_completion(&p->done);
-+	reinit_completion(&p->done_dma_tx);
-+	reinit_completion(&p->done_dma_rx);
- 	p->slave_aborted = false;
- 
- 	/* Now start DMA */
-@@ -789,7 +806,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 	}
- 
- 	/* wait for tx fifo to be emptied / rx fifo to be filled */
--	ret = sh_msiof_wait_for_completion(p);
-+	ret = sh_msiof_wait_for_completion(p, tx, rx);
- 	if (ret)
- 		goto stop_reset;
- 
-@@ -1258,6 +1275,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	p->min_div = chipdata->min_div;
- 
- 	init_completion(&p->done);
-+	init_completion(&p->done_dma_tx);
-+	init_completion(&p->done_dma_rx);
- 
- 	p->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(p->clk)) {
++#ifdef CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG
++		if (p->mode == SPI_MSIOF_MASTER)
++			msleep(TRANSFAR_SYNC_DELAY);
++#endif /* CONFIG_SPI_SH_MSIOF_TRANSFER_SYNC_DEBUG */
++
+ 		n = sh_msiof_spi_txrx_once(p, tx_fifo, rx_fifo, tx_buf, rx_buf,
+ 					   words, bits);
+ 		if (n < 0)
 -- 
 2.14.1

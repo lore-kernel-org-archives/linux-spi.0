@@ -1,62 +1,49 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Single SPI Protocol Driver with multiple SPI Slaves
-Date: Wed, 6 Sep 2017 14:09:50 +0100
-Message-ID: <20170906130950.q5acowbqa65h3zrz@sirena.co.uk>
-References: <faa18de5-545a-4be1-eaf0-a0374a75d7e2@naio-technologies.com>
- <af912d1d-a036-ebc3-5439-09a44e98f437@metafoo.de>
+Subject: Re: [PATCH] spi: Use ida to manage SPI bus number
+Date: Wed, 6 Sep 2017 14:28:46 +0100
+Message-ID: <20170906132846.il4ycaxu75ezsyt4@sirena.co.uk>
+References: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang@linaro.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7sgjarwmr7awkgur"
-Cc: =?iso-8859-1?B?TOlv?= Serre <leo-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="3guhzl5rqptqybw3"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <af912d1d-a036-ebc3-5439-09a44e98f437-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---7sgjarwmr7awkgur
+--3guhzl5rqptqybw3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Sep 06, 2017 at 01:49:25PM +0200, Lars-Peter Clausen wrote:
+On Wed, Sep 06, 2017 at 07:26:51PM +0800, Baolin Wang wrote:
+> This patch adds one static ida variable to manage SPI bus number, moreover
+> we can get dynamic bus number from ida instead of one "dynamic" IDs, which
+> can be removed.
 
-> There are currently no facilities in the kernel to do this. I've have had a
-> similar problem with a different driver and given this some thought.
+Someone else actually addressed this TODO item just in the last
+development cycle, v4.14 should contain an equivalent patch.  Always
+best to check linux-next for the latest development state!
 
-The kernel really can't cope with this at all, it's got a fairly clear
-idea that a device will only have one control bus.
-
-> Conceptually I think the best approach is to have something like
-> i2c_new_dummy() that creates a second slave device with a different address
-> for an existing device.
-
-> The main issue with implementing this is the global spi_add_lock mutex which
-> prevents a SPI device from being created from within the probe() callback of
-> another SPI device.
-
-There's also the devices that want to use multiple buses simultaneously
-that cause problems here, it's not just SPI vs SPI - there's one audio
-CODEC upstream that's got mixed I2C and SPI control.
-
---7sgjarwmr7awkgur
+--3guhzl5rqptqybw3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmv850ACgkQJNaLcl1U
-h9CGCQf/e2Tc+cYYUIaw/N7Uu+t6PRRp4qToSZED1J//7qNdMEEYjmRQMp7HOOsY
-98a44puVg5nO/EqLuWCBl3365Z2KoQUCEtNjX3q65v9pGHt/FaAxBK1pdk2ZLO1P
-FCjG+TSm0eh8iCV1KJlwsA9xjwZa6VhMCEKlE7JLSO/c+ZVhz3TRi2GBDLvAHcUP
-0PnnyxeXoc3gR1+a/QZcZ8e2EN3qtRRMebmmv+YsChXz2zSMycFYyhNm0m02/3X/
-n3nlHW9wMH5yP1NZESMo8XXmrPun4K3Un+lPq24O1kKSdVjbBCHCzVQRM8S7aEip
-9f+uSlxiD/b8oMP3sGS0vszZb7M7rA==
-=Vjyq
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmv+A4ACgkQJNaLcl1U
+h9BFhQf/Y0zAEJjGTDFX/tOfF2Cz0WZSX1z0rJ6gMy5roCiFwIf9eKSJ33H25pGs
+sNGA7snBhDfApWeOCZm3xHamSozsBm99QSby9cIiX4JLfTalTrJrP7VyB8GdCnsK
+uNC/sU2xPNlY2PRApvT4qrf359t4Muz4e67pegE0a9949OhUqOwskYGQlo/XUjmY
+7XDoKM9mqD2y0uXvZ+/v72kg/pZSIT1vnRkSreyi7ChYF66kJ5OReomRPZrRHuhA
+RN4+GaHzyMhzPTkGIQj2baZx5Vl490/Fi291dVRWCOiqfiSSsaVq42NGtcKDQQHB
+4H8BbldigOv1rCkc5ocahOG4JrV4mw==
+=VdK/
 -----END PGP SIGNATURE-----
 
---7sgjarwmr7awkgur--
+--3guhzl5rqptqybw3--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

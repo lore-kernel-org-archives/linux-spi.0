@@ -1,92 +1,53 @@
-From: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] spi: Use ida to manage SPI bus number
-Date: Wed,  6 Sep 2017 19:26:51 +0800
-Message-ID: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang@linaro.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: Re: Single SPI Protocol Driver with multiple SPI Slaves
+Date: Wed, 6 Sep 2017 13:49:25 +0200
+Message-ID: <af912d1d-a036-ebc3-5439-09a44e98f437@metafoo.de>
+References: <faa18de5-545a-4be1-eaf0-a0374a75d7e2@naio-technologies.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+To: =?UTF-8?Q?L=c3=a9o_Serre?= <leo-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <faa18de5-545a-4be1-eaf0-a0374a75d7e2-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds one static ida variable to manage SPI bus number, moreover
-we can get dynamic bus number from ida instead of one "dynamic" IDs, which
-can be removed.
+On 09/05/2017 11:13 AM, Léo Serre wrote:
+> Hello,
+> 
+> I have written three SPI drivers for BMX055 sensor (accelerometer +
+> gyroscope + magnetometer). It appears that in that case, it was perfect to
+> write three different drivers as the different components were independants.
+> 
+> I'm now working on a driver for MRF89XA (Microchip's radio chip) that is
+> composed of two SPI slaves (one for config and one for data). The device is
+> attached to the driver using a Device Tree.
+> 
+> Is that possible to write a single driver, that works with a pair of SPI
+> slaves?
 
-Signed-off-by: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+There are currently no facilities in the kernel to do this. I've have had a
+similar problem with a different driver and given this some thought.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4fcbb0a..1498be2 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -40,10 +40,13 @@
- #include <linux/ioport.h>
- #include <linux/acpi.h>
- #include <linux/highmem.h>
-+#include <linux/idr.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
- 
-+static DEFINE_IDA(spi_bus_ida);
-+
- static void spidev_release(struct device *dev)
- {
- 	struct spi_device	*spi = to_spi_device(dev);
-@@ -2052,7 +2055,6 @@ static int of_spi_register_master(struct spi_controller *ctlr)
-  */
- int spi_register_controller(struct spi_controller *ctlr)
- {
--	static atomic_t		dyn_bus_id = ATOMIC_INIT((1<<15) - 1);
- 	struct device		*dev = ctlr->dev.parent;
- 	struct boardinfo	*bi;
- 	int			status = -ENODEV;
-@@ -2076,12 +2078,15 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if ((ctlr->bus_num < 0) && ctlr->dev.of_node)
- 		ctlr->bus_num = of_alias_get_id(ctlr->dev.of_node, "spi");
- 
--	/* convention:  dynamically assigned bus IDs count down from the max */
-+	if (ctlr->bus_num >= 0)
-+		ctlr->bus_num = ida_simple_get(&spi_bus_ida, ctlr->bus_num,
-+					       ctlr->bus_num + 1, GFP_KERNEL);
-+
- 	if (ctlr->bus_num < 0) {
--		/* FIXME switch to an IDR based scheme, something like
--		 * I2C now uses, so we can't run out of "dynamic" IDs
--		 */
--		ctlr->bus_num = atomic_dec_return(&dyn_bus_id);
-+		ctlr->bus_num = ida_simple_get(&spi_bus_ida, 0, 0, GFP_KERNEL);
-+		if (ctlr->bus_num < 0)
-+			return ctlr->bus_num;
-+
- 		dynamic = 1;
- 	}
- 
-@@ -2128,7 +2133,10 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	/* Register devices from the device tree and ACPI */
- 	of_register_spi_devices(ctlr);
- 	acpi_register_spi_devices(ctlr);
-+
-+	return 0;
- done:
-+	ida_simple_remove(&spi_bus_ida, ctlr->bus_num);
- 	return status;
- }
- EXPORT_SYMBOL_GPL(spi_register_controller);
-@@ -2202,6 +2210,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	list_del(&ctlr->list);
- 	mutex_unlock(&board_lock);
- 
-+	ida_simple_remove(&spi_bus_ida, ctlr->bus_num);
- 	dummy = device_for_each_child(&ctlr->dev, NULL, __unregister);
- 	device_unregister(&ctlr->dev);
- }
--- 
-1.7.9.5
+Conceptually I think the best approach is to have something like
+i2c_new_dummy() that creates a second slave device with a different address
+for an existing device.
 
+The main issue with implementing this is the global spi_add_lock mutex which
+prevents a SPI device from being created from within the probe() callback of
+another SPI device.
+
+The lock is used to prevent two SPI devices with the same chip-select being
+registered on the same master concurrently and overwriting each others
+configuration.
+
+One way to remove the need for the lock could be to use a per master atomic
+bitmap that keeps track of the chip-selects that are in use. But this would
+require some additional memory in the spi_master struct.
+
+- Lars
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,72 +1,52 @@
-From: Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 6/8] spi: sh-msiof: Add MSIOF parent clock changing function for R-Car Gen3
-Date: Wed, 6 Sep 2017 09:05:05 +0200
-Message-ID: <20170906070507.26223-7-dirk.behme@de.bosch.com>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH 3/8] spi: sh-msiof: Fix MSIOF address for DMAC
+Date: Wed, 6 Sep 2017 09:05:02 +0200
+Message-ID: <20170906070507.26223-4-dirk.behme@de.bosch.com>
 References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        Dirk Behme <dirk.behme@de.bosch.com>
-To: <linux-renesas-soc@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <20170906070507.26223-1-dirk.behme@de.bosch.com>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+To: <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170906070507.26223-1-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+From: Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 
-Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+MSIOF Base Address H'E6xx can be accessed by CPU and DMAC.
+MSIOF Base Address H'E7xx for DMAC was removed from H/W manual.
+
+Signed-off-by: Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index a960e8da123d..2c53fc3f73af 100644
+index f9300fdf41e5..24b49d3ca9a8 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -188,6 +188,14 @@ struct sh_msiof_spi_priv {
- #define IER_RFOVFE	0x00000008 /* Receive FIFO Overflow Enable */
- 
- 
-+static int msiof_rcar_is_gen3(struct device *dev)
-+{
-+	struct device_node *node = dev->of_node;
-+
-+	return of_device_is_compatible(node, "renesas,msiof-r8a7795") ||
-+		of_device_is_compatible(node, "renesas,msiof-r8a7796");
-+}
-+
- static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
- {
- 	switch (reg_offs) {
-@@ -1252,6 +1260,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	const struct of_device_id *of_id;
- 	struct sh_msiof_spi_info *info;
- 	struct sh_msiof_spi_priv *p;
-+	struct clk *ref_clk;
-+	u32 clk_rate = 0;
- 	int i;
- 	int ret;
- 
-@@ -1352,6 +1362,17 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 		goto err2;
+@@ -1145,10 +1145,7 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+ 		return 0;
  	}
  
-+	if (msiof_rcar_is_gen3(&master->dev)) {
-+		ref_clk = devm_clk_get(&pdev->dev, "msiof_ref_clk");
-+		if (!IS_ERR(ref_clk))
-+			clk_rate = clk_get_rate(ref_clk);
-+		if (clk_rate) {
-+			clk_prepare_enable(p->clk);
-+			clk_set_rate(p->clk, clk_rate);
-+			clk_disable_unprepare(p->clk);
-+		}
-+	}
-+
- 	return 0;
+-	/* The DMA engine uses the second register set, if present */
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+-	if (!res)
+-		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
  
-  err2:
+ 	master = p->master;
+ 	master->dma_tx = sh_msiof_request_dma_chan(dev, DMA_MEM_TO_DEV,
 -- 
 2.14.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

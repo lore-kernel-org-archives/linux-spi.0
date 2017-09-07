@@ -1,65 +1,61 @@
-From: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum ADI controller documentation
-Date: Thu, 7 Sep 2017 11:29:05 +0800
-Message-ID: <CAMz4ku+hKaemHQdVtNEbCf0J_9CjqKouSygAaQsqf+hBzGd-mg@mail.gmail.com>
-References: <ccbb0641fa123021249c7a51cbe2dcd975c41f39.1504677110.git.baolin.wang@spreadtrum.com>
- <20170906145900.yesyfyruv5wd3wxj@sirena.co.uk>
+From: =?UTF-8?Q?L=c3=a9o_Serre?= <leo-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>
+Subject: Re: Single SPI Protocol Driver with multiple SPI Slaves
+Date: Thu, 7 Sep 2017 09:03:59 +0200
+Message-ID: <6a5ddbb9-3203-48aa-a4d9-7bd100224592@naio-technologies.com>
+References: <faa18de5-545a-4be1-eaf0-a0374a75d7e2@naio-technologies.com>
+ <af912d1d-a036-ebc3-5439-09a44e98f437@metafoo.de>
+ <20170906130950.q5acowbqa65h3zrz@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170906145900.yesyfyruv5wd3wxj-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
+In-Reply-To: <20170906130950.q5acowbqa65h3zrz-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Thanks for your answers,
 
-On 6 September 2017 at 22:59, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Sep 06, 2017 at 02:10:43PM +0800, Baolin Wang wrote:
->
->> +- hwlocks: Reference to a phandle of a hwlock provider node.
->> +- hwlock-names: Reference to hwlock name strings defined in the same order
->> +     as the hwlocks.
->
-> What are these hwlocks protecting, and what names are expected?
+It appears that the solution is to bind the driver to a unique SPI slave 
+in the device-tree using a fake CS pin.
 
-I made one explanation in above sentence, I assume it is not clear.
-Since we have multi-subsystems will use ADI to access analog chip,
-when one system is reading/writing data by ADI, which should be under
-one hardware spinlock protection to prevent other systems from
-reading/writing data by ADI at the same time, or two parallel routine
-of setting ADI registers will get incorrect results.
+Then in the probe function, assign two GPIO pins to the control the two 
+CS of the device.
 
-The hwspinlock name should be "adi", and I will make it clear in next version.
+I'm sure that solution will work but:
+  * The driver will be written specifically to a configuration (GPIO pin 
+number hard-coded)
+  * Requires a unused pin (the fake CS pin, except if it is possible to 
+setup the SPI bus as "no-cs" in the device-tree).
+  * Requires do find the GPIO pin number, that could be quite difficult 
+in iMX6 for example.
 
->
->> +Optional properties:
->> +- sprd,hw-channels: Specify the hardware channel number and mapped address
->> +     for hardware channel accessing.
->
-> What do these mean and how are the numbers and how will the binding be
-> interpreted?
+Léo
 
-I also gave one explanation in above sentence, is it not clear? I try again.
-
-ADI controller has 50 channels including 2 software read/write
-channels and 48 hardware channels to access analog chip. For 2
-software read/write channels, which means we should set ADI registers
-to access analog chip. But For hardware channels, we can just mapped
-one analog chip address to one hardware channel, then user can access
-analog chip by hardware channel without setting ADI registers.
-
-For this "sprd,hw-channels" property, the first value specifies the
-channel id, and the second value specifies the address which is mapped
-into analog chip space.
-
--- 
-Baolin.wang
-Best Regards
+Le 06/09/2017 à 15:09, Mark Brown a écrit :
+> On Wed, Sep 06, 2017 at 01:49:25PM +0200, Lars-Peter Clausen wrote:
+> 
+>> There are currently no facilities in the kernel to do this. I've have had a
+>> similar problem with a different driver and given this some thought.
+> 
+> The kernel really can't cope with this at all, it's got a fairly clear
+> idea that a device will only have one control bus.
+> 
+>> Conceptually I think the best approach is to have something like
+>> i2c_new_dummy() that creates a second slave device with a different address
+>> for an existing device.
+> 
+>> The main issue with implementing this is the global spi_add_lock mutex which
+>> prevents a SPI device from being created from within the probe() callback of
+>> another SPI device.
+> 
+> There's also the devices that want to use multiple buses simultaneously
+> that cause problems here, it's not just SPI vs SPI - there's one audio
+> CODEC upstream that's got mixed I2C and SPI control.
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

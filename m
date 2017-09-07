@@ -1,111 +1,90 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/8] spi: sh-msiof: Fix DMA transfer size check
-Date: Thu, 7 Sep 2017 11:12:16 +0200
-Message-ID: <CAMuHMdXQKj3F02zur3BZ95Et+btQD=rOfpMUC8cFWBnwF4Qxdw@mail.gmail.com>
-References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
- <20170906070507.26223-3-dirk.behme@de.bosch.com> <CAMuHMdWzWK5UTtmfoGmpHEwac8i3r1c6XqzT6cmwMXko2X7mvw@mail.gmail.com>
- <931484ec-8830-0e63-98cb-9dd58ce35230@de.bosch.com> <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
- <09ce4c7a-347c-7df8-d8ed-4eb61a00bd20@de.bosch.com> <CAMuHMdVo_62kYYmgLZNHksRi+Z96K+tu9KTsgyKfmk6U_gP79w@mail.gmail.com>
- <a3fbaa5c-caa1-c28f-3248-6c5557a96d8c@de.bosch.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum ADI controller
+ documentation
+Date: Thu, 7 Sep 2017 10:54:35 +0100
+Message-ID: <20170907095435.5yhybxz6oootp37h@sirena.co.uk>
+References: <ccbb0641fa123021249c7a51cbe2dcd975c41f39.1504677110.git.baolin.wang@spreadtrum.com>
+ <20170906145900.yesyfyruv5wd3wxj@sirena.co.uk>
+ <CAMz4ku+hKaemHQdVtNEbCf0J_9CjqKouSygAaQsqf+hBzGd-mg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a3fbaa5c-caa1-c28f-3248-6c5557a96d8c-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="dp67jsqfqnmybocx"
+Cc: Baolin Wang <baolin.wang@spreadtrum.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+To: Baolin Wang <baolin.wang@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAMz4ku+hKaemHQdVtNEbCf0J_9CjqKouSygAaQsqf+hBzGd-mg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Dirk,
 
-On Thu, Sep 7, 2017 at 11:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org> wrote:
-> On 07.09.2017 10:59, Geert Uytterhoeven wrote:
->> On Thu, Sep 7, 2017 at 10:42 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->> wrote:
->>> On 07.09.2017 10:39, Geert Uytterhoeven wrote:
->>>> On Thu, Sep 7, 2017 at 10:33 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>> wrote:
->>>>> On 07.09.2017 10:31, Geert Uytterhoeven wrote:
->>>>>> On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>>>> wrote:
->>>>>>> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->>>>>>> DMA supports 32-bit words only,
->>>>>>> even if BITLEN1 of SITMDR2 register is 16bit.
->>>>>>>
->>>>>>> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->>>>>>> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>>>>> ---
->>>>>>>     drivers/spi/spi-sh-msiof.c | 2 +-
->>>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
->>>>>>> index 2b4d3a520176..f9300fdf41e5 100644
->>>>>>> --- a/drivers/spi/spi-sh-msiof.c
->>>>>>> +++ b/drivers/spi/spi-sh-msiof.c
->>>>>>> @@ -904,7 +904,7 @@ static int sh_msiof_transfer_one(struct
->>>>>>> spi_master
->>>>>>> *master,
->>>>>>>                                    break;
->>>>>>>                            copy32 = copy_bswap32;
->>>>>>>                    } else if (bits <= 16) {
->>>>>>> -                       if (l & 1)
->>>>>>> +                       if (l & 3)
->>>>>>>                                    break;
->>>>>>>                            copy32 = copy_wswap32;
->>>>>>>                    } else {
->>>>>>
->>>>>> Looks OK, as l is in bytes, not 16-bit words.
->>>>>>
->>>>>> Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
->>>>>
->>>>> What do you think about CCing this to -stable?
->>>>
->>>> Sounds OK. Have you tested this?
->>>
->>> I tested all 8 patches together if they fix the issues I observed with
->>> plain
->>> mainline.
->>
->> Could you please elaborate about the issues you observed with plain
->> mainline?
->> It may help to identify which patches are responsible for fixing them.
->
-> I've been told that an easy test case is to just cat random data (any mid
-> sized file) into SPI. E.g.:
->
-> # cat /proc/cpuinfo > /dev/spidev32764.2
-> [  504.544948] spi_sh_msiof e6e90000.spi: failed to shut down hardware
-> [  504.551265] spidev spi32764.2: SPI transfer failed: -110
-> [  504.556625] spi_master spi32764: failed to transfer one message from
-> queue
-> [  504.564857] spi_sh_msiof e6e90000.spi: failed to shut down hardware
-> [  504.571177] spidev spi32764.2: SPI transfer failed: -110
-> [  504.576528] spi_master spi32764: failed to transfer one message from
-> queue
-> cat: write error: Connection timed out
->
-> done on plain 4.13-rc6.
+--dp67jsqfqnmybocx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you, that's very valuable information!
-We'll give it a try...
+On Thu, Sep 07, 2017 at 11:29:05AM +0800, Baolin Wang wrote:
+> On 6 September 2017 at 22:59, Mark Brown <broonie@kernel.org> wrote:
+> > On Wed, Sep 06, 2017 at 02:10:43PM +0800, Baolin Wang wrote:
 
-Note that this test does not exercise the code path affected by this particular
-patch ;-)
+> >> +- hwlocks: Reference to a phandle of a hwlock provider node.
+> >> +- hwlock-names: Reference to hwlock name strings defined in the same order
+> >> +     as the hwlocks.
 
-Gr{oetje,eeting}s,
+> > What are these hwlocks protecting, and what names are expected?
 
-                        Geert
+> I made one explanation in above sentence, I assume it is not clear.
+> Since we have multi-subsystems will use ADI to access analog chip,
+> when one system is reading/writing data by ADI, which should be under
+> one hardware spinlock protection to prevent other systems from
+> reading/writing data by ADI at the same time, or two parallel routine
+> of setting ADI registers will get incorrect results.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+> The hwspinlock name should be "adi", and I will make it clear in next version.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+So there's other drivers that might also be accessing this IP block?
+
+> >> +Optional properties:
+> >> +- sprd,hw-channels: Specify the hardware channel number and mapped address
+> >> +     for hardware channel accessing.
+
+> > What do these mean and how are the numbers and how will the binding be
+> > interpreted?
+
+> I also gave one explanation in above sentence, is it not clear? I try again.
+
+It says what they are, it doesn't say for example what a hardware
+channel is or how those numbers map onto the actual hardware.
+
+> ADI controller has 50 channels including 2 software read/write
+> channels and 48 hardware channels to access analog chip. For 2
+> software read/write channels, which means we should set ADI registers
+> to access analog chip. But For hardware channels, we can just mapped
+> one analog chip address to one hardware channel, then user can access
+> analog chip by hardware channel without setting ADI registers.
+
+> For this "sprd,hw-channels" property, the first value specifies the
+> channel id, and the second value specifies the address which is mapped
+> into analog chip space.
+
+So does this driver control all the channels or are there other drivers
+(or hardware components) that control some of the other channels?
+
+--dp67jsqfqnmybocx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmxF1oACgkQJNaLcl1U
+h9DyxQf/fVqmR0vdFkLnCR9LQ02Y/Su8TujJSIOse/f+FP/7jJ1/LIbgCqvZ/nFq
+4LwpNn4M76HKv4k/q/Qy1TWV+wwkdFTAgiIqGz4pgHR7bXJYg9AoSFCRS10nYt62
+3Po+Q+CrjDomPotQIO7jQPQvJ5wQH17m9Vdyofi9jMeFVJNPJddCOoDf4MDe7liI
+wtN9ig+s53PHt+53GmKIf4jMHKGfRBMh7x2YGE5J1nWYO08gLncnZpGUzoy4laXs
+1MT77gSkzbzHO2ocfgdjN/3dhYmmzNByCYxW24Dwy+XmuYYDPAIu7S9wQFpk054j
+3i0r6eRpvfQqHZ1JEp0pzIjXIKKmeA==
+=Lrxi
+-----END PGP SIGNATURE-----
+
+--dp67jsqfqnmybocx--

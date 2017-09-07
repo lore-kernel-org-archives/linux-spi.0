@@ -1,73 +1,91 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 5/8] spi: sh-msiof: Wait for Tx FIFO empty after DMA
-Date: Thu, 7 Sep 2017 10:34:49 +0200
-Message-ID: <CAMuHMdX0tu1aZqQoqUwvaN-dnsKicU_UwmRFzW6KL0LKJiULVQ@mail.gmail.com>
-References: <20170906070507.26223-1-dirk.behme@de.bosch.com> <20170906070507.26223-6-dirk.behme@de.bosch.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 6/8] spi: sh-msiof: Add MSIOF parent clock changing
+ function for R-Car Gen3
+Date: Thu, 7 Sep 2017 10:38:24 +0200
+Message-ID: <CAMuHMdVzv_cSSfRtHpfq86YoU-rxB4tk+LxyagTRAOvEoFxhYg@mail.gmail.com>
+References: <20170906070507.26223-1-dirk.behme@de.bosch.com> <20170906070507.26223-7-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170906070507.26223-6-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <20170906070507.26223-7-dirk.behme@de.bosch.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Hi Dirk,
 
-On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org> wrote:
-> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme@de.bosch.com> wrote:
+> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
 >
-> When Tx DMA is only used, Tx FIFO is still not empty after DMA callback.
-> This patch waits for sweeping data out of the Tx FIFO.
->
-> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> [adjust context]
-> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > ---
->  drivers/spi/spi-sh-msiof.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+>  drivers/spi/spi-sh-msiof.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 >
 > diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 660b03ed6770..a960e8da123d 100644
+> index a960e8da123d..2c53fc3f73af 100644
 > --- a/drivers/spi/spi-sh-msiof.c
 > +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -638,6 +638,17 @@ static int sh_msiof_wait_for_completion(struct sh_msiof_spi_priv *p,
->                                 dev_err(&p->pdev->dev, "Tx DMA timeout\n");
->                                 return -ETIMEDOUT;
->                         }
-> +                       if (!rx) {
-
-May the issue also happen is TX and RX are used?
-See also "[PATCH 4/8] spi: sh-msiof: Fix DMA completion".
-
-> +                               sh_msiof_write(p, IER, IER_TEOFE);
+> @@ -188,6 +188,14 @@ struct sh_msiof_spi_priv {
+>  #define IER_RFOVFE     0x00000008 /* Receive FIFO Overflow Enable */
+>
+>
+> +static int msiof_rcar_is_gen3(struct device *dev)
+> +{
+> +       struct device_node *node = dev->of_node;
 > +
-> +                               /* wait for tx fifo to be emptied */
-> +                               if (!wait_for_completion_timeout(&p->done,
-> +                                                                HZ)) {
-> +                                       dev_err(&p->pdev->dev,
-> +                                       "Tx fifo to be emptied timeout\n");
-> +                                       return -ETIMEDOUT;
-> +                               }
-> +                       }
->                 }
->                 if (rx) {
->                         if (!wait_for_completion_timeout(&p->done_dma_rx,
+> +       return of_device_is_compatible(node, "renesas,msiof-r8a7795") ||
+> +               of_device_is_compatible(node, "renesas,msiof-r8a7796");
+
+Things like this should be done by adding a flag to struct sh_msiof_chipdata
+instead.
+
+> +}
+> +
+>  static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+>  {
+>         switch (reg_offs) {
+> @@ -1252,6 +1260,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+>         const struct of_device_id *of_id;
+>         struct sh_msiof_spi_info *info;
+>         struct sh_msiof_spi_priv *p;
+> +       struct clk *ref_clk;
+> +       u32 clk_rate = 0;
+>         int i;
+>         int ret;
+>
+> @@ -1352,6 +1362,17 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+>                 goto err2;
+>         }
+>
+> +       if (msiof_rcar_is_gen3(&master->dev)) {
+> +               ref_clk = devm_clk_get(&pdev->dev, "msiof_ref_clk");
+
+Where is this clock coming from?
+The MSIOF DT bindings specify a single clock only.
+
+> +               if (!IS_ERR(ref_clk))
+> +                       clk_rate = clk_get_rate(ref_clk);
+> +               if (clk_rate) {
+> +                       clk_prepare_enable(p->clk);
+> +                       clk_set_rate(p->clk, clk_rate);
+> +                       clk_disable_unprepare(p->clk);
+> +               }
+> +       }
+> +
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

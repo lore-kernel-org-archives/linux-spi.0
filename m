@@ -1,91 +1,74 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 6/8] spi: sh-msiof: Add MSIOF parent clock changing
- function for R-Car Gen3
-Date: Thu, 7 Sep 2017 10:38:24 +0200
-Message-ID: <CAMuHMdVzv_cSSfRtHpfq86YoU-rxB4tk+LxyagTRAOvEoFxhYg@mail.gmail.com>
-References: <20170906070507.26223-1-dirk.behme@de.bosch.com> <20170906070507.26223-7-dirk.behme@de.bosch.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 2/8] spi: sh-msiof: Fix DMA transfer size check
+Date: Thu, 7 Sep 2017 10:39:18 +0200
+Message-ID: <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
+References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
+ <20170906070507.26223-3-dirk.behme@de.bosch.com> <CAMuHMdWzWK5UTtmfoGmpHEwac8i3r1c6XqzT6cmwMXko2X7mvw@mail.gmail.com>
+ <931484ec-8830-0e63-98cb-9dd58ce35230@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <20170906070507.26223-7-dirk.behme@de.bosch.com>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <931484ec-8830-0e63-98cb-9dd58ce35230-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 Hi Dirk,
 
-On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme@de.bosch.com> wrote:
-> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+On Thu, Sep 7, 2017 at 10:33 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org> wrote:
+> On 07.09.2017 10:31, Geert Uytterhoeven wrote:
+>> On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+>> wrote:
+>>> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+>>>
+>>> DMA supports 32-bit words only,
+>>> even if BITLEN1 of SITMDR2 register is 16bit.
+>>>
+>>> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+>>> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+>>> ---
+>>>   drivers/spi/spi-sh-msiof.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+>>> index 2b4d3a520176..f9300fdf41e5 100644
+>>> --- a/drivers/spi/spi-sh-msiof.c
+>>> +++ b/drivers/spi/spi-sh-msiof.c
+>>> @@ -904,7 +904,7 @@ static int sh_msiof_transfer_one(struct spi_master
+>>> *master,
+>>>                                  break;
+>>>                          copy32 = copy_bswap32;
+>>>                  } else if (bits <= 16) {
+>>> -                       if (l & 1)
+>>> +                       if (l & 3)
+>>>                                  break;
+>>>                          copy32 = copy_wswap32;
+>>>                  } else {
+>>
+>>
+>> Looks OK, as l is in bytes, not 16-bit words.
+>>
+>> Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 >
-> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-> ---
->  drivers/spi/spi-sh-msiof.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index a960e8da123d..2c53fc3f73af 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -188,6 +188,14 @@ struct sh_msiof_spi_priv {
->  #define IER_RFOVFE     0x00000008 /* Receive FIFO Overflow Enable */
->
->
-> +static int msiof_rcar_is_gen3(struct device *dev)
-> +{
-> +       struct device_node *node = dev->of_node;
-> +
-> +       return of_device_is_compatible(node, "renesas,msiof-r8a7795") ||
-> +               of_device_is_compatible(node, "renesas,msiof-r8a7796");
+> What do you think about CCing this to -stable?
 
-Things like this should be done by adding a flag to struct sh_msiof_chipdata
-instead.
-
-> +}
-> +
->  static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
->  {
->         switch (reg_offs) {
-> @@ -1252,6 +1260,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
->         const struct of_device_id *of_id;
->         struct sh_msiof_spi_info *info;
->         struct sh_msiof_spi_priv *p;
-> +       struct clk *ref_clk;
-> +       u32 clk_rate = 0;
->         int i;
->         int ret;
->
-> @@ -1352,6 +1362,17 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
->                 goto err2;
->         }
->
-> +       if (msiof_rcar_is_gen3(&master->dev)) {
-> +               ref_clk = devm_clk_get(&pdev->dev, "msiof_ref_clk");
-
-Where is this clock coming from?
-The MSIOF DT bindings specify a single clock only.
-
-> +               if (!IS_ERR(ref_clk))
-> +                       clk_rate = clk_get_rate(ref_clk);
-> +               if (clk_rate) {
-> +                       clk_prepare_enable(p->clk);
-> +                       clk_set_rate(p->clk, clk_rate);
-> +                       clk_disable_unprepare(p->clk);
-> +               }
-> +       }
-> +
+Sounds OK. Have you tested this?
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

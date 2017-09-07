@@ -1,72 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Single SPI Protocol Driver with multiple SPI Slaves
-Date: Thu, 7 Sep 2017 11:13:06 +0100
-Message-ID: <20170907101306.jsaa7ysckdxk3m62@sirena.co.uk>
-References: <faa18de5-545a-4be1-eaf0-a0374a75d7e2@naio-technologies.com>
- <af912d1d-a036-ebc3-5439-09a44e98f437@metafoo.de>
- <20170906130950.q5acowbqa65h3zrz@sirena.co.uk>
- <6a5ddbb9-3203-48aa-a4d9-7bd100224592@naio-technologies.com>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum ADI controller documentation
+Date: Thu, 7 Sep 2017 19:03:18 +0800
+Message-ID: <CAMz4kuLGTCgppki=je9pE5SidRnYWJA-nJd1=RD7qdN1ZRww3Q@mail.gmail.com>
+References: <ccbb0641fa123021249c7a51cbe2dcd975c41f39.1504677110.git.baolin.wang@spreadtrum.com>
+ <20170906145900.yesyfyruv5wd3wxj@sirena.co.uk> <CAMz4ku+hKaemHQdVtNEbCf0J_9CjqKouSygAaQsqf+hBzGd-mg@mail.gmail.com>
+ <20170907095435.5yhybxz6oootp37h@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="choolnanjbxm7vor"
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: =?iso-8859-1?B?TOlv?= Serre <leo-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <6a5ddbb9-3203-48aa-a4d9-7bd100224592-fx4xgHRsvDuU6xZXA0faPpqQE7yCjDx5@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Baolin Wang <baolin.wang@spreadtrum.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170907095435.5yhybxz6oootp37h@sirena.co.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On 7 September 2017 at 17:54, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Sep 07, 2017 at 11:29:05AM +0800, Baolin Wang wrote:
+>> On 6 September 2017 at 22:59, Mark Brown <broonie@kernel.org> wrote:
+>> > On Wed, Sep 06, 2017 at 02:10:43PM +0800, Baolin Wang wrote:
+>
+>> >> +- hwlocks: Reference to a phandle of a hwlock provider node.
+>> >> +- hwlock-names: Reference to hwlock name strings defined in the same order
+>> >> +     as the hwlocks.
+>
+>> > What are these hwlocks protecting, and what names are expected?
+>
+>> I made one explanation in above sentence, I assume it is not clear.
+>> Since we have multi-subsystems will use ADI to access analog chip,
+>> when one system is reading/writing data by ADI, which should be under
+>> one hardware spinlock protection to prevent other systems from
+>> reading/writing data by ADI at the same time, or two parallel routine
+>> of setting ADI registers will get incorrect results.
+>
+>> The hwspinlock name should be "adi", and I will make it clear in next version.
+>
+> So there's other drivers that might also be accessing this IP block?
 
---choolnanjbxm7vor
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes. Other drivers (like regulator, RTC or charger ... ) can access
+analog chip (like PMIC) by ADI controller. But the hardware spinlock
+is used to synchronize between the multiple subsystems, since we only
+have one ADI controller.
 
-On Thu, Sep 07, 2017 at 09:03:59AM +0200, L=E9o Serre wrote:
-> Thanks for your answers,
+>
+>> >> +Optional properties:
+>> >> +- sprd,hw-channels: Specify the hardware channel number and mapped address
+>> >> +     for hardware channel accessing.
+>
+>> > What do these mean and how are the numbers and how will the binding be
+>> > interpreted?
+>
+>> I also gave one explanation in above sentence, is it not clear? I try again.
+>
+> It says what they are, it doesn't say for example what a hardware
+> channel is or how those numbers map onto the actual hardware.
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+OK. I will add more documentation to explain that.
 
-> It appears that the solution is to bind the driver to a unique SPI slave =
-in
-> the device-tree using a fake CS pin.
+>
+>> ADI controller has 50 channels including 2 software read/write
+>> channels and 48 hardware channels to access analog chip. For 2
+>> software read/write channels, which means we should set ADI registers
+>> to access analog chip. But For hardware channels, we can just mapped
+>> one analog chip address to one hardware channel, then user can access
+>> analog chip by hardware channel without setting ADI registers.
+>
+>> For this "sprd,hw-channels" property, the first value specifies the
+>> channel id, and the second value specifies the address which is mapped
+>> into analog chip space.
+>
+> So does this driver control all the channels or are there other drivers
+> (or hardware components) that control some of the other channels?
 
-> Then in the probe function, assign two GPIO pins to the control the two CS
-> of the device.
+The ADI driver only controls 2 software channels (read/write), and
+other hardware channels can be controlled by hardware components if we
+set the hardware config.
 
-> I'm sure that solution will work but:
->  * The driver will be written specifically to a configuration (GPIO pin
-> number hard-coded)
->  * Requires a unused pin (the fake CS pin, except if it is possible to se=
-tup
-> the SPI bus as "no-cs" in the device-tree).
->  * Requires do find the GPIO pin number, that could be quite difficult in
-> iMX6 for example.
-
-That's going into an ABI so will be difficult to support in future if we
-ever do get direct support for this.
-
---choolnanjbxm7vor
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlmxG7IACgkQJNaLcl1U
-h9AXgQf+MvLD+daHKP6j1L2OZDNF/zvNTr1yuj3gDgYyDK8m20jJtRrQ1QrEGVeO
-2V4NezAImi070EBs6ooQb3geDgO0gTasVNp+KgDsNkKi3tUlMZ/dyDdTZjlcvZk6
-uHM+hZsiLxvw6nxbWGqDf6t9mMqD+bmUp9LPY5/OImtdxAjN1cvC3O2PyXkp79Sp
-/WwcCOgC9N+rf2byGjtKMPo8xDDLi+xw+LF3b8lt/UGJUV7Wa5GA6vsxMAnFNBRj
-DP3E7PrGzweqxGYcJ1+NGQ7l1kTdDRDf0mz9E+R+lK1p03zWDxGnqHtNyOspMU2N
-UQEEwLW1JhFr6/pW4gKRT16vLg0kCA==
-=gdFt
------END PGP SIGNATURE-----
-
---choolnanjbxm7vor--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Baolin.wang
+Best Regards

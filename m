@@ -1,59 +1,72 @@
-From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 4/8] spi: sh-msiof: Fix DMA completion
-Date: Thu, 7 Sep 2017 10:41:13 +0200
-Message-ID: <40ef3c01-983d-b80d-59d4-085a7b7d8f13@de.bosch.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
+Subject: Re: [PATCH 2/8] spi: sh-msiof: Fix DMA transfer size check
+Date: Thu, 7 Sep 2017 10:42:46 +0200
+Message-ID: <09ce4c7a-347c-7df8-d8ed-4eb61a00bd20@de.bosch.com>
 References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
- <20170906070507.26223-5-dirk.behme@de.bosch.com>
- <CAMuHMdW=AA03BLMXO8EpBBx3gdd13VPrjhL1gsEgZR2msYBkcQ@mail.gmail.com>
+ <20170906070507.26223-3-dirk.behme@de.bosch.com>
+ <CAMuHMdWzWK5UTtmfoGmpHEwac8i3r1c6XqzT6cmwMXko2X7mvw@mail.gmail.com>
+ <931484ec-8830-0e63-98cb-9dd58ce35230@de.bosch.com>
+ <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdW=AA03BLMXO8EpBBx3gdd13VPrjhL1gsEgZR2msYBkcQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Cc: Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 07.09.2017 10:33, Geert Uytterhoeven wrote:
+On 07.09.2017 10:39, Geert Uytterhoeven wrote:
 > Hi Dirk,
 > 
-> On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org> wrote:
->> From: Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+> On Thu, Sep 7, 2017 at 10:33 AM, Dirk Behme <dirk.behme@de.bosch.com> wrote:
+>> On 07.09.2017 10:31, Geert Uytterhoeven wrote:
+>>> On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme@de.bosch.com>
+>>> wrote:
+>>>> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+>>>>
+>>>> DMA supports 32-bit words only,
+>>>> even if BITLEN1 of SITMDR2 register is 16bit.
+>>>>
+>>>> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+>>>> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+>>>> ---
+>>>>    drivers/spi/spi-sh-msiof.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+>>>> index 2b4d3a520176..f9300fdf41e5 100644
+>>>> --- a/drivers/spi/spi-sh-msiof.c
+>>>> +++ b/drivers/spi/spi-sh-msiof.c
+>>>> @@ -904,7 +904,7 @@ static int sh_msiof_transfer_one(struct spi_master
+>>>> *master,
+>>>>                                   break;
+>>>>                           copy32 = copy_bswap32;
+>>>>                   } else if (bits <= 16) {
+>>>> -                       if (l & 1)
+>>>> +                       if (l & 3)
+>>>>                                   break;
+>>>>                           copy32 = copy_wswap32;
+>>>>                   } else {
+>>>
+>>>
+>>> Looks OK, as l is in bytes, not 16-bit words.
+>>>
+>>> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 >>
->> When reception DMA completes before transmission DMA, next transmission
->> DMA may not be able to start. This patch adds wait_for_completion_timeout()
->> to both of reception DMA and transmission DMA.
->>
->> If the driver waits only for the Rx DMA completion, the Tx DMA completion
->> thread of DMA Engine may be still processing.
->>
->> Signed-off-by: Ryo Kataoka <ryo.kataoka.wt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->> [reword commit message]
->> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->> [adjust context]
->> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+>> What do you think about CCing this to -stable?
 > 
-> Is this still needed after "[PATCH 5/8] spi: sh-msiof: Wait for Tx
-> FIFO empty after DMA"?
+> Sounds OK. Have you tested this?
 
 
-Do you have a proposal for nice test cases you like to see covered?
-
+I tested all 8 patches together if they fix the issues I observed with 
+plain mainline.
 
 Best regards
 
 Dirk
-
-
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

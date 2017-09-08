@@ -1,36 +1,50 @@
-From: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Use ida to manage SPI bus number
-Date: Fri, 8 Sep 2017 14:26:42 +0800
-Message-ID: <CAMz4kuLjEepehA43C5kGKbLC=ExxYpV-26U8K7CNjQpR0HQG0w@mail.gmail.com>
-References: <2a15b398a8f8d3f6f46f9fd6e8591242d29c44a2.1504697026.git.baolin.wang@linaro.org>
- <20170906132846.il4ycaxu75ezsyt4@sirena.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170906132846.il4ycaxu75ezsyt4-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+Subject: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
+Date: Fri,  8 Sep 2017 09:07:15 +0100
+Message-ID: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+        Chris Paterson <chris.paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Signed-off-by: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-rspi.txt | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-On 6 September 2017 at 21:28, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Sep 06, 2017 at 07:26:51PM +0800, Baolin Wang wrote:
->> This patch adds one static ida variable to manage SPI bus number, moreover
->> we can get dynamic bus number from ida instead of one "dynamic" IDs, which
->> can be removed.
->
-> Someone else actually addressed this TODO item just in the last
-> development cycle, v4.14 should contain an equivalent patch.  Always
-> best to check linux-next for the latest development state!
-
-Yes, I saw that patch. Then ignore this patch, sorry.
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+index 8f4169f..3b02b3a 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -5,11 +5,14 @@ Required properties:
+ 		     "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
+ 		     For Renesas Serial Peripheral Interface on RZ/A1H:
+ 		     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
+-		     For Quad Serial Peripheral Interface on R-Car Gen2:
++		     For Quad Serial Peripheral Interface on R-Car Gen2 and
++		     RZ/G1 devices:
+ 		     "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
+ 		     Examples with soctypes are:
+ 		        - "renesas,rspi-sh7757" (SH)
+ 			- "renesas,rspi-r7s72100" (RZ/A1H)
++			- "renesas,qspi-r8a7743" (RZ/G1M)
++			- "renesas,qspi-r8a7745" (RZ/G1E)
+ 			- "renesas,qspi-r8a7790" (R-Car H2)
+ 			- "renesas,qspi-r8a7791" (R-Car M2-W)
+ 			- "renesas,qspi-r8a7792" (R-Car V2H)
 -- 
-Baolin.wang
-Best Regards
+2.7.4
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

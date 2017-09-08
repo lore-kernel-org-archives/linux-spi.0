@@ -1,89 +1,37 @@
 From: Franklin S Cooper Jr <fcooper@ti.com>
-Subject: [PATCH 2/3] ARM: dts: keystone-k2g: Add SPI nodes
-Date: Fri, 8 Sep 2017 15:46:37 -0500
-Message-ID: <20170908204638.13149-3-fcooper@ti.com>
-References: <20170908204638.13149-1-fcooper@ti.com>
+Subject: [PATCH 0/3] ARM: dts: keystone-k2g-evm: Add SPI nodes and enable SPI1 on K2G EVM
+Date: Fri, 8 Sep 2017 15:46:35 -0500
+Message-ID: <20170908204638.13149-1-fcooper@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Vitaly Andrianov <vitalya@ti.com>,
-        Franklin S Cooper Jr <fcooper@ti.com>
+Cc: Franklin S Cooper Jr <fcooper@ti.com>
 To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <ssantosh@kernel.org>, <linux@armlinux.org.uk>,
         <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20170908204638.13149-1-fcooper@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vitaly Andrianov <vitalya@ti.com>
+Update the binding document to indicate the required requirements
+for 66AK2G. In addition add the proper SPI nodes for 66AK2G. For K2G
+EVM enable SPI1 which is used for the on board SPI NOR.
 
-Add nodes for the various SPI instances.
+Franklin S Cooper Jr (1):
+  dt-bindings: spi: spi-davinci: Update binding for 66AK2Gx pwr dm
+    property
 
-Signed-off-by: Vitaly Andrianov <vitalya@ti.com>
-Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
----
- arch/arm/boot/dts/keystone-k2g.dtsi | 48 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+Murali Karicheri (1):
+  ARM: dts: keystone-k2g-evm: add bindings for SPI NOR flash
 
-diff --git a/arch/arm/boot/dts/keystone-k2g.dtsi b/arch/arm/boot/dts/keystone-k2g.dtsi
-index 826b286..9f9e9e1 100644
---- a/arch/arm/boot/dts/keystone-k2g.dtsi
-+++ b/arch/arm/boot/dts/keystone-k2g.dtsi
-@@ -343,5 +343,53 @@
- 			clock-names = "fck", "mmchsdb_fck";
- 			status = "disabled";
- 		};
-+
-+		spi0: spi@21805400 {
-+			compatible = "ti,keystone-spi";
-+			reg = <0x21805400 0x200>;
-+			num-cs = <4>;
-+			ti,davinci-spi-intr-line = <0>;
-+			interrupts = <GIC_SPI 64 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			power-domains = <&k2g_pds 0x0010>;
-+			clocks = <&k2g_clks 0x0010 0>;
-+		};
-+
-+		spi1: spi@21805800 {
-+			compatible = "ti,keystone-spi";
-+			reg = <0x21805800 0x200>;
-+			num-cs = <4>;
-+			ti,davinci-spi-intr-line = <0>;
-+			interrupts = <GIC_SPI 66 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			power-domains = <&k2g_pds 0x0011>;
-+			clocks = <&k2g_clks 0x0011 0>;
-+		};
-+
-+		spi2: spi@21805c00 {
-+			compatible = "ti,keystone-spi";
-+			reg = <0x21805C00 0x200>;
-+			num-cs = <4>;
-+			ti,davinci-spi-intr-line = <0>;
-+			interrupts = <GIC_SPI 68 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			power-domains = <&k2g_pds 0x0012>;
-+			clocks = <&k2g_clks 0x0012 0>;
-+		};
-+
-+		spi3: spi@21806000 {
-+			compatible = "ti,keystone-spi";
-+			reg = <0x21806000 0x200>;
-+			num-cs = <4>;
-+			ti,davinci-spi-intr-line = <0>;
-+			interrupts = <GIC_SPI 70 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			power-domains = <&k2g_pds 0x0013>;
-+			clocks = <&k2g_clks 0x0013 0>;
-+		};
- 	};
- };
+Vitaly Andrianov (1):
+  ARM: dts: keystone-k2g: Add SPI nodes
+
+ .../devicetree/bindings/spi/spi-davinci.txt        | 10 +++++
+ arch/arm/boot/dts/keystone-k2g-evm.dts             | 37 +++++++++++++++++
+ arch/arm/boot/dts/keystone-k2g.dtsi                | 48 ++++++++++++++++++++++
+ 3 files changed, 95 insertions(+)
+
 -- 
 2.9.4.dirty

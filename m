@@ -1,48 +1,96 @@
-From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
-Subject: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
-Date: Fri,  8 Sep 2017 09:07:15 +0100
-Message-ID: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
-Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-        Chris Paterson <chris.paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
-        Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+From: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Subject: [PATCH v2 1/2] dt-bindings: spi: Add Spreadtrum ADI controller documentation
+Date: Fri, 8 Sep 2017 16:33:41 +0800
+Message-ID: <d1c5720eccf12ee5ea6bffcbe4c1555680638fcc.1504859001.git.baolin.wang@spreadtrum.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
+        <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-rspi.txt | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This patch adds the binding documentation for Spreadtrum ADI
+controller device.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
-index 8f4169f..3b02b3a 100644
---- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
-@@ -5,11 +5,14 @@ Required properties:
- 		     "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
- 		     For Renesas Serial Peripheral Interface on RZ/A1H:
- 		     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
--		     For Quad Serial Peripheral Interface on R-Car Gen2:
-+		     For Quad Serial Peripheral Interface on R-Car Gen2 and
-+		     RZ/G1 devices:
- 		     "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
- 		     Examples with soctypes are:
- 		        - "renesas,rspi-sh7757" (SH)
- 			- "renesas,rspi-r7s72100" (RZ/A1H)
-+			- "renesas,qspi-r8a7743" (RZ/G1M)
-+			- "renesas,qspi-r8a7745" (RZ/G1E)
- 			- "renesas,qspi-r8a7790" (R-Car H2)
- 			- "renesas,qspi-r8a7791" (R-Car M2-W)
- 			- "renesas,qspi-r8a7792" (R-Car V2H)
+Signed-off-by: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+---
+Changes since v1:
+ - Add more documentation the 'sprd,hw-channels' property and why need
+ one hardware spinlock.
+---
+ .../devicetree/bindings/spi/spi-sprd-adi.txt       |   58 ++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+new file mode 100644
+index 0000000..0f76336
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+@@ -0,0 +1,58 @@
++Spreadtrum ADI controller based on SPI framework
++
++ADI is the abbreviation of Anolog-Digital interface, which is used to access
++analog chip (such as PMIC) from digital chip. ADI controller follows the SPI
++framework for its hardware implementation is alike to SPI bus and its timing
++is compatile to SPI timing.
++
++ADI controller has 50 channels including 2 software read/write channels and
++48 hardware channels to access analog chip. For 2 software read/write channels,
++users should set ADI registers to access analog chip. For hardware channels,
++we can configure them to allow other hardware components to use it independently,
++which means we can just link one analog chip address to one hardware channel,
++then users can access the mapped analog chip address by this hardware channel
++triggered by hardware components instead of ADI software channels.
++
++Thus we introduce one property named "sprd,hw-channels" to configure hardware
++channels, the first value specifies the hardware channel id which is used to
++transfer data triggered by hardware automatically, and the second value specifies
++the analog chip address where user want to access by hardware components.
++
++Another hand since we have multi-subsystems will use unique ADI to access analog
++chip, when one system is reading/writing data by ADI software channels, that
++should be under one hardware spinlock protection to prevent other systems from
++reading/writing data by ADI software channels at the same time, or two parallel
++routine of setting ADI registers will make ADI controller registers chaos to
++lead incorrect results. Then we need one hardware spinlock to synchronize between
++the multiple subsystems.
++
++Required properties:
++- compatible: Should be "sprd,sc9860-adi".
++- reg: Offset and length of ADI-SPI controller register space.
++- hwlocks: Reference to a phandle of a hwlock provider node.
++- hwlock-names: Reference to hwlock name strings defined in the same order
++	as the hwlocks, should be "adi".
++- #address-cells: Number of cells required to define a chip select address
++	on the ADI-SPI bus. Should be set to 1.
++- #size-cells: Size of cells required to define a chip select address size
++	on the ADI-SPI bus. Should be set to 0.
++
++Optional properties:
++- sprd,hw-channels: The first value specifies the hardware channel id which
++	is used to transfer data triggered by hardware automatically, and
++	the second value specifies the analog chip address where user want
++	to access by hardware components.
++
++SPI slave nodes must be children of the SPI controller node and can contain
++properties described in Documentation/devicetree/bindings/spi/spi-bus.txt.
++
++Example:
++	adi_bus: spi@40030000 {
++		compatible = "sprd,sc9860-adi";
++		reg = <0 0x40030000 0 0x10000>;
++		hwlocks = <&hwlock1 0>;
++		hwlock-names = "adi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		sprd,hw-channels = <30 0x8c20>;
++	};
 -- 
-2.7.4
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in

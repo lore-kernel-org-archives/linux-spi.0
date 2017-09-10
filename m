@@ -1,73 +1,43 @@
-From: Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 1/2] spi: armada-3700: Fix failing commands with quad-SPI
-Date: Wed, 13 Sep 2017 18:21:38 +0200
-Message-ID: <20170913162139.17598-2-miquel.raynal@free-electrons.com>
-References: <20170913162139.17598-1-miquel.raynal@free-electrons.com>
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-        Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: [PATCH] spi: uapi: spidev: add missing ioctl header
+Date: Sun, 10 Sep 2017 20:29:45 +0300
+Message-ID: <98661f29960910754e7a21c1cbebae7aff4d4dbe.1505064585.git.baruch@tkos.co.il>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170913162139.17598-1-miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-A3700 SPI controller datasheet states that only the first line (IO0) is
-used to receive and send instructions, addresses and dummy bytes,
-unless for addresses during an RX operation in a quad SPI configuration
-(see p.821 of the Armada-3720-DB datasheet). Otherwise, some commands
-such as SPI NOR commands like READ_FROM_CACHE_DUAL_IO(0xeb) and
-READ_FROM_CACHE_DUAL_IO(0xbb) will fail because these commands must send
-address bytes through the four pins. Data transfer always use the four
-bytes with this setup.
+The SPI_IOC_MESSAGE() macro references _IOC_SIZEBITS. Add linux/ioctl.h
+to make sure this macro is defined. This fixes the following build
+failure of lcdproc with the musl libc:
 
-Thus, in quad SPI configuration, the A3700_SPI_ADDR_PIN bit must be set
-only in this case to inform the controller that it must use the number
-of pins indicated in the {A3700_SPI_DATA_PIN1,A3700_SPI_DATA_PIN0} field
-during the address cycles of an RX operation.
+In file included from .../sysroot/usr/include/sys/ioctl.h:7:0,
+                 from hd44780-spi.c:31:
+hd44780-spi.c: In function 'spi_transfer':
+hd44780-spi.c:89:24: error: '_IOC_SIZEBITS' undeclared (first use in this function)
+  status = ioctl(p->fd, SPI_IOC_MESSAGE(1), &xfer);
+                        ^
 
-Suggested-by: Ken Ma <make-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 ---
- drivers/spi/spi-armada-3700.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/uapi/linux/spi/spidev.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 6c7d7a460689..a28702b1fa05 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -161,7 +161,7 @@ static void a3700_spi_deactivate_cs(struct a3700_spi *a3700_spi,
- }
+diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
+index dd5f21e75805..856de39d0b89 100644
+--- a/include/uapi/linux/spi/spidev.h
++++ b/include/uapi/linux/spi/spidev.h
+@@ -23,6 +23,7 @@
+ #define SPIDEV_H
  
- static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
--				  unsigned int pin_mode)
-+				  unsigned int pin_mode, bool receiving)
- {
- 	u32 val;
+ #include <linux/types.h>
++#include <linux/ioctl.h>
  
-@@ -177,6 +177,9 @@ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
- 		break;
- 	case SPI_NBITS_QUAD:
- 		val |= A3700_SPI_DATA_PIN1;
-+		/* RX during address reception uses 4-pin */
-+		if (receiving)
-+			val |= A3700_SPI_ADDR_PIN;
- 		break;
- 	default:
- 		dev_err(&a3700_spi->master->dev, "wrong pin mode %u", pin_mode);
-@@ -653,7 +656,7 @@ static int a3700_spi_transfer_one(struct spi_master *master,
- 	else if (xfer->rx_buf)
- 		nbits = xfer->rx_nbits;
- 
--	a3700_spi_pin_mode_set(a3700_spi, nbits);
-+	a3700_spi_pin_mode_set(a3700_spi, nbits, xfer->rx_buf ? true : false);
- 
- 	if (xfer->rx_buf) {
- 		/* Set read data length */
+ /* User space versions of kernel symbols for SPI clocking modes,
+  * matching <linux/spi/spi.h>
 -- 
-2.11.0
+2.14.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

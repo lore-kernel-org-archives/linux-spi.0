@@ -1,92 +1,80 @@
-From: Franklin S Cooper Jr <fcooper@ti.com>
-Subject: [PATCH 3/3] ARM: dts: keystone-k2g-evm: add bindings for SPI NOR flash
-Date: Fri, 8 Sep 2017 15:46:38 -0500
-Message-ID: <20170908204638.13149-4-fcooper@ti.com>
-References: <20170908204638.13149-1-fcooper@ti.com>
+From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 5/6] dt-bindings: iio: adc: mcp320x: Update for
+ mcp3550/1/3
+Date: Sun, 10 Sep 2017 14:36:04 +0100
+Message-ID: <20170910143604.3431d17c@archlinux>
+References: <cover.1503407738.git.lukas@wunner.de>
+        <87644503b0397248c06fbe0058f292955dd10f79.1503407738.git.lukas@wunner.de>
+        <20170825195941.iylf4w5hitjwniio@rob-hp-laptop>
+        <20170827153405.GA13399@wunner.de>
+        <CABjU8GvCB61envBiR0ei3gHEPadd5VDZ7FGysDjhCrJcQrEXDg@mail.gmail.com>
+        <20170903143429.749be480@archlinux>
+        <20170904172221.47si6swykixnb5of@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Murali Karicheri <m-karicheri2@ti.com>,
- Franklin S Cooper Jr <fcooper@ti.com>
-To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
- <ssantosh@kernel.org>, <linux@armlinux.org.uk>,
- <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20170908204638.13149-1-fcooper@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Adriana Reus <adi.reus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Hartmut Knaack <knaack.h-Mmb7MZpHnFY@public.gmane.org>,
+        Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+        Peter Meerwald-Stadler <pmeerw-jW+XmwGofnusTnJN9+BGXg@public.gmane.org>,
+        Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+        Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>,
+        Oskar Andero <oskar.andero-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Andrea Galbusera <gizero-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Manfred Schlaegl <manfred.schlaegl-RbZlAiThDcE@public.gmane.org>,
+        Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>,
+        Soeren Andersen <san-KGKi0rHxN0fKWSuBa/xFvVpr/1R2p/CL@public.gmane.org>,
+        linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Abhisit Sangjan <s.abhisit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170904172221.47si6swykixnb5of-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Murali Karicheri <m-karicheri2@ti.com>
+On Mon, 4 Sep 2017 18:22:21 +0100
+Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-K2G EVM has n25q128a13 SPI NOR flash on SPI1. Enable SPI1 in the DT
-node as well as add a subnode for the SPI NOR.
+> On Sun, Sep 03, 2017 at 02:37:49PM +0100, Jonathan Cameron wrote:
+> 
+> > +cc Mark Brown and linux-spi to address question about how to represent
+> > a hardwired chip select.  See below for why I think that is what we should
+> > be representing rather than the fact it puts it in 'continuous mode'.  
+> 
+> There's a good chance that if you just send me mail with a not obviously
+> related subject line it might get discarded unread, people CC me on lots
+> of things that are of questionable relevance.
+> 
+> > > >> > +   - microchip,continuous-conversion (boolean):
+> > > >> > +                   Only applicable to MCP3550/1/3:  These ADCs have long
+> > > >> > +                   conversion times and therefore support "continuous
+> > > >> > +                   conversion mode" to allow retrieval of conversions
+> > > >> > +                   at any time without observing a delay.  The mode is
+> > > >> > +                   enabled by permanently driving CS low, e.g. by wiring
+> > > >> > +                   it to ground.    
+> 
+> > hmm.  This is odd.  We probably need to make the SPI subsystem aware of this.
+> > It is possible to ask for exclusive use of an SPI bus and I think we should
+> > be doing this here.  It may be wired low on your board, but it may be wired to  
+> 
+> This sounds like SPI_NO_CS, though it's vanishingly rare for it to be
+> implemented as there's a lot of ways for it to go wrong electrically -
+> it's a lot simpler to just have a chip select and minimise the number of
+> times it gets asserted.
 
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
----
- arch/arm/boot/dts/keystone-k2g-evm.dts | 37 ++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Thanks Mark.  It sounds like we don't actually need it for the driver under
+consideration on the particular platform it is being used on.  If it comes
+up later, then adding bindings for SPI_NO_CS and adding relevant support
+in the driver looks the way to go to me.
 
-diff --git a/arch/arm/boot/dts/keystone-k2g-evm.dts b/arch/arm/boot/dts/keystone-k2g-evm.dts
-index f462f10..d5c43c7 100644
---- a/arch/arm/boot/dts/keystone-k2g-evm.dts
-+++ b/arch/arm/boot/dts/keystone-k2g-evm.dts
-@@ -81,6 +81,16 @@
- 			K2G_CORE_IOPAD(0x1110) (BUFFER_CLASS_B | PIN_PULLUP | MUX_MODE0)	/* mmc1_cmd.mmc1_cmd */
- 		>;
- 	};
-+
-+	spi1_pins: pinmux_spi1_pins {
-+		pinctrl-single,pins = <
-+			K2G_CORE_IOPAD(0x11a4) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* spi1_scs0.spi1_scs0 */
-+			K2G_CORE_IOPAD(0x11ac) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* spi1_clk.spi1_clk */
-+			K2G_CORE_IOPAD(0x11b0) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* spi1_miso.spi1_miso */
-+			K2G_CORE_IOPAD(0x11b4) (BUFFER_CLASS_B | PULL_DISABLE | MUX_MODE0)	/* spi1_mosi.spi1_mosi */
-+		>;
-+	};
-+
- };
- 
- &uart0 {
-@@ -112,3 +122,30 @@
- 	memory-region = <&dsp_common_memory>;
- 	status = "okay";
- };
-+
-+&spi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins>;
-+	status = "okay";
-+
-+	spi_nor: flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "jedec,spi-nor";
-+		spi-max-frequency = <5000000>;
-+		m25p,fast-read;
-+		reg = <0>;
-+
-+		partition@0 {
-+			label = "u-boot-spl";
-+			reg = <0x0 0x100000>;
-+			read-only;
-+		};
-+
-+		partition@1 {
-+			label = "misc";
-+			reg = <0x100000 0xf00000>;
-+		};
-+	};
-+};
-+
--- 
-2.9.4.dirty
+Jonathan
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

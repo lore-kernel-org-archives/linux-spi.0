@@ -1,41 +1,49 @@
-From: Christos Gkekas <chris.gekas@gmail.com>
-Subject: [PATCH] spi: stm32: Fix logical error in stm32_spi_prepare_mbr()
-Date: Sun, 10 Sep 2017 14:55:29 +0100
-Message-ID: <1505051729-22270-1-git-send-email-chris.gekas@gmail.com>
-Cc: Christos Gkekas <chris.gekas@gmail.com>
-To: Amelie Delaunay <amelie.delaunay@st.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
+Date: Mon, 11 Sep 2017 09:57:38 +0200
+Message-ID: <CAMuHMdXjQHMH=jUkL9eaHzwGOTxKN9Zqpkcwoyrvzif0Z87-Xg@mail.gmail.com>
+References: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+        Chris Paterson <chris.paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1504858035-3568-1-git-send-email-fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-stm32_spi_prepare_mbr() is returning an error value when div is less
-than SPI_MBR_DIV_MIN *and* greater than SPI_MBR_DIV_MAX, which always
-evaluates to false. This should change to use *or*.
+On Fri, Sep 8, 2017 at 10:07 AM, Fabrizio Castro
+<fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org> wrote:
 
-Signed-off-by: Christos Gkekas <chris.gekas@gmail.com>
----
- drivers/spi/spi-stm32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The oneline summary should be
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 680cdf5..ba9743f 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -263,8 +263,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
- 	 * no need to check it there.
- 	 * However, we need to ensure the following calculations.
- 	 */
--	if ((div < SPI_MBR_DIV_MIN) &&
--	    (div > SPI_MBR_DIV_MAX))
-+	if (div < SPI_MBR_DIV_MIN ||
-+	    div > SPI_MBR_DIV_MAX)
- 		return -EINVAL;
- 
- 	/* Determine the first power of 2 greater than or equal to div */
--- 
-2.7.4
+"dt-bindings: spi: rspi: Add r8a7743/5 to the compatible list"
+
+> Signed-off-by: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

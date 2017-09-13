@@ -1,26 +1,24 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: armada-3700: Fix padding when sending not 4-byte aligned data" to the spi tree
-Date: Wed, 13 Sep 2017 17:50:10 +0100 (BST)
-Message-ID: <20170913165010.8125F44001D@finisterre.ee.mobilebroadband>
-References: <20170913075259.9569-1-miquel.raynal@free-electrons.com>
-Cc: Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-        Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Zachary Zhang <zhangzg-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170913075259.9569-1-miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: stm32: Fix logical error in stm32_spi_prepare_mbr()" to the spi tree
+Date: Wed, 13 Sep 2017 17:49:57 +0100 (BST)
+Message-ID: <20170913164958.025E9440014@finisterre.ee.mobilebroadband>
+References: <1505051729-22270-1-git-send-email-chris.gekas@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Christos Gkekas <chris.gekas@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1505051729-22270-1-git-send-email-chris.gekas@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: armada-3700: Fix padding when sending not 4-byte aligned data
+   spi: stm32: Fix logical error in stm32_spi_prepare_mbr()
 
 has been applied to the spi tree at
 
@@ -45,239 +43,35 @@ to this mail.
 Thanks,
 Mark
 
->From 6fd6fd68c9e2f3a206a098ef57b1d5548f9d00d1 Mon Sep 17 00:00:00 2001
-From: Zachary Zhang <zhangzg-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-Date: Wed, 13 Sep 2017 18:21:39 +0200
-Subject: [PATCH] spi: armada-3700: Fix padding when sending not 4-byte aligned
- data
+>From 8b5d729a3a8a07fe273af266e90bc52114dd69a6 Mon Sep 17 00:00:00 2001
+From: Christos Gkekas <chris.gekas@gmail.com>
+Date: Sun, 10 Sep 2017 14:55:29 +0100
+Subject: [PATCH] spi: stm32: Fix logical error in stm32_spi_prepare_mbr()
 
-In 4-byte transfer mode, extra padding/dummy bytes '0xff' would be
-sent in write operation if TX data is not 4-byte aligned since the
-SPI data register is always shifted out as whole 4 bytes.
+stm32_spi_prepare_mbr() is returning an error value when div is less
+than SPI_MBR_DIV_MIN *and* greater than SPI_MBR_DIV_MAX, which always
+evaluates to false. This should change to use *or*.
 
-Fix this by using the header count feature that allows to transfer 0 to
-4 bytes. Use it to actually send the first 1 to 3 bytes of data before
-the rest of the buffer that will hence be 4-byte aligned.
-
-Signed-off-by: Zachary Zhang <zhangzg-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Christos Gkekas <chris.gekas@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-armada-3700.c | 135 +++++++++++++-----------------------------
- 1 file changed, 41 insertions(+), 94 deletions(-)
+ drivers/spi/spi-stm32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index a28702b1fa05..9172cb2d2e7a 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -99,11 +99,6 @@
- /* A3700_SPI_IF_TIME_REG */
- #define A3700_SPI_CLK_CAPT_EDGE		BIT(7)
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 680cdf549506..ba9743fa2326 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -263,8 +263,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
+ 	 * no need to check it there.
+ 	 * However, we need to ensure the following calculations.
+ 	 */
+-	if ((div < SPI_MBR_DIV_MIN) &&
+-	    (div > SPI_MBR_DIV_MAX))
++	if (div < SPI_MBR_DIV_MIN ||
++	    div > SPI_MBR_DIV_MAX)
+ 		return -EINVAL;
  
--/* Flags and macros for struct a3700_spi */
--#define A3700_INSTR_CNT			1
--#define A3700_ADDR_CNT			3
--#define A3700_DUMMY_CNT			1
--
- struct a3700_spi {
- 	struct spi_master *master;
- 	void __iomem *base;
-@@ -117,9 +112,6 @@ struct a3700_spi {
- 	u8 byte_len;
- 	u32 wait_mask;
- 	struct completion done;
--	u32 addr_cnt;
--	u32 instr_cnt;
--	size_t hdr_cnt;
- };
- 
- static u32 spireg_read(struct a3700_spi *a3700_spi, u32 offset)
-@@ -449,59 +441,43 @@ static void a3700_spi_set_cs(struct spi_device *spi, bool enable)
- 
- static void a3700_spi_header_set(struct a3700_spi *a3700_spi)
- {
--	u32 instr_cnt = 0, addr_cnt = 0, dummy_cnt = 0;
-+	unsigned int addr_cnt;
- 	u32 val = 0;
- 
- 	/* Clear the header registers */
- 	spireg_write(a3700_spi, A3700_SPI_IF_INST_REG, 0);
- 	spireg_write(a3700_spi, A3700_SPI_IF_ADDR_REG, 0);
- 	spireg_write(a3700_spi, A3700_SPI_IF_RMODE_REG, 0);
-+	spireg_write(a3700_spi, A3700_SPI_IF_HDR_CNT_REG, 0);
- 
- 	/* Set header counters */
- 	if (a3700_spi->tx_buf) {
--		if (a3700_spi->buf_len <= a3700_spi->instr_cnt) {
--			instr_cnt = a3700_spi->buf_len;
--		} else if (a3700_spi->buf_len <= (a3700_spi->instr_cnt +
--						  a3700_spi->addr_cnt)) {
--			instr_cnt = a3700_spi->instr_cnt;
--			addr_cnt = a3700_spi->buf_len - instr_cnt;
--		} else if (a3700_spi->buf_len <= a3700_spi->hdr_cnt) {
--			instr_cnt = a3700_spi->instr_cnt;
--			addr_cnt = a3700_spi->addr_cnt;
--			/* Need to handle the normal write case with 1 byte
--			 * data
--			 */
--			if (!a3700_spi->tx_buf[instr_cnt + addr_cnt])
--				dummy_cnt = a3700_spi->buf_len - instr_cnt -
--					    addr_cnt;
-+		/*
-+		 * when tx data is not 4 bytes aligned, there will be unexpected
-+		 * bytes out of SPI output register, since it always shifts out
-+		 * as whole 4 bytes. This might cause incorrect transaction with
-+		 * some devices. To avoid that, use SPI header count feature to
-+		 * transfer up to 3 bytes of data first, and then make the rest
-+		 * of data 4-byte aligned.
-+		 */
-+		addr_cnt = a3700_spi->buf_len % 4;
-+		if (addr_cnt) {
-+			val = (addr_cnt & A3700_SPI_ADDR_CNT_MASK)
-+				<< A3700_SPI_ADDR_CNT_BIT;
-+			spireg_write(a3700_spi, A3700_SPI_IF_HDR_CNT_REG, val);
-+
-+			/* Update the buffer length to be transferred */
-+			a3700_spi->buf_len -= addr_cnt;
-+
-+			/* transfer 1~3 bytes through address count */
-+			val = 0;
-+			while (addr_cnt--) {
-+				val = (val << 8) | a3700_spi->tx_buf[0];
-+				a3700_spi->tx_buf++;
-+			}
-+			spireg_write(a3700_spi, A3700_SPI_IF_ADDR_REG, val);
- 		}
--		val |= ((instr_cnt & A3700_SPI_INSTR_CNT_MASK)
--			<< A3700_SPI_INSTR_CNT_BIT);
--		val |= ((addr_cnt & A3700_SPI_ADDR_CNT_MASK)
--			<< A3700_SPI_ADDR_CNT_BIT);
--		val |= ((dummy_cnt & A3700_SPI_DUMMY_CNT_MASK)
--			<< A3700_SPI_DUMMY_CNT_BIT);
- 	}
--	spireg_write(a3700_spi, A3700_SPI_IF_HDR_CNT_REG, val);
--
--	/* Update the buffer length to be transferred */
--	a3700_spi->buf_len -= (instr_cnt + addr_cnt + dummy_cnt);
--
--	/* Set Instruction */
--	val = 0;
--	while (instr_cnt--) {
--		val = (val << 8) | a3700_spi->tx_buf[0];
--		a3700_spi->tx_buf++;
--	}
--	spireg_write(a3700_spi, A3700_SPI_IF_INST_REG, val);
--
--	/* Set Address */
--	val = 0;
--	while (addr_cnt--) {
--		val = (val << 8) | a3700_spi->tx_buf[0];
--		a3700_spi->tx_buf++;
--	}
--	spireg_write(a3700_spi, A3700_SPI_IF_ADDR_REG, val);
- }
- 
- static int a3700_is_wfifo_full(struct a3700_spi *a3700_spi)
-@@ -515,35 +491,12 @@ static int a3700_is_wfifo_full(struct a3700_spi *a3700_spi)
- static int a3700_spi_fifo_write(struct a3700_spi *a3700_spi)
- {
- 	u32 val;
--	int i = 0;
- 
- 	while (!a3700_is_wfifo_full(a3700_spi) && a3700_spi->buf_len) {
--		val = 0;
--		if (a3700_spi->buf_len >= 4) {
--			val = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
--			spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
--
--			a3700_spi->buf_len -= 4;
--			a3700_spi->tx_buf += 4;
--		} else {
--			/*
--			 * If the remained buffer length is less than 4-bytes,
--			 * we should pad the write buffer with all ones. So that
--			 * it avoids overwrite the unexpected bytes following
--			 * the last one.
--			 */
--			val = GENMASK(31, 0);
--			while (a3700_spi->buf_len) {
--				val &= ~(0xff << (8 * i));
--				val |= *a3700_spi->tx_buf++ << (8 * i);
--				i++;
--				a3700_spi->buf_len--;
--
--				spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG,
--					     val);
--			}
--			break;
--		}
-+		val = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
-+		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
-+		a3700_spi->buf_len -= 4;
-+		a3700_spi->tx_buf += 4;
- 	}
- 
- 	return 0;
-@@ -648,9 +601,6 @@ static int a3700_spi_transfer_one(struct spi_master *master,
- 	a3700_spi->rx_buf  = xfer->rx_buf;
- 	a3700_spi->buf_len = xfer->len;
- 
--	/* SPI transfer headers */
--	a3700_spi_header_set(a3700_spi);
--
- 	if (xfer->tx_buf)
- 		nbits = xfer->tx_nbits;
- 	else if (xfer->rx_buf)
-@@ -658,6 +608,12 @@ static int a3700_spi_transfer_one(struct spi_master *master,
- 
- 	a3700_spi_pin_mode_set(a3700_spi, nbits, xfer->rx_buf ? true : false);
- 
-+	/* Flush the FIFOs */
-+	a3700_spi_fifo_flush(a3700_spi);
-+
-+	/* Transfer first bytes of data when buffer is not 4-byte aligned */
-+	a3700_spi_header_set(a3700_spi);
-+
- 	if (xfer->rx_buf) {
- 		/* Set read data length */
- 		spireg_write(a3700_spi, A3700_SPI_IF_DIN_CNT_REG,
-@@ -736,16 +692,11 @@ static int a3700_spi_transfer_one(struct spi_master *master,
- 				dev_err(&spi->dev, "wait wfifo empty timed out\n");
- 				return -ETIMEDOUT;
- 			}
--		} else {
--			/*
--			 * If the instruction in SPI_INSTR does not require data
--			 * to be written to the SPI device, wait until SPI_RDY
--			 * is 1 for the SPI interface to be in idle.
--			 */
--			if (!a3700_spi_transfer_wait(spi, A3700_SPI_XFER_RDY)) {
--				dev_err(&spi->dev, "wait xfer ready timed out\n");
--				return -ETIMEDOUT;
--			}
-+		}
-+
-+		if (!a3700_spi_transfer_wait(spi, A3700_SPI_XFER_RDY)) {
-+			dev_err(&spi->dev, "wait xfer ready timed out\n");
-+			return -ETIMEDOUT;
- 		}
- 
- 		val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
-@@ -837,10 +788,6 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 	memset(spi, 0, sizeof(struct a3700_spi));
- 
- 	spi->master = master;
--	spi->instr_cnt = A3700_INSTR_CNT;
--	spi->addr_cnt = A3700_ADDR_CNT;
--	spi->hdr_cnt = A3700_INSTR_CNT + A3700_ADDR_CNT +
--		       A3700_DUMMY_CNT;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi->base = devm_ioremap_resource(dev, res);
+ 	/* Determine the first power of 2 greater than or equal to div */
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

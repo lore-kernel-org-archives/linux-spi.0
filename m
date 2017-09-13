@@ -1,20 +1,23 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: uapi: spidev: add missing ioctl header" to the spi tree
-Date: Wed, 13 Sep 2017 17:49:39 +0100 (BST)
-Message-ID: <20170913164939.209A1440013@finisterre.ee.mobilebroadband>
-References: <98661f29960910754e7a21c1cbebae7aff4d4dbe.1505064585.git.baruch@tkos.co.il>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <98661f29960910754e7a21c1cbebae7aff4d4dbe.1505064585.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: armada-3700: Fix failing commands with quad-SPI" to the spi tree
+Date: Wed, 13 Sep 2017 17:50:28 +0100 (BST)
+Message-ID: <20170913165028.47BF4440024@finisterre.ee.mobilebroadband>
+References: <20170913074802.9366-1-miquel.raynal@free-electrons.com>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Antoine Tenart <antoine.tenart@free-electrons.com>,
+        Nadav Haklai <nadavh@marvell.com>, linux-spi@vger.kernel.org
+To: Miquel Raynal <miquel.raynal@free-electrons.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20170913074802.9366-1-miquel.raynal@free-electrons.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: uapi: spidev: add missing ioctl header
+   spi: armada-3700: Fix failing commands with quad-SPI
 
 has been applied to the spi tree at
 
@@ -39,45 +42,64 @@ to this mail.
 Thanks,
 Mark
 
->From a2b4a79b88b24c49d98d45a06a014ffd22ada1a4 Mon Sep 17 00:00:00 2001
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Date: Sun, 10 Sep 2017 20:29:45 +0300
-Subject: [PATCH] spi: uapi: spidev: add missing ioctl header
+>From 747e1f60470b975363cbbfcde0c41a3166391be5 Mon Sep 17 00:00:00 2001
+From: Miquel Raynal <miquel.raynal@free-electrons.com>
+Date: Wed, 13 Sep 2017 18:21:38 +0200
+Subject: [PATCH] spi: armada-3700: Fix failing commands with quad-SPI
 
-The SPI_IOC_MESSAGE() macro references _IOC_SIZEBITS. Add linux/ioctl.h
-to make sure this macro is defined. This fixes the following build
-failure of lcdproc with the musl libc:
+A3700 SPI controller datasheet states that only the first line (IO0) is
+used to receive and send instructions, addresses and dummy bytes,
+unless for addresses during an RX operation in a quad SPI configuration
+(see p.821 of the Armada-3720-DB datasheet). Otherwise, some commands
+such as SPI NOR commands like READ_FROM_CACHE_DUAL_IO(0xeb) and
+READ_FROM_CACHE_DUAL_IO(0xbb) will fail because these commands must send
+address bytes through the four pins. Data transfer always use the four
+bytes with this setup.
 
-In file included from .../sysroot/usr/include/sys/ioctl.h:7:0,
-                 from hd44780-spi.c:31:
-hd44780-spi.c: In function 'spi_transfer':
-hd44780-spi.c:89:24: error: '_IOC_SIZEBITS' undeclared (first use in this function)
-  status = ioctl(p->fd, SPI_IOC_MESSAGE(1), &xfer);
-                        ^
+Thus, in quad SPI configuration, the A3700_SPI_ADDR_PIN bit must be set
+only in this case to inform the controller that it must use the number
+of pins indicated in the {A3700_SPI_DATA_PIN1,A3700_SPI_DATA_PIN0} field
+during the address cycles of an RX operation.
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Suggested-by: Ken Ma <make@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- include/uapi/linux/spi/spidev.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-armada-3700.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
-index dd5f21e75805..856de39d0b89 100644
---- a/include/uapi/linux/spi/spidev.h
-+++ b/include/uapi/linux/spi/spidev.h
-@@ -23,6 +23,7 @@
- #define SPIDEV_H
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 6c7d7a460689..a28702b1fa05 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -161,7 +161,7 @@ static void a3700_spi_deactivate_cs(struct a3700_spi *a3700_spi,
+ }
  
- #include <linux/types.h>
-+#include <linux/ioctl.h>
+ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
+-				  unsigned int pin_mode)
++				  unsigned int pin_mode, bool receiving)
+ {
+ 	u32 val;
  
- /* User space versions of kernel symbols for SPI clocking modes,
-  * matching <linux/spi/spi.h>
+@@ -177,6 +177,9 @@ static int a3700_spi_pin_mode_set(struct a3700_spi *a3700_spi,
+ 		break;
+ 	case SPI_NBITS_QUAD:
+ 		val |= A3700_SPI_DATA_PIN1;
++		/* RX during address reception uses 4-pin */
++		if (receiving)
++			val |= A3700_SPI_ADDR_PIN;
+ 		break;
+ 	default:
+ 		dev_err(&a3700_spi->master->dev, "wrong pin mode %u", pin_mode);
+@@ -653,7 +656,7 @@ static int a3700_spi_transfer_one(struct spi_master *master,
+ 	else if (xfer->rx_buf)
+ 		nbits = xfer->rx_nbits;
+ 
+-	a3700_spi_pin_mode_set(a3700_spi, nbits);
++	a3700_spi_pin_mode_set(a3700_spi, nbits, xfer->rx_buf ? true : false);
+ 
+ 	if (xfer->rx_buf) {
+ 		/* Set read data length */
 -- 
 2.13.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

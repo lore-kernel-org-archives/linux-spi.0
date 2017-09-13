@@ -1,77 +1,80 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: Fix logical error in stm32_spi_prepare_mbr()" to the spi tree
-Date: Wed, 13 Sep 2017 17:49:57 +0100 (BST)
-Message-ID: <20170913164958.025E9440014@finisterre.ee.mobilebroadband>
-References: <1505051729-22270-1-git-send-email-chris.gekas@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Christos Gkekas <chris.gekas@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1505051729-22270-1-git-send-email-chris.gekas@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] Fix issues in Armada-3700 SPI controller driver
+Date: Wed, 13 Sep 2017 10:20:38 -0700
+Message-ID: <87o9qeh5w9.fsf@free-electrons.com>
+References: <20170913162139.17598-1-miquel.raynal@free-electrons.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170913162139.17598-1-miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> (Miquel
+        Raynal's message of "Wed, 13 Sep 2017 18:21:37 +0200")
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
-
-   spi: stm32: Fix logical error in stm32_spi_prepare_mbr()
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 8b5d729a3a8a07fe273af266e90bc52114dd69a6 Mon Sep 17 00:00:00 2001
-From: Christos Gkekas <chris.gekas@gmail.com>
-Date: Sun, 10 Sep 2017 14:55:29 +0100
-Subject: [PATCH] spi: stm32: Fix logical error in stm32_spi_prepare_mbr()
-
-stm32_spi_prepare_mbr() is returning an error value when div is less
-than SPI_MBR_DIV_MIN *and* greater than SPI_MBR_DIV_MAX, which always
-evaluates to false. This should change to use *or*.
-
-Signed-off-by: Christos Gkekas <chris.gekas@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-stm32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 680cdf549506..ba9743fa2326 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -263,8 +263,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
- 	 * no need to check it there.
- 	 * However, we need to ensure the following calculations.
- 	 */
--	if ((div < SPI_MBR_DIV_MIN) &&
--	    (div > SPI_MBR_DIV_MAX))
-+	if (div < SPI_MBR_DIV_MIN ||
-+	    div > SPI_MBR_DIV_MAX)
- 		return -EINVAL;
+Hi Miquel and Mark,
  
- 	/* Determine the first power of 2 greater than or equal to div */
+ On mer., sept. 13 2017, Miquel Raynal <miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+
+> Hello,
+>
+> This short serie addresses two issues in Armada-3700 SPI controller driver.
+>
+> Second patch from Zachary Zhang fixes the way padding is introduced in not
+> 4-byte aligned SPI transfers (that fails some NAND flash devices). It also
+> revealed the issue fixed by the first commit when using quad-SPI. Thus, it
+> would be preferable to apply them in that order.
+>
+> Differences with the first version:
+> - Added this cover letter.
+> - Fixed the commit titles by using "spi: armada-3700:" prefix.
+>
+> And sorry for the noise.
+
+These two patches being fixes it would be nice to add the Fixes and
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> flags. Indeed the older version on Linux
+should be fixed too.
+
+Miquel could you provide the accurate Fixes: flag ?
+(By the way there is also a way to indicate dependency between patches
+for stable, see Documentation/process/stable-kernel-rules.rst.)
+
+Mark, could you amend the patches with the flags that will be provided
+my Miquel? Thanks, to this the patches will be backported to te stables
+branches.
+
+Thanks!
+
+Gregory
+
+>
+> Thanks,
+> Miquel
+>
+> Miquel Raynal (1):
+>   spi: armada-3700: Fix failing commands with quad-SPI
+>
+> Zachary Zhang (1):
+>   spi: armada-3700: Fix padding when sending not 4-byte aligned data
+>
+>  drivers/spi/spi-armada-3700.c | 142 ++++++++++++++----------------------------
+>  1 file changed, 46 insertions(+), 96 deletions(-)
+>
+> -- 
+> 2.11.0
+>
+
 -- 
-2.13.2
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

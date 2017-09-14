@@ -1,116 +1,115 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Add Spreadtrum ADI controller
- documentation
-Date: Wed, 13 Sep 2017 14:51:19 -0500
-Message-ID: <20170913195119.es5weqo3rbjbgsyl@rob-hp-laptop>
+From: Baolin Wang <baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: Add ADI driver for Spreadtrum platform
+Date: Thu, 14 Sep 2017 09:50:55 +0800
+Message-ID: <CAMz4kuK+cLc07CGifhShYr8ODpM+DL8_ShEH9jk3m59zM46u6A@mail.gmail.com>
 References: <d1c5720eccf12ee5ea6bffcbe4c1555680638fcc.1504859001.git.baolin.wang@spreadtrum.com>
+ <4573c724b795c569e1ccea2a1a4f6c0bdd602744.1504859001.git.baolin.wang@spreadtrum.com>
+ <20170913194548.qsyfyyboitz3mpcr@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, baolin.wang-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <d1c5720eccf12ee5ea6bffcbe4c1555680638fcc.1504859001.git.baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+In-Reply-To: <20170913194548.qsyfyyboitz3mpcr@rob-hp-laptop>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 08, 2017 at 04:33:41PM +0800, Baolin Wang wrote:
-> This patch adds the binding documentation for Spreadtrum ADI
-> controller device.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
-> ---
-> Changes since v1:
->  - Add more documentation the 'sprd,hw-channels' property and why need
->  one hardware spinlock.
-> ---
->  .../devicetree/bindings/spi/spi-sprd-adi.txt       |   58 ++++++++++++++++++++
->  1 file changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-> new file mode 100644
-> index 0000000..0f76336
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-> @@ -0,0 +1,58 @@
-> +Spreadtrum ADI controller based on SPI framework
+Hi Rob,
 
-"SPI framework" is not relevant to bindings.
+On 14 September 2017 at 03:45, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Sep 08, 2017 at 04:33:42PM +0800, Baolin Wang wrote:
+>> This patch adds ADI driver based on SPI framework for
+>> Spreadtrum SC9860 platform.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+>> ---
+>
+> [...]
+>
+>> +++ b/drivers/spi/spi-sprd-adi.c
+>> @@ -0,0 +1,419 @@
+>> +/*
+>> + * Copyright (C) 2017 Spreadtrum Communications Inc.
+>> + *
+>> + * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>
+> Kernel code should generally not be MIT license.
 
-> +
-> +ADI is the abbreviation of Anolog-Digital interface, which is used to access
-> +analog chip (such as PMIC) from digital chip. ADI controller follows the SPI
-> +framework for its hardware implementation is alike to SPI bus and its timing
-> +is compatile to SPI timing.
-> +
-> +ADI controller has 50 channels including 2 software read/write channels and
-> +48 hardware channels to access analog chip. For 2 software read/write channels,
-> +users should set ADI registers to access analog chip. For hardware channels,
-> +we can configure them to allow other hardware components to use it independently,
-> +which means we can just link one analog chip address to one hardware channel,
-> +then users can access the mapped analog chip address by this hardware channel
-> +triggered by hardware components instead of ADI software channels.
-> +
-> +Thus we introduce one property named "sprd,hw-channels" to configure hardware
-> +channels, the first value specifies the hardware channel id which is used to
-> +transfer data triggered by hardware automatically, and the second value specifies
-> +the analog chip address where user want to access by hardware components.
-> +
-> +Another hand since we have multi-subsystems will use unique ADI to access analog
+OK. Will fix in next version.
 
-Drop "Another hand"
+>
+> [...]
+>
+>> +static int sprd_adi_drain_fifo(struct sprd_adi *sadi)
+>> +{
+>> +     u32 timeout = ADI_FIFO_DRAIN_TIMEOUT;
+>> +     u32 sts;
+>> +
+>> +     do {
+>> +             sts = readl_relaxed(sadi->base + REG_ADI_ARM_FIFO_STS);
+>> +             if (sts & BIT_FIFO_EMPTY)
+>> +                     break;
+>> +
+>> +             cpu_relax();
+>> +     } while (--timeout);
+>
+> You can use readl_poll_timeout.
 
-> +chip, when one system is reading/writing data by ADI software channels, that
-> +should be under one hardware spinlock protection to prevent other systems from
-> +reading/writing data by ADI software channels at the same time, or two parallel
-> +routine of setting ADI registers will make ADI controller registers chaos to
-> +lead incorrect results. Then we need one hardware spinlock to synchronize between
-> +the multiple subsystems.
-> +
-> +Required properties:
-> +- compatible: Should be "sprd,sc9860-adi".
-> +- reg: Offset and length of ADI-SPI controller register space.
-> +- hwlocks: Reference to a phandle of a hwlock provider node.
-> +- hwlock-names: Reference to hwlock name strings defined in the same order
-> +	as the hwlocks, should be "adi".
-> +- #address-cells: Number of cells required to define a chip select address
-> +	on the ADI-SPI bus. Should be set to 1.
-> +- #size-cells: Size of cells required to define a chip select address size
-> +	on the ADI-SPI bus. Should be set to 0.
-> +
-> +Optional properties:
-> +- sprd,hw-channels: The first value specifies the hardware channel id which
-> +	is used to transfer data triggered by hardware automatically, and
-> +	the second value specifies the analog chip address where user want
-> +	to access by hardware components.
+The readl_poll_timeout() function might be sleep, but we can not sleep
+when reading/writing data through ADI controller, since the routine is
+under hardware spinlock protection. Moreover it is usually very quick
+to jump the loop and we no need to sleep here.
 
-Need to say this is an array of values up to ? channels.
+>
+>> +
+>> +     if (timeout == 0) {
+>> +             dev_err(sadi->dev, "drain write fifo timeout\n");
+>> +             return -EBUSY;
+>> +     }
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static int sprd_adi_fifo_is_full(struct sprd_adi *sadi)
+>> +{
+>> +     return readl_relaxed(sadi->base + REG_ADI_ARM_FIFO_STS) & BIT_FIFO_FULL;
+>> +}
+>> +
+>> +static int sprd_adi_read(struct sprd_adi *sadi, u32 reg_paddr, u32 *read_val)
+>> +{
+>> +     int read_timeout = ADI_READ_TIMEOUT;
+>> +     u32 val, rd_addr;
+>> +
+>> +     /*
+>> +      * Set the physical register address need to read into RD_CMD register,
+>> +      * then ADI controller will start to transfer automatically.
+>> +      */
+>> +     writel_relaxed(reg_paddr, sadi->base + REG_ADI_RD_CMD);
+>> +
+>> +     /*
+>> +      * Wait read operation complete, the BIT_RD_CMD_BUSY will be set
+>> +      * simultaneously when writing read command to register, and the
+>> +      * BIT_RD_CMD_BUSY will be cleared after the read operation is
+>> +      * completed.
+>> +      */
+>> +     do {
+>> +             val = readl_relaxed(sadi->base + REG_ADI_RD_DATA);
+>> +             if (!(val & BIT_RD_CMD_BUSY))
+>> +                     break;
+>> +
+>> +             cpu_relax();
+>> +     } while (--read_timeout);
+>
+> readl_poll_timeout
 
-I wonder if this should be a slave property. Is there a relationship 
-between the SPI address (i.e. chip select) and the "analog chip 
-address"? It sounds like the h/w channels are a protocol specific to a 
-particular PMIC/MFD that this controller supports.
+The same reason as above. Thanks for your comments.
 
-> +
-> +SPI slave nodes must be children of the SPI controller node and can contain
-> +properties described in Documentation/devicetree/bindings/spi/spi-bus.txt.
-> +
-> +Example:
-> +	adi_bus: spi@40030000 {
-> +		compatible = "sprd,sc9860-adi";
-> +		reg = <0 0x40030000 0 0x10000>;
-> +		hwlocks = <&hwlock1 0>;
-> +		hwlock-names = "adi";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		sprd,hw-channels = <30 0x8c20>;
-> +	};
-> -- 
-> 1.7.9.5
-> 
+-- 
+Baolin.wang
+Best Regards
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,25 +1,17 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-davinci: Update binding for 66AK2Gx pwr dm property" to the spi tree
-Date: Tue, 19 Sep 2017 14:47:34 +0100
-Message-ID: <E1duIsA-0008VG-Dn@debutante>
-References: <20170908204638.13149-2-fcooper@ti.com>
-Cc: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Franklin Cooper <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: Applied "spi: Add Spreadtrum ADI controller documentation" to the spi tree
+Date: Tue, 19 Sep 2017 14:47:47 +0100
+Message-ID: <E1duIsN-000054-Le@debutante>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170908204638.13149-2-fcooper-l0cyMroinI0@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-davinci: Update binding for 66AK2Gx pwr dm property
+   spi: Add Spreadtrum ADI controller documentation
 
 has been applied to the spi tree at
 
@@ -44,42 +36,85 @@ to this mail.
 Thanks,
 Mark
 
->From 32c30f73687a7ea5fe6add62b7bc3b520115d0d9 Mon Sep 17 00:00:00 2001
-From: Franklin Cooper <fcooper-l0cyMroinI0@public.gmane.org>
-Date: Fri, 8 Sep 2017 15:46:36 -0500
-Subject: [PATCH] spi: spi-davinci: Update binding for 66AK2Gx pwr dm property
+>From 2f329595b8db42ceb3de93595a740ac7b24eddba Mon Sep 17 00:00:00 2001
+From: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Date: Fri, 15 Sep 2017 15:29:15 +0800
+Subject: [PATCH] spi: Add Spreadtrum ADI controller documentation
 
-Add pm-domains property which is required for 66AK2Gx. Also document 66AK2G
-unique clocks property usage.
+This patch adds the binding documentation for Spreadtrum ADI
+controller device.
 
-Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-davinci.txt | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../devicetree/bindings/spi/spi-sprd-adi.txt       | 58 ++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index f5916c92fe91..1925277bfc1e 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -24,6 +24,16 @@ Required properties:
- 	based on a specific SoC configuration.
- - interrupts: interrupt number mapped to CPU.
- - clocks: spi clk phandle
-+          For 66AK2G this property should be set per binding,
-+          Documentation/devicetree/bindings/clock/ti,sci-clk.txt
+diff --git a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+new file mode 100644
+index 000000000000..8de589b376ce
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+@@ -0,0 +1,58 @@
++Spreadtrum ADI controller
 +
-+SoC-specific Required Properties:
++ADI is the abbreviation of Anolog-Digital interface, which is used to access
++analog chip (such as PMIC) from digital chip. ADI controller follows the SPI
++framework for its hardware implementation is alike to SPI bus and its timing
++is compatile to SPI timing.
 +
-+The following are mandatory properties for Keystone 2 66AK2G SoCs only:
++ADI controller has 50 channels including 2 software read/write channels and
++48 hardware channels to access analog chip. For 2 software read/write channels,
++users should set ADI registers to access analog chip. For hardware channels,
++we can configure them to allow other hardware components to use it independently,
++which means we can just link one analog chip address to one hardware channel,
++then users can access the mapped analog chip address by this hardware channel
++triggered by hardware components instead of ADI software channels.
 +
-+- power-domains:	Should contain a phandle to a PM domain provider node
-+			and an args specifier containing the SPI device id
-+			value. This property is as per the binding,
- 
- Optional:
- - cs-gpios: gpio chip selects
++Thus we introduce one property named "sprd,hw-channels" to configure hardware
++channels, the first value specifies the hardware channel id which is used to
++transfer data triggered by hardware automatically, and the second value specifies
++the analog chip address where user want to access by hardware components.
++
++Since we have multi-subsystems will use unique ADI to access analog chip, when
++one system is reading/writing data by ADI software channels, that should be under
++one hardware spinlock protection to prevent other systems from reading/writing
++data by ADI software channels at the same time, or two parallel routine of setting
++ADI registers will make ADI controller registers chaos to lead incorrect results.
++Then we need one hardware spinlock to synchronize between the multiple subsystems.
++
++Required properties:
++- compatible: Should be "sprd,sc9860-adi".
++- reg: Offset and length of ADI-SPI controller register space.
++- hwlocks: Reference to a phandle of a hwlock provider node.
++- hwlock-names: Reference to hwlock name strings defined in the same order
++	as the hwlocks, should be "adi".
++- #address-cells: Number of cells required to define a chip select address
++	on the ADI-SPI bus. Should be set to 1.
++- #size-cells: Size of cells required to define a chip select address size
++	on the ADI-SPI bus. Should be set to 0.
++
++Optional properties:
++- sprd,hw-channels: This is an array of channel values up to 49 channels.
++	The first value specifies the hardware channel id which is used to
++	transfer data triggered by hardware automatically, and the second
++	value specifies the analog chip address where user want to access
++	by hardware components.
++
++SPI slave nodes must be children of the SPI controller node and can contain
++properties described in Documentation/devicetree/bindings/spi/spi-bus.txt.
++
++Example:
++	adi_bus: spi@40030000 {
++		compatible = "sprd,sc9860-adi";
++		reg = <0 0x40030000 0 0x10000>;
++		hwlocks = <&hwlock1 0>;
++		hwlock-names = "adi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		sprd,hw-channels = <30 0x8c20>;
++	};
 -- 
 2.14.1
 

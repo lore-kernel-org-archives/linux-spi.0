@@ -1,55 +1,41 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 Subject: Re: [PATCH -next] spi: fix spi-sprd-adi build errors when
  COMPILE_TEST=y
-Date: Thu, 21 Sep 2017 17:49:33 +0100
-Message-ID: <20170921164933.hvvwfm6kvha3d5my@sirena.co.uk>
+Date: Thu, 21 Sep 2017 11:00:22 -0700
+Message-ID: <55e65046-6184-9198-644f-1f253e219729@infradead.org>
 References: <1e21f485-7f06-0566-afd4-74f2bfc9606e@infradead.org>
+ <20170921164933.hvvwfm6kvha3d5my@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tvr7n346xtud4nqd"
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1e21f485-7f06-0566-afd4-74f2bfc9606e-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+In-Reply-To: <20170921164933.hvvwfm6kvha3d5my-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 09/21/17 09:49, Mark Brown wrote:
+> On Thu, Sep 21, 2017 at 09:10:04AM -0700, Randy Dunlap wrote:
+> 
+>> +++ linux-next-20170921/drivers/spi/Kconfig
+>> @@ -625,6 +625,7 @@ config SPI_SIRF
+>>  config SPI_SPRD_ADI
+>>  	tristate "Spreadtrum ADI controller"
+>>  	depends on ARCH_SPRD || COMPILE_TEST
+>> +	depends on HWSPINLOCK
+>>  	help
+>>  	  ADI driver based on SPI for Spreadtrum SoCs.
+> 
+> Why is this a more sensible fix than providing stubs for HWSPINLOCK?
+> 
 
---tvr7n346xtud4nqd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There are already stubs there. I'll send an updated patch.
 
-On Thu, Sep 21, 2017 at 09:10:04AM -0700, Randy Dunlap wrote:
-
-> +++ linux-next-20170921/drivers/spi/Kconfig
-> @@ -625,6 +625,7 @@ config SPI_SIRF
->  config SPI_SPRD_ADI
->  	tristate "Spreadtrum ADI controller"
->  	depends on ARCH_SPRD || COMPILE_TEST
-> +	depends on HWSPINLOCK
->  	help
->  	  ADI driver based on SPI for Spreadtrum SoCs.
-
-Why is this a more sensible fix than providing stubs for HWSPINLOCK?
-
---tvr7n346xtud4nqd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnD7Z0ACgkQJNaLcl1U
-h9Dj1wf9GG7xpGDnDit8BpVJOvTOs9Dn9sjNooFAmymK6FZY2CR61vH3FAaALrFB
-T5eAv1Ca37fA29VwGs1CdgIH5TPfBpkoYTJmJFEgWgR8CJFADRvUXCy9gfXpFrBZ
-5nPWpbA59zNF5zGalhL+dOZHYa9OLUMlwCjfjojyWGZhTNlzzKi6SF9//3fAnufo
-MsS84PR1pun/FuvQF1FNn5raU+AR37yv9ev4BoiWnjL7AukNZaT1P3mtnHK+kmiU
-1JPqc19QoN7NiLUDyBKjPoEXAJ8m4XtoWMji7wtPNxGIaIBIMZhNKR2lOblSH2pP
-xZgzpA8wgFElfDosUIeZ61JlU/J+cg==
-=IAJM
------END PGP SIGNATURE-----
-
---tvr7n346xtud4nqd--
+-- 
+~Randy
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

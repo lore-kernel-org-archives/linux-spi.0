@@ -1,58 +1,55 @@
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Subject: [PATCH -next] spi: fix spi-sprd-adi build errors when COMPILE_TEST=y
-Date: Thu, 21 Sep 2017 09:10:04 -0700
-Message-ID: <1e21f485-7f06-0566-afd4-74f2bfc9606e@infradead.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH -next] spi: fix spi-sprd-adi build errors when
+ COMPILE_TEST=y
+Date: Thu, 21 Sep 2017 17:49:33 +0100
+Message-ID: <20170921164933.hvvwfm6kvha3d5my@sirena.co.uk>
+References: <1e21f485-7f06-0566-afd4-74f2bfc9606e@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
-To: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="tvr7n346xtud4nqd"
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1e21f485-7f06-0566-afd4-74f2bfc9606e-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 
-Fix build errors when CONFIG_HWSPINLOCK=m.
+--tvr7n346xtud4nqd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch fixes the build errors when COMPILE_TEST=y,
-but I expect that this driver also wants HWSPINLOCK_SPRD=y (or =m
-when SPI_SPRD_ADI=m).
+On Thu, Sep 21, 2017 at 09:10:04AM -0700, Randy Dunlap wrote:
 
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_remove':
-spi-sprd-adi.c:(.text+0x13): undefined reference to `hwspin_lock_free'
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_probe':
-spi-sprd-adi.c:(.text+0xf5): undefined reference to `of_hwspin_lock_get_id'
-spi-sprd-adi.c:(.text+0x107): undefined reference to `hwspin_lock_request_specific'
-spi-sprd-adi.c:(.text+0x22e): undefined reference to `hwspin_lock_free'
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_transfer_one':
-spi-sprd-adi.c:(.text+0x2eb): undefined reference to `__hwspin_lock_timeout'
-spi-sprd-adi.c:(.text+0x349): undefined reference to `__hwspin_unlock'
-spi-sprd-adi.c:(.text+0x389): undefined reference to `__hwspin_lock_timeout'
-spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
+> +++ linux-next-20170921/drivers/spi/Kconfig
+> @@ -625,6 +625,7 @@ config SPI_SIRF
+>  config SPI_SPRD_ADI
+>  	tristate "Spreadtrum ADI controller"
+>  	depends on ARCH_SPRD || COMPILE_TEST
+> +	depends on HWSPINLOCK
+>  	help
+>  	  ADI driver based on SPI for Spreadtrum SoCs.
 
-Signed-off-by: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Cc: Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
----
- drivers/spi/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+Why is this a more sensible fix than providing stubs for HWSPINLOCK?
 
---- linux-next-20170921.orig/drivers/spi/Kconfig
-+++ linux-next-20170921/drivers/spi/Kconfig
-@@ -625,6 +625,7 @@ config SPI_SIRF
- config SPI_SPRD_ADI
- 	tristate "Spreadtrum ADI controller"
- 	depends on ARCH_SPRD || COMPILE_TEST
-+	depends on HWSPINLOCK
- 	help
- 	  ADI driver based on SPI for Spreadtrum SoCs.
- 
+--tvr7n346xtud4nqd
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnD7Z0ACgkQJNaLcl1U
+h9Dj1wf9GG7xpGDnDit8BpVJOvTOs9Dn9sjNooFAmymK6FZY2CR61vH3FAaALrFB
+T5eAv1Ca37fA29VwGs1CdgIH5TPfBpkoYTJmJFEgWgR8CJFADRvUXCy9gfXpFrBZ
+5nPWpbA59zNF5zGalhL+dOZHYa9OLUMlwCjfjojyWGZhTNlzzKi6SF9//3fAnufo
+MsS84PR1pun/FuvQF1FNn5raU+AR37yv9ev4BoiWnjL7AukNZaT1P3mtnHK+kmiU
+1JPqc19QoN7NiLUDyBKjPoEXAJ8m4XtoWMji7wtPNxGIaIBIMZhNKR2lOblSH2pP
+xZgzpA8wgFElfDosUIeZ61JlU/J+cg==
+=IAJM
+-----END PGP SIGNATURE-----
+
+--tvr7n346xtud4nqd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

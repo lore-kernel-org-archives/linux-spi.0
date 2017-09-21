@@ -1,38 +1,59 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: spi: Add Spreadtrum ADI controller
- documentation
-Date: Wed, 20 Sep 2017 15:52:24 -0500
-Message-ID: <20170920130844.jdfxlhlkseiytqb5@rob-hp-laptop>
-References: <385c61101941f4a7329d3092f0339514c531b740.1505388996.git.baolin.wang@spreadtrum.com>
+From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Subject: [PATCH -next] spi: fix spi-sprd-adi build errors when COMPILE_TEST=y
+Date: Thu, 21 Sep 2017 09:10:04 -0700
+Message-ID: <1e21f485-7f06-0566-afd4-74f2bfc9606e@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, mark.rutland@arm.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, baolin.wang@linaro.org
-To: Baolin Wang <baolin.wang@spreadtrum.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <385c61101941f4a7329d3092f0339514c531b740.1505388996.git.baolin.wang@spreadtrum.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+To: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Sep 15, 2017 at 03:29:15PM +0800, Baolin Wang wrote:
-> This patch adds the binding documentation for Spreadtrum ADI
-> controller device.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@spreadtrum.com>
-> ---
-> Changes since v2:
->  - Add some documentation to describe how many hardware channels can be
->  configured.
->  - Remove "SPI framework" from binding file and other small optimization.
-> 
-> Changes since v1:
->  - Add more documentation for the 'sprd,hw-channels' property and explain
->  why need one hardware spinlock.
-> ---
->  .../devicetree/bindings/spi/spi-sprd-adi.txt       |   58 ++++++++++++++++++++
->  1 file changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 
-Acked-by: Rob Herring <robh@kernel.org>
+Fix build errors when CONFIG_HWSPINLOCK=m.
+
+This patch fixes the build errors when COMPILE_TEST=y,
+but I expect that this driver also wants HWSPINLOCK_SPRD=y (or =m
+when SPI_SPRD_ADI=m).
+
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_remove':
+spi-sprd-adi.c:(.text+0x13): undefined reference to `hwspin_lock_free'
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_probe':
+spi-sprd-adi.c:(.text+0xf5): undefined reference to `of_hwspin_lock_get_id'
+spi-sprd-adi.c:(.text+0x107): undefined reference to `hwspin_lock_request_specific'
+spi-sprd-adi.c:(.text+0x22e): undefined reference to `hwspin_lock_free'
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_transfer_one':
+spi-sprd-adi.c:(.text+0x2eb): undefined reference to `__hwspin_lock_timeout'
+spi-sprd-adi.c:(.text+0x349): undefined reference to `__hwspin_unlock'
+spi-sprd-adi.c:(.text+0x389): undefined reference to `__hwspin_lock_timeout'
+spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
+
+Signed-off-by: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Cc: Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+---
+ drivers/spi/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- linux-next-20170921.orig/drivers/spi/Kconfig
++++ linux-next-20170921/drivers/spi/Kconfig
+@@ -625,6 +625,7 @@ config SPI_SIRF
+ config SPI_SPRD_ADI
+ 	tristate "Spreadtrum ADI controller"
+ 	depends on ARCH_SPRD || COMPILE_TEST
++	depends on HWSPINLOCK
+ 	help
+ 	  ADI driver based on SPI for Spreadtrum SoCs.
+ 
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

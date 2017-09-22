@@ -1,57 +1,38 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
- SPI_SPRD_ADI=y and HWSPINLOCK=m
-Date: Fri, 22 Sep 2017 10:26:21 +0100
-Message-ID: <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
-References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH] spi: sprd-adi: silence an uninitialized variable warning
+Date: Fri, 22 Sep 2017 23:48:08 +0300
+Message-ID: <20170922204808.7o7jn7pfj4se2s5r@mwanda>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qq536yoti5x7j5ze"
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <ed5b8ca2-b853-755d-2801-57cc0b626508-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---qq536yoti5x7j5ze
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Baolin Wang <baolin.wang@spreadtrum.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 21, 2017 at 11:02:31AM -0700, Randy Dunlap wrote:
+If of_get_property() fails then "size" is uninitialized and it leads to
+a static checker warning:
 
-> spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
->=20
-> v2: allow build with or without HWSPINLOCK, but restrict to =3Dm
-> if HWSPINLOCK=3Dm.
->=20
-> Signed-off-by: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+    drivers/spi/spi-sprd-adi.c:288 sprd_adi_hw_init()
+    error: uninitialized symbol 'size'.
 
-Please put inter version changelogs after the --- as covered in
-SubmittingPatches.  This still seems like the stubs aren't doing the
-right thing - if we can use hwspinlocks in a module when they're enabled
-I'd expect to be able to build the stubs that way too.
+We can silence the warning by re-arranging the order of these checks.
+It obviously doesn't affect runtime at all.
 
---qq536yoti5x7j5ze
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnE1zwACgkQJNaLcl1U
-h9Cp1wf/cG2IeJDVyZ6Jd15eaSp2FKhFjsgCKZ6uUisBrI/I4zEX9r5c2xIRoeAb
-X3ZW6tZl+yiyB2o+49P+qKttKXB0JJWVw1ZnUoK+QWzhP4ZXr1ua+21h70Aq7ECD
-LCMntStzvPfy0PYewohcOAuL7u6QqSoCbxXJ/f5rTUTtFkTPY7AfrXjNDEmCe794
-F81H9EOJOYYSl+/HqG+16nTXJHeUPf8rmWkTXzemjhno6ObixfJk1LUIQkreJape
-IEG0f9lBafTriebcefwxttGKkvdyna4oCqQSOv//U9dqUweQ48p+3rJNVVSRPkJr
-9wWttDmYf73onFTiBthGmrt/9IGLhQ==
-=xZDt
------END PGP SIGNATURE-----
-
---qq536yoti5x7j5ze--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 0d481f8a46c2..146d674573f7 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -285,7 +285,7 @@ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+ 
+ 	/* Set hardware channels setting */
+ 	list = of_get_property(np, "sprd,hw-channels", &size);
+-	if (!size || !list) {
++	if (!list || !size) {
+ 		dev_info(sadi->dev, "no hw channels setting in node\n");
+ 		return;
+ 	}

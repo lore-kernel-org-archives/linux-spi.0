@@ -1,59 +1,57 @@
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
- SPI_SPRD_ADI=y and HWSPINLOCK=m
-Date: Fri, 22 Sep 2017 18:46:46 -0700
-Message-ID: <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
-References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
- <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
+From: Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v2] spi: fix spi-sprd-adi build errors when HWSPINLOCK=m and
+ SPI_SPRD_ADI=y
+Date: Fri, 22 Sep 2017 18:47:25 -0700
+Message-ID: <38b3774a-96b0-fc1d-5e91-e1665cb8c076@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170922092621.uq2xsvxangeetewi-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Cc: Baolin Wang <Baolin.Wang@spreadtrum.com>
+To: LKML <linux-kernel@vger.kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 09/22/17 02:26, Mark Brown wrote:
-> On Thu, Sep 21, 2017 at 11:02:31AM -0700, Randy Dunlap wrote:
-> 
->> spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
->>
->> v2: allow build with or without HWSPINLOCK, but restrict to =m
->> if HWSPINLOCK=m.
->>
->> Signed-off-by: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-> 
-> Please put inter version changelogs after the --- as covered in
-> SubmittingPatches.  This still seems like the stubs aren't doing the
+From: Randy Dunlap <rdunlap@infradead.org>
 
-Yep.
+Fix build errors when CONFIG_HWSPINLOCK=m and SPI_SPRD_ADI=y.
+That combination is not allowed.
 
-> right thing - if we can use hwspinlocks in a module when they're enabled
-> I'd expect to be able to build the stubs that way too.
+This allows building with HWSPINLOCK and SPI_SPRD_ADI in any
+combinations except for HWSPINLOCK=m and SPI_SPRD_ADI=y.
 
-Sorry, I'm not understanding what you are trying to say on that one.
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_remove':
+spi-sprd-adi.c:(.text+0x13): undefined reference to `hwspin_lock_free'
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_probe':
+spi-sprd-adi.c:(.text+0xf5): undefined reference to `of_hwspin_lock_get_id'
+spi-sprd-adi.c:(.text+0x107): undefined reference to `hwspin_lock_request_specific'
+spi-sprd-adi.c:(.text+0x22e): undefined reference to `hwspin_lock_free'
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_transfer_one':
+spi-sprd-adi.c:(.text+0x2eb): undefined reference to `__hwspin_lock_timeout'
+spi-sprd-adi.c:(.text+0x349): undefined reference to `__hwspin_unlock'
+spi-sprd-adi.c:(.text+0x389): undefined reference to `__hwspin_lock_timeout'
+spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
 
-The hwspinlock stubs are present if HWSPINLOCK is not enabled (when
-<linux/hwspinlock.h> is #included).
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Baolin Wang <Baolin.Wang@spreadtrum.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+---
+ drivers/spi/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-The following kconfig combinations build:
+v2: allow build with or without HWSPINLOCK, but restrict SPI_SPRD_ADI
+to =m if HWSPINLOCK=m.
 
-HWSPINLOCK	SPI_SPRD_ADI
-	n		y
-	n		m
-	y		y
-	y		m
-	m		m
-but this combo is not allowed (with the patch) or causes build errors
-(without the patch):
-	m		y
-
--- 
-~Randy
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--- linux-next-20170921.orig/drivers/spi/Kconfig
++++ linux-next-20170921/drivers/spi/Kconfig
+@@ -625,6 +625,7 @@ config SPI_SIRF
+ config SPI_SPRD_ADI
+ 	tristate "Spreadtrum ADI controller"
+ 	depends on ARCH_SPRD || COMPILE_TEST
++	depends on HWSPINLOCK || HWSPINLOCK=n
+ 	help
+ 	  ADI driver based on SPI for Spreadtrum SoCs.
+ 

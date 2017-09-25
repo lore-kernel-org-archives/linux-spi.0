@@ -1,75 +1,62 @@
-From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
-Subject: RE: [PATCH 1/2] spi: sh-msiof: Add compatible strings for r8a774[35]
-Date: Mon, 25 Sep 2017 12:01:28 +0000
-Message-ID: <TY1PR06MB0895C23882FD516D6DA5680DC07A0@TY1PR06MB0895.apcprd06.prod.outlook.com>
-References: <1506329660-4064-1-git-send-email-fabrizio.castro@bp.renesas.com>
- <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
- <CAMuHMdUA-ukN=Vv68Zbe2N2Z=fkKrq=w9QPm4uKyb5k68v+qcg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
+ SPI_SPRD_ADI=y and HWSPINLOCK=m
+Date: Mon, 25 Sep 2017 17:12:21 +0100
+Message-ID: <20170925161221.v23dpeljin5kakhz@sirena.org.uk>
+References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
+ <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
+ <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "Mark Rutland" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Chris Paterson <Chris.Paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUA-ukN=Vv68Zbe2N2Z=fkKrq=w9QPm4uKyb5k68v+qcg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="h3dlpnuuk6uvwtfp"
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGVsbG8gR2VlcnQsDQoNClRoYW5rIHlvdSBmb3IgZ2V0dGluZyBiYWNrIHRvIG1lLg0KDQo+IC0t
-LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGdlZXJ0LnV5dHRlcmhvZXZlbkBnbWFp
-bC5jb20gW21haWx0bzpnZWVydC51eXR0ZXJob2V2ZW5AZ21haWwuY29tXSBPbiBCZWhhbGYgT2Yg
-R2VlcnQgVXl0dGVyaG9ldmVuDQo+IFNlbnQ6IDI1IFNlcHRlbWJlciAyMDE3IDEyOjIyDQo+IFRv
-OiBGYWJyaXppbyBDYXN0cm8gPGZhYnJpemlvLmNhc3Ryb0BicC5yZW5lc2FzLmNvbT4NCj4gQ2M6
-IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47IFJvYiBIZXJyaW5nIDxyb2JoK2R0QGtl
-cm5lbC5vcmc+OyBNYXJrIFJ1dGxhbmQgPG1hcmsucnV0bGFuZEBhcm0uY29tPjsgbGludXgtc3Bp
-DQo+IDxsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnPjsgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5v
-cmc7IExpbnV4LVJlbmVzYXMgPGxpbnV4LXJlbmVzYXMtc29jQHZnZXIua2VybmVsLm9yZz47IENo
-cmlzIFBhdGVyc29uDQo+IDxDaHJpcy5QYXRlcnNvbjJAcmVuZXNhcy5jb20+OyBCaWp1IERhcyA8
-YmlqdS5kYXNAYnAucmVuZXNhcy5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMS8yXSBzcGk6
-IHNoLW1zaW9mOiBBZGQgY29tcGF0aWJsZSBzdHJpbmdzIGZvciByOGE3NzRbMzVdDQo+DQo+IEhp
-IEZhYnJpemlvLA0KPg0KPiBPbiBNb24sIFNlcCAyNSwgMjAxNyBhdCAxMDo1NCBBTSwgRmFicml6
-aW8gQ2FzdHJvDQo+IDxmYWJyaXppby5jYXN0cm9AYnAucmVuZXNhcy5jb20+IHdyb3RlOg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEZhYnJpemlvIENhc3RybyA8ZmFicml6aW8uY2FzdHJvQGJwLnJlbmVz
-YXMuY29tPg0KPg0KPiBUaGlzIHBhdGNoIGlzIG5vdCBuZWVkZWQuLi4NCj4NCj4gPiAtLS0NCj4g
-PiAgZHJpdmVycy9zcGkvc3BpLXNoLW1zaW9mLmMgfCAyICsrDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGkt
-c2gtbXNpb2YuYyBiL2RyaXZlcnMvc3BpL3NwaS1zaC1tc2lvZi5jDQo+ID4gaW5kZXggMGViMWU5
-NS4uMDA4MDg0NCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktc2gtbXNpb2YuYw0K
-PiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1zaC1tc2lvZi5jDQo+ID4gQEAgLTEwMjEsNiArMTAy
-MSw4IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgc2hfbXNpb2ZfY2hpcGRhdGEgcmNhcl9nZW4zX2Rh
-dGEgPSB7DQo+ID4NCj4gPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgc2hfbXNp
-b2ZfbWF0Y2hbXSA9IHsNCj4gPiAgICAgICAgIHsgLmNvbXBhdGlibGUgPSAicmVuZXNhcyxzaC1t
-b2JpbGUtbXNpb2YiLCAuZGF0YSA9ICZzaF9kYXRhIH0sDQo+ID4gKyAgICAgICB7IC5jb21wYXRp
-YmxlID0gInJlbmVzYXMsbXNpb2YtcjhhNzc0MyIsICAgLmRhdGEgPSAmcmNhcl9nZW4yX2RhdGEg
-fSwNCj4gPiArICAgICAgIHsgLmNvbXBhdGlibGUgPSAicmVuZXNhcyxtc2lvZi1yOGE3NzQ1Iiwg
-ICAuZGF0YSA9ICZyY2FyX2dlbjJfZGF0YSB9LA0KPiA+ICAgICAgICAgeyAuY29tcGF0aWJsZSA9
-ICJyZW5lc2FzLG1zaW9mLXI4YTc3OTAiLCAgIC5kYXRhID0gJnJjYXJfZ2VuMl9kYXRhIH0sDQo+
-ID4gICAgICAgICB7IC5jb21wYXRpYmxlID0gInJlbmVzYXMsbXNpb2YtcjhhNzc5MSIsICAgLmRh
-dGEgPSAmcmNhcl9nZW4yX2RhdGEgfSwNCj4gPiAgICAgICAgIHsgLmNvbXBhdGlibGUgPSAicmVu
-ZXNhcyxtc2lvZi1yOGE3NzkyIiwgICAuZGF0YSA9ICZyY2FyX2dlbjJfZGF0YSB9LA0KPg0KPiAu
-Li4gYXMgdGhlIGRyaXZlciBhbHJlYWR5IG1hdGNoZXMgYWdhaW5zdCB0aGUgZmFtaWx5LXNwZWNp
-ZmljIGNvbXBhdGlibGUgdmFsdWUNCj4gYmVsb3c6DQo+DQo+ICAgICAgICAgeyAuY29tcGF0aWJs
-ZSA9ICJyZW5lc2FzLHJjYXItZ2VuMi1tc2lvZiIsIC5kYXRhID0gJnJjYXJfZ2VuMl9kYXRhIH0s
-DQoNCldlIHN1c3BlY3RlZCB0aGlzIHdhcyB0aGUgY2FzZSwgYnV0IHdlIHdlcmVuJ3Qgc3VyZS4N
-CkkgYXBvbG9naXplIGZvciB3YXN0aW5nIHlvdXIgdGltZS4NCg0KQ2hlZXJzLA0KRmFicml6aW8N
-Cg0KPg0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4NCj4gICAgICAgICAgICAgICAgICAgICAgICAg
-R2VlcnQNCj4NCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9ldmVuIC0tIFRoZXJlJ3MgbG90cyBvZiBM
-aW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1tNjhrLm9yZw0KPg0KPiBJbiBwZXJzb25h
-bCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhh
-Y2tlci4gQnV0DQo+IHdoZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAi
-cHJvZ3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4NCj4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAtLSBMaW51cyBUb3J2YWxkcw0KDQoNCg0KUmVuZXNhcyBFbGVjdHJvbmlj
-cyBFdXJvcGUgTHRkLCBEdWtlcyBNZWFkb3csIE1pbGxib2FyZCBSb2FkLCBCb3VybmUgRW5kLCBC
-dWNraW5naGFtc2hpcmUsIFNMOCA1RkgsIFVLLiBSZWdpc3RlcmVkIGluIEVuZ2xhbmQgJiBXYWxl
-cyB1bmRlciBSZWdpc3RlcmVkIE5vLiAwNDU4NjcwOS4NCg==
+
+--h3dlpnuuk6uvwtfp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Sep 22, 2017 at 06:46:46PM -0700, Randy Dunlap wrote:
+> On 09/22/17 02:26, Mark Brown wrote:
+
+> > right thing - if we can use hwspinlocks in a module when they're enabled
+> > I'd expect to be able to build the stubs that way too.
+
+> Sorry, I'm not understanding what you are trying to say on that one.
+
+> HWSPINLOCK	SPI_SPRD_ADI
+
+> but this combo is not allowed (with the patch) or causes build errors
+> (without the patch):
+> 	m		y
+
+Why is that not just an || COMPILE_TEST dependency then?  The dependency
+you're trying to introduce is weird and confusing, we shouldn't be
+having to do things like that.
+
+--h3dlpnuuk6uvwtfp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnJKuQACgkQJNaLcl1U
+h9ClSAf9HXapwrFbCjSOUCah0zc1oA5WhxRvwyOxF/q2IH2yN5nKJ4bc8yMxxXeo
+ruzy5zNQdshL6RKjY3aHp9weYV0E661UGCpaFxPZ8phtVtWZAWLx5/m/+1YxwqJt
+7vDH3z9+pAeGad3KiBEF/RzOvKRfcbyWvYWTjiCDAhNk2bfJZfVTaDgwCQ87iYr0
+o1UxB2qq9vPm9Zq0ci9ijb4LqpxbMUQYA8zyxcfhsrXnhKuLqQuHMJsl5TTOzzYe
+dZTkIXq8jwYyCdZ8M1+umMqD3NL3b1vDmZnRfZj/BuQ88d3Fd4YjszBGdmZzqz2x
+uqNlI30LKBCBlgl91Slwyu2T1acBPA==
+=OUIe
+-----END PGP SIGNATURE-----
+
+--h3dlpnuuk6uvwtfp--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,21 +1,23 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sprd-adi: checking for NULL instead of IS_ERR()" to the spi tree
-Date: Mon, 25 Sep 2017 17:16:40 +0100 (BST)
-Message-ID: <20170925161640.0D23644005B@finisterre.ee.mobilebroadband>
-References: <20170925102133.4kef3fesnh3v3ixe@mwanda>
+Subject: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]" to the spi tree
+Date: Mon, 25 Sep 2017 17:16:37 +0100 (BST)
+Message-ID: <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
+References: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chris Paterson <Chris.Paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170925102133.4kef3fesnh3v3ixe@mwanda>
+In-Reply-To: <1506329660-4064-2-git-send-email-fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sprd-adi: checking for NULL instead of IS_ERR()
+   spi: sh-msiof: Add compatible strings for r8a774[35]
 
 has been applied to the spi tree at
 
@@ -40,35 +42,30 @@ to this mail.
 Thanks,
 Mark
 
->From 04063a011f2f35c37e1146c736e6d4ad402a8557 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Date: Mon, 25 Sep 2017 13:21:33 +0300
-Subject: [PATCH] spi: sprd-adi: checking for NULL instead of IS_ERR()
+>From bdacfc7b6216dd30d07c10732fd4c0a660c62853 Mon Sep 17 00:00:00 2001
+From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+Date: Mon, 25 Sep 2017 09:54:19 +0100
+Subject: [PATCH] spi: sh-msiof: Add compatible strings for r8a774[35]
 
-devm_ioremap_resource() returns error pointers, it never returns NULL.
-
-Fixes: 7e2903cb91df ("spi: Add ADI driver for Spreadtrum platform")
-Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sprd-adi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 0d481f8a46c2..bff6ef1caad7 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -341,8 +341,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 0eb1e9583485..00808448cf35 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1021,6 +1021,8 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	sadi->base = devm_ioremap_resource(&pdev->dev, res);
--	if (!sadi->base) {
--		ret = -ENOMEM;
-+	if (IS_ERR(sadi->base)) {
-+		ret = PTR_ERR(sadi->base);
- 		goto put_ctlr;
- 	}
- 
+ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
++	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
++	{ .compatible = "renesas,msiof-r8a7745",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7790",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7791",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7792",   .data = &rcar_gen2_data },
 -- 
 2.14.1
 

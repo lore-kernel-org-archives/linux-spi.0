@@ -1,21 +1,21 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd-adi: silence an uninitialized variable warning" to the spi tree
-Date: Mon, 25 Sep 2017 17:16:38 +0100 (BST)
-Message-ID: <20170925161638.E9B1244005A@finisterre.ee.mobilebroadband>
-References: <20170922204808.7o7jn7pfj4se2s5r@mwanda>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Baolin Wang <baolin.wang@spreadtrum.com>,
-        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20170922204808.7o7jn7pfj4se2s5r@mwanda>
-Sender: kernel-janitors-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: sprd-adi: checking for NULL instead of IS_ERR()" to the spi tree
+Date: Mon, 25 Sep 2017 17:16:40 +0100 (BST)
+Message-ID: <20170925161640.0D23644005B@finisterre.ee.mobilebroadband>
+References: <20170925102133.4kef3fesnh3v3ixe@mwanda>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170925102133.4kef3fesnh3v3ixe@mwanda>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sprd-adi: silence an uninitialized variable warning
+   spi: sprd-adi: checking for NULL instead of IS_ERR()
 
 has been applied to the spi tree at
 
@@ -40,39 +40,39 @@ to this mail.
 Thanks,
 Mark
 
->From b0d6e097b922ac7f538623c52794d9d63d6ee378 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 22 Sep 2017 23:48:08 +0300
-Subject: [PATCH] spi: sprd-adi: silence an uninitialized variable warning
+>From 04063a011f2f35c37e1146c736e6d4ad402a8557 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Date: Mon, 25 Sep 2017 13:21:33 +0300
+Subject: [PATCH] spi: sprd-adi: checking for NULL instead of IS_ERR()
 
-If of_get_property() fails then "size" is uninitialized and it leads to
-a static checker warning:
+devm_ioremap_resource() returns error pointers, it never returns NULL.
 
-    drivers/spi/spi-sprd-adi.c:288 sprd_adi_hw_init()
-    error: uninitialized symbol 'size'.
-
-We can silence the warning by re-arranging the order of these checks.
-It obviously doesn't affect runtime at all.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7e2903cb91df ("spi: Add ADI driver for Spreadtrum platform")
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sprd-adi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sprd-adi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index bff6ef1caad7..1324463244d3 100644
+index 0d481f8a46c2..bff6ef1caad7 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -285,7 +285,7 @@ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+@@ -341,8 +341,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
  
- 	/* Set hardware channels setting */
- 	list = of_get_property(np, "sprd,hw-channels", &size);
--	if (!size || !list) {
-+	if (!list || !size) {
- 		dev_info(sadi->dev, "no hw channels setting in node\n");
- 		return;
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	sadi->base = devm_ioremap_resource(&pdev->dev, res);
+-	if (!sadi->base) {
+-		ret = -ENOMEM;
++	if (IS_ERR(sadi->base)) {
++		ret = PTR_ERR(sadi->base);
+ 		goto put_ctlr;
  	}
+ 
 -- 
 2.14.1
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

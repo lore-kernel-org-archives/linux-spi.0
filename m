@@ -1,7 +1,7 @@
 From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
-Subject: [PATCH 1/2] spi: sh-msiof: Add compatible strings for r8a774[35]
-Date: Mon, 25 Sep 2017 09:54:19 +0100
-Message-ID: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH 2/2] dt-bindings: spi: sh-msiof: Add r8a774[35] to the compatible list
+Date: Mon, 25 Sep 2017 09:54:20 +0100
+Message-ID: <1506329660-4064-3-git-send-email-fabrizio.castro@bp.renesas.com>
 References: <1506329660-4064-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -17,22 +17,33 @@ List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 0eb1e95..0080844 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1021,6 +1021,8 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index e865855..bdd8395 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -1,7 +1,9 @@
+ Renesas MSIOF spi controller
  
- static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
-+	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
-+	{ .compatible = "renesas,msiof-r8a7745",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7790",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7791",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7792",   .data = &rcar_gen2_data },
+ Required properties:
+-- compatible           : "renesas,msiof-r8a7790" (R-Car H2)
++- compatible           : "renesas,msiof-r8a7743" (RZ/G1M)
++			 "renesas,msiof-r8a7745" (RZ/G1E)
++			 "renesas,msiof-r8a7790" (R-Car H2)
+ 			 "renesas,msiof-r8a7791" (R-Car M2-W)
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+@@ -10,7 +12,7 @@ Required properties:
+ 			 "renesas,msiof-r8a7796" (R-Car M3-W)
+ 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
+ 			 "renesas,sh-mobile-msiof" (generic SH-Mobile compatibile device)
+-			 "renesas,rcar-gen2-msiof" (generic R-Car Gen2 compatible device)
++			 "renesas,rcar-gen2-msiof" (generic R-Car Gen2 and RZ/G1 compatible device)
+ 			 "renesas,rcar-gen3-msiof" (generic R-Car Gen3 compatible device)
+ 			 "renesas,sh-msiof"      (deprecated)
+ 
 -- 
 2.7.4
 

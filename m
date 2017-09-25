@@ -1,90 +1,73 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]" to
- the spi tree
-Date: Mon, 25 Sep 2017 19:48:44 +0200
-Message-ID: <CAMuHMdVsRwW+10ERyTJAa8XhhkPMn4ruymUwPKot+kmczBwbcA@mail.gmail.com>
-References: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com> <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
+ SPI_SPRD_ADI=y and HWSPINLOCK=m
+Date: Mon, 25 Sep 2017 10:36:51 -0700
+Message-ID: <20170925173651.zyof5olbas52wb2q@sirena.org.uk>
+References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
+ <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
+ <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
+ <20170925161221.v23dpeljin5kakhz@sirena.org.uk>
+ <449abd0e-8d8b-86e9-2b7a-65c27ab3171b@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="dyhvwc3orh5yxhuk"
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <449abd0e-8d8b-86e9-2b7a-65c27ab3171b-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
 
-On Mon, Sep 25, 2017 at 6:16 PM, Mark Brown <broonie@kernel.org> wrote:
-> The patch
->
->    spi: sh-msiof: Add compatible strings for r8a774[35]
->
-> has been applied to the spi tree at
->
->    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
->
-> All being well this means that it will be integrated into the linux-next
-> tree (usually sometime in the next 24 hours) and sent to Linus during
-> the next merge window (or sooner if it is a bug fix), however if
-> problems are discovered then the patch may be dropped or reverted.
->
-> You may get further e-mails resulting from automated or manual testing
-> and review of the tree, please engage with people reporting problems and
-> send followup patches addressing any issues that are reported if needed.
->
-> If any updates are required or you are submitting further changes they
-> should be sent as incremental updates against current git, existing
-> patches will not be replaced.
->
-> Please add any relevant lists and maintainers to the CCs when replying
-> to this mail.
+--dyhvwc3orh5yxhuk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Please drop this patch, as there's no need to add explicit matching for these
-compatible values. The family-specific compatible values (which the driver
-already matches against) are sufficient.
+On Mon, Sep 25, 2017 at 10:19:56AM -0700, Randy Dunlap wrote:
+> On 09/25/17 09:12, Mark Brown wrote:
 
-Thanks!
+> > Why is that not just an || COMPILE_TEST dependency then?  The dependency
+> > you're trying to introduce is weird and confusing, we shouldn't be
+> > having to do things like that.
 
-> From bdacfc7b6216dd30d07c10732fd4c0a660c62853 Mon Sep 17 00:00:00 2001
-> From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-> Date: Mon, 25 Sep 2017 09:54:19 +0100
-> Subject: [PATCH] spi: sh-msiof: Add compatible strings for r8a774[35]
->
-> Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  drivers/spi/spi-sh-msiof.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 0eb1e9583485..00808448cf35 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -1021,6 +1021,8 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
->
->  static const struct of_device_id sh_msiof_match[] = {
->         { .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
-> +       { .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
-> +       { .compatible = "renesas,msiof-r8a7745",   .data = &rcar_gen2_data },
->         { .compatible = "renesas,msiof-r8a7790",   .data = &rcar_gen2_data },
->         { .compatible = "renesas,msiof-r8a7791",   .data = &rcar_gen2_data },
->         { .compatible = "renesas,msiof-r8a7792",   .data = &rcar_gen2_data },
+> It already uses COMPILE_TEST:
 
-Gr{oetje,eeting}s,
+> config SPI_SPRD_ADI
+> 	tristate "Spreadtrum ADI controller"
+> 	depends on ARCH_SPRD || COMPILE_TEST
+> 	help
+> 	  ADI driver based on SPI for Spreadtrum SoCs.
 
-                        Geert
+> but that allows build errors when SPI_SPRD_ADI=y and HWSPINLOCK=y.
 
+> As for the dependency that I am adding:
+> +	depends on HWSPINLOCK || HWSPINLOCK=n
+
+> that idiom is used over and over again in Kconfig files to prevent this kind of
+> build problem in loadable modules.
+
+And what is that equivalent to in relation to COMPILE_TEST, especially
+considering the situations where you'd build this without hwspinlock
+support?
+
+--dyhvwc3orh5yxhuk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnJPrIACgkQJNaLcl1U
+h9B2Rwf7B3oriTjML9g9fjOFZ6kmfUmXDyLqT+l5Ux6BcNvgUBB9dXV98bqamKvZ
+nbE46B6l3kEu/AehCVoNXh9C+/jJdVWnrPpWIzTCENrFGsgjBuUV17d0e6JGqHyX
+OLdNayC6k0N31AG34R155ay+hV932T1dIE6B+fo6EEqJZC+g5/hsYQqBfoICDczi
+KfBOodsJdu7xBpElTzT+u1M8NO0QdSNHgiAweULPXOs//U8JlBA1+ftmWEaD1AzO
+/tZ46JnADd9Ve2HTbekijNOmoeELMOfsWnXWI89DWS+8TclesESaG49vgpShzuq0
+AXCKswU+UskBCFqUDyWGWUyJLpmi+w==
+=z6Rm
+-----END PGP SIGNATURE-----
+
+--dyhvwc3orh5yxhuk--
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

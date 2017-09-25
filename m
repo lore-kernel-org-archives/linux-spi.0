@@ -1,72 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
- SPI_SPRD_ADI=y and HWSPINLOCK=m
-Date: Mon, 25 Sep 2017 10:36:51 -0700
-Message-ID: <20170925173651.zyof5olbas52wb2q@sirena.org.uk>
-References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
- <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
- <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
- <20170925161221.v23dpeljin5kakhz@sirena.org.uk>
- <449abd0e-8d8b-86e9-2b7a-65c27ab3171b@infradead.org>
+Subject: Re: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]"
+ to the spi tree
+Date: Mon, 25 Sep 2017 11:45:45 -0700
+Message-ID: <20170925184545.5k4nke27rgud3uwp@sirena.org.uk>
+References: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
+ <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
+ <CAMuHMdVsRwW+10ERyTJAa8XhhkPMn4ruymUwPKot+kmczBwbcA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dyhvwc3orh5yxhuk"
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="dsaqr4lnrmkz2tik"
+Cc: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Chris Paterson <Chris.Paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <449abd0e-8d8b-86e9-2b7a-65c27ab3171b-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+In-Reply-To: <CAMuHMdVsRwW+10ERyTJAa8XhhkPMn4ruymUwPKot+kmczBwbcA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---dyhvwc3orh5yxhuk
+--dsaqr4lnrmkz2tik
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Sep 25, 2017 at 10:19:56AM -0700, Randy Dunlap wrote:
-> On 09/25/17 09:12, Mark Brown wrote:
+On Mon, Sep 25, 2017 at 07:48:44PM +0200, Geert Uytterhoeven wrote:
 
-> > Why is that not just an || COMPILE_TEST dependency then?  The dependency
-> > you're trying to introduce is weird and confusing, we shouldn't be
-> > having to do things like that.
+> Please drop this patch, as there's no need to add explicit matching for these
+> compatible values. The family-specific compatible values (which the driver
+> already matches against) are sufficient.
 
-> It already uses COMPILE_TEST:
+While the patch is not needed if people list the fallback property it
+also does no harm and provides a marginal documentation benefit in
+saying that someone has considered if any special handling is useful and
+decided that it isn't.
 
-> config SPI_SPRD_ADI
-> 	tristate "Spreadtrum ADI controller"
-> 	depends on ARCH_SPRD || COMPILE_TEST
-> 	help
-> 	  ADI driver based on SPI for Spreadtrum SoCs.
-
-> but that allows build errors when SPI_SPRD_ADI=y and HWSPINLOCK=y.
-
-> As for the dependency that I am adding:
-> +	depends on HWSPINLOCK || HWSPINLOCK=n
-
-> that idiom is used over and over again in Kconfig files to prevent this kind of
-> build problem in loadable modules.
-
-And what is that equivalent to in relation to COMPILE_TEST, especially
-considering the situations where you'd build this without hwspinlock
-support?
-
---dyhvwc3orh5yxhuk
+--dsaqr4lnrmkz2tik
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnJPrIACgkQJNaLcl1U
-h9B2Rwf7B3oriTjML9g9fjOFZ6kmfUmXDyLqT+l5Ux6BcNvgUBB9dXV98bqamKvZ
-nbE46B6l3kEu/AehCVoNXh9C+/jJdVWnrPpWIzTCENrFGsgjBuUV17d0e6JGqHyX
-OLdNayC6k0N31AG34R155ay+hV932T1dIE6B+fo6EEqJZC+g5/hsYQqBfoICDczi
-KfBOodsJdu7xBpElTzT+u1M8NO0QdSNHgiAweULPXOs//U8JlBA1+ftmWEaD1AzO
-/tZ46JnADd9Ve2HTbekijNOmoeELMOfsWnXWI89DWS+8TclesESaG49vgpShzuq0
-AXCKswU+UskBCFqUDyWGWUyJLpmi+w==
-=z6Rm
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnJTtYACgkQJNaLcl1U
+h9D+zQf9H+eHZt3G9Ts391WXqEIE0MvIkpN6hFrNq8CMmQoB59GMDb4hXJY1MUyR
+omEoy4eeWKixmvZWxcZOpXWaHuDc9pxM9rAgjd8dns2wANydt5pvk9Aw7oFyZnmT
+g6zt+ZZ6oHQFHmO34ucHMx7FEYg41Im2hWkAOQupnnDK8TbmmFOxsnC/MXHyU/Su
+b30pVzjKxIsYxeOM6xA5noY6LO+VVW1cwZSPb6yxJXnKT4cQiBKYgFVgvrIY3thI
+n7lGDp8Mbaa/XrryFjSl/JgND5R0dEjiotYs8Gpfe+1OjVUVIvn5ow3ko3siC69k
+j8+W39myoqf519iCvp9oXDII+KYbnA==
+=Qu7o
 -----END PGP SIGNATURE-----
 
---dyhvwc3orh5yxhuk--
+--dsaqr4lnrmkz2tik--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

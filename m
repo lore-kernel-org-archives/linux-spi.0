@@ -1,81 +1,56 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
  SPI_SPRD_ADI=y and HWSPINLOCK=m
-Date: Mon, 25 Sep 2017 21:20:31 +0200
-Message-ID: <CAMuHMdXwv7s-uBM2J1Rf5fw+2=N_VcPxCYHartgUxb56yrR23A@mail.gmail.com>
+Date: Mon, 25 Sep 2017 12:22:56 -0700
+Message-ID: <20170925192256.bmrm6gmb4idvomxb@sirena.org.uk>
 References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
- <20170922092621.uq2xsvxangeetewi@sirena.org.uk> <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
- <20170925161221.v23dpeljin5kakhz@sirena.org.uk> <449abd0e-8d8b-86e9-2b7a-65c27ab3171b@infradead.org>
+ <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
+ <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
+ <20170925161221.v23dpeljin5kakhz@sirena.org.uk>
+ <449abd0e-8d8b-86e9-2b7a-65c27ab3171b@infradead.org>
+ <CAMuHMdXwv7s-uBM2J1Rf5fw+2=N_VcPxCYHartgUxb56yrR23A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <449abd0e-8d8b-86e9-2b7a-65c27ab3171b-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sat7szmj55wuxpcl"
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXwv7s-uBM2J1Rf5fw+2=N_VcPxCYHartgUxb56yrR23A@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Randy,
 
-On Mon, Sep 25, 2017 at 7:19 PM, Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org> wrote:
-> On 09/25/17 09:12, Mark Brown wrote:
->> On Fri, Sep 22, 2017 at 06:46:46PM -0700, Randy Dunlap wrote:
->>> On 09/22/17 02:26, Mark Brown wrote:
->>
->>>> right thing - if we can use hwspinlocks in a module when they're enabled
->>>> I'd expect to be able to build the stubs that way too.
->>
->>> Sorry, I'm not understanding what you are trying to say on that one.
->>
->>> HWSPINLOCK   SPI_SPRD_ADI
->>
->>> but this combo is not allowed (with the patch) or causes build errors
->>> (without the patch):
->>>      m               y
->>
->> Why is that not just an || COMPILE_TEST dependency then?  The dependency
->> you're trying to introduce is weird and confusing, we shouldn't be
->> having to do things like that.
->
-> It already uses COMPILE_TEST:
->
-> config SPI_SPRD_ADI
->         tristate "Spreadtrum ADI controller"
->         depends on ARCH_SPRD || COMPILE_TEST
->         help
->           ADI driver based on SPI for Spreadtrum SoCs.
->
-> but that allows build errors when SPI_SPRD_ADI=y and HWSPINLOCK=y.
+--sat7szmj55wuxpcl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-You mean "when SPI_SPRD_ADI=y and HWSPINLOCK=m"?
+On Mon, Sep 25, 2017 at 09:20:31PM +0200, Geert Uytterhoeven wrote:
 
-> As for the dependency that I am adding:
-> +       depends on HWSPINLOCK || HWSPINLOCK=n
->
-> that idiom is used over and over again in Kconfig files to prevent this kind of
-> build problem in loadable modules.
+> The issue is builtin drivers that depend on a modular API.  The clean way
+> is to separate API and implementation, so the API can be builtin, and the
+> implementation can be modular.
+> Hence the API should provide stubs that call into function pointers, to be
+> registered by the module providing the implementation.
 
-Indeed, it's confusing, but used all over the place.
+In this case the problem is even more basic in that the driver does
+actually depend on having hwspinlocks for any production use.
 
-The issue is builtin drivers that depend on a modular API.  The clean way
-is to separate API and implementation, so the API can be builtin, and the
-implementation can be modular.
-Hence the API should provide stubs that call into function pointers, to be
-registered by the module providing the implementation.
+--sat7szmj55wuxpcl
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Gr{oetje,eeting}s,
+-----BEGIN PGP SIGNATURE-----
 
-                        Geert
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnJV48ACgkQJNaLcl1U
+h9CmvAf/cqC65jnDhSzDVAsiwmYuZbiu8TfEbI52qnxHdAiQjj/IFM4lab1hPZVU
+iGTVhjV6g5MvxxzlJcib755hp1aplqAVhti1mjItSiIe5AjphExjJ64yzn4jMdv7
+J8OIJkFibQ3vbklEwl8V3/S3FrLwg1smkFxC89AzEwjwz5tb1bWcnhUvLkR+Myyu
+XPT5pE5cqWjy72P9GpdJsmVyIL3UNAnFYOcK44V2s0oiHDtPT2sOnoMAGgeM3rCj
+30gt0SFJ0beNsKw8xKGPF6HWt5ot3Tam3zfC4mtf1ns5/oxfAnJ7TfrwZQB5oHvS
+MONa+N6rpt/TlgMcaqMDLz3aTHJDbw==
+=YgXW
+-----END PGP SIGNATURE-----
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--sat7szmj55wuxpcl--

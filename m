@@ -1,57 +1,33 @@
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2] spi: fix spi-sprd-adi build errors when HWSPINLOCK=m and
- SPI_SPRD_ADI=y
-Date: Fri, 22 Sep 2017 18:47:25 -0700
-Message-ID: <38b3774a-96b0-fc1d-5e91-e1665cb8c076@infradead.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Baolin Wang <Baolin.Wang@spreadtrum.com>
-To: LKML <linux-kernel@vger.kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+Subject: [PATCH 0/2] spi: sh-msiof: Add r8a774[35] bindings
+Date: Mon, 25 Sep 2017 09:54:18 +0100
+Message-ID: <1506329660-4064-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chris Paterson <Chris.Paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Randy Dunlap <rdunlap@infradead.org>
+This series adds compatible strings and device tree bindings in order to enable
+msiof support for r8a7743 and r8a7745.
 
-Fix build errors when CONFIG_HWSPINLOCK=m and SPI_SPRD_ADI=y.
-That combination is not allowed.
+Fabrizio Castro (2):
+  spi: sh-msiof: Add compatible strings for r8a774[35]
+  dt-bindings: spi: sh-msiof: Add r8a774[35] to the compatible list
 
-This allows building with HWSPINLOCK and SPI_SPRD_ADI in any
-combinations except for HWSPINLOCK=m and SPI_SPRD_ADI=y.
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 6 ++++--
+ drivers/spi/spi-sh-msiof.c                         | 2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_remove':
-spi-sprd-adi.c:(.text+0x13): undefined reference to `hwspin_lock_free'
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_probe':
-spi-sprd-adi.c:(.text+0xf5): undefined reference to `of_hwspin_lock_get_id'
-spi-sprd-adi.c:(.text+0x107): undefined reference to `hwspin_lock_request_specific'
-spi-sprd-adi.c:(.text+0x22e): undefined reference to `hwspin_lock_free'
-drivers/spi/spi-sprd-adi.o: In function `sprd_adi_transfer_one':
-spi-sprd-adi.c:(.text+0x2eb): undefined reference to `__hwspin_lock_timeout'
-spi-sprd-adi.c:(.text+0x349): undefined reference to `__hwspin_unlock'
-spi-sprd-adi.c:(.text+0x389): undefined reference to `__hwspin_lock_timeout'
-spi-sprd-adi.c:(.text+0x3ee): undefined reference to `__hwspin_unlock'
+-- 
+2.7.4
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Baolin Wang <Baolin.Wang@spreadtrum.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
----
- drivers/spi/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
-
-v2: allow build with or without HWSPINLOCK, but restrict SPI_SPRD_ADI
-to =m if HWSPINLOCK=m.
-
---- linux-next-20170921.orig/drivers/spi/Kconfig
-+++ linux-next-20170921/drivers/spi/Kconfig
-@@ -625,6 +625,7 @@ config SPI_SIRF
- config SPI_SPRD_ADI
- 	tristate "Spreadtrum ADI controller"
- 	depends on ARCH_SPRD || COMPILE_TEST
-+	depends on HWSPINLOCK || HWSPINLOCK=n
- 	help
- 	  ADI driver based on SPI for Spreadtrum SoCs.
- 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,72 +1,76 @@
-From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: RE: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]" to
- the spi tree
-Date: Tue, 26 Sep 2017 12:23:21 +0000
-Message-ID: <TY1PR06MB08958955D6FE134373838397C07B0@TY1PR06MB0895.apcprd06.prod.outlook.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]"
+ to the spi tree
+Date: Tue, 26 Sep 2017 10:30:09 -0700
+Message-ID: <20170926173009.xdw6mtvcyixpenr7@sirena.org.uk>
 References: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
  <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
  <CAMuHMdVsRwW+10ERyTJAa8XhhkPMn4ruymUwPKot+kmczBwbcA@mail.gmail.com>
  <20170925184545.5k4nke27rgud3uwp@sirena.org.uk>
  <CAMuHMdUv-5COUuzJOWx=BTb5oJ7tFOi1BpocuJ7+VuCZ3fEuPg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdUv-5COUuzJOWx=BTb5oJ7tFOi1BpocuJ7+VuCZ3fEuPg@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="flc5unealuztpgbg"
+Cc: Fabrizio Castro <fabrizio.castro-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Chris Paterson <Chris.Paterson2-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Biju Das <biju.das-kTT6dE0pTRh9uiUsa/gSgQ@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUv-5COUuzJOWx=BTb5oJ7tFOi1BpocuJ7+VuCZ3fEuPg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTWFyaywNCg0KSSBhbSB2ZXJ5IHNvcnJ5IGFib3V0IHRoZSBjb25mdXNpb24uIEdlZXJ0IGhh
-cyBhIGdvb2QgcG9pbnQgc28gcGxlYXNlIGRyb3AgdGhpcyBwYXRjaC4NCg0KVGhhbmtzLA0KRmFi
-cml6aW8NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBnZWVydC51eXR0
-ZXJob2V2ZW5AZ21haWwuY29tIFttYWlsdG86Z2VlcnQudXl0dGVyaG9ldmVuQGdtYWlsLmNvbV0g
-T24gQmVoYWxmIE9mIEdlZXJ0IFV5dHRlcmhvZXZlbg0KPiBTZW50OiAyNSBTZXB0ZW1iZXIgMjAx
-NyAyMDoxNg0KPiBUbzogTWFyayBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPg0KPiBDYzogRmFi
-cml6aW8gQ2FzdHJvIDxmYWJyaXppby5jYXN0cm9AYnAucmVuZXNhcy5jb20+OyBSb2IgSGVycmlu
-ZyA8cm9iaCtkdEBrZXJuZWwub3JnPjsgTWFyayBSdXRsYW5kIDxtYXJrLnJ1dGxhbmRAYXJtLmNv
-bT47DQo+IGxpbnV4LXNwaSA8bGludXgtc3BpQHZnZXIua2VybmVsLm9yZz47IGRldmljZXRyZWVA
-dmdlci5rZXJuZWwub3JnOyBMaW51eC1SZW5lc2FzIDxsaW51eC1yZW5lc2FzLXNvY0B2Z2VyLmtl
-cm5lbC5vcmc+OyBDaHJpcw0KPiBQYXRlcnNvbiA8Q2hyaXMuUGF0ZXJzb24yQHJlbmVzYXMuY29t
-PjsgQmlqdSBEYXMgPGJpanUuZGFzQGJwLnJlbmVzYXMuY29tPg0KPiBTdWJqZWN0OiBSZTogQXBw
-bGllZCAic3BpOiBzaC1tc2lvZjogQWRkIGNvbXBhdGlibGUgc3RyaW5ncyBmb3IgcjhhNzc0WzM1
-XSIgdG8gdGhlIHNwaSB0cmVlDQo+DQo+IEhpIE1hcmssDQo+DQo+IE9uIE1vbiwgU2VwIDI1LCAy
-MDE3IGF0IDg6NDUgUE0sIE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4gd3JvdGU6DQo+
-ID4gT24gTW9uLCBTZXAgMjUsIDIwMTcgYXQgMDc6NDg6NDRQTSArMDIwMCwgR2VlcnQgVXl0dGVy
-aG9ldmVuIHdyb3RlOg0KPiA+PiBQbGVhc2UgZHJvcCB0aGlzIHBhdGNoLCBhcyB0aGVyZSdzIG5v
-IG5lZWQgdG8gYWRkIGV4cGxpY2l0IG1hdGNoaW5nIGZvciB0aGVzZQ0KPiA+PiBjb21wYXRpYmxl
-IHZhbHVlcy4gVGhlIGZhbWlseS1zcGVjaWZpYyBjb21wYXRpYmxlIHZhbHVlcyAod2hpY2ggdGhl
-IGRyaXZlcg0KPiA+PiBhbHJlYWR5IG1hdGNoZXMgYWdhaW5zdCkgYXJlIHN1ZmZpY2llbnQuDQo+
-ID4NCj4gPiBXaGlsZSB0aGUgcGF0Y2ggaXMgbm90IG5lZWRlZCBpZiBwZW9wbGUgbGlzdCB0aGUg
-ZmFsbGJhY2sgcHJvcGVydHkgaXQNCj4gPiBhbHNvIGRvZXMgbm8gaGFybSBhbmQgcHJvdmlkZXMg
-YSBtYXJnaW5hbCBkb2N1bWVudGF0aW9uIGJlbmVmaXQgaW4NCj4gPiBzYXlpbmcgdGhhdCBzb21l
-b25lIGhhcyBjb25zaWRlcmVkIGlmIGFueSBzcGVjaWFsIGhhbmRsaW5nIGlzIHVzZWZ1bCBhbmQN
-Cj4gPiBkZWNpZGVkIHRoYXQgaXQgaXNuJ3QuDQo+DQo+IEFsbCB0cnVlLg0KPg0KPiBNeSByZWJ1
-dHRhbCBpcyB0aHJlZWZvbGQ6DQo+ICAgMS4gTGlzdGluZyB0aGUgZmFsbGJhY2sgcHJvcGVydHkg
-aXMgbWFuZGF0b3J5IGZvciBuZXcgU29Dcy4gV2Ugb25seSBrZWVwDQo+ICAgICAgdGhlIHBlci1T
-b0MgY29tcGF0aWJsZSB2YWx1ZXMgaW4gdGhlIGRyaXZlciBmb3Igb2xkZXIgU29DcyB0aGF0IHBy
-ZWRhdGUNCj4gICAgICB0aGUgaW50cm9kdWN0aW9uIG9mIGZhbGxiYWNrIHByb3BlcnRpZXMuDQo+
-ICAgMi4gU29tZSBoYXJtIGlzIGludm9sdmVkLCBpbiB0aGUgZm9ybSBvZiBpbmNyZWFzZWQga2Vy
-bmVsIGltYWdlIHNpemUuDQo+ICAgMy4gV2hlbiB1cGRhdGluZyBEVCBiaW5kaW5ncyBmb3IgbmV3
-IFNvQ3MsIHdlIHVzdWFsbHkgYWRkICJObyBkcml2ZXINCj4gICAgICB1cGRhdGUgaXMgbmVlZGVk
-IiB0byB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gdG8gY2xhcmlmeS4gVW5mb3J0dW5hdGVseQ0KPiAg
-ICAgIHRoYXQgd2FzIG1pc3NlZCBoZXJlLg0KPg0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4NCj4g
-ICAgICAgICAgICAgICAgICAgICAgICAgR2VlcnQNCj4NCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9l
-dmVuIC0tIFRoZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1t
-NjhrLm9yZw0KPg0KPiBJbiBwZXJzb25hbCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBl
-b3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0DQo+IHdoZW4gSSdtIHRhbGtpbmcgdG8g
-am91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhh
-dC4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtLSBMaW51cyBUb3J2YWxkcw0K
-DQoNCg0KUmVuZXNhcyBFbGVjdHJvbmljcyBFdXJvcGUgTHRkLCBEdWtlcyBNZWFkb3csIE1pbGxi
-b2FyZCBSb2FkLCBCb3VybmUgRW5kLCBCdWNraW5naGFtc2hpcmUsIFNMOCA1RkgsIFVLLiBSZWdp
-c3RlcmVkIGluIEVuZ2xhbmQgJiBXYWxlcyB1bmRlciBSZWdpc3RlcmVkIE5vLiAwNDU4NjcwOS4N
-Cg==
+
+--flc5unealuztpgbg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Sep 25, 2017 at 09:15:53PM +0200, Geert Uytterhoeven wrote:
+
+> My rebuttal is threefold:
+>   1. Listing the fallback property is mandatory for new SoCs. We only keep
+>      the per-SoC compatible values in the driver for older SoCs that predate
+>      the introduction of fallback properties.
+
+So good practice is always good practice, but I'd argue that it's not
+bad practice to also explicitly enumerate all the documented compatibles
+in the driver.  Being liberal in what you accept and all that.
+
+>   2. Some harm is involved, in the form of increased kernel image size.
+
+Is this really a meaningful impact?
+
+>   3. When updating DT bindings for new SoCs, we usually add "No driver
+>      update is needed" to the patch description to clarify. Unfortunately
+>      that was missed here.
+
+That's basically the same good practice thing, it's just documenting
+what you're trying to do here with not putting things in code but
+writing things in changelogs doesn't make them so!
+
+--flc5unealuztpgbg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnKjp4ACgkQJNaLcl1U
+h9CyOQf+KF7TH4e1LUiEusbvfDIIFdd+l5LEKQIJqQP/5OoKznc7+7vQKftJuqqM
+Wobnz0aQOhA1AMgXh0YnKyxx8CJIiEFq3DA+W3eLt6BABkRTPTkfSGjP/kYPa31w
+Px/pPoPFiNK3ldlhKAa2HkPoYA8MjlhcrX0U+fCa129JDFm8EKEmS6e6ThEnL5bW
+E48g6EGj8uImSSYnz+vBRnZ+GxkGuMkz41h+3735uXYUqvj9om6gIGSgSetH2l1y
+Mf6YW9h4YPybdui9n1ROLjZH8ELKCtLMhexyyDWZGlgmUOMkMEfSVfpXStb1hwRh
+C0eLU6+cRxHyjbStxq+Hacz2c2W/9A==
+=2Ur+
+-----END PGP SIGNATURE-----
+
+--flc5unealuztpgbg--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

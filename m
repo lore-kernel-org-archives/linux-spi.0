@@ -1,60 +1,72 @@
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Subject: Re: [PATCH v2 -next] spi: fix spi-sprd-adi build errors when
- SPI_SPRD_ADI=y and HWSPINLOCK=m
-Date: Mon, 25 Sep 2017 15:32:56 -0700
-Message-ID: <faf455ad-b7ef-beac-ac6d-4822f350cd71@infradead.org>
-References: <ed5b8ca2-b853-755d-2801-57cc0b626508@infradead.org>
- <20170922092621.uq2xsvxangeetewi@sirena.org.uk>
- <9dc8b064-8a6c-98d2-4ade-088cbfd56fb1@infradead.org>
- <20170925161221.v23dpeljin5kakhz@sirena.org.uk>
- <449abd0e-8d8b-86e9-2b7a-65c27ab3171b@infradead.org>
- <CAMuHMdXwv7s-uBM2J1Rf5fw+2=N_VcPxCYHartgUxb56yrR23A@mail.gmail.com>
- <20170925192256.bmrm6gmb4idvomxb@sirena.org.uk>
- <156431d9-a518-53e7-17d9-bb1ee0f637bb@infradead.org>
- <20170925194417.bjkw5ar6s57bkbdt@sirena.org.uk>
- <c0c60c5e-d06f-b246-fb63-3eb507c62449@infradead.org>
- <20170925211154.j23g4b2xmu4f3cxc@sirena.org.uk>
+From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+Subject: RE: Applied "spi: sh-msiof: Add compatible strings for r8a774[35]" to
+ the spi tree
+Date: Tue, 26 Sep 2017 12:23:21 +0000
+Message-ID: <TY1PR06MB08958955D6FE134373838397C07B0@TY1PR06MB0895.apcprd06.prod.outlook.com>
+References: <1506329660-4064-2-git-send-email-fabrizio.castro@bp.renesas.com>
+ <20170925161637.D7471440058@finisterre.ee.mobilebroadband>
+ <CAMuHMdVsRwW+10ERyTJAa8XhhkPMn4ruymUwPKot+kmczBwbcA@mail.gmail.com>
+ <20170925184545.5k4nke27rgud3uwp@sirena.org.uk>
+ <CAMuHMdUv-5COUuzJOWx=BTb5oJ7tFOi1BpocuJ7+VuCZ3fEuPg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Baolin Wang <Baolin.Wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>
-To: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170925211154.j23g4b2xmu4f3cxc-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdUv-5COUuzJOWx=BTb5oJ7tFOi1BpocuJ7+VuCZ3fEuPg@mail.gmail.com>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 09/25/17 14:11, Mark Brown wrote:
-> On Mon, Sep 25, 2017 at 12:53:20PM -0700, Randy Dunlap wrote:
->> On 09/25/17 12:44, Mark Brown wrote:
-> 
->>> That would then get in the way of build test coverage.  
-> 
->> I don't agree, but whatever. I give up.
-> 
-> OK.  Just as a general thing it's really important that dependency
-> changes be thought through and express what the constraints are in ways
-> that reflect what's actually going on and what's useful for users, it
-> seems to be a frequent problem and it does get in the way.
-
-Yes, it's a frequent problem that drivers do not build due to some kconfig
-dependency issue(s).
-
-I would prefer to see the driver maintainer(s) fix build errors themselves,
-but they are not always aware of the idiosyncrasies of kconfig.
-
-I think that people often submit drivers (or driver changes) after building
-it in one (working) configuration only, without regard for the other possible
-combinations.
-
-
--- 
-~Randy
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SGkgTWFyaywNCg0KSSBhbSB2ZXJ5IHNvcnJ5IGFib3V0IHRoZSBjb25mdXNpb24uIEdlZXJ0IGhh
+cyBhIGdvb2QgcG9pbnQgc28gcGxlYXNlIGRyb3AgdGhpcyBwYXRjaC4NCg0KVGhhbmtzLA0KRmFi
+cml6aW8NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBnZWVydC51eXR0
+ZXJob2V2ZW5AZ21haWwuY29tIFttYWlsdG86Z2VlcnQudXl0dGVyaG9ldmVuQGdtYWlsLmNvbV0g
+T24gQmVoYWxmIE9mIEdlZXJ0IFV5dHRlcmhvZXZlbg0KPiBTZW50OiAyNSBTZXB0ZW1iZXIgMjAx
+NyAyMDoxNg0KPiBUbzogTWFyayBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPg0KPiBDYzogRmFi
+cml6aW8gQ2FzdHJvIDxmYWJyaXppby5jYXN0cm9AYnAucmVuZXNhcy5jb20+OyBSb2IgSGVycmlu
+ZyA8cm9iaCtkdEBrZXJuZWwub3JnPjsgTWFyayBSdXRsYW5kIDxtYXJrLnJ1dGxhbmRAYXJtLmNv
+bT47DQo+IGxpbnV4LXNwaSA8bGludXgtc3BpQHZnZXIua2VybmVsLm9yZz47IGRldmljZXRyZWVA
+dmdlci5rZXJuZWwub3JnOyBMaW51eC1SZW5lc2FzIDxsaW51eC1yZW5lc2FzLXNvY0B2Z2VyLmtl
+cm5lbC5vcmc+OyBDaHJpcw0KPiBQYXRlcnNvbiA8Q2hyaXMuUGF0ZXJzb24yQHJlbmVzYXMuY29t
+PjsgQmlqdSBEYXMgPGJpanUuZGFzQGJwLnJlbmVzYXMuY29tPg0KPiBTdWJqZWN0OiBSZTogQXBw
+bGllZCAic3BpOiBzaC1tc2lvZjogQWRkIGNvbXBhdGlibGUgc3RyaW5ncyBmb3IgcjhhNzc0WzM1
+XSIgdG8gdGhlIHNwaSB0cmVlDQo+DQo+IEhpIE1hcmssDQo+DQo+IE9uIE1vbiwgU2VwIDI1LCAy
+MDE3IGF0IDg6NDUgUE0sIE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4gd3JvdGU6DQo+
+ID4gT24gTW9uLCBTZXAgMjUsIDIwMTcgYXQgMDc6NDg6NDRQTSArMDIwMCwgR2VlcnQgVXl0dGVy
+aG9ldmVuIHdyb3RlOg0KPiA+PiBQbGVhc2UgZHJvcCB0aGlzIHBhdGNoLCBhcyB0aGVyZSdzIG5v
+IG5lZWQgdG8gYWRkIGV4cGxpY2l0IG1hdGNoaW5nIGZvciB0aGVzZQ0KPiA+PiBjb21wYXRpYmxl
+IHZhbHVlcy4gVGhlIGZhbWlseS1zcGVjaWZpYyBjb21wYXRpYmxlIHZhbHVlcyAod2hpY2ggdGhl
+IGRyaXZlcg0KPiA+PiBhbHJlYWR5IG1hdGNoZXMgYWdhaW5zdCkgYXJlIHN1ZmZpY2llbnQuDQo+
+ID4NCj4gPiBXaGlsZSB0aGUgcGF0Y2ggaXMgbm90IG5lZWRlZCBpZiBwZW9wbGUgbGlzdCB0aGUg
+ZmFsbGJhY2sgcHJvcGVydHkgaXQNCj4gPiBhbHNvIGRvZXMgbm8gaGFybSBhbmQgcHJvdmlkZXMg
+YSBtYXJnaW5hbCBkb2N1bWVudGF0aW9uIGJlbmVmaXQgaW4NCj4gPiBzYXlpbmcgdGhhdCBzb21l
+b25lIGhhcyBjb25zaWRlcmVkIGlmIGFueSBzcGVjaWFsIGhhbmRsaW5nIGlzIHVzZWZ1bCBhbmQN
+Cj4gPiBkZWNpZGVkIHRoYXQgaXQgaXNuJ3QuDQo+DQo+IEFsbCB0cnVlLg0KPg0KPiBNeSByZWJ1
+dHRhbCBpcyB0aHJlZWZvbGQ6DQo+ICAgMS4gTGlzdGluZyB0aGUgZmFsbGJhY2sgcHJvcGVydHkg
+aXMgbWFuZGF0b3J5IGZvciBuZXcgU29Dcy4gV2Ugb25seSBrZWVwDQo+ICAgICAgdGhlIHBlci1T
+b0MgY29tcGF0aWJsZSB2YWx1ZXMgaW4gdGhlIGRyaXZlciBmb3Igb2xkZXIgU29DcyB0aGF0IHBy
+ZWRhdGUNCj4gICAgICB0aGUgaW50cm9kdWN0aW9uIG9mIGZhbGxiYWNrIHByb3BlcnRpZXMuDQo+
+ICAgMi4gU29tZSBoYXJtIGlzIGludm9sdmVkLCBpbiB0aGUgZm9ybSBvZiBpbmNyZWFzZWQga2Vy
+bmVsIGltYWdlIHNpemUuDQo+ICAgMy4gV2hlbiB1cGRhdGluZyBEVCBiaW5kaW5ncyBmb3IgbmV3
+IFNvQ3MsIHdlIHVzdWFsbHkgYWRkICJObyBkcml2ZXINCj4gICAgICB1cGRhdGUgaXMgbmVlZGVk
+IiB0byB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gdG8gY2xhcmlmeS4gVW5mb3J0dW5hdGVseQ0KPiAg
+ICAgIHRoYXQgd2FzIG1pc3NlZCBoZXJlLg0KPg0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4NCj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgR2VlcnQNCj4NCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9l
+dmVuIC0tIFRoZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1t
+NjhrLm9yZw0KPg0KPiBJbiBwZXJzb25hbCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBl
+b3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0DQo+IHdoZW4gSSdtIHRhbGtpbmcgdG8g
+am91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhh
+dC4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtLSBMaW51cyBUb3J2YWxkcw0K
+DQoNCg0KUmVuZXNhcyBFbGVjdHJvbmljcyBFdXJvcGUgTHRkLCBEdWtlcyBNZWFkb3csIE1pbGxi
+b2FyZCBSb2FkLCBCb3VybmUgRW5kLCBCdWNraW5naGFtc2hpcmUsIFNMOCA1RkgsIFVLLiBSZWdp
+c3RlcmVkIGluIEVuZ2xhbmQgJiBXYWxlcyB1bmRlciBSZWdpc3RlcmVkIE5vLiAwNDU4NjcwOS4N
+Cg==

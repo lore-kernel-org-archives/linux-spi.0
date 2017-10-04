@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: rspi: Use of_device_get_match_data() helper
-Date: Wed,  4 Oct 2017 14:19:53 +0200
-Message-ID: <1507119593-12789-1-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH] spi: sh-msiof: Use of_device_get_match_data() helper
+Date: Wed,  4 Oct 2017 14:20:27 +0200
+Message-ID: <1507119627-12865-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -13,33 +13,31 @@ Use the of_device_get_match_data() helper instead of open coding.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 6 ++----
+ drivers/spi/spi-sh-msiof.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index a76e0cacc23b4dcb..c96eab723fd3fdb7 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1221,7 +1221,6 @@ static int rspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 00808448cf35b87c..2c5ea4c57508d2b5 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1211,15 +1211,13 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	struct resource	*r;
  	struct spi_master *master;
- 	struct rspi_data *rspi;
- 	int ret;
+ 	const struct sh_msiof_chipdata *chipdata;
 -	const struct of_device_id *of_id;
- 	const struct rspi_plat_data *rspi_pd;
- 	const struct spi_ops *ops;
+ 	struct sh_msiof_spi_info *info;
+ 	struct sh_msiof_spi_priv *p;
+ 	int i;
+ 	int ret;
  
-@@ -1229,9 +1228,8 @@ static int rspi_probe(struct platform_device *pdev)
- 	if (master == NULL)
- 		return -ENOMEM;
- 
--	of_id = of_match_device(rspi_of_match, &pdev->dev);
+-	of_id = of_match_device(sh_msiof_match, &pdev->dev);
 -	if (of_id) {
--		ops = of_id->data;
-+	ops = of_device_get_match_data(&pdev->dev);
-+	if (ops) {
- 		ret = rspi_parse_dt(&pdev->dev, master);
- 		if (ret)
- 			goto error1;
+-		chipdata = of_id->data;
++	chipdata = of_device_get_match_data(&pdev->dev);
++	if (chipdata) {
+ 		info = sh_msiof_spi_parse_dt(&pdev->dev);
+ 	} else {
+ 		chipdata = (const void *)pdev->id_entry->driver_data;
 -- 
 2.7.4
 

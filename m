@@ -1,39 +1,48 @@
-From: Igor Plyatov <plyatov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: spi-atmel.c: regression
-Date: Mon, 2 Oct 2017 17:45:07 +0300
-Message-ID: <0876ce0a-cb93-07b7-8019-e365d08cca2a@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-To: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Cyrille Pitchen <cyrille.pitchen-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: rspi: Use of_device_get_match_data() helper
+Date: Wed,  4 Oct 2017 14:19:53 +0200
+Message-ID: <1507119593-12789-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello!
+Use the of_device_get_match_data() helper instead of open coding.
 
-please help to manage issue with data corruption by PDC of SPI.
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+ drivers/spi/spi-rspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index a76e0cacc23b4dcb..c96eab723fd3fdb7 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1221,7 +1221,6 @@ static int rspi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct rspi_data *rspi;
+ 	int ret;
+-	const struct of_device_id *of_id;
+ 	const struct rspi_plat_data *rspi_pd;
+ 	const struct spi_ops *ops;
+ 
+@@ -1229,9 +1228,8 @@ static int rspi_probe(struct platform_device *pdev)
+ 	if (master == NULL)
+ 		return -ENOMEM;
+ 
+-	of_id = of_match_device(rspi_of_match, &pdev->dev);
+-	if (of_id) {
+-		ops = of_id->data;
++	ops = of_device_get_match_data(&pdev->dev);
++	if (ops) {
+ 		ret = rspi_parse_dt(&pdev->dev, master);
+ 		if (ret)
+ 			goto error1;
+-- 
+2.7.4
 
-I have compared operation of Linux-2.6.39 and linux4sam kernel 4.9.36+ 
-on the AT91SAM9G20 (Stamp9G20 SOM from Taskit.de) and found regression 
-in the spi-atmel.c.
-
-New spi-atmel.c driver works very bad with SPI speeds above 6 MHz. I see 
-corruption in data received by Linux and SPI overruns when OS has big 
-CPI and IO load.
-
-Old kernel works fine at 22 MHz with the same device driver and hardware.
-
-Can somebody comment and/or help on how to resolve this issue?
-
-Best wishes.
---
-Igor Plyatov
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

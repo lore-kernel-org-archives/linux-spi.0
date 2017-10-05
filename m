@@ -1,52 +1,48 @@
-From: Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-Subject: [PATCH] spi: tegra114: correct register name in definition
-Date: Thu,  5 Oct 2017 13:22:36 +0200
-Message-ID: <20171005112236.4242-1-ralf.ramsauer@oth-regensburg.de>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH] spi: spreadtrum adi: add hwspinlock dependency
+Date: Thu,  5 Oct 2017 14:11:17 +0200
+Message-ID: <20171005121129.531046-1-arnd@arndb.de>
+Cc: Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>,
+        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-According to "Tegra K1 Processor Technical Reference Manual" (p. 2448),
-bit 20 of SPI_COMMAND1 is called CS_SW_VAL and not CS_SS_VAL.
+With CONFIG_HWSPINLOCK=m, the new driver fails to link as a built-in driver:
 
-Signed-off-by: Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_remove':
+spi-sprd-adi.c:(.text+0x18): undefined reference to `hwspin_lock_free'
+drivers/spi/spi-sprd-adi.o: In function `sprd_adi_probe':
+spi-sprd-adi.c:(.text+0xfc): undefined reference to `of_hwspin_lock_get_id'
+spi-sprd-adi.c:(.text+0x108): undefined reference to `hwspin_lock_request_specific'
+spi-sprd-adi.c:(.text+0x268): undefined reference to `hwspin_lock_free'
+
+This adds a hard Kconfig dependency on HWSPINLOCK, which is the
+simplest solution since we don't care about building for the case
+without HWSPINLOCK.
+
+Fixes: 7e2903cb91df ("spi: Add ADI driver for Spreadtrum platform")
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 ---
- drivers/spi/spi-tegra114.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 44550182a4a3..a76acedd7e2f 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -50,7 +50,7 @@
- #define SPI_IDLE_SDA_PULL_LOW			(2 << 18)
- #define SPI_IDLE_SDA_PULL_HIGH			(3 << 18)
- #define SPI_IDLE_SDA_MASK			(3 << 18)
--#define SPI_CS_SS_VAL				(1 << 20)
-+#define SPI_CS_SW_VAL				(1 << 20)
- #define SPI_CS_SW_HW				(1 << 21)
- /* SPI_CS_POL_INACTIVE bits are default high */
- 						/* n from 0 to 3 */
-@@ -705,9 +705,9 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 2d9601e3a6ae..e2bd86826d44 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -625,6 +625,7 @@ config SPI_SIRF
+ config SPI_SPRD_ADI
+ 	tristate "Spreadtrum ADI controller"
+ 	depends on ARCH_SPRD || COMPILE_TEST
++	depends on HWSPINLOCK
+ 	help
+ 	  ADI driver based on SPI for Spreadtrum SoCs.
  
- 		command1 |= SPI_CS_SW_HW;
- 		if (spi->mode & SPI_CS_HIGH)
--			command1 |= SPI_CS_SS_VAL;
-+			command1 |= SPI_CS_SW_VAL;
- 		else
--			command1 &= ~SPI_CS_SS_VAL;
-+			command1 &= ~SPI_CS_SW_VAL;
- 
- 		tegra_spi_writel(tspi, 0, SPI_COMMAND2);
- 	} else {
 -- 
-2.14.2
+2.9.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

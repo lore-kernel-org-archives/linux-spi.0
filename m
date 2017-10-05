@@ -1,46 +1,27 @@
 From: Igor Plyatov <plyatov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi-atmel.c: regression
-Date: Thu, 5 Oct 2017 10:05:57 +0300
-Message-ID: <1ab533fa-7bb5-8a83-c4a3-8f066754a27c@gmail.com>
-References: <0876ce0a-cb93-07b7-8019-e365d08cca2a@gmail.com>
+Subject: Re: spi-atmel.c: problem with PDC on AT91SAM9G20
+Date: Thu, 5 Oct 2017 10:18:09 +0300
+Message-ID: <503ccb36-fab0-6e0c-b9cc-f814ab64a1aa@gmail.com>
+References: <de4b4952-35a0-fd95-6adf-9219385644e9@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-To: Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Cyrille Pitchen <cyrille.pitchen-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Ludovic Desroches <ludovic.desroches-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-        Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0876ce0a-cb93-07b7-8019-e365d08cca2a-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <de4b4952-35a0-fd95-6adf-9219385644e9-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Hello!
 
-> Hello!
->
-> please help to manage issue with data corruption by PDC of SPI.
->
->
-> I have compared operation of Linux-2.6.39 and linux4sam kernel 4.9.36+ 
-> on the AT91SAM9G20 (Stamp9G20 SOM from Taskit.de) and found regression 
-> in the spi-atmel.c.
->
-> New spi-atmel.c driver works very bad with SPI speeds above 6 MHz. I 
-> see corruption in data received by Linux and SPI overruns when OS has 
-> big CPI and IO load.
->
-> Old kernel works fine at 22 MHz with the same device driver and hardware.
->
-> Can somebody comment and/or help on how to resolve this issue?
->
-> Best wishes.
-> -- 
-> Igor Plyatov
+
+> Data corruption happens during receiving of SPI data by kernel. It 
+> happens quite often (once per minute or so) if OS has some light load, 
+> like periodical writes to SD card in parallel with communication to 
+> SPI device (DSP).
+... skipped
+
 
 For those, who has same interest or encountered the same issue as I had...
 
@@ -105,10 +86,6 @@ Please help to answer on questions:
    2) Why SPI overrun flag does not asserted each time? I have not found 
 such HW bug
       in the Errata for AT91SAM9G20 CPU.
-
-Best wishes.
---
-Igor Plyatov
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

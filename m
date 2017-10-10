@@ -1,86 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: tegra114: correct register name in definition" to the spi tree
-Date: Mon, 09 Oct 2017 11:44:39 +0100
-Message-ID: <E1e1VY7-0001lb-3m@debutante>
-References: <20171005112236.4242-1-ralf.ramsauer@oth-regensburg.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Jonathan Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171005112236.4242-1-ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+Subject: [PATCH 1/2] spi: a3700: Return correct value on timeout detection
+Date: Tue, 10 Oct 2017 10:43:17 +0200
+Message-ID: <1507624998-31425-1-git-send-email-maxime.chevallier@smile.fr>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
+        miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
+        Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+When waiting for transfer completion, a3700_spi_wait_completion
+returns a boolean indicating if a timeout occurred.
 
-   spi: tegra114: correct register name in definition
+The function was returning 'true' everytime, failing to detect any
+timeout.
 
-has been applied to the spi tree at
+This patch makes it return 'false' when a timeout is reached.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 979a9afe399f7c75e1be9f235fa8bf1a90d2e77d Mon Sep 17 00:00:00 2001
-From: Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-Date: Thu, 5 Oct 2017 13:22:36 +0200
-Subject: [PATCH] spi: tegra114: correct register name in definition
-
-According to "Tegra K1 Processor Technical Reference Manual" (p. 2448),
-bit 20 of SPI_COMMAND1 is called CS_SW_VAL and not CS_SS_VAL.
-
-Signed-off-by: Ralf Ramsauer <ralf.ramsauer-XqyLlMioih3Nn6Kn0k1nHrNAH6kLmebB@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 ---
- drivers/spi/spi-tegra114.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-armada-3700.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 44550182a4a3..a76acedd7e2f 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -50,7 +50,7 @@
- #define SPI_IDLE_SDA_PULL_LOW			(2 << 18)
- #define SPI_IDLE_SDA_PULL_HIGH			(3 << 18)
- #define SPI_IDLE_SDA_MASK			(3 << 18)
--#define SPI_CS_SS_VAL				(1 << 20)
-+#define SPI_CS_SW_VAL				(1 << 20)
- #define SPI_CS_SW_HW				(1 << 21)
- /* SPI_CS_POL_INACTIVE bits are default high */
- 						/* n from 0 to 3 */
-@@ -705,9 +705,9 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 9172cb2..568e1c6 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -387,7 +387,8 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
  
- 		command1 |= SPI_CS_SW_HW;
- 		if (spi->mode & SPI_CS_HIGH)
--			command1 |= SPI_CS_SS_VAL;
-+			command1 |= SPI_CS_SW_VAL;
- 		else
--			command1 &= ~SPI_CS_SS_VAL;
-+			command1 &= ~SPI_CS_SW_VAL;
+ 	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
  
- 		tegra_spi_writel(tspi, 0, SPI_COMMAND2);
- 	} else {
+-	return true;
++	/* Timeout was reached */
++	return false;
+ }
+ 
+ static bool a3700_spi_transfer_wait(struct spi_device *spi,
 -- 
-2.14.1
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

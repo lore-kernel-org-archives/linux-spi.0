@@ -1,82 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: a3700: Return correct value on timeout detection" to the spi tree
-Date: Tue, 10 Oct 2017 10:19:55 +0100
-Message-ID: <E1e1qhf-0003dO-Kp@debutante>
-References: <1507624998-31425-1-git-send-email-maxime.chevallier@smile.fr>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-        miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [2/2] spi: imx: fix use of native chip-selects with devicetree
+Date: Tue, 10 Oct 2017 20:38:37 +0000
+Message-ID: <1507667916.74283.19.camel@impinj.com>
+References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org" <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1507624998-31425-1-git-send-email-maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+In-Reply-To: <1489726983-17706-3-git-send-email-gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Language: en-US
+Content-ID: <8A8ACDD17E32F148B3BFB5E1201B430D-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
-
-   spi: a3700: Return correct value on timeout detection
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 5a866ec0014b2baa4ecbb1eaa19c835482829d08 Mon Sep 17 00:00:00 2001
-From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Date: Tue, 10 Oct 2017 10:43:17 +0200
-Subject: [PATCH] spi: a3700: Return correct value on timeout detection
-
-When waiting for transfer completion, a3700_spi_wait_completion
-returns a boolean indicating if a timeout occurred.
-
-The function was returning 'true' everytime, failing to detect any
-timeout.
-
-This patch makes it return 'false' when a timeout is reached.
-
-Signed-off-by: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
----
- drivers/spi/spi-armada-3700.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 9172cb2d2e7a..568e1c65aa82 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -387,7 +387,8 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
- 
- 	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
- 
--	return true;
-+	/* Timeout was reached */
-+	return false;
- }
- 
- static bool a3700_spi_transfer_wait(struct spi_device *spi,
--- 
-2.14.1
-
+T24gRnJpLCAyMDE3LTAzLTE3IGF0IDE1OjAzICsxMDAwLCBHcmVnIFVuZ2VyZXIgd3JvdGU6DQo+
+IFlvdSBjYW4gc3VjY2Vzc2Z1bGx5IHNwZWNpZnkgbmF0aXZlIGNoaXAtc2VsZWN0cyBpZiB1c2lu
+ZyBhIHBsYXRmb3JtDQo+IHNldHVwIGJ5IHNwZWNpZnlpbmcgdGhlIGNzLWdwaW8gYXMgbmVnYXRp
+dmUgb2Zmc2V0IGJ5IDMyLiBBbmQgdGhhdA0KPiB3b3JrcyBjb3JyZWN0bHkuIFlvdSBjYW5ub3Qg
+dXNlIHRoZSBzYW1lIG1ldGhvZCBpbiBkZXZpY2V0cmVlLg0KDQpJIGNhbWUgYWNyb3NzIHNvbWUg
+c3BpLWlteCBidWdzIGluIGFuIG9sZGVyIGtlcm5lbCBhbmQgaW4gY2hlY2tpbmcgdGhlDQpsYXRl
+c3Qga2VybmVsLCBmb3VuZCB0aGlzIHBhdGNoLiAgSXQgZml4ZWQgdGhlIGlzc3VlIHdpdGggZHQg
+bm90DQp3b3JraW5nIGZvciBvbGRlciBzcGkgaW14IGRldmljZXMgKHRoZSBpbXg1MSsgY29uZmln
+IGZ1bmN0aW9uIG5ldmVyDQp1c2VkIHRoZSBwbGF0Zm9ybSBkYXRhIDMyIG9mZnNldCB0aGluZyks
+IGJ1dCBmYWlscyB0byBhZGRyZXNzIG5vbi1kdA0KcGxhdGZvcm0gZGF0YSBiYXNlZCB1c2VycyBv
+ZiB0aGUgc3BpIGlteCBkcml2ZXIuDQoNCkZvciBpbnN0YW5jZSwgaW5jbHVkZS9saW51eC9wbGF0
+Zm9ybV9kYXRhL3NwaS1pbXguaCBzdGlsbCByZWZlcnMgdG8gdGhlDQpvZmZzZXQgYnkgMzIgZm9y
+IG5hdGl2ZSBjczoNCg0KICogQGNoaXBzZWxlY3Q6IEFycmF5IG9mIGNoaXBzZWxlY3RzIGZvciB0
+aGlzIG1hc3Rlci4gTnVtYmVycyA+PSAwIG1lYW4gZ3Bpbw0KICogICAgICAgICAgICAgIHBpbnMs
+IG51bWJlcnMgPCAwIG1lYW4gaW50ZXJuYWwgQ1NQSSBjaGlwc2VsZWN0cyBhY2NvcmRpbmcNCiAq
+ICAgICAgICAgICAgICB0byBNWENfU1BJX0NTKCkuIE5vcm1hbGx5IHlvdSB3YW50IHRvIHVzZSBn
+cGlvIGJhc2VkIGNoaXANCg0KI2RlZmluZSBNWENfU1BJX0NTKG5vKSAgKChubykgLSAzMikNCg0K
+QWZ0ZXIgdGhpcyBwYXRjaCwgZm9yIG5vLURUIHVzZXJzLCBhbnkgbmVnYXRpdmUgKG9yIHJhdGhl
+ciBub3QgYSB2YWxpZA0KZ3BpbykgdmFsdWUgaW4gY2hpcHNlbGVjdCB3aWxsIGNhdXNlIHRoZSBu
+YXRpdmUgY2hpcHNlbGVjdA0KY29ycmVzcG9uZGluZyB0byB0aGUgc3BpIHNsYXZlJ3MgY2hpcHNl
+bGVjdC4gIEl0J3Mgbm8gbG9uZ2VyIHBvc3NpYmxlDQp0byBzcGVjaWZ5IHdoaWNoIG5hdGl2ZSBj
+cyB0byB1c2UgaW4gdGhlIHNwaS1pbXggcGxhdGZvcm0gZGF0YS4gIFNvIGluDQpzb21ldGhpbmcg
+bGlrZToNCg0KYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jLXN0YXRpYyBpbnQg
+bW9ib2FyZF9zcGkxX2NzW10gPSB7DQphcmNoL2FybS9tYWNoLWlteC9tYWNoLW14MzFtb2JvYXJk
+LmM6ICAgTVhDX1NQSV9DUygwKSwNCmFyY2gvYXJtL21hY2gtaW14L21hY2gtbXgzMW1vYm9hcmQu
+YzogICBNWENfU1BJX0NTKDIpLA0KYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5j
+LX07DQoNClRoZSBzcGkgZGV2aWNlIGNvbmZpZ3VyZWQgdG8gdXNlIGNoaXAgc2VsZWN0IDEgd2ls
+bCBubyBsb25nZXIgdXNlDQpuYXRpdmUgY2hpcCBzZWxlY3QgbGluZSAyLg0KDQpMb29raW5nIGF0
+IGFsbCBpbi10cmVlIHVzZXJzIG9mIHNwaSBpbXggcGxhdGZvcm0gZGF0YSwgaXQgYXBwZWFycyB0
+aGF0DQp0aGlzIGJvYXJkIGlzIHRoZSBvbmx5IG9uZSBpbiB3aGljaCB0aGUgY3Mgc2VsZWN0ZWQg
+ZG9lcyBub3QgbWF0Y2ggdGhlDQphcnJheSBpbmRleC4gIFRob3VnaCB0aGVyZSBhcmUgc3RpbGwg
+c2V2ZXJhbCB3aGljaCBzdGlsbCB1c2UNCk1TQ19TUElfQ1MoKSBldmVuIHRob3VnaCBpdCBkb2Vz
+bid0IHJlYWxseSB3b3JrIGFueW1vcmUuDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

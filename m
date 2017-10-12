@@ -1,81 +1,108 @@
-From: Greg Ungerer <gerg@linux-m68k.org>
-Subject: Re: [2/2] spi: imx: fix use of native chip-selects with devicetree
-Date: Thu, 12 Oct 2017 16:26:10 +1000
-Message-ID: <209bb901-875e-8007-06f8-3ae9698a0e41@linux-m68k.org>
-References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
- <1507667916.74283.19.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>, "vz@mleia.com" <vz@mleia.com>
-To: Trent Piepho <tpiepho@impinj.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1507667916.74283.19.camel@impinj.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in error path" to the spi tree
+Date: Thu, 12 Oct 2017 11:17:43 +0100
+Message-ID: <E1e2aYh-0007gJ-Dz@debutante>
+References: <20171011215922.20536-1-f.fainelli@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kdasu.kdev@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com,
+        Mark Brown <broonie@kernel.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+To: Florian Fainelli <f.fainelli@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171011215922.20536-1-f.fainelli@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Trent,
+The patch
 
-On 11/10/17 06:38, Trent Piepho wrote:
-> On Fri, 2017-03-17 at 15:03 +1000, Greg Ungerer wrote:
->> You can successfully specify native chip-selects if using a platform
->> setup by specifying the cs-gpio as negative offset by 32. And that
->> works correctly. You cannot use the same method in devicetree.
-> 
-> I came across some spi-imx bugs in an older kernel and in checking the
-> latest kernel, found this patch.  It fixed the issue with dt not
-> working for older spi imx devices (the imx51+ config function never
-> used the platform data 32 offset thing), but fails to address non-dt
-> platform data based users of the spi imx driver.
-> 
-> For instance, include/linux/platform_data/spi-imx.h still refers to the
-> offset by 32 for native cs:
-> 
->  * @chipselect: Array of chipselects for this master. Numbers >= 0 mean gpio
->  *              pins, numbers < 0 mean internal CSPI chipselects according
->  *              to MXC_SPI_CS(). Normally you want to use gpio based chip
-> 
-> #define MXC_SPI_CS(no)  ((no) - 32)
-> 
-> After this patch, for no-DT users, any negative (or rather not a valid
-> gpio) value in chipselect will cause the native chipselect
-> corresponding to the spi slave's chipselect.  It's no longer possible
-> to specify which native cs to use in the spi-imx platform data.  So in
-> something like:
-> 
-> arch/arm/mach-imx/mach-mx31moboard.c-static int moboard_spi1_cs[] = {
-> arch/arm/mach-imx/mach-mx31moboard.c:   MXC_SPI_CS(0),
-> arch/arm/mach-imx/mach-mx31moboard.c:   MXC_SPI_CS(2),
-> arch/arm/mach-imx/mach-mx31moboard.c-};
-> 
-> The spi device configured to use chip select 1 will no longer use
-> native chip select line 2.
-> 
-> Looking at all in-tree users of spi imx platform data, it appears that
-> this board is the only one in which the cs selected does not match the
-> array index.  Though there are still several which still use
-> MSC_SPI_CS() even though it doesn't really work anymore.
+   spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in error path
 
-Commit 901f26bce64a ("ARM: imx: set correct chip_select in platform setup") 
-fixes this issue. It specifically makes sure that the board setup chip
-select is set correctly (so that spi-imx can then use it). It also pads
-out the chipselect arrays so that the chip select and indexes match.
+has been applied to the spi tree at
 
-Is this not working for you?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Regards
-Greg
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c0368e4db4a3e8a3dce40f3f621c06e14c560d79 Mon Sep 17 00:00:00 2001
+From: Florian Fainelli <f.fainelli@gmail.com>
+Date: Wed, 11 Oct 2017 14:59:22 -0700
+Subject: [PATCH] spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in
+ error path
+
+There was an inversion in how the error path in bcm_qspi_probe() is done
+which would make us trip over a KASAN use-after-free report. Turns out
+that qspi->dev_ids does not get allocated until later in the probe
+process. Fix this by introducing a new lable: qspi_resource_err which
+takes care of cleaning up the SPI master instance.
+
+Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/spi/spi-bcm-qspi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 6ef6c44f39f5..a172ab299e80 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -1250,7 +1250,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 			goto qspi_probe_err;
+ 		}
+ 	} else {
+-		goto qspi_probe_err;
++		goto qspi_resource_err;
+ 	}
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "bspi");
+@@ -1272,7 +1272,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->base[CHIP_SELECT]  = devm_ioremap_resource(dev, res);
+ 		if (IS_ERR(qspi->base[CHIP_SELECT])) {
+ 			ret = PTR_ERR(qspi->base[CHIP_SELECT]);
+-			goto qspi_probe_err;
++			goto qspi_resource_err;
+ 		}
+ 	}
+ 
+@@ -1280,7 +1280,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 				GFP_KERNEL);
+ 	if (!qspi->dev_ids) {
+ 		ret = -ENOMEM;
+-		goto qspi_probe_err;
++		goto qspi_resource_err;
+ 	}
+ 
+ 	for (val = 0; val < num_irqs; val++) {
+@@ -1369,8 +1369,9 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	bcm_qspi_hw_uninit(qspi);
+ 	clk_disable_unprepare(qspi->clk);
+ qspi_probe_err:
+-	spi_master_put(master);
+ 	kfree(qspi->dev_ids);
++qspi_resource_err:
++	spi_master_put(master);
+ 	return ret;
+ }
+ /* probe function to be called by SoC specific platform driver probe */
+-- 
+2.14.1

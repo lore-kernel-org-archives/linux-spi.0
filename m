@@ -1,108 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in error path" to the spi tree
-Date: Thu, 12 Oct 2017 11:17:43 +0100
-Message-ID: <E1e2aYh-0007gJ-Dz@debutante>
-References: <20171011215922.20536-1-f.fainelli@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kdasu.kdev@gmail.com,
-        bcm-kernel-feedback-list@broadcom.com,
-        Mark Brown <broonie@kernel.org>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Florian Fainelli <f.fainelli@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171011215922.20536-1-f.fainelli@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [2/2] spi: imx: fix use of native chip-selects with devicetree
+Date: Thu, 12 Oct 2017 20:41:07 +0000
+Message-ID: <1507840866.3880.4.camel@impinj.com>
+References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
+         <1507667916.74283.19.camel@impinj.com>
+         <209bb901-875e-8007-06f8-3ae9698a0e41@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org" <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <209bb901-875e-8007-06f8-3ae9698a0e41-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Language: en-US
+Content-ID: <A8A919E75B9BBA4096B48A230ED0CC42-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
-
-   spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in error path
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c0368e4db4a3e8a3dce40f3f621c06e14c560d79 Mon Sep 17 00:00:00 2001
-From: Florian Fainelli <f.fainelli@gmail.com>
-Date: Wed, 11 Oct 2017 14:59:22 -0700
-Subject: [PATCH] spi: bcm-qspi: Fix use after free in bcm_qspi_probe() in
- error path
-
-There was an inversion in how the error path in bcm_qspi_probe() is done
-which would make us trip over a KASAN use-after-free report. Turns out
-that qspi->dev_ids does not get allocated until later in the probe
-process. Fix this by introducing a new lable: qspi_resource_err which
-takes care of cleaning up the SPI master instance.
-
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi-bcm-qspi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 6ef6c44f39f5..a172ab299e80 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1250,7 +1250,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 			goto qspi_probe_err;
- 		}
- 	} else {
--		goto qspi_probe_err;
-+		goto qspi_resource_err;
- 	}
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "bspi");
-@@ -1272,7 +1272,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 		qspi->base[CHIP_SELECT]  = devm_ioremap_resource(dev, res);
- 		if (IS_ERR(qspi->base[CHIP_SELECT])) {
- 			ret = PTR_ERR(qspi->base[CHIP_SELECT]);
--			goto qspi_probe_err;
-+			goto qspi_resource_err;
- 		}
- 	}
- 
-@@ -1280,7 +1280,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 				GFP_KERNEL);
- 	if (!qspi->dev_ids) {
- 		ret = -ENOMEM;
--		goto qspi_probe_err;
-+		goto qspi_resource_err;
- 	}
- 
- 	for (val = 0; val < num_irqs; val++) {
-@@ -1369,8 +1369,9 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 	bcm_qspi_hw_uninit(qspi);
- 	clk_disable_unprepare(qspi->clk);
- qspi_probe_err:
--	spi_master_put(master);
- 	kfree(qspi->dev_ids);
-+qspi_resource_err:
-+	spi_master_put(master);
- 	return ret;
- }
- /* probe function to be called by SoC specific platform driver probe */
--- 
-2.14.1
+T24gVGh1LCAyMDE3LTEwLTEyIGF0IDE2OjI2ICsxMDAwLCBHcmVnIFVuZ2VyZXIgd3JvdGU6DQo+
+IE9uIDExLzEwLzE3IDA2OjM4LCBUcmVudCBQaWVwaG8gd3JvdGU6DQo+ID4gDQo+ID4gYXJjaC9h
+cm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jLXN0YXRpYyBpbnQgbW9ib2FyZF9zcGkxX2Nz
+W10gPSB7DQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jOiAgIE1YQ19T
+UElfQ1MoMCksDQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jOiAgIE1Y
+Q19TUElfQ1MoMiksDQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jLX07
+DQo+ID4gDQo+ID4gVGhlIHNwaSBkZXZpY2UgY29uZmlndXJlZCB0byB1c2UgY2hpcCBzZWxlY3Qg
+MSB3aWxsIG5vIGxvbmdlciB1c2UNCj4gPiBuYXRpdmUgY2hpcCBzZWxlY3QgbGluZSAyLg0KPiA+
+IA0KPiA+IExvb2tpbmcgYXQgYWxsIGluLXRyZWUgdXNlcnMgb2Ygc3BpIGlteCBwbGF0Zm9ybSBk
+YXRhLCBpdCBhcHBlYXJzIHRoYXQNCj4gPiB0aGlzIGJvYXJkIGlzIHRoZSBvbmx5IG9uZSBpbiB3
+aGljaCB0aGUgY3Mgc2VsZWN0ZWQgZG9lcyBub3QgbWF0Y2ggdGhlDQo+ID4gYXJyYXkgaW5kZXgu
+ICBUaG91Z2ggdGhlcmUgYXJlIHN0aWxsIHNldmVyYWwgd2hpY2ggc3RpbGwgdXNlDQo+ID4gTVND
+X1NQSV9DUygpIGV2ZW4gdGhvdWdoIGl0IGRvZXNuJ3QgcmVhbGx5IHdvcmsgYW55bW9yZS4NCj4g
+DQo+IENvbW1pdCA5MDFmMjZiY2U2NGEgKCJBUk06IGlteDogc2V0IGNvcnJlY3QgY2hpcF9zZWxl
+Y3QgaW4gcGxhdGZvcm0gc2V0dXAiKSANCj4gZml4ZXMgdGhpcyBpc3N1ZS4gSXQgc3BlY2lmaWNh
+bGx5IG1ha2VzIHN1cmUgdGhhdCB0aGUgYm9hcmQgc2V0dXAgY2hpcA0KPiBzZWxlY3QgaXMgc2V0
+IGNvcnJlY3RseSAoc28gdGhhdCBzcGktaW14IGNhbiB0aGVuIHVzZSBpdCkuIEl0IGFsc28gcGFk
+cw0KPiBvdXQgdGhlIGNoaXBzZWxlY3QgYXJyYXlzIHNvIHRoYXQgdGhlIGNoaXAgc2VsZWN0IGFu
+ZCBpbmRleGVzIG1hdGNoLg0KPiANCj4gSXMgdGhpcyBub3Qgd29ya2luZyBmb3IgeW91Pw0KDQpJ
+dCBsb29rcyBsaWtlIHRoYXQgcGF0Y2ggbWlzc2VkIG9uZSBzcGkgYnVzIGluIG14MzFtb2JvYXJk
+LmMsIHF1b3RlZA0KYWJvdmUuDQoNCkkgaGF2ZSBhIHBhdGNoIHNlcmllcyB0aGF0IHNob3VsZCBm
+aXggdGhhdCBhbmQgYWxzbyB0aGUgZG9jdW1lbnRhdGlvbi4gDQpOZWVkIHRvIHRlc3QgaXQgYSBi
+aXQgbW9yZS4=
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

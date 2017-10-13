@@ -1,79 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sprd-adi: fix platform_no_drv_owner.cocci warnings" to the spi tree
-Date: Fri, 13 Oct 2017 22:16:27 +0100
-Message-ID: <E1e37Jj-0001Oz-Cb@debutante>
-References: <20171013211040.GA11015@intel17.lkp.intel.com>
-Cc: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Baolin Wang <baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org>, kbuild-all-JC7UmRfGjtg@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wu Fengguang <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RESEND PATCH 1/2] spi: rockchip: Convert to late and early
+ system PM callbacks
+Date: Fri, 13 Oct 2017 16:45:11 -0700
+Message-ID: <20171013234511.dxazu5wvvz7sjiiu@dtor-ws>
+References: <20171013104138.3216-1-jeffy.chen@rock-chips.com>
+ <20171013104138.3216-2-jeffy.chen@rock-chips.com>
+ <CAD=FV=X6pkaY3t=ceh3QEUws+_gqRGMN9zveW0fXR1noF1T6ew@mail.gmail.com>
+ <20171013155120.GA137489@google.com>
+ <20171013164235.thgqha7sl5tdptwv@sirena.co.uk>
+ <59E103B0.8060705@rock-chips.com>
+ <20171013183006.k6pzcr5tcwsxxtmp@dtor-ws>
+ <20171013183750.piabs7m3dnpabnkm@sirena.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: jeffy <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171013211040.GA11015-QGOtBMdtQC0FrBlDiA5jVhL4W9x8LtSr@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20171013183750.piabs7m3dnpabnkm-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Fri, Oct 13, 2017 at 07:37:50PM +0100, Mark Brown wrote:
+> On Fri, Oct 13, 2017 at 11:30:06AM -0700, Dmitry Torokhov wrote:
+> > On Sat, Oct 14, 2017 at 02:19:28AM +0800, jeffy wrote:
+> 
+> > > > Yeah, it's the same stuff as we get with initcall ordering.  This sort
+> > > > of thing does happen with things like PMICs which tend to have hardware
+> > > > that the system wants to manipulate in the IRQs off part of suspend.
+> > > > Ideally the dependency annotation stuff would figure things out though
+> > > > I'm not sure what the status of that is.
+> 
+> > I'd say non-existent for resources such as regulators, pwms, clocks,
+> > etc. I do not think many places call device_link_add()... I think adding
+> > this to devm_* APIs might be easiest to get the ball going as they
+> > naturally have consumer device and can easily figure out the supplier
+> > side.
+> 
+> Hrm, are things in a state where we're supposed to be doing that?  I've
+> not seen anyone even trying which is a bit odd, I'd thought there was
+> some core work still ongoing (and it wasn't clear to me if we were going
+> to try to do things like use DT/ACPI cross references to figure this
+> stuff out).
 
-   spi: sprd-adi: fix platform_no_drv_owner.cocci warnings
+Not sure, adding Rafael...
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 8955b26d227263a0938daae77f981da927e19513 Mon Sep 17 00:00:00 2001
-From: Wu Fengguang <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Sat, 14 Oct 2017 05:10:40 +0800
-Subject: [PATCH] spi: sprd-adi: fix platform_no_drv_owner.cocci warnings
-
-drivers/spi/spi-sprd-adi.c:409:3-8: No need to set .owner here. The core will do it.
-
- Remove .owner field if calls are used which set it automatically
-
-Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
-
-Fixes: 7e2903cb91df ("spi: Add ADI driver for Spreadtrum platform")
-Signed-off-by: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-sprd-adi.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 1324463244d3..6a5ff3003044 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -406,7 +406,6 @@ MODULE_DEVICE_TABLE(of, sprd_adi_of_match);
- static struct platform_driver sprd_adi_driver = {
- 	.driver = {
- 		.name = "sprd-adi",
--		.owner = THIS_MODULE,
- 		.of_match_table = sprd_adi_of_match,
- 	},
- 	.probe = sprd_adi_probe,
 -- 
-2.14.1
-
+Dmitry
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,8 @@
 From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 1/4] spi: imx: GPIO based chip selects should not be required
-Date: Fri, 13 Oct 2017 12:54:07 -0700
-Message-ID: <20171013195410.30767-1-tpiepho@impinj.com>
+Subject: [PATCH 3/4] spi: imx: Don't require platform data chipselect array
+Date: Fri, 13 Oct 2017 12:54:09 -0700
+Message-ID: <20171013195410.30767-3-tpiepho@impinj.com>
+References: <20171013195410.30767-1-tpiepho@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -12,64 +13,50 @@ Cc: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 To: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171013195410.30767-1-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The driver will fail to load if no gpio chip selects are specified,
-this patch changes this so that it no longer fails.
+If the array is not present, assume all chip selects are native.  This
+is the standard behavior for SPI masters configured via the device
+tree and the behavior of this driver as well when it is configured via
+device tree.
 
-It's possible to use all native chip selects, in which case there is
-no reason to have a gpio chip select array.  This is what happens if
-the *optional* device tree property "cs-gpios" is omitted.
-
-The spi core already checks for the absence of gpio chip selects in
-the master and assigns any slaves the gpio_cs value of -ENOENT.
+This reduces platform data vs DT differences and allows most of the
+platform data based boards to remove their chip select arrays.
 
 Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/spi/spi-imx.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index babb15f07995..07e6250f2dad 100644
+index fea46cbf458a..3a2c34522655 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1457,22 +1457,19 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		goto out_clk_put;
- 	}
+@@ -1364,13 +1364,15 @@ static int spi_imx_probe(struct platform_device *pdev)
  
--	if (!master->cs_gpios) {
--		dev_err(&pdev->dev, "No CS GPIOs available\n");
--		ret = -EINVAL;
--		goto out_clk_put;
--	}
+ 	if (mxc_platform_info) {
+ 		master->num_chipselect = mxc_platform_info->num_chipselect;
+-		master->cs_gpios = devm_kzalloc(&master->dev,
+-			sizeof(int) * master->num_chipselect, GFP_KERNEL);
+-		if (!master->cs_gpios)
+-			return -ENOMEM;
 -
--	for (i = 0; i < master->num_chipselect; i++) {
--		if (!gpio_is_valid(master->cs_gpios[i]))
--			continue;
--
--		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
--					DRIVER_NAME);
--		if (ret) {
--			dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
--				master->cs_gpios[i]);
--			goto out_clk_put;
-+	/* Request GPIO CS lines, if any */
-+	if (master->cs_gpios) {
-+		for (i = 0; i < master->num_chipselect; i++) {
-+			if (!gpio_is_valid(master->cs_gpios[i]))
-+				continue;
+-		for (i = 0; i < master->num_chipselect; i++)
+-			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
++		if (mxc_platform_info->chipselect) {
++			master->cs_gpios = devm_kzalloc(&master->dev,
++				sizeof(int) * master->num_chipselect, GFP_KERNEL);
++			if (!master->cs_gpios)
++				return -ENOMEM;
 +
-+			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
-+						DRIVER_NAME);
-+			if (ret) {
-+				dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
-+					master->cs_gpios[i]);
-+				goto out_clk_put;
-+			}
- 		}
- 	}
++			for (i = 0; i < master->num_chipselect; i++)
++				master->cs_gpios[i] = mxc_platform_info->chipselect[i];
++		}
+  	}
  
+ 	spi_imx->bitbang.chipselect = spi_imx_chipselect;
 -- 
 2.13.6
 

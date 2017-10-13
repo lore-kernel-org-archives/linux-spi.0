@@ -1,60 +1,55 @@
-From: jeffy <jeffy.chen@rock-chips.com>
-Subject: Re: [RESEND PATCH 1/2] spi: rockchip: Convert to late and early system
- PM callbacks
-Date: Sat, 14 Oct 2017 02:19:28 +0800
-Message-ID: <59E103B0.8060705@rock-chips.com>
-References: <20171013104138.3216-1-jeffy.chen@rock-chips.com> <20171013104138.3216-2-jeffy.chen@rock-chips.com> <CAD=FV=X6pkaY3t=ceh3QEUws+_gqRGMN9zveW0fXR1noF1T6ew@mail.gmail.com> <20171013155120.GA137489@google.com> <20171013164235.thgqha7sl5tdptwv@sirena.co.uk>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/4] spi: imx: GPIO based chip selects should not be required
+Date: Fri, 13 Oct 2017 18:22:01 +0000
+Message-ID: <1507918921.24265.8.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Doug Anderson <dianders@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171013164235.thgqha7sl5tdptwv@sirena.co.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Language: en-US
+Content-ID: <C76F0501271C5C43AEDAB97CD6037FF6-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi guys,
-
-it looks like the suspend sequence depends on the dt node sequence, and 
-we are putting display-subsystem dt node above spi dt node, so it would 
-be earlier in the device list, then got suspended later than spi device.
-
-the pwm backlight and cros_ec_spi pwm are very interesting, not only 
-about suspend dependency... if we unbind cros_ec_spi pwm, the pwm 
-backlight would still hold a reference to it, and crash the kernel later.
-
-On 10/14/2017 12:42 AM, Mark Brown wrote:
-> On Fri, Oct 13, 2017 at 08:51:21AM -0700, Brian Norris wrote:
->
->> Yes, this does seem odd to me too. This looks like an arms race hack
->> that should be avoided unless we know a legit root cause. Also,
->> "probe order implies suspend order" doesn't quite work for async suspend
->> anyway, so we'd probably want to express the dependency properly
->> anyway.
->
-> Yeah, it's the same stuff as we get with initcall ordering.  This sort
-> of thing does happen with things like PMICs which tend to have hardware
-> that the system wants to manipulate in the IRQs off part of suspend.
-> Ideally the dependency annotation stuff would figure things out though
-> I'm not sure what the status of that is.
->
->> Any chance this is related? Seems like that might break the parent/child
->> relationship for master/slave:
->
->> commit d7e2ee257038baeb03baef602500368a51ee9eef
->> Author: Linus Walleij <linus.walleij@linaro.org>
->> Date:   Mon Apr 11 13:51:03 2016 +0200
->
->>      spi: let SPI masters ignore their children for PM
->
-> That's for runtime PM, I'd not expect it to affect system suspend.
->
+VGhlIGRyaXZlciB3aWxsIGZhaWwgdG8gbG9hZCBpZiBubyBncGlvIGNoaXAgc2VsZWN0cyBhcmUg
+c3BlY2lmaWVkLA0KdGhpcyBwYXRjaCBjaGFuZ2VzIHRoaXMgc28gdGhhdCBpdCBubyBsb25nZXIg
+ZmFpbHMuDQoNCkl0J3MgcG9zc2libGUgdG8gdXNlIGFsbCBuYXRpdmUgY2hpcCBzZWxlY3RzLCBp
+biB3aGljaCBjYXNlIHRoZXJlIGlzDQpubyByZWFzb24gdG8gaGF2ZSBhIGdwaW8gY2hpcCBzZWxl
+Y3QgYXJyYXkuICBUaGlzIGlzIHdoYXQgaGFwcGVucyBpZg0KdGhlICpvcHRpb25hbCogZGV2aWNl
+IHRyZWUgcHJvcGVydHkgImNzLWdwaW9zIiBpcyBvbWl0dGVkLg0KDQpUaGUgc3BpIGNvcmUgYWxy
+ZWFkeSBjaGVja3MgZm9yIHRoZSBhYnNlbmNlIG9mIGdwaW8gY2hpcCBzZWxlY3RzIGluDQp0aGUg
+bWFzdGVyIGFuZCBhc3NpZ25zIGFueSBzbGF2ZXMgdGhlIGdwaW9fY3MgdmFsdWUgb2YgLUVOT0VO
+VC4NCg0KU2lnbmVkLW9mZi1ieTogVHJlbnQgUGllcGhvIDx0cGllcGhvQGltcGluai5jb20+DQot
+LS0NCiBkcml2ZXJzL3NwaS9zcGktaW14LmMgfCAyOSArKysrKysrKysrKysrLS0tLS0tLS0tLS0t
+LS0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkN
+Cg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYyBiL2RyaXZlcnMvc3BpL3NwaS1p
+bXguYw0KaW5kZXggYmFiYjE1ZjA3OTk1Li4wN2U2MjUwZjJkYWQgMTAwNjQ0DQotLS0gYS9kcml2
+ZXJzL3NwaS9zcGktaW14LmMNCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYw0KQEAgLTE0NTcs
+MjIgKzE0NTcsMTkgQEAgc3RhdGljIGludCBzcGlfaW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9k
+ZXZpY2UgKnBkZXYpDQogCQlnb3RvIG91dF9jbGtfcHV0Ow0KIAl9DQogDQotCWlmICghbWFzdGVy
+LT5jc19ncGlvcykgew0KLQkJZGV2X2VycigmcGRldi0+ZGV2LCAiTm8gQ1MgR1BJT3MgYXZhaWxh
+YmxlXG4iKTsNCi0JCXJldCA9IC1FSU5WQUw7DQotCQlnb3RvIG91dF9jbGtfcHV0Ow0KLQl9DQot
+DQotCWZvciAoaSA9IDA7IGkgPCBtYXN0ZXItPm51bV9jaGlwc2VsZWN0OyBpKyspIHsNCi0JCWlm
+ICghZ3Bpb19pc192YWxpZChtYXN0ZXItPmNzX2dwaW9zW2ldKSkNCi0JCQljb250aW51ZTsNCi0N
+Ci0JCXJldCA9IGRldm1fZ3Bpb19yZXF1ZXN0KCZwZGV2LT5kZXYsIG1hc3Rlci0+Y3NfZ3Bpb3Nb
+aV0sDQotCQkJCQlEUklWRVJfTkFNRSk7DQotCQlpZiAocmV0KSB7DQotCQkJZGV2X2VycigmcGRl
+di0+ZGV2LCAiQ2FuJ3QgZ2V0IENTIEdQSU8gJWlcbiIsDQotCQkJCW1hc3Rlci0+Y3NfZ3Bpb3Nb
+aV0pOw0KLQkJCWdvdG8gb3V0X2Nsa19wdXQ7DQorCS8qIFJlcXVlc3QgR1BJTyBDUyBsaW5lcywg
+aWYgYW55ICovDQorCWlmIChtYXN0ZXItPmNzX2dwaW9zKSB7DQorCQlmb3IgKGkgPSAwOyBpIDwg
+bWFzdGVyLT5udW1fY2hpcHNlbGVjdDsgaSsrKSB7DQorCQkJaWYgKCFncGlvX2lzX3ZhbGlkKG1h
+c3Rlci0+Y3NfZ3Bpb3NbaV0pKQ0KKwkJCQljb250aW51ZTsNCisNCisJCQlyZXQgPSBkZXZtX2dw
+aW9fcmVxdWVzdCgmcGRldi0+ZGV2LCBtYXN0ZXItPmNzX2dwaW9zW2ldLA0KKwkJCQkJCURSSVZF
+Ul9OQU1FKTsNCisJCQlpZiAocmV0KSB7DQorCQkJCWRldl9lcnIoJnBkZXYtPmRldiwgIkNhbid0
+IGdldCBDUyBHUElPICVpXG4iLA0KKwkJCQkJbWFzdGVyLT5jc19ncGlvc1tpXSk7DQorCQkJCWdv
+dG8gb3V0X2Nsa19wdXQ7DQorCQkJfQ0KIAkJfQ0KIAl9DQogDQotLSANCjIuMTMuNg0K
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

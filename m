@@ -1,52 +1,257 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [2/2] spi: imx: fix use of native chip-selects with devicetree
-Date: Thu, 12 Oct 2017 20:41:07 +0000
-Message-ID: <1507840866.3880.4.camel@impinj.com>
-References: <1489726983-17706-3-git-send-email-gerg@linux-m68k.org>
-         <1507667916.74283.19.camel@impinj.com>
-         <209bb901-875e-8007-06f8-3ae9698a0e41@linux-m68k.org>
+From: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+Subject: [RFC] patch to spi-fsl-dspi.c to enable Coldfire mcf5441x
+Date: Fri, 13 Oct 2017 02:08:54 +0200
+Message-ID: <ff0014ac-1d46-5014-4371-041ccdba1fa5@sysam.it>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org" <vz-ChpfBGZJDbMAvxtiuMwx3w@public.gmane.org>,
-        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: multipart/mixed;
+ boundary="------------57A0638A40AC44CA6D7C92C3"
+Cc: Greg Ungerer <gregungerer-ncau/BB9MAPvnOemgxGiVw@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <209bb901-875e-8007-06f8-3ae9698a0e41-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Content-Language: en-US
-Content-ID: <A8A919E75B9BBA4096B48A230ED0CC42-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gVGh1LCAyMDE3LTEwLTEyIGF0IDE2OjI2ICsxMDAwLCBHcmVnIFVuZ2VyZXIgd3JvdGU6DQo+
-IE9uIDExLzEwLzE3IDA2OjM4LCBUcmVudCBQaWVwaG8gd3JvdGU6DQo+ID4gDQo+ID4gYXJjaC9h
-cm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jLXN0YXRpYyBpbnQgbW9ib2FyZF9zcGkxX2Nz
-W10gPSB7DQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jOiAgIE1YQ19T
-UElfQ1MoMCksDQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jOiAgIE1Y
-Q19TUElfQ1MoMiksDQo+ID4gYXJjaC9hcm0vbWFjaC1pbXgvbWFjaC1teDMxbW9ib2FyZC5jLX07
-DQo+ID4gDQo+ID4gVGhlIHNwaSBkZXZpY2UgY29uZmlndXJlZCB0byB1c2UgY2hpcCBzZWxlY3Qg
-MSB3aWxsIG5vIGxvbmdlciB1c2UNCj4gPiBuYXRpdmUgY2hpcCBzZWxlY3QgbGluZSAyLg0KPiA+
-IA0KPiA+IExvb2tpbmcgYXQgYWxsIGluLXRyZWUgdXNlcnMgb2Ygc3BpIGlteCBwbGF0Zm9ybSBk
-YXRhLCBpdCBhcHBlYXJzIHRoYXQNCj4gPiB0aGlzIGJvYXJkIGlzIHRoZSBvbmx5IG9uZSBpbiB3
-aGljaCB0aGUgY3Mgc2VsZWN0ZWQgZG9lcyBub3QgbWF0Y2ggdGhlDQo+ID4gYXJyYXkgaW5kZXgu
-ICBUaG91Z2ggdGhlcmUgYXJlIHN0aWxsIHNldmVyYWwgd2hpY2ggc3RpbGwgdXNlDQo+ID4gTVND
-X1NQSV9DUygpIGV2ZW4gdGhvdWdoIGl0IGRvZXNuJ3QgcmVhbGx5IHdvcmsgYW55bW9yZS4NCj4g
-DQo+IENvbW1pdCA5MDFmMjZiY2U2NGEgKCJBUk06IGlteDogc2V0IGNvcnJlY3QgY2hpcF9zZWxl
-Y3QgaW4gcGxhdGZvcm0gc2V0dXAiKSANCj4gZml4ZXMgdGhpcyBpc3N1ZS4gSXQgc3BlY2lmaWNh
-bGx5IG1ha2VzIHN1cmUgdGhhdCB0aGUgYm9hcmQgc2V0dXAgY2hpcA0KPiBzZWxlY3QgaXMgc2V0
-IGNvcnJlY3RseSAoc28gdGhhdCBzcGktaW14IGNhbiB0aGVuIHVzZSBpdCkuIEl0IGFsc28gcGFk
-cw0KPiBvdXQgdGhlIGNoaXBzZWxlY3QgYXJyYXlzIHNvIHRoYXQgdGhlIGNoaXAgc2VsZWN0IGFu
-ZCBpbmRleGVzIG1hdGNoLg0KPiANCj4gSXMgdGhpcyBub3Qgd29ya2luZyBmb3IgeW91Pw0KDQpJ
-dCBsb29rcyBsaWtlIHRoYXQgcGF0Y2ggbWlzc2VkIG9uZSBzcGkgYnVzIGluIG14MzFtb2JvYXJk
-LmMsIHF1b3RlZA0KYWJvdmUuDQoNCkkgaGF2ZSBhIHBhdGNoIHNlcmllcyB0aGF0IHNob3VsZCBm
-aXggdGhhdCBhbmQgYWxzbyB0aGUgZG9jdW1lbnRhdGlvbi4gDQpOZWVkIHRvIHRlc3QgaXQgYSBi
-aXQgbW9yZS4=
+This is a multi-part message in MIME format.
+--------------57A0638A40AC44CA6D7C92C3
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Dear all,
+
+i had the need to use the dspi module of Coldfire mcf5441x.
+I have seen the spi-fsl-dspi.c was already covering this
+CPU but was not selectable, and not working out of the box
+once enabled form Kconfig.
+
+So i tested the attached solution on a mcf5441x based board
+called stmark2, it seems to work reliably at least from some
+basic testing.
+
+I have a nor spi flash connected to dspi0.
+
+[    8.140000] m25p80 spi0.1: is25lp128 (16384 Kbytes)
+[    8.150000] Creating 3 MTD partitions on "is25lp128":
+[    8.150000] 0x000000000000-0x000000100000 : "U-Boot (1024K)"
+[    8.220000] 0x000000100000-0x000000800000 : "Kernel+initramfs (7168K)"
+[    8.290000] 0x000000800000-0x000001000000 : "Flash Free Space (8192K)"
+[    8.400000] Freeing unused kernel memory: 264K
+
+I can read and write the partitions properly.
+
+Not sure if patching the driver adding board support would be
+welcome, btw, Coldfire arch. is actually not supporting devicetree
+so this is why i am proposing the board support option.
+
+
+Best regards,
+Angelo Dureghello
+
+
+
+--------------57A0638A40AC44CA6D7C92C3
+Content-Type: text/x-patch;
+ name="0001-spi-spi-fsl-dspi-enabling-Coldfire-mcf5441x-to-use-t.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-spi-spi-fsl-dspi-enabling-Coldfire-mcf5441x-to-use-t.pa";
+ filename*1="tch"
+
+>From 811fdbb62a9d9c1d194e67c8c5be359500bcc772 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+Date: Fri, 13 Oct 2017 01:03:25 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: enabling Coldfire mcf5441x to use this
+ driver.
+
+This patch adds board support and related params to enable the use
+of this driver from Coldfire mcf5441x CPU family.
+
+Signed-off-by: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+---
+ drivers/spi/Kconfig              |  2 +-
+ drivers/spi/spi-fsl-dspi.c       | 67 +++++++++++++++++++++++++++-------------
+ include/linux/spi/spi-fsl-dspi.h | 31 +++++++++++++++++++
+ 3 files changed, 77 insertions(+), 23 deletions(-)
+ create mode 100644 include/linux/spi/spi-fsl-dspi.h
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a75f2a2cf780..a8b761979673 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -379,7 +379,7 @@ config SPI_FSL_DSPI
+ 	tristate "Freescale DSPI controller"
+ 	select REGMAP_MMIO
+ 	depends on HAS_DMA
+-	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
++	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || M5441x || COMPILE_TEST
+ 	help
+ 	  This enables support for the Freescale DSPI controller in master
+ 	  mode. VF610 platform uses the controller.
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d89127f4a46d..ad0b3fc8d2a6 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -32,6 +32,7 @@
+ #include <linux/regmap.h>
+ #include <linux/sched.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/spi-fsl-dspi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/time.h>
+ 
+@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
+ 	.max_clock_factor = 8,
+ };
+ 
++static const struct fsl_dspi_devtype_data coldfire_data = {
++	.trans_mode = DSPI_EOQ_MODE,
++	.max_clock_factor = 8,
++};
++
+ struct fsl_dspi_dma {
+ 	/* Length of transfer in words of DSPI_FIFO_SIZE */
+ 	u32 curr_xfer_len;
+@@ -741,6 +747,7 @@ static int dspi_setup(struct spi_device *spi)
+ {
+ 	struct chip_data *chip;
+ 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
++	struct fsl_dspi_platform_data *pdata;
+ 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
+ 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+ 	unsigned char pasc = 0, asc = 0, fmsz = 0;
+@@ -761,11 +768,18 @@ static int dspi_setup(struct spi_device *spi)
+ 			return -ENOMEM;
+ 	}
+ 
+-	of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
+-			&cs_sck_delay);
++	pdata = dev_get_platdata(&dspi->pdev->dev);
+ 
+-	of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
+-			&sck_cs_delay);
++	if (!pdata) {
++		of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
++				&cs_sck_delay);
++
++		of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
++				&sck_cs_delay);
++	} else {
++		cs_sck_delay = pdata->cs_sck_delay;
++		sck_cs_delay = pdata->sck_cs_delay;
++	}
+ 
+ 	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS |
+ 		SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF;
+@@ -819,7 +833,6 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+ 	regmap_write(dspi->regmap, SPI_SR, spi_sr);
+ 
+-
+ 	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
+ 		tx_word = is_double_byte_mode(dspi);
+ 
+@@ -949,6 +962,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	struct fsl_dspi *dspi;
+ 	struct resource *res;
+ 	void __iomem *base;
++	struct fsl_dspi_platform_data *pdata;
+ 	int ret = 0, cs_num, bus_num;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+@@ -969,25 +983,34 @@ static int dspi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(4) | SPI_BPW_MASK(8) |
+ 					SPI_BPW_MASK(16);
+ 
+-	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
+-		goto out_master_put;
+-	}
+-	master->num_chipselect = cs_num;
++	pdata = dev_get_platdata(&pdev->dev);
++	if (pdata) {
++		master->num_chipselect = pdata->cs_num;
++		master->bus_num = pdata->bus_num;
+ 
+-	ret = of_property_read_u32(np, "bus-num", &bus_num);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "can't get bus-num\n");
+-		goto out_master_put;
+-	}
+-	master->bus_num = bus_num;
++		dspi->devtype_data = &coldfire_data;
++	} else {
+ 
+-	dspi->devtype_data = of_device_get_match_data(&pdev->dev);
+-	if (!dspi->devtype_data) {
+-		dev_err(&pdev->dev, "can't get devtype_data\n");
+-		ret = -EFAULT;
+-		goto out_master_put;
++		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
++			goto out_master_put;
++		}
++		master->num_chipselect = cs_num;
++
++		ret = of_property_read_u32(np, "bus-num", &bus_num);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "can't get bus-num\n");
++			goto out_master_put;
++		}
++		master->bus_num = bus_num;
++
++		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
++		if (!dspi->devtype_data) {
++			dev_err(&pdev->dev, "can't get devtype_data\n");
++			ret = -EFAULT;
++			goto out_master_put;
++		}
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+diff --git a/include/linux/spi/spi-fsl-dspi.h b/include/linux/spi/spi-fsl-dspi.h
+new file mode 100644
+index 000000000000..74c9bae20bf2
+--- /dev/null
++++ b/include/linux/spi/spi-fsl-dspi.h
+@@ -0,0 +1,31 @@
++/*
++ * Freescale DSPI controller driver
++ *
++ * Copyright (c) 2017 Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef SPI_FSL_DSPI_HEADER_H
++#define SPI_FSL_DSPI_HEADER_H
++
++/**
++ * struct fsl_dspi_platform_data - platform data for the Freescale DSPI driver
++ * @bus_num: board specific identifier for this DSPI driver.
++ * @cs_num: number of chip selects supported by this DSPI driver.
++ */
++struct fsl_dspi_platform_data {
++	u32 cs_num;
++	u32 bus_num;
++	u32 sck_cs_delay;
++	u32 cs_sck_delay;
++};
++
++#endif /* SPI_FSL_DSPI_HEADER_H */
+-- 
+2.14.1
+
+
+--------------57A0638A40AC44CA6D7C92C3--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

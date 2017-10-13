@@ -1,66 +1,56 @@
-From: Brian Norris <briannorris@chromium.org>
-Subject: Re: [RESEND PATCH 1/2] spi: rockchip: Convert to late and early
- system PM callbacks
-Date: Fri, 13 Oct 2017 08:51:21 -0700
-Message-ID: <20171013155120.GA137489@google.com>
-References: <20171013104138.3216-1-jeffy.chen@rock-chips.com>
- <20171013104138.3216-2-jeffy.chen@rock-chips.com>
- <CAD=FV=X6pkaY3t=ceh3QEUws+_gqRGMN9zveW0fXR1noF1T6ew@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jeffy Chen <jeffy.chen@rock-chips.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Doug Anderson <dianders@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=X6pkaY3t=ceh3QEUws+_gqRGMN9zveW0fXR1noF1T6ew@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers
+Date: Fri, 13 Oct 2017 17:59:46 +0200
+Message-ID: <20171013155946.1486-1-l.stach@pengutronix.de>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        patchwork-lst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+On systems where some controllers get a dynamic ID assigned and some have
+a fixed number from DT, the current implemention might run into an IDR
+collision if the dynamic controllers gets probed first and get an IDR number,
+which is later requested by the controller with the fixed numbering. When
+this happens the fixed controller will fail to register with the SPI core.
 
-On Fri, Oct 13, 2017 at 08:32:12AM -0700, Doug Anderson wrote:
-> Hi,
-> 
-> On Fri, Oct 13, 2017 at 3:41 AM, Jeffy Chen <jeffy.chen@rock-chips.com> wrote:
-> > Currently we are suspending the spi master in it's ->suspend callback,
-> > which is racy as some other drivers may still want to transmit messages
-> > on the bus(e.g. spi based pwm backlight).
-> >
-> > Convert to late and early system PM callbacks to avoid the race.
-> >
-> > Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
-> > ---
-> >
-> >  drivers/spi/spi-rockchip.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> It shouldn't hurt to do this, but I'm curious if you did any digging
-> about why this happens?  As I understood it suspend order is supposed
-> to be opposite of probe order.  Thus anything that was able to get a
-> reference to the cros-ec PWM at its probe time should get suspended
-> before cros-ec suspends.
+Fix this by skipping all known alias numbers when assigning the dynamic IDs.
 
-Yes, this does seem odd to me too. This looks like an arms race hack
-that should be avoided unless we know a legit root cause. Also,
-"probe order implies suspend order" doesn't quite work for async suspend
-anyway, so we'd probably want to express the dependency properly
-anyway.
+Fixes: 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
+Signed-off-by: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Any chance this is related? Seems like that might break the parent/child
-relationship for master/slave:
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6e65524cbfd9..0483410e7cb3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -45,7 +45,6 @@
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/spi.h>
+-#define SPI_DYN_FIRST_BUS_NUM 0
+ 
+ static DEFINE_IDR(spi_master_idr);
+ 
+@@ -2117,8 +2116,9 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	}
+ 	if (ctlr->bus_num < 0) {
+ 		mutex_lock(&board_lock);
+-		id = idr_alloc(&spi_master_idr, ctlr, SPI_DYN_FIRST_BUS_NUM, 0,
+-			       GFP_KERNEL);
++		id = idr_alloc(&spi_master_idr, ctlr,
++			       of_alias_get_highest_id("spi") + 1,
++			       0, GFP_KERNEL);
+ 		mutex_unlock(&board_lock);
+ 		if (WARN(id < 0, "couldn't get idr"))
+ 			return id;
+-- 
+2.11.0
 
-commit d7e2ee257038baeb03baef602500368a51ee9eef
-Author: Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon Apr 11 13:51:03 2016 +0200
-
-    spi: let SPI masters ignore their children for PM
-
-Brian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

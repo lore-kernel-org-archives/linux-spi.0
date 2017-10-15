@@ -1,76 +1,275 @@
-From: Dirk-Jan Faber <dfaber-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Mode 1 on /dev/spidev1.0: invalid argument
-Date: Sun, 15 Oct 2017 22:34:06 +0200
-Message-ID: <AB33E321-786B-4160-A5ED-E4DA04B1EE94@gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: multipart/signed; boundary="Apple-Mail=_AC8D8164-151C-4604-BAE1-55E33560F11A"; protocol="application/pgp-signature"; micalg=pgp-sha512
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 4/4] ARM: imx: Update spi_imx platform data to reflect
+ current state
+Date: Mon, 16 Oct 2017 09:34:13 +1000
+Message-ID: <8cdf2bc7-e0ab-b8ec-1cc5-7cc397f13197@linux-m68k.org>
+References: <20171013195410.30767-1-tpiepho@impinj.com>
+ <20171013195410.30767-4-tpiepho@impinj.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171013195410.30767-4-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Trent,
 
---Apple-Mail=_AC8D8164-151C-4604-BAE1-55E33560F11A
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+On 14/10/17 05:54, Trent Piepho wrote:
+> The docs for the spi_imx platform data still refer to a -32 offset used to
+> specify a native chip select.  This was removed in commit 602c8f4485cd
+> ("spi: imx: fix use of native chip-selects with devicetree") and no
+> longer works as documented.  Update documentation.
+> 
+> The macro MXC_SPI_CS() is no longer is needed.
+> 
+> If a board uses all native chip selects, then it's not necessary to
+> specify a chip select array at all, as all native is the default (this is
+> how device-tree configured SPI masters work too).  Most of the spi-imx
+> platform data users have their chip select arrays removed by this patch.
+> 
+> This patch also fixes a bug in mx31moboard introduced in the '602 commit.
+> When that board was updated in commit 901f26bce64a ("ARM: imx: set
+> correct chip_select in platform setup") to reflect the SPI change, only
+> SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
+> selects.  The mc13783 spi device on bus 1 had its chip select updated as
+> if it were on bus 2.
+> 
+> CC: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Hello list,
+Looks like a nice cleanup.
+For whatever it is worth:
 
-While connecting an as5047d sensor to my Raspberry Pi 3, I noticed =
-something unexpected in the spi connection. According the datasheet, the =
-as5047d works in spi mode 1 (cpol=3D0, cpha=3D1). I noticed a difference =
-between `/dev/spidev0.0` and `/dev/spidev1.0`. =46rom the first device, =
-I can read the sensor without problems. When I use the second device, I =
-get the message:
+Acked-by: Greg Ungerer <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-> can't set spi mode: Invalid argument
+Regards
+Greg
 
-I am aware that this can mean that either the Pi=E2=80=99s hardware or =
-the software has a problem with setting the mode. I hope you can help me =
-figure out which one is the case or maybe I am overlooking something.
 
-I've put the code I use on a github gist: =
-https://gist.github.com/steviethecat/49cfb90c7aaee848284647d31f4889e1
-The argument for the compiled code is the device to use:
 
-     $ ./as5047d-spi /dev/spidev0.0 | head -n 5
-    spi mode: 1 bits per word: 8 max speed: 1000000 Hz (1000 KHz)
-    245.52
-    245.52
-    $ ./as5047d-spi /dev/spidev1.0 | head -n 5
-    can't set spi mode: Invalid argument
-    $ uname -a
-    Linux mypi 4.9.41-v7+ #1023 SMP Tue Aug 8 16:00:15 BST 2017 armv7l =
-GNU/Linux
+> CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+> Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+> ---
+>  arch/arm/mach-imx/mach-mx31_3ds.c     | 18 ++----------------
+>  arch/arm/mach-imx/mach-mx31lilly.c    | 12 ++----------
+>  arch/arm/mach-imx/mach-mx31lite.c     | 16 ++--------------
+>  arch/arm/mach-imx/mach-mx31moboard.c  | 17 +++--------------
+>  arch/arm/mach-imx/mach-pcm037_eet.c   |  5 +----
+>  include/linux/platform_data/spi-imx.h | 29 +++++++++++++++++------------
+>  6 files changed, 27 insertions(+), 70 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/mach-mx31_3ds.c b/arch/arm/mach-imx/mach-mx31_3ds.c
+> index 68c3f0799d5b..9d87f1dcf7bb 100644
+> --- a/arch/arm/mach-imx/mach-mx31_3ds.c
+> +++ b/arch/arm/mach-imx/mach-mx31_3ds.c
+> @@ -374,26 +374,12 @@ static struct imx_ssi_platform_data mx31_3ds_ssi_pdata = {
+>  };
+>  
+>  /* SPI */
+> -static int spi0_internal_chipselect[] = {
+> -	MXC_SPI_CS(0),
+> -	MXC_SPI_CS(1),
+> -	MXC_SPI_CS(2),
+> -};
+> -
+>  static const struct spi_imx_master spi0_pdata __initconst = {
+> -	.chipselect	= spi0_internal_chipselect,
+> -	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
+> -};
+> -
+> -static int spi1_internal_chipselect[] = {
+> -	MXC_SPI_CS(0),
+> -	MXC_SPI_CS(1),
+> -	MXC_SPI_CS(2),
+> +	.num_chipselect	= 3,
+>  };
+>  
+>  static const struct spi_imx_master spi1_pdata __initconst = {
+> -	.chipselect	= spi1_internal_chipselect,
+> -	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
+> +	.num_chipselect	= 3,
+>  };
+>  
+>  static struct spi_board_info mx31_3ds_spi_devs[] __initdata = {
+> diff --git a/arch/arm/mach-imx/mach-mx31lilly.c b/arch/arm/mach-imx/mach-mx31lilly.c
+> index 6fd463642954..8bf52819d4d9 100644
+> --- a/arch/arm/mach-imx/mach-mx31lilly.c
+> +++ b/arch/arm/mach-imx/mach-mx31lilly.c
+> @@ -226,20 +226,12 @@ static void __init lilly1131_usb_init(void)
+>  
+>  /* SPI */
+>  
+> -static int spi_internal_chipselect[] = {
+> -	MXC_SPI_CS(0),
+> -	MXC_SPI_CS(1),
+> -	MXC_SPI_CS(2),
+> -};
+> -
+>  static const struct spi_imx_master spi0_pdata __initconst = {
+> -	.chipselect = spi_internal_chipselect,
+> -	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
+> +	.num_chipselect = 3,
+>  };
+>  
+>  static const struct spi_imx_master spi1_pdata __initconst = {
+> -	.chipselect = spi_internal_chipselect,
+> -	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
+> +	.num_chipselect = 3,
+>  };
+>  
+>  static struct mc13xxx_platform_data mc13783_pdata __initdata = {
+> diff --git a/arch/arm/mach-imx/mach-mx31lite.c b/arch/arm/mach-imx/mach-mx31lite.c
+> index f033a57d5694..fcbaf0070ccf 100644
+> --- a/arch/arm/mach-imx/mach-mx31lite.c
+> +++ b/arch/arm/mach-imx/mach-mx31lite.c
+> @@ -83,15 +83,8 @@ static const struct imxuart_platform_data uart_pdata __initconst = {
+>  };
+>  
+>  /* SPI */
+> -static int spi0_internal_chipselect[] = {
+> -	MXC_SPI_CS(0),
+> -	MXC_SPI_CS(1),
+> -	MXC_SPI_CS(2),
+> -};
+> -
+>  static const struct spi_imx_master spi0_pdata __initconst = {
+> -	.chipselect	= spi0_internal_chipselect,
+> -	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
+> +	.num_chipselect	= 3,
+>  };
+>  
+>  static const struct mxc_nand_platform_data
+> @@ -133,13 +126,8 @@ static struct platform_device smsc911x_device = {
+>   * The MC13783 is the only hard-wired SPI device on the module.
+>   */
+>  
+> -static int spi1_internal_chipselect[] = {
+> -	MXC_SPI_CS(0),
+> -};
+> -
+>  static const struct spi_imx_master spi1_pdata __initconst = {
+> -	.chipselect	= spi1_internal_chipselect,
+> -	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
+> +	.num_chipselect	= 1,
+>  };
+>  
+>  static struct mc13xxx_platform_data mc13783_pdata __initdata = {
+> diff --git a/arch/arm/mach-imx/mach-mx31moboard.c b/arch/arm/mach-imx/mach-mx31moboard.c
+> index 7716f83aecdd..643a3d749703 100644
+> --- a/arch/arm/mach-imx/mach-mx31moboard.c
+> +++ b/arch/arm/mach-imx/mach-mx31moboard.c
+> @@ -152,14 +152,8 @@ static const struct imxi2c_platform_data moboard_i2c1_data __initconst = {
+>  	.bitrate = 100000,
+>  };
+>  
+> -static int moboard_spi1_cs[] = {
+> -	MXC_SPI_CS(0),
+> -	MXC_SPI_CS(2),
+> -};
+> -
+>  static const struct spi_imx_master moboard_spi1_pdata __initconst = {
+> -	.chipselect	= moboard_spi1_cs,
+> -	.num_chipselect	= ARRAY_SIZE(moboard_spi1_cs),
+> +	.num_chipselect	= 3,
+>  };
+>  
+>  static struct regulator_consumer_supply sdhc_consumers[] = {
+> @@ -296,19 +290,14 @@ static struct spi_board_info moboard_spi_board_info[] __initdata = {
+>  		/* irq number is run-time assigned */
+>  		.max_speed_hz = 300000,
+>  		.bus_num = 1,
+> -		.chip_select = 1,
+> +		.chip_select = 0,
+>  		.platform_data = &moboard_pmic,
+>  		.mode = SPI_CS_HIGH,
+>  	},
+>  };
+>  
+> -static int moboard_spi2_cs[] = {
+> -	MXC_SPI_CS(0), MXC_SPI_CS(1),
+> -};
+> -
+>  static const struct spi_imx_master moboard_spi2_pdata __initconst = {
+> -	.chipselect	= moboard_spi2_cs,
+> -	.num_chipselect	= ARRAY_SIZE(moboard_spi2_cs),
+> +	.num_chipselect	= 2,
+>  };
+>  
+>  #define SDHC1_CD IOMUX_TO_GPIO(MX31_PIN_ATA_CS0)
+> diff --git a/arch/arm/mach-imx/mach-pcm037_eet.c b/arch/arm/mach-imx/mach-pcm037_eet.c
+> index 95bd97710494..15bc956d466b 100644
+> --- a/arch/arm/mach-imx/mach-pcm037_eet.c
+> +++ b/arch/arm/mach-imx/mach-pcm037_eet.c
+> @@ -56,11 +56,8 @@ static struct spi_board_info pcm037_spi_dev[] = {
+>  };
+>  
+>  /* Platform Data for MXC CSPI */
+> -static int pcm037_spi1_cs[] = { MXC_SPI_CS(0), MXC_SPI_CS(1), };
+> -
+>  static const struct spi_imx_master pcm037_spi1_pdata __initconst = {
+> -	.chipselect = pcm037_spi1_cs,
+> -	.num_chipselect = ARRAY_SIZE(pcm037_spi1_cs),
+> +	.num_chipselect = 2,
+>  };
+>  
+>  /* GPIO-keys input device */
+> diff --git a/include/linux/platform_data/spi-imx.h b/include/linux/platform_data/spi-imx.h
+> index 08be445e8eb8..9b2ed66ef7a2 100644
+> --- a/include/linux/platform_data/spi-imx.h
+> +++ b/include/linux/platform_data/spi-imx.h
+> @@ -4,24 +4,29 @@
+>  
+>  /*
+>   * struct spi_imx_master - device.platform_data for SPI controller devices.
+> - * @chipselect: Array of chipselects for this master. Numbers >= 0 mean gpio
+> - *              pins, numbers < 0 mean internal CSPI chipselects according
+> - *              to MXC_SPI_CS(). Normally you want to use gpio based chip
+> - *              selects as the CSPI module tries to be intelligent about
+> - *              when to assert the chipselect: The CSPI module deasserts the
+> - *              chipselect once it runs out of input data. The other problem
+> - *              is that it is not possible to mix between high active and low
+> - *              active chipselects on one single bus using the internal
+> - *              chipselects. Unfortunately Freescale decided to put some
+> + * @chipselect: Array of chipselects for this master or NULL.  Numbers >= 0
+> + *              mean GPIO pins, -ENOENT means internal CSPI chipselect
+> + *              matching the position in the array.  E.g., if chipselect[1] =
+> + *              -ENOENT then a SPI slave using chip select 1 will use the
+> + *              native SS1 line of the CSPI.  Omitting the array will use
+> + *              all native chip selects.
+> +
+> + *              Normally you want to use gpio based chip selects as the CSPI
+> + *              module tries to be intelligent about when to assert the
+> + *              chipselect:  The CSPI module deasserts the chipselect once it
+> + *              runs out of input data.  The other problem is that it is not
+> + *              possible to mix between high active and low active chipselects
+> + *              on one single bus using the internal chipselects.
+> + *              Unfortunately, on some SoCs, Freescale decided to put some
+>   *              chipselects on dedicated pins which are not usable as gpios,
+>   *              so we have to support the internal chipselects.
+> - * @num_chipselect: ARRAY_SIZE(chipselect)
+> + *
+> + * @num_chipselect: If @chipselect is specified, ARRAY_SIZE(chipselect),
+> + *                  otherwise the number of native chip selects.
+>   */
+>  struct spi_imx_master {
+>  	int	*chipselect;
+>  	int	num_chipselect;
+>  };
+>  
+> -#define MXC_SPI_CS(no)	((no) - 32)
+> -
+>  #endif /* __MACH_SPI_H_*/
+> 
 
-I would really like to use `spidev1.0` for the encoder, as I already =
-have the `spidev0.1` device connected to another spi device.
-
-Kind regards,
-  Dirk-Jan Faber
-
---Apple-Mail=_AC8D8164-151C-4604-BAE1-55E33560F11A
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP using GPGMail
-
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
-
-iQEcBAEBCgAGBQJZ48Y/AAoJEH9IjqRGUG040w8H/2yFupgCpi8R71rOf/kEoFWJ
-Vxq4NAc80oqH1CFiGEA2vCBBSeuVO7/r0kvfebSoa00snN2WYcfu4bUhOpeKnV7i
-ruyFix64CvpafCb8lRqYp1ot98n4sIUcf0IE2JwjLffnKX4QXbk38pl8UYbmmBo2
-VLDDxLEnvx0L6fzqKKq3jyAItmFujR7a5b04VrmF1uLx64vM84yt1NL2K6I6NpRo
-cD2Tsnbbg40xbWxSq7yB/KKvJeFEODD5Ur55OvKkN1y09ERnwJBMHy0JjCw148/r
-FKL8e1VSlm+S/qqtaWzsRmxYAorKvvynNUk44hnMgB9mO0lFnWpGanmRUO/FRHI=
-=64wC
------END PGP SIGNATURE-----
-
---Apple-Mail=_AC8D8164-151C-4604-BAE1-55E33560F11A--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

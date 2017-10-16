@@ -1,72 +1,53 @@
-From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH v2] spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers
-Date: Mon, 16 Oct 2017 12:27:58 +0200
-Message-ID: <20171016102758.22444-1-l.stach@pengutronix.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: fix IDR collision on systems with both fixed and
+ dynamic SPI bus numbers
+Date: Mon, 16 Oct 2017 12:05:19 +0100
+Message-ID: <20171016110519.gosljzrxy6dgvvjo@sirena.co.uk>
+References: <20171016102758.22444-1-l.stach@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vobztala3ev3lotw"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
         patchwork-lst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20171016102758.22444-1-l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On systems where some controllers get a dynamic ID assigned and some have
-a fixed number from DT, the current implemention might run into an IDR
-collision if the dynamic controllers gets probed first and get an IDR number,
-which is later requested by the controller with the fixed numbering. When
-this happens the fixed controller will fail to register with the SPI core.
 
-Fix this by skipping all known alias numbers when assigning the dynamic IDs.
+--vobztala3ev3lotw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
-Signed-off-by: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
-v2: fix regression when no aliases are present
----
- drivers/spi/spi.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+On Mon, Oct 16, 2017 at 12:27:58PM +0200, Lucas Stach wrote:
+> On systems where some controllers get a dynamic ID assigned and some have
+> a fixed number from DT, the current implemention might run into an IDR
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6e65524cbfd9..e8b5a5e21b2e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -45,7 +45,6 @@
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
--#define SPI_DYN_FIRST_BUS_NUM 0
- 
- static DEFINE_IDR(spi_master_idr);
- 
-@@ -2086,7 +2085,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	struct device		*dev = ctlr->dev.parent;
- 	struct boardinfo	*bi;
- 	int			status = -ENODEV;
--	int			id;
-+	int			id, first_dynamic;
- 
- 	if (!dev)
- 		return -ENODEV;
-@@ -2116,9 +2115,15 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		}
- 	}
- 	if (ctlr->bus_num < 0) {
-+		first_dynamic = of_alias_get_highest_id("spi");
-+		if (first_dynamic < 0)
-+			first_dynamic = 0;
-+		else
-+			first_dynamic++;
-+
- 		mutex_lock(&board_lock);
--		id = idr_alloc(&spi_master_idr, ctlr, SPI_DYN_FIRST_BUS_NUM, 0,
--			       GFP_KERNEL);
-+		id = idr_alloc(&spi_master_idr, ctlr, first_dynamic,
-+			       0, GFP_KERNEL);
- 		mutex_unlock(&board_lock);
- 		if (WARN(id < 0, "couldn't get idr"))
- 			return id;
--- 
-2.11.0
+Please don't resubmit patches that have already been applied, you should
+submit patches against current code in the tree you're expecting things
+to be applied to.  If any updates are needed to a patch that's already
+been applied you should submit incremental patches which make those
+updates.  This avoids having to change published git commits which could
+cause problems for people working against git.
 
+--vobztala3ev3lotw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlnkkm8ACgkQJNaLcl1U
+h9DIngf+Ku3aXUQwj5s6ZtAv4mPY4Z2S+QYOrPdUQ/cLjtqUGj2++cy3J9oTeofc
++Fzvoiv5+NSB97dOof9WvDca/RH2NYfqAmK4cKec5Py6ViKvPxnYvPGW5BiCThix
+LzTKr+lQFSoUmdFSwHz86oz+LL2dhC9YvQC9Wxall69do3O936H+kHjempapzL0D
+Tw2xs3vPZMKaxfk200o1hQ2VFAw3hQftoJrOqrYUoq76US42z3piKQi39xrw/VIt
+mKKMXYIVDPYoMrXMsURWeh3w1jxbm7H7Yo8OBagNCAMp3CtOavw/jcVfRKXV4B/4
+9YZOlU56wsBKsNLEh5swudkAaao8GQ==
+=WIwr
+-----END PGP SIGNATURE-----
+
+--vobztala3ev3lotw--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

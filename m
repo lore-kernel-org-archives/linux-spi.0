@@ -1,106 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers" to the spi tree
-Date: Mon, 16 Oct 2017 21:03:55 +0100
-Message-ID: <E1e4BcB-0006Sh-Bp@debutante>
-References: <20171016102758.22444-1-l.stach@pengutronix.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-        patchwork-lst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH] spi: fix bogus SPI bus number
+Date: Tue, 17 Oct 2017 12:44:50 +0200
+Message-ID: <20171017104519.878892-1-arnd@arndb.de>
+Cc: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Naresh Kamboju <naresh.kamboju-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171016102758.22444-1-l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+lkft found a boot time regression on the Hikey board that has no
+aliases entry for spi buses. of_alias_get_highest_id() here
+returns -ENODEV, which is then used as the initial number for the
+IDR allocation, and that in turn triggers a WARN_ON:
 
-   spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers
+WARNING: CPU: 3 PID: 53 at include/linux/idr.h:113 spi_register_controller+0x890/0x940
 
-has been applied to the spi tree at
+This reworks the algorithm to turn any negative number into zero
+again, restoring the original behavior for the Hikey case.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 226584aedd94acd61ffa51fb69bcf6b3309a7b8f Mon Sep 17 00:00:00 2001
-From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Date: Mon, 16 Oct 2017 12:27:58 +0200
-Subject: [PATCH] spi: fix IDR collision on systems with both fixed and dynamic
- SPI bus numbers
-
-On systems where some controllers get a dynamic ID assigned and some have
-a fixed number from DT, the current implemention might run into an IDR
-collision if the dynamic controllers gets probed first and get an IDR number,
-which is later requested by the controller with the fixed numbering. When
-this happens the fixed controller will fail to register with the SPI core.
-
-Fix this by skipping all known alias numbers when assigning the dynamic IDs.
-
-Fixes: 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
-Signed-off-by: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: 9ce70d49fa80 ("spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers")
+Reported-by: Naresh Kamboju <naresh.kamboju-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Link: https://lkft.validation.linaro.org/scheduler/job/48009#L3147
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 ---
- drivers/spi/spi.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Not tested yet, please review carefully
+---
+ drivers/spi/spi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6e65524cbfd9..e8b5a5e21b2e 100644
+index 0483410e7cb3..4b6985ec962c 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -45,7 +45,6 @@
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
--#define SPI_DYN_FIRST_BUS_NUM 0
- 
- static DEFINE_IDR(spi_master_idr);
- 
-@@ -2086,7 +2085,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	struct device		*dev = ctlr->dev.parent;
- 	struct boardinfo	*bi;
- 	int			status = -ENODEV;
--	int			id;
-+	int			id, first_dynamic;
- 
- 	if (!dev)
- 		return -ENODEV;
-@@ -2116,9 +2115,15 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		}
+@@ -2116,9 +2116,11 @@ int spi_register_controller(struct spi_controller *ctlr)
  	}
  	if (ctlr->bus_num < 0) {
-+		first_dynamic = of_alias_get_highest_id("spi");
-+		if (first_dynamic < 0)
-+			first_dynamic = 0;
-+		else
-+			first_dynamic++;
-+
  		mutex_lock(&board_lock);
--		id = idr_alloc(&spi_master_idr, ctlr, SPI_DYN_FIRST_BUS_NUM, 0,
--			       GFP_KERNEL);
-+		id = idr_alloc(&spi_master_idr, ctlr, first_dynamic,
-+			       0, GFP_KERNEL);
++		id = of_alias_get_highest_id("spi");
++		if (id < 0)
++			id = -1;
+ 		id = idr_alloc(&spi_master_idr, ctlr,
+-			       of_alias_get_highest_id("spi") + 1,
+-			       0, GFP_KERNEL);
++			       id + 1, 0, GFP_KERNEL);
  		mutex_unlock(&board_lock);
  		if (WARN(id < 0, "couldn't get idr"))
  			return id;
 -- 
-2.14.1
+2.9.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

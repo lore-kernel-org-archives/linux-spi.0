@@ -1,44 +1,91 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 4/4] ARM: imx: Update spi_imx platform data to reflect
- current state
-Date: Wed, 18 Oct 2017 17:50:30 +0000
-Message-ID: <1508349029.87493.8.camel@impinj.com>
-References: <20171013195410.30767-1-tpiepho@impinj.com>
-         <20171013195410.30767-4-tpiepho@impinj.com> <20171018021709.GD18810@dragon>
+From: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: imx: GPIO based chip selects should not be
+ required
+Date: Thu, 19 Oct 2017 12:17:16 +0200
+Message-ID: <20171019101715.wmm6avnoyb5r3bsv@pengutronix.de>
+References: <1507918921.24265.8.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
         <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
         "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171018021709.GD18810@dragon>
-Content-Language: en-US
-Content-ID: <A8A48B3DC22AF04FB8030153B6A334AD-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1507918921.24265.8.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gV2VkLCAyMDE3LTEwLTE4IGF0IDEwOjE3ICswODAwLCBTaGF3biBHdW8gd3JvdGU6DQo+IE9u
-IEZyaSwgT2N0IDEzLCAyMDE3IGF0IDEyOjU0OjEwUE0gLTA3MDAsIFRyZW50IFBpZXBobyB3cm90
-ZToNCj4gPiANCj4gPiBJZiBhIGJvYXJkIHVzZXMgYWxsIG5hdGl2ZSBjaGlwIHNlbGVjdHMsIHRo
-ZW4gaXQncyBub3QgbmVjZXNzYXJ5IHRvDQo+ID4gc3BlY2lmeSBhIGNoaXAgc2VsZWN0IGFycmF5
-IGF0IGFsbCwgYXMgYWxsIG5hdGl2ZSBpcyB0aGUgZGVmYXVsdCAodGhpcyBpcw0KPiA+IGhvdyBk
-ZXZpY2UtdHJlZSBjb25maWd1cmVkIFNQSSBtYXN0ZXJzIHdvcmsgdG9vKS4gIE1vc3Qgb2YgdGhl
-IHNwaS1pbXgNCj4gPiBwbGF0Zm9ybSBkYXRhIHVzZXJzIGhhdmUgdGhlaXIgY2hpcCBzZWxlY3Qg
-YXJyYXlzIHJlbW92ZWQgYnkgdGhpcyBwYXRjaC4NCj4gPiANCj4gPiANCj4gRG9lcyB0aGlzIHBh
-dGNoIGhhdmUgYW55IGRlcGVuZGVuY3kgb24gb3RoZXJzIGluIHRoaXMgc2VyaWVzLCBvciBjYW4g
-aXQNCj4gYmUgc2VudCB2aWEgYXJtLXNvYyB0cmVlIGluZGVwZW5kZW50bHk/DQoNCkl0IG5lZWRz
-IHBhdGNoIDEgYW5kIDMgaW4gdGhlIHNlcmllcy4gIEN1cnJlbnRseSBzdXBwbHlpbmcgY3MgZ3Bp
-b3MgaXMNCm1hbmRhdG9yeSBmb3IgYm90aCBwbGF0Zm9ybSBkYXRhIGFuZCBEVCBiYXNlZCBzeXN0
-ZW1zIHVzaW5nIHNwaS1pbXguIA0KVGhlIGxhdHRlciBpcyBhIGJ1ZywgYXMgdGhlIERUIGJpbmRp
-bmcgY2xlYXJseSBtYWtlcyBjcy1ncGlvcyBvcHRpb25hbA0KYW5kIG90aGVyIGRyaXZlcnMgZG8g
-bm90IHJlcXVpcmUgaXQuICBJIGZpZ3VyZWQgSSBtaWdodCBhcyB3ZWxsIGNsZWFuDQp1cCB0aGUg
-cGxhdGZvcm0gZGF0YSB3aGlsZSBJIGZpeGVkIHRoYXQgYnVnIGFuZCBjYW1lIGFjcm9zcyB0aGUN
-CmlteDMxbW9ib2FyZCBidWcgaW4gdGhhdCBwcm9jZXNzLg0K
+On Fri, Oct 13, 2017 at 06:22:01PM +0000, Trent Piepho wrote:
+> The driver will fail to load if no gpio chip selects are specified,
+> this patch changes this so that it no longer fails.
+> 
+> It's possible to use all native chip selects, in which case there is
+> no reason to have a gpio chip select array.  This is what happens if
+> the *optional* device tree property "cs-gpios" is omitted.
+> 
+> The spi core already checks for the absence of gpio chip selects in
+> the master and assigns any slaves the gpio_cs value of -ENOENT.
+> 
+> Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi-imx.c | 29 +++++++++++++----------------
+>  1 file changed, 13 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index babb15f07995..07e6250f2dad 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -1457,22 +1457,19 @@ static int spi_imx_probe(struct platform_device *pdev)
+>  		goto out_clk_put;
+>  	}
+>  
+> -	if (!master->cs_gpios) {
+> -		dev_err(&pdev->dev, "No CS GPIOs available\n");
+> -		ret = -EINVAL;
+> -		goto out_clk_put;
+> -	}
+> -
+> -	for (i = 0; i < master->num_chipselect; i++) {
+> -		if (!gpio_is_valid(master->cs_gpios[i]))
+> -			continue;
+> -
+> -		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
+> -					DRIVER_NAME);
+> -		if (ret) {
+> -			dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
+> -				master->cs_gpios[i]);
+> -			goto out_clk_put;
+> +	/* Request GPIO CS lines, if any */
+> +	if (master->cs_gpios) {
+> +		for (i = 0; i < master->num_chipselect; i++) {
+> +			if (!gpio_is_valid(master->cs_gpios[i]))
+> +				continue;
+> +
+> +			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
+> +						DRIVER_NAME);
+> +			if (ret) {
+> +				dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
+> +					master->cs_gpios[i]);
+> +				goto out_clk_put;
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.13.6
+
+Reviewed-by: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

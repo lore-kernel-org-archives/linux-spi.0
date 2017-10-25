@@ -1,56 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC] patch to spi-fsl-dspi.c to enable Coldfire mcf5441x
-Date: Mon, 23 Oct 2017 09:39:27 +0100
-Message-ID: <20171023083927.7h2tb5vgbesgnc3f@sirena.org.uk>
-References: <ff0014ac-1d46-5014-4371-041ccdba1fa5@sysam.it>
- <20171021102240.kwsjgmpjdom2np77@sirena.org.uk>
- <5132a92c-ae76-2392-c075-0b893964c658@sysam.it>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: [bug report] spi: Add ADI driver for Spreadtrum platform
+Date: Wed, 25 Oct 2017 11:57:23 +0300
+Message-ID: <20171025085723.4z7rmwhtt265nyi5@mwanda>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yecdmullrmhtqqnh"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Greg Ungerer <gregungerer-ncau/BB9MAPvnOemgxGiVw@public.gmane.org>
-To: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: baolin.wang-lxIno14LUO0EEoCn2XhGlw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5132a92c-ae76-2392-c075-0b893964c658-BIYBQhTR83Y@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello Baolin Wang,
 
---yecdmullrmhtqqnh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch 7e2903cb91df: "spi: Add ADI driver for Spreadtrum platform"
+from Sep 15, 2017, leads to the following static checker warning:
 
-On Sun, Oct 22, 2017 at 12:37:47AM +0200, Angelo Dureghello wrote:
-> On 21/10/2017 12:22, Mark Brown wrote:
+	drivers/spi/spi-sprd-adi.c:312 sprd_adi_hw_init()
+	warn: 'chn_id - 32' is negative one
 
-> > Please submit changes using the format covered in SubmittingPatches,
-> > this allows things to be handled using tools and for review by e-mail.
+drivers/spi/spi-sprd-adi.c
+   293          chn_cnt = size / 8;
+   294          for (i = 0; i < chn_cnt; i++) {
+   295                  u32 value;
+   296                  u32 chn_id = be32_to_cpu(*list++);
+                            ^^^^^^
+Let's imagine chn_id == 31.
 
-> sorry, was not sure if the list could reply to my RFC so i=20
-> submitted a regular patch yesterday, just before your reply.
 
-You need to copy the maintainers of things on patches when you submit
-them - most maintainers work on patches from e-mail.
+   297                  u32 chn_config = be32_to_cpu(*list++);
+   298  
+   299                  /* Channel 0 and 1 are software channels */
+   300                  if (chn_id < 2)
+   301                          continue;
+   302  
+   303                  writel_relaxed(chn_config, sadi->base +
+   304                                 REG_ADI_CHN_ADDR(chn_id));
+   305  
+   306                  if (chn_id < 31) {
+                            ^^^^^^^^^^^
+This is false.
 
---yecdmullrmhtqqnh
-Content-Type: application/pgp-signature; name="signature.asc"
+   307                          value = readl_relaxed(sadi->base + REG_ADI_CHN_EN);
+   308                          value |= BIT(chn_id);
+   309                          writel_relaxed(value, sadi->base + REG_ADI_CHN_EN);
+   310                  } else if (chn_id < ADI_HW_CHNS) {
+                                   ^^^^^^^^^^^^^^^^^^^^
+This is true.
 
------BEGIN PGP SIGNATURE-----
+   311                          value = readl_relaxed(sadi->base + REG_ADI_CHN_EN1);
+   312                          value |= BIT(chn_id - 32);
+                                             ^^^^^^^^^^^
+This is BIT(-1) which is undefined.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlntqrwACgkQJNaLcl1U
-h9AHVAf/U2u2Oynesj3T6CS19gQH7m9Srk4dKcJv6TH9O4lANQfGgw5jZKjjDpgz
-Fx0XjqwpO5C71qJpAs89KwwQbyALFOZ0aCwzRm9eOxraXlI0Wsposr4v2cJE17wG
-y51kpHRfb+qoeXklcX9exHu9Ol3u7pWR9CxTHb0M3on6+1+biqx7hIdRHTpisb4j
-5dzFpp6QN7D++FF0M6oKx2P9xkAm2YrY9hCsdTkGzQlCEWw8UE6Xgg+Wv6Z17b3H
-f/tZzkmwB3c1ikwy8K3AxbGRw4MRaSz23naLfVx86xuRsTCdG7XUmQ+YmYi2hY0h
-Mkg/v2aUxHcqRriIThVwb5OqC6FQyQ==
-=KljF
------END PGP SIGNATURE-----
+   313                          writel_relaxed(value, sadi->base + REG_ADI_CHN_EN1);
+   314                  }
+   315          }
 
---yecdmullrmhtqqnh--
+regards,
+dan carpenter
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

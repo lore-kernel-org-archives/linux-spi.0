@@ -1,83 +1,192 @@
-From: Oleksij Rempel <ore-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v2 3/4] spi: imx: Don't require platform data chipselect
- array
-Date: Fri, 27 Oct 2017 13:14:04 +0200
-Message-ID: <20171027111404.nibuwyakef6bvjvn@pengutronix.de>
-References: <20171027010841.28624-1-tpiepho@impinj.com>
- <20171027010841.28624-4-tpiepho@impinj.com>
+From: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+Subject: [RESEND PATCH] spi: spi-fsl-dspi: enabling Coldfire mcf5441x dspi
+Date: Sat, 28 Oct 2017 00:23:01 +0200
+Message-ID: <20171027222300.vsuq4u5kaw6xq73y@jerusalem>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20171027010841.28624-4-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Trent,
+Signed-off-by: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
+---
+ drivers/spi/Kconfig              |  2 +-
+ drivers/spi/spi-fsl-dspi.c       | 66 +++++++++++++++++++++++++++-------------
+ include/linux/spi/spi-fsl-dspi.h | 31 +++++++++++++++++++
+ 3 files changed, 77 insertions(+), 22 deletions(-)
+ create mode 100644 include/linux/spi/spi-fsl-dspi.h
 
-On Thu, Oct 26, 2017 at 06:08:40PM -0700, Trent Piepho wrote:
-> If the array is not present, assume all chip selects are native.  This
-> is the standard behavior for SPI masters configured via the device
-> tree and the behavior of this driver as well when it is configured via
-> device tree.
-> 
-> This reduces platform data vs DT differences and allows most of the
-> platform data based boards to remove their chip select arrays.
-> 
-> CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-> CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-imx.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index fea46cbf458a..535378ebab18 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -1362,8 +1362,7 @@ static int spi_imx_probe(struct platform_device *pdev)
->  	spi_imx->devtype_data = of_id ? of_id->data :
->  		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
->  
-> -	if (mxc_platform_info) {
-> -		master->num_chipselect = mxc_platform_info->num_chipselect;
-> +	if (mxc_platform_info && master->num_chipselect) {
-
-after spi_alloc_master(), master->num_chipselect should be always 1.
-This check makes no sense for me. Probably you wonted to use
-mxc_platform_info->num_chipselect instead?
-
->  		master->cs_gpios = devm_kzalloc(&master->dev,
->  			sizeof(int) * master->num_chipselect, GFP_KERNEL);
->  		if (!master->cs_gpios)
-> @@ -1371,7 +1370,7 @@ static int spi_imx_probe(struct platform_device *pdev)
->  
->  		for (i = 0; i < master->num_chipselect; i++)
->  			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
-> - 	}
-> +	}
->  
->  	spi_imx->bitbang.chipselect = spi_imx_chipselect;
->  	spi_imx->bitbang.setup_transfer = spi_imx_setupxfer;
-> -- 
-> 2.14.3
-> 
-> 
-> 
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a75f2a2cf780..a8b761979673 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -379,7 +379,7 @@ config SPI_FSL_DSPI
+ 	tristate "Freescale DSPI controller"
+ 	select REGMAP_MMIO
+ 	depends on HAS_DMA
+-	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
++	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || M5441x || COMPILE_TEST
+ 	help
+ 	  This enables support for the Freescale DSPI controller in master
+ 	  mode. VF610 platform uses the controller.
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d89127f4a46d..f652f70cb8db 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -32,6 +32,7 @@
+ #include <linux/regmap.h>
+ #include <linux/sched.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/spi-fsl-dspi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/time.h>
+ 
+@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
+ 	.max_clock_factor = 8,
+ };
+ 
++static const struct fsl_dspi_devtype_data coldfire_data = {
++	.trans_mode = DSPI_EOQ_MODE,
++	.max_clock_factor = 8,
++};
++
+ struct fsl_dspi_dma {
+ 	/* Length of transfer in words of DSPI_FIFO_SIZE */
+ 	u32 curr_xfer_len;
+@@ -741,6 +747,7 @@ static int dspi_setup(struct spi_device *spi)
+ {
+ 	struct chip_data *chip;
+ 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
++	struct fsl_dspi_platform_data *pdata;
+ 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
+ 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+ 	unsigned char pasc = 0, asc = 0, fmsz = 0;
+@@ -761,11 +768,18 @@ static int dspi_setup(struct spi_device *spi)
+ 			return -ENOMEM;
+ 	}
+ 
+-	of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
+-			&cs_sck_delay);
++	pdata = dev_get_platdata(&dspi->pdev->dev);
+ 
+-	of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
+-			&sck_cs_delay);
++	if (!pdata) {
++		of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
++				&cs_sck_delay);
++
++		of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
++				&sck_cs_delay);
++	} else {
++		cs_sck_delay = pdata->cs_sck_delay;
++		sck_cs_delay = pdata->sck_cs_delay;
++	}
+ 
+ 	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS |
+ 		SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF;
+@@ -949,6 +963,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	struct fsl_dspi *dspi;
+ 	struct resource *res;
+ 	void __iomem *base;
++	struct fsl_dspi_platform_data *pdata;
+ 	int ret = 0, cs_num, bus_num;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+@@ -969,25 +984,34 @@ static int dspi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(4) | SPI_BPW_MASK(8) |
+ 					SPI_BPW_MASK(16);
+ 
+-	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
+-		goto out_master_put;
+-	}
+-	master->num_chipselect = cs_num;
++	pdata = dev_get_platdata(&pdev->dev);
++	if (pdata) {
++		master->num_chipselect = pdata->cs_num;
++		master->bus_num = pdata->bus_num;
+ 
+-	ret = of_property_read_u32(np, "bus-num", &bus_num);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "can't get bus-num\n");
+-		goto out_master_put;
+-	}
+-	master->bus_num = bus_num;
++		dspi->devtype_data = &coldfire_data;
++	} else {
+ 
+-	dspi->devtype_data = of_device_get_match_data(&pdev->dev);
+-	if (!dspi->devtype_data) {
+-		dev_err(&pdev->dev, "can't get devtype_data\n");
+-		ret = -EFAULT;
+-		goto out_master_put;
++		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
++			goto out_master_put;
++		}
++		master->num_chipselect = cs_num;
++
++		ret = of_property_read_u32(np, "bus-num", &bus_num);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "can't get bus-num\n");
++			goto out_master_put;
++		}
++		master->bus_num = bus_num;
++
++		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
++		if (!dspi->devtype_data) {
++			dev_err(&pdev->dev, "can't get devtype_data\n");
++			ret = -EFAULT;
++			goto out_master_put;
++		}
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+diff --git a/include/linux/spi/spi-fsl-dspi.h b/include/linux/spi/spi-fsl-dspi.h
+new file mode 100644
+index 000000000000..74c9bae20bf2
+--- /dev/null
++++ b/include/linux/spi/spi-fsl-dspi.h
+@@ -0,0 +1,31 @@
++/*
++ * Freescale DSPI controller driver
++ *
++ * Copyright (c) 2017 Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef SPI_FSL_DSPI_HEADER_H
++#define SPI_FSL_DSPI_HEADER_H
++
++/**
++ * struct fsl_dspi_platform_data - platform data for the Freescale DSPI driver
++ * @bus_num: board specific identifier for this DSPI driver.
++ * @cs_num: number of chip selects supported by this DSPI driver.
++ */
++struct fsl_dspi_platform_data {
++	u32 cs_num;
++	u32 bus_num;
++	u32 sck_cs_delay;
++	u32 cs_sck_delay;
++};
++
++#endif /* SPI_FSL_DSPI_HEADER_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.14.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

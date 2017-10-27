@@ -1,41 +1,80 @@
 From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2 0/4] Fix for imx-spi CS GPIOs
-Date: Thu, 26 Oct 2017 18:08:37 -0700
-Message-ID: <20171027010841.28624-1-tpiepho@impinj.com>
+Subject: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be required
+Date: Thu, 26 Oct 2017 18:08:38 -0700
+Message-ID: <20171027010841.28624-2-tpiepho@impinj.com>
+References: <20171027010841.28624-1-tpiepho@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171027010841.28624-1-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This fixes a bug where GPIO based chip selects must be specified in the OF
-node for spi-imx when they should be optional.
+The driver will fail to load if no gpio chip selects are specified,
+this patch changes this so that it no longer fails.
 
-Fixes a regression in the platform data of imx31moboard.
+It's possible to use all native chip selects, in which case there is
+no reason to have a gpio chip select array.  This is what happens if
+the *optional* device tree property "cs-gpios" is omitted.
 
-Clean up of some old platform data based spi-imx users.
+The spi core already checks for the absence of gpio chip selects in
+the master and assigns any slaves the gpio_cs value of -ENOENT.
 
-Changes from V1:
- * Collected reviewed bys.
- * Minor change to coding style in one patch.
+CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Reviewed-by: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-Trent Piepho (4):
-  spi: imx: GPIO based chip selects should not be required
-  spi: imx: Fix failure path leak on GPIO request error
-  spi: imx: Don't require platform data chipselect array
-  ARM: imx: Update spi_imx platform data to reflect current state
-
- arch/arm/mach-imx/mach-mx31_3ds.c     | 18 ++-------------
- arch/arm/mach-imx/mach-mx31lilly.c    | 12 ++--------
- arch/arm/mach-imx/mach-mx31lite.c     | 16 ++------------
- arch/arm/mach-imx/mach-mx31moboard.c  | 17 +++------------
- arch/arm/mach-imx/mach-pcm037_eet.c   |  5 +----
- drivers/spi/spi-imx.c                 | 41 ++++++++++++++++-------------------
- include/linux/platform_data/spi-imx.h | 29 +++++++++++++++----------
- 7 files changed, 46 insertions(+), 92 deletions(-)
-
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index babb15f07995..07e6250f2dad 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1457,22 +1457,19 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_clk_put;
+ 	}
+ 
+-	if (!master->cs_gpios) {
+-		dev_err(&pdev->dev, "No CS GPIOs available\n");
+-		ret = -EINVAL;
+-		goto out_clk_put;
+-	}
+-
+-	for (i = 0; i < master->num_chipselect; i++) {
+-		if (!gpio_is_valid(master->cs_gpios[i]))
+-			continue;
+-
+-		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
+-					DRIVER_NAME);
+-		if (ret) {
+-			dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
+-				master->cs_gpios[i]);
+-			goto out_clk_put;
++	/* Request GPIO CS lines, if any */
++	if (master->cs_gpios) {
++		for (i = 0; i < master->num_chipselect; i++) {
++			if (!gpio_is_valid(master->cs_gpios[i]))
++				continue;
++
++			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
++						DRIVER_NAME);
++			if (ret) {
++				dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
++					master->cs_gpios[i]);
++				goto out_clk_put;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.14.3
 

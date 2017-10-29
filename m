@@ -1,55 +1,56 @@
-From: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/3] spi: document odd controller reference handling
-Date: Sun, 29 Oct 2017 12:56:24 +0100
-Message-ID: <20171029115625.32385-2-johan@kernel.org>
-References: <20171029115625.32385-1-johan@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171029115625.32385-1-johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Johan Hovold <johan@kernel.org>
+Subject: [PATCH 1/3] spi: fix use-after-free at controller deregistration
+Date: Sun, 29 Oct 2017 12:56:23 +0100
+Message-ID: <20171029115625.32385-1-johan@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan@kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Suniel Mahesh <sunil.m@techveda.org>,
+        Karthik Tummala <karthik@techveda.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Document the fact that a reference to the controller is dropped as part
-of deregistration.
+The controller is typically freed as part of device_unregister() so
+store the bus id before deregistration to avoid use-after-free when the
+id is later released.
 
-This is an odd pattern as the reference is typically taken in
-__spi_alloc_controller() rather than spi_register_controller(). Most
-controller drivers gets it right these days and notably the
-device-managed interface relies on this behaviour.
-
-Signed-off-by: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: 9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
+Cc: stable <stable@vger.kernel.org>     # 4.13
+Cc: Suniel Mahesh <sunil.m@techveda.org>
+Cc: Karthik Tummala <karthik@techveda.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3ff0ee88c467..b33a727a0158 100644
+index e8b5a5e21b2e..3ff0ee88c467 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2200,7 +2200,7 @@ static void devm_spi_unregister(struct device *dev, void *res)
-  * Context: can sleep
-  *
-  * Register a SPI device as with spi_register_controller() which will
-- * automatically be unregister
-+ * automatically be unregistered and freed.
-  *
-  * Return: zero on success, else a negative error code.
-  */
-@@ -2241,6 +2241,8 @@ static int __unregister(struct device *dev, void *null)
-  * only ones directly touching chip registers.
-  *
-  * This must be called from context that can sleep.
-+ *
-+ * Note that this function also drops a reference to the controller.
-  */
+@@ -2245,11 +2245,12 @@ static int __unregister(struct device *dev, void *null)
  void spi_unregister_controller(struct spi_controller *ctlr)
  {
+ 	struct spi_controller *found;
++	int id = ctlr->bus_num;
+ 	int dummy;
+ 
+ 	/* First make sure that this controller was ever added */
+ 	mutex_lock(&board_lock);
+-	found = idr_find(&spi_master_idr, ctlr->bus_num);
++	found = idr_find(&spi_master_idr, id);
+ 	mutex_unlock(&board_lock);
+ 	if (found != ctlr) {
+ 		dev_dbg(&ctlr->dev,
+@@ -2269,7 +2270,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	device_unregister(&ctlr->dev);
+ 	/* free bus id */
+ 	mutex_lock(&board_lock);
+-	idr_remove(&spi_master_idr, ctlr->bus_num);
++	idr_remove(&spi_master_idr, id);
+ 	mutex_unlock(&board_lock);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
 -- 
 2.14.3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

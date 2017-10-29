@@ -1,56 +1,56 @@
 From: Johan Hovold <johan@kernel.org>
-Subject: [PATCH 1/3] spi: fix use-after-free at controller deregistration
-Date: Sun, 29 Oct 2017 12:56:23 +0100
-Message-ID: <20171029115625.32385-1-johan@kernel.org>
+Subject: [PATCH 3/3] spi: spi-axi: take extra controller reference before deregistration
+Date: Sun, 29 Oct 2017 12:56:25 +0100
+Message-ID: <20171029115625.32385-3-johan@kernel.org>
+References: <20171029115625.32385-1-johan@kernel.org>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Johan Hovold <johan@kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Suniel Mahesh <sunil.m@techveda.org>,
-        Karthik Tummala <karthik@techveda.org>
+        Lars-Peter Clausen <lars@metafoo.de>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
-Sender: stable-owner@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171029115625.32385-1-johan@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The controller is typically freed as part of device_unregister() so
-store the bus id before deregistration to avoid use-after-free when the
-id is later released.
+Take an extra reference to the controller to avoid use-after-free in
+free_irq() which is called only after the controller has been
+deregistered and freed.
 
-Fixes: 9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
-Cc: stable <stable@vger.kernel.org>     # 4.13
-Cc: Suniel Mahesh <sunil.m@techveda.org>
-Cc: Karthik Tummala <karthik@techveda.org>
+Note that this is not an issue for this particular driver which does not
+use shared interrupts, but free_irq() could otherwise end up accessing
+the freed controller when CONFIG_DEBUG_SHIRQ is set.
+
+Defer controller release until free_irq() returns to prevent this
+from ever becoming an issue should this code be replicated in other
+drivers.
+
+Cc: Lars-Peter Clausen <lars@metafoo.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e8b5a5e21b2e..3ff0ee88c467 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2245,11 +2245,12 @@ static int __unregister(struct device *dev, void *null)
- void spi_unregister_controller(struct spi_controller *ctlr)
- {
- 	struct spi_controller *found;
-+	int id = ctlr->bus_num;
- 	int dummy;
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 6ab4c7700228..68cfc351b47f 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
  
- 	/* First make sure that this controller was ever added */
- 	mutex_lock(&board_lock);
--	found = idr_find(&spi_master_idr, ctlr->bus_num);
-+	found = idr_find(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
- 	if (found != ctlr) {
- 		dev_dbg(&ctlr->dev,
-@@ -2269,7 +2270,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	device_unregister(&ctlr->dev);
- 	/* free bus id */
- 	mutex_lock(&board_lock);
--	idr_remove(&spi_master_idr, ctlr->bus_num);
-+	idr_remove(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
+ static int spi_engine_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
+ 	int irq = platform_get_irq(pdev, 0);
+ 
+@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
+ 
+ 	free_irq(irq, master);
+ 
++	spi_master_put(master);
++
+ 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
 -- 
 2.14.3

@@ -1,56 +1,56 @@
-From: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 2/3] spi: document odd controller reference handling
-Date: Mon, 30 Oct 2017 11:35:26 +0100
-Message-ID: <20171030103527.13535-2-johan@kernel.org>
+From: Johan Hovold <johan@kernel.org>
+Subject: [PATCH v2 3/3] spi: spi-axi: fix potential use-after-free after deregistration
+Date: Mon, 30 Oct 2017 11:35:27 +0100
+Message-ID: <20171030103527.13535-3-johan@kernel.org>
 References: <20171030103527.13535-1-johan@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-        Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171030103527.13535-1-johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171030103527.13535-1-johan@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Document the fact that a reference to the controller is dropped as part
-of deregistration.
+Take an extra reference to the controller before deregistering it to
+prevent use-after-free in the interrupt handler in case an interrupt
+fires before the line is disabled.
 
-This is an odd pattern as the reference is typically taken in
-__spi_alloc_controller() rather than spi_register_controller(). Most
-controller drivers gets it right these days and notably the
-device-managed interface relies on this behaviour.
-
-Signed-off-by: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi.c | 4 +++-
+
+v2
+ - Add Fixes tag and update commit message to reflect that this is a
+   potential issue also for this driver (and not just for drivers using
+   shared interrupts) as noted by Lars-Peter.
+
+
+ drivers/spi/spi-axi-spi-engine.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3ff0ee88c467..b33a727a0158 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2200,7 +2200,7 @@ static void devm_spi_unregister(struct device *dev, void *res)
-  * Context: can sleep
-  *
-  * Register a SPI device as with spi_register_controller() which will
-- * automatically be unregister
-+ * automatically be unregistered and freed.
-  *
-  * Return: zero on success, else a negative error code.
-  */
-@@ -2241,6 +2241,8 @@ static int __unregister(struct device *dev, void *null)
-  * only ones directly touching chip registers.
-  *
-  * This must be called from context that can sleep.
-+ *
-+ * Note that this function also drops a reference to the controller.
-  */
- void spi_unregister_controller(struct spi_controller *ctlr)
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 6ab4c7700228..68cfc351b47f 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 
+ static int spi_engine_remove(struct platform_device *pdev)
  {
+-	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
+ 	int irq = platform_get_irq(pdev, 0);
+ 
+@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
+ 
+ 	free_irq(irq, master);
+ 
++	spi_master_put(master);
++
+ 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
 -- 
 2.14.3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

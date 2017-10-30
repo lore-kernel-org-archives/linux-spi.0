@@ -1,56 +1,57 @@
 From: Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 3/3] spi: spi-axi: fix potential use-after-free after deregistration
-Date: Mon, 30 Oct 2017 11:35:27 +0100
-Message-ID: <20171030103527.13535-3-johan@kernel.org>
-References: <20171030103527.13535-1-johan@kernel.org>
+Subject: [PATCH v2 1/3] spi: fix use-after-free at controller deregistration
+Date: Mon, 30 Oct 2017 11:35:25 +0100
+Message-ID: <20171030103527.13535-1-johan@kernel.org>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Johan Hovold <johan@kernel.org>
+        Johan Hovold <johan@kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Suniel Mahesh <sunil.m@techveda.org>,
+        Karthik Tummala <karthik@techveda.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171030103527.13535-1-johan@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Take an extra reference to the controller before deregistering it to
-prevent use-after-free in the interrupt handler in case an interrupt
-fires before the line is disabled.
+The controller is typically freed as part of device_unregister() so
+store the bus id before deregistration to avoid use-after-free when the
+id is later released.
 
-Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Fixes: 9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
+Cc: stable <stable@vger.kernel.org>     # 4.13
+Cc: Suniel Mahesh <sunil.m@techveda.org>
+Cc: Karthik Tummala <karthik@techveda.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
+ drivers/spi/spi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-v2
- - Add Fixes tag and update commit message to reflect that this is a
-   potential issue also for this driver (and not just for drivers using
-   shared interrupts) as noted by Lars-Peter.
-
-
- drivers/spi/spi-axi-spi-engine.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 6ab4c7700228..68cfc351b47f 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- static int spi_engine_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e8b5a5e21b2e..3ff0ee88c467 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2245,11 +2245,12 @@ static int __unregister(struct device *dev, void *null)
+ void spi_unregister_controller(struct spi_controller *ctlr)
  {
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
- 	int irq = platform_get_irq(pdev, 0);
+ 	struct spi_controller *found;
++	int id = ctlr->bus_num;
+ 	int dummy;
  
-@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, master);
- 
-+	spi_master_put(master);
-+
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+ 	/* First make sure that this controller was ever added */
+ 	mutex_lock(&board_lock);
+-	found = idr_find(&spi_master_idr, ctlr->bus_num);
++	found = idr_find(&spi_master_idr, id);
+ 	mutex_unlock(&board_lock);
+ 	if (found != ctlr) {
+ 		dev_dbg(&ctlr->dev,
+@@ -2269,7 +2270,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	device_unregister(&ctlr->dev);
+ 	/* free bus id */
+ 	mutex_lock(&board_lock);
+-	idr_remove(&spi_master_idr, ctlr->bus_num);
++	idr_remove(&spi_master_idr, id);
+ 	mutex_unlock(&board_lock);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
 -- 
 2.14.3

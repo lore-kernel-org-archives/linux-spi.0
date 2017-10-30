@@ -1,57 +1,58 @@
-From: Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 1/3] spi: fix use-after-free at controller deregistration
-Date: Mon, 30 Oct 2017 11:35:25 +0100
-Message-ID: <20171030103527.13535-1-johan@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Johan Hovold <johan@kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Suniel Mahesh <sunil.m@techveda.org>,
-        Karthik Tummala <karthik@techveda.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: imx: Don't require platform data chipselect
+ array
+Date: Mon, 30 Oct 2017 23:47:37 +0000
+Message-ID: <1509407257.5473.7.camel@impinj.com>
+References: <20171013195410.30767-1-tpiepho@impinj.com>
+         <20171013195410.30767-3-tpiepho@impinj.com>
+         <36d381de-ee3f-26d4-59c3-b9d361758ace@arm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <gerg-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "julien.thierry-5wv7dgnIgG8@public.gmane.org" <julien.thierry-5wv7dgnIgG8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <36d381de-ee3f-26d4-59c3-b9d361758ace-5wv7dgnIgG8@public.gmane.org>
+Content-Language: en-US
+Content-ID: <94EA4035F276B54B9041CA4FE70A1EDB-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The controller is typically freed as part of device_unregister() so
-store the bus id before deregistration to avoid use-after-free when the
-id is later released.
-
-Fixes: 9b61e302210e ("spi: Pick spi bus number from Linux idr or spi alias")
-Cc: stable <stable@vger.kernel.org>     # 4.13
-Cc: Suniel Mahesh <sunil.m@techveda.org>
-Cc: Karthik Tummala <karthik@techveda.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e8b5a5e21b2e..3ff0ee88c467 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2245,11 +2245,12 @@ static int __unregister(struct device *dev, void *null)
- void spi_unregister_controller(struct spi_controller *ctlr)
- {
- 	struct spi_controller *found;
-+	int id = ctlr->bus_num;
- 	int dummy;
- 
- 	/* First make sure that this controller was ever added */
- 	mutex_lock(&board_lock);
--	found = idr_find(&spi_master_idr, ctlr->bus_num);
-+	found = idr_find(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
- 	if (found != ctlr) {
- 		dev_dbg(&ctlr->dev,
-@@ -2269,7 +2270,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	device_unregister(&ctlr->dev);
- 	/* free bus id */
- 	mutex_lock(&board_lock);
--	idr_remove(&spi_master_idr, ctlr->bus_num);
-+	idr_remove(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
--- 
-2.14.3
+T24gV2VkLCAyMDE3LTEwLTE4IGF0IDEwOjAyICswMTAwLCBKdWxpZW4gVGhpZXJyeSB3cm90ZToN
+Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWlteC5jDQo+ID4gKysrIGIvZHJpdmVycy9zcGkvc3Bp
+LWlteC5jDQo+ID4gQEAgLTEzNjQsMTMgKzEzNjQsMTUgQEAgc3RhdGljIGludCBzcGlfaW14X3By
+b2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ID4gICANCj4gPiAgIAlpZiAobXhj
+X3BsYXRmb3JtX2luZm8pIHsNCj4gPiAgIAkJbWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9IG14Y19w
+bGF0Zm9ybV9pbmZvLT5udW1fY2hpcHNlbGVjdDsNCj4gDQo+IG5pdDoNCj4gVGhpcyBpcyBvbmx5
+IHVzZWZ1bCB3aGVuIG51bV9jaGlwc2VsZWN0IGlzIG5vbi16ZXJvIChtYXN0ZXIncyBtZW1vcnkg
+aXMgDQo+IHplcm9lZCBvbiBhbGxvY2F0aW9uKS4gU28gbWF5YmUgdGhpcyBjb3VsZCBiZSBzaW1w
+bGlmaWVkIGEgYml0IG1vcmUgYXM6DQo+IA0KPiBpZiAobXhjX3BsYXRmb3JtX2luZm8gJiYgbXhj
+X3BsYXRmb3JtX2luZm8tPmNoaXBzZWxlY3QpIHsNCj4gCW1hc3Rlci0+bnVtX2NoaXBzZWxlY3Qg
+PSBteGNfcGxhdGZvcm1faW5mby0+bnVtX2NoaXBzZWxlY3Q7DQo+IAlbLi4uXQ0KPiB9DQo+IA0K
+PiBSZWR1Y2luZyBhbiBpbmRlbnRhdGlvbiBsZXZlbCBmb3IgYWxsIHRoZSBmb2xsb3dpbmcgc3Rh
+dGVtZW50cy4NCg0KVGhvdWdodCBhYm91dCB0aGlzIHNvbWUgbW9yZSwgYW5kIGl0IGRvZXNuJ3Qg
+d29yayB0byBkbyB0aGF0LiAgSWYNCmNoaXBzZWxlY3QgaXMgTlVMTCwgcGxhdGZvcm0gZGF0YSBp
+cyBzdGlsbCBhbGxvd2VkIHRvIHNldCB0aGUgbnVtYmVyIG9mDQpjaGlwc2VsZWN0cyB1c2luZyBt
+Y3hfcGxhdGZvcm1faW5mby0+bnVtX2NoaXBzZWxlY3QuDQoNCj4gDQo+ID4gLQkJCXNpemVvZihp
+bnQpICogbWFzdGVyLT5udW1fY2hpcHNlbGVjdCwgR0ZQX0tFUk5FTCk7DQo+ID4gLQkJaWYgKCFt
+YXN0ZXItPmNzX2dwaW9zKQ0KPiA+IC0JCQlyZXR1cm4gLUVOT01FTTsNCj4gPiAtDQo+ID4gLQkJ
+Zm9yIChpID0gMDsgaSA8IG1hc3Rlci0+bnVtX2NoaXBzZWxlY3Q7IGkrKykNCj4gPiAtCQkJbWFz
+dGVyLT5jc19ncGlvc1tpXSA9IG14Y19wbGF0Zm9ybV9pbmZvLT5jaGlwc2VsZWN0W2ldOw0KPiA+
+ICsJCWlmIChteGNfcGxhdGZvcm1faW5mby0+Y2hpcHNlbGVjdCkgew0KPiA+ICsJCQltYXN0ZXIt
+PmNzX2dwaW9zID0gZGV2bV9remFsbG9jKCZtYXN0ZXItPmRldiwNCj4gPiArCQkJCXNpemVvZihp
+bnQpICogbWFzdGVyLT5udW1fY2hpcHNlbGVjdCwgR0ZQX0tFUk5FTCk7DQo+ID4gKwkJCWlmICgh
+bWFzdGVyLT5jc19ncGlvcykNCj4gPiArCQkJCXJldHVybiAtRU5PTUVNOw0KPiA+ICsNCj4gPiAr
+CQkJZm9yIChpID0gMDsgaSA8IG1hc3Rlci0+bnVtX2NoaXBzZWxlY3Q7IGkrKykNCj4gPiArCQkJ
+CW1hc3Rlci0+Y3NfZ3Bpb3NbaV0gPSBteGNfcGxhdGZvcm1faW5mby0+Y2hpcHNlbGVjdFtpXTsN
+Cj4gPiArCQl9DQo+ID4gICAgCX0NCj4gPiAgIA0KPiA+ICAgCXNwaV9pbXgtPmJpdGJhbmcuY2hp
+cHNlbGVjdCA9IHNwaV9pbXhfY2hpcHNlbGVjdDsNCj4gPiANCj4gDQo+IA==
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,56 +1,44 @@
-From: Johan Hovold <johan@kernel.org>
-Subject: [PATCH 3/3] spi: spi-axi: take extra controller reference before deregistration
-Date: Sun, 29 Oct 2017 12:56:25 +0100
-Message-ID: <20171029115625.32385-3-johan@kernel.org>
+From: Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 3/3] spi: spi-axi: take extra controller reference before
+ deregistration
+Date: Mon, 30 Oct 2017 10:48:23 +0100
+Message-ID: <2a83c1f1-9203-eb97-5595-7a8da7261128@metafoo.de>
 References: <20171029115625.32385-1-johan@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-To: Mark Brown <broonie@kernel.org>
+ <20171029115625.32385-3-johan@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Johan Hovold <johan@kernel.org>, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171029115625.32385-1-johan@kernel.org>
+In-Reply-To: <20171029115625.32385-3-johan@kernel.org>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Take an extra reference to the controller to avoid use-after-free in
-free_irq() which is called only after the controller has been
-deregistered and freed.
+On 10/29/2017 12:56 PM, Johan Hovold wrote:
+> Take an extra reference to the controller to avoid use-after-free in
+> free_irq() which is called only after the controller has been
+> deregistered and freed.
+> 
+> Note that this is not an issue for this particular driver which does not
+> use shared interrupts, but free_irq() could otherwise end up accessing
+> the freed controller when CONFIG_DEBUG_SHIRQ is set.
 
-Note that this is not an issue for this particular driver which does not
-use shared interrupts, but free_irq() could otherwise end up accessing
-the freed controller when CONFIG_DEBUG_SHIRQ is set.
+Strictly speaking there is no guarantee that the IRQ handler does not run
+until free_irq() has been called. And since the SPI master is referenced in
+the IRQ handler there could be an use-after-free condition. So there is kind
+of a real issue here as well. But it should be really really hard to trigger
+it unless the hardware misbehaves.
 
-Defer controller release until free_irq() returns to prevent this
-from ever becoming an issue should this code be replicated in other
-drivers.
+> 
+> Defer controller release until free_irq() returns to prevent this
+> from ever becoming an issue should this code be replicated in other
+> drivers.
+> 
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-axi-spi-engine.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 6ab4c7700228..68cfc351b47f 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- static int spi_engine_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
- 	int irq = platform_get_irq(pdev, 0);
- 
-@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, master);
- 
-+	spi_master_put(master);
-+
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
--- 
-2.14.3
+Thanks.

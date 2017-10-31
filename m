@@ -1,22 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-axi: fix potential use-after-free after deregistration" to the spi tree
-Date: Tue, 31 Oct 2017 11:22:12 +0000
-Message-ID: <E1e9UcW-0002zo-9F@debutante>
-References: <20171029115625.32385-3-johan@kernel.org>
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171029115625.32385-3-johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: document odd controller reference handling" to the spi tree
+Date: Tue, 31 Oct 2017 11:22:16 +0000
+Message-ID: <E1e9Uca-00030d-EO@debutante>
+References: <20171029115625.32385-2-johan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Johan Hovold <johan@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171029115625.32385-2-johan@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-axi: fix potential use-after-free after deregistration
+   spi: document odd controller reference handling
 
 has been applied to the spi tree at
 
@@ -41,50 +39,46 @@ to this mail.
 Thanks,
 Mark
 
->From 4d5e0689dc9d5640ad46cdfbe1896b74d8df1661 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Date: Mon, 30 Oct 2017 11:35:27 +0100
-Subject: [PATCH] spi: spi-axi: fix potential use-after-free after
- deregistration
+>From 68b892f1fdc493d7cd4e4067596879cd097c1f62 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Mon, 30 Oct 2017 11:35:26 +0100
+Subject: [PATCH] spi: document odd controller reference handling
 
-Take an extra reference to the controller before deregistering it to
-prevent use-after-free in the interrupt handler in case an interrupt
-fires before the line is disabled.
+Document the fact that a reference to the controller is dropped as part
+of deregistration.
 
-Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
-Acked-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Signed-off-by: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This is an odd pattern as the reference is typically taken in
+__spi_alloc_controller() rather than spi_register_controller(). Most
+controller drivers gets it right these days and notably the
+device-managed interface relies on this behaviour.
+
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 4 +++-
+ drivers/spi/spi.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 6ab4c7700228..68cfc351b47f 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- static int spi_engine_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6e65524cbfd9..5673cca1d1d0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2195,7 +2195,7 @@ static void devm_spi_unregister(struct device *dev, void *res)
+  * Context: can sleep
+  *
+  * Register a SPI device as with spi_register_controller() which will
+- * automatically be unregister
++ * automatically be unregistered and freed.
+  *
+  * Return: zero on success, else a negative error code.
+  */
+@@ -2236,6 +2236,8 @@ static int __unregister(struct device *dev, void *null)
+  * only ones directly touching chip registers.
+  *
+  * This must be called from context that can sleep.
++ *
++ * Note that this function also drops a reference to the controller.
+  */
+ void spi_unregister_controller(struct spi_controller *ctlr)
  {
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
- 	int irq = platform_get_irq(pdev, 0);
- 
-@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, master);
- 
-+	spi_master_put(master);
-+
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
 -- 
 2.15.0.rc2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

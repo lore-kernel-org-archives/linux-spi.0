@@ -1,17 +1,22 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: Fix failure path leak on GPIO request error" to the spi tree
-Date: Tue, 31 Oct 2017 11:22:09 +0000
-Message-ID: <E1e9UcT-0002yg-Rr@debutante>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Applied "spi: spi-axi: fix potential use-after-free after deregistration" to the spi tree
+Date: Tue, 31 Oct 2017 11:22:12 +0000
+Message-ID: <E1e9UcW-0002zo-9F@debutante>
+References: <20171029115625.32385-3-johan@kernel.org>
+Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <20171029115625.32385-3-johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: Fix failure path leak on GPIO request error
+   spi: spi-axi: fix potential use-after-free after deregistration
 
 has been applied to the spi tree at
 
@@ -36,59 +41,46 @@ to this mail.
 Thanks,
 Mark
 
->From 974488e4ce1ed0b39f2c711c13f523c5912128a1 Mon Sep 17 00:00:00 2001
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Date: Thu, 26 Oct 2017 18:08:39 -0700
-Subject: [PATCH] spi: imx: Fix failure path leak on GPIO request error
+>From 4d5e0689dc9d5640ad46cdfbe1896b74d8df1661 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date: Mon, 30 Oct 2017 11:35:27 +0100
+Subject: [PATCH] spi: spi-axi: fix potential use-after-free after
+ deregistration
 
-If the code that requests any chip select GPIOs fails, the cleanup of
-spi_bitbang_start() by calling spi_bitbang_stop() is not done.
+Take an extra reference to the controller before deregistering it to
+prevent use-after-free in the interrupt handler in case an interrupt
+fires before the line is disabled.
 
-Fix this by moving spi_bitbang_start() to after the code that requets
-GPIOs.  The GPIOs are dev managed and don't need explicit cleanup.
-Since spi_bitbang_start() is now the last operation, it doesn't need
-to be cleaned up in the failure path.
-
-CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Reviewed-by: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
+Acked-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Signed-off-by: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index fe35aaea323b..5ddd32ba2521 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1613,11 +1613,6 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->devtype_data->intctrl(spi_imx, 0);
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 6ab4c7700228..68cfc351b47f 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -553,7 +553,7 @@ static int spi_engine_probe(struct platform_device *pdev)
  
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = spi_bitbang_start(&spi_imx->bitbang);
--	if (ret) {
--		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
--		goto out_clk_put;
--	}
+ static int spi_engine_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
+ 	int irq = platform_get_irq(pdev, 0);
  
- 	if (!spi_imx->slave_mode) {
- 		if (!master->cs_gpios) {
-@@ -1641,6 +1636,12 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		}
- 	}
+@@ -561,6 +561,8 @@ static int spi_engine_remove(struct platform_device *pdev)
  
-+	ret = spi_bitbang_start(&spi_imx->bitbang);
-+	if (ret) {
-+		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
-+		goto out_clk_put;
-+	}
+ 	free_irq(irq, master);
+ 
++	spi_master_put(master);
 +
- 	dev_info(&pdev->dev, "probed\n");
- 
- 	clk_disable(spi_imx->clk_ipg);
+ 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
 -- 
 2.15.0.rc2
 

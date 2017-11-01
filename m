@@ -1,59 +1,37 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/4] spi: imx: Fix failure path leak on GPIO request
- error
-Date: Tue, 31 Oct 2017 20:01:43 +0000
-Message-ID: <20171031200143.iwhoennvpwvqspnf@sirena.co.uk>
-References: <20171031194907.29108-1-tpiepho@impinj.com>
- <20171031194907.29108-3-tpiepho@impinj.com>
+From: Zhiqiang Hou <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH 0/2] arm64: dts: Add ls1088a DSPI device tree nodes
+Date: Wed, 1 Nov 2017 11:40:13 +0800
+Message-ID: <20171101034015.41114-1-Zhiqiang.Hou@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ahy5auejb7olrwiv"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20171031194907.29108-3-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <prabhakar.kushwaha-3arQi8VN3Tc@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+From: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
 
---ahy5auejb7olrwiv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+LS1088A reuse LS2085A DSPI driver, this patchset just adds device tree
+nodes and adds compatible entry to documentation.
 
-On Tue, Oct 31, 2017 at 12:49:05PM -0700, Trent Piepho wrote:
-> If the code that requests any chip select GPIOs fails, the cleanup of
-> spi_bitbang_start() by calling spi_bitbang_stop() is not done.  Add this
-> to the failure path.
+Hou Zhiqiang (2):
+  arm64: dts: ls1088a: add DT nodes for DSPI support
+  Documentation: fsl: dspi: Add a compatible string for ls1088a DSPI
 
-Please don't resubmit patches that have already been applied, you should
-submit patches against current code in the tree you're expecting things
-to be applied to.  If any updates are needed to a patch that's already
-been applied you should submit incremental patches which make those
-updates.  This avoids having to change published git commits which could
-cause problems for people working against git.
+ .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  1 +
+ arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts  | 28 ++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi     | 13 ++++++++++
+ 3 files changed, 42 insertions(+)
 
---ahy5auejb7olrwiv
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.14.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAln41qYACgkQJNaLcl1U
-h9BxxAf7B4ca16Td/VbDphvOxNDF685YQ3XlsPhMiO3UV+T+aKAihuymWa1m42K0
-Rgj5KSdb3zXY72l5zLsRsPcMMqUDXwES064JSX4i6I2WlCSP5ccqvTj6aCqoE+DX
-qdNx7xEqJNvPlO0KW8CopEBSxiOyWzljmuSAV1nQPyPfrDeVnFjUZKB6qBYiBqGK
-HC7znwfavBD3UdBoWtrCgObWQjKRm0dFN9obkTSUacAdgdXkScpnrc4CsC5PRz1X
-h63zqZiumF1YdkIcr/xeKNa/T1CYj7LXVxb8LPjWykvfbRe7tGaclTutjuTN/Wz6
-DnE2Az2k/3sRExOuRE5HOCn4okNMiw==
-=dmha
------END PGP SIGNATURE-----
-
---ahy5auejb7olrwiv--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

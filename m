@@ -1,91 +1,46 @@
-From: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-Subject: [PATCH 1/2] arm64: dts: ls1088a: add DT nodes for DSPI support
-Date: Wed, 1 Nov 2017 11:40:14 +0800
-Message-ID: <20171101034015.41114-2-Zhiqiang.Hou@nxp.com>
+From: Zhiqiang Hou <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH 2/2] Documentation: fsl: dspi: Add a compatible string for ls1088a DSPI
+Date: Wed, 1 Nov 2017 11:40:15 +0800
+Message-ID: <20171101034015.41114-3-Zhiqiang.Hou@nxp.com>
 References: <20171101034015.41114-1-Zhiqiang.Hou@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-To: <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <broonie@kernel.org>,
-        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <shawnguo@kernel.org>, <prabhakar.kushwaha@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171101034015.41114-1-Zhiqiang.Hou@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <prabhakar.kushwaha-3arQi8VN3Tc@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171101034015.41114-1-Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+From: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
 
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Add a new compatible string "fsl,ls1088a-dspi".
+
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts | 28 +++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi    | 13 +++++++++++
- 2 files changed, 41 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts
-index 30128051d0c0..cf5b85b93ae6 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dts
-@@ -134,6 +134,34 @@
- 	};
- };
- 
-+&dspi {
-+	status = "okay";
-+
-+	dflash0: n25q128a {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "n25q128a11", "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <3000000>;
-+	};
-+
-+	dflash1: sst25wf040b {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "sst,sst25wf040b", "jedec,spi-nor";
-+		reg = <1>;
-+		spi-max-frequency = <3000000>;
-+	};
-+
-+	dflash2: en25s64 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "eon,en25s64", "jedec,spi-nor";
-+		reg = <2>;
-+		spi-max-frequency = <3000000>;
-+	};
-+};
-+
- &duart0 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-index bd80e9a2e67c..f5ed3878abb7 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-@@ -276,6 +276,19 @@
- 			};
- 		};
- 
-+		dspi: dspi@2100000 {
-+			compatible = "fsl,ls1088a-dspi", "fsl,ls2085a-dspi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x0 0x2100000 0x0 0x10000>;
-+			interrupts = <0 26 0x4>; /* Level high type */
-+			clocks = <&clockgen 4 3>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <0>;
-+			status = "disabled";
-+		};
-+
- 		duart0: serial@21c0500 {
- 			compatible = "fsl,ns16550", "ns16550a";
- 			reg = <0x0 0x21c0500 0x0 0x100>;
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+index dcc7eaada511..5fc467211cc6 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+@@ -6,6 +6,7 @@ Required properties:
+ 		or
+ 		"fsl,ls2080a-dspi" followed by "fsl,ls2085a-dspi"
+ 		"fsl,ls1012a-dspi" followed by "fsl,ls1021a-v1.0-dspi"
++		"fsl,ls1088a-dspi" followed by "fsl,ls2085a-dspi"
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain SPI controller interrupt
+ - clocks: from common clock binding: handle to dspi clock.
 -- 
 2.14.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

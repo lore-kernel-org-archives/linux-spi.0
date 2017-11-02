@@ -1,46 +1,38 @@
-From: Zhiqiang Hou <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH 2/2] Documentation: fsl: dspi: Add a compatible string for ls1088a DSPI
-Date: Wed, 1 Nov 2017 11:40:15 +0800
-Message-ID: <20171101034015.41114-3-Zhiqiang.Hou@nxp.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] Documentation: fsl: dspi: Add a compatible string
+ for ls1088a DSPI
+Date: Wed, 1 Nov 2017 19:14:16 -0500
+Message-ID: <20171102001416.6etwlhfauu7auc7p@rob-hp-laptop>
 References: <20171101034015.41114-1-Zhiqiang.Hou@nxp.com>
+ <20171101034015.41114-3-Zhiqiang.Hou@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
-To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <prabhakar.kushwaha-3arQi8VN3Tc@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171101034015.41114-1-Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        prabhakar.kushwaha-3arQi8VN3Tc@public.gmane.org
+To: Zhiqiang Hou <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20171101034015.41114-3-Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+On Wed, Nov 01, 2017 at 11:40:15AM +0800, Zhiqiang Hou wrote:
+> From: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+> 
+> Add a new compatible string "fsl,ls1088a-dspi".
+> 
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
-Add a new compatible string "fsl,ls1088a-dspi".
+"dt-bindings: spi: " for the subject. Otherwise,
 
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou-3arQi8VN3Tc@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-index dcc7eaada511..5fc467211cc6 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-@@ -6,6 +6,7 @@ Required properties:
- 		or
- 		"fsl,ls2080a-dspi" followed by "fsl,ls2085a-dspi"
- 		"fsl,ls1012a-dspi" followed by "fsl,ls1021a-v1.0-dspi"
-+		"fsl,ls1088a-dspi" followed by "fsl,ls2085a-dspi"
- - reg : Offset and length of the register set for the device
- - interrupts : Should contain SPI controller interrupt
- - clocks: from common clock binding: handle to dspi clock.
--- 
-2.14.1
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

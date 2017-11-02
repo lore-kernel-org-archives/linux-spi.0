@@ -1,20 +1,24 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: orion: remove redundant assignment of status to zero" to the spi tree
-Date: Thu, 02 Nov 2017 13:21:11 +0000
-Message-ID: <E1eAFQl-0005xp-IX@debutante>
-References: <20171102121625.20387-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171102121625.20387-1-colin.king@canonical.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: sh-msiof: Fix DMA transfer size check" to the spi tree
+Date: Thu, 02 Nov 2017 13:21:22 +0000
+Message-ID: <E1eAFQw-0005zD-If@debutante>
+References: <1478527623-17960-1-git-send-email-horms+renesas@verge.net.au>
+Cc: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1478527623-17960-1-git-send-email-horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: orion: remove redundant assignment of status to zero
+   spi: sh-msiof: Fix DMA transfer size check
 
 has been applied to the spi tree at
 
@@ -39,35 +43,41 @@ to this mail.
 Thanks,
 Mark
 
->From f747c3104efd1e21528d368910afd978fbcd6a78 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 2 Nov 2017 12:16:25 +0000
-Subject: [PATCH] spi: orion: remove redundant assignment of status to zero
+>From 36735783fdb599c94b9c86824583df367c65900b Mon Sep 17 00:00:00 2001
+From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Date: Thu, 2 Nov 2017 10:32:36 +0100
+Subject: [PATCH] spi: sh-msiof: Fix DMA transfer size check
 
-The assignment of status to zero is never read, status is either
-updated in the next iteration of the of the loop or several
-lines after the end of the loop.  Remove it, cleans up clang warning:
+DMA supports 32-bit words only,
+even if BITLEN1 of SITMDR2 register is 16bit.
 
-drivers/spi/spi-orion.c:674:4: warning: Value stored to 'status'
-is never read
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b0d0ce8b6b91 ("spi: sh-msiof: Add DMA support")
+Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Acked-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-orion.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 4b6dd73b80da..8974bb340b3a 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -671,7 +671,6 @@ static int orion_spi_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"%pOF has no valid 'reg' property (%d)\n",
- 				np, status);
--			status = 0;
- 			continue;
- 		}
- 
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 0eb1e9583485..837bb95eea62 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -900,7 +900,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 				break;
+ 			copy32 = copy_bswap32;
+ 		} else if (bits <= 16) {
+-			if (l & 1)
++			if (l & 3)
+ 				break;
+ 			copy32 = copy_wswap32;
+ 		} else {
 -- 
 2.15.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

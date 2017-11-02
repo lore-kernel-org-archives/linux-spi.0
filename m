@@ -1,50 +1,54 @@
-From: "Z.q. Hou" <zhiqiang.hou-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [PATCH 2/2] Documentation: fsl: dspi: Add a compatible string for
- ls1088a DSPI
-Date: Thu, 2 Nov 2017 03:12:22 +0000
-Message-ID: <VI1PR0402MB27823B7E70356968D2381FBE845C0@VI1PR0402MB2782.eurprd04.prod.outlook.com>
-References: <20171101034015.41114-1-Zhiqiang.Hou@nxp.com>
- <20171101034015.41114-3-Zhiqiang.Hou@nxp.com>
- <20171102001416.6etwlhfauu7auc7p@rob-hp-laptop>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Prabhakar Kushwaha <prabhakar.kushwaha-3arQi8VN3Tc@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171102001416.6etwlhfauu7auc7p@rob-hp-laptop>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: [PATCH] spi: sh-msiof: Fix DMA transfer size check
+Date: Thu,  2 Nov 2017 10:32:36 +0100
+Message-ID: <20171102093236.26082-1-horms+renesas@verge.net.au>
+Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGkgUm9iLA0KDQpUaGFua3MgYSBsb3QgZm9yIHRoZSBhY2shDQoNCj4gLS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iIEhlcnJpbmcgW21haWx0bzpyb2JoQGtlcm5lbC5vcmdd
-DQo+IFNlbnQ6IDIwMTfE6jEx1MIyyNUgODoxNA0KPiBUbzogWi5xLiBIb3UgPHpoaXFpYW5nLmhv
-dUBueHAuY29tPg0KPiBDYzogbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBs
-aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0KPiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9y
-ZzsgbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgYnJvb25pZUBrZXJuZWwub3JnOw0KPiBtYXJr
-LnJ1dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsgUHJhYmhha2FyIEt1c2h3YWhh
-DQo+IDxwcmFiaGFrYXIua3VzaHdhaGFAbnhwLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAy
-LzJdIERvY3VtZW50YXRpb246IGZzbDogZHNwaTogQWRkIGEgY29tcGF0aWJsZSBzdHJpbmcgZm9y
-DQo+IGxzMTA4OGEgRFNQSQ0KPiANCj4gT24gV2VkLCBOb3YgMDEsIDIwMTcgYXQgMTE6NDA6MTVB
-TSArMDgwMCwgWmhpcWlhbmcgSG91IHdyb3RlOg0KPiA+IEZyb206IEhvdSBaaGlxaWFuZyA8Wmhp
-cWlhbmcuSG91QG54cC5jb20+DQo+ID4NCj4gPiBBZGQgYSBuZXcgY29tcGF0aWJsZSBzdHJpbmcg
-ImZzbCxsczEwODhhLWRzcGkiLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSG91IFpoaXFpYW5n
-IDxaaGlxaWFuZy5Ib3VAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiAgRG9jdW1lbnRhdGlvbi9kZXZp
-Y2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktZnNsLWRzcGkudHh0IHwgMSArDQo+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiANCj4gImR0LWJpbmRpbmdzOiBzcGk6ICIgZm9yIHRo
-ZSBzdWJqZWN0LiBPdGhlcndpc2UsDQoNCkknbGwgcmVjb21wb3NlIHRoZSBzdWJqZWN0IGluIG5l
-eHQgdmVyc2lvbi4NCg0KPiANCj4gQWNrZWQtYnk6IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5v
-cmc+DQoNClRoYW5rcywNClpoaXFpYW5nDQo=
+From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+
+DMA supports 32-bit words only,
+even if BITLEN1 of SITMDR2 register is 16bit.
+
+Fixes: b0d0ce8b6b91 ("spi: sh-msiof: Add DMA support")
+Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+v2
+* Added Geert's Ack
+
+Sorry for letting this slip through the cracks, it appears
+to have been on my todo list for 1 year less 5 days.
+
+---
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2c5ea4c57508..94d15ef0e4e6 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -900,7 +900,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 				break;
+ 			copy32 = copy_bswap32;
+ 		} else if (bits <= 16) {
+-			if (l & 1)
++			if (l & 3)
+ 				break;
+ 			copy32 = copy_wswap32;
+ 		} else {
+-- 
+2.11.0
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

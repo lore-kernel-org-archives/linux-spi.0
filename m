@@ -1,74 +1,42 @@
-From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-msiof: Fix DMA transfer size check
-Date: Thu, 2 Nov 2017 10:36:24 +0100
-Message-ID: <4ffdafd2-e81a-5fc8-54eb-765d768c202d@de.bosch.com>
-References: <20171102093236.26082-1-horms+renesas@verge.net.au>
+From: Colin King <colin.king@canonical.com>
+Subject: [PATCH] spi: orion: remove redundant assignment of status to zero
+Date: Thu,  2 Nov 2017 12:16:25 +0000
+Message-ID: <20171102121625.20387-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171102093236.26082-1-horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 02.11.2017 10:32, Simon Horman wrote:
-> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> 
-> DMA supports 32-bit words only,
-> even if BITLEN1 of SITMDR2 register is 16bit.
-> 
-> Fixes: b0d0ce8b6b91 ("spi: sh-msiof: Add DMA support")
-> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> Signed-off-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-> Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+From: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+The assignment of status to zero is never read, status is either
+updated in the next iteration of the of the loop or several
+lines after the end of the loop.  Remove it, cleans up clang warning:
 
-> ---
-> v2
-> * Added Geert's Ack
-> 
-> Sorry for letting this slip through the cracks, it appears
-> to have been on my todo list for 1 year less 5 days.
+drivers/spi/spi-orion.c:674:4: warning: Value stored to 'status'
+is never read
 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/spi/spi-orion.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thanks for picking it :)
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 4b6dd73b80da..8974bb340b3a 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -671,7 +671,6 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev,
+ 				"%pOF has no valid 'reg' property (%d)\n",
+ 				np, status);
+-			status = 0;
+ 			continue;
+ 		}
+ 
+-- 
+2.14.1
 
-Best regards
-
-Dirk
-
-P.S.: The remaining msiof (DMA) patches are not forgotten, we are sill 
-working on them (with low priority, though).
-
-
-> ---
->   drivers/spi/spi-sh-msiof.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 2c5ea4c57508..94d15ef0e4e6 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -900,7 +900,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
->   				break;
->   			copy32 = copy_bswap32;
->   		} else if (bits <= 16) {
-> -			if (l & 1)
-> +			if (l & 3)
->   				break;
->   			copy32 = copy_wswap32;
->   		} else {
-> 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

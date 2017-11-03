@@ -1,20 +1,25 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sh-msiof: remove redundant pointer dev" to the spi tree
-Date: Fri, 03 Nov 2017 18:50:46 +0000
-Message-ID: <E1eAh3G-0005rO-5K@debutante>
-References: <20171103135829.8697-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171103135829.8697-1-colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: s3c64xx: remove redundant pointer sci" to the spi tree
+Date: Fri, 03 Nov 2017 18:50:58 +0000
+Message-ID: <E1eAh3S-0005u1-W6@debutante>
+References: <20171103133525.8173-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andi Shyti <andi.shyti@samsung.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20171103133525.8173-1-colin.king@canonical.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sh-msiof: remove redundant pointer dev
+   spi: s3c64xx: remove redundant pointer sci
 
 has been applied to the spi tree at
 
@@ -39,44 +44,43 @@ to this mail.
 Thanks,
 Mark
 
->From 6ae6678344af52cf1c05475ff3ec2f43b8b532ef Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Date: Fri, 3 Nov 2017 13:58:29 +0000
-Subject: [PATCH] spi: sh-msiof: remove redundant pointer dev
+>From 4132b8b9107badf75bf30c8b4b3ac2cebd03389d Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Fri, 3 Nov 2017 13:35:25 +0000
+Subject: [PATCH] spi: s3c64xx: remove redundant pointer sci
 
-The pointer dev is assigned but never read, hence it is redundant
+The pointer sci is assigned but never read, hence it is redundant
 and can be removed. Cleans up clang warning:
 
-drivers/spi/spi-sh-msiof.c:1198:2: warning: Value stored to 'dev'
-is never read
+drivers/spi/spi-s3c64xx.c:791:2: warning: Value stored to 'sci' is
+never read
 
-Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 2c5ea4c57508..66043611e86d 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1190,12 +1190,10 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
- static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index b392cca8fa4f..de7df20f8712 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -752,7 +752,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
  {
- 	struct spi_master *master = p->master;
--	struct device *dev;
+ 	struct s3c64xx_spi_csinfo *cs = spi->controller_data;
+ 	struct s3c64xx_spi_driver_data *sdd;
+-	struct s3c64xx_spi_info *sci;
+ 	int err;
  
- 	if (!master->dma_tx)
- 		return;
+ 	sdd = spi_master_get_devdata(spi->master);
+@@ -788,8 +787,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 		spi_set_ctldata(spi, cs);
+ 	}
  
--	dev = &p->pdev->dev;
- 	dma_unmap_single(master->dma_rx->device->dev, p->rx_dma_addr,
- 			 PAGE_SIZE, DMA_FROM_DEVICE);
- 	dma_unmap_single(master->dma_tx->device->dev, p->tx_dma_addr,
+-	sci = sdd->cntrlr_info;
+-
+ 	pm_runtime_get_sync(&sdd->pdev->dev);
+ 
+ 	/* Check if we can provide the requested rate */
 -- 
 2.15.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

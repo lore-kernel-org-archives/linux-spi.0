@@ -1,72 +1,107 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
- required
-Date: Thu, 2 Nov 2017 15:14:39 +0000
-Message-ID: <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
-References: <20171027010841.28624-1-tpiepho@impinj.com>
- <20171027010841.28624-2-tpiepho@impinj.com>
- <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
- <1509469061.5473.16.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jfacq4arwzkkv6bl"
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Applied "spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers" to the spi tree
+Date: Fri,  3 Nov 2017 11:47:39 +0000 (GMT)
+Message-ID: <20171103114739.1F1E344005B@finisterre.ee.mobilebroadband>
+References: <20171016102758.22444-1-l.stach@pengutronix.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        patchwork-lst-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1509469061.5473.16.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20171016102758.22444-1-l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---jfacq4arwzkkv6bl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers
 
-On Tue, Oct 31, 2017 at 04:57:42PM +0000, Trent Piepho wrote:
-> On Tue, 2017-10-31 at 11:19 +0000, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > Do the native chip selects actually work usefully on this hardware?
-> > There used to be problems with it wanting to do things like bounce the
-> > chip select on every word which made it extremely difficult to use with
-> > Linux.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Still are annoying, but on the device we have connected to it, it ends
-> up working as desired.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> I've not thoroughly investigated this hardware to find the details.=20
-> IIRC, the designware SPI on Altera SoCFPGA had the same issue, but it
-> was a flaw in the driver and I was able to fix it.  I've come to expect
-> it, as every new SPI master I use doesn't work properly in some
-> different way.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-It's one of the reasons why I'm suspicous of making the GPIO optional,
-lots of chips use GPIO chipselects because a lot of the breakage is
-confined to chip select handling and I remember the i.MX as being
-especially far from useful.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---jfacq4arwzkkv6bl
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAln7Nl4ACgkQJNaLcl1U
-h9AhaAf/aHlfFuDpdMqTMBZZKtOnl5YcclHZYjX+zgaasmV3WTA/YgVxuYayrPRb
-EcDRfE0Vv1lqgwr6OCCkLXcrE9vizCdQeYBtMRxtfd6DiZLcpF5lgAjdpgChPzse
-7OL+ttl81qlozzxoO0l+jscNwhL+JQO5seQcrT2VyROZPUEPvUvBYIEIDv8YREV5
-zNy8zProqRIxOmHuPFYsXnu4ZZ/9RVzgROjUaHadBsqXe12VLIYlXgqP/lpbsX6P
-x/AoN9Xn7tnuHyihVjEieAvdEnz+yM2kENNFWxSoF+Z28WfelPI+N5T7QnAEL5ti
-8QE7UvZFRwHxqVE9LaE8qy8pQVeo7g==
-=KdlQ
------END PGP SIGNATURE-----
+>From 42bdd7061a6e24d7b21d3d21973615fecef544ef Mon Sep 17 00:00:00 2001
+From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Date: Mon, 16 Oct 2017 12:27:58 +0200
+Subject: [PATCH] spi: fix IDR collision on systems with both fixed and dynamic
+ SPI bus numbers
 
---jfacq4arwzkkv6bl--
+On systems where some controllers get a dynamic ID assigned and some have
+a fixed number from DT, the current implemention might run into an IDR
+collision if the dynamic controllers gets probed first and get an IDR number,
+which is later requested by the controller with the fixed numbering. When
+this happens the fixed controller will fail to register with the SPI core.
+
+Fix this by skipping all known alias numbers when assigning the dynamic IDs.
+
+Fixes: 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
+Signed-off-by: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 759c9725495a..3ff0ee88c467 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -45,7 +45,6 @@
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/spi.h>
+-#define SPI_DYN_FIRST_BUS_NUM 0
+ 
+ static DEFINE_IDR(spi_master_idr);
+ 
+@@ -2086,7 +2085,7 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	struct device		*dev = ctlr->dev.parent;
+ 	struct boardinfo	*bi;
+ 	int			status = -ENODEV;
+-	int			id;
++	int			id, first_dynamic;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+@@ -2116,9 +2115,15 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 		}
+ 	}
+ 	if (ctlr->bus_num < 0) {
++		first_dynamic = of_alias_get_highest_id("spi");
++		if (first_dynamic < 0)
++			first_dynamic = 0;
++		else
++			first_dynamic++;
++
+ 		mutex_lock(&board_lock);
+-		id = idr_alloc(&spi_master_idr, ctlr, SPI_DYN_FIRST_BUS_NUM, 0,
+-			       GFP_KERNEL);
++		id = idr_alloc(&spi_master_idr, ctlr, first_dynamic,
++			       0, GFP_KERNEL);
+ 		mutex_unlock(&board_lock);
+ 		if (WARN(id < 0, "couldn't get idr"))
+ 			return id;
+-- 
+2.14.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,86 +1,105 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
  required
-Date: Fri, 3 Nov 2017 19:18:56 +0000
-Message-ID: <1509736735.5473.87.camel@impinj.com>
+Date: Fri, 3 Nov 2017 19:36:49 +0000
+Message-ID: <20171103193649.jcoiy3raefikko2h@sirena.co.uk>
 References: <20171027010841.28624-1-tpiepho@impinj.com>
-         <20171027010841.28624-2-tpiepho@impinj.com>
-         <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
-         <1509469061.5473.16.camel@impinj.com>
-         <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
-         <1509731639.5473.60.camel@impinj.com>
-         <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
+ <20171027010841.28624-2-tpiepho@impinj.com>
+ <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
+ <1509469061.5473.16.camel@impinj.com>
+ <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
+ <1509731639.5473.60.camel@impinj.com>
+ <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
+ <1509736735.5473.87.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sohhyoroq6sqhlw5"
 Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
         <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
         "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171103183700.spnqbagr4q7fth4k-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
-Content-Language: en-US
-Content-ID: <0232022036B36A419D6C33C92BCE2CAC-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1509736735.5473.87.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gRnJpLCAyMDE3LTExLTAzIGF0IDE4OjM3ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
-biBGcmksIE5vdiAwMywgMjAxNyBhdCAwNTo1Mzo1OVBNICswMDAwLCBUcmVudCBQaWVwaG8gd3Jv
-dGU6DQo+IA0KPiA+IEp1c3QgdG8gYmUgY2xlYXIsIG9uZSBkb2Vzbid0IG5lZWQgdG8gdXNlIEdQ
-SU9zIHdpdGggdGhlIGRyaXZlciBhcyBpcy4gDQo+ID4gQnV0IHRoZSBiaW5kaW5ncyB0byBkbyB0
-aGF0IGFyZSBub24tc3RhbmRhcmQgYW5kIHRoZXNlIHBhdGNoZXMgbWFrZSB0aGUNCj4gPiBkcml2
-ZXIgZm9sbG93IHRoZSBzdGFuZGFyZC4gKGFuZCBkb24ndCBicmVhayBhbnlvbmUpLg0KPiANCj4g
-SWYgdGhlcmUgYXJlIG5vbi1zdGFuZGFyZCBiaW5kaW5ncyB0aGVuIG1hcmsgdGhlbSBhcyBkZXBy
-ZWNhdGVkLiAgSQ0KPiBjYW4ndCBpbW1lZGlhdGVseSBmaW5kICphbnkqIGJpbmRpbmcgZG9jdW1l
-bnRhdGlvbiBmb3IgdGhpcyBjb250cm9sbGVyLg0KPiBUaGUgbGFzdCBjb21taXQgbG9va3MgbGlr
-ZSBpdCB3YXMgbW9yZSBhdHRlbXB0aW5nIHRvIHdvcmsgcm91bmQgYnJva2VuDQo+IGJvYXJkIGJp
-bmRpbmdzIGFuZCBkbyBzb21ldGhpbmcgc2Vuc2libGUgdGhhbiBhZGQgYSBuZXcgYmluZGluZywg
-YXQNCj4gbGVhc3QgdGhhdCdzIHdoYXQgSSByZW1lbWJlciBteSBzZW5zZSBvZiBpdCBiZWluZy4N
-Cg0KVGhlIG5vbi1zdGFuZGFyZCBwYXJ0IGlzIG5lZWRpbmcgdG8gYWRkIGNzLWdwaW9zID0gPDA+
-IHRvIGdldCBhIG5hdGl2ZQ0KY2hpcCBzZWxlY3Qgd2hlbiB0aGF0IGlzIGRvY3VtZW50ZWQgYXMg
-YmVpbmcgb3B0aW9uYWwuICBJdCBkb2Vzbid0DQpmb2xsb3cgdGhlIHNwZWMuICBJdCBkb2Vzbid0
-IG1hdGNoIG90aGVyIGRyaXZlcnMgKGFuZCBkdy1zcGkgaXMgZXF1YWxseQ0KYXMgYnJva2VuIGlu
-IHRoZSBzYW1lIG1hbm5lciwgcHJvYmFibHkgb3RoZXJzIHRvbykgdGhhdCBkbyBmb2xsb3cgdGhl
-DQpzcGVjLg0KDQo+IElmIHRoZSBoYXJkd2FyZSBpcyBhcyBicm9rZW4gYXMgdGhlc2UgY29udHJv
-bGxlcnMgYWx3YXlzIHdlcmUgaW4gdGhlDQo+IHBhc3QgYW5kIHRoZXJlIGFyZSB3b3JrYXJvdW5k
-cyB3aGljaCB3b3JrIGluIGFsbCBwcmFjdGljYWwgc2l0dWF0aW9ucw0KPiAoQUZBSUsgYWxsIHRo
-ZSByZWxldmFudCBTb0NzIHBlcm1pdCBHUElPIHVzYWdlIG9uIHRoZSBjaGlwIHNlbGVjdCBwaW5z
-KQ0KDQpDb21tZW50cyBpbiB0aGUgZHJpdmVyIGluZGljYXRlIHRoYXQgc29tZSBTb0NzIGRvIG5v
-dCBhbGxvdyBHUElPIHVzYWdlDQpvbiBhbGwgY2hpcCBzZWxlY3QgcGlucy4NCg0KPiBkb2N1bWVu
-dGluZyBzb21ldGhpbmcgYXMgc3VwcG9ydGVkIGlzIGp1c3QgZ29pbmcgdG8gbWFrZSBwZW9wbGUN
-Cj4gbWlzZXJhYmxlLiAgVGhlIHJlYXNvbiBJIGtub3cgYWJvdXQgdGhpcyBicmVha2FnZSBpcyB0
-aGF0IEkgaGFkIHRvIGdvDQo+IHRocm91Z2ggdGhlIHByb2Nlc3Mgb2Ygd29ya2luZyBvdXQgdGhh
-dCB0aGUgbmF0aXZlIGNoaXAgc2VsZWN0IHN1cHBvcnQNCj4gZGlkbid0IHdvcmsgb24gYSBzeXN0
-ZW0uDQoNCkkganVzdCBkb24ndCBzZWUgaG93IG5vdCBmb2xsb3dpbmcgdGhlIGRldmljZSB0cmVl
-IGJpbmRpbmcNCnNwZWNpZmljYXRpb24gZG9jdW1lbnRzIHRoZSBoYXJkd2FyZSBmbGF3LCBvciBo
-b3cgZm9sbG93aW5nIHRoZSBzcGVjDQpkb2N1bWVudHMgdGhhdCB0aGUgZmxhdyBkb2VzIG5vdCBl
-eGlzdC4NCg0KPiA+IElmIHRoZSBnb2FsIGlzIHRvIGRvY3VtZW50IHRoZSBoYXJkd2FyZSBxdWly
-a3MsIHRoZW4gc2hvdWxkbid0IHRoaXMgYmUNCj4gPiBkb25lIHRocm91Z2ggZG9jdW1lbnRhdGlv
-bj8gIEEgbm90ZSBvciBwb2ludGVyIGluIHRoZSBrY29uZmlnLA0KPiA+IHNvbWV0aGluZyBpbiB0
-aGUgc291cmNlLCBhIGJldHRlciBkZXNjcmlwdGlvbiBpbiBEb2N1bWVudGlvbi8NCj4gPiBzb21l
-d2hlcmUsIGV0Yy4gIFRoYXQgd291bGQgaGF2ZSBhIGJldHRlciBjaGFuY2Ugb2YgYmVpbmcgc2Vl
-biBiZWZvcmUNCj4gPiBoYXJkd2FyZSBpcyBkZXNpZ25lZCwgYW5kIHdvdWxkIGV4cGxhaW4gdGhl
-IGlzc3VlIHRvbywgaW5zdGVhZCBvZiBqdXN0DQo+ID4gYXBwZWFyaW5nIGFzIGFub3RoZXIgcXVp
-cmsgaW4gZGV2aWNlIHRyZWUgYmluZGluZ3MuDQo+IA0KPiBZZXMsIGJldHRlciBkb2N1bWVudGF0
-aW9uIHdvdWxkIGJlIGdyZWF0Lg0KDQpIb3cgYWJvdXQgSSBhZGQgc29tZXRoaW5nIHRvIERvY3Vt
-ZW50YXRpb24vc3BpIGFuZCBhZGQgYSBub3RlIGluDQpLY29uZmlnLCBidXQgbWFrZSB0aGUgZHJp
-dmVyIHN0YW5kYXJkIGNvbXBsaWFudCBpbiBpdHMgZGV2aWNlIHRyZWUNCmJpbmRpbmdzPw0KDQpU
-aGUgZ29hbCBoZXJlIGlzIHRoYXQgZXZlcnlvbmUgZG9lc24ndCBoYXZlIHRvIHN0aWNrIGEgc2Nv
-cGUgb24gdGhlDQpib2FyZCBhbmQgcmUtZGlzY292ZXIgdGhhdCB0aGUgbmF0aXZlIENTIGRvZXNu
-J3QgZG8gd2hhdCB0aGV5IHdhbnQsDQpyaWdodD8gQmVlbiB0aGVyZSwgZG9uZSB0aGF0LCBhbmQg
-Y2FuIGFwcHJlY2lhdGUgdGhlIHNlbnRpbWVudC4NCg0KSSBkb24ndCB0aGluayBub3QgZm9sbG93
-aW5nIHRoZSBzdGFuZGFyZCBpcyBhbiBlZmZlY3RpdmUgd2F5IHRvIGRvDQp0aGF0LiAgRnJvbSBh
-IHNhbXBsZSBvZiB0aHJlZSBkZXZlbG9wZXJzLCB0d28gY2FtZSB1cCB3aXRoIGR0IGJpbmRpbmdz
-DQp0byB1c2UgbmF0aXZlIGNzIGFuZCBkZWNpZGVkIHRoZXkgYXBwYXJlbnRseSBtaXN1bmRlcnN0
-b29kIHRoZSBzcGkgZHQNCnNwZWMgdG8gZXhwbGFpbiB3aHkgd2hhdCBzaG91bGQgaGF2ZSB3b3Jr
-ZWQgZGlkIG5vdC4gIFRoZSB0aGlyZCAobWUpDQpsb29rZWQgaW50byB0aGUgZHJpdmVyIHNvdXJj
-ZSB0byBmaW5kIHRoZSB3aHksIGFuZCBldmVuIHRoZW4gaXQgd2Fzbid0DQpjbGVhciB0aGUgYmVo
-YXZpb3Igd2FzIGludGVudGlvbmFsIG9yIGFuIG92ZXJzaWdodC4gIEkgdGhpbmsNCmRvY3VtZW50
-aW5nIHRoZSBrbm93biBmbGF3cyB3b3VsZCBiZSBhIGJldHRlciBhbmQgbW9yZSBlZmZlY3RpdmUg
-d2F5IHRvDQpnZXQgdGhhdCBpbmZvcm1hdGlvbiBhY3Jvc3Mu
+
+--sohhyoroq6sqhlw5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Nov 03, 2017 at 07:18:56PM +0000, Trent Piepho wrote:
+> On Fri, 2017-11-03 at 18:37 +0000, Mark Brown wrote:
+
+> > If there are non-standard bindings then mark them as deprecated.  I
+> > can't immediately find *any* binding documentation for this controller.
+> > The last commit looks like it was more attempting to work round broken
+> > board bindings and do something sensible than add a new binding, at
+> > least that's what I remember my sense of it being.
+
+> The non-standard part is needing to add cs-gpios = <0> to get a native
+> chip select when that is documented as being optional.  It doesn't
+> follow the spec.  It doesn't match other drivers (and dw-spi is equally
+> as broken in the same manner, probably others too) that do follow the
+> spec.
+
+Is there any documentation of the bindings for this driver at all?  I
+wasn't able to find it.
+
+> > If the hardware is as broken as these controllers always were in the
+> > past and there are workarounds which work in all practical situations
+> > (AFAIK all the relevant SoCs permit GPIO usage on the chip select pins)
+
+> Comments in the driver indicate that some SoCs do not allow GPIO usage
+> on all chip select pins.
+
+Ah, that's an issue.  We will need support for the hardware chip selects
+then.
+
+> > documenting something as supported is just going to make people
+> > miserable.  The reason I know about this breakage is that I had to go
+> > through the process of working out that the native chip select support
+> > didn't work on a system.
+
+> I just don't see how not following the device tree binding
+> specification documents the hardware flaw, or how following the spec
+> documents that the flaw does not exist.
+
+Hardware chip selects aren't present in all controllers and at times
+have entertaining enumerations in the hardware, the details on them need
+to be covered in the device specific binding (which like I say seems to
+be missing for this controller).  If they just don't work well the
+kindest thing may be to not support them and document the binding that
+way.
+
+> > Yes, better documentation would be great.
+
+> How about I add something to Documentation/spi and add a note in
+> Kconfig, but make the driver standard compliant in its device tree
+> bindings?
+
+Writing a binding document for the controller would probably cover it.
+
+--sohhyoroq6sqhlw5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAln8xVEACgkQJNaLcl1U
+h9CcNgf/blE6FKozZjZp8jGE+NvJDjSbLoNAOrGB0yWoTLfh3140w4jorSeaBLRs
+25EMnamVDDgcsvAxb3y942z2fnCAokAlXAsb/7ux8FvDjUYlXJxcxHsH/v9ggx8Q
+t7fpBcewOV45pm3AwjdZxlnbmqyJz2vTZAYjScjo4yQzHXMVWuNexTJ66WHny93A
+jg1HrD31G+aFiKT+NBinQS33pImCzvlYWsGUBDSDkNnfsnQsAzyFkLger6bgDkhz
+kVErwv6m3zhJkj9Z0wqwRymCE78T01eV5leNbXXSW8nSWc4AJAOVr2VXdNm6BZex
+Ps50B4kF30ehGwSq3RjoaccwR0u+DA==
+=Tf9J
+-----END PGP SIGNATURE-----
+
+--sohhyoroq6sqhlw5--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

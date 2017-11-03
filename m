@@ -1,83 +1,66 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
  required
-Date: Fri, 3 Nov 2017 20:09:19 +0000
-Message-ID: <1509739759.5473.93.camel@impinj.com>
+Date: Fri, 3 Nov 2017 20:11:50 +0000
+Message-ID: <20171103201150.7lt2bc6co7angy5w@sirena.co.uk>
 References: <20171027010841.28624-1-tpiepho@impinj.com>
-         <20171027010841.28624-2-tpiepho@impinj.com>
-         <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
-         <1509469061.5473.16.camel@impinj.com>
-         <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
-         <1509731639.5473.60.camel@impinj.com>
-         <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
-         <1509736735.5473.87.camel@impinj.com>
-         <20171103193649.jcoiy3raefikko2h@sirena.co.uk>
+ <20171027010841.28624-2-tpiepho@impinj.com>
+ <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
+ <1509469061.5473.16.camel@impinj.com>
+ <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
+ <1509731639.5473.60.camel@impinj.com>
+ <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
+ <1509736735.5473.87.camel@impinj.com>
+ <20171103193649.jcoiy3raefikko2h@sirena.co.uk>
+ <1509739759.5473.93.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="oryr674mm7p67op2"
 Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
         <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
         "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171103193649.jcoiy3raefikko2h-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
-Content-Language: en-US
-Content-ID: <68E1A7384D27364487CC785D2E2B6395-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1509739759.5473.93.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gRnJpLCAyMDE3LTExLTAzIGF0IDE5OjM2ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
-biBGcmksIE5vdiAwMywgMjAxNyBhdCAwNzoxODo1NlBNICswMDAwLCBUcmVudCBQaWVwaG8gd3Jv
-dGU6DQo+ID4gT24gRnJpLCAyMDE3LTExLTAzIGF0IDE4OjM3ICswMDAwLCBNYXJrIEJyb3duIHdy
-b3RlOg0KPiA+ID4gSWYgdGhlcmUgYXJlIG5vbi1zdGFuZGFyZCBiaW5kaW5ncyB0aGVuIG1hcmsg
-dGhlbSBhcyBkZXByZWNhdGVkLiAgSQ0KPiA+ID4gY2FuJ3QgaW1tZWRpYXRlbHkgZmluZCAqYW55
-KiBiaW5kaW5nIGRvY3VtZW50YXRpb24gZm9yIHRoaXMgY29udHJvbGxlci4NCj4gPiA+IFRoZSBs
-YXN0IGNvbW1pdCBsb29rcyBsaWtlIGl0IHdhcyBtb3JlIGF0dGVtcHRpbmcgdG8gd29yayByb3Vu
-ZCBicm9rZW4NCj4gPiA+IGJvYXJkIGJpbmRpbmdzIGFuZCBkbyBzb21ldGhpbmcgc2Vuc2libGUg
-dGhhbiBhZGQgYSBuZXcgYmluZGluZywgYXQNCj4gPiA+IGxlYXN0IHRoYXQncyB3aGF0IEkgcmVt
-ZW1iZXIgbXkgc2Vuc2Ugb2YgaXQgYmVpbmcuDQo+ID4gVGhlIG5vbi1zdGFuZGFyZCBwYXJ0IGlz
-IG5lZWRpbmcgdG8gYWRkIGNzLWdwaW9zID0gPDA+IHRvIGdldCBhIG5hdGl2ZQ0KPiA+IGNoaXAg
-c2VsZWN0IHdoZW4gdGhhdCBpcyBkb2N1bWVudGVkIGFzIGJlaW5nIG9wdGlvbmFsLiAgSXQgZG9l
-c24ndA0KPiA+IGZvbGxvdyB0aGUgc3BlYy4gIEl0IGRvZXNuJ3QgbWF0Y2ggb3RoZXIgZHJpdmVy
-cyAoYW5kIGR3LXNwaSBpcyBlcXVhbGx5DQo+ID4gYXMgYnJva2VuIGluIHRoZSBzYW1lIG1hbm5l
-ciwgcHJvYmFibHkgb3RoZXJzIHRvbykgdGhhdCBkbyBmb2xsb3cgdGhlDQo+ID4gc3BlYy4NCj4g
-DQo+IElzIHRoZXJlIGFueSBkb2N1bWVudGF0aW9uIG9mIHRoZSBiaW5kaW5ncyBmb3IgdGhpcyBk
-cml2ZXIgYXQgYWxsPyAgSQ0KPiB3YXNuJ3QgYWJsZSB0byBmaW5kIGl0Lg0KDQpEb2N1bWVudGF0
-aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2ZzbC1pbXgtY3NwaS50eHQNCg0KRG9lc24ndCBu
-b3RlIGFueXRoaW5nIHNwZWNpYWwgYWJvdXQgdGhlIG5hdGl2ZSBjaGlwIHNlbGVjdHMuDQoNCj4g
-PiA+IElmIHRoZSBoYXJkd2FyZSBpcyBhcyBicm9rZW4gYXMgdGhlc2UgY29udHJvbGxlcnMgYWx3
-YXlzIHdlcmUgaW4gdGhlDQo+ID4gPiBwYXN0IGFuZCB0aGVyZSBhcmUgd29ya2Fyb3VuZHMgd2hp
-Y2ggd29yayBpbiBhbGwgcHJhY3RpY2FsIHNpdHVhdGlvbnMNCj4gPiA+IChBRkFJSyBhbGwgdGhl
-IHJlbGV2YW50IFNvQ3MgcGVybWl0IEdQSU8gdXNhZ2Ugb24gdGhlIGNoaXAgc2VsZWN0IHBpbnMp
-DQo+ID4gQ29tbWVudHMgaW4gdGhlIGRyaXZlciBpbmRpY2F0ZSB0aGF0IHNvbWUgU29DcyBkbyBu
-b3QgYWxsb3cgR1BJTyB1c2FnZQ0KPiA+IG9uIGFsbCBjaGlwIHNlbGVjdCBwaW5zLg0KPiANCj4g
-QWgsIHRoYXQncyBhbiBpc3N1ZS4gIFdlIHdpbGwgbmVlZCBzdXBwb3J0IGZvciB0aGUgaGFyZHdh
-cmUgY2hpcCBzZWxlY3RzDQo+IHRoZW4uDQoNCkFuZCB0aGV5IGFyZSBhbHJlYWR5IHN1cHBvcnRl
-ZCB0b28uICBUaGUgaXNzdWUgSSB3YW50IHRvIGZpeCBpcyB0aGUNCm5lZWQgZm9yIG5vbi1zdGFu
-ZGFyZCBiaW5kaW5ncyB0byB1c2UgdGhlbS4NCg0KPiA+ID4gZG9jdW1lbnRpbmcgc29tZXRoaW5n
-IGFzIHN1cHBvcnRlZCBpcyBqdXN0IGdvaW5nIHRvIG1ha2UgcGVvcGxlDQo+ID4gPiBtaXNlcmFi
-bGUuICBUaGUgcmVhc29uIEkga25vdyBhYm91dCB0aGlzIGJyZWFrYWdlIGlzIHRoYXQgSSBoYWQg
-dG8gZ28NCj4gPiA+IHRocm91Z2ggdGhlIHByb2Nlc3Mgb2Ygd29ya2luZyBvdXQgdGhhdCB0aGUg
-bmF0aXZlIGNoaXAgc2VsZWN0IHN1cHBvcnQNCj4gPiA+IGRpZG4ndCB3b3JrIG9uIGEgc3lzdGVt
-Lg0KPiA+IEkganVzdCBkb24ndCBzZWUgaG93IG5vdCBmb2xsb3dpbmcgdGhlIGRldmljZSB0cmVl
-IGJpbmRpbmcNCj4gPiBzcGVjaWZpY2F0aW9uIGRvY3VtZW50cyB0aGUgaGFyZHdhcmUgZmxhdywg
-b3IgaG93IGZvbGxvd2luZyB0aGUgc3BlYw0KPiA+IGRvY3VtZW50cyB0aGF0IHRoZSBmbGF3IGRv
-ZXMgbm90IGV4aXN0Lg0KPiANCj4gSGFyZHdhcmUgY2hpcCBzZWxlY3RzIGFyZW4ndCBwcmVzZW50
-IGluIGFsbCBjb250cm9sbGVycyBhbmQgYXQgdGltZXMNCj4gaGF2ZSBlbnRlcnRhaW5pbmcgZW51
-bWVyYXRpb25zIGluIHRoZSBoYXJkd2FyZSwgdGhlIGRldGFpbHMgb24gdGhlbSBuZWVkDQo+IHRv
-IGJlIGNvdmVyZWQgaW4gdGhlIGRldmljZSBzcGVjaWZpYyBiaW5kaW5nICh3aGljaCBsaWtlIEkg
-c2F5IHNlZW1zIHRvDQo+IGJlIG1pc3NpbmcgZm9yIHRoaXMgY29udHJvbGxlcikuICBJZiB0aGV5
-IGp1c3QgZG9uJ3Qgd29yayB3ZWxsIHRoZQ0KPiBraW5kZXN0IHRoaW5nIG1heSBiZSB0byBub3Qg
-c3VwcG9ydCB0aGVtIGFuZCBkb2N1bWVudCB0aGUgYmluZGluZyB0aGF0DQo+IHdheS4NCj4gDQo+
-ID4gPiBZZXMsIGJldHRlciBkb2N1bWVudGF0aW9uIHdvdWxkIGJlIGdyZWF0Lg0KPiA+IEhvdyBh
-Ym91dCBJIGFkZCBzb21ldGhpbmcgdG8gRG9jdW1lbnRhdGlvbi9zcGkgYW5kIGFkZCBhIG5vdGUg
-aW4NCj4gPiBLY29uZmlnLCBidXQgbWFrZSB0aGUgZHJpdmVyIHN0YW5kYXJkIGNvbXBsaWFudCBp
-biBpdHMgZGV2aWNlIHRyZWUNCj4gPiBiaW5kaW5ncz8NCj4gDQo+IFdyaXRpbmcgYSBiaW5kaW5n
-IGRvY3VtZW50IGZvciB0aGUgY29udHJvbGxlciB3b3VsZCBwcm9iYWJseSBjb3ZlciBpdC4NCg0K
-T2ssIEknbGwgYWRqdXN0IHRoZSBzZXJpZXMgdG8gZG9jdW1lbnQgdGhlIHJlYWwgaXNzdWUu
+
+--oryr674mm7p67op2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Nov 03, 2017 at 08:09:19PM +0000, Trent Piepho wrote:
+> On Fri, 2017-11-03 at 19:36 +0000, Mark Brown wrote:
+
+> > Is there any documentation of the bindings for this driver at all?  I
+> > wasn't able to find it.
+
+> Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+
+Ah, good - for some reason I'd thought that was a different IP block
+(SPI controllers are like serial ports, endless room for innovation!).
+
+--oryr674mm7p67op2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAln8zYYACgkQJNaLcl1U
+h9A68Qf/caLFT6u4KJI1ha+vGu39pyw5/5OMA8bAau/xbFK17LcyXPGBOoHAANOU
+mYX9Aw8bZW/uFcAowZj8CMwYxAqoLEiktACkGYMu4x24d5PYayQT3DcpIpSjl4s1
+ZgcLYLRLIgr/SO6G4u0wgC37Ppqu6dfwoWROipTFvYs4RPT6/eC+w0aRmNipBUOl
+k+9/K5Dkmd2pTOo3wVhKhn4iTu8lgHt+CZhXru+18vnepYCypxQbraagrBcdMw8p
+xXCon7wjHlqVmGl5PBSWR18ecqUlBRMq1+7m9eVWHZMash6yX5Gecr0aj2QqqP9i
+rpTYUhiwxou8mUaJecNvoxqNTK+DiA==
+=7Ffr
+-----END PGP SIGNATURE-----
+
+--oryr674mm7p67op2--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

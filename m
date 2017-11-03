@@ -1,86 +1,87 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: remove redundant pointer sci" to the spi tree
-Date: Fri, 03 Nov 2017 18:50:58 +0000
-Message-ID: <E1eAh3S-0005u1-W6@debutante>
-References: <20171103133525.8173-1-colin.king@canonical.com>
-Cc: Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andi Shyti <andi.shyti@samsung.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Colin Ian King <colin.king@canonical.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20171103133525.8173-1-colin.king@canonical.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
+ required
+Date: Fri, 3 Nov 2017 19:18:56 +0000
+Message-ID: <1509736735.5473.87.camel@impinj.com>
+References: <20171027010841.28624-1-tpiepho@impinj.com>
+         <20171027010841.28624-2-tpiepho@impinj.com>
+         <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
+         <1509469061.5473.16.camel@impinj.com>
+         <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
+         <1509731639.5473.60.camel@impinj.com>
+         <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171103183700.spnqbagr4q7fth4k-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <0232022036B36A419D6C33C92BCE2CAC-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
-
-   spi: s3c64xx: remove redundant pointer sci
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4132b8b9107badf75bf30c8b4b3ac2cebd03389d Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Fri, 3 Nov 2017 13:35:25 +0000
-Subject: [PATCH] spi: s3c64xx: remove redundant pointer sci
-
-The pointer sci is assigned but never read, hence it is redundant
-and can be removed. Cleans up clang warning:
-
-drivers/spi/spi-s3c64xx.c:791:2: warning: Value stored to 'sci' is
-never read
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-s3c64xx.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index b392cca8fa4f..de7df20f8712 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -752,7 +752,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- {
- 	struct s3c64xx_spi_csinfo *cs = spi->controller_data;
- 	struct s3c64xx_spi_driver_data *sdd;
--	struct s3c64xx_spi_info *sci;
- 	int err;
- 
- 	sdd = spi_master_get_devdata(spi->master);
-@@ -788,8 +787,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 		spi_set_ctldata(spi, cs);
- 	}
- 
--	sci = sdd->cntrlr_info;
--
- 	pm_runtime_get_sync(&sdd->pdev->dev);
- 
- 	/* Check if we can provide the requested rate */
--- 
-2.15.0
+T24gRnJpLCAyMDE3LTExLTAzIGF0IDE4OjM3ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBGcmksIE5vdiAwMywgMjAxNyBhdCAwNTo1Mzo1OVBNICswMDAwLCBUcmVudCBQaWVwaG8gd3Jv
+dGU6DQo+IA0KPiA+IEp1c3QgdG8gYmUgY2xlYXIsIG9uZSBkb2Vzbid0IG5lZWQgdG8gdXNlIEdQ
+SU9zIHdpdGggdGhlIGRyaXZlciBhcyBpcy4gDQo+ID4gQnV0IHRoZSBiaW5kaW5ncyB0byBkbyB0
+aGF0IGFyZSBub24tc3RhbmRhcmQgYW5kIHRoZXNlIHBhdGNoZXMgbWFrZSB0aGUNCj4gPiBkcml2
+ZXIgZm9sbG93IHRoZSBzdGFuZGFyZC4gKGFuZCBkb24ndCBicmVhayBhbnlvbmUpLg0KPiANCj4g
+SWYgdGhlcmUgYXJlIG5vbi1zdGFuZGFyZCBiaW5kaW5ncyB0aGVuIG1hcmsgdGhlbSBhcyBkZXBy
+ZWNhdGVkLiAgSQ0KPiBjYW4ndCBpbW1lZGlhdGVseSBmaW5kICphbnkqIGJpbmRpbmcgZG9jdW1l
+bnRhdGlvbiBmb3IgdGhpcyBjb250cm9sbGVyLg0KPiBUaGUgbGFzdCBjb21taXQgbG9va3MgbGlr
+ZSBpdCB3YXMgbW9yZSBhdHRlbXB0aW5nIHRvIHdvcmsgcm91bmQgYnJva2VuDQo+IGJvYXJkIGJp
+bmRpbmdzIGFuZCBkbyBzb21ldGhpbmcgc2Vuc2libGUgdGhhbiBhZGQgYSBuZXcgYmluZGluZywg
+YXQNCj4gbGVhc3QgdGhhdCdzIHdoYXQgSSByZW1lbWJlciBteSBzZW5zZSBvZiBpdCBiZWluZy4N
+Cg0KVGhlIG5vbi1zdGFuZGFyZCBwYXJ0IGlzIG5lZWRpbmcgdG8gYWRkIGNzLWdwaW9zID0gPDA+
+IHRvIGdldCBhIG5hdGl2ZQ0KY2hpcCBzZWxlY3Qgd2hlbiB0aGF0IGlzIGRvY3VtZW50ZWQgYXMg
+YmVpbmcgb3B0aW9uYWwuICBJdCBkb2Vzbid0DQpmb2xsb3cgdGhlIHNwZWMuICBJdCBkb2Vzbid0
+IG1hdGNoIG90aGVyIGRyaXZlcnMgKGFuZCBkdy1zcGkgaXMgZXF1YWxseQ0KYXMgYnJva2VuIGlu
+IHRoZSBzYW1lIG1hbm5lciwgcHJvYmFibHkgb3RoZXJzIHRvbykgdGhhdCBkbyBmb2xsb3cgdGhl
+DQpzcGVjLg0KDQo+IElmIHRoZSBoYXJkd2FyZSBpcyBhcyBicm9rZW4gYXMgdGhlc2UgY29udHJv
+bGxlcnMgYWx3YXlzIHdlcmUgaW4gdGhlDQo+IHBhc3QgYW5kIHRoZXJlIGFyZSB3b3JrYXJvdW5k
+cyB3aGljaCB3b3JrIGluIGFsbCBwcmFjdGljYWwgc2l0dWF0aW9ucw0KPiAoQUZBSUsgYWxsIHRo
+ZSByZWxldmFudCBTb0NzIHBlcm1pdCBHUElPIHVzYWdlIG9uIHRoZSBjaGlwIHNlbGVjdCBwaW5z
+KQ0KDQpDb21tZW50cyBpbiB0aGUgZHJpdmVyIGluZGljYXRlIHRoYXQgc29tZSBTb0NzIGRvIG5v
+dCBhbGxvdyBHUElPIHVzYWdlDQpvbiBhbGwgY2hpcCBzZWxlY3QgcGlucy4NCg0KPiBkb2N1bWVu
+dGluZyBzb21ldGhpbmcgYXMgc3VwcG9ydGVkIGlzIGp1c3QgZ29pbmcgdG8gbWFrZSBwZW9wbGUN
+Cj4gbWlzZXJhYmxlLiAgVGhlIHJlYXNvbiBJIGtub3cgYWJvdXQgdGhpcyBicmVha2FnZSBpcyB0
+aGF0IEkgaGFkIHRvIGdvDQo+IHRocm91Z2ggdGhlIHByb2Nlc3Mgb2Ygd29ya2luZyBvdXQgdGhh
+dCB0aGUgbmF0aXZlIGNoaXAgc2VsZWN0IHN1cHBvcnQNCj4gZGlkbid0IHdvcmsgb24gYSBzeXN0
+ZW0uDQoNCkkganVzdCBkb24ndCBzZWUgaG93IG5vdCBmb2xsb3dpbmcgdGhlIGRldmljZSB0cmVl
+IGJpbmRpbmcNCnNwZWNpZmljYXRpb24gZG9jdW1lbnRzIHRoZSBoYXJkd2FyZSBmbGF3LCBvciBo
+b3cgZm9sbG93aW5nIHRoZSBzcGVjDQpkb2N1bWVudHMgdGhhdCB0aGUgZmxhdyBkb2VzIG5vdCBl
+eGlzdC4NCg0KPiA+IElmIHRoZSBnb2FsIGlzIHRvIGRvY3VtZW50IHRoZSBoYXJkd2FyZSBxdWly
+a3MsIHRoZW4gc2hvdWxkbid0IHRoaXMgYmUNCj4gPiBkb25lIHRocm91Z2ggZG9jdW1lbnRhdGlv
+bj8gIEEgbm90ZSBvciBwb2ludGVyIGluIHRoZSBrY29uZmlnLA0KPiA+IHNvbWV0aGluZyBpbiB0
+aGUgc291cmNlLCBhIGJldHRlciBkZXNjcmlwdGlvbiBpbiBEb2N1bWVudGlvbi8NCj4gPiBzb21l
+d2hlcmUsIGV0Yy4gIFRoYXQgd291bGQgaGF2ZSBhIGJldHRlciBjaGFuY2Ugb2YgYmVpbmcgc2Vl
+biBiZWZvcmUNCj4gPiBoYXJkd2FyZSBpcyBkZXNpZ25lZCwgYW5kIHdvdWxkIGV4cGxhaW4gdGhl
+IGlzc3VlIHRvbywgaW5zdGVhZCBvZiBqdXN0DQo+ID4gYXBwZWFyaW5nIGFzIGFub3RoZXIgcXVp
+cmsgaW4gZGV2aWNlIHRyZWUgYmluZGluZ3MuDQo+IA0KPiBZZXMsIGJldHRlciBkb2N1bWVudGF0
+aW9uIHdvdWxkIGJlIGdyZWF0Lg0KDQpIb3cgYWJvdXQgSSBhZGQgc29tZXRoaW5nIHRvIERvY3Vt
+ZW50YXRpb24vc3BpIGFuZCBhZGQgYSBub3RlIGluDQpLY29uZmlnLCBidXQgbWFrZSB0aGUgZHJp
+dmVyIHN0YW5kYXJkIGNvbXBsaWFudCBpbiBpdHMgZGV2aWNlIHRyZWUNCmJpbmRpbmdzPw0KDQpU
+aGUgZ29hbCBoZXJlIGlzIHRoYXQgZXZlcnlvbmUgZG9lc24ndCBoYXZlIHRvIHN0aWNrIGEgc2Nv
+cGUgb24gdGhlDQpib2FyZCBhbmQgcmUtZGlzY292ZXIgdGhhdCB0aGUgbmF0aXZlIENTIGRvZXNu
+J3QgZG8gd2hhdCB0aGV5IHdhbnQsDQpyaWdodD8gQmVlbiB0aGVyZSwgZG9uZSB0aGF0LCBhbmQg
+Y2FuIGFwcHJlY2lhdGUgdGhlIHNlbnRpbWVudC4NCg0KSSBkb24ndCB0aGluayBub3QgZm9sbG93
+aW5nIHRoZSBzdGFuZGFyZCBpcyBhbiBlZmZlY3RpdmUgd2F5IHRvIGRvDQp0aGF0LiAgRnJvbSBh
+IHNhbXBsZSBvZiB0aHJlZSBkZXZlbG9wZXJzLCB0d28gY2FtZSB1cCB3aXRoIGR0IGJpbmRpbmdz
+DQp0byB1c2UgbmF0aXZlIGNzIGFuZCBkZWNpZGVkIHRoZXkgYXBwYXJlbnRseSBtaXN1bmRlcnN0
+b29kIHRoZSBzcGkgZHQNCnNwZWMgdG8gZXhwbGFpbiB3aHkgd2hhdCBzaG91bGQgaGF2ZSB3b3Jr
+ZWQgZGlkIG5vdC4gIFRoZSB0aGlyZCAobWUpDQpsb29rZWQgaW50byB0aGUgZHJpdmVyIHNvdXJj
+ZSB0byBmaW5kIHRoZSB3aHksIGFuZCBldmVuIHRoZW4gaXQgd2Fzbid0DQpjbGVhciB0aGUgYmVo
+YXZpb3Igd2FzIGludGVudGlvbmFsIG9yIGFuIG92ZXJzaWdodC4gIEkgdGhpbmsNCmRvY3VtZW50
+aW5nIHRoZSBrbm93biBmbGF3cyB3b3VsZCBiZSBhIGJldHRlciBhbmQgbW9yZSBlZmZlY3RpdmUg
+d2F5IHRvDQpnZXQgdGhhdCBpbmZvcm1hdGlvbiBhY3Jvc3Mu
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

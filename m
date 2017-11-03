@@ -1,45 +1,80 @@
-From: Colin King <colin.king@canonical.com>
-Subject: [PATCH] spi: sh-msiof: remove redundant pointer dev
-Date: Fri,  3 Nov 2017 13:58:29 +0000
-Message-ID: <20171103135829.8697-1-colin.king@canonical.com>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
+ required
+Date: Fri, 3 Nov 2017 17:53:59 +0000
+Message-ID: <1509731639.5473.60.camel@impinj.com>
+References: <20171027010841.28624-1-tpiepho@impinj.com>
+         <20171027010841.28624-2-tpiepho@impinj.com>
+         <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
+         <1509469061.5473.16.camel@impinj.com>
+         <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171102151439.6dpfud7a5vtc27dy-7j8lgAiuQgnQXOPxS62xeg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <4E16D750E61CC243A6AFAC7EEA60DFBA-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Colin Ian King <colin.king@canonical.com>
-
-The pointer dev is assigned but never read, hence it is redundant
-and can be removed. Cleans up clang warning:
-
-drivers/spi/spi-sh-msiof.c:1198:2: warning: Value stored to 'dev'
-is never read
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/spi/spi-sh-msiof.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 94d15ef0e4e6..fcd261f98b9f 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1190,12 +1190,10 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
- static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
- {
- 	struct spi_master *master = p->master;
--	struct device *dev;
- 
- 	if (!master->dma_tx)
- 		return;
- 
--	dev = &p->pdev->dev;
- 	dma_unmap_single(master->dma_rx->device->dev, p->rx_dma_addr,
- 			 PAGE_SIZE, DMA_FROM_DEVICE);
- 	dma_unmap_single(master->dma_tx->device->dev, p->tx_dma_addr,
--- 
-2.14.1
+T24gVGh1LCAyMDE3LTExLTAyIGF0IDE1OjE0ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBUdWUsIE9jdCAzMSwgMjAxNyBhdCAwNDo1Nzo0MlBNICswMDAwLCBUcmVudCBQaWVwaG8gd3Jv
+dGU6DQo+ID4gT24gVHVlLCAyMDE3LTEwLTMxIGF0IDExOjE5ICswMDAwLCBNYXJrIEJyb3duIHdy
+b3RlOg0KPiA+ID4gRG8gdGhlIG5hdGl2ZSBjaGlwIHNlbGVjdHMgYWN0dWFsbHkgd29yayB1c2Vm
+dWxseSBvbiB0aGlzIGhhcmR3YXJlPw0KPiA+ID4gVGhlcmUgdXNlZCB0byBiZSBwcm9ibGVtcyB3
+aXRoIGl0IHdhbnRpbmcgdG8gZG8gdGhpbmdzIGxpa2UgYm91bmNlIHRoZQ0KPiA+ID4gY2hpcCBz
+ZWxlY3Qgb24gZXZlcnkgd29yZCB3aGljaCBtYWRlIGl0IGV4dHJlbWVseSBkaWZmaWN1bHQgdG8g
+dXNlIHdpdGgNCj4gPiA+IExpbnV4Lg0KPiA+IFN0aWxsIGFyZSBhbm5veWluZywgYnV0IG9uIHRo
+ZSBkZXZpY2Ugd2UgaGF2ZSBjb25uZWN0ZWQgdG8gaXQsIGl0IGVuZHMNCj4gPiB1cCB3b3JraW5n
+IGFzIGRlc2lyZWQuDQo+ID4gSSd2ZSBub3QgdGhvcm91Z2hseSBpbnZlc3RpZ2F0ZWQgdGhpcyBo
+YXJkd2FyZSB0byBmaW5kIHRoZSBkZXRhaWxzLiANCj4gPiBJSVJDLCB0aGUgZGVzaWdud2FyZSBT
+UEkgb24gQWx0ZXJhIFNvQ0ZQR0EgaGFkIHRoZSBzYW1lIGlzc3VlLCBidXQgaXQNCj4gPiB3YXMg
+YSBmbGF3IGluIHRoZSBkcml2ZXIgYW5kIEkgd2FzIGFibGUgdG8gZml4IGl0LiAgSSd2ZSBjb21l
+IHRvIGV4cGVjdA0KPiA+IGl0LCBhcyBldmVyeSBuZXcgU1BJIG1hc3RlciBJIHVzZSBkb2Vzbid0
+IHdvcmsgcHJvcGVybHkgaW4gc29tZQ0KPiA+IGRpZmZlcmVudCB3YXkuDQo+IA0KPiBJdCdzIG9u
+ZSBvZiB0aGUgcmVhc29ucyB3aHkgSSdtIHN1c3BpY291cyBvZiBtYWtpbmcgdGhlIEdQSU8gb3B0
+aW9uYWwsDQo+IGxvdHMgb2YgY2hpcHMgdXNlIEdQSU8gY2hpcHNlbGVjdHMgYmVjYXVzZSBhIGxv
+dCBvZiB0aGUgYnJlYWthZ2UgaXMNCj4gY29uZmluZWQgdG8gY2hpcCBzZWxlY3QgaGFuZGxpbmcg
+YW5kIEkgcmVtZW1iZXIgdGhlIGkuTVggYXMgYmVpbmcNCj4gZXNwZWNpYWxseSBmYXIgZnJvbSB1
+c2VmdWwuDQoNCkp1c3QgdG8gYmUgY2xlYXIsIG9uZSBkb2Vzbid0IG5lZWQgdG8gdXNlIEdQSU9z
+IHdpdGggdGhlIGRyaXZlciBhcyBpcy4gDQpCdXQgdGhlIGJpbmRpbmdzIHRvIGRvIHRoYXQgYXJl
+IG5vbi1zdGFuZGFyZCBhbmQgdGhlc2UgcGF0Y2hlcyBtYWtlIHRoZQ0KZHJpdmVyIGZvbGxvdyB0
+aGUgc3RhbmRhcmQuIChhbmQgZG9uJ3QgYnJlYWsgYW55b25lKS4NCg0KSXQncyB1bmZvcnR1bmF0
+ZSB0aGF0IHRoaXMsIGFuZCBpbiBteSBleHBlcmllbmNlIGV2ZXJ5LCBTUEkgbWFzdGVyDQpkb2Vz
+bid0IGFsd2F5cyAob3IgZXZlcikgZ2VuZXJhdGUgdGhlIHdhdmVmb3JtcyBpdCBzaG91bGQgYWNj
+b3JkaW5nIHRvDQp0aGUgTGludXggQVBJLiAgQnV0IEkgZG9uJ3QgdGhpbmsgbm90IGZvbGxvd2lu
+ZyB0aGUgc3BlY2lmaWNhdGlvbiBmb3INCnRoZSBkZXZpY2UgdHJlZSBiaW5kaW5ncyBpcyBhIG1p
+dGlnYXRpb24gb2YgdGhpcy4gIElmIGFueXRoaW5nLCBpdCBqdXN0DQpjcmVhdGVzIG1vcmUgcHJv
+YmxlbXMuDQoNCkFzIHNvbWVvbmUgd2hvIGhhcyBkb25lIGJyaW5ndXAgYSBtb3JlIHRoYW4gYSBm
+ZXcgZGV2aWNlcywgSSBrbm93IHdoYXQNCkkgd2FudCB0aGUgaGFyZHdhcmUgdG8gZG8sIGFuZCBJ
+IGtub3cgdGhlIHByb3BlciBiaW5kaW5ncyB0byBkbyB0aGF0LiANCkJ1dCBzb21lb25lIGNvbWVz
+IGJhY2sgYW5kIHNheXMgdGhleSBkb24ndCB3b3JrIGFuZCBub3cgSSBuZWVkIHRvIGRpZw0KaW50
+byB0aGUgZHJpdmVyIHNvdXJjZSBhbmQgZmlndXJlIG91dCB3aGF0IGl0cyBwYXJ0aWN1bGFyIGZs
+YXZvciBvZg0Kbm9uLXN0YW5kYXJkIGJlaGF2aW9yIGlzLiAgSSBkb24ndCB0aGluayB0aGF0IGhl
+bHBlZCBtZSBhbnkuICBJdCBkaWRuJ3QNCnRlbGwgd2hhdCB0aGUgaGFyZHdhcmUvZHJpdmVyJ3Mg
+cXVpcmtzIGFyZSB3LnIudC4gYWJpbGl0eSB0byBmb2xsb3cgdGhlDQpMaW51eCBTUEkgQVBJIGVp
+dGhlci4NCg0KVGhpcyBhbHNvIGhhcHBlbnMgYWZ0ZXIgdGhlIGhhcmR3YXJlIGlzIGRlc2lnbmVk
+IGFuZCBidWlsdCwgc28gaXQncyBhDQpsaXR0bGUgbGF0ZSB0byBjaG9vc2UgYW5vdGhlciBwaW4u
+DQoNCklmIHRoZSBnb2FsIGlzIHRvIGRvY3VtZW50IHRoZSBoYXJkd2FyZSBxdWlya3MsIHRoZW4g
+c2hvdWxkbid0IHRoaXMgYmUNCmRvbmUgdGhyb3VnaCBkb2N1bWVudGF0aW9uPyAgQSBub3RlIG9y
+IHBvaW50ZXIgaW4gdGhlIGtjb25maWcsDQpzb21ldGhpbmcgaW4gdGhlIHNvdXJjZSwgYSBiZXR0
+ZXIgZGVzY3JpcHRpb24gaW4gRG9jdW1lbnRpb24vDQpzb21ld2hlcmUsIGV0Yy4gIFRoYXQgd291
+bGQgaGF2ZSBhIGJldHRlciBjaGFuY2Ugb2YgYmVpbmcgc2VlbiBiZWZvcmUNCmhhcmR3YXJlIGlz
+IGRlc2lnbmVkLCBhbmQgd291bGQgZXhwbGFpbiB0aGUgaXNzdWUgdG9vLCBpbnN0ZWFkIG9mIGp1
+c3QNCmFwcGVhcmluZyBhcyBhbm90aGVyIHF1aXJrIGluIGRldmljZSB0cmVlIGJpbmRpbmdzLg0K
+DQpBbHNvIGNvbnNpZGVyIHRoZXJlIGlzIGEgbG90IG9mIHJlLWltcGxlbWVudGVkIGNvZGUgaW4g
+ZWFjaCBkcml2ZXINCnJlbGF0aW5nIHRvIGRldmljZSB0cmVlIHBhcnNpbmcgYW5kIGFsc28gR1BJ
+TyBDUy4gIE5vbi1zdGFuZGFyZA0KYmVoYXZpb3IgaW4gYSBkcml2ZXIgZG9lc24ndCBoZWxwIGFu
+eSByZWZhY3RvcmluZyBlZmZvcnQu
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

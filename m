@@ -1,226 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: enabling Coldfire mcf5441x dspi" to the spi tree
-Date: Fri,  3 Nov 2017 11:53:57 +0000 (GMT)
-Message-ID: <20171103115357.75F2744005B@finisterre.ee.mobilebroadband>
-References: <20171019214706.25765-1-angelo@sysam.it>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171019214706.25765-1-angelo-BIYBQhTR83Y@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Colin King <colin.king@canonical.com>
+Subject: [PATCH] spi: s3c64xx: remove redundant pointer sci
+Date: Fri,  3 Nov 2017 13:35:25 +0000
+Message-ID: <20171103133525.8173-1-colin.king@canonical.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andi Shyti <andi.shyti@samsung.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+From: Colin Ian King <colin.king@canonical.com>
 
-   spi: spi-fsl-dspi: enabling Coldfire mcf5441x dspi
+The pointer sci is assigned but never read, hence it is redundant
+and can be removed. Cleans up clang warning:
 
-has been applied to the spi tree at
+drivers/spi/spi-s3c64xx.c:791:2: warning: Value stored to 'sci' is
+never read
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From ec7ed7708e009e046d1e16ed53ba4d6048748d07 Mon Sep 17 00:00:00 2001
-From: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
-Date: Sat, 28 Oct 2017 00:23:01 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: enabling Coldfire mcf5441x dspi
-
-Signed-off-by: Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/spi/Kconfig              |  2 +-
- drivers/spi/spi-fsl-dspi.c       | 66 +++++++++++++++++++++++++++-------------
- include/linux/spi/spi-fsl-dspi.h | 31 +++++++++++++++++++
- 3 files changed, 77 insertions(+), 22 deletions(-)
- create mode 100644 include/linux/spi/spi-fsl-dspi.h
+ drivers/spi/spi-s3c64xx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index a75f2a2cf780..a8b761979673 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -379,7 +379,7 @@ config SPI_FSL_DSPI
- 	tristate "Freescale DSPI controller"
- 	select REGMAP_MMIO
- 	depends on HAS_DMA
--	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
-+	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || M5441x || COMPILE_TEST
- 	help
- 	  This enables support for the Freescale DSPI controller in master
- 	  mode. VF610 platform uses the controller.
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index d89127f4a46d..f652f70cb8db 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -32,6 +32,7 @@
- #include <linux/regmap.h>
- #include <linux/sched.h>
- #include <linux/spi/spi.h>
-+#include <linux/spi/spi-fsl-dspi.h>
- #include <linux/spi/spi_bitbang.h>
- #include <linux/time.h>
- 
-@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
- 	.max_clock_factor = 8,
- };
- 
-+static const struct fsl_dspi_devtype_data coldfire_data = {
-+	.trans_mode = DSPI_EOQ_MODE,
-+	.max_clock_factor = 8,
-+};
-+
- struct fsl_dspi_dma {
- 	/* Length of transfer in words of DSPI_FIFO_SIZE */
- 	u32 curr_xfer_len;
-@@ -741,6 +747,7 @@ static int dspi_setup(struct spi_device *spi)
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index b392cca8fa4f..de7df20f8712 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -752,7 +752,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
  {
- 	struct chip_data *chip;
- 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
-+	struct fsl_dspi_platform_data *pdata;
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
- 	unsigned char pasc = 0, asc = 0, fmsz = 0;
-@@ -761,11 +768,18 @@ static int dspi_setup(struct spi_device *spi)
- 			return -ENOMEM;
+ 	struct s3c64xx_spi_csinfo *cs = spi->controller_data;
+ 	struct s3c64xx_spi_driver_data *sdd;
+-	struct s3c64xx_spi_info *sci;
+ 	int err;
+ 
+ 	sdd = spi_master_get_devdata(spi->master);
+@@ -788,8 +787,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 		spi_set_ctldata(spi, cs);
  	}
  
--	of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
--			&cs_sck_delay);
-+	pdata = dev_get_platdata(&dspi->pdev->dev);
+-	sci = sdd->cntrlr_info;
+-
+ 	pm_runtime_get_sync(&sdd->pdev->dev);
  
--	of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
--			&sck_cs_delay);
-+	if (!pdata) {
-+		of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
-+				&cs_sck_delay);
-+
-+		of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
-+				&sck_cs_delay);
-+	} else {
-+		cs_sck_delay = pdata->cs_sck_delay;
-+		sck_cs_delay = pdata->sck_cs_delay;
-+	}
- 
- 	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS |
- 		SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF;
-@@ -949,6 +963,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	struct fsl_dspi *dspi;
- 	struct resource *res;
- 	void __iomem *base;
-+	struct fsl_dspi_platform_data *pdata;
- 	int ret = 0, cs_num, bus_num;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
-@@ -969,25 +984,34 @@ static int dspi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_MASK(4) | SPI_BPW_MASK(8) |
- 					SPI_BPW_MASK(16);
- 
--	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
--		goto out_master_put;
--	}
--	master->num_chipselect = cs_num;
-+	pdata = dev_get_platdata(&pdev->dev);
-+	if (pdata) {
-+		master->num_chipselect = pdata->cs_num;
-+		master->bus_num = pdata->bus_num;
- 
--	ret = of_property_read_u32(np, "bus-num", &bus_num);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "can't get bus-num\n");
--		goto out_master_put;
--	}
--	master->bus_num = bus_num;
-+		dspi->devtype_data = &coldfire_data;
-+	} else {
- 
--	dspi->devtype_data = of_device_get_match_data(&pdev->dev);
--	if (!dspi->devtype_data) {
--		dev_err(&pdev->dev, "can't get devtype_data\n");
--		ret = -EFAULT;
--		goto out_master_put;
-+		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
-+		if (ret < 0) {
-+			dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
-+			goto out_master_put;
-+		}
-+		master->num_chipselect = cs_num;
-+
-+		ret = of_property_read_u32(np, "bus-num", &bus_num);
-+		if (ret < 0) {
-+			dev_err(&pdev->dev, "can't get bus-num\n");
-+			goto out_master_put;
-+		}
-+		master->bus_num = bus_num;
-+
-+		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
-+		if (!dspi->devtype_data) {
-+			dev_err(&pdev->dev, "can't get devtype_data\n");
-+			ret = -EFAULT;
-+			goto out_master_put;
-+		}
- 	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-diff --git a/include/linux/spi/spi-fsl-dspi.h b/include/linux/spi/spi-fsl-dspi.h
-new file mode 100644
-index 000000000000..74c9bae20bf2
---- /dev/null
-+++ b/include/linux/spi/spi-fsl-dspi.h
-@@ -0,0 +1,31 @@
-+/*
-+ * Freescale DSPI controller driver
-+ *
-+ * Copyright (c) 2017 Angelo Dureghello <angelo-BIYBQhTR83Y@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef SPI_FSL_DSPI_HEADER_H
-+#define SPI_FSL_DSPI_HEADER_H
-+
-+/**
-+ * struct fsl_dspi_platform_data - platform data for the Freescale DSPI driver
-+ * @bus_num: board specific identifier for this DSPI driver.
-+ * @cs_num: number of chip selects supported by this DSPI driver.
-+ */
-+struct fsl_dspi_platform_data {
-+	u32 cs_num;
-+	u32 bus_num;
-+	u32 sck_cs_delay;
-+	u32 cs_sck_delay;
-+};
-+
-+#endif /* SPI_FSL_DSPI_HEADER_H */
+ 	/* Check if we can provide the requested rate */
 -- 
 2.14.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

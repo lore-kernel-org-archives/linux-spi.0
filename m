@@ -1,87 +1,81 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
- required
-Date: Fri, 3 Nov 2017 18:37:00 +0000
-Message-ID: <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
-References: <20171027010841.28624-1-tpiepho@impinj.com>
- <20171027010841.28624-2-tpiepho@impinj.com>
- <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
- <1509469061.5473.16.camel@impinj.com>
- <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
- <1509731639.5473.60.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="afciwvqykpwy4eef"
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Applied "spi: sh-msiof: remove redundant pointer dev" to the spi tree
+Date: Fri, 03 Nov 2017 18:50:46 +0000
+Message-ID: <E1eAh3G-0005rO-5K@debutante>
+References: <20171103135829.8697-1-colin.king@canonical.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1509731639.5473.60.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20171103135829.8697-1-colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---afciwvqykpwy4eef
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: sh-msiof: remove redundant pointer dev
 
-On Fri, Nov 03, 2017 at 05:53:59PM +0000, Trent Piepho wrote:
+has been applied to the spi tree at
 
-> Just to be clear, one doesn't need to use GPIOs with the driver as is.=20
-> But the bindings to do that are non-standard and these patches make the
-> driver follow the standard. (and don't break anyone).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-If there are non-standard bindings then mark them as deprecated.  I
-can't immediately find *any* binding documentation for this controller.
-The last commit looks like it was more attempting to work round broken
-board bindings and do something sensible than add a new binding, at
-least that's what I remember my sense of it being.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> It's unfortunate that this, and in my experience every, SPI master
-> doesn't always (or ever) generate the waveforms it should according to
-> the Linux API.  But I don't think not following the specification for
-> the device tree bindings is a mitigation of this.  If anything, it just
-> creates more problems.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-If the hardware is as broken as these controllers always were in the
-past and there are workarounds which work in all practical situations
-(AFAIK all the relevant SoCs permit GPIO usage on the chip select pins)
-documenting something as supported is just going to make people
-miserable.  The reason I know about this breakage is that I had to go
-through the process of working out that the native chip select support
-didn't work on a system.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> If the goal is to document the hardware quirks, then shouldn't this be
-> done through documentation?  A note or pointer in the kconfig,
-> something in the source, a better description in Documention/
-> somewhere, etc.  That would have a better chance of being seen before
-> hardware is designed, and would explain the issue too, instead of just
-> appearing as another quirk in device tree bindings.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Yes, better documentation would be great.
+Thanks,
+Mark
 
---afciwvqykpwy4eef
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 6ae6678344af52cf1c05475ff3ec2f43b8b532ef Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Date: Fri, 3 Nov 2017 13:58:29 +0000
+Subject: [PATCH] spi: sh-msiof: remove redundant pointer dev
 
------BEGIN PGP SIGNATURE-----
+The pointer dev is assigned but never read, hence it is redundant
+and can be removed. Cleans up clang warning:
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAln8t0wACgkQJNaLcl1U
-h9Bkdwf+Pe8OuwTEINoDuRoLj/XXa4vNBHXvTCplVzHMw7YK/7KUPDxBhKxTlMme
-sr9FPgR29JbI4SzcyU4NRaSfDU3GIKRAxSsIbXwwUIbqFo82s2YCo2WMXF1Gie8V
-P4a0xVDmmoVNFDEdg9gA/uYSoMlrVZJbwPgJsA5o9hNHKNLEHYO89zSUBI1fstHn
-HHSqZRwnOnZ1JT3+vooFwVGPjdYx23+jpg51WZ0POJRYk1g27T2dCDG1NKK8M1iY
-Io33gyzQKuqcjRo2317WVmL4cOBfoNofZokGEUy/8TSaKx/Syw9iSOFq5C6ATI/Q
-GAII4C2BOwBPVoUmAHtvesGdDN9RHw==
-=d8Md
------END PGP SIGNATURE-----
+drivers/spi/spi-sh-msiof.c:1198:2: warning: Value stored to 'dev'
+is never read
 
---afciwvqykpwy4eef--
+Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-sh-msiof.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2c5ea4c57508..66043611e86d 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1190,12 +1190,10 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+ static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
+ {
+ 	struct spi_master *master = p->master;
+-	struct device *dev;
+ 
+ 	if (!master->dma_tx)
+ 		return;
+ 
+-	dev = &p->pdev->dev;
+ 	dma_unmap_single(master->dma_rx->device->dev, p->rx_dma_addr,
+ 			 PAGE_SIZE, DMA_FROM_DEVICE);
+ 	dma_unmap_single(master->dma_tx->device->dev, p->tx_dma_addr,
+-- 
+2.15.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

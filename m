@@ -1,51 +1,73 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: [bug report] xilinx_spi: potential use after free in
- xilinx_spi_remove
-Date: Sat, 4 Nov 2017 10:07:13 +0300
-Message-ID: <20171104070713.7hs3x3xdx3rp74jk@mwanda>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v2 1/4] spi: imx: GPIO based chip selects should not be
+ required
+Date: Mon, 6 Nov 2017 08:32:46 +0100
+Message-ID: <20171106073246.efcz7r2vnymz3me7@pengutronix.de>
+References: <20171027010841.28624-1-tpiepho@impinj.com>
+ <20171027010841.28624-2-tpiepho@impinj.com>
+ <20171031111919.gocl7wwrhkwnxrya@sirena.co.uk>
+ <1509469061.5473.16.camel@impinj.com>
+ <20171102151439.6dpfud7a5vtc27dy@sirena.co.uk>
+ <1509731639.5473.60.camel@impinj.com>
+ <20171103183700.spnqbagr4q7fth4k@sirena.co.uk>
+ <1509736735.5473.87.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        "fabio.estevam-3arQi8VN3Tc@public.gmane.org" <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1509736735.5473.87.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi, I have a question about this static checker warning:
+On Fri, Nov 03, 2017 at 07:18:56PM +0000, Trent Piepho wrote:
+> On Fri, 2017-11-03 at 18:37 +0000, Mark Brown wrote:
+> > On Fri, Nov 03, 2017 at 05:53:59PM +0000, Trent Piepho wrote:
+> > 
+> > > Just to be clear, one doesn't need to use GPIOs with the driver as is. 
+> > > But the bindings to do that are non-standard and these patches make the
+> > > driver follow the standard. (and don't break anyone).
+> > 
+> > If there are non-standard bindings then mark them as deprecated.  I
+> > can't immediately find *any* binding documentation for this controller.
+> > The last commit looks like it was more attempting to work round broken
+> > board bindings and do something sensible than add a new binding, at
+> > least that's what I remember my sense of it being.
+> 
+> The non-standard part is needing to add cs-gpios = <0> to get a native
+> chip select when that is documented as being optional.  It doesn't
+> follow the spec.  It doesn't match other drivers (and dw-spi is equally
+> as broken in the same manner, probably others too) that do follow the
+> spec.
+> 
+> > If the hardware is as broken as these controllers always were in the
+> > past and there are workarounds which work in all practical situations
+> > (AFAIK all the relevant SoCs permit GPIO usage on the chip select pins)
+> 
+> Comments in the driver indicate that some SoCs do not allow GPIO usage
+> on all chip select pins.
 
-	drivers/spi/spi-xilinx.c:509 xilinx_spi_remove()
-	warn: passing freed memory 'xspi->bitbang.master'
+Which comments do you mean? I remember there were comments, but I can't
+find any in the driver.
 
-drivers/spi/spi-xilinx.c
-   496  static int xilinx_spi_remove(struct platform_device *pdev)
-   497  {
-   498          struct spi_master *master = platform_get_drvdata(pdev);
-   499          struct xilinx_spi *xspi = spi_master_get_devdata(master);
-   500          void __iomem *regs_base = xspi->regs;
-   501  
-   502          spi_bitbang_stop(&xspi->bitbang);
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Can we use xspi->bitbang.master again after we pass it to
-spi_unregister_master()?  I'm not totally sure how the refcounting works
-with this.
+The only SoC which has dedicated SPI CS pins which can't be configured
+as GPIOs is the i.MX31. Unless you have an i.MX31 you shouldn't be
+forced to use native chip selects.
 
-   503  
-   504          /* Disable all the interrupts just in case */
-   505          xspi->write_fn(0, regs_base + XIPIF_V123B_IIER_OFFSET);
-   506          /* Disable the global IPIF interrupt */
-   507          xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
-   508  
-   509          spi_master_put(xspi->bitbang.master);
-                               ^^^^^^^^^^^^^^^^^^^^
-The static checker is complaining about this but it could be easily be
-wrong depending on how spi_unregister_master() works.
+Sascha
 
-   510  
-   511          return 0;
-   512  }
-
-regards,
-dan carpenter
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

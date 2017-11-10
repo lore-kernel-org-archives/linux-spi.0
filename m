@@ -1,25 +1,17 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: Fix failure path leak on GPIO request error" to the spi tree
-Date: Fri, 10 Nov 2017 21:30:10 +0000
-Message-ID: <E1eDGsM-0004iR-Jp@debutante>
-References: <20171031194907.29108-3-tpiepho@impinj.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Applied "spi: imx: GPIO based chip selects should not be required" to the spi tree
+Date: Fri, 10 Nov 2017 21:30:13 +0000
+Message-ID: <E1eDGsP-0004jA-7N@debutante>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171031194907.29108-3-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: Fix failure path leak on GPIO request error
+   spi: imx: GPIO based chip selects should not be required
 
 has been applied to the spi tree at
 
@@ -44,52 +36,78 @@ to this mail.
 Thanks,
 Mark
 
->From 4e21791e741c7c1b962c4a8327529f52310b9aac Mon Sep 17 00:00:00 2001
+>From 881a0b993e9f065cbb3673c94c395fa1de24bdcc Mon Sep 17 00:00:00 2001
 From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 31 Oct 2017 12:49:05 -0700
-Subject: [PATCH] spi: imx: Fix failure path leak on GPIO request error
+Date: Tue, 31 Oct 2017 12:49:04 -0700
+Subject: [PATCH] spi: imx: GPIO based chip selects should not be required
 
-If the code that requests any chip select GPIOs fails, the cleanup of
-spi_bitbang_start() by calling spi_bitbang_stop() is not done.  Add this
-to the failure path.
+The driver will fail to load if no gpio chip selects are specified,
+this patch changes this so that it no longer fails.
 
-Note that spi_bitbang_start() has to be called before requesting GPIOs
-because the GPIO data in the spi master is populated when the master is
-registed, and that doesn't happen until spi_bitbang_start() is called.
+It's possible to use all native chip selects, in which case there is
+no reason to have a gpio chip select array.  This is what happens if
+the *optional* device tree property "cs-gpios" is omitted.
 
+The spi core already checks for the absence of gpio chip selects in
+the master and assigns any slaves the gpio_cs value of -ENOENT.
+
+Also have the driver respect the standard SPI device tree property "num-cs"
+to allow setting the number of chip selects without using cs-gpios.
+
+CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 CC: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 70dcc8ee1f6b..fdbbdac66839 100644
+index 5ddd32ba2521..70dcc8ee1f6b 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1633,7 +1633,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 			if (ret) {
- 				dev_err(&pdev->dev, "Can't get CS GPIO %i\n",
- 					master->cs_gpios[i]);
--				goto out_clk_put;
-+				goto out_spi_bitbang;
- 			}
- 		}
- 	}
-@@ -1650,6 +1650,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	clk_disable(spi_imx->clk_per);
- 	return ret;
+@@ -1523,6 +1523,7 @@ static int spi_imx_probe(struct platform_device *pdev)
  
-+out_spi_bitbang:
-+	spi_bitbang_stop(&spi_imx->bitbang);
- out_clk_put:
- 	clk_disable_unprepare(spi_imx->clk_ipg);
- out_put_per:
+ 	spi_imx->devtype_data = devtype_data;
+ 
++	/* Get number of chip selects, either platform data or OF */
+ 	if (mxc_platform_info) {
+ 		master->num_chipselect = mxc_platform_info->num_chipselect;
+ 		master->cs_gpios = devm_kzalloc(&master->dev,
+@@ -1532,7 +1533,13 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 		for (i = 0; i < master->num_chipselect; i++)
+ 			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
+- 	}
++	} else {
++		u32 num_cs;
++
++		if (!of_property_read_u32(np, "num-cs", &num_cs))
++			master->num_chipselect = num_cs;
++		/* If not preset, default value of 1 is used */
++	}
+ 
+ 	spi_imx->bitbang.chipselect = spi_imx_chipselect;
+ 	spi_imx->bitbang.setup_transfer = spi_imx_setupxfer;
+@@ -1614,13 +1621,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+-	if (!spi_imx->slave_mode) {
+-		if (!master->cs_gpios) {
+-			dev_err(&pdev->dev, "No CS GPIOs available\n");
+-			ret = -EINVAL;
+-			goto out_clk_put;
+-		}
+-
++	/* Request GPIO CS lines, if any */
++	if (!spi_imx->slave_mode && master->cs_gpios) {
+ 		for (i = 0; i < master->num_chipselect; i++) {
+ 			if (!gpio_is_valid(master->cs_gpios[i]))
+ 				continue;
 -- 
 2.15.0
 

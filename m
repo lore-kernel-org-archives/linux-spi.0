@@ -1,17 +1,23 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: GPIO based chip selects should not be required" to the spi tree
-Date: Fri, 10 Nov 2017 21:30:13 +0000
-Message-ID: <E1eDGsP-0004jA-7N@debutante>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Applied "spi: imx: Don't require platform data chipselect array" to the spi tree
+Date: Fri, 10 Nov 2017 21:30:04 +0000
+Message-ID: <E1eDGsG-0004h1-V3@debutante>
+References: <20171031194907.29108-4-tpiepho@impinj.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <20171031194907.29108-4-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: GPIO based chip selects should not be required
+   spi: imx: Don't require platform data chipselect array
 
 has been applied to the spi tree at
 
@@ -36,78 +42,56 @@ to this mail.
 Thanks,
 Mark
 
->From 881a0b993e9f065cbb3673c94c395fa1de24bdcc Mon Sep 17 00:00:00 2001
+>From ffd4db9e10fdb431b559af052c17015682bbe2aa Mon Sep 17 00:00:00 2001
 From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 31 Oct 2017 12:49:04 -0700
-Subject: [PATCH] spi: imx: GPIO based chip selects should not be required
+Date: Tue, 31 Oct 2017 12:49:06 -0700
+Subject: [PATCH] spi: imx: Don't require platform data chipselect array
 
-The driver will fail to load if no gpio chip selects are specified,
-this patch changes this so that it no longer fails.
+If the array is not present, assume all chip selects are native.  This
+is the standard behavior for SPI masters configured via the device
+tree and the behavior of this driver as well when it is configured via
+device tree.
 
-It's possible to use all native chip selects, in which case there is
-no reason to have a gpio chip select array.  This is what happens if
-the *optional* device tree property "cs-gpios" is omitted.
+This reduces platform data vs DT differences and allows most of the
+platform data based boards to remove their chip select arrays.
 
-The spi core already checks for the absence of gpio chip selects in
-the master and assigns any slaves the gpio_cs value of -ENOENT.
-
-Also have the driver respect the standard SPI device tree property "num-cs"
-to allow setting the number of chip selects without using cs-gpios.
-
-CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-CC: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/spi/spi-imx.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 5ddd32ba2521..70dcc8ee1f6b 100644
+index fdbbdac66839..79ddefe4180d 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1523,6 +1523,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 
- 	spi_imx->devtype_data = devtype_data;
- 
-+	/* Get number of chip selects, either platform data or OF */
+@@ -1526,13 +1526,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	/* Get number of chip selects, either platform data or OF */
  	if (mxc_platform_info) {
  		master->num_chipselect = mxc_platform_info->num_chipselect;
- 		master->cs_gpios = devm_kzalloc(&master->dev,
-@@ -1532,7 +1533,13 @@ static int spi_imx_probe(struct platform_device *pdev)
- 
- 		for (i = 0; i < master->num_chipselect; i++)
- 			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
-- 	}
-+	} else {
-+		u32 num_cs;
-+
-+		if (!of_property_read_u32(np, "num-cs", &num_cs))
-+			master->num_chipselect = num_cs;
-+		/* If not preset, default value of 1 is used */
-+	}
- 
- 	spi_imx->bitbang.chipselect = spi_imx_chipselect;
- 	spi_imx->bitbang.setup_transfer = spi_imx_setupxfer;
-@@ -1614,13 +1621,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 
- 	master->dev.of_node = pdev->dev.of_node;
- 
--	if (!spi_imx->slave_mode) {
--		if (!master->cs_gpios) {
--			dev_err(&pdev->dev, "No CS GPIOs available\n");
--			ret = -EINVAL;
--			goto out_clk_put;
--		}
+-		master->cs_gpios = devm_kzalloc(&master->dev,
+-			sizeof(int) * master->num_chipselect, GFP_KERNEL);
+-		if (!master->cs_gpios)
+-			return -ENOMEM;
 -
-+	/* Request GPIO CS lines, if any */
-+	if (!spi_imx->slave_mode && master->cs_gpios) {
- 		for (i = 0; i < master->num_chipselect; i++) {
- 			if (!gpio_is_valid(master->cs_gpios[i]))
- 				continue;
+-		for (i = 0; i < master->num_chipselect; i++)
+-			master->cs_gpios[i] = mxc_platform_info->chipselect[i];
++		if (mxc_platform_info->chipselect) {
++			master->cs_gpios = devm_kzalloc(&master->dev,
++				sizeof(int) * master->num_chipselect, GFP_KERNEL);
++			if (!master->cs_gpios)
++				return -ENOMEM;
++
++			for (i = 0; i < master->num_chipselect; i++)
++				master->cs_gpios[i] = mxc_platform_info->chipselect[i];
++		}
+ 	} else {
+ 		u32 num_cs;
+ 
 -- 
 2.15.0
 

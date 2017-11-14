@@ -1,50 +1,56 @@
-From: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>
-Subject: MCP251x SPI CAN controller on Cavium ThunderX
-Date: Mon, 13 Nov 2017 13:17:42 -0800
-Message-ID: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: MCP251x SPI CAN controller on Cavium ThunderX
+Date: Tue, 14 Nov 2017 12:02:07 +0000
+Message-ID: <20171114120207.xbee2cgsai4qka46@sirena.org.uk>
+References: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="e4xxopltkrz4zvbu"
+Cc: Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>,
         Marc Kleine-Budde <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Mark/Jan,
 
-I have been unsuccessful getting a MCP251x SPI based CAN controller
-working on a CN80xx using Linux mainline.
+--e4xxopltkrz4zvbu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When a register is read from the mcp251x driver the
-octeon_spi_do_transfer() gets a spi_message with a single spi_xfer of
-len=3, a tx_buf, and an rx_buf which I believe is supposed to shift
-out 3 bytes out MOSI and shift in 3 bytes from MISO where the last
-byte shifted in would be the response.
+On Mon, Nov 13, 2017 at 01:17:42PM -0800, Tim Harvey wrote:
 
-The cavium CN80xx MPI_TX register has fields for 'Number of bytes to
-transmit' (TXNUM) and 'Total number of bytes to shift (transmit and
-receive)' (TOTNUM) and these are both getting set to 3 by
-octeon_spi_do_transfer() but I find that this causes unexpected data
-in the shifted in response unless I make TOTNUM = TXNUM + 1.
+> When a register is read from the mcp251x driver the
+> octeon_spi_do_transfer() gets a spi_message with a single spi_xfer of
+> len=3, a tx_buf, and an rx_buf which I believe is supposed to shift
+> out 3 bytes out MOSI and shift in 3 bytes from MISO where the last
+> byte shifted in would be the response.
 
-I should also note that Cavium has a software suite called the 'BDK'
-which provides a CLI to SPI transfers which allows you to set the
-TXNUM and TOTNUM fields uniquely and if I send a 2-byte command
-(TXNUM=2) to read a register (READ command followed by the register)
-and a 1 byte read (thus TOTNUM=3) then I get the response from the
-mcp251x I expect.
+No, that will simultaneously transmit and recieve three bytes.  If you
+want to transmit two bytes and then recieve one byte you need two xfers,
+one with a len of 2 and a tx_buf, the other with a len of 1 and a rx_buf.
 
-Is there something I'm misunderstanding about the Linux SPI API and
-perhaps is there a bug in the cavium SPI controller driver or do I
-perhaps have it configured wrong with respect to CPHA and/or CPOL?
+--e4xxopltkrz4zvbu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
 
-Tim
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAloK2z4ACgkQJNaLcl1U
+h9CCvgf/QzTbKo9PUto0ftJpgRcHYPszjJFYWDP56teG68kzEVo3giNAsEsRIPif
+Hmwc0/JkFErxFwok9N7KB4n8+oK4DTofLd8bphNNP0GR3tfYE5O1hnahn0sSzOp9
+fcoQflAbt3b+/qt54DTkL7Pzo4srhyrtHOEk6nHoCHChTK7klcV0C2PCBlvHAa8B
+uurozNzTiFIpsMaUFWFO7UGwsXc9yGDxd71ADFGrAS9Z6tcTZY8qyXp4AXIbYAnD
+7z7Zh0lRdvU9kpC1CzHL4goRj4XzAnLW2V6iaVuibt57GvcNvr5oCYqQDxv2J0vt
+NtpCOpnchYirLbEz6DCBsgiUW6Zh8g==
+=N4XA
+-----END PGP SIGNATURE-----
+
+--e4xxopltkrz4zvbu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,56 +1,73 @@
-From: Mark Brown <broonie@kernel.org>
+From: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
 Subject: Re: MCP251x SPI CAN controller on Cavium ThunderX
-Date: Wed, 15 Nov 2017 15:39:40 +0000
-Message-ID: <20171115153940.cxlacbcyl3jxiwex@sirena.org.uk>
+Date: Wed, 15 Nov 2017 08:02:01 -0800
+Message-ID: <2771c4a8-ed85-86c1-a08c-5b62d177b107@caviumnetworks.com>
 References: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw@mail.gmail.com>
- <20171114120207.xbee2cgsai4qka46@sirena.org.uk>
- <bfa971bb-1217-ed86-d1d8-e353ecc506aa@pengutronix.de>
- <20171115120754.GC3011@hc>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wprfa2rwdtellclg"
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-        Tim Harvey <tharvey@gateworks.com>, linux-spi@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        linux-can <linux-can@vger.kernel.org>
-To: Jan Glauber <jan.glauber@caviumnetworks.com>
-Return-path: <linux-can-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20171115120754.GC3011@hc>
-Sender: linux-can-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>,
+        Marc Kleine-Budde <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+On 11/13/2017 01:17 PM, Tim Harvey wrote:
+> Mark/Jan,
+> 
+> I have been unsuccessful getting a MCP251x SPI based CAN controller
+> working on a CN80xx using Linux mainline.
+> 
+> When a register is read from the mcp251x driver the
+> octeon_spi_do_transfer() gets a spi_message with a single spi_xfer of
+> len=3, a tx_buf, and an rx_buf which I believe is supposed to shift
+> out 3 bytes out MOSI and shift in 3 bytes from MISO where the last
+> byte shifted in would be the response.
+> 
+> The cavium CN80xx MPI_TX register has fields for 'Number of bytes to
+> transmit' (TXNUM) and 'Total number of bytes to shift (transmit and
+> receive)' (TOTNUM) and these are both getting set to 3 by
+> octeon_spi_do_transfer() but I find that this causes unexpected data
+> in the shifted in response unless I make TOTNUM = TXNUM + 1.
+> 
+> I should also note that Cavium has a software suite called the 'BDK'
+> which provides a CLI to SPI transfers which allows you to set the
+> TXNUM and TOTNUM fields uniquely and if I send a 2-byte command
+> (TXNUM=2) to read a register (READ command followed by the register)
+> and a 1 byte read (thus TOTNUM=3) then I get the response from the
+> mcp251x I expect.
+> 
+
+By looking at the driver, and from my recollection, I think that 
+SPI_3WIRE may never have been tested, so there could be bugs in this mode.
+
+The driver as is works with various SPI eeprom devices, so any proposed 
+changes would need to be validated against things that currently work.
+
+It could be that you need the CN80xx Hardware Reference Manual, board 
+schematics and a logic analyzer to be able to figure out what is happening.
+
+David.
 
 
---wprfa2rwdtellclg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Nov 15, 2017 at 01:07:54PM +0100, Jan Glauber wrote:
+> Is there something I'm misunderstanding about the Linux SPI API and
+> perhaps is there a bug in the cavium SPI controller driver or do I
+> perhaps have it configured wrong with respect to CPHA and/or CPOL?
+> 
+> Thanks,
+> 
+> Tim
+> 
 
-> To support this full duplex transfer the Cavium SPI controller needs
-> to know the receive lenght before setting up the transaction.
-
-> spi_transfer only includes the total length, so I don't see how this
-> should work.
-
-For a full duplex transfer the recieve length *is* the total length of
-the transfer.  If there is a mix of tx, rx and full duplex then you need
-multiple xfers in the transfer.
-
---wprfa2rwdtellclg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAloMX7sACgkQJNaLcl1U
-h9C/1Qf+JpW5b0U+OGAOXioYPOfMAswMf4jkY5DnHprbabg9g8cJXkvc0ZMw6Rkq
-Umkek0U35ddlmx2+fVHFZTszLeB6+/8gly9esnCagw+sXlAuSzRzBL5sSD7TfS7Y
-lapN3ThqJIOe2HhclMqJpfRPqeG/w+lZN5HiJ/F4Zg1V7LdGOEygVeT2kg4irhlm
-T8uDpdoTEBjuu6CkYsH4zK8TIe6cldGVifFYg9Z/wOFl90cgWPvckv8M58veRp2/
-t87oFhp+5Halj26VsnktmIomHOsW5TJWg1fL/9IOSByIUhK43+rIphX91x6zhgNX
-27GHr4YV/mCQPwcHkEpFX6b28/wLCQ==
-=LP3E
------END PGP SIGNATURE-----
-
---wprfa2rwdtellclg--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

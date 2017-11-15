@@ -1,71 +1,79 @@
-From: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Subject: Re: MCP251x SPI CAN controller on Cavium ThunderX
-Date: Wed, 15 Nov 2017 08:02:01 -0800
-Message-ID: <2771c4a8-ed85-86c1-a08c-5b62d177b107@caviumnetworks.com>
-References: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw@mail.gmail.com>
+From: Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: [RFC PATCH 1/2] Revert "spi: atmel: fix corrupted data issue on SAM9 family SoCs"
+Date: Wed, 15 Nov 2017 18:35:31 +0200
+Message-ID: <1510763732-10151-2-git-send-email-radu.pirea@microchip.com>
+References: <1510763732-10151-1-git-send-email-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>,
-        Marc Kleine-Budde <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <1510763732-10151-1-git-send-email-radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 11/13/2017 01:17 PM, Tim Harvey wrote:
-> Mark/Jan,
-> 
-> I have been unsuccessful getting a MCP251x SPI based CAN controller
-> working on a CN80xx using Linux mainline.
-> 
-> When a register is read from the mcp251x driver the
-> octeon_spi_do_transfer() gets a spi_message with a single spi_xfer of
-> len=3, a tx_buf, and an rx_buf which I believe is supposed to shift
-> out 3 bytes out MOSI and shift in 3 bytes from MISO where the last
-> byte shifted in would be the response.
-> 
-> The cavium CN80xx MPI_TX register has fields for 'Number of bytes to
-> transmit' (TXNUM) and 'Total number of bytes to shift (transmit and
-> receive)' (TOTNUM) and these are both getting set to 3 by
-> octeon_spi_do_transfer() but I find that this causes unexpected data
-> in the shifted in response unless I make TOTNUM = TXNUM + 1.
-> 
-> I should also note that Cavium has a software suite called the 'BDK'
-> which provides a CLI to SPI transfers which allows you to set the
-> TXNUM and TOTNUM fields uniquely and if I send a 2-byte command
-> (TXNUM=2) to read a register (READ command followed by the register)
-> and a 1 byte read (thus TOTNUM=3) then I get the response from the
-> mcp251x I expect.
-> 
+This reverts commit 7094576ccdc3acfe1e06a1e2ab547add375baf7f.
 
-By looking at the driver, and from my recollection, I think that 
-SPI_3WIRE may never have been tested, so there could be bugs in this mode.
+A better fix was found and DMA for SAM9 SoCs must be enabled.
 
-The driver as is works with various SPI eeprom devices, so any proposed 
-changes would need to be validated against things that currently work.
+Signed-off-by: Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
 
-It could be that you need the CN80xx Hardware Reference Manual, board 
-schematics and a logic analyzer to be able to figure out what is happening.
-
-David.
-
-
-
-> Is there something I'm misunderstanding about the Linux SPI API and
-> perhaps is there a bug in the cavium SPI controller driver or do I
-> perhaps have it configured wrong with respect to CPHA and/or CPOL?
-> 
-> Thanks,
-> 
-> Tim
-> 
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index f95da36..4e5e51f 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -269,7 +269,6 @@ struct atmel_spi_caps {
+ 	bool	is_spi2;
+ 	bool	has_wdrbt;
+ 	bool	has_dma_support;
+-	bool	has_pdc_support;
+ };
+ 
+ /*
+@@ -1426,28 +1425,7 @@ static void atmel_get_caps(struct atmel_spi *as)
+ 
+ 	as->caps.is_spi2 = version > 0x121;
+ 	as->caps.has_wdrbt = version >= 0x210;
+-#ifdef CONFIG_SOC_SAM_V4_V5
+-	/*
+-	 * Atmel SoCs based on ARM9 (SAM9x) cores should not use spi_map_buf()
+-	 * since this later function tries to map buffers with dma_map_sg()
+-	 * even if they have not been allocated inside DMA-safe areas.
+-	 * On SoCs based on Cortex A5 (SAMA5Dx), it works anyway because for
+-	 * those ARM cores, the data cache follows the PIPT model.
+-	 * Also the L2 cache controller of SAMA5D2 uses the PIPT model too.
+-	 * In case of PIPT caches, there cannot be cache aliases.
+-	 * However on ARM9 cores, the data cache follows the VIVT model, hence
+-	 * the cache aliases issue can occur when buffers are allocated from
+-	 * DMA-unsafe areas, by vmalloc() for instance, where cache coherency is
+-	 * not taken into account or at least not handled completely (cache
+-	 * lines of aliases are not invalidated).
+-	 * This is not a theorical issue: it was reproduced when trying to mount
+-	 * a UBI file-system on a at91sam9g35ek board.
+-	 */
+-	as->caps.has_dma_support = false;
+-#else
+ 	as->caps.has_dma_support = version >= 0x212;
+-#endif
+-	as->caps.has_pdc_support = version < 0x212;
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -1588,7 +1566,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		} else if (ret == -EPROBE_DEFER) {
+ 			return ret;
+ 		}
+-	} else if (as->caps.has_pdc_support) {
++	} else {
+ 		as->use_pdc = true;
+ 	}
+ 
+-- 
+2.7.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

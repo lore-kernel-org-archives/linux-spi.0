@@ -1,58 +1,82 @@
 From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [RFC PATCH 2/2] spi: atmel: Fix DMA transfers data corruption
-Date: Wed, 15 Nov 2017 19:01:11 +0000
-Message-ID: <1510772471.15881.17.camel@impinj.com>
-References: <1510763732-10151-1-git-send-email-radu.pirea@microchip.com>
-         <1510763732-10151-3-git-send-email-radu.pirea@microchip.com>
+Subject: [PATCH 1/1] spi: imx: Update device tree binding documentation
+Date: Wed, 15 Nov 2017 11:52:32 -0800
+Message-ID: <20171115195232.10354-1-tpiepho@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
+        Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1510763732-10151-3-git-send-email-radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <15C5C7EE47A0BF4DB7083EB31D224D5A-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gV2VkLCAyMDE3LTExLTE1IGF0IDE4OjM1ICswMjAwLCBSYWR1IFBpcmVhIHdyb3RlOg0KPiBJ
-ZiB0aGUgY2FjaGUgbW9kZWwgaXMgVklWVCwgRE1BIGRhdGEgdHJhbnNmZXJzIG1heSBub3QgYmUg
-dmFsaWQgYW5kIHRvDQo+IGVuc3VyZSB0aGUgdmFsaWRpdHkgb2YgdGhlIGRhdGEgY2FjaGUgbXVz
-dCBiZSBmbHVzaGVkIGFuZCBpbnZhbGlkYXRlZC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJhZHUg
-UGlyZWEgPHJhZHUucGlyZWFAbWljcm9jaGlwLmNvbT4NCj4gIA0KPiArI2lmZGVmIENPTkZJR19T
-T0NfU0FNX1Y0X1Y1DQo+ICsJLyoNCj4gKwkgKiBPbiBBdG1lbCBTb0NzIGJhc2VkIG9uIEFSTTkg
-Y29yZXMsIHRoZSBkYXRhIGNhY2hlIGZvbGxvd3MgdGhlIFZJVlQNCj4gKwkgKiBtb2RlbCwgaGVu
-Y2UgdGhlIGNhY2hlIGFsaWFzZXMgaXNzdWUgY2FuIG9jY3VyIHdoZW4gYnVmZmVycyBhcmUNCj4g
-KwkgKiBhbGxvY2F0ZWQgZnJvbSBETUEtdW5zYWZlIGFyZWFzLCBieSB2bWFsbG9jKCkgZm9yIGlu
-c3RhbmNlLCB3aGVyZQ0KPiArCSAqIGNhY2hlIGNvaGVyZW5jeSBpcyBub3QgdGFrZW4gaW50byBh
-Y2NvdW50IG9yIGF0IGxlYXN0IG5vdCBoYW5kbGVkDQo+ICsJICogY29tcGxldGVseSAoY2FjaGUg
-bGluZXMgb2YgYWxpYXNlcyBhcmUgbm90IGZsdXNoZWQgYW5kIGludmFsaWRhdGVkKS4NCj4gKwkg
-KiBUaGlzIGlzIG5vdCBhIHRoZW9yaWNhbCBpc3N1ZTogaXQgd2FzIHJlcHJvZHVjZWQgd2hlbiB0
-cnlpbmcgdG8gbW91bnQNCj4gKwkgKiBhIFVCSSBmaWxlLXN5c3RlbSBvbiBhIGF0OTFzYW05ZzM1
-ZWsgYm9hcmQuDQo+ICsJICovDQo+ICsJZmx1c2hfa2VybmVsX3ZtYXBfcmFuZ2UoKHZvaWQgKil4
-ZmVyLT5yeF9idWYsIHhmZXItPmxlbik7DQo+ICsjZW5kaWYNCg0KRG9lcyB0aGlzIGNhbGwgbmVl
-ZCB0byBiZSBpbnNpZGUgYW4gaWZkZWYgZm9yIGEgc3BlY2lmaWMgU09DPyAgSQ0KYmVsaWV2ZSB0
-aGF0IGZsdXNoX2tlcm5lbF92bWFwX3JhbmdlIHNob3VsZCBleHBhbmQgdG8gYSBuby1vcCBpZiB0
-aGUNCmNhY2hlIGlzIG5vdCBWSVZUIG9yIGFsaWFzaW5nIFZJUFQuICBTbyBpdCBzaG91bGQgYmUg
-c2FmZSB0byBhbHdheXMNCmNhbGwgaXQuDQoNCkl0IGFsc28gZG9lc24ndCBzZWVtIHJpZ2h0IHRo
-YXQgdGhlIFNQSSBkcml2ZXIgbmVlZHMgdG8ga25vdyB3aGljaCBTb0NzDQpoYXZlIHdoYXQga2lu
-ZCBvZiBjYWNoZS4gIElmIHRoZXJlIGFyZSBtb3JlIHNvY3Mgd2l0aCBtb3JlIGNhY2hlDQpkZXRh
-aWxzLCBkb2VzIHRoZSBzcGkgZHJpdmVyIG5lZWQgdG8gZXhwYW5kIHRoZSBsaXN0PyAgSWYgYW5v
-dGhlcg0KZHJpdmVyIGRvZXMgRE1BLCBkb2VzIGl0IG5lZWQgdGhlIGxpc3QgdG9vPw0KDQoNCj4g
-IAkvKiBTZW5kIGJvdGggc2NhdHRlcmxpc3RzICovDQo+ICAJcnhkZXNjID0gZG1hZW5naW5lX3By
-ZXBfc2xhdmVfc2cocnhjaGFuLA0KPiAgCQkJCQkgeGZlci0+cnhfc2cuc2dsLCB4ZmVyLT5yeF9z
-Zy5uZW50cywNCg0KRG9lcyB0aGlzIHByb2JsZW0gYWxzbyBwb3NzaWJseSBhZmZlY3QgYWxsIG90
-aGVyIHVzZXJzIG9mIGRtYWVuZ2luZSBvbg0KdGhlc2UgU29Dcz8gIEkyQywgc2VyaWFsLCBjcnB0
-bywgZXRjLiBJIGNvdWxkbid0IGZpbmQgYW55IG90aGVyIGRyaXZlcg0KdGhhdCBuZWVkIHRvIG1h
-a2UgZmx1c2hfa2VybmVsX3ZtYXBfcmFuZ2UoKS4gIFdoaWNoIHNlZW1zIG9kZCwgc2luY2UNCnRo
-ZXJlIGFyZSBtYW55IGRyaXZlcnMgdGhhdCB1c2UgRE1BIGFuZCBydW4gb24gQVJNOSBjb3Jlcy4g
-IEUuZy4sIEkNCmJlbGlldmUgc3BpLW14cyBydW5zIG9uIEFSTTkgYmFzZWQgaU1YLjIzIGFuZCBp
-TVguMjggd2hpY2ggYWxzbyBoYXZlDQpWSVZUIGNhY2hlcy4gIEl0IGRvZXNuJ3QgbWFrZSBmbHVz
-aF9rZXJuZWxfdm1hcF9yYW5nZSBjYWxscy4gIERvZXMgaXQNCmhhdmUgdGhpcyBzYW1lIGJ1Zz8=
+Update documentation for gpio-cs and num-cs to reflect the standard SPI
+bindings.
+
+The dma properties are optional.
+
+Include a warning that native CS do not work in a commonly useful manner
+with this hardware/driver, and therefor most users probably should use GPIO
+based CS lines rather than native.
+
+CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+CC: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 5bf13960f7f4..e3c48b20b1a6 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -12,24 +12,30 @@ Required properties:
+   - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+-- cs-gpios : Specifies the gpio pins to be used for chipselects.
+ - clocks : Clock specifiers for both ipg and per clocks.
+ - clock-names : Clock names should include both "ipg" and "per"
+ See the clock consumer binding,
+ 	Documentation/devicetree/bindings/clock/clock-bindings.txt
+-- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
+-		Documentation/devicetree/bindings/dma/dma.txt
+-- dma-names: DMA request names should include "tx" and "rx" if present.
+ 
+-Obsolete properties:
+-- fsl,spi-num-chipselects : Contains the number of the chipselect
++Recommended properties:
++- cs-gpios : GPIOs to use as chip selects, see spi-bus.txt.  While the native chip
++select lines can be used, they appear to always generate a pulse between each
++word of a transfer.  Most use cases will require GPIO based chip selects to
++generate a valid transaction.
+ 
+ Optional properties:
++- num-cs :  Number of total chip selects, see spi-bus.txt.
++- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
++Documentation/devicetree/bindings/dma/dma.txt.
++- dma-names: DMA request names, if present, should include "tx" and "rx".
+ - fsl,spi-rdy-drctl: Integer, representing the value of DRCTL, the register
+ controlling the SPI_READY handling. Note that to enable the DRCTL consideration,
+ the SPI_READY mode-flag needs to be set too.
+ Valid values are: 0 (disabled), 1 (edge-triggered burst) and 2 (level-triggered burst).
+ 
++Obsolete properties:
++- fsl,spi-num-chipselects : Contains the number of the chipselect
++
+ Example:
+ 
+ ecspi@70010000 {
+-- 
+2.14.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

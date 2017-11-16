@@ -1,50 +1,70 @@
-From: Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v4 3/3] ARM: imx: Update spi_imx platform data to reflect
- current state
-Date: Thu, 16 Nov 2017 15:47:44 +0800
-Message-ID: <20171116074743.GC25384@dragon>
-References: <20171106194618.9421-1-tpiepho@impinj.com>
- <20171106194618.9421-4-tpiepho@impinj.com>
+From: Radu Nicolae Pirea <radu.pirea@microchip.com>
+Subject: Re: [RFC PATCH 2/2] spi: atmel: Fix DMA transfers data corruption
+Date: Thu, 16 Nov 2017 12:26:39 +0200
+Message-ID: <f60fc5b0-990a-9439-01e9-96a6547007e9@microchip.com>
+References: <1510763732-10151-1-git-send-email-radu.pirea@microchip.com>
+ <1510763732-10151-3-git-send-email-radu.pirea@microchip.com>
+ <1510772471.15881.17.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@nxp.com>, Sascha Hauer <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Trent Piepho <tpiepho@impinj.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20171106194618.9421-4-tpiepho@impinj.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+To: Trent Piepho <tpiepho@impinj.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1510772471.15881.17.camel@impinj.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 06, 2017 at 11:46:18AM -0800, Trent Piepho wrote:
-> The docs for the spi_imx platform data still refer to a -32 offset used to
-> specify a native chip select.  This was removed in commit 602c8f4485cd
-> ("spi: imx: fix use of native chip-selects with devicetree") and no
-> longer works as documented.  Update documentation.
+On 15.11.2017 21:01, Trent Piepho wrote:
+> On Wed, 2017-11-15 at 18:35 +0200, Radu Pirea wrote:
+>> If the cache model is VIVT, DMA data transfers may not be valid and to
+>> ensure the validity of the data cache must be flushed and invalidated.
+>>
+>> Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
+>>   
+>> +#ifdef CONFIG_SOC_SAM_V4_V5
+>> +	/*
+>> +	 * On Atmel SoCs based on ARM9 cores, the data cache follows the VIVT
+>> +	 * model, hence the cache aliases issue can occur when buffers are
+>> +	 * allocated from DMA-unsafe areas, by vmalloc() for instance, where
+>> +	 * cache coherency is not taken into account or at least not handled
+>> +	 * completely (cache lines of aliases are not flushed and invalidated).
+>> +	 * This is not a theorical issue: it was reproduced when trying to mount
+>> +	 * a UBI file-system on a at91sam9g35ek board.
+>> +	 */
+>> +	flush_kernel_vmap_range((void *)xfer->rx_buf, xfer->len);
+>> +#endif
 > 
-> The macro MXC_SPI_CS() is no longer is needed.
+> Does this call need to be inside an ifdef for a specific SOC?  I
+> believe that flush_kernel_vmap_range should expand to a no-op if the
+> cache is not VIVT or aliasing VIPT.  So it should be safe to always
+> call it.
 > 
-> If a board uses all native chip selects, then it's not necessary to
-> specify a chip select array at all, as all native is the default (this is
-> how device-tree configured SPI masters work too).  Most of the spi-imx
-> platform data users have their chip select arrays removed by this patch.
-> 
-> This patch also fixes a bug in mx31moboard introduced in the '602 commit.
-> When that board was updated in commit 901f26bce64a ("ARM: imx: set
-> correct chip_select in platform setup") to reflect the SPI change, only
-> SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
-> selects.  The mc13783 spi device on bus 1 had its chip select updated as
-> if it were on bus 2.
-> 
-> CC: Shawn Guo <shawnguo@kernel.org>
+> It also doesn't seem right that the SPI driver needs to know which SoCs
+> have what kind of cache.  If there are more socs with more cache
+> details, does the spi driver need to expand the list?  If another
+> driver does DMA, does it need the list too?
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
+Understood. I will find another way to call the function.
+
+> 
+> 
+>>   	/* Send both scatterlists */
+>>   	rxdesc = dmaengine_prep_slave_sg(rxchan,
+>>   					 xfer->rx_sg.sgl, xfer->rx_sg.nents,
+> 
+> Does this problem also possibly affect all other users of dmaengine on
+> these SoCs?  I2C, serial, crpto, etc. I couldn't find any other driver
+> that need to make flush_kernel_vmap_range().  Which seems odd, since
+> there are many drivers that use DMA and run on ARM9 cores.  E.g., I
+> believe spi-mxs runs on ARM9 based iMX.23 and iMX.28 which also have
+> VIVT caches.  It doesn't make flush_kernel_vmap_range calls.  Does it
+> have this same bug?��칻�&�~�&���+-��ݶ��w��˛���m�b��l�(����ܨ}���Ơz�&j:+v�������zZ+��+zf���h���~����i���z��w���?����&�)ߢf
+> 
+
+Other users of dmaengine are not affected by this problem. I know nothing about 
+spi-mxs, but i know spi-davinci have the same bug.

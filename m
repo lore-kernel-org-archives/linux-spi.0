@@ -1,117 +1,158 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: Update device tree binding documentation" to the spi tree
-Date: Thu, 16 Nov 2017 11:06:59 +0000
-Message-ID: <E1eFI0Z-0004FO-3R@debutante>
-References: <20171115195232.10354-1-tpiepho@impinj.com>
+From: Marc Kleine-Budde <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: MCP251x SPI CAN controller on Cavium ThunderX
+Date: Thu, 16 Nov 2017 13:12:36 +0100
+Message-ID: <cf336886-a64f-9ff1-2a44-984ff64f8433@pengutronix.de>
+References: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw@mail.gmail.com>
+ <2771c4a8-ed85-86c1-a08c-5b62d177b107@caviumnetworks.com>
+ <CAJ+vNU0rsabjK80zmq_QBhPQqru2A06n8+zgEPvWfHdyb-kbMQ@mail.gmail.com>
+ <CAJ+vNU0qkXafz8FWjM_TCYj56dv31=ZQ306Ab2qSsePGD6E6KQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="9xI0x2jnMhx85a0x0J3oUGqPNlMb47T2a"
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-        Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>
+To: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>,
+        David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
+        Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171115195232.10354-1-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <CAJ+vNU0qkXafz8FWjM_TCYj56dv31=ZQ306Ab2qSsePGD6E6KQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--9xI0x2jnMhx85a0x0J3oUGqPNlMb47T2a
+Content-Type: multipart/mixed; boundary="J6ARjg9R1whsU6rlw3R9fBkLaLkawTuKX";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Tim Harvey <tharvey-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org>,
+ David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
+ Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>
+Message-ID: <cf336886-a64f-9ff1-2a44-984ff64f8433-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: MCP251x SPI CAN controller on Cavium ThunderX
+References: <CAJ+vNU3VK=NPKW+119t4MT7w5xs=FS2HWJTqbFb-HSeJhCvwWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+ <2771c4a8-ed85-86c1-a08c-5b62d177b107-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+ <CAJ+vNU0rsabjK80zmq_QBhPQqru2A06n8+zgEPvWfHdyb-kbMQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+ <CAJ+vNU0qkXafz8FWjM_TCYj56dv31=ZQ306Ab2qSsePGD6E6KQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAJ+vNU0qkXafz8FWjM_TCYj56dv31=ZQ306Ab2qSsePGD6E6KQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 
-   spi: imx: Update device tree binding documentation
+--J6ARjg9R1whsU6rlw3R9fBkLaLkawTuKX
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On 11/16/2017 12:18 AM, Tim Harvey wrote:
+> David / Jan,
+>=20
+> For reference, the HM describes TXNUM/TOTNUM as:
+>  TXNUM - Number of bytes to transmit
+>  TOTNUM - Total number of bytes to shift (transmit and receive)
+>=20
+> Here are some experiments that show somewhat inconsistent results:
+> - full duplex 3byte tx / 3byte rx to MCP251x
+> mpi_dat0 =3D> 0x03 // READ
+> mpi_dat1 =3D> 0x0e // CANSTAT
+> mip_dat2 =3D> 0xa5 // dummy (but making it 0xa5 instead of 0x00 to prov=
+e a point)
+> mpi_tx =3D> 0x100303 // TXNUM=3D3 TOTNUM=3D3; we see 24 clock cycles
+> // wait for completion
+> mpi_dat0 <=3D 0xff
+> mpi_dat1 <=3D 0xff
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Do you see 0xff 0xff on the MISO wire for byte 1 and 2?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> mpi_dat2 <=3D0xa5 // this the dummy byte we sent out MOSI not what came=
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> in on MISO which the scope shows as 0x80
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Oh, the device reads what you have shifed out? This is not good.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> if I set TXNUM=3D3 TOTNUM=3D4:
+> mpi_dat0 =3D> 0x03 // READ
+> mpi_dat1 =3D> 0x0e // CANSTAT
+> mip_dat2 =3D> 0xa5 // dummy
+> mpi_tx =3D> 0x100304 // TXNUM=3D3 TOTNUM=3D4; we see 32 clock cycles
 
-Thanks,
-Mark
+What's on MOSI for byte 4?
 
->From 8c059a4676038967dd6efe614538c329b61e68a1 Mon Sep 17 00:00:00 2001
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Date: Wed, 15 Nov 2017 11:52:32 -0800
-Subject: [PATCH] spi: imx: Update device tree binding documentation
+> // wait for completion
+> mpi_dat0 <=3D 0xff
+> mpi_dat1 <=3D 0xff
+> mpi_dat2 <=3D 0x80 // response for CANSTAT reg 0x0e
+> mpi_dat3 <=3D 0x87 // response for CANCTRL reg 0x0f (because we shifted=
 
-Update documentation for gpio-cs and num-cs to reflect the standard SPI
-bindings.
+> 32 clock cycles)
 
-The dma properties are optional.
+Looks correct.
 
-Include a warning that native CS do not work in a commonly useful manner
-with this hardware/driver, and therefor most users probably should use GPIO
-based CS lines rather than native.
+> if I set TXNUM=3D2 TOTNUM=3D3:
+> mpi_dat0 =3D> 0x03 // READ
+> mpi_dat1 =3D> 0x0e // CANSTAT
+> mpi_tx =3D> 0x100203 // TXNUM=3D2 TOTNUM=3D3; we see 24 clock cycles
 
-CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-CC: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-CC: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-CC: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-CC: Oleksij Rempel <o.rempel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+What's on MOSI for byte 3?
 
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 5bf13960f7f4..e3c48b20b1a6 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -12,24 +12,30 @@ Required properties:
-   - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
- - reg : Offset and length of the register set for the device
- - interrupts : Should contain CSPI/eCSPI interrupt
--- cs-gpios : Specifies the gpio pins to be used for chipselects.
- - clocks : Clock specifiers for both ipg and per clocks.
- - clock-names : Clock names should include both "ipg" and "per"
- See the clock consumer binding,
- 	Documentation/devicetree/bindings/clock/clock-bindings.txt
--- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
--		Documentation/devicetree/bindings/dma/dma.txt
--- dma-names: DMA request names should include "tx" and "rx" if present.
- 
--Obsolete properties:
--- fsl,spi-num-chipselects : Contains the number of the chipselect
-+Recommended properties:
-+- cs-gpios : GPIOs to use as chip selects, see spi-bus.txt.  While the native chip
-+select lines can be used, they appear to always generate a pulse between each
-+word of a transfer.  Most use cases will require GPIO based chip selects to
-+generate a valid transaction.
- 
- Optional properties:
-+- num-cs :  Number of total chip selects, see spi-bus.txt.
-+- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
-+Documentation/devicetree/bindings/dma/dma.txt.
-+- dma-names: DMA request names, if present, should include "tx" and "rx".
- - fsl,spi-rdy-drctl: Integer, representing the value of DRCTL, the register
- controlling the SPI_READY handling. Note that to enable the DRCTL consideration,
- the SPI_READY mode-flag needs to be set too.
- Valid values are: 0 (disabled), 1 (edge-triggered burst) and 2 (level-triggered burst).
- 
-+Obsolete properties:
-+- fsl,spi-num-chipselects : Contains the number of the chipselect
-+
- Example:
- 
- ecspi@70010000 {
--- 
-2.15.0
+> // wait for completion
+> mpi_dat0 <=3D 0xff
+> mpi_dat1 <=3D 0xff
+> mpi_dat2 <=3D 0x80 // response for CANSTAT reg 0x0e
+>=20
+> if I set TXNUM=3D1 TOTNUM=3D1 to send a RESET command:
+> mpi_dat0 =3D> 0xc0 // RESET
+> mpi_tx =3D> 0x100101 // TXNUM=3D1 TOTNUM=3D1; we see 8 clock cycles
+> // wait for completion
+> mpi_dat0 <=3D 0xc0
+>=20
+> In all cases above what is seen on MISO in relation to CLK matches the
+> expectations of the mcp251x but the CN80xx MPI_DAT registers don't
+> return what I see on MISO. Am I missing a consistent pattern of
+> MPI_DAT vs TXNUM/TOTNUM here that would allow us to work-around this?
+> Is this a CN80xx chip errata? There is no known errata for the CN80XX
+> MPI engine.
+>=20
+> I could re-write the mcp251x driver to not use full-duplex but I'm
+> assuming most SPI drivers use full-duplex transactions.
 
+ACK.
+
+You don't want to use the mcp251x chip anyways for CAN, the SPI is quite
+slow and the load of the CPU is relatively high. Don't expect to get
+many messages over CAN and prepare for dropped frames. Better use a
+USB-CAN dongle. Or a proper card with some sort of PCI interface.
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--J6ARjg9R1whsU6rlw3R9fBkLaLkawTuKX--
+
+--9xI0x2jnMhx85a0x0J3oUGqPNlMb47T2a
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEE4bay/IylYqM/npjQHv7KIOw4HPYFAloNgLQACgkQHv7KIOw4
+HPYX7Af/cvGR1xEdTrGpPfukvDSKJcwBY6kOvqU/yCIkP/qTQH5VPMRz0ENlIJFX
+Nsu6ilk8B2wZjrXss0XVLLEZBX/GjFtu0z5ysJC6gxJcdk713/H1Vw30YZDWi2p3
+vlfLwcJyz8Xpz5lr30vJPD9rzuwqKHYEvDSKpCF1Y6BIq+EZ9jc/BTZ4AaIJ7Mx6
+5G/pSIJC16ParX+nLfGzZybHm07+FP1HfPIgzYlBaFCAXnK1P/EshpszZDcJzpp3
+2ERFSBGFYDNjnY++LZs38mB3ANdOFz4Gm5OvMM7jEyj0DYANqb4DCrPASQM3yz1H
+rmrajYQFUuq4W0sdaax4jOVD8jKBcg==
+=0rNj
+-----END PGP SIGNATURE-----
+
+--9xI0x2jnMhx85a0x0J3oUGqPNlMb47T2a--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

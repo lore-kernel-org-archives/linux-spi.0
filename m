@@ -1,12 +1,15 @@
-From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: RE: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
-Date: Fri, 17 Nov 2017 18:00:46 +0000
-Message-ID: <TY1PR06MB08958546062D685532669977C02F0@TY1PR06MB0895.apcprd06.prod.outlook.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
+Date: Fri, 17 Nov 2017 18:08:04 +0000
+Message-ID: <20171117180804.g2jzdv4c7sq33te7@sirena.org.uk>
 References: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
+ <TY1PR06MB08958546062D685532669977C02F0@TY1PR06MB0895.apcprd06.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: Simon Horman <horms@verge.net.au>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="g7y6qpprvcdxghdc"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Simon Horman <horms@verge.net.au>,
         Chris Paterson <Chris.Paterson2@renesas.com>,
         Biju Das <biju.das@bp.renesas.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
@@ -16,58 +19,55 @@ Cc: Simon Horman <horms@verge.net.au>,
         Russell King <linux@armlinux.org.uk>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>
-To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
+To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <TY1PR06MB08958546062D685532669977C02F0@TY1PR06MB0895.apcprd06.prod.outlook.com>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear All,
 
-this patch has been around for some time now, it was reviewed-by Geert Uytt=
-erhoeven and acked-by Rob Herring, any news?
+--g7y6qpprvcdxghdc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Fab
+On Fri, Nov 17, 2017 at 06:00:46PM +0000, Fabrizio Castro wrote:
 
-> Subject: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
->
-> Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-rspi.txt | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documen=
-tation/devicetree/bindings/spi/spi-rspi.txt
-> index 8f4169f..3b02b3a 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
-> @@ -5,11 +5,14 @@ Required properties:
->       "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
->       For Renesas Serial Peripheral Interface on RZ/A1H:
->       "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
-> -     For Quad Serial Peripheral Interface on R-Car Gen2:
-> +     For Quad Serial Peripheral Interface on R-Car Gen2 and
-> +     RZ/G1 devices:
->       "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
->       Examples with soctypes are:
->          - "renesas,rspi-sh7757" (SH)
->  - "renesas,rspi-r7s72100" (RZ/A1H)
-> +- "renesas,qspi-r8a7743" (RZ/G1M)
-> +- "renesas,qspi-r8a7745" (RZ/G1E)
->  - "renesas,qspi-r8a7790" (R-Car H2)
->  - "renesas,qspi-r8a7791" (R-Car M2-W)
->  - "renesas,qspi-r8a7792" (R-Car V2H)
-> --
-> 2.7.4
+> this patch has been around for some time now, it was reviewed-by Geert Uy=
+tterhoeven and acked-by Rob Herring, any news?
 
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
 
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, though there are some other maintainers who like them - if in
+doubt look at how patches for the subsystem are normally handled.
 
+Please submit patches using subject lines reflecting the style for the
+subsystem.  This makes it easier for people to identify relevant
+patches.  Look at what existing commits in the area you're changing are
+doing and make sure your subject lines visually resemble what they're
+doing.
 
-Renesas Electronics Europe Ltd, Dukes Meadow, Millboard Road, Bourne End, B=
-uckinghamshire, SL8 5FH, UK. Registered in England & Wales under Registered=
- No. 04586709.
+--g7y6qpprvcdxghdc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAloPJYMACgkQJNaLcl1U
+h9A4CQf9FMedXNxMM9FoMpVlhHAE6WoFlhrU9co8XYnfnRYKHxdxEthIVVgUpy0O
+8wFus5dqOp5ljJ/ytREwLvW4b3hb4/IuhZEWFo+k0+i36q71oVqJHhaSvdt4/oZV
+lwH/5LqTofWwDjPMjeKpr3VNSEc3BLNCJ/BGNfKluKi6iAA4YDnehD/qpe45LtKr
+aXfFFm1wwL/uniFhIcqmzzgHeM4vR1PakhYvZGcCqpEUNjZyWn4SVkJHlhV8wdKk
+jdgT/LihTnTE+7dK26LIsSe3Fieqabd5FyMgZpfjOpSiYo0KnY+mdhaxSHgaZCZE
+0ZqkF7WF5+N+k4ViKszJtdzbPoUhWw==
+=ICog
+-----END PGP SIGNATURE-----
+
+--g7y6qpprvcdxghdc--

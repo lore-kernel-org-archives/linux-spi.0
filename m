@@ -1,77 +1,73 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: add SPI_LSB_FIRST to driver capabilities" to the spi tree
-Date: Thu, 16 Nov 2017 19:30:06 +0000 (GMT)
-Message-ID: <20171116193006.86CC744005B@finisterre.ee.mobilebroadband>
-References: <20171113074721.22404-1-kurt@linutronix.de>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Kurt Kanzenbach <kurt-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171113074721.22404-1-kurt-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+Subject: RE: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
+Date: Fri, 17 Nov 2017 18:00:46 +0000
+Message-ID: <TY1PR06MB08958546062D685532669977C02F0@TY1PR06MB0895.apcprd06.prod.outlook.com>
+References: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: Simon Horman <horms@verge.net.au>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org"
+        <linux-renesas-soc@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1504858035-3568-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Content-Language: en-US
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+Dear All,
 
-   spi: spi-fsl-dspi: add SPI_LSB_FIRST to driver capabilities
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+this patch has been around for some time now, it was reviewed-by Geert Uytt=
+erhoeven and acked-by Rob Herring, any news?
 
 Thanks,
-Mark
+Fab
 
->From 00ac9562158e8541d60e91eb72aa9ed0674d4a6a Mon Sep 17 00:00:00 2001
-From: Kurt Kanzenbach <kurt-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Date: Mon, 13 Nov 2017 08:47:21 +0100
-Subject: [PATCH] spi: spi-fsl-dspi: add SPI_LSB_FIRST to driver capabilities
+> Subject: [PATCH] dt-bindings: qspi: Add r8a7743/5 to the compatible list
+>
+> Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-rspi.txt | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documen=
+tation/devicetree/bindings/spi/spi-rspi.txt
+> index 8f4169f..3b02b3a 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> @@ -5,11 +5,14 @@ Required properties:
+>       "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
+>       For Renesas Serial Peripheral Interface on RZ/A1H:
+>       "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
+> -     For Quad Serial Peripheral Interface on R-Car Gen2:
+> +     For Quad Serial Peripheral Interface on R-Car Gen2 and
+> +     RZ/G1 devices:
+>       "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
+>       Examples with soctypes are:
+>          - "renesas,rspi-sh7757" (SH)
+>  - "renesas,rspi-r7s72100" (RZ/A1H)
+> +- "renesas,qspi-r8a7743" (RZ/G1M)
+> +- "renesas,qspi-r8a7745" (RZ/G1E)
+>  - "renesas,qspi-r8a7790" (R-Car H2)
+>  - "renesas,qspi-r8a7791" (R-Car M2-W)
+>  - "renesas,qspi-r8a7792" (R-Car V2H)
+> --
+> 2.7.4
 
-The driver as well as the controller support the SPI lsb first
-mode. However, it's not possible to configure it e.g. when using
-spidev. Adding this flag to mode_bits resolves the issue and lsb first
-mode can be used.
 
-Signed-off-by: Kurt Kanzenbach <kurt-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index f652f70cb8db..02d3ed7f2558 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -980,7 +980,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 
- 	master->cleanup = dspi_cleanup;
--	master->mode_bits = SPI_CPOL | SPI_CPHA;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
- 	master->bits_per_word_mask = SPI_BPW_MASK(4) | SPI_BPW_MASK(8) |
- 					SPI_BPW_MASK(16);
- 
--- 
-2.14.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Renesas Electronics Europe Ltd, Dukes Meadow, Millboard Road, Bourne End, B=
+uckinghamshire, SL8 5FH, UK. Registered in England & Wales under Registered=
+ No. 04586709.

@@ -1,78 +1,66 @@
-From: Maxime Chevallier <maxime.chevallier@smile.fr>
-Subject: [PATCH] spi: a3700: Fix event detection when waiting for interrupt
-Date: Fri, 24 Nov 2017 13:11:50 +0100
-Message-ID: <1511525510-29964-1-git-send-email-maxime.chevallier@smile.fr>
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        gregory.clement@free-electrons.com,
-        miquel.raynal@free-electrons.com,
-        Maxime Chevallier <maxime.chevallier@smile.fr>
-To: linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [RFC PATCH v2 10/12] spi: core: convert spi_master to use gpio_desc
+Date: Fri, 24 Nov 2017 13:59:53 +0100
+Message-ID: <CAMuHMdVx=JSL0dViZpL1spujK-K0kCTX3P=UWVOnxwhqw8nnWg@mail.gmail.com>
+References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz> <20170727220322.26654-11-chris.packham@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170727220322.26654-11-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When waiting for an interrupt event, there is a short window where
-an interrupt can occur before we start waiting for it, but after
-the initial flag checking.
+Hi Chris,
 
-The current implementation documents that case, but clears the wait_mask
-before doing the check, making it non-effective.
+On Fri, Jul 28, 2017 at 12:03 AM, Chris Packham
+<chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
+> Instead of numeric gpios make struct spi_master hold an array of struct
+> gpio_desc. For now struct spi_device still maintains a numeric gpio
+> which will be updated in a subsequent change.
+>
+> Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 
-The function also returns early in some cases, skipping the part where
-we mask the interrupt that we waited for.
+Thanks for your patch!
 
-This commit reworks the function so that we correctly check for the
-wait_mask before clearing it, and we always mask the interrupt if we
-enabled it previously.
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -40,6 +40,7 @@
+>  #include <linux/ioport.h>
+>  #include <linux/acpi.h>
+>  #include <linux/highmem.h>
+> +#include <linux/gpio/consumer.h>
+>
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/spi.h>
+> @@ -531,7 +532,9 @@ int spi_add_device(struct spi_device *spi)
+>         }
+>
+>         if (ctlr->cs_gpios)
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
----
- drivers/spi/spi-armada-3700.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+As desc_to_gpio() crashes when passed a NULL pointer, the above check should
+be changed to:
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 77fe55c..fe58685 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -333,6 +333,7 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
- {
- 	struct a3700_spi *a3700_spi;
- 	unsigned int timeout;
-+	bool completed = true;
- 	unsigned int ctrl_reg;
- 	unsigned long timeout_jiffies;
- 
-@@ -357,10 +358,9 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
- 	timeout = wait_for_completion_timeout(&a3700_spi->done,
- 					      timeout_jiffies);
- 
--	a3700_spi->wait_mask = 0;
- 
- 	if (timeout)
--		return true;
-+		goto done;
- 
- 	/* there might be the case that right after we checked the
- 	 * status bits in this routine and before start to wait for
-@@ -372,12 +372,16 @@ static bool a3700_spi_wait_completion(struct spi_device *spi)
- 	 */
- 	ctrl_reg = spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG);
- 	if (a3700_spi->wait_mask & ctrl_reg)
--		return true;
-+		goto done;
- 
-+	/* Timeout was reached */
-+	completed = false;
-+done:
- 	spireg_write(a3700_spi, A3700_SPI_INT_MASK_REG, 0);
- 
--	/* Timeout was reached */
--	return false;
-+	a3700_spi->wait_mask = 0;
-+
-+	return completed;
- }
- 
- static bool a3700_spi_transfer_wait(struct spi_device *spi,
--- 
-2.1.4
+        if (ctlr->cs_gpios && ctlr->cs_gpios[spi->chip_select])
+
+> -               spi->cs_gpio = ctlr->cs_gpios[spi->chip_select];
+> +               spi->cs_gpio = desc_to_gpio(ctlr->cs_gpios[spi->chip_select]);
+> +       else
+> +               spi->cs_gpio = -ENOENT;
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,15 +1,15 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [RFC PATCH v2 10/12] spi: core: convert spi_master to use gpio_desc
-Date: Fri, 24 Nov 2017 13:59:53 +0100
-Message-ID: <CAMuHMdVx=JSL0dViZpL1spujK-K0kCTX3P=UWVOnxwhqw8nnWg@mail.gmail.com>
-References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz> <20170727220322.26654-11-chris.packham@alliedtelesis.co.nz>
+Subject: Re: [RFC PATCH v2 12/12] wip: convert struct spi_device to gpio_desc
+Date: Fri, 24 Nov 2017 14:03:19 +0100
+Message-ID: <CAMuHMdWLw_jicndWQYcVkxKztW4rappPb+F58MXO+ykTTKpSpQ@mail.gmail.com>
+References: <20170727220322.26654-1-chris.packham@alliedtelesis.co.nz> <20170727220322.26654-13-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170727220322.26654-11-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+In-Reply-To: <20170727220322.26654-13-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -17,38 +17,30 @@ Hi Chris,
 
 On Fri, Jul 28, 2017 at 12:03 AM, Chris Packham
 <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
-> Instead of numeric gpios make struct spi_master hold an array of struct
-> gpio_desc. For now struct spi_device still maintains a numeric gpio
-> which will be updated in a subsequent change.
->
-> Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+> ---
+>  drivers/spi/spi-ath79.c       | 26 +++-----------------------
+>  drivers/spi/spi-atmel.c       |  4 ++--
+>  drivers/spi/spi-bcm2835.c     |  8 ++++----
+>  drivers/spi/spi-cadence.c     | 29 ++---------------------------
+>  drivers/spi/spi-clps711x.c    | 13 +------------
+>  drivers/spi/spi-davinci.c     | 10 ++++------
+>  drivers/spi/spi-dw.c          |  7 -------
+>  drivers/spi/spi-fsl-spi.c     | 29 +++++------------------------
+>  drivers/spi/spi-img-spfi.c    | 25 +------------------------
+>  drivers/spi/spi-lantiq-ssc.c  |  2 +-
+>  drivers/spi/spi-mpc512x-psc.c | 20 +++-----------------
+>  drivers/spi/spi-mt65xx.c      |  3 ---
+>  drivers/spi/spi-omap2-mcspi.c | 17 ++---------------
+>  drivers/spi/spi-orion.c       |  2 +-
+>  drivers/spi/spi-pic32.c       | 11 +----------
+>  drivers/spi/spi-s3c64xx.c     | 16 ++--------------
+>  drivers/spi/spi-st-ssc4.c     | 29 +----------------------------
+>  drivers/spi/spi.c             | 10 +++-------
+>  include/linux/spi/spi.h       |  2 +-
+>  19 files changed, 37 insertions(+), 226 deletions(-)
 
-Thanks for your patch!
-
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -40,6 +40,7 @@
->  #include <linux/ioport.h>
->  #include <linux/acpi.h>
->  #include <linux/highmem.h>
-> +#include <linux/gpio/consumer.h>
->
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/spi.h>
-> @@ -531,7 +532,9 @@ int spi_add_device(struct spi_device *spi)
->         }
->
->         if (ctlr->cs_gpios)
-
-As desc_to_gpio() crashes when passed a NULL pointer, the above check should
-be changed to:
-
-        if (ctlr->cs_gpios && ctlr->cs_gpios[spi->chip_select])
-
-> -               spi->cs_gpio = ctlr->cs_gpios[spi->chip_select];
-> +               spi->cs_gpio = desc_to_gpio(ctlr->cs_gpios[spi->chip_select]);
-> +       else
-> +               spi->cs_gpio = -ENOENT;
+JFTR, this missed spi-sh-msiof (because it doesn't use gpio_is_valid()?).
+And of course several recently introduced drivers.
 
 Gr{oetje,eeting}s,
 

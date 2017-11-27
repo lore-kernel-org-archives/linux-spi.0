@@ -1,26 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: xilinx: Add support for xlnx,axi-quad-spi-1.00.a" to the spi tree
-Date: Mon, 27 Nov 2017 18:54:49 +0000
-Message-ID: <E1eJOYL-0007dA-VP@debutante>
-References: <20171121090904.6901-2-ricardo.ribalda@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ricardo Ribalda <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: a3700: Fix clk prescaling for coefficient over 15" to the spi tree
+Date: Mon, 27 Nov 2017 18:54:55 +0000
+Message-ID: <E1eJOYR-0007e7-EH@debutante>
+References: <1511792192-7090-1-git-send-email-maxime.chevallier@smile.fr>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
+        miquel.raynal-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171121090904.6901-2-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1511792192-7090-1-git-send-email-maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: xilinx: Add support for xlnx,axi-quad-spi-1.00.a
+   spi: a3700: Fix clk prescaling for coefficient over 15
 
 has been applied to the spi tree at
 
@@ -45,52 +40,54 @@ to this mail.
 Thanks,
 Mark
 
->From a094c2fa093cf7fd0fe23d15cc2abca4083c6a45 Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 21 Nov 2017 10:09:03 +0100
-Subject: [PATCH] spi: xilinx: Add support for xlnx,axi-quad-spi-1.00.a
+>From 251c201bf4f8b5bf4f1ccb4f8920eed2e1f57580 Mon Sep 17 00:00:00 2001
+From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+Date: Mon, 27 Nov 2017 15:16:32 +0100
+Subject: [PATCH] spi: a3700: Fix clk prescaling for coefficient over 15
 
-The driver has been successfully tested with Xilinx's core
-axi-quad-spi-1.0.0a. Documented on DS843:
+The Armada 3700 SPI controller has 2 ranges of prescaler coefficients.
+One ranging from 0 to 15 by steps of 1, and one ranging from 0 to 30 by
+steps of 2.
 
-https://www.xilinx.com/support/documentation/ip_documentation/axi_quad_spi/v1_00_a/ds843_axi_quad_spi.pdf
+This commit fixes the prescaler coefficients that are over 15 so that it
+uses the correct range of values. The prescaling coefficient is rounded
+to the upper value if it is odd.
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This was tested on Espressobin with spidev and a locigal analyser.
+
+Signed-off-by: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- Documentation/devicetree/bindings/spi/spi-xilinx.txt | 2 +-
- drivers/spi/spi-xilinx.c                             | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-armada-3700.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.txt b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-index c7b7856bd528..7bf61efc66c8 100644
---- a/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-@@ -2,7 +2,7 @@ Xilinx SPI controller Device Tree Bindings
- -------------------------------------------------
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 77fe55ce790c..d65345312527 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -79,6 +79,7 @@
+ #define A3700_SPI_BYTE_LEN		BIT(5)
+ #define A3700_SPI_CLK_PRESCALE		BIT(0)
+ #define A3700_SPI_CLK_PRESCALE_MASK	(0x1f)
++#define A3700_SPI_CLK_EVEN_OFFS		(0x10)
  
- Required properties:
--- compatible		: Should be "xlnx,xps-spi-2.00.a" or "xlnx,xps-spi-2.00.b"
-+- compatible		: Should be "xlnx,xps-spi-2.00.a", "xlnx,xps-spi-2.00.b" or "xlnx,axi-quad-spi-1.00.a"
- - reg			: Physical base address and size of SPI registers map.
- - interrupts		: Property with a value describing the interrupt
- 			  number.
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e0b9fe1d0e37..63fedc49ae9c 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -381,6 +381,7 @@ static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
- }
+ #define A3700_SPI_WFIFO_THRS_BIT	28
+ #define A3700_SPI_RFIFO_THRS_BIT	24
+@@ -220,6 +221,13 @@ static void a3700_spi_clock_set(struct a3700_spi *a3700_spi,
  
- static const struct of_device_id xilinx_spi_of_match[] = {
-+	{ .compatible = "xlnx,axi-quad-spi-1.00.a", },
- 	{ .compatible = "xlnx,xps-spi-2.00.a", },
- 	{ .compatible = "xlnx,xps-spi-2.00.b", },
- 	{}
+ 	prescale = DIV_ROUND_UP(clk_get_rate(a3700_spi->clk), speed_hz);
+ 
++	/* For prescaler values over 15, we can only set it by steps of 2.
++	 * Starting from A3700_SPI_CLK_EVEN_OFFS, we set values from 0 up to
++	 * 30. We only use this range from 16 to 30.
++	 */
++	if (prescale > 15)
++		prescale = A3700_SPI_CLK_EVEN_OFFS + DIV_ROUND_UP(prescale, 2);
++
+ 	val = spireg_read(a3700_spi, A3700_SPI_IF_CFG_REG);
+ 	val = val & ~A3700_SPI_CLK_PRESCALE_MASK;
+ 
 -- 
 2.15.0
 

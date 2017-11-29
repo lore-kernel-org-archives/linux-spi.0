@@ -1,84 +1,45 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: meson-axg: update compatible string for the Meson-AXG" to the spi tree
-Date: Tue, 28 Nov 2017 20:22:16 +0000
-Message-ID: <E1eJmOW-0008Dj-RE@debutante>
-References: <20171128132926.19051-2-yixun.lan@amlogic.com>
-Cc: Yixun Lan <yixun.lan@amlogic.com>, Rob Herring <robh@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Carlo Caione <carlo@caione.org>,
-        Yixun Lan <yixun.lan@amlogic.com>,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Sunny Luo <sunny.luo@amlogic.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171128132926.19051-2-yixun.lan@amlogic.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
+Subject: spidev: Instantiating from DT as "spidev"
+Date: Wed, 29 Nov 2017 09:04:36 -0600
+Message-ID: <20171129150435.5npybjuu2ndmtx2v@senary>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hello,
 
-   spi: meson-axg: update compatible string for the Meson-AXG
+Since commit 956b200a846e ("spi: spidev: Warn loudly if instantiated from DT as
+"spidev""), listing "spidev" directly in a device tree is not recommended.
+Instead, what I see in the (many) past discussions is that I should change my
+device tree to describe the actual hardware and add whatever new ID I create to
+spidev_dt_ids. That seems perfectly reasonable.
 
-has been applied to the spi tree at
+However, our SPI master [1] is similar to the Raspberry Pi or Beaglebone in
+that we don't know at kernel build time what device may be attached to the SPI
+bus. Because the end users of our device are usually young students, we also
+can't expect them to rebuild their kernel or mess with device tree overlays
+just to interface with some arbitrary SPI device.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Is there a "correct" solution to this problem? Both the Raspberry Pi [2] and
+Beaglebone [3] kernels have just added "spidev" back to the match table, but I
+would rather not carry a patch around just for some printk spam.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Regards,
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From a78841479696efa557a2251c86462c936a208f90 Mon Sep 17 00:00:00 2001
-From: Sunny Luo <sunny.luo@amlogic.com>
-Date: Tue, 28 Nov 2017 21:29:24 +0800
-Subject: [PATCH] spi: meson-axg: update compatible string for the Meson-AXG
-
-Update the compatbile string to support Meson-AXG SoCs.
-
-Signed-off-by: Sunny Luo <sunny.luo@amlogic.com>
-Signed-off-by: Yixun Lan <yixun.lan@amlogic.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-meson.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
-index 825c39cae74a..b7f5e86fed22 100644
---- a/Documentation/devicetree/bindings/spi/spi-meson.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-meson.txt
-@@ -27,7 +27,9 @@ The Meson SPICC is generic SPI controller for general purpose Full-Duplex
- communications with dedicated 16 words RX/TX PIO FIFOs.
- 
- Required properties:
-- - compatible: should be "amlogic,meson-gx-spicc" on Amlogic GX SoCs.
-+ - compatible: should be:
-+	"amlogic,meson-gx-spicc" on Amlogic GX and compatible SoCs.
-+	"amlogic,meson-axg-spicc" on Amlogic AXG and compatible SoCs
-  - reg: physical base address and length of the controller registers
-  - interrupts: The interrupt specifier
-  - clock-names: Must contain "core"
 -- 
-2.15.0
+Kyle Roeschley
+Software Engineer
+National Instruments
+
+[1] http://www.ni.com/en-us/support/model.roborio.html
+[2] https://github.com/raspberrypi/linux/commit/dc08459ce87f0e73422c17abe20d0ac6c72153ad
+[3] https://github.com/beagleboard/linux/commit/1596f3a6a0966969089be73c58e4a6294ffbcb09
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

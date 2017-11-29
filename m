@@ -1,54 +1,50 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
 Subject: Re: spidev: Instantiating from DT as "spidev"
-Date: Wed, 29 Nov 2017 17:32:55 +0100
-Message-ID: <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
+Date: Wed, 29 Nov 2017 13:24:08 -0600
+Message-ID: <20171129192407.vrkphuhttmzl2ii4@senary>
 References: <20171129150435.5npybjuu2ndmtx2v@senary>
+ <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171129150435.5npybjuu2ndmtx2v@senary>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Kyle,
+On Wed, Nov 29, 2017 at 05:32:55PM +0100, Geert Uytterhoeven wrote:
+> 
+> Implement something in sysfs like "new_device" for i2c, or "slave" for SPI.
+> Then people can add a new device (e.g. "spidev") by writing to that
+> virtual file.
 
-On Wed, Nov 29, 2017 at 4:04 PM, Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org> wrote:
-> Since commit 956b200a846e ("spi: spidev: Warn loudly if instantiated from DT as
-> "spidev""), listing "spidev" directly in a device tree is not recommended.
-> Instead, what I see in the (many) past discussions is that I should change my
-> device tree to describe the actual hardware and add whatever new ID I create to
-> spidev_dt_ids. That seems perfectly reasonable.
->
-> However, our SPI master [1] is similar to the Raspberry Pi or Beaglebone in
-> that we don't know at kernel build time what device may be attached to the SPI
-> bus. Because the end users of our device are usually young students, we also
-> can't expect them to rebuild their kernel or mess with device tree overlays
-> just to interface with some arbitrary SPI device.
->
-> Is there a "correct" solution to this problem? Both the Raspberry Pi [2] and
-> Beaglebone [3] kernels have just added "spidev" back to the match table, but I
-> would rather not carry a patch around just for some printk spam.
+That makes sense to me. However, the i2c "new_device" and SPI "slave" nodes are
+simpler in that they only require the device name (and address for i2c). A SPI
+device can have many properties specified in the device tree that we would
+somehow need to get and parse. Two options I see would be:
 
-Implement something in sysfs like "new_device" for i2c, or "slave" for SPI.
-Then people can add a new device (e.g. "spidev") by writing to that
-virtual file.
+1. Set device status to disabled in the DT and add the device when the name is
+   written to the new_device sysfs node. But then, this is basically the same
+   as just specifying "spidev" in the DT (minus the printks). I suppose we
+   could also drop the compatible entry and require the user to specify a
+   driver when writing to new_device.
+2. Pass all parameters into the "new_device" node, e.g. by passing in and
+   applying a DT overlay or snippet.
 
-Documentation/i2c/instantiating-devices
-Documentation/spi/spi-summary
+In my specific case [1], the device tree entires are simple, but I wouldn't
+expect that for everyone. I've hacked up the first option and it works, but it
+doesn't seem terribly useful. I noticed that you've been working with DT
+overlays recently; what do you think of the second option?
 
-Gr{oetje,eeting}s,
+[1] https://github.com/ni/linux/blob/nilrt/17.0/4.6/arch/arm/boot/dts/ni-76F2.dts#L108
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+Kyle Roeschley
+Software Engineer
+National Instruments
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

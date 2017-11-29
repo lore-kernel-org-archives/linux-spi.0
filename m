@@ -1,79 +1,67 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Subject: Re: spidev: Instantiating from DT as "spidev"
-Date: Wed, 29 Nov 2017 20:22:25 +0000
-Message-ID: <1511986944.9792.36.camel@impinj.com>
-References: <20171129150435.5npybjuu2ndmtx2v@senary>
-         <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
+Date: Wed, 29 Nov 2017 23:18:26 +0100
+Message-ID: <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
+References: <20171129150435.5npybjuu2ndmtx2v@senary> <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
+ <20171129192407.vrkphuhttmzl2ii4@senary>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: "kyle.roeschley-acOepvfBmUk@public.gmane.org" <kyle.roeschley-acOepvfBmUk@public.gmane.org>,
-        "geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Content-ID: <41B4CC019B73D54AB422BA4731BF782A-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+In-Reply-To: <20171129192407.vrkphuhttmzl2ii4@senary>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gV2VkLCAyMDE3LTExLTI5IGF0IDE3OjMyICswMTAwLCBHZWVydCBVeXR0ZXJob2V2ZW4gd3Jv
-dGU6DQo+IE9uIFdlZCwgTm92IDI5LCAyMDE3IGF0IDQ6MDQgUE0sIEt5bGUgUm9lc2NobGV5IDxr
-eWxlLnJvZXNjaGxleUBuaS5jb20+IHdyb3RlOg0KPiA+IFNpbmNlIGNvbW1pdCA5NTZiMjAwYTg0
-NmUgKCJzcGk6IHNwaWRldjogV2FybiBsb3VkbHkgaWYgaW5zdGFudGlhdGVkIGZyb20gRFQgYXMN
-Cj4gPiAic3BpZGV2IiIpLCBsaXN0aW5nICJzcGlkZXYiIGRpcmVjdGx5IGluIGEgZGV2aWNlIHRy
-ZWUgaXMgbm90IHJlY29tbWVuZGVkLg0KPiA+IEluc3RlYWQsIHdoYXQgSSBzZWUgaW4gdGhlICht
-YW55KSBwYXN0IGRpc2N1c3Npb25zIGlzIHRoYXQgSSBzaG91bGQgY2hhbmdlIG15DQo+ID4gZGV2
-aWNlIHRyZWUgdG8gZGVzY3JpYmUgdGhlIGFjdHVhbCBoYXJkd2FyZSBhbmQgYWRkIHdoYXRldmVy
-IG5ldyBJRCBJIGNyZWF0ZSB0bw0KPiA+IHNwaWRldl9kdF9pZHMuIFRoYXQgc2VlbXMgcGVyZmVj
-dGx5IHJlYXNvbmFibGUuDQo+ID4gDQo+ID4gDQo+ID4gSXMgdGhlcmUgYSAiY29ycmVjdCIgc29s
-dXRpb24gdG8gdGhpcyBwcm9ibGVtPyBCb3RoIHRoZSBSYXNwYmVycnkgUGkgWzJdIGFuZA0KPiA+
-IEJlYWdsZWJvbmUgWzNdIGtlcm5lbHMgaGF2ZSBqdXN0IGFkZGVkICJzcGlkZXYiIGJhY2sgdG8g
-dGhlIG1hdGNoIHRhYmxlLCBidXQgSQ0KPiA+IHdvdWxkIHJhdGhlciBub3QgY2FycnkgYSBwYXRj
-aCBhcm91bmQganVzdCBmb3Igc29tZSBwcmludGsgc3BhbS4NCj4gDQo+IEltcGxlbWVudCBzb21l
-dGhpbmcgaW4gc3lzZnMgbGlrZSAibmV3X2RldmljZSIgZm9yIGkyYywgb3IgInNsYXZlIiBmb3Ig
-U1BJLg0KPiBUaGVuIHBlb3BsZSBjYW4gYWRkIGEgbmV3IGRldmljZSAoZS5nLiAic3BpZGV2Iikg
-Ynkgd3JpdGluZyB0byB0aGF0DQo+IHZpcnR1YWwgZmlsZS4NCg0KSSBoYWQgYSBwcm9kdWN0IHRo
-YXQgdXNlZCBhIG51bWJlciBvZiBkZXZpY2VzIGNvbnRyb2xsZWQgdmlhIHNwaWRldiwNCmFuZCBw
-YXRjaGluZyB0aGUga2VybmVsIHRvIGFkZCB0aGVtIHRvIHRoZSBzcGlkZXZfZHRfaWRzIGxpc3Qg
-aXMsDQpJTU5TSE8sIGEgY3JhcCBzb2x1dGlvbi4gIFNvIEkgY2FtZSB1cCB3aXRoIHNvbWV0aGlu
-ZyBkaWZmZXJlbnQuDQoNClNvbWUgb3RoZXIgTGludXggYnVzIHN1YnN5c3RlbXMsIGxpa2UgUENJ
-IGFuZCBwbGF0Zm9ybSwgaGF2ZSBhDQoiZHJpdmVyX292ZXJyaWRlIiBzeXNmcyBhdHRyaWJ1dGUg
-Zm9yIGVhY2ggZGV2aWNlLiAgV3JpdGluZyB0aGUgbmFtZSBvZg0KYSBkcml2ZXIgdG8gdGhpcyBh
-dHRyaWJ1dGUgd2lsbCBiaW5kIHRoZSBkZXZpY2UgdG8gdGhlIG5hbWVkIGRyaXZlciwgDQpldmVu
-IGlmIHRoZSBkcml2ZXIgZG9lcyBub3QgZXhwbGljaXRseSBsaXN0IHRoZSBkZXZpY2UgaW4gdGhl
-IGJpbmQNCnRhYmxlLiAgVGhpcyBjYW4gYmUgdXNlZCB0byBiaW5kIHNwaWRldiB0byBhIGRldmlj
-ZSwgd2l0aG91dCBhZGRpbmcgdGhlDQpkZXZpY2UgdHlwZSB0byBhIGR0IGlkIGxpc3QgaW4gc3Bp
-ZGV2IG5vciBnaXZpbmcgdGhlIGRldmljZSBhIHR5cGUgb2YNCiJzcGlkZXYiIHJhdGhlciB0aGFu
-IHRoZSByZWFsIHR5cGUuDQoNClNvIEkgYWRkZWQgZHJpdmVyX292ZXJyaWRlIHRvIHRvIHRoZSBz
-cGkgYnVzLiAgVGhlcmUgYXJlIHNvbWUgb3RoZXINCnVzZXMgdG9vLCBhcyBwbGF0Zm9ybSBhbmQg
-cGNpIGhhdmUgdGhlIGF0dHJpYnV0ZSBhbmQgdGhlcmUgaXMgbm8gc3BpZGV2DQpkcml2ZXIgZm9y
-IHRob3NlIGJ1c2VzLiAgRm9yIGluc3RhbmNlLCB5b3UgY2FuIGJpbmQgc3BpZGV2IHRvIGEgZGV2
-aWNlDQp3aXRoIGEgcmVhbCBrZXJuZWwgZHJpdmVyIHRvIGRlYnVnIHNvbWV0aGluZywgYXQgcnVu
-dGltZSwgd2l0aG91dA0KbmVlZGluZyB0byBtb2RpZnkgZGV2aWNlIHRyZWUgZW50cmllcyBvciBw
-YXRjaCB0aGUga2VybmVsLg0KDQpSYXRoZXIgdGhhbiBtYW51YWwgd3JpdGUgdG8gZHJpdmVyX292
-ZXJyaWRlIGZpbGVzLCBvbmUgY2FuIHVzZSB1ZGV2DQpydWxlcyB0byBkbyBpdCBhdXRvbWF0aWNh
-bGx5LiAgRXhhbXBsZToNCg0KU1VCU1lTVEVNPT0ic3BpIiwgRU5We01PREFMSUFTfT09InNwaTph
-ZHJmNjgyMCIsIEFUVFJ7ZHJpdmVyX292ZXJyaWRlfSs9InNwaWRldiINCg0KT25lIGNhbiBub3cg
-dXNlIGEgInByb3BlciIgY29tcGF0aWJsZSBlbnRyeSBpbiB0aGUgZGV2aWNlIHRyZWUsDQpjb21w
-YXRpYmxlID0gImFkaSxhZHJmNjgyMCIuDQoNCkNyZWF0aW5nIG5ldyBzcGkgZGV2aWNlIGlzLCBJ
-TUhPLCBhIHNlcGFyYXRlIHByb2JsZW0gZnJvbSBiaW5kaW5nIGEgc3BpDQpkZXZpY2UgdG8gc3Bp
-ZGV2LiAgT25lIGNvdWxkIHRyeSB0byBzb2x2ZSB0aGF0IHdpdGggdGhlICJuZXdfZGV2aWNlIg0K
-c3lzdGVtIHVzZWQgaW4gaTJjLiAgSG93ZXZlciwgaTJjIGFkZGVkIHRoYXQgb3ZlciBlaWdodCB5
-ZWFycyBhZ28gd2hlbg0KZGV2aWNlIHRyZWUgc3VwcG9ydCB3YXMgYSBsb3QgbGVzcyBjb21tb24g
-YW5kIGRldmljZSB0cmVlIGZyYWdtZW50cw0KZGlkbid0IGV4aXN0LiAgTm93IHRoYXQgd2UgaGF2
-ZSBkeW5hbWljIGR0IGZyYWdtZW50IGxvYWRpbmcsIG1heWJlIHRoYXQNCmlzIGEgYmV0dGVyIHN5
-c3RlbT8NCg0KT25lIGNhbiBjcmVhdGUgYSBkdCBmcmFnbWVudCB0aGF0IGFkZHMgYSBuZXcgc3Bp
-IGRldmljZSwgYW5kIHRoaXMgZ2l2ZXMNCnlvdSB0aGUgYWJpbGl0eSB0byBhZGQgYWxsIHRoZSBw
-cm9wZXJ0aWVzIHRoZSBkZXZpY2UgbWlnaHQgbmVlZCAoc3BpDQptb2RlLCBzcGVlZCwgZGV2aWNl
-IHNwZWNpZmljIHBhcmFtZXRlcnMsIGV0Yy4pLiAgSXQgY291bGQgYmluZCB0byBhbiANCm5vcm1h
-bCBzcGktc2xhdmUga2VybmVsIGRyaXZlciBvciB0byBzcGlkZXYuDQoNCklmIGFkZGluZyBhIGR0
-IGZyYWdtZW50IGlzICJ0b28gaGFyZCIsIGp1c3Qgd3JhcCBpdCBpbiBhIHNjcmlwdC4gIEl0DQpz
-aG91bGQgYmUgdHJpdmlhbCB0byB3cml0ZSBhIHNjcmlwdCB0aGF0IHRha2VzIGEgc3BpIGJ1cyBh
-bmQgY2hpcA0Kc2VsZWN0IGFuZCBwcm9kdWNlcyBhIGdlbmVyaWMgZHQgZnJhZ21lbnQgd2l0aCB0
-aG9zZSBmaWVsZHMgcGx1Z2dlZCBpbg0KYW5kIHNlbmRzIGl0IHRvIHRoZSBhcHByb3ByaWF0ZSBw
-bGFjZSBpbiBzeXNmcy4=
+Hi Kyle,
+
+On Wed, Nov 29, 2017 at 8:24 PM, Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org> wrote:
+> On Wed, Nov 29, 2017 at 05:32:55PM +0100, Geert Uytterhoeven wrote:
+>> Implement something in sysfs like "new_device" for i2c, or "slave" for SPI.
+>> Then people can add a new device (e.g. "spidev") by writing to that
+>> virtual file.
+>
+> That makes sense to me. However, the i2c "new_device" and SPI "slave" nodes are
+> simpler in that they only require the device name (and address for i2c). A SPI
+> device can have many properties specified in the device tree that we would
+> somehow need to get and parse. Two options I see would be:
+>
+> 1. Set device status to disabled in the DT and add the device when the name is
+>    written to the new_device sysfs node. But then, this is basically the same
+>    as just specifying "spidev" in the DT (minus the printks). I suppose we
+>    could also drop the compatible entry and require the user to specify a
+>    driver when writing to new_device.
+> 2. Pass all parameters into the "new_device" node, e.g. by passing in and
+>    applying a DT overlay or snippet.
+>
+> In my specific case [1], the device tree entires are simple, but I wouldn't
+> expect that for everyone. I've hacked up the first option and it works, but it
+> doesn't seem terribly useful. I noticed that you've been working with DT
+> overlays recently; what do you think of the second option?
+>
+> [1] https://github.com/ni/linux/blob/nilrt/17.0/4.6/arch/arm/boot/dts/ni-76F2.dts#L108
+
+To me, the above sounds a bit contradictive: either you have
+  1. a simple (trivial) description, which can be handled by spidev and
+     userspace, and thus by just writing "<unit-addr> spidev" to a new_device
+     sysfs node, or
+  2. a complex description, for which you need a specialized in-kernel driver,
+     so you're gonna need a real DT node (and overlays?) to describe it.
+
+I don't think writing a complex description to a new_device sysfs node makes
+sense.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

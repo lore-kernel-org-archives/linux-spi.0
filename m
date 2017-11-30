@@ -1,71 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Fix double "when"" to the spi tree
-Date: Thu, 30 Nov 2017 17:40:23 +0000
-Message-ID: <E1eKSox-0007bR-GE@debutante>
-References: <1512048908-19246-1-git-send-email-geert+renesas@glider.be>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+From: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
+Subject: Re: spidev: Instantiating from DT as "spidev"
+Date: Thu, 30 Nov 2017 16:24:16 -0600
+Message-ID: <20171130222416.4b7pob47eicuappv@senary>
+References: <20171129150435.5npybjuu2ndmtx2v@senary>
+ <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
+ <20171129192407.vrkphuhttmzl2ii4@senary>
+ <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
+ <1512007657.9792.45.camel@impinj.com>
+ <CAMuHMdXv2WsGCUBD4Td9K1zOfZ9DOfeW5rYtCyq27Ucp21xGRA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1512048908-19246-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXv2WsGCUBD4Td9K1zOfZ9DOfeW5rYtCyq27Ucp21xGRA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Thu, Nov 30, 2017 at 09:03:12AM +0100, Geert Uytterhoeven wrote:
+> Hi Trent,
+> 
+> On Thu, Nov 30, 2017 at 3:07 AM, Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org> wrote:
+> > On Wed, 2017-11-29 at 23:18 +0100, Geert Uytterhoeven wrote:
+> >> To me, the above sounds a bit contradictive: either you have
+> >>   1. a simple (trivial) description, which can be handled by spidev and
+> >>      userspace, and thus by just writing "<unit-addr> spidev" to a new_device
+> >>      sysfs node, or
 
-   spi: Fix double "when"
+So you're suggesting that new_device can only be used to create a device which
+uses spidev (without yelling about it)? That makes sense to me.
 
-has been applied to the spi tree at
+> >>   2. a complex description, for which you need a specialized in-kernel driver,
+> >>      so you're gonna need a real DT node (and overlays?) to describe it.
+> >>
+> >> I don't think writing a complex description to a new_device sysfs node makes
+> >> sense.
+> >
+> > Is there anything one can do with new_device that can't be done with a
+> > dt fragment?
+> 
+> Nope.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Aren't DT overlays via configfs not yet in mainline? So if I did want to use
+that mechanism, I'd have call the in-kernel API from within the SPI core.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 8d26fdfcb45dc420115b267ac9d6b3ac13457f1b Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Thu, 30 Nov 2017 14:35:08 +0100
-Subject: [PATCH] spi: Fix double "when"
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- include/linux/spi/spi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 7b2170bfd6e7..bc6bb325d1bf 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -126,7 +126,7 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
-  *	for that name.  This appears in the sysfs "modalias" attribute
-  *	for driver coldplugging, and in uevents used for hotplugging
-  * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
-- *	when not using a GPIO line)
-+ *	not using a GPIO line)
-  *
-  * @statistics: statistics for the spi_device
-  *
 -- 
-2.15.0
-
+Kyle Roeschley
+Software Engineer
+National Instruments
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

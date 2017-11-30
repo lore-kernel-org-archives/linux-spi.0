@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sh-msiof: Use dev_warn_once() instead of open-coding" to the spi tree
-Date: Thu, 30 Nov 2017 17:40:20 +0000
-Message-ID: <E1eKSou-0007a2-FG@debutante>
-References: <1512049130-20170-1-git-send-email-geert+renesas@glider.be>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Applied "spi: Fix double "when"" to the spi tree
+Date: Thu, 30 Nov 2017 17:40:23 +0000
+Message-ID: <E1eKSox-0007bR-GE@debutante>
+References: <1512048908-19246-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1512049130-20170-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <1512048908-19246-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sh-msiof: Use dev_warn_once() instead of open-coding
+   spi: Fix double "when"
 
 has been applied to the spi tree at
 
@@ -38,37 +39,30 @@ to this mail.
 Thanks,
 Mark
 
->From 5d8e614f6cf8850657edbd1859391a2ae45b4488 Mon Sep 17 00:00:00 2001
+>From 8d26fdfcb45dc420115b267ac9d6b3ac13457f1b Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Thu, 30 Nov 2017 14:38:50 +0100
-Subject: [PATCH] spi: sh-msiof: Use dev_warn_once() instead of open-coding
-
-Use the helper introduced by commit e135303bd5bebcd2 ("device: Add
-dev_<level>_once variants") instead of open-coding the same
-functionality.
+Date: Thu, 30 Nov 2017 14:35:08 +0100
+Subject: [PATCH] spi: Fix double "when"
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/spi/spi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index fcd261f98b9f..81a9144f5442 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -912,9 +912,8 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 
- 		ret = sh_msiof_dma_once(p, tx_buf, rx_buf, l);
- 		if (ret == -EAGAIN) {
--			pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
--				     dev_driver_string(&p->pdev->dev),
--				     dev_name(&p->pdev->dev));
-+			dev_warn_once(&p->pdev->dev,
-+				"DMA not available, falling back to PIO\n");
- 			break;
- 		}
- 		if (ret)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 7b2170bfd6e7..bc6bb325d1bf 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -126,7 +126,7 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
+  * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
+- *	when not using a GPIO line)
++ *	not using a GPIO line)
+  *
+  * @statistics: statistics for the spi_device
+  *
 -- 
 2.15.0
 

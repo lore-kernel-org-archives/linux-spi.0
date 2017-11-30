@@ -1,67 +1,44 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Subject: Re: spidev: Instantiating from DT as "spidev"
-Date: Wed, 29 Nov 2017 23:18:26 +0100
-Message-ID: <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
-References: <20171129150435.5npybjuu2ndmtx2v@senary> <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
- <20171129192407.vrkphuhttmzl2ii4@senary>
+Date: Thu, 30 Nov 2017 02:07:37 +0000
+Message-ID: <1512007657.9792.45.camel@impinj.com>
+References: <20171129150435.5npybjuu2ndmtx2v@senary>
+         <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
+         <20171129192407.vrkphuhttmzl2ii4@senary>
+         <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "kyle.roeschley-acOepvfBmUk@public.gmane.org" <kyle.roeschley-acOepvfBmUk@public.gmane.org>,
+        "geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171129192407.vrkphuhttmzl2ii4@senary>
+In-Reply-To: <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <DC1AF26D850B6F47B6847DFFD43E283C-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Kyle,
-
-On Wed, Nov 29, 2017 at 8:24 PM, Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org> wrote:
-> On Wed, Nov 29, 2017 at 05:32:55PM +0100, Geert Uytterhoeven wrote:
->> Implement something in sysfs like "new_device" for i2c, or "slave" for SPI.
->> Then people can add a new device (e.g. "spidev") by writing to that
->> virtual file.
->
-> That makes sense to me. However, the i2c "new_device" and SPI "slave" nodes are
-> simpler in that they only require the device name (and address for i2c). A SPI
-> device can have many properties specified in the device tree that we would
-> somehow need to get and parse. Two options I see would be:
->
-> 1. Set device status to disabled in the DT and add the device when the name is
->    written to the new_device sysfs node. But then, this is basically the same
->    as just specifying "spidev" in the DT (minus the printks). I suppose we
->    could also drop the compatible entry and require the user to specify a
->    driver when writing to new_device.
-> 2. Pass all parameters into the "new_device" node, e.g. by passing in and
->    applying a DT overlay or snippet.
->
-> In my specific case [1], the device tree entires are simple, but I wouldn't
-> expect that for everyone. I've hacked up the first option and it works, but it
-> doesn't seem terribly useful. I noticed that you've been working with DT
-> overlays recently; what do you think of the second option?
->
-> [1] https://github.com/ni/linux/blob/nilrt/17.0/4.6/arch/arm/boot/dts/ni-76F2.dts#L108
-
-To me, the above sounds a bit contradictive: either you have
-  1. a simple (trivial) description, which can be handled by spidev and
-     userspace, and thus by just writing "<unit-addr> spidev" to a new_device
-     sysfs node, or
-  2. a complex description, for which you need a specialized in-kernel driver,
-     so you're gonna need a real DT node (and overlays?) to describe it.
-
-I don't think writing a complex description to a new_device sysfs node makes
-sense.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+T24gV2VkLCAyMDE3LTExLTI5IGF0IDIzOjE4ICswMTAwLCBHZWVydCBVeXR0ZXJob2V2ZW4gd3Jv
+dGU6DQo+IA0KPiBUbyBtZSwgdGhlIGFib3ZlIHNvdW5kcyBhIGJpdCBjb250cmFkaWN0aXZlOiBl
+aXRoZXIgeW91IGhhdmUNCj4gICAxLiBhIHNpbXBsZSAodHJpdmlhbCkgZGVzY3JpcHRpb24sIHdo
+aWNoIGNhbiBiZSBoYW5kbGVkIGJ5IHNwaWRldiBhbmQNCj4gICAgICB1c2Vyc3BhY2UsIGFuZCB0
+aHVzIGJ5IGp1c3Qgd3JpdGluZyAiPHVuaXQtYWRkcj4gc3BpZGV2IiB0byBhIG5ld19kZXZpY2UN
+Cj4gICAgICBzeXNmcyBub2RlLCBvcg0KPiAgIDIuIGEgY29tcGxleCBkZXNjcmlwdGlvbiwgZm9y
+IHdoaWNoIHlvdSBuZWVkIGEgc3BlY2lhbGl6ZWQgaW4ta2VybmVsIGRyaXZlciwNCj4gICAgICBz
+byB5b3UncmUgZ29ubmEgbmVlZCBhIHJlYWwgRFQgbm9kZSAoYW5kIG92ZXJsYXlzPykgdG8gZGVz
+Y3JpYmUgaXQuDQo+IA0KPiBJIGRvbid0IHRoaW5rIHdyaXRpbmcgYSBjb21wbGV4IGRlc2NyaXB0
+aW9uIHRvIGEgbmV3X2RldmljZSBzeXNmcyBub2RlIG1ha2VzDQo+IHNlbnNlLg0KDQpJcyB0aGVy
+ZSBhbnl0aGluZyBvbmUgY2FuIGRvIHdpdGggbmV3X2RldmljZSB0aGF0IGNhbid0IGJlIGRvbmUg
+d2l0aCBhDQpkdCBmcmFnbWVudD8NCg0KSTJDIGFkZGVkIHRoYXQgZmVhdHVyZSBhIGxvbmcgdGlt
+ZSBhZ28sIHdoZW4gd2Ugd2VyZSBzdGlsbCBsYXJnZWx5DQp1c2luZyBwbGF0Zm9ybV9kYXRhIGFu
+ZCBib2FyZCBmaWxlcyBhbmQgZGV2aWNlIHRyZWUgZnJhZ21lbnRzIGRpZG4ndA0KZXhpc3QuICBJ
+dCBzZWVtcyBvYnNvbGV0ZSB0byBtZS4gIE1heWJlIGVhc2llciB0byB1c2UgaWYgeW91IGxpbWl0
+DQp5b3Vyc2VsZiB0byB3aGF0J3MgaW4gYnVzeWJveCwgYnV0IEkgdGhpbmsgb25lIGNvdWxkIHdy
+aXRlIGEgc2ltcGxlDQpzaGVsbCBzY3JpcHQgdGhhdCBtYWtlcyBpdCBqdXN0IGFzIHNpbXBsZSB0
+byBjcmVhdGUgbmV3IGRldmljZXMgd2l0aCBkdA0KZnJhZ21lbnRzIGFzIHdpdGggbmV3X2Rldmlj
+ZS4=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

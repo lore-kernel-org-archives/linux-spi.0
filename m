@@ -1,68 +1,19 @@
-From: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
-Subject: Re: spidev: Instantiating from DT as "spidev"
-Date: Thu, 30 Nov 2017 16:24:16 -0600
-Message-ID: <20171130222416.4b7pob47eicuappv@senary>
-References: <20171129150435.5npybjuu2ndmtx2v@senary>
- <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
- <20171129192407.vrkphuhttmzl2ii4@senary>
- <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
- <1512007657.9792.45.camel@impinj.com>
- <CAMuHMdXv2WsGCUBD4Td9K1zOfZ9DOfeW5rYtCyq27Ucp21xGRA@mail.gmail.com>
+From: "Obrist Nicolas" <authentic-VhI5nVM4ZgmpwFb5G8XvHQ@public.gmane.org>
+Subject: brauchen sie schnell geld? Wir helfen ihnen weiter
+Date: Sun, 03 Dec 2017 12:11:27 -0800
+Message-ID: <20171203200830.E6F529704E5@mail.07d02.mspz7.gob.ec>
+Reply-To: nicolashelp279-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+To: Recipients <authentic-VhI5nVM4ZgmpwFb5G8XvHQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXv2WsGCUBD4Td9K1zOfZ9DOfeW5rYtCyq27Ucp21xGRA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Nov 30, 2017 at 09:03:12AM +0100, Geert Uytterhoeven wrote:
-> Hi Trent,
-> 
-> On Thu, Nov 30, 2017 at 3:07 AM, Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org> wrote:
-> > On Wed, 2017-11-29 at 23:18 +0100, Geert Uytterhoeven wrote:
-> >> To me, the above sounds a bit contradictive: either you have
-> >>   1. a simple (trivial) description, which can be handled by spidev and
-> >>      userspace, and thus by just writing "<unit-addr> spidev" to a new_device
-> >>      sysfs node, or
-
-So you're suggesting that new_device can only be used to create a device which
-uses spidev (without yelling about it)? That makes sense to me.
-
-> >>   2. a complex description, for which you need a specialized in-kernel driver,
-> >>      so you're gonna need a real DT node (and overlays?) to describe it.
-> >>
-> >> I don't think writing a complex description to a new_device sysfs node makes
-> >> sense.
-> >
-> > Is there anything one can do with new_device that can't be done with a
-> > dt fragment?
-> 
-> Nope.
-
-Aren't DT overlays via configfs not yet in mainline? So if I did want to use
-that mechanism, I'd have call the in-kernel API from within the SPI core.
-
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-
--- 
-Kyle Roeschley
-Software Engineer
-National Instruments
+brauchen sie schnell geld? Wir helfen ihnen weiter
+Wenn reiche person fuhle ich mich verpflichtet menschen eine zweite chance zu bieten. Keine uberraschungen, kein betrug aber klarheit und schnell geld auf ihrem konto. Kontaktieren sie uns und geben sie an wie viel sie leihen mochten. Wie senden ihnen sofort die moglichkeiten
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

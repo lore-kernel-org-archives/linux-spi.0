@@ -1,7 +1,7 @@
 From: Takuo Koguchi <takuo.koguchi@gmail.com>
-Subject: [PATCH] spi: jcore: disable clock when registering spi conroller
-Date: Thu,  7 Dec 2017 19:09:24 +0900
-Message-ID: <1512641366-5963-1-git-send-email-takuo.koguchi.sw@hitachi.com>
+Subject: [PATCH] spi: jcore: disable clock when registering spi conroller failed
+Date: Thu,  7 Dec 2017 19:11:41 +0900
+Message-ID: <1512641503-6098-1-git-send-email-takuo.koguchi.sw@hitachi.com>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, khoroshilov@ispras.ru,
         takuo.koguchi@gmail.com, takuo.koguchi.sw@hitachi.com
@@ -9,7 +9,7 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
- failed When probe function fails in registering the spi controller, the clock
+ When probe function fails in registering the spi controller, the clock
  should remain disabled.
 
 Found by Linux Driver Verification project (linuxtesting.org).

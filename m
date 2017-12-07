@@ -1,25 +1,23 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sun4i: disable clocks in the remove function" to the spi tree
-Date: Thu, 07 Dec 2017 12:35:02 +0000
-Message-ID: <E1eMvOI-0006Ak-FL@debutante>
-References: <1512631227-27334-1-git-send-email-takuo.koguchi.sw@hitachi.com>
-Cc: Takuo Koguchi <takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org>,
-        Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org, takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Takuo Koguchi <takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1512631227-27334-1-git-send-email-takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: rspi: Do not set SPCR_SPE in qspi_set_config_register()" to the spi tree
+Date: Thu, 07 Dec 2017 12:35:09 +0000
+Message-ID: <E1eMvOP-0006Bd-8M@debutante>
+References: <1512641361-4128-1-git-send-email-geert+renesas@glider.be>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1512641361-4128-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sun4i: disable clocks in the remove function
+   spi: rspi: Do not set SPCR_SPE in qspi_set_config_register()
 
 has been applied to the spi tree at
 
@@ -44,40 +42,44 @@ to this mail.
 Thanks,
 Mark
 
->From c810daba0ab5226084a56893a789af427a801146 Mon Sep 17 00:00:00 2001
-From: Takuo Koguchi <takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 7 Dec 2017 16:20:14 +0900
-Subject: [PATCH] spi: sun4i: disable clocks in the remove function
+>From b458a3490e46dddd5b63f59b458c9b6d2284a63f Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Thu, 7 Dec 2017 11:09:21 +0100
+Subject: [PATCH] spi: rspi: Do not set SPCR_SPE in qspi_set_config_register()
 
-mclk and hclk need to be disabled. Since pm_runtime_disable does
-not disable the clocks, use pm_runtime_force_suspend instead.
+The R-Car Gen2 Hardware User Manual Rev. 2.00 states:
 
-Found by Linux Driver Verification project (linuxtesting.org).
+    If the master/slave mode select bit (MSTR) is modified while the SPI
+    function enable bit (SPE) is set to 1 (that is, this module is
+    enabled), the subsequent operation cannot be guaranteed.
 
-Signed-off-by: Takuo Koguchi <takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org>
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Hence do not set SPCR_SPE when setting SPCR_MSTR, just like the
+.set_config_register() implementations for other RSPI variants do.
+
+Note that when booted from QSPI, the boot loader will have set SPCR_MSTR
+already, hence usually the bit is never modified by the Linux driver.
+
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sun4i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-rspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index c5cd635c28f3..41410031f8e9 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -525,7 +525,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 2ce875764ca6..0835a8d88fb8 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -377,8 +377,8 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+ 	/* Sets SPCMD */
+ 	rspi_write16(rspi, rspi->spcmd, RSPI_SPCMD0);
  
- static int sun4i_spi_remove(struct platform_device *pdev)
- {
--	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_force_suspend(&pdev->dev);
+-	/* Enables SPI function in master mode */
+-	rspi_write8(rspi, SPCR_SPE | SPCR_MSTR, RSPI_SPCR);
++	/* Sets RSPI mode */
++	rspi_write8(rspi, SPCR_MSTR, RSPI_SPCR);
  
  	return 0;
  }
 -- 
 2.15.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

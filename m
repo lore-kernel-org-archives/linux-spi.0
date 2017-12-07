@@ -1,17 +1,20 @@
-From: Takuo Koguchi <takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: jcore: disable clock when registering spi conroller  failed When probe function fails in registering the spi controller, the clock should remain disabled.
-Date: Thu,  7 Dec 2017 19:03:47 +0900
-Message-ID: <1512641032-5848-1-git-send-email-takuo.koguchi.sw@hitachi.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org,
-        takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Takuo Koguchi <takuo.koguchi@gmail.com>
+Subject: [PATCH] spi: jcore: disable clock when registering spi conroller
+Date: Thu,  7 Dec 2017 19:09:24 +0900
+Message-ID: <1512641366-5963-1-git-send-email-takuo.koguchi.sw@hitachi.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, khoroshilov@ispras.ru,
+        takuo.koguchi@gmail.com, takuo.koguchi.sw@hitachi.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+ failed When probe function fails in registering the spi controller, the clock
+ should remain disabled.
 
 Found by Linux Driver Verification project (linuxtesting.org).
 
-Signed-off-by: Takuo Koguchi <takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Takuo Koguchi <takuo.koguchi.sw@hitachi.com>
 ---
  Compiled test only, no runtime test done.
  
@@ -36,8 +39,3 @@ index cebfea5..dafed62 100644
  
 -- 
 2.7.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

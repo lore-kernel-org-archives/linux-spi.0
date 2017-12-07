@@ -1,47 +1,52 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] spi: rspi: Do not set SPCR_SPE in qspi_set_config_register()
-Date: Thu,  7 Dec 2017 11:09:21 +0100
-Message-ID: <1512641361-4128-1-git-send-email-geert+renesas@glider.be>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: jcore: disable clock when registering spi conroller
+ failed
+Date: Thu, 7 Dec 2017 11:55:09 +0000
+Message-ID: <20171207115509.xm7vjrwd5qningcf@sirena.org.uk>
+References: <1512641503-6098-1-git-send-email-takuo.koguchi.sw@hitachi.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lz6n2vpbve3uyjwh"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org,
+        takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Takuo Koguchi <takuo.koguchi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1512641503-6098-1-git-send-email-takuo.koguchi.sw-FCd8Q96Dh0JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The R-Car Gen2 Hardware User Manual Rev. 2.00 states:
 
-    If the master/slave mode select bit (MSTR) is modified while the SPI
-    function enable bit (SPE) is set to 1 (that is, this module is
-    enabled), the subsequent operation cannot be guaranteed.
+--lz6n2vpbve3uyjwh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hence do not set SPCR_SPE when setting SPCR_MSTR, just like the
-.set_config_register() implementations for other RSPI variants do.
+On Thu, Dec 07, 2017 at 07:11:41PM +0900, Takuo Koguchi wrote:
+>  When probe function fails in registering the spi controller, the clock
+>  should remain disabled.
+>=20
+> Found by Linux Driver Verification project (linuxtesting.org).
 
-Note that when booted from QSPI, the boot loader will have set SPCR_MSTR
-already, hence usually the bit is never modified by the Linux driver.
+I seem to have got three copies of this from you in a very short time?
 
-Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi-rspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--lz6n2vpbve3uyjwh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index c96eab723fd3fdb7..8ef05c9568ced5d7 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -377,8 +377,8 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
- 	/* Sets SPCMD */
- 	rspi_write16(rspi, rspi->spcmd, RSPI_SPCMD0);
- 
--	/* Enables SPI function in master mode */
--	rspi_write8(rspi, SPCR_SPE | SPCR_MSTR, RSPI_SPCR);
-+	/* Sets RSPI mode */
-+	rspi_write8(rspi, SPCR_MSTR, RSPI_SPCR);
- 
- 	return 0;
- }
--- 
-2.7.4
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlopLBwACgkQJNaLcl1U
+h9DeGAf9Hjq16BG0Nxi+5uNSMvvqdJ/KlPzizg9KrsNi3REqjLOWcYtaOVOXYR6q
+KVYHpkuqLU4odKK68OCCRri+OmqB2TciEbfcA7MZHe6MhczJinega3rs5JB2DOXx
+PcfOIPjy4yeNqxOYKR1FNFYJXSSAIXlRooefJM+3HU0m5AkIv38y2LKlJ1T3iL8I
+MSsW3fRlpYGSmHu38UzulXa/eP4jxL3m+DAxVrr67986N2REHg4dYmsvck/Ys5UY
++xkhEazubdwJ1EhtC33meA7+M/JUkiEGd4PsYO5UEIWmlqMvV3x+ZEf3Gk7Tkz3u
+mUW/JKmriNUYdHWnXdWzaQYcjKlBuw==
+=i2O6
+-----END PGP SIGNATURE-----
+
+--lz6n2vpbve3uyjwh--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

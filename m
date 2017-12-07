@@ -1,166 +1,70 @@
-From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: RFC: FT232H based FPGA configuration adapter drivers
-Date: Thu, 7 Dec 2017 15:31:50 +0100
-Message-ID: <20171207153150.6f33f2e7@crub>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH] spi: sun6i: disable/unprepare clocks on remove
+Date: Thu, 7 Dec 2017 17:36:27 +0100
+Message-ID: <20171207163627.i4nrojgveczjfeox@flea.lan>
+References: <20171207140453.55krsazvnfqr7ooe@agrajag.zerfleddert.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nv2mta4twuhhctkt"
+Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org
+To: Tobias Jordan <Tobias.Jordan@elektrobit.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20171207140453.55krsazvnfqr7ooe@agrajag.zerfleddert.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-I have to rework drivers for custom FT232H based FPGA configuration
-adapters to make them suitable for including in mainline kernel. These
-adapters should be usable via low-level drivers for FPGA Manager
-framework. Two required low-level FPGA Manager drivers (for PS-SPI and
-CvP configurations) are already in mainline. The missing parts are the
-MPSSE SPI master driver (for attaching altera-ps-spi SPI devices) and
-the FTDI FIFO FPP interface driver for FPGA Manager. I'm CCing the
-relevant subsystem mailing lists and would like to get feedback to the
-draft below before rewriting the missing driver parts.
+--nv2mta4twuhhctkt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-A few words about our FPGA and FPGA configuration adapter hardware. We
-have FPGA PCIe boards with two different FT232H based configuration
-adapters. The first adapter type utilizes FT232H chip in MPSSE mode to
-connect ADBUS SPI/GPIO pins to Stratix-V PS-SPI interface. Another
-adapter type connects FT232H ADBUS (in FT245 FIFO mode) and two ACBUS
-GPIOs to a CPLD, the CPLD is connected to the Arria-10 FPP interface.
-Both FPGA boards are connected to the host via PCIe and USB (FT232H).
+On Thu, Dec 07, 2017 at 03:04:53PM +0100, Tobias Jordan wrote:
+> sun6i_spi_probe() uses sun6i_spi_runtime_resume() to prepare/enable
+> clocks, so sun6i_spi_remove() should use sun6i_spi_runtime_suspend() to
+> disable/unprepare them if we're not suspended.
+> Replacing pm_runtime_disable() by pm_runtime_force_suspend() will ensure
+> that sun6i_spi_runtime_suspend() is called if needed.
+>=20
+> Found by Linux Driver Verification project (linuxtesting.org).
+>=20
+> Fixes: 3558fe900e8af spi: sunxi: Add Allwinner A31 SPI controller driver
 
-Below simplified diagram shows the drivers relationship used in the
-first patch series [1] submitted to the FPGA and USB lists before
-(this series didn't yet include the MPSSE SPI master driver).
+This isn't the proper fixes format.
 
-   +-------------+
-   |             |
-   |  STRATIX V  |PS-SPI         FT245 FIFO & GPIO
-   |             +-----+    +-------------------+
-   |  on Board 1 |     |    |                   |
-   |             |                         +----+---+
-   |  PCIe       |   ADBUS&ACBUS           |  CPLD  |
-   +---+---------+ Connection Options      +----+---+
-       ^          (MPSSE or FIFO&GPIO)          |
-       |                  |              +------+-------+
-  altera-cvp  +-----------+----------+   |     FPP      |
-              |                      |   |              |
-              | FT232H 0x0403:0x6014 |   |   ARRIA 10   |
-              |                      |   |              |
-              +----------+-----------+   |  on Board 2  |
-                         |               |              |
-      MFD drv +----------+-----------+   |        PCIe  |
-      creates | ftdi-ft232h MFD drv  |   +----------+---+
-     platform |  USB bulk/ctrl xfer  |              ^
-      devices +---+------+-------+---+              |
-       below      |      |       |                  |
-            +-----+      |       +-------------+    +--------+
-            |            |                     |             |
-     +------+-------+ +--+-----------+ +-------+---------+   |
-     |ftdi-mpsse-spi| |ftdi-cbus-gpio| |ftdi-fifo-fpp-mgr|   |
-     | platform dev | | platform dev | |  platform dev   |   |
-     +-------+------+ +------+-------+ +---------+-------+   |
-  platform   ^               ^                   ^           |
-   drivers:  +               +                   |           |
-     MPSSE SPI master  ACBUS GPIO Ctrl     +-----+        +--+
-             ^               ^             |              |
-             |               |             +              +
-       altera-ps-spi         \uses   ftdi-fifo-fpp     altera-cvp
-        FPGA Manager          ------+ FPGA Manager    FPGA Manager
-             ^                            ^               ^
-             |                            |               |
-             +-------------------------+  +  +------------+
-                                       fpga-mgr
+> Signed-off-by: Tobias Jordan <Tobias.Jordan@elektrobit.com>
 
-The first FTDI FPP adapter driver patch series has some fundamental
-issues as discussed on the lists and I plan to rework the FT232H
-specific parts to prepare a new patch series. We have already
-reserved custom PIDs for both adapter types and can use them in
-adapter EEPROMs to ensure binding to the vendor specific drivers
-for SPI and FIFO FPP types.
+Once fixed,
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 
-Instead of MFD part as in previous version I intend to add an USB misc
-driver for our FPGA configuration adapters under drivers/usb/misc.
-When probing for VID/PID assigned to FIFO-FPP adapter type, this
-driver will register CBUS GPIO controller, GPIO lookup tables for
-FIFO FPP device and will create a platform device for attaching the
-low-level FPGA manager driver for FIFO FPP interface. The attached
-FPGA manager driver will be similar to the ftdi-fifo-fpp driver and
-will reside in drivers/fpga. When probing for VID/PID assigned to
-MPSSE SPI adapter type, the USB misc driver will register MPSSE GPIO
-controller, GPIO lookup tables for altera-ps-spi control/status GPIOs
-and will create platform device for attaching MPSSE SPI master
-controller driver. The SPI master controller platform driver will
-register MPSSE SPI bus with SPI slave device from spi_board_info
-struct in its platform data (in our case altera-ps-spi SPI slave
-device for attaching altera-ps-spi driver). The intended location
-of this custom SPI master controller driver is drivers/spi.
+Maxime
 
-Below simplified diagram shows the intended device and drivers
-relationship for reworking the adapter drivers.
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
 
-   +-------------+
-   |             |
-   |  STRATIX V  |PS-SPI         FT245 FIFO & GPIO
-   |             +-----+    +-------------------+
-   |  on Board 1 |     +    +                   |
-   |             |                         +----+---+
-   |  PCIe       |   ADBUS&ACBUS           |  CPLD  |
-   +---+---------+ Connection Options      +----+---+
-       ^          (MPSSE or FIFO&GPIO)          |
-       +                  +              +------+-------+
-  altera-cvp  +-----------+----------+   |     FPP      |
-              |        FT232H        |   |              |
-              |     0x0403:0x7148    |   |   ARRIA 10   |
-              |     0x0403:0x7149    |   |              |
-              +----------+-----------+   |  on Board 2  |
-                         |               |              |
-             +-----------+------------+  |        PCIe  |
-    USB misc | fpga-cfg-intf USB misc |  +----------+---+
-  drv creates|     bulk/ctrl xfer     |             ^
-    platform |ACBUS GPIO Ctrl (0x7148)|             |
-     devices |MPSSE GPIO Ctrl (0x7149)|             |
-      below  +-------+-------+--------+             |
-                     |       |                      |
-        for     +----+       +------+    for        |
-     PID 0x7149 |                   | PID 0x7148    |
-      +---------+--------+  +-------+---------+     |
-      | ftdi-mpsse-spi + |  |                 |     |
-      | altera-ps-spi in |  |ftdi-fifo-fpp-mgr|     |
-      |  spi_board_info  |  | platform device |     |
-      +---------+--------+  +--------+--------+     |
-                ^                    ^              |
-      drivers:  |                    |              |
-                +                    |              |
-         MPSSE SPI master            |              |
-                ^                    |              |
-                |                    +              +
-          altera-ps-spi        ftdi-fifo-fpp    altera-cvp
-           FPGA Manager         FPGA Manager   FPGA Manager
-                ^                    ^              ^
-                |                    |              |
-                +---------------+    +    +---------+
-                                  fpga-mgr
+--nv2mta4twuhhctkt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It would be worthwhile to concentrate the common USB transfer related
-functions (bulk, control and FTDI mode setting code used in previous
-ftdi-ft232h driver part) in a single file and reuse them in MPSSE SPI
-master and FIFO FPP drivers to avoid code duplication. I plan to add
-these functions in USB misc adapter driver and it could pass them to
-platform drivers as callbacks in an ops struct via platform data.
+-----BEGIN PGP SIGNATURE-----
 
-Before reworking the adapter drivers I'd like to get comments to this
-draft, especially when there are design issues that will cause driver
-rejection in the appropriate subsystem.
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlopbgcACgkQ0rTAlCFN
+r3TdJQ/+Jinh5IEBLLuno79aQiL3E/9gvM8eioylAMnVpB4kX19RSdjn1/GrGGBl
+2bYXvH6pKvs8mh4QTpDlwcIghs3IX69Vo7BE3c3lyDEaihsIDlGV2i5RCT4YiaaF
+HY3VZgRWJd/hdhGEpCBidmsqSqlKAphEwHNhiT8t2pd1kwZ4OTwIyVgdCVPmmLIv
+xy3f/FrjmWljXDdbHowDYuBOiGWK5WIIZ0JUzZ3I9isFtI/iSKLbZFLdtOQMpmIF
+8wQD2r8GMqN2h6QRoj5lQKyfNrNCnadIh8O3o0e4CuI75BqqkmKdlSAfOnoMe2tQ
+gKg3zAKGE8jSUy2ZiCV6Dt69NJuObgyoweOAQjRbe2AVBh46+mWphcXpGmes/UYR
+Wy3lf/E5qgS6lffdg7JF8sJcigE6Vo+Rw2nZkN2Kr0VkJ5yJnlLtGHjZqRz0V5KS
+qvxvmt1Qp7K48NZj7jvub1AXIUJIXawpWx0gXzl+YznFd99Bo4WHGLxDuAiUgTU1
+MloaANd8ZbUmnqnMlMFREMoXNoOOAZHULrOMnR/PxKh+9wuKlj+0DT6H2hkjsR7X
+kAJ2qqcXSDWW99pox0CvLqCd4rVBAtOrJ6Fep+EgZ+ap43omygCsAi++v+dnKnOW
+b+Xt2FcSO/bFP5BwGjyyQ5ilRTwO7Xb9dm3CK0V/gIAwgVXFMaA=
+=JdmT
+-----END PGP SIGNATURE-----
 
-Thanks!
-
-Anatolij
-
-[1] https://lkml.org/lkml/2017/7/6/710
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--nv2mta4twuhhctkt--

@@ -1,74 +1,58 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: RFC: FT232H based FPGA configuration adapter drivers
-Date: Fri, 8 Dec 2017 10:27:46 +0100
-Message-ID: <CAMuHMdUAXv_s8Lw1qwORew8RydKRKhFq7tMccU7jCa63_Otp0w@mail.gmail.com>
-References: <20171207153150.6f33f2e7@crub>
+From: Radu Nicolae Pirea <radu.pirea@microchip.com>
+Subject: Re: [RFC PATCH 2/2] spi: atmel: Fix DMA transfers data corruption
+Date: Fri, 8 Dec 2017 15:26:33 +0200
+Message-ID: <f3ed96fa-3d4e-6670-18f8-b6425a53e826@microchip.com>
+References: <1510763732-10151-1-git-send-email-radu.pirea@microchip.com>
+ <1510763732-10151-3-git-send-email-radu.pirea@microchip.com>
+ <20171116104508.rm7xdabyvucowlaj@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, USB list <linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171207153150.6f33f2e7@crub>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <linux-spi@vger.kernel.org>, <nicolas.ferre@microchip.com>,
+        <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171116104508.rm7xdabyvucowlaj@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Anatolij,
+On 16.11.2017 12:45, Mark Brown wrote:
+> On Wed, Nov 15, 2017 at 06:35:32PM +0200, Radu Pirea wrote:
+> 
+>> +#ifdef CONFIG_SOC_SAM_V4_V5
+>> +	/*
+>> +	 * On Atmel SoCs based on ARM9 cores, the data cache follows the VIVT
+>> +	 * model, hence the cache aliases issue can occur when buffers are
+>> +	 * allocated from DMA-unsafe areas, by vmalloc() for instance, where
+>> +	 * cache coherency is not taken into account or at least not handled
+>> +	 * completely (cache lines of aliases are not flushed and invalidated).
+>> +	 * This is not a theorical issue: it was reproduced when trying to mount
+>> +	 * a UBI file-system on a at91sam9g35ek board.
+>> +	 */
+>> +	flush_kernel_vmap_range((void *)xfer->rx_buf, xfer->len);
+>> +#endif
+> 
+> Shouldn't we be fixing this in the DMA mapping operations for the SoC,
+> won't this affect everything that does DMA on this platform and not just
+> this driver?  I'd expect that dma_map_sg() and so on would do the right
+> thing.
+> 
 
-On Thu, Dec 7, 2017 at 3:31 PM, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
-> I have to rework drivers for custom FT232H based FPGA configuration
-> adapters to make them suitable for including in mainline kernel. These
-> adapters should be usable via low-level drivers for FPGA Manager
-> framework. Two required low-level FPGA Manager drivers (for PS-SPI and
-> CvP configurations) are already in mainline. The missing parts are the
-> MPSSE SPI master driver (for attaching altera-ps-spi SPI devices) and
-> the FTDI FIFO FPP interface driver for FPGA Manager. I'm CCing the
-> relevant subsystem mailing lists and would like to get feedback to the
-> draft below before rewriting the missing driver parts.
->
-> A few words about our FPGA and FPGA configuration adapter hardware. We
-> have FPGA PCIe boards with two different FT232H based configuration
-> adapters. The first adapter type utilizes FT232H chip in MPSSE mode to
-> connect ADBUS SPI/GPIO pins to Stratix-V PS-SPI interface. Another
-> adapter type connects FT232H ADBUS (in FT245 FIFO mode) and two ACBUS
-> GPIOs to a CPLD, the CPLD is connected to the Arria-10 FPP interface.
-> Both FPGA boards are connected to the host via PCIe and USB (FT232H).
+I didn't find a bug like this in other drivers and the only way I can reproduce 
+the bug is with UBIFS on top of a spi-nor memory. dma_map_sg() does the right 
+thing, but data from cache are not written-back. If I enable 
+CONFIG_CPU_DCACHE_WRITETHROUGH bug disappears. Anyway, enabling 
+CONFIG_CPU_DCACHE_WRITETHROUGH is not an option because performance will drop.
 
-[...]
+Fixing the bug in DMA driver is not an option because other DMA operations are 
+not affected and the bug comes from the fact that UBIFS allocates memory with 
+vmalloc.
 
-> Instead of MFD part as in previous version I intend to add an USB misc
-> driver for our FPGA configuration adapters under drivers/usb/misc.
-> When probing for VID/PID assigned to FIFO-FPP adapter type, this
-> driver will register CBUS GPIO controller, GPIO lookup tables for
-> FIFO FPP device and will create a platform device for attaching the
-> low-level FPGA manager driver for FIFO FPP interface. The attached
-> FPGA manager driver will be similar to the ftdi-fifo-fpp driver and
-> will reside in drivers/fpga. When probing for VID/PID assigned to
-> MPSSE SPI adapter type, the USB misc driver will register MPSSE GPIO
-> controller, GPIO lookup tables for altera-ps-spi control/status GPIOs
-> and will create platform device for attaching MPSSE SPI master
-> controller driver. The SPI master controller platform driver will
-> register MPSSE SPI bus with SPI slave device from spi_board_info
-> struct in its platform data (in our case altera-ps-spi SPI slave
-> device for attaching altera-ps-spi driver). The intended location
-> of this custom SPI master controller driver is drivers/spi.
+Until now I have two solutions for this bug:
+1. This one with cache flushing.
+2. Another solution, based on ti-qspi driver, is to transfer the data whit a 
+bounce buffer allocated with dma_alloc_coherent when rx_buf or tx_buf is 
+allocated with vmalloc.
 
-A quick Google shows the FT232H chip in MPSSE mode can also support i2c.
-I guess your design can be extended for that, too, using another VID/PID pair?
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+So, witch solution do you think is suitable to solve this bug?

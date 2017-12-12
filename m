@@ -1,35 +1,66 @@
-From: Jia-Ju Bai <baijiaju1990-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [BUG] drivers/spi: a possible sleep-in-atomic bug in atmel_spi_remove
-Date: Tue, 12 Dec 2017 15:30:01 +0800
-Message-ID: <229fd3a0-b88e-5b86-e26e-ec6b79d37a2c@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: [PATCH] spi: s3c64xx: add SPDX identifier
+Date: Tue, 12 Dec 2017 16:58:15 +0900
+Message-ID: <20171212075815.8683-1-andi.shyti@samsung.com>
+References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
+Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@samsung.com>,
+        Andi Shyti <andi@etezian.org>
+To: Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-According to drivers/spi/spi-atmel.c, the kernel module may sleep under 
-a spinlock.
-The function call path is:
-atmel_spi_remove (acquire the spinlock)
-   atmel_spi_release_dma
-     dma_release_channel
-       mutex_lock --> may sleep
+Replace the original license statement with the SPDX identifier.
 
-I do not find a good way to fix it, so I only report.
-This possible bug is found by my static analysis tool (DSAC) and checked 
-by my code review.
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+---
+ drivers/spi/spi-s3c64xx.c                 | 18 ++++--------------
+ include/linux/platform_data/spi-s3c64xx.h |  4 +---
+ 2 files changed, 5 insertions(+), 17 deletions(-)
 
-
-Thanks,
-Jia-Ju Bai
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index de7df20f8712..7ef68d45edfb 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1,17 +1,7 @@
+-/*
+- * Copyright (C) 2009 Samsung Electronics Ltd.
+- *	Jaswinder Singh <jassi.brar@samsung.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (c) 2009 Samsung Electronics Co., Ltd.
++//      Jaswinder Singh <jassi.brar@samsung.com>
+ 
+ #include <linux/init.h>
+ #include <linux/module.h>
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index da79774078a7..8917f38c97c5 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -2,9 +2,7 @@
+  * Copyright (C) 2009 Samsung Electronics Ltd.
+  *	Jaswinder Singh <jassi.brar@samsung.com>
+  *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
++ * SPDX-License-Identifier: GPL-2.0
+  */
+ 
+ #ifndef __SPI_S3C64XX_H
+-- 
+2.15.1

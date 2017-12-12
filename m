@@ -1,34 +1,52 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: add SPDX identifier
-Date: Tue, 12 Dec 2017 11:13:26 +0100
-Message-ID: <CAJKOXPdM+C_JWOiqT8obEAsEsGJ1GvJMG=o2Kq0TCiOwdmZOxw@mail.gmail.com>
-References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
- <20171212075815.8683-1-andi.shyti@samsung.com> <CAJKOXPfdKyT8-bpM7tmveb3jWCRSSXwnkifhsRw_ag8X9z0W8A@mail.gmail.com>
- <20171212100730.GA16323@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: spi: davinci: Initialize dspi->done before any possible use of it
+Date: Tue, 12 Dec 2017 10:16:30 +0000
+Message-ID: <20171212101630.GB16323@sirena.org.uk>
+References: <20171212101048.28278-1-michele.dionisio@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Andi Shyti <andi.shyti@samsung.com>, Kukjin Kim <kgene@kernel.org>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20171212100730.GA16323@sirena.org.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michele Dionisio <michele.dionisio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20171212101048.28278-1-michele.dionisio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 12, 2017 at 11:07 AM, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Dec 12, 2017 at 10:17:09AM +0100, Krzysztof Kozlowski wrote:
->> On Tue, Dec 12, 2017 at 8:58 AM, Andi Shyti <andi.shyti@samsung.com> wrote:
->
->> > +// SPDX-License-Identifier: GPL-2.0
->
->> Why changing the comment style?
->
-> Apparently that's the thing for SPDX headers.
 
-Yes (although in sources one can find /* */ as well) but the rest of
-comment does not have to be changed in that case. With quick grep
-through sources I could not find such practice.
+--VrqPEDrXMn8OVzN4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards,
-Krzysztof
+On Tue, Dec 12, 2017 at 11:10:47AM +0100, Michele Dionisio wrote:
+
+> On SOC with multiple cpu (like omal l138) it is possible that spi periferic is already initialized when this module is loaded and it is possible to recieve interrupt when the modules is not sully initialized.
+
+Please include descriptions of what your patches are doing like this one
+in the changelog of the patch as covered in SubmittingPatches.
+
+Please also fix your mail client to word wrap within paragraphs at
+something substantially less than 80 columns.  Doing this makes your
+messages much easier to read and reply to.
+
+--VrqPEDrXMn8OVzN4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlovrH0ACgkQJNaLcl1U
+h9BoDAf+PFhkgYaJOWs33dRtBv/kj+mkRvlPohQlXzpabfUkL9OgCa4ru9C2QlXj
+O/o602Ykk/szGKo0uuxZmD4e/d1hQwxi+XLttQ88MSKUCm5A/jV9zWwt30Q02Zof
+ZTkVsvP2IhgQ3xD+smKVyLeZU4GIrWoP/sq/PtBd7LppaG4984lEALSe0IHsiphx
+Nay1HxycGgPhhh7/AYV/DPFGJBVjk62R2opRInVMMGe0YyvirkHk/LAXyfhkNPPv
+y4dhRQITxOBkRxNhJy6mAwmIcFVmrwwoYvm8wyiFbNJkl+4E6kED8S5wTloHKCv8
+qYk1b6WCFWGKwXkxY1dlgyfqf3srxw==
+=sFpH
+-----END PGP SIGNATURE-----
+
+--VrqPEDrXMn8OVzN4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

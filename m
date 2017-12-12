@@ -1,35 +1,34 @@
-From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: Re: RFC: FT232H based FPGA configuration adapter drivers
-Date: Fri, 8 Dec 2017 14:57:17 +0100
-Message-ID: <20171208145717.67b23e48@crub>
-References: <20171207153150.6f33f2e7@crub>
-        <CAMuHMdUAXv_s8Lw1qwORew8RydKRKhFq7tMccU7jCa63_Otp0w@mail.gmail.com>
+From: Jia-Ju Bai <baijiaju1990-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [BUG] drivers/spi: a possible sleep-in-atomic bug in atmel_spi_remove
+Date: Tue, 12 Dec 2017 15:30:01 +0800
+Message-ID: <229fd3a0-b88e-5b86-e26e-ec6b79d37a2c@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, USB list <linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUAXv_s8Lw1qwORew8RydKRKhFq7tMccU7jCa63_Otp0w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
+According to drivers/spi/spi-atmel.c, the kernel module may sleep under 
+a spinlock.
+The function call path is:
+atmel_spi_remove (acquire the spinlock)
+   atmel_spi_release_dma
+     dma_release_channel
+       mutex_lock --> may sleep
 
-On Fri, 8 Dec 2017 10:27:46 +0100
-Geert Uytterhoeven geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org wrote:
+I do not find a good way to fix it, so I only report.
+This possible bug is found by my static analysis tool (DSAC) and checked 
+by my code review.
 
-[...]
->A quick Google shows the FT232H chip in MPSSE mode can also support i2c.
->I guess your design can be extended for that, too, using another VID/PID
->pair?
-
-Yes, this should be doable.
 
 Thanks,
-
-Anatolij
+Jia-Ju Bai
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,207 +1,146 @@
-From: Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH v2] spi: atmel: bounce buffer spi
-Date: Tue, 12 Dec 2017 17:22:30 +0200
-Message-ID: <1513092150-11129-1-git-send-email-radu.pirea@microchip.com>
+From: Philippe Ombredanne <pombredanne@nexb.com>
+Subject: Re: [PATCH] spi: s3c64xx: add SPDX identifier
+Date: Tue, 12 Dec 2017 16:24:21 +0100
+Message-ID: <CAOFm3uEAzEgN-PgSOccbwO3aWfABsHywUmm8eXasR8CXy=NPJQ@mail.gmail.com>
+References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
+ <20171212075815.8683-1-andi.shyti@samsung.com> <CAJKOXPfdKyT8-bpM7tmveb3jWCRSSXwnkifhsRw_ag8X9z0W8A@mail.gmail.com>
+ <20171212130313.GC1072@brancaleone.zhora.eu> <CAJKOXPc8o2_bMbXjwPopOtsoML0NqOzzHnYXCL9oU9VkU2cQYA@mail.gmail.com>
+ <CAOFm3uHobATjskAKG83QoSQjXgzv1RQFv0vrgt_QgnZoxNQ2-w@mail.gmail.com> <CAJKOXPeZi=TWqoCo9x-Wa372ey8D=r8-Lf3CvJ95dgaMAF1kxQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, <Wenyou.Yang-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: Andi Shyti <andi@etezian.org>, Andi Shyti <andi.shyti@samsung.com>,
+        Kukjin Kim <kgene@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <CAJKOXPeZi=TWqoCo9x-Wa372ey8D=r8-Lf3CvJ95dgaMAF1kxQ@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Radu Pirea <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 112 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 82 insertions(+), 30 deletions(-)
+Dear Krzysztof,
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index f95da36..59b59ae 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -291,6 +291,10 @@ struct atmel_spi {
- 	struct spi_transfer	*current_transfer;
- 	int			current_remaining_bytes;
- 	int			done_status;
-+	dma_addr_t		dma_addr_rx_bbuf;
-+	dma_addr_t		dma_addr_tx_bbuf;
-+	void			*addr_rx_bbuf;
-+	void			*addr_tx_bbuf;
- 
- 	struct completion	xfer_completion;
- 
-@@ -436,10 +440,15 @@ static void atmel_spi_unlock(struct atmel_spi *as) __releases(&as->lock)
- 	spin_unlock_irqrestore(&as->lock, as->flags);
- }
- 
-+static inline bool atmel_spi_is_vmalloc_xfer(struct spi_transfer *xfer)
-+{
-+	return is_vmalloc_addr(xfer->tx_buf) || is_vmalloc_addr(xfer->rx_buf);
-+}
-+
- static inline bool atmel_spi_use_dma(struct atmel_spi *as,
- 				struct spi_transfer *xfer)
- {
--	return as->use_dma && xfer->len >= DMA_MIN_BYTES;
-+		return as->use_dma && xfer->len >= DMA_MIN_BYTES;
- }
- 
- static bool atmel_spi_can_dma(struct spi_master *master,
-@@ -448,7 +457,12 @@ static bool atmel_spi_can_dma(struct spi_master *master,
- {
- 	struct atmel_spi *as = spi_master_get_devdata(master);
- 
--	return atmel_spi_use_dma(as, xfer);
-+	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5))
-+		return atmel_spi_use_dma(as, xfer) &&
-+			!atmel_spi_is_vmalloc_xfer(xfer);
-+	else
-+		return atmel_spi_use_dma(as, xfer);
-+
- }
- 
- static int atmel_spi_dma_slave_config(struct atmel_spi *as,
-@@ -594,6 +608,11 @@ static void dma_callback(void *data)
- 	struct spi_master	*master = data;
- 	struct atmel_spi	*as = spi_master_get_devdata(master);
- 
-+	if (is_vmalloc_addr(as->current_transfer->rx_buf) &&
-+	    IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
-+		memcpy(as->current_transfer->rx_buf, as->addr_rx_bbuf,
-+		       as->current_transfer->len);
-+	}
- 	complete(&as->xfer_completion);
- }
- 
-@@ -744,17 +763,41 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
- 		goto err_exit;
- 
- 	/* Send both scatterlists */
--	rxdesc = dmaengine_prep_slave_sg(rxchan,
--					 xfer->rx_sg.sgl, xfer->rx_sg.nents,
--					 DMA_FROM_DEVICE,
--					 DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (atmel_spi_is_vmalloc_xfer(xfer) &&
-+	    IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
-+		rxdesc = dmaengine_prep_slave_single(rxchan,
-+						     as->dma_addr_rx_bbuf,
-+						     xfer->len,
-+						     DMA_FROM_DEVICE,
-+						     DMA_PREP_INTERRUPT |
-+						     DMA_CTRL_ACK);
-+	} else {
-+		rxdesc = dmaengine_prep_slave_sg(rxchan,
-+						 xfer->rx_sg.sgl,
-+						 xfer->rx_sg.nents,
-+						 DMA_FROM_DEVICE,
-+						 DMA_PREP_INTERRUPT |
-+						 DMA_CTRL_ACK);
-+	}
- 	if (!rxdesc)
- 		goto err_dma;
- 
--	txdesc = dmaengine_prep_slave_sg(txchan,
--					 xfer->tx_sg.sgl, xfer->tx_sg.nents,
--					 DMA_TO_DEVICE,
--					 DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (atmel_spi_is_vmalloc_xfer(xfer) &&
-+	    IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
-+		memcpy(as->addr_tx_bbuf, xfer->tx_buf, xfer->len);
-+		txdesc = dmaengine_prep_slave_single(txchan,
-+						     as->dma_addr_tx_bbuf,
-+						     xfer->len, DMA_TO_DEVICE,
-+						     DMA_PREP_INTERRUPT |
-+						     DMA_CTRL_ACK);
-+	} else {
-+		txdesc = dmaengine_prep_slave_sg(txchan,
-+						 xfer->tx_sg.sgl,
-+						 xfer->tx_sg.nents,
-+						 DMA_TO_DEVICE,
-+						 DMA_PREP_INTERRUPT |
-+						 DMA_CTRL_ACK);
-+	}
- 	if (!txdesc)
- 		goto err_dma;
- 
-@@ -1426,27 +1469,7 @@ static void atmel_get_caps(struct atmel_spi *as)
- 
- 	as->caps.is_spi2 = version > 0x121;
- 	as->caps.has_wdrbt = version >= 0x210;
--#ifdef CONFIG_SOC_SAM_V4_V5
--	/*
--	 * Atmel SoCs based on ARM9 (SAM9x) cores should not use spi_map_buf()
--	 * since this later function tries to map buffers with dma_map_sg()
--	 * even if they have not been allocated inside DMA-safe areas.
--	 * On SoCs based on Cortex A5 (SAMA5Dx), it works anyway because for
--	 * those ARM cores, the data cache follows the PIPT model.
--	 * Also the L2 cache controller of SAMA5D2 uses the PIPT model too.
--	 * In case of PIPT caches, there cannot be cache aliases.
--	 * However on ARM9 cores, the data cache follows the VIVT model, hence
--	 * the cache aliases issue can occur when buffers are allocated from
--	 * DMA-unsafe areas, by vmalloc() for instance, where cache coherency is
--	 * not taken into account or at least not handled completely (cache
--	 * lines of aliases are not invalidated).
--	 * This is not a theorical issue: it was reproduced when trying to mount
--	 * a UBI file-system on a at91sam9g35ek board.
--	 */
--	as->caps.has_dma_support = false;
--#else
- 	as->caps.has_dma_support = version >= 0x212;
--#endif
- 	as->caps.has_pdc_support = version < 0x212;
- }
- 
-@@ -1592,6 +1615,27 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 		as->use_pdc = true;
- 	}
- 
-+	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
-+		as->addr_rx_bbuf = dma_alloc_coherent(&pdev->dev,
-+						      SPI_MAX_DMA_XFER,
-+						      &as->dma_addr_rx_bbuf,
-+						      GFP_KERNEL | GFP_DMA);
-+		if (!as->addr_rx_bbuf) {
-+			as->use_dma = false;
-+		} else {
-+			as->addr_tx_bbuf = dma_alloc_coherent(&pdev->dev,
-+					SPI_MAX_DMA_XFER,
-+					&as->dma_addr_tx_bbuf,
-+					GFP_KERNEL | GFP_DMA);
-+			if (!as->addr_tx_bbuf) {
-+				as->use_dma = false;
-+				dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
-+						  as->addr_rx_bbuf,
-+						  as->dma_addr_rx_bbuf);
-+			}
-+		}
-+	}
-+
- 	if (as->caps.has_dma_support && !as->use_dma)
- 		dev_info(&pdev->dev, "Atmel SPI Controller using PIO only\n");
- 
-@@ -1665,6 +1709,14 @@ static int atmel_spi_remove(struct platform_device *pdev)
- 	if (as->use_dma) {
- 		atmel_spi_stop_dma(master);
- 		atmel_spi_release_dma(master);
-+		if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
-+			dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
-+					  as->addr_tx_bbuf,
-+					  as->dma_addr_tx_bbuf);
-+			dma_free_coherent(&pdev->dev, SPI_MAX_DMA_XFER,
-+					  as->addr_rx_bbuf,
-+					  as->dma_addr_rx_bbuf);
-+		}
- 	}
- 
- 	spi_writel(as, CR, SPI_BIT(SWRST));
--- 
-2.7.4
+On Tue, Dec 12, 2017 at 4:00 PM, Krzysztof Kozlowski <krzk@kernel.org> wrot=
+e:
+> On Tue, Dec 12, 2017 at 3:48 PM, Philippe Ombredanne
+> <pombredanne@nexb.com> wrote:
+>> On Tue, Dec 12, 2017 at 2:45 PM, Krzysztof Kozlowski <krzk@kernel.org> w=
+rote:
+>>> On Tue, Dec 12, 2017 at 2:03 PM, Andi Shyti <andi@etezian.org> wrote:
+>>>> Hi Krzysztof,
+>>>>
+>>>>> > - * Copyright (C) 2009 Samsung Electronics Ltd.
+>>>>> > - *     Jaswinder Singh <jassi.brar@samsung.com>
+>>>>> > - *
+>>>>> > - * This program is free software; you can redistribute it and/or m=
+odify
+>>>>> > - * it under the terms of the GNU General Public License as publish=
+ed by
+>>>>> > - * the Free Software Foundation; either version 2 of the License, =
+or
+>>>>> > - * (at your option) any later version.
+>>>>> > - *
+>>>>> > - * This program is distributed in the hope that it will be useful,
+>>>>> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>>>>> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>>>>> > - * GNU General Public License for more details.
+>>>>> > - */
+>>>>> > +// SPDX-License-Identifier: GPL-2.0
+>>>>>
+>>>>
+>>>>> Existing license corresponds to GPL-2.0+, not GPL-2.0.
+>>>>
+>>>> mmmhhh... isn't it deprecated from 2.0rc2? Current SPDX version
+>>>> 2.6 doesn't have GPL-2.0+ in the list of licenses.
+>>>>
+>>>> https://spdx.org/licenses/
+>>>>
+>>>> I can improve the commit log to state it more clearly. Would that
+>>>> work?
+>>>
+>>> No. The license identifier is deprecated, not the license itself.
+>>> Instead the, the SPDX says: <<This new syntax supports the ability to
+>>> use a simple =E2=80=9C+=E2=80=9D operator after a license short identif=
+ier to indicate
+>>> =E2=80=9Cor later version=E2=80=9D (e.g. GPL-2.0+)>>. The spec [1] ment=
+ions it again:
+>>> "An SPDX License List Short Form Identifier with a unary"+" operator
+>>> suffix to represent the current version of the license or any later
+>>> version.  For example: GPL-2.0+"
+>>>
+>>> Existing kernel sources follow this convention.
+>>>
+>>>> BTW, is it really a change of license?
+>>>
+>>> Yes, it is. Or maybe not license itself but it terms and specific
+>>> elements. GPL-2.0 does not say "any later option at your choice". Let
+>>> me quote:
+>>> "Each version is given a distinguishing version number. If the Program
+>>> specifies a version number of this License which applies to it and
+>>> "any later version", you have the option of following the terms and
+>>> conditions either of that version or of any later version published by
+>>> the Free Software Foundation. If the Program does not specify a
+>>> version number of this License, you may choose any version ever
+>>> published by the Free Software Foundation." [2]
+>>>
+>>> What to add more here? GPL-2.0 only does not allow you to use any
+>>> later version ever published by FSF.
+>>>
+>>>>
+>>>>> Why changing the comment style?
+>>>>
+>>>> That's SPDX, right? by adding the SPDX-License-Identifier the
+>>>> GPLv2 statement becomes redundant and we can remove some lines.
+>>>
+>>> But it does not explain why existing comment has to be rewritten into /=
+/.
+>>>
+>>> [1] https://spdx.org/spdx-specification-21-web-version
+>>> [2] https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+>>>
+>>> Best regards,
+>>> Krzysztof
+>>
+>> IMHO you should refer to Thomas doc patches instead of looking for
+>> details elsewhere [1]
+>> They are the authoritative doc for the kernel.
+>
+> I was actually checking this with existing source code (after applying
+> these patches) and GPLv2.0+any_later was converted to "GPL-2.0+".
+> Let's look at specific example:
+> https://lkml.org/lkml/2017/12/4/946
+> "+ For 'GNU General Public License (GPL) version 2 or any later version' =
+use:
+> +    SPDX-License-Identifier: GPL-2.0+"
+>
+> I do not understand then whether you are agreeing or arguing with my poin=
+t. :)
+>
+> Best regards,
+> Krzysztof
+>
+>>
+>> CC: Greg Kroah-Hartman
+>> CC: Thomas Gleixner
+>>
+>> [1] https://lkml.org/lkml/2017/12/4/934
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Here, this should be as a top line:
+
+// SPDX-License-Identifier: GPL-2.0+
+
+
+So I agree with the SPDX id but also pointing to the use of the C++ //
+comment style as requested by Linus [1]
+
+[1] https://lkml.org/lkml/2017/11/25/133
+[2] https://lkml.org/lkml/2017/11/25/125
+[3] https://lkml.org/lkml/2017/11/2/715
+[4] https://lkml.org/lkml/2017/11/2/805
+
+--=20
+Cordially
+Philippe Ombredanne

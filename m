@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 4/4] spi: sh-msiof: Document hardware limitations related to chip selects
-Date: Wed, 13 Dec 2017 20:05:13 +0100
-Message-ID: <1513191913-10612-5-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 1/4] spi: sh-msiof: Avoid writing to registers from spi_master.setup()
+Date: Wed, 13 Dec 2017 20:05:10 +0100
+Message-ID: <1513191913-10612-2-git-send-email-geert+renesas@glider.be>
 References: <1513191913-10612-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org,
@@ -13,34 +13,87 @@ In-Reply-To: <1513191913-10612-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Guide users to maintain the proper balance between native and GPIO chip
-selects.
+The spi_master.setup() callback must not change configuration registers,
+as that could corrupt I/O that is in progress for other SPI slaves.
+
+The only exception is the configuration of the native chip select
+polarity in SPI master mode, as a wrong chip select polarity will cause
+havoc during all future transfers to any other SPI slave.
+
+Hence stop writing to registers in sh_msiof_spi_setup(), unless it is
+the first call for a controller using a native chip select, or unless
+native chip select polarity has changed (note that you'll loose anyway
+if I/O is in progress).  Even then, only do what is strictly necessary,
+instead of calling sh_msiof_spi_set_pin_regs().
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- Documentation/devicetree/bindings/spi/sh-msiof.txt | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-index bc8c16a6cfc82685..80710f0f04489174 100644
---- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -41,6 +41,16 @@ Optional properties:
- 			   0: MSIOF_SYNC
- 			   1: MSIOF_SS1
- 			   2: MSIOF_SS2
-+			 Hardware limitations related to chip selects:
-+			   - Native chip selects are always deasserted in
-+			     between transfers that are part of the same
-+			     message.  Use cs-gpios to work around this.
-+			   - All slaves using native chip selects must use the
-+			     same spi-cs-high configuration.  Use cs-gpios to
-+			     work around this.
-+			   - When using GPIO chip selects, at least one native
-+			     chip select must be left unused, as it will be
-+			     driven anyway.
- - dmas                 : Must contain a list of two references to DMA
- 			 specifiers, one for transmission, and one for
- 			 reception.
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 81a9144f5442cdb4..2704abb11ea41fd0 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -55,6 +55,8 @@ struct sh_msiof_spi_priv {
+ 	void *rx_dma_page;
+ 	dma_addr_t tx_dma_addr;
+ 	dma_addr_t rx_dma_addr;
++	bool native_cs_inited;
++	bool native_cs_high;
+ 	bool slave_aborted;
+ };
+ 
+@@ -528,8 +530,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ {
+ 	struct device_node	*np = spi->master->dev.of_node;
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
+-
+-	pm_runtime_get_sync(&p->pdev->dev);
++	u32 clr, set, tmp;
+ 
+ 	if (!np) {
+ 		/*
+@@ -539,19 +540,31 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 		spi->cs_gpio = (uintptr_t)spi->controller_data;
+ 	}
+ 
+-	/* Configure pins before deasserting CS */
+-	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
+-				  !!(spi->mode & SPI_CPHA),
+-				  !!(spi->mode & SPI_3WIRE),
+-				  !!(spi->mode & SPI_LSB_FIRST),
+-				  !!(spi->mode & SPI_CS_HIGH));
+-
+-	if (spi->cs_gpio >= 0)
++	if (spi->cs_gpio >= 0) {
+ 		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++		return 0;
++	}
+ 
++	if (spi_controller_is_slave(p->master))
++		return 0;
+ 
+-	pm_runtime_put(&p->pdev->dev);
++	if (p->native_cs_inited &&
++	    (p->native_cs_high == !!(spi->mode & SPI_CS_HIGH)))
++		return 0;
+ 
++	/* Configure native chip select mode/polarity early */
++	clr = MDR1_SYNCMD_MASK;
++	set = MDR1_TRMD | TMDR1_PCON | MDR1_SYNCMD_SPI;
++	if (spi->mode & SPI_CS_HIGH)
++		clr |= BIT(MDR1_SYNCAC_SHIFT);
++	else
++		set |= BIT(MDR1_SYNCAC_SHIFT);
++	pm_runtime_get_sync(&p->pdev->dev);
++	tmp = sh_msiof_read(p, TMDR1) & ~clr;
++	sh_msiof_write(p, TMDR1, tmp | set);
++	pm_runtime_put(&p->pdev->dev);
++	p->native_cs_high = spi->mode & SPI_CS_HIGH;
++	p->native_cs_inited = true;
+ 	return 0;
+ }
+ 
 -- 
 2.7.4

@@ -1,99 +1,165 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 1/4] spi: sh-msiof: Avoid writing to registers from spi_master.setup()
-Date: Wed, 13 Dec 2017 20:05:10 +0100
-Message-ID: <1513191913-10612-2-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 3/4] spi: sh-msiof: Implement cs-gpios configuration
+Date: Wed, 13 Dec 2017 20:05:12 +0100
+Message-ID: <1513191913-10612-4-git-send-email-geert+renesas@glider.be>
 References: <1513191913-10612-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1513191913-10612-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1513191913-10612-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The spi_master.setup() callback must not change configuration registers,
-as that could corrupt I/O that is in progress for other SPI slaves.
+The current support for GPIO chip selects assumes the GPIOs have been
+configured by platform code or the boot loader.  This includes pinmux
+setup and GPIO direction.  Hence it does not work as expected when just
+described in DT using the "cs-gpios" property.
 
-The only exception is the configuration of the native chip select
-polarity in SPI master mode, as a wrong chip select polarity will cause
-havoc during all future transfers to any other SPI slave.
+Fix this by:
+  1. using devm_gpiod_get_index() to request the GPIO, and thus
+     configure pinmux, if needed,
+  2. configuring the GPIO direction is the spi_master.setup() callback.
 
-Hence stop writing to registers in sh_msiof_spi_setup(), unless it is
-the first call for a controller using a native chip select, or unless
-native chip select polarity has changed (note that you'll loose anyway
-if I/O is in progress).  Even then, only do what is strictly necessary,
-instead of calling sh_msiof_spi_set_pin_regs().
+Use gpio_is_valid() instead of a check on positive numbers.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Note that when using GPIO chip selects, at least one native chip select
+must be left unused, as that native chip select will be driven anyway,
+and (global) native chip select polarity must be taken into account.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 66 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 59 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 81a9144f5442cdb4..2704abb11ea41fd0 100644
+index 9bdc292aa050cb16..8aa5c7b910d9ca93 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -55,6 +55,8 @@ struct sh_msiof_spi_priv {
+@@ -19,6 +19,7 @@
+ #include <linux/dmaengine.h>
+ #include <linux/err.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -55,6 +56,7 @@ struct sh_msiof_spi_priv {
  	void *rx_dma_page;
  	dma_addr_t tx_dma_addr;
  	dma_addr_t rx_dma_addr;
-+	bool native_cs_inited;
-+	bool native_cs_high;
++	unsigned short unused_ss;
+ 	bool native_cs_inited;
+ 	bool native_cs_high;
  	bool slave_aborted;
- };
- 
-@@ -528,8 +530,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
- {
- 	struct device_node	*np = spi->master->dev.of_node;
- 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
--
--	pm_runtime_get_sync(&p->pdev->dev);
-+	u32 clr, set, tmp;
- 
- 	if (!np) {
- 		/*
-@@ -539,19 +540,31 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+@@ -547,8 +549,8 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
  		spi->cs_gpio = (uintptr_t)spi->controller_data;
  	}
  
--	/* Configure pins before deasserting CS */
--	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
--				  !!(spi->mode & SPI_CPHA),
--				  !!(spi->mode & SPI_3WIRE),
+-	if (spi->cs_gpio >= 0) {
+-		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++	if (gpio_is_valid(spi->cs_gpio)) {
++		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 		return 0;
+ 	}
+ 
+@@ -580,14 +582,20 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ {
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+ 	const struct spi_device *spi = msg->spi;
++	u32 ss, cs_high;
+ 
+ 	/* Configure pins before asserting CS */
+-	sh_msiof_spi_set_pin_regs(p, spi->chip_select,
+-				  !!(spi->mode & SPI_CPOL),
++	if (gpio_is_valid(spi->cs_gpio)) {
++		ss = p->unused_ss;
++		cs_high = p->native_cs_high;
++	} else {
++		ss = spi->chip_select;
++		cs_high = !!(spi->mode & SPI_CS_HIGH);
++	}
++	sh_msiof_spi_set_pin_regs(p, ss, !!(spi->mode & SPI_CPOL),
+ 				  !!(spi->mode & SPI_CPHA),
+ 				  !!(spi->mode & SPI_3WIRE),
 -				  !!(spi->mode & SPI_LSB_FIRST),
 -				  !!(spi->mode & SPI_CS_HIGH));
--
--	if (spi->cs_gpio >= 0)
-+	if (spi->cs_gpio >= 0) {
- 		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+		return 0;
-+	}
- 
-+	if (spi_controller_is_slave(p->master))
-+		return 0;
- 
--	pm_runtime_put(&p->pdev->dev);
-+	if (p->native_cs_inited &&
-+	    (p->native_cs_high == !!(spi->mode & SPI_CS_HIGH)))
-+		return 0;
- 
-+	/* Configure native chip select mode/polarity early */
-+	clr = MDR1_SYNCMD_MASK;
-+	set = MDR1_TRMD | TMDR1_PCON | MDR1_SYNCMD_SPI;
-+	if (spi->mode & SPI_CS_HIGH)
-+		clr |= BIT(MDR1_SYNCAC_SHIFT);
-+	else
-+		set |= BIT(MDR1_SYNCAC_SHIFT);
-+	pm_runtime_get_sync(&p->pdev->dev);
-+	tmp = sh_msiof_read(p, TMDR1) & ~clr;
-+	sh_msiof_write(p, TMDR1, tmp | set);
-+	pm_runtime_put(&p->pdev->dev);
-+	p->native_cs_high = spi->mode & SPI_CS_HIGH;
-+	p->native_cs_inited = true;
++				  !!(spi->mode & SPI_LSB_FIRST), cs_high);
  	return 0;
  }
  
+@@ -1091,6 +1099,45 @@ static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
+ }
+ #endif
+ 
++static int sh_msiof_get_cs_gpios(struct sh_msiof_spi_priv *p)
++{
++	struct device *dev = &p->pdev->dev;
++	unsigned int used_ss_mask = 0;
++	unsigned int cs_gpios = 0;
++	unsigned int num_cs, i;
++	int ret;
++
++	ret = gpiod_count(dev, "cs");
++	if (ret <= 0)
++		return 0;
++
++	num_cs = max_t(unsigned int, ret, p->master->num_chipselect);
++	for (i = 0; i < num_cs; i++) {
++		struct gpio_desc *gpiod;
++
++		gpiod = devm_gpiod_get_index(dev, "cs", i, GPIOD_ASIS);
++		if (!IS_ERR(gpiod)) {
++			cs_gpios++;
++			continue;
++		}
++
++		if (PTR_ERR(gpiod) != -ENOENT)
++			return PTR_ERR(gpiod);
++
++		if (i >= MAX_SS) {
++			dev_err(dev, "Invalid native chip select %d\n", i);
++			return -EINVAL;
++		}
++		used_ss_mask |= BIT(i);
++	}
++	p->unused_ss = ffz(used_ss_mask);
++	if (cs_gpios && p->unused_ss >= MAX_SS) {
++		dev_err(dev, "No unused native chip select available\n");
++		return -EINVAL;
++	}
++	return 0;
++}
++
+ static struct dma_chan *sh_msiof_request_dma_chan(struct device *dev,
+ 	enum dma_transfer_direction dir, unsigned int id, dma_addr_t port_addr)
+ {
+@@ -1304,13 +1351,18 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	if (p->info->rx_fifo_override)
+ 		p->rx_fifo_size = p->info->rx_fifo_override;
+ 
++	/* Setup GPIO chip selects */
++	master->num_chipselect = p->info->num_chipselect;
++	ret = sh_msiof_get_cs_gpios(p);
++	if (ret)
++		goto err1;
++
+ 	/* init master code */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
+ 	master->flags = chipdata->master_flags;
+ 	master->bus_num = pdev->id;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	master->num_chipselect = p->info->num_chipselect;
+ 	master->setup = sh_msiof_spi_setup;
+ 	master->prepare_message = sh_msiof_prepare_message;
+ 	master->slave_abort = sh_msiof_slave_abort;
 -- 
 2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,95 +1,77 @@
-From: Philippe Ombredanne <pombredanne@nexb.com>
-Subject: Re: [PATCH v2] spi: s3c64xx: add SPDX identifier
-Date: Wed, 13 Dec 2017 10:20:20 +0100
-Message-ID: <CAOFm3uHP-4UN+gzXzZc1ptptFm5f9uhafKyE963+DiamzdRTdw@mail.gmail.com>
-References: <CGME20171213080544epcas2p29731b6c65f760ab1b9ac71d530fcaf77@epcas2p2.samsung.com>
- <20171213080530.12724-1-andi.shyti@samsung.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: s3c64xx: add SPDX identifier
+Date: Wed, 13 Dec 2017 09:38:06 +0000
+Message-ID: <20171213093806.GA6416@sirena.org.uk>
+References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
+ <20171212075815.8683-1-andi.shyti@samsung.com>
+ <CAJKOXPfdKyT8-bpM7tmveb3jWCRSSXwnkifhsRw_ag8X9z0W8A@mail.gmail.com>
+ <20171212130313.GC1072@brancaleone.zhora.eu>
+ <CAJKOXPc8o2_bMbXjwPopOtsoML0NqOzzHnYXCL9oU9VkU2cQYA@mail.gmail.com>
+ <CAOFm3uHobATjskAKG83QoSQjXgzv1RQFv0vrgt_QgnZoxNQ2-w@mail.gmail.com>
+ <CAJKOXPeZi=TWqoCo9x-Wa372ey8D=r8-Lf3CvJ95dgaMAF1kxQ@mail.gmail.com>
+ <CAOFm3uEAzEgN-PgSOccbwO3aWfABsHywUmm8eXasR8CXy=NPJQ@mail.gmail.com>
+ <CAJKOXPeCBPdCi2NnpBWimb4Py_zDZrsSK9o1cCswKM+XNeyqxQ@mail.gmail.com>
+ <20171213014854.GG20051@gangnam.samsung>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20171213080530.12724-1-andi.shyti@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-Andi,
-
-On Wed, Dec 13, 2017 at 9:05 AM, Andi Shyti <andi.shyti@samsung.com> wrote:
-> Replace the original license statement with the SPDX identifier.
->
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> ---
-> Hi,
->
-> this second version unlike v1, where I tried to move the license
-> from GPLv2+ to GPLv2, preserves the original licese while adding
-> the SPDX identifier.
->
-> Andi
->
->  drivers/spi/spi-s3c64xx.c                 | 18 ++++--------------
->  include/linux/platform_data/spi-s3c64xx.h |  4 +---
->  2 files changed, 5 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index de7df20f8712..baa3a9fa2638 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1,17 +1,7 @@
-> -/*
-> - * Copyright (C) 2009 Samsung Electronics Ltd.
-> - *     Jaswinder Singh <jassi.brar@samsung.com>
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License as published by
-> - * the Free Software Foundation; either version 2 of the License, or
-> - * (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - */
-> +// SPDX-License-Identifier: GPL-2.0+
-> +//
-> +// Copyright (c) 2009 Samsung Electronics Co., Ltd.
-> +//      Jaswinder Singh <jassi.brar@samsung.com>
->
->  #include <linux/init.h>
->  #include <linux/module.h>
-> diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-> index da79774078a7..8917f38c97c5 100644
-> --- a/include/linux/platform_data/spi-s3c64xx.h
-> +++ b/include/linux/platform_data/spi-s3c64xx.h
-> @@ -2,9 +2,7 @@
->   * Copyright (C) 2009 Samsung Electronics Ltd.
->   *     Jaswinder Singh <jassi.brar@samsung.com>
->   *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License version 2 as
-> - * published by the Free Software Foundation.
-> + * SPDX-License-Identifier: GPL-2.0
->   */
->
->  #ifndef __SPI_S3C64XX_H
-> --
-> 2.15.1
->
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
+Cc: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Philippe Ombredanne <pombredanne-od1rfyK75/E@public.gmane.org>,
+        Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+        Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20171213014854.GG20051-8vUhnHFVuGn35fTxX1Dczw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-You still need to put this line at the very top of the file, first
-line. That's the convention for the SPDX tags as documented by Thomas
-Gleixner.
+--qMm9M+Fa2AknHoGS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> + * SPDX-License-Identifier: GPL-2.0
+On Wed, Dec 13, 2017 at 10:48:54AM +0900, Andi Shyti wrote:
 
+> > > +//
+> > > +// Copyright (c) 2009 Samsung Electronics Co., Ltd.
+> > > +//      Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
--- 
-Cordially
-Philippe Ombredanne
+> it just looks ugly to me to have something like
+
+>   // SPDX...
+
+>   /*
+>    * Copyright (c)...
+>    *      Jasw...
+>    */
+
+> I would make everything of the '//' style (I've also seen that
+> this is the trend also in other subsystems), but honestly I don't
+> really care. If you're strong on not moving entirely in '//' style
+
+Yes, my preference is to avoid a mixture like you've got there.
+
+--qMm9M+Fa2AknHoGS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlow9PsACgkQJNaLcl1U
+h9CYIwf/bEb287R0G3M+8JKpYhdWpf8kQIgcrfPoPSIq6MzrX75jSr+kgi1VwIz9
+ACb8n6NNGbF4a4zVCpjmgGRvm9Yh8AQrZXolC4XpJkeqX+l9k1xHYFFxOeu2cn7M
+Hg1a6D8+zpcKlQip3UMlvGrg6pCHNqCwLOQBxhOHKRuUxdEmefrFyvBuJP7g92Ou
+U9Lb+loG0GIvIF7/CuceTXqYouddqQywHJqmsvamMDKyB3QPvZGbgxu4nnsKWgIu
+LdVtEW659hnLC7N3/D2EUoRH+rBDu0Urhu8iKWmqLj0zLWoTCXJWHL9GuA70G/lN
+QFIEZnWLqTJf1kSsYRCOyQ6CJIANKA==
+=pOsu
+-----END PGP SIGNATURE-----
+
+--qMm9M+Fa2AknHoGS--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

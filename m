@@ -1,63 +1,74 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: add SPDX identifier
-Date: Wed, 13 Dec 2017 08:23:47 +0100
-Message-ID: <CAJKOXPevhP41cU67AgZhW1Hh319ifPi4EAEVXp5yLcOi61n-1g@mail.gmail.com>
-References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
- <20171212075815.8683-1-andi.shyti@samsung.com> <CAJKOXPfdKyT8-bpM7tmveb3jWCRSSXwnkifhsRw_ag8X9z0W8A@mail.gmail.com>
- <20171212130313.GC1072@brancaleone.zhora.eu> <CAJKOXPc8o2_bMbXjwPopOtsoML0NqOzzHnYXCL9oU9VkU2cQYA@mail.gmail.com>
- <CAOFm3uHobATjskAKG83QoSQjXgzv1RQFv0vrgt_QgnZoxNQ2-w@mail.gmail.com>
- <CAJKOXPeZi=TWqoCo9x-Wa372ey8D=r8-Lf3CvJ95dgaMAF1kxQ@mail.gmail.com>
- <CAOFm3uEAzEgN-PgSOccbwO3aWfABsHywUmm8eXasR8CXy=NPJQ@mail.gmail.com>
- <CAJKOXPeCBPdCi2NnpBWimb4Py_zDZrsSK9o1cCswKM+XNeyqxQ@mail.gmail.com> <20171213014854.GG20051@gangnam.samsung>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Philippe Ombredanne <pombredanne@nexb.com>,
-        Andi Shyti <andi@etezian.org>, Kukjin Kim <kgene@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-To: Andi Shyti <andi.shyti@samsung.com>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: [PATCH v2] spi: s3c64xx: add SPDX identifier
+Date: Wed, 13 Dec 2017 17:05:30 +0900
+Message-ID: <20171213080530.12724-1-andi.shyti@samsung.com>
+References: <CGME20171213080544epcas2p29731b6c65f760ab1b9ac71d530fcaf77@epcas2p2.samsung.com>
+Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@samsung.com>,
+        Andi Shyti <andi@etezian.org>
+To: Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20171213014854.GG20051@gangnam.samsung>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 13, 2017 at 2:48 AM, Andi Shyti <andi.shyti@samsung.com> wrote:
-> Hi Krzysztof,
->
->> > Here, this should be as a top line:
->> >
->> > // SPDX-License-Identifier: GPL-2.0+
->> >
->> >
->> > So I agree with the SPDX id but also pointing to the use of the C++ //
->> > comment style as requested by Linus [1]
->>
->> Thanks for the reference. I see that Linus prefers converting entire
->> comment into // style. I was not arguing about SPDX line but entire
->> existing copyright comment which follows it:
->>
->> > +//
->> > +// Copyright (c) 2009 Samsung Electronics Co., Ltd.
->> > +//      Jaswinder Singh <jassi.brar@samsung.com>
->
-> it just looks ugly to me to have something like
->
->   // SPDX...
->
->   /*
->    * Copyright (c)...
->    *      Jasw...
->    */
->
-> I would make everything of the '//' style (I've also seen that
-> this is the trend also in other subsystems), but honestly I don't
-> really care. If you're strong on not moving entirely in '//' style
-> then I can resend it with the double comment style.
+Replace the original license statement with the SPDX identifier.
 
-Let's follow Linus' preference - entire commend converted as you did already.
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+---
+Hi,
 
-Thanks,
-Krzysztof
+this second version unlike v1, where I tried to move the license
+from GPLv2+ to GPLv2, preserves the original licese while adding
+the SPDX identifier.
+
+Andi
+
+ drivers/spi/spi-s3c64xx.c                 | 18 ++++--------------
+ include/linux/platform_data/spi-s3c64xx.h |  4 +---
+ 2 files changed, 5 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index de7df20f8712..baa3a9fa2638 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1,17 +1,7 @@
+-/*
+- * Copyright (C) 2009 Samsung Electronics Ltd.
+- *	Jaswinder Singh <jassi.brar@samsung.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++//
++// Copyright (c) 2009 Samsung Electronics Co., Ltd.
++//      Jaswinder Singh <jassi.brar@samsung.com>
+ 
+ #include <linux/init.h>
+ #include <linux/module.h>
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index da79774078a7..8917f38c97c5 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -2,9 +2,7 @@
+  * Copyright (C) 2009 Samsung Electronics Ltd.
+  *	Jaswinder Singh <jassi.brar@samsung.com>
+  *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
++ * SPDX-License-Identifier: GPL-2.0
+  */
+ 
+ #ifndef __SPI_S3C64XX_H
+-- 
+2.15.1

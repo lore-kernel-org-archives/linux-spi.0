@@ -1,63 +1,65 @@
-From: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
-Subject: Re: spidev: Instantiating from DT as "spidev"
-Date: Tue, 12 Dec 2017 12:44:45 -0600
-Message-ID: <20171212184444.GA32483@senary>
-References: <20171129150435.5npybjuu2ndmtx2v@senary>
- <CAMuHMdUps9Ti=CRZM7UxrHLD8GA+FKD+_RFLW3H9wUpSRTYs8w@mail.gmail.com>
- <20171129192407.vrkphuhttmzl2ii4@senary>
- <CAMuHMdX62=vC6=P-v=SPe_hq0F12tOZCgePaS7=MZZg_4PkvUw@mail.gmail.com>
- <1512007657.9792.45.camel@impinj.com>
- <CAMuHMdXv2WsGCUBD4Td9K1zOfZ9DOfeW5rYtCyq27Ucp21xGRA@mail.gmail.com>
- <20171130222416.4b7pob47eicuappv@senary>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: Re: [PATCH] spi: s3c64xx: add SPDX identifier
+Date: Wed, 13 Dec 2017 10:48:54 +0900
+Message-ID: <20171213014854.GG20051@gangnam.samsung>
+References: <CGME20171212075830epcas2p31afc4a2e715e857694082748fd2bbe49@epcas2p3.samsung.com>
+        <20171212075815.8683-1-andi.shyti@samsung.com>
+        <CAJKOXPfdKyT8-bpM7tmveb3jWCRSSXwnkifhsRw_ag8X9z0W8A@mail.gmail.com>
+        <20171212130313.GC1072@brancaleone.zhora.eu>
+        <CAJKOXPc8o2_bMbXjwPopOtsoML0NqOzzHnYXCL9oU9VkU2cQYA@mail.gmail.com>
+        <CAOFm3uHobATjskAKG83QoSQjXgzv1RQFv0vrgt_QgnZoxNQ2-w@mail.gmail.com>
+        <CAJKOXPeZi=TWqoCo9x-Wa372ey8D=r8-Lf3CvJ95dgaMAF1kxQ@mail.gmail.com>
+        <CAOFm3uEAzEgN-PgSOccbwO3aWfABsHywUmm8eXasR8CXy=NPJQ@mail.gmail.com>
+        <CAJKOXPeCBPdCi2NnpBWimb4Py_zDZrsSK9o1cCswKM+XNeyqxQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20171130222416.4b7pob47eicuappv@senary>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: Philippe Ombredanne <pombredanne@nexb.com>,
+        Andi Shyti <andi@etezian.org>, Kukjin Kim <kgene@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-disposition: inline
+In-reply-to: <CAJKOXPeCBPdCi2NnpBWimb4Py_zDZrsSK9o1cCswKM+XNeyqxQ@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 30, 2017 at 04:24:16PM -0600, Kyle Roeschley wrote:
-> On Thu, Nov 30, 2017 at 09:03:12AM +0100, Geert Uytterhoeven wrote:
-> > Hi Trent,
-> > 
-> > On Thu, Nov 30, 2017 at 3:07 AM, Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org> wrote:
-> > > On Wed, 2017-11-29 at 23:18 +0100, Geert Uytterhoeven wrote:
-> > >> To me, the above sounds a bit contradictive: either you have
-> > >>   1. a simple (trivial) description, which can be handled by spidev and
-> > >>      userspace, and thus by just writing "<unit-addr> spidev" to a new_device
-> > >>      sysfs node, or
-> 
-> So you're suggesting that new_device can only be used to create a device which
-> uses spidev (without yelling about it)? That makes sense to me.
-> 
-> > >>   2. a complex description, for which you need a specialized in-kernel driver,
-> > >>      so you're gonna need a real DT node (and overlays?) to describe it.
-> > >>
-> > >> I don't think writing a complex description to a new_device sysfs node makes
-> > >> sense.
-> > >
-> > > Is there anything one can do with new_device that can't be done with a
-> > > dt fragment?
-> > 
-> > Nope.
-> 
-> Aren't DT overlays via configfs not yet in mainline? So if I did want to use
-> that mechanism, I'd have call the in-kernel API from within the SPI core.
-> 
+Hi Krzysztof,
 
-Any more comments on this? If not, I'll create something like new_device and
-send it up.
+> > Here, this should be as a top line:
+> >
+> > // SPDX-License-Identifier: GPL-2.0+
+> >
+> >
+> > So I agree with the SPDX id but also pointing to the use of the C++ //
+> > comment style as requested by Linus [1]
+> 
+> Thanks for the reference. I see that Linus prefers converting entire
+> comment into // style. I was not arguing about SPDX line but entire
+> existing copyright comment which follows it:
+> 
+> > +//
+> > +// Copyright (c) 2009 Samsung Electronics Co., Ltd.
+> > +//      Jaswinder Singh <jassi.brar@samsung.com>
 
--- 
-Kyle Roeschley
-Software Engineer
-National Instruments
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+it just looks ugly to me to have something like
+
+  // SPDX...
+  
+  /*
+   * Copyright (c)...
+   *      Jasw...
+   */
+
+I would make everything of the '//' style (I've also seen that
+this is the trend also in other subsystems), but honestly I don't
+really care. If you're strong on not moving entirely in '//' style
+then I can resend it with the double comment style.
+
+Andi
+
+P.S. About GPLv2 vs GPLv2+ I checked and I will repost it keeping
+the license as its original. Thanks!

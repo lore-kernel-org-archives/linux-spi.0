@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sh-msiof: Implement cs-gpios configuration" to the spi tree
-Date: Thu, 14 Dec 2017 11:49:54 +0000
-Message-ID: <E1ePS1S-0005VK-Gz@debutante>
-References: <1513191913-10612-4-git-send-email-geert+renesas@glider.be>
+Subject: Applied "spi: sh-msiof: Extend support to 3 native chip selects" to the spi tree
+Date: Thu, 14 Dec 2017 11:50:10 +0000
+Message-ID: <E1ePS1i-0005WO-4U@debutante>
+References: <1513191913-10612-3-git-send-email-geert+renesas@glider.be>
 Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
@@ -10,13 +10,13 @@ Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1513191913-10612-4-git-send-email-geert+renesas@glider.be>
+In-Reply-To: <1513191913-10612-3-git-send-email-geert+renesas@glider.be>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sh-msiof: Implement cs-gpios configuration
+   spi: sh-msiof: Extend support to 3 native chip selects
 
 has been applied to the spi tree at
 
@@ -41,154 +41,98 @@ to this mail.
 Thanks,
 Mark
 
->From b8761434bdec32fa46a644c26a12d16a9b0f58d8 Mon Sep 17 00:00:00 2001
+>From 9cce882bedd2768dc251b73f2ad86a9bfcfd9fc7 Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Wed, 13 Dec 2017 20:05:12 +0100
-Subject: [PATCH] spi: sh-msiof: Implement cs-gpios configuration
+Date: Wed, 13 Dec 2017 20:05:11 +0100
+Subject: [PATCH] spi: sh-msiof: Extend support to 3 native chip selects
 
-The current support for GPIO chip selects assumes the GPIOs have been
-configured by platform code or the boot loader.  This includes pinmux
-setup and GPIO direction.  Hence it does not work as expected when just
-described in DT using the "cs-gpios" property.
+Currently only the MSIOF_SYNC signal can be used as a native chip
+select.  Extend support to up to 3 native chipselects using the
+MSIOF_SS1 and MSIOF_SS2 signals.
 
-Fix this by:
-  1. using devm_gpiod_get_index() to request the GPIO, and thus
-     configure pinmux, if needed,
-  2. configuring the GPIO direction is the spi_master.setup() callback.
-
-Use gpio_is_valid() instead of a check on positive numbers.
-
-Note that when using GPIO chip selects, at least one native chip select
-must be left unused, as that native chip select will be driven anyway,
-and (global) native chip select polarity must be taken into account.
+Inspired by a patch in the BSP by Hiromitsu Yamasaki.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 66 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 59 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |  6 +++++-
+ drivers/spi/spi-sh-msiof.c                         | 18 +++++++++++++-----
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index bdd83959019c..bc8c16a6cfc8 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -36,7 +36,11 @@ Required properties:
+ 
+ Optional properties:
+ - clocks               : Must contain a reference to the functional clock.
+-- num-cs               : Total number of chip-selects (default is 1)
++- num-cs               : Total number of chip selects (default is 1).
++			 Up to 3 native chip selects are supported:
++			   0: MSIOF_SYNC
++			   1: MSIOF_SS1
++			   2: MSIOF_SS2
+ - dmas                 : Must contain a list of two references to DMA
+ 			 specifiers, one for transmission, and one for
+ 			 reception.
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 9bdc292aa050..8aa5c7b910d9 100644
+index 2704abb11ea4..9bdc292aa050 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -19,6 +19,7 @@
- #include <linux/dmaengine.h>
- #include <linux/err.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -55,6 +56,7 @@ struct sh_msiof_spi_priv {
- 	void *rx_dma_page;
- 	dma_addr_t tx_dma_addr;
- 	dma_addr_t rx_dma_addr;
-+	unsigned short unused_ss;
- 	bool native_cs_inited;
- 	bool native_cs_high;
+@@ -60,6 +60,8 @@ struct sh_msiof_spi_priv {
  	bool slave_aborted;
-@@ -547,8 +549,8 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
- 		spi->cs_gpio = (uintptr_t)spi->controller_data;
- 	}
+ };
  
--	if (spi->cs_gpio >= 0) {
--		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 		return 0;
- 	}
++#define MAX_SS	3	/* Maximum number of native chip selects */
++
+ #define TMDR1	0x00	/* Transmit Mode Register 1 */
+ #define TMDR2	0x04	/* Transmit Mode Register 2 */
+ #define TMDR3	0x08	/* Transmit Mode Register 3 */
+@@ -93,6 +95,8 @@ struct sh_msiof_spi_priv {
+ #define MDR1_XXSTP	 0x00000001 /* Transmission/Reception Stop on FIFO */
+ /* TMDR1 */
+ #define TMDR1_PCON	 0x40000000 /* Transfer Signal Connection */
++#define TMDR1_SYNCCH_MASK 0xc000000 /* Synchronization Signal Channel Select */
++#define TMDR1_SYNCCH_SHIFT	 26 /* 0=MSIOF_SYNC, 1=MSIOF_SS1, 2=MSIOF_SS2 */
  
-@@ -580,14 +582,20 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ /* TMDR2 and RMDR2 */
+ #define MDR2_BITLEN1(i)	(((i) - 1) << 24) /* Data Size (8-32 bits) */
+@@ -326,7 +330,7 @@ static u32 sh_msiof_spi_get_dtdl_and_syncdl(struct sh_msiof_spi_priv *p)
+ 	return val;
+ }
+ 
+-static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
++static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p, u32 ss,
+ 				      u32 cpol, u32 cpha,
+ 				      u32 tx_hi_z, u32 lsb_first, u32 cs_high)
  {
- 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+@@ -344,10 +348,13 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	tmp |= !cs_high << MDR1_SYNCAC_SHIFT;
+ 	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
+ 	tmp |= sh_msiof_spi_get_dtdl_and_syncdl(p);
+-	if (spi_controller_is_slave(p->master))
++	if (spi_controller_is_slave(p->master)) {
+ 		sh_msiof_write(p, TMDR1, tmp | TMDR1_PCON);
+-	else
+-		sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
++	} else {
++		sh_msiof_write(p, TMDR1,
++			       tmp | MDR1_TRMD | TMDR1_PCON |
++			       (ss < MAX_SS ? ss : 0) << TMDR1_SYNCCH_SHIFT);
++	}
+ 	if (p->master->flags & SPI_MASTER_MUST_TX) {
+ 		/* These bits are reserved if RX needs TX */
+ 		tmp &= ~0x0000ffff;
+@@ -575,7 +582,8 @@ static int sh_msiof_prepare_message(struct spi_master *master,
  	const struct spi_device *spi = msg->spi;
-+	u32 ss, cs_high;
  
  	/* Configure pins before asserting CS */
--	sh_msiof_spi_set_pin_regs(p, spi->chip_select,
--				  !!(spi->mode & SPI_CPOL),
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		ss = p->unused_ss;
-+		cs_high = p->native_cs_high;
-+	} else {
-+		ss = spi->chip_select;
-+		cs_high = !!(spi->mode & SPI_CS_HIGH);
-+	}
-+	sh_msiof_spi_set_pin_regs(p, ss, !!(spi->mode & SPI_CPOL),
+-	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
++	sh_msiof_spi_set_pin_regs(p, spi->chip_select,
++				  !!(spi->mode & SPI_CPOL),
  				  !!(spi->mode & SPI_CPHA),
  				  !!(spi->mode & SPI_3WIRE),
--				  !!(spi->mode & SPI_LSB_FIRST),
--				  !!(spi->mode & SPI_CS_HIGH));
-+				  !!(spi->mode & SPI_LSB_FIRST), cs_high);
- 	return 0;
- }
- 
-@@ -1091,6 +1099,45 @@ static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
- }
- #endif
- 
-+static int sh_msiof_get_cs_gpios(struct sh_msiof_spi_priv *p)
-+{
-+	struct device *dev = &p->pdev->dev;
-+	unsigned int used_ss_mask = 0;
-+	unsigned int cs_gpios = 0;
-+	unsigned int num_cs, i;
-+	int ret;
-+
-+	ret = gpiod_count(dev, "cs");
-+	if (ret <= 0)
-+		return 0;
-+
-+	num_cs = max_t(unsigned int, ret, p->master->num_chipselect);
-+	for (i = 0; i < num_cs; i++) {
-+		struct gpio_desc *gpiod;
-+
-+		gpiod = devm_gpiod_get_index(dev, "cs", i, GPIOD_ASIS);
-+		if (!IS_ERR(gpiod)) {
-+			cs_gpios++;
-+			continue;
-+		}
-+
-+		if (PTR_ERR(gpiod) != -ENOENT)
-+			return PTR_ERR(gpiod);
-+
-+		if (i >= MAX_SS) {
-+			dev_err(dev, "Invalid native chip select %d\n", i);
-+			return -EINVAL;
-+		}
-+		used_ss_mask |= BIT(i);
-+	}
-+	p->unused_ss = ffz(used_ss_mask);
-+	if (cs_gpios && p->unused_ss >= MAX_SS) {
-+		dev_err(dev, "No unused native chip select available\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static struct dma_chan *sh_msiof_request_dma_chan(struct device *dev,
- 	enum dma_transfer_direction dir, unsigned int id, dma_addr_t port_addr)
- {
-@@ -1304,13 +1351,18 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	if (p->info->rx_fifo_override)
- 		p->rx_fifo_size = p->info->rx_fifo_override;
- 
-+	/* Setup GPIO chip selects */
-+	master->num_chipselect = p->info->num_chipselect;
-+	ret = sh_msiof_get_cs_gpios(p);
-+	if (ret)
-+		goto err1;
-+
- 	/* init master code */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
- 	master->flags = chipdata->master_flags;
- 	master->bus_num = pdev->id;
- 	master->dev.of_node = pdev->dev.of_node;
--	master->num_chipselect = p->info->num_chipselect;
- 	master->setup = sh_msiof_spi_setup;
- 	master->prepare_message = sh_msiof_prepare_message;
- 	master->slave_abort = sh_msiof_slave_abort;
+ 				  !!(spi->mode & SPI_LSB_FIRST),
 -- 
 2.15.1

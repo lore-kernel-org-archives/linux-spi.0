@@ -1,101 +1,59 @@
-From: Philippe Ombredanne <pombredanne-od1rfyK75/E@public.gmane.org>
-Subject: Re: [PATCH v3] spi: s3c64xx: add SPDX identifier
-Date: Thu, 14 Dec 2017 09:56:54 +0100
-Message-ID: <CAOFm3uEyUevF5mhi6VpGWz8qv5cXBtBt5BU3R93JGZCpJXOo9A@mail.gmail.com>
-References: <CGME20171214062903epcas2p3e6fdc84e9e36bbf7368601cd3cf5252b@epcas2p3.samsung.com>
- <20171214062827.12573-1-andi.shyti@samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: s3c64xx: add SPDX identifier
+Date: Thu, 14 Dec 2017 10:41:23 +0000
+Message-ID: <20171214104123.GA9788@sirena.org.uk>
+References: <CGME20171213080544epcas2p29731b6c65f760ab1b9ac71d530fcaf77@epcas2p2.samsung.com>
+ <20171213080530.12724-1-andi.shyti@samsung.com>
+ <CAOFm3uHP-4UN+gzXzZc1ptptFm5f9uhafKyE963+DiamzdRTdw@mail.gmail.com>
+ <20171214013109.GC11657@gangnam.samsung>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171214062827.12573-1-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On Thu, Dec 14, 2017 at 7:28 AM, Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> Replace the original license statement with the SPDX identifier.
->
-> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> Reviewed-by: Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
-> Hi,
->
-> v2 to v3:
->  - move the SPDX identifier on top as a separate comment as per
->    documentation
->  - add Krzysztof's review
->
-> v1 to v2:
->  - keep the original license
->
-> Andi
->
->  drivers/spi/spi-s3c64xx.c                 | 18 ++++--------------
->  include/linux/platform_data/spi-s3c64xx.h |  6 ++----
->  2 files changed, 6 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index de7df20f8712..baa3a9fa2638 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1,17 +1,7 @@
-> -/*
-> - * Copyright (C) 2009 Samsung Electronics Ltd.
-> - *     Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License as published by
-> - * the Free Software Foundation; either version 2 of the License, or
-> - * (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - */
-> +// SPDX-License-Identifier: GPL-2.0+
-> +//
-> +// Copyright (c) 2009 Samsung Electronics Co., Ltd.
-> +//      Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->
->  #include <linux/init.h>
->  #include <linux/module.h>
-> diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-> index da79774078a7..773daf7915a3 100644
-> --- a/include/linux/platform_data/spi-s3c64xx.h
-> +++ b/include/linux/platform_data/spi-s3c64xx.h
-> @@ -1,10 +1,8 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
->  /*
->   * Copyright (C) 2009 Samsung Electronics Ltd.
->   *     Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License version 2 as
-> - * published by the Free Software Foundation.
->   */
->
->  #ifndef __SPI_S3C64XX_H
-> --
-> 2.15.1
->
-
-Acked-by: Philippe Ombredanne <pombredanne-od1rfyK75/E@public.gmane.org>
-
-Thanks!
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
+Cc: Philippe Ombredanne <pombredanne@nexb.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andi Shyti <andi@etezian.org>
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20171214013109.GC11657@gangnam.samsung>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
--- 
-Cordially
-Philippe Ombredanne
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--9jxsPFA5p3P2qPhR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 14, 2017 at 10:31:09AM +0900, Andi Shyti wrote:
+
+> 1. Strictly by Thomas documentation:
+>=20
+>   /* SPDX-License-Identifier: GPL-2.0 */
+>=20
+>   /*
+>    * Copyright (C) 2009 Samsung Electronics Ltd.
+>    *     Jaswinder Singh <jassi.brar@samsung.com>
+>    */
+
+Use C++ comments.
+
+--9jxsPFA5p3P2qPhR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAloyVVAACgkQJNaLcl1U
+h9ArbQf/Q2LQnfLWr/mn4Rosh1g6P/N5Bm6MBK60vOL8+0qHN7JHKv++PMi/qkfu
+hfGEzm20k7PvE982XjX6eqtqcarq7XBoYtSStow59yYroV3soixiEOV0hqzt0IdU
+76tQCPrDuSVftOzXLtSsc9PIYEEzauoi/6/nSbP1rI+HajzOGYwA5er5GSmvfJPU
+udH5g/a4NhOMg7FX9m48Qa6dO0vXK24w0INoNA3BCiZqfPp4gPekOS1hG9UEFcJ5
+R62EIS2ut3pMErEPG1H7iA10esMQhOsh8iqvu3tzAr+OAte5WBe5KQFDsGqAz7N6
+EhoAOLONI7mJxUfWJsyRONfYi8WFtQ==
+=VEyb
+-----END PGP SIGNATURE-----
+
+--9jxsPFA5p3P2qPhR--

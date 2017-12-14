@@ -1,59 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Subject: Re: [PATCH v2] spi: s3c64xx: add SPDX identifier
-Date: Thu, 14 Dec 2017 10:41:23 +0000
-Message-ID: <20171214104123.GA9788@sirena.org.uk>
+Date: Thu, 14 Dec 2017 12:00:02 +0100
+Message-ID: <CAMuHMdUbMyS6d71nWg3=ir8RVZ7H_H7Ws=tsMKEbXK+Y9oRB2A@mail.gmail.com>
 References: <CGME20171213080544epcas2p29731b6c65f760ab1b9ac71d530fcaf77@epcas2p2.samsung.com>
- <20171213080530.12724-1-andi.shyti@samsung.com>
- <CAOFm3uHP-4UN+gzXzZc1ptptFm5f9uhafKyE963+DiamzdRTdw@mail.gmail.com>
- <20171214013109.GC11657@gangnam.samsung>
+ <20171213080530.12724-1-andi.shyti@samsung.com> <CAOFm3uHP-4UN+gzXzZc1ptptFm5f9uhafKyE963+DiamzdRTdw@mail.gmail.com>
+ <20171214013109.GC11657@gangnam.samsung> <20171214104123.GA9788@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
-Cc: Philippe Ombredanne <pombredanne@nexb.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20171214013109.GC11657@gangnam.samsung>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Philippe Ombredanne <pombredanne-od1rfyK75/E@public.gmane.org>,
+        Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Krzysztof Kozlowski <krzk-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171214104123.GA9788-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---9jxsPFA5p3P2qPhR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Dec 14, 2017 at 11:41 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Dec 14, 2017 at 10:31:09AM +0900, Andi Shyti wrote:
+>
+>> 1. Strictly by Thomas documentation:
+>>
+>>   /* SPDX-License-Identifier: GPL-2.0 */
+>>
+>>   /*
+>>    * Copyright (C) 2009 Samsung Electronics Ltd.
+>>    *     Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>    */
+>
+> Use C++ comments.
 
-On Thu, Dec 14, 2017 at 10:31:09AM +0900, Andi Shyti wrote:
+Not for header files...
 
-> 1. Strictly by Thomas documentation:
->=20
->   /* SPDX-License-Identifier: GPL-2.0 */
->=20
->   /*
->    * Copyright (C) 2009 Samsung Electronics Ltd.
->    *     Jaswinder Singh <jassi.brar@samsung.com>
->    */
+https://www.spinics.net/lists/linux-xfs/msg12872.html
 
-Use C++ comments.
+Gr{oetje,eeting}s,
 
---9jxsPFA5p3P2qPhR
-Content-Type: application/pgp-signature; name="signature.asc"
+                        Geert
 
------BEGIN PGP SIGNATURE-----
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAloyVVAACgkQJNaLcl1U
-h9ArbQf/Q2LQnfLWr/mn4Rosh1g6P/N5Bm6MBK60vOL8+0qHN7JHKv++PMi/qkfu
-hfGEzm20k7PvE982XjX6eqtqcarq7XBoYtSStow59yYroV3soixiEOV0hqzt0IdU
-76tQCPrDuSVftOzXLtSsc9PIYEEzauoi/6/nSbP1rI+HajzOGYwA5er5GSmvfJPU
-udH5g/a4NhOMg7FX9m48Qa6dO0vXK24w0INoNA3BCiZqfPp4gPekOS1hG9UEFcJ5
-R62EIS2ut3pMErEPG1H7iA10esMQhOsh8iqvu3tzAr+OAte5WBe5KQFDsGqAz7N6
-EhoAOLONI7mJxUfWJsyRONfYi8WFtQ==
-=VEyb
------END PGP SIGNATURE-----
-
---9jxsPFA5p3P2qPhR--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

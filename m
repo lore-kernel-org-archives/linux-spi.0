@@ -1,22 +1,58 @@
-From: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
-Subject: [PATCH] spi: pxa2xx: avoid redundant gpio_to_desc(desc_to_gpio()) round-trip
-Date: Thu, 21 Dec 2017 01:37:31 +0100
-Message-ID: <20171221003731.21633-1-linux@rasmusvillemoes.dk>
-Cc: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pxa2xx: avoid redundant gpio_to_desc(desc_to_gpio()) round-trip" to the spi tree
+Date: Thu, 21 Dec 2017 12:28:42 +0000 (GMT)
+Message-ID: <20171221122842.367A744006B@finisterre.ee.mobilebroadband>
+References: <20171221003731.21633-1-linux@rasmusvillemoes.dk>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
         Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171221003731.21633-1-linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi: pxa2xx: avoid redundant gpio_to_desc(desc_to_gpio()) round-trip
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 221886646f75964ca31cf60f1811b2c9c4e965a5 Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
+Date: Thu, 21 Dec 2017 01:37:31 +0100
+Subject: [PATCH] spi: pxa2xx: avoid redundant gpio_to_desc(desc_to_gpio())
+ round-trip
 
 gpio_free(gpio) simply does gpiod_free(gpio_to_desc(gpio)), so it's
 simpler and cleaner to use gpiod_free directly.
 
 Signed-off-by: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
  drivers/spi/spi-pxa2xx.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
@@ -44,7 +80,7 @@ index 4cb515a3104c..c209dc1047b5 100644
  	kfree(chip);
  }
 -- 
-2.11.0
+2.15.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

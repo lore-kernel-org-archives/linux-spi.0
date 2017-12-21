@@ -1,72 +1,129 @@
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCH] spi: Add a sysfs interface to instantiate devices
-Date: Thu, 21 Dec 2017 12:11:23 -0800
-Message-ID: <881b7381-0bba-70af-b4fe-24f0d388109e@infradead.org>
+Date: Thu, 21 Dec 2017 21:05:43 +0000
+Message-ID: <1513890342.26695.4.camel@impinj.com>
 References: <20171221200309.17967-1-kyle.roeschley@ni.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: "kyle.roeschley-acOepvfBmUk@public.gmane.org" <kyle.roeschley-acOepvfBmUk@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20171221200309.17967-1-kyle.roeschley-acOepvfBmUk@public.gmane.org>
 Content-Language: en-US
+Content-ID: <69D5B49F2A1B254687383E390C43DBBF-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 12/21/2017 12:03 PM, Kyle Roeschley wrote:
-> Add a sysfs interface to instantiate and delete SPI devices using the
-> spidev driver. This can be used when developing a driver on a
-> self-soldered board which doesn't yet have proper SPI device declaration
-> at the platform level, and presumably for various debugging situations.
-> 
-> Inspired by 99cd8e25875a ("i2c: Add a sysfs interface to instantiate
-> devices").
-> 
-> Signed-off-by: Kyle Roeschley <kyle.roeschley-acOepvfBmUk@public.gmane.org>
-> ---
->  Documentation/spi/spi-summary | 14 ++++++++
->  drivers/spi/spi.c             | 78 +++++++++++++++++++++++++++++++++++++++++++
->  include/linux/spi/spi.h       |  3 ++
->  3 files changed, 95 insertions(+)
-> 
-> diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-> index 1721c1b570c3..51d9747c4426 100644
-> --- a/Documentation/spi/spi-summary
-> +++ b/Documentation/spi/spi-summary
-> @@ -339,6 +339,20 @@ up the spi bus master, and will likely need spi_new_device() to provide the
->  board info based on the board that was hotplugged.  Of course, you'd later
->  call at least spi_unregister_device() when that board is removed.
->  
-> +Alternatively, a sysfs interface was added to let the user create devices which
-
-                                                                             when
-
-> +using the spidev driver. This interface is made of 2 attribute files which are
-> +created in every SPI master directory: new_device and delete_device. Both files
-> +are write only and you must write the decimal SPI chip select number to them in
-
-       write-only
-
-> +order to properly instantiate or delete a SPI device. As no two devices can be
-> +attached to the same master with the same chip select line, the chip select
-> +number is sufficient to uniquely identify the device to be deleted.
-> +
-> +Example:
-> +# echo 1 > /sys/class/spi_master/spi0/new_device
-> +
-> +In general, this interface should only be used when in-kernel device
-> +declaration can't be done.
-> +
->  When Linux includes support for MMC/SD/SDIO/DataFlash cards through SPI, those
->  configurations will also be dynamic.  Fortunately, such devices all support
->  basic device identification probes, so they should hotplug normally.
-
-thanks.
--- 
-~Randy
+T24gVGh1LCAyMDE3LTEyLTIxIGF0IDE0OjAzIC0wNjAwLCBLeWxlIFJvZXNjaGxleSB3cm90ZToN
+Cj4gQWRkIGEgc3lzZnMgaW50ZXJmYWNlIHRvIGluc3RhbnRpYXRlIGFuZCBkZWxldGUgU1BJIGRl
+dmljZXMgdXNpbmcgdGhlDQo+IHNwaWRldiBkcml2ZXIuIFRoaXMgY2FuIGJlIHVzZWQgd2hlbiBk
+ZXZlbG9waW5nIGEgZHJpdmVyIG9uIGENCj4gc2VsZi1zb2xkZXJlZCBib2FyZCB3aGljaCBkb2Vz
+bid0IHlldCBoYXZlIHByb3BlciBTUEkgZGV2aWNlIGRlY2xhcmF0aW9uDQo+IGF0IHRoZSBwbGF0
+Zm9ybSBsZXZlbCwgYW5kIHByZXN1bWFibHkgZm9yIHZhcmlvdXMgZGVidWdnaW5nIHNpdHVhdGlv
+bnMuDQo+IA0KPiBJbnNwaXJlZCBieSA5OWNkOGUyNTg3NWEgKCJpMmM6IEFkZCBhIHN5c2ZzIGlu
+dGVyZmFjZSB0byBpbnN0YW50aWF0ZQ0KPiBkZXZpY2VzIikuDQoNClRoZSBpMmMgaW50ZXJmYWNl
+IGFsbG93cyBvbmUgdG8gc3BlY2lmeSB0aGUgdHlwZSBvZiBkZXZpY2UgdG8gY3JlYXRlLiANCldo
+eSBtdXN0IHRoaXMgaW50ZXJmYWNlIGJlIGxpbmtlZCB0byBzcGlkZXYgYW5kIG9ubHkgY2FwYWJs
+ZSBvZg0KY3JlYXRpbmcgc3BpZGV2IGRldmljZXM/ICANCg0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+S3lsZSBSb2VzY2hsZXkgPGt5bGUucm9lc2NobGV5QG5pLmNvbT4NCj4gLS0tDQo+ICBEb2N1bWVu
+dGF0aW9uL3NwaS9zcGktc3VtbWFyeSB8IDE0ICsrKysrKysrDQo+ICBkcml2ZXJzL3NwaS9zcGku
+YyAgICAgICAgICAgICB8IDc4ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysNCj4gIGluY2x1ZGUvbGludXgvc3BpL3NwaS5oICAgICAgIHwgIDMgKysNCj4gIDMgZmls
+ZXMgY2hhbmdlZCwgOTUgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50
+YXRpb24vc3BpL3NwaS1zdW1tYXJ5IGIvRG9jdW1lbnRhdGlvbi9zcGkvc3BpLXN1bW1hcnkNCj4g
+aW5kZXggMTcyMWMxYjU3MGMzLi41MWQ5NzQ3YzQ0MjYgMTAwNjQ0DQo+IC0tLSBhL0RvY3VtZW50
+YXRpb24vc3BpL3NwaS1zdW1tYXJ5DQo+ICsrKyBiL0RvY3VtZW50YXRpb24vc3BpL3NwaS1zdW1t
+YXJ5DQo+IEBAIC0zMzksNiArMzM5LDIwIEBAIHVwIHRoZSBzcGkgYnVzIG1hc3RlciwgYW5kIHdp
+bGwgbGlrZWx5IG5lZWQgc3BpX25ld19kZXZpY2UoKSB0byBwcm92aWRlIHRoZQ0KPiAgYm9hcmQg
+aW5mbyBiYXNlZCBvbiB0aGUgYm9hcmQgdGhhdCB3YXMgaG90cGx1Z2dlZC4gIE9mIGNvdXJzZSwg
+eW91J2QgbGF0ZXINCj4gIGNhbGwgYXQgbGVhc3Qgc3BpX3VucmVnaXN0ZXJfZGV2aWNlKCkgd2hl
+biB0aGF0IGJvYXJkIGlzIHJlbW92ZWQuDQo+ICANCj4gK0FsdGVybmF0aXZlbHksIGEgc3lzZnMg
+aW50ZXJmYWNlIHdhcyBhZGRlZCB0byBsZXQgdGhlIHVzZXIgY3JlYXRlIGRldmljZXMgd2hpY2gN
+Cj4gK3VzaW5nIHRoZSBzcGlkZXYgZHJpdmVyLiBUaGlzIGludGVyZmFjZSBpcyBtYWRlIG9mIDIg
+YXR0cmlidXRlIGZpbGVzIHdoaWNoIGFyZQ0KPiArY3JlYXRlZCBpbiBldmVyeSBTUEkgbWFzdGVy
+IGRpcmVjdG9yeTogbmV3X2RldmljZSBhbmQgZGVsZXRlX2RldmljZS4gQm90aCBmaWxlcw0KPiAr
+YXJlIHdyaXRlIG9ubHkgYW5kIHlvdSBtdXN0IHdyaXRlIHRoZSBkZWNpbWFsIFNQSSBjaGlwIHNl
+bGVjdCBudW1iZXIgdG8gdGhlbSBpbg0KPiArb3JkZXIgdG8gcHJvcGVybHkgaW5zdGFudGlhdGUg
+b3IgZGVsZXRlIGEgU1BJIGRldmljZS4gQXMgbm8gdHdvIGRldmljZXMgY2FuIGJlDQo+ICthdHRh
+Y2hlZCB0byB0aGUgc2FtZSBtYXN0ZXIgd2l0aCB0aGUgc2FtZSBjaGlwIHNlbGVjdCBsaW5lLCB0
+aGUgY2hpcCBzZWxlY3QNCj4gK251bWJlciBpcyBzdWZmaWNpZW50IHRvIHVuaXF1ZWx5IGlkZW50
+aWZ5IHRoZSBkZXZpY2UgdG8gYmUgZGVsZXRlZC4NCj4gKw0KPiArRXhhbXBsZToNCj4gKyMgZWNo
+byAxID4gL3N5cy9jbGFzcy9zcGlfbWFzdGVyL3NwaTAvbmV3X2RldmljZQ0KPiArDQo+ICtJbiBn
+ZW5lcmFsLCB0aGlzIGludGVyZmFjZSBzaG91bGQgb25seSBiZSB1c2VkIHdoZW4gaW4ta2VybmVs
+IGRldmljZQ0KPiArZGVjbGFyYXRpb24gY2FuJ3QgYmUgZG9uZS4NCj4gKw0KPiAgV2hlbiBMaW51
+eCBpbmNsdWRlcyBzdXBwb3J0IGZvciBNTUMvU0QvU0RJTy9EYXRhRmxhc2ggY2FyZHMgdGhyb3Vn
+aCBTUEksIHRob3NlDQo+ICBjb25maWd1cmF0aW9ucyB3aWxsIGFsc28gYmUgZHluYW1pYy4gIEZv
+cnR1bmF0ZWx5LCBzdWNoIGRldmljZXMgYWxsIHN1cHBvcnQNCj4gIGJhc2ljIGRldmljZSBpZGVu
+dGlmaWNhdGlvbiBwcm9iZXMsIHNvIHRoZXkgc2hvdWxkIGhvdHBsdWcgbm9ybWFsbHkuDQo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS5jDQo+IGluZGV4
+IGIzM2E3MjdhMDE1OC4uNjQ4Y2NkZjM1OWY5IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9z
+cGkuYw0KPiArKysgYi9kcml2ZXJzL3NwaS9zcGkuYw0KPiBAQCAtMjQyLDggKzI0Miw4NSBAQCBz
+dGF0aWMgY29uc3Qgc3RydWN0IGF0dHJpYnV0ZV9ncm91cCBzcGlfY29udHJvbGxlcl9zdGF0aXN0
+aWNzX2dyb3VwID0gew0KPiAgCS5hdHRycyAgPSBzcGlfY29udHJvbGxlcl9zdGF0aXN0aWNzX2F0
+dHJzLA0KPiAgfTsNCj4gIA0KPiArc3RhdGljIHNzaXplX3QNCj4gK25ld19kZXZpY2Vfc3RvcmUo
+c3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwNCj4gKwkJ
+IGNvbnN0IGNoYXIgKmJ1Ziwgc2l6ZV90IGNvdW50KQ0KPiArew0KPiArCXN0cnVjdCBzcGlfY29u
+dHJvbGxlciAqY3RsciA9IGNvbnRhaW5lcl9vZihkZXYsIHN0cnVjdCBzcGlfY29udHJvbGxlciwN
+Cj4gKwkJCQkJCSAgIGRldik7DQo+ICsJc3RydWN0IHNwaV9kZXZpY2UgKnNwaTsNCj4gKwlzdHJ1
+Y3Qgc3BpX2JvYXJkX2luZm8gYmkgPSB7DQo+ICsJCS5tb2RhbGlhcyA9ICJzcGlkZXYiLA0KPiAr
+CQkubWF4X3NwZWVkX2h6ID0gY3Rsci0+bWF4X3NwZWVkX2h6LA0KPiArCX07DQo+ICsNCj4gKwlp
+ZiAoa3N0cnRvdTE2KGJ1ZiwgMCwgJmJpLmNoaXBfc2VsZWN0KSA8IDApDQo+ICsJCXJldHVybiAt
+RUlOVkFMOw0KPiArDQo+ICsJc3BpID0gc3BpX25ld19kZXZpY2UoY3RsciwgJmJpKTsNCj4gKwlp
+ZiAoIXNwaSkgew0KPiArCQlkZXZfZXJyKGRldiwgImNhbid0IGNyZWF0ZSBuZXcgZGV2aWNlXG4i
+KTsNCj4gKwkJcmV0dXJuIC1FTlhJTzsNCg0KSTJDIHJldHVybnMgLUVJTlZBTA0KDQo+ICsJfQ0K
+PiArDQo+ICsJbXV0ZXhfbG9jaygmY3Rsci0+YnVzX2xvY2tfbXV0ZXgpOw0KPiArCWxpc3RfYWRk
+X3RhaWwoJnNwaS0+dXNlcnNwYWNlX2RldmljZSwgJmN0bHItPnVzZXJzcGFjZV9kZXZpY2VzKTsN
+Cj4gKwltdXRleF91bmxvY2soJmN0bHItPmJ1c19sb2NrX211dGV4KTsNCj4gKw0KPiArCWRldl9p
+bmZvKGRldiwgImNyZWF0ZWQgc3BpZGV2IGRldmljZSAlc1xuIiwgZGV2X25hbWUoJnNwaS0+ZGV2
+KSk7DQo+ICsNCj4gKwlyZXR1cm4gY291bnQ7DQo+ICt9DQo+ICtzdGF0aWMgREVWSUNFX0FUVFJf
+V08obmV3X2RldmljZSk7DQo+ICsNCj4gK3N0YXRpYyBzc2l6ZV90DQo+ICtkZWxldGVfZGV2aWNl
+X3N0b3JlKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldmljZV9hdHRyaWJ1dGUgKmF0dHIs
+DQo+ICsJCSAgICBjb25zdCBjaGFyICpidWYsIHNpemVfdCBjb3VudCkNCj4gK3sNCj4gKwlzdHJ1
+Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIgPSBjb250YWluZXJfb2YoZGV2LCBzdHJ1Y3Qgc3BpX2Nv
+bnRyb2xsZXIsDQo+ICsJCQkJCQkgICBkZXYpOw0KPiArCXN0cnVjdCBzcGlfZGV2aWNlICpzcGks
+ICpuZXh0Ow0KPiArCWludCByZXQgPSAtRU5YSU87DQo+ICsJdTE2IGNzOw0KPiArDQo+ICsJaWYg
+KGtzdHJ0b3UxNihidWYsIDAsICZjcykgPCAwKQ0KPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gKw0K
+PiArCW11dGV4X2xvY2soJmN0bHItPmJ1c19sb2NrX211dGV4KTsNCj4gKwlsaXN0X2Zvcl9lYWNo
+X2VudHJ5X3NhZmUoc3BpLCBuZXh0LCAmY3Rsci0+dXNlcnNwYWNlX2RldmljZXMsDQo+ICsJCQkJ
+IHVzZXJzcGFjZV9kZXZpY2UpIHsNCj4gKwkJaWYgKHNwaS0+Y2hpcF9zZWxlY3QgIT0gY3MpDQo+
+ICsJCQljb250aW51ZTsNCj4gKw0KPiArCQlkZXZfaW5mbyhkZXYsICJkZWxldGluZyBzcGlkZXYg
+ZGV2aWNlICVzXG4iLA0KPiArCQkJIGRldl9uYW1lKCZzcGktPmRldikpOw0KPiArCQlsaXN0X2Rl
+bCgmc3BpLT51c2Vyc3BhY2VfZGV2aWNlKTsNCj4gKwkJc3BpX3VucmVnaXN0ZXJfZGV2aWNlKHNw
+aSk7DQo+ICsJCXJldCA9IGNvdW50Ow0KPiArCQlicmVhazsNCj4gKwl9DQo+ICsJbXV0ZXhfdW5s
+b2NrKCZjdGxyLT5idXNfbG9ja19tdXRleCk7DQo+ICsNCj4gKwlpZiAocmV0ID09IC1FTlhJTykN
+Cj4gKwkJZGV2X2VycihkZXYsICJjYW4ndCBmaW5kIHNwaWRldiBkZXZpY2UgJXUgaW4gbGlzdFxu
+IiwgY3MpOw0KPiArDQo+ICsJcmV0dXJuIHJldDsNCj4gK30NCj4gK3N0YXRpYyBERVZJQ0VfQVRU
+Ul9XTyhkZWxldGVfZGV2aWNlKTsNCj4gKw0KPiArc3RhdGljIHN0cnVjdCBhdHRyaWJ1dGUgKnNw
+aV9jb250cm9sbGVyX3VzZXJzcGFjZV9hdHRyc1tdID0gew0KPiArCSZkZXZfYXR0cl9uZXdfZGV2
+aWNlLmF0dHIsDQo+ICsJJmRldl9hdHRyX2RlbGV0ZV9kZXZpY2UuYXR0ciwNCj4gKwlOVUxMLA0K
+PiArfTsNCj4gKw0KPiArc3RhdGljIGNvbnN0IHN0cnVjdCBhdHRyaWJ1dGVfZ3JvdXAgc3BpX2Nv
+bnRyb2xsZXJfdXNlcnNwYWNlX2dyb3VwID0gew0KPiArCS5hdHRycyAgPSBzcGlfY29udHJvbGxl
+cl91c2Vyc3BhY2VfYXR0cnMsDQo+ICt9Ow0KPiArDQo+ICBzdGF0aWMgY29uc3Qgc3RydWN0IGF0
+dHJpYnV0ZV9ncm91cCAqc3BpX21hc3Rlcl9ncm91cHNbXSA9IHsNCj4gIAkmc3BpX2NvbnRyb2xs
+ZXJfc3RhdGlzdGljc19ncm91cCwNCj4gKwkmc3BpX2NvbnRyb2xsZXJfdXNlcnNwYWNlX2dyb3Vw
+LA0KPiAgCU5VTEwsDQo+ICB9Ow0KPiAgDQo+IEBAIC0yMTI5LDYgKzIyMDYsNyBAQCBpbnQgc3Bp
+X3JlZ2lzdGVyX2NvbnRyb2xsZXIoc3RydWN0IHNwaV9jb250cm9sbGVyICpjdGxyKQ0KPiAgCQkJ
+cmV0dXJuIGlkOw0KPiAgCQljdGxyLT5idXNfbnVtID0gaWQ7DQo+ICAJfQ0KPiArCUlOSVRfTElT
+VF9IRUFEKCZjdGxyLT51c2Vyc3BhY2VfZGV2aWNlcyk7DQo+ICAJSU5JVF9MSVNUX0hFQUQoJmN0
+bHItPnF1ZXVlKTsNCj4gIAlzcGluX2xvY2tfaW5pdCgmY3Rsci0+cXVldWVfbG9jayk7DQo+ICAJ
+c3Bpbl9sb2NrX2luaXQoJmN0bHItPmJ1c19sb2NrX3NwaW5sb2NrKTsNCj4gZGlmZiAtLWdpdCBh
+L2luY2x1ZGUvbGludXgvc3BpL3NwaS5oIGIvaW5jbHVkZS9saW51eC9zcGkvc3BpLmgNCj4gaW5k
+ZXggYmM2YmIzMjVkMWJmLi5mNzI1NTc0NTMyNmQgMTAwNjQ0DQo+IC0tLSBhL2luY2x1ZGUvbGlu
+dXgvc3BpL3NwaS5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvc3BpL3NwaS5oDQo+IEBAIC0xNzIs
+NiArMTcyLDggQEAgc3RydWN0IHNwaV9kZXZpY2Ugew0KPiAgCS8qIHRoZSBzdGF0aXN0aWNzICov
+DQo+ICAJc3RydWN0IHNwaV9zdGF0aXN0aWNzCXN0YXRpc3RpY3M7DQo+ICANCj4gKwlzdHJ1Y3Qg
+bGlzdF9oZWFkCXVzZXJzcGFjZV9kZXZpY2U7DQo+ICsNCj4gIAkvKg0KPiAgCSAqIGxpa2VseSBu
+ZWVkIG1vcmUgaG9va3MgZm9yIG1vcmUgcHJvdG9jb2wgb3B0aW9ucyBhZmZlY3RpbmcgaG93DQo+
+ICAJICogdGhlIGNvbnRyb2xsZXIgdGFsa3MgdG8gZWFjaCBjaGlwLCBsaWtlOg0KPiBAQCAtNDEw
+LDYgKzQxMiw3IEBAIHN0cnVjdCBzcGlfY29udHJvbGxlciB7DQo+ICAJc3RydWN0IGRldmljZQlk
+ZXY7DQo+ICANCj4gIAlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7DQo+ICsJc3RydWN0IGxpc3RfaGVh
+ZCB1c2Vyc3BhY2VfZGV2aWNlczsNCj4gIA0KPiAgCS8qIG90aGVyIHRoYW4gbmVnYXRpdmUgKD09
+IGFzc2lnbiBvbmUgZHluYW1pY2FsbHkpLCBidXNfbnVtIGlzIGZ1bGx5DQo+ICAJICogYm9hcmQt
+c3BlY2lmaWMuICB1c3VhbGx5IHRoYXQgc2ltcGxpZmllcyB0byBiZWluZyBTT0Mtc3BlY2lmaWMu
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

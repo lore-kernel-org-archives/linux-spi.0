@@ -1,72 +1,82 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-Date: Sat, 23 Dec 2017 07:57:40 -0800
-Message-ID: <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org, ulf.hansson@linaro.org,
- jakub.kicinski@netronome.com, platform-driver-x86@vger.kernel.org,
- airlied@linux.ie, linux-wireless@vger.kernel.org, linus.walleij@linaro.org,
- alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-mtd@lists.infradead.org, daniel.vetter@intel.com,
- dan.j.williams@intel.com, jason@lakedaemon.net, linux-rtc@vger.kernel.org,
- boris.brezillon@free-electrons.com, mchehab@kernel.org,
- dmaengine@vger.kernel.org, vinod.koul@intel.com, richard@nod.at,
- marek.vasut@gmail.com, industrypack-devel@lists.sourceforge.net,
- linux-pci@vger.kernel.org, dvhart@infradead.org, wg@grandegger.com,
- linux-media@vger.kernel.org, seanpaul@chromium.org, devel@driverdev.osuosl.org,
- linux-watchdog@vger.kernel.org, arnd@arndb.de, b.zolnierkie@samsung.com,
- marc.zyngier@arm.com, jslaby@sus
-To: Greg KH <gregkh@linuxfoundation.org>, Yisheng Xie <xieyisheng1@huawei.com>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20171223134831.GB10103@kroah.com>
-Content-Language: en-US
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+Subject: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between MTD and SPI
+Date: Sun, 24 Dec 2017 05:36:03 +0100
+Message-ID: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        robh@kernel.org, devicetree@vger.kernel.org,
+        nicolas.ferre@microchip.com, radu.pirea@microchip.com,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+To: computersforpeace@gmail.com, dwmw2@infradead.org, richard@nod.at,
+        boris.brezillon@free-electrons.com, marek.vasut@gmail.com,
+        linux-mtd@lists.infradead.org, broonie@kernel.org, vigneshr@ti.com,
+        linux@armlinux.org.uk
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/23/2017 05:48 AM, Greg KH wrote:
-> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->> Hi all,
->>
->> When I tried to use devm_ioremap function and review related code, I found
->> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
->> except one use ioremap while the other use ioremap_nocache.
-> 
-> For all arches?  Really?  Look at MIPS, and x86, they have different
-> functions.
-> 
+Hi all,
 
-Both mips and x86 end up mapping the same function, but other arches don't.
-mn10300 is one where ioremap and ioremap_nocache are definitely different.
+this series tries to solve a long time issue of compatibility between the
+MTD and SPI sub-systems about whether we should use DMA-safe memory.
 
-Guenter
+This issue is visible espcecially when using a UBI file-system on a SPI
+NOR memory accessed through a SPI controller behind the m25p80 driver.
 
->> While ioremap's
->> default function is ioremap_nocache, so devm_ioremap_nocache also have the
->> same function with devm_ioremap, which can just be killed to reduce the size
->> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
->>
->> I have posted two versions, which use macro instead of function for
->> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
->> devm_ioremap_nocache for no need to keep a macro around for the duplicate
->> thing. So here comes v3 and please help to review.
-> 
-> I don't think this can be done, what am I missing?  These functions are
-> not identical, sorry for missing that before.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+The SPI sub-system has already implemented a work-around on its side,
+based on the spi_map_buf() function. However this function has its own
+limitation too. Especially, even if it builds a 'struct scatterlist' from
+a vmalloc'ed buffer, calling dma_map_sg() is still not safe on all
+architectures. Especially, on ARM cores using either VIPT or VIVT data
+caches, dma_map_sg() doesn't take the cache aliases issue into account.
+Then numerous crashes were reported for such architectures.
+
+If think it's high time to provide a reliable solution. So let's try to
+work together!
+
+The proposed solution here is based on an former series from Vignesh R and
+relies on a bounce buffer.
+
+For this series, I will need some pieces of advice on how to implement
+a reliable [spi_nor_]is_dma_safe() function. The proposed implementation
+in patch 1 is based on the tests performed by spi_map_buf() but I was
+wondring whether it would be more cautious to consider:
+DMA-safe <=> allocated by kmalloc'ed.
+
+Actually, it's better using the bounce buffer when not needed than not
+using it when we should.
+
+Also the bounce buffer solution in spi-nor is designed so it could be
+used as an helper so spi flash controller drivers other than m25p80.c
+could now easily add support to DMA transfers for (Fast) Read and/or
+Page Program operations.
+
+I've implemented and tested it on a sama5d2 xplained board + Macronix
+mx25l25673g SPI NOR memory reading from and writing into some UBI
+file-system. I've also tested with mtd_debug to write then read back
+a raw data into the SPI NOR memory, later checking the data integrity with
+sha1sum.
+
+For the atmel-quadspi.c driver, DMA memcpy() transfers are enabled only if
+the "dmacap,mempcy" boolean property is set in the device-tree.
+I found this name in some other device-trees already using it for a
+boolean property.
+
+Best regards,
+
+Cyrille
+
+Cyrille Pitchen (3):
+  mtd: spi-nor: add optional DMA-safe bounce buffer for data transfer
+  dt-bindings: mtd: atmel-quadspi: add an optional property
+    'dmacap,memcpy'
+  mtd: atmel-quadspi: add support of DMA memcpy()
+
+ .../devicetree/bindings/mtd/atmel-quadspi.txt      |   5 +
+ drivers/mtd/devices/m25p80.c                       |   4 +-
+ drivers/mtd/spi-nor/atmel-quadspi.c                | 132 +++++++++++++++++++-
+ drivers/mtd/spi-nor/spi-nor.c                      | 136 +++++++++++++++++++--
+ include/linux/mtd/spi-nor.h                        |   8 ++
+ 5 files changed, 273 insertions(+), 12 deletions(-)
+
+-- 
+2.11.0

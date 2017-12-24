@@ -1,71 +1,124 @@
-From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
-Subject: [PATCH 2/3] dt-bindings: mtd: atmel-quadspi: add an optional property
- 'dmacap, memcpy'
-Date: Sun, 24 Dec 2017 05:36:05 +0100
-Message-ID: <143542c61ca674d53da4985bbabc142e8e6ebefc.1514087323.git.cyrille.pitchen@wedev4u.fr>
-References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+From: christophe leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
+Date: Sun, 24 Dec 2017 09:55:18 +0100
+Message-ID: <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+ <20171223134831.GB10103@kroah.com>
+ <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: robh@kernel.org, devicetree@vger.kernel.org, nicolas.ferre@microchip.com,
- linux-kernel@vger.kernel.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- radu.pirea@microchip.com, linux-spi@vger.kernel.org
-To: computersforpeace@gmail.com, dwmw2@infradead.org, richard@nod.at,
- boris.brezillon@free-electrons.com, marek.vasut@gmail.com,
- linux-mtd@lists.infradead.org, broonie@kernel.org, vigneshr@ti.com,
- linux@armlinux.org.uk
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-In-Reply-To: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: linux-kernel@vger.kernel.org, ysxie@foxmail.com,
+        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
+        boris.brezillon@free-electrons.com, richard@nod.at,
+        marek.vasut@gmail.com, cyrille.pitchen@wedev4u.fr,
+        linux-mtd@lists.infradead.org, alsa-devel@alsa-project.org,
+        wim@iguana.be, linux-watchdog@vger.kernel.org,
+        b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
+        linus.walleij@linaro.org, linux-gpio@vger.kernel.org,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        lgirdwood@gmail.com, broonie@kernel.org, tglx@linutronix.de,
+        jason@lakedaemon.net, marc.zyngier@arm.com, arnd@arndb.de,
+        andriy.shevchenko@linux.intel.com,
+        industrypack-devel@lists.sourceforge.net, wg@grandegger.com,
+        mkl@pengutronix.de, linux-can@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, a.zum
+To: Guenter Roeck <linux@roeck-us.net>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Yisheng Xie <xieyisheng1@huawei.com>
+Return-path: <linux-can-owner@vger.kernel.org>
+In-Reply-To: <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
+Content-Language: fr
+Sender: linux-can-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The optional 'dmacap,memcpy' DT property tells the Atmel QSPI controller
-driver to reserve some DMA channel then to use it to perform DMA
-memcpy() during data transfers. This feature relies on the generic
-bounce buffer helper from spi-nor.c.
 
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+
+Le 23/12/2017 à 16:57, Guenter Roeck a écrit :
+> On 12/23/2017 05:48 AM, Greg KH wrote:
+>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
+>>> Hi all,
+>>>
+>>> When I tried to use devm_ioremap function and review related code, I 
+>>> found
+>>> devm_ioremap and devm_ioremap_nocache is almost the same with each 
+>>> other,
+>>> except one use ioremap while the other use ioremap_nocache.
+>>
+>> For all arches?  Really?  Look at MIPS, and x86, they have different
+>> functions.
+>>
+> 
+> Both mips and x86 end up mapping the same function, but other arches don't.
+> mn10300 is one where ioremap and ioremap_nocache are definitely different.
+
+alpha: identical
+arc: identical
+arm: identical
+arm64: identical
+cris: different        <==
+frv: identical
+hexagone: identical
+ia64: different        <==
+m32r: identical
+m68k: identical
+metag: identical
+microblaze: identical
+mips: identical
+mn10300: different     <==
+nios: identical
+openrisc: different    <==
+parisc: identical
+riscv: identical
+s390: identical
+sh: identical
+sparc: identical
+tile: identical
+um: rely on asm/generic
+unicore32: identical
+x86: identical
+asm/generic (no mmu): identical
+
+So 4 among all arches seems to have ioremap() and ioremap_nocache() 
+being different.
+
+Could we have a define set by the 4 arches on which ioremap() and 
+ioremap_nocache() are different, something like 
+HAVE_DIFFERENT_IOREMAP_NOCACHE ?
+
+Christophe
+
+> 
+> Guenter
+> 
+>>> While ioremap's
+>>> default function is ioremap_nocache, so devm_ioremap_nocache also 
+>>> have the
+>>> same function with devm_ioremap, which can just be killed to reduce 
+>>> the size
+>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
+>>>
+>>> I have posted two versions, which use macro instead of function for
+>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
+>>> devm_ioremap_nocache for no need to keep a macro around for the 
+>>> duplicate
+>>> thing. So here comes v3 and please help to review.
+>>
+>> I don't think this can be done, what am I missing?  These functions are
+>> not identical, sorry for missing that before.
+>>
+>> thanks,
+>>
+>> greg k-h
+>>
+> 
+> -- 
+> To unsubscribe from this list: send the line "unsubscribe 
+> linux-watchdog" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
 ---
- Documentation/devicetree/bindings/mtd/atmel-quadspi.txt | 5 +++++
- 1 file changed, 5 insertions(+)
+L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+https://www.avast.com/antivirus
 
-diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
-index b93c1e2f25dd..002d3f0a445b 100644
---- a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
-+++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
-@@ -12,6 +12,10 @@ Required properties:
- - #address-cells: Should be <1>.
- - #size-cells:    Should be <0>.
- 
-+Optional properties:
-+- dmacap,memcpy:  Reserve a DMA channel to perform DMA memcpy() between the
-+                  system memory and the QSPI mapped memory.
-+
- Example:
- 
- spi@f0020000 {
-@@ -24,6 +28,7 @@ spi@f0020000 {
- 	#size-cells = <0>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_spi0_default>;
-+	dmacap,memcpy;
- 
- 	m25p80@0 {
- 		...
--- 
-2.11.0
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

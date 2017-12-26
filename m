@@ -1,86 +1,76 @@
-From: Yisheng Xie <xieyisheng1@huawei.com>
-Subject: Re: [PATCH v3 27/27] devres: kill devm_ioremap_nocache
-Date: Mon, 25 Dec 2017 09:43:40 +0800
-Message-ID: <4d0991ec-9cd4-0c33-5560-ae9c2c762765@huawei.com>
-References: <1514026979-33838-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134532.GA10103@kroah.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
+ data transfer
+Date: Tue, 26 Dec 2017 19:12:09 +0530
+Message-ID: <1126731d-cbf7-8fbf-34ab-8ccf1cc8241f@ti.com>
+References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+ <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org, ulf.hansson@linaro.org,
- jakub.kicinski@netronome.com, lgirdwood@gmail.com, airlied@linux.ie,
- linux-pci@vger.kernel.org, linus.walleij@linaro.org,
- alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-mtd@lists.infradead.org, daniel.vetter@intel.com, tglx@linutronix.de,
- linux-watchdog@vger.kernel.org, linux-rtc@vger.kernel.org,
- boris.brezillon@free-electrons.com, andriy.shevchenko@linux.intel.com,
- vinod.koul@intel.com, richard@nod.at, alexandre.belloni@free-electrons.com,
- marek.vasut@gmail.com, industrypack-devel@lists.sourceforge.net,
- jslaby@suse.com, dvhart@infradead.org, linux@roeck-us.net,
- linux-media@vger.kernel.org, devel@driverdev.osuosl.org, jason@lakedaemon.net,
- arnd@arndb.de, b.zolnierkie@samsung.com, marc.zyngier@arm.com,
- linux-mmc@vger.kernel.org, jani.niku
-To: Greg KH <gregkh@linuxfoundation.org>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20171223134532.GA10103@kroah.com>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>, <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        <richard-/L3Ra7n9ekc@public.gmane.org>, <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
+Content-Language: en-US
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Cyrille,
 
+Thanks for doing this series! One comment below.
 
-On 2017/12/23 21:45, Greg KH wrote:
-> On Sat, Dec 23, 2017 at 07:02:59PM +0800, Yisheng Xie wrote:
->> --- a/lib/devres.c
->> +++ b/lib/devres.c
->> @@ -44,35 +44,6 @@ void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>  EXPORT_SYMBOL(devm_ioremap);
->>  
->>  /**
->> - * devm_ioremap_nocache - Managed ioremap_nocache()
->> - * @dev: Generic device to remap IO address for
->> - * @offset: Resource address to map
->> - * @size: Size of map
->> - *
->> - * Managed ioremap_nocache().  Map is automatically unmapped on driver
->> - * detach.
->> - */
->> -void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->> -				   resource_size_t size)
->> -{
->> -	void __iomem **ptr, *addr;
->> -
->> -	ptr = devres_alloc(devm_ioremap_release, sizeof(*ptr), GFP_KERNEL);
->> -	if (!ptr)
->> -		return NULL;
->> -
->> -	addr = ioremap_nocache(offset, size);
-> 
-> Wait, devm_ioremap() calls ioremap(), not ioremap_nocache(), are you
-> _SURE_ that these are all identical?  For all arches?  If so, then
-> ioremap_nocache() can also be removed, right?
+On 24-Dec-17 10:06 AM, Cyrille Pitchen wrote:
+[...]
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 8bafd462f0ae..59f9fbd45234 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -14,8 +14,10 @@
+>  #include <linux/errno.h>
+>  #include <linux/module.h>
+>  #include <linux/device.h>
+> +#include <linux/highmem.h>
+>  #include <linux/mutex.h>
+>  #include <linux/math64.h>
+> +#include <linux/mm.h>
+>  #include <linux/sizes.h>
+>  #include <linux/slab.h>
+>  
+> @@ -1232,6 +1234,56 @@ static const struct flash_info spi_nor_ids[] = {
+>  	{ },
+>  };
+>  
+> +static bool spi_nor_is_dma_safe(const void *buf)
+> +{
+> +	if (is_vmalloc_addr(buf))
+> +		return false;
+> +
+> +#ifdef CONFIG_HIGHMEM
+> +	if ((unsigned long)buf >= PKMAP_BASE &&
+> +	    (unsigned long)buf < (PKMAP_BASE + (LAST_PKMAP * PAGE_SIZE)))
+> +		return false;
+> +#endif
+> +
+> +	return true;
+> +}
+> +
 
-Yeah, As Christophe pointed out, that 4 archs do not have the same function.
-But I do not why they do not want do the same thing. Driver may no know about
-this? right?
+Better way would be to use virt_addr_valid():
+static bool spi_nor_is_dma_safe(const void *buf)
+{
+	return virt_addr_valid(buf);
+}
 
-> 
-> In my quick glance, I don't think you can do this series at all :(
-
-Yes, maybe should take Christophe suggestion and use a bool or enum to distinguish them?
-
-Thanks
-Yisheng
-> 
-> greg k-h
-> 
-> .
-> 
+Regards
+Vignesh
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

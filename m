@@ -1,90 +1,78 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
- data transfer
-Date: Tue, 26 Dec 2017 19:43:05 +0000
-Message-ID: <1514317385.26695.39.camel@impinj.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/3] dt-bindings: mtd: atmel-quadspi: add an optional
+ property 'dmacap,memcpy'
+Date: Tue, 26 Dec 2017 17:23:30 -0600
+Message-ID: <20171226232330.trljk2ofyvu4ly3n@rob-hp-laptop>
 References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-         <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
+ <143542c61ca674d53da4985bbabc142e8e6ebefc.1514087323.git.cyrille.pitchen@wedev4u.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org" <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
-        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
-        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        "vigneshr-l0cyMroinI0@public.gmane.org" <vigneshr-l0cyMroinI0@public.gmane.org>,
-        "richard-/L3Ra7n9ekc@public.gmane.org" <richard-/L3Ra7n9ekc@public.gmane.org>,
-        "marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <C0658D1EAA0A334FAD541A566FCDE634-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, richard-/L3Ra7n9ekc@public.gmane.org,
+        boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org,
+        linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org
+To: Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <143542c61ca674d53da4985bbabc142e8e6ebefc.1514087323.git.cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-T24gU3VuLCAyMDE3LTEyLTI0IGF0IDA1OjM2ICswMTAwLCBDeXJpbGxlIFBpdGNoZW4gd3JvdGU6
-DQo+IA0KPiBUaGVuIHRoZSBwYXRjaCBhZGRzIHR3byBoYXJkd2FyZSBjYXBhYmlsaXRpZXMgZm9y
-IFNQSSBmbGFzaCBjb250cm9sbGVycywNCj4gU05PUl9IV0NBUFNfV1JfQk9VTkNFIGFuZCBTTk9S
-X0hXQ0FQU19SRF9CT1VOQ0UuDQoNCkFyZSB0aGVyZSBhbnkgZHJpdmVycyBmb3Igd2hpY2ggYSBi
-b3VuY2UgYnVmZmVyIGlzIE5PVCBuZWVkZWQgd2hlbiB0aGUNCnR4L3J4IGJ1ZmZlciBpcyBub3Qg
-aW4gRE1BIHNhZmUgbWVtb3J5PyAgTWF5YmUgaXQgd291bGQgbWFrZSBtb3JlIHNlbnNlDQp0byBp
-bnZlcnQgdGhlIHNlbnNlIG9mIHRoZXNlIGZsYWdzLCBzbyB0aGF0IHRoZXkgaW5kaWNhdGUgdGhl
-IGRyaXZlcg0KZG9lcyBub3QgbmVlZCBETUEgc2FmZSBidWZmZXJzLCBpZiB0aGF0IGlzIHRoZSB1
-bmNvbW1vbi9ub24tZXhpc3RlbnQNCmNhc2UsIHNvIHRoYXQgZmV3ZXIgZHJpdmVycyBuZWVkIHRv
-IGJlIG1vZGlmaWVkIHRvIHRvIGJlIGZpeGVkPw0KDQo+ICtzdGF0aWMgYm9vbCBzcGlfbm9yX2lz
-X2RtYV9zYWZlKGNvbnN0IHZvaWQgKmJ1ZikNCj4gK3sNCj4gKwlpZiAoaXNfdm1hbGxvY19hZGRy
-KGJ1ZikpDQo+ICsJCXJldHVybiBmYWxzZTsNCj4gKw0KPiArI2lmZGVmIENPTkZJR19ISUdITUVN
-DQo+ICsJaWYgKCh1bnNpZ25lZCBsb25nKWJ1ZiA+PSBQS01BUF9CQVNFICYmDQo+ICsJICAgICh1
-bnNpZ25lZCBsb25nKWJ1ZiA8IChQS01BUF9CQVNFICsgKExBU1RfUEtNQVAgKiBQQUdFX1NJWkUp
-KSkNCj4gKwkJcmV0dXJuIGZhbHNlOw0KPiArI2VuZGlmDQoNCkl0IGxvb2tzIGxpa2U6DQoNCih1
-bnNpZ25lZCBsb25nKWFkZHIgPj0gUEtNQVBfQUREUigwKSAmJg0KKHVuc2lnbmVkIGxvbmcpYWRk
-ciA8IFBLTUFQX0FERFIoTEFTVF9QS01BUCkNCg0KaXMgdGhlIGV4cHJlc3Npb24gdXNlZCBpbiB0
-aGUgaGlnaG1lbSBjb2RlLiAgQnV0IHJlYWxseSwgaXNuJ3QgdGhpcw0KYmVnZ2luZyBmb3IgaXNf
-aGlnaG1lbV9hZGRyKCkgaW4gaW5jbHVkZS9saW51eC9tbS5oIHRoYXQgY2FuIGFsd2F5cw0KcmV0
-dXJuIGZhbHNlIHdoZW4gaGlnaG1lbSBpcyBub3QgZW5hYmxlZD8NCg0KSW4gb3JkZXIgdG8gYmUg
-c2FmZSwgdGhpcyBtdXN0IGJlIGNhbGxlZCB3aGVuIG5vci0+bG9jayBpcyBoZWxkLCByaWdodD8N
-CiBPdGhlcndpc2UgaXQgY291bGQgcmFjZSBhZ2FpbnN0IHR3byBjYWxsZXJzIGFsbG9jYXRpbmcg
-dGhlIGJ1ZmZlciBhdA0KdGhlIHNhbWUgdGltZS4gIFRoYXQgc2hvdWxkIHByb2JhYmx5IGJlIG5v
-dGVkIGluIHRoZSBrZXJuZWxkb2MgY29tbWVudHMNCmZvciB0aGlzIGZ1bmN0aW9uLCB3aGljaCBz
-aG91bGQgYWxzbyBiZSB3cml0dGVuLg0KDQo+ICtzdGF0aWMgaW50IHNwaV9ub3JfZ2V0X2JvdW5j
-ZV9idWZmZXIoc3RydWN0IHNwaV9ub3IgKm5vciwNCj4gKwkJCQkgICAgIHVfY2hhciAqKmJ1ZmZl
-ciwNCj4gKwkJCQkgICAgIHNpemVfdCAqYnVmZmVyX3NpemUpDQo+ICt7DQoNCj4gKw0KPiArCSpi
-dWZmZXIgPSBub3ItPmJvdW5jZV9idWZmZXI7DQo+ICsJKmJ1ZmZlcl9zaXplID0gc2l6ZTsNCg0K
-U28gdGhlIGJ1ZmZlciBpcyByZXR1cm5lZCB2aWEgdGhlIHBhcmFtZXRlciwgYW5kIGFsc28gdmlh
-IGEgZmllbGQNCmluc2lkZSBub3IuICBTZWVtcyByZWR1bmRhbnQuICBDb25zaWRlciBhZGRyZXNz
-IGNvdWxkIGJlIHJldHVybmVkIHZpYQ0KdGhlIGZ1bmN0aW9uIHJldHVybiB2YWx1ZSBjb3VwbGVk
-IHdpdGggUFRSX0VSUigpIGZvciB0aGUgZXJyb3IgY2FzZXMuIA0KT3Igbm90IHJldHVybiBhZGRy
-ZXNzIGF0IGFsbCBzaW5jZSBpdCdzIGF2YWlsYWJsZSB2aWEgbm9yLQ0KPmJvdW5jZV9idWZmZXIu
-DQoNCj4gIHsNCj4gIAlzdHJ1Y3Qgc3BpX25vciAqbm9yID0gbXRkX3RvX3NwaV9ub3IobXRkKTsN
-Cj4gKwlib29sIHVzZV9ib3VuY2UgPSAobm9yLT5mbGFncyAmIFNOT1JfRl9VU0VfUkRfQk9VTkNF
-KSAmJg0KPiArCQkJICAhc3BpX25vcl9pc19kbWFfc2FmZShidWYpOw0KPiArCXVfY2hhciAqYnVm
-ZmVyID0gYnVmOw0KPiArCXNpemVfdCBidWZmZXJfc2l6ZSA9IDA7DQo+ICAJaW50IHJldDsNCj4g
-IA0KPiAgCWRldl9kYmcobm9yLT5kZXYsICJmcm9tIDB4JTA4eCwgbGVuICV6ZFxuIiwgKHUzMilm
-cm9tLCBsZW4pOw0KPiBAQCAtMTI2OCwxMyArMTMyNCwyMyBAQCBzdGF0aWMgaW50IHNwaV9ub3Jf
-cmVhZChzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgbG9mZl90IGZyb20sIHNpemVfdCBsZW4sDQo+ICAJ
-aWYgKHJldCkNCj4gIAkJcmV0dXJuIHJldDsNCj4gIA0KPiArCWlmICh1c2VfYm91bmNlKSB7DQo+
-ICsJCXJldCA9IHNwaV9ub3JfZ2V0X2JvdW5jZV9idWZmZXIobm9yLCAmYnVmZmVyLCAmYnVmZmVy
-X3NpemUpOw0KPiArCQlpZiAocmV0IDwgMCkNCj4gKwkJCWdvdG8gcmVhZF9lcnI7DQo+ICsJfQ0K
-DQpUaGlzIHBhdHRlcm4sIGNoZWNrIGlmIGJvdW5jZSBpcyBlbmFibGVkLCBjaGVjayBpZiBhZGRy
-ZXNzIGlzIGRtYS0NCnVuc2FmZSwgZ2V0IGJvdW5jZSBidWZmZXIsIHNlZW1zIHRvIGJlIHZlcnkg
-Y29tbW9uLiAgQ291bGQgaXQgYmUNCnJlZmFjdG9yZWQgaW50byBvbmUgaGVscGVyPw0KDQp1X2No
-YXIgKmJ1ZmZlciA9IHNwaV9ub3JfY2hlY2tfYm91bmNlKG5vciwgYnVmLCBsZW4sICZidWZmZXJf
-c2l6ZSk7DQppZiAoSVNfRVJSKGJ1ZmZlcikpIA0KICAgIHJldHVybiBQVFJfRVJSKGJ1ZmZlcik7
-DQovLyBidWZmZXIgPSBub3ItPmJvdW5jZV9idWZmZXIgb3IgYnVmLCB3aGljaGV2ZXIgaXMgY29y
-cmVjdA0KLy8gYnVmZmVyX3NpemUgPSBsZW4gb3IgYm91bmNlIGJ1ZmZlciBzaXplLCB3aGljaGV2
-ZXIgaXMgY29ycmVjdA0KDQpDb3VsZCBzcGlfbm9yX3JlYWRfc2ZkcF9kbWFfdW5zYWZlKCkgYWxz
-byB1c2UgdGhpcyBidWZmZXI/DQo=
+On Sun, Dec 24, 2017 at 05:36:05AM +0100, Cyrille Pitchen wrote:
+> The optional 'dmacap,memcpy' DT property tells the Atmel QSPI controller
+> driver to reserve some DMA channel then to use it to perform DMA
+> memcpy() during data transfers. This feature relies on the generic
+> bounce buffer helper from spi-nor.c.
+> 
+> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/mtd/atmel-quadspi.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+> index b93c1e2f25dd..002d3f0a445b 100644
+> --- a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+> +++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+> @@ -12,6 +12,10 @@ Required properties:
+>  - #address-cells: Should be <1>.
+>  - #size-cells:    Should be <0>.
+>  
+> +Optional properties:
+> +- dmacap,memcpy:  Reserve a DMA channel to perform DMA memcpy() between the
+> +                  system memory and the QSPI mapped memory.
+
+How is this a h/w property? Why would I not want to always enable DMA if 
+possible?
+
+Furthermore, you are reusing a property, but giving it a different 
+meaning. The current definition is an indication whether a DMA 
+controller supports memcpy operations or not. It is not a flag for 
+clients to use memcpy channels.
+
+Why don't you use "dmas" property to point to the DMA controller.
+
+> +
+>  Example:
+>  
+>  spi@f0020000 {
+> @@ -24,6 +28,7 @@ spi@f0020000 {
+>  	#size-cells = <0>;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_spi0_default>;
+> +	dmacap,memcpy;
+>  
+>  	m25p80@0 {
+>  		...
+> -- 
+> 2.11.0
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

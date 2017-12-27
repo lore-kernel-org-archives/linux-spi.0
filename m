@@ -1,54 +1,67 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Add a sysfs interface to instantiate devices
-Date: Wed, 27 Dec 2017 10:31:15 +0000
-Message-ID: <20171227103115.GP1827@finisterre>
-References: <20171221200309.17967-1-kyle.roeschley@ni.com>
- <1513890342.26695.4.camel@impinj.com>
- <20171222155603.GM1827@finisterre>
- <20171222171108.GA31574@senary>
- <CAMuHMdVmNv8Pji0pGGS8L0Q0Rcp8FjCW3Y8NSMdGU3OHjJTNhw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between
+ MTD and SPI
+Date: Wed, 27 Dec 2017 10:36:09 +0000
+Message-ID: <20171227103609.GQ1827@finisterre>
+References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+ <1514313927.26695.19.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mejza3ZMMA5Za1mX"
-Cc: Kyle Roeschley <kyle.roeschley@ni.com>,
-        Trent Piepho <tpiepho@impinj.com>,
+        protocol="application/pgp-signature"; boundary="hIO1AjEoFJ7b3ahE"
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "boris.brezillon@free-electrons.com"
+        <boris.brezillon@free-electrons.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
+        "devicetree@vger.kernel.org
+To: Trent Piepho <tpiepho@impinj.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdVmNv8Pji0pGGS8L0Q0Rcp8FjCW3Y8NSMdGU3OHjJTNhw@mail.gmail.com>
+In-Reply-To: <1514313927.26695.19.camel@impinj.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---mejza3ZMMA5Za1mX
+--hIO1AjEoFJ7b3ahE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 23, 2017 at 09:58:51AM +0100, Geert Uytterhoeven wrote:
+On Tue, Dec 26, 2017 at 06:45:28PM +0000, Trent Piepho wrote:
 
-> >> > > + struct spi_board_info bi = {
-> >> > > +         .modalias = "spidev",
+> Or, since this only fixes instances of DMA-unsafe buffers used in
+> access to SPI NOR flash chips, and since there are other SPI master
+> interface users, those chip specific fixes in some/all spi master
+> drivers are still needed to fix transfers not originated via spi-nor?=20
 
-> I would make it a little bit more generic and extract the modalias from the
-> string written.
+SPI client drivers are *supposed* to use DMA safe memory already.  How
+often that happens in cases where it matters is a separate question, we
+definitely have users with smaller transfers that don't do the right
+thing but they're normally done using PIO anyway.
 
-Right, that'd be much better.
-
---mejza3ZMMA5Za1mX
+--hIO1AjEoFJ7b3ahE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpDdnIACgkQJNaLcl1U
-h9BM3gf+NhwkWbl4DVnbXIRVCGmY0JN+xizLta4WOtJzQ/0YjPeJsKwh753co2GE
-7GwXcQvmQKN4P+UXCoBFX2SI53/JX0odlewfpzXnsceBGKTsfFdiVGBmVu5eAuAG
-AXar8JrLfhy2U2sBVP1mMsp3Muz2PjFZTwBilgaK+68mcr490Mv/qUJifIzZtkD/
-L2ya+eOgjYxCsUafuiq9TPv+EVXXiFiPB91Uh39+Rp+lDlVTKigiQr5cbX/91dpg
-AsYJLc+XKCa6Ry2HVVDpOfnRcnr/AI5GPdxRiRqw4eJhnEO3fNmXX/q3KhoKSJYZ
-ZVKw5tqRCRTVC3vB4UZo0xyVWKY9Jw==
-=jCvF
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpDd5gACgkQJNaLcl1U
+h9AEpgf/RtY0/PG8AYuqJuqcXHvaDEP59zvItyFKdgesM7P9Wu7LNe0mL1F+jPb8
+rD+jQ9AY0Ks7Q1wcjx8p8PJQdc25ybQoHrAfPqGtHbxlP7QsmCk1bbFJQ8zElHES
+cL969cO2GYxfb/uxpg0+Gl4OPqJs9CTkyzHphGgYZ8fIrbhCMbFmfjnuU4NcRuwF
+ODAsdhhWZRN4JxB+JAlpFy9KgSV59I/82alu4QhVuZcsuicDymafDb/Cx3EQ/inO
+nsdkp2g0nt4e9CNP6N5UUT6Chbah/oRNT3YMg5Zn3ez8IwmSq9t/82GoxEOYGIty
+OKq5AwLtmn2uVDAcJ+cfldZ4yCBGxA==
+=8I+R
 -----END PGP SIGNATURE-----
 
---mejza3ZMMA5Za1mX--
+--hIO1AjEoFJ7b3ahE--

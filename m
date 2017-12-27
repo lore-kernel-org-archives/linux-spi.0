@@ -1,67 +1,86 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between
- MTD and SPI
-Date: Wed, 27 Dec 2017 10:36:09 +0000
-Message-ID: <20171227103609.GQ1827@finisterre>
-References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <1514313927.26695.19.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hIO1AjEoFJ7b3ahE"
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "boris.brezillon@free-electrons.com"
-        <boris.brezillon@free-electrons.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
-        "devicetree@vger.kernel.org
-To: Trent Piepho <tpiepho@impinj.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1514313927.26695.19.camel@impinj.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Use gpiod_put() not gpiod_free()" to the spi tree
+Date: Wed, 27 Dec 2017 10:40:18 +0000 (GMT)
+Message-ID: <20171227104018.DE07944006B@finisterre.ee.mobilebroadband>
+References: <20171222161755.2742-1-broonie@kernel.org>
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+        Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+        Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171222161755.2742-1-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---hIO1AjEoFJ7b3ahE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: pxa2xx: Use gpiod_put() not gpiod_free()
 
-On Tue, Dec 26, 2017 at 06:45:28PM +0000, Trent Piepho wrote:
+has been applied to the spi tree at
 
-> Or, since this only fixes instances of DMA-unsafe buffers used in
-> access to SPI NOR flash chips, and since there are other SPI master
-> interface users, those chip specific fixes in some/all spi master
-> drivers are still needed to fix transfers not originated via spi-nor?=20
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-SPI client drivers are *supposed* to use DMA safe memory already.  How
-often that happens in cases where it matters is a separate question, we
-definitely have users with smaller transfers that don't do the right
-thing but they're normally done using PIO anyway.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---hIO1AjEoFJ7b3ahE
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpDd5gACgkQJNaLcl1U
-h9AEpgf/RtY0/PG8AYuqJuqcXHvaDEP59zvItyFKdgesM7P9Wu7LNe0mL1F+jPb8
-rD+jQ9AY0Ks7Q1wcjx8p8PJQdc25ybQoHrAfPqGtHbxlP7QsmCk1bbFJQ8zElHES
-cL969cO2GYxfb/uxpg0+Gl4OPqJs9CTkyzHphGgYZ8fIrbhCMbFmfjnuU4NcRuwF
-ODAsdhhWZRN4JxB+JAlpFy9KgSV59I/82alu4QhVuZcsuicDymafDb/Cx3EQ/inO
-nsdkp2g0nt4e9CNP6N5UUT6Chbah/oRNT3YMg5Zn3ez8IwmSq9t/82GoxEOYGIty
-OKq5AwLtmn2uVDAcJ+cfldZ4yCBGxA==
-=8I+R
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---hIO1AjEoFJ7b3ahE--
+Thanks,
+Mark
+
+>From a885eebc1b062c6a6a925db85828108779fb0e62 Mon Sep 17 00:00:00 2001
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date: Fri, 22 Dec 2017 16:15:36 +0000
+Subject: [PATCH] spi: pxa2xx: Use gpiod_put() not gpiod_free()
+
+gpiod_free() is an internal function for gpiolib, gpiod_put() is the
+correct external function.
+
+Reported-by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Suggested-by: Rasmus Villemoes <linux-qQsb+v5E8BnlAoU/VqSP6n9LOBIZ5rWg@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c209dc1047b5..b0822d1dba29 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1237,7 +1237,7 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 	 * different chip_info, release previously requested GPIO
+ 	 */
+ 	if (chip->gpiod_cs) {
+-		gpiod_free(chip->gpiod_cs);
++		gpiod_put(chip->gpiod_cs);
+ 		chip->gpiod_cs = NULL;
+ 	}
+ 
+@@ -1417,7 +1417,7 @@ static void cleanup(struct spi_device *spi)
+ 
+ 	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
+ 	    chip->gpiod_cs)
+-		gpiod_free(chip->gpiod_cs);
++		gpiod_put(chip->gpiod_cs);
+ 
+ 	kfree(chip);
+ }
+-- 
+2.15.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

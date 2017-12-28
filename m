@@ -1,198 +1,144 @@
-From: Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
+From: Trent Piepho <tpiepho@impinj.com>
 Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
  data transfer
-Date: Thu, 28 Dec 2017 11:39:08 +0100
-Message-ID: <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
+Date: Thu, 28 Dec 2017 18:54:39 +0000
+Message-ID: <1514487276.26695.94.camel@impinj.com>
 References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <1514317385.26695.39.camel@impinj.com>
+         <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
+         <1514317385.26695.39.camel@impinj.com>
+         <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
-        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        "vigneshr-l0cyMroinI0@public.gmane.org" <vigneshr-l0cyMroinI0@public.gmane.org>,
-        "richard-/L3Ra7n9ekc@public.gmane.org" <richard-/L3Ra7n9ekc@public.gmane.org>,
-        "marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1514317385.26695.39.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "boris.brezillon@free-electrons.com"
+        <boris.brezillon@free-electrons.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
 Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-ID: <19614AEFEB7D234F8E504F8164313343@namprd06.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Trent,
-
-Le 26/12/2017 à 20:43, Trent Piepho a écrit :
-> On Sun, 2017-12-24 at 05:36 +0100, Cyrille Pitchen wrote:
->>
->> Then the patch adds two hardware capabilities for SPI flash controllers,
->> SNOR_HWCAPS_WR_BOUNCE and SNOR_HWCAPS_RD_BOUNCE.
-> 
-> Are there any drivers for which a bounce buffer is NOT needed when the
-> tx/rx buffer is not in DMA safe memory?  Maybe it would make more sense
-> to invert the sense of these flags, so that they indicate the driver
-> does not need DMA safe buffers, if that is the uncommon/non-existent
-> case, so that fewer drivers need to be modified to to be fixed?
->
-
-It doesn't sound safe for a first step. I don't know if some of the
-spi-flash controllers are embedded inside systems with small memory and
-don't care about DMA transfers. Maybe they don't plan to use anything else
-but PIO transfers. Then why taking the risk to exhaust the memory on systems
-that would not use the bounce buffer anyway?
-
-Later, if we see that most spi-flash drivers actually need this bounce
-buffer, I agree with you: we could invert the logic of the flags but
-currently I guess this is too soon and to be safe I would have to add the
-negative flags to all other spi-flash drivers. I would like a smooth and
-safe transition to avoid unexpected and unwanted side effects.
-
-
-About the memory loss when forcing the SNOR_HWCAPS_*_BOUNCE in m25p80.c, I
-justify it because the m25p80 has to be compliant with the SPI sub-system
-requirements but currently is not. However I've taken care not to allocate
-the bounce buffer as long as we use only DMA-safe buffers.
-
-Here at the MTD side, the main (only ?) source of DMA-unsafe buffers is
-the UBIFS (JFFS2 too ?) layer. Then I've assumed that systems using such a
-file-system should already have enough system memory.
-
-However I wanted to take all other use cases into account.
-
->> +static bool spi_nor_is_dma_safe(const void *buf)
->> +{
->> +	if (is_vmalloc_addr(buf))
->> +		return false;
->> +
->> +#ifdef CONFIG_HIGHMEM
->> +	if ((unsigned long)buf >= PKMAP_BASE &&
->> +	    (unsigned long)buf < (PKMAP_BASE + (LAST_PKMAP * PAGE_SIZE)))
->> +		return false;
->> +#endif
-> 
-> It looks like:
-> 
-> (unsigned long)addr >= PKMAP_ADDR(0) &&
-> (unsigned long)addr < PKMAP_ADDR(LAST_PKMAP)
-> 
-> is the expression used in the highmem code.  But really, isn't this
-> begging for is_highmem_addr() in include/linux/mm.h that can always
-> return false when highmem is not enabled?
->
-
-Vignesh has suggested to call virt_addr_valid() instead.
-I think Boris has also told me about this function.
-So it might be the right solution. What do you think about their proposal?
-
-> In order to be safe, this must be called when nor->lock is held, right?
-
-Indeed, in all cases (spi_nor_read(), sst_write() and spi_nor_write()),
-spi_nor_get_bounce_buffer() is always called with nor->lock held, precisely
-to avoid races and allocating the bounce buffer twice by mistake.
-
->  Otherwise it could race against two callers allocating the buffer at
-> the same time.  That should probably be noted in the kerneldoc comments
-> for this function, which should also be written.
->
-
-I can add kernel-doc.
-
->> +static int spi_nor_get_bounce_buffer(struct spi_nor *nor,
->> +				     u_char **buffer,
->> +				     size_t *buffer_size)
->> +{
-> 
->> +
->> +	*buffer = nor->bounce_buffer;
->> +	*buffer_size = size;
-> 
-> So the buffer is returned via the parameter, and also via a field
-> inside nor.  Seems redundant.  Consider address could be returned via
-> the function return value coupled with PTR_ERR() for the error cases. 
-> Or not return address at all since it's available via nor-
->> bounce_buffer.
->
-
-Why not. It would require more lines though. I guess it's purely a matter of taste.
-
-	u_char *buffer = buf;
-
-	if (use_bounce) {
-		buffer = spi_nor_get_bounce_buffer(nor, &buffer_size);
-		if (IS_ERR(buffer)) {
-			err = PTR_ERR(buffer);
-			goto read_err;
-		 }
-	}
-
->>  {
->>  	struct spi_nor *nor = mtd_to_spi_nor(mtd);
->> +	bool use_bounce = (nor->flags & SNOR_F_USE_RD_BOUNCE) &&
->> +			  !spi_nor_is_dma_safe(buf);
->> +	u_char *buffer = buf;
->> +	size_t buffer_size = 0;
->>  	int ret;
->>  
->>  	dev_dbg(nor->dev, "from 0x%08x, len %zd\n", (u32)from, len);
->> @@ -1268,13 +1324,23 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
->>  	if (ret)
->>  		return ret;
->>  
->> +	if (use_bounce) {
->> +		ret = spi_nor_get_bounce_buffer(nor, &buffer, &buffer_size);
->> +		if (ret < 0)
->> +			goto read_err;
->> +	}
-> 
-> This pattern, check if bounce is enabled, check if address is dma-
-> unsafe, get bounce buffer, seems to be very common.  Could it be
-> refactored into one helper?
->
-> u_char *buffer = spi_nor_check_bounce(nor, buf, len, &buffer_size);
-
-The conditions that define the value of 'use_bounce' also depend on the type
-of operation, read or write, hence on the two different flags
-SNOR_F_USE_RD_BOUNCE and SNOR_F_USE_WR_BOUNCE.
-
-Besides, 'use_bounce' is also tested later in spi_nor_read(), sst_write()
-and sst_write().
-
-So I don't really see how the spi_nor_check_bounce() function you propose
-could be that different from spi_nor_get_bounce_buffer().
-
-> if (IS_ERR(buffer)) 
->     return PTR_ERR(buffer);
-> // buffer = nor->bounce_buffer or buf, whichever is correct
-> // buffer_size = len or bounce buffer size, whichever is correct
-> 
-> Could spi_nor_read_sfdp_dma_unsafe() also use this buffer?
-> 
-
-I didn't use the bounce buffer in spi_nor_read_sfdp_dma_unsafe() on
-purpose: the bounce buffer, when needed, is allocated once for all to limit
-performance loss. However, to avoid increasing the memory footprint, if not
-absolutely needed the bounce buffer is not allocated at all.
-
-For a SFDP compliant memory, spi_nor_parse_sfdp() is always called during
-spi_nor_scan() even if later, only DMA-safe buffers are provided. In such a
-case, allocating the bounce buffer would have been a waste of memory.
-
-Best regards,
-
-Cyrille
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+T24gVGh1LCAyMDE3LTEyLTI4IGF0IDExOjM5ICswMTAwLCBDeXJpbGxlIFBpdGNoZW4gd3JvdGU6
+DQo+IExlIDI2LzEyLzIwMTcgw6AgMjA6NDMsIFRyZW50IFBpZXBobyBhIMOpY3JpdCA6DQo+ID4g
+T24gU3VuLCAyMDE3LTEyLTI0IGF0IDA1OjM2ICswMTAwLCBDeXJpbGxlIFBpdGNoZW4gd3JvdGU6
+DQo+ID4gPiANCj4gPiA+IFRoZW4gdGhlIHBhdGNoIGFkZHMgdHdvIGhhcmR3YXJlIGNhcGFiaWxp
+dGllcyBmb3IgU1BJIGZsYXNoIGNvbnRyb2xsZXJzLA0KPiA+ID4gU05PUl9IV0NBUFNfV1JfQk9V
+TkNFIGFuZCBTTk9SX0hXQ0FQU19SRF9CT1VOQ0UuDQo+ID4gDQo+ID4gQXJlIHRoZXJlIGFueSBk
+cml2ZXJzIGZvciB3aGljaCBhIGJvdW5jZSBidWZmZXIgaXMgTk9UIG5lZWRlZCB3aGVuIHRoZQ0K
+PiA+IHR4L3J4IGJ1ZmZlciBpcyBub3QgaW4gRE1BIHNhZmUgbWVtb3J5PyAgTWF5YmUgaXQgd291
+bGQgbWFrZSBtb3JlIHNlbnNlDQo+ID4gdG8gaW52ZXJ0IHRoZSBzZW5zZSBvZiB0aGVzZSBmbGFn
+cywgc28gdGhhdCB0aGV5IGluZGljYXRlIHRoZSBkcml2ZXINCj4gPiBkb2VzIG5vdCBuZWVkIERN
+QSBzYWZlIGJ1ZmZlcnMsIGlmIHRoYXQgaXMgdGhlIHVuY29tbW9uL25vbi1leGlzdGVudA0KPiA+
+IGNhc2UsIHNvIHRoYXQgZmV3ZXIgZHJpdmVycyBuZWVkIHRvIGJlIG1vZGlmaWVkIHRvIHRvIGJl
+IGZpeGVkPw0KPiA+IA0KPiANCj4gSXQgZG9lc24ndCBzb3VuZCBzYWZlIGZvciBhIGZpcnN0IHN0
+ZXAuIEkgZG9uJ3Qga25vdyBpZiBzb21lIG9mIHRoZQ0KPiBzcGktZmxhc2ggY29udHJvbGxlcnMg
+YXJlIGVtYmVkZGVkIGluc2lkZSBzeXN0ZW1zIHdpdGggc21hbGwgbWVtb3J5IGFuZA0KPiBkb24n
+dCBjYXJlIGFib3V0IERNQSB0cmFuc2ZlcnMuIE1heWJlIHRoZXkgZG9uJ3QgcGxhbiB0byB1c2Ug
+YW55dGhpbmcgZWxzZQ0KPiBidXQgUElPIHRyYW5zZmVycy4gVGhlbiB3aHkgdGFraW5nIHRoZSBy
+aXNrIHRvIGV4aGF1c3QgdGhlIG1lbW9yeSBvbiBzeXN0ZW1zDQo+IHRoYXQgd291bGQgbm90IHVz
+ZSB0aGUgYm91bmNlIGJ1ZmZlciBhbnl3YXk/DQoNClRoaXMgd291bGQgY2VydGFpbmx5IGJlIHRo
+ZSBjYXNlIHdoZW4gdGhlIGRyaXZlciBkb2VzIG5vdCBldmVuIHN1cHBvcnQNCkRNQSBpbiB0aGUg
+Zmlyc3QgcGxhY2UuDQoNClRoaXMgYWxzbyBtYWtlcyBtZSB3b25kZXIsIGhvdyBpbmVmZmljaWVu
+dCBkb2VzIHRoaXMgYmVjb21lIHdoZW4gaXQNCnVzZXMgYSBib3VuY2UgYnVmZmVyIGZvciBzbWFs
+bCB0cmFuc2ZlciB0aGF0IHdvdWxkIG5vdCB1c2UgRE1BIGFueXdheT8gDQogSW4gdGhlIHNwaV9m
+bGFzaF9yZWFkKCkgaW50ZXJmYWNlIGZvciBzcGkgbWFzdGVycywgdGhlcmUgaXMgYSBtYXN0ZXIN
+Cm1ldGhvZCBzcGlfZmxhc2hfY2FuX2RtYSgpIGNhbGxiYWNrIHVzZWQgYnkgdGhlIHNwaSBjb3Jl
+IHRvIHRlbGwgaWYNCmVhY2ggdHJhbnNmZXIgY2FuIGJlIERNQWVkLg0KDQpTaG91bGQgc29tZXRo
+aW5nIGxpa2UgdGhhdCBiZSB1c2VkIGhlcmUsIHRvIGFzayB0aGUgbWFzdGVyIGlmIGl0IHdvdWxk
+DQp1c2UgZG1hIG9uIHRoZSBidWZmZXI/DQoNClRoaXMgbWlnaHQgYWxzbyBwcmV2ZW50IGFsbG9j
+YXRpb24gb2YgdGhlIGJvdW5jZSBidWZmZXIgaWYgdGhlIG9ubHkgRE1BDQp1bnNhZmUgdHJhbnNm
+ZXJzIGFyZSB0aW55IGNvbnRyb2wgb3BzIHdpdGggc3RhY2sgdmFyaWFibGVzIHRoYXQNCndvdWxk
+bid0IHVzZSBETUEsIGUuZy4gdGhlIHN0dWZmIHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUo
+KSBkb2VzLg0KDQoNCj4gQWJvdXQgdGhlIG1lbW9yeSBsb3NzIHdoZW4gZm9yY2luZyB0aGUgU05P
+Ul9IV0NBUFNfKl9CT1VOQ0UgaW4gbTI1cDgwLmMsIEkNCj4ganVzdGlmeSBpdCBiZWNhdXNlIHRo
+ZSBtMjVwODAgaGFzIHRvIGJlIGNvbXBsaWFudCB3aXRoIHRoZSBTUEkgc3ViLXN5c3RlbQ0KPiBy
+ZXF1aXJlbWVudHMgYnV0IGN1cnJlbnRseSBpcyBub3QuIEhvd2V2ZXIgSSd2ZSB0YWtlbiBjYXJl
+IG5vdCB0byBhbGxvY2F0ZQ0KPiB0aGUgYm91bmNlIGJ1ZmZlciBhcyBsb25nIGFzIHdlIHVzZSBv
+bmx5IERNQS1zYWZlIGJ1ZmZlcnMuDQoNCkFub3RoZXIgcG9zc2liaWxpdHkgdG8gcmVkdWNlIG1l
+bW9yeSB1c2FnZTogbWFrZSB0aGUgYnVmZmVyIHNtYWxsZXINCndoZW4gZmlyc3QgYWxsb2NhdGVk
+IGJ5IGJlaW5nIGp1c3QgZW5vdWdoIGZvciB0aGUgbmVlZGVkIHNwYWNlLiAgR3Jvdw0KaXQgKGJ5
+IHBvd2VycyBvZiB0d28/KSB1bnRpbCBpdCByZWFjaGVzIHRoZSBtYXggYWxsb3dlZCBzaXplLiAg
+Tm8NCnJlYXNvbiB0byB1c2UgYSAyNTYga0IgYnVmZmVyIGlmIERNQSB1bnNhZmUgb3BlcmF0aW9u
+cyBuZXZlciBnZXQgdGhhdA0KYmlnLg0KDQoNCj4gSGVyZSBhdCB0aGUgTVREIHNpZGUsIHRoZSBt
+YWluIChvbmx5ID8pIHNvdXJjZSBvZiBETUEtdW5zYWZlIGJ1ZmZlcnMgaXMNCj4gdGhlIFVCSUZT
+IChKRkZTMiB0b28gPykgbGF5ZXIuIFRoZW4gSSd2ZSBhc3N1bWVkIHRoYXQgc3lzdGVtcyB1c2lu
+ZyBzdWNoIGENCj4gZmlsZS1zeXN0ZW0gc2hvdWxkIGFscmVhZHkgaGF2ZSBlbm91Z2ggc3lzdGVt
+IG1lbW9yeS4NCg0KSSBzYXcgYSBub3RlIGluIG9uZSBvZiB0aGUgZXhpc3RpbmcgRE1BIGZpeGVz
+IHRoYXQgSkZGUzIgd2FzIHRoZSBzb3VyY2UNCm9mIHRoZSB1bnNhZmUgYnVmZmVycywgc28gcHJv
+YmFibHkgdGhlcmUgdG9vLg0KDQoNCj4gDQo+IFZpZ25lc2ggaGFzIHN1Z2dlc3RlZCB0byBjYWxs
+IHZpcnRfYWRkcl92YWxpZCgpIGluc3RlYWQuDQo+IEkgdGhpbmsgQm9yaXMgaGFzIGFsc28gdG9s
+ZCBtZSBhYm91dCB0aGlzIGZ1bmN0aW9uLg0KPiBTbyBpdCBtaWdodCBiZSB0aGUgcmlnaHQgc29s
+dXRpb24uIFdoYXQgZG8geW91IHRoaW5rIGFib3V0IHRoZWlyIHByb3Bvc2FsPw0KDQpOb3Qgc3Vy
+ZSB3aGF0IGV4YWN0bHkgdGhlIGRpZmZlcmVuY2VzIGFyZSBiZXR3ZWVuIHRoZXNlIG1ldGhvZHMu
+ICBUaGUNCmZhY3QgdGhhdCBlYWNoIG9mIHRoZSBtYW55IGV4aXN0aW5nIERNQSBmaXhlcyB1c2Vz
+IHNsaWdodGx5IGRpZmZlcmVudA0KY29kZSB0byBkZXRlY3Qgd2hhdCBpcyB1bnNhZmUgc3BlYWtz
+IHRvIHRoZSBkaWZmaWN1bHR5IG9mIHRoaXMgcHJvYmxlbSENCiB2aXJ0X2FkZHJfdmFsaWQoKSBp
+cyBhbHJlYWR5IHVzZWQgYnkgc3BpLXRpLXFzcGkuICBzcGkgY29yZSB1c2VzIGZvcg0KdGhlIGJ1
+ZmZlciBtYXAgaGVscGVyLCBidXQgdGhhdCBjb2RlIHBhdGggaXMgZm9yIGJ1ZmZlcnMgd2hpY2gg
+YXJlIE5PVA0Kdm1hbGxvYyBvciBoaWdobWVtLCBidXQgYXJlIHN0aWxsIG5vdCB2aXJ0X2FkZHJf
+dmFsaWQoKSBmb3Igc29tZSBvdGhlcg0KcmVhc29uLg0KDQo+ID4gPiArc3RhdGljIGludCBzcGlf
+bm9yX2dldF9ib3VuY2VfYnVmZmVyKHN0cnVjdCBzcGlfbm9yICpub3IsDQo+ID4gPiArCQkJCSAg
+ICAgdV9jaGFyICoqYnVmZmVyLA0KPiA+ID4gKwkJCQkgICAgIHNpemVfdCAqYnVmZmVyX3NpemUp
+DQo+ID4gPiArew0KPiA+ID4gKw0KPiA+ID4gKwkqYnVmZmVyID0gbm9yLT5ib3VuY2VfYnVmZmVy
+Ow0KPiA+ID4gKwkqYnVmZmVyX3NpemUgPSBzaXplOw0KPiA+IA0KPiA+IFNvIHRoZSBidWZmZXIg
+aXMgcmV0dXJuZWQgdmlhIHRoZSBwYXJhbWV0ZXIsIGFuZCBhbHNvIHZpYSBhIGZpZWxkDQo+ID4g
+aW5zaWRlIG5vci4gIFNlZW1zIHJlZHVuZGFudC4gIENvbnNpZGVyIGFkZHJlc3MgY291bGQgYmUg
+cmV0dXJuZWQgdmlhDQo+ID4gdGhlIGZ1bmN0aW9uIHJldHVybiB2YWx1ZSBjb3VwbGVkIHdpdGgg
+UFRSX0VSUigpIGZvciB0aGUgZXJyb3IgY2FzZXMuIA0KPiA+IE9yIG5vdCByZXR1cm4gYWRkcmVz
+cyBhdCBhbGwgc2luY2UgaXQncyBhdmFpbGFibGUgdmlhIG5vci0NCj4gPiA+IGJvdW5jZV9idWZm
+ZXIuDQo+IA0KPiBXaHkgbm90LiBJdCB3b3VsZCByZXF1aXJlIG1vcmUgbGluZXMgdGhvdWdoLiBJ
+IGd1ZXNzIGl0J3MgcHVyZWx5IGEgbWF0dGVyIG9mIHRhc3RlLg0KDQpXZWxsLCBhbHNvIGNvbnNp
+ZGVyIHRoYXQgeW91IGRvbid0IG5lZWQgdG8gZXZlbiByZXR1cm4gdGhlIGJ1ZmZlcg0KcG9pbnRl
+ciBhdCBhbGwsIHNpbmNlIGl0J3MgYXZhaWxhYmxlIGFzIG5vci0+Ym91bmNlX2J1ZmZlci4gIFdo
+aWNoIGl0DQppcyB1c2VkIGFzIGluIHNwaV9ub3Jfd3JpdGUoKSBhbmQgc3BpX25vcl9yZWFkKCku
+DQoNCj4gPiBUaGlzIHBhdHRlcm4sIGNoZWNrIGlmIGJvdW5jZSBpcyBlbmFibGVkLCBjaGVjayBp
+ZiBhZGRyZXNzIGlzIGRtYS0NCj4gPiB1bnNhZmUsIGdldCBib3VuY2UgYnVmZmVyLCBzZWVtcyB0
+byBiZSB2ZXJ5IGNvbW1vbi4gIENvdWxkIGl0IGJlDQo+ID4gcmVmYWN0b3JlZCBpbnRvIG9uZSBo
+ZWxwZXI/DQo+ID4gDQo+ID4gdV9jaGFyICpidWZmZXIgPSBzcGlfbm9yX2NoZWNrX2JvdW5jZShu
+b3IsIGJ1ZiwgbGVuLCAmYnVmZmVyX3NpemUpOw0KPiANCj4gVGhlIGNvbmRpdGlvbnMgdGhhdCBk
+ZWZpbmUgdGhlIHZhbHVlIG9mICd1c2VfYm91bmNlJyBhbHNvIGRlcGVuZCBvbiB0aGUgdHlwZQ0K
+PiBvZiBvcGVyYXRpb24sIHJlYWQgb3Igd3JpdGUsIGhlbmNlIG9uIHRoZSB0d28gZGlmZmVyZW50
+IGZsYWdzDQo+IFNOT1JfRl9VU0VfUkRfQk9VTkNFIGFuZCBTTk9SX0ZfVVNFX1dSX0JPVU5DRS4N
+Cg0KSnVzdCBwYXNzIG9uZSBvZiB0aG9zZSBmbGFncyBhcyBhbiBhcmd1bWVudCB0byB0ZWxsIHdo
+YXQgZGlyZWN0aW9uIGl0DQppcyBpbi4gIFRob3VnaCBJIHdvbmRlciBpZiB1c2luZyBhIGJvdW5j
+ZSBidWZmZXIgZm9yIG9ubHkgb25lIGRpcmVjdGlvbg0Kd2lsbCBldmVyIGJlIHVzZWQuDQoNCj4g
+DQo+IEJlc2lkZXMsICd1c2VfYm91bmNlJyBpcyBhbHNvIHRlc3RlZCBsYXRlciBpbiBzcGlfbm9y
+X3JlYWQoKSwgc3N0X3dyaXRlKCkNCj4gYW5kIHNzdF93cml0ZSgpLg0KPiANCj4gU28gSSBkb24n
+dCByZWFsbHkgc2VlIGhvdyB0aGUgc3BpX25vcl9jaGVja19ib3VuY2UoKSBmdW5jdGlvbiB5b3Ug
+cHJvcG9zZQ0KPiBjb3VsZCBiZSB0aGF0IGRpZmZlcmVudCBmcm9tIHNwaV9ub3JfZ2V0X2JvdW5j
+ZV9idWZmZXIoKS4NCg0KPiANCj4gPiBpZiAoSVNfRVJSKGJ1ZmZlcikpIA0KPiA+ICAgICByZXR1
+cm4gUFRSX0VSUihidWZmZXIpOw0KPiA+IC8vIGJ1ZmZlciA9IG5vci0+Ym91bmNlX2J1ZmZlciBv
+ciBidWYsIHdoaWNoZXZlciBpcyBjb3JyZWN0DQo+ID4gLy8gYnVmZmVyX3NpemUgPSBsZW4gb3Ig
+Ym91bmNlIGJ1ZmZlciBzaXplLCB3aGljaGV2ZXIgaXMgY29ycmVjdA0KPiA+IA0KPiA+IENvdWxk
+IHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUoKSBhbHNvIHVzZSB0aGlzIGJ1ZmZlcj8NCj4g
+PiANCj4gDQo+IEkgZGlkbid0IHVzZSB0aGUgYm91bmNlIGJ1ZmZlciBpbiBzcGlfbm9yX3JlYWRf
+c2ZkcF9kbWFfdW5zYWZlKCkgb24NCj4gcHVycG9zZTogdGhlIGJvdW5jZSBidWZmZXIsIHdoZW4g
+bmVlZGVkLCBpcyBhbGxvY2F0ZWQgb25jZSBmb3IgYWxsIHRvIGxpbWl0DQo+IHBlcmZvcm1hbmNl
+IGxvc3MuIEhvd2V2ZXIsIHRvIGF2b2lkIGluY3JlYXNpbmcgdGhlIG1lbW9yeSBmb290cHJpbnQs
+IGlmIG5vdA0KPiBhYnNvbHV0ZWx5IG5lZWRlZCB0aGUgYm91bmNlIGJ1ZmZlciBpcyBub3QgYWxs
+b2NhdGVkIGF0IGFsbC4NCg0Kc3BpLW5vciB0cmllcyB0byBwcm92aWRlIGEgY29tbW9uIGltcGxl
+bWVudGF0aW9uIG9mIERNQSBib3VuY2UgYnVmZmVycywNCiB5ZXQgc3BpLW5vciBpdHNlbGYgaGFz
+IHR3byBkaWZmZXJlbnQgRE1BIGJvdW5jZSBidWZmZXINCmltcGxlbWVudGF0aW9ucy4NCg0KSSB0
+aGluayB0aGUgcmVhbCBhbnN3ZXIgZm9yIHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUoKSBp
+cyB0aGF0IGl0DQpzaG91bGRuJ3QgYmUgd3JpdHRlbiB0aGF0IHdheSBhbmQgdGhlIGZ1bmN0aW9u
+IHNob3VsZCBnbyBhd2F5LiAgVGhlIHR3bw0KY2FsbCBzaXRlcyBzaG91bGQganVzdCBrbWFsbG9j
+IHRoZSBzdHJ1Y3QgdGhleSByZWFkIGludG8gaW5zdGVhZCBvZg0KcGxhY2luZyBpdCBvbiB0aGUg
+c3RhY2suICBUaGUgZG1hX3Vuc2FmZSB3cmFwcGVyIGttYWxsb2NzIGEgYnVmZmVyDQphbnl3YXks
+IHNvIGl0J3Mgbm90IGxpa2UgdGhlcmUgaXMgYW55IG1vcmUgYWxsb2NhdGlvbiBnb2luZyBvbi4N
+Cg==

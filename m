@@ -1,144 +1,57 @@
-From: Trent Piepho <tpiepho@impinj.com>
-Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
- data transfer
-Date: Thu, 28 Dec 2017 18:54:39 +0000
-Message-ID: <1514487276.26695.94.camel@impinj.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between MTD
+ and SPI
+Date: Fri, 29 Dec 2017 14:46:31 +0530
+Message-ID: <46499c32-f513-1781-bb42-f56b1f534941@ti.com>
 References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-         <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
-         <1514317385.26695.39.camel@impinj.com>
-         <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
+ <1514313927.26695.19.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
         "robh@kernel.org" <robh@kernel.org>,
+        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+To: Trent Piepho <tpiepho@impinj.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
         "dwmw2@infradead.org" <dwmw2@infradead.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
         "boris.brezillon@free-electrons.com"
         <boris.brezillon@free-electrons.com>,
         "richard@nod.at" <richard@nod.at>,
         "marek.vasut@gmail.com" <marek.vasut@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
+In-Reply-To: <1514313927.26695.19.camel@impinj.com>
 Content-Language: en-US
-Content-ID: <19614AEFEB7D234F8E504F8164313343@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCAyMDE3LTEyLTI4IGF0IDExOjM5ICswMTAwLCBDeXJpbGxlIFBpdGNoZW4gd3JvdGU6
-DQo+IExlIDI2LzEyLzIwMTcgw6AgMjA6NDMsIFRyZW50IFBpZXBobyBhIMOpY3JpdCA6DQo+ID4g
-T24gU3VuLCAyMDE3LTEyLTI0IGF0IDA1OjM2ICswMTAwLCBDeXJpbGxlIFBpdGNoZW4gd3JvdGU6
-DQo+ID4gPiANCj4gPiA+IFRoZW4gdGhlIHBhdGNoIGFkZHMgdHdvIGhhcmR3YXJlIGNhcGFiaWxp
-dGllcyBmb3IgU1BJIGZsYXNoIGNvbnRyb2xsZXJzLA0KPiA+ID4gU05PUl9IV0NBUFNfV1JfQk9V
-TkNFIGFuZCBTTk9SX0hXQ0FQU19SRF9CT1VOQ0UuDQo+ID4gDQo+ID4gQXJlIHRoZXJlIGFueSBk
-cml2ZXJzIGZvciB3aGljaCBhIGJvdW5jZSBidWZmZXIgaXMgTk9UIG5lZWRlZCB3aGVuIHRoZQ0K
-PiA+IHR4L3J4IGJ1ZmZlciBpcyBub3QgaW4gRE1BIHNhZmUgbWVtb3J5PyAgTWF5YmUgaXQgd291
-bGQgbWFrZSBtb3JlIHNlbnNlDQo+ID4gdG8gaW52ZXJ0IHRoZSBzZW5zZSBvZiB0aGVzZSBmbGFn
-cywgc28gdGhhdCB0aGV5IGluZGljYXRlIHRoZSBkcml2ZXINCj4gPiBkb2VzIG5vdCBuZWVkIERN
-QSBzYWZlIGJ1ZmZlcnMsIGlmIHRoYXQgaXMgdGhlIHVuY29tbW9uL25vbi1leGlzdGVudA0KPiA+
-IGNhc2UsIHNvIHRoYXQgZmV3ZXIgZHJpdmVycyBuZWVkIHRvIGJlIG1vZGlmaWVkIHRvIHRvIGJl
-IGZpeGVkPw0KPiA+IA0KPiANCj4gSXQgZG9lc24ndCBzb3VuZCBzYWZlIGZvciBhIGZpcnN0IHN0
-ZXAuIEkgZG9uJ3Qga25vdyBpZiBzb21lIG9mIHRoZQ0KPiBzcGktZmxhc2ggY29udHJvbGxlcnMg
-YXJlIGVtYmVkZGVkIGluc2lkZSBzeXN0ZW1zIHdpdGggc21hbGwgbWVtb3J5IGFuZA0KPiBkb24n
-dCBjYXJlIGFib3V0IERNQSB0cmFuc2ZlcnMuIE1heWJlIHRoZXkgZG9uJ3QgcGxhbiB0byB1c2Ug
-YW55dGhpbmcgZWxzZQ0KPiBidXQgUElPIHRyYW5zZmVycy4gVGhlbiB3aHkgdGFraW5nIHRoZSBy
-aXNrIHRvIGV4aGF1c3QgdGhlIG1lbW9yeSBvbiBzeXN0ZW1zDQo+IHRoYXQgd291bGQgbm90IHVz
-ZSB0aGUgYm91bmNlIGJ1ZmZlciBhbnl3YXk/DQoNClRoaXMgd291bGQgY2VydGFpbmx5IGJlIHRo
-ZSBjYXNlIHdoZW4gdGhlIGRyaXZlciBkb2VzIG5vdCBldmVuIHN1cHBvcnQNCkRNQSBpbiB0aGUg
-Zmlyc3QgcGxhY2UuDQoNClRoaXMgYWxzbyBtYWtlcyBtZSB3b25kZXIsIGhvdyBpbmVmZmljaWVu
-dCBkb2VzIHRoaXMgYmVjb21lIHdoZW4gaXQNCnVzZXMgYSBib3VuY2UgYnVmZmVyIGZvciBzbWFs
-bCB0cmFuc2ZlciB0aGF0IHdvdWxkIG5vdCB1c2UgRE1BIGFueXdheT8gDQogSW4gdGhlIHNwaV9m
-bGFzaF9yZWFkKCkgaW50ZXJmYWNlIGZvciBzcGkgbWFzdGVycywgdGhlcmUgaXMgYSBtYXN0ZXIN
-Cm1ldGhvZCBzcGlfZmxhc2hfY2FuX2RtYSgpIGNhbGxiYWNrIHVzZWQgYnkgdGhlIHNwaSBjb3Jl
-IHRvIHRlbGwgaWYNCmVhY2ggdHJhbnNmZXIgY2FuIGJlIERNQWVkLg0KDQpTaG91bGQgc29tZXRo
-aW5nIGxpa2UgdGhhdCBiZSB1c2VkIGhlcmUsIHRvIGFzayB0aGUgbWFzdGVyIGlmIGl0IHdvdWxk
-DQp1c2UgZG1hIG9uIHRoZSBidWZmZXI/DQoNClRoaXMgbWlnaHQgYWxzbyBwcmV2ZW50IGFsbG9j
-YXRpb24gb2YgdGhlIGJvdW5jZSBidWZmZXIgaWYgdGhlIG9ubHkgRE1BDQp1bnNhZmUgdHJhbnNm
-ZXJzIGFyZSB0aW55IGNvbnRyb2wgb3BzIHdpdGggc3RhY2sgdmFyaWFibGVzIHRoYXQNCndvdWxk
-bid0IHVzZSBETUEsIGUuZy4gdGhlIHN0dWZmIHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUo
-KSBkb2VzLg0KDQoNCj4gQWJvdXQgdGhlIG1lbW9yeSBsb3NzIHdoZW4gZm9yY2luZyB0aGUgU05P
-Ul9IV0NBUFNfKl9CT1VOQ0UgaW4gbTI1cDgwLmMsIEkNCj4ganVzdGlmeSBpdCBiZWNhdXNlIHRo
-ZSBtMjVwODAgaGFzIHRvIGJlIGNvbXBsaWFudCB3aXRoIHRoZSBTUEkgc3ViLXN5c3RlbQ0KPiBy
-ZXF1aXJlbWVudHMgYnV0IGN1cnJlbnRseSBpcyBub3QuIEhvd2V2ZXIgSSd2ZSB0YWtlbiBjYXJl
-IG5vdCB0byBhbGxvY2F0ZQ0KPiB0aGUgYm91bmNlIGJ1ZmZlciBhcyBsb25nIGFzIHdlIHVzZSBv
-bmx5IERNQS1zYWZlIGJ1ZmZlcnMuDQoNCkFub3RoZXIgcG9zc2liaWxpdHkgdG8gcmVkdWNlIG1l
-bW9yeSB1c2FnZTogbWFrZSB0aGUgYnVmZmVyIHNtYWxsZXINCndoZW4gZmlyc3QgYWxsb2NhdGVk
-IGJ5IGJlaW5nIGp1c3QgZW5vdWdoIGZvciB0aGUgbmVlZGVkIHNwYWNlLiAgR3Jvdw0KaXQgKGJ5
-IHBvd2VycyBvZiB0d28/KSB1bnRpbCBpdCByZWFjaGVzIHRoZSBtYXggYWxsb3dlZCBzaXplLiAg
-Tm8NCnJlYXNvbiB0byB1c2UgYSAyNTYga0IgYnVmZmVyIGlmIERNQSB1bnNhZmUgb3BlcmF0aW9u
-cyBuZXZlciBnZXQgdGhhdA0KYmlnLg0KDQoNCj4gSGVyZSBhdCB0aGUgTVREIHNpZGUsIHRoZSBt
-YWluIChvbmx5ID8pIHNvdXJjZSBvZiBETUEtdW5zYWZlIGJ1ZmZlcnMgaXMNCj4gdGhlIFVCSUZT
-IChKRkZTMiB0b28gPykgbGF5ZXIuIFRoZW4gSSd2ZSBhc3N1bWVkIHRoYXQgc3lzdGVtcyB1c2lu
-ZyBzdWNoIGENCj4gZmlsZS1zeXN0ZW0gc2hvdWxkIGFscmVhZHkgaGF2ZSBlbm91Z2ggc3lzdGVt
-IG1lbW9yeS4NCg0KSSBzYXcgYSBub3RlIGluIG9uZSBvZiB0aGUgZXhpc3RpbmcgRE1BIGZpeGVz
-IHRoYXQgSkZGUzIgd2FzIHRoZSBzb3VyY2UNCm9mIHRoZSB1bnNhZmUgYnVmZmVycywgc28gcHJv
-YmFibHkgdGhlcmUgdG9vLg0KDQoNCj4gDQo+IFZpZ25lc2ggaGFzIHN1Z2dlc3RlZCB0byBjYWxs
-IHZpcnRfYWRkcl92YWxpZCgpIGluc3RlYWQuDQo+IEkgdGhpbmsgQm9yaXMgaGFzIGFsc28gdG9s
-ZCBtZSBhYm91dCB0aGlzIGZ1bmN0aW9uLg0KPiBTbyBpdCBtaWdodCBiZSB0aGUgcmlnaHQgc29s
-dXRpb24uIFdoYXQgZG8geW91IHRoaW5rIGFib3V0IHRoZWlyIHByb3Bvc2FsPw0KDQpOb3Qgc3Vy
-ZSB3aGF0IGV4YWN0bHkgdGhlIGRpZmZlcmVuY2VzIGFyZSBiZXR3ZWVuIHRoZXNlIG1ldGhvZHMu
-ICBUaGUNCmZhY3QgdGhhdCBlYWNoIG9mIHRoZSBtYW55IGV4aXN0aW5nIERNQSBmaXhlcyB1c2Vz
-IHNsaWdodGx5IGRpZmZlcmVudA0KY29kZSB0byBkZXRlY3Qgd2hhdCBpcyB1bnNhZmUgc3BlYWtz
-IHRvIHRoZSBkaWZmaWN1bHR5IG9mIHRoaXMgcHJvYmxlbSENCiB2aXJ0X2FkZHJfdmFsaWQoKSBp
-cyBhbHJlYWR5IHVzZWQgYnkgc3BpLXRpLXFzcGkuICBzcGkgY29yZSB1c2VzIGZvcg0KdGhlIGJ1
-ZmZlciBtYXAgaGVscGVyLCBidXQgdGhhdCBjb2RlIHBhdGggaXMgZm9yIGJ1ZmZlcnMgd2hpY2gg
-YXJlIE5PVA0Kdm1hbGxvYyBvciBoaWdobWVtLCBidXQgYXJlIHN0aWxsIG5vdCB2aXJ0X2FkZHJf
-dmFsaWQoKSBmb3Igc29tZSBvdGhlcg0KcmVhc29uLg0KDQo+ID4gPiArc3RhdGljIGludCBzcGlf
-bm9yX2dldF9ib3VuY2VfYnVmZmVyKHN0cnVjdCBzcGlfbm9yICpub3IsDQo+ID4gPiArCQkJCSAg
-ICAgdV9jaGFyICoqYnVmZmVyLA0KPiA+ID4gKwkJCQkgICAgIHNpemVfdCAqYnVmZmVyX3NpemUp
-DQo+ID4gPiArew0KPiA+ID4gKw0KPiA+ID4gKwkqYnVmZmVyID0gbm9yLT5ib3VuY2VfYnVmZmVy
-Ow0KPiA+ID4gKwkqYnVmZmVyX3NpemUgPSBzaXplOw0KPiA+IA0KPiA+IFNvIHRoZSBidWZmZXIg
-aXMgcmV0dXJuZWQgdmlhIHRoZSBwYXJhbWV0ZXIsIGFuZCBhbHNvIHZpYSBhIGZpZWxkDQo+ID4g
-aW5zaWRlIG5vci4gIFNlZW1zIHJlZHVuZGFudC4gIENvbnNpZGVyIGFkZHJlc3MgY291bGQgYmUg
-cmV0dXJuZWQgdmlhDQo+ID4gdGhlIGZ1bmN0aW9uIHJldHVybiB2YWx1ZSBjb3VwbGVkIHdpdGgg
-UFRSX0VSUigpIGZvciB0aGUgZXJyb3IgY2FzZXMuIA0KPiA+IE9yIG5vdCByZXR1cm4gYWRkcmVz
-cyBhdCBhbGwgc2luY2UgaXQncyBhdmFpbGFibGUgdmlhIG5vci0NCj4gPiA+IGJvdW5jZV9idWZm
-ZXIuDQo+IA0KPiBXaHkgbm90LiBJdCB3b3VsZCByZXF1aXJlIG1vcmUgbGluZXMgdGhvdWdoLiBJ
-IGd1ZXNzIGl0J3MgcHVyZWx5IGEgbWF0dGVyIG9mIHRhc3RlLg0KDQpXZWxsLCBhbHNvIGNvbnNp
-ZGVyIHRoYXQgeW91IGRvbid0IG5lZWQgdG8gZXZlbiByZXR1cm4gdGhlIGJ1ZmZlcg0KcG9pbnRl
-ciBhdCBhbGwsIHNpbmNlIGl0J3MgYXZhaWxhYmxlIGFzIG5vci0+Ym91bmNlX2J1ZmZlci4gIFdo
-aWNoIGl0DQppcyB1c2VkIGFzIGluIHNwaV9ub3Jfd3JpdGUoKSBhbmQgc3BpX25vcl9yZWFkKCku
-DQoNCj4gPiBUaGlzIHBhdHRlcm4sIGNoZWNrIGlmIGJvdW5jZSBpcyBlbmFibGVkLCBjaGVjayBp
-ZiBhZGRyZXNzIGlzIGRtYS0NCj4gPiB1bnNhZmUsIGdldCBib3VuY2UgYnVmZmVyLCBzZWVtcyB0
-byBiZSB2ZXJ5IGNvbW1vbi4gIENvdWxkIGl0IGJlDQo+ID4gcmVmYWN0b3JlZCBpbnRvIG9uZSBo
-ZWxwZXI/DQo+ID4gDQo+ID4gdV9jaGFyICpidWZmZXIgPSBzcGlfbm9yX2NoZWNrX2JvdW5jZShu
-b3IsIGJ1ZiwgbGVuLCAmYnVmZmVyX3NpemUpOw0KPiANCj4gVGhlIGNvbmRpdGlvbnMgdGhhdCBk
-ZWZpbmUgdGhlIHZhbHVlIG9mICd1c2VfYm91bmNlJyBhbHNvIGRlcGVuZCBvbiB0aGUgdHlwZQ0K
-PiBvZiBvcGVyYXRpb24sIHJlYWQgb3Igd3JpdGUsIGhlbmNlIG9uIHRoZSB0d28gZGlmZmVyZW50
-IGZsYWdzDQo+IFNOT1JfRl9VU0VfUkRfQk9VTkNFIGFuZCBTTk9SX0ZfVVNFX1dSX0JPVU5DRS4N
-Cg0KSnVzdCBwYXNzIG9uZSBvZiB0aG9zZSBmbGFncyBhcyBhbiBhcmd1bWVudCB0byB0ZWxsIHdo
-YXQgZGlyZWN0aW9uIGl0DQppcyBpbi4gIFRob3VnaCBJIHdvbmRlciBpZiB1c2luZyBhIGJvdW5j
-ZSBidWZmZXIgZm9yIG9ubHkgb25lIGRpcmVjdGlvbg0Kd2lsbCBldmVyIGJlIHVzZWQuDQoNCj4g
-DQo+IEJlc2lkZXMsICd1c2VfYm91bmNlJyBpcyBhbHNvIHRlc3RlZCBsYXRlciBpbiBzcGlfbm9y
-X3JlYWQoKSwgc3N0X3dyaXRlKCkNCj4gYW5kIHNzdF93cml0ZSgpLg0KPiANCj4gU28gSSBkb24n
-dCByZWFsbHkgc2VlIGhvdyB0aGUgc3BpX25vcl9jaGVja19ib3VuY2UoKSBmdW5jdGlvbiB5b3Ug
-cHJvcG9zZQ0KPiBjb3VsZCBiZSB0aGF0IGRpZmZlcmVudCBmcm9tIHNwaV9ub3JfZ2V0X2JvdW5j
-ZV9idWZmZXIoKS4NCg0KPiANCj4gPiBpZiAoSVNfRVJSKGJ1ZmZlcikpIA0KPiA+ICAgICByZXR1
-cm4gUFRSX0VSUihidWZmZXIpOw0KPiA+IC8vIGJ1ZmZlciA9IG5vci0+Ym91bmNlX2J1ZmZlciBv
-ciBidWYsIHdoaWNoZXZlciBpcyBjb3JyZWN0DQo+ID4gLy8gYnVmZmVyX3NpemUgPSBsZW4gb3Ig
-Ym91bmNlIGJ1ZmZlciBzaXplLCB3aGljaGV2ZXIgaXMgY29ycmVjdA0KPiA+IA0KPiA+IENvdWxk
-IHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUoKSBhbHNvIHVzZSB0aGlzIGJ1ZmZlcj8NCj4g
-PiANCj4gDQo+IEkgZGlkbid0IHVzZSB0aGUgYm91bmNlIGJ1ZmZlciBpbiBzcGlfbm9yX3JlYWRf
-c2ZkcF9kbWFfdW5zYWZlKCkgb24NCj4gcHVycG9zZTogdGhlIGJvdW5jZSBidWZmZXIsIHdoZW4g
-bmVlZGVkLCBpcyBhbGxvY2F0ZWQgb25jZSBmb3IgYWxsIHRvIGxpbWl0DQo+IHBlcmZvcm1hbmNl
-IGxvc3MuIEhvd2V2ZXIsIHRvIGF2b2lkIGluY3JlYXNpbmcgdGhlIG1lbW9yeSBmb290cHJpbnQs
-IGlmIG5vdA0KPiBhYnNvbHV0ZWx5IG5lZWRlZCB0aGUgYm91bmNlIGJ1ZmZlciBpcyBub3QgYWxs
-b2NhdGVkIGF0IGFsbC4NCg0Kc3BpLW5vciB0cmllcyB0byBwcm92aWRlIGEgY29tbW9uIGltcGxl
-bWVudGF0aW9uIG9mIERNQSBib3VuY2UgYnVmZmVycywNCiB5ZXQgc3BpLW5vciBpdHNlbGYgaGFz
-IHR3byBkaWZmZXJlbnQgRE1BIGJvdW5jZSBidWZmZXINCmltcGxlbWVudGF0aW9ucy4NCg0KSSB0
-aGluayB0aGUgcmVhbCBhbnN3ZXIgZm9yIHNwaV9ub3JfcmVhZF9zZmRwX2RtYV91bnNhZmUoKSBp
-cyB0aGF0IGl0DQpzaG91bGRuJ3QgYmUgd3JpdHRlbiB0aGF0IHdheSBhbmQgdGhlIGZ1bmN0aW9u
-IHNob3VsZCBnbyBhd2F5LiAgVGhlIHR3bw0KY2FsbCBzaXRlcyBzaG91bGQganVzdCBrbWFsbG9j
-IHRoZSBzdHJ1Y3QgdGhleSByZWFkIGludG8gaW5zdGVhZCBvZg0KcGxhY2luZyBpdCBvbiB0aGUg
-c3RhY2suICBUaGUgZG1hX3Vuc2FmZSB3cmFwcGVyIGttYWxsb2NzIGEgYnVmZmVyDQphbnl3YXks
-IHNvIGl0J3Mgbm90IGxpa2UgdGhlcmUgaXMgYW55IG1vcmUgYWxsb2NhdGlvbiBnb2luZyBvbi4N
-Cg==
+
+
+On Wednesday 27 December 2017 12:15 AM, Trent Piepho wrote:
+> On Sun, 2017-12-24 at 05:36 +0100, Cyrille Pitchen wrote:
+>> this series tries to solve a long time issue of compatibility between the
+>> MTD and SPI sub-systems about whether we should use DMA-safe memory.
+> 
+> Can this should replace SoC specific fixes like:
+> 
+> c687c46e9e45
+> spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble
+> 
+
+Yes, I plan to revert this patch once m25p80 starts using bounce buffers.
+
+I am interested in knowing which other SPI clients end up passing non
+DMA'able buffers. AFAIK, its UBIFS and JFFS2. Most other SPI devices on
+TI boards that I have dealt with like Touch, Sensors (IIO), GPIO
+expanders etc all provide DMA'able buffers.
+
+
+-- 
+Regards
+Vignesh

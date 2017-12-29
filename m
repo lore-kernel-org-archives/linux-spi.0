@@ -1,57 +1,138 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between MTD
- and SPI
-Date: Fri, 29 Dec 2017 14:46:31 +0530
-Message-ID: <46499c32-f513-1781-bb42-f56b1f534941@ti.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
+ data transfer
+Date: Fri, 29 Dec 2017 15:46:29 +0530
+Message-ID: <08be8b42-732a-bf28-40c4-f46bf9d71c80@ti.com>
 References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <1514313927.26695.19.camel@impinj.com>
+ <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
+ <1514317385.26695.39.camel@impinj.com>
+ <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
+ <1514487276.26695.94.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "radu.pirea@microchip.com" <radu.pirea@microchip.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Trent Piepho <tpiepho@impinj.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "boris.brezillon@free-electrons.com"
-        <boris.brezillon@free-electrons.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1514313927.26695.19.camel@impinj.com>
+Content-Transfer-Encoding: 8bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
+        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org" <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        "richard-/L3Ra7n9ekc@public.gmane.org" <richard-/L3Ra7n9ekc@public.gmane.org>,
+        "marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1514487276.26695.94.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
 
-On Wednesday 27 December 2017 12:15 AM, Trent Piepho wrote:
-> On Sun, 2017-12-24 at 05:36 +0100, Cyrille Pitchen wrote:
->> this series tries to solve a long time issue of compatibility between the
->> MTD and SPI sub-systems about whether we should use DMA-safe memory.
+On Friday 29 December 2017 12:24 AM, Trent Piepho wrote:
+> On Thu, 2017-12-28 at 11:39 +0100, Cyrille Pitchen wrote:
+>> Le 26/12/2017 à 20:43, Trent Piepho a écrit :
+>> > On Sun, 2017-12-24 at 05:36 +0100, Cyrille Pitchen wrote:
+>> > > 
+>> > > Then the patch adds two hardware capabilities for SPI flash controllers,
+>> > > SNOR_HWCAPS_WR_BOUNCE and SNOR_HWCAPS_RD_BOUNCE.
+>> > 
+>> > Are there any drivers for which a bounce buffer is NOT needed when the
+>> > tx/rx buffer is not in DMA safe memory?  Maybe it would make more sense
+>> > to invert the sense of these flags, so that they indicate the driver
+>> > does not need DMA safe buffers, if that is the uncommon/non-existent
+>> > case, so that fewer drivers need to be modified to to be fixed?
+>> > 
+>> 
+>> It doesn't sound safe for a first step. I don't know if some of the
+>> spi-flash controllers are embedded inside systems with small memory and
+>> don't care about DMA transfers. Maybe they don't plan to use anything else
+>> but PIO transfers. Then why taking the risk to exhaust the memory on systems
+>> that would not use the bounce buffer anyway?
 > 
-> Can this should replace SoC specific fixes like:
+> This would certainly be the case when the driver does not even support
+> DMA in the first place.
 > 
-> c687c46e9e45
-> spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble
+> This also makes me wonder, how inefficient does this become when it
+> uses a bounce buffer for small transfer that would not use DMA anyway?
+>  In the spi_flash_read() interface for spi masters, there is a master
+> method spi_flash_can_dma() callback used by the spi core to tell if
+> each transfer can be DMAed.
+> 
+> Should something like that be used here, to ask the master if it would
+> use dma on the buffer?
+> 
+> This might also prevent allocation of the bounce buffer if the only DMA
+> unsafe transfers are tiny control ops with stack variables that
+> wouldn't use DMA, e.g. the stuff spi_nor_read_sfdp_dma_unsafe() does.
+> 
+> 
+>> About the memory loss when forcing the SNOR_HWCAPS_*_BOUNCE in m25p80.c, I
+>> justify it because the m25p80 has to be compliant with the SPI sub-system
+>> requirements but currently is not. However I've taken care not to allocate
+>> the bounce buffer as long as we use only DMA-safe buffers.
+> 
+> Another possibility to reduce memory usage: make the buffer smaller
+> when first allocated by being just enough for the needed space.  Grow
+> it (by powers of two?) until it reaches the max allowed size.  No
+> reason to use a 256 kB buffer if DMA unsafe operations never get that
+> big.
+> 
+> 
+>> Here at the MTD side, the main (only ?) source of DMA-unsafe buffers is
+>> the UBIFS (JFFS2 too ?) layer. Then I've assumed that systems using such a
+>> file-system should already have enough system memory.
+> 
+> I saw a note in one of the existing DMA fixes that JFFS2 was the source
+> of the unsafe buffers, so probably there too.
+> 
+> 
+>> 
+>> Vignesh has suggested to call virt_addr_valid() instead.
+>> I think Boris has also told me about this function.
+>> So it might be the right solution. What do you think about their proposal?
+> 
+> Not sure what exactly the differences are between these methods.  The
+> fact that each of the many existing DMA fixes uses slightly different
+> code to detect what is unsafe speaks to the difficulty of this problem!
+
+My understanding based on Documentation/DMA-API-HOWTO.txt and
+Documentation/arm/memory.txt is that
+virt_addr_valid() will guarantee that address is in range of
+PAGE_OFFSET to high_memory-1 (Kernel direct-mapped RAM region) which is
+address range of buffers that are DMA'able.
+
+
+>  virt_addr_valid() is already used by spi-ti-qspi.  spi core uses for
+> the buffer map helper, but that code path is for buffers which are NOT
+> vmalloc or highmem, but are still not virt_addr_valid() for some other
+> reason.
 > 
 
-Yes, I plan to revert this patch once m25p80 starts using bounce buffers.
+	if (vmalloced_buf || kmap_buf) {
+		/* Handle vmalloc'd or kmap'd buffers */
+		...
+        } else if (virt_addr_valid(buf)) {
+		/* Handle kmalloc'd and such buffers */
+                ...
+	} else {
+		/* Error if none of the above */
+		return -EINVAL;
+	}
 
-I am interested in knowing which other SPI clients end up passing non
-DMA'able buffers. AFAIK, its UBIFS and JFFS2. Most other SPI devices on
-TI boards that I have dealt with like Touch, Sensors (IIO), GPIO
-expanders etc all provide DMA'able buffers.
 
 
 -- 
 Regards
 Vignesh
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

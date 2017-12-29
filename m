@@ -1,124 +1,80 @@
-From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: bcm53xx: simplify reading SPI data
-Date: Fri, 29 Dec 2017 14:48:02 +0100
-Message-ID: <20171229134802.7551-1-zajec5@gmail.com>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 1/3] mtd: spi-nor: add optional DMA-safe bounce buffer for
+ data transfer
+Date: Fri, 29 Dec 2017 18:03:47 +0000
+Message-ID: <1514570627.26695.114.camel@impinj.com>
+References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+         <fc2440c6f52877f28286d89691049e5cba10e6a7.1514087323.git.cyrille.pitchen@wedev4u.fr>
+         <1514317385.26695.39.camel@impinj.com>
+         <1a7dc424-1ce0-6c64-fc52-bb88ec7db8fa@wedev4u.fr>
+         <1514487276.26695.94.camel@impinj.com>
+         <08be8b42-732a-bf28-40c4-f46bf9d71c80@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org" <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "vigneshr-l0cyMroinI0@public.gmane.org" <vigneshr-l0cyMroinI0@public.gmane.org>,
+        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        "richard-/L3Ra7n9ekc@public.gmane.org" <richard-/L3Ra7n9ekc@public.gmane.org>,
+        "marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <08be8b42-732a-bf28-40c4-f46bf9d71c80-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
+Content-ID: <51651E7A11DB4D408180A3F356864551-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Rafał Miłecki <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
-
-This commit makes transfer function use spi_transfer_is_last to
-determine if currently processed transfer is the last one. Thanks to
-that we finally set hardware registers properly and it makes controller
-behave the way it's expected to.
-
-This allows simplifying read function which can now simply start reading
-from the slot 0 instead of the last saved offset. It has been
-successfully tested using spi_write_then_read.
-
-Moreover this change fixes handling messages with two writing transfers.
-It's important for SPI flash devices as their drivers commonly use one
-transfer for a command and another one for data.
-
-Signed-off-by: Rafał Miłecki <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>
----
- drivers/spi/spi-bcm53xx.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-index 6e409eabe1c9..d02ceb7a29d1 100644
---- a/drivers/spi/spi-bcm53xx.c
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -27,8 +27,6 @@ struct bcm53xxspi {
- 	struct bcma_device *core;
- 	struct spi_master *master;
- 	void __iomem *mmio_base;
--
--	size_t read_offset;
- 	bool bspi;				/* Boot SPI mode with memory mapping */
- };
- 
-@@ -172,8 +170,6 @@ static void bcm53xxspi_buf_write(struct bcm53xxspi *b53spi, u8 *w_buf,
- 
- 	if (!cont)
- 		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 0);
--
--	b53spi->read_offset = len;
- }
- 
- static void bcm53xxspi_buf_read(struct bcm53xxspi *b53spi, u8 *r_buf,
-@@ -182,10 +178,10 @@ static void bcm53xxspi_buf_read(struct bcm53xxspi *b53spi, u8 *r_buf,
- 	u32 tmp;
- 	int i;
- 
--	for (i = 0; i < b53spi->read_offset + len; i++) {
-+	for (i = 0; i < len; i++) {
- 		tmp = B53SPI_CDRAM_CONT | B53SPI_CDRAM_PCS_DISABLE_ALL |
- 		      B53SPI_CDRAM_PCS_DSCK;
--		if (!cont && i == b53spi->read_offset + len - 1)
-+		if (!cont && i == len - 1)
- 			tmp &= ~B53SPI_CDRAM_CONT;
- 		tmp &= ~0x1;
- 		/* Command Register File */
-@@ -194,8 +190,7 @@ static void bcm53xxspi_buf_read(struct bcm53xxspi *b53spi, u8 *r_buf,
- 
- 	/* Set queue pointers */
- 	bcm53xxspi_write(b53spi, B53SPI_MSPI_NEWQP, 0);
--	bcm53xxspi_write(b53spi, B53SPI_MSPI_ENDQP,
--			 b53spi->read_offset + len - 1);
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_ENDQP, len - 1);
- 
- 	if (cont)
- 		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 1);
-@@ -214,13 +209,11 @@ static void bcm53xxspi_buf_read(struct bcm53xxspi *b53spi, u8 *r_buf,
- 		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 0);
- 
- 	for (i = 0; i < len; ++i) {
--		int offset = b53spi->read_offset + i;
-+		u16 reg = B53SPI_MSPI_RXRAM + 4 * (1 + i * 2);
- 
- 		/* Data stored in the transmit register file LSB */
--		r_buf[i] = (u8)bcm53xxspi_read(b53spi, B53SPI_MSPI_RXRAM + 4 * (1 + offset * 2));
-+		r_buf[i] = (u8)bcm53xxspi_read(b53spi, reg);
- 	}
--
--	b53spi->read_offset = 0;
- }
- 
- static int bcm53xxspi_transfer_one(struct spi_master *master,
-@@ -238,7 +231,8 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
- 		left = t->len;
- 		while (left) {
- 			size_t to_write = min_t(size_t, 16, left);
--			bool cont = left - to_write > 0;
-+			bool cont = !spi_transfer_is_last(master, t) ||
-+				    left - to_write > 0;
- 
- 			bcm53xxspi_buf_write(b53spi, buf, to_write, cont);
- 			left -= to_write;
-@@ -250,9 +244,9 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
- 		buf = (u8 *)t->rx_buf;
- 		left = t->len;
- 		while (left) {
--			size_t to_read = min_t(size_t, 16 - b53spi->read_offset,
--					       left);
--			bool cont = left - to_read > 0;
-+			size_t to_read = min_t(size_t, 16, left);
-+			bool cont = !spi_transfer_is_last(master, t) ||
-+				    left - to_read > 0;
- 
- 			bcm53xxspi_buf_read(b53spi, buf, to_read, cont);
- 			left -= to_read;
--- 
-2.11.0
-
+T24gRnJpLCAyMDE3LTEyLTI5IGF0IDE1OjQ2ICswNTMwLCBWaWduZXNoIFIgd3JvdGU6DQo+IE9u
+IEZyaWRheSAyOSBEZWNlbWJlciAyMDE3IDEyOjI0IEFNLCBUcmVudCBQaWVwaG8gd3JvdGU6DQo+
+ID4gDQo+ID4gPiBWaWduZXNoIGhhcyBzdWdnZXN0ZWQgdG8gY2FsbCB2aXJ0X2FkZHJfdmFsaWQo
+KSBpbnN0ZWFkLg0KPiA+ID4gSSB0aGluayBCb3JpcyBoYXMgYWxzbyB0b2xkIG1lIGFib3V0IHRo
+aXMgZnVuY3Rpb24uDQo+ID4gPiBTbyBpdCBtaWdodCBiZSB0aGUgcmlnaHQgc29sdXRpb24uIFdo
+YXQgZG8geW91IHRoaW5rIGFib3V0IHRoZWlyIHByb3Bvc2FsPw0KPiA+IA0KPiA+IE5vdCBzdXJl
+IHdoYXQgZXhhY3RseSB0aGUgZGlmZmVyZW5jZXMgYXJlIGJldHdlZW4gdGhlc2UgbWV0aG9kcy4g
+IFRoZQ0KPiA+IGZhY3QgdGhhdCBlYWNoIG9mIHRoZSBtYW55IGV4aXN0aW5nIERNQSBmaXhlcyB1
+c2VzIHNsaWdodGx5IGRpZmZlcmVudA0KPiA+IGNvZGUgdG8gZGV0ZWN0IHdoYXQgaXMgdW5zYWZl
+IHNwZWFrcyB0byB0aGUgZGlmZmljdWx0eSBvZiB0aGlzIHByb2JsZW0hDQo+IA0KPiBNeSB1bmRl
+cnN0YW5kaW5nIGJhc2VkIG9uIERvY3VtZW50YXRpb24vRE1BLUFQSS1IT1dUTy50eHQgYW5kDQo+
+IERvY3VtZW50YXRpb24vYXJtL21lbW9yeS50eHQgaXMgdGhhdA0KPiB2aXJ0X2FkZHJfdmFsaWQo
+KSB3aWxsIGd1YXJhbnRlZSB0aGF0IGFkZHJlc3MgaXMgaW4gcmFuZ2Ugb2YNCj4gUEFHRV9PRkZT
+RVQgdG8gaGlnaF9tZW1vcnktMSAoS2VybmVsIGRpcmVjdC1tYXBwZWQgUkFNIHJlZ2lvbikgd2hp
+Y2ggaXMNCj4gYWRkcmVzcyByYW5nZSBvZiBidWZmZXJzIHRoYXQgYXJlIERNQSdhYmxlLg0KDQpU
+aGVyZSdzIGNvZGUgaW4gZ3BtaS1uYW5kLmMgdGhhdCBkb2VzOg0KDQogICAgICAgIC8qIGZpcnN0
+IHRyeSB0byBtYXAgdGhlIHVwcGVyIGJ1ZmZlciBkaXJlY3RseSAqLw0KICAgICAgICBpZiAodmly
+dF9hZGRyX3ZhbGlkKHRoaXMtPnVwcGVyX2J1ZikgJiYNCiAgICAgICAgICAgICAgICAhb2JqZWN0
+X2lzX29uX3N0YWNrKHRoaXMtPnVwcGVyX2J1ZikpIHsNCiAgICAgICAgICAgICAgICBzZ19pbml0
+X29uZShzZ2wsIHRoaXMtPnVwcGVyX2J1ZiwgdGhpcy0+dXBwZXJfbGVuKTsNCg0KU28gd2hvZXZl
+ciB3cm90ZSB0aGF0IHRob3VnaHQgdGhhdCBzdGFjayBvYmplY3RzIG5lZWRlZCBhbiBhZGRpdGlv
+bmFsDQp0ZXN0IGJleW9uZCB2aXJ0X2FkZHJfdmFsaWQuICBCdXQgaXQgZG9lcyBhcHBlYXIgdG8g
+YmUgZmFyIG1vcmUgY29tbW9uDQp0byBkZXBlbmQgb24ganVzdCB2aXJ0X2FkZHJfdmFsaWQsIHNv
+IHBlcmhhcHMgdGhlIGNvZGUgaW4gZ3BtaS1uYW5kIGlzDQppbiBlcnJvci4NCg0KPiA+ICB2aXJ0
+X2FkZHJfdmFsaWQoKSBpcyBhbHJlYWR5IHVzZWQgYnkgc3BpLXRpLXFzcGkuICBzcGkgY29yZSB1
+c2VzIGZvcg0KPiA+IHRoZSBidWZmZXIgbWFwIGhlbHBlciwgYnV0IHRoYXQgY29kZSBwYXRoIGlz
+IGZvciBidWZmZXJzIHdoaWNoIGFyZSBOT1QNCj4gPiB2bWFsbG9jIG9yIGhpZ2htZW0sIGJ1dCBh
+cmUgc3RpbGwgbm90IHZpcnRfYWRkcl92YWxpZCgpIGZvciBzb21lIG90aGVyDQo+ID4gcmVhc29u
+Lg0KPiA+IA0KPiANCj4gCWlmICh2bWFsbG9jZWRfYnVmIHx8IGttYXBfYnVmKSB7DQo+IAkJLyog
+SGFuZGxlIHZtYWxsb2MnZCBvciBrbWFwJ2QgYnVmZmVycyAqLw0KPiAJCS4uLg0KVGhpcyBzdHVm
+ZiBkb2VzIGdldCBETUFlZC4gIFNvIEkgaGF2ZSB0byB3b25kZXIsIGlmIHNwaS5jIHRoaW5rcyBp
+dCBjYW4NCnVzZSBETUEgd2l0aCB2bWFsbG9jIG9yIGhpZ2htZW0sIGNvdWxkbid0IHNwaS1ub3Qg
+ZG8gdGhlIHNhbWUgaW5zdGVhZA0Kb2YgdGhlIGJvdW5jZSBidWZmZXI/DQoNCj4gICAgICAgICB9
+IGVsc2UgaWYgKHZpcnRfYWRkcl92YWxpZChidWYpKSB7DQo+IAkJLyogSGFuZGxlIGttYWxsb2Mn
+ZCBhbmQgc3VjaCBidWZmZXJzICovDQo+ICAgICAgICAgICAgICAgICAuLi4NCj4gCX0gZWxzZSB7
+DQo+IAkJLyogRXJyb3IgaWYgbm9uZSBvZiB0aGUgYWJvdmUgKi8NCg0KU28gd2hhdCBpcyB0aGlz
+IGNhc2UgaGVyZSBmb3I/ICBJdCdzIHNvbWUgY2xhc3MgdGhhdCBkb2VzIG5vdCBoYXZlIGENCnZh
+bGlkIHZpcnR1YWwgYWRkcmVzcyBhbmQgeWV0IGlzIG5vdCB2bWFsbG9jIG9yIGhpZ2htZW0uDQoN
+Cj4gCQlyZXR1cm4gLUVJTlZBTDsNCj4gCX0NCj4g
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

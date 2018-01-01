@@ -1,52 +1,52 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v1] eSPI: add Aspeed AST2500 eSPI driver to boot a host
- with PCH runs on eSPI
-Date: Sun, 31 Dec 2017 00:10:51 +0100
-Message-ID: <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w@mail.gmail.com>
-References: <1514512387-27113-1-git-send-email-haiyue.wang@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>, gregkh <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Haiyue Wang <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 0/5] Rewrite GPIO SPI to use descriptors
+Date: Mon,  1 Jan 2018 14:37:44 +0100
+Message-ID: <20180101133749.29567-1-linus.walleij@linaro.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1514512387-27113-1-git-send-email-haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Dec 29, 2017 at 2:53 AM, Haiyue Wang
-<haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
-> When PCH works under eSPI mode, the PMC (Power Management Controller) in
-> PCH is waiting for SUS_ACK from BMC after it alerts SUS_WARN. It is in
-> dead loop if no SUS_ACK assert. This is the basic requirement for the BMC
-> works as eSPI slave.
->
-> Also for the host power on / off actions, from BMC side, the following VW
-> (Virtual Wire) messages are done in firmware:
-> 1. SLAVE_BOOT_LOAD_DONE / SLAVE_BOOT_LOAD_STATUS
-> 2. SUS_ACK
-> 3. OOB_RESET_ACK
-> 4. HOST_RESET_ACK
+Just as it says, this rewrites the GPIO bit-banged SPI driver to
+just use GPIO descriptors and pushes the configuration of the GPIO
+lines down into devices trees and board files.
 
-I have not looked at the driver contents yet, but I'm adding the SPI
-maintainer and
-mailing list to Cc here for further discussion. Can you clarify how
-the eSPI slave
-mode relates to SPI slaves that we already support? I was under the impression
-that the difference between SPI and eSPI is mainly on the master side, but that
-any SPI slave can also act as an eSPI slave. Would this driver fit into the SPI
-slave framework, possibly with some extensions to the generic abstraction?
+As there is a patch to the GPIO core, I can provide a tag to
+be pulled from the GPIO tree so I can pull the first patch
+into the GPIO devel branch for next as well.
 
-It also seems rather inflexible to have a single driver that is responsible both
-for the transport (eSPI register level interface for ASPEED) and the high-level
-protocol (talking to an Intel PCH), since either half of the work could be
-done elsewhere, using either a different eSPI slave implementation, or
-a different
-host architecture)
+There is a testing branch based on v4.15-rc1 already if people
+just want to pull it in and test it from there:
 
-       Arnd
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git/log/?h=gpio-descriptors-spi
+
+Please test it if you can.
+
+Linus Walleij (5):
+  gpio: of: Support SPI nonstandard GPIO properties
+  spi: spi-gpio: Rewrite to use GPIO descriptors
+  spi: spi-gpio: Augment device tree bindings
+  spi: spi-gpio: Make optional chipselect handling more explicit
+  spi: spi-gpio: Delete references to non-GENERIC_BITBANG
+
+ Documentation/devicetree/bindings/spi/spi-gpio.txt |  24 +-
+ arch/arm/mach-pxa/cm-x300.c                        |  21 +-
+ arch/arm/mach-pxa/raumfeld.c                       |  26 +-
+ arch/arm/mach-s3c24xx/mach-jive.c                  |  55 ++--
+ arch/arm/mach-s3c24xx/mach-qt2410.c                |  26 +-
+ arch/arm/mach-s3c64xx/mach-smartq.c                |  22 +-
+ arch/mips/alchemy/devboards/db1000.c               |  24 +-
+ arch/mips/jz4740/board-qi_lb60.c                   |  26 +-
+ drivers/gpio/gpiolib-of.c                          |  36 +++
+ drivers/misc/eeprom/digsy_mtc_eeprom.c             |  29 +-
+ drivers/spi/spi-gpio.c                             | 293 ++++++---------------
+ include/linux/spi/spi_gpio.h                       |  49 +---
+ 12 files changed, 311 insertions(+), 320 deletions(-)
+
+-- 
+2.14.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

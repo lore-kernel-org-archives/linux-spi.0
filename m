@@ -1,7 +1,7 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/5] gpio: of: Support SPI nonstandard GPIO properties
-Date: Mon,  1 Jan 2018 14:37:45 +0100
-Message-ID: <20180101133749.29567-2-linus.walleij@linaro.org>
+Subject: [PATCH 3/5] spi: spi-gpio: Augment device tree bindings
+Date: Mon,  1 Jan 2018 14:37:47 +0100
+Message-ID: <20180101133749.29567-4-linus.walleij@linaro.org>
 References: <20180101133749.29567-1-linus.walleij@linaro.org>
 Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -11,89 +11,68 @@ In-Reply-To: <20180101133749.29567-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Before it was clearly established that all GPIO properties in the
-device tree shall be named "foo-gpios" (with the deprecated variant
-"foo-gpio" for single lines) we unfortunately merged a few bindings
-which named the lines "gpio-foo" instead.
-
-This is most prominent in the GPIO SPI driver in Linux which names
-the lines "gpio-sck", "gpio-mosi" and "gpio-miso".
-
-As we want to switch the GPIO SPI driver to using descriptors, we
-need devm_gpiod_get() to return something reasonable when looking
-up these in the device tree.
-
-Put in a special #ifdef:ed kludge to do this special lookup only
-for the SPI case and gets compiled out if we're not enabling SPI.
-If we have more oddly defined legacy GPIOs like this, they can be
-handled in a similar manner.
+After we augmented the core to handle "gpio-sck"/"sck-gpios",
+"gpio-mosi"/"mosi-gpios", "gpio-miso"/"miso-gpios" alike,
+deprecate the old binding and put the strict modern and
+recommended binding practice into place as the default for
+GPIO-based SPI.
 
 Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/gpio/gpiolib-of.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-gpio.txt | 24 ++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index e0d59e61b52f..0f2d096c78a3 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -117,6 +117,37 @@ int of_get_named_gpio_flags(struct device_node *np, const char *list_name,
- }
- EXPORT_SYMBOL(of_get_named_gpio_flags);
+diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+index a95603bcf6ff..52db562f17a4 100644
+--- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
++++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+@@ -1,18 +1,30 @@
+ SPI-GPIO devicetree bindings
  
-+/*
-+ * The SPI GPIO bindings happened before we managed to establish that GPIO
-+ * properties should be named "foo-gpios" so we have this special kludge for
-+ * them.
-+ */
-+#ifdef CONFIG_SPI_MASTER
-+static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
-+					  enum of_gpio_flags *of_flags)
-+{
-+	char prop_name[32]; /* 32 is max size of property name */
-+	struct device_node *np = dev->of_node;
-+	struct gpio_desc *desc;
++This represents a group of 3-n GPIO lines used for bit-banged SPI on dedicated
++GPIO lines.
 +
-+	/* Allow this specifically for "spi-gpio" devices */
-+	if (!of_device_is_compatible(np, "spi-gpio") || !con_id)
-+		return ERR_PTR(-ENOENT);
-+
-+	/* Will be "gpio-sck", "gpio-mosi" or "gpio-miso" */
-+	snprintf(prop_name, sizeof(prop_name), "%s-%s", "gpio", con_id);
-+
-+	desc = of_get_named_gpiod_flags(np, prop_name, 0, of_flags);
-+	return desc;
-+}
-+#else
-+static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
-+					  enum of_gpio_flags *of_flags)
-+{
-+	return ERR_PTR(-ENOENT);
-+}
-+#endif
-+
- struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
- 			       unsigned int idx,
- 			       enum gpio_lookup_flags *flags)
-@@ -126,6 +157,7 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
- 	struct gpio_desc *desc;
- 	unsigned int i;
+ Required properties:
  
-+	/* Try GPIO property "foo-gpios" and "foo-gpio" */
- 	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
- 		if (con_id)
- 			snprintf(prop_name, sizeof(prop_name), "%s-%s", con_id,
-@@ -140,6 +172,10 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
- 			break;
- 	}
+  - compatible: should be set to "spi-gpio"
+  - #address-cells: should be set to <0x1>
+  - ranges
+- - gpio-sck: GPIO spec for the SCK line to use
+- - gpio-miso: GPIO spec for the MISO line to use
+- - gpio-mosi: GPIO spec for the MOSI line to use
++ - sck-gpios: GPIO spec for the SCK line to use
++ - miso-gpios: GPIO spec for the MISO line to use
++ - mosi-gpios: GPIO spec for the MOSI line to use
+  - cs-gpios: GPIOs to use for chipselect lines.
+              Not needed if num-chipselects = <0>.
+  - num-chipselects: Number of chipselect lines. Should be <0> if a single device
+                     with no chip select is connected.
  
-+	/* Special handling for SPI GPIOs if used */
-+	if (IS_ERR(desc))
-+		desc = of_find_spi_gpio(dev, con_id, &of_flags);
++Deprecated bindings:
 +
- 	if (IS_ERR(desc))
- 		return desc;
++These legacy GPIO line bindings can alternatively be used to define the
++GPIO lines used, they should not be used in new device trees.
++
++ - gpio-sck: GPIO spec for the SCK line to use
++ - gpio-miso: GPIO spec for the MISO line to use
++ - gpio-mosi: GPIO spec for the MOSI line to use
++
+ Example:
+ 
+ 	spi {
+@@ -20,9 +32,9 @@ Example:
+ 		#address-cells = <0x1>;
+ 		ranges;
+ 
+-		gpio-sck = <&gpio 95 0>;
+-		gpio-miso = <&gpio 98 0>;
+-		gpio-mosi = <&gpio 97 0>;
++		sck-gpios = <&gpio 95 0>;
++		miso-gpios = <&gpio 98 0>;
++		mosi-gpios = <&gpio 97 0>;
+ 		cs-gpios = <&gpio 125 0>;
+ 		num-chipselects = <1>;
  
 -- 
 2.14.3

@@ -1,49 +1,100 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 0/5] Rewrite GPIO SPI to use descriptors
-Date: Mon,  1 Jan 2018 14:37:44 +0100
-Message-ID: <20180101133749.29567-1-linus.walleij@linaro.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/5] gpio: of: Support SPI nonstandard GPIO properties
+Date: Mon,  1 Jan 2018 14:37:45 +0100
+Message-ID: <20180101133749.29567-2-linus.walleij@linaro.org>
+References: <20180101133749.29567-1-linus.walleij@linaro.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20180101133749.29567-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Just as it says, this rewrites the GPIO bit-banged SPI driver to
-just use GPIO descriptors and pushes the configuration of the GPIO
-lines down into devices trees and board files.
+Before it was clearly established that all GPIO properties in the
+device tree shall be named "foo-gpios" (with the deprecated variant
+"foo-gpio" for single lines) we unfortunately merged a few bindings
+which named the lines "gpio-foo" instead.
 
-As there is a patch to the GPIO core, I can provide a tag to
-be pulled from the GPIO tree so I can pull the first patch
-into the GPIO devel branch for next as well.
+This is most prominent in the GPIO SPI driver in Linux which names
+the lines "gpio-sck", "gpio-mosi" and "gpio-miso".
 
-There is a testing branch based on v4.15-rc1 already if people
-just want to pull it in and test it from there:
+As we want to switch the GPIO SPI driver to using descriptors, we
+need devm_gpiod_get() to return something reasonable when looking
+up these in the device tree.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git/log/?h=gpio-descriptors-spi
+Put in a special #ifdef:ed kludge to do this special lookup only
+for the SPI case and gets compiled out if we're not enabling SPI.
+If we have more oddly defined legacy GPIOs like this, they can be
+handled in a similar manner.
 
-Please test it if you can.
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/gpio/gpiolib-of.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Linus Walleij (5):
-  gpio: of: Support SPI nonstandard GPIO properties
-  spi: spi-gpio: Rewrite to use GPIO descriptors
-  spi: spi-gpio: Augment device tree bindings
-  spi: spi-gpio: Make optional chipselect handling more explicit
-  spi: spi-gpio: Delete references to non-GENERIC_BITBANG
-
- Documentation/devicetree/bindings/spi/spi-gpio.txt |  24 +-
- arch/arm/mach-pxa/cm-x300.c                        |  21 +-
- arch/arm/mach-pxa/raumfeld.c                       |  26 +-
- arch/arm/mach-s3c24xx/mach-jive.c                  |  55 ++--
- arch/arm/mach-s3c24xx/mach-qt2410.c                |  26 +-
- arch/arm/mach-s3c64xx/mach-smartq.c                |  22 +-
- arch/mips/alchemy/devboards/db1000.c               |  24 +-
- arch/mips/jz4740/board-qi_lb60.c                   |  26 +-
- drivers/gpio/gpiolib-of.c                          |  36 +++
- drivers/misc/eeprom/digsy_mtc_eeprom.c             |  29 +-
- drivers/spi/spi-gpio.c                             | 293 ++++++---------------
- include/linux/spi/spi_gpio.h                       |  49 +---
- 12 files changed, 311 insertions(+), 320 deletions(-)
-
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index e0d59e61b52f..0f2d096c78a3 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -117,6 +117,37 @@ int of_get_named_gpio_flags(struct device_node *np, const char *list_name,
+ }
+ EXPORT_SYMBOL(of_get_named_gpio_flags);
+ 
++/*
++ * The SPI GPIO bindings happened before we managed to establish that GPIO
++ * properties should be named "foo-gpios" so we have this special kludge for
++ * them.
++ */
++#ifdef CONFIG_SPI_MASTER
++static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
++					  enum of_gpio_flags *of_flags)
++{
++	char prop_name[32]; /* 32 is max size of property name */
++	struct device_node *np = dev->of_node;
++	struct gpio_desc *desc;
++
++	/* Allow this specifically for "spi-gpio" devices */
++	if (!of_device_is_compatible(np, "spi-gpio") || !con_id)
++		return ERR_PTR(-ENOENT);
++
++	/* Will be "gpio-sck", "gpio-mosi" or "gpio-miso" */
++	snprintf(prop_name, sizeof(prop_name), "%s-%s", "gpio", con_id);
++
++	desc = of_get_named_gpiod_flags(np, prop_name, 0, of_flags);
++	return desc;
++}
++#else
++static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
++					  enum of_gpio_flags *of_flags)
++{
++	return ERR_PTR(-ENOENT);
++}
++#endif
++
+ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 			       unsigned int idx,
+ 			       enum gpio_lookup_flags *flags)
+@@ -126,6 +157,7 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 	struct gpio_desc *desc;
+ 	unsigned int i;
+ 
++	/* Try GPIO property "foo-gpios" and "foo-gpio" */
+ 	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
+ 		if (con_id)
+ 			snprintf(prop_name, sizeof(prop_name), "%s-%s", con_id,
+@@ -140,6 +172,10 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 			break;
+ 	}
+ 
++	/* Special handling for SPI GPIOs if used */
++	if (IS_ERR(desc))
++		desc = of_find_spi_gpio(dev, con_id, &of_flags);
++
+ 	if (IS_ERR(desc))
+ 		return desc;
+ 
 -- 
 2.14.3
 

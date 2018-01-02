@@ -1,9 +1,10 @@
 From: Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: [PATCH 10/12] spi: spi-fsl-dspi: account for const type of of_device_id.data
-Date: Tue,  2 Jan 2018 14:28:06 +0100
-Message-ID: <1514899688-27844-11-git-send-email-Julia.Lawall@lip6.fr>
+Subject: [PATCH 03/12] spi: sirf: account for const type of of_device_id.data
+Date: Tue,  2 Jan 2018 14:27:59 +0100
+Message-ID: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
 References: <1514899688-27844-1-git-send-email-Julia.Lawall@lip6.fr>
-Cc: kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+Cc: kernel-janitors@vger.kernel.org, Barry Song <baohua@kernel.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
@@ -11,36 +12,41 @@ In-Reply-To: <1514899688-27844-1-git-send-email-Julia.Lawall@lip6.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This driver creates a number of const structures that it stores in the
+This driver creates various const structures that it stores in the
 data field of an of_device_id array.
 
-The data field of an of_device_id structure has type const void *, so
-there is no need for a const-discarding cast when putting const values
-into such a structure.
+Adding const to the declaration of the location that receives the
+const value from the data field ensures that the compiler will
+continue to check that the value is not modified.  Furthermore, the
+const-discarding cast on the extraction from the data field is no
+longer needed.
 
 Done using Coccinelle.
 
 Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
 
 ---
- drivers/spi/spi-fsl-dspi.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sirf.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 02d3ed7..0630962 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -903,10 +903,9 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- }
- 
- static const struct of_device_id fsl_dspi_dt_ids[] = {
--	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
--	{ .compatible = "fsl,ls1021a-v1.0-dspi",
--		.data = (void *)&ls1021a_v1_data, },
--	{ .compatible = "fsl,ls2085a-dspi", .data = (void *)&ls2085a_data, },
-+	{ .compatible = "fsl,vf610-dspi", .data = &vf610_data, },
-+	{ .compatible = "fsl,ls1021a-v1.0-dspi", .data = &ls1021a_v1_data, },
-+	{ .compatible = "fsl,ls2085a-dspi", .data = &ls2085a_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
+diff -u -p a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -1072,7 +1072,7 @@ static int spi_sirfsoc_probe(struct plat
+ 	struct sirfsoc_spi *sspi;
+ 	struct spi_master *master;
+ 	struct resource *mem_res;
+-	struct sirf_spi_comp_data *spi_comp_data;
++	const struct sirf_spi_comp_data *spi_comp_data;
+ 	int irq;
+ 	int ret;
+ 	const struct of_device_id *match;
+@@ -1092,7 +1092,7 @@ static int spi_sirfsoc_probe(struct plat
+ 	platform_set_drvdata(pdev, master);
+ 	sspi = spi_master_get_devdata(master);
+ 	sspi->fifo_full_offset = ilog2(sspi->fifo_size);
+-	spi_comp_data = (struct sirf_spi_comp_data *)match->data;
++	spi_comp_data = match->data;
+ 	sspi->regs = spi_comp_data->regs;
+ 	sspi->type = spi_comp_data->type;
+ 	sspi->fifo_level_chk_mask = (sspi->fifo_size / 4) - 1;

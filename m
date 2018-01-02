@@ -1,52 +1,84 @@
-From: Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: [PATCH 03/12] spi: sirf: account for const type of of_device_id.data
-Date: Tue,  2 Jan 2018 14:27:59 +0100
-Message-ID: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
-References: <1514899688-27844-1-git-send-email-Julia.Lawall@lip6.fr>
-Cc: kernel-janitors@vger.kernel.org, Barry Song <baohua@kernel.org>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v1] eSPI: add Aspeed AST2500 eSPI driver to boot a host
+ with PCH runs on eSPI
+Date: Tue, 2 Jan 2018 16:13:43 +0100
+Message-ID: <CAK8P3a1Jw+oQ6Z_DG6uDFYpqboRoki+4MyXGScuQJ-__-nUE6A@mail.gmail.com>
+References: <1514512387-27113-1-git-send-email-haiyue.wang@linux.intel.com>
+ <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w@mail.gmail.com> <e11e7a46-d038-4299-6781-525feda8f851@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Joel Stanley <joel@jms.id.au>, gregkh <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: "Wang, Haiyue" <haiyue.wang@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1514899688-27844-1-git-send-email-Julia.Lawall@lip6.fr>
+In-Reply-To: <e11e7a46-d038-4299-6781-525feda8f851@linux.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This driver creates various const structures that it stores in the
-data field of an of_device_id array.
+> On 2017-12-31 07:10, Arnd Bergmann wrote:
+> > On Fri, Dec 29, 2017 at 2:53 AM, Haiyue Wang
+> > <haiyue.wang@linux.intel.com> wrote:
+> >> When PCH works under eSPI mode, the PMC (Power Management Controller) in
+> >> PCH is waiting for SUS_ACK from BMC after it alerts SUS_WARN. It is in
+> >> dead loop if no SUS_ACK assert. This is the basic requirement for the BMC
+> >> works as eSPI slave.
+> >>
+> >> Also for the host power on / off actions, from BMC side, the following VW
+> >> (Virtual Wire) messages are done in firmware:
+> >> 1. SLAVE_BOOT_LOAD_DONE / SLAVE_BOOT_LOAD_STATUS
+> >> 2. SUS_ACK
+> >> 3. OOB_RESET_ACK
+> >> 4. HOST_RESET_ACK
+> > I have not looked at the driver contents yet, but I'm adding the SPI
+> > maintainer and
+> > mailing list to Cc here for further discussion. Can you clarify how
+> > the eSPI slave
+> > mode relates to SPI slaves that we already support? I was under the impression
+> > that the difference between SPI and eSPI is mainly on the master side, but that
+> > any SPI slave can also act as an eSPI slave. Would this driver fit into the SPI
+> > slave framework, possibly with some extensions to the generic abstraction?
+> In simple word, the eSPI uses the SPI interface pin definition, but it
+> will replace Low Pin Count (LPC)
+> interface. From its name, sure, it will confuse you! ;-)
 
-Adding const to the declaration of the location that receives the
-const value from the data field ensures that the compiler will
-continue to check that the value is not modified.  Furthermore, the
-const-discarding cast on the extraction from the data field is no
-longer needed.
+I know what eSPI is meant for, and understand the basic idea of the
+protocol, but I'm not familiar with the Apeed slave hardware
+implementation.
 
-Done using Coccinelle.
+> > It also seems rather inflexible to have a single driver that is responsible both
+> > for the transport (eSPI register level interface for ASPEED) and the high-level
+> > protocol (talking to an Intel PCH), since either half of the work could be
+> > done elsewhere, using either a different eSPI slave implementation, or
+> > a different
+> > host architecture)
+> Yes, eSPI has the architecture such as transaction layer, link Layer;
+> all of it is about the **silicon**
+> design. That's why I put the driver under /misc directory, not /spi
+> directory.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+I don't see any requirement in the eSPI spec for the upper layers to
+be implemented in hardware. Obviously an x86 host such as Intel's
+PCH would implement the host interface using PIO,  and MMIO
+accesses that are compatible with ISA and LPC, as this is the motivation
+behind the specification, but an ARM server that wants to use eSPI
+based peripherals could choose to implement it just as well using
+a traditional SPI master hardware, some GPIOs (reset and alert)
+and a (driver independent) software implementation of the transaction
+and link layers.
 
----
- drivers/spi/spi-sirf.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On the slave side, it seems that aspeed have implemented the
+virtual wires partially in hardware and require a driver like the one
+you wrote to reply to some of the wires being accessed by the host,
+but again it seems plausible that this could be implemented in another
+BMC using a generic SPI slave and a transaction layer written
+entirely in software.
 
-diff -u -p a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -1072,7 +1072,7 @@ static int spi_sirfsoc_probe(struct plat
- 	struct sirfsoc_spi *sspi;
- 	struct spi_master *master;
- 	struct resource *mem_res;
--	struct sirf_spi_comp_data *spi_comp_data;
-+	const struct sirf_spi_comp_data *spi_comp_data;
- 	int irq;
- 	int ret;
- 	const struct of_device_id *match;
-@@ -1092,7 +1092,7 @@ static int spi_sirfsoc_probe(struct plat
- 	platform_set_drvdata(pdev, master);
- 	sspi = spi_master_get_devdata(master);
- 	sspi->fifo_full_offset = ilog2(sspi->fifo_size);
--	spi_comp_data = (struct sirf_spi_comp_data *)match->data;
-+	spi_comp_data = match->data;
- 	sspi->regs = spi_comp_data->regs;
- 	sspi->type = spi_comp_data->type;
- 	sspi->fifo_level_chk_mask = (sspi->fifo_size / 4) - 1;
+Your driver does not handle the other channels (smbus, mmio, spinor)
+at the moment at all, can you provide some information how they
+are implemented in the ast2500? Are those handled completely
+in hardware (I assume this is the case for spinor at least), or do they
+require help from a driver, either this one or a separate one?
+
+       Arnd

@@ -1,71 +1,58 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 2/3] dt-bindings: mtd: atmel-quadspi: add an optional
- property 'dmacap,memcpy'
-Date: Tue, 2 Jan 2018 19:18:58 +0000
-Message-ID: <1514920738.26695.171.camel@impinj.com>
-References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
-         <143542c61ca674d53da4985bbabc142e8e6ebefc.1514087323.git.cyrille.pitchen@wedev4u.fr>
-         <20171226232330.trljk2ofyvu4ly3n@rob-hp-laptop>
-         <0149ba05-64b1-2739-e61f-78d5170775fb@wedev4u.fr>
-         <20180102102234.GG2612@rfolt0960.corp.atmel.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/5] Rewrite GPIO SPI to use descriptors
+Date: Wed, 3 Jan 2018 00:17:07 +0100
+Message-ID: <CACRpkdYRJ=jR4B2Ko2P1axwGMKob2vHkY2h8cMc9t9Qi7n52sQ@mail.gmail.com>
+References: <20180101133749.29567-1-linus.walleij@linaro.org> <1514918569.26695.151.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
-        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        "vigneshr-l0cyMroinI0@public.gmane.org" <vigneshr-l0cyMroinI0@public.gmane.org>,
-        "marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "richard-/L3Ra7n9ekc@public.gmane.org" <r
-To: "cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org" <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
-        "ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180102102234.GG2612-fC2aZbRiGnsAAwgTK2POJVCF2YAvjlIb@public.gmane.org>
-Content-Language: en-US
-Content-ID: <3810E1B0D4C84545933E0F2072FEFB05-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1514918569.26695.151.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-T24gVHVlLCAyMDE4LTAxLTAyIGF0IDExOjIyICswMTAwLCBMdWRvdmljIERlc3JvY2hlcyB3cm90
-ZToNCj4gT24gV2VkLCBEZWMgMjcsIDIwMTcgYXQgMTA6NDA6MDBQTSArMDEwMCwgQ3lyaWxsZSBQ
-aXRjaGVuIHdyb3RlOg0KPiANCj4gPiBPciBtYXliZSBubyBjaGFuZ2UgYXQgYWxsIGlzIHJlcXVp
-cmVkIGF0IHRoZSBhdF94ZG1hYy5jIGRyaXZlciBzaWRlOiB3ZQ0KPiA+IGp1c3QgZG9uJ3QgY2Fy
-ZSBhYm91dCB0aGUgcHJvdmlkZWQgZmxhZ3MgaW4gdGhlICJkbWFzIiBwcm9wZXJ0eSwgZXNwZWNp
-YWxseQ0KPiA+IHRoZSAicGVyaXBoZXJhbCBpZCIuIFRoZXkgd291bGQgYmUgaWdub3JlZCBhbnl3
-YXkgd2hlbiB0aGUgYXRtZWwtcXVhZHNwaS5jDQo+ID4gZHJpdmVyIGxhdGVyIGNhbGxzIGRtYWVu
-Z2luZV9wcmVwX2RtYV9tZW1jcHkoKS4gU28gSSBjb3VsZCBzaW1wbHkgc2V0IHRoZQ0KPiA+IGRt
-YSBjZWxscyB0byAwIGluIHRoZSBkZXZpY2UtdHJlZT8NCj4gPiANCj4gPiBMdWRvdmljLCB3aGF0
-IGRvIHlvdSB0aGluayBhYm91dCB0aGF0ID8NCj4gDQo+IEl0IG1heSB3b3JrIGJ1dCBJIHdvbid0
-IGRvIHRoaXMuIFVzdWFsbHksIGNoYW5uZWxzIHJlcXVlc3RlZCB0aHJvdWdoIHRoZSB4bGF0ZQ0K
-PiBmdW5jdGlvbiBoYXZlIHVzdWFsbHkgdGhlaXIgY2FwYWlibGl0aWVzIHNldCB0byBETUFfU0xB
-VkUgYW5kIG5vdCBETUFfTUVNQ1BZLg0KPiBJbiB0aGUgYXRfeGRtYWMgY2FzZSwgaXQgd29uJ3Qg
-YmUgYW4gaXNzdWUgYnV0IGlmIHlvdSBoYXZlIGEgY29udHJvbGxlcg0KPiB3aGljaCBoYXMgY2hh
-bm5lbHMgd2hpY2ggY2FuIHN1cHBvcnQgb25seSBtZW0tdG8tbWVtIG9yIHBlcmlwaGVyYWwsIGl0
-DQo+IHdvbid0IHdvcmsuDQoNCk1heWJlIG9uZSBjb3VsZCBjcmVhdGUgYW4gIkFUOTFfWERNQUNf
-RFRfIiBtYWNybyB0byBpbmRpY2F0ZSBhIG1lbWNweQ0KY2hhbm5lbC4gIFRoZXJlIGFyZSBzdGls
-bCB1bnVzZWQgYml0cyBmb3IgYW5vdGhlciBmbGFnLiAgSXQgYWxzbyBsb29rcw0KbGlrZSBhdF94
-ZG1hIHVzZXMgcGVyaXBoZXJhbCBpZCAweDNmIGZvciBtZW1jcHkgdHJhbnNmZXJzICh3aWxsIHRo
-YXQNCndvcmsgd2l0aCBtZW1jcHkgRE1BIG9uIG11bHRpcGxlIGNoYW5uZWxzIGF0IHRoZSBzYW1l
-IHRpbWU/KS4gIFNvDQpwZXJoYXBzIHBlcmlkIDB4M2YgY291bGQgYmUgdGhlIGluZGljYXRpb24g
-b2Ygd2FudGluZyBhIG1lbWNweSBjaGFubmVsLA0KcmF0aGVyIHRoYW4gYW5vdGhlciBmbGFnIGJp
-dC4gIEJ1dCBob3dldmVyIGl0J3MgZG9uZSwgb25lIHdyaXRlczoNCg0KZG1hcyA9IDwmZG1hMCBB
-VDkxX1hETUFDX0RUX01FTUNQWT47IGRtYS1uYW1lcyA9ICJyeC10eCI7DQoNCkkgdGhpbmsgb25l
-IGNvdWxkIGhhdmUgdGhlIHF1YWRzcGkgZHJpdmVyIGF1dG9tYXRpY2FsbHkgZmlsbCBpbiB0aGUg
-ZG1hDQpjZWxsIGluIHRoZSBkbWEgc3BlY2lmaWVyIGlmIGl0IGlzIG5vdCBwcmVzZW50IGluIHRo
-ZSBkZXZpY2UgdHJlZS4gIFNvDQpvbmUgY291bGQgd3JpdGUgImRtYXMgPSA8JmRtYTA+IiBhbmQg
-dGhlIGRyaXZlciBhZGRzIHRoZQ0KQVQ5MV9YRE1BQ19EVF9NRU1DUFkgY2VsbCBiZWZvcmUgeGxh
-dGluZy4gIEknbSBub3Qgc3VyZSBpZiB0aGF0J3MgYQ0KZ29vZCBpZGVhIG9yIG5vdC4=
+On Tue, Jan 2, 2018 at 7:42 PM, Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org> wrote:
+> On Mon, 2018-01-01 at 14:37 +0100, Linus Walleij wrote:
+>> Just as it says, this rewrites the GPIO bit-banged SPI driver to
+>> just use GPIO descriptors and pushes the configuration of the GPIO
+>> lines down into devices trees and board files.
+>
+> Any before/after benchmark for speed or code size?
+
+Not really, the main motivation for the change is neither performance
+nor object code size, but to get rid of the global GPIO numbers, which
+does not scale very well and makes stuff messy. Istead we aim
+to make code deal with abstract GPIO handles known as
+GPIO descriptors.
+
+The motivation is the same as for moving IRQ numbers to IRQ
+descriptors which has been going on for some time: it is easy when
+you have just say 64 IRQs or GPIOs. The subsystems were designed
+for that. As the number IRQ controllers and GPIO controllers on
+a system grows, managing the number space and the hardware
+descriptions becomes a pain.
+
+I'd be surprised if either performance or object code size is affected
+in a bad way though. I don't have any high-speed SPI devices I can test
+really, and loopback would require some special hardware set-up I
+don't have.
+
+The last patch in the series remove remnants of an unused mechanism
+that seemed to be for performance critical bitbanged SPI, that was never
+put to use, I kind of assume noone is really doing performance critical
+SPI over GPIO but I've been wrong before.
+
+> Looks like code size is pretty even.
+
+Number of lines yes, readability I would argue is better but it is a matter
+of taste. I would hope some bytes have been pushed away from
+the core and into the board files (etc) but I could be wrong.
+
+Yours,
+Linus Walleij
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,77 +1,84 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1] eSPI: add Aspeed AST2500 eSPI driver to boot a host
- with PCH runs on eSPI
-Date: Wed, 3 Jan 2018 11:38:05 +0000
-Message-ID: <20180103113805.GD5603@sirena.org.uk>
-References: <1514512387-27113-1-git-send-email-haiyue.wang@linux.intel.com>
- <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mtd: spi-nor: fix DMA-unsafe buffer issue between
+ MTD and SPI
+Date: Wed, 3 Jan 2018 11:49:31 +0000
+Message-ID: <20180103114931.GF5603@sirena.org.uk>
+References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
+ <1514313927.26695.19.camel@impinj.com>
+ <20171227103609.GQ1827@finisterre>
+ <1514405711.26695.67.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="eheScQNz3K90DVRs"
-Cc: Haiyue Wang <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
-        gregkh <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="RE3pQJLXZi4fr8Xo"
+Cc: "nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org" <radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        "linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org" <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org" <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        "computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "vigneshr-l0cyMroinI0@public.gmane.org" <vigneshr-l0cyMroinI0@public.gmane.org>,
+        "boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org"
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        "richard-/L3Ra7n9ekc@public.gmane.org" <richard-/L3Ra7n9ekc@public.gmane.org>,
+        "marek.vasut@gmai
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1514405711.26695.67.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---eheScQNz3K90DVRs
+--RE3pQJLXZi4fr8Xo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 31, 2017 at 12:10:51AM +0100, Arnd Bergmann wrote:
-> On Fri, Dec 29, 2017 at 2:53 AM, Haiyue Wang
-> <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
-> > When PCH works under eSPI mode, the PMC (Power Management Controller) in
-> > PCH is waiting for SUS_ACK from BMC after it alerts SUS_WARN. It is in
-> > dead loop if no SUS_ACK assert. This is the basic requirement for the B=
-MC
-> > works as eSPI slave.
-> >
-> > Also for the host power on / off actions, from BMC side, the following =
-VW
-> > (Virtual Wire) messages are done in firmware:
-> > 1. SLAVE_BOOT_LOAD_DONE / SLAVE_BOOT_LOAD_STATUS
-> > 2. SUS_ACK
-> > 3. OOB_RESET_ACK
-> > 4. HOST_RESET_ACK
->=20
-> I have not looked at the driver contents yet, but I'm adding the SPI
-> maintainer and
-> mailing list to Cc here for further discussion. Can you clarify how
+On Wed, Dec 27, 2017 at 08:15:11PM +0000, Trent Piepho wrote:
 
-More generally:
+> A random collection of spi master drivers will accept DMA-unsafe
+> buffers in some way.  In some cases a framework like spi-nor provides
+> the fixup to spi-nor master drivers (none so far) and in other cases
+> (atmel-quadspi), the spi-nor master driver has its own fixes.
 
-As documented in SubmittingPatches please send patches to the=20
-maintainers for the code you would like to change.  The normal kernel
-workflow is that people apply patches from their inboxes, if they aren't
-copied they are likely to not see the patch at all and it is much more
-difficult to apply patches.
+Everything really should be DMA safe.  The thing with skimping on the
+DMA safety is that things generally won't explode every single time but
+they might explode.
 
---eheScQNz3K90DVRs
+> What exactly is caught as DMA unsafe and what is not will of course
+> vary greatly from driver to driver.  Some drivers will catch highmem
+> memory while other drivers will only detect vmalloc memory.  Some will
+> only catch an unsafe buffer if a specific SoC known to the driver to
+> have an aliasing cache is enabled.  Some will check buffers that arrive
+> via the spi_flash_read interface but not via generic spi transfers,
+> while others will check all spi transfer buffers.
+
+As I keep saying here the real fix would be to have a simple API that we
+could use to tell if we're dealing with something DMA safe.  Right now
+it's a mess because you need to pass that information around through
+every layer that references memory which is a pain.
+
+--RE3pQJLXZi4fr8Xo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpMwJwACgkQJNaLcl1U
-h9CrnQf8CWd6/GS0V9kEscGKec5RhPtDOeRrIFgcY9THNJfr0WBSQIt66sbX3wzD
-25yjcVmri/OY/K/e74fBV0nfxe3b/HvM9XP6Fydl9K2pfQP+W27zOfD1xEBRvyRu
-walIWrQdxWcngdgWIl7hf5zvHPwjvFqyWgYheagJv9D3zMPivU0HZrmVfIpudusL
-bWqvxNKGidw8py9X7l30zoLma/nDk3TejdoFrP0Q9jSlXIVc8dlOPI3Xu56RJMSD
-Q7niM77VPS7E0YHt3vml5hpA/zkT8Z17CZ83frVEG6GuLmxCKV9OPN0ct8qB8G4c
-TC3vxGcLpZgE+LUQNDi17IToRYHrLA==
-=FPZL
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpMw0oACgkQJNaLcl1U
+h9AQSAf+KdLHQShKUCckRDN+9aVdQFD3qT+Bx28dXtpMxXM+XGUk0RMl4Hvbkb2Q
+Q31Oehypjtk9sY1KS5xh6AgvPQrAEfo60gSI36FG3gV8G+3jFxm3qM1mxDweHCey
+VNegIt2Fx6EOOqRjSo2s9y8BJNNXKEaJqBamBhkSqNTHEnD82IpVfrmEoE5AVsa8
+PyL1v4i5T6hPxoyg81aXIeD3DGEemOQbWEJenDTGGc8X5ieaKfq9bXydTwbMbtYU
+qSaGjbGCqqOjUItEVUPo6WnCOVQhow+JPgPJ3vMCdH0UDNCr29cEupRbRMYAUPo4
+Op15qcLdpKjnPgo3yj3iFZcG1YiMDg==
+=ajYs
 -----END PGP SIGNATURE-----
 
---eheScQNz3K90DVRs--
+--RE3pQJLXZi4fr8Xo--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

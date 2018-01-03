@@ -1,129 +1,102 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/8] spi: sh-msiof: Fix DMA transfer size check
-Date: Wed, 3 Jan 2018 18:25:17 +0100
-Message-ID: <CAMuHMdVvk2_0T7HdJbmd_QZ+7OtXAQYo3GZ6Xt2QPmd0N=1_qg@mail.gmail.com>
-References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
- <20170906070507.26223-3-dirk.behme@de.bosch.com> <CAMuHMdWzWK5UTtmfoGmpHEwac8i3r1c6XqzT6cmwMXko2X7mvw@mail.gmail.com>
- <931484ec-8830-0e63-98cb-9dd58ce35230@de.bosch.com> <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
- <09ce4c7a-347c-7df8-d8ed-4eb61a00bd20@de.bosch.com> <CAMuHMdVo_62kYYmgLZNHksRi+Z96K+tu9KTsgyKfmk6U_gP79w@mail.gmail.com>
- <a3fbaa5c-caa1-c28f-3248-6c5557a96d8c@de.bosch.com> <CAMuHMdXQKj3F02zur3BZ95Et+btQD=rOfpMUC8cFWBnwF4Qxdw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdXQKj3F02zur3BZ95Et+btQD=rOfpMUC8cFWBnwF4Qxdw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sh-msiof: Fix timeout failures for TX-only DMA transfers" to the spi tree
+Date: Wed, 03 Jan 2018 17:44:00 +0000
+Message-ID: <E1eWn56-0005rw-N5@debutante>
+References: <1514999474-22288-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Dirk Behme <dirk.behme@de.bosch.com>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1514999474-22288-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Dirk,
+The patch
 
-On Thu, Sep 7, 2017 at 11:12 AM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> On Thu, Sep 7, 2017 at 11:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org> wrote:
->> On 07.09.2017 10:59, Geert Uytterhoeven wrote:
->>> On Thu, Sep 7, 2017 at 10:42 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>> wrote:
->>>> On 07.09.2017 10:39, Geert Uytterhoeven wrote:
->>>>> On Thu, Sep 7, 2017 at 10:33 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>>> wrote:
->>>>>> On 07.09.2017 10:31, Geert Uytterhoeven wrote:
->>>>>>> On Wed, Sep 6, 2017 at 9:05 AM, Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>>>>> wrote:
->>>>>>>> From: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->>>>>>>> DMA supports 32-bit words only,
->>>>>>>> even if BITLEN1 of SITMDR2 register is 16bit.
->>>>>>>>
->>>>>>>> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->>>>>>>> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->>>>>>>> ---
->>>>>>>>     drivers/spi/spi-sh-msiof.c | 2 +-
->>>>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>>
->>>>>>>> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
->>>>>>>> index 2b4d3a520176..f9300fdf41e5 100644
->>>>>>>> --- a/drivers/spi/spi-sh-msiof.c
->>>>>>>> +++ b/drivers/spi/spi-sh-msiof.c
->>>>>>>> @@ -904,7 +904,7 @@ static int sh_msiof_transfer_one(struct
->>>>>>>> spi_master
->>>>>>>> *master,
->>>>>>>>                                    break;
->>>>>>>>                            copy32 = copy_bswap32;
->>>>>>>>                    } else if (bits <= 16) {
->>>>>>>> -                       if (l & 1)
->>>>>>>> +                       if (l & 3)
->>>>>>>>                                    break;
->>>>>>>>                            copy32 = copy_wswap32;
->>>>>>>>                    } else {
->>>>>>>
->>>>>>> Looks OK, as l is in bytes, not 16-bit words.
->>>>>>>
->>>>>>> Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
->>>>>>
->>>>>> What do you think about CCing this to -stable?
->>>>>
->>>>> Sounds OK. Have you tested this?
->>>>
->>>> I tested all 8 patches together if they fix the issues I observed with
->>>> plain
->>>> mainline.
->>>
->>> Could you please elaborate about the issues you observed with plain
->>> mainline?
->>> It may help to identify which patches are responsible for fixing them.
->>
->> I've been told that an easy test case is to just cat random data (any mid
->> sized file) into SPI. E.g.:
->>
->> # cat /proc/cpuinfo > /dev/spidev32764.2
->> [  504.544948] spi_sh_msiof e6e90000.spi: failed to shut down hardware
->> [  504.551265] spidev spi32764.2: SPI transfer failed: -110
->> [  504.556625] spi_master spi32764: failed to transfer one message from
->> queue
->> [  504.564857] spi_sh_msiof e6e90000.spi: failed to shut down hardware
->> [  504.571177] spidev spi32764.2: SPI transfer failed: -110
->> [  504.576528] spi_master spi32764: failed to transfer one message from
->> queue
->> cat: write error: Connection timed out
->>
->> done on plain 4.13-rc6.
->
-> Thank you, that's very valuable information!
-> We'll give it a try...
+   spi: sh-msiof: Fix timeout failures for TX-only DMA transfers
 
-After some investigation, this is caused by DMA completion triggering
-too early for TX-only transfers.  This should indeed be fixed by "[PATCH 5/8]
-spi: sh-msiof: Wait for Tx FIFO empty after DMA" you extracted from the BSP.
+has been applied to the spi tree at
 
-As that patch needs changes to apply (a) on current spi/for-next and (b)
-without other patches from your series, I reworked it into "[PATCH] spi:
-sh-msiof: Fix timeout failures for TX-only DMA transfers".
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-As for the other patches from your series:
-  - Upstream already has commit 36735783fdb599c9 ("spi: sh-msiof: Fix DMA
-    transfer size check"),
-  - spi/for-next has commit b8761434bdec32fa ("spi: sh-msiof: Implement
-    cs-gpios configuration").
-The remaining were either rejected, retracted, or it is unclear which problem
-(if any) they are really fixing.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Do you agree?
-Thanks!
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Gr{oetje,eeting}s,
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-                        Geert
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Thanks,
+Mark
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From 89434c3c35081439627baa2225622d5bd12242fe Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 3 Jan 2018 18:11:14 +0100
+Subject: [PATCH] spi: sh-msiof: Fix timeout failures for TX-only DMA transfers
+
+When using RX (with or without TX), the DMA interrupt triggers
+completion when the RX FIFO has been emptied, i.e. after the full
+transfer has finished.
+
+However, when using TX without RX, the DMA interrupt triggers completion
+as soon as the DMA engine has filled the TX FIFO, i.e. before the full
+transfer has finished.  Then sh_msiof_modify_ctr_wait() will spin until
+the transfer has really finished and the TFSE bit is cleared, for at
+most 1 ms.  For slow speeds and/or large transfers, this may cause
+timeouts and transfer failures:
+
+    spi_sh_msiof e6e10000.spi: failed to shut down hardware
+    74x164 spi2.0: SPI transfer failed: -110
+    spi_master spi2: failed to transfer one message from queue
+    74x164 spi2.0: Failed writing: -110
+
+Fix this by waiting explicitly until the TX FIFO has been emptied.
+
+Based on a patch in the BSP by Hiromitsu Yamasaki.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-sh-msiof.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index fcd261f98b9f..06bc4b170c47 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -784,11 +784,21 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 		goto stop_dma;
+ 	}
+ 
+-	/* wait for tx fifo to be emptied / rx fifo to be filled */
++	/* wait for tx/rx DMA completion */
+ 	ret = sh_msiof_wait_for_completion(p);
+ 	if (ret)
+ 		goto stop_reset;
+ 
++	if (!rx) {
++		reinit_completion(&p->done);
++		sh_msiof_write(p, IER, IER_TEOFE);
++
++		/* wait for tx fifo to be emptied */
++		ret = sh_msiof_wait_for_completion(p);
++		if (ret)
++			goto stop_reset;
++	}
++
+ 	/* clear status bits */
+ 	sh_msiof_reset_str(p);
+ 
+-- 
+2.15.1

@@ -1,88 +1,59 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] gpio: of: Support SPI nonstandard GPIO properties
-Date: Wed, 3 Jan 2018 09:23:06 -0600
-Message-ID: <CAL_JsqLH4pqptAkpw2CHPRe=6dR3k1iBPM8g7yMFUHnYmm7L9w@mail.gmail.com>
-References: <20180101133749.29567-1-linus.walleij@linaro.org> <20180101133749.29567-2-linus.walleij@linaro.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/5] spi: spi-gpio: Rewrite to use GPIO descriptors
+Date: Wed, 3 Jan 2018 15:55:19 +0000
+Message-ID: <20180103155519.GD28713@sirena.org.uk>
+References: <20180101133749.29567-1-linus.walleij@linaro.org>
+ <20180101133749.29567-3-linus.walleij@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="d01dLTUuW90fS44H"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, arm-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Sylwester Nawrocki <sylvester.nawrocki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+        Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>,
+        Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>,
+        Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180101133749.29567-2-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20180101133749.29567-3-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jan 1, 2018 at 7:37 AM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> Before it was clearly established that all GPIO properties in the
-> device tree shall be named "foo-gpios" (with the deprecated variant
-> "foo-gpio" for single lines) we unfortunately merged a few bindings
-> which named the lines "gpio-foo" instead.
->
-> This is most prominent in the GPIO SPI driver in Linux which names
-> the lines "gpio-sck", "gpio-mosi" and "gpio-miso".
->
-> As we want to switch the GPIO SPI driver to using descriptors, we
-> need devm_gpiod_get() to return something reasonable when looking
-> up these in the device tree.
->
-> Put in a special #ifdef:ed kludge to do this special lookup only
-> for the SPI case and gets compiled out if we're not enabling SPI.
-> If we have more oddly defined legacy GPIOs like this, they can be
-> handled in a similar manner.
->
-> Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/gpio/gpiolib-of.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->
-> diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-> index e0d59e61b52f..0f2d096c78a3 100644
-> --- a/drivers/gpio/gpiolib-of.c
-> +++ b/drivers/gpio/gpiolib-of.c
-> @@ -117,6 +117,37 @@ int of_get_named_gpio_flags(struct device_node *np, const char *list_name,
->  }
->  EXPORT_SYMBOL(of_get_named_gpio_flags);
->
-> +/*
-> + * The SPI GPIO bindings happened before we managed to establish that GPIO
-> + * properties should be named "foo-gpios" so we have this special kludge for
-> + * them.
-> + */
-> +#ifdef CONFIG_SPI_MASTER
-> +static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
-> +                                         enum of_gpio_flags *of_flags)
-> +{
-> +       char prop_name[32]; /* 32 is max size of property name */
-> +       struct device_node *np = dev->of_node;
-> +       struct gpio_desc *desc;
 
-Instead of the ifdef:
+--d01dLTUuW90fS44H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-if (!IS_ENABLED(CONFIG_SPI_MASTER))
-  return ERR_PTR(-ENOENT);
+On Mon, Jan 01, 2018 at 02:37:46PM +0100, Linus Walleij wrote:
 
-Or merge the condition with the if below.
+> mach-s3c64xx/mach-smartq.c has the same problem and additionally
+> defines the *same* GPIO line for MOSI and MISO which is not going
+> to be accepted by gpiolib. As the lines were number 1,2,2 I assumed
 
-> +
-> +       /* Allow this specifically for "spi-gpio" devices */
-> +       if (!of_device_is_compatible(np, "spi-gpio") || !con_id)
-> +               return ERR_PTR(-ENOENT);
-> +
-> +       /* Will be "gpio-sck", "gpio-mosi" or "gpio-miso" */
-> +       snprintf(prop_name, sizeof(prop_name), "%s-%s", "gpio", con_id);
-> +
-> +       desc = of_get_named_gpiod_flags(np, prop_name, 0, of_flags);
-> +       return desc;
-> +}
-> +#else
-> +static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
-> +                                         enum of_gpio_flags *of_flags)
-> +{
-> +       return ERR_PTR(-ENOENT);
-> +}
-> +#endif
-> +
+You do get three wire SPI buses where one data line is used for both
+MOSI and MISO so that might be intentional - IIRC it used to work fine
+with a lot of SPI chips.
+
+--d01dLTUuW90fS44H
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpM/OYACgkQJNaLcl1U
+h9CYjQf/f7qJgwhRNGmCbbJiLUn9OdsuN4FYqf/g5alTFFgvk/c2W2YjZ+XSDpGY
+4O3km1Uh+4HhJR/gKgwb5R11w4zQ3KJYlfnOx2E9byCCPkMSvaeA3dfgzeNy8I9d
+7j+HZ1v5vXY1HsxTVFnWiMCBFs35nARPYj27zKckrLWuKH/slzCyx03Himqw6JxX
+y6U+LFCVoGNKXJnvkMFJ+YveaykyqdonEv8U/9oEp08ohr7fF5Mje2xCSt+YO8h6
+j4OtJSOXygu3Evpc0witEw1KR+4ZLTJzZOm+HhGoD+2Eqcv3fbainDek38hPLZjR
+OAOea1aiYKM6Yvm5xnYwGxNszB8VKQ==
+=Bw6Q
+-----END PGP SIGNATURE-----
+
+--d01dLTUuW90fS44H--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

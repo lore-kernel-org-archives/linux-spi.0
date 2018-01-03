@@ -1,59 +1,63 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/5] spi: spi-gpio: Rewrite to use GPIO descriptors
-Date: Wed, 3 Jan 2018 15:55:19 +0000
-Message-ID: <20180103155519.GD28713@sirena.org.uk>
+Subject: Re: [PATCH 4/5] spi: spi-gpio: Make optional chipselect handling
+ more explicit
+Date: Wed, 3 Jan 2018 16:05:17 +0000
+Message-ID: <20180103160517.GE28713@sirena.org.uk>
 References: <20180101133749.29567-1-linus.walleij@linaro.org>
- <20180101133749.29567-3-linus.walleij@linaro.org>
+ <20180101133749.29567-5-linus.walleij@linaro.org>
+ <CAMuHMdV5tdm0diunWg2BXxgVsG0FqwTgXXXBD+p9nbOEXcd59Q@mail.gmail.com>
+ <CACRpkdZaLKUs+9BP_Tp8bhdCur+CHaTK1RsS=i2na4Edqz1VGw@mail.gmail.com>
+ <CAMuHMdVeTQOxRMJaohGFtw6LUtwQb6H46rsrf1fRFno9KBQXXA@mail.gmail.com>
+ <CACRpkdaEyKcWPY543CZz0grepAhVijefh_+FCsPd3g+83hv2Fg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="d01dLTUuW90fS44H"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, arm-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Sylwester Nawrocki <sylvester.nawrocki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-        Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>,
-        Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>,
-        Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="sfyO1m2EN8ZOtJL6"
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20180101133749.29567-3-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <CACRpkdaEyKcWPY543CZz0grepAhVijefh_+FCsPd3g+83hv2Fg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---d01dLTUuW90fS44H
+--sfyO1m2EN8ZOtJL6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jan 01, 2018 at 02:37:46PM +0100, Linus Walleij wrote:
+On Wed, Jan 03, 2018 at 10:40:52AM +0100, Linus Walleij wrote:
 
-> mach-s3c64xx/mach-smartq.c has the same problem and additionally
-> defines the *same* GPIO line for MOSI and MISO which is not going
-> to be accepted by gpiolib. As the lines were number 1,2,2 I assumed
+> So someone wanted to save a slab by using this instead of allocating
+> the array dynamically. It's not a very admirable coding style to begin
+> with. I doubt the system gains much from this.
 
-You do get three wire SPI buses where one data line is used for both
-MOSI and MISO so that might be intentional - IIRC it used to work fine
-with a lot of SPI chips.
+Right, David was very focused on saving memory.
 
---d01dLTUuW90fS44H
+> If you agree I can rewrite it to have struct gpio_desc ** and
+> dynamically allocate that to the number of descriptors with devm_kzalloc()
+> instead, that is more in line with kernel patterns and this memory
+> optimization anyways seems a bit overdone anyways.
+
+Yes, that would be clearer - it's something that's good to fix anyway
+rather than trying to contort around it.
+
+--sfyO1m2EN8ZOtJL6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpM/OYACgkQJNaLcl1U
-h9CYjQf/f7qJgwhRNGmCbbJiLUn9OdsuN4FYqf/g5alTFFgvk/c2W2YjZ+XSDpGY
-4O3km1Uh+4HhJR/gKgwb5R11w4zQ3KJYlfnOx2E9byCCPkMSvaeA3dfgzeNy8I9d
-7j+HZ1v5vXY1HsxTVFnWiMCBFs35nARPYj27zKckrLWuKH/slzCyx03Himqw6JxX
-y6U+LFCVoGNKXJnvkMFJ+YveaykyqdonEv8U/9oEp08ohr7fF5Mje2xCSt+YO8h6
-j4OtJSOXygu3Evpc0witEw1KR+4ZLTJzZOm+HhGoD+2Eqcv3fbainDek38hPLZjR
-OAOea1aiYKM6Yvm5xnYwGxNszB8VKQ==
-=Bw6Q
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpM/zwACgkQJNaLcl1U
+h9CE9Af/bp5ISdiEVDRvxRcpT+4A9zSbCpVZzK2yhN6zmdyE4IqzLE0G+bSB3qPq
+IwIHR0r9M11g+jSSKJUZ3coVinBXS2wUooiEJkNTbd5LKB4oy+WMz//mNcvtnVSQ
+fefbn0JSWyjQNfAjI7fIqCCYpV4X6Pt4chyyGPy8uciQ9fi9K5UUaKXFIYQKzB2Z
+aQXDjv679d7q3zNbpvtB/7dAlbiyti9F7lNtQJbXVONEkmElTtjcKyZir8MLWMsN
+eXDJX1OvWySkYU3WmVBDByznEInmEzmxM3Q65W0/FD8+SJz+NZuBFA8WE63o59bM
+aICzQO2g0/+tTukGbHsxno9bj6cOww==
+=uA5r
 -----END PGP SIGNATURE-----
 
---d01dLTUuW90fS44H--
+--sfyO1m2EN8ZOtJL6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

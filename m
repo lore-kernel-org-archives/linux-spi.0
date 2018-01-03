@@ -1,21 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sirf: account for const type of of_device_id.data" to the spi tree
-Date: Wed, 03 Jan 2018 12:15:23 +0000
-Message-ID: <E1eWhx5-0002II-8d@debutante>
-References: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        kernel-janitors@vger.kernel.org, Barry Song <baohua@kernel.org>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Julia Lawall <Julia.Lawall@lip6.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-fsl-dspi: account for const type of of_device_id.data" to the spi tree
+Date: Wed, 03 Jan 2018 12:22:47 +0000
+Message-ID: <E1eWi4F-0003MO-Vh@debutante>
+References: <1514899688-27844-11-git-send-email-Julia.Lawall@lip6.fr>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1514899688-27844-11-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sirf: account for const type of of_device_id.data
+   spi: spi-fsl-dspi: account for const type of of_device_id.data
 
 has been applied to the spi tree at
 
@@ -40,49 +39,49 @@ to this mail.
 Thanks,
 Mark
 
->From 9e327ce71f3894e7e6b57f5c15a0dfa5be79f44e Mon Sep 17 00:00:00 2001
-From: Julia Lawall <Julia.Lawall@lip6.fr>
-Date: Tue, 2 Jan 2018 14:27:59 +0100
-Subject: [PATCH] spi: sirf: account for const type of of_device_id.data
+>From 230c08b2acf65863ac5905ea1fa93106bdd20af3 Mon Sep 17 00:00:00 2001
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Date: Tue, 2 Jan 2018 14:28:06 +0100
+Subject: [PATCH] spi: spi-fsl-dspi: account for const type of
+ of_device_id.data
 
-This driver creates various const structures that it stores in the
+This driver creates a number of const structures that it stores in the
 data field of an of_device_id array.
 
-Adding const to the declaration of the location that receives the
-const value from the data field ensures that the compiler will
-continue to check that the value is not modified.  Furthermore, the
-const-discarding cast on the extraction from the data field is no
-longer needed.
+The data field of an of_device_id structure has type const void *, so
+there is no need for a const-discarding cast when putting const values
+into such a structure.
 
 Done using Coccinelle.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sirf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index bbb1a275f718..f009d76f96b1 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -1072,7 +1072,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	struct sirfsoc_spi *sspi;
- 	struct spi_master *master;
- 	struct resource *mem_res;
--	struct sirf_spi_comp_data *spi_comp_data;
-+	const struct sirf_spi_comp_data *spi_comp_data;
- 	int irq;
- 	int ret;
- 	const struct of_device_id *match;
-@@ -1092,7 +1092,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	sspi = spi_master_get_devdata(master);
- 	sspi->fifo_full_offset = ilog2(sspi->fifo_size);
--	spi_comp_data = (struct sirf_spi_comp_data *)match->data;
-+	spi_comp_data = match->data;
- 	sspi->regs = spi_comp_data->regs;
- 	sspi->type = spi_comp_data->type;
- 	sspi->fifo_level_chk_mask = (sspi->fifo_size / 4) - 1;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 02d3ed7f2558..0630962ce442 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -903,10 +903,9 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ }
+ 
+ static const struct of_device_id fsl_dspi_dt_ids[] = {
+-	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
+-	{ .compatible = "fsl,ls1021a-v1.0-dspi",
+-		.data = (void *)&ls1021a_v1_data, },
+-	{ .compatible = "fsl,ls2085a-dspi", .data = (void *)&ls2085a_data, },
++	{ .compatible = "fsl,vf610-dspi", .data = &vf610_data, },
++	{ .compatible = "fsl,ls1021a-v1.0-dspi", .data = &ls1021a_v1_data, },
++	{ .compatible = "fsl,ls2085a-dspi", .data = &ls2085a_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
 -- 
 2.15.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

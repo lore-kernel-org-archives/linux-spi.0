@@ -1,61 +1,104 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: spi-gpio: Delete references to
- non-GENERIC_BITBANG
-Date: Wed, 3 Jan 2018 16:10:45 +0000
-Message-ID: <20180103161045.GF28713@sirena.org.uk>
-References: <20180101133749.29567-1-linus.walleij@linaro.org>
- <20180101133749.29567-6-linus.walleij@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
+Date: Wed, 3 Jan 2018 17:14:59 +0100
+Message-ID: <CAK8P3a3i0bKvG56ha9_hzO=z80sVxCQhaeFn6QW3AwbwZs3HPg@mail.gmail.com>
+References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+ <20171223134831.GB10103@kroah.com>
+ <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
+ <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QXO0/MSS4VvK6f+D"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20180101133749.29567-6-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yisheng Xie <xieyisheng1@huawei.com>,
+ "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ Jakub Kicinski <jakub.kicinski@netronome.com>,
+ Platform Driver <platform-driver-x86@vger.kernel.org>,
+ David Airlie <airlied@linux.ie>,
+ linux-wireless <linux-wireless@vger.kernel.org>, alsa-devel@alsa-project.org,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, IDE-ML <linux-ide@vger.kernel.org>,
+ Wim Van Sebroeck <wim@iguana.be>, Networking <netdev@vger.kernel.org>,
+ linux-mtd <linux-mtd@lists.infradead.org>,
+ Daniel Vetter <daniel.vetter@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Jason Cooper <jason@lakedaemon.net>,
+ linux-rtc@vger.kernel.org,
+ Boris Brezillon <boris.brezillon@free-electrons.com>,
+ Mauro Carvalho Chehab <mchehab@kern
+To: christophe leroy <christophe.leroy@c-s.fr>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+List-Id: linux-spi.vger.kernel.org
 
-
---QXO0/MSS4VvK6f+D
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Jan 01, 2018 at 02:37:49PM +0100, Linus Walleij wrote:
-> The non-generic bitbang was a feature where a platform could optimize
-> SPI bit-banging by inlining the routines to hammer GPIO lines into
-> the GPIO bitbanging driver as direct register writes using a custom
-> set of GPIO library calls.
-
-> It does not work with multiplatform concepts, violates everything
-> about how GPIO is made generic and is just generally a bad idea,
-> even on legacy system. Also there is no single user in the entire
-> kernel (for good reasons).
-
-> Delete the remnants of this optimization.
-
-What's the positive reason for removing this?  I'd not anticipate people
-doing this upstream but it seems like a totally valid thing to do on
-product.  It's just compiling out the gpiolib calls so it never looked
-like too big a maintanence overhead.
-
---QXO0/MSS4VvK6f+D
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpNAIQACgkQJNaLcl1U
-h9BcAAf/YWqmLIiDxsBxSABCsLlz6HkfUfFseGBMVvE4QS3qo4k+QabuLRz0HtUC
-qGWnMT13rlMGo1r1eqpuC2tHv2AWhQljfCnhQOhPXE73IRBoJtBVZpDQVtASwRwH
-+bWtRPZHr78exQFnP5XIqUkZ7ZA5+QEHuUOSKZFtf4ao5kb3trX4olH+JylRKDuY
-wypqf8ReY0iiVfeVvAGpTilR2Fdnow908+/nb1ofetp6jlxgRbQ7x+IX18R6f3/x
-aroBpg2YzjhrtX3nJhiew/matJsQVDhwRqvOpHgahZEA2BDDIYNJMKLqijwVGsuY
-kfOwxUZhpSE5f6Og3Qi17zGF3xGjUw==
-=eH9F
------END PGP SIGNATURE-----
-
---QXO0/MSS4VvK6f+D--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+T24gU3VuLCBEZWMgMjQsIDIwMTcgYXQgOTo1NSBBTSwgY2hyaXN0b3BoZSBsZXJveQo8Y2hyaXN0
+b3BoZS5sZXJveUBjLXMuZnI+IHdyb3RlOgo+IExlIDIzLzEyLzIwMTcgw6AgMTY6NTcsIEd1ZW50
+ZXIgUm9lY2sgYSDDqWNyaXQgOgo+Pgo+PiBPbiAxMi8yMy8yMDE3IDA1OjQ4IEFNLCBHcmVnIEtI
+IHdyb3RlOgo+Pj4KPj4+IE9uIFNhdCwgRGVjIDIzLCAyMDE3IGF0IDA2OjU1OjI1UE0gKzA4MDAs
+IFlpc2hlbmcgWGllIHdyb3RlOgo+Pj4+Cj4+Pj4gSGkgYWxsLAo+Pj4+Cj4+Pj4gV2hlbiBJIHRy
+aWVkIHRvIHVzZSBkZXZtX2lvcmVtYXAgZnVuY3Rpb24gYW5kIHJldmlldyByZWxhdGVkIGNvZGUs
+IEkKPj4+PiBmb3VuZAo+Pj4+IGRldm1faW9yZW1hcCBhbmQgZGV2bV9pb3JlbWFwX25vY2FjaGUg
+aXMgYWxtb3N0IHRoZSBzYW1lIHdpdGggZWFjaAo+Pj4+IG90aGVyLAo+Pj4+IGV4Y2VwdCBvbmUg
+dXNlIGlvcmVtYXAgd2hpbGUgdGhlIG90aGVyIHVzZSBpb3JlbWFwX25vY2FjaGUuCj4+Pgo+Pj4K
+Pj4+IEZvciBhbGwgYXJjaGVzPyAgUmVhbGx5PyAgTG9vayBhdCBNSVBTLCBhbmQgeDg2LCB0aGV5
+IGhhdmUgZGlmZmVyZW50Cj4+PiBmdW5jdGlvbnMuCj4+Pgo+Pgo+PiBCb3RoIG1pcHMgYW5kIHg4
+NiBlbmQgdXAgbWFwcGluZyB0aGUgc2FtZSBmdW5jdGlvbiwgYnV0IG90aGVyIGFyY2hlcwo+PiBk
+b24ndC4KPj4gbW4xMDMwMCBpcyBvbmUgd2hlcmUgaW9yZW1hcCBhbmQgaW9yZW1hcF9ub2NhY2hl
+IGFyZSBkZWZpbml0ZWx5IGRpZmZlcmVudC4KPgo+Cj4gYWxwaGE6IGlkZW50aWNhbAo+IGFyYzog
+aWRlbnRpY2FsCj4gYXJtOiBpZGVudGljYWwKPiBhcm02NDogaWRlbnRpY2FsCj4gY3JpczogZGlm
+ZmVyZW50ICAgICAgICA8PT0KPiBmcnY6IGlkZW50aWNhbAo+IGhleGFnb25lOiBpZGVudGljYWwK
+PiBpYTY0OiBkaWZmZXJlbnQgICAgICAgIDw9PQo+IG0zMnI6IGlkZW50aWNhbAo+IG02OGs6IGlk
+ZW50aWNhbAo+IG1ldGFnOiBpZGVudGljYWwKPiBtaWNyb2JsYXplOiBpZGVudGljYWwKPiBtaXBz
+OiBpZGVudGljYWwKPiBtbjEwMzAwOiBkaWZmZXJlbnQgICAgIDw9PQo+IG5pb3M6IGlkZW50aWNh
+bAo+IG9wZW5yaXNjOiBkaWZmZXJlbnQgICAgPD09Cj4gcGFyaXNjOiBpZGVudGljYWwKPiByaXNj
+djogaWRlbnRpY2FsCj4gczM5MDogaWRlbnRpY2FsCj4gc2g6IGlkZW50aWNhbAo+IHNwYXJjOiBp
+ZGVudGljYWwKPiB0aWxlOiBpZGVudGljYWwKPiB1bTogcmVseSBvbiBhc20vZ2VuZXJpYwo+IHVu
+aWNvcmUzMjogaWRlbnRpY2FsCj4geDg2OiBpZGVudGljYWwKPiBhc20vZ2VuZXJpYyAobm8gbW11
+KTogaWRlbnRpY2FsCj4KPiBTbyA0IGFtb25nIGFsbCBhcmNoZXMgc2VlbXMgdG8gaGF2ZSBpb3Jl
+bWFwKCkgYW5kIGlvcmVtYXBfbm9jYWNoZSgpIGJlaW5nCj4gZGlmZmVyZW50Lgo+Cj4gQ291bGQg
+d2UgaGF2ZSBhIGRlZmluZSBzZXQgYnkgdGhlIDQgYXJjaGVzIG9uIHdoaWNoIGlvcmVtYXAoKSBh
+bmQKPiBpb3JlbWFwX25vY2FjaGUoKSBhcmUgZGlmZmVyZW50LCBzb21ldGhpbmcgbGlrZQo+IEhB
+VkVfRElGRkVSRU5UX0lPUkVNQVBfTk9DQUNIRSA/CgpJIHdvbmRlciBpZiB0aG9zZSBhcmUgYWN0
+dWFsbHkgY29ycmVjdCBvciBub3QuIFdoYXQgSSBmb3VuZCBsb29raW5nIGF0CnRob3NlIGFyY2hp
+dGVjdHVyZXM6CgotIG9wZW5yaXNjIG9ubHkgaGFzIG9uZSBkcml2ZXIgdXNpbmcgaW9yZW1hcCAo
+ZHJpdmVycy9uZXQvZXRoZXJuZXQvZXRob2MuYykKICBhbmQgdGhhdCBjYWxscyBpb3JlbWFwX25v
+Y2FjaGUoKS4gUHJlc3VtYWJseSB0aGUgYXV0aG9ycyB3ZW50IHdpdGggdGhlCiAgaW1wbGVtZW50
+YXRpb24gZm9yIGlvcmVtYXAgdGhhdCBtYWRlIHNlbnNlICh1c2luZyBkZWZhdWx0IGF0dHJpYnV0
+ZXMpCiAgcmF0aGVyIHRoYW4gdGhlIG9uZSB0aGF0IGFjdHVhbGx5IHdvcmtzICh1c2luZyB1bmNh
+Y2hlZCkuCgotIE9uIGlhNjQsIGlvcmVtYXAoKSBjaGVja3MgdGhlIGF0dHJpYnV0ZXMgZm9yIHRo
+ZSBwaHlzaWNhbAogIGFkZHJlc3MgYmFzZWQgb24gZmlybXdhcmUgdGFibGVzIGFuZCB0aGVuIHBp
+Y2tzIGVpdGhlciBjYWNoZWQKICBvciB1bmNhY2hlZCBtYXBwaW5ncy4gaW9yZW1hcF9ub2NhY2hl
+KCkgZG9lcyB0aGUgc2FtZSBidXQKICByZXR1cm5zIE5VTEwgaW5zdGVhZCBvZiBhIGNhY2hlZCBt
+YXBwaW5nIGZvciBhbnl0aGluZyB0aGF0IGlzCiAgbm90IGFuIE1NSU8gYWRkcmVzcy4gUHJlc3Vt
+YWJseSBpdCB3b3VsZCBqdXN0IHdvcmsgdG8gYWx3YXlzCiAgY2FsbCBpb3JlbWFwKCkuCgotIG1u
+MTAzMDAgYXBwZWFycyB0byBiZSB3cm9uZywgYnJva2VuIGJ5IERhdmlkIEhvd2VsbHMgaW4KICBj
+b21taXQgODNjMmRjMTVjZTgyICgiTU4xMDMwMDogSGFuZGxlIGNhY2hlYWJsZSBQQ0kgcmVnaW9u
+cwogIGluIHBjaV9pb21hcCgpIikgZm9yIGFueSBkcml2ZXIgY2FsbGluZyBpb3JlbWFwKCkgYnkg
+dG8gZ2V0IHVuY2FjaGVkCiAgbWVtb3J5LCBpZiBJIHVuZGVyc3RhbmQgdGhlIGNvbW1lbnQgZm9y
+IGNvbW1pdCAzNGYxYmRlZTE5MTAKICAgKCJtbjEwMzAwOiBzd2l0Y2ggdG8gR0VORVJJQ19QQ0lf
+SU9NQVAiKSBjb3JyZWN0bHk6IGl0CiAgc2VlbXMgdGhhdCBQQ0kgYWRkcmVzc2VzIGluY2x1ZGUg
+dGhlICd1bmNhY2hlZCcgYml0IGJ5IGRlZmF1bHQKICB0byBnZXQgdGhlIHJpZ2h0IGJlaGF2aW9y
+LCBidXQgZHJvcHBpbmcgdGhhdCBiaXQgYnJlYWtzIGl0LgoKLSBjcmlzIHNlZW1zIHNpbWlsYXIg
+dG8gbW4xMDMwMCBpbiBoYXJkd2FyZSwgdXNpbmcgYW4gcGh5cyBhZGRyZXNzCiAgYml0IGZvciB1
+bmNhY2hlZCBhY2Nlc3MuIFRoZXJlIGFyZSB0d28gY2FsbGVycyBpbiBhcmNoIGNvZGUgdGhhdAog
+IGFwcGVhciB0byByZWx5IG9uIHRoZSBjYWNoYWJsZSBvdXRwdXQgb2YgaW9yZW1hcCgpCmFyY2gv
+Y3Jpcy9hcmNoLXYzMi9rZXJuZWwvc2lnbmFsLmM6Cl9faW9yZW1hcF9wcm90KHZpcnRfdG9fcGh5
+cyhkYXRhKSwgUEFHRV9TSVpFLCBQQUdFX1NJR05BTF9UUkFNUE9MSU5FKTsKYXJjaC9jcmlzL2Fy
+Y2gtdjMyL21tL2ludG1lbS5jOiAgICAgICAgIGludG1lbV92aXJ0dWFsID0KaW9yZW1hcChNRU1f
+SU5UTUVNX1NUQVJUICsgUkVTRVJWRURfU0laRSwKICBJdCdzIHVuY2xlYXIgd2hldGhlciBpb3Jl
+bWFwX25vY2FjaGUoKSBhY3R1YWxseSBoYXMgYW55IHVzZXJzCiAgb24gY3Jpcywgb3Igd2hldGhl
+ciBpdCB3YXMgb25seSBhZGRlZCBmb3IgY29tcGlsZS10aW1lIHRlc3RpbmcsCiAgYW5kIGNhbGxp
+bmcgcGxhaW4gaW9yZW1hcCgpIHdvdWxkIGFsd2F5cyB3b3JrIHRvbyAoYXNzdW1pbmcgd2UKICBw
+YXNzIHRoZSBwaHlzIGFkZHJlc3Mgd2l0aCB0aGUgdW5jYWNoZWQtYml0IHNldCkuCgogICAgICAg
+QXJuZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmkt
+ZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWwK

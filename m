@@ -1,80 +1,88 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] dt-bindings: mtd: atmel-quadspi: add an optional
- property 'dmacap,memcpy'
-Date: Wed, 3 Jan 2018 11:51:16 +0000
-Message-ID: <20180103115116.GG5603@sirena.org.uk>
-References: <cover.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <143542c61ca674d53da4985bbabc142e8e6ebefc.1514087323.git.cyrille.pitchen@wedev4u.fr>
- <20171226232330.trljk2ofyvu4ly3n@rob-hp-laptop>
- <0149ba05-64b1-2739-e61f-78d5170775fb@wedev4u.fr>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xs+9IvWevLaxKUtW"
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ludovic Desroches <ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, richard-/L3Ra7n9ekc@public.gmane.org,
-        boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org,
-        linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, radu.pirea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org
-To: Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <0149ba05-64b1-2739-e61f-78d5170775fb-yU5RGvR974pGWvitb5QawA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sirf: account for const type of of_device_id.data" to the spi tree
+Date: Wed, 03 Jan 2018 12:15:23 +0000
+Message-ID: <E1eWhx5-0002II-8d@debutante>
+References: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        kernel-janitors@vger.kernel.org, Barry Song <baohua@kernel.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Julia Lawall <Julia.Lawall@lip6.fr>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1514899688-27844-4-git-send-email-Julia.Lawall@lip6.fr>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---xs+9IvWevLaxKUtW
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: sirf: account for const type of of_device_id.data
 
-On Wed, Dec 27, 2017 at 10:40:00PM +0100, Cyrille Pitchen wrote:
-> Le 27/12/2017 =E0 00:23, Rob Herring a =E9crit :
-> > On Sun, Dec 24, 2017 at 05:36:05AM +0100, Cyrille Pitchen wrote:
+has been applied to the spi tree at
 
-> >> +Optional properties:
-> >> +- dmacap,memcpy:  Reserve a DMA channel to perform DMA memcpy() betwe=
-en the
-> >> +                  system memory and the QSPI mapped memory.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > How is this a h/w property? Why would I not want to always enable DMA i=
-f=20
-> > possible?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> The number of DMA channels is limited for a given SoC. This number may be
-> lower than the number of enabled controllers (spi, i2c, qspi, aes, sha,
-> des, sdmmc, usart, ...).
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> So we use a DT property to explicitly tell the matching drivers to request
-> and reserved the DMA channels they need. This policy is not driver or even
-> SoC specific but board specific. It's very common to reserved DMA channels
-> for the most used or most performance dependent controllers, setting the
-> relevant properties in the device-tree then restricting remaining
-> controllers to their PIO mode.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Why can't we just time share the DMA channels at runtime, why do we need
-this static allocation? =20
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---xs+9IvWevLaxKUtW
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From 9e327ce71f3894e7e6b57f5c15a0dfa5be79f44e Mon Sep 17 00:00:00 2001
+From: Julia Lawall <Julia.Lawall@lip6.fr>
+Date: Tue, 2 Jan 2018 14:27:59 +0100
+Subject: [PATCH] spi: sirf: account for const type of of_device_id.data
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpMw7MACgkQJNaLcl1U
-h9AWGQf9F0RsEiNtRpRHLeDZldvGY8OSYaP3t3RRrpTrlrKfx3BxDGqCeuTj5gfB
-7wCpMzuTn8ckXz3nSuP3i2rdWUDSIZxX7zMHUElNLDEQBtUofXi4Ub35NznNShTN
-0EAuW9xc86ek/iPZUnGHjQe6BcCzZajeLMpPOdxg6YPqGKHYNwtPH7RvZ9sTYI+Y
-w8vj6lx5Y9o1UB0Lw/TIevyjWIOdndfy3IN0g2a2H8isDuATg0edR+CUtDKG0LBM
-3EHxrxilgFks/Y3TmnirTcDMcFT+IzelUmIxtYG01DLALQQoHpMrHEfOI22/x7Hr
-15vQ8RoA0kndI977/52eKt4b1QvQeg==
-=1Kgv
------END PGP SIGNATURE-----
+This driver creates various const structures that it stores in the
+data field of an of_device_id array.
 
---xs+9IvWevLaxKUtW--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Adding const to the declaration of the location that receives the
+const value from the data field ensures that the compiler will
+continue to check that the value is not modified.  Furthermore, the
+const-discarding cast on the extraction from the data field is no
+longer needed.
+
+Done using Coccinelle.
+
+Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-sirf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index bbb1a275f718..f009d76f96b1 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -1072,7 +1072,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	struct sirfsoc_spi *sspi;
+ 	struct spi_master *master;
+ 	struct resource *mem_res;
+-	struct sirf_spi_comp_data *spi_comp_data;
++	const struct sirf_spi_comp_data *spi_comp_data;
+ 	int irq;
+ 	int ret;
+ 	const struct of_device_id *match;
+@@ -1092,7 +1092,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	sspi = spi_master_get_devdata(master);
+ 	sspi->fifo_full_offset = ilog2(sspi->fifo_size);
+-	spi_comp_data = (struct sirf_spi_comp_data *)match->data;
++	spi_comp_data = match->data;
+ 	sspi->regs = spi_comp_data->regs;
+ 	sspi->type = spi_comp_data->type;
+ 	sspi->fifo_level_chk_mask = (sspi->fifo_size / 4) - 1;
+-- 
+2.15.1

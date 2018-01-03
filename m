@@ -1,158 +1,153 @@
-From: "Wang, Haiyue" <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1] eSPI: add Aspeed AST2500 eSPI driver to boot a host
- with PCH runs on eSPI
-Date: Wed, 3 Jan 2018 10:21:03 +0800
-Message-ID: <e09a0c0c-9e95-01c5-d652-c9622db81118@linux.intel.com>
-References: <1514512387-27113-1-git-send-email-haiyue.wang@linux.intel.com>
- <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w@mail.gmail.com>
- <e11e7a46-d038-4299-6781-525feda8f851@linux.intel.com>
- <CAK8P3a1Jw+oQ6Z_DG6uDFYpqboRoki+4MyXGScuQJ-__-nUE6A@mail.gmail.com>
- <a1de8f61-701e-221e-2d32-e7412b86b58e@linux.intel.com>
- <CAK8P3a08a+QhPof=pF64jRKYjrmGa=P5DnPDD4zdq2HaZ-2wyQ@mail.gmail.com>
+From: Yisheng Xie <xieyisheng1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
+Date: Wed, 3 Jan 2018 14:42:14 +0800
+Message-ID: <e9f6805c-2dd7-f9c6-d615-5e25cff241a3@huawei.com>
+References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
+ <20171223134831.GB10103@kroah.com>
+ <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
+ <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+ <6c0ade63-f4d3-d44d-c622-b091eb2ba902@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>, gregkh <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAK8P3a08a+QhPof=pF64jRKYjrmGa=P5DnPDD4zdq2HaZ-2wyQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <ysxie-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org>,
+        <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, <richard-/L3Ra7n9ekc@public.gmane.org>,
+        <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>,
+        <wim-IQzOog9fTRqzQB+pC5nmwQ@public.gmane.org>, <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, <linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+        <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, <marc.zyngier-5wv7dgnIgG8@public.gmane.org>, <arnd-r2nGTMty4D4@public.gmane.org>,
+        <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        <industrypack-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>,
+        <mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <linux-can-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+To: christophe leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>,
+        Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+        Greg KH <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>, <starvik-VrBV9hrLPhE@public.gmane.org>,
+        <jesper.nilsson-VrBV9hrLPhE@public.gmane.org>, <tony.luck-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        <fenghua.yu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <jonas-A9uVI2HLR7kOP4wsBPIw7w@public.gmane.org>, <shorne-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        <dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <6c0ade63-f4d3-d44d-c622-b091eb2ba902-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Sender: linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
++ cris/ia64/mn10300/openrisc maintainers
 
-
-On 2018-01-03 00:23, Arnd Bergmann wrote:
-> On Tue, Jan 2, 2018 at 4:36 PM, Wang, Haiyue
-> <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
->> On 2018-01-02 23:13, Arnd Bergmann wrote:
->>>> On 2017-12-31 07:10, Arnd Bergmann wrote:
->>>>> It also seems rather inflexible to have a single driver that is
->>>>> responsible both
->>>>> for the transport (eSPI register level interface for ASPEED) and the
->>>>> high-level
->>>>> protocol (talking to an Intel PCH), since either half of the work could
->>>>> be
->>>>> done elsewhere, using either a different eSPI slave implementation, or
->>>>> a different
->>>>> host architecture)
->>>> Yes, eSPI has the architecture such as transaction layer, link Layer;
->>>> all of it is about the **silicon**
->>>> design. That's why I put the driver under /misc directory, not /spi
->>>> directory.
->>> I don't see any requirement in the eSPI spec for the upper layers to
->>> be implemented in hardware. Obviously an x86 host such as Intel's
->>> PCH would implement the host interface using PIO,  and MMIO
->>> accesses that are compatible with ISA and LPC, as this is the motivation
->>> behind the specification, but an ARM server that wants to use eSPI
->>> based peripherals could choose to implement it just as well using
->>> a traditional SPI master hardware, some GPIOs (reset and alert)
->>> and a (driver independent) software implementation of the transaction
->>> and link layers.
+On 2017/12/25 9:09, Yisheng Xie wrote:
+> hi Christophe and Greg,
+> 
+> On 2017/12/24 16:55, christophe leroy wrote:
+>>
+>>
+>> Le 23/12/2017 à 16:57, Guenter Roeck a écrit :
+>>> On 12/23/2017 05:48 AM, Greg KH wrote:
+>>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
+>>>>> Hi all,
+>>>>>
+>>>>> When I tried to use devm_ioremap function and review related code, I found
+>>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
+>>>>> except one use ioremap while the other use ioremap_nocache.
+>>>>
+>>>> For all arches?  Really?  Look at MIPS, and x86, they have different
+>>>> functions.
+>>>>
 >>>
->>> On the slave side, it seems that aspeed have implemented the
->>> virtual wires partially in hardware and require a driver like the one
->>> you wrote to reply to some of the wires being accessed by the host,
->>> but again it seems plausible that this could be implemented in another
->>> BMC using a generic SPI slave and a transaction layer written
->>> entirely in software.
->> Yes, you are right, Aspeed have implemented the virtual wires partially.
->> Tthat's why I named it
->> as aspeed-espi-slave driver.
-> Maybe the name should be more specific and refer to only virtual-wire
-> rather than espi-slave?
-We changed Aspeed's reference code about virtual-wire to production 
-code, which meets
-the upstream code style. If other people used new features in eSPI 
-slave, they can add into
-this place one by one, which is proved to work. This is a eSPI slave 
-start point for Aspeed,
-not just virtual wires.
->>> Your driver does not handle the other channels (smbus, mmio, spinor)
->>> at the moment at all, can you provide some information how they
->>> are implemented in the ast2500? Are those handled completely
->>> in hardware (I assume this is the case for spinor at least), or do they
->>> require help from a driver, either this one or a separate one?
->> I can't send the AST2500 datasheet to you directly, but you can contact
->> Aspeed firstly.
->> https://www.aspeedtech.com/products.php?fPath=20&rId=440
+>>> Both mips and x86 end up mapping the same function, but other arches don't.
+>>> mn10300 is one where ioremap and ioremap_nocache are definitely different.
 >>
->> These functions are handled in hardware, the original SDK just provides some
->> ioctl API for user
->> application to access them. The mmio function such as KCS / Port 80, these
->> controllers will get
->> data from eSPI IP in silicon, but their drivers do not need to be changed,
->> run the same as LPC
->> mode.
->>
->> You can image bellowing work path:
->>
->>   KCS    Mailbox  Snoop (Port 80)  UART ....
->>     ^        ^                 ^                          ^
->>     |         |                |                           |
->>     |         |                |                           |
->>      \        |                /                          /
->>               { LPC IP }            <-------------------- { eSPI IP to decode
->> the mmio address }
-> This is all handled by the drivers/misc/aspeed-lpc-snoop.c driver, right?
-This driver just handle port 80. And later may have kcs-bmc.c upstream 
-from openbmc
-project: https://github.com/openbmc/docs/blob/master/kernel-development.md
->> And in our first generation eSPI x86 server, we  just use the eSPI new
->> function to decode the VW to boot the PCH (eSPI master).
->>
->> Other functions such as GPIO SMBus, we didn't use it. So for making
->> things clean, we just keep the basic code, which is verified and tested
->> well.
-> For the upstream submission, having the code verified and tested
-> is secondary, it most of all must be maintainable in the future ;-)
->
-> Your current driver is very simple, which is good: it shouldn't try to be
-> overly generic and do things we won't ever need, but I want to be
-> sure that I understand the bigger picture well enough and ensure
-> that the code is generic enough to do the things we know we will
-> need.
-Sure, people should easily add new features into this file. They just 
-need add other interrupt
-handling here. Currently, we handle the basic interrupt bits.
-> I see that your documentation only refers to the generic principle of
-> eSPI, while the driver deals mostly with the aspeed specifics. If we
-> get a generic virtual-wire implementation based on the spi-slave
-> framework, the documentation would be the same, and part
-> of the driver would also be the same. OTOH, if one were to use
-> the SMBUS over eSPI, the high-level interaction with the vw
-> would have to be different, and at that point, we'd probably want
-> an abstraction that can deal with both the aspeed hardware and
-> a simple spi-slave based implementation.
->
-> Superficially, the virtual wires closely resemble GPIOs both on
-> the host and the slave side, so I wonder if your driver could be
-> rewritten into a gpiochip driver that implements the slave side of
-> the eSPI VW on ast2500: make it export a set of GPIO lines,
-> I suppose you'd need 64 GPIOs to cover all possible
-> bits in ESPI_SYS_ISR and ESPI_SYS1_ISR, plus an irqchip
-> to handle the virtual events (ESPI_SYSEVT_HOST_RST_WARN
-> etc). That would let you separate the simple logic (ack after
-> warn, boot-done after boot, ...) into one driver or even
-> user space, and keep the low-level driver specific to ast2500
-> but otherwise independent of the host side. Do you think that
-> makes sense?
-Currently, these virtual wires side-band signals between PCH and BMC 
-(AST2500) needs to be
-handled in time. So we did it in ISR by reading and writing registers. 
-When this driver is loaded,
-then it can handle just in kernel mode, no need a user application. And 
-the real GPIO pin signal
-if transferred by ePSI VW, Aspeed will map these VW values to the GPIO 
-contorller, so that the
-original GPIO driver still work.
+>> alpha: identical
+>> arc: identical
+>> arm: identical
+>> arm64: identical
+>> cris: different        <==
+>> frv: identical
+>> hexagone: identical
+>> ia64: different        <==
+>> m32r: identical
+>> m68k: identical
+>> metag: identical
+>> microblaze: identical
+>> mips: identical
+>> mn10300: different     <==
+>> nios: identical
+>> openrisc: different    <==
+>> parisc: identical
+>> riscv: identical
+>> s390: identical
+>> sh: identical
+>> sparc: identical
+>> tile: identical
+>> um: rely on asm/generic
+>> unicore32: identical
+>> x86: identical
+>> asm/generic (no mmu): identical
+> 
+> Wow, that's correct, sorry for I have just checked the main archs, I means
+> x86,arm, arm64, mips.
+> 
+> However, I stall have no idea about why these 4 archs want different ioremap
+> function with others. Drivers seems cannot aware this? If driver call ioremap
+> want he really want for there 4 archs, cache or nocache?
 
->        Arnd
+Could you please help about this? it is out of my knowledge.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks
+Yisheng
+
+> 
+>>
+>> So 4 among all arches seems to have ioremap() and ioremap_nocache() being different.
+>>
+>> Could we have a define set by the 4 arches on which ioremap() and ioremap_nocache() are different, something like HAVE_DIFFERENT_IOREMAP_NOCACHE ?
+> 
+> Then, what the HAVE_DIFFERENT_IOREMAP_NOCACHE is uesed for ?
+> 
+> Thanks
+> Yisheng
+>>
+>> Christophe
+>>
+>>>
+>>> Guenter
+>>>
+>>>>> While ioremap's
+>>>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
+>>>>> same function with devm_ioremap, which can just be killed to reduce the size
+>>>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
+>>>>>
+>>>>> I have posted two versions, which use macro instead of function for
+>>>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
+>>>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
+>>>>> thing. So here comes v3 and please help to review.
+>>>>
+>>>> I don't think this can be done, what am I missing?  These functions are
+>>>> not identical, sorry for missing that before.
+> 
+> Never mind, I should checked all the arches, sorry about that.
+> 
+>>>>
+>>>> thanks,
+>>>>
+>>>> greg k-h
+>>>>
+>>>
+>>> -- 
+>>> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
+>>> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>
+>> ---
+>> L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+>> https://www.avast.com/antivirus
+>>
+>>
+>> .
+>>
+> 
+> 
+> .
+> 

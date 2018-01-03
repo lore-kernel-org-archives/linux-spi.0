@@ -1,51 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] gpio: of: Support SPI nonstandard GPIO properties
-Date: Wed, 3 Jan 2018 15:04:52 +0000
-Message-ID: <20180103150452.GB28713@sirena.org.uk>
-References: <20180101133749.29567-1-linus.walleij@linaro.org>
- <20180101133749.29567-2-linus.walleij@linaro.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v1] eSPI: add Aspeed AST2500 eSPI driver to boot a host
+ with PCH runs on eSPI
+Date: Wed, 3 Jan 2018 16:05:50 +0100
+Message-ID: <CAK8P3a29m0fKtmv4N4PG1bBFAOULoYvh_t6hk4u_fxRzjA5Z5A@mail.gmail.com>
+References: <1514512387-27113-1-git-send-email-haiyue.wang@linux.intel.com>
+ <CAK8P3a2nZzc22FgupGjGeS7uQkrxH_W7=T7m_foejDMHtp70_w@mail.gmail.com>
+ <20180103113805.GD5603@sirena.org.uk> <004d3017-5477-ec42-c78a-aba0ca0621bc@linux.intel.com>
+ <20180103143226.GI5603@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GRPZ8SYKNexpdSJ7"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: "Wang, Haiyue" <haiyue.wang-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
+        gregkh <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20180101133749.29567-2-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20180103143226.GI5603-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Jan 3, 2018 at 3:32 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Jan 03, 2018 at 10:28:22PM +0800, Wang, Haiyue wrote:
+>
+>> Should send to like this ? Because I add patch for Aspeed chip:
+>
+>> ./scripts/get_maintainer.pl drivers/misc/aspeed-lpc-snoop.c
+>> Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org> (maintainer:ARM/ASPEED MACHINE SUPPORT)
+>> Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> (supporter:CHAR and MISC DRIVERS)
+>> Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> (supporter:CHAR and MISC
+>> DRIVERS)
+>> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list)
+>
+> So it's not actually doing anything at all with the SPI subsystem?  I
+> lacked any context for the discussion having been copied in part way
+> through.  If it is a SPI controller it ought to have been in
+> drivers/spi.
 
---GRPZ8SYKNexpdSJ7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It's not an SPI host controller, but a specialized driver for a specialuzed
+SPI slave hardware block.
 
-On Mon, Jan 01, 2018 at 02:37:45PM +0100, Linus Walleij wrote:
+The SPI slave driver implements the higher-level parts of the eSPI protocol
+stack in Linux, and the lower levels in hardware. The question is whether (and
+how) there should be a split between the levels. If we are expecting to add
+a software implementation of the same eSPI stack in software using the generic
+SPI slave code in the future, it may be helpful to have that separate in place
+already.
 
-> Before it was clearly established that all GPIO properties in the
-> device tree shall be named "foo-gpios" (with the deprecated variant
-> "foo-gpio" for single lines) we unfortunately merged a few bindings
-> which named the lines "gpio-foo" instead.
+With my later suggestion of splitting out the eSPI "virtual wire" low-level
+support into a gpiochip driver, neither half would be in drivers/spi/, but
+one could implement a drivers/spi/spi-slave-espi-vw.c slave protocol
+driver that exposes the same in-kernel interface on top of a slave-capable
+SPI controller.
 
-Can we get this merged during the upcoming merge window to make the rest
-of the series easier to handle please?
-
---GRPZ8SYKNexpdSJ7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpM8RMACgkQJNaLcl1U
-h9Da2wf9H/dlEjK/dPnVdkKUGNCoy2JNMYmqhsy1dWBlj0oDXTDb3sMW4tzi9+mW
-XWDAq1Hasgf5foZ/Lsjpo+bGf7jbnoCFIjVGeL9JCHF7XrbKMuTikLsUP6jjzcTW
-rWzRXGIjo6hXPnwdx/3dFc1Xlgn6uakC1nod57gyjrHefMLLfbrhNTdZu+9WZXEF
-Qzjzj6vc13axSLDvPdQ4JKPsGHUFWr+V2Ab91Yeu5rp6D6w4pRKwuokTngQjyMZ8
-OfmSrjgwNRTsJAwRAggAKNTlTTpD69lZj3fJ2IAEtyLq7wB0awY2vprqN3pjqaNk
-GrupaG3qfZU6StaLTKYdQ+cixkTVcw==
-=LKwr
------END PGP SIGNATURE-----
-
---GRPZ8SYKNexpdSJ7--
+      Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

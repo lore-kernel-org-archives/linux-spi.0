@@ -1,69 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/5] Rewrite GPIO SPI to use descriptors
-Date: Wed, 3 Jan 2018 16:24:49 +0000
-Message-ID: <20180103162449.GG28713@sirena.org.uk>
-References: <20180101133749.29567-1-linus.walleij@linaro.org>
- <1514918569.26695.151.camel@impinj.com>
- <CACRpkdYRJ=jR4B2Ko2P1axwGMKob2vHkY2h8cMc9t9Qi7n52sQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="w/VI3ydZO+RcZ3Ux"
-Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYRJ=jR4B2Ko2P1axwGMKob2vHkY2h8cMc9t9Qi7n52sQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: sh-msiof: Fix timeout failures for TX-only DMA transfers
+Date: Wed,  3 Jan 2018 18:11:14 +0100
+Message-ID: <1514999474-22288-1-git-send-email-geert+renesas@glider.be>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+When using RX (with or without TX), the DMA interrupt triggers
+completion when the RX FIFO has been emptied, i.e. after the full
+transfer has finished.
 
---w/VI3ydZO+RcZ3Ux
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+However, when using TX without RX, the DMA interrupt triggers completion
+as soon as the DMA engine has filled the TX FIFO, i.e. before the full
+transfer has finished.  Then sh_msiof_modify_ctr_wait() will spin until
+the transfer has really finished and the TFSE bit is cleared, for at
+most 1 ms.  For slow speeds and/or large transfers, this may cause
+timeouts and transfer failures:
 
-On Wed, Jan 03, 2018 at 12:17:07AM +0100, Linus Walleij wrote:
+    spi_sh_msiof e6e10000.spi: failed to shut down hardware
+    74x164 spi2.0: SPI transfer failed: -110
+    spi_master spi2: failed to transfer one message from queue
+    74x164 spi2.0: Failed writing: -110
 
-> I'd be surprised if either performance or object code size is affected
-> in a bad way though. I don't have any high-speed SPI devices I can test
-> really, and loopback would require some special hardware set-up I
-> don't have.
+Fix this by waiting explicitly until the TX FIFO has been emptied.
 
-You could just do something like spin on register reads on some device
-or something?  Something like dumping a regmap via debugfs would do the
-trick probably.  I too would be surprised if there were a substantial
-hit but it'd be good to check, while they've never been fast equally the
-slowness can make people more sensitive to performance (including impact
-on the rest of the system).  One of the reasons people can end up with
-the GPIO controller is discovering some hardware bug in a hardware
-controller (like the issues a lot of the Freescale controllers have with
-trying to deassert chip select on every word transferred).
+Based on a patch in the BSP by Hiromitsu Yamasaki.
 
-> The last patch in the series remove remnants of an unused mechanism
-> that seemed to be for performance critical bitbanged SPI, that was never
-> put to use, I kind of assume noone is really doing performance critical
-> SPI over GPIO but I've been wrong before.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-sh-msiof.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-It was never really possible to upstream users of that code, AFAICT it
-was always for custom out of tree builds.
-
---w/VI3ydZO+RcZ3Ux
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpNA9AACgkQJNaLcl1U
-h9AOegf9GzlfxoDf6PtCCx7/uq0oE++vshKhhx50Fhttn8cc5Gn+G/VhCKYxLdyX
-zv5x83Dy9/rtIThEPGxCZUbP2sAnlE8bel0Ng6WZPfCf0lSpfWIT+QHw2awCDked
-Epan/OyXr8T6QbrjasRsfOWNWCBv35z0lApbdyErfatYmmuXoG0kGEvcMG1+e+Ty
-5r+KJ45O+vpd0KhSMr20zsbKB2/wNt8gd17Akd4ZpAdgloQyRAqjcu1v1WMBa+Eu
-CUSTjX78nm5dD/THBuriXkulZKCoQrZYtxVmpJLdeEOwErEs8eCn5OqtlDz2Qbpg
-7HVtSn8nU7BQNixzWR6nxjywozkNUQ==
-=8ckI
------END PGP SIGNATURE-----
-
---w/VI3ydZO+RcZ3Ux--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index e1d18de1e55c50e7..6c1914a1cddeec17 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -912,11 +912,21 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 		goto stop_dma;
+ 	}
+ 
+-	/* wait for tx fifo to be emptied / rx fifo to be filled */
++	/* wait for tx/rx DMA completion */
+ 	ret = sh_msiof_wait_for_completion(p);
+ 	if (ret)
+ 		goto stop_reset;
+ 
++	if (!rx) {
++		reinit_completion(&p->done);
++		sh_msiof_write(p, IER, IER_TEOFE);
++
++		/* wait for tx fifo to be emptied */
++		ret = sh_msiof_wait_for_completion(p);
++		if (ret)
++			goto stop_reset;
++	}
++
+ 	/* clear status bits */
+ 	sh_msiof_reset_str(p);
+ 
+-- 
+2.7.4

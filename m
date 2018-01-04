@@ -1,157 +1,107 @@
-From: Christophe LEROY <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-Date: Thu, 4 Jan 2018 09:05:45 +0100
-Message-ID: <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
- <b8ff7f17-7f2c-f220-9833-7ae5bd7343d5@c-s.fr>
- <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 2/8] spi: sh-msiof: Fix DMA transfer size check
+Date: Thu, 4 Jan 2018 09:24:15 +0100
+Message-ID: <CAMuHMdWOdgsEGN+OPrF+uoQekkioB2Tfq==GJ0nNoaXYVzDydw@mail.gmail.com>
+References: <20170906070507.26223-1-dirk.behme@de.bosch.com>
+ <20170906070507.26223-3-dirk.behme@de.bosch.com> <CAMuHMdWzWK5UTtmfoGmpHEwac8i3r1c6XqzT6cmwMXko2X7mvw@mail.gmail.com>
+ <931484ec-8830-0e63-98cb-9dd58ce35230@de.bosch.com> <CAMuHMdVY5fLf+qH0rKSe5BrXSd7xDpA3x=GAnwD43cu9LT8wig@mail.gmail.com>
+ <09ce4c7a-347c-7df8-d8ed-4eb61a00bd20@de.bosch.com> <CAMuHMdVo_62kYYmgLZNHksRi+Z96K+tu9KTsgyKfmk6U_gP79w@mail.gmail.com>
+ <a3fbaa5c-caa1-c28f-3248-6c5557a96d8c@de.bosch.com> <CAMuHMdXQKj3F02zur3BZ95Et+btQD=rOfpMUC8cFWBnwF4Qxdw@mail.gmail.com>
+ <CAMuHMdVvk2_0T7HdJbmd_QZ+7OtXAQYo3GZ6Xt2QPmd0N=1_qg@mail.gmail.com> <b6bbd5cd-b257-edef-8b2f-ee4e58382e12@de.bosch.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel@vger.kernel.org, ysxie@foxmail.com,
-        ulf.hansson@linaro.org, linux-mmc@vger.kernel.org,
-        boris.brezillon@free-electrons.com, richard@nod.at,
-        marek.vasut@gmail.com, cyrille.pitchen@wedev4u.fr,
-        linux-mtd@lists.infradead.org, alsa-devel@alsa-project.org,
-        wim@iguana.be, linux@roeck-us.net, linux-watchdog@vger.kernel.org,
-        b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linus.walleij@linaro.org, linux-gpio@vger.kernel.org,
-        ralf@linux-mips.org, linux-mips@linux-mips.org,
-        lgirdwood@gmail.com, broonie@kernel.org, tglx@linutronix.de,
-        jason@lakedaemon.net, marc.zyngier@arm.com, arnd@arndb.de,
-        andriy.shevchenko@linux.intel.com,
-        industrypack-devel@lists.sourceforge.net, wg@grandegger.com,
-        mkl@pengutronix.de, linux-can@vger.kernel.org, mchehab@kernel.org,
-        linux-media@vg
-To: Yisheng Xie <xieyisheng1@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Return-path: <linux-ide-owner@vger.kernel.org>
-In-Reply-To: <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
-Content-Language: fr
-Sender: linux-ide-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <b6bbd5cd-b257-edef-8b2f-ee4e58382e12@de.bosch.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Dirk,
 
-
-Le 25/12/2017 à 02:34, Yisheng Xie a écrit :
-> 
-> 
-> On 2017/12/24 17:05, christophe leroy wrote:
->>
->>
->> Le 23/12/2017 à 14:48, Greg KH a écrit :
->>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->>>> Hi all,
+On Thu, Jan 4, 2018 at 8:19 AM, Dirk Behme <dirk.behme@de.bosch.com> wrote:
+> On 03.01.2018 18:25, Geert Uytterhoeven wrote:
+>> On Thu, Sep 7, 2017 at 11:12 AM, Geert Uytterhoeven
+>> <geert@linux-m68k.org> wrote:
+>>> On Thu, Sep 7, 2017 at 11:05 AM, Dirk Behme <dirk.behme@de.bosch.com>
+>>> wrote:
+>>>> On 07.09.2017 10:59, Geert Uytterhoeven wrote:
+>>>>> On Thu, Sep 7, 2017 at 10:42 AM, Dirk Behme <dirk.behme@de.bosch.com>
+>>>>> wrote:
+>>>>>> On 07.09.2017 10:39, Geert Uytterhoeven wrote:
+>>>>>>> Sounds OK. Have you tested this?
+>>>>>>
+>>>>>> I tested all 8 patches together if they fix the issues I observed with
+>>>>>> plain
+>>>>>> mainline.
+>>>>>
+>>>>> Could you please elaborate about the issues you observed with plain
+>>>>> mainline?
+>>>>> It may help to identify which patches are responsible for fixing them.
 >>>>
->>>> When I tried to use devm_ioremap function and review related code, I found
->>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
->>>> except one use ioremap while the other use ioremap_nocache.
->>>
->>> For all arches?  Really?  Look at MIPS, and x86, they have different
->>> functions.
->>>
->>>> While ioremap's
->>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
->>>> same function with devm_ioremap, which can just be killed to reduce the size
->>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
+>>>> I've been told that an easy test case is to just cat random data (any
+>>>> mid
+>>>> sized file) into SPI. E.g.:
 >>>>
->>>> I have posted two versions, which use macro instead of function for
->>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
->>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
->>>> thing. So here comes v3 and please help to review.
+>>>> # cat /proc/cpuinfo > /dev/spidev32764.2
+>>>> [  504.544948] spi_sh_msiof e6e90000.spi: failed to shut down hardware
+>>>> [  504.551265] spidev spi32764.2: SPI transfer failed: -110
+>>>> [  504.556625] spi_master spi32764: failed to transfer one message from
+>>>> queue
+>>>> [  504.564857] spi_sh_msiof e6e90000.spi: failed to shut down hardware
+>>>> [  504.571177] spidev spi32764.2: SPI transfer failed: -110
+>>>> [  504.576528] spi_master spi32764: failed to transfer one message from
+>>>> queue
+>>>> cat: write error: Connection timed out
+>>>>
+>>>> done on plain 4.13-rc6.
 >>>
->>> I don't think this can be done, what am I missing?  These functions are
->>> not identical, sorry for missing that before.
+>>> Thank you, that's very valuable information!
+>>> We'll give it a try...
 >>
->> devm_ioremap() and devm_ioremap_nocache() are quite similar, both use devm_ioremap_release() for the release, why not just defining:
+>> After some investigation, this is caused by DMA completion triggering
+>> too early for TX-only transfers.  This should indeed be fixed by "[PATCH
+>> 5/8]
+>> spi: sh-msiof: Wait for Tx FIFO empty after DMA" you extracted from the
+>> BSP.
 >>
->> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->>                 resource_size_t size, bool nocache)
->> {
->> [...]
->>      if (nocache)
->>          addr = ioremap_nocache(offset, size);
->>      else
->>          addr = ioremap(offset, size);
->> [...]
->> }
+>> As that patch needs changes to apply (a) on current spi/for-next and (b)
+>> without other patches from your series, I reworked it into "[PATCH] spi:
+>> sh-msiof: Fix timeout failures for TX-only DMA transfers".
 >>
->> then in include/linux/io.h
->>
->> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>                 resource_size_t size)
->> {return __devm_ioremap(dev, offset, size, false);}
->>
->> static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->>                     resource_size_t size);
->> {return __devm_ioremap(dev, offset, size, true);}
-> 
-> Yeah, this seems good to me, right now we have devm_ioremap, devm_ioremap_wc, devm_ioremap_nocache
-> May be we can use an enum like:
-> typedef enum {
-> 	DEVM_IOREMAP = 0,
-> 	DEVM_IOREMAP_NOCACHE,
-> 	DEVM_IOREMAP_WC,
-> } devm_ioremap_type;
-> 
-> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->                  resource_size_t size)
->   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP);}
-> 
->   static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->                      resource_size_t size);
->   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_NOCACHE);}
-> 
->   static inline void __iomem *devm_ioremap_wc(struct device *dev, resource_size_t offset,
->                      resource_size_t size);
->   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_WC);}
-> 
->   static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->                  resource_size_t size, devm_ioremap_type type)
->   {
->       void __iomem **ptr, *addr = NULL;
->   [...]
->       switch (type){
->       case DEVM_IOREMAP:
->           addr = ioremap(offset, size);
->           break;
->       case DEVM_IOREMAP_NOCACHE:
->           addr = ioremap_nocache(offset, size);
->           break;
->       case DEVM_IOREMAP_WC:
->           addr = ioremap_wc(offset, size);
->           break;
->       }
->   [...]
->   }
+>> As for the other patches from your series:
+>>    - Upstream already has commit 36735783fdb599c9 ("spi: sh-msiof: Fix DMA
+>>      transfer size check"),
+>>    - spi/for-next has commit b8761434bdec32fa ("spi: sh-msiof: Implement
+>>      cs-gpios configuration").
+>> The remaining were either rejected, retracted, or it is unclear which
+>> problem
+>> (if any) they are really fixing.
+>
+> First, many thanks for looking into this!
+>
+>> Do you agree?
+>
+> If there are no more issues, then I agree ;) So lets rephrase that a little:
+> We'll test what we have, now. And in case we find any remaining issues,
+> we'll come back with more details, then. What will help us to look at the
+> remaining patches.
 
+Sure, if more issues can be identified, we should look into fixing them as
+well.
 
-That looks good to me, will you submit a v4 ?
+Thanks!
 
-Christophe
+Gr{oetje,eeting}s,
 
-> 
-> Thanks
-> Yisheng
-> 
->>
->> Christophe
->>
->>>
->>> thanks,
->>>
->>> greg k-h
->>> -- 
->>> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
->>> the body of a message to majordomo@vger.kernel.org
->>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->>>
->>
->> ---
->> L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
->> https://www.avast.com/antivirus
->>
->>
->> .
->>
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

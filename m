@@ -1,71 +1,48 @@
-From: David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-Date: Thu, 04 Jan 2018 14:52:54 +0000
-Message-ID: <20289.1515077574@warthog.procyon.org.uk>
-References: <CAK8P3a3i0bKvG56ha9_hzO=z80sVxCQhaeFn6QW3AwbwZs3HPg@mail.gmail.com>
- <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
- <f7632cf5-2bcc-4d74-b912-3999937a1269@roeck-us.net>
- <c28ac0bc-8bd2-3dce-3167-8c0f80ec601e@c-s.fr>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/5] gpio: of: Support SPI nonstandard GPIO properties
+Date: Thu, 4 Jan 2018 21:24:22 +0100
+Message-ID: <CACRpkdZ9yGm9K4iF=jR8bjzZR6cU7vEV8tNz6i7DfcE=Jhp2yw@mail.gmail.com>
+References: <20180101133749.29567-1-linus.walleij@linaro.org>
+ <20180101133749.29567-2-linus.walleij@linaro.org> <CAL_JsqLH4pqptAkpw2CHPRe=6dR3k1iBPM8g7yMFUHnYmm7L9w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Yisheng Xie <xieyisheng1@huawei.com>, linux-mips@linux-mips.org,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Jakub Kicinski <jakub.kicinski@netronome.com>,
- Platform Driver <platform-driver-x86@vger.kernel.org>,
- David Airlie <airlied@linux.ie>,
- linux-wireless <linux-wireless@vger.kernel.org>, alsa-devel@alsa-project.org,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Liam Girdwood <lgirdwood@gmail.com>, dhowells@redhat.com,
- IDE-ML <linux-ide@vger.kernel.org>, Wim Van Sebroeck <wim@iguana.be>,
- Networking <netdev@vger.kernel.org>, linux-mtd <linux-mtd@lists.infradead.org>,
- Daniel Vetter <daniel.vetter@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Jason Cooper <jason@lakedaemon.net>,
- linux-rtc@vger.kernel.org,
- Boris Brezillon <boris.brezillon@free-electrons.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, dmaengine@vger.kernel.org,
- Vinod Koul <vinod.koul@intel.com>, Richar
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <CAK8P3a3i0bKvG56ha9_hzO=z80sVxCQhaeFn6QW3AwbwZs3HPg@mail.gmail.com>
-Content-ID: <20288.1515077574.1@warthog.procyon.org.uk>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAL_JsqLH4pqptAkpw2CHPRe=6dR3k1iBPM8g7yMFUHnYmm7L9w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-QXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4gd3JvdGU6Cgo+IC0gbW4xMDMwMCBhcHBlYXJz
-IHRvIGJlIHdyb25nLCBicm9rZW4gYnkgRGF2aWQgSG93ZWxscyBpbgo+ICAgY29tbWl0IDgzYzJk
-YzE1Y2U4MiAoIk1OMTAzMDA6IEhhbmRsZSBjYWNoZWFibGUgUENJIHJlZ2lvbnMKPiAgIGluIHBj
-aV9pb21hcCgpIikgZm9yIGFueSBkcml2ZXIgY2FsbGluZyBpb3JlbWFwKCkgYnkgdG8gZ2V0IHVu
-Y2FjaGVkCj4gICBtZW1vcnksCgpJdCdzIG5vdCBjbGVhciB3aGF0IHRoZSByaWdodCB0aGluZyB0
-byBkbyB3YXMsIGdpdmVuIHRoYXQgdGhlcmUncyBhbiBpb3JlbWFwKCkKYW5kIGFuIGlvcmVtYXBf
-dW5jYWNoZWQoKS4KCkJ1dCB0aGUgYXNiMjMwNSdzIHBjaV9pb21hcCgpIHdpbGwgdXNlIGlvcmVt
-YXAoKSAodGhlIGNhY2hlYWJsZSB3aW5kb3cpIGlmCklPUkVTT1VSQ0VfQ0FDSEVBQkxFIGlzIHNl
-dCwgYnV0IElPUkVTT1VSQ0VfSU8gaXMgbm90IGFuZCBpb3JlbWFwX3VuY2FjaGVkKCkKb3RoZXJ3
-aXNlLgoKVGhlIG90aGVyIHN1cHBvcnRlZCB1bml0cyBkb24ndCBoYXZlIFBDSSBidXNlcy4KCj4g
-aWYgSSB1bmRlcnN0YW5kIHRoZSBjb21tZW50IGZvciBjb21taXQgMzRmMWJkZWUxOTEwICgibW4x
-MDMwMDogc3dpdGNoIHRvCj4gR0VORVJJQ19QQ0lfSU9NQVAiKSBjb3JyZWN0bHk6IGl0IHNlZW1z
-IHRoYXQgUENJIGFkZHJlc3NlcyBpbmNsdWRlIHRoZQo+ICd1bmNhY2hlZCcgYml0IGJ5IGRlZmF1
-bHQgdG8gZ2V0IHRoZSByaWdodCBiZWhhdmlvciwgYnV0IGRyb3BwaW5nIHRoYXQgYml0Cj4gYnJl
-YWtzIGl0LgoKTm90IGV4YWN0bHkuICBUaGUgQ1BVIGhhcyBhIHdpbmRvdyBpbiB0aGUgcmFuZ2Ug
-MHhhMDAwMDAwMC0weGJmZmZmZmZmIHdoaWNoIGlzCmFuIHVuY2FjaGVkIHZpZXcgb2YgaXRzIGhh
-cmR3YXJlIGJ1c2VzLiAgSXQgaGFzIGFub3RoZXIgd2luZG93IGluIHRoZSByYW5nZQoweDgwMDAw
-MDAwLTB4OWZmZmZmZmYgd2hpY2ggaXMgYSBjYWNoZWQgdmlldyBvZiB0aGF0IHJlZ2lvbi4gIFRo
-ZXNlIHdpbmRvd3MKY2Fubm90IGJlIGNoYW5nZWQgYW5kIGFkZHJlc3NlcyBhYm92ZSAweDgwMDAw
-MDAwIGFyZSBzdGF0aWNhbGx5IG1hcHBlZCBhbmQgYXJlCm9ubHkgYWNjZXNzaWJsZSBieSB0aGUg
-a2VybmVsICh0aGlzIGlzIGhhcmR3aXJlZCBpbiB0aGUgTU1VKS4KClNvIHRoZSBhcmNoIGhhcyB0
-d28gc3Vid2luZG93cyB0byB0aGUgUENJIGJ1cywgb25lIGNhY2hlZCBhbmQgb25lIHVuY2FjaGVk
-LgpUaGVzZSBzdWJ3aW5kb3dzIGFyZSBmdXJ0aGVyIHN1YmRpdmlkZWQgaW50byBpb3BvcnQgYW5k
-IGlvbWVtIHNwYWNlcywgYW4gU1JBTQphbmQgc29tZSBjb250cm9sIHJlZ2lzdGVycyBmb3IgdGhl
-IENQVS1QQ0kgYnJpZGdlLgoKRGF2aWQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vZHJpLWRldmVsCg==
+On Wed, Jan 3, 2018 at 4:23 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, Jan 1, 2018 at 7:37 AM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+
+>> +/*
+>> + * The SPI GPIO bindings happened before we managed to establish that GPIO
+>> + * properties should be named "foo-gpios" so we have this special kludge for
+>> + * them.
+>> + */
+>> +#ifdef CONFIG_SPI_MASTER
+>> +static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
+>> +                                         enum of_gpio_flags *of_flags)
+>> +{
+>> +       char prop_name[32]; /* 32 is max size of property name */
+>> +       struct device_node *np = dev->of_node;
+>> +       struct gpio_desc *desc;
+>
+> Instead of the ifdef:
+>
+> if (!IS_ENABLED(CONFIG_SPI_MASTER))
+>   return ERR_PTR(-ENOENT);
+>
+> Or merge the condition with the if below.
+
+I was consciously exploting the fact the CONFIG_SPI_MASTER is bool,
+but I guess that can be fragile if someone decides to modularize it so, OK.
+
+Yours,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

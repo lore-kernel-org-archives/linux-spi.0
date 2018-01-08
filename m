@@ -1,92 +1,112 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: do not access registers while clocks disabled" to the spi tree
-Date: Mon, 08 Jan 2018 12:36:13 +0000
-Message-ID: <E1eYWez-0003TA-5J@debutante>
-References: <20180107140549.17855-1-stefan@agner.ch>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Philippe De Muyter <phdm@macqel.be>,
-        Huang Shijie <shijie.huang@arm.com>, linux-spi@vger.kernel.org
-To: Stefan Agner <stefan@agner.ch>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180107140549.17855-1-stefan@agner.ch>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v2] gpio: of: Support SPI nonstandard GPIO properties
+Date: Mon,  8 Jan 2018 13:49:09 +0100
+Message-ID: <20180108124909.32334-1-linus.walleij@linaro.org>
+Cc: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Before it was clearly established that all GPIO properties in the
+device tree shall be named "foo-gpios" (with the deprecated variant
+"foo-gpio" for single lines) we unfortunately merged a few bindings
+which named the lines "gpio-foo" instead.
 
-   spi: imx: do not access registers while clocks disabled
+This is most prominent in the GPIO SPI driver in Linux which names
+the lines "gpio-sck", "gpio-mosi" and "gpio-miso".
 
-has been applied to the spi tree at
+As we want to switch the GPIO SPI driver to using descriptors, we
+need devm_gpiod_get() to return something reasonable when looking
+up these in the device tree.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Put in a special #ifdef:ed kludge to do this special lookup only
+for the SPI case and gets compiled out if we're not enabling SPI.
+If we have more oddly defined legacy GPIOs like this, they can be
+handled in a similar manner.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d593574aff0ab846136190b1729c151c736727ec Mon Sep 17 00:00:00 2001
-From: Stefan Agner <stefan@agner.ch>
-Date: Sun, 7 Jan 2018 15:05:49 +0100
-Subject: [PATCH] spi: imx: do not access registers while clocks disabled
-
-Since clocks are disabled except during message transfer clocks
-are also disabled when spi_imx_remove gets called. Accessing
-registers leads to a freeeze at least on a i.MX 6ULL. Enable
-clocks before disabling accessing the MXC_CSPICTRL register.
-
-Fixes: 9e556dcc55774 ("spi: spi-imx: only enable the clocks when we start to transfer a message")
-Signed-off-by: Stefan Agner <stefan@agner.ch>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+I will merge this into the GPIO tree as a preparation for the next
+(v4.17) kernel cycle so that we avoid cross-tree dependencies.
+I estimate that it is too late to merge the bulk of the patches
+for v4.16, but this can go in.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 79ddefe4180d..40390d31a93b 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1668,12 +1668,23 @@ static int spi_imx_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-+	int ret;
+ChangeLog v1->v2:
+- Us if IS_ENABLED(CONFIG_SPI_MASTER) instead of
+  #ifdef CONFIG_SPI_MASTER
+---
+ drivers/gpio/gpiolib-of.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index e0d59e61b52f..3ae9876e8c44 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -117,6 +117,37 @@ int of_get_named_gpio_flags(struct device_node *np, const char *list_name,
+ }
+ EXPORT_SYMBOL(of_get_named_gpio_flags);
  
- 	spi_bitbang_stop(&spi_imx->bitbang);
++/*
++ * The SPI GPIO bindings happened before we managed to establish that GPIO
++ * properties should be named "foo-gpios" so we have this special kludge for
++ * them.
++ */
++#if IS_ENABLED(CONFIG_SPI_MASTER)
++static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
++					  enum of_gpio_flags *of_flags)
++{
++	char prop_name[32]; /* 32 is max size of property name */
++	struct device_node *np = dev->of_node;
++	struct gpio_desc *desc;
++
++	/* Allow this specifically for "spi-gpio" devices */
++	if (!of_device_is_compatible(np, "spi-gpio") || !con_id)
++		return ERR_PTR(-ENOENT);
++
++	/* Will be "gpio-sck", "gpio-mosi" or "gpio-miso" */
++	snprintf(prop_name, sizeof(prop_name), "%s-%s", "gpio", con_id);
++
++	desc = of_get_named_gpiod_flags(np, prop_name, 0, of_flags);
++	return desc;
++}
++#else
++static struct gpio_desc *of_find_spi_gpio(struct device *dev, const char *con_id,
++					  enum of_gpio_flags *of_flags)
++{
++	return ERR_PTR(-ENOENT);
++}
++#endif
++
+ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 			       unsigned int idx,
+ 			       enum gpio_lookup_flags *flags)
+@@ -126,6 +157,7 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 	struct gpio_desc *desc;
+ 	unsigned int i;
  
-+	ret = clk_enable(spi_imx->clk_per);
-+	if (ret)
-+		return ret;
++	/* Try GPIO property "foo-gpios" and "foo-gpio" */
+ 	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
+ 		if (con_id)
+ 			snprintf(prop_name, sizeof(prop_name), "%s-%s", con_id,
+@@ -140,6 +172,10 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 			break;
+ 	}
+ 
++	/* Special handling for SPI GPIOs if used */
++	if (IS_ERR(desc))
++		desc = of_find_spi_gpio(dev, con_id, &of_flags);
 +
-+	ret = clk_enable(spi_imx->clk_ipg);
-+	if (ret) {
-+		clk_disable(spi_imx->clk_per);
-+		return ret;
-+	}
-+
- 	writel(0, spi_imx->base + MXC_CSPICTRL);
--	clk_unprepare(spi_imx->clk_ipg);
--	clk_unprepare(spi_imx->clk_per);
-+	clk_disable_unprepare(spi_imx->clk_ipg);
-+	clk_disable_unprepare(spi_imx->clk_per);
- 	spi_imx_sdma_exit(spi_imx);
- 	spi_master_put(master);
+ 	if (IS_ERR(desc))
+ 		return desc;
  
 -- 
-2.15.1
+2.14.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

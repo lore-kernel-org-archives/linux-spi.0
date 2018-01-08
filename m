@@ -1,51 +1,107 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] gpio: of: Support SPI nonstandard GPIO properties
-Date: Mon, 8 Jan 2018 09:22:52 -0600
-Message-ID: <CAL_JsqKDObQZQ=GNYvZT013bu_gZvdJVDEP64ujdNC0CowEg=A@mail.gmail.com>
-References: <20180108150221.14193-1-linus.walleij@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180108150221.14193-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: s3c64xx: add SPDX identifier" to the spi tree
+Date: Mon, 08 Jan 2018 16:23:56 +0000
+Message-ID: <E1eYaDM-0002PX-W5@debutante>
+References: <20171214062827.12573-1-andi.shyti@samsung.com>
+Cc: Philippe Ombredanne <pombredanne@nexb.com>,
+        Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>,
+        linux-spi@vger.kernel.org
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20171214062827.12573-1-andi.shyti@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 8, 2018 at 9:02 AM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> Before it was clearly established that all GPIO properties in the
-> device tree shall be named "foo-gpios" (with the deprecated variant
-> "foo-gpio" for single lines) we unfortunately merged a few bindings
-> which named the lines "gpio-foo" instead.
->
-> This is most prominent in the GPIO SPI driver in Linux which names
-> the lines "gpio-sck", "gpio-mosi" and "gpio-miso".
->
-> As we want to switch the GPIO SPI driver to using descriptors, we
-> need devm_gpiod_get() to return something reasonable when looking
-> up these in the device tree.
->
-> Put in a special #ifdef:ed kludge to do this special lookup only
-> for the SPI case and gets compiled out if we're not enabling SPI.
-> If we have more oddly defined legacy GPIOs like this, they can be
-> handled in a similar manner.
->
-> Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
-> ChangeLog v2->v3:
-> - Put the if(!IS_ENABLED()) inside the SPI GPIO retrieveal function
->   and rely on the compiler to stub out unused code.
-> ChangeLog v1->v2:
-> - Us if IS_ENABLED(CONFIG_SPI_MASTER) instead of
->   #ifdef CONFIG_SPI_MASTER
-> ---
->  drivers/gpio/gpiolib-of.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
+The patch
 
-Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+   spi: s3c64xx: add SPDX identifier
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 78b5d705b51bc175fb67e4f5209f55e5ec581eec Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@samsung.com>
+Date: Thu, 14 Dec 2017 15:28:27 +0900
+Subject: [PATCH] spi: s3c64xx: add SPDX identifier
+
+Replace the original license statement with the SPDX identifier.
+
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Philippe Ombredanne <pombredanne@nexb.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-s3c64xx.c                 | 18 ++++--------------
+ include/linux/platform_data/spi-s3c64xx.h |  6 ++----
+ 2 files changed, 6 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index de7df20f8712..baa3a9fa2638 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1,17 +1,7 @@
+-/*
+- * Copyright (C) 2009 Samsung Electronics Ltd.
+- *	Jaswinder Singh <jassi.brar@samsung.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++//
++// Copyright (c) 2009 Samsung Electronics Co., Ltd.
++//      Jaswinder Singh <jassi.brar@samsung.com>
+ 
+ #include <linux/init.h>
+ #include <linux/module.h>
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index da79774078a7..773daf7915a3 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -1,10 +1,8 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
+ /*
+  * Copyright (C) 2009 Samsung Electronics Ltd.
+  *	Jaswinder Singh <jassi.brar@samsung.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+  */
+ 
+ #ifndef __SPI_S3C64XX_H
+-- 
+2.15.1

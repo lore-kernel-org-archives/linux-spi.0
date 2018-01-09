@@ -1,75 +1,117 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCHv1 2/3] spi: Add spi driver for Socionext Synquacer
  platform
-Date: Tue, 9 Jan 2018 17:41:41 +0000
-Message-ID: <20180109174141.GF11471@sirena.org.uk>
+Date: Tue, 9 Jan 2018 19:59:05 +0000
+Message-ID: <1515527945.25398.59.camel@impinj.com>
 References: <1515503383-8909-1-git-send-email-jassisinghbrar@gmail.com>
- <1515503448-9025-1-git-send-email-jassisinghbrar@gmail.com>
+         <1515503448-9025-1-git-send-email-jassisinghbrar@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vKFfOv5t3oGVpiF+"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        "jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        "ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: "jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <1515503448-9025-1-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Language: en-US
+Content-ID: <D320C76CBBB2B140B62917105DCAA3F6-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---vKFfOv5t3oGVpiF+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Jan 09, 2018 at 06:40:48PM +0530, jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
-
-This is basically fine, a couple of style things plus the question I had
-on the bindings:
-
-> +++ b/drivers/spi/spi-synquacer.c
-> @@ -0,0 +1,664 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Synquacer HSSPI controller driver
-
-Mixing C and C++ style comments on adjacent lines looks messy, just make
-the whole thing C++.
-
-> +       speed = xfer->speed_hz ? : spi->max_speed_hz;
-> +       bpw = xfer->bits_per_word ? : spi->bits_per_word;
-
-I'm not a big fan of all the ternery operator use in the driver, it's
-not super helpful for legibility.
-
-> +	if (sspi->bpw == 8)
-> +		words = xfer->len / 1;
-> +	else if (sspi->bpw == 16)
-> +		words = xfer->len / 2;
-> +	else
-> +		words = xfer->len / 4;
-
-This should be a switch statement; a safety check for invalid values
-wouldn't go amiss either.
-
---vKFfOv5t3oGVpiF+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpU/tQACgkQJNaLcl1U
-h9DFTQf9FAgzVFX1w6D/dFOUsfcbtbkQWrmWZAAXV30Wxyl+hJnCp6TGnp1rrP72
-NOUfah+YjrtFhAkisxiXRA575kQGklojE6w2PogHjMbijtDy6rVEtg9G6r0rHcGb
-B8wwjgjQFEyO3bmvIW9YoN/pZ8fG56PLCceOxikuknTpISt5opzaSkNtbRHk2BpT
-EHtuDGm/YpFiGMZjaiTvHJv7c3wmvU/tp0Qi/9IfuyVZHlvYid7yVWYNY/73nd82
-ZZ+cGzCPhOCLXzXGP19EhdIj7PliJxX9Ea7x7I6DLj0hZGIIPQINOIFfIiVm9aZS
-l2fBEjcng/1kSV92bSzFaZMWd+l1eQ==
-=hNKz
------END PGP SIGNATURE-----
-
---vKFfOv5t3oGVpiF+--
+T24gVHVlLCAyMDE4LTAxLTA5IGF0IDE4OjQwICswNTMwLCBqYXNzaXNpbmdoYnJhckBnbWFpbC5j
+b20gd3JvdGU6DQo+IEZyb206IEphc3NpIEJyYXIgPGphc3dpbmRlci5zaW5naEBsaW5hcm8ub3Jn
+Pg0KPiANCj4gVGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQgZm9yIGNvbnRyb2xsZXIgZm91bmQgb24g
+c3lucXVhY2VyIHBsYXRmb3Jtcy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEphc3NpIEJyYXIgPGph
+c3dpbmRlci5zaW5naEBsaW5hcm8ub3JnPg0KPiANCj4gK3N0YXRpYyBpbnQgc3lucXVhY2VyX3Nw
+aV9jb25maWcoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwNCj4gKwkJCQkgIHN0cnVjdCBzcGlf
+ZGV2aWNlICpzcGksDQo+ICsJCQkJICBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVyKQ0KPiArew0K
+PiArCXN0cnVjdCBzeW5xdWFjZXJfc3BpICpzc3BpID0gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YSht
+YXN0ZXIpOw0KPiArCXVuc2lnbmVkIGludCBzcGVlZCwgbW9kZSwgYnB3LCBjcywgYnVzX3dpZHRo
+Ow0KPiArCXVuc2lnbmVkIGxvbmcgcmF0ZSwgdHJhbnNmX21vZGU7DQo+ICsJdTMyIHZhbCwgZGl2
+Ow0KPiArDQo+ICsJLyogRnVsbCBEdXBsZXggb25seSBvbiAxYml0IHdpZGUgYnVzICovDQo+ICsJ
+aWYgKHhmZXItPnJ4X2J1ZiAmJiB4ZmVyLT50eF9idWYgJiYNCj4gKwkJCSh4ZmVyLT5yeF9uYml0
+cyAhPSAxIHx8IHhmZXItPnR4X25iaXRzICE9IDEpKSB7DQo+ICsJCWRldl9lcnIoc3NwaS0+ZGV2
+LCAiUlggYW5kIFRYIGJ1cyB3aWR0aHMgbXVzdCBtYXRjaCFcbiIpOw0KDQpUaGlzIGxvb2tzIGxp
+a2UgdGhlIHdyb25nIGVycm9yIG1lc3NhZ2UgaXMgYmVpbmcgcHJpbnRlZC4gIEl0IGRvZXMgbm90
+DQptYXRjaCB0aGUgY29tbWVudCBub3IgdGhlIGNvZGUuDQoNCj4gKwlzcGVlZCA9IHhmZXItPnNw
+ZWVkX2h6ID8gOiBzcGktPm1heF9zcGVlZF9oejsNCj4gKwlicHcgPSB4ZmVyLT5iaXRzX3Blcl93
+b3JkID8gOiBzcGktPmJpdHNfcGVyX3dvcmQ7DQoNCllvdSBzaG91bGRuJ3QgbmVlZCB0byBkbyB0
+aGlzIGNoZWNraW5nLiBfX3NwaV92YWxpZGF0ZSgpIHNob3VsZCBoYXZlDQphbHJlYWR5IHNldCB0
+aGVzZSBmaWVsZHMgaW4geGZlciB0byB0aGVpciBkZWZhdWx0cyBpZiB0aGV5IHdlcmVuJ3Qgc2V0
+LA0KY2hlY2tlZCB4ZmVyIHNwZWVkIGlzIGxlc3MgdGhhbiBjb250cm9sbGVyIG1heCBzcGVlZCwg
+Y2hlY2tlZCBidXMgd2lkdGgNCmlzIHN1cHBvcnRlZCwgZXRjLg0KDQo+ICsJLyogcmV0dXJuIGlm
+IG5vdGhpbmcgdG8gY2hhbmdlICovDQo+ICsJaWYgKHNwZWVkID09IHNzcGktPnNwZWVkICYmDQo+
+ICsJCQlidXNfd2lkdGggPT0gc3NwaS0+YnVzX3dpZHRoICYmIGJwdyA9PSBzc3BpLT5icHcgJiYN
+Cj4gKwkJCW1vZGUgPT0gc3NwaS0+bW9kZSAmJiBjcyA9PSBzc3BpLT5jcyAmJg0KPiArCQkJdHJh
+bnNmX21vZGUgPT0gc3NwaS0+b2xkX3RyYW5zZl9tb2RlKSB7DQo+ICsJCXJldHVybiAwOw0KPiAr
+CX0NCg0KR29vZCBvcHRpbWl6YXRpb24gdG8gbm90IHJlcHJvZ3JhbSBvbiBldmVyeSB4ZmVyLCBz
+aW5jZSB1c3VhbGx5IHNwZWVkLA0KYml0cywgZXRjLiBzdGF5cyB0aGUgc2FtZSBmb3IgYSBzZXJp
+ZXMgb2YgeGZlcnMuICBIb3dldmVyLCBvZnRlbiBTUEkNCmNsaWVudHMgZ2VuZXJhdGUgYSBudW1i
+ZXIgd3JpdGUsIHJlYWQgcGFpcnMuICBJbiB0aGlzIGNhc2UgdHJhbnNmX21vZGUNCndpbGwgYWx0
+ZXJuYXRlIGFuZCB0aGUgb3B0aW1pemF0aW9uIHdpbGwgZmFpbCB0byB3b3JrLCBldmVuIHRocm91
+Z2ggaXQNCmlzIHZlcnkgbGlrZWx5IHRoYXQgbm90aGluZyAoZXNwZWNpYWxseSBidXMgc3BlZWQs
+IHdoaWNoIGNhbiBiZSBzbG93IHRvDQpjaGFuZ2UpIGVsc2UgY2hhbmdlZC4NCg0KQ29uc2lkZXIg
+YWxsb3dpbmcgY2hhbmdpbmcgYmV0d2VlbiByZWFkIGFuZCB3cml0ZSB3aXRob3V0IHVubmVjZXNz
+YXJpbHkNCnJlcHJvZ3JhbW1pbmcgZXZlcnl0aGluZyBlbHNlLg0KDQo+ICsNCj4gKwlpZiAoeGZl
+ci0+dHhfYnVmKQ0KPiArCQlzc3BpLT5vbGRfdHJhbnNmX21vZGUgPSBUWEJJVDsNCj4gKwllbHNl
+DQo+ICsJCXNzcGktPm9sZF90cmFuc2ZfbW9kZSA9IFJYQklUOw0KV2h5IG5vdCBqdXN0Og0KDQpz
+c3BpLT5vbGRfdHJhbnNmX21vZGUgPSB0cmFuc2ZfbW9kZTsNCg0KQWxzbywgd2h5IGlzIHRoaXMg
+Im9sZF8iIHdoZW4gYWxsIHRoZSBvdGhlciBvbmVzLCBzc3BpLT5zcGVlZCwgZXRjLiwNCmRvbid0
+IGhhdmUgIm9sZF8iIGluIGZyb250LiAgU2VlbXMgaW5jb25zaXN0ZW50IHVubGVzcyB0aGVyZSBp
+cw0Kc29tZXRoaW5nIHNwZWNpYWwgYWJvdXQgdHJhbnNmX21vZGUgSSBoYXZlIG1pc3NlZC4NCg0K
+PiANCj4gKw0KPiArCWlmICh4ZmVyLT50eF9idWYgJiYgeGZlci0+cnhfYnVmKQ0KPiArCQl2YWwg
+fD0gKERBVEFfVFhSWCA8PCBEQVRBX1NISUZUKTsNCj4gKwllbHNlIGlmICh4ZmVyLT5yeF9idWYp
+DQo+ICsJCXZhbCB8PSAoREFUQV9SWCA8PCBEQVRBX1NISUZUKTsNCj4gKwllbHNlDQo+ICsJCXZh
+bCB8PSAoREFUQV9UWCA8PCBEQVRBX1NISUZUKTsNCg0KTG9va3MgbGlrZSBvbmUgbmVlZHMgdG8g
+c2V0IHRocmVlIGRpZmZlcmVudCBtb2RlcyBmb3IgYmksIHJ4LCBhbmQgdHguIA0KQnV0IHlvdXIg
+dHJhbnNmX21vZGUgdmFyaWFibGUgb25seSBoYXMgdHdvIHNldHRpbmdzLCByeCBhbmQgdHguICBJ
+dA0Kd29uJ3QgZGV0ZWN0IGNoYW5nZSBiZXR3ZWVuIHR4IGFuZCBiaS4NCg0KPiANCj4gKw0KPiAr
+CXZhbCA9IHJlYWRsX3JlbGF4ZWQoc3NwaS0+cmVncyArIEZJRk9DRkcpOw0KPiArCXZhbCB8PSBS
+WF9GTFVTSDsNCj4gKwl2YWwgfD0gVFhfRkxVU0g7DQo+ICsJd3JpdGVsX3JlbGF4ZWQodmFsLCBz
+c3BpLT5yZWdzICsgRklGT0NGRyk7DQoNCklmIHRoaXMgY2F1c2VzIHRoZSBtYXN0ZXIgdG8gcHVs
+c2UgdGhlIGNoaXBzZWxlY3QgaXQgd2lsbCBtZXNzIHVwDQptZXNzYWdlcyB0aGF0IGhhdmUgbW9y
+ZSB0aGFuIG9uZSB4ZmVyLg0KDQo+ICsNCj4gKwkvKiBTZWUgaWYgd2UgY2FuIHRyYW5zZmVyIDQt
+Ynl0ZXMgYXMgMSB3b3JkIGV2ZW4gaWYgbm90IGFza2VkICovDQo+ICsJYnB3ID0geGZlci0+Yml0
+c19wZXJfd29yZCA/IDogc3BpLT5iaXRzX3Blcl93b3JkOw0KDQpEb24ndCBuZWVlZCB0aGlzIGFz
+IHhmZXItPmJpdHNfcGVyX3dvcmQgaXMgYWxyZWFkeSBub3JtYWxpemVkLg0KDQo+ICsJaWYgKGJw
+dyA9PSA4ICYmICEoeGZlci0+bGVuICUgNCkgJiYgIShzcGktPm1vZGUgJiBTUElfTFNCX0ZJUlNU
+KSkgew0KPiArCQlicHcgPSB4ZmVyLT5iaXRzX3Blcl93b3JkOw0KPiArCQl4ZmVyLT5iaXRzX3Bl
+cl93b3JkID0gMzI7DQo+ICsJfSBlbHNlIHsNCj4gKwkJYnB3ID0geGZlci0+Yml0c19wZXJfd29y
+ZDsNCj4gKwl9DQoNCldoYXQncyB0aGUgcG9pbnQgb2YgdGhlIGJwdyA9IHhmZXItPmJpdHNfcGVy
+X3dvcmQgYWJvdmU/ICBJdCB3b3VsZA0KYWxyZWFkeSBiZSBzZXQgdG8gdGhhdCB2YWx1ZS4NCg0K
+PiArDQo+ICsJcmV0ID0gc3lucXVhY2VyX3NwaV9jb25maWcobWFzdGVyLCBzcGksIHhmZXIpOw0K
+PiArCWlmIChyZXQpIHsNCj4gKwkJeGZlci0+Yml0c19wZXJfd29yZCA9IGJwdzsNCg0KV2h5IG5v
+dCByZXN0b3JlIHhmZXItPmJpdHNfcGVyX3dvcmQgaW1tZWRpYXRlbHkgYWZ0ZXIgY2FsbCB0bw0K
+c3lucXVhY2VyX3NwaV9jb25maWcsIGJlZm9yZSBpZiBzdGF0ZW1lbnQuICBJdCdzIG5vdCB1c2Vk
+IGFnYWluLiAgVGhlbg0KeW91IGRvbid0IGhhdmUgdG8gcmVzdG9yZSBpdCBhbHNvIGF0IHRoZSBl
+bmQgb2YgdGhlIGZ1bmN0aW9uLg0KDQo+IA0KPiArDQo+ICsJc3Bpbl9sb2NrX2lycXNhdmUoJnNz
+cGktPmxvY2ssIGZsYWdzKTsNCg0KV2hhdCdzIHRoaXMgbG9jayBmb3I/ICBJIHNlZSBubyBvdGhl
+ciB1c2UgdGhhbiBoZXJlLg0KDQo+ICsJbWFzdGVyLT5taW5fc3BlZWRfaHogPSBtYXN0ZXItPm1h
+eF9zcGVlZF9oeiAvIDI1NDsNCg0KVGhlIGNvbmZpZ3VyZSBmdW5jdGlvbiByZWplY3RzIGRpdmlz
+b3JzIGxhcmdlciB0aGFuIDEyNy4gIFNlZW1zIGxpa2UNCnRoZXNlIHNob3VsZCBtYXRjaC4NCg0K
+SSBub3RpY2UgeW91ciB0cmFuc2ZlciBmdW5jdGlvbiBkb2VzIG5vdCB1c2UgaW50ZXJydXB0cy4g
+IEl0IHdpbGwgc3Bpbg0KaW4gYSB0aWdodCBsb29wIHBvbGxpbmcgRE1TVEFUVVMgd2FpdGluZyBm
+b3IgZGF0YSB0byBhcnJpdmUuICBOb3QgdmVyeQ0KZnJpZW5kbHkgZm9yIGEgbXVsdGl0YXNraW5n
+IG9wZXJhdGluZyBzeXN0ZW0uICBJdCB3b3VsZCBiZSBtdWNoIGJldHRlcg0KaWYgdGhlcmUgd2Fz
+IGEgd2F5IHdhaXQgZm9yIGluIGFuIGludGVycnVwdCBhdCB0aGUgc3RhcnQgb2YgeW91ciB3aGls
+ZQ0KbG9vcCBhbmQgaGF2ZSB0aGUgY29udHJvbGxlciB0cmlnZ2VyIG9uZSB3aGVuIHRoZSB0eCBh
+bmQvb3IgcnggZmlmbyBoYXMNCiBzb21lIGFtb3VudCBvZiBkYXRhIGluIGl0IChsaWtlIGhhbGYg
+ZnVsbCkuDQoNCllvdSdsbCBsaWtlbHkgYWxzbyBmaW5kIHRoYXQgaW4gYW4gaW50ZXJydXB0YWJs
+ZSBrZXJuZWwgdGhhdCB5b3VyDQp0cmFuc2ZlciBmdW5jdGlvbiB3aWxsIGV2ZW50dWFsbHkgc3Rv
+cCBydW5uaW5nIGFuZCBhbm90aGVyIHByb2Nlc3Mgd2lsbA0KcnVuLiAgTXVsdGl0YXNraW5nLiAg
+V2hlbiB0aGlzIGhhcHBlbnMsIGl0IG1pZ2h0IGJlIG1hbnkgbWlsbGlzZWNvbmRzDQpiZWZvcmUg
+aXQgaXMgc2NoZWR1bGVkIHRvIHJ1biBhZ2Fpbi4gIEhvcGUgdGhhdCBmaWZvIGlzIGxhcmdlLi4u
+DQoNClVzdWFsbHkgd2hlbiBhIGRldmljZSBoYXMgYSBmaWZvIHRoYXQgbXVzdCBiZSBlbXB0aWVk
+IGJlZm9yZSBpdA0Kb3ZlcmZsb3dzLCBpdCBpcyBlaXRoZXIgZW1wdGllZCBmcm9tIGFuIGludGVy
+cnVwdCBoYW5kbGVyIG9yIHRoZQ0KaW50ZXJydXB0IGhhbmRsZXIgd2lsbCBxdWV1ZSBhIHdvcmsg
+ZnVuY3Rpb24gb3IgdGFza2xldCB0aGF0IHdpbGwgZW1wdHkNCml0LiAgRG9pbmcgaXQgZnJvbSB1
+c2VyIGNvbnRleHQgaGFzIGEgbWF4aW11bSBsYXRlbmN5IHRoYXQgaXMgdG9vIGhpZ2guDQoNCg==
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

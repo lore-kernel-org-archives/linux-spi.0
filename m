@@ -1,144 +1,121 @@
-From: Yisheng Xie <xieyisheng1@huawei.com>
-Subject: Re: [PATCH v3 00/27] kill devm_ioremap_nocache
-Date: Fri, 12 Jan 2018 17:12:12 +0800
-Message-ID: <ff498c83-d1ee-7553-e20c-a07369f8dad6@huawei.com>
-References: <1514026525-32538-1-git-send-email-xieyisheng1@huawei.com>
- <20171223134831.GB10103@kroah.com>
- <b8ff7f17-7f2c-f220-9833-7ae5bd7343d5@c-s.fr>
- <8dd19411-5b06-0aa4-fd0e-e5b112c25dcb@huawei.com>
- <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: <linux-kernel@vger.kernel.org>, <ysxie@foxmail.com>,
-        <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>,
-        <boris.brezillon@free-electrons.com>, <richard@nod.at>,
-        <marek.vasut@gmail.com>, <cyrille.pitchen@wedev4u.fr>,
-        <linux-mtd@lists.infradead.org>, <alsa-devel@alsa-project.org>,
-        <wim@iguana.be>, <linux@roeck-us.net>,
-        <linux-watchdog@vger.kernel.org>, <b.zolnierkie@samsung.com>,
-        <linux-fbdev@vger.kernel.org>, <linus.walleij@linaro.org>,
-        <linux-gpio@vger.kernel.org>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <tglx@linutronix.de>, <jason@lakedaemon.net>,
-        <marc.zyngier@arm.com>, <arnd@arndb.de>,
-        <andriy.shevchenko@linux.intel.com>,
-        <industrypack-devel@lists.sourceforge.net>, <wg@grandegger.com>,
-        <mkl@pengutronix.de>, <li
-To: Christophe LEROY <christophe.leroy@c-s.fr>,
-        Greg KH <gregkh@linuxfoundation.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <1eb206ed-95e9-5839-485d-0e549ff3f505@c-s.fr>
-Sender: linux-mmc-owner@vger.kernel.org
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: [PATCH] spi: orion: Fix clock resource by adding an optional bus clock
+Date: Fri, 12 Jan 2018 11:42:33 +0100
+Message-ID: <20180112104233.4952-1-gregory.clement@free-electrons.com>
+Cc: Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory CLEMENT <gregory.clement@free-electrons.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Antoine Tenart <antoine.tenart@free-electrons.com>,
+        =?UTF-8?q?Miqu=C3=A8l=20Raynal?= <miquel.raynal@free-electrons.com>,
+        Nadav Haklai <nadavh@marvell.com>,
+        Shadi Ammouri <shadi@marvell.com>,
+        Yehuda Yitschak <yehuday@marvell.com>,
+        Omri Itach <omrii@marvell.com>,
+        Hanna Hawa <hannah@marvell.com>,
+        Igal Liberman <igall@marvell.com>,
+        Marcin Wojtas <mw@semihalf.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Christophe ，
+On Armada 7K/8K we need to explicitly enable the bus clock. The bus clock
+is optional because not all the SoCs need them but at least for Armada
+7K/8K it is actually mandatory.
 
-On 2018/1/4 16:05, Christophe LEROY wrote:
-> 
-> 
-> Le 25/12/2017 à 02:34, Yisheng Xie a écrit :
->>
->>
->> On 2017/12/24 17:05, christophe leroy wrote:
->>>
->>>
->>> Le 23/12/2017 à 14:48, Greg KH a écrit :
->>>> On Sat, Dec 23, 2017 at 06:55:25PM +0800, Yisheng Xie wrote:
->>>>> Hi all,
->>>>>
->>>>> When I tried to use devm_ioremap function and review related code, I found
->>>>> devm_ioremap and devm_ioremap_nocache is almost the same with each other,
->>>>> except one use ioremap while the other use ioremap_nocache.
->>>>
->>>> For all arches?  Really?  Look at MIPS, and x86, they have different
->>>> functions.
->>>>
->>>>> While ioremap's
->>>>> default function is ioremap_nocache, so devm_ioremap_nocache also have the
->>>>> same function with devm_ioremap, which can just be killed to reduce the size
->>>>> of devres.o(from 20304 bytes to 18992 bytes in my compile environment).
->>>>>
->>>>> I have posted two versions, which use macro instead of function for
->>>>> devm_ioremap_nocache[1] or devm_ioremap[2]. And Greg suggest me to kill
->>>>> devm_ioremap_nocache for no need to keep a macro around for the duplicate
->>>>> thing. So here comes v3 and please help to review.
->>>>
->>>> I don't think this can be done, what am I missing?  These functions are
->>>> not identical, sorry for missing that before.
->>>
->>> devm_ioremap() and devm_ioremap_nocache() are quite similar, both use devm_ioremap_release() for the release, why not just defining:
->>>
->>> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->>>                 resource_size_t size, bool nocache)
->>> {
->>> [...]
->>>      if (nocache)
->>>          addr = ioremap_nocache(offset, size);
->>>      else
->>>          addr = ioremap(offset, size);
->>> [...]
->>> }
->>>
->>> then in include/linux/io.h
->>>
->>> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>>                 resource_size_t size)
->>> {return __devm_ioremap(dev, offset, size, false);}
->>>
->>> static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->>>                     resource_size_t size);
->>> {return __devm_ioremap(dev, offset, size, true);}
->>
->> Yeah, this seems good to me, right now we have devm_ioremap, devm_ioremap_wc, devm_ioremap_nocache
->> May be we can use an enum like:
->> typedef enum {
->>     DEVM_IOREMAP = 0,
->>     DEVM_IOREMAP_NOCACHE,
->>     DEVM_IOREMAP_WC,
->> } devm_ioremap_type;
->>
->> static inline void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
->>                  resource_size_t size)
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP);}
->>
->>   static inline void __iomem *devm_ioremap_nocache(struct device *dev, resource_size_t offset,
->>                      resource_size_t size);
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_NOCACHE);}
->>
->>   static inline void __iomem *devm_ioremap_wc(struct device *dev, resource_size_t offset,
->>                      resource_size_t size);
->>   {return __devm_ioremap(dev, offset, size, DEVM_IOREMAP_WC);}
->>
->>   static void __iomem *__devm_ioremap(struct device *dev, resource_size_t offset,
->>                  resource_size_t size, devm_ioremap_type type)
->>   {
->>       void __iomem **ptr, *addr = NULL;
->>   [...]
->>       switch (type){
->>       case DEVM_IOREMAP:
->>           addr = ioremap(offset, size);
->>           break;
->>       case DEVM_IOREMAP_NOCACHE:
->>           addr = ioremap_nocache(offset, size);
->>           break;
->>       case DEVM_IOREMAP_WC:
->>           addr = ioremap_wc(offset, size);
->>           break;
->>       }
->>   [...]
->>   }
-> 
-> 
-> That looks good to me, will you submit a v4 ?
+The binding documentation is updating accordingly as well as mentioning
+the mandatory clock which was also missing.
 
-Sorry for late response. And I will submit the v4 as your suggestion.
+Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+---
+ Documentation/devicetree/bindings/spi/spi-orion.txt |  9 +++++++++
+ drivers/spi/spi-orion.c                             | 14 ++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-Thanks
-Yisheng
-
-> 
-> Christophe
-> 
->>
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
+index df8ec31f2f07..8434a65fc12a 100644
+--- a/Documentation/devicetree/bindings/spi/spi-orion.txt
++++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
+@@ -18,8 +18,17 @@ Required properties:
+ 	The eight register sets following the control registers refer to
+ 	chip-select lines 0 through 7 respectively.
+ - cell-index : Which of multiple SPI controllers is this.
++- clocks : pointers to the reference clocks for this device, the first
++	   one is the one used for the clock on the spi bus, the
++	   second one is optional and is the clock used for the
++	   functional part of the controller
++
+ Optional properties:
+ - interrupts : Is currently not used.
++- clock-names : names of used clocks, mandatory if the second clock is
++		used, the name must be "core", and "axi" (the latter
++		is only for Armada 7K/8K).
++
+ 
+ Example:
+        spi@10600 {
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 8974bb340b3a..482a0cf3b7aa 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -94,6 +94,7 @@ struct orion_spi {
+ 	struct spi_master	*master;
+ 	void __iomem		*base;
+ 	struct clk              *clk;
++	struct clk              *axi_clk;
+ 	const struct orion_spi_dev *devdata;
+ 
+ 	struct orion_direct_acc	direct_access[ORION_NUM_CHIPSELECTS];
+@@ -634,6 +635,14 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	if (status)
+ 		goto out;
+ 
++	/* The following clock is only used by some SoCs */
++	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
++	if (IS_ERR(spi->axi_clk) &&
++	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
++		return -EPROBE_DEFER;
++	if (!IS_ERR(spi->axi_clk))
++		clk_prepare_enable(spi->axi_clk);
++
+ 	tclk_hz = clk_get_rate(spi->clk);
+ 
+ 	/*
+@@ -725,6 +734,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ out_rel_pm:
+ 	pm_runtime_disable(&pdev->dev);
+ out_rel_clk:
++	clk_disable_unprepare(spi->axi_clk);
+ 	clk_disable_unprepare(spi->clk);
+ out:
+ 	spi_master_put(master);
+@@ -738,6 +748,7 @@ static int orion_spi_remove(struct platform_device *pdev)
+ 	struct orion_spi *spi = spi_master_get_devdata(master);
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
++	clk_disable_unprepare(spi->axi_clk);
+ 	clk_disable_unprepare(spi->clk);
+ 
+ 	spi_unregister_master(master);
+@@ -754,6 +765,7 @@ static int orion_spi_runtime_suspend(struct device *dev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct orion_spi *spi = spi_master_get_devdata(master);
+ 
++	clk_disable_unprepare(spi->axi_clk);
+ 	clk_disable_unprepare(spi->clk);
+ 	return 0;
+ }
+@@ -763,6 +775,8 @@ static int orion_spi_runtime_resume(struct device *dev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct orion_spi *spi = spi_master_get_devdata(master);
+ 
++	if (!IS_ERR(spi->axi_clk))
++		clk_prepare_enable(spi->axi_clk);
+ 	return clk_prepare_enable(spi->clk);
+ }
+ #endif
+-- 
+2.15.1

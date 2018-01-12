@@ -1,10 +1,13 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: [PATCH] spi: orion: Fix clock resource by adding an optional bus clock
-Date: Fri, 12 Jan 2018 11:42:33 +0100
-Message-ID: <20180112104233.4952-1-gregory.clement@free-electrons.com>
-Cc: Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>,
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: orion: Fix clock resource by adding an optional bus clock" to the spi tree
+Date: Fri, 12 Jan 2018 21:09:56 +0000
+Message-ID: <E1ea6aK-0003Ko-VL@debutante>
+References: <20180112104233.4952-1-gregory.clement@free-electrons.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
         Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory CLEMENT <gregory.clement@free-electrons.com>,
         Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
         linux-arm-kernel@lists.infradead.org,
         Antoine Tenart <antoine.tenart@free-electrons.com>,
@@ -15,12 +18,45 @@ Cc: Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>,
         Omri Itach <omrii@marvell.com>,
         Hanna Hawa <hannah@marvell.com>,
         Igal Liberman <igall@marvell.com>,
-        Marcin Wojtas <mw@semihalf.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        Marcin Wojtas <mw@semihalf.com>, linux-spi@vger.kernel.org
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180112104233.4952-1-gregory.clement@free-electrons.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+The patch
+
+   spi: orion: Fix clock resource by adding an optional bus clock
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 92ae112e477ac412decc3fdd5c1eeb6c90c266b4 Mon Sep 17 00:00:00 2001
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Date: Fri, 12 Jan 2018 11:42:33 +0100
+Subject: [PATCH] spi: orion: Fix clock resource by adding an optional bus
+ clock
 
 On Armada 7K/8K we need to explicitly enable the bus clock. The bus clock
 is optional because not all the SoCs need them but at least for Armada
@@ -30,6 +66,7 @@ The binding documentation is updating accordingly as well as mentioning
 the mandatory clock which was also missing.
 
 Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
  Documentation/devicetree/bindings/spi/spi-orion.txt |  9 +++++++++
  drivers/spi/spi-orion.c                             | 14 ++++++++++++++

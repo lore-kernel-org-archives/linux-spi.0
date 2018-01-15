@@ -1,48 +1,55 @@
-From: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCHv2 3/3] MAINTAINERS: Add entry for Synquacer SPI driver
-Date: Mon, 15 Jan 2018 18:36:33 +0530
-Message-ID: <1516021593-19429-1-git-send-email-jassisinghbrar@gmail.com>
-References: <1516021530-19236-1-git-send-email-jassisinghbrar@gmail.com>
-Cc: tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCHv2 1/3] dt-bindings: spi: Add DT bindings for Synquacer
+Date: Mon, 15 Jan 2018 09:15:23 -0600
+Message-ID: <CAL_JsqKM2OhdhFZfd_fhBkYiFE9Fdr38Xn7TKorwJo_-+f9xUg@mail.gmail.com>
+References: <1516021530-19236-1-git-send-email-jassisinghbrar@gmail.com> <1516021559-19327-1-git-send-email-jassisinghbrar@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Ard Biesheuvel <ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Masami Hiramatsu <masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1516021530-19236-1-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1516021559-19327-1-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On Mon, Jan 15, 2018 at 7:05 AM,  <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> From: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>
+> This patch adds documentation for Device-Tree bindings for the
+> Socionext Synquacer spi driver.
+>
+> Signed-off-by: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/spi-synquacer.txt      | 24 ++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-synquacer.txt
+>
+> diff --git a/Documentation/devicetree/bindings/spi/spi-synquacer.txt b/Documentation/devicetree/bindings/spi/spi-synquacer.txt
+> new file mode 100644
+> index 0000000..d013cfd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-synquacer.txt
+> @@ -0,0 +1,24 @@
+> +* Socionext Synquacer HS-SPI bindings
+> +
+> +Required Properties:
+> +- compatible: should be "socionext,synquacer-spi"
+> +- reg: physical base address of the controller and length of memory mapped
+> +       region.
+> +- clocks: Must contain an entry for rate source clock(s).
+> +- clock-names: Shall be "iHCLK" or "iPCLK". iHCLK is preferred over iPCLK
 
-Add entry for the Synquacer spi driver and DT bindings.
+Huh? The clock binding should reflect all clocks connected to a block,
+not a selection of which one you want to use.
 
-Signed-off-by: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1899480..da79a2a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12627,6 +12627,13 @@ F:	drivers/md/raid*
- F:	include/linux/raid/
- F:	include/uapi/linux/raid/
- 
-+SOCIONEXT (SNI) Synquacer SPI DRIVER
-+M:	Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-+L:	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-+S:	Maintained
-+F:	drivers/spi/spi-synquacer.c
-+F:	Documentation/devicetree/bindings/spi/spi-synquacer.txt
-+
- SONIC NETWORK DRIVER
- M:	Thomas Bogendoerfer <tsbogend-I1c7kopa9pxLokYuJOExCg@public.gmane.org>
- L:	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
--- 
-2.7.4
-
+Rob
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

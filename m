@@ -1,83 +1,72 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCHv2 1/3] dt-bindings: spi: Add DT bindings for Synquacer
-Date: Wed, 17 Jan 2018 15:30:53 +0530
-Message-ID: <CABb+yY1QK16pNC4ajM+0M+R5yy28FNx+LYTuMQWj2c2ur9nC+Q@mail.gmail.com>
+Date: Wed, 17 Jan 2018 11:18:18 +0000
+Message-ID: <20180117111817.GA9775@sirena.org.uk>
 References: <1516021530-19236-1-git-send-email-jassisinghbrar@gmail.com>
  <1516021559-19327-1-git-send-email-jassisinghbrar@gmail.com>
  <CAL_JsqKM2OhdhFZfd_fhBkYiFE9Fdr38Xn7TKorwJo_-+f9xUg@mail.gmail.com>
- <CABb+yY3HEX6qMWxmirMnbwe3P5NwmUHGcuYypo-UzbUyUOi5UQ@mail.gmail.com> <CAL_JsqK16GXU0WQ2Ft2-_dHOH_y08inMjF8vHE4mhK0Zo9=JMg@mail.gmail.com>
+ <CABb+yY3HEX6qMWxmirMnbwe3P5NwmUHGcuYypo-UzbUyUOi5UQ@mail.gmail.com>
+ <CAL_JsqK16GXU0WQ2Ft2-_dHOH_y08inMjF8vHE4mhK0Zo9=JMg@mail.gmail.com>
+ <CABb+yY1f=NwB_UmGAogTj2AgA5stk5zic39HJgTSJcv1rdcQVw@mail.gmail.com>
+ <1516132926.25398.98.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ard Biesheuvel <ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Masami Hiramatsu <masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sm4nu43k4a2Rpi4c"
+Cc: "jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        "ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        "masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAL_JsqK16GXU0WQ2Ft2-_dHOH_y08inMjF8vHE4mhK0Zo9=JMg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1516132926.25398.98.camel-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 15, 2018 at 10:47 PM, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Jan 15, 2018 at 9:53 AM, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> On Mon, Jan 15, 2018 at 8:45 PM, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->>> On Mon, Jan 15, 2018 at 7:05 AM,  <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>>> From: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->>>>
->>>> This patch adds documentation for Device-Tree bindings for the
->>>> Socionext Synquacer spi driver.
->>>>
->>>> Signed-off-by: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->>>> ---
->>>>  .../devicetree/bindings/spi/spi-synquacer.txt      | 24 ++++++++++++++++++++++
->>>>  1 file changed, 24 insertions(+)
->>>>  create mode 100644 Documentation/devicetree/bindings/spi/spi-synquacer.txt
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/spi/spi-synquacer.txt b/Documentation/devicetree/bindings/spi/spi-synquacer.txt
->>>> new file mode 100644
->>>> index 0000000..d013cfd
->>>> --- /dev/null
->>>> +++ b/Documentation/devicetree/bindings/spi/spi-synquacer.txt
->>>> @@ -0,0 +1,24 @@
->>>> +* Socionext Synquacer HS-SPI bindings
->>>> +
->>>> +Required Properties:
->>>> +- compatible: should be "socionext,synquacer-spi"
->>>> +- reg: physical base address of the controller and length of memory mapped
->>>> +       region.
->>>> +- clocks: Must contain an entry for rate source clock(s).
->>>> +- clock-names: Shall be "iHCLK" or "iPCLK". iHCLK is preferred over iPCLK
->>>
->>> Huh? The clock binding should reflect all clocks connected to a block,
->>> not a selection of which one you want to use.
->>>
->> Both the clocks are internal to the block and derived from the same source.
->> Instead of defining a new "use-ipclk" property, the driver uses the
->> clock-names to choose the appropriate divider.
->> I am open to any better option.
->
-> If one is preferred, then why not always use it? Or how does one
-> decide which clock to use?
->
-So I got my native speaker friend to interpret the Japanese datasheet.
 
-The iHCLK clocks the whole block and can also be the source for
-internal dividers. An external, optional, source iPCLK is also
-provided for producing lower (Fpclk < Fhclk) rates from the dividers.
-That is, iHCLK is always needed, while iPCLK can be provided if that
-is to be fed to the dividers.
+--sm4nu43k4a2Rpi4c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So the dt bindings should define one required clock (iHCLK) and
-another optional clock (iPCLK). The driver would use iPCLK if
-provided, otherwise the default iHCLK.
+On Tue, Jan 16, 2018 at 08:02:06PM +0000, Trent Piepho wrote:
+> On Tue, 2018-01-16 at 08:59 +0530, Jassi Brar wrote:
 
-Will update DT and driver for next submission.
+> > Now the idea dawns that DT provide both clocks and the driver select
+> > from the mux looking at speed requirements of the slave at runtime.
 
-Thanks.
+> add this feature at some point.  It might be simpler to just prefer
+> HCLK if both are there.  The idea being that the DT should describe the
+> hardware rather than tell the driver what to do.
+
+Or only try one if the other fails to give something.
+
+> Speed can be changed on a xfer by xfer basis on a single message to a
+> single slave.  Trying to switch clocks during a message, if it requires
+> resetting the whole block, sounds rather difficult.
+
+In practice that's so vanishingly rare it's probably not worth worrying
+about.
+
+--sm4nu43k4a2Rpi4c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpfMPYACgkQJNaLcl1U
+h9DSUwf/SdBrUaeth5vl+Qfv4FvOgy5ve5YQ0ERiVasepBBLKNNNCai3h5+ixMZj
+b5zOcXrZGq8mehJ3ii2zkBwuU713NTo2cbYT0ejgy9veN979X0bljs29SK0eAVoQ
+RUYeHEKpmWPclK7mKApD/3Ah32jFSOG80RHvLlEmTge2S0nJ4NItJMlweW6T8hQd
+J/m5IG1jHWldL+2d7fy8u542fqbMLkg8S/mRoO5Y5DX9YdLDbUOeAblozGaRr0/L
+wmLz/ONNGTEi0ohfab1lzDeYSUQN74t4pySJFi2IXNBkxne9qv6rbHr8ZsKp0Zrc
+B2ghj96ZUBVNtfMLQTr1KLLfkj0VNw==
+=3Fe4
+-----END PGP SIGNATURE-----
+
+--sm4nu43k4a2Rpi4c--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,8 +1,7 @@
 From: Maxime Chevallier <maxime.chevallier@smile.fr>
-Subject: [PATCH 2/4] spi: a3700: Set frequency limits at startup
-Date: Wed, 17 Jan 2018 17:15:26 +0100
-Message-ID: <1516205728-3256-3-git-send-email-maxime.chevallier@smile.fr>
-References: <1516205728-3256-1-git-send-email-maxime.chevallier@smile.fr>
+Subject: [PATCH 0/4] spi: a3700: Add improvements and full-duplex transfers
+Date: Wed, 17 Jan 2018 17:15:24 +0100
+Message-ID: <1516205728-3256-1-git-send-email-maxime.chevallier@smile.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,7 +10,6 @@ Cc: gregory.clement@free-electrons.com,
  linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
 To: broonie@kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1516205728-3256-1-git-send-email-maxime.chevallier@smile.fr>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,42 +21,30 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Armada 3700 SPI controller has an internal clock divider which can
-divide the parent clock frequency by up to 30.
+This patchset adds some improvements on the existing Armada 3700 SPI
+driver, the biggest being adding support for full-duplex transfers.
 
-This patch sets the limits in the spi_controller fields so that we can
-detect when a non-supported frequency is requested by a device for a
-transfer.
+The first patch fixes an undocumented (to my knowledge, I might have
+missed something) behaviour where some of the content of the last
+write transfer is shifted out during a read half-duplex operation.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
----
- drivers/spi/spi-armada-3700.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+The second one sets the correct limits on the SPI max and min
+frequencies, based on the source clock rate.
 
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index c11ea6c..8048468 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -27,6 +27,8 @@
- 
- #define DRIVER_NAME			"armada_3700_spi"
- 
-+#define A3700_SPI_MAX_SPEED_HZ		100000000
-+#define A3700_SPI_MAX_PRESCALE		30
- #define A3700_SPI_TIMEOUT		10
- 
- /* SPI Register Offest */
-@@ -823,6 +825,11 @@ static int a3700_spi_probe(struct platform_device *pdev)
- 		goto error;
- 	}
- 
-+	master->max_speed_hz = min_t(unsigned long, A3700_SPI_MAX_SPEED_HZ,
-+					clk_get_rate(spi->clk));
-+	master->min_speed_hz = DIV_ROUND_UP(clk_get_rate(spi->clk),
-+						A3700_SPI_MAX_PRESCALE);
-+
- 	ret = a3700_spi_init(spi);
- 	if (ret)
- 		goto error_clk;
+The last 2 patches enable full-duplex transfers. On this controller,
+full-duplex transfers cannot use the hardware FIFOs and have to be
+performed either 1 or 4 bytes at a time. Because this is more
+CPU intensive, and a bit slower than FIFO mode, we only use the
+full-duplex way of transferring data when necessary.
+
+Maxime Chevallier (4):
+  spi: a3700: Clear DATA_OUT when performing a read
+  spi: a3700: Set frequency limits at startup
+  spi: a3700: Allow to enable or disable FIFO mode
+  spi: a3700: Add full-duplex support
+
+ drivers/spi/spi-armada-3700.c | 106 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 91 insertions(+), 15 deletions(-)
+
 -- 
 2.1.4

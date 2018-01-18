@@ -1,83 +1,92 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: a3700: Clear DATA_OUT when performing a read" to the spi tree
-Date: Thu, 18 Jan 2018 11:24:12 +0000
-Message-ID: <E1ec8Im-0003vW-Gx@debutante>
-References: <1516205728-3256-2-git-send-email-maxime.chevallier@smile.fr>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [spi:topic/a3700 4/4] drivers/spi/spi-armada-3700.c:759:33: sparse:
+ incorrect type in assignment (different base types)
+Date: Thu, 18 Jan 2018 23:55:12 +0800
+Message-ID: <201801182310.i21tIBzi%fengguang.wu@intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: kbuild-all-JC7UmRfGjtg@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1516205728-3256-2-git-send-email-maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git topic/a3700
+head:   f68a7dcb91b7957c5bb1c3e347775332af719519
+commit: f68a7dcb91b7957c5bb1c3e347775332af719519 [4/4] spi: a3700: Add full-duplex support
+reproduce:
+        # apt-get install sparse
+        git checkout f68a7dcb91b7957c5bb1c3e347775332af719519
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF=-D__CHECK_ENDIAN__
 
-   spi: a3700: Clear DATA_OUT when performing a read
 
-has been applied to the spi tree at
+sparse warnings: (new ones prefixed by >>)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   drivers/spi/spi-armada-3700.c:496:21: sparse: incorrect type in assignment (different base types) @@ expected unsigned int val @@ got ed int val @@
+   drivers/spi/spi-armada-3700.c:496:21: expected unsigned int val
+   drivers/spi/spi-armada-3700.c:496:21: got restricted __le32 <noident>
+   drivers/spi/spi-armada-3700.c:519:36: sparse: cast to restricted __le32
+>> drivers/spi/spi-armada-3700.c:759:33: sparse: incorrect type in assignment (different base types) @@ expected unsigned int val_out @@ got igned] val_out @@
+   drivers/spi/spi-armada-3700.c:759:33: expected unsigned int val_out
+   drivers/spi/spi-armada-3700.c:759:33: got restricted __le32 <noident>
+   drivers/spi/spi-armada-3700.c:768:26: sparse: cast to restricted __le32
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+vim +759 drivers/spi/spi-armada-3700.c
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+   737	
+   738	static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
+   739					  struct spi_device *spi,
+   740					  struct spi_transfer *xfer)
+   741	{
+   742		struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
+   743		u32 val_in, val_out;
+   744	
+   745		/* Disable FIFO mode */
+   746		a3700_spi_fifo_mode_set(a3700_spi, false);
+   747	
+   748		while (a3700_spi->buf_len) {
+   749	
+   750			/* When we have less than 4 bytes to transfer, switch to 1 byte
+   751			 * mode. This is reset after each transfer
+   752			 */
+   753			if (a3700_spi->buf_len < 4)
+   754				a3700_spi_bytelen_set(a3700_spi, 1);
+   755	
+   756			if (a3700_spi->byte_len == 1)
+   757				val_out = *a3700_spi->tx_buf;
+   758			else
+ > 759				val_out = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
+   760	
+   761			spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val_out);
+   762	
+   763			/* Wait for all the data to be shifted in / out */
+   764			while (!(spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG) &
+   765					A3700_SPI_XFER_DONE))
+   766				cpu_relax();
+   767	
+   768			val_in = le32_to_cpu(spireg_read(a3700_spi,
+   769							 A3700_SPI_DATA_IN_REG));
+   770	
+   771			memcpy(a3700_spi->rx_buf, &val_in, a3700_spi->byte_len);
+   772	
+   773			a3700_spi->buf_len -= a3700_spi->byte_len;
+   774			a3700_spi->tx_buf += a3700_spi->byte_len;
+   775			a3700_spi->rx_buf += a3700_spi->byte_len;
+   776	
+   777		}
+   778	
+   779		spi_finalize_current_transfer(master);
+   780	
+   781		return 0;
+   782	}
+   783	
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 44a5f423e70374e5b42cecd85e78f2d79334e0f2 Mon Sep 17 00:00:00 2001
-From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Date: Wed, 17 Jan 2018 17:15:25 +0100
-Subject: [PATCH] spi: a3700: Clear DATA_OUT when performing a read
-
-When performing a read using FIFO mode, the spi controller shifts out
-the last 2 bytes that were written in a previous transfer on MOSI.
-
-This undocumented behaviour can cause devices to misinterpret the
-transfer, so we explicitly clear the WFIFO before each read.
-
-This behaviour was noticed on EspressoBin.
-
-Signed-off-by: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-armada-3700.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index 77fe55ce790c..4857b0119556 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -607,6 +607,11 @@ static int a3700_spi_transfer_one(struct spi_master *master,
- 	a3700_spi_header_set(a3700_spi);
- 
- 	if (xfer->rx_buf) {
-+		/* Clear WFIFO, since it's last 2 bytes are shifted out during
-+		 * a read operation
-+		 */
-+		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, 0);
-+
- 		/* Set read data length */
- 		spireg_write(a3700_spi, A3700_SPI_IF_DIN_CNT_REG,
- 			     a3700_spi->buf_len);
--- 
-2.15.1
-
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

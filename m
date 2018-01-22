@@ -1,36 +1,36 @@
-From: 59742038-JVqo/v6+17SELdXlOq2cAlZq95QhYFEm@public.gmane.org
-Subject: Darlehensangebot
-Date: Sat, 20 Jan 2018 22:38:53 +0530
-Message-ID: <HE1PR0101MB25052C878C489F588DED0DF9B9EE0@HE1PR0101MB2505.eurprd01.prod.exchangelabs.com>
-Reply-To: david.loanfirm09-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-To: Recipients <59742038-JVqo/v6+17SELdXlOq2cAlZq95QhYFEm@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Description: Mail message body
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ben Whitten <ben.whitten@gmail.com>
+Subject: [RFC] Add ability to multiplex SPI bus
+Date: Mon, 22 Jan 2018 22:51:11 +0000
+Message-ID: <1516661472-16452-1-git-send-email-ben.whitten@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ben Whitten <ben.whitten@gmail.com>
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Sch=C3=B6nen Tag,
+A chip that I am working on acts as an SPI multiplexer for downstream radios,
+this patch adds basic support for adding an SPI mux with DT.
 
-Sie ben=C3=B6tigen einen echten Kredit online Ihre Rechnungen zu sichern?
-Startet ein neues Unternehmen? Sie ben=C3=B6tigen einen pers=C3=B6nlichen K=
-redit
-oder Business-Darlehen? Wir bieten ein Darlehen von =E2=82=AC 10.000 bis =
-=E2=82=AC
-500,000.000.00 mit 2% Zinsen pro Jahr und auch mit einem
-erschwinglichen R=C3=BCckzahlungsbedingungen und Zustand. Ich suche f=C3=BCr
-Darlehen und Projektinvestmentfonds ? Wir halten professionelle
-Exzellenz, unsere Definition von Exzellenz liegt in hervorragenden
-Kundenservice, erschwingliche Zahlung und R=C3=BCckzahlung Pl=C3=A4ne, schn=
-ell
-und einfach-Prozess.
-Hochachtungsvoll....
+The mux API is modeled on the I2C mux way of doing things with the addition of
+being able to override the transfer_one_message. This is due to my mux exposing
+the downstream radios through its regmap and not straight on the bus.
 
-Freundliche Gr=C3=BC=C3=9Fe,
-Herr David Williams
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This is a first proof of concept and I'm expecting a few revisions, which is
+why there is no documentation yet.
+
+Thanks!
+
+Ben Whitten (1):
+  spi: add spi multiplexing functions for dt
+
+ drivers/spi/Kconfig     |  10 +++
+ drivers/spi/Makefile    |   3 +
+ drivers/spi/spi-mux.c   | 181 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi-mux.h |  55 +++++++++++++++
+ 4 files changed, 249 insertions(+)
+ create mode 100644 drivers/spi/spi-mux.c
+ create mode 100644 include/linux/spi-mux.h
+
+-- 
+2.7.4

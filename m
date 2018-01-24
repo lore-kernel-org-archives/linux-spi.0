@@ -1,38 +1,52 @@
-From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a =?iso-8859-1?Q?GPIO_CS?=
-Date: Wed, 24 Jan 2018 16:03:15 +0100
-Message-ID: <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
+ GPIO CS
+Date: Wed, 24 Jan 2018 15:09:28 +0000
+Message-ID: <20180124150928.GE9366@sirena.org.uk>
 References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
+ <CAHp75VdB2e8Qwr7+LT3jT6HB2rSiSJ3TrMdBqVZYqO=KE6QBmg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SNIs70sCzqvszXB4"
+Cc: Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdB2e8Qwr7+LT3jT6HB2rSiSJ3TrMdBqVZYqO=KE6QBmg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On st=C5=99eda 24. ledna 2018 14:41:27 CET, Geert Uytterhoeven wrote:
-> Can't you just deduce an unused HW CS from the cs-gpios property?
 
-Thanks for a review. Yes, I probably can. I just noticed that my local use=20=
+--SNIs70sCzqvszXB4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-of spi-orion's "direct mode" is probably the root cause of some weirdness=20
-that I'm seeing (such as the CS GPIO pin going up in the middle of a=20
-two-byte transaction, and other nasty issues that just go away once one=20
-adds a dev_info call...).
+On Wed, Jan 24, 2018 at 04:19:41PM +0200, Andy Shevchenko wrote:
 
-> Renesas MSIOF also requires driving a native chip select, cfr. commit
-> b8761434bdec32fa ("spi: sh-msiof: Implement cs-gpios configuration").
+> It would make life easier in the future to switch SPI core to GPIO
+> descriptors completely.
 
-I'll take a look. It could be a candidate for some shared code, I suppose.
+Linus has patches for that which I'm expecting very soon after the merge
+window.
 
-Cheers,
-Jan
+--SNIs70sCzqvszXB4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpooacACgkQJNaLcl1U
+h9DD0Qf+IsRrQVm9O3IgAmH3KNILMLcbuU1zjhBBfDeIr+WGZjce5ciAFnVGjlJD
+UkQNOgFAQDUNQa8DFOdx4zbtmqb2zLedm6/Las5A4v38BsDMA/W3auAQEsPdrI4W
+ptg9EZsl2a8CNMpasGiKmVSGaNc9+Z/Dq4qZoJmLTnqX9ZyFQCFZRgPb6eZbeFAW
+26lXR7DfnLCsOgsWvtLP66diueymH8WSA49ckjh6sfKZNWrgpljcjdzuj8L8xkE1
+ZJRmpE6k7p6b5KNbreGuXn0wBYAUsL+iZSqSfsRSET/CSeqCPOgdVP9o071p9eyC
+HsVcRoEx7Pg1DXZUkTG/AQhwkrUBsg==
+=niNL
+-----END PGP SIGNATURE-----
+
+--SNIs70sCzqvszXB4--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

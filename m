@@ -1,92 +1,61 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: Re: [PATCH 2/2] spi: a3700: Remove endianness swapping for full-duplex transfers
-Date: Wed, 24 Jan 2018 15:23:54 +0100
-Message-ID: <87fu6v49ol.fsf@free-electrons.com>
-References: <1516803048-26942-1-git-send-email-maxime.chevallier@smile.fr>
-        <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC] spi: add spi multiplexing functions for dt
+Date: Wed, 24 Jan 2018 14:54:30 +0000
+Message-ID: <20180124145430.GD9366@sirena.org.uk>
+References: <1516661472-16452-1-git-send-email-ben.whitten@gmail.com>
+ <1516661472-16452-2-git-send-email-ben.whitten@gmail.com>
+ <20180123111123.GB7600@sirena.org.uk>
+ <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Maxime Chevallier <maxime.chevallier@smile.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
-        (Maxime Chevallier's message of "Wed, 24 Jan 2018 15:10:48 +0100")
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DiL7RhKs8rK9YGuF"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Maxime,
- 
- On mer., janv. 24 2018, Maxime Chevallier <maxime.chevallier@smile.fr> wrote:
 
-> Fixes the following sparse warnings :
-> line 767: warning: incorrect type in assignment (different base types)
-> line 767:    expected unsigned int [unsigned] [assigned] [usertype] val_out
-> line 767:    got restricted __le32 [usertype] <noident>
-> line 776: warning: cast to restricted __le32
->
-> This takes advantage of readl/writel to do the endianness reordering,
-> and removes an extra variable in the function.
->
-> Fixes: f68a7dcb91b7 ("spi: a3700: Add full-duplex support")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
+--DiL7RhKs8rK9YGuF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As for the previous patch:
+On Wed, Jan 24, 2018 at 02:01:55PM +0000, Ben Whitten wrote:
+> On 23 January 2018 at 11:11, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-Reviewed-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> > level.  Things that have their own transfer function would be better off
+> > just being first order SPI controllers I think so that they get access
+> > to everything the framework offers and can correctly advertise
+> > capabilities and so on.
 
-Thanks,
+> This runs as a very simple fake SPI controller per bus that the mux is
+> controlling. Having this custom transfer message allowed me to pop
+> in the way my device exposes the downstream devices, through its
+> regmap.
 
-Gregory> ---
->  drivers/spi/spi-armada-3700.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-> index 43ee0b56fe1c..7dcb14d303eb 100644
-> --- a/drivers/spi/spi-armada-3700.c
-> +++ b/drivers/spi/spi-armada-3700.c
-> @@ -747,7 +747,7 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
->  				  struct spi_transfer *xfer)
->  {
->  	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
-> -	u32 val_in, val_out;
-> +	u32 val;
->  
->  	/* Disable FIFO mode */
->  	a3700_spi_fifo_mode_set(a3700_spi, false);
-> @@ -761,21 +761,20 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
->  			a3700_spi_bytelen_set(a3700_spi, 1);
->  
->  		if (a3700_spi->byte_len == 1)
-> -			val_out = *a3700_spi->tx_buf;
-> +			val = *a3700_spi->tx_buf;
->  		else
-> -			val_out = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
-> +			val = *(u32 *)a3700_spi->tx_buf;
->  
-> -		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val_out);
-> +		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
->  
->  		/* Wait for all the data to be shifted in / out */
->  		while (!(spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG) &
->  				A3700_SPI_XFER_DONE))
->  			cpu_relax();
->  
-> -		val_in = le32_to_cpu(spireg_read(a3700_spi,
-> -						 A3700_SPI_DATA_IN_REG));
-> +		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
->  
-> -		memcpy(a3700_spi->rx_buf, &val_in, a3700_spi->byte_len);
-> +		memcpy(a3700_spi->rx_buf, &val, a3700_spi->byte_len);
->  
->  		a3700_spi->buf_len -= a3700_spi->byte_len;
->  		a3700_spi->tx_buf += a3700_spi->byte_len;
-> -- 
-> 2.1.4
->
+Which like I say is a problem - if your device (which just sounds like a
+SPI controller) has different capabilities and constraints to the parent
+then client drivers won't see that.
 
--- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+--DiL7RhKs8rK9YGuF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlponiUACgkQJNaLcl1U
+h9DF9Qf/ZmVGzLukP8G7gRAoIfdmjqFSJrEMpkTAKiXR0CS8RAxbdkZDm1RIKhLZ
+JERqcAmaSv5f8JHVBZJ5/JYSf8C/BEeGqQt1YHOdBjRXvOeu2hj4qB9TZvCev4P4
+RUJIe0qJbMGiD5mIXm0CNkJjg0eZ5tQctJjV84GAjC/qTllDY3qFZg3bPrMQuTbO
+x3hiPFbv9C40Yze/bL4uMm8KDkxSdte8rGyKG2kjH8CBZvZPEoh0MpkPgAzM/UIu
+jgtl96wWJSXgTSHL99vtwD5AghIhn+N4oTkpzkIVxlrUrqGP5kONZZjG3J4Uc+XJ
+UruYUIeEctmMeWLzieTfn8eu/kTR9g==
+=urIv
+-----END PGP SIGNATURE-----
+
+--DiL7RhKs8rK9YGuF--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

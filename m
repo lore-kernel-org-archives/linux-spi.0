@@ -1,43 +1,83 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Wed, 24 Jan 2018 16:19:41 +0200
-Message-ID: <CAHp75VdB2e8Qwr7+LT3jT6HB2rSiSJ3TrMdBqVZYqO=KE6QBmg@mail.gmail.com>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
+From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: a3700: Remove endianness swapping functions when accessing FIFOs
+Date: Wed, 24 Jan 2018 15:23:12 +0100
+Message-ID: <87k1w749pr.fsf@free-electrons.com>
+References: <1516803048-26942-1-git-send-email-maxime.chevallier@smile.fr>
+        <1516803048-26942-2-git-send-email-maxime.chevallier@smile.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: =?UTF-8?B?SmFuIEt1bmRyw6F0?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Type: text/plain
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+In-Reply-To: <1516803048-26942-2-git-send-email-maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+        (Maxime Chevallier's message of "Wed, 24 Jan 2018 15:10:47 +0100")
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jan 23, 2018 at 9:56 PM, Jan Kundr=C3=A1t <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org> w=
-rote:
->
-> Commit b28b9149b37f added support for using an additional GPIO pin for
-> Chip Select. According to that commit and to my understanding of a
-> semi-public datahseet, it seems that the SPI hardware really insists on
-> driving *some* HW CS signal whenever a SPI transaction is in progress.
->
-> The old code effectively forced the HW CS pin to be CS0. That means that
-> there could not be anything connected to the real CS0 signal when one
-> uses a GPIO CS. That assumption does not hold on e.g. Solidrun Clearfog
-> where some SOM models have a built-in SPI flash on SPI1, CS0.
-Like Geert said I also highly recommend to use existing properties.
+Hi Maxime,
+ 
+ On mer., janv. 24 2018, Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org> wrote:
 
-Better if you, in the meantime, can switch the driver to use GPIO
-descriptors, while core still use legacy numbers.
-It would make life easier in the future to switch SPI core to GPIO
-descriptors completely.
+> Fixes the following sparse warnings :
+> line 504: warning: incorrect type in assignment (different base types)
+> line 504:    expected unsigned int [unsigned] [usertype] val
+> line 504:    got restricted __le32 [usertype] <noident>
+> line 527: warning: cast to restricted __le32
+>
+> This is solved by removing endian-converson functions, since the
+> converted values are going through readl/writel anyway, which take care
+> of the conversion.
+>
 
---=20
-With Best Regards,
-Andy Shevchenko
+These changes look good for me:
+
+Reviewed-by: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+
+Thanks,
+
+Gregory
+
+
+> Fixes: 6fd6fd68c9e2 ("spi: armada-3700: Fix padding when sending not 4-byte aligned data")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+> ---
+>  drivers/spi/spi-armada-3700.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+> index a8576c89f713..43ee0b56fe1c 100644
+> --- a/drivers/spi/spi-armada-3700.c
+> +++ b/drivers/spi/spi-armada-3700.c
+> @@ -501,7 +501,7 @@ static int a3700_spi_fifo_write(struct a3700_spi *a3700_spi)
+>  	u32 val;
+>  
+>  	while (!a3700_is_wfifo_full(a3700_spi) && a3700_spi->buf_len) {
+> -		val = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
+> +		val = *(u32 *)a3700_spi->tx_buf;
+>  		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
+>  		a3700_spi->buf_len -= 4;
+>  		a3700_spi->tx_buf += 4;
+> @@ -524,9 +524,8 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
+>  	while (!a3700_is_rfifo_empty(a3700_spi) && a3700_spi->buf_len) {
+>  		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
+>  		if (a3700_spi->buf_len >= 4) {
+> -			u32 data = le32_to_cpu(val);
+>  
+> -			memcpy(a3700_spi->rx_buf, &data, 4);
+> +			memcpy(a3700_spi->rx_buf, &val, 4);
+>  
+>  			a3700_spi->buf_len -= 4;
+>  			a3700_spi->rx_buf += 4;
+> -- 
+> 2.1.4
+>
+
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

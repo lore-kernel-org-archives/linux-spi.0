@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: a3700: Remove endianness swapping functions when accessing FIFOs" to the spi tree
-Date: Wed, 24 Jan 2018 15:36:23 +0000
-Message-ID: <E1eeN67-0004sJ-Dj@debutante>
-References: <1516803048-26942-2-git-send-email-maxime.chevallier@smile.fr>
+Subject: Applied "spi: a3700: Remove endianness swapping for full-duplex transfers" to the spi tree
+Date: Wed, 24 Jan 2018 15:36:19 +0000
+Message-ID: <E1eeN63-0004rM-Pw@debutante>
+References: <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
 Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         gregory.clement@free-electrons.com, linux-spi@vger.kernel.org
 To: Maxime Chevallier <maxime.chevallier@smile.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1516803048-26942-2-git-send-email-maxime.chevallier@smile.fr>
+In-Reply-To: <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: a3700: Remove endianness swapping functions when accessing FIFOs
+   spi: a3700: Remove endianness swapping for full-duplex transfers
 
 has been applied to the spi tree at
 
@@ -40,53 +40,68 @@ to this mail.
 Thanks,
 Mark
 
->From 162f8debc01f48ac984ed6d7291743053ec90271 Mon Sep 17 00:00:00 2001
+>From 34b1fcaeb21de2a64004a95a1dc52d7e9998b733 Mon Sep 17 00:00:00 2001
 From: Maxime Chevallier <maxime.chevallier@smile.fr>
-Date: Wed, 24 Jan 2018 15:10:47 +0100
-Subject: [PATCH] spi: a3700: Remove endianness swapping functions when
- accessing FIFOs
+Date: Wed, 24 Jan 2018 15:10:48 +0100
+Subject: [PATCH] spi: a3700: Remove endianness swapping for full-duplex
+ transfers
 
 Fixes the following sparse warnings :
-line 504: warning: incorrect type in assignment (different base types)
-line 504:    expected unsigned int [unsigned] [usertype] val
-line 504:    got restricted __le32 [usertype] <noident>
-line 527: warning: cast to restricted __le32
+line 767: warning: incorrect type in assignment (different base types)
+line 767:    expected unsigned int [unsigned] [assigned] [usertype] val_out
+line 767:    got restricted __le32 [usertype] <noident>
+line 776: warning: cast to restricted __le32
 
-This is solved by removing endian-converson functions, since the
-converted values are going through readl/writel anyway, which take care
-of the conversion.
+This takes advantage of readl/writel to do the endianness reordering,
+and removes an extra variable in the function.
 
-Fixes: 6fd6fd68c9e2 ("spi: armada-3700: Fix padding when sending not 4-byte aligned data")
+Fixes: f68a7dcb91b7 ("spi: a3700: Add full-duplex support")
 Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
 Reviewed-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-armada-3700.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-armada-3700.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index fdc35dabcda2..f32b83c7209f 100644
+index f32b83c7209f..1f42bd04e630 100644
 --- a/drivers/spi/spi-armada-3700.c
 +++ b/drivers/spi/spi-armada-3700.c
-@@ -493,7 +493,7 @@ static int a3700_spi_fifo_write(struct a3700_spi *a3700_spi)
- 	u32 val;
+@@ -739,7 +739,7 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
+ 				  struct spi_transfer *xfer)
+ {
+ 	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
+-	u32 val_in, val_out;
++	u32 val;
  
- 	while (!a3700_is_wfifo_full(a3700_spi) && a3700_spi->buf_len) {
--		val = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
-+		val = *(u32 *)a3700_spi->tx_buf;
- 		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
- 		a3700_spi->buf_len -= 4;
- 		a3700_spi->tx_buf += 4;
-@@ -516,9 +516,8 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
- 	while (!a3700_is_rfifo_empty(a3700_spi) && a3700_spi->buf_len) {
- 		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
- 		if (a3700_spi->buf_len >= 4) {
--			u32 data = le32_to_cpu(val);
+ 	/* Disable FIFO mode */
+ 	a3700_spi_fifo_mode_set(a3700_spi, false);
+@@ -753,21 +753,20 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
+ 			a3700_spi_bytelen_set(a3700_spi, 1);
  
--			memcpy(a3700_spi->rx_buf, &data, 4);
-+			memcpy(a3700_spi->rx_buf, &val, 4);
+ 		if (a3700_spi->byte_len == 1)
+-			val_out = *a3700_spi->tx_buf;
++			val = *a3700_spi->tx_buf;
+ 		else
+-			val_out = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
++			val = *(u32 *)a3700_spi->tx_buf;
  
- 			a3700_spi->buf_len -= 4;
- 			a3700_spi->rx_buf += 4;
+-		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val_out);
++		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
+ 
+ 		/* Wait for all the data to be shifted in / out */
+ 		while (!(spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG) &
+ 				A3700_SPI_XFER_DONE))
+ 			cpu_relax();
+ 
+-		val_in = le32_to_cpu(spireg_read(a3700_spi,
+-						 A3700_SPI_DATA_IN_REG));
++		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
+ 
+-		memcpy(a3700_spi->rx_buf, &val_in, a3700_spi->byte_len);
++		memcpy(a3700_spi->rx_buf, &val, a3700_spi->byte_len);
+ 
+ 		a3700_spi->buf_len -= a3700_spi->byte_len;
+ 		a3700_spi->tx_buf += a3700_spi->byte_len;
 -- 
 2.15.1

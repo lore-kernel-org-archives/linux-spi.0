@@ -1,107 +1,38 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: a3700: Remove endianness swapping for full-duplex transfers" to the spi tree
-Date: Wed, 24 Jan 2018 15:36:19 +0000
-Message-ID: <E1eeN63-0004rM-Pw@debutante>
-References: <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        gregory.clement@free-electrons.com, linux-spi@vger.kernel.org
-To: Maxime Chevallier <maxime.chevallier@smile.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1516803048-26942-3-git-send-email-maxime.chevallier@smile.fr>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a =?iso-8859-1?Q?GPIO_CS?=
+Date: Wed, 24 Jan 2018 18:56:23 +0100
+Message-ID: <52b64615-7c67-47ee-8f00-059decfc2c93@cesnet.cz>
+References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
+ <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
+ <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <60b34619-5034-4e71-b0b2-75a62de0cf2c-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On st=C5=99eda 24. ledna 2018 16:03:15 CET, Jan Kundr=C3=A1t wrote:
+>> Renesas MSIOF also requires driving a native chip select, cfr. commit
+>> b8761434bdec32fa ("spi: sh-msiof: Implement cs-gpios configuration").
+>
+> I'll take a look. It could be a candidate for some shared code, I suppose.
 
-   spi: a3700: Remove endianness swapping for full-duplex transfers
+Hi Gert, if I take your code from that commit almost as-is, probing of my=20
+SPI controller fails with errno -16 (that's EBUSY, right?). The GPIO pin=20
+that I want to use is defined as a gpio-hog in the DT.
 
-has been applied to the spi tree at
+Is my DT correct? Should I define the GPIO pin as an output hog? IS your=20
+code supposed to deal with this?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 34b1fcaeb21de2a64004a95a1dc52d7e9998b733 Mon Sep 17 00:00:00 2001
-From: Maxime Chevallier <maxime.chevallier@smile.fr>
-Date: Wed, 24 Jan 2018 15:10:48 +0100
-Subject: [PATCH] spi: a3700: Remove endianness swapping for full-duplex
- transfers
-
-Fixes the following sparse warnings :
-line 767: warning: incorrect type in assignment (different base types)
-line 767:    expected unsigned int [unsigned] [assigned] [usertype] val_out
-line 767:    got restricted __le32 [usertype] <noident>
-line 776: warning: cast to restricted __le32
-
-This takes advantage of readl/writel to do the endianness reordering,
-and removes an extra variable in the function.
-
-Fixes: f68a7dcb91b7 ("spi: a3700: Add full-duplex support")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
-Reviewed-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-armada-3700.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
-index f32b83c7209f..1f42bd04e630 100644
---- a/drivers/spi/spi-armada-3700.c
-+++ b/drivers/spi/spi-armada-3700.c
-@@ -739,7 +739,7 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
- 				  struct spi_transfer *xfer)
- {
- 	struct a3700_spi *a3700_spi = spi_master_get_devdata(master);
--	u32 val_in, val_out;
-+	u32 val;
- 
- 	/* Disable FIFO mode */
- 	a3700_spi_fifo_mode_set(a3700_spi, false);
-@@ -753,21 +753,20 @@ static int a3700_spi_transfer_one_full_duplex(struct spi_master *master,
- 			a3700_spi_bytelen_set(a3700_spi, 1);
- 
- 		if (a3700_spi->byte_len == 1)
--			val_out = *a3700_spi->tx_buf;
-+			val = *a3700_spi->tx_buf;
- 		else
--			val_out = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
-+			val = *(u32 *)a3700_spi->tx_buf;
- 
--		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val_out);
-+		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
- 
- 		/* Wait for all the data to be shifted in / out */
- 		while (!(spireg_read(a3700_spi, A3700_SPI_IF_CTRL_REG) &
- 				A3700_SPI_XFER_DONE))
- 			cpu_relax();
- 
--		val_in = le32_to_cpu(spireg_read(a3700_spi,
--						 A3700_SPI_DATA_IN_REG));
-+		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
- 
--		memcpy(a3700_spi->rx_buf, &val_in, a3700_spi->byte_len);
-+		memcpy(a3700_spi->rx_buf, &val, a3700_spi->byte_len);
- 
- 		a3700_spi->buf_len -= a3700_spi->byte_len;
- 		a3700_spi->tx_buf += a3700_spi->byte_len;
--- 
-2.15.1
+With kind regards,
+Jan
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

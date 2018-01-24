@@ -1,53 +1,92 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Wed, 24 Jan 2018 15:09:28 +0000
-Message-ID: <20180124150928.GE9366@sirena.org.uk>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <CAHp75VdB2e8Qwr7+LT3jT6HB2rSiSJ3TrMdBqVZYqO=KE6QBmg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SNIs70sCzqvszXB4"
-Cc: Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdB2e8Qwr7+LT3jT6HB2rSiSJ3TrMdBqVZYqO=KE6QBmg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: a3700: Remove endianness swapping functions when accessing FIFOs" to the spi tree
+Date: Wed, 24 Jan 2018 15:36:23 +0000
+Message-ID: <E1eeN67-0004sJ-Dj@debutante>
+References: <1516803048-26942-2-git-send-email-maxime.chevallier@smile.fr>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        gregory.clement@free-electrons.com, linux-spi@vger.kernel.org
+To: Maxime Chevallier <maxime.chevallier@smile.fr>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1516803048-26942-2-git-send-email-maxime.chevallier@smile.fr>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---SNIs70sCzqvszXB4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: a3700: Remove endianness swapping functions when accessing FIFOs
 
-On Wed, Jan 24, 2018 at 04:19:41PM +0200, Andy Shevchenko wrote:
+has been applied to the spi tree at
 
-> It would make life easier in the future to switch SPI core to GPIO
-> descriptors completely.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Linus has patches for that which I'm expecting very soon after the merge
-window.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---SNIs70sCzqvszXB4
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlpooacACgkQJNaLcl1U
-h9DD0Qf+IsRrQVm9O3IgAmH3KNILMLcbuU1zjhBBfDeIr+WGZjce5ciAFnVGjlJD
-UkQNOgFAQDUNQa8DFOdx4zbtmqb2zLedm6/Las5A4v38BsDMA/W3auAQEsPdrI4W
-ptg9EZsl2a8CNMpasGiKmVSGaNc9+Z/Dq4qZoJmLTnqX9ZyFQCFZRgPb6eZbeFAW
-26lXR7DfnLCsOgsWvtLP66diueymH8WSA49ckjh6sfKZNWrgpljcjdzuj8L8xkE1
-ZJRmpE6k7p6b5KNbreGuXn0wBYAUsL+iZSqSfsRSET/CSeqCPOgdVP9o071p9eyC
-HsVcRoEx7Pg1DXZUkTG/AQhwkrUBsg==
-=niNL
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---SNIs70sCzqvszXB4--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Mark
+
+>From 162f8debc01f48ac984ed6d7291743053ec90271 Mon Sep 17 00:00:00 2001
+From: Maxime Chevallier <maxime.chevallier@smile.fr>
+Date: Wed, 24 Jan 2018 15:10:47 +0100
+Subject: [PATCH] spi: a3700: Remove endianness swapping functions when
+ accessing FIFOs
+
+Fixes the following sparse warnings :
+line 504: warning: incorrect type in assignment (different base types)
+line 504:    expected unsigned int [unsigned] [usertype] val
+line 504:    got restricted __le32 [usertype] <noident>
+line 527: warning: cast to restricted __le32
+
+This is solved by removing endian-converson functions, since the
+converted values are going through readl/writel anyway, which take care
+of the conversion.
+
+Fixes: 6fd6fd68c9e2 ("spi: armada-3700: Fix padding when sending not 4-byte aligned data")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@smile.fr>
+Reviewed-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-armada-3700.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index fdc35dabcda2..f32b83c7209f 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -493,7 +493,7 @@ static int a3700_spi_fifo_write(struct a3700_spi *a3700_spi)
+ 	u32 val;
+ 
+ 	while (!a3700_is_wfifo_full(a3700_spi) && a3700_spi->buf_len) {
+-		val = cpu_to_le32(*(u32 *)a3700_spi->tx_buf);
++		val = *(u32 *)a3700_spi->tx_buf;
+ 		spireg_write(a3700_spi, A3700_SPI_DATA_OUT_REG, val);
+ 		a3700_spi->buf_len -= 4;
+ 		a3700_spi->tx_buf += 4;
+@@ -516,9 +516,8 @@ static int a3700_spi_fifo_read(struct a3700_spi *a3700_spi)
+ 	while (!a3700_is_rfifo_empty(a3700_spi) && a3700_spi->buf_len) {
+ 		val = spireg_read(a3700_spi, A3700_SPI_DATA_IN_REG);
+ 		if (a3700_spi->buf_len >= 4) {
+-			u32 data = le32_to_cpu(val);
+ 
+-			memcpy(a3700_spi->rx_buf, &data, 4);
++			memcpy(a3700_spi->rx_buf, &val, 4);
+ 
+ 			a3700_spi->buf_len -= 4;
+ 			a3700_spi->rx_buf += 4;
+-- 
+2.15.1

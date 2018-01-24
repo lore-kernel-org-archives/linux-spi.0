@@ -1,60 +1,38 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC] spi: add spi multiplexing functions for dt
-Date: Wed, 24 Jan 2018 14:54:30 +0000
-Message-ID: <20180124145430.GD9366@sirena.org.uk>
-References: <1516661472-16452-1-git-send-email-ben.whitten@gmail.com>
- <1516661472-16452-2-git-send-email-ben.whitten@gmail.com>
- <20180123111123.GB7600@sirena.org.uk>
- <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g@mail.gmail.com>
+From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a =?iso-8859-1?Q?GPIO_CS?=
+Date: Wed, 24 Jan 2018 16:03:15 +0100
+Message-ID: <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz>
+References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
+ <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="DiL7RhKs8rK9YGuF"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On st=C5=99eda 24. ledna 2018 14:41:27 CET, Geert Uytterhoeven wrote:
+> Can't you just deduce an unused HW CS from the cs-gpios property?
 
---DiL7RhKs8rK9YGuF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for a review. Yes, I probably can. I just noticed that my local use=20=
 
-On Wed, Jan 24, 2018 at 02:01:55PM +0000, Ben Whitten wrote:
-> On 23 January 2018 at 11:11, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+of spi-orion's "direct mode" is probably the root cause of some weirdness=20
+that I'm seeing (such as the CS GPIO pin going up in the middle of a=20
+two-byte transaction, and other nasty issues that just go away once one=20
+adds a dev_info call...).
 
-> > level.  Things that have their own transfer function would be better off
-> > just being first order SPI controllers I think so that they get access
-> > to everything the framework offers and can correctly advertise
-> > capabilities and so on.
+> Renesas MSIOF also requires driving a native chip select, cfr. commit
+> b8761434bdec32fa ("spi: sh-msiof: Implement cs-gpios configuration").
 
-> This runs as a very simple fake SPI controller per bus that the mux is
-> controlling. Having this custom transfer message allowed me to pop
-> in the way my device exposes the downstream devices, through its
-> regmap.
+I'll take a look. It could be a candidate for some shared code, I suppose.
 
-Which like I say is a problem - if your device (which just sounds like a
-SPI controller) has different capabilities and constraints to the parent
-then client drivers won't see that.
-
---DiL7RhKs8rK9YGuF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlponiUACgkQJNaLcl1U
-h9DF9Qf/ZmVGzLukP8G7gRAoIfdmjqFSJrEMpkTAKiXR0CS8RAxbdkZDm1RIKhLZ
-JERqcAmaSv5f8JHVBZJ5/JYSf8C/BEeGqQt1YHOdBjRXvOeu2hj4qB9TZvCev4P4
-RUJIe0qJbMGiD5mIXm0CNkJjg0eZ5tQctJjV84GAjC/qTllDY3qFZg3bPrMQuTbO
-x3hiPFbv9C40Yze/bL4uMm8KDkxSdte8rGyKG2kjH8CBZvZPEoh0MpkPgAzM/UIu
-jgtl96wWJSXgTSHL99vtwD5AghIhn+N4oTkpzkIVxlrUrqGP5kONZZjG3J4Uc+XJ
-UruYUIeEctmMeWLzieTfn8eu/kTR9g==
-=urIv
------END PGP SIGNATURE-----
-
---DiL7RhKs8rK9YGuF--
+Cheers,
+Jan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

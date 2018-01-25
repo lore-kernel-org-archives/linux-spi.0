@@ -1,97 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Thu, 25 Jan 2018 11:57:41 +0000
-Message-ID: <20180125115741.GA21900@sirena.org.uk>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
- <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz>
- <96ca6f6776cf4146bcfb56a884236165@svr-chch-ex1.atlnz.lc>
- <CAMuHMdUOFJS=s-8Dv-BBLayXxKqZ0kPAUednA-3NL0+AZYuq-w@mail.gmail.com>
+From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
+Subject: Issue with spi_map_buf
+Date: Thu, 25 Jan 2018 15:47:54 +0100
+Message-ID: <20180125154754.48a30b23@smile-e5570>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="BXVAT5kNtrzKuDFl"
-Cc: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
-        Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUOFJS=s-8Dv-BBLayXxKqZ0kPAUednA-3NL0+AZYuq-w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi everyone,
 
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+While developing support for DMA transfers in the SPI controller for
+armada 3700, I stumbled on an issue with the way buffers are splitted
+into scatterlists in drivers/spi/spi.c, and I would like some
+knowledgeable people to take a quick look at this (I don't really know
+how to solve this) :
 
-")
-Fcc: +sent-mail
+In the function spi_map_buf [1] :
 
-On Thu, Jan 25, 2018 at 09:51:06AM +0100, Geert Uytterhoeven wrote:
-> On Wed, Jan 24, 2018 at 10:29 PM, Chris Packham
+The issue boils down to this (for the sake of clarity, I simplified the
+function by taking the following assumptions :
 
-> However, Jan wrote:
-> > semi-public datahseet, it seems that the SPI hardware really insists on
-> > driving *some* HW CS signal whenever a SPI transaction is in progress.
+- We work on a vmalloced buffer
+- max_seg_size < PAGE_SIZE
+- len > max_seg_size (len is size of the buffer we want to split)
 
-> If that is correct, it behaves like MSIOF, so you must leave one native chip
-> select unused. If all native chip selects are in use, one of them must be
-> replaced by a GPIO chip select (which could be the same physical pin,
-> depending on pinmux capabilities).
+desc_len = min_t(int, max_seg_size, PAGE_SIZE);
 
-Using the same pin is the ideal thing obviously, or if not then
-something that we know isn't routed out of the SoC (which may or may not
-be possible with a given chip design).
+sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
 
-> >          spi-flash@0 {
-> >                 /* This is on CS0 when GPIO 17 is high */
-> >          };
-> >
-> >          spi-sram@1 {
-> >                  /* This is on CS0 when GPIO 17 is low */
-> >         };
-> > };
+for (i = 0; i < sgs; i++) {
 
-> > I'm not sure what else I could do. I can't claim the GPIO twice. If I
-> > could I could probably use spi-cs-high to handle the high/low toggle.
+	min = min_t(size_t,
+		    len, desc_len - offset_in_page(buf));
+		    
+	vm_page = vmalloc_to_page(buf);
+			
+	sg_set_page(sg, vm_page,
+		    min, offset_in_page(buf));
 
-> So this uses GPIO17 to drive a mux to connect CS0 to either the first or
-> second device?
+	buf += min;
+	len -= min;
+	sg = sg_next(sg);
+}
 
-Interesting, coincidentally there was someone else sending a patch for
-muxing the other day which looked like having some support for chip
-select muxing would be the most sensible implementation.  I've copied in
-Ben who had initially approached this with a mux for the full bus which
-I'm not so convincd about.
+The 'min' variable computation seems incorrect when max_seg_size is less
+than PAGE_SIZE, in particular the "desc_len - offset_in_page(buf)",
+which should be something like "(len % PAGE_SIZE) - offset_in_page(buf)"
 
-> But you describe this as @0 being driven by CS0, and @1 by GPIO17, and you
-> rely on CS0 still being driven when @1 is selected, right?
-> That indeed won't work when an unused native chip select is driven when
-> using cs-gpio.
+Unfortunately, this start to be complex if we want to take all possible
+cases into account : If we want to split a buffer in segments, where
+some might cross page boundaries, how do we know how much sg elements
+will there be ?
 
-> IMHO, this needs the mux to be described properly in DT.
+I thought about using something like  __sg_alloc_table_from_pages, but
+the "max_segment" parameter is expected to be page aligned, which is not
+the case here.
 
-Yes.
+Another solution would be to iterate twice, one to find out how much
+elements there will be, then allocate the scatterlist, then fill it.
 
---BXVAT5kNtrzKuDFl
-Content-Type: application/pgp-signature; name="signature.asc"
+I also might be overthinking or musunderstanding this, so any help on
+this issue is welcome.
 
------BEGIN PGP SIGNATURE-----
+I found this issue with a prototype implementation of SPI DMA xfers on
+armada 3700, using fpga-pgr as a spi device. In my case, max_seg_size is
+set to 512 bytes.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlppxjIACgkQJNaLcl1U
-h9CV3gf+KMhccpcOUh+f8Y/MHsSur/5hxZjlwvQZN9stJ854d/M98Kq4wSqt8iGW
-VTcf5TDx5HI2Uhh8ns7EXEfT53cdPTtVnLAOce9QL+oNp1t57atbXQqNWo0WM7DF
-4sTNYehCWhbzSUNNxUEHTgvTpyoTqeitklIqWAK+miRjRkAJuM4IhXMV26ecnsXI
-htTTjaAaHxTRHOrqn7TKMfAShlko/PHbpCG8vKAupYwOxW0ty+K3VBnB896NLE6f
-CvmjKHPY0+hZoAzjYtqkj54UzmwKmwlNhqoPwQZlx28/ha/tlkj5aHDgv56oBJhw
-3cD48j1xToQOg3gHTpV//hOd72vf3g==
-=nRnA
------END PGP SIGNATURE-----
+This should occur with other DMA / SPI controllers, as long as the
+max_seg_size is less than PAGE_SIZE.
 
---BXVAT5kNtrzKuDFl--
+Thanks,
+
+Maxime
+
+[1] :
+http://elixir.free-electrons.com/linux/v4.15-rc9/source/drivers/spi/spi.c#L743
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

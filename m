@@ -1,83 +1,42 @@
-From: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Subject: Issue with spi_map_buf
-Date: Thu, 25 Jan 2018 15:47:54 +0100
-Message-ID: <20180125154754.48a30b23@smile-e5570>
+From: Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC] spi: add spi multiplexing functions for dt
+Date: Thu, 25 Jan 2018 15:54:25 +0000
+Message-ID: <CAF3==ivhZ1AJtNqEmzQpmgy4r0NSz36THe3xADaARsDRbv1vVQ@mail.gmail.com>
+References: <1516661472-16452-1-git-send-email-ben.whitten@gmail.com>
+ <1516661472-16452-2-git-send-email-ben.whitten@gmail.com> <20180123111123.GB7600@sirena.org.uk>
+ <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g@mail.gmail.com> <20180124145430.GD9366@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20180124145430.GD9366-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi everyone,
+On 24 January 2018 at 14:54, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Jan 24, 2018 at 02:01:55PM +0000, Ben Whitten wrote:
+>> On 23 January 2018 at 11:11, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+>> > level.  Things that have their own transfer function would be better off
+>> > just being first order SPI controllers I think so that they get access
+>> > to everything the framework offers and can correctly advertise
+>> > capabilities and so on.
+>
+>> This runs as a very simple fake SPI controller per bus that the mux is
+>> controlling. Having this custom transfer message allowed me to pop
+>> in the way my device exposes the downstream devices, through its
+>> regmap.
+>
+> Which like I say is a problem - if your device (which just sounds like a
+> SPI controller) has different capabilities and constraints to the parent
+> then client drivers won't see that.
 
-While developing support for DMA transfers in the SPI controller for
-armada 3700, I stumbled on an issue with the way buffers are splitted
-into scatterlists in drivers/spi/spi.c, and I would like some
-knowledgeable people to take a quick look at this (I don't really know
-how to solve this) :
+Ahh yes I see what you mean, agreed. I have changed my device to be a full
+controller.
+Thanks for the review.
 
-In the function spi_map_buf [1] :
-
-The issue boils down to this (for the sake of clarity, I simplified the
-function by taking the following assumptions :
-
-- We work on a vmalloced buffer
-- max_seg_size < PAGE_SIZE
-- len > max_seg_size (len is size of the buffer we want to split)
-
-desc_len = min_t(int, max_seg_size, PAGE_SIZE);
-
-sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
-
-for (i = 0; i < sgs; i++) {
-
-	min = min_t(size_t,
-		    len, desc_len - offset_in_page(buf));
-		    
-	vm_page = vmalloc_to_page(buf);
-			
-	sg_set_page(sg, vm_page,
-		    min, offset_in_page(buf));
-
-	buf += min;
-	len -= min;
-	sg = sg_next(sg);
-}
-
-The 'min' variable computation seems incorrect when max_seg_size is less
-than PAGE_SIZE, in particular the "desc_len - offset_in_page(buf)",
-which should be something like "(len % PAGE_SIZE) - offset_in_page(buf)"
-
-Unfortunately, this start to be complex if we want to take all possible
-cases into account : If we want to split a buffer in segments, where
-some might cross page boundaries, how do we know how much sg elements
-will there be ?
-
-I thought about using something like  __sg_alloc_table_from_pages, but
-the "max_segment" parameter is expected to be page aligned, which is not
-the case here.
-
-Another solution would be to iterate twice, one to find out how much
-elements there will be, then allocate the scatterlist, then fill it.
-
-I also might be overthinking or musunderstanding this, so any help on
-this issue is welcome.
-
-I found this issue with a prototype implementation of SPI DMA xfers on
-armada 3700, using fpga-pgr as a spi device. In my case, max_seg_size is
-set to 512 bytes.
-
-This should occur with other DMA / SPI controllers, as long as the
-max_seg_size is less than PAGE_SIZE.
-
-Thanks,
-
-Maxime
-
-[1] :
-http://elixir.free-electrons.com/linux/v4.15-rc9/source/drivers/spi/spi.c#L743
+Ben
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

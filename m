@@ -1,42 +1,85 @@
-From: Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] spi: add spi multiplexing functions for dt
-Date: Thu, 25 Jan 2018 15:54:25 +0000
-Message-ID: <CAF3==ivhZ1AJtNqEmzQpmgy4r0NSz36THe3xADaARsDRbv1vVQ@mail.gmail.com>
-References: <1516661472-16452-1-git-send-email-ben.whitten@gmail.com>
- <1516661472-16452-2-git-send-email-ben.whitten@gmail.com> <20180123111123.GB7600@sirena.org.uk>
- <CAF3==it=5_YQVJ9xg8CLzSPw7LQZbCHQHfsufYwwCb=n7x3L0g@mail.gmail.com> <20180124145430.GD9366@sirena.org.uk>
+From: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Subject: [PATCH] spi: orion: Fix a resource leak if the optional "axi" clk is deferred
+Date: Thu, 25 Jan 2018 21:16:17 +0100
+Message-ID: <20180125201617.17099-1-christophe.jaillet@wanadoo.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180124145430.GD9366-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 24 January 2018 at 14:54, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Jan 24, 2018 at 02:01:55PM +0000, Ben Whitten wrote:
->> On 23 January 2018 at 11:11, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
->> > level.  Things that have their own transfer function would be better off
->> > just being first order SPI controllers I think so that they get access
->> > to everything the framework offers and can correctly advertise
->> > capabilities and so on.
->
->> This runs as a very simple fake SPI controller per bus that the mux is
->> controlling. Having this custom transfer message allowed me to pop
->> in the way my device exposes the downstream devices, through its
->> regmap.
->
-> Which like I say is a problem - if your device (which just sounds like a
-> SPI controller) has different capabilities and constraints to the parent
-> then client drivers won't see that.
+If the optional "axi" clk is deferred, we still need to undo some
+initialisation. Espacially 'master' must be released. It will be
+reallocated the next time 'orion_spi_probe()' is called.
 
-Ahh yes I see what you mean, agreed. I have changed my device to be a full
-controller.
-Thanks for the review.
+Add a new label to clean what needs to be cleaned and rename another
+label to improve the names used.
 
-Ben
+Fixes: 92ae112e477a ("spi: orion: Fix clock resource by adding an optional bus clock")
+Signed-off-by: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+---
+ drivers/spi/spi-orion.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 482a0cf3b7aa..deca63e82ff6 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -638,8 +638,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	/* The following clock is only used by some SoCs */
+ 	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
+ 	if (IS_ERR(spi->axi_clk) &&
+-	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
+-		return -EPROBE_DEFER;
++	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER) {
++		status = -EPROBE_DEFER;
++		goto out_rel_clk;
++	}
+ 	if (!IS_ERR(spi->axi_clk))
+ 		clk_prepare_enable(spi->axi_clk);
+ 
+@@ -667,7 +669,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	spi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(spi->base)) {
+ 		status = PTR_ERR(spi->base);
+-		goto out_rel_clk;
++		goto out_rel_axi_clk;
+ 	}
+ 
+ 	/* Scan all SPI devices of this controller for direct mapped devices */
+@@ -705,7 +707,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 							    PAGE_SIZE);
+ 		if (!spi->direct_access[cs].vaddr) {
+ 			status = -ENOMEM;
+-			goto out_rel_clk;
++			goto out_rel_axi_clk;
+ 		}
+ 		spi->direct_access[cs].size = PAGE_SIZE;
+ 
+@@ -733,8 +735,9 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 
+ out_rel_pm:
+ 	pm_runtime_disable(&pdev->dev);
+-out_rel_clk:
++out_rel_axi_clk:
+ 	clk_disable_unprepare(spi->axi_clk);
++out_rel_clk:
+ 	clk_disable_unprepare(spi->clk);
+ out:
+ 	spi_master_put(master);
+-- 
+2.14.1
+
+
+---
+L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+https://www.avast.com/antivirus
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

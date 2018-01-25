@@ -1,88 +1,108 @@
-From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
-Subject: [PATCH 4/4] pinctrl: mcp23s08: spi: Fix duplicate pinctrl debugfs
- entries
-Date: Fri, 26 Jan 2018 16:06:37 +0100
-Message-ID: <e3a251cf48ad518ce4205cfdf2e866e6b3bb76f8.1516997103.git.jan.kundrat@cesnet.cz>
+From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Subject: [PATCH 2/4] pinctrl: mcp23s08: spi: Fix regmap debugfs entries
+Date: Thu, 25 Jan 2018 18:29:15 +0100
+Message-ID: <de8fbb7902652b5a512f67e2ee0813571e9d2372.1516997103.git.jan.kundrat@cesnet.cz>
 References: <cover.1516997103.git.jan.kundrat@cesnet.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Phil Reid <preid@electromag.com.au>,
-        Sebastian Reichel <sebastian.reichel@collabora.co.uk>
-To: linux-gpio@vger.kernel.org
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <cover.1516997103.git.jan.kundrat@cesnet.cz>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>,
+        Sebastian Reichel <sebastian.reichel-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+To: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1516997103.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This is a bit more involved because the pinctrl core so far always
-assumed that one device (with a unique dev_name) only contains a single
-pinctrl thing. This is not true for the mcp23s08 driver for chips
-connected over SPI. They have a "logical address" which means that
-several chips can share one physical CS signal.
+The SPI version of this chip allows several devices to be present on the
+same SPI bus via a local address. If this is in action and if the kernel
+has debugfs, however, the code attempts to create duplicate entries for
+the regmap's debugfs:
 
-A downside of this patch are some possibly ugly names for the debugfs
-entries, such as "spi1.1-mcp23xxx-pinctrl.2", etc.
+  mcp23s08 spi1.1: Failed to create debugfs directory
 
-Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+This patch simply assigns a local name matching the device logical
+address to the `struct regmap_config`.
+
+No changes are needed for MCP23S18 because that device does not support
+any logical addressing. Similarly, I2C devices do not need any action,
+either, because they are already different in their I2C address.
+
+A similar problem is present for the pinctrl debugfs instance, but that
+one is not addressed by this patch.
+
+Signed-off-by: Jan Kundrát <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 ---
- drivers/pinctrl/core.c             | 18 ++++++++++++++++--
- drivers/pinctrl/pinctrl-mcp23s08.c |  9 ++++++++-
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 4c8d5b23e4d0..dc7a77f2f9fe 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1856,9 +1856,23 @@ static struct dentry *debugfs_root;
- static void pinctrl_init_device_debugfs(struct pinctrl_dev *pctldev)
- {
- 	struct dentry *device_root;
-+	const char *debugfs_name;
-+
-+	if (pctldev->desc->name &&
-+			strcmp(dev_name(pctldev->dev), pctldev->desc->name)) {
-+		debugfs_name = devm_kasprintf(pctldev->dev, GFP_KERNEL,
-+				"%s-%s", dev_name(pctldev->dev),
-+				pctldev->desc->name);
-+		if (!debugfs_name) {
-+			pr_warn("failed to determine debugfs dir name for %s\n",
-+				dev_name(pctldev->dev));
-+			return;
-+		}
-+	} else {
-+		debugfs_name = dev_name(pctldev->dev);
-+	}
- 
--	device_root = debugfs_create_dir(dev_name(pctldev->dev),
--					 debugfs_root);
-+	device_root = debugfs_create_dir(debugfs_name, debugfs_root);
- 	pctldev->device_root = device_root;
- 
- 	if (IS_ERR(device_root) || !device_root) {
 diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index c76c9d4b26c9..1f3971d02084 100644
+index 186101c575e3..8dc758bacdd1 100644
 --- a/drivers/pinctrl/pinctrl-mcp23s08.c
 +++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -954,7 +954,14 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- 			goto fail;
- 	}
+@@ -788,6 +788,7 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ {
+ 	int status, ret;
+ 	bool mirror = false;
++	struct regmap_config *one_regmap_config = NULL;
  
--	mcp->pinctrl_desc.name = "mcp23xxx-pinctrl";
-+	if (one_regmap_config) {
-+		mcp->pinctrl_desc.name = devm_kasprintf(dev, GFP_KERNEL,
-+				"mcp23xxx-pinctrl.%d", raw_chip_address);
-+		if (!mcp->pinctrl_desc.name)
+ 	mutex_init(&mcp->lock);
+ 
+@@ -808,22 +809,36 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ 	switch (type) {
+ #ifdef CONFIG_SPI_MASTER
+ 	case MCP_TYPE_S08:
+-		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
+-					       &mcp23x08_regmap);
+-		mcp->reg_shift = 0;
+-		mcp->chip.ngpio = 8;
+-		mcp->chip.label = "mcp23s08";
+-		break;
+-
+ 	case MCP_TYPE_S17:
++		switch (type) {
++		case MCP_TYPE_S08:
++			one_regmap_config =
++				devm_kmemdup(dev, &mcp23x08_regmap,
++					sizeof(struct regmap_config), GFP_KERNEL);
++			mcp->reg_shift = 0;
++			mcp->chip.ngpio = 8;
++			mcp->chip.label = "mcp23s08";
++			break;
++		case MCP_TYPE_S17:
++			one_regmap_config =
++				devm_kmemdup(dev, &mcp23x17_regmap,
++					sizeof(struct regmap_config), GFP_KERNEL);
++			mcp->reg_shift = 1;
++			mcp->chip.ngpio = 16;
++			mcp->chip.label = "mcp23s17";
++			break;
++		}
++		if (!one_regmap_config)
 +			return -ENOMEM;
-+	} else {
-+		mcp->pinctrl_desc.name = "mcp23xxx-pinctrl";
-+	}
- 	mcp->pinctrl_desc.pctlops = &mcp_pinctrl_ops;
- 	mcp->pinctrl_desc.confops = &mcp_pinconf_ops;
- 	mcp->pinctrl_desc.npins = mcp->chip.ngpio;
++
++		one_regmap_config->name = devm_kasprintf(dev, GFP_KERNEL, "%d", (addr & ~0x40) >> 1);
+ 		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
+-					       &mcp23x17_regmap);
+-		mcp->reg_shift = 1;
+-		mcp->chip.ngpio = 16;
+-		mcp->chip.label = "mcp23s17";
++					       one_regmap_config);
+ 		break;
+ 
+ 	case MCP_TYPE_S18:
++		if (!one_regmap_config)
++			return -ENOMEM;
+ 		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
+ 					       &mcp23x17_regmap);
+ 		mcp->reg_shift = 1;
 -- 
 2.14.3
 
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

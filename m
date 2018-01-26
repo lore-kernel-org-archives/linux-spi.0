@@ -1,68 +1,115 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Fri, 26 Jan 2018 11:51:22 +0000
-Message-ID: <20180126115122.GC32674@sirena.org.uk>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
- <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz>
- <96ca6f6776cf4146bcfb56a884236165@svr-chch-ex1.atlnz.lc>
- <CAMuHMdUOFJS=s-8Dv-BBLayXxKqZ0kPAUednA-3NL0+AZYuq-w@mail.gmail.com>
- <20180125115741.GA21900@sirena.org.uk>
- <5dec18c8e18845d39999ca60547fefff@svr-chch-ex1.atlnz.lc>
- <CAMuHMdVESS=_JhsO2pziFshWF+d=g78H8XSny34HTJn=1Lei7g@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Qbvjkv9qwOGw/5Fx"
-Cc: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
-        Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVESS=_JhsO2pziFshWF+d=g78H8XSny34HTJn=1Lei7g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: orion: Fix a resource leak if the optional "axi" clk is deferred" to the spi tree
+Date: Fri, 26 Jan 2018 12:54:21 +0000
+Message-ID: <E1ef3WP-0002Mh-9A@debutante>
+References: <20180125201617.17099-1-christophe.jaillet@wanadoo.fr>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gregory CLEMENT <gregory.clement@free-electrons.com>,
+        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        gregory.clement@free-electrons.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-spi@vger.kernel.org
+To: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20180125201617.17099-1-christophe.jaillet@wanadoo.fr>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---Qbvjkv9qwOGw/5Fx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: orion: Fix a resource leak if the optional "axi" clk is deferred
 
-On Thu, Jan 25, 2018 at 10:27:24PM +0100, Geert Uytterhoeven wrote:
-> On Thu, Jan 25, 2018 at 10:18 PM, Chris Packham
+has been applied to the spi tree at
 
-> > I'm more than happy to update the DT on this product. But I've no idea
-> > what that update would look like.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> (Un)fortunately a mux driver is WIP, as Mark mentioned above.
-> See https://lkml.org/lkml/2018/1/22/859
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-=46rom the discussion there I think the case that Ben had was for a
-controller on the SPI bus rather than a mux on the CS so you're probably
-going to have to do this yourself.  I've been thinking about what we
-might do in DT terms but I've not been getting too many ideas, we may
-need to talk it over with the DT people.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---Qbvjkv9qwOGw/5Fx
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlprFjoACgkQJNaLcl1U
-h9Ad2gf+NxBPhTDrl34O2NAkvSxe4w69cNCqd084R+mzYnL8mSu3BvsivBAqLTRU
-6RQEonL5yKWxD+UW2NPQF1elSjM+Or2kR0ntQMaWPY2jW2OczjCZDSGqjWcHTqiv
-bRAKeNWi10O69enA65GJsix+Nj9fIkUQpmOzlVb+9xjFV+JOw9U1Zp66LRJwjwl6
-VSTnnc3Tun2M6mq9UeAlNP8L1HyLr3XcxIV52Wwd5xkqVI4NUZkwOAqYYsRt5bE7
-GkkVlWVxA22XE7Cw82O7XycGGLgCZ7KOLc012INq1YOpLNyG5NEDTwtyhPieoZCV
-6X5BWkeffDMXEK4osL916vanyAp+lQ==
-=KAia
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---Qbvjkv9qwOGw/5Fx--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From 479c03a7173d07b2967f9b521159271543d99e2f Mon Sep 17 00:00:00 2001
+From: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Date: Thu, 25 Jan 2018 21:16:17 +0100
+Subject: [PATCH] spi: orion: Fix a resource leak if the optional "axi" clk is
+ deferred
+
+If the optional "axi" clk is deferred, we still need to undo some
+initialisation. Especially 'master' must be released. It will be
+reallocated the next time 'orion_spi_probe()' is called.
+
+Add a new label to clean what needs to be cleaned and rename another
+label to improve the names used.
+
+Fixes: 92ae112e477a ("spi: orion: Fix clock resource by adding an optional bus clock")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-orion.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 482a0cf3b7aa..deca63e82ff6 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -638,8 +638,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	/* The following clock is only used by some SoCs */
+ 	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
+ 	if (IS_ERR(spi->axi_clk) &&
+-	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
+-		return -EPROBE_DEFER;
++	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER) {
++		status = -EPROBE_DEFER;
++		goto out_rel_clk;
++	}
+ 	if (!IS_ERR(spi->axi_clk))
+ 		clk_prepare_enable(spi->axi_clk);
+ 
+@@ -667,7 +669,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	spi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(spi->base)) {
+ 		status = PTR_ERR(spi->base);
+-		goto out_rel_clk;
++		goto out_rel_axi_clk;
+ 	}
+ 
+ 	/* Scan all SPI devices of this controller for direct mapped devices */
+@@ -705,7 +707,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 							    PAGE_SIZE);
+ 		if (!spi->direct_access[cs].vaddr) {
+ 			status = -ENOMEM;
+-			goto out_rel_clk;
++			goto out_rel_axi_clk;
+ 		}
+ 		spi->direct_access[cs].size = PAGE_SIZE;
+ 
+@@ -733,8 +735,9 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 
+ out_rel_pm:
+ 	pm_runtime_disable(&pdev->dev);
+-out_rel_clk:
++out_rel_axi_clk:
+ 	clk_disable_unprepare(spi->axi_clk);
++out_rel_clk:
+ 	clk_disable_unprepare(spi->clk);
+ out:
+ 	spi_master_put(master);
+-- 
+2.15.1
+

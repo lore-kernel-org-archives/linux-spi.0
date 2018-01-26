@@ -1,198 +1,88 @@
-From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: [PATCH 1/4] pinctrl: mcp23s08: IRQ behavior for open-drain interrupts
-Date: Thu, 25 Jan 2018 16:08:35 +0100
-Message-ID: <9e78a4a697c8d4d3028ea8780bd925471b49af3c.1516997103.git.jan.kundrat@cesnet.cz>
+From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
+Subject: [PATCH 4/4] pinctrl: mcp23s08: spi: Fix duplicate pinctrl debugfs
+ entries
+Date: Fri, 26 Jan 2018 16:06:37 +0100
+Message-ID: <e3a251cf48ad518ce4205cfdf2e866e6b3bb76f8.1516997103.git.jan.kundrat@cesnet.cz>
 References: <cover.1516997103.git.jan.kundrat@cesnet.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>,
-        Sebastian Reichel <sebastian.reichel-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-To: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1516997103.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Phil Reid <preid@electromag.com.au>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+To: linux-gpio@vger.kernel.org
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <cover.1516997103.git.jan.kundrat@cesnet.cz>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The hardware supports three different IRQ modes:
-- open drain, i.e., an active-low output which requires an external
-  pull-up and supports IRQ line sharing,
-- active low, with push-pull output,
-- active high, with push-pull output.
+This is a bit more involved because the pinctrl core so far always
+assumed that one device (with a unique dev_name) only contains a single
+pinctrl thing. This is not true for the mcp23s08 driver for chips
+connected over SPI. They have a "logical address" which means that
+several chips can share one physical CS signal.
 
-My understanding of electronics is limited, but it is "wrong" to connect
-different push-pull outpus together. It could sort-of work if the
-chips/board actually have some resistors there, but it's an ugly thing
-to do.
+A downside of this patch are some possibly ugly names for the debugfs
+entries, such as "spi1.1-mcp23xxx-pinctrl.2", etc.
 
-In the past, this driver did not touch the ODR bit (for open-drain)
-operation. During power-on-reset, it is set to zero. Unless some
-platform code actually set this bit to one, this means that the code
-never supported open drain operation.
-
-This change makes this handling explicit. If you want sharing of the IRQ
-line, then use the microchip,irq-open-drain mode and add an external
-pull-up.
-
-There's some risk here. If, e.g., the bootloader sets the ODR bit for
-some reason, the HW shares the IRQ lines, and nobody changes the DT,
-then your HW will suddenly use push-pull driver for the IRQ line. If
-there is any other chip on the same lane, the HW might suffer (my chip
-survived this when I "tested" this by accident with no bootloader code
-to set the ODR bit).
-
-Signed-off-by: Jan Kundrát <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
 ---
- .../bindings/pinctrl/pinctrl-mcp23s08.txt          |  4 ++
- drivers/pinctrl/pinctrl-mcp23s08.c                 | 82 +++++++++++++++-------
- 2 files changed, 61 insertions(+), 25 deletions(-)
+ drivers/pinctrl/core.c             | 18 ++++++++++++++++--
+ drivers/pinctrl/pinctrl-mcp23s08.c |  9 ++++++++-
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
-index 9c451c20dda4..92aa91027c68 100644
---- a/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
-@@ -58,6 +58,10 @@ Optional device specific properties:
-         On devices with only one interrupt output this property is useless.
- - microchip,irq-active-high: Sets the INTPOL flag in the IOCON register. This
-         configures the IRQ output polarity as active high.
-+- microchip,irq-open-drain: Sets the ODR flag in the IOCON register. This
-+        configures the IRQ output as active low open-drain and allows sharing
-+	of the IRQ line among several chips. Note that irq-active-high and
-+	irq-open-drain are mutually exclusive.
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 4c8d5b23e4d0..dc7a77f2f9fe 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1856,9 +1856,23 @@ static struct dentry *debugfs_root;
+ static void pinctrl_init_device_debugfs(struct pinctrl_dev *pctldev)
+ {
+ 	struct dentry *device_root;
++	const char *debugfs_name;
++
++	if (pctldev->desc->name &&
++			strcmp(dev_name(pctldev->dev), pctldev->desc->name)) {
++		debugfs_name = devm_kasprintf(pctldev->dev, GFP_KERNEL,
++				"%s-%s", dev_name(pctldev->dev),
++				pctldev->desc->name);
++		if (!debugfs_name) {
++			pr_warn("failed to determine debugfs dir name for %s\n",
++				dev_name(pctldev->dev));
++			return;
++		}
++	} else {
++		debugfs_name = dev_name(pctldev->dev);
++	}
  
- Example I2C (with interrupt):
- gpiom1: gpio@20 {
+-	device_root = debugfs_create_dir(dev_name(pctldev->dev),
+-					 debugfs_root);
++	device_root = debugfs_create_dir(debugfs_name, debugfs_root);
+ 	pctldev->device_root = device_root;
+ 
+ 	if (IS_ERR(device_root) || !device_root) {
 diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index c017860619d6..186101c575e3 100644
+index c76c9d4b26c9..1f3971d02084 100644
 --- a/drivers/pinctrl/pinctrl-mcp23s08.c
 +++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -54,9 +54,15 @@
- 
- struct mcp23s08;
- 
-+enum mcp23s08_irq_regime {
-+	MCP_IRQ_PULL_LOW,
-+	MCP_IRQ_PUSH_UP,
-+	MCP_IRQ_OPEN_DRAIN
-+};
-+
- struct mcp23s08 {
- 	u8			addr;
--	bool			irq_active_high;
-+	enum mcp23s08_irq_regime	irq_regime;
- 	bool			reg_shift;
- 
- 	u16			irq_rise;
-@@ -625,10 +631,17 @@ static int mcp23s08_irq_setup(struct mcp23s08 *mcp)
- 	int err;
- 	unsigned long irqflags = IRQF_ONESHOT | IRQF_SHARED;
- 
--	if (mcp->irq_active_high)
--		irqflags |= IRQF_TRIGGER_HIGH;
--	else
-+	switch (mcp->irq_regime) {
-+	case MCP_IRQ_PULL_LOW:
- 		irqflags |= IRQF_TRIGGER_LOW;
-+		break;
-+	case MCP_IRQ_PUSH_UP:
-+		irqflags |= IRQF_TRIGGER_HIGH;
-+		break;
-+	case MCP_IRQ_OPEN_DRAIN:
-+		irqflags |= IRQF_TRIGGER_LOW | IRQF_SHARED;
-+		break;
-+	}
- 
- 	err = devm_request_threaded_irq(chip->parent, mcp->irq, NULL,
- 					mcp23s08_irq,
-@@ -780,7 +793,7 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- 
- 	mcp->dev = dev;
- 	mcp->addr = addr;
--	mcp->irq_active_high = false;
-+	mcp->irq_regime = MCP_IRQ_PULL_LOW;
- 
- 	mcp->chip.direction_input = mcp23s08_direction_input;
- 	mcp->chip.get = mcp23s08_get;
-@@ -866,33 +879,52 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- 	mcp->irq_controller =
- 		device_property_read_bool(dev, "interrupt-controller");
- 	if (mcp->irq && mcp->irq_controller) {
--		mcp->irq_active_high =
--			device_property_read_bool(dev,
--					      "microchip,irq-active-high");
-+		bool irq_active_high = device_property_read_bool(dev,
-+						"microchip,irq-active-high");
-+		bool irq_open_drain = device_property_read_bool(dev,
-+						"microchip,irq-open-drain");
-+		if (irq_active_high && irq_open_drain) {
-+			dev_err(dev, "microchip,irq-open-drain and "
-+				"microchip,irq-active-high are mutually exclusive\n");
-+			ret = -EINVAL;
-+			goto fail;
-+		} else if (irq_active_high) {
-+			mcp->irq_regime = MCP_IRQ_PUSH_UP;
-+		} else if (irq_open_drain) {
-+			mcp->irq_regime = MCP_IRQ_OPEN_DRAIN;
-+		}
- 
- 		mirror = device_property_read_bool(dev, "microchip,irq-mirror");
+@@ -954,7 +954,14 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ 			goto fail;
  	}
  
--	if ((status & IOCON_SEQOP) || !(status & IOCON_HAEN) || mirror ||
--	     mcp->irq_active_high) {
--		/* mcp23s17 has IOCON twice, make sure they are in sync */
--		status &= ~(IOCON_SEQOP | (IOCON_SEQOP << 8));
--		status |= IOCON_HAEN | (IOCON_HAEN << 8);
--		if (mcp->irq_active_high)
--			status |= IOCON_INTPOL | (IOCON_INTPOL << 8);
--		else
--			status &= ~(IOCON_INTPOL | (IOCON_INTPOL << 8));
-+	/* mcp23s17 has IOCON twice, make sure they are in sync */
-+	status &= ~(IOCON_SEQOP | (IOCON_SEQOP << 8));
-+	status |= IOCON_HAEN | (IOCON_HAEN << 8);
- 
--		if (mirror)
--			status |= IOCON_MIRROR | (IOCON_MIRROR << 8);
-+	switch (mcp->irq_regime) {
-+	case MCP_IRQ_PUSH_UP:
-+		status |= IOCON_INTPOL | (IOCON_INTPOL << 8);
-+		status &= ~(IOCON_ODR | (IOCON_ODR << 8));
-+		break;
-+	case MCP_IRQ_PULL_LOW:
-+		status &= ~(IOCON_INTPOL | (IOCON_INTPOL << 8));
-+		status &= ~(IOCON_ODR | (IOCON_ODR << 8));
-+		break;
-+	case MCP_IRQ_OPEN_DRAIN:
-+		/* ODR overrides INTPOL */
-+		status |= IOCON_ODR | (IOCON_ODR << 8);
-+		break;
+-	mcp->pinctrl_desc.name = "mcp23xxx-pinctrl";
++	if (one_regmap_config) {
++		mcp->pinctrl_desc.name = devm_kasprintf(dev, GFP_KERNEL,
++				"mcp23xxx-pinctrl.%d", raw_chip_address);
++		if (!mcp->pinctrl_desc.name)
++			return -ENOMEM;
++	} else {
++		mcp->pinctrl_desc.name = "mcp23xxx-pinctrl";
 +	}
- 
--		if (type == MCP_TYPE_S18 || type == MCP_TYPE_018)
--			status |= IOCON_INTCC | (IOCON_INTCC << 8);
-+	if (mirror)
-+		status |= IOCON_MIRROR | (IOCON_MIRROR << 8);
- 
--		ret = mcp_write(mcp, MCP_IOCON, status);
--		if (ret < 0)
--			goto fail;
--	}
-+	if (type == MCP_TYPE_S18 || type == MCP_TYPE_018)
-+		status |= IOCON_INTCC | (IOCON_INTCC << 8);
-+
-+	ret = mcp_write(mcp, MCP_IOCON, status);
-+	if (ret < 0)
-+		goto fail;
- 
- 	ret = devm_gpiochip_add_data(dev, &mcp->chip, mcp);
- 	if (ret < 0)
+ 	mcp->pinctrl_desc.pctlops = &mcp_pinctrl_ops;
+ 	mcp->pinctrl_desc.confops = &mcp_pinconf_ops;
+ 	mcp->pinctrl_desc.npins = mcp->chip.ngpio;
 -- 
 2.14.3
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

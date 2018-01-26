@@ -1,108 +1,75 @@
-From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: [PATCH 2/4] pinctrl: mcp23s08: spi: Fix regmap debugfs entries
-Date: Thu, 25 Jan 2018 18:29:15 +0100
-Message-ID: <de8fbb7902652b5a512f67e2ee0813571e9d2372.1516997103.git.jan.kundrat@cesnet.cz>
+From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
+Subject: [PATCH 3/4] pinctrl: mcp23s08: spi: Add HW address to gpio_chip.label
+Date: Fri, 26 Jan 2018 20:16:47 +0100
+Message-ID: <03c5ea4d98804e4ea6b0927e5bf103106e438142.1516997103.git.jan.kundrat@cesnet.cz>
 References: <cover.1516997103.git.jan.kundrat@cesnet.cz>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>,
-        Sebastian Reichel <sebastian.reichel-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-To: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1516997103.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Phil Reid <preid@electromag.com.au>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+To: linux-gpio@vger.kernel.org
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <cover.1516997103.git.jan.kundrat@cesnet.cz>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The SPI version of this chip allows several devices to be present on the
-same SPI bus via a local address. If this is in action and if the kernel
-has debugfs, however, the code attempts to create duplicate entries for
-the regmap's debugfs:
+When several devices are sharing one hardware SPI CS, there is no visual
+clue in `lsgpio` or in /sys/kernel/debug/gpio about which one is which
+one. Stuff depends on the enumeration order, and therefore lower chip
+addresses always go first, but that's just an implementation detail.
+This change includes the device-specific address in the debug output:
 
-  mcp23s08 spi1.1: Failed to create debugfs directory
+  gpiochip4: GPIOs 464-479, parent: spi/spi1.1, mcp23s17.2, can sleep:
+  gpiochip3: GPIOs 480-495, parent: spi/spi1.1, mcp23s17.1, can sleep:
 
-This patch simply assigns a local name matching the device logical
-address to the `struct regmap_config`.
-
-No changes are needed for MCP23S18 because that device does not support
-any logical addressing. Similarly, I2C devices do not need any action,
-either, because they are already different in their I2C address.
-
-A similar problem is present for the pinctrl debugfs instance, but that
-one is not addressed by this patch.
-
-Signed-off-by: Jan Kundrát <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index 186101c575e3..8dc758bacdd1 100644
+index 8dc758bacdd1..c76c9d4b26c9 100644
 --- a/drivers/pinctrl/pinctrl-mcp23s08.c
 +++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -788,6 +788,7 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- {
+@@ -789,6 +789,7 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
  	int status, ret;
  	bool mirror = false;
-+	struct regmap_config *one_regmap_config = NULL;
+ 	struct regmap_config *one_regmap_config = NULL;
++	int raw_chip_address = (addr & ~0x40) >> 1;
  
  	mutex_init(&mcp->lock);
  
-@@ -808,22 +809,36 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- 	switch (type) {
- #ifdef CONFIG_SPI_MASTER
- 	case MCP_TYPE_S08:
--		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
--					       &mcp23x08_regmap);
--		mcp->reg_shift = 0;
--		mcp->chip.ngpio = 8;
--		mcp->chip.label = "mcp23s08";
--		break;
--
- 	case MCP_TYPE_S17:
-+		switch (type) {
-+		case MCP_TYPE_S08:
-+			one_regmap_config =
-+				devm_kmemdup(dev, &mcp23x08_regmap,
-+					sizeof(struct regmap_config), GFP_KERNEL);
-+			mcp->reg_shift = 0;
-+			mcp->chip.ngpio = 8;
-+			mcp->chip.label = "mcp23s08";
-+			break;
-+		case MCP_TYPE_S17:
-+			one_regmap_config =
-+				devm_kmemdup(dev, &mcp23x17_regmap,
-+					sizeof(struct regmap_config), GFP_KERNEL);
-+			mcp->reg_shift = 1;
-+			mcp->chip.ngpio = 16;
-+			mcp->chip.label = "mcp23s17";
-+			break;
-+		}
-+		if (!one_regmap_config)
-+			return -ENOMEM;
-+
-+		one_regmap_config->name = devm_kasprintf(dev, GFP_KERNEL, "%d", (addr & ~0x40) >> 1);
- 		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
--					       &mcp23x17_regmap);
--		mcp->reg_shift = 1;
--		mcp->chip.ngpio = 16;
--		mcp->chip.label = "mcp23s17";
-+					       one_regmap_config);
- 		break;
+@@ -817,7 +818,8 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ 					sizeof(struct regmap_config), GFP_KERNEL);
+ 			mcp->reg_shift = 0;
+ 			mcp->chip.ngpio = 8;
+-			mcp->chip.label = "mcp23s08";
++			mcp->chip.label = devm_kasprintf(dev, GFP_KERNEL,
++					"mcp23s08.%d", raw_chip_address);
+ 			break;
+ 		case MCP_TYPE_S17:
+ 			one_regmap_config =
+@@ -825,13 +827,14 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ 					sizeof(struct regmap_config), GFP_KERNEL);
+ 			mcp->reg_shift = 1;
+ 			mcp->chip.ngpio = 16;
+-			mcp->chip.label = "mcp23s17";
++			mcp->chip.label = devm_kasprintf(dev, GFP_KERNEL,
++					"mcp23s17.%d", raw_chip_address);
+ 			break;
+ 		}
+ 		if (!one_regmap_config)
+ 			return -ENOMEM;
  
- 	case MCP_TYPE_S18:
-+		if (!one_regmap_config)
-+			return -ENOMEM;
+-		one_regmap_config->name = devm_kasprintf(dev, GFP_KERNEL, "%d", (addr & ~0x40) >> 1);
++		one_regmap_config->name = devm_kasprintf(dev, GFP_KERNEL, "%d", raw_chip_address);
  		mcp->regmap = devm_regmap_init(dev, &mcp23sxx_spi_regmap, mcp,
- 					       &mcp23x17_regmap);
- 		mcp->reg_shift = 1;
+ 					       one_regmap_config);
+ 		break;
 -- 
 2.14.3
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

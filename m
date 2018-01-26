@@ -1,101 +1,105 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Thu, 25 Jan 2018 22:27:24 +0100
-Message-ID: <CAMuHMdVESS=_JhsO2pziFshWF+d=g78H8XSny34HTJn=1Lei7g@mail.gmail.com>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <CAMuHMdU-06YxWm3MPSBY5weCRCRVRQPUiabGxa-n8ikXi9D-3A@mail.gmail.com>
- <60b34619-5034-4e71-b0b2-75a62de0cf2c@cesnet.cz> <96ca6f6776cf4146bcfb56a884236165@svr-chch-ex1.atlnz.lc>
- <CAMuHMdUOFJS=s-8Dv-BBLayXxKqZ0kPAUednA-3NL0+AZYuq-w@mail.gmail.com>
- <20180125115741.GA21900@sirena.org.uk> <5dec18c8e18845d39999ca60547fefff@svr-chch-ex1.atlnz.lc>
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: Re: [PATCH] spi: orion: Fix a resource leak if the optional "axi" clk is deferred
+Date: Fri, 26 Jan 2018 09:10:07 +0100
+Message-ID: <87fu6t2g80.fsf@free-electrons.com>
+References: <20180125201617.17099-1-christophe.jaillet@wanadoo.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        =?UTF-8?B?SmFuIEt1bmRyw6F0?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Ben Whitten <ben.whitten-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5dec18c8e18845d39999ca60547fefff-5g7mGxlPNYb6GjIOKuZY+ItlCAj8ZROq@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+In-Reply-To: <20180125201617.17099-1-christophe.jaillet@wanadoo.fr>
+        (Christophe JAILLET's message of "Thu, 25 Jan 2018 21:16:17 +0100")
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Chris,
+Hi Christophe,
+ 
+ On jeu., janv. 25 2018, Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-On Thu, Jan 25, 2018 at 10:18 PM, Chris Packham
-<Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
-> On 26/01/18 00:57, Mark Brown wrote:
->> ")
->> Fcc: +sent-mail
->>
->> On Thu, Jan 25, 2018 at 09:51:06AM +0100, Geert Uytterhoeven wrote:
->>> On Wed, Jan 24, 2018 at 10:29 PM, Chris Packham
->>
->>> However, Jan wrote:
->>>> semi-public datahseet, it seems that the SPI hardware really insists on
->>>> driving *some* HW CS signal whenever a SPI transaction is in progress.
->>
->>> If that is correct, it behaves like MSIOF, so you must leave one native chip
->>> select unused. If all native chip selects are in use, one of them must be
->>> replaced by a GPIO chip select (which could be the same physical pin,
->>> depending on pinmux capabilities).
->>
->> Using the same pin is the ideal thing obviously, or if not then
->> something that we know isn't routed out of the SoC (which may or may not
->> be possible with a given chip design).
->>
->>>>           spi-flash@0 {
->>>>                  /* This is on CS0 when GPIO 17 is high */
->>>>           };
->>>>
->>>>           spi-sram@1 {
->>>>                   /* This is on CS0 when GPIO 17 is low */
->>>>          };
->>>> };
->>
->>>> I'm not sure what else I could do. I can't claim the GPIO twice. If I
->>>> could I could probably use spi-cs-high to handle the high/low toggle.
->>
->>> So this uses GPIO17 to drive a mux to connect CS0 to either the first or
->>> second device?
+> If the optional "axi" clk is deferred, we still need to undo some
+> initialisation. Espacially 'master' must be released. It will be
+                  Especially
+
+> reallocated the next time 'orion_spi_probe()' is called.
 >
-> Correct. GPIO17 directs CS0 with the addition of a logic gate.
+> Add a new label to clean what needs to be cleaned and rename another
+> label to improve the names used.
 >
->> Interesting, coincidentally there was someone else sending a patch for
->> muxing the other day which looked like having some support for chip
->> select muxing would be the most sensible implementation.  I've copied in
->> Ben who had initially approached this with a mux for the full bus which
->> I'm not so convincd about.
->>
->>> But you describe this as @0 being driven by CS0, and @1 by GPIO17, and you
->>> rely on CS0 still being driven when @1 is selected, right?
->>> That indeed won't work when an unused native chip select is driven when
->>> using cs-gpio.
+> Fixes: 92ae112e477a ("spi: orion: Fix clock resource by adding an optional bus clock")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+
+Acked-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+
+Thanks,
+
+Gregory
+
+
+> ---
+>  drivers/spi/spi-orion.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 >
-> Yes that's my problem.
+> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+> index 482a0cf3b7aa..deca63e82ff6 100644
+> --- a/drivers/spi/spi-orion.c
+> +++ b/drivers/spi/spi-orion.c
+> @@ -638,8 +638,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+>  	/* The following clock is only used by some SoCs */
+>  	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
+>  	if (IS_ERR(spi->axi_clk) &&
+> -	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
+> -		return -EPROBE_DEFER;
+> +	    PTR_ERR(spi->axi_clk) == -EPROBE_DEFER) {
+> +		status = -EPROBE_DEFER;
+> +		goto out_rel_clk;
+> +	}
+>  	if (!IS_ERR(spi->axi_clk))
+>  		clk_prepare_enable(spi->axi_clk);
+>  
+> @@ -667,7 +669,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+>  	spi->base = devm_ioremap_resource(&pdev->dev, r);
+>  	if (IS_ERR(spi->base)) {
+>  		status = PTR_ERR(spi->base);
+> -		goto out_rel_clk;
+> +		goto out_rel_axi_clk;
+>  	}
+>  
+>  	/* Scan all SPI devices of this controller for direct mapped devices */
+> @@ -705,7 +707,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+>  							    PAGE_SIZE);
+>  		if (!spi->direct_access[cs].vaddr) {
+>  			status = -ENOMEM;
+> -			goto out_rel_clk;
+> +			goto out_rel_axi_clk;
+>  		}
+>  		spi->direct_access[cs].size = PAGE_SIZE;
+>  
+> @@ -733,8 +735,9 @@ static int orion_spi_probe(struct platform_device *pdev)
+>  
+>  out_rel_pm:
+>  	pm_runtime_disable(&pdev->dev);
+> -out_rel_clk:
+> +out_rel_axi_clk:
+>  	clk_disable_unprepare(spi->axi_clk);
+> +out_rel_clk:
+>  	clk_disable_unprepare(spi->clk);
+>  out:
+>  	spi_master_put(master);
+> -- 
+> 2.14.1
 >
->>
->>> IMHO, this needs the mux to be described properly in DT.
->>
->> Yes.
 >
-> I'm more than happy to update the DT on this product. But I've no idea
-> what that update would look like.
+> ---
+> L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+> https://www.avast.com/antivirus
+>
 
-(Un)fortunately a mux driver is WIP, as Mark mentioned above.
-See https://lkml.org/lkml/2018/1/22/859
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com

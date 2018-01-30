@@ -1,51 +1,66 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Tue, 30 Jan 2018 01:13:37 +0000
-Message-ID: <1517274816.25398.136.camel@impinj.com>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
+From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Subject: Re: [PATCH 1/4] pinctrl: mcp23s08: IRQ behavior for open-drain
+ interrupts
+Date: Tue, 30 Jan 2018 10:24:15 +0800
+Message-ID: <f32083de-bf9b-5db3-61b5-bd7d1369f008@electromag.com.au>
+References: <cover.1516997103.git.jan.kundrat@cesnet.cz>
+ <9e78a4a697c8d4d3028ea8780bd925471b49af3c.1516997103.git.jan.kundrat@cesnet.cz>
+ <621e8caf-3591-9748-dcdd-7ae8f7222e80@electromag.com.au>
+ <77ac8e65-1742-4e0e-9f96-8445de92c6c6@cesnet.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org"
-        <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org" <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Sebastian Reichel <sebastian.reichel-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+To: =?UTF-8?Q?Jan_Kundr=c3=a1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Content-Language: en-US
-Content-ID: <94D1A084185F6C44B94AD3E47B53D913-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+In-Reply-To: <77ac8e65-1742-4e0e-9f96-8445de92c6c6-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Language: en-AU
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gVHVlLCAyMDE4LTAxLTIzIGF0IDIwOjU2ICswMTAwLCBKYW4gS3VuZHLDoXQgd3JvdGU6DQo+
-IENvbW1pdCBiMjhiOTE0OWIzN2YgYWRkZWQgc3VwcG9ydCBmb3IgdXNpbmcgYW4gYWRkaXRpb25h
-bCBHUElPIHBpbiBmb3INCj4gQ2hpcCBTZWxlY3QuIEFjY29yZGluZyB0byB0aGF0IGNvbW1pdCBh
-bmQgdG8gbXkgdW5kZXJzdGFuZGluZyBvZiBhDQo+IHNlbWktcHVibGljIGRhdGFoc2VldCwgaXQg
-c2VlbXMgdGhhdCB0aGUgU1BJIGhhcmR3YXJlIHJlYWxseSBpbnNpc3RzIG9uDQo+IGRyaXZpbmcg
-KnNvbWUqIEhXIENTIHNpZ25hbCB3aGVuZXZlciBhIFNQSSB0cmFuc2FjdGlvbiBpcyBpbiBwcm9n
-cmVzcy4NCg0KSXQncyBwcmV0dHkgY29tbW9uIGZvciBTUEkgaGFyZHdhcmUgdG8gaGF2ZSB0aGlz
-IGxpbWl0YXRpb24uDQoNCkFub3RoZXIgd2F5IHRvIGZpeCBpdCwgYmVzaWRlcyBkZWZhdWx0IHRv
-IDAgb3IgdG8gc2VsZWN0IGFuIHVudXNlZA0KY2hpcHNlbGVjdCwgaXMgdG8gdXNlIHRoZSBjcyBu
-dW1iZXIgb2YgdGhlIHNsYXZlIG1vZHVsdXMgdGhlIG51bWJlciBvZg0KbmF0aXZlIGNoaXAgc2Vs
-ZWN0cy4gIFRoZXkgYXJlIG9yIHdlcmUgc29tZSBvdGhlciBkcml2ZXJzIHRoYXQgZG8gdGhpcy4N
-ClRoZSBpZGVhIGlzIHRoYXQgQ1MgbnVtYmVycyBkb24ndCBuZWVkIHRvIGJlIHNlcXVlbnRpYWwg
-YW5kIHRoZXJlIGlzbid0DQptdWNoIG9mIGEgY29zdCBvZiBhbiB1bnVzZWQgY2hpcCBzZWxlY3Qg
-KG9uZSB3b3JkIGluIGRldmljZSB0cmVlDQpwcm9wZXJ0eSkuDQoNClNvIHNheSB5b3Ugd2FudCB0
-d28gR1BJTyBDUyBkZXZpY2VzIGFuZCB0aGV5IHNob3VsZCBtYWtlIHVzZSBvZiBuYXRpdmUNCkNT
-IDEsIGJlY2F1c2UgdGhhdCBwaW4gaGFzIG5vIGNvbmZsaWN0cyBmb3IgdGhpcyB1c2FnZSwgYW5k
-IHlvdSBhbHNvDQp3YW50IGEgZGV2aWNlIG9uIG5hdGl2ZSBjaGlwIHNlbGVjdCAwIHRoYXQncyBu
-b3QgdXNpbmcgYSBHUElPIENTLiAgVGhlDQpzcGkgbWFzdGVyIGhhcyBmb3VyIG5hdGl2ZSBjaGlw
-IHNlbGVjdHMuICBTZXQgdXAgdGhlIERUIGxpa2UgdGhpczoNCg0KY3MtZ3Bpb3MgPSA8MD4sIDwm
-Z3BpbyA0Mj4sIDwwPiwgPDA+LCA8MD4sIDwmZ3BpbyA0Mz47DQpmbGFzaEAwIHsgcmVnID0gPDA+
-OyB9IC8qIG9uIG5hdGl2ZSBDUyAwICovDQpzbGF2ZUAxIHsgcmVnID0gPDE+OyB9IC8qIG9uIEdQ
-SU8gNDIsIGFsc28gbmF0aXZlIENTIDEgKi8NCnNsYXZlQDUgeyByZWcgPSA8NT47IH0gLyogb24g
-R1BJTyA0MywgYWxzbyBuYXRpdmUgQ1MgMSAqLw0KDQpUaGlzIGFsbG93cyBhc3NpZ25pbmcgd2hp
-Y2ggbmF0aXZlIENTIHRvIHVzZS4gIEl0IGNvdWxkIHBpeCBtdXhpbmcNCmxpbWl0YXRpb25zIGRv
-bid0IGFsbG93IGp1c3QgYW55IENTIHRvIGJlIGNob3Nlbi4gIElmIHRoZXJlJ3Mgbm8gcmVhc29u
-DQp0byBjYXJlLCB0aGVuIHNlbGVjdGluZyBhdXRvbWF0aWNhbGx5IGlzIGVhc2llciB0byB1c2Uu
-DQo=
+On 29/01/2018 18:27, Jan Kundrát wrote:
+>> I submitted a patch for this in November, But haven't followed up on the last review as yet.
+>> See: https://patchwork.ozlabs.org/cover/839923/
+> 
+> Hi Phil, that looks nice. Sorry for duplicating your work. I would have sworn I haven't seen your patch, but I *think* I actually read that IRQ polarity 
+> discussion. Strange, perhaps I just forgot that it was about MCP23xxx.
+> 
+>> I used exactly the same dt in my first propsal. But you'll see form the discussions that series
+>> This needs to be the standard 'drive-open-drain' flag
+> 
+> I wasn't aware of that one.
+> 
+>> The original code does the same thing.
+>> open drain is active-low.
+>> Sharing can also be achieved by AND / OR gates with push-pull drivers.
+>> So no need to treat that differently.
+> 
+> That's a good point. I agree that decoupling the irq-controller's configuration from this chip's IRQ output lane configuration (and hence moving the IRQ_SHARED 
+> etc to the DT) makes sense.
+> 
+> My change also writes to the MCP_IOCON unconditionally. For example, the old code would fail if "something" configured the chip for irq-open-drain before the 
+> kernel got a chance to run.
+Yeah I don't like that conditional logic for setting the config.
+Tricky to change without potentially breaking something as you say.
+But if you don't want mirror set and something is setting it before hand then things are broken.
+
+
+> 
+> Will you have time to re-spin the series anytime soon? I can help if you'd like to.
+> 
+
+I'll try and respin the open drain bit in the next week or so.
+The other part of my series is a little more work I think.
+
+Gives me some motivation to have a look at it.
+
+
+-- 
+Regards
+Phil Reid
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

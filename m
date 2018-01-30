@@ -1,88 +1,59 @@
-From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a =?iso-8859-1?Q?GPIO_CS?=
-Date: Tue, 30 Jan 2018 17:09:44 +0100
-Message-ID: <3988555e-0439-4cff-a91c-bb947fae6b1e@cesnet.cz>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
+ GPIO CS
+Date: Tue, 30 Jan 2018 19:46:54 +0000
+Message-ID: <1517341614.25398.147.camel@impinj.com>
 References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
- <1517274816.25398.136.camel@impinj.com>
- <368d1a46-8fc8-466d-b292-8ab8eaf11f4b@cesnet.cz>
- <20180130155409.GD10525@sirena.org.uk>
+         <1517274816.25398.136.camel@impinj.com>
+         <368d1a46-8fc8-466d-b292-8ab8eaf11f4b@cesnet.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Cc: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org"
+        <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org" <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180130155409.GD10525-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <368d1a46-8fc8-466d-b292-8ab8eaf11f4b-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Language: en-US
+Content-ID: <33F0CD65A260A64D89F871F643AB4509-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On =C3=BAter=C3=BD 30. ledna 2018 16:54:09 CET, Mark Brown wrote:
-> You can't physically design working hardware for a system with this
-> limitation that doesn't have a free chip select somehow - if the
-> hardware requires that it controls an internal chip select line then
-> using a GPIO chip select is going to require that there's some internal
-> chip select line that's getting controlled so you need one that's not
-> connected to an actual device that can be used for this purpose.
-
-Hi Mark,
-yes, I understand that. Sorry if I confused things by trying to explain why=20=
-
-a modulo-algorithm won't work.
-
-I have an unused CS lane. It's just that the spi-orion driver currently=20
-hardcodes HW CS#0, and that one is not free on my board.
-
-The latest version of my patch [1] finds the first *GPIO* CS number. As you=20=
-
-pointed out, this allocation means that a HW CS signal with the same number=20=
-
-is definitely not connected to any other slave's CS. My patch therefore=20
-drives this "unused" HW CS whenever a GPIO CS is needed. This is similar to=20=
-
-what e.g. spi-sh-msiof.c is doing now.
-
-Should I perhaps improve the patch description? I'm open to all comments=20
-here.
-
-I see that it might be a bit confusing that I also changed spi-orion.c so=20
-that it claims/requests/registers/allocates the GPIO for CS. Without that=20
-patch , spi-orion is different from other SPI masters; I have to manually=20
-create a gpio-hog for my CS GPIO. I'll be happy to rework my changes into=20
-two separate patches.
-
->> Also, the spi-orion driver currently hard-codes that each and=20
->> every model is
->> supposed to have exactly eight HW CS pins. That's not true for my SoC
->> (Marvell Armada 388, the Solidrun Clearfog Base board); the=20
->> 88F6828 CPU only
->> has four SPI CS signals.
->
->> What my patch does is simply picking the *first* unused CS and going with
->> that one because that looks like the easiest and also safest option.
->
-> I would expect that you want to have this selected by the board designer
-> (unless there's something convenient like a chip select present in the
-> controller but not routed out of the IP you can guarantee will never be
-> used).  That will avoid issues if for example the DT is still not
-> complete.
-
-That's the approach that I used in my first version of this patch [2], but=20=
-
-Geert suggested to follow some other SPI master's code and implement=20
-autodiscovery. I don't really care. Which approach is better from your=20
-point of view?
-
-I understand the preference to specify the "fake" HW CS manually. My board=20=
-
-has a flash at CS#0, and it is marked as disabled in a default DT. But=20
-perhaps that's a special case. Your call, anyway.
-
-With kind regards,
-Jan
-
-[1] https://patchwork.kernel.org/patch/10187175/
-[2] https://patchwork.kernel.org/patch/10182583/
+T24gVHVlLCAyMDE4LTAxLTMwIGF0IDA5OjAzICswMTAwLCBKYW4gS3VuZHLDoXQgd3JvdGU6DQo+
+IE9uIMO6dGVyw70gMzAuIGxlZG5hIDIwMTggMjoxMzozNyBDRVQsIFRyZW50IFBpZXBobyB3cm90
+ZToNCj4gPiBBbm90aGVyIHdheSB0byBmaXggaXQsIGJlc2lkZXMgZGVmYXVsdCB0byAwIG9yIHRv
+IHNlbGVjdCBhbiB1bnVzZWQNCj4gPiBjaGlwc2VsZWN0LCBpcyB0byB1c2UgdGhlIGNzIG51bWJl
+ciBvZiB0aGUgc2xhdmUgbW9kdWx1cyB0aGUgbnVtYmVyIG9mDQo+ID4gbmF0aXZlIGNoaXAgc2Vs
+ZWN0cy4gIFRoZXkgYXJlIG9yIHdlcmUgc29tZSBvdGhlciBkcml2ZXJzIHRoYXQgZG8gdGhpcy4N
+Cj4gPiBUaGUgaWRlYSBpcyB0aGF0IENTIG51bWJlcnMgZG9uJ3QgbmVlZCB0byBiZSBzZXF1ZW50
+aWFsIGFuZCB0aGVyZSBpc24ndA0KPiA+IG11Y2ggb2YgYSBjb3N0IG9mIGFuIHVudXNlZCBjaGlw
+IHNlbGVjdCAob25lIHdvcmQgaW4gZGV2aWNlIHRyZWUNCj4gPiBwcm9wZXJ0eSkuDQo+IA0KPiBI
+aSBUcmVudCwgYXJlIHlvdSB0YWxraW5nIGFib3V0IGFuIGludGVnZXIgbW9kdWxvIGhlcmU/IEkg
+ZG9uJ3QgdGhpbmsgdGhhdCANCj4gbW9kdWxvIGlzIGEgY29ycmVjdCBhcHByb2FjaC4gSWYgbXkg
+SFcgaGFzIHR3byBDUyBhbmQgSSB1c2UgdGhlIGZvbGxvd2luZyANCj4gRFQ6DQo+IA0KPiAJY3Mt
+Z3Bpb3MgPSA8MD4sIDwmZ3BpbzAgMT4sIDwmZ3BpbzAgMj4sIDwwPjsNCj4gDQo+IC4uLnRoZW4g
+dGhlIGxvZ2ljYWwgQ1MyIChhdCBncGlvMCBwaW4gMikgY29uZmxpY3RzIHdpdGggdGhlIG5hdGl2
+ZSBDUzAuDQoNCldoYXQgeW91J2QgZG8gaXMgdXNlIHRoaXM6DQoNCiAgICBjcy1ncGlvcyA9IDww
+PiwgPCZncGlvMCAxPiwgPDA+LCA8JmdwaW8wIDI+Ow0KUHV0IHRoZSBzbGF2ZXMgb24gY3MgMCwg
+MSwgYW5kIDMuICBUaGUgc2xhdmVzIG9uIDEgYW5kIDMgdXNlIG5hdGl2ZSBDUzENCndpdGggdGhl
+aXIgZ3Bpb3MuDQoNCj4gQWxzbywgdGhlIHNwaS1vcmlvbiBkcml2ZXIgY3VycmVudGx5IGhhcmQt
+Y29kZXMgdGhhdCBlYWNoIGFuZCBldmVyeSBtb2RlbCANCj4gaXMgc3VwcG9zZWQgdG8gaGF2ZSBl
+eGFjdGx5IGVpZ2h0IEhXIENTIHBpbnMuIFRoYXQncyBub3QgdHJ1ZSBmb3IgbXkgU29DIA0KPiAo
+TWFydmVsbCBBcm1hZGEgMzg4LCB0aGUgU29saWRydW4gQ2xlYXJmb2cgQmFzZSBib2FyZCk7IHRo
+ZSA4OEY2ODI4IENQVSANCj4gb25seSBoYXMgZm91ciBTUEkgQ1Mgc2lnbmFscy4NCg0KWWVzLCB5
+b3UgbmVlZCB0byBrbm93IGhvdyBtYW55IENTIHRoZSBkcml2ZXIgd2lsbCBjb25zaWRlciB0aGUg
+ZGV2aWNlDQp0byBoYXZlLiAgVGhhdCBpcyBhbiBhZGRpdGlvbmFsIGRpZmZpY3VsdHkuDQoNCj4g
+DQo+IFdoYXQgbXkgcGF0Y2ggZG9lcyBpcyBzaW1wbHkgcGlja2luZyB0aGUgKmZpcnN0KiB1bnVz
+ZWQgQ1MgYW5kIGdvaW5nIHdpdGggDQo+IHRoYXQgb25lIGJlY2F1c2UgdGhhdCBsb29rcyBsaWtl
+IHRoZSBlYXNpZXN0IGFuZCBhbHNvIHNhZmVzdCBvcHRpb24uDQoNClllcywgSSBhZ3JlZSB0aGUg
+ZWFzaWVzdCB0byB1c2UuICBEb24ndCBuZWVkIHRvIGtub3cgaG93IG1hbnkgSFcgQ1MgdGhlDQpk
+cml2ZXIgd2lsbCB0aGluayB0aGVyZSBhcmUuICBEb24ndCBuZWVkIHRvIG1hbnVhbGx5IHBsYWNl
+IHlvdXIgZ3Bpb3MNCmNzIGluIHRoZSBsaXN0IHRvIGF2b2lkIG5hdGl2ZSBjcyBjb25mbGljdHMu
+DQoNCkJ1dCB5b3UgZG8gbG9zZSBzb21lIGZsZXhpYmlsaXR5LiAgV2hhdCBpZiB5b3UgZG9uJ3Qg
+d2FudCB0aGUgZmlyc3QNCnVudXNlZCBDUz8gIFByb2JhYmx5IHJhdGhlciBvYnNjdXJlIHRvIGhh
+dmUgdGhhdCBpc3N1ZS4=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,36 +1,52 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv3 1/3] dt-bindings: spi: Add DT bindings for Synquacer
-Date: Mon, 29 Jan 2018 13:41:32 -0600
-Message-ID: <20180129194132.ivcnrt2jjt43irq7@rob-hp-laptop>
-References: <1516358213-4400-1-git-send-email-jassisinghbrar@gmail.com>
- <1516358236-4472-1-git-send-email-jassisinghbrar@gmail.com>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
+ GPIO CS
+Date: Tue, 30 Jan 2018 01:13:37 +0000
+Message-ID: <1517274816.25398.136.camel@impinj.com>
+References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, masami.hiramatsu-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1516358236-4472-1-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org"
+        <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org" <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Language: en-US
+Content-ID: <94D1A084185F6C44B94AD3E47B53D913-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 19, 2018 at 04:07:16PM +0530, jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
-> From: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> 
-> This patch adds documentation for Device-Tree bindings for the
-> Socionext Synquacer spi driver.
-> 
-> Signed-off-by: Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/spi-synquacer.txt      | 23 ++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-synquacer.txt
-
-Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+T24gVHVlLCAyMDE4LTAxLTIzIGF0IDIwOjU2ICswMTAwLCBKYW4gS3VuZHLDoXQgd3JvdGU6DQo+
+IENvbW1pdCBiMjhiOTE0OWIzN2YgYWRkZWQgc3VwcG9ydCBmb3IgdXNpbmcgYW4gYWRkaXRpb25h
+bCBHUElPIHBpbiBmb3INCj4gQ2hpcCBTZWxlY3QuIEFjY29yZGluZyB0byB0aGF0IGNvbW1pdCBh
+bmQgdG8gbXkgdW5kZXJzdGFuZGluZyBvZiBhDQo+IHNlbWktcHVibGljIGRhdGFoc2VldCwgaXQg
+c2VlbXMgdGhhdCB0aGUgU1BJIGhhcmR3YXJlIHJlYWxseSBpbnNpc3RzIG9uDQo+IGRyaXZpbmcg
+KnNvbWUqIEhXIENTIHNpZ25hbCB3aGVuZXZlciBhIFNQSSB0cmFuc2FjdGlvbiBpcyBpbiBwcm9n
+cmVzcy4NCg0KSXQncyBwcmV0dHkgY29tbW9uIGZvciBTUEkgaGFyZHdhcmUgdG8gaGF2ZSB0aGlz
+IGxpbWl0YXRpb24uDQoNCkFub3RoZXIgd2F5IHRvIGZpeCBpdCwgYmVzaWRlcyBkZWZhdWx0IHRv
+IDAgb3IgdG8gc2VsZWN0IGFuIHVudXNlZA0KY2hpcHNlbGVjdCwgaXMgdG8gdXNlIHRoZSBjcyBu
+dW1iZXIgb2YgdGhlIHNsYXZlIG1vZHVsdXMgdGhlIG51bWJlciBvZg0KbmF0aXZlIGNoaXAgc2Vs
+ZWN0cy4gIFRoZXkgYXJlIG9yIHdlcmUgc29tZSBvdGhlciBkcml2ZXJzIHRoYXQgZG8gdGhpcy4N
+ClRoZSBpZGVhIGlzIHRoYXQgQ1MgbnVtYmVycyBkb24ndCBuZWVkIHRvIGJlIHNlcXVlbnRpYWwg
+YW5kIHRoZXJlIGlzbid0DQptdWNoIG9mIGEgY29zdCBvZiBhbiB1bnVzZWQgY2hpcCBzZWxlY3Qg
+KG9uZSB3b3JkIGluIGRldmljZSB0cmVlDQpwcm9wZXJ0eSkuDQoNClNvIHNheSB5b3Ugd2FudCB0
+d28gR1BJTyBDUyBkZXZpY2VzIGFuZCB0aGV5IHNob3VsZCBtYWtlIHVzZSBvZiBuYXRpdmUNCkNT
+IDEsIGJlY2F1c2UgdGhhdCBwaW4gaGFzIG5vIGNvbmZsaWN0cyBmb3IgdGhpcyB1c2FnZSwgYW5k
+IHlvdSBhbHNvDQp3YW50IGEgZGV2aWNlIG9uIG5hdGl2ZSBjaGlwIHNlbGVjdCAwIHRoYXQncyBu
+b3QgdXNpbmcgYSBHUElPIENTLiAgVGhlDQpzcGkgbWFzdGVyIGhhcyBmb3VyIG5hdGl2ZSBjaGlw
+IHNlbGVjdHMuICBTZXQgdXAgdGhlIERUIGxpa2UgdGhpczoNCg0KY3MtZ3Bpb3MgPSA8MD4sIDwm
+Z3BpbyA0Mj4sIDwwPiwgPDA+LCA8MD4sIDwmZ3BpbyA0Mz47DQpmbGFzaEAwIHsgcmVnID0gPDA+
+OyB9IC8qIG9uIG5hdGl2ZSBDUyAwICovDQpzbGF2ZUAxIHsgcmVnID0gPDE+OyB9IC8qIG9uIEdQ
+SU8gNDIsIGFsc28gbmF0aXZlIENTIDEgKi8NCnNsYXZlQDUgeyByZWcgPSA8NT47IH0gLyogb24g
+R1BJTyA0MywgYWxzbyBuYXRpdmUgQ1MgMSAqLw0KDQpUaGlzIGFsbG93cyBhc3NpZ25pbmcgd2hp
+Y2ggbmF0aXZlIENTIHRvIHVzZS4gIEl0IGNvdWxkIHBpeCBtdXhpbmcNCmxpbWl0YXRpb25zIGRv
+bid0IGFsbG93IGp1c3QgYW55IENTIHRvIGJlIGNob3Nlbi4gIElmIHRoZXJlJ3Mgbm8gcmVhc29u
+DQp0byBjYXJlLCB0aGVuIHNlbGVjdGluZyBhdXRvbWF0aWNhbGx5IGlzIGVhc2llciB0byB1c2Uu
+DQo=
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

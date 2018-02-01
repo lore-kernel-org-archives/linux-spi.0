@@ -1,68 +1,18 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: orion: Allow specifying which HW CS to use with a
- GPIO CS
-Date: Tue, 30 Jan 2018 20:54:57 +0000
-Message-ID: <1517345696.25398.178.camel@impinj.com>
-References: <a1884719d4381cc3254408229cf5d9f94d4f2995.1516744108.git.jan.kundrat@cesnet.cz>
-         <1517274816.25398.136.camel@impinj.com>
-         <368d1a46-8fc8-466d-b292-8ab8eaf11f4b@cesnet.cz>
-         <20180130155409.GD10525@sirena.org.uk>
-         <3988555e-0439-4cff-a91c-bb947fae6b1e@cesnet.cz>
+From: "Martin Kelly" <csuz-eshH1AjLspA@public.gmane.org>
+Subject: =?utf-8?q?Kredit=3F_so_schnell_wie_m=C3=B6glich=3F?=
+Date: Thu, 01 Feb 2018 00:49:59 -0800
+Message-ID: <20180201085004.067CC5208713__31754.4058467776$1517484646$gmane$org@dep.fie.umich.mx>
+Reply-To: kellyauthentic-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org"
-        <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org" <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+To: Recipients <csuz-eshH1AjLspA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3988555e-0439-4cff-a91c-bb947fae6b1e-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Content-Language: en-US
-Content-ID: <7E93985E77A50D4EB9F233FC34B0A120-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gVHVlLCAyMDE4LTAxLTMwIGF0IDE3OjA5ICswMTAwLCBKYW4gS3VuZHLDoXQgd3JvdGU6DQo+
-IE9uIMO6dGVyw70gMzAuIGxlZG5hIDIwMTggMTY6NTQ6MDkgQ0VULCBNYXJrIEJyb3duIHdyb3Rl
-Og0KPiA+ID4gV2hhdCBteSBwYXRjaCBkb2VzIGlzIHNpbXBseSBwaWNraW5nIHRoZSAqZmlyc3Qq
-IHVudXNlZCBDUyBhbmQgZ29pbmcgd2l0aA0KPiA+ID4gdGhhdCBvbmUgYmVjYXVzZSB0aGF0IGxv
-b2tzIGxpa2UgdGhlIGVhc2llc3QgYW5kIGFsc28gc2FmZXN0IG9wdGlvbi4NCj4gPiANCj4gPiBJ
-IHdvdWxkIGV4cGVjdCB0aGF0IHlvdSB3YW50IHRvIGhhdmUgdGhpcyBzZWxlY3RlZCBieSB0aGUg
-Ym9hcmQgZGVzaWduZXINCj4gPiAodW5sZXNzIHRoZXJlJ3Mgc29tZXRoaW5nIGNvbnZlbmllbnQg
-bGlrZSBhIGNoaXAgc2VsZWN0IHByZXNlbnQgaW4gdGhlDQo+ID4gY29udHJvbGxlciBidXQgbm90
-IHJvdXRlZCBvdXQgb2YgdGhlIElQIHlvdSBjYW4gZ3VhcmFudGVlIHdpbGwgbmV2ZXIgYmUNCj4g
-PiB1c2VkKS4gIFRoYXQgd2lsbCBhdm9pZCBpc3N1ZXMgaWYgZm9yIGV4YW1wbGUgdGhlIERUIGlz
-IHN0aWxsIG5vdA0KPiA+IGNvbXBsZXRlLg0KPiANCj4gVGhhdCdzIHRoZSBhcHByb2FjaCB0aGF0
-IEkgdXNlZCBpbiBteSBmaXJzdCB2ZXJzaW9uIG9mIHRoaXMgcGF0Y2ggWzJdLCBidXQgDQo+IEdl
-ZXJ0IHN1Z2dlc3RlZCB0byBmb2xsb3cgc29tZSBvdGhlciBTUEkgbWFzdGVyJ3MgY29kZSBhbmQg
-aW1wbGVtZW50IA0KPiBhdXRvZGlzY292ZXJ5LiBJIGRvbid0IHJlYWxseSBjYXJlLiBXaGljaCBh
-cHByb2FjaCBpcyBiZXR0ZXIgZnJvbSB5b3VyIA0KPiBwb2ludCBvZiB2aWV3Pw0KDQpBdXRvIHNl
-bGVjdGluZyB0aGUgZmlyc3QgdW51c2VkIGlzIGNlcnRhaW5seSBuaWNlIGZvciB0aGUgRFQNCmNv
-bnN0cnVjdG9yIGlmIGl0IHdvcmtzLiAgQWxzbyBzZWVtcyBsZXNzIGZyYWdpbGUgdG8gbWUuDQoN
-CkJ1dCB3aGF0IGFib3V0IHBvc3NpYmxlIGZ1dHVyZSBzdXBwb3J0IGZvciBkeW5hbWljIGNyZWF0
-aW9uIG9mIHNwaQ0KZGV2aWNlcz8gIFRoZXJlJ3MgYWxyZWFkeSBhIHBhdGNoIGZvciB0aGF0IG91
-dCB0aGVyZSBhbmQgdGhlcmUgaXMgYWxzbw0KRFQgZnJhZ21lbnQgbG9hZGluZyB0aGF0IGNvdWxk
-IGJlIG1lcmdlZC4NCg0KVGhlcmUgbWlnaHQgbm90IGJlIGEgZGV2aWNlIG9uIEhXIENTMCB3aGVu
-IHRoZSBkcml2ZXIgbG9hZHMsIGJ1dCB0aGVuDQpvbmUgaXMgYWRkZWQgbGF0ZXIsIHdoaWNoIHdp
-bGwgYmUgdG9vIGxhdGUgc2luY2UgdGhlIEhXIENTIHdhcyBjaG9zZW4NCmF0IGRyaXZlciBwcm9i
-ZSB0aW1lLg0KDQpUaGF0IGlzc3VlIGNhbiBwcm9iYWJseSBiZSBmaXhlZCBieSBjaG9vc2luZyB0
-aGUgSFcgQ1MgYXQgc3BpIHRyYW5zZmVyDQpzZXR1cCB0aW1lLg0KDQpBbm90aGVyIHByb2JsZW0g
-aXMgdGhhdCBJIGRvbid0IGJlbGlldmUgdGhlcmUgaXMgYW55IHdheSBmb3IgdGhlIG1hc3Rlcg0K
-dG8ga25vdyBhYm91dCB3aGF0IFNQSSBzbGF2ZXMgZXhpc3QuICBJbiBKYW4ncyBwYXRjaCwgdGhl
-IGFzc3VtcHRpb24gaXMNCnRoYXQgYSBub24tZ3BpbyBDUyBpcyB1c2VkLiAgQnV0IHRoaXMgaXMg
-bm90IHN0cmljdGx5IGNvcnJlY3QsIGFzIGlzDQpkb2VzIG5vdCBkaXN0aW5ndWlzaCBiZXR3ZWVu
-IGFuIHVudXNlZCBDUyBhbmQgaW4tdXNlIEhXIENTLiAgQm90aCB0aG9zZQ0KY2FzZXMgYXJlICJu
-b3QgZ3BpbyIuDQoNCkJ1dCBwZXJoYXBzIHRoaXMgaXMgb2suICBJIHRoaW5rIHRoZSBpbnN0cnVj
-dGlvbnMgdG8gdGhlIERUIGF1dGhvcg0Kc2hvdWxkIGJlOg0KICAgIElmIHlvdSB3aWxsIGhhdmUg
-R1BJTyBjaGlwIHNlbGVjdHMsIHlvdSBtdXN0IGNob29zZSBvbmUgSFcgQ1MgbGluZQ0KICAgIHRv
-IGJlIGNvbnN1bWVkIGFuZCB1c2VkIGJ5IGFsbCBHUElPIENTIGJhc2VkIHNsYXZlKHMpLiAgQ2hv
-b3NlIGJ5DQogICAgcGxhY2luZyB0aGUgZmlyc3QgR1BJTyBDUyBhdCB0aGUgcG9zaXRpb24gb2Yg
-dGhlIEhXIENTIHRoYXQgc2hvdWxkDQogICAgYmUgY29uc3VtZWQgYnkgdGhhdCBHUElPIENTIGFu
-ZCBhbnkgcmVtYWluaW5nIG9uZXMuICBFLmcuLCBpZiB5b3UNCiAgICBmaXJzdCB0byBoYXZlIHRo
-cmVlIEdQSU8gQ1MsIGFuZCB3YW50IHRoZW0gdG8gY29uc3VtZSBIVyBDUyAxLCB0aGUNCiAgICBm
-aXJzdCBHUElPIENTICptdXN0KiBiZSBwbGFjZWQgYXQgQ1MgMSwgdGhlIHJlbWFpbmluZyB0d28g
-bWF5IGJlIGF0DQogICAgYW55IHN1YnNlcXVlbnQgQ1MuDQoNCg==
+Kredit? so schnell wie möglich? unkompliziert und seriös ? Bei uns genau richtig. Wir arbeiten europaweit. Wir vermitteln Kredite und Darlehen zu fairen Konditionen. Durch unsere seriöse, kompetente und ehrliche Kreditberatung haben wir über Jahre eine starke Position auf dem Markt.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,111 +1,78 @@
-From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: Re: MAX310X transfers usage in DMA mode
-Date: Fri, 02 Feb 2018 11:19:39 +0100
-Message-ID: <59519abd-d268-4f7a-ace8-4fd61131bb0d@cesnet.cz>
-References: <CABMprFg5N_Qxj6No0P8fkBfY6goB2wh4Q=kawNyOi2XjdkyZ7w@mail.gmail.com>
+From: Henry Gomersall <henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+Subject: spidev: That spidev in the DT issue again...
+Date: Fri, 2 Feb 2018 15:47:34 +0000
+Message-ID: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1@smartacoustics.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Gerlando Falauto <gerlando.falauto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="CYjZW4wLfLlvs0PpieBRarIaUhMQueAJV"
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CABMprFg5N_Qxj6No0P8fkBfY6goB2wh4Q=kawNyOi2XjdkyZ7w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On p=C3=A1tek 2. =C3=BAnora 2018 10:25:09 CET, Gerlando Falauto wrote:
-> I saw your patches about max310x and all the improvements you brought in to=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--CYjZW4wLfLlvs0PpieBRarIaUhMQueAJV
+Content-Type: multipart/mixed; boundary="Lr5a6h2Mxs9J0Q1kKrlUCza4Ip29uXCfc";
+ protected-headers="v1"
+From: Henry Gomersall <henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Message-ID: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+Subject: spidev: That spidev in the DT issue again...
 
-> achieve
-> burst transfers.
-> My goal would be to push the chip to its limits (i.e. to 2.000.000bps) on a=
+--Lr5a6h2Mxs9J0Q1kKrlUCza4Ip29uXCfc
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 
-> raspberry pi.
+Hi All,
 
-Hi Gerlando,
-I'm happy that these patches help others as well :).
+Following on from Kyle's email on 2017-11-29 in questioning the
+"correct" way to deal with the device type being set as spidev, I'm
+still not clear on the solution.
 
-> I had already noticed the inefficiencies and tried something similar to
-> your approach for burst transfers (but sticking to regmap).
+Before I dig deeper into understanding it, is there a reason why we
+can't have an "spi-generic" device as a catch-all for a DT defined
+userspace SPI bus?
 
-I wonder how you did that? I looked at regmap, but it felt as if it wasn't=20=
+The clear use case for more flexibility in the system is around FPGA
+based SoCs (in my case a Zynq). In such a scenario the use of userspace
+is a natural complement to runtime configurable hardware blocks. It
+would really ease access to (at least somewhat) correct use of the
+driver if it could be recognised that the kernel might not actually need
+to know what's on the end of an SPI bus.
 
-really possible to persuade regmap to just keep the SCLK line running for=20
-batch-reading additional bytes from the same register (and just for=20
-registers 0x00).
+Best wishes,
 
-> In both cases
-> (with or without regmap) it looks like the CPU is the bottleneck.
-> I was thinking of using DMA and your approach looks just one step away from=
+Henry
 
-> achieving this.
 
-Regarding DMA, I have no clue how it works on RPi. I know that the SoC I=20
-have has something similar, but it's severely limited and the kernel=20
-doesn't really support it.
+--Lr5a6h2Mxs9J0Q1kKrlUCza4Ip29uXCfc--
 
-> Did you ever consider this?
+--CYjZW4wLfLlvs0PpieBRarIaUhMQueAJV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Here's what I think should help get you a better performance:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-1) Ensure that the userspace actually configures the UART in a mode which=20
-enables batched reads (also known as "SPI burst access"). This is a big=20
-catch. By default, reading each byte requires two SPI transactions, one for=20=
+iQIcBAEBCAAGBQJadIgWAAoJEGf0MT1zztWmzUsP/i7JQMZCtI0eGPXUYRiAjRnt
+bRRvMIidSo1fd2XXIwkTCnY+pYBgh5NYqfgOPJ8L06bH7pX/HxbAN3r1n8FUi60W
+dG1JY49qgzvhwNCk1C7AO556PjnyUJa8Xag/fNJdN3vao917On5H1q2Ho918nElC
+rieq6lhR66eHexSJYc9/hxJSBABNA8y+BNLn8S0grgI6CLS0zsq4z8vMQN8J/s0X
+8TPQn8AJ+Wzs5HsxtGeTBWiVp7kgWSQkpF3kEeO9VxqTJ4purQJ2yzOEBPGTEGF5
+EbVLW8SCPDWGTed+fBVEnXBGq6CP41uZYH8Afb9dt0A5VDRa/zglioDRM3vDMBkQ
+Zx8BR9NRfihdGHLHm020bdmpN/O7GnaIx5q7fanJQ7SVA9qdxDwH/heZKkCGtgRF
++7q3bB7hj6NrQuokXRtw/qJrvljit2e9wMXmJ0mofHnW4DRL4Whmex+TBLM1b8UL
+IA6BnXwE9/tVTC+LcFD8WnDHPDoAdo3877gzA1XBMNlp5qEXF97xg0bQDIaKocv4
+Zg+EhYOTUyrB7qIBMVy0JwdHVs9NScx+M9ie8CaUdWE2d5TVGrvvn7s6zS2GzUIg
+f03aeh3JEqb8R+p3uPgJSPaYgt13RTV+Jhb8eVIsOtM5q7HS0ELFpz6fErbrJG3+
+Bd6JqVtX5Qg7IXrOUlWw
+=XfoH
+-----END PGP SIGNATURE-----
 
-reading one byte from the RX FIFO, and another one for the Line Status=20
-Register. The HW does not support "batch reading" the RX buffer along with=20=
-
-the LSR, unfortunately. This means that by default, each byte received by=20
-the UART requires at least four bytes to be transmitted over SPI.
-
-However, if the userspace tells the kernel that it is not interested in=20
-checking the BREAK condition, in determining RX parity errors, etc, then=20
-the kernel can skip (and does skip, at least in the tty-next tree) the LSR=20=
-
-register. And because it's only reading from the RXFIFO, it can leverage=20
-that SPI burst access.
-
-Here's a snippet of my code which does that `termios` configuration:
-
-    m_config.c_iflag =3D IGNPAR;
-    m_config.c_oflag =3D 0;
-    m_config.c_cflag =3D CLOCAL | CREAD | CS8 | B115200;
-    m_config.c_lflag =3D 0;
-    m_config.c_cc[VMIN] =3D 0;
-    m_config.c_cc[VTIME] =3D 1;
-
-2) Check the SPI frequency. The RPi's documentation suggests that there are=20=
-
-some limitations of the maximal SPI frequency. It's apparently a bit=20
-coarse, with a big gap between 16MHz and 32MHz. The chip that I use is=20
-spec'ed to allow up to 26MHz, which means 16MHz on your system.
-
-3) We can also improve the RX FIFO utilization. My device has a 128B=20
-buffer, and when I added some debugging code to produce a histogram of the=20=
-
-actual watermark level when reading the RX FIFO, I was surprised to see=20
-plenty of small transfers. That's because the current driver prefers to=20
-read from the RX buffer "ASAP", as soon as there's something in there.
-
-The HW also allows another mode of operation where it only raises an IRQ=20
-once either:
-
-- more than X bytes are in the FIFO,
-- or any byte in the FIFO has been there for more than Y "periods", where a=20=
-
-"period" is the time it takes the UART to transmit/receive one byte.
-
-Doing that would make a lot of sense in this context. If we always read=20
-after, say, 32 bytes are in the buffer (or upon a matching timeout), then=20
-it's likely that we will do 32byte SPI transactions much more often. That=20
-should reduce the SPI utilization when reading by (asymptotically) 50%.
-
-I plan to (eventually) send a patch doing just that, but ENOTIME for now.
-
-Hope this helps.
-
-With kind regards,
-Jan
+--CYjZW4wLfLlvs0PpieBRarIaUhMQueAJV--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

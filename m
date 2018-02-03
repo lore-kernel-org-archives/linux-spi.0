@@ -1,59 +1,19 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: spidev: That spidev in the DT issue again...
-Date: Fri, 2 Feb 2018 18:58:53 +0000
-Message-ID: <1517597933.25398.215.camel@impinj.com>
-References: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1@smartacoustics.co.uk>
+From: "La Caixa Investment" <yuhefizar-dFcGOvKyb4y0H2GgtxDY1g@public.gmane.org>
+Subject: Achtung Herr / Frau !!
+Date: Fri, 02 Feb 2018 17:31:55 -0800
+Message-ID: <20180203004931.D7C7134F3FE6@mail.polinpdg.ac.id>
+Reply-To: lacaixai-YDxpq3io04c@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org"
-        <henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: Recipients <yuhefizar-dFcGOvKyb4y0H2GgtxDY1g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
-Content-Language: en-US
-Content-ID: <31DE87F1B02AE0429E7458FC5BD65519-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gRnJpLCAyMDE4LTAyLTAyIGF0IDE1OjQ3ICswMDAwLCBIZW5yeSBHb21lcnNhbGwgd3JvdGU6
-DQo+IA0KPiBCZWZvcmUgSSBkaWcgZGVlcGVyIGludG8gdW5kZXJzdGFuZGluZyBpdCwgaXMgdGhl
-cmUgYSByZWFzb24gd2h5IHdlDQo+IGNhbid0IGhhdmUgYW4gInNwaS1nZW5lcmljIiBkZXZpY2Ug
-YXMgYSBjYXRjaC1hbGwgZm9yIGEgRFQgZGVmaW5lZA0KPiB1c2Vyc3BhY2UgU1BJIGJ1cz8NCj4g
-DQo+IFRoZSBjbGVhciB1c2UgY2FzZSBmb3IgbW9yZSBmbGV4aWJpbGl0eSBpbiB0aGUgc3lzdGVt
-IGlzIGFyb3VuZCBGUEdBDQo+IGJhc2VkIFNvQ3MgKGluIG15IGNhc2UgYSBaeW5xKS4gSW4gc3Vj
-aCBhIHNjZW5hcmlvIHRoZSB1c2Ugb2YgdXNlcnNwYWNlDQo+IGlzIGEgbmF0dXJhbCBjb21wbGVt
-ZW50IHRvIHJ1bnRpbWUgY29uZmlndXJhYmxlIGhhcmR3YXJlIGJsb2Nrcy4gSXQNCj4gd291bGQg
-cmVhbGx5IGVhc2UgYWNjZXNzIHRvIChhdCBsZWFzdCBzb21ld2hhdCkgY29ycmVjdCB1c2Ugb2Yg
-dGhlDQo+IGRyaXZlciBpZiBpdCBjb3VsZCBiZSByZWNvZ25pc2VkIHRoYXQgdGhlIGtlcm5lbCBt
-aWdodCBub3QgYWN0dWFsbHkgbmVlZA0KPiB0byBrbm93IHdoYXQncyBvbiB0aGUgZW5kIG9mIGFu
-IFNQSSBidXMuDQoNCkkndmUgZ290IGEgcGF0Y2ggdGhhdCBhZGRzICJkcml2ZXJfb3ZlcnJpZGUi
-IHRvIHRoZSBTUEkgYnVzLiAgVGhpcw0KYWxyZWFkeSBleGlzdHMgb24gdGhlIFBDSSBidXMsIHBs
-YXRmb3JtIGJ1cywgYW5kIEFNQkEgYnVzLg0KDQpPbmUgY2FuIG5hbWUgdGhlIFNQSSBkZXZpY2Un
-cyB0eXBlIGluIHRoZSBEVCBjb3JyZWN0bHkgdG8gYW55dGhpbmcgeW91DQp3YW50LiAgQ2FsbCBp
-dCAic21hcnRhY291c3RpY3MsZnBnYS1jb2RlYy1ibG9jay0xLjAiIG9yIHdoYXRldmVyLiAgSXQN
-CmRvZXNuJ3QgaGF2ZSB0byBoYXZlIHRvIGJlICJnZW5lcmljIiBvciAibmFtZS1vZi1saW51eC1k
-cml2ZXIiLiAgTmFtZXMNCmxpa2UgdGhhdCBhcmUgd2hhdCBhcmVuJ3Qgc3VwcG9zZWQgdG8gYmUg
-aW4gdGhlIERULg0KDQpUaGVuIGRyaXZlcl9vdmVycmlkZSBhbGxvd3MgdGhpcyBzcGVjaWZpYyBk
-ZXZpY2UgdG8gYmUgYm91bmQgdG8gc3BpZGV2Lg0KIEl0IHdvcmtzIGZvciBhbGwgb3RoZXIgc3Bp
-IGRyaXZlcnMgdG9vLiAgU3VwcG9zZSB0aGUgZGV2aWNlIHlvdSBoYXZlDQpjcmVhdGVkIGluIGFu
-IEZQR0EgaXMgb3IgY2FuIGJlIGNvbXBhdGlibGUgd2l0aCBhIHN0YW5kYXJkIFNQSSBlZXByb20u
-IA0KQmluZCB0aGUgZWVwcm9tIGRyaXZlciB0byBpdC4gIFJlY29uZmlndXJlIHRoZSBGUEdBIGxv
-Z2ljIGFuZCBub3cgaXQNCndvcmtzIGxpa2UgYSBTUEkgY29udHJvbGxlZCBEQUMgYW5kIHN3aXRj
-aCB0byB0aGUgREFJIGRyaXZlci4NCg0KSSB0aGluayB0aGlzIHNvbHZlcyB0aGUgcHJvYmxlbXMg
-b2YgU1BJIHNsYXZlcyB0aGF0IGFyZToNCiogT2YgYW4gdW5rbm93biB0eXBlIGF0IHRoZSB0aW1l
-IHRoZSBEVCBpcyBnaXZlbiB0byB0aGUga2VybmVsLg0KKiBVbmlxdWUgZGV2aWNlcyB0aGF0IGRv
-bid0IG1ha2Ugc2Vuc2UgdG8gcHV0IGludG8gYSBrZXJuZWwgZHJpdmVyDQpmcmFtZXdvcmsgYW5k
-IHNob3VsZCBiZSBjb250cm9sbGVkIGZyb20gdXNlcnNwYWNlIGFzIFNQSSBkZXZpY2VzLg0KKiBJ
-bXBsZW1lbnRlZCBpbiByZS1jb25maWd1cmFibGUgbG9naWMgYW5kIGhvdyB0aGUga2VybmVsIHNo
-b3VsZCB2aWV3DQp0aGVtIGNhbiBjaGFuZ2UuDQoNCkl0IGRvZXMgbm90IHNvbHZlIHRoZSBwcm9i
-bGVtIG9mIGNyZWF0aW5nIGFuZCBkZXN0cm95aW5nIFNQSSBzbGF2ZXMNCmR5bmFtaWNhbGx5IGF0
-IHJ1biB0aW1lLiAgVGhpcyBjYW4gYmUgc29sdmVkIChhbmQgaXQgd2F5IHRoYXQgaXNuJ3QNCnNw
-ZWNpZmljIHRvIHNwaWRldiksIHZpYToNCiogQ29weWluZyB0aGUgSTJDIG5ld19kZXZpY2Ugc3lz
-dGVtLCB3aGljaCBhbGxvd3MgdGhpcyB3aXRoIGxpbWl0YXRpb25zDQphbmQgaW4gYSBTUEkgKGFu
-ZCBJMkMpIHNwZWNpZmljIHdheS4NCiogSW5jb3Jwb3JhdGlvbiBvZiB0aGUgZHluYW1pYyBEVCBm
-cmFnbWVudCBsb2FkaW5nIHN5c3RlbSwgd2hpY2ggc29sdmVzDQp0aGlzIHdpdGggZmFyIGxlc3Mg
-bGltaXRhdGlvbiBhbmQgaXQgbWFubmVyIHRoYXQgaXMgbm90IGJ1cyBzcGVjaWZpYy4=
+Wir bieten derzeit Darlehen in H=F6he von 3% pro Jahr f=FCr jeden Teil der =
+Welt an. Antworte zur=FCck f=FCr mehr Details.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

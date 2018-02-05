@@ -1,59 +1,154 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: spidev: That spidev in the DT issue again...
-Date: Mon, 5 Feb 2018 20:42:07 +0000
-Message-ID: <1517863326.25398.233.camel@impinj.com>
-References: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1@smartacoustics.co.uk>
-         <1517597933.25398.215.camel@impinj.com>
-         <8622f025-ceee-b9cb-9ea7-8ac77ae020dd@smartacoustics.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org"
-        <henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+From: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Subject: [RFC PATCH 0/6] spi: Extend the framework to generically support memory devices
+Date: Tue,  6 Feb 2018 00:21:14 +0100
+Message-ID: <20180205232120.5851-1-boris.brezillon@bootlin.com>
+Cc: Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
+        Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Yogesh Gaur <yogeshnarayan.gaur-3arQi8VN3Tc@public.gmane.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+        Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+To: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8622f025-ceee-b9cb-9ea7-8ac77ae020dd-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
-Content-Language: en-US
-Content-ID: <83FF791B56231D4DAC31A2229239EACB-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gU2F0LCAyMDE4LTAyLTAzIGF0IDA4OjMxICswMDAwLCBIZW5yeSBHb21lcnNhbGwgd3JvdGU6
-DQo+IE9uIDAyLzAyLzE4IDE4OjU4LCBUcmVudCBQaWVwaG8gd3JvdGU6DQo+ID4gPiBUaGUgY2xl
-YXIgdXNlIGNhc2UgZm9yIG1vcmUgZmxleGliaWxpdHkgaW4gdGhlIHN5c3RlbSBpcyBhcm91bmQg
-RlBHQQ0KPiA+ID4gYmFzZWQgU29DcyAoaW4gbXkgY2FzZSBhIFp5bnEpLiBJbiBzdWNoIGEgc2Nl
-bmFyaW8gdGhlIHVzZSBvZiB1c2Vyc3BhY2UNCj4gPiA+IGlzIGEgbmF0dXJhbCBjb21wbGVtZW50
-IHRvIHJ1bnRpbWUgY29uZmlndXJhYmxlIGhhcmR3YXJlIGJsb2Nrcy4gSXQNCj4gPiA+IHdvdWxk
-IHJlYWxseSBlYXNlIGFjY2VzcyB0byAoYXQgbGVhc3Qgc29tZXdoYXQpIGNvcnJlY3QgdXNlIG9m
-IHRoZQ0KPiA+ID4gZHJpdmVyIGlmIGl0IGNvdWxkIGJlIHJlY29nbmlzZWQgdGhhdCB0aGUga2Vy
-bmVsIG1pZ2h0IG5vdCBhY3R1YWxseSBuZWVkDQo+ID4gPiB0byBrbm93IHdoYXQncyBvbiB0aGUg
-ZW5kIG9mIGFuIFNQSSBidXMuDQo+ID4gDQo+ID4gSSd2ZSBnb3QgYSBwYXRjaCB0aGF0IGFkZHMg
-ImRyaXZlcl9vdmVycmlkZSIgdG8gdGhlIFNQSSBidXMuICBUaGlzDQo+ID4gYWxyZWFkeSBleGlz
-dHMgb24gdGhlIFBDSSBidXMsIHBsYXRmb3JtIGJ1cywgYW5kIEFNQkEgYnVzLg0KPiA+IA0KPiAN
-Cj4gVGhhbmtzIGZvciB0aGF0LiBXaGF0J3MgdGhlIHN0YXR1cyBvZiB0aGUgcGF0Y2ggY3VycmVu
-dGx5PyBJIGNhbid0IHNlZQ0KPiBpdCBvbiBwYXRjaHdvcmsuLi4NCj4gDQo+IExvb2tpbmcgYmFj
-ayBhdCB5b3VyIGVhcmxpZXIgZW1haWwgeW91IHBvaW50IG91dCBkb2luZyB0aGlzIHRocm91Z2gg
-dWRldg0KPiBydWxlcywgd2hpY2ggaXMgSU1PIGEgZ29vZCB3YXkgdG8gc29sdmUgdGhlIHByb2Js
-ZW0NCg0KSSdsbCBuZWVkIHRvIHNlbmQgaXQgYWdhaW4uDQoNCj4gPiANCj4gPiBJdCBkb2VzIG5v
-dCBzb2x2ZSB0aGUgcHJvYmxlbSBvZiBjcmVhdGluZyBhbmQgZGVzdHJveWluZyBTUEkgc2xhdmVz
-DQo+ID4gZHluYW1pY2FsbHkgYXQgcnVuIHRpbWUuICBUaGlzIGNhbiBiZSBzb2x2ZWQgKGFuZCBp
-dCB3YXkgdGhhdCBpc24ndA0KPiA+IHNwZWNpZmljIHRvIHNwaWRldiksIHZpYToNCj4gPiAqIENv
-cHlpbmcgdGhlIEkyQyBuZXdfZGV2aWNlIHN5c3RlbSwgd2hpY2ggYWxsb3dzIHRoaXMgd2l0aCBs
-aW1pdGF0aW9ucw0KPiA+IGFuZCBpbiBhIFNQSSAoYW5kIEkyQykgc3BlY2lmaWMgd2F5Lg0KPiA+
-ICogSW5jb3Jwb3JhdGlvbiBvZiB0aGUgZHluYW1pYyBEVCBmcmFnbWVudCBsb2FkaW5nIHN5c3Rl
-bSwgd2hpY2ggc29sdmVzDQo+ID4gdGhpcyB3aXRoIGZhciBsZXNzIGxpbWl0YXRpb24gYW5kIGl0
-IG1hbm5lciB0aGF0IGlzIG5vdCBidXMgc3BlY2lmaWMuDQo+IA0KPiBJcyB0aGlzIGFuIGFzcGly
-YXRpb24sIGEgV0lQLCBvciBqdXN0IGEgdGhvdWdodD8NCg0KVGhlIG5ld19kZXZpY2Ugd2FzIHBy
-ZXNlbnRlZCBhcyBhIHBhdGNoIHJlY2VudGx5LCBidXQgd2FzIGxpbmtlZCB0bw0Kc3BpZGV2LiAg
-SSBkb24ndCByZW1lbWJlciBzZWVpbmcgYSB2MiB0aGF0IHdhcyBub3QgbGlua2VkIHRvIHNwaWRl
-diwNCndoaWNoIHNlZW1lZCBzdHJhaWdodGZvcndhcmQsIGJ1dCBJIGVhc2lseSBjb3VsZCBoYXZl
-IG1pc3NlZCBpdC4NCg0KTW9zdCBvZiB0aGUgZHluYW1pYyBEVCBwaWVjZXMgYXJlIGFscmVhZHkg
-aW4gdGhlIGtlcm5lbCwgZm9yIGV4YW1wbGUNCmNlNzlkNTRhZTQ0ICJzcGkvb2Y6IEFkZCBPRiBu
-b3RpZmllciBoYW5kbGVyIi4gIEkgdGhpbmsgdGhlIGNvbmZpZ2ZzDQpwYXJ0IGlzIHN0aWxsIHVu
-bWVyZ2VkLCBzZWUgaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC81MTc5NjIxLw0K
-SSBkb24ndCBrbm93IHdoeSBpdCdzIG5vdCBpbiBhbHJlYWR5LiAgVGhpcyB3b3VsZCBzb2x2ZSB0
-aGUgcHJvYmxlbSBvZg0KZHluYW1pY2FsbHkgYWRkaW5nIGFuZCByZW1vdmluZyBTUEkgKGFuZCBJ
-MkMpIGRldmljZXMu
+Hello all,
+
+I know a lot of you have already tried to address some of the flaws in
+the SPI NOR framework, and I'm coming with yet another proposal to solve
+some of the problems I faced recently :-/. The approach I'm proposing
+here has been motivated by the recent work done on SPI NANDs.
+
+Peter has proposed a SPI NAND controller interface (based on my
+suggestions) where the controller had to implement hooks that the SPI
+NAND framework could use to execute SPI NAND operations. I thought the
+approach was acceptable as a first step before we move to a solution
+where we share even more logic between SPI NOR and SPI NAND frameworks.
+But I recently changed my mind after working with Frieder to support
+his SPI NAND (Frieder has a SPI NAND connected to the FSL QSPI
+controller).
+
+And here come the problems: we definitely want one FSL QSPI driver
+that works for both NANDs and NORs. In the current state, that means
+forcing the FSL QSPI driver to implement both the SPI NAND and SPI NOR
+interfaces. When you look at the internal controller logic, if we want
+to support this without duplicating too much code, we have to add
+an intermediate representation that abstracts away the NOR/NAND
+specificities and pass only basic information to the controller:
+
+* the opcode
+* the number of address cycles
+* the number of dummy cycles
+* the number of data bytes to receive/transmit
+
+And the same problem is likely to hit most of the controller drivers
+placed in drivers/mtd/spi-nor.
+
+Another problem I see with the current approach is the duplication
+of DT parsing code in almost all drivers, even though most of them
+follow the generic SPI controller/device bindings.
+
+And finally, there's the confusion brought by the 2 entry points
+exposed by the SPI NOR layer (and that we had planned to mimic in the
+SPI NAND layer): you can register a SPI NOR device directly from the
+dedicated SPI memory controller, or it can be registered through the
+SPI layer if the SPI controller is a generic SPI controller. While
+the generic SPI controller path works fine, the dedicated SPI NOR
+controller path brings its own set of issues:
+
+* the SPI bus is not represented in sysfs
+* because there's no bus, there's no uevent, which means you'll have to
+  select both the SPI NAND and SPI NOR logic as soon as one driver
+  supports both interfaces if you don't want to run into loading
+  dependency issues
+
+Not to mention that, in order to work properly, the SPI flash ids may
+have to be exported so that all QSPI controller drivers can use the
+same database.
+
+For all these reasons, I decided to try a new approach: move the
+generic "SPI memory" logic in the SPI framework (what I call the SPI
+memory interface here is actually not limited to SPI memories, and
+I'm pretty sure other QSPI devices use the same kind of protocol).
+
+So, basically, all kind of operations that can be done on a SPI
+memory are encoded with a  CMD[+ADDR][+DUMMY][+DATA_{IN,OUT}] sequence,
+and that's pretty much what I'm adding here: a way to ask the SPI
+framework to execute a SPI memory operation. If the SPI controller
+this memory is connected to is a generic SPI controller, then those
+operations will be converted to generic SPI messages, but, if the
+controller has an high-level interface to send those operations, then
+it can expose it and the framework will use it.
+
+One last comment: this new interface makes the spi_flash_read() API
+redundant, because it's able to handle both read/write path and allows
+the same kind of optimizations you could achieve with the
+spi_flash_read hooks.
+
+To sum-up: the idea behind this series is to converge to a
+common/generic interface that could be used by any kind of SPI memory
+driver and still allow per-controller optimizations.
+
+Right now, the design is quite simple, and drivers can easily implement
+the various mem_ops to optimize things. I'm currently working on the
+conversion of the FSL driver, but I'm pretty sure most of the QSPI
+drivers lying in drivers/mtd/spi-nor can easily be converted to this
+new interface.
+
+Once, we'll have that done, the SPI NOR layer will declare itself as
+a regular spi_mem_driver and we'll be done with all the funky things
+we have there. The SPI NAND patches have already been converted to this
+approach.
+
+If you want to see the big picture, my development branch is here [1]
+and contains this series + the SPI NAND patches + a hack-ish FSL
+QSPI ported to this driver which will hopefully support both SPI NANDs
+and SPI NORs (only tested with a SPI NAND so far).
+
+I know it's a big introduction, and I probably have lost most of my
+readers before this point :-). But I'd really like to have feedback on
+this series, because I'd hate to have to add yet another layer of
+insane hacks in existing QSPI drivers to support both NORs and NANDs.
+
+Mark, Cyrille, Marek, and all people that have been involved in SPI-NOR
+development lately, please have a quick look at this RFC, and let me
+know what you think.
+
+Thanks,
+
+Boris
+
+[1]https://github.com/bbrezillon/linux/tree/spi-mem
+
+Boris Brezillon (6):
+  spi: Extend the core to ease integration of SPI memory controllers
+  spi: bcm-qspi: Implement the spi_mem interface
+  spi: bcm53xx: Implement the spi_mem interface
+  spi: ti-qspi: Implement the spi_mem interface
+  mtd: spi-nor: Use the spi_mem_xx() API
+  spi: Get rid of the spi_flash_read() API
+
+ drivers/mtd/devices/m25p80.c | 240 ++++++++--------------
+ drivers/spi/spi-bcm-qspi.c   | 173 ++++++++--------
+ drivers/spi/spi-bcm53xx.c    |  38 +++-
+ drivers/spi/spi-ti-qspi.c    |  86 +++++---
+ drivers/spi/spi.c            | 480 +++++++++++++++++++++++++++++++++++++------
+ include/linux/spi/spi.h      | 263 ++++++++++++++++++++----
+ 6 files changed, 898 insertions(+), 382 deletions(-)
+
+-- 
+2.14.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

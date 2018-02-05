@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: [RFC PATCH 3/6] spi: bcm53xx: Implement the spi_mem interface
-Date: Tue,  6 Feb 2018 00:21:17 +0100
-Message-ID: <20180205232120.5851-4-boris.brezillon@bootlin.com>
+Subject: [RFC PATCH 4/6] spi: ti-qspi: Implement the spi_mem interface
+Date: Tue,  6 Feb 2018 00:21:18 +0100
+Message-ID: <20180205232120.5851-5-boris.brezillon@bootlin.com>
 References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
 Cc: Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
@@ -29,75 +29,158 @@ The spi_mem interface is meant to replace the spi_flash_read() one.
 Implement the ->exec_op() method so that we can smoothly get rid of the
 old interface.
 
-Note that the current ->flash_read() implementation looks a bit fragile
-since it does not take the ->read_opcode passed by the spi-nor layer
-into account, which means if might not work with all kind of NORs.
-
-Anyway, I left the logic unchanged and added a few extra checks to make
-sure we're receiving something that looks like a NOR read operation.
-
 Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- drivers/spi/spi-bcm53xx.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c | 85 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 72 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-index 6e409eabe1c9..c681d432e26c 100644
---- a/drivers/spi/spi-bcm53xx.c
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -263,6 +263,40 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index c24d9b45a27c..40cac3ef6cc9 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -434,12 +434,10 @@ static int ti_qspi_dma_xfer(struct ti_qspi *qspi, dma_addr_t dma_dst,
  	return 0;
  }
  
-+static int bcm53xxspi_exec_mem_op(struct spi_mem *mem,
-+				  const struct spi_mem_op *op)
+-static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi,
+-				     struct spi_flash_read_message *msg)
++static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi, loff_t offs,
++				     void *to, size_t readsize)
+ {
+-	size_t readsize = msg->len;
+-	void *to = msg->buf;
+-	dma_addr_t dma_src = qspi->mmap_phys_base + msg->from;
++	dma_addr_t dma_src = qspi->mmap_phys_base + offs;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -507,13 +505,14 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+ 	qspi->mmap_enabled = false;
+ }
+ 
+-static void ti_qspi_setup_mmap_read(struct spi_device *spi,
+-				    struct spi_flash_read_message *msg)
++static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
++				    u8 data_nbits, u8 addr_width,
++				    u8 dummy_bytes)
+ {
+ 	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
+-	u32 memval = msg->read_opcode;
++	u32 memval = opcode;
+ 
+-	switch (msg->data_nbits) {
++	switch (data_nbits) {
+ 	case SPI_NBITS_QUAD:
+ 		memval |= QSPI_SETUP_RD_QUAD;
+ 		break;
+@@ -524,8 +523,8 @@ static void ti_qspi_setup_mmap_read(struct spi_device *spi,
+ 		memval |= QSPI_SETUP_RD_NORMAL;
+ 		break;
+ 	}
+-	memval |= ((msg->addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
+-		   msg->dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
++	memval |= ((addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
++		   dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
+ 	ti_qspi_write(qspi, memval,
+ 		      QSPI_SPI_SETUP_REG(spi->chip_select));
+ }
+@@ -546,13 +545,15 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
+ 
+ 	if (!qspi->mmap_enabled)
+ 		ti_qspi_enable_memory_map(spi);
+-	ti_qspi_setup_mmap_read(spi, msg);
++	ti_qspi_setup_mmap_read(spi, msg->read_opcode, msg->data_nbits,
++				msg->addr_width, msg->dummy_bytes);
+ 
+ 	if (qspi->rx_chan) {
+ 		if (msg->cur_msg_mapped)
+ 			ret = ti_qspi_dma_xfer_sg(qspi, msg->rx_sg, msg->from);
+ 		else
+-			ret = ti_qspi_dma_bounce_buffer(qspi, msg);
++			ret = ti_qspi_dma_bounce_buffer(qspi, msg->from,
++							msg->buf, msg->len);
+ 		if (ret)
+ 			goto err_unlock;
+ 	} else {
+@@ -566,6 +567,62 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
+ 	return ret;
+ }
+ 
++static int ti_qspi_exec_mem_op(struct spi_mem *mem,
++			       const struct spi_mem_op *op)
 +{
-+	struct bcm53xxspi *b53spi = spi_master_get_devdata(mem->spi->master);
-+	u32 from;
++	struct ti_qspi *qspi = spi_master_get_devdata(mem->spi->master);
++	int i, ret = 0;
++	u32 from = 0;
 +
-+	/*
-+	 * FIXME: There's nothing in this driver programming the opcode and
-+	 * buswidth to be used when a read is done on the mmio window, but it
-+	 * seems to be used to access a SPI NOR device, so restrict access
-+	 * access to SPINOR_OP_READ commands.
-+	 */
++	/* Only optimize read path. */
 +	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
-+	    op->addr.nbytes != 3 || op->cmd.opcode != 0x3)
++	    !op->addr.nbytes || op->addr.nbytes > 4)
 +		return -ENOTSUPP;
 +
-+	from = ((u32)op->addr.buf[0] << 16) | ((u32)op->addr.buf[1] << 8) |
-+	       op->addr.buf[2];
++	for (i = 0; i < op->addr.nbytes; i++) {
++		from <<= 8;
++		from |= op->addr.buf[i];
++	}
 +
-+	/* Return -ENOTSUPP so that the core can fall back to normal reads. */
-+	if (from + op->data.nbytes > BCM53XXSPI_FLASH_WINDOW)
++	/* Address exceeds MMIO window size, fall back to regular mode. */
++	if (from > 0x4000000)
 +		return -ENOTSUPP;
 +
-+	bcm53xxspi_enable_bspi(b53spi);
-+	memcpy_fromio(op->data.buf.in, b53spi->mmio_base + from,
-+		      op->data.nbytes);
++	mutex_lock(&qspi->list_lock);
 +
-+	return 0;
++	if (!qspi->mmap_enabled)
++		ti_qspi_enable_memory_map(mem->spi);
++	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
++				op->addr.nbytes, op->dummy.nbytes);
++
++	if (qspi->rx_chan) {
++		struct sg_table sgt;
++
++		if (!virt_addr_valid(op->data.buf.in) &&
++		    !spi_controller_dma_map_mem_op_data(mem->spi->master, op,
++							&sgt)) {
++			ret = ti_qspi_dma_xfer_sg(qspi, sgt, from);
++			spi_controller_dma_unmap_mem_op_data(mem->spi->master,
++							     op, &sgt);
++		} else {
++			ret = ti_qspi_dma_bounce_buffer(qspi, from,
++							op->data.buf.in,
++							op->data.nbytes);
++		}
++	} else {
++		memcpy_fromio(op->data.buf.in, qspi->mmap_base + from,
++			      op->data.nbytes);
++	}
++
++	mutex_unlock(&qspi->list_lock);
++
++	return ret;
 +}
 +
-+static const struct spi_controller_mem_ops bcm53xxspi_mem_ops = {
-+	.exec_op = bcm53xxspi_exec_mem_op,
++static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
++	.exec_op = ti_qspi_exec_mem_op,
 +};
 +
- static int bcm53xxspi_flash_read(struct spi_device *spi,
- 				 struct spi_flash_read_message *msg)
+ static int ti_qspi_start_transfer_one(struct spi_master *master,
+ 		struct spi_message *m)
  {
-@@ -317,8 +351,10 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
+@@ -673,6 +730,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
+ 				     SPI_BPW_MASK(8);
+ 	master->spi_flash_read = ti_qspi_spi_flash_read;
++	master->mem_ops = &ti_qspi_mem_ops;
  
- 	master->dev.of_node = dev->of_node;
- 	master->transfer_one = bcm53xxspi_transfer_one;
--	if (b53spi->mmio_base)
-+	if (b53spi->mmio_base) {
-+		master->mem_ops = &bcm53xxspi_mem_ops;
- 		master->spi_flash_read = bcm53xxspi_flash_read;
-+	}
- 
- 	bcma_set_drvdata(core, b53spi);
- 
+ 	if (!of_property_read_u32(np, "num-cs", &num_cs))
+ 		master->num_chipselect = num_cs;
+@@ -785,6 +843,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 				 PTR_ERR(qspi->mmap_base));
+ 			qspi->mmap_base = NULL;
+ 			master->spi_flash_read = NULL;
++			master->mem_ops = NULL;
+ 		}
+ 	}
+ 	qspi->mmap_enabled = false;
 -- 
 2.14.1
 

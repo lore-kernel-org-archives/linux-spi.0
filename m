@@ -1,67 +1,60 @@
-From: Ulf Magnusson <ulfalizer@gmail.com>
-Subject: [PATCH v3 03/20] kconfig: Remove leftover references to AVR32 symbol
-Date: Mon,  5 Feb 2018 20:05:39 +0100
-Message-ID: <20180205190552.14282-1-ulfalizer@gmail.com>
-References: <20180205081151.GA11907@Red>
-Cc: viresh.kumar@linaro.org, matthias.bgg@gmail.com,
-        linux-pwm@vger.kernel.org, thierry.reding@gmail.com,
-        ulfalizer@gmail.com, Mark Brown <broonie@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Sean Paul <seanpaul@chromium.org>, linux-spi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-To: clabbe.montjoie@gmail.com, linux-kernel@vger.kernel.org
-Return-path: <linux-pwm-owner@vger.kernel.org>
-In-Reply-To: <20180205081151.GA11907@Red>
-Sender: linux-pwm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Subject: Re: spidev: That spidev in the DT issue again...
+Date: Mon, 5 Feb 2018 20:42:07 +0000
+Message-ID: <1517863326.25398.233.camel@impinj.com>
+References: <ef61ff15-ec38-42f0-8ef3-9235b50dfda1@smartacoustics.co.uk>
+         <1517597933.25398.215.camel@impinj.com>
+         <8622f025-ceee-b9cb-9ea7-8ac77ae020dd@smartacoustics.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org"
+        <henry.gomersall-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8622f025-ceee-b9cb-9ea7-8ac77ae020dd-rFU6cQq7QtIud/4VRtRfoNBc4/FLrbF6@public.gmane.org>
+Content-Language: en-US
+Content-ID: <83FF791B56231D4DAC31A2229239EACB-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
-support for AVR32 architecture"). Remove the remaining references to it
-from the Kconfig files.
-
-Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
----
-Changes in v3:
-Removal of the AVR32 dependency in PWM_ATMEL is already pending:
-https://lkml.org/lkml/2018/1/18/699
-
-Changes in v2:
-Removal of AVR32_AT32AP_CPUFREQ is already pending in
-https://marc.info/?i=20180118200202.11883-1-clabbe.montjoie%40gmail.com (which
-also does it properly -- I forgot to search for related files here). Just
-remove the other references.
-
- drivers/spi/Kconfig           | 2 +-
- drivers/video/console/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 603783976b81..c1e455d46c7f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -72,7 +72,7 @@ config SPI_ARMADA_3700
- config SPI_ATMEL
- 	tristate "Atmel SPI Controller"
- 	depends on HAS_DMA
--	depends on (ARCH_AT91 || AVR32 || COMPILE_TEST)
-+	depends on (ARCH_AT91 || COMPILE_TEST)
- 	help
- 	  This selects a driver for the Atmel SPI Controller, present on
- 	  many AT32 (AVR32) and AT91 (ARM) chips.
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index 7f1f1fbcef9e..be63759b6027 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -7,7 +7,7 @@ menu "Console display driver support"
- config VGA_CONSOLE
- 	bool "VGA text console" if EXPERT || !X86
- 	depends on !4xx && !PPC_8xx && !SPARC && !M68K && !PARISC && !FRV && \
--		!SUPERH && !BLACKFIN && !AVR32 && !MN10300 && !CRIS && \
-+		!SUPERH && !BLACKFIN && !MN10300 && !CRIS && \
- 		(!ARM || ARCH_FOOTBRIDGE || ARCH_INTEGRATOR || ARCH_NETWINDER) && \
- 		!ARM64 && !ARC && !MICROBLAZE && !OPENRISC
- 	default y
--- 
-2.14.1
+T24gU2F0LCAyMDE4LTAyLTAzIGF0IDA4OjMxICswMDAwLCBIZW5yeSBHb21lcnNhbGwgd3JvdGU6
+DQo+IE9uIDAyLzAyLzE4IDE4OjU4LCBUcmVudCBQaWVwaG8gd3JvdGU6DQo+ID4gPiBUaGUgY2xl
+YXIgdXNlIGNhc2UgZm9yIG1vcmUgZmxleGliaWxpdHkgaW4gdGhlIHN5c3RlbSBpcyBhcm91bmQg
+RlBHQQ0KPiA+ID4gYmFzZWQgU29DcyAoaW4gbXkgY2FzZSBhIFp5bnEpLiBJbiBzdWNoIGEgc2Nl
+bmFyaW8gdGhlIHVzZSBvZiB1c2Vyc3BhY2UNCj4gPiA+IGlzIGEgbmF0dXJhbCBjb21wbGVtZW50
+IHRvIHJ1bnRpbWUgY29uZmlndXJhYmxlIGhhcmR3YXJlIGJsb2Nrcy4gSXQNCj4gPiA+IHdvdWxk
+IHJlYWxseSBlYXNlIGFjY2VzcyB0byAoYXQgbGVhc3Qgc29tZXdoYXQpIGNvcnJlY3QgdXNlIG9m
+IHRoZQ0KPiA+ID4gZHJpdmVyIGlmIGl0IGNvdWxkIGJlIHJlY29nbmlzZWQgdGhhdCB0aGUga2Vy
+bmVsIG1pZ2h0IG5vdCBhY3R1YWxseSBuZWVkDQo+ID4gPiB0byBrbm93IHdoYXQncyBvbiB0aGUg
+ZW5kIG9mIGFuIFNQSSBidXMuDQo+ID4gDQo+ID4gSSd2ZSBnb3QgYSBwYXRjaCB0aGF0IGFkZHMg
+ImRyaXZlcl9vdmVycmlkZSIgdG8gdGhlIFNQSSBidXMuICBUaGlzDQo+ID4gYWxyZWFkeSBleGlz
+dHMgb24gdGhlIFBDSSBidXMsIHBsYXRmb3JtIGJ1cywgYW5kIEFNQkEgYnVzLg0KPiA+IA0KPiAN
+Cj4gVGhhbmtzIGZvciB0aGF0LiBXaGF0J3MgdGhlIHN0YXR1cyBvZiB0aGUgcGF0Y2ggY3VycmVu
+dGx5PyBJIGNhbid0IHNlZQ0KPiBpdCBvbiBwYXRjaHdvcmsuLi4NCj4gDQo+IExvb2tpbmcgYmFj
+ayBhdCB5b3VyIGVhcmxpZXIgZW1haWwgeW91IHBvaW50IG91dCBkb2luZyB0aGlzIHRocm91Z2gg
+dWRldg0KPiBydWxlcywgd2hpY2ggaXMgSU1PIGEgZ29vZCB3YXkgdG8gc29sdmUgdGhlIHByb2Js
+ZW0NCg0KSSdsbCBuZWVkIHRvIHNlbmQgaXQgYWdhaW4uDQoNCj4gPiANCj4gPiBJdCBkb2VzIG5v
+dCBzb2x2ZSB0aGUgcHJvYmxlbSBvZiBjcmVhdGluZyBhbmQgZGVzdHJveWluZyBTUEkgc2xhdmVz
+DQo+ID4gZHluYW1pY2FsbHkgYXQgcnVuIHRpbWUuICBUaGlzIGNhbiBiZSBzb2x2ZWQgKGFuZCBp
+dCB3YXkgdGhhdCBpc24ndA0KPiA+IHNwZWNpZmljIHRvIHNwaWRldiksIHZpYToNCj4gPiAqIENv
+cHlpbmcgdGhlIEkyQyBuZXdfZGV2aWNlIHN5c3RlbSwgd2hpY2ggYWxsb3dzIHRoaXMgd2l0aCBs
+aW1pdGF0aW9ucw0KPiA+IGFuZCBpbiBhIFNQSSAoYW5kIEkyQykgc3BlY2lmaWMgd2F5Lg0KPiA+
+ICogSW5jb3Jwb3JhdGlvbiBvZiB0aGUgZHluYW1pYyBEVCBmcmFnbWVudCBsb2FkaW5nIHN5c3Rl
+bSwgd2hpY2ggc29sdmVzDQo+ID4gdGhpcyB3aXRoIGZhciBsZXNzIGxpbWl0YXRpb24gYW5kIGl0
+IG1hbm5lciB0aGF0IGlzIG5vdCBidXMgc3BlY2lmaWMuDQo+IA0KPiBJcyB0aGlzIGFuIGFzcGly
+YXRpb24sIGEgV0lQLCBvciBqdXN0IGEgdGhvdWdodD8NCg0KVGhlIG5ld19kZXZpY2Ugd2FzIHBy
+ZXNlbnRlZCBhcyBhIHBhdGNoIHJlY2VudGx5LCBidXQgd2FzIGxpbmtlZCB0bw0Kc3BpZGV2LiAg
+SSBkb24ndCByZW1lbWJlciBzZWVpbmcgYSB2MiB0aGF0IHdhcyBub3QgbGlua2VkIHRvIHNwaWRl
+diwNCndoaWNoIHNlZW1lZCBzdHJhaWdodGZvcndhcmQsIGJ1dCBJIGVhc2lseSBjb3VsZCBoYXZl
+IG1pc3NlZCBpdC4NCg0KTW9zdCBvZiB0aGUgZHluYW1pYyBEVCBwaWVjZXMgYXJlIGFscmVhZHkg
+aW4gdGhlIGtlcm5lbCwgZm9yIGV4YW1wbGUNCmNlNzlkNTRhZTQ0ICJzcGkvb2Y6IEFkZCBPRiBu
+b3RpZmllciBoYW5kbGVyIi4gIEkgdGhpbmsgdGhlIGNvbmZpZ2ZzDQpwYXJ0IGlzIHN0aWxsIHVu
+bWVyZ2VkLCBzZWUgaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC81MTc5NjIxLw0K
+SSBkb24ndCBrbm93IHdoeSBpdCdzIG5vdCBpbiBhbHJlYWR5LiAgVGhpcyB3b3VsZCBzb2x2ZSB0
+aGUgcHJvYmxlbSBvZg0KZHluYW1pY2FsbHkgYWRkaW5nIGFuZCByZW1vdmluZyBTUEkgKGFuZCBJ
+MkMpIGRldmljZXMu
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

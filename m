@@ -1,25 +1,19 @@
 From: Ulf Magnusson <ulfalizer@gmail.com>
-Subject: [PATCH v2 03/20] kconfig: Remove leftover references to AVR32 symbol
-Date: Mon,  5 Feb 2018 05:44:41 +0100
-Message-ID: <20180205044441.4440-1-ulfalizer@gmail.com>
-References: <20180205040515.GC28462@vireshk-i7>
-Cc: linux-kbuild@vger.kernel.org, tfiga@chromium.org,
-        paul.burton@mips.com, m.szyprowski@samsung.com,
-        egtvedt@samfundet.no, linus.walleij@linaro.org,
-        vgupta@synopsys.com, mgorman@techsingularity.net, hch@lst.de,
-        mina86@mina86.com, robh@kernel.org, sboyd@codeaurora.org,
-        paulus@ozlabs.org, will.deacon@arm.com, tony@atomide.com,
-        npiggin@gmail.com, yamada.masahiro@socionext.com,
-        ulfalizer@gmail.com, rjw@rjwysocki.net, viresh.kumar@linaro.org,
-        thierry.reding@gmail.com, broonie@kernel.org,
-        b.zolnierkie@samsung.com, seanpaul@chromium.org,
-        daniel.vetter@ffwll.ch, christophe.leroy@c-s.fr,
-        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-To: linux-kernel@vger.kernel.org
+Subject: [PATCH v3 03/20] kconfig: Remove leftover references to AVR32 symbol
+Date: Mon,  5 Feb 2018 20:05:39 +0100
+Message-ID: <20180205190552.14282-1-ulfalizer@gmail.com>
+References: <20180205081151.GA11907@Red>
+Cc: viresh.kumar@linaro.org, matthias.bgg@gmail.com,
+        linux-pwm@vger.kernel.org, thierry.reding@gmail.com,
+        ulfalizer@gmail.com, Mark Brown <broonie@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Sean Paul <seanpaul@chromium.org>, linux-spi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+To: clabbe.montjoie@gmail.com, linux-kernel@vger.kernel.org
 Return-path: <linux-pwm-owner@vger.kernel.org>
-In-Reply-To: <20180205040515.GC28462@vireshk-i7>
+In-Reply-To: <20180205081151.GA11907@Red>
 Sender: linux-pwm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -29,30 +23,20 @@ from the Kconfig files.
 
 Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
 ---
+Changes in v3:
+Removal of the AVR32 dependency in PWM_ATMEL is already pending:
+https://lkml.org/lkml/2018/1/18/699
+
 Changes in v2:
 Removal of AVR32_AT32AP_CPUFREQ is already pending in
 https://marc.info/?i=20180118200202.11883-1-clabbe.montjoie%40gmail.com (which
 also does it properly -- I forgot to search for related files here). Just
 remove the other references.
 
- drivers/pwm/Kconfig           | 2 +-
  drivers/spi/Kconfig           | 2 +-
  drivers/video/console/Kconfig | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 763ee50ea57d..f16aad3bf5d6 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -43,7 +43,7 @@ config PWM_AB8500
- 
- config PWM_ATMEL
- 	tristate "Atmel PWM support"
--	depends on ARCH_AT91 || AVR32
-+	depends on ARCH_AT91
- 	help
- 	  Generic PWM framework driver for Atmel SoC.
- 
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
 index 603783976b81..c1e455d46c7f 100644
 --- a/drivers/spi/Kconfig

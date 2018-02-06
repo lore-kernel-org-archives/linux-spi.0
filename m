@@ -1,79 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
- memory controllers
-Date: Tue, 6 Feb 2018 12:06:50 +0000
-Message-ID: <20180206120650.GE5681@sirena.org.uk>
-References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
- <20180205232120.5851-2-boris.brezillon@bootlin.com>
- <20180206104330.35ffb946@smile-e5570>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 03/20] kconfig: Remove leftover references to AVR32
+ symbol
+Date: Tue, 6 Feb 2018 12:08:25 +0000
+Message-ID: <20180206120825.GF5681@sirena.org.uk>
+References: <20180205081151.GA11907@Red>
+ <20180205190552.14282-1-ulfalizer@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="FEz7ebHBGB6b2e8X"
-Cc: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
-        Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Yogesh Gaur <yogeshnarayan.gaur-3arQi8VN3Tc@public.gmane.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-To: Maxime Chevallier <maxime.chevallier-fqqU8Ppg2Jk@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="p8PhoBjPxaQXD0vg"
+Cc: clabbe.montjoie@gmail.com, linux-kernel@vger.kernel.org,
+        viresh.kumar@linaro.org, matthias.bgg@gmail.com,
+        linux-pwm@vger.kernel.org, thierry.reding@gmail.com,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Sean Paul <seanpaul@chromium.org>, linux-spi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+To: Ulf Magnusson <ulfalizer@gmail.com>
+Return-path: <linux-pwm-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180206104330.35ffb946@smile-e5570>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20180205190552.14282-1-ulfalizer@gmail.com>
+Sender: linux-pwm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---FEz7ebHBGB6b2e8X
+--p8PhoBjPxaQXD0vg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 06, 2018 at 10:43:30AM +0100, Maxime Chevallier wrote:
+On Mon, Feb 05, 2018 at 08:05:39PM +0100, Ulf Magnusson wrote:
+> The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
+> support for AVR32 architecture"). Remove the remaining references to it
+> from the Kconfig files.
 
-> As a user, what prevented me from using spi_flash_read is that it
-> bypasses the message queue. I have a setup that uses spi_async and I
-> have to make sure everything goes in the right order, so I ended up
-> using spi_write_then_read instead.
+>  drivers/spi/Kconfig           | 2 +-
+>  drivers/video/console/Kconfig | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-> Is there a way to make so that the message that uses exec_op are issued
-> in the correct order regarding messages that are already queued ?
+It'd probably be easier to just submit these as separate patches to the
+individual subsystems, that'd make it more likely that reviewers will
+see them.  As I've no context for this I can't tell if there's any
+dependencies, I'm guessing not but just in case
 
-> Maybe we could extend spi_message or spi_transfer to store all
-> this opcode/dummy/addr information, so that we would use the standard
-> interfaces spi_sync / spi_async, and make this mechanism of exec_op
-> transparent from the user ?
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Or have the flash read flush out the queue perhaps, might be simpler.
-Pushing the memory mapped read operations through the queue does seem to
-defeat some of the purpose of having them though I can see it might be
-needed, I think the current applications were read only or at least read
-mostly.
-
---FEz7ebHBGB6b2e8X
+--p8PhoBjPxaQXD0vg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlp5mloACgkQJNaLcl1U
-h9CnTQf/RgIMXDTKX+XvD0iWFt3K/k6hK5BJXNz8tPGFTW0qmm3pFETDPS/xD+m7
-nQrmFksa+BP991QIziVJxiavdJC0wuTpz9Zvjt6v6ioPmwOKMoGziv1AnE1ZwkzJ
-U3Rbb5uZao00QaH8MEffbUUK8MZ6g80TXQzUMlJEqZzUSiOx6Vkfu8HGve3X0OxH
-+WQmTKHNz/S2VY00X4m5Gjlju2szBIo97EQ/X//XzX8AY+GGsI3JU5sSGaACvpqn
-3G+hwFsEtuYhU3+HLjuIBmhoz3nqn2ZWGfTakRHHBg8XFIb95YZjdqlXIypzLfv8
-ThAkJe4X54RaVLPo+oTxuBXQDdsR/w==
-=+CE3
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlp5mrgACgkQJNaLcl1U
+h9CxMgf+JGurc+K5jhMMPpAoGyGrZ2TugIAbUw6WrjvHDaaxifeQLKh2i8ujLw3+
+OKgl0XJ1ytpqMPkVVCH9WGZF/BSl8tQKtbVvmF2jSBMmFTlk1mevQcoqrgJb4NTf
+U3m2JAQoWqcPsI4lVF146SNy+AP8N042uQgpXIq9sREp1qHAnzSiD22+WD8LtWVW
+yfIHX5p6Pkdh5odO7hezLjHv2VlMcqSfla7q4Lzm2vAb01OhySdi1Uep6TnahHRX
+fY/lVkeqRjOcKOoacLIgNSxDZ2K1Vgc55krRxXZbB2gAySlFSIksnPSdtE9nH/xm
+yluMHQbeE2ORH3Yhhu7cSOqFwUBAdw==
+=rUEE
 -----END PGP SIGNATURE-----
 
---FEz7ebHBGB6b2e8X--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--p8PhoBjPxaQXD0vg--

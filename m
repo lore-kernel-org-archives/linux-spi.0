@@ -1,62 +1,51 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [PATCH] spi: kconfig: Remove AVR32 dep. from SPI_ATMEL
-Date: Wed, 7 Feb 2018 09:59:55 +0100
-Message-ID: <a8d2076b-6863-6ff1-5442-0587ad973766@gmail.com>
-References: <20180206120825.GF5681@sirena.org.uk>
- <20180206225519.20248-1-ulfalizer@gmail.com>
- <7f2bebe1-2931-7ec9-ef9f-0d3e6dda6c0b@gmail.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/4] pinctrl: mcp23s08: spi: Fix regmap debugfs entries
+Date: Wed, 7 Feb 2018 14:43:02 +0100
+Message-ID: <CACRpkdaj2+2bfPX2R-fx8V-VAD2M=+nT+AW9PBM00da9rKOQ5g@mail.gmail.com>
+References: <cover.1516997103.git.jan.kundrat@cesnet.cz> <de8fbb7902652b5a512f67e2ee0813571e9d2372.1516997103.git.jan.kundrat@cesnet.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: clabbe.montjoie@gmail.com, viresh.kumar@linaro.org,
-        linux-pwm@vger.kernel.org, thierry.reding@gmail.com,
-        b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        christophe.leroy@c-s.fr, seanpaul@chromium.org,
-        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-To: Ulf Magnusson <ulfalizer@gmail.com>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org
-Return-path: <linux-pwm-owner@vger.kernel.org>
-In-Reply-To: <7f2bebe1-2931-7ec9-ef9f-0d3e6dda6c0b@gmail.com>
-Content-Language: en-US
-Sender: linux-pwm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>,
+        Sebastian Reichel <sebastian.reichel-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+To: =?UTF-8?B?SmFuIEt1bmRyw6F0?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <de8fbb7902652b5a512f67e2ee0813571e9d2372.1516997103.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Thu, Jan 25, 2018 at 6:29 PM, Jan Kundr=C3=A1t <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org> w=
+rote:
 
+> The SPI version of this chip allows several devices to be present on the
+> same SPI bus via a local address. If this is in action and if the kernel
+> has debugfs, however, the code attempts to create duplicate entries for
+> the regmap's debugfs:
+>
+>   mcp23s08 spi1.1: Failed to create debugfs directory
+>
+> This patch simply assigns a local name matching the device logical
+> address to the `struct regmap_config`.
+>
+> No changes are needed for MCP23S18 because that device does not support
+> any logical addressing. Similarly, I2C devices do not need any action,
+> either, because they are already different in their I2C address.
+>
+> A similar problem is present for the pinctrl debugfs instance, but that
+> one is not addressed by this patch.
+>
+> Signed-off-by: Jan Kundr=C3=A1t <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 
-On 02/07/2018 09:58 AM, Matthias Brugger wrote:
-> 
-> 
-> On 02/06/2018 11:55 PM, Ulf Magnusson wrote:
->> The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
->> support for AVR32 architecture").
->>
->> Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
->> ---
-> 
-> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-> 
+This looks good and straight-forward.
 
-Sigh, that was too fast, see comment below.
+Patch applied for v4.17.
 
->>  drivers/spi/Kconfig | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
->> index 603783976b81..c1e455d46c7f 100644
->> --- a/drivers/spi/Kconfig
->> +++ b/drivers/spi/Kconfig
->> @@ -72,7 +72,7 @@ config SPI_ARMADA_3700
->>  config SPI_ATMEL
->>  	tristate "Atmel SPI Controller"
->>  	depends on HAS_DMA
->> -	depends on (ARCH_AT91 || AVR32 || COMPILE_TEST)
->> +	depends on (ARCH_AT91 || COMPILE_TEST)
->>  	help
->>  	  This selects a driver for the Atmel SPI Controller, present on
->>  	  many AT32 (AVR32) and AT91 (ARM) chips.
+Hope it doesn't clash with Phil et al's parallel developments.
 
-AVR32 is no longer supported, please update the description as well.
-
-Thanks,
-Matthias
+Yours,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

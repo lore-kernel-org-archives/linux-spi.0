@@ -1,71 +1,59 @@
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Subject: Re: [PATCH] spi: bcm2835aux: use 64-bit arithmetic instead of 32-bit
-Date: Thu, 8 Feb 2018 09:54:38 +0000
-Message-ID: <CAKv+Gu9hmxLSS0ekr8av-ADt3OQjBV=Bt-hRq_-SzWaGODs4SQ@mail.gmail.com>
-References: <20180207160002.GA9292@embeddedgus>
+From: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: [PATCH v2] spi: kconfig: Remove AVR32 dep. from SPI_ATMEL
+Date: Thu, 8 Feb 2018 17:33:51 +0100
+Message-ID: <97250c63-cb2b-b1e8-63ac-59b9c749fd52@gmail.com>
+References: <20180206120825.GF5681@sirena.org.uk>
+ <20180206225519.20248-1-ulfalizer@gmail.com>
+ <7f2bebe1-2931-7ec9-ef9f-0d3e6dda6c0b@gmail.com>
+ <a8d2076b-6863-6ff1-5442-0587ad973766@gmail.com>
+ <20180208024414.jjcxvd2q4o5rifgh@huvuddator>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Ray Jui <rjui@broadcom.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
- Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-rpi-kernel@lists.infradead.org,
- "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180207160002.GA9292@embeddedgus>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+        clabbe.montjoie@gmail.com, viresh.kumar@linaro.org,
+        linux-pwm@vger.kernel.org, thierry.reding@gmail.com,
+        b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        christophe.leroy@c-s.fr, seanpaul@chromium.org,
+        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+To: Ulf Magnusson <ulfalizer@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180208024414.jjcxvd2q4o5rifgh@huvuddator>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 7 February 2018 at 16:00, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
-> Add suffix ULL to constant 9 in order to give the compiler complete
-> information about the proper arithmetic to use. Notice that this
-> constant is used in a context that expects an expression of type
-> unsigned long long (64 bits, unsigned).
->
-> The expression tfr->len * 9 * 1000000 is currently being evaluated
-> using 32-bit arithmetic.
->
-> Addresses-Coverity-ID: 1339619
 
-What does this number mean? If it is an index into some internal
-database, please remove it.
 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+On 02/08/2018 03:44 AM, Ulf Magnusson wrote:
+> The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
+> support for AVR32 architecture").
+
+You forgot the Signed-off-by tag.
+
 > ---
->  drivers/spi/spi-bcm2835aux.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> index 7428091..a768c23 100644
-> --- a/drivers/spi/spi-bcm2835aux.c
-> +++ b/drivers/spi/spi-bcm2835aux.c
-> @@ -363,7 +363,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
->          * chunk getting transferred - in our case the chunk size
->          * is 3 bytes, so we approximate this by 9 bits/byte
->          */
-> -       xfer_time_us = tfr->len * 9 * 1000000;
-> +       xfer_time_us = tfr->len * 9ULL * 1000000;
->         do_div(xfer_time_us, spi_used_hz);
->
->         /* run in polling mode for short transfers */
-> --
-> 2.7.4
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> Changes in v2:
+> Remove the AVR32 reference from the help text too.
+> 
+>  drivers/spi/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 603783976b81..6fb0347a24f2 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -72,10 +72,10 @@ config SPI_ARMADA_3700
+>  config SPI_ATMEL
+>  	tristate "Atmel SPI Controller"
+>  	depends on HAS_DMA
+> -	depends on (ARCH_AT91 || AVR32 || COMPILE_TEST)
+> +	depends on (ARCH_AT91 || COMPILE_TEST)
+>  	help
+>  	  This selects a driver for the Atmel SPI Controller, present on
+> -	  many AT32 (AVR32) and AT91 (ARM) chips.
+> +	  many AT91 (ARM) chips.
+>  
+>  config SPI_AU1550
+>  	tristate "Au1550/Au1200/Au1300 SPI Controller"
+> 

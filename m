@@ -1,31 +1,35 @@
-From: Eric Anholt <eric@anholt.net>
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Subject: Re: [PATCH] spi: bcm2835aux: use 64-bit arithmetic instead of 32-bit
-Date: Thu, 08 Feb 2018 08:22:54 +0000
-Message-ID: <87inb7c2ld.fsf@anholt.net>
+Date: Thu, 8 Feb 2018 09:54:38 +0000
+Message-ID: <CAKv+Gu9hmxLSS0ekr8av-ADt3OQjBV=Bt-hRq_-SzWaGODs4SQ@mail.gmail.com>
 References: <20180207160002.GA9292@embeddedgus>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha512; protocol="application/pgp-signature"
-Cc: linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Mark Brown <broonie@kernel.org>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Stefan Wahren <stefan.wahren@i2se.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
+ Ray Jui <rjui@broadcom.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ linux-rpi-kernel@lists.infradead.org,
+ "Gustavo A. R. Silva" <garsilva@embeddedor.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20180207160002.GA9292@embeddedgus>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
-
+On 7 February 2018 at 16:00, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
 > Add suffix ULL to constant 9 in order to give the compiler complete
 > information about the proper arithmetic to use. Notice that this
 > constant is used in a context that expects an expression of type
@@ -35,31 +39,33 @@ Content-Type: text/plain
 > using 32-bit arithmetic.
 >
 > Addresses-Coverity-ID: 1339619
+
+What does this number mean? If it is an index into some internal
+database, please remove it.
+
 > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-
-The effect looks like it would be that we would have chosen polling mode
-instead of waiting for interrupts for some transfers >477 seconds.
-Seems like a good fix for an unlikely bug.
-
-Reviewed-by: Eric Anholt <eric@anholt.net>
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlp8CN8ACgkQtdYpNtH8
-nuhFJg/+If8zqN025T35hzY8SlSSyWxwWL0VFvyljQaDUkwMYkEvcgdpAMF7NX+N
-86SO2VtTAmxDc/bFQCHhdMrU65LTpsuFE4Vx8KP0MAYtw7jZF+caMYp+n7xpTG5U
-2+3o6GyOpXX5A4iKPc2J0yw70YsRmah+s/mpZPH/EcSh89tmZdEcEdwSXAGjgND2
-Dn/XEuUXuLB8AozI1feyMyM1c8pzq04PDiu6Kx8hqSB5h0UtiemnrmPL12CLvypa
-l1lEyArkAmd8URtMEr6fWXZxHq2ikst8BFk9QGvtsp3UeePDgbcRA0hmJh+rsLJM
-0ATE8Grcb6Do/NC6NDQw/seSHjvR90RxZ98TEGVFCTl4+11RUU8YhCGUOBe3+9SB
-VBSMEsd3vk1tPnauM+qkLic2gjjdM9Qbeh09pzMxDL6svMti4wVsbIz4zDiRL0/v
-7zDWpCXwBH0QJlNXJWPmZ0A5KppoloYPuPwg9YVm7gb2SnL21tWCoy5tP0SsFi3A
-w7yd4XDbsqGJwB0dh6qiWM20fGaqqz6OPUB1KdQwNdPk0h44z8KAKJKugwisfGy2
-j06VhvLK+iEGR/4d5UKZAWgN9KRIZtYO8NZDLuNQQQlExirMsOTMSsg/wZl1ZN+p
-qep7mpfKkh2vaCr3y+FXNE2AzrQ1KiN6Qf8zCH2PRxLPuJIuh6M=
-=n2nX
------END PGP SIGNATURE-----
---=-=-=--
+> ---
+>  drivers/spi/spi-bcm2835aux.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+> index 7428091..a768c23 100644
+> --- a/drivers/spi/spi-bcm2835aux.c
+> +++ b/drivers/spi/spi-bcm2835aux.c
+> @@ -363,7 +363,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+>          * chunk getting transferred - in our case the chunk size
+>          * is 3 bytes, so we approximate this by 9 bits/byte
+>          */
+> -       xfer_time_us = tfr->len * 9 * 1000000;
+> +       xfer_time_us = tfr->len * 9ULL * 1000000;
+>         do_div(xfer_time_us, spi_used_hz);
+>
+>         /* run in polling mode for short transfers */
+> --
+> 2.7.4
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

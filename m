@@ -1,49 +1,57 @@
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] spi: bcm2835aux: use 64-bit arithmetic instead of 32-bit
-Date: Wed, 7 Feb 2018 10:00:02 -0600
-Message-ID: <20180207160002.GA9292@embeddedgus>
+From: Ulf Magnusson <ulfalizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: kconfig: Remove AVR32 dep. from SPI_ATMEL
+Date: Thu, 8 Feb 2018 03:44:14 +0100
+Message-ID: <20180208024414.jjcxvd2q4o5rifgh@huvuddator>
+References: <20180206120825.GF5681@sirena.org.uk>
+ <20180206225519.20248-1-ulfalizer@gmail.com>
+ <7f2bebe1-2931-7ec9-ef9f-0d3e6dda6c0b@gmail.com>
+ <a8d2076b-6863-6ff1-5442-0587ad973766@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <garsilva@embeddedor.com>
-To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        clabbe.montjoie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, daniel.vetter-/w4YWyX8dFk@public.gmane.org,
+        christophe.leroy-GgN8y9CXRhA@public.gmane.org, seanpaul-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
+        linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <a8d2076b-6863-6ff1-5442-0587ad973766-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add suffix ULL to constant 9 in order to give the compiler complete
-information about the proper arithmetic to use. Notice that this
-constant is used in a context that expects an expression of type
-unsigned long long (64 bits, unsigned).
-
-The expression tfr->len * 9 * 1000000 is currently being evaluated
-using 32-bit arithmetic.
-
-Addresses-Coverity-ID: 1339619
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
+support for AVR32 architecture").
 ---
- drivers/spi/spi-bcm2835aux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+Remove the AVR32 reference from the help text too.
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 7428091..a768c23 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -363,7 +363,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
- 	 * chunk getting transferred - in our case the chunk size
- 	 * is 3 bytes, so we approximate this by 9 bits/byte
- 	 */
--	xfer_time_us = tfr->len * 9 * 1000000;
-+	xfer_time_us = tfr->len * 9ULL * 1000000;
- 	do_div(xfer_time_us, spi_used_hz);
+ drivers/spi/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 603783976b81..6fb0347a24f2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -72,10 +72,10 @@ config SPI_ARMADA_3700
+ config SPI_ATMEL
+ 	tristate "Atmel SPI Controller"
+ 	depends on HAS_DMA
+-	depends on (ARCH_AT91 || AVR32 || COMPILE_TEST)
++	depends on (ARCH_AT91 || COMPILE_TEST)
+ 	help
+ 	  This selects a driver for the Atmel SPI Controller, present on
+-	  many AT32 (AVR32) and AT91 (ARM) chips.
++	  many AT91 (ARM) chips.
  
- 	/* run in polling mode for short transfers */
+ config SPI_AU1550
+ 	tristate "Au1550/Au1200/Au1300 SPI Controller"
 -- 
-2.7.4
+2.14.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

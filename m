@@ -1,11 +1,10 @@
 From: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
- memory controllers
-Date: Sun, 11 Feb 2018 17:00:19 +0100
-Message-ID: <20180211170019.7ebfd39c@bbrezillon>
+Subject: Re: [RFC PATCH 4/6] spi: ti-qspi: Implement the spi_mem interface
+Date: Sun, 11 Feb 2018 18:18:19 +0100
+Message-ID: <20180211181819.31513336@bbrezillon>
 References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
-        <20180205232120.5851-2-boris.brezillon@bootlin.com>
-        <20180209135205.6872203c@xps13>
+        <20180205232120.5851-5-boris.brezillon@bootlin.com>
+        <20180211161706.31d0bdc8@xps13>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -25,201 +24,205 @@ Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
         Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 To: Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180209135205.6872203c@xps13>
+In-Reply-To: <20180211161706.31d0bdc8@xps13>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Miquel,
-
-On Fri, 9 Feb 2018 13:52:05 +0100
+On Sun, 11 Feb 2018 16:17:06 +0100
 Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org> wrote:
 
-> > +/**
-> > + * spi_controller_dma_unmap_mem_op_data() - DMA-unmap the buffer attached to a
-> > + *					    memory operation
-> > + * @ctlr: the SPI controller requesting this dma_unmap()
-> > + * @op: the memory operation containing the buffer to unmap
-> > + * @sgt: a pointer to an sg_table previously initialized by
-> > + *	 spi_controller_dma_map_mem_op_data()
-> > + *
-> > + * Some controllers might want to do DMA on the data buffer embedded in @op.
-> > + * This helper prepares things so that the CPU can access the
-> > + * op->data.buf.{in,out} buffer again.
-> > + *
-> > + * This function is not intended to be called from spi drivers. Only SPI  
+> Hi Boris,
 > 
-> s/spi/SPI/
+> On Tue,  6 Feb 2018 00:21:18 +0100, Boris Brezillon
+> <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org> wrote:
 > 
-> > + * controller drivers should use it.
-> > + *
-> > + * This function should be called after the DMA operation has finished an is  
-> 
-> s/an/and/
-
-Will fix both.
-
-> 
-> > + * only valid if the previous spi_controller_dma_map_mem_op_data() has returned
-> > + * 0.
-> > + *
-> > + * Return: 0 in case of success, a negative error code otherwise.
-> > + */
-> > +void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
-> > +					  const struct spi_mem_op *op,
-> > +					  struct sg_table *sgt)
+> > From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > 
+> > The spi_mem interface is meant to replace the spi_flash_read() one.
+> > Implement the ->exec_op() method so that we can smoothly get rid of the
+> > old interface.
+> > 
+> > Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-ti-qspi.c | 85 +++++++++++++++++++++++++++++++++++++++--------
+> >  1 file changed, 72 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> > index c24d9b45a27c..40cac3ef6cc9 100644
+> > --- a/drivers/spi/spi-ti-qspi.c
+> > +++ b/drivers/spi/spi-ti-qspi.c
+> > @@ -434,12 +434,10 @@ static int ti_qspi_dma_xfer(struct ti_qspi *qspi, dma_addr_t dma_dst,
+> >  	return 0;
+> >  }
+> >  
+> > -static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi,
+> > -				     struct spi_flash_read_message *msg)
+> > +static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi, loff_t offs,
+> > +				     void *to, size_t readsize)
+> >  {
+> > -	size_t readsize = msg->len;
+> > -	void *to = msg->buf;
+> > -	dma_addr_t dma_src = qspi->mmap_phys_base + msg->from;
+> > +	dma_addr_t dma_src = qspi->mmap_phys_base + offs;
+> >  	int ret = 0;
+> >  
+> >  	/*
+> > @@ -507,13 +505,14 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+> >  	qspi->mmap_enabled = false;
+> >  }
+> >  
+> > -static void ti_qspi_setup_mmap_read(struct spi_device *spi,
+> > -				    struct spi_flash_read_message *msg)
+> > +static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
+> > +				    u8 data_nbits, u8 addr_width,
+> > +				    u8 dummy_bytes)
+> >  {
+> >  	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
+> > -	u32 memval = msg->read_opcode;
+> > +	u32 memval = opcode;
+> >  
+> > -	switch (msg->data_nbits) {
+> > +	switch (data_nbits) {
+> >  	case SPI_NBITS_QUAD:
+> >  		memval |= QSPI_SETUP_RD_QUAD;
+> >  		break;
+> > @@ -524,8 +523,8 @@ static void ti_qspi_setup_mmap_read(struct spi_device *spi,
+> >  		memval |= QSPI_SETUP_RD_NORMAL;
+> >  		break;
+> >  	}
+> > -	memval |= ((msg->addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
+> > -		   msg->dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
+> > +	memval |= ((addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
+> > +		   dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
+> >  	ti_qspi_write(qspi, memval,
+> >  		      QSPI_SPI_SETUP_REG(spi->chip_select));
+> >  }
+> > @@ -546,13 +545,15 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
+> >  
+> >  	if (!qspi->mmap_enabled)
+> >  		ti_qspi_enable_memory_map(spi);
+> > -	ti_qspi_setup_mmap_read(spi, msg);
+> > +	ti_qspi_setup_mmap_read(spi, msg->read_opcode, msg->data_nbits,
+> > +				msg->addr_width, msg->dummy_bytes);
+> >  
+> >  	if (qspi->rx_chan) {
+> >  		if (msg->cur_msg_mapped)
+> >  			ret = ti_qspi_dma_xfer_sg(qspi, msg->rx_sg, msg->from);
+> >  		else
+> > -			ret = ti_qspi_dma_bounce_buffer(qspi, msg);
+> > +			ret = ti_qspi_dma_bounce_buffer(qspi, msg->from,
+> > +							msg->buf, msg->len);
+> >  		if (ret)
+> >  			goto err_unlock;
+> >  	} else {
+> > @@ -566,6 +567,62 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
+> >  	return ret;
+> >  }
+> >  
+> > +static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+> > +			       const struct spi_mem_op *op)
 > > +{
-> > +	struct device *dmadev;
+> > +	struct ti_qspi *qspi = spi_master_get_devdata(mem->spi->master);
+> > +	int i, ret = 0;
+> > +	u32 from = 0;
 > > +
-> > +	if (!op->data.nbytes)
-> > +		return;
-> > +
-> > +	if (op->data.dir == SPI_MEM_DATA_OUT)
-> > +		dmadev = ctlr->dma_tx ?
-> > +			 ctlr->dma_tx->device->dev : ctlr->dev.parent;
-> > +	else
-> > +		dmadev = ctlr->dma_rx ?
-> > +			 ctlr->dma_rx->device->dev : ctlr->dev.parent;
-> > +
-> > +	spi_unmap_buf(ctlr, dmadev, sgt,
-> > +		      op->data.dir == SPI_MEM_DATA_IN ?
-> > +		      DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> > +}
-> > +EXPORT_SYMBOL_GPL(spi_controller_dma_unmap_mem_op_data);
-> > +
-> > +static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
-> > +{
-> > +	u32 mode = mem->spi->mode;
-> > +
-> > +	switch (buswidth) {
-> > +	case 1:
-> > +		return 0;
-> > +
-> > +	case 2:
-> > +		if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
-> > +		    (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))
-> > +			return 0;
-> > +
-> > +		break;
-> > +
-> > +	case 4:
-> > +		if ((tx && (mode & SPI_TX_QUAD)) ||
-> > +		    (!tx && (mode & SPI_RX_QUAD)))
-> > +			return 0;
-> > +
-> > +		break;
-> > +
-> > +	default:
-> > +		break;
-> > +	}
-> > +
-> > +	return -ENOTSUPP;
-> > +}
-> > +
-> > +/**
-> > + * spi_mem_supports_op() - Check if a memory device and the controller it is
-> > + *			   connected to support a specific memory operation
-> > + * @mem: the SPI memory
-> > + * @op: the memory operation to check
-> > + *
-> > + * Some controllers are only supporting Single or Dual IOs, others might only
-> > + * support specific opcodes, or it can even be that the controller and device
-> > + * both support Quad IOs but the hardware prevents you from using it because
-> > + * only 2 IO lines are connected.
-> > + *
-> > + * This function checks whether a specific operation is supported.
-> > + *
-> > + * Return: true if @op is supported, false otherwise.
-> > + */
-> > +bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> > +{
-> > +	struct spi_controller *ctlr = mem->spi->controller;
-> > +
-> > +	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->addr.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->addr.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->dummy.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->data.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->data.buswidth,
-> > +				   op->data.dir == SPI_MEM_DATA_IN ?
-> > +				   false : true))  
-> 
-> Why not just op->data.dir != SPI_MEM_DATA_IN or even better ==
-> SPI_MEM_DATA_OUT if it exists?
-
-Indeed, I'll use op->data.dir == SPI_MEM_DATA_OUT.
-
-> 
-> > +		return false;
-> > +
-> > +	if (ctlr->mem_ops)
-> > +		return ctlr->mem_ops->supports_op(mem, op);
-> > +
-> > +	return true;
-> > +}
-> > +EXPORT_SYMBOL_GPL(spi_mem_supports_op);
-> > +
-> > +/**
-> > + * spi_mem_exec_op() - Execute a memory operation
-> > + * @mem: the SPI memory
-> > + * @op: the memory operation to execute
-> > + *
-> > + * Executes a memory operation.
-> > + *
-> > + * This function first checks that @op is supported and then tries to execute
-> > + * it.
-> > + *
-> > + * Return: 0 in case of success, a negative error code otherwise.
-> > + */
-> > +int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> > +{
-> > +	unsigned int tmpbufsize, xferpos = 0, totalxferlen = 0;
-> > +	struct spi_controller *ctlr = mem->spi->controller;
-> > +	struct spi_transfer xfers[4] = { };
-> > +	struct spi_message msg;
-> > +	u8 *tmpbuf;
-> > +	int ret;
-> > +
-> > +	if (!spi_mem_supports_op(mem, op))
+> > +	/* Only optimize read path. */
+> > +	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
+> > +	    !op->addr.nbytes || op->addr.nbytes > 4)
 > > +		return -ENOTSUPP;
 > > +
-> > +	if (ctlr->mem_ops) {
-> > +		if (ctlr->auto_runtime_pm) {
-> > +			ret = pm_runtime_get_sync(ctlr->dev.parent);
-> > +			if (ret < 0) {
-> > +				dev_err(&ctlr->dev,
-> > +					"Failed to power device: %d\n",
-> > +					ret);
-> > +				return ret;
-> > +			}
-> > +		}
+> > +	for (i = 0; i < op->addr.nbytes; i++) {
+> > +		from <<= 8;
+> > +		from |= op->addr.buf[i];
+> > +	}
 > > +
-> > +		mutex_lock(&ctlr->bus_lock_mutex);
-> > +		mutex_lock(&ctlr->io_mutex);
-> > +		ret = ctlr->mem_ops->exec_op(mem, op);
-> > +		mutex_unlock(&ctlr->io_mutex);
-> > +		mutex_unlock(&ctlr->bus_lock_mutex);  
+> > +	/* Address exceeds MMIO window size, fall back to regular mode. */  
 > 
-> Is not this a bit dangerous? I guess that no one should release the bus
-> lock without having already released the IO lock but maybe this should
-> be clearly mentioned in a comment in the original structure definition?
+> I don't understand how do you fall back to regular mode?
 
-It's not something new, spi_flash_read() was doing the same [1]. This
-being said, if Mark agrees, I can add a comment in the spi_controller
-struct def stating that ->bus_lock_mutex should always be acquired
-before ->io_mutex.
+If you look at spi_mem_exec_op() you'll see that if the controller
+->exec_op() returns -ENOTSUPP, the function will try to execute the
+operation using the regular spi_sync() API. I'll try to make it clearer
+in my next iteration.
 
-Thanks for your review.
+> Moreover if the
+> purpose of adding this function is to remove spi_flash_read().
 
-Boris
+Sorry, I don't get that one. Yes, the spi_mem_ops interface is here to
+replace the ->spi_flash_xx() one, and that's exactly what I'm doing
+here: porting the existing implementation to the new interface, keeping
+the exact same limitations (only read path is optimized, and the request
+has to fall in the iomem range mapped by the driver).
 
-[1]http://elixir.free-electrons.com/linux/v4.15.2/source/drivers/spi/spi.c#L3045
+> 
+> > +	if (from > 0x4000000)
+
+Oops! Looks like I forgot to update the code to store the qspi_mmap
+resource size in ti_qspi struct and use it here to detect whether
+mmap access is allowed or not. Will fix that in v2.
+
+> > +		return -ENOTSUPP;
+> > +
+> > +	mutex_lock(&qspi->list_lock);
+> > +
+> > +	if (!qspi->mmap_enabled)
+> > +		ti_qspi_enable_memory_map(mem->spi);
+> > +	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
+> > +				op->addr.nbytes, op->dummy.nbytes);
+> > +
+> > +	if (qspi->rx_chan) {
+> > +		struct sg_table sgt;
+> > +
+> > +		if (!virt_addr_valid(op->data.buf.in) &&
+> > +		    !spi_controller_dma_map_mem_op_data(mem->spi->master, op,
+> > +							&sgt)) {
+> > +			ret = ti_qspi_dma_xfer_sg(qspi, sgt, from);
+> > +			spi_controller_dma_unmap_mem_op_data(mem->spi->master,
+> > +							     op, &sgt);
+> > +		} else {
+> > +			ret = ti_qspi_dma_bounce_buffer(qspi, from,
+> > +							op->data.buf.in,
+> > +							op->data.nbytes);
+> > +		}
+> > +	} else {
+> > +		memcpy_fromio(op->data.buf.in, qspi->mmap_base + from,
+> > +			      op->data.nbytes);
+> > +	}
+> > +
+> > +	mutex_unlock(&qspi->list_lock);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
+> > +	.exec_op = ti_qspi_exec_mem_op,
+> > +};
+> > +
+> >  static int ti_qspi_start_transfer_one(struct spi_master *master,
+> >  		struct spi_message *m)
+> >  {
+> > @@ -673,6 +730,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+> >  	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
+> >  				     SPI_BPW_MASK(8);
+> >  	master->spi_flash_read = ti_qspi_spi_flash_read;
+> > +	master->mem_ops = &ti_qspi_mem_ops;
+> >  
+> >  	if (!of_property_read_u32(np, "num-cs", &num_cs))
+> >  		master->num_chipselect = num_cs;
+> > @@ -785,6 +843,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+> >  				 PTR_ERR(qspi->mmap_base));
+> >  			qspi->mmap_base = NULL;
+> >  			master->spi_flash_read = NULL;
+> > +			master->mem_ops = NULL;
+> >  		}
+> >  	}
+> >  	qspi->mmap_enabled = false;  
+> 
+> 
+> 
+
+
+
 -- 
 Boris Brezillon, Bootlin (formerly Free Electrons)
 Embedded Linux and Kernel engineering

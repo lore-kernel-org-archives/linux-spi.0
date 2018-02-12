@@ -1,9 +1,10 @@
 From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RFC PATCH 5/6] mtd: spi-nor: Use the spi_mem_xx() API
-Date: Mon, 12 Feb 2018 17:14:21 +0530
-Message-ID: <933bd372-8b75-183f-0b03-563cabbbcc68@ti.com>
+Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
+ memory controllers
+Date: Mon, 12 Feb 2018 17:20:46 +0530
+Message-ID: <40a44152-e62c-d57e-7646-7699301c29cc@ti.com>
 References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
- <20180205232120.5851-6-boris.brezillon@bootlin.com>
+ <20180205232120.5851-2-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -22,49 +23,28 @@ To: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
         <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180205232120.5851-6-boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <20180205232120.5851-2-boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
+Hi,
 
 On Tuesday 06 February 2018 04:51 AM, Boris Brezillon wrote:
 > From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 > 
-> The spi_mem_xxx() API has been introduced to replace the
-> spi_flash_read() one. Make use of it so we can get rid of
-> spi_flash_read().
+> Some controllers are exposing high-level interfaces to access various
+> kind of SPI memories. Unfortunately they do not fit in the current
+> spi_controller model and usually have drivers placed in
+> drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
+> memories in general.
 > 
-> Note that using spi_mem_xx() also simplifies the code because this API
-> takes care of using the regular spi_sync() interface when the optimized
-> ->mem_ops interface is not implemented by the controller.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> ---
-[...]
->  /*
-> @@ -138,92 +121,42 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
->  			   u_char *buf)
->  {
->  	struct m25p *flash = nor->priv;
-> -	struct spi_device *spi = flash->spi;
-> -	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
-> -	struct spi_transfer t[3];
-> -	struct spi_message m;
-> -	unsigned int dummy = nor->read_dummy;
-> -	ssize_t ret;
-> -	int cmd_sz;
-> +	u8 addrs[4];
-> +	struct spi_mem_op op =
-> +			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
-> +				   SPI_MEM_OP_ADDRS(nor->addr_width, addrs, 1),
-> +				   SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
-> +				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
+> This is an attempt at defining a SPI memory interface which works for
+> all kinds of SPI memories (NORs, NANDs, SRAMs).
 
-					^^^^ SPI_MEM_OP_DATA_IN
+Wouldn't it be better if spi_mem* implementations were in separate file?
+drivers/spi/spi.c is 3.5K+ lines and is bit difficult to follow.
 
-[...]
 
 -- 
 Regards

@@ -1,108 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Move SSP idle waiting to cs_deassert()" to the spi tree
-Date: Mon, 12 Feb 2018 12:10:21 +0000
-Message-ID: <E1elCw9-0007cx-Q6@debutante>
-References: <20180209143107.16671-1-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
+ memory controllers
+Date: Mon, 12 Feb 2018 13:28:34 +0100
+Message-ID: <20180212132834.10781446@bbrezillon>
+References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
+        <20180205232120.5851-2-boris.brezillon@bootlin.com>
+        <40a44152-e62c-d57e-7646-7699301c29cc@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
+        Yogesh Gaur <yogeshnarayan.gaur-3arQi8VN3Tc@public.gmane.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180209143107.16671-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <40a44152-e62c-d57e-7646-7699301c29cc-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Mon, 12 Feb 2018 17:20:46 +0530
+Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
 
-   spi: pxa2xx: Move SSP idle waiting to cs_deassert()
+> Hi,
+> 
+> On Tuesday 06 February 2018 04:51 AM, Boris Brezillon wrote:
+> > From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > 
+> > Some controllers are exposing high-level interfaces to access various
+> > kind of SPI memories. Unfortunately they do not fit in the current
+> > spi_controller model and usually have drivers placed in
+> > drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
+> > memories in general.
+> > 
+> > This is an attempt at defining a SPI memory interface which works for
+> > all kinds of SPI memories (NORs, NANDs, SRAMs).  
+> 
+> Wouldn't it be better if spi_mem* implementations were in separate file?
+> drivers/spi/spi.c is 3.5K+ lines and is bit difficult to follow.
 
-has been applied to the spi tree at
+No strong opinion about where the spi_mem code should lie, so if Mark
+agrees I can move it to a different file and possibly make it optional
+with a Kconfig option.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 104e51af79a0dbb80627d4db5e1421dd2a2f590c Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Fri, 9 Feb 2018 16:31:07 +0200
-Subject: [PATCH] spi: pxa2xx: Move SSP idle waiting to cs_deassert()
-
-Move SSP idle waiting before CS deassert from error and end of message
-handling function giveback() to cs_deassert(). This ensures idle waiting
-is done also if there is CS change between transfers.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index b0822d1dba29..31117f9985ea 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -415,10 +415,17 @@ static void cs_deassert(struct driver_data *drv_data)
- {
- 	struct chip_data *chip =
- 		spi_get_ctldata(drv_data->master->cur_msg->spi);
-+	unsigned long timeout;
- 
- 	if (drv_data->ssp_type == CE4100_SSP)
- 		return;
- 
-+	/* Wait until SSP becomes idle before deasserting the CS */
-+	timeout = jiffies + msecs_to_jiffies(10);
-+	while (pxa2xx_spi_read(drv_data, SSSR) & SSSR_BSY &&
-+	       !time_after(jiffies, timeout))
-+		cpu_relax();
-+
- 	if (chip->cs_control) {
- 		chip->cs_control(PXA2XX_CS_DEASSERT);
- 		return;
-@@ -563,7 +570,6 @@ static void giveback(struct driver_data *drv_data)
- {
- 	struct spi_transfer* last_transfer;
- 	struct spi_message *msg;
--	unsigned long timeout;
- 
- 	msg = drv_data->master->cur_msg;
- 	drv_data->cur_transfer = NULL;
-@@ -575,12 +581,6 @@ static void giveback(struct driver_data *drv_data)
- 	if (last_transfer->delay_usecs)
- 		udelay(last_transfer->delay_usecs);
- 
--	/* Wait until SSP becomes idle before deasserting the CS */
--	timeout = jiffies + msecs_to_jiffies(10);
--	while (pxa2xx_spi_read(drv_data, SSSR) & SSSR_BSY &&
--	       !time_after(jiffies, timeout))
--		cpu_relax();
--
- 	/* Drop chip select UNLESS cs_change is true or we are returning
- 	 * a message with an error, or next message is for another chip
- 	 */
 -- 
-2.16.1
-
+Boris Brezillon, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+http://bootlin.com
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

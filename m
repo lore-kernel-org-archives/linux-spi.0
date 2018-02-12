@@ -1,64 +1,75 @@
-From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835aux: use 64-bit arithmetic instead of 32-bit
-Date: Mon, 12 Feb 2018 19:31:46 +0000
-Message-ID: <1518463905.25398.281.camel@impinj.com>
-References: <20180207160002.GA9292@embeddedgus>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: [PATCH] spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
+Date: Mon, 12 Feb 2018 11:38:14 -0800
+Message-ID: <20180212193814.17644-1-tpiepho@impinj.com>
+References: <1518463905.25398.281.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>
-To: "gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        "bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org"
-        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        "stefan.wahren-eS4NqCHxEME@public.gmane.org" <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
-        "f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org" <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-        "rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org" <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        "sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org" <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180207160002.GA9292@embeddedgus>
-Content-Language: en-US
-Content-ID: <86ADEA02724F604596EAF6370778382E-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: "Gustavo A . R . Silva" <garsilva@embeddedor.com>,
+        Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>, Trent Piepho <tpiepho@impinj.com>
+To: linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1518463905.25398.281.camel@impinj.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCAyMDE4LTAyLTA3IGF0IDEwOjAwIC0wNjAwLCBHdXN0YXZvIEEuIFIuIFNpbHZhIHdy
-b3RlOg0KPiBBZGQgc3VmZml4IFVMTCB0byBjb25zdGFudCA5IGluIG9yZGVyIHRvIGdpdmUgdGhl
-IGNvbXBpbGVyIGNvbXBsZXRlDQo+IGluZm9ybWF0aW9uIGFib3V0IHRoZSBwcm9wZXIgYXJpdGht
-ZXRpYyB0byB1c2UuIE5vdGljZSB0aGF0IHRoaXMNCj4gY29uc3RhbnQgaXMgdXNlZCBpbiBhIGNv
-bnRleHQgdGhhdCBleHBlY3RzIGFuIGV4cHJlc3Npb24gb2YgdHlwZQ0KPiB1bnNpZ25lZCBsb25n
-IGxvbmcgKDY0IGJpdHMsIHVuc2lnbmVkKS4NCj4gDQo+IFRoZSBleHByZXNzaW9uIHRmci0+bGVu
-ICogOSAqIDEwMDAwMDAgaXMgY3VycmVudGx5IGJlaW5nIGV2YWx1YXRlZA0KPiB1c2luZyAzMi1i
-aXQgYXJpdGhtZXRpYy4NCj4gDQo+IEFkZHJlc3Nlcy1Db3Zlcml0eS1JRDogMTMzOTYxOQ0KPiBT
-aWduZWQtb2ZmLWJ5OiBHdXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvQGVtYmVkZGVkb3IuY29t
-Pg0KPiAtLS0NCj4gIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMgfCAyICstDQo+ICAxIGZp
-bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4
-MzVhdXguYw0KPiBpbmRleCA3NDI4MDkxLi5hNzY4YzIzIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJz
-L3NwaS9zcGktYmNtMjgzNWF1eC5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4
-LmMNCj4gQEAgLTM2Myw3ICszNjMsNyBAQCBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3RyYW5z
-ZmVyX29uZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLA0KPiAgCSAqIGNodW5rIGdldHRpbmcg
-dHJhbnNmZXJyZWQgLSBpbiBvdXIgY2FzZSB0aGUgY2h1bmsgc2l6ZQ0KPiAgCSAqIGlzIDMgYnl0
-ZXMsIHNvIHdlIGFwcHJveGltYXRlIHRoaXMgYnkgOSBiaXRzL2J5dGUNCj4gIAkgKi8NCj4gLQl4
-ZmVyX3RpbWVfdXMgPSB0ZnItPmxlbiAqIDkgKiAxMDAwMDAwOw0KPiArCXhmZXJfdGltZV91cyA9
-IHRmci0+bGVuICogOVVMTCAqIDEwMDAwMDA7DQo+ICAJZG9fZGl2KHhmZXJfdGltZV91cywgc3Bp
-X3VzZWRfaHopOw0KPiAgDQo+ICAJLyogcnVuIGluIHBvbGxpbmcgbW9kZSBmb3Igc2hvcnQgdHJh
-bnNmZXJzICovDQoJaWYgKHhmZXJfdGltZV91cyA8IEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0xJ
-TUlUX1VTKQ0KDQpJZiBvbmUgbG9va3MgYXQgdGhlIGxvZ2ljIGFzIGEgd2hvbGUuLi4NCg0KdGZy
-LT5sZW4gKiA5VUxMICogMTAwMDAwIC8gc3BpX3VzZWRfaHogPCAzMA0KDQpBIGxpdHRsZSBhbGdl
-YnJhIGNhbiBjaGFuZ2UgdGhhdCBpbnRvOg0KDQp0ZnItPmxlbiA8IHNwaV91c2VkX2h6IC8gMzAw
-MDAwDQoNClNvIHJhdGhlciB0aGFuIGFkZCBtb3JlIDY0LWJpdCBtYXRoLCBpdCBjYW4gYmUgcmVt
-b3ZlZCBlbnRpcmVseS4gIEJvdGgNCnRoZSBsZW5ndGggYW5kIHNwZWVkIGFyZSAzMiBiaXRzIGFu
-ZCB0aGVyZSdzIG5vIG5lZWQgdG8gbXVsdGlwbHkgdGhlbQ0KaW50byBzb21ldGhpbmcgbGFyZ2Vy
-IHRoYW4gbWlnaHQgbmVlZCA2NCBiaXRzLg0K
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+We want to check for xfers that are over 30 microseconds.  Rather than
+find how many µs a xfer will take, instead find how many bytes can be
+transferred in 30 µs.  The latter must be less than 32 bits (since our
+clock speed is limited to 32 bits), while the former involves 64 bit
+quantities and more arithmetic operations.
+
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+---
+ drivers/spi/spi-bcm2835aux.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 7428091d3f5b..1431cb98fe40 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -321,7 +321,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, speed;
+ 	unsigned long spi_used_hz;
+-	unsigned long long xfer_time_us;
+ 
+ 	/* calculate the registers to handle
+ 	 *
+@@ -358,20 +357,21 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	bs->rx_len = tfr->len;
+ 	bs->pending = 0;
+ 
+-	/* calculate the estimated time in us the transfer runs
+-	 * note that there are are 2 idle clocks after each
+-	 * chunk getting transferred - in our case the chunk size
+-	 * is 3 bytes, so we approximate this by 9 bits/byte
++	/* Calculate the estimated time in us the transfer runs.  Note that
++	 * there are are 2 idle clocks cycles after each chunk getting
++	 * transferred - in our case the chunk size is 3 bytes, so we
++	 * approximate this by 9 cycles/byte.  This is used to find the number
++	 * of Hz per byte per polling limit.  E.g., we can transfer 1 byte in
++	 * 30 µs per 300,000 Hz of bus clock.
+ 	 */
+-	xfer_time_us = tfr->len * 9 * 1000000;
+-	do_div(xfer_time_us, spi_used_hz);
+-
++#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_AUX_SPI_POLLING_LIMIT_US)
+ 	/* run in polling mode for short transfers */
+-	if (xfer_time_us < BCM2835_AUX_SPI_POLLING_LIMIT_US)
++	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
+ 		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr);
+ 
+ 	/* run in interrupt mode for all others */
+ 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
++#undef HZ_PER_BYTE
+ }
+ 
+ static int bcm2835aux_spi_prepare_message(struct spi_master *master,
+-- 
+2.14.3

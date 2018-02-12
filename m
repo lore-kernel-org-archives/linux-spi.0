@@ -1,89 +1,63 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCH] spi: bcm2835aux: use 64-bit arithmetic instead of 32-bit
-Date: Mon, 12 Feb 2018 11:14:25 -0800
-Message-ID: <f93d501d-4aaf-9504-aeb0-944dc8797ce3@gmail.com>
+Date: Mon, 12 Feb 2018 19:31:46 +0000
+Message-ID: <1518463905.25398.281.camel@impinj.com>
 References: <20180207160002.GA9292@embeddedgus>
- <CAKv+Gu9hmxLSS0ekr8av-ADt3OQjBV=Bt-hRq_-SzWaGODs4SQ@mail.gmail.com>
- <275feee3-7140-498b-714f-4c88a302d3f6@embeddedor.com>
- <CAKv+Gu9VTkNN-6MCCuQ2jWFyDMeZKNRyPqMpTWB5jvuSw7MWeA@mail.gmail.com>
- <bab99bbb-c84b-3413-e7f8-203c7daad8b3@gmail.com>
- <CAKv+Gu9Mb7Wpzwvr=1WsUs1jXYT16DL2dYBfhSWH0HYZMYM5Nw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "Gustavo A. R. Silva" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-        Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
-        Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ard Biesheuvel <ard.biesheuvel-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>
+To: "gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
+        "bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org"
+        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        "stefan.wahren-eS4NqCHxEME@public.gmane.org" <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
+        "f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org" <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+        "rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org" <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        "sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org" <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAKv+Gu9Mb7Wpzwvr=1WsUs1jXYT16DL2dYBfhSWH0HYZMYM5Nw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20180207160002.GA9292@embeddedgus>
 Content-Language: en-US
+Content-ID: <86ADEA02724F604596EAF6370778382E-+1mpgTUVCH2cE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 02/12/2018 11:11 AM, Ard Biesheuvel wrote:
-> On 12 February 2018 at 19:10, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> On 02/12/2018 10:45 AM, Ard Biesheuvel wrote:
->>> On 12 February 2018 at 18:04, Gustavo A. R. Silva
->>> <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org> wrote:
->>>> Hi Ard,
->>>>
->>>> On 02/08/2018 03:54 AM, Ard Biesheuvel wrote:
->>>>>
->>>>> On 7 February 2018 at 16:00, Gustavo A. R. Silva <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>
->>>>> wrote:
->>>>>>
->>>>>> Add suffix ULL to constant 9 in order to give the compiler complete
->>>>>> information about the proper arithmetic to use. Notice that this
->>>>>> constant is used in a context that expects an expression of type
->>>>>> unsigned long long (64 bits, unsigned).
->>>>>>
->>>>>> The expression tfr->len * 9 * 1000000 is currently being evaluated
->>>>>> using 32-bit arithmetic.
->>>>>>
->>>>>> Addresses-Coverity-ID: 1339619
->>>>>
->>>>>
->>>>> What does this number mean? If it is an index into some internal
->>>>> database, please remove it.
->>>>>
->>>>
->>>> This is a unique Coverity identifier. We want to keep information like
->>>> public Bugzilla IDs and tools like Coverity on the commit message.
->>>>
->>>
->>> Who is 'we' in this case? And how is this id to any benefit of other
->>> people that have been excluded from 'we'?
->>
->> We is probably the greater Linux community here.
->>
->>>
->>> If you add identifiers like this, make sure that they don't only make
->>> sense to the in-crowd. For instance, you could replace this with a
->>> http link to the database entry if you really must.
->>
->> I don't think it is that easy to extract good URLs from the public Linux
->> coverity instance which is why referring to coverity IDs is being done
->> AFAICT.
-> 
-> Ah ok, pardon my ignorance then. I wasn't aware there is a public
-> Linux coverity instance. Got a link?
-
-It requires you to sign up to get notifications and have a dashboard,
-does this link work for you?
-
-https://scan.coverity.com/projects/linux?tab=overview
--- 
-Florian
+T24gV2VkLCAyMDE4LTAyLTA3IGF0IDEwOjAwIC0wNjAwLCBHdXN0YXZvIEEuIFIuIFNpbHZhIHdy
+b3RlOg0KPiBBZGQgc3VmZml4IFVMTCB0byBjb25zdGFudCA5IGluIG9yZGVyIHRvIGdpdmUgdGhl
+IGNvbXBpbGVyIGNvbXBsZXRlDQo+IGluZm9ybWF0aW9uIGFib3V0IHRoZSBwcm9wZXIgYXJpdGht
+ZXRpYyB0byB1c2UuIE5vdGljZSB0aGF0IHRoaXMNCj4gY29uc3RhbnQgaXMgdXNlZCBpbiBhIGNv
+bnRleHQgdGhhdCBleHBlY3RzIGFuIGV4cHJlc3Npb24gb2YgdHlwZQ0KPiB1bnNpZ25lZCBsb25n
+IGxvbmcgKDY0IGJpdHMsIHVuc2lnbmVkKS4NCj4gDQo+IFRoZSBleHByZXNzaW9uIHRmci0+bGVu
+ICogOSAqIDEwMDAwMDAgaXMgY3VycmVudGx5IGJlaW5nIGV2YWx1YXRlZA0KPiB1c2luZyAzMi1i
+aXQgYXJpdGhtZXRpYy4NCj4gDQo+IEFkZHJlc3Nlcy1Db3Zlcml0eS1JRDogMTMzOTYxOQ0KPiBT
+aWduZWQtb2ZmLWJ5OiBHdXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvQGVtYmVkZGVkb3IuY29t
+Pg0KPiAtLS0NCj4gIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMgfCAyICstDQo+ICAxIGZp
+bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4
+MzVhdXguYw0KPiBpbmRleCA3NDI4MDkxLi5hNzY4YzIzIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJz
+L3NwaS9zcGktYmNtMjgzNWF1eC5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4
+LmMNCj4gQEAgLTM2Myw3ICszNjMsNyBAQCBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3RyYW5z
+ZmVyX29uZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLA0KPiAgCSAqIGNodW5rIGdldHRpbmcg
+dHJhbnNmZXJyZWQgLSBpbiBvdXIgY2FzZSB0aGUgY2h1bmsgc2l6ZQ0KPiAgCSAqIGlzIDMgYnl0
+ZXMsIHNvIHdlIGFwcHJveGltYXRlIHRoaXMgYnkgOSBiaXRzL2J5dGUNCj4gIAkgKi8NCj4gLQl4
+ZmVyX3RpbWVfdXMgPSB0ZnItPmxlbiAqIDkgKiAxMDAwMDAwOw0KPiArCXhmZXJfdGltZV91cyA9
+IHRmci0+bGVuICogOVVMTCAqIDEwMDAwMDA7DQo+ICAJZG9fZGl2KHhmZXJfdGltZV91cywgc3Bp
+X3VzZWRfaHopOw0KPiAgDQo+ICAJLyogcnVuIGluIHBvbGxpbmcgbW9kZSBmb3Igc2hvcnQgdHJh
+bnNmZXJzICovDQoJaWYgKHhmZXJfdGltZV91cyA8IEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0xJ
+TUlUX1VTKQ0KDQpJZiBvbmUgbG9va3MgYXQgdGhlIGxvZ2ljIGFzIGEgd2hvbGUuLi4NCg0KdGZy
+LT5sZW4gKiA5VUxMICogMTAwMDAwIC8gc3BpX3VzZWRfaHogPCAzMA0KDQpBIGxpdHRsZSBhbGdl
+YnJhIGNhbiBjaGFuZ2UgdGhhdCBpbnRvOg0KDQp0ZnItPmxlbiA8IHNwaV91c2VkX2h6IC8gMzAw
+MDAwDQoNClNvIHJhdGhlciB0aGFuIGFkZCBtb3JlIDY0LWJpdCBtYXRoLCBpdCBjYW4gYmUgcmVt
+b3ZlZCBlbnRpcmVseS4gIEJvdGgNCnRoZSBsZW5ndGggYW5kIHNwZWVkIGFyZSAzMiBiaXRzIGFu
+ZCB0aGVyZSdzIG5vIG5lZWQgdG8gbXVsdGlwbHkgdGhlbQ0KaW50byBzb21ldGhpbmcgbGFyZ2Vy
+IHRoYW4gbWlnaHQgbmVlZCA2NCBiaXRzLg0K
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

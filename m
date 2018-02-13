@@ -1,139 +1,63 @@
 From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: spi-gpio: Rewrite to use GPIO descriptors
-Date: Tue, 13 Feb 2018 16:17:38 +0200
-Message-ID: <CAHp75VeOf6Zywgn9LWWX1kOwsqw28dhZ5EE+N-0KFX_0m-JxOw@mail.gmail.com>
-References: <20180212124532.25776-1-linus.walleij@linaro.org> <20180212124532.25776-2-linus.walleij@linaro.org>
+Subject: Re: [PATCH 0/3] Convert GPIO SPI to use descriptors only
+Date: Tue, 13 Feb 2018 16:19:19 +0200
+Message-ID: <CAHp75Vc3d+R8TQf5egW2g6FjnAaPcYg7qBNxRb_4ZF77bRnUHQ@mail.gmail.com>
+References: <20180212124532.25776-1-linus.walleij@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-        Sylwester Nawrocki <sylvester.nawrocki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-        Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>,
-        Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>,
-        Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+        "open list:GPIO SUBSYSTEM" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180212124532.25776-2-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20180212124532.25776-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On Mon, Feb 12, 2018 at 2:45 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> This converts the bit-banged GPIO SPI driver to looking up and
-> using GPIO descriptors to get a handle on GPIO lines for SCK,
-> MOSI, MISO and all CS lines.
+> This series now has all prerequisite changes in gpiolib
+> merged upstream so the conversion should be smooth.
 >
-> All existing board files are converted in one go to keep it all
-> consistent. With these conversions I rarely find any interrim
-
-interim
-
-> steps that makes any sense.
+> The boardfile patches have been under review forever now,
+> so the maintainers either think it's OK or do not care.
 >
-> Device tree probing and GPIO handling should work like before
-> also after this patch.
+> I have confirmed clean build on a plethora of platforms
+> using the zeroday build system.
 >
-> For board files, we stop using controller data to pass the GPIO
-> line for chip select, instead we pass this as a GPIO descriptor
-> lookup like everything else.
+> I think we can safely queue this for v4.17.
 >
-> In some s3c24xx machines the names of the SPI devices were set to
-> "spi-gpio" rather than "spi_gpio" which can never have worked, I
-> fixed it working (I guess) as part of this patch set. Sometimes
-> I wonder how this code got upstream in the first place, it
-> obviously is not tested.
+
+I think it makes sense to address my comments, after that FWIW:
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+> Linus Walleij (3):
+>   spi: spi-gpio: Rewrite to use GPIO descriptors
+>   spi: spi-gpio: Delete references to non-GENERIC_BITBANG
+>   spi: spi-gpio: Augment device tree bindings
 >
-> mach-s3c64xx/mach-smartq.c has the same problem and additionally
-> defines the *same* GPIO line for MOSI and MISO which is not going
-> to be accepted by gpiolib. As the lines were number 1,2,2 I assumed
-> it was a typo and use lines 1,2,3. A comment gives awat that line 0
-> is chip select though no actual SPI device is provided for the LCD
-> supposed to be on this bit-banged SPI bus. I left it intact instead
-> of just deleting the bus though.
+>  Documentation/devicetree/bindings/spi/spi-gpio.txt |  24 +-
+>  arch/arm/mach-pxa/cm-x300.c                        |  21 +-
+>  arch/arm/mach-pxa/raumfeld.c                       |  26 +-
+>  arch/arm/mach-s3c24xx/mach-jive.c                  |  55 ++--
+>  arch/arm/mach-s3c24xx/mach-qt2410.c                |  26 +-
+>  arch/arm/mach-s3c64xx/mach-smartq.c                |  22 +-
+>  arch/mips/alchemy/devboards/db1000.c               |  24 +-
+>  arch/mips/jz4740/board-qi_lb60.c                   |  26 +-
+>  drivers/misc/eeprom/digsy_mtc_eeprom.c             |  29 +-
+>  drivers/spi/spi-gpio.c                             | 298 +++++++--------------
+>  include/linux/spi/spi_gpio.h                       |  49 +---
+>  11 files changed, 280 insertions(+), 320 deletions(-)
 >
-> Kill off board file code that try to initialize the SPI lines
-> to the same values that they will later be set by the spi_gpio
-> driver anyways. Given the huge number of weird things in these
-> board files I do not think this code is very tested or put in
-> with much afterthought anyways.
+> --
+> 2.14.3
 >
-> In order to assert that we do not get performance regressions on
-> this crucial bing-banged driver, a ran a script like this dumping the
-> Ilitek ILI9322 regmap 10000 times (it has no caching obviously) on
-> an otherwise idle system in two iterations before and after the
-> patches:
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-> +               { },
 
-As commented earlier to the similar change, terminator would terminate
-even at compile time.
-To achieve that just remove comma.
-
-> +               { },
-
-> +               { },
-
-> +               { },
-
-> +               { },
-
-> +               { },
-
-> +               { },
-
-> +               { },
-
->  #include <linux/gpio.h>
-> +#include <linux/gpio/machine.h>
-
-Do I understand correctly that gpio.h is left due to dependencies in
-other parts of the code (here and in the rest of changed drivers)?
-
-> +               { },
-
->  static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
->  {
->         struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
->
-> +       /* set initial clock line level */
->         if (is_active)
-> +               gpiod_set_value_cansleep(spi_gpio->sck, spi->mode & SPI_CPOL);
-> +
-> +       /* Drive chip select line, if we have one */
-> +       if (spi_gpio->has_cs) {
-> +               struct gpio_desc *cs = spi_gpio->cs_gpios[spi->chip_select];
->
-> +               /* SPI chip selects are normally active-low */
-> +               gpiod_set_value_cansleep(cs, (spi->mode & SPI_CS_HIGH) ? is_active : !is_active);
-
-  bool invert = !(spi->mode & SPI_CS_HIGH);
-
-  gpiod_set_value_cansleep(cs, !!is_active ^ invert);
-
-?
-
-But I guess most used pattern is just explicit conditional
-
-if (spi->mode & SPI_CS_HIGH)
-        gpiod_set_value_cansleep(cs, is_active);
-else
-        gpiod_set_value_cansleep(cs, !is_active);
-
->         }
->  }
-
-> +       spi_gpio->cs_gpios = devm_kzalloc(&pdev->dev,
-> +                               pdata->num_chipselect * sizeof(*spi_gpio->cs_gpios),
-> +                               GFP_KERNEL);
-
-kcalloc
-
-> +       if (!spi_gpio->cs_gpios)
-> +               return -ENOMEM;
 
 -- 
 With Best Regards,

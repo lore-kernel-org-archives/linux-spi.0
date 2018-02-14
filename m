@@ -1,25 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc" to the spi tree
-Date: Wed, 14 Feb 2018 16:28:41 +0000
-Message-ID: <E1elzvF-0005oU-Pj@debutante>
-References: <20180212193814.17644-1-tpiepho@impinj.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "Gustavo A . R . Silva" <garsilva@embeddedor.com>,
-        Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>, linux-spi@vger.kernel.org
-To: Trent Piepho <tpiepho@impinj.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180212193814.17644-1-tpiepho@impinj.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-gpio: Augment device tree bindings" to the spi tree
+Date: Wed, 14 Feb 2018 16:28:44 +0000
+Message-ID: <E1elzvI-0005pZ-U3@debutante>
+References: <20180101133749.29567-4-linus.walleij@linaro.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20180101133749.29567-4-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
+   spi: spi-gpio: Augment device tree bindings
 
 has been applied to the spi tree at
 
@@ -44,67 +39,83 @@ to this mail.
 Thanks,
 Mark
 
->From d704afffe65c8fab424963c1ba4ec4364c2d6a82 Mon Sep 17 00:00:00 2001
-From: Trent Piepho <tpiepho@impinj.com>
-Date: Mon, 12 Feb 2018 11:38:14 -0800
-Subject: [PATCH] spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From 77a060533c0468069d0b4a5d1968a42259763f08 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Date: Mon, 12 Feb 2018 13:45:32 +0100
+Subject: [PATCH] spi: spi-gpio: Augment device tree bindings
 
-We want to check for xfers that are over 30 microseconds.  Rather than
-find how many µs a xfer will take, instead find how many bytes can be
-transferred in 30 µs.  The latter must be less than 32 bits (since our
-clock speed is limited to 32 bits), while the former involves 64 bit
-quantities and more arithmetic operations.
+After we augmented the core to handle "gpio-sck"/"sck-gpios",
+"gpio-mosi"/"mosi-gpios", "gpio-miso"/"miso-gpios" alike,
+deprecate the old binding and put the strict modern and
+recommended binding practice into place as the default for
+GPIO-based SPI.
 
-Signed-off-by: Trent Piepho <tpiepho@impinj.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This reflects the similar change in I2C:
+commit 7d29f509d2cf
+("dt-bindings: i2c: i2c-gpio: Add support for named gpios")
+
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-gpio.txt | 24 ++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 7428091d3f5b..1431cb98fe40 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -321,7 +321,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, speed;
- 	unsigned long spi_used_hz;
--	unsigned long long xfer_time_us;
+diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+index a95603bcf6ff..52db562f17a4 100644
+--- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
++++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+@@ -1,18 +1,30 @@
+ SPI-GPIO devicetree bindings
  
- 	/* calculate the registers to handle
- 	 *
-@@ -358,20 +357,21 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
- 	bs->rx_len = tfr->len;
- 	bs->pending = 0;
++This represents a group of 3-n GPIO lines used for bit-banged SPI on dedicated
++GPIO lines.
++
+ Required properties:
  
--	/* calculate the estimated time in us the transfer runs
--	 * note that there are are 2 idle clocks after each
--	 * chunk getting transferred - in our case the chunk size
--	 * is 3 bytes, so we approximate this by 9 bits/byte
-+	/* Calculate the estimated time in us the transfer runs.  Note that
-+	 * there are are 2 idle clocks cycles after each chunk getting
-+	 * transferred - in our case the chunk size is 3 bytes, so we
-+	 * approximate this by 9 cycles/byte.  This is used to find the number
-+	 * of Hz per byte per polling limit.  E.g., we can transfer 1 byte in
-+	 * 30 µs per 300,000 Hz of bus clock.
- 	 */
--	xfer_time_us = tfr->len * 9 * 1000000;
--	do_div(xfer_time_us, spi_used_hz);
--
-+#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_AUX_SPI_POLLING_LIMIT_US)
- 	/* run in polling mode for short transfers */
--	if (xfer_time_us < BCM2835_AUX_SPI_POLLING_LIMIT_US)
-+	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
- 		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr);
+  - compatible: should be set to "spi-gpio"
+  - #address-cells: should be set to <0x1>
+  - ranges
+- - gpio-sck: GPIO spec for the SCK line to use
+- - gpio-miso: GPIO spec for the MISO line to use
+- - gpio-mosi: GPIO spec for the MOSI line to use
++ - sck-gpios: GPIO spec for the SCK line to use
++ - miso-gpios: GPIO spec for the MISO line to use
++ - mosi-gpios: GPIO spec for the MOSI line to use
+  - cs-gpios: GPIOs to use for chipselect lines.
+              Not needed if num-chipselects = <0>.
+  - num-chipselects: Number of chipselect lines. Should be <0> if a single device
+                     with no chip select is connected.
  
- 	/* run in interrupt mode for all others */
- 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
-+#undef HZ_PER_BYTE
- }
++Deprecated bindings:
++
++These legacy GPIO line bindings can alternatively be used to define the
++GPIO lines used, they should not be used in new device trees.
++
++ - gpio-sck: GPIO spec for the SCK line to use
++ - gpio-miso: GPIO spec for the MISO line to use
++ - gpio-mosi: GPIO spec for the MOSI line to use
++
+ Example:
  
- static int bcm2835aux_spi_prepare_message(struct spi_master *master,
+ 	spi {
+@@ -20,9 +32,9 @@ Example:
+ 		#address-cells = <0x1>;
+ 		ranges;
+ 
+-		gpio-sck = <&gpio 95 0>;
+-		gpio-miso = <&gpio 98 0>;
+-		gpio-mosi = <&gpio 97 0>;
++		sck-gpios = <&gpio 95 0>;
++		miso-gpios = <&gpio 98 0>;
++		mosi-gpios = <&gpio 97 0>;
+ 		cs-gpios = <&gpio 125 0>;
+ 		num-chipselects = <1>;
+ 
 -- 
 2.16.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

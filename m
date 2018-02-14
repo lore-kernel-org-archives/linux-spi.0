@@ -1,60 +1,58 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: spi-gpio: Delete references to
- non-GENERIC_BITBANG
-Date: Wed, 14 Feb 2018 16:01:22 +0000
-Message-ID: <20180214160122.GE12658@sirena.org.uk>
-References: <20180212124532.25776-1-linus.walleij@linaro.org>
- <20180212124532.25776-3-linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
+Date: Wed, 14 Feb 2018 16:04:24 +0000
+Message-ID: <20180214160424.GF12658@sirena.org.uk>
+References: <1518463905.25398.281.camel@impinj.com>
+ <20180212193814.17644-1-tpiepho@impinj.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sfyO1m2EN8ZOtJL6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="QXO0/MSS4VvK6f+D"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        "Gustavo A . R . Silva" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
+        Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+        Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20180212124532.25776-3-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20180212193814.17644-1-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---sfyO1m2EN8ZOtJL6
-Content-Type: text/plain; charset=us-ascii
+--QXO0/MSS4VvK6f+D
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2018 at 01:45:31PM +0100, Linus Walleij wrote:
+On Mon, Feb 12, 2018 at 11:38:14AM -0800, Trent Piepho wrote:
+> We want to check for xfers that are over 30 microseconds.  Rather than
+> find how many =B5s a xfer will take, instead find how many bytes can be
+> transferred in 30 =B5s.  The latter must be less than 32 bits (since our
+> clock speed is limited to 32 bits), while the former involves 64 bit
+> quantities and more arithmetic operations.
 
-> The non-generic bitbang was a feature where a platform could optimize
-> SPI bit-banging by inlining the routines to hammer GPIO lines into
-> the GPIO bitbanging driver as direct register writes using a custom
-> set of GPIO library calls.
+Please don't bury patches in the middle of existing threads, it makes it
+much harder to find them.
 
-> It does not work with multiplatform concepts, violates everything
-> about how GPIO is made generic and is just generally a bad idea,
-> even on legacy system. Also there is no single user in the entire
-> kernel (for good reasons).
-
-It's not expected that users should go upstream and it doesn't seem
-helpful to delete without replacement.  The original idea was to allow
-things like setting multiple GPIOs at once if there were calls for that,
-now that gpiolib has support for that we should at least convert to it
-before removing the hook.
-
---sfyO1m2EN8ZOtJL6
+--QXO0/MSS4VvK6f+D
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqEXVEACgkQJNaLcl1U
-h9B0GQf/SclSl4u89MHim7or/YsyKmVANnwm7Wi33AaeengZLvej110/Qh3eSN/3
-u67oUIhL/am/pORVE46vSQKwUF6mBoBrwqsGZh0Lb+yZVT8ghouY7kdGJRURNKT+
-CeRAJAzC/Akcp+H5Q12IVpJivE+8eB84z7IY1gkxSthUqqNg9Gc1qUTzjYzprMym
-M12rZf3J8EY9ZT7qQpwrBoVPBPDeU4ZZpfc3VnrBiQkyyFrXJ+BxEYloy9v6jn0z
-VQdKVezOZ+IwtRYKm7UTklJPGt6hXLALqvJRpTmmj/oSPmTHkCeTVh5WBuJVlldL
-s5ukK55Tj4Oe8cwkZN86IRUmdctYIg==
-=XOp8
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqEXgcACgkQJNaLcl1U
+h9AOaAf+M3iRgU/R7ovC6LI/9ir/WLDZkKGuAvajlFBuGUihZ+ycSDmOA75Hg/EO
+bV4LJvtMYwXU5Hrpx1p4ACm9LUDY1WmuL0ZKOZbkbBn5d2gvytdioQ3jUE2bAmmb
+1/qh3WCqNl04rLMyO6ZPE+9EjqSzvNTYXPtc9Azxrl8WoZcLtf2A1v9GkG1rbgrW
+UB0HakZw3cRTu7RfbEyPYTMb33PCLiGYRFHTpHjTejDeUe5LbBZpAc5dCLdL6gA0
+/pm9JTtfpkZwIrzDdjktzk9MLnyXS79QwbY3IRPXA3vcqtRn9kX73Omx5QEJmqOk
+jYOcUaId7GtwKPvTsHayOzuEPF8m9w==
+=RJmP
 -----END PGP SIGNATURE-----
 
---sfyO1m2EN8ZOtJL6--
+--QXO0/MSS4VvK6f+D--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

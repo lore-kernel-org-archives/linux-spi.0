@@ -1,58 +1,120 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
-Date: Wed, 14 Feb 2018 16:04:24 +0000
-Message-ID: <20180214160424.GF12658@sirena.org.uk>
-References: <1518463905.25398.281.camel@impinj.com>
- <20180212193814.17644-1-tpiepho@impinj.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [RFC PATCH 4/6] spi: ti-qspi: Implement the spi_mem interface
+Date: Wed, 14 Feb 2018 21:55:10 +0530
+Message-ID: <0944fefa-6ef8-a93a-dad6-660044b8ec8e@ti.com>
+References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
+ <20180205232120.5851-5-boris.brezillon@bootlin.com>
+ <6a9eaaaf-20a6-b332-03d0-9d16e24d0b3d@ti.com>
+ <20180212133158.3032442f@bbrezillon>
+ <67e61203-a2e9-853c-6cda-7226499611c2@ti.com>
+ <20180212170809.3f0b5e20@bbrezillon>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QXO0/MSS4VvK6f+D"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "Gustavo A . R . Silva" <garsilva-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-        Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Trent Piepho <tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
+        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
+        Yogesh Gaur <yogeshnarayan.gaur-3arQi8VN3Tc@public.gmane.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>,
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20180212193814.17644-1-tpiepho-cgc2CodaaHDQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20180212170809.3f0b5e20@bbrezillon>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---QXO0/MSS4VvK6f+D
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2018 at 11:38:14AM -0800, Trent Piepho wrote:
-> We want to check for xfers that are over 30 microseconds.  Rather than
-> find how many =B5s a xfer will take, instead find how many bytes can be
-> transferred in 30 =B5s.  The latter must be less than 32 bits (since our
-> clock speed is limited to 32 bits), while the former involves 64 bit
-> quantities and more arithmetic operations.
+On 12-Feb-18 9:38 PM, Boris Brezillon wrote:
+> On Mon, 12 Feb 2018 21:30:09 +0530
+> Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
+> 
+>> On 12-Feb-18 6:01 PM, Boris Brezillon wrote:
+>>> On Mon, 12 Feb 2018 17:13:55 +0530
+>>> Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
+>>>   
+>>>> On Tuesday 06 February 2018 04:51 AM, Boris Brezillon wrote:  
+>>>>> From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>>>>
+>>>>> The spi_mem interface is meant to replace the spi_flash_read() one.
+>>>>> Implement the ->exec_op() method so that we can smoothly get rid of the
+>>>>> old interface.
+>>>>>
+>>>>> Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>>>> ---
+>>>>>   drivers/spi/spi-ti-qspi.c | 85 +++++++++++++++++++++++++++++++++++++++--------
+>>>>>   1 file changed, 72 insertions(+), 13 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+>>>>> index c24d9b45a27c..40cac3ef6cc9 100644
+>>>>> --- a/drivers/spi/spi-ti-qspi.c
+>>>>> +++ b/drivers/spi/spi-ti-qspi.c    
+>>>>
+>>>> [...]
+>>>>   
+>>>>> +static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
+>>>>> +   .exec_op = ti_qspi_exec_mem_op,    
+>>>>
+>>>>         .supports_op = ti_qspi_supports_mem_op,
+>>>>
+>>>> Its required as per spi_controller_check_ops() in Patch 1/6  
+>>>   
+>>> ->supports_op() is optional, and if it's missing, the core will do the  
+>>> regular QuadSPI/DualSPI/SingleSPI check (see spi_mem_supports_op()
+>>> implementation).   
+>>
+>> You might have overlooked spi_controller_check_ops() from Patch 1/6:
+>> +static int spi_controller_check_ops(struct spi_controller *ctlr)
+>> +{
+>> +	/*
+>> +	 * The controller can implement only the high-level SPI-memory
+>> +	 * operations if it does not support regular SPI transfers.
+>> +	 */
+>> +	if (ctlr->mem_ops) {
+>> +		if (!ctlr->mem_ops->supports_op ||
+>> +		    !ctlr->mem_ops->exec_op)
+>> +			return -EINVAL;
+>> +	} else if (!ctlr->transfer && !ctlr->transfer_one &&
+>> +		   !ctlr->transfer_one_message) {
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>
+>> So if ->supports_op() is not populated by SPI controller driver, then
+>> driver probe fails with -EINVAL. This is what I observed on my TI
+>> hardware when testing this patch series.
+> 
+> Correct. Then I should fix spi_controller_check_ops() to allow empty
+> ctlr->mem_ops->supports_op.
+> 
+>>
+>>> This being said, if you think a custom ->supports_op()
+>>> implementation is needed for this controller I can add one.
+>>>   
+>>
+>> spi_mem_supports_op() should suffice for now if above issue is fixed.
+> 
+> Cool. IIUC, you tested the series on a TI SoC. Does it work as
+> expected? Do you see any perf regressions?
+> 
 
-Please don't bury patches in the middle of existing threads, it makes it
-much harder to find them.
-
---QXO0/MSS4VvK6f+D
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqEXgcACgkQJNaLcl1U
-h9AOaAf+M3iRgU/R7ovC6LI/9ir/WLDZkKGuAvajlFBuGUihZ+ycSDmOA75Hg/EO
-bV4LJvtMYwXU5Hrpx1p4ACm9LUDY1WmuL0ZKOZbkbBn5d2gvytdioQ3jUE2bAmmb
-1/qh3WCqNl04rLMyO6ZPE+9EjqSzvNTYXPtc9Azxrl8WoZcLtf2A1v9GkG1rbgrW
-UB0HakZw3cRTu7RfbEyPYTMb33PCLiGYRFHTpHjTejDeUe5LbBZpAc5dCLdL6gA0
-/pm9JTtfpkZwIrzDdjktzk9MLnyXS79QwbY3IRPXA3vcqtRn9kX73Omx5QEJmqOk
-jYOcUaId7GtwKPvTsHayOzuEPF8m9w==
-=RJmP
------END PGP SIGNATURE-----
-
---QXO0/MSS4VvK6f+D--
+I am planning to collect throughput numbers with this series for TI
+QSPI. I don't think there would be noticeable degradation.
+But, it would be interesting to test for a driver thats now under
+drivers/mtd/spi-nor moved to drivers/spi and see if added overhead of
+m25p80 layer + spi core has any impact.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

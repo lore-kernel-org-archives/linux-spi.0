@@ -1,65 +1,110 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion: Rework GPIO CS handling
-Date: Wed, 14 Feb 2018 16:26:37 +0000
-Message-ID: <20180214162637.GH12658@sirena.org.uk>
-References: <CAMuHMdUaLV522qihJibmTO1NR6NK0DNjMT8soGvLsi=ffGg71A@mail.gmail.com>
- <92369661c99f83e656004288fcc06a510b4b8c58.1517007569.git.jan.kundrat@cesnet.cz>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SdvjNjn6lL3tIsv0"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-To: Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <92369661c99f83e656004288fcc06a510b4b8c58.1517007569.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc" to the spi tree
+Date: Wed, 14 Feb 2018 16:28:41 +0000
+Message-ID: <E1elzvF-0005oU-Pj@debutante>
+References: <20180212193814.17644-1-tpiepho@impinj.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "Gustavo A . R . Silva" <garsilva@embeddedor.com>,
+        Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>, linux-spi@vger.kernel.org
+To: Trent Piepho <tpiepho@impinj.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180212193814.17644-1-tpiepho@impinj.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---SdvjNjn6lL3tIsv0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
 
-On Fri, Jan 26, 2018 at 11:56:10PM +0100, Jan Kundr=E1t wrote:
+has been applied to the spi tree at
 
-> +			if (status) {
-> +				dev_err(&pdev->dev,
-> +					"Can't request GPIO for CS %d\n",
-> +					master->cs_gpios[i]);
-> +				goto out_rel_master;
-> +			}
-> +			if (spi->unused_hw_gpio =3D=3D -1) {
-> +				dev_info(&pdev->dev,
-> +					"Selected unused HW CS#%d "
-> +					"for any GPIO CSes\n", i);
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Don't split log messages over multiple lines, it gets in the way of
-anyone searching for them in the code.  Please send a followup patch
-fixing this.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---SdvjNjn6lL3tIsv0
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqEYzwACgkQJNaLcl1U
-h9AarAf/VTu5T+3t76RxTdhU2LwPOgr7niAanv80+2gNxiFLYXhAm5uI8KxftocH
-EzGhaXEnuIrNGEFsKhv4YNyhjkQsk4hihHuME/fAwBcnAImhz2sIOmSYsmgGHL4S
-yXyLG6DgKeb08hkwCgV8saUyjSLeUjTQIssEVtdgGFo8IME6h7FOmNPnTr7NKQiX
-eD2XfBwUZRpoeo3x4xyLJGpcaZg80DhaCmZc1wzDfe66WXBWuP5N2V9X8YxNRwbL
-f1ZoPoJ+Z4iN9Ee+Dzaj6hyY7k1u2mvVXl+ezaczce+kjw8tVc5z5EBM7ndxrMcM
-sIIWun42XhaoUQ8jYNmvEHvicnI/Nw==
-=YbPa
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---SdvjNjn6lL3tIsv0--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Mark
+
+>From d704afffe65c8fab424963c1ba4ec4364c2d6a82 Mon Sep 17 00:00:00 2001
+From: Trent Piepho <tpiepho@impinj.com>
+Date: Mon, 12 Feb 2018 11:38:14 -0800
+Subject: [PATCH] spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We want to check for xfers that are over 30 microseconds.  Rather than
+find how many µs a xfer will take, instead find how many bytes can be
+transferred in 30 µs.  The latter must be less than 32 bits (since our
+clock speed is limited to 32 bits), while the former involves 64 bit
+quantities and more arithmetic operations.
+
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 7428091d3f5b..1431cb98fe40 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -321,7 +321,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, speed;
+ 	unsigned long spi_used_hz;
+-	unsigned long long xfer_time_us;
+ 
+ 	/* calculate the registers to handle
+ 	 *
+@@ -358,20 +357,21 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	bs->rx_len = tfr->len;
+ 	bs->pending = 0;
+ 
+-	/* calculate the estimated time in us the transfer runs
+-	 * note that there are are 2 idle clocks after each
+-	 * chunk getting transferred - in our case the chunk size
+-	 * is 3 bytes, so we approximate this by 9 bits/byte
++	/* Calculate the estimated time in us the transfer runs.  Note that
++	 * there are are 2 idle clocks cycles after each chunk getting
++	 * transferred - in our case the chunk size is 3 bytes, so we
++	 * approximate this by 9 cycles/byte.  This is used to find the number
++	 * of Hz per byte per polling limit.  E.g., we can transfer 1 byte in
++	 * 30 µs per 300,000 Hz of bus clock.
+ 	 */
+-	xfer_time_us = tfr->len * 9 * 1000000;
+-	do_div(xfer_time_us, spi_used_hz);
+-
++#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_AUX_SPI_POLLING_LIMIT_US)
+ 	/* run in polling mode for short transfers */
+-	if (xfer_time_us < BCM2835_AUX_SPI_POLLING_LIMIT_US)
++	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
+ 		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr);
+ 
+ 	/* run in interrupt mode for all others */
+ 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
++#undef HZ_PER_BYTE
+ }
+ 
+ static int bcm2835aux_spi_prepare_message(struct spi_master *master,
+-- 
+2.16.1

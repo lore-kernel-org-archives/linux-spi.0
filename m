@@ -1,104 +1,80 @@
-From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
-Subject: [PATCH 3/4] spi: orion: Prepare space for per-child options
-Date: Sat, 10 Feb 2018 12:20:23 +0100
-Message-ID: <11b0dbc2b01dcd1e2f1e94ee1199442d5f2492ce.1518704854.git.jan.kundrat@cesnet.cz>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: orion: Software control for inter-word delays
+Date: Thu, 15 Feb 2018 15:49:45 +0000
+Message-ID: <20180215154945.GF8374@sirena.org.uk>
 References: <bc8bf712358fbb000ea7e2ea9e1aec42b21988e6.1518704854.git.jan.kundrat@cesnet.cz>
+ <475b63c52b17187089d3f2ecf8ff4b8c45a7e58b.1518704854.git.jan.kundrat@cesnet.cz>
+ <20180215151907.GD8374@sirena.org.uk>
+ <c5d27950-0d13-422c-afe9-990b4adad45a@cesnet.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="b8GWCKCLzrXbuNet"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
         Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>,
         Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>,
+        Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>,
+        Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+To: Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <bc8bf712358fbb000ea7e2ea9e1aec42b21988e6.1518704854.git.jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <c5d27950-0d13-422c-afe9-990b4adad45a-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Aggregating all options for a particular child underneath a common
-struct looks cleaner compared to having a separate array for each
-per-child option.
 
-Signed-off-by: Jan Kundrát <jan.kundrat-xoNZbkdr4U2lVyrhU4qvOw@public.gmane.org>
----
-This is just a precursor for the next one in series ("spi: orion: Software control for inter-word delays").
----
- drivers/spi/spi-orion.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+--b8GWCKCLzrXbuNet
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 56e419a7ed78..1eccc2287079 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -90,6 +90,10 @@ struct orion_direct_acc {
- 	u32			size;
- };
- 
-+struct orion_child_options {
-+	struct orion_direct_acc direct_access;
-+};
-+
- struct orion_spi {
- 	struct spi_master	*master;
- 	void __iomem		*base;
-@@ -98,7 +102,7 @@ struct orion_spi {
- 	const struct orion_spi_dev *devdata;
- 	int			unused_hw_gpio;
- 
--	struct orion_direct_acc	direct_access[ORION_NUM_CHIPSELECTS];
-+	struct orion_child_options	child[ORION_NUM_CHIPSELECTS];
- };
- 
- static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
-@@ -436,7 +440,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	 * Use SPI direct write mode if base address is available. Otherwise
- 	 * fall back to PIO mode for this transfer.
- 	 */
--	if ((orion_spi->direct_access[cs].vaddr) && (xfer->tx_buf) &&
-+	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
- 	    (word_len == 8)) {
- 		unsigned int cnt = count / 4;
- 		unsigned int rem = count % 4;
-@@ -445,12 +449,12 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 		 * Send the TX-data to the SPI device via the direct
- 		 * mapped address window
- 		 */
--		iowrite32_rep(orion_spi->direct_access[cs].vaddr,
-+		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
- 			      xfer->tx_buf, cnt);
- 		if (rem) {
- 			u32 *buf = (u32 *)xfer->tx_buf;
- 
--			iowrite8_rep(orion_spi->direct_access[cs].vaddr,
-+			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
- 				     &buf[cnt], rem);
- 		}
- 
-@@ -707,14 +711,14 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
- 		 * support, once this gets implemented.
- 		 */
--		spi->direct_access[cs].vaddr = devm_ioremap(&pdev->dev,
-+		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
- 							    r->start,
- 							    PAGE_SIZE);
--		if (!spi->direct_access[cs].vaddr) {
-+		if (!spi->child[cs].direct_access.vaddr) {
- 			status = -ENOMEM;
- 			goto out_rel_axi_clk;
- 		}
--		spi->direct_access[cs].size = PAGE_SIZE;
-+		spi->child[cs].direct_access.size = PAGE_SIZE;
- 
- 		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
- 	}
--- 
-2.14.3
+On Thu, Feb 15, 2018 at 04:45:55PM +0100, Jan Kundr=E1t wrote:
 
+> How should the interface look like? Is spi_controller->mode_bits a good
+> place for controllers to advertise this feature (SPI_WORD_DELAY, perhaps?)
+> as supported, with spi-orion being the only implementation now? If we all=
+ow
 
+Yup.
+
+> each spi_transfer to override this value, is there a common place in the =
+SPI
+> core which somehow validates a spi_transfer against each controller's
+> capabilities? I see a code like that (bad_bits, ugly_bits) in spi_setup
+> which looks like something to be called per-device, not per-transfer.
+
+__spi_validate().
+
+> My most important use case is, however, the userspace-facing spidev, and =
+its
+> ioctl complicates stuff a bit. The relevant struct has a 16bit padding now
+> (used to be 32bit prior to https://patchwork.kernel.org/patch/3715391/). =
+Is
+> it OK to use this padding for this feature? Or should I perhaps eat just
+> 8bits and limit the delays to an arbitrary value of 255us? Or should I not
+> care about that now and let somebody else come up with another "bigger"
+> ioctl when they need that space?
+
+Ugh.  Using the whole padding is probably OK.
+
+--b8GWCKCLzrXbuNet
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqFrBgACgkQJNaLcl1U
+h9Bwkwf7BOOb3KVuSIOBmHAqX1mEEM6qnrN9oxJzNnzyCQlIype1emleKqztIcVo
+3eHvcj9KHzbMc/6nmcM+uCqHp4yvnUwB7YPJ6jOZa1pRmSOVnvhrAQeje1huKhAJ
+e65TyAznnJtjnGV2hRMdXY1HiaJkWjIDKRGPwC7XX7QhelYBETdF4x0380Ax8fGS
+vmWxg1YAGwb0C3o9Dbxf+Y6kmW/YPP/vNmjJaTPl7jp1SR8KD8NxXTdML3zv1hDg
+NTlwIVWsJ190QsMaHU8+rGFfoNcVyzeUIq0cIceG5K1iTSijjv7vhL6ZwffxjQ1b
+AOh+3g2Sn0P5KPi8QBKwRuh0znO4QQ==
+=IoD8
+-----END PGP SIGNATURE-----
+
+--b8GWCKCLzrXbuNet--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

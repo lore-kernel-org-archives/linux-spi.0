@@ -1,16 +1,16 @@
-From: Meghana Madhyastha <meghana.madhyastha@gmail.com>
-Subject: [PATCH] drm/tinydrm: Remove chunk splitting in tinydrm_spi_transfer
-Date: Mon, 19 Feb 2018 11:47:23 +0000
-Message-ID: <20180219114723.npfsjzyrvhylwrtz@raspberrypi>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] drm/tinydrm: Remove chunk splitting in
+ tinydrm_spi_transfer
+Date: Mon, 19 Feb 2018 17:42:31 +0000
+Message-ID: <20180219174231.GM32761@sirena.org.uk>
+References: <20180219114723.npfsjzyrvhylwrtz@raspberrypi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Mark Brown <broonie@kernel.org>,
- Daniel Vetter <daniel.vetter@intel.com>, linux-spi@vger.kernel.org,
- Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
- Sean Paul <seanpaul@chromium.org>, dri-devel@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1061891041=="
+Cc: Daniel Vetter <daniel.vetter@intel.com>, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org
+To: Meghana Madhyastha <meghana.madhyastha@gmail.com>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-Content-Disposition: inline
+In-Reply-To: <20180219114723.npfsjzyrvhylwrtz@raspberrypi>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -22,91 +22,87 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-LVJlbW92ZSBjaHVuayBzcGxpdHRpbmcgaW4gdGlueWRybV9zcGlfdHJhbnNmZXIgaW4gdGlueWRy
-bS1oZWxwZXJzIGFzIFRoZSBzcGkgY29yZSB3aWxsIHNwbGl0IGEgYnVmZmVyIGludG8gbWF4X2Rt
-YV9sZW4gY2h1bmtzIGZvciB0aGUKIHNwaSBjb250cm9sbGVyIGRyaXZlciB0byBoYW5kbGUuCi1S
-ZW1vdmUgYXV0b21hdGljIGJ5dGUgc3dhcHBpbmcgaW4gdGlueWRybV9zcGlfdHJhbnNmZXIgYXMg
-aXQgZG9lc24ndCBoYXZlIHVzZXJzLgotUmVtb3ZlIHRoZSB1cHBlciBib3VuZCBjaGVjayBvbiBk
-bWEgdHJhbnNmZXIgbGVuZ3RoIGluIGJjbTI4MzVfc3BpX2Nhbl9kbWEoKS4KClNpZ25lZC1vZmYt
-Ynk6IE1lZ2hhbmEgTWFkaHlhc3RoYSA8bWVnaGFuYS5tYWRoeWFzdGhhQGdtYWlsLmNvbT4KLS0t
-CiBkcml2ZXJzL2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVycy5jIHwgNDggKysr
-Ky0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvZ3B1L2RybS90aW55ZHJtL21pcGktZGJp
-LmMgICAgICAgICAgICAgfCAxMCArKy0tLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgICAg
-ICAgICAgICAgICAgICAgICAgfCAxNSArLS0tLS0tLQogMyBmaWxlcyBjaGFuZ2VkLCA5IGluc2Vy
-dGlvbnMoKyksIDY0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS90
-aW55ZHJtL2NvcmUvdGlueWRybS1oZWxwZXJzLmMgYi9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9j
-b3JlL3Rpbnlkcm0taGVscGVycy5jCmluZGV4IGJmOTYwNzJkMWI5Ny4uNjA2NDA5OWU4ZTYzIDEw
-MDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVycy5j
-CisrKyBiL2RyaXZlcnMvZ3B1L2RybS90aW55ZHJtL2NvcmUvdGlueWRybS1oZWxwZXJzLmMKQEAg
-LTQ1Miw2MiArNDUyLDI2IEBAIGludCB0aW55ZHJtX3NwaV90cmFuc2ZlcihzdHJ1Y3Qgc3BpX2Rl
-dmljZSAqc3BpLCB1MzIgc3BlZWRfaHosCiAJc3RydWN0IHNwaV90cmFuc2ZlciB0ciA9IHsKIAkJ
-LmJpdHNfcGVyX3dvcmQgPSBicHcsCiAJCS5zcGVlZF9oeiA9IHNwZWVkX2h6LAorCQkudHhfYnVm
-ID0gYnVmLAorCQkubGVuID0gbGVuCiAJfTsKIAlzdHJ1Y3Qgc3BpX21lc3NhZ2UgbTsKLQl1MTYg
-KnN3YXBfYnVmID0gTlVMTDsKIAlzaXplX3QgbWF4X2NodW5rOwotCXNpemVfdCBjaHVuazsKLQlp
-bnQgcmV0ID0gMDsKIAotCWlmIChXQVJOX09OX09OQ0UoYnB3ICE9IDggJiYgYnB3ICE9IDE2KSkK
-LQkJcmV0dXJuIC1FSU5WQUw7Ci0KLQltYXhfY2h1bmsgPSB0aW55ZHJtX3NwaV9tYXhfdHJhbnNm
-ZXJfc2l6ZShzcGksIDApOworCW1heF9jaHVuayA9IFNJWkVfTUFYOwogCiAJaWYgKGRybV9kZWJ1
-ZyAmIERSTV9VVF9EUklWRVIpCiAJCXByX2RlYnVnKCJbZHJtOiVzXSBicHc9JXUsIG1heF9jaHVu
-az0lenUsIHRyYW5zZmVyczpcbiIsCi0JCQkgX19mdW5jX18sIGJwdywgbWF4X2NodW5rKTsKLQot
-CWlmIChicHcgPT0gMTYgJiYgIXRpbnlkcm1fc3BpX2Jwd19zdXBwb3J0ZWQoc3BpLCAxNikpIHsK
-LQkJdHIuYml0c19wZXJfd29yZCA9IDg7Ci0JCWlmICh0aW55ZHJtX21hY2hpbmVfbGl0dGxlX2Vu
-ZGlhbigpKSB7Ci0JCQlzd2FwX2J1ZiA9IGttYWxsb2MobWluKGxlbiwgbWF4X2NodW5rKSwgR0ZQ
-X0tFUk5FTCk7Ci0JCQlpZiAoIXN3YXBfYnVmKQotCQkJCXJldHVybiAtRU5PTUVNOwotCQl9Ci0J
-fQorCQkJX19mdW5jX18sIGJwdywgbWF4X2NodW5rKTsKIAogCXNwaV9tZXNzYWdlX2luaXQoJm0p
-OwogCWlmIChoZWFkZXIpCiAJCXNwaV9tZXNzYWdlX2FkZF90YWlsKGhlYWRlciwgJm0pOwogCXNw
-aV9tZXNzYWdlX2FkZF90YWlsKCZ0ciwgJm0pOwogCi0Jd2hpbGUgKGxlbikgewotCQljaHVuayA9
-IG1pbihsZW4sIG1heF9jaHVuayk7Ci0KLQkJdHIudHhfYnVmID0gYnVmOwotCQl0ci5sZW4gPSBj
-aHVuazsKLQotCQlpZiAoc3dhcF9idWYpIHsKLQkJCWNvbnN0IHUxNiAqYnVmMTYgPSBidWY7Ci0J
-CQl1bnNpZ25lZCBpbnQgaTsKLQotCQkJZm9yIChpID0gMDsgaSA8IGNodW5rIC8gMjsgaSsrKQot
-CQkJCXN3YXBfYnVmW2ldID0gc3dhYjE2KGJ1ZjE2W2ldKTsKLQotCQkJdHIudHhfYnVmID0gc3dh
-cF9idWY7Ci0JCX0KLQotCQlidWYgKz0gY2h1bms7Ci0JCWxlbiAtPSBjaHVuazsKLQotCQl0aW55
-ZHJtX2RiZ19zcGlfbWVzc2FnZShzcGksICZtKTsKLQkJcmV0ID0gc3BpX3N5bmMoc3BpLCAmbSk7
-Ci0JCWlmIChyZXQpCi0JCQlyZXR1cm4gcmV0OwotCX0KKwl0aW55ZHJtX2RiZ19zcGlfbWVzc2Fn
-ZShzcGksICZtKTsKIAotCXJldHVybiAwOworCXJldHVybiBzcGlfc3luYyhzcGksICZtKTsKIH0K
-IEVYUE9SVF9TWU1CT0wodGlueWRybV9zcGlfdHJhbnNmZXIpOwogCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL2dwdS9kcm0vdGlueWRybS9taXBpLWRiaS5jIGIvZHJpdmVycy9ncHUvZHJtL3Rpbnlkcm0v
-bWlwaS1kYmkuYwppbmRleCA3NWRkNjVjNTdlNzQuLmM4YWYyZDY1YzJhZCAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9ncHUvZHJtL3Rpbnlkcm0vbWlwaS1kYmkuYworKysgYi9kcml2ZXJzL2dwdS9kcm0v
-dGlueWRybS9taXBpLWRiaS5jCkBAIC04ODYsMTUgKzg4Niw5IEBAIHN0YXRpYyBpbnQgbWlwaV9k
-YmlfdHlwZWMzX2NvbW1hbmQoc3RydWN0IG1pcGlfZGJpICptaXBpLCB1OCBjbWQsCiBpbnQgbWlw
-aV9kYmlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IG1pcGlfZGJpICpt
-aXBpLAogCQkgICAgICBzdHJ1Y3QgZ3Bpb19kZXNjICpkYykKIHsKLQlzaXplX3QgdHhfc2l6ZSA9
-IHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKHNwaSwgMCk7CiAJc3RydWN0IGRldmljZSAq
-ZGV2ID0gJnNwaS0+ZGV2OwogCWludCByZXQ7CiAKLQlpZiAodHhfc2l6ZSA8IDE2KSB7Ci0JCURS
-TV9FUlJPUigiU1BJIHRyYW5zbWl0IGJ1ZmZlciB0b28gc21hbGw6ICV6dVxuIiwgdHhfc2l6ZSk7
-Ci0JCXJldHVybiAtRUlOVkFMOwotCX0KLQogCS8qCiAJICogRXZlbiB0aG91Z2ggaXQncyBub3Qg
-dGhlIFNQSSBkZXZpY2UgdGhhdCBkb2VzIERNQSAodGhlIG1hc3RlciBkb2VzKSwKIAkgKiB0aGUg
-ZG1hIG1hc2sgaXMgbmVjZXNzYXJ5IGZvciB0aGUgZG1hX2FsbG9jX3djKCkgaW4KQEAgLTkyNCw4
-ICs5MTgsOCBAQCBpbnQgbWlwaV9kYmlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwg
-c3RydWN0IG1pcGlfZGJpICptaXBpLAogCQkJbWlwaS0+c3dhcF9ieXRlcyA9IHRydWU7CiAJfSBl
-bHNlIHsKIAkJbWlwaS0+Y29tbWFuZCA9IG1pcGlfZGJpX3R5cGVjMV9jb21tYW5kOwotCQltaXBp
-LT50eF9idWY5X2xlbiA9IHR4X3NpemU7Ci0JCW1pcGktPnR4X2J1ZjkgPSBkZXZtX2ttYWxsb2Mo
-ZGV2LCB0eF9zaXplLCBHRlBfS0VSTkVMKTsKKwkJbWlwaS0+dHhfYnVmOV9sZW4gPSBTWl8xNks7
-CisJCW1pcGktPnR4X2J1ZjkgPSBkZXZtX2ttYWxsb2MoZGV2LCBtaXBpLT50eF9idWY5X2xlbiwg
-R0ZQX0tFUk5FTCk7CiAJCWlmICghbWlwaS0+dHhfYnVmOSkKIAkJCXJldHVybiAtRU5PTUVNOwog
-CX0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgYi9kcml2ZXJzL3NwaS9z
-cGktYmNtMjgzNS5jCmluZGV4IGYzNWNjMTA3NzJmNi4uMmZkNjUwODkxYzA3IDEwMDY0NAotLS0g
-YS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1
-LmMKQEAgLTM2NSwxOSArMzY1LDYgQEAgc3RhdGljIGJvb2wgYmNtMjgzNV9zcGlfY2FuX2RtYShz
-dHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAogCWlmICh0ZnItPmxlbiA8IEJDTTI4MzVfU1BJX0RN
-QV9NSU5fTEVOR1RIKQogCQlyZXR1cm4gZmFsc2U7CiAKLQkvKiBCQ00yODM1X1NQSV9ETEVOIGhh
-cyBkZWZpbmVkIGEgbWF4IHRyYW5zZmVyIHNpemUgYXMKLQkgKiAxNiBiaXQsIHNvIG1heCBpcyA2
-NTUzNQotCSAqIHdlIGNhbiByZXZpc2l0IHRoaXMgYnkgdXNpbmcgYW4gYWx0ZXJuYXRpdmUgdHJh
-bnNmZXIKLQkgKiBtZXRob2QgLSBpZGVhbGx5IHRoaXMgd291bGQgZ2V0IGRvbmUgd2l0aG91dCBh
-bnkgbW9yZQotCSAqIGludGVyYWN0aW9uLi4uCi0JICovCi0JaWYgKHRmci0+bGVuID4gNjU1MzUp
-IHsKLQkJZGV2X3dhcm5fb25jZSgmc3BpLT5kZXYsCi0JCQkgICAgICAidHJhbnNmZXIgc2l6ZSBv
-ZiAlZCB0b28gYmlnIGZvciBkbWEtdHJhbnNmZXJcbiIsCi0JCQkgICAgICB0ZnItPmxlbik7Ci0J
-CXJldHVybiBmYWxzZTsKLQl9Ci0KIAkvKiBpZiB3ZSBydW4gcngvdHhfYnVmIHdpdGggd29yZCBh
-bGlnbmVkIGFkZHJlc3NlcyB0aGVuIHdlIGFyZSBPSyAqLwogCWlmICgoKChzaXplX3QpdGZyLT5y
-eF9idWYgJiAzKSA9PSAwKSAmJgogCSAgICAoKChzaXplX3QpdGZyLT50eF9idWYgJiAzKSA9PSAw
-KSkKQEAgLTQ2MSw3ICs0NDgsNyBAQCBzdGF0aWMgdm9pZCBiY20yODM1X2RtYV9pbml0KHN0cnVj
-dCBzcGlfbWFzdGVyICptYXN0ZXIsIHN0cnVjdCBkZXZpY2UgKmRldikKIAogCS8qIGFsbCB3ZW50
-IHdlbGwsIHNvIHNldCBjYW5fZG1hICovCiAJbWFzdGVyLT5jYW5fZG1hID0gYmNtMjgzNV9zcGlf
-Y2FuX2RtYTsKLQltYXN0ZXItPm1heF9kbWFfbGVuID0gNjU1MzU7IC8qIGxpbWl0YXRpb24gYnkg
-QkNNMjgzNV9TUElfRExFTiAqLworCW1hc3Rlci0+bWF4X2RtYV9sZW4gPSA2NTUyODsgLyogbGlt
-aXRhdGlvbiBieSBCQ00yODM1X1NQSV9ETEVOICovCiAJLyogbmVlZCB0byBkbyBUWCBBTkQgUlgg
-RE1BLCBzbyB3ZSBuZWVkIGR1bW15IGJ1ZmZlcnMgKi8KIAltYXN0ZXItPmZsYWdzID0gU1BJX01B
-U1RFUl9NVVNUX1JYIHwgU1BJX01BU1RFUl9NVVNUX1RYOwogCi0tIAoyLjExLjAKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5n
-IGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=
+
+--===============1061891041==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ICrdrp3pM9DyZLTK"
+Content-Disposition: inline
+
+
+--ICrdrp3pM9DyZLTK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Feb 19, 2018 at 11:47:23AM +0000, Meghana Madhyastha wrote:
+> -Remove chunk splitting in tinydrm_spi_transfer in tinydrm-helpers as The=
+ spi core will split a buffer into max_dma_len chunks for the
+>  spi controller driver to handle.
+> -Remove automatic byte swapping in tinydrm_spi_transfer as it doesn't hav=
+e users.
+> -Remove the upper bound check on dma transfer length in bcm2835_spi_can_d=
+ma().
+
+This looks like a series of related changes that should be split up into
+individual commits, probably at least one per bullet point there.
+
+> -	/* BCM2835_SPI_DLEN has defined a max transfer size as
+> -	 * 16 bit, so max is 65535
+> -	 * we can revisit this by using an alternative transfer
+> -	 * method - ideally this would get done without any more
+> -	 * interaction...
+> -	 */
+> -	if (tfr->len > 65535) {
+> -		dev_warn_once(&spi->dev,
+> -			      "transfer size of %d too big for dma-transfer\n",
+> -			      tfr->len);
+> -		return false;
+> -	}
+> -
+
+The changelog says we're removing this check but doesn't explain why
+and...
+
+>  	/* if we run rx/tx_buf with word aligned addresses then we are OK */
+>  	if ((((size_t)tfr->rx_buf & 3) =3D=3D 0) &&
+>  	    (((size_t)tfr->tx_buf & 3) =3D=3D 0))
+> @@ -461,7 +448,7 @@ static void bcm2835_dma_init(struct spi_master *maste=
+r, struct device *dev)
+> =20
+>  	/* all went well, so set can_dma */
+>  	master->can_dma =3D bcm2835_spi_can_dma;
+> -	master->max_dma_len =3D 65535; /* limitation by BCM2835_SPI_DLEN */
+> +	master->max_dma_len =3D 65528; /* limitation by BCM2835_SPI_DLEN */
+>  	/* need to do TX AND RX DMA, so we need dummy buffers */
+>  	master->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+
+=2E..this bit of the change isn't mentioned at all?
+
+--ICrdrp3pM9DyZLTK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqLDIYACgkQJNaLcl1U
+h9BIHwf/T6X/m+UxHBXi0rMkLUmFXs7aIaLlxRaQfuEiXDq2xDVIeZzeW7uu6o/y
+qjvJDg+PzNgUGtiUMXjti5mPqGjZn0MLpDNIjM5B0ygBCMLtQON8nfyWSMh6GdgM
+H/+xvEqNy13ru+HNnrRByW/8uexUseGYyoTkGgt5+GjqLCwE6VQhNQT0jKx6xcsi
+MDtCtT6ek3t24918o3FyM49OexWehFZvlHyMaAuqihqSayzWsGHB/bTqZvpTtzC6
+2tjB8BYp0rwffOZzTqyPdmUBlU8Bg7t8qSNQ9+a7gv5D7xVK+vsZ47bUQj35xLS3
+g+DASo6jcC1YOPiVcl/n6caZ4226HQ==
+=GBJx
+-----END PGP SIGNATURE-----
+
+--ICrdrp3pM9DyZLTK--
+
+--===============1061891041==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCg==
+
+--===============1061891041==--

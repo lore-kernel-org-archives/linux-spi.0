@@ -1,117 +1,112 @@
-From: Boris Brezillon <boris.brezillon-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [RFC PATCH 4/6] spi: ti-qspi: Implement the spi_mem interface
-Date: Sat, 17 Feb 2018 22:52:26 +0100
-Message-ID: <20180217225226.3813c1ce@bbrezillon>
-References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
-        <20180205232120.5851-5-boris.brezillon@bootlin.com>
-        <6a9eaaaf-20a6-b332-03d0-9d16e24d0b3d@ti.com>
-        <20180212133158.3032442f@bbrezillon>
-        <67e61203-a2e9-853c-6cda-7226499611c2@ti.com>
-        <20180212170809.3f0b5e20@bbrezillon>
-        <0944fefa-6ef8-a93a-dad6-660044b8ec8e@ti.com>
-        <20180214200952.6a8578dc@bbrezillon>
-        <55878296-f1c9-434b-3c7e-e2f03f5824a9@ti.com>
+From: Meghana Madhyastha <meghana.madhyastha@gmail.com>
+Subject: [PATCH] drm/tinydrm: Remove chunk splitting in tinydrm_spi_transfer
+Date: Mon, 19 Feb 2018 11:47:23 +0000
+Message-ID: <20180219114723.npfsjzyrvhylwrtz@raspberrypi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Yogesh Gaur <yogeshnarayan.gaur-3arQi8VN3Tc@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Peter Pan <peterpansjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Frieder Schrempf <frieder.schrempf-wPoT/lNZgHizQB+pC5nmwQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Cyrille Pitchen <cyrille.pitchen-yU5RGvR974pGWvitb5QawA@public.gmane.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal-g1n6cQUeyibVItvQsEIGlw@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55878296-f1c9-434b-3c7e-e2f03f5824a9-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: Mark Brown <broonie@kernel.org>,
+ Daniel Vetter <daniel.vetter@intel.com>, linux-spi@vger.kernel.org,
+ Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
+ Sean Paul <seanpaul@chromium.org>, dri-devel@lists.freedesktop.org
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, 17 Feb 2018 16:31:48 +0530
-Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
-
-> [...]
-> >>>>>>       
-> >>>>>>> +static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
-> >>>>>>> +   .exec_op = ti_qspi_exec_mem_op,        
-> >>>>>>
-> >>>>>>         .supports_op = ti_qspi_supports_mem_op,
-> >>>>>>
-> >>>>>> Its required as per spi_controller_check_ops() in Patch 1/6      
-> >>>>>       
-> >>>>> ->supports_op() is optional, and if it's missing, the core will do the      
-> >>>>> regular QuadSPI/DualSPI/SingleSPI check (see spi_mem_supports_op()
-> >>>>> implementation).       
-> >>>>
-> >>>> You might have overlooked spi_controller_check_ops() from Patch 1/6:
-> >>>> +static int spi_controller_check_ops(struct spi_controller *ctlr)
-> >>>> +{
-> >>>> +	/*
-> >>>> +	 * The controller can implement only the high-level SPI-memory
-> >>>> +	 * operations if it does not support regular SPI transfers.
-> >>>> +	 */
-> >>>> +	if (ctlr->mem_ops) {
-> >>>> +		if (!ctlr->mem_ops->supports_op ||
-> >>>> +		    !ctlr->mem_ops->exec_op)
-> >>>> +			return -EINVAL;
-> >>>> +	} else if (!ctlr->transfer && !ctlr->transfer_one &&
-> >>>> +		   !ctlr->transfer_one_message) {
-> >>>> +		return -EINVAL;
-> >>>> +	}
-> >>>> +
-> >>>> +	return 0;
-> >>>> +}
-> >>>> +
-> >>>>
-> >>>> So if ->supports_op() is not populated by SPI controller driver, then
-> >>>> driver probe fails with -EINVAL. This is what I observed on my TI
-> >>>> hardware when testing this patch series.    
-> >>>
-> >>> Correct. Then I should fix spi_controller_check_ops() to allow empty
-> >>> ctlr->mem_ops->supports_op.
-> >>>     
-> >>>>    
-> >>>>> This being said, if you think a custom ->supports_op()
-> >>>>> implementation is needed for this controller I can add one.
-> >>>>>       
-> >>>>
-> >>>> spi_mem_supports_op() should suffice for now if above issue is fixed.    
-> >>>
-> >>> Cool. IIUC, you tested the series on a TI SoC. Does it work as
-> >>> expected? Do you see any perf regressions?
-> >>>     
-> 
-> No other functional failures or performance issues so far wrt TI QSPI.
-> Things look good :)
-
-That's good news. I'll send a v2 addressing the problems you and others
-reported soon, but I'd like to have Cyrille's and Mark's feedback first.
-
-BTW, don't hesitate to comment on the interface itself. Do you think
-it's missing important features? Do you need more information to better
-optimize SPI memory accesses? ...
-This truly was an RFC: I'm new to these QSPI/SPI-NOR/SPI-NAND stuff, and
-I know you and others already faced various problems and thought about
-different solutions to address them. Now is a good time to re-think the
-whole thing and design the spi_mem interface in a way that allows us to
-better support all these QSPI-memory-oriented controllers.
-
-Regards,
-
-Boris
-
--- 
-Boris Brezillon, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-http://bootlin.com
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+LVJlbW92ZSBjaHVuayBzcGxpdHRpbmcgaW4gdGlueWRybV9zcGlfdHJhbnNmZXIgaW4gdGlueWRy
+bS1oZWxwZXJzIGFzIFRoZSBzcGkgY29yZSB3aWxsIHNwbGl0IGEgYnVmZmVyIGludG8gbWF4X2Rt
+YV9sZW4gY2h1bmtzIGZvciB0aGUKIHNwaSBjb250cm9sbGVyIGRyaXZlciB0byBoYW5kbGUuCi1S
+ZW1vdmUgYXV0b21hdGljIGJ5dGUgc3dhcHBpbmcgaW4gdGlueWRybV9zcGlfdHJhbnNmZXIgYXMg
+aXQgZG9lc24ndCBoYXZlIHVzZXJzLgotUmVtb3ZlIHRoZSB1cHBlciBib3VuZCBjaGVjayBvbiBk
+bWEgdHJhbnNmZXIgbGVuZ3RoIGluIGJjbTI4MzVfc3BpX2Nhbl9kbWEoKS4KClNpZ25lZC1vZmYt
+Ynk6IE1lZ2hhbmEgTWFkaHlhc3RoYSA8bWVnaGFuYS5tYWRoeWFzdGhhQGdtYWlsLmNvbT4KLS0t
+CiBkcml2ZXJzL2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVycy5jIHwgNDggKysr
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvZ3B1L2RybS90aW55ZHJtL21pcGktZGJp
+LmMgICAgICAgICAgICAgfCAxMCArKy0tLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgICAg
+ICAgICAgICAgICAgICAgICAgfCAxNSArLS0tLS0tLQogMyBmaWxlcyBjaGFuZ2VkLCA5IGluc2Vy
+dGlvbnMoKyksIDY0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS90
+aW55ZHJtL2NvcmUvdGlueWRybS1oZWxwZXJzLmMgYi9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9j
+b3JlL3Rpbnlkcm0taGVscGVycy5jCmluZGV4IGJmOTYwNzJkMWI5Ny4uNjA2NDA5OWU4ZTYzIDEw
+MDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVycy5j
+CisrKyBiL2RyaXZlcnMvZ3B1L2RybS90aW55ZHJtL2NvcmUvdGlueWRybS1oZWxwZXJzLmMKQEAg
+LTQ1Miw2MiArNDUyLDI2IEBAIGludCB0aW55ZHJtX3NwaV90cmFuc2ZlcihzdHJ1Y3Qgc3BpX2Rl
+dmljZSAqc3BpLCB1MzIgc3BlZWRfaHosCiAJc3RydWN0IHNwaV90cmFuc2ZlciB0ciA9IHsKIAkJ
+LmJpdHNfcGVyX3dvcmQgPSBicHcsCiAJCS5zcGVlZF9oeiA9IHNwZWVkX2h6LAorCQkudHhfYnVm
+ID0gYnVmLAorCQkubGVuID0gbGVuCiAJfTsKIAlzdHJ1Y3Qgc3BpX21lc3NhZ2UgbTsKLQl1MTYg
+KnN3YXBfYnVmID0gTlVMTDsKIAlzaXplX3QgbWF4X2NodW5rOwotCXNpemVfdCBjaHVuazsKLQlp
+bnQgcmV0ID0gMDsKIAotCWlmIChXQVJOX09OX09OQ0UoYnB3ICE9IDggJiYgYnB3ICE9IDE2KSkK
+LQkJcmV0dXJuIC1FSU5WQUw7Ci0KLQltYXhfY2h1bmsgPSB0aW55ZHJtX3NwaV9tYXhfdHJhbnNm
+ZXJfc2l6ZShzcGksIDApOworCW1heF9jaHVuayA9IFNJWkVfTUFYOwogCiAJaWYgKGRybV9kZWJ1
+ZyAmIERSTV9VVF9EUklWRVIpCiAJCXByX2RlYnVnKCJbZHJtOiVzXSBicHc9JXUsIG1heF9jaHVu
+az0lenUsIHRyYW5zZmVyczpcbiIsCi0JCQkgX19mdW5jX18sIGJwdywgbWF4X2NodW5rKTsKLQot
+CWlmIChicHcgPT0gMTYgJiYgIXRpbnlkcm1fc3BpX2Jwd19zdXBwb3J0ZWQoc3BpLCAxNikpIHsK
+LQkJdHIuYml0c19wZXJfd29yZCA9IDg7Ci0JCWlmICh0aW55ZHJtX21hY2hpbmVfbGl0dGxlX2Vu
+ZGlhbigpKSB7Ci0JCQlzd2FwX2J1ZiA9IGttYWxsb2MobWluKGxlbiwgbWF4X2NodW5rKSwgR0ZQ
+X0tFUk5FTCk7Ci0JCQlpZiAoIXN3YXBfYnVmKQotCQkJCXJldHVybiAtRU5PTUVNOwotCQl9Ci0J
+fQorCQkJX19mdW5jX18sIGJwdywgbWF4X2NodW5rKTsKIAogCXNwaV9tZXNzYWdlX2luaXQoJm0p
+OwogCWlmIChoZWFkZXIpCiAJCXNwaV9tZXNzYWdlX2FkZF90YWlsKGhlYWRlciwgJm0pOwogCXNw
+aV9tZXNzYWdlX2FkZF90YWlsKCZ0ciwgJm0pOwogCi0Jd2hpbGUgKGxlbikgewotCQljaHVuayA9
+IG1pbihsZW4sIG1heF9jaHVuayk7Ci0KLQkJdHIudHhfYnVmID0gYnVmOwotCQl0ci5sZW4gPSBj
+aHVuazsKLQotCQlpZiAoc3dhcF9idWYpIHsKLQkJCWNvbnN0IHUxNiAqYnVmMTYgPSBidWY7Ci0J
+CQl1bnNpZ25lZCBpbnQgaTsKLQotCQkJZm9yIChpID0gMDsgaSA8IGNodW5rIC8gMjsgaSsrKQot
+CQkJCXN3YXBfYnVmW2ldID0gc3dhYjE2KGJ1ZjE2W2ldKTsKLQotCQkJdHIudHhfYnVmID0gc3dh
+cF9idWY7Ci0JCX0KLQotCQlidWYgKz0gY2h1bms7Ci0JCWxlbiAtPSBjaHVuazsKLQotCQl0aW55
+ZHJtX2RiZ19zcGlfbWVzc2FnZShzcGksICZtKTsKLQkJcmV0ID0gc3BpX3N5bmMoc3BpLCAmbSk7
+Ci0JCWlmIChyZXQpCi0JCQlyZXR1cm4gcmV0OwotCX0KKwl0aW55ZHJtX2RiZ19zcGlfbWVzc2Fn
+ZShzcGksICZtKTsKIAotCXJldHVybiAwOworCXJldHVybiBzcGlfc3luYyhzcGksICZtKTsKIH0K
+IEVYUE9SVF9TWU1CT0wodGlueWRybV9zcGlfdHJhbnNmZXIpOwogCmRpZmYgLS1naXQgYS9kcml2
+ZXJzL2dwdS9kcm0vdGlueWRybS9taXBpLWRiaS5jIGIvZHJpdmVycy9ncHUvZHJtL3Rpbnlkcm0v
+bWlwaS1kYmkuYwppbmRleCA3NWRkNjVjNTdlNzQuLmM4YWYyZDY1YzJhZCAxMDA2NDQKLS0tIGEv
+ZHJpdmVycy9ncHUvZHJtL3Rpbnlkcm0vbWlwaS1kYmkuYworKysgYi9kcml2ZXJzL2dwdS9kcm0v
+dGlueWRybS9taXBpLWRiaS5jCkBAIC04ODYsMTUgKzg4Niw5IEBAIHN0YXRpYyBpbnQgbWlwaV9k
+YmlfdHlwZWMzX2NvbW1hbmQoc3RydWN0IG1pcGlfZGJpICptaXBpLCB1OCBjbWQsCiBpbnQgbWlw
+aV9kYmlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IG1pcGlfZGJpICpt
+aXBpLAogCQkgICAgICBzdHJ1Y3QgZ3Bpb19kZXNjICpkYykKIHsKLQlzaXplX3QgdHhfc2l6ZSA9
+IHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKHNwaSwgMCk7CiAJc3RydWN0IGRldmljZSAq
+ZGV2ID0gJnNwaS0+ZGV2OwogCWludCByZXQ7CiAKLQlpZiAodHhfc2l6ZSA8IDE2KSB7Ci0JCURS
+TV9FUlJPUigiU1BJIHRyYW5zbWl0IGJ1ZmZlciB0b28gc21hbGw6ICV6dVxuIiwgdHhfc2l6ZSk7
+Ci0JCXJldHVybiAtRUlOVkFMOwotCX0KLQogCS8qCiAJICogRXZlbiB0aG91Z2ggaXQncyBub3Qg
+dGhlIFNQSSBkZXZpY2UgdGhhdCBkb2VzIERNQSAodGhlIG1hc3RlciBkb2VzKSwKIAkgKiB0aGUg
+ZG1hIG1hc2sgaXMgbmVjZXNzYXJ5IGZvciB0aGUgZG1hX2FsbG9jX3djKCkgaW4KQEAgLTkyNCw4
+ICs5MTgsOCBAQCBpbnQgbWlwaV9kYmlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwg
+c3RydWN0IG1pcGlfZGJpICptaXBpLAogCQkJbWlwaS0+c3dhcF9ieXRlcyA9IHRydWU7CiAJfSBl
+bHNlIHsKIAkJbWlwaS0+Y29tbWFuZCA9IG1pcGlfZGJpX3R5cGVjMV9jb21tYW5kOwotCQltaXBp
+LT50eF9idWY5X2xlbiA9IHR4X3NpemU7Ci0JCW1pcGktPnR4X2J1ZjkgPSBkZXZtX2ttYWxsb2Mo
+ZGV2LCB0eF9zaXplLCBHRlBfS0VSTkVMKTsKKwkJbWlwaS0+dHhfYnVmOV9sZW4gPSBTWl8xNks7
+CisJCW1pcGktPnR4X2J1ZjkgPSBkZXZtX2ttYWxsb2MoZGV2LCBtaXBpLT50eF9idWY5X2xlbiwg
+R0ZQX0tFUk5FTCk7CiAJCWlmICghbWlwaS0+dHhfYnVmOSkKIAkJCXJldHVybiAtRU5PTUVNOwog
+CX0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgYi9kcml2ZXJzL3NwaS9z
+cGktYmNtMjgzNS5jCmluZGV4IGYzNWNjMTA3NzJmNi4uMmZkNjUwODkxYzA3IDEwMDY0NAotLS0g
+YS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1
+LmMKQEAgLTM2NSwxOSArMzY1LDYgQEAgc3RhdGljIGJvb2wgYmNtMjgzNV9zcGlfY2FuX2RtYShz
+dHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAogCWlmICh0ZnItPmxlbiA8IEJDTTI4MzVfU1BJX0RN
+QV9NSU5fTEVOR1RIKQogCQlyZXR1cm4gZmFsc2U7CiAKLQkvKiBCQ00yODM1X1NQSV9ETEVOIGhh
+cyBkZWZpbmVkIGEgbWF4IHRyYW5zZmVyIHNpemUgYXMKLQkgKiAxNiBiaXQsIHNvIG1heCBpcyA2
+NTUzNQotCSAqIHdlIGNhbiByZXZpc2l0IHRoaXMgYnkgdXNpbmcgYW4gYWx0ZXJuYXRpdmUgdHJh
+bnNmZXIKLQkgKiBtZXRob2QgLSBpZGVhbGx5IHRoaXMgd291bGQgZ2V0IGRvbmUgd2l0aG91dCBh
+bnkgbW9yZQotCSAqIGludGVyYWN0aW9uLi4uCi0JICovCi0JaWYgKHRmci0+bGVuID4gNjU1MzUp
+IHsKLQkJZGV2X3dhcm5fb25jZSgmc3BpLT5kZXYsCi0JCQkgICAgICAidHJhbnNmZXIgc2l6ZSBv
+ZiAlZCB0b28gYmlnIGZvciBkbWEtdHJhbnNmZXJcbiIsCi0JCQkgICAgICB0ZnItPmxlbik7Ci0J
+CXJldHVybiBmYWxzZTsKLQl9Ci0KIAkvKiBpZiB3ZSBydW4gcngvdHhfYnVmIHdpdGggd29yZCBh
+bGlnbmVkIGFkZHJlc3NlcyB0aGVuIHdlIGFyZSBPSyAqLwogCWlmICgoKChzaXplX3QpdGZyLT5y
+eF9idWYgJiAzKSA9PSAwKSAmJgogCSAgICAoKChzaXplX3QpdGZyLT50eF9idWYgJiAzKSA9PSAw
+KSkKQEAgLTQ2MSw3ICs0NDgsNyBAQCBzdGF0aWMgdm9pZCBiY20yODM1X2RtYV9pbml0KHN0cnVj
+dCBzcGlfbWFzdGVyICptYXN0ZXIsIHN0cnVjdCBkZXZpY2UgKmRldikKIAogCS8qIGFsbCB3ZW50
+IHdlbGwsIHNvIHNldCBjYW5fZG1hICovCiAJbWFzdGVyLT5jYW5fZG1hID0gYmNtMjgzNV9zcGlf
+Y2FuX2RtYTsKLQltYXN0ZXItPm1heF9kbWFfbGVuID0gNjU1MzU7IC8qIGxpbWl0YXRpb24gYnkg
+QkNNMjgzNV9TUElfRExFTiAqLworCW1hc3Rlci0+bWF4X2RtYV9sZW4gPSA2NTUyODsgLyogbGlt
+aXRhdGlvbiBieSBCQ00yODM1X1NQSV9ETEVOICovCiAJLyogbmVlZCB0byBkbyBUWCBBTkQgUlgg
+RE1BLCBzbyB3ZSBuZWVkIGR1bW15IGJ1ZmZlcnMgKi8KIAltYXN0ZXItPmZsYWdzID0gU1BJX01B
+U1RFUl9NVVNUX1JYIHwgU1BJX01BU1RFUl9NVVNUX1RYOwogCi0tIAoyLjExLjAKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5n
+IGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=

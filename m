@@ -1,64 +1,87 @@
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH] spi: atmel: init FIFOs before spi enable
-Date: Tue, 27 Feb 2018 11:29:33 +0100
-Message-ID: <9650154b-c0b4-48aa-1c98-8d86aa834202@microchip.com>
-References: <1519727107-5821-1-git-send-email-eugen.hristev@microchip.com>
+From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Subject: Re: [PATCH v2 1/2] drm/tinydrm: Remove chunk splitting in
+ tinydrm_spi_transfer
+Date: Tue, 27 Feb 2018 18:39:41 +0100
+Message-ID: <eaa3d9dc-fd87-4174-7883-d173a2cbff87@tronnes.org>
+References: <cover.1519492575.git.meghana.madhyastha@gmail.com>
+ <641c51d452648aba2fb2b0b707dc780970eaaf99.1519492575.git.meghana.madhyastha@gmail.com>
+ <20180225170342.GB7348@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-To: Eugen Hristev <eugen.hristev@microchip.com>, <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1519727107-5821-1-git-send-email-eugen.hristev@microchip.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, Daniel Vetter <daniel.vetter@intel.com>,
+ kernel@martin.sperl.org
+To: Lukas Wunner <lukas@wunner.de>,
+ Meghana Madhyastha <meghana.madhyastha@gmail.com>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20180225170342.GB7348@wunner.de>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 27/02/2018 at 11:25, Eugen Hristev wrote:
-> The datasheet recommends initializing FIFOs before
-> SPI enable. If we do not do it like this, there may be
-> a strange behavior. We noticed that DMA does not work properly
-> with FIFOs if we do not clear them beforehand or enable them
-> before SPIEN.
-> 
-> Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
-
-Ok, good:
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-
-> ---
->   drivers/spi/spi-atmel.c | 8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 6694709..0478758 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1489,6 +1489,11 @@ static void atmel_spi_init(struct atmel_spi *as)
->   {
->   	spi_writel(as, CR, SPI_BIT(SWRST));
->   	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
-> +
-> +	/* It is recommended to enable FIFOs first thing after reset */
-> +	if (as->fifo_size)
-> +		spi_writel(as, CR, SPI_BIT(FIFOEN));
-> +
->   	if (as->caps.has_wdrbt) {
->   		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
->   				| SPI_BIT(MSTR));
-> @@ -1499,9 +1504,6 @@ static void atmel_spi_init(struct atmel_spi *as)
->   	if (as->use_pdc)
->   		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
->   	spi_writel(as, CR, SPI_BIT(SPIEN));
-> -
-> -	if (as->fifo_size)
-> -		spi_writel(as, CR, SPI_BIT(FIFOEN));
->   }
->   
->   static int atmel_spi_probe(struct platform_device *pdev)
-> 
-
-
--- 
-Nicolas Ferre
+CkRlbiAyNS4wMi4yMDE4IDE4LjAzLCBza3JldiBMdWthcyBXdW5uZXI6Cj4gT24gU2F0LCBGZWIg
+MjQsIDIwMTggYXQgMDY6MTY6NDZQTSArMDAwMCwgTWVnaGFuYSBNYWRoeWFzdGhhIHdyb3RlOgo+
+PiAtUmVtb3ZlIGNodW5rIHNwbGl0dGluZyBpbiB0aW55ZHJtX3NwaV90cmFuc2ZlciBpbiB0aW55
+ZHJtLWhlbHBlcnMgYXMgVGhlIHNwaSBjb3JlIHdpbGwgc3BsaXQgYSBidWZmZXIgaW50byBtYXhf
+ZG1hX2xlbiBjaHVua3MgZm9yIHRoZQo+PiAgIHNwaSBjb250cm9sbGVyIGRyaXZlciB0byBoYW5k
+bGUuCj4+IC1SZW1vdmUgYXV0b21hdGljIGJ5dGUgc3dhcHBpbmcgaW4gdGlueWRybV9zcGlfdHJh
+bnNmZXIgYXMgaXQgZG9lc24ndCBoYXZlIHVzZXJzLgo+PiAtUmVtb3ZlIHRoZSB1cHBlciBib3Vu
+ZCBjaGVjayBvbiBkbWEgdHJhbnNmZXIgbGVuZ3RoIGluIGJjbTI4MzVfc3BpX2Nhbl9kbWEoKS4K
+PiBBRkFJQ1MgeW91IG5lZWQgdG8gcmV2ZXJzZSB0aGUgb3JkZXIgb2YgdGhlIHR3byBwYXRjaGVz
+LCBzbyB0aGF0IHRoZQo+IHNwbGl0dGluZyBpcyBhZGRlZCB0byBzcGktYmNtMjgzNSBiZWZvcmUg
+eW91IHJlbW92ZSBpdCBmcm9tIHRoZSBEUk0KPiBkcml2ZXJzLiAgT3RoZXJ3aXNlIHRoZXJlJ3Mg
+bm8gc3BsaXR0aW5nIGF0IGFsbCBpbi1iZXR3ZWVuIHRoZSBwYXRjaGVzLAo+IHdoaWNoIG1heSBj
+YXVzZSBpc3N1ZXMgZm9yIHNvbWVvbmUgaGl0dGluZyB0aGlzIHBhdGNoIHdoZW4gYmlzZWN0aW5n
+Lgo+Cj4gSXQgd291bGQgYmUgZ29vZCBpZiB5b3UgY291bGQgZXhwbGFpbiB0aGUgcmF0aW9uYWxl
+IG9mIHRoZSBwYXRjaAo+ICh0aGUgIndoeSIpIGluIG1vcmUgZGV0YWlsLiAgWW91J3ZlIHByb3Zp
+ZGVkIHRoZSByYXRpb25hbGUgaW4gdGhlCj4gY292ZXIgbGV0dGVyIGJ1dCB0aGUgY292ZXIgbGV0
+dGVyIGlzbid0IHJlY29yZGVkIGluIHRoZSBnaXQgaGlzdG9yeS4KPiBSaWdodCBub3cgdGhlIGNv
+bW1pdCBtZXNzYWdlIG9ubHkgc3VtbWFyaXplcyB0aGUgIndoYXQiLgoKWWVhaCwgdGhlIHdoeSBp
+cyBpbXBvcnRhbnQuCgpDdXJyZW50bHkgY2xpZW50cyB1c2luZyBzcGktYmNtMjgzNSBuZWVkIHRv
+IGtub3cgYWJvdXQgdGhlIG1heF9kbWFfbGVuCmxpbWl0IHRvIGVuc3VyZSBETUEgdHJhbnNmZXJz
+LiBUcnlpbmcgdG8gdHJhbnNmZXIgbGFyZ2VyIGJ1ZmZlcnMgd2lsbApyZXN1bHQgaW4gYSB3YXJu
+aW5nIGFuZCBhIHNsb3cgUElPIHRyYW5zZmVyLgp0aW55ZHJtIHdvcmtzIGFyb3VuZCB0aGlzIGJ5
+IHNwbGl0dGluZyB0aGUgZnJhbWVidWZmZXJzIGJlZm9yZSB0cmFuc2ZlcgooYSBsZWdhY3kgZnJv
+bSBmYnRmdCB3aGljaCB0aW55ZHJtIGdyZXcgb3V0IG9mKS4KClNvIHRoZSBjaGFuZ2UgaXMgYWJv
+dXQgcmVtb3ZpbmcgdGhlIHVwcGVyIGJvdW5kIG9uIERNQSBTUEkgdHJhbnNmZXJzIGZvcgp0aGlz
+IHBhcnRpY3VsYXIgc3BpIGNvbnRyb2xsZXIgZHJpdmVyLgoKKFdoZW4gSSBjaGVja2VkIHRoaXMg
+YSB5ZWFyIGFnbywgdGhlcmUgd2FzIG9uZSBtb3JlIGNvbnRyb2xsZXIgZHJpdmVyIHdpdGgKYW4g
+dXBwZXIgYm91bmQgb24gRE1BIHRyYW5zZmVycywgYnV0IEkgZG9uJ3QgcmVtZW1iZXIgd2hpY2gp
+CgpOb3JhbGYuCgoKPiBBbHNvLCBwbGVhc2Ugd3JhcCB0aGUgY29tbWl0IG1lc3NhZ2UgYXQgNzIg
+Y2hhcnMuCj4KPgo+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCj4+ICsrKyBiL2Ry
+aXZlcnMvc3BpL3NwaS1iY20yODM1LmMKPj4gQEAgLTM2NSwxOSArMzY1LDYgQEAgc3RhdGljIGJv
+b2wgYmNtMjgzNV9zcGlfY2FuX2RtYShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAo+PiAgIAlp
+ZiAodGZyLT5sZW4gPCBCQ00yODM1X1NQSV9ETUFfTUlOX0xFTkdUSCkKPj4gICAJCXJldHVybiBm
+YWxzZTsKPj4gICAKPj4gLQkvKiBCQ00yODM1X1NQSV9ETEVOIGhhcyBkZWZpbmVkIGEgbWF4IHRy
+YW5zZmVyIHNpemUgYXMKPj4gLQkgKiAxNiBiaXQsIHNvIG1heCBpcyA2NTUzNQo+PiAtCSAqIHdl
+IGNhbiByZXZpc2l0IHRoaXMgYnkgdXNpbmcgYW4gYWx0ZXJuYXRpdmUgdHJhbnNmZXIKPj4gLQkg
+KiBtZXRob2QgLSBpZGVhbGx5IHRoaXMgd291bGQgZ2V0IGRvbmUgd2l0aG91dCBhbnkgbW9yZQo+
+PiAtCSAqIGludGVyYWN0aW9uLi4uCj4+IC0JICovCj4+IC0JaWYgKHRmci0+bGVuID4gNjU1MzUp
+IHsKPj4gLQkJZGV2X3dhcm5fb25jZSgmc3BpLT5kZXYsCj4+IC0JCQkgICAgICAidHJhbnNmZXIg
+c2l6ZSBvZiAlZCB0b28gYmlnIGZvciBkbWEtdHJhbnNmZXJcbiIsCj4+IC0JCQkgICAgICB0ZnIt
+Pmxlbik7Cj4+IC0JCXJldHVybiBmYWxzZTsKPj4gLQl9Cj4+IC0KPj4gICAJLyogaWYgd2UgcnVu
+IHJ4L3R4X2J1ZiB3aXRoIHdvcmQgYWxpZ25lZCBhZGRyZXNzZXMgdGhlbiB3ZSBhcmUgT0sgKi8K
+Pj4gICAJaWYgKCgoKHNpemVfdCl0ZnItPnJ4X2J1ZiAmIDMpID09IDApICYmCj4+ICAgCSAgICAo
+KChzaXplX3QpdGZyLT50eF9idWYgJiAzKSA9PSAwKSkKPiBNb3ZlIHRoaXMgaHVuayB0byB0aGUg
+b3RoZXIgcGF0Y2ggc28gdGhhdCBpdCdzIHRvZ2V0aGVyIHdpdGggdGhlCj4gY2hhbmdlcyB0aGF0
+IHJlbW92ZSB0aGUgNjU1MzUgbGltaXRhdGlvbi4gIEl0IHdvdWxkIHByb2JhYmx5IGdvb2QKPiB0
+byByZXRhaW4gYSBwb3J0aW9uIG9mIHRoZSBjb21tZW50IHRvIGV4cGxhaW4gd2h5IHRoZSBzcGxp
+dHRpbmcgaXMKPiBuZWNlc3NhcnkuCj4KPgo+PiBAQCAtNDYxLDcgKzQ0OCw3IEBAIHN0YXRpYyB2
+b2lkIGJjbTI4MzVfZG1hX2luaXQoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3Rlciwgc3RydWN0IGRl
+dmljZSAqZGV2KQo+PiAgIAo+PiAgIAkvKiBhbGwgd2VudCB3ZWxsLCBzbyBzZXQgY2FuX2RtYSAq
+Lwo+PiAgIAltYXN0ZXItPmNhbl9kbWEgPSBiY20yODM1X3NwaV9jYW5fZG1hOwo+PiAtCW1hc3Rl
+ci0+bWF4X2RtYV9sZW4gPSA2NTUzNTsgLyogbGltaXRhdGlvbiBieSBCQ00yODM1X1NQSV9ETEVO
+ICovCj4+ICsJbWFzdGVyLT5tYXhfZG1hX2xlbiA9IDY1NTI4OyAvKiBsaW1pdGF0aW9uIGJ5IEJD
+TTI4MzVfU1BJX0RMRU4gKi8KPiBTcHVyaW91cyB1bmV4cGxhaW5lZCBjaGFuZ2UuCj4KPiBUaGFu
+a3MsCj4KPiBMdWthcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRl
+dmVsCg==

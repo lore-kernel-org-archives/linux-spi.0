@@ -1,73 +1,53 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v2 1/2] drm/tinydrm: Remove chunk splitting in
- tinydrm_spi_transfer
-Date: Sun, 25 Feb 2018 18:03:42 +0100
-Message-ID: <20180225170342.GB7348@wunner.de>
-References: <cover.1519492575.git.meghana.madhyastha@gmail.com>
- <641c51d452648aba2fb2b0b707dc780970eaaf99.1519492575.git.meghana.madhyastha@gmail.com>
+From: Eugen Hristev <eugen.hristev@microchip.com>
+Subject: [PATCH] spi: atmel: init FIFOs before spi enable
+Date: Tue, 27 Feb 2018 12:25:07 +0200
+Message-ID: <1519727107-5821-1-git-send-email-eugen.hristev@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
- linux-rpi-kernel@lists.infradead.org, Daniel Vetter <daniel.vetter@intel.com>,
- kernel@martin.sperl.org
-To: Meghana Madhyastha <meghana.madhyastha@gmail.com>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-Content-Disposition: inline
-In-Reply-To: <641c51d452648aba2fb2b0b707dc780970eaaf99.1519492575.git.meghana.madhyastha@gmail.com>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain
+Cc: Eugen Hristev <eugen.hristev@microchip.com>
+To: <nicolas.ferre@microchip.com>, <broonie@kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCBGZWIgMjQsIDIwMTggYXQgMDY6MTY6NDZQTSArMDAwMCwgTWVnaGFuYSBNYWRoeWFz
-dGhhIHdyb3RlOgo+IC1SZW1vdmUgY2h1bmsgc3BsaXR0aW5nIGluIHRpbnlkcm1fc3BpX3RyYW5z
-ZmVyIGluIHRpbnlkcm0taGVscGVycyBhcyBUaGUgc3BpIGNvcmUgd2lsbCBzcGxpdCBhIGJ1ZmZl
-ciBpbnRvIG1heF9kbWFfbGVuIGNodW5rcyBmb3IgdGhlCj4gIHNwaSBjb250cm9sbGVyIGRyaXZl
-ciB0byBoYW5kbGUuCj4gLVJlbW92ZSBhdXRvbWF0aWMgYnl0ZSBzd2FwcGluZyBpbiB0aW55ZHJt
-X3NwaV90cmFuc2ZlciBhcyBpdCBkb2Vzbid0IGhhdmUgdXNlcnMuCj4gLVJlbW92ZSB0aGUgdXBw
-ZXIgYm91bmQgY2hlY2sgb24gZG1hIHRyYW5zZmVyIGxlbmd0aCBpbiBiY20yODM1X3NwaV9jYW5f
-ZG1hKCkuCgpBRkFJQ1MgeW91IG5lZWQgdG8gcmV2ZXJzZSB0aGUgb3JkZXIgb2YgdGhlIHR3byBw
-YXRjaGVzLCBzbyB0aGF0IHRoZQpzcGxpdHRpbmcgaXMgYWRkZWQgdG8gc3BpLWJjbTI4MzUgYmVm
-b3JlIHlvdSByZW1vdmUgaXQgZnJvbSB0aGUgRFJNCmRyaXZlcnMuICBPdGhlcndpc2UgdGhlcmUn
-cyBubyBzcGxpdHRpbmcgYXQgYWxsIGluLWJldHdlZW4gdGhlIHBhdGNoZXMsCndoaWNoIG1heSBj
-YXVzZSBpc3N1ZXMgZm9yIHNvbWVvbmUgaGl0dGluZyB0aGlzIHBhdGNoIHdoZW4gYmlzZWN0aW5n
-LgoKSXQgd291bGQgYmUgZ29vZCBpZiB5b3UgY291bGQgZXhwbGFpbiB0aGUgcmF0aW9uYWxlIG9m
-IHRoZSBwYXRjaAoodGhlICJ3aHkiKSBpbiBtb3JlIGRldGFpbC4gIFlvdSd2ZSBwcm92aWRlZCB0
-aGUgcmF0aW9uYWxlIGluIHRoZQpjb3ZlciBsZXR0ZXIgYnV0IHRoZSBjb3ZlciBsZXR0ZXIgaXNu
-J3QgcmVjb3JkZWQgaW4gdGhlIGdpdCBoaXN0b3J5LgpSaWdodCBub3cgdGhlIGNvbW1pdCBtZXNz
-YWdlIG9ubHkgc3VtbWFyaXplcyB0aGUgIndoYXQiLgoKQWxzbywgcGxlYXNlIHdyYXAgdGhlIGNv
-bW1pdCBtZXNzYWdlIGF0IDcyIGNoYXJzLgoKCj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWJjbTI4
-MzUuYwo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKPiBAQCAtMzY1LDE5ICszNjUs
-NiBAQCBzdGF0aWMgYm9vbCBiY20yODM1X3NwaV9jYW5fZG1hKHN0cnVjdCBzcGlfbWFzdGVyICpt
-YXN0ZXIsCj4gIAlpZiAodGZyLT5sZW4gPCBCQ00yODM1X1NQSV9ETUFfTUlOX0xFTkdUSCkKPiAg
-CQlyZXR1cm4gZmFsc2U7Cj4gIAo+IC0JLyogQkNNMjgzNV9TUElfRExFTiBoYXMgZGVmaW5lZCBh
-IG1heCB0cmFuc2ZlciBzaXplIGFzCj4gLQkgKiAxNiBiaXQsIHNvIG1heCBpcyA2NTUzNQo+IC0J
-ICogd2UgY2FuIHJldmlzaXQgdGhpcyBieSB1c2luZyBhbiBhbHRlcm5hdGl2ZSB0cmFuc2Zlcgo+
-IC0JICogbWV0aG9kIC0gaWRlYWxseSB0aGlzIHdvdWxkIGdldCBkb25lIHdpdGhvdXQgYW55IG1v
-cmUKPiAtCSAqIGludGVyYWN0aW9uLi4uCj4gLQkgKi8KPiAtCWlmICh0ZnItPmxlbiA+IDY1NTM1
-KSB7Cj4gLQkJZGV2X3dhcm5fb25jZSgmc3BpLT5kZXYsCj4gLQkJCSAgICAgICJ0cmFuc2ZlciBz
-aXplIG9mICVkIHRvbyBiaWcgZm9yIGRtYS10cmFuc2ZlclxuIiwKPiAtCQkJICAgICAgdGZyLT5s
-ZW4pOwo+IC0JCXJldHVybiBmYWxzZTsKPiAtCX0KPiAtCj4gIAkvKiBpZiB3ZSBydW4gcngvdHhf
-YnVmIHdpdGggd29yZCBhbGlnbmVkIGFkZHJlc3NlcyB0aGVuIHdlIGFyZSBPSyAqLwo+ICAJaWYg
-KCgoKHNpemVfdCl0ZnItPnJ4X2J1ZiAmIDMpID09IDApICYmCj4gIAkgICAgKCgoc2l6ZV90KXRm
-ci0+dHhfYnVmICYgMykgPT0gMCkpCgpNb3ZlIHRoaXMgaHVuayB0byB0aGUgb3RoZXIgcGF0Y2gg
-c28gdGhhdCBpdCdzIHRvZ2V0aGVyIHdpdGggdGhlCmNoYW5nZXMgdGhhdCByZW1vdmUgdGhlIDY1
-NTM1IGxpbWl0YXRpb24uICBJdCB3b3VsZCBwcm9iYWJseSBnb29kCnRvIHJldGFpbiBhIHBvcnRp
-b24gb2YgdGhlIGNvbW1lbnQgdG8gZXhwbGFpbiB3aHkgdGhlIHNwbGl0dGluZyBpcwpuZWNlc3Nh
-cnkuCgoKPiBAQCAtNDYxLDcgKzQ0OCw3IEBAIHN0YXRpYyB2b2lkIGJjbTI4MzVfZG1hX2luaXQo
-c3RydWN0IHNwaV9tYXN0ZXIgKm1hc3Rlciwgc3RydWN0IGRldmljZSAqZGV2KQo+ICAKPiAgCS8q
-IGFsbCB3ZW50IHdlbGwsIHNvIHNldCBjYW5fZG1hICovCj4gIAltYXN0ZXItPmNhbl9kbWEgPSBi
-Y20yODM1X3NwaV9jYW5fZG1hOwo+IC0JbWFzdGVyLT5tYXhfZG1hX2xlbiA9IDY1NTM1OyAvKiBs
-aW1pdGF0aW9uIGJ5IEJDTTI4MzVfU1BJX0RMRU4gKi8KPiArCW1hc3Rlci0+bWF4X2RtYV9sZW4g
-PSA2NTUyODsgLyogbGltaXRhdGlvbiBieSBCQ00yODM1X1NQSV9ETEVOICovCgpTcHVyaW91cyB1
-bmV4cGxhaW5lZCBjaGFuZ2UuCgpUaGFua3MsCgpMdWthcwpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZl
-bEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9kcmktZGV2ZWwK
+The datasheet recommends initializing FIFOs before
+SPI enable. If we do not do it like this, there may be
+a strange behavior. We noticed that DMA does not work properly
+with FIFOs if we do not clear them beforehand or enable them
+before SPIEN.
+
+Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+---
+ drivers/spi/spi-atmel.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 6694709..0478758 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1489,6 +1489,11 @@ static void atmel_spi_init(struct atmel_spi *as)
+ {
+ 	spi_writel(as, CR, SPI_BIT(SWRST));
+ 	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
++
++	/* It is recommended to enable FIFOs first thing after reset */
++	if (as->fifo_size)
++		spi_writel(as, CR, SPI_BIT(FIFOEN));
++
+ 	if (as->caps.has_wdrbt) {
+ 		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
+ 				| SPI_BIT(MSTR));
+@@ -1499,9 +1504,6 @@ static void atmel_spi_init(struct atmel_spi *as)
+ 	if (as->use_pdc)
+ 		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
+ 	spi_writel(as, CR, SPI_BIT(SPIEN));
+-
+-	if (as->fifo_size)
+-		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ }
+ 
+ static int atmel_spi_probe(struct platform_device *pdev)
+-- 
+2.7.4

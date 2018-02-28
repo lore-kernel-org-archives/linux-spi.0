@@ -1,797 +1,90 @@
-From: Peter Pan <peterpansjtu@gmail.com>
-Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
- memory controllers
-Date: Wed, 28 Feb 2018 15:51:29 +0800
-Message-ID: <CAAyFORKQCBMOGajA6-evsO8FfFz7_8-PGqU4MmhRic18PFrLUQ@mail.gmail.com>
-References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
- <20180205232120.5851-2-boris.brezillon@bootlin.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Boris Brezillon <boris.brezillon@free-electrons.com>,
- Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180205232120.5851-2-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: atmel: init FIFOs before spi enable" to the spi tree
+Date: Wed, 28 Feb 2018 11:06:46 +0000
+Message-ID: <E1eqzZO-0005Jw-Kt@debutante>
+References: <1519727107-5821-1-git-send-email-eugen.hristev@microchip.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        nicolas.ferre@microchip.com, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Eugen Hristev <eugen.hristev@microchip.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1519727107-5821-1-git-send-email-eugen.hristev@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+The patch
 
-I'm away from work for the last month for some personal reason.
-Now I'm trying to catch up your great effort on SPI memory stuff.
+   spi: atmel: init FIFOs before spi enable
 
-Below is some comments:
+has been applied to the spi tree at
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Tue, Feb 6, 2018 at 7:21 AM, Boris Brezillon
-<boris.brezillon@bootlin.com> wrote:
-> From: Boris Brezillon <boris.brezillon@free-electrons.com>
->
-> Some controllers are exposing high-level interfaces to access various
-> kind of SPI memories. Unfortunately they do not fit in the current
-> spi_controller model and usually have drivers placed in
-> drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
-> memories in general.
->
-> This is an attempt at defining a SPI memory interface which works for
-> all kinds of SPI memories (NORs, NANDs, SRAMs).
->
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> ---
->  drivers/spi/spi.c       | 423 +++++++++++++++++++++++++++++++++++++++++++++++-
->  include/linux/spi/spi.h | 226 ++++++++++++++++++++++++++
->  2 files changed, 646 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index b33a727a0158..57bc540a0521 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -2057,6 +2057,24 @@ static int of_spi_register_master(struct spi_controller *ctlr)
->  }
->  #endif
->
-> +static int spi_controller_check_ops(struct spi_controller *ctlr)
-> +{
-> +       /*
-> +        * The controller can implement only the high-level SPI-memory like
-> +        * operations if it does not support regular SPI transfers.
-> +        */
-> +       if (ctlr->mem_ops) {
-> +               if (!ctlr->mem_ops->supports_op ||
-> +                   !ctlr->mem_ops->exec_op)
-> +                       return -EINVAL;
-> +       } else if (!ctlr->transfer && !ctlr->transfer_one &&
-> +                  !ctlr->transfer_one_message) {
-> +               return -EINVAL;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  /**
->   * spi_register_controller - register SPI master or slave controller
->   * @ctlr: initialized master, originally from spi_alloc_master() or
-> @@ -2090,6 +2108,14 @@ int spi_register_controller(struct spi_controller *ctlr)
->         if (!dev)
->                 return -ENODEV;
->
-> +       /*
-> +        * Make sure all necessary hooks are implemented before registering
-> +        * the SPI controller.
-> +        */
-> +       status = spi_controller_check_ops(ctlr);
-> +       if (status)
-> +               return status;
-> +
->         if (!spi_controller_is_slave(ctlr)) {
->                 status = of_spi_register_master(ctlr);
->                 if (status)
-> @@ -2155,10 +2181,14 @@ int spi_register_controller(struct spi_controller *ctlr)
->                         spi_controller_is_slave(ctlr) ? "slave" : "master",
->                         dev_name(&ctlr->dev));
->
-> -       /* If we're using a queued driver, start the queue */
-> -       if (ctlr->transfer)
-> +       /*
-> +        * If we're using a queued driver, start the queue. Note that we don't
-> +        * need the queueing logic if the driver is only supporting high-level
-> +        * memory operations.
-> +        */
-> +       if (ctlr->transfer) {
->                 dev_info(dev, "controller is unqueued, this is deprecated\n");
-> -       else {
-> +       } else if (ctlr->transfer_one || ctlr->transfer_one_message) {
->                 status = spi_controller_initialize_queue(ctlr);
->                 if (status) {
->                         device_del(&ctlr->dev);
-> @@ -2893,6 +2923,13 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->  {
->         struct spi_controller *ctlr = spi->controller;
->
-> +       /*
-> +        * Some controllers do not support doing regular SPI transfers. Return
-> +        * ENOTSUPP when this is the case.
-> +        */
-> +       if (!ctlr->transfer)
-> +               return -ENOTSUPP;
-> +
->         message->spi = spi;
->
->         SPI_STATISTICS_INCREMENT_FIELD(&ctlr->statistics, spi_async);
-> @@ -3321,6 +3358,386 @@ int spi_write_then_read(struct spi_device *spi,
->  }
->  EXPORT_SYMBOL_GPL(spi_write_then_read);
->
-> +/**
-> + * spi_controller_dma_map_mem_op_data() - DMA-map the buffer attached to a
-> + *                                       memory operation
-> + * @ctlr: the SPI controller requesting this dma_map()
-> + * @op: the memory operation containing the buffer to map
-> + * @sgt: a pointer to a non-initialized sg_table that will be filled by this
-> + *      function
-> + *
-> + * Some controllers might want to do DMA on the data buffer embedded in @op.
-> + * This helper prepares everything for you and provides a ready-to-use
-> + * sg_table. This function is not intended to be called from spi drivers.
-> + * Only SPI controller drivers should use it.
-> + * Note that the caller must ensure the memory region pointed by
-> + * op->data.buf.{in,out} is DMA-able before calling this function.
-> + *
-> + * Return: 0 in case of success, a negative error code otherwise.
-> + */
-> +int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-> +                                      const struct spi_mem_op *op,
-> +                                      struct sg_table *sgt)
-> +{
-> +       struct device *dmadev;
-> +
-> +       if (!op->data.nbytes)
-> +               return -EINVAL;
-> +
-> +       if (op->data.dir == SPI_MEM_DATA_OUT)
-> +               dmadev = ctlr->dma_tx ?
-> +                        ctlr->dma_tx->device->dev : ctlr->dev.parent;
-> +       else
-> +               dmadev = ctlr->dma_rx ?
-> +                        ctlr->dma_rx->device->dev : ctlr->dev.parent;
-> +
-> +       if (!dmadev)
-> +               return -EINVAL;
-> +
-> +       return spi_map_buf(ctlr, dmadev, sgt, op->data.buf.in, op->data.nbytes,
-> +                          op->data.dir == SPI_MEM_DATA_IN ?
-> +                          DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> +}
-> +EXPORT_SYMBOL_GPL(spi_controller_dma_map_mem_op_data);
-> +
-> +/**
-> + * spi_controller_dma_unmap_mem_op_data() - DMA-unmap the buffer attached to a
-> + *                                         memory operation
-> + * @ctlr: the SPI controller requesting this dma_unmap()
-> + * @op: the memory operation containing the buffer to unmap
-> + * @sgt: a pointer to an sg_table previously initialized by
-> + *      spi_controller_dma_map_mem_op_data()
-> + *
-> + * Some controllers might want to do DMA on the data buffer embedded in @op.
-> + * This helper prepares things so that the CPU can access the
-> + * op->data.buf.{in,out} buffer again.
-> + *
-> + * This function is not intended to be called from spi drivers. Only SPI
-> + * controller drivers should use it.
-> + *
-> + * This function should be called after the DMA operation has finished an is
-> + * only valid if the previous spi_controller_dma_map_mem_op_data() has returned
-> + * 0.
-> + *
-> + * Return: 0 in case of success, a negative error code otherwise.
-> + */
-> +void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
-> +                                         const struct spi_mem_op *op,
-> +                                         struct sg_table *sgt)
-> +{
-> +       struct device *dmadev;
-> +
-> +       if (!op->data.nbytes)
-> +               return;
-> +
-> +       if (op->data.dir == SPI_MEM_DATA_OUT)
-> +               dmadev = ctlr->dma_tx ?
-> +                        ctlr->dma_tx->device->dev : ctlr->dev.parent;
-> +       else
-> +               dmadev = ctlr->dma_rx ?
-> +                        ctlr->dma_rx->device->dev : ctlr->dev.parent;
-> +
-> +       spi_unmap_buf(ctlr, dmadev, sgt,
-> +                     op->data.dir == SPI_MEM_DATA_IN ?
-> +                     DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> +}
-> +EXPORT_SYMBOL_GPL(spi_controller_dma_unmap_mem_op_data);
-> +
-> +static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
-> +{
-> +       u32 mode = mem->spi->mode;
-> +
-> +       switch (buswidth) {
-> +       case 1:
-> +               return 0;
-> +
-> +       case 2:
-> +               if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
-> +                   (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))
-> +                       return 0;
-> +
-> +               break;
-> +
-> +       case 4:
-> +               if ((tx && (mode & SPI_TX_QUAD)) ||
-> +                   (!tx && (mode & SPI_RX_QUAD)))
-> +                       return 0;
-> +
-> +               break;
-> +
-> +       default:
-> +               break;
-> +       }
-> +
-> +       return -ENOTSUPP;
-> +}
-> +
-> +/**
-> + * spi_mem_supports_op() - Check if a memory device and the controller it is
-> + *                        connected to support a specific memory operation
-> + * @mem: the SPI memory
-> + * @op: the memory operation to check
-> + *
-> + * Some controllers are only supporting Single or Dual IOs, others might only
-> + * support specific opcodes, or it can even be that the controller and device
-> + * both support Quad IOs but the hardware prevents you from using it because
-> + * only 2 IO lines are connected.
-> + *
-> + * This function checks whether a specific operation is supported.
-> + *
-> + * Return: true if @op is supported, false otherwise.
-> + */
-> +bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> +{
-> +       struct spi_controller *ctlr = mem->spi->controller;
-> +
-> +       if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
-> +               return false;
-> +
-> +       if (op->addr.nbytes &&
-> +           spi_check_buswidth_req(mem, op->addr.buswidth, true))
-> +               return false;
-> +
-> +       if (op->dummy.nbytes &&
-> +           spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-> +               return false;
-> +
-> +       if (op->data.nbytes &&
-> +           spi_check_buswidth_req(mem, op->data.buswidth,
-> +                                  op->data.dir == SPI_MEM_DATA_IN ?
-> +                                  false : true))
-> +               return false;
-> +
-> +       if (ctlr->mem_ops)
-> +               return ctlr->mem_ops->supports_op(mem, op);
-> +
-> +       return true;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_mem_supports_op);
-> +
-> +/**
-> + * spi_mem_exec_op() - Execute a memory operation
-> + * @mem: the SPI memory
-> + * @op: the memory operation to execute
-> + *
-> + * Executes a memory operation.
-> + *
-> + * This function first checks that @op is supported and then tries to execute
-> + * it.
-> + *
-> + * Return: 0 in case of success, a negative error code otherwise.
-> + */
-> +int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> +{
-> +       unsigned int tmpbufsize, xferpos = 0, totalxferlen = 0;
-> +       struct spi_controller *ctlr = mem->spi->controller;
-> +       struct spi_transfer xfers[4] = { };
-> +       struct spi_message msg;
-> +       u8 *tmpbuf;
-> +       int ret;
-> +
-> +       if (!spi_mem_supports_op(mem, op))
-> +               return -ENOTSUPP;
-> +
-> +       if (ctlr->mem_ops) {
-> +               if (ctlr->auto_runtime_pm) {
-> +                       ret = pm_runtime_get_sync(ctlr->dev.parent);
-> +                       if (ret < 0) {
-> +                               dev_err(&ctlr->dev,
-> +                                       "Failed to power device: %d\n",
-> +                                       ret);
-> +                               return ret;
-> +                       }
-> +               }
-> +
-> +               mutex_lock(&ctlr->bus_lock_mutex);
-> +               mutex_lock(&ctlr->io_mutex);
-> +               ret = ctlr->mem_ops->exec_op(mem, op);
-> +               mutex_unlock(&ctlr->io_mutex);
-> +               mutex_unlock(&ctlr->bus_lock_mutex);
-> +
-> +               if (ctlr->auto_runtime_pm)
-> +                       pm_runtime_put(ctlr->dev.parent);
-> +
-> +               /*
-> +                * Some controllers only optimize specific paths (typically the
-> +                * read path) and expect the core to use the regular SPI
-> +                * interface in these cases.
-> +                */
-> +               if (!ret || ret != -ENOTSUPP)
-> +                       return ret;
-> +       }
-> +
-> +       tmpbufsize = sizeof(op->cmd.opcode) + op->addr.nbytes +
-> +                    op->dummy.nbytes;
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Here you are using sizeof(op->cmd.opcode) while the code after this
-assumes opcode is u8(ie. "memcpy(tmpbuf + 1, op->addr.buf, op->addr.nbytes);")
-It may be confused.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Peter Pan
+Mark
 
-> +
-> +       /*
-> +        * Allocate a buffer to transmit the CMD, ADDR cycles with kmalloc() so
-> +        * we're guaranteed that this buffer is DMA-able, as required by the
-> +        * SPI layer.
-> +        */
-> +       tmpbuf = kzalloc(tmpbufsize, GFP_KERNEL | GFP_DMA);
-> +       if (!tmpbuf)
-> +               return -ENOMEM;
-> +
-> +       spi_message_init(&msg);
-> +
-> +       tmpbuf[0] = op->cmd.opcode;
-> +       xfers[xferpos].tx_buf = tmpbuf;
-> +       xfers[xferpos].len = sizeof(op->cmd.opcode);
-> +       xfers[xferpos].tx_nbits = op->cmd.buswidth;
-> +       spi_message_add_tail(&xfers[xferpos], &msg);
-> +       xferpos++;
-> +       totalxferlen++;
-> +
-> +       if (op->addr.nbytes) {
-> +               memcpy(tmpbuf + 1, op->addr.buf, op->addr.nbytes);
-> +               xfers[xferpos].tx_buf = tmpbuf + 1;
-> +               xfers[xferpos].len = op->addr.nbytes;
-> +               xfers[xferpos].tx_nbits = op->addr.buswidth;
-> +               spi_message_add_tail(&xfers[xferpos], &msg);
-> +               xferpos++;
-> +               totalxferlen += op->addr.nbytes;
-> +       }
-> +
-> +       if (op->dummy.nbytes) {
-> +               memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
-> +               xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
-> +               xfers[xferpos].len = op->dummy.nbytes;
-> +               xfers[xferpos].tx_nbits = op->dummy.buswidth;
-> +               spi_message_add_tail(&xfers[xferpos], &msg);
-> +               xferpos++;
-> +               totalxferlen += op->dummy.nbytes;
-> +       }
-> +
-> +       if (op->data.nbytes) {
-> +               if (op->data.dir == SPI_MEM_DATA_IN) {
-> +                       xfers[xferpos].rx_buf = op->data.buf.in;
-> +                       xfers[xferpos].rx_nbits = op->data.buswidth;
-> +               } else {
-> +                       xfers[xferpos].tx_buf = op->data.buf.out;
-> +                       xfers[xferpos].tx_nbits = op->data.buswidth;
-> +               }
-> +
-> +               xfers[xferpos].len = op->data.nbytes;
-> +               spi_message_add_tail(&xfers[xferpos], &msg);
-> +               xferpos++;
-> +               totalxferlen += op->data.nbytes;
-> +       }
-> +
-> +       ret = spi_sync(mem->spi, &msg);
-> +
-> +       kfree(tmpbuf);
-> +
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (msg.actual_length != totalxferlen)
-> +               return -EIO;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_mem_exec_op);
-> +
-> +/**
-> + * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
-> + *                           match controller limitations
-> + * @mem: the SPI memory
-> + * @op: the operation to adjust
-> + *
-> + * Some controllers have FIFO limitations and must split a data transfer
-> + * operation into multiple ones, others require a specific alignment for
-> + * optimized accesses. This function allows SPI mem drivers to split a single
-> + * operation into multiple sub-operations when required.
-> + *
-> + * Return: a negative error code if the controller can't properly adjust @op,
-> + *        0 otherwise. Note that @op->data.nbytes will be updated if @op
-> + *        can't be handled in a single step.
-> + */
-> +int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-> +{
-> +       struct spi_controller *ctlr = mem->spi->controller;
-> +
-> +       if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
-> +               return ctlr->mem_ops->adjust_op_size(mem, op);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
-> +
-> +static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
-> +{
-> +       return container_of(drv, struct spi_mem_driver, spidrv.driver);
-> +}
-> +
-> +static int spi_mem_probe(struct spi_device *spi)
-> +{
-> +       struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
-> +       struct spi_mem *mem;
-> +
-> +       mem = devm_kzalloc(&spi->dev, sizeof(*mem), GFP_KERNEL);
-> +       if (!mem)
-> +               return -ENOMEM;
-> +
-> +       mem->spi = spi;
-> +       spi_set_drvdata(spi, mem);
-> +
-> +       return memdrv->probe(mem);
-> +}
-> +
-> +static int spi_mem_remove(struct spi_device *spi)
-> +{
-> +       struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
-> +       struct spi_mem *mem = spi_get_drvdata(spi);
-> +
-> +       if (memdrv->remove)
-> +               return memdrv->remove(mem);
-> +
-> +       return 0;
-> +}
-> +
-> +static void spi_mem_shutdown(struct spi_device *spi)
-> +{
-> +       struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
-> +       struct spi_mem *mem = spi_get_drvdata(spi);
-> +
-> +       if (memdrv->shutdown)
-> +               memdrv->shutdown(mem);
-> +}
-> +
-> +/**
-> + * spi_mem_driver_register_with_owner() - Register a SPI memory driver
-> + * @memdrv: the SPI memory driver to register
-> + * @owner: the owner of this driver
-> + *
-> + * Registers a SPI memory driver.
-> + *
-> + * Return: 0 in case of success, a negative error core otherwise.
-> + */
-> +
-> +int spi_mem_driver_register_with_owner(struct spi_mem_driver *memdrv,
-> +                                      struct module *owner)
-> +{
-> +       memdrv->spidrv.probe = spi_mem_probe;
-> +       memdrv->spidrv.remove = spi_mem_remove;
-> +       memdrv->spidrv.shutdown = spi_mem_shutdown;
-> +
-> +       return __spi_register_driver(owner, &memdrv->spidrv);
-> +}
-> +EXPORT_SYMBOL_GPL(spi_mem_driver_register_with_owner);
-> +
-> +/**
-> + * spi_mem_driver_unregister_with_owner() - Unregister a SPI memory driver
-> + * @memdrv: the SPI memory driver to unregister
-> + *
-> + * Unregisters a SPI memory driver.
-> + */
-> +void spi_mem_driver_unregister(struct spi_mem_driver *memdrv)
-> +{
-> +       spi_unregister_driver(&memdrv->spidrv);
-> +}
-> +EXPORT_SYMBOL_GPL(spi_mem_driver_unregister);
-> +
->  /*-------------------------------------------------------------------------*/
->
->  #if IS_ENABLED(CONFIG_OF_DYNAMIC)
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 7b2170bfd6e7..af3c4ac62b55 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -27,6 +27,7 @@ struct property_entry;
->  struct spi_controller;
->  struct spi_transfer;
->  struct spi_flash_read_message;
-> +struct spi_controller_mem_ops;
->
->  /*
->   * INTERFACES between SPI master-side drivers and SPI slave protocol handlers,
-> @@ -376,6 +377,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
->   *                    transfer_one callback.
->   * @handle_err: the subsystem calls the driver to handle an error that occurs
->   *             in the generic implementation of transfer_one_message().
-> + * @mem_ops: optimized/dedicated operations for interactions with SPI memory.
-> + *          This field is optional and should only be implemented if the
-> + *          controller has native support for memory like operations.
->   * @unprepare_message: undo any work done by prepare_message().
->   * @slave_abort: abort the ongoing transfer request on an SPI slave controller
->   * @spi_flash_read: to support spi-controller hardwares that provide
-> @@ -564,6 +568,9 @@ struct spi_controller {
->         void (*handle_err)(struct spi_controller *ctlr,
->                            struct spi_message *message);
->
-> +       /* Optimized handlers for SPI memory-like operations. */
-> +       const struct spi_controller_mem_ops *mem_ops;
-> +
->         /* gpio chip select */
->         int                     *cs_gpios;
->
-> @@ -1227,6 +1234,225 @@ int spi_flash_read(struct spi_device *spi,
->
->  /*---------------------------------------------------------------------------*/
->
-> +/* SPI memory related definitions. */
-> +
-> +#define SPI_MEM_OP_CMD(__opcode, __buswidth)                   \
-> +       {                                                       \
-> +               .buswidth = __buswidth,                         \
-> +               .opcode = __opcode,                             \
-> +       }
-> +
-> +#define SPI_MEM_OP_ADDRS(__nbytes, __buf, __buswidth)          \
-> +       {                                                       \
-> +               .nbytes = __nbytes,                             \
-> +               .buf = __buf,                                   \
-> +               .buswidth = __buswidth,                         \
-> +       }
-> +
-> +#define SPI_MEM_OP_NO_ADDRS    { }
-> +
-> +#define SPI_MEM_OP_DUMMY(__nbytes, __buswidth)                 \
-> +       {                                                       \
-> +               .nbytes = __nbytes,                             \
-> +               .buswidth = __buswidth,                         \
-> +       }
-> +
-> +#define SPI_MEM_OP_NO_DUMMY    { }
-> +
-> +#define SPI_MEM_OP_DATA_IN(__nbytes, __buf, __buswidth)                \
-> +       {                                                       \
-> +               .dir = SPI_MEM_DATA_IN,                         \
-> +               .nbytes = __nbytes,                             \
-> +               .buf.in = __buf,                                \
-> +               .buswidth = __buswidth,                         \
-> +       }
-> +
-> +#define SPI_MEM_OP_DATA_OUT(__nbytes, __buf, __buswidth)       \
-> +       {                                                       \
-> +               .dir = SPI_MEM_DATA_OUT,                        \
-> +               .nbytes = __nbytes,                             \
-> +               .buf.out = __buf,                               \
-> +               .buswidth = __buswidth,                         \
-> +       }
-> +
-> +#define SPI_MEM_OP_NO_DATA     { }
-> +
-> +/**
-> + * enum spi_mem_data_dir - describes the direction of a SPI memory data
-> + *                        transfer from the controller perspective
-> + * @SPI_MEM_DATA_IN: data coming from the SPI memory
-> + * @SPI_MEM_DATA_OUT: data sent the SPI memory
-> + */
-> +enum spi_mem_data_dir {
-> +       SPI_MEM_DATA_IN,
-> +       SPI_MEM_DATA_OUT,
-> +};
-> +
-> +/**
-> + * struct spi_mem_op - describes a SPI memory operation
-> + * @cmd.buswidth: number of IO lines used to transmit the command
-> + * @cmd.opcode: operation opcode
-> + * @addr.nbytes: number of address bytes to send. Can be zero if the operation
-> + *              does not need to send an address
-> + * @addr.buswidth: number of IO lines used to transmit the address cycles
-> + * @addr.buf: buffer storing the address bytes
-> + * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
-> + *               be zero if the operation does not require dummy bytes
-> + * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
-> + * @data.buswidth: number of IO lanes used to send/receive the data
-> + * @data.dir: direction of the transfer
-> + * @data.buf.in: input buffer
-> + * @data.buf.out: output buffer
-> + */
-> +struct spi_mem_op {
-> +       struct {
-> +               u8 buswidth;
-> +               u8 opcode;
-> +       } cmd;
-> +
-> +       struct {
-> +               u8 nbytes;
-> +               u8 buswidth;
-> +               const u8 *buf;
-> +       } addr;
-> +
-> +       struct {
-> +               u8 nbytes;
-> +               u8 buswidth;
-> +       } dummy;
-> +
-> +       struct {
-> +               u8 buswidth;
-> +               enum spi_mem_data_dir dir;
-> +               unsigned int nbytes;
-> +               /* buf.{in,out} must be DMA-able. */
-> +               union {
-> +                       void *in;
-> +                       const void *out;
-> +               } buf;
-> +       } data;
-> +};
-> +
-> +#define SPI_MEM_OP(__cmd, __addr, __dummy, __data)             \
-> +       {                                                       \
-> +               .cmd = __cmd,                                   \
-> +               .addr = __addr,                                 \
-> +               .dummy = __dummy,                               \
-> +               .data = __data,                                 \
-> +       }
-> +
-> +/**
-> + * struct spi_mem - describes a SPI memory device
-> + * @spi: the underlying SPI device
-> + * @drvpriv: spi_mem_drviver private data
-> + *
-> + * Extra information that describe the SPI memory device and may be needed by
-> + * the controller to properly handle this device should be placed here.
-> + *
-> + * One example would be the device size since some controller expose their SPI
-> + * mem devices through a io-mapped region.
-> + */
-> +struct spi_mem {
-> +       struct spi_device *spi;
-> +       void *drvpriv;
-> +};
-> +
-> +/**
-> + * struct spi_mem_set_drvdata() - attach driver private data to a SPI mem
-> + *                               device
-> + * @mem: memory device
-> + * @data: data to attach to the memory device
-> + */
-> +static inline void spi_mem_set_drvdata(struct spi_mem *mem, void *data)
-> +{
-> +       mem->drvpriv = data;
-> +}
-> +
-> +/**
-> + * struct spi_mem_get_drvdata() - get driver private data attached to a SPI mem
-> + *                               device
-> + * @mem: memory device
-> + *
-> + * Return: the data attached to the mem device.
-> + */
-> +static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
-> +{
-> +       return mem->drvpriv;
-> +}
-> +
-> +/**
-> + * struct spi_controller_mem_ops - SPI memory operations
-> + * @adjust_op_size: shrink the data xfer of an operation to match controller's
-> + *                 limitations (can be alignment of max RX/TX size
-> + *                 limitations)
-> + * @supports_op: check if an operation is supported by the controller
-> + * @exec_op: execute a SPI memory operation
-> + *
-> + * This interface should be implemented by SPI controllers providing an
-> + * high-level interface to execute SPI memory operation, which is usually the
-> + * case for QSPI controllers.
-> + */
-> +struct spi_controller_mem_ops {
-> +       int (*adjust_op_size)(struct spi_mem *mem, struct spi_mem_op *op);
-> +       bool (*supports_op)(struct spi_mem *mem,
-> +                           const struct spi_mem_op *op);
-> +       int (*exec_op)(struct spi_mem *mem,
-> +                      const struct spi_mem_op *op);
-> +};
-> +
-> +int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-> +                                      const struct spi_mem_op *op,
-> +                                      struct sg_table *sg);
-> +
-> +void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
-> +                                         const struct spi_mem_op *op,
-> +                                         struct sg_table *sg);
-> +
-> +int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
-> +
-> +bool spi_mem_supports_op(struct spi_mem *mem,
-> +                        const struct spi_mem_op *op);
-> +
-> +int spi_mem_exec_op(struct spi_mem *mem,
-> +                   const struct spi_mem_op *op);
-> +
-> +/**
-> + * struct spi_mem_driver - SPI memory driver
-> + * @spidrv: inherit from a SPI driver
-> + * @probe: probe a SPI memory. Usually where detection/initialization takes
-> + *        place
-> + * @remove: remove a SPI memory
-> + * @shutdown: take appropriate action when the system is shutdown
-> + *
-> + * This is just a thin wrapper around a spi_driver. The core takes care of
-> + * allocating the spi_mem object and forwarding the probe/remove/shutdown
-> + * request to the spi_mem_driver. The reason we use this wrapper is because
-> + * we might have to stuff more information into the spi_mem struct to let
-> + * SPI controllers know more about the SPI memory they interact with, and
-> + * having this intermediate layer allows us to do that without adding more
-> + * useless fields to the spi_device object.
-> + */
-> +struct spi_mem_driver {
-> +       struct spi_driver spidrv;
-> +       int (*probe)(struct spi_mem *mem);
-> +       int (*remove)(struct spi_mem *mem);
-> +       void (*shutdown)(struct spi_mem *mem);
-> +};
-> +
-> +int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
-> +                                      struct module *owner);
-> +
-> +#define spi_mem_driver_register(__drv)                                  \
-> +       spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
-> +
-> +void spi_mem_driver_unregister(struct spi_mem_driver *drv);
-> +
-> +#define module_spi_mem_driver(__drv)                                    \
-> +       module_driver(__drv, spi_mem_driver_register,                   \
-> +                     spi_mem_driver_unregister)
-> +
-> +/*---------------------------------------------------------------------------*/
-> +
->  /*
->   * INTERFACE between board init code and SPI infrastructure.
->   *
-> --
-> 2.14.1
->
+>From 9581329eff9db72ab4fbb46a594fd7fdda3c51b0 Mon Sep 17 00:00:00 2001
+From: Eugen Hristev <eugen.hristev@microchip.com>
+Date: Tue, 27 Feb 2018 12:25:07 +0200
+Subject: [PATCH] spi: atmel: init FIFOs before spi enable
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+The datasheet recommends initializing FIFOs before
+SPI enable. If we do not do it like this, there may be
+a strange behavior. We noticed that DMA does not work properly
+with FIFOs if we do not clear them beforehand or enable them
+before SPIEN.
+
+Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/spi/spi-atmel.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 4a11fc0d4136..b7936f815373 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1512,6 +1512,11 @@ static void atmel_spi_init(struct atmel_spi *as)
+ {
+ 	spi_writel(as, CR, SPI_BIT(SWRST));
+ 	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
++
++	/* It is recommended to enable FIFOs first thing after reset */
++	if (as->fifo_size)
++		spi_writel(as, CR, SPI_BIT(FIFOEN));
++
+ 	if (as->caps.has_wdrbt) {
+ 		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
+ 				| SPI_BIT(MSTR));
+@@ -1522,9 +1527,6 @@ static void atmel_spi_init(struct atmel_spi *as)
+ 	if (as->use_pdc)
+ 		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
+ 	spi_writel(as, CR, SPI_BIT(SPIEN));
+-
+-	if (as->fifo_size)
+-		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ }
+ 
+ static int atmel_spi_probe(struct platform_device *pdev)
+-- 
+2.16.1

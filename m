@@ -1,96 +1,66 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
- memory controllers
-Date: Wed, 28 Feb 2018 13:25:49 +0100
-Message-ID: <20180228132549.75727e55@bbrezillon>
-References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
- <20180205232120.5851-2-boris.brezillon@bootlin.com>
- <CAAyFORKQCBMOGajA6-evsO8FfFz7_8-PGqU4MmhRic18PFrLUQ@mail.gmail.com>
+From: Meghana Madhyastha <meghana.madhyastha@gmail.com>
+Subject: Re: [PATCH v2 0/2] Chunk splitting of spi transfers
+Date: Fri, 2 Mar 2018 16:41:53 +0530
+Message-ID: <20180302111153.GB20064@meghana-HP-Pavilion-Notebook>
+References: <cover.1519492575.git.meghana.madhyastha@gmail.com>
+ <20180225131910.GA22086@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Boris Brezillon <boris.brezillon@free-electrons.com>,
- Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Peter Pan <peterpansjtu@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAAyFORKQCBMOGajA6-evsO8FfFz7_8-PGqU4MmhRic18PFrLUQ@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: Lukas Wunner <lukas@wunner.de>, Mark Brown <broonie@kernel.org>,
+ Daniel Vetter <daniel.vetter@intel.com>, linux-spi@vger.kernel.org,
+ Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
+ Sean Paul <seanpaul@chromium.org>, dri-devel@lists.freedesktop.org,
+ kernel@martin.sperl.org
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+In-Reply-To: <20180225131910.GA22086@wunner.de>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 28 Feb 2018 15:51:29 +0800
-Peter Pan <peterpansjtu@gmail.com> wrote:
-
-> > +int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> > +{
-> > +       unsigned int tmpbufsize, xferpos = 0, totalxferlen = 0;
-> > +       struct spi_controller *ctlr = mem->spi->controller;
-> > +       struct spi_transfer xfers[4] = { };
-> > +       struct spi_message msg;
-> > +       u8 *tmpbuf;
-> > +       int ret;
-> > +
-> > +       if (!spi_mem_supports_op(mem, op))
-> > +               return -ENOTSUPP;
-> > +
-> > +       if (ctlr->mem_ops) {
-> > +               if (ctlr->auto_runtime_pm) {
-> > +                       ret = pm_runtime_get_sync(ctlr->dev.parent);
-> > +                       if (ret < 0) {
-> > +                               dev_err(&ctlr->dev,
-> > +                                       "Failed to power device: %d\n",
-> > +                                       ret);
-> > +                               return ret;
-> > +                       }
-> > +               }
-> > +
-> > +               mutex_lock(&ctlr->bus_lock_mutex);
-> > +               mutex_lock(&ctlr->io_mutex);
-> > +               ret = ctlr->mem_ops->exec_op(mem, op);
-> > +               mutex_unlock(&ctlr->io_mutex);
-> > +               mutex_unlock(&ctlr->bus_lock_mutex);
-> > +
-> > +               if (ctlr->auto_runtime_pm)
-> > +                       pm_runtime_put(ctlr->dev.parent);
-> > +
-> > +               /*
-> > +                * Some controllers only optimize specific paths (typically the
-> > +                * read path) and expect the core to use the regular SPI
-> > +                * interface in these cases.
-> > +                */
-> > +               if (!ret || ret != -ENOTSUPP)
-> > +                       return ret;
-> > +       }
-> > +
-> > +       tmpbufsize = sizeof(op->cmd.opcode) + op->addr.nbytes +
-> > +                    op->dummy.nbytes;  
-> 
-> Here you are using sizeof(op->cmd.opcode) while the code after this
-> assumes opcode is u8(ie. "memcpy(tmpbuf + 1, op->addr.buf, op->addr.nbytes);")
-> It may be confused.
-
-Will use sizeof(op->cmd.opcode) everywhere then.
-
--- 
-Boris Brezillon, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+T24gU3VuLCBGZWIgMjUsIDIwMTggYXQgMDI6MTk6MTBQTSArMDEwMCwgTHVrYXMgV3VubmVyIHdy
+b3RlOgo+IFtjYyArPSBsaW51eC1ycGkta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmddCj4gCj4g
+T24gU2F0LCBGZWIgMjQsIDIwMTggYXQgMDY6MTU6NTlQTSArMDAwMCwgTWVnaGFuYSBNYWRoeWFz
+dGhhIHdyb3RlOgo+ID4gSSd2ZSBhZGRlZCBiY20yODM1X3NwaV90cmFuc2Zlcl9vbmVfbWVzc2Fn
+ZSBpbiBzcGktYmNtMjgzNS4gVGhpcyBjYWxscwo+ID4gc3BpX3NwbGl0X3RyYW5zZmVyc19tYXhz
+aXplIHRvIHNwbGl0IGxhcmdlIGNodW5rcyBmb3Igc3BpIGRtYSB0cmFuc2ZlcnMuIAo+ID4gSSB0
+aGVuIHJlbW92ZWQgY2h1bmsgc3BsaXR0aW5nIGluIHRoZSB0aW55ZHJtIHNwaSBoZWxwZXIgKGFz
+IG5vdyB0aGUgY29yZQo+ID4gaXMgaGFuZGxpbmcgdGhlIGNodW5rIHNwbGl0dGluZykuIEhvd2V2
+ZXIsIGFsdGhvdWdoIHRoZSBTUEkgSFcgc2hvdWxkIGJlCj4gPiBhYmxlIHRvIGFjY29tb2RhdGUg
+dXAgdG8gNjU1MzUgYnl0ZXMgZm9yIGRtYSB0cmFuc2ZlcnMsIHRoZSBzcGxpdHRpbmcgb2YKPiA+
+IGNodW5rcyB0byA2NTUzNSBieXRlcyByZXN1bHRzIGluIGEgZG1hIHRyYW5zZmVyIHRpbWUgb3V0
+IGVycm9yLiBIb3dldmVyLAo+ID4gd2hlbiB0aGUgY2h1bmtzIGFyZSBzcGxpdCB0byA8IDY0IGJ5
+dGVzIGl0IHNlZW1zIHRvIHdvcmsgZmluZS4KPiAKPiBIbSwgdGhhdCBpcyByZWFsbHkgb2RkLCBo
+b3cgZGlkIHlvdSB0ZXN0IHRoaXMgZXhhY3RseSwgd2hhdCBkaWQgeW91Cj4gdXNlIGFzIFNQSSBz
+bGF2ZT8gIEl0IGNvbnRyYWRpY3RzIG91ciBvd24gZXhwZXJpZW5jZSwgd2UncmUgdXNpbmcKPiBN
+aWNyZWwgS1NaODg1MSBFdGhlcm5ldCBjaGlwcyBhcyBTUEkgc2xhdmUgb24gc3BpMCBvZiBhIEJD
+TTI4MzcKPiBhbmQgY2FuIHNlbmQvcmVjZWl2ZSBtZXNzYWdlcyB2aWEgRE1BIHRvIHRoZSB0dW5l
+IG9mIHNldmVyYWwgaHVuZHJlZAo+IGJ5dGVzIHdpdGhvdXQgYW55IGlzc3Vlcy4gIEluIGZhY3Qs
+IGZvciBtZXNzYWdlcyA8IDk2IGJ5dGVzLCBETUEgaXMKPiBub3QgdXNlZCBhdCBhbGwsIHNvIHlv
+dSd2ZSBwcm9iYWJseSBiZWVuIHVzaW5nIGludGVycnVwdCBtb2RlLAo+IHNlZSB0aGUgQkNNMjgz
+NV9TUElfRE1BX01JTl9MRU5HVEggbWFjcm8gaW4gc3BpLWJjbTI4MzUuYy4KCkhpIEx1a2FzLAoK
+SSB0aGluayB5b3UgYXJlIHJpZ2h0LiBJIGNoZWNrZWQgaXQgYW5kIGl0cyBub3QgdXNpbmcgdGhl
+IERNQSBtb2RlIHdoaWNoCmlzIHdoeSBpdHMgd29ya2luZyB3aXRoIDY0IGJ5dGVzLgpOb3JhbGYs
+IHRoYXQgbGVhdmVzIHVzIGJhY2sgdG8gdGhlCmluaXRpYWwgdGltZSBvdXQgcHJvYmxlbS4gSSd2
+ZSB0cmllZCBkb2luZyB0aGUgbWVzc2FnZSBzcGxpdHRpbmcgaW4Kc3BpX3N5bmMgYXMgd2VsbCBh
+cyBzcGlfcHVtcF9tZXNzYWdlcy4gTWFydGluIGhhZCBleHBsYWluZWQgdGhhdCBETUEKd2lsbCB3
+YWl0IGZvcgp0aGUgU1BJIEhXIHRvIHNldCB0aGUgc2VuZF9tb3JlX2RhdGEgbGluZSwgYnV0IHRo
+ZSBTUEktSFcgaXRzZWxmIHdpbGwKc3RvcCB0cmlnZ2VyaW5nIGl0IHdoZW4gU1BJX0xFTiBpcyAw
+IGNhdXNpbmcgRE1BIHRvIHdhaXQgZm9yZXZlci4gSQp0aG91Z2h0IGlmIHdlIHNwbGl0IGl0IGJl
+Zm9yZSBpdHNlbGYsIHRoZSBTUElfTEVOIHdpbGwgbm90IGdvIHRvIHplcm8KdGh1cyBwcmV2ZW50
+aW5nIHRoaXMgcHJvYmxlbSwgaG93ZXZlciBpdCBkaWRuJ3Qgd29yayBhbmQgc3RhcnRlZApoYW5n
+aW5nLiBTbyBJJ20gYSBsaXR0bGUgdW5jZXJ0YWluIGFzIHRvIGhvdyB0byBwcm9jZWVkIGFuZCBk
+ZWJ1ZyB3aGF0CmV4YWN0bHkgaGFzIGNhdXNlZCB0aGUgdGltZSBvdXQgZHVlIHRvIHRoZSBhc3lu
+Y2hyb25vdXMgbWV0aG9kcy4KClRoYW5rcyBhbmQgcmVnYXJkcywKTWVnaGFuYQoKPiBUaGFua3Ms
+Cj4gCj4gTHVrYXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+Cg==

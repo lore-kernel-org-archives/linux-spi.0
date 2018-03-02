@@ -1,66 +1,54 @@
-From: Meghana Madhyastha <meghana.madhyastha@gmail.com>
-Subject: Re: [PATCH v2 0/2] Chunk splitting of spi transfers
-Date: Fri, 2 Mar 2018 16:41:53 +0530
-Message-ID: <20180302111153.GB20064@meghana-HP-Pavilion-Notebook>
-References: <cover.1519492575.git.meghana.madhyastha@gmail.com>
- <20180225131910.GA22086@wunner.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Lukas Wunner <lukas@wunner.de>, Mark Brown <broonie@kernel.org>,
- Daniel Vetter <daniel.vetter@intel.com>, linux-spi@vger.kernel.org,
- Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
- Sean Paul <seanpaul@chromium.org>, dri-devel@lists.freedesktop.org,
- kernel@martin.sperl.org
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-Content-Disposition: inline
-In-Reply-To: <20180225131910.GA22086@wunner.de>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH] spi: Fix scatterlist elements size in spi_map_buf
+Date: Fri,  2 Mar 2018 15:55:09 +0100
+Message-ID: <20180302145509.24563-1-maxime.chevallier@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU3VuLCBGZWIgMjUsIDIwMTggYXQgMDI6MTk6MTBQTSArMDEwMCwgTHVrYXMgV3VubmVyIHdy
-b3RlOgo+IFtjYyArPSBsaW51eC1ycGkta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmddCj4gCj4g
-T24gU2F0LCBGZWIgMjQsIDIwMTggYXQgMDY6MTU6NTlQTSArMDAwMCwgTWVnaGFuYSBNYWRoeWFz
-dGhhIHdyb3RlOgo+ID4gSSd2ZSBhZGRlZCBiY20yODM1X3NwaV90cmFuc2Zlcl9vbmVfbWVzc2Fn
-ZSBpbiBzcGktYmNtMjgzNS4gVGhpcyBjYWxscwo+ID4gc3BpX3NwbGl0X3RyYW5zZmVyc19tYXhz
-aXplIHRvIHNwbGl0IGxhcmdlIGNodW5rcyBmb3Igc3BpIGRtYSB0cmFuc2ZlcnMuIAo+ID4gSSB0
-aGVuIHJlbW92ZWQgY2h1bmsgc3BsaXR0aW5nIGluIHRoZSB0aW55ZHJtIHNwaSBoZWxwZXIgKGFz
-IG5vdyB0aGUgY29yZQo+ID4gaXMgaGFuZGxpbmcgdGhlIGNodW5rIHNwbGl0dGluZykuIEhvd2V2
-ZXIsIGFsdGhvdWdoIHRoZSBTUEkgSFcgc2hvdWxkIGJlCj4gPiBhYmxlIHRvIGFjY29tb2RhdGUg
-dXAgdG8gNjU1MzUgYnl0ZXMgZm9yIGRtYSB0cmFuc2ZlcnMsIHRoZSBzcGxpdHRpbmcgb2YKPiA+
-IGNodW5rcyB0byA2NTUzNSBieXRlcyByZXN1bHRzIGluIGEgZG1hIHRyYW5zZmVyIHRpbWUgb3V0
-IGVycm9yLiBIb3dldmVyLAo+ID4gd2hlbiB0aGUgY2h1bmtzIGFyZSBzcGxpdCB0byA8IDY0IGJ5
-dGVzIGl0IHNlZW1zIHRvIHdvcmsgZmluZS4KPiAKPiBIbSwgdGhhdCBpcyByZWFsbHkgb2RkLCBo
-b3cgZGlkIHlvdSB0ZXN0IHRoaXMgZXhhY3RseSwgd2hhdCBkaWQgeW91Cj4gdXNlIGFzIFNQSSBz
-bGF2ZT8gIEl0IGNvbnRyYWRpY3RzIG91ciBvd24gZXhwZXJpZW5jZSwgd2UncmUgdXNpbmcKPiBN
-aWNyZWwgS1NaODg1MSBFdGhlcm5ldCBjaGlwcyBhcyBTUEkgc2xhdmUgb24gc3BpMCBvZiBhIEJD
-TTI4MzcKPiBhbmQgY2FuIHNlbmQvcmVjZWl2ZSBtZXNzYWdlcyB2aWEgRE1BIHRvIHRoZSB0dW5l
-IG9mIHNldmVyYWwgaHVuZHJlZAo+IGJ5dGVzIHdpdGhvdXQgYW55IGlzc3Vlcy4gIEluIGZhY3Qs
-IGZvciBtZXNzYWdlcyA8IDk2IGJ5dGVzLCBETUEgaXMKPiBub3QgdXNlZCBhdCBhbGwsIHNvIHlv
-dSd2ZSBwcm9iYWJseSBiZWVuIHVzaW5nIGludGVycnVwdCBtb2RlLAo+IHNlZSB0aGUgQkNNMjgz
-NV9TUElfRE1BX01JTl9MRU5HVEggbWFjcm8gaW4gc3BpLWJjbTI4MzUuYy4KCkhpIEx1a2FzLAoK
-SSB0aGluayB5b3UgYXJlIHJpZ2h0LiBJIGNoZWNrZWQgaXQgYW5kIGl0cyBub3QgdXNpbmcgdGhl
-IERNQSBtb2RlIHdoaWNoCmlzIHdoeSBpdHMgd29ya2luZyB3aXRoIDY0IGJ5dGVzLgpOb3JhbGYs
-IHRoYXQgbGVhdmVzIHVzIGJhY2sgdG8gdGhlCmluaXRpYWwgdGltZSBvdXQgcHJvYmxlbS4gSSd2
-ZSB0cmllZCBkb2luZyB0aGUgbWVzc2FnZSBzcGxpdHRpbmcgaW4Kc3BpX3N5bmMgYXMgd2VsbCBh
-cyBzcGlfcHVtcF9tZXNzYWdlcy4gTWFydGluIGhhZCBleHBsYWluZWQgdGhhdCBETUEKd2lsbCB3
-YWl0IGZvcgp0aGUgU1BJIEhXIHRvIHNldCB0aGUgc2VuZF9tb3JlX2RhdGEgbGluZSwgYnV0IHRo
-ZSBTUEktSFcgaXRzZWxmIHdpbGwKc3RvcCB0cmlnZ2VyaW5nIGl0IHdoZW4gU1BJX0xFTiBpcyAw
-IGNhdXNpbmcgRE1BIHRvIHdhaXQgZm9yZXZlci4gSQp0aG91Z2h0IGlmIHdlIHNwbGl0IGl0IGJl
-Zm9yZSBpdHNlbGYsIHRoZSBTUElfTEVOIHdpbGwgbm90IGdvIHRvIHplcm8KdGh1cyBwcmV2ZW50
-aW5nIHRoaXMgcHJvYmxlbSwgaG93ZXZlciBpdCBkaWRuJ3Qgd29yayBhbmQgc3RhcnRlZApoYW5n
-aW5nLiBTbyBJJ20gYSBsaXR0bGUgdW5jZXJ0YWluIGFzIHRvIGhvdyB0byBwcm9jZWVkIGFuZCBk
-ZWJ1ZyB3aGF0CmV4YWN0bHkgaGFzIGNhdXNlZCB0aGUgdGltZSBvdXQgZHVlIHRvIHRoZSBhc3lu
-Y2hyb25vdXMgbWV0aG9kcy4KClRoYW5rcyBhbmQgcmVnYXJkcywKTWVnaGFuYQoKPiBUaGFua3Ms
-Cj4gCj4gTHVrYXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
-Cg==
+When SPI transfers can be offloaded using DMA, the SPI core need to
+build a scatterlist to make sure that the buffer to be transferred is
+dma-able.
+
+This patch fixes the scatterlist entry size computation in the case
+where the maximum acceptable scatterlist entry supported by the DMA
+controller is less than PAGE_SIZE, when the buffer is vmalloced.
+
+For each entry, the actual size is given by the minimum between the
+desc_len (which is the max buffer size supported by the DMA controller)
+and the remaining buffer length until we cross a page boundary.
+
+Fixes: 65598c13fd66 ("spi: Fix per-page mapping of unaligned vmalloc-ed buffer")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/spi/spi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b33a727a0158..4153f959f28c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -779,8 +779,14 @@ static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+ 	for (i = 0; i < sgs; i++) {
+ 
+ 		if (vmalloced_buf || kmap_buf) {
+-			min = min_t(size_t,
+-				    len, desc_len - offset_in_page(buf));
++			/*
++			 * Next scatterlist entry size is the minimum between
++			 * the desc_len and the remaining buffer length that
++			 * fits in a page.
++			 */
++			min = min_t(size_t, desc_len,
++				    min_t(size_t, len,
++					  PAGE_SIZE - offset_in_page(buf)));
+ 			if (vmalloced_buf)
+ 				vm_page = vmalloc_to_page(buf);
+ 			else
+-- 
+2.11.0

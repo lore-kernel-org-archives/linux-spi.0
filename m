@@ -1,91 +1,113 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix scatterlist elements size in spi_map_buf" to the spi tree
-Date: Fri, 02 Mar 2018 18:02:03 +0000
-Message-ID: <E1erp0N-0005Fv-JL@debutante>
-References: <20180302145509.24563-1-maxime.chevallier@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-spi@vger.kernel.org
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180302145509.24563-1-maxime.chevallier@bootlin.com>
-Sender: stable-owner@vger.kernel.org
+From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Subject: Re: [PATCH v2 0/2] Chunk splitting of spi transfers
+Date: Sun, 4 Mar 2018 18:38:42 +0100
+Message-ID: <f6dbf3ca-4c1b-90cc-c4af-8889f7407180@tronnes.org>
+References: <cover.1519492575.git.meghana.madhyastha@gmail.com>
+ <20180225131910.GA22086@wunner.de>
+ <20180302111153.GB20064@meghana-HP-Pavilion-Notebook>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+To: Meghana Madhyastha <meghana.madhyastha@gmail.com>,
+ Lukas Wunner <lukas@wunner.de>, Mark Brown <broonie@kernel.org>,
+ Daniel Vetter <daniel.vetter@intel.com>, linux-spi@vger.kernel.org,
+ Sean Paul <seanpaul@chromium.org>, dri-devel@lists.freedesktop.org,
+ kernel@martin.sperl.org
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20180302111153.GB20064@meghana-HP-Pavilion-Notebook>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: Fix scatterlist elements size in spi_map_buf
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From ce99319a182fe766be67f96338386f3ec73e321c Mon Sep 17 00:00:00 2001
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Date: Fri, 2 Mar 2018 15:55:09 +0100
-Subject: [PATCH] spi: Fix scatterlist elements size in spi_map_buf
-
-When SPI transfers can be offloaded using DMA, the SPI core need to
-build a scatterlist to make sure that the buffer to be transferred is
-dma-able.
-
-This patch fixes the scatterlist entry size computation in the case
-where the maximum acceptable scatterlist entry supported by the DMA
-controller is less than PAGE_SIZE, when the buffer is vmalloced.
-
-For each entry, the actual size is given by the minimum between the
-desc_len (which is the max buffer size supported by the DMA controller)
-and the remaining buffer length until we cross a page boundary.
-
-Fixes: 65598c13fd66 ("spi: Fix per-page mapping of unaligned vmalloc-ed buffer")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b33a727a0158..4153f959f28c 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -779,8 +779,14 @@ static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
- 	for (i = 0; i < sgs; i++) {
- 
- 		if (vmalloced_buf || kmap_buf) {
--			min = min_t(size_t,
--				    len, desc_len - offset_in_page(buf));
-+			/*
-+			 * Next scatterlist entry size is the minimum between
-+			 * the desc_len and the remaining buffer length that
-+			 * fits in a page.
-+			 */
-+			min = min_t(size_t, desc_len,
-+				    min_t(size_t, len,
-+					  PAGE_SIZE - offset_in_page(buf)));
- 			if (vmalloced_buf)
- 				vm_page = vmalloc_to_page(buf);
- 			else
--- 
-2.16.2
+CkRlbiAwMi4wMy4yMDE4IDEyLjExLCBza3JldiBNZWdoYW5hIE1hZGh5YXN0aGE6Cj4gT24gU3Vu
+LCBGZWIgMjUsIDIwMTggYXQgMDI6MTk6MTBQTSArMDEwMCwgTHVrYXMgV3VubmVyIHdyb3RlOgo+
+PiBbY2MgKz0gbGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnXQo+Pgo+PiBPbiBT
+YXQsIEZlYiAyNCwgMjAxOCBhdCAwNjoxNTo1OVBNICswMDAwLCBNZWdoYW5hIE1hZGh5YXN0aGEg
+d3JvdGU6Cj4+PiBJJ3ZlIGFkZGVkIGJjbTI4MzVfc3BpX3RyYW5zZmVyX29uZV9tZXNzYWdlIGlu
+IHNwaS1iY20yODM1LiBUaGlzIGNhbGxzCj4+PiBzcGlfc3BsaXRfdHJhbnNmZXJzX21heHNpemUg
+dG8gc3BsaXQgbGFyZ2UgY2h1bmtzIGZvciBzcGkgZG1hIHRyYW5zZmVycy4KPj4+IEkgdGhlbiBy
+ZW1vdmVkIGNodW5rIHNwbGl0dGluZyBpbiB0aGUgdGlueWRybSBzcGkgaGVscGVyIChhcyBub3cg
+dGhlIGNvcmUKPj4+IGlzIGhhbmRsaW5nIHRoZSBjaHVuayBzcGxpdHRpbmcpLiBIb3dldmVyLCBh
+bHRob3VnaCB0aGUgU1BJIEhXIHNob3VsZCBiZQo+Pj4gYWJsZSB0byBhY2NvbW9kYXRlIHVwIHRv
+IDY1NTM1IGJ5dGVzIGZvciBkbWEgdHJhbnNmZXJzLCB0aGUgc3BsaXR0aW5nIG9mCj4+PiBjaHVu
+a3MgdG8gNjU1MzUgYnl0ZXMgcmVzdWx0cyBpbiBhIGRtYSB0cmFuc2ZlciB0aW1lIG91dCBlcnJv
+ci4gSG93ZXZlciwKPj4+IHdoZW4gdGhlIGNodW5rcyBhcmUgc3BsaXQgdG8gPCA2NCBieXRlcyBp
+dCBzZWVtcyB0byB3b3JrIGZpbmUuCj4+IEhtLCB0aGF0IGlzIHJlYWxseSBvZGQsIGhvdyBkaWQg
+eW91IHRlc3QgdGhpcyBleGFjdGx5LCB3aGF0IGRpZCB5b3UKPj4gdXNlIGFzIFNQSSBzbGF2ZT8g
+IEl0IGNvbnRyYWRpY3RzIG91ciBvd24gZXhwZXJpZW5jZSwgd2UncmUgdXNpbmcKPj4gTWljcmVs
+IEtTWjg4NTEgRXRoZXJuZXQgY2hpcHMgYXMgU1BJIHNsYXZlIG9uIHNwaTAgb2YgYSBCQ00yODM3
+Cj4+IGFuZCBjYW4gc2VuZC9yZWNlaXZlIG1lc3NhZ2VzIHZpYSBETUEgdG8gdGhlIHR1bmUgb2Yg
+c2V2ZXJhbCBodW5kcmVkCj4+IGJ5dGVzIHdpdGhvdXQgYW55IGlzc3Vlcy4gIEluIGZhY3QsIGZv
+ciBtZXNzYWdlcyA8IDk2IGJ5dGVzLCBETUEgaXMKPj4gbm90IHVzZWQgYXQgYWxsLCBzbyB5b3Un
+dmUgcHJvYmFibHkgYmVlbiB1c2luZyBpbnRlcnJ1cHQgbW9kZSwKPj4gc2VlIHRoZSBCQ00yODM1
+X1NQSV9ETUFfTUlOX0xFTkdUSCBtYWNybyBpbiBzcGktYmNtMjgzNS5jLgo+IEhpIEx1a2FzLAo+
+Cj4gSSB0aGluayB5b3UgYXJlIHJpZ2h0LiBJIGNoZWNrZWQgaXQgYW5kIGl0cyBub3QgdXNpbmcg
+dGhlIERNQSBtb2RlIHdoaWNoCj4gaXMgd2h5IGl0cyB3b3JraW5nIHdpdGggNjQgYnl0ZXMuCj4g
+Tm9yYWxmLCB0aGF0IGxlYXZlcyB1cyBiYWNrIHRvIHRoZQo+IGluaXRpYWwgdGltZSBvdXQgcHJv
+YmxlbS4gSSd2ZSB0cmllZCBkb2luZyB0aGUgbWVzc2FnZSBzcGxpdHRpbmcgaW4KPiBzcGlfc3lu
+YyBhcyB3ZWxsIGFzIHNwaV9wdW1wX21lc3NhZ2VzLiBNYXJ0aW4gaGFkIGV4cGxhaW5lZCB0aGF0
+IERNQQo+IHdpbGwgd2FpdCBmb3IKPiB0aGUgU1BJIEhXIHRvIHNldCB0aGUgc2VuZF9tb3JlX2Rh
+dGEgbGluZSwgYnV0IHRoZSBTUEktSFcgaXRzZWxmIHdpbGwKPiBzdG9wIHRyaWdnZXJpbmcgaXQg
+d2hlbiBTUElfTEVOIGlzIDAgY2F1c2luZyBETUEgdG8gd2FpdCBmb3JldmVyLiBJCj4gdGhvdWdo
+dCBpZiB3ZSBzcGxpdCBpdCBiZWZvcmUgaXRzZWxmLCB0aGUgU1BJX0xFTiB3aWxsIG5vdCBnbyB0
+byB6ZXJvCj4gdGh1cyBwcmV2ZW50aW5nIHRoaXMgcHJvYmxlbSwgaG93ZXZlciBpdCBkaWRuJ3Qg
+d29yayBhbmQgc3RhcnRlZAo+IGhhbmdpbmcuIFNvIEknbSBhIGxpdHRsZSB1bmNlcnRhaW4gYXMg
+dG8gaG93IHRvIHByb2NlZWQgYW5kIGRlYnVnIHdoYXQKPiBleGFjdGx5IGhhcyBjYXVzZWQgdGhl
+IHRpbWUgb3V0IGR1ZSB0byB0aGUgYXN5bmNocm9ub3VzIG1ldGhvZHMuCgpJIGRpZCBhIHF1aWNr
+IHRlc3QgYW5kIGF0IGxlYXN0IHRoaXMgaXMgd29ya2luZzoKCmludCB0aW55ZHJtX3NwaV90cmFu
+c2ZlcihzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1MzIgc3BlZWRfaHosCiDCoMKgwqAgwqDCoMKg
+IMKgwqDCoCDCoHN0cnVjdCBzcGlfdHJhbnNmZXIgKmhlYWRlciwgdTggYnB3LCBjb25zdCB2b2lk
+ICpidWYsCiDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoHNpemVfdCBsZW4pCnsKIMKgwqDCoCBzdHJ1
+Y3Qgc3BpX3RyYW5zZmVyIHRyID0gewogwqDCoMKgIMKgwqDCoCAuYml0c19wZXJfd29yZCA9IGJw
+dywKIMKgwqDCoCDCoMKgwqAgLnNwZWVkX2h6ID0gc3BlZWRfaHosCiDCoMKgwqAgwqDCoMKgIC50
+eF9idWYgPSBidWYsCiDCoMKgwqAgwqDCoMKgIC5sZW4gPSBsZW4sCiDCoMKgwqAgfTsKIMKgwqDC
+oCBzdHJ1Y3Qgc3BpX21lc3NhZ2UgbTsKIMKgwqDCoCBzaXplX3QgbWF4c2l6ZTsKIMKgwqDCoCBp
+bnQgcmV0OwoKIMKgwqDCoCBtYXhzaXplID0gdGlueWRybV9zcGlfbWF4X3RyYW5zZmVyX3NpemUo
+c3BpLCAwKTsKCiDCoMKgwqAgaWYgKGRybV9kZWJ1ZyAmIERSTV9VVF9EUklWRVIpCiDCoMKgwqAg
+wqDCoMKgIHByX2RlYnVnKCJbZHJtOiVzXSBicHc9JXUsIG1heHNpemU9JXp1LCB0cmFuc2ZlcnM6
+XG4iLAogwqDCoMKgIMKgwqDCoCDCoMKgwqAgwqBfX2Z1bmNfXywgYnB3LCBtYXhzaXplKTsKCiDC
+oMKgwqAgc3BpX21lc3NhZ2VfaW5pdCgmbSk7CiDCoMKgwqAgbS5zcGkgPSBzcGk7CiDCoMKgwqAg
+aWYgKGhlYWRlcikKIMKgwqDCoCDCoMKgwqAgc3BpX21lc3NhZ2VfYWRkX3RhaWwoaGVhZGVyLCAm
+bSk7CiDCoMKgwqAgc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnRyLCAmbSk7CgogwqDCoMKgIHJldCA9
+IHNwaV9zcGxpdF90cmFuc2ZlcnNfbWF4c2l6ZShzcGktPmNvbnRyb2xsZXIsICZtLCBtYXhzaXpl
+LCAKR0ZQX0tFUk5FTCk7CiDCoMKgwqAgaWYgKHJldCkKIMKgwqDCoCDCoMKgwqAgcmV0dXJuIHJl
+dDsKCiDCoMKgwqAgdGlueWRybV9kYmdfc3BpX21lc3NhZ2Uoc3BpLCAmbSk7CgogwqDCoMKgIHJl
+dHVybiBzcGlfc3luYyhzcGksICZtKTsKfQpFWFBPUlRfU1lNQk9MKHRpbnlkcm1fc3BpX3RyYW5z
+ZmVyKTsKCgpMb2c6ClvCoMKgIDM5LjAxNTY0NF0gW2RybTptaXBpX2RiaV9mYl9kaXJ0eSBbbWlw
+aV9kYmldXSBGbHVzaGluZyBbRkI6MzZdIHgxPTAsIAp4Mj0zMjAsIHkxPTAsIHkyPTI0MAoKW8Kg
+wqAgMzkuMDE4MDc5XSBbZHJtOm1pcGlfZGJpX3R5cGVjM19jb21tYW5kIFttaXBpX2RiaV1dIGNt
+ZD0yYSwgcGFyPTAwIAowMCAwMSAzZgpbwqDCoCAzOS4wMTgxMjldIFtkcm06dGlueWRybV9zcGlf
+dHJhbnNmZXJdIGJwdz04LCBtYXhzaXplPTY1NTMyLCB0cmFuc2ZlcnM6ClvCoMKgIDM5LjAxODE1
+Ml3CoMKgwqDCoCB0cigwKTogc3BlZWQ9MTBNSHosIGJwdz04LCBsZW49MSwgdHhfYnVmPVsyYV0K
+W8KgwqAgMzkuMDE4MjMxXSBbZHJtOnRpbnlkcm1fc3BpX3RyYW5zZmVyXSBicHc9OCwgbWF4c2l6
+ZT02NTUzMiwgdHJhbnNmZXJzOgpbwqDCoCAzOS4wMTgyNDhdwqDCoMKgwqAgdHIoMCk6IHNwZWVk
+PTEwTUh6LCBicHc9OCwgbGVuPTQsIHR4X2J1Zj1bMDAgMDAgMDEgM2ZdCgpbwqDCoCAzOS4wMTgz
+MzBdIFtkcm06bWlwaV9kYmlfdHlwZWMzX2NvbW1hbmQgW21pcGlfZGJpXV0gY21kPTJiLCBwYXI9
+MDAgCjAwIDAwIGVmClvCoMKgIDM5LjAxODM0N10gW2RybTp0aW55ZHJtX3NwaV90cmFuc2Zlcl0g
+YnB3PTgsIG1heHNpemU9NjU1MzIsIHRyYW5zZmVyczoKW8KgwqAgMzkuMDE4MzYyXcKgwqDCoMKg
+IHRyKDApOiBzcGVlZD0xME1IeiwgYnB3PTgsIGxlbj0xLCB0eF9idWY9WzJiXQpbwqDCoCAzOS4w
+MTgzOTZdIFtkcm06dGlueWRybV9zcGlfdHJhbnNmZXJdIGJwdz04LCBtYXhzaXplPTY1NTMyLCB0
+cmFuc2ZlcnM6ClvCoMKgIDM5LjAxODQyOF3CoMKgwqDCoCB0cigwKTogc3BlZWQ9MTBNSHosIGJw
+dz04LCBsZW49NCwgdHhfYnVmPVswMCAwMCAwMCBlZl0KClvCoMKgIDM5LjAxODQ4N10gW2RybTpt
+aXBpX2RiaV90eXBlYzNfY29tbWFuZCBbbWlwaV9kYmldXSBjbWQ9MmMsIGxlbj0xNTM2MDAKW8Kg
+wqAgMzkuMDE4NTAyXSBbZHJtOnRpbnlkcm1fc3BpX3RyYW5zZmVyXSBicHc9OCwgbWF4c2l6ZT02
+NTUzMiwgdHJhbnNmZXJzOgpbwqDCoCAzOS4wMTg1MTddwqDCoMKgwqAgdHIoMCk6IHNwZWVkPTEw
+TUh6LCBicHc9OCwgbGVuPTEsIHR4X2J1Zj1bMmNdClvCoMKgIDM5LjAxODU2NV0gW2RybTp0aW55
+ZHJtX3NwaV90cmFuc2Zlcl0gYnB3PTgsIG1heHNpemU9NjU1MzIsIHRyYW5zZmVyczoKW8KgwqAg
+MzkuMDE4NTk0XcKgwqDCoMKgIHRyKDApOiBzcGVlZD00OE1IeiwgYnB3PTgsIGxlbj02NTUzMiwg
+dHhfYnVmPVtjNiAxOCAKYzYgMTggYzYgMTggYzYgMTggYzYgMTggYzYgMTggYzYgMTggYzYgMTgg
+Li4uXQpbwqDCoCAzOS4wMTg2MDhdwqDCoMKgwqAgdHIoMSk6IHNwZWVkPTQ4TUh6LCBicHc9OCwg
+bGVuPTY1NTMyLCB0eF9idWY9WzA2IDE4IAowNiAxOCAwNiAxOCAwNiAxOCAwNiAxOCAwNiAxOCAw
+NiAxOCAwNiAxOCAuLi5dClvCoMKgIDM5LjAxODYyMV3CoMKgwqDCoCB0cigyKTogc3BlZWQ9NDhN
+SHosIGJwdz04LCBsZW49MjI1MzYsIHR4X2J1Zj1bMTAgODIgCjEwIDgyIDEwIDgyIDEwIDgyIDEw
+IDgyIDEwIDgyIDE4IGUzIDE4IGUzIC4uLl0KCgpOb3JhbGYuCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmkt
+ZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCg==

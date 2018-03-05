@@ -1,14 +1,15 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
+From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
 Subject: Re: [RFC PATCH 1/6] spi: Extend the core to ease integration of SPI
  memory controllers
-Date: Mon, 5 Mar 2018 10:00:25 +0100
-Message-ID: <20180305100025.3b25ae3d@bbrezillon>
+Date: Mon, 5 Mar 2018 14:01:59 +0100
+Message-ID: <7314a397-2821-ceb8-a9ff-f14d0dd2a176@wedev4u.fr>
 References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
  <20180205232120.5851-2-boris.brezillon@bootlin.com>
  <c45b9709-be32-d864-c8b2-0e33d7da28b2@wedev4u.fr>
+ <20180305100025.3b25ae3d@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Boris Brezillon <boris.brezillon@free-electrons.com>,
  Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
  Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
@@ -20,9 +21,10 @@ Cc: Boris Brezillon <boris.brezillon@free-electrons.com>,
  Sourav Poddar <sourav.poddar@ti.com>,
  Brian Norris <computersforpeace@gmail.com>,
  David Woodhouse <dwmw2@infradead.org>
-To: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <c45b9709-be32-d864-c8b2-0e33d7da28b2@wedev4u.fr>
+In-Reply-To: <20180305100025.3b25ae3d@bbrezillon>
+Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -34,342 +36,270 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Cyrille,
-
-On Sun, 4 Mar 2018 22:15:20 +0100
-Cyrille Pitchen <cyrille.pitchen@wedev4u.fr> wrote:
-
-> > +
-> > +static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
-> > +{
-> > +	u32 mode = mem->spi->mode;
-> > +
-> > +	switch (buswidth) {
-> > +	case 1:
-> > +		return 0;
-> > +
-> > +	case 2:
-> > +		if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
-> > +		    (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))  
-> 
-> Some SPI (flash) controller may support Quad protocols but no Duals
-> protocols at all. Hence you should only test SPI_{R,T]X_DUAL.
-
-Hm, I'd rather not change that, since it's what have been used so far.
-Note that a controller that wants to put more constraints can still
-implement the ->supports_op() hook.
-
-> 
-> Anyway, I think the function should completely be removed because
-> SPI_{R,T}X_{DUAL,QUAD} flags should be deprecated.
-> 
-> They were fine when introduced long time ago when Quad SPI flashes only
-> supported Fast Read 1-1-4 and maybe few of them Page Program 1-1-4.
-> 
-> However for many years now, Quad SPI flashes support far much SPI protocols
-> and commands. For instance:
-> Fast Read 1-1-4
-> Fast Read 1-4-4
-> (Fast Read 4-4-4)
-> Page Program 1-1-4
-> Page Program 1-4-4
-> Page Program 4-4-4
-> 
-> Fast Read x-y-z means that:
-> - the op code is transfered (tx) on x I/O line(s)
-> - the address, mode and dummies are transfered (tx) on y I/O line(s)
-> - the data are received (rx) on z I/O line(s)
-> 
-> Page Program x-y-z stands for:
-> - the op code being transfered (tx) on x I/O line(s)
-> - the address is transfered (tx) on y I/O line(s)
-> the data are transfered (tx) on z I/O line(s)
-> 
-> Then some SPI flash controllers and/or memories may support Fast Read 1-4-4
-> but not Page Program 1-1-4 whereas others may support Page Program 1-1-4
-> but not Fast Read 1-4-4.
-> 
-> So using only SPI_{R,T}X_{DUAL,QUAD} flags, how do we make the difference
-> between support of Fast Read 1-4-4 and Page Program 1-1-4 or between
-> Fast Read 1-1-4 and Fast Read 1-4-4 ?
-
-I think you're mixing 2 different things:
-
-1/ The RX/TX buswidth capabilities for generic SPI/DualSPI/QuadSPI
-   transfers, which is, I guess, what these flags have been created for
-
-2/ The buswidth of each instruction of a memory-like operation (by
-   instruction I mean, CMD, ADDR, DATA cycles)
-
-There is no reason for a generic SPI controller to specify things for
-#2, because it doesn't know anything about this spi-mem protocol, all
-it can do is send/recv data using a specific bus width.
-
-> Indeed some latest (Cypress) memories only support Fast Read 1-4-4 but no
-> longer Fast Read 1-1-4.
-
-And here you're going to specific. This framework is not here to fully
-handle SPI NOR devices, it's here to abstract things enough to make SPI
-controllers compatible with various SPI memories or devices that want
-to use a similar protocol (FPGAs?).
-
-> 
-> I guess we'd rather use something close to the SNOR_HWCAPS_* macros as
-> defined in include/linux/mtd/spi-nor.h
-
-->supports_op() should be enough to check such constraints, I don't see
-a need for yet another set of macros.
-
-> 
-> SPI_{R,T}X_{DUAL,QUAD} flags are no longer suited to SPI flash memories for
-> a long time now.
-
-See my explanation above. I don't think SPI_{R,T}X_{DUAL,QUAD} have
-been created to handle SPI memories, it's just a way to specify the
-supported buswidth for a SPI transfer, that's all. And we still need
-them for regular SPI transfers.
-
-> 
-> 
-> > +			return 0;
-> > +
-> > +		break;
-> > +
-> > +	case 4:
-> > +		if ((tx && (mode & SPI_TX_QUAD)) ||
-> > +		    (!tx && (mode & SPI_RX_QUAD)))
-> > +			return 0;
-> > +
-> > +		break;
-> > +
-> > +	default:
-> > +		break;
-> > +	}
-> > +
-> > +	return -ENOTSUPP;
-> > +}
-> > +
-> > +/**
-> > + * spi_mem_supports_op() - Check if a memory device and the controller it is
-> > + *			   connected to support a specific memory operation
-> > + * @mem: the SPI memory
-> > + * @op: the memory operation to check
-> > + *
-> > + * Some controllers are only supporting Single or Dual IOs, others might only
-> > + * support specific opcodes, or it can even be that the controller and device
-> > + * both support Quad IOs but the hardware prevents you from using it because
-> > + * only 2 IO lines are connected.
-> > + *
-> > + * This function checks whether a specific operation is supported.
-> > + *
-> > + * Return: true if @op is supported, false otherwise.
-> > + */
-> > +bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> > +{
-> > +	struct spi_controller *ctlr = mem->spi->controller;
-> > +
-> > +	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->addr.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->addr.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->dummy.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-> > +		return false;
-> > +
-> > +	if (op->data.nbytes &&
-> > +	    spi_check_buswidth_req(mem, op->data.buswidth,
-> > +				   op->data.dir == SPI_MEM_DATA_IN ?
-> > +				   false : true))
-> > +		return false;  
-> 
-> You should remove the 4 tests and calls of spi_check_buswidth_req() above.
-
-Why?
-
-> Based on spi_controller_check_ops(), when ctrl->mem_ops is not NULL,
-> mem_ops->supports_op() must be provided, this hook is mandatory.
-
-Well, this was a mistake on my side, see my reply to Vignesh.
-
-> 
-> So call this latest hook only, has done just below. You may want to keep the 4
-> tests above and spi_check_buswidth_req() but then move them in a
-> stand-alone function that could be used as a default implementation of
-> mem_ops->supports_op() if you want to allow some SPI controller drivers not
-> to implement ->supports_op() by their own.
-
-Okay, that's an option: make ->supports_op() mandatory and then provide
-an helper if the controller does not have any extra constraints. I see
-one problem with this approach:
-
-> 
-> However it should be considered a transitionnal and at some point I think
-> SPI_{R,T}X_{DUAL,QUAD} flags should just be removed because many
-> developers submitting patches to spi-nor have often been confused by how
-> properly use those flags in their drivers.
-
-And here I disagree, again. SPI_{R,T}X_{DUAL,QUAD} are still useful for
-regular SPI transfers. I guess not every Dual/Quad SPI device is using
-the spi-mem protocol, so we need to support this case too.
-
-> 
-> Till then, if you removed the 4 tests above, at least new SPI flash
-> controller drivers won't have to set some odd combination of flags in
-> spi->mode to make their support of SPI flash memories work as they want.
-
-Hm, I'm not sure about spi->mode. AFAICT, SPI_{R,T}X_{DUAL,QUAD}
-flags are only encoding what the device supports, not the current mode.
-
-But I guess you were talking about controller->mode_bits which encodes
-the controller capabilities, and I think this one is still useful if
-the controller is a generic SPI controller.
-
-As a side note, I'll add that it's possible to have a device supporting
-SPI+DualSPI+QuadSPI and still have this device partially connected to
-the host controller (some pins left unconnected), hence the
-spi-{tx,rx}-bus-width properties in DTs. So we really want to check
-the device capabilities, the controller capabilities and the limitation
-implied by the board design.
-
-> > +
-> > +/**
-> > + * struct spi_mem_op - describes a SPI memory operation
-> > + * @cmd.buswidth: number of IO lines used to transmit the command
-> > + * @cmd.opcode: operation opcode
-> > + * @addr.nbytes: number of address bytes to send. Can be zero if the operation
-> > + *		 does not need to send an address
-> > + * @addr.buswidth: number of IO lines used to transmit the address cycles
-> > + * @addr.buf: buffer storing the address bytes
-> > + * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
-> > + *		  be zero if the operation does not require dummy bytes
-> > + * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
-> > + * @data.buswidth: number of IO lanes used to send/receive the data
-> > + * @data.dir: direction of the transfer
-> > + * @data.buf.in: input buffer
-> > + * @data.buf.out: output buffer
-> > + */
-> > +struct spi_mem_op {
-> > +	struct {
-> > +		u8 buswidth;
-> > +		u8 opcode;
-> > +	} cmd;
-> > +
-> > +	struct {
-> > +		u8 nbytes;
-> > +		u8 buswidth;
-> > +		const u8 *buf;  
-> 
-> For the address value, I would rather use some loff_t type, instead of
-> const u8 *. 
-> Actually, most (if not all) SPI flash controllers have some hardware
-> register to set the address value of the SPI flash command to be
-> sent. Hence having this value directly in the right format would avoid to
-> convert.
-
-What is the appropriate format? An address encoded in a 64-bit integer
-does not give any information on how these bytes should be transmitted
-on the bus. SPI NOR is passing the address in big endian, SPI NAND seems
-to do the same, but we're not sure this will be the case for all kind of
-memories or devices using this spi-mem protocol.
-
-Also, by passing it through an integer we limit ourselves to 8 bytes.
-That should be enough, but who knows :-).
-
-If we go for this loff_t field, we'll have to add an endianness field
-here and force all drivers to check it.
-
-> AFAIK, only m25p80 needs to convert from loff_t to u8 * and only
-> when using the regular SPI API, ie spi_sync(), as the 'struct
-> spi_flash_read_messag' already uses some integral type too.
-
-And I'm not sure this was a good idea.
-
-> 
-> 
-> > +	} addr;
-> > +
-> > +	struct {
-> > +		u8 nbytes;
-> > +		u8 buswidth;
-> > +	} dummy;
-> > +
-> > +	struct {
-> > +		u8 buswidth;
-> > +		enum spi_mem_data_dir dir;
-> > +		unsigned int nbytes;
-> > +		/* buf.{in,out} must be DMA-able. */
-> > +		union {
-> > +			void *in;
-> > +			const void *out;
-> > +		} buf;
-> > +	} data;  
-> 
-> Also, you should add another member in this structure to set the 'type' of
-> operation for the SPI flash command:
-> - register read
-> - register write
-> - memory read
-> - memory write
-> - memory erase
-> [- SFDP read ? ]
-> [- OTP read/write ? ]
-
-No, really, that's not belonging here. It's entirely SPI NOR specific.
-
-> 
-> Indeed, some SPI flash controller drivers need this information.
-
-Then they'll have to be converted/reworked to not depend on that. I did
-it for the FSL QSPI controller, and it worked fine. I'm pretty sure
-almost all controllers will fit well in the new framework. For those
-controllers that really are only able to handle SPI NOR devices (I'm
-thinking about the Intel one, but there may be others), then they should
-not be converted to the spi_mem approach.
-
-> 
-> For instance the Atmel QSPI controller has some optional feature that allow
-> to scramble data on the fly from/to the (Q)SPI memory. Hence the scrambling
-> should be enabled for memory {read,write} (Fast Read, Page Programm)
-> commands but disabled for register {read,write} commands (Read ID, Write
-> Enable, Read/Write Status Register, ...).
-
-If scrambling is really something that we need to support, then I think
-adding a spi_mem_op->data.scramble boolean would be more appropriate.
-
-> 
-> SPI flash controller drivers *should not* have to check the SPI flash command
-> instruction op code to guess what kind of operation is being performed.
-
-I completely agree. Not only they shouldn't check the opcode to guess
-what is being done, but, IMHO, they should also not try to determine
-what kind of operation is being done, so your suggestion to add an
-operation type information is not a good idea.
-
-> 
-> Another example:
-> Some (Q)SPI flash controllers map the the SPI flash memory into the system
-> address space then perform some "memcpy-like" operations to access this SPI
-> flash memory whereas they rely on reguler register to handle SPI flash
-> commands reading from or writing into the internal registers fo the SPI
-> flash. So those controller too need to make the difference between register
-> and memory operations.
-
-I already thought about the direct mapping stuff, and I think this
-should be supported through new hooks in spi_mem_ops (->map() +
-->unmap()?).
-
-Thanks for your review.
-
-Boris
-
--- 
-Boris Brezillon, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+SGkgQm9yaXMsCgpMZSAwNS8wMy8yMDE4IMOgIDEwOjAwLCBCb3JpcyBCcmV6aWxsb24gYSDDqWNy
+aXTCoDoKPiBIZWxsbyBDeXJpbGxlLAo+IAo+IE9uIFN1biwgNCBNYXIgMjAxOCAyMjoxNToyMCAr
+MDEwMAo+IEN5cmlsbGUgUGl0Y2hlbiA8Y3lyaWxsZS5waXRjaGVuQHdlZGV2NHUuZnI+IHdyb3Rl
+Ogo+IAo+Pj4gKwo+Pj4gK3N0YXRpYyBpbnQgc3BpX2NoZWNrX2J1c3dpZHRoX3JlcShzdHJ1Y3Qg
+c3BpX21lbSAqbWVtLCB1OCBidXN3aWR0aCwgYm9vbCB0eCkKPj4+ICt7Cj4+PiArCXUzMiBtb2Rl
+ID0gbWVtLT5zcGktPm1vZGU7Cj4+PiArCj4+PiArCXN3aXRjaCAoYnVzd2lkdGgpIHsKPj4+ICsJ
+Y2FzZSAxOgo+Pj4gKwkJcmV0dXJuIDA7Cj4+PiArCj4+PiArCWNhc2UgMjoKPj4+ICsJCWlmICgo
+dHggJiYgKG1vZGUgJiAoU1BJX1RYX0RVQUwgfCBTUElfVFhfUVVBRCkpKSB8fAo+Pj4gKwkJICAg
+ICghdHggJiYgKG1vZGUgJiAoU1BJX1JYX0RVQUwgfCBTUElfUlhfUVVBRCkpKSkgIAo+Pgo+PiBT
+b21lIFNQSSAoZmxhc2gpIGNvbnRyb2xsZXIgbWF5IHN1cHBvcnQgUXVhZCBwcm90b2NvbHMgYnV0
+IG5vIER1YWxzCj4+IHByb3RvY29scyBhdCBhbGwuIEhlbmNlIHlvdSBzaG91bGQgb25seSB0ZXN0
+IFNQSV97UixUXVhfRFVBTC4KPiAKPiBIbSwgSSdkIHJhdGhlciBub3QgY2hhbmdlIHRoYXQsIHNp
+bmNlIGl0J3Mgd2hhdCBoYXZlIGJlZW4gdXNlZCBzbyBmYXIuCj4gTm90ZSB0aGF0IGEgY29udHJv
+bGxlciB0aGF0IHdhbnRzIHRvIHB1dCBtb3JlIGNvbnN0cmFpbnRzIGNhbiBzdGlsbAo+IGltcGxl
+bWVudCB0aGUgLT5zdXBwb3J0c19vcCgpIGhvb2suCj4gCj4+Cj4+IEFueXdheSwgSSB0aGluayB0
+aGUgZnVuY3Rpb24gc2hvdWxkIGNvbXBsZXRlbHkgYmUgcmVtb3ZlZCBiZWNhdXNlCj4+IFNQSV97
+UixUfVhfe0RVQUwsUVVBRH0gZmxhZ3Mgc2hvdWxkIGJlIGRlcHJlY2F0ZWQuCj4+Cj4+IFRoZXkg
+d2VyZSBmaW5lIHdoZW4gaW50cm9kdWNlZCBsb25nIHRpbWUgYWdvIHdoZW4gUXVhZCBTUEkgZmxh
+c2hlcyBvbmx5Cj4+IHN1cHBvcnRlZCBGYXN0IFJlYWQgMS0xLTQgYW5kIG1heWJlIGZldyBvZiB0
+aGVtIFBhZ2UgUHJvZ3JhbSAxLTEtNC4KPj4KPj4gSG93ZXZlciBmb3IgbWFueSB5ZWFycyBub3cs
+IFF1YWQgU1BJIGZsYXNoZXMgc3VwcG9ydCBmYXIgbXVjaCBTUEkgcHJvdG9jb2xzCj4+IGFuZCBj
+b21tYW5kcy4gRm9yIGluc3RhbmNlOgo+PiBGYXN0IFJlYWQgMS0xLTQKPj4gRmFzdCBSZWFkIDEt
+NC00Cj4+IChGYXN0IFJlYWQgNC00LTQpCj4+IFBhZ2UgUHJvZ3JhbSAxLTEtNAo+PiBQYWdlIFBy
+b2dyYW0gMS00LTQKPj4gUGFnZSBQcm9ncmFtIDQtNC00Cj4+Cj4+IEZhc3QgUmVhZCB4LXkteiBt
+ZWFucyB0aGF0Ogo+PiAtIHRoZSBvcCBjb2RlIGlzIHRyYW5zZmVyZWQgKHR4KSBvbiB4IEkvTyBs
+aW5lKHMpCj4+IC0gdGhlIGFkZHJlc3MsIG1vZGUgYW5kIGR1bW1pZXMgYXJlIHRyYW5zZmVyZWQg
+KHR4KSBvbiB5IEkvTyBsaW5lKHMpCj4+IC0gdGhlIGRhdGEgYXJlIHJlY2VpdmVkIChyeCkgb24g
+eiBJL08gbGluZShzKQo+Pgo+PiBQYWdlIFByb2dyYW0geC15LXogc3RhbmRzIGZvcjoKPj4gLSB0
+aGUgb3AgY29kZSBiZWluZyB0cmFuc2ZlcmVkICh0eCkgb24geCBJL08gbGluZShzKQo+PiAtIHRo
+ZSBhZGRyZXNzIGlzIHRyYW5zZmVyZWQgKHR4KSBvbiB5IEkvTyBsaW5lKHMpCj4+IHRoZSBkYXRh
+IGFyZSB0cmFuc2ZlcmVkICh0eCkgb24geiBJL08gbGluZShzKQo+Pgo+PiBUaGVuIHNvbWUgU1BJ
+IGZsYXNoIGNvbnRyb2xsZXJzIGFuZC9vciBtZW1vcmllcyBtYXkgc3VwcG9ydCBGYXN0IFJlYWQg
+MS00LTQKPj4gYnV0IG5vdCBQYWdlIFByb2dyYW0gMS0xLTQgd2hlcmVhcyBvdGhlcnMgbWF5IHN1
+cHBvcnQgUGFnZSBQcm9ncmFtIDEtMS00Cj4+IGJ1dCBub3QgRmFzdCBSZWFkIDEtNC00Lgo+Pgo+
+PiBTbyB1c2luZyBvbmx5IFNQSV97UixUfVhfe0RVQUwsUVVBRH0gZmxhZ3MsIGhvdyBkbyB3ZSBt
+YWtlIHRoZSBkaWZmZXJlbmNlCj4+IGJldHdlZW4gc3VwcG9ydCBvZiBGYXN0IFJlYWQgMS00LTQg
+YW5kIFBhZ2UgUHJvZ3JhbSAxLTEtNCBvciBiZXR3ZWVuCj4+IEZhc3QgUmVhZCAxLTEtNCBhbmQg
+RmFzdCBSZWFkIDEtNC00ID8KPiAKPiBJIHRoaW5rIHlvdSdyZSBtaXhpbmcgMiBkaWZmZXJlbnQg
+dGhpbmdzOgo+IAo+IDEvIFRoZSBSWC9UWCBidXN3aWR0aCBjYXBhYmlsaXRpZXMgZm9yIGdlbmVy
+aWMgU1BJL0R1YWxTUEkvUXVhZFNQSQo+ICAgIHRyYW5zZmVycywgd2hpY2ggaXMsIEkgZ3Vlc3Ms
+IHdoYXQgdGhlc2UgZmxhZ3MgaGF2ZSBiZWVuIGNyZWF0ZWQgZm9yCj4gCj4gMi8gVGhlIGJ1c3dp
+ZHRoIG9mIGVhY2ggaW5zdHJ1Y3Rpb24gb2YgYSBtZW1vcnktbGlrZSBvcGVyYXRpb24gKGJ5Cj4g
+ICAgaW5zdHJ1Y3Rpb24gSSBtZWFuLCBDTUQsIEFERFIsIERBVEEgY3ljbGVzKQo+IAo+IFRoZXJl
+IGlzIG5vIHJlYXNvbiBmb3IgYSBnZW5lcmljIFNQSSBjb250cm9sbGVyIHRvIHNwZWNpZnkgdGhp
+bmdzIGZvcgo+ICMyLCBiZWNhdXNlIGl0IGRvZXNuJ3Qga25vdyBhbnl0aGluZyBhYm91dCB0aGlz
+IHNwaS1tZW0gcHJvdG9jb2wsIGFsbAo+IGl0IGNhbiBkbyBpcyBzZW5kL3JlY3YgZGF0YSB1c2lu
+ZyBhIHNwZWNpZmljIGJ1cyB3aWR0aC4KPgoKSSBtaWdodCBiZSB3cm9uZyBidXQgSSB0aGluayBT
+UEkgZmxhc2hlcyBhcmUgdGhlIG9ubHkgU1BJIGRldmljZXMgdXNpbmcgbW9yZQp0aGFuIG9uZSBJ
+L08gbGluZSB0byBzZW5kIGFuZCByZWNlaXZlIGRhdGEuCgpBbnl3YXksIGxldCBhc3N1bWUgZGV2
+aWNlcyBvdGhlciB0aGFuIFNQSSBmbGFzaCBhbHNvIHVzZSBtYW55IEkvTyBsaW5lcwpoZW5jZSBt
+YWtlIHVzZSBvZiB0aGUgU1BJX3tSLFR9WF97RFVBTCxRVUFEfSBmbGFncy4KCkl0IGxvb2tzIGxp
+a2UgdGhpcyBzZXJpZXMgaXMgZGVhbGluZyBhIG5ldyBTUEkgQVBJIGRlZGljYXRlZCB0byBTUEkg
+bWVtb3JpZXMuCkp1c3QgbXkgb3BpbmlvbiBidXQgMS8gYW5kIHRoZSBhc3NvY2lhdGVkIFNQSV97
+UixUfVhfe0RVQUwsUVVBRH0gZmxhZ3Mgc2hvdWxkCmJlIGxlZnQgb25seSBmb3IgdGhlIGdlbmVy
+aWMgU1BJIEFQSSwgLSB3aXRoIHNwaV9zeW5jKCksICdzdHJ1Y3Qgc3BpX21lc3NhZ2UnLAonc3Ry
+dWN0IHNwaV90cmFuc2ZlcicgYW5kIHNvIG9uLgoKT24gdGhlIG90aGVyIGhhbmQsIHRoZSBuZXcg
+U1BJIGZsYXNoIGRlZGljYXRlZCBBUEkgc2hvdWxkIG9ubHkgZm9jdXMgb24gMi8KYW5kIHRvdGFs
+bHkgaWdub3JlIHRoZSBTUElfe1IsVH1YX3tEVUFMLFFVQUR9IGZsYWdzLgoKSWYgd2UgdGFrZSB0
+aGUgZXhhbXBsZSBvZiB0aGUgc2FtYTVkMiBRU1BJIGNvbnRyb2xsZXIsIHdlIGNhbiB1c2UgbW9y
+ZSB0aGFuIG9uZQpJL08gbGluZSBvbmx5IHdoZW4gY29uZmlndXJlIGluICJzZXJpYWwgZmxhc2gg
+bWVtb3J5IiBtb2RlLiBIb3dldmVyIHdoZW4gaW4gInNwaSIKbW9kZSwgd2hlbiBjYW4gb25seSB1
+c2UgcmVndWxhciBNT1NJIGFuZCBNSVNPIGxpbmVzLgoKV2l0aCBzcGlfbWVtX3N1cHBvcnRzX29w
+KCkgYXMgcHJvcG9zZWQgYmVsb3csIHdlIHdvdWxkIGhhdmUgdG8gc2V0IGJvdGggU1BJX1JYX1FV
+QUQKYW5kIFNQSV9UWF9RVUFEIHRvIGFsbG93IEZhc3QgUmVhZCAxLTQtNCB3aGVuIGluICJzZXJp
+YWwgZmxhc2ggbWVtb3J5IiBtb2RlLgpIb3dldmVyIHdpdGggb3RoZXIgU1BJIGRldmljZXMsIGhl
+bmNlIHdoZW4gaW4gInNwaSIgbW9kZSwgdGhlIFNQSV97UixUfVhfUVVBRCBmbGFncwp3b3VsZCBz
+dGlsbCBiZSBzZXQgdGhvdWdoIHRoZSBjb250cm9sbGVyIGNhbm5vdCBzdXBwb3J0IG1vcmUgdGhh
+biBhIHNpbmdsZSBJL08gbGluZS4KClRoZSBTUElfe1IsVH1fe0RVQUwsUVVBRH0gZmxhZ3MgY291
+bGQgYmUgdGVzdGVkIGluIGEgZGVmYXVsdCBpbXBsZW1lbnRhdGlvbiBvZgpzcGlfbWVtX3N1cHBv
+cnRzX29wKCkgYnV0IHNob3VsZCBub3QgYmUgdGVzdGVkIGFzIG1hbmRhdG9yeSBmbGFncyBmb3Ig
+YWxsIFNQSQooZmxhc2gpIGNvbnRyb2xsZXJzLgoKIAo+PiBJbmRlZWQgc29tZSBsYXRlc3QgKEN5
+cHJlc3MpIG1lbW9yaWVzIG9ubHkgc3VwcG9ydCBGYXN0IFJlYWQgMS00LTQgYnV0IG5vCj4+IGxv
+bmdlciBGYXN0IFJlYWQgMS0xLTQuCj4gCj4gQW5kIGhlcmUgeW91J3JlIGdvaW5nIHRvIHNwZWNp
+ZmljLiBUaGlzIGZyYW1ld29yayBpcyBub3QgaGVyZSB0byBmdWxseQo+IGhhbmRsZSBTUEkgTk9S
+IGRldmljZXMsIGl0J3MgaGVyZSB0byBhYnN0cmFjdCB0aGluZ3MgZW5vdWdoIHRvIG1ha2UgU1BJ
+Cj4gY29udHJvbGxlcnMgY29tcGF0aWJsZSB3aXRoIHZhcmlvdXMgU1BJIG1lbW9yaWVzIG9yIGRl
+dmljZXMgdGhhdCB3YW50Cj4gdG8gdXNlIGEgc2ltaWxhciBwcm90b2NvbCAoRlBHQXM/KS4KPiAK
+Pj4KPj4gSSBndWVzcyB3ZSdkIHJhdGhlciB1c2Ugc29tZXRoaW5nIGNsb3NlIHRvIHRoZSBTTk9S
+X0hXQ0FQU18qIG1hY3JvcyBhcwo+PiBkZWZpbmVkIGluIGluY2x1ZGUvbGludXgvbXRkL3NwaS1u
+b3IuaAo+IAo+IC0+c3VwcG9ydHNfb3AoKSBzaG91bGQgYmUgZW5vdWdoIHRvIGNoZWNrIHN1Y2gg
+Y29uc3RyYWludHMsIEkgZG9uJ3Qgc2VlCj4gYSBuZWVkIGZvciB5ZXQgYW5vdGhlciBzZXQgb2Yg
+bWFjcm9zLgo+IAo+Pgo+PiBTUElfe1IsVH1YX3tEVUFMLFFVQUR9IGZsYWdzIGFyZSBubyBsb25n
+ZXIgc3VpdGVkIHRvIFNQSSBmbGFzaCBtZW1vcmllcyBmb3IKPj4gYSBsb25nIHRpbWUgbm93Lgo+
+IAo+IFNlZSBteSBleHBsYW5hdGlvbiBhYm92ZS4gSSBkb24ndCB0aGluayBTUElfe1IsVH1YX3tE
+VUFMLFFVQUR9IGhhdmUKPiBiZWVuIGNyZWF0ZWQgdG8gaGFuZGxlIFNQSSBtZW1vcmllcywgaXQn
+cyBqdXN0IGEgd2F5IHRvIHNwZWNpZnkgdGhlCj4gc3VwcG9ydGVkIGJ1c3dpZHRoIGZvciBhIFNQ
+SSB0cmFuc2ZlciwgdGhhdCdzIGFsbC4gQW5kIHdlIHN0aWxsIG5lZWQKPiB0aGVtIGZvciByZWd1
+bGFyIFNQSSB0cmFuc2ZlcnMuCj4gCj4+Cj4+Cj4+PiArCQkJcmV0dXJuIDA7Cj4+PiArCj4+PiAr
+CQlicmVhazsKPj4+ICsKPj4+ICsJY2FzZSA0Ogo+Pj4gKwkJaWYgKCh0eCAmJiAobW9kZSAmIFNQ
+SV9UWF9RVUFEKSkgfHwKPj4+ICsJCSAgICAoIXR4ICYmIChtb2RlICYgU1BJX1JYX1FVQUQpKSkK
+Pj4+ICsJCQlyZXR1cm4gMDsKPj4+ICsKPj4+ICsJCWJyZWFrOwo+Pj4gKwo+Pj4gKwlkZWZhdWx0
+Ogo+Pj4gKwkJYnJlYWs7Cj4+PiArCX0KPj4+ICsKPj4+ICsJcmV0dXJuIC1FTk9UU1VQUDsKPj4+
+ICt9Cj4+PiArCj4+PiArLyoqCj4+PiArICogc3BpX21lbV9zdXBwb3J0c19vcCgpIC0gQ2hlY2sg
+aWYgYSBtZW1vcnkgZGV2aWNlIGFuZCB0aGUgY29udHJvbGxlciBpdCBpcwo+Pj4gKyAqCQkJICAg
+Y29ubmVjdGVkIHRvIHN1cHBvcnQgYSBzcGVjaWZpYyBtZW1vcnkgb3BlcmF0aW9uCj4+PiArICog
+QG1lbTogdGhlIFNQSSBtZW1vcnkKPj4+ICsgKiBAb3A6IHRoZSBtZW1vcnkgb3BlcmF0aW9uIHRv
+IGNoZWNrCj4+PiArICoKPj4+ICsgKiBTb21lIGNvbnRyb2xsZXJzIGFyZSBvbmx5IHN1cHBvcnRp
+bmcgU2luZ2xlIG9yIER1YWwgSU9zLCBvdGhlcnMgbWlnaHQgb25seQo+Pj4gKyAqIHN1cHBvcnQg
+c3BlY2lmaWMgb3Bjb2Rlcywgb3IgaXQgY2FuIGV2ZW4gYmUgdGhhdCB0aGUgY29udHJvbGxlciBh
+bmQgZGV2aWNlCj4+PiArICogYm90aCBzdXBwb3J0IFF1YWQgSU9zIGJ1dCB0aGUgaGFyZHdhcmUg
+cHJldmVudHMgeW91IGZyb20gdXNpbmcgaXQgYmVjYXVzZQo+Pj4gKyAqIG9ubHkgMiBJTyBsaW5l
+cyBhcmUgY29ubmVjdGVkLgo+Pj4gKyAqCj4+PiArICogVGhpcyBmdW5jdGlvbiBjaGVja3Mgd2hl
+dGhlciBhIHNwZWNpZmljIG9wZXJhdGlvbiBpcyBzdXBwb3J0ZWQuCj4+PiArICoKPj4+ICsgKiBS
+ZXR1cm46IHRydWUgaWYgQG9wIGlzIHN1cHBvcnRlZCwgZmFsc2Ugb3RoZXJ3aXNlLgo+Pj4gKyAq
+Lwo+Pj4gK2Jvb2wgc3BpX21lbV9zdXBwb3J0c19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLCBjb25z
+dCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApCj4+PiArewo+Pj4gKwlzdHJ1Y3Qgc3BpX2NvbnRyb2xs
+ZXIgKmN0bHIgPSBtZW0tPnNwaS0+Y29udHJvbGxlcjsKPj4+ICsKPj4+ICsJaWYgKHNwaV9jaGVj
+a19idXN3aWR0aF9yZXEobWVtLCBvcC0+Y21kLmJ1c3dpZHRoLCB0cnVlKSkKPj4+ICsJCXJldHVy
+biBmYWxzZTsKPj4+ICsKPj4+ICsJaWYgKG9wLT5hZGRyLm5ieXRlcyAmJgo+Pj4gKwkgICAgc3Bp
+X2NoZWNrX2J1c3dpZHRoX3JlcShtZW0sIG9wLT5hZGRyLmJ1c3dpZHRoLCB0cnVlKSkKPj4+ICsJ
+CXJldHVybiBmYWxzZTsKPj4+ICsKPj4+ICsJaWYgKG9wLT5kdW1teS5uYnl0ZXMgJiYKPj4+ICsJ
+ICAgIHNwaV9jaGVja19idXN3aWR0aF9yZXEobWVtLCBvcC0+ZHVtbXkuYnVzd2lkdGgsIHRydWUp
+KQo+Pj4gKwkJcmV0dXJuIGZhbHNlOwo+Pj4gKwo+Pj4gKwlpZiAob3AtPmRhdGEubmJ5dGVzICYm
+Cj4+PiArCSAgICBzcGlfY2hlY2tfYnVzd2lkdGhfcmVxKG1lbSwgb3AtPmRhdGEuYnVzd2lkdGgs
+Cj4+PiArCQkJCSAgIG9wLT5kYXRhLmRpciA9PSBTUElfTUVNX0RBVEFfSU4gPwo+Pj4gKwkJCQkg
+ICBmYWxzZSA6IHRydWUpKQo+Pj4gKwkJcmV0dXJuIGZhbHNlOyAgCj4+Cj4+IFlvdSBzaG91bGQg
+cmVtb3ZlIHRoZSA0IHRlc3RzIGFuZCBjYWxscyBvZiBzcGlfY2hlY2tfYnVzd2lkdGhfcmVxKCkg
+YWJvdmUuCj4gCj4gV2h5Pwo+IAo+PiBCYXNlZCBvbiBzcGlfY29udHJvbGxlcl9jaGVja19vcHMo
+KSwgd2hlbiBjdHJsLT5tZW1fb3BzIGlzIG5vdCBOVUxMLAo+PiBtZW1fb3BzLT5zdXBwb3J0c19v
+cCgpIG11c3QgYmUgcHJvdmlkZWQsIHRoaXMgaG9vayBpcyBtYW5kYXRvcnkuCj4gCj4gV2VsbCwg
+dGhpcyB3YXMgYSBtaXN0YWtlIG9uIG15IHNpZGUsIHNlZSBteSByZXBseSB0byBWaWduZXNoLgo+
+IAo+Pgo+PiBTbyBjYWxsIHRoaXMgbGF0ZXN0IGhvb2sgb25seSwgaGFzIGRvbmUganVzdCBiZWxv
+dy4gWW91IG1heSB3YW50IHRvIGtlZXAgdGhlIDQKPj4gdGVzdHMgYWJvdmUgYW5kIHNwaV9jaGVj
+a19idXN3aWR0aF9yZXEoKSBidXQgdGhlbiBtb3ZlIHRoZW0gaW4gYQo+PiBzdGFuZC1hbG9uZSBm
+dW5jdGlvbiB0aGF0IGNvdWxkIGJlIHVzZWQgYXMgYSBkZWZhdWx0IGltcGxlbWVudGF0aW9uIG9m
+Cj4+IG1lbV9vcHMtPnN1cHBvcnRzX29wKCkgaWYgeW91IHdhbnQgdG8gYWxsb3cgc29tZSBTUEkg
+Y29udHJvbGxlciBkcml2ZXJzIG5vdAo+PiB0byBpbXBsZW1lbnQgLT5zdXBwb3J0c19vcCgpIGJ5
+IHRoZWlyIG93bi4KPiAKPiBPa2F5LCB0aGF0J3MgYW4gb3B0aW9uOiBtYWtlIC0+c3VwcG9ydHNf
+b3AoKSBtYW5kYXRvcnkgYW5kIHRoZW4gcHJvdmlkZQo+IGFuIGhlbHBlciBpZiB0aGUgY29udHJv
+bGxlciBkb2VzIG5vdCBoYXZlIGFueSBleHRyYSBjb25zdHJhaW50cy4gSSBzZWUKPiBvbmUgcHJv
+YmxlbSB3aXRoIHRoaXMgYXBwcm9hY2g6Cj4gCj4+Cj4+IEhvd2V2ZXIgaXQgc2hvdWxkIGJlIGNv
+bnNpZGVyZWQgYSB0cmFuc2l0aW9ubmFsIGFuZCBhdCBzb21lIHBvaW50IEkgdGhpbmsKPj4gU1BJ
+X3tSLFR9WF97RFVBTCxRVUFEfSBmbGFncyBzaG91bGQganVzdCBiZSByZW1vdmVkIGJlY2F1c2Ug
+bWFueQo+PiBkZXZlbG9wZXJzIHN1Ym1pdHRpbmcgcGF0Y2hlcyB0byBzcGktbm9yIGhhdmUgb2Z0
+ZW4gYmVlbiBjb25mdXNlZCBieSBob3cKPj4gcHJvcGVybHkgdXNlIHRob3NlIGZsYWdzIGluIHRo
+ZWlyIGRyaXZlcnMuCj4gCj4gQW5kIGhlcmUgSSBkaXNhZ3JlZSwgYWdhaW4uIFNQSV97UixUfVhf
+e0RVQUwsUVVBRH0gYXJlIHN0aWxsIHVzZWZ1bCBmb3IKPiByZWd1bGFyIFNQSSB0cmFuc2ZlcnMu
+IEkgZ3Vlc3Mgbm90IGV2ZXJ5IER1YWwvUXVhZCBTUEkgZGV2aWNlIGlzIHVzaW5nCj4gdGhlIHNw
+aS1tZW0gcHJvdG9jb2wsIHNvIHdlIG5lZWQgdG8gc3VwcG9ydCB0aGlzIGNhc2UgdG9vLgo+IAo+
+Pgo+PiBUaWxsIHRoZW4sIGlmIHlvdSByZW1vdmVkIHRoZSA0IHRlc3RzIGFib3ZlLCBhdCBsZWFz
+dCBuZXcgU1BJIGZsYXNoCj4+IGNvbnRyb2xsZXIgZHJpdmVycyB3b24ndCBoYXZlIHRvIHNldCBz
+b21lIG9kZCBjb21iaW5hdGlvbiBvZiBmbGFncyBpbgo+PiBzcGktPm1vZGUgdG8gbWFrZSB0aGVp
+ciBzdXBwb3J0IG9mIFNQSSBmbGFzaCBtZW1vcmllcyB3b3JrIGFzIHRoZXkgd2FudC4KPiAKPiBI
+bSwgSSdtIG5vdCBzdXJlIGFib3V0IHNwaS0+bW9kZS4gQUZBSUNULCBTUElfe1IsVH1YX3tEVUFM
+LFFVQUR9Cj4gZmxhZ3MgYXJlIG9ubHkgZW5jb2Rpbmcgd2hhdCB0aGUgZGV2aWNlIHN1cHBvcnRz
+LCBub3QgdGhlIGN1cnJlbnQgbW9kZS4KPiAKPiBCdXQgSSBndWVzcyB5b3Ugd2VyZSB0YWxraW5n
+IGFib3V0IGNvbnRyb2xsZXItPm1vZGVfYml0cyB3aGljaCBlbmNvZGVzCj4gdGhlIGNvbnRyb2xs
+ZXIgY2FwYWJpbGl0aWVzLCBhbmQgSSB0aGluayB0aGlzIG9uZSBpcyBzdGlsbCB1c2VmdWwgaWYK
+PiB0aGUgY29udHJvbGxlciBpcyBhIGdlbmVyaWMgU1BJIGNvbnRyb2xsZXIuCj4gCj4gQXMgYSBz
+aWRlIG5vdGUsIEknbGwgYWRkIHRoYXQgaXQncyBwb3NzaWJsZSB0byBoYXZlIGEgZGV2aWNlIHN1
+cHBvcnRpbmcKPiBTUEkrRHVhbFNQSStRdWFkU1BJIGFuZCBzdGlsbCBoYXZlIHRoaXMgZGV2aWNl
+IHBhcnRpYWxseSBjb25uZWN0ZWQgdG8KPiB0aGUgaG9zdCBjb250cm9sbGVyIChzb21lIHBpbnMg
+bGVmdCB1bmNvbm5lY3RlZCksIGhlbmNlIHRoZQo+IHNwaS17dHgscnh9LWJ1cy13aWR0aCBwcm9w
+ZXJ0aWVzIGluIERUcy4gU28gd2UgcmVhbGx5IHdhbnQgdG8gY2hlY2sKPiB0aGUgZGV2aWNlIGNh
+cGFiaWxpdGllcywgdGhlIGNvbnRyb2xsZXIgY2FwYWJpbGl0aWVzIGFuZCB0aGUgbGltaXRhdGlv
+bgo+IGltcGxpZWQgYnkgdGhlIGJvYXJkIGRlc2lnbi4KPiAKPj4+ICsKPj4+ICsvKioKPj4+ICsg
+KiBzdHJ1Y3Qgc3BpX21lbV9vcCAtIGRlc2NyaWJlcyBhIFNQSSBtZW1vcnkgb3BlcmF0aW9uCj4+
+PiArICogQGNtZC5idXN3aWR0aDogbnVtYmVyIG9mIElPIGxpbmVzIHVzZWQgdG8gdHJhbnNtaXQg
+dGhlIGNvbW1hbmQKPj4+ICsgKiBAY21kLm9wY29kZTogb3BlcmF0aW9uIG9wY29kZQo+Pj4gKyAq
+IEBhZGRyLm5ieXRlczogbnVtYmVyIG9mIGFkZHJlc3MgYnl0ZXMgdG8gc2VuZC4gQ2FuIGJlIHpl
+cm8gaWYgdGhlIG9wZXJhdGlvbgo+Pj4gKyAqCQkgZG9lcyBub3QgbmVlZCB0byBzZW5kIGFuIGFk
+ZHJlc3MKPj4+ICsgKiBAYWRkci5idXN3aWR0aDogbnVtYmVyIG9mIElPIGxpbmVzIHVzZWQgdG8g
+dHJhbnNtaXQgdGhlIGFkZHJlc3MgY3ljbGVzCj4+PiArICogQGFkZHIuYnVmOiBidWZmZXIgc3Rv
+cmluZyB0aGUgYWRkcmVzcyBieXRlcwo+Pj4gKyAqIEBkdW1teS5uYnl0ZXM6IG51bWJlciBvZiBk
+dW1teSBieXRlcyB0byBzZW5kIGFmdGVyIGFuIG9wY29kZSBvciBhZGRyZXNzLiBDYW4KPj4+ICsg
+KgkJICBiZSB6ZXJvIGlmIHRoZSBvcGVyYXRpb24gZG9lcyBub3QgcmVxdWlyZSBkdW1teSBieXRl
+cwo+Pj4gKyAqIEBkdW1teS5idXN3aWR0aDogbnVtYmVyIG9mIElPIGxhbmVzIHVzZWQgdG8gdHJh
+bnNtaXQgdGhlIGR1bW15IGJ5dGVzCj4+PiArICogQGRhdGEuYnVzd2lkdGg6IG51bWJlciBvZiBJ
+TyBsYW5lcyB1c2VkIHRvIHNlbmQvcmVjZWl2ZSB0aGUgZGF0YQo+Pj4gKyAqIEBkYXRhLmRpcjog
+ZGlyZWN0aW9uIG9mIHRoZSB0cmFuc2Zlcgo+Pj4gKyAqIEBkYXRhLmJ1Zi5pbjogaW5wdXQgYnVm
+ZmVyCj4+PiArICogQGRhdGEuYnVmLm91dDogb3V0cHV0IGJ1ZmZlcgo+Pj4gKyAqLwo+Pj4gK3N0
+cnVjdCBzcGlfbWVtX29wIHsKPj4+ICsJc3RydWN0IHsKPj4+ICsJCXU4IGJ1c3dpZHRoOwo+Pj4g
+KwkJdTggb3Bjb2RlOwo+Pj4gKwl9IGNtZDsKPj4+ICsKPj4+ICsJc3RydWN0IHsKPj4+ICsJCXU4
+IG5ieXRlczsKPj4+ICsJCXU4IGJ1c3dpZHRoOwo+Pj4gKwkJY29uc3QgdTggKmJ1ZjsgIAo+Pgo+
+PiBGb3IgdGhlIGFkZHJlc3MgdmFsdWUsIEkgd291bGQgcmF0aGVyIHVzZSBzb21lIGxvZmZfdCB0
+eXBlLCBpbnN0ZWFkIG9mCj4+IGNvbnN0IHU4ICouIAo+PiBBY3R1YWxseSwgbW9zdCAoaWYgbm90
+IGFsbCkgU1BJIGZsYXNoIGNvbnRyb2xsZXJzIGhhdmUgc29tZSBoYXJkd2FyZQo+PiByZWdpc3Rl
+ciB0byBzZXQgdGhlIGFkZHJlc3MgdmFsdWUgb2YgdGhlIFNQSSBmbGFzaCBjb21tYW5kIHRvIGJl
+Cj4+IHNlbnQuIEhlbmNlIGhhdmluZyB0aGlzIHZhbHVlIGRpcmVjdGx5IGluIHRoZSByaWdodCBm
+b3JtYXQgd291bGQgYXZvaWQgdG8KPj4gY29udmVydC4KPiAKPiBXaGF0IGlzIHRoZSBhcHByb3By
+aWF0ZSBmb3JtYXQ/IEFuIGFkZHJlc3MgZW5jb2RlZCBpbiBhIDY0LWJpdCBpbnRlZ2VyCj4gZG9l
+cyBub3QgZ2l2ZSBhbnkgaW5mb3JtYXRpb24gb24gaG93IHRoZXNlIGJ5dGVzIHNob3VsZCBiZSB0
+cmFuc21pdHRlZAo+IG9uIHRoZSBidXMuIFNQSSBOT1IgaXMgcGFzc2luZyB0aGUgYWRkcmVzcyBp
+biBiaWcgZW5kaWFuLCBTUEkgTkFORCBzZWVtcwo+IHRvIGRvIHRoZSBzYW1lLCBidXQgd2UncmUg
+bm90IHN1cmUgdGhpcyB3aWxsIGJlIHRoZSBjYXNlIGZvciBhbGwga2luZCBvZgo+IG1lbW9yaWVz
+IG9yIGRldmljZXMgdXNpbmcgdGhpcyBzcGktbWVtIHByb3RvY29sLgo+IAo+IEFsc28sIGJ5IHBh
+c3NpbmcgaXQgdGhyb3VnaCBhbiBpbnRlZ2VyIHdlIGxpbWl0IG91cnNlbHZlcyB0byA4IGJ5dGVz
+Lgo+IFRoYXQgc2hvdWxkIGJlIGVub3VnaCwgYnV0IHdobyBrbm93cyA6LSkuCj4gCj4gSWYgd2Ug
+Z28gZm9yIHRoaXMgbG9mZl90IGZpZWxkLCB3ZSdsbCBoYXZlIHRvIGFkZCBhbiBlbmRpYW5uZXNz
+IGZpZWxkCj4gaGVyZSBhbmQgZm9yY2UgYWxsIGRyaXZlcnMgdG8gY2hlY2sgaXQuCj4KCkkgZG9u
+J3QgdGhpbmsgd2UgbmVlZCBhbnkgZW5kaWFubmVzcyBmaWVsZC4gV2UgYWxyZWFkeSB1c2UgbG9m
+Zl90IG9ubHksCndpdGhvdXQgYWRkaXRpb25hbCBlbmRpYW5uZXNzIHBhcmFtYXRlciwgaW4gc3Bp
+LW5vciBidXQgYWxzbyBpbiB0aGUgYWJvdmUKTVREIGxheWVyIChzZWUgJ3N0cnVjdCBtdGRfaW5m
+bycpIGFuZCB0aWxsIG5vdyBpdCBoYXMganVzdCB3b3JrZWQgZmluZS4KCk1vc3QsIGlmIG5vdCBh
+bGwsIFNQSSBmbGFzaCBjb250cm9sbGVycyBoYXZlIGEgZGVkaWNhdGVkIGZpZWxkIGluIG9uZSBv
+Zgp0aGVpciByZWdpc3RlcnMgdG8gd3JpdGUgdGhlIGFkZHJlc3MgdmFsdWUgaW50byBpdC4gR2Vu
+ZXJhbGx5LCB0aGlzIHJlZ2lzdGVyCmlzIHdyaXR0ZW4gd2l0aCBhbiBpbnRlZ2VyIGluIHRoZSBD
+UFUgbmF0aXZlIGJ5dGUgb3JkZXIgc28gbm8gbmVlZCB0byBjb252ZXJ0LgoKQW5kIGFueXdheSwg
+aWYgc29tZSBjb252ZXJzaW9uIGlzIGV2ZXIgbmVlZGVkLCB0aGUgU1BJIGZsYXNoIGNvbnRyb2xs
+ZXIKZHJpdmVyIGtub3dzIGl0IHNvIHdlIGNvdWxkIHNldCBhcyBhIHJ1bGUgdGhhdCB0aGUgaW50
+ZWdlciB2YWx1ZSBmb3IgdGhlCmFkZHJlc3MgaXMgYWx3YXlzIHN0b3JlZCBpbiB0aGUgbmF0aXZl
+IENQVSBieXRlIG9yZGVyLiBBdCBsZWFzdCBtb3N0IFNQSSBmbGFzaApjb250cm9sbGVyIGRyaXZl
+ciB3b24ndCBoYXZlIHRvIGNvbnZlcnQgZnJvbSBhIGNvbnN0IHU4ICogdG8gc29tZSB1bnNpZ25l
+ZAppbnRlZ3JhbCB0eXBlIG1vcmUgc3VpdGVkIHRvIHRoZWlyIHJlZ2lzdGVyIGFjY2Vzc2VzLgog
+Cj4+IEFGQUlLLCBvbmx5IG0yNXA4MCBuZWVkcyB0byBjb252ZXJ0IGZyb20gbG9mZl90IHRvIHU4
+ICogYW5kIG9ubHkKPj4gd2hlbiB1c2luZyB0aGUgcmVndWxhciBTUEkgQVBJLCBpZSBzcGlfc3lu
+YygpLCBhcyB0aGUgJ3N0cnVjdAo+PiBzcGlfZmxhc2hfcmVhZF9tZXNzYWcnIGFscmVhZHkgdXNl
+cyBzb21lIGludGVncmFsIHR5cGUgdG9vLgo+IAo+IEFuZCBJJ20gbm90IHN1cmUgdGhpcyB3YXMg
+YSBnb29kIGlkZWEuCj4gCj4+Cj4+Cj4+PiArCX0gYWRkcjsKPj4+ICsKPj4+ICsJc3RydWN0IHsK
+Pj4+ICsJCXU4IG5ieXRlczsKPj4+ICsJCXU4IGJ1c3dpZHRoOwo+Pj4gKwl9IGR1bW15Owo+Pj4g
+Kwo+Pj4gKwlzdHJ1Y3Qgewo+Pj4gKwkJdTggYnVzd2lkdGg7Cj4+PiArCQllbnVtIHNwaV9tZW1f
+ZGF0YV9kaXIgZGlyOwo+Pj4gKwkJdW5zaWduZWQgaW50IG5ieXRlczsKPj4+ICsJCS8qIGJ1Zi57
+aW4sb3V0fSBtdXN0IGJlIERNQS1hYmxlLiAqLwo+Pj4gKwkJdW5pb24gewo+Pj4gKwkJCXZvaWQg
+KmluOwo+Pj4gKwkJCWNvbnN0IHZvaWQgKm91dDsKPj4+ICsJCX0gYnVmOwo+Pj4gKwl9IGRhdGE7
+ICAKPj4KPj4gQWxzbywgeW91IHNob3VsZCBhZGQgYW5vdGhlciBtZW1iZXIgaW4gdGhpcyBzdHJ1
+Y3R1cmUgdG8gc2V0IHRoZSAndHlwZScgb2YKPj4gb3BlcmF0aW9uIGZvciB0aGUgU1BJIGZsYXNo
+IGNvbW1hbmQ6Cj4+IC0gcmVnaXN0ZXIgcmVhZAo+PiAtIHJlZ2lzdGVyIHdyaXRlCj4+IC0gbWVt
+b3J5IHJlYWQKPj4gLSBtZW1vcnkgd3JpdGUKPj4gLSBtZW1vcnkgZXJhc2UKPj4gWy0gU0ZEUCBy
+ZWFkID8gXQo+PiBbLSBPVFAgcmVhZC93cml0ZSA/IF0KPiAKPiBObywgcmVhbGx5LCB0aGF0J3Mg
+bm90IGJlbG9uZ2luZyBoZXJlLiBJdCdzIGVudGlyZWx5IFNQSSBOT1Igc3BlY2lmaWMuCj4gCgpJ
+IGRpc2FncmVlIHdpdGggeW91IG9uIHRoYXQuIEV4Y2VwdCBmb3IgU0ZEUCBvZiBjb3Vyc2UsIHRo
+aXMgd2lsbCBhbHNvIGFwcGx5IHRvClNQSSBOQU5EIGFzIHdlbGwuIEFuZCB0aGlzIGluZm9ybWF0
+aW9uIHNob3VsZCBiZSBwYXNzZWQgZG93biB0byB0aGUgU1BJIChmbGFzaCkKY29udHJvbGxlciBk
+cml2ZXIsIGluc3RlYWQgb2YgYmVpbmcgbG9zdCBhdCB0aGUgU1BJIE5BTkQvTk9SIGxldmVscywg
+c28gdGhlIFNQSQpjb250cm9sbGVyIGRyaXZlciBjb3VsZCB0YWtlIHRoZSBwcm9wZXIgYWN0aW9u
+cyAoZGF0YSBjYWNoZSBmbHVzaC9pbnZhbGlkYXRpb24KZm9yIG1lbW9yeSBvcGVyYXRpb25zLCBl
+bmFibGluZy9kaXNhYmxpbmcgb24tdGhlLWZseSBkYXRhIHNjcmFtYmxpbmcsIGFuZCBvdGhlcgpj
+b250cm9sbGVyIHNwZWNpZmljIGNvbnN0cmFpbnRzKS4KCkJlc3QgcmVnYXJkcywKCkN5cmlsbGUK
+Cj4+Cj4+IEluZGVlZCwgc29tZSBTUEkgZmxhc2ggY29udHJvbGxlciBkcml2ZXJzIG5lZWQgdGhp
+cyBpbmZvcm1hdGlvbi4KPiAKPiBUaGVuIHRoZXknbGwgaGF2ZSB0byBiZSBjb252ZXJ0ZWQvcmV3
+b3JrZWQgdG8gbm90IGRlcGVuZCBvbiB0aGF0LiBJIGRpZAo+IGl0IGZvciB0aGUgRlNMIFFTUEkg
+Y29udHJvbGxlciwgYW5kIGl0IHdvcmtlZCBmaW5lLiBJJ20gcHJldHR5IHN1cmUKPiBhbG1vc3Qg
+YWxsIGNvbnRyb2xsZXJzIHdpbGwgZml0IHdlbGwgaW4gdGhlIG5ldyBmcmFtZXdvcmsuIEZvciB0
+aG9zZQo+IGNvbnRyb2xsZXJzIHRoYXQgcmVhbGx5IGFyZSBvbmx5IGFibGUgdG8gaGFuZGxlIFNQ
+SSBOT1IgZGV2aWNlcyAoSSdtCj4gdGhpbmtpbmcgYWJvdXQgdGhlIEludGVsIG9uZSwgYnV0IHRo
+ZXJlIG1heSBiZSBvdGhlcnMpLCB0aGVuIHRoZXkgc2hvdWxkCj4gbm90IGJlIGNvbnZlcnRlZCB0
+byB0aGUgc3BpX21lbSBhcHByb2FjaC4KPiAKPj4KPj4gRm9yIGluc3RhbmNlIHRoZSBBdG1lbCBR
+U1BJIGNvbnRyb2xsZXIgaGFzIHNvbWUgb3B0aW9uYWwgZmVhdHVyZSB0aGF0IGFsbG93Cj4+IHRv
+IHNjcmFtYmxlIGRhdGEgb24gdGhlIGZseSBmcm9tL3RvIHRoZSAoUSlTUEkgbWVtb3J5LiBIZW5j
+ZSB0aGUgc2NyYW1ibGluZwo+PiBzaG91bGQgYmUgZW5hYmxlZCBmb3IgbWVtb3J5IHtyZWFkLHdy
+aXRlfSAoRmFzdCBSZWFkLCBQYWdlIFByb2dyYW1tKQo+PiBjb21tYW5kcyBidXQgZGlzYWJsZWQg
+Zm9yIHJlZ2lzdGVyIHtyZWFkLHdyaXRlfSBjb21tYW5kcyAoUmVhZCBJRCwgV3JpdGUKPj4gRW5h
+YmxlLCBSZWFkL1dyaXRlIFN0YXR1cyBSZWdpc3RlciwgLi4uKS4KPiAKPiBJZiBzY3JhbWJsaW5n
+IGlzIHJlYWxseSBzb21ldGhpbmcgdGhhdCB3ZSBuZWVkIHRvIHN1cHBvcnQsIHRoZW4gSSB0aGlu
+awo+IGFkZGluZyBhIHNwaV9tZW1fb3AtPmRhdGEuc2NyYW1ibGUgYm9vbGVhbiB3b3VsZCBiZSBt
+b3JlIGFwcHJvcHJpYXRlLgo+IAo+Pgo+PiBTUEkgZmxhc2ggY29udHJvbGxlciBkcml2ZXJzICpz
+aG91bGQgbm90KiBoYXZlIHRvIGNoZWNrIHRoZSBTUEkgZmxhc2ggY29tbWFuZAo+PiBpbnN0cnVj
+dGlvbiBvcCBjb2RlIHRvIGd1ZXNzIHdoYXQga2luZCBvZiBvcGVyYXRpb24gaXMgYmVpbmcgcGVy
+Zm9ybWVkLgo+IAo+IEkgY29tcGxldGVseSBhZ3JlZS4gTm90IG9ubHkgdGhleSBzaG91bGRuJ3Qg
+Y2hlY2sgdGhlIG9wY29kZSB0byBndWVzcwo+IHdoYXQgaXMgYmVpbmcgZG9uZSwgYnV0LCBJTUhP
+LCB0aGV5IHNob3VsZCBhbHNvIG5vdCB0cnkgdG8gZGV0ZXJtaW5lCj4gd2hhdCBraW5kIG9mIG9w
+ZXJhdGlvbiBpcyBiZWluZyBkb25lLCBzbyB5b3VyIHN1Z2dlc3Rpb24gdG8gYWRkIGFuCj4gb3Bl
+cmF0aW9uIHR5cGUgaW5mb3JtYXRpb24gaXMgbm90IGEgZ29vZCBpZGVhLgo+IAo+Pgo+PiBBbm90
+aGVyIGV4YW1wbGU6Cj4+IFNvbWUgKFEpU1BJIGZsYXNoIGNvbnRyb2xsZXJzIG1hcCB0aGUgdGhl
+IFNQSSBmbGFzaCBtZW1vcnkgaW50byB0aGUgc3lzdGVtCj4+IGFkZHJlc3Mgc3BhY2UgdGhlbiBw
+ZXJmb3JtIHNvbWUgIm1lbWNweS1saWtlIiBvcGVyYXRpb25zIHRvIGFjY2VzcyB0aGlzIFNQSQo+
+PiBmbGFzaCBtZW1vcnkgd2hlcmVhcyB0aGV5IHJlbHkgb24gcmVndWxlciByZWdpc3RlciB0byBo
+YW5kbGUgU1BJIGZsYXNoCj4+IGNvbW1hbmRzIHJlYWRpbmcgZnJvbSBvciB3cml0aW5nIGludG8g
+dGhlIGludGVybmFsIHJlZ2lzdGVycyBmbyB0aGUgU1BJCj4+IGZsYXNoLiBTbyB0aG9zZSBjb250
+cm9sbGVyIHRvbyBuZWVkIHRvIG1ha2UgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiByZWdpc3Rlcgo+
+PiBhbmQgbWVtb3J5IG9wZXJhdGlvbnMuCj4gCj4gSSBhbHJlYWR5IHRob3VnaHQgYWJvdXQgdGhl
+IGRpcmVjdCBtYXBwaW5nIHN0dWZmLCBhbmQgSSB0aGluayB0aGlzCj4gc2hvdWxkIGJlIHN1cHBv
+cnRlZCB0aHJvdWdoIG5ldyBob29rcyBpbiBzcGlfbWVtX29wcyAoLT5tYXAoKSArCj4gLT51bm1h
+cCgpPykuCj4gCj4gVGhhbmtzIGZvciB5b3VyIHJldmlldy4KPiAKPiBCb3Jpcwo+IAoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4IE1U
+RCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K

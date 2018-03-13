@@ -1,37 +1,56 @@
-From: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] video: console: kconfig: Remove AVR32 dep. from
- VGA_CONSOLE
-Date: Mon, 12 Mar 2018 16:01:45 +0100
-Message-ID: <12268684.R5uc9OLfbC@amdc3058>
-References: <20180206120825.GF5681@sirena.org.uk>
-        <CGME20180206225334epcas4p3f1bf4f40c1fbc4bed23dd79445df1b3a@epcas4p3.samsung.com>
-        <20180206225254.20036-1-ulfalizer@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        clabbe.montjoie@gmail.com, viresh.kumar@linaro.org,
-        matthias.bgg@gmail.com, linux-pwm@vger.kernel.org,
-        thierry.reding@gmail.com, daniel.vetter@ffwll.ch,
-        christophe.leroy@c-s.fr, seanpaul@chromium.org,
-        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-To: Ulf Magnusson <ulfalizer@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] spi: bcm-qspi: fIX some error handling paths
+Date: Tue, 13 Mar 2018 19:36:58 +0100
+Message-ID: <20180313183658.10641-1-christophe.jaillet@wanadoo.fr>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: broonie@kernel.org, f.fainelli@gmail.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-reply-to: <20180206225254.20036-1-ulfalizer@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, February 06, 2018 11:52:46 PM Ulf Magnusson wrote:
-> The AVR32 symbol was removed in commit 26202873bb51 ("avr32: remove
-> support for AVR32 architecture").
-> 
-> Signed-off-by: Ulf Magnusson <ulfalizer@gmail.com>
+For some reason, commit c0368e4db4a3 ("spi: bcm-qspi: Fix use after free
+in bcm_qspi_probe() in error path") has updated some gotos, but not all of
+them.
 
-Patch queued for 4.17, thanks.
+This looks spurious, so fix it.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I've added the same Fixes: tag as in commit c0368e4db4a3 even if the patch
+would not cleanly apply on top of it.
+At least commit 4e3b2d236fe0 ("spi: bcm-qspi: Add BSPI spi-nor flash
+controller driver") would also be needed.
+
+Also the label names could be improved. But this goes beyond the scope of
+this patch.
+---
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index a172ab299e80..1596d35498c5 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -1247,7 +1247,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->base[MSPI]  = devm_ioremap_resource(dev, res);
+ 		if (IS_ERR(qspi->base[MSPI])) {
+ 			ret = PTR_ERR(qspi->base[MSPI]);
+-			goto qspi_probe_err;
++			goto qspi_resource_err;
+ 		}
+ 	} else {
+ 		goto qspi_resource_err;
+@@ -1258,7 +1258,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->base[BSPI]  = devm_ioremap_resource(dev, res);
+ 		if (IS_ERR(qspi->base[BSPI])) {
+ 			ret = PTR_ERR(qspi->base[BSPI]);
+-			goto qspi_probe_err;
++			goto qspi_resource_err;
+ 		}
+ 		qspi->bspi_mode = true;
+ 	} else {
+-- 
+2.14.1

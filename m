@@ -1,48 +1,86 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 34/47] spi: remove blackfin related host drivers
-Date: Wed, 14 Mar 2018 09:17:53 -0700
-Message-ID: <20180314161753.GT2186@sirena.org.uk>
-References: <20180314153603.3127932-1-arnd@arndb.de>
- <20180314153603.3127932-35-arnd@arndb.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="WQ40utMgiyDduspJ"
-Cc: linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+Subject: Applied "spi: bcm-qspi: fIX some error handling paths" to the spi tree
+Date: Wed, 14 Mar 2018 16:40:06 +0000 (GMT)
+Message-ID: <20180314164006.89AF3440079@finisterre.ee.mobilebroadband>
+References: <20180313183658.10641-1-christophe.jaillet@wanadoo.fr>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        f.fainelli@gmail.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+To: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180314153603.3127932-35-arnd@arndb.de>
+In-Reply-To: <20180313183658.10641-1-christophe.jaillet@wanadoo.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---WQ40utMgiyDduspJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: bcm-qspi: fIX some error handling paths
 
-On Wed, Mar 14, 2018 at 04:35:47PM +0100, Arnd Bergmann wrote:
-> The blackfin architecture is getting removed, so these
-> won't be needed any more.
+has been applied to the spi tree at
 
-Acked-by: Mark Brown <broonie@kernel.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-(or if you resend something directly applicable I can do that)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---WQ40utMgiyDduspJ
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlqpSzAACgkQJNaLcl1U
-h9Dm9wf/dhNzPHEVAxztXFolS6JT9Sw4qUXvJRw0lXsHYBUSiYWWlKPdeCgXAWRS
-Y9mnmUYQdGVGuSAIHzjNk5UCFfIpW50UIu/0IjaJAcmGy2M4jMuX3SDfbhLJx2mt
-7142piElsmG/gotQuzUnc4qkC8SDtoZH1hi8p8PKD00WdJVlulGL6aJEsDnpc3DJ
-BkUYxQanSIP1dWjoy8U2nz1hDyYvLh6QGKCMymQm5VDfLQSBMEZu8i6TcodNWs8U
-vPHNATqITYoeUKpbPa2wnDOwSjol0M0LhLdT9dDVbdV+e0folEhexbzzG9ZiePKX
-2owZNoQW7LiUw5wmaeuasHAH9KaS3g==
-=BrBX
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---WQ40utMgiyDduspJ--
+Thanks,
+Mark
+
+>From bc3cc75281b3c2b1c5355d88d147b66a753bb9a5 Mon Sep 17 00:00:00 2001
+From: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
+Date: Tue, 13 Mar 2018 19:36:58 +0100
+Subject: [PATCH] spi: bcm-qspi: fIX some error handling paths
+
+For some reason, commit c0368e4db4a3 ("spi: bcm-qspi: Fix use after free
+in bcm_qspi_probe() in error path") has updated some gotos, but not all of
+them.
+
+This looks spurious, so fix it.
+
+Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index a172ab299e80..1596d35498c5 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -1247,7 +1247,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->base[MSPI]  = devm_ioremap_resource(dev, res);
+ 		if (IS_ERR(qspi->base[MSPI])) {
+ 			ret = PTR_ERR(qspi->base[MSPI]);
+-			goto qspi_probe_err;
++			goto qspi_resource_err;
+ 		}
+ 	} else {
+ 		goto qspi_resource_err;
+@@ -1258,7 +1258,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->base[BSPI]  = devm_ioremap_resource(dev, res);
+ 		if (IS_ERR(qspi->base[BSPI])) {
+ 			ret = PTR_ERR(qspi->base[BSPI]);
+-			goto qspi_probe_err;
++			goto qspi_resource_err;
+ 		}
+ 		qspi->bspi_mode = true;
+ 	} else {
+-- 
+2.16.2

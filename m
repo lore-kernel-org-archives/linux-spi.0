@@ -1,63 +1,89 @@
-From: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Subject: [PATCH v2] spi: jcore: disable ref_clk after getting its rate
-Date: Sat, 17 Mar 2018 13:05:44 +0300
-Message-ID: <1521281144-2561-1-git-send-email-khoroshilov@ispras.ru>
-References: <1521238878-27159-1-git-send-email-khoroshilov@ispras.ru>
-Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1521238878-27159-1-git-send-email-khoroshilov@ispras.ru>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 08/21] iio: adc: Remove depends on HAS_DMA in case of
+ platform dependency
+Date: Sat, 17 Mar 2018 16:42:41 +0000
+Message-ID: <20180317164241.6fbad835@archlinux>
+References: <1521208314-4783-1-git-send-email-geert@linux-m68k.org>
+ <1521208314-4783-9-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Wolfram Sang <wsa@the-dreams.de>,
+ linux-iio@vger.kernel.org, linux-fpga@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Eric Anholt <eric@anholt.net>,
+ netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-i2c@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Boris Brezillon <boris.brezillon@free-electrons.com>,
+ "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>, Joerg Roedel <joro@8bytes.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
+ linux-serial@vger.kernel.org, Matias Bjorling <mb@lightn
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <1521208314-4783-9-git-send-email-geert@linux-m68k.org>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-The driver does not disable ref_clk on remove.
-According to the comment, the only reason to enable the clock is to get
-its rate. So, it should be safe to disable clk just after that.
+On Fri, 16 Mar 2018 14:51:41 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-By the way, clk_prepare_enable() looks to be more appropriate
-than clk_enable() here.
+> Remove dependencies on HAS_DMA where a Kconfig symbol depends on another
+> symbol that implies HAS_DMA, and, optionally, on "|| COMPILE_TEST".
+> In most cases this other symbol is an architecture or platform specific
+> symbol, or PCI.
+> 
+> Generic symbols and drivers without platform dependencies keep their
+> dependencies on HAS_DMA, to prevent compiling subsystems or drivers that
+> cannot work anyway.
+> 
+> This simplifies the dependencies, and allows to improve compile-testing.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Reviewed-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Robin Murphy <robin.murphy@arm.com>
+Great.
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Found by Linux Driver Verification project (linuxtesting.org).
+Thanks for doing this - this has been annoying for a long time :)
 
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
----
-v2: There is no reason to wait for remove to disable ref_clk.
-
- drivers/spi/spi-jcore.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-jcore.c b/drivers/spi/spi-jcore.c
-index dafed6280df3..702fe573a47b 100644
---- a/drivers/spi/spi-jcore.c
-+++ b/drivers/spi/spi-jcore.c
-@@ -184,10 +184,11 @@ static int jcore_spi_probe(struct platform_device *pdev)
- 	 */
- 	clock_freq = 50000000;
- 	clk = devm_clk_get(&pdev->dev, "ref_clk");
--	if (!IS_ERR_OR_NULL(clk)) {
--		if (clk_enable(clk) == 0)
-+	if (!IS_ERR(clk)) {
-+		if (clk_prepare_enable(clk) == 0) {
- 			clock_freq = clk_get_rate(clk);
--		else
-+			clk_disable_unprepare(clk);
-+		} else
- 			dev_warn(&pdev->dev, "could not enable ref_clk\n");
- 	}
- 	hw->clock_freq = clock_freq;
-@@ -198,10 +199,8 @@ static int jcore_spi_probe(struct platform_device *pdev)
- 
- 	/* Register our spi controller */
- 	err = devm_spi_register_master(&pdev->dev, master);
--	if (err) {
--		clk_disable(clk);
-+	if (err)
- 		goto exit;
--	}
- 
- 	return 0;
- 
--- 
-2.7.4
+> ---
+> v2:
+>   - Add Reviewed-by, Acked-by,
+>   - Drop RFC state,
+>   - Split per subsystem.
+> ---
+>  drivers/iio/adc/Kconfig | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 72bc2b71765ae2ff..57f46e88f5c2536e 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -158,7 +158,6 @@ config AT91_SAMA5D2_ADC
+>  	tristate "Atmel AT91 SAMA5D2 ADC"
+>  	depends on ARCH_AT91 || COMPILE_TEST
+>  	depends on HAS_IOMEM
+> -	depends on HAS_DMA
+>  	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say yes here to build support for Atmel SAMA5D2 ADC which is
+> @@ -647,7 +646,6 @@ config SD_ADC_MODULATOR
+>  config STM32_ADC_CORE
+>  	tristate "STMicroelectronics STM32 adc core"
+>  	depends on ARCH_STM32 || COMPILE_TEST
+> -	depends on HAS_DMA
+>  	depends on OF
+>  	depends on REGULATOR
+>  	select IIO_BUFFER

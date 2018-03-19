@@ -1,105 +1,55 @@
-From: Alan Tull <atull@kernel.org>
-Subject: Re: [PATCH v2 06/21] fpga: Remove depends on HAS_DMA in case of
- platform dependency
-Date: Mon, 19 Mar 2018 11:06:29 -0500
-Message-ID: <CANk1AXR3sv2=G-KsQh1p0rdcvy-3XZs6qVy5EMbcAMS6OSVzeQ@mail.gmail.com>
-References: <1521208314-4783-1-git-send-email-geert@linux-m68k.org>
- <1521208314-4783-7-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Wolfram Sang <wsa@the-dreams.de>,
- linux-iio@vger.kernel.org, linux-fpga@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Eric Anholt <eric@anholt.net>,
- netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-i2c@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Stefan Wahren <stefan.wahren@i2se.com>,
- Boris Brezillon <boris.brezillon@free-electrons.com>,
- "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, Joerg Roedel <joro@8bytes.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- linux-serial@vger.kernel.org, Matias Bjorling <mb@lightn
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <1521208314-4783-7-git-send-email-geert@linux-m68k.org>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+From: Stefan Agner <stefan@agner.ch>
+Subject: [PATCH] spi: rspi: use correct enum for DMA transfer direction
+Date: Mon, 19 Mar 2018 22:42:31 +0100
+Message-ID: <20180319214231.15529-1-stefan@agner.ch>
+Cc: geert+renesas@glider.be, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Mar 16, 2018 at 8:51 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+Use enum dma_transfer_direction as required by dmaengine_prep_slave_sg
+instead of enum dma_data_direction.
 
-Hi Geert,
+This fixes two warnings when building with clang:
+  drivers/spi/spi-rspi.c:538:26: warning: implicit conversion from enumeration
+      type 'enum dma_data_direction' to different enumeration type
+      'enum dma_transfer_direction' [-Wenum-conversion]
+                                        rx->sgl, rx->nents, DMA_FROM_DEVICE,
+                                                            ^~~~~~~~~~~~~~~
+  drivers/spi/spi-rspi.c:558:26: warning: implicit conversion from enumeration
+      type 'enum dma_data_direction' to different enumeration type
+      'enum dma_transfer_direction' [-Wenum-conversion]
+                                        tx->sgl, tx->nents, DMA_TO_DEVICE,
+                                                            ^~~~~~~~~~~~~
 
-This essentially removes this commit
+Signed-off-by: Stefan Agner <stefan@agner.ch>
+---
+ drivers/spi/spi-rspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-commit 1c8cb409491403036919dd1c6b45013dc8835a44
-Author: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Wed Aug 3 13:45:46 2016 -0700
-
-    drivers/fpga/Kconfig: fix build failure
-
-    While building m32r allmodconfig the build is failing with the error:
-
-      ERROR: "bad_dma_ops" [drivers/fpga/zynq-fpga.ko] undefined!
-
-    Xilinx Zynq FPGA is using DMA but there was no dependency while
-    building.
-
-    Link: http://lkml.kernel.org/r/1464346526-13913-1-git-send-email-sudipm.mukherjee@gmail.com
-    Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-    Acked-by: Moritz Fischer <moritz.fischer@ettus.com>
-    Cc: Alan Tull <atull@opensource.altera.com>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-
-Alan
-
-> Remove dependencies on HAS_DMA where a Kconfig symbol depends on another
-> symbol that implies HAS_DMA, and, optionally, on "|| COMPILE_TEST".
-> In most cases this other symbol is an architecture or platform specific
-> symbol, or PCI.
->
-> Generic symbols and drivers without platform dependencies keep their
-> dependencies on HAS_DMA, to prevent compiling subsystems or drivers that
-> cannot work anyway.
->
-> This simplifies the dependencies, and allows to improve compile-testing.
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Reviewed-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Robin Murphy <robin.murphy@arm.com>
-> ---
-> v2:
->   - Add Reviewed-by, Acked-by,
->   - Drop RFC state,
->   - Split per subsystem.
-> ---
->  drivers/fpga/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/fpga/Kconfig b/drivers/fpga/Kconfig
-> index f47ef848bcd056d5..fd539132542e30ee 100644
-> --- a/drivers/fpga/Kconfig
-> +++ b/drivers/fpga/Kconfig
-> @@ -53,7 +53,6 @@ config FPGA_MGR_ALTERA_CVP
->  config FPGA_MGR_ZYNQ_FPGA
->         tristate "Xilinx Zynq FPGA"
->         depends on ARCH_ZYNQ || COMPILE_TEST
-> -       depends on HAS_DMA
->         help
->           FPGA manager driver support for Xilinx Zynq FPGAs.
->
-> --
-> 2.7.4
->
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 0835a8d88fb8..3e5a31d338fe 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -535,7 +535,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 	/* First prepare and submit the DMA request(s), as this may fail */
+ 	if (rx) {
+ 		desc_rx = dmaengine_prep_slave_sg(rspi->master->dma_rx,
+-					rx->sgl, rx->nents, DMA_FROM_DEVICE,
++					rx->sgl, rx->nents, DMA_MEM_TO_DEV,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!desc_rx) {
+ 			ret = -EAGAIN;
+@@ -555,7 +555,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 
+ 	if (tx) {
+ 		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
+-					tx->sgl, tx->nents, DMA_TO_DEVICE,
++					tx->sgl, tx->nents, DMA_DEV_TO_MEM,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!desc_tx) {
+ 			ret = -EAGAIN;
+-- 
+2.16.2

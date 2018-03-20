@@ -1,110 +1,68 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix unregistration of controller with fixed SPI bus number" to the spi tree
-Date: Tue, 20 Mar 2018 09:02:26 +0000 (GMT)
-Message-ID: <20180320090226.E553444007A@finisterre.ee.mobilebroadband>
-References: <20180306154722.8813-1-jarkko.nikula@linux.intel.com>
-Cc: stable@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Suniel Mahesh <sunil.m@techveda.org>, stable@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180306154722.8813-1-jarkko.nikula@linux.intel.com>
-Sender: stable-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 00/21] Allow compile-testing NO_DMA (drivers)
+Date: Tue, 20 Mar 2018 10:57:28 +0100
+Message-ID: <CAMuHMdUUKMngcyajm_s==KbhL3ZjMNHVxhNNGkPWkpnePE2rMw@mail.gmail.com>
+References: <1521208314-4783-1-git-send-email-geert@linux-m68k.org>
+ <20180316212317.7d5rri3p25hpmx44@ninjato>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-iio@vger.kernel.org,
+ linux-fpga@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Eric Anholt <eric@anholt.net>,
+ netdev <netdev@vger.kernel.org>,
+ MTD Maling List <linux-mtd@lists.infradead.org>,
+ Linux I2C <linux-i2c@vger.kernel.org>, linux1394-devel@lists.sourceforge.net,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Boris Brezillon <boris.brezillon@free-electrons.com>,
+ "James E . J . Bottomley" <jejb@linux.vnet.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, scsi <linux-scsi@vger.kernel.org>,
+ Richard Weinberger <richard@nod.at>, Joerg Roedel <joro@8bytes.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
+ linux-seria
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <20180316212317.7d5rri3p25hpmx44@ninjato>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Wolfram,
 
-   spi: Fix unregistration of controller with fixed SPI bus number
+On Fri, Mar 16, 2018 at 10:23 PM, Wolfram Sang <wsa@the-dreams.de> wrote:
+>> To avoid allmodconfig/allyesconfig regressions on NO_DMA=y platforms,
+>> this (drivers) series should be applied after the previous (core)
+>> series (but not many people may notice/care ;-)
+>
+> I still don't get if there is a dependency on the core patches. I.e.
+> shall I apply the subsystem patch now by myself or do you want to push
+> the series after the core patch and need my ack here?
 
-has been applied to the spi tree at
+Yes, there is a dependency. Without the core patches, enabling COMPILE_TEST,
+and compile-testing drivers irrelevant on obscure NO_DMA=y platforms will
+cause build failures.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+To play it safe, you want to postpone the subsystem patches until the core
+part has landed upstream. I will rebase and resubmit after v4.17-rc1.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Thanks, and sorry for being unclear.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Gr{oetje,eeting}s,
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+                        Geert
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 613bd1ea387bb48b7c9a71a0bb451ac15cfbbc01 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Date: Tue, 20 Mar 2018 10:27:50 +0200
-Subject: [PATCH] spi: Fix unregistration of controller with fixed SPI bus
- number
-
-Commit 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
-ceased to unregister SPI buses with fixed bus numbers. Moreover this is
-visible only if CONFIG_SPI_DEBUG=y is set or when trying to re-register
-the same SPI controller.
-
-rmmod spi_pxa2xx_platform (with CONFIG_SPI_DEBUG=y):
-[   26.788362] spi_master spi1: attempting to delete unregistered controller [spi1]
-
-modprobe spi_pxa2xx_platform:
-[   37.883137] sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:19.0/pxa2xx-spi.12/spi_master/spi1'
-[   37.894984] CPU: 1 PID: 1467 Comm: modprobe Not tainted 4.16.0-rc4+ #21
-[   37.902384] Call Trace:
-...
-[   38.122680] kobject_add_internal failed for spi1 with -EEXIST, don't try to register things with the same name in the same directory.
-[   38.136154] WARNING: CPU: 1 PID: 1467 at lib/kobject.c:238 kobject_add_internal+0x2a5/0x2f0
-...
-[   38.513817] pxa2xx-spi pxa2xx-spi.12: problem registering spi master
-[   38.521036] pxa2xx-spi: probe of pxa2xx-spi.12 failed with error -17
-
-Fix this by not returning immediately from spi_unregister_controller() if
-idr_find() doesn't find controller with given ID/bus number. It finds
-only those controllers that were registered with dynamic SPI bus
-numbers. Only conditional cleanup between dynamic and fixed bus numbers
-is to remove allocated IDR.
-
-Fixes: 9b61e302210e (spi: Pick spi bus number from Linux idr or spi alias)
-Cc: stable@vger.kernel.org
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b33a727a0158..e90fd442b3f0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2254,12 +2254,6 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	mutex_lock(&board_lock);
- 	found = idr_find(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
--	if (found != ctlr) {
--		dev_dbg(&ctlr->dev,
--			"attempting to delete unregistered controller [%s]\n",
--			dev_name(&ctlr->dev));
--		return;
--	}
- 	if (ctlr->queued) {
- 		if (spi_destroy_queue(ctlr))
- 			dev_err(&ctlr->dev, "queue remove failed\n");
-@@ -2272,7 +2266,8 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	device_unregister(&ctlr->dev);
- 	/* free bus id */
- 	mutex_lock(&board_lock);
--	idr_remove(&spi_master_idr, id);
-+	if (found == ctlr)
-+		idr_remove(&spi_master_idr, id);
- 	mutex_unlock(&board_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
 -- 
-2.16.2
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

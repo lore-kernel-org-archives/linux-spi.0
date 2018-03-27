@@ -1,180 +1,131 @@
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [RFC PATCH] spi: zynqmp: Add pm runtime support
-Date: Mon, 26 Mar 2018 18:34:20 +0530
-Message-ID: <1522069460-4703-1-git-send-email-nagasure@xilinx.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH] Fixes in TI QSPI driver to allow more than one flash chip
+Date: Tue, 27 Mar 2018 09:30:11 +0530
+Message-ID: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
+References: <0ece6261f37a424cbde7122907548a9f@CO1PR6802MB0085.017d.mgd.msft.net>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
-        <shubhrajyoti.datta@xilinx.com>,
-        Naga Sureshkumar Relli <nagasure@xilinx.com>
-To: <broonie@kernel.org>
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: 8bit
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Kwiatkowski, Arkadiusz" <arkadiusz.kwiatkowski@aptiv.com>,
+        "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <0ece6261f37a424cbde7122907548a9f@CO1PR6802MB0085.017d.mgd.msft.net>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds runtime pm functions.
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Signed-off-by: Naga Sureshkumar Relli <nagasure@xilinx.com>
----
- drivers/spi/spi-zynqmp-gqspi.c | 86 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 70 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 18aeace..26d1ac3 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -20,6 +20,7 @@
- #include <linux/of_irq.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
-@@ -135,6 +136,7 @@
- #define GQSPI_DMA_UNALIGN		0x3
- #define GQSPI_DEFAULT_NUM_CS	1	/* Default number of chip selects */
- 
-+#define SPI_AUTOSUSPEND_TIMEOUT		3000
- enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
- 
- /**
-@@ -356,21 +358,9 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
- static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
- {
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
--	int ret;
--
--	ret = clk_enable(xqspi->refclk);
--	if (ret)
--		return ret;
--
--	ret = clk_enable(xqspi->pclk);
--	if (ret)
--		goto clk_err;
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
- 	return 0;
--clk_err:
--	clk_disable(xqspi->refclk);
--	return ret;
- }
- 
- /**
-@@ -387,8 +377,6 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
--	clk_disable(xqspi->refclk);
--	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
-@@ -959,11 +947,67 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- 
- 	spi_master_resume(master);
- 
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(zynqmp_qspi_dev_pm_ops, zynqmp_qspi_suspend,
--			 zynqmp_qspi_resume);
-+/**
-+ * zynqmp_runtime_suspend - Runtime suspend method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function disables the clocks
-+ *
-+ * Return:	Always 0
-+ */
-+static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+
-+	clk_disable(xqspi->refclk);
-+	clk_disable(xqspi->pclk);
-+
-+	return 0;
-+}
-+
-+/**
-+ * zynqmp_runtime_resume - Runtime resume method for the SPI driver
-+ * @dev:	Address of the platform_device structure
-+ *
-+ * This function enables the clocks
-+ *
-+ * Return:	0 on success and error value on error
-+ */
-+static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-+	int ret;
-+
-+	ret = clk_enable(xqspi->pclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable APB clock.\n");
-+		return ret;
-+	}
-+
-+	ret = clk_enable(xqspi->refclk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable device clock.\n");
-+		clk_disable(xqspi->pclk);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
-+	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
-+			   zynqmp_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
-+};
- 
- /**
-  * zynqmp_qspi_probe:	Probe method for the QSPI driver
-@@ -1023,9 +1067,15 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_pclk;
- 	}
- 
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
- 	/* QSPI controller initializations */
- 	zynqmp_qspi_init_hw(xqspi);
- 
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
-@@ -1063,6 +1113,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_dis_all:
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
-@@ -1090,6 +1142,8 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 
- 	spi_unregister_master(master);
- 
+On Thursday 22 March 2018 06:03 PM, Kwiatkowski, Arkadiusz wrote:
+> Add checking for which SPI device was memory-mapped to allow more than
+> one flash device being used on QSPI bus. Fix parameters order in
+> regmap_update_bits calls.
+> 
+> Signed-off-by: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+> ---
+
+Thanks for the patch! Fixes are legitimate but,
+Your mailer has grabbled the patch (especially white spaces). Please use
+git send-email to send patches.
+Run scripts/checkpatch.pl --strict on the patch for kernel coding style
+checks.
+Please look at git log drivers/spi/spi-ti-qspi.c and fix up $subject
+accordingly. Split this patch into two: One fixing up
+regmap_update_bits() call and other fixing up mmap setup for more than
+one CS.
+
+
+>  drivers/spi/spi-ti-qspi.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> index c24d9b4..3d1dc4f 100644
+> --- a/drivers/spi/spi-ti-qspi.c
+> +++ b/drivers/spi/spi-ti-qspi.c
+> @@ -66,7 +66,7 @@ struct ti_qspi {
+>  u32 cmd;
+>  u32 dc;
+> 
+> -bool mmap_enabled;
+> +struct spi_device*mmap_spi_device;
+>  };
+> 
+>  #define QSPI_PID(0x0)
+> @@ -490,10 +490,10 @@ static void ti_qspi_enable_memory_map(struct
+> spi_device *spi)
+>  ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
+>  if (qspi->ctrl_base) {
+>  regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+> -   MEM_CS_EN(spi->chip_select),
+> -   MEM_CS_MASK);
+> +   MEM_CS_MASK,
+> +   MEM_CS_EN(spi->chip_select));
+>  }
+> -qspi->mmap_enabled = true;
+> +qspi->mmap_spi_device = spi;
+>  }
+> 
+>  static void ti_qspi_disable_memory_map(struct spi_device *spi)
+> @@ -503,8 +503,8 @@ static void ti_qspi_disable_memory_map(struct
+> spi_device *spi)
+>  ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
+>  if (qspi->ctrl_base)
+>  regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+> -   0, MEM_CS_MASK);
+> -qspi->mmap_enabled = false;
+> +   MEM_CS_MASK, 0);
+> +qspi->mmap_spi_device = NULL;
+>  }
+> 
+>  static void ti_qspi_setup_mmap_read(struct spi_device *spi,
+> @@ -544,8 +544,12 @@ static int ti_qspi_spi_flash_read(struct spi_device
+> *spi,
+> 
+>  mutex_lock(&qspi->list_lock);
+> 
+> -if (!qspi->mmap_enabled)
+> +if (qspi->mmap_spi_device != spi) {
+> +if (qspi->mmap_spi_device != NULL)
+> +ti_qspi_disable_memory_map(qspi->mmap_spi_device);
+>  ti_qspi_enable_memory_map(spi);
+> +}
+> +
+>  ti_qspi_setup_mmap_read(spi, msg);
+> 
+>  if (qspi->rx_chan) {
+> @@ -600,7 +604,7 @@ static int ti_qspi_start_transfer_one(struct
+> spi_master *master,
+> 
+>  mutex_lock(&qspi->list_lock);
+> 
+> -if (qspi->mmap_enabled)
+> +if (qspi->mmap_spi_device != NULL)
+>  ti_qspi_disable_memory_map(spi);
+> 
+>  list_for_each_entry(t, &m->transfers, transfer_list) {
+> @@ -787,7 +791,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+>  master->spi_flash_read = NULL;
+>  }
+>  }
+> -qspi->mmap_enabled = false;
+> +qspi->mmap_spi_device = NULL;
+> 
+>  ret = devm_spi_register_master(&pdev->dev, master);
+>  if (!ret)
+> --
+> 2.7.4
+> ****************************************************************************************
+> Note: If the reader of this message is not the intended recipient, or an
+> employee or agent responsible for delivering this message to the
+> intended recipient, you are hereby notified that any dissemination,
+> distribution or copying of this communication is strictly prohibited. If
+> you have received this communication in error, please notify us
+> immediately by replying to the message and deleting it from your
+> computer. Thank you.
+> ****************************************************************************************
+
 -- 
-2.7.4
+Regards
+Vignesh

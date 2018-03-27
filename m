@@ -1,131 +1,69 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH] Fixes in TI QSPI driver to allow more than one flash chip
-Date: Tue, 27 Mar 2018 09:30:11 +0530
-Message-ID: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
-References: <0ece6261f37a424cbde7122907548a9f@CO1PR6802MB0085.017d.mgd.msft.net>
+From: Maksims Matjakubovs <maksims.matjakubovs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] Allwinner SPI sun6i : add dual mode support.
+Date: Tue, 27 Mar 2018 19:11:02 +0300
+Message-ID: <1522167062-4079-1-git-send-email-maksims.matjakubovs@gmail.com>
+Reply-To: maksims.matjakubovs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: 8bit
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Kwiatkowski, Arkadiusz" <arkadiusz.kwiatkowski@aptiv.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <0ece6261f37a424cbde7122907548a9f@CO1PR6802MB0085.017d.mgd.msft.net>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org,
+	wens-jdAy2FN1RRM@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Maksims Matjakubovs <maksims.matjakubovs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-sunxi+bncBCD6TL67ZQFBBKG25HKQKGQEYJVTTWY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
+Added Dual mode half duplex Rx and Tx support to Allwinner sun6i/sun8i SPI driver.
+Main changes is related to SUN6I_BURST_CTL_CNT_REG register.
+SPI transmit is in Dual mode if STC (Master Single Mode Transmit Counter) is 0 and DRM (Master Dual Mode RX Enable) is not set.
+SPI receive is in Dual mode if DRM (Master Dual Mode RX Enable) is set.
+Tested on Allwinner V3s (sun8i) CPU.
 
+Signed-off-by: Maksims Matjakubovs <maksims.matjakubovs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-sun6i.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-On Thursday 22 March 2018 06:03 PM, Kwiatkowski, Arkadiusz wrote:
-> Add checking for which SPI device was memory-mapped to allow more than
-> one flash device being used on QSPI bus. Fix parameters order in
-> regmap_update_bits calls.
-> 
-> Signed-off-by: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
-> ---
-
-Thanks for the patch! Fixes are legitimate but,
-Your mailer has grabbled the patch (especially white spaces). Please use
-git send-email to send patches.
-Run scripts/checkpatch.pl --strict on the patch for kernel coding style
-checks.
-Please look at git log drivers/spi/spi-ti-qspi.c and fix up $subject
-accordingly. Split this patch into two: One fixing up
-regmap_update_bits() call and other fixing up mmap setup for more than
-one CS.
-
-
->  drivers/spi/spi-ti-qspi.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index c24d9b4..3d1dc4f 100644
-> --- a/drivers/spi/spi-ti-qspi.c
-> +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -66,7 +66,7 @@ struct ti_qspi {
->  u32 cmd;
->  u32 dc;
-> 
-> -bool mmap_enabled;
-> +struct spi_device*mmap_spi_device;
->  };
-> 
->  #define QSPI_PID(0x0)
-> @@ -490,10 +490,10 @@ static void ti_qspi_enable_memory_map(struct
-> spi_device *spi)
->  ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
->  if (qspi->ctrl_base) {
->  regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
-> -   MEM_CS_EN(spi->chip_select),
-> -   MEM_CS_MASK);
-> +   MEM_CS_MASK,
-> +   MEM_CS_EN(spi->chip_select));
->  }
-> -qspi->mmap_enabled = true;
-> +qspi->mmap_spi_device = spi;
->  }
-> 
->  static void ti_qspi_disable_memory_map(struct spi_device *spi)
-> @@ -503,8 +503,8 @@ static void ti_qspi_disable_memory_map(struct
-> spi_device *spi)
->  ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
->  if (qspi->ctrl_base)
->  regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
-> -   0, MEM_CS_MASK);
-> -qspi->mmap_enabled = false;
-> +   MEM_CS_MASK, 0);
-> +qspi->mmap_spi_device = NULL;
->  }
-> 
->  static void ti_qspi_setup_mmap_read(struct spi_device *spi,
-> @@ -544,8 +544,12 @@ static int ti_qspi_spi_flash_read(struct spi_device
-> *spi,
-> 
->  mutex_lock(&qspi->list_lock);
-> 
-> -if (!qspi->mmap_enabled)
-> +if (qspi->mmap_spi_device != spi) {
-> +if (qspi->mmap_spi_device != NULL)
-> +ti_qspi_disable_memory_map(qspi->mmap_spi_device);
->  ti_qspi_enable_memory_map(spi);
-> +}
-> +
->  ti_qspi_setup_mmap_read(spi, msg);
-> 
->  if (qspi->rx_chan) {
-> @@ -600,7 +604,7 @@ static int ti_qspi_start_transfer_one(struct
-> spi_master *master,
-> 
->  mutex_lock(&qspi->list_lock);
-> 
-> -if (qspi->mmap_enabled)
-> +if (qspi->mmap_spi_device != NULL)
->  ti_qspi_disable_memory_map(spi);
-> 
->  list_for_each_entry(t, &m->transfers, transfer_list) {
-> @@ -787,7 +791,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
->  master->spi_flash_read = NULL;
->  }
->  }
-> -qspi->mmap_enabled = false;
-> +qspi->mmap_spi_device = NULL;
-> 
->  ret = devm_spi_register_master(&pdev->dev, master);
->  if (!ret)
-> --
-> 2.7.4
-> ****************************************************************************************
-> Note: If the reader of this message is not the intended recipient, or an
-> employee or agent responsible for delivering this message to the
-> intended recipient, you are hereby notified that any dissemination,
-> distribution or copying of this communication is strictly prohibited. If
-> you have received this communication in error, please notify us
-> immediately by replying to the message and deleting it from your
-> computer. Thank you.
-> ****************************************************************************************
-
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 8533f4e..2da52ed 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -84,6 +84,7 @@
+ 
+ #define SUN6I_BURST_CTL_CNT_REG		0x38
+ #define SUN6I_BURST_CTL_CNT_STC(cnt)		((cnt) & SUN6I_MAX_XFER_SIZE)
++#define SUN6I_BURST_CTL_CNT_DRM		BIT(28)
+ 
+ #define SUN6I_TXDATA_REG		0x200
+ #define SUN6I_RXDATA_REG		0x300
+@@ -312,6 +313,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	sun6i_spi_write(sspi, SUN6I_BURST_CNT_REG, SUN6I_BURST_CNT(tfr->len));
+ 	sun6i_spi_write(sspi, SUN6I_XMIT_CNT_REG, SUN6I_XMIT_CNT(tx_len));
+ 	sun6i_spi_write(sspi, SUN6I_BURST_CTL_CNT_REG,
++			(tfr->tx_nbits == SPI_NBITS_DUAL) ? 0 :
++			(tfr->rx_nbits == SPI_NBITS_DUAL) ? SUN6I_BURST_CTL_CNT_DRM :
+ 			SUN6I_BURST_CTL_CNT_STC(tx_len));
+ 
+ 	/* Fill the TX FIFO */
+@@ -480,7 +483,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	master->set_cs = sun6i_spi_set_cs;
+ 	master->transfer_one = sun6i_spi_transfer_one;
+ 	master->num_chipselect = 4;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
++				SPI_RX_DUAL | SPI_TX_DUAL;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->auto_runtime_pm = true;
 -- 
-Regards
-Vignesh
+2.7.4

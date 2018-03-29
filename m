@@ -1,7 +1,7 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH 2/6] spi: sun4i: restrict transfer length in PIO-mode
-Date: Thu, 29 Mar 2018 21:59:03 +0300
-Message-ID: <20180329185907.27281-3-ssuloev@orpaltech.com>
+Subject: [PATCH 4/6] spi: sun4i: use completion provided by SPI core driver
+Date: Thu, 29 Mar 2018 21:59:05 +0300
+Message-ID: <20180329185907.27281-5-ssuloev@orpaltech.com>
 References: <20180329185907.27281-1-ssuloev@orpaltech.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,108 +23,140 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-There is no need to handle 3/4 empty/full interrupts
-as the maximum supported transfer length in PIO mode
-is 64 bytes for sun4i-family SoCs. As long as a
-problem was reported previously with filling FIFO
-on A10s then we stick with 63 bytes depth.
+As long as the completion already provided by the SPI core
+then there is no need to waste extra-memory on this.
+Also a waiting function was added to avoid code duplication.
 
 Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
 
 ---
- drivers/spi/spi-sun4i.c | 50 ++++++++++++-------------------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
+ drivers/spi/spi-sun4i.c | 62 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 35 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 4141003..2a49c22 100644
+index 2d716f1..4f24e12 100644
 --- a/drivers/spi/spi-sun4i.c
 +++ b/drivers/spi/spi-sun4i.c
-@@ -22,7 +22,12 @@
+@@ -92,8 +92,6 @@ struct sun4i_spi {
+ 	struct clk		*hclk;
+ 	struct clk		*mclk;
  
- #include <linux/spi/spi.h>
- 
--#define SUN4I_FIFO_DEPTH		64
-+/*
-+ * FIFO length is 64 bytes
-+ * But filling the FIFO fully might cause a timeout
-+ * on some devices, for example on spi2 on A10s
-+ */
-+#define SUN4I_FIFO_DEPTH		63
- 
- #define SUN4I_RXDATA_REG		0x00
- 
-@@ -202,7 +207,7 @@ static void sun4i_spi_set_cs(struct spi_device *spi, bool enable)
- 
- static size_t sun4i_spi_max_transfer_size(struct spi_device *spi)
- {
--	return SUN4I_FIFO_DEPTH - 1;
-+	return SUN4I_FIFO_DEPTH;
+-	struct completion	done;
+-
+ 	const u8		*tx_buf;
+ 	u8			*rx_buf;
+ 	int			len;
+@@ -213,13 +211,36 @@ static size_t sun4i_spi_max_transfer_size(struct spi_device *spi)
+ 	return SUN4I_FIFO_DEPTH;
  }
  
++static int sun4i_spi_wait_for_transfer(struct spi_device *spi,
++				       struct spi_transfer *tfr)
++{
++	struct spi_master *master = spi->master;
++	unsigned int start, end, tx_time;
++	unsigned int timeout;
++
++	/* calc required timeout from given speed & len values */
++	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
++	start = jiffies;
++	timeout = wait_for_completion_timeout(&master->xfer_completion,
++					      msecs_to_jiffies(tx_time));
++	end = jiffies;
++	if (!timeout) {
++		dev_warn(&master->dev,
++			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
++			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
++			 jiffies_to_msecs(end - start), tx_time);
++		return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
  static int sun4i_spi_transfer_one(struct spi_master *master,
-@@ -216,11 +221,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *tfr)
+ {
+ 	struct sun4i_spi *sspi = spi_master_get_devdata(master);
+-	unsigned int mclk_rate, div, timeout;
+-	unsigned int start, end, tx_time;
++	unsigned int mclk_rate, div;
+ 	unsigned int tx_len = 0;
  	int ret = 0;
  	u32 reg;
- 
--	/* We don't support transfer larger than the FIFO */
--	if (tfr->len > SUN4I_MAX_XFER_SIZE)
--		return -EMSGSIZE;
--
--	if (tfr->tx_buf && tfr->len >= SUN4I_MAX_XFER_SIZE)
-+	/* We don't support transfers larger than FIFO depth */
-+	if (tfr->len > SUN4I_FIFO_DEPTH)
+@@ -228,7 +249,6 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	if (tfr->len > SUN4I_FIFO_DEPTH)
  		return -EMSGSIZE;
  
- 	reinit_completion(&sspi->done);
-@@ -313,17 +315,11 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 
- 	/*
- 	 * Fill the TX FIFO
--	 * Filling the FIFO fully causes timeout for some reason
--	 * at least on spi2 on A10s
- 	 */
--	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH - 1);
-+	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
- 
--	/* Enable the interrupts */
--	sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TC |
--					 SUN4I_INT_CTL_RF_F34);
--	/* Only enable Tx FIFO interrupt if we really need it */
--	if (tx_len > SUN4I_FIFO_DEPTH)
--		sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TF_E34);
-+	/* Enable the transfer complete interrupt */
-+	sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TC);
- 
- 	/* Start the transfer */
+-	reinit_completion(&sspi->done);
+ 	sspi->tx_buf = tfr->tx_buf;
+ 	sspi->rx_buf = tfr->rx_buf;
+ 	sspi->len = tfr->len;
+@@ -328,22 +348,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
  	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
-@@ -363,28 +359,6 @@ static irqreturn_t sun4i_spi_handler(int irq, void *dev_id)
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
+ 
+-	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
+-	start = jiffies;
+-	timeout = wait_for_completion_timeout(&sspi->done,
+-					      msecs_to_jiffies(tx_time));
+-	end = jiffies;
+-	if (!timeout) {
+-		dev_warn(&master->dev,
+-			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
+-			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+-			 jiffies_to_msecs(end - start), tx_time);
+-		ret = -ETIMEDOUT;
+-		goto out;
+-	}
+-
++	ret = sun4i_spi_wait_for_transfer(spi, tfr);
+ 
+-out:
+ 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, 0);
+ 
+ 	return ret;
+@@ -351,14 +357,18 @@ out:
+ 
+ static irqreturn_t sun4i_spi_handler(int irq, void *dev_id)
+ {
+-	struct sun4i_spi *sspi = dev_id;
+-	u32 status = sun4i_spi_read(sspi, SUN4I_INT_STA_REG);
++	struct spi_master *master = dev_id;
++	struct sun4i_spi *sspi = spi_master_get_devdata(master);
++	u32 status;
++
++	status = sun4i_spi_read(sspi, SUN4I_INT_STA_REG);
+ 
+ 	/* Transfer complete */
+ 	if (status & SUN4I_INT_CTL_TC) {
+-		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_TC);
++		sun4i_spi_write(sspi, SUN4I_INT_STA_REG,
++				SUN4I_INT_CTL_TC);
+ 		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
+-		complete(&sspi->done);
++		spi_finalize_current_transfer(master);
  		return IRQ_HANDLED;
  	}
  
--	/* Receive FIFO 3/4 full */
--	if (status & SUN4I_INT_CTL_RF_F34) {
--		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
--		/* Only clear the interrupt _after_ draining the FIFO */
--		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_RF_F34);
--		return IRQ_HANDLED;
--	}
--
--	/* Transmit FIFO 3/4 empty */
--	if (status & SUN4I_INT_CTL_TF_E34) {
--		sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
--
--		if (!sspi->len)
--			/* nothing left to transmit */
--			sun4i_spi_disable_interrupt(sspi, SUN4I_INT_CTL_TF_E34);
--
--		/* Only clear the interrupt _after_ re-seeding the FIFO */
--		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_TF_E34);
--
--		return IRQ_HANDLED;
--	}
--
- 	return IRQ_NONE;
- }
+@@ -447,7 +457,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	}
  
+ 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
+-			       0, dev_name(&pdev->dev), sspi);
++			       0, dev_name(&pdev->dev), master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot request IRQ\n");
+ 		goto err_free_master;
+@@ -467,8 +477,6 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 		goto err_free_master;
+ 	}
+ 
+-	init_completion(&sspi->done);
+-
+ 	/*
+ 	 * This wake-up/shutdown pattern is to be able to have the
+ 	 * device woken up, even if runtime_pm is disabled
 -- 
 2.16.2

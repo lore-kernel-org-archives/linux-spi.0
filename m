@@ -1,104 +1,29 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH 3/6] spi: sun4i: coding style/readability improvements
-Date: Thu, 29 Mar 2018 21:59:04 +0300
-Message-ID: <20180329185907.27281-4-ssuloev@orpaltech.com>
-References: <20180329185907.27281-1-ssuloev@orpaltech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sergey Suloev <ssuloev@orpaltech.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Maxime Ripard <maxime.ripard@bootlin.com>,
- Chen-Yu Tsai <wens@csie.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180329185907.27281-1-ssuloev@orpaltech.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Subject: [PATCH 0/6] spi: Add support for DMA transfers in sun6i SPI driver
+Date: Fri, 30 Mar 2018 10:22:37 +0300
+Message-ID: <20180330072243.19368-1-ssuloev@orpaltech.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Minor changes to fulfill the coding style and
-improve the readability.
+The following patchset provides corrections for PIO-mode
+and support for DMA transfers in sun6i SPI driver.
 
-Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+Sergey Suloev (6):
+  spi: sun6i: coding style/readability improvements
+  spi: sun6i: handle chip select polarity flag
+  spi: sun6i: restrict transfer length in PIO-mode
+  spi: sun6i: use completion provided by SPI core
+  spi: sun6i: introduce register set/unset helpers
+  spi: sun6i: add DMA transfers support
 
----
- drivers/spi/spi-sun4i.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/spi/spi-sun6i.c | 501 ++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 378 insertions(+), 123 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 2a49c22..2d716f1 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -83,8 +83,11 @@
- #define SUN4I_FIFO_STA_TF_CNT_MASK		0x7f
- #define SUN4I_FIFO_STA_TF_CNT_BITS		16
- 
-+#define SUN4I_SPI_MAX_SPEED_HZ		100 * 1000 * 1000
-+#define SUN4I_SPI_MIN_SPEED_HZ		3 * 1000
-+#define SUN4I_SPI_MODE_BITS		(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST)
-+
- struct sun4i_spi {
--	struct spi_master	*master;
- 	void __iomem		*base_addr;
- 	struct clk		*hclk;
- 	struct clk		*mclk;
-@@ -409,12 +412,23 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	struct resource	*res;
- 	int ret = 0, irq;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(struct sun4i_spi));
-+	master = spi_alloc_master(&pdev->dev, sizeof(*sspi));
- 	if (!master) {
- 		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
- 		return -ENOMEM;
- 	}
- 
-+	master->max_speed_hz = SUN4I_SPI_MAX_SPEED_HZ;
-+	master->min_speed_hz = SUN4I_SPI_MIN_SPEED_HZ;
-+	master->num_chipselect = 4;
-+	master->mode_bits = SUN4I_SPI_MODE_BITS;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->set_cs = sun4i_spi_set_cs;
-+	master->transfer_one = sun4i_spi_transfer_one;
-+	master->max_transfer_size = sun4i_spi_max_transfer_size;
-+	master->dev.of_node = pdev->dev.of_node;
-+	master->auto_runtime_pm = true;
-+
- 	platform_set_drvdata(pdev, master);
- 	sspi = spi_master_get_devdata(master);
- 
-@@ -433,24 +447,12 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
--			       0, "sun4i-spi", sspi);
-+			       0, dev_name(&pdev->dev), sspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot request IRQ\n");
- 		goto err_free_master;
- 	}
- 
--	sspi->master = master;
--	master->max_speed_hz = 100 * 1000 * 1000;
--	master->min_speed_hz = 3 * 1000;
--	master->set_cs = sun4i_spi_set_cs;
--	master->transfer_one = sun4i_spi_transfer_one;
--	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = pdev->dev.of_node;
--	master->auto_runtime_pm = true;
--	master->max_transfer_size = sun4i_spi_max_transfer_size;
--
- 	sspi->hclk = devm_clk_get(&pdev->dev, "ahb");
- 	if (IS_ERR(sspi->hclk)) {
- 		dev_err(&pdev->dev, "Unable to acquire AHB clock\n");
 -- 
 2.16.2

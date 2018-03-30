@@ -1,41 +1,63 @@
-From: Chen-Yu Tsai <wens@csie.org>
-Subject: Re: [PATCH 0/6] spi: Add support for DMA transfers in sun6i SPI driver
-Date: Fri, 30 Mar 2018 15:33:30 +0800
-Message-ID: <CAGb2v642R=zNmLLz2t4B=xB9wu9yefRs6WG_5fPkuD1-9vLTQg@mail.gmail.com>
-References: <20180330072243.19368-1-ssuloev@orpaltech.com>
+From: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+Subject: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in regmap_update_bits calls
+Date: Fri, 30 Mar 2018 11:41:23 +0200
+Message-ID: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        linux-spi@vger.kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-To: Sergey Suloev <ssuloev@orpaltech.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Arkadiusz Kwiatkowski" <arkadiusz.kwiatkowski@aptiv.com>
+To: <vigneshr@ti.com>, <sourav.poddar@ti.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180330072243.19368-1-ssuloev@orpaltech.com>
+In-Reply-To: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Mar 30, 2018 at 3:22 PM, Sergey Suloev <ssuloev@orpaltech.com> wrote:
-> The following patchset provides corrections for PIO-mode
-> and support for DMA transfers in sun6i SPI driver.
+This commit fixes the order of parameters passed to regmap_update_bits
+function inside spi-ti-qspi driver. Accidentally the code worked
+correctly when cs=3D0, but it is not the case for other values.
 
-Is this the same series you sent 12 hours ago? What's different?
-Please version your patch series and provide a changelog.
+Signed-off-by: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+---
+ drivers/spi/spi-ti-qspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-ChenYu
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index c24d9b4..d0ea62d 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -490,8 +490,8 @@ static void ti_qspi_enable_memory_map(struct spi_device=
+ *spi)
+        ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
+        if (qspi->ctrl_base) {
+                regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+-                                  MEM_CS_EN(spi->chip_select),
+-                                  MEM_CS_MASK);
++                                  MEM_CS_MASK,
++                                  MEM_CS_EN(spi->chip_select));
+        }
+        qspi->mmap_enabled =3D true;
+ }
+@@ -503,7 +503,7 @@ static void ti_qspi_disable_memory_map(struct spi_devic=
+e *spi)
+        ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
+        if (qspi->ctrl_base)
+                regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+-                                  0, MEM_CS_MASK);
++                                  MEM_CS_MASK, 0);
+        qspi->mmap_enabled =3D false;
+ }
 
-> Sergey Suloev (6):
->   spi: sun6i: coding style/readability improvements
->   spi: sun6i: handle chip select polarity flag
->   spi: sun6i: restrict transfer length in PIO-mode
->   spi: sun6i: use completion provided by SPI core
->   spi: sun6i: introduce register set/unset helpers
->   spi: sun6i: add DMA transfers support
->
->  drivers/spi/spi-sun6i.c | 501 ++++++++++++++++++++++++++++++++++++------------
->  1 file changed, 378 insertions(+), 123 deletions(-)
->
-> --
-> 2.16.2
->
+--
+2.7.4
+
+***************************************************************************=
+************* Note: If the reader of this message is not the intended recip=
+ient, or an employee or agent responsible for delivering this message to th=
+e intended recipient, you are hereby notified that any dissemination, distr=
+ibution or copying of this communication is strictly prohibited. If you hav=
+e received this communication in error, please notify us immediately by rep=
+lying to the message and deleting it from your computer. Thank you. *******=
+***************************************************************************=
+******

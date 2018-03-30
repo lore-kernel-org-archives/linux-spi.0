@@ -1,144 +1,40 @@
-From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH v2 4/6] spi: sun6i: use completion provided by SPI core
-Date: Fri, 30 Mar 2018 15:50:45 +0300
-Message-ID: <20180330125047.13936-5-ssuloev@orpaltech.com>
-References: <20180330125047.13936-1-ssuloev@orpaltech.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
+Date: Fri, 30 Mar 2018 22:54:44 +0300
+Message-ID: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org
 To: Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180330125047.13936-1-ssuloev@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-As long as the completion is already provided by the SPI core
-then there is no need to waste extra-memory on this.
-Also a waiting function was added to avoid code duplication.
+clk_get_rate() is below clk_prepare_enable(), so
+its error should lead to goto err_clk_disable, not to err_master_put.
 
-Changes in v2:
-1) Fixed issue with passing an invalid argument into devm_request_irq()
-function.
+Found by Linux Driver Verification project (linuxtesting.org).
 
-Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
-
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
 ---
- drivers/spi/spi-sun6i.c | 52 ++++++++++++++++++++++++++++---------------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 4db1f20..210cef9 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -99,8 +99,6 @@ struct sun6i_spi {
- 	struct clk		*mclk;
- 	struct reset_control	*rstc;
- 
--	struct completion	done;
--
- 	const u8		*tx_buf;
- 	u8			*rx_buf;
- 	int			len;
-@@ -246,6 +244,30 @@ static int sun6i_spi_prepare_message(struct spi_master *master,
- 	return 0;
- }
- 
-+static int sun6i_spi_wait_for_transfer(struct spi_device *spi,
-+				       struct spi_transfer *tfr)
-+{
-+	struct spi_master *master = spi->master;
-+	unsigned int start, end, tx_time;
-+	unsigned int timeout;
-+
-+	/* smart wait for completion */
-+	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
-+	start = jiffies;
-+	timeout = wait_for_completion_timeout(&master->xfer_completion,
-+					      msecs_to_jiffies(tx_time));
-+	end = jiffies;
-+	if (!timeout) {
-+		dev_warn(&master->dev,
-+			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
-+			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
-+			 jiffies_to_msecs(end - start), tx_time);
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
- static int sun6i_spi_transfer_one(struct spi_master *master,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *tfr)
-@@ -266,7 +288,6 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	if (tfr->len > sspi->fifo_depth)
- 		return -EMSGSIZE;
- 
--	reinit_completion(&sspi->done);
- 	sspi->tx_buf = tfr->tx_buf;
- 	sspi->rx_buf = tfr->rx_buf;
- 	sspi->len = tfr->len;
-@@ -346,21 +367,9 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
- 	sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
- 
--	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
--	start = jiffies;
--	timeout = wait_for_completion_timeout(&sspi->done,
--					      msecs_to_jiffies(tx_time));
--	end = jiffies;
--	if (!timeout) {
--		dev_warn(&master->dev,
--			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
--			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
--			 jiffies_to_msecs(end - start), tx_time);
--		ret = -ETIMEDOUT;
--		goto out;
--	}
-+	/* Wait for completion */
-+	ret = sun6i_spi_wait_for_transfer(spi, tfr);
- 
--out:
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
- 
- 	return ret;
-@@ -368,7 +377,8 @@ out:
- 
- static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
- {
--	struct sun6i_spi *sspi = dev_id;
-+	struct spi_master *master = dev_id;
-+	struct sun6i_spi *sspi = spi_master_get_devdata(master);
- 	u32 status;
- 
- 	status = sun6i_spi_read(sspi, SUN6I_INT_STA_REG);
-@@ -377,7 +387,7 @@ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
- 	if (status & SUN6I_INT_CTL_TC) {
- 		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TC);
- 		sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
--		complete(&sspi->done);
-+		spi_finalize_current_transfer(master);
- 		return IRQ_HANDLED;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index ba9743fa2326..ad1e55d3d5d5 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1129,7 +1129,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	if (!spi->clk_rate) {
+ 		dev_err(&pdev->dev, "clk rate = 0\n");
+ 		ret = -EINVAL;
+-		goto err_master_put;
++		goto err_clk_disable;
  	}
  
-@@ -476,7 +486,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, sun6i_spi_handler,
--			       0, dev_name(&pdev->dev), sspi);
-+			       0, dev_name(&pdev->dev), master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot request IRQ\n");
- 		goto err_free_master;
-@@ -498,8 +508,6 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 		goto err_free_master;
- 	}
- 
--	init_completion(&sspi->done);
--
- 	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(sspi->rstc)) {
- 		dev_err(&pdev->dev, "Couldn't get reset controller\n");
+ 	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
 -- 
-2.16.2
+2.7.4

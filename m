@@ -1,97 +1,131 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH 5/6] spi: sun6i: introduce register set/unset helpers
-Date: Fri, 30 Mar 2018 10:22:42 +0300
-Message-ID: <20180330072243.19368-6-ssuloev@orpaltech.com>
+Subject: [PATCH 4/6] spi: sun6i: use completion provided by SPI core
+Date: Fri, 30 Mar 2018 10:22:41 +0300
+Message-ID: <20180330072243.19368-5-ssuloev@orpaltech.com>
 References: <20180330072243.19368-1-ssuloev@orpaltech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sergey Suloev <ssuloev@orpaltech.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Maxime Ripard <maxime.ripard@bootlin.com>,
- Chen-Yu Tsai <wens@csie.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180330072243.19368-1-ssuloev@orpaltech.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Two helper functions were added in order to update
-registers easily.
+As long as the completion is already provided by the SPI core
+then there is no need to waste extra-memory on this.
+Also a waiting function was added to avoid code duplication.
 
 Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
 
 ---
- drivers/spi/spi-sun6i.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/spi/spi-sun6i.c | 50 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index fc43752..a6e6812 100644
+index 13396bd..fc43752 100644
 --- a/drivers/spi/spi-sun6i.c
 +++ b/drivers/spi/spi-sun6i.c
-@@ -115,29 +115,29 @@ static inline void sun6i_spi_write(struct sun6i_spi *sspi, u32 reg, u32 value)
- 	writel(value, sspi->base_addr + reg);
- }
+@@ -99,8 +99,6 @@ struct sun6i_spi {
+ 	struct clk		*mclk;
+ 	struct reset_control	*rstc;
  
--static inline u32 sun6i_spi_get_tx_fifo_count(struct sun6i_spi *sspi)
-+static inline void sun6i_spi_set(struct sun6i_spi *sspi, u32 addr, u32 val)
- {
--	u32 reg = sun6i_spi_read(sspi, SUN6I_FIFO_STA_REG);
+-	struct completion	done;
 -
--	reg >>= SUN6I_FIFO_STA_TF_CNT_BITS;
-+	u32 reg = sun6i_spi_read(sspi, addr);
- 
--	return reg & SUN6I_FIFO_STA_TF_CNT_MASK;
-+	reg |= val;
-+	sun6i_spi_write(sspi, addr, reg);
+ 	const u8		*tx_buf;
+ 	u8			*rx_buf;
+ 	int			len;
+@@ -255,6 +253,30 @@ static int sun6i_spi_prepare_message(struct spi_master *master,
+ 	return 0;
  }
  
--static inline void sun6i_spi_enable_interrupt(struct sun6i_spi *sspi, u32 mask)
-+static inline void sun6i_spi_unset(struct sun6i_spi *sspi, u32 addr, u32 val)
- {
--	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
-+	u32 reg = sun6i_spi_read(sspi, addr);
- 
--	reg |= mask;
--	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
-+	reg &= ~val;
-+	sun6i_spi_write(sspi, addr, reg);
- }
- 
--static inline void sun6i_spi_disable_interrupt(struct sun6i_spi *sspi, u32 mask)
-+static inline u32 sun6i_spi_get_tx_fifo_count(struct sun6i_spi *sspi)
- {
--	u32 reg = sun6i_spi_read(sspi, SUN6I_INT_CTL_REG);
-+	u32 reg = sun6i_spi_read(sspi, SUN6I_FIFO_STA_REG);
++static int sun6i_spi_wait_for_transfer(struct spi_device *spi,
++				       struct spi_transfer *tfr)
++{
++	struct spi_master *master = spi->master;
++	unsigned int start, end, tx_time;
++	unsigned int timeout;
 +
-+	reg >>= SUN6I_FIFO_STA_TF_CNT_BITS;
++	/* smart wait for completion */
++	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
++	start = jiffies;
++	timeout = wait_for_completion_timeout(&master->xfer_completion,
++					      msecs_to_jiffies(tx_time));
++	end = jiffies;
++	if (!timeout) {
++		dev_warn(&master->dev,
++			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
++			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
++			 jiffies_to_msecs(end - start), tx_time);
++		return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
+ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *tfr)
+@@ -275,7 +297,6 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	if (tfr->len > sspi->fifo_depth)
+ 		return -EMSGSIZE;
  
--	reg &= ~mask;
--	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, reg);
-+	return reg & SUN6I_FIFO_STA_TF_CNT_MASK;
- }
+-	reinit_completion(&sspi->done);
+ 	sspi->tx_buf = tfr->tx_buf;
+ 	sspi->rx_buf = tfr->rx_buf;
+ 	sspi->len = tfr->len;
+@@ -342,21 +363,9 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+ 	sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
  
- static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int len)
-@@ -357,11 +357,10 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	sun6i_spi_fill_fifo(sspi, sspi->fifo_depth);
+-	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
+-	start = jiffies;
+-	timeout = wait_for_completion_timeout(&sspi->done,
+-					      msecs_to_jiffies(tx_time));
+-	end = jiffies;
+-	if (!timeout) {
+-		dev_warn(&master->dev,
+-			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
+-			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+-			 jiffies_to_msecs(end - start), tx_time);
+-		ret = -ETIMEDOUT;
+-		goto out;
+-	}
++	/* Wait for completion */
++	ret = sun6i_spi_wait_for_transfer(spi, tfr);
  
- 	/* Enable transfer complete interrupt */
--	sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TC);
-+	sun6i_spi_set(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
+-out:
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
  
- 	/* Start the transfer */
--	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
--	sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
-+	sun6i_spi_set(sspi, SUN6I_TFR_CTL_REG, SUN6I_TFR_CTL_XCH);
+ 	return ret;
+@@ -364,7 +373,8 @@ out:
  
- 	/* Wait for completion */
- 	ret = sun6i_spi_wait_for_transfer(spi, tfr);
+ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
+ {
+-	struct sun6i_spi *sspi = dev_id;
++	struct spi_master *master = dev_id;
++	struct sun6i_spi *sspi = spi_master_get_devdata(master);
+ 	u32 status;
+ 
+ 	status = sun6i_spi_read(sspi, SUN6I_INT_STA_REG);
+@@ -373,7 +383,7 @@ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
+ 	if (status & SUN6I_INT_CTL_TC) {
+ 		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TC);
+ 		sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
+-		complete(&sspi->done);
++		spi_finalize_current_transfer(master);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -494,8 +504,6 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 		goto err_free_master;
+ 	}
+ 
+-	init_completion(&sspi->done);
+-
+ 	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(sspi->rstc)) {
+ 		dev_err(&pdev->dev, "Couldn't get reset controller\n");
 -- 
 2.16.2

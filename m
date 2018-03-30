@@ -1,43 +1,41 @@
-From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH 2/6] spi: sun6i: handle chip select polarity flag
-Date: Fri, 30 Mar 2018 10:22:39 +0300
-Message-ID: <20180330072243.19368-3-ssuloev@orpaltech.com>
+From: Chen-Yu Tsai <wens@csie.org>
+Subject: Re: [PATCH 0/6] spi: Add support for DMA transfers in sun6i SPI driver
+Date: Fri, 30 Mar 2018 15:33:30 +0800
+Message-ID: <CAGb2v642R=zNmLLz2t4B=xB9wu9yefRs6WG_5fPkuD1-9vLTQg@mail.gmail.com>
 References: <20180330072243.19368-1-ssuloev@orpaltech.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
-To: Mark Brown <broonie@kernel.org>,
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>
+        linux-spi@vger.kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180330072243.19368-1-ssuloev@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The chip select polarity flag is declared as supported
-but is not handled in the code.
+On Fri, Mar 30, 2018 at 3:22 PM, Sergey Suloev <ssuloev@orpaltech.com> wrote:
+> The following patchset provides corrections for PIO-mode
+> and support for DMA transfers in sun6i SPI driver.
 
-Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+Is this the same series you sent 12 hours ago? What's different?
+Please version your patch series and provide a changelog.
 
----
- drivers/spi/spi-sun6i.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ChenYu
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index ff790dc..f992a7d 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -193,6 +193,12 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
- 	else
- 		reg &= ~SUN6I_TFR_CTL_CS_LEVEL;
- 
-+	/* Handle chip select "reverse" polarity */
-+	if (spi->mode & SPI_CS_HIGH)
-+		reg &= ~SUN6I_TFR_CTL_SPOL;
-+	else
-+		reg |= SUN6I_TFR_CTL_SPOL;
-+
- 	/* We want to control the chip select manually */
- 	reg |= SUN6I_TFR_CTL_CS_MANUAL;
- 
--- 
-2.16.2
+> Sergey Suloev (6):
+>   spi: sun6i: coding style/readability improvements
+>   spi: sun6i: handle chip select polarity flag
+>   spi: sun6i: restrict transfer length in PIO-mode
+>   spi: sun6i: use completion provided by SPI core
+>   spi: sun6i: introduce register set/unset helpers
+>   spi: sun6i: add DMA transfers support
+>
+>  drivers/spi/spi-sun6i.c | 501 ++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 378 insertions(+), 123 deletions(-)
+>
+> --
+> 2.16.2
+>

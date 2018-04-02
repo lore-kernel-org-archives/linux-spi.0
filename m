@@ -1,159 +1,267 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v4.17
-Date: Mon, 2 Apr 2018 17:56:00 +0100
-Message-ID: <20180402165600.GW29239@sirena.org.uk>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: [PATCH v5] ARM: imx: Update spi_imx platform data to reflect current
+ state
+Date: Mon,  2 Apr 2018 13:06:05 -0700
+Message-ID: <20180402200605.13050-1-tpiepho@impinj.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QCC2I/2CckNfI+Tr"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <kernel@pengutronix.de>, Trent Piepho <tpiepho@impinj.com>
+To: linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The docs for the spi_imx platform data still refer to a -32 offset used to
+specify a native chip select.  This was removed in commit 602c8f4485cd
+("spi: imx: fix use of native chip-selects with devicetree") and no
+longer works as documented.  Update documentation.
 
---QCC2I/2CckNfI+Tr
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The macro MXC_SPI_CS() is no longer is needed.
 
-The following changes since commit 0adb32858b0bddf4ada5f364a84ed60b196dbcda:
+If a board uses all native chip selects, then it's not necessary to
+specify a chip select array at all, as all native is the default (this is
+how device-tree configured SPI masters work too).  Most of the spi-imx
+platform data users have their chip select arrays removed by this patch.
 
-  Linux 4.16 (2018-04-01 14:20:27 -0700)
+This patch also fixes a bug in mx31moboard introduced in the '602 commit.
+When that board was updated in commit 901f26bce64a ("ARM: imx: set
+correct chip_select in platform setup") to reflect the SPI change, only
+SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
+selects.  The mc13783 spi device on bus 1 had its chip select updated as
+if it were on bus 2.
 
-are available in the Git repository at:
+CC: Shawn Guo <shawnguo@kernel.org>
+CC: Sascha Hauer <kernel@pengutronix.de>
+CC: Fabio Estevam <fabio.estevam@nxp.com>
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+---
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
-v4.17
+Changes from v4:
+  Ported to current linux-next with no changes.
+  This patch no longer has any dependencies that are not applied in v4.15
 
-for you to fetch changes up to 0930437e8f9d1f513ca7f130a650b608358f8805:
 
-  Merge remote-tracking branches 'spi/topic/sh-msiof', 'spi/topic/sprd' and=
- 'spi/topic/tegra20-slink' into spi-next (2018-04-02 15:56:45 +0100)
+ arch/arm/mach-imx/mach-mx31_3ds.c     | 18 ++----------------
+ arch/arm/mach-imx/mach-mx31lilly.c    | 12 ++----------
+ arch/arm/mach-imx/mach-mx31lite.c     | 16 ++--------------
+ arch/arm/mach-imx/mach-mx31moboard.c  | 17 +++--------------
+ arch/arm/mach-imx/mach-pcm037_eet.c   |  5 +----
+ include/linux/platform_data/spi-imx.h | 29 +++++++++++++++++------------
+ 6 files changed, 27 insertions(+), 70 deletions(-)
 
-----------------------------------------------------------------
-spi: SPI updates for v4.17
-
-A quiet release for SPI, some fixes and small updates for individual
-drivers with one bigger change from Linus Walleij which coverts the
-bitbanging SPI driver to use the GPIO descriptor API from Linus Walleij.
-Since GPIO descriptors were used by platform data this means there's a
-few changes in arch/ making relevant updates for a few platforms and one
-misc driver that are affected.
-
-----------------------------------------------------------------
-Alexey Khoroshilov (1):
-      spi: jcore: disable ref_clk after getting its rate
-
-Andi Shyti (1):
-      MAINTAINERS: update Andi's e-mail
-
-Baolin Wang (2):
-      spi: sprd: Simplify the transfer function
-      spi: sprd: Add the support of restarting the system
-
-Christophe Jaillet (1):
-      spi: bcm-qspi: fIX some error handling paths
-
-Eugen Hristev (1):
-      spi: atmel: init FIFOs before spi enable
-
-Geert Uytterhoeven (2):
-      spi: sh-msiof: Use correct enum for DMA transfer direction
-      spi: sh-msiof: Document R-Car M3-N support
-
-Gustavo A. R. Silva (1):
-      spi: tegra20-slink: use true and false for boolean values
-
-Jan Kundr=E1t (3):
-      spi: orion: Rework GPIO CS handling
-      spi: orion: Make the error message greppable
-      spi: orion: Prepare space for per-child options
-
-Jarkko Nikula (5):
-      spi: pxa2xx: Move SSP idle waiting to cs_deassert()
-      spi: dw: Convert to generalized SPI controller API
-      spi: pxa2xx: Convert to generalized SPI controller API
-      spi: pxa2xx: Disable runtime PM if controller registration fails
-      spi: Fix unregistration of controller with fixed SPI bus number
-
-Linus Walleij (2):
-      spi: spi-gpio: Rewrite to use GPIO descriptors
-      spi: spi-gpio: Augment device tree bindings
-
-Mark Brown (6):
-      Merge remote-tracking branch 'spi/fix/dma' into spi-linus
-      Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/pxa2xx' and =
-'spi/fix/unregiser' into spi-linus
-      Merge remote-tracking branch 'spi/topic/samsung' into spi-next
-      Merge remote-tracking branches 'spi/topic/atmel', 'spi/topic/bcm-qspi=
-', 'spi/topic/bcm2835aux', 'spi/topic/dw' and 'spi/topic/gpio' into spi-next
-      Merge remote-tracking branches 'spi/topic/jcore', 'spi/topic/kconfig'=
-, 'spi/topic/orion', 'spi/topic/pxa2xx' and 'spi/topic/rspi' into spi-next
-      Merge remote-tracking branches 'spi/topic/sh-msiof', 'spi/topic/sprd'=
- and 'spi/topic/tegra20-slink' into spi-next
-
-Maxime Chevallier (1):
-      spi: Fix scatterlist elements size in spi_map_buf
-
-Stefan Agner (2):
-      spi: rspi: use correct enum for DMA transfer direction
-      spi: spi-atmel: Use correct enum for DMA transfer direction
-
-Trent Piepho (1):
-      spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc
-
-Ulf Magnusson (1):
-      spi: kconfig: Remove AVR32 dep. from SPI_ATMEL
-
- .mailmap                                           |   1 +
- Documentation/devicetree/bindings/spi/sh-msiof.txt |   1 +
- Documentation/devicetree/bindings/spi/spi-gpio.txt |  24 +-
- MAINTAINERS                                        |   2 +-
- arch/arm/mach-pxa/cm-x300.c                        |  21 +-
- arch/arm/mach-pxa/raumfeld.c                       |  26 +-
- arch/arm/mach-s3c24xx/mach-jive.c                  |  55 +++--
- arch/arm/mach-s3c24xx/mach-qt2410.c                |  26 +-
- arch/arm/mach-s3c64xx/mach-smartq.c                |  22 +-
- arch/mips/alchemy/devboards/db1000.c               |  24 +-
- arch/mips/jz4740/board-qi_lb60.c                   |  26 +-
- drivers/misc/eeprom/digsy_mtc_eeprom.c             |  29 ++-
- drivers/spi/Kconfig                                |   4 +-
- drivers/spi/spi-atmel.c                            |  16 +-
- drivers/spi/spi-bcm-qspi.c                         |   4 +-
- drivers/spi/spi-bcm2835aux.c                       |  18 +-
- drivers/spi/spi-dw-mid.c                           |   6 +-
- drivers/spi/spi-dw.c                               |  26 +-
- drivers/spi/spi-dw.h                               |   4 +-
- drivers/spi/spi-gpio.c                             | 270 +++++++----------=
-----
- drivers/spi/spi-jcore.c                            |  11 +-
- drivers/spi/spi-orion.c                            |  65 ++++-
- drivers/spi/spi-pxa2xx-dma.c                       |   4 +-
- drivers/spi/spi-pxa2xx.c                           |  56 +++--
- drivers/spi/spi-pxa2xx.h                           |   2 +-
- drivers/spi/spi-rspi.c                             |   4 +-
- drivers/spi/spi-sh-msiof.c                         |   4 +-
- drivers/spi/spi-sprd-adi.c                         | 176 +++++++++++---
- drivers/spi/spi-tegra20-slink.c                    |   4 +-
- drivers/spi/spi.c                                  |  19 +-
- include/linux/spi/spi_gpio.h                       |  49 +---
- 31 files changed, 580 insertions(+), 419 deletions(-)
-
---QCC2I/2CckNfI+Tr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrCYJ8ACgkQJNaLcl1U
-h9DPGQf9FKYaTbOZhpP4oL1L8Rw5y+bxJ3y/+2lDS9CF7vAmOJZbfcBVtTxm+Brl
-OS5go3DDC1dztcNjZ/Z5e4jnfKkH21xUF0E52PXwbKrJVMTIyr59LRgZjBJj6kXp
-jRrLozZr/4ygS/W/l6f+gytWC6/zfqQAQxSNpFlkp5kLpY/bNTPpx0c5TgO7bOdg
-0m3U+YkOjiaJjOPBt7LW9lN4j6Fu2IAO3ho2NhivbLF44c0nQI/zPo8IqTLxU7LK
-wfQA5rcz2UlnODCSmJifAqDV9I3W6cdZR5skjoNwVns1XAcaGoD4ehILt6z+wWbJ
-Tg5SBVYJyljXi4VqmjhE5rWv+fmBbw==
-=yeId
------END PGP SIGNATURE-----
-
---QCC2I/2CckNfI+Tr--
+diff --git a/arch/arm/mach-imx/mach-mx31_3ds.c b/arch/arm/mach-imx/mach-mx31_3ds.c
+index 68c3f0799d5b..9d87f1dcf7bb 100644
+--- a/arch/arm/mach-imx/mach-mx31_3ds.c
++++ b/arch/arm/mach-imx/mach-mx31_3ds.c
+@@ -374,26 +374,12 @@ static struct imx_ssi_platform_data mx31_3ds_ssi_pdata = {
+ };
+ 
+ /* SPI */
+-static int spi0_internal_chipselect[] = {
+-	MXC_SPI_CS(0),
+-	MXC_SPI_CS(1),
+-	MXC_SPI_CS(2),
+-};
+-
+ static const struct spi_imx_master spi0_pdata __initconst = {
+-	.chipselect	= spi0_internal_chipselect,
+-	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
+-};
+-
+-static int spi1_internal_chipselect[] = {
+-	MXC_SPI_CS(0),
+-	MXC_SPI_CS(1),
+-	MXC_SPI_CS(2),
++	.num_chipselect	= 3,
+ };
+ 
+ static const struct spi_imx_master spi1_pdata __initconst = {
+-	.chipselect	= spi1_internal_chipselect,
+-	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
++	.num_chipselect	= 3,
+ };
+ 
+ static struct spi_board_info mx31_3ds_spi_devs[] __initdata = {
+diff --git a/arch/arm/mach-imx/mach-mx31lilly.c b/arch/arm/mach-imx/mach-mx31lilly.c
+index 6fd463642954..8bf52819d4d9 100644
+--- a/arch/arm/mach-imx/mach-mx31lilly.c
++++ b/arch/arm/mach-imx/mach-mx31lilly.c
+@@ -226,20 +226,12 @@ static void __init lilly1131_usb_init(void)
+ 
+ /* SPI */
+ 
+-static int spi_internal_chipselect[] = {
+-	MXC_SPI_CS(0),
+-	MXC_SPI_CS(1),
+-	MXC_SPI_CS(2),
+-};
+-
+ static const struct spi_imx_master spi0_pdata __initconst = {
+-	.chipselect = spi_internal_chipselect,
+-	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
++	.num_chipselect = 3,
+ };
+ 
+ static const struct spi_imx_master spi1_pdata __initconst = {
+-	.chipselect = spi_internal_chipselect,
+-	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
++	.num_chipselect = 3,
+ };
+ 
+ static struct mc13xxx_platform_data mc13783_pdata __initdata = {
+diff --git a/arch/arm/mach-imx/mach-mx31lite.c b/arch/arm/mach-imx/mach-mx31lite.c
+index a3250bc7f114..a3cbba6c955b 100644
+--- a/arch/arm/mach-imx/mach-mx31lite.c
++++ b/arch/arm/mach-imx/mach-mx31lite.c
+@@ -83,15 +83,8 @@ static const struct imxuart_platform_data uart_pdata __initconst = {
+ };
+ 
+ /* SPI */
+-static int spi0_internal_chipselect[] = {
+-	MXC_SPI_CS(0),
+-	MXC_SPI_CS(1),
+-	MXC_SPI_CS(2),
+-};
+-
+ static const struct spi_imx_master spi0_pdata __initconst = {
+-	.chipselect	= spi0_internal_chipselect,
+-	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
++	.num_chipselect	= 3,
+ };
+ 
+ static const struct mxc_nand_platform_data
+@@ -133,13 +126,8 @@ static struct platform_device smsc911x_device = {
+  * The MC13783 is the only hard-wired SPI device on the module.
+  */
+ 
+-static int spi1_internal_chipselect[] = {
+-	MXC_SPI_CS(0),
+-};
+-
+ static const struct spi_imx_master spi1_pdata __initconst = {
+-	.chipselect	= spi1_internal_chipselect,
+-	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
++	.num_chipselect	= 1,
+ };
+ 
+ static struct mc13xxx_platform_data mc13783_pdata __initdata = {
+diff --git a/arch/arm/mach-imx/mach-mx31moboard.c b/arch/arm/mach-imx/mach-mx31moboard.c
+index 7716f83aecdd..643a3d749703 100644
+--- a/arch/arm/mach-imx/mach-mx31moboard.c
++++ b/arch/arm/mach-imx/mach-mx31moboard.c
+@@ -152,14 +152,8 @@ static const struct imxi2c_platform_data moboard_i2c1_data __initconst = {
+ 	.bitrate = 100000,
+ };
+ 
+-static int moboard_spi1_cs[] = {
+-	MXC_SPI_CS(0),
+-	MXC_SPI_CS(2),
+-};
+-
+ static const struct spi_imx_master moboard_spi1_pdata __initconst = {
+-	.chipselect	= moboard_spi1_cs,
+-	.num_chipselect	= ARRAY_SIZE(moboard_spi1_cs),
++	.num_chipselect	= 3,
+ };
+ 
+ static struct regulator_consumer_supply sdhc_consumers[] = {
+@@ -296,19 +290,14 @@ static struct spi_board_info moboard_spi_board_info[] __initdata = {
+ 		/* irq number is run-time assigned */
+ 		.max_speed_hz = 300000,
+ 		.bus_num = 1,
+-		.chip_select = 1,
++		.chip_select = 0,
+ 		.platform_data = &moboard_pmic,
+ 		.mode = SPI_CS_HIGH,
+ 	},
+ };
+ 
+-static int moboard_spi2_cs[] = {
+-	MXC_SPI_CS(0), MXC_SPI_CS(1),
+-};
+-
+ static const struct spi_imx_master moboard_spi2_pdata __initconst = {
+-	.chipselect	= moboard_spi2_cs,
+-	.num_chipselect	= ARRAY_SIZE(moboard_spi2_cs),
++	.num_chipselect	= 2,
+ };
+ 
+ #define SDHC1_CD IOMUX_TO_GPIO(MX31_PIN_ATA_CS0)
+diff --git a/arch/arm/mach-imx/mach-pcm037_eet.c b/arch/arm/mach-imx/mach-pcm037_eet.c
+index 95bd97710494..15bc956d466b 100644
+--- a/arch/arm/mach-imx/mach-pcm037_eet.c
++++ b/arch/arm/mach-imx/mach-pcm037_eet.c
+@@ -56,11 +56,8 @@ static struct spi_board_info pcm037_spi_dev[] = {
+ };
+ 
+ /* Platform Data for MXC CSPI */
+-static int pcm037_spi1_cs[] = { MXC_SPI_CS(0), MXC_SPI_CS(1), };
+-
+ static const struct spi_imx_master pcm037_spi1_pdata __initconst = {
+-	.chipselect = pcm037_spi1_cs,
+-	.num_chipselect = ARRAY_SIZE(pcm037_spi1_cs),
++	.num_chipselect = 2,
+ };
+ 
+ /* GPIO-keys input device */
+diff --git a/include/linux/platform_data/spi-imx.h b/include/linux/platform_data/spi-imx.h
+index 6f012fefa1a2..328f670d10bd 100644
+--- a/include/linux/platform_data/spi-imx.h
++++ b/include/linux/platform_data/spi-imx.h
+@@ -5,24 +5,29 @@
+ 
+ /*
+  * struct spi_imx_master - device.platform_data for SPI controller devices.
+- * @chipselect: Array of chipselects for this master. Numbers >= 0 mean gpio
+- *              pins, numbers < 0 mean internal CSPI chipselects according
+- *              to MXC_SPI_CS(). Normally you want to use gpio based chip
+- *              selects as the CSPI module tries to be intelligent about
+- *              when to assert the chipselect: The CSPI module deasserts the
+- *              chipselect once it runs out of input data. The other problem
+- *              is that it is not possible to mix between high active and low
+- *              active chipselects on one single bus using the internal
+- *              chipselects. Unfortunately Freescale decided to put some
++ * @chipselect: Array of chipselects for this master or NULL.  Numbers >= 0
++ *              mean GPIO pins, -ENOENT means internal CSPI chipselect
++ *              matching the position in the array.  E.g., if chipselect[1] =
++ *              -ENOENT then a SPI slave using chip select 1 will use the
++ *              native SS1 line of the CSPI.  Omitting the array will use
++ *              all native chip selects.
++
++ *              Normally you want to use gpio based chip selects as the CSPI
++ *              module tries to be intelligent about when to assert the
++ *              chipselect:  The CSPI module deasserts the chipselect once it
++ *              runs out of input data.  The other problem is that it is not
++ *              possible to mix between high active and low active chipselects
++ *              on one single bus using the internal chipselects.
++ *              Unfortunately, on some SoCs, Freescale decided to put some
+  *              chipselects on dedicated pins which are not usable as gpios,
+  *              so we have to support the internal chipselects.
+- * @num_chipselect: ARRAY_SIZE(chipselect)
++ *
++ * @num_chipselect: If @chipselect is specified, ARRAY_SIZE(chipselect),
++ *                  otherwise the number of native chip selects.
+  */
+ struct spi_imx_master {
+ 	int	*chipselect;
+ 	int	num_chipselect;
+ };
+ 
+-#define MXC_SPI_CS(no)	((no) - 32)
+-
+ #endif /* __MACH_SPI_H_*/
+-- 
+2.14.3

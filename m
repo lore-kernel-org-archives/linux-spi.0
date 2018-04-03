@@ -1,72 +1,35 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: Re: [PATCH 6/6] spi: sun4i: add DMA transfers support
-Date: Tue, 3 Apr 2018 16:03:32 +0300
-Message-ID: <19d5907c-f081-21ce-1b72-7c0a331eb073@orpaltech.com>
-References: <20180329185907.27281-1-ssuloev@orpaltech.com>
- <20180329185907.27281-7-ssuloev@orpaltech.com>
- <20180403081711.rqsp77mgnuvlnzt5@flea>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@bootlin.com>
+Subject: [PATCH v2 0/6] spi: Add support for DMA transfers in sun4i SPI driver
+Date: Tue,  3 Apr 2018 18:28:59 +0300
+Message-ID: <20180403152905.1524-1-ssuloev@orpaltech.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180403081711.rqsp77mgnuvlnzt5@flea>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/03/2018 11:17 AM, Maxime Ripard wrote:
-> On Thu, Mar 29, 2018 at 09:59:07PM +0300, Sergey Suloev wrote:
->> +static int sun4i_spi_dma_setup(struct device *dev,
->> +			       struct resource *res)
->> +{
->> +	struct spi_master *master = dev_get_drvdata(dev);
->> +	struct dma_slave_config dma_sconf;
->> +	int ret;
->> +
->> +	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
->> +	if (IS_ERR(master->dma_tx)) {
->> +		dev_err(dev, "Unable to acquire DMA TX channel\n");
->> +		ret = PTR_ERR(master->dma_tx);
->> +		goto out;
->> +	}
->> +
->> +	dma_sconf.direction = DMA_MEM_TO_DEV;
->> +	dma_sconf.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
->> +	dma_sconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> I guess that would depend on the size of the transfer, right?
-no
-"this is the width in bytes of the source (RX)register where DMA data 
-shall be read. If the sourceis memory this may be ignored depending on 
-architecture."
-AFAIK is should be 1 byte for SPI side and seems to be ignored for 
-memory side, but as soon as I don't know what should be correct value 
-for memory side I just put 1 there too.
->
->> +	dma_sconf.dst_addr = res->start + SUN4I_TXDATA_REG;
->> +	dma_sconf.dst_maxburst = 1;
->> +	dma_sconf.src_maxburst = 1;
-> And a burst of 1 seems sub-optimal here.
-I did some tests before with 3/4 FIFO size but it didn't work and I got 
-stuck with 1 byte.
-It seems like 1 byte is the correct value because in SPI protocol we can 
-only send 1 byte in 1 burst.
+The following patchset provides corrections for PIO-mode
+and support for DMA transfers in sun4i SPI driver.
 
->
->> +	ret = sun4i_spi_dma_setup(&pdev->dev, res);
->> +	if (ret) {
->> +		if (ret == -EPROBE_DEFER) {
->> +			/* wait for the dma driver to load */
->> +			goto err_free_master;
->> +		}
->> +		dev_warn(&pdev->dev, "DMA transfer not supported\n");
-> Saying why it's not supported would be great.
-I can put more info in this log
-but there is already a message printed from sun4_spi_dma_setup() if any 
-error occurs
->
-> Maxime
->
+Changes in v2:
+1) Restored processing of 3/4 FIFO full interrupt.
+
+2) Debug log enhancements.
+
+Sergey Suloev (6):
+  spi: core: handle timeout error from transfer_one()
+  spi: sun4i: restrict transfer length in PIO-mode
+  spi: sun4i: coding style/readability improvements
+  spi: sun4i: use completion provided by SPI core driver
+  spi: sun4i: introduce register set/unset helpers
+  spi: sun4i: add DMA transfers support
+
+ drivers/spi/spi-sun4i.c | 442 +++++++++++++++++++++++++++++++++++++-----------
+ drivers/spi/spi.c       |   5 +-
+ 2 files changed, 347 insertions(+), 100 deletions(-)
+
+-- 
+2.16.2

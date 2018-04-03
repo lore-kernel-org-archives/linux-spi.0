@@ -1,76 +1,62 @@
-From: Amelie DELAUNAY <amelie.delaunay@st.com>
-Subject: RE: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
-Date: Tue, 3 Apr 2018 07:24:47 +0000
-Message-ID: <1c12d20a40384fc78262bcd82c68ba6a@SFHDAG3NODE2.st.com>
-References: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Subject: Re: [PATCH 2/6] spi: sun4i: restrict transfer length in PIO-mode
+Date: Tue, 3 Apr 2018 10:10:41 +0200
+Message-ID: <20180403081041.3ully6bcyfwx2cx6@flea>
+References: <20180329185907.27281-1-ssuloev@orpaltech.com>
+ <20180329185907.27281-3-ssuloev@orpaltech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "ldv-project@linuxtesting.org" <ldv-project@linuxtesting.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Alexey Khoroshilov <khoroshilov@ispras.ru>, Mark Brown
- <broonie@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- "Alexandre TORGUE" <alexandre.torgue@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="y5vlyrnrsygmeihf"
+Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+To: Sergey Suloev <ssuloev@orpaltech.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180329185907.27281-3-ssuloev@orpaltech.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-> -----Original Message-----
-> From: Alexey Khoroshilov [mailto:khoroshilov@ispras.ru]
-> Sent: vendredi 30 mars 2018 21:55
-> To: Mark Brown <broonie@kernel.org>; Amelie DELAUNAY
-> <amelie.delaunay@st.com>; Maxime Coquelin
-> <mcoquelin.stm32@gmail.com>; Alexandre TORGUE
-> <alexandre.torgue@st.com>
-> Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>; linux-spi@vger.kernel.org;
-> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; ldv-
-> project@linuxtesting.org
-> Subject: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
-> 
-> clk_get_rate() is below clk_prepare_enable(), so its error should lead to goto
-> err_clk_disable, not to err_master_put.
-> 
-> Found by Linux Driver Verification project (linuxtesting.org).
-> 
-> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-> ---
->  drivers/spi/spi-stm32.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c index
-> ba9743fa2326..ad1e55d3d5d5 100644
-> --- a/drivers/spi/spi-stm32.c
-> +++ b/drivers/spi/spi-stm32.c
-> @@ -1129,7 +1129,7 @@ static int stm32_spi_probe(struct platform_device
-> *pdev)
->  	if (!spi->clk_rate) {
->  		dev_err(&pdev->dev, "clk rate = 0\n");
->  		ret = -EINVAL;
-> -		goto err_master_put;
-> +		goto err_clk_disable;
->  	}
-> 
->  	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
-> --
-> 2.7.4
+--y5vlyrnrsygmeihf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the patch!
+On Thu, Mar 29, 2018 at 09:59:03PM +0300, Sergey Suloev wrote:
+> There is no need to handle 3/4 empty/full interrupts as the maximum
+> supported transfer length in PIO mode is 64 bytes for sun4i-family
+> SoCs.
 
-Reviewed-by: Amelie Delaunay <amelie.delaunay@st.com>
+That assumes that you'll be able to treat the FIFO full interrupt and
+drain the FIFO before we have the next byte coming in. This would
+require a real time system, and we're not in one of them.
 
-Regards,
-Amelie
+Maxime
+
+--=20
+Maxime Ripard, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--y5vlyrnrsygmeihf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrDNwEACgkQ0rTAlCFN
+r3SoEg//Vtl7Lp2S0SIivzzhSJ1GQAYY//I6QFMrnn08YIO7xi+v97nZMyVh40ZJ
+8UUqlo84wa11VeXa674J6P2I2mF46sOl/Ujodx9A3CGz6irBQYSbboW0ZY9C22DG
+E/H64+Ie9LBP6+/8qYPqHo4hG3E7TNvCWIIg6n+FMeNyUpquac3ME/my+R5mOoav
+RdQ+24smy3RHVwMq/PHp4XG1+lc66XndC848nWxWf8igY8kBhHP6uNCb4o2WH1WN
+bEHAMRR+6vnvty7kkA1fCl5xZ6bfKKU/C5giy/62qjB1Ag33tU3srTmHep8PjgFH
+JQdKJcx+cCuGWgLa0FSl3bgIz3qlBjE200poL8bFNmERxXSkhKDOJmZPZPF79+ui
+Z1FPb4jkJ3tIbADRxqse1qRUysAs4PT5lDN4QuRYeaMT/R4ufD0gdOOTwBBrSSou
+BYVEGn22j2slUnk6NHf2L5XeDjHMqcMkOMvON5/h+2xRnDGoXj0yiuqGJ++esT84
+Bdcruq3jarbxe1jE75ua641fSXlFtamMZZHYUBa/NDfrJyZP9uo639W6xIRnDQG0
+lPMIygLi/dvEoOEPvivVTAuYWvhafrOa6BnyMvAYQ8dTdrpIae5MfMwinHYVZ1VO
+P4Q7XA3AP2oEL6KyLUUjMptL5RcGrm3gFza2TF+OXV4Lc+aFGaI=
+=pSkJ
+-----END PGP SIGNATURE-----
+
+--y5vlyrnrsygmeihf--

@@ -1,115 +1,151 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: [PATCH v2 5/6] spi: sun4i: introduce register set/unset helpers
-Date: Tue,  3 Apr 2018 18:29:04 +0300
-Message-ID: <20180403152905.1524-6-ssuloev@orpaltech.com>
+Subject: [PATCH v2 4/6] spi: sun4i: use completion provided by SPI core driver
+Date: Tue,  3 Apr 2018 18:29:03 +0300
+Message-ID: <20180403152905.1524-5-ssuloev@orpaltech.com>
 References: <20180403152905.1524-1-ssuloev@orpaltech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sergey Suloev <ssuloev@orpaltech.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Maxime Ripard <maxime.ripard@bootlin.com>,
- Chen-Yu Tsai <wens@csie.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Sergey Suloev <ssuloev@orpaltech.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180403152905.1524-1-ssuloev@orpaltech.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Two helper functions were added in order to set/unset
-specified flags in registers.
+As long as the completion already provided by the SPI core
+then there is no need to waste extra-memory on this.
+Also a waiting function was added to avoid code duplication.
 
 Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
 ---
- drivers/spi/spi-sun4i.c | 40 +++++++++++++++++++---------------------
- 1 file changed, 19 insertions(+), 21 deletions(-)
+ drivers/spi/spi-sun4i.c | 62 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 35 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 9d1bc20..d81d31c 100644
+index 899e956..9d1bc20 100644
 --- a/drivers/spi/spi-sun4i.c
 +++ b/drivers/spi/spi-sun4i.c
-@@ -107,29 +107,29 @@ static inline void sun4i_spi_write(struct sun4i_spi *sspi, u32 reg, u32 value)
- 	writel(value, sspi->base_addr + reg);
- }
+@@ -92,8 +92,6 @@ struct sun4i_spi {
+ 	struct clk		*hclk;
+ 	struct clk		*mclk;
  
--static inline u32 sun4i_spi_get_tx_fifo_count(struct sun4i_spi *sspi)
-+static inline void sun4i_spi_set(struct sun4i_spi *sspi, u32 addr, u32 val)
- {
--	u32 reg = sun4i_spi_read(sspi, SUN4I_FIFO_STA_REG);
+-	struct completion	done;
 -
--	reg >>= SUN4I_FIFO_STA_TF_CNT_BITS;
-+	u32 reg = sun4i_spi_read(sspi, addr);
- 
--	return reg & SUN4I_FIFO_STA_TF_CNT_MASK;
-+	reg |= val;
-+	sun4i_spi_write(sspi, addr, reg);
+ 	const u8		*tx_buf;
+ 	u8			*rx_buf;
+ 	int			len;
+@@ -213,13 +211,36 @@ static size_t sun4i_spi_max_transfer_size(struct spi_device *spi)
+ 	return SUN4I_FIFO_DEPTH;
  }
  
--static inline void sun4i_spi_enable_interrupt(struct sun4i_spi *sspi, u32 mask)
-+static inline void sun4i_spi_unset(struct sun4i_spi *sspi, u32 addr, u32 val)
- {
--	u32 reg = sun4i_spi_read(sspi, SUN4I_INT_CTL_REG);
-+	u32 reg = sun4i_spi_read(sspi, addr);
- 
--	reg |= mask;
--	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, reg);
-+	reg &= ~val;
-+	sun4i_spi_write(sspi, addr, reg);
- }
- 
--static inline void sun4i_spi_disable_interrupt(struct sun4i_spi *sspi, u32 mask)
-+static inline u32 sun4i_spi_get_tx_fifo_count(struct sun4i_spi *sspi)
- {
--	u32 reg = sun4i_spi_read(sspi, SUN4I_INT_CTL_REG);
-+	u32 reg = sun4i_spi_read(sspi, SUN4I_FIFO_STA_REG);
- 
--	reg &= ~mask;
--	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, reg);
-+	reg >>= SUN4I_FIFO_STA_TF_CNT_BITS;
++static int sun4i_spi_wait_for_transfer(struct spi_device *spi,
++				       struct spi_transfer *tfr)
++{
++	struct spi_master *master = spi->master;
++	unsigned int start, end, tx_time;
++	unsigned int timeout;
 +
-+	return reg & SUN4I_FIFO_STA_TF_CNT_MASK;
- }
++	/* calc required timeout from given speed & len values */
++	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
++	start = jiffies;
++	timeout = wait_for_completion_timeout(&master->xfer_completion,
++					      msecs_to_jiffies(tx_time));
++	end = jiffies;
++	if (!timeout) {
++		dev_warn(&master->dev,
++			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
++			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
++			 jiffies_to_msecs(end - start), tx_time);
++		return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
+ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *tfr)
+ {
+ 	struct sun4i_spi *sspi = spi_master_get_devdata(master);
+-	unsigned int mclk_rate, div, timeout;
+-	unsigned int start, end, tx_time;
++	unsigned int mclk_rate, div;
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
+ 	u32 reg;
+@@ -228,7 +249,6 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	if (tfr->len > SUN4I_FIFO_DEPTH)
+ 		return -EMSGSIZE;
  
- static inline void sun4i_spi_drain_fifo(struct sun4i_spi *sspi, int len)
-@@ -256,13 +256,12 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	/* Clear pending interrupts */
- 	sun4i_spi_write(sspi, SUN4I_INT_STA_REG, ~0);
- 
-+	/* Reset FIFOs */
-+	sun4i_spi_set(sspi, SUN4I_CTL_REG,
-+		      SUN4I_CTL_RF_RST | SUN4I_CTL_TF_RST);
- 
+-	reinit_completion(&sspi->done);
+ 	sspi->tx_buf = tfr->tx_buf;
+ 	sspi->rx_buf = tfr->rx_buf;
+ 	sspi->len = tfr->len;
+@@ -329,22 +349,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
  	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
  
--	/* Reset FIFOs */
--	sun4i_spi_write(sspi, SUN4I_CTL_REG,
--			reg | SUN4I_CTL_RF_RST | SUN4I_CTL_TF_RST);
+-	tx_time = max(tfr->len * 8 * 2 / (tfr->speed_hz / 1000), 100U);
+-	start = jiffies;
+-	timeout = wait_for_completion_timeout(&sspi->done,
+-					      msecs_to_jiffies(tx_time));
+-	end = jiffies;
+-	if (!timeout) {
+-		dev_warn(&master->dev,
+-			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
+-			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+-			 jiffies_to_msecs(end - start), tx_time);
+-		ret = -ETIMEDOUT;
+-		goto out;
+-	}
+-
++	ret = sun4i_spi_wait_for_transfer(spi, tfr);
+ 
+-out:
+ 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, 0);
+ 
+ 	return ret;
+@@ -352,14 +358,18 @@ out:
+ 
+ static irqreturn_t sun4i_spi_handler(int irq, void *dev_id)
+ {
+-	struct sun4i_spi *sspi = dev_id;
+-	u32 status = sun4i_spi_read(sspi, SUN4I_INT_STA_REG);
++	struct spi_master *master = dev_id;
++	struct sun4i_spi *sspi = spi_master_get_devdata(master);
++	u32 status;
++
++	status = sun4i_spi_read(sspi, SUN4I_INT_STA_REG);
+ 
+ 	/* Transfer complete */
+ 	if (status & SUN4I_INT_CTL_TC) {
+-		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_TC);
++		sun4i_spi_write(sspi, SUN4I_INT_STA_REG,
++				SUN4I_INT_CTL_TC);
+ 		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
+-		complete(&sspi->done);
++		spi_finalize_current_transfer(master);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -456,7 +466,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
+-			       0, dev_name(&pdev->dev), sspi);
++			       0, dev_name(&pdev->dev), master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot request IRQ\n");
+ 		goto err_free_master;
+@@ -476,8 +486,6 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 		goto err_free_master;
+ 	}
+ 
+-	init_completion(&sspi->done);
 -
  	/*
- 	 * Setup the transfer control register: Chip Select,
- 	 * polarities, etc.
-@@ -342,12 +341,11 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
- 
- 	/* Enable the interrupts */
--	sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TC |
--					 SUN4I_INT_CTL_RF_F34);
-+	sun4i_spi_set(sspi, SUN4I_INT_CTL_REG, SUN4I_INT_CTL_TC |
-+					       SUN4I_INT_CTL_RF_F34);
- 
- 	/* Start the transfer */
--	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
--	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
-+	sun4i_spi_set(sspi, SUN4I_CTL_REG, SUN4I_CTL_XCH);
- 
- 	ret = sun4i_spi_wait_for_transfer(spi, tfr);
- 
+ 	 * This wake-up/shutdown pattern is to be able to have the
+ 	 * device woken up, even if runtime_pm is disabled
 -- 
 2.16.2

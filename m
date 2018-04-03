@@ -1,76 +1,76 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in
- regmap_update_bits calls
-Date: Tue, 3 Apr 2018 11:33:44 +0530
-Message-ID: <87e92c69-60bb-37b0-87d3-c4c688e94d09@ti.com>
-References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
- <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+From: Amelie DELAUNAY <amelie.delaunay@st.com>
+Subject: RE: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
+Date: Tue, 3 Apr 2018 07:24:47 +0000
+Message-ID: <1c12d20a40384fc78262bcd82c68ba6a@SFHDAG3NODE2.st.com>
+References: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>,
-        <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+Cc: "ldv-project@linuxtesting.org" <ldv-project@linuxtesting.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Alexey Khoroshilov <khoroshilov@ispras.ru>, Mark Brown
+ <broonie@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ "Alexandre TORGUE" <alexandre.torgue@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
-
-On Friday 30 March 2018 03:11 PM, Arkadiusz Kwiatkowski wrote:
-> This commit fixes the order of parameters passed to regmap_update_bits
-> function inside spi-ti-qspi driver. Accidentally the code worked
-> correctly when cs=0, but it is not the case for other values.
+> -----Original Message-----
+> From: Alexey Khoroshilov [mailto:khoroshilov@ispras.ru]
+> Sent: vendredi 30 mars 2018 21:55
+> To: Mark Brown <broonie@kernel.org>; Amelie DELAUNAY
+> <amelie.delaunay@st.com>; Maxime Coquelin
+> <mcoquelin.stm32@gmail.com>; Alexandre TORGUE
+> <alexandre.torgue@st.com>
+> Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>; linux-spi@vger.kernel.org;
+> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; ldv-
+> project@linuxtesting.org
+> Subject: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
 > 
-
-Add:
-Fixes: 4dea6c9b0b64 ("spi: spi-ti-qspi: add mmap mode read support")
-before Signed-off-by
-
-> Signed-off-by: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+> clk_get_rate() is below clk_prepare_enable(), so its error should lead to goto
+> err_clk_disable, not to err_master_put.
+> 
+> Found by Linux Driver Verification project (linuxtesting.org).
+> 
+> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
 > ---
-
-Unfortunately, your mail client is still mangling the patch and "git am"
- still fails to apply this from my inbox. Could you try using "git
-send-email" to send patches? See
-https://www.kernel.org/doc/Documentation/process/email-clients.rst for
-more info
-
->  drivers/spi/spi-ti-qspi.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/spi/spi-stm32.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index c24d9b4..d0ea62d 100644
-> --- a/drivers/spi/spi-ti-qspi.c
-> +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -490,8 +490,8 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
->         ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
->         if (qspi->ctrl_base) {
->                 regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
-> -                                  MEM_CS_EN(spi->chip_select),
-> -                                  MEM_CS_MASK);
-> +                                  MEM_CS_MASK,
-> +                                  MEM_CS_EN(spi->chip_select));
->         }
->         qspi->mmap_enabled = true;
->  }
-> @@ -503,7 +503,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
->         ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
->         if (qspi->ctrl_base)
->                 regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
-> -                                  0, MEM_CS_MASK);
-> +                                  MEM_CS_MASK, 0);
->         qspi->mmap_enabled = false;
->  }
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c index
+> ba9743fa2326..ad1e55d3d5d5 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -1129,7 +1129,7 @@ static int stm32_spi_probe(struct platform_device
+> *pdev)
+>  	if (!spi->clk_rate) {
+>  		dev_err(&pdev->dev, "clk rate = 0\n");
+>  		ret = -EINVAL;
+> -		goto err_master_put;
+> +		goto err_clk_disable;
+>  	}
 > 
+>  	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
 > --
 > 2.7.4
-> 
-> **************************************************************************************** Note: If the reader of this message is not the intended recipient, or an employee or agent responsible for delivering this message to the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication is strictly prohibited. If you have received this communication in error, please notify us immediately by replying to the message and deleting it from your computer. Thank you. ****************************************************************************************
-> 
 
--- 
-Regards
-Vignesh
+Thanks for the patch!
+
+Reviewed-by: Amelie Delaunay <amelie.delaunay@st.com>
+
+Regards,
+Amelie

@@ -1,267 +1,76 @@
-From: Trent Piepho <tpiepho@impinj.com>
-Subject: [PATCH v5] ARM: imx: Update spi_imx platform data to reflect current
- state
-Date: Mon,  2 Apr 2018 13:06:05 -0700
-Message-ID: <20180402200605.13050-1-tpiepho@impinj.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in
+ regmap_update_bits calls
+Date: Tue, 3 Apr 2018 11:33:44 +0530
+Message-ID: <87e92c69-60bb-37b0-87d3-c4c688e94d09@ti.com>
+References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
+ <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <kernel@pengutronix.de>, Trent Piepho <tpiepho@impinj.com>
-To: linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>,
+        <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The docs for the spi_imx platform data still refer to a -32 offset used to
-specify a native chip select.  This was removed in commit 602c8f4485cd
-("spi: imx: fix use of native chip-selects with devicetree") and no
-longer works as documented.  Update documentation.
-
-The macro MXC_SPI_CS() is no longer is needed.
-
-If a board uses all native chip selects, then it's not necessary to
-specify a chip select array at all, as all native is the default (this is
-how device-tree configured SPI masters work too).  Most of the spi-imx
-platform data users have their chip select arrays removed by this patch.
-
-This patch also fixes a bug in mx31moboard introduced in the '602 commit.
-When that board was updated in commit 901f26bce64a ("ARM: imx: set
-correct chip_select in platform setup") to reflect the SPI change, only
-SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
-selects.  The mc13783 spi device on bus 1 had its chip select updated as
-if it were on bus 2.
-
-CC: Shawn Guo <shawnguo@kernel.org>
-CC: Sascha Hauer <kernel@pengutronix.de>
-CC: Fabio Estevam <fabio.estevam@nxp.com>
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Trent Piepho <tpiepho@impinj.com>
----
-
-Changes from v4:
-  Ported to current linux-next with no changes.
-  This patch no longer has any dependencies that are not applied in v4.15
 
 
- arch/arm/mach-imx/mach-mx31_3ds.c     | 18 ++----------------
- arch/arm/mach-imx/mach-mx31lilly.c    | 12 ++----------
- arch/arm/mach-imx/mach-mx31lite.c     | 16 ++--------------
- arch/arm/mach-imx/mach-mx31moboard.c  | 17 +++--------------
- arch/arm/mach-imx/mach-pcm037_eet.c   |  5 +----
- include/linux/platform_data/spi-imx.h | 29 +++++++++++++++++------------
- 6 files changed, 27 insertions(+), 70 deletions(-)
+On Friday 30 March 2018 03:11 PM, Arkadiusz Kwiatkowski wrote:
+> This commit fixes the order of parameters passed to regmap_update_bits
+> function inside spi-ti-qspi driver. Accidentally the code worked
+> correctly when cs=0, but it is not the case for other values.
+> 
 
-diff --git a/arch/arm/mach-imx/mach-mx31_3ds.c b/arch/arm/mach-imx/mach-mx31_3ds.c
-index 68c3f0799d5b..9d87f1dcf7bb 100644
---- a/arch/arm/mach-imx/mach-mx31_3ds.c
-+++ b/arch/arm/mach-imx/mach-mx31_3ds.c
-@@ -374,26 +374,12 @@ static struct imx_ssi_platform_data mx31_3ds_ssi_pdata = {
- };
- 
- /* SPI */
--static int spi0_internal_chipselect[] = {
--	MXC_SPI_CS(0),
--	MXC_SPI_CS(1),
--	MXC_SPI_CS(2),
--};
--
- static const struct spi_imx_master spi0_pdata __initconst = {
--	.chipselect	= spi0_internal_chipselect,
--	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
--};
--
--static int spi1_internal_chipselect[] = {
--	MXC_SPI_CS(0),
--	MXC_SPI_CS(1),
--	MXC_SPI_CS(2),
-+	.num_chipselect	= 3,
- };
- 
- static const struct spi_imx_master spi1_pdata __initconst = {
--	.chipselect	= spi1_internal_chipselect,
--	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
-+	.num_chipselect	= 3,
- };
- 
- static struct spi_board_info mx31_3ds_spi_devs[] __initdata = {
-diff --git a/arch/arm/mach-imx/mach-mx31lilly.c b/arch/arm/mach-imx/mach-mx31lilly.c
-index 6fd463642954..8bf52819d4d9 100644
---- a/arch/arm/mach-imx/mach-mx31lilly.c
-+++ b/arch/arm/mach-imx/mach-mx31lilly.c
-@@ -226,20 +226,12 @@ static void __init lilly1131_usb_init(void)
- 
- /* SPI */
- 
--static int spi_internal_chipselect[] = {
--	MXC_SPI_CS(0),
--	MXC_SPI_CS(1),
--	MXC_SPI_CS(2),
--};
--
- static const struct spi_imx_master spi0_pdata __initconst = {
--	.chipselect = spi_internal_chipselect,
--	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
-+	.num_chipselect = 3,
- };
- 
- static const struct spi_imx_master spi1_pdata __initconst = {
--	.chipselect = spi_internal_chipselect,
--	.num_chipselect = ARRAY_SIZE(spi_internal_chipselect),
-+	.num_chipselect = 3,
- };
- 
- static struct mc13xxx_platform_data mc13783_pdata __initdata = {
-diff --git a/arch/arm/mach-imx/mach-mx31lite.c b/arch/arm/mach-imx/mach-mx31lite.c
-index a3250bc7f114..a3cbba6c955b 100644
---- a/arch/arm/mach-imx/mach-mx31lite.c
-+++ b/arch/arm/mach-imx/mach-mx31lite.c
-@@ -83,15 +83,8 @@ static const struct imxuart_platform_data uart_pdata __initconst = {
- };
- 
- /* SPI */
--static int spi0_internal_chipselect[] = {
--	MXC_SPI_CS(0),
--	MXC_SPI_CS(1),
--	MXC_SPI_CS(2),
--};
--
- static const struct spi_imx_master spi0_pdata __initconst = {
--	.chipselect	= spi0_internal_chipselect,
--	.num_chipselect	= ARRAY_SIZE(spi0_internal_chipselect),
-+	.num_chipselect	= 3,
- };
- 
- static const struct mxc_nand_platform_data
-@@ -133,13 +126,8 @@ static struct platform_device smsc911x_device = {
-  * The MC13783 is the only hard-wired SPI device on the module.
-  */
- 
--static int spi1_internal_chipselect[] = {
--	MXC_SPI_CS(0),
--};
--
- static const struct spi_imx_master spi1_pdata __initconst = {
--	.chipselect	= spi1_internal_chipselect,
--	.num_chipselect	= ARRAY_SIZE(spi1_internal_chipselect),
-+	.num_chipselect	= 1,
- };
- 
- static struct mc13xxx_platform_data mc13783_pdata __initdata = {
-diff --git a/arch/arm/mach-imx/mach-mx31moboard.c b/arch/arm/mach-imx/mach-mx31moboard.c
-index 7716f83aecdd..643a3d749703 100644
---- a/arch/arm/mach-imx/mach-mx31moboard.c
-+++ b/arch/arm/mach-imx/mach-mx31moboard.c
-@@ -152,14 +152,8 @@ static const struct imxi2c_platform_data moboard_i2c1_data __initconst = {
- 	.bitrate = 100000,
- };
- 
--static int moboard_spi1_cs[] = {
--	MXC_SPI_CS(0),
--	MXC_SPI_CS(2),
--};
--
- static const struct spi_imx_master moboard_spi1_pdata __initconst = {
--	.chipselect	= moboard_spi1_cs,
--	.num_chipselect	= ARRAY_SIZE(moboard_spi1_cs),
-+	.num_chipselect	= 3,
- };
- 
- static struct regulator_consumer_supply sdhc_consumers[] = {
-@@ -296,19 +290,14 @@ static struct spi_board_info moboard_spi_board_info[] __initdata = {
- 		/* irq number is run-time assigned */
- 		.max_speed_hz = 300000,
- 		.bus_num = 1,
--		.chip_select = 1,
-+		.chip_select = 0,
- 		.platform_data = &moboard_pmic,
- 		.mode = SPI_CS_HIGH,
- 	},
- };
- 
--static int moboard_spi2_cs[] = {
--	MXC_SPI_CS(0), MXC_SPI_CS(1),
--};
--
- static const struct spi_imx_master moboard_spi2_pdata __initconst = {
--	.chipselect	= moboard_spi2_cs,
--	.num_chipselect	= ARRAY_SIZE(moboard_spi2_cs),
-+	.num_chipselect	= 2,
- };
- 
- #define SDHC1_CD IOMUX_TO_GPIO(MX31_PIN_ATA_CS0)
-diff --git a/arch/arm/mach-imx/mach-pcm037_eet.c b/arch/arm/mach-imx/mach-pcm037_eet.c
-index 95bd97710494..15bc956d466b 100644
---- a/arch/arm/mach-imx/mach-pcm037_eet.c
-+++ b/arch/arm/mach-imx/mach-pcm037_eet.c
-@@ -56,11 +56,8 @@ static struct spi_board_info pcm037_spi_dev[] = {
- };
- 
- /* Platform Data for MXC CSPI */
--static int pcm037_spi1_cs[] = { MXC_SPI_CS(0), MXC_SPI_CS(1), };
--
- static const struct spi_imx_master pcm037_spi1_pdata __initconst = {
--	.chipselect = pcm037_spi1_cs,
--	.num_chipselect = ARRAY_SIZE(pcm037_spi1_cs),
-+	.num_chipselect = 2,
- };
- 
- /* GPIO-keys input device */
-diff --git a/include/linux/platform_data/spi-imx.h b/include/linux/platform_data/spi-imx.h
-index 6f012fefa1a2..328f670d10bd 100644
---- a/include/linux/platform_data/spi-imx.h
-+++ b/include/linux/platform_data/spi-imx.h
-@@ -5,24 +5,29 @@
- 
- /*
-  * struct spi_imx_master - device.platform_data for SPI controller devices.
-- * @chipselect: Array of chipselects for this master. Numbers >= 0 mean gpio
-- *              pins, numbers < 0 mean internal CSPI chipselects according
-- *              to MXC_SPI_CS(). Normally you want to use gpio based chip
-- *              selects as the CSPI module tries to be intelligent about
-- *              when to assert the chipselect: The CSPI module deasserts the
-- *              chipselect once it runs out of input data. The other problem
-- *              is that it is not possible to mix between high active and low
-- *              active chipselects on one single bus using the internal
-- *              chipselects. Unfortunately Freescale decided to put some
-+ * @chipselect: Array of chipselects for this master or NULL.  Numbers >= 0
-+ *              mean GPIO pins, -ENOENT means internal CSPI chipselect
-+ *              matching the position in the array.  E.g., if chipselect[1] =
-+ *              -ENOENT then a SPI slave using chip select 1 will use the
-+ *              native SS1 line of the CSPI.  Omitting the array will use
-+ *              all native chip selects.
-+
-+ *              Normally you want to use gpio based chip selects as the CSPI
-+ *              module tries to be intelligent about when to assert the
-+ *              chipselect:  The CSPI module deasserts the chipselect once it
-+ *              runs out of input data.  The other problem is that it is not
-+ *              possible to mix between high active and low active chipselects
-+ *              on one single bus using the internal chipselects.
-+ *              Unfortunately, on some SoCs, Freescale decided to put some
-  *              chipselects on dedicated pins which are not usable as gpios,
-  *              so we have to support the internal chipselects.
-- * @num_chipselect: ARRAY_SIZE(chipselect)
-+ *
-+ * @num_chipselect: If @chipselect is specified, ARRAY_SIZE(chipselect),
-+ *                  otherwise the number of native chip selects.
-  */
- struct spi_imx_master {
- 	int	*chipselect;
- 	int	num_chipselect;
- };
- 
--#define MXC_SPI_CS(no)	((no) - 32)
--
- #endif /* __MACH_SPI_H_*/
+Add:
+Fixes: 4dea6c9b0b64 ("spi: spi-ti-qspi: add mmap mode read support")
+before Signed-off-by
+
+> Signed-off-by: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+> ---
+
+Unfortunately, your mail client is still mangling the patch and "git am"
+ still fails to apply this from my inbox. Could you try using "git
+send-email" to send patches? See
+https://www.kernel.org/doc/Documentation/process/email-clients.rst for
+more info
+
+>  drivers/spi/spi-ti-qspi.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> index c24d9b4..d0ea62d 100644
+> --- a/drivers/spi/spi-ti-qspi.c
+> +++ b/drivers/spi/spi-ti-qspi.c
+> @@ -490,8 +490,8 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
+>         ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
+>         if (qspi->ctrl_base) {
+>                 regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+> -                                  MEM_CS_EN(spi->chip_select),
+> -                                  MEM_CS_MASK);
+> +                                  MEM_CS_MASK,
+> +                                  MEM_CS_EN(spi->chip_select));
+>         }
+>         qspi->mmap_enabled = true;
+>  }
+> @@ -503,7 +503,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+>         ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
+>         if (qspi->ctrl_base)
+>                 regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+> -                                  0, MEM_CS_MASK);
+> +                                  MEM_CS_MASK, 0);
+>         qspi->mmap_enabled = false;
+>  }
+> 
+> --
+> 2.7.4
+> 
+> **************************************************************************************** Note: If the reader of this message is not the intended recipient, or an employee or agent responsible for delivering this message to the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication is strictly prohibited. If you have received this communication in error, please notify us immediately by replying to the message and deleting it from your computer. Thank you. ****************************************************************************************
+> 
+
 -- 
-2.14.3
+Regards
+Vignesh

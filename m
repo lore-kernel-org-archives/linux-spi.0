@@ -1,10 +1,10 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: Re: [PATCH 2/6] spi: sun4i: restrict transfer length in PIO-mode
-Date: Tue, 3 Apr 2018 13:26:34 +0300
-Message-ID: <c3b41806-dc12-3af9-8b3a-bd1a611293f8@orpaltech.com>
+Subject: Re: [PATCH 5/6] spi: sun4i: introduce register set/unset helpers
+Date: Tue, 3 Apr 2018 13:27:57 +0300
+Message-ID: <8edccc63-9729-ff4c-b272-1916e7794bc7@orpaltech.com>
 References: <20180329185907.27281-1-ssuloev@orpaltech.com>
- <20180329185907.27281-3-ssuloev@orpaltech.com>
- <20180403081041.3ully6bcyfwx2cx6@flea>
+ <20180329185907.27281-6-ssuloev@orpaltech.com>
+ <20180403081458.lyilg3yu3n2e54fd@flea>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -13,19 +13,18 @@ Cc: Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Maxime Ripard <maxime.ripard@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180403081041.3ully6bcyfwx2cx6@flea>
+In-Reply-To: <20180403081458.lyilg3yu3n2e54fd@flea>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/03/2018 11:10 AM, Maxime Ripard wrote:
-> On Thu, Mar 29, 2018 at 09:59:03PM +0300, Sergey Suloev wrote:
->> There is no need to handle 3/4 empty/full interrupts as the maximum
->> supported transfer length in PIO mode is 64 bytes for sun4i-family
->> SoCs.
-> That assumes that you'll be able to treat the FIFO full interrupt and
-> drain the FIFO before we have the next byte coming in. This would
-> require a real time system, and we're not in one of them.
+On 04/03/2018 11:14 AM, Maxime Ripard wrote:
+> On Thu, Mar 29, 2018 at 09:59:06PM +0300, Sergey Suloev wrote:
+>> Two helper functions were added in order to update
+>> registers easily.
+>>
+>> Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+> I'm not really sure what's easier about this one.
 >
 > Maxime
 >
@@ -36,4 +35,4 @@ On 04/03/2018 11:10 AM, Maxime Ripard wrote:
 > linux-arm-kernel@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
-so you think we should still handle 3/4 FIFO full ?
+well, just seems more readable vs doing "read, or, write" every time

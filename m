@@ -1,90 +1,47 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH 6/6] spi: sun4i: add DMA transfers support
-Date: Tue, 3 Apr 2018 10:17:11 +0200
-Message-ID: <20180403081711.rqsp77mgnuvlnzt5@flea>
-References: <20180329185907.27281-1-ssuloev@orpaltech.com>
- <20180329185907.27281-7-ssuloev@orpaltech.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in
+ regmap_update_bits calls
+Date: Tue, 3 Apr 2018 10:09:20 +0100
+Message-ID: <20180403090920.GA30411@sirena.org.uk>
+References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
+ <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yhiohrrbift4fmzp"
-Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ew6BAiZeqk4r7MaW"
+Cc: vigneshr@ti.com, sourav.poddar@ti.com, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-To: Sergey Suloev <ssuloev@orpaltech.com>
+To: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180329185907.27281-7-ssuloev@orpaltech.com>
+In-Reply-To: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---yhiohrrbift4fmzp
+--ew6BAiZeqk4r7MaW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 29, 2018 at 09:59:07PM +0300, Sergey Suloev wrote:
-> +static int sun4i_spi_dma_setup(struct device *dev,
-> +			       struct resource *res)
-> +{
-> +	struct spi_master *master =3D dev_get_drvdata(dev);
-> +	struct dma_slave_config dma_sconf;
-> +	int ret;
-> +
-> +	master->dma_tx =3D dma_request_slave_channel_reason(dev, "tx");
-> +	if (IS_ERR(master->dma_tx)) {
-> +		dev_err(dev, "Unable to acquire DMA TX channel\n");
-> +		ret =3D PTR_ERR(master->dma_tx);
-> +		goto out;
-> +	}
-> +
-> +	dma_sconf.direction =3D DMA_MEM_TO_DEV;
-> +	dma_sconf.src_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
-> +	dma_sconf.dst_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
+On Fri, Mar 30, 2018 at 11:41:23AM +0200, Arkadiusz Kwiatkowski wrote:
+> This commit fixes the order of parameters passed to regmap_update_bits
+> function inside spi-ti-qspi driver. Accidentally the code worked
+> correctly when cs=0, but it is not the case for other values.
 
-I guess that would depend on the size of the transfer, right?
+This doesn't apply against current code, please check and resend.
 
-> +	dma_sconf.dst_addr =3D res->start + SUN4I_TXDATA_REG;
-> +	dma_sconf.dst_maxburst =3D 1;
-> +	dma_sconf.src_maxburst =3D 1;
-
-And a burst of 1 seems sub-optimal here.
-
-> +	ret =3D sun4i_spi_dma_setup(&pdev->dev, res);
-> +	if (ret) {
-> +		if (ret =3D=3D -EPROBE_DEFER) {
-> +			/* wait for the dma driver to load */
-> +			goto err_free_master;
-> +		}
-> +		dev_warn(&pdev->dev, "DMA transfer not supported\n");
-
-Saying why it's not supported would be great.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---yhiohrrbift4fmzp
+--ew6BAiZeqk4r7MaW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrDOIYACgkQ0rTAlCFN
-r3TTnBAAgcFscT4aSqpBZIvbBl4ZyzqGYOoxXFaYBE9m+tnkrbpVU0aIVx4Zfogg
-M5d0r+FkrS6IhKSCCQ6xabOJN8EQvB1bkk7whcq8+584YcGxeqbAuAqY9pqARJ+f
-9Nn5MUkLATPqgzT8efuu+Fjfwj4g4DHDWFiFqOcULPVYLfiYySkWfqYfPhGAdHKd
-2AARSbFuURp3JeIspP/N9xMx9Oggw0J+Ba5R5KwMyF+/qhwGue0vsB3/JOMACg9E
-eHlTXxUYfM2oCL1Jybh7xUvnumrwQnixYnNGJZV66v+twI/UjXsXpSVJhDkL8rDG
-+HNZvaH2x5ymhpiTgm/6IWvYW5IdeB6WZXoV4cM1qHBQMBrpgQI+vofoSf7LJiWY
-RnACbUk9ls3Sh+zrZY3Xn0ZsneQ303EcvCrRyQuir5bXCUi6dCCZH4iWG2060pO3
-U1mxL7DshzLUfjl0rB31rjjm6VpeclvlASHcVSqHlO3Ax34nSkwIysLEAkeQq+nU
-CfsAvwJAjtDHMGPlfjKG+kPZ0otO66ZTfcE6X+mgHQtr/odcL05nn3u/VX1LJUqn
-b3ILTtVC1qop+W0+umEB9avV8dd8OM6GtN0TrgDrzTfrJNgbLr+0wpas+jm8g/m+
-MP6m9eycG6N7e/vIjPkbAGuP4oJHJDAYHzKHvLCddq4J9zUZJ8s=
-=7lOd
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrDRL8ACgkQJNaLcl1U
+h9BZ9Qf/a5Ds2OxypkXyedwPwkzkiJA32hBqEh1HiWQvPtOljc1wvKMFNFlAG2Lf
+FPCSJWyOiSIMbrN48SMKUn0zshOpY5fOxavHpI16GE0EFlP36Pf9TS9u8N6Qy3nS
++lrmWdVysrUia/d9sg6hNLLs2YNRdfmBijX6XPGaOPqnpGyPSP3y5hXZr9AdKscG
+q1JDPiqtk1NFagiLb4BmO6PJ3CawZQ5jod5qu029BPi8wL/zffLyYaBQRYBfbp8U
+nmHEcrn+urMpmmgmFVSSqMb/puaYx5MbMtngWE6yXTY4Pp8PC/16zBE2/O2gExuw
+JEKYpnq11LWoVGJt+e6O8WUI8eK+vw==
+=CoBX
 -----END PGP SIGNATURE-----
 
---yhiohrrbift4fmzp--
+--ew6BAiZeqk4r7MaW--

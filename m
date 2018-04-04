@@ -1,56 +1,123 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/6] spi: core: handle timeout error from
- transfer_one()
-Date: Wed, 4 Apr 2018 11:42:52 +0100
-Message-ID: <20180404104252.GC7691@sirena.org.uk>
-References: <20180403152905.1524-1-ssuloev@orpaltech.com>
- <20180403152905.1524-2-ssuloev@orpaltech.com>
- <20180403155224.GA11578@sirena.org.uk>
- <c0476d75-821f-7a0d-3c3f-270304e7b032@orpaltech.com>
- <20180403161824.GB11578@sirena.org.uk>
- <dad0ea81-2dd6-ccc3-a0c9-cf20ff195b7f@orpaltech.com>
- <20180404070817.6cens44jvlmdaxtm@flea>
+From: Sergey Suloev <ssuloev@orpaltech.com>
+Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
+Date: Wed, 4 Apr 2018 14:35:14 +0300
+Message-ID: <a6044902-8977-3ce1-d7d5-c6797341a5d0@orpaltech.com>
+References: <20180403154449.2443-1-ssuloev@orpaltech.com>
+ <20180403154449.2443-4-ssuloev@orpaltech.com>
+ <20180404065048.n76r3ytuznd6fqsl@flea>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="69pVuxX8awAiJ7fD"
-Cc: Sergey Suloev <ssuloev@orpaltech.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
 To: Maxime Ripard <maxime.ripard@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180404070817.6cens44jvlmdaxtm@flea>
+In-Reply-To: <20180404065048.n76r3ytuznd6fqsl@flea>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 04/04/2018 09:50 AM, Maxime Ripard wrote:
+> On Tue, Apr 03, 2018 at 06:44:46PM +0300, Sergey Suloev wrote:
+>> There is no need to handle 3/4 empty interrupt as the maximum
+>> supported transfer length in PIO mode is equal to FIFO depth,
+>> i.e. 128 bytes for sun6i and 64 bytes for sun8i SoCs.
+>>
+>> Changes in v3:
+>> 1) Restored processing of 3/4 FIFO full interrupt.
+>>
+>> Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+>> ---
+>>   drivers/spi/spi-sun6i.c | 41 +++++++++++++++++------------------------
+>>   1 file changed, 17 insertions(+), 24 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+>> index 78acc1f..c09ad10 100644
+>> --- a/drivers/spi/spi-sun6i.c
+>> +++ b/drivers/spi/spi-sun6i.c
+>> @@ -207,7 +207,10 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
+>>   
+>>   static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
+>>   {
+>> -	return SUN6I_MAX_XFER_SIZE - 1;
+>> +	struct spi_master *master = spi->master;
+>> +	struct sun6i_spi *sspi = spi_master_get_devdata(master);
+>> +
+>> +	return sspi->fifo_depth;
+> Doesn't that effectively revert 3288d5cb40c0 ?
+>
+> Why do you need to do so?
+Need what?
 
---69pVuxX8awAiJ7fD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Change is supposed to restrict max transfer size for PIO mode otherwise 
+it will fail.
+The maximum transfer length = FIFO depth for PIO mode.
 
-On Wed, Apr 04, 2018 at 09:08:18AM +0200, Maxime Ripard wrote:
-
-> And I'm pretty sure that papering over an error returned by a driver
-> is not the right thing to do.
-
-We've got specific error handling for timeouts - they get accounted for
-separately in the stats.  It *shouldn't* affect actual operation and
-AFAICT it doesn't.  I think the main problem here is that the commit
-message is very unclear.
-
---69pVuxX8awAiJ7fD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrErCsACgkQJNaLcl1U
-h9C5Vgf+OToh7RTZkBZDR/42P3i4DVvulaQv12xyeiY8y0/cVS2T5BnlWo4H0xZ5
-0NLmSRjaEJcf2hLnQE8vyOtDKHPYa/nfwdPmadimsvIHlKQ3Vumzw+8LP1WLgRxp
-GmIhOosBUZ2BuCaGeidlXu6fjT3Ngh34IHg4WOH3gx7++oclzzZQG3Ka0JCA/4fL
-U+tG+EUVbABd0UHznYj/j/5nuIW0Uga2ChsgpLPdZYU4vF0F1RPrHC79PfAdlQxZ
-T8LQQaCdUTYKvz/H0Os+fQygFssielvdpyGWppvE98o/BHmtdMWkbcoQqIVzMWw2
-phnrI7nVJuAMpegLx/Bb0IouNVpNAg==
-=n2XR
------END PGP SIGNATURE-----
-
---69pVuxX8awAiJ7fD--
+>
+>>   }
+>>   
+>>   static int sun6i_spi_prepare_message(struct spi_master *master,
+>> @@ -255,8 +258,14 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+>>   	int ret = 0;
+>>   	u32 reg;
+>>   
+>> -	if (tfr->len > SUN6I_MAX_XFER_SIZE)
+>> -		return -EINVAL;
+>> +	/* A zero length transfer never finishes if programmed
+>> +	   in the hardware */
+> Improper comment style here. Please make sure to run checkpatch before
+> sending your patches.
+ok
+>
+>> +	if (!tfr->len)
+>> +		return 0;
+> Can that case even happen?
+Not sure, just for safety.
+>
+>> +	/* Don't support transfer larger than the FIFO */
+>> +	if (tfr->len > sspi->fifo_depth)
+>> +		return -EMSGSIZE;
+> You're changing the return type, why?
+As  a more appropriate one
+>
+>>   	reinit_completion(&sspi->done);
+>>   	sspi->tx_buf = tfr->tx_buf;
+>> @@ -278,8 +287,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+>>   	 */
+>>   	trig_level = sspi->fifo_depth / 4 * 3;
+>>   	sun6i_spi_write(sspi, SUN6I_FIFO_CTL_REG,
+>> -			(trig_level << SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS) |
+>> -			(trig_level << SUN6I_FIFO_CTL_TF_ERQ_TRIG_LEVEL_BITS));
+>> +			(trig_level << SUN6I_FIFO_CTL_RF_RDY_TRIG_LEVEL_BITS));
+>>   
+>>   
+>>   	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+>> @@ -343,11 +351,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+>>   	sun6i_spi_fill_fifo(sspi, sspi->fifo_depth);
+>>   
+>>   	/* Enable the interrupts */
+>> -	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
+>>   	sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TC |
+>>   					 SUN6I_INT_CTL_RF_RDY);
+>> -	if (tx_len > sspi->fifo_depth)
+>> -		sun6i_spi_enable_interrupt(sspi, SUN6I_INT_CTL_TF_ERQ);
+> This would also need to be explained in your commit log.
+What exactly and in what way ?
+>
+>>   
+>>   	/* Start the transfer */
+>>   	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+>> @@ -376,7 +381,9 @@ out:
+>>   static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
+>>   {
+>>   	struct sun6i_spi *sspi = dev_id;
+>> -	u32 status = sun6i_spi_read(sspi, SUN6I_INT_STA_REG);
+>> +	u32 status;
+>> +
+>> +	status = sun6i_spi_read(sspi, SUN6I_INT_STA_REG);
+> Why is this change needed?
+A minor one, for readability.
+>
+> Maxime
+>

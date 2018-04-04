@@ -1,35 +1,33 @@
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH v2 4/6] spi: sun4i: use completion provided by SPI core
- driver
-Date: Wed, 4 Apr 2018 09:13:26 +0200
-Message-ID: <20180404071326.6mcaal77mzgfnhuy@flea>
+Subject: Re: [PATCH v2 5/6] spi: sun4i: introduce register set/unset helpers
+Date: Wed, 4 Apr 2018 09:14:10 +0200
+Message-ID: <20180404071410.qhjela7b55oaecuu@flea>
 References: <20180403152905.1524-1-ssuloev@orpaltech.com>
- <20180403152905.1524-5-ssuloev@orpaltech.com>
+ <20180403152905.1524-6-ssuloev@orpaltech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fbfiet4p3ftpkrnv"
+        protocol="application/pgp-signature"; boundary="zut6nqsjatua2up3"
 Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
 To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180403152905.1524-5-ssuloev@orpaltech.com>
+In-Reply-To: <20180403152905.1524-6-ssuloev@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---fbfiet4p3ftpkrnv
+--zut6nqsjatua2up3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 03, 2018 at 06:29:03PM +0300, Sergey Suloev wrote:
-> As long as the completion already provided by the SPI core
-> then there is no need to waste extra-memory on this.
-> Also a waiting function was added to avoid code duplication.
+On Tue, Apr 03, 2018 at 06:29:04PM +0300, Sergey Suloev wrote:
+> Two helper functions were added in order to set/unset
+> specified flags in registers.
 
-This should also be split in two parts.
+Again, the diffstat is pretty neutral, so what is the benefit?
 
 Maxime
 
@@ -38,24 +36,24 @@ Maxime Ripard, Bootlin (formerly Free Electrons)
 Embedded Linux and Kernel engineering
 https://bootlin.com
 
---fbfiet4p3ftpkrnv
+--zut6nqsjatua2up3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrEexYACgkQ0rTAlCFN
-r3QJKg/9HkS+s2JWnNaBiwt78vVwybXyqL9bWwmXQ5+0hjfiow/lP/jQzskv90Ej
-aURcZYt6gPQiXtnQJN5R6jxt+HnaZUMAWh5U/kL9ChE9etvoBVo9P+N0CfC2pBe+
-nsl/hLqmAFHNwAT2/HgJIk/pGXPYKkAJfXspXRW3Wb9FBBa89FJqevbsGK3cj+FN
-hZLyjDa4wwop15MCwxoFeyFoDHo/7Q0b5qSg1hOjAyt9nrvEw35FxuuefEej9h2D
-GiMgVdfXTVn6hN5QcYJXrOiTLDJnpywDM6NfH64YwZv0gplj9LVC1UwnVB+P7aKT
-9c26eip9DChSSlzjYZLCPfS2VmN/J9L0RtkysKlBH2y8oAAshh1rinfRcqeGss20
-iWs++wBASKcG6PiCLEQ7WoxlA4FSDU8R+OmM1ev+Yivqm7fVDUjsi0dh5zK9r7/6
-C4nDPIPNp7TK9VaJM2vN0uZSE1V/Sd3J0WlyqOjBxbExDsRfvYdH+ZJH9Hf9Y8ih
-aYbIqeGOatFtGBmSL4Ejfrq9dlHvtkWj6wRvaBJ3rL/vp3DV+oa1xNlVYDwf8kGH
-fxxbaWDLXuc96DxAXOdOGEyQlrM1Waq3J5GcL4sSyjzC5ump5hFsy07zu0yHn9Ud
-vQ3kdx1O0PtfZ8iLBH7R70H31dMbHlkNYDvA+pQ8zCY8bUXyO5Q=
-=zwXE
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrEe0EACgkQ0rTAlCFN
+r3QxQg//QzRrYiuAY5Cxm4evvkiU/H2F6YIQXyyq0mCTeWLBSEfqUc7kS2X15v28
++HyIKvjmEmlj7fv6x4dEg2QfUDwUNpGD2ulcM+2METzOQV3QSA6kpcxzpBkQx411
+Ifwx3FbRSqH8ybKnElsamX/CX5cGWfs6rBZsgn/1ZyI151h7JjsvaDcyMnvQ3ux8
+y0Hct9RaYHs3Jho441kpzzjVuqZKS1SK8HC2wB71KlLkt/3qy41rlYcY1O0+FvxD
+MJPNF+JEjCEhqcBxoaFt+6B4L+gHQmR8q+RaFNdoDD2ZjG5/Z6BvE9nGegNbMDjG
+yhcun3Qxny12x6raauM8Jdo4XCVwv+p28VCJBKt8EbKIdhkWUUy2vROLURK2QOQa
+CDG4twwPsUyocMCnEcpIt2vwtB6yomwK+RSpiPKblNd3W2LMyXr/ZbmGCgBiJ1Qf
+/yN9UGIt50dU/CBAECwY7Ti2ue1aqQyQ9Hl0CYbRg57dWsKR2YvfvSuF37III054
+GK22N+TIiKbLtAS9CidYQp4AzsPy5xiavQQ6pZuD1UgmDwpxzVtvuhp/tjQldtu0
+yRQ4+8tK/bTn5Odb0vHzlOSNR8qpBXhYrrWcRmhNBsdOyjJdLiFP1ML5KTo/h2k7
+liXA/xVG8N74OTY1dlfhVjn27/G8v/5cv6BeSFzvx96JfGtBF8s=
+=6lhN
 -----END PGP SIGNATURE-----
 
---fbfiet4p3ftpkrnv--
+--zut6nqsjatua2up3--

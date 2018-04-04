@@ -1,36 +1,61 @@
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH v3 5/6] spi: sun6i: introduce register set/unset helpers
-Date: Wed, 4 Apr 2018 09:02:15 +0200
-Message-ID: <20180404070215.matr7snuyxjd7syu@flea>
-References: <20180403154449.2443-1-ssuloev@orpaltech.com>
- <20180403154449.2443-6-ssuloev@orpaltech.com>
+Subject: Re: [PATCH v2 1/6] spi: core: handle timeout error from
+ transfer_one()
+Date: Wed, 4 Apr 2018 09:08:18 +0200
+Message-ID: <20180404070817.6cens44jvlmdaxtm@flea>
+References: <20180403152905.1524-1-ssuloev@orpaltech.com>
+ <20180403152905.1524-2-ssuloev@orpaltech.com>
+ <20180403155224.GA11578@sirena.org.uk>
+ <c0476d75-821f-7a0d-3c3f-270304e7b032@orpaltech.com>
+ <20180403161824.GB11578@sirena.org.uk>
+ <dad0ea81-2dd6-ccc3-a0c9-cf20ff195b7f@orpaltech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="27hwlkrs2c4ciypb"
+        protocol="application/pgp-signature"; boundary="jixbiuhukrqgg4cn"
 Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org
 To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180403154449.2443-6-ssuloev@orpaltech.com>
+In-Reply-To: <dad0ea81-2dd6-ccc3-a0c9-cf20ff195b7f@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---27hwlkrs2c4ciypb
+--jixbiuhukrqgg4cn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 03, 2018 at 06:44:48PM +0300, Sergey Suloev wrote:
-> Two helper functions were added in order to set/unset
-> specified flags in registers.
+On Tue, Apr 03, 2018 at 07:24:11PM +0300, Sergey Suloev wrote:
+> On 04/03/2018 07:18 PM, Mark Brown wrote:
+> > On Tue, Apr 03, 2018 at 07:00:55PM +0300, Sergey Suloev wrote:
+> > > On 04/03/2018 06:52 PM, Mark Brown wrote:
+> > > > On Tue, Apr 03, 2018 at 06:29:00PM +0300, Sergey Suloev wrote:
+> > > > > As long as sun4i/sun6i SPI drivers have overriden the default
+> > > > > "wait for completion" procedure then we need to properly
+> > > > > handle -ETIMEDOUT error from transfer_one().
+> > > > Why is this connected to those drivers specifically?
+> > > These 2 drivers have their own "waiting" code and not using the code =
+=66rom
+> > > SPI core.
+> > Does this not apply to any other driver - why is this something we only
+> > have to do when these drivers do it?  That's what's setting off alarm
+> > bells.
 >=20
-> Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+> sun4i/sun6i drivers have let's say "smart" waiting while SPI core uses a
+> fixed interval to wait.
+>=20
+> I can't say for every SPI driver in kernel, that's outside of my area of
+> expertise.
 
-Again, I'm not really sure what the benefit of that is. Your diffstat
-is pretty much identical, so it's basically just moving code around.
+I'm not sure what's specific about the sun4i / sun6i case here. Your
+patch doesn't have anything to do with the delay before the timeout,
+but the fact that we return -ETIMEDOUT in the first place.
+
+And I'm pretty sure that papering over an error returned by a driver
+is not the right thing to do.
 
 Maxime
 
@@ -39,24 +64,24 @@ Maxime Ripard, Bootlin (formerly Free Electrons)
 Embedded Linux and Kernel engineering
 https://bootlin.com
 
---27hwlkrs2c4ciypb
+--jixbiuhukrqgg4cn
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrEeHYACgkQ0rTAlCFN
-r3Ql5A//YDJuOQUfZlB15TiE0DDnqqBOrQvEpidlgLBWFyPwGjySislkUqgpPg4i
-UVaxdOC1M4XcqsOhacFUqSamvXTNhRr6CF5AzicFx37S9Gv7DS2SmM829e2e2B2j
-aCXkSpjctWl95jVkyObkAKsRj3fGZl2TFAiKMzRoVxUrfO9Bqb38HyMTtyLImEyy
-04kmwtXNm5wlJoL0dDOcw1FCvDXuGH0kv/1+EPimJaGtqYWzVPGDKbzNG+VjS3zz
-DCGKfvqqTwvJRj6DDQ/mqlQ47+3ct9KLlp9Ip63ilhGkvffPbj1RLf5VQlOnz7UY
-aG5ke8CWSofenN1lNpvXDZSs6Sg8W2D+rQkxGGGHNOPuXa2h20jJLyziW1PkBaJO
-/eGfDMCbkkRWMOXFQ6tDUo+FwobwR8B3IzjqAb5D4RebrK80mOxezUDDtSYDokUS
-fFApxnbxmbNKrsc12/nFcEZzsqPayn/bPuCTpl82OmtDELBVDtTxpYChpWb3+nSj
-o1JjxHGCbZjHt79+fIIr+hrx+a8+UNzKeOX+G+ORv7IK01qG+fojShq9z6sxM0D8
-nlrAtll+PkYL5wL+iMMPdzNJ7Tvoo1FykRmU5kgb/62jB1xD9VM2bNdpmyR8LHO4
-O+9ZsNF4aY7dFtmYyOEe6PFtz/4ZIZQYDmVLnSuWUmmRbA7WkOQ=
-=vo6V
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrEeeEACgkQ0rTAlCFN
+r3RTyg/+LLCk5LJ18AFnqN1WDMGyPF5NEgPeSYBdWEoBlP79QTs5DKYzgK/CW8/I
+t3WkryZBNoBC0jb9NWa+YLjacANk4egs6hK7rY3kjkbIDx7Ni9QlEZpYFll0gZL9
+f9mqE++6nIlS3qpFJNU+6g46NghIy0WhB3GhmXyzdb4meFMYo6KjiPLuqRSfjx2N
+CpZ0gzRTKPGPLj13q0ZPBqHAID5hhNIDG954rYBOKyZh+ykSG2pIH0Z98DB7XWau
+d3jBo50TI7XP3yEe3UkUlIgLa5j9PVIJyiZk9S2fDJqSeA7Oq5YLddkMsJtvsXcO
+WXW8lFUrRJLrVmaerz04ga98ad4JO8LiXyXuGGMYoj63dJ++cM7kUjjzGXiMzuBB
+jPDcUJaGZRV5mp2CzHpeecCtR0xPm0MquJcQp0tO7THWeSkttuqmb6MkJCMcEx9t
+o1NhKwYZc/hyKpFnIYeZRNIobscfouo5t5np7pB1W7N8jSSFCr6Nyiu/XLDHF+h3
+VmigIkT7HkkcHyDgItFK5eiw0TY1yGJtq58U6CxsMLdRpyTM7eWCJRY4ofGmncwa
+c0d/eZ1QF6PLIlNCNxJMYSXa1iglLeXOuPUxj+fYzZPR7eiSXUFlwqAwFP21u2WD
+nGGSG8ySISUT/v8j9hrzPG0CKk5Lmo3mDZi72iVAHIDPdBoUyMM=
+=ZjNx
 -----END PGP SIGNATURE-----
 
---27hwlkrs2c4ciypb--
+--jixbiuhukrqgg4cn--

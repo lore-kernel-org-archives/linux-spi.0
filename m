@@ -1,62 +1,57 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
-Date: Thu, 5 Apr 2018 11:07:40 +0100
-Message-ID: <20180405100740.GA12349@sirena.org.uk>
+Date: Thu, 5 Apr 2018 14:17:35 +0100
+Message-ID: <20180405131735.GB12349@sirena.org.uk>
 References: <20180403154449.2443-1-ssuloev@orpaltech.com>
  <20180403154449.2443-4-ssuloev@orpaltech.com>
  <20180404065048.n76r3ytuznd6fqsl@flea>
  <a6044902-8977-3ce1-d7d5-c6797341a5d0@orpaltech.com>
  <20180405091913.ky4dnmszoobn2xry@flea>
+ <ee4adb1e-caf6-32f6-33d6-d8dd94d232cf@orpaltech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="a8Wt8u1KmwUX3Y2C"
-Cc: Sergey Suloev <ssuloev@orpaltech.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@bootlin.com>
+        protocol="application/pgp-signature"; boundary="v9Ux+11Zm5mwPlX6"
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180405091913.ky4dnmszoobn2xry@flea>
+In-Reply-To: <ee4adb1e-caf6-32f6-33d6-d8dd94d232cf@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---a8Wt8u1KmwUX3Y2C
+--v9Ux+11Zm5mwPlX6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Apr 05, 2018 at 11:19:13AM +0200, Maxime Ripard wrote:
-> On Wed, Apr 04, 2018 at 02:35:14PM +0300, Sergey Suloev wrote:
+On Thu, Apr 05, 2018 at 12:59:35PM +0300, Sergey Suloev wrote:
+> On 04/05/2018 12:19 PM, Maxime Ripard wrote:
 
-> > What exactly and in what way ?
+> > The point of that patch was precisely to allow to send more data than
+> > the FIFO. You're breaking that behaviour without any justification,
+> > and this is not ok.
 
-> You should explain, at least:
-> A) What is the current behaviour
-> B) Why that is a problem, or what problem does it cause
-> C) What solution you implement and why you think it's justified
+> I am sorry, but you can't. That's a hardware limitation.
 
-Right, this is key - the top level problem with most of this patch set
-is that it's hard to understand what the changes are intended to do or
-why.  It's really important that people reading the changes be able to
-understand what's going on, especially if technical problems have been
-found since that tends to make people look more closely.  Part of this
-is about splitting the changes out so that each patch does one thing
-(which makes it easier to understand them) and part of it is about
-explaining those changes clearly.
+Are you positive about that?  Normally you can add things to hardware
+FIFOs while they're being drained so so long as you can keep data
+flowing in at least as fast as it's being consumed.
 
---a8Wt8u1KmwUX3Y2C
+--v9Ux+11Zm5mwPlX6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrF9WsACgkQJNaLcl1U
-h9Ac5gf/aYWiN662b+5WIMt7jZMwx0qaXalRcZxf2FeQLaYdBbq8GlQ54uqSHzu8
-plDSw8unB6nL1YNKLTbXlrY2HXP80abBwWVAOjlj2Dr//POEbMPOmMtiBRBvGvkf
-EaKunDg1F+DsBpUV2J62x9vbixG3gHjCh4mqbMr1l9Bt9suj5DDr126rRkfGh5BK
-TKMpisOr+grrT6wVcANovT9vofO2yH2sYTYu3KiuQ3ukA20hb3WgyxYELiggTT/Z
-rKqoM3bPqwKWKBN17ONIp1k1r9j02EXD5MV0a9IWUi3quq6Tiff47bYoVXF1scrg
-X9dWa7exq2ppwBJBWPij+tjHrQKqlQ==
-=HryV
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrGIe4ACgkQJNaLcl1U
+h9BmoAf/ahzcFkuIYLDWPJ6YcVmSo2FrEo9db3cgyBVAdYr5Mjc8tfXGcALZWqu6
+gfPNrxkvZwpj7AB7XTFeVwr51tYriWPmAbRhBQ/jGH97hovKCQ1Etibg9Sazvdgi
+JMdB4P27ZkULOa9E7NFHdKGnf8FEPjhZX7/bXLeGBUII/R4BMQD2uE8DPpBeKtMl
+dtfk+gvwHf/n18H8kp9SQ8+BGaZ/jd5hjZcwS+ELHGfNkSe2dCgRt+l/jelx1xKd
+evkyGmpaQa/rWzFHqQcjuCPlinwKuoqH26vb/RCD1KDHgeefq/kHwWKzhid5FSfF
+QkT8QJXlGj+g2Q5NqwJ4+VbbR2pZsw==
+=0+Ns
 -----END PGP SIGNATURE-----
 
---a8Wt8u1KmwUX3Y2C--
+--v9Ux+11Zm5mwPlX6--

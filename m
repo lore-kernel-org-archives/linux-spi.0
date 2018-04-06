@@ -1,7 +1,7 @@
 From: Sergey Suloev <ssuloev@orpaltech.com>
 Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
-Date: Fri, 6 Apr 2018 18:48:23 +0300
-Message-ID: <204e97cb-2f39-00f0-fd4e-3aa9a51f7cac@orpaltech.com>
+Date: Fri, 6 Apr 2018 18:54:21 +0300
+Message-ID: <46df9f95-a93f-57af-b7d9-dfd5db046622@orpaltech.com>
 References: <20180403154449.2443-1-ssuloev@orpaltech.com>
  <20180403154449.2443-4-ssuloev@orpaltech.com>
  <20180404065048.n76r3ytuznd6fqsl@flea>
@@ -42,10 +42,11 @@ On 04/06/2018 10:34 AM, Maxime Ripard wrote:
 > Because you're not supposed to have a transfer larger than the FIFO,
 > but to have to setup at first a transfer the size of the FIFO, and
 > then when it's (or starts to be) depleted, fill it up again.
-
 According to what you said the driver must implement 
-"transfer_one_message" instead of "transfer_one"
-
+"transfer_one_message" instead of "transfer_one",
+because the maximum transfer length is 64 bytes (for sun4i) and we 
+shouldn't allow "transfer_one" handle
+more than 64 bytes. Otherwise it breaks the concept.
 >
 > That's the point of the patch you're reverting, and if it doesn't
 > work, you should make it work and not simply revert it.

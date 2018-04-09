@@ -1,7 +1,7 @@
-From: Mark Brown <broonie@kernel.org>
+From: Maxime Ripard <maxime.ripard@bootlin.com>
 Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
-Date: Mon, 9 Apr 2018 12:27:03 +0100
-Message-ID: <20180409112703.GD11532@sirena.org.uk>
+Date: Mon, 9 Apr 2018 13:36:03 +0200
+Message-ID: <20180409113603.2iexkqvyeqmysp5e@flea>
 References: <20180405091913.ky4dnmszoobn2xry@flea>
  <ee4adb1e-caf6-32f6-33d6-d8dd94d232cf@orpaltech.com>
  <20180405131735.GB12349@sirena.org.uk>
@@ -13,11 +13,11 @@ References: <20180405091913.ky4dnmszoobn2xry@flea>
  <20180409105001.GC11532@sirena.org.uk>
  <67c2006b-17f2-2459-e3c9-e91e3c694d8c@orpaltech.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8nsIa27JVQLqB7/C"
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="c7ddtt4fgfml6w7z"
+Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org
 To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
@@ -26,7 +26,7 @@ Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---8nsIa27JVQLqB7/C
+--c7ddtt4fgfml6w7z
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -34,51 +34,76 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Apr 09, 2018 at 02:10:40PM +0300, Sergey Suloev wrote:
 > On 04/09/2018 01:50 PM, Mark Brown wrote:
 > > On Mon, Apr 09, 2018 at 01:26:23PM +0300, Sergey Suloev wrote:
-
+> > > On 04/09/2018 12:27 PM, Maxime Ripard wrote:
+> > > > On Fri, Apr 06, 2018 at 06:48:23PM +0300, Sergey Suloev wrote:
+> > > > > On 04/06/2018 10:34 AM, Maxime Ripard wrote:
+> > > > > According to what you said the driver must implement
+> > > > > "transfer_one_message" instead of "transfer_one"
+> > > > I'm not sure what makes you think that I said that.
 > > > Because current implementation tries to send more than FIFO-depth of =
 data in
 > > > a single call to "transfer_one" which is wrong.
-
 > > No, that's absolutely not the case.  All any of these functions has to
 > > do is transfer whatever they were asked to, how they do it is not at all
 > > important to the framework.
-
+>=20
 > I think you don't fully understand the issue. Let's talk about sun4i and=
 =A0
 > sun6i SPI=A0 drivers separately.
-
+>=20
 > sun4i
-
+>=20
 > 1)it is correctly declaring max_transfer_size=3DFIFO depth for PIO mode=
 =A0 but
 > transfer_one() function doesn't follow the declaration allowing PIO
 > transfers longer than FIFO depth=A0 by just refilling FIFO using 3/4 FIFO
 > empty interrupt. I can definitely state here that long transfers WON'T WO=
 RK
-> on real hardware. I tested it and that's why I can say that. But as soon =
-as
-> sun4i SPI driver=A0 is correctly declaring max_transfer_size then "smart"
-> clients will work well by limiting a single transfer size to FIFO depth. I
-> tested it with real hardware, again.
+> on real hardware.
 
-None of this is in the slightest bit related to the use of transfer_one()=
-=20
-vs transfer_one_message().  These are all implementation details and
-will so far as I can tell apply equally to both APIs.
+Surely the original author of the patch allowing to do just that
+disagrees with you. And it's not about the hardware itself, it's about
+how the driver operates as well.
 
---8nsIa27JVQLqB7/C
+> I tested it and that's why I can say that.
+
+Then it must be fixed, and not silently reverted.
+
+> But as soon as sun4i SPI driver=A0 is correctly declaring
+> max_transfer_size then "smart" clients will work well by limiting a
+> single transfer size to FIFO depth. I tested it with real hardware,
+> again.
+
+This is really not my point. What would prevent you from doing
+multiple transfers in that case, and filling the FIFO entirely,
+waiting for it to be done, then resuming until you have sent the right
+number of bytes?
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--c7ddtt4fgfml6w7z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrLTgYACgkQJNaLcl1U
-h9DvMwf8CIj4UsGLjuBE1zeTHE3Qwaw0ed1LshStN6fkryKqAdUNIVlIY7ONiww/
-bOuzFEc38tlqkXZoTf09t4NgIbtzo6Ua5xAsjUK0Om2aNUhqfgjmBGJclBzXwkPm
-jRVUwLjcWMpxNkDEDpKUWJssD71Ir2/ynreXDTF5//avov+C+MbQUpDXZPjZXUpG
-Jxt8oSTe3GwZ10HXlhrShtYG3G90H30kNNyjOoRtRYT+D7xSJg8BROVxnHMX0YDM
-wysz+mFs9Rl1RGRdEz66GBxwFgtMmwrUR+Uiu/ZDpgCSqGcPPLnKWj899zsYDH1U
-Qpy9J34vjIch6at14BEkpqnNnX4qYg==
-=wTgl
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrLUCIACgkQ0rTAlCFN
+r3QlohAAmO131yUSwi9hkobfB8OoLlbWtoOp7Lb6szGcm+EKP9CnxnAlRAQuwyC3
+9Elfpd9SxVyHw484Das9er0viPndDdz2LJANLiq4q2d7G/Ii2xqtroS6BpmtG480
+Jcz8Wpy7fPeaLFMGxyJTzOVKrz8Xmz3fHcVpyDWhU0jtPiHU1uCAn1meUMLWyxse
+djJ16DRqeXgGiypfjlTwDba/ml8Y45gM4lV1UT/bdLQJvEGKL4V9NaDeYdeMRnyt
+xyeQbKrHc5kLVNPrsOoCteRRS9xQnmWI/gCy/Hi1nWnCkt0Uidv/JgYU1tGChpOV
+iLF90KMc9RvzpCwC0lNxUOsdEO4mAPzMJEMjP9ciX7dYuXPfwo5S3QZN0GpQHDVN
+pgjGLE8IHth/kI4k8FNCQLnhwqRYGoUlOGC3YJfZXddyJpRAFl6L4fHx676EjEh7
+VyyraolTNq6+c9pQhZZQJA7nHqVl12VhhuuOUdD5sMEqWmXuBaweAWHNyUEQFRgs
+xOnKITVTVgyXyM0y79qtb3idvRBi2xpKFyiprJes7C+vpisYidgRxJ6Oh1GWJu52
+RZaAwnymTFewXTY8/DDRdGiiRblaRK6mYO2mFIt2LZrHhbIUJCxV2V60fLrqR3Po
+wJjC7pDoitgT2cKbF0T5ttgYk+E6UL5vdMADfabKBH75ldKQwts=
+=hFQP
 -----END PGP SIGNATURE-----
 
---8nsIa27JVQLqB7/C--
+--c7ddtt4fgfml6w7z--

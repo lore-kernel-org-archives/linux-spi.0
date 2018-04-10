@@ -1,88 +1,54 @@
-From: Sergey Suloev <ssuloev@orpaltech.com>
-Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
-Date: Mon, 9 Apr 2018 14:59:57 +0300
-Message-ID: <0e2fefa5-b6e7-5e42-cf6e-8fc921f972dd@orpaltech.com>
-References: <20180405091913.ky4dnmszoobn2xry@flea>
- <ee4adb1e-caf6-32f6-33d6-d8dd94d232cf@orpaltech.com>
- <20180405131735.GB12349@sirena.org.uk>
- <8159c3a5-af74-9f13-aedb-7ecc708bdff6@orpaltech.com>
- <20180406073441.xesojvzc3deljhoy@flea>
- <204e97cb-2f39-00f0-fd4e-3aa9a51f7cac@orpaltech.com>
- <20180409092730.2moyhl5aaktjwbyn@flea>
- <94a394bd-89bf-9334-c500-4cbadf4c1044@orpaltech.com>
- <20180409105001.GC11532@sirena.org.uk>
- <67c2006b-17f2-2459-e3c9-e91e3c694d8c@orpaltech.com>
- <20180409113603.2iexkqvyeqmysp5e@flea>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@bootlin.com>
+From: Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] spi: spi-topcliff-pch: Replace GFP_ATOMIC with GFP_KERNEL in pch_spi_handle_dma
+Date: Tue, 10 Apr 2018 17:06:16 +0800
+Message-ID: <1523351176-29741-1-git-send-email-baijiaju1990@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jia-Ju Bai <baijiaju1990@gmail.com>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180409113603.2iexkqvyeqmysp5e@flea>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/09/2018 02:36 PM, Maxime Ripard wrote:
-> On Mon, Apr 09, 2018 at 02:10:40PM +0300, Sergey Suloev wrote:
->> On 04/09/2018 01:50 PM, Mark Brown wrote:
->>> On Mon, Apr 09, 2018 at 01:26:23PM +0300, Sergey Suloev wrote:
->>>> On 04/09/2018 12:27 PM, Maxime Ripard wrote:
->>>>> On Fri, Apr 06, 2018 at 06:48:23PM +0300, Sergey Suloev wrote:
->>>>>> On 04/06/2018 10:34 AM, Maxime Ripard wrote:
->>>>>> According to what you said the driver must implement
->>>>>> "transfer_one_message" instead of "transfer_one"
->>>>> I'm not sure what makes you think that I said that.
->>>> Because current implementation tries to send more than FIFO-depth of data in
->>>> a single call to "transfer_one" which is wrong.
->>> No, that's absolutely not the case.  All any of these functions has to
->>> do is transfer whatever they were asked to, how they do it is not at all
->>> important to the framework.
->> I think you don't fully understand the issue. Let's talk about sun4i and
->> sun6i SPI  drivers separately.
->>
->> sun4i
->>
->> 1)it is correctly declaring max_transfer_size=FIFO depth for PIO mode  but
->> transfer_one() function doesn't follow the declaration allowing PIO
->> transfers longer than FIFO depth  by just refilling FIFO using 3/4 FIFO
->> empty interrupt. I can definitely state here that long transfers WON'T WORK
->> on real hardware.
-> Surely the original author of the patch allowing to do just that
-> disagrees with you.
-I am not getting the point why the driver is declaring the max transfer 
-length value and not following the rule.
-> And it's not about the hardware itself, it's about
-> how the driver operates as well.
->
->> I tested it and that's why I can say that.
-> Then it must be fixed, and not silently reverted.
->
->> But as soon as sun4i SPI driver  is correctly declaring
->> max_transfer_size then "smart" clients will work well by limiting a
->> single transfer size to FIFO depth. I tested it with real hardware,
->> again.
-> This is really not my point. What would prevent you from doing
-> multiple transfers in that case, and filling the FIFO entirely,
-> waiting for it to be done, then resuming until you have sent the right
-> number of bytes?
-Because it makes no sense IMHO. I can't see any single point in allowing 
-long PIO transfers. Can you find at least one ?
+pch_spi_handle_dma() is never called in atomic context.
+This function is only called by pch_spi_process_messages().
+pch_spi_process_messages() is only set as a parameter of INIT_WORK() in
+pch_spi_pd_probe().
 
-I think we should reuse as much SPI core code as possible. The SPI core 
-can handle an SPI message with multiple transfers,
-all we need is to have max_transfer_size = FIFO depth and restrict it in 
-transfer_one().
+Despite never getting called from atomic context,
+pch_spi_handle_dma() calls kcalloc() with GFP_ATOMIC,
+which does not sleep for allocation.
+GFP_ATOMIC is not necessary and can be replaced with GFP_KERNEL,
+which can sleep and improve the possibility of sucessful allocation.
 
->
-> Maxime
->
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+This is found by a static analysis tool named DCNS written by myself.
+And I also manually check it.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/spi/spi-topcliff-pch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 97d1375..dc93ca9 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1007,7 +1007,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 	spin_unlock_irqrestore(&data->lock, flags);
+ 
+ 	/* RX */
+-	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
++	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_KERNEL);
+ 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_rx_p;
+@@ -1067,7 +1067,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 		head = 0;
+ 	}
+ 
+-	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
++	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_KERNEL);
+ 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_tx_p;
+-- 
+1.9.1

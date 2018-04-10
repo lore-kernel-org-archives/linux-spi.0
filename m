@@ -1,84 +1,94 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH v3 3/6] spi: sun6i: restrict transfer length in PIO-mode
-Date: Tue, 10 Apr 2018 16:05:04 +0200
-Message-ID: <20180410140504.i7kszskwxuoygt5s@flea>
-References: <20180405131735.GB12349@sirena.org.uk>
- <8159c3a5-af74-9f13-aedb-7ecc708bdff6@orpaltech.com>
- <20180406073441.xesojvzc3deljhoy@flea>
- <204e97cb-2f39-00f0-fd4e-3aa9a51f7cac@orpaltech.com>
- <20180409092730.2moyhl5aaktjwbyn@flea>
- <94a394bd-89bf-9334-c500-4cbadf4c1044@orpaltech.com>
- <20180409105001.GC11532@sirena.org.uk>
- <67c2006b-17f2-2459-e3c9-e91e3c694d8c@orpaltech.com>
- <20180409113603.2iexkqvyeqmysp5e@flea>
- <0e2fefa5-b6e7-5e42-cf6e-8fc921f972dd@orpaltech.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH v2 01/10] spi: Check presence the of ->transfer[_xxx]() before
+ registering a controller
+Date: Wed, 11 Apr 2018 00:44:30 +0200
+Message-ID: <20180410224439.9260-2-boris.brezillon@bootlin.com>
+References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="b4q666t6sgvco2sh"
-Cc: Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org
-To: Sergey Suloev <ssuloev@orpaltech.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <0e2fefa5-b6e7-5e42-cf6e-8fc921f972dd@orpaltech.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Kamal Dasu <kdasu.kdev@gmail.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Peter Pan <peterpansjtu@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+ Sourav Poddar <sourav.poddar@ti.com>
+To: David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180410224439.9260-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Right now, no checks are done on the presence of a ->transfer[_xxx]()
+method, which can lead to a NULL pointer dereference when someone
+starts sending something on the bus.
 
---b4q666t6sgvco2sh
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Do the check at registration time and refuse to add the controller if
+all ->transfer[_xxx]() pointers are NULL.
 
-On Mon, Apr 09, 2018 at 02:59:57PM +0300, Sergey Suloev wrote:
-> > > But as soon as sun4i SPI driver=A0 is correctly declaring
-> > > max_transfer_size then "smart" clients will work well by limiting a
-> > > single transfer size to FIFO depth. I tested it with real hardware,
-> > > again.
-> > This is really not my point. What would prevent you from doing
-> > multiple transfers in that case, and filling the FIFO entirely,
-> > waiting for it to be done, then resuming until you have sent the right
-> > number of bytes?
->
-> Because it makes no sense IMHO. I can't see any single point in allowing
-> long PIO transfers. Can you find at least one ?
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+ drivers/spi/spi.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-I'm probably going to state the obvious here, but to allow long transfers?
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 7b213faa0a2b..24369e437c6b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2063,6 +2063,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
+ }
+ #endif
+ 
++static int spi_controller_check_ops(struct spi_controller *ctlr)
++{
++	/*
++	 * The controller must at least implement one of the ->transfer()
++	 * hooks.
++	 */
++	if (!ctlr->transfer && !ctlr->transfer_one &&
++	    !ctlr->transfer_one_message)
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * spi_register_controller - register SPI master or slave controller
+  * @ctlr: initialized master, originally from spi_alloc_master() or
+@@ -2096,6 +2109,14 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	/*
++	 * Make sure all necessary hooks are implemented before registering
++	 * the SPI controller.
++	 */
++	status = spi_controller_check_ops(ctlr);
++	if (status)
++		return status;
++
+ 	if (!spi_controller_is_slave(ctlr)) {
+ 		status = of_spi_register_master(ctlr);
+ 		if (status)
+-- 
+2.14.1
 
-> I think we should reuse as much SPI core code as possible. The SPI
-> core can handle an SPI message with multiple transfers, all we need
-> is to have max_transfer_size =3D FIFO depth and restrict it in
-> transfer_one().
 
-There's not a single call to the max_transfer_size hook in the SPI
-core in 4.16, so that seems a bit too optimistic.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---b4q666t6sgvco2sh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlrMxI8ACgkQ0rTAlCFN
-r3SbrQ//TFFVHDCIE9JtIeazfWuz9k4LebEYXhTIiMcUGLUWvJojjRVlmrR14rZA
-R9JmR0ytUic7r/v4lBBP/P/JSlY/ljcR8XGNfxYe0GnhOGYYB9ety/xu8jHfJ92W
-d6zsgUuhOLkjuP3u7Ox9w7d5Qv0itLkic7n8DMjnwVsqLPt4gQLYp4s6QVZ86cKA
-1viXDzJwrM+e2y1/Mhi8/9dtkoyylyTSzU7ILl9jWQPM7ARDgNJlxq4bSl6mhmkz
-CBIFZBoXm3RlnHk7THdCypTG8eA3ouJD/Z8X6DxmNOcLIz/7tA/+eGX9IqbnBgwn
-nMwMB0jFAU/h8yABmpCzduvDdMO1nJY+EQl93/dLR+YiXAqbZIfZj+eZaTb/A3Bv
-/kskvfzYcywAecX30RISteepIQiHWpjDObZ0fhxAym/MiwNGJFKFtKtM6R0bqk88
-mHaxo6nRjr8+0RCjw9+coQY1sHmf3pFkLvK60GDmO7eGENlMmIBN1UCowXDI/Uem
-YoIiEDFnpnyDz6j3yjhOJYbfKa8xM971Z6RCu2kLcVJ8iVYaA1/bfQHE/WX4EKd9
-eEqiDAsXzbekbDsISIoxohzYP+NSN+NRbFcZypzQGICVF+F8S68yx0R4v3ls6lgH
-WzxFLGS/norkO1WEsB88+KMocXz1KyIUHFPTDMynO7ErJUAdblk=
-=bs5n
------END PGP SIGNATURE-----
-
---b4q666t6sgvco2sh--
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

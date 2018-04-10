@@ -1,8 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v2 00/10] spi: Extend the framework to generically support
- memory devices
-Date: Wed, 11 Apr 2018 00:44:29 +0200
-Message-ID: <20180410224439.9260-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 03/10] spi: Add an helper to flush the message queue
+Date: Wed, 11 Apr 2018 00:44:32 +0200
+Message-ID: <20180410224439.9260-4-boris.brezillon@bootlin.com>
+References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,6 +21,7 @@ To: David Woodhouse <dwmw2@infradead.org>,
  linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
  Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,61 +33,60 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+This is needed by the spi-mem logic to force all messages that have been
+queued before a memory operation to be sent before we start the memory
+operation. We do that in order to guarantee that spi-mem operations do
+not preempt regular SPI transfers.
 
-Shrinking a bit the explanation on why the spi-mem abstraction is
-needed (a detailed explanation is available here [2]). In addition to
-what as been said in my initial explanation I'll add that making it part
-of the SPI framework instead of as an extra independent layer is
-justified by the fact that some controllers support both SPI memory
-operations and regular SPI transfers, and it's cleaner to have both
-features exposed through a single driver.
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+As for the spi_map/unmap_buf() I'd suggest to move the prototype
+definition to an internal header file.
+---
+ drivers/spi/spi.c       | 16 ++++++++++++++++
+ include/linux/spi/spi.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-In this v2, I think I addressed all the comments I had except the
-advanced direct memory mapping stuff mentioned by Cyrille, but I don't
-think any of the work done in this series prevents us from adding this
-feature later on.
-
-For those who want to have the full picture, here is a branch [1]
-containing the SPI NAND framework based on top of this spi-mem layer.
-
-Thanks,
-
-Boris
-
-[1]https://github.com/bbrezillon/linux/tree/spi-mem
-[2]https://www.spinics.net/lists/linux-spi/msg12058.html
-
-Boris Brezillon (10):
-  spi: Check presence the of ->transfer[_xxx]() before registering a
-    controller
-  spi: Expose spi_{map,unmap}_buf() for internal use
-  spi: Add an helper to flush the message queue
-  spi: Extend the core to ease integration of SPI memory controllers
-  spi: Make support for regular transfers optional when ->mem_ops !=
-    NULL
-  spi: bcm-qspi: Implement the spi_mem interface
-  spi: bcm53xx: Implement the spi_mem interface
-  spi: ti-qspi: Implement the spi_mem interface
-  mtd: spi-nor: Use the spi_mem_xx() API
-  spi: Get rid of the spi_flash_read() API
-
- drivers/mtd/devices/Kconfig  |   1 +
- drivers/mtd/devices/m25p80.c | 236 +++++++++----------------
- drivers/spi/Kconfig          |   7 +
- drivers/spi/Makefile         |   1 +
- drivers/spi/spi-bcm-qspi.c   | 162 ++++++++---------
- drivers/spi/spi-bcm2835.c    |   1 +
- drivers/spi/spi-bcm53xx.c    |  36 ++--
- drivers/spi/spi-mem.c        | 408 +++++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-ti-qspi.c    |  85 +++++----
- drivers/spi/spi.c            | 142 +++++++--------
- include/linux/spi/spi-mem.h  | 249 ++++++++++++++++++++++++++
- include/linux/spi/spi.h      |  88 ++++------
- 12 files changed, 1005 insertions(+), 411 deletions(-)
- create mode 100644 drivers/spi/spi-mem.c
- create mode 100644 include/linux/spi/spi-mem.h
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 308e4c2114d8..d7e046128b3f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1520,6 +1520,22 @@ static int spi_controller_initialize_queue(struct spi_controller *ctlr)
+ 	return ret;
+ }
+ 
++/**
++ * spi_flush_queue - Send all pending messages in the queue from the callers'
++ *		     context
++ * @ctlr: controller to process queue for
++ *
++ * This should be used when one wants to ensure all pending messages have been
++ * sent before doing something. Is used by the spi-mem code to make sure SPI
++ * memory operations do not preempt regular SPI transfers that have been queued
++ * before the spi-mem operation.
++ */
++void spi_flush_queue(struct spi_controller *ctlr)
++{
++	if (ctlr->transfer == spi_queued_transfer)
++		__spi_pump_messages(ctlr, false);
++}
++
+ /*-------------------------------------------------------------------------*/
+ 
+ #if defined(CONFIG_OF)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index de6fd95a61c5..3489fc9c0410 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -619,6 +619,8 @@ extern int spi_controller_resume(struct spi_controller *ctlr);
+  * Helpers needed by the spi-mem logic. Should not be used outside of
+  * spi-mem.c
+  */
++void spi_flush_queue(struct spi_controller *ctrl);
++
+ #ifdef CONFIG_HAS_DMA
+ int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+ 		struct sg_table *sgt, void *buf, size_t len,
 -- 
 2.14.1
 

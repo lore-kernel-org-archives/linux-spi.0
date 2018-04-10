@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v2 07/10] spi: bcm53xx: Implement the spi_mem interface
-Date: Wed, 11 Apr 2018 00:44:36 +0200
-Message-ID: <20180410224439.9260-8-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 05/10] spi: Make support for regular transfers optional
+ when ->mem_ops != NULL
+Date: Wed, 11 Apr 2018 00:44:34 +0200
+Message-ID: <20180410224439.9260-6-boris.brezillon@bootlin.com>
 References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -33,94 +34,93 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi_mem interface is meant to replace the spi_flash_read() one.
-Implement the ->exec_op() method so that we can smoothly get rid of the
-old interface.
+Some SPI/QuadSPI controllers only expose a high-level SPI memory
+interface, thus preventing any regular SPI transfers from being done.
 
-Note that the current ->flash_read() implementation looks a bit fragile
-since it does not take the ->read_opcode passed by the spi-nor layer
-into account, which means if might not work with all kind of NORs.
+In that case, SPI controller drivers can leave all ->transfer_xxx()
+hooks empty and only implement the spi_mem_ops interface.
 
-Anyway, I left the logic unchanged and added a few extra checks to make
-sure we're receiving something that looks like a NOR read operation.
+Adjust the core to allow such situations:
+- extend spi_controller_check_ops() to accept situations where all
+  ->transfer_xxx() pointers are NULL only if ->mem_ops != NULL
+- make sure we do not initialize the SPI message queue if
+  ctlr->transfer_one and ctlr->transfer_one_message are missing
+- return -ENOTSUPP if someone tries to do a regular SPI transfer on
+  a controller that does not support it
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
-Changes in v2:
-- include spi-mem.h
-- treat op->addr.val differently since it's now an u64
----
- drivers/spi/spi-bcm2835.c |  1 +
- drivers/spi/spi-bcm53xx.c | 36 +++++++++++++++++++++++++++++++++++-
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index f35cc10772f6..41ed371eaf15 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -37,6 +37,7 @@
- #include <linux/of_gpio.h>
- #include <linux/of_irq.h>
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d7e046128b3f..4961a5e91941 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -28,6 +28,7 @@
+ #include <linux/slab.h>
+ #include <linux/mod_devicetable.h>
  #include <linux/spi/spi.h>
 +#include <linux/spi/spi-mem.h>
- 
- /* SPI register offsets */
- #define BCM2835_SPI_CS			0x00
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-index d02ceb7a29d1..016059d3160b 100644
---- a/drivers/spi/spi-bcm53xx.c
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -257,6 +257,38 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
- 	return 0;
- }
- 
-+static int bcm53xxspi_exec_mem_op(struct spi_mem *mem,
-+				  const struct spi_mem_op *op)
-+{
-+	struct bcm53xxspi *b53spi = spi_master_get_devdata(mem->spi->master);
-+	u32 from;
-+
-+	/*
-+	 * FIXME: There's nothing in this driver programming the opcode and
-+	 * buswidth to be used when a read is done on the mmio window, but it
-+	 * seems to be used to access a SPI NOR device, so restrict access
-+	 * access to SPINOR_OP_READ commands.
-+	 */
-+	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
-+	    op->addr.nbytes != 3 || op->cmd.opcode != 0x3)
-+		return -ENOTSUPP;
-+
-+	/* Return -ENOTSUPP so that the core can fall back to normal reads. */
-+	from = op->addr.val;
-+	if (from + op->data.nbytes > BCM53XXSPI_FLASH_WINDOW)
-+		return -ENOTSUPP;
-+
-+	bcm53xxspi_enable_bspi(b53spi);
-+	memcpy_fromio(op->data.buf.in, b53spi->mmio_base + from,
-+		      op->data.nbytes);
-+
-+	return 0;
-+}
-+
-+static const struct spi_controller_mem_ops bcm53xxspi_mem_ops = {
-+	.exec_op = bcm53xxspi_exec_mem_op,
-+};
-+
- static int bcm53xxspi_flash_read(struct spi_device *spi,
- 				 struct spi_flash_read_message *msg)
+ #include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_domain.h>
+@@ -2069,12 +2070,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
+ static int spi_controller_check_ops(struct spi_controller *ctlr)
  {
-@@ -311,8 +343,10 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
- 
- 	master->dev.of_node = dev->of_node;
- 	master->transfer_one = bcm53xxspi_transfer_one;
--	if (b53spi->mmio_base)
-+	if (b53spi->mmio_base) {
-+		master->mem_ops = &bcm53xxspi_mem_ops;
- 		master->spi_flash_read = bcm53xxspi_flash_read;
+ 	/*
+-	 * The controller must at least implement one of the ->transfer()
+-	 * hooks.
++	 * The controller may implement only the high-level SPI-memory like
++	 * operations if it does not support regular SPI transfers, and this is
++	 * valid use case.
++	 * If ->mem_ops is NULL, we request that at least one of the
++	 * ->transfer_xxx() method be implemented.
+ 	 */
+-	if (!ctlr->transfer && !ctlr->transfer_one &&
+-	    !ctlr->transfer_one_message)
++	if (ctlr->mem_ops) {
++		if (!ctlr->mem_ops->exec_op)
++			return -EINVAL;
++	} else if (!ctlr->transfer && !ctlr->transfer_one &&
++		   !ctlr->transfer_one_message) {
+ 		return -EINVAL;
 +	}
  
- 	bcma_set_drvdata(core, b53spi);
+ 	return 0;
+ }
+@@ -2185,10 +2193,14 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 			spi_controller_is_slave(ctlr) ? "slave" : "master",
+ 			dev_name(&ctlr->dev));
  
+-	/* If we're using a queued driver, start the queue */
+-	if (ctlr->transfer)
++	/*
++	 * If we're using a queued driver, start the queue. Note that we don't
++	 * need the queueing logic if the driver is only supporting high-level
++	 * memory operations.
++	 */
++	if (ctlr->transfer) {
+ 		dev_info(dev, "controller is unqueued, this is deprecated\n");
+-	else {
++	} else if (ctlr->transfer_one || ctlr->transfer_one_message) {
+ 		status = spi_controller_initialize_queue(ctlr);
+ 		if (status) {
+ 			device_del(&ctlr->dev);
+@@ -2918,6 +2930,13 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 
++	/*
++	 * Some controllers do not support doing regular SPI transfers. Return
++	 * ENOTSUPP when this is the case.
++	 */
++	if (!ctlr->transfer)
++		return -ENOTSUPP;
++
+ 	message->spi = spi;
+ 
+ 	SPI_STATISTICS_INCREMENT_FIELD(&ctlr->statistics, spi_async);
 -- 
 2.14.1
 

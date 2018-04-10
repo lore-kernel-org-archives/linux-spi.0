@@ -1,54 +1,51 @@
-From: Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] spi: spi-topcliff-pch: Replace GFP_ATOMIC with GFP_KERNEL in pch_spi_handle_dma
-Date: Tue, 10 Apr 2018 17:06:16 +0800
-Message-ID: <1523351176-29741-1-git-send-email-baijiaju1990@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jia-Ju Bai <baijiaju1990@gmail.com>
-To: broonie@kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: cadence: Add usleep_range() for
+ cdns_spi_fill_tx_fifo()
+Date: Tue, 10 Apr 2018 14:49:33 +0100
+Message-ID: <20180410134933.GA14657@sirena.org.uk>
+References: <201804102112307962582@163.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="liOOAslEiF7prFVr"
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+To: "sxauwsk@163.com" <sxauwsk@163.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201804102112307962582@163.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-pch_spi_handle_dma() is never called in atomic context.
-This function is only called by pch_spi_process_messages().
-pch_spi_process_messages() is only set as a parameter of INIT_WORK() in
-pch_spi_pd_probe().
 
-Despite never getting called from atomic context,
-pch_spi_handle_dma() calls kcalloc() with GFP_ATOMIC,
-which does not sleep for allocation.
-GFP_ATOMIC is not necessary and can be replaced with GFP_KERNEL,
-which can sleep and improve the possibility of sucessful allocation.
+--liOOAslEiF7prFVr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is found by a static analysis tool named DCNS written by myself.
-And I also manually check it.
+On Tue, Apr 10, 2018 at 09:12:32PM +0800, sxauwsk@163.com wrote:
+>=20
+>=20
+>=20
+>=20
+> sxauwsk@163.com
 
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
----
- drivers/spi/spi-topcliff-pch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Please submit patches in the format described in SubmittingPatches, my
+mail program isn't seeing anything in the mail except what's quoted
+above.
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 97d1375..dc93ca9 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1007,7 +1007,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	spin_unlock_irqrestore(&data->lock, flags);
- 
- 	/* RX */
--	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
-+	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_KERNEL);
- 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
-@@ -1067,7 +1067,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 		head = 0;
- 	}
- 
--	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
-+	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_KERNEL);
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_tx_p;
--- 
-1.9.1
+--liOOAslEiF7prFVr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrMwOwACgkQJNaLcl1U
+h9APAQf7BP7KGe3JfFfM/JgwY7/wn+RHBnhTLUGrWgS3pHuS2qfGUEGLnD82rR2e
+DX2Xo+lVxcjPRgFedAsJ+qh84gUbkAW69sSuLJkYj8xrUefxszupdLUZqas5ne4B
+vb0wQU38JMIQYWrnefhq7aMxxP5HdAuMRltvRakZB9ecm335+zyVSRt5JkjcKXkA
+mDXL8x36fLSIipu68res2tzZv4H4uw1LuLxW7QtmgLhm65W8GnhOx5IaHVgffUft
+H54TRd047aj6eQPUCBXpyzIe9pjORlTqe3RgIijqmmjyPLqCK2Nw/KlyetcA7aw4
+YPHVUpyK4EJ1hbuTpJ6MbytJ4NFaSg==
+=X3hj
+-----END PGP SIGNATURE-----
+
+--liOOAslEiF7prFVr--

@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v2 03/10] spi: Add an helper to flush the message queue
-Date: Wed, 11 Apr 2018 00:44:32 +0200
-Message-ID: <20180410224439.9260-4-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 02/10] spi: Expose spi_{map,unmap}_buf() for internal use
+Date: Wed, 11 Apr 2018 00:44:31 +0200
+Message-ID: <20180410224439.9260-3-boris.brezillon@bootlin.com>
 References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -33,60 +33,124 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This is needed by the spi-mem logic to force all messages that have been
-queued before a memory operation to be sent before we start the memory
-operation. We do that in order to guarantee that spi-mem operations do
-not preempt regular SPI transfers.
+spi_{map,unmap}_buf() are needed by the spi-mem logic that is about to
+be introduced to prepare data buffer for DMA operations.
+
+Remove the static specifier on these functions and add their prototypes
+to include/linux/spi/spi.h. We do not export the symbols here because
+both SPI_MEM and SPI can't be enabled as modules and we'd like to
+prevent controller/device drivers from using these functions.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
-As for the spi_map/unmap_buf() I'd suggest to move the prototype
-definition to an internal header file.
+I see 2 other options to not expose internal stuff to spi users or
+controller drivers:
+
+1/ we do not expose spi_map/unmap_buf() and instead implement
+   spi_controller_dma_map/unmap_mem_op_data() directly in spi.c
+2/ we create a new header (drivers/spi/internals.h?) for all
+   definitions that are meant for internal use (shared between spi.c
+   and spi-mem.c)
+
+I personally prefer #2 as it provides a better separation between spi
+and spi-mem code.
 ---
- drivers/spi/spi.c       | 16 ++++++++++++++++
- include/linux/spi/spi.h |  2 ++
- 2 files changed, 18 insertions(+)
+ drivers/spi/spi.c       | 23 +++++------------------
+ include/linux/spi/spi.h | 26 ++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 308e4c2114d8..d7e046128b3f 100644
+index 24369e437c6b..308e4c2114d8 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1520,6 +1520,22 @@ static int spi_controller_initialize_queue(struct spi_controller *ctlr)
- 	return ret;
+@@ -740,9 +740,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
  }
  
-+/**
-+ * spi_flush_queue - Send all pending messages in the queue from the callers'
-+ *		     context
-+ * @ctlr: controller to process queue for
-+ *
-+ * This should be used when one wants to ensure all pending messages have been
-+ * sent before doing something. Is used by the spi-mem code to make sure SPI
-+ * memory operations do not preempt regular SPI transfers that have been queued
-+ * before the spi-mem operation.
-+ */
-+void spi_flush_queue(struct spi_controller *ctlr)
-+{
-+	if (ctlr->transfer == spi_queued_transfer)
-+		__spi_pump_messages(ctlr, false);
-+}
-+
- /*-------------------------------------------------------------------------*/
+ #ifdef CONFIG_HAS_DMA
+-static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+-		       struct sg_table *sgt, void *buf, size_t len,
+-		       enum dma_data_direction dir)
++int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++		struct sg_table *sgt, void *buf, size_t len,
++		enum dma_data_direction dir)
+ {
+ 	const bool vmalloced_buf = is_vmalloc_addr(buf);
+ 	unsigned int max_seg_size = dma_get_max_seg_size(dev);
+@@ -821,8 +821,8 @@ static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+ 	return 0;
+ }
  
- #if defined(CONFIG_OF)
+-static void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
+-			  struct sg_table *sgt, enum dma_data_direction dir)
++void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir)
+ {
+ 	if (sgt->orig_nents) {
+ 		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
+@@ -907,19 +907,6 @@ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	return 0;
+ }
+ #else /* !CONFIG_HAS_DMA */
+-static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+-			      struct sg_table *sgt, void *buf, size_t len,
+-			      enum dma_data_direction dir)
+-{
+-	return -EINVAL;
+-}
+-
+-static inline void spi_unmap_buf(struct spi_controller *ctlr,
+-				 struct device *dev, struct sg_table *sgt,
+-				 enum dma_data_direction dir)
+-{
+-}
+-
+ static inline int __spi_map_msg(struct spi_controller *ctlr,
+ 				struct spi_message *msg)
+ {
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index de6fd95a61c5..3489fc9c0410 100644
+index bc6bb325d1bf..de6fd95a61c5 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -619,6 +619,8 @@ extern int spi_controller_resume(struct spi_controller *ctlr);
-  * Helpers needed by the spi-mem logic. Should not be used outside of
-  * spi-mem.c
-  */
-+void spi_flush_queue(struct spi_controller *ctrl);
+@@ -16,6 +16,7 @@
+ #define __LINUX_SPI_H
+ 
+ #include <linux/device.h>
++#include <linux/dma-direction.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
+@@ -614,6 +615,31 @@ static inline bool spi_controller_is_slave(struct spi_controller *ctlr)
+ extern int spi_controller_suspend(struct spi_controller *ctlr);
+ extern int spi_controller_resume(struct spi_controller *ctlr);
+ 
++/*
++ * Helpers needed by the spi-mem logic. Should not be used outside of
++ * spi-mem.c
++ */
++#ifdef CONFIG_HAS_DMA
++int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++		struct sg_table *sgt, void *buf, size_t len,
++		enum dma_data_direction dir);
++void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir);
++#else /* !CONFIG_HAS_DMA */
++static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++			      struct sg_table *sgt, void *buf, size_t len,
++			      enum dma_data_direction dir)
++{
++	return -EINVAL;
++}
 +
- #ifdef CONFIG_HAS_DMA
- int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
- 		struct sg_table *sgt, void *buf, size_t len,
++static inline void spi_unmap_buf(struct spi_controller *ctlr,
++				 struct device *dev, struct sg_table *sgt,
++				 enum dma_data_direction dir)
++{
++}
++#endif /* CONFIG_HAS_DMA */
++
+ /* Calls the driver make to interact with the message queue */
+ extern struct spi_message *spi_get_next_queued_message(struct spi_controller *ctlr);
+ extern void spi_finalize_current_message(struct spi_controller *ctlr);
 -- 
 2.14.1
 

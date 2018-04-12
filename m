@@ -1,27 +1,27 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 07/10] spi: bcm53xx: Implement the spi_mem interface
-Date: Thu, 12 Apr 2018 15:09:52 +0200
-Message-ID: <20180412150952.57a525ee@bbrezillon>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v2 04/10] spi: Extend the core to ease integration of SPI
+ memory controllers
+Date: Thu, 12 Apr 2018 20:08:28 +0530
+Message-ID: <60f3d53a-9668-9e1c-9f29-45aaf4004630@ti.com>
 References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
- <20180410224439.9260-8-boris.brezillon@bootlin.com>
+ <20180410224439.9260-5-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>,
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
  Maxime Chevallier <maxime.chevallier@bootlin.com>,
  Peter Pan <peterpansjtu@gmail.com>,
  Frieder Schrempf <frieder.schrempf@exceet.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJl?= =?UTF-8?B?Y2tp?= <rafal@milecki.pl>,
- Sourav Poddar <sourav.poddar@ti.com>
-To: David Woodhouse <dwmw2@infradead.org>, Brian Norris
- <computersforpeace@gmail.com>, Boris Brezillon
- <boris.brezillon@bootlin.com>, Marek Vasut <marek.vasut@gmail.com>, Richard
- Weinberger <richard@nod.at>, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+To: Boris Brezillon <boris.brezillon@bootlin.com>, David Woodhouse
+ <dwmw2@infradead.org>, Brian Norris <computersforpeace@gmail.com>, Marek
+ Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>, Cyrille
+ Pitchen <cyrille.pitchen@wedev4u.fr>, <linux-mtd@lists.infradead.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-8-boris.brezillon@bootlin.com>
+In-Reply-To: <20180410224439.9260-5-boris.brezillon@bootlin.com>
+Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -33,102 +33,93 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 11 Apr 2018 00:44:36 +0200
-Boris Brezillon <boris.brezillon@bootlin.com> wrote:
 
-> The spi_mem interface is meant to replace the spi_flash_read() one.
-> Implement the ->exec_op() method so that we can smoothly get rid of the
-> old interface.
+Hi,
+
+- Sourav Poddar <sourav.poddar@ti.com> mail ID no longer valid.
+
+On Wednesday 11 April 2018 04:14 AM, Boris Brezillon wrote:
+> Some controllers are exposing high-level interfaces to access various
+> kind of SPI memories. Unfortunately they do not fit in the current
+> spi_controller model and usually have drivers placed in
+> drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
+> memories in general.
 > 
-> Note that the current ->flash_read() implementation looks a bit fragile
-> since it does not take the ->read_opcode passed by the spi-nor layer
-> into account, which means if might not work with all kind of NORs.
-> 
-> Anyway, I left the logic unchanged and added a few extra checks to make
-> sure we're receiving something that looks like a NOR read operation.
+> This is an attempt at defining a SPI memory interface which works for
+> all kinds of SPI memories (NORs, NANDs, SRAMs).
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 > ---
-> Changes in v2:
-> - include spi-mem.h
-> - treat op->addr.val differently since it's now an u64
-> ---
->  drivers/spi/spi-bcm2835.c |  1 +
->  drivers/spi/spi-bcm53xx.c | 36 +++++++++++++++++++++++++++++++++++-
->  2 files changed, 36 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> index f35cc10772f6..41ed371eaf15 100644
-> --- a/drivers/spi/spi-bcm2835.c
-> +++ b/drivers/spi/spi-bcm2835.c
-> @@ -37,6 +37,7 @@
->  #include <linux/of_gpio.h>
->  #include <linux/of_irq.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/spi/spi-mem.h>
 
-Oops, I didn't modify the appropriate file. This line should be added
-in drivers/spi/spi-bcm53xx.c. I'll fix that in the next version.
+[...]
 
->  
->  /* SPI register offsets */
->  #define BCM2835_SPI_CS			0x00
-> diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-> index d02ceb7a29d1..016059d3160b 100644
-> --- a/drivers/spi/spi-bcm53xx.c
-> +++ b/drivers/spi/spi-bcm53xx.c
-> @@ -257,6 +257,38 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
->  	return 0;
->  }
->  
-> +static int bcm53xxspi_exec_mem_op(struct spi_mem *mem,
-> +				  const struct spi_mem_op *op)
-> +{
-> +	struct bcm53xxspi *b53spi = spi_master_get_devdata(mem->spi->master);
-> +	u32 from;
+> +/**
+> + * struct spi_mem_op - describes a SPI memory operation
+> + * @cmd.buswidth: number of IO lines used to transmit the command
+> + * @cmd.opcode: operation opcode
+> + * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+> + *		 does not need to send an address
+> + * @addr.buswidth: number of IO lines used to transmit the address cycles
+> + * @addr.val: address value. This value is always sent MSB first on the bus.
+> + *	      Note that only @addr.nbytes are taken into account in this
+> + *	      address value, so users should make sure the value fits in the
+> + *	      assigned number of bytes.
+> + * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
+> + *		  be zero if the operation does not require dummy bytes
+> + * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
+> + * @data.buswidth: number of IO lanes used to send/receive the data
+> + * @data.dir: direction of the transfer
+> + * @data.buf.in: input buffer
+> + * @data.buf.out: output buffer
+> + */
+> +struct spi_mem_op {
+> +	struct {
+> +		u8 buswidth;
+> +		u8 opcode;
+> +	} cmd;
 > +
-> +	/*
-> +	 * FIXME: There's nothing in this driver programming the opcode and
-> +	 * buswidth to be used when a read is done on the mmio window, but it
-> +	 * seems to be used to access a SPI NOR device, so restrict access
-> +	 * access to SPINOR_OP_READ commands.
-> +	 */
-> +	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
-> +	    op->addr.nbytes != 3 || op->cmd.opcode != 0x3)
-> +		return -ENOTSUPP;
+> +	struct {
+> +		u8 nbytes;
+> +		u8 buswidth;
+> +		u64 val;
+
+You could consider using loff_t here and be consistent with
+spi_nor_read/write() API as well as mtd->_read().
+
+> +	} addr;
 > +
-> +	/* Return -ENOTSUPP so that the core can fall back to normal reads. */
-> +	from = op->addr.val;
-> +	if (from + op->data.nbytes > BCM53XXSPI_FLASH_WINDOW)
-> +		return -ENOTSUPP;
+> +	struct {
+> +		u8 nbytes;
+> +		u8 buswidth;
+> +	} dummy;
 > +
-> +	bcm53xxspi_enable_bspi(b53spi);
-> +	memcpy_fromio(op->data.buf.in, b53spi->mmio_base + from,
-> +		      op->data.nbytes);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct spi_controller_mem_ops bcm53xxspi_mem_ops = {
-> +	.exec_op = bcm53xxspi_exec_mem_op,
+> +	struct {
+> +		u8 buswidth;
+> +		enum spi_mem_data_dir dir;
+> +		unsigned int nbytes;
+> +		/* buf.{in,out} must be DMA-able. */
+> +		union {
+> +			void *in;
+> +			const void *out;
+> +		} buf;
+> +	} data;
 > +};
 > +
->  static int bcm53xxspi_flash_read(struct spi_device *spi,
->  				 struct spi_flash_read_message *msg)
->  {
-> @@ -311,8 +343,10 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
->  
->  	master->dev.of_node = dev->of_node;
->  	master->transfer_one = bcm53xxspi_transfer_one;
-> -	if (b53spi->mmio_base)
-> +	if (b53spi->mmio_base) {
-> +		master->mem_ops = &bcm53xxspi_mem_ops;
->  		master->spi_flash_read = bcm53xxspi_flash_read;
-> +	}
->  
->  	bcma_set_drvdata(core, b53spi);
->  
 
+Some flash devices support Dual/Quad DDR (Double Data Rate) mode and the
+SPI controller driver would need to know this information. We will need
+to add a field for that.
+
+Currently, there are drivers under mtd/spi-nor/ that need to know
+page/sector/total size of flash memory(info available in
+-`struct spi_nor). We would need a way to provide this info to spi_mem
+drivers, if we ever plan to move drivers under mtd/spi-nor to spi/
+
+
+[...]
+-- 
+Regards
+Vignesh
 
 ______________________________________________________
 Linux MTD discussion mailing list

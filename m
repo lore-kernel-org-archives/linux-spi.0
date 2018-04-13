@@ -1,20 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-topcliff-pch: Replace GFP_ATOMIC with GFP_KERNEL in pch_spi_handle_dma" to the spi tree
-Date: Fri, 13 Apr 2018 11:57:44 +0100
-Message-ID: <E1f6wOm-0007OQ-1a@debutante>
-References: <1523351176-29741-1-git-send-email-baijiaju1990@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: imx: Update MODULE_DESCRIPTION to "SPI Controller driver"" to the spi tree
+Date: Fri, 13 Apr 2018 12:25:27 +0100
+Message-ID: <E1f6wpb-0000S3-3O@debutante>
+References: <1523523488-22034-1-git-send-email-wdjjwb@163.com>
+Cc: wangbo <wang.bo116@zte.com.cn>, Mark Brown <broonie@kernel.org>,
+        linux-kernel@vger.kernel.org, broonie@kernel.org,
+        linux-spi@vger.kernel.org, wang.bo116@zte.com.cn,
         linux-spi@vger.kernel.org
-To: Jia-Ju Bai <baijiaju1990@gmail.com>
+To: wangbo <wdjjwb@163.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1523351176-29741-1-git-send-email-baijiaju1990@gmail.com>
+In-Reply-To: <1523523488-22034-1-git-send-email-wdjjwb@163.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-topcliff-pch: Replace GFP_ATOMIC with GFP_KERNEL in pch_spi_handle_dma
+   spi: imx: Update MODULE_DESCRIPTION to "SPI Controller driver"
 
 has been applied to the spi tree at
 
@@ -39,53 +40,33 @@ to this mail.
 Thanks,
 Mark
 
->From d16cd3eb8e5c62cd349987f57e3511b59cbe0198 Mon Sep 17 00:00:00 2001
-From: Jia-Ju Bai <baijiaju1990@gmail.com>
-Date: Tue, 10 Apr 2018 17:06:16 +0800
-Subject: [PATCH] spi: spi-topcliff-pch: Replace GFP_ATOMIC with GFP_KERNEL in
- pch_spi_handle_dma
+>From af82800cd2d9cfcae2de1b47a35c26c147b9cdd1 Mon Sep 17 00:00:00 2001
+From: wangbo <wdjjwb@163.com>
+Date: Thu, 12 Apr 2018 16:58:08 +0800
+Subject: [PATCH] spi: imx: Update MODULE_DESCRIPTION to "SPI Controller
+ driver"
 
-pch_spi_handle_dma() is never called in atomic context.
-This function is only called by pch_spi_process_messages().
-pch_spi_process_messages() is only set as a parameter of INIT_WORK() in
-pch_spi_pd_probe().
+Now i.MX SPI controller can work in Slave mode.
+Update MODULE_DESCRIPTION to "SPI Controller driver".
 
-Despite never getting called from atomic context,
-pch_spi_handle_dma() calls kcalloc() with GFP_ATOMIC,
-which does not sleep for allocation.
-GFP_ATOMIC is not necessary and can be replaced with GFP_KERNEL,
-which can sleep and improve the possibility of sucessful allocation.
-
-This is found by a static analysis tool named DCNS written by myself.
-And I also manually check it.
-
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Signed-off-by: wangbo <wang.bo116@zte.com.cn>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 97d137591b18..dc93ca9e001c 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1007,7 +1007,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	spin_unlock_irqrestore(&data->lock, flags);
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 6f57592a7f95..a056ee88a960 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1701,7 +1701,7 @@ static struct platform_driver spi_imx_driver = {
+ };
+ module_platform_driver(spi_imx_driver);
  
- 	/* RX */
--	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
-+	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_KERNEL);
- 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
-@@ -1067,7 +1067,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 		head = 0;
- 	}
- 
--	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
-+	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_KERNEL);
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_tx_p;
+-MODULE_DESCRIPTION("SPI Master Controller driver");
++MODULE_DESCRIPTION("SPI Controller driver");
+ MODULE_AUTHOR("Sascha Hauer, Pengutronix");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:" DRIVER_NAME);
 -- 
 2.17.0

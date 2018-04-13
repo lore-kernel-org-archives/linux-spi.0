@@ -1,69 +1,50 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [PATCH 2/3] dt-bindings: add binding for at91-usart in spi mode
-Date: Fri, 13 Apr 2018 20:12:51 +0200
-Message-ID: <20180413181251.GG22187@piout.net>
-References: <20180413161117.20274-1-radu.pirea@microchip.com>
- <20180413161117.20274-3-radu.pirea@microchip.com>
- <20180413162327.GE22187@piout.net>
- <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Radu Pirea <radu.pirea@microchip.com>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-To: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH] spi: meson-axg: Fix error handling in meson_spicc_probe()
+Date: Sat, 14 Apr 2018 00:39:46 +0300
+Message-ID: <1523655586-4163-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org
+To: Mark Brown <broonie@kernel.org>, Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 13/04/2018 19:12:54+0200, Nicolas Ferre wrote:
-> > > diff --git a/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt b/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
-> > > new file mode 100644
-> > > index 000000000000..92d33ccdffae
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
-> > > @@ -0,0 +1,24 @@
-> > > +* Universal Synchronous Asynchronous Receiver/Transmitter (USART) in SPI mode
-> > > +
-> > > +Required properties:
-> > > +- #size-cells      : Must be <0>
-> > > +- #address-cells   : Must be <1>
-> > > +- compatible: Should be "microchip,at91sam9g45-usart-spi" or "microchip,sama5d2-usart-spi"
-> > > +- reg: Should contain registers location and length
-> > > +- interrupts: Should contain interrupt
-> > > +- clocks: phandles to input clocks.
-> > > +- clock-names: tuple listing input clock names.
-> > > +	Required elements: "usart"
-> > > +- cs-gpios: chipselects (internal cs not supported)
-> > > +
-> > > +Example:
-> > > +	spi0: spi@f001c000 {
-> > > +		#address-cells = <1>;
-> > > +		#size-cells = <0>;
-> > > +		compatible = "microchip,sama5d2-usart-spi", "microchip,at91sam9g45-usart-spi";
-> > 
-> > I'm pretty sure this will be considered configuration rather than
-> > hardware description. Why don't you do something like the flexcom mode
-> > selection?
-> 
-> Because we are not in the same situation as having a glue layer that would
-> select one of the already existing peripherals with associated drivers
-> above.
-> This layout of the hardware is completely different from the USART one and
-> it seems to makes sense to address it with a different hardware description
-> and so a different compatible string.
-> 
+If devm_spi_register_master() fails in meson_spicc_probe(),
+spicc->core is left undisabled. The patch fixes that.
 
-But then, you can end up with two drivers trying to use the same IP
-because nothing prevents you from writing a DT with both a usart and an
-spi node enabled for the same IP. request_mem_region() will not help
-here because then the working driver will depend on the probing order.
+Found by Linux Driver Verification project (linuxtesting.org).
 
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+ drivers/spi/spi-meson-spicc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 5c82910e3480..7fe4488ace57 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -574,10 +574,15 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 		master->max_speed_hz = rate >> 2;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+-	if (!ret)
+-		return 0;
++	if (ret) {
++		dev_err(&pdev->dev, "spi master registration failed\n");
++		goto out_clk;
++	}
+ 
+-	dev_err(&pdev->dev, "spi master registration failed\n");
++	return 0;
++
++out_clk:
++	clk_disable_unprepare(spicc->core);
+ 
+ out_master:
+ 	spi_master_put(master);
 -- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.7.4

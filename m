@@ -1,126 +1,69 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Check presence the of ->transfer[_xxx]() before
- registering a controller" to the spi tree
-Date: Mon, 16 Apr 2018 13:13:24 +0100
-Message-ID: <E1f830e-0001Lz-Vf@debutante>
-References: <20180410224439.9260-2-boris.brezillon@bootlin.com>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH 2/6] spi: spi-s3c64xx: Remove unused s3c64xx_spi_hwinit()
+ function argument
+Date: Mon, 16 Apr 2018 17:40:17 +0200
+Message-ID: <20180416154021.25626-2-s.nawrocki@samsung.com>
+References: <20180416154021.25626-1-s.nawrocki@samsung.com>
+ <CGME20180416154109epcas2p1696b9cdc72403fe5abdd0a2117067c8d@epcas2p1.samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
- Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-2-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, b.zolnierkie@samsung.com,
+ krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
+ linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+To: broonie@kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-reply-to: <20180416154021.25626-1-s.nawrocki@samsung.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+The channel argument is not used and anyway it could be retrieved from
+the passed driver data structure.
 
-   spi: Check presence the of ->transfer[_xxx]() before registering a controller
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From bd40560ac3365e3a2d512d0ad03ceb6c7f603c0c Mon Sep 17 00:00:00 2001
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Date: Wed, 11 Apr 2018 00:44:30 +0200
-Subject: [PATCH] spi: Check presence the of ->transfer[_xxx]() before
- registering a controller
-
-Right now, no checks are done on the presence of a ->transfer[_xxx]()
-method, which can lead to a NULL pointer dereference when someone
-starts sending something on the bus.
-
-Do the check at registration time and refuse to add the controller if
-all ->transfer[_xxx]() pointers are NULL.
-
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 ---
- drivers/spi/spi.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 7b213faa0a2b..24369e437c6b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2063,6 +2063,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index f7ca7ed33e1e..b7333a883442 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -889,7 +889,7 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+ 	return IRQ_HANDLED;
  }
- #endif
  
-+static int spi_controller_check_ops(struct spi_controller *ctlr)
-+{
-+	/*
-+	 * The controller must at least implement one of the ->transfer()
-+	 * hooks.
-+	 */
-+	if (!ctlr->transfer && !ctlr->transfer_one &&
-+	    !ctlr->transfer_one_message)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- /**
-  * spi_register_controller - register SPI master or slave controller
-  * @ctlr: initialized master, originally from spi_alloc_master() or
-@@ -2096,6 +2109,14 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (!dev)
- 		return -ENODEV;
+-static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
++static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd)
+ {
+ 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+ 	void __iomem *regs = sdd->regs;
+@@ -1143,7 +1143,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_get_sync(&pdev->dev);
  
-+	/*
-+	 * Make sure all necessary hooks are implemented before registering
-+	 * the SPI controller.
-+	 */
-+	status = spi_controller_check_ops(ctlr);
-+	if (status)
-+		return status;
-+
- 	if (!spi_controller_is_slave(ctlr)) {
- 		status = of_spi_register_master(ctlr);
- 		if (status)
+ 	/* Setup Deufult Mode */
+-	s3c64xx_spi_hwinit(sdd, sdd->port_id);
++	s3c64xx_spi_hwinit(sdd);
+ 
+ 	spin_lock_init(&sdd->lock);
+ 	init_completion(&sdd->xfer_completion);
+@@ -1258,7 +1258,7 @@ static int s3c64xx_spi_resume(struct device *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	s3c64xx_spi_hwinit(sdd, sdd->port_id);
++	s3c64xx_spi_hwinit(sdd);
+ 
+ 	return spi_master_resume(master);
+ }
 -- 
-2.17.0
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+2.14.2

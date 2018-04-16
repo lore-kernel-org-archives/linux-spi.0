@@ -1,50 +1,68 @@
-From: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Subject: [PATCH] spi: meson-axg: Fix error handling in meson_spicc_probe()
-Date: Sat, 14 Apr 2018 00:39:46 +0300
-Message-ID: <1523655586-4163-1-git-send-email-khoroshilov@ispras.ru>
-Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-To: Mark Brown <broonie@kernel.org>, Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] spi: mediatek: Use of_device_get_match_data()
+Date: Mon, 16 Apr 2018 10:33:00 +0800
+Message-ID: <94cba80f703be048666afde1ed53c15c3704c533.1523347340.git.ryder.lee@mediatek.com>
+References: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Leilk Liu <leilk.liu@mediatek.com>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-If devm_spi_register_master() fails in meson_spicc_probe(),
-spicc->core is left undisabled. The patch fixes that.
+The usage of of_device_get_match_data() reduce the code size a bit.
 
-Found by Linux Driver Verification project (linuxtesting.org).
+Also, the only way to call mtk_spi_probe() is to match an entry in
+mtk_spi_of_match[], so of_id cannot be NULL.
 
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/spi/spi-meson-spicc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mt65xx.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 5c82910e3480..7fe4488ace57 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -574,10 +574,15 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 		master->max_speed_hz = rate >> 2;
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 86bf456..3edc183 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -20,6 +20,7 @@
+ #include <linux/ioport.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/platform_data/spi-mt65xx.h>
+@@ -578,7 +579,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct mtk_spi *mdata;
+-	const struct of_device_id *of_id;
+ 	struct resource *res;
+ 	int i, irq, ret;
  
- 	ret = devm_spi_register_master(&pdev->dev, master);
--	if (!ret)
--		return 0;
-+	if (ret) {
-+		dev_err(&pdev->dev, "spi master registration failed\n");
-+		goto out_clk;
-+	}
+@@ -598,15 +598,9 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	master->can_dma = mtk_spi_can_dma;
+ 	master->setup = mtk_spi_setup;
  
--	dev_err(&pdev->dev, "spi master registration failed\n");
-+	return 0;
+-	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
+-	if (!of_id) {
+-		dev_err(&pdev->dev, "failed to probe of_node\n");
+-		ret = -EINVAL;
+-		goto err_put_master;
+-	}
+-
+ 	mdata = spi_master_get_devdata(master);
+-	mdata->dev_comp = of_id->data;
++	mdata->dev_comp = of_device_get_match_data(&pdev->dev);
 +
-+out_clk:
-+	clk_disable_unprepare(spicc->core);
+ 	if (mdata->dev_comp->must_tx)
+ 		master->flags = SPI_MASTER_MUST_TX;
  
- out_master:
- 	spi_master_put(master);
 -- 
-2.7.4
+1.9.1

@@ -1,185 +1,47 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH 6/6] spi: spi-s3c64xx: Allow higher transfer lengths in
- polling IO mode
-Date: Mon, 16 Apr 2018 17:40:21 +0200
-Message-ID: <20180416154021.25626-6-s.nawrocki@samsung.com>
-References: <20180416154021.25626-1-s.nawrocki@samsung.com>
- <CGME20180416154208epcas1p1774dd679e3564be916901a180315943b@epcas1p1.samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in
+ regmap_update_bits calls
+Date: Mon, 16 Apr 2018 17:58:41 +0100
+Message-ID: <20180416165841.GF20726@sirena.org.uk>
+References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
+ <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
- linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
-To: broonie@kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <20180416154021.25626-1-s.nawrocki@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="1Y7d0dPL928TPQbc"
+Cc: vigneshr@ti.com, sourav.poddar@ti.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some variants of the SPI controller have no DMA support, in such case
-SPI transfers longer than the FIFO length are not currently properly
-handled by the driver. Fix it by doing multiple transfers in the
-s3c64xx_spi_transfer_one() function if the SPI transfer length exceeds
-the FIFO size.
 
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
----
- drivers/spi/spi-s3c64xx.c | 108 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 71 insertions(+), 37 deletions(-)
+--1Y7d0dPL928TPQbc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 2723fa6bed8b..b2e8ed354dac 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -349,7 +349,7 @@ static bool s3c64xx_spi_can_dma(struct spi_master *master,
- }
- 
- static void s3c64xx_enable_datapath(struct s3c64xx_spi_driver_data *sdd,
--				    struct spi_transfer *xfer, int dma_mode)
-+				    struct spi_transfer *xfer, bool dma_mode)
- {
- 	void __iomem *regs = sdd->regs;
- 	u32 modecfg, chcfg;
-@@ -634,11 +634,15 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 				    struct spi_transfer *xfer)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-+	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	const void *tx_buf = NULL;
-+	void *rx_buf = NULL;
-+	int target_len = 0, origin_len = 0;
-+	bool use_dma = false;
- 	int status;
- 	u32 speed;
- 	u8 bpw;
- 	unsigned long flags;
--	int use_dma;
- 
- 	reinit_completion(&sdd->xfer_completion);
- 
-@@ -653,48 +657,78 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 		s3c64xx_spi_config(sdd);
- 	}
- 
--	/* Polling method for xfers not bigger than FIFO capacity */
--	use_dma = 0;
--	if (!is_polling(sdd) &&
--	    (sdd->rx_dma.ch && sdd->tx_dma.ch &&
--	     (xfer->len > ((FIFO_LVL_MASK(sdd) >> 1) + 1))))
--		use_dma = 1;
-+	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
-+	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
-+		use_dma = true;
- 
--	spin_lock_irqsave(&sdd->lock, flags);
-+	} else if (is_polling(sdd) && xfer->len > fifo_len) {
-+		tx_buf = xfer->tx_buf;
-+		rx_buf = xfer->rx_buf;
-+		origin_len = xfer->len;
- 
--	/* Pending only which is to be done */
--	sdd->state &= ~RXBUSY;
--	sdd->state &= ~TXBUSY;
-+		target_len = xfer->len;
-+		if (xfer->len > fifo_len)
-+			xfer->len = fifo_len;
-+	}
-+
-+	do {
-+		spin_lock_irqsave(&sdd->lock, flags);
- 
--	s3c64xx_enable_datapath(sdd, xfer, use_dma);
-+		/* Pending only which is to be done */
-+		sdd->state &= ~RXBUSY;
-+		sdd->state &= ~TXBUSY;
- 
--	/* Start the signals */
--	s3c64xx_spi_set_cs(spi, true);
-+		s3c64xx_enable_datapath(sdd, xfer, use_dma);
- 
--	spin_unlock_irqrestore(&sdd->lock, flags);
-+		/* Start the signals */
-+		s3c64xx_spi_set_cs(spi, true);
- 
--	if (use_dma)
--		status = wait_for_dma(sdd, xfer);
--	else
--		status = wait_for_pio(sdd, xfer);
--
--	if (status) {
--		dev_err(&spi->dev, "I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
--			xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
--			(sdd->state & RXBUSY) ? 'f' : 'p',
--			(sdd->state & TXBUSY) ? 'f' : 'p',
--			xfer->len);
--
--		if (use_dma) {
--			if (xfer->tx_buf != NULL
--			    && (sdd->state & TXBUSY))
--				dmaengine_terminate_all(sdd->tx_dma.ch);
--			if (xfer->rx_buf != NULL
--			    && (sdd->state & RXBUSY))
--				dmaengine_terminate_all(sdd->rx_dma.ch);
-+		spin_unlock_irqrestore(&sdd->lock, flags);
-+
-+		if (use_dma)
-+			status = wait_for_dma(sdd, xfer);
-+		else
-+			status = wait_for_pio(sdd, xfer);
-+
-+		if (status) {
-+			dev_err(&spi->dev,
-+				"I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
-+				xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
-+				(sdd->state & RXBUSY) ? 'f' : 'p',
-+				(sdd->state & TXBUSY) ? 'f' : 'p',
-+				xfer->len);
-+
-+			if (use_dma) {
-+				if (xfer->tx_buf && (sdd->state & TXBUSY))
-+					dmaengine_terminate_all(sdd->tx_dma.ch);
-+				if (xfer->rx_buf && (sdd->state & RXBUSY))
-+					dmaengine_terminate_all(sdd->rx_dma.ch);
-+			}
-+		} else {
-+			flush_fifo(sdd);
- 		}
--	} else {
--		flush_fifo(sdd);
-+
-+		if (target_len > 0) {
-+			target_len -= xfer->len;
-+
-+			if (xfer->tx_buf)
-+				xfer->tx_buf += xfer->len;
-+
-+			if (xfer->rx_buf)
-+				xfer->rx_buf += xfer->len;
-+
-+			if (target_len > fifo_len)
-+				xfer->len = fifo_len;
-+			else
-+				xfer->len = target_len;
-+		}
-+	} while (target_len > 0);
-+
-+	if (origin_len) {
-+		/* Restore original xfer buffers and length */
-+		xfer->tx_buf = tx_buf;
-+		xfer->rx_buf = rx_buf;
-+		xfer->len = origin_len;
- 	}
- 
- 	return status;
--- 
-2.14.2
+On Fri, Mar 30, 2018 at 11:41:23AM +0200, Arkadiusz Kwiatkowski wrote:
+> This commit fixes the order of parameters passed to regmap_update_bits
+> function inside spi-ti-qspi driver. Accidentally the code worked
+> correctly when cs=0, but it is not the case for other values.
+
+This doesn't apply against current code, please check and resend.
+
+--1Y7d0dPL928TPQbc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrU1kAACgkQJNaLcl1U
+h9Db+gf8DkztroNNFajgi5uCMec9ZiegpPoY5iv7efHPF3Fil600G6Huxe0SWCl0
+fVBcZzEF/Pv0VpALb2cmKHgTV/adt/MBkOwzc35r7Zj4hpaN7lN+T4cl6CB9iabB
+t2uVMUsFSl+bFzDsJKAZzANAo2WF4EOHoIkRfyWlS68kn7f9qM7+yB4Pua8cWTrR
+isAnXSuutBOuvQkpr2sK0EeKun/B3VXFzdPzly50OPSBul6ovUDEi/4rnwcYix5c
+Pl/ai2xC5lzOFIJvJoyWhvFJ+6gRnYqVjtjycYPJhxp/2hu6r7nUzKPJPHthvsqQ
+jxAg0+d1SngNDXlUCYQKXnFKZue/AA==
+=JmWt
+-----END PGP SIGNATURE-----
+
+--1Y7d0dPL928TPQbc--

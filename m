@@ -1,68 +1,45 @@
-From: Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] spi: mediatek: Use of_device_get_match_data()
-Date: Mon, 16 Apr 2018 10:33:00 +0800
-Message-ID: <94cba80f703be048666afde1ed53c15c3704c533.1523347340.git.ryder.lee@mediatek.com>
-References: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Leilk Liu <leilk.liu@mediatek.com>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
+From: sxauwsk <sxauwsk@163.com>
+Subject: [PATCH] [PATCH v1] spi: cadence: Add usleep_range() for  cdns_spi_fill_tx_fifo()
+Date: Mon, 16 Apr 2018 14:46:40 +0800
+Message-ID: <1523861200-34130-1-git-send-email-sxauwsk@163.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wangshikai@inno-instrument.cn, sxauwsk <sxauwsk@163.com>,
+        guojian <guojian@innoinstrument.net>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The usage of of_device_get_match_data() reduce the code size a bit.
+In case of xspi work in busy condition, may send bytes failed.
+once something wrong, spi controller did't work any more
 
-Also, the only way to call mtk_spi_probe() is to match an entry in
-mtk_spi_of_match[], so of_id cannot be NULL.
+My test found this situation appear in both of read/write process.
+so when TX FIFO is full, add one byte delay before send data;
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: sxauwsk <sxauwsk@163.com>
+Signed-off-by: guojian <guojian@innoinstrument.net>
+Signed-off-by: wangshikai <wangshikai@inno-instrument.cn>
 ---
- drivers/spi/spi-mt65xx.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/spi/spi-cadence.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 86bf456..3edc183 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -20,6 +20,7 @@
- #include <linux/ioport.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/of_gpio.h>
- #include <linux/platform_device.h>
- #include <linux/platform_data/spi-mt65xx.h>
-@@ -578,7 +579,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
- 	struct mtk_spi *mdata;
--	const struct of_device_id *of_id;
- 	struct resource *res;
- 	int i, irq, ret;
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 66ae055..9694042 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -315,9 +315,11 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
+ 	       (xspi->tx_bytes > 0)) {
  
-@@ -598,15 +598,9 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	master->can_dma = mtk_spi_can_dma;
- 	master->setup = mtk_spi_setup;
+ 		/* When xspi in busy condition, bytes may send failed,
+-		 * caused communication failure so add one byte delay
++		 * then spi control did't work thoroughly, add one byte delay
+ 		 */
+-		usleep_range(10, 20);
++		if (cdns_spi_read(xspi, CDNS_SPI_ISR_OFFSET) &
++		    CDNS_SPI_IXR_TXFULL_MASK)
++			usleep_range(10, 20);
  
--	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
--	if (!of_id) {
--		dev_err(&pdev->dev, "failed to probe of_node\n");
--		ret = -EINVAL;
--		goto err_put_master;
--	}
--
- 	mdata = spi_master_get_devdata(master);
--	mdata->dev_comp = of_id->data;
-+	mdata->dev_comp = of_device_get_match_data(&pdev->dev);
-+
- 	if (mdata->dev_comp->must_tx)
- 		master->flags = SPI_MASTER_MUST_TX;
- 
+ 		if (xspi->txbuf)
+ 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
 -- 
-1.9.1
+1.7.9.5

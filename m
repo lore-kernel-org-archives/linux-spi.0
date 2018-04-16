@@ -1,26 +1,26 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 02/10] spi: Expose spi_{map,unmap}_buf() for internal
- use
-Date: Mon, 16 Apr 2018 13:11:27 +0100
-Message-ID: <20180416121127.GC20726@sirena.org.uk>
-References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
- <20180410224439.9260-3-boris.brezillon@bootlin.com>
+Subject: Applied "spi: Check presence the of ->transfer[_xxx]() before
+ registering a controller" to the spi tree
+Date: Mon, 16 Apr 2018 13:13:24 +0100
+Message-ID: <E1f830e-0001Lz-Vf@debutante>
+References: <20180410224439.9260-2-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4397939641288136125=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
  Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
  Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
  Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, linux-mtd@lists.infradead.org,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
  Maxime Chevallier <maxime.chevallier@bootlin.com>,
  Sourav Poddar <sourav.poddar@ti.com>,
  Brian Norris <computersforpeace@gmail.com>,
  David Woodhouse <dwmw2@infradead.org>
 To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-3-boris.brezillon@bootlin.com>
+In-Reply-To: <20180410224439.9260-2-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,61 +32,95 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============4397939641288136125==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DSayHWYpDlRfCAAQ"
-Content-Disposition: inline
+   spi: Check presence the of ->transfer[_xxx]() before registering a controller
 
+has been applied to the spi tree at
 
---DSayHWYpDlRfCAAQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Wed, Apr 11, 2018 at 12:44:31AM +0200, Boris Brezillon wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> 2/ we create a new header (drivers/spi/internals.h?) for all
->    definitions that are meant for internal use (shared between spi.c
->    and spi-mem.c)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> I personally prefer #2 as it provides a better separation between spi
-> and spi-mem code.
-> ---
->  drivers/spi/spi.c       | 23 +++++------------------
->  include/linux/spi/spi.h | 26 ++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+), 18 deletions(-)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-I prefer that too (if you prefer it you should go with it so it's the
-option on the table!).  I'd go with drivers/spi/internals.h though so
-that it's even more obvious if something is being silly trying to use
-it when they shouldn't.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---DSayHWYpDlRfCAAQ
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From bd40560ac3365e3a2d512d0ad03ceb6c7f603c0c Mon Sep 17 00:00:00 2001
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Date: Wed, 11 Apr 2018 00:44:30 +0200
+Subject: [PATCH] spi: Check presence the of ->transfer[_xxx]() before
+ registering a controller
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrUku4ACgkQJNaLcl1U
-h9CJ5wgAgpUXA9I2SZRq2krUOla6ygDObJY6loIIg/CrJLASzhi6JC/ZqI3me5mR
-OMrmmZXyLTN5Ri7SZaBvivDbBJ3D4JnguhE9Smz4kw9EGfE75K64mcA2iVMIZ9aj
-cudXzuTFUXUWLJ/MEUIA5L9ZTyi2nthn8srO2Ef2GPLBwtbYeqwqJnmXrJBhDK3Z
-jAKS3p3PZgeDzHGEArpxTj64eVbtr07NixAQXu1eNq5udVWYTqpA0Fj+udghxWAk
-+c8fOrLqZspda8EpKktwgHOTyFJOnVhX+9pgid8nfkVWTUce1aUe5iC0ILJSZ77N
-nNuHPLUYuiXroKwyC464boDxIyBzmg==
-=Utjc
------END PGP SIGNATURE-----
+Right now, no checks are done on the presence of a ->transfer[_xxx]()
+method, which can lead to a NULL pointer dereference when someone
+starts sending something on the bus.
 
---DSayHWYpDlRfCAAQ--
+Do the check at registration time and refuse to add the controller if
+all ->transfer[_xxx]() pointers are NULL.
 
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---===============4397939641288136125==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 7b213faa0a2b..24369e437c6b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2063,6 +2063,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
+ }
+ #endif
+ 
++static int spi_controller_check_ops(struct spi_controller *ctlr)
++{
++	/*
++	 * The controller must at least implement one of the ->transfer()
++	 * hooks.
++	 */
++	if (!ctlr->transfer && !ctlr->transfer_one &&
++	    !ctlr->transfer_one_message)
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * spi_register_controller - register SPI master or slave controller
+  * @ctlr: initialized master, originally from spi_alloc_master() or
+@@ -2096,6 +2109,14 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	/*
++	 * Make sure all necessary hooks are implemented before registering
++	 * the SPI controller.
++	 */
++	status = spi_controller_check_ops(ctlr);
++	if (status)
++		return status;
++
+ 	if (!spi_controller_is_slave(ctlr)) {
+ 		status = of_spi_register_master(ctlr);
+ 		if (status)
+-- 
+2.17.0
+
 
 ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============4397939641288136125==--

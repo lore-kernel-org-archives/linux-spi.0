@@ -1,42 +1,43 @@
-From: kbuild test robot <lkp@intel.com>
-Subject: [spi:for-4.18 12/12] drivers/spi/spi-pxa2xx.c:914:5: sparse: symbol
- 'pxa2xx_spi_transfer_one' was not declared. Should it be static?
-Date: Wed, 18 Apr 2018 03:53:23 +0800
-Message-ID: <201804180300.Pn9JAJQ2%fengguang.wu@intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: kbuild-all@01.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: sxauwsk <sxauwsk@163.com>
+Subject: [PATCH] spi: cadence: Add usleep_range() for cdns_spi_fill_tx_fifo()
+Date: Tue, 17 Apr 2018 04:01:27 +0800
+Message-ID: <1523908887-48616-1-git-send-email-sxauwsk@163.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sxauwsk <sxauwsk@163.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-4.18
-head:   d5898e19c0d74cd41b9f5c8c8ea87e559c3fe0c1
-commit: d5898e19c0d74cd41b9f5c8c8ea87e559c3fe0c1 [12/12] spi: pxa2xx: Use core message processing loop
-reproduce:
-        # apt-get install sparse
-        git checkout d5898e19c0d74cd41b9f5c8c8ea87e559c3fe0c1
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF=-D__CHECK_ENDIAN__
+In case of xspi work in busy condition, may send bytes failed.
+once something wrong, spi controller did't work any more
 
+My test found this situation appear in both of read/write process.
+so when TX FIFO is full, add one byte delay before send data;
 
-sparse warnings: (new ones prefixed by >>)
-
-   drivers/spi/spi-pxa2xx.c:877:16: sparse: expression using sizeof(void)
-   drivers/spi/spi-pxa2xx.c:877:16: sparse: expression using sizeof(void)
->> drivers/spi/spi-pxa2xx.c:914:5: sparse: symbol 'pxa2xx_spi_transfer_one' was not declared. Should it be static?
-   drivers/spi/spi-pxa2xx.c:1672:42: sparse: expression using sizeof(void)
-   drivers/spi/spi-pxa2xx.c:1672:42: sparse: expression using sizeof(void)
-
-Please review and possibly fold the followup patch.
-
+Signed-off-by: sxauwsk <sxauwsk@163.com>
 ---
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+ drivers/spi/spi-cadence.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 5c9516a..4a00163 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -313,6 +313,14 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
+
+ 	while ((trans_cnt < CDNS_SPI_FIFO_DEPTH) &&
+ 	       (xspi->tx_bytes > 0)) {
++
++		/* When xspi in busy condition, bytes may send failed,
++		 * then spi control did't work thoroughly, add one byte delay
++		 */
++		if (cdns_spi_read(xspi, CDNS_SPI_ISR) &
++		    CDNS_SPI_IXR_TXFULL)
++			usleep_range(10, 20);
++
+ 		if (xspi->txbuf)
+ 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
+ 		else
+--
+1.7.9.5

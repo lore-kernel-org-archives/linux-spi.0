@@ -1,93 +1,62 @@
-From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH v2 04/10] spi: Extend the core to ease integration of SPI
- memory controllers
-Date: Mon, 16 Apr 2018 12:33:54 +0200
-Message-ID: <31229922-5bc4-99ce-5373-452d27a20ade@exceet.de>
-References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
- <20180410224439.9260-5-boris.brezillon@bootlin.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] [PATCH v1] spi: cadence: Add usleep_range() for
+ cdns_spi_fill_tx_fifo()
+Date: Mon, 16 Apr 2018 12:57:11 +0100
+Message-ID: <20180416115711.GB20726@sirena.org.uk>
+References: <1523861200-34130-1-git-send-email-sxauwsk@163.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Peter Pan <peterpansjtu@gmail.com>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Sourav Poddar <sourav.poddar@ti.com>
-To: Boris Brezillon <boris.brezillon@bootlin.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Brian Norris <computersforpeace@gmail.com>,
- Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>, linux-mtd@lists.infradead.org,
- Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-5-boris.brezillon@bootlin.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rS8CxjVDS/+yyDmU"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wangshikai@inno-instrument.cn, guojian <guojian@innoinstrument.net>
+To: sxauwsk <sxauwsk@163.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1523861200-34130-1-git-send-email-sxauwsk@163.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
 
-On 11.04.2018 00:44, Boris Brezillon wrote:
-> Some controllers are exposing high-level interfaces to access various
-> kind of SPI memories. Unfortunately they do not fit in the current
-> spi_controller model and usually have drivers placed in
-> drivers/mtd/spi-nor which are only supporting SPI NORs and not SPI
-> memories in general.
-> 
-> This is an attempt at defining a SPI memory interface which works for
-> all kinds of SPI memories (NORs, NANDs, SRAMs).
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> ---
+--rS8CxjVDS/+yyDmU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+On Mon, Apr 16, 2018 at 02:46:40PM +0800, sxauwsk wrote:
+> In case of xspi work in busy condition, may send bytes failed.
+> once something wrong, spi controller did't work any more
+>=20
+> My test found this situation appear in both of read/write process.
+> so when TX FIFO is full, add one byte delay before send data;
 
-> +
-> +/**
-> + * spi_mem_supports_op() - Check if a memory device and the controller it is
-> + *			   connected to support a specific memory operation
-> + * @mem: the SPI memory
-> + * @op: the memory operation to check
-> + *
-> + * Some controllers are only supporting Single or Dual IOs, others might only
-> + * support specific opcodes, or it can even be that the controller and device
-> + * both support Quad IOs but the hardware prevents you from using it because
-> + * only 2 IO lines are connected.
-> + *
-> + * This function checks whether a specific operation is supported.
-> + *
-> + * Return: true if @op is supported, false otherwise.
-> + */
-> +bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> +{
-> +	struct spi_controller *ctlr = mem->spi->controller;
-> +
-> +	if (ctlr->mem_ops->supports_op)
+This looks sensible but doesn't seem to apply against current code,
+please check and resend. =20
 
-this misses a null check for mem_ops:
-	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
+>  		/* When xspi in busy condition, bytes may send failed,
+> -		 * caused communication failure so add one byte delay
+> +		 * then spi control did't work thoroughly, add one byte delay
+>  		 */
+> -		usleep_range(10, 20);
+> +		if (cdns_spi_read(xspi, CDNS_SPI_ISR_OFFSET) &
+> +		    CDNS_SPI_IXR_TXFULL_MASK)
+> +			usleep_range(10, 20);
 
-> +		return ctlr->mem_ops->supports_op(mem, op);
-> +
-> +	return spi_mem_default_supports_op(mem, op);
-> +}
+It looks like this may have been sent based on a previous version of
+your patch, not against the driver as it is now.
 
-[...]
+--rS8CxjVDS/+yyDmU
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
+-----BEGIN PGP SIGNATURE-----
 
-Frieder
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrUj5YACgkQJNaLcl1U
+h9CmDQf+N6GcIexi7BGApL0D9gLTDtT9RN2GdqrVoVokQLKXnP58D1THElEO/nfV
+vbUnVrKZqPqKGS6eWFyjNbmyOlsLvWCt8OR7vfEfmLONJdLqCgJPJewg6tf+48Dt
+PC6amPDgbvRcFADPym0kNHf5d0sZm9XdKrTP4FtoCrr97QP3gfByzEkCIZ4n1K/H
+aiAu81QYajQoD9PkxUadB8nLiFL5HpIWW6DzmIEVlsdx0CPX1fbryYZBtSc7rhNV
+XkBwEU5Gw3cVEyFN1WPvjbQidp65sV+9phdVLEQfoARA4ouIUe6E7GVto72xgUMJ
+NNHsecrT2KcN+OfGio+PMSvRQzKBGw==
+=xFe2
+-----END PGP SIGNATURE-----
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+--rS8CxjVDS/+yyDmU--

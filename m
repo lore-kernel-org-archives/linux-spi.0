@@ -1,47 +1,77 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/2] spi: spi-ti-qspi: Fix parameters order in
- regmap_update_bits calls
-Date: Mon, 16 Apr 2018 17:58:41 +0100
-Message-ID: <20180416165841.GF20726@sirena.org.uk>
-References: <496c162d-5e3c-e008-a14b-6b990e253e64@ti.com>
- <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1Y7d0dPL928TPQbc"
-Cc: vigneshr@ti.com, sourav.poddar@ti.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Arkadiusz Kwiatkowski <arkadiusz.kwiatkowski@aptiv.com>
+Subject: Applied "spi: stm32: Fix error handling in stm32_spi_probe()" to the spi tree
+Date: Mon, 16 Apr 2018 18:16:12 +0100
+Message-ID: <E1f87jg-000397-5U@debutante>
+References: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org,
+        linux-spi@vger.kernel.org
+To: Alexey Khoroshilov <khoroshilov@ispras.ru>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1522402884-26790-1-git-send-email-arkadiusz.kwiatkowski@aptiv.com>
+In-Reply-To: <1522439684-7510-1-git-send-email-khoroshilov@ispras.ru>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---1Y7d0dPL928TPQbc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: stm32: Fix error handling in stm32_spi_probe()
 
-On Fri, Mar 30, 2018 at 11:41:23AM +0200, Arkadiusz Kwiatkowski wrote:
-> This commit fixes the order of parameters passed to regmap_update_bits
-> function inside spi-ti-qspi driver. Accidentally the code worked
-> correctly when cs=0, but it is not the case for other values.
+has been applied to the spi tree at
 
-This doesn't apply against current code, please check and resend.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---1Y7d0dPL928TPQbc
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrU1kAACgkQJNaLcl1U
-h9Db+gf8DkztroNNFajgi5uCMec9ZiegpPoY5iv7efHPF3Fil600G6Huxe0SWCl0
-fVBcZzEF/Pv0VpALb2cmKHgTV/adt/MBkOwzc35r7Zj4hpaN7lN+T4cl6CB9iabB
-t2uVMUsFSl+bFzDsJKAZzANAo2WF4EOHoIkRfyWlS68kn7f9qM7+yB4Pua8cWTrR
-isAnXSuutBOuvQkpr2sK0EeKun/B3VXFzdPzly50OPSBul6ovUDEi/4rnwcYix5c
-Pl/ai2xC5lzOFIJvJoyWhvFJ+6gRnYqVjtjycYPJhxp/2hu6r7nUzKPJPHthvsqQ
-jxAg0+d1SngNDXlUCYQKXnFKZue/AA==
-=JmWt
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---1Y7d0dPL928TPQbc--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 05799ddf74f642911d27514227b89392ba02b26f Mon Sep 17 00:00:00 2001
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Date: Fri, 30 Mar 2018 22:54:44 +0300
+Subject: [PATCH] spi: stm32: Fix error handling in stm32_spi_probe()
+
+clk_get_rate() is below clk_prepare_enable(), so
+its error should lead to goto err_clk_disable, not to err_master_put.
+
+Found by Linux Driver Verification project (linuxtesting.org).
+
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@st.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index ba9743fa2326..ad1e55d3d5d5 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1129,7 +1129,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	if (!spi->clk_rate) {
+ 		dev_err(&pdev->dev, "clk rate = 0\n");
+ 		ret = -EINVAL;
+-		goto err_master_put;
++		goto err_clk_disable;
+ 	}
+ 
+ 	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-- 
+2.17.0

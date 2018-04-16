@@ -1,10 +1,11 @@
 From: andi@etezian.org
-Subject: Re: [PATCH 1/6] spi: spi-s3c64xx: Remove unused driver data structure
- tgl_spi field
-Date: Tue, 17 Apr 2018 04:04:00 +0900
-Message-ID: <3f84e28e946d13afe44fcbebf32cb267@etezian.org>
-References: <CGME20180416154055epcas2p4c08bb2254e79368a29eb481cddc59855@epcas2p4.samsung.com>
- <20180416154021.25626-1-s.nawrocki@samsung.com>
+Subject: Re: [PATCH 2/6] spi: spi-s3c64xx: Remove unused s3c64xx_spi_hwinit()
+ function argument
+Date: Tue, 17 Apr 2018 04:06:31 +0900
+Message-ID: <d4ccf19bd88c45c50f4026d6e08951c7@etezian.org>
+References: <20180416154021.25626-1-s.nawrocki@samsung.com>
+ <CGME20180416154109epcas2p1696b9cdc72403fe5abdd0a2117067c8d@epcas2p1.samsung.com>
+ <20180416154021.25626-2-s.nawrocki@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
@@ -14,7 +15,7 @@ Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
  m.szyprowski@samsung.com
 To: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180416154021.25626-1-s.nawrocki@samsung.com>
+In-Reply-To: <20180416154021.25626-2-s.nawrocki@samsung.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,7 +30,8 @@ List-Id: linux-spi.vger.kernel.org
 Hi Sylwester,
 
 On 17.04.2018 00:40, Sylwester Nawrocki wrote:
-> The tgl_spi pointer is now unused so remove it.
+> The channel argument is not used and anyway it could be retrieved from
+> the passed driver data structure.
 > 
 > Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 

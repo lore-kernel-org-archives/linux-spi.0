@@ -1,62 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] dt-bindings: add binding for at91-usart in spi mode
-Date: Tue, 17 Apr 2018 12:03:58 +0100
-Message-ID: <20180417110358.GD8973@sirena.org.uk>
-References: <20180413161117.20274-1-radu.pirea@microchip.com>
- <20180413161117.20274-3-radu.pirea@microchip.com>
- <20180413162327.GE22187@piout.net>
- <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
- <20180413181251.GG22187@piout.net>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH v2 2/8] spi: spi-s3c64xx: Remove unused driver data
+ structure tgl_spi field
+Date: Tue, 17 Apr 2018 16:29:48 +0200
+Message-ID: <20180417142954.5507-2-s.nawrocki@samsung.com>
+References: <20180417142954.5507-1-s.nawrocki@samsung.com>
+ <CGME20180417143028epcas1p459b6358287256a1c060ea95847ce9fbd@epcas1p4.samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KdquIMZPjGJQvRdI"
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Radu Pirea <radu.pirea@microchip.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180413181251.GG22187@piout.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-samsung-soc@vger.kernel.org,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, b.zolnierkie@samsung.com,
+ krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
+ linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+To: broonie@kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-reply-to: <20180417142954.5507-1-s.nawrocki@samsung.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The tgl_spi pointer is now unused so remove it.
 
---KdquIMZPjGJQvRdI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Andi Shyti <andi@etezian.org>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+---
+ drivers/spi/spi-s3c64xx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-On Fri, Apr 13, 2018 at 08:12:51PM +0200, Alexandre Belloni wrote:
-> On 13/04/2018 19:12:54+0200, Nicolas Ferre wrote:
-
-> > This layout of the hardware is completely different from the USART one and
-> > it seems to makes sense to address it with a different hardware description
-> > and so a different compatible string.
-
-> But then, you can end up with two drivers trying to use the same IP
-> because nothing prevents you from writing a DT with both a usart and an
-> spi node enabled for the same IP. request_mem_region() will not help
-> here because then the working driver will depend on the probing order.
-
-We don't really have too much in the way of better ideas for how to
-handle this though.  Take a look at how the PXA SSP stuff handles this,
-though that's not really doing too much different it at least layers a
-mechanism on top to avoid collisions.
-
---KdquIMZPjGJQvRdI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrV1J0ACgkQJNaLcl1U
-h9DCSQf+MvNTpltQosRGeLwGrJwao9U0bH049keLdBcKwW0YHwsyF27+3qgKSt2P
-o0yP3Kc0wpvXsg8nCA8i002IsP0TlMwfoK4iErmRsm3yrq9oW1OvLhQhmSQQPMGo
-nKCK5JnS9yRigDctPIHxBEypFSVz7yeEcISKO7A7xdhsZx9OZAsj+E/IN/msyur0
-qq5dmuxkWEOpHBRVib82AZkiGT4mnKtI1++JyKvtUxPJkALV9/2oZ02zBmF0wP7B
-Xr4/E0ceAJ1dGNoCoDgE3buSyUn/4dPf/+0PnN4hnnAfT64Nr0jAogk8U4yVESEC
-M2sMuJONsvBSwQh9X6OWXvBtec/3Ig==
-=CaAS
------END PGP SIGNATURE-----
-
---KdquIMZPjGJQvRdI--
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 9a990bc3138a..f0e28adbbc32 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -156,7 +156,6 @@ struct s3c64xx_spi_port_config {
+  * @ioclk: Pointer to the i/o clock between master and slave
+  * @master: Pointer to the SPI Protocol master.
+  * @cntrlr_info: Platform specific data for the controller this driver manages.
+- * @tgl_spi: Pointer to the last CS left untoggled by the cs_change hint.
+  * @lock: Controller specific lock.
+  * @state: Set of FLAGS to indicate status.
+  * @rx_dmach: Controller's DMA channel for Rx.
+@@ -177,7 +176,6 @@ struct s3c64xx_spi_driver_data {
+ 	struct platform_device          *pdev;
+ 	struct spi_master               *master;
+ 	struct s3c64xx_spi_info  *cntrlr_info;
+-	struct spi_device               *tgl_spi;
+ 	spinlock_t                      lock;
+ 	unsigned long                   sfr_start;
+ 	struct completion               xfer_completion;
+-- 
+2.14.2

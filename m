@@ -1,23 +1,25 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Subject: Re: [PATCH 3/6] spi: spi-s3c64xx: Drop unused enable_datapath()
  function argument
-Date: Tue, 17 Apr 2018 12:02:54 +0200
-Message-ID: <71b98ebb-550e-60af-36cb-0196cf738e54@samsung.com>
+Date: Tue, 17 Apr 2018 12:51:21 +0200
+Message-ID: <CAJKOXPexpELGMGPh_=U7LqBTuEyoMByJ3KF+cd9SkOwuA9W_Og@mail.gmail.com>
 References: <20180416154021.25626-1-s.nawrocki@samsung.com>
  <CGME20180416154122epcas1p1ae714af12f8da08783c47fcd820c40e7@epcas1p1.samsung.com>
  <20180416154021.25626-3-s.nawrocki@samsung.com>
  <167c0f1a1a9de44574523c7f4a9d137d@etezian.org>
+ <71b98ebb-550e-60af-36cb-0196cf738e54@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
- kgene@kernel.org, linux-arm-kernel@lists.infradead.org,
- m.szyprowski@samsung.com
-To: andi@etezian.org
+Cc: linux-samsung-soc@vger.kernel.org,
+ =?UTF-8?B?QmFydMWCb21pZWogxbtvxYJuaWVya2lld2ljeg==?=
+ <b.zolnierkie@samsung.com>, linux-spi@vger.kernel.org, broonie@kernel.org,
+ kgene@kernel.org, Andi Shyti <andi@etezian.org>,
+ linux-arm-kernel@lists.infradead.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <167c0f1a1a9de44574523c7f4a9d137d@etezian.org>
-Content-language: en-GB
+In-Reply-To: <71b98ebb-550e-60af-36cb-0196cf738e54@samsung.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,20 +31,31 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Andi,
-
-On 04/16/2018 09:09 PM, andi@etezian.org wrote:
-> On 17.04.2018 00:40, Sylwester Nawrocki wrote:
->> The spi pointer argument is not used now so remove it. While at it
->> s3c64xx_ prefix is added to the function name.
+On Tue, Apr 17, 2018 at 12:02 PM, Sylwester Nawrocki
+<s.nawrocki@samsung.com> wrote:
+> Hi Andi,
 >
-> These for me are two different patches, but in any case it's trivial
-> so that I don't mind it too much.
+> On 04/16/2018 09:09 PM, andi@etezian.org wrote:
+>> On 17.04.2018 00:40, Sylwester Nawrocki wrote:
+>>> The spi pointer argument is not used now so remove it. While at it
+>>> s3c64xx_ prefix is added to the function name.
+>>
+>> These for me are two different patches, but in any case it's trivial
+>> so that I don't mind it too much.
+>
+> I am going to drop renaming from this patch. There are 2 more functions
+> (wait_for_pio(), wait_for_dma()) without prefix, should we rename them
+> too or rather leave all 3 as they are now?
 
-I am going to drop renaming from this patch. There are 2 more functions
-(wait_for_pio(), wait_for_dma()) without prefix, should we rename them
-too or rather leave all 3 as they are now?
+Indeed it is kind of mixed up - some purely local functions (not even
+passed through pointer to some ops) have prefix, some do not. If you
+ask me, I would prefer to have the prefix on all of them because:
+1. If they appear in call trace (where backtrace pointers are not
+telling anything) it is easy to understand their location,
+2. having generic name like "wait_for_dma" sounds for me like generic,
+Linux-wide macro (but it is not).
 
--- 
-Regards,
-Sylwester
+However I do not insist on that.
+
+Best regards,
+Krzysztof

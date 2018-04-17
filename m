@@ -1,61 +1,83 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH 3/6] spi: spi-s3c64xx: Drop unused enable_datapath()
- function argument
-Date: Tue, 17 Apr 2018 12:51:21 +0200
-Message-ID: <CAJKOXPexpELGMGPh_=U7LqBTuEyoMByJ3KF+cd9SkOwuA9W_Og@mail.gmail.com>
-References: <20180416154021.25626-1-s.nawrocki@samsung.com>
- <CGME20180416154122epcas1p1ae714af12f8da08783c47fcd820c40e7@epcas1p1.samsung.com>
- <20180416154021.25626-3-s.nawrocki@samsung.com>
- <167c0f1a1a9de44574523c7f4a9d137d@etezian.org>
- <71b98ebb-550e-60af-36cb-0196cf738e54@samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 00/10] spi: Extend the framework to generically
+ support memory devices
+Date: Tue, 17 Apr 2018 11:57:13 +0100
+Message-ID: <20180417105713.GC8973@sirena.org.uk>
+References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
- =?UTF-8?B?QmFydMWCb21pZWogxbtvxYJuaWVya2lld2ljeg==?=
- <b.zolnierkie@samsung.com>, linux-spi@vger.kernel.org, broonie@kernel.org,
- kgene@kernel.org, Andi Shyti <andi@etezian.org>,
- linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <71b98ebb-550e-60af-36cb-0196cf738e54@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="===============1900722782764160481=="
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
+ Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, linux-mtd@lists.infradead.org,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Sourav Poddar <sourav.poddar@ti.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180410224439.9260-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 17, 2018 at 12:02 PM, Sylwester Nawrocki
-<s.nawrocki@samsung.com> wrote:
-> Hi Andi,
->
-> On 04/16/2018 09:09 PM, andi@etezian.org wrote:
->> On 17.04.2018 00:40, Sylwester Nawrocki wrote:
->>> The spi pointer argument is not used now so remove it. While at it
->>> s3c64xx_ prefix is added to the function name.
->>
->> These for me are two different patches, but in any case it's trivial
->> so that I don't mind it too much.
->
-> I am going to drop renaming from this patch. There are 2 more functions
-> (wait_for_pio(), wait_for_dma()) without prefix, should we rename them
-> too or rather leave all 3 as they are now?
 
-Indeed it is kind of mixed up - some purely local functions (not even
-passed through pointer to some ops) have prefix, some do not. If you
-ask me, I would prefer to have the prefix on all of them because:
-1. If they appear in call trace (where backtrace pointers are not
-telling anything) it is easy to understand their location,
-2. having generic name like "wait_for_dma" sounds for me like generic,
-Linux-wide macro (but it is not).
+--===============1900722782764160481==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="L6iaP+gRLNZHKoI4"
+Content-Disposition: inline
 
-However I do not insist on that.
 
-Best regards,
-Krzysztof
+--L6iaP+gRLNZHKoI4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Apr 11, 2018 at 12:44:29AM +0200, Boris Brezillon wrote:
+
+> In this v2, I think I addressed all the comments I had except the
+> advanced direct memory mapping stuff mentioned by Cyrille, but I don't
+> think any of the work done in this series prevents us from adding this
+> feature later on.
+
+I'm pretty much OK with this, there's a few small bits to be addressed
+it seems but it looks good overall.
+
+--L6iaP+gRLNZHKoI4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrV0wkACgkQJNaLcl1U
+h9CZoQf/a+SZVy8o3vQ6NykHLZMDfH66KJMqpQq+Din8bbLl4p/n8GH50hU4AbK/
+YOq/KfcWLFw9ql5+JGV5dqdHL1rgQDx0LQA0yDw3RDY9yijF4EgevTD8jmUK4iIN
+Imme9bHaZFwADAazz3bxuDfjADzLXZkgHQ8r2CQ3mWGPJU+wfcoA1b+koEQLtlMt
+xZ62m/bXWQv5pXBNMATIUyRUQnFnuWVU/SInmxDxaj3VBxJnNd3C/bb1YmdY5v/b
+IM8/6wu7PVMbCD9Xh1nz54+Wl0sB11a9jSGLLUhwLReBexhOpEj3IMFi78P4HE51
+6ckZH1NtvoCYQLlJNUFyl7fzsDwuog==
+=iUuM
+-----END PGP SIGNATURE-----
+
+--L6iaP+gRLNZHKoI4--
+
+
+--===============1900722782764160481==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============1900722782764160481==--

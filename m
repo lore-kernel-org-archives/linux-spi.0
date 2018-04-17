@@ -1,171 +1,76 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH v2 8/8] spi: spi-s3c64xx: Allow higher transfer lengths in
- polling IO mode
-Date: Tue, 17 Apr 2018 16:29:54 +0200
-Message-ID: <20180417142954.5507-8-s.nawrocki@samsung.com>
-References: <20180417142954.5507-1-s.nawrocki@samsung.com>
- <CGME20180417143100epcas2p228d05e4de4ce06621635a523241d9824@epcas2p2.samsung.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH v2 00/21] Allow compile-testing NO_DMA (drivers)
+Date: Tue, 17 Apr 2018 19:48:01 +0200
+Message-ID: <CAMuHMdUrLW7gdsUfKQ5FHBHh1t5ecYBSy-6ZKxPSJoP6TQzXvw@mail.gmail.com>
+References: <1521208314-4783-1-git-send-email-geert@linux-m68k.org>
+	<CAL_JsqJMppYaz31Gg8BH2OaAxs56dnjZ4y+nzBBp-Tt2odaqCw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
- linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
-To: broonie@kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <20180417142954.5507-1-s.nawrocki@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"open list:REMOTE PROCESSOR \(REMOTEPROC\) SUBSYSTEM"
+	<linux-remoteproc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-ALSA <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, netdev <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Linux I2C <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux1394-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
+	Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	"James E . J . Bottomley" <jejb-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
+	Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>,
+	scsi <linux-scsi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+	Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"open list:SERI
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+In-Reply-To: <CAL_JsqJMppYaz31Gg8BH2OaAxs56dnjZ4y+nzBBp-Tt2odaqCw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
+List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
+Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Some variants of the SPI controller have no DMA support, in such case
-SPI transfers longer than the FIFO length are not currently properly
-handled by the driver. Fix it by doing multiple transfers in the
-s3c64xx_spi_transfer_one() function if the SPI transfer length exceeds
-the FIFO size.
+Hi Rob,
 
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
----
- drivers/spi/spi-s3c64xx.c | 99 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 66 insertions(+), 33 deletions(-)
+On Thu, Apr 5, 2018 at 2:32 AM, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Fri, Mar 16, 2018 at 8:51 AM, Geert Uytterhoeven
+> <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+>> If NO_DMA=y, get_dma_ops() returns a reference to the non-existing
+>> symbol bad_dma_ops, thus causing a link failure if it is ever used.
+>>
+>> The intention of this is twofold:
+>>   1. To catch users of the DMA API on systems that do no support the DMA
+>>      mapping API,
+>>   2. To avoid building drivers that cannot work on such systems anyway.
+>>
+>> However, the disadvantage is that we have to keep on adding dependencies
+>> on HAS_DMA all over the place.
+>>
+>> Thanks to the COMPILE_TEST symbol, lots of drivers now depend on one or
+>> more platform dependencies (that imply HAS_DMA) || COMPILE_TEST, thus
+>> already covering intention #2.  Having to add an explicit dependency on
+>> HAS_DMA here is cumbersome, and hinders compile-testing.
+>
+> The same can be said for CONFIG_IOMEM and CONFIG_OF. Any plans to
+> remove those too? CONFIG_IOMEM is mostly just a !CONFIG_UM option.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 27cd8c59eabf..755ab2dc6969 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -635,11 +635,14 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	const void *tx_buf = NULL;
-+	void *rx_buf = NULL;
-+	int target_len = 0, origin_len = 0;
-+	int use_dma = 0;
- 	int status;
- 	u32 speed;
- 	u8 bpw;
- 	unsigned long flags;
--	int use_dma;
- 
- 	reinit_completion(&sdd->xfer_completion);
- 
-@@ -654,47 +657,77 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 		s3c64xx_spi_config(sdd);
- 	}
- 
--	/* Polling method for xfers not bigger than FIFO capacity */
--	use_dma = 0;
- 	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
--	    sdd->rx_dma.ch && sdd->tx_dma.ch)
-+	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
- 		use_dma = 1;
- 
--	spin_lock_irqsave(&sdd->lock, flags);
-+	} else if (is_polling(sdd) && xfer->len > fifo_len) {
-+		tx_buf = xfer->tx_buf;
-+		rx_buf = xfer->rx_buf;
-+		origin_len = xfer->len;
- 
--	/* Pending only which is to be done */
--	sdd->state &= ~RXBUSY;
--	sdd->state &= ~TXBUSY;
-+		target_len = xfer->len;
-+		if (xfer->len > fifo_len)
-+			xfer->len = fifo_len;
-+	}
-+
-+	do {
-+		spin_lock_irqsave(&sdd->lock, flags);
- 
--	s3c64xx_enable_datapath(sdd, xfer, use_dma);
-+		/* Pending only which is to be done */
-+		sdd->state &= ~RXBUSY;
-+		sdd->state &= ~TXBUSY;
- 
--	/* Start the signals */
--	s3c64xx_spi_set_cs(spi, true);
-+		s3c64xx_enable_datapath(sdd, xfer, use_dma);
- 
--	spin_unlock_irqrestore(&sdd->lock, flags);
-+		/* Start the signals */
-+		s3c64xx_spi_set_cs(spi, true);
- 
--	if (use_dma)
--		status = s3c64xx_wait_for_dma(sdd, xfer);
--	else
--		status = s3c64xx_wait_for_pio(sdd, xfer);
--
--	if (status) {
--		dev_err(&spi->dev, "I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
--			xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
--			(sdd->state & RXBUSY) ? 'f' : 'p',
--			(sdd->state & TXBUSY) ? 'f' : 'p',
--			xfer->len);
--
--		if (use_dma) {
--			if (xfer->tx_buf != NULL
--			    && (sdd->state & TXBUSY))
--				dmaengine_terminate_all(sdd->tx_dma.ch);
--			if (xfer->rx_buf != NULL
--			    && (sdd->state & RXBUSY))
--				dmaengine_terminate_all(sdd->rx_dma.ch);
-+		spin_unlock_irqrestore(&sdd->lock, flags);
-+
-+		if (use_dma)
-+			status = s3c64xx_wait_for_dma(sdd, xfer);
-+		else
-+			status = s3c64xx_wait_for_pio(sdd, xfer);
-+
-+		if (status) {
-+			dev_err(&spi->dev,
-+				"I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
-+				xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
-+				(sdd->state & RXBUSY) ? 'f' : 'p',
-+				(sdd->state & TXBUSY) ? 'f' : 'p',
-+				xfer->len);
-+
-+			if (use_dma) {
-+				if (xfer->tx_buf && (sdd->state & TXBUSY))
-+					dmaengine_terminate_all(sdd->tx_dma.ch);
-+				if (xfer->rx_buf && (sdd->state & RXBUSY))
-+					dmaengine_terminate_all(sdd->rx_dma.ch);
-+			}
-+		} else {
-+			s3c64xx_flush_fifo(sdd);
- 		}
--	} else {
--		s3c64xx_flush_fifo(sdd);
-+		if (target_len > 0) {
-+			target_len -= xfer->len;
-+
-+			if (xfer->tx_buf)
-+				xfer->tx_buf += xfer->len;
-+
-+			if (xfer->rx_buf)
-+				xfer->rx_buf += xfer->len;
-+
-+			if (target_len > fifo_len)
-+				xfer->len = fifo_len;
-+			else
-+				xfer->len = target_len;
-+		}
-+	} while (target_len > 0);
-+
-+	if (origin_len) {
-+		/* Restore original xfer buffers and length */
-+		xfer->tx_buf = tx_buf;
-+		xfer->rx_buf = rx_buf;
-+		xfer->len = origin_len;
- 	}
- 
- 	return status;
+Perhaps, if time permits...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.14.2
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

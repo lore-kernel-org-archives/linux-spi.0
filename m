@@ -1,23 +1,19 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH 6/6] spi: spi-s3c64xx: Allow higher transfer lengths in
- polling IO mode
-Date: Tue, 17 Apr 2018 11:07:01 +0200
-Message-ID: <4a7a1eb3-a953-c47b-317a-2d96e414961f@samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 4/6] spi: spi-s3c64xx: Do not ignore timeout errors in
+ polling I/O mode
+Date: Tue, 17 Apr 2018 11:02:24 +0100
+Message-ID: <20180417100224.GA8973@sirena.org.uk>
 References: <20180416154021.25626-1-s.nawrocki@samsung.com>
- <CGME20180416154208epcas1p1774dd679e3564be916901a180315943b@epcas1p1.samsung.com>
- <20180416154021.25626-6-s.nawrocki@samsung.com>
- <93a6b80d599a40a39ae396f5dcd7c5b7@etezian.org>
+ <CGME20180416154130epcas1p492c86e911db645acf32d960281e8b297@epcas1p4.samsung.com>
+ <20180416154021.25626-4-s.nawrocki@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5735650673605830508=="
 Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
- kgene@kernel.org, linux-arm-kernel@lists.infradead.org,
- m.szyprowski@samsung.com
-To: andi@etezian.org
+ krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
+ linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <93a6b80d599a40a39ae396f5dcd7c5b7@etezian.org>
-Content-language: en-GB
+In-Reply-To: <20180416154021.25626-4-s.nawrocki@samsung.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,42 +25,52 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Andi,
 
-On 04/16/2018 09:19 PM, andi@etezian.org wrote:
-> On 17.04.2018 00:40, Sylwester Nawrocki wrote:
->> Some variants of the SPI controller have no DMA support, in such case
->> SPI transfers longer than the FIFO length are not currently properly
->> handled by the driver. Fix it by doing multiple transfers in the
->> s3c64xx_spi_transfer_one() function if the SPI transfer length exceeds
->> the FIFO size.
-> 
-> this patch is a mix of cosmetics and what you are actually describing
-> in the commit log...
-> 
->> @@ -634,11 +634,15 @@ static int s3c64xx_spi_transfer_one(struct
->> spi_master *master,
->>  				    struct spi_transfer *xfer)
->>  {
->>  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
->> +	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
->> +	const void *tx_buf = NULL;
->> +	void *rx_buf = NULL;
->> +	int target_len = 0, origin_len = 0;
->> +	bool use_dma = false;
->>  	int status;
->>  	u32 speed;
->>  	u8 bpw;
->>  	unsigned long flags;
->> -	int use_dma;
-> 
-> ... for example 'use_dma' bool instead of int or the 'fifo_len'. I agree
-> with these changes and, even though they are trivial, I would prefer
-> having them in separate patches.
+--===============5735650673605830508==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+Content-Disposition: inline
 
-Thanks for your review! I will split that into 3 patches then, however
-it seems a bit dubious to have the fifo_len change on its own.
 
--- 
-Regards,
-Sylwester
+--9amGYk9869ThD9tj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Apr 16, 2018 at 05:40:19PM +0200, Sylwester Nawrocki wrote:
+> Currently timeout errors in polling I/O mode transfer are silently ignored.
+> Fix it by returning an error when we time out waiting on the RX FIFO level
+> to reach the transfer length.
+
+This would probably have been better sent as a fix before the cosmetic
+updates.
+
+--9amGYk9869ThD9tj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrVxi8ACgkQJNaLcl1U
+h9Br1wf/cVTNByWAkkqPG+ebbVz8qq1XOZOQ7eWZ/N2fzOlfN6fy+AVoE17xmj+g
+Kfjvu/+53KYRnB3hvXr3b8yVpfJLK1WIT1pdy5R3lK9t5nFUeyujigcD6pkKpU54
+0KFm5R0hpCJhII5g66yDFIwdcrzLR+SdtpLlNtzfMF1K9U20Kv8DnP8HmU0J3Je7
+Eurx2Awr3upyn8mLaClL0c6Nv/4rnycK9KljHoePv7gFoROSqkLchFH0HU0hjXAl
+fk9zBx55+rL9m5l1uK+j2+CIZcdpfFGc4GB5I99wfes7fD9J3fEbjI7WPcHd4dyQ
+l9Y9I0S+c1qwHBJxGbo5ehxSjRMGHg==
+=SMQh
+-----END PGP SIGNATURE-----
+
+--9amGYk9869ThD9tj--
+
+
+--===============5735650673605830508==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============5735650673605830508==--

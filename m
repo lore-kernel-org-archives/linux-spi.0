@@ -1,11 +1,11 @@
 From: andi@etezian.org
-Subject: Re: [PATCH v2 5/8] spi: spi-s3c64xx: Add missing s3c64xx_ prefix to
- function names
-Date: Wed, 18 Apr 2018 03:11:44 +0900
-Message-ID: <eb149117a22b6622d94d5037e753698a@etezian.org>
+Subject: Re: [PATCH v2 7/8] spi: spi-s3c64xx: Use local variable for FIFO
+ length
+Date: Wed, 18 Apr 2018 03:14:35 +0900
+Message-ID: <7eddeec03e4bb1eedaa2e068361e2c65@etezian.org>
 References: <20180417142954.5507-1-s.nawrocki@samsung.com>
- <CGME20180417143045epcas2p2ac92ce458223a849647265d59b12bc70@epcas2p2.samsung.com>
- <20180417142954.5507-5-s.nawrocki@samsung.com>
+ <CGME20180417143053epcas1p2a1bf34ea178d1f20fee3c6ade18bf17d@epcas1p2.samsung.com>
+ <20180417142954.5507-7-s.nawrocki@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
  m.szyprowski@samsung.com
 To: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180417142954.5507-5-s.nawrocki@samsung.com>
+In-Reply-To: <20180417142954.5507-7-s.nawrocki@samsung.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -30,13 +30,12 @@ List-Id: linux-spi.vger.kernel.org
 Hi Sylwester,
 
 On 17.04.2018 23:29, Sylwester Nawrocki wrote:
-> Add a s3c64xx_ prefix to remaining generic function names so it is 
-> clear
-> the code is part of the driver when grepping or looking at debug logs.
+> More references to fifo_len are added in subsequent patch.
 > 
 > Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 
-thank you :)
+thanks also for this! It's trivial, but I like it better
+on a separate patch.
 
 Reviewed-by: Andi Shyti <andi@etezian.org>
 

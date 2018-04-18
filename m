@@ -1,60 +1,50 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 00/10] spi: Extend the framework to generically
- support memory devices
-Date: Wed, 18 Apr 2018 16:25:03 +0200
-Message-ID: <20180418162503.764f4761@bbrezillon>
-References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
- <20180417105713.GC8973@sirena.org.uk>
+From: Colin King <colin.king@canonical.com>
+Subject: [PATCH][next] spi: pxa2xx: make function pxa2xx_spi_transfer_one static
+Date: Wed, 18 Apr 2018 17:18:42 +0100
+Message-ID: <20180418161842.19846-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
- Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, linux-mtd@lists.infradead.org,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180417105713.GC8973@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Tue, 17 Apr 2018 11:57:13 +0100
-Mark Brown <broonie@kernel.org> wrote:
+The function pxa2xx_spi_transfer_one is local to the source and
+do not need to be in global scope, so make it static.
 
-> On Wed, Apr 11, 2018 at 12:44:29AM +0200, Boris Brezillon wrote:
-> 
-> > In this v2, I think I addressed all the comments I had except the
-> > advanced direct memory mapping stuff mentioned by Cyrille, but I don't
-> > think any of the work done in this series prevents us from adding this
-> > feature later on.  
-> 
-> I'm pretty much OK with this, there's a few small bits to be addressed
-> it seems but it looks good overall.
+Cleans up sparse warning:
+drivers/spi/spi-pxa2xx.c:914:5: warning: symbol 'pxa2xx_spi_transfer_one'
+was not declared. Should it be static?
 
-Okay, cool. I'll send a v3 addressing the few issues pointed by
-reviewers.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/spi/spi-pxa2xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Thanks,
-
-Boris
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c852ea5c28c6..40f1346b8188 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -911,9 +911,9 @@ static bool pxa2xx_spi_can_dma(struct spi_controller *master,
+ 	       xfer->len >= chip->dma_burst_size;
+ }
+ 
+-int pxa2xx_spi_transfer_one(struct spi_controller *master,
+-			    struct spi_device *spi,
+-			    struct spi_transfer *transfer)
++static int pxa2xx_spi_transfer_one(struct spi_controller *master,
++				   struct spi_device *spi,
++				   struct spi_transfer *transfer)
+ {
+ 	struct driver_data *drv_data = spi_controller_get_devdata(master);
+ 	struct spi_message *message = master->cur_msg;
+-- 
+2.17.0

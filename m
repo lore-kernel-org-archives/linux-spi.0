@@ -1,19 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 6/8] spi: spi-s3c64xx: Fix indentation in the register
- offset definitions
-Date: Wed, 18 Apr 2018 11:47:07 +0100
-Message-ID: <20180418104707.GA10061@sirena.org.uk>
-References: <20180417142954.5507-1-s.nawrocki@samsung.com>
- <CGME20180417143049epcas2p1a9244272897740ac03d7a21d5dfb5d14@epcas2p1.samsung.com>
- <20180417142954.5507-6-s.nawrocki@samsung.com>
+Subject: Applied "spi: spi-s3c64xx: Use local variable for FIFO length" to the
+ spi tree
+Date: Wed, 18 Apr 2018 12:40:42 +0100
+Message-ID: <E1f8lS6-00024O-GC@debutante>
+References: <20180417142954.5507-7-s.nawrocki@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4343905200338143923=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
- linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+ broonie@kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
+ kgene@kernel.org, andi@etezian.org, linux-arm-kernel@lists.infradead.org,
+ m.szyprowski@samsung.com
 To: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180417142954.5507-6-s.nawrocki@samsung.com>
+In-Reply-To: <20180417142954.5507-7-s.nawrocki@samsung.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,50 +25,70 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============4343905200338143923==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Qxx1br4bt0+wmkIi"
-Content-Disposition: inline
+   spi: spi-s3c64xx: Use local variable for FIFO length
 
+has been applied to the spi tree at
 
---Qxx1br4bt0+wmkIi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Tue, Apr 17, 2018 at 04:29:52PM +0200, Sylwester Nawrocki wrote:
-> Change indentation so register address offset and register bit definitions
-> are aligned to same column.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-This doesn't apply against current code, please check and resend.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---Qxx1br4bt0+wmkIi
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrXIioACgkQJNaLcl1U
-h9DJjgf/X/rGImihxfiFB6y9LEVEsipXd+jBhEhaeH78Os6y4riUHvqAN95imBay
-yzzc9K4DzQFpmM0xBORfaIbzg06DCjI2/kGpM2CZgLGMJetoG+ao543hi0+4/ez8
-TrazYHrcYCF6gPUIz6fnp6P1c5/lz9+ChhIDX10xMUWdlt5G109EdQI1Wq+e4P6h
-rC91J0/T6MGxeMUXTmBaNHchVnekjA7gTE0a1EujRhSC6GFrYBC3AacTq7NcT/2g
-zQ3SADTCW94KDpdGRjsOmYmYVN4VamTEWzIlOIKgpwM8f4Wowaeq4DeSIG+Zc3HM
-X5vmdyKLVub5MTcxU9/ZLtzSyS2J7w==
-=kJEn
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---Qxx1br4bt0+wmkIi--
+>From f6364e66c66135f40709635849620411f3f8a2ff Mon Sep 17 00:00:00 2001
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Date: Tue, 17 Apr 2018 16:29:53 +0200
+Subject: [PATCH] spi: spi-s3c64xx: Use local variable for FIFO length
 
+More references to fifo_len are added in subsequent patch.
 
---===============4343905200338143923==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Reviewed-by: Andi Shyti <andi@etezian.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-s3c64xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============4343905200338143923==--
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index db33bc9b4147..27cd8c59eabf 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -634,6 +634,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+ 				    struct spi_transfer *xfer)
+ {
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
++	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
+ 	int status;
+ 	u32 speed;
+ 	u8 bpw;
+@@ -655,9 +656,8 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* Polling method for xfers not bigger than FIFO capacity */
+ 	use_dma = 0;
+-	if (!is_polling(sdd) &&
+-	    (sdd->rx_dma.ch && sdd->tx_dma.ch &&
+-	     (xfer->len > ((FIFO_LVL_MASK(sdd) >> 1) + 1))))
++	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
++	    sdd->rx_dma.ch && sdd->tx_dma.ch)
+ 		use_dma = 1;
+ 
+ 	spin_lock_irqsave(&sdd->lock, flags);
+-- 
+2.17.0

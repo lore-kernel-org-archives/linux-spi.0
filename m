@@ -1,19 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-s3c64xx: Drop unused enable_datapath() function
- argument" to the spi tree
-Date: Wed, 18 Apr 2018 12:40:53 +0100
-Message-ID: <E1f8lSH-00027l-AH@debutante>
-References: <20180417142954.5507-4-s.nawrocki@samsung.com>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH v2 6/8] spi: spi-s3c64xx: Fix indentation in the
+ register offset definitions
+Date: Wed, 18 Apr 2018 14:17:36 +0200
+Message-ID: <66b1bc57-8e12-2ec9-3238-c9ddbc1f2ca6@samsung.com>
+References: <20180417142954.5507-1-s.nawrocki@samsung.com>
+ <CGME20180417143049epcas2p1a9244272897740ac03d7a21d5dfb5d14@epcas2p1.samsung.com>
+ <20180417142954.5507-6-s.nawrocki@samsung.com>
+ <20180418104707.GA10061@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- broonie@kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
- kgene@kernel.org, andi@etezian.org, linux-arm-kernel@lists.infradead.org,
- m.szyprowski@samsung.com
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+ krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
+ linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180417142954.5507-4-s.nawrocki@samsung.com>
+In-reply-to: <20180418104707.GA10061@sirena.org.uk>
+Content-language: en-GB
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,70 +28,16 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 04/18/2018 12:47 PM, Mark Brown wrote:
+> On Tue, Apr 17, 2018 at 04:29:52PM +0200, Sylwester Nawrocki wrote:
+>> Change indentation so register address offset and register bit definitions
+>> are aligned to same column.
+>
+> This doesn't apply against current code, please check and resend.
 
-   spi: spi-s3c64xx: Drop unused enable_datapath() function argument
+It seems there is no need to resend now as all patches from the series
+are in your for-4.18 branch.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 80aa0d746c10e14ac14ca03b2bc8b26a0f75c5e4 Mon Sep 17 00:00:00 2001
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Date: Tue, 17 Apr 2018 16:29:50 +0200
-Subject: [PATCH] spi: spi-s3c64xx: Drop unused enable_datapath() function
- argument
-
-The spi pointer argument is not used now so remove it.
-
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Reviewed-by: Andi Shyti <andi@etezian.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-s3c64xx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 54fde5c80374..38a5e9ce5f11 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -349,8 +349,7 @@ static bool s3c64xx_spi_can_dma(struct spi_master *master,
- }
- 
- static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
--				struct spi_device *spi,
--				struct spi_transfer *xfer, int dma_mode)
-+			    struct spi_transfer *xfer, int dma_mode)
- {
- 	void __iomem *regs = sdd->regs;
- 	u32 modecfg, chcfg;
-@@ -667,7 +666,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	sdd->state &= ~RXBUSY;
- 	sdd->state &= ~TXBUSY;
- 
--	enable_datapath(sdd, spi, xfer, use_dma);
-+	enable_datapath(sdd, xfer, use_dma);
- 
- 	/* Start the signals */
- 	s3c64xx_spi_set_cs(spi, true);
 -- 
-2.17.0
+Thanks,
+Sylwester

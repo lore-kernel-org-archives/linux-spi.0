@@ -1,50 +1,51 @@
-From: Colin King <colin.king@canonical.com>
-Subject: [PATCH][next] spi: pxa2xx: make function pxa2xx_spi_transfer_one static
-Date: Wed, 18 Apr 2018 17:18:42 +0100
-Message-ID: <20180418161842.19846-1-colin.king@canonical.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH][next] spi: pxa2xx: make function pxa2xx_spi_transfer_one
+ static
+Date: Wed, 18 Apr 2018 17:23:15 +0100
+Message-ID: <20180418162315.GF10061@sirena.org.uk>
+References: <20180418161842.19846-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Daniel Mack <daniel@zonque.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="QXO0/MSS4VvK6f+D"
+Cc: Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Colin King <colin.king@canonical.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180418161842.19846-1-colin.king@canonical.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-The function pxa2xx_spi_transfer_one is local to the source and
-do not need to be in global scope, so make it static.
+--QXO0/MSS4VvK6f+D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cleans up sparse warning:
-drivers/spi/spi-pxa2xx.c:914:5: warning: symbol 'pxa2xx_spi_transfer_one'
-was not declared. Should it be static?
+On Wed, Apr 18, 2018 at 05:18:42PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The function pxa2xx_spi_transfer_one is local to the source and
+> do not need to be in global scope, so make it static.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/spi/spi-pxa2xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Someone already sent a patch for this which I applied earlier today.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index c852ea5c28c6..40f1346b8188 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -911,9 +911,9 @@ static bool pxa2xx_spi_can_dma(struct spi_controller *master,
- 	       xfer->len >= chip->dma_burst_size;
- }
- 
--int pxa2xx_spi_transfer_one(struct spi_controller *master,
--			    struct spi_device *spi,
--			    struct spi_transfer *transfer)
-+static int pxa2xx_spi_transfer_one(struct spi_controller *master,
-+				   struct spi_device *spi,
-+				   struct spi_transfer *transfer)
- {
- 	struct driver_data *drv_data = spi_controller_get_devdata(master);
- 	struct spi_message *message = master->cur_msg;
--- 
-2.17.0
+--QXO0/MSS4VvK6f+D
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrXcPIACgkQJNaLcl1U
+h9CCIAf/eF+L52UsAb/zYblEOaMrc+d+LbuwcYm8vq8Z6QXi/ASvHx/Yi/mkbc2g
+zFmKpjzK+a3cm2eUBSGOqOxyF2SqUmoZYMZjHs5V4eJtK379G9B/Ok+tksj2R6Ir
+TsYnt6xbUoGwnTGozSQ7kyb/Girjqpd9uq/tx7bNF7dg6BVCyk9fCbvsYGFJlyLE
+rPvfl/avZTlByWLmGYKIxbJtV0h206PtJHvI5I9klxMx3dAfSmxwHd5d+k9qeb10
+BzI16/pCmih6dewa+p0sfhiBB+Y0qPbjOzdmZYJ/qk1YZ+kyJ3LnhQEf21GuuaCt
+5DHAFxRc1x1Z+2ZFO2FvvTvOCcgsNw==
+=Mul6
+-----END PGP SIGNATURE-----
+
+--QXO0/MSS4VvK6f+D--

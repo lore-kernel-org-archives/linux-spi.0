@@ -1,43 +1,54 @@
-From: sxauwsk <sxauwsk@163.com>
-Subject: [PATCH] spi: cadence: Add usleep_range() for cdns_spi_fill_tx_fifo()
-Date: Tue, 17 Apr 2018 04:01:27 +0800
-Message-ID: <1523908887-48616-1-git-send-email-sxauwsk@163.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sxauwsk <sxauwsk@163.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v5] ARM: imx: Update spi_imx platform data to reflect
+ current state
+Date: Wed, 18 Apr 2018 11:12:00 +0800
+Message-ID: <20180418031159.GR25429@dragon>
+References: <20180402200605.13050-1-tpiepho@impinj.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam@nxp.com>, Sascha Hauer <kernel@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Trent Piepho <tpiepho@impinj.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20180402200605.13050-1-tpiepho@impinj.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-In case of xspi work in busy condition, may send bytes failed.
-once something wrong, spi controller did't work any more
+On Mon, Apr 02, 2018 at 01:06:05PM -0700, Trent Piepho wrote:
+> The docs for the spi_imx platform data still refer to a -32 offset used to
+> specify a native chip select.  This was removed in commit 602c8f4485cd
+> ("spi: imx: fix use of native chip-selects with devicetree") and no
+> longer works as documented.  Update documentation.
+> 
+> The macro MXC_SPI_CS() is no longer is needed.
+> 
+> If a board uses all native chip selects, then it's not necessary to
+> specify a chip select array at all, as all native is the default (this is
+> how device-tree configured SPI masters work too).  Most of the spi-imx
+> platform data users have their chip select arrays removed by this patch.
+> 
+> This patch also fixes a bug in mx31moboard introduced in the '602 commit.
+> When that board was updated in commit 901f26bce64a ("ARM: imx: set
+> correct chip_select in platform setup") to reflect the SPI change, only
+> SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
+> selects.  The mc13783 spi device on bus 1 had its chip select updated as
+> if it were on bus 2.
+> 
+> CC: Shawn Guo <shawnguo@kernel.org>
+> CC: Sascha Hauer <kernel@pengutronix.de>
+> CC: Fabio Estevam <fabio.estevam@nxp.com>
+> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Trent Piepho <tpiepho@impinj.com>
 
-My test found this situation appear in both of read/write process.
-so when TX FIFO is full, add one byte delay before send data;
-
-Signed-off-by: sxauwsk <sxauwsk@163.com>
----
- drivers/spi/spi-cadence.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 5c9516a..4a00163 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -313,6 +313,14 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
-
- 	while ((trans_cnt < CDNS_SPI_FIFO_DEPTH) &&
- 	       (xspi->tx_bytes > 0)) {
-+
-+		/* When xspi in busy condition, bytes may send failed,
-+		 * then spi control did't work thoroughly, add one byte delay
-+		 */
-+		if (cdns_spi_read(xspi, CDNS_SPI_ISR) &
-+		    CDNS_SPI_IXR_TXFULL)
-+			usleep_range(10, 20);
-+
- 		if (xspi->txbuf)
- 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
- 		else
---
-1.7.9.5
+Applied, thanks.

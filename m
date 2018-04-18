@@ -1,54 +1,50 @@
-From: Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v5] ARM: imx: Update spi_imx platform data to reflect
- current state
-Date: Wed, 18 Apr 2018 11:12:00 +0800
-Message-ID: <20180418031159.GR25429@dragon>
-References: <20180402200605.13050-1-tpiepho@impinj.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [RFC PATCH spi] spi: pxa2xx: pxa2xx_spi_transfer_one() can be
+ static
+Date: Wed, 18 Apr 2018 09:04:48 +0300
+Message-ID: <22cf611b-6a88-ec72-bb3c-51f8b62a8019@linux.intel.com>
+References: <201804180300.Pn9JAJQ2%fengguang.wu@intel.com>
+ <20180417195323.GA69680@ivb43>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@nxp.com>, Sascha Hauer <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Trent Piepho <tpiepho@impinj.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20180402200605.13050-1-tpiepho@impinj.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: kbuild-all@01.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: kbuild test robot <lkp@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180417195323.GA69680@ivb43>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 02, 2018 at 01:06:05PM -0700, Trent Piepho wrote:
-> The docs for the spi_imx platform data still refer to a -32 offset used to
-> specify a native chip select.  This was removed in commit 602c8f4485cd
-> ("spi: imx: fix use of native chip-selects with devicetree") and no
-> longer works as documented.  Update documentation.
+On 04/17/18 22:53, kbuild test robot wrote:
 > 
-> The macro MXC_SPI_CS() is no longer is needed.
+> Fixes: d5898e19c0d7 ("spi: pxa2xx: Use core message processing loop")
+> Signed-off-by: Fengguang Wu <fengguang.wu@intel.com>
+> ---
+>   spi-pxa2xx.c |    6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> If a board uses all native chip selects, then it's not necessary to
-> specify a chip select array at all, as all native is the default (this is
-> how device-tree configured SPI masters work too).  Most of the spi-imx
-> platform data users have their chip select arrays removed by this patch.
-> 
-> This patch also fixes a bug in mx31moboard introduced in the '602 commit.
-> When that board was updated in commit 901f26bce64a ("ARM: imx: set
-> correct chip_select in platform setup") to reflect the SPI change, only
-> SPI bus 2 was updated and SPI bus 1 was left with non-sequential chip
-> selects.  The mc13783 spi device on bus 1 had its chip select updated as
-> if it were on bus 2.
-> 
-> CC: Shawn Guo <shawnguo@kernel.org>
-> CC: Sascha Hauer <kernel@pengutronix.de>
-> CC: Fabio Estevam <fabio.estevam@nxp.com>
-> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
-> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index c852ea5..40f1346 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -911,9 +911,9 @@ static bool pxa2xx_spi_can_dma(struct spi_controller *master,
+>   	       xfer->len >= chip->dma_burst_size;
+>   }
+>   
+> -int pxa2xx_spi_transfer_one(struct spi_controller *master,
+> -			    struct spi_device *spi,
+> -			    struct spi_transfer *transfer)
+> +static int pxa2xx_spi_transfer_one(struct spi_controller *master,
+> +				   struct spi_device *spi,
+> +				   struct spi_transfer *transfer)
 
-Applied, thanks.
+Thanks Fengguang. I don't understand how I managed to drop "static" 
+while doing manual s/pump_transfers/pxa2xx_spi_transfer_one/ :-)
+
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>

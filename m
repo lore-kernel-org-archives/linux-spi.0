@@ -1,33 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-s3c64xx: Use local variable for FIFO length" to the
- spi tree
-Date: Wed, 18 Apr 2018 12:40:42 +0100
-Message-ID: <E1f8lS6-00024O-GC@debutante>
-References: <20180417142954.5507-7-s.nawrocki@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- broonie@kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
- kgene@kernel.org, andi@etezian.org, linux-arm-kernel@lists.infradead.org,
- m.szyprowski@samsung.com
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180417142954.5507-7-s.nawrocki@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Subject: Applied "spi: pxa2xx: pxa2xx_spi_transfer_one() can be static" to the spi tree
+Date: Wed, 18 Apr 2018 12:40:46 +0100
+Message-ID: <E1f8lSA-00025Y-3G@debutante>
+References: <20180417195323.GA69680@ivb43>
+Cc: Fengguang Wu <fengguang.wu@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        kbuild-all@01.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: kbuild test robot <lkp@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180417195323.GA69680@ivb43>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-s3c64xx: Use local variable for FIFO length
+   spi: pxa2xx: pxa2xx_spi_transfer_one() can be static
 
 has been applied to the spi tree at
 
@@ -52,43 +46,35 @@ to this mail.
 Thanks,
 Mark
 
->From f6364e66c66135f40709635849620411f3f8a2ff Mon Sep 17 00:00:00 2001
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Date: Tue, 17 Apr 2018 16:29:53 +0200
-Subject: [PATCH] spi: spi-s3c64xx: Use local variable for FIFO length
+>From 71293a60e38f44b1d18c14803f0dd2744f6b9a12 Mon Sep 17 00:00:00 2001
+From: kbuild test robot <lkp@intel.com>
+Date: Wed, 18 Apr 2018 03:53:23 +0800
+Subject: [PATCH] spi: pxa2xx: pxa2xx_spi_transfer_one() can be static
 
-More references to fifo_len are added in subsequent patch.
-
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Reviewed-by: Andi Shyti <andi@etezian.org>
+Fixes: d5898e19c0d7 ("spi: pxa2xx: Use core message processing loop")
+Signed-off-by: Fengguang Wu <fengguang.wu@intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 6 +++---
+ drivers/spi/spi-pxa2xx.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index db33bc9b4147..27cd8c59eabf 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -634,6 +634,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 				    struct spi_transfer *xfer)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c852ea5c28c6..40f1346b8188 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -911,9 +911,9 @@ static bool pxa2xx_spi_can_dma(struct spi_controller *master,
+ 	       xfer->len >= chip->dma_burst_size;
+ }
+ 
+-int pxa2xx_spi_transfer_one(struct spi_controller *master,
+-			    struct spi_device *spi,
+-			    struct spi_transfer *transfer)
++static int pxa2xx_spi_transfer_one(struct spi_controller *master,
++				   struct spi_device *spi,
++				   struct spi_transfer *transfer)
  {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-+	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
- 	int status;
- 	u32 speed;
- 	u8 bpw;
-@@ -655,9 +656,8 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 
- 	/* Polling method for xfers not bigger than FIFO capacity */
- 	use_dma = 0;
--	if (!is_polling(sdd) &&
--	    (sdd->rx_dma.ch && sdd->tx_dma.ch &&
--	     (xfer->len > ((FIFO_LVL_MASK(sdd) >> 1) + 1))))
-+	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
-+	    sdd->rx_dma.ch && sdd->tx_dma.ch)
- 		use_dma = 1;
- 
- 	spin_lock_irqsave(&sdd->lock, flags);
+ 	struct driver_data *drv_data = spi_controller_get_devdata(master);
+ 	struct spi_message *message = master->cur_msg;
 -- 
 2.17.0

@@ -1,27 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: pxa2xx_spi_transfer_one() can be static" to the spi tree
-Date: Wed, 18 Apr 2018 12:40:46 +0100
-Message-ID: <E1f8lSA-00025Y-3G@debutante>
-References: <20180417195323.GA69680@ivb43>
-Cc: Fengguang Wu <fengguang.wu@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        kbuild-all@01.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: kbuild test robot <lkp@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180417195323.GA69680@ivb43>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: spi-s3c64xx: Allow higher transfer lengths in polling
+ IO mode" to the spi tree
+Date: Wed, 18 Apr 2018 12:40:38 +0100
+Message-ID: <E1f8lS2-00023M-Sa@debutante>
+References: <20180417142954.5507-8-s.nawrocki@samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
+ broonie@kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
+ kgene@kernel.org, andi@etezian.org, linux-arm-kernel@lists.infradead.org,
+ m.szyprowski@samsung.com
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180417142954.5507-8-s.nawrocki@samsung.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: pxa2xx_spi_transfer_one() can be static
+   spi: spi-s3c64xx: Allow higher transfer lengths in polling IO mode
 
 has been applied to the spi tree at
 
@@ -46,35 +52,154 @@ to this mail.
 Thanks,
 Mark
 
->From 71293a60e38f44b1d18c14803f0dd2744f6b9a12 Mon Sep 17 00:00:00 2001
-From: kbuild test robot <lkp@intel.com>
-Date: Wed, 18 Apr 2018 03:53:23 +0800
-Subject: [PATCH] spi: pxa2xx: pxa2xx_spi_transfer_one() can be static
+>From 0af7af7da6510f12595b81ba98bb15dd7ffed1f3 Mon Sep 17 00:00:00 2001
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Date: Tue, 17 Apr 2018 16:29:54 +0200
+Subject: [PATCH] spi: spi-s3c64xx: Allow higher transfer lengths in polling IO
+ mode
 
-Fixes: d5898e19c0d7 ("spi: pxa2xx: Use core message processing loop")
-Signed-off-by: Fengguang Wu <fengguang.wu@intel.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Some variants of the SPI controller have no DMA support, in such case
+SPI transfers longer than the FIFO length are not currently properly
+handled by the driver. Fix it by doing multiple transfers in the
+s3c64xx_spi_transfer_one() function if the SPI transfer length exceeds
+the FIFO size.
+
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Reviewed-by: Andi Shyti <andi@etezian.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 99 ++++++++++++++++++++++++++-------------
+ 1 file changed, 66 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index c852ea5c28c6..40f1346b8188 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -911,9 +911,9 @@ static bool pxa2xx_spi_can_dma(struct spi_controller *master,
- 	       xfer->len >= chip->dma_burst_size;
- }
- 
--int pxa2xx_spi_transfer_one(struct spi_controller *master,
--			    struct spi_device *spi,
--			    struct spi_transfer *transfer)
-+static int pxa2xx_spi_transfer_one(struct spi_controller *master,
-+				   struct spi_device *spi,
-+				   struct spi_transfer *transfer)
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 27cd8c59eabf..755ab2dc6969 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -635,11 +635,14 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
  {
- 	struct driver_data *drv_data = spi_controller_get_devdata(master);
- 	struct spi_message *message = master->cur_msg;
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ 	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
++	const void *tx_buf = NULL;
++	void *rx_buf = NULL;
++	int target_len = 0, origin_len = 0;
++	int use_dma = 0;
+ 	int status;
+ 	u32 speed;
+ 	u8 bpw;
+ 	unsigned long flags;
+-	int use_dma;
+ 
+ 	reinit_completion(&sdd->xfer_completion);
+ 
+@@ -654,47 +657,77 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+ 		s3c64xx_spi_config(sdd);
+ 	}
+ 
+-	/* Polling method for xfers not bigger than FIFO capacity */
+-	use_dma = 0;
+ 	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
+-	    sdd->rx_dma.ch && sdd->tx_dma.ch)
++	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
+ 		use_dma = 1;
+ 
+-	spin_lock_irqsave(&sdd->lock, flags);
++	} else if (is_polling(sdd) && xfer->len > fifo_len) {
++		tx_buf = xfer->tx_buf;
++		rx_buf = xfer->rx_buf;
++		origin_len = xfer->len;
+ 
+-	/* Pending only which is to be done */
+-	sdd->state &= ~RXBUSY;
+-	sdd->state &= ~TXBUSY;
++		target_len = xfer->len;
++		if (xfer->len > fifo_len)
++			xfer->len = fifo_len;
++	}
++
++	do {
++		spin_lock_irqsave(&sdd->lock, flags);
+ 
+-	s3c64xx_enable_datapath(sdd, xfer, use_dma);
++		/* Pending only which is to be done */
++		sdd->state &= ~RXBUSY;
++		sdd->state &= ~TXBUSY;
+ 
+-	/* Start the signals */
+-	s3c64xx_spi_set_cs(spi, true);
++		s3c64xx_enable_datapath(sdd, xfer, use_dma);
+ 
+-	spin_unlock_irqrestore(&sdd->lock, flags);
++		/* Start the signals */
++		s3c64xx_spi_set_cs(spi, true);
+ 
+-	if (use_dma)
+-		status = s3c64xx_wait_for_dma(sdd, xfer);
+-	else
+-		status = s3c64xx_wait_for_pio(sdd, xfer);
+-
+-	if (status) {
+-		dev_err(&spi->dev, "I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
+-			xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
+-			(sdd->state & RXBUSY) ? 'f' : 'p',
+-			(sdd->state & TXBUSY) ? 'f' : 'p',
+-			xfer->len);
+-
+-		if (use_dma) {
+-			if (xfer->tx_buf != NULL
+-			    && (sdd->state & TXBUSY))
+-				dmaengine_terminate_all(sdd->tx_dma.ch);
+-			if (xfer->rx_buf != NULL
+-			    && (sdd->state & RXBUSY))
+-				dmaengine_terminate_all(sdd->rx_dma.ch);
++		spin_unlock_irqrestore(&sdd->lock, flags);
++
++		if (use_dma)
++			status = s3c64xx_wait_for_dma(sdd, xfer);
++		else
++			status = s3c64xx_wait_for_pio(sdd, xfer);
++
++		if (status) {
++			dev_err(&spi->dev,
++				"I/O Error: rx-%d tx-%d res:rx-%c tx-%c len-%d\n",
++				xfer->rx_buf ? 1 : 0, xfer->tx_buf ? 1 : 0,
++				(sdd->state & RXBUSY) ? 'f' : 'p',
++				(sdd->state & TXBUSY) ? 'f' : 'p',
++				xfer->len);
++
++			if (use_dma) {
++				if (xfer->tx_buf && (sdd->state & TXBUSY))
++					dmaengine_terminate_all(sdd->tx_dma.ch);
++				if (xfer->rx_buf && (sdd->state & RXBUSY))
++					dmaengine_terminate_all(sdd->rx_dma.ch);
++			}
++		} else {
++			s3c64xx_flush_fifo(sdd);
+ 		}
+-	} else {
+-		s3c64xx_flush_fifo(sdd);
++		if (target_len > 0) {
++			target_len -= xfer->len;
++
++			if (xfer->tx_buf)
++				xfer->tx_buf += xfer->len;
++
++			if (xfer->rx_buf)
++				xfer->rx_buf += xfer->len;
++
++			if (target_len > fifo_len)
++				xfer->len = fifo_len;
++			else
++				xfer->len = target_len;
++		}
++	} while (target_len > 0);
++
++	if (origin_len) {
++		/* Restore original xfer buffers and length */
++		xfer->tx_buf = tx_buf;
++		xfer->rx_buf = rx_buf;
++		xfer->len = origin_len;
+ 	}
+ 
+ 	return status;
 -- 
 2.17.0

@@ -1,82 +1,125 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 6/8] spi: spi-s3c64xx: Fix indentation in the register
- offset definitions
-Date: Wed, 18 Apr 2018 14:49:22 +0100
-Message-ID: <20180418134922.GC10061@sirena.org.uk>
-References: <20180417142954.5507-1-s.nawrocki@samsung.com>
- <CGME20180417143049epcas2p1a9244272897740ac03d7a21d5dfb5d14@epcas2p1.samsung.com>
- <20180417142954.5507-6-s.nawrocki@samsung.com>
- <20180418104707.GA10061@sirena.org.uk>
- <66b1bc57-8e12-2ec9-3238-c9ddbc1f2ca6@samsung.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v2 04/10] spi: Extend the core to ease integration of
+ SPI memory controllers
+Date: Wed, 18 Apr 2018 16:17:47 +0200
+Message-ID: <20180418161747.7060ae3b@bbrezillon>
+References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
+ <20180410224439.9260-5-boris.brezillon@bootlin.com>
+ <60f3d53a-9668-9e1c-9f29-45aaf4004630@ti.com>
+ <20180412171005.5cfaba58@bbrezillon>
+ <20180412215951.751bf889@bbrezillon>
+ <991f6a90-2211-acb9-c384-1d49d5468b31@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0631438097407914698=="
-Cc: linux-samsung-soc@vger.kernel.org, b.zolnierkie@samsung.com,
- krzk@kernel.org, linux-spi@vger.kernel.org, kgene@kernel.org, andi@etezian.org,
- linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <66b1bc57-8e12-2ec9-3238-c9ddbc1f2ca6@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <991f6a90-2211-acb9-c384-1d49d5468b31@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============0631438097407914698==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eRtJSFbw+EEWtPj3"
-Content-Disposition: inline
-
-
---eRtJSFbw+EEWtPj3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Apr 18, 2018 at 02:17:36PM +0200, Sylwester Nawrocki wrote:
-> On 04/18/2018 12:47 PM, Mark Brown wrote:
-
-> > This doesn't apply against current code, please check and resend.
-
-> It seems there is no need to resend now as all patches from the series
-> are in your for-4.18 branch.
-
-I applied a bunch of the series yesterday, it looks like something that
-was applied then.=20
-
---eRtJSFbw+EEWtPj3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrXTOEACgkQJNaLcl1U
-h9DGcQf/bLPJy9ZzeL0pdHzlJLcv6oBxTm1GEw6fPXT+AuX+nFT1OreaH7Uf5aj5
-1gWP4dQHzT+uimlPtNYi+66qd/WFYJSGgnujxjy5ArwX/dzCe9Kk/SkO0cUwy2/H
-gxIQ/Zez0HGivTeM2NLR5Mir3G6DxTQYkIdRlUiYRgrbLP3NPJpUTLFqPgpW8/i8
-FHNw/LXEAWD93UAKSA2rRrwBk4NmAtgv/ZxadP8VHal92BPAKU7dM8fy/C4RZMcd
-zFv3MMMmPzHRa6+8JOaKcRvUyfuh7pgEw4K6l5VHGWVMprFZl9EqAqrWhN+F/MMV
-0KQgdjtwATpMG44lUFzO/3dMQ5PStA==
-=T85S
------END PGP SIGNATURE-----
-
---eRtJSFbw+EEWtPj3--
-
-
---===============0631438097407914698==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============0631438097407914698==--
+SGkgVmlnbmVzaCwKCk9uIFR1ZSwgMTcgQXByIDIwMTggMDk6NDI6MTggKzA1MzAKVmlnbmVzaCBS
+IDx2aWduZXNockB0aS5jb20+IHdyb3RlOgoKPiA+PiAgIAo+ID4+ID7CoMKgICAgCj4gPj4gPiA+
+ICsgfSBhZGRyOwo+ID4+ID4gPiArCj4gPj4gPiA+ICsgc3RydWN0IHsKPiA+PiA+ID4gK8KgwqDC
+oMKgwqDCoMKgwqAgdTggbmJ5dGVzOwo+ID4+ID4gPiArwqDCoMKgwqDCoMKgwqDCoCB1OCBidXN3
+aWR0aDsKPiA+PiA+ID4gKyB9IGR1bW15Owo+ID4+ID4gPiArCj4gPj4gPiA+ICsgc3RydWN0IHsK
+PiA+PiA+ID4gK8KgwqDCoMKgwqDCoMKgwqAgdTggYnVzd2lkdGg7Cj4gPj4gPiA+ICvCoMKgwqDC
+oMKgwqDCoMKgIGVudW0gc3BpX21lbV9kYXRhX2RpciBkaXI7Cj4gPj4gPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgIHVuc2lnbmVkIGludCBuYnl0ZXM7Cj4gPj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgIC8q
+IGJ1Zi57aW4sb3V0fSBtdXN0IGJlIERNQS1hYmxlLiAqLwo+ID4+ID4gPiArwqDCoMKgwqDCoMKg
+wqDCoCB1bmlvbiB7Cj4gPj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB2
+b2lkICppbjsKPiA+PiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnN0
+IHZvaWQgKm91dDsKPiA+PiA+ID4gK8KgwqDCoMKgwqDCoMKgwqAgfSBidWY7Cj4gPj4gPiA+ICsg
+fSBkYXRhOwo+ID4+ID4gPiArfTsKPiA+PiA+ID4gK8KgwqDCoCAgIAo+ID4+ID4gCj4gPj4gPiBT
+b21lIGZsYXNoIGRldmljZXMgc3VwcG9ydCBEdWFsL1F1YWQgRERSIChEb3VibGUgRGF0YSBSYXRl
+KSBtb2RlIGFuZCB0aGUKPiA+PiA+IFNQSSBjb250cm9sbGVyIGRyaXZlciB3b3VsZCBuZWVkIHRv
+IGtub3cgdGhpcyBpbmZvcm1hdGlvbi4gV2Ugd2lsbCBuZWVkCj4gPj4gPiB0byBhZGQgYSBmaWVs
+ZCBmb3IgdGhhdC7CoCAgIAo+ID4+IAo+ID4+IFdlbGwsIGxldCdzIHdhaXQgdW50aWwgd2UgYWN0
+dWFsbHkgbmVlZCB0aGF0Lgo+ID4+ICAgCj4gPj4gPiAKPiA+PiA+IEN1cnJlbnRseSwgdGhlcmUg
+YXJlIGRyaXZlcnMgdW5kZXIgbXRkL3NwaS1ub3IvIHRoYXQgbmVlZCB0byBrbm93Cj4gPj4gPiBw
+YWdlL3NlY3Rvci90b3RhbCBzaXplIG9mIGZsYXNoIG1lbW9yeShpbmZvIGF2YWlsYWJsZSBpbgo+
+ID4+ID4gLWBzdHJ1Y3Qgc3BpX25vcikuIFdlIHdvdWxkIG5lZWQgYSB3YXkgdG8gcHJvdmlkZSB0
+aGlzIGluZm8gdG8gc3BpX21lbQo+ID4+ID4gZHJpdmVycywgaWYgd2UgZXZlciBwbGFuIHRvIG1v
+dmUgZHJpdmVycyB1bmRlciBtdGQvc3BpLW5vciB0byBzcGkvwqAgICAKPiA+PiAKPiA+PiBBZ2Fp
+biwgd2UnbGwgc2VlIHdoZW4gd2UnbGwgdHJ5IHRvIG1vdmUgdGhlbSwgYnV0IEkgaG9wZSBzdGls
+bCB3ZSB3b24ndAo+ID4+IG5lZWQgdGhhdC4gTG9va3MgbGlrZSB0aGUga2luZCBvZiBpbmZvcm1h
+dGlvbiBJJ2QgbGlrZSB0byBrZWVwIGF3YXkKPiA+PiBmcm9tIHNwaSBjb250cm9sbGVyIGRyaXZl
+cnMuICAKPiA+IAo+ID4gTGV0IG1lIGNsYXJpZnkgdGhpcyBwYXJ0LiBJIGFscmVhZHkgdGhvdWdo
+dCBhIGJpdCBhYm91dCB0aGlzIHByb2JsZW0sCj4gPiBhbmQgdGhhdCdzIHRoZSB2ZXJ5IHJlYXNv
+biB3ZSBoYXZlIGFuIGludGVybWVkaWF0ZSBsYXllciB3aXRoIGEgc3BpX21lbQo+ID4gc3RydWN0
+IHBvaW50aW5nIHRvIHRoZSByZWFsIHNwaV9kZXZpY2Ugb2JqZWN0LiBUaGUgaWRlYSBpcyB0byBh
+ZGQgbmV3Cj4gPiBmaWVsZHMgdG8gc3BpX21lbSBvYmplY3QgaWYvd2hlbiB3ZSByZWFsbHkgaGF2
+ZSB0by4gV2UnZCBhbHNvIGhhdmUgdG8KPiA+IGFkZCAtPmF0dGFjaC9kZXRhY2goKSBtZXRob2Rz
+IHRvIHNwaV9tZW1fb3BzIHNvIHRoYXQgU1BJIG1lbSBjb250cm9sbGVyCj4gPiBjYW4ga25vdyB3
+aGVuIGEgbmV3IGRldmljZSBpcyBhYm91dCB0byBiZSBhY2Nlc3NlZCBieSBhIHNwaS1tZW0KPiA+
+IGRyaXZlciwgY2FuIHBhcnNlIHRoZSBpbmZvcm1hdGlvbiBwcm92aWRlZCBpbiBzcGlfbWVtIGFu
+ZCBjb25maWd1cmUgdGhlCj4gPiBjb250cm9sbGVyIGFjY29yZGluZ2x5Lgo+ID4gCj4gPiBOb3cs
+IGV2ZW4gaWYgdGhhdCdzIHNvbWV0aGluZyBJIGNvbnNpZGVyZWQgd2hlbiBkZXNpZ25pbmcgdGhl
+IHNwaS1tZW0KPiA+IGludGVyZmFjZSwgSSdkIGxpa2UgdG8gc3RheSBhd2F5IGZyb20gdGhpcyBz
+b3J0IG9mIHNwZWNpYWxpemF0aW9uIGFzCj4gPiBsb25nIGFzIHBvc3NpYmxlLiBXaHk/IFNpbXBs
+eSBiZWNhdXNlIGRlYWxpbmcgd2l0aCBtZW1vcnkgc3BlY2lmaWNpdGllcwo+ID4gbGlrZSAiaXMg
+aXQgYSBOT1IsIGEgTkFORCBvciBhbiBTUkFNPyBTaG91bGQgSSBlcmFzZSBibG9ja3MgYmVmb3Jl
+Cj4gPiB3cml0aW5nIGRhdGE/IFdoYXQncyB0aGUgcGFnZSBzaXplLCBzZWN0b3Igc2l6ZSwgZXJh
+c2VibG9jayBzaXplPyAuLi4iCj4gPiBpcyBub3Qgc29tZXRoaW5nIHRoYXQgYmVsb25ncyBpbiB0
+aGUgU1BJIGZyYW1ld29yay4gSU1ITywgaXQgc2hvdWxkCj4gPiBzdGF5IGluIFNQSSBtZW0gZHJp
+dmVycyAodGhlIFNQSSBOT1Igb3IgU1BJIE5BTkQgZnJhbWV3b3JrIGFyZSBzdWNoIFNQSQo+ID4g
+bWVtIGRyaXZlcnMpLgo+ID4gCj4gPiBUaGlzIGJlaW5nIHNhaWQsIEkgc2VlIGEgcmVhbCBuZWVk
+IGZvciBhZHZhbmNlZCBmZWF0dXJlcy4gT25lIGV4YW1wbGUgSQo+ID4gaGF2ZSBpbiBtaW5kIGlz
+IGEgImRpcmVjdC1tYXBwaW5nIEFQSSIsIHdoZXJlIGEgc3BpX21lbSB1c2VyIGNvdWxkIGFzawo+
+ID4gZm9yIGEgc3BlY2lmaWMgcmVnaW9uIG9mIHRoZSBtZW1vcnkgdG8gYmUgZGlyZWN0bHkgbWFw
+cGVkIChpZiB0aGUKPiA+IGZlYXR1cmUgaXMgc3VwcG9ydGVkIGJ5IHRoZSBjb250cm9sbGVyIG9m
+IGNvdXJzZSkuIEFuZCB0aGF0J3Mgc29tZXRoaW5nCj4gPiBJIHRoaW5rIHdlIGNhbiBtYWtlIGdl
+bmVyaWMgZW5vdWdoIHRvIGNvbnNpZGVyIGFkZGluZyBpdCB0byB0aGUKPiA+IHNwaV9tZW1fb3Bz
+IGludGVyZmFjZS4gQWxsIHdlJ2xsIG5lZWQgaXMgYSB3YXkgdG8gc2F5ICJJIHdhbnQgdG8gbWFw
+Cj4gPiB0aGlzIHBvcnRpb24gb2YgdGhlIG1lbW9yeSBpbiBSLCBXIG9yIFJXIGFuZCB3aGVuIHlv
+dSBuZWVkIHRvCj4gPiByZWFkL3dyaXRlIHVzZSB0aGlzIHNwaV9tZW1fb3AgYW5kIHBhdGNoIHRo
+ZSBhZGRyZXNzIGJhc2VkIG9uIHRoZQo+ID4gYWN0dWFsIG1lbW9yeSBhZGRyZXNzIHRoYXQgaXMg
+YmVpbmcgYWNjZXNzZWQiLgo+ID4gIAo+IAo+IAo+IE1hbnkgb2YgdGhlIFNQSSBOT1IgY29udHJv
+bGxlcnMsIGVzcGVjaWFsbHkgdGhlIG9uZXMgdGhhdCBzdXBwb3J0IGRpcmVjdAo+IG1hcHBpbmcg
+YXJlIHNtYXJ0IGFuZCBuZWVkIG1vcmUgZmxhc2ggc3BlY2lmaWMgZGF0YS4gRm9yIGV4YW1wbGUs
+Cj4gY2FkZW5jZS1xdWFkc3BpIG5lZWRzIHRvIGtub3cgcGFnZXNpemUgYXMgdGhpcyBjb250cm9s
+bGVyIGF1dG9tYXRpY2FsbHkKPiBzZW5kcyB3cml0ZSBlbmFibGUgd2hlbiB3cml0ZXMgY3Jvc3Mg
+cGFnZSBib3VuZGFyeS4gSSBndWVzcywgc3VjaAo+IGNvbnRyb2xsZXJzIHBvc2UgYSBwcm9ibGVt
+IHRvIHNwaV9tZW1fb3BzIGluIHBhc3Npbmcgc3BpX25vciBpbnRlcm5hbAo+IGRhdGEgdG8gZHJp
+dmVycy4gT3Igc3VjaCBjb250cm9sbGVycyBtYXkgbmVlZCB0byBiZSBjb250aW51ZWQgdG8gYmUK
+PiBzdXBwb3J0ZWQgZGlyZWN0bHkgdW5kZXIgc3BpLW5vciBmcmFtZXdvcms/CgpJdCdzIG5vdCBk
+ZWNpZGVkIHlldC4gSSdtIG5vdCBjbG9zaW5nIHRoZSBkb29yIHRvIGFueSBvZiB0aG9zZSBhZHZh
+bmNlZApjb250cm9sbGVycyB5ZXQsIGp1c3QgbmVlZCB0byBoYXZlIGEgY2xvc2VyIGxvb2sgYmVm
+b3JlIHRha2luZyBhCmRlY2lzaW9uLiBUbyBtZSwgaXQgc291bmRzIGxpa2UgaW5mb3JtYXRpb24g
+dGhhdCBtaWdodCBiZSBuZWVkZWQgdG8KaGFuZGxlIGRpcmVjdCBtYXBwaW5nIGluIHdyaXRlIG1v
+ZGUgZm9yIFNQSSBOT1JzIGFuZCB3ZSdyZSBub3QgdGhlcmUKeWV0LgoKPiAKPiBJIGFtIG9rYXkg
+d2l0aCB0aGlzIHNlcmllcyBpbiBnZW5lcmFsLiBCdXQsIHdhcyB0cnlpbmcgdG8gdW5kZXJzdGFu
+ZAo+IHdoaWNoIGRyaXZlcnMgd2lsbCBmYWxsIHVuZGVyIHNwaV9tZW0gYW5kIHdoaWNoIHdpbGwg
+Y29udGludWUgdG8gcmVtYWluCj4gdW5kZXIgbXRkL3NwaS1ub3IKCklkZWFsbHksIGFsbCBvZiB0
+aGVtLCBidXQgbWF5YmUgbm90IHdpdGggYWxsIHRoZSBhZHZhbmNlZCBmZWF0dXJlcwpzdXBwb3J0
+ZWQgYXQgdGhlIGJlZ2lubmluZy4gVGhlIG9ubHkgdGhpbmdzIEknZCBsaWtlIHRvIGtlZXAgb3V0
+c2lkZSBvZgpkcml2ZXJzL3NwaSBhcmUgY29udHJvbGxlcnMgdGhhdCBhcmUgb25seSBhYmxlIHRv
+IHNlbmQgY29tbWFuZHMgZm9yIGEKc3BlY2lmaWMgdHlwZSBvZiBtZW1vcnkgKGxpa2Ugb25seSBj
+b21tYW5kcyB0byBhZGRyZXNzIFNQSSBOT1JzKS4KCkknbSBmaW5lIGRpc2N1c3NpbmcgYWxsIG9m
+IHRoaXMsIHdpdGggcmVhbCB1c2UgY2FzZXMgdG8gZXhwbGFpbiB3aHkgd2UKbmVlZCB0byBleHBv
+c2UgdGhlIG1lbW9yeSB0eXBlLCBhbmQgdGhlIG1lbW9yeSBvcmdhbml6YXRpb24gaW5mb3JtYXRp
+b24KdG8gU1BJIGNvbnRyb2xsZXIgZHJpdmVycywgYnV0IEknZCBwcmVmZXIgdG8gZG8gdGhhdCBp
+biBhIHNlcGFyYXRlCnRocmVhZCBpZiB5b3UgZG9uJ3QgbWluZC4KClJlZ2FyZHMsCgpCb3JpcwoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
+bnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K

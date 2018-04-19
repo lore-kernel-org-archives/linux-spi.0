@@ -1,78 +1,60 @@
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 46/61] spi: simplify getting .drvdata
-Date: Thu, 19 Apr 2018 16:06:16 +0200
-Message-ID: <20180419140641.27926-47-wsa+renesas@sang-engineering.com>
-References: <20180419140641.27926-1-wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: linux-kernel@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] dt-bindings: add binding for at91-usart in spi mode
+Date: Thu, 19 Apr 2018 15:55:23 +0100
+Message-ID: <20180419145523.GH27188@sirena.org.uk>
+References: <20180413161117.20274-1-radu.pirea@microchip.com>
+ <20180413161117.20274-3-radu.pirea@microchip.com>
+ <20180413162327.GE22187@piout.net>
+ <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
+ <20180413181251.GG22187@piout.net>
+ <20180417110358.GD8973@sirena.org.uk>
+ <68cdbb8b60c32980caa7b130409d05d28788edd9.camel@microchip.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="PW0Eas8rCkcu1VkF"
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+To: Radu Pirea <radu.pirea@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180419140641.27926-1-wsa+renesas@sang-engineering.com>
+Content-Disposition: inline
+In-Reply-To: <68cdbb8b60c32980caa7b130409d05d28788edd9.camel@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We should get drvdata from struct device directly. Going via
-platform_device is an unneeded step back and forth.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
+--PW0Eas8rCkcu1VkF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Build tested only. buildbot is happy. Please apply individually.
+On Thu, Apr 19, 2018 at 01:04:16PM +0300, Radu Pirea wrote:
 
- drivers/spi/spi-cadence.c      | 6 ++----
- drivers/spi/spi-zynqmp-gqspi.c | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+> Thank you for suggestions. I followed your advice and looked at PXA SSP
+> driver. In my opinion it is a layer that avoids collsions and
+> unfortunately complicates things a bit. My ideea is to keep the things
+> as simple as possible. For example, I can enhance usart-serial and
+> usart-spi drivers to print detailed messages if probe fails because one
+> driver tries to request a memory region already used by another driver.
+> What do you think? Is this approach a good way to move forward?
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 5c9516ae4942..de394422b611 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -686,8 +686,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
-  */
- static int __maybe_unused cdns_spi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 
- 	return spi_master_suspend(master);
- }
-@@ -702,8 +701,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
-  */
- static int __maybe_unused cdns_spi_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
- 
- 	cdns_spi_init_hw(xspi);
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 18aeaceee286..3608db4ff368 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -918,8 +918,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
-  */
- static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 
- 	spi_master_suspend(master);
- 
-@@ -939,8 +938,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
-  */
- static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 	int ret = 0;
- 
--- 
-2.11.0
+Alexandre's suggestion using a MFD with a property to select the mode
+seems more solid TBH.
+
+--PW0Eas8rCkcu1VkF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrYrdsACgkQJNaLcl1U
+h9CMZAf9GecsYu4xXaOVqUz0a0cx6h608umvha/JVWSZkxiQ/wfRaegqAE/FLR7t
+InctEm95jQ0cTn07XxLwOCEUrW2KzacBq4Ivv+5vbFQU7mDBSRDHhKZwlOPzPGfG
+ebSQ/pFduE9Uhxs73RbY5F5xa3nLDPa6almsZeqv5T3C80TEdtxPk6uJhKDqDt44
+CEqiNJVtfXoFlFsNJjS/qnLPTou63bOVRkcY0VBlycNBb2AR0qPN7SUQKvVNrQwo
+aT3v4xlOJQv3UCScITTw9G5/mVcgETvbhlJpufyNCd5zv1ocFVpQy3Em9HdG1T4o
+hftd8yd9tQPMIX7bt12eonRCWE2Zeg==
+=p/IG
+-----END PGP SIGNATURE-----
+
+--PW0Eas8rCkcu1VkF--

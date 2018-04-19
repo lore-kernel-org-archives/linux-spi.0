@@ -1,148 +1,52 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 13/20] mmc: Remove depends on HAS_DMA in case of
-	platform dependency
-Date: Thu, 19 Apr 2018 15:17:53 +0200
-Message-ID: <CAPDyKFrDsqJ-URAi=b0JmRkqoAqgT01HDPpQtNkH5to_Enm+LA@mail.gmail.com>
-References: <1523987360-18760-1-git-send-email-geert@linux-m68k.org>
-	<1523987360-18760-14-git-send-email-geert@linux-m68k.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH 2/3] dt-bindings: add binding for at91-usart in spi mode
+Date: Thu, 19 Apr 2018 15:32:33 +0200
+Message-ID: <20180419133233.GE7369@piout.net>
+References: <20180413161117.20274-1-radu.pirea@microchip.com>
+ <20180413161117.20274-3-radu.pirea@microchip.com>
+ <20180413162327.GE22187@piout.net>
+ <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
+ <20180413181251.GG22187@piout.net>
+ <20180417110358.GD8973@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-remoteproc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Linux Fbdev development list <linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux1394-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
-	Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>,
-	Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Matias Bjorling <mb-VR7NuqX4VJ8tq7phqP6ubQ@public.gmane.org>,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ohad Ben-Cohen <ohad-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org>,
-	driverdevel <devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org>, Alan Tull <atull@kern
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-In-Reply-To: <1523987360-18760-14-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
-	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
-List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
-	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
-Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
-Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Radu Pirea <radu.pirea@microchip.com>, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180417110358.GD8973@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 17 April 2018 at 19:49, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> Remove dependencies on HAS_DMA where a Kconfig symbol depends on another
-> symbol that implies HAS_DMA, and, optionally, on "|| COMPILE_TEST".
-> In most cases this other symbol is an architecture or platform specific
-> symbol, or PCI.
->
-> Generic symbols and drivers without platform dependencies keep their
-> dependencies on HAS_DMA, to prevent compiling subsystems or drivers that
-> cannot work anyway.
->
-> This simplifies the dependencies, and allows to improve compile-testing.
->
-> Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> Reviewed-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Acked-by: Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>
-> Acked-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On 17/04/2018 12:03:58+0100, Mark Brown wrote:
+> On Fri, Apr 13, 2018 at 08:12:51PM +0200, Alexandre Belloni wrote:
+> > On 13/04/2018 19:12:54+0200, Nicolas Ferre wrote:
+> 
+> > > This layout of the hardware is completely different from the USART one and
+> > > it seems to makes sense to address it with a different hardware description
+> > > and so a different compatible string.
+> 
+> > But then, you can end up with two drivers trying to use the same IP
+> > because nothing prevents you from writing a DT with both a usart and an
+> > spi node enabled for the same IP. request_mem_region() will not help
+> > here because then the working driver will depend on the probing order.
+> 
+> We don't really have too much in the way of better ideas for how to
+> handle this though.  Take a look at how the PXA SSP stuff handles this,
+> though that's not really doing too much different it at least layers a
+> mechanism on top to avoid collisions.
 
-Thanks, applied for next!
+My suggestion was to add an MFD driver that would match the current
+compatible and either have an atmel,usart-mode property or maybe more
+risky, check whether there are children nodes. Based on that, the
+correct platform device can be added, either an usart or an spi master
+device can be registered.
 
-Kind regrds
-Uffe
-
-> ---
-> v3:
->   - Add Acked-by,
->   - Rebase to v4.17-rc1,
->
-> v2:
->   - Add Reviewed-by, Acked-by,
->   - Drop RFC state,
->   - Split per subsystem.
-> ---
->  drivers/mmc/host/Kconfig | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 9589f9c9046f14b1..3978d0418958bf6b 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -358,7 +358,6 @@ config MMC_MESON_MX_SDIO
->         tristate "Amlogic Meson6/Meson8/Meson8b SD/MMC Host Controller support"
->         depends on ARCH_MESON || COMPILE_TEST
->         depends on COMMON_CLK
-> -       depends on HAS_DMA
->         depends on OF
->         help
->           This selects support for the SD/MMC Host Controller on
-> @@ -401,7 +400,6 @@ config MMC_OMAP
->
->  config MMC_OMAP_HS
->         tristate "TI OMAP High Speed Multimedia Card Interface support"
-> -       depends on HAS_DMA
->         depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
->         help
->           This selects the TI OMAP High Speed Multimedia card Interface.
-> @@ -511,7 +509,6 @@ config MMC_DAVINCI
->
->  config MMC_GOLDFISH
->         tristate "goldfish qemu Multimedia Card Interface support"
-> -       depends on HAS_DMA
->         depends on GOLDFISH || COMPILE_TEST
->         help
->           This selects the Goldfish Multimedia card Interface emulation
-> @@ -605,7 +602,7 @@ config MMC_SDHI
->
->  config MMC_SDHI_SYS_DMAC
->         tristate "DMA for SDHI SD/SDIO controllers using SYS-DMAC"
-> -       depends on MMC_SDHI && HAS_DMA
-> +       depends on MMC_SDHI
->         default MMC_SDHI if (SUPERH || ARM)
->         help
->           This provides DMA support for SDHI SD/SDIO controllers
-> @@ -615,7 +612,7 @@ config MMC_SDHI_SYS_DMAC
->  config MMC_SDHI_INTERNAL_DMAC
->         tristate "DMA for SDHI SD/SDIO controllers using on-chip bus mastering"
->         depends on ARM64 || COMPILE_TEST
-> -       depends on MMC_SDHI && HAS_DMA
-> +       depends on MMC_SDHI
->         default MMC_SDHI if ARM64
->         help
->           This provides DMA support for SDHI SD/SDIO controllers
-> @@ -669,7 +666,6 @@ config MMC_CAVIUM_THUNDERX
->
->  config MMC_DW
->         tristate "Synopsys DesignWare Memory Card Interface"
-> -       depends on HAS_DMA
->         depends on ARC || ARM || ARM64 || MIPS || COMPILE_TEST
->         help
->           This selects support for the Synopsys DesignWare Mobile Storage IP
-> @@ -748,7 +744,6 @@ config MMC_DW_ZX
->
->  config MMC_SH_MMCIF
->         tristate "SuperH Internal MMCIF support"
-> -       depends on HAS_DMA
->         depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
->         help
->           This selects the MMC Host Interface controller (MMCIF) found in various
-> @@ -868,7 +863,6 @@ config MMC_TOSHIBA_PCI
->  config MMC_BCM2835
->         tristate "Broadcom BCM2835 SDHOST MMC Controller support"
->         depends on ARCH_BCM2835 || COMPILE_TEST
-> -       depends on HAS_DMA
->         help
->           This selects the BCM2835 SDHOST MMC controller. If you have
->           a BCM2835 platform with SD or MMC devices, say Y or M here.
-> --
-> 2.7.4
->
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

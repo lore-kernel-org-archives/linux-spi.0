@@ -1,51 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH][next] spi: pxa2xx: make function pxa2xx_spi_transfer_one
- static
-Date: Wed, 18 Apr 2018 17:23:15 +0100
-Message-ID: <20180418162315.GF10061@sirena.org.uk>
-References: <20180418161842.19846-1-colin.king@canonical.com>
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: Re: [PATCH 2/3] dt-bindings: add binding for at91-usart in spi mode
+Date: Thu, 19 Apr 2018 13:04:16 +0300
+Message-ID: <68cdbb8b60c32980caa7b130409d05d28788edd9.camel@microchip.com>
+References: <20180413161117.20274-1-radu.pirea@microchip.com>
+         <20180413161117.20274-3-radu.pirea@microchip.com>
+         <20180413162327.GE22187@piout.net>
+         <8e6c447d-dce5-f9af-e5b2-8d1d863159d6@microchip.com>
+         <20180413181251.GG22187@piout.net> <20180417110358.GD8973@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QXO0/MSS4VvK6f+D"
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Colin King <colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180418161842.19846-1-colin.king@canonical.com>
+In-Reply-To: <20180417110358.GD8973@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, 2018-04-17 at 12:03 +0100, Mark Brown wrote:
+> On Fri, Apr 13, 2018 at 08:12:51PM +0200, Alexandre Belloni wrote:
+> > On 13/04/2018 19:12:54+0200, Nicolas Ferre wrote:
+> > > This layout of the hardware is completely different from the
+> > > USART one and
+> > > it seems to makes sense to address it with a different hardware
+> > > description
+> > > and so a different compatible string.
+> > But then, you can end up with two drivers trying to use the same IP
+> > because nothing prevents you from writing a DT with both a usart
+> > and an
+> > spi node enabled for the same IP. request_mem_region() will not
+> > help
+> > here because then the working driver will depend on the probing
+> > order.
+> 
+> We don't really have too much in the way of better ideas for how to
+> handle this though.  Take a look at how the PXA SSP stuff handles
+> this,
+> though that's not really doing too much different it at least layers
+> a
+> mechanism on top to avoid collisions.
+Hi Mark,
 
---QXO0/MSS4VvK6f+D
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Apr 18, 2018 at 05:18:42PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The function pxa2xx_spi_transfer_one is local to the source and
-> do not need to be in global scope, so make it static.
-
-Someone already sent a patch for this which I applied earlier today.
-
---QXO0/MSS4VvK6f+D
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrXcPIACgkQJNaLcl1U
-h9CCIAf/eF+L52UsAb/zYblEOaMrc+d+LbuwcYm8vq8Z6QXi/ASvHx/Yi/mkbc2g
-zFmKpjzK+a3cm2eUBSGOqOxyF2SqUmoZYMZjHs5V4eJtK379G9B/Ok+tksj2R6Ir
-TsYnt6xbUoGwnTGozSQ7kyb/Girjqpd9uq/tx7bNF7dg6BVCyk9fCbvsYGFJlyLE
-rPvfl/avZTlByWLmGYKIxbJtV0h206PtJHvI5I9klxMx3dAfSmxwHd5d+k9qeb10
-BzI16/pCmih6dewa+p0sfhiBB+Y0qPbjOzdmZYJ/qk1YZ+kyJ3LnhQEf21GuuaCt
-5DHAFxRc1x1Z+2ZFO2FvvTvOCcgsNw==
-=Mul6
------END PGP SIGNATURE-----
-
---QXO0/MSS4VvK6f+D--
+Thank you for suggestions. I followed your advice and looked at PXA SSP
+driver. In my opinion it is a layer that avoids collsions and
+unfortunately complicates things a bit. My ideea is to keep the things
+as simple as possible. For example, I can enhance usart-serial and
+usart-spi drivers to print detailed messages if probe fails because one
+driver tries to request a memory region already used by another driver.
+What do you think? Is this approach a good way to move forward?

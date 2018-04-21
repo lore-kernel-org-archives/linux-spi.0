@@ -1,111 +1,91 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: simplify getting .drvdata" to the spi tree
-Date: Fri, 20 Apr 2018 18:05:46 +0100
-Message-ID: <E1f9ZTm-0004eH-Ps@debutante>
-References: <20180419140641.27926-47-wsa+renesas@sang-engineering.com>
-Cc: Michal Simek <michal.simek@xilinx.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: Re: [PATCH] Enable the clock before calling clk_get_rate().
+Date: Sat, 21 Apr 2018 16:10:46 -0700
+Message-ID: <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
+References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: ldv-project@linuxtesting.org, sil2review@lists.osadl.org
+To: Stefan Potyra <Stefan.Potyra@elektrobit.com>,
         Mark Brown <broonie@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jonas Gorski <jonas.gorski@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180419140641.27926-47-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
++Jonas,
 
-   spi: simplify getting .drvdata
+On 04/19/2018 06:03 AM, Stefan Potyra wrote:
+> Found by Linux Driver Verification project (linuxtesting.org).
 
-has been applied to the spi tree at
+Please use a commit subject which matches what was used before:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+git log --no-merges --oneline drivers/spi/spi-bcm63xx-hsspi.c
+378da4a65f3a spi/bcm63xx-hspi: fix error return code in
+bcm63xx_hsspi_probe()
+c3c25ea712c9 spi/bcm63xx-hspi: Fix checkpatch warnings
+0b85a8421790 spi: bcm63xx-hsspi: Export OF device ID table as module aliases
+7ab2463550e2 spi/bcm63xx-hsspi: allow for probing through devicetree
+ff18e1ef04e2 spi/bcm63xx-hsspi: allow providing clock rate through a
+second clock
+f4d862237715 spi/bcm63xx-hsspi: add support for dual spi read/write
+14ac00e033c5 spi: drop owner assignment from platform_drivers
+e4745fef5595 spi: Remove unneeded include of linux/workqueue.h
+1480916ebd6f spi: bcm63xx-hsspi: Use SIMPLE_DEV_PM_OPS macro
+aa0fe82629f1 spi: Use reinit_completion at appropriate places
+937ebf9cd34a spi/bcm63xx-hsspi: fix pm sleep support
+7d255695804f spi/bcm63xx-hsspi: use devm_register_master()
+dea5de1b37c0 spi/bcm63xx-hsspi: check result of clk_prepare_enable
+b1bdd4f883e1 spi: bcm63xx-hsspi: Use devm_clk_get()
+87917528cc92 spi: bcm63xx-hsspi: checking for ERR_PTR instead of NULL
+142168eba9dc spi: bcm63xx-hsspi: add bcm63xx HSSPI driver
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> 
+> Fixes: 142168eba9dc spi: bcm63xx-hsspi: add bcm63xx HSSPI driver
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Please include the commit title in ("<title>") as is indicated in the
+SubmittingPatches document.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Thank you
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> Signed-off-by: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+> ---
+>  drivers/spi/spi-bcm63xx-hsspi.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+> index cbcba614b253..46cd9b683d22 100644
+> --- a/drivers/spi/spi-bcm63xx-hsspi.c
+> +++ b/drivers/spi/spi-bcm63xx-hsspi.c
+> @@ -352,6 +352,10 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+>  	if (IS_ERR(clk))
+>  		return PTR_ERR(clk);
+>  
+> +	ret = clk_prepare_enable(clk);
+> +	if (ret)
+> +		return ret;
+> +
+>  	rate = clk_get_rate(clk);
+>  	if (!rate) {
+>  		struct clk *pll_clk = devm_clk_get(dev, "pll");
+> @@ -364,10 +368,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+>  			return -EINVAL;
+>  	}
+>  
+> -	ret = clk_prepare_enable(clk);
+> -	if (ret)
+> -		return ret;
+> -
+>  	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+>  	if (!master) {
+>  		ret = -ENOMEM;
+> 
 
-Thanks,
-Mark
-
->From e1f16b0493a01820a137ebbdd96bf695e427fabe Mon Sep 17 00:00:00 2001
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Date: Thu, 19 Apr 2018 16:06:16 +0200
-Subject: [PATCH] spi: simplify getting .drvdata
-
-We should get drvdata from struct device directly. Going via
-platform_device is an unneeded step back and forth.
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Acked-by: Michal Simek <michal.simek@xilinx.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-cadence.c      | 6 ++----
- drivers/spi/spi-zynqmp-gqspi.c | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 5c9516ae4942..de394422b611 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -686,8 +686,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
-  */
- static int __maybe_unused cdns_spi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 
- 	return spi_master_suspend(master);
- }
-@@ -702,8 +701,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
-  */
- static int __maybe_unused cdns_spi_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
- 
- 	cdns_spi_init_hw(xspi);
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 26d1ac3bf496..cc4d31033494 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -906,8 +906,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
-  */
- static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 
- 	spi_master_suspend(master);
- 
-@@ -927,8 +926,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
-  */
- static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 	int ret = 0;
- 
 -- 
-2.17.0
+Florian

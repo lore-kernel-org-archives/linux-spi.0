@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 1/9] spi: Expose spi_{map,unmap}_buf() for internal use
-Date: Sun, 22 Apr 2018 20:35:14 +0200
-Message-ID: <20180422183522.11118-2-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 4/9] spi: Make support for regular transfers optional when
+ ->mem_ops != NULL
+Date: Sun, 22 Apr 2018 20:35:17 +0200
+Message-ID: <20180422183522.11118-5-boris.brezillon@bootlin.com>
 References: <20180422183522.11118-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,131 +33,99 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-spi_{map,unmap}_buf() are needed by the spi-mem logic that is about to
-be introduced to prepare data buffer for DMA operations.
+Some SPI/QuadSPI controllers only expose a high-level SPI memory
+interface, thus preventing any regular SPI transfers from being done.
 
-Remove the static specifier on these functions and add their prototypes
-to drivers/spi/internals.h. We do not export the symbols here because
-both SPI_MEM and SPI can't be enabled as modules and we'd like to
-prevent controller/device drivers from using these functions.
+In that case, SPI controller drivers can leave all ->transfer_xxx()
+hooks empty and only implement the spi_mem_ops interface.
+
+Adjust the core to allow such situations:
+- extend spi_controller_check_ops() to accept situations where all
+  ->transfer_xxx() pointers are NULL only if ->mem_ops != NULL
+- make sure we do not initialize the SPI message queue if
+  ctlr->transfer_one and ctlr->transfer_one_message are missing
+- return -ENOTSUPP if someone tries to do a regular SPI transfer on
+  a controller that does not support it
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
 Changes in v3:
-- move definitions to drivers/spi/internals.h
+- none
 
 Changes in v2:
-- patch introduced in v2
+- patch added in v2
 ---
- drivers/spi/internals.h | 41 +++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi.c       | 25 +++++++------------------
- 2 files changed, 48 insertions(+), 18 deletions(-)
- create mode 100644 drivers/spi/internals.h
+ drivers/spi/spi.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/internals.h b/drivers/spi/internals.h
-new file mode 100644
-index 000000000000..dbe56c77b464
---- /dev/null
-+++ b/drivers/spi/internals.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2018 Exceet Electronics GmbH
-+ * Copyright (C) 2018 Bootlin
-+ *
-+ * Author: Boris Brezillon <boris.brezillon@bootlin.com>
-+ *
-+ * Helpers needed by the spi or spi-mem logic. Should not be used outside of
-+ * spi-mem.c and spi.c.
-+ */
-+
-+#ifndef __LINUX_SPI_INTERNALS_H
-+#define __LINUX_SPI_INTERNALS_H
-+
-+#include <linux/device.h>
-+#include <linux/dma-direction.h>
-+#include <linux/scatterlist.h>
-+#include <linux/spi/spi.h>
-+
-+#ifdef CONFIG_HAS_DMA
-+int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
-+		struct sg_table *sgt, void *buf, size_t len,
-+		enum dma_data_direction dir);
-+void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
-+		   struct sg_table *sgt, enum dma_data_direction dir);
-+#else /* !CONFIG_HAS_DMA */
-+static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
-+			      struct sg_table *sgt, void *buf, size_t len,
-+			      enum dma_data_direction dir)
-+{
-+	return -EINVAL;
-+}
-+
-+static inline void spi_unmap_buf(struct spi_controller *ctlr,
-+				 struct device *dev, struct sg_table *sgt,
-+				 enum dma_data_direction dir)
-+{
-+}
-+#endif /* CONFIG_HAS_DMA */
-+
-+#endif /* __LINUX_SPI_INTERNALS_H */
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 24369e437c6b..a59f01005906 100644
+index 9ab65fb2738e..c85b0cf7b4a9 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -46,6 +46,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
+@@ -28,6 +28,7 @@
+ #include <linux/slab.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
+ #include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_domain.h>
+@@ -2071,12 +2072,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
+ static int spi_controller_check_ops(struct spi_controller *ctlr)
+ {
+ 	/*
+-	 * The controller must at least implement one of the ->transfer()
+-	 * hooks.
++	 * The controller may implement only the high-level SPI-memory like
++	 * operations if it does not support regular SPI transfers, and this is
++	 * valid use case.
++	 * If ->mem_ops is NULL, we request that at least one of the
++	 * ->transfer_xxx() method be implemented.
+ 	 */
+-	if (!ctlr->transfer && !ctlr->transfer_one &&
+-	    !ctlr->transfer_one_message)
++	if (ctlr->mem_ops) {
++		if (!ctlr->mem_ops->exec_op)
++			return -EINVAL;
++	} else if (!ctlr->transfer && !ctlr->transfer_one &&
++		   !ctlr->transfer_one_message) {
+ 		return -EINVAL;
++	}
  
-+#include "internals.h"
+ 	return 0;
+ }
+@@ -2187,10 +2195,14 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 			spi_controller_is_slave(ctlr) ? "slave" : "master",
+ 			dev_name(&ctlr->dev));
+ 
+-	/* If we're using a queued driver, start the queue */
+-	if (ctlr->transfer)
++	/*
++	 * If we're using a queued driver, start the queue. Note that we don't
++	 * need the queueing logic if the driver is only supporting high-level
++	 * memory operations.
++	 */
++	if (ctlr->transfer) {
+ 		dev_info(dev, "controller is unqueued, this is deprecated\n");
+-	else {
++	} else if (ctlr->transfer_one || ctlr->transfer_one_message) {
+ 		status = spi_controller_initialize_queue(ctlr);
+ 		if (status) {
+ 			device_del(&ctlr->dev);
+@@ -2920,6 +2932,13 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 
++	/*
++	 * Some controllers do not support doing regular SPI transfers. Return
++	 * ENOTSUPP when this is the case.
++	 */
++	if (!ctlr->transfer)
++		return -ENOTSUPP;
 +
- static DEFINE_IDR(spi_master_idr);
+ 	message->spi = spi;
  
- static void spidev_release(struct device *dev)
-@@ -740,9 +742,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- }
- 
- #ifdef CONFIG_HAS_DMA
--static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
--		       struct sg_table *sgt, void *buf, size_t len,
--		       enum dma_data_direction dir)
-+int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
-+		struct sg_table *sgt, void *buf, size_t len,
-+		enum dma_data_direction dir)
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
- 	unsigned int max_seg_size = dma_get_max_seg_size(dev);
-@@ -821,8 +823,8 @@ static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
- 	return 0;
- }
- 
--static void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
--			  struct sg_table *sgt, enum dma_data_direction dir)
-+void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
-+		   struct sg_table *sgt, enum dma_data_direction dir)
- {
- 	if (sgt->orig_nents) {
- 		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
-@@ -907,19 +909,6 @@ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	return 0;
- }
- #else /* !CONFIG_HAS_DMA */
--static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
--			      struct sg_table *sgt, void *buf, size_t len,
--			      enum dma_data_direction dir)
--{
--	return -EINVAL;
--}
--
--static inline void spi_unmap_buf(struct spi_controller *ctlr,
--				 struct device *dev, struct sg_table *sgt,
--				 enum dma_data_direction dir)
--{
--}
--
- static inline int __spi_map_msg(struct spi_controller *ctlr,
- 				struct spi_message *msg)
- {
+ 	SPI_STATISTICS_INCREMENT_FIELD(&ctlr->statistics, spi_async);
 -- 
 2.14.1
 

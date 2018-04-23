@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Add an helper to flush the message queue" to the spi
- tree
-Date: Mon, 23 Apr 2018 19:05:27 +0100
-Message-ID: <E1fAfqB-0004Jh-F7@debutante>
-References: <20180422183522.11118-3-boris.brezillon@bootlin.com>
+Subject: Applied "spi: Expose spi_{map,
+ unmap}_buf() for internal use" to the spi tree
+Date: Mon, 23 Apr 2018 19:05:43 +0100
+Message-ID: <E1fAfqR-0004M5-3E@debutante>
+References: <20180422183522.11118-2-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,7 +19,7 @@ Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
  David Woodhouse <dwmw2@infradead.org>
 To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180422183522.11118-3-boris.brezillon@bootlin.com>
+In-Reply-To: <20180422183522.11118-2-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -33,7 +33,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Add an helper to flush the message queue
+   spi: Expose spi_{map,unmap}_buf() for internal use
 
 has been applied to the spi tree at
 
@@ -58,63 +58,131 @@ to this mail.
 Thanks,
 Mark
 
->From 988f259b46646934003ff8ae4966f7233691d1ad Mon Sep 17 00:00:00 2001
+>From 46336966bf0852d76f76c1292c057635b05dbb1b Mon Sep 17 00:00:00 2001
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Date: Sun, 22 Apr 2018 20:35:15 +0200
-Subject: [PATCH] spi: Add an helper to flush the message queue
+Date: Sun, 22 Apr 2018 20:35:14 +0200
+Subject: [PATCH] spi: Expose spi_{map,unmap}_buf() for internal use
 
-This is needed by the spi-mem logic to force all messages that have been
-queued before a memory operation to be sent before we start the memory
-operation. We do that in order to guarantee that spi-mem operations do
-not preempt regular SPI transfers.
+spi_{map,unmap}_buf() are needed by the spi-mem logic that is about to
+be introduced to prepare data buffer for DMA operations.
+
+Remove the static specifier on these functions and add their prototypes
+to drivers/spi/internals.h. We do not export the symbols here because
+both SPI_MEM and SPI can't be enabled as modules and we'd like to
+prevent controller/device drivers from using these functions.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/internals.h |  2 ++
- drivers/spi/spi.c       | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+)
+ drivers/spi/internals.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi.c       | 25 +++++++------------------
+ 2 files changed, 48 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/spi/internals.h
 
 diff --git a/drivers/spi/internals.h b/drivers/spi/internals.h
-index dbe56c77b464..4a28a8395552 100644
---- a/drivers/spi/internals.h
+new file mode 100644
+index 000000000000..dbe56c77b464
+--- /dev/null
 +++ b/drivers/spi/internals.h
-@@ -17,6 +17,8 @@
- #include <linux/scatterlist.h>
- #include <linux/spi/spi.h>
- 
-+void spi_flush_queue(struct spi_controller *ctrl);
-+
- #ifdef CONFIG_HAS_DMA
- int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
- 		struct sg_table *sgt, void *buf, size_t len,
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 86b778d8563e..3f4666365678 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1522,6 +1522,22 @@ static int spi_controller_initialize_queue(struct spi_controller *ctlr)
- 	return ret;
- }
- 
-+/**
-+ * spi_flush_queue - Send all pending messages in the queue from the callers'
-+ *		     context
-+ * @ctlr: controller to process queue for
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (C) 2018 Exceet Electronics GmbH
++ * Copyright (C) 2018 Bootlin
 + *
-+ * This should be used when one wants to ensure all pending messages have been
-+ * sent before doing something. Is used by the spi-mem code to make sure SPI
-+ * memory operations do not preempt regular SPI transfers that have been queued
-+ * before the spi-mem operation.
++ * Author: Boris Brezillon <boris.brezillon@bootlin.com>
++ *
++ * Helpers needed by the spi or spi-mem logic. Should not be used outside of
++ * spi-mem.c and spi.c.
 + */
-+void spi_flush_queue(struct spi_controller *ctlr)
++
++#ifndef __LINUX_SPI_INTERNALS_H
++#define __LINUX_SPI_INTERNALS_H
++
++#include <linux/device.h>
++#include <linux/dma-direction.h>
++#include <linux/scatterlist.h>
++#include <linux/spi/spi.h>
++
++#ifdef CONFIG_HAS_DMA
++int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++		struct sg_table *sgt, void *buf, size_t len,
++		enum dma_data_direction dir);
++void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir);
++#else /* !CONFIG_HAS_DMA */
++static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++			      struct sg_table *sgt, void *buf, size_t len,
++			      enum dma_data_direction dir)
 +{
-+	if (ctlr->transfer == spi_queued_transfer)
-+		__spi_pump_messages(ctlr, false);
++	return -EINVAL;
 +}
 +
- /*-------------------------------------------------------------------------*/
++static inline void spi_unmap_buf(struct spi_controller *ctlr,
++				 struct device *dev, struct sg_table *sgt,
++				 enum dma_data_direction dir)
++{
++}
++#endif /* CONFIG_HAS_DMA */
++
++#endif /* __LINUX_SPI_INTERNALS_H */
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 7b213faa0a2b..86b778d8563e 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -46,6 +46,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/spi.h>
  
- #if defined(CONFIG_OF)
++#include "internals.h"
++
+ static DEFINE_IDR(spi_master_idr);
+ 
+ static void spidev_release(struct device *dev)
+@@ -740,9 +742,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ }
+ 
+ #ifdef CONFIG_HAS_DMA
+-static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+-		       struct sg_table *sgt, void *buf, size_t len,
+-		       enum dma_data_direction dir)
++int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
++		struct sg_table *sgt, void *buf, size_t len,
++		enum dma_data_direction dir)
+ {
+ 	const bool vmalloced_buf = is_vmalloc_addr(buf);
+ 	unsigned int max_seg_size = dma_get_max_seg_size(dev);
+@@ -821,8 +823,8 @@ static int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+ 	return 0;
+ }
+ 
+-static void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
+-			  struct sg_table *sgt, enum dma_data_direction dir)
++void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir)
+ {
+ 	if (sgt->orig_nents) {
+ 		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
+@@ -907,19 +909,6 @@ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	return 0;
+ }
+ #else /* !CONFIG_HAS_DMA */
+-static inline int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+-			      struct sg_table *sgt, void *buf, size_t len,
+-			      enum dma_data_direction dir)
+-{
+-	return -EINVAL;
+-}
+-
+-static inline void spi_unmap_buf(struct spi_controller *ctlr,
+-				 struct device *dev, struct sg_table *sgt,
+-				 enum dma_data_direction dir)
+-{
+-}
+-
+ static inline int __spi_map_msg(struct spi_controller *ctlr,
+ 				struct spi_message *msg)
+ {
 -- 
 2.17.0
 

@@ -1,68 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] spi/bcm63xx-hspi: Enable the clock before calling
- clk_get_rate().
-Date: Tue, 24 Apr 2018 18:32:53 +0100
-Message-ID: <20180424173253.GF22073@sirena.org.uk>
-References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
- <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
- <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [RFC 00/10] ARM: Remove support for Exynos5440
+Date: Tue, 24 Apr 2018 22:50:58 +0200
+Message-ID: <CAK8P3a2CZU1CYFt0fdVSFFnj2Wg=mUcC=yuWAW7zDO0u2Q2dUQ@mail.gmail.com>
+References: <20180424203239.21885-1-krzk@kernel.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="z0eOaCaDLjvTGF2l"
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        ldv-project@linuxtesting.org, sil2review@lists.osadl.org
-To: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, Tejun Heo <tj@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
+In-Reply-To: <20180424203239.21885-1-krzk@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Apr 24, 2018 at 10:32 PM, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> Hi,
+>
+>
+> Overview
+> ========
+> Let's continue the removal of old platforms. We already get rid of Exynos4212.
+> Now it's time for Exynos5440.
+>
+> The Exynos5440 (quad-core A15 with GMAC, PCIe, SATA) was targeting
+> server platforms but it did not make it to the market really.  There are
+> no development boards with it and probably there are no real products
+> neither.  The development for Exynos5440 ended in 2013 and since then
+> the platform is in maintenance mode.
+>
+> The only development happening around it is the PCIe driver for Exynos5433
+> (ARMv8). [1]
+>
+> Removing Exynos5440, makes our life slightly easier:
+> 1. Less maintenance,
+> 2. Smaller code, less quirks,
+> 3. No need to preserve (imaginary) backward-compatibility for Exynos PCIe
+>    driver (so it is easier to add support for Exynos5433).
+>
+>
+> Because of point (3) above - I left the PCIe and PCIe PHY drivers intact.
+>
+>
+> Dependencies
+> ============
+> I think about starting with removal of DTS in some kernel release (patch 1/10).
+> Then all drivers can be removed/updated - subsystem maintainers can pick their
+> patches freely.
+>
+> Finally, after getting rid of all Exynos5440 symbols, the last patch (10/10) will
+> end in arm-soc tree.
+>
+>
+> Any comments?
 
---z0eOaCaDLjvTGF2l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't see any hard dependency here, if this is all unused, I think we
+can apply both patches 1 and 10 into arm-soc at the same time as merging
+the other patches through the respective subsystem trees.
 
-On Tue, Apr 24, 2018 at 06:16:05PM +0200, Stefan Potyra wrote:
-
-> +	ret =3D clk_prepare_enable(clk);
-> +	if (ret)
-> +		return ret;
-> +
->  	rate =3D clk_get_rate(clk);
->  	if (!rate) {
->  		struct clk *pll_clk =3D devm_clk_get(dev, "pll");
-> @@ -364,10 +368,6 @@ static int bcm63xx_hsspi_probe(struct platform_devic=
-e *pdev)
->  			return -EINVAL;
->  	}
-> =20
-> -	ret =3D clk_prepare_enable(clk);
-> -	if (ret)
-> -		return ret;
-> -
-
-We can return an error after the clock was enabled, this will leake the
-clock if that happens.
-
---z0eOaCaDLjvTGF2l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrfakUACgkQJNaLcl1U
-h9D4bgf+J6y1UloIi6nrD3w10mYBHYTy/sHpIZUvMNIhg8AoJ8flP3t4TB4+djjJ
-HOG0IqvjlBzc0kyyOgGBW97z3HvTvy+iZAQgHctjhVPspVLJQ4sZq0FAnkonEMpZ
-2aEVaYvijzInM6ooUE0a//6BGPtyX3V4y2bMcqyWZGx9AS6J6WZJHEInSlPngq5s
-+Zp1Wu0oHjPA6fsauACKbgWl5aheQy597RpksN6cNJMbvcxSsgZxHY7y2UG8s2Bl
-kaqDkNh34qbGudLd+eWk8aWajMDm1UevFaNj4FfS1wXXBiGOT0YqVj6ezEr4Dgoq
-1w93AHUEleTSljxo+WZp8rv6+4I90g==
-=S6fH
------END PGP SIGNATURE-----
-
---z0eOaCaDLjvTGF2l--
+      Arnd

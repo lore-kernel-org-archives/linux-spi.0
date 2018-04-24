@@ -1,77 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Allow 64-bit DMA" to the spi tree
-Date: Tue, 24 Apr 2018 16:28:33 +0100
-Message-ID: <E1fAzrt-0007ZJ-F6@debutante>
-References: <20180419165333.32962-1-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-spi@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180419165333.32962-1-andriy.shevchenko@linux.intel.com>
-Sender: stable-owner@vger.kernel.org
+From: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+Subject: [PATCH v2] spi/bcm63xx-hspi: Enable the clock before calling
+ clk_get_rate().
+Date: Tue, 24 Apr 2018 18:16:05 +0200
+Message-ID: <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
+References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
+ <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Cc: Mark Brown <broonie@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        <ldv-project@linuxtesting.org>, <sil2review@lists.osadl.org>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Enable the clock prior to calling clk_get_rate(), because clk_get_rate()
+should only be called if the clock is enabled.
 
-   spi: pxa2xx: Allow 64-bit DMA
+Found by Linux Driver Verification project (linuxtesting.org).
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From efc4a13724b852ddaa3358402a8dec024ffbcb17 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date: Thu, 19 Apr 2018 19:53:32 +0300
-Subject: [PATCH] spi: pxa2xx: Allow 64-bit DMA
-
-Currently the 32-bit device address only is supported for DMA. However,
-starting from Intel Sunrisepoint PCH the DMA address of the device FIFO
-can be 64-bit.
-
-Change the respective variable to be compatible with DMA engine
-expectations, i.e. to phys_addr_t.
-
-Fixes: 34cadd9c1bcb ("spi: pxa2xx: Add support for Intel Sunrisepoint")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: 142168eba9dc (spi: "bcm63xx-hsspi: add bcm63xx HSSPI driver")
+Signed-off-by: Stefan Potyra <Stefan.Potyra@elektrobit.com>
 ---
- drivers/spi/spi-pxa2xx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 513ec6c6e25b..0ae7defd3492 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -38,7 +38,7 @@ struct driver_data {
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index cbcba614b253..46cd9b683d22 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -352,6 +352,10 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
  
- 	/* SSP register addresses */
- 	void __iomem *ioaddr;
--	u32 ssdr_physical;
-+	phys_addr_t ssdr_physical;
++	ret = clk_prepare_enable(clk);
++	if (ret)
++		return ret;
++
+ 	rate = clk_get_rate(clk);
+ 	if (!rate) {
+ 		struct clk *pll_clk = devm_clk_get(dev, "pll");
+@@ -364,10 +368,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 			return -EINVAL;
+ 	}
  
- 	/* SSP masks*/
- 	u32 dma_cr1;
+-	ret = clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+ 	if (!master) {
+ 		ret = -ENOMEM;
 -- 
 2.17.0

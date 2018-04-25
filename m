@@ -1,73 +1,30 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4] spi/bcm63xx-hspi: Enable the clock before calling
- clk_get_rate().
-Date: Wed, 25 Apr 2018 18:28:16 +0100
-Message-ID: <20180425172816.GI24769@sirena.org.uk>
-References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
- <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
- <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
- <20180424173253.GF22073@sirena.org.uk>
- <20180425134728.GA20897@er01809n.ebgroup.elektrobit.com>
- <20180425155028.GF24769@sirena.org.uk>
- <20180425164904.GA30349@er01809n.ebgroup.elektrobit.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Q59ABw34pTSIagmi"
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        ldv-project@linuxtesting.org, sil2review@lists.osadl.org
-To: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
+Subject: [PATCH v1 0/2] spi: bcm-qspi: Fix spi-nor chip select logic for BSPI
+Date: Wed, 25 Apr 2018 14:28:03 -0400
+Message-ID: <1524680885-4600-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        jon.mason@broadcom.com, yendapally.reddy@broadcom.com,
+        Kamal Dasu <kdasu.kdev@gmail.com>
+To: broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180425164904.GA30349@er01809n.ebgroup.elektrobit.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+spi-nor master controller driver needs to verify the chip select bit in the
+cs register for any cs change during trasfers. Also CDRAM PCS field not used
+in BSPI mode, set defualt to ~1 indicating active low for zeroth bit.
+Also always enable/disable BSPI_MAST_N_BOOT_CTRL when using BSPI mode.
 
---Q59ABw34pTSIagmi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 25, 2018 at 06:49:06PM +0200, Stefan Potyra wrote:
+*** BLURB HERE ***
 
-> Additionally, prepare/enable the pll_clk before calling clk_get_rate()
-> for the same reason.
+Kamal Dasu (2):
+  spi: bcm-qspi: Avoid setting MSPI_CDRAM_PCS for spi-nor master
+  spi: bcm-qspi: Always change BSPI_MAST_N_BOOT_CTRL state
 
-I don't see this change in the code:
+ drivers/spi/spi-bcm-qspi.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
->  		struct clk *pll_clk =3D devm_clk_get(dev, "pll");
-> =20
-> -		if (IS_ERR(pll_clk))
-> -			return PTR_ERR(pll_clk);
-> +		if (IS_ERR(pll_clk)) {
-> +			ret =3D PTR_ERR(pll_clk);
-> +			goto out_disable_clk;
-> +		}
-> +
-> =20
->  		rate =3D clk_get_rate(pll_clk);
-> -		if (!rate)
-> -			return -EINVAL;
-
-Did you forget a git add?
-
---Q59ABw34pTSIagmi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrguq8ACgkQJNaLcl1U
-h9AsQQf/eb4QMlqdeZw5IBQeEG+aa+JJHHr3zw0WmnYW9tUnMCZTrUnU8F5kxYlU
-mzKhZ7nLND8AxG8cr9mlcCd8P9A4pPsx2ARLh0Ji+yj8LznKUf8qAhiamgFD3k0+
-SIMyDteMB9ckbiU8bZWk96QpHg7Kjl2shmth5YCDwugnnjhruBzs9vnjAuLuPuVG
-j/7uk9mj5QNDd5P5lpNh4iXm2fK4HMLi/1OIm4uFwEL3TfNte96ahh1yLVZ/1lxn
-1HFrJmjYus8NduYAOpEF02sXvzj63n3t83019NOVi3Twsrc5385I0czNeE7J87F+
-o30is95xtenYwHjGvoJLfhnSMNI2MQ==
-=l/Yu
------END PGP SIGNATURE-----
-
---Q59ABw34pTSIagmi--
+-- 
+2.7.4

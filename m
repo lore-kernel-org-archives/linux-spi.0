@@ -1,11 +1,11 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC 00/10] ARM: Remove support for Exynos5440
-Date: Tue, 24 Apr 2018 23:12:15 +0200
-Message-ID: <CAK8P3a1Az9acSZwdhPz+Gwy6nSL=WAB6-z6Cq9m=nPLzF240_A@mail.gmail.com>
-References: <20180424203239.21885-1-krzk@kernel.org> <CAK8P3a2CZU1CYFt0fdVSFFnj2Wg=mUcC=yuWAW7zDO0u2Q2dUQ@mail.gmail.com>
- <20180424205636.cdp4czq6hhs5gu5a@kozik-lap>
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [RFC 03/10] cpufreq: exynos: Remove support for Exynos5440
+Date: Wed, 25 Apr 2018 08:18:24 +0530
+Message-ID: <20180425024824.7ej2sz5jlbiuqeqh@vireshk-i7>
+References: <20180424203239.21885-1-krzk@kernel.org>
+ <20180424203239.21885-4-krzk@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
 Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>, Tejun Heo <tj@kernel.org>,
         Sylwester Nawrocki <s.nawrocki@samsung.com>,
@@ -14,7 +14,6 @@ Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Eduardo Valentin <edubezval@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -23,24 +22,30 @@ Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Alan Stern <stern@rowland.harvard.edu>,
-        Greg
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180424205636.cdp4czq6hhs5gu5a@kozik-lap>
+Content-Disposition: inline
+In-Reply-To: <20180424203239.21885-4-krzk@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 24, 2018 at 10:56 PM, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Tue, Apr 24, 2018 at 10:50:58PM +0200, Arnd Bergmann wrote:
->> On Tue, Apr 24, 2018 at 10:32 PM, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> The only dependency is through Kconfig symbol (SOC_EXYNOS5440).  After
-> applying 10/10, which removes SOC_EXYNOS5440, some automatic code
-> testers can complain about non-existing Kconfig option.  That's not big
-> issue because all this will go away so indeed we could take everything
-> in one release.
+On 24-04-18, 22:32, Krzysztof Kozlowski wrote:
+> The Exynos5440 is not actively developed, there are no development
+> boards available and probably there are no real products with it.
+> Remove wide-tree support for Exynos5440.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  .../bindings/cpufreq/cpufreq-exynos5440.txt        |  28 --
+>  drivers/cpufreq/Kconfig.arm                        |  14 -
+>  drivers/cpufreq/Makefile                           |   1 -
+>  drivers/cpufreq/exynos5440-cpufreq.c               | 452 ---------------------
+>  4 files changed, 495 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/cpufreq/cpufreq-exynos5440.txt
+>  delete mode 100644 drivers/cpufreq/exynos5440-cpufreq.c
 
-Right, I wouldn't worry about that. Kbuild itself doesn't warn about missing
-symbols, so this is only for helpful automated checks that tell us that there
-is still some pending work.
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-       Arnd
+-- 
+viresh

@@ -1,50 +1,109 @@
-From: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [RFC 06/10] thermal: samsung: Remove support for Exynos5440
-Date: Wed, 25 Apr 2018 15:18:51 +0200
-Message-ID: <1951102.VLysaozMLK@amdc3058>
-References: <20180424203239.21885-1-krzk@kernel.org>
-        <CGME20180424203356epcas4p44b884a8d409d0faa188a0ecdf4945c11@epcas4p4.samsung.com>
-        <20180424203239.21885-7-krzk@kernel.org>
+From: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+Subject: [PATCH v3] spi/bcm63xx-hspi: Enable the clock before calling
+Date: Wed, 25 Apr 2018 15:47:30 +0200
+Message-ID: <20180425134728.GA20897@er01809n.ebgroup.elektrobit.com>
+References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
+ <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
+ <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
+ <20180424173253.GF22073@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, Tejun Heo <tj@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm
-To: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Kj7319i9nmIyA2yE"
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        <ldv-project@linuxtesting.org>, <sil2review@lists.osadl.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-reply-to: <20180424203239.21885-7-krzk@kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180424173253.GF22073@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, April 24, 2018 10:32:35 PM Krzysztof Kozlowski wrote:
-> The Exynos5440 is not actively developed, there are no development
-> boards available and probably there are no real products with it.
-> Remove wide-tree support for Exynos5440.
+--Kj7319i9nmIyA2yE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for doing this.
+Enable the clock prior to calling clk_get_rate(), because clk_get_rate()
+should only be called if the clock is enabled.
 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Found by Linux Driver Verification project (linuxtesting.org).
 
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Fixes: 142168eba9dc ("spi: bcm63xx-hsspi: add bcm63xx HSSPI driver")
+Signed-off-by: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+---
+ drivers/spi/spi-bcm63xx-hsspi.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hssp=
+i.c
+index cbcba614b253..8475703543e5 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -352,22 +352,27 @@ static int bcm63xx_hsspi_probe(struct platform_device=
+ *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+=20
++	ret =3D clk_prepare_enable(clk);
++	if (ret)
++		return ret;
++
+ 	rate =3D clk_get_rate(clk);
+ 	if (!rate) {
+ 		struct clk *pll_clk =3D devm_clk_get(dev, "pll");
+=20
+-		if (IS_ERR(pll_clk))
+-			return PTR_ERR(pll_clk);
++		if (IS_ERR(pll_clk)) {
++			ret =3D PTR_ERR(pll_clk);
++			goto out_disable_clk;
++		}
++
+=20
+ 		rate =3D clk_get_rate(pll_clk);
+-		if (!rate)
+-			return -EINVAL;
++		if (!rate) {
++			ret =3D -EINVAL;
++			goto out_disable_clk;
++		}
+ 	}
+=20
+-	ret =3D clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+ 	master =3D spi_alloc_master(&pdev->dev, sizeof(*bs));
+ 	if (!master) {
+ 		ret =3D -ENOMEM;
+--=20
+2.17.0
+
+
+--Kj7319i9nmIyA2yE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEATY+KFcrMtHMM+b3X8uyjJIzOwAFAlrghugACgkQX8uyjJIz
+OwAP0w/6Aw6QHIS37j2GJwPo22PVw14H7EdiBnG5i+Z1erP3PhP/bw3+NfwchKX1
+GDF4cwQ0YPHkhBoDGaa/gM/39HxOU4O/cefP2j+yzXvhCHtQlxMOlz+0juwiA5tj
+SfVmFAvju5FlhRCZijkaxD5V3rDQ0Zh0PDQUADpSUoboVtkQHrUuTbl6RgMj4Joq
+gcIfeaKAvTp+eWxXKAUNAaZEvBMLGCtSsvKKakw98NTT0CX4fAzRzIQKiO1CUMJR
+NB3Sq/wJ7ETYxm8kIM2l7f5pqapaRMBV37bBkkw38o5+BLtoC+uo37f+uWr3WAi4
+RvNq5I65hTCc+leKiW7Y62klkYkFDd9VZjSvDyKcEXtXUNbtg1LLGdNPvERiCotQ
+bzBjeQadiG/qxvqF9U7cD1jfspyj0Q4bHf/iO2SKShOJfOijmA/xeqjsyZuZlzBi
+gCPxjFPae/b+i8SN/jcug0DwD305U2OsWR+IUisp0kQqhffe/+fFy70OGUCmQPoG
+13CcpuuIebgdO7FDkRhG7K/aYr37v22mAveNMrEuvxemadVgA9R2/feRFUEZmoGN
+NdYLNkqlnKum2Og+WbYYkCiw7XnOLayF2P1EyYai6oDgq53WuY7pR4aBXky0kbtk
+dQTxr378eFxS1RDOQRhphb56tGYmsPx/GefUKRoeFpjQSuV5N5E=
+=FsCe
+-----END PGP SIGNATURE-----
+
+--Kj7319i9nmIyA2yE--

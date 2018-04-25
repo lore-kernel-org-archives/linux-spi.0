@@ -1,95 +1,115 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] spi/bcm63xx-hspi: Enable the clock before calling
-Date: Wed, 25 Apr 2018 16:50:28 +0100
-Message-ID: <20180425155028.GF24769@sirena.org.uk>
+From: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+Subject: [PATCH v4] spi/bcm63xx-hspi: Enable the clock before calling
+ clk_get_rate().
+Date: Wed, 25 Apr 2018 18:49:06 +0200
+Message-ID: <20180425164904.GA30349@er01809n.ebgroup.elektrobit.com>
 References: <20180419130358.r7dva6owy2izyfus@agrajag.zerfleddert.de>
  <dfb9c72c-6289-a2ea-c3d4-c59f5e3c799c@broadcom.com>
  <20180424161605.GA17825@er01809n.ebgroup.elektrobit.com>
  <20180424173253.GF22073@sirena.org.uk>
  <20180425134728.GA20897@er01809n.ebgroup.elektrobit.com>
+ <20180425155028.GF24769@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3017803263062288662=="
-Cc: ldv-project@linuxtesting.org, sil2review@lists.osadl.org,
- Florian Fainelli <f.fainelli@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
- Jonas Gorski <jonas.gorski@gmail.com>, linux-arm-kernel@lists.infradead.org
-To: Stefan Potyra <Stefan.Potyra@elektrobit.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180425134728.GA20897@er01809n.ebgroup.elektrobit.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        <ldv-project@linuxtesting.org>, <sil2review@lists.osadl.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180425155028.GF24769@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============3017803263062288662==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="E7i4zwmWs5DOuDSH"
-Content-Disposition: inline
-
-
---E7i4zwmWs5DOuDSH
+--mP3DRpeJDSE+ciuQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 25, 2018 at 03:47:30PM +0200, Stefan Potyra wrote:
+Enable the clock prior to calling clk_get_rate(), because clk_get_rate()
+should only be called if the clock is enabled.
 
-> +	ret =3D clk_prepare_enable(clk);
-> +	if (ret)
-> +		return ret;
-> +
->  	rate =3D clk_get_rate(clk);
->  	if (!rate) {
->  		struct clk *pll_clk =3D devm_clk_get(dev, "pll");
-> =20
-> -		if (IS_ERR(pll_clk))
-> -			return PTR_ERR(pll_clk);
-> +		if (IS_ERR(pll_clk)) {
-> +			ret =3D PTR_ERR(pll_clk);
-> +			goto out_disable_clk;
-> +		}
-> +
-> =20
->  		rate =3D clk_get_rate(pll_clk);
+Additionally, prepare/enable the pll_clk before calling clk_get_rate()
+for the same reason.
 
-Isn't this just showing the same problem with not enabling the pll_clk
-before getting the rate that you're trying to fix for the main clk?
+Found by Linux Driver Verification project (linuxtesting.org).
 
---E7i4zwmWs5DOuDSH
+Fixes: 142168eba9dc ("spi: bcm63xx-hsspi: add bcm63xx HSSPI driver")
+Signed-off-by: Stefan Potyra <Stefan.Potyra@elektrobit.com>
+---
+ drivers/spi/spi-bcm63xx-hsspi.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hssp=
+i.c
+index cbcba614b253..8475703543e5 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -352,22 +352,27 @@ static int bcm63xx_hsspi_probe(struct platform_device=
+ *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+=20
++	ret =3D clk_prepare_enable(clk);
++	if (ret)
++		return ret;
++
+ 	rate =3D clk_get_rate(clk);
+ 	if (!rate) {
+ 		struct clk *pll_clk =3D devm_clk_get(dev, "pll");
+=20
+-		if (IS_ERR(pll_clk))
+-			return PTR_ERR(pll_clk);
++		if (IS_ERR(pll_clk)) {
++			ret =3D PTR_ERR(pll_clk);
++			goto out_disable_clk;
++		}
++
+=20
+ 		rate =3D clk_get_rate(pll_clk);
+-		if (!rate)
+-			return -EINVAL;
++		if (!rate) {
++			ret =3D -EINVAL;
++			goto out_disable_clk;
++		}
+ 	}
+=20
+-	ret =3D clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+ 	master =3D spi_alloc_master(&pdev->dev, sizeof(*bs));
+ 	if (!master) {
+ 		ret =3D -ENOMEM;
+--=20
+2.17.0
+
+
+--mP3DRpeJDSE+ciuQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrgo8MACgkQJNaLcl1U
-h9C3mAf9E2wT1z6BVSR3pGjn8VkIqjK8tF4v/fW0OUJoRejY519N0LtV6wkA2ikU
-H5eCOr7VNNu345uaFdzIXqKWR4jEyPCWkzHj7baall1kwb9wSA1tfMoFG36FW38G
-Kbg2hDQXS/vuIvfBcaNh8XtAftIuKxyWv0W0HnvoKfAJyntdkgCyamRzMgraTNrQ
-oHziqpj2Nzkm8wwtk7HnjyvvnfW8ErCT92pTjcoki5MWeVExDYpgqHseEyXYm+QR
-Oeg8Gch4CHPQfJcvL3njThXkqFIGHqZl4xddXSi/kM/1xOtTY0ibY48GkmSUjjNX
-+4hRjKR2e+ZLj3Jmnbg5tOCwi0IcBw==
-=PbX0
+iQIzBAABCAAdFiEEATY+KFcrMtHMM+b3X8uyjJIzOwAFAlrgsXwACgkQX8uyjJIz
+OwBerg/9EqnUtTafdrKsu9IEkV8E+jzZCtp4JWQI4lmteNcdmufocEPwXQX9cZqZ
+f0GVexGMFQVhA7lK3Zzm8DgvaAT2hSFKLkZgQ1eutz1HyrMUWrMZQ7YeH6IwHu/8
+/WevR7BieZKI+WWKJfZQz6I4/ofb5lSEK1fZ10AFVAdjAgNbV/6jOLWrTRrH++Dn
+0I4e5HBTOzzKek7Rg9+oHG06GEVEdVu0mJweVmzXhVRH3ij5EHV0qftJ/Y5nI5It
+m26qXLL9ZAj6TOP5jMriJQ94Zw2Li+E23xiPoC1KTGYKcyk0THKBeWhsUldTCJzv
+ENkI+dG12TpXlRWtSPTea8LDo2cPxbbYs50DgGX1GwB2Dtz2NIngVL+OqfXmU4G4
+rl6AgthYPKli6zOxVzLN69GHfOfp8V3Dw00oL6n4yfCVBCFtrmsEuJytHsghKoMl
+6zpYZaxjtS2y9IM76NA5fiNtnY9Jtsr6jf+gcEQgZX45Rt8O9Rz6Jz4/JFSDh5dY
+eQEhvRGc8/dtXauPR5KNzqRdp6WZNoVl6ircLGXYlSVUQvMN06qyVlrybHbxxL76
+R2l1H/GwNxyXAE1POw4JAED8g+vgRRmb5gZIiCcS8YR726i4KQwzdsAo8OLhRA7d
+HQMpU5NQ0ruZmICtVq8uAMgs9fD2Knsk49XWLx4ZqbYCNqnrqnY=
+=Z9YA
 -----END PGP SIGNATURE-----
 
---E7i4zwmWs5DOuDSH--
-
-
---===============3017803263062288662==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============3017803263062288662==--
+--mP3DRpeJDSE+ciuQ--

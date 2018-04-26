@@ -1,26 +1,26 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Check presence the of ->transfer[_xxx]() before
- registering a controller" to the spi tree
-Date: Thu, 26 Apr 2018 13:54:13 +0100
-Message-ID: <E1fBgPd-0001Bv-PR@debutante>
-References: <20180410224439.9260-2-boris.brezillon@bootlin.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH v4 4/7] spi: bcm53xx: Implement the spi_mem interface
+Date: Thu, 26 Apr 2018 18:18:17 +0200
+Message-ID: <20180426161820.2852-5-boris.brezillon@bootlin.com>
+References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
- Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+ Kamal Dasu <kdasu.kdev@gmail.com>,
  Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Sourav Poddar <sourav.poddar@ti.com>,
+ Peter Pan <peterpansjtu@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+To: David Woodhouse <dwmw2@infradead.org>,
  Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-2-boris.brezillon@bootlin.com>
+In-Reply-To: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,93 +32,97 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+The spi_mem interface is meant to replace the spi_flash_read() one.
+Implement the ->exec_op() method so that we can smoothly get rid of the
+old interface.
 
-   spi: Check presence the of ->transfer[_xxx]() before registering a controller
+Note that the current ->flash_read() implementation looks a bit fragile
+since it does not take the ->read_opcode passed by the spi-nor layer
+into account, which means if might not work with all kind of NORs.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From bdf3a3b59a7ab1972e7d2242c9466ba7e79f0004 Mon Sep 17 00:00:00 2001
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Date: Wed, 11 Apr 2018 00:44:30 +0200
-Subject: [PATCH] spi: Check presence the of ->transfer[_xxx]() before
- registering a controller
-
-Right now, no checks are done on the presence of a ->transfer[_xxx]()
-method, which can lead to a NULL pointer dereference when someone
-starts sending something on the bus.
-
-Do the check at registration time and refuse to add the controller if
-all ->transfer[_xxx]() pointers are NULL.
+Anyway, I left the logic unchanged and added a few extra checks to make
+sure we're receiving something that looks like a NOR read operation.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Changes in v4:
+- none
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3f4666365678..9ab65fb2738e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2068,6 +2068,19 @@ static int of_spi_register_master(struct spi_controller *ctlr)
- }
- #endif
+Changes in v3:
+- include spi-mem.h from spi-bcm53xx.c instead of spi-bcm2835.c
+
+Changes in v2:
+- include spi-mem.h
+- treat op->addr.val differently since it's now an u64
+---
+ drivers/spi/spi-bcm53xx.c | 37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
+index d02ceb7a29d1..5044e4e4a263 100644
+--- a/drivers/spi/spi-bcm53xx.c
++++ b/drivers/spi/spi-bcm53xx.c
+@@ -14,6 +14,7 @@
+ #include <linux/delay.h>
+ #include <linux/bcma/bcma.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
  
-+static int spi_controller_check_ops(struct spi_controller *ctlr)
+ #include "spi-bcm53xx.h"
+ 
+@@ -257,6 +258,38 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
+ 	return 0;
+ }
+ 
++static int bcm53xxspi_exec_mem_op(struct spi_mem *mem,
++				  const struct spi_mem_op *op)
 +{
++	struct bcm53xxspi *b53spi = spi_master_get_devdata(mem->spi->master);
++	u32 from;
++
 +	/*
-+	 * The controller must at least implement one of the ->transfer()
-+	 * hooks.
++	 * FIXME: There's nothing in this driver programming the opcode and
++	 * buswidth to be used when a read is done on the mmio window, but it
++	 * seems to be used to access a SPI NOR device, so restrict access
++	 * access to SPINOR_OP_READ commands.
 +	 */
-+	if (!ctlr->transfer && !ctlr->transfer_one &&
-+	    !ctlr->transfer_one_message)
-+		return -EINVAL;
++	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
++	    op->addr.nbytes != 3 || op->cmd.opcode != 0x3)
++		return -ENOTSUPP;
++
++	/* Return -ENOTSUPP so that the core can fall back to normal reads. */
++	from = op->addr.val;
++	if (from + op->data.nbytes > BCM53XXSPI_FLASH_WINDOW)
++		return -ENOTSUPP;
++
++	bcm53xxspi_enable_bspi(b53spi);
++	memcpy_fromio(op->data.buf.in, b53spi->mmio_base + from,
++		      op->data.nbytes);
 +
 +	return 0;
 +}
 +
- /**
-  * spi_register_controller - register SPI master or slave controller
-  * @ctlr: initialized master, originally from spi_alloc_master() or
-@@ -2101,6 +2114,14 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	/*
-+	 * Make sure all necessary hooks are implemented before registering
-+	 * the SPI controller.
-+	 */
-+	status = spi_controller_check_ops(ctlr);
-+	if (status)
-+		return status;
++static const struct spi_controller_mem_ops bcm53xxspi_mem_ops = {
++	.exec_op = bcm53xxspi_exec_mem_op,
++};
 +
- 	if (!spi_controller_is_slave(ctlr)) {
- 		status = of_spi_register_master(ctlr);
- 		if (status)
+ static int bcm53xxspi_flash_read(struct spi_device *spi,
+ 				 struct spi_flash_read_message *msg)
+ {
+@@ -311,8 +344,10 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
+ 
+ 	master->dev.of_node = dev->of_node;
+ 	master->transfer_one = bcm53xxspi_transfer_one;
+-	if (b53spi->mmio_base)
++	if (b53spi->mmio_base) {
++		master->mem_ops = &bcm53xxspi_mem_ops;
+ 		master->spi_flash_read = bcm53xxspi_flash_read;
++	}
+ 
+ 	bcma_set_drvdata(core, b53spi);
+ 
 -- 
-2.17.0
+2.14.1
 
 
 ______________________________________________________

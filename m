@@ -1,66 +1,73 @@
-From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH] spi: meson-axg: Fix error handling in meson_spicc_probe()
-Date: Thu, 26 Apr 2018 10:35:33 +0200
-Message-ID: <a2a9cde3-5192-ce05-cc5c-d0191f0e811a@baylibre.com>
-References: <1523655586-4163-1-git-send-email-khoroshilov@ispras.ru>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v3 0/9] spi: Extend the framework to generically support
+ memory devices
+Date: Thu, 26 Apr 2018 14:37:10 +0530
+Message-ID: <354d5c48-be1b-0412-8cb0-f6e4daebccc5@ti.com>
+References: <20180422183522.11118-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-To: Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Mark Brown <broonie@kernel.org>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1523655586-4163-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Peter Pan <peterpansjtu@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+To: Boris Brezillon <boris.brezillon@bootlin.com>, David Woodhouse
+ <dwmw2@infradead.org>, Brian Norris <computersforpeace@gmail.com>, Marek
+ Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>, Cyrille
+ Pitchen <cyrille.pitchen@wedev4u.fr>, <linux-mtd@lists.infradead.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180422183522.11118-1-boris.brezillon@bootlin.com>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Alexey,
 
 
-On 13/04/2018 23:39, Alexey Khoroshilov wrote:
-> If devm_spi_register_master() fails in meson_spicc_probe(),
-> spicc->core is left undisabled. The patch fixes that.
+On Monday 23 April 2018 12:05 AM, Boris Brezillon wrote:
+> Hello,
 > 
-> Found by Linux Driver Verification project (linuxtesting.org).
+> Shrinking a bit the explanation on why the spi-mem abstraction is
+> needed (a detailed explanation is available here [2]). In addition to
+> what as been said in my initial explanation I'll add that making it part
+> of the SPI framework instead of as an extra independent layer is
+> justified by the fact that some controllers support both SPI memory
+> operations and regular SPI transfers, and it's cleaner to have both
+> features exposed through a single driver.
 > 
-> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-> ---
->  drivers/spi/spi-meson-spicc.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+> For those who want to have the full picture, here is a branch [1]
+> containing the SPI NAND framework based on top of this spi-mem layer.
 > 
-> diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-> index 5c82910e3480..7fe4488ace57 100644
-> --- a/drivers/spi/spi-meson-spicc.c
-> +++ b/drivers/spi/spi-meson-spicc.c
-> @@ -574,10 +574,15 @@ static int meson_spicc_probe(struct platform_device *pdev)
->  		master->max_speed_hz = rate >> 2;
->  
->  	ret = devm_spi_register_master(&pdev->dev, master);
-> -	if (!ret)
-> -		return 0;
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "spi master registration failed\n");
-> +		goto out_clk;
-> +	}
->  
-> -	dev_err(&pdev->dev, "spi master registration failed\n");
-> +	return 0;
-> +
-> +out_clk:
-> +	clk_disable_unprepare(spicc->core);
->  
->  out_master:
->  	spi_master_put(master);
+> Thanks,
+> 
+> Boris
+> 
+> [1]https://github.com/bbrezillon/linux/tree/spi-mem
+> [2]https://www.spinics.net/lists/linux-spi/msg12058.html
+> 
 > 
 
-The correct subject should be "spi: meson-spicc:"
+I am trying to apply this on top of linux-next, but
+[PATCH v2 01/10] spi: Check presence the of ->transfer[_xxx]() before
+registering a controller
+from v2 is missing in this series and it does not seem to be in spi.git
+as well?
 
-Apart that :
-Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
 
-Neil
+-- 
+Regards
+Vignesh
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

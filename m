@@ -1,8 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v4 4/7] spi: bcm53xx: Implement the spi_mem interface
-Date: Thu, 26 Apr 2018 18:18:17 +0200
-Message-ID: <20180426161820.2852-5-boris.brezillon@bootlin.com>
-References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v4 0/7] spi: Extend the framework to generically support
+ memory devices
+Date: Thu, 26 Apr 2018 18:18:13 +0200
+Message-ID: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,7 +20,6 @@ To: David Woodhouse <dwmw2@infradead.org>,
  linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
  Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,95 +31,51 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi_mem interface is meant to replace the spi_flash_read() one.
-Implement the ->exec_op() method so that we can smoothly get rid of the
-old interface.
+Hello,
 
-Note that the current ->flash_read() implementation looks a bit fragile
-since it does not take the ->read_opcode passed by the spi-nor layer
-into account, which means if might not work with all kind of NORs.
+Shrinking a bit the explanation on why the spi-mem abstraction is
+needed (a detailed explanation is available here [2]). In addition to
+what as been said in my initial explanation I'll add that making it part
+of the SPI framework instead of as an extra independent layer is
+justified by the fact that some controllers support both SPI memory
+operations and regular SPI transfers, and it's cleaner to have both
+features exposed through a single driver.
 
-Anyway, I left the logic unchanged and added a few extra checks to make
-sure we're receiving something that looks like a NOR read operation.
+For those who want to have the full picture, here is a branch [1]
+containing the SPI NAND framework based on top of this spi-mem layer.
 
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
----
-Changes in v4:
-- none
+Thanks,
 
-Changes in v3:
-- include spi-mem.h from spi-bcm53xx.c instead of spi-bcm2835.c
+Boris
 
-Changes in v2:
-- include spi-mem.h
-- treat op->addr.val differently since it's now an u64
----
- drivers/spi/spi-bcm53xx.c | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+[1]https://github.com/bbrezillon/linux/tree/spi-mem
+[2]https://www.spinics.net/lists/linux-spi/msg12058.html
 
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-index d02ceb7a29d1..5044e4e4a263 100644
---- a/drivers/spi/spi-bcm53xx.c
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -14,6 +14,7 @@
- #include <linux/delay.h>
- #include <linux/bcma/bcma.h>
- #include <linux/spi/spi.h>
-+#include <linux/spi/spi-mem.h>
- 
- #include "spi-bcm53xx.h"
- 
-@@ -257,6 +258,38 @@ static int bcm53xxspi_transfer_one(struct spi_master *master,
- 	return 0;
- }
- 
-+static int bcm53xxspi_exec_mem_op(struct spi_mem *mem,
-+				  const struct spi_mem_op *op)
-+{
-+	struct bcm53xxspi *b53spi = spi_master_get_devdata(mem->spi->master);
-+	u32 from;
-+
-+	/*
-+	 * FIXME: There's nothing in this driver programming the opcode and
-+	 * buswidth to be used when a read is done on the mmio window, but it
-+	 * seems to be used to access a SPI NOR device, so restrict access
-+	 * access to SPINOR_OP_READ commands.
-+	 */
-+	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
-+	    op->addr.nbytes != 3 || op->cmd.opcode != 0x3)
-+		return -ENOTSUPP;
-+
-+	/* Return -ENOTSUPP so that the core can fall back to normal reads. */
-+	from = op->addr.val;
-+	if (from + op->data.nbytes > BCM53XXSPI_FLASH_WINDOW)
-+		return -ENOTSUPP;
-+
-+	bcm53xxspi_enable_bspi(b53spi);
-+	memcpy_fromio(op->data.buf.in, b53spi->mmio_base + from,
-+		      op->data.nbytes);
-+
-+	return 0;
-+}
-+
-+static const struct spi_controller_mem_ops bcm53xxspi_mem_ops = {
-+	.exec_op = bcm53xxspi_exec_mem_op,
-+};
-+
- static int bcm53xxspi_flash_read(struct spi_device *spi,
- 				 struct spi_flash_read_message *msg)
- {
-@@ -311,8 +344,10 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
- 
- 	master->dev.of_node = dev->of_node;
- 	master->transfer_one = bcm53xxspi_transfer_one;
--	if (b53spi->mmio_base)
-+	if (b53spi->mmio_base) {
-+		master->mem_ops = &bcm53xxspi_mem_ops;
- 		master->spi_flash_read = bcm53xxspi_flash_read;
-+	}
- 
- 	bcma_set_drvdata(core, b53spi);
- 
+Boris Brezillon (7):
+  spi: Extend the core to ease integration of SPI memory controllers
+  spi: Make support for regular transfers optional when ->mem_ops !=
+    NULL
+  spi: bcm-qspi: Implement the spi_mem interface
+  spi: bcm53xx: Implement the spi_mem interface
+  spi: ti-qspi: Implement the spi_mem interface
+  mtd: spi-nor: Use the spi_mem_xx() API
+  spi: Get rid of the spi_flash_read() API
+
+ drivers/mtd/devices/Kconfig  |   1 +
+ drivers/mtd/devices/m25p80.c | 236 +++++++++----------------
+ drivers/spi/Kconfig          |   7 +
+ drivers/spi/Makefile         |   1 +
+ drivers/spi/spi-bcm-qspi.c   | 162 ++++++++---------
+ drivers/spi/spi-bcm53xx.c    |  37 ++--
+ drivers/spi/spi-mem.c        | 410 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-ti-qspi.c    |  85 +++++----
+ drivers/spi/spi.c            |  90 +++-------
+ include/linux/spi/spi-mem.h  | 249 ++++++++++++++++++++++++++
+ include/linux/spi/spi.h      |  60 +------
+ 11 files changed, 941 insertions(+), 397 deletions(-)
+ create mode 100644 drivers/spi/spi-mem.c
+ create mode 100644 include/linux/spi/spi-mem.h
+
 -- 
 2.14.1
 

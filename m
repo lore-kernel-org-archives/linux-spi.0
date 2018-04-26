@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v4 5/7] spi: ti-qspi: Implement the spi_mem interface
-Date: Thu, 26 Apr 2018 18:18:18 +0200
-Message-ID: <20180426161820.2852-6-boris.brezillon@bootlin.com>
+Subject: [PATCH v4 6/7] mtd: spi-nor: Use the spi_mem_xx() API
+Date: Thu, 26 Apr 2018 18:18:19 +0200
+Message-ID: <20180426161820.2852-7-boris.brezillon@bootlin.com>
 References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,14 +32,18 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi_mem interface is meant to replace the spi_flash_read() one.
-Implement the ->exec_op() method so that we can smoothly get rid of the
-old interface.
+The spi_mem_xxx() API has been introduced to replace the
+spi_flash_read() one. Make use of it so we can get rid of
+spi_flash_read().
+
+Note that using spi_mem_xx() also simplifies the code because this API
+takes care of using the regular spi_sync() interface when the optimized
+->mem_ops interface is not implemented by the controller.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
 Changes in v4:
-- fix ->mmap_size assignment
+- none
 
 Changes in v3:
 - none
@@ -47,179 +51,384 @@ Changes in v3:
 Changes in v2:
 - include spi-mem.h
 - treat op->addr.val differently since it's now an u64
-- Fix 'buf is DMA-able' check
-- Extract max mmap size from resource_size()
+- Replace SPI_MEM_OP_DATA_OUT() by SPI_MEM_OP_DATA_IN() in m25p80_read()
 ---
- drivers/spi/spi-ti-qspi.c | 84 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 71 insertions(+), 13 deletions(-)
+ drivers/mtd/devices/Kconfig  |   1 +
+ drivers/mtd/devices/m25p80.c | 236 +++++++++++++++----------------------------
+ 2 files changed, 80 insertions(+), 157 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index c24d9b45a27c..1b12c2ff8be3 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -36,6 +36,7 @@
- #include <linux/sizes.h>
+diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
+index 6def5445e03e..57b02c4b3f63 100644
+--- a/drivers/mtd/devices/Kconfig
++++ b/drivers/mtd/devices/Kconfig
+@@ -81,6 +81,7 @@ config MTD_DATAFLASH_OTP
+ config MTD_M25P80
+ 	tristate "Support most SPI Flash chips (AT26DF, M25P, W25X, ...)"
+ 	depends on SPI_MASTER && MTD_SPI_NOR
++	select SPI_MEM
+ 	help
+ 	  This enables access to most modern SPI flash chips, used for
+ 	  program and data storage.   Series supported include Atmel AT26DF,
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index a4e18f6aaa33..3dc022d3b53e 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -24,12 +24,13 @@
+ #include <linux/mtd/partitions.h>
  
  #include <linux/spi/spi.h>
 +#include <linux/spi/spi-mem.h>
+ #include <linux/spi/flash.h>
+ #include <linux/mtd/spi-nor.h>
  
- struct ti_qspi_regs {
- 	u32 clkctrl;
-@@ -50,6 +51,7 @@ struct ti_qspi {
- 	struct spi_master	*master;
- 	void __iomem            *base;
- 	void __iomem            *mmap_base;
-+	size_t			mmap_size;
- 	struct regmap		*ctrl_base;
- 	unsigned int		ctrl_reg;
- 	struct clk		*fclk;
-@@ -434,12 +436,10 @@ static int ti_qspi_dma_xfer(struct ti_qspi *qspi, dma_addr_t dma_dst,
- 	return 0;
- }
- 
--static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi,
--				     struct spi_flash_read_message *msg)
-+static int ti_qspi_dma_bounce_buffer(struct ti_qspi *qspi, loff_t offs,
-+				     void *to, size_t readsize)
+ #define	MAX_CMD_SIZE		6
+ struct m25p {
+-	struct spi_device	*spi;
++	struct spi_mem		*spimem;
+ 	struct spi_nor		spi_nor;
+ 	u8			command[MAX_CMD_SIZE];
+ };
+@@ -37,97 +38,68 @@ struct m25p {
+ static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)
  {
--	size_t readsize = msg->len;
--	void *to = msg->buf;
--	dma_addr_t dma_src = qspi->mmap_phys_base + msg->from;
-+	dma_addr_t dma_src = qspi->mmap_phys_base + offs;
- 	int ret = 0;
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(code, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_IN(len, val, 1));
+ 	int ret;
  
- 	/*
-@@ -507,13 +507,14 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
- 	qspi->mmap_enabled = false;
- }
+-	ret = spi_write_then_read(spi, &code, 1, val, len);
++	ret = spi_mem_exec_op(flash->spimem, &op);
+ 	if (ret < 0)
+-		dev_err(&spi->dev, "error %d reading %x\n", ret, code);
++		dev_err(&flash->spimem->spi->dev, "error %d reading %x\n", ret,
++			code);
  
--static void ti_qspi_setup_mmap_read(struct spi_device *spi,
--				    struct spi_flash_read_message *msg)
-+static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
-+				    u8 data_nbits, u8 addr_width,
-+				    u8 dummy_bytes)
- {
- 	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
--	u32 memval = msg->read_opcode;
-+	u32 memval = opcode;
- 
--	switch (msg->data_nbits) {
-+	switch (data_nbits) {
- 	case SPI_NBITS_QUAD:
- 		memval |= QSPI_SETUP_RD_QUAD;
- 		break;
-@@ -524,8 +525,8 @@ static void ti_qspi_setup_mmap_read(struct spi_device *spi,
- 		memval |= QSPI_SETUP_RD_NORMAL;
- 		break;
- 	}
--	memval |= ((msg->addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
--		   msg->dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
-+	memval |= ((addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
-+		   dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
- 	ti_qspi_write(qspi, memval,
- 		      QSPI_SPI_SETUP_REG(spi->chip_select));
- }
-@@ -546,13 +547,15 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
- 
- 	if (!qspi->mmap_enabled)
- 		ti_qspi_enable_memory_map(spi);
--	ti_qspi_setup_mmap_read(spi, msg);
-+	ti_qspi_setup_mmap_read(spi, msg->read_opcode, msg->data_nbits,
-+				msg->addr_width, msg->dummy_bytes);
- 
- 	if (qspi->rx_chan) {
- 		if (msg->cur_msg_mapped)
- 			ret = ti_qspi_dma_xfer_sg(qspi, msg->rx_sg, msg->from);
- 		else
--			ret = ti_qspi_dma_bounce_buffer(qspi, msg);
-+			ret = ti_qspi_dma_bounce_buffer(qspi, msg->from,
-+							msg->buf, msg->len);
- 		if (ret)
- 			goto err_unlock;
- 	} else {
-@@ -566,6 +569,58 @@ static int ti_qspi_spi_flash_read(struct spi_device *spi,
  	return ret;
  }
  
-+static int ti_qspi_exec_mem_op(struct spi_mem *mem,
-+			       const struct spi_mem_op *op)
-+{
-+	struct ti_qspi *qspi = spi_master_get_devdata(mem->spi->master);
-+	u32 from = 0;
-+	int ret = 0;
-+
-+	/* Only optimize read path. */
-+	if (!op->data.nbytes || op->data.dir != SPI_MEM_DATA_IN ||
-+	    !op->addr.nbytes || op->addr.nbytes > 4)
-+		return -ENOTSUPP;
-+
-+	/* Address exceeds MMIO window size, fall back to regular mode. */
-+	from = op->addr.val;
-+	if (from + op->data.nbytes > qspi->mmap_size)
-+		return -ENOTSUPP;
-+
-+	mutex_lock(&qspi->list_lock);
-+
-+	if (!qspi->mmap_enabled)
-+		ti_qspi_enable_memory_map(mem->spi);
-+	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
-+				op->addr.nbytes, op->dummy.nbytes);
-+
-+	if (qspi->rx_chan) {
-+		struct sg_table sgt;
-+
-+		if (virt_addr_valid(op->data.buf.in) &&
-+		    !spi_controller_dma_map_mem_op_data(mem->spi->master, op,
-+							&sgt)) {
-+			ret = ti_qspi_dma_xfer_sg(qspi, sgt, from);
-+			spi_controller_dma_unmap_mem_op_data(mem->spi->master,
-+							     op, &sgt);
-+		} else {
-+			ret = ti_qspi_dma_bounce_buffer(qspi, from,
-+							op->data.buf.in,
-+							op->data.nbytes);
-+		}
-+	} else {
-+		memcpy_fromio(op->data.buf.in, qspi->mmap_base + from,
-+			      op->data.nbytes);
-+	}
-+
-+	mutex_unlock(&qspi->list_lock);
-+
-+	return ret;
-+}
-+
-+static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
-+	.exec_op = ti_qspi_exec_mem_op,
-+};
-+
- static int ti_qspi_start_transfer_one(struct spi_master *master,
- 		struct spi_message *m)
+-static void m25p_addr2cmd(struct spi_nor *nor, unsigned int addr, u8 *cmd)
+-{
+-	/* opcode is in cmd[0] */
+-	cmd[1] = addr >> (nor->addr_width * 8 -  8);
+-	cmd[2] = addr >> (nor->addr_width * 8 - 16);
+-	cmd[3] = addr >> (nor->addr_width * 8 - 24);
+-	cmd[4] = addr >> (nor->addr_width * 8 - 32);
+-}
+-
+-static int m25p_cmdsz(struct spi_nor *nor)
+-{
+-	return 1 + nor->addr_width;
+-}
+-
+ static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
  {
-@@ -673,6 +728,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
- 				     SPI_BPW_MASK(8);
- 	master->spi_flash_read = ti_qspi_spi_flash_read;
-+	master->mem_ops = &ti_qspi_mem_ops;
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
+-
+-	flash->command[0] = opcode;
+-	if (buf)
+-		memcpy(&flash->command[1], buf, len);
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_OUT(len, buf, 1));
  
- 	if (!of_property_read_u32(np, "num-cs", &num_cs))
- 		master->num_chipselect = num_cs;
-@@ -701,6 +757,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 				"memory mapped resource not required\n");
- 		}
- 	}
-+	qspi->mmap_size = resource_size(res_mmap);
+-	return spi_write(spi, flash->command, len + 1);
++	return spi_mem_exec_op(flash->spimem, &op);
+ }
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -785,6 +842,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 				 PTR_ERR(qspi->mmap_base));
- 			qspi->mmap_base = NULL;
- 			master->spi_flash_read = NULL;
-+			master->mem_ops = NULL;
- 		}
+ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 			    const u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
+-	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
+-	struct spi_transfer t[3] = {};
+-	struct spi_message m;
+-	int cmd_sz = m25p_cmdsz(nor);
+-	ssize_t ret;
++	struct spi_mem_op op =
++			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
++				   SPI_MEM_OP_ADDR(nor->addr_width, to, 1),
++				   SPI_MEM_OP_DUMMY(0, 1),
++				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
++	size_t remaining = len;
++	int ret;
+ 
+ 	/* get transfer protocols. */
+-	inst_nbits = spi_nor_get_protocol_inst_nbits(nor->write_proto);
+-	addr_nbits = spi_nor_get_protocol_addr_nbits(nor->write_proto);
+-	data_nbits = spi_nor_get_protocol_data_nbits(nor->write_proto);
+-
+-	spi_message_init(&m);
++	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
++	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
++	op.dummy.buswidth = op.addr.buswidth;
++	op.data.buswidth = spi_nor_get_protocol_data_nbits(nor->write_proto);
+ 
+ 	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
+-		cmd_sz = 1;
+-
+-	flash->command[0] = nor->program_opcode;
+-	m25p_addr2cmd(nor, to, flash->command);
++		op.addr.nbytes = 0;
+ 
+-	t[0].tx_buf = flash->command;
+-	t[0].tx_nbits = inst_nbits;
+-	t[0].len = cmd_sz;
+-	spi_message_add_tail(&t[0], &m);
+-
+-	/* split the op code and address bytes into two transfers if needed. */
+-	data_idx = 1;
+-	if (addr_nbits != inst_nbits) {
+-		t[0].len = 1;
++	while (remaining) {
++		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
++		ret = spi_mem_adjust_op_size(flash->spimem, &op);
++		if (ret)
++			return ret;
+ 
+-		t[1].tx_buf = &flash->command[1];
+-		t[1].tx_nbits = addr_nbits;
+-		t[1].len = cmd_sz - 1;
+-		spi_message_add_tail(&t[1], &m);
++		ret = spi_mem_exec_op(flash->spimem, &op);
++		if (ret)
++			return ret;
+ 
+-		data_idx = 2;
++		op.addr.val += op.data.nbytes;
++		remaining -= op.data.nbytes;
++		op.data.buf.out += op.data.nbytes;
  	}
- 	qspi->mmap_enabled = false;
+ 
+-	t[data_idx].tx_buf = buf;
+-	t[data_idx].tx_nbits = data_nbits;
+-	t[data_idx].len = len;
+-	spi_message_add_tail(&t[data_idx], &m);
+-
+-	ret = spi_sync(spi, &m);
+-	if (ret)
+-		return ret;
+-
+-	ret = m.actual_length - cmd_sz;
+-	if (ret < 0)
+-		return -EIO;
+-	return ret;
++	return len;
+ }
+ 
+ /*
+@@ -138,92 +110,39 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 			   u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+-	struct spi_device *spi = flash->spi;
+-	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
+-	struct spi_transfer t[3];
+-	struct spi_message m;
+-	unsigned int dummy = nor->read_dummy;
+-	ssize_t ret;
+-	int cmd_sz;
++	struct spi_mem_op op =
++			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
++				   SPI_MEM_OP_ADDR(nor->addr_width, from, 1),
++				   SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
++				   SPI_MEM_OP_DATA_IN(len, buf, 1));
++	size_t remaining = len;
++	int ret;
+ 
+ 	/* get transfer protocols. */
+-	inst_nbits = spi_nor_get_protocol_inst_nbits(nor->read_proto);
+-	addr_nbits = spi_nor_get_protocol_addr_nbits(nor->read_proto);
+-	data_nbits = spi_nor_get_protocol_data_nbits(nor->read_proto);
++	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
++	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
++	op.dummy.buswidth = op.addr.buswidth;
++	op.data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
+ 
+ 	/* convert the dummy cycles to the number of bytes */
+-	dummy = (dummy * addr_nbits) / 8;
+-
+-	if (spi_flash_read_supported(spi)) {
+-		struct spi_flash_read_message msg;
+-
+-		memset(&msg, 0, sizeof(msg));
++	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
+ 
+-		msg.buf = buf;
+-		msg.from = from;
+-		msg.len = len;
+-		msg.read_opcode = nor->read_opcode;
+-		msg.addr_width = nor->addr_width;
+-		msg.dummy_bytes = dummy;
+-		msg.opcode_nbits = inst_nbits;
+-		msg.addr_nbits = addr_nbits;
+-		msg.data_nbits = data_nbits;
+-
+-		ret = spi_flash_read(spi, &msg);
+-		if (ret < 0)
++	while (remaining) {
++		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
++		ret = spi_mem_adjust_op_size(flash->spimem, &op);
++		if (ret)
+ 			return ret;
+-		return msg.retlen;
+-	}
+ 
+-	spi_message_init(&m);
+-	memset(t, 0, (sizeof t));
+-
+-	flash->command[0] = nor->read_opcode;
+-	m25p_addr2cmd(nor, from, flash->command);
+-
+-	t[0].tx_buf = flash->command;
+-	t[0].tx_nbits = inst_nbits;
+-	t[0].len = m25p_cmdsz(nor) + dummy;
+-	spi_message_add_tail(&t[0], &m);
+-
+-	/*
+-	 * Set all dummy/mode cycle bits to avoid sending some manufacturer
+-	 * specific pattern, which might make the memory enter its Continuous
+-	 * Read mode by mistake.
+-	 * Based on the different mode cycle bit patterns listed and described
+-	 * in the JESD216B specification, the 0xff value works for all memories
+-	 * and all manufacturers.
+-	 */
+-	cmd_sz = t[0].len;
+-	memset(flash->command + cmd_sz - dummy, 0xff, dummy);
+-
+-	/* split the op code and address bytes into two transfers if needed. */
+-	data_idx = 1;
+-	if (addr_nbits != inst_nbits) {
+-		t[0].len = 1;
+-
+-		t[1].tx_buf = &flash->command[1];
+-		t[1].tx_nbits = addr_nbits;
+-		t[1].len = cmd_sz - 1;
+-		spi_message_add_tail(&t[1], &m);
++		ret = spi_mem_exec_op(flash->spimem, &op);
++		if (ret)
++			return ret;
+ 
+-		data_idx = 2;
++		op.addr.val += op.data.nbytes;
++		remaining -= op.data.nbytes;
++		op.data.buf.in += op.data.nbytes;
+ 	}
+ 
+-	t[data_idx].rx_buf = buf;
+-	t[data_idx].rx_nbits = data_nbits;
+-	t[data_idx].len = min3(len, spi_max_transfer_size(spi),
+-			       spi_max_message_size(spi) - cmd_sz);
+-	spi_message_add_tail(&t[data_idx], &m);
+-
+-	ret = spi_sync(spi, &m);
+-	if (ret)
+-		return ret;
+-
+-	ret = m.actual_length - cmd_sz;
+-	if (ret < 0)
+-		return -EIO;
+-	return ret;
++	return len;
+ }
+ 
+ /*
+@@ -231,8 +150,9 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+  * matches what the READ command supports, at least until this driver
+  * understands FAST_READ (for clocks over 25 MHz).
+  */
+-static int m25p_probe(struct spi_device *spi)
++static int m25p_probe(struct spi_mem *spimem)
+ {
++	struct spi_device *spi = spimem->spi;
+ 	struct flash_platform_data	*data;
+ 	struct m25p *flash;
+ 	struct spi_nor *nor;
+@@ -244,9 +164,9 @@ static int m25p_probe(struct spi_device *spi)
+ 	char *flash_name;
+ 	int ret;
+ 
+-	data = dev_get_platdata(&spi->dev);
++	data = dev_get_platdata(&spimem->spi->dev);
+ 
+-	flash = devm_kzalloc(&spi->dev, sizeof(*flash), GFP_KERNEL);
++	flash = devm_kzalloc(&spimem->spi->dev, sizeof(*flash), GFP_KERNEL);
+ 	if (!flash)
+ 		return -ENOMEM;
+ 
+@@ -258,12 +178,12 @@ static int m25p_probe(struct spi_device *spi)
+ 	nor->write_reg = m25p80_write_reg;
+ 	nor->read_reg = m25p80_read_reg;
+ 
+-	nor->dev = &spi->dev;
++	nor->dev = &spimem->spi->dev;
+ 	spi_nor_set_flash_node(nor, spi->dev.of_node);
+ 	nor->priv = flash;
+ 
+ 	spi_set_drvdata(spi, flash);
+-	flash->spi = spi;
++	flash->spimem = spimem;
+ 
+ 	if (spi->mode & SPI_RX_QUAD) {
+ 		hwcaps.mask |= SNOR_HWCAPS_READ_1_1_4;
+@@ -303,9 +223,9 @@ static int m25p_probe(struct spi_device *spi)
+ }
+ 
+ 
+-static int m25p_remove(struct spi_device *spi)
++static int m25p_remove(struct spi_mem *spimem)
+ {
+-	struct m25p	*flash = spi_get_drvdata(spi);
++	struct m25p	*flash = spi_mem_get_drvdata(spimem);
+ 
+ 	spi_nor_restore(&flash->spi_nor);
+ 
+@@ -313,9 +233,9 @@ static int m25p_remove(struct spi_device *spi)
+ 	return mtd_device_unregister(&flash->spi_nor.mtd);
+ }
+ 
+-static void m25p_shutdown(struct spi_device *spi)
++static void m25p_shutdown(struct spi_mem *spimem)
+ {
+-	struct m25p *flash = spi_get_drvdata(spi);
++	struct m25p *flash = spi_mem_get_drvdata(spimem);
+ 
+ 	spi_nor_restore(&flash->spi_nor);
+ }
+@@ -386,12 +306,14 @@ static const struct of_device_id m25p_of_table[] = {
+ };
+ MODULE_DEVICE_TABLE(of, m25p_of_table);
+ 
+-static struct spi_driver m25p80_driver = {
+-	.driver = {
+-		.name	= "m25p80",
+-		.of_match_table = m25p_of_table,
++static struct spi_mem_driver m25p80_driver = {
++	.spidrv = {
++		.driver = {
++			.name	= "m25p80",
++			.of_match_table = m25p_of_table,
++		},
++		.id_table	= m25p_ids,
+ 	},
+-	.id_table	= m25p_ids,
+ 	.probe	= m25p_probe,
+ 	.remove	= m25p_remove,
+ 	.shutdown	= m25p_shutdown,
+@@ -402,7 +324,7 @@ static struct spi_driver m25p80_driver = {
+ 	 */
+ };
+ 
+-module_spi_driver(m25p80_driver);
++module_spi_mem_driver(m25p80_driver);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Mike Lavender");
 -- 
 2.14.1
 

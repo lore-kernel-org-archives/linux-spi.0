@@ -1,70 +1,52 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mpc52xx: Use gpio_is_valid()" to the spi tree
-Date: Fri, 27 Apr 2018 12:08:46 +0100
-Message-ID: <E1fC1F8-0004WI-06@debutante>
-References: <aef1b612f61b530012459def8ac958f88674e1c8.1524826858.git.arvind.yadav.cs@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Arvind Yadav <arvind.yadav.cs@gmail.com>
+From: Christopher Lameter <cl@linux.com>
+Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
+Date: Fri, 27 Apr 2018 11:07:07 -0500 (CDT)
+Message-ID: <alpine.DEB.2.20.1804271103160.11686@nuc-kabylake>
+References: <20180426215406.GB27853@wotan.suse.de> <20180427053556.GB11339@infradead.org> <20180427071843.GB17484@dhcp22.suse.cz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Cc: Christoph Hellwig <hch@infradead.org>,
+        "Luis R. Rodriguez" <mcgrof@kernel.org>, linux-mm@kvack.org,
+        Jan Kara <jack@suse.cz>, matthew@wil.cx, x86@kernel.org,
+        luto@amacapital.net, martin.petersen@oracle.com,
+        jthumshirn@suse.de, broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "lsf-pc@lists.linux-foundation.org"
+        <lsf-pc@lists.linux-foundation.org>
+To: Michal Hocko <mhocko@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <aef1b612f61b530012459def8ac958f88674e1c8.1524826858.git.arvind.yadav.cs@gmail.com>
+In-Reply-To: <20180427071843.GB17484@dhcp22.suse.cz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Fri, 27 Apr 2018, Michal Hocko wrote:
 
-   spi: mpc52xx: Use gpio_is_valid()
+> On Thu 26-04-18 22:35:56, Christoph Hellwig wrote:
+> > On Thu, Apr 26, 2018 at 09:54:06PM +0000, Luis R. Rodriguez wrote:
+> > > In practice if you don't have a floppy device on x86, you don't need ZONE_DMA,
+> >
+> > I call BS on that, and you actually explain later why it it BS due
+> > to some drivers using it more explicitly.  But even more importantly
+> > we have plenty driver using it through dma_alloc_* and a small DMA
+> > mask, and they are in use - we actually had a 4.16 regression due to
+> > them.
+>
+> Well, but do we need a zone for that purpose? The idea was to actually
+> replace the zone by a CMA pool (at least on x86). With the current
+> implementation of the CMA we would move the range [0-16M] pfn range into
+> zone_movable so it can be used and we would get rid of all of the
+> overhead each zone brings (a bit in page flags, kmalloc caches and who
+> knows what else)
 
-has been applied to the spi tree at
+Well it looks like what we are using it for is to force allocation from
+low physical memory if we fail to obtain proper memory through a normal
+channel.  The use of ZONE_DMA is only there for emergency purposes.
+I think we could subsitute ZONE_DMA32 on x87 without a problem.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Which means that ZONE_DMA has no purpose anymore.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Can we make ZONE_DMA on x86 refer to the low 32 bit physical addresses
+instead and remove ZONE_DMA32?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 0a090d6537d3ac14391e7aeaf025b725e72a9675 Mon Sep 17 00:00:00 2001
-From: Arvind Yadav <arvind.yadav.cs@gmail.com>
-Date: Fri, 27 Apr 2018 16:32:17 +0530
-Subject: [PATCH] spi: mpc52xx: Use gpio_is_valid()
-
-Replace the manual validity checks for the GPIO with the
-gpio_is_valid().
-
-Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-mpc52xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index e8b59ce4dc3a..0e55784a3ad9 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -447,7 +447,7 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 
- 		for (i = 0; i < ms->gpio_cs_count; i++) {
- 			gpio_cs = of_get_gpio(op->dev.of_node, i);
--			if (gpio_cs < 0) {
-+			if (!gpio_is_valid(gpio_cs)) {
- 				dev_err(&op->dev,
- 					"could not parse the gpio field in oftree\n");
- 				rc = -ENODEV;
--- 
-2.17.0
+That would actually improve the fallback because you have more memory for
+the old devices.

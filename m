@@ -1,104 +1,71 @@
-From: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
-Date: Sat, 28 Apr 2018 01:42:21 -0700
-Message-ID: <20180428084221.GD31684@infradead.org>
-References: <20180426215406.GB27853@wotan.suse.de>
- <20180427053556.GB11339@infradead.org>
- <20180427161456.GD27853@wotan.suse.de>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [RFC 05/10] i2c: s3c2410: Remove support for Exynos5440
+Date: Sat, 28 Apr 2018 14:44:07 +0200
+Message-ID: <20180428124407.bpc47bo7ojebahpz@ninjato>
+References: <20180424203239.21885-1-krzk@kernel.org>
+ <20180424203239.21885-6-krzk@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
-        mhocko@kernel.org, cl@linux.com, Jan Kara <jack@suse.cz>,
-        matthew@wil.cx, x86@kernel.org, luto@amacapital.net,
-        martin.petersen@oracle.com, jthumshirn@suse.de, broonie@kernel.org,
-        Juergen Gross <jgross@suse.com>, linux-spi@vger.kernel.org,
-        Joerg Roedel <joro@8bytes.org>, linux-scsi@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-kernel@vger.kernel.org,
-        "lsf-pc@lists.linux-foundation.org"
-        <lsf-pc@lists.linux-foundation.org>
-To: "Luis R. Rodriguez" <mcgrof@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2ub5o5uu6wk62jsg"
+Cc: Kukjin Kim <kgene@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, Tejun Heo <tj@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180427161456.GD27853@wotan.suse.de>
+In-Reply-To: <20180424203239.21885-6-krzk@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Apr 27, 2018 at 04:14:56PM +0000, Luis R. Rodriguez wrote:
-> But curious, on a standard qemu x86_x64 KVM guest, which of the
-> drivers do we know for certain *are* being used from the ones
-> listed?
 
-On a KVM guest probably none.  But not all the world is relatively
-sane and standardized VMs unfortunately.
+--2ub5o5uu6wk62jsg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > But even more importantly
-> > we have plenty driver using it through dma_alloc_* and a small DMA
-> > mask, and they are in use 
-> 
-> Do we have a list of users for x86 with a small DMA mask?
-> Or, given that I'm not aware of a tool to be able to look
-> for this in an easy way, would it be good to find out which
-> x86 drivers do have a small mask?
+On Tue, Apr 24, 2018 at 10:32:34PM +0200, Krzysztof Kozlowski wrote:
+> The Exynos5440 is not actively developed, there are no development
+> boards available and probably there are no real products with it.
+> Remove wide-tree support for Exynos5440.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Basically you'll have to grep for calls to dma_set_mask/
-dma_set_coherent_mask/dma_set_mask_and_coherent and their pci_*
-wrappers with masks smaller 32-bit.  Some use numeric values,
-some use DMA_BIT_MASK and various places uses local variables
-or struct members to parse them, so finding them will be a bit
-more work.  Nothing a coccinell expert couldn't solve, though :)
+Applied to for-next, thanks!
 
-> > - we actually had a 4.16 regression due to them.
-> 
-> Ah what commit was the culprit? Is that fixed already? If so what
-> commit?
 
-66bdb147 ("swiotlb: Use dma_direct_supported() for swiotlb_ops")
+--2ub5o5uu6wk62jsg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> > > SCSI is *severely* affected:
-> > 
-> > Not really.  We have unchecked_isa_dma to support about 4 drivers,
-> 
-> Ah very neat:
-> 
->   * CONFIG_CHR_DEV_OSST - "SCSI OnStream SC-x0 tape support"
->   * CONFIG_SCSI_ADVANSYS - "AdvanSys SCSI support"
->   * CONFIG_SCSI_AHA1542 - "Adaptec AHA1542 support"
->   * CONFIG_SCSI_ESAS2R - "ATTO Technology's ExpressSAS RAID adapter driver"
-> 
-> > and less than a hand ful of drivers doing stupid things, which can
-> > be fixed easily, and just need a volunteer.
-> 
-> Care to list what needs to be done? Can an eager beaver student do it?
+-----BEGIN PGP SIGNATURE-----
 
-Drop the drivers, as in my branch I prepared a while ago would be
-easiest:
+iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlrkbJcACgkQFA3kzBSg
+KbY0oBAAp5AZ22Iwc3g476LI/homGu6AP+TvzJ14ZHvvKXmBhKLST+eTqjibgy8y
+ezyaVsMGoTAqZXpFAoPhMWB/ktsDNOM6QhshTyAR5EI634GhnTZ8j5quAXYwgPsL
+Iugkw/DxGYGz+0iaPwvd7L4OnCHpufRomudIkx7wO5IObmbuFIAYiAvZIp6873Hq
+UFWUlW4k67D+BcoYc+uVcvTteewzffXS/qyRim6TF4Xg2FKTPp9KRUjmL86xLHvl
+FXDKa4djARTZz+HD0aQ27aOuv+g7yxLS9mfL4wSckymohGCtmDhHI6xdw3hyCDwM
+yPElg4JICJDm4EuDjzYdYrcZlFjsXeuHN3RGaJfIRFnIhwC/CxiUnwtMosGCuWSK
+BDU+esBF7qEXxherzLPJEJVPYW1z3XqLphkxoJ8Ma/9DpLDmItGythWIuMblLHWP
+jWpb3DOgATifO3ZLkyNEp/6m4GMEZN29Xc81BLRgy+NMzaNPofgSflzW1QAHz8H8
+qMtjIHp9zH9h4jn7LoUng1AsEBs4AW/xv5Bul8l4FhrfjSpzTCfb1+kF7QKAr8IW
+0xuLrzW3GSd1/WC7BTnQMDD41d8sgd8YL8RyfFBYsst0L0TXvhgWLCLt7M40X42q
+pUXIKPw/t0MR4uIsD8nQ9ZnWhb4chO2pzGSMabmZQDLeZQvGRBI=
+=ObTl
+-----END PGP SIGNATURE-----
 
-http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/unchecked_isa_dma
-
-But unlike the other few aha1542 actually seems to have active users,
-or at least had recently.  I'll need to send this out as a RFC, but
-don't really expect it to fly.
-
-If it doesn't we'll need to enhance swiotlb to support a ISA DMA pool
-in addition to current 32-bit DMA pool, and also convert aha1542 to
-use the DMA API.  Not really student material.
-
-> > > That's the end of the review of all current explicit callers on x86.
-> > > 
-> > > # dma_alloc_coherent_gfp_flags() and dma_generic_alloc_coherent()
-> > > 
-> > > dma_alloc_coherent_gfp_flags() and dma_generic_alloc_coherent() set
-> > > GFP_DMA if if (dma_mask <= DMA_BIT_MASK(24))
-> > 
-> > All that code is long gone and replaced with dma-direct.  Which still
-> > uses GFP_DMA based on the dma mask, though - see above.
-> 
-> And that's mostly IOMMU code, on the alloc() dma_map_ops.
-
-It is the dma mapping API, which translates the dma mask to the right
-zone, and probably is the biggest user of ZONE_DMA in modern systems.
-
-Currently there are still various arch and iommu specific
-implementations of the allocator decisions, but I'm working to
-consolidate them into common code.
+--2ub5o5uu6wk62jsg--

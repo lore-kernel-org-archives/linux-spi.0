@@ -1,81 +1,54 @@
-From: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
-Date: Sat, 28 Apr 2018 13:41:18 -0700
-Message-ID: <20180428204118.GA3305@bombadil.infradead.org>
-References: <20180426215406.GB27853@wotan.suse.de>
- <20180427053556.GB11339@infradead.org>
- <20180427161456.GD27853@wotan.suse.de>
- <20180428084221.GD31684@infradead.org>
- <20180428185514.GW27853@wotan.suse.de>
- <alpine.DEB.2.20.1804282145450.2532@hadrien>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>, linux-mm@kvack.org,
-        mhocko@kernel.org, cl@linux.com, Jan Kara <jack@suse.cz>,
-        matthew@wil.cx, x86@kernel.org, luto@amacapital.net,
-        martin.petersen@oracle.com, jthumshirn@suse.de, broonie@kernel.org,
-        Juergen Gross <jgross@suse.com>, linux-spi@vger.kernel.org,
-        Joerg Roedel <joro@8bytes.org>, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "lsf-pc@lists.linux-foundation.org"
-        <lsf-pc@lists.linux-foundation.org>
-To: Julia Lawall <julia.lawall@lip6.fr>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH v2] spi: meson-spicc: Fix error handling in meson_spicc_probe()
+Date: Sun, 29 Apr 2018 01:46:23 +0300
+Message-ID: <1524955583-22760-1-git-send-email-khoroshilov@ispras.ru>
+References: <a2a9cde3-5192-ce05-cc5c-d0191f0e811a@baylibre.com>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org
+To: Mark Brown <broonie@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1804282145450.2532@hadrien>
+In-Reply-To: <a2a9cde3-5192-ce05-cc5c-d0191f0e811a@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Apr 28, 2018 at 09:46:52PM +0200, Julia Lawall wrote:
-> FWIW, here is my semantic patch and the output - it reports on things that
-> appear to be too small and things that it doesn't know about.
-> 
-> What are the relevant pci wrappers?  I didn't find them.
+If devm_spi_register_master() fails in meson_spicc_probe(),
+spicc->core is left undisabled. The patch fixes that.
 
-Basically all of the functions in include/linux/pci-dma-compat.h
+Found by Linux Driver Verification project (linuxtesting.org).
 
-> too small: drivers/gpu/drm/i915/i915_drv.c:1138: 30
-> too small: drivers/net/wireless/broadcom/b43/dma.c:1068: 30
-> unknown: sound/pci/ctxfi/cthw20k2.c:2033: DMA_BIT_MASK(dma_bits)
-> unknown: sound/pci/ctxfi/cthw20k2.c:2034: DMA_BIT_MASK(dma_bits)
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+---
+v2: Fix subject as Neil Armstrong noted.
 
-This one's good:
+ drivers/spi/spi-meson-spicc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-        const unsigned int dma_bits = BITS_PER_LONG;
-
-> unknown: drivers/scsi/megaraid/megaraid_sas_base.c:6036: consistent_mask
-
-and this one:
-        consistent_mask = (instance->adapter_type == VENTURA_SERIES) ?
-                                DMA_BIT_MASK(64) : DMA_BIT_MASK(32);
-
-> unknown: drivers/net/wireless/ath/wil6210/txrx.c:200: DMA_BIT_MASK(wil->dma_addr_size)
-
-        if (wil->dma_addr_size > 32)
-                dma_set_mask_and_coherent(dev,
-                                          DMA_BIT_MASK(wil->dma_addr_size));
-
-> unknown: drivers/net/ethernet/netronome/nfp/nfp_main.c:452: DMA_BIT_MASK(NFP_NET_MAX_DMA_BITS)
-
-drivers/net/ethernet/netronome/nfp/nfp_net.h:#define NFP_NET_MAX_DMA_BITS       40
-
-> unknown: drivers/gpu/host1x/dev.c:199: host->info->dma_mask
-
-Looks safe ...
-
-drivers/gpu/host1x/bus.c:       device->dev.coherent_dma_mask = host1x->dev->coherent_dma_mask;
-drivers/gpu/host1x/bus.c:       device->dev.dma_mask = &device->dev.coherent_dma_mask;
-drivers/gpu/host1x/dev.c:       .dma_mask = DMA_BIT_MASK(32),
-drivers/gpu/host1x/dev.c:       .dma_mask = DMA_BIT_MASK(32),
-drivers/gpu/host1x/dev.c:       .dma_mask = DMA_BIT_MASK(34),
-drivers/gpu/host1x/dev.c:       .dma_mask = DMA_BIT_MASK(34),
-drivers/gpu/host1x/dev.c:       .dma_mask = DMA_BIT_MASK(34),
-drivers/gpu/host1x/dev.c:       dma_set_mask_and_coherent(host->dev, host->info->dma_mask);
-drivers/gpu/host1x/dev.h:       u64 dma_mask; /* mask of addressable memory */
-
-... but that reminds us that maybe some drivers aren't using dma_set_mask()
-but rather touching dma_mask directly.
-
-... 57 more to look at ...
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 5c82910e3480..7fe4488ace57 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -574,10 +574,15 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 		master->max_speed_hz = rate >> 2;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+-	if (!ret)
+-		return 0;
++	if (ret) {
++		dev_err(&pdev->dev, "spi master registration failed\n");
++		goto out_clk;
++	}
+ 
+-	dev_err(&pdev->dev, "spi master registration failed\n");
++	return 0;
++
++out_clk:
++	clk_disable_unprepare(spicc->core);
+ 
+ out_master:
+ 	spi_master_put(master);
+-- 
+2.7.4

@@ -1,71 +1,75 @@
-From: Michal Hocko <mhocko@kernel.org>
-Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
-Date: Fri, 27 Apr 2018 18:37:40 +0200
-Message-ID: <20180427163740.GI17484@dhcp22.suse.cz>
-References: <20180426215406.GB27853@wotan.suse.de>
- <20180427053556.GB11339@infradead.org>
- <20180427071843.GB17484@dhcp22.suse.cz>
- <alpine.DEB.2.20.1804271103160.11686@nuc-kabylake>
+From: Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>
+Subject: Re: [PATCH v3 03/20] crypto: Remove depends on HAS_DMA in case of
+	platform dependency
+Date: Sat, 28 Apr 2018 16:24:38 +0800
+Message-ID: <20180428082438.azb64xw6hofisdwi@gondor.apana.org.au>
+References: <1523987360-18760-1-git-send-email-geert@linux-m68k.org>
+	<1523987360-18760-4-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Christoph Hellwig <hch@infradead.org>,
-        "Luis R. Rodriguez" <mcgrof@kernel.org>, linux-mm@kvack.org,
-        Jan Kara <jack@suse.cz>, matthew@wil.cx, x86@kernel.org,
-        luto@amacapital.net, martin.petersen@oracle.com,
-        jthumshirn@suse.de, broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "lsf-pc@lists.linux-foundation.org"
-        <lsf-pc@lists.linux-foundation.org>
-To: Christopher Lameter <cl@linux.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-remoteproc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux1394-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
+	Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Matias Bjorling <mb-VR7NuqX4VJ8tq7phqP6ubQ@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ohad Ben-Cohen <ohad-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org>,
+	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-kernel@vg
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1804271103160.11686@nuc-kabylake>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1523987360-18760-4-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
+List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
+Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri 27-04-18 11:07:07, Cristopher Lameter wrote:
-> On Fri, 27 Apr 2018, Michal Hocko wrote:
+On Tue, Apr 17, 2018 at 07:49:03PM +0200, Geert Uytterhoeven wrote:
+> Remove dependencies on HAS_DMA where a Kconfig symbol depends on another
+> symbol that implies HAS_DMA, and, optionally, on "|| COMPILE_TEST".
+> In most cases this other symbol is an architecture or platform specific
+> symbol, or PCI.
 > 
-> > On Thu 26-04-18 22:35:56, Christoph Hellwig wrote:
-> > > On Thu, Apr 26, 2018 at 09:54:06PM +0000, Luis R. Rodriguez wrote:
-> > > > In practice if you don't have a floppy device on x86, you don't need ZONE_DMA,
-> > >
-> > > I call BS on that, and you actually explain later why it it BS due
-> > > to some drivers using it more explicitly.  But even more importantly
-> > > we have plenty driver using it through dma_alloc_* and a small DMA
-> > > mask, and they are in use - we actually had a 4.16 regression due to
-> > > them.
-> >
-> > Well, but do we need a zone for that purpose? The idea was to actually
-> > replace the zone by a CMA pool (at least on x86). With the current
-> > implementation of the CMA we would move the range [0-16M] pfn range into
-> > zone_movable so it can be used and we would get rid of all of the
-> > overhead each zone brings (a bit in page flags, kmalloc caches and who
-> > knows what else)
+> Generic symbols and drivers without platform dependencies keep their
+> dependencies on HAS_DMA, to prevent compiling subsystems or drivers that
+> cannot work anyway.
 > 
-> Well it looks like what we are using it for is to force allocation from
-> low physical memory if we fail to obtain proper memory through a normal
-> channel.  The use of ZONE_DMA is only there for emergency purposes.
-> I think we could subsitute ZONE_DMA32 on x87 without a problem.
+> This simplifies the dependencies, and allows to improve compile-testing.
 > 
-> Which means that ZONE_DMA has no purpose anymore.
+> Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> Reviewed-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Acked-by: Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>
+> Acked-by: Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>
+> ---
+> v3:
+>   - Add Acked-by,
+>   - Rebase to v4.17-rc1,
+> 
+> v2:
+>   - Add Reviewed-by, Acked-by,
+>   - Drop RFC state,
+>   - Split per subsystem.
+> ---
+>  drivers/crypto/Kconfig | 14 ++++----------
+>  1 file changed, 4 insertions(+), 10 deletions(-)
 
-We still need to make sure the low 16MB is available on request. And
-that is what CMA can help with. We do not really seem to need the whole
-zone infreastructure for that.
-
-> Can we make ZONE_DMA on x86 refer to the low 32 bit physical addresses
-> instead and remove ZONE_DMA32?
-
-Why that would be an advantage? If anything I would rename ZONE_DMA32 to
-ZONE_ADDR32 or something like that.
-
-> That would actually improve the fallback because you have more memory for
-> the old devices.
-
-I do not really understand how is that related to removal ZONE_DMA. We
-are really talking about the lowest 16MB...
-
+Patch applied.  Thanks.
 -- 
-Michal Hocko
-SUSE Labs
+Email: Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

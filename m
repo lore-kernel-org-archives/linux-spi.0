@@ -1,81 +1,60 @@
-From: Tobias Jordan <Tobias.Jordan@elektrobit.com>
-Subject: [PATCH] spi: pxa2xx: check clk_prepare_enable() return value
-Date: Mon, 30 Apr 2018 16:30:06 +0200
-Message-ID: <20180430143006.ckcbicijw2to2ghl@agrajag.zerfleddert.de>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [RFC 01/10] ARM: dts: exynos: Remove Exynos5440
+Date: Tue, 1 May 2018 09:07:25 -0500
+Message-ID: <20180501140725.GA25487@rob-hp-laptop>
+References: <20180424203239.21885-1-krzk@kernel.org>
+ <20180424203239.21885-2-krzk@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>
+Cc: Kukjin Kim <kgene@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Tejun Heo <tj@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfounda
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
+In-Reply-To: <20180424203239.21885-2-krzk@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-clk_prepare_enable() can fail, so its return value should be checked and
-acted upon.
+On Tue, Apr 24, 2018 at 10:32:30PM +0200, Krzysztof Kozlowski wrote:
+> The Exynos5440 (quad-core A15 with GMAC, PCIe, SATA) was targeting
+> server platforms but it did not make it to the market really.  There are
+> no development boards with it and probably there are no real products
+> neither.  The development for Exynos5440 ended in 2013 and since then
+> the platform is in maintenance mode.
+> 
+> Remove all Device Tree sources for Exynos5440, as first step of removal
+> of the platform to simplify the code and drivers.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  .../bindings/arm/samsung/samsung-boards.txt        |   2 -
+>  arch/arm/boot/dts/Makefile                         |   2 -
+>  arch/arm/boot/dts/exynos5440-sd5v1.dts             |  42 ---
+>  arch/arm/boot/dts/exynos5440-ssdk5440.dts          |  81 -----
+>  arch/arm/boot/dts/exynos5440-tmu-sensor-conf.dtsi  |  20 --
+>  arch/arm/boot/dts/exynos5440-trip-points.dtsi      |  21 --
+>  arch/arm/boot/dts/exynos5440.dtsi                  | 355 ---------------------
+>  7 files changed, 523 deletions(-)
+>  delete mode 100644 arch/arm/boot/dts/exynos5440-sd5v1.dts
+>  delete mode 100644 arch/arm/boot/dts/exynos5440-ssdk5440.dts
+>  delete mode 100644 arch/arm/boot/dts/exynos5440-tmu-sensor-conf.dtsi
+>  delete mode 100644 arch/arm/boot/dts/exynos5440-trip-points.dtsi
+>  delete mode 100644 arch/arm/boot/dts/exynos5440.dtsi
 
-Found by Linux Driver Verification project (linuxtesting.org).
-
-Fixes: 3343b7a6d2cd ("spi/pxa2xx: convert to the common clk framework")
-Signed-off-by: Tobias Jordan <Tobias.Jordan@elektrobit.com>
----
- drivers/spi/spi-pxa2xx.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 40f1346b8188..0b2d60d30f69 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1612,7 +1612,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Enable SOC clock */
--	clk_prepare_enable(ssp->clk);
-+	status = clk_prepare_enable(ssp->clk);
-+	if (status)
-+		goto out_error_dma_irq_alloc;
- 
- 	master->max_speed_hz = clk_get_rate(ssp->clk);
- 
-@@ -1716,6 +1718,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(ssp->clk);
-+
-+out_error_dma_irq_alloc:
- 	pxa2xx_spi_dma_release(drv_data);
- 	free_irq(ssp->irq, drv_data);
- 
-@@ -1789,8 +1793,11 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	int status;
- 
- 	/* Enable the SSP clock */
--	if (!pm_runtime_suspended(dev))
--		clk_prepare_enable(ssp->clk);
-+	if (!pm_runtime_suspended(dev)) {
-+		status = clk_prepare_enable(ssp->clk);
-+		if (status)
-+			return status;
-+	}
- 
- 	/* Restore LPSS private register bits */
- 	if (is_lpss_ssp(drv_data))
-@@ -1819,9 +1826,10 @@ static int pxa2xx_spi_runtime_suspend(struct device *dev)
- static int pxa2xx_spi_runtime_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	int status;
- 
--	clk_prepare_enable(drv_data->ssp->clk);
--	return 0;
-+	status = clk_prepare_enable(drv_data->ssp->clk);
-+	return status;
- }
- #endif
- 
--- 
-2.11.0
+Reviewed-by: Rob Herring <robh@kernel.org>

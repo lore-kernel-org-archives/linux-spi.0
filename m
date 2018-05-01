@@ -1,56 +1,63 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] thermal: samsung: Remove support for Exynos5440
-Date: Tue, 1 May 2018 09:45:16 -0500
-Message-ID: <20180501144516.GA519@rob-hp-laptop>
-References: <20180424203239.21885-1-krzk@kernel.org>
- <20180424203239.21885-7-krzk@kernel.org>
- <1951102.VLysaozMLK@amdc3058>
- <CGME20180426112113eucas1p1b5bf6f093442154e29f5541b4aba6b00@eucas1p1.samsung.com>
- <2734003.UHSMxVLybj@amdc3058>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: mediatek: Use of_device_get_match_data()
+Date: Wed, 2 May 2018 05:35:31 +0900
+Message-ID: <20180501203531.GA2714@sirena.org.uk>
+References: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
+ <94cba80f703be048666afde1ed53c15c3704c533.1523347340.git.ryder.lee@mediatek.com>
+ <1525073196.21494.3.camel@mtkswgap22>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, Tejun Heo <tj@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-To: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Dxnq1zWXvFF0Q93v"
+Cc: Leilk Liu =?utf-8?B?KOWImOejiik=?= <Leilk.Liu@mediatek.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org"
+        <linux-mediatek@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Ryder Lee <ryder.lee@mediatek.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <2734003.UHSMxVLybj@amdc3058>
+In-Reply-To: <1525073196.21494.3.camel@mtkswgap22>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 26, 2018 at 01:21:12PM +0200, Bartlomiej Zolnierkiewicz wrote:
-> From: Krzysztof Kozlowski <krzk@kernel.org>
-> Subject: [PATCH] thermal: samsung: Remove support for Exynos5440
-> 
-> The Exynos5440 is not actively developed, there are no development
-> boards available and probably there are no real products with it.
-> Remove wide-tree support for Exynos5440.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> [b.zolnierkie: ported over driver changes]
-> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> ---
-> Eduardo, here is a version which applies on top of pending Exynos
-> thermal changes (https://lkml.org/lkml/2018/4/16/256).
-> 
->  Documentation/devicetree/bindings/thermal/exynos-thermal.txt |   14 
->  drivers/thermal/samsung/exynos_tmu.c                         |  161 -----------
->  2 files changed, 4 insertions(+), 171 deletions(-)
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+--Dxnq1zWXvFF0Q93v
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Apr 30, 2018 at 03:26:36PM +0800, Ryder Lee wrote:
+> Hi Mark,
+>=20
+> Is it okay with you?
+>=20
+> On Mon, 2018-04-16 at 10:33 +0800, Ryder Lee (=E6=9D=8E=E5=BA=9A?V) wrote:
+> > The usage of of_device_get_match_data() reduce the code size a bit.
+
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
+Sending content free pings just adds to the mail volume (if they are
+seen at all) and if something has gone wrong you'll have to resend the
+patches anyway.
+
+--Dxnq1zWXvFF0Q93v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlroz5IACgkQJNaLcl1U
+h9Aozgf/dlersQlemJt9YYytwTHQpJn6ykNz0dHqAHr3JotCFqSGnkYfnmf1BrhS
+AmkDq4YgOtcv0XoGcdMCLMPeL5Ah2N2w+wkVG1JFXKSevbfAd19+rgyvrj7/iXRN
+z2R2FJu2avyaAGJONG0PZ9raP0CpqaxAfd9vww/n+4py/fnFCp7/r5m1fBbN6rkF
+8i6jOWvA302gUgRk9r8viElBvWNBGmeso2IJBkcevlPET6pCgUg+N0SA5bFY0yJz
+U67oySQy/7z+Au+aJpdPiVsdIwGdRmWyeyGKQoVcuxl0NzERZ/9gjjA48gqTcRHT
+kKupcvzZoCxZeArEo1RoLNrqE51Ynw==
+=psBX
+-----END PGP SIGNATURE-----
+
+--Dxnq1zWXvFF0Q93v--

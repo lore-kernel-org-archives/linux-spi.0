@@ -1,63 +1,33 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: mediatek: Use of_device_get_match_data()
-Date: Wed, 2 May 2018 05:35:31 +0900
-Message-ID: <20180501203531.GA2714@sirena.org.uk>
-References: <31f944ab8dfcc1d7b6f03b35657a2a34825b5246.1523347340.git.ryder.lee@mediatek.com>
- <94cba80f703be048666afde1ed53c15c3704c533.1523347340.git.ryder.lee@mediatek.com>
- <1525073196.21494.3.camel@mtkswgap22>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: Applied "spi: pxa2xx: Allow 64-bit DMA" to the spi tree
+Date: Wed, 2 May 2018 16:04:10 +0300
+Message-ID: <CAHp75VcNe_VfZRoM2G0_QUxo6sZZ7cco369NvoyOPBAxg9muGQ@mail.gmail.com>
+References: <20180419165333.32962-1-andriy.shevchenko@linux.intel.com> <E1fAzrt-0007ZJ-F6@debutante>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Dxnq1zWXvFF0Q93v"
-Cc: Leilk Liu =?utf-8?B?KOWImOejiik=?= <Leilk.Liu@mediatek.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org"
-        <linux-mediatek@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Ryder Lee <ryder.lee@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1525073196.21494.3.camel@mtkswgap22>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stable <stable@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <E1fAzrt-0007ZJ-F6@debutante>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Apr 24, 2018 at 6:28 PM, Mark Brown <broonie@kernel.org> wrote:
+> The patch
+>
+>    spi: pxa2xx: Allow 64-bit DMA
+>
+> has been applied to the spi tree at
+>
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
 
---Dxnq1zWXvFF0Q93v
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sorry to bother you again, though I don't see it yet in Linus'. Now we
+have same patch twice in next and zero in Linus'.
+What did I miss?
 
-On Mon, Apr 30, 2018 at 03:26:36PM +0800, Ryder Lee wrote:
-> Hi Mark,
->=20
-> Is it okay with you?
->=20
-> On Mon, 2018-04-16 at 10:33 +0800, Ryder Lee (=E6=9D=8E=E5=BA=9A?V) wrote:
-> > The usage of of_device_get_match_data() reduce the code size a bit.
-
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
-
---Dxnq1zWXvFF0Q93v
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlroz5IACgkQJNaLcl1U
-h9Aozgf/dlersQlemJt9YYytwTHQpJn6ykNz0dHqAHr3JotCFqSGnkYfnmf1BrhS
-AmkDq4YgOtcv0XoGcdMCLMPeL5Ah2N2w+wkVG1JFXKSevbfAd19+rgyvrj7/iXRN
-z2R2FJu2avyaAGJONG0PZ9raP0CpqaxAfd9vww/n+4py/fnFCp7/r5m1fBbN6rkF
-8i6jOWvA302gUgRk9r8viElBvWNBGmeso2IJBkcevlPET6pCgUg+N0SA5bFY0yJz
-U67oySQy/7z+Au+aJpdPiVsdIwGdRmWyeyGKQoVcuxl0NzERZ/9gjjA48gqTcRHT
-kKupcvzZoCxZeArEo1RoLNrqE51Ynw==
-=psBX
------END PGP SIGNATURE-----
-
---Dxnq1zWXvFF0Q93v--
+-- 
+With Best Regards,
+Andy Shevchenko

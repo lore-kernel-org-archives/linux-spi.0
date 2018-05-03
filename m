@@ -1,82 +1,64 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for
- shared handler
-Date: Fri, 4 May 2018 08:06:02 +0900
-Message-ID: <20180503230602.GA13402@sirena.org.uk>
-References: <20180503180945.3502-1-robh@kernel.org>
+Subject: Re: [PATCH 1/3] spi: meson-axg: support MAX 80M clock
+Date: Fri, 4 May 2018 08:13:05 +0900
+Message-ID: <20180503231305.GC13402@sirena.org.uk>
+References: <20180503213645.20694-1-yixun.lan@amlogic.com>
+ <20180503213645.20694-2-yixun.lan@amlogic.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8034675562318730107=="
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Ray Jui <rjui@broadcom.com>,
- Alexander Graf <agraf@suse.de>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, bcm-kernel-feedback-list@broadcom.com,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Rob Herring <robh@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180503180945.3502-1-robh@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iFRdW5/EC4oqxDHL"
+Cc: Sunny Luo <sunny.luo@amlogic.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Carlo Caione <carlo@caione.org>, linux-spi@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Yixun Lan <yixun.lan@amlogic.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180503213645.20694-2-yixun.lan@amlogic.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8034675562318730107==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
-Content-Disposition: inline
-
-
---UlVJffcvxoiEqYs2
+--iFRdW5/EC4oqxDHL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, May 03, 2018 at 01:09:44PM -0500, Rob Herring wrote:
+On Thu, May 03, 2018 at 09:36:42PM +0000, Yixun Lan wrote:
 
-> The root cause however is a bug in the shared handler. Shared handlers
-> must check that interrupts are actually enabled before servicing the
-> interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
+>  static const struct of_device_id meson_spicc_of_match[] = {
+> -	{ .compatible = "amlogic,meson-gx-spicc", },
+> -	{ .compatible = "amlogic,meson-axg-spicc", },
+> +	{
+> +		.compatible	= "amlogic,meson-gx-spicc",
+> +		.data		= &meson_spicc_gx_data,
+> +	},
+> +	{
+> +		.compatible = "amlogic,meson-axg-spicc",
+> +		.data		= &meson_spicc_axg_data,
+> +	},
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, meson_spicc_of_match);
 
-The requirement is more that the handler should correctly identify if it
-actually handled an interrupt - especially if the driver doesn't enable
-and disable the interrupt at runtime it's not going to upset anything to
-always run the interrupt handling (and of course some hardware can't
-disable things anyway) but if nohing happened then the handler needs to
-return IRQ_NONE.
+This is changing the DT bindings but there's no update to the DT binding
+documentation, please add an update there.
 
---UlVJffcvxoiEqYs2
+--iFRdW5/EC4oqxDHL
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrrldoACgkQJNaLcl1U
-h9AFWAf+KJ2Ahu1SNg0uzFnkUt5jMQuqT918CVCyQudsarzgqDIfjNUM1si677MQ
-yfiLVaV2FV3ReozK512CnUNAwhGG8ktTYBepOolU+wryZwTbBhFUOF6w2KQQJgm8
-E9Cph4D4E8xN4aJ5T3b3po34igFrZSFlasooCw3MfjyXCLPyHY6XDs9znNbpR1QN
-g1qayP1SW/PIXS4AqQDO9b4OSJ1e2hnLHh7gnNGfhcOczD8zk2Miol6g/95iexJm
-Xf0Yu/I0fTUjQPovnGEhjfxcnF03tt3hVbQEWh1UCQ0RTjJWUcm9IsPghXgbMd3G
-7K8quUUIvcpXzODZd+5pkodFUNQuPQ==
-=y+hq
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrrl4AACgkQJNaLcl1U
+h9AKnwf+LmyWjH1qLkM99n8Lnim407HcgCEcI50yVPIY0OymY40AQX8+3KQjyF+4
+r3s70Vk5GT3djRgwYciWxX3jq/GeCcjgKa4VZyy+Ia3CGb1yYXJoc/u0OsCUSD3q
+kEA9OulskLY7zoW+H13XLq0IpojUPnkVOb23/si9lUpOgGGk9d3srlAbS712EY98
+2wetI/a0AMQDAuMpP3KwawAtcKP5CKWpqcpDgWdrZqznQWGgh9DGnS1V6t4YxHYZ
+8KBA9AIaW80mRieqvMEj5fUVsO/bGCskNFq9edF0pDUI0T89FR/Qd4e6eMMiOTFp
+onn5vzNs+dP+MP2iZyTQ8do6umnn6g==
+=2yYe
 -----END PGP SIGNATURE-----
 
---UlVJffcvxoiEqYs2--
-
-
---===============8034675562318730107==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============8034675562318730107==--
+--iFRdW5/EC4oqxDHL--

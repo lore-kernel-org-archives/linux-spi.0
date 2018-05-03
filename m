@@ -1,19 +1,23 @@
-From: Rob Herring <robh@kernel.org>
-Subject: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for shared
- handler
-Date: Thu,  3 May 2018 13:09:44 -0500
-Message-ID: <20180503180945.3502-1-robh@kernel.org>
+From: Stefan Wahren <stefan.wahren@i2se.com>
+Subject: Re: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for
+ shared handler
+Date: Thu, 3 May 2018 20:31:37 +0200 (CEST)
+Message-ID: <205406626.92407.1525372297575@email.1und1.de>
+References: <20180503180945.3502-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Ray Jui <rjui@broadcom.com>,
- Alexander Graf <agraf@suse.de>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, bcm-kernel-feedback-list@broadcom.com,
+Cc: Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
+ Scott Branden <sbranden@broadcom.com>, Marc Zyngier <marc.zyngier@arm.com>,
+ Ray Jui <rjui@broadcom.com>, Alexander Graf <agraf@suse.de>,
+ linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
  linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>
+To: Martin Sperl <kernel@martin.sperl.org>,
+ =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+ Phil Elwell <phil@raspberrypi.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180503180945.3502-1-robh@kernel.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,58 +29,70 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
-Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
-DT change which breaks compatibility with older kernels. The AUX irqchip
-was already rejected for upstream[1] and the DT change would break
-working systems if the DTB is updated to a newer one. The latter issue
-was brought to my attention by Alex Graf.
+Hi,
 
-The root cause however is a bug in the shared handler. Shared handlers
-must check that interrupts are actually enabled before servicing the
-interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
+[added Martin, Noralf and Phil]
 
-[1] https://patchwork.kernel.org/patch/9781221/
 
-Cc: Alexander Graf <agraf@suse.de>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Stefan Wahren <stefan.wahren@i2se.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com
-Cc: linux-spi@vger.kernel.org
-Cc: linux-rpi-kernel@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-Compile tested only. I'll add something to the related github issue on 
-this and hopefully someone can test and confirm.
+> Rob Herring <robh@kernel.org> hat am 3. Mai 2018 um 20:09 geschrieben:
+> 
+> 
+> The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
+> Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
+> DT change which breaks compatibility with older kernels. The AUX irqchip
+> was already rejected for upstream[1] and the DT change would break
+> working systems if the DTB is updated to a newer one. The latter issue
+> was brought to my attention by Alex Graf.
+> 
+> The root cause however is a bug in the shared handler. Shared handlers
+> must check that interrupts are actually enabled before servicing the
+> interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
+> 
+> [1] https://patchwork.kernel.org/patch/9781221/
+> 
+> Cc: Alexander Graf <agraf@suse.de>
+> Cc: Marc Zyngier <marc.zyngier@arm.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Eric Anholt <eric@anholt.net>
+> Cc: Stefan Wahren <stefan.wahren@i2se.com>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Ray Jui <rjui@broadcom.com>
+> Cc: Scott Branden <sbranden@broadcom.com>
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> Cc: linux-spi@vger.kernel.org
+> Cc: linux-rpi-kernel@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Compile tested only. I'll add something to the related github issue on 
+> this and hopefully someone can test and confirm.
+> 
+> I'm assuming the 8250 driver can handle shared irqs correctly.
+> 
+> Rob
+> 
+>  drivers/spi/spi-bcm2835aux.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+> index 1431cb98fe40..3094d818cf06 100644
+> --- a/drivers/spi/spi-bcm2835aux.c
+> +++ b/drivers/spi/spi-bcm2835aux.c
+> @@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+>  	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+>  	irqreturn_t ret = IRQ_NONE;
+>  
+> +	/* IRQ may be shared, so return if our interrupts are disabled */
+> +	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
+> +	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
+> +		return ret;
+> +
+>  	/* check if we have data to read */
+>  	while (bs->rx_len &&
+>  	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+> -- 
+> 2.17.0
 
-I'm assuming the 8250 driver can handle shared irqs correctly.
+does anyone have a setup to test this patch (i assume it requires a compute module)?
 
-Rob
-
- drivers/spi/spi-bcm2835aux.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 1431cb98fe40..3094d818cf06 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
- 	irqreturn_t ret = IRQ_NONE;
- 
-+	/* IRQ may be shared, so return if our interrupts are disabled */
-+	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
-+	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
-+		return ret;
-+
- 	/* check if we have data to read */
- 	while (bs->rx_len &&
- 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
--- 
-2.17.0
+@Rob: Thank you very much for this patch

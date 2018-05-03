@@ -1,52 +1,75 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: pxa2xx: Allow 64-bit DMA" to the spi tree
-Date: Thu, 3 May 2018 10:21:57 +0900
-Message-ID: <20180503012157.GJ2714@sirena.org.uk>
-References: <20180419165333.32962-1-andriy.shevchenko@linux.intel.com>
- <E1fAzrt-0007ZJ-F6@debutante>
- <CAHp75VcNe_VfZRoM2G0_QUxo6sZZ7cco369NvoyOPBAxg9muGQ@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
+Date: Thu, 3 May 2018 10:20:54 +0200
+Message-ID: <CAMuHMdV1D8zYUWzVX3wmayTobX1FPwU7QMXvaimWewuxi7FoNw@mail.gmail.com>
+References: <20180426215406.GB27853@wotan.suse.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pMCBjikF2xGw87uL"
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Stable <stable@vger.kernel.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux MM <linux-mm@kvack.org>, Michal Hocko <mhocko@kernel.org>,
+        Christoph Lameter <cl@linux.com>, Jan Kara <jack@suse.cz>,
+        Matthew Wilcox <matthew@wil.cx>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        jthumshirn@suse.de, Mark Brown <broonie@kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <stable-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VcNe_VfZRoM2G0_QUxo6sZZ7cco369NvoyOPBAxg9muGQ@mail.gmail.com>
-Sender: stable-owner@vger.kernel.org
+        scsi <linux-scsi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "lsf-pc@lists.linux-foundation.org"
+        <lsf-pc@lists.linux-foundation.org>
+To: "Luis R. Rodriguez" <mcgrof@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180426215406.GB27853@wotan.suse.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Luis,
 
---pMCBjikF2xGw87uL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Thu, Apr 26, 2018 at 11:54 PM, Luis R. Rodriguez <mcgrof@kernel.org> wrote:
+> x86 implicit and explicit ZONE_DMA users
+> -----------------------------------------
+>
+> We list below all x86 implicit and explicit ZONE_DMA users.
+>
+> # Explicit x86 users of GFP_DMA or __GFP_DMA
+>
+>   * drivers/iio/common/ssp_sensors - wonder if enabling this on x86 was a mistake.
+>     Note that this needs SPI and SPI needs HAS_IOMEM. I only see HAS_IOMEM on
+>     s390 ? But I do think the Intel Minnowboard has SPI, but doubt it has
+>    the ssp sensor stuff.
+>
+>  * drivers/input/rmi4/rmi_spi.c - same SPI question
+>  * drivers/media/common/siano/ - make allyesconfig yields it enabled, but
+>    not sure if this should ever be on x86
+>  * drivers/media/platform/sti/bdisp/ - likewise
+>   * drivers/media/platform/sti/hva/ - likewise
+>   * drivers/media/usb/gspca/ - likewise
+>   * drivers/mmc/host/wbsd.c - likewise
+>   * drivers/mtd/nand/gpmi-nand/ - likewise
+>   * drivers/net/can/spi/hi311x.c - likewise
+>   * drivers/net/can/spi/mcp251x.c - likewise
+>   * drivers/net/ethernet/agere/ - likewise
+>   * drivers/net/ethernet/neterion/vxge/ - likewise
+>   * drivers/net/ethernet/rocker/ - likewise
+>   * drivers/net/usb/kalmia.c - likewise
+>   * drivers/net/ethernet/neterion/vxge/ - likewise
+>   * drivers/spi/spi-pic32-sqi.c - likewise
+>   * drivers/spi/spi-sh-msiof.c - likewise
 
-On Wed, May 02, 2018 at 04:04:10PM +0300, Andy Shevchenko wrote:
+depends on ARCH_SHMOBILE || ARCH_RENESAS || COMPILE_TEST
 
-> Sorry to bother you again, though I don't see it yet in Linus'. Now we
-> have same patch twice in next and zero in Linus'.
-> What did I miss?
+>   * drivers/spi/spi-ti-qspi.c - likewise
 
-Linus will only merge patches when I send him a pull request.  I had to
-duplicate the patch since I stopped using topic branches after Linus got
-angry about it so I can't just move the topic to a fix.
+I haven't checked the others, but probably you want to disable COMPILE_TEST
+to make more educated guesses about driver usage on x86.
 
---pMCBjikF2xGw87uL
-Content-Type: application/pgp-signature; name="signature.asc"
+Gr{oetje,eeting}s,
 
------BEGIN PGP SIGNATURE-----
+                        Geert
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrqZDIACgkQJNaLcl1U
-h9AxXQf9HY8TcoEYIyW/ZCYUoM8QhPJ4MacNNTgdT+zC+kv9YasRI6Fpmls1hber
-omjdtRGQhhoAaAPcYsbfsA5yuBCcgxQyVkRPHut4XiS/j+GLwQJHu4BlletECKKn
-Wo1mkWPQH2LiIRBUzflEw8cyOttkQU7OxM2jquhSWDo4a2ykTdDivCCUHzDpry3k
-KP7VX86EqcHd8myRRWN2UWrxDmChXag/SvVQKl2X/RR/bbYM25d1TQy3oC/tErVH
-yK+qWH8myZcC605kiIEyS20HzZEFddEAhFPQNsLVqE2OV6QYHFv4kEFS4Y6wpLbh
-yxwB6HtBjxxJOfv0FrlSBUGK8CfvOg==
-=xkgO
------END PGP SIGNATURE-----
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
---pMCBjikF2xGw87uL--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

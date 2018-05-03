@@ -1,75 +1,44 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Michal Hocko <mhocko@kernel.org>
 Subject: Re: [LSF/MM TOPIC NOTES] x86 ZONE_DMA love
-Date: Thu, 3 May 2018 10:20:54 +0200
-Message-ID: <CAMuHMdV1D8zYUWzVX3wmayTobX1FPwU7QMXvaimWewuxi7FoNw@mail.gmail.com>
+Date: Thu, 3 May 2018 14:03:38 +0200
+Message-ID: <20180503120338.GG4535@dhcp22.suse.cz>
 References: <20180426215406.GB27853@wotan.suse.de>
+ <20180427053556.GB11339@infradead.org>
+ <20180427161456.GD27853@wotan.suse.de>
+ <20180428084221.GD31684@infradead.org>
+ <20180428185514.GW27853@wotan.suse.de>
+ <CAFhKne8u7KcBkpgiQ0fFZyh5_EorfY-_MJJaEYk3feCOd9LsRQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linux MM <linux-mm@kvack.org>, Michal Hocko <mhocko@kernel.org>,
-        Christoph Lameter <cl@linux.com>, Jan Kara <jack@suse.cz>,
-        Matthew Wilcox <matthew@wil.cx>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        jthumshirn@suse.de, Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        scsi <linux-scsi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Julia Lawall <julia.lawall@lip6.fr>, linux-mm@kvack.org,
+        cl@linux.com, Jan Kara <jack@suse.cz>, matthew@wil.cx,
+        x86@kernel.org, luto@amacapital.net, martin.petersen@oracle.com,
+        jthumshirn@suse.de, broonie@kernel.org,
+        Juergen Gross <jgross@suse.com>, linux-spi@vger.kernel.org,
+        Joerg Roedel <joro@8bytes.org>, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "lsf-pc@lists.linux-foundation.org"
         <lsf-pc@lists.linux-foundation.org>
-To: "Luis R. Rodriguez" <mcgrof@kernel.org>
+To: Matthew Wilcox <willy6545@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180426215406.GB27853@wotan.suse.de>
+Content-Disposition: inline
+In-Reply-To: <CAFhKne8u7KcBkpgiQ0fFZyh5_EorfY-_MJJaEYk3feCOd9LsRQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Luis,
+On Sat 28-04-18 19:10:47, Matthew Wilcox wrote:
+> Another way we could approach this is to get rid of ZONE_DMA. Make GFP_DMA
+> a flag which doesn't map to a zone. Rather, it redirects to a separate
+> allocator. At boot, we hand all memory under 16MB to the DMA allocator. The
+> DMA allocator can have a shrinker which just hands back all the memory once
+> we're under memory pressure (if it's never had an allocation).
 
-On Thu, Apr 26, 2018 at 11:54 PM, Luis R. Rodriguez <mcgrof@kernel.org> wrote:
-> x86 implicit and explicit ZONE_DMA users
-> -----------------------------------------
->
-> We list below all x86 implicit and explicit ZONE_DMA users.
->
-> # Explicit x86 users of GFP_DMA or __GFP_DMA
->
->   * drivers/iio/common/ssp_sensors - wonder if enabling this on x86 was a mistake.
->     Note that this needs SPI and SPI needs HAS_IOMEM. I only see HAS_IOMEM on
->     s390 ? But I do think the Intel Minnowboard has SPI, but doubt it has
->    the ssp sensor stuff.
->
->  * drivers/input/rmi4/rmi_spi.c - same SPI question
->  * drivers/media/common/siano/ - make allyesconfig yields it enabled, but
->    not sure if this should ever be on x86
->  * drivers/media/platform/sti/bdisp/ - likewise
->   * drivers/media/platform/sti/hva/ - likewise
->   * drivers/media/usb/gspca/ - likewise
->   * drivers/mmc/host/wbsd.c - likewise
->   * drivers/mtd/nand/gpmi-nand/ - likewise
->   * drivers/net/can/spi/hi311x.c - likewise
->   * drivers/net/can/spi/mcp251x.c - likewise
->   * drivers/net/ethernet/agere/ - likewise
->   * drivers/net/ethernet/neterion/vxge/ - likewise
->   * drivers/net/ethernet/rocker/ - likewise
->   * drivers/net/usb/kalmia.c - likewise
->   * drivers/net/ethernet/neterion/vxge/ - likewise
->   * drivers/spi/spi-pic32-sqi.c - likewise
->   * drivers/spi/spi-sh-msiof.c - likewise
-
-depends on ARCH_SHMOBILE || ARCH_RENESAS || COMPILE_TEST
-
->   * drivers/spi/spi-ti-qspi.c - likewise
-
-I haven't checked the others, but probably you want to disable COMPILE_TEST
-to make more educated guesses about driver usage on x86.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Yeah, that was exactly the plan with the CMA allocator... We wouldn't
+need the shrinker because who cares about 16MB which is not usable
+anyway.
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Michal Hocko
+SUSE Labs

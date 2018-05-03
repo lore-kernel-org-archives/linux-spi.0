@@ -1,60 +1,113 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/3] spi: meson-axg: add a linear clock divider support
-Date: Fri, 4 May 2018 08:16:04 +0900
-Message-ID: <20180503231604.GD13402@sirena.org.uk>
-References: <20180503213645.20694-1-yixun.lan@amlogic.com>
- <20180503213645.20694-4-yixun.lan@amlogic.com>
+Subject: Applied "spi: bcm2835aux: ensure interrupts are enabled for shared
+ handler" to the spi tree
+Date: Fri,  4 May 2018 00:19:35 +0100 (BST)
+Message-ID: <20180503231935.4865344007A@finisterre.ee.mobilebroadband>
+References: <20180503180945.3502-1-robh@kernel.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hoZxPH4CaxYzWscb"
-Cc: Sunny Luo <sunny.luo@amlogic.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Carlo Caione <carlo@caione.org>, linux-spi@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Yixun Lan <yixun.lan@amlogic.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180503213645.20694-4-yixun.lan@amlogic.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Stefan Wahren <stefan.wahren@i2se.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
+ Marc Zyngier <marc.zyngier@arm.com>, Ray Jui <rjui@broadcom.com>,
+ Alexander Graf <agraf@suse.de>, linux-spi@vger.kernel.org,
+ Eric Anholt <eric@anholt.net>, Mark Brown <broonie@kernel.org>,
+ bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org
+To: Rob Herring <robh@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180503180945.3502-1-robh@kernel.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---hoZxPH4CaxYzWscb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: bcm2835aux: ensure interrupts are enabled for shared handler
 
-On Thu, May 03, 2018 at 09:36:44PM +0000, Yixun Lan wrote:
-> From: Sunny Luo <sunny.luo@amlogic.com>
->=20
-> The SPICC controller in Meson-AXG SoC is capable of using
-> a linear clock divider to reach a much fine tuned range of clocks,
-> while the old controller only use a power of two clock divider,
-> result at a more coarse clock range.
->=20
-> Also convert the clock registeration into Common Clock Framework.
+has been applied to the spi tree at
 
-This would be better split into two patches - one adding the new linear
-clock divider and the other one doing the CCF conversion.  Splitting
-things out like that makes them much easier to review as each change is
-only doing one thing.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---hoZxPH4CaxYzWscb
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrrmDQACgkQJNaLcl1U
-h9CV8wf/c7YMCGTuS+T4MV8e2xZibjN4BIJGs2dGOW9o4vu/Mehk82SJ0h2gbNFu
-UhlnojgCn3fw5hCx7B3TaV6pkOnTD2T840zqLFiSIfXuhknlT537boO4xxn/pRwA
-AY/wPmS093AixMpFGcbtS385tNpU6S+UIR0oXOGPZ+tm4S+ghvr8lVCRWaKKmeoc
-spDwkXVuAHDPftg1O7uBa7ieZ/4Kg5ksQvXBL0Hp8OshAYJIZlpfz6zhrioqHzmo
-bbOdAdR8vflr8GUGv5f1NpCoKPOVoaOc9+B4UcXUYYQfxLKjVLJZJqtCiwEADZAs
-drP1ih0KRGzM9WClDdbvmH/ceNm7Hw==
-=iR+3
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---hoZxPH4CaxYzWscb--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From bc519d9574618e47a0c788000fb78da95e18d953 Mon Sep 17 00:00:00 2001
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 3 May 2018 13:09:44 -0500
+Subject: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for shared
+ handler
+
+The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
+Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
+DT change which breaks compatibility with older kernels. The AUX irqchip
+was already rejected for upstream[1] and the DT change would break
+working systems if the DTB is updated to a newer one. The latter issue
+was brought to my attention by Alex Graf.
+
+The root cause however is a bug in the shared handler. Shared handlers
+must check that interrupts are actually enabled before servicing the
+interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
+
+[1] https://patchwork.kernel.org/patch/9781221/
+
+Cc: Alexander Graf <agraf@suse.de>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: linux-spi@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Eric Anholt <eric@anholt.net>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 1431cb98fe40..3094d818cf06 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	irqreturn_t ret = IRQ_NONE;
+ 
++	/* IRQ may be shared, so return if our interrupts are disabled */
++	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
++	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
++		return ret;
++
+ 	/* check if we have data to read */
+ 	while (bs->rx_len &&
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+-- 
+2.17.0

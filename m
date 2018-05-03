@@ -1,113 +1,131 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835aux: ensure interrupts are enabled for shared
- handler" to the spi tree
-Date: Fri,  4 May 2018 00:19:35 +0100 (BST)
-Message-ID: <20180503231935.4865344007A@finisterre.ee.mobilebroadband>
-References: <20180503180945.3502-1-robh@kernel.org>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
+ based QUP
+Date: Fri, 4 May 2018 08:38:49 +0900
+Message-ID: <20180503233849.GF13402@sirena.org.uk>
+References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Ray Jui <rjui@broadcom.com>,
- Alexander Graf <agraf@suse.de>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, Mark Brown <broonie@kernel.org>,
- bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org
-To: Rob Herring <robh@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180503180945.3502-1-robh@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ULyIDA2m8JTe+TiX"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        sdharia@codeaurora.org, kramasub@codeaurora.org,
+        dianders@chromium.org, linux-arm-msm@vger.kernel.org,
+        swboyd@chromium.org
+To: Girish Mahadevan <girishm@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: bcm2835aux: ensure interrupts are enabled for shared handler
+--ULyIDA2m8JTe+TiX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Thu, May 03, 2018 at 03:34:43PM -0600, Girish Mahadevan wrote:
+> This driver supports GENI based SPI Controller in the Qualcomm SOCs. The
+> Qualcomm Generic Interface (GENI) is a programmable module supporting a
+> wide range of serial interfaces including SPI. This driver supports SPI
+> operations using FIFO mode of transfer.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+This is a DT based driver but there is no binding documentation.
+Binding documentation is required for any new DT stuff.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> +       depends on ARCH_QCOM || (ARM && COMPILE_TEST)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Why the ARM dependency?  There's no architecture specific headers
+included...
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+>  obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
+>  obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
+> +obj-$(CONFIG_SPI_QCOM_GENI)		+= spi-geni-qcom.o
+>  obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Please keep Kconfig and Makefile alphabetically sorted to reduce
+conflicts.
 
-Thanks,
-Mark
+> +static struct spi_master *get_spi_master(struct device *dev)
+> +{
+> +	struct platform_device *pdev = to_platform_device(dev);
+> +	struct spi_master *spi = platform_get_drvdata(pdev);
+> +
+> +	return spi;
+> +}
 
->From bc519d9574618e47a0c788000fb78da95e18d953 Mon Sep 17 00:00:00 2001
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 3 May 2018 13:09:44 -0500
-Subject: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for shared
- handler
+This doesn't look at all driver specific with the current naming but it
+actually is given that other drivers may use other driver data so it
+should be renamed.  I'm also not clear why it's bouncing through the
+platform device, dev_get_drvdata() exists.
 
-The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
-Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
-DT change which breaks compatibility with older kernels. The AUX irqchip
-was already rejected for upstream[1] and the DT change would break
-working systems if the DTB is updated to a newer one. The latter issue
-was brought to my attention by Alex Graf.
+> +static int spi_geni_unprepare_message(struct spi_master *spi_mas,
+> +					struct spi_message *spi_msg)
+> +{
+> +	struct spi_geni_master *mas = spi_master_get_devdata(spi_mas);
+> +
+> +	mas->cur_speed_hz = 0;
+> +	mas->cur_word_len = 0;
+> +	return 0;
+> +}
 
-The root cause however is a bug in the shared handler. Shared handlers
-must check that interrupts are actually enabled before servicing the
-interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
+Is this really useful?  If the driver needs to reconfigure for every
+message then it should just do that and not care about the state.  If it
+might end up caring about the state anyway that suggests there's some
+kind of bug somewhere that's being masked.
 
-[1] https://patchwork.kernel.org/patch/9781221/
+> +static int spi_geni_prepare_transfer_hardware(struct spi_master *spi)
+> +{
+> +	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+> +	int ret = 0;
+> +	struct geni_se *se = &mas->se;
+> +
+> +	ret = pm_runtime_get_sync(mas->dev);
+> +	if (ret < 0) {
 
-Cc: Alexander Graf <agraf@suse.de>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Stefan Wahren <stefan.wahren@i2se.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com
-Cc: linux-spi@vger.kernel.org
-Cc: linux-rpi-kernel@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Eric Anholt <eric@anholt.net>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm2835aux.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Use auto_runtime_pm.
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 1431cb98fe40..3094d818cf06 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
- 	irqreturn_t ret = IRQ_NONE;
- 
-+	/* IRQ may be shared, so return if our interrupts are disabled */
-+	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
-+	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
-+		return ret;
-+
- 	/* check if we have data to read */
- 	while (bs->rx_len &&
- 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
--- 
-2.17.0
+> +	if (unlikely(!mas->setup)) {
+> +		int proto = geni_se_read_proto(se);
+
+Does this really need a likely/unlikely annotation - it shouldn't be any
+kind of hot path...  There's a lot of these annotations in the code.
+
+> +		ret = devm_request_irq(mas->dev, mas->irq, geni_spi_isr,
+> +			       IRQF_TRIGGER_HIGH, "spi_geni", mas);
+> +		if (ret) {
+> +			dev_err(mas->dev, "Request_irq failed:%d: err:%d\n",
+
+Why are we dynamically requesting the IRQ outside of probe?  Normally an
+interrupt is requested on startup and held through the life of the
+device.  I'm also not seeing any sign that it's freed except via devm...
+
+> +	spi->bus_num = of_alias_get_id(pdev->dev.of_node, "spi");
+
+Don't do this, just set bus_num to -1 and let the core assign an ID.
+
+> +	spi->dev.of_node = pdev->dev.of_node;
+
+This is broken, the virtual SPI device does not exist in DT and this
+might break things.
+
+> +	pm_runtime_enable(&pdev->dev);
+> +	ret = spi_register_master(spi);
+
+No devm?
+
+--ULyIDA2m8JTe+TiX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlrrnYgACgkQJNaLcl1U
+h9C0ZAf9HBm4HdgsBUt/v0XEybYkzizuKBtsvq9KvjJC8ngbNW2m0nivSBZu0QYq
+DFpJa6p/CjzCbviF7OMFLtNLukR7KLAWrP3JYYUz9AWW0o+5sjCUmxtQQi6wYM7d
+hvD0DEDfQ3FkvuCUi2pUaFX6xu6u1t8b+uqC21pR6T2iUA1jLxkuoPbPXN5N98kh
+TDXscnglEnMZ0CCc1zia2Rxrr1556BzyjDyU6f7PTjDMBb+zQG70pXE1Ddv+5HkV
+ExV5MkOZig+lZqMHrAdoy1u2fI9YNk3KccdQ8hw9FI+vDCaLRTzNSAHeOLvn9w3T
+nty8LPMugARReOwVQbWEGSqKnUsH3Q==
+=Fbhk
+-----END PGP SIGNATURE-----
+
+--ULyIDA2m8JTe+TiX--

@@ -1,98 +1,101 @@
-From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH] spi: bcm2835aux: ensure interrupts are enabled for
- shared handler
-Date: Thu, 3 May 2018 20:31:37 +0200 (CEST)
-Message-ID: <205406626.92407.1525372297575@email.1und1.de>
-References: <20180503180945.3502-1-robh@kernel.org>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: [PATCH v4 0/7] spi: Extend the framework to generically support
+ memory devices
+Date: Thu, 3 May 2018 20:40:25 +0200
+Message-ID: <256c2540-7bac-32f5-2acd-2dedb0c45830@exceet.de>
+References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
- Scott Branden <sbranden@broadcom.com>, Marc Zyngier <marc.zyngier@arm.com>,
- Ray Jui <rjui@broadcom.com>, Alexander Graf <agraf@suse.de>,
- linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
- Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Martin Sperl <kernel@martin.sperl.org>,
- =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
- Phil Elwell <phil@raspberrypi.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180503180945.3502-1-robh@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Kamal Dasu <kdasu.kdev@gmail.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Peter Pan <peterpansjtu@gmail.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+To: Boris Brezillon <boris.brezillon@bootlin.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>, linux-mtd@lists.infradead.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180426161820.2852-1-boris.brezillon@bootlin.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hi Boris,
 
-[added Martin, Noralf and Phil]
+On 26.04.2018 18:18, Boris Brezillon wrote:
+> Hello,
+> 
+> Shrinking a bit the explanation on why the spi-mem abstraction is
+> needed (a detailed explanation is available here [2]). In addition to
+> what as been said in my initial explanation I'll add that making it part
+> of the SPI framework instead of as an extra independent layer is
+> justified by the fact that some controllers support both SPI memory
+> operations and regular SPI transfers, and it's cleaner to have both
+> features exposed through a single driver.
+> 
+> For those who want to have the full picture, here is a branch [1]
+> containing the SPI NAND framework based on top of this spi-mem layer.
+> 
+> Thanks,
+> 
+> Boris
+> 
+> [1]https://smex12-5-en-ctp.trendmicro.com:443/wis/clicktime/v1/query?url=https%3a%2f%2fgithub.com%2fbbrezillon%2flinux%2ftree%2fspi%2dmem&umid=78d7b933-335d-48ad-a7f9-47b716b20fc3&auth=541e45255b6517100d80c2b1b80b6933b203c492-068a43ed6b9776ab1e94d8bfe0b7982ce0a4715d
+> [2]https://www.spinics.net/lists/linux-spi/msg12058.html
+> 
+> Boris Brezillon (7):
+>    spi: Extend the core to ease integration of SPI memory controllers
+>    spi: Make support for regular transfers optional when ->mem_ops !=
+>      NULL
+>    spi: bcm-qspi: Implement the spi_mem interface
+>    spi: bcm53xx: Implement the spi_mem interface
+>    spi: ti-qspi: Implement the spi_mem interface
+>    mtd: spi-nor: Use the spi_mem_xx() API
+>    spi: Get rid of the spi_flash_read() API
 
+I have been using these patches quite a bit in different setups:
 
-> Rob Herring <robh@kernel.org> hat am 3. Mai 2018 um 20:09 geschrieben:
-> 
-> 
-> The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
-> Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
-> DT change which breaks compatibility with older kernels. The AUX irqchip
-> was already rejected for upstream[1] and the DT change would break
-> working systems if the DTB is updated to a newer one. The latter issue
-> was brought to my attention by Alex Graf.
-> 
-> The root cause however is a bug in the shared handler. Shared handlers
-> must check that interrupts are actually enabled before servicing the
-> interrupt. Add a check that the TXEMPTY or IDLE interrupts are enabled.
-> 
-> [1] https://patchwork.kernel.org/patch/9781221/
-> 
-> Cc: Alexander Graf <agraf@suse.de>
-> Cc: Marc Zyngier <marc.zyngier@arm.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Eric Anholt <eric@anholt.net>
-> Cc: Stefan Wahren <stefan.wahren@i2se.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Ray Jui <rjui@broadcom.com>
-> Cc: Scott Branden <sbranden@broadcom.com>
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: linux-spi@vger.kernel.org
-> Cc: linux-rpi-kernel@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Compile tested only. I'll add something to the related github issue on 
-> this and hopefully someone can test and confirm.
-> 
-> I'm assuming the 8250 driver can handle shared irqs correctly.
-> 
-> Rob
-> 
->  drivers/spi/spi-bcm2835aux.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> index 1431cb98fe40..3094d818cf06 100644
-> --- a/drivers/spi/spi-bcm2835aux.c
-> +++ b/drivers/spi/spi-bcm2835aux.c
-> @@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
->  	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
->  	irqreturn_t ret = IRQ_NONE;
->  
-> +	/* IRQ may be shared, so return if our interrupts are disabled */
-> +	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
-> +	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
-> +		return ret;
-> +
->  	/* check if we have data to read */
->  	while (bs->rx_len &&
->  	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
-> -- 
-> 2.17.0
+* with your spi_mem port of fsl-quadspi and SPI NAND/NOR
+* with a spi_mem port of stm32-quadspi and SPI NOR
+* with generic SPI and SPI NOR
 
-does anyone have a setup to test this patch (i assume it requires a compute module)?
+So to make this official, I will add R-b/T-b tags in separate replies to 
+the individual patches.
 
-@Rob: Thank you very much for this patch
+Regards,
+
+Frieder
+
+> 
+>   drivers/mtd/devices/Kconfig  |   1 +
+>   drivers/mtd/devices/m25p80.c | 236 +++++++++----------------
+>   drivers/spi/Kconfig          |   7 +
+>   drivers/spi/Makefile         |   1 +
+>   drivers/spi/spi-bcm-qspi.c   | 162 ++++++++---------
+>   drivers/spi/spi-bcm53xx.c    |  37 ++--
+>   drivers/spi/spi-mem.c        | 410 +++++++++++++++++++++++++++++++++++++++++++
+>   drivers/spi/spi-ti-qspi.c    |  85 +++++----
+>   drivers/spi/spi.c            |  90 +++-------
+>   include/linux/spi/spi-mem.h  | 249 ++++++++++++++++++++++++++
+>   include/linux/spi/spi.h      |  60 +------
+>   11 files changed, 941 insertions(+), 397 deletions(-)
+>   create mode 100644 drivers/spi/spi-mem.c
+>   create mode 100644 include/linux/spi/spi-mem.h
+> 
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

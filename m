@@ -1,55 +1,56 @@
 From: Yixun Lan <yixun.lan@amlogic.com>
-Subject: Re: [PATCH 1/3] spi: meson-axg: support MAX 80M clock
-Date: Fri, 4 May 2018 09:56:10 +0800
-Message-ID: <6cdee2c8-2ca4-2efb-43ac-c233516c0570@amlogic.com>
+Subject: Re: [PATCH 3/3] spi: meson-axg: add a linear clock divider support
+Date: Fri, 4 May 2018 10:07:12 +0800
+Message-ID: <e5610b7f-9e34-3925-cb40-1c62a3c470d2@amlogic.com>
 References: <20180503213645.20694-1-yixun.lan@amlogic.com>
- <20180503213645.20694-2-yixun.lan@amlogic.com>
- <20180503231305.GC13402@sirena.org.uk>
+ <20180503213645.20694-4-yixun.lan@amlogic.com>
+ <20180503231604.GD13402@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <yixun.lan@amlogic.com>, Sunny Luo <sunny.luo@amlogic.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Carlo Caione <carlo@caione.org>, <linux-spi@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+ Kevin Hilman <khilman@baylibre.com>, yixun.lan@amlogic.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Carlo Caione <carlo@caione.org>, linux-amlogic@lists.infradead.org,
+ Sunny Luo <sunny.luo@amlogic.com>, linux-arm-kernel@lists.infradead.org,
+ Jerome Brunet <jbrunet@baylibre.com>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180503231305.GC13402@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180503231604.GD13402@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Mark
 
-On 05/04/18 07:13, Mark Brown wrote:
-> On Thu, May 03, 2018 at 09:36:42PM +0000, Yixun Lan wrote:
+On 05/04/18 07:16, Mark Brown wrote:
+> On Thu, May 03, 2018 at 09:36:44PM +0000, Yixun Lan wrote:
+>> From: Sunny Luo <sunny.luo@amlogic.com>
+>>
+>> The SPICC controller in Meson-AXG SoC is capable of using
+>> a linear clock divider to reach a much fine tuned range of clocks,
+>> while the old controller only use a power of two clock divider,
+>> result at a more coarse clock range.
+>>
+>> Also convert the clock registeration into Common Clock Framework.
 > 
->>  static const struct of_device_id meson_spicc_of_match[] = {
->> -	{ .compatible = "amlogic,meson-gx-spicc", },
->> -	{ .compatible = "amlogic,meson-axg-spicc", },
->> +	{
->> +		.compatible	= "amlogic,meson-gx-spicc",
->> +		.data		= &meson_spicc_gx_data,
->> +	},
->> +	{
->> +		.compatible = "amlogic,meson-axg-spicc",
->> +		.data		= &meson_spicc_axg_data,
->> +	},
->>  	{ /* sentinel */ }
->>  };
->>  MODULE_DEVICE_TABLE(of, meson_spicc_of_match);
-> 
-> This is changing the DT bindings but there's no update to the DT binding
-> documentation, please add an update there.
+> This would be better split into two patches - one adding the new linear
+> clock divider and the other one doing the CCF conversion.  Splitting
+> things out like that makes them much easier to review as each change is
+> only doing one thing.
 > 
 
-thanks for your comments, but I actually didn't get what's your point here.
+it's maybe obscure in my previous commit message, the clock divider
+support is actually achieved via CCF framework, it can be split as two
+independent patches..
 
-Here I only introduce the dt compatible data to differentiate the
-old/new controller, the compatible name is not changed, and none of the
-property is introduced.
+I'm CCing clock mailing list (will do if I need to send a v2)
 
 Yixun

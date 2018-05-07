@@ -1,58 +1,137 @@
-From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Subject: Re: [PATCH v2 07/10] spi: bcm53xx: Implement the spi_mem interface
-Date: Mon, 7 May 2018 11:35:23 +0200
-Message-ID: <CACna6rw4_sBzhtnvn+vkfiqkt4yQgsk6a1OrM8D7K_81RgUSkQ@mail.gmail.com>
-References: <20180410224439.9260-1-boris.brezillon@bootlin.com>
- <20180410224439.9260-8-boris.brezillon@bootlin.com>
+From: "Mahadevan, Girish" <girishm@codeaurora.org>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
+ QUP
+Date: Mon, 7 May 2018 15:40:46 -0600
+Message-ID: <a9146e14-19d6-c718-a5d8-64aba6db5465@codeaurora.org>
+References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
+ <20180503233849.GF13402@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- linux-spi <linux-spi@vger.kernel.org>, Peter Pan <peterpansjtu@gmail.com>,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180410224439.9260-8-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        sdharia@codeaurora.org, kramasub@codeaurora.org,
+        dianders@chromium.org, linux-arm-msm@vger.kernel.org,
+        swboyd@chromium.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180503233849.GF13402@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11 April 2018 at 00:44, Boris Brezillon <boris.brezillon@bootlin.com> wrote:
-> The spi_mem interface is meant to replace the spi_flash_read() one.
-> Implement the ->exec_op() method so that we can smoothly get rid of the
-> old interface.
->
-> Note that the current ->flash_read() implementation looks a bit fragile
-> since it does not take the ->read_opcode passed by the spi-nor layer
-> into account, which means if might not work with all kind of NORs.
->
-> Anyway, I left the logic unchanged and added a few extra checks to make
-> sure we're receiving something that looks like a NOR read operation.
->
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+Hi Mark
 
-Actually, I've just sent
-[PATCH] spi: remove the older/duplicated bcm53xx driver
-https://patchwork.kernel.org/patch/10383719/
+On 5/3/2018 5:38 PM, Mark Brown wrote:
+> On Thu, May 03, 2018 at 03:34:43PM -0600, Girish Mahadevan wrote:
+>> This driver supports GENI based SPI Controller in the Qualcomm SOCs. The
+>> Qualcomm Generic Interface (GENI) is a programmable module supporting a
+>> wide range of serial interfaces including SPI. This driver supports SPI
+>> operations using FIFO mode of transfer.
+> 
+> This is a DT based driver but there is no binding documentation.
+> Binding documentation is required for any new DT stuff.
+>
 
-This patch can be probably dropped, as I expect spi-bcm53xx.c to disappear soon.
+The DT documentation for the SPI driver was done as part of this patch
+series
+https://patchwork.kernel.org/patch/10318125/
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+>> +       depends on ARCH_QCOM || (ARM && COMPILE_TEST)
+> > Why the ARM dependency?  There's no architecture specific headers
+> included...
+
+Agree, I will remove it. I will add the dependency on QCOM_GENI_SE(to be
+consistent with the other GENI_QUP protocol drivers (I2C and UART))
+
+>>  obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
+>>  obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
+>> +obj-$(CONFIG_SPI_QCOM_GENI)		+= spi-geni-qcom.o
+>>  obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
+> 
+> Please keep Kconfig and Makefile alphabetically sorted to reduce
+> conflicts.
+> 
+Ok.
+>> +static struct spi_master *get_spi_master(struct device *dev)
+>> +{
+>> +	struct platform_device *pdev = to_platform_device(dev);
+>> +	struct spi_master *spi = platform_get_drvdata(pdev);
+>> +
+>> +	return spi;
+>> +}
+> 
+> This doesn't look at all driver specific with the current naming but it
+> actually is given that other drivers may use other driver data so it
+> should be renamed.  I'm also not clear why it's bouncing through the
+> platform device, dev_get_drvdata() exists.
+> 
+Agree, this function isn't needed, dev_get_drvdata() should be sufficient.
+>> +static int spi_geni_unprepare_message(struct spi_master *spi_mas,
+>> +					struct spi_message *spi_msg)
+>> +{
+>> +	struct spi_geni_master *mas = spi_master_get_devdata(spi_mas);
+>> +
+>> +	mas->cur_speed_hz = 0;
+>> +	mas->cur_word_len = 0;
+>> +	return 0;
+>> +}
+> 
+> Is this really useful?  If the driver needs to reconfigure for every
+> message then it should just do that and not care about the state.  If it
+> might end up caring about the state anyway that suggests there's some
+> kind of bug somewhere that's being masked.
+> 
+Agree, it can be removed.
+>> +static int spi_geni_prepare_transfer_hardware(struct spi_master *spi)
+>> +{
+>> +	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+>> +	int ret = 0;
+>> +	struct geni_se *se = &mas->se;
+>> +
+>> +	ret = pm_runtime_get_sync(mas->dev);
+>> +	if (ret < 0) {
+> 
+> Use auto_runtime_pm.
+> 
+Ok
+>> +	if (unlikely(!mas->setup)) {
+>> +		int proto = geni_se_read_proto(se);
+> 
+> Does this really need a likely/unlikely annotation - it shouldn't be any
+> kind of hot path...  There's a lot of these annotations in the code.
+> 
+Ok
+>> +		ret = devm_request_irq(mas->dev, mas->irq, geni_spi_isr,
+>> +			       IRQF_TRIGGER_HIGH, "spi_geni", mas);
+>> +		if (ret) {
+>> +			dev_err(mas->dev, "Request_irq failed:%d: err:%d\n",
+> 
+> Why are we dynamically requesting the IRQ outside of probe?  Normally an
+> interrupt is requested on startup and held through the life of the
+> device.  I'm also not seeing any sign that it's freed except via devm...
+> 
+Ok, will move this to probe.
+>> +	spi->bus_num = of_alias_get_id(pdev->dev.of_node, "spi");
+> 
+> Don't do this, just set bus_num to -1 and let the core assign an ID.
+> 
+Ok.
+>> +	spi->dev.of_node = pdev->dev.of_node;
+> 
+> This is broken, the virtual SPI device does not exist in DT and this
+> might break things.
+> 
+I don't follow, if I don't do this the framework won't be able to probe
+the slave devices of the controller.
+>> +	pm_runtime_enable(&pdev->dev);
+>> +	ret = spi_register_master(spi);
+> 
+> No devm?
+> 
+Agree, I will change this to use devm_spi_register_master()
+
+Best Regards
+Girish
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora
+Forum, a Linux Foundation Collaborative Project.

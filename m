@@ -1,137 +1,54 @@
-From: "Mahadevan, Girish" <girishm@codeaurora.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
- QUP
-Date: Mon, 7 May 2018 15:40:46 -0600
-Message-ID: <a9146e14-19d6-c718-a5d8-64aba6db5465@codeaurora.org>
-References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
- <20180503233849.GF13402@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Applied "spi: pxa2xx: Allow 64-bit DMA" to the spi tree
+Date: Wed, 9 May 2018 17:19:49 +0900
+Message-ID: <20180509081949.GP13402@sirena.org.uk>
+References: <20180419165333.32962-1-andriy.shevchenko@linux.intel.com>
+ <E1fAzrt-0007ZJ-F6@debutante>
+ <CAHp75VcNe_VfZRoM2G0_QUxo6sZZ7cco369NvoyOPBAxg9muGQ@mail.gmail.com>
+ <20180503012157.GJ2714@sirena.org.uk>
+ <CAHp75VckqcfNzD_Q+kAe4aTQwFC+OJeHtor7PbJBVYAiO-VG4g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        sdharia@codeaurora.org, kramasub@codeaurora.org,
-        dianders@chromium.org, linux-arm-msm@vger.kernel.org,
-        swboyd@chromium.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180503233849.GF13402@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="m46qSNjkc66Ye11q"
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stable <stable@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAHp75VckqcfNzD_Q+kAe4aTQwFC+OJeHtor7PbJBVYAiO-VG4g@mail.gmail.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark
 
-On 5/3/2018 5:38 PM, Mark Brown wrote:
-> On Thu, May 03, 2018 at 03:34:43PM -0600, Girish Mahadevan wrote:
->> This driver supports GENI based SPI Controller in the Qualcomm SOCs. The
->> Qualcomm Generic Interface (GENI) is a programmable module supporting a
->> wide range of serial interfaces including SPI. This driver supports SPI
->> operations using FIFO mode of transfer.
-> 
-> This is a DT based driver but there is no binding documentation.
-> Binding documentation is required for any new DT stuff.
->
+--m46qSNjkc66Ye11q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The DT documentation for the SPI driver was done as part of this patch
-series
-https://patchwork.kernel.org/patch/10318125/
+On Sat, May 05, 2018 at 01:13:56PM +0300, Andy Shevchenko wrote:
+> On Thu, May 3, 2018 at 4:21 AM, Mark Brown <broonie@kernel.org> wrote:
 
->> +       depends on ARCH_QCOM || (ARM && COMPILE_TEST)
-> > Why the ARM dependency?  There's no architecture specific headers
-> included...
+> > Linus will only merge patches when I send him a pull request.
 
-Agree, I will remove it. I will add the dependency on QCOM_GENI_SE(to be
-consistent with the other GENI_QUP protocol drivers (I2C and UART))
+> Are you going to send one for this rc?
 
->>  obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
->>  obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
->> +obj-$(CONFIG_SPI_QCOM_GENI)		+= spi-geni-qcom.o
->>  obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
-> 
-> Please keep Kconfig and Makefile alphabetically sorted to reduce
-> conflicts.
-> 
-Ok.
->> +static struct spi_master *get_spi_master(struct device *dev)
->> +{
->> +	struct platform_device *pdev = to_platform_device(dev);
->> +	struct spi_master *spi = platform_get_drvdata(pdev);
->> +
->> +	return spi;
->> +}
-> 
-> This doesn't look at all driver specific with the current naming but it
-> actually is given that other drivers may use other driver data so it
-> should be renamed.  I'm also not clear why it's bouncing through the
-> platform device, dev_get_drvdata() exists.
-> 
-Agree, this function isn't needed, dev_get_drvdata() should be sufficient.
->> +static int spi_geni_unprepare_message(struct spi_master *spi_mas,
->> +					struct spi_message *spi_msg)
->> +{
->> +	struct spi_geni_master *mas = spi_master_get_devdata(spi_mas);
->> +
->> +	mas->cur_speed_hz = 0;
->> +	mas->cur_word_len = 0;
->> +	return 0;
->> +}
-> 
-> Is this really useful?  If the driver needs to reconfigure for every
-> message then it should just do that and not care about the state.  If it
-> might end up caring about the state anyway that suggests there's some
-> kind of bug somewhere that's being masked.
-> 
-Agree, it can be removed.
->> +static int spi_geni_prepare_transfer_hardware(struct spi_master *spi)
->> +{
->> +	struct spi_geni_master *mas = spi_master_get_devdata(spi);
->> +	int ret = 0;
->> +	struct geni_se *se = &mas->se;
->> +
->> +	ret = pm_runtime_get_sync(mas->dev);
->> +	if (ret < 0) {
-> 
-> Use auto_runtime_pm.
-> 
-Ok
->> +	if (unlikely(!mas->setup)) {
->> +		int proto = geni_se_read_proto(se);
-> 
-> Does this really need a likely/unlikely annotation - it shouldn't be any
-> kind of hot path...  There's a lot of these annotations in the code.
-> 
-Ok
->> +		ret = devm_request_irq(mas->dev, mas->irq, geni_spi_isr,
->> +			       IRQF_TRIGGER_HIGH, "spi_geni", mas);
->> +		if (ret) {
->> +			dev_err(mas->dev, "Request_irq failed:%d: err:%d\n",
-> 
-> Why are we dynamically requesting the IRQ outside of probe?  Normally an
-> interrupt is requested on startup and held through the life of the
-> device.  I'm also not seeing any sign that it's freed except via devm...
-> 
-Ok, will move this to probe.
->> +	spi->bus_num = of_alias_get_id(pdev->dev.of_node, "spi");
-> 
-> Don't do this, just set bus_num to -1 and let the core assign an ID.
-> 
-Ok.
->> +	spi->dev.of_node = pdev->dev.of_node;
-> 
-> This is broken, the virtual SPI device does not exist in DT and this
-> might break things.
-> 
-I don't follow, if I don't do this the framework won't be able to probe
-the slave devices of the controller.
->> +	pm_runtime_enable(&pdev->dev);
->> +	ret = spi_register_master(spi);
-> 
-> No devm?
-> 
-Agree, I will change this to use devm_spi_register_master()
+Probably, I'll certainly send one before the next release.  I'm on
+holiday right now so a bit intermittent.
 
-Best Regards
-Girish
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora
-Forum, a Linux Foundation Collaborative Project.
+--m46qSNjkc66Ye11q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlryryQACgkQJNaLcl1U
+h9DWoAf7BIrbX0TdCI3jntXZiyeMl6aOJz/cIlSjMRALVQ7ka4IbJ0C63wMOMd6m
+z+7nQZS/aI+UolNcior0Q7mY6vBf0MvV+mOn1gLk5ZoxWOsswggaMH5dBUWfqpGG
+78reISGaZmlKHX+bFRKhMYystnGkrkaSLCpx6EFS7HCuuIh/D69P5vQYLMcV/14X
+vrpByQl6pGWsOZkcqfvdvoOwAVD9OGO7Zpfen0iW6y77IRzSigGI1XPsVbfwv+zH
+zPztzTJdLyd5KBOP0KDD1/FtHpO0ye5XXoKB6oyDh0PuMLcxmeeV33xD+sSFA5yO
+edqgTU1Zq9RbINrr+Wjc0ZUSnQXIkA==
+=qFO8
+-----END PGP SIGNATURE-----
+
+--m46qSNjkc66Ye11q--

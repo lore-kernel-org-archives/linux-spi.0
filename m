@@ -1,68 +1,50 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 5/6] spi: at91-usart: add driver for at91-usart as spi
-Date: Thu, 17 May 2018 13:54:37 +0900
-Message-ID: <20180517045437.GE20254@sirena.org.uk>
-References: <20180511103822.31698-1-radu.pirea@microchip.com>
- <20180511103822.31698-6-radu.pirea@microchip.com>
- <CAHp75Ve3Ugnjjm8EZkPQTZSvH1qad1e5SqjOn8zz5syHSQea_g@mail.gmail.com>
- <5a3930b867cf8c279953d08c5d5dd1d93113a43b.camel@microchip.com>
- <CAHp75VdRrL25Jgnbk64Qqc5RY3uJdcntJ3xwRdp3F+rRFeTHBA@mail.gmail.com>
- <c23cdde58b9f724f51787c6c38478df983be6efa.camel@microchip.com>
+Subject: Re: [PATCH v2 2/6] spi: sun6i: handle chip select polarity flag
+Date: Thu, 17 May 2018 16:07:43 +0900
+Message-ID: <20180517070743.GQ20254@sirena.org.uk>
+References: <20180330125047.13936-1-ssuloev@orpaltech.com>
+ <20180330125047.13936-3-ssuloev@orpaltech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ep0oHQY+/Gbo/zt0"
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        alexandre.belloni@bootlin.com,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-To: Radu Pirea <radu.pirea@microchip.com>
+        protocol="application/pgp-signature"; boundary="tk6xM/wkRlnXD2NA"
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Sergey Suloev <ssuloev@orpaltech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <c23cdde58b9f724f51787c6c38478df983be6efa.camel@microchip.com>
+In-Reply-To: <20180330125047.13936-3-ssuloev@orpaltech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---ep0oHQY+/Gbo/zt0
+--tk6xM/wkRlnXD2NA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, May 15, 2018 at 12:22:24PM +0300, Radu Pirea wrote:
-> On Mon, 2018-05-14 at 20:38 +0300, Andy Shevchenko wrote:
+On Fri, Mar 30, 2018 at 03:50:43PM +0300, Sergey Suloev wrote:
+> The chip select polarity flag is declared as supported
+> but is not handled in the code.
 
-> > So, what is not going as expected in "SPI core takes care of CSs"
-> > case?
-> > Did you use oscilloscope for that?
+This is more of a fix and should really have come before the cosmetic
+changes in patch 1.  In general it's best to put fixes fist in a series
+unless there's a strong reason to do something else, that makes it
+easier to get the fixes in without them getting caught by review issues
+with other code.
 
-> Yes, I used and CSs was not asserted. Anyway, I will will try again.
-
-If the core chip select handling is not working properly for some reason
-then the core chip select handling should be fixed rather than just open
-coding in your driver - probably it's also broken for other users.
-
---ep0oHQY+/Gbo/zt0
+--tk6xM/wkRlnXD2NA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr9CwwACgkQJNaLcl1U
-h9AHmAf+MeZvNU8HPwcP+sQCno97dw8H+yoy3YJU9I0Dj3O2T7Oo92s9mWkZRvVo
-sOKTcum4hVqmJFePu3boGmH63hfeD0QUOSm6kJr4xkSy1Sxz0ouOhlvI7LRe8XFK
-e7cHXKAznizC8uLRLSmtfWJ1Yxs/Xp6f4ZHidVlXxlstZBp3pPNrf1Fp5l9fuHyn
-SztnBBwxWDd+T0BolFLQttRrPK+QH8kbI4QGd+m7Nf+89x+FAWwsNKbFZE/J7A0A
-J1ZHjrJ4Tby2CIG4dhx0EsBn57AyB+DxZJcCVYt66KyOcggs8kom3k+RxY8kXQNr
-EDDh2ppYFrYMdZt1KnbLilNYeZ14Hw==
-=UhMg
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr9Kj8ACgkQJNaLcl1U
+h9A26gf+Ni1rK72Q4vG/YsD2GxlnBDcJ71rRbsMeMC0XFmNsNTRHDvYaG8BJHYm8
+yiS8hjSWbLb+Zq8OQtjdioXtPwmvvzvogGUemf7MWDjnifqinHTnkkXJMEW80zW8
+qpJNZ1UtvW65pHQ13PZyySvv3DOaHImMONfS9D1RhQdmEhsxvu8yg551rjLuoiVG
+5KhNlln0pBhkNPKlACaj41eJhXNYSBnC0urYMzXwe6IeoQylgMK+AIOa5Y1YPZxu
+4B4n94KPlsigjdn2SHk/QO9fBtmCUidaeWc5QGEDKCwuadNSKGtcYmGGbBNKZzIL
+QQV+4j9B6GKpLKitaCon9hIP3cPf/A==
+=7uPr
 -----END PGP SIGNATURE-----
 
---ep0oHQY+/Gbo/zt0--
+--tk6xM/wkRlnXD2NA--

@@ -1,73 +1,41 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Thu, 17 May 2018 16:21:14 +0900
-Message-ID: <20180517072114.GS20254@sirena.org.uk>
-References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
- <20180503233849.GF13402@sirena.org.uk>
- <0c26e96c-85ad-c2a2-9abd-33096d76008b@codeaurora.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] spi: spi-s3c64xx: Fix system resume support
+Date: Fri, 18 May 2018 07:33:03 +0200
+Message-ID: <CAJKOXPegbcXzy7QYpt09pXKcHaLji0Xyy+nmYz+wj+_awqAG4A@mail.gmail.com>
+References: <CGME20180517102518eucas1p10e55ae3c884f6fe29b37c01eff0fe7a4@eucas1p1.samsung.com>
+ <20180517101508.25867-1-m.szyprowski@samsung.com> <20180517164102.GT20254@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0lx/R+CYDdR/AN/7"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        sdharia@codeaurora.org, kramasub@codeaurora.org,
-        dianders@chromium.org, linux-arm-msm@vger.kernel.org,
-        swboyd@chromium.org
-To: "Mahadevan, Girish" <girishm@codeaurora.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <0c26e96c-85ad-c2a2-9abd-33096d76008b@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-spi@vger.kernel.org,
+        "linux-samsung-soc@vger.kernel.org"
+        <linux-samsung-soc@vger.kernel.org>, Andi Shyti <andi@etezian.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20180517164102.GT20254@sirena.org.uk>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, May 17, 2018 at 6:41 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, May 17, 2018 at 12:15:08PM +0200, Marek Szyprowski wrote:
+>
+>> Resend reason: added cc: stable, reviewed and acked tags
+>
+> Please don't resend so quickly for stuff like this, it just makes noise
+> - stable doesn't need to be CCed on e-mails.
 
---0lx/R+CYDdR/AN/7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Mark,
 
-On Mon, May 07, 2018 at 02:29:45PM -0600, Mahadevan, Girish wrote:
-> On 5/3/2018 5:38 PM, Mark Brown wrote:
+The point of resend was to add the specific cc-stable tags with a
+prerequisite for backporting:
+    CC: <stable@vger.kernel.org> # 4.10.x: 1c75862d8e5a spi:
+spi-s3c64xx: Remove unused s3c64xx_spi_hwinit()
+    CC: <stable@vger.kernel.org> # 4.10.x
+Unfortunately I saw that these did not end up in patch you committed.
+Mentioning required commit is, I think, quite helpful for stable guys.
 
-> > This is a DT based driver but there is no binding documentation.
-> > Binding documentation is required for any new DT stuff.
-
-> The DT documentation for the SPI driver was done as part of this patch se=
-ries
-> https://patchwork.kernel.org/patch/10318125/=20
-
-I can't follow the link as I'm working offline but since I've no record
-of having seen a copy of any bindings for review and I'm fairly sure I'd
-have remembered any bindings without code I'm very disappointed -
-bindings should be being reviewed by the relevant maintainers just like
-code.
-
-Fortunately as far as I can tell whereever you sent that to it doesn't
-seem to have been applied but that makes it even more disappointing that
-they're not being sent.
-
-=2E..
-
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
-
---0lx/R+CYDdR/AN/7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr9LWkACgkQJNaLcl1U
-h9AIxAf+KLiYUADjRtmwz1fuV8DJoSTNw5zZFh33/YHqqVlqKmANHlLuiBz0Oigx
-qKR4ikl+O9lkixub4Vml30JurgAfAuzQ8VBOpCY0upuzrV0Ssje12nLus2F9ewoX
-3UznB6iggbXghA++mHvF7XZjkwKai4XeqaW5LdGVl4spY/8VPV3O2IuoyXSK5/8Q
-H1sGMNGPdcIYZfSpc5AgXap5DPl5be5QPHBQzow8faUxBc2BpMldzUt2aqBAH8GO
-sxqYuj+Vy1nuV9d6koOnLAQIcknrt0qp74SgDfpDagn9Ng9GBB6Ba8gYIu8EZ/C6
-V0E7k7bM3+YCNa0QWLvSYF9MLMEtqg==
-=e3Nf
------END PGP SIGNATURE-----
-
---0lx/R+CYDdR/AN/7--
+Best regards,
+Krzysztof

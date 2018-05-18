@@ -1,58 +1,91 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [GIT PULL] spi fixes for v4.17
-Date: Fri, 18 May 2018 11:02:34 +0100
-Message-ID: <20180518100234.GF24209@sirena.org.uk>
-References: <20180518100107.GE24209@sirena.org.uk>
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Subject: Re: [PATCH v2 1/6] spi: sun6i: coding style/readability improvements
+Date: Fri, 18 May 2018 16:29:55 +0200
+Message-ID: <20180518142955.lmeb5bkeo4wyv2ue@flea>
+References: <20180330125047.13936-1-ssuloev@orpaltech.com>
+ <20180330125047.13936-2-ssuloev@orpaltech.com>
+ <20180517070307.GP20254@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="o0ZfoUVt4BxPQnbU"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="d7i6mknxxllhrk7r"
+Cc: Sergey Suloev <ssuloev@orpaltech.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180518100107.GE24209@sirena.org.uk>
+In-Reply-To: <20180517070307.GP20254@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---o0ZfoUVt4BxPQnbU
+--d7i6mknxxllhrk7r
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 18, 2018 at 11:01:07AM +0100, Mark Brown wrote:
+Hi,
 
-> are available in the Git repository at:
-
->   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git spi-fix=
--v4.17-rc5
+On Thu, May 17, 2018 at 04:03:07PM +0900, Mark Brown wrote:
+> On Fri, Mar 30, 2018 at 03:50:42PM +0300, Sergey Suloev wrote:
+> > Minor changes to fulfill the coding style and improve
+> > the readability of the code.
+> >=20
+> > Changes in v2:
+> > 1) Fixed issue with misplacing a piece of code that requires access
+> > to the transfer structure into sun6i_spi_prepare_message() function
+> > where the transfer structure is not available.
 >=20
-> for you to fetch changes up to bc519d9574618e47a0c788000fb78da95e18d953:
+> Place inter-version changelogs after the --- as covered in
+> SubmittingPatches.
 >=20
->   spi: bcm2835aux: ensure interrupts are enabled for shared handler (2018=
--05-04 08:09:02 +0900)
+> >=20
+> > Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
+> >=20
+> > ---
+> >  drivers/spi/spi-sun6i.c | 97 +++++++++++++++++++++++++++++------------=
+--------
+>=20
+> This is a *very* large change doing a whole bunch of different things,
+> including some fairly substantial changes like moving things into
+> different functions but the changelog doesn't provide any details at all
+> on what the changes are supposed to be.  This makes it difficult to
+> review, it should be split into separate patches each doing one clerly
+> described thing (I'm guessing this might be part of why the AllWinner
+> maintainers haven't reviewed the series).
 
-This is actually a signed tag, sorry:
+We didn't really review them because most of the changes done here
+were also applicable to the sun4i series that was sent pretty much at
+the same time:
+http://lists.infradead.org/pipermail/linux-arm-kernel/2018-April/570056.html
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
-fix-v4.17-rc5
+We should have made that clearer, sorry.
 
-Managed to not notice being slightly fast with generating the pull
-request.
+Maxime
 
---o0ZfoUVt4BxPQnbU
+--=20
+Maxime Ripard, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--d7i6mknxxllhrk7r
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr+pLkACgkQJNaLcl1U
-h9AlKgf7BaX4Vl0vIwhT9RtuWlFUZJrRZ85QNaW/gfEYpBMlPkOZ6I2MM6gxtDtQ
-7sOwaVaeNRF08qGvr0tmUiHbcPhDykXFTLXNSCzqoMaN2RaJz9jSVzgLvNXvzBx6
-GG9Htup8NGoyDUnwErgmRSRY/FF1ksPHdeWTCo3zrqB2lqdtyBSCaKeiodnXeNoQ
-r0wBpPAh2nJllLZYDgFmjCoiNG1/1NOgedqLPQ2KPlq/LGa5tUFrkgyDPj0+jyB/
-tKDThuz37TtKwYfQJI18o//9+qpZCDC6MryA3f1swVtSzmB3KINadu+E0TAgtvol
-uMTeRjfh8l/nFzVTbit7jHY9rtvAqQ==
-=mlXK
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlr+42IACgkQ0rTAlCFN
+r3TStA//QhbjWN3incX1RsA/jvrsdgXH/vFz1CJ6t3WlRRt9/GLqs+tB6Az6iC26
+IDFepxUlNf2538we2rhpEtpZtTY7AwQu2/Gd++dIlxpn19O8CHHCGhqVLlgcrQXC
+V97e9PzWSZw5PR2b+7QizHR4VqiXL/1OQdkefnTLZzyruiElSI2U6I5Xb8tInUsL
+hqA7HGPohelAvI/q/adUceUehPzvDvAXA79GQLbMyPqaREljimbALYhyKyl/pxGx
+790zvuW4Kg30In5/sdS4B8Ubo81k1q08qkLmip383gVaBzRv4gVO40Gwy8gptRNY
+rUkZz0JKV3GxFAP6YVb9SsZ+qYH2VE6iVqHQ+RjNRdkNTxj3phvV4ikvAn0aM6ZX
+i7Vjnn/Q5tDvOYdCi9xig7HFxgJfl0KrLJf4KMh8L5v/NnFiwmO+yqWYzHiht0uL
+JYSdQB0pXbLd6yY1/RQJDsXrqCJRgQMPr3A8rhmD5X9q+lAOnNuSeiYSMgd/SRBh
+ubO/MjCZSJO60YAsPggYHOC6vlRhyaYNyxjc30YADVdd0qkqoGJ++H3ueQyCie9c
+pobyl2XXFHS9Lcq26Y34HRW/KTdyA+rkcgmaG3cBgXZ47Pf40PFYewz30zH0DI5c
+UR9mZZ6ANbOvOpSM32YMcc/EHV2xjHv9hI5x/c8AVYAOBm7SXrA=
+=9mEz
 -----END PGP SIGNATURE-----
 
---o0ZfoUVt4BxPQnbU--
+--d7i6mknxxllhrk7r--

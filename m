@@ -1,61 +1,81 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-s3c64xx: Fix system resume support
-Date: Fri, 18 May 2018 09:34:11 +0100
-Message-ID: <20180518083411.GB24209@sirena.org.uk>
-References: <CGME20180517102518eucas1p10e55ae3c884f6fe29b37c01eff0fe7a4@eucas1p1.samsung.com>
- <20180517101508.25867-1-m.szyprowski@samsung.com>
- <20180517164102.GT20254@sirena.org.uk>
- <CAJKOXPegbcXzy7QYpt09pXKcHaLji0Xyy+nmYz+wj+_awqAG4A@mail.gmail.com>
+Subject: [GIT PULL] spi fixes for v4.17
+Date: Fri, 18 May 2018 11:01:07 +0100
+Message-ID: <20180518100107.GE24209@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hHWLQfXTYDoKhP50"
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-spi@vger.kernel.org,
-        "linux-samsung-soc@vger.kernel.org"
-        <linux-samsung-soc@vger.kernel.org>, Andi Shyti <andi@etezian.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="5p8PegU4iirBW1oA"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAJKOXPegbcXzy7QYpt09pXKcHaLji0Xyy+nmYz+wj+_awqAG4A@mail.gmail.com>
-Sender: stable-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---hHWLQfXTYDoKhP50
+--5p8PegU4iirBW1oA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, May 18, 2018 at 07:33:03AM +0200, Krzysztof Kozlowski wrote:
+The following changes since commit e241e3f2bf975788a1b70dff2eb5180ca395b28e:
 
-> The point of resend was to add the specific cc-stable tags with a
-> prerequisite for backporting:
->     CC: <stable@vger.kernel.org> # 4.10.x: 1c75862d8e5a spi:
-> spi-s3c64xx: Remove unused s3c64xx_spi_hwinit()
->     CC: <stable@vger.kernel.org> # 4.10.x
+  Merge tag 'for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost (2018-04-11 18:58:27 -0700)
 
-> Unfortunately I saw that these did not end up in patch you committed.
-> Mentioning required commit is, I think, quite helpful for stable guys.
+are available in the Git repository at:
 
-If you want to mention the commit being fixed then use a Fixes: tag.  I
-was complaining because I'd already applied the commit before that got
-resent so I had to try to figure out what was going on with it.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git spi-fix-v4.17-rc5
 
---hHWLQfXTYDoKhP50
+for you to fetch changes up to bc519d9574618e47a0c788000fb78da95e18d953:
+
+  spi: bcm2835aux: ensure interrupts are enabled for shared handler (2018-05-04 08:09:02 +0900)
+
+----------------------------------------------------------------
+spi: Fixes for v4.17
+
+A small collection of fixes accumilated since the merge window, all
+fairly small and driver specific.
+
+----------------------------------------------------------------
+Andy Shevchenko (1):
+      spi: pxa2xx: Allow 64-bit DMA
+
+Kamal Dasu (2):
+      spi: bcm-qspi: Avoid setting MSPI_CDRAM_PCS for spi-nor master
+      spi: bcm-qspi: Always read and set BSPI_MAST_N_BOOT_CTRL
+
+Rob Herring (1):
+      spi: bcm2835aux: ensure interrupts are enabled for shared handler
+
+Vladimir Zapolskiy (1):
+      spi: sh-msiof: Fix bit field overflow writes to TSCR/RSCR
+
+sxauwsk (1):
+      spi: cadence: Add usleep_range() for cdns_spi_fill_tx_fifo()
+
+wangbo (1):
+      spi: imx: Update MODULE_DESCRIPTION to "SPI Controller driver"
+
+ drivers/spi/spi-bcm-qspi.c   | 28 ++++++++++++++++++----------
+ drivers/spi/spi-bcm2835aux.c |  5 +++++
+ drivers/spi/spi-cadence.c    |  8 ++++++++
+ drivers/spi/spi-imx.c        |  2 +-
+ drivers/spi/spi-pxa2xx.h     |  2 +-
+ drivers/spi/spi-sh-msiof.c   |  1 +
+ 6 files changed, 34 insertions(+), 12 deletions(-)
+
+--5p8PegU4iirBW1oA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr+kAIACgkQJNaLcl1U
-h9D/fwf+MUZi/FPGYEwovQWGxYt5EiE2yl15583FjuWsiT8ZPNn+PgyeCA+aUuss
-JQrW6llC5B4GX4nz1Ac67lkzmoGkdz5nohRO0cmgwPmKCjTPzC/K0ejRUnrpY98u
-2qDvHACQmH3MlYkpWCXOcH7gJfHRMlFcrSGaZZHpqn9SXkQZYVHb0MrriDoo2Dnj
-Tco4BYphkWFUwODEEUYiixQOS0T2sALzAG6q1oNgZvHrSOfLuaP8vYFoXYYXO8HI
-yH73FOIwUx/nCcLkiEMyfy9YW3l6OBaEPZ+jB2y33vlGJGzp/9QTFjhUywkXx7iY
-iMGbgEjwohUThKzLFMf4S74Y4cH1rA==
-=u4A0
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlr+pGIACgkQJNaLcl1U
+h9Bx3QgAgN/z4QCLB6XTufdU7rbmowc/oZA6SZL5XrZ9hODiuhW5ttdpbq9GmuwM
+7S97ixGgs/zeq2zVYD+xYSQYjzaZaV4R6Kkzx3HWyuRXHpmrJkG7NxbwMFUMEUHI
+x4Jy+WI4HLyiTvhjA0i7VM6o2grXzO5PFqhS6tHLG8CyExtHDycBJOFpwJgoHQEa
+PkweuTjY++6kKk1OWGy3LyaZGEhoqB8g0qDrhL/VnDTxX2l+MHj6qqyriEEwwVxQ
+x58OxP2kHFESLQEh71L3TpORzvrSA9SaTpyKAoISpPrKPE5uVemLZJCkuTkUB9wQ
+KWBUBjb2rHdVFcHZdGFD0bUz2koS4Q==
+=+tcx
 -----END PGP SIGNATURE-----
 
---hHWLQfXTYDoKhP50--
+--5p8PegU4iirBW1oA--

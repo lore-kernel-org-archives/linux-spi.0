@@ -1,91 +1,84 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH v2 1/6] spi: sun6i: coding style/readability improvements
-Date: Fri, 18 May 2018 16:29:55 +0200
-Message-ID: <20180518142955.lmeb5bkeo4wyv2ue@flea>
-References: <20180330125047.13936-1-ssuloev@orpaltech.com>
- <20180330125047.13936-2-ssuloev@orpaltech.com>
- <20180517070307.GP20254@sirena.org.uk>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v3 4/6] dt-bindings: add binding for at91-usart in spi
+ mode
+Date: Fri, 18 May 2018 16:40:51 -0500
+Message-ID: <20180518214051.GA29868@rob-hp-laptop>
+References: <20180511103822.31698-1-radu.pirea@microchip.com>
+ <20180511103822.31698-5-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="d7i6mknxxllhrk7r"
-Cc: Sergey Suloev <ssuloev@orpaltech.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: devicetree@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, mark.rutland@arm.com,
+        lee.jones@linaro.org, gregkh@linuxfoundation.org, jslaby@suse.com,
+        richard.genoud@gmail.com, alexandre.belloni@bootlin.com,
+        nicolas.ferre@microchip.com, broonie@kernel.org
+To: Radu Pirea <radu.pirea@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180517070307.GP20254@sirena.org.uk>
+In-Reply-To: <20180511103822.31698-5-radu.pirea@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, May 11, 2018 at 01:38:20PM +0300, Radu Pirea wrote:
+> These are bindings for at91-usart IP in spi spi mode. There is no support for
 
---d7i6mknxxllhrk7r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+s/spi spi/SPI/
 
-Hi,
+> internal chip select. Only kind of chip selects available are gpio chip
 
-On Thu, May 17, 2018 at 04:03:07PM +0900, Mark Brown wrote:
-> On Fri, Mar 30, 2018 at 03:50:42PM +0300, Sergey Suloev wrote:
-> > Minor changes to fulfill the coding style and improve
-> > the readability of the code.
-> >=20
-> > Changes in v2:
-> > 1) Fixed issue with misplacing a piece of code that requires access
-> > to the transfer structure into sun6i_spi_prepare_message() function
-> > where the transfer structure is not available.
->=20
-> Place inter-version changelogs after the --- as covered in
-> SubmittingPatches.
->=20
-> >=20
-> > Signed-off-by: Sergey Suloev <ssuloev@orpaltech.com>
-> >=20
-> > ---
-> >  drivers/spi/spi-sun6i.c | 97 +++++++++++++++++++++++++++++------------=
---------
->=20
-> This is a *very* large change doing a whole bunch of different things,
-> including some fairly substantial changes like moving things into
-> different functions but the changelog doesn't provide any details at all
-> on what the changes are supposed to be.  This makes it difficult to
-> review, it should be split into separate patches each doing one clerly
-> described thing (I'm guessing this might be part of why the AllWinner
-> maintainers haven't reviewed the series).
+GPIO
 
-We didn't really review them because most of the changes done here
-were also applicable to the sun4i series that was sent pretty much at
-the same time:
-http://lists.infradead.org/pipermail/linux-arm-kernel/2018-April/570056.html
+> selects.
+> 
+> Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
+> ---
+>  .../bindings/spi/microchip,at91-usart-spi.txt | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt b/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
+> new file mode 100644
+> index 000000000000..b68a3bec4121
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
 
-We should have made that clearer, sorry.
+So now we have 2 copies of the same thing that varies by 2 properties?
+Please make this one doc.
 
-Maxime
+> @@ -0,0 +1,28 @@
+> +* Universal Synchronous Asynchronous Receiver/Transmitter (USART) in SPI mode
+> +
+> +Required properties:
+> +- #size-cells      : Must be <0>
+> +- #address-cells   : Must be <1>
+> +- compatible: Should be "atmel,at91rm9200-usart" or "atmel,at91sam9260-usart"
+> +- reg: Should contain registers location and length
+> +- interrupts: Should contain interrupt
+> +- clocks: phandles to input clocks.
+> +- clock-names: tuple listing input clock names.
+> +	Required elements: "usart"
+> +- cs-gpios: chipselects (internal cs not supported)
+> +- at91,usart-mode: AT91_USART_MODE_SPI (found in dt-bindings/mfd/at91-usart.h)
 
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+at91 is not a vendor.
 
---d7i6mknxxllhrk7r
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlr+42IACgkQ0rTAlCFN
-r3TStA//QhbjWN3incX1RsA/jvrsdgXH/vFz1CJ6t3WlRRt9/GLqs+tB6Az6iC26
-IDFepxUlNf2538we2rhpEtpZtTY7AwQu2/Gd++dIlxpn19O8CHHCGhqVLlgcrQXC
-V97e9PzWSZw5PR2b+7QizHR4VqiXL/1OQdkefnTLZzyruiElSI2U6I5Xb8tInUsL
-hqA7HGPohelAvI/q/adUceUehPzvDvAXA79GQLbMyPqaREljimbALYhyKyl/pxGx
-790zvuW4Kg30In5/sdS4B8Ubo81k1q08qkLmip383gVaBzRv4gVO40Gwy8gptRNY
-rUkZz0JKV3GxFAP6YVb9SsZ+qYH2VE6iVqHQ+RjNRdkNTxj3phvV4ikvAn0aM6ZX
-i7Vjnn/Q5tDvOYdCi9xig7HFxgJfl0KrLJf4KMh8L5v/NnFiwmO+yqWYzHiht0uL
-JYSdQB0pXbLd6yY1/RQJDsXrqCJRgQMPr3A8rhmD5X9q+lAOnNuSeiYSMgd/SRBh
-ubO/MjCZSJO60YAsPggYHOC6vlRhyaYNyxjc30YADVdd0qkqoGJ++H3ueQyCie9c
-pobyl2XXFHS9Lcq26Y34HRW/KTdyA+rkcgmaG3cBgXZ47Pf40PFYewz30zH0DI5c
-UR9mZZ6ANbOvOpSM32YMcc/EHV2xjHv9hI5x/c8AVYAOBm7SXrA=
-=9mEz
------END PGP SIGNATURE-----
-
---d7i6mknxxllhrk7r--
+> +
+> +Example:
+> +	#include <dt-bindings/mfd/at91-usart.h>
+> +
+> +	spi0: spi@f001c000 {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		compatible = "atmel,at91rm9200-usart", "atmel,at91sam9260-usart";
+> +		at91,usart-mode = <AT91_USART_MODE_SPI>;
+> +		reg = <0xf001c000 0x100>;
+> +		interrupts = <12 IRQ_TYPE_LEVEL_HIGH>;
+> +		clocks = <&usart0_clk>;
+> +		clock-names = "usart";
+> +		cs-gpios = <&pioB 3 0>;
+> +	};
+> -- 
+> 2.17.0
+> 

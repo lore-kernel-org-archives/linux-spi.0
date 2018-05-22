@@ -1,55 +1,44 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Tue, 22 May 2018 18:32:16 +0100
-Message-ID: <20180522173216.GH24776@sirena.org.uk>
-References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
- <20180503233849.GF13402@sirena.org.uk>
- <0c26e96c-85ad-c2a2-9abd-33096d76008b@codeaurora.org>
- <20180517072114.GS20254@sirena.org.uk>
- <9e8c271f-6373-b0e3-ba74-8a776b09c1e1@codeaurora.org>
+From: Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH] ARM: dts: imx6q: Use correct SDMA script for SPI5 core
+Date: Tue, 22 May 2018 14:49:41 -0300
+Message-ID: <CAOMZO5AiWtSx8ziA_-GGkU6LxNTUqJOmE+o5_DmFHOQTuMLvjg@mail.gmail.com>
+References: <20180522174509.18154-1-sean.nyekjaer@prevas.dk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0XhtP95kHFp3KGBe"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        sdharia@codeaurora.org, kramasub@codeaurora.org,
-        dianders@chromium.org, linux-arm-msm@vger.kernel.org,
-        swboyd@chromium.org
-To: "Mahadevan, Girish" <girishm@codeaurora.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <9e8c271f-6373-b0e3-ba74-8a776b09c1e1@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org,
+ Anton Bondarenko <anton.bondarenko.sama@gmail.com>,
+ Mark Brown <broonie@kernel.org>, stable@kernel.vger.org,
+ Shawn Guo <shawnguo@kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
+To: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180522174509.18154-1-sean.nyekjaer@prevas.dk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, May 22, 2018 at 2:45 PM, Sean Nyekjaer <sean.nyekjaer@prevas.dk> wrote:
+> According to the reference manual the shp_2_mcu / mcu_2_shp
+> scripts must be used for devices connected through the SPBA.
+>
+> This fixes an issue we saw with DMA transfers.
+> Sometimes the SPI controller RX FIFO was not empty after a DMA
+> transfer and the driver got stuck in the next PIO transfer when
+> it read one word more than expected.
+>
+> commit dd4b487b32a35 ("ARM: dts: imx6: Use correct SDMA script
+> for SPI cores") is fixing the same issue but only for SPI1 - 4.
+>
+> Fixes: 677940258dd8e ("ARM: dts: imx6q: enable dma for ecspi5")
+> Signed-off-by: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
 
---0XhtP95kHFp3KGBe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, May 21, 2018 at 03:45:09PM -0600, Mahadevan, Girish wrote:
-
-> I can resubmit the SPI binding documentation as part of this patch series.
-
-Yes, and realy I'd expect to see the SPI subdevices being documented in
-a separate SPI binding document rather than just lumped in with the
-parent documentation.  The same thing probably applies to the rest of
-the bindings in there which I'm guessing have also not been reviewed in
-the relevant subsystems.
-
---0XhtP95kHFp3KGBe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlsEVCAACgkQJNaLcl1U
-h9BwXwf+PC9/gYupCwaYhEV7tms5eJppMYWLDPWITaR+XD//KQYbOLWmYIvEGl8p
-KMR/W4X9f7jMRBphwKHcrPUlKWfBAhPWxGU699OqAX2IxbRhFzi1t4AZqmg+zXkr
-GRfrxiIcu4Q3YNWiQDKBjnDCEdDZNr8wZ99nGaLmuqL5ZlscTz680KdVT7b1pg4J
-8Q0RA2vnfdb4zBltZUXKuGs9/2w35Ac4CCXu+yGXOcrufqPCyTV2LtBQ02wjeYhC
-DVSOA/PpR3gDg9qTJHcMJ2o8jWP5PwkKEZXNFUjicjKl6CXC7BuJFWa1993xC3VX
-WJsgZV6KaScyO89ANbymywNwBeMuSQ==
-=Vfz3
------END PGP SIGNATURE-----
-
---0XhtP95kHFp3KGBe--
+Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>

@@ -1,76 +1,204 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH] mtd: devices: m25p80: Use spi_mem_set_drvdata() instead of
- spi_set_drvdata()
-Date: Tue, 22 May 2018 12:55:14 +0200
-Message-ID: <20180522105514.8145-1-boris.brezillon@bootlin.com>
+From: Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
+Date: Tue, 22 May 2018 09:46:39 -0700
+Message-ID: <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
+References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
+ <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
+ <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
- Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
- Boris Brezillon <boris.brezillon@bootlin.com>, linux-mtd@lists.infradead.org,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: sdharia@codeaurora.org, kramasub@codeaurora.org,
+        dianders@chromium.org, linux-arm-msm@vger.kernel.org
+To: "Mahadevan, Girish" <girishm@codeaurora.org>, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SPI mem drivers should use spi_mem_set_drvdata() not spi_set_drvdata()
-to store their private data. Using spi_set_drvdata() will mess the
-spi -> spi-mem link up and cause a kernel panic at shutdown or
-device removal time.
+Quoting Mahadevan, Girish (2018-05-21 08:52:47)
+> Hi Stephen
+> =
 
-Fixes: 4120f8d158ef ("mtd: spi-nor: Use the spi_mem_xx() API")
-Reported-by: Marek Vasut <marek.vasut@gmail.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Marek Vasut <marek.vasut+renesas@gmail.com> on R8A7791 Porter
----
-Hi Mark,
+> On 5/11/2018 4:30 PM, Stephen Boyd wrote:
+> =
 
-Could you take this patch through the SPI tree? The bug has been
-introduced by 4120f8d158ef ("mtd: spi-nor: Use the spi_mem_xx() API")
-which is in the spi/for-4.18 branch (I didn't pull these changes in the
-MTD tree yet, and if possible I'd like to avoid doing that unless we
-end up with a conflict between the MTD and SPI tree).
+> >> +       if (mode & SPI_CPHA)
+> >> +               cpha |=3D CPHA;
+> >> +
+> >> +       if (spi_slv->mode & SPI_CS_HIGH)
+> >> +               demux_output_inv |=3D BIT(spi_slv->chip_select);
+> >> +
+> >> +       if (spi_slv->controller_data) {
+> >> +               u32 cs_clk_delay =3D 0;
+> >> +               u32 inter_words_delay =3D 0;
+> >> +
+> >> +               delay_params =3D
+> >> +               (struct spi_geni_qcom_ctrl_data *) spi_slv->controller=
+_data;
+> >> +               cs_clk_delay =3D
+> >> +               (delay_params->spi_cs_clk_delay << SPI_CS_CLK_DELAY_SH=
+FT)
+> >> +                                                       & SPI_CS_CLK_D=
+ELAY_MSK;
+> >> +               inter_words_delay =3D
+> >> +                       delay_params->spi_inter_words_delay &
+> >> +                                               SPI_INTER_WORDS_DELAY_=
+MSK;
+> >> +               spi_delay_params =3D
+> >> +               (inter_words_delay | cs_clk_delay);
+> >> +       }
+> >> +
+> >> +       demux_sel =3D spi_slv->chip_select;
+> >> +       mas->cur_speed_hz =3D spi_slv->max_speed_hz;
+> > =
 
-Let me know if that's not possible and I'll find another solution (wait
--rc1 or merge the spi/for-4.18 branch into the MTD tree).
+> > Why can't you use clk_get_rate() instead? Or call clk_set_rate() with
+> > the rate you want the master clk to run at and then divide that down
+> > from there?
+> =
 
-Thanks,
+> Not sure I follow, the intention is to run the controller clock based on
+> the slave's max frequency.
 
-Boris
----
- drivers/mtd/devices/m25p80.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That's good. The problem I see is that we have to specify the max
+frequency in the controller/bus node, and also in the child/slave node.
+It should only need to be specified in the slave node, so making the
+cur_speed_hz equal the max_speed_hz is problematic. The current speed of
+the master should be determined by calling clk_get_rate().
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 3dc022d3b53e..e84563d2067f 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -182,7 +182,7 @@ static int m25p_probe(struct spi_mem *spimem)
- 	spi_nor_set_flash_node(nor, spi->dev.of_node);
- 	nor->priv = flash;
- 
--	spi_set_drvdata(spi, flash);
-+	spi_mem_set_drvdata(spimem, flash);
- 	flash->spimem = spimem;
- 
- 	if (spi->mode & SPI_RX_QUAD) {
--- 
-2.14.1
+> > =
 
+> >> +       }
+> >> +
+> >> +       if (unlikely(!mas->setup)) {
+> >> +               int proto =3D geni_se_read_proto(se);
+> >> +               unsigned int major;
+> >> +               unsigned int minor;
+> >> +               unsigned int step;
+> >> +
+> >> +               if (unlikely(proto !=3D GENI_SE_SPI)) {
+> >> +                       dev_err(mas->dev, "Invalid proto %d\n", proto);
+> >> +                       return -ENXIO;
+> >> +               }
+> >> +               mas->tx_fifo_depth =3D geni_se_get_tx_fifo_depth(se);
+> >> +               mas->rx_fifo_depth =3D geni_se_get_rx_fifo_depth(se);
+> >> +               mas->tx_fifo_width =3D geni_se_get_tx_fifo_width(se);
+> >> +               geni_se_init(se, 0x0, (mas->tx_fifo_depth - 2));
+> > =
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> > Why 2? Drop extra parenthesis please.
+> =
+
+> This is what the hardware programming doc recommends, the parameter is
+> actually the rx_rfr_watermark, something that doesn't apply to non-UART
+> protocols.
+> (I will add a detailed comment)
+
+Thanks. Just wanted to make sure we don't forget what the magic number
+means.
+
+>  an else if.
+> > =
+
+> >> +                       m_param |=3D FRAGMENTATION;
+> >> +       }
+> >> +
+> >> +       mas->cur_xfer =3D xfer;
+> >> +       if (m_cmd & SPI_TX_ONLY) {
+> >> +               mas->tx_rem_bytes =3D xfer->len;
+> >> +               writel_relaxed(trans_len, se->base + SE_SPI_TX_TRANS_L=
+EN);
+> >> +       }
+> >> +
+> >> +       if (m_cmd & SPI_RX_ONLY) {
+> >> +               writel_relaxed(trans_len, se->base + SE_SPI_RX_TRANS_L=
+EN);
+> >> +               mas->rx_rem_bytes =3D xfer->len;
+> >> +       }
+> >> +       writel_relaxed(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
+> >> +       geni_se_setup_m_cmd(se, m_cmd, m_param);
+> >> +       if (m_cmd & SPI_TX_ONLY)
+> >> +               writel_relaxed(mas->tx_wm, se->base + SE_GENI_TX_WATER=
+MARK_REG);
+> > =
+
+> > This can't be combined with above m_cmd & SPI_TX_ONLY statement?
+> =
+
+> No, writing to this register should be done after we enqueue the command
+> to the GENI engine(the geni_se_setup_m_cmd), but some of the transaction
+> properties (length etc) should be setup before we enqueue the GENI comman=
+d.
+
+Ok.
+
+> =
+
+> > =
+
+> > More things can be unsigned?
+> > =
+
+> >> +               fifo_byte =3D (u8 *)&fifo_word;
+> >> +               for (j =3D 0; j < bytes_to_write; j++)
+> >> +                       fifo_byte[j] =3D tx_buf[i++];
+> > =
+
+> > Why are we doing all this work to fill in a fifo byte at a time? tx_buf
+> > should be a buffer of bytes that we can iowrite32_rep() with directly.
+> > And then we could just run iowrite32_rep() with some count of bytes to
+> > write? I suppose we may run into problems with unaligned size buffers,
+> > but it sounds like that doesn't happen?
+> =
+
+> I did this for 2 reasons.
+> 1.The core can handle different byte order transmissions (e.g MSB
+> first), I am quite honestly not sure how the client's will setup the
+> data buffer in these cases.(for bigger word sizes , 16/32)
+> [we plan to support these]
+> 2. For non-byte aligned word sizes (e,g 9), I am not enabling FIFO word
+> packing (meaning 1 SPI-WORD/FIFO-WORD in these cases).
+
+Alright. I'm not certain how the incoming buffer looks when clients
+request certain modes. Have you tested out non-byte aligned word size
+transfers?
+
+> =
+
+> =
+
+> >> +++ b/include/linux/spi/spi-geni-qcom.h
+> >> @@ -0,0 +1,14 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> > =
+
+> > Why?
+> > =
+
+> >> +/*
+> >> + * Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+> >> + */
+> >> +
+> >> +#ifndef __SPI_GENI_QCOM_HEADER___
+> >> +#define __SPI_GENI_QCOM_HEADER___
+> >> +
+> >> +struct spi_geni_qcom_ctrl_data {
+> > =
+
+> > What's the point of this header file and structure? This driver supports
+> > board files? Isn't everything DT now?
+> =
+
+> The intention was to allow a client to specify slave specific timing
+> requirements, e.g CS-CLK delay (based on the slave's data sheet).
+> So that the client drivers could setup these delays and pass it in part
+> of the controller_data member of the spi_device data structure.
+> The header file was meant to expose these timing params that the client
+> could specify. I honestly didn't know how else a client could specify
+> these to the controller driver.
+
+Do you mean spi-rx-delay-us and spi-tx-delay-us properties? Those are
+documented but don't seem to be used. There's also the delay_usecs part
+of the spi_transfer structure, which may be what you're talking about.

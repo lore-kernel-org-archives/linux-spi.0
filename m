@@ -1,44 +1,101 @@
-From: Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH] ARM: dts: imx6q: Use correct SDMA script for SPI5 core
-Date: Tue, 22 May 2018 14:49:41 -0300
-Message-ID: <CAOMZO5AiWtSx8ziA_-GGkU6LxNTUqJOmE+o5_DmFHOQTuMLvjg@mail.gmail.com>
-References: <20180522174509.18154-1-sean.nyekjaer@prevas.dk>
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: Re: [PATCH v3 5/6] spi: at91-usart: add driver for at91-usart as spi
+Date: Wed, 23 May 2018 11:10:28 +0300
+Message-ID: <6a59e071-3159-4939-8535-6c7a9d491379@microchip.com>
+References: <20180511103822.31698-1-radu.pirea@microchip.com>
+ <20180511103822.31698-6-radu.pirea@microchip.com>
+ <20180517050406.GF20254@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org,
- Anton Bondarenko <anton.bondarenko.sama@gmail.com>,
- Mark Brown <broonie@kernel.org>, stable@kernel.vger.org,
- Shawn Guo <shawnguo@kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-To: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180522174509.18154-1-sean.nyekjaer@prevas.dk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: <devicetree@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <mark.rutland@arm.com>,
+        <robh+dt@kernel.org>, <lee.jones@linaro.org>,
+        <gregkh@linuxfoundation.org>, <jslaby@suse.com>,
+        <richard.genoud@gmail.com>, <alexandre.belloni@bootlin.com>,
+        <nicolas.ferre@microchip.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180517050406.GF20254@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 22, 2018 at 2:45 PM, Sean Nyekjaer <sean.nyekjaer@prevas.dk> wrote:
-> According to the reference manual the shp_2_mcu / mcu_2_shp
-> scripts must be used for devices connected through the SPBA.
->
-> This fixes an issue we saw with DMA transfers.
-> Sometimes the SPI controller RX FIFO was not empty after a DMA
-> transfer and the driver got stuck in the next PIO transfer when
-> it read one word more than expected.
->
-> commit dd4b487b32a35 ("ARM: dts: imx6: Use correct SDMA script
-> for SPI cores") is fixing the same issue but only for SPI1 - 4.
->
-> Fixes: 677940258dd8e ("ARM: dts: imx6q: enable dma for ecspi5")
-> Signed-off-by: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
 
-Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
+
+On 05/17/2018 08:04 AM, Mark Brown wrote:
+> On Fri, May 11, 2018 at 01:38:21PM +0300, Radu Pirea wrote:
+> 
+>> +config SPI_AT91_USART
+>> +        tristate "Atmel USART Controller as SPI"
+>> +	depends on HAS_DMA
+>> +	depends on (ARCH_AT91 || COMPILE_TEST)
+>> +        select MFD_AT91_USART
+>> +	help
+>> +	  This selects a driver for the AT91 USART Controller as SPI Master,
+>> +	  present on AT91 and SAMA5 SoC series.
+>> +
+> 
+> This looks like there's some tab/space mixing going on here.
+> 
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Driver for AT91 USART Controllers as SPI
+>> + *
+>> + * Copyright (C) 2018 Microchip Technology Inc.
+> 
+> Make the entire block a C++ comment so it looks more intentional rather
+> tha mixing C and C++.
+
+Hi Mark,
+
+I know it's ugly, but SPDX license identifier must be in a separate 
+comment block.
+
+> 
+>> +static inline void at91_usart_spi_tx(struct at91_usart_spi *aus)
+>> +{
+>> +	unsigned int len = aus->current_transfer->len;
+>> +	unsigned int remaining = aus->current_tx_remaining_bytes;
+>> +	const u8  *tx_buf = aus->current_transfer->tx_buf;
+>> +
+>> +	if (tx_buf && remaining) {
+>> +		if (at91_usart_spi_tx_ready(aus))
+>> +			spi_writel(aus, THR, tx_buf[len - remaining]);
+>> +			aus->current_tx_remaining_bytes--;
+> 
+> Missing braces here - we only write to the FIFO if there's space but we
+> unconditionally decrement the counter.
+> 
+
+Thanks. I will fix it.
+
+>> +	} else {
+>> +		if (at91_usart_spi_tx_ready(aus))
+>> +			spi_writel(aus, THR, US_DUMMY_TX);
+>> +	}
+>> +}
+> 
+> This looks like you're open coding SPI_CONTROLLER_MUST_TX
+> 
+>> +	int len = aus->current_transfer->len;
+>> +	int remaining = aus->current_rx_remaining_bytes;
+>> +	u8  *rx_buf = aus->current_transfer->rx_buf;
+>> +
+>> +	if (aus->current_rx_remaining_bytes) {
+>> +		rx_buf[len - remaining] = spi_readb(aus, RHR);
+>> +		aus->current_rx_remaining_bytes--;
+>> +	} else {
+>> +		spi_readb(aus, RHR);
+>> +	}
+> 
+> Similarly for _MUST_RX.
+> 
+>> +	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+> 
+> You're actually setting both flags...  this means that the handling for
+> cases with missing TX or RX buffers can't happen.
+
+Sorry. My mistake. I will remove unnecessary code.

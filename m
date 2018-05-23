@@ -1,76 +1,88 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v4 6/7] mtd: spi-nor: Use the spi_mem_xx() API
-Date: Wed, 23 May 2018 20:06:11 +0200
-Message-ID: <20180523200611.77cab6e5@bbrezillon>
-References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
- <20180426161820.2852-7-boris.brezillon@bootlin.com>
- <6a39f071-186e-7009-994d-af845ce3f75d@microchip.com>
+From: Rob Herring <robh@kernel.org>
+Subject: [PATCH v2] spi: bcm2835aux: ensure interrupts are enabled for shared
+ handler
+Date: Wed, 23 May 2018 15:52:20 -0500
+Message-ID: <20180523205220.7394-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-spi@vger.kernel.org,
- Peter Pan <peterpansjtu@gmail.com>, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Cyrille Pitchen <cyrille.pitchen@microchip.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <6a39f071-186e-7009-994d-af845ce3f75d@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: Stefan Wahren <stefan.wahren@i2se.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
+ Ray Jui <rjui@broadcom.com>, Alexander Graf <agraf@suse.de>,
+ linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
+ =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+ Phil Elwell <phil@raspberrypi.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Cyrille,
+The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
+Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
+DT change which breaks compatibility with older kernels. The AUX irqchip
+was already rejected for upstream[1] and the DT change would break
+working systems if the DTB is updated to a newer one. The latter issue
+was brought to my attention by Alex Graf.
 
-On Wed, 23 May 2018 17:44:32 +0200
-Cyrille Pitchen <cyrille.pitchen@microchip.com> wrote:
+The root cause however is a bug in the shared handler. A shared handler
+must correctly identify it actually handled an interrupt. The handler
+here was processing data whether interrupts were enabled or not.
+It would return IRQ_HANDLED if there was any data and not only when
+there was an actual interrupt pending. The result is that another
+device's IRQ could cause the SPI's IRQ handler to run and process data
+when the the SPI driver working in polled mode. Fix this by adding a
+check in the IRQ handler that the TXEMPTY or IDLE interrupts are enabled
+and always return IRQ_NONE when they are not.
 
-> > +					  SPI_MEM_OP_DATA_OUT(len, buf, 1));
-> >  
-> > -	return spi_write(spi, flash->command, len + 1);
-> > +	return spi_mem_exec_op(flash->spimem, &op);
-> >  }
-> >  
-> >  static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
-> >  			    const u_char *buf)
-> >  {
-> >  	struct m25p *flash = nor->priv;
-> > -	struct spi_device *spi = flash->spi;
-> > -	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
-> > -	struct spi_transfer t[3] = {};
-> > -	struct spi_message m;
-> > -	int cmd_sz = m25p_cmdsz(nor);
-> > -	ssize_t ret;
-> > +	struct spi_mem_op op =
-> > +			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
-> > +				   SPI_MEM_OP_ADDR(nor->addr_width, to, 1),
-> > +				   SPI_MEM_OP_DUMMY(0, 1),  
-> 
-> Why do you use SPI_MEM_OP_DUMMY(0, 1) here instead of SPI_MEM_OP_NO_DUMMY() ?
+[1] https://patchwork.kernel.org/patch/9781221/
 
-I guess I just copied the definition from m25p80_read() and modified
-the definition without noticing this one could be replaced by
-SPI_MEM_OP_NO_DUMMY. Not a big deal though, since SPI_MEM_OP_DUMMY(0,
-1) still means "no dummy cycles".
+Cc: Alexander Graf <agraf@suse.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: linux-spi@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Reviewed-by: Eric Anholt <eric@anholt.net>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Still hoping someone can test this as I have not.
 
-Do you plan to send a patch to change that, or should I?
+v2:
+- Expand commit message text about shared handler req. and how polled 
+  mode causes the problem.
 
-Regards,
+ drivers/spi/spi-bcm2835aux.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Boris
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 1431cb98fe40..3094d818cf06 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	irqreturn_t ret = IRQ_NONE;
+ 
++	/* IRQ may be shared, so return if our interrupts are disabled */
++	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
++	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
++		return ret;
++
+ 	/* check if we have data to read */
+ 	while (bs->rx_len &&
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+-- 
+2.17.0

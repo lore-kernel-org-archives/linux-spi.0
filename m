@@ -1,73 +1,47 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 5/6] spi: at91-usart: add driver for at91-usart as spi
-Date: Thu, 24 May 2018 19:16:28 +0100
-Message-ID: <20180524181628.GE4828@sirena.org.uk>
-References: <20180511103822.31698-1-radu.pirea@microchip.com>
- <20180511103822.31698-6-radu.pirea@microchip.com>
- <CAHp75Ve3Ugnjjm8EZkPQTZSvH1qad1e5SqjOn8zz5syHSQea_g@mail.gmail.com>
- <5a3930b867cf8c279953d08c5d5dd1d93113a43b.camel@microchip.com>
- <CAHp75VdRrL25Jgnbk64Qqc5RY3uJdcntJ3xwRdp3F+rRFeTHBA@mail.gmail.com>
- <c23cdde58b9f724f51787c6c38478df983be6efa.camel@microchip.com>
- <20180517045437.GE20254@sirena.org.uk>
- <0e6e71e2-f8ac-7889-0d81-8d8a4c15223d@microchip.com>
- <20180524175620.GB12093@piout.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fzZfjcV6kaBgkq89"
-Cc: Radu Pirea <radu.pirea@microchip.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180524175620.GB12093@piout.net>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Sean Nyekjaer <sean@nyekjaer.dk>
+Subject: [RESEND PATCH] ARM: dts: imx6q: Use correct SDMA script for SPI5 core
+Date: Thu, 24 May 2018 21:46:59 +0200
+Message-ID: <20180524194659.2546-1-sean.nyekjaer@prevas.dk>
+Cc: Sean Nyekjaer <sean.nyekjaer@prevas.dk>, linux-spi@vger.kernel.org,
+        fabio.estevam@nxp.com, broonie@kernel.org,
+        anton.bondarenko.sama@gmail.com, stable@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        s.hauer@pengutronix.de, shawnguo@kernel.org, mark.rutland@arm.com
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+According to the reference manual the shp_2_mcu / mcu_2_shp
+scripts must be used for devices connected through the SPBA.
 
---fzZfjcV6kaBgkq89
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This fixes an issue we saw with DMA transfers.
+Sometimes the SPI controller RX FIFO was not empty after a DMA
+transfer and the driver got stuck in the next PIO transfer when
+it read one word more than expected.
 
-On Thu, May 24, 2018 at 07:56:20PM +0200, Alexandre Belloni wrote:
+commit dd4b487b32a35 ("ARM: dts: imx6: Use correct SDMA script
+for SPI cores") is fixing the same issue but only for SPI1 - 4.
 
-> Back in 2014, I was suggesting using devm_gpio_request_one() in
-> of_spi_register_master(). That would take care of setting the direction
-> of the GPIO:
+Fixes: 677940258dd8e ("ARM: dts: imx6q: enable dma for ecspi5")
 
-> https://www.spinics.net/lists/arm-kernel/msg351251.html
+Signed-off-by: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
+Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
+---
+ arch/arm/boot/dts/imx6q.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I never took the time to create the patch and test though.
-
-Right, this'd be ideal but unfortunately it does mean we'd have to
-transition all the existing users that open code their requests which is
-a pain.  It'd be really nice if someone had the time/enthusiam to do it
-though.
-
---fzZfjcV6kaBgkq89
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlsHAXwACgkQJNaLcl1U
-h9ByOQgAhs9RFeiFQSgUep94tUUdJU85bZVBQRkfQiidVevSbmmgtz05neQXGEIW
-UxyKwshNRVCqV2cnNMKLrLCjLOMS46TdgEfUnkzWegJQ0vhwj+XJ+AWJtCPwFZaT
-CdROhNgbhE6zNCNJGNEc8kUNrAscKV/bllQh6M6SceLpddXqcnbtgdPF6+iOKAKh
-LDWT7nzUeX49b0zEmMfnoSHLBdpQjrQui4an3bllPpZ3XB0IipIHKX+gU0lqpYSw
-qzN8auPOdD1Wqk70KfWi/+PK1flmqlQ4d9eJEOf02/zLSG7p/BjjVBKmT60DkN9+
-sM0kLWPGAOrqz+msZG7H3CegweQ9Hw==
-=dq7H
------END PGP SIGNATURE-----
-
---fzZfjcV6kaBgkq89--
+diff --git a/arch/arm/boot/dts/imx6q.dtsi b/arch/arm/boot/dts/imx6q.dtsi
+index ae7b3f107893..5185300cc11f 100644
+--- a/arch/arm/boot/dts/imx6q.dtsi
++++ b/arch/arm/boot/dts/imx6q.dtsi
+@@ -96,7 +96,7 @@
+ 					clocks = <&clks IMX6Q_CLK_ECSPI5>,
+ 						 <&clks IMX6Q_CLK_ECSPI5>;
+ 					clock-names = "ipg", "per";
+-					dmas = <&sdma 11 7 1>, <&sdma 12 7 2>;
++					dmas = <&sdma 11 8 1>, <&sdma 12 8 2>;
+ 					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+-- 
+2.17.0

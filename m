@@ -1,78 +1,74 @@
-From: Radu Pirea <radu.pirea@microchip.com>
-Subject: Re: [PATCH v3 5/6] spi: at91-usart: add driver for at91-usart as spi
-Date: Thu, 24 May 2018 19:04:11 +0300
-Message-ID: <0e6e71e2-f8ac-7889-0d81-8d8a4c15223d@microchip.com>
-References: <20180511103822.31698-1-radu.pirea@microchip.com>
- <20180511103822.31698-6-radu.pirea@microchip.com>
- <CAHp75Ve3Ugnjjm8EZkPQTZSvH1qad1e5SqjOn8zz5syHSQea_g@mail.gmail.com>
- <5a3930b867cf8c279953d08c5d5dd1d93113a43b.camel@microchip.com>
- <CAHp75VdRrL25Jgnbk64Qqc5RY3uJdcntJ3xwRdp3F+rRFeTHBA@mail.gmail.com>
- <c23cdde58b9f724f51787c6c38478df983be6efa.camel@microchip.com>
- <20180517045437.GE20254@sirena.org.uk>
+From: "Mahadevan, Girish" <girishm@codeaurora.org>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
+ QUP
+Date: Thu, 24 May 2018 10:25:58 -0600
+Message-ID: <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
+References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
+ <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
+ <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
+ <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
+ <20180522173000.GG24776@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        <alexandre.belloni@bootlin.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-To: Mark Brown <broonie@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        sdharia@codeaurora.org, kramasub@codeaurora.org,
+        dianders@chromium.org, linux-arm-msm@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180517045437.GE20254@sirena.org.uk>
+In-Reply-To: <20180522173000.GG24776@sirena.org.uk>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark, Stephen
 
+On 5/22/2018 11:30 AM, Mark Brown wrote:
+>> That's good. The problem I see is that we have to specify the max
+>> frequency in the controller/bus node, and also in the child/slave node.
+>> It should only need to be specified in the slave node, so making the
+>> cur_speed_hz equal the max_speed_hz is problematic. The current speed of
+>> the master should be determined by calling clk_get_rate().
+>
+> We don't require that the slaves all individually set a speed since it
+> gets a bit redundant, it should be enough to just use the default the
+> controller provides.  A bigger problem with this is that the driver will
+> never see a transfer which doesn't explicitly have a speed set as the
+> core will ensure something is set, open coding this logic in every
+> driver would obviously be tiresome.
 
-On 05/17/2018 07:54 AM, Mark Brown wrote:
-> On Tue, May 15, 2018 at 12:22:24PM +0300, Radu Pirea wrote:
->> On Mon, 2018-05-14 at 20:38 +0300, Andy Shevchenko wrote:
+Sorry , I need some more clarification.
+
+When I register the master, I specify the max rate the core can support
+(50 Mhz). So any transaction that comes to the driver is going to be
+requesting at-most 50 Mhz.
+
+The reason I have the cur_speed_hz is that there is a max_speed_hz which
+is the max frequency the slave can do; but every transfer can also
+specify a speed_hz and override this.
+
+So my point is we can do upto 4 slaves on a given controller, each slave
+can have a different max speed and each slave's transfer can override
+the max_frequency of that slave device.
+(the default frequency is the master's max frequency)
+
+>> Do you mean spi-rx-delay-us and spi-tx-delay-us properties? Those are
+>> documented but don't seem to be used. There's also the delay_usecs part
+>> of the spi_transfer structure, which may be what you're talking about.
 > 
->>> So, what is not going as expected in "SPI core takes care of CSs"
->>> case?
->>> Did you use oscilloscope for that?
-> 
->> Yes, I used and CSs was not asserted. Anyway, I will will try again.
-> 
-> If the core chip select handling is not working properly for some reason
-> then the core chip select handling should be fixed rather than just open
-> coding in your driver - probably it's also broken for other users.
+> delay_usecs is for inter-transfer delays within a message rather than
+> after the initial chip select assert (it can be used to keep chip select
+> asserted for longer after the final transfer too).  Obviously this is
+> also something that shouldn't be configured in a driver specific
+> fashion.
 > 
 
-Hi Mark,
+Hmmm ok, so you mean don't send these as controller_data, rather add new
+members to the spi_device struct ?
 
-I found the fix for cs-gpios. If I change spi_add_device function like 
-this(see below) everything is ok.
+Best Regards
+Girish
 
-int spi_add_device(struct spi_device *spi)
-
-...
-
-     if (ctlr->cs_gpios){
-         spi->cs_gpio = ctlr->cs_gpios[spi->chip_select];
-         if(gpio_is_valid(spi->cs_gpio))
-             gpio_direction_output(spi->cs_gpio, !(spi->mode & 
-SPI_CS_HIGH));
-
-     }
-
-...
-
-     return status;
-}
-
-In the subsystem gpio direction of pins is never set and 
-gpio_set_value() don't set the direction.
-In my opinion gpio_direction_output() set direction should be called in 
-spi_add_device. What do you think? Is ok?
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora
+Forum, a Linux Foundation Collaborative Project.

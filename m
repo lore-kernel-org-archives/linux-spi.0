@@ -1,88 +1,76 @@
-From: Rob Herring <robh@kernel.org>
-Subject: [PATCH v2] spi: bcm2835aux: ensure interrupts are enabled for shared
- handler
-Date: Wed, 23 May 2018 15:52:20 -0500
-Message-ID: <20180523205220.7394-1-robh@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v4 6/7] mtd: spi-nor: Use the spi_mem_xx() API
+Date: Thu, 24 May 2018 09:43:27 +0200
+Message-ID: <CAMuHMdX1QzEu9i6mpamzUth7VMfJVLJ_0TzVcess7UJ=YvCxRg@mail.gmail.com>
+References: <20180426161820.2852-1-boris.brezillon@bootlin.com>
+ <20180426161820.2852-7-boris.brezillon@bootlin.com>
+ <6a39f071-186e-7009-994d-af845ce3f75d@microchip.com>
+ <4ecb6215-699b-b714-cab5-cb237e883ec7@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Ray Jui <rjui@broadcom.com>, Alexander Graf <agraf@suse.de>,
- linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
- bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
- =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
- Phil Elwell <phil@raspberrypi.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ linux-spi <linux-spi@vger.kernel.org>, Peter Pan <peterpansjtu@gmail.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ MTD Maling List <linux-mtd@lists.infradead.org>,
+ Kamal Dasu <kdasu.kdev@gmail.com>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <4ecb6215-699b-b714-cab5-cb237e883ec7@microchip.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The BCM2835 AUX SPI has a shared interrupt line (with AUX UART).
-Downstream fixes this with an AUX irqchip to demux the IRQ sources and a
-DT change which breaks compatibility with older kernels. The AUX irqchip
-was already rejected for upstream[1] and the DT change would break
-working systems if the DTB is updated to a newer one. The latter issue
-was brought to my attention by Alex Graf.
-
-The root cause however is a bug in the shared handler. A shared handler
-must correctly identify it actually handled an interrupt. The handler
-here was processing data whether interrupts were enabled or not.
-It would return IRQ_HANDLED if there was any data and not only when
-there was an actual interrupt pending. The result is that another
-device's IRQ could cause the SPI's IRQ handler to run and process data
-when the the SPI driver working in polled mode. Fix this by adding a
-check in the IRQ handler that the TXEMPTY or IDLE interrupts are enabled
-and always return IRQ_NONE when they are not.
-
-[1] https://patchwork.kernel.org/patch/9781221/
-
-Cc: Alexander Graf <agraf@suse.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Stefan Wahren <stefan.wahren@i2se.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com
-Cc: linux-spi@vger.kernel.org
-Cc: linux-rpi-kernel@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Reviewed-by: Eric Anholt <eric@anholt.net>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-Still hoping someone can test this as I have not.
-
-v2:
-- Expand commit message text about shared handler req. and how polled 
-  mode causes the problem.
-
- drivers/spi/spi-bcm2835aux.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 1431cb98fe40..3094d818cf06 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
- 	irqreturn_t ret = IRQ_NONE;
- 
-+	/* IRQ may be shared, so return if our interrupts are disabled */
-+	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
-+	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
-+		return ret;
-+
- 	/* check if we have data to read */
- 	while (bs->rx_len &&
- 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
--- 
-2.17.0
+SGkgQ3lyaWxsZSwKCk9uIFdlZCwgTWF5IDIzLCAyMDE4IGF0IDU6NTYgUE0sIEN5cmlsbGUgUGl0
+Y2hlbgo8Y3lyaWxsZS5waXRjaGVuQG1pY3JvY2hpcC5jb20+IHdyb3RlOgo+IExlIDIzLzA1LzIw
+MTggw6AgMTc6NDQsIEN5cmlsbGUgUGl0Y2hlbiBhIMOpY3JpdCA6Cj4+IExlIDI2LzA0LzIwMTgg
+w6AgMTg6MTgsIEJvcmlzIEJyZXppbGxvbiBhIMOpY3JpdCA6Cj4+PiAgc3RhdGljIGludCBtMjVw
+ODBfd3JpdGVfcmVnKHN0cnVjdCBzcGlfbm9yICpub3IsIHU4IG9wY29kZSwgdTggKmJ1ZiwgaW50
+IGxlbikKPj4+ICB7Cj4+PiAgICAgIHN0cnVjdCBtMjVwICpmbGFzaCA9IG5vci0+cHJpdjsKPj4+
+IC0gICAgc3RydWN0IHNwaV9kZXZpY2UgKnNwaSA9IGZsYXNoLT5zcGk7Cj4+PiAtCj4+PiAtICAg
+IGZsYXNoLT5jb21tYW5kWzBdID0gb3Bjb2RlOwo+Pj4gLSAgICBpZiAoYnVmKQo+Pj4gLSAgICAg
+ICAgICAgIG1lbWNweSgmZmxhc2gtPmNvbW1hbmRbMV0sIGJ1ZiwgbGVuKTsKPj4+ICsgICAgc3Ry
+dWN0IHNwaV9tZW1fb3Agb3AgPSBTUElfTUVNX09QKFNQSV9NRU1fT1BfQ01EKG9wY29kZSwgMSks
+Cj4+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTUElfTUVNX09QX05P
+X0FERFIsCj4+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTUElfTUVN
+X09QX05PX0RVTU1ZLAo+Pgo+PiBJIGRpZG4ndCB0ZXN0IG5vciBjb21waWxlZCB0byB2ZXJpZnkg
+YnV0IEkgaGF2ZSBzb21lIGRvdWJ0Ogo+PiBoZXJlIHRoZSAnb3AnIHZhcmlhYmxlIGlzIGFsbG9j
+YXRlZCBvbiB0aGUgc3RhY2sgYW5kIGJvdGggZGVmaW5pdGlvbnMKPj4gb2YgU1BJX01FTV9PUF9O
+T19BRERSIGFuZCBTUElfTUVNX09QX05PX0RVTU1ZIG1hY3JvcyBhcmUgeyB9Lgo+Pgo+PiBJdCBt
+aWdodCBiZSBzb21lIHJ1bGUgb2YgdGhlIEMgbGFuZ3VhZ2UgdGhhdCBJIGlnbm9yZSBidXQgYXJl
+IHdlIGd1YXJhbnRlZWQKPj4gdGhhdCB0aGUgLm5ieXRlcyBtZW1iZXIgb2YgYm90aCBzdHJ1Y3R1
+cmVzIGlzIGFjdHVhbGx5IGluaXRpYWxpemVkIHRvIDAgPwo+Pgo+PiBJIHdvdWxkIHNheSBubzog
+SSB0aGluayBzaW5jZSB0aGUgc3RydWN0dXJlIGlzIGFsbG9jYXRlZCBvbiB0aGUgc3RhY2sgYWxs
+Cj4+IG1lbWJlcnMgbm90IGJlaW5nIGV4cGxpY2l0bHkgaW5pdGlhbGl6ZWQgYXJlIGxlZnQgdW5p
+bml0aWFsaXplZCBieSB0aGUKPj4gY29tcGlsZXIgd2hlbiBpdCBnZW5lcmF0ZXMgdGhlIGFzc2Vt
+YmxlciBjb2RlLiBIb3dldmVyLCBJJ20gbm90IDEwMCUgc3VyZSBvZgo+PiB0aGF0Lgo+Cj4gQWN0
+dWFsbHksIEknbSByZWFkaW5nIHRoYXQgd2l0aCBDOTkgZXh0ZW5zaW9ucywgIm9taXR0ZWQgZmll
+bGQgbWVtYmVycyBhcmUKPiBpbXBsaWNpdGx5IGluaXRpYWxpemVkIHRoZSBzYW1lIGFzIG9iamVj
+dHMgdGhhdCBoYXZlIHN0YXRpYyBzdG9yYWdlIGR1cmF0aW9uLiIKPiBodHRwczovL2djYy5nbnUu
+b3JnL29ubGluZWRvY3MvZ2NjL0Rlc2lnbmF0ZWQtSW5pdHMuaHRtbAoKSkZUUiwgb21pdHRlZCBm
+aWVsZCBtZW1iZXJzIGFyZS4KQnV0IElJUkMsIGltcGxpY2l0IGdhcHMgZHVlIHRvIGFsaWdubWVu
+dCBydWxlcyBhcmVuJ3QsIHdoaWNoIG1vc3RseSBtYXR0ZXJzCmZvciBsZWFraW5nIHJhbmRvbSBk
+YXRhIHRvIHVzZXJzcGFjZS4KCkdye29ldGplLGVldGluZ31zLAoKICAgICAgICAgICAgICAgICAg
+ICAgICAgR2VlcnQKCi0tIApHZWVydCBVeXR0ZXJob2V2ZW4gLS0gVGhlcmUncyBsb3RzIG9mIExp
+bnV4IGJleW9uZCBpYTMyIC0tIGdlZXJ0QGxpbnV4LW02OGsub3JnCgpJbiBwZXJzb25hbCBjb252
+ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4g
+QnV0CndoZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1l
+ciIgb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAtLSBMaW51cyBUb3J2YWxkcwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K

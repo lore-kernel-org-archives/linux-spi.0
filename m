@@ -1,66 +1,93 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Thu, 24 May 2018 17:29:40 +0100
-Message-ID: <20180524162940.GA4828@sirena.org.uk>
-References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
- <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
- <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
- <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
- <20180522173000.GG24776@sirena.org.uk>
- <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH v3 5/6] spi: at91-usart: add driver for at91-usart as spi
+Date: Thu, 24 May 2018 19:56:20 +0200
+Message-ID: <20180524175620.GB12093@piout.net>
+References: <20180511103822.31698-1-radu.pirea@microchip.com>
+ <20180511103822.31698-6-radu.pirea@microchip.com>
+ <CAHp75Ve3Ugnjjm8EZkPQTZSvH1qad1e5SqjOn8zz5syHSQea_g@mail.gmail.com>
+ <5a3930b867cf8c279953d08c5d5dd1d93113a43b.camel@microchip.com>
+ <CAHp75VdRrL25Jgnbk64Qqc5RY3uJdcntJ3xwRdp3F+rRFeTHBA@mail.gmail.com>
+ <c23cdde58b9f724f51787c6c38478df983be6efa.camel@microchip.com>
+ <20180517045437.GE20254@sirena.org.uk>
+ <0e6e71e2-f8ac-7889-0d81-8d8a4c15223d@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="RUvhGz2nhX7DIu1B"
-Cc: Stephen Boyd <swboyd@chromium.org>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, sdharia@codeaurora.org,
-        kramasub@codeaurora.org, dianders@chromium.org,
-        linux-arm-msm@vger.kernel.org
-To: "Mahadevan, Girish" <girishm@codeaurora.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+To: Radu Pirea <radu.pirea@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
+In-Reply-To: <0e6e71e2-f8ac-7889-0d81-8d8a4c15223d@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---RUvhGz2nhX7DIu1B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 24/05/2018 19:04:11+0300, Radu Pirea wrote:
+> 
+> 
+> On 05/17/2018 07:54 AM, Mark Brown wrote:
+> > On Tue, May 15, 2018 at 12:22:24PM +0300, Radu Pirea wrote:
+> > > On Mon, 2018-05-14 at 20:38 +0300, Andy Shevchenko wrote:
+> > 
+> > > > So, what is not going as expected in "SPI core takes care of CSs"
+> > > > case?
+> > > > Did you use oscilloscope for that?
+> > 
+> > > Yes, I used and CSs was not asserted. Anyway, I will will try again.
+> > 
+> > If the core chip select handling is not working properly for some reason
+> > then the core chip select handling should be fixed rather than just open
+> > coding in your driver - probably it's also broken for other users.
+> > 
+> 
+> Hi Mark,
+> 
+> I found the fix for cs-gpios. If I change spi_add_device function like
+> this(see below) everything is ok.
+> 
+> int spi_add_device(struct spi_device *spi)
+> 
+> ...
+> 
+>     if (ctlr->cs_gpios){
+>         spi->cs_gpio = ctlr->cs_gpios[spi->chip_select];
+>         if(gpio_is_valid(spi->cs_gpio))
+>             gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+> 
+>     }
+> 
+> ...
+> 
+>     return status;
+> }
+> 
+> In the subsystem gpio direction of pins is never set and gpio_set_value()
+> don't set the direction.
+> In my opinion gpio_direction_output() set direction should be called in
+> spi_add_device. What do you think? Is ok?
 
-On Thu, May 24, 2018 at 10:25:58AM -0600, Mahadevan, Girish wrote:
+Back in 2014, I was suggesting using devm_gpio_request_one() in
+of_spi_register_master(). That would take care of setting the direction
+of the GPIO:
 
-> The reason I have the cur_speed_hz is that there is a max_speed_hz which
-> is the max frequency the slave can do; but every transfer can also
-> specify a speed_hz and override this.
+https://www.spinics.net/lists/arm-kernel/msg351251.html
 
-Every transfer *will* specify a speed, you should never see a transfer
-that doesn't specify a speed.
+I never took the time to create the patch and test though.
 
-> > delay_usecs is for inter-transfer delays within a message rather than
-> > after the initial chip select assert (it can be used to keep chip select
-> > asserted for longer after the final transfer too).  Obviously this is
-> > also something that shouldn't be configured in a driver specific
-> > fashion.
-
-> Hmmm ok, so you mean don't send these as controller_data, rather add new
-> members to the spi_device struct ?
-
-Yes, that'd be one way to do it.
-
---RUvhGz2nhX7DIu1B
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlsG6HQACgkQJNaLcl1U
-h9As8Qf+MknPLWq8X+nQFKB+YjPA0NvhhdxC9pJqz2vwbRsNbhCgo9XcuC5YNFvD
-BOyJy1yS3nM01E4E+4ZOsM1mTxRNk39lN46JxC9/SPtxcA/V9YF9AFMXyT1osHH7
-YJPC+Roj+E23Q2gOzX6GLVKzn8fuk9gm1NNdVMpVzMuSXJssFOcBduuqWYxIpl/5
-1vs/cOrqVTvaG3aXS6UsrjzWGvYH+OpmtTzlrk0W0pFRShSHCawostYh3rDQ8cSS
-PgR2eXImIpIEOSdAU5DUi4m6QQQZN0kpqfrdBS9vBKQUB2LcPRZE+Wf4h1lQuz1P
-Uh7p3NMTqtqahNOxXrCPnb6W7syDfg==
-=4nP2
------END PGP SIGNATURE-----
-
---RUvhGz2nhX7DIu1B--
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

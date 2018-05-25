@@ -1,47 +1,60 @@
-From: Sean Nyekjaer <sean@nyekjaer.dk>
-Subject: [RESEND PATCH] ARM: dts: imx6q: Use correct SDMA script for SPI5 core
-Date: Thu, 24 May 2018 21:46:59 +0200
-Message-ID: <20180524194659.2546-1-sean.nyekjaer@prevas.dk>
-Cc: Sean Nyekjaer <sean.nyekjaer@prevas.dk>, linux-spi@vger.kernel.org,
-        fabio.estevam@nxp.com, broonie@kernel.org,
-        anton.bondarenko.sama@gmail.com, stable@vger.kernel.org
-To: linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-        s.hauer@pengutronix.de, shawnguo@kernel.org, mark.rutland@arm.com
-Return-path: <stable-owner@vger.kernel.org>
-Sender: stable-owner@vger.kernel.org
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: Re: [PATCH v3 6/6] tty/serial: atmel: changed the driver to work
+ under at91-usart mfd
+Date: Fri, 25 May 2018 15:17:39 +0300
+Message-ID: <391de5c1-45d7-4773-fe57-7f2bc747214b@microchip.com>
+References: <20180511103822.31698-1-radu.pirea@microchip.com>
+ <20180511103822.31698-7-radu.pirea@microchip.com>
+ <4a75568e-a52e-3872-f465-d707372a5c12@sorico.fr>
+ <95a51c6c69bf1a2422f545ac1f06846ebcdb186a.camel@microchip.com>
+ <4d70c73e-9db7-bdff-7414-04a4843acae3@sorico.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <mark.rutland@arm.com>, <robh+dt@kernel.org>,
+        <lee.jones@linaro.org>, <gregkh@linuxfoundation.org>,
+        <jslaby@suse.com>, <alexandre.belloni@bootlin.com>,
+        <nicolas.ferre@microchip.com>, <broonie@kernel.org>
+To: Richard Genoud <richard.genoud@gmail.com>,
+        <devicetree@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4d70c73e-9db7-bdff-7414-04a4843acae3@sorico.fr>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-According to the reference manual the shp_2_mcu / mcu_2_shp
-scripts must be used for devices connected through the SPBA.
 
-This fixes an issue we saw with DMA transfers.
-Sometimes the SPI controller RX FIFO was not empty after a DMA
-transfer and the driver got stuck in the next PIO transfer when
-it read one word more than expected.
 
-commit dd4b487b32a35 ("ARM: dts: imx6: Use correct SDMA script
-for SPI cores") is fixing the same issue but only for SPI1 - 4.
-
-Fixes: 677940258dd8e ("ARM: dts: imx6q: enable dma for ecspi5")
-
-Signed-off-by: Sean Nyekjaer <sean.nyekjaer@prevas.dk>
-Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
----
- arch/arm/boot/dts/imx6q.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/imx6q.dtsi b/arch/arm/boot/dts/imx6q.dtsi
-index ae7b3f107893..5185300cc11f 100644
---- a/arch/arm/boot/dts/imx6q.dtsi
-+++ b/arch/arm/boot/dts/imx6q.dtsi
-@@ -96,7 +96,7 @@
- 					clocks = <&clks IMX6Q_CLK_ECSPI5>,
- 						 <&clks IMX6Q_CLK_ECSPI5>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 11 7 1>, <&sdma 12 7 2>;
-+					dmas = <&sdma 11 8 1>, <&sdma 12 8 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
--- 
-2.17.0
+On 05/15/2018 04:14 PM, Richard Genoud wrote:
+> On 15/05/2018 14:47, Radu Pirea wrote:
+>> On Mon, 2018-05-14 at 12:57 +0200, Richard Genoud wrote:
+>>> After your patch, the DMA is not selected anymore:
+>>> atmel_usart_serial atmel_usart_serial.0.auto: TX channel not
+>>> available, switch to pio
+>>> instead of:
+>>> atmel_usart fffff200.serial: using dma1chan2 for tx DMA transfers
+>>>
+>> Fixed.
+>>> And the kernel doesn't log anymore on the serial console, despite the
+>>> loglevel=8
+>>> (after reverting this series, the kernel logs reappears on the serial
+>>> console)
+>>>
+>> Which serial are you using as console?
+> fffff200.serial (sam9g35-cm)
+> ( stdout-path = "serial0:115200n8"; in the DTS )
+> 
+> With this series applied, all the kernel log goes on the screen.
+> Without, it goes on the serial debug.
+> 
+I tested again with archlinux arm and poky-linux4sam release as distros 
+and kernel log goes on the serial debug. Can you give me more details 
+like cmdline?
+>>> (tests done on sam9g35)
+>>>
+>> I will consider the rest of suggestions.
+>>> regards,
+>>> Richard
+> 

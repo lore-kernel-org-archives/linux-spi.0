@@ -1,52 +1,71 @@
-From: Richard Genoud <richard.genoud@gmail.com>
-Subject: Re: [PATCH v4 6/6] tty/serial: atmel: changed the driver to work
- under at91-usart mfd
-Date: Mon, 28 May 2018 12:08:02 +0200
-Message-ID: <e1445467-2df0-4593-852d-939e6795f318@sorico.fr>
-References: <20180525171941.26766-1-radu.pirea@microchip.com>
- <20180525171941.26766-7-radu.pirea@microchip.com>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v2 0/6] Driver for at91 usart in spi mode
+Date: Tue, 29 May 2018 09:33:03 +0100
+Message-ID: <20180529083303.GF4790@dell>
+References: <20180504154714.5109-1-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Radu Pirea <radu.pirea@microchip.com>, broonie@kernel.org,
- nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
- lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
- gregkh@linuxfoundation.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180525171941.26766-7-radu.pirea@microchip.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
+        broonie@kernel.org, alexandre.belloni@bootlin.com,
+        nicolas.ferre@microchip.com, jslaby@suse.com,
+        gregkh@linuxfoundation.org, richard.genoud@gmail.com
+To: Radu Pirea <radu.pirea@microchip.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180504154714.5109-1-radu.pirea@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 25/05/2018 19:19, Radu Pirea wrote:
-> This patch modifies the place where resources and device tree properties
-> are searched.
+On Fri, 04 May 2018, Radu Pirea wrote:
+
+> Hello,
 > 
-> Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
-> ---
->  drivers/tty/serial/Kconfig        |  1 +
->  drivers/tty/serial/atmel_serial.c | 40 +++++++++++++++++--------------
->  2 files changed, 23 insertions(+), 18 deletions(-)
-the stdout-path property of the chosen node is still broken in this verion.
-if :
-stdout-path = "serial0:115200n8";
-is set in the DTS, the console output should go on serial0 (aka dbgu)
-cf Documentation/devicetree/bindings/chosen.txt
+> This is the second version of driver. I added a mfd driver which by
+> default probes atmel_serial driver and if in dt is specified to probe
+> the spi driver, then the spi-at91-usart driver will be probed. The
+> compatible for atmel_serial is now the compatible for at91-usart mfd
+> driver and compatilbe for atmel_serial driver was changed in order to
+> keep the bindings for serial as they are.
+> 
+> Changes in v1:
+> - added spi-at91-usart driver
+> 
+> Changes in v2:
+> - added at91-usart mfd driver
+> - modified spi-at91-usart driver to work as mfd driver child
+> - modified atmel_serial driver to work as mfd driver child
+> 
+> Radu Pirea (6):
+>   MAINTAINERS: add at91 usart mfd driver
+>   mfd: at91-usart: added mfd driver for usart
+>   MAINTAINERS: add at91 usart spi driver
+>   dt-bindings: add binding for at91-usart in spi mode
+>   spi: at91-usart: add driver for at91-usart as spi
+>   tty/serial: atmel: changed the driver to work under at91-usart mfd
+> 
+>  .../bindings/spi/microchip,at91-usart-spi.txt |  28 +
+>  MAINTAINERS                                   |  14 +
+>  drivers/mfd/Kconfig                           |  10 +
+>  drivers/mfd/Makefile                          |   1 +
+>  drivers/mfd/at91-usart.c                      |  81 +++
+>  drivers/spi/Kconfig                           |   9 +
+>  drivers/spi/Makefile                          |   1 +
+>  drivers/spi/spi-at91-usart.c                  | 545 ++++++++++++++++++
+>  drivers/tty/serial/Kconfig                    |   1 +
+>  drivers/tty/serial/atmel_serial.c             |  29 +-
+>  include/dt-bindings/mfd/at91-usart.h          |  17 +
+>  11 files changed, 722 insertions(+), 14 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/microchip,at91-usart-spi.txt
+>  create mode 100644 drivers/mfd/at91-usart.c
+>  create mode 100644 drivers/spi/spi-at91-usart.c
+>  create mode 100644 include/dt-bindings/mfd/at91-usart.h
 
-With this patch applied, this is not the case anymore.
-Adding console=ttyS0,115200 in the chosen node is not the solution here.
+Applied, thanks.
 
-
-regards,
-Richard.
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

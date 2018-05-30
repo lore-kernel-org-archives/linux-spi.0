@@ -1,105 +1,114 @@
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH v4 5/6] spi: at91-usart: add driver for at91-usart as spi
-Date: Tue, 29 May 2018 16:36:52 +0200
-Message-ID: <7ac6e7ba-1f92-22c4-c989-b64107b8644a@microchip.com>
-References: <20180525171941.26766-1-radu.pirea@microchip.com>
- <20180525171941.26766-6-radu.pirea@microchip.com>
- <CAHp75Vc0e=+2YptoFAUuPSpAyxaCUJJqjQPPY5VZHV=MEMOqHQ@mail.gmail.com>
- <110bb353-b131-348c-8e26-9863b074142d@microchip.com>
- <0c529082-722c-14d8-7a04-dfeb63d5de92@microchip.com>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: [PATCH 00/11] Port the FSL QSPI driver to the SPI framework
+Date: Wed, 30 May 2018 15:14:29 +0200
+Message-ID: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, <alexandre.belloni@bootlin.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
-To: Radu Pirea <radu.pirea@microchip.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <0c529082-722c-14d8-7a04-dfeb63d5de92@microchip.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: yogeshnarayan.gaur@nxp.com, richard@nod.at, prabhakar.kushwaha@nxp.com,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, marek.vasut@gmail.com,
+ han.xu@nxp.com, broonie@kernel.org, miquel.raynal@bootlin.com,
+ fabio.estevam@nxp.com, david.wolfe@nxp.com, computersforpeace@gmail.com,
+ dwmw2@infradead.org
+To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+ linux-spi@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 29/05/2018 at 16:34, Nicolas Ferre wrote:
-> On 29/05/2018 at 16:28, Radu Pirea wrote:
->>
->>
->> On 05/28/2018 11:21 AM, Andy Shevchenko wrote:
->>> On Fri, May 25, 2018 at 8:19 PM, Radu Pirea <radu.pirea@microchip.com> wrote:
->>>> This is the driver for at91-usart in spi mode. The USART IP can be configured
->>>> to work in many modes and one of them is SPI.
-> 
-> [..]
-> 
->>>> +static int at91_usart_gpio_setup(struct platform_device *pdev)
->>>> +{
->>>
->>>> +       struct device_node      *np = pdev->dev.parent->of_node;
->>>
->>> Your driver is not OF specific as far as I can see. Drop all these
->>> device_node stuff and change API calls respectively.
->>
->> Ok. What do you suggest to use instead of OF API to get the count of
->> cs-gpios and to read their values one by one?
-> 
-> As Alexandre said, we can make this driver OF specific.
-> 
-> What could be interesting is to use the gpio descriptors API and not the
-> older one. This would allow us to have far more control over the gpio
-> that we use in our drivers (Ludovic is converting our drivers to only
-> use gpiod structures).
+Now that the SPI memory interface was introduced by Boris [1], it is
+possible to move drivers from mtd/spi-nor to the SPI framework in order
+to use them for different type of SPI memory chips.
 
-Oh, but we already said that we cannot.
-Disregard my comment then, sorry for the noise.
+Patch 1 adds a function spi_mem_get_name() to the SPI memory interface,
+and patch 2 uses it in m25p80.c to make it possible for SPI controller
+drivers to provide a custom naming scheme for the flash chip.
+This is needed to avoid breaking compatibility of mtdparts when switching
+from the old to the new driver.
 
-> Regards,
->     Nicolas
-> 
->>
->>>
->>>> +       int                     i;
->>>
->>>> +       int                     ret = 0;
->>>> +       int                     nb = 0;
->>>
->>> What happened to indentation?
->>>
->>> Redundnant assignment for both.
->>>
->>>> +       if (!np)
->>>> +               return -EINVAL;
->>>> +
->>>> +       nb = of_gpio_named_count(np, "cs-gpios");
->>>> +       for (i = 0; i < nb; i++) {
->>>> +               int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
->>>> +
->>>> +               if (cs_gpio < 0)
->>>> +                       return cs_gpio;
->>>> +
->>>> +               if (gpio_is_valid(cs_gpio)) {
->>>> +                       ret = devm_gpio_request_one(&pdev->dev, cs_gpio,
->>>> +                                                   GPIOF_DIR_OUT,
->>>> +                                                   dev_name(&pdev->dev));
->>>> +                       if (ret)
->>>> +                               return ret;
->>>> +               }
->>>> +       }
->>>> +
->>>> +       return 0;
->>>> +}
-> [..]
-> 
+Patch 3 adds a driver for the Freescale QSPI controller to the SPI
+framework. Together with m25p80.c it can be used to interface SPI
+NOR flashes just as the old driver did. For this to work properly a few
+minor changes to the devicetrees are necessary (see patches 4,5 and 6).
 
+Patch 7 changes the defconfigs to use the new driver and patch 8 removes
+the old driver.
+
+Patch 9 and 10 remove 'fsl,qspi-has-second-chip' from the devicetrees.
+Patch 11 adjusts the MAINTAINERS file.
+
+The new driver was tested with i.MX6UL and a Micron SPI NOR @ 60MHz.
+The read performance of the new driver is almost the same or even better
+than the old driver, depending on the block size.
+The write performance is a bit slower on average (~10-15%).
+
+The new driver was also tested with the SPI NAND framework [2] and a
+Winbond W25M02GV flash.
+
+If someone has a board that uses both chips selects and/or both busses,
+it would be really nice to have the driver be tested on such a setup.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/commit/?h=for-4.18&id=c36ff266dc82f4ae797a6f3513c6ffa344f7f1c7
+[2] https://patchwork.ozlabs.org/cover/913728/
+
+Frieder Schrempf (11):
+  spi: spi-mem: Extend the SPI mem interface to set a custom memory name
+  mtd: m25p80: Call spi_mem_get_name() to let controller set a custom
+    name
+  spi: Add a driver for the Freescale/NXP QuadSPI controller
+  dt-bindings: spi: Move and adjust the bindings for the fsl-qspi driver
+  ARM: dts: Reflect change of FSL QSPI driver and remove unused
+    properties
+  arm64: dts: Reflect change of FSL QSPI driver and remove unused
+    properties
+  ARM: defconfig: Use the new FSL QSPI driver under the SPI framework
+  mtd: fsl-quadspi: Remove the driver as it was replaced by
+    spi-fsl-qspi.c
+  ARM: dts: ls1021a: Remove fsl,qspi-has-second-chip as it is not used
+  ARM64: dts: ls1046a: Remove fsl,qspi-has-second-chip as it is not used
+  MAINTAINERS: Move the Freescale QSPI driver to the SPI framework
+
+ .../devicetree/bindings/mtd/fsl-quadspi.txt     |   65 -
+ .../devicetree/bindings/spi/spi-fsl-qspi.txt    |   69 +
+ MAINTAINERS                                     |    4 +-
+ arch/arm/boot/dts/imx6sx-sdb-reva.dts           |    8 +-
+ arch/arm/boot/dts/imx6sx-sdb.dts                |    8 +-
+ arch/arm/boot/dts/imx6ul-14x14-evk.dtsi         |    2 +
+ arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts     |    6 +-
+ arch/arm/configs/imx_v6_v7_defconfig            |    2 +-
+ arch/arm/configs/multi_v7_defconfig             |    2 +-
+ .../boot/dts/freescale/fsl-ls1043a-qds.dts      |    3 +-
+ .../boot/dts/freescale/fsl-ls1046a-qds.dts      |    4 +-
+ .../boot/dts/freescale/fsl-ls1046a-rdb.dts      |    6 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi  |    1 -
+ .../boot/dts/freescale/fsl-ls208xa-qds.dtsi     |    4 +
+ drivers/mtd/devices/m25p80.c                    |    3 +-
+ drivers/mtd/spi-nor/Kconfig                     |    9 -
+ drivers/mtd/spi-nor/Makefile                    |    1 -
+ drivers/mtd/spi-nor/fsl-quadspi.c               | 1206 ------------------
+ drivers/spi/Kconfig                             |   11 +
+ drivers/spi/Makefile                            |    1 +
+ drivers/spi/spi-fsl-qspi.c                      |  929 ++++++++++++++
+ drivers/spi/spi-mem.c                           |   25 +
+ include/linux/spi/spi-mem.h                     |    3 +
+ 23 files changed, 1071 insertions(+), 1301 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
+ delete mode 100644 drivers/mtd/spi-nor/fsl-quadspi.c
+ create mode 100644 drivers/spi/spi-fsl-qspi.c
 
 -- 
-Nicolas Ferre
+2.7.4
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

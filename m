@@ -1,133 +1,94 @@
 From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH 01/11] spi: spi-mem: Extend the SPI mem interface to set a
- custom memory name
-Date: Wed, 30 May 2018 17:12:18 +0200
-Message-ID: <9c1cf52a-dfea-157f-a7ef-d59299e154af@exceet.de>
+Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
+ controller
+Date: Wed, 30 May 2018 17:13:44 +0200
+Message-ID: <e55af89e-71ac-136e-09c6-98d20e133b78@exceet.de>
 References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
- <1527686082-15142-2-git-send-email-frieder.schrempf@exceet.de>
- <20180530163220.161fdb86@bbrezillon>
+ <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
+ <20180530165816.371dc39c@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        dwmw2@infradead.org, computersforpeace@gmail.com,
-        marek.vasut@gmail.com, richard@nod.at, miquel.raynal@bootlin.com,
-        broonie@kernel.org, david.wolfe@nxp.com, fabio.estevam@nxp.com,
-        prabhakar.kushwaha@nxp.com, yogeshnarayan.gaur@nxp.com,
-        han.xu@nxp.com, linux-kernel@vger.kernel.org
+Cc: yogeshnarayan.gaur@nxp.com, richard@nod.at, prabhakar.kushwaha@nxp.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+ han.xu@nxp.com, broonie@kernel.org, linux-mtd@lists.infradead.org,
+ miquel.raynal@bootlin.com, fabio.estevam@nxp.com, david.wolfe@nxp.com,
+ computersforpeace@gmail.com, dwmw2@infradead.org
 To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180530163220.161fdb86@bbrezillon>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180530165816.371dc39c@bbrezillon>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Boris,
 
-On 30.05.2018 16:32, Boris Brezillon wrote:
+On 30.05.2018 16:58, Boris Brezillon wrote:
 > Hi Frieder,
 > 
-> On Wed, 30 May 2018 15:14:30 +0200
+> On Wed, 30 May 2018 15:14:32 +0200
 > Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
 > 
->> When porting (Q)SPI controller drivers from the MTD layer to the SPI
->> layer, the naming scheme for the memory devices changes. To be able
->> to keep compatibility with the old drivers naming scheme, a function
->> is added to the SPI mem interface to let controller drivers set a
->> custom name for the memory.
->>
->> Example for the FSL QSPI driver:
->>
->> Name with the old driver: 21e0000.qspi,
->> or with multiple devices: 21e0000.qspi-0, 21e0000.qspi-1, ...
->>
->> Name with the new driver without spi_mem_get_name: spi4.0
->>
->> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
->> ---
->>   drivers/spi/spi-mem.c       | 25 +++++++++++++++++++++++++
->>   include/linux/spi/spi-mem.h |  3 +++
->>   2 files changed, 28 insertions(+)
->>
->> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
->> index 990770d..5e9af47 100644
->> --- a/drivers/spi/spi-mem.c
->> +++ b/drivers/spi/spi-mem.c
->> @@ -311,6 +311,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
->>   EXPORT_SYMBOL_GPL(spi_mem_exec_op);
->>   
->>   /**
->> + * spi_mem_get_name() - Let drivers using the SPI mem interface specify a
->> + *			custom name for the memory to avoid compatibility
->> + *			issues with ported drivers.
->> + * @mem: the SPI memory
->> + *
->> + * When porting (Q)SPI controller drivers from the MTD layer to the SPI
->> + * layer, the naming scheme for the memory devices changes. To be able to
->> + * keep compatibility with the old drivers naming scheme, this function can
->> + * be used to get a custom name from the controller driver.
->> + * If no custom name is available, the name of the SPI device is returned.
->> + *
->> + * Return: a char array that contains the name for the flash memory
->> + */
->> +const char *spi_mem_get_name(struct spi_mem *mem)
->> +{
->> +	struct spi_controller *ctlr = mem->spi->controller;
 >> +
->> +	if (ctlr->mem_ops && ctlr->mem_ops->get_name)
->> +		return ctlr->mem_ops->get_name(mem);
+>> +static const char *fsl_qspi_get_name(struct spi_mem *mem)
+>> +{
+>> +	struct fsl_qspi *q = spi_controller_get_devdata(mem->spi->master);
+>> +	struct device *dev = &mem->spi->dev;
+>> +	const char *name;
+>> +
+>> +	/*
+>> +	 * In order to keep mtdparts compatible with the old MTD driver at
+>> +	 * mtd/spi-nor/fsl-quadspi.c, we set a custom name derived from the
+>> +	 * platform_device of the controller.
+>> +	 */
+>> +	if (of_get_available_child_count(q->dev->of_node) == 1)
+>> +		name = dev_name(q->dev);
+>> +	else
+>> +		name = devm_kasprintf(dev, GFP_KERNEL,
+>> +				      "%s-%d", dev_name(q->dev),
+>> +				      mem->spi->chip_select);
+>> +
+>> +	if (!name) {
+>> +		dev_err(dev, "failed to get memory for custom flash name\n");
+>> +		return dev_name(q->dev);
 > 
-> Looks like your implementation of ->get_name() in the fsl driver is
-> allocating a new string each time it's called. I guess other
-> implementations might be forced to do the same, so maybe it's better to
-> add a ->name field to struct spi_mem and only call ->get_name() once
-> when the device is probed. Then spi_mem_get_name() can just be
-> implemented like this:
-> 
-> const char *spi_mem_get_name(struct spi_mem *mem)
-> {
-> 	return mem->name;
-> }
+> Hm, not sure that's what we want. We should probably fail when the
+> allocation fails.
 
-Sounds like a good proposal. I will change that.
+Right, we should definitely fail when the allocation fails.
+
+> 
+> How about letting ->get_name() return an error pointer or NULL in case
+> of error. With the other I made suggestion in my review of patch 1
+> (calling ->get_name() at probe time) you could refuse to probe the
+> device when ->get_name() fails.
+
+Ok, I will change that.
 
 Thanks,
 
 Frieder
 
 > 
+>> +	}
+>> +
+>> +	return name;
+>> +}
+>> +
+> 
 > Regards,
 > 
 > Boris
 > 
->> +
->> +	return dev_name(&mem->spi->dev);
->> +}
->> +EXPORT_SYMBOL_GPL(spi_mem_get_name);
->> +
->> +/**
->>    * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
->>    *			      match controller limitations
->>    * @mem: the SPI memory
->> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
->> index 4fa34a2..f1912d3 100644
->> --- a/include/linux/spi/spi-mem.h
->> +++ b/include/linux/spi/spi-mem.h
->> @@ -178,6 +178,7 @@ struct spi_controller_mem_ops {
->>   			    const struct spi_mem_op *op);
->>   	int (*exec_op)(struct spi_mem *mem,
->>   		       const struct spi_mem_op *op);
->> +	const char *(*get_name)(struct spi_mem *mem);
->>   };
->>   
->>   /**
->> @@ -236,6 +237,8 @@ bool spi_mem_supports_op(struct spi_mem *mem,
->>   int spi_mem_exec_op(struct spi_mem *mem,
->>   		    const struct spi_mem_op *op);
->>   
->> +const char *spi_mem_get_name(struct spi_mem *mem);
->> +
->>   int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
->>   				       struct module *owner);
->>   
-> 
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,75 +1,120 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Wed, 30 May 2018 16:24:39 +0200
-Message-ID: <20180530162439.7b5eec2b@bbrezillon>
+Subject: Re: [PATCH 01/11] spi: spi-mem: Extend the SPI mem interface to set
+ a custom memory name
+Date: Wed, 30 May 2018 16:32:20 +0200
+Message-ID: <20180530163220.161fdb86@bbrezillon>
 References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB2838F1DE06025F231537DD68996C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <1527686082-15142-2-git-send-email-frieder.schrempf@exceet.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        dwmw2@infradead.org, computersforpeace@gmail.com,
+        marek.vasut@gmail.com, richard@nod.at, miquel.raynal@bootlin.com,
+        broonie@kernel.org, david.wolfe@nxp.com, fabio.estevam@nxp.com,
+        prabhakar.kushwaha@nxp.com, yogeshnarayan.gaur@nxp.com,
+        han.xu@nxp.com, linux-kernel@vger.kernel.org
+To: Frieder Schrempf <frieder.schrempf@exceet.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <DB6PR0402MB2838F1DE06025F231537DD68996C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+In-Reply-To: <1527686082-15142-2-git-send-email-frieder.schrempf@exceet.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Yogesh,
+Hi Frieder,
 
-On Wed, 30 May 2018 13:50:51 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+On Wed, 30 May 2018 15:14:30 +0200
+Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
 
-> Hi Frieder,
+> When porting (Q)SPI controller drivers from the MTD layer to the SPI
+> layer, the naming scheme for the memory devices changes. To be able
+> to keep compatibility with the old drivers naming scheme, a function
+> is added to the SPI mem interface to let controller drivers set a
+> custom name for the memory.
 > 
-> Thanks for migrating the fsl-quadspi.c driver on the new SPI
-> framework. This patch is using dynamic LUT approach to create the LUT
-> at run time instead of fixed static LUT as being used in current
-> driver present at mtd/spi-nor/fsl-quadspi.c. I have pushed the
-> changes for dynamic LUT on mtd/spi-nor/fsl-quadspi.c and v10 has been
-> in review stage.
+> Example for the FSL QSPI driver:
 > 
-> Request you to please add 'signed-off' mentioned in those patches in
-> this patch, patchwork link is
-> https://patchwork.ozlabs.org/patch/896534/
+> Name with the old driver: 21e0000.qspi,
+> or with multiple devices: 21e0000.qspi-0, 21e0000.qspi-1, ...
+> 
+> Name with the new driver without spi_mem_get_name: spi4.0
+> 
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+> ---
+>  drivers/spi/spi-mem.c       | 25 +++++++++++++++++++++++++
+>  include/linux/spi/spi-mem.h |  3 +++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index 990770d..5e9af47 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -311,6 +311,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  EXPORT_SYMBOL_GPL(spi_mem_exec_op);
+>  
+>  /**
+> + * spi_mem_get_name() - Let drivers using the SPI mem interface specify a
+> + *			custom name for the memory to avoid compatibility
+> + *			issues with ported drivers.
+> + * @mem: the SPI memory
+> + *
+> + * When porting (Q)SPI controller drivers from the MTD layer to the SPI
+> + * layer, the naming scheme for the memory devices changes. To be able to
+> + * keep compatibility with the old drivers naming scheme, this function can
+> + * be used to get a custom name from the controller driver.
+> + * If no custom name is available, the name of the SPI device is returned.
+> + *
+> + * Return: a char array that contains the name for the flash memory
+> + */
+> +const char *spi_mem_get_name(struct spi_mem *mem)
+> +{
+> +	struct spi_controller *ctlr = mem->spi->controller;
+> +
+> +	if (ctlr->mem_ops && ctlr->mem_ops->get_name)
+> +		return ctlr->mem_ops->get_name(mem);
 
-First, I'd like to state that this work has not been based on your
-dynamic LUT code, and I actually asked you to adapt your code to match
-the way we were handling it in the new driver (which at that time was
-still under development). Then, even if you want to be cited as one of
-the author of the new code, SoB tag is not the right way to do it (see
-[1] for an explanation on when SoB should be added). Instead, you
-should add your name in the copyright header and maybe be add a
-MODULE_AUTHOR():
+Looks like your implementation of ->get_name() in the fsl driver is
+allocating a new string each time it's called. I guess other
+implementations might be forced to do the same, so maybe it's better to
+add a ->name field to struct spi_mem and only call ->get_name() once
+when the device is probed. Then spi_mem_get_name() can just be
+implemented like this:
 
-/*
- * Copyright ...
- * ...
- * Authors:
- *	...
- *	Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
- */
-
-...
-
-MODULE_AUTHOR("Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>");
+const char *spi_mem_get_name(struct spi_mem *mem)
+{
+	return mem->name;
+}
 
 Regards,
 
 Boris
 
-[1]https://elixir.bootlin.com/linux/latest/source/Documentation/process/submitting-patches.rst#L429
+> +
+> +	return dev_name(&mem->spi->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(spi_mem_get_name);
+> +
+> +/**
+>   * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
+>   *			      match controller limitations
+>   * @mem: the SPI memory
+> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+> index 4fa34a2..f1912d3 100644
+> --- a/include/linux/spi/spi-mem.h
+> +++ b/include/linux/spi/spi-mem.h
+> @@ -178,6 +178,7 @@ struct spi_controller_mem_ops {
+>  			    const struct spi_mem_op *op);
+>  	int (*exec_op)(struct spi_mem *mem,
+>  		       const struct spi_mem_op *op);
+> +	const char *(*get_name)(struct spi_mem *mem);
+>  };
+>  
+>  /**
+> @@ -236,6 +237,8 @@ bool spi_mem_supports_op(struct spi_mem *mem,
+>  int spi_mem_exec_op(struct spi_mem *mem,
+>  		    const struct spi_mem_op *op);
+>  
+> +const char *spi_mem_get_name(struct spi_mem *mem);
+> +
+>  int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+>  				       struct module *owner);
+>  

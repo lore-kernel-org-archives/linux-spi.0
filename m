@@ -1,115 +1,82 @@
-From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH 05/11] ARM: dts: Reflect change of FSL QSPI driver and
- remove unused properties
-Date: Fri, 1 Jun 2018 11:27:13 +0200
-Message-ID: <d6512adf-2d48-5bdc-d793-a7c1fcabc177@exceet.de>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
- <1527686082-15142-6-git-send-email-frieder.schrempf@exceet.de>
- <20180530171057.39f1a2be@bbrezillon>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH v8 2/4] dt-bindings: Add bindings for SPI NAND devices
+Date: Fri,  1 Jun 2018 15:13:58 +0200
+Message-ID: <20180601131400.17634-3-boris.brezillon@bootlin.com>
+References: <20180601131400.17634-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- yogeshnarayan.gaur@nxp.com, Rob Herring <robh+dt@kernel.org>, richard@nod.at,
- Sascha Hauer <s.hauer@pengutronix.de>, prabhakar.kushwaha@nxp.com,
- linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
- linux-spi@vger.kernel.org, marek.vasut@gmail.com, han.xu@nxp.com,
- broonie@kernel.org, linux-mtd@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>, miquel.raynal@bootlin.com,
- fabio.estevam@nxp.com, david.wolfe@nxp.com, computersforpeace@gmail.com,
- dwmw2@infradead.org, linux-arm-kernel@lists.infradead.org
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180530171057.39f1a2be@bbrezillon>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Ian Campbell <ijc+devicetree@hellion.org.uk>,
+ Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180601131400.17634-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+Add bindings for SPI NAND chips.
 
-On 30.05.2018 17:10, Boris Brezillon wrote:
-> On Wed, 30 May 2018 15:14:34 +0200
-> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
-> 
->> The FSL QSPI driver was moved to the SPI framework and it now
->> acts as a SPI controller. Therefore the subnodes need to set
->> spi-[rx/tx]-bus-width = <4>, so quad mode is used just as before.
-> 
-> We should try to keep the current behavior even when
-> spi-[rx/tx]-bus-width are not defined. How about considering
-> spi-[rx/tx]-bus-width as board constraints and then let the core pick
-> the best mode based on these constraints plus the SPI NOR chip
-> limitations.
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+Changes in v8:
+- Fixed a typo in the commit message
+---
+ Documentation/devicetree/bindings/mtd/spi-nand.txt | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
 
-Ok, I'll try to adjust this, so we can leave spi-[rx/tx]-bus-width 
-undefined and still get quad mode as default if possible.
+diff --git a/Documentation/devicetree/bindings/mtd/spi-nand.txt b/Documentation/devicetree/bindings/mtd/spi-nand.txt
+new file mode 100644
+index 000000000000..d55f80196c63
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/spi-nand.txt
+@@ -0,0 +1,27 @@
++SPI NAND flash
++
++Required properties:
++- compatible: should be "spi-nand"
++- reg: should encode the chip-select line used to access the NAND chip
++
++Optional properties
++- spi-max-frequency: maximum frequency of the SPI bus the chip can operate at.
++		     This should encode board limitations (i.e. max freq can't
++		     be achieved due to crosstalk on IO lines).
++		     When unspecified, the driver assumes the chip can run at
++		     the max frequency defined in the spec (information
++		     extracted chip detection time).
++- spi-tx-bus-width: The bus width (number of data wires) that is used for MOSI.
++		    Only encodes the board constraints (i.e. when not all IO
++		    signals are routed on the board). Device constraints are
++		    extracted when detecting the chip, and controller
++		    constraints are exposed by the SPI mem controller. If this
++		    property is missing that means no constraint at the board
++		    level.
++- spi-rx-bus-width: The bus width (number of data wires) that is used for MISO.
++		    Only encodes the board constraints (i.e. when not all IO
++		    signals are routed on the board). Device constraints are
++		    extracted when detecting the chip, and controller
++		    constraints are exposed by the SPI mem controller. If this
++		    property is missing that means no constraint at the board
++		    level.
+-- 
+2.14.1
 
-> 
->>
->> Also the properties 'bus-num', 'fsl,spi-num-chipselects' and
->> 'fsl,spi-flash-chipselects' were never read by the driver and
->> can be removed.
->>
->> The 'reg' properties are adjusted to reflect the what bus and
->> chipselect the flash is connected to, as the new driver needs
->> this information.
->>
->> The property 'fsl,qspi-has-second-chip' is not needed anymore
->> and will be removed after the old driver was disabled to avoid
->> breaking ls1021a-moxa-uc-8410a.dts.
->>
->> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
->> ---
->>   arch/arm/boot/dts/imx6sx-sdb-reva.dts       | 8 ++++++--
->>   arch/arm/boot/dts/imx6sx-sdb.dts            | 8 ++++++--
->>   arch/arm/boot/dts/imx6ul-14x14-evk.dtsi     | 2 ++
->>   arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts | 5 ++---
->>   4 files changed, 16 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/arm/boot/dts/imx6sx-sdb-reva.dts b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
->> index e3533e7..1a6f680 100644
->> --- a/arch/arm/boot/dts/imx6sx-sdb-reva.dts
->> +++ b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
->> @@ -131,13 +131,17 @@
->>   		#size-cells = <1>;
->>   		compatible = "spansion,s25fl128s", "jedec,spi-nor";
->>   		spi-max-frequency = <66000000>;
->> +		spi-rx-bus-width = <4>;
->> +		spi-tx-bus-width = <4>;
->>   	};
->>   
->> -	flash1: s25fl128s@1 {
->> -		reg = <1>;
->> +	flash1: s25fl128s@2 {
->> +		reg = <2>;
-> 
-> Hm, you're breaking backward compat here. Can we try to re-use the
-> old numbering scheme instead of patching all DTs?
 
-Unfortunately in the current setup, the definitions for the reg property 
-are already broken.
-
-For example imx6sx-sdb.dts seems to have one chip connected on bus A, 
-CS0 and one on bus B, CS0. It has reg set to 0 for the first and 1 for 
-the second chip.
-
-While fsl-ls208xa-qds.dtsi uses the same hw setup, but has reg set to 0 
-and 2.
-
-So either way we need to change the reg property at some place.
-So the best approach in my opinion is to fix the definitions to use a 
-single scheme and while at it also remove the fsl,qspi-has-second-chip 
-property, that is not needed if a single consistent scheme for the reg 
-properties is used.
-
-Regards,
-
-Frieder
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,12 +1,13 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v8 4/4] mtd: spinand: Add initial support for Winbond W25M02GV
-Date: Fri,  1 Jun 2018 15:14:00 +0200
-Message-ID: <20180601131400.17634-5-boris.brezillon@bootlin.com>
+Subject: [PATCH v8 3/4] mtd: spinand: Add initial support for Micron
+ MT29F2G01ABAGD
+Date: Fri,  1 Jun 2018 15:13:59 +0200
+Message-ID: <20180601131400.17634-4-boris.brezillon@bootlin.com>
 References: <20180601131400.17634-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>
+Cc: Peter Pan <peterpandong@micron.com>
 To: David Woodhouse <dwmw2@infradead.org>,
  Brian Norris <computersforpeace@gmail.com>,
  Boris Brezillon <boris.brezillon@bootlin.com>,
@@ -30,66 +31,88 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Frieder Schrempf <frieder.schrempf@exceet.de>
+From: Peter Pan <peterpandong@micron.com>
 
-Add support for the W25M02GV chip.
+Add a basic driver for Micron SPI NANDs. Only one device is supported
+right now, but the driver will be extended to support more devices
+afterwards.
 
-Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+Signed-off-by: Peter Pan <peterpandong@micron.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
 Changes in v8:
-- Add a commit message
 - Changed the subject prefix
 ---
- drivers/mtd/nand/spi/Makefile  |   2 +-
- drivers/mtd/nand/spi/core.c    |   1 +
- drivers/mtd/nand/spi/winbond.c | 141 +++++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h    |   1 +
- 4 files changed, 144 insertions(+), 1 deletion(-)
- create mode 100644 drivers/mtd/nand/spi/winbond.c
+ drivers/mtd/nand/spi/Makefile |   2 +-
+ drivers/mtd/nand/spi/core.c   |  17 ++++++
+ drivers/mtd/nand/spi/micron.c | 133 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h   |   3 +
+ 4 files changed, 154 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mtd/nand/spi/micron.c
 
 diff --git a/drivers/mtd/nand/spi/Makefile b/drivers/mtd/nand/spi/Makefile
-index 79a1f1e79221..983a94f7f205 100644
+index feb79a1d1b46..79a1f1e79221 100644
 --- a/drivers/mtd/nand/spi/Makefile
 +++ b/drivers/mtd/nand/spi/Makefile
 @@ -1,2 +1,2 @@
--spinand-objs := core.o micron.o
-+spinand-objs := core.o micron.o winbond.o
+-spinand-objs := core.o
++spinand-objs := core.o micron.o
  obj-$(CONFIG_MTD_SPI_NAND) += spinand.o
 diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 2194a7f9b550..83fd039fe4d8 100644
+index a99ea352eb85..2194a7f9b550 100644
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -753,6 +753,7 @@ static const struct nand_ops spinand_ops = {
- 
- static const struct spinand_manufacturer *spinand_manufacturers[] = {
- 	&micron_spinand_manufacturer,
-+	&winbond_spinand_manufacturer,
+@@ -751,8 +751,25 @@ static const struct nand_ops spinand_ops = {
+ 	.isbad = spinand_isbad,
  };
  
++static const struct spinand_manufacturer *spinand_manufacturers[] = {
++	&micron_spinand_manufacturer,
++};
++
  static int spinand_manufacturer_detect(struct spinand_device *spinand)
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+ {
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < ARRAY_SIZE(spinand_manufacturers); i++) {
++		ret = spinand_manufacturers[i]->ops->detect(spinand);
++		if (ret > 0) {
++			spinand->manufacturer = spinand_manufacturers[i];
++			return 0;
++		} else if (ret < 0) {
++			return ret;
++		}
++	}
++
+ 	return -ENOTSUPP;
+ }
+ 
+diff --git a/drivers/mtd/nand/spi/micron.c b/drivers/mtd/nand/spi/micron.c
 new file mode 100644
-index 000000000000..67baa1b32c00
+index 000000000000..9c4381d6847b
 --- /dev/null
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -0,0 +1,141 @@
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -0,0 +1,133 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (c) 2017 exceet electronics GmbH
++ * Copyright (c) 2016-2017 Micron Technology, Inc.
 + *
 + * Authors:
-+ *	Frieder Schrempf <frieder.schrempf@exceet.de>
-+ *	Boris Brezillon <boris.brezillon@bootlin.com>
++ *	Peter Pan <peterpandong@micron.com>
 + */
 +
 +#include <linux/device.h>
 +#include <linux/kernel.h>
 +#include <linux/mtd/spinand.h>
 +
-+#define SPINAND_MFR_WINBOND		0xEF
++#define SPINAND_MFR_MICRON		0x2c
 +
-+#define WINBOND_CFG_BUF_READ		BIT(3)
++#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
++#define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
++#define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
++#define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
++#define MICRON_STATUS_ECC_7TO8_BITFLIPS	(5 << 4)
 +
 +static SPINAND_OP_VARIANTS(read_cache_variants,
 +		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
@@ -107,126 +130,117 @@ index 000000000000..67baa1b32c00
 +		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
 +		SPINAND_PROG_LOAD(false, 0, NULL, 0));
 +
-+static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *region)
++static int mt29f2g01abagd_ooblayout_ecc(struct mtd_info *mtd, int section,
++					struct mtd_oob_region *region)
 +{
-+	if (section > 3)
++	if (section)
 +		return -ERANGE;
 +
-+	region->offset = (16 * section) + 8;
-+	region->length = 8;
++	region->offset = 64;
++	region->length = 64;
 +
 +	return 0;
 +}
 +
-+static int w25m02gv_ooblayout_free(struct mtd_info *mtd, int section,
-+				   struct mtd_oob_region *region)
++static int mt29f2g01abagd_ooblayout_free(struct mtd_info *mtd, int section,
++					 struct mtd_oob_region *region)
 +{
-+	if (section > 3)
++	if (section)
 +		return -ERANGE;
 +
-+	region->offset = (16 * section) + 2;
-+	region->length = 6;
++	/* Reserve 2 bytes for the BBM. */
++	region->offset = 2;
++	region->length = 62;
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
-+	.ecc = w25m02gv_ooblayout_ecc,
-+	.free = w25m02gv_ooblayout_free,
++static const struct mtd_ooblayout_ops mt29f2g01abagd_ooblayout = {
++	.ecc = mt29f2g01abagd_ooblayout_ecc,
++	.free = mt29f2g01abagd_ooblayout_free,
 +};
 +
-+static int w25m02gv_select_target(struct spinand_device *spinand,
-+				  unsigned int target)
++static int mt29f2g01abagd_ecc_get_status(struct spinand_device *spinand,
++					 u8 status)
 +{
-+	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0xc2, 1),
-+					  SPI_MEM_OP_NO_ADDR,
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_OUT(1,
-+							spinand->scratchbuf,
-+							1));
++	switch (status & MICRON_STATUS_ECC_MASK) {
++	case STATUS_ECC_NO_BITFLIPS:
++		return 0;
 +
-+	*spinand->scratchbuf = target;
-+	return spi_mem_exec_op(spinand->spimem, &op);
++	case STATUS_ECC_UNCOR_ERROR:
++		return -EBADMSG;
++
++	case MICRON_STATUS_ECC_1TO3_BITFLIPS:
++		return 3;
++
++	case MICRON_STATUS_ECC_4TO6_BITFLIPS:
++		return 6;
++
++	case MICRON_STATUS_ECC_7TO8_BITFLIPS:
++		return 8;
++
++	default:
++		break;
++	}
++
++	return -EINVAL;
 +}
 +
-+static const struct spinand_info winbond_spinand_table[] = {
-+	SPINAND_INFO("W25M02GV", 0xAB,
-+		     NAND_MEMORG(1, 2048, 64, 64, 1024, 1, 1, 2),
-+		     NAND_ECCREQ(1, 512),
++static const struct spinand_info micron_spinand_table[] = {
++	SPINAND_INFO("MT29F2G01ABAGD", 0x24,
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 2, 1, 1),
++		     NAND_ECCREQ(8, 512),
 +		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 +					      &write_cache_variants,
 +					      &update_cache_variants),
 +		     0,
-+		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
-+		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
++		     SPINAND_ECCINFO(&mt29f2g01abagd_ooblayout,
++				     mt29f2g01abagd_ecc_get_status)),
 +};
 +
-+/**
-+ * winbond_spinand_detect - initialize device related part in spinand_device
-+ * struct if it is a Winbond device.
-+ * @spinand: SPI NAND device structure
-+ */
-+static int winbond_spinand_detect(struct spinand_device *spinand)
++static int micron_spinand_detect(struct spinand_device *spinand)
 +{
 +	u8 *id = spinand->id.data;
 +	int ret;
 +
 +	/*
-+	 * Winbond SPI NAND read ID need a dummy byte,
++	 * Micron SPI NAND read ID need a dummy byte,
 +	 * so the first byte in raw_id is dummy.
 +	 */
-+	if (id[1] != SPINAND_MFR_WINBOND)
++	if (id[1] != SPINAND_MFR_MICRON)
 +		return 0;
 +
-+	ret = spinand_match_and_init(spinand, winbond_spinand_table,
-+				     ARRAY_SIZE(winbond_spinand_table), id[2]);
++	ret = spinand_match_and_init(spinand, micron_spinand_table,
++				     ARRAY_SIZE(micron_spinand_table), id[2]);
 +	if (ret)
 +		return ret;
 +
 +	return 1;
 +}
 +
-+static int winbond_spinand_init(struct spinand_device *spinand)
-+{
-+	struct nand_device *nand = spinand_to_nand(spinand);
-+	unsigned int i;
-+
-+	/*
-+	 * Make sure all dies are in buffer read mode and not continuous read
-+	 * mode.
-+	 */
-+	for (i = 0; i < nand->memorg.ntargets; i++) {
-+		spinand_select_target(spinand, i);
-+		spinand_upd_cfg(spinand, WINBOND_CFG_BUF_READ,
-+				WINBOND_CFG_BUF_READ);
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
-+	.detect = winbond_spinand_detect,
-+	.init = winbond_spinand_init,
++static const struct spinand_manufacturer_ops micron_spinand_manuf_ops = {
++	.detect = micron_spinand_detect,
 +};
 +
-+const struct spinand_manufacturer winbond_spinand_manufacturer = {
-+	.id = SPINAND_MFR_WINBOND,
-+	.name = "Winbond",
-+	.ops = &winbond_spinand_manuf_ops,
++const struct spinand_manufacturer micron_spinand_manufacturer = {
++	.id = SPINAND_MFR_MICRON,
++	.name = "Micron",
++	.ops = &micron_spinand_manuf_ops,
 +};
 diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 11a18c1993e8..31d993628a0d 100644
+index 17a4584c0017..11a18c1993e8 100644
 --- a/include/linux/mtd/spinand.h
 +++ b/include/linux/mtd/spinand.h
-@@ -194,6 +194,7 @@ struct spinand_manufacturer {
+@@ -192,6 +192,9 @@ struct spinand_manufacturer {
+ 	const struct spinand_manufacturer_ops *ops;
+ };
  
- /* SPI NAND manufacturers */
- extern const struct spinand_manufacturer micron_spinand_manufacturer;
-+extern const struct spinand_manufacturer winbond_spinand_manufacturer;
- 
++/* SPI NAND manufacturers */
++extern const struct spinand_manufacturer micron_spinand_manufacturer;
++
  /**
   * struct spinand_op_variants - SPI NAND operation variants
+  * @ops: the list of variants for a given operation
 -- 
 2.14.1
 

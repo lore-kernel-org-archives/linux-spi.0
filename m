@@ -1,10 +1,12 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v8 0/4] mtd: Add a SPI NAND driver
-Date: Fri,  1 Jun 2018 15:13:56 +0200
-Message-ID: <20180601131400.17634-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v8 4/4] mtd: spinand: Add initial support for Winbond W25M02GV
+Date: Fri,  1 Jun 2018 15:14:00 +0200
+Message-ID: <20180601131400.17634-5-boris.brezillon@bootlin.com>
+References: <20180601131400.17634-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Frieder Schrempf <frieder.schrempf@exceet.de>
 To: David Woodhouse <dwmw2@infradead.org>,
  Brian Norris <computersforpeace@gmail.com>,
  Boris Brezillon <boris.brezillon@bootlin.com>,
@@ -16,6 +18,7 @@ To: David Woodhouse <dwmw2@infradead.org>,
  Ian Campbell <ijc+devicetree@hellion.org.uk>,
  Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180601131400.17634-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -27,165 +30,203 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
 
-Not much has changed in this v8, I mainly fixed bugs/issues reported
-by Miquel and Frider.
-This is hopefully the last version, and if everything goes well I
-should merge this stuff just after 4.18-rc1 is out.
+Add support for the W25M02GV chip.
 
-Mark, Rob, just one thing I'm not sure about: in patch 2 I use
-spi-{tx,rx}-bus-width to encode board limitations on the SPI bus, but
-I'm not sure these properties were created to express that. Should I
-create a new prop (spi-max-bus-width?) or is it fine to reuse those
-spi-{tx,rx}-bus-width props?
-
-Comments/reviews are welcome.
-
-Thanks,
-
-Boris
-
-v8 changes:
-- dropped patch 1 which has been applied
-- fix various bugs in the core (see changelog in patch 1)
-- add a commit message to patch 4
-
-v7 changes:
-- Use the spi-mem interface
-- Add support for on-die ECC
-- Add support for Winbond W25M02GV chip
-
-v6 changes:
-- includes generic NAND framework patches in series
-- rebase on nand/next (commit 6076fd1e9d879521f7082a5e22185b71e480b777)
-- remove on-die ECC support
-- remove devm_free() since everything allocated by devm_kmalloc() will be
-  automatically freed when device is released
-- add comment header for structs in spinand.h
-- remove spinand_register()/unregister(), call spinand_detect() in
-  spinand_init() and only expose spinand_init()/cleanup()
-- add nand_release_bbt() in bbt.c and use it in nand_cleanup() and
-  spinand_cleanup()
-- use BIT(n) instead (1 << n) in macro of spinand.h
-- rename spinand_alloc() to devm_spinand_alloc()
-- name lables in better way
-- fix some typos
-- add empty lines between code blocks
-
-v5 changes:
-- rebase patch on nand/next with Boris's generic NAND framework patches[3]
-- replace pr_xxx() with dev_xxx()
-- replace kzalloc()i/kfree() with devm_kzalloc()/devm_kfree()
-- rename spinand_op_init() to spinand_init_op() for consistency
-- remove command opcode in function comments
-- use BIT(n) instead (1 << n) in macro
-- remove manufactures.c and put spinand_manufacturers table in core.c
-- change spinand_write_reg() u8 *buf argument to u8 value,
-  since the length is always 1
-- remove spinand_manufacture->detect() check, since it is always != NULL
-- alloc spinand_ecc_engine struct in vendor.c when using on-die ECC
-  (for hardware ECC, it should be in controllers/*.c)
-- add comment header for struct spinand_op
-- fix timeout bug in spinand_wait(), thanks for Arnaud's debug
-- make spinand_manufacturers const
-- add ecc_engine_ops pointer in struct micron_spinand_info
-- make controller->cap assignment right with SPI_TX/RX_QUAD/DUAL flag
-
-v4 changes:
-- initialize struct mtd_oob_ops to 0 in bbt.c
-- rename new added helper in nand.h to nand_check_xxxx()
-- add struct mtd_oob_ops consistency check in nand_check_oob_ops()
-- add dataleft in struct nand_page_iter instead of offs
-- remove spinand_manufacturers->ops->detect() check since it is mandatory
-- remove spinand_set_manufacturer_ops() and do the job in
-  spinand_manufacturer_detect()
-- move .priv out of struct spinand_controller
-- add spinand_alloc/free/register/unregister() and make
-  spinand_detect/init() static
-- make BBT be configured by device tree
-- chip->id.data stores raw ID directly
-- refine device info print message after detect success
-- add struct mtd_layout_ops pointer in struct micron_spinand_info
-- remove micron_spinand_init() and do its job in micron_spinand_detect()
-- fix BBT block cannot be erased bug
-
-v3 changes:
-- rebase patch on 4.11-rc1[2]
-- change read ID method. read 4 bytes ID out then let ->detect() of each
-  manufacutre driver to decode ID and detect the device.
-- make SPI NAND id table private to each manufacutre driver
-- fix coding style to make checkpatch.pl happy
-- update the MAINTAINERS file for spi nand code
-- add nand_size() helper in nand.h
-- use nand_for_each_page() helper in spinand_do_read/write_ops()
-- create helper to check boundaries in generic NAND code and use it
-  in SPI NAND core
-- rename spinand_base.c to core.c
-- manufactures' drivers expose spinand_manufacturer struct instead of
-  spinand_manufacturer_ops struct to keep Manufacture ID macro in
-  manufactures' drivers and rename spinand_ids.c to manufacture.c
-- rename spinand_micron.c to micron.c
-- rename chips/ directory to controllers/
-- rename generic_spi.c to generic-spi.c
-- replace ->build_column_addr() and ->get_dummy() hooks with ->prepare_op() in
-  spinand_manufacturer_ops struct
-- rename __spinand_erase() to spinand_erase()
-- rename spinand_erase() to spinand_erase_skip_bbt()
-- rename spinand_scan_ident() to spinand_detect()
-- rename spinand_scan_tail() to spinand_init()
-- move non detect related code from spinand_detect() to spinand_init()
-- remove spinand_fill_nandd, assign nand->ops in spinand_detect()
-- merge v2 patch 3(bad block support) and patch 4(BBT support)
-- drop getchip parameter, remove spinand_get/remove_device(), take the lock
-  by caller directly
-- fix function comment headers
-- use nand_bbt_is_initialized() helper
-- replace spinand_ecc_engine and spinand_controller object in spinand_device
-  struct with pointer
-- replace struct spinand_manufacturer_ops pointer in spinand_device struct
-  with spinand_manufacturer struct
-
-v2 changes:
-- replace "spi_nand" with "spinand".
-- rename spi nand related structs for better understanding.
-- introduce spi nand controller, manufacturer and ecc_engine struct.
-- add spi nand manufacturer initialization function refer to Boris's
-  manuf-init branch.
-- remove NAND_SKIP_BBTSCAN from series. Add it later when enabling HW ECC.
-- reorganize series according to Boris's suggestion.
-
-*** BLURB HERE ***
-
-Boris Brezillon (1):
-  dt-bindings: Add bindings for SPI NAND devices
-
-Frieder Schrempf (1):
-  mtd: spinand: Add initial support for Winbond W25M02GV
-
-Peter Pan (2):
-  mtd: nand: Add core infrastructure to support SPI NANDs
-  mtd: spinand: Add initial support for Micron MT29F2G01ABAGD
-
- Documentation/devicetree/bindings/mtd/spi-nand.txt |   27 +
- drivers/mtd/nand/Kconfig                           |    1 +
- drivers/mtd/nand/Makefile                          |    1 +
- drivers/mtd/nand/spi/Kconfig                       |    7 +
- drivers/mtd/nand/spi/Makefile                      |    2 +
- drivers/mtd/nand/spi/core.c                        | 1129 ++++++++++++++++++++
- drivers/mtd/nand/spi/micron.c                      |  133 +++
- drivers/mtd/nand/spi/winbond.c                     |  141 +++
- include/linux/mtd/spinand.h                        |  419 ++++++++
- include/linux/spi/spi-mem.h                        |    4 +-
- 10 files changed, 1863 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
- create mode 100644 drivers/mtd/nand/spi/Kconfig
- create mode 100644 drivers/mtd/nand/spi/Makefile
- create mode 100644 drivers/mtd/nand/spi/core.c
- create mode 100644 drivers/mtd/nand/spi/micron.c
+Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+Changes in v8:
+- Add a commit message
+- Changed the subject prefix
+---
+ drivers/mtd/nand/spi/Makefile  |   2 +-
+ drivers/mtd/nand/spi/core.c    |   1 +
+ drivers/mtd/nand/spi/winbond.c | 141 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h    |   1 +
+ 4 files changed, 144 insertions(+), 1 deletion(-)
  create mode 100644 drivers/mtd/nand/spi/winbond.c
- create mode 100644 include/linux/mtd/spinand.h
 
+diff --git a/drivers/mtd/nand/spi/Makefile b/drivers/mtd/nand/spi/Makefile
+index 79a1f1e79221..983a94f7f205 100644
+--- a/drivers/mtd/nand/spi/Makefile
++++ b/drivers/mtd/nand/spi/Makefile
+@@ -1,2 +1,2 @@
+-spinand-objs := core.o micron.o
++spinand-objs := core.o micron.o winbond.o
+ obj-$(CONFIG_MTD_SPI_NAND) += spinand.o
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 2194a7f9b550..83fd039fe4d8 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -753,6 +753,7 @@ static const struct nand_ops spinand_ops = {
+ 
+ static const struct spinand_manufacturer *spinand_manufacturers[] = {
+ 	&micron_spinand_manufacturer,
++	&winbond_spinand_manufacturer,
+ };
+ 
+ static int spinand_manufacturer_detect(struct spinand_device *spinand)
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+new file mode 100644
+index 000000000000..67baa1b32c00
+--- /dev/null
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2017 exceet electronics GmbH
++ *
++ * Authors:
++ *	Frieder Schrempf <frieder.schrempf@exceet.de>
++ *	Boris Brezillon <boris.brezillon@bootlin.com>
++ */
++
++#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/mtd/spinand.h>
++
++#define SPINAND_MFR_WINBOND		0xEF
++
++#define WINBOND_CFG_BUF_READ		BIT(3)
++
++static SPINAND_OP_VARIANTS(read_cache_variants,
++		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++
++static SPINAND_OP_VARIANTS(write_cache_variants,
++		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
++		SPINAND_PROG_LOAD(true, 0, NULL, 0));
++
++static SPINAND_OP_VARIANTS(update_cache_variants,
++		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
++		SPINAND_PROG_LOAD(false, 0, NULL, 0));
++
++static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 8;
++	region->length = 8;
++
++	return 0;
++}
++
++static int w25m02gv_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 2;
++	region->length = 6;
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
++	.ecc = w25m02gv_ooblayout_ecc,
++	.free = w25m02gv_ooblayout_free,
++};
++
++static int w25m02gv_select_target(struct spinand_device *spinand,
++				  unsigned int target)
++{
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0xc2, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_OUT(1,
++							spinand->scratchbuf,
++							1));
++
++	*spinand->scratchbuf = target;
++	return spi_mem_exec_op(spinand->spimem, &op);
++}
++
++static const struct spinand_info winbond_spinand_table[] = {
++	SPINAND_INFO("W25M02GV", 0xAB,
++		     NAND_MEMORG(1, 2048, 64, 64, 1024, 1, 1, 2),
++		     NAND_ECCREQ(1, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     0,
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
++};
++
++/**
++ * winbond_spinand_detect - initialize device related part in spinand_device
++ * struct if it is a Winbond device.
++ * @spinand: SPI NAND device structure
++ */
++static int winbond_spinand_detect(struct spinand_device *spinand)
++{
++	u8 *id = spinand->id.data;
++	int ret;
++
++	/*
++	 * Winbond SPI NAND read ID need a dummy byte,
++	 * so the first byte in raw_id is dummy.
++	 */
++	if (id[1] != SPINAND_MFR_WINBOND)
++		return 0;
++
++	ret = spinand_match_and_init(spinand, winbond_spinand_table,
++				     ARRAY_SIZE(winbond_spinand_table), id[2]);
++	if (ret)
++		return ret;
++
++	return 1;
++}
++
++static int winbond_spinand_init(struct spinand_device *spinand)
++{
++	struct nand_device *nand = spinand_to_nand(spinand);
++	unsigned int i;
++
++	/*
++	 * Make sure all dies are in buffer read mode and not continuous read
++	 * mode.
++	 */
++	for (i = 0; i < nand->memorg.ntargets; i++) {
++		spinand_select_target(spinand, i);
++		spinand_upd_cfg(spinand, WINBOND_CFG_BUF_READ,
++				WINBOND_CFG_BUF_READ);
++	}
++
++	return 0;
++}
++
++static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
++	.detect = winbond_spinand_detect,
++	.init = winbond_spinand_init,
++};
++
++const struct spinand_manufacturer winbond_spinand_manufacturer = {
++	.id = SPINAND_MFR_WINBOND,
++	.name = "Winbond",
++	.ops = &winbond_spinand_manuf_ops,
++};
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 11a18c1993e8..31d993628a0d 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -194,6 +194,7 @@ struct spinand_manufacturer {
+ 
+ /* SPI NAND manufacturers */
+ extern const struct spinand_manufacturer micron_spinand_manufacturer;
++extern const struct spinand_manufacturer winbond_spinand_manufacturer;
+ 
+ /**
+  * struct spinand_op_variants - SPI NAND operation variants
 -- 
 2.14.1
 

@@ -1,100 +1,115 @@
 From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Fri, 1 Jun 2018 11:14:52 +0200
-Message-ID: <a2f96430-d880-dea1-436c-191cddac431e@exceet.de>
+Subject: Re: [PATCH 05/11] ARM: dts: Reflect change of FSL QSPI driver and
+ remove unused properties
+Date: Fri, 1 Jun 2018 11:27:13 +0200
+Message-ID: <d6512adf-2d48-5bdc-d793-a7c1fcabc177@exceet.de>
 References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
- <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
- <DB6PR0402MB2838F1DE06025F231537DD68996C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
- <20180530162439.7b5eec2b@bbrezillon>
+ <1527686082-15142-6-git-send-email-frieder.schrempf@exceet.de>
+ <20180530171057.39f1a2be@bbrezillon>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
- "richard@nod.at" <richard@nod.at>,
- Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>, Han Xu <han.xu@nxp.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
- Fabio Estevam <fabio.estevam@nxp.com>, David Wolfe <david.wolfe@nxp.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180530162439.7b5eec2b@bbrezillon>
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ yogeshnarayan.gaur@nxp.com, Rob Herring <robh+dt@kernel.org>, richard@nod.at,
+ Sascha Hauer <s.hauer@pengutronix.de>, prabhakar.kushwaha@nxp.com,
+ linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+ linux-spi@vger.kernel.org, marek.vasut@gmail.com, han.xu@nxp.com,
+ broonie@kernel.org, linux-mtd@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, miquel.raynal@bootlin.com,
+ fabio.estevam@nxp.com, david.wolfe@nxp.com, computersforpeace@gmail.com,
+ dwmw2@infradead.org, linux-arm-kernel@lists.infradead.org
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180530171057.39f1a2be@bbrezillon>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Yogesh,
+Hi Boris,
 
-On 30.05.2018 16:24, Boris Brezillon wrote:
-> Hi Yogesh,
+On 30.05.2018 17:10, Boris Brezillon wrote:
+> On Wed, 30 May 2018 15:14:34 +0200
+> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
 > 
-> On Wed, 30 May 2018 13:50:51 +0000
-> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+>> The FSL QSPI driver was moved to the SPI framework and it now
+>> acts as a SPI controller. Therefore the subnodes need to set
+>> spi-[rx/tx]-bus-width = <4>, so quad mode is used just as before.
 > 
->> Hi Frieder,
->>
->> Thanks for migrating the fsl-quadspi.c driver on the new SPI
->> framework. This patch is using dynamic LUT approach to create the LUT
->> at run time instead of fixed static LUT as being used in current
->> driver present at mtd/spi-nor/fsl-quadspi.c. I have pushed the
->> changes for dynamic LUT on mtd/spi-nor/fsl-quadspi.c and v10 has been
->> in review stage.
->>
->> Request you to please add 'signed-off' mentioned in those patches in
->> this patch, patchwork link is
->> https://patchwork.ozlabs.org/patch/896534/
+> We should try to keep the current behavior even when
+> spi-[rx/tx]-bus-width are not defined. How about considering
+> spi-[rx/tx]-bus-width as board constraints and then let the core pick
+> the best mode based on these constraints plus the SPI NOR chip
+> limitations.
 
-So for reasons already given by Boris, I won't add your S-o-b tags. But 
-I can add your name (and that of Suresh Gupta?) to the file header and 
-as MODULE_AUTHOR in the next version.
+Ok, I'll try to adjust this, so we can leave spi-[rx/tx]-bus-width 
+undefined and still get quad mode as default if possible.
+
+> 
+>>
+>> Also the properties 'bus-num', 'fsl,spi-num-chipselects' and
+>> 'fsl,spi-flash-chipselects' were never read by the driver and
+>> can be removed.
+>>
+>> The 'reg' properties are adjusted to reflect the what bus and
+>> chipselect the flash is connected to, as the new driver needs
+>> this information.
+>>
+>> The property 'fsl,qspi-has-second-chip' is not needed anymore
+>> and will be removed after the old driver was disabled to avoid
+>> breaking ls1021a-moxa-uc-8410a.dts.
+>>
+>> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+>> ---
+>>   arch/arm/boot/dts/imx6sx-sdb-reva.dts       | 8 ++++++--
+>>   arch/arm/boot/dts/imx6sx-sdb.dts            | 8 ++++++--
+>>   arch/arm/boot/dts/imx6ul-14x14-evk.dtsi     | 2 ++
+>>   arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts | 5 ++---
+>>   4 files changed, 16 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm/boot/dts/imx6sx-sdb-reva.dts b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
+>> index e3533e7..1a6f680 100644
+>> --- a/arch/arm/boot/dts/imx6sx-sdb-reva.dts
+>> +++ b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
+>> @@ -131,13 +131,17 @@
+>>   		#size-cells = <1>;
+>>   		compatible = "spansion,s25fl128s", "jedec,spi-nor";
+>>   		spi-max-frequency = <66000000>;
+>> +		spi-rx-bus-width = <4>;
+>> +		spi-tx-bus-width = <4>;
+>>   	};
+>>   
+>> -	flash1: s25fl128s@1 {
+>> -		reg = <1>;
+>> +	flash1: s25fl128s@2 {
+>> +		reg = <2>;
+> 
+> Hm, you're breaking backward compat here. Can we try to re-use the
+> old numbering scheme instead of patching all DTs?
+
+Unfortunately in the current setup, the definitions for the reg property 
+are already broken.
+
+For example imx6sx-sdb.dts seems to have one chip connected on bus A, 
+CS0 and one on bus B, CS0. It has reg set to 0 for the first and 1 for 
+the second chip.
+
+While fsl-ls208xa-qds.dtsi uses the same hw setup, but has reg set to 0 
+and 2.
+
+So either way we need to change the reg property at some place.
+So the best approach in my opinion is to fix the definitions to use a 
+single scheme and while at it also remove the fsl,qspi-has-second-chip 
+property, that is not needed if a single consistent scheme for the reg 
+properties is used.
 
 Regards,
 
 Frieder
-
-> 
-> First, I'd like to state that this work has not been based on your
-> dynamic LUT code, and I actually asked you to adapt your code to match
-> the way we were handling it in the new driver (which at that time was
-> still under development). Then, even if you want to be cited as one of
-> the author of the new code, SoB tag is not the right way to do it (see
-> [1] for an explanation on when SoB should be added). Instead, you
-> should add your name in the copyright header and maybe be add a
-> MODULE_AUTHOR():
-> 
-> /*
->   * Copyright ...
->   * ...
->   * Authors:
->   *	...
->   *	Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
->   */
-> 
-> ...
-> 
-> MODULE_AUTHOR("Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>");
-> 
-> Regards,
-> 
-> Boris
-> 
-> [1]https://elixir.bootlin.com/linux/latest/source/Documentation/process/submitting-patches.rst#L429
-> 
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

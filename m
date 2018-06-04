@@ -1,73 +1,74 @@
-From: Janek Kotas <jank@cadence.com>
-Subject: [PATCH] spi: cadence: Change usleep_range() to udelay(), for atomic
- context
-Date: Mon, 4 Jun 2018 11:24:44 +0000
-Message-ID: <65980D27-1B52-43A3-A7CA-33B804A62AC5@cadence.com>
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: [PATCH v5 0/6] Driver for at91 usart in spi mode
+Date: Mon, 4 Jun 2018 19:59:37 +0300
+Message-ID: <20180604165943.31381-1-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>,
+        Radu Pirea <radu.pirea@microchip.com>
+To: <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <lee.jones@linaro.org>,
+        <richard.genoud@gmail.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <gregkh@linuxfoundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Content-ID: <937B7F65D6E8BD418555E2A2FD3B4061@namprd07.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The path "spi: cadence: Add usleep_range() for
-cdns_spi_fill_tx_fifo()" added a usleep_range() function call,
-which cannot be used in atomic context.
-However the cdns_spi_fill_tx_fifo() function can be called during
-an interrupt which may result in a kernel panic:
+Hello,
 
-BUG: scheduling while atomic: grep/561/0x00010002
-Modules linked in:
-Preemption disabled at:
-[<ffffff800858ea28>] wait_for_common+0x48/0x178
-CPU: 0 PID: 561 Comm: grep Not tainted 4.17.0 #1
-Hardware name: Cadence CSP (DT)
-Call trace:
- dump_backtrace+0x0/0x198
- show_stack+0x14/0x20
- dump_stack+0x8c/0xac
- __schedule_bug+0x6c/0xb8
- __schedule+0x570/0x5d8
- schedule+0x34/0x98
- schedule_hrtimeout_range_clock+0x98/0x110
- schedule_hrtimeout_range+0x10/0x18
- usleep_range+0x64/0x98
- cdns_spi_fill_tx_fifo+0x70/0xb0
- cdns_spi_irq+0xd0/0xe0
- __handle_irq_event_percpu+0x9c/0x128
- handle_irq_event_percpu+0x34/0x88
- handle_irq_event+0x48/0x78
- handle_fasteoi_irq+0xbc/0x1b0
- generic_handle_irq+0x24/0x38
- __handle_domain_irq+0x84/0xf8
- gic_handle_irq+0xc4/0x180
+This is the second version of driver. I added a mfd driver which by
+default probes atmel_serial driver and if in dt is specified to probe
+the spi driver, then the spi-at91-usart driver will be probed. The
+compatible for atmel_serial is now the compatible for at91-usart mfd
+driver and compatilbe for atmel_serial driver was changed in order to
+keep the bindings for serial as they are.
 
-This patch replaces the function call with udelay() which can be
-used in an atomic context, like an interrupt.
+Changes in v1:
+- added spi-at91-usart driver
 
-Signed-off-by: Jan Kotas <jank@cadence.com>
----
- drivers/spi/spi-cadence.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Changes in v2:
+- added at91-usart mfd driver
+- modified spi-at91-usart driver to work as mfd driver child
+- modified atmel_serial driver to work as mfd driver child
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 4a00163..02bd1eb 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -319,7 +319,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi=
-)
- 		 */
- 		if (cdns_spi_read(xspi, CDNS_SPI_ISR) &
- 		    CDNS_SPI_IXR_TXFULL)
--			usleep_range(10, 20);
-+			udelay(10);
-=20
- 		if (xspi->txbuf)
- 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
---=20
-1.7.1
+Changes in v3:
+- fixed spi slaves probing
+
+Changes in v4:
+- modified the spi driver to use cs gpio support form spi subsystem
+- fixed dma transfers for serial driver
+- squashed binding for spi and serial and moved them to mfd/atmel-usart.txt
+
+Changes in v5:
+- fixed usage of stdout-path property with atmel_serial driver
+
+Radu Pirea (6):
+  MAINTAINERS: add at91 usart mfd driver
+  dt-bindings: add binding for atmel-usart in SPI mode
+  mfd: at91-usart: added mfd driver for usart
+  MAINTAINERS: add at91 usart spi driver
+  spi: at91-usart: add driver for at91-usart as spi
+  tty/serial: atmel: changed the driver to work under at91-usart mfd
+
+ .../bindings/{serial => mfd}/atmel-usart.txt  |  25 +-
+ MAINTAINERS                                   |  16 +
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/at91-usart.c                      |  67 +++
+ drivers/spi/Kconfig                           |   9 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-at91-usart.c                  | 436 ++++++++++++++++++
+ drivers/tty/serial/Kconfig                    |   1 +
+ drivers/tty/serial/atmel_serial.c             |  41 +-
+ include/dt-bindings/mfd/at91-usart.h          |  17 +
+ 11 files changed, 604 insertions(+), 19 deletions(-)
+ rename Documentation/devicetree/bindings/{serial => mfd}/atmel-usart.txt (76%)
+ create mode 100644 drivers/mfd/at91-usart.c
+ create mode 100644 drivers/spi/spi-at91-usart.c
+ create mode 100644 include/dt-bindings/mfd/at91-usart.h
+
+-- 
+2.17.1

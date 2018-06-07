@@ -1,114 +1,101 @@
-From: Radu Pirea <radu.pirea@microchip.com>
-Subject: [PATCH v6 2/6] dt-bindings: add binding for atmel-usart in SPI mode
-Date: Thu, 7 Jun 2018 14:00:16 +0300
-Message-ID: <20180607110020.20565-3-radu.pirea@microchip.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v6 0/6] Driver for at91 usart in spi mode
+Date: Thu, 7 Jun 2018 16:18:02 +0300
+Message-ID: <CAHp75Vf=CC=UximfkB5a0-PHLiT6ugR4jH3NKdU3w=k=-kPnSA@mail.gmail.com>
 References: <20180607110020.20565-1-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
- Radu Pirea <radu.pirea@microchip.com>, linux-arm-kernel@lists.infradead.org
-To: <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
- <alexandre.belloni@bootlin.com>, <lee.jones@linaro.org>,
- <richard.genoud@gmail.com>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
- <gregkh@linuxfoundation.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        alexandre.belloni@bootlin.com, Lee Jones <lee.jones@linaro.org>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>
+To: Radu Pirea <radu.pirea@microchip.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180607110020.20565-1-radu.pirea@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch moves the bindings for serial from serial/atmel-usart.txt to
-mfd/atmel-usart.txt and adds bindings for USART in SPI mode.
+On Thu, Jun 7, 2018 at 2:00 PM, Radu Pirea <radu.pirea@microchip.com> wrote:
+> Hello,
+>
+> This is the second version of driver. I added a mfd driver which by
+> default probes atmel_serial driver and if in dt is specified to probe
+> the spi driver, then the spi-at91-usart driver will be probed. The
+> compatible for atmel_serial is now the compatible for at91-usart mfd
+> driver and compatilbe for atmel_serial driver was changed in order to
+> keep the bindings for serial as they are.
+>
 
-Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
- .../bindings/{serial => mfd}/atmel-usart.txt  | 25 +++++++++++++++++--
- include/dt-bindings/mfd/at91-usart.h          | 17 +++++++++++++
- 2 files changed, 40 insertions(+), 2 deletions(-)
- rename Documentation/devicetree/bindings/{serial => mfd}/atmel-usart.txt (76%)
- create mode 100644 include/dt-bindings/mfd/at91-usart.h
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-diff --git a/Documentation/devicetree/bindings/serial/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-similarity index 76%
-rename from Documentation/devicetree/bindings/serial/atmel-usart.txt
-rename to Documentation/devicetree/bindings/mfd/atmel-usart.txt
-index 7c0d6b2f53e4..3b9e18642c3b 100644
---- a/Documentation/devicetree/bindings/serial/atmel-usart.txt
-+++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-@@ -1,6 +1,6 @@
- * Atmel Universal Synchronous Asynchronous Receiver/Transmitter (USART)
- 
--Required properties:
-+Required properties for USART:
- - compatible: Should be "atmel,<chip>-usart" or "atmel,<chip>-dbgu"
-   The compatible <chip> indicated will be the first SoC to support an
-   additional mode or an USART new feature.
-@@ -11,7 +11,13 @@ Required properties:
- 	Required elements: "usart"
- - clocks: phandles to input clocks.
- 
--Optional properties:
-+Required properties for USART in SPI mode:
-+- #size-cells      : Must be <0>
-+- #address-cells   : Must be <1>
-+- cs-gpios: chipselects (internal cs not supported)
-+- atmel,usart-mode : Must be <USART_MODE_SPI> (found in dt-bindings/mfd/at91-usart.h)
-+
-+Optional properties in serial mode:
- - atmel,use-dma-rx: use of PDC or DMA for receiving data
- - atmel,use-dma-tx: use of PDC or DMA for transmitting data
- - {rts,cts,dtr,dsr,rng,dcd}-gpios: specify a GPIO for RTS/CTS/DTR/DSR/RI/DCD line respectively.
-@@ -62,3 +68,18 @@ Example:
- 		dma-names = "tx", "rx";
- 		atmel,fifo-size = <32>;
- 	};
-+
-+- SPI mode:
-+	#include <dt-bindings/mfd/at91-usart.h>
-+
-+	spi0: spi@f001c000 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "atmel,at91rm9200-usart", "atmel,at91sam9260-usart";
-+		atmel,usart-mode = <USART_MODE_SPI>;
-+		reg = <0xf001c000 0x100>;
-+		interrupts = <12 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&usart0_clk>;
-+		clock-names = "usart";
-+		cs-gpios = <&pioB 3 0>;
-+	};
-diff --git a/include/dt-bindings/mfd/at91-usart.h b/include/dt-bindings/mfd/at91-usart.h
-new file mode 100644
-index 000000000000..ac811628a42d
---- /dev/null
-+++ b/include/dt-bindings/mfd/at91-usart.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * This header provides macros for AT91 USART DT bindings.
-+ *
-+ * Copyright (C) 2018 Microchip Technology
-+ *
-+ * Author: Radu Pirea <radu.pirea@microchip.com>
-+ *
-+ */
-+
-+#ifndef __DT_BINDINGS_AT91_USART_H__
-+#define __DT_BINDINGS_AT91_USART_H__
-+
-+#define AT91_USART_MODE_SERIAL	1
-+#define AT91_USART_MODE_SPI	2
-+
-+#endif /* __DT_BINDINGS_AT91_USART_H__ */
+for patches 3, 5, 6 only.
+
+> Changes in v1:
+> - added spi-at91-usart driver
+>
+> Changes in v2:
+> - added at91-usart mfd driver
+> - modified spi-at91-usart driver to work as mfd driver child
+> - modified atmel_serial driver to work as mfd driver child
+>
+> Changes in v3:
+> - fixed spi slaves probing
+>
+> Changes in v4:
+> - modified the spi driver to use cs gpio support form spi subsystem
+> - fixed dma transfers for serial driver
+> - squashed binding for spi and serial and moved them to mfd/atmel-usart.txt
+>
+> Changes in v5:
+> - fixed usage of stdout-path property with atmel_serial driver
+>
+> Changes in v6:
+> - removed unused compatible strings from serial and spi drivers
+>
+> Radu Pirea (6):
+>   MAINTAINERS: add at91 usart mfd driver
+>   dt-bindings: add binding for atmel-usart in SPI mode
+>   mfd: at91-usart: added mfd driver for usart
+>   MAINTAINERS: add at91 usart spi driver
+>   spi: at91-usart: add driver for at91-usart as spi
+>   tty/serial: atmel: change the driver to work under at91-usart mfd
+>
+>  .../bindings/{serial => mfd}/atmel-usart.txt  |  25 +-
+>  MAINTAINERS                                   |  16 +
+>  drivers/mfd/Kconfig                           |   9 +
+>  drivers/mfd/Makefile                          |   1 +
+>  drivers/mfd/at91-usart.c                      |  68 +++
+>  drivers/spi/Kconfig                           |   9 +
+>  drivers/spi/Makefile                          |   1 +
+>  drivers/spi/spi-at91-usart.c                  | 434 ++++++++++++++++++
+>  drivers/tty/serial/Kconfig                    |   1 +
+>  drivers/tty/serial/atmel_serial.c             |  42 +-
+>  include/dt-bindings/mfd/at91-usart.h          |  17 +
+>  11 files changed, 606 insertions(+), 17 deletions(-)
+>  rename Documentation/devicetree/bindings/{serial => mfd}/atmel-usart.txt (76%)
+>  create mode 100644 drivers/mfd/at91-usart.c
+>  create mode 100644 drivers/spi/spi-at91-usart.c
+>  create mode 100644 include/dt-bindings/mfd/at91-usart.h
+>
+> --
+> 2.17.1
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
 -- 
-2.17.1
+With Best Regards,
+Andy Shevchenko

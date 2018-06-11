@@ -1,7 +1,7 @@
 From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Subject: [PATCH] mtd: spi-nor: honour max_data_size for spi-nor writes
-Date: Mon, 11 Jun 2018 14:48:14 +0530
-Message-ID: <1528708694-19407-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Date: Mon, 11 Jun 2018 15:02:39 +0530
+Message-ID: <1528709559-19935-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: boris.brezillon@bootlin.com, boris.brezillon@free-electrons.com,

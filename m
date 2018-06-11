@@ -1,497 +1,370 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [RFC PATCH 5/6] mtd: spi-nor: Use the spi_mem_xx() API
-Date: Mon, 11 Jun 2018 06:25:02 +0000
-Message-ID: <DB6PR0402MB28380B10F866F08E0CDC6B6999780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-References: <20180205232120.5851-1-boris.brezillon@bootlin.com>
- <20180205232120.5851-6-boris.brezillon@bootlin.com>
+Subject: RE: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
+ controller
+Date: Mon, 11 Jun 2018 06:31:00 +0000
+Message-ID: <DB6PR0402MB2838D514CF38AC5E6C004E8499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
+        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
+        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+ <20180608145130.09f979f9@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-2"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Cc: Vignesh R <vigneshr@ti.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
- Peter Pan <peterpansjtu@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>,
- =?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <rafal@milecki.pl>,
- Sourav Poddar <sourav.poddar@ti.com>
-To: Boris Brezillon <boris.brezillon@bootlin.com>, David Woodhouse
- <dwmw2@infradead.org>, Brian Norris <computersforpeace@gmail.com>, Boris
- Brezillon <boris.brezillon@free-electrons.com>, Marek Vasut
- <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>, Cyrille Pitchen
- <cyrille.pitchen@wedev4u.fr>, "linux-mtd@lists.infradead.org"
- <linux-mtd@lists.infradead.org>, Mark Brown <broonie@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180205232120.5851-6-boris.brezillon@bootlin.com>
+Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        David Wolfe <david.wolfe@nxp.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+        Han Xu <han.xu@nxp.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180608145130.09f979f9@bbrezillon>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Boris,
 
-Issue which I am getting in spi-fsl-qspi.c regarding write is happening due=
- to the changes been pushed by this patch series.
 
-Comments inline, comments holds true for the final pushed change.
+-----Original Message-----
+From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]=20
+Sent: Friday, June 8, 2018 6:22 PM
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Cc: Frieder Schrempf <frieder.schrempf@exceet.de>; linux-mtd@lists.infradea=
+d.org; linux-spi@vger.kernel.org; dwmw2@infradead.org; computersforpeace@gm=
+ail.com; marek.vasut@gmail.com; richard@nod.at; miquel.raynal@bootlin.com; =
+broonie@kernel.org; David Wolfe <david.wolfe@nxp.com>; Fabio Estevam <fabio=
+.estevam@nxp.com>; Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>; Han Xu =
+<han.xu@nxp.com>; linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI =
+controller
+
+Hi Yogesh,
+
+On Fri, 8 Jun 2018 11:54:12 +0000
+Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+
+> Hi Frieder,
+>=20
+> I have tried to validate your patch on fsl,ls2080a target having 2 Spansi=
+on NOR flash, S25FS512S, as slave device.
+> Below are my observations:
+>=20
+> Observation 1:
+> In Linux boot logs after driver probing is successful, getting below log =
+messages
+> [    1.435986] m25p80 spi0.0: found s25fl512s, expected m25p80
+> [    1.441564] m25p80 spi0.0: s25fl512s (65536 Kbytes)
+> [    1.446972] m25p80 spi0.1: found s25fl512s, expected m25p80
+> [    1.452548] m25p80 spi0.1: s25fl512s (65536 Kbytes)
+>=20
+> IMHO, we need to correct message as 'found s25fl512s, expected m25p80' as=
+ final underlying connected flash device is s25fl512s.
+
+Not sure what you mean here. What would you like us to fix exactly?
+
+>=20
+> Observation 2:
+> I have observed data sanity issue after performing read/write=20
+> operations using MTD interface. Explained below
+>=20
+> root:~# mtd_debug erase /dev/mtd0 0x1000000 0x40000
+> Erased 262144 bytes from address 0x01000000 in flash                     =
+ --> Erase at address 0x1000000 of erase size 0x40000
+> root:~# mtd_debug read /dev/mtd0 0x0 0x100 rp
+> Copied 256 bytes from address 0x00000000 in flash to rp                  =
+ --> Read 0x100 bytes from flash from address 0x0 in file rp
+> root:~# mtd_debug write /dev/mtd0 0x1000000 0x100 rp
+> Copied 256 bytes from rp to address 0x01000000 in flash                  =
+ --> Write 0x100 bytes to flash address 0x1000000 from file rp
+> root:~# mtd_debug read /dev/mtd0 0x1000000 0x100 wp
+> Copied 256 bytes from address 0x01000000 in flash to wp                  =
+--> Read 0x100 bytes from flash from address 0x1000000 in file wp
+> root:~# diff rp wp                                                       =
+                                    --> compare both rp and wp files, if th=
+ey are different output comes on console stating file are different
+> Files rp and wp differ
+> root:~# hexdump wp
+> 0000000 aa55 aa55 0000 8010 541c 4000 0040 0000
+> 0000010 0000 0000 0000 0000 0000 0000 0000 000a
+> 0000020 0000 0030 0000 0000 11a0 00a0 2580 0000
+> 0000030 0000 0000 0040 0000 005b 0000 0000 0000
+> 0000040 ffff ffff ffff ffff ffff ffff ffff ffff
+> *
+> 0000100
+> root:~# hexdump rp
+> 0000000 aa55 aa55 0000 8010 541c 4000 0040 0000
+> 0000010 0000 0000 0000 0000 0000 0000 0000 000a
+> 0000020 0000 0030 0000 0000 11a0 00a0 2580 0000
+> 0000030 0000 0000 0040 0000 005b 0000 0000 0000
+> 0000040 2403 0000 0000 0000 0000 0000 0000 0000
+> 0000050 0000 0000 0000 0000 0000 0000 0000 0000
+> *
+> 0000070 0011 0000 09e7 0000 0000 4411 9555 0050
+> 0000080 0000 0000 0000 0000 f9bc afa1 0404 31e0
+> 0000090 0000 0000 0400 31e0 0000 2010 08dc 31eb
+> 00000a0 2880 0050 1300 31eb 4e20 8010 0000 80ff
+> 00000b0 0000 0000 beef dead beef dead beef dead
+> 00000c0 beef dead beef dead beef dead beef dead
+> *
+> 0000100
+> root:~#
+>=20
+> In hexdump output of the file which being read from address 0x1000000,wp,=
+ it can be observed that only first 64 bytes (0x40) are written on the flas=
+h.
+>=20
+> Observation 3:
+> As we can support JFFS2 filesystem on NOR flash, so we can expect JFFS2 c=
+ommands should work fine on NOR flash.
+> But with this driver change my mount command is not working.
+>=20
+> In my target there are 2 flash slave devices connected, and I have given =
+argument to create MTD partition like "mtdparts=3D20c0000.quadspi-1:5M(rcw)=
+,10M(test),46M(rootfs) " for 2nd flash.
+> Below is output for /proc/mtd commands
+>     root@ls1012ardb:~# cat /proc/mtd
+>     dev:    size   erasesize  name
+>     mtd0: 04000000 00040000 "20c0000.quadspi-0"   --> First 64MB flash
+>     mtd1: 00500000 00040000 "rcw"                               --> Secon=
+d 64 MB flash device, 3 MTD partition are created for it.
+>     mtd2: 00a00000 00040000 "test"
+>     mtd3: 02e00000 00040000 "rootfs"
+>=20
+>     root@ls1012ardb:~# mkdir /media/ram ; flash_eraseall /dev/mtd3
+>     flash_eraseall has been replaced by `flash_erase <mtddev> 0 0`; pleas=
+e use it
+>     Erasing 256 Kibyte @ 0 --  0 % complete [   18.299929] random: crng i=
+nit done
+>     Erasing 256 Kibyte @ 2dc0000 -- 100 % complete
+>     root@ls1012ardb:~# mount -t jffs2 /dev/mtdblock3 /media/ram/
+>=20
+> This command didn't finish successfully and there are lot of messages com=
+ing on console mentioning failure in jffs2_scan_eraseblock()
+>     [  187.118677] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 n=
+ot found at 0x013c0000: 0x2886 instead
+>     [  187.128159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 n=
+ot found at 0x013c0004: 0x7a3b instead
+>     [  187.137641] jffs2: jffs2_scan_eraseblock(): Magic bitmask=20
+> 0x1985 not found at 0x013c0008: 0xb10f instead
+>=20
+> If I remove this patch series and check with older implementation, JFFS2 =
+mounting is working fine.
+
+Problems 2 and 3 should definitely be fixed. That's weird because I remembe=
+r that Frieder tested the new driver with a NOR chip, maybe not with JFFS2 =
+though.
+
+For write issue, it would be happening due to the changes pushed in spi-mem=
+ framework.
+
+I have added my comment in that patch[1].
+
+[1] https://patchwork.ozlabs.org/patch/869629/
+
+>=20
+> Observation 4:
+> With previous driver, we can read content of flash directly using=20
+> devmem command Like devmem 0x20000000  "Flash is connected at this Quad-S=
+PI address"
+>=20
+> But with new driver devmem interface reporting in-correct value.
+
+This one is clearly not something we should fix. What you were doing is uns=
+afe (accessing the direct mapping from userspace without making sure you're=
+ the only one to access the device), and making it even more broken is IMO =
+a better thing. You want to access the memory from user-space, just use the=
+ standard MTD interface (/dev/mtdX).
+
+Let me check how devmem interface is working.
 
 --
 Regards
 Yogesh Gaur
 
------Original Message-----
-From: Boris Brezillon [mailto:boris.brezillon@bootlin.com] =
+[...]
 
-Sent: Tuesday, February 6, 2018 4:51 AM
-To: David Woodhouse <dwmw2@infradead.org>; Brian Norris <computersforpeace@=
-gmail.com>; Boris Brezillon <boris.brezillon@free-electrons.com>; Marek Vas=
-ut <marek.vasut@gmail.com>; Richard Weinberger <richard@nod.at>; Cyrille Pi=
-tchen <cyrille.pitchen@wedev4u.fr>; linux-mtd@lists.infradead.org; Mark Bro=
-wn <broonie@kernel.org>; linux-spi@vger.kernel.org
-Cc: Peter Pan <peterpansjtu@gmail.com>; Frieder Schrempf <frieder.schrempf@=
-exceet.de>; Vignesh R <vigneshr@ti.com>; Yogesh Narayan Gaur <yogeshnarayan=
-.gaur@nxp.com>; Rafa=B3 Mi=B3ecki <rafal@milecki.pl>; Kamal Dasu <kdasu.kde=
-v@gmail.com>; Sourav Poddar <sourav.poddar@ti.com>
-Subject: [RFC PATCH 5/6] mtd: spi-nor: Use the spi_mem_xx() API
+> +
+> +static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
+> +				 const struct spi_mem_op *op)
+> +{
+> +	void __iomem *base =3D q->iobase;
+> +	u32 lutval[4] =3D {};
+> +	int lutidx =3D 1, i;
+> +
+> +	lutval[0] |=3D LUT_DEF(0, LUT_CMD, LUT_PAD(op->cmd.buswidth),
+> +			     op->cmd.opcode);
+> +
+> +	/*
+> +	 * For some unknown reason, using LUT_ADDR doesn't work in some
+> +	 * cases (at least with only one byte long addresses), so
+> +	 * let's use LUT_MODE to write the address bytes one by one
+> +	 */
+> +	for (i =3D 0; i < op->addr.nbytes; i++) {
+> +		u8 addrbyte =3D op->addr.val >> (8 * (op->addr.nbytes - i - 1));
+> +
+> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_MODE,
+> +					      LUT_PAD(op->addr.buswidth),
+> +					      addrbyte);
+> +		lutidx++;
+> +	}
+> +
+>=20
+> For ADDR filling in LUT we should use LUT_ADDR only, needs to find out th=
+e reason for the issue and we shouldn't use LUT_MODE here.
 
-From: Boris Brezillon <boris.brezillon@free-electrons.com>
+Just try with a 16-bit address and you'll see it does not work. I don't kno=
+w why, and it's more something you should ask to someone working at NXP ;-)=
+.
 
-The spi_mem_xxx() API has been introduced to replace the
-spi_flash_read() one. Make use of it so we can get rid of spi_flash_read().
+> I have few more comments regarding same, mentioned below.
+>=20
+> +	if (op->dummy.nbytes) {
+> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_DUMMY,
+> +					      LUT_PAD(op->dummy.buswidth),
+> +					      op->dummy.nbytes * 8 /
+> +					      op->dummy.buswidth);
+> +		lutidx++;
+> +	}
+> +
+> +	if (op->data.nbytes) {
+> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx,
+> +					      op->data.dir =3D=3D SPI_MEM_DATA_IN ?
+> +					      LUT_FSL_READ : LUT_FSL_WRITE,
+> +					      LUT_PAD(op->data.buswidth),
+> +					      0);
+> +		lutidx++;
+> +	}
+> +
+> +	lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_STOP, 0, 0);
+> +
+> +	/* unlock LUT */
+> +	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
+> +	qspi_writel(q, QUADSPI_LCKER_UNLOCK, q->iobase + QUADSPI_LCKCR);
+> +
+> +	/* fill LUT */
+> +	for (i =3D 0; i < ARRAY_SIZE(lutval); i++)
+> +		qspi_writel(q, lutval[i], base + QUADSPI_LUT_REG(i));
+> +
+> +	/* lock LUT */
+> +	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
+> +	qspi_writel(q, QUADSPI_LCKER_LOCK, q->iobase + QUADSPI_LCKCR); }
+> +
 
-Note that using spi_mem_xx() also simplifies the code because this API take=
-s care of using the regular spi_sync() interface when the optimized
-->mem_ops interface is not implemented by the controller.
+[...]
 
-Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
----
- drivers/mtd/devices/m25p80.c | 240 ++++++++++++++++-----------------------=
-----
- 1 file changed, 88 insertions(+), 152 deletions(-)
+> +static int fsl_qspi_exec_op(struct spi_mem *mem, const struct=20
+> +spi_mem_op *op) {
+> +	struct fsl_qspi *q =3D spi_controller_get_devdata(mem->spi->master);
+> +	void __iomem *base =3D q->iobase;
+> +	int err =3D 0;
+> +
+> +	mutex_lock(&q->lock);
+> +
+> +	/* wait for the controller being ready */
+> +	do {
+> +		u32 status;
+> +
+> +		status =3D qspi_readl(q, base + QUADSPI_SR);
+> +		if (status &
+> +		    (QUADSPI_SR_IP_ACC_MASK | QUADSPI_SR_AHB_ACC_MASK)) {
+> +			udelay(1);
+> +			dev_dbg(q->dev, "The controller is busy, 0x%x\n",
+> +				status);
+> +			continue;
+> +		}
+> +		break;
+> +	} while (1);
+> +
+> +	fsl_qspi_select_mem(q, mem->spi);
+> +
+> +	qspi_writel(q, q->memmap_phy, base + QUADSPI_SFAR);
+>=20
+> SFAR should have the actual address where we are doing operation.
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c in=
-dex a4e18f6aaa33..3b17425d5e6f 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -29,7 +29,7 @@
- =
+Not with the new approach. SFAR is now automatically reconfigured at each a=
+ccess, and it works because we're not using a LUT_ADDR instruction but a LU=
+T_MODE one. Sure, I'd prefer to go for the clean solution with a LUT_ADDR a=
+nd the address passed through SFAR (+AHB offset), but it does not work with=
+ anything that is not 24 bits or
+32 bits wide, which means it does not work when you need to access a SPI NA=
+ND device (on which some addresses are 16 bits wide).
 
- #define	MAX_CMD_SIZE		6
- struct m25p {
--	struct spi_device	*spi;
-+	struct spi_mem		*spimem;
- 	struct spi_nor		spi_nor;
- 	u8			command[MAX_CMD_SIZE];
- };
-@@ -37,97 +37,80 @@ struct m25p {
- static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)=
-  {
- 	struct m25p *flash =3D nor->priv;
--	struct spi_device *spi =3D flash->spi;
-+	struct spi_mem_op op =3D SPI_MEM_OP(SPI_MEM_OP_CMD(code, 1),
-+					  SPI_MEM_OP_NO_ADDRS,
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_IN(len, val, 1));
- 	int ret;
- =
+>=20
+> For e.g. If reading from flash-0 offset 0x100000 than SFAR should have ad=
+dress as 0x20100000.
+> As for 'read/write' request 'from/to' respectively been saved in struct s=
+pi_mem_op [op.val] this should be added to q->memmap_phy.
 
--	ret =3D spi_write_then_read(spi, &code, 1, val, len);
-+	ret =3D spi_mem_exec_op(flash->spimem, &op);
- 	if (ret < 0)
--		dev_err(&spi->dev, "error %d reading %x\n", ret, code);
-+		dev_err(&flash->spimem->spi->dev, "error %d reading %x\n", ret,
-+			code);
- =
+You're still thinking as if the driver was only controlling a NOR device wh=
+ich can be directly addressed. This is not the case for NAND devices where =
+you first have to load the data in the NAND internal cache and then read da=
+ta from the cache.
 
- 	return ret;
- }
- =
+>=20
+> In LUT preparation for ADDR, we should use ADDR_WIDTH as 3-byte or 4-byte=
+ addressing only.
 
--static void m25p_addr2cmd(struct spi_nor *nor, unsigned int addr, u8 *cmd)
-+static void m25p_offs2addr(struct spi_nor *nor, unsigned int offs, u8 =
+Please have a look at SPI NAND datasheets and you'll see it's simply not po=
+ssible. So, either NXP doesn't want his QSPI controller to interface with a=
+nything except NORs or we have to use the trick we have here (LUT_MODE inst=
+ead of LUT_ADDR).
 
-+*addrs)
- {
--	/* opcode is in cmd[0] */
--	cmd[1] =3D addr >> (nor->addr_width * 8 -  8);
--	cmd[2] =3D addr >> (nor->addr_width * 8 - 16);
--	cmd[3] =3D addr >> (nor->addr_width * 8 - 24);
--	cmd[4] =3D addr >> (nor->addr_width * 8 - 32);
--}
--
--static int m25p_cmdsz(struct spi_nor *nor) -{
--	return 1 + nor->addr_width;
-+	addrs[0] =3D offs >> (nor->addr_width * 8 -  8);
-+	addrs[1] =3D offs >> (nor->addr_width * 8 - 16);
-+	addrs[2] =3D offs >> (nor->addr_width * 8 - 24);
-+	addrs[3] =3D offs >> (nor->addr_width * 8 - 32);
- }
- =
+> Start address should be saved in SFAR register.
+>=20
+> +
+> +	qspi_writel(q,
+> +		    qspi_readl(q, base + QUADSPI_MCR) |
+> +		    QUADSPI_MCR_CLR_RXF_MASK | QUADSPI_MCR_CLR_TXF_MASK,
+> +		    base + QUADSPI_MCR);
+> +
+> +	qspi_writel(q, QUADSPI_SPTRCLR_BFPTRC | QUADSPI_SPTRCLR_IPPTRC,
+> +		    base + QUADSPI_SPTRCLR);
+> +
+> +	fsl_qspi_prepare_lut(q, op);
+> +
+> +	/*
+> +	 * If we have large chunks of data, we read them through the AHB bus
+> +	 * by accessing the mapped memory. In all other cases we use
+> +	 * IP commands to access the flash.
+> +	 */
+> +	if (op->data.nbytes > (q->devtype_data->rxfifo - 4) &&
+> +	    op->data.dir =3D=3D SPI_MEM_DATA_IN) {
+> +		fsl_qspi_read_ahb(q, op);
+> +	} else {
+> +		qspi_writel(q,
+> +			    QUADSPI_RBCT_WMRK_MASK | QUADSPI_RBCT_RXBRD_USEIPS,
+> +			    base + QUADSPI_RBCT);
+> +
+> +		if (op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_OUT)
+> +			fsl_qspi_fill_txfifo(q, op);
+> +
+> +		err =3D fsl_qspi_do_op(q, op);
+> +	}
+> +
+> +	mutex_unlock(&q->lock);
+> +
+> +	return err;
+> +}
 
- static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int l=
-en)  {
- 	struct m25p *flash =3D nor->priv;
--	struct spi_device *spi =3D flash->spi;
-+	struct spi_mem_op op =3D SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 1),
-+					  SPI_MEM_OP_NO_ADDRS,
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_OUT(len, buf, 1));
- =
+[...]
 
--	flash->command[0] =3D opcode;
--	if (buf)
--		memcpy(&flash->command[1], buf, len);
--
--	return spi_write(spi, flash->command, len + 1);
-+	return spi_mem_exec_op(flash->spimem, &op);
- }
- =
+>=20
+> Also we should add more debug print messages under dev_dbg() like in func=
+ like fsl_qspi_prepare_lut() etc.
+>=20
 
- static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
- 			    const u_char *buf)
- {
- 	struct m25p *flash =3D nor->priv;
--	struct spi_device *spi =3D flash->spi;
--	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
--	struct spi_transfer t[3] =3D {};
--	struct spi_message m;
--	int cmd_sz =3D m25p_cmdsz(nor);
--	ssize_t ret;
-+	u8 addrs[4];
-+	struct spi_mem_op op =3D
-+			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
-+				   SPI_MEM_OP_ADDRS(nor->addr_width, addrs, 1),
-+				   SPI_MEM_OP_DUMMY(0, 1),
-+				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
-+	size_t remaining =3D len;
-+	int ret;
- =
+Would you mind giving more details about where you'd like this traces to be=
+ placed exactly and what information you'd like to display?
 
- 	/* get transfer protocols. */
--	inst_nbits =3D spi_nor_get_protocol_inst_nbits(nor->write_proto);
--	addr_nbits =3D spi_nor_get_protocol_addr_nbits(nor->write_proto);
--	data_nbits =3D spi_nor_get_protocol_data_nbits(nor->write_proto);
--
--	spi_message_init(&m);
-+	op.cmd.buswidth =3D spi_nor_get_protocol_inst_nbits(nor->write_proto);
-+	op.addr.buswidth =3D spi_nor_get_protocol_addr_nbits(nor->write_proto);
-+	op.dummy.buswidth =3D op.addr.buswidth;
-+	op.data.buswidth =3D spi_nor_get_protocol_data_nbits(nor->write_proto);
- =
+Thanks,
 
- 	if (nor->program_opcode =3D=3D SPINOR_OP_AAI_WP && nor->sst_write_second)
--		cmd_sz =3D 1;
--
--	flash->command[0] =3D nor->program_opcode;
--	m25p_addr2cmd(nor, to, flash->command);
-+		op.addr.nbytes =3D 0;
- =
-
--	t[0].tx_buf =3D flash->command;
--	t[0].tx_nbits =3D inst_nbits;
--	t[0].len =3D cmd_sz;
--	spi_message_add_tail(&t[0], &m);
-+	while (remaining) {
-+		if (op.addr.nbytes)
-+			m25p_offs2addr(nor, to, addrs);
- =
-
--	/* split the op code and address bytes into two transfers if needed. */
--	data_idx =3D 1;
--	if (addr_nbits !=3D inst_nbits) {
--		t[0].len =3D 1;
-+		op.data.nbytes =3D remaining < UINT_MAX ? remaining : UINT_MAX;
-+		ret =3D spi_mem_adjust_op_size(flash->spimem, &op);
-+		if (ret)
-+			return ret;
- =
-
--		t[1].tx_buf =3D &flash->command[1];
--		t[1].tx_nbits =3D addr_nbits;
--		t[1].len =3D cmd_sz - 1;
--		spi_message_add_tail(&t[1], &m);
-+		ret =3D spi_mem_exec_op(flash->spimem, &op);
-+		if (ret)
-+			return ret;
- =
-
--		data_idx =3D 2;
-+		to +=3D op.data.nbytes;
-+		remaining -=3D op.data.nbytes;
-+		op.data.buf.out +=3D op.data.nbytes;
-
-For NOR flashes, WRITE command is being send in order as below
-Write Enable command
-Flash Write command
-Status Register command
-
-But for case when Write data size is more than op.data.nbytes then for rema=
-ining data size chunk, we are just sending the FLASH WRITE Command and this=
- is the reason I am seeing failure after 64 byte data size.
-
-
- 	}
- =
-
--	t[data_idx].tx_buf =3D buf;
--	t[data_idx].tx_nbits =3D data_nbits;
--	t[data_idx].len =3D len;
--	spi_message_add_tail(&t[data_idx], &m);
--
--	ret =3D spi_sync(spi, &m);
--	if (ret)
--		return ret;
--
--	ret =3D m.actual_length - cmd_sz;
--	if (ret < 0)
--		return -EIO;
--	return ret;
-+	return len;
- }
- =
-
- /*
-@@ -138,92 +121,42 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_=
-t from, size_t len,
- 			   u_char *buf)
- {
- 	struct m25p *flash =3D nor->priv;
--	struct spi_device *spi =3D flash->spi;
--	unsigned int inst_nbits, addr_nbits, data_nbits, data_idx;
--	struct spi_transfer t[3];
--	struct spi_message m;
--	unsigned int dummy =3D nor->read_dummy;
--	ssize_t ret;
--	int cmd_sz;
-+	u8 addrs[4];
-+	struct spi_mem_op op =3D
-+			SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
-+				   SPI_MEM_OP_ADDRS(nor->addr_width, addrs, 1),
-+				   SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
-+				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
-+	size_t remaining =3D len;
-+	int ret;
- =
-
- 	/* get transfer protocols. */
--	inst_nbits =3D spi_nor_get_protocol_inst_nbits(nor->read_proto);
--	addr_nbits =3D spi_nor_get_protocol_addr_nbits(nor->read_proto);
--	data_nbits =3D spi_nor_get_protocol_data_nbits(nor->read_proto);
-+	op.cmd.buswidth =3D spi_nor_get_protocol_inst_nbits(nor->read_proto);
-+	op.addr.buswidth =3D spi_nor_get_protocol_addr_nbits(nor->read_proto);
-+	op.dummy.buswidth =3D op.addr.buswidth;
-+	op.data.buswidth =3D spi_nor_get_protocol_data_nbits(nor->read_proto);
- =
-
- 	/* convert the dummy cycles to the number of bytes */
--	dummy =3D (dummy * addr_nbits) / 8;
--
--	if (spi_flash_read_supported(spi)) {
--		struct spi_flash_read_message msg;
-+	op.dummy.nbytes =3D (nor->read_dummy * op.dummy.buswidth) / 8;
- =
-
--		memset(&msg, 0, sizeof(msg));
-+	while (remaining) {
-+		m25p_offs2addr(nor, from, addrs);
- =
-
--		msg.buf =3D buf;
--		msg.from =3D from;
--		msg.len =3D len;
--		msg.read_opcode =3D nor->read_opcode;
--		msg.addr_width =3D nor->addr_width;
--		msg.dummy_bytes =3D dummy;
--		msg.opcode_nbits =3D inst_nbits;
--		msg.addr_nbits =3D addr_nbits;
--		msg.data_nbits =3D data_nbits;
--
--		ret =3D spi_flash_read(spi, &msg);
--		if (ret < 0)
-+		op.data.nbytes =3D remaining < UINT_MAX ? remaining : UINT_MAX;
-+		ret =3D spi_mem_adjust_op_size(flash->spimem, &op);
-+		if (ret)
- 			return ret;
--		return msg.retlen;
--	}
--
--	spi_message_init(&m);
--	memset(t, 0, (sizeof t));
--
--	flash->command[0] =3D nor->read_opcode;
--	m25p_addr2cmd(nor, from, flash->command);
--
--	t[0].tx_buf =3D flash->command;
--	t[0].tx_nbits =3D inst_nbits;
--	t[0].len =3D m25p_cmdsz(nor) + dummy;
--	spi_message_add_tail(&t[0], &m);
--
--	/*
--	 * Set all dummy/mode cycle bits to avoid sending some manufacturer
--	 * specific pattern, which might make the memory enter its Continuous
--	 * Read mode by mistake.
--	 * Based on the different mode cycle bit patterns listed and described
--	 * in the JESD216B specification, the 0xff value works for all memories
--	 * and all manufacturers.
--	 */
--	cmd_sz =3D t[0].len;
--	memset(flash->command + cmd_sz - dummy, 0xff, dummy);
- =
-
--	/* split the op code and address bytes into two transfers if needed. */
--	data_idx =3D 1;
--	if (addr_nbits !=3D inst_nbits) {
--		t[0].len =3D 1;
--
--		t[1].tx_buf =3D &flash->command[1];
--		t[1].tx_nbits =3D addr_nbits;
--		t[1].len =3D cmd_sz - 1;
--		spi_message_add_tail(&t[1], &m);
-+		ret =3D spi_mem_exec_op(flash->spimem, &op);
-+		if (ret)
-+			return ret;
- =
-
--		data_idx =3D 2;
-+		from +=3D op.data.nbytes;
-+		remaining -=3D op.data.nbytes;
-+		op.data.buf.in +=3D op.data.nbytes;
- 	}
- =
-
--	t[data_idx].rx_buf =3D buf;
--	t[data_idx].rx_nbits =3D data_nbits;
--	t[data_idx].len =3D min3(len, spi_max_transfer_size(spi),
--			       spi_max_message_size(spi) - cmd_sz);
--	spi_message_add_tail(&t[data_idx], &m);
--
--	ret =3D spi_sync(spi, &m);
--	if (ret)
--		return ret;
--
--	ret =3D m.actual_length - cmd_sz;
--	if (ret < 0)
--		return -EIO;
--	return ret;
-+	return len;
- }
- =
-
- /*
-@@ -231,8 +164,9 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t =
-from, size_t len,
-  * matches what the READ command supports, at least until this driver
-  * understands FAST_READ (for clocks over 25 MHz).
-  */
--static int m25p_probe(struct spi_device *spi)
-+static int m25p_probe(struct spi_mem *spimem)
- {
-+	struct spi_device *spi =3D spimem->spi;
- 	struct flash_platform_data	*data;
- 	struct m25p *flash;
- 	struct spi_nor *nor;
-@@ -244,9 +178,9 @@ static int m25p_probe(struct spi_device *spi)
- 	char *flash_name;
- 	int ret;
- =
-
--	data =3D dev_get_platdata(&spi->dev);
-+	data =3D dev_get_platdata(&spimem->spi->dev);
- =
-
--	flash =3D devm_kzalloc(&spi->dev, sizeof(*flash), GFP_KERNEL);
-+	flash =3D devm_kzalloc(&spimem->spi->dev, sizeof(*flash), GFP_KERNEL);
- 	if (!flash)
- 		return -ENOMEM;
- =
-
-@@ -258,12 +192,12 @@ static int m25p_probe(struct spi_device *spi)
- 	nor->write_reg =3D m25p80_write_reg;
- 	nor->read_reg =3D m25p80_read_reg;
- =
-
--	nor->dev =3D &spi->dev;
-+	nor->dev =3D &spimem->spi->dev;
- 	spi_nor_set_flash_node(nor, spi->dev.of_node);
- 	nor->priv =3D flash;
- =
-
- 	spi_set_drvdata(spi, flash);
--	flash->spi =3D spi;
-+	flash->spimem =3D spimem;
- =
-
- 	if (spi->mode & SPI_RX_QUAD) {
- 		hwcaps.mask |=3D SNOR_HWCAPS_READ_1_1_4; @@ -303,9 +237,9 @@ static int =
-m25p_probe(struct spi_device *spi)  }
- =
-
- =
-
--static int m25p_remove(struct spi_device *spi)
-+static int m25p_remove(struct spi_mem *spimem)
- {
--	struct m25p	*flash =3D spi_get_drvdata(spi);
-+	struct m25p	*flash =3D spi_mem_get_drvdata(spimem);
- =
-
- 	spi_nor_restore(&flash->spi_nor);
- =
-
-@@ -313,9 +247,9 @@ static int m25p_remove(struct spi_device *spi)
- 	return mtd_device_unregister(&flash->spi_nor.mtd);
- }
- =
-
--static void m25p_shutdown(struct spi_device *spi)
-+static void m25p_shutdown(struct spi_mem *spimem)
- {
--	struct m25p *flash =3D spi_get_drvdata(spi);
-+	struct m25p *flash =3D spi_mem_get_drvdata(spimem);
- =
-
- 	spi_nor_restore(&flash->spi_nor);
- }
-@@ -386,12 +320,14 @@ static const struct of_device_id m25p_of_table[] =3D =
-{  };  MODULE_DEVICE_TABLE(of, m25p_of_table);
- =
-
--static struct spi_driver m25p80_driver =3D {
--	.driver =3D {
--		.name	=3D "m25p80",
--		.of_match_table =3D m25p_of_table,
-+static struct spi_mem_driver m25p80_driver =3D {
-+	.spidrv =3D {
-+		.driver =3D {
-+			.name	=3D "m25p80",
-+			.of_match_table =3D m25p_of_table,
-+		},
-+		.id_table	=3D m25p_ids,
- 	},
--	.id_table	=3D m25p_ids,
- 	.probe	=3D m25p_probe,
- 	.remove	=3D m25p_remove,
- 	.shutdown	=3D m25p_shutdown,
-@@ -402,7 +338,7 @@ static struct spi_driver m25p80_driver =3D {
- 	 */
- };
- =
-
--module_spi_driver(m25p80_driver);
-+module_spi_mem_driver(m25p80_driver);
- =
-
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Mike Lavender");
---
-2.14.1
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Boris

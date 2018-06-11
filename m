@@ -1,110 +1,167 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Mon, 11 Jun 2018 10:21:22 +0000
-Message-ID: <DB6PR0402MB28388D9DEB86629BB58DD5E499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180608145130.09f979f9@bbrezillon>
-        <DB6PR0402MB2838D514CF38AC5E6C004E8499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611094616.5c8f82cf@bbrezillon>
-        <DB6PR0402MB283825171DF93AD3C8590DD799780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
- <20180611121618.40f4b609@bbrezillon>
+From: Enric Balletbo Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v5 3/6] mfd: at91-usart: added mfd driver for usart
+Date: Mon, 11 Jun 2018 16:55:28 +0200
+Message-ID: <CAFqH_52gx_As_BE+WV8mUS5Ajab_4XN9EW_8K4hrwKqUHzSYSQ@mail.gmail.com>
+References: <20180604165943.31381-1-radu.pirea@microchip.com> <20180604165943.31381-4-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Lee Jones <lee.jones@linaro.org>, richard.genoud@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-spi@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        linux-serial@vger.kernel.org
+To: radu.pirea@microchip.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180611121618.40f4b609@bbrezillon>
-Content-Language: en-US
+In-Reply-To: <20180604165943.31381-4-radu.pirea@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+Hi Radu,
 
------Original Message-----
-From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]=20
-Sent: Monday, June 11, 2018 3:46 PM
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Cc: marek.vasut@gmail.com; Frieder Schrempf <frieder.schrempf@exceet.de>; l=
-inux-mtd@lists.infradead.org; linux-spi@vger.kernel.org; dwmw2@infradead.or=
-g; computersforpeace@gmail.com; richard@nod.at; miquel.raynal@bootlin.com; =
-broonie@kernel.org; David Wolfe <david.wolfe@nxp.com>; Fabio Estevam <fabio=
-.estevam@nxp.com>; Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>; Han Xu =
-<han.xu@nxp.com>; linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI =
-controller
+Some few feedback in a hope to help you.
 
-On Mon, 11 Jun 2018 09:38:14 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+Missatge de Radu Pirea <radu.pirea@microchip.com> del dia dl., 4 de
+juny 2018 a les 19:03:
+>
+> This mfd driver is just a wrapper over atmel_serial driver and
+> spi-at91-usart driver. Selection of one of the drivers is based on a
+> property from device tree. If the property is not specified, the default
+> driver is atmel_serial.
+>
+> Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
+> Acked-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/mfd/Kconfig      |  9 ++++++
+>  drivers/mfd/Makefile     |  1 +
+>  drivers/mfd/at91-usart.c | 67 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 77 insertions(+)
+>  create mode 100644 drivers/mfd/at91-usart.c
+>
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index b860eb5aa194..a886672b960d 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -99,6 +99,15 @@ config MFD_AAT2870_CORE
+>           additional drivers must be enabled in order to use the
+>           functionality of the device.
+>
+> +config MFD_AT91_USART
+> +       tristate "AT91 USART Driver"
+> +       select MFD_CORE
+> +       help
+> +         Select this to get support for AT91 USART IP. This is a wrapper
+> +         over at91-usart-serial driver and usart-spi-driver. Only one function
+> +         can be used at a time. The choice is done at boot time by the probe
+> +         function of this MFD driver according to a device tree property.
+> +
+>  config MFD_ATMEL_FLEXCOM
+>         tristate "Atmel Flexcom (Flexible Serial Communication Unit)"
+>         select MFD_CORE
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index d9d2cf0d32ef..db1332aa96db 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -185,6 +185,7 @@ obj-$(CONFIG_MFD_SPMI_PMIC) += qcom-spmi-pmic.o
+>  obj-$(CONFIG_TPS65911_COMPARATOR)      += tps65911-comparator.o
+>  obj-$(CONFIG_MFD_TPS65090)     += tps65090.o
+>  obj-$(CONFIG_MFD_AAT2870_CORE) += aat2870-core.o
+> +obj-$(CONFIG_MFD_AT91_USART)   += at91-usart.o
+>  obj-$(CONFIG_MFD_ATMEL_FLEXCOM)        += atmel-flexcom.o
+>  obj-$(CONFIG_MFD_ATMEL_HLCDC)  += atmel-hlcdc.o
+>  obj-$(CONFIG_MFD_ATMEL_SMC)    += atmel-smc.o
+> diff --git a/drivers/mfd/at91-usart.c b/drivers/mfd/at91-usart.c
+> new file mode 100644
+> index 000000000000..262e7affba22
+> --- /dev/null
+> +++ b/drivers/mfd/at91-usart.c
+> @@ -0,0 +1,67 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 
-> > > Observation 3:
-> > > As we can support JFFS2 filesystem on NOR flash, so we can expect JFF=
-S2 commands should work fine on NOR flash.
-> > > But with this driver change my mount command is not working.
-> > >=20
-> > > In my target there are 2 flash slave devices connected, and I have gi=
-ven argument to create MTD partition like "mtdparts=3D20c0000.quadspi-1:5M(=
-rcw),10M(test),46M(rootfs) " for 2nd flash.
-> > > Below is output for /proc/mtd commands
-> > >     root@ls1012ardb:~# cat /proc/mtd
-> > >     dev:    size   erasesize  name
-> > >     mtd0: 04000000 00040000 "20c0000.quadspi-0"   --> First 64MB flas=
-h
-> > >     mtd1: 00500000 00040000 "rcw"                               --> S=
-econd 64 MB flash device, 3 MTD partition are created for it.
-> > >     mtd2: 00a00000 00040000 "test"
-> > >     mtd3: 02e00000 00040000 "rootfs"
+This means GPL-2.0 or later ...
 
-When I do mtd1 + mtd2 + mtd3, I end up with 0x3d00000 instead of 0x4000000.=
- Is that normal? Do you reserve a bit of space at the end or is it that rcw=
- is not starting at 0?
+> +/*
+> + * Driver for AT91 USART
+> + *
+> + * Copyright (C) 2018 Microchip Technology
+> + *
+> + * Author: Radu Pirea <radu.pirea@microchip.com>
+> + *
+> + */
+> +
+> +#include <dt-bindings/mfd/at91-usart.h>
+> +
+> +#include <linux/module.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/property.h>
+> +
+> +static struct mfd_cell at91_usart_spi_subdev = {
+> +               .name = "at91_usart_spi",
+> +               .of_compatible = "microchip,at91sam9g45-usart-spi",
+> +       };
+> +
+> +static struct mfd_cell at91_usart_serial_subdev = {
+> +               .name = "atmel_usart_serial",
+> +               .of_compatible = "atmel,at91rm9200-usart-serial",
+> +       };
+> +
+> +static int at91_usart_mode_probe(struct platform_device *pdev)
+> +{
+> +       struct mfd_cell cell;
+> +       u32 opmode;
+> +       int err;
+> +
+> +       err = device_property_read_u32(&pdev->dev, "atmel,usart-mode", &opmode);
+> +
 
-I have given partition size n bootargs as mtdparts=3D20c0000.quadspi-1:5M(r=
-cw),10M(test),46M(rootfs)
-5 + 10 + 46 =3D=3D> 61M i.e. 0x3d00000.
-I have just reserve the bit at the end, we can modify these settings also.
+The returned value is not checked (and probably has no sense to
+check), so I think you can just remove the err variable.
 
-> > >=20
-> > >     root@ls1012ardb:~# mkdir /media/ram ; flash_eraseall /dev/mtd3
-> > >     flash_eraseall has been replaced by `flash_erase <mtddev> 0 0`; p=
-lease use it
-> > >     Erasing 256 Kibyte @ 0 --  0 % complete [   18.299929] random: cr=
-ng init done
-> > >     Erasing 256 Kibyte @ 2dc0000 -- 100 % complete
-> > >     root@ls1012ardb:~# mount -t jffs2 /dev/mtdblock3 /media/ram/
-> > >=20
-> > > This command didn't finish successfully and there are lot of messages=
- coming on console mentioning failure in jffs2_scan_eraseblock()
-> > >     [  187.118677] jffs2: jffs2_scan_eraseblock(): Magic bitmask=20
-> > > 0x1985 not found at 0x013c0000: 0x2886 instead
+> +       switch (opmode) {
+> +       case AT91_USART_MODE_SPI:
+> +               cell = at91_usart_spi_subdev;
+> +               break;
+> +       case AT91_USART_MODE_SERIAL:
+> +       default:
+> +               cell = at91_usart_serial_subdev;
+> +       }
+> +
+> +       return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO, &cell, 1,
+> +                             NULL, 0, NULL);
+> +}
+> +
+> +static const struct of_device_id at91_usart_mode_of_match[] = {
+> +       { .compatible = "atmel,at91rm9200-usart" },
+> +       { .compatible = "atmel,at91sam9260-usart" },
+> +       { /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, at91_flexcom_of_match);
+> +
+> +static struct platform_driver at91_usart_mfd = {
+> +       .probe  = at91_usart_mode_probe,
+> +       .driver = {
+> +               .name           = "at91_usart_mode",
+> +               .of_match_table = at91_usart_mode_of_match,
+> +       },
+> +};
+> +
+> +module_platform_driver(at91_usart_mfd);
+> +
+> +MODULE_AUTHOR("Radu Pirea <radu.pirea@microchip.com>");
+> +MODULE_DESCRIPTION("AT91 USART MFD driver");
+> +MODULE_LICENSE("GPL v2");
 
-Did you try to create a smaller partition? Maybe we have a problem when acc=
-essing addresses higher than X with the new driver (X to be determined).
+And this means GPL-2.0-only, so there is a mismatch. The SPDX
+identifier should be GPL-2.0 or the module license should be GPL.
 
-Would try and update you.
-
---
-Regards
-Yogesh Gaur
-
-> > >     [  187.128159] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x19=
-85 not found at 0x013c0004: 0x7a3b instead
-> > >     [  187.137641] jffs2: jffs2_scan_eraseblock(): Magic bitmask
-> > > 0x1985 not found at 0x013c0008: 0xb10f instead
-> > >=20
+> --
+> 2.17.1
+>
+Cheers,
+  Enric

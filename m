@@ -1,64 +1,89 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Tue, 12 Jun 2018 09:13:28 +0200
-Message-ID: <20180612091328.67734adb@bbrezillon>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180608145130.09f979f9@bbrezillon>
-        <DB6PR0402MB2838D514CF38AC5E6C004E8499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611094616.5c8f82cf@bbrezillon>
-        <DB6PR0402MB283825171DF93AD3C8590DD799780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611121618.40f4b609@bbrezillon>
-        <DB6PR0402MB28388D9DEB86629BB58DD5E499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <DB6PR0402MB2838563F1BA71A9A21ABBE01997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH] mtd: spi-nor: honour max_data_size for spi-nor writes
+Date: Tue, 12 Jun 2018 09:22:48 +0200
+Message-ID: <20180612092248.4e6a3e92@bbrezillon>
+References: <1528708694-19407-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <20180611114916.351ed272@bbrezillon>
+        <87r2ldj7xi.fsf@notabene.neil.brown.name>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: "richard@nod.at" <richard@nod.at>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>,
+        linux-mtd@lists.infradead.org, boris.brezillon@free-electrons.com,
+        frieder.schrempf@exceet.de, computersforpeace@gmail.com,
+        david.wolfe@nxp.com, han.xu@nxp.com, festevam@gmail.com,
+        marek.vasut@gmail.com, prabhakar.kushwaha@nxp.com,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: NeilBrown <neil@brown.name>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <DB6PR0402MB2838563F1BA71A9A21ABBE01997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+In-Reply-To: <87r2ldj7xi.fsf@notabene.neil.brown.name>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 12 Jun 2018 06:42:42 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+Hi Neil,
 
-> I have tried JFFS2 mounting with smaller partition size but still getting failure.
-> For partition size equal or less than 1MB, getting errors as
->     [   25.044930] jffs2: Too few erase blocks (4)
-> Thus, need to have size more than 1MB.
+On Tue, 12 Jun 2018 08:05:13 +1000
+NeilBrown <neil@brown.name> wrote:
+
+> On Mon, Jun 11 2018, Boris Brezillon wrote:
+> >
+> > Also, I'd prefer to have this patch split in 2:
+> > 1/ one patch removing the check in spi_nor_write()
+> > 2/ and the second patch removing the while() loop in m25p80_write()
+> >
+> > How about the following commit messages for those 2 patches:
+> >
+> > 1:
+> > "
+> > mtd: spi-nor: Support controllers with limited TX FIFO size
+> >
+> > Some SPI controllers can't write nor->page_size bytes in a single step
+> > because their TX FIFO is too small.  
 > 
-> For 2MB partition size getting error message from jffs2_scan_eraseblock().
->     root@ls1012ardb:~# cat /proc/mtd
->     dev:    size   erasesize  name
->     mtd0: 04000000 00040000 "20c0000.quadspi-0"
->     mtd1: 00500000 00040000 "rcw"
->     mtd2: 00a00000 00040000 "test"
->     mtd3: 00200000 00040000 "rootfs"
->     root@ls1012ardb:~#  mkdir /media/ram ; flash_eraseall /dev/mtd3
->     flash_eraseall has been replaced by `flash_erase <mtddev> 0 0`; please use it
->     Erasing 256 Kibyte @ 1c0000 -- 100 % complete
->     root@ls1012ardb:~# mount -t jffs2 /dev/mtdblock3 /media/ram/
->     [   26.380989] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000000: 0x0dd0 instead
->     [   26.390509] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0000004c: 0x7366 instead
->     [   26.399999] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000050: 0x736c instead
+> I no longer think this is good justification for changes to m25p80 or to
+> anything outside the low-level SPI driver.  The size of the FIFO is not
+> related to the maximum message size.
+> 
+> An SPI transaction involves:
+>  - asserting chip-select
+>  - sending/receiving a bunch of bits
+>  - deasserting chip-select
+> 
+> That middle part of sending/receiving bits can be done:
+>  - one bit at a time by bit-banging GPIOs
+>  - 32 bytes at a time by filling a buffer, running the SPI engine, then
+>     reading results out of the buffer (assuming a 32-byte buffer)
+>  - with one single DMA operation if the SPI engine can DMA to/from
+>    main memory
+> 
+> and there are probably other options.
+> 
+> If your SPI engine only handles (say) 32 bytes at a time, then call it
+> repeatedly, while holding chip-select asserted the whole time.
 
-That's weird. Can you tell me on which platform you're testing?
-lsxxx or vf610? Can you dump the NOR after the erase to make sure the
-memory is actually erased (filled with 0xff)?
+Except you're not necessarily in control of the CS signal, and that's
+most of the time the case with high-level (Q)SPI mem controllers like
+the NXP/FSL QSPI controller (see the datasheet here if you want to check
+[1]).
+
+> The SPI
+> clock is controlled by the host and in this case it will not have a
+> stable frequency for the whole transaction (occasionally pauses), but
+> that doesn't matter.  The slave just watches for the clock transitions
+> and don't care when they come as long as they don't come too fast.
+> 
+> I recently modified the mt7621 spi driver (in drivers/staging) to work
+> like this and got much better throughput when reading from spi-nor flash
+> memory.  It handles writes of full pages (36 bytes at at time!) without
+> problems.
+
+Just because you managed to solve the problem in one driver does not
+mean the problem does not exist for others. I read this datasheet [1]
+several times and couldn't find a way to say 'I want to keep the CS
+asserted between 2 transactions', so I think we really need this patch.
+
+Regards,
+
+Boris
+
+[1]https://www.nxp.com/docs/en/reference-manual/VFXXXRM.pdf

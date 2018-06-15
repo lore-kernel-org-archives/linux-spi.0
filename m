@@ -1,78 +1,171 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Fri, 15 Jun 2018 15:58:23 +0200
-Message-ID: <20180615155823.6950f64b@bbrezillon>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180608145130.09f979f9@bbrezillon>
-        <DB6PR0402MB2838D514CF38AC5E6C004E8499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611094616.5c8f82cf@bbrezillon>
-        <DB6PR0402MB283825171DF93AD3C8590DD799780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611121618.40f4b609@bbrezillon>
-        <DB6PR0402MB28388D9DEB86629BB58DD5E499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <DB6PR0402MB2838563F1BA71A9A21ABBE01997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180612091328.67734adb@bbrezillon>
-        <DB6PR0402MB28387FE79F2742C9BEBD4037997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180615145019.734f23a9@bbrezillon>
-        <DB6PR0402MB28382767652782E0CC6C14A0997C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180615155541.4f43e9bb@bbrezillon>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "richard@nod.at" <richard@nod.at>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>
+From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: [PATCH v4 22/26] devicetree: fix name of pinctrl-bindings.txt
+Date: Fri, 15 Jun 2018 13:30:50 -0300
+Message-ID: <1832904c012f823958663464ac4fb249f77978b5.1529079120.git.mchehab+samsung@kernel.org>
+References: <cover.1529079119.git.mchehab+samsung@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180615155541.4f43e9bb@bbrezillon>
+In-Reply-To: <cover.1529079119.git.mchehab+samsung@kernel.org>
+In-Reply-To: <cover.1529079119.git.mchehab+samsung@kernel.org>
+References: <cover.1529079119.git.mchehab+samsung@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 15 Jun 2018 15:55:41 +0200
-Boris Brezillon <boris.brezillon@bootlin.com> wrote:
+Rename:
+	pinctrl-binding.txt -> pinctrl-bindings.txt
 
-> On Fri, 15 Jun 2018 13:42:12 +0000
-> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> 
-> > Hi Boris,
-> > 
-> > I am still debugging the issue.
-> > With some analysis, able to check that proper values are not being written for QUADSPI_SFA2AD/ QUADSPI_SFB1AD/ QUADSPI_SFB2AD register.
-> > 
-> > In current code, value of map_addr are being assigned to these register.
-> >              map_addr = q->memmap_phy +
-> >                         2 * q->devtype_data->ahb_buf_size;
-> > 
-> >      qspi_writel(q, map_addr, q->iobase + QUADSPI_SFA1AD + (i * 4));
-> > 
-> > But instead of "q->devtype_data->ahb_buf_size" it should be flash size.  
-> 
-> No, because we're only using 2 * ->ahb_buf_size in the direct mapping
-> for each device, and we're modifying the mapping dynamically based on
-> the selected device. Maybe we got the logic wrong though.
-> 
-> > For my case flash size is 0x4000000 and with this hard coded value I am able to perform Write and Erase operation.
-> > One more change, I have to do is adding the flash_size when writing the base_address in SFAR register for case when "mem->spi->chip_select == 1"
-> > 	qspi_writel(q, q->memmap_phy + 0x4000000, base + QUADSPI_SFAR);  
-> 
-> I don't want to expose the full device in the direct mapping yet
-> (that's part of the direct-mapping API I posted here [1]). What this
-> version of the driver does is, map only 2 time the ahb_size so that we
-> can bypass the internal cache of the QSPI engine.
+In order to match the current name of this file.
 
-Oops, forgot to add the link.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ Documentation/devicetree/bindings/media/stih407-c8sectpfe.txt | 2 +-
+ Documentation/devicetree/bindings/mfd/as3722.txt              | 2 +-
+ .../devicetree/bindings/mmc/microchip,sdhci-pic32.txt         | 2 +-
+ Documentation/devicetree/bindings/mmc/sdhci-st.txt            | 2 +-
+ .../devicetree/bindings/pinctrl/pinctrl-max77620.txt          | 4 ++--
+ .../devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt          | 4 ++--
+ Documentation/devicetree/bindings/pinctrl/pinctrl-rk805.txt   | 4 ++--
+ .../devicetree/bindings/serial/microchip,pic32-uart.txt       | 2 +-
+ Documentation/devicetree/bindings/spi/spi-st-ssc.txt          | 2 +-
+ 9 files changed, 12 insertions(+), 12 deletions(-)
 
-[1]http://lists.infradead.org/pipermail/linux-mtd/2018-June/081460.html
+diff --git a/Documentation/devicetree/bindings/media/stih407-c8sectpfe.txt b/Documentation/devicetree/bindings/media/stih407-c8sectpfe.txt
+index c7888d6f6408..880d4d70c9fd 100644
+--- a/Documentation/devicetree/bindings/media/stih407-c8sectpfe.txt
++++ b/Documentation/devicetree/bindings/media/stih407-c8sectpfe.txt
+@@ -28,7 +28,7 @@ See: Documentation/devicetree/bindings/clock/clock-bindings.txt
+ - pinctrl-names	: a pinctrl state named tsin%d-serial or tsin%d-parallel (where %d is tsin-num)
+ 		   must be defined for each tsin child node.
+ - pinctrl-0	: phandle referencing pin configuration for this tsin configuration
+-See: Documentation/devicetree/bindings/pinctrl/pinctrl-binding.txt
++See: Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt
+ 
+ 
+ Required properties (tsin (child) node):
+diff --git a/Documentation/devicetree/bindings/mfd/as3722.txt b/Documentation/devicetree/bindings/mfd/as3722.txt
+index 0b2a6099aa20..5297b2210704 100644
+--- a/Documentation/devicetree/bindings/mfd/as3722.txt
++++ b/Documentation/devicetree/bindings/mfd/as3722.txt
+@@ -46,7 +46,7 @@ is required:
+ 	Following properties are require if pin control setting is required
+ 	at boot.
+ 	- pinctrl-names: A pinctrl state named "default" be defined, using the
+-		bindings in pinctrl/pinctrl-binding.txt.
++		bindings in pinctrl/pinctrl-bindings.txt.
+ 	- pinctrl[0...n]: Properties to contain the phandle that refer to
+ 		different nodes of pin control settings. These nodes represents
+ 		the pin control setting of state 0 to state n. Each of these
+diff --git a/Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt b/Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt
+index 3149297b3933..f064528effed 100644
+--- a/Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt
++++ b/Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt
+@@ -12,7 +12,7 @@ Required properties:
+           See: Documentation/devicetree/bindings/clock/clock-bindings.txt
+ - pinctrl-names: A pinctrl state names "default" must be defined.
+ - pinctrl-0: Phandle referencing pin configuration of the SDHCI controller.
+-             See: Documentation/devicetree/bindings/pinctrl/pinctrl-binding.txt
++             See: Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt
+ 
+ Example:
+ 
+diff --git a/Documentation/devicetree/bindings/mmc/sdhci-st.txt b/Documentation/devicetree/bindings/mmc/sdhci-st.txt
+index 6b3d40ca395e..ccf82b4ee838 100644
+--- a/Documentation/devicetree/bindings/mmc/sdhci-st.txt
++++ b/Documentation/devicetree/bindings/mmc/sdhci-st.txt
+@@ -20,7 +20,7 @@ Required properties:
+ 
+ - pinctrl-names:	A pinctrl state names "default" must be defined.
+ - pinctrl-0:		Phandle referencing pin configuration of the sd/emmc controller.
+-			See: Documentation/devicetree/bindings/pinctrl/pinctrl-binding.txt
++			See: Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt
+ 
+ - reg:			This must provide the host controller base address and it can also
+ 			contain the FlashSS Top register for TX/RX delay used by the driver
+diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-max77620.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-max77620.txt
+index ad4fce3552bb..511fc234558b 100644
+--- a/Documentation/devicetree/bindings/pinctrl/pinctrl-max77620.txt
++++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-max77620.txt
+@@ -11,9 +11,9 @@ Optional Pinmux properties:
+ --------------------------
+ Following properties are required if default setting of pins are required
+ at boot.
+-- pinctrl-names: A pinctrl state named per <pinctrl-binding.txt>.
++- pinctrl-names: A pinctrl state named per <pinctrl-bindings.txt>.
+ - pinctrl[0...n]: Properties to contain the phandle for pinctrl states per
+-		<pinctrl-binding.txt>.
++		<pinctrl-bindings.txt>.
+ 
+ The pin configurations are defined as child of the pinctrl states node. Each
+ sub-node have following properties:
+diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
+index a677145ae6d1..625a22e2f211 100644
+--- a/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
++++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt
+@@ -101,9 +101,9 @@ Optional Pinmux properties:
+ --------------------------
+ Following properties are required if default setting of pins are required
+ at boot.
+-- pinctrl-names: A pinctrl state named per <pinctrl-binding.txt>.
++- pinctrl-names: A pinctrl state named per <pinctrl-bindings.txt>.
+ - pinctrl[0...n]: Properties to contain the phandle for pinctrl states per
+-		<pinctrl-binding.txt>.
++		<pinctrl-bindings.txt>.
+ 
+ The pin configurations are defined as child of the pinctrl states node. Each
+ sub-node have following properties:
+diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-rk805.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-rk805.txt
+index eee3dc260934..cbcbd31e3ce8 100644
+--- a/Documentation/devicetree/bindings/pinctrl/pinctrl-rk805.txt
++++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-rk805.txt
+@@ -10,9 +10,9 @@ Optional Pinmux properties:
+ --------------------------
+ Following properties are required if default setting of pins are required
+ at boot.
+-- pinctrl-names: A pinctrl state named per <pinctrl-binding.txt>.
++- pinctrl-names: A pinctrl state named per <pinctrl-bindings.txt>.
+ - pinctrl[0...n]: Properties to contain the phandle for pinctrl states per
+-		<pinctrl-binding.txt>.
++		<pinctrl-bindings.txt>.
+ 
+ The pin configurations are defined as child of the pinctrl states node. Each
+ sub-node have following properties:
+diff --git a/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
+index 7a34345d0ca3..c8dd440e9747 100644
+--- a/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
++++ b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
+@@ -8,7 +8,7 @@ Required properties:
+           See: Documentation/devicetree/bindings/clock/clock-bindings.txt
+ - pinctrl-names: A pinctrl state names "default" must be defined.
+ - pinctrl-0: Phandle referencing pin configuration of the UART peripheral.
+-             See: Documentation/devicetree/bindings/pinctrl/pinctrl-binding.txt
++             See: Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt
+ 
+ Optional properties:
+ - cts-gpios: CTS pin for UART
+diff --git a/Documentation/devicetree/bindings/spi/spi-st-ssc.txt b/Documentation/devicetree/bindings/spi/spi-st-ssc.txt
+index fe54959ec957..1bdc4709e474 100644
+--- a/Documentation/devicetree/bindings/spi/spi-st-ssc.txt
++++ b/Documentation/devicetree/bindings/spi/spi-st-ssc.txt
+@@ -9,7 +9,7 @@ Required properties:
+ - clocks	: Must contain an entry for each name in clock-names
+ 		    See ../clk/*
+ - pinctrl-names	: Uses "default", can use "sleep" if provided
+-		    See ../pinctrl/pinctrl-binding.txt
++		    See ../pinctrl/pinctrl-bindings.txt
+ 
+ Optional properties:
+ - cs-gpios	: List of GPIO chip selects
+-- 
+2.17.1

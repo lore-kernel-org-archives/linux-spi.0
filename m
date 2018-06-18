@@ -1,106 +1,116 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: cadence: Change usleep_range() to udelay(), for atomic context" to the spi tree
-Date: Mon, 18 Jun 2018 13:06:13 +0100
-Message-ID: <E1fUsvF-0001ML-8t@debutante>
-References: <65980D27-1B52-43A3-A7CA-33B804A62AC5@cadence.com>
-Cc: Jan Kotas <jank@cadence.com>, Mark Brown <broonie@kernel.org>,
-        stable@vger.kernel.org, "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
+ controller
+Date: Mon, 18 Jun 2018 13:32:27 +0000
+Message-ID: <DB6PR0402MB2838C4F67D17337ADBC5D5F899710@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
+        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
+        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <20180608145130.09f979f9@bbrezillon>
+        <DB6PR0402MB2838D514CF38AC5E6C004E8499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <20180611094616.5c8f82cf@bbrezillon>
+        <DB6PR0402MB283825171DF93AD3C8590DD799780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <20180611121618.40f4b609@bbrezillon>
+        <DB6PR0402MB28388D9DEB86629BB58DD5E499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <DB6PR0402MB2838563F1BA71A9A21ABBE01997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <20180612091328.67734adb@bbrezillon>
+        <DB6PR0402MB28387FE79F2742C9BEBD4037997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+        <20180615145019.734f23a9@bbrezillon>
+        <DB6PR0402MB28382767652782E0CC6C14A0997C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+ <20180615155541.4f43e9bb@bbrezillon>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "richard@nod.at" <richard@nod.at>,
+        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+        Han Xu <han.xu@nxp.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Janek Kotas <jank@cadence.com>
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        Frieder Schrempf <frieder.schrempf@exceet.de>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        David Wolfe <david.wolfe@nxp.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <65980D27-1B52-43A3-A7CA-33B804A62AC5@cadence.com>
+In-Reply-To: <20180615155541.4f43e9bb@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: cadence: Change usleep_range() to udelay(), for atomic context
 
-has been applied to the spi tree at
+-----Original Message-----
+From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]=20
+Sent: Friday, June 15, 2018 7:26 PM
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>; Fabio Estevam <fabio.=
+estevam@nxp.com>; David Wolfe <david.wolfe@nxp.com>; dwmw2@infradead.org
+Cc: richard@nod.at; Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>; Han Xu=
+ <han.xu@nxp.com>; linux-kernel@vger.kernel.org; linux-spi@vger.kernel.org;=
+ marek.vasut@gmail.com; Frieder Schrempf <frieder.schrempf@exceet.de>; broo=
+nie@kernel.org; linux-mtd@lists.infradead.org; miquel.raynal@bootlin.com; c=
+omputersforpeace@gmail.com
+Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI =
+controller
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+On Fri, 15 Jun 2018 13:42:12 +0000
+Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> Hi Boris,
+>=20
+> I am still debugging the issue.
+> With some analysis, able to check that proper values are not being writte=
+n for QUADSPI_SFA2AD/ QUADSPI_SFB1AD/ QUADSPI_SFB2AD register.
+>=20
+> In current code, value of map_addr are being assigned to these register.
+>              map_addr =3D q->memmap_phy +
+>                         2 * q->devtype_data->ahb_buf_size;
+>=20
+>      qspi_writel(q, map_addr, q->iobase + QUADSPI_SFA1AD + (i * 4));
+>=20
+> But instead of "q->devtype_data->ahb_buf_size" it should be flash size.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+No, because we're only using 2 * ->ahb_buf_size in the direct mapping for e=
+ach device, and we're modifying the mapping dynamically based on the select=
+ed device. Maybe we got the logic wrong though.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Yes, for register QUADSPI_SFA2AD/ QUADSPI_SFB1AD/ QUADSPI_SFB2AD, we need t=
+o save starting actual address from where this flash is getting started.
+Thus, if my first flash size is 64MB, then register QUADSPI_SFA2AD would ha=
+ve value of q->memmap_phy + 0x4000000 i.e. (QUADSPI_SFA1AD + sizeof First F=
+lash)
+If second flash is of size 32MB, then register QUADSPI_SFB1AD would have va=
+lue of value of QUADSPI_SFA2AD + sizeof second flash.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> For my case flash size is 0x4000000 and with this hard coded value I am a=
+ble to perform Write and Erase operation.
+> One more change, I have to do is adding the flash_size when writing the b=
+ase_address in SFAR register for case when "mem->spi->chip_select =3D=3D 1"
+> 	qspi_writel(q, q->memmap_phy + 0x4000000, base + QUADSPI_SFAR);
 
-Thanks,
-Mark
+I don't want to expose the full device in the direct mapping yet (that's pa=
+rt of the direct-mapping API I posted here [1]). What this version of the d=
+river does is, map only 2 time the ahb_size so that we can bypass the inter=
+nal cache of the QSPI engine.
 
->From 931c4e9a72ae91d59c5332ffb6812911a749da8e Mon Sep 17 00:00:00 2001
-From: Janek Kotas <jank@cadence.com>
-Date: Mon, 4 Jun 2018 11:24:44 +0000
-Subject: [PATCH] spi: cadence: Change usleep_range() to udelay(), for atomic
- context
+To perform any operation on second flash, we need to provide it's base addr=
+ess should be saved in SFAR register for this particular operation.
+Exposing only 2 time of ahb_size is design decision but value in SFAR regis=
+ter should be correct.
 
-The path "spi: cadence: Add usleep_range() for
-cdns_spi_fill_tx_fifo()" added a usleep_range() function call,
-which cannot be used in atomic context.
-However the cdns_spi_fill_tx_fifo() function can be called during
-an interrupt which may result in a kernel panic:
+>=20
+> Thus, there should be mechanism or the entry in structure where we can ha=
+ve the information of the size of the connected slave device.
 
-BUG: scheduling while atomic: grep/561/0x00010002
-Modules linked in:
-Preemption disabled at:
-[<ffffff800858ea28>] wait_for_common+0x48/0x178
-CPU: 0 PID: 561 Comm: grep Not tainted 4.17.0 #1
-Hardware name: Cadence CSP (DT)
-Call trace:
- dump_backtrace+0x0/0x198
- show_stack+0x14/0x20
- dump_stack+0x8c/0xac
- __schedule_bug+0x6c/0xb8
- __schedule+0x570/0x5d8
- schedule+0x34/0x98
- schedule_hrtimeout_range_clock+0x98/0x110
- schedule_hrtimeout_range+0x10/0x18
- usleep_range+0x64/0x98
- cdns_spi_fill_tx_fifo+0x70/0xb0
- cdns_spi_irq+0xd0/0xe0
- __handle_irq_event_percpu+0x9c/0x128
- handle_irq_event_percpu+0x34/0x88
- handle_irq_event+0x48/0x78
- handle_fasteoi_irq+0xbc/0x1b0
- generic_handle_irq+0x24/0x38
- __handle_domain_irq+0x84/0xf8
- gic_handle_irq+0xc4/0x180
+Because that's exactly the kind of thing I'd like to avoid. What if the dev=
+ice is bigger than the reserved memory region? What if the sum of all devic=
+es does not fit in there? Here I tried to support all cases by just mapping=
+ the portion of memory we need.
 
-This patch replaces the function call with udelay() which can be
-used in an atomic context, like an interrupt.
-
-Signed-off-by: Jan Kotas <jank@cadence.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi-cadence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index f3dad6fcdc35..a568f35522f9 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -319,7 +319,7 @@ static void cdns_spi_fill_tx_fifo(struct cdns_spi *xspi)
- 		 */
- 		if (cdns_spi_read(xspi, CDNS_SPI_ISR) &
- 		    CDNS_SPI_IXR_TXFULL)
--			usleep_range(10, 20);
-+			udelay(10);
- 
- 		if (xspi->txbuf)
- 			cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
--- 
-2.17.1
+So IMO, there should be mechanism to have value of start address of each sl=
+ave device. This might can be done from DTS entry of each slave device conn=
+ected to the controller.

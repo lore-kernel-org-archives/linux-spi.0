@@ -1,148 +1,79 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Tue, 19 Jun 2018 10:46:27 +0200
-Message-ID: <20180619104627.31cfd22e@bbrezillon>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB283825171DF93AD3C8590DD799780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180611121618.40f4b609@bbrezillon>
-        <DB6PR0402MB28388D9DEB86629BB58DD5E499780@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <DB6PR0402MB2838563F1BA71A9A21ABBE01997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180612091328.67734adb@bbrezillon>
-        <DB6PR0402MB28387FE79F2742C9BEBD4037997F0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180615145019.734f23a9@bbrezillon>
-        <DB6PR0402MB28382767652782E0CC6C14A0997C0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180615155541.4f43e9bb@bbrezillon>
-        <DB6PR0402MB2838C4F67D17337ADBC5D5F899710@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <20180618211536.0bf44f55@bbrezillon>
-        <VI1PR0402MB2845767966A437E0D376219799700@VI1PR0402MB2845.eurprd04.prod.outlook.com>
-        <20180619092832.3b6c8f22@bbrezillon>
-        <DB6PR0402MB2838FAF5CF0B0883EFAA3A9B99700@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 1/2] spi: Add QuadSPI driver for Atmel SAMA5D2
+Date: Tue, 19 Jun 2018 16:15:06 +0100
+Message-ID: <20180619151506.GG11230@sirena.org.uk>
+References: <20180618162124.21749-1-bugalski.piotr@gmail.com>
+ <20180618162124.21749-2-bugalski.piotr@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "richard@nod.at" <richard@nod.at>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="O8XZ+2Hy8Kj8wLPZ"
+Cc: linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Piotr Bugalski <pbu@cryptera.com>
+To: Piotr Bugalski <bugalski.piotr@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <DB6PR0402MB2838FAF5CF0B0883EFAA3A9B99700@DB6PR0402MB2838.eurprd04.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <20180618162124.21749-2-bugalski.piotr@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 19 Jun 2018 08:31:25 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-> > 
-> > Could you please use a mailer that is quoting things correctly. I
-> > have a hard time differentiating your replies from mine.  
-> 
-> Sorry for this, have changed my mailer settings.
+--O8XZ+2Hy8Kj8wLPZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks for doing. It's still not perfect, but it's definitely better.
+On Mon, Jun 18, 2018 at 06:21:23PM +0200, Piotr Bugalski wrote:
 
-> 
-> > 
-> > On Tue, 19 Jun 2018 07:10:37 +0000
-> > Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> >   
-> > > Let us take below layout of memory address space map.
-> > > QuadSPI Controller can access range from 0x2000_0000 -
-> > > 0x2FFF_FFFF i.e. 256  
-> > MB address space reserved and it is having 4 slave devices
-> > connected.  
-> > > These slave devices[of size 64MB, 64MB, 32MB and 64MB ] are
-> > > connected at below address 0x2000_0000, 0x2400_0000, 0x2A00_0000,
-> > > 0x2C00_0000 i.e. there is gap of 32MB from 0x2800_0000 to
-> > > 0x29FF_FFFF.  
-> > 
-> > Okay, I'm fine with pre-reserving 32MB per chip select.
-> >   
-> > >
-> > > As per my understanding of the controller, flash XX top address,
-> > > register should  
-> > have below values:  
-> > >   QUADSPI_SFA1AD - 0x0
-> > >   QUADSPI_SFA2AD - 0x400_0000
-> > >   QUADSPI_SFB1AD - 0xA00_0000
-> > >   QUADSPI_SFB2AD - 0xC00_0000
-> > > And Register QUADSPI_SFAR should point to the range for the flash
-> > > in which  
-> > operation is happening.  
-> 
-> My mistake values of these register would be for said case are:
-> QUADSPI_SFA1AD - 0x400_0000
-> QUADSPI_SFA2AD - 0x800_0000
-> QUADSPI_SFB1AD - 0xC00_0000
-> QUADSPI_SFB2AD - 0x1000_0000
-> 
-> i.e. as per controller each register is having the Top address for
-> serial flash connected at A1/A2/B1/B2 respectively.
+> +static int atmel_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+> +{
+> +	return 0;
+> +}
 
-This is still wrong ;-). I guess you mean:
+If this can be empty should we adjust the callers to allow it to just be
+omitted?
 
-QUADSPI_SFA1AD - 0x2400_0000
-QUADSPI_SFA2AD - 0x2800_0000
-QUADSPI_SFB1AD - 0x2C00_0000
-QUADSPI_SFB2AD - 0x3000_0000
+> +static int atmel_qspi_remove(struct platform_device *pdev)
+> +{
+> +	struct spi_controller *ctrl = platform_get_drvdata(pdev);
+> +	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+> +
+> +	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIDIS);
+> +	clk_disable_unprepare(aq->clk);
+> +
+> +	spi_unregister_controller(ctrl);
+> +
+> +	return 0;
+> +}
 
-> 
-> > 
-> > Wait, I thought it was supposed to be an absolute address, not one
-> > relative to the 0x20000000 offset.
-> >   
-> > >
-> > > Please check Table10-32, page 1657, in [1] for more details on
-> > > flash address  
-> > assignment.
-> > 
-> > Yes, I still don't see where it says that having one of the range
-> > with a zero size is forbidden, or anything mentioning a required
-> > alignment. 
-> > >
-> > > But say if I assign address to register QUADSPI_SFA2AD as "0 + 2
-> > > * -
-> > >ahb_buf_size" then this address value is not correct as per the
-> > >value range  
-> > explained in above mentioned table.
-> > 
-> > Why? If the SFA1AD is set to zero, that should not, right?  
-> What this table says that for TOP_ADDR_MEMA1 defines the top address
-> for flash connected at A1 and any address space between
-> TOP_ADDR_MEMA1 and QSPI_AMBA_BASE will be routed to Serial Flash A1.
-> In my example case TOP_ADDR_MEMA1 is 0x400_0000 If assign value to
-> SFAR register is "0 + 2 * ->ahb_buf_size", then this would lie in
-> access range of Serial Flash A1 and access happens to A1 flash
-> whereas we want access to A2 flash.
+You should unregister the controller before disabling the hardware,
+otherwise something could come in and try to start an operation on the
+controller (or already be running one) while the hardware is disabled
+which might blow up.
 
-No, not if SFA1AD is 0x20000000, because then the address range for CS0
-would be 0x20000000 -> 0x20000000.
+--O8XZ+2Hy8Kj8wLPZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If you look at the code, you'll see that I adjust the CS mapping
-dynamically, making the one being access use the range
-0x20000000 -> (0x20000000 + 2 * ->ahb_buf_size) and assigning a 0-size
-range for the other ones (either 0x20000000 -> 0x20000000 or
-(0x20000000 + 2 * ->ahb_buf_size) -> (0x20000000 + 2 * ->ahb_buf_size))
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> For access of serial flash A2, any address space access between
-> TOP_ADDR_MEMA2 and TOP_ADDR_MEMA1 would be routed to serial flash A2.
-> Thus to access A2 flash, SFAR would be in range from 0x400_0000 and
-> 0x800_0000
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlspHfkACgkQJNaLcl1U
+h9Cymgf+MbrO5iP90HOZ4RRfuC7+k40zc4d09EiG7izyzvJ2/tYUEuSN13tnVCnS
+kLf/EzOTei8n+cWU4jsetP27cVnhFSwAWAlnFQFYtd7yUV/e9bkoLIhuNTPs8RA7
+pDtsc8bwrYqfxq0G/KoH2kUqa60fFnCRxxRkcTkaldu7oKe8m4i8pEdYVp52CSkl
+1KHxfemgHnx40BFB9Aw2jS1UR5S812PVth6m9XV+qwphuUvlSkquORFe0uv0rNum
+4AOK+w4QXvcZp/B9W1nEcwcsccDBJ082oMsI/kUj1rbCy7DlE8gI2OHufN9AlM/R
+UXvlT50vdrssQaiicBHXd8Riqf18CA==
+=2QLs
+-----END PGP SIGNATURE-----
 
-I understand what you're explaining, what I don't get is why the QSPI
-IP doesn't cope with a 0-size range. If you have SFA1AD set to
-0x20000000 and SFA2AD set so 0x20000800, I would except any access to
-the 0x20000000 -> 0x20000800 range to be routed to CS1 not CS0. But
-apparently it's not working like that.
+--O8XZ+2Hy8Kj8wLPZ--

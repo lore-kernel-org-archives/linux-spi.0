@@ -1,14 +1,16 @@
-From: Piotr Bugalski <bugalski.piotr@gmail.com>
-Subject: Re: [RFC PATCH 1/2] spi: Add QuadSPI driver for Atmel SAMA5D2
-Date: Wed, 20 Jun 2018 16:31:13 +0200 (CEST)
-Message-ID: <alpine.DEB.2.20.1806201627330.26137@carbonite>
-References: <20180618162124.21749-1-bugalski.piotr@gmail.com> <20180618162124.21749-2-bugalski.piotr@gmail.com> <20180619151506.GG11230@sirena.org.uk>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [RFC PATCH 2/2] dt-bindings: spi: QuadSPI driver for Atmel
+ SAMA5D2 documentation
+Date: Wed, 20 Jun 2018 16:47:41 +0200
+Message-ID: <20180620164741.2a8da424@bbrezillon>
+References: <20180618162124.21749-1-bugalski.piotr@gmail.com>
+        <20180618162124.21749-3-bugalski.piotr@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
-        linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         Richard Weinberger <richard@nod.at>,
         linux-mtd@lists.infradead.org,
@@ -20,54 +22,94 @@ Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
         Cyrille Pitchen <cyrille.pitchen@microchip.com>,
         Tudor Ambarus <tudor.ambarus@microchip.com>,
         Piotr Bugalski <pbu@cryptera.com>
-To: Mark Brown <broonie@kernel.org>
+To: Piotr Bugalski <bugalski.piotr@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180619151506.GG11230@sirena.org.uk>
+In-Reply-To: <20180618162124.21749-3-bugalski.piotr@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Piotr,
 
-Thank you very much for quick answer.
+On Mon, 18 Jun 2018 18:21:24 +0200
+Piotr Bugalski <bugalski.piotr@gmail.com> wrote:
 
-On Tue, 19 Jun 2018, Mark Brown wrote:
+> Documentation for DT-binding change.
+> 
+> Suggested-by: Boris Brezillon <boris.brezillon@bootlin.com>
 
-> On Mon, Jun 18, 2018 at 06:21:23PM +0200, Piotr Bugalski wrote:
->
->> +static int atmel_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
->> +{
->> +	return 0;
->> +}
->
-> If this can be empty should we adjust the callers to allow it to just be
-> omitted?
->
+I'm pretty sure I didn't make a single suggestion about the DT
+bindings you use here ;-).
 
-If I remember well some commits ago spi-mem required even empty 
-adjust_op_size. Now it seems unnecessary, but I forgot to remove the 
-code. I will fix it in next version.
+> Signed-off-by: Piotr Bugalski <pbu@cryptera.com>
+> 
+> ---
+>  .../devicetree/bindings/spi/spi_atmel-qspi.txt     | 41 ++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi_atmel-qspi.txt
 
->> +static int atmel_qspi_remove(struct platform_device *pdev)
->> +{
->> +	struct spi_controller *ctrl = platform_get_drvdata(pdev);
->> +	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
->> +
->> +	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIDIS);
->> +	clk_disable_unprepare(aq->clk);
->> +
->> +	spi_unregister_controller(ctrl);
->> +
->> +	return 0;
->> +}
->
-> You should unregister the controller before disabling the hardware,
-> otherwise something could come in and try to start an operation on the
-> controller (or already be running one) while the hardware is disabled
-> which might blow up.
->
+I'll comment on this aspect in more details when replying to the cover
+letter, but I think you should re-use the bindings defined in
+Documentation/devicetree/bindings/mtd/atmel-quadspi.txt (IOW, move the
+existing file to the Documentation/devicetree/bindings/spi directory).
 
-Sure, deinit should be done in reverse order of init, you are perfectly 
-right, just my mistake. I'll fix it in next version.
+It's the same HW block, and just because you develop a new driver to
+replace the old one doesn't mean you should have 2 different bindings in
+parallel.
 
-Best Regards,
-Piotr
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi_atmel-qspi.txt b/Documentation/devicetree/bindings/spi/spi_atmel-qspi.txt
+> new file mode 100644
+> index 000000000000..d52b534c9c2b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi_atmel-qspi.txt
+> @@ -0,0 +1,41 @@
+> +* Atmel Quad Serial Peripheral Interface (QSPI)
+> +
+> +Required properties:
+> +- compatible:     Should be "atmel,sama5d2-spi-qspi".
+> +- reg:            Should contain the locations and lengths of the base registers
+> +                  and the mapped memory.
+> +- reg-names:      Should contain the resource reg names:
+> +                  - qspi_base: configuration register address space
+> +                  - qspi_mmap: memory mapped address space
+> +- interrupts:     Should contain the interrupt for the device.
+> +- clocks:         The phandle of the clock needed by the QSPI controller.
+> +- #address-cells: Should be <1>.
+> +- #size-cells:    Should be <0>.
+> +
+> +Example:
+> +
+> +qspi1: spi@f0024000 {
+> +	compatible = "atmel,sama5d2-spi-qspi";
+> +	reg = <0xf0024000 0x100>, <0xd8000000 0x08000000>;
+> +	reg-names = "qspi_base", "qspi_mmap";
+> +	interrupts = <53 IRQ_TYPE_LEVEL_HIGH 7>;
+> +	clocks = <&qspi1_clk>;
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_qspi1_default>;
+> +	status = "okay";
+> +
+> +	flash@0 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "winbond,w25m02gv", "spi-nand";
+
+"winbond,w25m02gv" is undocumented and unnecessary since SPI NANDs are
+automatically detected. Also, maybe you should declare a SPI NOR in the
+example since SPI NAND support has not yet been merged.
+
+> +		reg = <0>;
+> +		spi-max-frequency = <83000000>;
+> +		spi-rx-bus-width = <4>;
+> +		spi-tx-bus-width = <4>;
+> +
+> +		...
+> +	};
+> +};
+> +
+
+Regards,
+
+Boris

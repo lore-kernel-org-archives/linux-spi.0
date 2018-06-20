@@ -1,7 +1,7 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: [PATCH 06/12] spi: spi-fsl-dspi: Fixup regmap configuration
-Date: Wed, 20 Jun 2018 09:34:36 +0200
-Message-ID: <20180620073442.20913-7-esben.haabendal@gmail.com>
+Subject: [PATCH 01/12] spi: spi-fsl-dspi: Drop unreachable else if statement
+Date: Wed, 20 Jun 2018 09:34:31 +0200
+Message-ID: <20180620073442.20913-2-esben.haabendal@gmail.com>
 References: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -21,43 +21,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Esben Haabendal <eha@deif.com>
 
-Mark volatile registers to avoid caching bugs.
-
-Note: SPI_MCR is marked volatile because of CLR_TXF and CLR_RXF bits.
+The if statement just above this if/else statement triggers on the same
+condition, and then invalidates it.
 
 Signed-off-by: Esben Haabendal <eha@deif.com>
 Cc: Martin Hundebøll <martin@geanix.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index df07dd4722fb..5c5905b6509f 100644
+index 0630962ce442..3ca9b9608801 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -862,11 +862,23 @@ static int dspi_resume(struct device *dev)
+@@ -593,8 +593,7 @@ static int dspi_eoq_write(struct fsl_dspi *dspi)
+ 			dspi_pushr |= SPI_PUSHR_EOQ;
+ 			if ((dspi->cs_change) && (!dspi->len))
+ 				dspi_pushr &= ~SPI_PUSHR_CONT;
+-		} else if (tx_word && (dspi->len == 1))
+-			dspi_pushr |= SPI_PUSHR_EOQ;
++		}
  
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 		regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
  
-+static const struct regmap_range dspi_volatile_ranges[] = {
-+	regmap_reg_range(SPI_MCR, SPI_TCR),
-+	regmap_reg_range(SPI_SR, SPI_SR),
-+	regmap_reg_range(SPI_PUSHR, SPI_RXFR3),
-+};
-+
-+static const struct regmap_access_table dspi_volatile_table = {
-+	.yes_ranges     = dspi_volatile_ranges,
-+	.n_yes_ranges   = ARRAY_SIZE(dspi_volatile_ranges),
-+};
-+
- static const struct regmap_config dspi_regmap_config = {
- 	.reg_bits = 32,
- 	.val_bits = 32,
- 	.reg_stride = 4,
- 	.max_register = 0x88,
-+	.volatile_table = &dspi_volatile_table,
- };
- 
- static void dspi_init(struct fsl_dspi *dspi)
 -- 
 2.17.1

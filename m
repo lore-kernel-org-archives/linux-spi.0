@@ -1,7 +1,7 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: [PATCH 07/12] spi: spi-fsl-dspi: Fix MCR register handling
-Date: Wed, 20 Jun 2018 09:34:37 +0200
-Message-ID: <20180620073442.20913-8-esben.haabendal@gmail.com>
+Subject: [PATCH 04/12] spi: spi-fsl-dspi: Simplify transfer counter handling
+Date: Wed, 20 Jun 2018 09:34:34 +0200
+Message-ID: <20180620073442.20913-5-esben.haabendal@gmail.com>
 References: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -21,61 +21,109 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Esben Haabendal <eha@deif.com>
 
-The MCR register is not changed, so initialize it in dspi_init().
-
-The exception is the CLR_TXF and CLR_RXF bits, which should be written to
-before each transfer to make sure we start with empty FIFOs.  With MCR
-register now configured as volatile, the regmap_update_bits will do a real
-read-modify-write cycle.
+Simplify driver by avoiding counter wrapping by clearing transfer counter
+on first SPI transfer per interrupt instead of tracking what it was before.
 
 Signed-off-by: Esben Haabendal <eha@deif.com>
 Cc: Martin Hundebøll <martin@geanix.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 39 ++++++++++++++------------------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 5c5905b6509f..d83d3496d538 100644
+index c0c3b8bf2781..2371b9978e65 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -120,7 +120,6 @@
+@@ -119,8 +119,6 @@
+ #define SPI_CS_ASSERT		0x02
+ #define SPI_CS_DROP		0x04
+ 
+-#define SPI_TCR_TCNT_MAX	0x10000
+-
  #define DMA_COMPLETION_TIMEOUT	msecs_to_jiffies(3000)
  
  struct chip_data {
--	u32 mcr_val;
- 	u32 ctar_val;
- 	u16 void_write_data;
+@@ -201,7 +199,6 @@ struct fsl_dspi {
+ 	wait_queue_head_t	waitq;
+ 	u32			waitflags;
+ 
+-	u32			spi_tcnt;
+ 	struct fsl_dspi_dma	*dma;
  };
-@@ -644,10 +643,9 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 		else
- 			dspi->bytes_per_word = 2;
  
--		regmap_write(dspi->regmap, SPI_MCR, dspi->cur_chip->mcr_val);
- 		regmap_update_bits(dspi->regmap, SPI_MCR,
--				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
--				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
-+				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
-+				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
- 		regmap_write(dspi->regmap, SPI_CTAR(0),
- 			     dspi->cur_chip->ctar_val |
- 			     SPI_FRAME_BITS(transfer->bits_per_word));
-@@ -725,9 +723,6 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
+@@ -594,6 +591,10 @@ static int dspi_eoq_write(struct fsl_dspi *dspi)
+ 			/* request EOQ flag for last transfer in queue */
+ 			dspi_pushr |= SPI_PUSHR_EOQ;
  
--	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS |
--		SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF;
++		/* Clear transfer counter on first transfer (in FIFO) */
++		if (tx_count == 0)
++			dspi_pushr |= SPI_PUSHR_CTCNT;
++
+ 		regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
+ 
+ 		tx_count++;
+@@ -635,6 +636,9 @@ static int dspi_tcfq_write(struct fsl_dspi *dspi)
+ 
+ 	dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
+ 
++	/* Clear transfer counter on each transfer */
++	dspi_pushr |= SPI_PUSHR_CTCNT;
++
+ 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
+ 
+ 	return tx_word + 1;
+@@ -658,10 +662,6 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 	struct spi_transfer *transfer;
+ 	int status = 0;
+ 	enum dspi_trans_mode trans_mode;
+-	u32 spi_tcr;
 -
- 	chip->void_write_data = 0;
+-	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
+-	dspi->spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
  
- 	clkrate = clk_get_rate(dspi->clk);
-@@ -883,6 +878,7 @@ static const struct regmap_config dspi_regmap_config = {
+ 	message->actual_length = 0;
  
- static void dspi_init(struct fsl_dspi *dspi)
- {
-+	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
- }
+@@ -831,7 +831,7 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	struct spi_message *msg = dspi->cur_msg;
+ 	enum dspi_trans_mode trans_mode;
+ 	u32 spi_sr, spi_tcr;
+-	u32 spi_tcnt, tcnt_diff;
++	u16 spi_tcnt;
+ 	int tx_word;
  
+ 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+@@ -841,26 +841,15 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
+ 		tx_word = is_double_byte_mode(dspi);
+ 
++		/* Get transfer counter (in number of SPI transfers). It was
++		 * reset to 0 when transfer(s) were started.
++		 */
+ 		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
+ 		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
+-		/*
+-		 * The width of SPI Transfer Counter in SPI_TCR is 16bits,
+-		 * so the max couner is 65535. When the counter reach 65535,
+-		 * it will wrap around, counter reset to zero.
+-		 * spi_tcnt my be less than dspi->spi_tcnt, it means the
+-		 * counter already wrapped around.
+-		 * SPI Transfer Counter is a counter of transmitted frames.
+-		 * The size of frame maybe two bytes.
+-		 */
+-		tcnt_diff = ((spi_tcnt + SPI_TCR_TCNT_MAX) - dspi->spi_tcnt)
+-			% SPI_TCR_TCNT_MAX;
+-		tcnt_diff *= (tx_word + 1);
+-		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
+-			tcnt_diff--;
+-
+-		msg->actual_length += tcnt_diff;
+ 
+-		dspi->spi_tcnt = spi_tcnt;
++		/* Update total number of bytes that were transferred */
++		msg->actual_length += spi_tcnt * (tx_word + 1) -
++			(dspi->dataflags & TRAN_STATE_WORD_ODD_NUM ? 1 : 0);
+ 
+ 		trans_mode = dspi->devtype_data->trans_mode;
+ 		switch (trans_mode) {
 -- 
 2.17.1

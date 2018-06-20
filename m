@@ -1,7 +1,7 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: [PATCH 02/12] spi: spi-fsl-dspi: Drop unneeded use of dataflags bits
-Date: Wed, 20 Jun 2018 09:34:32 +0200
-Message-ID: <20180620073442.20913-3-esben.haabendal@gmail.com>
+Subject: [PATCH 10/12] spi: spi-fsl-dspi: XSPI FIFO handling (in TCFQ mode)
+Date: Wed, 20 Jun 2018 09:34:40 +0200
+Message-ID: <20180620073442.20913-11-esben.haabendal@gmail.com>
 References: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -21,80 +21,117 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Esben Haabendal <eha@deif.com>
 
-Checking directly against pointer value should be at least as fast as doing
-bitmasking and compare, so let's keep it simple.
+This implements handling of split CMD and TX FIFO queues for XSPI when
+running in TCFQ mode.
+
+It should be simple to add it to EOQ mode also.  Currently, EOQ mode is
+only used with coldfire.  So if coldfire DSPI supports XSPI, XSPI FIFO
+handling should be added to EOQ mode also.
 
 Signed-off-by: Esben Haabendal <eha@deif.com>
 Cc: Martin Hundebøll <martin@geanix.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 55 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 48 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3ca9b9608801..3bf135bf8b93 100644
+index ba83ff4512c9..67cd2e901255 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -38,8 +38,6 @@
+@@ -215,15 +215,17 @@ struct fsl_dspi {
+ 	struct fsl_dspi_dma	*dma;
+ };
  
- #define DRIVER_NAME "fsl-dspi"
- 
--#define TRAN_STATE_RX_VOID		0x01
--#define TRAN_STATE_TX_VOID		0x02
- #define TRAN_STATE_WORD_ODD_NUM	0x04
- 
- #define DSPI_FIFO_SIZE			4
-@@ -232,7 +230,7 @@ static void dspi_rx_dma_callback(void *arg)
- 
- 	rx_word = is_double_byte_mode(dspi);
- 
--	if (!(dspi->dataflags & TRAN_STATE_RX_VOID)) {
-+	if (dspi->rx) {
- 		for (i = 0; i < dma->curr_xfer_len; i++) {
- 			d = dspi->dma->rx_dma_buf[i];
- 			rx_word ? (*(u16 *)dspi->rx = d) :
-@@ -538,12 +536,13 @@ static u32 dspi_data_to_pushr(struct fsl_dspi *dspi, int tx_word)
+-static u16 dspi_pop_tx(struct fsl_dspi *dspi)
++static u32 dspi_pop_tx(struct fsl_dspi *dspi)
  {
- 	u16 d16;
+-	u16 txdata = 0;
++	u32 txdata = 0;
  
--	if (!(dspi->dataflags & TRAN_STATE_TX_VOID))
-+	if (dspi->tx) {
- 		d16 = tx_word ? *(u16 *)dspi->tx : *(u8 *)dspi->tx;
--	else
-+		dspi->tx += tx_word + 1;
+ 	if (dspi->tx) {
+ 		if (dspi->bytes_per_word == 1)
+ 			txdata = *(u8 *)dspi->tx;
+-		else /* dspi->bytes_per_word == 2 */
++		else if (dspi->bytes_per_word == 2)
+ 			txdata = *(u16 *)dspi->tx;
++		else  /* dspi->bytes_per_word == 4 */
++			txdata = *(u32 *)dspi->tx;
+ 		dspi->tx += dspi->bytes_per_word;
+ 	}
+ 	dspi->len -= dspi->bytes_per_word;
+@@ -249,8 +251,10 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+ 
+ 	if (dspi->bytes_per_word == 1)
+ 		*(u8 *)dspi->rx = rxdata;
+-	else /* dspi->bytes_per_word == 2 */
++	else if (dspi->bytes_per_word == 2)
+ 		*(u16 *)dspi->rx = rxdata;
++	else /* dspi->bytes_per_word == 4 */
++		*(u32 *)dspi->rx = rxdata;
+ 	dspi->rx += dspi->bytes_per_word;
+ }
+ 
+@@ -564,12 +568,47 @@ static void fifo_write(struct fsl_dspi *dspi)
+ 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
+ }
+ 
++static void cmd_fifo_write(struct fsl_dspi *dspi)
++{
++	u16 cmd = dspi->tx_cmd;
++
++	if (dspi->len > 0)
++		cmd |= SPI_PUSHR_CMD_CONT;
++	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
++}
++
++static void tx_fifo_write(struct fsl_dspi *dspi, u16 txdata)
++{
++	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
++}
++
+ static void dspi_tcfq_write(struct fsl_dspi *dspi)
+ {
+ 	/* Clear transfer count */
+ 	dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
+-	/* Write one entry to both TX FIFO and CMD FIFO simultaneously */
+-	fifo_write(dspi);
++
++	if (dspi->devtype_data->xspi_mode && dspi->bits_per_word > 16) {
++		/* Write two TX FIFO entries first, and then the corresponding
++		 * CMD FIFO entry.
++		 */
++		u32 data = dspi_pop_tx(dspi);
++
++		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1)) {
++			/* LSB */
++			tx_fifo_write(dspi, data & 0xFFFF);
++			tx_fifo_write(dspi, data >> 16);
++		} else {
++			/* MSB */
++			tx_fifo_write(dspi, data >> 16);
++			tx_fifo_write(dspi, data & 0xFFFF);
++		}
++		cmd_fifo_write(dspi);
 +	} else {
- 		d16 = dspi->void_write_data;
-+	}
- 
--	dspi->tx += tx_word + 1;
- 	dspi->len -= tx_word + 1;
- 
- 	return	SPI_PUSHR_TXDATA(d16) |
-@@ -560,10 +559,10 @@ static void dspi_data_from_popr(struct fsl_dspi *dspi, int rx_word)
- 	regmap_read(dspi->regmap, SPI_POPR, &val);
- 	d = SPI_POPR_RXDATA(val);
- 
--	if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
-+	if (dspi->rx) {
- 		rx_word ? (*(u16 *)dspi->rx = d) : (*(u8 *)dspi->rx = d);
--
--	dspi->rx += rx_word + 1;
-+		dspi->rx += rx_word + 1;
++		/* Write one entry to both TX FIFO and CMD FIFO
++		 * simultaneously.
++		 */
++		fifo_write(dspi);
 +	}
  }
  
- static int dspi_eoq_write(struct fsl_dspi *dspi)
-@@ -687,12 +686,6 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 		dspi->rx_end = dspi->rx + transfer->len;
- 		dspi->len = transfer->len;
+ static u32 fifo_read(struct fsl_dspi *dspi)
+@@ -656,8 +695,10 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 		dspi->bits_per_word = transfer->bits_per_word;
+ 		if (transfer->bits_per_word <= 8)
+ 			dspi->bytes_per_word = 1;
+-		else
++		else if (transfer->bits_per_word <= 16)
+ 			dspi->bytes_per_word = 2;
++		else
++			dspi->bytes_per_word = 4;
  
--		if (!dspi->rx)
--			dspi->dataflags |= TRAN_STATE_RX_VOID;
--
--		if (!dspi->tx)
--			dspi->dataflags |= TRAN_STATE_TX_VOID;
--
- 		regmap_write(dspi->regmap, SPI_MCR, dspi->cur_chip->mcr_val);
  		regmap_update_bits(dspi->regmap, SPI_MCR,
- 				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
 -- 
 2.17.1

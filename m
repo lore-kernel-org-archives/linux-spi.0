@@ -1,60 +1,57 @@
-From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: [PATCH 00/12] XSPI mode for LS1021A DSPI
-Date: Wed, 20 Jun 2018 09:34:30 +0200
-Message-ID: <20180620073442.20913-1-esben.haabendal@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 03/12] spi: spi-fsl-dspi: Fix per transfer cs_change
+ handling
+Date: Wed, 20 Jun 2018 14:27:55 +0100
+Message-ID: <20180620132755.GF6242@sirena.org.uk>
+References: <20180620073442.20913-1-esben.haabendal@gmail.com>
+ <20180620073442.20913-4-esben.haabendal@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Kurt Kanzenbach <kurt@linutronix.de>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4VrXvz3cwkc87Wze"
+Cc: linux-spi@vger.kernel.org, Kurt Kanzenbach <kurt@linutronix.de>,
         Angelo Dureghello <angelo@sysam.it>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Sanchayan Maity <maitysanchayan@gmail.com>,
         Yuan Yao <yao.yuan@nxp.com>, linux-kernel@vger.kernel.org,
-        Esben Haabendal <eha@deif.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+        Esben Haabendal <eha@deif.com>,
+        Martin =?iso-8859-1?Q?Hundeb=F8ll?= <martin@geanix.com>
+To: Esben Haabendal <esben.haabendal@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180620073442.20913-4-esben.haabendal@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Esben Haabendal <eha@deif.com>
 
-This patch series contains a number of fixes and cleanups for the spi-fsl-dspi
-driver (commit 1-7), and on top of that, implementation of XSPI mode for
-LS1021A allowing for SPI transfers larger than 16 bits (commit 8-12).
+--4VrXvz3cwkc87Wze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-User visible changes (improvements) are:
+On Wed, Jun 20, 2018 at 09:34:33AM +0200, Esben Haabendal wrote:
 
-* Support for all transfer sizes between 4 and 16, not just 4 (which I believe
-  were broken anyway), 8 and 16 bits per word.  
+> As of 92dc20d83adec565378254c0630e839ff5674e14, transfer->cs_change has
+> been supported for non-last transfers, but not for last transfer.
 
-* Full support for transfer->cs_change flag.  Setting cs_change in last
-  transfer leaves CS asserted.
+Please include human readable descriptions of things like commits and
+issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
 
-* Support for all transfers sizes between 4 and 32 bits per word for LS1021A.
+--4VrXvz3cwkc87Wze
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The XSPI mode can be trivially enabled for other target using TCQF mode.
-Enable for targets using EOQ mode requires additional work due to the split
-of TX FIFO into command and data FIFO.
+-----BEGIN PGP SIGNATURE-----
 
-If you like, I will happily squash the last 5 commits into a single XSPI mode
-commit.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlsqVloACgkQJNaLcl1U
+h9AWlgf+Jn8V8GuWmqwEjOKvD0pO8SCEE/IgKm5c/+b3o8F/A0emloVE+ajKiHbr
+oBK3+hMehOCGdgDuE9TYltcC3q8v64mqtIHqrqunm4cgFaE6xzWzBbBNn6lI07Z6
+6zleQcD5fYwaZv/AJOIIdcuxTOFISymveAuR1ghppifKWOub2cFhNdfC7cCUYUII
+5hOcMmb8+/P870I/45ZfOVoK+wZZ4Mt5DtXy2zVgwWL95FIIMMBIfFVlQ9UFCib5
+baIGM5L7JNNEHR536q9HB7BHqx69yCDNZk9F4SUMrc2yxFavpLzKsTjWZM6vwAnT
+e9IJKF1ocTg12yzqRbpGU/uJ6OrtEQ==
+=j208
+-----END PGP SIGNATURE-----
 
-Esben Haabendal (12):
-  spi: spi-fsl-dspi: Drop unreachable else if statement
-  spi: spi-fsl-dspi: Drop unneeded use of dataflags bits
-  spi: spi-fsl-dspi: Fix per transfer cs_change handling
-  spi: spi-fsl-dspi: Simplify transfer counter handling
-  spi: spi-fsl-dspi: Support 4 to 16 bits per word transfers
-  spi: spi-fsl-dspi: Fixup regmap configuration
-  spi: spi-fsl-dspi: Fix MCR register handling
-  spi: spi-fsl-dspi: Add support for XSPI mode registers
-  spi: spi-fsl-dspi: Framesize control for XSPI mode
-  spi: spi-fsl-dspi: XSPI FIFO handling (in TCFQ mode)
-  spi: spi-fsl-dspi: Advertise 32 bit for XSPI mode
-  spi: spi-fsl-dspi: Enable extended SPI mode
-
- drivers/spi/spi-fsl-dspi.c | 458 ++++++++++++++++++++-----------------
- 1 file changed, 250 insertions(+), 208 deletions(-)
-
--- 
-2.17.1
+--4VrXvz3cwkc87Wze--

@@ -1,7 +1,7 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: [PATCH 09/12] spi: spi-fsl-dspi: Framesize control for XSPI mode
-Date: Wed, 20 Jun 2018 09:34:39 +0200
-Message-ID: <20180620073442.20913-10-esben.haabendal@gmail.com>
+Subject: [PATCH 06/12] spi: spi-fsl-dspi: Fixup regmap configuration
+Date: Wed, 20 Jun 2018 09:34:36 +0200
+Message-ID: <20180620073442.20913-7-esben.haabendal@gmail.com>
 References: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -21,46 +21,43 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Esben Haabendal <eha@deif.com>
 
+Mark volatile registers to avoid caching bugs.
+
+Note: SPI_MCR is marked volatile because of CLR_TXF and CLR_RXF bits.
+
 Signed-off-by: Esben Haabendal <eha@deif.com>
 Cc: Martin Hundebøll <martin@geanix.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3e9dd645ee54..ba83ff4512c9 100644
+index df07dd4722fb..5c5905b6509f 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -119,6 +119,9 @@
- #define SPI_FRAME_BITS_16	SPI_CTAR_FMSZ(0xf)
- #define SPI_FRAME_BITS_8	SPI_CTAR_FMSZ(0x7)
+@@ -862,11 +862,23 @@ static int dspi_resume(struct device *dev)
  
-+#define SPI_FRAME_EBITS(bits)	SPI_CTARE_FMSZE(((bits) - 1) >> 4)
-+#define SPI_FRAME_EBITS_MASK	SPI_CTARE_FMSZE(1)
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
++static const struct regmap_range dspi_volatile_ranges[] = {
++	regmap_reg_range(SPI_MCR, SPI_TCR),
++	regmap_reg_range(SPI_SR, SPI_SR),
++	regmap_reg_range(SPI_PUSHR, SPI_RXFR3),
++};
 +
- /* Register offsets for regmap_pushr */
- #define PUSHR_CMD		0x0
- #define PUSHR_TX		0x2
-@@ -662,6 +665,10 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 		regmap_write(dspi->regmap, SPI_CTAR(0),
- 			     dspi->cur_chip->ctar_val |
- 			     SPI_FRAME_BITS(transfer->bits_per_word));
-+		if (dspi->devtype_data->xspi_mode)
-+			regmap_write(dspi->regmap, SPI_CTARE(0),
-+				     SPI_FRAME_EBITS(transfer->bits_per_word)
-+				     | SPI_CTARE_DTCP(1));
++static const struct regmap_access_table dspi_volatile_table = {
++	.yes_ranges     = dspi_volatile_ranges,
++	.n_yes_ranges   = ARRAY_SIZE(dspi_volatile_ranges),
++};
++
+ static const struct regmap_config dspi_regmap_config = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+ 	.reg_stride = 4,
+ 	.max_register = 0x88,
++	.volatile_table = &dspi_volatile_table,
+ };
  
- 		trans_mode = dspi->devtype_data->trans_mode;
- 		switch (trans_mode) {
-@@ -922,6 +929,9 @@ static void dspi_init(struct fsl_dspi *dspi)
- {
- 	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
-+	if (dspi->devtype_data->xspi_mode)
-+		regmap_write(dspi->regmap, SPI_CTARE(0),
-+			     SPI_CTARE_FMSZE(0) | SPI_CTARE_DTCP(1));
- }
- 
- static int dspi_probe(struct platform_device *pdev)
+ static void dspi_init(struct fsl_dspi *dspi)
 -- 
 2.17.1

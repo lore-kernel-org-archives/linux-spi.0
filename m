@@ -1,79 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 1/2] spi: Add QuadSPI driver for Atmel SAMA5D2
-Date: Tue, 19 Jun 2018 16:15:06 +0100
-Message-ID: <20180619151506.GG11230@sirena.org.uk>
-References: <20180618162124.21749-1-bugalski.piotr@gmail.com>
- <20180618162124.21749-2-bugalski.piotr@gmail.com>
+From: Esben Haabendal <esben.haabendal@gmail.com>
+Subject: [PATCH 11/12] spi: spi-fsl-dspi: Advertise 32 bit for XSPI mode
+Date: Wed, 20 Jun 2018 09:34:41 +0200
+Message-ID: <20180620073442.20913-12-esben.haabendal@gmail.com>
+References: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="O8XZ+2Hy8Kj8wLPZ"
-Cc: linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Piotr Bugalski <pbu@cryptera.com>
-To: Piotr Bugalski <bugalski.piotr@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Kurt Kanzenbach <kurt@linutronix.de>,
+        Angelo Dureghello <angelo@sysam.it>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Sanchayan Maity <maitysanchayan@gmail.com>,
+        Yuan Yao <yao.yuan@nxp.com>, linux-kernel@vger.kernel.org,
+        Esben Haabendal <eha@deif.com>,
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180618162124.21749-2-bugalski.piotr@gmail.com>
+In-Reply-To: <20180620073442.20913-1-esben.haabendal@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Esben Haabendal <eha@deif.com>
 
---O8XZ+2Hy8Kj8wLPZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Esben Haabendal <eha@deif.com>
+Cc: Martin Hundebøll <martin@geanix.com>
+---
+ drivers/spi/spi-fsl-dspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-On Mon, Jun 18, 2018 at 06:21:23PM +0200, Piotr Bugalski wrote:
-
-> +static int atmel_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-> +{
-> +	return 0;
-> +}
-
-If this can be empty should we adjust the callers to allow it to just be
-omitted?
-
-> +static int atmel_qspi_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_controller *ctrl = platform_get_drvdata(pdev);
-> +	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
-> +
-> +	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIDIS);
-> +	clk_disable_unprepare(aq->clk);
-> +
-> +	spi_unregister_controller(ctrl);
-> +
-> +	return 0;
-> +}
-
-You should unregister the controller before disabling the hardware,
-otherwise something could come in and try to start an operation on the
-controller (or already be running one) while the hardware is disabled
-which might blow up.
-
---O8XZ+2Hy8Kj8wLPZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlspHfkACgkQJNaLcl1U
-h9Cymgf+MbrO5iP90HOZ4RRfuC7+k40zc4d09EiG7izyzvJ2/tYUEuSN13tnVCnS
-kLf/EzOTei8n+cWU4jsetP27cVnhFSwAWAlnFQFYtd7yUV/e9bkoLIhuNTPs8RA7
-pDtsc8bwrYqfxq0G/KoH2kUqa60fFnCRxxRkcTkaldu7oKe8m4i8pEdYVp52CSkl
-1KHxfemgHnx40BFB9Aw2jS1UR5S812PVth6m9XV+qwphuUvlSkquORFe0uv0rNum
-4AOK+w4QXvcZp/B9W1nEcwcsccDBJ082oMsI/kUj1rbCy7DlE8gI2OHufN9AlM/R
-UXvlT50vdrssQaiicBHXd8Riqf18CA==
-=2QLs
------END PGP SIGNATURE-----
-
---O8XZ+2Hy8Kj8wLPZ--
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 67cd2e901255..eed55491b2c9 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1001,7 +1001,6 @@ static int dspi_probe(struct platform_device *pdev)
+ 
+ 	master->cleanup = dspi_cleanup;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
+ 
+ 	pdata = dev_get_platdata(&pdev->dev);
+ 	if (pdata) {
+@@ -1033,6 +1032,11 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (dspi->devtype_data->xspi_mode)
++		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
++	else
++		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
++
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(base)) {
+-- 
+2.17.1

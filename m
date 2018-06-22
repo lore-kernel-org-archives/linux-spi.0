@@ -1,189 +1,241 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 2/8] hwspinlock: Add devm_xxx() APIs to request/free hwlock
-Date: Fri, 22 Jun 2018 16:08:59 +0800
-Message-ID: <f75f8ab18e2e27077536692ae35e3dd707920238.1529654288.git.baolin.wang@linaro.org>
-References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
-Cc: baolin.wang@linaro.org, linux-spi@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-To: ohad@wizery.com, bjorn.andersson@linaro.org, broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
-In-Reply-To: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
-References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH v9 4/6] mtd: spinand: Add initial support for Winbond W25M02GV
+Date: Fri, 22 Jun 2018 14:28:26 +0200
+Message-ID: <20180622122828.12939-5-boris.brezillon@bootlin.com>
+References: <20180622122828.12939-1-boris.brezillon@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Piotr Bugalski <Piotr.Bugalski@cryptera.com>,
+ Peter Pan <peterpansjtu@gmail.com>, Julien Su <juliensu@mxic.com.tw>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mason Yang <masonccyang@mxic.com.tw>, zhengxunli@mxic.com.tw
+To: Boris Brezillon <boris.brezillon@bootlin.com>,
+ Richard Weinberger <richard@nod.at>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org,
+ David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Pawel Moll <pawel.moll@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Ian Campbell <ijc+devicetree@hellion.org.uk>,
+ Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180622122828.12939-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch introduces some devm_xxx() APIs to help to request or free
-the hwlocks, which will help to simplify the cleanup code for drivers
-requesting one hwlock, ensuring that the hwlock is automatically freed
-whenever the device is unbound.
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+Add support for the W25M02GV chip.
+
+Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/hwspinlock/hwspinlock_core.c |  110 ++++++++++++++++++++++++++++++++++
- include/linux/hwspinlock.h           |   22 +++++++
- 2 files changed, 132 insertions(+)
+Changes in v8:
+- Add a commit message
+- Changed the subject prefix
+---
+ drivers/mtd/nand/spi/Makefile  |   2 +-
+ drivers/mtd/nand/spi/core.c    |   1 +
+ drivers/mtd/nand/spi/winbond.c | 141 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h    |   1 +
+ 4 files changed, 144 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mtd/nand/spi/winbond.c
 
-diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
-index bea3586..d542b6f 100644
---- a/drivers/hwspinlock/hwspinlock_core.c
-+++ b/drivers/hwspinlock/hwspinlock_core.c
-@@ -735,6 +735,116 @@ int hwspin_lock_free(struct hwspinlock *hwlock)
- }
- EXPORT_SYMBOL_GPL(hwspin_lock_free);
+diff --git a/drivers/mtd/nand/spi/Makefile b/drivers/mtd/nand/spi/Makefile
+index a1df25398f20..100008d202ed 100644
+--- a/drivers/mtd/nand/spi/Makefile
++++ b/drivers/mtd/nand/spi/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
+-spinand-objs := core.o micron.o
++spinand-objs := core.o micron.o winbond.o
+ obj-$(CONFIG_MTD_SPI_NAND) += spinand.o
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 3b7b4dd21d44..c951c9739c4b 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -780,6 +780,7 @@ static const struct nand_ops spinand_ops = {
  
-+static int devm_hwspin_lock_match(struct device *dev, void *res, void *data)
-+{
-+	struct hwspinlock **hwlock = res;
-+
-+	if (WARN_ON(!hwlock || !*hwlock))
-+		return 0;
-+
-+	return *hwlock == data;
-+}
-+
-+static void devm_hwspin_lock_release(struct device *dev, void *res)
-+{
-+	hwspin_lock_free(*(struct hwspinlock **)res);
-+}
-+
-+/**
-+ * devm_hwspin_lock_free() - free a specific hwspinlock for a managed device
-+ * @dev: the device to free the specific hwspinlock
-+ * @hwlock: the specific hwspinlock to free
+ static const struct spinand_manufacturer *spinand_manufacturers[] = {
+ 	&micron_spinand_manufacturer,
++	&winbond_spinand_manufacturer,
+ };
+ 
+ static int spinand_manufacturer_detect(struct spinand_device *spinand)
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+new file mode 100644
+index 000000000000..67baa1b32c00
+--- /dev/null
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2017 exceet electronics GmbH
 + *
-+ * This function mark @hwlock as free again.
-+ * Should only be called with an @hwlock that was retrieved from
-+ * an earlier call to hwspin_lock_request{_specific}.
-+ *
-+ * Should be called from a process context (might sleep)
-+ *
-+ * Returns 0 on success, or an appropriate error code on failure
++ * Authors:
++ *	Frieder Schrempf <frieder.schrempf@exceet.de>
++ *	Boris Brezillon <boris.brezillon@bootlin.com>
 + */
-+int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock)
++
++#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/mtd/spinand.h>
++
++#define SPINAND_MFR_WINBOND		0xEF
++
++#define WINBOND_CFG_BUF_READ		BIT(3)
++
++static SPINAND_OP_VARIANTS(read_cache_variants,
++		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++
++static SPINAND_OP_VARIANTS(write_cache_variants,
++		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
++		SPINAND_PROG_LOAD(true, 0, NULL, 0));
++
++static SPINAND_OP_VARIANTS(update_cache_variants,
++		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
++		SPINAND_PROG_LOAD(false, 0, NULL, 0));
++
++static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
 +{
-+	int ret;
++	if (section > 3)
++		return -ERANGE;
 +
-+	ret = devres_release(dev, devm_hwspin_lock_release,
-+			     devm_hwspin_lock_match, hwlock);
-+	WARN_ON(ret);
++	region->offset = (16 * section) + 8;
++	region->length = 8;
 +
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(devm_hwspin_lock_free);
-+
-+/**
-+ * devm_hwspin_lock_request() - request an hwspinlock for a managed device
-+ * @dev: the device to request an hwspinlock
-+ *
-+ * This function should be called by users of the hwspinlock device,
-+ * in order to dynamically assign them an unused hwspinlock.
-+ * Usually the user of this lock will then have to communicate the lock's id
-+ * to the remote core before it can be used for synchronization (to get the
-+ * id of a given hwlock, use hwspin_lock_get_id()).
-+ *
-+ * Should be called from a process context (might sleep)
-+ *
-+ * Returns the address of the assigned hwspinlock, or NULL on error
-+ */
-+struct hwspinlock *devm_hwspin_lock_request(struct device *dev)
-+{
-+	struct hwspinlock **ptr, *hwlock;
-+
-+	ptr = devres_alloc(devm_hwspin_lock_release, sizeof(*ptr), GFP_KERNEL);
-+	if (!ptr)
-+		return ERR_PTR(-ENOMEM);
-+
-+	hwlock = hwspin_lock_request();
-+	if (!IS_ERR(hwlock)) {
-+		*ptr = hwlock;
-+		devres_add(dev, ptr);
-+	} else {
-+		devres_free(ptr);
-+	}
-+
-+	return hwlock;
-+}
-+EXPORT_SYMBOL_GPL(devm_hwspin_lock_request);
-+
-+/**
-+ * devm_hwspin_lock_request_specific() - request for a specific hwspinlock for
-+ *					 a managed device
-+ * @dev: the device to request the specific hwspinlock
-+ * @id: index of the specific hwspinlock that is requested
-+ *
-+ * This function should be called by users of the hwspinlock module,
-+ * in order to assign them a specific hwspinlock.
-+ * Usually early board code will be calling this function in order to
-+ * reserve specific hwspinlock ids for predefined purposes.
-+ *
-+ * Should be called from a process context (might sleep)
-+ *
-+ * Returns the address of the assigned hwspinlock, or NULL on error
-+ */
-+struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
-+						     unsigned int id)
-+{
-+	struct hwspinlock **ptr, *hwlock;
-+
-+	ptr = devres_alloc(devm_hwspin_lock_release, sizeof(*ptr), GFP_KERNEL);
-+	if (!ptr)
-+		return ERR_PTR(-ENOMEM);
-+
-+	hwlock = hwspin_lock_request_specific(id);
-+	if (!IS_ERR(hwlock)) {
-+		*ptr = hwlock;
-+		devres_add(dev, ptr);
-+	} else {
-+		devres_free(ptr);
-+	}
-+
-+	return hwlock;
-+}
-+EXPORT_SYMBOL_GPL(devm_hwspin_lock_request_specific);
-+
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("Hardware spinlock interface");
- MODULE_AUTHOR("Ohad Ben-Cohen <ohad@wizery.com>");
-diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
-index 2b6f389..dfd0593 100644
---- a/include/linux/hwspinlock.h
-+++ b/include/linux/hwspinlock.h
-@@ -67,6 +67,10 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
- int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
- void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
- int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
-+int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
-+struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
-+struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
-+						     unsigned int id);
- 
- #else /* !CONFIG_HWSPINLOCK */
- 
-@@ -132,6 +136,24 @@ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name)
- 	return 0;
- }
- 
-+static inline
-+int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock)
-+{
 +	return 0;
 +}
 +
-+static inline struct hwspinlock *devm_hwspin_lock_request(struct device *dev)
++static int w25m02gv_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
 +{
-+	return ERR_PTR(-ENODEV);
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 2;
++	region->length = 6;
++
++	return 0;
 +}
 +
-+static inline
-+struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
-+						     unsigned int id)
++static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
++	.ecc = w25m02gv_ooblayout_ecc,
++	.free = w25m02gv_ooblayout_free,
++};
++
++static int w25m02gv_select_target(struct spinand_device *spinand,
++				  unsigned int target)
 +{
-+	return ERR_PTR(-ENODEV);
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0xc2, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_OUT(1,
++							spinand->scratchbuf,
++							1));
++
++	*spinand->scratchbuf = target;
++	return spi_mem_exec_op(spinand->spimem, &op);
 +}
 +
- #endif /* !CONFIG_HWSPINLOCK */
++static const struct spinand_info winbond_spinand_table[] = {
++	SPINAND_INFO("W25M02GV", 0xAB,
++		     NAND_MEMORG(1, 2048, 64, 64, 1024, 1, 1, 2),
++		     NAND_ECCREQ(1, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     0,
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
++};
++
++/**
++ * winbond_spinand_detect - initialize device related part in spinand_device
++ * struct if it is a Winbond device.
++ * @spinand: SPI NAND device structure
++ */
++static int winbond_spinand_detect(struct spinand_device *spinand)
++{
++	u8 *id = spinand->id.data;
++	int ret;
++
++	/*
++	 * Winbond SPI NAND read ID need a dummy byte,
++	 * so the first byte in raw_id is dummy.
++	 */
++	if (id[1] != SPINAND_MFR_WINBOND)
++		return 0;
++
++	ret = spinand_match_and_init(spinand, winbond_spinand_table,
++				     ARRAY_SIZE(winbond_spinand_table), id[2]);
++	if (ret)
++		return ret;
++
++	return 1;
++}
++
++static int winbond_spinand_init(struct spinand_device *spinand)
++{
++	struct nand_device *nand = spinand_to_nand(spinand);
++	unsigned int i;
++
++	/*
++	 * Make sure all dies are in buffer read mode and not continuous read
++	 * mode.
++	 */
++	for (i = 0; i < nand->memorg.ntargets; i++) {
++		spinand_select_target(spinand, i);
++		spinand_upd_cfg(spinand, WINBOND_CFG_BUF_READ,
++				WINBOND_CFG_BUF_READ);
++	}
++
++	return 0;
++}
++
++static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
++	.detect = winbond_spinand_detect,
++	.init = winbond_spinand_init,
++};
++
++const struct spinand_manufacturer winbond_spinand_manufacturer = {
++	.id = SPINAND_MFR_WINBOND,
++	.name = "Winbond",
++	.ops = &winbond_spinand_manuf_ops,
++};
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 717b272940f1..f0f16b9029e7 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -195,6 +195,7 @@ struct spinand_manufacturer {
+ 
+ /* SPI NAND manufacturers */
+ extern const struct spinand_manufacturer micron_spinand_manufacturer;
++extern const struct spinand_manufacturer winbond_spinand_manufacturer;
  
  /**
+  * struct spinand_op_variants - SPI NAND operation variants
 -- 
-1.7.9.5
+2.14.1
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

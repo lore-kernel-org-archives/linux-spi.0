@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v9 0/6] mtd: Add a SPI NAND driver
-Date: Fri, 22 Jun 2018 14:28:22 +0200
-Message-ID: <20180622122828.12939-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v9 6/6] mtd: spinand: macronix: Add support for MX35LF2GE4AB
+Date: Fri, 22 Jun 2018 14:28:28 +0200
+Message-ID: <20180622122828.12939-7-boris.brezillon@bootlin.com>
+References: <20180622122828.12939-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,6 +22,7 @@ To: Boris Brezillon <boris.brezillon@bootlin.com>,
  Ian Campbell <ijc+devicetree@hellion.org.uk>,
  Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180622122828.12939-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,168 +34,39 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Not much has changed in this v9 except for the addition of the macronix
-driver. I mainly fixed bugs/issues reported by Miquel.
+MX35LF2GE4AB is almost identical to MX35LF1GE4AB except it has 2 times
+more eraseblocks per LUN and exposes 2 planes instead of 1.
 
-Mark, Rob, Geert, I dropped the controversial changes in the DT
-bindings patch, since it's not something specific to SPI NAND, this
-applies to SPI memory devices in general.
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+Changes in v9:
+- New patch
+---
+ drivers/mtd/nand/spi/macronix.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Thanks,
-
-Boris
-
-v9 changes:
-- add support for 2 SPI NANDs from Macronix
-- a few fixes and improvements (see the changelog in each patch)
-- drop the doc describing generic SPI device props in the DT binding
-
-v8 changes:
-- dropped patch 1 which has been applied
-- fix various bugs in the core (see changelog in patch 1)
-- add a commit message to patch 4
-
-v7 changes:
-- Use the spi-mem interface
-- Add support for on-die ECC
-- Add support for Winbond W25M02GV chip
-
-v6 changes:
-- includes generic NAND framework patches in series
-- rebase on nand/next (commit 6076fd1e9d879521f7082a5e22185b71e480b777)
-- remove on-die ECC support
-- remove devm_free() since everything allocated by devm_kmalloc() will be
-  automatically freed when device is released
-- add comment header for structs in spinand.h
-- remove spinand_register()/unregister(), call spinand_detect() in
-  spinand_init() and only expose spinand_init()/cleanup()
-- add nand_release_bbt() in bbt.c and use it in nand_cleanup() and
-  spinand_cleanup()
-- use BIT(n) instead (1 << n) in macro of spinand.h
-- rename spinand_alloc() to devm_spinand_alloc()
-- name lables in better way
-- fix some typos
-- add empty lines between code blocks
-
-v5 changes:
-- rebase patch on nand/next with Boris's generic NAND framework patches[3]
-- replace pr_xxx() with dev_xxx()
-- replace kzalloc()i/kfree() with devm_kzalloc()/devm_kfree()
-- rename spinand_op_init() to spinand_init_op() for consistency
-- remove command opcode in function comments
-- use BIT(n) instead (1 << n) in macro
-- remove manufactures.c and put spinand_manufacturers table in core.c
-- change spinand_write_reg() u8 *buf argument to u8 value,
-  since the length is always 1
-- remove spinand_manufacture->detect() check, since it is always != NULL
-- alloc spinand_ecc_engine struct in vendor.c when using on-die ECC
-  (for hardware ECC, it should be in controllers/*.c)
-- add comment header for struct spinand_op
-- fix timeout bug in spinand_wait(), thanks for Arnaud's debug
-- make spinand_manufacturers const
-- add ecc_engine_ops pointer in struct micron_spinand_info
-- make controller->cap assignment right with SPI_TX/RX_QUAD/DUAL flag
-
-v4 changes:
-- initialize struct mtd_oob_ops to 0 in bbt.c
-- rename new added helper in nand.h to nand_check_xxxx()
-- add struct mtd_oob_ops consistency check in nand_check_oob_ops()
-- add dataleft in struct nand_page_iter instead of offs
-- remove spinand_manufacturers->ops->detect() check since it is mandatory
-- remove spinand_set_manufacturer_ops() and do the job in
-  spinand_manufacturer_detect()
-- move .priv out of struct spinand_controller
-- add spinand_alloc/free/register/unregister() and make
-  spinand_detect/init() static
-- make BBT be configured by device tree
-- chip->id.data stores raw ID directly
-- refine device info print message after detect success
-- add struct mtd_layout_ops pointer in struct micron_spinand_info
-- remove micron_spinand_init() and do its job in micron_spinand_detect()
-- fix BBT block cannot be erased bug
-
-v3 changes:
-- rebase patch on 4.11-rc1[2]
-- change read ID method. read 4 bytes ID out then let ->detect() of each
-  manufacutre driver to decode ID and detect the device.
-- make SPI NAND id table private to each manufacutre driver
-- fix coding style to make checkpatch.pl happy
-- update the MAINTAINERS file for spi nand code
-- add nand_size() helper in nand.h
-- use nand_for_each_page() helper in spinand_do_read/write_ops()
-- create helper to check boundaries in generic NAND code and use it
-  in SPI NAND core
-- rename spinand_base.c to core.c
-- manufactures' drivers expose spinand_manufacturer struct instead of
-  spinand_manufacturer_ops struct to keep Manufacture ID macro in
-  manufactures' drivers and rename spinand_ids.c to manufacture.c
-- rename spinand_micron.c to micron.c
-- rename chips/ directory to controllers/
-- rename generic_spi.c to generic-spi.c
-- replace ->build_column_addr() and ->get_dummy() hooks with ->prepare_op() in
-  spinand_manufacturer_ops struct
-- rename __spinand_erase() to spinand_erase()
-- rename spinand_erase() to spinand_erase_skip_bbt()
-- rename spinand_scan_ident() to spinand_detect()
-- rename spinand_scan_tail() to spinand_init()
-- move non detect related code from spinand_detect() to spinand_init()
-- remove spinand_fill_nandd, assign nand->ops in spinand_detect()
-- merge v2 patch 3(bad block support) and patch 4(BBT support)
-- drop getchip parameter, remove spinand_get/remove_device(), take the lock
-  by caller directly
-- fix function comment headers
-- use nand_bbt_is_initialized() helper
-- replace spinand_ecc_engine and spinand_controller object in spinand_device
-  struct with pointer
-- replace struct spinand_manufacturer_ops pointer in spinand_device struct
-  with spinand_manufacturer struct
-
-v2 changes:
-- replace "spi_nand" with "spinand".
-- rename spi nand related structs for better understanding.
-- introduce spi nand controller, manufacturer and ecc_engine struct.
-- add spi nand manufacturer initialization function refer to Boris's
-  manuf-init branch.
-- remove NAND_SKIP_BBTSCAN from series. Add it later when enabling HW ECC.
-- reorganize series according to Boris's suggestion.
-
-Boris Brezillon (2):
-  dt-bindings: Add bindings for SPI NAND devices
-  mtd: spinand: Add initial support for the MX35LF1GE4AB chip
-
-Frieder Schrempf (1):
-  mtd: spinand: Add initial support for Winbond W25M02GV
-
-Miquel Raynal (1):
-  mtd: spinand: macronix: Add support for MX35LF2GE4AB
-
-Peter Pan (2):
-  mtd: nand: Add core infrastructure to support SPI NANDs
-  mtd: spinand: Add initial support for Micron MT29F2G01ABAGD
-
- Documentation/devicetree/bindings/mtd/spi-nand.txt |    5 +
- drivers/mtd/nand/Kconfig                           |    1 +
- drivers/mtd/nand/Makefile                          |    1 +
- drivers/mtd/nand/spi/Kconfig                       |    7 +
- drivers/mtd/nand/spi/Makefile                      |    3 +
- drivers/mtd/nand/spi/core.c                        | 1168 ++++++++++++++++++++
- drivers/mtd/nand/spi/macronix.c                    |  144 +++
- drivers/mtd/nand/spi/micron.c                      |  133 +++
- drivers/mtd/nand/spi/winbond.c                     |  141 +++
- include/linux/mtd/spinand.h                        |  421 +++++++
- include/linux/spi/spi-mem.h                        |    4 +-
- 11 files changed, 2027 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
- create mode 100644 drivers/mtd/nand/spi/Kconfig
- create mode 100644 drivers/mtd/nand/spi/Makefile
- create mode 100644 drivers/mtd/nand/spi/core.c
- create mode 100644 drivers/mtd/nand/spi/macronix.c
- create mode 100644 drivers/mtd/nand/spi/micron.c
- create mode 100644 drivers/mtd/nand/spi/winbond.c
- create mode 100644 include/linux/mtd/spinand.h
-
+diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
+index 8ba3489d332a..98f6b9c4b684 100644
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
+@@ -102,6 +102,14 @@ static const struct spinand_info macronix_spinand_table[] = {
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout,
+ 				     mx35lf1ge4ab_ecc_get_status)),
++	SPINAND_INFO("MX35LF2GE4AB", 0x22,
++		     NAND_MEMORG(1, 2048, 64, 64, 2048, 2, 1, 1),
++		     NAND_ECCREQ(4, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
+ };
+ 
+ static int macronix_spinand_detect(struct spinand_device *spinand)
 -- 
 2.14.1
 

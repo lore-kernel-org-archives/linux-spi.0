@@ -1,7 +1,7 @@
 From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 8/8] spi: sprd: Change to use devm_hwspin_lock_request_specific()
-Date: Fri, 22 Jun 2018 16:09:05 +0800
-Message-ID: <1662400fb204bbbe9a36edf580ea267079a2a02e.1529654288.git.baolin.wang@linaro.org>
+Subject: [PATCH 7/8] spi: sprd: Replace of_hwspin_lock_get_id() with of_hwspin_lock_get_id_byname()
+Date: Fri, 22 Jun 2018 16:09:04 +0800
+Message-ID: <c08a834989a8ffa841c457129d13b7a11361ec51.1529654288.git.baolin.wang@linaro.org>
 References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
 Cc: baolin.wang@linaro.org, linux-spi@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -13,58 +13,27 @@ References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Change to use devm_hwspin_lock_request_specific() instead of
-freeing the hwlock explicitly when unbound the device.
+Now the hwlock core has supplied new function to get a specific hwlock id
+by one hwlock name, which is more clear for users. So change to use
+of_hwspin_lock_get_id_byname().
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/spi/spi-sprd-adi.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/spi/spi-sprd-adi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index d8d5e2f..6fb5c0c 100644
+index 6fc50cf..d8d5e2f 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -465,7 +465,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+@@ -459,7 +459,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	sadi->slave_pbase = res->start + ADI_SLAVE_OFFSET;
+ 	sadi->ctlr = ctlr;
+ 	sadi->dev = &pdev->dev;
+-	ret = of_hwspin_lock_get_id(np, 0);
++	ret = of_hwspin_lock_get_id_byname(np, "adi");
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not get the hardware spinlock\n");
  		goto put_ctlr;
- 	}
- 
--	sadi->hwlock = hwspin_lock_request_specific(ret);
-+	sadi->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, ret);
- 	if (!sadi->hwlock) {
- 		ret = -ENXIO;
- 		goto put_ctlr;
-@@ -483,7 +483,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI controller\n");
--		goto free_hwlock;
-+		goto put_ctlr;
- 	}
- 
- 	sadi->restart_handler.notifier_call = sprd_adi_restart_handler;
-@@ -491,13 +491,11 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	ret = register_restart_handler(&sadi->restart_handler);
- 	if (ret) {
- 		dev_err(&pdev->dev, "can not register restart handler\n");
--		goto free_hwlock;
-+		goto put_ctlr;
- 	}
- 
- 	return 0;
- 
--free_hwlock:
--	hwspin_lock_free(sadi->hwlock);
- put_ctlr:
- 	spi_controller_put(ctlr);
- 	return ret;
-@@ -509,7 +507,6 @@ static int sprd_adi_remove(struct platform_device *pdev)
- 	struct sprd_adi *sadi = spi_controller_get_devdata(ctlr);
- 
- 	unregister_restart_handler(&sadi->restart_handler);
--	hwspin_lock_free(sadi->hwlock);
- 	return 0;
- }
- 
 -- 
 1.7.9.5

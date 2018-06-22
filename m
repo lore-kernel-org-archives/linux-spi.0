@@ -1,7 +1,7 @@
 From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 4/8] hwspinlock: Remove redundant config
-Date: Fri, 22 Jun 2018 16:09:01 +0800
-Message-ID: <a36034ffba1e2416270bce9ecf40bfa33f12f017.1529654288.git.baolin.wang@linaro.org>
+Subject: [PATCH 6/8] hwspinlock: sprd: Use devm_hwspin_lock_register()
+Date: Fri, 22 Jun 2018 16:09:03 +0800
+Message-ID: <e5f5f315a882fe5cdd161c8cb1790c9f3de0920a.1529654288.git.baolin.wang@linaro.org>
 References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
 Cc: baolin.wang@linaro.org, linux-spi@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -13,26 +13,37 @@ References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The hardware core can not be built as a module, so remove the redundant
-CONFIG_HWSPINLOCK_MODULE config.
+Use devm_hwspin_lock_register() to register the hwlock controller to
+avoid unregistering the device explicitly.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- include/linux/hwspinlock.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwspinlock/sprd_hwspinlock.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
-index 94064cc..0afe693 100644
---- a/include/linux/hwspinlock.h
-+++ b/include/linux/hwspinlock.h
-@@ -52,7 +52,7 @@ struct hwspinlock_pdata {
- 	int base_id;
- };
+diff --git a/drivers/hwspinlock/sprd_hwspinlock.c b/drivers/hwspinlock/sprd_hwspinlock.c
+index dc42bf5..ba5daf6 100644
+--- a/drivers/hwspinlock/sprd_hwspinlock.c
++++ b/drivers/hwspinlock/sprd_hwspinlock.c
+@@ -120,8 +120,9 @@ static int sprd_hwspinlock_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, sprd_hwlock);
+ 	pm_runtime_enable(&pdev->dev);
  
--#if defined(CONFIG_HWSPINLOCK) || defined(CONFIG_HWSPINLOCK_MODULE)
-+#ifdef CONFIG_HWSPINLOCK
+-	ret = hwspin_lock_register(&sprd_hwlock->bank, &pdev->dev,
+-				   &sprd_hwspinlock_ops, 0, SPRD_HWLOCKS_NUM);
++	ret = devm_hwspin_lock_register(&pdev->dev, &sprd_hwlock->bank,
++					&sprd_hwspinlock_ops, 0,
++					SPRD_HWLOCKS_NUM);
+ 	if (ret) {
+ 		pm_runtime_disable(&pdev->dev);
+ 		clk_disable_unprepare(sprd_hwlock->clk);
+@@ -135,7 +136,6 @@ static int sprd_hwspinlock_remove(struct platform_device *pdev)
+ {
+ 	struct sprd_hwspinlock_dev *sprd_hwlock = platform_get_drvdata(pdev);
  
- int hwspin_lock_register(struct hwspinlock_device *bank, struct device *dev,
- 		const struct hwspinlock_ops *ops, int base_id, int num_locks);
+-	hwspin_lock_unregister(&sprd_hwlock->bank);
+ 	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(sprd_hwlock->clk);
+ 	return 0;
 -- 
 1.7.9.5

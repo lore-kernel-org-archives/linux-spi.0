@@ -1,7 +1,7 @@
 From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 3/8] hwspinlock: Add devm_xxx() APIs to register/unregister one hwlock controller
-Date: Fri, 22 Jun 2018 16:09:00 +0800
-Message-ID: <52f3abc65549f6b412587a2c5938ee1347bccde7.1529654288.git.baolin.wang@linaro.org>
+Subject: [PATCH 2/8] hwspinlock: Add devm_xxx() APIs to request/free hwlock
+Date: Fri, 22 Jun 2018 16:08:59 +0800
+Message-ID: <f75f8ab18e2e27077536692ae35e3dd707920238.1529654288.git.baolin.wang@linaro.org>
 References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
 Cc: baolin.wang@linaro.org, linux-spi@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -13,125 +13,177 @@ References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch introduces devm_hwspin_lock_register() and devm_hwspin_lock_unregister()
-interfaces to help to register or unregister one hardware spinlock controller, that
-will help to simplify the cleanup code for hwspinlock drivers.
+This patch introduces some devm_xxx() APIs to help to request or free
+the hwlocks, which will help to simplify the cleanup code for drivers
+requesting one hwlock, ensuring that the hwlock is automatically freed
+whenever the device is unbound.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/hwspinlock/hwspinlock_core.c |   82 ++++++++++++++++++++++++++++++++++
- include/linux/hwspinlock.h           |    6 +++
- 2 files changed, 88 insertions(+)
+ drivers/hwspinlock/hwspinlock_core.c |  110 ++++++++++++++++++++++++++++++++++
+ include/linux/hwspinlock.h           |   22 +++++++
+ 2 files changed, 132 insertions(+)
 
 diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
-index d542b6f..ba27465 100644
+index bea3586..d542b6f 100644
 --- a/drivers/hwspinlock/hwspinlock_core.c
 +++ b/drivers/hwspinlock/hwspinlock_core.c
-@@ -529,6 +529,88 @@ int hwspin_lock_unregister(struct hwspinlock_device *bank)
+@@ -735,6 +735,116 @@ int hwspin_lock_free(struct hwspinlock *hwlock)
  }
- EXPORT_SYMBOL_GPL(hwspin_lock_unregister);
+ EXPORT_SYMBOL_GPL(hwspin_lock_free);
  
-+static void devm_hwspin_lock_unreg(struct device *dev, void *res)
++static int devm_hwspin_lock_match(struct device *dev, void *res, void *data)
 +{
-+	hwspin_lock_unregister(*(struct hwspinlock_device **)res);
-+}
++	struct hwspinlock **hwlock = res;
 +
-+static int devm_hwspin_lock_device_match(struct device *dev, void *res,
-+					 void *data)
-+{
-+	struct hwspinlock_device **bank = res;
-+
-+	if (WARN_ON(!bank || !*bank))
++	if (WARN_ON(!hwlock || !*hwlock))
 +		return 0;
 +
-+	return *bank == data;
++	return *hwlock == data;
++}
++
++static void devm_hwspin_lock_release(struct device *dev, void *res)
++{
++	hwspin_lock_free(*(struct hwspinlock **)res);
 +}
 +
 +/**
-+ * devm_hwspin_lock_unregister() - unregister an hw spinlock device for
-+ *				   a managed device
-+ * @dev: the backing device
-+ * @bank: the hwspinlock device, which usually provides numerous hw locks
++ * devm_hwspin_lock_free() - free a specific hwspinlock for a managed device
++ * @dev: the device to free the specific hwspinlock
++ * @hwlock: the specific hwspinlock to free
 + *
-+ * This function should be called from the underlying platform-specific
-+ * implementation, to unregister an existing (and unused) hwspinlock.
++ * This function mark @hwlock as free again.
++ * Should only be called with an @hwlock that was retrieved from
++ * an earlier call to hwspin_lock_request{_specific}.
 + *
 + * Should be called from a process context (might sleep)
 + *
 + * Returns 0 on success, or an appropriate error code on failure
 + */
-+int devm_hwspin_lock_unregister(struct device *dev,
-+				struct hwspinlock_device *bank)
++int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock)
 +{
 +	int ret;
 +
-+	ret = devres_release(dev, devm_hwspin_lock_unreg,
-+			     devm_hwspin_lock_device_match, bank);
++	ret = devres_release(dev, devm_hwspin_lock_release,
++			     devm_hwspin_lock_match, hwlock);
 +	WARN_ON(ret);
 +
 +	return ret;
 +}
-+EXPORT_SYMBOL_GPL(devm_hwspin_lock_unregister);
++EXPORT_SYMBOL_GPL(devm_hwspin_lock_free);
 +
 +/**
-+ * devm_hwspin_lock_register() - register a new hw spinlock device for
-+ *				 a managed device
-+ * @dev: the backing device
-+ * @bank: the hwspinlock device, which usually provides numerous hw locks
-+ * @ops: hwspinlock handlers for this device
-+ * @base_id: id of the first hardware spinlock in this bank
-+ * @num_locks: number of hwspinlocks provided by this device
++ * devm_hwspin_lock_request() - request an hwspinlock for a managed device
++ * @dev: the device to request an hwspinlock
 + *
-+ * This function should be called from the underlying platform-specific
-+ * implementation, to register a new hwspinlock device instance.
++ * This function should be called by users of the hwspinlock device,
++ * in order to dynamically assign them an unused hwspinlock.
++ * Usually the user of this lock will then have to communicate the lock's id
++ * to the remote core before it can be used for synchronization (to get the
++ * id of a given hwlock, use hwspin_lock_get_id()).
 + *
 + * Should be called from a process context (might sleep)
 + *
-+ * Returns 0 on success, or an appropriate error code on failure
++ * Returns the address of the assigned hwspinlock, or NULL on error
 + */
-+int devm_hwspin_lock_register(struct device *dev,
-+			      struct hwspinlock_device *bank,
-+			      const struct hwspinlock_ops *ops,
-+			      int base_id, int num_locks)
++struct hwspinlock *devm_hwspin_lock_request(struct device *dev)
 +{
-+	struct hwspinlock_device **ptr;
-+	int ret;
++	struct hwspinlock **ptr, *hwlock;
 +
-+	ptr = devres_alloc(devm_hwspin_lock_unreg, sizeof(*ptr), GFP_KERNEL);
++	ptr = devres_alloc(devm_hwspin_lock_release, sizeof(*ptr), GFP_KERNEL);
 +	if (!ptr)
-+		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
 +
-+	ret = hwspin_lock_register(bank, dev, ops, base_id, num_locks);
-+	if (!ret) {
-+		*ptr = bank;
++	hwlock = hwspin_lock_request();
++	if (!IS_ERR(hwlock)) {
++		*ptr = hwlock;
 +		devres_add(dev, ptr);
 +	} else {
 +		devres_free(ptr);
 +	}
 +
-+	return ret;
++	return hwlock;
 +}
-+EXPORT_SYMBOL_GPL(devm_hwspin_lock_register);
++EXPORT_SYMBOL_GPL(devm_hwspin_lock_request);
 +
- /**
-  * __hwspin_lock_request() - tag an hwspinlock as used and power it up
-  *
++/**
++ * devm_hwspin_lock_request_specific() - request for a specific hwspinlock for
++ *					 a managed device
++ * @dev: the device to request the specific hwspinlock
++ * @id: index of the specific hwspinlock that is requested
++ *
++ * This function should be called by users of the hwspinlock module,
++ * in order to assign them a specific hwspinlock.
++ * Usually early board code will be calling this function in order to
++ * reserve specific hwspinlock ids for predefined purposes.
++ *
++ * Should be called from a process context (might sleep)
++ *
++ * Returns the address of the assigned hwspinlock, or NULL on error
++ */
++struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
++						     unsigned int id)
++{
++	struct hwspinlock **ptr, *hwlock;
++
++	ptr = devres_alloc(devm_hwspin_lock_release, sizeof(*ptr), GFP_KERNEL);
++	if (!ptr)
++		return ERR_PTR(-ENOMEM);
++
++	hwlock = hwspin_lock_request_specific(id);
++	if (!IS_ERR(hwlock)) {
++		*ptr = hwlock;
++		devres_add(dev, ptr);
++	} else {
++		devres_free(ptr);
++	}
++
++	return hwlock;
++}
++EXPORT_SYMBOL_GPL(devm_hwspin_lock_request_specific);
++
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("Hardware spinlock interface");
+ MODULE_AUTHOR("Ohad Ben-Cohen <ohad@wizery.com>");
 diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
-index dfd0593..94064cc 100644
+index 2b6f389..dfd0593 100644
 --- a/include/linux/hwspinlock.h
 +++ b/include/linux/hwspinlock.h
-@@ -71,6 +71,12 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
- struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
- struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
- 						     unsigned int id);
-+int devm_hwspin_lock_unregister(struct device *dev,
-+				struct hwspinlock_device *bank);
-+int devm_hwspin_lock_register(struct device *dev,
-+			      struct hwspinlock_device *bank,
-+			      const struct hwspinlock_ops *ops,
-+			      int base_id, int num_locks);
+@@ -67,6 +67,10 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
+ int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
+ void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
+ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
++int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
++struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
++struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
++						     unsigned int id);
  
  #else /* !CONFIG_HWSPINLOCK */
  
+@@ -132,6 +136,24 @@ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name)
+ 	return 0;
+ }
+ 
++static inline
++int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock)
++{
++	return 0;
++}
++
++static inline struct hwspinlock *devm_hwspin_lock_request(struct device *dev)
++{
++	return ERR_PTR(-ENODEV);
++}
++
++static inline
++struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
++						     unsigned int id)
++{
++	return ERR_PTR(-ENODEV);
++}
++
+ #endif /* !CONFIG_HWSPINLOCK */
+ 
+ /**
 -- 
 1.7.9.5

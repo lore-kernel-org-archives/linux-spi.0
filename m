@@ -1,57 +1,92 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v9 2/6] dt-bindings: Add bindings for SPI NAND devices
-Date: Mon, 25 Jun 2018 08:45:41 -0600
-Message-ID: <20180625144541.GA8597@rob-hp-laptop>
-References: <20180622122828.12939-1-boris.brezillon@bootlin.com>
- <20180622122828.12939-3-boris.brezillon@bootlin.com>
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: [PATCH v10 0/6] Driver for at91 usart in spi mode
+Date: Mon, 25 Jun 2018 20:22:24 +0300
+Message-ID: <20180625172230.29686-1-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Mason Yang <masonccyang@mxic.com.tw>, Julien Su <juliensu@mxic.com.tw>,
- Pawel Moll <pawel.moll@arm.com>, Ian Campbell <ijc+devicetree@hellion.org.uk>,
- Piotr Bugalski <Piotr.Bugalski@cryptera.com>,
- Richard Weinberger <richard@nod.at>, Kumar Gala <galak@codeaurora.org>,
- linux-spi@vger.kernel.org, Peter Pan <peterpansjtu@gmail.com>,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20180622122828.12939-3-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>,
+        Radu Pirea <radu.pirea@microchip.com>
+To: <broonie@kernel.org>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <lee.jones@linaro.org>,
+        <richard.genoud@gmail.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <gregkh@linuxfoundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 22, 2018 at 02:28:24PM +0200, Boris Brezillon wrote:
-> Add bindings for SPI NAND chips.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> ---
-> Changes in v9:
-> - Do not describe generic SPI device properties, and more importantly
->   do not change their meaning
-> 
-> Changes in v8:
-> - Fixed a typo in the commit message
-> ---
->  Documentation/devicetree/bindings/mtd/spi-nand.txt | 5 +++++
->  1 file changed, 5 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mtd/spi-nand.txt
+Hello,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+This is the second version of driver. I added a mfd driver which by
+default probes atmel_serial driver and if in dt is specified to probe
+the spi driver, then the spi-at91-usart driver will be probed. The
+compatible for atmel_serial is now the compatible for at91-usart mfd
+driver and compatilbe for atmel_serial driver was changed in order to
+keep the bindings for serial as they are.
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Changes in v10:
+-fixed kbuild test robot warning
+
+Changes in v9:
+- minor changes
+- rebased on top of broonie/for-4.19
+
+Changes in v8:
+- fixed passing an empty mfd cell if "atmel,usart-mode" value is invalid
+
+Changes in v7:
+- synced up  SPDIX license with module license
+- numbering of usart modes starts from 0 insteand of 1
+
+Changes in v6:
+- removed unused compatible strings from serial and spi drivers
+
+Changes in v5:
+- fixed usage of stdout-path property with atmel_serial driver
+
+Changes in v4:
+- modified the spi driver to use cs gpio support form spi subsystem
+- fixed dma transfers for serial driver
+- squashed binding for spi and serial and moved them to mfd/atmel-usart.txt
+
+Changes in v3:
+- fixed spi slaves probing
+
+Changes in v2:
+- added at91-usart mfd driver
+- modified spi-at91-usart driver to work as mfd driver child
+- modified atmel_serial driver to work as mfd driver child
+
+Changes in v1:
+- added spi-at91-usart driver
+
+
+Radu Pirea (6):
+  MAINTAINERS: add at91 usart mfd driver
+  dt-bindings: add binding for atmel-usart in SPI mode
+  mfd: at91-usart: added mfd driver for usart
+  MAINTAINERS: add at91 usart spi driver
+  spi: at91-usart: add driver for at91-usart as spi
+  tty/serial: atmel: change the driver to work under at91-usart mfd
+
+ .../bindings/{serial => mfd}/atmel-usart.txt  |  25 +-
+ MAINTAINERS                                   |  16 +
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/at91-usart.c                      |  71 +++
+ drivers/spi/Kconfig                           |   9 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-at91-usart.c                  | 432 ++++++++++++++++++
+ drivers/tty/serial/Kconfig                    |   1 +
+ drivers/tty/serial/atmel_serial.c             |  42 +-
+ include/dt-bindings/mfd/at91-usart.h          |  17 +
+ 11 files changed, 607 insertions(+), 17 deletions(-)
+ rename Documentation/devicetree/bindings/{serial => mfd}/atmel-usart.txt (76%)
+ create mode 100644 drivers/mfd/at91-usart.c
+ create mode 100644 drivers/spi/spi-at91-usart.c
+ create mode 100644 include/dt-bindings/mfd/at91-usart.h
+
+-- 
+2.18.0

@@ -1,54 +1,85 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Tue, 26 Jun 2018 15:47:28 +0200
-Message-ID: <20180626154728.16e94b58@bbrezillon>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
-        <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
-        <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
-        <CAHp75Vesytovn1s-L0RQbEi6Tua=8qKc8a8yDkFmadgscW_UAw@mail.gmail.com>
-        <4046ba78-b6c0-c09b-43e2-e3c2e550be9f@exceet.de>
-        <CAHp75VfskABz+KrnLzDTYH=1cESimi++3HwQ2a1tiWkPTqf=HQ@mail.gmail.com>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
+Subject: Re: [RFC PATCH 1/2] spi: Add QuadSPI driver for Atmel SAMA5D2
+Date: Tue, 26 Jun 2018 17:44:26 +0300
+Message-ID: <455adb76-530a-1fd5-303c-cfa158ad7870@microchip.com>
+References: <20180618162124.21749-1-bugalski.piotr@gmail.com>
+ <20180618162124.21749-2-bugalski.piotr@gmail.com>
+ <20180621233321.0f25f572@bbrezillon>
+ <alpine.DEB.2.20.1806220719190.21824@carbonite>
+ <20180622093905.62a3b936@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+        Piotr Bugalski <pbu@cryptera.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Piotr Bugalski <bugalski.piotr@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAHp75VfskABz+KrnLzDTYH=1cESimi++3HwQ2a1tiWkPTqf=HQ@mail.gmail.com>
+In-Reply-To: <20180622093905.62a3b936@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Andy,
+Hi, Piotr,
 
-On Tue, 26 Jun 2018 16:18:44 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+General things to consider for the limitation in performance:
+- is the serial flash memory operating in Quad SPI?
+- QSCLK should be as high as possible
+- transfer delays - I checked them, they have default values, we should be good.
+- use DMA, as you suggested
 
+On 06/22/2018 10:39 AM, Boris Brezillon wrote:
+> [...]
 > 
-> > What is wrong? Some newlines are missing here between the MODULE_ macros,
-> > but in my original patch it seems correct.  
+>>>> +/*
+>>>> + * Atmel SAMA5D2 QuadSPI driver.
+>>>> + *
+>>>> + * Copyright (C) 2018 Cryptera A/S  
+>>>
+>>> A non-negligible portion of this code has been copied from the existing
+>>> driver. Please keep the existing copyright (you can still add Cryptera's
+>>> one).
+>>>  
+>>
+>> Technically this driver were written from scratch, with spi-fsl-qspi
+>> as example of new interface. Hence the name and code structure.
+>> But it's the same peripheral as Atmel's driver uses so code looks
+>> similar. I can unify the code to make comparsion even simpler and
+>> then update copyright.
 > 
-> It should be like
-> 
-> MODULE_FOO(...);
-> MODULE_BAR(...);
-> MODULE_BAZ(...);
-> 
-> One macro — one line.
+> Hm, ok. Some constructs really looked like they were copied
+> from the old driver, hence my comment. I'll let Nicolas give his
+> opinion on this aspect.
 
-It's not Frieder's fault, it's Yogesh mailer which messed-up the
-formatting. Just look at the original patch and you'll see.
+This driver will be a conversion of the legacy one to the spi-mem interface. I
+would keep the legacy copyright and add Cryptera's below, as Boris suggested.
+
+[...]
+
+>>>> +#define QSPI_SR_CMD_COMPLETED           (QSPI_SR_INSTRE | QSPI_SR_CSR)  
+>>>
+>>> Do you really to wait for both INSTRE and CSR to consider the command
+>>> as complete?
+>>>  
+>>
+>> This part were really copied from Atmel driver. I wasn't sure so I
+>> used tested solution.
+> 
+> Okay. I guess that's a question for Cyrille and/or Tudor then.
+
+We have to wait for both INSTRE and CSR.
+
+Best,
+ta

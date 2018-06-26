@@ -1,64 +1,61 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 03/11] spi: Add a driver for the Freescale/NXP QuadSPI controller
-Date: Tue, 26 Jun 2018 18:42:37 +0300
-Message-ID: <CAHp75Vda=zqOoAk955B9jLRKE0u34jrV8mMC6RG+RtvrENTbVw@mail.gmail.com>
-References: <1527686082-15142-1-git-send-email-frieder.schrempf@exceet.de>
- <1527686082-15142-4-git-send-email-frieder.schrempf@exceet.de>
- <DB6PR0402MB283845A1A98672FE63C89550997B0@DB6PR0402MB2838.eurprd04.prod.outlook.com>
- <CAHp75Vesytovn1s-L0RQbEi6Tua=8qKc8a8yDkFmadgscW_UAw@mail.gmail.com>
- <4046ba78-b6c0-c09b-43e2-e3c2e550be9f@exceet.de> <CAHp75VfskABz+KrnLzDTYH=1cESimi++3HwQ2a1tiWkPTqf=HQ@mail.gmail.com>
- <20180626154728.16e94b58@bbrezillon>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH 6/8] hwspinlock: sprd: Use devm_hwspin_lock_register()
+Date: Tue, 26 Jun 2018 13:51:38 -0700
+Message-ID: <20180626205138.GF3206@builder>
+References: <c23ed23d6d355e80401abce6242523f32ce480fd.1529654288.git.baolin.wang@linaro.org>
+ <e5f5f315a882fe5cdd161c8cb1790c9f3de0920a.1529654288.git.baolin.wang@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        Han Xu <han.xu@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: ohad@wizery.com, broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Baolin Wang <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180626154728.16e94b58@bbrezillon>
+Content-Disposition: inline
+In-Reply-To: <e5f5f315a882fe5cdd161c8cb1790c9f3de0920a.1529654288.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jun 26, 2018 at 4:47 PM, Boris Brezillon
-<boris.brezillon@bootlin.com> wrote:
-> Hi Andy,
->
-> On Tue, 26 Jun 2018 16:18:44 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
->>
->> > What is wrong? Some newlines are missing here between the MODULE_ macr=
-os,
->> > but in my original patch it seems correct.
->>
->> It should be like
->>
->> MODULE_FOO(...);
->> MODULE_BAR(...);
->> MODULE_BAZ(...);
->>
->> One macro =E2=80=94 one line.
->
-> It's not Frieder's fault, it's Yogesh mailer which messed-up the
-> formatting. Just look at the original patch and you'll see.
+On Fri 22 Jun 01:09 PDT 2018, Baolin Wang wrote:
 
-One problem less, then.
-Good!
+> Use devm_hwspin_lock_register() to register the hwlock controller to
+> avoid unregistering the device explicitly.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> ---
+>  drivers/hwspinlock/sprd_hwspinlock.c |    6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/hwspinlock/sprd_hwspinlock.c b/drivers/hwspinlock/sprd_hwspinlock.c
+> index dc42bf5..ba5daf6 100644
+> --- a/drivers/hwspinlock/sprd_hwspinlock.c
+> +++ b/drivers/hwspinlock/sprd_hwspinlock.c
+> @@ -120,8 +120,9 @@ static int sprd_hwspinlock_probe(struct platform_device *pdev)
+>  	platform_set_drvdata(pdev, sprd_hwlock);
+>  	pm_runtime_enable(&pdev->dev);
+>  
+> -	ret = hwspin_lock_register(&sprd_hwlock->bank, &pdev->dev,
+> -				   &sprd_hwspinlock_ops, 0, SPRD_HWLOCKS_NUM);
+> +	ret = devm_hwspin_lock_register(&pdev->dev, &sprd_hwlock->bank,
+> +					&sprd_hwspinlock_ops, 0,
+> +					SPRD_HWLOCKS_NUM);
+>  	if (ret) {
+>  		pm_runtime_disable(&pdev->dev);
+>  		clk_disable_unprepare(sprd_hwlock->clk);
+> @@ -135,7 +136,6 @@ static int sprd_hwspinlock_remove(struct platform_device *pdev)
+>  {
+>  	struct sprd_hwspinlock_dev *sprd_hwlock = platform_get_drvdata(pdev);
+>  
+> -	hwspin_lock_unregister(&sprd_hwlock->bank);
 
+Until the hwspinlock is unregistered it's possible for clients to issue
+operations on it, so disabling power and clocks before that seems bad.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Regards,
+Bjorn
+
+>  	pm_runtime_disable(&pdev->dev);
+>  	clk_disable_unprepare(sprd_hwlock->clk);
+>  	return 0;
+> -- 
+> 1.7.9.5
+> 

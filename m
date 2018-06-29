@@ -1,91 +1,93 @@
-From: Piotr Bugalski <bugalski.piotr@gmail.com>
-Subject: Re: [RFC PATCH 1/2] spi: Add QuadSPI driver for Atmel SAMA5D2
-Date: Thu, 28 Jun 2018 14:02:19 +0200 (CEST)
-Message-ID: <alpine.DEB.2.20.1806281352590.22837@carbonite>
-References: <20180618162124.21749-1-bugalski.piotr@gmail.com> <20180618162124.21749-2-bugalski.piotr@gmail.com> <20180621233321.0f25f572@bbrezillon> <alpine.DEB.2.20.1806220719190.21824@carbonite> <20180622093905.62a3b936@bbrezillon>
- <455adb76-530a-1fd5-303c-cfa158ad7870@microchip.com> <alpine.DEB.2.20.1806270940500.32198@carbonite> <1d736934-b3e7-7b23-0f34-1d22d36b2b18@microchip.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Piotr Bugalski <pbu@cryptera.com>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1d736934-b3e7-7b23-0f34-1d22d36b2b18@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH] spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe
+Date: Fri, 29 Jun 2018 13:33:09 +0200
+Message-ID: <1530271989-9022-1-git-send-email-krzk@kernel.org>
+Cc: Stefan Agner <stefan@agner.ch>, Shawn Guo <shawnguo@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Registers of DSPI should not be accessed before enabling its clock.  On
+Toradex Colibri VF50 on Iris carrier board this could be seen during
+bootup as imprecise abort:
 
-Hi Tudor,
+    Unhandled fault: imprecise external abort (0x1c06) at 0x00000000
+    Internal error: : 1c06 [#1] ARM
+    Modules linked in:
+    CPU: 0 PID: 1 Comm: swapper Not tainted 4.14.39-dirty #97
+    Hardware name: Freescale Vybrid VF5xx/VF6xx (Device Tree)
+    Backtrace:
+    [<804166a8>] (regmap_write) from [<80466b5c>] (dspi_probe+0x1f0/0x8dc)
+    [<8046696c>] (dspi_probe) from [<8040107c>] (platform_drv_probe+0x54/0xb8)
+    [<80401028>] (platform_drv_probe) from [<803ff53c>] (driver_probe_device+0x280/0x2f8)
+    [<803ff2bc>] (driver_probe_device) from [<803ff674>] (__driver_attach+0xc0/0xc4)
+    [<803ff5b4>] (__driver_attach) from [<803fd818>] (bus_for_each_dev+0x70/0xa4)
+    [<803fd7a8>] (bus_for_each_dev) from [<803fee74>] (driver_attach+0x24/0x28)
+    [<803fee50>] (driver_attach) from [<803fe980>] (bus_add_driver+0x1a0/0x218)
+    [<803fe7e0>] (bus_add_driver) from [<803fffe8>] (driver_register+0x80/0x100)
+    [<803fff68>] (driver_register) from [<80400fdc>] (__platform_driver_register+0x48/0x50)
+    [<80400f94>] (__platform_driver_register) from [<8091cf7c>] (fsl_dspi_driver_init+0x1c/0x20)
+    [<8091cf60>] (fsl_dspi_driver_init) from [<8010195c>] (do_one_initcall+0x4c/0x174)
+    [<80101910>] (do_one_initcall) from [<80900e8c>] (kernel_init_freeable+0x144/0x1d8)
+    [<80900d48>] (kernel_init_freeable) from [<805ff6a8>] (kernel_init+0x10/0x114)
+    [<805ff698>] (kernel_init) from [<80107be8>] (ret_from_fork+0x14/0x2c)
 
-On Thu, 28 Jun 2018, Tudor Ambarus wrote:
+Cc: <stable@vger.kernel.org>
+Fixes: 5ee67b587a2b ("spi: dspi: clear SPI_SR before enable interrupt")
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-> Hi, Piotr,
->
-> On 06/27/2018 10:52 AM, Piotr Bugalski wrote:
->>
->>> General things to consider for the limitation in performance:
->>> - is the serial flash memory operating in Quad SPI?
->>
->> Yes, I've checked signal using logic analyzer, data is transferred using
->> all four lines.
->>
->>> - QSCLK should be as high as possible
->>
->> Sure, but when we are using lower frequency CPU impact should be
->> negligible while efficiency is crap on every speed.
->>
->>> - transfer delays - I checked them, they have default values, we should be good.
->>> - use DMA, as you suggested
->>>
->>
->> I don't understand one thing. While CPU is not busy and during my tests
->> 100% of CPU can be used for communication, efficiency is still very low.
->> Why DMA has such impact?
->>
->> It is very interesting to observe signals using logic analyzer.
->> When CPU is used for communication, there are long delays after
->> every byte transferred. These delays are  much longer than it should be only because of writing next value by CPU.
->
-> Are those consecutive transfers (same peripheral without removing chip select)?
-> The delays between consecutive transfers can be set just in SPI mode. It would
-> be strange to see this kind of delays in serial memory mode.
->
-
-Yes, it's just single block transfer so no CS changes occurs.
-I find this delays strange also, but I have no idea how to avoid them.
-The same behaviour exists even when DMA is used in APB mode (write
-to registers). Only using SMM with DMA helps.
-
->> I tried to change SPI frequency. If delay were CPU related,
->> delay time should stay the same. Unfortunately results were different -
->> lowering SPI freqency extends delay time.
->
-> If QSCK is less than f-perif-clock/2, then setting DLYBS to 1 will shorten the
-> DLYBS delay, but this is peanuts.
->
-
-I have DLYBS, DLYCS and DLYBCT set to zeros. I can try DLYBS=1 if
-you wish.
-
-> Thanks,
-> ta
->
->> Using DMA makes these delays to disappear, but how to acheive CPU
->> communication without delays?
->
-
-Thank you for comments,
-Piotr
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index ff7456be9d6d..89a1e7a4fe5d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1071,30 +1071,30 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
++	if (IS_ERR(dspi->clk)) {
++		ret = PTR_ERR(dspi->clk);
++		dev_err(&pdev->dev, "unable to get clock\n");
++		goto out_master_put;
++	}
++	ret = clk_prepare_enable(dspi->clk);
++	if (ret)
++		goto out_master_put;
++
+ 	dspi_init(dspi);
+ 	dspi->irq = platform_get_irq(pdev, 0);
+ 	if (dspi->irq < 0) {
+ 		dev_err(&pdev->dev, "can't get platform irq\n");
+ 		ret = dspi->irq;
+-		goto out_master_put;
++		goto out_clk_put;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
+ 			pdev->name, dspi);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
+-		goto out_master_put;
+-	}
+-
+-	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
+-	if (IS_ERR(dspi->clk)) {
+-		ret = PTR_ERR(dspi->clk);
+-		dev_err(&pdev->dev, "unable to get clock\n");
+-		goto out_master_put;
++		goto out_clk_put;
+ 	}
+-	ret = clk_prepare_enable(dspi->clk);
+-	if (ret)
+-		goto out_master_put;
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 		ret = dspi_request_dma(dspi, res->start);
+-- 
+2.7.4

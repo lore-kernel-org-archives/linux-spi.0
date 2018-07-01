@@ -1,8 +1,7 @@
 From: =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
-Subject: [RFC net-next 15/15] net: lora: Add Semtech SX1301
-Date: Sun,  1 Jul 2018 13:08:04 +0200
-Message-ID: <20180701110804.32415-16-afaerber@suse.de>
-References: <20180701110804.32415-1-afaerber@suse.de>
+Subject: [RFC net-next 00/15] net: A socket API for LoRa
+Date: Sun,  1 Jul 2018 13:07:49 +0200
+Message-ID: <20180701110804.32415-1-afaerber@suse.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -17,525 +16,228 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Dollar Chen <dollar.chen@wtmec.com>,
         Ken Yu <ken.yu@rakwireless.com>,
         =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+        =?UTF-8?q?Konstantin=20B=C3=B6hm?= <konstantin.boehm@ancud.de>,
+        Jan Jongboom <jan.jongboom@arm.com>,
+        Jon Ortego <Jon.Ortego@imst.de>, contact@snootlab.com,
         Ben Whitten <ben.whitten@lairdtech.com>,
-        Steve deRosier <derosier@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+        Brian Ray <brian.ray@link-labs.com>, lora@globalsat.com.tw,
+        lora@radioshuttle.de, Alexander
 To: netdev@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180701110804.32415-1-afaerber@suse.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <netdev-owner@vger.kernel.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The Semtech SX1301 was the first multi-channel LoRa "concentrator".
-It uses a SPI interface to the host as well as a dual SPI interface to
-its radios. These two have been implemented as spi_controller, so that
-the Device Tree can specify whether the respective module uses two
-SX1257, two SX1255 or a combination of these or some unforeseen chipset.
+Hello,
 
-This implementation is the most recent - initialization is not yet
-complete, it will need to load firmware into the two on-chip MCUs.
+LoRa is a long-range, low-power wireless technology by Semtech.
+Unlike other LPWAN technologies, users don't need to rely on infrastructure
+providers and SIM cards and expensive subscription plans, they can set up
+their own gateways. Modules, adapters and evaluation boards are available
+from a large number of vendors.
 
-Unfortunately there is no full datasheet with register descriptions,
-only a BSD-licensed userspace HAL implementation using spidev devices.
-Therefore some register names are unknown.
+Many vendors also make available Open Source software examples on GitHub.
+But when taking a closer look, many of them combine licenses in ways that are
+not redistributable. My reports have remained without response or solution.
 
+https://github.com/ernstdevreede/lmic_pi/issues/2
+https://github.com/Snootlab/lmic_chisterapi/issues/2
+https://github.com/Snootlab/lora_chisterapi/issues/2
+
+Another issue was that most such projects around the Raspberry Pi make use of
+spidev to communicate with the Semtech chipsets from userspace. The Linux spi
+maintainers have chosen to greet any such users of spidev with a friendly
+WARN_ON(), preferring in-kernel spi drivers and white-listing individual
+devices only.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spidev.c?h=v4.17#n722
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spidev.c?h=v4.17#n667
+
+Also I don't quite see the point in having userspace probe what SPI devices
+are connected to a generic spidev driver when we have an easy Device Tree
+hardware description on arm/arm64 that could give us that info.
+
+I raised the topic during Q&A of a FOSDEM 2017 talk (cut off at the end
+of the video) but unfortunately found no one to collaborate on this.
+
+https://archive.fosdem.org/2017/schedule/event/lorawan/
+
+Instead of porting from wiringPi to a differently licensed GPIO library
+and dealing with seemingly unmaintained LoRaWAN code dumps, I started a
+spi kernel driver for SX1276 back in 2016. But obviously a kernel driver
+isn't too helpful without a userspace API to send and receive packets.
+
+This patchset, updated from 2017 and extended, is implementing kernel drivers
+for various LoRa chipsets and modules. As API I'm proposing a PF_LORA socket
+implementation. Why? LoRa uses data packets with headers and checksums
+and differing MTUs and multiple protocols layered on top of it. Apart from
+simple headers for addressing used by RadioHead library and IMST's LoRa P2P
+protocol, the main use case (not implemented in this patchset) is expected
+to be LoRaWAN. And LoRaWAN has competing proprietary protocols, such as
+Link Labs' Symphony Link or GlobalSat M.O.S.T. or RadioShuttle, that might
+at some point want to adopt a standard API for their implementations, too.
+
+Ready-made LoRa hardware modules come in three flavors,
+a) with SPI access to the underlying Semtech chipsets, needing a software
+   implementation of e.g. LoRaWAN protocol stack (i.e., a soft MAC),
+b) with a custom, often UART based interface and a pre-certified LoRaWAN
+   protocol stack already integrated (i.e., hard/full MAC), and
+c) with a microcontroller that serves not only for the protocol stack but
+   also as application processor, not offering a ready-made interface.
+
+This patchset focuses on option a). An SX1276 based LoRaWAN stack appeared
+to be the project of Jian-Hong Pan and is not included here.
+This patchset also includes drivers for b), from text based AT commands to
+a binary SLIP based HCI protocol.
+Hardware examples for c) are Murata CMWX1ZZABZ-078 and RAK813.
+
+This patchset is clearly not ready for merging, but is being submitted for
+discussion, as requested by Jiri, in particular of the design choices:
+
+1) PF_LORA/AF_LORA and associated identifiers are proposed to represent
+   this technology. While for an SX1276 - case a) above - it might work to
+   layer LoRaWAN as a protocol option for PF_LORA and add LoRaWAN address
+   fields to the union in my sockaddr_lora, how would that work for devices
+   that only support LoRaWAN but not pure LoRa? Do we need both AF_LORA and
+   AF_LORAWAN, or just a separate ETH_P_LORAWAN or ARPHRD_LORAWAN?
+
+2) PF_LORA is used with SOCK_DGRAM here. The assumption is that RAW mode
+   would be DGRAM plus preamble plus optional checksum.
+
+3) Only the transmit path is partially implemented already. The assumption
+   is that the devices should go into receive mode by default and only
+   interrupt that when asked to transmit.
+
+4) Some hardware settings need to be supplied externally, such as the radio
+   frequency for some modules, but many others can be runtime-configured,
+   such as Spreading Factor, Bandwidth, Sync Word, or which antenna to use.
+   What settings should be implemented as socket option vs. netlink layer
+   vs. ioctl vs. sysfs? What are the criteria to apply?
+
+5) Many of the modules support multiple modes, such as LoRa, LoRaWAN and FSK.
+   Lacking a LoRaWAN implementation, I am currently switching them into LoRa
+   mode at probe time wherever possible. How do we deal with that properly?
+
+  a) Is there any precedence from the Wifi world for dynamically selecting
+     between our own trusted Open Source implementation vs. hardware/firmware
+     accelerated and/or certified implementations?
+
+  b) Would a proof of concept for FSK (non-LoRa) modes be required for
+     merging any LoRa driver for chipsets that support both? Or is there any
+     facility or design guidelines that would allow us to focus on LoRa and
+     LoRaWAN and leave non-LoRa radio modes to later contributors?
+
+As evident by the many questions, this is my first deep dive into the Linux
+net subsystem. It's also my first experiments with the new serdev subsystem,
+so in particular the receive paths will need some review and optimizations.
+
+This patchset was developed and tested mainly as KMP, originally at
+https://github.com/afaerber/lora-modules. It was recently transformed into a
+linux-next based tree, still mostly tested on our openSUSE Tumbleweed kernel
+with a differing AF_LORA value below current AF_MAX limit.
+
+Some corresponding Device Tree Overlays have been collected here:
+https://github.com/afaerber/dt-overlays
+
+Only European models for 868 MHz and 433 MHz could be tested when available.
+Thanks to all companies and people that have supported this project so far.
+
+Have a lot of fun!
+
+Cheers,
+Andreas
+
+Cc: Jian-Hong Pan <starnight@g.ncu.edu.tw>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Matthias Brugger <mbrugger@suse.com>
+Cc: Konstantin Böhm <konstantin.boehm@ancud.de>
+Cc: Jan Jongboom <jan.jongboom@arm.com>
+Cc: Janus Piwek <jpiwek@arroweurope.com>
+Cc: Michael Röder <michael.roeder@avnet.eu>
+Cc: Dollar Chen (陳義元) <dollar.chen@wtmec.com>
+Cc: Ken Yu (禹凯) <ken.yu@rakwireless.com>
+Cc: Jon Ortego <Jon.Ortego@imst.de>
+Cc: contact@snootlab.com
 Cc: Ben Whitten <ben.whitten@lairdtech.com>
+Cc: Brian Ray <brian.ray@link-labs.com>
+Cc: lora@globalsat.com.tw
+Cc: lora@radioshuttle.de
+Cc: Alexander Graf <agraf@suse.de>
+Cc: Michal Kubeček <mkubecek@suse.cz>
+Cc: Rob Herring <robh@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
 Cc: Steve deRosier <derosier@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
-Cc: Michael Röder <michael.roeder@avnet.eu>
-Cc: Ken Yu (禹凯) <ken.yu@rakwireless.com>
 Cc: linux-spi@vger.kernel.org
-Signed-off-by: Andreas Färber <afaerber@suse.de>
----
- drivers/net/lora/Kconfig  |   7 +
- drivers/net/lora/Makefile |   3 +
- drivers/net/lora/sx1301.c | 446 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 456 insertions(+)
- create mode 100644 drivers/net/lora/sx1301.c
 
-diff --git a/drivers/net/lora/Kconfig b/drivers/net/lora/Kconfig
-index 68c7480d7812..950450e353b4 100644
---- a/drivers/net/lora/Kconfig
-+++ b/drivers/net/lora/Kconfig
-@@ -45,6 +45,13 @@ config LORA_SX1276
- 	help
- 	  Semtech SX1272/1276/1278
- 
-+config LORA_SX1301
-+	tristate "Semtech SX1301 SPI driver"
-+	default y
-+	depends on SPI
-+	help
-+	  Semtech SX1301
-+
- config LORA_USI
- 	tristate "USI WM-SG-SM-42 driver"
- 	default y
-diff --git a/drivers/net/lora/Makefile b/drivers/net/lora/Makefile
-index 44c578bde7d5..1cc1e3aa189b 100644
---- a/drivers/net/lora/Makefile
-+++ b/drivers/net/lora/Makefile
-@@ -22,6 +22,9 @@ lora-sx1257-y := sx1257.o
- obj-$(CONFIG_LORA_SX1276) += lora-sx1276.o
- lora-sx1276-y := sx1276.o
- 
-+obj-$(CONFIG_LORA_SX1301) += lora-sx1301.o
-+lora-sx1301-y := sx1301.o
-+
- obj-$(CONFIG_LORA_USI) += lora-usi.o
- lora-usi-y := usi.o
- 
-diff --git a/drivers/net/lora/sx1301.c b/drivers/net/lora/sx1301.c
-new file mode 100644
-index 000000000000..5c936c1116d1
---- /dev/null
-+++ b/drivers/net/lora/sx1301.c
-@@ -0,0 +1,446 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Semtech SX1301 LoRa concentrator
-+ *
-+ * Copyright (c) 2018 Andreas Färber
-+ *
-+ * Based on SX1301 HAL code:
-+ * Copyright (c) 2013 Semtech-Cycleo
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/lora.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/of_gpio.h>
-+#include <linux/lora/dev.h>
-+#include <linux/spi/spi.h>
-+
-+#define REG_PAGE_RESET			0
-+#define REG_VERSION			1
-+#define REG_2_SPI_RADIO_A_DATA		33
-+#define REG_2_SPI_RADIO_A_DATA_READBACK	34
-+#define REG_2_SPI_RADIO_A_ADDR		35
-+#define REG_2_SPI_RADIO_A_CS		37
-+#define REG_2_SPI_RADIO_B_DATA		38
-+#define REG_2_SPI_RADIO_B_DATA_READBACK	39
-+#define REG_2_SPI_RADIO_B_ADDR		40
-+#define REG_2_SPI_RADIO_B_CS		42
-+
-+#define REG_PAGE_RESET_SOFT_RESET	BIT(7)
-+
-+#define REG_16_GLOBAL_EN		BIT(3)
-+
-+#define REG_17_CLK32M_EN		BIT(0)
-+
-+#define REG_2_43_RADIO_A_EN		BIT(0)
-+#define REG_2_43_RADIO_B_EN		BIT(1)
-+#define REG_2_43_RADIO_RST		BIT(2)
-+
-+struct spi_sx1301 {
-+	struct spi_device *parent;
-+	u8 page;
-+	u8 regs;
-+};
-+
-+struct sx1301_priv {
-+	struct lora_priv lora;
-+	struct gpio_desc *rst_gpio;
-+	u8 cur_page;
-+	struct spi_controller *radio_a_ctrl, *radio_b_ctrl;
-+};
-+
-+static int sx1301_read(struct spi_device *spi, u8 reg, u8 *val)
-+{
-+	u8 addr = reg & 0x7f;
-+	return spi_write_then_read(spi, &addr, 1, val, 1);
-+}
-+
-+static int sx1301_write(struct spi_device *spi, u8 reg, u8 val)
-+{
-+	u8 buf[2];
-+
-+	buf[0] = reg | BIT(7);
-+	buf[1] = val;
-+	return spi_write(spi, buf, 2);
-+}
-+
-+static int sx1301_page_switch(struct spi_device *spi, u8 page)
-+{
-+	struct sx1301_priv *priv = spi_get_drvdata(spi);
-+	int ret;
-+
-+	if (priv->cur_page == page)
-+		return 0;
-+
-+	dev_dbg(&spi->dev, "switching to page %u\n", (unsigned)page);
-+	ret = sx1301_write(spi, REG_PAGE_RESET, page & 0x3);
-+	if (ret) {
-+		dev_err(&spi->dev, "switching to page %u failed\n", (unsigned)page);
-+		return ret;
-+	}
-+
-+	priv->cur_page = page;
-+
-+	return 0;
-+}
-+
-+static int sx1301_soft_reset(struct spi_device *spi)
-+{
-+	return sx1301_write(spi, REG_PAGE_RESET, REG_PAGE_RESET_SOFT_RESET);
-+}
-+
-+#define REG_RADIO_X_DATA		0
-+#define REG_RADIO_X_DATA_READBACK	1
-+#define REG_RADIO_X_ADDR		2
-+#define REG_RADIO_X_CS			4
-+
-+static int sx1301_radio_set_cs(struct spi_controller *ctrl, bool enable)
-+{
-+	struct spi_sx1301 *ssx = spi_controller_get_devdata(ctrl);
-+	u8 cs;
-+	int ret;
-+
-+	dev_dbg(&ctrl->dev, "setting CS to %s\n", enable ? "1" : "0");
-+
-+	ret = sx1301_page_switch(ssx->parent, ssx->page);
-+	if (ret) {
-+		dev_warn(&ctrl->dev, "failed to switch page for CS (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	ret = sx1301_read(ssx->parent, ssx->regs + REG_RADIO_X_CS, &cs);
-+	if (ret) {
-+		dev_warn(&ctrl->dev, "failed to read CS (%d)\n", ret);
-+		cs = 0;
-+	}
-+
-+	if (enable)
-+		cs |= BIT(0);
-+	else
-+		cs &= ~BIT(0);
-+
-+	ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_CS, cs);
-+	if (ret)
-+		dev_warn(&ctrl->dev, "failed to write CS (%d)\n", ret);
-+
-+	return 0;
-+}
-+
-+static void sx1301_radio_spi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	int ret;
-+
-+	dev_dbg(&spi->dev, "setting SPI CS to %s\n", enable ? "1" : "0");
-+
-+	if (enable)
-+		return;
-+
-+	ret = sx1301_radio_set_cs(spi->controller, enable);
-+	if (ret)
-+		dev_warn(&spi->dev, "failed to write CS (%d)\n", ret);
-+}
-+
-+static int sx1301_radio_spi_transfer_one(struct spi_controller *ctrl,
-+	struct spi_device *spi, struct spi_transfer *xfr)
-+{
-+	struct spi_sx1301 *ssx = spi_controller_get_devdata(ctrl);
-+	const u8 *tx_buf = xfr->tx_buf;
-+	u8 *rx_buf = xfr->rx_buf;
-+	int ret;
-+
-+	if (xfr->len == 0 || xfr->len > 3)
-+		return -EINVAL;
-+
-+	dev_dbg(&spi->dev, "transferring one (%u)\n", xfr->len);
-+
-+	ret = sx1301_page_switch(ssx->parent, ssx->page);
-+	if (ret) {
-+		dev_err(&spi->dev, "failed to switch page for transfer (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	if (tx_buf) {
-+		ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_ADDR, tx_buf ? tx_buf[0] : 0);
-+		if (ret) {
-+			dev_err(&spi->dev, "SPI radio address write failed\n");
-+			return ret;
-+		}
-+
-+		ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_DATA, (tx_buf && xfr->len >= 2) ? tx_buf[1] : 0);
-+		if (ret) {
-+			dev_err(&spi->dev, "SPI radio data write failed\n");
-+			return ret;
-+		}
-+
-+		ret = sx1301_radio_set_cs(ctrl, true);
-+		if (ret) {
-+			dev_err(&spi->dev, "SPI radio CS set failed\n");
-+			return ret;
-+		}
-+
-+		ret = sx1301_radio_set_cs(ctrl, false);
-+		if (ret) {
-+			dev_err(&spi->dev, "SPI radio CS unset failed\n");
-+			return ret;
-+		}
-+	}
-+
-+	if (rx_buf) {
-+		ret = sx1301_read(ssx->parent, ssx->regs + REG_RADIO_X_DATA_READBACK, &rx_buf[xfr->len - 1]);
-+		if (ret) {
-+			dev_err(&spi->dev, "SPI radio data read failed\n");
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void sx1301_radio_setup(struct spi_controller *ctrl)
-+{
-+	ctrl->mode_bits = SPI_CS_HIGH | SPI_NO_CS;
-+	ctrl->bits_per_word_mask = SPI_BPW_MASK(8);
-+	ctrl->num_chipselect = 1;
-+	ctrl->set_cs = sx1301_radio_spi_set_cs;
-+	ctrl->transfer_one = sx1301_radio_spi_transfer_one;
-+}
-+
-+static int sx1301_probe(struct spi_device *spi)
-+{
-+	struct net_device *netdev;
-+	struct sx1301_priv *priv;
-+	struct spi_sx1301 *radio;
-+	struct gpio_desc *rst;
-+	int ret;
-+	u8 val;
-+
-+	rst = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(rst))
-+		return PTR_ERR(rst);
-+
-+	gpiod_set_value_cansleep(rst, 1);
-+	msleep(100);
-+	gpiod_set_value_cansleep(rst, 0);
-+	msleep(100);
-+
-+	spi->bits_per_word = 8;
-+	spi_setup(spi);
-+
-+	ret = sx1301_read(spi, REG_VERSION, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "version read failed\n");
-+		goto err_version;
-+	}
-+
-+	if (val != 103) {
-+		dev_err(&spi->dev, "unexpected version: %u\n", val);
-+		ret = -ENXIO;
-+		goto err_version;
-+	}
-+
-+	netdev = alloc_loradev(sizeof(*priv));
-+	if (!netdev) {
-+		ret = -ENOMEM;
-+		goto err_alloc_loradev;
-+	}
-+
-+	priv = netdev_priv(netdev);
-+	priv->rst_gpio = rst;
-+	priv->cur_page = 0xff;
-+
-+	spi_set_drvdata(spi, netdev);
-+	SET_NETDEV_DEV(netdev, &spi->dev);
-+
-+	ret = sx1301_write(spi, REG_PAGE_RESET, 0);
-+	if (ret) {
-+		dev_err(&spi->dev, "page/reset write failed\n");
-+		return ret;
-+	}
-+
-+	ret = sx1301_soft_reset(spi);
-+	if (ret) {
-+		dev_err(&spi->dev, "soft reset failed\n");
-+		return ret;
-+	}
-+
-+	ret = sx1301_read(spi, 16, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "16 read failed\n");
-+		return ret;
-+	}
-+
-+	val &= ~REG_16_GLOBAL_EN;
-+
-+	ret = sx1301_write(spi, 16, val);
-+	if (ret) {
-+		dev_err(&spi->dev, "16 write failed\n");
-+		return ret;
-+	}
-+
-+	ret = sx1301_read(spi, 17, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "17 read failed\n");
-+		return ret;
-+	}
-+
-+	val &= ~REG_17_CLK32M_EN;
-+
-+	ret = sx1301_write(spi, 17, val);
-+	if (ret) {
-+		dev_err(&spi->dev, "17 write failed\n");
-+		return ret;
-+	}
-+
-+	ret = sx1301_page_switch(spi, 2);
-+	if (ret) {
-+		dev_err(&spi->dev, "page 2 switch failed\n");
-+		return ret;
-+	}
-+
-+	ret = sx1301_read(spi, 43, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 read failed\n");
-+		return ret;
-+	}
-+
-+	val |= REG_2_43_RADIO_B_EN | REG_2_43_RADIO_A_EN;
-+
-+	ret = sx1301_write(spi, 43, val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 write failed\n");
-+		return ret;
-+	}
-+
-+	msleep(500);
-+
-+	ret = sx1301_read(spi, 43, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 read failed\n");
-+		return ret;
-+	}
-+
-+	val |= REG_2_43_RADIO_RST;
-+
-+	ret = sx1301_write(spi, 43, val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 write failed\n");
-+		return ret;
-+	}
-+
-+	msleep(5);
-+
-+	ret = sx1301_read(spi, 43, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 read failed\n");
-+		return ret;
-+	}
-+
-+	val &= ~REG_2_43_RADIO_RST;
-+
-+	ret = sx1301_write(spi, 43, val);
-+	if (ret) {
-+		dev_err(&spi->dev, "2|43 write failed\n");
-+		return ret;
-+	}
-+
-+	/* radio A */
-+
-+	priv->radio_a_ctrl = spi_alloc_master(&spi->dev, sizeof(*radio));
-+	if (!priv->radio_a_ctrl) {
-+		ret = -ENOMEM;
-+		goto err_radio_a_alloc;
-+	}
-+
-+	sx1301_radio_setup(priv->radio_a_ctrl);
-+	priv->radio_a_ctrl->dev.of_node = of_get_child_by_name(spi->dev.of_node, "radio-a");
-+
-+	radio = spi_controller_get_devdata(priv->radio_a_ctrl);
-+	radio->page = 2;
-+	radio->regs = REG_2_SPI_RADIO_A_DATA;
-+	radio->parent = spi;
-+
-+	dev_info(&spi->dev, "registering radio A SPI\n");
-+
-+	ret = devm_spi_register_controller(&spi->dev, priv->radio_a_ctrl);
-+	if (ret) {
-+		dev_err(&spi->dev, "radio A SPI register failed\n");
-+		goto err_radio_a_register;
-+	}
-+
-+	/* radio B */
-+
-+	priv->radio_b_ctrl = spi_alloc_master(&spi->dev, sizeof(*radio));
-+	if (!priv->radio_b_ctrl) {
-+		ret = -ENOMEM;
-+		goto err_radio_b_alloc;
-+	}
-+
-+	sx1301_radio_setup(priv->radio_b_ctrl);
-+	priv->radio_b_ctrl->dev.of_node = of_get_child_by_name(spi->dev.of_node, "radio-b");
-+
-+	radio = spi_controller_get_devdata(priv->radio_b_ctrl);
-+	radio->page = 2;
-+	radio->regs = REG_2_SPI_RADIO_B_DATA;
-+	radio->parent = spi;
-+
-+	dev_info(&spi->dev, "registering radio B SPI\n");
-+
-+	ret = devm_spi_register_controller(&spi->dev, priv->radio_b_ctrl);
-+	if (ret) {
-+		dev_err(&spi->dev, "radio B SPI register failed\n");
-+		goto err_radio_b_register;
-+	}
-+
-+	dev_info(&spi->dev, "SX1301 module probed\n");
-+
-+	return 0;
-+err_radio_b_register:
-+	spi_controller_put(priv->radio_b_ctrl);
-+err_radio_b_alloc:
-+err_radio_a_register:
-+	spi_controller_put(priv->radio_a_ctrl);
-+err_radio_a_alloc:
-+	free_loradev(netdev);
-+err_alloc_loradev:
-+err_version:
-+	return ret;
-+}
-+
-+static int sx1301_remove(struct spi_device *spi)
-+{
-+	struct net_device *netdev = spi_get_drvdata(spi);
-+
-+	//unregister_loradev(netdev);
-+	free_loradev(netdev);
-+
-+	dev_info(&spi->dev, "SX1301 module removed\n");
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_OF
-+static const struct of_device_id sx1301_dt_ids[] = {
-+	{ .compatible = "semtech,sx1301" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, sx1301_dt_ids);
-+#endif
-+
-+static struct spi_driver sx1301_spi_driver = {
-+	.driver = {
-+		.name = "sx1301",
-+		.of_match_table = of_match_ptr(sx1301_dt_ids),
-+	},
-+	.probe = sx1301_probe,
-+	.remove = sx1301_remove,
-+};
-+
-+module_spi_driver(sx1301_spi_driver);
-+
-+MODULE_DESCRIPTION("SX1301 SPI driver");
-+MODULE_AUTHOR("Andreas Färber <afaerber@suse.de>");
-+MODULE_LICENSE("GPL");
+Andreas Färber (15):
+  net: Reserve protocol numbers for LoRa
+  net: lora: Define sockaddr_lora
+  net: lora: Add protocol numbers
+  net: Add lora subsystem
+  HACK: net: lora: Deal with .poll_mask in 4.18-rc2
+  net: lora: Prepare for device drivers
+  net: lora: Add Semtech SX1276
+  net: lora: sx1276: Add debugfs
+  net: lora: Prepare EUI helpers
+  net: lora: Add Microchip RN2483
+  net: lora: Add IMST WiMOD
+  net: lora: Add USI WM-SG-SM-42
+  net: lora: Prepare RAK RAK811
+  net: lora: Prepare Semtech SX1257
+  net: lora: Add Semtech SX1301
+
+ drivers/net/Makefile                |   1 +
+ drivers/net/lora/Kconfig            |  72 ++++
+ drivers/net/lora/Makefile           |  32 ++
+ drivers/net/lora/dev.c              | 125 ++++++
+ drivers/net/lora/rak811.c           | 219 +++++++++++
+ drivers/net/lora/rn2483.c           | 344 +++++++++++++++++
+ drivers/net/lora/rn2483.h           |  40 ++
+ drivers/net/lora/rn2483_cmd.c       | 130 +++++++
+ drivers/net/lora/sx1257.c           |  96 +++++
+ drivers/net/lora/sx1276.c           | 740 ++++++++++++++++++++++++++++++++++++
+ drivers/net/lora/sx1301.c           | 446 ++++++++++++++++++++++
+ drivers/net/lora/usi.c              | 411 ++++++++++++++++++++
+ drivers/net/lora/wimod.c            | 597 +++++++++++++++++++++++++++++
+ include/linux/lora/dev.h            |  44 +++
+ include/linux/lora/skb.h            |  29 ++
+ include/linux/socket.h              |   4 +-
+ include/uapi/linux/if_arp.h         |   1 +
+ include/uapi/linux/if_ether.h       |   1 +
+ include/uapi/linux/lora.h           |  24 ++
+ net/Kconfig                         |   1 +
+ net/Makefile                        |   1 +
+ net/lora/Kconfig                    |  15 +
+ net/lora/Makefile                   |   8 +
+ net/lora/af_lora.c                  | 152 ++++++++
+ net/lora/af_lora.h                  |  13 +
+ net/lora/dgram.c                    | 297 +++++++++++++++
+ security/selinux/hooks.c            |   4 +-
+ security/selinux/include/classmap.h |   4 +-
+ 28 files changed, 3848 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/lora/Kconfig
+ create mode 100644 drivers/net/lora/Makefile
+ create mode 100644 drivers/net/lora/dev.c
+ create mode 100644 drivers/net/lora/rak811.c
+ create mode 100644 drivers/net/lora/rn2483.c
+ create mode 100644 drivers/net/lora/rn2483.h
+ create mode 100644 drivers/net/lora/rn2483_cmd.c
+ create mode 100644 drivers/net/lora/sx1257.c
+ create mode 100644 drivers/net/lora/sx1276.c
+ create mode 100644 drivers/net/lora/sx1301.c
+ create mode 100644 drivers/net/lora/usi.c
+ create mode 100644 drivers/net/lora/wimod.c
+ create mode 100644 include/linux/lora/dev.h
+ create mode 100644 include/linux/lora/skb.h
+ create mode 100644 include/uapi/linux/lora.h
+ create mode 100644 net/lora/Kconfig
+ create mode 100644 net/lora/Makefile
+ create mode 100644 net/lora/af_lora.c
+ create mode 100644 net/lora/af_lora.h
+ create mode 100644 net/lora/dgram.c
+
 -- 
 2.16.4

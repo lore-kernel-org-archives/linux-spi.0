@@ -1,93 +1,541 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe
-Date: Fri, 29 Jun 2018 13:33:09 +0200
-Message-ID: <1530271989-9022-1-git-send-email-krzk@kernel.org>
-Cc: Stefan Agner <stefan@agner.ch>, Shawn Guo <shawnguo@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-Sender: stable-owner@vger.kernel.org
+From: =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
+Subject: [RFC net-next 15/15] net: lora: Add Semtech SX1301
+Date: Sun,  1 Jul 2018 13:08:04 +0200
+Message-ID: <20180701110804.32415-16-afaerber@suse.de>
+References: <20180701110804.32415-1-afaerber@suse.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jian-Hong Pan <starnight@g.ncu.edu.tw>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Janus Piwek <jpiwek@arroweurope.com>,
+        =?UTF-8?q?Michael=20R=C3=B6der?= <michael.roeder@avnet.eu>,
+        Dollar Chen <dollar.chen@wtmec.com>,
+        Ken Yu <ken.yu@rakwireless.com>,
+        =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        Steve deRosier <derosier@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: netdev@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180701110804.32415-1-afaerber@suse.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Registers of DSPI should not be accessed before enabling its clock.  On
-Toradex Colibri VF50 on Iris carrier board this could be seen during
-bootup as imprecise abort:
+The Semtech SX1301 was the first multi-channel LoRa "concentrator".
+It uses a SPI interface to the host as well as a dual SPI interface to
+its radios. These two have been implemented as spi_controller, so that
+the Device Tree can specify whether the respective module uses two
+SX1257, two SX1255 or a combination of these or some unforeseen chipset.
 
-    Unhandled fault: imprecise external abort (0x1c06) at 0x00000000
-    Internal error: : 1c06 [#1] ARM
-    Modules linked in:
-    CPU: 0 PID: 1 Comm: swapper Not tainted 4.14.39-dirty #97
-    Hardware name: Freescale Vybrid VF5xx/VF6xx (Device Tree)
-    Backtrace:
-    [<804166a8>] (regmap_write) from [<80466b5c>] (dspi_probe+0x1f0/0x8dc)
-    [<8046696c>] (dspi_probe) from [<8040107c>] (platform_drv_probe+0x54/0xb8)
-    [<80401028>] (platform_drv_probe) from [<803ff53c>] (driver_probe_device+0x280/0x2f8)
-    [<803ff2bc>] (driver_probe_device) from [<803ff674>] (__driver_attach+0xc0/0xc4)
-    [<803ff5b4>] (__driver_attach) from [<803fd818>] (bus_for_each_dev+0x70/0xa4)
-    [<803fd7a8>] (bus_for_each_dev) from [<803fee74>] (driver_attach+0x24/0x28)
-    [<803fee50>] (driver_attach) from [<803fe980>] (bus_add_driver+0x1a0/0x218)
-    [<803fe7e0>] (bus_add_driver) from [<803fffe8>] (driver_register+0x80/0x100)
-    [<803fff68>] (driver_register) from [<80400fdc>] (__platform_driver_register+0x48/0x50)
-    [<80400f94>] (__platform_driver_register) from [<8091cf7c>] (fsl_dspi_driver_init+0x1c/0x20)
-    [<8091cf60>] (fsl_dspi_driver_init) from [<8010195c>] (do_one_initcall+0x4c/0x174)
-    [<80101910>] (do_one_initcall) from [<80900e8c>] (kernel_init_freeable+0x144/0x1d8)
-    [<80900d48>] (kernel_init_freeable) from [<805ff6a8>] (kernel_init+0x10/0x114)
-    [<805ff698>] (kernel_init) from [<80107be8>] (ret_from_fork+0x14/0x2c)
+This implementation is the most recent - initialization is not yet
+complete, it will need to load firmware into the two on-chip MCUs.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 5ee67b587a2b ("spi: dspi: clear SPI_SR before enable interrupt")
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Unfortunately there is no full datasheet with register descriptions,
+only a BSD-licensed userspace HAL implementation using spidev devices.
+Therefore some register names are unknown.
+
+Cc: Ben Whitten <ben.whitten@lairdtech.com>
+Cc: Steve deRosier <derosier@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michael Röder <michael.roeder@avnet.eu>
+Cc: Ken Yu (禹凯) <ken.yu@rakwireless.com>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Andreas Färber <afaerber@suse.de>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/lora/Kconfig  |   7 +
+ drivers/net/lora/Makefile |   3 +
+ drivers/net/lora/sx1301.c | 446 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 456 insertions(+)
+ create mode 100644 drivers/net/lora/sx1301.c
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index ff7456be9d6d..89a1e7a4fe5d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1071,30 +1071,30 @@ static int dspi_probe(struct platform_device *pdev)
- 		}
- 	}
+diff --git a/drivers/net/lora/Kconfig b/drivers/net/lora/Kconfig
+index 68c7480d7812..950450e353b4 100644
+--- a/drivers/net/lora/Kconfig
++++ b/drivers/net/lora/Kconfig
+@@ -45,6 +45,13 @@ config LORA_SX1276
+ 	help
+ 	  Semtech SX1272/1276/1278
  
-+	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
-+	if (IS_ERR(dspi->clk)) {
-+		ret = PTR_ERR(dspi->clk);
-+		dev_err(&pdev->dev, "unable to get clock\n");
-+		goto out_master_put;
-+	}
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		goto out_master_put;
++config LORA_SX1301
++	tristate "Semtech SX1301 SPI driver"
++	default y
++	depends on SPI
++	help
++	  Semtech SX1301
 +
- 	dspi_init(dspi);
- 	dspi->irq = platform_get_irq(pdev, 0);
- 	if (dspi->irq < 0) {
- 		dev_err(&pdev->dev, "can't get platform irq\n");
- 		ret = dspi->irq;
--		goto out_master_put;
-+		goto out_clk_put;
- 	}
+ config LORA_USI
+ 	tristate "USI WM-SG-SM-42 driver"
+ 	default y
+diff --git a/drivers/net/lora/Makefile b/drivers/net/lora/Makefile
+index 44c578bde7d5..1cc1e3aa189b 100644
+--- a/drivers/net/lora/Makefile
++++ b/drivers/net/lora/Makefile
+@@ -22,6 +22,9 @@ lora-sx1257-y := sx1257.o
+ obj-$(CONFIG_LORA_SX1276) += lora-sx1276.o
+ lora-sx1276-y := sx1276.o
  
- 	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
- 			pdev->name, dspi);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
--		goto out_master_put;
--	}
--
--	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
--	if (IS_ERR(dspi->clk)) {
--		ret = PTR_ERR(dspi->clk);
--		dev_err(&pdev->dev, "unable to get clock\n");
--		goto out_master_put;
-+		goto out_clk_put;
- 	}
--	ret = clk_prepare_enable(dspi->clk);
--	if (ret)
--		goto out_master_put;
++obj-$(CONFIG_LORA_SX1301) += lora-sx1301.o
++lora-sx1301-y := sx1301.o
++
+ obj-$(CONFIG_LORA_USI) += lora-usi.o
+ lora-usi-y := usi.o
  
- 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 		ret = dspi_request_dma(dspi, res->start);
+diff --git a/drivers/net/lora/sx1301.c b/drivers/net/lora/sx1301.c
+new file mode 100644
+index 000000000000..5c936c1116d1
+--- /dev/null
++++ b/drivers/net/lora/sx1301.c
+@@ -0,0 +1,446 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Semtech SX1301 LoRa concentrator
++ *
++ * Copyright (c) 2018 Andreas Färber
++ *
++ * Based on SX1301 HAL code:
++ * Copyright (c) 2013 Semtech-Cycleo
++ */
++
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <linux/lora.h>
++#include <linux/module.h>
++#include <linux/netdevice.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/of_gpio.h>
++#include <linux/lora/dev.h>
++#include <linux/spi/spi.h>
++
++#define REG_PAGE_RESET			0
++#define REG_VERSION			1
++#define REG_2_SPI_RADIO_A_DATA		33
++#define REG_2_SPI_RADIO_A_DATA_READBACK	34
++#define REG_2_SPI_RADIO_A_ADDR		35
++#define REG_2_SPI_RADIO_A_CS		37
++#define REG_2_SPI_RADIO_B_DATA		38
++#define REG_2_SPI_RADIO_B_DATA_READBACK	39
++#define REG_2_SPI_RADIO_B_ADDR		40
++#define REG_2_SPI_RADIO_B_CS		42
++
++#define REG_PAGE_RESET_SOFT_RESET	BIT(7)
++
++#define REG_16_GLOBAL_EN		BIT(3)
++
++#define REG_17_CLK32M_EN		BIT(0)
++
++#define REG_2_43_RADIO_A_EN		BIT(0)
++#define REG_2_43_RADIO_B_EN		BIT(1)
++#define REG_2_43_RADIO_RST		BIT(2)
++
++struct spi_sx1301 {
++	struct spi_device *parent;
++	u8 page;
++	u8 regs;
++};
++
++struct sx1301_priv {
++	struct lora_priv lora;
++	struct gpio_desc *rst_gpio;
++	u8 cur_page;
++	struct spi_controller *radio_a_ctrl, *radio_b_ctrl;
++};
++
++static int sx1301_read(struct spi_device *spi, u8 reg, u8 *val)
++{
++	u8 addr = reg & 0x7f;
++	return spi_write_then_read(spi, &addr, 1, val, 1);
++}
++
++static int sx1301_write(struct spi_device *spi, u8 reg, u8 val)
++{
++	u8 buf[2];
++
++	buf[0] = reg | BIT(7);
++	buf[1] = val;
++	return spi_write(spi, buf, 2);
++}
++
++static int sx1301_page_switch(struct spi_device *spi, u8 page)
++{
++	struct sx1301_priv *priv = spi_get_drvdata(spi);
++	int ret;
++
++	if (priv->cur_page == page)
++		return 0;
++
++	dev_dbg(&spi->dev, "switching to page %u\n", (unsigned)page);
++	ret = sx1301_write(spi, REG_PAGE_RESET, page & 0x3);
++	if (ret) {
++		dev_err(&spi->dev, "switching to page %u failed\n", (unsigned)page);
++		return ret;
++	}
++
++	priv->cur_page = page;
++
++	return 0;
++}
++
++static int sx1301_soft_reset(struct spi_device *spi)
++{
++	return sx1301_write(spi, REG_PAGE_RESET, REG_PAGE_RESET_SOFT_RESET);
++}
++
++#define REG_RADIO_X_DATA		0
++#define REG_RADIO_X_DATA_READBACK	1
++#define REG_RADIO_X_ADDR		2
++#define REG_RADIO_X_CS			4
++
++static int sx1301_radio_set_cs(struct spi_controller *ctrl, bool enable)
++{
++	struct spi_sx1301 *ssx = spi_controller_get_devdata(ctrl);
++	u8 cs;
++	int ret;
++
++	dev_dbg(&ctrl->dev, "setting CS to %s\n", enable ? "1" : "0");
++
++	ret = sx1301_page_switch(ssx->parent, ssx->page);
++	if (ret) {
++		dev_warn(&ctrl->dev, "failed to switch page for CS (%d)\n", ret);
++		return ret;
++	}
++
++	ret = sx1301_read(ssx->parent, ssx->regs + REG_RADIO_X_CS, &cs);
++	if (ret) {
++		dev_warn(&ctrl->dev, "failed to read CS (%d)\n", ret);
++		cs = 0;
++	}
++
++	if (enable)
++		cs |= BIT(0);
++	else
++		cs &= ~BIT(0);
++
++	ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_CS, cs);
++	if (ret)
++		dev_warn(&ctrl->dev, "failed to write CS (%d)\n", ret);
++
++	return 0;
++}
++
++static void sx1301_radio_spi_set_cs(struct spi_device *spi, bool enable)
++{
++	int ret;
++
++	dev_dbg(&spi->dev, "setting SPI CS to %s\n", enable ? "1" : "0");
++
++	if (enable)
++		return;
++
++	ret = sx1301_radio_set_cs(spi->controller, enable);
++	if (ret)
++		dev_warn(&spi->dev, "failed to write CS (%d)\n", ret);
++}
++
++static int sx1301_radio_spi_transfer_one(struct spi_controller *ctrl,
++	struct spi_device *spi, struct spi_transfer *xfr)
++{
++	struct spi_sx1301 *ssx = spi_controller_get_devdata(ctrl);
++	const u8 *tx_buf = xfr->tx_buf;
++	u8 *rx_buf = xfr->rx_buf;
++	int ret;
++
++	if (xfr->len == 0 || xfr->len > 3)
++		return -EINVAL;
++
++	dev_dbg(&spi->dev, "transferring one (%u)\n", xfr->len);
++
++	ret = sx1301_page_switch(ssx->parent, ssx->page);
++	if (ret) {
++		dev_err(&spi->dev, "failed to switch page for transfer (%d)\n", ret);
++		return ret;
++	}
++
++	if (tx_buf) {
++		ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_ADDR, tx_buf ? tx_buf[0] : 0);
++		if (ret) {
++			dev_err(&spi->dev, "SPI radio address write failed\n");
++			return ret;
++		}
++
++		ret = sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_DATA, (tx_buf && xfr->len >= 2) ? tx_buf[1] : 0);
++		if (ret) {
++			dev_err(&spi->dev, "SPI radio data write failed\n");
++			return ret;
++		}
++
++		ret = sx1301_radio_set_cs(ctrl, true);
++		if (ret) {
++			dev_err(&spi->dev, "SPI radio CS set failed\n");
++			return ret;
++		}
++
++		ret = sx1301_radio_set_cs(ctrl, false);
++		if (ret) {
++			dev_err(&spi->dev, "SPI radio CS unset failed\n");
++			return ret;
++		}
++	}
++
++	if (rx_buf) {
++		ret = sx1301_read(ssx->parent, ssx->regs + REG_RADIO_X_DATA_READBACK, &rx_buf[xfr->len - 1]);
++		if (ret) {
++			dev_err(&spi->dev, "SPI radio data read failed\n");
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++static void sx1301_radio_setup(struct spi_controller *ctrl)
++{
++	ctrl->mode_bits = SPI_CS_HIGH | SPI_NO_CS;
++	ctrl->bits_per_word_mask = SPI_BPW_MASK(8);
++	ctrl->num_chipselect = 1;
++	ctrl->set_cs = sx1301_radio_spi_set_cs;
++	ctrl->transfer_one = sx1301_radio_spi_transfer_one;
++}
++
++static int sx1301_probe(struct spi_device *spi)
++{
++	struct net_device *netdev;
++	struct sx1301_priv *priv;
++	struct spi_sx1301 *radio;
++	struct gpio_desc *rst;
++	int ret;
++	u8 val;
++
++	rst = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(rst))
++		return PTR_ERR(rst);
++
++	gpiod_set_value_cansleep(rst, 1);
++	msleep(100);
++	gpiod_set_value_cansleep(rst, 0);
++	msleep(100);
++
++	spi->bits_per_word = 8;
++	spi_setup(spi);
++
++	ret = sx1301_read(spi, REG_VERSION, &val);
++	if (ret) {
++		dev_err(&spi->dev, "version read failed\n");
++		goto err_version;
++	}
++
++	if (val != 103) {
++		dev_err(&spi->dev, "unexpected version: %u\n", val);
++		ret = -ENXIO;
++		goto err_version;
++	}
++
++	netdev = alloc_loradev(sizeof(*priv));
++	if (!netdev) {
++		ret = -ENOMEM;
++		goto err_alloc_loradev;
++	}
++
++	priv = netdev_priv(netdev);
++	priv->rst_gpio = rst;
++	priv->cur_page = 0xff;
++
++	spi_set_drvdata(spi, netdev);
++	SET_NETDEV_DEV(netdev, &spi->dev);
++
++	ret = sx1301_write(spi, REG_PAGE_RESET, 0);
++	if (ret) {
++		dev_err(&spi->dev, "page/reset write failed\n");
++		return ret;
++	}
++
++	ret = sx1301_soft_reset(spi);
++	if (ret) {
++		dev_err(&spi->dev, "soft reset failed\n");
++		return ret;
++	}
++
++	ret = sx1301_read(spi, 16, &val);
++	if (ret) {
++		dev_err(&spi->dev, "16 read failed\n");
++		return ret;
++	}
++
++	val &= ~REG_16_GLOBAL_EN;
++
++	ret = sx1301_write(spi, 16, val);
++	if (ret) {
++		dev_err(&spi->dev, "16 write failed\n");
++		return ret;
++	}
++
++	ret = sx1301_read(spi, 17, &val);
++	if (ret) {
++		dev_err(&spi->dev, "17 read failed\n");
++		return ret;
++	}
++
++	val &= ~REG_17_CLK32M_EN;
++
++	ret = sx1301_write(spi, 17, val);
++	if (ret) {
++		dev_err(&spi->dev, "17 write failed\n");
++		return ret;
++	}
++
++	ret = sx1301_page_switch(spi, 2);
++	if (ret) {
++		dev_err(&spi->dev, "page 2 switch failed\n");
++		return ret;
++	}
++
++	ret = sx1301_read(spi, 43, &val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 read failed\n");
++		return ret;
++	}
++
++	val |= REG_2_43_RADIO_B_EN | REG_2_43_RADIO_A_EN;
++
++	ret = sx1301_write(spi, 43, val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 write failed\n");
++		return ret;
++	}
++
++	msleep(500);
++
++	ret = sx1301_read(spi, 43, &val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 read failed\n");
++		return ret;
++	}
++
++	val |= REG_2_43_RADIO_RST;
++
++	ret = sx1301_write(spi, 43, val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 write failed\n");
++		return ret;
++	}
++
++	msleep(5);
++
++	ret = sx1301_read(spi, 43, &val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 read failed\n");
++		return ret;
++	}
++
++	val &= ~REG_2_43_RADIO_RST;
++
++	ret = sx1301_write(spi, 43, val);
++	if (ret) {
++		dev_err(&spi->dev, "2|43 write failed\n");
++		return ret;
++	}
++
++	/* radio A */
++
++	priv->radio_a_ctrl = spi_alloc_master(&spi->dev, sizeof(*radio));
++	if (!priv->radio_a_ctrl) {
++		ret = -ENOMEM;
++		goto err_radio_a_alloc;
++	}
++
++	sx1301_radio_setup(priv->radio_a_ctrl);
++	priv->radio_a_ctrl->dev.of_node = of_get_child_by_name(spi->dev.of_node, "radio-a");
++
++	radio = spi_controller_get_devdata(priv->radio_a_ctrl);
++	radio->page = 2;
++	radio->regs = REG_2_SPI_RADIO_A_DATA;
++	radio->parent = spi;
++
++	dev_info(&spi->dev, "registering radio A SPI\n");
++
++	ret = devm_spi_register_controller(&spi->dev, priv->radio_a_ctrl);
++	if (ret) {
++		dev_err(&spi->dev, "radio A SPI register failed\n");
++		goto err_radio_a_register;
++	}
++
++	/* radio B */
++
++	priv->radio_b_ctrl = spi_alloc_master(&spi->dev, sizeof(*radio));
++	if (!priv->radio_b_ctrl) {
++		ret = -ENOMEM;
++		goto err_radio_b_alloc;
++	}
++
++	sx1301_radio_setup(priv->radio_b_ctrl);
++	priv->radio_b_ctrl->dev.of_node = of_get_child_by_name(spi->dev.of_node, "radio-b");
++
++	radio = spi_controller_get_devdata(priv->radio_b_ctrl);
++	radio->page = 2;
++	radio->regs = REG_2_SPI_RADIO_B_DATA;
++	radio->parent = spi;
++
++	dev_info(&spi->dev, "registering radio B SPI\n");
++
++	ret = devm_spi_register_controller(&spi->dev, priv->radio_b_ctrl);
++	if (ret) {
++		dev_err(&spi->dev, "radio B SPI register failed\n");
++		goto err_radio_b_register;
++	}
++
++	dev_info(&spi->dev, "SX1301 module probed\n");
++
++	return 0;
++err_radio_b_register:
++	spi_controller_put(priv->radio_b_ctrl);
++err_radio_b_alloc:
++err_radio_a_register:
++	spi_controller_put(priv->radio_a_ctrl);
++err_radio_a_alloc:
++	free_loradev(netdev);
++err_alloc_loradev:
++err_version:
++	return ret;
++}
++
++static int sx1301_remove(struct spi_device *spi)
++{
++	struct net_device *netdev = spi_get_drvdata(spi);
++
++	//unregister_loradev(netdev);
++	free_loradev(netdev);
++
++	dev_info(&spi->dev, "SX1301 module removed\n");
++
++	return 0;
++}
++
++#ifdef CONFIG_OF
++static const struct of_device_id sx1301_dt_ids[] = {
++	{ .compatible = "semtech,sx1301" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, sx1301_dt_ids);
++#endif
++
++static struct spi_driver sx1301_spi_driver = {
++	.driver = {
++		.name = "sx1301",
++		.of_match_table = of_match_ptr(sx1301_dt_ids),
++	},
++	.probe = sx1301_probe,
++	.remove = sx1301_remove,
++};
++
++module_spi_driver(sx1301_spi_driver);
++
++MODULE_DESCRIPTION("SX1301 SPI driver");
++MODULE_AUTHOR("Andreas Färber <afaerber@suse.de>");
++MODULE_LICENSE("GPL");
 -- 
-2.7.4
+2.16.4

@@ -1,169 +1,130 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v9 0/6] mtd: Add a SPI NAND driver
-Date: Sun, 1 Jul 2018 20:11:27 +0200
-Message-ID: <20180701201127.551d969c@xps13>
-References: <20180622122828.12939-1-boris.brezillon@bootlin.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Mason Yang <masonccyang@mxic.com.tw>, Julien Su <juliensu@mxic.com.tw>,
- Pawel Moll <pawel.moll@arm.com>, Ian Campbell <ijc+devicetree@hellion.org.uk>,
- Piotr Bugalski <Piotr.Bugalski@cryptera.com>,
- Richard Weinberger <richard@nod.at>, Rob Herring <robh+dt@kernel.org>,
- linux-spi@vger.kernel.org, Peter Pan <peterpansjtu@gmail.com>,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Kumar Gala <galak@codeaurora.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180622122828.12939-1-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe" to the spi tree
+Date: Mon, 02 Jul 2018 11:12:22 +0100
+Message-ID: <E1fZvok-0006lt-LT@debutante>
+References: <1530271989-9022-1-git-send-email-krzk@kernel.org>
+Cc: <stable@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
+        Shawn Guo <shawnguo@kernel.org>, stable@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1530271989-9022-1-git-send-email-krzk@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
-d3JvdGUgb24gRnJpLCAyMiBKdW4gMjAxOAoxNDoyODoyMiArMDIwMDoKCj4gSGVsbG8sCj4gCj4g
-Tm90IG11Y2ggaGFzIGNoYW5nZWQgaW4gdGhpcyB2OSBleGNlcHQgZm9yIHRoZSBhZGRpdGlvbiBv
-ZiB0aGUgbWFjcm9uaXgKPiBkcml2ZXIuIEkgbWFpbmx5IGZpeGVkIGJ1Z3MvaXNzdWVzIHJlcG9y
-dGVkIGJ5IE1pcXVlbC4KPiAKPiBNYXJrLCBSb2IsIEdlZXJ0LCBJIGRyb3BwZWQgdGhlIGNvbnRy
-b3ZlcnNpYWwgY2hhbmdlcyBpbiB0aGUgRFQKPiBiaW5kaW5ncyBwYXRjaCwgc2luY2UgaXQncyBu
-b3Qgc29tZXRoaW5nIHNwZWNpZmljIHRvIFNQSSBOQU5ELCB0aGlzCj4gYXBwbGllcyB0byBTUEkg
-bWVtb3J5IGRldmljZXMgaW4gZ2VuZXJhbC4KPiAKPiBUaGFua3MsCj4gCj4gQm9yaXMKPiAKPiB2
-OSBjaGFuZ2VzOgo+IC0gYWRkIHN1cHBvcnQgZm9yIDIgU1BJIE5BTkRzIGZyb20gTWFjcm9uaXgK
-PiAtIGEgZmV3IGZpeGVzIGFuZCBpbXByb3ZlbWVudHMgKHNlZSB0aGUgY2hhbmdlbG9nIGluIGVh
-Y2ggcGF0Y2gpCj4gLSBkcm9wIHRoZSBkb2MgZGVzY3JpYmluZyBnZW5lcmljIFNQSSBkZXZpY2Ug
-cHJvcHMgaW4gdGhlIERUIGJpbmRpbmcKPiAKPiB2OCBjaGFuZ2VzOgo+IC0gZHJvcHBlZCBwYXRj
-aCAxIHdoaWNoIGhhcyBiZWVuIGFwcGxpZWQKPiAtIGZpeCB2YXJpb3VzIGJ1Z3MgaW4gdGhlIGNv
-cmUgKHNlZSBjaGFuZ2Vsb2cgaW4gcGF0Y2ggMSkKPiAtIGFkZCBhIGNvbW1pdCBtZXNzYWdlIHRv
-IHBhdGNoIDQKPiAKPiB2NyBjaGFuZ2VzOgo+IC0gVXNlIHRoZSBzcGktbWVtIGludGVyZmFjZQo+
-IC0gQWRkIHN1cHBvcnQgZm9yIG9uLWRpZSBFQ0MKPiAtIEFkZCBzdXBwb3J0IGZvciBXaW5ib25k
-IFcyNU0wMkdWIGNoaXAKPiAKPiB2NiBjaGFuZ2VzOgo+IC0gaW5jbHVkZXMgZ2VuZXJpYyBOQU5E
-IGZyYW1ld29yayBwYXRjaGVzIGluIHNlcmllcwo+IC0gcmViYXNlIG9uIG5hbmQvbmV4dCAoY29t
-bWl0IDYwNzZmZDFlOWQ4Nzk1MjFmNzA4MmE1ZTIyMTg1YjcxZTQ4MGI3NzcpCj4gLSByZW1vdmUg
-b24tZGllIEVDQyBzdXBwb3J0Cj4gLSByZW1vdmUgZGV2bV9mcmVlKCkgc2luY2UgZXZlcnl0aGlu
-ZyBhbGxvY2F0ZWQgYnkgZGV2bV9rbWFsbG9jKCkgd2lsbCBiZQo+ICAgYXV0b21hdGljYWxseSBm
-cmVlZCB3aGVuIGRldmljZSBpcyByZWxlYXNlZAo+IC0gYWRkIGNvbW1lbnQgaGVhZGVyIGZvciBz
-dHJ1Y3RzIGluIHNwaW5hbmQuaAo+IC0gcmVtb3ZlIHNwaW5hbmRfcmVnaXN0ZXIoKS91bnJlZ2lz
-dGVyKCksIGNhbGwgc3BpbmFuZF9kZXRlY3QoKSBpbgo+ICAgc3BpbmFuZF9pbml0KCkgYW5kIG9u
-bHkgZXhwb3NlIHNwaW5hbmRfaW5pdCgpL2NsZWFudXAoKQo+IC0gYWRkIG5hbmRfcmVsZWFzZV9i
-YnQoKSBpbiBiYnQuYyBhbmQgdXNlIGl0IGluIG5hbmRfY2xlYW51cCgpIGFuZAo+ICAgc3BpbmFu
-ZF9jbGVhbnVwKCkKPiAtIHVzZSBCSVQobikgaW5zdGVhZCAoMSA8PCBuKSBpbiBtYWNybyBvZiBz
-cGluYW5kLmgKPiAtIHJlbmFtZSBzcGluYW5kX2FsbG9jKCkgdG8gZGV2bV9zcGluYW5kX2FsbG9j
-KCkKPiAtIG5hbWUgbGFibGVzIGluIGJldHRlciB3YXkKPiAtIGZpeCBzb21lIHR5cG9zCj4gLSBh
-ZGQgZW1wdHkgbGluZXMgYmV0d2VlbiBjb2RlIGJsb2Nrcwo+IAo+IHY1IGNoYW5nZXM6Cj4gLSBy
-ZWJhc2UgcGF0Y2ggb24gbmFuZC9uZXh0IHdpdGggQm9yaXMncyBnZW5lcmljIE5BTkQgZnJhbWV3
-b3JrIHBhdGNoZXNbM10KPiAtIHJlcGxhY2UgcHJfeHh4KCkgd2l0aCBkZXZfeHh4KCkKPiAtIHJl
-cGxhY2Uga3phbGxvYygpaS9rZnJlZSgpIHdpdGggZGV2bV9remFsbG9jKCkvZGV2bV9rZnJlZSgp
-Cj4gLSByZW5hbWUgc3BpbmFuZF9vcF9pbml0KCkgdG8gc3BpbmFuZF9pbml0X29wKCkgZm9yIGNv
-bnNpc3RlbmN5Cj4gLSByZW1vdmUgY29tbWFuZCBvcGNvZGUgaW4gZnVuY3Rpb24gY29tbWVudHMK
-PiAtIHVzZSBCSVQobikgaW5zdGVhZCAoMSA8PCBuKSBpbiBtYWNybwo+IC0gcmVtb3ZlIG1hbnVm
-YWN0dXJlcy5jIGFuZCBwdXQgc3BpbmFuZF9tYW51ZmFjdHVyZXJzIHRhYmxlIGluIGNvcmUuYwo+
-IC0gY2hhbmdlIHNwaW5hbmRfd3JpdGVfcmVnKCkgdTggKmJ1ZiBhcmd1bWVudCB0byB1OCB2YWx1
-ZSwKPiAgIHNpbmNlIHRoZSBsZW5ndGggaXMgYWx3YXlzIDEKPiAtIHJlbW92ZSBzcGluYW5kX21h
-bnVmYWN0dXJlLT5kZXRlY3QoKSBjaGVjaywgc2luY2UgaXQgaXMgYWx3YXlzICE9IE5VTEwKPiAt
-IGFsbG9jIHNwaW5hbmRfZWNjX2VuZ2luZSBzdHJ1Y3QgaW4gdmVuZG9yLmMgd2hlbiB1c2luZyBv
-bi1kaWUgRUNDCj4gICAoZm9yIGhhcmR3YXJlIEVDQywgaXQgc2hvdWxkIGJlIGluIGNvbnRyb2xs
-ZXJzLyouYykKPiAtIGFkZCBjb21tZW50IGhlYWRlciBmb3Igc3RydWN0IHNwaW5hbmRfb3AKPiAt
-IGZpeCB0aW1lb3V0IGJ1ZyBpbiBzcGluYW5kX3dhaXQoKSwgdGhhbmtzIGZvciBBcm5hdWQncyBk
-ZWJ1Zwo+IC0gbWFrZSBzcGluYW5kX21hbnVmYWN0dXJlcnMgY29uc3QKPiAtIGFkZCBlY2NfZW5n
-aW5lX29wcyBwb2ludGVyIGluIHN0cnVjdCBtaWNyb25fc3BpbmFuZF9pbmZvCj4gLSBtYWtlIGNv
-bnRyb2xsZXItPmNhcCBhc3NpZ25tZW50IHJpZ2h0IHdpdGggU1BJX1RYL1JYX1FVQUQvRFVBTCBm
-bGFnCj4gCj4gdjQgY2hhbmdlczoKPiAtIGluaXRpYWxpemUgc3RydWN0IG10ZF9vb2Jfb3BzIHRv
-IDAgaW4gYmJ0LmMKPiAtIHJlbmFtZSBuZXcgYWRkZWQgaGVscGVyIGluIG5hbmQuaCB0byBuYW5k
-X2NoZWNrX3h4eHgoKQo+IC0gYWRkIHN0cnVjdCBtdGRfb29iX29wcyBjb25zaXN0ZW5jeSBjaGVj
-ayBpbiBuYW5kX2NoZWNrX29vYl9vcHMoKQo+IC0gYWRkIGRhdGFsZWZ0IGluIHN0cnVjdCBuYW5k
-X3BhZ2VfaXRlciBpbnN0ZWFkIG9mIG9mZnMKPiAtIHJlbW92ZSBzcGluYW5kX21hbnVmYWN0dXJl
-cnMtPm9wcy0+ZGV0ZWN0KCkgY2hlY2sgc2luY2UgaXQgaXMgbWFuZGF0b3J5Cj4gLSByZW1vdmUg
-c3BpbmFuZF9zZXRfbWFudWZhY3R1cmVyX29wcygpIGFuZCBkbyB0aGUgam9iIGluCj4gICBzcGlu
-YW5kX21hbnVmYWN0dXJlcl9kZXRlY3QoKQo+IC0gbW92ZSAucHJpdiBvdXQgb2Ygc3RydWN0IHNw
-aW5hbmRfY29udHJvbGxlcgo+IC0gYWRkIHNwaW5hbmRfYWxsb2MvZnJlZS9yZWdpc3Rlci91bnJl
-Z2lzdGVyKCkgYW5kIG1ha2UKPiAgIHNwaW5hbmRfZGV0ZWN0L2luaXQoKSBzdGF0aWMKPiAtIG1h
-a2UgQkJUIGJlIGNvbmZpZ3VyZWQgYnkgZGV2aWNlIHRyZWUKPiAtIGNoaXAtPmlkLmRhdGEgc3Rv
-cmVzIHJhdyBJRCBkaXJlY3RseQo+IC0gcmVmaW5lIGRldmljZSBpbmZvIHByaW50IG1lc3NhZ2Ug
-YWZ0ZXIgZGV0ZWN0IHN1Y2Nlc3MKPiAtIGFkZCBzdHJ1Y3QgbXRkX2xheW91dF9vcHMgcG9pbnRl
-ciBpbiBzdHJ1Y3QgbWljcm9uX3NwaW5hbmRfaW5mbwo+IC0gcmVtb3ZlIG1pY3Jvbl9zcGluYW5k
-X2luaXQoKSBhbmQgZG8gaXRzIGpvYiBpbiBtaWNyb25fc3BpbmFuZF9kZXRlY3QoKQo+IC0gZml4
-IEJCVCBibG9jayBjYW5ub3QgYmUgZXJhc2VkIGJ1Zwo+IAo+IHYzIGNoYW5nZXM6Cj4gLSByZWJh
-c2UgcGF0Y2ggb24gNC4xMS1yYzFbMl0KPiAtIGNoYW5nZSByZWFkIElEIG1ldGhvZC4gcmVhZCA0
-IGJ5dGVzIElEIG91dCB0aGVuIGxldCAtPmRldGVjdCgpIG9mIGVhY2gKPiAgIG1hbnVmYWN1dHJl
-IGRyaXZlciB0byBkZWNvZGUgSUQgYW5kIGRldGVjdCB0aGUgZGV2aWNlLgo+IC0gbWFrZSBTUEkg
-TkFORCBpZCB0YWJsZSBwcml2YXRlIHRvIGVhY2ggbWFudWZhY3V0cmUgZHJpdmVyCj4gLSBmaXgg
-Y29kaW5nIHN0eWxlIHRvIG1ha2UgY2hlY2twYXRjaC5wbCBoYXBweQo+IC0gdXBkYXRlIHRoZSBN
-QUlOVEFJTkVSUyBmaWxlIGZvciBzcGkgbmFuZCBjb2RlCj4gLSBhZGQgbmFuZF9zaXplKCkgaGVs
-cGVyIGluIG5hbmQuaAo+IC0gdXNlIG5hbmRfZm9yX2VhY2hfcGFnZSgpIGhlbHBlciBpbiBzcGlu
-YW5kX2RvX3JlYWQvd3JpdGVfb3BzKCkKPiAtIGNyZWF0ZSBoZWxwZXIgdG8gY2hlY2sgYm91bmRh
-cmllcyBpbiBnZW5lcmljIE5BTkQgY29kZSBhbmQgdXNlIGl0Cj4gICBpbiBTUEkgTkFORCBjb3Jl
-Cj4gLSByZW5hbWUgc3BpbmFuZF9iYXNlLmMgdG8gY29yZS5jCj4gLSBtYW51ZmFjdHVyZXMnIGRy
-aXZlcnMgZXhwb3NlIHNwaW5hbmRfbWFudWZhY3R1cmVyIHN0cnVjdCBpbnN0ZWFkIG9mCj4gICBz
-cGluYW5kX21hbnVmYWN0dXJlcl9vcHMgc3RydWN0IHRvIGtlZXAgTWFudWZhY3R1cmUgSUQgbWFj
-cm8gaW4KPiAgIG1hbnVmYWN0dXJlcycgZHJpdmVycyBhbmQgcmVuYW1lIHNwaW5hbmRfaWRzLmMg
-dG8gbWFudWZhY3R1cmUuYwo+IC0gcmVuYW1lIHNwaW5hbmRfbWljcm9uLmMgdG8gbWljcm9uLmMK
-PiAtIHJlbmFtZSBjaGlwcy8gZGlyZWN0b3J5IHRvIGNvbnRyb2xsZXJzLwo+IC0gcmVuYW1lIGdl
-bmVyaWNfc3BpLmMgdG8gZ2VuZXJpYy1zcGkuYwo+IC0gcmVwbGFjZSAtPmJ1aWxkX2NvbHVtbl9h
-ZGRyKCkgYW5kIC0+Z2V0X2R1bW15KCkgaG9va3Mgd2l0aCAtPnByZXBhcmVfb3AoKSBpbgo+ICAg
-c3BpbmFuZF9tYW51ZmFjdHVyZXJfb3BzIHN0cnVjdAo+IC0gcmVuYW1lIF9fc3BpbmFuZF9lcmFz
-ZSgpIHRvIHNwaW5hbmRfZXJhc2UoKQo+IC0gcmVuYW1lIHNwaW5hbmRfZXJhc2UoKSB0byBzcGlu
-YW5kX2VyYXNlX3NraXBfYmJ0KCkKPiAtIHJlbmFtZSBzcGluYW5kX3NjYW5faWRlbnQoKSB0byBz
-cGluYW5kX2RldGVjdCgpCj4gLSByZW5hbWUgc3BpbmFuZF9zY2FuX3RhaWwoKSB0byBzcGluYW5k
-X2luaXQoKQo+IC0gbW92ZSBub24gZGV0ZWN0IHJlbGF0ZWQgY29kZSBmcm9tIHNwaW5hbmRfZGV0
-ZWN0KCkgdG8gc3BpbmFuZF9pbml0KCkKPiAtIHJlbW92ZSBzcGluYW5kX2ZpbGxfbmFuZGQsIGFz
-c2lnbiBuYW5kLT5vcHMgaW4gc3BpbmFuZF9kZXRlY3QoKQo+IC0gbWVyZ2UgdjIgcGF0Y2ggMyhi
-YWQgYmxvY2sgc3VwcG9ydCkgYW5kIHBhdGNoIDQoQkJUIHN1cHBvcnQpCj4gLSBkcm9wIGdldGNo
-aXAgcGFyYW1ldGVyLCByZW1vdmUgc3BpbmFuZF9nZXQvcmVtb3ZlX2RldmljZSgpLCB0YWtlIHRo
-ZSBsb2NrCj4gICBieSBjYWxsZXIgZGlyZWN0bHkKPiAtIGZpeCBmdW5jdGlvbiBjb21tZW50IGhl
-YWRlcnMKPiAtIHVzZSBuYW5kX2JidF9pc19pbml0aWFsaXplZCgpIGhlbHBlcgo+IC0gcmVwbGFj
-ZSBzcGluYW5kX2VjY19lbmdpbmUgYW5kIHNwaW5hbmRfY29udHJvbGxlciBvYmplY3QgaW4gc3Bp
-bmFuZF9kZXZpY2UKPiAgIHN0cnVjdCB3aXRoIHBvaW50ZXIKPiAtIHJlcGxhY2Ugc3RydWN0IHNw
-aW5hbmRfbWFudWZhY3R1cmVyX29wcyBwb2ludGVyIGluIHNwaW5hbmRfZGV2aWNlIHN0cnVjdAo+
-ICAgd2l0aCBzcGluYW5kX21hbnVmYWN0dXJlciBzdHJ1Y3QKPiAKPiB2MiBjaGFuZ2VzOgo+IC0g
-cmVwbGFjZSAic3BpX25hbmQiIHdpdGggInNwaW5hbmQiLgo+IC0gcmVuYW1lIHNwaSBuYW5kIHJl
-bGF0ZWQgc3RydWN0cyBmb3IgYmV0dGVyIHVuZGVyc3RhbmRpbmcuCj4gLSBpbnRyb2R1Y2Ugc3Bp
-IG5hbmQgY29udHJvbGxlciwgbWFudWZhY3R1cmVyIGFuZCBlY2NfZW5naW5lIHN0cnVjdC4KPiAt
-IGFkZCBzcGkgbmFuZCBtYW51ZmFjdHVyZXIgaW5pdGlhbGl6YXRpb24gZnVuY3Rpb24gcmVmZXIg
-dG8gQm9yaXMncwo+ICAgbWFudWYtaW5pdCBicmFuY2guCj4gLSByZW1vdmUgTkFORF9TS0lQX0JC
-VFNDQU4gZnJvbSBzZXJpZXMuIEFkZCBpdCBsYXRlciB3aGVuIGVuYWJsaW5nIEhXIEVDQy4KPiAt
-IHJlb3JnYW5pemUgc2VyaWVzIGFjY29yZGluZyB0byBCb3JpcydzIHN1Z2dlc3Rpb24uCj4gCj4g
-Qm9yaXMgQnJlemlsbG9uICgyKToKPiAgIGR0LWJpbmRpbmdzOiBBZGQgYmluZGluZ3MgZm9yIFNQ
-SSBOQU5EIGRldmljZXMKPiAgIG10ZDogc3BpbmFuZDogQWRkIGluaXRpYWwgc3VwcG9ydCBmb3Ig
-dGhlIE1YMzVMRjFHRTRBQiBjaGlwCj4gCj4gRnJpZWRlciBTY2hyZW1wZiAoMSk6Cj4gICBtdGQ6
-IHNwaW5hbmQ6IEFkZCBpbml0aWFsIHN1cHBvcnQgZm9yIFdpbmJvbmQgVzI1TTAyR1YKPiAKPiBN
-aXF1ZWwgUmF5bmFsICgxKToKPiAgIG10ZDogc3BpbmFuZDogbWFjcm9uaXg6IEFkZCBzdXBwb3J0
-IGZvciBNWDM1TEYyR0U0QUIKPiAKPiBQZXRlciBQYW4gKDIpOgo+ICAgbXRkOiBuYW5kOiBBZGQg
-Y29yZSBpbmZyYXN0cnVjdHVyZSB0byBzdXBwb3J0IFNQSSBOQU5Ecwo+ICAgbXRkOiBzcGluYW5k
-OiBBZGQgaW5pdGlhbCBzdXBwb3J0IGZvciBNaWNyb24gTVQyOUYyRzAxQUJBR0QKPiAKPiAgRG9j
-dW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL210ZC9zcGktbmFuZC50eHQgfCAgICA1ICsK
-PiAgZHJpdmVycy9tdGQvbmFuZC9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAxICsKPiAgZHJpdmVycy9tdGQvbmFuZC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgICAxICsKPiAgZHJpdmVycy9tdGQvbmFuZC9zcGkvS2NvbmZpZyAgICAgICAgICAgICAg
-ICAgICAgICAgfCAgICA3ICsKPiAgZHJpdmVycy9tdGQvbmFuZC9zcGkvTWFrZWZpbGUgICAgICAg
-ICAgICAgICAgICAgICAgfCAgICAzICsKPiAgZHJpdmVycy9tdGQvbmFuZC9zcGkvY29yZS5jICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAxMTY4ICsrKysrKysrKysrKysrKysrKysrCj4gIGRyaXZl
-cnMvbXRkL25hbmQvc3BpL21hY3Jvbml4LmMgICAgICAgICAgICAgICAgICAgIHwgIDE0NCArKysK
-PiAgZHJpdmVycy9tdGQvbmFuZC9zcGkvbWljcm9uLmMgICAgICAgICAgICAgICAgICAgICAgfCAg
-MTMzICsrKwo+ICBkcml2ZXJzL210ZC9uYW5kL3NwaS93aW5ib25kLmMgICAgICAgICAgICAgICAg
-ICAgICB8ICAxNDEgKysrCj4gIGluY2x1ZGUvbGludXgvbXRkL3NwaW5hbmQuaCAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgIDQyMSArKysrKysrCj4gIGluY2x1ZGUvbGludXgvc3BpL3NwaS1tZW0u
-aCAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgNCArLQo+ICAxMSBmaWxlcyBjaGFuZ2VkLCAy
-MDI3IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IERv
-Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tdGQvc3BpLW5hbmQudHh0Cj4gIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL210ZC9uYW5kL3NwaS9LY29uZmlnCj4gIGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBkcml2ZXJzL210ZC9uYW5kL3NwaS9NYWtlZmlsZQo+ICBjcmVhdGUgbW9kZSAxMDA2
-NDQgZHJpdmVycy9tdGQvbmFuZC9zcGkvY29yZS5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2
-ZXJzL210ZC9uYW5kL3NwaS9tYWNyb25peC5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L210ZC9uYW5kL3NwaS9taWNyb24uYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9tdGQv
-bmFuZC9zcGkvd2luYm9uZC5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2xpbnV4L210
-ZC9zcGluYW5kLmgKPiAKClNlcmllcyBhcHBsaWVkLgoKVGhhbmsgeW91IHZlcnkgbXVjaCEKTWlx
-dcOobAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K
+The patch
+
+   spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From d8ffee2f551a627ffb7b216e2da322cb9a037f77 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Fri, 29 Jun 2018 13:33:09 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe
+
+Registers of DSPI should not be accessed before enabling its clock.  On
+Toradex Colibri VF50 on Iris carrier board this could be seen during
+bootup as imprecise abort:
+
+    Unhandled fault: imprecise external abort (0x1c06) at 0x00000000
+    Internal error: : 1c06 [#1] ARM
+    Modules linked in:
+    CPU: 0 PID: 1 Comm: swapper Not tainted 4.14.39-dirty #97
+    Hardware name: Freescale Vybrid VF5xx/VF6xx (Device Tree)
+    Backtrace:
+    [<804166a8>] (regmap_write) from [<80466b5c>] (dspi_probe+0x1f0/0x8dc)
+    [<8046696c>] (dspi_probe) from [<8040107c>] (platform_drv_probe+0x54/0xb8)
+    [<80401028>] (platform_drv_probe) from [<803ff53c>] (driver_probe_device+0x280/0x2f8)
+    [<803ff2bc>] (driver_probe_device) from [<803ff674>] (__driver_attach+0xc0/0xc4)
+    [<803ff5b4>] (__driver_attach) from [<803fd818>] (bus_for_each_dev+0x70/0xa4)
+    [<803fd7a8>] (bus_for_each_dev) from [<803fee74>] (driver_attach+0x24/0x28)
+    [<803fee50>] (driver_attach) from [<803fe980>] (bus_add_driver+0x1a0/0x218)
+    [<803fe7e0>] (bus_add_driver) from [<803fffe8>] (driver_register+0x80/0x100)
+    [<803fff68>] (driver_register) from [<80400fdc>] (__platform_driver_register+0x48/0x50)
+    [<80400f94>] (__platform_driver_register) from [<8091cf7c>] (fsl_dspi_driver_init+0x1c/0x20)
+    [<8091cf60>] (fsl_dspi_driver_init) from [<8010195c>] (do_one_initcall+0x4c/0x174)
+    [<80101910>] (do_one_initcall) from [<80900e8c>] (kernel_init_freeable+0x144/0x1d8)
+    [<80900d48>] (kernel_init_freeable) from [<805ff6a8>] (kernel_init+0x10/0x114)
+    [<805ff698>] (kernel_init) from [<80107be8>] (ret_from_fork+0x14/0x2c)
+
+Cc: <stable@vger.kernel.org>
+Fixes: 5ee67b587a2b ("spi: dspi: clear SPI_SR before enable interrupt")
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index ff7456be9d6d..89a1e7a4fe5d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1071,30 +1071,30 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
++	if (IS_ERR(dspi->clk)) {
++		ret = PTR_ERR(dspi->clk);
++		dev_err(&pdev->dev, "unable to get clock\n");
++		goto out_master_put;
++	}
++	ret = clk_prepare_enable(dspi->clk);
++	if (ret)
++		goto out_master_put;
++
+ 	dspi_init(dspi);
+ 	dspi->irq = platform_get_irq(pdev, 0);
+ 	if (dspi->irq < 0) {
+ 		dev_err(&pdev->dev, "can't get platform irq\n");
+ 		ret = dspi->irq;
+-		goto out_master_put;
++		goto out_clk_put;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
+ 			pdev->name, dspi);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
+-		goto out_master_put;
+-	}
+-
+-	dspi->clk = devm_clk_get(&pdev->dev, "dspi");
+-	if (IS_ERR(dspi->clk)) {
+-		ret = PTR_ERR(dspi->clk);
+-		dev_err(&pdev->dev, "unable to get clock\n");
+-		goto out_master_put;
++		goto out_clk_put;
+ 	}
+-	ret = clk_prepare_enable(dspi->clk);
+-	if (ret)
+-		goto out_master_put;
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 		ret = dspi_request_dma(dspi, res->start);
+-- 
+2.18.0.rc2

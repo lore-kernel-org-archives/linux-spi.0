@@ -1,44 +1,130 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC PATCH v2 1/6] mtd: spi-nor: atmel-quaspi: Typo fix
-Date: Tue, 3 Jul 2018 14:52:24 +0200
-Message-ID: <20180703125224.GC14626@piout.net>
-References: <20180627131609.13681-1-bugalski.piotr@gmail.com>
- <20180627131609.13681-2-bugalski.piotr@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC net-next 15/15] net: lora: Add Semtech SX1301
+Date: Tue, 3 Jul 2018 15:50:22 +0100
+Message-ID: <20180703145022.GA13744@sirena.org.uk>
+References: <20180701110804.32415-1-afaerber@suse.de>
+ <20180701110804.32415-16-afaerber@suse.de>
+ <20180702161258.GA18744@sirena.org.uk>
+ <4e06cc72-2092-70f3-c801-bf6e4c3cbec2@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>
-To: Piotr Bugalski <bugalski.piotr@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="h31gzZEtNLTqOjlF"
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Jian-Hong Pan <starnight@g.ncu.edu.tw>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Janus Piwek <jpiwek@arroweurope.com>,
+        Michael =?iso-8859-1?Q?R=F6der?= <michael.roeder@avnet.eu>,
+        Dollar Chen <dollar.chen@wtmec.com>,
+        Ken Yu <ken.yu@rakwireless.com>,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        Steve deRosier <derosier@gmail.com>, linux-spi@vger.kernel.org,
+        LoRa_Community_Support@semtech.com
+To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180627131609.13681-2-bugalski.piotr@gmail.com>
+In-Reply-To: <4e06cc72-2092-70f3-c801-bf6e4c3cbec2@suse.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-On 27/06/2018 15:16:04+0200, Piotr Bugalski wrote:
-> Just minor typo fix. Fixed in preparation of new driver.
-> 
-> Signed-off: Piotr Bugalski <pbu@cryptera.com>
+--h31gzZEtNLTqOjlF
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This SoB line must match the author. It doesn't matter which one you
-change. note that you can still submit your patch from an address
-different from your work address if necessary (git format-patch will
-insert the proper From line).
+On Mon, Jul 02, 2018 at 07:34:21PM +0200, Andreas F=E4rber wrote:
+> Hi Mark,
+>=20
+> This driver is still evolving, there's newer code on my lora-next branch
+> already: https://github.com/afaerber/linux/commits/lora-next
 
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
+
+> 2) This SPI device is in turn exposing the two SPI masters that you
+> already found below, and I didn't see a sane way to split that code out
+> into drivers/spi/, so it's in drivers/net/lora/ here - has there been
+> any precedence either way?
+
+A MFD?
+
+> Am 02.07.2018 um 18:12 schrieb Mark Brown:
+> > On Sun, Jul 01, 2018 at 01:08:04PM +0200, Andreas F=E4rber wrote:
+
+> >> +static void sx1301_radio_spi_set_cs(struct spi_device *spi, bool enab=
+le)
+> >> +{
+> >> +	int ret;
+> >> +
+> >> +	dev_dbg(&spi->dev, "setting SPI CS to %s\n", enable ? "1" : "0");
+> >> +
+> >> +	if (enable)
+> >> +		return;
+
+> > So we never disable chip select?
+
+> Not here, I instead did that in transfer_one below.
+
+That's obviously at best going to be fragile, you're implementing half
+the operation here and half somewhere else which is most likely going to
+break at some point when the framework changes.
+
+> >> +		if (ret) {
+> >> +			dev_err(&spi->dev, "SPI radio address write failed\n");
+> >> +			return ret;
+> >> +		}
+> >> +
+> >> +		ret =3D sx1301_write(ssx->parent, ssx->regs + REG_RADIO_X_DATA, (tx=
+_buf && xfr->len >=3D 2) ? tx_buf[1] : 0);
+> >> +		if (ret) {
+> >> +			dev_err(&spi->dev, "SPI radio data write failed\n");
+> >> +			return ret;
+> >> +		}
+
+> > This looks awfully like you're coming in at the wrong abstraction layer
+> > and the hardware actually implements a register abstraction rather than
+> > a SPI one so you should be using regmap as the abstraction.
+
+> I don't understand. Ben has suggested using regmap for the SPI _device_
+> that we're talking to, which may be a good idea. But this SX1301 device
+> in turn has two SPI _masters_ talking to an SX125x slave each. I don't
+> see how using regmap instead of my wrappers avoids this spi_controller?
+
+It seems obvious from the code that this isn't actually interacting with
+a SPI controller, you're writing an address and a value to a register
+map rather than dealing with a byte stream.  There may be a SPI bus
+somewhere behind some other hardware but you don't seem to be
+interacting with it as such.
+
+> The whole point of this spi_controller is to abstract and separate the
+> SX1255 vs. SX1257 vs. whatever-radio-attached into a separate driver,
+> instead of mixing it into the SX1301 driver - to me that looks cleaner
+> and more extensible. It also has the side-effect that we could configure
+> the two radios via DT (frequencies, clk output, etc.).
+
+A register map would work just as well here, we already have plenty of
+devices that abstract at this level (most obviously the I2C/SPI devices
+that use it to offer both interfaces with a single core driver).
+
+--h31gzZEtNLTqOjlF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAls7jS0ACgkQJNaLcl1U
+h9BcQQf/Wh+yvlTJq85AJqGSGc5/mDu0xDi4DSc3njoxybXSMNOTY11hoEWajvKx
+GwwZWNtudrJViG3Tm0TBgwjmJTvssXxE92B4X+f6fvB7k2k3rkrqe9XmK1BiwNa1
+8TsUvLfHWcJNdgjhoBik6qe7cRpHt1mpYbfzbP297byRRGOmI9uSir68DT000z2C
+abtq9ZxfVk8SkYQFLC8aoJajitFkj7u7QKl78gmZoC32OhPv9gs2ewdd/49DtlUh
+kacwJuoJ65CwC37rnt7sdL7HnAiIeSmm+pUHqbpMp5N10hLe0S+7CiFnVAnhHxAL
+HL7IYIqEFd5p7Zn+0+FJRDXBYvkJXA==
+=FVYx
+-----END PGP SIGNATURE-----
+
+--h31gzZEtNLTqOjlF--

@@ -1,119 +1,79 @@
-From: Mark Brown <broonie@kernel.org>
+From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
 Subject: Re: [RFC net-next 15/15] net: lora: Add Semtech SX1301
-Date: Tue, 3 Jul 2018 16:31:37 +0100
-Message-ID: <20180703153137.GB13744@sirena.org.uk>
+Date: Tue, 3 Jul 2018 18:40:41 +0200
+Message-ID: <3f6289f9-d345-39a7-f0dd-9d5fa7c86e82@suse.de>
 References: <20180701110804.32415-1-afaerber@suse.de>
  <20180701110804.32415-16-afaerber@suse.de>
  <20180702161258.GA18744@sirena.org.uk>
  <4e06cc72-2092-70f3-c801-bf6e4c3cbec2@suse.de>
  <20180703145022.GA13744@sirena.org.uk>
  <809fc546-6012-37f3-9485-cfd8eaf99488@suse.de>
+ <20180703153137.GB13744@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2710504223641520439=="
-Cc: Steve deRosier <derosier@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Jiri Pirko <jiri@resnulli.us>, Ben Whitten <ben.whitten@lairdtech.com>,
- netdev@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
- Dollar Chen <dollar.chen@wtmec.com>, linux-kernel@vger.kernel.org,
- Michael =?iso-8859-1?Q?R=F6der?= <michael.roeder@avnet.eu>,
- Janus Piwek <jpiwek@arroweurope.com>, linux-spi@vger.kernel.org,
- LoRa_Community_Support@semtech.com, Jian-Hong Pan <starnight@g.ncu.edu.tw>,
- Ken Yu <ken.yu@rakwireless.com>, "David S . Miller" <davem@davemloft.net>,
- linux-arm-kernel@lists.infradead.org
-To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <809fc546-6012-37f3-9485-cfd8eaf99488@suse.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Jian-Hong Pan <starnight@g.ncu.edu.tw>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Janus Piwek <jpiwek@arroweurope.com>,
+        =?UTF-8?Q?Michael_R=c3=b6der?= <michael.roeder@avnet.eu>,
+        Dollar Chen <dollar.chen@wtmec.com>,
+        Ken Yu <ken.yu@rakwireless.com>,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        Steve deRosier <derosier@gmail.com>, linux-spi@vger.kernel.org,
+        LoRa_Community_Support@semtech.com,
+        Hasnain Virk <Hasnain.Virk@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180703153137.GB13744@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Am 03.07.2018 um 17:31 schrieb Mark Brown:
+> On Tue, Jul 03, 2018 at 05:09:38PM +0200, Andreas Färber wrote:
+>> Am 03.07.2018 um 16:50 schrieb Mark Brown:
+>>> A register map would work just as well here, we already have plenty of
+>>> devices that abstract at this level (most obviously the I2C/SPI devices
+>>> that use it to offer both interfaces with a single core driver).
+> 
+>> The address and data registers together form a two-byte SPI message!
+> 
+>> It is transmitted by writing to the CS register.
+> 
+>> The received data is afterwards available in another register.
+> 
+> Right, but it seems from the code that the hardware understands that
+> it's formatting register I/O and not just shifting in and out a byte
+> stream which is what a SPI controller does.  I'd not be surprised to
+> learn that the register you're calling a chip select register is a
+> strobe that initiates the transfer (and that this may be some of the
+> difficulty you're having with handling it in the way the framework
+> expects), the pattern with writing 1 followed immediately by 0 is a bit
+> of a flag here.
 
---===============2710504223641520439==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="24zk1gE8NUlDmwG9"
-Content-Disposition: inline
+Yeah, the current implementation assumes exactly that. :)
 
+> I've seen such before hardware where I know it was intentionally
+> designed that way so it wouldn't be totally surprising.
 
---24zk1gE8NUlDmwG9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If we don't implement a spi_controller here, then IIUC we can't have
+multiple spi_device implementations for the devices on the receiving
+end, as they rely on a spi_controller for their APIs.
 
-On Tue, Jul 03, 2018 at 05:09:38PM +0200, Andreas F=E4rber wrote:
-> Am 03.07.2018 um 16:50 schrieb Mark Brown:
+Do you have an alternative solution for abstraction? A regmap would seem
+to require putting everything into a monolithic SX1301 driver despite
+those connected chipsets actually being regular, external SPI chips that
+could also be attached to non-SX1301 SPI masters.
 
-> >> 2) This SPI device is in turn exposing the two SPI masters that you
-> >> already found below, and I didn't see a sane way to split that code out
-> >> into drivers/spi/, so it's in drivers/net/lora/ here - has there been
-> >> any precedence either way?
+Regards,
+Andreas
 
-> > A MFD?
-
-> I know of mfd, but how would the the the net vs. spi pieces interact
-> then? Some functions would need to be exported then or is there an
-> easier way without needing to set a cross-module API in stone?
-
-It's an in-kernel ABI it's not exactly set in stone but yeah, you'll
-need some interface.  A lot of devices work by having the children know
-that they're part of a MFD and fish things out of the parent device,
-either the pdata or (in the common case where the MFD bit mostly just
-instantiates subdevices and holds a regmap) with dev_get_regmap().
-
-> > A register map would work just as well here, we already have plenty of
-> > devices that abstract at this level (most obviously the I2C/SPI devices
-> > that use it to offer both interfaces with a single core driver).
-
-> The address and data registers together form a two-byte SPI message!
-
-> It is transmitted by writing to the CS register.
-
-> The received data is afterwards available in another register.
-
-Right, but it seems from the code that the hardware understands that
-it's formatting register I/O and not just shifting in and out a byte
-stream which is what a SPI controller does.  I'd not be surprised to
-learn that the register you're calling a chip select register is a
-strobe that initiates the transfer (and that this may be some of the
-difficulty you're having with handling it in the way the framework
-expects), the pattern with writing 1 followed immediately by 0 is a bit
-of a flag here.
-
-I've seen such before hardware where I know it was intentionally
-designed that way so it wouldn't be totally surprising.
-
---24zk1gE8NUlDmwG9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAls7ltkACgkQJNaLcl1U
-h9A+lwf+M8MTt6KWaR4J9ViDILdK0W8JxGgJ2Glb/wXPZ7TDowwt6N0oQs8Cg8cZ
-ch1D/dW0vBuW/NmvFtarbcfqAEJCIlL9oFovgMTao6RLZTc1L2unzKifbtTzUhHo
-bqUXZA5ubjQuwESRbbd5C9PM2HSMfXKn2BrvvLYz9FyYMRlGVJf9oom8vGzYBo/t
-DbMe/c4o+Tw7golyzKKraTTV61DAtXeaT0wgYLKR5iB/sPtViqn9LombTM7tyQxi
-Oi3SLV/Q838Bpk+fwQEXfRzSVO073z9+46kpG4lg11xzf9WT9lOq6e2qrtOgsCVy
-FEW068wwEBTdALjHWYCx3DUkN4prIQ==
-=Dyei
------END PGP SIGNATURE-----
-
---24zk1gE8NUlDmwG9--
-
-
---===============2710504223641520439==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============2710504223641520439==--
+-- 
+SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

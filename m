@@ -1,91 +1,99 @@
-From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH v2 02/12] mtd: m25p80: Call spi_mem_get_name() to let
- controller set a custom name
-Date: Thu, 5 Jul 2018 15:06:01 +0200
-Message-ID: <abcd1bc3-9ce7-0402-86f6-d43dacad0fb5@exceet.de>
-References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
- <1530789310-16254-3-git-send-email-frieder.schrempf@exceet.de>
- <20180705145628.57a48e87@bbrezillon>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: yogeshnarayan.gaur@nxp.com, Philipp Puschmann <pp@emlix.com>,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>, richard@nod.at,
- Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, prabhakar.kushwaha@nxp.com,
- linux-kernel@vger.kernel.org, shawnguo@kernel.org, linux-spi@vger.kernel.org,
- marek.vasut@gmail.com, han.xu@nxp.com, broonie@kernel.org,
- linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com,
- fabio.estevam@nxp.com, david.wolfe@nxp.com, computersforpeace@gmail.com,
- dwmw2@infradead.org
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180705145628.57a48e87@bbrezillon>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+From: Girish Mahadevan <girishm@codeaurora.org>
+Subject: [PATCH 1/2] dt-bindings: spi: Qualcomm Quad SPI(QSPI) documentation
+Date: Thu,  5 Jul 2018 15:46:41 -0600
+Message-ID: <1530827202-9997-1-git-send-email-girishm@codeaurora.org>
+Cc: Girish Mahadevan <girishm@codeaurora.org>, dianders@chromium.org,
+        swboyd@chromium.org, sdharia@codeaurora.org,
+        kramasub@codeaurora.org, linux-arm-msm@vger.kernel.org
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
+---
+ .../devicetree/bindings/spi/qcom,spi-qcom-qspi.txt | 36 ++++++++++++++++++++++
+ err.txt                                            | 27 ----------------
+ 2 files changed, 36 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+ delete mode 100644 err.txt
 
-On 05.07.2018 14:56, Boris Brezillon wrote:
-> On Thu,  5 Jul 2018 13:14:58 +0200
-> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
-> 
->> By calling spi_mem_get_name(), the driver of the (Q)SPI controller can
->> set a custom name for the memory device if necessary.
->> This is useful to keep mtdparts compatible when controller drivers are
->> ported from the MTD to the SPI layer.
->>
->> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
->> ---
->>   drivers/mtd/devices/m25p80.c | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
->> index e84563d..482f0ef 100644
->> --- a/drivers/mtd/devices/m25p80.c
->> +++ b/drivers/mtd/devices/m25p80.c
->> @@ -199,8 +199,7 @@ static int m25p_probe(struct spi_mem *spimem)
->>   			hwcaps.mask |= SNOR_HWCAPS_READ_1_2_2;
->>   	}
->>   
->> -	if (data && data->name)
->> -		nor->mtd.name = data->name;
->> +	nor->mtd.name = spi_mem_get_name(spimem);
-> 
-> Hm, not sure you can do that without breaking setup that pass a
-> flash_platform_data object with a name.
-> 
-> Also, you should keep the name extracted from the label property if any
-> (this is done earlier, when spi_nor_set_flash_node() is called).
-> 
-> 	if (data && data->name)
-> 		nor->mtd.name = data->name;
-> 
-> 	if (!nor->mtd.name)
-> 		nor->mtd.name = spi_mem_get_name(spimem);
-
-I missed both facts, that data could be passed with a name assigned 
-already and that spi_nor_set_flash_node() might assign a name from dt.
-I should have looked at the code more closely.
-
-Thanks for pointing that out. I'll fix it.
-
-Frieder
-
-> 
->>   
->>   	/* For some (historical?) reason many platforms provide two different
->>   	 * names in flash_platform_data: "name" and "type". Quite often name is
-> 
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+new file mode 100644
+index 0000000..3baa893
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+@@ -0,0 +1,36 @@
++QTI [Qualcomm Technologies Inc] Quad Serial Peripheral Interface (QSPI)
++
++QSPI [Quad Serial Peripheral Interface] allows single dual and quad read/write
++access to slaves. QTI's QSPI controller implements the QSPI protocol to interface
++with slaves like NOR Flash devices.
++
++Required properties:
++- compatible:	Should contain:
++		"qcom,qspi-v1"
++- reg:		Contains the base register location and length
++- interrupts:	Interrupt number used by the controller.
++- clocks:	Contains the core and AHB clock names.
++- clock-names:	"core" for core clock and "iface" for AHB clock.
++- spi-max-frequency:	Maximum SPI core clock frequency in Hz.
++
++SPI slave nodes must be children of the SPI master node and can contain
++properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Example:
++
++	qspi: qspi@7418000 {
++		compatible = "qcom,qspi-v1";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x7418000 0x600>;
++		interrupts = <0 459 0>;
++		clock-names = "iface", "core";
++		clocks = <&clock_gcc clk_gcc_qspi_ahb_clk>,
++			 <&clock_gcc clk_gcc_qspi_ser_clk>;
++
++		device@0 {
++			compatible = "dummy_device";
++			reg = <x>; /* CS for the device */
++			spi-max-frequency = <f>; /* Max supported frequency of the slave (Hz) */
++		};
++	};
+diff --git a/err.txt b/err.txt
+deleted file mode 100644
+index 09000e4..0000000
+--- a/err.txt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-Skipping hidl generation
+-arch/arm64/Makefile:23: ld does not support --fix-cortex-a53-843419; kernel may be susceptible to erratum
+-arch/arm64/Makefile:44: Detected assembler with broken .inst; disassembly will be unreliable
+-  CHK     include/config/kernel.release
+-  CHK     include/generated/uapi/linux/version.h
+-  CHK     include/generated/utsrelease.h
+-  CHK     include/generated/bounds.h
+-  CHK     include/generated/timeconst.h
+-  CHK     include/generated/asm-offsets.h
+-  CALL    scripts/checksyscalls.sh
+-  CHK     scripts/mod/devicetable-offsets.h
+-  CHK     include/generated/compile.h
+-  CHK     kernel/config_data.h
+-  CC      drivers/mtd/devices/m25p80.o
+-  AR      drivers/mtd/devices/built-in.o
+-  AR      drivers/mtd/built-in.o
+-  CC      drivers/spi/spi-mem.o
+-drivers/spi/spi-mem.c:12:23: fatal error: internals.h: No such file or directory
+- #include "internals.h"
+-                       ^
+-compilation terminated.
+-make[2]: *** [drivers/spi/spi-mem.o] Error 1
+-make[1]: *** [drivers/spi] Error 2
+-make: *** [drivers] Error 2
+-
+-[0;31m#### failed to build some targets (12 seconds) ####[00m
+-
+-- 
+1.9.1

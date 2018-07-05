@@ -1,91 +1,138 @@
-From: Helmut Tschemernjak <helmut@helios.de>
-Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Thu, 5 Jul 2018 12:43:36 +0200
-Message-ID: <5aac9ea5-484c-1b3b-8058-50e11e8d7a9a@helios.de>
-References: <20180701110804.32415-1-afaerber@suse.de>
- <487df785-ddf5-ed81-a253-6afb7f2de811@datenfreihafen.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: =?UTF-8?Q?Michal_Kube=c4=8dek?= <mkubecek@suse.cz>,
- =?UTF-8?Q?Konstantin_B=c3=b6hm?= <konstantin.boehm@ancud.de>,
- contact@snootlab.com, Ken Yu <ken.yu@rakwireless.com>,
- =?UTF-8?Q?Michael_R=c3=b6der?= <michael.roeder@avnet.eu>,
- Rob Herring <robh@kernel.org>, lora@globalsat.com.tw,
- Alexander Graf <agraf@suse.de>, Jan Jongboom <jan.jongboom@arm.com>,
- Janus Piwek <jpiwek@arroweurope.com>, Jon Ortego <Jon.Ortego@imst.de>,
- Jian-Hong Pan <starnight@g.ncu.edu.tw>, devicetree@vger.kernel.org,
- Jiri Pirko <jiri@resnulli.us>, Marcel Holtmann <marcel@holtmann.org>,
- Mark Brown <broonie@kernel.org>, Dollar Chen <dollar.chen@wtmec.com>,
- Brian Ray <brian.ray@link-labs.com>, linux-arm-kernel@lists.infradead.org,
- lora@radioshuttle.de, Matthias Brugger <mbrugger@suse.com>,
- Ben Whitten <ben.whitten@lairdtech.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Steve deRosier <deros
-To: Stefan Schmidt <stefan@datenfreihafen.org>,
- =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>, netdev@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <487df785-ddf5-ed81-a253-6afb7f2de811@datenfreihafen.org>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: [PATCH v2 01/12] spi: spi-mem: Extend the SPI mem interface to set a custom memory name
+Date: Thu,  5 Jul 2018 13:14:57 +0200
+Message-ID: <1530789310-16254-2-git-send-email-frieder.schrempf@exceet.de>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+Cc: dwmw2@infradead.org, computersforpeace@gmail.com,
+        marek.vasut@gmail.com, richard@nod.at, miquel.raynal@bootlin.com,
+        broonie@kernel.org, david.wolfe@nxp.com, fabio.estevam@nxp.com,
+        prabhakar.kushwaha@nxp.com, yogeshnarayan.gaur@nxp.com,
+        han.xu@nxp.com, shawnguo@kernel.org,
+        Frieder Schrempf <frieder.schrempf@exceet.de>,
+        linux-kernel@vger.kernel.org
+To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+        linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RGVhciBBbmRyZWFzLAoKSSBwdXQgdGhlIGtlcm5lbCBzdXBwb3J0IGZvciB0aGUgU1gxMjc2IExv
-UmEgY2hpcCBpbiBxdWVzdGlvbi4gSSBkb27igJl0IAp0aGluayB0aGF0IHRoaXMga2luZCBvZiBk
-ZXZpY2Ugc2hvdWxkIGJlIGluIHRoZSBMaW51eCBrZXJuZWwuCgpIZXJlIGFyZSBhIGZldyBmYWN0
-cyB0byBjb25zaWRlcjoKLSBBIExvUmEgdHJhbnNhY3Rpb24gaXMgdmVyeSBzbG93wqAgKGUuZy4g
-U0Y3IG5lZWRzIGFib3V0IDIxMCBtcywgZm9yIApTRjEyIDYyODAgbXMpIGZvciAxMiBieXRlcyB1
-c2VyIGRhdGEgd2l0aCBhY2tub3dsZWRnZS4KCi0gVGhlcmUgYXJlIG1hbnkgZGlmZmVyZW50IGlt
-cGxlbWVudGF0aW9ucyBmb3IgdGhlIGFudGVubmEgc3dpdGNoLCAKc3dpdGNoaW5nIGJldHdlZW4g
-cmVjZWl2aW5nL3NlbmRpbmcsIFBBLUJPT1NULCA0MzMsIDg2OC85MTUgTUh6LiAoSSBrbm93IApT
-WDEyNzYgSGVsdGVjIEVTUDMyLCBTWDEyNzYgTXVyYXRhLCBSRk05NS0oMTI3NiksIFNYMTI3NiBI
-ZWx0ZWMgClNUTTMyLUw0KSB0aGV5IGFyZSBhbGwgZGlmZmVyZW50IHJlZ2FyZGluZyB0aGlzLgoK
-LSBUaGUgTG9SYSBjaGlwIGRldmljZSBJRCBpcyBvbmx5IDgtYml0IHdoaWNoIGlzIG5vdCBzdWZm
-aWNpZW50IGZvciAKbGFyZ2VyIG5ldHdvcmtzLCBlLmcuIG91ciBSYWRpb1NodXR0bGUgcHJvdG9j
-b2wgdXNlcyBjb21wcmVzc2VkIDMyLWJpdCAKZGV2aWNlIElEcy4KCi0gVGhlIGNoaXAgY2FuIGRv
-IE1UVSBzaXplcyB1cCB0byAyMDQ4IGJ5dGVzLCBtb3N0IHByb3RvY29scyB1c2UgbGVzcyAKdGhh
-biAyNTAgYnl0ZXMuCgotIEFwcGxpY2F0aW9ucyBkbyBvbi10aGUtZmx5IGNoYW5uZWwgYW5kIHNw
-cmVhZGluZyBmYWN0b3Igc3dpdGNoaW5nIAp3aGljaCBtYWtlcyBpdCBtb3JlIGRpZmZpY3VsdCBm
-b3IgdGhlIGNvbmZpZ3VyYXRpb24uCgotIFRoZSBjaGlwIHN1cHBvcnRzIExvcmEgbW9kdWxhdGlv
-biBhcyB3ZWxsIGFzwqAgRlNLLCBHRlNLLCBNU0ssIEdNU0ssIAphbmQgT09LIG1vZHVsYXRpb24s
-IGZvciBzb21lIHVzZSBjYXNlcyB0aGUgb3RoZXIgbW9kdWxhdGlvbnMgYXJlIG9mIAppbnRlcmVz
-dCwgZS5nLiB0byBjb21tdW5pY2F0ZWQgd2l0aCBvdGhlciBkZXZpY2VzLgoKLSBQb3dlciBzYXZp
-bmcgbW9kZXMsIGxpa2Ugc2xlZXAsIHN1c3BlbmQgbWF5IGJlIHJlcXVpcmVkIGZvciBiYXR0ZXJ5
-IApvcGVyYXRpb24uCgotIENhZCBkZXRlY3Rpb24gaXMgdmVyeSBmbGV4aWJsZSBhbmQgY2FuIGJl
-IGRpZmZlcmVudGx5IHVzZWQuCgotIExvUmEgcHJlYW1ibGUgbWF5IGJlIGRpZmZlcmVudCBkZXBl
-bmRpbmcgb24gdGhlIHByb3RvY29sIHVzZWQuCgotIFRoZSBuZXcgTG9yYSBjaGlwIFNYMTI2MiAv
-IDY4IChzdWNjZXNzb3Igb2YgdGhlIFNYMTI3NikgaGFzIGRpZmZlcmVudCAKaGFyZHdhcmUgYW5k
-IGFsbCBkaWZmZXJlbnQgcmVnaXN0ZXJzLCBpdCBpcyBkcml2ZXIgaW5jb21wYXRpYmxlIHdpdGgg
-dGhlIApTWDEyNzYuIEl0IG5lZWRzIGFuIGVudGlyZSBuZXcgZHJpdmVyLgoKLSBUaGUgZGV2aWNl
-IGlzIG5vdCBtdWx0aS1wcm9jZXNzIGNhcGFibGUgKG9ubHkgYSBzaW5nbGUgcHJvY2VzcyBjYW4g
-CmNvbW11bmljYXRlIHdpdGggaXQpLgoKLSBUaGVyZSBhcmUgU1gxMjc2IExvUmEgbW9kdWxlcyB3
-aXRoIGEgYnVpbGQtaW4gcHJvdG9jb2wgKExvUmFXQU4gYW5kIApSQVcpIHZpYSBhIHNlcmlhbCBj
-b25uZWN0aW9uIG9ubHksIGFnYWluIGNvbXBsZXRlIGRpZmZlcmVudCBBUEkgY29tcGFyZWQgCnRo
-ZSBTWDEyNzYgY2hpcC4gU29mdHdhcmUgdXBkYXRlcyBmb3IgdGhpcyBkZXZpY2VzIGFyZSBkaWZm
-aWN1bHQuCgotIEkgYW0gZXZlbiBjb252aW5jZWQgdGhhdCB0aGUgTG9SYVdBTiBwcm90b2NvbCB3
-aXRoIHRoZSBjb25jZW50cmF0b3IgCmNvbmNlcHQgaXMgbm90IGdvb2QsIHRoZSBwZWVyIHRvIHBl
-ZXIgY29tbXVuaWNhdGlvbiBhbmQgYSBzdGFuZGFyZCBNUVRUIApnYXRld2F5ICh3aGF0IHdlIGRv
-KSBpcyB3YXkgbW9yZSBmbGV4aWJsZS4KCkZvciBhbGwgdGhpcyByZWFzb25zLCBJIGZlZWwgYSB1
-c2VyIGxldmVsIGRyaXZlciB0YXNrIGltcGxlbWVudGF0aW9uIGlzIAp3YXkgbW9yZSBmbGV4aWJs
-ZS4gSSBkaWQgYSBsb3Qgb2Ygd29yay9lbmhhbmNlbWVudHMgb24gdGhlIFNYMTI3NiBsaW5rIAps
-ZXZlbCBkcml2ZXIgZnJvbSBTZW10ZWNoLCBpdCBpcyBhdmFpbGFibGUgYW5kIG1haW50YWluZWQg
-b24gbWJlZC5vcmcgCmFuZCBzdXBwb3J0cyBtYmVkLW9zLCBBcmR1aW5vIGFuZCBpcyBwcmVwYXJl
-ZCBmb3IgTGludXguCmh0dHBzOi8vb3MubWJlZC5jb20vdXNlcnMvSGVsbXV0NjQvY29kZS9TWDEy
-NzZHZW5lcmljTGliLwoKUHJvdG9jb2xzIGUuZy4gb3VyIFJhZGlvU2h1dHRsZSBMb1JhIHBlZXIg
-dG8gcGVlciBwcm90b2NvbCBvciB0aGUgCkxvUmFXQU4gcHJvdG9jb2wgY2FuIHJ1biBvbiB0b3Ag
-b2YgdGhlIFNYMTI3NkdlbmVyaWNMaWIuIFdlIG1heSBzaG91bGQgCmZvY3VzIG9uIHN1Y2ggYSBk
-cml2ZXIgbGlicmFyeSBnZXR0aW5nIHN1cHBvcnRlZCBmb3IgbXVsdGlwbGUgT1MncyAoV2luLCAK
-TGludXgsIG1iZWQsIEFyZGlubywgZXRjLikKCkFnYWluIEkgZmVlbCBhIExpbnV4IGtlcm5lbCBk
-ZXZpY2UgZHJpdmVyIGZvciB0aGUgU1gxMjc2IGNoaXAgbWFrZSAKbGl0dGxlIHNlbnNlIGZvciBt
-ZS4KClJlZ2FyZHMKSGVsbXV0IFRzY2hlbWVybmphayAod3d3LnJhZGlvc2h1dHRsZS5kZSwgd3d3
-LmhlbGlvcy5kZSkKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2xpbnV4LWFybS1rZXJuZWwK
+When porting (Q)SPI controller drivers from the MTD layer to the SPI
+layer, the naming scheme for the memory devices changes. To be able
+to keep compatibility with the old drivers naming scheme, a function
+is added to the SPI mem interface to let controller drivers set a
+custom name for the memory.
+
+Example for the FSL QSPI driver:
+
+Name with the old driver: 21e0000.qspi,
+or with multiple devices: 21e0000.qspi-0, 21e0000.qspi-1, ...
+
+Name with the new driver without spi_mem_get_name: spi4.0
+
+Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+---
+Changes in v2:
+==============
+* Add a name field to struct spi_mem and fill it while probing
+
+ drivers/spi/spi-mem.c       | 30 ++++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h |  7 ++++++-
+ 2 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 990770d..048101c 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -311,6 +311,26 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ EXPORT_SYMBOL_GPL(spi_mem_exec_op);
+ 
+ /**
++ * spi_mem_get_name() - Let drivers using the SPI mem interface specify a
++ *			custom name for the memory to avoid compatibility
++ *			issues with ported drivers.
++ * @mem: the SPI memory
++ *
++ * When porting (Q)SPI controller drivers from the MTD layer to the SPI
++ * layer, the naming scheme for the memory devices changes. To be able to
++ * keep compatibility with the old drivers naming scheme, this function can
++ * be used to get a custom name from the controller driver.
++ * If no custom name is available, the name of the SPI device is returned.
++ *
++ * Return: a char array that contains the name for the flash memory
++ */
++const char *spi_mem_get_name(struct spi_mem *mem)
++{
++	return mem->name;
++}
++EXPORT_SYMBOL_GPL(spi_mem_get_name);
++
++/**
+  * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
+  *			      match controller limitations
+  * @mem: the SPI memory
+@@ -344,6 +364,7 @@ static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
+ static int spi_mem_probe(struct spi_device *spi)
+ {
+ 	struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
++	struct spi_controller *ctlr = spi->controller;
+ 	struct spi_mem *mem;
+ 
+ 	mem = devm_kzalloc(&spi->dev, sizeof(*mem), GFP_KERNEL);
+@@ -351,6 +372,15 @@ static int spi_mem_probe(struct spi_device *spi)
+ 		return -ENOMEM;
+ 
+ 	mem->spi = spi;
++
++	if (ctlr->mem_ops && ctlr->mem_ops->get_name)
++		mem->name = ctlr->mem_ops->get_name(mem);
++	else
++		mem->name = dev_name(&spi->dev);
++
++	if (IS_ERR_OR_NULL(mem->name))
++		return PTR_ERR(mem->name);
++
+ 	spi_set_drvdata(spi, mem);
+ 
+ 	return memdrv->probe(mem);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 4fa34a2..c3f82d1 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -124,7 +124,8 @@ struct spi_mem_op {
+ /**
+  * struct spi_mem - describes a SPI memory device
+  * @spi: the underlying SPI device
+- * @drvpriv: spi_mem_drviver private data
++ * @drvpriv: spi_mem_driver private data
++ * @name: name of the SPI memory device
+  *
+  * Extra information that describe the SPI memory device and may be needed by
+  * the controller to properly handle this device should be placed here.
+@@ -135,6 +136,7 @@ struct spi_mem_op {
+ struct spi_mem {
+ 	struct spi_device *spi;
+ 	void *drvpriv;
++	char *name;
+ };
+ 
+ /**
+@@ -178,6 +180,7 @@ struct spi_controller_mem_ops {
+ 			    const struct spi_mem_op *op);
+ 	int (*exec_op)(struct spi_mem *mem,
+ 		       const struct spi_mem_op *op);
++	const char *(*get_name)(struct spi_mem *mem);
+ };
+ 
+ /**
+@@ -236,6 +239,8 @@ bool spi_mem_supports_op(struct spi_mem *mem,
+ int spi_mem_exec_op(struct spi_mem *mem,
+ 		    const struct spi_mem_op *op);
+ 
++const char *spi_mem_get_name(struct spi_mem *mem);
++
+ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 				       struct module *owner);
+ 
+-- 
+2.7.4

@@ -1,98 +1,115 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v10 5/6] spi: at91-usart: add driver for at91-usart as spi
-Date: Tue, 10 Jul 2018 19:15:59 +0100
-Message-ID: <20180710181559.GG8104@sirena.org.uk>
-References: <20180625172230.29686-1-radu.pirea@microchip.com>
- <20180625172230.29686-6-radu.pirea@microchip.com>
+Subject: Re: [PATCH 2/2] spi: Introduce new driver for Qualcomm QuadSPI
+ controller
+Date: Tue, 10 Jul 2018 19:10:24 +0100
+Message-ID: <20180710181024.GF8104@sirena.org.uk>
+References: <1530827202-9997-1-git-send-email-girishm@codeaurora.org>
+ <1530827202-9997-2-git-send-email-girishm@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7765635742122202660=="
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
- richard.genoud@gmail.com, gregkh@linuxfoundation.org,
- linux-spi@vger.kernel.org, robh+dt@kernel.org, linux-serial@vger.kernel.org,
- lee.jones@linaro.org, linux-arm-kernel@lists.infradead.org
-To: Radu Pirea <radu.pirea@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180625172230.29686-6-radu.pirea@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kbCYTQG2MZjuOjyn"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dianders@chromium.org, swboyd@chromium.org,
+        linux-arm-msm@vger.kernel.org, sdharia@codeaurora.org,
+        kramasub@codeaurora.org, boris.brezillon@bootlin.com
+To: Girish Mahadevan <girishm@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1530827202-9997-2-git-send-email-girishm@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============7765635742122202660==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EDJsL2R9iCFAt7IV"
-Content-Disposition: inline
-
-
---EDJsL2R9iCFAt7IV
+--kbCYTQG2MZjuOjyn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 25, 2018 at 08:22:29PM +0300, Radu Pirea wrote:
+On Thu, Jul 05, 2018 at 03:46:42PM -0600, Girish Mahadevan wrote:
 
-This is mostly good, just a couple of small things:
+Overall this looks pretty good, but there were a few small issues
+(mostly cosmetic):
 
-> +config SPI_AT91_USART
-> +	tristate "Atmel USART Controller SPI driver"
-> +	depends on HAS_DMA
-> +	depends on (ARCH_AT91 || COMPILE_TEST)
-> +	select MFD_AT91_USART
+> +	/*
+> +	 * Ensure that the configuration goes through by reading back
+> +	 * a register from the IO space.
+> +	 */
+> +	mb();
+> +	mstr_cfg = readl_relaxed((ctrl->base + MSTR_CONFIG));
+> +	pm_runtime_put_sync(ctrl->dev);
+> +	return ret;
 
-Why is this selecting rather than depending on the MFD like we normally
-do?
+There's no need to use _put_sync() unless you *really* need the put to
+go through immediately, if you don't need it then it'll just slow things
+down.
 
-> @@ -0,0 +1,432 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Driver for AT91 USART Controllers as SPI
-> + *
-> + * Copyright (C) 2018 Microchip Technology Inc.
-> + * Author: Radu Pirea <radu.pirea@microchip.com>
-> + */
+> +	wr_cnts = (rd_fifo_status & WR_CNTS_MSK) >> WR_CNTS_SHFT;
+> +	fifo_rdy = (rd_fifo_status & FIFO_RDY) ? true : false;
+> +
+> +	if (!fifo_rdy) {
+> +		dev_dbg(ctrl->dev, "%s: Spurious IRQ 0x%x",
+> +			__func__, rd_fifo_status);
+> +		return IRQ_NONE;
+> +	}
 
-Please use C++ comments for the whole block so it looks a bit more
-intentional.
+Please just use a normal if statement, it's easier to read.
 
-Otherwise=20
+> +	wr_fifo_bytes =
+> +	readl_relaxed(ctrl->base + PIO_XFER_STATUS) >> WR_FIFO_BYTES_SHFT;
 
-Reviwed-by: Mark Brown <broonie@kernel.org>
+Just use something like
 
---EDJsL2R9iCFAt7IV
++	wr_fifo_bytes = readl_relaxed(ctrl->base + PIO_XFER_STATUS)
++				>> WR_FIFO_BYTES_SHFT;
+
+Again, more legible.
+
+> +static irqreturn_t qcom_qspi_irq(int irq, void *dev_id)
+> +{
+> +	u32 int_status;
+> +	struct qcom_qspi *ctrl = dev_id;
+> +	irqreturn_t ret = IRQ_HANDLED;
+> +
+> +	int_status = readl_relaxed(ctrl->base + MSTR_INT_STATUS);
+> +	writel_relaxed(int_status, ctrl->base + MSTR_INT_STATUS);
+> +
+> +	if (int_status & WR_FIFO_EMPTY)
+> +		ret = pio_write(ctrl);
+> +
+> +	if (int_status & RESP_FIFO_RDY)
+> +		ret = pio_read(ctrl);
+
+What if both bits are set and return different statuses?
+
+> +static bool qcom_qspi_supports_op(struct spi_mem *mem,
+> +				const struct spi_mem_op *op)
+> +{
+> +	return true;
+> +}
+
+So we definitely support all possible ops?
+
+> +static int qcom_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+> +{
+> +	return 0;
+> +}
+
+If this can be empty it's prboably better to fix the callers so that
+they don't need to provide it (looking at the code it seems that this is
+already the case so you can just remove it).
+
+--kbCYTQG2MZjuOjyn
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltE994ACgkQJNaLcl1U
-h9AkeQf+Mq7IQsKQUVCnKMlLqJ5zyB55TxIx46+ND7yNKQrL9Iqyz6XWFUlOfwA4
-4sYKoF4uDRaMv3EcelHQSA4Q4uCCfQkOB4wXeilyOM5XGz/dSu02hp9AHkUeIrYk
-mFC0N0A9av/xbcS8VdDtbUjOuS/8P27Tmbwh3U/n+mcXa8k0YEQwYA1VSoIoTbno
-IleZNwnp13oH/c5pDpgLX/HlmeHNjLI/DT4Rt+3nsq0sV4H3I/Zvn/wwtyhruG48
-iubp+b9R6lBWFxAT/gj/WJnbMn8xa42mTFCazIwW6bJ+0d+UHQeqSmJYPZVz2jE8
-rp9nuWdqIOxugrMSGaI9s+VhdD/Qzg==
-=uIu3
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltE9o8ACgkQJNaLcl1U
+h9Af6AgAhCnYFi9h43XiBkYpYNKmd7XeTJGQ21ygOwJlATmULtetPdNv88OcqPdF
+aNde7s8cGb9A218XkK2MtcavF98V2OnBTFWcogmURmkHos4uDKBkCW3UfIgMLL98
+KwhE2Tcpv15XCOet9Cfoc/PNG7BurxRBbJnkT9+BhddlFfg9lP3I8y6OMkKqeX/O
+Vl3ntT0oChMcR9oLI+KOsKVAmnJs1rF5mM1GGAuyhOZ4l9SgBBJGJHBYJ6Y+0fa+
+LOCvPYAcPpybHi5rIoGp1scxIOb7oBR2nQc8SVwGc+1LP+6LITBwt04GbjqDeTQH
+U/Yxwzy/SfjpoxU7krZWm/tmihN5LQ==
+=IKH9
 -----END PGP SIGNATURE-----
 
---EDJsL2R9iCFAt7IV--
-
-
---===============7765635742122202660==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============7765635742122202660==--
+--kbCYTQG2MZjuOjyn--

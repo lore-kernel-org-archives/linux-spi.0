@@ -1,104 +1,64 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 05/12] dt-bindings: spi: Adjust the bindings for the
- FSL QSPI driver
-Date: Wed, 11 Jul 2018 10:05:21 -0600
-Message-ID: <20180711160521.GA16884@rob-hp-laptop>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: [PATCH v2 04/12] dt-bindings: spi: Move the bindings for the FSL
+ QSPI driver
+Date: Thu, 12 Jul 2018 10:11:20 +0200
+Message-ID: <6ea89c5c-0a50-fade-7d72-ca5b804da418@exceet.de>
 References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
- <1530789310-16254-6-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-5-git-send-email-frieder.schrempf@exceet.de>
+ <20180711155404.GA15363@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
-        linux-spi@vger.kernel.org, dwmw2@infradead.org,
-        computersforpeace@gmail.com, marek.vasut@gmail.com, richard@nod.at,
-        miquel.raynal@bootlin.com, broonie@kernel.org, david.wolfe@nxp.com,
-        fabio.estevam@nxp.com, prabhakar.kushwaha@nxp.com,
-        yogeshnarayan.gaur@nxp.com, han.xu@nxp.com, shawnguo@kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Frieder Schrempf <frieder.schrempf@exceet.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1530789310-16254-6-git-send-email-frieder.schrempf@exceet.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ yogeshnarayan.gaur@nxp.com, boris.brezillon@bootlin.com, richard@nod.at,
+ prabhakar.kushwaha@nxp.com, linux-kernel@vger.kernel.org, shawnguo@kernel.org,
+ linux-spi@vger.kernel.org, marek.vasut@gmail.com, han.xu@nxp.com,
+ broonie@kernel.org, linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com,
+ fabio.estevam@nxp.com, david.wolfe@nxp.com, computersforpeace@gmail.com,
+ dwmw2@infradead.org
+To: Rob Herring <robh@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180711155404.GA15363@rob-hp-laptop>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 05, 2018 at 01:15:01PM +0200, Frieder Schrempf wrote:
-> Adjust the documentation of the new SPI memory interface based
-> driver to reflect the new drivers settings.
+Hi Rob,
 
-Bindings shouldn't change (other than new properties) due to driver 
-changes.
+On 11.07.2018 17:54, Rob Herring wrote:
+> On Thu, Jul 05, 2018 at 01:15:00PM +0200, Frieder Schrempf wrote:
+>> Move the documentation of the old SPI NOR driver to the place of the new
+>> SPI memory interface based driver.
+>>
+>> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+>> ---
+>> Changes in v2:
+>> ==============
+>> * Split the moving and editing of the dt-bindings in two patches
+>>
+>>   .../devicetree/bindings/mtd/fsl-quadspi.txt     | 65 --------------------
+>>   .../devicetree/bindings/spi/spi-fsl-qspi.txt    | 65 ++++++++++++++++++++
+>>   2 files changed, 65 insertions(+), 65 deletions(-)
+> 
+> Next time, use the -M option so the move shows any real diffs.
+
+Ok, I'll keep that in mind.
+
+Thanks,
+Frieder
 
 > 
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
-> ---
-> Changes in v2:
-> ==============
-> * Split the moving and editing of the dt-bindings in two patches
+> Acked-by: Rob Herring <robh@kernel.org>
 > 
->  .../devicetree/bindings/spi/spi-fsl-qspi.txt    | 22 ++++++++++----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-> index 483e9cf..8b4eed7 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-> @@ -3,9 +3,8 @@
->  Required properties:
->    - compatible : Should be "fsl,vf610-qspi", "fsl,imx6sx-qspi",
->  		 "fsl,imx7d-qspi", "fsl,imx6ul-qspi",
-> -		 "fsl,ls1021a-qspi"
-> +		 "fsl,ls1021a-qspi", "fsl,ls2080a-qspi"
->  		 or
-> -		 "fsl,ls2080a-qspi" followed by "fsl,ls1021a-qspi",
->  		 "fsl,ls1043a-qspi" followed by "fsl,ls1021a-qspi"
 
-So the 2080a h/w was compatible with the 1021a h/w, but now it is not? 
-How did the h/w change?
-
->    - reg : the first contains the register location and length,
->            the second contains the memory mapping address and length
-> @@ -15,14 +14,15 @@ Required properties:
->    - clock-names : Should contain the name of the clocks: "qspi_en" and "qspi".
->  
->  Optional properties:
-> -  - fsl,qspi-has-second-chip: The controller has two buses, bus A and bus B.
-> -                              Each bus can be connected with two NOR flashes.
-> -			      Most of the time, each bus only has one NOR flash
-> -			      connected, this is the default case.
-> -			      But if there are two NOR flashes connected to the
-> -			      bus, you should enable this property.
-> -			      (Please check the board's schematic.)
-
-You can't just remove properties without explanation. Why is this no 
-longer needed? What about backwards compatibility with existing dtbs?
-
-> -  - big-endian : That means the IP register is big endian
-> +  - big-endian : That means the IP registers format is big endian
-
-This is a standard property so it doesn't really need to be redefined 
-here, but just reference the definition.
-
-> +
-> +Required SPI slave node properties:
-> +  - reg: There are two buses (A and B) with two chip selects each.
-> +	 This encodes to which bus and CS the flash is connected:
-> +		<0>: Bus A, CS 0
-> +		<1>: Bus A, CS 1
-> +		<2>: Bus B, CS 0
-> +		<3>: Bus B, CS 1
->  
->  Example:
->  
-> @@ -40,7 +40,7 @@ qspi0: quadspi@40044000 {
->  	};
->  };
->  
-> -Example showing the usage of two SPI NOR devices:
-> +Example showing the usage of two SPI NOR devices on bus A:
->  
->  &qspi2 {
->  	pinctrl-names = "default";
-> -- 
-> 2.7.4
-> 
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,7 +1,8 @@
 From: David Lechner <david@lechnology.com>
-Subject: [PATCH 0/4] spi: introduce SPI_CS_WORD mode flag
-Date: Mon, 16 Jul 2018 22:20:48 -0500
-Message-ID: <20180717032052.12273-1-david@lechnology.com>
+Subject: [PATCH 3/4] spi: spi-davinci: Add support for SPI_CS_WORD
+Date: Mon, 16 Jul 2018 22:20:51 -0500
+Message-ID: <20180717032052.12273-4-david@lechnology.com>
+References: <20180717032052.12273-1-david@lechnology.com>
 Cc: David Lechner <david@lechnology.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -10,46 +11,55 @@ Cc: David Lechner <david@lechnology.com>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
 To: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180717032052.12273-1-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This series introduces a new SPI mode flag, SPI_CS_WORD, that indicates that
-the chip select line should be toggled after each word sent. This series
-includes examples of how this can be implemented for both an SPI controller
-and an SPI device.
+This adds support for the SPI_CS_WORD flag to the TI DaVinci SPI
+driver. This mode can be used as long as we are using the hardware
+chip select and not a GPIO chip select.
 
-The motivation here is to take advantage of DMA transfers with an analog/digital
-convert chip. This chip requires that the chip select line be toggled after
-each word send in order to drive the internal circuitry of the chip.
+Signed-off-by: David Lechner <david@lechnology.com>
+---
+ drivers/spi/spi-davinci.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-The way we were accomplishing this was, for example, to read 16 channels, we
-would create 16 SPI _transfer_s in one SPI _message_. Although this works, it
-uses quite a bit of CPU because we have to do work at the end of each transfer
-to get the next transfer ready. When you are polling the chip at 100Hz, this
-CPU usage adds up.
-
-The SPI controller being used has DMA support, but only on the _transfer_ level
-and not on the _message_ level. So, to take advantage of DMA, we need to read
-all of the A/DC channels in a single _transfer_. The SPI controller is capable
-automatically toggling the chip select line during a DMA transfer, so we are
-adding a new SPI flag in order to take advantage of this.
-
-Dependency: the iio patch applies on top of "iio: adc: ti-ads7950: allow
-simultaneous use of buffer and direct mode"[1]
-
-[1]: https://lore.kernel.org/lkml/20180716233550.6449-1-david@lechnology.com/
-
-David Lechner (4):
-  spi: spi-bitbang: change flags from u8 to u16
-  spi: add new SPI_CS_WORD flag
-  spi: spi-davinci: Add support for SPI_CS_WORD
-  iio: adc: ti-ads7950: use SPI_CS_WORD to reduce CPU usage
-
- drivers/iio/adc/ti-ads7950.c    | 53 +++++++++++++++++++--------------
- drivers/spi/spi-davinci.c       | 11 +++++--
- include/linux/spi/spi.h         |  2 +-
- include/linux/spi/spi_bitbang.h |  2 +-
- 4 files changed, 41 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 577084bb911b..8e4b869b50fd 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -232,7 +232,8 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ 				!(spi->mode & SPI_CS_HIGH));
+ 	} else {
+ 		if (value == BITBANG_CS_ACTIVE) {
+-			spidat1 |= SPIDAT1_CSHOLD_MASK;
++			if (!(spi->mode & SPI_CS_WORD))
++				spidat1 |= SPIDAT1_CSHOLD_MASK;
+ 			spidat1 &= ~(0x1 << chip_sel);
+ 		}
+ 	}
+@@ -449,8 +450,12 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 			return retval;
+ 		}
+ 
+-		if (internal_cs)
++		if (internal_cs) {
+ 			set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
++		} else if (spi->mode & SPI_CS_WORD) {
++			dev_err(&spi->dev, "SPI_CS_WORD can't be use with GPIO CS\n");
++			return -EINVAL;
++		}
+ 	}
+ 
+ 	if (spi->mode & SPI_READY)
+@@ -985,7 +990,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	dspi->prescaler_limit = pdata->prescaler_limit;
+ 	dspi->version = pdata->version;
+ 
+-	dspi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP;
++	dspi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP | SPI_CS_WORD;
+ 	if (dspi->version == SPI_VERSION_2)
+ 		dspi->bitbang.flags |= SPI_READY;
+ 
 -- 
 2.17.1

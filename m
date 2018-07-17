@@ -1,44 +1,32 @@
-From: David Lechner <david@lechnology.com>
-Subject: [PATCH 1/4] spi: spi-bitbang: change flags from u8 to u16
-Date: Mon, 16 Jul 2018 22:20:49 -0500
-Message-ID: <20180717032052.12273-2-david@lechnology.com>
-References: <20180717032052.12273-1-david@lechnology.com>
-Cc: David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-To: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] spi: spi-fsl-dspi: Fill actual_length when doing DMA transfer
+Date: Mon, 16 Jul 2018 21:11:09 -0700
+Message-ID: <CAHQ1cqHPgL0k9Av6m3gxkeT=YpaaK9+Wm4Lagp+GXo-nH+OBnw@mail.gmail.com>
+References: <20180716062508.7726-1-andrew.smirnov@gmail.com> <20180716112629.GC20734@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: maitysanchayan@gmail.com, Stefan Agner <stefan@agner.ch>,
+        Chris Healy <cphealy@gmail.com>, linux-spi@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180717032052.12273-1-david@lechnology.com>
+In-Reply-To: <20180716112629.GC20734@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This changes the data type of the flags field in struct spi_bitbang from
-u8 to u16. This matches the size of the mode field of struct spi_device
-where these flags are also used.
+On Mon, Jul 16, 2018 at 4:26 AM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Sun, Jul 15, 2018 at 11:25:08PM -0700, Andrey Smirnov wrote:
+> > Users of SPI device drivers may rely on 'actual_length', so it is
+> > important that information is correctly reported. One example would be
+> > spi_mem_exec_op() which will fail if 'actual_length' doesn't match
+> > requested transfer length. To fix the problem, add necessary code to
+> > populate 'actual_length'.
+>
+> This doesn't apply against current code, please check and resend.
 
-This is done in preparation of adding a new SPI mode flag that will be
-used with this field that would otherwise not fit in 8 bits.
 
-Signed-off-by: David Lechner <david@lechnology.com>
----
- include/linux/spi/spi_bitbang.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry about that. Will do in v2.
 
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index 51d8c060e513..c1e61641a7f1 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -8,7 +8,7 @@ struct spi_bitbang {
- 	struct mutex		lock;
- 	u8			busy;
- 	u8			use_dma;
--	u8			flags;		/* extra spi->mode support */
-+	u16			flags;		/* extra spi->mode support */
- 
- 	struct spi_master	*master;
- 
--- 
-2.17.1
+Thanks,
+Andrey Smirnov

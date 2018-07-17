@@ -1,54 +1,60 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 2/5] spi: dw: allow providing own set_cs callback
-Date: Tue, 17 Jul 2018 16:23:11 +0200
-Message-ID: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
-References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
-Cc: Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH RESEND 0/5] spi: imx: Improve non 8-bit aligned words and dynamic bursts
+Date: Tue, 17 Jul 2018 16:31:49 +0200
+Message-ID: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        alexandre.belloni@bootlin.com
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Allow platform specific drivers to provide their own set_cs callback when
-the IP integration requires it.
+[Resend with i.MX platform maintainers and reviewers in Cc: ]
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
----
- drivers/spi/spi-dw.c | 3 +++
- drivers/spi/spi-dw.h | 1 +
- 2 files changed, 4 insertions(+)
+This series aims to improve PIO transfers on the SPI imx driver for several
+use-cases, where bits_per_words isn't a multiple of 8, or when using
+dynamic_burst mode.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index a087464efdd7..f76e31faf694 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -507,6 +507,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->dev.of_node = dev->of_node;
- 	master->flags = SPI_MASTER_GPIO_SS;
- 
-+	if (dws->set_cs)
-+		master->set_cs = dws->set_cs;
-+
- 	/* Basic HW init */
- 	spi_hw_init(dev, dws);
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 2cde2473b3e9..446013022849 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -112,6 +112,7 @@ struct dw_spi {
- 	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
-+	void (*set_cs)(struct spi_device *spi, bool enable);
- 
- 	/* Current message transfer state info */
- 	size_t			len;
+The first patch is just a cosmetic cleanup of extra variable assignments
+
+The second patch enforces the use of the dynamic_burst mode only when we
+can pack words into the 32 bits FIFO entries. This avoid having to mask out the
+remaining parts of the words, and avoid shifting extra clock ticks.
+
+The 3rd and 4th patches fixes the way we compute the number of bytes per words,
+by using 4 bytes to transfer 24 bits words as expected by the core.
+
+Finally, the 5th patch reworks the way dynamic bursts are emitted, by shifting
+out the non 4-bytes aligned parts first as expected by the imx SPI controller.
+
+This avoid splitting out transfer when not necessary.
+
+This was tested on imx6s and imx6q, with and without DMA, in single and full
+duplex with a wide range of transfer sizes and bit_per_words values.
+
+I however couldn't test the slave mode with these patches, so some review is
+very welcomed, especially on the last patch.
+
+Thanks,
+
+Maxime
+
+Maxime Chevallier (5):
+  spi: imx: Remove duplicate variable assignments
+  spi: imx: Use dynamic bursts only when bits_per_word is 8, 16 or 32
+  spi: imx: Use correct number of bytes per words
+  spi: imx: remove unnecessary check in spi_imx_can_dma
+  spi: imx: Use the longuest possible burst size when in dynamic_burst
+
+ drivers/spi/spi-imx.c | 162 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 101 insertions(+), 61 deletions(-)
+
 -- 
-2.18.0
+2.11.0

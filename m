@@ -1,271 +1,103 @@
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH RESEND 5/5] spi: imx: Use the longuest possible burst size when in dynamic_burst
-Date: Tue, 17 Jul 2018 16:31:54 +0200
-Message-ID: <20180717143154.28241-6-maxime.chevallier@bootlin.com>
-References: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-        alexandre.belloni@bootlin.com
-To: Mark Brown <broonie@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 1/5] spi: dw: fix possible race condition
+Date: Wed, 18 Jul 2018 00:30:11 +0300
+Message-ID: <CAHp75Vc4SrMXznc6PSrO2Lfrc3gspu_g1QYjuFDWT9-J=C+bjw@mail.gmail.com>
+References: <20180717142314.32337-1-alexandre.belloni@bootlin.com> <20180717142314.32337-2-alexandre.belloni@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20180717142314.32337-2-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dynamic burst mode allows to group together multiple words and send them
-in one continuous burst. When the number of bytes to be sent is not a
-strict multiple of the FIFO entry size (32 bits), the controller expects
-the non aligned bits to be sent first.
+On Tue, Jul 17, 2018 at 5:23 PM, Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+> It is possible to get an interrupt as soon as it is requested.  dw_spi_irq
+> does spi_controller_get_devdata(master) and expects it to be different than
+> NULL. However, spi_controller_set_devdata() is called after request_irq(),
+> resulting in the following crash:
+>
+> CPU 0 Unable to handle kernel paging request at virtual address 00000030, epc == 8058e09c, ra == 8018ff90
+> [...]
+> Call Trace:
+> [<8058e09c>] dw_spi_irq+0x8/0x64
+> [<8018ff90>] __handle_irq_event_percpu+0x70/0x1d4
+> [<80190128>] handle_irq_event_percpu+0x34/0x8c
+> [<801901c4>] handle_irq_event+0x44/0x80
+> [<801951a8>] handle_level_irq+0xdc/0x194
+> [<8018f580>] generic_handle_irq+0x38/0x50
+> [<804c6924>] ocelot_irq_handler+0x104/0x1c0
+> [<8018f580>] generic_handle_irq+0x38/0x50
+> [<8075c1d8>] do_IRQ+0x18/0x24
+> [<804c4714>] plat_irq_dispatch+0xa4/0x150
+> [<80106ba8>] except_vec_vi_end+0xb8/0xc4
+> [<8075ba5c>] _raw_spin_unlock_irqrestore+0x14/0x20
+> [<801926c8>] __setup_irq+0x53c/0x8e0
+> [<80192e28>] request_threaded_irq+0xf4/0x1e8
+> [<8058ed18>] dw_spi_add_host+0x264/0x2c4
+> [<8058f2ec>] dw_spi_mmio_probe+0x258/0x27c
+> [<8051f4a4>] platform_drv_probe+0x58/0xbc
+> [<8051daa8>] driver_probe_device+0x308/0x40c
+> [<8051dc9c>] __driver_attach+0xf0/0xf8
+> [<8051b698>] bus_for_each_dev+0x78/0xcc
+> [<8051c2c0>] bus_add_driver+0x1b4/0x228
+> [<8051e840>] driver_register+0x84/0x154
+> [<801001d8>] do_one_initcall+0x54/0x1ac
+> [<80880e90>] kernel_init_freeable+0x1ec/0x2ac
+> [<80755310>] kernel_init+0x14/0x110
+> [<80106698>] ret_from_kernel_thread+0x14/0x1c
+> Code: 00000000  8ca40050  8c820008 <8c420030> 0000000f  3042003f  10400007  00000000  8ca20230
+>
 
-This commit adds support for this particular constraint, avoiding the
-need to send the non-aligned bytes one by one at the end of the
-transfer, speeding-up transfer speed in that case.
+Good catch!
 
-With this method, a transfer is divided into multiple bursts, limited in
-size by the maximum amount of data that the controller can transfer in
-one continuous burst (which is 512 bytes).
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-The non-512 byte part of the transfer is sent first. The remaining bytes
-to be transferred in the current burst is stored in the 'remainder'
-field.
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  drivers/spi/spi-dw.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index f693bfe95ab9..a087464efdd7 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -485,6 +485,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+>         dws->dma_inited = 0;
+>         dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
+>
+> +       spi_controller_set_devdata(master, dws);
+> +
+>         ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
+>                           master);
+>         if (ret < 0) {
+> @@ -518,7 +520,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+>                 }
+>         }
+>
+> -       spi_controller_set_devdata(master, dws);
+>         ret = devm_spi_register_controller(dev, master);
+>         if (ret) {
+>                 dev_err(&master->dev, "problem registering spi master\n");
+> --
+> 2.18.0
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-With this method, the read_u32 field is no longer necessary, and is
-removed.
 
-This was tested on imx6 solo and imx6 quad.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/spi/spi-imx.c | 122 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 85 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index ef6d3648396a..08dd3a31a3e5 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -94,7 +94,7 @@ struct spi_imx_data {
- 	void *rx_buf;
- 	const void *tx_buf;
- 	unsigned int txfifo; /* number of words pushed in tx FIFO */
--	unsigned int dynamic_burst, read_u32;
-+	unsigned int dynamic_burst;
- 
- 	/* Slave mode */
- 	bool slave_mode;
-@@ -139,6 +139,8 @@ static void spi_imx_buf_rx_##type(struct spi_imx_data *spi_imx)		\
- 		*(type *)spi_imx->rx_buf = val;				\
- 		spi_imx->rx_buf += sizeof(type);			\
- 	}								\
-+									\
-+	spi_imx->remainder -= sizeof(type);				\
- }
- 
- #define MXC_SPI_BUF_TX(type)						\
-@@ -292,22 +294,36 @@ static void spi_imx_buf_rx_swap_u32(struct spi_imx_data *spi_imx)
- 		*(u32 *)spi_imx->rx_buf = val;
- 		spi_imx->rx_buf += sizeof(u32);
- 	}
-+
-+	spi_imx->remainder -= sizeof(u32);
- }
- 
- static void spi_imx_buf_rx_swap(struct spi_imx_data *spi_imx)
- {
--	unsigned int bytes_per_word;
-+	int unaligned;
-+	u32 val;
- 
--	bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
--	if (spi_imx->read_u32) {
-+	unaligned = spi_imx->remainder % 4;
-+
-+	if (!unaligned) {
- 		spi_imx_buf_rx_swap_u32(spi_imx);
- 		return;
- 	}
- 
--	if (bytes_per_word == 1)
--		spi_imx_buf_rx_u8(spi_imx);
--	else if (bytes_per_word == 2)
-+	if (spi_imx_bytes_per_word(spi_imx->bits_per_word) == 2) {
- 		spi_imx_buf_rx_u16(spi_imx);
-+		return;
-+	}
-+
-+	val = readl(spi_imx->base + MXC_CSPIRXDATA);
-+
-+	while (unaligned--) {
-+		if (spi_imx->rx_buf) {
-+			*(u8 *)spi_imx->rx_buf = (val >> (8 * unaligned)) & 0xff;
-+			spi_imx->rx_buf++;
-+		}
-+		spi_imx->remainder--;
-+	}
- }
- 
- static void spi_imx_buf_tx_swap_u32(struct spi_imx_data *spi_imx)
-@@ -336,40 +352,30 @@ static void spi_imx_buf_tx_swap_u32(struct spi_imx_data *spi_imx)
- 
- static void spi_imx_buf_tx_swap(struct spi_imx_data *spi_imx)
- {
--	u32 ctrl, val;
--	unsigned int bytes_per_word;
-+	int unaligned;
-+	u32 val = 0;
- 
--	if (spi_imx->count == spi_imx->remainder) {
--		ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
--		ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
--		if (spi_imx->count > MX51_ECSPI_CTRL_MAX_BURST) {
--			spi_imx->remainder = spi_imx->count %
--					     MX51_ECSPI_CTRL_MAX_BURST;
--			val = MX51_ECSPI_CTRL_MAX_BURST * 8 - 1;
--		} else if (spi_imx->count >= sizeof(u32)) {
--			spi_imx->remainder = spi_imx->count % sizeof(u32);
--			val = (spi_imx->count - spi_imx->remainder) * 8 - 1;
--		} else {
--			spi_imx->remainder = 0;
--			val = spi_imx->bits_per_word - 1;
--			spi_imx->read_u32 = 0;
--		}
-+	unaligned = spi_imx->count % 4;
- 
--		ctrl |= (val << MX51_ECSPI_CTRL_BL_OFFSET);
--		writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-+	if (!unaligned) {
-+		spi_imx_buf_tx_swap_u32(spi_imx);
-+		return;
- 	}
- 
--	if (spi_imx->count >= sizeof(u32)) {
--		spi_imx_buf_tx_swap_u32(spi_imx);
-+	if (spi_imx_bytes_per_word(spi_imx->bits_per_word) == 2) {
-+		spi_imx_buf_tx_u16(spi_imx);
- 		return;
- 	}
- 
--	bytes_per_word = spi_imx_bytes_per_word(spi_imx->bits_per_word);
-+	while (unaligned--) {
-+		if (spi_imx->tx_buf) {
-+			val |= *(u8 *)spi_imx->tx_buf << (8 * unaligned);
-+			spi_imx->tx_buf++;
-+		}
-+		spi_imx->count--;
-+	}
- 
--	if (bytes_per_word == 1)
--		spi_imx_buf_tx_u8(spi_imx);
--	else if (bytes_per_word == 2)
--		spi_imx_buf_tx_u16(spi_imx);
-+	writel(val, spi_imx->base + MXC_CSPITXDATA);
- }
- 
- static void mx53_ecspi_rx_slave(struct spi_imx_data *spi_imx)
-@@ -388,6 +394,8 @@ static void mx53_ecspi_rx_slave(struct spi_imx_data *spi_imx)
- 		spi_imx->rx_buf += n_bytes;
- 		spi_imx->slave_burst -= n_bytes;
- 	}
-+
-+	spi_imx->remainder -= sizeof(u32);
- }
- 
- static void mx53_ecspi_tx_slave(struct spi_imx_data *spi_imx)
-@@ -997,12 +1005,52 @@ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
- 	gpio_set_value(spi->cs_gpio, dev_is_lowactive ^ active);
- }
- 
-+static void spi_imx_set_burst_len(struct spi_imx_data *spi_imx, int n_bits)
-+{
-+	u32 ctrl;
-+
-+	ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+	ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
-+	ctrl |= ((n_bits - 1) << MX51_ECSPI_CTRL_BL_OFFSET);
-+	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-+}
-+
- static void spi_imx_push(struct spi_imx_data *spi_imx)
- {
-+	unsigned int burst_len, fifo_words;
-+
-+	if (spi_imx->dynamic_burst)
-+		fifo_words = 4;
-+	else
-+		fifo_words = spi_imx_bytes_per_word(spi_imx->bits_per_word);
-+	/*
-+	 * Reload the FIFO when the remaining bytes to be transferred in the
-+	 * current burst is 0. This only applies when bits_per_word is a
-+	 * multiple of 8.
-+	 */
-+	if (!spi_imx->remainder) {
-+		if (spi_imx->dynamic_burst) {
-+
-+			/* We need to deal unaligned data first */
-+			burst_len = spi_imx->count % MX51_ECSPI_CTRL_MAX_BURST;
-+
-+			if (!burst_len)
-+				burst_len = MX51_ECSPI_CTRL_MAX_BURST;
-+
-+			spi_imx_set_burst_len(spi_imx, burst_len * 8);
-+
-+			spi_imx->remainder = burst_len;
-+		} else {
-+			spi_imx->remainder = fifo_words;
-+		}
-+	}
-+
- 	while (spi_imx->txfifo < spi_imx->devtype_data->fifo_size) {
- 		if (!spi_imx->count)
- 			break;
--		if (spi_imx->txfifo && (spi_imx->count == spi_imx->remainder))
-+		if (spi_imx->dynamic_burst &&
-+		    spi_imx->txfifo >=  DIV_ROUND_UP(spi_imx->remainder,
-+						     fifo_words))
- 			break;
- 		spi_imx->tx(spi_imx);
- 		spi_imx->txfifo++;
-@@ -1108,12 +1156,9 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 	    spi_imx->bits_per_word == 16 ||
- 	    spi_imx->bits_per_word == 32)) {
- 
--		spi_imx->read_u32  = 1;
--
- 		spi_imx->rx = spi_imx_buf_rx_swap;
- 		spi_imx->tx = spi_imx_buf_tx_swap;
- 		spi_imx->dynamic_burst = 1;
--		spi_imx->remainder = t->len;
- 
- 	} else {
- 		if (spi_imx->bits_per_word <= 8) {
-@@ -1126,6 +1171,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 			spi_imx->rx = spi_imx_buf_rx_u32;
- 			spi_imx->tx = spi_imx_buf_tx_u32;
- 		}
-+		spi_imx->dynamic_burst = 0;
- 	}
- 
- 	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
-@@ -1309,6 +1355,7 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- 	spi_imx->rx_buf = transfer->rx_buf;
- 	spi_imx->count = transfer->len;
- 	spi_imx->txfifo = 0;
-+	spi_imx->remainder = 0;
- 
- 	reinit_completion(&spi_imx->xfer_done);
- 
-@@ -1346,6 +1393,7 @@ static int spi_imx_pio_transfer_slave(struct spi_device *spi,
- 	spi_imx->rx_buf = transfer->rx_buf;
- 	spi_imx->count = transfer->len;
- 	spi_imx->txfifo = 0;
-+	spi_imx->remainder = 0;
- 
- 	reinit_completion(&spi_imx->xfer_done);
- 	spi_imx->slave_aborted = false;
 -- 
-2.11.0
+With Best Regards,
+Andy Shevchenko

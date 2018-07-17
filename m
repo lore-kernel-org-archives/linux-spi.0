@@ -1,64 +1,52 @@
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH v2] spi: spi-fsl-dspi: Fill actual_length when doing DMA transfer
-Date: Mon, 16 Jul 2018 21:33:29 -0700
-Message-ID: <20180717043329.4209-1-andrew.smirnov@gmail.com>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Sanchayan Maity <maitysanchayan@gmail.com>,
-        Stefan Agner <stefan@agner.ch>, cphealy@gmail.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH 0/5] spi: imx: Improve non 8-bit aligned words and dynamic bursts
+Date: Tue, 17 Jul 2018 15:43:06 +0200
+Message-ID: <20180717134311.26780-1-maxime.chevallier@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        thomas.petazzoni@bootlin.com, alexandre.belloni@bootlin.com
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Upper layer users of SPI device drivers may rely on 'actual_length',
-so it is important that information is correctly reported. One such
-example is spi_mem_exec_op() function that will fail if
-'actual_length' of the data transferred is not what was requested. Add
-necessary code to populate 'actual_length.
+This series aims to improve PIO transfers on the SPI imx driver for several
+use-cases, where bits_per_words isn't a multiple of 8, or when using
+dynamic_burst mode.
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Sanchayan Maity <maitysanchayan@gmail.com>
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: cphealy@gmail.com
-Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
+The first patch is just a cosmetic cleanup of extra variable assignments
 
-Changes since [v1]
+The second patch enforces the use of the dynamic_burst mode only when we
+can pack words into the 32 bits FIFO entries. This avoid having to mask out the
+remaining parts of the words, and avoid shifting extra clock ticks.
 
-    - Patch rebase on for-next branch of SPI sybsytem's git tree
+The 3rd and 4th patches fixes the way we compute the number of bytes per words,
+by using 4 bytes to transfer 24 bits words as expected by the core.
 
-[v1] lkml.kernel.org/r/20180716062508.7726-1-andrew.smirnov@gmail.com
+Finally, the 4th patch reworks the way dynamic bursts are emitted, by shifting
+out the non 4-bytes aligned parts first as expected by the imx SPI controller.
 
- drivers/spi/spi-fsl-dspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+This avoid splitting out transfer when not necessary.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 89a1e7a4fe5d..9e598642ca66 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -358,6 +358,7 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
- {
- 	struct fsl_dspi_dma *dma = dspi->dma;
- 	struct device *dev = &dspi->pdev->dev;
-+	struct spi_message *message = dspi->cur_msg;
- 	int curr_remaining_bytes;
- 	int bytes_per_buffer;
- 	int ret = 0;
-@@ -377,8 +378,10 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
- 			goto exit;
- 
- 		} else {
--			curr_remaining_bytes -= dma->curr_xfer_len
--				* dspi->bytes_per_word;
-+			const int len =
-+				dma->curr_xfer_len * dspi->bytes_per_word;
-+			curr_remaining_bytes -= len;
-+			message->actual_length += len;
- 			if (curr_remaining_bytes < 0)
- 				curr_remaining_bytes = 0;
- 		}
+This was tested on imx6s and imx6q, with and without DMA, in single and full
+duplex with a wide range of transfer sizes and bit_per_words values.
+
+I however couldn't test the slave mode with these patches, so some review is
+very welcomed, especially on the last patch.
+
+Thanks,
+
+Maxime
+
+Maxime Chevallier (5):
+  spi: imx: Remove duplicate variable assignments
+  spi: imx: Use dynamic bursts only when bits_per_word is 8, 16 or 32
+  spi: imx: Use correct number of bytes per words
+  spi: imx: remove unnecessary check in spi_imx_can_dma
+  spi: imx: Use the longuest possible burst size when in dynamic_burst
+
+ drivers/spi/spi-imx.c | 162 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 101 insertions(+), 61 deletions(-)
+
 -- 
-2.17.1
+2.11.0

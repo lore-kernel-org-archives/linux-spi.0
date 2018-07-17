@@ -1,7 +1,7 @@
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5/5] mips: dts: mscc: enable spi and NOR flash support on ocelot PCB123
-Date: Tue, 17 Jul 2018 16:23:14 +0200
-Message-ID: <20180717142314.32337-6-alexandre.belloni@bootlin.com>
+Subject: [PATCH 2/5] spi: dw: allow providing own set_cs callback
+Date: Tue, 17 Jul 2018 16:23:11 +0200
+Message-ID: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
 References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
 Cc: Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -15,33 +15,40 @@ In-Reply-To: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Ocelot PCB123 has a SPI NOR connected on its SPI bus.
+Allow platform specific drivers to provide their own set_cs callback when
+the IP integration requires it.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- arch/mips/boot/dts/mscc/ocelot_pcb123.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-dw.c | 3 +++
+ drivers/spi/spi-dw.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-index 4ccd65379059..2266027759f9 100644
---- a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-+++ b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-@@ -26,6 +26,16 @@
- 	status = "okay";
- };
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index a087464efdd7..f76e31faf694 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -507,6 +507,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	master->dev.of_node = dev->of_node;
+ 	master->flags = SPI_MASTER_GPIO_SS;
  
-+&spi {
-+	status = "okay";
++	if (dws->set_cs)
++		master->set_cs = dws->set_cs;
 +
-+	flash@0 {
-+		compatible = "macronix,mx25l25635f", "jedec,spi-nor";
-+		spi-max-frequency = <20000000>;
-+		reg = <0>;
-+	};
-+};
-+
- &mdio0 {
- 	status = "okay";
- };
+ 	/* Basic HW init */
+ 	spi_hw_init(dev, dws);
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 2cde2473b3e9..446013022849 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -112,6 +112,7 @@ struct dw_spi {
+ 	u32			reg_io_width;	/* DR I/O width in bytes */
+ 	u16			bus_num;
+ 	u16			num_cs;		/* supported slave numbers */
++	void (*set_cs)(struct spi_device *spi, bool enable);
+ 
+ 	/* Current message transfer state info */
+ 	size_t			len;
 -- 
 2.18.0

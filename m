@@ -1,62 +1,78 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/4] spi: add new SPI_CS_WORD flag
-Date: Wed, 18 Jul 2018 16:04:50 +0100
-Message-ID: <20180718150450.GO5700@sirena.org.uk>
-References: <20180717032052.12273-1-david@lechnology.com>
- <20180717032052.12273-3-david@lechnology.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="H83aLI5Lttn3Hg7B"
-Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
+Subject: Applied "spi: spi-bitbang: change flags from u8 to u16" to the spi tree
+Date: Wed, 18 Jul 2018 16:17:09 +0100
+Message-ID: <E1ffoCT-0004O3-0g@debutante>
+References: <20180717032052.12273-2-david@lechnology.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-kernel@vger.kernel.org
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180717032052.12273-3-david@lechnology.com>
+In-Reply-To: <20180717032052.12273-2-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---H83aLI5Lttn3Hg7B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-bitbang: change flags from u8 to u16
 
-On Mon, Jul 16, 2018 at 10:20:50PM -0500, David Lechner wrote:
-> This adds a new SPI mode flag, SPI_CS_WORD, that is used to indicate
-> that a SPI device requires the chip select to be toggled after each
-> word that is transferred.
+has been applied to the spi tree at
 
-This feels like it should have a soft implementation if it is going to
-be truly usable, the vast majority of SPI controllers don't do this and
-I can only think of a few that have the hardware feature.  I'd also
-expect to see some validation added to the core spi_setup() since at
-present a client driver could set the mode option but then have it
-ignored by the controller which would presumably break things, we
-currently only have checks for specific modes and nothing that'd catch
-an unknown flag like this.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Ideally we'd also have some ability to use this as an optimization where
-possible with longer sequences (I can see a regmap cache sync being able
-to take advantage of this for example) but that might be more trouble
-than it's worth.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---H83aLI5Lttn3Hg7B
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltPVxIACgkQJNaLcl1U
-h9C/awf/b9hscy2AJosmJUBThr9n1LpeKI6knCgJVbsOg9FUBH9JjVxAagPdRe4Z
-3fEyFqiDo7kSezNOZmrxbwTKTwiLbi2eLojQfohuMpEaF6HXE7Vo3ypGvlnTwSsQ
-Xaw9vlpI8rNbDXqIb98PRd3th49FEkIIdsi2g0LTKlhxZWG3nynTHprK0PyPZuro
-uPg4FU4dLUtsIkrsg8awEGCCuBARNysS6TFgPAKeLhSGnMwPfMMx20f2o1KeMdWT
-B2QUNwjQnPwnxlYO9ahs2BiYxTY43ap1WlYN0xqoYyUTHN0dL4bD3neCSHb1p+SG
-jM2asJiLGGzjHyzrKZhF3VhQuOEp1w==
-=l9Kc
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---H83aLI5Lttn3Hg7B--
+Thanks,
+Mark
+
+>From 7c201ead1bfd19935f689fca69100c335028c047 Mon Sep 17 00:00:00 2001
+From: David Lechner <david@lechnology.com>
+Date: Mon, 16 Jul 2018 22:20:49 -0500
+Subject: [PATCH] spi: spi-bitbang: change flags from u8 to u16
+
+This changes the data type of the flags field in struct spi_bitbang from
+u8 to u16. This matches the size of the mode field of struct spi_device
+where these flags are also used.
+
+This is done in preparation of adding a new SPI mode flag that will be
+used with this field that would otherwise not fit in 8 bits.
+
+Signed-off-by: David Lechner <david@lechnology.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ include/linux/spi/spi_bitbang.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
+index 51d8c060e513..c1e61641a7f1 100644
+--- a/include/linux/spi/spi_bitbang.h
++++ b/include/linux/spi/spi_bitbang.h
+@@ -8,7 +8,7 @@ struct spi_bitbang {
+ 	struct mutex		lock;
+ 	u8			busy;
+ 	u8			use_dma;
+-	u8			flags;		/* extra spi->mode support */
++	u16			flags;		/* extra spi->mode support */
+ 
+ 	struct spi_master	*master;
+ 
+-- 
+2.18.0

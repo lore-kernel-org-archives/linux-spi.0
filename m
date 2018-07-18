@@ -1,73 +1,89 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/5] spi: dw: allow providing own set_cs callback
-Date: Wed, 18 Jul 2018 13:24:21 +0100
-Message-ID: <20180718122421.GK5700@sirena.org.uk>
-References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
- <20180717142314.32337-3-alexandre.belloni@bootlin.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M9kwpIYUMbI/2cCx"
-Cc: James Hogan <jhogan@kernel.org>,
+Subject: Applied "spi: dw: allow providing own set_cs callback" to the spi tree
+Date: Wed, 18 Jul 2018 13:29:50 +0100
+Message-ID: <E1fflaY-0007Wj-SM@debutante>
+References: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        linux-spi@vger.kernel.org
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 In-Reply-To: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---M9kwpIYUMbI/2cCx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: dw: allow providing own set_cs callback
 
-On Tue, Jul 17, 2018 at 04:23:11PM +0200, Alexandre Belloni wrote:
-> Allow platform specific drivers to provide their own set_cs callback when
-> the IP integration requires it.
+has been applied to the spi tree at
 
-The following changes since commit ce397d215ccd07b8ae3f71db689aedb85d56ab40:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-  Linux 4.18-rc1 (2018-06-17 08:04:49 +0900)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-are available in the Git repository at:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-dw-set-cs
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-for you to fetch changes up to 62dbbae483b6452e688b8e26c4d024d484117697:
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-  spi: dw: allow providing own set_cs callback (2018-07-18 13:22:37 +0100)
+Thanks,
+Mark
 
-----------------------------------------------------------------
-spi: dw: Allow custom set_cs_callback
+>From 62dbbae483b6452e688b8e26c4d024d484117697 Mon Sep 17 00:00:00 2001
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Date: Tue, 17 Jul 2018 16:23:11 +0200
+Subject: [PATCH] spi: dw: allow providing own set_cs callback
 
 Allow platform specific drivers to provide their own set_cs callback when
 the IP integration requires it.
 
-----------------------------------------------------------------
-Alexandre Belloni (1):
-      spi: dw: allow providing own set_cs callback
-
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
  drivers/spi/spi-dw.c | 3 +++
  drivers/spi/spi-dw.h | 1 +
  2 files changed, 4 insertions(+)
 
---M9kwpIYUMbI/2cCx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltPMXUACgkQJNaLcl1U
-h9BWsgf9FOP0W6xbxEz+Z9Vym3Fbf6vuznYgCsxHhqV79EP6lRLrdJOllZTSXOSy
-dkYUwpR0MlLDukWBvPPwmDM2m/BR6rHfzMWXqyWh4+wj6CD9KZlm7hMqauANfSoC
-6zV2IdBSVw3d0QHfiMRB2WuVBAnTlTFaPPik66NJo/VngEEvBrnsV3KjuECtdeKZ
-KgHtmh0O/D674R8OdfKJ4BjpHAl2BCHJnyjr0fm1X/doqci62vM2Oq6WQWSA6Z2w
-W9BgQzxMgFEiXNVAikwYAT2g/wos85wiqRFPMqUQDC0I0KTxZJjsL4yogxSiIEVZ
-WUMcnYQ6Qzbwj83eD7krc7hVaCVYLw==
-=I9ay
------END PGP SIGNATURE-----
-
---M9kwpIYUMbI/2cCx--
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index f693bfe95ab9..0d8ccb8be5ec 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -505,6 +505,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	master->dev.of_node = dev->of_node;
+ 	master->flags = SPI_MASTER_GPIO_SS;
+ 
++	if (dws->set_cs)
++		master->set_cs = dws->set_cs;
++
+ 	/* Basic HW init */
+ 	spi_hw_init(dev, dws);
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 2cde2473b3e9..446013022849 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -112,6 +112,7 @@ struct dw_spi {
+ 	u32			reg_io_width;	/* DR I/O width in bytes */
+ 	u16			bus_num;
+ 	u16			num_cs;		/* supported slave numbers */
++	void (*set_cs)(struct spi_device *spi, bool enable);
+ 
+ 	/* Current message transfer state info */
+ 	size_t			len;
+-- 
+2.18.0

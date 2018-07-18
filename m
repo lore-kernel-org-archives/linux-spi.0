@@ -1,97 +1,62 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: fix possible race condition" to the spi tree
-Date: Wed, 18 Jul 2018 13:29:53 +0100
-Message-ID: <E1fflab-0007Xk-2r@debutante>
-References: <20180717142314.32337-2-alexandre.belloni@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>,
-        linux-spi@vger.kernel.org
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH 2/4] spi: add new SPI_CS_WORD flag
+Date: Wed, 18 Jul 2018 16:04:50 +0100
+Message-ID: <20180718150450.GO5700@sirena.org.uk>
+References: <20180717032052.12273-1-david@lechnology.com>
+ <20180717032052.12273-3-david@lechnology.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="H83aLI5Lttn3Hg7B"
+Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org
+To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180717142314.32337-2-alexandre.belloni@bootlin.com>
+Content-Disposition: inline
+In-Reply-To: <20180717032052.12273-3-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: dw: fix possible race condition
+--H83aLI5Lttn3Hg7B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Mon, Jul 16, 2018 at 10:20:50PM -0500, David Lechner wrote:
+> This adds a new SPI mode flag, SPI_CS_WORD, that is used to indicate
+> that a SPI device requires the chip select to be toggled after each
+> word that is transferred.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+This feels like it should have a soft implementation if it is going to
+be truly usable, the vast majority of SPI controllers don't do this and
+I can only think of a few that have the hardware feature.  I'd also
+expect to see some validation added to the core spi_setup() since at
+present a client driver could set the mode option but then have it
+ignored by the controller which would presumably break things, we
+currently only have checks for specific modes and nothing that'd catch
+an unknown flag like this.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Ideally we'd also have some ability to use this as an optimization where
+possible with longer sequences (I can see a regmap cache sync being able
+to take advantage of this for example) but that might be more trouble
+than it's worth.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--H83aLI5Lttn3Hg7B
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltPVxIACgkQJNaLcl1U
+h9C/awf/b9hscy2AJosmJUBThr9n1LpeKI6knCgJVbsOg9FUBH9JjVxAagPdRe4Z
+3fEyFqiDo7kSezNOZmrxbwTKTwiLbi2eLojQfohuMpEaF6HXE7Vo3ypGvlnTwSsQ
+Xaw9vlpI8rNbDXqIb98PRd3th49FEkIIdsi2g0LTKlhxZWG3nynTHprK0PyPZuro
+uPg4FU4dLUtsIkrsg8awEGCCuBARNysS6TFgPAKeLhSGnMwPfMMx20f2o1KeMdWT
+B2QUNwjQnPwnxlYO9ahs2BiYxTY43ap1WlYN0xqoYyUTHN0dL4bD3neCSHb1p+SG
+jM2asJiLGGzjHyzrKZhF3VhQuOEp1w==
+=l9Kc
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From 66b19d762378785d1568b5650935205edfeb0503 Mon Sep 17 00:00:00 2001
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Date: Tue, 17 Jul 2018 16:23:10 +0200
-Subject: [PATCH] spi: dw: fix possible race condition
-
-It is possible to get an interrupt as soon as it is requested.  dw_spi_irq
-does spi_controller_get_devdata(master) and expects it to be different than
-NULL. However, spi_controller_set_devdata() is called after request_irq(),
-resulting in the following crash:
-
-CPU 0 Unable to handle kernel paging request at virtual address 00000030, epc == 8058e09c, ra == 8018ff90
-[...]
-Call Trace:
-[<8058e09c>] dw_spi_irq+0x8/0x64
-[<8018ff90>] __handle_irq_event_percpu+0x70/0x1d4
-[<80190128>] handle_irq_event_percpu+0x34/0x8c
-[<801901c4>] handle_irq_event+0x44/0x80
-[<801951a8>] handle_level_irq+0xdc/0x194
-[<8018f580>] generic_handle_irq+0x38/0x50
-[<804c6924>] ocelot_irq_handler+0x104/0x1c0
-
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-dw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index f693bfe95ab9..a087464efdd7 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -485,6 +485,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
- 
-+	spi_controller_set_devdata(master, dws);
-+
- 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
- 			  master);
- 	if (ret < 0) {
-@@ -518,7 +520,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 		}
- 	}
- 
--	spi_controller_set_devdata(master, dws);
- 	ret = devm_spi_register_controller(dev, master);
- 	if (ret) {
- 		dev_err(&master->dev, "problem registering spi master\n");
--- 
-2.18.0
+--H83aLI5Lttn3Hg7B--

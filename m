@@ -1,78 +1,77 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-bitbang: change flags from u8 to u16" to the spi tree
-Date: Wed, 18 Jul 2018 16:17:09 +0100
-Message-ID: <E1ffoCT-0004O3-0g@debutante>
-References: <20180717032052.12273-2-david@lechnology.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: David Lechner <david@lechnology.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+Subject: [DISCUSSION] spi multi chipselect support
+Date: Wed, 18 Jul 2018 18:35:30 +0200
+Message-ID: <20180718163530.zsa5md3huz3dnotb@earth.universe>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wzbhycylfnbjkxy4"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@collabora.com
+To: Rob Herring <robh@kernel.org>, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180717032052.12273-2-david@lechnology.com>
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: spi-bitbang: change flags from u8 to u16
+--wzbhycylfnbjkxy4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+Hi Mark,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Some SPI slave devices have more than one chip select [0]. Rob suggested
+to use the following DT notation for this [1]:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+spi-controller {
+    slave@0 {
+        reg = <0>, <1>;
+    };
+};
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I think this makes sense from a DT point of view, but this needs
+quite some changes in the SPI core. I tried to find out, how to
+implement the suggestion in the last few days and I see two
+possibilities:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+1. Register two SPI Linux devices from one DT node. This needs the
+   fewest changes in SPI core. But we loose the one-to-one mapping
+   of DT nodes to devices. I have a feeling, that this will backfire.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+2. Add support for multiple chip-select to spi_device and modify
+   the transfer functions to make use of this. Unfortunately this
+   would require changing all spi controller as far as I can see?
+
+Can you please advise me how to proceed?
 
 Thanks,
-Mark
 
->From 7c201ead1bfd19935f689fca69100c335028c047 Mon Sep 17 00:00:00 2001
-From: David Lechner <david@lechnology.com>
-Date: Mon, 16 Jul 2018 22:20:49 -0500
-Subject: [PATCH] spi: spi-bitbang: change flags from u8 to u16
+-- Sebastian
 
-This changes the data type of the flags field in struct spi_bitbang from
-u8 to u16. This matches the size of the mode field of struct spi_device
-where these flags are also used.
+[0] For example microcontrollers with ISP (in-system programming)
+    interface, like the NXP Kinetis K20 series or the MRF89XA,
+    which has one chip-select for configuration register access
+    and one for FIFO access
+[1] https://patchwork.kernel.org/patch/10310109/
 
-This is done in preparation of adding a new SPI mode flag that will be
-used with this field that would otherwise not fit in 8 bits.
+--wzbhycylfnbjkxy4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: David Lechner <david@lechnology.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- include/linux/spi/spi_bitbang.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index 51d8c060e513..c1e61641a7f1 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -8,7 +8,7 @@ struct spi_bitbang {
- 	struct mutex		lock;
- 	u8			busy;
- 	u8			use_dma;
--	u8			flags;		/* extra spi->mode support */
-+	u16			flags;		/* extra spi->mode support */
- 
- 	struct spi_master	*master;
- 
--- 
-2.18.0
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAltPbE8ACgkQ2O7X88g7
++pq66hAAjxSDnlGBPukpVrvdCJ2cKIgQmiZG3Dn+1jfT71uWsk2hiA6Zolsjyhs+
+0KlOT3O4cXQrQvhktLGdCeJZeZpMA/jscZ5PwXefCRN3VngYiWEdlnsMUx8iLYGV
+K4MF8dexwae6aXYP6VxCy//XHEyzNrGaz8OJSdOFe8L6e5h6u9xjDPQh9J6VnAzW
+gOhW23eGT89ofjl/Wb4SmOn+T+g9BOeBDOtAi4ht2B3gSgXVdlYjHC/B/ufolj0A
+f7sfIQ69Bf7ngf71424An6KRsGM+vcvUQwykHgZ2jMRBu5tB+OzyOd5qQNTXUXIu
+ym4sS/+as7+W36gZqTfksgVDKyq12OpiG6B2r/v3m+XvO+q8+aF7FXA5ueSFATaS
+fHUSkOKZu0ny36fq6MpENisUI1ytDskcx+sTe83tgBL1eu0wzbaF4eCHfMcHIloa
+1v5TYuz12NwHhQbX1rnCVWC9l1vkFFL+LVHi8UPuG16sUvpNaGI6V5X1wYAtyQoa
+QJR3wyJOVum+xnoonKAmB+x7CHNF1SqJlV4VAaGAym+L+CuHmrgoGTdZuDMtW64k
+aQ+4G1u90HZrw+WKzVeQWmdgn1pozNzTn7qMhgs0JQsbDJvCxRzsALiotfh+EzE1
+MeM5vCS+UiUvX+Xrp6BbrTtnzXR44ggqlPJpF6yIxZ9zVs/NJGk=
+=tC6i
+-----END PGP SIGNATURE-----
+
+--wzbhycylfnbjkxy4--

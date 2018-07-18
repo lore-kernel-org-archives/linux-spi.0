@@ -1,95 +1,47 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Qualcomm Quad SPI(QSPI) documentation
-Date: Tue, 17 Jul 2018 15:19:55 -0700
-Message-ID: <CAD=FV=W1LA3XFDDhD7wZOWF2wLoGA1xTbKkXJDj0t_BE13J0BA@mail.gmail.com>
-References: <1530827202-9997-1-git-send-email-girishm@codeaurora.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 1/5] spi: dw: fix possible race condition
+Date: Wed, 18 Jul 2018 13:33:39 +0300
+Message-ID: <CAHp75VfvP7s-ud0XRUfESjTNRdbaZH_qKRpXbkCzKqp8j5e6kg@mail.gmail.com>
+References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
+ <20180717142314.32337-2-alexandre.belloni@bootlin.com> <CAHp75Vc4SrMXznc6PSrO2Lfrc3gspu_g1QYjuFDWT9-J=C+bjw@mail.gmail.com>
+ <CAHp75VfRS_gSv6x22M1TiTariUftF04sLyd84dQpxudOmT0s7w@mail.gmail.com>
+ <20180717214212.GE3211@piout.net> <CAHp75VdEkQ=AC8xUBno7qp0E+cXqwq03WOtVB3sX+Z6zthDJSw@mail.gmail.com>
+ <20180717221301.GF3211@piout.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+Cc: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
         linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>
-To: Girish Mahadevan <girishm@codeaurora.org>
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1530827202-9997-1-git-send-email-girishm@codeaurora.org>
+In-Reply-To: <20180717221301.GF3211@piout.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Wed, Jul 18, 2018 at 1:13 AM, Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+> On 18/07/2018 00:54:21+0300, Andy Shevchenko wrote:
+>> On Wed, Jul 18, 2018 at 12:42 AM, Alexandre Belloni
+>> <alexandre.belloni@bootlin.com> wrote:
+>> > On 18/07/2018 00:30:49+0300, Andy Shevchenko wrote:
 
-On Thu, Jul 5, 2018 at 2:46 PM, Girish Mahadevan <girishm@codeaurora.org> wrote:
-> Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
-> ---
->  .../devicetree/bindings/spi/qcom,spi-qcom-qspi.txt | 36 ++++++++++++++++++++++
->  err.txt                                            | 27 ----------------
->  2 files changed, 36 insertions(+), 27 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
->  delete mode 100644 err.txt
->
-> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
-> new file mode 100644
-> index 0000000..3baa893
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
-> @@ -0,0 +1,36 @@
-> +QTI [Qualcomm Technologies Inc] Quad Serial Peripheral Interface (QSPI)
-> +
-> +QSPI [Quad Serial Peripheral Interface] allows single dual and quad read/write
-> +access to slaves. QTI's QSPI controller implements the QSPI protocol to interface
-> +with slaves like NOR Flash devices.
-> +
-> +Required properties:
-> +- compatible:  Should contain:
-> +               "qcom,qspi-v1"
-> +- reg:         Contains the base register location and length
-> +- interrupts:  Interrupt number used by the controller.
-> +- clocks:      Contains the core and AHB clock names.
-> +- clock-names: "core" for core clock and "iface" for AHB clock.
-> +- spi-max-frequency:   Maximum SPI core clock frequency in Hz.
-> +
-> +SPI slave nodes must be children of the SPI master node and can contain
-> +properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
-> +
-> +Example:
-> +
-> +       qspi: qspi@7418000 {
-> +               compatible = "qcom,qspi-v1";
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-> +               reg = <0x7418000 0x600>;
-> +               interrupts = <0 459 0>;
+>> > Well, I'm not sure how far this can be backported. It also seems nobody
+>> > ever hit that while our hardware will hit it at every boot.
 
-Please use a more proper interrupts example, AKA:
-    interrupts = <GIC_SPI 459 IRQ_TYPE_LEVEL_HIGH>;
+>> No-one enabled CONFIG_DEBUG_SHIRQ?
 
+> Nope, this is a real HW IRQ. I meant find out up to when it can be
+> sanely backported.
 
-> +               clock-names = "iface", "core";
-> +               clocks = <&clock_gcc clk_gcc_qspi_ahb_clk>,
-> +                        <&clock_gcc clk_gcc_qspi_ser_clk>;
+I meant that before your case no-one tested with that option enabled
+which will behave like you describe (IRQ gets fired as soon as being
+registered).
 
-In upstream I believe that the clock #defines are usually in ALL CAPS.
-Maybe good to use that in your example.  In the clock patches I'm
-hoping to send up for SDM845, for instance, this will be:
-
-clocks = <&gcc GCC_QSPI_CNOC_PERIPH_AHB_CLK>,
-    <&gcc GCC_QSPI_CORE_CLK>;
-
-
-> +
-> +               device@0 {
-> +                       compatible = "dummy_device";
-> +                       reg = <x>; /* CS for the device */
-> +                       spi-max-frequency = <f>; /* Max supported frequency of the slave (Hz) */
-
-Since you are a Quad SPI controller, maybe you'd want your example to
-include how to enable that?  AKA:
-
-spi-tx-bus-width = <4>;
-spi-rx-bus-width = <4>;
-
-
--Doug
+-- 
+With Best Regards,
+Andy Shevchenko

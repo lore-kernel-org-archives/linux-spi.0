@@ -1,52 +1,58 @@
 From: "Keiji Hayashibara" <hayashibara.keiji@socionext.com>
 Subject: RE: [PATCH 2/2] spi: add SPI controller driver for UniPhier SoC
-Date: Fri, 20 Jul 2018 09:33:53 +0900
-Message-ID: <000901d41fc1$565160f0$02f422d0$@socionext.com>
-References: <1531983117-9443-1-git-send-email-hayashibara.keiji@socionext.com> <1531983117-9443-3-git-send-email-hayashibara.keiji@socionext.com> <20180719165150.GI27938@sirena.org.uk>
+Date: Fri, 20 Jul 2018 11:20:35 +0900
+Message-ID: <000d01d41fd0$3e691640$bb3b42c0$@socionext.com>
+References: <1531983117-9443-1-git-send-email-hayashibara.keiji@socionext.com>	
+ <1531983117-9443-3-git-send-email-hayashibara.keiji@socionext.com>
+ <1532029542.2283.157.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="iso-2022-jp"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        =?iso-2022-jp?B?WWFtYWRhLCBNYXNhaGlyby8bJEI7M0VEGyhCIBskQj8/OTAbKEI=?=
-        <yamada.masahiro@socionext.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <masami.hiramatsu@linaro.org>,
-        <jaswinder.singh@linaro.org>, <linux-kernel@vger.kernel.org>,
-        =?iso-2022-jp?B?SGF5YXNoaSwgS3VuaWhpa28vGyRCTlMbKEIgGyRCSy5JJxsoQg==?=
-        <hayashi.kunihiko@socionext.com>
-To: "'Mark Brown'" <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180719165150.GI27938@sirena.org.uk>
+Cc: jaswinder.singh@linaro.org,
+ =?utf-8?Q?Hayashi=2C_Kunihiko/=E6=9E=97_=E9=82=A6=E5=BD=A6?=
+ <hayashi.kunihiko@socionext.com>, linux-kernel@vger.kernel.org,
+ masami.hiramatsu@linaro.org
+To: "'Trent Piepho'" <tpiepho@impinj.com>, <robh+dt@kernel.org>,
+ <devicetree@vger.kernel.org>, <broonie@kernel.org>, <mark.rutland@arm.com>,
+ <linux-spi@vger.kernel.org>,
+ =?utf-8?B?WWFtYWRhLCBNYXNhaGlyby/lsbHnlLAg55yf5byY?=
+ <yamada.masahiro@socionext.com>, <linux-arm-kernel@lists.infradead.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1532029542.2283.157.camel@impinj.com>
 Content-Language: ja
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Trent,
 
 > -----Original Message-----
-> From: Mark Brown [mailto:broonie@kernel.org]
-> Sent: Friday, July 20, 2018 1:52 AM
+> From: Trent Piepho [mailto:tpiepho@impinj.com]
+> Sent: Friday, July 20, 2018 4:46 AM
 > Subject: Re: [PATCH 2/2] spi: add SPI controller driver for UniPhier SoC
 > 
-> On Thu, Jul 19, 2018 at 03:51:57PM +0900, Keiji Hayashibara wrote:
+> On Thu, 2018-07-19 at 15:51 +0900, Keiji Hayashibara wrote:
+> >
+> > +config SPI_UNIPHIER
+> > +	tristate "Socionext UniPhier SPI Controller"
+> > +	depends on (ARCH_UNIPHIER || COMPILE_TEST) && OF
+> > +	help
+> > +	  This driver supports the SPI controller on Socionext
+> > +	  UniPhier SoCs.
 > 
-> This all looks good, just a small number of fairly minor things - mostly style points.
-> 
-> > @@ -0,0 +1,532 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * spi-uniphier.c - Socionext UniPhier SPI controller driver
-> > + *
-> > + * Copyright 2012      Panasonic Corporation
-> > + * Copyright 2016-2018 Socionext Inc.
-> > + */
-> 
-> Please make the entire comment a C++ one, it makes things look a bit more joined up/intentional.
+> Perhaps add the bit that this is for the SCSSI and not MCSSI here?
 
-OK. I will modify to C++ style.
+OK. I will add it.
 
-
+> >
+> > +
 > > +#define BYTES_PER_WORD(x)			\
 > > +({						\
 > > +	int __x;				\
@@ -55,56 +61,238 @@ OK. I will modify to C++ style.
 > > +	__x;					\
 > > +})
 > 
-> Could this be replaced with an inline function?  The usage seems fine but it's a bit big for a macro.  The end
-> result should be similar.
+> Or:
+> 
+> static inline bytes_per_word(unsigned int bits) {
+>    return bits <= 8 ? 1 : (bits <= 16 ? 2 : 4); }
 
-OK. I will replace with an inline function.
+I will modify.
+
 
 > 
-> > +static irqreturn_t uniphier_spi_handler(int irq, void *dev_id) {
-> > +	struct uniphier_spi_priv *priv = dev_id;
-> > +	u32 val, stat;
 > > +
-> > +	stat = readl(priv->base + SSI_IS);
-> > +	val = SSI_IC_TCIC | SSI_IC_RCIC | SSI_IC_RORIC;
-> > +	writel(val, priv->base + SSI_IC);
+> > +static inline void uniphier_spi_irq_enable(struct spi_device *spi,
+> > +u32 mask) {
+> > +	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> > +	u32 val;
 > > +
-> > +	/* rx fifo overrun */
-> > +	if (stat & SSI_IS_RORID) {
-> > +		priv->error = -EIO;
-> > +		goto done;
+> > +	val = readl(priv->base + SSI_IE);
+> > +	val |= mask;
+> > +	writel(val, priv->base + SSI_IE);
+> > +}
+> > +
+> > +static inline void uniphier_spi_irq_disable(struct spi_device *spi,
+> > +u32 mask) {
+> > +	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> > +	u32 val;
+> > +
+> > +	val = readl(priv->base + SSI_IE);
+> > +	val &= ~mask;
+> > +	writel(val, priv->base + SSI_IE);
+> > +}
+> > +
+> > +static void uniphier_spi_set_transfer_size(struct spi_device *spi,
+> > +int size) {
+> > +	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> > +	u32 val;
+> > +
+> > +	val = readl(priv->base + SSI_TXWDS);
+> > +	val &= ~(SSI_TXWDS_WDLEN_MASK | SSI_TXWDS_DTLEN_MASK);
+> > +	val |= FIELD_PREP(SSI_TXWDS_WDLEN_MASK, size);
+> > +	val |= FIELD_PREP(SSI_TXWDS_DTLEN_MASK, size);
+> > +	writel(val, priv->base + SSI_TXWDS);
+> > +
+> > +	val = readl(priv->base + SSI_RXWDS);
+> > +	val &= ~SSI_RXWDS_DTLEN_MASK;
+> > +	val |= FIELD_PREP(SSI_RXWDS_DTLEN_MASK, size);
+> > +	writel(val, priv->base + SSI_RXWDS); }
+> > +
+> > +static int uniphier_spi_set_baudrate(struct spi_device *spi, unsigned
+> > +int speed) {
+> > +	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> > +	u32 val, ckrat;
+> > +
+> > +	/*
+> > +	 * the supported rates are even numbers from 4 to 254. (4,6,8...254)
+> > +	 * round up as we look for equal or less speed
+> > +	 */
+> > +	ckrat = DIV_ROUND_UP(clk_get_rate(priv->clk), speed);
+> > +	ckrat = roundup(ckrat, 2);
+> > +
+> > +	/* check if requested speed is too small */
+> > +	if (ckrat > SSI_MAX_CLK_DIVIDER)
+> > +		return -EINVAL;
+> > +
+> > +	if (ckrat < SSI_MIN_CLK_DIVIDER)
+> > +		ckrat = SSI_MIN_CLK_DIVIDER;
+> > +
+> > +	val = readl(priv->base + SSI_CKS);
+> > +	val &= ~SSI_CKS_CKRAT_MASK;
+> > +	val |= ckrat & SSI_CKS_CKRAT_MASK;
+> > +	writel(val, priv->base + SSI_CKS);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int uniphier_spi_setup_transfer(struct spi_device *spi,
+> > +				       struct spi_transfer *t)
+> > +{
+> > +	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	priv->error = 0;
+> > +	priv->tx_buf = t->tx_buf;
+> > +	priv->rx_buf = t->rx_buf;
+> > +	priv->tx_bytes = priv->rx_bytes = t->len;
+> > +
+> > +	if (priv->bits_per_word != t->bits_per_word) {
+> > +		uniphier_spi_set_transfer_size(spi, t->bits_per_word);
+> > +		priv->bits_per_word = t->bits_per_word;
 > > +	}
 > > +
-> > +	/* rx complete */
-> > +	if ((stat & SSI_IS_RCID) && (stat & SSI_IS_RXRS)) {
-> 
+> > +	if (priv->speed_hz != t->speed_hz) {
+> > +		ret = uniphier_spi_set_baudrate(spi, t->speed_hz);
+> > +		if (ret)
+> > +			return ret;
+> > +		priv->speed_hz = t->speed_hz;
 > > +	}
 > > +
-> > +	return IRQ_HANDLED;
+> > +	/* reset FIFOs */
+> > +	val = SSI_FC_TXFFL | SSI_FC_RXFFL;
+> > +	writel(val, priv->base + SSI_FC);
 > > +
-> > +done:
-> > +	complete(&priv->xfer_done);
-> > +	return IRQ_HANDLED;
+> > +	return 0;
+> > +}
+> > +
+> > +static void uniphier_spi_send(struct uniphier_spi_priv *priv) {
+> > +	int i, loop;
+> > +	u32 val = 0;
+> > +
+> > +	loop = BYTES_PER_WORD(priv->bits_per_word);
+> > +	if (priv->tx_bytes < loop)
+> > +		loop = priv->tx_bytes;
+> > +
+> > +	priv->tx_bytes -= loop;
+> > +
+> > +	if (priv->tx_buf)
+> > +		for (i = 0; i < loop; i++) {
+> > +			val |= (*(const u8 *)priv->tx_buf)
+> > +						<< (BITS_PER_BYTE * i);
 > 
-> This will unconditionally report IRQ_HANDLED even if none of the flags were set by the hardware which will cause
-> problems if something goes wrong - the interrupt will continually be serviced and the interrupt framework won't
-> be able to mitigate or provide diagnostics.  It's better to return IRQ_NONE if nothing is detected from the hardware.
+> priv->tx_buf is already a const u8*, no need to cast it.  Also in recv,
+> no need to cast the pointer.  It'll just hide errors if someone changes the type of the field.
 
-I agree. I will modify it.
+I agree.
 
-> > +static const struct of_device_id uniphier_spi_match[] = {
-> > +	{ .compatible = "socionext,uniphier-scssi", },
-> > +	{ /* sentinel */ },
-> > +};
-> > +MODULE_DEVICE_TABLE(of, uniphier_spi_match);
+> > +			(const u8 *)priv->tx_buf++;
+> > +		}
+> > +
+> > +	writel(val, priv->base + SSI_TXDR);
+> > +}
 > 
-> The binding document also listed socionext,uniphier-mcssi as a compatible but this driver doesn't match that.
+> The loop to read the data will likely be somewhat slow.  It might be faster to use:
+> 
+>     val = get_unaligned_le32(priv->tx_buf);
+> 
+> To support different sizes a switch can be used:
+> 
+>     switch (MIN(BYTES_PER_WORD(priv->bits_per_word), priv->tx_bytes)) {
+>     case 1:
+>          val = *priv->tx_buf; break;
+>     case 2:
+>          val = get_unaligned_le16(priv->tx_buf); break;
+>     case 4:
+>          val = get_unaligned_le32(priv->tx_buf); break;
+>     }
+> 
+> However, I don't think either the existing code or this code is correctly handling word sizes that are not an
+> even number of bytes.  I think it needs to left shift the data, but of course it also depends on what the uniphier
+> hardware expected in the TXDR register.
 
-This driver doesn't support uniphier-mcssi, and support uniphier-scssi only.
-I described in the commit comment,
-but I will also describe it in the binding document.
+I agree. This code is simple for no loop.
+I will modify to this code.
 
-Thank you.
+> 
+> > +static void uniphier_spi_recv(struct uniphier_spi_priv *priv) {
+> > +	int i, loop;
+> > +	u32 val;
+> > +
+> > +	loop = BYTES_PER_WORD(priv->bits_per_word);
+> > +	if (priv->rx_bytes < loop)
+> > +		loop = priv->rx_bytes;
+> > +
+> > +	priv->rx_bytes -= loop;
+> > +
+> > +	val = readl(priv->base + SSI_RXDR);
+> > +
+> > +	if (priv->rx_buf)
+> > +		for (i = 0; i < loop; i++) {
+> > +			val = val >> (BITS_PER_BYTE * i);
+> > +			*(u8 *)priv->rx_buf = val & GENMASK(7, 0);
+> > +			(u8 *)priv->rx_buf++;
+> > +		}
+> 
+> 
+> 
+> > +}+static void uniphier_spi_fill_tx_fifo(struct uniphier_spi_priv
+> > +*priv) {
+> > +	unsigned int tx_count;
+> > +	int bytes_per_word = BYTES_PER_WORD(priv->bits_per_word);
+> > +	u32 val;
+> > +
+> > +	tx_count = priv->tx_bytes / bytes_per_word;
+> > +	if (tx_count > SSI_FIFO_DEPTH)
+> > +		tx_count = SSI_FIFO_DEPTH;
+> > +
+> > +	/* set fifo threthold */
+> > +	val = readl(priv->base + SSI_FC);
+> > +	val &= ~(SSI_FC_TXFTH_MASK | SSI_FC_RXFTH_MASK);
+> > +	val |= FIELD_PREP(SSI_FC_TXFTH_MASK, tx_count);
+> > +	val |= FIELD_PREP(SSI_FC_RXFTH_MASK, tx_count);
+> > +	writel(val, priv->base + SSI_FC);
+> > +
+> > +	while (tx_count--)
+> > +		uniphier_spi_send(priv);
+> > +}
+> 
+> If you have 24 bits per word, 3 words, that's 9 bytes.
+> BYTES_PER_WORD(24) is 4.  tx_count = 9/4 = 2.  Looks like your tx_count rounds incorrectly, as it will only send
+> 8 of the 9 bytes.
+
+Oh, I will fix this bug.
+
+> 
+> > +static int uniphier_spi_setup(struct spi_device *spi) {
+> 
+> > +
+> > +	writel(val1, priv->base + SSI_CKS);
+> > +	writel(val2, priv->base + SSI_FPS);
+> > +
+> > +	val1 = 0;
+> > +	if (spi->mode & SPI_LSB_FIRST)
+> > +		val1 |= FIELD_PREP(SSI_TXWDS_TDTF_MASK, 1);
+> > +	writel(val1, priv->base + SSI_TXWDS);
+> > +	writel(val1, priv->base + SSI_RXWDS);
+> 
+> Did you see this in the spi docs?
+> 
+>         Unless each SPI slave has its own configuration registers, don't
+>         change them right away ... otherwise drivers could corrupt I/O
+>         that's in progress for other SPI devices.
+> 
+>                 ** BUG ALERT:  for some reason the first version of
+>                 ** many spi_master drivers seems to get this wrong.
+>                 ** When you code setup(), ASSUME that the controller
+>                 ** is actively processing transfers for another device.
+> 
+> You have one chipselect, so maybe this is ok.  Until you want to support more than one chipselect.
+> 
+> With gpio lines as chip selects, there's really no reason any spi master can't support multiple slaves.
+
+I agree. I will re-think about this.
+
+Thank you for your advice.
 
 -----------------
 Best Regards,

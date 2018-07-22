@@ -1,110 +1,142 @@
-From: David Lechner <david@lechnology.com>
-Subject: Re: [PATCH 4/4] iio: adc: ti-ads7950: use SPI_CS_WORD to reduce CPU
- usage
-Date: Sat, 21 Jul 2018 14:05:49 -0500
-Message-ID: <e564e3c9-2fea-b203-ca39-ea94ba2b83b0@lechnology.com>
-References: <20180717032052.12273-1-david@lechnology.com>
- <20180717032052.12273-5-david@lechnology.com>
- <20180721185138.673bee00@archlinux>
+From: =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
+Subject: [PATCH 14/15] spi: img-spfi: Finish every transfer cleanly
+Date: Sun, 22 Jul 2018 23:20:09 +0200
+Message-ID: <20180722212010.3979-15-afaerber@suse.de>
+References: <20180722212010.3979-1-afaerber@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-To: Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>,
+        =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: linux-mips@linux-mips.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180721185138.673bee00@archlinux>
-Content-Language: en-US
+In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/21/2018 12:51 PM, Jonathan Cameron wrote:
-> On Mon, 16 Jul 2018 22:20:52 -0500
-> David Lechner <david@lechnology.com> wrote:
-> 
->> This changes how the SPI message for the triggered buffer is setup in
->> the TI ADS7950 A/DC driver. By using the SPI_CS_WORD flag, we can read
->> multiple samples in a single SPI transfer. If the SPI controller
->> supports DMA transfers, we can see a significant reduction in CPU usage.
->>
->> For example, on an ARM9 system running at 456MHz reading just 4 channels
->> at 100Hz: before this change, top shows the CPU usage of the IRQ thread
->> of this driver to be ~7.7%. After this change, the CPU usage drops to
->> ~3.8%.
->>
->> Signed-off-by: David Lechner <david@lechnology.com>
-> Hmm. There is a userspace ABI change in here, though it shouldn't matter
-> as long as people are using the full ABI rather than running some
-> scripts that make assumptions.
-> 
-> It's quite nice if we have all the relevant emulation in the SPI core
-> that this doesn't break things on any spi controllers.
-> 
-> Jonathan
-> 
->> ---
->>
->> Dependency: this patch applies on top of "iio: adc: ti-ads7950: allow
->> simultaneous use of buffer and direct mode"[1]
->>
->> [1]: https://lore.kernel.org/lkml/20180716233550.6449-1-david@lechnology.com/
->>
->>
->>   drivers/iio/adc/ti-ads7950.c | 53 +++++++++++++++++++++---------------
->>   1 file changed, 31 insertions(+), 22 deletions(-)
->>
->> diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
->> index ba7e5a027490..60de4cbbd5fc 100644
->> --- a/drivers/iio/adc/ti-ads7950.c
->> +++ b/drivers/iio/adc/ti-ads7950.c
->> @@ -60,7 +60,7 @@
->>   struct ti_ads7950_state {
->>   	struct iio_dev		*indio_dev;
->>   	struct spi_device	*spi;
->> -	struct spi_transfer	ring_xfer[TI_ADS7950_MAX_CHAN + 2];
->> +	struct spi_transfer	ring_xfer;
->>   	struct spi_transfer	scan_single_xfer[3];
->>   	struct spi_message	ring_msg;
->>   	struct spi_message	scan_single_msg;
->> @@ -69,16 +69,16 @@ struct ti_ads7950_state {
->>   	unsigned int		vref_mv;
->>   
->>   	unsigned int		settings;
->> -	__be16			single_tx;
->> -	__be16			single_rx;
->> +	u16			single_tx;
->> +	u16			single_rx;
->>   
->>   	/*
->>   	 * DMA (thus cache coherency maintenance) requires the
->>   	 * transfer buffers to live in their own cache lines.
->>   	 */
->> -	__be16	rx_buf[TI_ADS7950_MAX_CHAN + TI_ADS7950_TIMESTAMP_SIZE]
->> +	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2 + TI_ADS7950_TIMESTAMP_SIZE]
->>   							____cacheline_aligned;
->> -	__be16	tx_buf[TI_ADS7950_MAX_CHAN];
->> +	u16 tx_buf[TI_ADS7950_MAX_CHAN + 2];
->>   };
->>   
->>   struct ti_ads7950_chip_info {
->> @@ -116,7 +116,7 @@ enum ti_ads7950_id {
->>   		.realbits = bits,				\
->>   		.storagebits = 16,				\
->>   		.shift = 12 - (bits),				\
->> -		.endianness = IIO_BE,				\
->> +		.endianness = IIO_CPU,				\
-> 
-> Hmm. I'm getting a little dubious.  This is a userspace ABI change - it 'might'
-> break someone.  We'd have to cross our fingers it doesn't.
+From: Ionela Voinescu <ionela.voinescu@imgtec.com>
 
-Dubious is a good word for this. ;-)
+Before this change, the interrupt status bit that signaled
+the end of a transfer was cleared in the wait_all_done
+function. That functionality triggered issues for DMA
+duplex transactions where the wait function was called
+twice, in both the TX and RX callbacks.
 
-I was hoping that we could try to get away with this anyway. If someone
-complains, we can always change it back, right? And if no one complains, then
-did we really break anything?
+In order to fix the issue, clear all interrupt data bits
+at the end of a PIO transfer or at the end of both TX and RX
+duplex transfers, if the transfer is not a pending transfer
+(command waiting for data). After that, the status register
+is checked for new incoming data or new data requests to be
+signaled. If SPFI finished cleanly, no new interrupt data
+bits should be set.
 
-I'll have to play around with the a default SPI_CS_WORD implementation first
-to make sure it won't influence this either.
+Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
+Signed-off-by: Andreas Färber <afaerber@suse.de>
+---
+ drivers/spi/spi-img-spfi.c | 49 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 8ad6c75d0af5..a1244234daa5 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -83,6 +83,14 @@
+ #define SPFI_INTERRUPT_SDE			BIT(1)
+ #define SPFI_INTERRUPT_SDTRIG			BIT(0)
+ 
++#define SPFI_INTERRUPT_DATA_BITS		(SPFI_INTERRUPT_SDHF |\
++						SPFI_INTERRUPT_SDFUL |\
++						SPFI_INTERRUPT_GDEX32BIT |\
++						SPFI_INTERRUPT_GDHF |\
++						SPFI_INTERRUPT_GDFUL |\
++						SPFI_INTERRUPT_ALLDONETRIG |\
++						SPFI_INTERRUPT_GDEX8BIT)
++
+ /*
+  * There are four parallel FIFOs of 16 bytes each.  The word buffer
+  * (*_32BIT_VALID_DATA) accesses all four FIFOs at once, resulting in an
+@@ -144,6 +152,23 @@ static inline void spfi_reset(struct img_spfi *spfi)
+ 	spfi_writel(spfi, 0, SPFI_CONTROL);
+ }
+ 
++static inline void spfi_finish(struct img_spfi *spfi)
++{
++	if (!(spfi->complete))
++		return;
++
++	/* Clear data bits as all transfers(TX and RX) have finished */
++	spfi_writel(spfi, SPFI_INTERRUPT_DATA_BITS, SPFI_INTERRUPT_CLEAR);
++	if (spfi_readl(spfi, SPFI_INTERRUPT_STATUS) & SPFI_INTERRUPT_DATA_BITS) {
++		dev_err(spfi->dev, "SPFI did not finish transfer cleanly.\n");
++		spfi_reset(spfi);
++	}
++	/* Disable SPFI for it not to interfere with pending transactions */
++	spfi_writel(spfi,
++		    spfi_readl(spfi, SPFI_CONTROL) & ~SPFI_CONTROL_SPFI_EN,
++		    SPFI_CONTROL);
++}
++
+ static int spfi_wait_all_done(struct img_spfi *spfi)
+ {
+ 	unsigned long timeout = jiffies + msecs_to_jiffies(50);
+@@ -152,19 +177,9 @@ static int spfi_wait_all_done(struct img_spfi *spfi)
+ 		return 0;
+ 
+ 	while (time_before(jiffies, timeout)) {
+-		u32 status = spfi_readl(spfi, SPFI_INTERRUPT_STATUS);
+-
+-		if (status & SPFI_INTERRUPT_ALLDONETRIG) {
+-			spfi_writel(spfi, SPFI_INTERRUPT_ALLDONETRIG,
+-				    SPFI_INTERRUPT_CLEAR);
+-			/*
+-			 * Disable SPFI for it not to interfere with
+-			 * pending transactions
+-			 */
+-			spfi_writel(spfi, spfi_readl(spfi, SPFI_CONTROL)
+-			& ~SPFI_CONTROL_SPFI_EN, SPFI_CONTROL);
++		if (spfi_readl(spfi, SPFI_INTERRUPT_STATUS) &
++		    SPFI_INTERRUPT_ALLDONETRIG)
+ 			return 0;
+-		}
+ 		cpu_relax();
+ 	}
+ 
+@@ -296,6 +311,8 @@ static int img_spfi_start_pio(struct spi_master *master,
+ 	}
+ 
+ 	ret = spfi_wait_all_done(spfi);
++	spfi_finish(spfi);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -311,8 +328,10 @@ static void img_spfi_dma_rx_cb(void *data)
+ 
+ 	spin_lock_irqsave(&spfi->lock, flags);
+ 	spfi->rx_dma_busy = false;
+-	if (!spfi->tx_dma_busy)
++	if (!spfi->tx_dma_busy) {
++		spfi_finish(spfi);
+ 		spi_finalize_current_transfer(spfi->master);
++	}
+ 	spin_unlock_irqrestore(&spfi->lock, flags);
+ }
+ 
+@@ -325,8 +344,10 @@ static void img_spfi_dma_tx_cb(void *data)
+ 
+ 	spin_lock_irqsave(&spfi->lock, flags);
+ 	spfi->tx_dma_busy = false;
+-	if (!spfi->rx_dma_busy)
++	if (!spfi->rx_dma_busy) {
++		spfi_finish(spfi);
+ 		spi_finalize_current_transfer(spfi->master);
++	}
+ 	spin_unlock_irqrestore(&spfi->lock, flags);
+ }
+ 
+-- 
+2.16.4

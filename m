@@ -1,57 +1,137 @@
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Subject: [PATCH v2 1/2] dt-bindings: spi: add DT bindings for UniPhier SPI controller
-Date: Thu, 26 Jul 2018 16:09:02 +0900
-Message-ID: <1532588943-19481-2-git-send-email-hayashibara.keiji@socionext.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2 2/2] spi: add SPI controller driver for UniPhier SoC
+Date: Thu, 26 Jul 2018 11:46:12 +0300
+Message-ID: <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
 References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com>
-Cc: masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
-        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com,
+ <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Masami Hiramatsu <masami.hiramatsu@linaro.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com>
+In-Reply-To: <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+On Thu, Jul 26, 2018 at 10:09 AM, Keiji Hayashibara
+<hayashibara.keiji@socionext.com> wrote:
+> Add SPI controller driver implemented in Socionext UniPhier SoCs.
+>
+> UniPhier SoCs have two types SPI controllers; SCSSI supports a
+> single channel, and MCSSI supports multiple channels.
+> This driver supports SCSSI only.
+>
+> This controller has 32bit TX/RX FIFO with depth of eight entry,
+> and supports the SPI master mode only.
+>
+> This commit is implemented in PIO transfer mode, not DMA transfer.
 
-Add DT bindings for SPI controller implemented in UniPhier SoCs.
+Few style realted comments.
 
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
----
- .../devicetree/bindings/spi/spi-uniphier.txt       | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> +#include <asm/unaligned.h>
+> +#include <linux/kernel.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/clk.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/spi/spi.h>
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-new file mode 100644
-index 0000000..504a4ec
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-@@ -0,0 +1,22 @@
-+Socionext UniPhier SPI controller driver
-+
-+UniPhier SoCs have SCSSI which supports SPI single channel.
-+
-+Required properties:
-+ - compatible: should be "socionext,uniphier-scssi"
-+ - reg: address and length of the spi master registers
-+ - #address-cells: must be <1>, see spi-bus.txt
-+ - #size-cells: must be <0>, see spi-bus.txt
-+ - clocks: A phandle to the clock for the device.
-+ - resets: A phandle to the reset control for the device.
-+
-+Example:
-+
-+spi0: spi@54006000 {
-+	compatible = "socionext,uniphier-scssi";
-+	reg = <0x54006000 0x100>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	clocks = <&peri_clk 11>;
-+	resets = <&peri_rst 11>;
-+};
+Slightly better to keep them in order and put asm/* at the last.
+
+> +#define SSI_TIMEOUT            2000    /* ms */
+
+SSI_TIMEOUT_MS ?
+
+> +#define SSI_CTL                        0x0
+
+Slightly better to keep same width for the addresses, like 0x00 here.
+
+> +#define SSI_CKS                        0x4
+
+> +#define SSI_TXWDS              0x8
+
+> +#define SSI_RXWDS              0xc
+
+Ditto.
+
+
+> +static int uniphier_spi_set_baudrate(struct spi_device *spi, unsigned int speed)
+> +{
+> +       struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
+> +       u32 val, ckrat;
+> +
+> +       /*
+> +        * the supported rates are even numbers from 4 to 254. (4,6,8...254)
+> +        * round up as we look for equal or less speed
+> +        */
+> +       ckrat = DIV_ROUND_UP(clk_get_rate(priv->clk), speed);
+
+> +       ckrat = roundup(ckrat, 2);
+
+ckrat += ckrat & 1;
+
+?
+
+> +       /* check if requested speed is too small */
+> +       if (ckrat > SSI_MAX_CLK_DIVIDER)
+
+> +               return -EINVAL;
+
+So, does this critical?
+
+> +
+> +       if (ckrat < SSI_MIN_CLK_DIVIDER)
+> +               ckrat = SSI_MIN_CLK_DIVIDER;
+
+clamp_val()  / max() ?
+
+> +       val = readl(priv->base + SSI_CKS);
+> +       val &= ~SSI_CKS_CKRAT_MASK;
+> +       val |= ckrat & SSI_CKS_CKRAT_MASK;
+> +       writel(val, priv->base + SSI_CKS);
+> +
+> +       return 0;
+> +}
+
+> +       priv->irq = platform_get_irq(pdev, 0);
+> +       if (priv->irq < 0) {
+> +               dev_err(&pdev->dev, "failed to get IRQ\n");
+
+> +               ret = -ENXIO;
+
+What's wrong with
+
+ret = priv->irq;
+
+?
+
+> +               goto out_disable_clk;
+> +       }
+
+> +static const struct of_device_id uniphier_spi_match[] = {
+> +       { .compatible = "socionext,uniphier-scssi", },
+
+> +       { /* sentinel */ },
+
+Slightly better without comma.
+
+> +};
+> +MODULE_DEVICE_TABLE(of, uniphier_spi_match);
+
 -- 
-2.7.4
+With Best Regards,
+Andy Shevchenko

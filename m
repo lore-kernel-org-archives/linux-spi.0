@@ -1,58 +1,43 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
+From: Trent Piepho <tpiepho@impinj.com>
 Subject: Re: [PATCH v2 2/2] spi: add SPI controller driver for UniPhier SoC
-Date: Thu, 26 Jul 2018 16:44:08 +0300
-Message-ID: <CAHp75VfPozwBPpuP9HadSc2GVm7tbPpMxg+AtACZa9jzVGGT-Q@mail.gmail.com>
+Date: Thu, 26 Jul 2018 17:01:36 +0000
+Message-ID: <1532624495.2283.197.camel@impinj.com>
 References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com>
- <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
- <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com> <001b01d424c4$66e04230$34a0c690$@socionext.com>
+         <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
+         <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?B?WWFtYWRhLCBNYXNhaGlyby/lsbHnlLAg55yf5byY?=
-        <yamada.masahiro@socionext.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Masami Hiramatsu <masami.hiramatsu@linaro.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?B?SGF5YXNoaSwgS3VuaWhpa28v5p6XIOmCpuW9pg==?=
-        <hayashi.kunihiko@socionext.com>
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "masami.hiramatsu@linaro.org" <masami.hiramatsu@linaro.org>,
+        "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "yamada.masahiro@socionext.com" <yamada.masahiro@socionext.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "jaswinder.singh@linaro.org" <jaswinder.singh@linaro.org>
+To: "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "hayashibara.keiji@socionext.com" <hayashibara.keiji@socionext.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <001b01d424c4$66e04230$34a0c690$@socionext.com>
+In-Reply-To: <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
+Content-Language: en-US
+Content-ID: <C43B4CBB91F26E4188170557B0AB47F8@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 26, 2018 at 12:38 PM, Keiji Hayashibara
-<hayashibara.keiji@socionext.com> wrote:
-
->> > +       /* check if requested speed is too small */
->> > +       if (ckrat > SSI_MAX_CLK_DIVIDER)
->>
->> > +               return -EINVAL;
->>
->> So, does this critical?
->
-> If set the value to SSI_MAX_CLK_DIVIDER, the clock frequency will be set high.
-> I don't change it to high frequency, and it is daringly an error.
-> On the other hand, when changing to low frequency, I will change it automatically.
-
-No. My point is, if somehow user asks for that condition to be
-happened you bail out, while when using clamp_val() you may continue
-to work at maximum limit, though issue warning to user, for example.
-
->> > +
->> > +       if (ckrat < SSI_MIN_CLK_DIVIDER)
->> > +               ckrat = SSI_MIN_CLK_DIVIDER;
->>
->> clamp_val()  / max() ?
->
-> I will modify it to use max().
-
-See above.
-
--- 
-With Best Regards,
-Andy Shevchenko
+T24gVGh1LCAyMDE4LTA3LTI2IGF0IDExOjQ2ICswMzAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
+DQo+ID4gKw0KPiA+ICsgICAgICAgLyoNCj4gPiArICAgICAgICAqIHRoZSBzdXBwb3J0ZWQgcmF0
+ZXMgYXJlIGV2ZW4gbnVtYmVycyBmcm9tIDQgdG8gMjU0LiAoNCw2LDguLi4yNTQpDQo+ID4gKyAg
+ICAgICAgKiByb3VuZCB1cCBhcyB3ZSBsb29rIGZvciBlcXVhbCBvciBsZXNzIHNwZWVkDQo+ID4g
+KyAgICAgICAgKi8NCj4gPiArICAgICAgIGNrcmF0ID0gRElWX1JPVU5EX1VQKGNsa19nZXRfcmF0
+ZShwcml2LT5jbGspLCBzcGVlZCk7DQo+ID4gKyAgICAgICBja3JhdCA9IHJvdW5kdXAoY2tyYXQs
+IDIpOw0KPiANCj4gY2tyYXQgKz0gY2tyYXQgJiAxOw0KDQpFaXRoZXIgd2F5LCB0aGUgY29tcGls
+ZXIgcHJvZHVjZXMgdGhlIHNhbWUgY29kZToNCg0KIGFkZCByMCwgcjAsICMxDQogYmljIHIwLCBy
+MCwgIzENCg0KSS5lLiwgY2tyYXQgPSAoY2tyYXQgKyAxKSAmIH4xLCBvbmUgImFkZCIgYW5kIG9u
+ZSAiYW5kIi4NCg0KTWlnaHQgYXMgd2VsbCB1c2UgdGhlIG1hY3JvIHNvIGl0J3MgY2xlYXIuIFRo
+ZXJlIGlzIGFsc28gcm91bmRfdXAoeCx5KSwNCndoaWNoIEkgYmVsaWV2ZSBpcyBpbnRlbmRlZCB0
+byBiZSB1c2VkIG9ubHkgd2l0aCBwb3dlciBvZiAyIHZhbHVlcyBvZg0KeS4NCg==

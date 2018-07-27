@@ -1,43 +1,39 @@
-From: Trent Piepho <tpiepho@impinj.com>
-Subject: Re: [PATCH v2 2/2] spi: add SPI controller driver for UniPhier SoC
-Date: Thu, 26 Jul 2018 17:01:36 +0000
-Message-ID: <1532624495.2283.197.camel@impinj.com>
-References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com>
-         <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
-         <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "masami.hiramatsu@linaro.org" <masami.hiramatsu@linaro.org>,
-        "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "yamada.masahiro@socionext.com" <yamada.masahiro@socionext.com>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "jaswinder.singh@linaro.org" <jaswinder.singh@linaro.org>
-To: "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "hayashibara.keiji@socionext.com" <hayashibara.keiji@socionext.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v2 0/4] Add support for MSCC Ocelot SPI
+Date: Fri, 27 Jul 2018 14:05:31 +0200
+Message-ID: <20180727120535.16504-1-alexandre.belloni@bootlin.com>
+Cc: Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
-Content-Language: en-US
-Content-ID: <C43B4CBB91F26E4188170557B0AB47F8@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCAyMDE4LTA3LTI2IGF0IDExOjQ2ICswMzAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
-DQo+ID4gKw0KPiA+ICsgICAgICAgLyoNCj4gPiArICAgICAgICAqIHRoZSBzdXBwb3J0ZWQgcmF0
-ZXMgYXJlIGV2ZW4gbnVtYmVycyBmcm9tIDQgdG8gMjU0LiAoNCw2LDguLi4yNTQpDQo+ID4gKyAg
-ICAgICAgKiByb3VuZCB1cCBhcyB3ZSBsb29rIGZvciBlcXVhbCBvciBsZXNzIHNwZWVkDQo+ID4g
-KyAgICAgICAgKi8NCj4gPiArICAgICAgIGNrcmF0ID0gRElWX1JPVU5EX1VQKGNsa19nZXRfcmF0
-ZShwcml2LT5jbGspLCBzcGVlZCk7DQo+ID4gKyAgICAgICBja3JhdCA9IHJvdW5kdXAoY2tyYXQs
-IDIpOw0KPiANCj4gY2tyYXQgKz0gY2tyYXQgJiAxOw0KDQpFaXRoZXIgd2F5LCB0aGUgY29tcGls
-ZXIgcHJvZHVjZXMgdGhlIHNhbWUgY29kZToNCg0KIGFkZCByMCwgcjAsICMxDQogYmljIHIwLCBy
-MCwgIzENCg0KSS5lLiwgY2tyYXQgPSAoY2tyYXQgKyAxKSAmIH4xLCBvbmUgImFkZCIgYW5kIG9u
-ZSAiYW5kIi4NCg0KTWlnaHQgYXMgd2VsbCB1c2UgdGhlIG1hY3JvIHNvIGl0J3MgY2xlYXIuIFRo
-ZXJlIGlzIGFsc28gcm91bmRfdXAoeCx5KSwNCndoaWNoIEkgYmVsaWV2ZSBpcyBpbnRlbmRlZCB0
-byBiZSB1c2VkIG9ubHkgd2l0aCBwb3dlciBvZiAyIHZhbHVlcyBvZg0KeS4NCg==
+Hello,
+
+The MSCC MIPS SoC line uses a designware IP for the SPI controller but
+still requires some special handling to give control of the SPI
+interface to the IP and also has a specific handling for the chip
+select.
+
+Changes in v2:
+ - Removed already applied patches
+ - separated DT binding changes from the driver patch
+
+Alexandre Belloni (4):
+  dt-bindings: spi: snps,dw-apb-ssi: document Microsemi integration
+  spi: dw-mmio: add MSCC Ocelot support
+  mips: dts: mscc: Add spi on Ocelot
+  mips: dts: mscc: enable spi and NOR flash support on ocelot PCB123
+
+ arch/mips/boot/dts/mscc/ocelot.dtsi       | 11 +++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts | 10 +++
+ drivers/spi/spi-dw-mmio.c                 | 91 +++++++++++++++++++++++
+ 3 files changed, 112 insertions(+)
+
+-- 
+2.18.0

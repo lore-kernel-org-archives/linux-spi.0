@@ -1,7 +1,7 @@
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v3 2/5] dt-bindings: spi: snps,dw-apb-ssi: document Microsemi integration
-Date: Fri, 27 Jul 2018 21:53:55 +0200
-Message-ID: <20180727195358.23336-3-alexandre.belloni@bootlin.com>
+Subject: [PATCH v3 1/5] spi: dw: export dw_spi_set_cs
+Date: Fri, 27 Jul 2018 21:53:54 +0200
+Message-ID: <20180727195358.23336-2-alexandre.belloni@bootlin.com>
 References: <20180727195358.23336-1-alexandre.belloni@bootlin.com>
 Cc: Paul Burton <paul.burton@mips.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -9,39 +9,54 @@ Cc: Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180727195358.23336-1-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The integration of the Designware SPI controller on Microsemi SoCs requires
-an extra register set to be able to give the IP control of the SPI
-interface.
+Export dw_spi_set_cs so it can be used from the various IP integration
+modules.
 
-Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw.c | 3 ++-
+ drivers/spi/spi-dw.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-index 204b311e0400..d97b9fc4c1cb 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-@@ -1,8 +1,9 @@
- Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index f76e31faf694..ac2eb89ef7a5 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -133,7 +133,7 @@ static inline void dw_spi_debugfs_remove(struct dw_spi *dws)
+ }
+ #endif /* CONFIG_DEBUG_FS */
  
- Required properties:
--- compatible : "snps,dw-apb-ssi"
--- reg : The register base for the controller.
-+- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi"
-+- reg : The register base for the controller. For "mscc,<soc>-spi", a second
-+  register set is required (named ICPU_CFG:SPI_MST)
- - interrupts : One interrupt, used by the controller.
- - #address-cells : <1>, as required by generic SPI binding.
- - #size-cells : <0>, also as required by generic SPI binding.
+-static void dw_spi_set_cs(struct spi_device *spi, bool enable)
++void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+ 	struct dw_spi *dws = spi_controller_get_devdata(spi->controller);
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+@@ -145,6 +145,7 @@ static void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	if (!enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+ }
++EXPORT_SYMBOL_GPL(dw_spi_set_cs);
+ 
+ /* Return the max entries we can fill into tx fifo */
+ static inline u32 tx_max(struct dw_spi *dws)
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 446013022849..0168b08364d5 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -245,6 +245,7 @@ struct dw_spi_chip {
+ 	void (*cs_control)(u32 command);
+ };
+ 
++extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+ extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
+ extern void dw_spi_remove_host(struct dw_spi *dws);
+ extern int dw_spi_suspend_host(struct dw_spi *dws);
 -- 
 2.18.0

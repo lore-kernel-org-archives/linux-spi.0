@@ -1,133 +1,82 @@
 From: "Keiji Hayashibara" <hayashibara.keiji@socionext.com>
 Subject: RE: [PATCH v2 2/2] spi: add SPI controller driver for UniPhier SoC
-Date: Mon, 30 Jul 2018 10:15:06 +0900
-Message-ID: <002001d427a2$c05ca7f0$4115f7d0$@socionext.com>
-References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com>
- <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com>
- <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com>
- <001b01d424c4$66e04230$34a0c690$@socionext.com>
- <ab87c6a7-4ead-6492-9e47-42e6ab701d1c@microchip.com>
+Date: Mon, 30 Jul 2018 10:46:05 +0900
+Message-ID: <002101d427a7$14516f90$3cf44eb0$@socionext.com>
+References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com> <1532588943-19481-3-git-send-email-hayashibara.keiji@socionext.com> <CAHp75VcEdxDEo0T5_9BzOPaeaqjbmbrWmaE9+ZuUDYhjh6jpVw@mail.gmail.com> <001b01d424c4$66e04230$34a0c690$@socionext.com> <CAHp75VfPozwBPpuP9HadSc2GVm7tbPpMxg+AtACZa9jzVGGT-Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>,
- devicetree <devicetree@vger.kernel.org>,
- =?utf-8?Q?Hayashi=2C_Kunihiko/=E6=9E=97_=E9=82=A6=E5=BD=A6?=
- <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <masami.hiramatsu@linaro.org>,
- Jassi Brar <jaswinder.singh@linaro.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>, linux-spi <linux-spi@vger.kernel.org>,
- =?utf-8?B?WWFtYWRhLCBNYXNhaGlyby/lsbHnlLAg55yf5byY?=
- <yamada.masahiro@socionext.com>, Mark Brown <broonie@kernel.org>,
- linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
-To: "'Radu Pirea'" <radu.pirea@microchip.com>,
- "'Andy Shevchenko'" <andy.shevchenko@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <ab87c6a7-4ead-6492-9e47-42e6ab701d1c@microchip.com>
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Cc: "Mark Brown" <broonie@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        =?utf-8?B?WWFtYWRhLCBNYXNhaGlyby/lsbHnlLAg55yf5byY?=
+        <yamada.masahiro@socionext.com>,
+        "linux-spi" <linux-spi@vger.kernel.org>,
+        "linux-arm Mailing List" <linux-arm-kernel@lists.infradead.org>,
+        "devicetree" <devicetree@vger.kernel.org>,
+        "Masami Hiramatsu" <masami.hiramatsu@linaro.org>,
+        "Jassi Brar" <jaswinder.singh@linaro.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        =?utf-8?Q?Hayashi=2C_Kunihiko/=E6=9E=97_=E9=82=A6=E5=BD=A6?=
+        <hayashi.kunihiko@socionext.com>
+To: "'Andy Shevchenko'" <andy.shevchenko@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAHp75VfPozwBPpuP9HadSc2GVm7tbPpMxg+AtACZa9jzVGGT-Q@mail.gmail.com>
 Content-Language: ja
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8gUmFkdSwKCj4gRnJvbTogUmFkdSBQaXJlYSBbbWFpbHRvOnJhZHUucGlyZWFAbWljcm9j
-aGlwLmNvbV0KPiBTZW50OiBUaHVyc2RheSwgSnVseSAyNiwgMjAxOCA3OjU4IFBNCj4gVG86IEhh
-eWFzaGliYXJhLCBLZWlqaS/mnpfljp8g5ZWT5LqMIDxoYXlhc2hpYmFyYS5rZWlqaUBzb2Npb25l
-eHQuY29tPjsgJ0FuZHkgU2hldmNoZW5rbycKPiA8YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNvbT4K
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDIvMl0gc3BpOiBhZGQgU1BJIGNvbnRyb2xsZXIgZHJp
-dmVyIGZvciBVbmlQaGllciBTb0MKPiAKPiAKPiAKPiBPbiAwNy8yNi8yMDE4IDEyOjM4IFBNLCBL
-ZWlqaSBIYXlhc2hpYmFyYSB3cm90ZToKPiA+IEhlbGxvIEFuZHksCj4gPgo+ID4gVGhhbmsgeW91
-IGZvciB5b3VyIGNoZWNrIQo+ID4KPiA+Cj4gPj4gRnJvbTogQW5keSBTaGV2Y2hlbmtvIFttYWls
-dG86YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNvbV0KPiA+PiBTZW50OiBUaHVyc2RheSwgSnVseSAy
-NiwgMjAxOCA1OjQ2IFBNCj4gPj4gVG86IEhheWFzaGliYXJhLCBLZWlqaS/mnpfljp8g5ZWT5LqM
-IDxoYXlhc2hpYmFyYS5rZWlqaUBzb2Npb25leHQuY29tPgo+ID4+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0ggdjIgMi8yXSBzcGk6IGFkZCBTUEkgY29udHJvbGxlciBkcml2ZXIgZm9yCj4gPj4gVW5pUGhp
-ZXIgU29DCj4gPj4KPiA+PiBPbiBUaHUsIEp1bCAyNiwgMjAxOCBhdCAxMDowOSBBTSwgS2Vpamkg
-SGF5YXNoaWJhcmEgPGhheWFzaGliYXJhLmtlaWppQHNvY2lvbmV4dC5jb20+IHdyb3RlOgo+ID4+
-PiBBZGQgU1BJIGNvbnRyb2xsZXIgZHJpdmVyIGltcGxlbWVudGVkIGluIFNvY2lvbmV4dCBVbmlQ
-aGllciBTb0NzLgo+ID4+Pgo+ID4+PiBVbmlQaGllciBTb0NzIGhhdmUgdHdvIHR5cGVzIFNQSSBj
-b250cm9sbGVyczsgU0NTU0kgc3VwcG9ydHMgYQo+ID4+PiBzaW5nbGUgY2hhbm5lbCwgYW5kIE1D
-U1NJIHN1cHBvcnRzIG11bHRpcGxlIGNoYW5uZWxzLgo+ID4+PiBUaGlzIGRyaXZlciBzdXBwb3J0
-cyBTQ1NTSSBvbmx5Lgo+ID4+Pgo+ID4+PiBUaGlzIGNvbnRyb2xsZXIgaGFzIDMyYml0IFRYL1JY
-IEZJRk8gd2l0aCBkZXB0aCBvZiBlaWdodCBlbnRyeSwgYW5kCj4gPj4+IHN1cHBvcnRzIHRoZSBT
-UEkgbWFzdGVyIG1vZGUgb25seS4KPiA+Pj4KPiA+Pj4gVGhpcyBjb21taXQgaXMgaW1wbGVtZW50
-ZWQgaW4gUElPIHRyYW5zZmVyIG1vZGUsIG5vdCBETUEgdHJhbnNmZXIuCj4gPj4KPiA+PiBGZXcg
-c3R5bGUgcmVhbHRlZCBjb21tZW50cy4KPiA+Pgo+ID4+PiArI2luY2x1ZGUgPGFzbS91bmFsaWdu
-ZWQuaD4KPiA+Pj4gKyNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4KPiA+Pj4gKyNpbmNsdWRlIDxs
-aW51eC9iaXRmaWVsZC5oPgo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L2JpdG9wcy5oPgo+ID4+PiAr
-I2luY2x1ZGUgPGxpbnV4L2Nsay5oPgo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L2ludGVycnVwdC5o
-Pgo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L2lvLmg+Cj4gPj4+ICsjaW5jbHVkZSA8bGludXgvbW9k
-dWxlLmg+Cj4gPj4+ICsjaW5jbHVkZSA8bGludXgvb2YuaD4KPiA+Pj4gKyNpbmNsdWRlIDxsaW51
-eC9vZl9wbGF0Zm9ybS5oPgo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L3BsYXRmb3JtX2RldmljZS5o
-Pgo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L3NwaS9zcGkuaD4KPiA+Pgo+ID4+IFNsaWdodGx5IGJl
-dHRlciB0byBrZWVwIHRoZW0gaW4gb3JkZXIgYW5kIHB1dCBhc20vKiBhdCB0aGUgbGFzdC4KPiA+
-Cj4gPiBJIHNlZS4gSSB3aWxsIG1vZGlmeSB0aGlzLgo+ID4KPiA+Cj4gPj4+ICsjZGVmaW5lIFNT
-SV9USU1FT1VUICAgICAgICAgICAgMjAwMCAgICAvKiBtcyAqLwo+ID4+Cj4gPj4gU1NJX1RJTUVP
-VVRfTVMgPwo+ID4+Cj4gPj4+ICsjZGVmaW5lIFNTSV9DVEwgICAgICAgICAgICAgICAgICAgICAg
-ICAweDAKPiA+Pgo+ID4+IFNsaWdodGx5IGJldHRlciB0byBrZWVwIHNhbWUgd2lkdGggZm9yIHRo
-ZSBhZGRyZXNzZXMsIGxpa2UgMHgwMCBoZXJlLgo+ID4+Cj4gPj4+ICsjZGVmaW5lIFNTSV9DS1Mg
-ICAgICAgICAgICAgICAgICAgICAgICAweDQKPiA+Pgo+ID4+PiArI2RlZmluZSBTU0lfVFhXRFMg
-ICAgICAgICAgICAgIDB4OAo+ID4+Cj4gPj4+ICsjZGVmaW5lIFNTSV9SWFdEUyAgICAgICAgICAg
-ICAgMHhjCj4gPj4KPiA+PiBEaXR0by4KPiA+Cj4gPiBJIHdpbGwgbW9kaWZ5IGFib3V0IGFib3Zl
-Lgo+ID4KPiA+Pgo+ID4+PiArc3RhdGljIGludCB1bmlwaGllcl9zcGlfc2V0X2JhdWRyYXRlKHN0
-cnVjdCBzcGlfZGV2aWNlICpzcGksCj4gPj4+ICt1bnNpZ25lZCBpbnQgc3BlZWQpIHsKPiA+Pj4g
-KyAgICAgICBzdHJ1Y3QgdW5pcGhpZXJfc3BpX3ByaXYgKnByaXYgPSBzcGlfbWFzdGVyX2dldF9k
-ZXZkYXRhKHNwaS0+bWFzdGVyKTsKPiA+Pj4gKyAgICAgICB1MzIgdmFsLCBja3JhdDsKPiA+Pj4g
-Kwo+ID4+PiArICAgICAgIC8qCj4gPj4+ICsgICAgICAgICogdGhlIHN1cHBvcnRlZCByYXRlcyBh
-cmUgZXZlbiBudW1iZXJzIGZyb20gNCB0byAyNTQuICg0LDYsOC4uLjI1NCkKPiA+Pj4gKyAgICAg
-ICAgKiByb3VuZCB1cCBhcyB3ZSBsb29rIGZvciBlcXVhbCBvciBsZXNzIHNwZWVkCj4gPj4+ICsg
-ICAgICAgICovCj4gPj4+ICsgICAgICAgY2tyYXQgPSBESVZfUk9VTkRfVVAoY2xrX2dldF9yYXRl
-KHByaXYtPmNsayksIHNwZWVkKTsKPiA+Pgo+ID4+PiArICAgICAgIGNrcmF0ID0gcm91bmR1cChj
-a3JhdCwgMik7Cj4gPj4KPiA+PiBja3JhdCArPSBja3JhdCAmIDE7Cj4gPj4KPiA+PiA/Cj4gPgo+
-ID4gSXQncyBzaW1wbGUuIEkgd2lsbCBtb2RpZnkuCj4gPgo+ID4KPiA+Pj4gKyAgICAgICAvKiBj
-aGVjayBpZiByZXF1ZXN0ZWQgc3BlZWQgaXMgdG9vIHNtYWxsICovCj4gPj4+ICsgICAgICAgaWYg
-KGNrcmF0ID4gU1NJX01BWF9DTEtfRElWSURFUikKPiA+Pgo+ID4+PiArICAgICAgICAgICAgICAg
-cmV0dXJuIC1FSU5WQUw7Cj4gPj4KPiA+PiBTbywgZG9lcyB0aGlzIGNyaXRpY2FsPwo+ID4KPiA+
-IElmIHNldCB0aGUgdmFsdWUgdG8gU1NJX01BWF9DTEtfRElWSURFUiwgdGhlIGNsb2NrIGZyZXF1
-ZW5jeSB3aWxsIGJlIHNldCBoaWdoLgo+ID4gSSBkb24ndCBjaGFuZ2UgaXQgdG8gaGlnaCBmcmVx
-dWVuY3ksIGFuZCBpdCBpcyBkYXJpbmdseSBhbiBlcnJvci4KPiA+IE9uIHRoZSBvdGhlciBoYW5k
-LCB3aGVuIGNoYW5naW5nIHRvIGxvdyBmcmVxdWVuY3ksIEkgd2lsbCBjaGFuZ2UgaXQgYXV0b21h
-dGljYWxseS4KPiA+Cj4gPj4+ICsKPiA+Pj4gKyAgICAgICBpZiAoY2tyYXQgPCBTU0lfTUlOX0NM
-S19ESVZJREVSKQo+ID4+PiArICAgICAgICAgICAgICAgY2tyYXQgPSBTU0lfTUlOX0NMS19ESVZJ
-REVSOwo+IAo+IEluIGZhY3QgeW91IGRvbid0IG5lZWQgdGhpcyBjaGVja3MuIFlvdSBhbHJlYWR5
-IHNldCBpbiBwcm9iZSBmdW5jdGlvbiB0aGlzLgo+IG1hc3Rlci0+bWF4X3NwZWVkX2h6ID0gRElW
-X1JPVU5EX1VQKGNsa3NyYywgU1NJX01JTl9DTEtfRElWSURFUik7Cj4gbWFzdGVyLT5taW5fc3Bl
-ZWRfaHogPSBESVZfUk9VTkRfVVAoY2xrc3JjLCBTU0lfTUFYX0NMS19ESVZJREVSKTsKPiAKPiBU
-aGUgU1BJIGNvcmUgd2lsbCBjaGVjayBpZiB0cmFuc2ZlciBzcGVlZCBpcyBoaWdoZXIgdGhhbiBj
-b250cm9sbGVyIHNwZWVkIGFuZCBpZiBpcywgd2lsbCBzZXQgdGhlIHRyYW5zZmVyIHNwZWVkCj4g
-dG8gbWFzdGVyLT5tYXhfc3BlZWRfaHouIEluIGNhc2Ugb2YgbWFzdGVyLT5taW5fc3BlZWRfaHos
-IGlmIHRyYW5zZmVyIHNwZWVkIGlzIGxvd2VyIHRoYW4KPiBtYXN0ZXItPm1pbl9zcGVlZF9oeiBf
-X3NwaV92YWxpZGF0ZShkcml2ZXJzL3NwaS9zcGkuYykgd2lsbCByZXR1cm4gLUVJTlZBTC4KCkkg
-c2VlLgpJIGNvbmZpcm1lZCBfX3NwaV92YWxpZGF0ZSgpIGFuZCB1bmRlcnN0b29kIHRoYXQgdGhp
-cyBjaGVjayBjb2RlIGlzIHVubmVjZXNzYXJ5LgpJIHdpbGwgcmVtb3ZlIHRoaXMgY2hlY2sgY29k
-ZS4KClRoYW5rIHlvdS4KCj4gPj4KPiA+PiBjbGFtcF92YWwoKSAgLyBtYXgoKSA/Cj4gPgo+ID4g
-SSB3aWxsIG1vZGlmeSBpdCB0byB1c2UgbWF4KCkuCj4gPgo+ID4+Cj4gPj4+ICsgICAgICAgdmFs
-ID0gcmVhZGwocHJpdi0+YmFzZSArIFNTSV9DS1MpOwo+ID4+PiArICAgICAgIHZhbCAmPSB+U1NJ
-X0NLU19DS1JBVF9NQVNLOwo+ID4+PiArICAgICAgIHZhbCB8PSBja3JhdCAmIFNTSV9DS1NfQ0tS
-QVRfTUFTSzsKPiA+Pj4gKyAgICAgICB3cml0ZWwodmFsLCBwcml2LT5iYXNlICsgU1NJX0NLUyk7
-Cj4gPj4+ICsKPiA+Pj4gKyAgICAgICByZXR1cm4gMDsKPiA+Pj4gK30KPiA+Pgo+ID4+PiArICAg
-ICAgIHByaXYtPmlycSA9IHBsYXRmb3JtX2dldF9pcnEocGRldiwgMCk7Cj4gPj4+ICsgICAgICAg
-aWYgKHByaXYtPmlycSA8IDApIHsKPiA+Pj4gKyAgICAgICAgICAgICAgIGRldl9lcnIoJnBkZXYt
-PmRldiwgImZhaWxlZCB0byBnZXQgSVJRXG4iKTsKPiA+Pgo+ID4+PiArICAgICAgICAgICAgICAg
-cmV0ID0gLUVOWElPOwo+ID4+Cj4gPj4gV2hhdCdzIHdyb25nIHdpdGgKPiA+Pgo+ID4+IHJldCA9
-IHByaXYtPmlycTsKPiA+Pgo+ID4+ID8KPiA+Cj4gPiBJIHdpbGwgbW9kaWZ5IGl0Lgo+ID4KPiA+
-Pj4gKyAgICAgICAgICAgICAgIGdvdG8gb3V0X2Rpc2FibGVfY2xrOwo+ID4+PiArICAgICAgIH0K
-PiA+Pgo+ID4+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgdW5pcGhpZXJfc3Bp
-X21hdGNoW10gPSB7Cj4gPj4+ICsgICAgICAgeyAuY29tcGF0aWJsZSA9ICJzb2Npb25leHQsdW5p
-cGhpZXItc2Nzc2kiLCB9LAo+ID4+Cj4gPj4+ICsgICAgICAgeyAvKiBzZW50aW5lbCAqLyB9LAo+
-ID4+Cj4gPj4gU2xpZ2h0bHkgYmV0dGVyIHdpdGhvdXQgY29tbWEuCj4gPgo+ID4gT0suIEkgd2ls
-bCBtb2RpZnkgdGhpcy4KPiA+Cj4gPiAtLS0tLS0tLS0tLS0tLS0tLQo+ID4gQmVzdCBSZWdhcmRz
-LAo+ID4gS2VpamkgSGF5YXNoaWJhcmEKPiA+Cj4gPgo+ID4KPiA+Pj4gK307Cj4gPj4+ICtNT0RV
-TEVfREVWSUNFX1RBQkxFKG9mLCB1bmlwaGllcl9zcGlfbWF0Y2gpOwo+ID4+Cj4gPj4gLS0KPiA+
-PiBXaXRoIEJlc3QgUmVnYXJkcywKPiA+PiBBbmR5IFNoZXZjaGVua28KPiA+CgoKLS0tLS0tLS0t
-LS0tLS0tLS0KQmVzdCBSZWdhcmRzLApLZWlqaSBIYXlhc2hpYmFyYQoKCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxp
-bmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==
+Hello Andy,
+
+> -----Original Message-----
+> From: linux-kernel-owner@vger.kernel.org [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of Andy
+> Shevchenko
+> Sent: Thursday, July 26, 2018 10:44 PM
+> To: Hayashibara, Keiji/林原 啓二 <hayashibara.keiji@socionext.com>
+> Cc: Mark Brown <broonie@kernel.org>; Rob Herring <robh+dt@kernel.org>; Mark Rutland <mark.rutland@arm.com>;
+> Yamada, Masahiro/山田 真弘 <yamada.masahiro@socionext.com>; linux-spi <linux-spi@vger.kernel.org>; linux-arm
+> Mailing List <linux-arm-kernel@lists.infradead.org>; devicetree <devicetree@vger.kernel.org>; Masami Hiramatsu
+> <masami.hiramatsu@linaro.org>; Jassi Brar <jaswinder.singh@linaro.org>; Linux Kernel Mailing List
+> <linux-kernel@vger.kernel.org>; Hayashi, Kunihiko/林 邦彦 <hayashi.kunihiko@socionext.com>
+> Subject: Re: [PATCH v2 2/2] spi: add SPI controller driver for UniPhier SoC
+> 
+> On Thu, Jul 26, 2018 at 12:38 PM, Keiji Hayashibara <hayashibara.keiji@socionext.com> wrote:
+> 
+> >> > +       /* check if requested speed is too small */
+> >> > +       if (ckrat > SSI_MAX_CLK_DIVIDER)
+> >>
+> >> > +               return -EINVAL;
+> >>
+> >> So, does this critical?
+> >
+> > If set the value to SSI_MAX_CLK_DIVIDER, the clock frequency will be set high.
+> > I don't change it to high frequency, and it is daringly an error.
+> > On the other hand, when changing to low frequency, I will change it automatically.
+> 
+> No. My point is, if somehow user asks for that condition to be happened you bail out, while when using clamp_val()
+> you may continue to work at maximum limit, though issue warning to user, for example.
+
+Thank you. I understood what you pointed out. 
+However, I found this code unnecessary as pointed out by Radu, 
+so I will delete it.
+
+> >> > +
+> >> > +       if (ckrat < SSI_MIN_CLK_DIVIDER)
+> >> > +               ckrat = SSI_MIN_CLK_DIVIDER;
+> >>
+> >> clamp_val()  / max() ?
+> >
+> > I will modify it to use max().
+> 
+> See above.
+
+This is also the same as above.
+
+> --
+> With Best Regards,
+> Andy Shevchenko
+
+-----------------
+Best Regards,
+Keiji Hayashibara

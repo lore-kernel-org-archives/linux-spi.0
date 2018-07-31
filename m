@@ -1,56 +1,32 @@
-From: "Keiji Hayashibara" <hayashibara.keiji@socionext.com>
-Subject: RE: [PATCH v2 1/2] dt-bindings: spi: add DT bindings for UniPhier SPI controller
-Date: Tue, 31 Jul 2018 08:44:04 +0900
-Message-ID: <004f01d4285f$336d43f0$9a47cbd0$@socionext.com>
-References: <1532588943-19481-1-git-send-email-hayashibara.keiji@socionext.com> <1532588943-19481-2-git-send-email-hayashibara.keiji@socionext.com> <20180730214705.GA25882@rob-hp-laptop>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="iso-2022-jp"
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <mark.rutland@arm.com>,
-        =?iso-2022-jp?B?WWFtYWRhLCBNYXNhaGlyby8bJEI7M0VEGyhCIBskQj8/OTAbKEI=?=
-        <yamada.masahiro@socionext.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <masami.hiramatsu@linaro.org>,
-        <jaswinder.singh@linaro.org>, <linux-kernel@vger.kernel.org>,
-        =?iso-2022-jp?B?SGF5YXNoaSwgS3VuaWhpa28vGyRCTlMbKEIgGyRCSy5JJxsoQg==?=
-        <hayashi.kunihiko@socionext.com>
-To: "'Rob Herring'" <robh@kernel.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 0/3] Add support for MSCC Ocelot SPI
+Date: Tue, 31 Jul 2018 16:38:52 +0200
+Message-ID: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
+Cc: James Hogan <jhogan@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, Paul Burton <paul.burton@mips.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180730214705.GA25882@rob-hp-laptop>
-Content-Language: ja
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Rob,
+Hello,
 
-I see.
-I will add "Acked-by" and "Reviewed-by" tag by Rob in next version.
+This series only contains the DT documentation and the corresponding DT addition
+since it has been rebased on spi-next.
 
-Thank you.
+Alexandre Belloni (3):
+  spi: dw: document Microsemi integration
+  mips: dts: mscc: Add spi on Ocelot
+  mips: dts: mscc: enable spi and NOR flash support on ocelot PCB123
 
------------------
-Best Regards,
-Keiji Hayashibara
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.txt       |  6 ++++--
+ arch/mips/boot/dts/mscc/ocelot.dtsi                   | 11 +++++++++++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts             | 10 ++++++++++
+ 3 files changed, 25 insertions(+), 2 deletions(-)
 
-> -----Original Message-----
-> From: Rob Herring [mailto:robh@kernel.org]
-> Sent: Tuesday, July 31, 2018 6:47 AM
-> To: Hayashibara, Keiji/林原 啓二 <hayashibara.keiji@socionext.com>
-> Subject: Re: [PATCH v2 1/2] dt-bindings: spi: add DT bindings for UniPhier SPI controller
-> 
-> On Thu, Jul 26, 2018 at 04:09:02PM +0900, Keiji Hayashibara wrote:
-> > From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> >
-> > Add DT bindings for SPI controller implemented in UniPhier SoCs.
-> >
-> > Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> > Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-> > ---
-> >  .../devicetree/bindings/spi/spi-uniphier.txt       | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-uniphier.txt
-> 
-> Please add acks/reviewed-bys when posting new versions.
-> 
-> Rob
+-- 
+2.18.0

@@ -1,82 +1,41 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: document Microsemi integration" to the spi tree
-Date: Tue, 31 Jul 2018 15:41:42 +0100 (BST)
-Message-ID: <20180731144142.D81C811242BD@debutante.sirena.org.uk>
-References: <20180731143855.7131-2-alexandre.belloni@bootlin.com>
-Cc: Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org,
+From: Paul Burton <paul.burton@mips.com>
+Subject: Re: [PATCH v4 0/3] Add support for MSCC Ocelot SPI
+Date: Tue, 31 Jul 2018 10:38:09 -0700
+Message-ID: <20180731173809.eovsuiezlqzud7zi@pburton-laptop>
+References: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org
+        Allan Nielsen <allan.nielsen@microsemi.com>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180731143855.7131-2-alexandre.belloni@bootlin.com>
+Content-Disposition: inline
+In-Reply-To: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Alexandre,
 
-   spi: dw: document Microsemi integration
+On Tue, Jul 31, 2018 at 04:38:52PM +0200, Alexandre Belloni wrote:
+> Hello,
+> 
+> This series only contains the DT documentation and the corresponding DT addition
+> since it has been rebased on spi-next.
+> 
+> Alexandre Belloni (3):
+>   spi: dw: document Microsemi integration
+>   mips: dts: mscc: Add spi on Ocelot
+>   mips: dts: mscc: enable spi and NOR flash support on ocelot PCB123
+> 
+>  .../devicetree/bindings/spi/snps,dw-apb-ssi.txt       |  6 ++++--
+>  arch/mips/boot/dts/mscc/ocelot.dtsi                   | 11 +++++++++++
+>  arch/mips/boot/dts/mscc/ocelot_pcb123.dts             | 10 ++++++++++
+>  3 files changed, 25 insertions(+), 2 deletions(-)
 
-has been applied to the spi tree at
+Thanks - looks like the DT binding has been accepted, so I've applied
+patches 2 & 3 to mips-next for 4.19.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f09757ab401ff332030f8e3a41cec6a44e6d9461 Mon Sep 17 00:00:00 2001
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Date: Tue, 31 Jul 2018 16:38:53 +0200
-Subject: [PATCH] spi: dw: document Microsemi integration
-
-The integration of the Designware SPI controller on Microsemi SoCs requires
-an extra register set to be able to give the IP control of the SPI
-interface.
-
-Cc: Rob Herring <robh+dt@kernel.org>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-index 204b311e0400..642d3fb1ef85 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-@@ -1,8 +1,10 @@
- Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
- 
- Required properties:
--- compatible : "snps,dw-apb-ssi"
--- reg : The register base for the controller.
-+- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi", where soc is "ocelot" or
-+  "jaguar2"
-+- reg : The register base for the controller. For "mscc,<soc>-spi", a second
-+  register set is required (named ICPU_CFG:SPI_MST)
- - interrupts : One interrupt, used by the controller.
- - #address-cells : <1>, as required by generic SPI binding.
- - #size-cells : <0>, also as required by generic SPI binding.
--- 
-2.18.0
+Paul

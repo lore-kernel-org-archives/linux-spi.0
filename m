@@ -1,51 +1,36 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [PATCH v4 0/3] Add support for MSCC Ocelot SPI
-Date: Tue, 31 Jul 2018 20:16:28 +0200
-Message-ID: <20180731181628.GX28585@piout.net>
-References: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
- <20180731173809.eovsuiezlqzud7zi@pburton-laptop>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-To: Paul Burton <paul.burton@mips.com>
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Subject: [PATCH v3 0/2] add SPI controller driver for UniPhier SoCs
+Date: Wed,  1 Aug 2018 16:29:10 +0900
+Message-ID: <1533108552-19878-1-git-send-email-hayashibara.keiji@socionext.com>
+Cc: masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
+        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180731173809.eovsuiezlqzud7zi@pburton-laptop>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 31/07/2018 10:38:09-0700, Paul Burton wrote:
-> Hi Alexandre,
-> 
-> On Tue, Jul 31, 2018 at 04:38:52PM +0200, Alexandre Belloni wrote:
-> > Hello,
-> > 
-> > This series only contains the DT documentation and the corresponding DT addition
-> > since it has been rebased on spi-next.
-> > 
-> > Alexandre Belloni (3):
-> >   spi: dw: document Microsemi integration
-> >   mips: dts: mscc: Add spi on Ocelot
-> >   mips: dts: mscc: enable spi and NOR flash support on ocelot PCB123
-> > 
-> >  .../devicetree/bindings/spi/snps,dw-apb-ssi.txt       |  6 ++++--
-> >  arch/mips/boot/dts/mscc/ocelot.dtsi                   | 11 +++++++++++
-> >  arch/mips/boot/dts/mscc/ocelot_pcb123.dts             | 10 ++++++++++
-> >  3 files changed, 25 insertions(+), 2 deletions(-)
-> 
-> Thanks - looks like the DT binding has been accepted, so I've applied
-> patches 2 & 3 to mips-next for 4.19.
-> 
+This series adds support for SPI controller driver implemented on UniPhier SoCs.
 
-Thank you, it is great to see that going in as this makes the platform
-much more useful !
+Changes since v2:
+- remove check code of clock divider in uniphier_spi_set_baudrate().
+- change irq from struct variable to stack variable.
+- other trivial change.
 
+Keiji Hayashibara (1):
+  spi: add SPI controller driver for UniPhier SoC
+
+Kunihiko Hayashi (1):
+  dt-bindings: spi: add DT bindings for UniPhier SPI controller
+
+ .../devicetree/bindings/spi/spi-uniphier.txt       |  22 +
+ drivers/spi/Kconfig                                |  13 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-uniphier.c                         | 525 +++++++++++++++++++++
+ 4 files changed, 561 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-uniphier.txt
+ create mode 100644 drivers/spi/spi-uniphier.c
 
 -- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.7.4

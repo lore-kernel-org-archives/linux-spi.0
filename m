@@ -1,67 +1,36 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [RFC PATCH v2 5/6] spi: Add QuadSPI driver for Atmel SAMA5D2
-Date: Wed, 1 Aug 2018 21:57:33 +0200
-Message-ID: <20180801215733.4dfa3a95@bbrezillon>
-References: <20180627131609.13681-1-bugalski.piotr@gmail.com>
-        <20180627131609.13681-6-bugalski.piotr@gmail.com>
-        <20180801172747.GJ5509@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
-        linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Piotr Bugalski <pbu@cryptera.com>
-To: Mark Brown <broonie@kernel.org>
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Subject: [PATCH] spi: uniphier: remove unnecessary include headers
+Date: Thu,  2 Aug 2018 13:42:43 +0900
+Message-ID: <1533184963-28508-1-git-send-email-hayashibara.keiji@socionext.com>
+Cc: masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
+        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180801172747.GJ5509@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+This commit removed include headers of linux/of.h and linux/of_platform.h,
+because they are not used.
 
-On Wed, 1 Aug 2018 18:27:47 +0100
-Mark Brown <broonie@kernel.org> wrote:
+Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+---
+ drivers/spi/spi-uniphier.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-> On Wed, Jun 27, 2018 at 03:16:08PM +0200, Piotr Bugalski wrote:
-> > Kernel contains QSPI driver strongly tied to MTD and nor-flash memory.
-> > New spi-mem interface allows usage also other memory types, especially
-> > much larger NAND with SPI interface. This driver works as SPI controller
-> > and is not related to MTD, however can work with NAND-flash or other
-> > peripherals using spi-mem interface.  
-> 
-> This is fine from a SPI point of view
-
-Cool. There are still 2 things I think should be addressed before
-merging the driver:
-1/ Fixing the SoB tag to match the author (problem reported by
-   Alexandre)
-2/ Getting this patch [1] merged and implementing the ->get_name() hook
-   in this driver so that SPI NOR devs declared to the MTD layer keep
-   the same name after the transition to spi-mem and mtdparts= passed on
-   the cmdline keep working. Without this in place we're likely to
-   break a few setups :-/.
-
-> but I'd like to apply it directly
-> to the SPI tree rather than ack it for merge via the MTD tree - can we
-> work something out with a shared branch or something?
-
-Sure, I can provide an immutable tag for you to pull and I'll add my
-acks on those patches once the 2 things I mentioned above are
-addressed.
-
-Regards,
-
-Boris
-
-[1]https://patchwork.kernel.org/patch/10508693/ 
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 0899854..5a6137f 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -10,8 +10,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+ 
+-- 
+2.7.4

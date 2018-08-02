@@ -1,32 +1,74 @@
-From: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v11 6/6] tty/serial: atmel: change the driver to work
- under at91-usart mfd
-Date: Thu, 2 Aug 2018 10:11:21 +0200
-Message-ID: <20180802081121.GA26520@kroah.com>
-References: <20180713164736.26028-1-radu.pirea@microchip.com>
- <20180713164736.26028-7-radu.pirea@microchip.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, lee.jones@linaro.org,
-        richard.genoud@gmail.com, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-serial@vger.kernel.org
-To: Radu Pirea <radu.pirea@microchip.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: uniphier: remove unnecessary include headers" to the spi tree
+Date: Thu,  2 Aug 2018 11:12:24 +0100 (BST)
+Message-ID: <20180802101224.A50D71124241@debutante.sirena.org.uk>
+References: <1533184963-28508-1-git-send-email-hayashibara.keiji@socionext.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
+        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com,
+        linux-spi@vger.kernel.org
+To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180713164736.26028-7-radu.pirea@microchip.com>
+In-Reply-To: <1533184963-28508-1-git-send-email-hayashibara.keiji@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 13, 2018 at 07:47:36PM +0300, Radu Pirea wrote:
-> This patch modifies the place where resources and device tree properties
-> are searched.
-> 
-> Signed-off-by: Radu Pirea <radu.pirea@microchip.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Acked-by: Richard Genoud <richard.genoud@gmail.com>
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+The patch
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   spi: uniphier: remove unnecessary include headers
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 07ebbbe458790d3c75f4a2f3634d8e04f66b389b Mon Sep 17 00:00:00 2001
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Date: Thu, 2 Aug 2018 13:42:43 +0900
+Subject: [PATCH] spi: uniphier: remove unnecessary include headers
+
+This commit removed include headers of linux/of.h and linux/of_platform.h,
+because they are not used.
+
+Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-uniphier.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 089985465890..5a6137fe172d 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -10,8 +10,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+ 
+-- 
+2.18.0

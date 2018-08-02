@@ -1,71 +1,48 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [RFC PATCH v2 5/6] spi: Add QuadSPI driver for Atmel SAMA5D2
-Date: Thu, 2 Aug 2018 13:48:04 +0200
-Message-ID: <20180802134804.2352ee89@bbrezillon>
-References: <20180627131609.13681-1-bugalski.piotr@gmail.com>
-        <20180627131609.13681-6-bugalski.piotr@gmail.com>
-        <20180801172747.GJ5509@sirena.org.uk>
-        <20180801215733.4dfa3a95@bbrezillon>
-        <20180802101742.GF9117@sirena.org.uk>
-        <6f9ca4f1-6809-2d7d-4d64-6869a4e413cb@exceet.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Richard Weinberger <richard@nod.at>,
-        Piotr Bugalski <pbu@cryptera.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mtd@lists.infradead.org,
-        Piotr Bugalski <bugalski.piotr@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>
-To: Frieder Schrempf <frieder.schrempf@exceet.de>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: [PATCH v3 0/3] Extend the SPI mem interface to set a custom memory name
+Date: Thu,  2 Aug 2018 14:53:51 +0200
+Message-ID: <1533214434-28761-1-git-send-email-frieder.schrempf@exceet.de>
+Cc: cyrille.pitchen@wedev4u.fr, frieder.schrempf@exceet.de,
+        pp@emlix.com, Zhiqiang.Hou@nxp.com, linux-kernel@vger.kernel.org
+To: dwmw2@infradead.org, computersforpeace@gmail.com,
+        boris.brezillon@bootlin.com, marek.vasut@gmail.com, richard@nod.at,
+        broonie@kernel.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <6f9ca4f1-6809-2d7d-4d64-6869a4e413cb@exceet.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2 Aug 2018 12:46:36 +0200
-Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
+These changes were previously send with the series that transforms the FSL QSPI
+driver to the SPI mem interface [1]. As these changes are needed for other
+drivers too I send them separately now.
 
-> Hi Mark,
-> 
-> On 02.08.2018 12:17, Mark Brown wrote:
-> > On Wed, Aug 01, 2018 at 09:57:33PM +0200, Boris Brezillon wrote:  
-> >> Mark Brown <broonie@kernel.org> wrote:  
-> >   
-> >> 2/ Getting this patch [1] merged and implementing the ->get_name() hook
-> >>     in this driver so that SPI NOR devs declared to the MTD layer keep
-> >>     the same name after the transition to spi-mem and mtdparts= passed on
-> >>     the cmdline keep working. Without this in place we're likely to
-> >>     break a few setups :-/.  
-> >   
-> >> [1]https://patchwork.kernel.org/patch/10508693/  
-> > 
-> > I don't seem to have a copy of this patch...  not sure it was sent to
-> > me?  
-> 
-> When I sent the patch I put you in cc. So if nothing went wrong you 
-> should have it.
-> It is part of the SPI MEM conversion series for the FSL QSPI driver [1].
-> 
-> Boris made some remarks on documentation in v2, that I have fixed, but 
-> not sent out yet, as we have some blocking issues with the driver itself.
+The first patch fixes a typo, the second extends the interface to set and get a
+custom name for the memory device and the third patch makes use of this in the
+m25p80 driver.
 
-I don't remember where we were stuck. Are you still waiting answers
-from Yogesh? Probably a good time to ping him if that's the case ;-).
+[1] https://patchwork.ozlabs.org/cover/939864/
 
-> 
-> So if you want I could send the patch separately so it can be applied 
-> with the Atmel driver.
+Changes in v3:
+==============
+* Move fix for typo in spi-mem.h to a separate patch
+* Fix documentation of spi_mem_get_name() and get_name()
+* Avoid overwriting the name of the memory device in probe of m25p80
+* Add Suggested-by tags
 
-Yes please, send a v3 for patch 1 and 2.
+Changes in v2:
+==============
+* Add a name field to struct spi_mem and fill it while probing
+
+Frieder Schrempf (3):
+  spi: spi-mem: Fix a typo in the documentation of struct spi_mem
+  spi: spi-mem: Extend the SPI mem interface to set a custom memory name
+  mtd: m25p80: Call spi_mem_get_name() to let controller set a custom
+    name
+
+ drivers/mtd/devices/m25p80.c |  3 +++
+ drivers/spi/spi-mem.c        | 28 ++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h  | 14 +++++++++++++-
+ 3 files changed, 44 insertions(+), 1 deletion(-)
+
+-- 
+2.7.4

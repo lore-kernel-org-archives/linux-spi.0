@@ -1,7 +1,7 @@
 From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: [PATCH v3 2/3] spi: spi-mem: Extend the SPI mem interface to set a custom memory name
-Date: Thu,  2 Aug 2018 14:53:53 +0200
-Message-ID: <1533214434-28761-3-git-send-email-frieder.schrempf@exceet.de>
+Subject: [PATCH v3 3/3] mtd: m25p80: Call spi_mem_get_name() to let controller set a custom name
+Date: Thu,  2 Aug 2018 14:53:54 +0200
+Message-ID: <1533214434-28761-4-git-send-email-frieder.schrempf@exceet.de>
 References: <1533214434-28761-1-git-send-email-frieder.schrempf@exceet.de>
 Cc: cyrille.pitchen@wedev4u.fr, frieder.schrempf@exceet.de,
         pp@emlix.com, Zhiqiang.Hou@nxp.com, linux-kernel@vger.kernel.org
@@ -14,129 +14,30 @@ In-Reply-To: <1533214434-28761-1-git-send-email-frieder.schrempf@exceet.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When porting (Q)SPI controller drivers from the MTD layer to the SPI
-layer, the naming scheme for the memory devices changes. To be able
-to keep compatibility with the old drivers naming scheme, a name
-field is added to struct spi_mem and a hook is added to let controller
-drivers set a custom name for the memory device.
-
-Example for the FSL QSPI driver:
-
-Name with the old driver: 21e0000.qspi,
-or with multiple devices: 21e0000.qspi-0, 21e0000.qspi-1, ...
-
-Name with the new driver without spi_mem_get_name: spi4.0
+By calling spi_mem_get_name(), the driver of the (Q)SPI controller can
+set a custom name for the memory device if necessary.
+This is useful to keep mtdparts compatible when controller drivers are
+ported from the MTD to the SPI layer.
 
 Suggested-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
 ---
- drivers/spi/spi-mem.c       | 28 ++++++++++++++++++++++++++++
- include/linux/spi/spi-mem.h | 12 ++++++++++++
- 2 files changed, 40 insertions(+)
+ drivers/mtd/devices/m25p80.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 990770d..e43842c 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -311,6 +311,24 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- EXPORT_SYMBOL_GPL(spi_mem_exec_op);
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index e84563d..aac48800 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -202,6 +202,9 @@ static int m25p_probe(struct spi_mem *spimem)
+ 	if (data && data->name)
+ 		nor->mtd.name = data->name;
  
- /**
-+ * spi_mem_get_name() - Return the SPI mem device name to be used by the
-+ *			upper layer if necessary
-+ * @mem: the SPI memory
-+ *
-+ * This function allows SPI mem users to retrieve the SPI mem device name.
-+ * It is useful if the upper layer needs to expose a custom name for
-+ * compatibility reasons.
-+ *
-+ * Return: a string containing the name of the memory device to be used
-+ *	   by the SPI mem user
-+ */
-+const char *spi_mem_get_name(struct spi_mem *mem)
-+{
-+	return mem->name;
-+}
-+EXPORT_SYMBOL_GPL(spi_mem_get_name);
++	if (!nor->mtd.name)
++		nor->mtd.name = spi_mem_get_name(spimem);
 +
-+/**
-  * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
-  *			      match controller limitations
-  * @mem: the SPI memory
-@@ -344,6 +362,7 @@ static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
- static int spi_mem_probe(struct spi_device *spi)
- {
- 	struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
-+	struct spi_controller *ctlr = spi->controller;
- 	struct spi_mem *mem;
- 
- 	mem = devm_kzalloc(&spi->dev, sizeof(*mem), GFP_KERNEL);
-@@ -351,6 +370,15 @@ static int spi_mem_probe(struct spi_device *spi)
- 		return -ENOMEM;
- 
- 	mem->spi = spi;
-+
-+	if (ctlr->mem_ops && ctlr->mem_ops->get_name)
-+		mem->name = ctlr->mem_ops->get_name(mem);
-+	else
-+		mem->name = dev_name(&spi->dev);
-+
-+	if (IS_ERR_OR_NULL(mem->name))
-+		return PTR_ERR(mem->name);
-+
- 	spi_set_drvdata(spi, mem);
- 
- 	return memdrv->probe(mem);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 72cc9bc..0d41826 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -125,6 +125,7 @@ struct spi_mem_op {
-  * struct spi_mem - describes a SPI memory device
-  * @spi: the underlying SPI device
-  * @drvpriv: spi_mem_driver private data
-+ * @name: name of the SPI memory device
-  *
-  * Extra information that describe the SPI memory device and may be needed by
-  * the controller to properly handle this device should be placed here.
-@@ -135,6 +136,7 @@ struct spi_mem_op {
- struct spi_mem {
- 	struct spi_device *spi;
- 	void *drvpriv;
-+	char *name;
- };
- 
- /**
-@@ -167,6 +169,13 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
-  *		    limitations)
-  * @supports_op: check if an operation is supported by the controller
-  * @exec_op: execute a SPI memory operation
-+ * @get_name: get a custom name for the SPI mem device from the controller.
-+ *	      This might be needed if the controller driver has been ported
-+ *	      to use the SPI mem layer and a custom name is used to keep
-+ *	      mtdparts compatible.
-+ *	      Note that if the implementation of this function allocates memory
-+ *	      dynamically, then it should do so with devm_xxx(), as we don't
-+ *	      have a ->free_name() function.
-  *
-  * This interface should be implemented by SPI controllers providing an
-  * high-level interface to execute SPI memory operation, which is usually the
-@@ -178,6 +187,7 @@ struct spi_controller_mem_ops {
- 			    const struct spi_mem_op *op);
- 	int (*exec_op)(struct spi_mem *mem,
- 		       const struct spi_mem_op *op);
-+	const char *(*get_name)(struct spi_mem *mem);
- };
- 
- /**
-@@ -236,6 +246,8 @@ bool spi_mem_supports_op(struct spi_mem *mem,
- int spi_mem_exec_op(struct spi_mem *mem,
- 		    const struct spi_mem_op *op);
- 
-+const char *spi_mem_get_name(struct spi_mem *mem);
-+
- int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
- 				       struct module *owner);
- 
+ 	/* For some (historical?) reason many platforms provide two different
+ 	 * names in flash_platform_data: "name" and "type". Quite often name is
+ 	 * set to "m25p80" and then "type" provides a real chip name.
 -- 
 2.7.4

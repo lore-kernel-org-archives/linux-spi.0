@@ -1,34 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: Fix a typo in the documentation of struct
- spi_mem" to the spi tree
-Date: Thu,  2 Aug 2018 15:58:26 +0100 (BST)
-Message-ID: <20180802145826.BC5CB1121BE5@debutante.sirena.org.uk>
-References: <1533214434-28761-2-git-send-email-frieder.schrempf@exceet.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: pp@emlix.com, marek.vasut@gmail.com, richard@nod.at, Zhiqiang.Hou@nxp.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- boris.brezillon@bootlin.com, frieder.schrempf@exceet.de, broonie@kernel.org,
- linux-mtd@lists.infradead.org, cyrille.pitchen@wedev4u.fr,
- computersforpeace@gmail.com, dwmw2@infradead.org
+Subject: Applied "mtd: m25p80: Call spi_mem_get_name() to let controller set a custom name" to the spi tree
+Date: Thu,  2 Aug 2018 15:58:19 +0100 (BST)
+Message-ID: <20180802145820.032B11121BE5@debutante.sirena.org.uk>
+References: <1533214434-28761-4-git-send-email-frieder.schrempf@exceet.de>
+Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Mark Brown <broonie@kernel.org>, dwmw2@infradead.org,
+        computersforpeace@gmail.com, boris.brezillon@bootlin.com,
+        marek.vasut@gmail.com, richard@nod.at, broonie@kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        cyrille.pitchen@wedev4u.fr, frieder.schrempf@exceet.de,
+        pp@emlix.com, Zhiqiang.Hou@nxp.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: Frieder Schrempf <frieder.schrempf@exceet.de>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1533214434-28761-2-git-send-email-frieder.schrempf@exceet.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1533214434-28761-4-git-send-email-frieder.schrempf@exceet.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: Fix a typo in the documentation of struct spi_mem
+   mtd: m25p80: Call spi_mem_get_name() to let controller set a custom name
 
 has been applied to the spi tree at
 
@@ -53,38 +44,38 @@ to this mail.
 Thanks,
 Mark
 
->From 06bcb5168d7d49aa3ed449ff13a6d13c30afc3f0 Mon Sep 17 00:00:00 2001
+>From b02b17f55b2e789b9747cf4dd2eaaa110439a4cc Mon Sep 17 00:00:00 2001
 From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Date: Thu, 2 Aug 2018 14:53:52 +0200
-Subject: [PATCH] spi: spi-mem: Fix a typo in the documentation of struct
- spi_mem
+Date: Thu, 2 Aug 2018 14:53:54 +0200
+Subject: [PATCH] mtd: m25p80: Call spi_mem_get_name() to let controller set a
+ custom name
 
-Fix a typo in the @drvpriv description.
+By calling spi_mem_get_name(), the driver of the (Q)SPI controller can
+set a custom name for the memory device if necessary.
+This is useful to keep mtdparts compatible when controller drivers are
+ported from the MTD to the SPI layer.
 
+Suggested-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
 Acked-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi-mem.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/devices/m25p80.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index bb4bd15ae1f6..951a2e949d5f 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -122,7 +122,7 @@ struct spi_mem_op {
- /**
-  * struct spi_mem - describes a SPI memory device
-  * @spi: the underlying SPI device
-- * @drvpriv: spi_mem_drviver private data
-+ * @drvpriv: spi_mem_driver private data
-  *
-  * Extra information that describe the SPI memory device and may be needed by
-  * the controller to properly handle this device should be placed here.
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index e84563d2067f..aac488008216 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -202,6 +202,9 @@ static int m25p_probe(struct spi_mem *spimem)
+ 	if (data && data->name)
+ 		nor->mtd.name = data->name;
+ 
++	if (!nor->mtd.name)
++		nor->mtd.name = spi_mem_get_name(spimem);
++
+ 	/* For some (historical?) reason many platforms provide two different
+ 	 * names in flash_platform_data: "name" and "type". Quite often name is
+ 	 * set to "m25p80" and then "type" provides a real chip name.
 -- 
 2.18.0
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

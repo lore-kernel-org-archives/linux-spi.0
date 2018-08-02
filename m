@@ -1,74 +1,68 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: uniphier: remove unnecessary include headers" to the spi tree
-Date: Thu,  2 Aug 2018 11:12:24 +0100 (BST)
-Message-ID: <20180802101224.A50D71124241@debutante.sirena.org.uk>
-References: <1533184963-28508-1-git-send-email-hayashibara.keiji@socionext.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
-        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com,
-        linux-spi@vger.kernel.org
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Subject: Re: [RFC PATCH v2 5/6] spi: Add QuadSPI driver for Atmel SAMA5D2
+Date: Thu, 2 Aug 2018 11:17:42 +0100
+Message-ID: <20180802101742.GF9117@sirena.org.uk>
+References: <20180627131609.13681-1-bugalski.piotr@gmail.com>
+ <20180627131609.13681-6-bugalski.piotr@gmail.com>
+ <20180801172747.GJ5509@sirena.org.uk>
+ <20180801215733.4dfa3a95@bbrezillon>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="0hHDr/TIsw4o3iPK"
+Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
+        linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Piotr Bugalski <pbu@cryptera.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1533184963-28508-1-git-send-email-hayashibara.keiji@socionext.com>
+Content-Disposition: inline
+In-Reply-To: <20180801215733.4dfa3a95@bbrezillon>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: uniphier: remove unnecessary include headers
+--0hHDr/TIsw4o3iPK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Wed, Aug 01, 2018 at 09:57:33PM +0200, Boris Brezillon wrote:
+> Mark Brown <broonie@kernel.org> wrote:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> 2/ Getting this patch [1] merged and implementing the ->get_name() hook
+>    in this driver so that SPI NOR devs declared to the MTD layer keep
+>    the same name after the transition to spi-mem and mtdparts=3D passed on
+>    the cmdline keep working. Without this in place we're likely to
+>    break a few setups :-/.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> [1]https://patchwork.kernel.org/patch/10508693/=20
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I don't seem to have a copy of this patch...  not sure it was sent to
+me?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--0hHDr/TIsw4o3iPK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlti2kUACgkQJNaLcl1U
+h9BcOAgAgAz5lMpc2flvBJhdnlT29tzROXqSpM6wz1kpJM0vXKIBnD1f+CVqWg5x
+isd9zCSCYinC8A8qNtC8KeRZNWDWsuSc0oiizuFp8G5Nf/ep6iIoxlKV8FMwmOVm
+DITz7SZUqd/Ej1peuGNsE3/3dGd2sT0TKnjrrJT7ZjAjfH4OwfWkUS9lshgp0H+y
+l7HDz5Z5JAmEkkCbe97AHnZQv0jths9imXVpaAJJl6uYRkxM3zIAp6vRKf71MSSz
+ubaV2h3gejoYUviXa6zp4+o373AwNwSV/2JSV93wt4ogLkuECl3PMTzm74d+jlJq
+vRr2BQqeV9RkMdcDJmrV27AxH4TvsA==
+=R9Tx
+-----END PGP SIGNATURE-----
 
->From 07ebbbe458790d3c75f4a2f3634d8e04f66b389b Mon Sep 17 00:00:00 2001
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Date: Thu, 2 Aug 2018 13:42:43 +0900
-Subject: [PATCH] spi: uniphier: remove unnecessary include headers
-
-This commit removed include headers of linux/of.h and linux/of_platform.h,
-because they are not used.
-
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-uniphier.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index 089985465890..5a6137fe172d 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -10,8 +10,6 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
--#include <linux/of.h>
--#include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- 
--- 
-2.18.0
+--0hHDr/TIsw4o3iPK--

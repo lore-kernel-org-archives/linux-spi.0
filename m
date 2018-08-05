@@ -1,193 +1,185 @@
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Sun, 5 Aug 2018 02:11:25 +0200
-Message-ID: <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
-References: <20180701110804.32415-1-afaerber@suse.de>
- <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
+From: Jian-Hong Pan <starnight@g.ncu.edu.tw>
+Subject: Re: linux-lora.git and LoRaWAN (was: [RFC net-next 00/15] net: A
+ socket API for LoRa)
+Date: Sun, 5 Aug 2018 20:49:31 +0800
+Message-ID: <CAC=mGzhtr0SuOmgJpcXODAzTzSb3xKSnyy9bnq37NuM8fDqBqQ@mail.gmail.com>
+References: <20180701110804.32415-1-afaerber@suse.de> <BY1PR02MB11147C7443AB9623D6B65798E75A0@BY1PR02MB1114.namprd02.prod.outlook.com>
+ <e08cdcfb-207f-bd73-2afd-f775810b72b7@suse.de> <BY1PR02MB11143134B9ABAC9C9929A9C4E7530@BY1PR02MB1114.namprd02.prod.outlook.com>
+ <CAC=mGzg0uP6ddm-kjev6JAH=GrKX9bT6s2canFOjKsC4rCcVAQ@mail.gmail.com> <6dda350b-66ab-b5ab-41ed-319b27e4e28c@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Janus Piwek <jpiwek@arroweurope.com>,
-        =?UTF-8?Q?Michael_R=c3=b6der?= <michael.roeder@avnet.eu>,
-        Dollar Chen <dollar.chen@wtmec.com>,
-        Ken Yu <ken.yu@rakwireless.com>,
-        =?UTF-8?Q?Konstantin_B=c3=b6hm?= <konstantin.boehm@ancud.de>,
-        Jan Jongboom <jan.jongboom@arm.com>,
-        Jon Ortego <Jon.Ortego@imst.de>, contact@snootlab.com,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        Brian Ray <brian.ray@link-labs.com>, lora@globalsat.com.tw,
-        Alexander Graf <agraf@suse.de>,
-        =?UTF-8?Q?Michal_Kube=c4=8dek?= <mkubecek@suse.cz>,
-        Rob Herring <robh@kern
-To: Jian-Hong Pan <starnight@g.ncu.edu.tw>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: Ben Whitten <Ben.Whitten-xJ1y+ldTOs21Z/+hSey0Gg@public.gmane.org>,
+        "netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Jiri Pirko <jiri-rHqAuBHg3fBzbRFIqnYvSA@public.gmane.org>,
+        Marcel Holtmann <marcel-kz+m5ild9QBg9hUCZPvPmw@public.gmane.org>,
+        "David S. Miller" <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>,
+        Matthias Brugger <mbrugger-IBi9RG/b67k@public.gmane.org>,
+        Janus Piwek <jpiwek-xaGqqxxtfCsTxu5ScYMnmg@public.gmane.org>,
+        =?UTF-8?Q?Michael_R=C3=B6der?= <michael.roeder-1xq/Wrep1TY@public.gmane.org>,
+        Dollar Chen <dollar.chen-R57ae0ORxaEAvxtiuMwx3w@public.gmane.org>,
+        Ken Yu <ken.yu-EUSmNabW1sldz2imjWt+ww@public.gmane.org>,
+        =?UTF-8?Q?Konstantin_B=C3=B6hm?= <konstantin.boehm-5mkw0NDAAUY@public.gmane.org>,
+        Jan Jongboom <jan.jongboom-5wv7dgnIgG8@public.gmane.org>,
+        "contact-GpjyyWaKhplWk0Htik3J/w@public.gmane.org" <contact-GpjyyWaKhplWk0Htik3J/w@public.gmane.org>,
+        Brian Ray <brian.ray-Uo9O3XgVypaakBO8gow8eQ@public.gmane.org>,
+        "lora-SbRJF1/p8ws3UoVyvykmEw@public.gmane.org" <lo
+To: =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber-l3A5Bk7waGM@public.gmane.org>
+Return-path: <linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <6dda350b-66ab-b5ab-41ed-319b27e4e28c-l3A5Bk7waGM@public.gmane.org>
+Sender: linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jian-Hong,
+Hi Andreas,
 
-Am 03.07.2018 um 17:11 schrieb Jian-Hong Pan:
-> 2018-07-01 19:07 GMT+08:00 Andreas Färber <afaerber@suse.de>:
->> 2) PF_LORA is used with SOCK_DGRAM here. The assumption is that RAW mode
->>    would be DGRAM plus preamble plus optional checksum.
-> 
-> Is the preamble added by the hardware itself here or software here?
-
-That depends on the driver. For SX127x and any SX127x based modules it
-is added by hardware and a SOCK_RAW seems impossible. If you were to use
-some SDR hardware, it would need to be done by software and might either
-be done in the device driver for SOCK_DGRAM or by user with a SOCK_RAW.
-Right now I don't see a practical use case for the latter. (CC Pieter)
-
->> 3) Only the transmit path is partially implemented already. The assumption
->>    is that the devices should go into receive mode by default and only
->>    interrupt that when asked to transmit.
-> 
-> If it goes with LoRaWAN spec., end devices should be in idle (or
-> called standby mode) by default.  Unless the device is asked to be in
-> transmitting or receiving timing slot.
-
-Whatever the LoRaWAN spec says, in practice struct net_device_ops has an
-ndo_start_xmit hook but no ndo_start_recv. All drivers that I've checked
-start receiving via interrupts after ndo_open has set things up.
-
-LoRa radio channels being half-duplex, we'd need to stop receiving in
-ndo_start_xmit and re-start receiving in the TX interrupt handler AFAIU.
-Yes, it's ugly - one reason I haven't implemented RX in sx1276 yet.
-
-Are you suggesting to have dgram's recvmsg trigger the RX state somehow?
-It gets access to the net_device and could access dev.h struct lora_priv
-that we might extend to contain a LoRa-specific start_recv callback. And
-probably rename it more uniquely to lora_dev_priv while at it.
-
-The only other alternative I can think of would be to require the user
-to perform some netlink operation, possibly wrapped in some lora_ API,
-to actively put the device into receive mode. Doesn't sound desirable.
-
->> 4) Some hardware settings need to be supplied externally, such as the radio
->>    frequency for some modules, but many others can be runtime-configured,
->>    such as Spreading Factor, Bandwidth, Sync Word, or which antenna to use.
->>    What settings should be implemented as socket option vs. netlink layer
->>    vs. ioctl vs. sysfs? What are the criteria to apply?
-> 
-> - We can have a pre-defined table according to LoRaWAN Regional Parameters.
-> - Device driver declares the hardware's capability, for example
-> frequency, TX power.  And then registers as a LoRaWAN compatible
-> device.
-
-That sounds like a layering violation. We rather need to expose all
-these tunable parameters individually at the LoRa layer, allowing the
-LoRaWAN layer to configure them as it pleases. Not the other direction.
-That still leaves my above question 4) open of how to implement each.
-
-The use case I have in mind is this: User A opens a LoRaWAN socket and
-using maclorawan sends a packet P1. Here the LoRaWAN Regional Parameters
-and LoRaWAN Sync Word need to be applied.
-User B then opens a pure LoRa socket and transmits a packet P1' with
-different Sync Word, SF, BW, CR, etc.
-Afterwards user A wants to send another packet P2 via LoRaWAN - this
-needs to use the same LoRaWAN settings as before, not those used for
-LoRa in between. Therefore I was thinking about socket-level options, as
-netlink operations would be device-wide, with undesired side-effects.
-
-Obviously in that scenario not both users can receive at the same time.
-
-If there was a way to start receiving only when a user performs such a
-socket operations, even this could be implemented - if incompatible
-reception can get detected and if the packet gets delivered to both,
-LoRa being broadcast.
-
-> - LoRaWAN module handle the requests from upper layer or MAC commands
-> from a gateway (netlink layer), than uses the pre-defined interface
-> functions to set the parameters.
-> 
-> LoRaWAN module will export the operation functions interface.
-> 
->> 5) Many of the modules support multiple modes, such as LoRa, LoRaWAN and FSK.
->>    Lacking a LoRaWAN implementation, I am currently switching them into LoRa
->>    mode at probe time wherever possible. How do we deal with that properly?
-> 
-> - There are data rate tables defined in LoRaWAN Regional Parameters.
-> Those contain which data rate uses LoRa mode or FSK mode.
-
-That's missing my point, I fear. Independently of what LoRaWAN does, the
-user needs to be able to send on the physical layer from a selection of
-LoRa, GFSK, FSK, OOK, GMSK and MSK.
-Supposedly Wireless M-Bus and IEEE 802.15.4 can be implemented via those
-according to the SX1276 datasheet.
-
-This opens a can of worms...
-
-SX127x has a single channel, so I don't think there should be six
-network interfaces lora0, gfsk0, fsk0, ook0, gmsk0 and msk0 exposed to
-the user.
-Having a lora0 interface speak non-LoRa modulations may be confusing,
-but since the chip is sold as LoRa transceiver it might be acceptable.
-
-SX130x has 8+2 channels, with IF9 dedicated to GFSK/FSK. It appears to
-use one FIFO for receiving (up to 16 packets) and can only transmit one
-packet at a time. So I think this should be one lora0 interface, too.
-
-With a view to supporting non-LoRa RF chipsets such as Si4xxx (GFSK,
-FSK, OOK) or nRF905 and nRF24L01+ (both GFSK) at a later date, I don't
-think those modulations should be some netlink option on a PF_LORA
-interface but cleanly distinguished as ETH_P_GFSK or something.
-For example, the Chistera Pi HAT has both an RFM95W and an RFM22 module.
-
-The next question arising is how the user would create such an skb. Just
-like I was hesitant about PF_LORAWAN originally, I'd like to avoid
-polluting the PF_ number space for each of these. Maybe have one PF_FSK
-as equivalent to PF_LORA and then have either a socket option or
-sockaddr field to select the modulation variants? Not sure how exactly
-those others differ from each other, that's why I tried to postpone the
-FSK topic and to focus on LoRa first - b) below.
-
-At this point we could also argue whether we need a PF_LORA at all or
-rather just some generic PF_RADIO with lots of options stored in its
-sockaddr.
-One criteria will be whether we need multiple protocol options per
-modulation type or just one. For LoRa that was the dgram vs. raw
-discussion; for FSK/OOK I read packet mode vs. continuous mode in SX127x
-but not obvious if that affects the protocol or just the device driver.
-
-Getting back to your point, the data rate selection at LoRaWAN layer
-needs to determine how an skb gets passed between device driver and MAC.
-
-
-Another aspect FSK touches on is interactions with other subsystems. For
-example, how an sx1276 802.15.4 implementation for FSK/OOK (or LoRa, as
-you mentioned in your slides) would best interact with ieee802154 and
-mac802154 code when not done as standalone implementation. Or how to
-deal with SigFox on the same module as LoRaWAN - not aware of any kernel
-subsystem for SigFox. By comparison, on-module BLE sounds slightly
-easier, since it uses a separate antenna.
-(Haven't seen LoRa plus NB-IoT yet, to name the other LPWAN technology.)
-
-> - LoRaWAN should handle the data rate changing requests and then calls
-> the corresponding operation functions.  Of course, the hardware's
-> capability registered before should also be under consideration at the
-> same time.
-> 
->>   a) Is there any precedence from the Wifi world for dynamically selecting
->>      between our own trusted Open Source implementation vs. hardware/firmware
->>      accelerated and/or certified implementations?
+2018-08-03 16:44 GMT+08:00 Andreas F=C3=A4rber <afaerber-l3A5Bk7waGM@public.gmane.org>:
+> Hi Jian-Hong,
+>
+> Am 02.08.2018 um 09:52 schrieb Jian-Hong Pan:
+>> 2018-07-18 19:28 GMT+08:00 Ben Whitten <Ben.Whitten-xJ1y+ldTOs21Z/+hSey0Gg@public.gmane.org>:
+>>>> 1) PF_LORA/AF_LORA and associated identifiers are
+>>>> proposed to represent
+>>>>    this technology. While for an SX1276 [...] it
+>>>> might work to
+>>>>    layer LoRaWAN as a protocol option for PF_LORA and
+>> add
+>>>> LoRaWAN address
+>>>>    fields to the union in my sockaddr_lora, how would that
+>>>> work for devices
+>>>>    that only support LoRaWAN but not pure LoRa? Do we
+>>>> need both AF_LORA and
+>>>>    AF_LORAWAN, or just a separate ETH_P_LORAWAN or
+>>>> ARPHRD_LORAWAN?
+> [...]
+>>>> Meanwhile my attempt to play with netlink during SUSE
+>>>> Hackweek has been
+>>>> going slow and I could use some guidance or a volunteer to
+>>>> contribute: I
+>>>> have a bare skeleton of registration, commands, attributes
+>>>> and multicast
+>>>> groups, but no plan yet how to connect that to the actual
+>>>> drivers to
+>>>> query or apply the settings...
+>>>
+>>> Happy to help, I will be starting from zero on netlink but I can contri=
+bute my existing work incorporating Marks comments for sx1301 etal.
+>>>
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/afaerber/li
+>>>> nux-lora.git/tree/net/lora/netlink.c?h=3Dlora-next
 >>
->>   b) Would a proof of concept for FSK (non-LoRa) modes be required for
->>      merging any LoRa driver for chipsets that support both? Or is there any
->>      facility or design guidelines that would allow us to focus on LoRa and
->>      LoRaWAN and leave non-LoRa radio modes to later contributors?
+>> Is this the repository used for the LoRa subsystem now?!!!
+>> If it is, than great!
+>
+> Yes, my linux-lora.git contains this RFC patchset (modulo SX1276 fixes
+> spotted by kbuild bot) plus a new serdev driver for another module and
+> ongoing work by Ben and me for refactoring SX1301. It's monitored by the
+> 0-day test service (kbuild bot).
+>
+> As this patchset was an RFC and does not have any Acked-bys from
+> maintainers, the tree does not have a for-next branch integrated into
+> linux-next on basis of 4.18-rc1, but instead (like my personal GitHub
+> tree before) has a lora-next branch that rebases as patch queue on top
+> of linux-next for now.
+>
+> The intent is to allow collaboration on getting things into a state that
+> I can later submit a clean (squashed) RFC v2 for review, with all issues
+> raised for this v1 addressed.
+>
+> For contributing patches to my linux-lora.git I suggest to use
+> --subject-prefix=3D"PATCH lora-next" to distinguish from net-next.
+> And I just realize I should add a MAINTAINERS entry in my tree to make
+> sure patches CC me, too. (I do monitor netdev for patches with subject
+> "lora", but chances are someone might omit that.)
+>
+>> As the previous mails, I am trying to implement the LoRaWAN
+>> specification as the soft MAC as the MAC layer over LoRa PHY.
+>> This is the the talk about LoRaWAN class module I gave in Netdev Conf
+>> https://www.slideshare.net/chienhungpan/lorawan-class-module-and-subsyst=
+em
+>>
+>> The expectation is:
+>>
+>> socket APIs:
+>> send and receive the data
+>> ------------------------------------------------------------
+>> LoRaWAN class module implements MAC:
+>> append the header/footer, encryption/decryption, timing slot and MAC com=
+mands
+>> ------------------------------------------------------------
+>> LoRa device drivers:
+>> send and receive the messages for MAC layer
+>> ------------------------------------------------------------
+>> LoRa devices
+>
+> Thanks for sharing your slides. We seem to be in alignment for the
+> abstract concept above. The devil is in the implementation details. ^.-
+>
+>> Is it possible that combine the LoRaWAN class module I implemented?
+>
+> Yes, as stated in this cover letter, I would love if you could help
+> merge your LoRaWAN implementation with my driver framework. Comparing
+> 802.15.4 and 802.11, I think MAC code should go into net/maclorawan/ and
+> then is a fairly independent module, with you as maintainer.
+>
+>> I start from the simplest class A end device's behavior, especially
+>> the timing slot.
+>> Also the encryption/decryption for uplink/downlink data messages.
+>> I can send it as patches.
+>>
+>> However, I have 2 problems right now.
+>> 1. Which Address and Protocol Family should we use?  PF_LORA or PF_LORAW=
+AN?
+>
+> That was one of the questions I raised above. I now think we need both.
+> I'm not yet too deep into LoRaWAN, but from the AT command interfaces
+> I've seen there's confirmed and unconfirmed transmission modes that with
+> PF_LORAWAN might be mapped to SOCK_STREAM and SOCK_DGRAM. Or do you see
+> a way of doing both on a single PF_LORA SOCK_LORAWAN socket?
+>
+>> 2. To test the LoRaWAN class module, adding more procedures in LoRa
+>> device drivers to register as a LoRaWAN device is needed.
+>
+> No, I don't think so. There are (at least) two types of devices, LoRaWAN
+> and LoRa devices. The SX1276 is a pure LoRa device and thus should only
+> expose a LoRa network device. It'll be the task of the maclorawan module
+> to translate between the two layers, not the business of the device
+> driver; SX1276 should receive a ready-to-send LoRa skb. For Ethernet,
+> PF_INET and PF_INET6 don't need separate devices either, both use eth0.
+>
+> What I do think we need is your struct lora_hw, maybe renamed to
+> lora_phy. That could be the missing piece for registration of the device
+> drivers with nllora module?
+> Note that similarly we'll also need an nllorawan module that needs to
+> work both with your maclorawan and with some of my device drivers that
+> implement the MAC in an MCU.
+
+Let me think these twice.
+
+> Additionally I've been looking into socket options at PF_LORA dgram
+> layer for some radio options, but discarded that again for lack of
+> precedence. Basically I wondered whether we could allow to choose SF,
+> bandwidth, etc. on socket level and then apply those settings before
+> sending one packet rather than expecting a global netlink operation that
+> affects all sockets for that interface.
+
+According to the LoRaWAN Regional Parameters, we should have the APIs
+to set the SF, frequency, bandwidth ...
+The idea is: LoRaWAN class module gets the region of this device and
+the device's abilities.  Then LoRaWAN class module calls the callback
+functions to set the related parameters: SF, frequency, bandwidth ...
+And of course, the setting actions only happen in the idle, standby or
+stop status.
+1. Interface is being startup.
+2. Requested by MAC command.
+
+But let start from simple case and add more features and complexity in
+the future.
+
+By the way, I am rearranging the module's code and try to make it
+could be patches.
 
 Regards,
-Andreas
-
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+Jian-Hong Pan

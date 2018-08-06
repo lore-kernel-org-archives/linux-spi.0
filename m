@@ -1,32 +1,91 @@
 From: Kosta Zertsekel <zertsekel@gmail.com>
-Subject: Re: [PATCH] spi: orion: cosmetics - alias long direct_access variables
-Date: Mon, 6 Aug 2018 22:27:46 +0300
-Message-ID: <CADxo8W+5rvp-cFzqiSJ7RGC13N42v45N0pJ+m+2qO8DQ5AWS7Q@mail.gmail.com>
-References: <20180806185158.2382-1-zertsekel@gmail.com> <20180806190912.GJ9372@lunn.ch>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?SmFuIEt1bmRyw6F0?= <jan.kundrat@cesnet.cz>,
+Subject: [PATCH v2] spi: orion: cosmetics - alias long direct_access variables
+Date: Mon,  6 Aug 2018 22:43:27 +0300
+Message-ID: <20180806194327.13389-1-zertsekel@gmail.com>
+Cc: Kosta Zertsekel <zertsekel@gmail.com>,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
         Stefan Roese <sr@denx.de>, Ken Wilson <ken.wilson@opengear.com>
-To: Andrew Lunn <andrew@lunn.ch>
+To: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180806190912.GJ9372@lunn.ch>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 6, 2018 at 10:09 PM Andrew Lunn <andrew@lunn.ch> wrote:
->> @@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
->>
->>       /* Scan all SPI devices of this controller for direct mapped devices */
->>       for_each_available_child_of_node(pdev->dev.of_node, np) {
->> +             struct orion_direct_acc *dacc;
->
-> I would prefer direct_access, but it looks like this is too long to
-> put the devm_ioremap on one line. But it should be enough to fix the
-> odd indentation of r->start and PAGE_SIZE.
+This change increases the source code readability.
+Instead of using `spi->child[cs].direct_access.XXX` use `dacc->XXX`.
+Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
 
-Actually, the longest possible name to put devm_ioremap on one line is
-`dir_acc`.
-I think `dir_acc` is readable enough to ring the `direct_access` in
-the mind of a reader.
+Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
+---
+ drivers/spi/spi-orion.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index d01a6adc726e..184ba91abeee 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -430,6 +430,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 	int word_len;
+ 	struct orion_spi *orion_spi;
+ 	int cs = spi->chip_select;
++	void __iomem *vaddr;
+ 
+ 	word_len = spi->bits_per_word;
+ 	count = xfer->len;
+@@ -440,8 +441,9 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 	 * Use SPI direct write mode if base address is available. Otherwise
+ 	 * fall back to PIO mode for this transfer.
+ 	 */
+-	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
+-	    (word_len == 8)) {
++	vaddr = orion_spi->child[cs].direct_access.vaddr;
++
++	if (vaddr && xfer->tx_buf && word_len == 8) {
+ 		unsigned int cnt = count / 4;
+ 		unsigned int rem = count % 4;
+ 
+@@ -449,13 +451,11 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 		 * Send the TX-data to the SPI device via the direct
+ 		 * mapped address window
+ 		 */
+-		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
+-			      xfer->tx_buf, cnt);
++		iowrite32_rep(vaddr, xfer->tx_buf, cnt);
+ 		if (rem) {
+ 			u32 *buf = (u32 *)xfer->tx_buf;
+ 
+-			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
+-				     &buf[cnt], rem);
++			iowrite8_rep(vaddr, &buf[cnt], rem);
+ 		}
+ 
+ 		return count;
+@@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 
+ 	/* Scan all SPI devices of this controller for direct mapped devices */
+ 	for_each_available_child_of_node(pdev->dev.of_node, np) {
++		struct orion_direct_acc *dir_acc;
+ 		u32 cs;
+ 
+ 		/* Get chip-select number from the "reg" property */
+@@ -711,14 +712,13 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
+ 		 * support, once this gets implemented.
+ 		 */
+-		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
+-							    r->start,
+-							    PAGE_SIZE);
+-		if (!spi->child[cs].direct_access.vaddr) {
++		dir_acc = &spi->child[cs].direct_access;
++		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
++		if (!dir_acc->vaddr) {
+ 			status = -ENOMEM;
+ 			goto out_rel_axi_clk;
+ 		}
+-		spi->child[cs].direct_access.size = PAGE_SIZE;
++		dir_acc->size = PAGE_SIZE;
+ 
+ 		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
+ 	}
+-- 
+2.17.1

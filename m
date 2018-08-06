@@ -1,122 +1,91 @@
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH RESEND 2/5] spi: imx: Use dynamic bursts only when
- bits_per_word is 8, 16 or 32
-Date: Mon, 6 Aug 2018 11:41:11 +0200
-Message-ID: <20180806094111.uutolczqccm2e2ot@pengutronix.de>
-References: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
- <20180717143154.28241-3-maxime.chevallier@bootlin.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-        alexandre.belloni@bootlin.com
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Kosta Zertsekel <zertsekel@gmail.com>
+Subject: [PATCH] spi: orion: cosmetics - alias long direct_access variables
+Date: Mon,  6 Aug 2018 21:51:58 +0300
+Message-ID: <20180806185158.2382-1-zertsekel@gmail.com>
+Cc: Kosta Zertsekel <zertsekel@gmail.com>,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+        Stefan Roese <sr@denx.de>, Ken Wilson <ken.wilson@opengear.com>
+To: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180717143154.28241-3-maxime.chevallier@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 17, 2018 at 04:31:51PM +0200, Maxime Chevallier wrote:
-> The dynamic bursts mode allows to group together multiple words into a
-> single burst. To do so, it's necessary that words can be packed into the
-> 32-bits FIFO entries, so we can't allow using this mode with bit_per_words
-> different to 8, 16 or 32.
-> 
-> This prevents shitfing out extra clock ticks for transfers with
+This change increases the source code readability.
+Instead of using `spi->child[cs].direct_access.XXX` use `dacc->XXX`.
+Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
 
-s/shitfing/shifting/
+Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
+---
+ drivers/spi/spi-orion.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-> bit_per_word values not aligned on 8 bits.
-> 
-> With that , we are sure that only the correct number of bits is
-> shifted out at each transfer, so we don't need to mask out the remaining
-> parts of the words.
-> 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Sascha
-
-> ---
->  drivers/spi/spi-imx.c | 23 +++++++++--------------
->  1 file changed, 9 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index d75153c995af..ecafbda5ec94 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -95,7 +95,6 @@ struct spi_imx_data {
->  	const void *tx_buf;
->  	unsigned int txfifo; /* number of words pushed in tx FIFO */
->  	unsigned int dynamic_burst, read_u32;
-> -	unsigned int word_mask;
->  
->  	/* Slave mode */
->  	bool slave_mode;
-> @@ -291,7 +290,6 @@ static void spi_imx_buf_rx_swap_u32(struct spi_imx_data *spi_imx)
->  		else if (bytes_per_word == 2)
->  			val = (val << 16) | (val >> 16);
->  #endif
-> -		val &= spi_imx->word_mask;
->  		*(u32 *)spi_imx->rx_buf = val;
->  		spi_imx->rx_buf += sizeof(u32);
->  	}
-> @@ -322,7 +320,6 @@ static void spi_imx_buf_tx_swap_u32(struct spi_imx_data *spi_imx)
->  
->  	if (spi_imx->tx_buf) {
->  		val = *(u32 *)spi_imx->tx_buf;
-> -		val &= spi_imx->word_mask;
->  		spi_imx->tx_buf += sizeof(u32);
->  	}
->  
-> @@ -1102,25 +1099,23 @@ static int spi_imx_setupxfer(struct spi_device *spi,
->  	spi_imx->bits_per_word = t->bits_per_word;
->  	spi_imx->speed_hz  = t->speed_hz;
->  
-> -	/* Initialize the functions for transfer */
-> -	if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode) {
-> -		u32 mask;
-> +	/*
-> +	 * Initialize the functions for transfer. To transfer non byte-aligned
-> +	 * words, we have to use multiple word-size bursts, we can't use
-> +	 * dynamic_burst in that case.
-> +	 */
-> +	if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode &&
-> +	    (spi_imx->bits_per_word == 8 ||
-> +	    spi_imx->bits_per_word == 16 ||
-> +	    spi_imx->bits_per_word == 32)) {
->  
->  		spi_imx->read_u32  = 1;
->  
-> -		mask = (1 << spi_imx->bits_per_word) - 1;
->  		spi_imx->rx = spi_imx_buf_rx_swap;
->  		spi_imx->tx = spi_imx_buf_tx_swap;
->  		spi_imx->dynamic_burst = 1;
->  		spi_imx->remainder = t->len;
->  
-> -		if (spi_imx->bits_per_word <= 8)
-> -			spi_imx->word_mask = mask << 24 | mask << 16
-> -					     | mask << 8 | mask;
-> -		else if (spi_imx->bits_per_word <= 16)
-> -			spi_imx->word_mask = mask << 16 | mask;
-> -		else
-> -			spi_imx->word_mask = mask;
->  	} else {
->  		if (spi_imx->bits_per_word <= 8) {
->  			spi_imx->rx = spi_imx_buf_rx_u8;
-> -- 
-> 2.11.0
-> 
-> 
-
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index d01a6adc726e..1d6272fe5a34 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -430,6 +430,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 	int word_len;
+ 	struct orion_spi *orion_spi;
+ 	int cs = spi->chip_select;
++	void __iomem *vaddr;
+ 
+ 	word_len = spi->bits_per_word;
+ 	count = xfer->len;
+@@ -440,8 +441,9 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 	 * Use SPI direct write mode if base address is available. Otherwise
+ 	 * fall back to PIO mode for this transfer.
+ 	 */
+-	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
+-	    (word_len == 8)) {
++	vaddr = orion_spi->child[cs].direct_access.vaddr;
++
++	if (vaddr && xfer->tx_buf && word_len == 8) {
+ 		unsigned int cnt = count / 4;
+ 		unsigned int rem = count % 4;
+ 
+@@ -449,13 +451,11 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 		 * Send the TX-data to the SPI device via the direct
+ 		 * mapped address window
+ 		 */
+-		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
+-			      xfer->tx_buf, cnt);
++		iowrite32_rep(vaddr, xfer->tx_buf, cnt);
+ 		if (rem) {
+ 			u32 *buf = (u32 *)xfer->tx_buf;
+ 
+-			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
+-				     &buf[cnt], rem);
++			iowrite8_rep(vaddr, &buf[cnt], rem);
+ 		}
+ 
+ 		return count;
+@@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 
+ 	/* Scan all SPI devices of this controller for direct mapped devices */
+ 	for_each_available_child_of_node(pdev->dev.of_node, np) {
++		struct orion_direct_acc *dacc;
+ 		u32 cs;
+ 
+ 		/* Get chip-select number from the "reg" property */
+@@ -711,14 +712,13 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
+ 		 * support, once this gets implemented.
+ 		 */
+-		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
+-							    r->start,
+-							    PAGE_SIZE);
+-		if (!spi->child[cs].direct_access.vaddr) {
++		dacc = &spi->child[cs].direct_access;
++		dacc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
++		if (!dacc->vaddr) {
+ 			status = -ENOMEM;
+ 			goto out_rel_axi_clk;
+ 		}
+-		spi->child[cs].direct_access.size = PAGE_SIZE;
++		dacc->size = PAGE_SIZE;
+ 
+ 		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1

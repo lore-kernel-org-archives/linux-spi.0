@@ -1,10 +1,10 @@
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH RESEND 1/5] spi: imx: Remove duplicate variable
- assignments
-Date: Mon, 6 Aug 2018 10:56:19 +0200
-Message-ID: <20180806085619.zfhrow3pnkcjbjdu@pengutronix.de>
+Subject: Re: [PATCH RESEND 4/5] spi: imx: remove unnecessary check in
+ spi_imx_can_dma
+Date: Mon, 6 Aug 2018 11:17:57 +0200
+Message-ID: <20180806091757.fnbonh66kd2cuuyk@pengutronix.de>
 References: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
- <20180717143154.28241-2-maxime.chevallier@bootlin.com>
+ <20180717143154.28241-5-maxime.chevallier@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -17,37 +17,48 @@ Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180717143154.28241-2-maxime.chevallier@bootlin.com>
+In-Reply-To: <20180717143154.28241-5-maxime.chevallier@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 17, 2018 at 04:31:50PM +0200, Maxime Chevallier wrote:
-> Some fields in struct spi_imx_data are assigned a different value twice
-> in a row, in spi_imx_setupxfer.
+On Tue, Jul 17, 2018 at 04:31:53PM +0200, Maxime Chevallier wrote:
+> The spi_imx_can_dma function computes the watermark level so that
+> the transfer will fit in exactly N bursts (without a remainder).
 > 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->  drivers/spi/spi-imx.c | 2 --
->  1 file changed, 2 deletions(-)
+> The smallest watermark level possible being one FIFO entry per burst, we
+> can't never have a case where the transfer size isn't divsiible by 1.
+
+s/can't never/can never/
+s/divsiible/divisible/
+
+Otherwise:
 
 Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Sascha
 
 > 
+> Remove the extra check for the wml being different than 0.
+> 
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  drivers/spi/spi-imx.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index d3b21faf6b1f..d75153c995af 100644
+> index 3ae706dac660..ef6d3648396a 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -1106,8 +1106,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
->  	if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode) {
->  		u32 mask;
+> @@ -229,9 +229,6 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>  			break;
+>  	}
 >  
-> -		spi_imx->dynamic_burst = 0;
-> -		spi_imx->remainder = 0;
->  		spi_imx->read_u32  = 1;
+> -	if (i == 0)
+> -		return false;
+> -
+>  	spi_imx->wml = i;
+>  	spi_imx->dynamic_burst = 0;
 >  
->  		mask = (1 << spi_imx->bits_per_word) - 1;
 > -- 
 > 2.11.0
 > 

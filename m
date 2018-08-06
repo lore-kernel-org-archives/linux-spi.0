@@ -1,7 +1,7 @@
 From: Kosta Zertsekel <zertsekel@gmail.com>
 Subject: [PATCH v2] spi: orion: cosmetics - alias long direct_access variables
-Date: Mon,  6 Aug 2018 22:43:27 +0300
-Message-ID: <20180806194327.13389-1-zertsekel@gmail.com>
+Date: Mon,  6 Aug 2018 22:50:02 +0300
+Message-ID: <20180806195002.15156-1-zertsekel@gmail.com>
 Cc: Kosta Zertsekel <zertsekel@gmail.com>,
         =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
         Stefan Roese <sr@denx.de>, Ken Wilson <ken.wilson@opengear.com>

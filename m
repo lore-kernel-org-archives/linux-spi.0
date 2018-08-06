@@ -1,10 +1,10 @@
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH RESEND 3/5] spi: imx: Use correct number of bytes per
- words
-Date: Mon, 6 Aug 2018 11:21:21 +0200
-Message-ID: <20180806092121.s7kuwf3yamrerw24@pengutronix.de>
+Subject: Re: [PATCH RESEND 2/5] spi: imx: Use dynamic bursts only when
+ bits_per_word is 8, 16 or 32
+Date: Mon, 6 Aug 2018 11:41:11 +0200
+Message-ID: <20180806094111.uutolczqccm2e2ot@pengutronix.de>
 References: <20180717143154.28241-1-maxime.chevallier@bootlin.com>
- <20180717143154.28241-4-maxime.chevallier@bootlin.com>
+ <20180717143154.28241-3-maxime.chevallier@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -17,21 +17,25 @@ Cc: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180717143154.28241-4-maxime.chevallier@bootlin.com>
+In-Reply-To: <20180717143154.28241-3-maxime.chevallier@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 17, 2018 at 04:31:52PM +0200, Maxime Chevallier wrote:
-> The SPI core enforces that we always use the next power-of-two number of
-> bytes to store words. As a result, a 24 bits word will be stored in 4
-> bytes.
+On Tue, Jul 17, 2018 at 04:31:51PM +0200, Maxime Chevallier wrote:
+> The dynamic bursts mode allows to group together multiple words into a
+> single burst. To do so, it's necessary that words can be packed into the
+> 32-bits FIFO entries, so we can't allow using this mode with bit_per_words
+> different to 8, 16 or 32.
 > 
-> This commit fixes the spi_imx_bytes_per_word function to return the
-> correct number of bytes.
+> This prevents shitfing out extra clock ticks for transfers with
+
+s/shitfing/shifting/
+
+> bit_per_word values not aligned on 8 bits.
 > 
-> This also allows to get rid of unnecessary checks in the can_dma
-> function, since the SPI core validates that we always have a transfer
-> length that is a multiple of the number of bytes per word.
+> With that , we are sure that only the correct number of bits is
+> shifted out at each transfer, so we don't need to mask out the remaining
+> parts of the words.
 > 
 > Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
@@ -40,37 +44,72 @@ Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
 Sascha
 
 > ---
->  drivers/spi/spi-imx.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  drivers/spi/spi-imx.c | 23 +++++++++--------------
+>  1 file changed, 9 insertions(+), 14 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index ecafbda5ec94..3ae706dac660 100644
+> index d75153c995af..ecafbda5ec94 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -202,7 +202,12 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+> @@ -95,7 +95,6 @@ struct spi_imx_data {
+>  	const void *tx_buf;
+>  	unsigned int txfifo; /* number of words pushed in tx FIFO */
+>  	unsigned int dynamic_burst, read_u32;
+> -	unsigned int word_mask;
 >  
->  static int spi_imx_bytes_per_word(const int bits_per_word)
->  {
-> -	return DIV_ROUND_UP(bits_per_word, BITS_PER_BYTE);
-> +	if (bits_per_word <= 8)
-> +		return 1;
-> +	else if (bits_per_word <= 16)
-> +		return 2;
-> +	else
-> +		return 4;
->  }
+>  	/* Slave mode */
+>  	bool slave_mode;
+> @@ -291,7 +290,6 @@ static void spi_imx_buf_rx_swap_u32(struct spi_imx_data *spi_imx)
+>  		else if (bytes_per_word == 2)
+>  			val = (val << 16) | (val >> 16);
+>  #endif
+> -		val &= spi_imx->word_mask;
+>  		*(u32 *)spi_imx->rx_buf = val;
+>  		spi_imx->rx_buf += sizeof(u32);
+>  	}
+> @@ -322,7 +320,6 @@ static void spi_imx_buf_tx_swap_u32(struct spi_imx_data *spi_imx)
 >  
->  static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
-> @@ -219,9 +224,6 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>  	if (spi_imx->tx_buf) {
+>  		val = *(u32 *)spi_imx->tx_buf;
+> -		val &= spi_imx->word_mask;
+>  		spi_imx->tx_buf += sizeof(u32);
+>  	}
 >  
->  	bytes_per_word = spi_imx_bytes_per_word(transfer->bits_per_word);
+> @@ -1102,25 +1099,23 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+>  	spi_imx->bits_per_word = t->bits_per_word;
+>  	spi_imx->speed_hz  = t->speed_hz;
 >  
-> -	if (bytes_per_word != 1 && bytes_per_word != 2 && bytes_per_word != 4)
-> -		return false;
-> -
->  	for (i = spi_imx->devtype_data->fifo_size / 2; i > 0; i--) {
->  		if (!(transfer->len % (i * bytes_per_word)))
->  			break;
+> -	/* Initialize the functions for transfer */
+> -	if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode) {
+> -		u32 mask;
+> +	/*
+> +	 * Initialize the functions for transfer. To transfer non byte-aligned
+> +	 * words, we have to use multiple word-size bursts, we can't use
+> +	 * dynamic_burst in that case.
+> +	 */
+> +	if (spi_imx->devtype_data->dynamic_burst && !spi_imx->slave_mode &&
+> +	    (spi_imx->bits_per_word == 8 ||
+> +	    spi_imx->bits_per_word == 16 ||
+> +	    spi_imx->bits_per_word == 32)) {
+>  
+>  		spi_imx->read_u32  = 1;
+>  
+> -		mask = (1 << spi_imx->bits_per_word) - 1;
+>  		spi_imx->rx = spi_imx_buf_rx_swap;
+>  		spi_imx->tx = spi_imx_buf_tx_swap;
+>  		spi_imx->dynamic_burst = 1;
+>  		spi_imx->remainder = t->len;
+>  
+> -		if (spi_imx->bits_per_word <= 8)
+> -			spi_imx->word_mask = mask << 24 | mask << 16
+> -					     | mask << 8 | mask;
+> -		else if (spi_imx->bits_per_word <= 16)
+> -			spi_imx->word_mask = mask << 16 | mask;
+> -		else
+> -			spi_imx->word_mask = mask;
+>  	} else {
+>  		if (spi_imx->bits_per_word <= 8) {
+>  			spi_imx->rx = spi_imx_buf_rx_u8;
 > -- 
 > 2.11.0
 > 

@@ -1,33 +1,64 @@
-From: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v2] spi: orion: cosmetics - alias long direct_access
- variables
-Date: Mon, 6 Aug 2018 22:06:40 +0200
-Message-ID: <20180806200640.GL9372@lunn.ch>
-References: <20180806195002.15156-1-zertsekel@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat@cesnet.cz>,
-        Stefan Roese <sr@denx.de>, Ken Wilson <ken.wilson@opengear.com>
-To: Kosta Zertsekel <zertsekel@gmail.com>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
+Date: Tue,  7 Aug 2018 18:43:37 +0800
+Message-ID: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
+Cc: orsonzhai@gmail.com, zhang.lyra@gmail.com,
+        lanqing.liu@spreadtrum.com, baolin.wang@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180806195002.15156-1-zertsekel@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 06, 2018 at 10:50:02PM +0300, Kosta Zertsekel wrote:
-> This change increases the source code readability.
-> Instead of using `spi->child[cs].direct_access.XXX` use `dacc->XXX`.
+From: Lanqing Liu <lanqing.liu@spreadtrum.com>
 
-Hi Kosta
+This patch adds the binding documentation for Spreadtrum SPI
+controller device.
 
-You forgot to update this line.
+Signed-off-by: Lanqing Liu <lanqing.liu@spreadtrum.com>
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+---
+ Documentation/devicetree/bindings/spi/spi-sprd.txt |   31 ++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd.txt
 
-Please wait a week to allow others to comment, then submit a v3, and
-include:
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+diff --git a/Documentation/devicetree/bindings/spi/spi-sprd.txt b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+new file mode 100644
+index 0000000..06ff746
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+@@ -0,0 +1,31 @@
++Spreadtrum SPI Controller
++
++Required properties:
++- compatible: Should be "sprd,sc9860-spi".
++- reg: Offset and length of SPI controller register space.
++- interrupts: Should contain SPI interrupt.
++- clock-names: Should contain following entries:
++	"spi" for SPI clock,
++	"source" for SPI source (parent) clock,
++	"enable" for SPI module enable clock.
++- clocks: List of clock input name strings sorted in the same order
++	as the clock-names property.
++- #address-cells: The number of cells required to define a chip select
++	address on the SPI bus. Should be set to 1.
++- #size-cells: Should be set to 0.
++
++Optional properties:
++- sprd,spi-interval: Specify the intervals of two SPI frames, which can be
++	converted to the delay clock cycles = interval number * 4 + 10.
++
++Example:
++spi0: spi@70a00000{
++	compatible = "sprd,sc9860-spi";
++	reg = <0 0x70a00000 0 0x1000>;
++	interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
++	clock-names = "spi", "source","enable";
++	clocks = <&clk_spi0>, <&ext_26m>, <&clk_ap_apb_gates 5>;
++	sprd,spi-interval = <9>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
+-- 
+1.7.9.5

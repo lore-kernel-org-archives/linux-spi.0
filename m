@@ -1,41 +1,56 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
-Date: Wed, 8 Aug 2018 19:07:48 +0800
-Message-ID: <CAMz4kuKzSc0SZjzt1OB2FW-v608AvTNk5X165EMLn5_e-JhPHw@mail.gmail.com>
-References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
- <20180807134121.GA7958@sirena.org.uk> <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
- <20180808095025.GB9346@sirena.org.uk> <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
- <20180808105451.GE9346@sirena.org.uk>
+From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Subject: Re: [PATCH] spi: dw: support 4-16 bits per word
+Date: Wed, 8 Aug 2018 13:58:35 +0200
+Message-ID: <CAAh8qswXPmcT94x69qDmf8RumT4+uRBwQEvJSu9agaq_e7FH-Q@mail.gmail.com>
+References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com> <CAHp75VdmrwZ4P0xrOOqpJaU7iuKS8zXGcRTg4zLrofZLdcb=8Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
-        DTML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: andy.shevchenko@gmail.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180808105451.GE9346@sirena.org.uk>
+In-Reply-To: <CAHp75VdmrwZ4P0xrOOqpJaU7iuKS8zXGcRTg4zLrofZLdcb=8Q@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 8 August 2018 at 18:54, Mark Brown <broonie@kernel.org> wrote:
-> On Wed, Aug 08, 2018 at 06:35:28PM +0800, Baolin Wang wrote:
->> On 8 August 2018 at 17:50, Mark Brown <broonie@kernel.org> wrote:
+On Wed, Aug 8, 2018 at 11:45 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
->> > Right, I don't think we added this yet (if we did I can't see it).  I'd
->> > add a new field to spi_transfer for this, then other controllers with
->> > the same support can implement it as well and drivers can start using
->> > it too.
+> On Wed, Aug 8, 2018 at 10:14 AM, Simon Goldschmidt
+> <simon.k.r.goldschmidt@gmail.com> wrote:
+> > The spi-dw driver currently only supports 8 or 16 bits per word.
+> >
+> > Since the hardware supports 4-16 bits per word, adapt the driver
+> > to also support this.
+> >
+> > Tested on socfpga cyclone5 with a 9-bit SPI display.
 >
->> OK. So I will name the new filed as 'word_delay', is it OK for you?
+> > +       if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
+> > +               return -EINVAL;
 >
-> Sounds good, yes.
+> > +       if (transfer->bits_per_word <= 8) {
+> >                 dws->n_bytes = 1;
+> >                 dws->dma_width = 1;
+> > -       } else if (transfer->bits_per_word == 16) {
+> > +       } else {
+> >                 dws->n_bytes = 2;
+> >                 dws->dma_width = 2;
+> >         }
+>
+> Now these can be just
+>
+> n_bytes = round_up(8);
+> dma_width = round_up(8);
 
-OK. Thanks.
+I guess you mean:
 
--- 
-Baolin Wang
-Best Regards
+n_bytes = round_up(transfer->bits_per_word, 8);
+
+But that would yield 8 or 16 where we need 1 or 2.
+
+Reading spi-imx.c, this might work:
+
+n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+
+
+Simon

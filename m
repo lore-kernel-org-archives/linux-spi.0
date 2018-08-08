@@ -1,43 +1,45 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
-Date: Wed, 8 Aug 2018 17:33:27 +0800
-Message-ID: <CAMz4ku+EgyjGR5Oo7FQPDUOYXnJ1=tAYBZfJwgfO+44Wkv6m1w@mail.gmail.com>
-References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
- <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
- <20180807142408.GB7958@sirena.org.uk> <CAMz4kuL2=7mNHLoTg7hjA4NjfGgNQ-mBJBSE8uMb0oqwnU1=Yg@mail.gmail.com>
- <20180808093148.GA9346@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] spi: dw: support 4-16 bits per word
+Date: Wed, 8 Aug 2018 12:45:29 +0300
+Message-ID: <CAHp75VdmrwZ4P0xrOOqpJaU7iuKS8zXGcRTg4zLrofZLdcb=8Q@mail.gmail.com>
+References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
-        DTML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180808093148.GA9346@sirena.org.uk>
+In-Reply-To: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 8 August 2018 at 17:31, Mark Brown <broonie@kernel.org> wrote:
-> On Wed, Aug 08, 2018 at 10:45:33AM +0800, Baolin Wang wrote:
->> On 7 August 2018 at 22:24, Mark Brown <broonie@kernel.org> wrote:
->> > On Tue, Aug 07, 2018 at 06:43:38PM +0800, Baolin Wang wrote:
+On Wed, Aug 8, 2018 at 10:14 AM, Simon Goldschmidt
+<simon.k.r.goldschmidt@gmail.com> wrote:
+> The spi-dw driver currently only supports 8 or 16 bits per word.
 >
->> >> +     bits_per_word = bits_per_word > 16 ? round_up(bits_per_word, 16) :
->> >> +             round_up(bits_per_word, 8);
+> Since the hardware supports 4-16 bits per word, adapt the driver
+> to also support this.
 >
->> > Please
->
->> Sorry I did not get your points here, could you elaborate on?
->
-> Sorry, missed the actual comment there - use normal if statements rather
-> than the ternery operator, it's easier to read.
+> Tested on socfpga cyclone5 with a 9-bit SPI display.
 
-Got it. Thanks.
+> +       if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
+> +               return -EINVAL;
+
+> +       if (transfer->bits_per_word <= 8) {
+>                 dws->n_bytes = 1;
+>                 dws->dma_width = 1;
+> -       } else if (transfer->bits_per_word == 16) {
+> +       } else {
+>                 dws->n_bytes = 2;
+>                 dws->dma_width = 2;
+>         }
+
+Now these can be just
+
+n_bytes = round_up(8);
+dma_width = round_up(8);
 
 -- 
-Baolin Wang
-Best Regards
+With Best Regards,
+Andy Shevchenko

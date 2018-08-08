@@ -1,80 +1,58 @@
-From: Trent Piepho <tpiepho@impinj.com>
-Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
-Date: Tue, 7 Aug 2018 17:10:19 +0000
-Message-ID: <1533661818.2283.264.camel@impinj.com>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
+Date: Wed, 8 Aug 2018 10:26:42 +0800
+Message-ID: <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
 References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
-         <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
+ <20180807134121.GA7958@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
-Content-Language: en-US
-Content-ID: <94309D1679973546936565B367D20CB1@namprd06.prod.outlook.com>
+In-Reply-To: <20180807134121.GA7958@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCAyMDE4LTA4LTA3IGF0IDE4OjQzICswODAwLCBCYW9saW4gV2FuZyB3cm90ZToNCj4g
-DQo+ICtzdGF0aWMgdTMyIHNwcmRfc3BpX3RyYW5zZmVyX21heF90aW1lb3V0KHN0cnVjdCBzcHJk
-X3NwaSAqc3MsDQo+ICsJCQkJCSBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0KQ0KPiArew0KPiArCS8q
-DQo+ICsJICogVGhlIHRpbWUgc3BlbnQgb24gdHJhbnNtaXNzaW9uIG9mIHRoZSBmdWxsIEZJRk8g
-ZGF0YSBpcyB0aGUgbWF4aW11bQ0KPiArCSAqIFNQSSB0cmFuc21pc3Npb24gdGltZS4NCj4gKwkg
-Ki8NCj4gKwl1MzIgc2l6ZSA9IHQtPmJpdHNfcGVyX3dvcmQgKiBTUFJEX1NQSV9GSUZPX1NJWkU7
-DQo+ICsJdTMyIGJpdF90aW1lX3VzID0gU1BSRF9TUElfSFogLyB0LT5zcGVlZF9oeiArIDE7DQo+
-ICsJdTMyIHRvdGFsX3RpbWVfdXMgPSBzaXplICogYml0X3RpbWVfdXM7DQo+ICsJLyoNCj4gKwkg
-KiBUaGVyZSBpcyBhbiBpbnRlcnZhbCBiZXR3ZWVuIGRhdGEgYW5kIHRoZSBkYXRhIGluIG91ciBT
-UEkgaGFyZHdhcmUsDQo+ICsJICogc28gdGhlIHRvdGFsIHRyYW5zbWlzc2lvbiB0aW1lIG5lZWQg
-YWRkIHRoZSBpbnRlcnZhbCB0aW1lLg0KPiArCSAqDQo+ICsJICogVGhlIGludGV2YWwgY2FsY3Vs
-YXRpb24gZm9ybXVsYToNCj4gKwkgKiBpbnRlcnZhbCB0aW1lIChzb3VyY2UgY2xvY2sgY3ljbGVz
-KSA9IGludGVydmFsICogNCArIDEwLg0KPiArCSAqLw0KPiArCXUzMiBpbnRlcnZhbF9jeWNsZSA9
-IFNQUkRfU1BJX0ZJRk9fU0laRSAqICgoc3MtPmludGVydmFsIDw8IDIpICsgMTApOw0KPiArCXUz
-MiBpbnRlcnZhbF90aW1lX3VzID0gaW50ZXJ2YWxfY3ljbGUgKiBTUFJEX1NQSV9IWiAvIHNzLT5z
-cmNfY2xrICsgMTsNCg0KSWYgaW50ZXJ2YWwgaXMgZ3JlYXRlciB0aGFuIDMxLCB0aGlzIHdpbGwg
-b3ZlcmZsb3cuDQoNCkFsc28gU1BSRF9TUElfSFogaXMgbm90IHRoZSBzcGVlZCBhbnl0aGluZyBy
-dW5zIGF0LCBhcyBvbmUgbWlnaHQgdGhpbmsNCmZyb20gdGhlIG5hbWUuICBJdCdzIHRoZSBudW1i
-ZXIgb2YgbWljcm9zZWNvbmRzIGluIGEgc2Vjb25kLiAgVGhlIGlzDQphbHJlYWR5IGEgTGludXgg
-bWFjcm8gZm9yIHRoYXQsIFVTRUNfUEVSX1NFQywgdGhhdCB5b3Ugc2hvdWxkIHVzZQ0KaW5zdGVh
-ZC4NCg0KPiArDQo+ICsJcmV0dXJuIHRvdGFsX3RpbWVfdXMgKyBpbnRlcnZhbF90aW1lX3VzOw0K
-PiArfQ0KPiArDQoNCg0KPiArc3RhdGljIHZvaWQgc3ByZF9zcGlfc2V0X3NwZWVkKHN0cnVjdCBz
-cHJkX3NwaSAqc3MsIHUzMiBzcGVlZF9oeikNCj4gK3sNCj4gKwkvKg0KPiArCSAqIEZyb20gU1BJ
-IGRhdGFzaGVldCwgdGhlIHByZXNjYWxlIGNhbGN1bGF0aW9uIGZvcm11bGE6DQo+ICsJICogcHJl
-c2NhbGUgPSBTUEkgc291cmNlIGNsb2NrIC8gKDIgKiBTUElfZnJlcSkgLSAxOw0KPiArCSAqLw0K
-PiArCXUzMiBjbGtfZGl2ID0gc3MtPnNyY19jbGsgLyAoc3BlZWRfaHogPDwgMSkgLSAxOw0KDQpZ
-b3Ugc2hvdWxkIHByb2JhYmx5IHJvdW5kIHVwIGhlcmUuICBUaGUgY29udmVudGlvbiBpcyB0byB1
-c2UgdGhlDQpjbG9zZXN0IHNwZWVkIGxlc3MgdGhhbiBlcXVhbCB0byB0aGUgcmVxdWVzdGVkIHNw
-ZWVkLCBidXQgc2luY2UgdGhpcyBpcw0KYSBkaXZpZGVyLCByb3VuZGluZyBpdCBkb3duIHdpbGwg
-c2VsZWN0IHRoZSBuZXh0IGhpZ2hlc3Qgc3BlZWQuDQoNCj4gKw0KPiArCXdyaXRlbF9yZWxheGVk
-KGNsa19kaXYsIHNzLT5iYXNlICsgU1BSRF9TUElfQ0xLRCk7DQo+ICt9DQo+ICsNCg0KPiArDQo+
-ICtzdGF0aWMgaW50IHNwcmRfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYp
-DQo+ICt7DQo+ICsJc3RydWN0IGRldmljZV9ub2RlICpucCA9IHBkZXYtPmRldi5vZl9ub2RlOw0K
-PiArCXN0cnVjdCBzcGlfY29udHJvbGxlciAqc2N0bHI7DQo+ICsJc3RydWN0IHJlc291cmNlICpy
-ZXM7DQo+ICsJc3RydWN0IHNwcmRfc3BpICpzczsNCj4gKwlpbnQgcmV0Ow0KPiArDQo+ICsJcGRl
-di0+aWQgPSBvZl9hbGlhc19nZXRfaWQocGRldi0+ZGV2Lm9mX25vZGUsICJzcGkiKTsNCj4gKwlz
-Y3RsciA9IHNwaV9hbGxvY19tYXN0ZXIoJnBkZXYtPmRldiwgc2l6ZW9mKCpzcykpOw0KPiArCWlm
-ICghc2N0bHIpDQo+ICsJCXJldHVybiAtRU5PTUVNOw0KPiArDQo+ICsJc3MgPSBzcGlfY29udHJv
-bGxlcl9nZXRfZGV2ZGF0YShzY3Rscik7DQo+ICsJaWYgKG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5w
-LCAic3ByZCxzcGktaW50ZXJ2YWwiLCAmc3MtPmludGVydmFsKSkNCj4gKwkJc3MtPmludGVydmFs
-ID0gU1BSRF9TUElfSVRWTF9OVU07DQo+ICsNCj4gKwlyZXMgPSBwbGF0Zm9ybV9nZXRfcmVzb3Vy
-Y2UocGRldiwgSU9SRVNPVVJDRV9NRU0sIDApOw0KPiArCXNzLT5iYXNlID0gZGV2bV9pb3JlbWFw
-X3Jlc291cmNlKCZwZGV2LT5kZXYsIHJlcyk7DQo+ICsJaWYgKElTX0VSUihzcy0+YmFzZSkpIHsN
-Cj4gKwkJcmV0ID0gUFRSX0VSUihzcy0+YmFzZSk7DQo+ICsJCWdvdG8gZnJlZV9jb250cm9sbGVy
-Ow0KPiArCX0NCj4gKw0KPiArCXNzLT5kZXYgPSAmcGRldi0+ZGV2Ow0KPiArCXNjdGxyLT5kZXYu
-b2Zfbm9kZSA9IHBkZXYtPmRldi5vZl9ub2RlOw0KPiArCXNjdGxyLT5tb2RlX2JpdHMgPSBTUElf
-Q1BPTCB8IFNQSV9DUEhBIHwgU1BJXzNXSVJFIHwgU1BJX1RYX0RVQUw7DQo+ICsJc2N0bHItPmJ1
-c19udW0gPSBwZGV2LT5pZDsNCj4gKwlzY3Rsci0+c2V0dXAgPSBzcHJkX3NwaV9zZXR1cDsNCj4g
-KwlzY3Rsci0+c2V0X2NzID0gc3ByZF9zcGlfY2hpcHNlbGVjdDsNCj4gKwlzY3Rsci0+dHJhbnNm
-ZXJfb25lID0gc3ByZF9zcGlfdHJhbnNmZXJfb25lOw0KPiArCXNjdGxyLT5tYXhfc3BlZWRfaHog
-PSAoc3MtPnNyY19jbGsgLyAyKSA8IFNQUkRfU1BJX01BWF9TUEVFRF9IWiA/DQo+ICsJCXNzLT5z
-cmNfY2xrIC8gMiA6IFNQUkRfU1BJX01BWF9TUEVFRF9IWjsNCg0KWW91IGNhbiB3cml0ZSB0aGlz
-IGFzOg0KICAgICAgICBzY3Rsci0+bWF4X3NwZWVkX2h6ID0gbWluKHNzLT5zcmNfY2xrIC8gMiwg
-U1BSRF9TUElfTUFYX1NQRUVEX0haKTsNCg==
+Hi Mark,
+
+On 7 August 2018 at 21:41, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Aug 07, 2018 at 06:43:37PM +0800, Baolin Wang wrote:
+>
+>> +Optional properties:
+>> +- sprd,spi-interval: Specify the intervals of two SPI frames, which can be
+>> +     converted to the delay clock cycles = interval number * 4 + 10.
+>
+> What's a frame here, and does it overlap with any of the existing delay
+> configuration we have?  In general it's better for this stuff to be
+> configured at runtime by the device rather than at DT time by the
+> controller since that way if the device needs the delays we always do
+> them if we can and if they are only needed some of the time (eg, for
+> only one device on the bus or for only some operations) then we don't
+> take the performance hit when we don't need to.
+
+Sorry for confusing. Let me try to explain it explicitly.
+We can set the word size (bits_per_word) for each transmission, for
+our SPI controller,  after every word size transmission, we need one
+interval time (hardware automatically) to make sure the slave has
+enough time to receive the whole data.
+
+Yes, I agree we should configure it at runtime by the device, but we
+did not find one member to use in 'struct spi_transfer', we just find
+one similar 'delay_usecs' member in 'struct spi_transfer' but not
+same. We can use  'delay_usecs' to set our hardware interval value,
+but we should clean it when transfer is done, since we do not need to
+delay after the transfer in spi_transfer_one _message(). Or can we add
+one new member maybe named 'word_interval' to indicate the interval
+time between word size transmission?
+
+What do you prefer or other better solution? Thanks.
+
+-- 
+Baolin Wang
+Best Regards

@@ -1,14 +1,11 @@
 From: Trent Piepho <tpiepho@impinj.com>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller
- documentation
-Date: Wed, 8 Aug 2018 18:57:01 +0000
-Message-ID: <1533754621.2283.270.camel@impinj.com>
+Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
+Date: Wed, 8 Aug 2018 19:08:57 +0000
+Message-ID: <1533755337.2283.280.camel@impinj.com>
 References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
-         <20180807134121.GA7958@sirena.org.uk>
-         <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
-         <20180808095025.GB9346@sirena.org.uk>
-         <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
-         <20180808105451.GE9346@sirena.org.uk>
+         <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
+         <1533661818.2283.264.camel@impinj.com>
+         <CAMz4kuJrzaZn9560tF73a-WPNhhRj5S2ezTKr0HHpcGRXMw-Ew@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
@@ -17,27 +14,73 @@ Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
-To: "broonie@kernel.org" <broonie@kernel.org>,
-        "baolin.wang@linaro.org" <baolin.wang@linaro.org>
+To: "baolin.wang@linaro.org" <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180808105451.GE9346@sirena.org.uk>
+In-Reply-To: <CAMz4kuJrzaZn9560tF73a-WPNhhRj5S2ezTKr0HHpcGRXMw-Ew@mail.gmail.com>
 Content-Language: en-US
-Content-ID: <D39B6F4479A8E649BD321CD3C0B740B1@namprd06.prod.outlook.com>
+Content-ID: <75D640BE93A38F4D9F0A7F6D1EAE2D11@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCAyMDE4LTA4LTA4IGF0IDExOjU0ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
-biBXZWQsIEF1ZyAwOCwgMjAxOCBhdCAwNjozNToyOFBNICswODAwLCBCYW9saW4gV2FuZyB3cm90
-ZToNCj4gPiBPbiA4IEF1Z3VzdCAyMDE4IGF0IDE3OjUwLCBNYXJrIEJyb3duIDxicm9vbmllQGtl
-cm5lbC5vcmc+IHdyb3RlOg0KPiA+ID4gUmlnaHQsIEkgZG9uJ3QgdGhpbmsgd2UgYWRkZWQgdGhp
-cyB5ZXQgKGlmIHdlIGRpZCBJIGNhbid0IHNlZQ0KPiA+ID4gaXQpLiAgSSdkDQo+ID4gPiBhZGQg
-YSBuZXcgZmllbGQgdG8gc3BpX3RyYW5zZmVyIGZvciB0aGlzLCB0aGVuIG90aGVyIGNvbnRyb2xs
-ZXJzDQo+ID4gPiB3aXRoDQo+ID4gPiB0aGUgc2FtZSBzdXBwb3J0IGNhbiBpbXBsZW1lbnQgaXQg
-YXMgd2VsbCBhbmQgZHJpdmVycyBjYW4gc3RhcnQNCj4gPiA+IHVzaW5nDQo+ID4gPiBpdCB0b28u
-DQo+ID4gT0suIFNvIEkgd2lsbCBuYW1lIHRoZSBuZXcgZmlsZWQgYXMgJ3dvcmRfZGVsYXknLCBp
-cyBpdCBPSyBmb3IgeW91Pw0KPiANCj4gU291bmRzIGdvb2QsIHllcy4NCg0KU2hvdWxkIGl0IGJl
-IGluIMK1cyBsaWtlIHRoZSBleGlzdGluZyBpdGVyLXRyYW5zZmVyIGRlbGF5PyAgSSB0aGluaw0K
-cGVyaGFwcyB1bml0cyBvZiBjeWNsZXMgb2YgdGhlIFNQSSBjbG9jayBtYWtlIG1vcmUgc2Vuc2U/
+T24gV2VkLCAyMDE4LTA4LTA4IGF0IDExOjE5ICswODAwLCBCYW9saW4gV2FuZyB3cm90ZToNCj4g
+T24gOCBBdWd1c3QgMjAxOCBhdCAwMToxMCwgVHJlbnQgUGllcGhvIDx0cGllcGhvQGltcGluai5j
+b20+IHdyb3RlOg0KPiA+IE9uIFR1ZSwgMjAxOC0wOC0wNyBhdCAxODo0MyArMDgwMCwgQmFvbGlu
+IFdhbmcgd3JvdGU6DQo+ID4gPiANCj4gPiA+ICtzdGF0aWMgdTMyIHNwcmRfc3BpX3RyYW5zZmVy
+X21heF90aW1lb3V0KHN0cnVjdCBzcHJkX3NwaSAqc3MsDQo+ID4gPiArICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0KQ0KPiA+ID4gK3sN
+Cj4gPiA+ICsgICAgIC8qDQo+ID4gPiArICAgICAgKiBUaGUgdGltZSBzcGVudCBvbiB0cmFuc21p
+c3Npb24gb2YgdGhlIGZ1bGwgRklGTyBkYXRhIGlzIHRoZSBtYXhpbXVtDQo+ID4gPiArICAgICAg
+KiBTUEkgdHJhbnNtaXNzaW9uIHRpbWUuDQo+ID4gPiArICAgICAgKi8NCj4gPiA+ICsgICAgIHUz
+MiBzaXplID0gdC0+Yml0c19wZXJfd29yZCAqIFNQUkRfU1BJX0ZJRk9fU0laRTsNCj4gPiA+ICsg
+ICAgIHUzMiBiaXRfdGltZV91cyA9IFNQUkRfU1BJX0haIC8gdC0+c3BlZWRfaHogKyAxOw0KDQpU
+aGVyZSdzIGFub3RoZXIgZmxhdyBoZXJlIGluIHRoYXQgdGhlIHRyYW5zZmVyIHNwZWVkLCB0LT5z
+cGVlZF9oeiwNCm1pZ2h0IG5vdCBiZSBleGFjdGx5IHdoYXQgaXMgdXNlZCwgZHVlIHRvIGxpbWl0
+YXRpb25zIG9mIHRoZSBjbG9jaw0KZGl2aWRlci4gIEl0IHdvdWxkIGJlIGJldHRlciB0byBmaW5k
+IHRoZSBhY3R1YWwgU1BJIGNsb2NrIHVzZWQsIHRoZW4NCnVzZSB0aGF0IGluIHRoZSBjYWxjdWxh
+dGlvbnMuDQoNCj4gPiA+ICsgICAgIHUzMiB0b3RhbF90aW1lX3VzID0gc2l6ZSAqIGJpdF90aW1l
+X3VzOw0KPiA+ID4gKyAgICAgLyoNCj4gPiA+ICsgICAgICAqIFRoZXJlIGlzIGFuIGludGVydmFs
+IGJldHdlZW4gZGF0YSBhbmQgdGhlIGRhdGEgaW4gb3VyIFNQSSBoYXJkd2FyZSwNCj4gPiA+ICsg
+ICAgICAqIHNvIHRoZSB0b3RhbCB0cmFuc21pc3Npb24gdGltZSBuZWVkIGFkZCB0aGUgaW50ZXJ2
+YWwgdGltZS4NCj4gPiA+ICsgICAgICAqDQo+ID4gPiArICAgICAgKiBUaGUgaW50ZXZhbCBjYWxj
+dWxhdGlvbiBmb3JtdWxhOg0KPiA+ID4gKyAgICAgICogaW50ZXJ2YWwgdGltZSAoc291cmNlIGNs
+b2NrIGN5Y2xlcykgPSBpbnRlcnZhbCAqIDQgKyAxMC4NCj4gPiA+ICsgICAgICAqLw0KPiA+ID4g
+KyAgICAgdTMyIGludGVydmFsX2N5Y2xlID0gU1BSRF9TUElfRklGT19TSVpFICogKChzcy0+aW50
+ZXJ2YWwgPDwgMikgKyAxMCk7DQo+ID4gPiArICAgICB1MzIgaW50ZXJ2YWxfdGltZV91cyA9IGlu
+dGVydmFsX2N5Y2xlICogU1BSRF9TUElfSFogLyBzcy0+c3JjX2NsayArIDE7DQo+ID4gDQo+ID4g
+SWYgaW50ZXJ2YWwgaXMgZ3JlYXRlciB0aGFuIDMxLCB0aGlzIHdpbGwgb3ZlcmZsb3cuDQo+IA0K
+PiBVc3VhbGx5IHdlIHdpbGwgbm90IHNldCBzdWNoIGEgYmlnIHZhbHVlIGZvciBpbnRlcnZhbCwg
+IGJ1dCB0aGlzIGlzIGENCj4gcmlzayBsaWtlIHlvdSBzYWlkLiBTbyB3ZSB3aWxsIGNoZWNrIGFu
+ZCBsaW1pdCB0aGUgaW50ZXJ2YWwgdmFsdWUgdG8NCj4gbWFrZSBzdXJlIHRoZSBmb3JtdWxhIHdp
+bGwgbm90IG92ZXJmbG93Lg0KPiANCg0KQmV0dGVyIHdvdWxkIGJlIHRvIGxpbWl0IHRoZSBpbnRl
+ciB3b3JkIGRlbGF5IHRvIHdoYXRldmVyIG1heGltdW0gdmFsdWUNCnlvdXIgaGFyZHdhcmUgc3Vw
+cG9ydHMsIGFuZCB0aGVuIHdyaXRlIGNvZGUgdGhhdCBjYW4gY2FsY3VsYXRlIHRoYXQNCndpdGhv
+dXQgZXJyb3IuDQoNCj4gPiA+ICtzdGF0aWMgdm9pZCBzcHJkX3NwaV9zZXRfc3BlZWQoc3RydWN0
+IHNwcmRfc3BpICpzcywgdTMyIHNwZWVkX2h6KQ0KPiA+ID4gK3sNCj4gPiA+ICsgICAgIC8qDQo+
+ID4gPiArICAgICAgKiBGcm9tIFNQSSBkYXRhc2hlZXQsIHRoZSBwcmVzY2FsZSBjYWxjdWxhdGlv
+biBmb3JtdWxhOg0KPiA+ID4gKyAgICAgICogcHJlc2NhbGUgPSBTUEkgc291cmNlIGNsb2NrIC8g
+KDIgKiBTUElfZnJlcSkgLSAxOw0KPiA+ID4gKyAgICAgICovDQo+ID4gPiArICAgICB1MzIgY2xr
+X2RpdiA9IHNzLT5zcmNfY2xrIC8gKHNwZWVkX2h6IDw8IDEpIC0gMTsNCj4gPiANCj4gPiBZb3Ug
+c2hvdWxkIHByb2JhYmx5IHJvdW5kIHVwIGhlcmUuICBUaGUgY29udmVudGlvbiBpcyB0byB1c2Ug
+dGhlDQo+ID4gY2xvc2VzdCBzcGVlZCBsZXNzIHRoYW4gZXF1YWwgdG8gdGhlIHJlcXVlc3RlZCBz
+cGVlZCwgYnV0IHNpbmNlIHRoaXMgaXMNCj4gPiBhIGRpdmlkZXIsIHJvdW5kaW5nIGl0IGRvd24g
+d2lsbCBzZWxlY3QgdGhlIG5leHQgaGlnaGVzdCBzcGVlZC4NCj4gDQo+IFBlciB0aGUgZGF0YXNo
+ZWV0LCB3ZSBkbyBub3QgbmVlZCByb3VuZCB1cC9kb3duIHRoZSBzcGVlZC4gU2luY2Ugb3VyDQo+
+IGhhcmR3YXJlIGNhbiBoYW5kbGUgdGhlIGNsb2NrIGNhbGN1bGF0ZWQgYnkgdGhlIGFib3ZlIGZv
+cm11bGEgaWYgdGhlDQo+IHJlcXVlc3RlZCBzcGVlZCBpcyBpbiB0aGUgbm9ybWFsIHJlZ2lvbiAo
+bGVzcyB0aGFuIC0+bWF4X3NwZWVkX2h6KS4NCg0KVGhhdCBpcyBub3Qgd2hhdCBJIG1lYW4uICBM
+ZXQgbWUgZXhwbGFpbiBkaWZmZXJlbnRseS4NCg0KQW4gaW50ZWdlciBkaXZpZGVyIGxpa2UgdGhp
+cyBjYW4gbm90IHByb2R1Y2UgYW55IGZyZXF1ZW5jeSBleGFjdGx5LiANCkNvbnNpZGVyIGlmIHNy
+Y19jbGsgaXMgMTAgTUh6LiAgQSBjbGtfZGl2IHZhbHVlIG9mIDAgcHJvZHVjZXMgYSA1IE1Ieg0K
+U1BJIGNsb2NrLiAgQSBjbGtfZGl2IHZhbHVlIG9mIDEgcHJvZHVjZXMgYSAyLjUgTUh6IFNQSSBj
+bG9jay4NCg0KV2hhdCBpZiB0aGUgdHJhbnNmZXIgcmVxdWVzdHMgYSBTUEkgY2xvY2sgb2YgMyBN
+SHo/DQoNCllvdXIgbWF0aCBhYm92ZSB3aWxsIHByb2R1Y2UgYSBTUEkgY2xvY2sgb2YgNSBNSHos
+IGZhc3RlciB0aGFuDQpyZXF1ZXN0ZWQuICBUaGlzIGlzIG5vdCB0aGUgY29udmVudGlvbiBpbiBM
+aW51eCBTUEkgbWFzdGVycy4gIFlvdQ0Kc2hvdWxkIGluc3RlYWQgb2YgaGF2ZSBjaG9zZW4gYSBj
+bGtfZGl2IHZhbHVlIG9mIDEgdG8gZ2V0IGEgU1BJIGNsb2NrDQpvZiAyLjUgTUh6LCB0aGUgY2xv
+c2VzdCBjbG9jayBwb3NzaWJsZSB0aGF0IGlzIG5vdCBncmVhdGVyIHRoYW4gdGhlDQpyZXF1ZXN0
+ZWQgdmFsdWUuDQoNClRvIGRvIHRoaXMsIHJvdW5kIHVwLg0KDQpjbGtfZGl2ID0gRElWX1JPVU5E
+X1VQKHNzLT5zcmNfY2xrLCBzcGVlZF9oeiAqIDIpIC0gMTsNCg0KPiA=

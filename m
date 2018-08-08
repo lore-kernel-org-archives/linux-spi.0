@@ -1,144 +1,133 @@
 From: Baolin Wang <baolin.wang@linaro.org>
 Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
-Date: Wed, 8 Aug 2018 10:45:33 +0800
-Message-ID: <CAMz4kuL2=7mNHLoTg7hjA4NjfGgNQ-mBJBSE8uMb0oqwnU1=Yg@mail.gmail.com>
+Date: Wed, 8 Aug 2018 11:19:07 +0800
+Message-ID: <CAMz4kuJrzaZn9560tF73a-WPNhhRj5S2ezTKr0HHpcGRXMw-Ew@mail.gmail.com>
 References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
  <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
- <20180807142408.GB7958@sirena.org.uk>
+ <1533661818.2283.264.camel@impinj.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
-        DTML <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>,
+        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Trent Piepho <tpiepho@impinj.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180807142408.GB7958@sirena.org.uk>
+In-Reply-To: <1533661818.2283.264.camel@impinj.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Trent,
 
-On 7 August 2018 at 22:24, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Aug 07, 2018 at 06:43:38PM +0800, Baolin Wang wrote:
->> From: Lanqing Liu <lanqing.liu@spreadtrum.com>
+On 8 August 2018 at 01:10, Trent Piepho <tpiepho@impinj.com> wrote:
+> On Tue, 2018-08-07 at 18:43 +0800, Baolin Wang wrote:
 >>
->> This patch adds the SPI controller driver for Spreadtrum SC9860 platform.
->
-> This all looks pretty clean, a few comments below but nothing too major:
->
->> +static void sprd_spi_chipselect(struct spi_device *sdev, bool cs)
+>> +static u32 sprd_spi_transfer_max_timeout(struct sprd_spi *ss,
+>> +                                      struct spi_transfer *t)
 >> +{
->> +     struct spi_controller *sctlr = sdev->controller;
->> +     struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
->> +     u32 val;
+>> +     /*
+>> +      * The time spent on transmission of the full FIFO data is the maximum
+>> +      * SPI transmission time.
+>> +      */
+>> +     u32 size = t->bits_per_word * SPRD_SPI_FIFO_SIZE;
+>> +     u32 bit_time_us = SPRD_SPI_HZ / t->speed_hz + 1;
+>> +     u32 total_time_us = size * bit_time_us;
+>> +     /*
+>> +      * There is an interval between data and the data in our SPI hardware,
+>> +      * so the total transmission time need add the interval time.
+>> +      *
+>> +      * The inteval calculation formula:
+>> +      * interval time (source clock cycles) = interval * 4 + 10.
+>> +      */
+>> +     u32 interval_cycle = SPRD_SPI_FIFO_SIZE * ((ss->interval << 2) + 10);
+>> +     u32 interval_time_us = interval_cycle * SPRD_SPI_HZ / ss->src_clk + 1;
+>
+> If interval is greater than 31, this will overflow.
+
+Usually we will not set such a big value for interval,  but this is a
+risk like you said. So we will check and limit the interval value to
+make sure the formula will not overflow.
+
+>
+> Also SPRD_SPI_HZ is not the speed anything runs at, as one might think
+> from the name.  It's the number of microseconds in a second.  The is
+> already a Linux macro for that, USEC_PER_SEC, that you should use
+> instead.
+
+Right, will use USEC_PER_SEC instead.
+
+>
+>> +
+>> +     return total_time_us + interval_time_us;
+>> +}
+>> +
+>
+>
+>> +static void sprd_spi_set_speed(struct sprd_spi *ss, u32 speed_hz)
+>> +{
+>> +     /*
+>> +      * From SPI datasheet, the prescale calculation formula:
+>> +      * prescale = SPI source clock / (2 * SPI_freq) - 1;
+>> +      */
+>> +     u32 clk_div = ss->src_clk / (speed_hz << 1) - 1;
+>
+> You should probably round up here.  The convention is to use the
+> closest speed less than equal to the requested speed, but since this is
+> a divider, rounding it down will select the next highest speed.
+
+Per the datasheet, we do not need round up/down the speed. Since our
+hardware can handle the clock calculated by the above formula if the
+requested speed is in the normal region (less than ->max_speed_hz).
+
+>> +
+>> +     writel_relaxed(clk_div, ss->base + SPRD_SPI_CLKD);
+>> +}
+>> +
+>
+>> +
+>> +static int sprd_spi_probe(struct platform_device *pdev)
+>> +{
+>> +     struct device_node *np = pdev->dev.of_node;
+>> +     struct spi_controller *sctlr;
+>> +     struct resource *res;
+>> +     struct sprd_spi *ss;
 >> +     int ret;
 >> +
->> +     ret = pm_runtime_get_sync(ss->dev);
->> +     if (ret < 0) {
->> +             dev_err(ss->dev, "failed to resume SPI controller\n");
->> +             return;
->> +     }
->
-> Something else further up the stack should probably have runtime PM
-> enabled already - we should only be changing chip select as part of a
-> bigger operation.  If you use the core auto_runtime_pm feature this will
-> definitely happen.
-
-Indeed, will use auto_runtime_pm.
-
->
->> +     bits_per_word = bits_per_word > 16 ? round_up(bits_per_word, 16) :
->> +             round_up(bits_per_word, 8);
->
-> Please
-
-Sorry I did not get your points here, could you elaborate on?
-
->
->> +     switch (bits_per_word) {
->> +     case 8:
->> +     case 16:
->> +     case 32:
->
-> It'd be nice to have a default case, the core should check for you but
-> it's nice to have defensive programming here.
-
-Sure.
-
->
->> +static int sprd_spi_transfer_one(struct spi_controller *sctlr,
->> +                              struct spi_device *sdev,
->> +                              struct spi_transfer *t)
->> +{
->> +     struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
->> +     int ret;
+>> +     pdev->id = of_alias_get_id(pdev->dev.of_node, "spi");
+>> +     sctlr = spi_alloc_master(&pdev->dev, sizeof(*ss));
+>> +     if (!sctlr)
+>> +             return -ENOMEM;
 >> +
->> +     ret = pm_runtime_get_sync(ss->dev);
->> +     if (ret < 0) {
->> +             dev_err(ss->dev, "failed to resume SPI controller\n");
->> +             goto rpm_err;
->> +     }
->
-> Same thing with runtime PM here - the core can do this for you.
-
-Yes.
-
->
->> +static int sprd_spi_setup(struct spi_device *spi_dev)
->> +{
->> +     struct spi_controller *sctlr = spi_dev->controller;
->> +     struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
->> +     int ret;
+>> +     ss = spi_controller_get_devdata(sctlr);
+>> +     if (of_property_read_u32(np, "sprd,spi-interval", &ss->interval))
+>> +             ss->interval = SPRD_SPI_ITVL_NUM;
 >> +
->> +     ret = pm_runtime_get_sync(ss->dev);
->> +     if (ret < 0) {
->> +             dev_err(ss->dev, "failed to resume SPI controller\n");
->> +             return ret;
+>> +     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +     ss->base = devm_ioremap_resource(&pdev->dev, res);
+>> +     if (IS_ERR(ss->base)) {
+>> +             ret = PTR_ERR(ss->base);
+>> +             goto free_controller;
 >> +     }
 >> +
->> +     ss->hw_mode = spi_dev->mode;
->> +     sprd_spi_init_hw(ss);
+>> +     ss->dev = &pdev->dev;
+>> +     sctlr->dev.of_node = pdev->dev.of_node;
+>> +     sctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE | SPI_TX_DUAL;
+>> +     sctlr->bus_num = pdev->id;
+>> +     sctlr->setup = sprd_spi_setup;
+>> +     sctlr->set_cs = sprd_spi_chipselect;
+>> +     sctlr->transfer_one = sprd_spi_transfer_one;
+>> +     sctlr->max_speed_hz = (ss->src_clk / 2) < SPRD_SPI_MAX_SPEED_HZ ?
+>> +             ss->src_clk / 2 : SPRD_SPI_MAX_SPEED_HZ;
 >
-> This can be called for one chip select while another is in progress so
-> it's not good to actually configure the hardware here unless the
-> configuration is in a chip select specific set of registers.  Instead
-> you should defer to when the transfer is being set up.
+> You can write this as:
+>         sctlr->max_speed_hz = min(ss->src_clk / 2, SPRD_SPI_MAX_SPEED_HZ);
 
-You are right, will move these into transfer setup.
-
->
->> +static int sprd_spi_clk_init(struct platform_device *pdev, struct sprd_spi *ss)
->> +{
->> +     struct clk *clk_spi, *clk_parent;
->> +
->> +     clk_spi = devm_clk_get(&pdev->dev, "spi");
->> +     if (IS_ERR(clk_spi)) {
->> +             dev_warn(&pdev->dev, "can't get the spi clock\n");
->> +             clk_spi = NULL;
->> +     }
->
-> I suspect some of these clocks are essential and you should probably
-> return an error if you can't get them (especially if probe deferral
-> becomes a factor).
-
-The 'spi' and 'source' clock can be optional, and the SPI can work at
-default source clock without setting 'spi' and 'source' clock. This is
-used on our FPGA board which has not set the spi source clock, but
-still make the SPI can work. So here we just give a warning.
-
->> +     if (!clk_set_parent(clk_spi, clk_parent))
->> +             ss->src_clk = clk_get_rate(clk_spi);
->> +     else
->> +             ss->src_clk = SPRD_SPI_DEFAULT_SOURCE;
->
-> Are upstream DTs going to be missing the clock setup needed here?
-
-Right. DTs can not set 'spi' and 'source' clock to make SPI work at
-default clock. Thanks for your useful comments.
+Right. Thanks for your comments.
 
 -- 
 Baolin Wang

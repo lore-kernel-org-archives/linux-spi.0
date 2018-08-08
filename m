@@ -1,56 +1,60 @@
-From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
-Subject: [PATCH] spi: dw: support 4-16 bits per word
-Date: Wed,  8 Aug 2018 09:14:21 +0200
-Message-ID: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
+Date: Wed, 8 Aug 2018 10:31:48 +0100
+Message-ID: <20180808093148.GA9346@sirena.org.uk>
+References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
+ <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
+ <20180807142408.GB7958@sirena.org.uk>
+ <CAMz4kuL2=7mNHLoTg7hjA4NjfGgNQ-mBJBSE8uMb0oqwnU1=Yg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+To: Baolin Wang <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAMz4kuL2=7mNHLoTg7hjA4NjfGgNQ-mBJBSE8uMb0oqwnU1=Yg@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi-dw driver currently only supports 8 or 16 bits per word.
 
-Since the hardware supports 4-16 bits per word, adapt the driver
-to also support this.
+--UlVJffcvxoiEqYs2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Tested on socfpga cyclone5 with a 9-bit SPI display.
+On Wed, Aug 08, 2018 at 10:45:33AM +0800, Baolin Wang wrote:
+> On 7 August 2018 at 22:24, Mark Brown <broonie@kernel.org> wrote:
+> > On Tue, Aug 07, 2018 at 06:43:38PM +0800, Baolin Wang wrote:
 
-Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
----
- drivers/spi/spi-dw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> >> +     bits_per_word = bits_per_word > 16 ? round_up(bits_per_word, 16) :
+> >> +             round_up(bits_per_word, 8);
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index f693bfe95ab9..2ecbb6b19cea 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -307,14 +307,14 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 		dws->current_freq = transfer->speed_hz;
- 		spi_set_clk(dws, chip->clk_div);
- 	}
--	if (transfer->bits_per_word == 8) {
-+	if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
-+		return -EINVAL;
-+	if (transfer->bits_per_word <= 8) {
- 		dws->n_bytes = 1;
- 		dws->dma_width = 1;
--	} else if (transfer->bits_per_word == 16) {
-+	} else {
- 		dws->n_bytes = 2;
- 		dws->dma_width = 2;
--	} else {
--		return -EINVAL;
- 	}
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	cr0 = (transfer->bits_per_word - 1)
-@@ -493,7 +493,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	}
- 
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-+	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
- 	master->bus_num = dws->bus_num;
- 	master->num_chipselect = dws->num_cs;
- 	master->setup = dw_spi_setup;
--- 
-2.17.1
+> > Please
+
+> Sorry I did not get your points here, could you elaborate on?
+
+Sorry, missed the actual comment there - use normal if statements rather
+than the ternery operator, it's easier to read.
+
+--UlVJffcvxoiEqYs2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltquIEACgkQJNaLcl1U
+h9D8Lwf+J5prKQ102tAnrwIbX+bnTbGLWbzHy/xe9I5LurjAiiD71625mnUJpUa6
+wySqLkDVivSopvk0Kep3i6i1M7CGRHHJucqFNe631u8ZahigQ9yE9CM8IVQxkqEY
+vfg6FCLyGxqGk5BCbjOHnqHDznkCsKVLYRPyp5QrPo8OxX1IvjZASba2Unksiyov
+ivsRL8LCBFHtzynR07kIvjMDYkulC6E0H2VsQE8fNAbrOfTd+WD4Ht8L2gj0PY+t
+GWBUX5H+wQmYNo+aSrwartUsw9SpHF8/O6yk1X9nIOlOEWC64FF3YGw87EcP4HOM
+XA7NKASPkS8NEYZR3pDoOR3OeyViqw==
+=rz+7
+-----END PGP SIGNATURE-----
+
+--UlVJffcvxoiEqYs2--

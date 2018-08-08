@@ -1,44 +1,43 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH] spi: dw: support 4-16 bits per word
-Date: Wed, 8 Aug 2018 15:26:02 +0300
-Message-ID: <CAHp75Vc24DM9jqBdKa1xjXfJjA_BpZq9H1PAwM36sQGfZ99zFw@mail.gmail.com>
-References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
- <CAHp75VdmrwZ4P0xrOOqpJaU7iuKS8zXGcRTg4zLrofZLdcb=8Q@mail.gmail.com> <CAAh8qswXPmcT94x69qDmf8RumT4+uRBwQEvJSu9agaq_e7FH-Q@mail.gmail.com>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller
+ documentation
+Date: Wed, 8 Aug 2018 18:57:01 +0000
+Message-ID: <1533754621.2283.270.camel@impinj.com>
+References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
+         <20180807134121.GA7958@sirena.org.uk>
+         <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
+         <20180808095025.GB9346@sirena.org.uk>
+         <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
+         <20180808105451.GE9346@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
+To: "broonie@kernel.org" <broonie@kernel.org>,
+        "baolin.wang@linaro.org" <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAAh8qswXPmcT94x69qDmf8RumT4+uRBwQEvJSu9agaq_e7FH-Q@mail.gmail.com>
+In-Reply-To: <20180808105451.GE9346@sirena.org.uk>
+Content-Language: en-US
+Content-ID: <D39B6F4479A8E649BD321CD3C0B740B1@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 8, 2018 at 2:58 PM, Simon Goldschmidt
-<simon.k.r.goldschmidt@gmail.com> wrote:
-> On Wed, Aug 8, 2018 at 11:45 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
->> On Wed, Aug 8, 2018 at 10:14 AM, Simon Goldschmidt
->> <simon.k.r.goldschmidt@gmail.com> wrote:
-
->> n_bytes = round_up(8);
->> dma_width = round_up(8);
->
-> I guess you mean:
->
-> n_bytes = round_up(transfer->bits_per_word, 8);
->
-> But that would yield 8 or 16 where we need 1 or 2.
-
-Indeed.
-
-> Reading spi-imx.c, this might work:
->
-> n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
-
-Yes.
-
--- 
-With Best Regards,
-Andy Shevchenko
+T24gV2VkLCAyMDE4LTA4LTA4IGF0IDExOjU0ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBXZWQsIEF1ZyAwOCwgMjAxOCBhdCAwNjozNToyOFBNICswODAwLCBCYW9saW4gV2FuZyB3cm90
+ZToNCj4gPiBPbiA4IEF1Z3VzdCAyMDE4IGF0IDE3OjUwLCBNYXJrIEJyb3duIDxicm9vbmllQGtl
+cm5lbC5vcmc+IHdyb3RlOg0KPiA+ID4gUmlnaHQsIEkgZG9uJ3QgdGhpbmsgd2UgYWRkZWQgdGhp
+cyB5ZXQgKGlmIHdlIGRpZCBJIGNhbid0IHNlZQ0KPiA+ID4gaXQpLiAgSSdkDQo+ID4gPiBhZGQg
+YSBuZXcgZmllbGQgdG8gc3BpX3RyYW5zZmVyIGZvciB0aGlzLCB0aGVuIG90aGVyIGNvbnRyb2xs
+ZXJzDQo+ID4gPiB3aXRoDQo+ID4gPiB0aGUgc2FtZSBzdXBwb3J0IGNhbiBpbXBsZW1lbnQgaXQg
+YXMgd2VsbCBhbmQgZHJpdmVycyBjYW4gc3RhcnQNCj4gPiA+IHVzaW5nDQo+ID4gPiBpdCB0b28u
+DQo+ID4gT0suIFNvIEkgd2lsbCBuYW1lIHRoZSBuZXcgZmlsZWQgYXMgJ3dvcmRfZGVsYXknLCBp
+cyBpdCBPSyBmb3IgeW91Pw0KPiANCj4gU291bmRzIGdvb2QsIHllcy4NCg0KU2hvdWxkIGl0IGJl
+IGluIMK1cyBsaWtlIHRoZSBleGlzdGluZyBpdGVyLXRyYW5zZmVyIGRlbGF5PyAgSSB0aGluaw0K
+cGVyaGFwcyB1bml0cyBvZiBjeWNsZXMgb2YgdGhlIFNQSSBjbG9jayBtYWtlIG1vcmUgc2Vuc2U/

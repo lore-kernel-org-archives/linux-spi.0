@@ -1,81 +1,55 @@
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Thu, 9 Aug 2018 02:50:39 +0200
-Message-ID: <f1967750-0a42-0e76-2d7d-da293bc351af@suse.de>
-References: <20180701110804.32415-1-afaerber@suse.de>
- <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
- <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
+Date: Thu, 9 Aug 2018 11:03:11 +0800
+Message-ID: <CAMz4kuKwfBB8-8o5s8FQadFSFiD8KU=qNZYQjCWOfc-QpuVRSw@mail.gmail.com>
+References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
+ <20180807134121.GA7958@sirena.org.uk> <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
+ <20180808095025.GB9346@sirena.org.uk> <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
+ <20180808105451.GE9346@sirena.org.uk> <1533754621.2283.270.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Janus Piwek <jpiwek@arroweurope.com>,
-        =?UTF-8?Q?Michael_R=c3=b6der?= <michael.roeder@avnet.eu>,
-        Dollar Chen <dollar.chen@wtmec.com>,
-        Ken Yu <ken.yu@rakwireless.com>,
-        =?UTF-8?Q?Konstantin_B=c3=b6hm?= <konstantin.boehm@ancud.de>,
-        Jan Jongboom <jan.jongboom@arm.com>,
-        Jon Ortego <Jon.Ortego@imst.de>, contact@snootlab.com,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        Brian Ray <brian.ray@link-labs.com>, lora@globalsat.com.tw,
-        Alexander Graf <agraf@suse.de>,
-        =?UTF-8?Q?Michal_Kube=c4=8dek?= <mkubecek@suse.cz>,
-        Rob Herring <robh@kern
-To: Jian-Hong Pan <starnight@g.ncu.edu.tw>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
-Content-Language: en-US
-Sender: netdev-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
+To: Trent Piepho <tpiepho@impinj.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1533754621.2283.270.camel@impinj.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 05.08.2018 um 02:11 schrieb Andreas Färber:
-> Am 03.07.2018 um 17:11 schrieb Jian-Hong Pan:
->> 2018-07-01 19:07 GMT+08:00 Andreas Färber <afaerber@suse.de>:
->>> 5) Many of the modules support multiple modes, such as LoRa, LoRaWAN and FSK.
->>>    Lacking a LoRaWAN implementation, I am currently switching them into LoRa
->>>    mode at probe time wherever possible. How do we deal with that properly?
-[...]
-> Independently of what LoRaWAN does, the
-> user needs to be able to send on the physical layer from a selection of
-> LoRa, GFSK, FSK, OOK, GMSK and MSK.
-> Supposedly Wireless M-Bus and IEEE 802.15.4 can be implemented via those
-> according to the SX1276 datasheet.
-> 
-> This opens a can of worms...
-> 
-> SX127x has a single channel, so I don't think there should be six
-> network interfaces lora0, gfsk0, fsk0, ook0, gmsk0 and msk0 exposed to
-> the user.
-> Having a lora0 interface speak non-LoRa modulations may be confusing,
-> but since the chip is sold as LoRa transceiver it might be acceptable.
-> 
-> SX130x has 8+2 channels, with IF9 dedicated to GFSK/FSK. It appears to
-> use one FIFO for receiving (up to 16 packets) and can only transmit one
-> packet at a time. So I think this should be one lora0 interface, too.
-> 
-> With a view to supporting non-LoRa RF chipsets such as Si4xxx (GFSK,
-> FSK, OOK) or nRF905 and nRF24L01+ (both GFSK) at a later date, I don't
-> think those modulations should be some netlink option on a PF_LORA
-> interface but cleanly distinguished as ETH_P_GFSK or something.
-> For example, the Chistera Pi HAT has both an RFM95W and an RFM22 module.
+Hi Trent,
 
-Answering myself here: MSK is a special case of FSK, and GMSK a special
-case of GFSK. SX1276 allows to switch between LoRa and FSK/OOK modes,
-and in FSK/OOK mode between FSK and OOK modulation types and for FSK
-modulation allows to set Gaussian filter values. I assume (G)MSK is
-selected indirectly through BitRate and Fdev settings or something.
+On 9 August 2018 at 02:57, Trent Piepho <tpiepho@impinj.com> wrote:
+> On Wed, 2018-08-08 at 11:54 +0100, Mark Brown wrote:
+>> On Wed, Aug 08, 2018 at 06:35:28PM +0800, Baolin Wang wrote:
+>> > On 8 August 2018 at 17:50, Mark Brown <broonie@kernel.org> wrote:
+>> > > Right, I don't think we added this yet (if we did I can't see
+>> > > it).  I'd
+>> > > add a new field to spi_transfer for this, then other controllers
+>> > > with
+>> > > the same support can implement it as well and drivers can start
+>> > > using
+>> > > it too.
+>> > OK. So I will name the new filed as 'word_delay', is it OK for you?
+>>
+>> Sounds good, yes.
+>
+> Should it be in =C2=B5s like the existing iter-transfer delay?  I think
+> perhaps units of cycles of the SPI clock make more sense?
 
-So we would just need ETH_P_FSK and ETH_P_OOK plus some skb fields for
-ETH_P_FSK.
+Since some SPI controllers just want some interval values (neither =C2=B5s
+unit nor cycles unit ) set into hardware, and the hardware will
+convert to the correct delay time automatically. So I did not force
+'word_delay' unit as =C2=B5s or cycle, and just let the slave devices
+decide the unit which depends on the SPI hardware requirement.
 
-Regards,
-Andreas
-
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+--=20
+Baolin Wang
+Best Regards

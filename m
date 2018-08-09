@@ -1,68 +1,85 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
-Date: Thu, 9 Aug 2018 11:03:55 -0700
-Message-ID: <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
+ QUP
+Date: Thu, 9 Aug 2018 18:24:03 +0000
+Message-ID: <1533839042.2283.305.camel@impinj.com>
 References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
- <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
- <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org> <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
- <20180522173000.GG24776@sirena.org.uk> <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
- <20180524162940.GA4828@sirena.org.uk> <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
- <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
+         <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
+         <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
+         <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
+         <20180522173000.GG24776@sirena.org.uk>
+         <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
+         <20180524162940.GA4828@sirena.org.uk>
+         <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
+         <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
+         <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "Mahadevan, Girish" <girishm@codeaurora.org>
-To: Dilip Kota <dkota@codeaurora.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "swboyd@chromium.org" <swboyd@chromium.org>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        "sdharia@codeaurora.org" <sdharia@codeaurora.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "kramasub@codeaurora.org" <kramasub@codeaurora.org>,
+        "girishm@codeaurora.org" <girishm@codeaurora.org>
+To: "dianders@chromium.org" <dianders@chromium.org>,
+        "dkota@codeaurora.org" <dkota@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
+In-Reply-To: <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
+Content-Language: en-US
+Content-ID: <B25E189A2D7E8D45B21D01B0055E6920@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Fri, Aug 3, 2018 at 5:18 AM,  <dkota@codeaurora.org> wrote:
->>> +       if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
->>> +                               &spi->max_speed_hz)) {
->
->
->> Why does this need to come from DT?
->
->
-> This is required to set the SPI controller max frequency.
-> As it is specific to the controller, so looks meaningful to specify it in
-> dtsi.
-> Also, spi core framework will set the transfer speed to controller max
-> frequency
-> if transfer frequency is greater than controller max frequency.
-> Please mention if you have a other opinion.
-
-Here are my thoughts:
-
-1. It sure seems like the clock framework could be enforcing the max
-speed here.  SPI can just ask for the speed and the clock framework
-will pick the highest speed it can if you ask for one too high.  Isn't
-that the whole point of the "struct freq_tbl" in the clock driver?
-
-
-2. The device tree writer already provides a max clock speed for each
-SPI slave in the device tree.  ...shouldn't the device tree writer
-already be taking into account the max of the SPI port when setting
-this value?
-
-
-3. If you really truly need code in the SPI driver then make sure you
-include a compatible string for the SoC and have a table in the driver
-that's found with of_device_get_match_data().  AKA:
-
-  compatible = "qcom,geni-spi-sdm845", "qcom,geni-spi";
-
-...as per #1 and #2 I don't think this is useful
-
-
--Doug
+T24gVGh1LCAyMDE4LTA4LTA5IGF0IDExOjAzIC0wNzAwLCBEb3VnIEFuZGVyc29uIHdyb3RlOg0K
+PiBPbiBGcmksIEF1ZyAzLCAyMDE4IGF0IDU6MTggQU0sICA8ZGtvdGFAY29kZWF1cm9yYS5vcmc+
+IHdyb3RlOg0KPiA+ID4gPiArICAgICAgIGlmIChvZl9wcm9wZXJ0eV9yZWFkX3UzMihwZGV2LT5k
+ZXYub2Zfbm9kZSwgInNwaS1tYXgtZnJlcXVlbmN5IiwNCj4gPiA+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAmc3BpLT5tYXhfc3BlZWRfaHopKSB7DQo+ID4gDQo+ID4gDQo+ID4g
+PiBXaHkgZG9lcyB0aGlzIG5lZWQgdG8gY29tZSBmcm9tIERUPw0KPiA+IA0KPiA+IA0KPiA+IFRo
+aXMgaXMgcmVxdWlyZWQgdG8gc2V0IHRoZSBTUEkgY29udHJvbGxlciBtYXggZnJlcXVlbmN5Lg0K
+PiA+IEFzIGl0IGlzIHNwZWNpZmljIHRvIHRoZSBjb250cm9sbGVyLCBzbyBsb29rcyBtZWFuaW5n
+ZnVsIHRvIHNwZWNpZnkgaXQgaW4NCj4gPiBkdHNpLg0KPiA+IEFsc28sIHNwaSBjb3JlIGZyYW1l
+d29yayB3aWxsIHNldCB0aGUgdHJhbnNmZXIgc3BlZWQgdG8gY29udHJvbGxlciBtYXgNCj4gPiBm
+cmVxdWVuY3kNCj4gPiBpZiB0cmFuc2ZlciBmcmVxdWVuY3kgaXMgZ3JlYXRlciB0aGFuIGNvbnRy
+b2xsZXIgbWF4IGZyZXF1ZW5jeS4NCj4gPiBQbGVhc2UgbWVudGlvbiBpZiB5b3UgaGF2ZSBhIG90
+aGVyIG9waW5pb24uDQo+IA0KPiBIZXJlIGFyZSBteSB0aG91Z2h0czoNCj4gDQo+IDEuIEl0IHN1
+cmUgc2VlbXMgbGlrZSB0aGUgY2xvY2sgZnJhbWV3b3JrIGNvdWxkIGJlIGVuZm9yY2luZyB0aGUg
+bWF4DQo+IHNwZWVkIGhlcmUuICBTUEkgY2FuIGp1c3QgYXNrIGZvciB0aGUgc3BlZWQgYW5kIHRo
+ZSBjbG9jayBmcmFtZXdvcmsNCj4gd2lsbCBwaWNrIHRoZSBoaWdoZXN0IHNwZWVkIGl0IGNhbiBp
+ZiB5b3UgYXNrIGZvciBvbmUgdG9vIGhpZ2guICBJc24ndA0KPiB0aGF0IHRoZSB3aG9sZSBwb2lu
+dCBvZiB0aGUgInN0cnVjdCBmcmVxX3RibCIgaW4gdGhlIGNsb2NrIGRyaXZlcj8NCj4gDQo+IA0K
+PiAyLiBUaGUgZGV2aWNlIHRyZWUgd3JpdGVyIGFscmVhZHkgcHJvdmlkZXMgYSBtYXggY2xvY2sg
+c3BlZWQgZm9yIGVhY2gNCj4gU1BJIHNsYXZlIGluIHRoZSBkZXZpY2UgdHJlZS4gIC4uLnNob3Vs
+ZG4ndCB0aGUgZGV2aWNlIHRyZWUgd3JpdGVyDQo+IGFscmVhZHkgYmUgdGFraW5nIGludG8gYWNj
+b3VudCB0aGUgbWF4IG9mIHRoZSBTUEkgcG9ydCB3aGVuIHNldHRpbmcNCj4gdGhpcyB2YWx1ZT8N
+Cg0KTm8sIHRoZSB3YXkgaXQgd29ya3MgaXMgdGhlIGFjdHVhbCBzcGVlZCBpcyB0aGUgbGVzc2Vy
+IG9mIHRoZSBtYXN0ZXIncw0KbWF4IGFuZCB0aGUgc2xhdmUgZGV2aWNlJ3MgbWF4Lg0KDQpCdXQg
+dXN1YWxseSB0aGUgbWFzdGVyJ3MgbWF4IGlzIGRldGVybWluZWQgYnk6DQoNCjEuIFRoZSBpbnB1
+dCBjbG9jayB0aGUgU1BJIG1hc3RlciBkZXZpY2UsIGFzIHByb3ZpZGVkIGJ5IHRoZSBjbG9jaw0K
+ZnJhbWV3b3JrLiAgVXN1YWxseSB0aGUgbWF4IFNQSSBjbG9jayB3aWxsIGJlIHRoaXMgY2xvY2sg
+LzIgb3INCnNvbWV0aGluZyBsaWtlIHRoYXQuDQoNCjIuIFRoZSBtYXN0ZXIgaGFzIHNvbWUgbWF4
+aW11bSBjbG9jayBhcyBwYXJ0IG9mIGl0cyBzcGVjaWZpY2F0aW9ucywgaW4NCndoaWNoIGNhc2Ug
+dGhlIGRyaXZlciBiYXNpY2FsbHkgaGFyZCBjb2RlcyBpdC4gIE1heWJlIGl0IGlzIGRpZmZlcmVu
+dA0KYmFzZWQgb24gbW9kZWwgYW5kIHRoZSBkcml2ZXIgaGFzIGEgdGFibGUuDQoNClRoZSBkZXZp
+Y2UgdHJlZSBpc24ndCByZWFsbHkgbWVhbnQgdG8gYmUgYSB3YXkgdG8gcmVtb3ZlIGFsbCBkYXRh
+IGZyb20NCnRoZSBkZXZpY2UgZHJpdmVyIGp1c3QgYmVjYXVzZSBpdCBjYW4gYmUsIG9yIHNoaWZ0
+IHdvcmsgZnJvbSB0aGUgZHJpdmVyDQphdXRob3IgdG8gdGhlIGRldmljZSB0cmVlIGF1dGhvci4N
+Cg0KU28sIG9uZSBzaG91bGRuJ3Qgc3BlY2lmeSB0aGUgbWFzdGVyIG1heCBpbiB0aGUgRFQgaWYg
+dGhlIGRyaXZlciBjb3VsZA0KZmlndXJlIGl0IG91dC4NCg0KU29tZXRpbWVzIHlvdSBzZWUgYSBm
+aWVsZCBpbiB0aGUgRFQgYW5kIEkgdGhpbmsgdGhlIHRob3VnaHQgcHJvY2Vzcw0KdGhhdCBwdXQg
+aXQgdGhlcmUgd2FzLCAiSSBkb24ndCB1bmRlcnN0YW5kIGhvdyB0byBzZXQgdGhpcyByZWdpc3Rl
+ciwNCkknbGwganVzdCBzdGljayBpbiB0aGUgZGV2aWNlIHRyZWUgYW5kIHRoZW4gaXQncyBTb21l
+b25lIEVsc2UncyBQcm9ibGVtDQp0byBmaW5kIHRoZSBjb3JyZWN0IHZhbHVlLiINCg0KVGhlIG1h
+eCBzcGVlZCB0aGF0IHNvbWUgYm9hcmQgY2FuIHRhbGsgdG8gYSBTUEkgc2xhdmUgbWlnaHQgYmUg
+ZnJvbSB0aGUNCnNwZWNzIG9mIHRoZSBzbGF2ZSBkZXZpY2Ugb3IgbWF5YmUgaXQncyBkdWUgdG8g
+dGhlIHRyYWNlcyBvbiB0aGUgYm9hcmQNCml0c2VsZiB0aGF0IGlzIHRoZSBsaW1pdGluZyBmYWN0
+b3IuICBJbiB0aGUgbGF0dGVyIGNhc2UgdGhlIGNvbnZlbnRpb24NCmlzIHRvIGNvbnNpZGVyIHRo
+aXMgcGFydCBvZiB0aGUgc2xhdmUncyBtYXggc3BlZWQgYW5kIHB1dCBpbnRvIHRoZSBEVA0KaW4g
+dGhlIHNsYXZlJ3MgRFQgbm9kZSBtYXggc3BlZWQgcHJvcGVydHkuDQoNClNvIHRoZSBzYW1lIHNw
+aSBlZXByb20gY2hpcCBtaWdodCBoYXZlIGhhdmUgYSBtYXggaW4gdGhlIERUIG9mIDIwIE1Ieg0K
+b24gb25lIGJvYXJkLCBjb3BpZWQgb3V0IG9mIHRoZSBlZXByb20ncyBkYXRhc2hlZXQuICBCdXQg
+b24gYW5vdGhlcg0KYm9hcmQgaXQgaGFzIGEgbWF4IG9mIDEwIE1IeiBiZWNhdXNlIG9uIHRoYXQg
+Ym9hcmQncyBsYXlvdXQgaXQgb25seQ0Kd29ya3MgdXAgdG8gMTAu

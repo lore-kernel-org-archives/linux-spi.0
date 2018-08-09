@@ -1,32 +1,33 @@
-From: Alan Cox <gnomes@lxorguk.ukuu.org.uk>
+From: Jian-Hong Pan <starnight@g.ncu.edu.tw>
 Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Thu, 9 Aug 2018 12:59:39 +0100
-Message-ID: <20180809125939.39ac2cc9@alans-desktop>
+Date: Thu, 9 Aug 2018 23:02:45 +0800
+Message-ID: <CAC=mGzjn4Kc-q9NFwX6NhU4V_thnzBP8SHtFQKyRbpSKR=yx3w@mail.gmail.com>
 References: <20180701110804.32415-1-afaerber@suse.de>
  <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
  <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
  <20180808213640.10a1d76f@alans-desktop>
  <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
+ <20180809125939.39ac2cc9@alans-desktop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Michal =?UTF-8?B?S3ViZcSNZWs=?= <mkubecek@suse.cz>,
- Konstantin =?UTF-8?B?QsO2aG0=?= <konstantin.boehm@ancud.de>,
- Sebastian =?UTF-8?B?SGXDnw==?= <shess@hessware.de>,
- Pieter Robyns <pieter.robyns@uhasselt.be>, contact@snootlab.com,
- Xue Liu <liuxuenetmail@gmail.com>, Ken Yu <ken.yu@rakwireless.com>,
- Michael =?UTF-8?B?UsO2ZGVy?= <michael.roeder@avnet.eu>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: =?UTF-8?Q?Michal_Kube=C4=8Dek?= <mkubecek@suse.cz>,
+ =?UTF-8?Q?Konstantin_B=C3=B6hm?= <konstantin.boehm@ancud.de>,
+ shess@hessware.de, pieter.robyns@uhasselt.be, "linux-kernel@vger.kernel.org>,
+ " <contact@snootlab.com>, Xue Liu <liuxuenetmail@gmail.com>,
+ Ken Yu <ken.yu@rakwireless.com>,
+ =?UTF-8?Q?Michael_R=C3=B6der?= <michael.roeder@avnet.eu>,
  Stefan Schmidt <stefan@datenfreihafen.org>, Rob Herring <robh@kernel.org>,
  lora@globalsat.com.tw, Alexander Graf <agraf@suse.de>,
  Jan Jongboom <jan.jongboom@arm.com>, Janus Piwek <jpiwek@arroweurope.com>,
- Jon Ortego <Jon.Ortego@imst.de>, Jian-Hong Pan <starnight@g.ncu.edu.tw>,
- devicetree@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
- Hasnain Virk <Hasnain.Virk@arm.com>, Daniele Comel <dcomel@mipot.com>,
- Marcel Holtmann <marcel@holtmann.org>, Mark Brown <broonie@kernel.org>,
- Dollar Chen <dollar.chen@wtmec.com>, Brian Ray <b
-To: Andreas =?UTF-8?B?RsOkcmJlcg==?= <afaerber@suse.de>
+ Jon Ortego <Jon.Ortego@imst.de>, devicetree@vger.kernel.org,
+ Jiri Pirko <jiri@resnulli.us>, Hasnain Virk <Hasnain.Virk@arm.com>,
+ Daniele Comel <dcomel@mipot.com>, Marcel Holtmann <marcel@holtmann.org>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Dollar Chen <dollar.chen@wtmec.com>, Brian Ray <brian.ray@link-labs.com>
+To: Alan Cox <gnomes@lxorguk.ukuu.org.uk>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
+In-Reply-To: <20180809125939.39ac2cc9@alans-desktop>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -38,180 +39,195 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-> Yes, and we are talking about that concrete sx1276 driver here, whose
-> chipset has a state machine that only allows either rx or tx and also
-> has standby and sleep modes with differing levels of data retention.
-
-It's a hardware limit, it should never influence the protocol stack
-itself just the driver. Linux always tries to design to optimize the
-non-crappy case. In the long term that works out best because hardware
-improves and you don't want to be tied to an old limit.
-
-> > (Some ancient ethernet cards do this btw.. they can't listen and transmit
-> > at the same time)  
-> 
-> So when do they start receiving?
-
-When they are not transmitting. The transmit path switches modes and when
-the frame send is done it goes back to receiving. As old ethernet was
-also half duplex that worked.
-
-> The issue here was that my original description, which you appear to
-> have cut, suggested a continuous listen mode, interrupted by transmit.
-
-I don't think I cut it but if so I didn't mean to and your approach is
-the one I agree with.
-
-> Jian-Hong didn't like that, with reference to the LoRaWAN spec that
-> supposedly asks for only being in receive mode when expecting a message,
-> likely to save on battery. So the question is, could we cleanly
-> implement receiving only when the user asks us to, or is that a no-go?
-
-Why would you do so ? You can't run Linux on a tiny little
-micro-controller where that would matter. Sure it makes sense for some
-tiny spec of embedded silicon buried in a sensor - but not a Linux box.
-
-Now you might power it down when the interface is down, or when there is
-nobody using that interface but that's really more about long term idle
-power.
-
-> bands and 2.) duty-cycle limits for some of those bands. No maintainer
-> commented on that so far. Thus I am working in tiny steps on providing
-> netlink-layer commands in nllora that can dispatch the individual radio
-> settings to drivers, which then upper layers can instrument as needed.
-
-Sounds right to me.
-> 
-> And making my very first steps with netlink here, it appeared as if each
-> technology has its own enums of commands and attributes, so I don't see
-> how to reuse anything from Wifi here apart from some design inspiration.
-
-That seems reasonable - you aren't likely to want to manage them with the
-same tool.
-
-> > That's a hardware question. Imagine a software defined radio. If your
-> > limitation wouldn't exist in a pure software defined radio then it's
-> > almost certainly a device level detal.  
-> 
-> An SDR would not be using this sx1276 device driver, I imagine.
-> 
-> In fact I would expect an SDR device not to be in drivers/net/lora/ at
-> all but to live in drivers/net/sdr/ and to consume ETH_P_LORA etc. skbs
-> and just do the right thing for them depending on their type...
-
-The point I was trying to make was that if you want to decide whether
-something is driver level or protocol level ask 'is this something you
-can't do even with an SDR'. Some things are protocol properties that no
-fancy hardware will change. Others are hardware limits, in which case you
-want them driver level - because at some point the hardware will get
-better.
-
-> > If you've got something listening to data but without the structure
-> > needed to identify multiple listeners and split out the data meaningfully
-> > to those listeners according to parts of the packet then you've got no
-> > reason to make it a protocol just use SOCK_PACKET and if need be BPF.  
-> 
-> Sorry, that doesn't parse for me. SOCK_PACKET must be a protocol on some
-> PF_ protocol family, no? Are you suggesting I use SOCK_PACKET instead of
-> SOCK_DGRAM in what is now net/lora/dgram.c? Or are you saying there's
-> some generic implementation that we can reuse and scratch mine?
-
-There is a heirarchy. Let me us IP for an example
-
-(historically it was SOCK_PACKET nowdays PF_PACKET - the layering got
-sorted better)
-
-PF_PACKET SOCK_RAW ETH_P_ALL		
-
-Everything on that device minus some things like hardware pre-ambles
-
-PF_PACKET SOCK_RAW ETH_P_SOMETHING
-
-Everything on that device that has the underlying protocol (and the
-protocol might not be in the packet but a property of the interface
-because it only does that format - simple example SLIP is IP packets over
-a serial link a SLIP interface is IP, not because there is anything
-saying it is but because that is *all* it can be)
-
-You get the two above for free. PF_PACKET is built into the stack so
-providing you label packets with the ETH_P_xxx you have for Lora, you can
-use PF_PACKET interfaces to dump them and write raw packets at the kernel
-layer.
-
-PF_INET SOCK_RAW
-
-Split the messages by protocol number in IP between multiple
-listeners/writers
-
-PF_INET SOCK_UDP / TCP etc
-
-Split the messages by port numbers in the higher level protocol
-
-
-For PF_LORA these would map to whatever goes on at the LORA protocol
-level and divide LORA messages up between multiple processes on the
-Linux system that are interested in some of the messages.
-
-
-> > The reason we have a socket layer not /dev/ethernet0 is that it's
-> > meaningful to divide messages up into flows, and to partition those flows
-> > securely amongst multiple consumers/generators.  
-> 
-> For me the distinction is that a /dev/whatever0 would seem more suited
-> for a stream of data to read/write, whereas sockets give us a bounded
-> skb for packets at device driver level.
-
-You could equally do that in a simple character device *if* you didn't
-need to split messages up and share between users. Some protocol stacks
-actually do that and then sort it out in user space, either because they
-are really obscure or they are incredibly complicated and broken so want
-to be out of kernel 8)
-
-> These PHYs all broadcast something over the antenna when sending, with
-> any addressing of listeners or senders being optional and MAC-specific,
-> apart from the LoRa/FSK SyncWord as well as the various frequency etc.
-> settings that determine what the receiver listens for.
-> 
-> None of these PHYs define any mechanism like EtherType through which to
-> identify upper-layer protocols.
-> 
-> So in a way, listening is always in a promiscuous mode, and I guess we
-> would need to try to parse each incoming packet as e.g. a LoRaWAN packet
-> and just give up if it's too short or checksums don't match. Only at the
-> layer of LoRaWAN and competing proprietary or custom protocols can we
-> split received packets out to individual listeners.
-
-My vote would be in that case that you either
-
-1. Set the protocol type on the interface assuming you don't mix and
-match (and if it's relying on random bits not looking like other packets
-then it sounds a complete mess at the moment - but yeah its new tech)
-
-2. You pass everything up to some magical agent which somehow splits them
-up and labels them ETH_P_LORA / ETH_P_FOO etc
-
-3. You do what ethernet does (which admittedly is *way* simpler for
-ethernet) and you have a library routine you can pass an skbuff in the
-driver itself which figures out wtf to label the packet. Look how
-eth_type_trans() is used. Drivers then just do
-
-           skb->protocol = xxx_type_trans(skb, dev);
-
-and the basic labelling gets done and any header pulls (you probably won't
-have any given you don't have anything wrapping LORA), and
-multicast/broadcast labelling - again meaningless I suspect.
-
-#3 Is probably the nicest because you update it all in one place as
-standards change and the market hopefully conslidates and develops some
-kind of sane packet formats. It's also effectively covering #1 and it's
-easy to start with because an initial implementation can just do 'return
-htons(ETH_P_LORA)'.
-
-> 
-> Does that give us any further clues for the design discussion here?
-> 
-I think so yes
-
-How do you plan to deal with routing if you've got multiple devices ?
-
-Alan
+QWxhbiBDb3ggPGdub21lc0BseG9yZ3VrLnVrdXUub3JnLnVrPiDmlrwgMjAxOOW5tDjmnIg55pel
+IOmAseWbmyDkuIvljYg3OjU55a+r6YGT77yaCj4KPiA+IFllcywgYW5kIHdlIGFyZSB0YWxraW5n
+IGFib3V0IHRoYXQgY29uY3JldGUgc3gxMjc2IGRyaXZlciBoZXJlLCB3aG9zZQo+ID4gY2hpcHNl
+dCBoYXMgYSBzdGF0ZSBtYWNoaW5lIHRoYXQgb25seSBhbGxvd3MgZWl0aGVyIHJ4IG9yIHR4IGFu
+ZCBhbHNvCj4gPiBoYXMgc3RhbmRieSBhbmQgc2xlZXAgbW9kZXMgd2l0aCBkaWZmZXJpbmcgbGV2
+ZWxzIG9mIGRhdGEgcmV0ZW50aW9uLgo+Cj4gSXQncyBhIGhhcmR3YXJlIGxpbWl0LCBpdCBzaG91
+bGQgbmV2ZXIgaW5mbHVlbmNlIHRoZSBwcm90b2NvbCBzdGFjawo+IGl0c2VsZiBqdXN0IHRoZSBk
+cml2ZXIuIExpbnV4IGFsd2F5cyB0cmllcyB0byBkZXNpZ24gdG8gb3B0aW1pemUgdGhlCj4gbm9u
+LWNyYXBweSBjYXNlLiBJbiB0aGUgbG9uZyB0ZXJtIHRoYXQgd29ya3Mgb3V0IGJlc3QgYmVjYXVz
+ZSBoYXJkd2FyZQo+IGltcHJvdmVzIGFuZCB5b3UgZG9uJ3Qgd2FudCB0byBiZSB0aWVkIHRvIGFu
+IG9sZCBsaW1pdC4KPgo+ID4gPiAoU29tZSBhbmNpZW50IGV0aGVybmV0IGNhcmRzIGRvIHRoaXMg
+YnR3Li4gdGhleSBjYW4ndCBsaXN0ZW4gYW5kIHRyYW5zbWl0Cj4gPiA+IGF0IHRoZSBzYW1lIHRp
+bWUpCj4gPgo+ID4gU28gd2hlbiBkbyB0aGV5IHN0YXJ0IHJlY2VpdmluZz8KPgo+IFdoZW4gdGhl
+eSBhcmUgbm90IHRyYW5zbWl0dGluZy4gVGhlIHRyYW5zbWl0IHBhdGggc3dpdGNoZXMgbW9kZXMg
+YW5kIHdoZW4KPiB0aGUgZnJhbWUgc2VuZCBpcyBkb25lIGl0IGdvZXMgYmFjayB0byByZWNlaXZp
+bmcuIEFzIG9sZCBldGhlcm5ldCB3YXMKPiBhbHNvIGhhbGYgZHVwbGV4IHRoYXQgd29ya2VkLgo+
+Cj4gPiBUaGUgaXNzdWUgaGVyZSB3YXMgdGhhdCBteSBvcmlnaW5hbCBkZXNjcmlwdGlvbiwgd2hp
+Y2ggeW91IGFwcGVhciB0bwo+ID4gaGF2ZSBjdXQsIHN1Z2dlc3RlZCBhIGNvbnRpbnVvdXMgbGlz
+dGVuIG1vZGUsIGludGVycnVwdGVkIGJ5IHRyYW5zbWl0Lgo+Cj4gSSBkb24ndCB0aGluayBJIGN1
+dCBpdCBidXQgaWYgc28gSSBkaWRuJ3QgbWVhbiB0byBhbmQgeW91ciBhcHByb2FjaCBpcwo+IHRo
+ZSBvbmUgSSBhZ3JlZSB3aXRoLgo+Cj4gPiBKaWFuLUhvbmcgZGlkbid0IGxpa2UgdGhhdCwgd2l0
+aCByZWZlcmVuY2UgdG8gdGhlIExvUmFXQU4gc3BlYyB0aGF0Cj4gPiBzdXBwb3NlZGx5IGFza3Mg
+Zm9yIG9ubHkgYmVpbmcgaW4gcmVjZWl2ZSBtb2RlIHdoZW4gZXhwZWN0aW5nIGEgbWVzc2FnZSwK
+PiA+IGxpa2VseSB0byBzYXZlIG9uIGJhdHRlcnkuIFNvIHRoZSBxdWVzdGlvbiBpcywgY291bGQg
+d2UgY2xlYW5seQo+ID4gaW1wbGVtZW50IHJlY2VpdmluZyBvbmx5IHdoZW4gdGhlIHVzZXIgYXNr
+cyB1cyB0bywgb3IgaXMgdGhhdCBhIG5vLWdvPwo+Cj4gV2h5IHdvdWxkIHlvdSBkbyBzbyA/IFlv
+dSBjYW4ndCBydW4gTGludXggb24gYSB0aW55IGxpdHRsZQo+IG1pY3JvLWNvbnRyb2xsZXIgd2hl
+cmUgdGhhdCB3b3VsZCBtYXR0ZXIuIFN1cmUgaXQgbWFrZXMgc2Vuc2UgZm9yIHNvbWUKPiB0aW55
+IHNwZWMgb2YgZW1iZWRkZWQgc2lsaWNvbiBidXJpZWQgaW4gYSBzZW5zb3IgLSBidXQgbm90IGEg
+TGludXggYm94Lgo+Cj4gTm93IHlvdSBtaWdodCBwb3dlciBpdCBkb3duIHdoZW4gdGhlIGludGVy
+ZmFjZSBpcyBkb3duLCBvciB3aGVuIHRoZXJlIGlzCj4gbm9ib2R5IHVzaW5nIHRoYXQgaW50ZXJm
+YWNlIGJ1dCB0aGF0J3MgcmVhbGx5IG1vcmUgYWJvdXQgbG9uZyB0ZXJtIGlkbGUKPiBwb3dlci4K
+CkV4Y2VwdCBzYXZpbmcgcG93ZXIsIG1pdGlnYXRpbmcgdGhlIHdpcmVsZXNzIHNpZ25hbCBjb25m
+bGljdCBvbiB0aGUKYWlyIGlzIG9uZSBvZiB0aGUgcmVhc29ucy4KCkFjY29yZGluZyB0byB0aGUg
+TG9SYVdBTiBzcGVjLiBkZWZpbmVkIGJ5IExvUmEgQWxsaWFuY2UsIGFsbCBMb1JhV0FOCmVuZCBk
+ZXZpY2VzIG11c3QgaW1wbGVtZW50IGNsYXNzIEEgZmVhdHVyZXMsIHdoaWNoIGlzIGFsc28gdGhl
+IG1vc3QKZ2VuZXJhbCBhbmQgc2ltcGxlc3QuCjEuIFRoZSB0cmFuc21pc3Npb24gc2xvdCBzY2hl
+ZHVsZWQgYnkgdGhlIGVuZC1kZXZpY2UgaXMgYmFzZWQgb24gaXRzCm93biBjb21tdW5pY2F0aW9u
+IG5lZWRzIHdpdGggYSBzbWFsbCB2YXJpYXRpb24gYmFzZWQgb24gYSByYW5kb20gdGltZQpiYXNp
+cyAoQUxPSEEtdHlwZSBvZiBwcm90b2NvbCkuCjIuIE9ubHkgcmVxdWlyZSBkb3dubGluayBjb21t
+dW5pY2F0aW9uIGZyb20gdGhlIHNlcnZlciBzaG9ydGx5IGFmdGVyCnRoZSBlbmQtZGV2aWNlIGhh
+cyBzZW50IGFuIHVwbGluayB0cmFuc21pc3Npb24uIERvd25saW5rCmNvbW11bmljYXRpb25zIGZy
+b20gdGhlIHNlcnZlciBhdCBhbnkgb3RoZXIgdGltZSB3aWxsIGhhdmUgdG8gd2FpdAp1bnRpbCB0
+aGUgbmV4dCBzY2hlZHVsZWQgdXBsaW5rLgozLiBFYWNoIGVuZC1kZXZpY2XigJhzIHVwbGluayB0
+cmFuc21pc3Npb24gaXMgZm9sbG93ZWQgYnkgdHdvIHNob3J0CmRvd25saW5rIHJlY2VpdmUgd2lu
+ZG93cy4KCkVuZCBkZXZpY2UgdHJhbnNtaXRzIGFuIHVwbGluayBtZXNzYWdlIGZpbmlzaGVkCiAg
+IC0+CkVuZCBkZXZpY2UgZ29lcyB0byBzbGVlcC9pZGxlL3N0b3AKICAgLT4KRW5kIGRldmljZSBv
+cGVucyBSWDEgd2luZG93LiAgVGhpcyBpcyB0aGUgdGltZSBmb3IgdGhlIGRvd25saW5rIG1lc3Nh
+Z2UuCiAgIC0+CkVuZCBkZXZpY2UgZ29lcyB0byBzbGVlcC9pZGxlL3N0b3AKICAgLT4KRW5kIGRl
+dmljZSBvcGVucyBSWDIgd2luZG93LiAgVGhpcyBpcyBhbm90aGVyIHRpbWUgZm9yIHRoZSBkb3du
+bGluayBtZXNzYWdlLgogICAtPgpFbmQgZGV2aWNlIGdvZXMgdG8gc2xlZXAvaWRsZS9zdG9wCgpU
+aGUgdGltZSBiZXR3ZWVuIGVuZCBkZXZpY2UgdHJhbnNtaXQgYW4gdXBsaW5rIG1lc3NhZ2UgZmlu
+aXNoZWQgYW5kCmVuZCBkZXZpY2Ugb3BlbnMgUlgxIHdpbmRvdyBpcyBSWCBkZWxheSAjMS4KVGhl
+IHRpbWUgYmV0d2VlbiBlbmQgZGV2aWNlIHRyYW5zbWl0IGFuIHVwbGluayBtZXNzYWdlIGZpbmlz
+aGVkIGFuZAplbmQgZGV2aWNlIG9wZW5zIFJYMiB3aW5kb3cgaXMgUlggZGVsYXkgIzIuCklmIGVu
+ZCBkZXZpY2UgZ2V0cyB0aGUgbWVhbmluZ2Z1bCBkb3dubGluayBtZXNzYWdlIGluIFJYMSB3aW5k
+b3csIGl0CndpbGwgbm90IG9wZW4gUlgyIHdpbmRvdy4KVGhlIHRpbWUgb2YgUlggZGVsYXkgIzEg
+YW5kIDIgYXJlIGRlZmluZWQgaW4gTG9SYVdBTiBSZWdpb25hbCBQYXJhbWV0ZXJzLgoKVGhlIHNs
+ZWVwL2lkbGUvc3RvcCBtaXRpZ2F0ZSB0aGUgdW5jb25jZXJuZWQgUkYgc2lnbmFscyBvciBtZXNz
+YWdlcy4KCj4gPiBiYW5kcyBhbmQgMi4pIGR1dHktY3ljbGUgbGltaXRzIGZvciBzb21lIG9mIHRo
+b3NlIGJhbmRzLiBObyBtYWludGFpbmVyCj4gPiBjb21tZW50ZWQgb24gdGhhdCBzbyBmYXIuIFRo
+dXMgSSBhbSB3b3JraW5nIGluIHRpbnkgc3RlcHMgb24gcHJvdmlkaW5nCj4gPiBuZXRsaW5rLWxh
+eWVyIGNvbW1hbmRzIGluIG5sbG9yYSB0aGF0IGNhbiBkaXNwYXRjaCB0aGUgaW5kaXZpZHVhbCBy
+YWRpbwo+ID4gc2V0dGluZ3MgdG8gZHJpdmVycywgd2hpY2ggdGhlbiB1cHBlciBsYXllcnMgY2Fu
+IGluc3RydW1lbnQgYXMgbmVlZGVkLgo+Cj4gU291bmRzIHJpZ2h0IHRvIG1lLgo+ID4KPiA+IEFu
+ZCBtYWtpbmcgbXkgdmVyeSBmaXJzdCBzdGVwcyB3aXRoIG5ldGxpbmsgaGVyZSwgaXQgYXBwZWFy
+ZWQgYXMgaWYgZWFjaAo+ID4gdGVjaG5vbG9neSBoYXMgaXRzIG93biBlbnVtcyBvZiBjb21tYW5k
+cyBhbmQgYXR0cmlidXRlcywgc28gSSBkb24ndCBzZWUKPiA+IGhvdyB0byByZXVzZSBhbnl0aGlu
+ZyBmcm9tIFdpZmkgaGVyZSBhcGFydCBmcm9tIHNvbWUgZGVzaWduIGluc3BpcmF0aW9uLgo+Cj4g
+VGhhdCBzZWVtcyByZWFzb25hYmxlIC0geW91IGFyZW4ndCBsaWtlbHkgdG8gd2FudCB0byBtYW5h
+Z2UgdGhlbSB3aXRoIHRoZQo+IHNhbWUgdG9vbC4KPgo+ID4gPiBUaGF0J3MgYSBoYXJkd2FyZSBx
+dWVzdGlvbi4gSW1hZ2luZSBhIHNvZnR3YXJlIGRlZmluZWQgcmFkaW8uIElmIHlvdXIKPiA+ID4g
+bGltaXRhdGlvbiB3b3VsZG4ndCBleGlzdCBpbiBhIHB1cmUgc29mdHdhcmUgZGVmaW5lZCByYWRp
+byB0aGVuIGl0J3MKPiA+ID4gYWxtb3N0IGNlcnRhaW5seSBhIGRldmljZSBsZXZlbCBkZXRhbC4K
+PiA+Cj4gPiBBbiBTRFIgd291bGQgbm90IGJlIHVzaW5nIHRoaXMgc3gxMjc2IGRldmljZSBkcml2
+ZXIsIEkgaW1hZ2luZS4KPiA+Cj4gPiBJbiBmYWN0IEkgd291bGQgZXhwZWN0IGFuIFNEUiBkZXZp
+Y2Ugbm90IHRvIGJlIGluIGRyaXZlcnMvbmV0L2xvcmEvIGF0Cj4gPiBhbGwgYnV0IHRvIGxpdmUg
+aW4gZHJpdmVycy9uZXQvc2RyLyBhbmQgdG8gY29uc3VtZSBFVEhfUF9MT1JBIGV0Yy4gc2ticwo+
+ID4gYW5kIGp1c3QgZG8gdGhlIHJpZ2h0IHRoaW5nIGZvciB0aGVtIGRlcGVuZGluZyBvbiB0aGVp
+ciB0eXBlLi4uCj4KPiBUaGUgcG9pbnQgSSB3YXMgdHJ5aW5nIHRvIG1ha2Ugd2FzIHRoYXQgaWYg
+eW91IHdhbnQgdG8gZGVjaWRlIHdoZXRoZXIKPiBzb21ldGhpbmcgaXMgZHJpdmVyIGxldmVsIG9y
+IHByb3RvY29sIGxldmVsIGFzayAnaXMgdGhpcyBzb21ldGhpbmcgeW91Cj4gY2FuJ3QgZG8gZXZl
+biB3aXRoIGFuIFNEUicuIFNvbWUgdGhpbmdzIGFyZSBwcm90b2NvbCBwcm9wZXJ0aWVzIHRoYXQg
+bm8KPiBmYW5jeSBoYXJkd2FyZSB3aWxsIGNoYW5nZS4gT3RoZXJzIGFyZSBoYXJkd2FyZSBsaW1p
+dHMsIGluIHdoaWNoIGNhc2UgeW91Cj4gd2FudCB0aGVtIGRyaXZlciBsZXZlbCAtIGJlY2F1c2Ug
+YXQgc29tZSBwb2ludCB0aGUgaGFyZHdhcmUgd2lsbCBnZXQKPiBiZXR0ZXIuCj4KPiA+ID4gSWYg
+eW91J3ZlIGdvdCBzb21ldGhpbmcgbGlzdGVuaW5nIHRvIGRhdGEgYnV0IHdpdGhvdXQgdGhlIHN0
+cnVjdHVyZQo+ID4gPiBuZWVkZWQgdG8gaWRlbnRpZnkgbXVsdGlwbGUgbGlzdGVuZXJzIGFuZCBz
+cGxpdCBvdXQgdGhlIGRhdGEgbWVhbmluZ2Z1bGx5Cj4gPiA+IHRvIHRob3NlIGxpc3RlbmVycyBh
+Y2NvcmRpbmcgdG8gcGFydHMgb2YgdGhlIHBhY2tldCB0aGVuIHlvdSd2ZSBnb3Qgbm8KPiA+ID4g
+cmVhc29uIHRvIG1ha2UgaXQgYSBwcm90b2NvbCBqdXN0IHVzZSBTT0NLX1BBQ0tFVCBhbmQgaWYg
+bmVlZCBiZSBCUEYuCj4gPgo+ID4gU29ycnksIHRoYXQgZG9lc24ndCBwYXJzZSBmb3IgbWUuIFNP
+Q0tfUEFDS0VUIG11c3QgYmUgYSBwcm90b2NvbCBvbiBzb21lCj4gPiBQRl8gcHJvdG9jb2wgZmFt
+aWx5LCBubz8gQXJlIHlvdSBzdWdnZXN0aW5nIEkgdXNlIFNPQ0tfUEFDS0VUIGluc3RlYWQgb2YK
+PiA+IFNPQ0tfREdSQU0gaW4gd2hhdCBpcyBub3cgbmV0L2xvcmEvZGdyYW0uYz8gT3IgYXJlIHlv
+dSBzYXlpbmcgdGhlcmUncwo+ID4gc29tZSBnZW5lcmljIGltcGxlbWVudGF0aW9uIHRoYXQgd2Ug
+Y2FuIHJldXNlIGFuZCBzY3JhdGNoIG1pbmU/Cj4KPiBUaGVyZSBpcyBhIGhlaXJhcmNoeS4gTGV0
+IG1lIHVzIElQIGZvciBhbiBleGFtcGxlCj4KPiAoaGlzdG9yaWNhbGx5IGl0IHdhcyBTT0NLX1BB
+Q0tFVCBub3dkYXlzIFBGX1BBQ0tFVCAtIHRoZSBsYXllcmluZyBnb3QKPiBzb3J0ZWQgYmV0dGVy
+KQo+Cj4gUEZfUEFDS0VUIFNPQ0tfUkFXIEVUSF9QX0FMTAo+Cj4gRXZlcnl0aGluZyBvbiB0aGF0
+IGRldmljZSBtaW51cyBzb21lIHRoaW5ncyBsaWtlIGhhcmR3YXJlIHByZS1hbWJsZXMKPgo+IFBG
+X1BBQ0tFVCBTT0NLX1JBVyBFVEhfUF9TT01FVEhJTkcKPgo+IEV2ZXJ5dGhpbmcgb24gdGhhdCBk
+ZXZpY2UgdGhhdCBoYXMgdGhlIHVuZGVybHlpbmcgcHJvdG9jb2wgKGFuZCB0aGUKPiBwcm90b2Nv
+bCBtaWdodCBub3QgYmUgaW4gdGhlIHBhY2tldCBidXQgYSBwcm9wZXJ0eSBvZiB0aGUgaW50ZXJm
+YWNlCj4gYmVjYXVzZSBpdCBvbmx5IGRvZXMgdGhhdCBmb3JtYXQgLSBzaW1wbGUgZXhhbXBsZSBT
+TElQIGlzIElQIHBhY2tldHMgb3Zlcgo+IGEgc2VyaWFsIGxpbmsgYSBTTElQIGludGVyZmFjZSBp
+cyBJUCwgbm90IGJlY2F1c2UgdGhlcmUgaXMgYW55dGhpbmcKPiBzYXlpbmcgaXQgaXMgYnV0IGJl
+Y2F1c2UgdGhhdCBpcyAqYWxsKiBpdCBjYW4gYmUpCj4KPiBZb3UgZ2V0IHRoZSB0d28gYWJvdmUg
+Zm9yIGZyZWUuIFBGX1BBQ0tFVCBpcyBidWlsdCBpbnRvIHRoZSBzdGFjayBzbwo+IHByb3ZpZGlu
+ZyB5b3UgbGFiZWwgcGFja2V0cyB3aXRoIHRoZSBFVEhfUF94eHggeW91IGhhdmUgZm9yIExvcmEs
+IHlvdSBjYW4KPiB1c2UgUEZfUEFDS0VUIGludGVyZmFjZXMgdG8gZHVtcCB0aGVtIGFuZCB3cml0
+ZSByYXcgcGFja2V0cyBhdCB0aGUga2VybmVsCj4gbGF5ZXIuCj4KPiBQRl9JTkVUIFNPQ0tfUkFX
+Cj4KPiBTcGxpdCB0aGUgbWVzc2FnZXMgYnkgcHJvdG9jb2wgbnVtYmVyIGluIElQIGJldHdlZW4g
+bXVsdGlwbGUKPiBsaXN0ZW5lcnMvd3JpdGVycwo+Cj4gUEZfSU5FVCBTT0NLX1VEUCAvIFRDUCBl
+dGMKPgo+IFNwbGl0IHRoZSBtZXNzYWdlcyBieSBwb3J0IG51bWJlcnMgaW4gdGhlIGhpZ2hlciBs
+ZXZlbCBwcm90b2NvbAo+Cj4KPiBGb3IgUEZfTE9SQSB0aGVzZSB3b3VsZCBtYXAgdG8gd2hhdGV2
+ZXIgZ29lcyBvbiBhdCB0aGUgTE9SQSBwcm90b2NvbAo+IGxldmVsIGFuZCBkaXZpZGUgTE9SQSBt
+ZXNzYWdlcyB1cCBiZXR3ZWVuIG11bHRpcGxlIHByb2Nlc3NlcyBvbiB0aGUKPiBMaW51eCBzeXN0
+ZW0gdGhhdCBhcmUgaW50ZXJlc3RlZCBpbiBzb21lIG9mIHRoZSBtZXNzYWdlcy4KPgo+Cj4gPiA+
+IFRoZSByZWFzb24gd2UgaGF2ZSBhIHNvY2tldCBsYXllciBub3QgL2Rldi9ldGhlcm5ldDAgaXMg
+dGhhdCBpdCdzCj4gPiA+IG1lYW5pbmdmdWwgdG8gZGl2aWRlIG1lc3NhZ2VzIHVwIGludG8gZmxv
+d3MsIGFuZCB0byBwYXJ0aXRpb24gdGhvc2UgZmxvd3MKPiA+ID4gc2VjdXJlbHkgYW1vbmdzdCBt
+dWx0aXBsZSBjb25zdW1lcnMvZ2VuZXJhdG9ycy4KPiA+Cj4gPiBGb3IgbWUgdGhlIGRpc3RpbmN0
+aW9uIGlzIHRoYXQgYSAvZGV2L3doYXRldmVyMCB3b3VsZCBzZWVtIG1vcmUgc3VpdGVkCj4gPiBm
+b3IgYSBzdHJlYW0gb2YgZGF0YSB0byByZWFkL3dyaXRlLCB3aGVyZWFzIHNvY2tldHMgZ2l2ZSB1
+cyBhIGJvdW5kZWQKPiA+IHNrYiBmb3IgcGFja2V0cyBhdCBkZXZpY2UgZHJpdmVyIGxldmVsLgo+
+Cj4gWW91IGNvdWxkIGVxdWFsbHkgZG8gdGhhdCBpbiBhIHNpbXBsZSBjaGFyYWN0ZXIgZGV2aWNl
+ICppZiogeW91IGRpZG4ndAo+IG5lZWQgdG8gc3BsaXQgbWVzc2FnZXMgdXAgYW5kIHNoYXJlIGJl
+dHdlZW4gdXNlcnMuIFNvbWUgcHJvdG9jb2wgc3RhY2tzCj4gYWN0dWFsbHkgZG8gdGhhdCBhbmQg
+dGhlbiBzb3J0IGl0IG91dCBpbiB1c2VyIHNwYWNlLCBlaXRoZXIgYmVjYXVzZSB0aGV5Cj4gYXJl
+IHJlYWxseSBvYnNjdXJlIG9yIHRoZXkgYXJlIGluY3JlZGlibHkgY29tcGxpY2F0ZWQgYW5kIGJy
+b2tlbiBzbyB3YW50Cj4gdG8gYmUgb3V0IG9mIGtlcm5lbCA4KQo+Cj4gPiBUaGVzZSBQSFlzIGFs
+bCBicm9hZGNhc3Qgc29tZXRoaW5nIG92ZXIgdGhlIGFudGVubmEgd2hlbiBzZW5kaW5nLCB3aXRo
+Cj4gPiBhbnkgYWRkcmVzc2luZyBvZiBsaXN0ZW5lcnMgb3Igc2VuZGVycyBiZWluZyBvcHRpb25h
+bCBhbmQgTUFDLXNwZWNpZmljLAo+ID4gYXBhcnQgZnJvbSB0aGUgTG9SYS9GU0sgU3luY1dvcmQg
+YXMgd2VsbCBhcyB0aGUgdmFyaW91cyBmcmVxdWVuY3kgZXRjLgo+ID4gc2V0dGluZ3MgdGhhdCBk
+ZXRlcm1pbmUgd2hhdCB0aGUgcmVjZWl2ZXIgbGlzdGVucyBmb3IuCj4gPgo+ID4gTm9uZSBvZiB0
+aGVzZSBQSFlzIGRlZmluZSBhbnkgbWVjaGFuaXNtIGxpa2UgRXRoZXJUeXBlIHRocm91Z2ggd2hp
+Y2ggdG8KPiA+IGlkZW50aWZ5IHVwcGVyLWxheWVyIHByb3RvY29scy4KPiA+Cj4gPiBTbyBpbiBh
+IHdheSwgbGlzdGVuaW5nIGlzIGFsd2F5cyBpbiBhIHByb21pc2N1b3VzIG1vZGUsIGFuZCBJIGd1
+ZXNzIHdlCj4gPiB3b3VsZCBuZWVkIHRvIHRyeSB0byBwYXJzZSBlYWNoIGluY29taW5nIHBhY2tl
+dCBhcyBlLmcuIGEgTG9SYVdBTiBwYWNrZXQKPiA+IGFuZCBqdXN0IGdpdmUgdXAgaWYgaXQncyB0
+b28gc2hvcnQgb3IgY2hlY2tzdW1zIGRvbid0IG1hdGNoLiBPbmx5IGF0IHRoZQo+ID4gbGF5ZXIg
+b2YgTG9SYVdBTiBhbmQgY29tcGV0aW5nIHByb3ByaWV0YXJ5IG9yIGN1c3RvbSBwcm90b2NvbHMg
+Y2FuIHdlCj4gPiBzcGxpdCByZWNlaXZlZCBwYWNrZXRzIG91dCB0byBpbmRpdmlkdWFsIGxpc3Rl
+bmVycy4KPgo+IE15IHZvdGUgd291bGQgYmUgaW4gdGhhdCBjYXNlIHRoYXQgeW91IGVpdGhlcgo+
+Cj4gMS4gU2V0IHRoZSBwcm90b2NvbCB0eXBlIG9uIHRoZSBpbnRlcmZhY2UgYXNzdW1pbmcgeW91
+IGRvbid0IG1peCBhbmQKPiBtYXRjaCAoYW5kIGlmIGl0J3MgcmVseWluZyBvbiByYW5kb20gYml0
+cyBub3QgbG9va2luZyBsaWtlIG90aGVyIHBhY2tldHMKPiB0aGVuIGl0IHNvdW5kcyBhIGNvbXBs
+ZXRlIG1lc3MgYXQgdGhlIG1vbWVudCAtIGJ1dCB5ZWFoIGl0cyBuZXcgdGVjaCkKPgo+IDIuIFlv
+dSBwYXNzIGV2ZXJ5dGhpbmcgdXAgdG8gc29tZSBtYWdpY2FsIGFnZW50IHdoaWNoIHNvbWVob3cg
+c3BsaXRzIHRoZW0KPiB1cCBhbmQgbGFiZWxzIHRoZW0gRVRIX1BfTE9SQSAvIEVUSF9QX0ZPTyBl
+dGMKPgo+IDMuIFlvdSBkbyB3aGF0IGV0aGVybmV0IGRvZXMgKHdoaWNoIGFkbWl0dGVkbHkgaXMg
+KndheSogc2ltcGxlciBmb3IKPiBldGhlcm5ldCkgYW5kIHlvdSBoYXZlIGEgbGlicmFyeSByb3V0
+aW5lIHlvdSBjYW4gcGFzcyBhbiBza2J1ZmYgaW4gdGhlCj4gZHJpdmVyIGl0c2VsZiB3aGljaCBm
+aWd1cmVzIG91dCB3dGYgdG8gbGFiZWwgdGhlIHBhY2tldC4gTG9vayBob3cKPiBldGhfdHlwZV90
+cmFucygpIGlzIHVzZWQuIERyaXZlcnMgdGhlbiBqdXN0IGRvCj4KPiAgICAgICAgICAgIHNrYi0+
+cHJvdG9jb2wgPSB4eHhfdHlwZV90cmFucyhza2IsIGRldik7Cj4KPiBhbmQgdGhlIGJhc2ljIGxh
+YmVsbGluZyBnZXRzIGRvbmUgYW5kIGFueSBoZWFkZXIgcHVsbHMgKHlvdSBwcm9iYWJseSB3b24n
+dAo+IGhhdmUgYW55IGdpdmVuIHlvdSBkb24ndCBoYXZlIGFueXRoaW5nIHdyYXBwaW5nIExPUkEp
+LCBhbmQKPiBtdWx0aWNhc3QvYnJvYWRjYXN0IGxhYmVsbGluZyAtIGFnYWluIG1lYW5pbmdsZXNz
+IEkgc3VzcGVjdC4KPgo+ICMzIElzIHByb2JhYmx5IHRoZSBuaWNlc3QgYmVjYXVzZSB5b3UgdXBk
+YXRlIGl0IGFsbCBpbiBvbmUgcGxhY2UgYXMKPiBzdGFuZGFyZHMgY2hhbmdlIGFuZCB0aGUgbWFy
+a2V0IGhvcGVmdWxseSBjb25zbGlkYXRlcyBhbmQgZGV2ZWxvcHMgc29tZQo+IGtpbmQgb2Ygc2Fu
+ZSBwYWNrZXQgZm9ybWF0cy4gSXQncyBhbHNvIGVmZmVjdGl2ZWx5IGNvdmVyaW5nICMxIGFuZCBp
+dCdzCj4gZWFzeSB0byBzdGFydCB3aXRoIGJlY2F1c2UgYW4gaW5pdGlhbCBpbXBsZW1lbnRhdGlv
+biBjYW4ganVzdCBkbyAncmV0dXJuCj4gaHRvbnMoRVRIX1BfTE9SQSknLgo+Cj4gPgo+ID4gRG9l
+cyB0aGF0IGdpdmUgdXMgYW55IGZ1cnRoZXIgY2x1ZXMgZm9yIHRoZSBkZXNpZ24gZGlzY3Vzc2lv
+biBoZXJlPwo+ID4KPiBJIHRoaW5rIHNvIHllcwo+Cj4gSG93IGRvIHlvdSBwbGFuIHRvIGRlYWwg
+d2l0aCByb3V0aW5nIGlmIHlvdSd2ZSBnb3QgbXVsdGlwbGUgZGV2aWNlcyA/CgpGb3IgTG9SYVdB
+TiwgaXQgaXMgYSBzdGFyIHRvcG9sb2d5LgoKT25lIGVuZCBkZXZpY2UgYW5kIG9uZSBMb1JhV0FO
+IGdhdGV3YXk6CkFuIGVuZCBkZXZpY2Ugc2VuZHMgYSB1cGxpbmsgbWVzc2FnZSB0byB0aGUgTG9S
+YVdBTiBnYXRld2F5IGRpcmVjdGx5LgpBIExvUmFXQU4gZ2F0ZXdheSByZWNlaXZlcyB0aGUgdXBs
+aW5rIG1lc3NhZ2UsIHRoZW4gdHJhbnNmZXJzIHRvIHRoZQpMb1JhV0FOIG5ldHdvcmsgc2VydmVy
+LgpUaGUgbmV0d29yayBzZXJ2ZXIgc2VuZHMgYSBkb3dubGluayBtZXNzYWdlIHRvIHRoZSBlbmQg
+ZGV2aWNlIHZpYSB0aGUKdHJhbnNmZXIgb2YgdGhlIExvUmFXQU4gZ2F0ZXdheS4KCk11bHRpcGxl
+IGVuZCBkZXZpY2VzIGFuZCBtdWx0aXBsZSBMb1JhV0FOIGdhdGV3YXk6Ck11bHRpcGxlIGVuZCBk
+ZXZpY2VzIGNhbiBzZW5kIHVwbGluayBtZXNzYWdlcyB0byBtdWx0aXBsZSBMb1JhV0FOCmdhdGV3
+YXlzIGRpcmVjdGx5LiAgR2F0ZXdheXMgcmVjZWl2ZSB0aGUgdGhlIHVwbGluayBtZXNzYWdlcywg
+dGhlbgp0cmFuc2ZlciB0byB0aGUgTG9SYVdBTiBuZXR3b3JrIHNlcnZlci4KVGhlIExvUmFXQU4g
+bmV0d29yayBzZXJ2ZXIgY29tcGFyZXMgdGhlIHVwbGluayBtZXNzYWdlcycgY29udGVudCB0bwpm
+aWx0ZXIgb3V0IHRoZSBkdXBsaWNhdGVkIG1lc3NhZ2VzLgpUaGUgTG9SYVdBTiBuZXR3b3JrIHNl
+cnZlciBzZW5kcyBhIGRvd25saW5rIG1lc3NhZ2UgdG8gdGhlIGVuZCBkZXZpY2UKdmlhIHRoZSB0
+cmFuc2ZlciBvZiBvbmx5IG9uZSBjaG9zZW4gTG9SYVdBTiBnYXRld2F5LgoKU28sIGFuIGVuZCBk
+ZXZpY2UgZG9lcyBub3QgdGFsayB0byBvdGhlciBlbmQgZGV2aWNlcyBkaXJlY3RseS4KQW5kLCBv
+ZiBjb3Vyc2UsIHRoZSBsaW5rcyBiZXR3ZWVuIExvUmFXQU4gZ2F0ZXdheSBhbmQgdGhlIG5ldHdv
+cmsKc2VydmVyIGNvdWxkIGJlIGFueSBuZXR3b3JrIHRlY2hub2xvZ3ksIG9ubHkgaWYgdGhleSBj
+YW4gY29tbXVuaWNhdGUKd2l0aCBlYWNoIG90aGVyIGZhc3QgZW5vdWdoLgoKUmVnYXJkcywKSmlh
+bi1Ib25nIFBhbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+bGludXgtYXJtLWtlcm5lbAo=

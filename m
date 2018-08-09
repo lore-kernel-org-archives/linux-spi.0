@@ -1,116 +1,217 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH 2/2] spi: sprd: Add SPI driver for Spreadtrum SC9860
-Date: Thu, 9 Aug 2018 11:23:51 +0800
-Message-ID: <CAMz4kuKCvN-dpSw3ZXj5CvahWkb6-4a93DDFJ66vkqeA=3=o5A@mail.gmail.com>
-References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
- <99befd2badc4dffb59662fca1e11d79f18b64755.1533638405.git.baolin.wang@linaro.org>
- <1533661818.2283.264.camel@impinj.com> <CAMz4kuJrzaZn9560tF73a-WPNhhRj5S2ezTKr0HHpcGRXMw-Ew@mail.gmail.com>
- <1533755337.2283.280.camel@impinj.com>
+From: Alan Cox <gnomes@lxorguk.ukuu.org.uk>
+Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
+Date: Thu, 9 Aug 2018 12:59:39 +0100
+Message-ID: <20180809125939.39ac2cc9@alans-desktop>
+References: <20180701110804.32415-1-afaerber@suse.de>
+ <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
+ <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
+ <20180808213640.10a1d76f@alans-desktop>
+ <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
-To: Trent Piepho <tpiepho@impinj.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1533755337.2283.280.camel@impinj.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Michal =?UTF-8?B?S3ViZcSNZWs=?= <mkubecek@suse.cz>,
+ Konstantin =?UTF-8?B?QsO2aG0=?= <konstantin.boehm@ancud.de>,
+ Sebastian =?UTF-8?B?SGXDnw==?= <shess@hessware.de>,
+ Pieter Robyns <pieter.robyns@uhasselt.be>, contact@snootlab.com,
+ Xue Liu <liuxuenetmail@gmail.com>, Ken Yu <ken.yu@rakwireless.com>,
+ Michael =?UTF-8?B?UsO2ZGVy?= <michael.roeder@avnet.eu>,
+ Stefan Schmidt <stefan@datenfreihafen.org>, Rob Herring <robh@kernel.org>,
+ lora@globalsat.com.tw, Alexander Graf <agraf@suse.de>,
+ Jan Jongboom <jan.jongboom@arm.com>, Janus Piwek <jpiwek@arroweurope.com>,
+ Jon Ortego <Jon.Ortego@imst.de>, Jian-Hong Pan <starnight@g.ncu.edu.tw>,
+ devicetree@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
+ Hasnain Virk <Hasnain.Virk@arm.com>, Daniele Comel <dcomel@mipot.com>,
+ Marcel Holtmann <marcel@holtmann.org>, Mark Brown <broonie@kernel.org>,
+ Dollar Chen <dollar.chen@wtmec.com>, Brian Ray <b
+To: Andreas =?UTF-8?B?RsOkcmJlcg==?= <afaerber@suse.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Trent,
+> Yes, and we are talking about that concrete sx1276 driver here, whose
+> chipset has a state machine that only allows either rx or tx and also
+> has standby and sleep modes with differing levels of data retention.
 
-On 9 August 2018 at 03:08, Trent Piepho <tpiepho@impinj.com> wrote:
-> On Wed, 2018-08-08 at 11:19 +0800, Baolin Wang wrote:
->> On 8 August 2018 at 01:10, Trent Piepho <tpiepho@impinj.com> wrote:
->> > On Tue, 2018-08-07 at 18:43 +0800, Baolin Wang wrote:
->> > >
->> > > +static u32 sprd_spi_transfer_max_timeout(struct sprd_spi *ss,
->> > > +                                      struct spi_transfer *t)
->> > > +{
->> > > +     /*
->> > > +      * The time spent on transmission of the full FIFO data is the maximum
->> > > +      * SPI transmission time.
->> > > +      */
->> > > +     u32 size = t->bits_per_word * SPRD_SPI_FIFO_SIZE;
->> > > +     u32 bit_time_us = SPRD_SPI_HZ / t->speed_hz + 1;
->
-> There's another flaw here in that the transfer speed, t->speed_hz,
-> might not be exactly what is used, due to limitations of the clock
-> divider.  It would be better to find the actual SPI clock used, then
-> use that in the calculations.
+It's a hardware limit, it should never influence the protocol stack
+itself just the driver. Linux always tries to design to optimize the
+non-crappy case. In the long term that works out best because hardware
+improves and you don't want to be tied to an old limit.
 
-Right, will use the real speed to calculate the transfer time.
+> > (Some ancient ethernet cards do this btw.. they can't listen and transmit
+> > at the same time)  
+> 
+> So when do they start receiving?
 
->
->> > > +     u32 total_time_us = size * bit_time_us;
->> > > +     /*
->> > > +      * There is an interval between data and the data in our SPI hardware,
->> > > +      * so the total transmission time need add the interval time.
->> > > +      *
->> > > +      * The inteval calculation formula:
->> > > +      * interval time (source clock cycles) = interval * 4 + 10.
->> > > +      */
->> > > +     u32 interval_cycle = SPRD_SPI_FIFO_SIZE * ((ss->interval << 2) + 10);
->> > > +     u32 interval_time_us = interval_cycle * SPRD_SPI_HZ / ss->src_clk + 1;
->> >
->> > If interval is greater than 31, this will overflow.
->>
->> Usually we will not set such a big value for interval,  but this is a
->> risk like you said. So we will check and limit the interval value to
->> make sure the formula will not overflow.
->>
->
-> Better would be to limit the inter word delay to whatever maximum value
-> your hardware supports, and then write code that can calculate that
-> without error.
+When they are not transmitting. The transmit path switches modes and when
+the frame send is done it goes back to receiving. As old ethernet was
+also half duplex that worked.
 
-Yes, will define the maximum word delay values to avoid overflow.
+> The issue here was that my original description, which you appear to
+> have cut, suggested a continuous listen mode, interrupted by transmit.
 
->
->> > > +static void sprd_spi_set_speed(struct sprd_spi *ss, u32 speed_hz)
->> > > +{
->> > > +     /*
->> > > +      * From SPI datasheet, the prescale calculation formula:
->> > > +      * prescale = SPI source clock / (2 * SPI_freq) - 1;
->> > > +      */
->> > > +     u32 clk_div = ss->src_clk / (speed_hz << 1) - 1;
->> >
->> > You should probably round up here.  The convention is to use the
->> > closest speed less than equal to the requested speed, but since this is
->> > a divider, rounding it down will select the next highest speed.
->>
->> Per the datasheet, we do not need round up/down the speed. Since our
->> hardware can handle the clock calculated by the above formula if the
->> requested speed is in the normal region (less than ->max_speed_hz).
->
-> That is not what I mean.  Let me explain differently.
->
-> An integer divider like this can not produce any frequency exactly.
-> Consider if src_clk is 10 MHz.  A clk_div value of 0 produces a 5 MHz
-> SPI clock.  A clk_div value of 1 produces a 2.5 MHz SPI clock.
->
-> What if the transfer requests a SPI clock of 3 MHz?
->
-> Your math above will produce a SPI clock of 5 MHz, faster than
-> requested.  This is not the convention in Linux SPI masters.  You
-> should instead of have chosen a clk_div value of 1 to get a SPI clock
-> of 2.5 MHz, the closest clock possible that is not greater than the
-> requested value.
->
-> To do this, round up.
->
-> clk_div = DIV_ROUND_UP(ss->src_clk, speed_hz * 2) - 1;
+I don't think I cut it but if so I didn't mean to and your approach is
+the one I agree with.
 
-Thanks for your patient explanation. After talking with Lanqing who is
-the author of the SPI driver, we think you are definitely correct and
-will fix in next version according to your suggestion. Thanks a lot.
+> Jian-Hong didn't like that, with reference to the LoRaWAN spec that
+> supposedly asks for only being in receive mode when expecting a message,
+> likely to save on battery. So the question is, could we cleanly
+> implement receiving only when the user asks us to, or is that a no-go?
 
--- 
-Baolin Wang
-Best Regards
+Why would you do so ? You can't run Linux on a tiny little
+micro-controller where that would matter. Sure it makes sense for some
+tiny spec of embedded silicon buried in a sensor - but not a Linux box.
+
+Now you might power it down when the interface is down, or when there is
+nobody using that interface but that's really more about long term idle
+power.
+
+> bands and 2.) duty-cycle limits for some of those bands. No maintainer
+> commented on that so far. Thus I am working in tiny steps on providing
+> netlink-layer commands in nllora that can dispatch the individual radio
+> settings to drivers, which then upper layers can instrument as needed.
+
+Sounds right to me.
+> 
+> And making my very first steps with netlink here, it appeared as if each
+> technology has its own enums of commands and attributes, so I don't see
+> how to reuse anything from Wifi here apart from some design inspiration.
+
+That seems reasonable - you aren't likely to want to manage them with the
+same tool.
+
+> > That's a hardware question. Imagine a software defined radio. If your
+> > limitation wouldn't exist in a pure software defined radio then it's
+> > almost certainly a device level detal.  
+> 
+> An SDR would not be using this sx1276 device driver, I imagine.
+> 
+> In fact I would expect an SDR device not to be in drivers/net/lora/ at
+> all but to live in drivers/net/sdr/ and to consume ETH_P_LORA etc. skbs
+> and just do the right thing for them depending on their type...
+
+The point I was trying to make was that if you want to decide whether
+something is driver level or protocol level ask 'is this something you
+can't do even with an SDR'. Some things are protocol properties that no
+fancy hardware will change. Others are hardware limits, in which case you
+want them driver level - because at some point the hardware will get
+better.
+
+> > If you've got something listening to data but without the structure
+> > needed to identify multiple listeners and split out the data meaningfully
+> > to those listeners according to parts of the packet then you've got no
+> > reason to make it a protocol just use SOCK_PACKET and if need be BPF.  
+> 
+> Sorry, that doesn't parse for me. SOCK_PACKET must be a protocol on some
+> PF_ protocol family, no? Are you suggesting I use SOCK_PACKET instead of
+> SOCK_DGRAM in what is now net/lora/dgram.c? Or are you saying there's
+> some generic implementation that we can reuse and scratch mine?
+
+There is a heirarchy. Let me us IP for an example
+
+(historically it was SOCK_PACKET nowdays PF_PACKET - the layering got
+sorted better)
+
+PF_PACKET SOCK_RAW ETH_P_ALL		
+
+Everything on that device minus some things like hardware pre-ambles
+
+PF_PACKET SOCK_RAW ETH_P_SOMETHING
+
+Everything on that device that has the underlying protocol (and the
+protocol might not be in the packet but a property of the interface
+because it only does that format - simple example SLIP is IP packets over
+a serial link a SLIP interface is IP, not because there is anything
+saying it is but because that is *all* it can be)
+
+You get the two above for free. PF_PACKET is built into the stack so
+providing you label packets with the ETH_P_xxx you have for Lora, you can
+use PF_PACKET interfaces to dump them and write raw packets at the kernel
+layer.
+
+PF_INET SOCK_RAW
+
+Split the messages by protocol number in IP between multiple
+listeners/writers
+
+PF_INET SOCK_UDP / TCP etc
+
+Split the messages by port numbers in the higher level protocol
+
+
+For PF_LORA these would map to whatever goes on at the LORA protocol
+level and divide LORA messages up between multiple processes on the
+Linux system that are interested in some of the messages.
+
+
+> > The reason we have a socket layer not /dev/ethernet0 is that it's
+> > meaningful to divide messages up into flows, and to partition those flows
+> > securely amongst multiple consumers/generators.  
+> 
+> For me the distinction is that a /dev/whatever0 would seem more suited
+> for a stream of data to read/write, whereas sockets give us a bounded
+> skb for packets at device driver level.
+
+You could equally do that in a simple character device *if* you didn't
+need to split messages up and share between users. Some protocol stacks
+actually do that and then sort it out in user space, either because they
+are really obscure or they are incredibly complicated and broken so want
+to be out of kernel 8)
+
+> These PHYs all broadcast something over the antenna when sending, with
+> any addressing of listeners or senders being optional and MAC-specific,
+> apart from the LoRa/FSK SyncWord as well as the various frequency etc.
+> settings that determine what the receiver listens for.
+> 
+> None of these PHYs define any mechanism like EtherType through which to
+> identify upper-layer protocols.
+> 
+> So in a way, listening is always in a promiscuous mode, and I guess we
+> would need to try to parse each incoming packet as e.g. a LoRaWAN packet
+> and just give up if it's too short or checksums don't match. Only at the
+> layer of LoRaWAN and competing proprietary or custom protocols can we
+> split received packets out to individual listeners.
+
+My vote would be in that case that you either
+
+1. Set the protocol type on the interface assuming you don't mix and
+match (and if it's relying on random bits not looking like other packets
+then it sounds a complete mess at the moment - but yeah its new tech)
+
+2. You pass everything up to some magical agent which somehow splits them
+up and labels them ETH_P_LORA / ETH_P_FOO etc
+
+3. You do what ethernet does (which admittedly is *way* simpler for
+ethernet) and you have a library routine you can pass an skbuff in the
+driver itself which figures out wtf to label the packet. Look how
+eth_type_trans() is used. Drivers then just do
+
+           skb->protocol = xxx_type_trans(skb, dev);
+
+and the basic labelling gets done and any header pulls (you probably won't
+have any given you don't have anything wrapping LORA), and
+multicast/broadcast labelling - again meaningless I suspect.
+
+#3 Is probably the nicest because you update it all in one place as
+standards change and the market hopefully conslidates and develops some
+kind of sane packet formats. It's also effectively covering #1 and it's
+easy to start with because an initial implementation can just do 'return
+htons(ETH_P_LORA)'.
+
+> 
+> Does that give us any further clues for the design discussion here?
+> 
+I think so yes
+
+How do you plan to deal with routing if you've got multiple devices ?
+
+Alan

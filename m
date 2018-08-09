@@ -1,56 +1,68 @@
-From: Alexander Aring <aring@mojatatu.com>
-Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Thu, 9 Aug 2018 11:21:34 -0400
-Message-ID: <20180809152134.gcql2lsh4sigx3hg@x220t>
-References: <20180701110804.32415-1-afaerber@suse.de>
- <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
- <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
- <20180808213640.10a1d76f@alans-desktop>
- <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
- <20180809125939.39ac2cc9@alans-desktop>
- <CAC=mGzjn4Kc-q9NFwX6NhU4V_thnzBP8SHtFQKyRbpSKR=yx3w@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
+Date: Thu, 9 Aug 2018 11:03:55 -0700
+Message-ID: <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
+References: <1525383283-18390-1-git-send-email-girishm@codeaurora.org>
+ <152607782792.34267.8023817955251139395@swboyd.mtv.corp.google.com>
+ <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org> <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
+ <20180522173000.GG24776@sirena.org.uk> <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
+ <20180524162940.GA4828@sirena.org.uk> <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
+ <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-        netdev@vger.kernel.org,
-        "<linux-arm-kernel@lists.infradead.org\\"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org>," <linux-kernel@vger.kernel.org>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Janus Piwek <jpiwek@arroweurope.com>,
-        Michael =?utf-8?B?UsO2ZGVy?= <michael.roeder@avnet.eu>,
-        Dollar Chen <dollar.chen@wtmec.com>,
-        Ken Yu <ken.yu@rakwireless.com>,
-        Konstantin =?utf-8?B?QsO2aG0=?= <konstantin.boehm@ancud.de>,
-        Jan Jongboom <jan.jongboom@arm.com>,
-        Jon Ortego <Jon.Ortego@imst.de>,
-        "linux-kernel@vger.kernel.org>," <contact@snootlab.co
-To: Jian-Hong Pan <starnight@g.ncu.edu.tw>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Stephen Boyd <swboyd@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Sagar Dharia <sdharia@codeaurora.org>,
+        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "Mahadevan, Girish" <girishm@codeaurora.org>
+To: Dilip Kota <dkota@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAC=mGzjn4Kc-q9NFwX6NhU4V_thnzBP8SHtFQKyRbpSKR=yx3w@mail.gmail.com>
+In-Reply-To: <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi,
 
-On Thu, Aug 09, 2018 at 11:02:45PM +0800, Jian-Hong Pan wrote:
-...
-> 
-> For LoRaWAN, it is a star topology.
-> 
+On Fri, Aug 3, 2018 at 5:18 AM,  <dkota@codeaurora.org> wrote:
+>>> +       if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
+>>> +                               &spi->max_speed_hz)) {
+>
+>
+>> Why does this need to come from DT?
+>
+>
+> This is required to set the SPI controller max frequency.
+> As it is specific to the controller, so looks meaningful to specify it in
+> dtsi.
+> Also, spi core framework will set the transfer speed to controller max
+> frequency
+> if transfer frequency is greater than controller max frequency.
+> Please mention if you have a other opinion.
 
-In sense of 6LoWPAN that means "border router" in the middle which runs
-radvd on it and sending RA messages. Then doing a route (or even allow nd
-proxy) between capable $IPv6 (ethernet?) and LoRa 6LoWPAN interface.
+Here are my thoughts:
 
-All others listen for RA messages with PIO and doing autoconfiguration.
-(In 6LoWPAN you would also pass a 6CO option to compress the PIO
-prefix, which would make sense to fully elide all IP addresses in the
-header).
+1. It sure seems like the clock framework could be enforcing the max
+speed here.  SPI can just ask for the speed and the clock framework
+will pick the highest speed it can if you ask for one too high.  Isn't
+that the whole point of the "struct freq_tbl" in the clock driver?
 
-- Alex
+
+2. The device tree writer already provides a max clock speed for each
+SPI slave in the device tree.  ...shouldn't the device tree writer
+already be taking into account the max of the SPI port when setting
+this value?
+
+
+3. If you really truly need code in the SPI driver then make sure you
+include a compatible string for the SoC and have a table in the driver
+that's found with of_device_get_match_data().  AKA:
+
+  compatible = "qcom,geni-spi-sdm845", "qcom,geni-spi";
+
+...as per #1 and #2 I don't think this is useful
+
+
+-Doug

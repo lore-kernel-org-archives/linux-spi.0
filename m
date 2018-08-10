@@ -1,114 +1,71 @@
-From: dkota@codeaurora.org
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
- QUP
-Date: Fri, 10 Aug 2018 21:59:46 +0530
-Message-ID: <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
-References: <24b3ef71-18c1-1704-e324-5581fd18a998@codeaurora.org>
- <152700759909.210890.13296077062705155869@swboyd.mtv.corp.google.com>
- <20180522173000.GG24776@sirena.org.uk>
- <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
- <20180524162940.GA4828@sirena.org.uk>
- <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
- <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
- <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
- <20180810105205.GC20971@sirena.org.uk>
- <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
- <20180810161329.GF20971@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "Mahadevan, Girish" <girishm@codeaurora.org>
-To: Mark Brown <broonie@kernel.org>,
-        Doug Anderson <dianders@chromium.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: davinci: fix a NULL pointer dereference" to the spi tree
+Date: Fri, 10 Aug 2018 17:31:16 +0100 (BST)
+Message-ID: <20180810163116.5CA7D112435F@debutante.sirena.org.uk>
+References: <20180810091352.30227-1-brgl@bgdev.pl>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180810161329.GF20971@sirena.org.uk>
+In-Reply-To: <20180810091352.30227-1-brgl@bgdev.pl>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2018-08-10 21:43, Mark Brown wrote:
-> On Fri, Aug 10, 2018 at 08:40:17AM -0700, Doug Anderson wrote:
->> On Fri, Aug 10, 2018 at 3:52 AM, Mark Brown <broonie@kernel.org> 
->> wrote:
-> 
->> > This is more about matching the data rate between the two drivers - the
->> > clock framework could (and possibly should) reasonably return an error
->> > here, we're trying to ensure that drivers and controllers work well
->> > together here.
-> 
->> The clock framework should be able to accomplish what you want.  If
->> you just request the rate it will do its best to make the rate
->> requested.  If we want to see what clock would be set before setting
-> 
-> The request could be massively off the deliverable rate - 50% or more.
-> 
->> is "close enough" in this case?  I haven't gone and dug, but I've
->> always seen people only specify a max rate for SPI.  ...so as long as
->> the clock framework gives us something <= the clock we requested then
->> we should be OK, right?  If / when this becomes a problem then we
->> should add a min/max to "struct spi_transfer", no?
-> 
-> On the other hand if I ask for my audio to be played at 44.1kHz and the
-> clock framework says "yes, sure" and gives me 8kHz then the user
-> experience will be poor.
-> 
->> Note that there are also clk_set_rate_range(), clk_set_min_rate(), and
->> clk_set_max_rate() though I'm told those might be a bit quirky.
-> 
-> They're certainly not widely used at any rate.
-> 
->> ...but maybe we don't need to argue about this anyway since IMHO we
->> should just use the clk framework to figure out our maximum speed.
-> 
-> It looks like that's true in this case.
-> 
->> >> 3. If you really truly need code in the SPI driver then make sure you
->> >> include a compatible string for the SoC and have a table in the driver
->> >> that's found with of_device_get_match_data().  AKA:
-> 
->> >>   compatible = "qcom,geni-spi-sdm845", "qcom,geni-spi";
-> 
->> > A controller driver really shouldn't need to be open coding anything.
-> 
->> It wouldn't be open-coding, it would be a different way of specifying
->> things.  In my understanding it's always a judgement call about how
-> 
-> If you're saying we need clock rate selection logic (which is what it
-> sounds like) rather than data then that seems like a problem.
+The patch
 
-Here are my couple of cents:
-SPI controller maximum frequency can be lesser than or equal to Clock 
-framework's maximum
-frequency, so should not rely on the Clock framework.
+   spi: davinci: fix a NULL pointer dereference
 
-SPI controller maximum frequency should not be derived from the SPI 
-slave maximum frequency.
-Consider the case where N number of slaves connected to SPI controller 
-then there will
-be N number of slave maximum frequency.
-Also it does not look meaningful in communicating the SPI slave maximum 
-frequency
-as SPI controller maximum frequency to the SPI core framework.
+has been applied to the spi tree at
 
-Hence relying on SPI slave maximum frequency for SPI controller maximum 
-frequency can be eliminated.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Now the need is, how to communicate the SPI controller maximum frequency 
-to SPI core framework?
-Is it by DTSI entry or hardcoding in the SPI controller driver?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-My stand is for providing the DTSI entry.
-Why because, this keeps SPI controller driver generic across the boards 
-and portable.
-Also it is not against to Device tree usage because maximum frequency
-is describing the property of the hardware.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Please add your points.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---Dilip
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 563a53f3906a6b43692498e5b3ae891fac93a4af Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date: Fri, 10 Aug 2018 11:13:52 +0200
+Subject: [PATCH] spi: davinci: fix a NULL pointer dereference
+
+On non-OF systems spi->controlled_data may be NULL. This causes a NULL
+pointer derefence on dm365-evm.
+
+Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/spi/spi-davinci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 60d59b003aa4..4ffc0f495be8 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -217,7 +217,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ 	pdata = &dspi->pdata;
+ 
+ 	/* program delay transfers if tx_delay is non zero */
+-	if (spicfg->wdelay)
++	if (spicfg && spicfg->wdelay)
+ 		spidat1 |= SPIDAT1_WDEL;
+ 
+ 	/*
+-- 
+2.18.0

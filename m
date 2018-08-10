@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
  based QUP
-Date: Fri, 10 Aug 2018 17:43:45 +0100
-Message-ID: <20180810164345.GH20971@sirena.org.uk>
+Date: Fri, 10 Aug 2018 17:46:36 +0100
+Message-ID: <20180810164636.GI20971@sirena.org.uk>
 References: <20180522173000.GG24776@sirena.org.uk>
  <8968e04c-a200-ef06-5c33-94e399f7b9fe@codeaurora.org>
  <20180524162940.GA4828@sirena.org.uk>
@@ -12,11 +12,11 @@ References: <20180522173000.GG24776@sirena.org.uk>
  <20180810105205.GC20971@sirena.org.uk>
  <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
  <20180810161329.GF20971@sirena.org.uk>
- <CAD=FV=Xu986JWnwC_D6OdUbers4fGf=ExS_z-J_t=QqHOhs1PA@mail.gmail.com>
+ <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="h3LYUU6HlUDSAOzy"
-Cc: Dilip Kota <dkota@codeaurora.org>,
+        protocol="application/pgp-signature"; boundary="MPkR1dXiUZqK+927"
+Cc: Doug Anderson <dianders@chromium.org>,
         Stephen Boyd <swboyd@chromium.org>,
         LKML <linux-kernel@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
@@ -24,84 +24,52 @@ Cc: Dilip Kota <dkota@codeaurora.org>,
         Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         "Mahadevan, Girish" <girishm@codeaurora.org>
-To: Doug Anderson <dianders@chromium.org>
+To: dkota@codeaurora.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAD=FV=Xu986JWnwC_D6OdUbers4fGf=ExS_z-J_t=QqHOhs1PA@mail.gmail.com>
+In-Reply-To: <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---h3LYUU6HlUDSAOzy
+--MPkR1dXiUZqK+927
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 10, 2018 at 09:27:05AM -0700, Doug Anderson wrote:
-> On Fri, Aug 10, 2018 at 9:13 AM, Mark Brown <broonie@kernel.org> wrote:
-> > On Fri, Aug 10, 2018 at 08:40:17AM -0700, Doug Anderson wrote:
+On Fri, Aug 10, 2018 at 09:59:46PM +0530, dkota@codeaurora.org wrote:
 
-> >> The clock framework should be able to accomplish what you want.  If
-> >> you just request the rate it will do its best to make the rate
-> >> requested.  If we want to see what clock would be set before setting
+> Now the need is, how to communicate the SPI controller maximum frequency to
+> SPI core framework?
+> Is it by DTSI entry or hardcoding in the SPI controller driver?
 
-> > The request could be massively off the deliverable rate - 50% or more.
+If you've got a limit that exists in the IP the hard code it in the
+driver.
 
-> Agreed.  If the clock is massively off and that causes problems then
-> someone will need to debug it and find a solution.  I'm not aware of
-> us being in that case in the driver in question.
+> My stand is for providing the DTSI entry.
+> Why because, this keeps SPI controller driver generic across the boards and
+> portable.
+> Also it is not against to Device tree usage because maximum frequency
+> is describing the property of the hardware.
 
-For the logic in the SPI core it's relatively common, lots of SPI
-controllers are limited to something in the region of 10-12.5MHz but it's
-common for devices to be able to run up to the region of 30MHz.
+If the limit the controller has is not coming from the clock tree then
+presumably it's a physical limitation of the silicon and isn't going to
+vary per board.  If the limit is coming from the board then it should be
+specified per slave since different slaves may have different
+requirements on different boards.
 
-> >> >> 3. If you really truly need code in the SPI driver then make sure y=
-ou
-> >> >> include a compatible string for the SoC and have a table in the dri=
-ver
-> >> >> that's found with of_device_get_match_data().  AKA:
-
-> >> It wouldn't be open-coding, it would be a different way of specifying
-> >> things.  In my understanding it's always a judgement call about how
-> >
-> > If you're saying we need clock rate selection logic (which is what it
-> > sounds like) rather than data then that seems like a problem.
->=20
-> We're talking past each other I think.  Maybe a concrete example helps?
-
-=2E..
-
-> IMO the line marked "/* UNNEEDED */" below should be removed:
-
->     ...
->     spi-max-frequency =3D <50000000>;  /* UNNEEDED */
-
-This is a line in the device tree (which I agree shouldn't be there),
-not code in the SPI driver?
-
-> ...and then the driver should say "oh, I have a compatible string of
-> "qcom,geni-spi-sdm845" so I know my controller's max frequency must be
-> 50 MHz.  It can get that information using of_device_get_match_data().
-
-> Hopefully that's clearer?
-
-That's just a data table, when you talk about code in the driver
-(particularly given the wider discussion of what the maximum rate might
-be) it sounds rather more involved than that.
-
---h3LYUU6HlUDSAOzy
+--MPkR1dXiUZqK+927
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlttwMAACgkQJNaLcl1U
-h9B/IAf9EhX/x7ITUJ2ludOKYLs5jT10JI6Sch29xzZJM/rwQZKQ5MkhmHaueXBD
-TFNoj831zKp0Y1SqsOF4OtuNnXjE08sMiuCeHCkuFBuVgPAgHTPonHf0S7v2P2+E
-qw0mjvqLIs/kLu+tspS2e6zsg7mOgab7WFFUcZyQgridiAOoeryGsVgVJw7LDhH0
-3c1jv1BjBE0uR6xRYJERBqbJnyrQZH8k0O2Tc/AMMQxEBtsXDGKWdS4AiCa049SA
-4NX1Zc0FELg3Yw7oC2T2PpPLzv+5FlMf/GqzYQubu/vv9rja9I7tKhoxwM1iBnVx
-9PSIMfBY/ZxtQKrvvEso7k5RSmgONw==
-=F/JN
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlttwWwACgkQJNaLcl1U
+h9BPcwf+JNWdFryuW2eK9kP9w/E8+jHe6SMG9VTzvgwMXSdHOv7xs8iZYKUKoYJt
+mXIOa8c2HKAK0BJYqXqceA5XtPZ4/+Xtw3PZGOaoQiv90WNHSdgN80ngek/ozRev
+BjJyrrbiNTYbH2kq9nSCLu0Paw5kl1PfLRpZgfFrrZhn+H0W85+wGo7i0BkLlOmx
+YfwbgV1WiawSv8UABQu/AJzWyj1trYZOqrF4NKKR9V3tFsoNwIZgtlOJpF4uz3u+
+qeqe62thRBqRrX3jBVZuj77Fb3r5Pl13RaqngtG8BwWv8oZ0xx0qkkaX66GBf1OC
+mco07vPbT7C7Y52ucvyNGWEte6b01g==
+=wK88
 -----END PGP SIGNATURE-----
 
---h3LYUU6HlUDSAOzy--
+--MPkR1dXiUZqK+927--

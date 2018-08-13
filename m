@@ -1,7 +1,7 @@
 From: Kosta Zertsekel <zertsekel@gmail.com>
 Subject: [PATCH v3] spi: orion: cosmetics - alias long direct_access variables
-Date: Mon, 13 Aug 2018 23:50:19 +0300
-Message-ID: <20180813205019.16214-1-zertsekel@gmail.com>
+Date: Mon, 13 Aug 2018 23:54:45 +0300
+Message-ID: <20180813205445.17113-1-zertsekel@gmail.com>
 Cc: Kosta Zertsekel <zertsekel@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -16,6 +16,7 @@ Instead of using `spi->child[cs].direct_access.XXX` use `dir_acc->XXX`.
 Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
 
 Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
  drivers/spi/spi-orion.c | 22 +++++++++++-----------
  1 file changed, 11 insertions(+), 11 deletions(-)

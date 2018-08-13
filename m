@@ -1,143 +1,206 @@
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Subject: Re: [RFC net-next 00/15] net: A socket API for LoRa
-Date: Sun, 12 Aug 2018 19:59:35 +0200
-Message-ID: <11276f7d-0175-05e9-a9bd-c72868067081@suse.de>
-References: <20180701110804.32415-1-afaerber@suse.de>
- <CAC=mGzgUCopz2xTOA0R-WD8a1DOaOOUn=YpfdMiJ33y3hnh6kg@mail.gmail.com>
- <92ee4016-1da9-826b-3674-b2d604a64848@suse.de>
- <20180808213640.10a1d76f@alans-desktop>
- <a70e9715-beac-d9a8-145e-de00175e56fa@suse.de>
- <20180809125939.39ac2cc9@alans-desktop>
- <CAC=mGzjn4Kc-q9NFwX6NhU4V_thnzBP8SHtFQKyRbpSKR=yx3w@mail.gmail.com>
- <20180810165711.59bf26f7@alans-desktop>
- <CAC=mGzhaLiSj5-+euM-YTRLwNDi8QJY0fAbiZbUadkPhZGRh_Q@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI updates for v4.19
+Date: Mon, 13 Aug 2018 11:02:57 +0100
+Message-ID: <20180813100257.GD6757@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Janus Piwek <jpiwek@arroweurope.com>,
-        =?UTF-8?Q?Michael_R=c3=b6der?= <michael.roeder@avnet.eu>,
-        Dollar Chen <dollar.chen@wtmec.com>,
-        Ken Yu <ken.yu@rakwireless.com>,
-        =?UTF-8?Q?Konstantin_B=c3=b6hm?= <konstantin.boehm@ancud.de>,
-        Jan Jongboom <jan.jongboom@arm.com>,
-        Jon Ortego <Jon.Ortego@imst.de>,
-        "contact@snootlab.com" <contact@snootlab.com>,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        Brian Ray <brian.ray@link-labs.com>, lora@globalsat.com.tw,
-        Alexander Graf <agraf@suse.de>,
-        =?UTF-8?Q?Michal_Kube=c4=8dek?= <mkubecek@suse.cz
-To: Jian-Hong Pan <starnight@g.ncu.edu.tw>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <CAC=mGzhaLiSj5-+euM-YTRLwNDi8QJY0fAbiZbUadkPhZGRh_Q@mail.gmail.com>
-Content-Language: en-US
-Sender: netdev-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="eheScQNz3K90DVRs"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 12.08.2018 um 18:37 schrieb Jian-Hong Pan:
-> Alan Cox <gnomes@lxorguk.ukuu.org.uk> 於 2018年8月10日 週五 下午11:57寫道：
->>
->>> The sleep/idle/stop mitigate the unconcerned RF signals or messages.
->>
->> At the physical level it's irrelevant. If we are receiving then we might
->> hear more things we later discard. It's not running on a tiny
->> microcontroller so the extra CPU cycles are not going to kill us.
-> 
-> According different power resource, LoRaWAN defines Class A, B and C.
-> Class A is the basic and both Class B and C devices must also
-> implement the feature of Class A.
-[...]
-> So, yes!  Class C opens the RX windows almost all the time, except the TX time.
-> And uses different channel to avoid the reflection noise (*).
-> 
-> However, Class C must also implements Class A and C is more complex than A.
-> I think starting from the simpler one and adding more features and
-> complexity in the future will be a better practice.
 
-Jian-Hong, you've failed to come up with any practical proposal or patch
-how to implement what you are saying LoRaWAN requires. Doing the
-impossible is never simpler!
+--eheScQNz3K90DVRs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Implementing a simple back-off timer sounds doable by comparison.
+The following changes since commit 1ffaddd029c867d134a1dde39f540dcc8c52e274:
 
-May I remind you, LoRa is the simpler step before LoRaWAN - if our
-layering is done right, someone else might choose to implement LoRaWAN
-in userspace based on PF_LORA. There is absolutely no reason to hardcode
-any LoRaWAN settings at device driver level for e.g. SX1276.
+  Linux 4.18-rc8 (2018-08-05 12:37:41 -0700)
 
->>>> How do you plan to deal with routing if you've got multiple devices ?
->>>
->>> For LoRaWAN, it is a star topology.
->>
->> No the question was much more how you plan to deal with it in the OS. If
->> for example I want to open a LORA connection to something, then there
->> needs to be a proper process to figure out where the target is and how to
->> get traffic to them.
->>
->> I guess it's best phrased as
->>
->> - What does a struct sockaddr_lora look like
-> 
-> According to LoRaWAN spec, the Data Message only has the device's
-> DevAddr (the device's address in 4 bytes) field related to "address".
-> The device just sends the uplink Data Message through the interface
-> and does not know the destination.  Then, a LoRaWAN gateway receives
-> the uplink Data Message and forwards to the designated network server.
-> So, end device does not care about the destination.  It only knows
-> there is a gateway will forward its message to some where.
-> Therefore, only the DevAddr as the source address will be meaningful
-> for uplink Data Message.
+are available in the Git repository at:
 
-Note that he was asking about sockaddr_lora, not LoRaWAN.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
+v4.19
 
-The simple answer is that, inspired by CAN, it uses an ifindex to select
-the interface the user asked to use. That then also answers Alan's next
-question: This ifindex determines which interface it goes out to.
+for you to fetch changes up to c1acb21b32a3bb601453764c9eac9fc8fbb3a81d:
 
-sockaddr_lora was in patch 02/15, latest code here:
-https://git.kernel.org/pub/scm/linux/kernel/git/afaerber/linux-lora.git/tree/include/uapi/linux/lora.h?h=lora-next
+  Merge branch 'spi-4.19' into spi-next (2018-08-10 17:51:52 +0100)
 
->> - How does the kernel decide which interface it goes out of (if any), and
->>   if it loops back
-> 
-> There is the MAC Header in the Data Message which is one byte.
-> Bits 5 to 7 indicate which kind of type the message is.
-> 000: Join Request
-> 001: Join Accept
-> 010: Unconfirmed Data Up
-> 011: Unconfirmed Data Down
-> 100: Confirmed Data Up
-> 101: Confirmed Data Down
-> 110: RFU
-> 111: Proprietary
-> 
-> So, end device only accepts the types of downlink and the matched
-> DevAddr (the device's address) in downlink Data Message for RX.
+----------------------------------------------------------------
+spi: Updates for v4.19
 
-LoRaWAN is an entirely different story, therefore my agreement that we
-need a separate PF_LORAWAN and sockaddr_lorawan for EUI addressing.
+Quite an active release for the SPI subsystem, lots of small updates and
+fixes scattered about with highlights including:
 
-I still think the user will need to explicitly say which interface they
-want to bind their socket to. AFAIU the device EUI is more comparable to
-an Ethernet MAC address than to an IP address that the user would
-configure routes for. If you have e.g. four SX1301 devices then they may
-be configured for different frequencies, bandwidths, etc. but unlikely
-for certain destination/source addresses. So either all that data comes
-via sockaddr (which I was discussing in the FSK/OOK part of this thread)
-or the user needs to make the interface choice for us.
+ - 3 wire support in the GPIO driver.
+ - Support for setting a custom memory name in the memory mapped flash
+   drivers.
+ - Support for extended mode in the Freescale DSPI controller.
+ - Support for the non-standard integration with the Microsemi Ocelot
+   platform in the DesignWare driver.
+ - New driver for the SocioNext UniPhier.
 
-Loopback mode would require a separate virtual device driver such as
-fakelr or vlora.
+----------------------------------------------------------------
+Alexandre Belloni (5):
+      spi: dw: fix possible race condition
+      spi: dw: allow providing own set_cs callback
+      spi: dw: export dw_spi_set_cs
+      spi: dw-mmio: add MSCC Ocelot support
+      spi: dw: document Microsemi integration
 
-Regards,
-Andreas
+Andrey Smirnov (1):
+      spi: spi-fsl-dspi: Fill actual_length when doing DMA transfer
 
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+Bartosz Golaszewski (1):
+      spi: davinci: fix a NULL pointer dereference
+
+Boris Brezillon (1):
+      spi: spi-mem: Constify spi_mem->name
+
+Colin Ian King (1):
+      spi: omap2-mcspi: remove several redundant variables
+
+Corentin Labbe (1):
+      spi: remove unused adi_spi3.h header
+
+David Lechner (1):
+      spi: spi-bitbang: change flags from u8 to u16
+
+Esben Haabendal (12):
+      spi: spi-fsl-dspi: Drop unreachable else if statement
+      spi: spi-fsl-dspi: Drop unneeded use of dataflags bits
+      spi: spi-fsl-dspi: Fix per transfer cs_change handling
+      spi: spi-fsl-dspi: Simplify transfer counter handling
+      spi: spi-fsl-dspi: Support 4 to 16 bits per word transfers
+      spi: spi-fsl-dspi: Fix MCR register handling
+      spi: spi-fsl-dspi: Fixup regmap configuration
+      spi: spi-fsl-dspi: Add support for XSPI mode registers
+      spi: spi-fsl-dspi: Framesize control for XSPI mode
+      spi: spi-fsl-dspi: XSPI FIFO handling (in TCFQ mode)
+      spi: spi-fsl-dspi: Advertise 32 bit for XSPI mode
+      spi: spi-fsl-dspi: Enable extended SPI mode
+
+Fabio Estevam (1):
+      spi: spi-fsl-dspi: Switch to SPDX identifier
+
+Frieder Schrempf (3):
+      spi: spi-mem: Fix a typo in the documentation of struct spi_mem
+      spi: spi-mem: Extend the SPI mem interface to set a custom memory name
+      mtd: m25p80: Call spi_mem_get_name() to let controller set a custom n=
+ame
+
+Geert Uytterhoeven (1):
+      spi: sh-msiof: Make sure all DMA operations have completed
+
+Gustavo A. R. Silva (1):
+      spi: spi-fsl-dspi: Fix copy-paste error in dspi_probe
+
+Ionela Voinescu (1):
+      spi: img-spfi: Set device select bits for SPFI port state
+
+Jan Kundr=E1t (1):
+      spi: orion: fix CS GPIO handling again
+
+Janek Kotas (1):
+      spi: cadence: Change usleep_range() to udelay(), for atomic context
+
+Keiji Hayashibara (2):
+      spi: add SPI controller driver for UniPhier SoC
+      spi: uniphier: remove unnecessary include headers
+
+Krzysztof Kozlowski (1):
+      spi: spi-fsl-dspi: Fix imprecise abort on VF500 during probe
+
+Kunihiko Hayashi (1):
+      spi: add DT bindings for UniPhier SPI controller
+
+Liang Chen (1):
+      spi: rockchip: add description for px30
+
+Lorenzo Bianconi (2):
+      spi: add flags parameter to txrx_word function pointers
+      spi: spi-gpio: add SPI_3WIRE support
+
+Mark Brown (4):
+      Merge branch 'spi-4.18' into spi-4.19 for DSPI dep
+      Merge tag 'spi-dw-set-cs' of https://git.kernel.org/.../broonie/spi i=
+nto spi-4.19
+      Merge branch 'spi-4.18' into spi-linus
+      Merge branch 'spi-4.19' into spi-next
+
+Maxime Chevallier (5):
+      spi: imx: Remove duplicate variable assignments
+      spi: imx: Use dynamic bursts only when bits_per_word is 8, 16 or 32
+      spi: imx: Use correct number of bytes per words
+      spi: imx: remove unnecessary check in spi_imx_can_dma
+      spi: imx: Use the longuest possible burst size when in dynamic_burst
+
+Mika Westerberg (1):
+      spi: pxa2xx: Add support for Intel Ice Lake
+
+Tiago Brusamarello (1):
+      spi: spi-fsl-espi: Log fifo counters on error
+
+Wei Yongjun (1):
+      spi: cadence: Fix missing clk_disable_unprepare() on error in cnds_ru=
+ntime_resume()
+
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.txt    |   6 +-
+ .../devicetree/bindings/spi/spi-rockchip.txt       |   1 +
+ .../devicetree/bindings/spi/spi-uniphier.txt       |  22 +
+ drivers/mtd/devices/m25p80.c                       |   3 +
+ drivers/spi/Kconfig                                |  13 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-ath79.c                            |   2 +-
+ drivers/spi/spi-bitbang.c                          |  50 +-
+ drivers/spi/spi-butterfly.c                        |   4 +-
+ drivers/spi/spi-cadence.c                          |   4 +-
+ drivers/spi/spi-davinci.c                          |   2 +-
+ drivers/spi/spi-dw-mmio.c                          |  90 ++++
+ drivers/spi/spi-dw.c                               |   9 +-
+ drivers/spi/spi-dw.h                               |   2 +
+ drivers/spi/spi-fsl-dspi.c                         | 505 +++++++++++------=
+---
+ drivers/spi/spi-fsl-espi.c                         |   5 +-
+ drivers/spi/spi-gpio.c                             |  49 +-
+ drivers/spi/spi-img-spfi.c                         |   3 +
+ drivers/spi/spi-imx.c                              | 162 ++++---
+ drivers/spi/spi-lm70llp.c                          |   5 +-
+ drivers/spi/spi-mem.c                              |  28 ++
+ drivers/spi/spi-omap2-mcspi.c                      |   9 -
+ drivers/spi/spi-orion.c                            |  77 +--
+ drivers/spi/spi-pxa2xx.c                           |   4 +
+ drivers/spi/spi-sh-msiof.c                         |  53 ++-
+ drivers/spi/spi-sh-sci.c                           |  20 +-
+ drivers/spi/spi-uniphier.c                         | 523 +++++++++++++++++=
+++++
+ drivers/spi/spi-xtensa-xtfpga.c                    |   2 +-
+ include/linux/spi/adi_spi3.h                       | 254 ----------
+ include/linux/spi/spi-mem.h                        |  14 +-
+ include/linux/spi/spi_bitbang.h                    |   5 +-
+ 31 files changed, 1253 insertions(+), 674 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-uniphier.txt
+ create mode 100644 drivers/spi/spi-uniphier.c
+ delete mode 100644 include/linux/spi/adi_spi3.h
+
+--eheScQNz3K90DVRs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltxV1EACgkQJNaLcl1U
+h9DebQf/f5F8Wt+ZnXmy7xb2tZMMWp+6mA2yLYOZF7UJ4yi+a2SsQM+wFhPQ5rqS
+YsqhOfOyRusbfyVLRanZmiwN0rPJgliCbmPYHwZfqYvJNdjoOQGsVIwYxi6nsgeu
+U8x87ltUCxNKUVn4c/boBLzud1uGaEDdYX6DnBbwb6pyeMREtnCcibkKS8v9j5EE
+CS+CleqKu1Q6Rql4iMpfKUG89cmdsoJpbMOzHm1rqqX+JkkfCtoH8sTBh8+k6q5T
+5yb4JpniqNGtQwQtYILHVUOZizPkNrIB6bDtf7EvvQXugOn0VWc0bIQLm/KW64nh
+WLKtmdMmQxuSWUykmCpVcqVg479TUQ==
+=tPEr
+-----END PGP SIGNATURE-----
+
+--eheScQNz3K90DVRs--

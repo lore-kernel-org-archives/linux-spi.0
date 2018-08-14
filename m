@@ -1,55 +1,86 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi:fix IDR collision on systems with both fixed and
- dynamic SPI bus numbers
-Date: Tue, 14 Aug 2018 15:18:59 +0100
-Message-ID: <20180814141859.GC5810@sirena.org.uk>
-References: <20180813164810.16769-1-kirill.kapranov@compulab.co.il>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
+ based QUP
+Date: Tue, 14 Aug 2018 16:03:40 +0100
+Message-ID: <20180814150340.GE5810@sirena.org.uk>
+References: <20180524162940.GA4828@sirena.org.uk>
+ <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
+ <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
+ <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
+ <20180810105205.GC20971@sirena.org.uk>
+ <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
+ <20180810161329.GF20971@sirena.org.uk>
+ <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
+ <20180810164636.GI20971@sirena.org.uk>
+ <b32c205955e0f42182b16e90f539a919@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="IpbVkmxF4tDyP/Kb"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        l.stach@pengutronix.de
-To: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+        protocol="application/pgp-signature"; boundary="X3gaHHMYHkYqP6yf"
+Cc: Doug Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Sagar Dharia <sdharia@codeaurora.org>,
+        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "Mahadevan, Girish" <girishm@codeaurora.org>
+To: dkota@codeaurora.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180813164810.16769-1-kirill.kapranov@compulab.co.il>
+In-Reply-To: <b32c205955e0f42182b16e90f539a919@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---IpbVkmxF4tDyP/Kb
+--X3gaHHMYHkYqP6yf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Aug 13, 2018 at 07:48:10PM +0300, Kirill Kapranov wrote:
-> On systems where some controllers get a dynamic ID assigned and some have
-> a fixed number (e.g. from ACPI tables), the current implementation might
-> run into an IDR collision: in case of a fixed bus number is gotten by a
-> driver (but not marked busy in IDR tree) and a driver with dynamic bus
-> number gets the same ID and predictably fails.
+On Tue, Aug 14, 2018 at 02:30:02PM +0530, dkota@codeaurora.org wrote:
+> On 2018-08-10 22:16, Mark Brown wrote:
+> > On Fri, Aug 10, 2018 at 09:59:46PM +0530, dkota@codeaurora.org wrote:
 
-Is this something that's actually happened for you?
+> > > delay_usecs is for inter-transfer delays within a message rather than
+> > > after the initial chip select assert (it can be used to keep chip
+> > > select
+> > > asserted for longer after the final transfer too).  Obviously this is
+> > > also something that shouldn't be configured in a driver specific
+> > > fashion.
 
-> +	} else {
-> +	/* devices with a fixed bus num must check-in with the num */
-> +		mutex_lock(&board_lock);
+> > Hmmm ok, so you mean don't send these as controller_data, rather add
+> > new
+> > members to the spi_device struct ?
 
-The indentation here is weird, the comment isn't aligned with the code
-it's commenting on.
+> spi_cs_clk_delay -> Adds Delay from CS line toggle to Clock line toggle
+> spi_inter_words_delay -> Adds inter-word delay for each transfer.
 
---IpbVkmxF4tDyP/Kb
+> Could you please provide more information on accommodating these
+> parameters in SPI core structures like spi_device or spi_transfer? Why
+> because these are very
+> specific to Qualcomm SPI GENI controller.
+
+I'm not sure what specific information you're looking for here - these
+things are not obviously specific to your controller, I'm even aware of
+other controllers which can do them.
+
+> If we define them in spi core framework structures, SPI Slave driver will
+> program and expect it in the SPI transfers.
+
+Sure.
+
+--X3gaHHMYHkYqP6yf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlty5NIACgkQJNaLcl1U
-h9Cltgf6AoHkyc03ShpCTDuvl+u2bjgiiUx+V3abGWb0pEZkU0ZVVIj4+3v+dIZI
-Rv6pP6cY1bb2q9KYxbxJSP0h9d1ywrec1ynGvxbWswLQJrXH5KDV8s2AJhOmNoOr
-bOQJESJBEpfC7msE6yqYKcI7HGBNT3Vsf8T3PVIRea+mJL8690mhsopehWwUKoiy
-6B2IZcwYmS+3fCitHQEMZ8z6G9pXYaVNWCoVe1PVDihW2NE3qI474nbqnM5KNmnx
-CfORtA1toS+a56QCR4baEWAyNAHbr/anRlnoqOic/qJQJflx1ZD5h1RoEmL3RgOV
-6TmZUGdgvfbj2HeWgoN8HQ51zySPBw==
-=EdRp
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlty70wACgkQJNaLcl1U
+h9C6EQf+MI9wpvQNCHMVn/4MvVEBuFzqeRkFsXgMF1dMQXli8MKY5y2plko5f9JV
+Wu57KVeKDFx67EmDATZ0qIvDZYSBHL1zbNREffKZpOx6r5tuVTvqh5NiybpUWxor
+gx9+NBTsV9lpZV1lkxQ2rAfEfRcBKDSjPxswCvWvBpFl+FC87mVexMZ1uhTUAdO6
+uFMxlAtxS6OTMQvLdkctJOLh2b/TY1WKUtlZdqvWb3KvsUexsibevEJ9Gr3MoL4o
+dKbcw0m5uJiWKpR9uRvpvA2QY4nZHUPV/eY60St7hK7E0x87BR2CjoXCvCD6PVGB
+MsRMU5ODPSqRpXHYzM+bkEv6wqepng==
+=6hLB
 -----END PGP SIGNATURE-----
 
---IpbVkmxF4tDyP/Kb--
+--X3gaHHMYHkYqP6yf--

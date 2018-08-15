@@ -1,95 +1,104 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
-Date: Wed, 15 Aug 2018 10:17:12 +0800
-Message-ID: <CAMz4kuK=n33V_AcmgmYjHHuXyDAZ+QAh947NL2g3XfOhsg_-gg@mail.gmail.com>
-References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
- <20180807134121.GA7958@sirena.org.uk> <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
- <20180808095025.GB9346@sirena.org.uk> <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
- <20180808105451.GE9346@sirena.org.uk> <1533754621.2283.270.camel@impinj.com>
- <CAMz4kuKwfBB8-8o5s8FQadFSFiD8KU=qNZYQjCWOfc-QpuVRSw@mail.gmail.com> <20180814202720.GB26606@rob-hp-laptop>
+From: Stefan Roese <sr@denx.de>
+Subject: Re: [PATCH v3] spi: orion: cosmetics - alias long direct_access
+ variables
+Date: Wed, 15 Aug 2018 09:10:06 +0200
+Message-ID: <b9c9ad94-2e10-6f85-2540-c60882d9630a@denx.de>
+References: <20180813205445.17113-1-zertsekel@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: Trent Piepho <tpiepho@impinj.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
-To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+To: Kosta Zertsekel <zertsekel@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Jan_Kundr=c3=a1t?= <jan.kundrat@cesnet.cz>,
+        Ken Wilson <ken.wilson@opengear.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180814202720.GB26606@rob-hp-laptop>
+In-Reply-To: <20180813205445.17113-1-zertsekel@gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Rob,
+On 13.08.2018 22:54, Kosta Zertsekel wrote:
+> This change increases the source code readability.
+> Instead of using `spi->child[cs].direct_access.XXX` use `dir_acc->XXX`.
+> Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
+> 
+> Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> ---
+>   drivers/spi/spi-orion.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+> index d01a6adc726e..184ba91abeee 100644
+> --- a/drivers/spi/spi-orion.c
+> +++ b/drivers/spi/spi-orion.c
+> @@ -430,6 +430,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+>   	int word_len;
+>   	struct orion_spi *orion_spi;
+>   	int cs = spi->chip_select;
+> +	void __iomem *vaddr;
+>   
+>   	word_len = spi->bits_per_word;
+>   	count = xfer->len;
+> @@ -440,8 +441,9 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+>   	 * Use SPI direct write mode if base address is available. Otherwise
+>   	 * fall back to PIO mode for this transfer.
+>   	 */
+> -	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
+> -	    (word_len == 8)) {
+> +	vaddr = orion_spi->child[cs].direct_access.vaddr;
+> +
+> +	if (vaddr && xfer->tx_buf && word_len == 8) {
+>   		unsigned int cnt = count / 4;
+>   		unsigned int rem = count % 4;
+>   
+> @@ -449,13 +451,11 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+>   		 * Send the TX-data to the SPI device via the direct
+>   		 * mapped address window
+>   		 */
+> -		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
+> -			      xfer->tx_buf, cnt);
+> +		iowrite32_rep(vaddr, xfer->tx_buf, cnt);
+>   		if (rem) {
+>   			u32 *buf = (u32 *)xfer->tx_buf;
+>   
+> -			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
+> -				     &buf[cnt], rem);
+> +			iowrite8_rep(vaddr, &buf[cnt], rem);
+>   		}
+>   
+>   		return count;
+> @@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+>   
+>   	/* Scan all SPI devices of this controller for direct mapped devices */
+>   	for_each_available_child_of_node(pdev->dev.of_node, np) {
+> +		struct orion_direct_acc *dir_acc;
+>   		u32 cs;
+>   
+>   		/* Get chip-select number from the "reg" property */
+> @@ -711,14 +712,13 @@ static int orion_spi_probe(struct platform_device *pdev)
+>   		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
+>   		 * support, once this gets implemented.
+>   		 */
+> -		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
+> -							    r->start,
+> -							    PAGE_SIZE);
+> -		if (!spi->child[cs].direct_access.vaddr) {
+> +		dir_acc = &spi->child[cs].direct_access;
+> +		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
+> +		if (!dir_acc->vaddr) {
+>   			status = -ENOMEM;
+>   			goto out_rel_axi_clk;
+>   		}
+> -		spi->child[cs].direct_access.size = PAGE_SIZE;
+> +		dir_acc->size = PAGE_SIZE;
+>   
+>   		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
+>   	}
+> 
 
-On 15 August 2018 at 04:27, Rob Herring <robh@kernel.org> wrote:
-> On Thu, Aug 09, 2018 at 11:03:11AM +0800, Baolin Wang wrote:
->> Hi Trent,
->>
->> On 9 August 2018 at 02:57, Trent Piepho <tpiepho@impinj.com> wrote:
->> > On Wed, 2018-08-08 at 11:54 +0100, Mark Brown wrote:
->> >> On Wed, Aug 08, 2018 at 06:35:28PM +0800, Baolin Wang wrote:
->> >> > On 8 August 2018 at 17:50, Mark Brown <broonie@kernel.org> wrote:
->> >> > > Right, I don't think we added this yet (if we did I can't see
->> >> > > it).  I'd
->> >> > > add a new field to spi_transfer for this, then other controllers
->> >> > > with
->> >> > > the same support can implement it as well and drivers can start
->> >> > > using
->> >> > > it too.
->> >> > OK. So I will name the new filed as 'word_delay', is it OK for you?
->> >>
->> >> Sounds good, yes.
->> >
->> > Should it be in =C2=B5s like the existing iter-transfer delay?  I thin=
-k
->> > perhaps units of cycles of the SPI clock make more sense?
->>
->> Since some SPI controllers just want some interval values (neither =C2=
-=B5s
->> unit nor cycles unit ) set into hardware, and the hardware will
->> convert to the correct delay time automatically. So I did not force
->> 'word_delay' unit as =C2=B5s or cycle, and just let the slave devices
->> decide the unit which depends on the SPI hardware requirement.
->
-> This needs to be defined units in DT, not decided by each controller.
+Reviewed-by: Stefan Roese <sr@denx.de>
 
-Do you mean we should introduce one standard property (maybe named as
-'word_delay_unit') to define the word_delay unit?
-If we really need to specify the unit of word_delay, I think we can
-add comments for spi_tansfer  to specify the unit, which will be
-better.
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index a64235e..7a72c0a 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -711,6 +711,8 @@ extern void spi_res_release(struct spi_controller *ctlr=
-,
-  * @delay_usecs: microseconds to delay after this transfer before
-  * (optionally) changing the chipselect status, then starting
-  * the next transfer or completing this @spi_message.
-+ * @word_delay: clock cycles to inter word delay after each word size
-(set by bits_per_word)
-+ * transmission.
-  * @transfer_list: transfers are sequenced through @spi_message.transfers
-  * @tx_sg: Scatterlist for transmit, currently not for client use
-  * @rx_sg: Scatterlist for receive, currently not for client use
-@@ -793,6 +795,7 @@ struct spi_transfer {
-  u8 bits_per_word;
-  u16 delay_usecs;
-  u32 speed_hz;
-+ u16 word_delay;
-
-  struct list_head transfer_list;
- };
-
-
---=20
-Baolin Wang
-Best Regards
+Thanks,
+Stefan

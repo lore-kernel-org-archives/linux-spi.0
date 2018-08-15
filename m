@@ -1,65 +1,78 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller
- documentation
-Date: Tue, 14 Aug 2018 14:27:20 -0600
-Message-ID: <20180814202720.GB26606@rob-hp-laptop>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add Spreadtrum SPI controller documentation
+Date: Wed, 15 Aug 2018 09:44:27 +0800
+Message-ID: <CAMz4kuKb_5gxMbLG1cfPwFHS9n666epy38Akz1FhDcjeAUik9A@mail.gmail.com>
 References: <64681bf903104c8a02f118294e616e2a12a5ebe4.1533638405.git.baolin.wang@linaro.org>
- <20180807134121.GA7958@sirena.org.uk>
- <CAMz4kuJsyKv_fvrqRR3pdfKsLVy53Uj0KX+m_9jLxpcVcMvs9g@mail.gmail.com>
- <20180808095025.GB9346@sirena.org.uk>
- <CAMz4kuKZHxYiJaMHnqdAGth8XkfGnq3-Tsfc59cGjsHQHZaY7A@mail.gmail.com>
- <20180808105451.GE9346@sirena.org.uk>
- <1533754621.2283.270.camel@impinj.com>
- <CAMz4kuKwfBB8-8o5s8FQadFSFiD8KU=qNZYQjCWOfc-QpuVRSw@mail.gmail.com>
+ <20180814202122.GA26606@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: Trent Piepho <tpiepho@impinj.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "lanqing.liu@spreadtrum.com" <lanqing.liu@spreadtrum.com>
-To: Baolin Wang <baolin.wang@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        lanqing.liu@spreadtrum.com, linux-spi@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+To: Rob Herring <robh@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMz4kuKwfBB8-8o5s8FQadFSFiD8KU=qNZYQjCWOfc-QpuVRSw@mail.gmail.com>
+In-Reply-To: <20180814202122.GA26606@rob-hp-laptop>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 09, 2018 at 11:03:11AM +0800, Baolin Wang wrote:
-> Hi Trent,
-> 
-> On 9 August 2018 at 02:57, Trent Piepho <tpiepho@impinj.com> wrote:
-> > On Wed, 2018-08-08 at 11:54 +0100, Mark Brown wrote:
-> >> On Wed, Aug 08, 2018 at 06:35:28PM +0800, Baolin Wang wrote:
-> >> > On 8 August 2018 at 17:50, Mark Brown <broonie@kernel.org> wrote:
-> >> > > Right, I don't think we added this yet (if we did I can't see
-> >> > > it).  I'd
-> >> > > add a new field to spi_transfer for this, then other controllers
-> >> > > with
-> >> > > the same support can implement it as well and drivers can start
-> >> > > using
-> >> > > it too.
-> >> > OK. So I will name the new filed as 'word_delay', is it OK for you?
-> >>
-> >> Sounds good, yes.
-> >
-> > Should it be in µs like the existing iter-transfer delay?  I think
-> > perhaps units of cycles of the SPI clock make more sense?
-> 
-> Since some SPI controllers just want some interval values (neither µs
-> unit nor cycles unit ) set into hardware, and the hardware will
-> convert to the correct delay time automatically. So I did not force
-> 'word_delay' unit as µs or cycle, and just let the slave devices
-> decide the unit which depends on the SPI hardware requirement.
+Hi Rob,
 
-This needs to be defined units in DT, not decided by each controller.
+On 15 August 2018 at 04:21, Rob Herring <robh@kernel.org> wrote:
+> On Tue, Aug 07, 2018 at 06:43:37PM +0800, Baolin Wang wrote:
+>> From: Lanqing Liu <lanqing.liu@spreadtrum.com>
+>>
+>> This patch adds the binding documentation for Spreadtrum SPI
+>> controller device.
+>>
+>> Signed-off-by: Lanqing Liu <lanqing.liu@spreadtrum.com>
+>> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+>> ---
+>>  Documentation/devicetree/bindings/spi/spi-sprd.txt |   31 ++++++++++++++++++++
+>>  1 file changed, 31 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/spi-sprd.txt b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+>> new file mode 100644
+>> index 0000000..06ff746
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+>> @@ -0,0 +1,31 @@
+>> +Spreadtrum SPI Controller
+>> +
+>> +Required properties:
+>> +- compatible: Should be "sprd,sc9860-spi".
+>> +- reg: Offset and length of SPI controller register space.
+>> +- interrupts: Should contain SPI interrupt.
+>> +- clock-names: Should contain following entries:
+>> +     "spi" for SPI clock,
+>> +     "source" for SPI source (parent) clock,
+>
+> Do the h/w block actually get this clock or the driver needs it? In the
+> latter case, it should not be in DT.
 
-The controller capabilities just affect what are valid values (or what 
-the resolution is).
+Yes, we will get the actual SPI source clock form the "source" clock property.
 
-Rob
+>
+>> +     "enable" for SPI module enable clock.
+>> +- clocks: List of clock input name strings sorted in the same order
+>> +     as the clock-names property.
+>> +- #address-cells: The number of cells required to define a chip select
+>> +     address on the SPI bus. Should be set to 1.
+>> +- #size-cells: Should be set to 0.
+>> +
+>> +Optional properties:
+>> +- sprd,spi-interval: Specify the intervals of two SPI frames, which can be
+>> +     converted to the delay clock cycles = interval number * 4 + 10.
+>
+> There are read and write delay properties you can use.
+
+Right. We've agreed introducing another field for spi_transfer to
+represent this and will remove 'sprd,spi-interval' from DT.
+
+-- 
+Baolin Wang
+Best Regards

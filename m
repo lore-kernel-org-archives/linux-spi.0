@@ -1,104 +1,47 @@
-From: Stefan Roese <sr@denx.de>
-Subject: Re: [PATCH v3] spi: orion: cosmetics - alias long direct_access
- variables
-Date: Wed, 15 Aug 2018 09:10:06 +0200
-Message-ID: <b9c9ad94-2e10-6f85-2540-c60882d9630a@denx.de>
-References: <20180813205445.17113-1-zertsekel@gmail.com>
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Subject: Re2: [PATCH] spi:fix IDR collision on systems with both fixed and
+ dynamic SPI bus numbers
+Date: Wed, 15 Aug 2018 17:28:56 +0300
+Message-ID: <13c72347-d1fc-6250-3ec4-2066f9fd5e1c@compulab.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-To: Kosta Zertsekel <zertsekel@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Jan_Kundr=c3=a1t?= <jan.kundrat@cesnet.cz>,
-        Ken Wilson <ken.wilson@opengear.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        l.stach@pengutronix.de
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180813205445.17113-1-zertsekel@gmail.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 13.08.2018 22:54, Kosta Zertsekel wrote:
-> This change increases the source code readability.
-> Instead of using `spi->child[cs].direct_access.XXX` use `dir_acc->XXX`.
-> Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
-> 
-> Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> ---
->   drivers/spi/spi-orion.c | 22 +++++++++++-----------
->   1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-> index d01a6adc726e..184ba91abeee 100644
-> --- a/drivers/spi/spi-orion.c
-> +++ b/drivers/spi/spi-orion.c
-> @@ -430,6 +430,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
->   	int word_len;
->   	struct orion_spi *orion_spi;
->   	int cs = spi->chip_select;
-> +	void __iomem *vaddr;
->   
->   	word_len = spi->bits_per_word;
->   	count = xfer->len;
-> @@ -440,8 +441,9 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
->   	 * Use SPI direct write mode if base address is available. Otherwise
->   	 * fall back to PIO mode for this transfer.
->   	 */
-> -	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
-> -	    (word_len == 8)) {
-> +	vaddr = orion_spi->child[cs].direct_access.vaddr;
-> +
-> +	if (vaddr && xfer->tx_buf && word_len == 8) {
->   		unsigned int cnt = count / 4;
->   		unsigned int rem = count % 4;
->   
-> @@ -449,13 +451,11 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
->   		 * Send the TX-data to the SPI device via the direct
->   		 * mapped address window
->   		 */
-> -		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
-> -			      xfer->tx_buf, cnt);
-> +		iowrite32_rep(vaddr, xfer->tx_buf, cnt);
->   		if (rem) {
->   			u32 *buf = (u32 *)xfer->tx_buf;
->   
-> -			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
-> -				     &buf[cnt], rem);
-> +			iowrite8_rep(vaddr, &buf[cnt], rem);
->   		}
->   
->   		return count;
-> @@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
->   
->   	/* Scan all SPI devices of this controller for direct mapped devices */
->   	for_each_available_child_of_node(pdev->dev.of_node, np) {
-> +		struct orion_direct_acc *dir_acc;
->   		u32 cs;
->   
->   		/* Get chip-select number from the "reg" property */
-> @@ -711,14 +712,13 @@ static int orion_spi_probe(struct platform_device *pdev)
->   		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
->   		 * support, once this gets implemented.
->   		 */
-> -		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
-> -							    r->start,
-> -							    PAGE_SIZE);
-> -		if (!spi->child[cs].direct_access.vaddr) {
-> +		dir_acc = &spi->child[cs].direct_access;
-> +		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
-> +		if (!dir_acc->vaddr) {
->   			status = -ENOMEM;
->   			goto out_rel_axi_clk;
->   		}
-> -		spi->child[cs].direct_access.size = PAGE_SIZE;
-> +		dir_acc->size = PAGE_SIZE;
->   
->   		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
->   	}
-> 
+On 08/14/2018 05:18 PM, Mark Brown wrote:
+ > Is this something that's actually happened for you?
 
-Reviewed-by: Stefan Roese <sr@denx.de>
+Yes, I observed it.
 
-Thanks,
-Stefan
+Background:
+The platform: fitlet2 [1] , CPU Intel(R) Celeron(R) CPU J3455 @ 1.50GHz.
+On an extension board there are three SPI master controllers "Intel 
+Corporation Atom/Celeron/Pentium Processor N4200/N3350/E3900 Series SPI 
+Controller", controlled with spi_pxa2xx_platform  driver,
+and two USB/SPI bridges "FT232H Single HS USB-UART/FIFO IC".
+
+I'm working on a driver for FT232H bridge and saw the following:
+spi_pxa2xx driver occupy IDs 1,2,3 this way [2].
+Thus when my code tries to get ID automatically (set spi_master.bus_num= 
+-1), it gets IDs 0 and 1, that leads a crash.
+
+BTW, I haven't the faintest idea, how to cure this problem in the 
+opposite case: when a device that gets ID dynamically squats an ID 
+purposed for a device that uses a fixed numbering order.
+
+ >> +    } else {
+ >> +    /* devices with a fixed bus num must check-in with the num */
+ >> +        mutex_lock(&board_lock);
+ > The indentation here is weird, the comment isn't aligned with the code
+ > it's commenting on.
+I'm sorry for the oversight, it'll be fixed.
+
+[1] https://fit-iot.com/web/products/fitlet2/
+[2] 
+https://elixir.bootlin.com/linux/latest/source/drivers/spi/spi-pxa2xx.c#L1361

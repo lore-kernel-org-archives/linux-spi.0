@@ -1,93 +1,51 @@
-From: Kosta Zertsekel <zertsekel@gmail.com>
-Subject: [PATCH v4] spi: orion: cosmetics - alias long direct_access variables
-Date: Wed, 15 Aug 2018 22:04:49 +0300
-Message-ID: <20180815190449.23738-1-zertsekel@gmail.com>
-Cc: Kosta Zertsekel <zertsekel@gmail.com>,
-        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-        Stefan Roese <sr@denx.de>, Ken Wilson <ken.wilson@opengear.com>
-To: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: [PATCH v2 1/3] spi: Introduce one new field to set word delay
+Date: Thu, 16 Aug 2018 20:54:49 +0800
+Message-ID: <a77a6bb8b3abf1c127014c78f71533c24afacd93.1534423916.git.baolin.wang@linaro.org>
+Cc: orsonzhai@gmail.com, zhang.lyra@gmail.com,
+        lanqing.liu@spreadtrum.com, baolin.wang@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This change increases the source code readability.
-Instead of using `spi->child[cs].direct_access.XXX` use `dir_acc->XXX`.
-Instead of using `orion_spi->child[cs].direct_access.vaddr` use `vaddr`.
+For some SPI controllers, after each word size (specified by bits_per_word)
+transimission, the hardware need some delay to make sure the slave has enough
+time to receive the whole data.
 
-Signed-off-by: Kosta Zertsekel <zertsekel@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Stefan Roese <sr@denx.de>
+So introducing one new 'word_delay' field of struct spi_tansfer for slave
+devices to set this inter word delay time.
+
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/spi/spi-orion.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+Changes from v1:
+ - New patch in v2.
+---
+ include/linux/spi/spi.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index d01a6adc726e..184ba91abeee 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -430,6 +430,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	int word_len;
- 	struct orion_spi *orion_spi;
- 	int cs = spi->chip_select;
-+	void __iomem *vaddr;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index a64235e..d698f9d 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -711,6 +711,8 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  * @delay_usecs: microseconds to delay after this transfer before
+  *	(optionally) changing the chipselect status, then starting
+  *	the next transfer or completing this @spi_message.
++ * @word_delay: clock cycles to inter word delay after each word size
++ *	(set by bits_per_word) transmission.
+  * @transfer_list: transfers are sequenced through @spi_message.transfers
+  * @tx_sg: Scatterlist for transmit, currently not for client use
+  * @rx_sg: Scatterlist for receive, currently not for client use
+@@ -793,6 +795,7 @@ struct spi_transfer {
+ 	u8		bits_per_word;
+ 	u16		delay_usecs;
+ 	u32		speed_hz;
++	u16		word_delay;
  
- 	word_len = spi->bits_per_word;
- 	count = xfer->len;
-@@ -440,8 +441,9 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	 * Use SPI direct write mode if base address is available. Otherwise
- 	 * fall back to PIO mode for this transfer.
- 	 */
--	if ((orion_spi->child[cs].direct_access.vaddr) && (xfer->tx_buf) &&
--	    (word_len == 8)) {
-+	vaddr = orion_spi->child[cs].direct_access.vaddr;
-+
-+	if (vaddr && xfer->tx_buf && word_len == 8) {
- 		unsigned int cnt = count / 4;
- 		unsigned int rem = count % 4;
- 
-@@ -449,13 +451,11 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 		 * Send the TX-data to the SPI device via the direct
- 		 * mapped address window
- 		 */
--		iowrite32_rep(orion_spi->child[cs].direct_access.vaddr,
--			      xfer->tx_buf, cnt);
-+		iowrite32_rep(vaddr, xfer->tx_buf, cnt);
- 		if (rem) {
- 			u32 *buf = (u32 *)xfer->tx_buf;
- 
--			iowrite8_rep(orion_spi->child[cs].direct_access.vaddr,
--				     &buf[cnt], rem);
-+			iowrite8_rep(vaddr, &buf[cnt], rem);
- 		}
- 
- 		return count;
-@@ -683,6 +683,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 
- 	/* Scan all SPI devices of this controller for direct mapped devices */
- 	for_each_available_child_of_node(pdev->dev.of_node, np) {
-+		struct orion_direct_acc *dir_acc;
- 		u32 cs;
- 
- 		/* Get chip-select number from the "reg" property */
-@@ -711,14 +712,13 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
- 		 * support, once this gets implemented.
- 		 */
--		spi->child[cs].direct_access.vaddr = devm_ioremap(&pdev->dev,
--							    r->start,
--							    PAGE_SIZE);
--		if (!spi->child[cs].direct_access.vaddr) {
-+		dir_acc = &spi->child[cs].direct_access;
-+		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
-+		if (!dir_acc->vaddr) {
- 			status = -ENOMEM;
- 			goto out_rel_axi_clk;
- 		}
--		spi->child[cs].direct_access.size = PAGE_SIZE;
-+		dir_acc->size = PAGE_SIZE;
- 
- 		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
- 	}
+ 	struct list_head transfer_list;
+ };
 -- 
-2.17.1
+1.7.9.5

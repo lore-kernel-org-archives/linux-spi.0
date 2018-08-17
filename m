@@ -1,105 +1,109 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH] spi: fsl-espi: master->mem_ops is implemented in the
- controller
-Date: Fri, 17 Aug 2018 12:32:35 +0200
-Message-ID: <20180817123235.08b33825@bbrezillon>
-References: <1534500425-9977-1-git-send-email-chuanhua.han@nxp.com>
+From: dkota@codeaurora.org
+Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
+ QUP
+Date: Fri, 17 Aug 2018 16:06:06 +0530
+Message-ID: <caea8294d20c515a33c090c4fddb15c3@codeaurora.org>
+References: <20180524162940.GA4828@sirena.org.uk>
+ <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
+ <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
+ <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
+ <20180810105205.GC20971@sirena.org.uk>
+ <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
+ <20180810161329.GF20971@sirena.org.uk>
+ <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
+ <20180810164636.GI20971@sirena.org.uk>
+ <b32c205955e0f42182b16e90f539a919@codeaurora.org>
+ <20180814150340.GE5810@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheetah0585@163.com
-To: Chuanhua Han <chuanhua.han@nxp.com>
+Cc: Doug Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Sagar Dharia <sdharia@codeaurora.org>,
+        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "Mahadevan, Girish" <girishm@codeaurora.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1534500425-9977-1-git-send-email-chuanhua.han@nxp.com>
+In-Reply-To: <20180814150340.GE5810@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 17 Aug 2018 18:07:05 +0800
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> The length of the transmitted data needs to be adjusted due to the maximum 
-> length limit for espi transmission messages
+On 2018-08-14 20:33, Mark Brown wrote:
+> On Tue, Aug 14, 2018 at 02:30:02PM +0530, dkota@codeaurora.org wrote:
+>> On 2018-08-10 22:16, Mark Brown wrote:
+>> > On Fri, Aug 10, 2018 at 09:59:46PM +0530, dkota@codeaurora.org wrote:
 > 
-> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-> ---
->  drivers/spi/spi-fsl-espi.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>> > > delay_usecs is for inter-transfer delays within a message rather than
+>> > > after the initial chip select assert (it can be used to keep chip
+>> > > select
+>> > > asserted for longer after the final transfer too).  Obviously this is
+>> > > also something that shouldn't be configured in a driver specific
+>> > > fashion.
 > 
-> diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-> index 1d332e2..4724127 100644
-> --- a/drivers/spi/spi-fsl-espi.c
-> +++ b/drivers/spi/spi-fsl-espi.c
-> @@ -22,6 +22,7 @@
->  #include <linux/spi/spi.h>
->  #include <linux/pm_runtime.h>
->  #include <sysdev/fsl_soc.h>
-> +#include <linux/spi/spi-mem.h>
->  
->  /* eSPI Controller registers */
->  #define ESPI_SPMODE	0x00	/* eSPI mode register */
-> @@ -659,6 +660,29 @@ static void fsl_espi_init_regs(struct device *dev, bool initial)
->  	fsl_espi_write_reg(espi, ESPI_SPMODE, SPMODE_INIT_VAL | SPMODE_ENABLE);
->  }
->  
-> +static int fsl_espi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-> +{
-> +	if (!mem || !op)
-> +		return -EINVAL;
-> +	op->data.nbytes = min3((unsigned long)op->data.nbytes,
-> +			spi_max_transfer_size(mem->spi),
-> +			spi_max_message_size(mem->spi) -
-> +			sizeof(op->cmd.opcode) -
-> +			op->addr.nbytes -
-> +			op->dummy.nbytes);
+>> > Hmmm ok, so you mean don't send these as controller_data, rather add
+>> > new
+>> > members to the spi_device struct ?
+> 
+>> spi_cs_clk_delay -> Adds Delay from CS line toggle to Clock line 
+>> toggle
+>> spi_inter_words_delay -> Adds inter-word delay for each transfer.
+> 
+>> Could you please provide more information on accommodating these
+>> parameters in SPI core structures like spi_device or spi_transfer? Why
+>> because these are very
+>> specific to Qualcomm SPI GENI controller.
+> 
+> I'm not sure what specific information you're looking for here - these
+> things are not obviously specific to your controller, I'm even aware of
+> other controllers which can do them.
+> 
+>> If we define them in spi core framework structures, SPI Slave driver 
+>> will
+>> program and expect it in the SPI transfers.
+> 
+> Sure.
 
-Oops! Looks like I was wrong in my initial review, this code is generic
-and should be placed in spi_mem_adjust_op_size() if !ctlr->mem_ops
-or !ctlr->mem_ops->exec_op:
+Thanks Brown for clarifying it. As similar fields are not present in the 
+spi core framework i thought these are not generic across the 
+controllers.
+I will add these fields in the SPI core framework structures.
 
-int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
-{
-	struct spi_controller *ctlr = mem->spi->controller;
+Could you please clarify on below query.
 
-	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
-		return ctlr->mem_ops->adjust_op_size(mem, op);
+>> +       mas->cur_speed_hz = spi_slv->max_speed_hz;
+> 
+> Why can't you use clk_get_rate() instead? Or call clk_set_rate() with
+> the rate you want the master clk to run at and then divide that down
+> from there?
+> 
+> 
+>> > Not sure I follow, the intention is to run the controller clock based on
+>> > the slave's max frequency.
+> 
+>> That's good. The problem I see is that we have to specify the max
+>> frequency in the controller/bus node, and also in the child/slave
+>> node.
+>> It should only need to be specified in the slave node, so making the
+>> cur_speed_hz equal the max_speed_hz is problematic. The current speed
+>> of
+>> the master should be determined by calling clk_get_rate().
+> 
+> We don't require that the slaves all individually set a speed since it
+> gets a bit redundant, it should be enough to just use the default the
+> controller provides.  A bigger problem with this is that the driver
+> will
+> never see a transfer which doesn't explicitly have a speed set as the
+> core will ensure something is set, open coding this logic in every
+> driver would obviously be tiresome.
 
-	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op)
-		op->data.nbytes = min3((unsigned long)op->data.nbytes,
-				       spi_max_transfer_size(mem->spi),
-				       spi_max_message_size(mem->spi) -
-				       sizeof(op->cmd.opcode) -
-				       op->addr.nbytes -
-				       op->dummy.nbytes);
+clock_get_rate() will returns the rate which got set as per the clock
+plan(which was the rounded up frequency) which can be less than or equal
+to the requested frequency. For that reason using the cur_speed_hz to
+store the requested frequency and skip clock configuration for the
+consecutive transfers with same frequency.
 
-	return 0;
-}
-
-Also, you don't seem to check spi_max_message_size(mem->spi) value
-before subtracting opcode, addr and dummy bytes.
-
-
-> +	return 0;
-> +}
-> +
-> +static int fsl_espi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
-> +{
-> +	return -ENOTSUPP;
-> +}
-> +
-> +static const struct spi_controller_mem_ops fsl_espi_mem_ops = {
-> +	.adjust_op_size = fsl_espi_adjust_op_size,
-> +	.exec_op = fsl_espi_exec_op,
-> +};
-> +
->  static int fsl_espi_probe(struct device *dev, struct resource *mem,
->  			  unsigned int irq, unsigned int num_cs)
->  {
-> @@ -682,6 +706,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
->  	master->auto_runtime_pm = true;
->  	master->max_message_size = fsl_espi_max_message_size;
->  	master->num_chipselect = num_cs;
-> +	master->mem_ops = &fsl_espi_mem_ops;
->  
->  	espi = spi_master_get_devdata(master);
->  	spin_lock_init(&espi->lock);
+--Dilip

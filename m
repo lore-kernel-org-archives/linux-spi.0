@@ -1,60 +1,35 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Fri, 17 Aug 2018 15:59:14 +0100
-Message-ID: <20180817145914.GA6885@sirena.org.uk>
-References: <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
- <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
- <20180810105205.GC20971@sirena.org.uk>
- <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
- <20180810161329.GF20971@sirena.org.uk>
- <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
- <20180810164636.GI20971@sirena.org.uk>
- <b32c205955e0f42182b16e90f539a919@codeaurora.org>
- <20180814150340.GE5810@sirena.org.uk>
- <caea8294d20c515a33c090c4fddb15c3@codeaurora.org>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Re: [PATCH v2] spi: dw: support 4-16 bits per word
+Date: Fri, 17 Aug 2018 16:32:31 +0000
+Message-ID: <1534523550.2283.397.camel@impinj.com>
+References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
+         <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KsGdsel6WgEHnImy"
-Cc: Doug Anderson <dianders@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "Mahadevan, Girish" <girishm@codeaurora.org>
-To: dkota@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "simon.k.r.goldschmidt@gmail.com" <simon.k.r.goldschmidt@gmail.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <caea8294d20c515a33c090c4fddb15c3@codeaurora.org>
+In-Reply-To: <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
+Content-Language: en-US
+Content-ID: <1E96AE1C0D7E3F4F9072F9FBF5E5E939@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Aug 17, 2018 at 04:06:06PM +0530, dkota@codeaurora.org wrote:
-
-> Could you please clarify on below query.
-
-I'm not seeing any further questions in your e-mail?
-
---KsGdsel6WgEHnImy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlt24r8ACgkQJNaLcl1U
-h9CRrQf/QY2VEoFZ8MVOx54OTnkKwUUdcFT2wstHs9r1U40lnp6BfYdsH9a9fSnL
-exMxIRIcdJ0Z/oJcXhbMS8y+bSRfyIww0KAU11R6u7LXihtugcBxLA+F1g6wa9zo
-5UrWRU1ePRdy8k5xQ9Wg/Kx2LcD8JlwA0ILpr1P2k0wlUOkEnbKddu5aG9KhsPLy
-dZ3UNzmA6JqgFt5NwmCEz/cjlINsq/N2Oc52lSSf36qgcOXzmvTmgSarhWys3sE5
-vFASKAOIJJtNOn2Q7ZiN8Tj9wwwHlFaPfD3VkcykNkCNNSreXdei4nVnh6jMyubQ
-eT1L/E1Ok7WsRWD82xFfSYSUb/Mvsg==
-=c13b
------END PGP SIGNATURE-----
-
---KsGdsel6WgEHnImy--
+T24gRnJpLCAyMDE4LTA4LTE3IGF0IDA5OjAxICswMjAwLCBTaW1vbiBHb2xkc2NobWlkdCB3cm90
+ZToNCj4gVGhlIHNwaS1kdyBkcml2ZXIgY3VycmVudGx5IG9ubHkgc3VwcG9ydHMgOCBvciAxNiBi
+aXRzIHBlciB3b3JkLg0KPiANCj4gU2luY2UgdGhlIGhhcmR3YXJlIHN1cHBvcnRzIDQtMTYgYml0
+cyBwZXIgd29yZCwgYWRhcHQgdGhlIGRyaXZlcg0KPiB0byBhbHNvIHN1cHBvcnQgdGhpcy4NCj4g
+DQo+IA0KDQo+IEBAIC0zMDcsMTUgKzMwNywxMyBAQCBzdGF0aWMgaW50IGR3X3NwaV90cmFuc2Zl
+cl9vbmUoc3RydWN0IHNwaV9jb250cm9sbGVyICptYXN0ZXIsDQo+ICsNCj4gKwlpZiAoKHRyYW5z
+ZmVyLT5iaXRzX3Blcl93b3JkIDwgNCkgfHwgKHRyYW5zZmVyLT5iaXRzX3Blcl93b3JkID4gMTYp
+KQ0KPiAgCQlyZXR1cm4gLUVJTlZBTDsNCj4gLQl9DQoNCllvdSBkb24ndCBuZWVkIHRoaXMgY2hl
+Y2sgYXMgdGhlIHNwaSBjb3JlIHZhbGlkYXRlcyB0aGUgdHJhbnNmZXINCmFnYWluc3QgbWFzdGVy
+LT5iaXRzX3Blcl93b3JkX21hc2suDQoNCj4gIAltYXN0ZXItPm1vZGVfYml0cyA9IFNQSV9DUE9M
+IHwgU1BJX0NQSEEgfCBTUElfTE9PUDsNCj4gLQltYXN0ZXItPmJpdHNfcGVyX3dvcmRfbWFzayA9
+IFNQSV9CUFdfTUFTSyg4KSB8IFNQSV9CUFdfTUFTSygxNik7DQo+ICsJbWFzdGVyLT5iaXRzX3Bl
+cl93b3JkX21hc2sgPSAgU1BJX0JQV19SQU5HRV9NQVNLKDQsIDE2KTsNCj4gIAltYXN0ZXItPmJ1
+c19udW0gPSBkd3MtPmJ1c19udW07DQo+IA==

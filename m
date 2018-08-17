@@ -1,68 +1,71 @@
-From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
-Subject: [PATCH v2] spi: dw: support 4-16 bits per word
-Date: Fri, 17 Aug 2018 09:01:05 +0200
-Message-ID: <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
-References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
-Cc: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH] spi: fsl-espi: master->mem_ops is implemented in the controller
+Date: Fri, 17 Aug 2018 18:07:05 +0800
+Message-ID: <1534500425-9977-1-git-send-email-chuanhua.han@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        cheetah0585@163.com, Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org, boris.brezillon@bootlin.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi-dw driver currently only supports 8 or 16 bits per word.
+The length of the transmitted data needs to be adjusted due to the maximum 
+length limit for espi transmission messages
 
-Since the hardware supports 4-16 bits per word, adapt the driver
-to also support this.
-
-Tested on socfpga cyclone5 with a 9-bit SPI display.
-
-Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
 ---
+ drivers/spi/spi-fsl-espi.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-Changes in v2:
-- use DIV_ROUND_UP to calculate number of bytes per word instead of
-  if/else range checks
-
- drivers/spi/spi-dw.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index f693bfe95ab9..58a7caf31d59 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -307,15 +307,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 		dws->current_freq = transfer->speed_hz;
- 		spi_set_clk(dws, chip->clk_div);
- 	}
--	if (transfer->bits_per_word == 8) {
--		dws->n_bytes = 1;
--		dws->dma_width = 1;
--	} else if (transfer->bits_per_word == 16) {
--		dws->n_bytes = 2;
--		dws->dma_width = 2;
--	} else {
-+
-+	if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
- 		return -EINVAL;
--	}
-+
-+	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
-+	dws->dma_width = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
-+
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	cr0 = (transfer->bits_per_word - 1)
- 		| (chip->type << SPI_FRF_OFFSET)
-@@ -493,7 +491,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	}
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 1d332e2..4724127 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -22,6 +22,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/pm_runtime.h>
+ #include <sysdev/fsl_soc.h>
++#include <linux/spi/spi-mem.h>
  
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-+	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
- 	master->bus_num = dws->bus_num;
- 	master->num_chipselect = dws->num_cs;
- 	master->setup = dw_spi_setup;
+ /* eSPI Controller registers */
+ #define ESPI_SPMODE	0x00	/* eSPI mode register */
+@@ -659,6 +660,29 @@ static void fsl_espi_init_regs(struct device *dev, bool initial)
+ 	fsl_espi_write_reg(espi, ESPI_SPMODE, SPMODE_INIT_VAL | SPMODE_ENABLE);
+ }
+ 
++static int fsl_espi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++{
++	if (!mem || !op)
++		return -EINVAL;
++	op->data.nbytes = min3((unsigned long)op->data.nbytes,
++			spi_max_transfer_size(mem->spi),
++			spi_max_message_size(mem->spi) -
++			sizeof(op->cmd.opcode) -
++			op->addr.nbytes -
++			op->dummy.nbytes);
++	return 0;
++}
++
++static int fsl_espi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	return -ENOTSUPP;
++}
++
++static const struct spi_controller_mem_ops fsl_espi_mem_ops = {
++	.adjust_op_size = fsl_espi_adjust_op_size,
++	.exec_op = fsl_espi_exec_op,
++};
++
+ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 			  unsigned int irq, unsigned int num_cs)
+ {
+@@ -682,6 +706,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	master->auto_runtime_pm = true;
+ 	master->max_message_size = fsl_espi_max_message_size;
+ 	master->num_chipselect = num_cs;
++	master->mem_ops = &fsl_espi_mem_ops;
+ 
+ 	espi = spi_master_get_devdata(master);
+ 	spin_lock_init(&espi->lock);
 -- 
-2.17.1
+2.7.4

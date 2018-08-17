@@ -1,109 +1,84 @@
-From: dkota@codeaurora.org
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
- QUP
-Date: Fri, 17 Aug 2018 16:06:06 +0530
-Message-ID: <caea8294d20c515a33c090c4fddb15c3@codeaurora.org>
-References: <20180524162940.GA4828@sirena.org.uk>
- <28d8ab5fdeb34e52eba7ca771a17bc06@codeaurora.org>
- <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
- <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
- <20180810105205.GC20971@sirena.org.uk>
- <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
- <20180810161329.GF20971@sirena.org.uk>
- <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
- <20180810164636.GI20971@sirena.org.uk>
- <b32c205955e0f42182b16e90f539a919@codeaurora.org>
- <20180814150340.GE5810@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2] spi: dw: support 4-16 bits per word
+Date: Fri, 17 Aug 2018 14:17:08 +0300
+Message-ID: <CAHp75Vc5bJEeX3tB8EbzWMf1GdFaSFgk+3u3CdZ2SVy3dWfVkA@mail.gmail.com>
+References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com> <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Doug Anderson <dianders@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "Mahadevan, Girish" <girishm@codeaurora.org>
-To: Mark Brown <broonie@kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180814150340.GE5810@sirena.org.uk>
+In-Reply-To: <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2018-08-14 20:33, Mark Brown wrote:
-> On Tue, Aug 14, 2018 at 02:30:02PM +0530, dkota@codeaurora.org wrote:
->> On 2018-08-10 22:16, Mark Brown wrote:
->> > On Fri, Aug 10, 2018 at 09:59:46PM +0530, dkota@codeaurora.org wrote:
-> 
->> > > delay_usecs is for inter-transfer delays within a message rather than
->> > > after the initial chip select assert (it can be used to keep chip
->> > > select
->> > > asserted for longer after the final transfer too).  Obviously this is
->> > > also something that shouldn't be configured in a driver specific
->> > > fashion.
-> 
->> > Hmmm ok, so you mean don't send these as controller_data, rather add
->> > new
->> > members to the spi_device struct ?
-> 
->> spi_cs_clk_delay -> Adds Delay from CS line toggle to Clock line 
->> toggle
->> spi_inter_words_delay -> Adds inter-word delay for each transfer.
-> 
->> Could you please provide more information on accommodating these
->> parameters in SPI core structures like spi_device or spi_transfer? Why
->> because these are very
->> specific to Qualcomm SPI GENI controller.
-> 
-> I'm not sure what specific information you're looking for here - these
-> things are not obviously specific to your controller, I'm even aware of
-> other controllers which can do them.
-> 
->> If we define them in spi core framework structures, SPI Slave driver 
->> will
->> program and expect it in the SPI transfers.
-> 
-> Sure.
+On Fri, Aug 17, 2018 at 10:01 AM, Simon Goldschmidt
+<simon.k.r.goldschmidt@gmail.com> wrote:
+> The spi-dw driver currently only supports 8 or 16 bits per word.
+>
+> Since the hardware supports 4-16 bits per word, adapt the driver
+> to also support this.
+>
+> Tested on socfpga cyclone5 with a 9-bit SPI display.
+>
 
-Thanks Brown for clarifying it. As similar fields are not present in the 
-spi core framework i thought these are not generic across the 
-controllers.
-I will add these fields in the SPI core framework structures.
+LGTM,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Could you please clarify on below query.
+> Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+> ---
+>
+> Changes in v2:
+> - use DIV_ROUND_UP to calculate number of bytes per word instead of
+>   if/else range checks
+>
+>  drivers/spi/spi-dw.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index f693bfe95ab9..58a7caf31d59 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -307,15 +307,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+>                 dws->current_freq = transfer->speed_hz;
+>                 spi_set_clk(dws, chip->clk_div);
+>         }
+> -       if (transfer->bits_per_word == 8) {
+> -               dws->n_bytes = 1;
+> -               dws->dma_width = 1;
+> -       } else if (transfer->bits_per_word == 16) {
+> -               dws->n_bytes = 2;
+> -               dws->dma_width = 2;
+> -       } else {
+> +
+> +       if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
+>                 return -EINVAL;
+> -       }
+> +
+> +       dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+> +       dws->dma_width = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+> +
+>         /* Default SPI mode is SCPOL = 0, SCPH = 0 */
+>         cr0 = (transfer->bits_per_word - 1)
+>                 | (chip->type << SPI_FRF_OFFSET)
+> @@ -493,7 +491,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+>         }
+>
+>         master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
+> -       master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
+> +       master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
+>         master->bus_num = dws->bus_num;
+>         master->num_chipselect = dws->num_cs;
+>         master->setup = dw_spi_setup;
+> --
+> 2.17.1
+>
 
->> +       mas->cur_speed_hz = spi_slv->max_speed_hz;
-> 
-> Why can't you use clk_get_rate() instead? Or call clk_set_rate() with
-> the rate you want the master clk to run at and then divide that down
-> from there?
-> 
-> 
->> > Not sure I follow, the intention is to run the controller clock based on
->> > the slave's max frequency.
-> 
->> That's good. The problem I see is that we have to specify the max
->> frequency in the controller/bus node, and also in the child/slave
->> node.
->> It should only need to be specified in the slave node, so making the
->> cur_speed_hz equal the max_speed_hz is problematic. The current speed
->> of
->> the master should be determined by calling clk_get_rate().
-> 
-> We don't require that the slaves all individually set a speed since it
-> gets a bit redundant, it should be enough to just use the default the
-> controller provides.  A bigger problem with this is that the driver
-> will
-> never see a transfer which doesn't explicitly have a speed set as the
-> core will ensure something is set, open coding this logic in every
-> driver would obviously be tiresome.
 
-clock_get_rate() will returns the rate which got set as per the clock
-plan(which was the rounded up frequency) which can be less than or equal
-to the requested frequency. For that reason using the cur_speed_hz to
-store the requested frequency and skip clock configuration for the
-consecutive transfers with same frequency.
 
---Dilip
+-- 
+With Best Regards,
+Andy Shevchenko

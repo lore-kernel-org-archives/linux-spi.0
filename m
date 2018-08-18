@@ -1,35 +1,44 @@
-From: Trent Piepho <tpiepho@impinj.com>
+From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
 Subject: Re: [PATCH v2] spi: dw: support 4-16 bits per word
-Date: Fri, 17 Aug 2018 16:32:31 +0000
-Message-ID: <1534523550.2283.397.camel@impinj.com>
+Date: Sat, 18 Aug 2018 10:37:01 +0200
+Message-ID: <CAAh8qszwWsSTPhK_aLziy8px9hOyixGN50m6YMA_5Rb2w23zaw@mail.gmail.com>
 References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
-         <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
+ <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com> <1534523550.2283.397.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "simon.k.r.goldschmidt@gmail.com" <simon.k.r.goldschmidt@gmail.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+To: tpiepho@impinj.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
-Content-Language: en-US
-Content-ID: <1E96AE1C0D7E3F4F9072F9FBF5E5E939@namprd06.prod.outlook.com>
+In-Reply-To: <1534523550.2283.397.camel@impinj.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCAyMDE4LTA4LTE3IGF0IDA5OjAxICswMjAwLCBTaW1vbiBHb2xkc2NobWlkdCB3cm90
-ZToNCj4gVGhlIHNwaS1kdyBkcml2ZXIgY3VycmVudGx5IG9ubHkgc3VwcG9ydHMgOCBvciAxNiBi
-aXRzIHBlciB3b3JkLg0KPiANCj4gU2luY2UgdGhlIGhhcmR3YXJlIHN1cHBvcnRzIDQtMTYgYml0
-cyBwZXIgd29yZCwgYWRhcHQgdGhlIGRyaXZlcg0KPiB0byBhbHNvIHN1cHBvcnQgdGhpcy4NCj4g
-DQo+IA0KDQo+IEBAIC0zMDcsMTUgKzMwNywxMyBAQCBzdGF0aWMgaW50IGR3X3NwaV90cmFuc2Zl
-cl9vbmUoc3RydWN0IHNwaV9jb250cm9sbGVyICptYXN0ZXIsDQo+ICsNCj4gKwlpZiAoKHRyYW5z
-ZmVyLT5iaXRzX3Blcl93b3JkIDwgNCkgfHwgKHRyYW5zZmVyLT5iaXRzX3Blcl93b3JkID4gMTYp
-KQ0KPiAgCQlyZXR1cm4gLUVJTlZBTDsNCj4gLQl9DQoNCllvdSBkb24ndCBuZWVkIHRoaXMgY2hl
-Y2sgYXMgdGhlIHNwaSBjb3JlIHZhbGlkYXRlcyB0aGUgdHJhbnNmZXINCmFnYWluc3QgbWFzdGVy
-LT5iaXRzX3Blcl93b3JkX21hc2suDQoNCj4gIAltYXN0ZXItPm1vZGVfYml0cyA9IFNQSV9DUE9M
-IHwgU1BJX0NQSEEgfCBTUElfTE9PUDsNCj4gLQltYXN0ZXItPmJpdHNfcGVyX3dvcmRfbWFzayA9
-IFNQSV9CUFdfTUFTSyg4KSB8IFNQSV9CUFdfTUFTSygxNik7DQo+ICsJbWFzdGVyLT5iaXRzX3Bl
-cl93b3JkX21hc2sgPSAgU1BJX0JQV19SQU5HRV9NQVNLKDQsIDE2KTsNCj4gIAltYXN0ZXItPmJ1
-c19udW0gPSBkd3MtPmJ1c19udW07DQo+IA==
+On Fri, Aug 17, 2018 at 6:32 PM Trent Piepho <tpiepho@impinj.com> wrote:
+>
+> On Fri, 2018-08-17 at 09:01 +0200, Simon Goldschmidt wrote:
+> > The spi-dw driver currently only supports 8 or 16 bits per word.
+> >
+> > Since the hardware supports 4-16 bits per word, adapt the driver
+> > to also support this.
+> >
+> >
+>
+> > @@ -307,15 +307,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+> > +
+> > +     if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
+> >               return -EINVAL;
+> > -     }
+>
+> You don't need this check as the spi core validates the transfer
+> against master->bits_per_word_mask.
+
+Ok.
+
+>
+> >       master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
+> > -     master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
+> > +     master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
+> >       master->bus_num = dws->bus_num;
+> >

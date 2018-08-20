@@ -1,39 +1,39 @@
-From: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] mtd: m25p80: consider max message size when use the
- spi_mem_xx() API
-Date: Mon, 20 Aug 2018 19:13:14 +0200
-Message-ID: <20180820171314.GB18339@kroah.com>
-References: <1534758206-24555-1-git-send-email-chuanhua.han@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 2/3] dt-bindings: spi: Add Spreadtrum SPI controller
+ documentation
+Date: Mon, 20 Aug 2018 14:38:26 -0500
+Message-ID: <20180820193826.GA20541@bogus>
+References: <a77a6bb8b3abf1c127014c78f71533c24afacd93.1534423916.git.baolin.wang@linaro.org>
+ <53e9467b4b16911576bcfb71c50c108ea83a803c.1534423916.git.baolin.wang@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, boris.brezillon@bootlin.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, jiafei.pan@nxp.com, zhiqiang.hou@nxp.com
-To: Chuanhua Han <chuanhua.han@nxp.com>
-Return-path: <stable-owner@vger.kernel.org>
+Cc: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        orsonzhai@gmail.com, zhang.lyra@gmail.com,
+        lanqing.liu@spreadtrum.com, baolin.wang@linaro.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Baolin Wang <baolin.wang@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1534758206-24555-1-git-send-email-chuanhua.han@nxp.com>
-Sender: stable-owner@vger.kernel.org
+In-Reply-To: <53e9467b4b16911576bcfb71c50c108ea83a803c.1534423916.git.baolin.wang@linaro.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 20, 2018 at 05:43:26PM +0800, Chuanhua Han wrote:
-> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+On Thu, 16 Aug 2018 20:54:50 +0800, Baolin Wang wrote:
+> From: Lanqing Liu <lanqing.liu@spreadtrum.com>
+> 
+> This patch adds the binding documentation for Spreadtrum SPI
+> controller device.
+> 
+> Signed-off-by: Lanqing Liu <lanqing.liu@spreadtrum.com>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 > ---
-> Changes in v2:
-> 	- Place the adjusted transfer bytes code in spi_mem_adjust_op_size()
-> 	and  check spi_max_message_size(mem->spi) value before subtracting 
-> 	opcode, addr and dummy bytes.
-> *fixes:
-> 	spi: Extend the core to ease integration of SPI memory controllers
+> Changes from v1:
+>  - Remove the sprd,spi-interval property.
 > ---
->  drivers/spi/spi-mem.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  Documentation/devicetree/bindings/spi/spi-sprd.txt |   26 ++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-sprd.txt
+> 
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+Reviewed-by: Rob Herring <robh@kernel.org>

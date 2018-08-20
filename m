@@ -1,44 +1,52 @@
-From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
-Subject: Re: [PATCH v2] spi: dw: support 4-16 bits per word
-Date: Sat, 18 Aug 2018 10:37:01 +0200
-Message-ID: <CAAh8qszwWsSTPhK_aLziy8px9hOyixGN50m6YMA_5Rb2w23zaw@mail.gmail.com>
-References: <20180808071421.32707-1-simon.k.r.goldschmidt@gmail.com>
- <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com> <1534523550.2283.397.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH] mtd: m25p80: consider max message size when use the spi_mem_xx() API
+Date: Mon, 20 Aug 2018 17:43:26 +0800
+Message-ID: <1534758206-24555-1-git-send-email-chuanhua.han@nxp.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-To: tpiepho@impinj.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1534523550.2283.397.camel@impinj.com>
-Sender: linux-kernel-owner@vger.kernel.org
+        stable@vger.kernel.org, jiafei.pan@nxp.com, zhiqiang.hou@nxp.com,
+        Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org, boris.brezillon@bootlin.com
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 17, 2018 at 6:32 PM Trent Piepho <tpiepho@impinj.com> wrote:
->
-> On Fri, 2018-08-17 at 09:01 +0200, Simon Goldschmidt wrote:
-> > The spi-dw driver currently only supports 8 or 16 bits per word.
-> >
-> > Since the hardware supports 4-16 bits per word, adapt the driver
-> > to also support this.
-> >
-> >
->
-> > @@ -307,15 +307,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
-> > +
-> > +     if ((transfer->bits_per_word < 4) || (transfer->bits_per_word > 16))
-> >               return -EINVAL;
-> > -     }
->
-> You don't need this check as the spi core validates the transfer
-> against master->bits_per_word_mask.
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+---
+Changes in v2:
+	- Place the adjusted transfer bytes code in spi_mem_adjust_op_size()
+	and  check spi_max_message_size(mem->spi) value before subtracting 
+	opcode, addr and dummy bytes.
+*fixes:
+	spi: Extend the core to ease integration of SPI memory controllers
+---
+ drivers/spi/spi-mem.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Ok.
-
->
-> >       master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
-> > -     master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-> > +     master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
-> >       master->bus_num = dws->bus_num;
-> >
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 990770d..f5e75d1 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -328,10 +328,21 @@ EXPORT_SYMBOL_GPL(spi_mem_exec_op);
+ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ {
+ 	struct spi_controller *ctlr = mem->spi->controller;
++	unsigned long val =	sizeof(op->cmd.opcode) +
++							  op->addr.nbytes +
++							  op->dummy.nbytes;
+ 
+ 	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
+ 		return ctlr->mem_ops->adjust_op_size(mem, op);
+ 
++	if (spi_max_message_size(mem->spi) < val)
++		return -EINVAL;
++
++	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op)
++		op->data.nbytes = min3((unsigned long)op->data.nbytes,
++				spi_max_transfer_size(mem->spi),
++				spi_max_message_size(mem->spi) - val);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+-- 
+2.7.4

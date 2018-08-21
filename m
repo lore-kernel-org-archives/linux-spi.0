@@ -1,66 +1,105 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH -next] spi: Fix double IDR allocation with DT aliases
-Date: Tue, 21 Aug 2018 19:42:03 +0200
-Message-ID: <CAMuHMdVUomvhM=ag2n4DKf6hwX+J+YL+stA2Z3dQeod2RAwKKQ@mail.gmail.com>
-References: <20180821095303.27664-1-geert+renesas@glider.be> <20180821134044.GA18693@kroah.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        kirill.kapranov@compulab.co.il,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-To: Greg KH <greg@kroah.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180821134044.GA18693@kroah.com>
-Sender: stable-owner@vger.kernel.org
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 00/11] tree-wide: use SPDX identifier for Renesas drivers
+Date: Wed, 22 Aug 2018 00:02:13 +0200
+Message-ID: <20180821220233.9202-1-wsa+renesas@sang-engineering.com>
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        dmaengine@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, netdev@vger.kernel.org
+To: linux-renesas-soc@vger.kernel.org
+Return-path: <netdev-owner@vger.kernel.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Greg,
+Here is my first batch of SPDX conversion patches. Mostly low hanging fruits,
+only a handful of drivers needed corrections in MODULE_LICENSE, too.
 
-On Tue, Aug 21, 2018 at 3:40 PM Greg KH <greg@kroah.com> wrote:
-> On Tue, Aug 21, 2018 at 11:53:03AM +0200, Geert Uytterhoeven wrote:
-> > If the SPI bus number is provided by a DT alias, idr_alloc() is called
-> > twice, leading to:
-> >
-> >     WARNING: CPU: 1 PID: 1 at drivers/spi/spi.c:2179 spi_register_controller+0x11c/0x5d8
-> >     couldn't get idr
-> >
-> > Fix this by moving the handling of fixed SPI bus numbers up, before the
-> > DT handling code fills in ctlr->bus_num.
-> >
-> > Fixes: 1a4327fbf4554d5b ("spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers")
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> > Seen on e.g. r8a7791/koelsch, breaking both RSPI and MSIOF.
-> > ---
-> >  drivers/spi/spi.c | 22 +++++++++++-----------
-> >  1 file changed, 11 insertions(+), 11 deletions(-)
-> >
->
-> <formletter>
->
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
->
-> </formletter>
+checkpatch is happy as well.
 
-I know.
+I think an ack from Morimoto-san with his Renesas email address would be nice
+to make it more official? Still, I *am* contracted by Renesas.
 
-I only CCed stable because the acceptance email for the original patch was
-CCed to stable, and I wanted to prevent that one from being backported early.
+Thanks,
 
-Gr{oetje,eeting}s,
+   Wolfram
 
-                        Geert
+Wolfram Sang (11):
+  clk: renesas: use SPDX identifier for Renesas drivers
+  dmaengine: use SPDX identifier for Renesas drivers
+  i2c: use SPDX identifier for Renesas drivers
+  mmc: use SPDX identifier for Renesas drivers
+  can: rcar: use SPDX identifier for Renesas drivers
+  net: ethernet: renesas: use SPDX identifier for Renesas drivers
+  phy: renesas: use SPDX identifier for Renesas drivers
+  pwm: use SPDX identifier for Renesas drivers
+  soc: renesas: use SPDX identifier for Renesas drivers
+  spi: use SPDX identifier for Renesas drivers
+  watchdog: use SPDX identifier for Renesas drivers
+
+ drivers/clk/renesas/clk-div6.c                |  5 +----
+ drivers/clk/renesas/r8a7795-cpg-mssr.c        |  5 +----
+ drivers/clk/renesas/r8a7796-cpg-mssr.c        |  5 +----
+ drivers/clk/renesas/r8a77995-cpg-mssr.c       |  5 +----
+ drivers/clk/renesas/rcar-gen3-cpg.c           |  5 +----
+ drivers/clk/renesas/rcar-usb2-clock-sel.c     |  5 +----
+ drivers/clk/renesas/renesas-cpg-mssr.c        |  5 +----
+ drivers/clk/renesas/renesas-cpg-mssr.h        |  5 +----
+ drivers/dma/nbpfaxi.c                         |  5 +----
+ drivers/dma/sh/shdma-arm.h                    |  5 +----
+ drivers/dma/sh/shdma-base.c                   |  5 +----
+ drivers/dma/sh/shdma-of.c                     |  5 +----
+ drivers/dma/sh/shdma-r8a73a4.c                |  5 +----
+ drivers/dma/sh/shdma.h                        |  6 +-----
+ drivers/dma/sh/shdmac.c                       |  6 +-----
+ drivers/dma/sh/sudmac.c                       |  5 +----
+ drivers/dma/sh/usb-dmac.c                     |  5 +----
+ drivers/i2c/busses/i2c-emev2.c                |  5 +----
+ drivers/i2c/busses/i2c-highlander.c           |  5 +----
+ drivers/i2c/busses/i2c-rcar.c                 | 10 +---------
+ drivers/i2c/busses/i2c-riic.c                 |  5 +----
+ drivers/i2c/busses/i2c-sh_mobile.c            | 10 +---------
+ drivers/mmc/host/renesas_sdhi.h               |  5 +----
+ drivers/mmc/host/renesas_sdhi_core.c          |  5 +----
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |  5 +----
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c      |  5 +----
+ drivers/mmc/host/sh_mmcif.c                   |  7 ++-----
+ drivers/mmc/host/tmio_mmc.c                   |  5 +----
+ drivers/mmc/host/tmio_mmc.h                   |  6 +-----
+ drivers/mmc/host/tmio_mmc_core.c              |  5 +----
+ drivers/mmc/host/usdhi6rol0.c                 |  5 +----
+ drivers/net/can/rcar/rcar_can.c               |  6 +-----
+ drivers/net/can/rcar/rcar_canfd.c             |  6 +-----
+ drivers/net/ethernet/renesas/ravb.h           |  5 +----
+ drivers/net/ethernet/renesas/ravb_main.c      |  5 +----
+ drivers/net/ethernet/renesas/sh_eth.c         | 13 +------------
+ drivers/net/ethernet/renesas/sh_eth.h         | 13 +------------
+ drivers/phy/renesas/phy-rcar-gen2.c           |  5 +----
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c      |  5 +----
+ drivers/phy/renesas/phy-rcar-gen3-usb3.c      |  5 +----
+ drivers/pwm/pwm-rcar.c                        |  5 +----
+ drivers/pwm/pwm-renesas-tpu.c                 | 10 +---------
+ drivers/soc/renesas/r8a7743-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7745-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7779-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7790-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7791-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7792-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7794-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7795-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a7796-sysc.c            |  5 +----
+ drivers/soc/renesas/r8a77970-sysc.c           |  5 +----
+ drivers/soc/renesas/r8a77995-sysc.c           |  5 +----
+ drivers/soc/renesas/rcar-sysc.h               |  5 +----
+ drivers/soc/renesas/renesas-soc.c             | 10 +---------
+ drivers/spi/spi-rspi.c                        | 10 +---------
+ drivers/spi/spi-sh-hspi.c                     | 12 ++----------
+ drivers/spi/spi-sh-msiof.c                    |  6 +-----
+ drivers/spi/spi-sh.c                          | 12 ++----------
+ drivers/watchdog/renesas_wdt.c                |  5 +----
+ 60 files changed, 63 insertions(+), 300 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.11.0

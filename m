@@ -1,72 +1,72 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: [PATCH v4] mtd: spi-mem: Add the default transfer length adjustments
-Date: Tue, 21 Aug 2018 15:15:50 +0800
-Message-ID: <1534835750-2251-1-git-send-email-chuanhua.han@nxp.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuanhua Han <chuanhua.han@nxp.com>, stable@vger.kernel.org
-To: boris.brezillon@bootlin.com, broonie@kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-Sender: stable-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH -next] spi: Fix double IDR allocation with DT aliases
+Date: Tue, 21 Aug 2018 11:53:03 +0200
+Message-ID: <20180821095303.27664-1-geert+renesas@glider.be>
+Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>,
+        Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-    We need that to adjust the len of the 2nd transfer (called data in spi-mem)
-if it's too long to fit in a SPI message or SPI transfer.
+If the SPI bus number is provided by a DT alias, idr_alloc() is called
+twice, leading to:
 
-Fixes: c36ff266dc82 ("spi: Extend the core to ease integration of SPI memory controllers")
-Cc: <stable@vger.kernel.org>
+    WARNING: CPU: 1 PID: 1 at drivers/spi/spi.c:2179 spi_register_controller+0x11c/0x5d8
+    couldn't get idr
 
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+Fix this by moving the handling of fixed SPI bus numbers up, before the
+DT handling code fills in ctlr->bus_num.
+
+Fixes: 1a4327fbf4554d5b ("spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-Changes in v4:
-  -Rename variable name "opcode_addr_dummy_sum" to "len".
-  -The comparison of "spi_max_message_size(mem->spi)" and "len" was removed.
-  -Adjust their order when comparing the sizes of "spi_max_message_size(mem->spi)" and "len".
-  -Changing the "unsigned long" type in the code to "size_t".
-Changes in v3:
-  -Rename variable name "val" to "opcode_addr_dummy_sum".
-  -Place the legitimacy of the transfer size(i.e., "spi_max_message_size(mem->spi)" and
-  -"opcode_addr_dummy_sum") into "if (! ctlr - > mem_ops | |! ctlr-> mem_ops->exec_op) {"
-structure and add "spi_max_transfer_size(mem->spi) and opcode_addr_dummy_sum".
-  -Adjust the formatting alignment of the code.
-  -"(unsigned long)op->data.nbytes" was modified to "(unsigned long)(op->data.nbytes)".
-Changes in v2:
-  -Place the adjusted transfer bytes code in spi_mem_adjust_op_size() and  check 
-spi_max_message_size(mem->spi) value before subtracting opcode, addr and dummy bytes.
-  -Change the code from fsl-espi controller to generic code(The adjustment of spi transmission
-length was originally modified in the "drivers/spi/spi-fsl-espi.c" file, and now the adjustment
-of transfer length is made in the "drivers/spi/spi-mem.c" file).
+Seen on e.g. r8a7791/koelsch, breaking both RSPI and MSIOF.
+---
+ drivers/spi/spi.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
- drivers/spi/spi-mem.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 990770d..5374606 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -328,10 +328,23 @@ EXPORT_SYMBOL_GPL(spi_mem_exec_op);
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- {
- 	struct spi_controller *ctlr = mem->spi->controller;
-+	size_t len = sizeof(op->cmd.opcode) +
-+			    op->addr.nbytes +
-+			    op->dummy.nbytes;
- 
- 	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
- 		return ctlr->mem_ops->adjust_op_size(mem, op);
- 
-+	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
-+		if (len > spi_max_transfer_size(mem->spi))
-+			return -EINVAL;
-+
-+		op->data.nbytes = min3((size_t)(op->data.nbytes),
-+				       spi_max_transfer_size(mem->spi),
-+				       spi_max_message_size(mem->spi) -
-+				       len);
-+	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a00d006d4c3a1c5a..9da0bc5a036cfff6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2143,8 +2143,17 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 */
+ 	if (ctlr->num_chipselect == 0)
+ 		return -EINVAL;
+-	/* allocate dynamic bus number using Linux idr */
+-	if ((ctlr->bus_num < 0) && ctlr->dev.of_node) {
++	if (ctlr->bus_num >= 0) {
++		/* devices with a fixed bus num must check-in with the num */
++		mutex_lock(&board_lock);
++		id = idr_alloc(&spi_master_idr, ctlr, ctlr->bus_num,
++			ctlr->bus_num + 1, GFP_KERNEL);
++		mutex_unlock(&board_lock);
++		if (WARN(id < 0, "couldn't get idr"))
++			return id == -ENOSPC ? -EBUSY : id;
++		ctlr->bus_num = id;
++	} else if (ctlr->dev.of_node) {
++		/* allocate dynamic bus number using Linux idr */
+ 		id = of_alias_get_id(ctlr->dev.of_node, "spi");
+ 		if (id >= 0) {
+ 			ctlr->bus_num = id;
+@@ -2170,15 +2179,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 		if (WARN(id < 0, "couldn't get idr"))
+ 			return id;
+ 		ctlr->bus_num = id;
+-	} else {
+-		/* devices with a fixed bus num must check-in with the num */
+-		mutex_lock(&board_lock);
+-		id = idr_alloc(&spi_master_idr, ctlr, ctlr->bus_num,
+-			ctlr->bus_num + 1, GFP_KERNEL);
+-		mutex_unlock(&board_lock);
+-		if (WARN(id < 0, "couldn't get idr"))
+-			return id == -ENOSPC ? -EBUSY : id;
+-		ctlr->bus_num = id;
+ 	}
+ 	INIT_LIST_HEAD(&ctlr->queue);
+ 	spin_lock_init(&ctlr->queue_lock);
 -- 
-2.7.4
+2.17.1

@@ -1,79 +1,81 @@
-From: dkota@codeaurora.org
-Subject: Re: [PATCH] spi: spi-geni-qcom: Add SPI driver support for GENI based
- QUP
-Date: Fri, 24 Aug 2018 16:30:16 +0530
-Message-ID: <9d334f90694ce3940cf28fb0d64a303e@codeaurora.org>
-References: <61f2e1fb394bfe47ace42352f2e1b3a6@codeaurora.org>
- <CAD=FV=X-fGukBpSOYCO=rv94_3gorL=9qmttsvZk21=m6mwUgA@mail.gmail.com>
- <20180810105205.GC20971@sirena.org.uk>
- <CAD=FV=XXyL5q1quxUtBohn2GrcadbY9hr6sdw+4qShQnYTgVwA@mail.gmail.com>
- <20180810161329.GF20971@sirena.org.uk>
- <c1bc416ba407b5a3cc098e78a529752e@codeaurora.org>
- <20180810164636.GI20971@sirena.org.uk>
- <b32c205955e0f42182b16e90f539a919@codeaurora.org>
- <20180814150340.GE5810@sirena.org.uk>
- <caea8294d20c515a33c090c4fddb15c3@codeaurora.org>
- <20180817145914.GA6885@sirena.org.uk>
+From: Jian-Hong Pan <starnight@g.ncu.edu.tw>
+Subject: Re: [RFC 1/3 net] lorawan: Add LoRaWAN class module
+Date: Fri, 24 Aug 2018 23:58:29 +0800
+Message-ID: <CAC=mGzjMm6OdJJXB=G0NEBkGASWyJv1cgeS=_wiUhDn+WYaqGQ@mail.gmail.com>
+References: <cover.1535039998.git.starnight@g.ncu.edu.tw> <fc737f3940bbe91341fb15d85ac11931eb56d1fc.1535039998.git.starnight@g.ncu.edu.tw>
+ <30b75248-7589-fc98-819f-2b68844522f1@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Doug Anderson <dianders@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "Mahadevan, Girish" <girishm@codeaurora.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180817145914.GA6885@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        netdev@vger.kernel.org,
+        "<linux-arm-kernel@lists.infradead.org\\"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org>," <linux-kernel@vger.kernel.org>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Janus Piwek <jpiwek@arroweurope.com>,
+        =?UTF-8?Q?Michael_R=C3=B6der?= <michael.roeder@avnet.eu>,
+        Dollar Chen <dollar.chen@wtmec.com>,
+        Ken Yu <ken.yu@rakwireless.com>,
+        =?UTF-8?Q?Konstantin_B=C3=B6hm?= <konstantin.boehm@ancud.de>,
+        Jan Jongboom <jan.jongboom@arm.com>,
+        Jon Ortego <Jon.Ortego@imst.de>,
+        "linux-kernel@vger.kernel.org>," <contact@snootlab.com>,
+        Ben Whitten <ben.whitten@lairdte
+To: rdunlap@infradead.org
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <30b75248-7589-fc98-819f-2b68844522f1@infradead.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2018-08-17 20:29, Mark Brown wrote:
-> On Fri, Aug 17, 2018 at 04:06:06PM +0530, dkota@codeaurora.org wrote:
-> 
->> Could you please clarify on below query.
-> 
-> I'm not seeing any further questions in your e-mail?
-My bad; i mean, you to comment on below explanation on using 
-cur_speed_hz instead of clk_get_rate().
+Randy Dunlap <rdunlap@infradead.org> =E6=96=BC 2018=E5=B9=B48=E6=9C=8824=E6=
+=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=881:43=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> Hi,
+>
+> On 08/23/2018 10:15 AM, Jian-Hong Pan wrote:
+> > diff --git a/net/maclorawan/Kconfig b/net/maclorawan/Kconfig
+> > new file mode 100644
+> > index 000000000000..741992b059c6
+> > --- /dev/null
+> > +++ b/net/maclorawan/Kconfig
+> > @@ -0,0 +1,14 @@
+> > +config LORAWAN
+> > +     tristate "MAC layer of LoRaWAN Network support"
+> > +     select CRYPTO
+> > +     select CRYPTO_CMAC
+> > +     select CRYPTO_CBC
+> > +     select CRYPTO_AES
+> > +     ---help---
+> > +       LoRaWAN defines a low data rate, low power and long range wirel=
+ess
+> > +       wide area networks. It was designed to organise networks of sen=
+sors,
+> > +       switches and actuators, etc automation devices.  It could opera=
+te as
+> > +       multiple kilometers wide.
+>
+> There are several things that I would change.  How about this instead?
+>
+>
+>           LoRaWAN defines low data rate, low power and long range wireles=
+s
+>           wide area networks. It was designed to organise networks of aut=
+omation
+>           devices, such as sensors, switches and actuators. It can operat=
+e
+>           multiple kilometers wide.
 
->> +       mas->cur_speed_hz = spi_slv->max_speed_hz;
-> 
-> Why can't you use clk_get_rate() instead? Or call clk_set_rate() with
-> the rate you want the master clk to run at and then divide that down
-> from there?
-> 
-> 
->> > Not sure I follow, the intention is to run the controller clock based on
->> > the slave's max frequency.
-> 
->> That's good. The problem I see is that we have to specify the max
->> frequency in the controller/bus node, and also in the child/slave
->> node.
->> It should only need to be specified in the slave node, so making the
->> cur_speed_hz equal the max_speed_hz is problematic. The current speed
->> of
->> the master should be determined by calling clk_get_rate().
-> 
-> We don't require that the slaves all individually set a speed since it
-> gets a bit redundant, it should be enough to just use the default the
-> controller provides.  A bigger problem with this is that the driver
-> will
-> never see a transfer which doesn't explicitly have a speed set as the
-> core will ensure something is set, open coding this logic in every
-> driver would obviously be tiresome.
+That becomes better!  Thank you
 
-clock_get_rate() will returns the rate which got set as per the clock
-plan(which was the rounded up frequency) which can be less than or equal
-to the requested frequency. For that reason using the cur_speed_hz to
-store the requested frequency and skip clock configuration for the
-consecutive transfers with same frequency.
-
-I have uploaded the new patchset addressing all these review comments.
-Please review it.
-
---Dilip
+> > +
+> > +       Say Y here to compile LoRaWAN support into the kernel or say M =
+to
+> > +       compile it as modules.
+>
+>
+> --
+> ~Randy

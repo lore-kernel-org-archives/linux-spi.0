@@ -1,8 +1,8 @@
 From: kbuild test robot <lkp@intel.com>
 Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI
  based QUP
-Date: Sat, 25 Aug 2018 13:21:25 +0800
-Message-ID: <201808251010.KRlMjZ8C%fengguang.wu@intel.com>
+Date: Sat, 25 Aug 2018 14:14:53 +0800
+Message-ID: <201808251129.Mc6yEfip%fengguang.wu@intel.com>
 References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -29,21 +29,20 @@ Hi Girish,
 Thank you for the patch! Yet something to improve:
 
 [auto build test ERROR on spi/for-next]
-[also build test ERROR on v4.18]
 [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 
 url:    https://github.com/0day-ci/linux/commits/Dilip-Kota/spi-spi-geni-qcom-Add-SPI-driver-support-for-GENI-based-QUP/20180824-190528
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-config: i386-allmodconfig
+config: i386-allyesconfig
 compiler: gcc-7 (Debian 7.3.0-16) 7.3.0
 reproduce:
-        make ARCH=i386  allmodconfig
+        make ARCH=i386  allyesconfig
         make ARCH=i386 
 
 All errors (new ones prefixed by >>):
 
 
-vim +239 drivers/spi/spi-geni-qcom.c
+vim +/GENI_SE_VERSION_MAJOR +239 drivers/spi/spi-geni-qcom.c
 
    212	
    213	static int spi_geni_prepare_transfer_hardware(struct spi_master *spi)

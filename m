@@ -1,47 +1,38 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: -next: Traceback at at drivers/spi/spi.c:2179 spi_register_controller
-Date: Mon, 27 Aug 2018 12:41:16 +0200
-Message-ID: <CAMuHMdUugeKbUgfKpwYCXQrpMys8hrWUXr0FZWAW7ryeZoS1dg@mail.gmail.com>
-References: <20180823200834.GA9368@roeck-us.net>
+From: Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH -next] spi: Fix double IDR allocation with DT aliases
+Date: Mon, 27 Aug 2018 11:13:49 -0300
+Message-ID: <CAOMZO5B43Cm+xtAMc5tLHAMzoVO0JJR+T+G0MPtC9oGAmjrP2w@mail.gmail.com>
+References: <20180821095303.27664-1-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, kirill.kapranov@compulab.co.il,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180823200834.GA9368@roeck-us.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+        Kirill Kapranov <kirill.kapranov@compulab.co.il>,
+        linux-spi@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20180821095303.27664-1-geert+renesas@glider.be>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Guenter,
+Hi Geert,
 
-On Thu, Aug 23, 2018 at 10:08 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> I see the attached warning when booting 'sabrelite' images in qemu,
-> using imx_v6_v7_defconfig and imx6dl-sabrelite.dts.
+On Tue, Aug 21, 2018 at 6:53 AM, Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+> If the SPI bus number is provided by a DT alias, idr_alloc() is called
+> twice, leading to:
 >
-> Context suggests that the warning is seen since commit 1a4327fbf4554 ("spi:
-> fix IDR collision on systems with both fixed and dynamic SPI bus numbers").
+>     WARNING: CPU: 1 PID: 1 at drivers/spi/spi.c:2179 spi_register_controller+0x11c/0x5d8
+>     couldn't get idr
 >
-> Guenter
+> Fix this by moving the handling of fixed SPI bus numbers up, before the
+> DT handling code fills in ctlr->bus_num.
 >
-> ---
-> [    7.105230] ------------[ cut here ]------------
-> [    7.105509] WARNING: CPU: 0 PID: 1 at drivers/spi/spi.c:2179 spi_register_controller+0x7dc/0x938
-> [    7.105760] couldn't get idr
+> Fixes: 1a4327fbf4554d5b ("spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Correct, all SPI controllers instantiated from DT and using DT aliases
-are broken.
+This fixes SPI on imx51-babbage, thanks.
 
-https://lore.kernel.org/lkml/20180821095303.27664-1-geert+renesas@glider.be/
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Tested-by: Fabio Estevam <fabio.estevam@nxp.com>

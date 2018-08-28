@@ -1,26 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sh-msiof: Add r8a774a1 support" to the spi tree
-Date: Tue, 28 Aug 2018 21:56:35 +0100 (BST)
-Message-ID: <20180828205635.E7107440095@finisterre.ee.mobilebroadband>
-References: <1534517914-15406-1-git-send-email-fabrizio.castro@bp.renesas.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, Simon Horman <horms@verge.net.au>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: Fix double IDR allocation with DT aliases" to the spi tree
+Date: Tue, 28 Aug 2018 21:58:56 +0100 (BST)
+Message-ID: <20180828205856.D4A934400A1@finisterre.ee.mobilebroadband>
+References: <20180821095303.27664-1-geert+renesas@glider.be>
+Cc: Fabio Estevam <fabio.estevam@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Kirill Kapranov <kirill.kapranov@compulab.co.il>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1534517914-15406-1-git-send-email-fabrizio.castro@bp.renesas.com>
+In-Reply-To: <20180821095303.27664-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sh-msiof: Add r8a774a1 support
+   spi: Fix double IDR allocation with DT aliases
 
 has been applied to the spi tree at
 
@@ -45,42 +43,67 @@ to this mail.
 Thanks,
 Mark
 
->From 864822235f1897219409ec1f0af076fcc9057c57 Mon Sep 17 00:00:00 2001
-From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Date: Fri, 17 Aug 2018 15:58:34 +0100
-Subject: [PATCH] spi: sh-msiof: Add r8a774a1 support
+>From 04b2d03a75652bda989de1595048f0501dc0c0a0 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 21 Aug 2018 11:53:03 +0200
+Subject: [PATCH] spi: Fix double IDR allocation with DT aliases
 
-Document RZ/G2M (R8A774A1) SoC bindings.
+If the SPI bus number is provided by a DT alias, idr_alloc() is called
+twice, leading to:
 
-Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das@bp.renesas.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+    WARNING: CPU: 1 PID: 1 at drivers/spi/spi.c:2179 spi_register_controller+0x11c/0x5d8
+    couldn't get idr
+
+Fix this by moving the handling of fixed SPI bus numbers up, before the
+DT handling code fills in ctlr->bus_num.
+
+Fixes: 1a4327fbf4554d5b ("spi: fix IDR collision on systems with both fixed and dynamic SPI bus numbers")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Fabio Estevam <fabio.estevam@nxp.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/sh-msiof.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-index bfbc2035fb6b..8f7bb6aaff2e 100644
---- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -3,6 +3,7 @@ Renesas MSIOF spi controller
- Required properties:
- - compatible           : "renesas,msiof-r8a7743" (RZ/G1M)
- 			 "renesas,msiof-r8a7745" (RZ/G1E)
-+			 "renesas,msiof-r8a774a1" (RZ/G2M)
- 			 "renesas,msiof-r8a7790" (R-Car H2)
- 			 "renesas,msiof-r8a7791" (R-Car M2-W)
- 			 "renesas,msiof-r8a7792" (R-Car V2H)
-@@ -14,7 +15,7 @@ Required properties:
- 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
- 			 "renesas,sh-mobile-msiof" (generic SH-Mobile compatibile device)
- 			 "renesas,rcar-gen2-msiof" (generic R-Car Gen2 and RZ/G1 compatible device)
--			 "renesas,rcar-gen3-msiof" (generic R-Car Gen3 compatible device)
-+			 "renesas,rcar-gen3-msiof" (generic R-Car Gen3 and RZ/G2 compatible device)
- 			 "renesas,sh-msiof"      (deprecated)
- 
- 			 When compatible with the generic version, nodes
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a00d006d4c3a..9da0bc5a036c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2143,8 +2143,17 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 */
+ 	if (ctlr->num_chipselect == 0)
+ 		return -EINVAL;
+-	/* allocate dynamic bus number using Linux idr */
+-	if ((ctlr->bus_num < 0) && ctlr->dev.of_node) {
++	if (ctlr->bus_num >= 0) {
++		/* devices with a fixed bus num must check-in with the num */
++		mutex_lock(&board_lock);
++		id = idr_alloc(&spi_master_idr, ctlr, ctlr->bus_num,
++			ctlr->bus_num + 1, GFP_KERNEL);
++		mutex_unlock(&board_lock);
++		if (WARN(id < 0, "couldn't get idr"))
++			return id == -ENOSPC ? -EBUSY : id;
++		ctlr->bus_num = id;
++	} else if (ctlr->dev.of_node) {
++		/* allocate dynamic bus number using Linux idr */
+ 		id = of_alias_get_id(ctlr->dev.of_node, "spi");
+ 		if (id >= 0) {
+ 			ctlr->bus_num = id;
+@@ -2170,15 +2179,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 		if (WARN(id < 0, "couldn't get idr"))
+ 			return id;
+ 		ctlr->bus_num = id;
+-	} else {
+-		/* devices with a fixed bus num must check-in with the num */
+-		mutex_lock(&board_lock);
+-		id = idr_alloc(&spi_master_idr, ctlr, ctlr->bus_num,
+-			ctlr->bus_num + 1, GFP_KERNEL);
+-		mutex_unlock(&board_lock);
+-		if (WARN(id < 0, "couldn't get idr"))
+-			return id == -ENOSPC ? -EBUSY : id;
+-		ctlr->bus_num = id;
+ 	}
+ 	INIT_LIST_HEAD(&ctlr->queue);
+ 	spin_lock_init(&ctlr->queue_lock);
 -- 
 2.18.0

@@ -1,23 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Introduce one new field to set word delay" to the spi tree
-Date: Wed, 29 Aug 2018 12:02:32 +0100 (BST)
-Message-ID: <20180829110232.2D6081124859@debutante.sirena.org.uk>
-References: <a77a6bb8b3abf1c127014c78f71533c24afacd93.1534423916.git.baolin.wang@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com, orsonzhai@gmail.com,
-        zhang.lyra@gmail.com, lanqing.liu@spreadtrum.com,
-        baolin.wang@linaro.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: spi-fsl-dspi: fix broken DSPI_EOQ_MODE" to the spi tree
+Date: Wed, 29 Aug 2018 12:04:21 +0100 (BST)
+Message-ID: <20180829110421.044381124859@debutante.sirena.org.uk>
+Cc: Esben Haabendal <esben@haabendal.dk>,
+        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Baolin Wang <baolin.wang@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <a77a6bb8b3abf1c127014c78f71533c24afacd93.1534423916.git.baolin.wang@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+To: Angelo Dureghello <angelo@sysam.it>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: 
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Introduce one new field to set word delay
+   spi: spi-fsl-dspi: fix broken DSPI_EOQ_MODE
 
 has been applied to the spi tree at
 
@@ -42,44 +38,54 @@ to this mail.
 Thanks,
 Mark
 
->From eeaceb8b7d1fb64b6030249ca0dd1d902ef3069e Mon Sep 17 00:00:00 2001
-From: Baolin Wang <baolin.wang@linaro.org>
-Date: Thu, 16 Aug 2018 20:54:49 +0800
-Subject: [PATCH] spi: Introduce one new field to set word delay
+>From 5223c9c1cbfc0cd4d0a1b50758e0949af3290fa1 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <angelo@sysam.it>
+Date: Sat, 18 Aug 2018 01:51:58 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: fix broken DSPI_EOQ_MODE
 
-For some SPI controllers, after each word size (specified by bits_per_word)
-transimission, the hardware need some delay to make sure the slave has enough
-time to receive the whole data.
+This patch fixes the dspi_eoq_write function used by the
+ColdFire mcf5441x family. The 16 bit cmd part must be re-set at
+each data transfer.
 
-So introducing one new 'word_delay' field of struct spi_tansfer for slave
-devices to set this inter word delay time.
+Also, now that fifo_size variables are used for eoq_read/write,
+a proper fifo size must be set (16 slots for the ColdFire dspi
+module version).
 
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+Signed-off-by: Angelo Dureghello <angelo@sysam.it>
+Acked-by: Esben Haabendal <esben@haabendal.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- include/linux/spi/spi.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index a64235e05321..d698f9db3484 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -711,6 +711,8 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  * @delay_usecs: microseconds to delay after this transfer before
-  *	(optionally) changing the chipselect status, then starting
-  *	the next transfer or completing this @spi_message.
-+ * @word_delay: clock cycles to inter word delay after each word size
-+ *	(set by bits_per_word) transmission.
-  * @transfer_list: transfers are sequenced through @spi_message.transfers
-  * @tx_sg: Scatterlist for transmit, currently not for client use
-  * @rx_sg: Scatterlist for receive, currently not for client use
-@@ -793,6 +795,7 @@ struct spi_transfer {
- 	u8		bits_per_word;
- 	u16		delay_usecs;
- 	u32		speed_hz;
-+	u16		word_delay;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 7cb3ab0a35a0..3082e72e4f6c 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -30,7 +30,11 @@
  
- 	struct list_head transfer_list;
- };
+ #define DRIVER_NAME "fsl-dspi"
+ 
++#ifdef CONFIG_M5441x
++#define DSPI_FIFO_SIZE			16
++#else
+ #define DSPI_FIFO_SIZE			4
++#endif
+ #define DSPI_DMA_BUFSIZE		(DSPI_FIFO_SIZE * 1024)
+ 
+ #define SPI_MCR		0x00
+@@ -623,9 +627,11 @@ static void dspi_tcfq_read(struct fsl_dspi *dspi)
+ static void dspi_eoq_write(struct fsl_dspi *dspi)
+ {
+ 	int fifo_size = DSPI_FIFO_SIZE;
++	u16 xfer_cmd = dspi->tx_cmd;
+ 
+ 	/* Fill TX FIFO with as many transfers as possible */
+ 	while (dspi->len && fifo_size--) {
++		dspi->tx_cmd = xfer_cmd;
+ 		/* Request EOQF for last transfer in FIFO */
+ 		if (dspi->len == dspi->bytes_per_word || fifo_size == 0)
+ 			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
 -- 
 2.18.0

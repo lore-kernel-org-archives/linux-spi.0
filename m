@@ -1,104 +1,93 @@
-From: lei liu <leilk.liu@mediatek.com>
-Subject: Re: [SPAM]Re: [PATCH 1/3] spis: mediatek: add bindings for Mediatek
- MT2712 soc platform
-Date: Wed, 29 Aug 2018 09:43:44 +0800
-Message-ID: <1535507024.3043.16.camel@mhfsdcap03>
-References: <1535437685-30230-1-git-send-email-leilk.liu@mediatek.com>
- <1535437685-30230-2-git-send-email-leilk.liu@mediatek.com>
- <d91449a1-87f4-77e0-dd94-09e9989aaa7e@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- linux-mediatek@lists.infradead.org, mengqi.zhang@mediatek.com,
- linux-arm-kernel@lists.infradead.org
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <d91449a1-87f4-77e0-dd94-09e9989aaa7e@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Marcel Ziswiler <marcel@ziswiler.com>
+Subject: [PATCH] spi: tegra20-slink: explicitly enable/disable clock
+Date: Wed, 29 Aug 2018 08:47:57 +0200
+Message-ID: <20180829064757.16349-1-marcel@ziswiler.com>
+Cc: Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Laxman Dewangan <ldewangan@nvidia.com>
+To: linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2018-08-28 at 17:44 +0200, Matthias Brugger wrote:
-> 
-> On 28/08/18 08:28, Leilk Liu wrote:
-> > This patch adds a DT binding documentation for the MT2712 soc.
-> > 
-> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> > ---
-> >  .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |   39 ++++++++++++++++++++
-> >  1 file changed, 39 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> 
-> Do I understand correctly that mt6xxx, mt7xxx and mt8xxx SoCs have a totally
-> different architecture then mt27xx so they will need a totally different
-> binding. If not, then please rename the binding description file and the driver.
-> 
-> Regards,
-> Matthias
-> 
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 
-This series are for spi slave, and mt27xx spi slave design has a
-entirely different architecture with mt6xxx, mt7xxx and mt8xxx SoCs.
+Depending on the SPI instance one may get an interrupt storm upon
+requesting resp. interrupt unless the clock is explicitly enabled
+beforehand. This has been observed trying to bring up instance 4 on
+T20.
 
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> > new file mode 100644
-> > index 0000000..dcb8934
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> > @@ -0,0 +1,39 @@
-> > +Binding for MTK SPI Slave controller
-> > +
-> > +Required properties:
-> > +- compatible: should be one of the following.
-> > +    - mediatek,mt2712-spi: for mt2712 platforms
-> > +
-> > +- reg: Address and length of the register set for the device
-> > +
-> > +- interrupts: Should contain spi interrupt
-> > +
-> > +- clocks: phandles to input clocks.
-> > +  The first should be one of the following. It's PLL.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D2>: specify parent clock 312MHZ.
-> > +				      It's the default one.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D4>: specify parent clock 156MHZ.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
-> > +  The second should be <&topckgen CLK_TOP_SPISLV_SEL>. It's clock mux.
-> > +  The third is <&infracfg CLK_INFRA_AO_SPI1>. It's clock gate.
-> > +
-> > +- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
-> > +  muxes clock, and "spi-clk" for the clock gate.
-> > +
-> > +- spi-slave: Empty property indicating the SPI controller is used in slave mode.
-> > +
-> > +Example:
-> > +
-> > +- SoC Specific Portion:
-> > +spis: spi@10013000 {
-> > +	compatible = "mediatek,mt2712-spi-slave";
-> > +	reg = <0 0x10013000 0 0x100>;
-> > +	interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-> > +	clocks = <&topckgen CLK_TOP_UNIVPLL1_D2>,
-> > +		<&topckgen CLK_TOP_SPISLV_SEL>,
-> > +		<&infracfg CLK_INFRA_AO_SPI1>;
-> > +	clock-names = "parent-clk", "sel-clk", "spi-clk";
-> > +	spi-slave;
-> > +	status = "disabled";
-> > +};
-> > 
-> 
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+
+---
+
+ drivers/spi/spi-tegra20-slink.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 6f7b946b5ced..1427f343b39a 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1063,6 +1063,24 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 		goto exit_free_master;
+ 	}
+ 
++	/* disabled clock may cause interrupt storm upon request */
++	tspi->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(tspi->clk)) {
++		ret = PTR_ERR(tspi->clk);
++		dev_err(&pdev->dev, "Can not get clock %d\n", ret);
++		goto exit_free_master;
++	}
++	ret = clk_prepare(tspi->clk);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Clock prepare failed %d\n", ret);
++		goto exit_free_master;
++	}
++	ret = clk_enable(tspi->clk);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
++		goto exit_free_master;
++	}
++
+ 	spi_irq = platform_get_irq(pdev, 0);
+ 	tspi->irq = spi_irq;
+ 	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
+@@ -1071,14 +1089,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
+ 					tspi->irq);
+-		goto exit_free_master;
+-	}
+-
+-	tspi->clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(tspi->clk)) {
+-		dev_err(&pdev->dev, "can not get clock\n");
+-		ret = PTR_ERR(tspi->clk);
+-		goto exit_free_irq;
++		goto exit_clk_disable;
+ 	}
+ 
+ 	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+@@ -1138,6 +1149,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	tegra_slink_deinit_dma_param(tspi, true);
+ exit_free_irq:
+ 	free_irq(spi_irq, tspi);
++exit_clk_disable:
++	clk_disable(tspi->clk);
+ exit_free_master:
+ 	spi_master_put(master);
+ 	return ret;
+@@ -1150,6 +1163,8 @@ static int tegra_slink_remove(struct platform_device *pdev)
+ 
+ 	free_irq(tspi->irq, tspi);
+ 
++	clk_disable(tspi->clk);
++
+ 	if (tspi->tx_dma_chan)
+ 		tegra_slink_deinit_dma_param(tspi, false);
+ 
+-- 
+2.14.4

@@ -1,48 +1,53 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v5] spi: spi-mem: Adjust op len based on
- message/transfer size limitations
-Date: Thu, 30 Aug 2018 11:16:30 +0200
-Message-ID: <20180830111630.19ab2fc4@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v5] spi: spi-mem: Adjust op len based on message/transfer
+ size limitations
+Date: Thu, 30 Aug 2018 09:19:28 +0000
+Message-ID: <AM6PR04MB43576978AD45C4D335E0321897080@AM6PR04MB4357.eurprd04.prod.outlook.com>
 References: <1535618604-21706-1-git-send-email-chuanhua.han@nxp.com>
         <20180830104729.5c7fefad@bbrezillon>
         <AM6PR04MB4357DA161E8FCDB7B0B5C42697080@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20180830111630.19ab2fc4@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-To: Chuanhua Han <chuanhua.han@nxp.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <AM6PR04MB4357DA161E8FCDB7B0B5C42697080@AM6PR04MB4357.eurprd04.prod.outlook.com>
+In-Reply-To: <20180830111630.19ab2fc4@bbrezillon>
+Content-Language: en-US
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 30 Aug 2018 09:13:03 +0000
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> > -----Original Message-----
-> > From: Boris Brezillon <boris.brezillon@bootlin.com>
-> > Sent: 2018年8月30日 16:47
-> > To: Chuanhua Han <chuanhua.han@nxp.com>
-> > Cc: broonie@kernel.org; linux-spi@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH v5] spi: spi-mem: Adjust op len based on message/transfer
-> > size limitations
-> > 
-> > Hi Chuanhua,
-> > 
-> > On Thu, 30 Aug 2018 16:43:24 +0800
-> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
-> >   
-> > > We need that to adjust the len of the 2nd transfer (called data in
-> > > spi-mem) if it's too long to fit in a SPI message or SPI transfer.  
-> > 
-> > You already sent this email a few days back. Please wait a bit before sending it
-> > again. And when you do so and nothing changed in the patch please use the
-> > [PATCH RESEND vX] prefix and explain why you resend it.  
-> I have modified the patch for the comment you mentioned last time. Do you need any other modification？
-
-Oops, sorry. Looks like the previous one was only sent to me, not the
-ML and the SPI maintainer.
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjlubQ45pyIMzDml6Ug
+MTc6MTcNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBi
+cm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
+cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDog
+UmU6IFtQQVRDSCB2NV0gc3BpOiBzcGktbWVtOiBBZGp1c3Qgb3AgbGVuIGJhc2VkIG9uIG1lc3Nh
+Z2UvdHJhbnNmZXINCj4gc2l6ZSBsaW1pdGF0aW9ucw0KPiANCj4gT24gVGh1LCAzMCBBdWcgMjAx
+OCAwOToxMzowMyArMDAwMA0KPiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPiB3
+cm90ZToNCj4gDQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTog
+Qm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+ID4gPiBTZW50
+OiAyMDE45bm0OOaciDMw5pelIDE2OjQ3DQo+ID4gPiBUbzogQ2h1YW5odWEgSGFuIDxjaHVhbmh1
+YS5oYW5AbnhwLmNvbT4NCj4gPiA+IENjOiBicm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2
+Z2VyLmtlcm5lbC5vcmc7DQo+ID4gPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBzdGFi
+bGVAdmdlci5rZXJuZWwub3JnDQo+ID4gPiBTdWJqZWN0OiBSZTogW1BBVENIIHY1XSBzcGk6IHNw
+aS1tZW06IEFkanVzdCBvcCBsZW4gYmFzZWQgb24NCj4gPiA+IG1lc3NhZ2UvdHJhbnNmZXIgc2l6
+ZSBsaW1pdGF0aW9ucw0KPiA+ID4NCj4gPiA+IEhpIENodWFuaHVhLA0KPiA+ID4NCj4gPiA+IE9u
+IFRodSwgMzAgQXVnIDIwMTggMTY6NDM6MjQgKzA4MDANCj4gPiA+IENodWFuaHVhIEhhbiA8Y2h1
+YW5odWEuaGFuQG54cC5jb20+IHdyb3RlOg0KPiA+ID4NCj4gPiA+ID4gV2UgbmVlZCB0aGF0IHRv
+IGFkanVzdCB0aGUgbGVuIG9mIHRoZSAybmQgdHJhbnNmZXIgKGNhbGxlZCBkYXRhIGluDQo+ID4g
+PiA+IHNwaS1tZW0pIGlmIGl0J3MgdG9vIGxvbmcgdG8gZml0IGluIGEgU1BJIG1lc3NhZ2Ugb3Ig
+U1BJIHRyYW5zZmVyLg0KPiA+ID4NCj4gPiA+IFlvdSBhbHJlYWR5IHNlbnQgdGhpcyBlbWFpbCBh
+IGZldyBkYXlzIGJhY2suIFBsZWFzZSB3YWl0IGEgYml0DQo+ID4gPiBiZWZvcmUgc2VuZGluZyBp
+dCBhZ2Fpbi4gQW5kIHdoZW4geW91IGRvIHNvIGFuZCBub3RoaW5nIGNoYW5nZWQgaW4NCj4gPiA+
+IHRoZSBwYXRjaCBwbGVhc2UgdXNlIHRoZSBbUEFUQ0ggUkVTRU5EIHZYXSBwcmVmaXggYW5kIGV4
+cGxhaW4gd2h5IHlvdQ0KPiByZXNlbmQgaXQuDQo+ID4gSSBoYXZlIG1vZGlmaWVkIHRoZSBwYXRj
+aCBmb3IgdGhlIGNvbW1lbnQgeW91IG1lbnRpb25lZCBsYXN0IHRpbWUuIERvDQo+ID4geW91IG5l
+ZWQgYW55IG90aGVyIG1vZGlmaWNhdGlvbu+8nw0KPiANCj4gT29wcywgc29ycnkuIExvb2tzIGxp
+a2UgdGhlIHByZXZpb3VzIG9uZSB3YXMgb25seSBzZW50IHRvIG1lLCBub3QgdGhlIE1MIGFuZA0K
+PiB0aGUgU1BJIG1haW50YWluZXIuDQpJdCBkb2Vzbid0IG1hdHRlcu+8jHRoYW5rIHlvdSBmb3Ig
+eW91ciB2YWx1YWJsZSBhZHZpY2XvvIENCg==

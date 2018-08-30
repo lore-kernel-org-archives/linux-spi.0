@@ -1,53 +1,51 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH v5] spi: spi-mem: Adjust op len based on message/transfer
- size limitations
-Date: Thu, 30 Aug 2018 09:19:28 +0000
-Message-ID: <AM6PR04MB43576978AD45C4D335E0321897080@AM6PR04MB4357.eurprd04.prod.outlook.com>
-References: <1535618604-21706-1-git-send-email-chuanhua.han@nxp.com>
-        <20180830104729.5c7fefad@bbrezillon>
-        <AM6PR04MB4357DA161E8FCDB7B0B5C42697080@AM6PR04MB4357.eurprd04.prod.outlook.com>
- <20180830111630.19ab2fc4@bbrezillon>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [andriy.shevchenko@linux.intel.com: Re: [PATCH] spi: dw-mmio:
+ add MSCC Jaguar2 support]
+Date: Thu, 30 Aug 2018 11:50:41 +0100
+Message-ID: <20180830105041.GA7301@sirena.org.uk>
+References: <20180829150955.GB7459@smile.fi.intel.com>
+ <20180829151501.GE27808@sirena.org.uk>
+ <20180829180242.GH16561@piout.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180830111630.19ab2fc4@bbrezillon>
-Content-Language: en-US
-Sender: stable-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="liOOAslEiF7prFVr"
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20180829180242.GH16561@piout.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
-IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjlubQ45pyIMzDml6Ug
-MTc6MTcNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBi
-cm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
-cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDog
-UmU6IFtQQVRDSCB2NV0gc3BpOiBzcGktbWVtOiBBZGp1c3Qgb3AgbGVuIGJhc2VkIG9uIG1lc3Nh
-Z2UvdHJhbnNmZXINCj4gc2l6ZSBsaW1pdGF0aW9ucw0KPiANCj4gT24gVGh1LCAzMCBBdWcgMjAx
-OCAwOToxMzowMyArMDAwMA0KPiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPiB3
-cm90ZToNCj4gDQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTog
-Qm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+ID4gPiBTZW50
-OiAyMDE45bm0OOaciDMw5pelIDE2OjQ3DQo+ID4gPiBUbzogQ2h1YW5odWEgSGFuIDxjaHVhbmh1
-YS5oYW5AbnhwLmNvbT4NCj4gPiA+IENjOiBicm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2
-Z2VyLmtlcm5lbC5vcmc7DQo+ID4gPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBzdGFi
-bGVAdmdlci5rZXJuZWwub3JnDQo+ID4gPiBTdWJqZWN0OiBSZTogW1BBVENIIHY1XSBzcGk6IHNw
-aS1tZW06IEFkanVzdCBvcCBsZW4gYmFzZWQgb24NCj4gPiA+IG1lc3NhZ2UvdHJhbnNmZXIgc2l6
-ZSBsaW1pdGF0aW9ucw0KPiA+ID4NCj4gPiA+IEhpIENodWFuaHVhLA0KPiA+ID4NCj4gPiA+IE9u
-IFRodSwgMzAgQXVnIDIwMTggMTY6NDM6MjQgKzA4MDANCj4gPiA+IENodWFuaHVhIEhhbiA8Y2h1
-YW5odWEuaGFuQG54cC5jb20+IHdyb3RlOg0KPiA+ID4NCj4gPiA+ID4gV2UgbmVlZCB0aGF0IHRv
-IGFkanVzdCB0aGUgbGVuIG9mIHRoZSAybmQgdHJhbnNmZXIgKGNhbGxlZCBkYXRhIGluDQo+ID4g
-PiA+IHNwaS1tZW0pIGlmIGl0J3MgdG9vIGxvbmcgdG8gZml0IGluIGEgU1BJIG1lc3NhZ2Ugb3Ig
-U1BJIHRyYW5zZmVyLg0KPiA+ID4NCj4gPiA+IFlvdSBhbHJlYWR5IHNlbnQgdGhpcyBlbWFpbCBh
-IGZldyBkYXlzIGJhY2suIFBsZWFzZSB3YWl0IGEgYml0DQo+ID4gPiBiZWZvcmUgc2VuZGluZyBp
-dCBhZ2Fpbi4gQW5kIHdoZW4geW91IGRvIHNvIGFuZCBub3RoaW5nIGNoYW5nZWQgaW4NCj4gPiA+
-IHRoZSBwYXRjaCBwbGVhc2UgdXNlIHRoZSBbUEFUQ0ggUkVTRU5EIHZYXSBwcmVmaXggYW5kIGV4
-cGxhaW4gd2h5IHlvdQ0KPiByZXNlbmQgaXQuDQo+ID4gSSBoYXZlIG1vZGlmaWVkIHRoZSBwYXRj
-aCBmb3IgdGhlIGNvbW1lbnQgeW91IG1lbnRpb25lZCBsYXN0IHRpbWUuIERvDQo+ID4geW91IG5l
-ZWQgYW55IG90aGVyIG1vZGlmaWNhdGlvbu+8nw0KPiANCj4gT29wcywgc29ycnkuIExvb2tzIGxp
-a2UgdGhlIHByZXZpb3VzIG9uZSB3YXMgb25seSBzZW50IHRvIG1lLCBub3QgdGhlIE1MIGFuZA0K
-PiB0aGUgU1BJIG1haW50YWluZXIuDQpJdCBkb2Vzbid0IG1hdHRlcu+8jHRoYW5rIHlvdSBmb3Ig
-eW91ciB2YWx1YWJsZSBhZHZpY2XvvIENCg==
+
+--liOOAslEiF7prFVr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Aug 29, 2018 at 08:02:42PM +0200, Alexandre Belloni wrote:
+
+> Do you want me to send a new version or a patch that you could squash in
+> the second one?
+
+A followup would be best given that I applied it.
+
+--liOOAslEiF7prFVr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluHy/4ACgkQJNaLcl1U
+h9BDEQf/Sg5eEdY++mdA1LKs0fAgW/QtDv2RvWwMtbwcBEUO2wuNeq7VyAANVOuD
+Z6J92qS8/gES01pxny06K9pzGwwTPQMcM05BIqUFQb2GZ9drOxWtt36+WpXzJS0k
+8fhVQaaeXzP97fEMwYklCGaeLhAa/+oCLt9P7AQl4v38wqQGYkIuLejUm5ThSjjp
+I+mIecxcauO4heYwy7b5ScN2W43oEQjHgLOzH7i6iEsuVYFcn3AtjUZjcqEfODzY
+T2ceA91nFvVBsXY+FXOH7TgYILAzwY0jLsPXgj1pTCflHiAL9+k+1214qUv0zmEi
+y0deOslRpejH2Ezvg7n4oDf1zVePGw==
+=USG2
+-----END PGP SIGNATURE-----
+
+--liOOAslEiF7prFVr--

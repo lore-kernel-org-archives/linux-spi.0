@@ -1,95 +1,91 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v5] spi: spi-mem: Adjust op len based on
- message/transfer size limitations
-Date: Thu, 30 Aug 2018 10:47:29 +0200
-Message-ID: <20180830104729.5c7fefad@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v5] spi: spi-mem: Adjust op len based on message/transfer
+ size limitations
+Date: Thu, 30 Aug 2018 09:13:03 +0000
+Message-ID: <AM6PR04MB4357DA161E8FCDB7B0B5C42697080@AM6PR04MB4357.eurprd04.prod.outlook.com>
 References: <1535618604-21706-1-git-send-email-chuanhua.han@nxp.com>
+ <20180830104729.5c7fefad@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-To: Chuanhua Han <chuanhua.han@nxp.com>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1535618604-21706-1-git-send-email-chuanhua.han@nxp.com>
+In-Reply-To: <20180830104729.5c7fefad@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Chuanhua,
-
-On Thu, 30 Aug 2018 16:43:24 +0800
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> We need that to adjust the len of the 2nd transfer (called data in
-> spi-mem) if it's too long to fit in a SPI message or SPI transfer.
-
-You already sent this email a few days back. Please wait a bit before
-sending it again. And when you do so and nothing changed in the patch
-please use the [PATCH RESEND vX] prefix and explain why you resend it.
-
-Thanks,
-
-Boris
-
-> 
-> Fixes: c36ff266dc82 ("spi: Extend the core to ease integration of SPI memory controllers")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-> Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> ---
-> Changes in v5:
->   -Add the validation check after the op->data.nbytes assignment
->   -Assign the "len" variable after defining it
->   -Remove the brackets on both sides of "opt-> data.nbytes"
-> Changes in v4:
->   -Rename variable name "opcode_addr_dummy_sum" to "len"
->   -The comparison of "spi_max_message_size(mem->spi)" and "len" was removed
->   -Adjust their order when comparing the sizes of "spi_max_message_size(mem->spi)" and "len"
->   -Changing the "unsigned long" type in the code to "size_t"
-> Changes in v3:
->   -Rename variable name "val" to "opcode_addr_dummy_sum"
->   -Place the legitimacy of the transfer size(i.e., "spi_max_message_size(mem->spi)" and
-> "opcode_addr_dummy_sum") into "if (! ctlr - > mem_ops | |! ctlr-> mem_ops->exec_op) {"
-> structure and add "spi_max_transfer_size(mem->spi) and opcode_addr_dummy_sum"
->   -Adjust the formatting alignment of the code
->   -"(unsigned long)op->data.nbytes" was modified to "(unsigned long)(op->data.nbytes)"
-> Changes in v2:
->   -Place the adjusted transfer bytes code in spi_mem_adjust_op_size() and  check
-> spi_max_message_size(mem->spi) value before subtracting opcode, addr and dummy bytes
->   -Change the code from fsl-espi controller to generic code(The adjustment of spi transmission
-> length was originally modified in the "drivers/spi/spi-fsl-espi.c" file, and now the adjustment
-> of transfer length is made in the "drivers/spi/spi-mem.c" file)
-> 
->  drivers/spi/spi-mem.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-> index e43842c..eb72dba 100644
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -346,10 +346,25 @@ EXPORT_SYMBOL_GPL(spi_mem_get_name);
->  int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
->  {
->  	struct spi_controller *ctlr = mem->spi->controller;
-> +	size_t len;
-> +
-> +	len = sizeof(op->cmd.opcode) + op->addr.nbytes + op->dummy.nbytes;
->  
->  	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
->  		return ctlr->mem_ops->adjust_op_size(mem, op);
->  
-> +	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
-> +		if (len > spi_max_transfer_size(mem->spi))
-> +			return -EINVAL;
-> +
-> +		op->data.nbytes = min3((size_t)op->data.nbytes,
-> +				       spi_max_transfer_size(mem->spi),
-> +				       spi_max_message_size(mem->spi) -
-> +				       len);
-> +		if (!op->data.nbytes)
-> +			return -EINVAL;
-> +	}
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jjUwjMwyNUgMTY6
+NDcNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6
+IFtQQVRDSCB2NV0gc3BpOiBzcGktbWVtOiBBZGp1c3Qgb3AgbGVuIGJhc2VkIG9uIG1lc3NhZ2Uv
+dHJhbnNmZXINCj4gc2l6ZSBsaW1pdGF0aW9ucw0KPiANCj4gSGkgQ2h1YW5odWEsDQo+IA0KPiBP
+biBUaHUsIDMwIEF1ZyAyMDE4IDE2OjQzOjI0ICswODAwDQo+IENodWFuaHVhIEhhbiA8Y2h1YW5o
+dWEuaGFuQG54cC5jb20+IHdyb3RlOg0KPiANCj4gPiBXZSBuZWVkIHRoYXQgdG8gYWRqdXN0IHRo
+ZSBsZW4gb2YgdGhlIDJuZCB0cmFuc2ZlciAoY2FsbGVkIGRhdGEgaW4NCj4gPiBzcGktbWVtKSBp
+ZiBpdCdzIHRvbyBsb25nIHRvIGZpdCBpbiBhIFNQSSBtZXNzYWdlIG9yIFNQSSB0cmFuc2Zlci4N
+Cj4gDQo+IFlvdSBhbHJlYWR5IHNlbnQgdGhpcyBlbWFpbCBhIGZldyBkYXlzIGJhY2suIFBsZWFz
+ZSB3YWl0IGEgYml0IGJlZm9yZSBzZW5kaW5nIGl0DQo+IGFnYWluLiBBbmQgd2hlbiB5b3UgZG8g
+c28gYW5kIG5vdGhpbmcgY2hhbmdlZCBpbiB0aGUgcGF0Y2ggcGxlYXNlIHVzZSB0aGUNCj4gW1BB
+VENIIFJFU0VORCB2WF0gcHJlZml4IGFuZCBleHBsYWluIHdoeSB5b3UgcmVzZW5kIGl0Lg0KSSBo
+YXZlIG1vZGlmaWVkIHRoZSBwYXRjaCBmb3IgdGhlIGNvbW1lbnQgeW91IG1lbnRpb25lZCBsYXN0
+IHRpbWUuIERvIHlvdSBuZWVkIGFueSBvdGhlciBtb2RpZmljYXRpb26jvw0KPiANCj4gVGhhbmtz
+LA0KPiANCj4gQm9yaXMNCj4gDQo+ID4NCj4gPiBGaXhlczogYzM2ZmYyNjZkYzgyICgic3BpOiBF
+eHRlbmQgdGhlIGNvcmUgdG8gZWFzZSBpbnRlZ3JhdGlvbiBvZiBTUEkNCj4gPiBtZW1vcnkgY29u
+dHJvbGxlcnMiKQ0KPiA+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4gPiBTaWduZWQt
+b2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPg0KPiA+IFJldmlld2Vk
+LWJ5OiBCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4NCj4gPiAt
+LS0NCj4gPiBDaGFuZ2VzIGluIHY1Og0KPiA+ICAgLUFkZCB0aGUgdmFsaWRhdGlvbiBjaGVjayBh
+ZnRlciB0aGUgb3AtPmRhdGEubmJ5dGVzIGFzc2lnbm1lbnQNCj4gPiAgIC1Bc3NpZ24gdGhlICJs
+ZW4iIHZhcmlhYmxlIGFmdGVyIGRlZmluaW5nIGl0DQo+ID4gICAtUmVtb3ZlIHRoZSBicmFja2V0
+cyBvbiBib3RoIHNpZGVzIG9mICJvcHQtPiBkYXRhLm5ieXRlcyINCj4gPiBDaGFuZ2VzIGluIHY0
+Og0KPiA+ICAgLVJlbmFtZSB2YXJpYWJsZSBuYW1lICJvcGNvZGVfYWRkcl9kdW1teV9zdW0iIHRv
+ICJsZW4iDQo+ID4gICAtVGhlIGNvbXBhcmlzb24gb2YgInNwaV9tYXhfbWVzc2FnZV9zaXplKG1l
+bS0+c3BpKSIgYW5kICJsZW4iIHdhcw0KPiByZW1vdmVkDQo+ID4gICAtQWRqdXN0IHRoZWlyIG9y
+ZGVyIHdoZW4gY29tcGFyaW5nIHRoZSBzaXplcyBvZg0KPiAic3BpX21heF9tZXNzYWdlX3NpemUo
+bWVtLT5zcGkpIiBhbmQgImxlbiINCj4gPiAgIC1DaGFuZ2luZyB0aGUgInVuc2lnbmVkIGxvbmci
+IHR5cGUgaW4gdGhlIGNvZGUgdG8gInNpemVfdCINCj4gPiBDaGFuZ2VzIGluIHYzOg0KPiA+ICAg
+LVJlbmFtZSB2YXJpYWJsZSBuYW1lICJ2YWwiIHRvICJvcGNvZGVfYWRkcl9kdW1teV9zdW0iDQo+
+ID4gICAtUGxhY2UgdGhlIGxlZ2l0aW1hY3kgb2YgdGhlIHRyYW5zZmVyIHNpemUoaS5lLiwNCj4g
+PiAic3BpX21heF9tZXNzYWdlX3NpemUobWVtLT5zcGkpIiBhbmQNCj4gPiAib3Bjb2RlX2FkZHJf
+ZHVtbXlfc3VtIikgaW50byAiaWYgKCEgY3RsciAtID4gbWVtX29wcyB8IHwhIGN0bHItPg0KPiBt
+ZW1fb3BzLT5leGVjX29wKSB7Ig0KPiA+IHN0cnVjdHVyZSBhbmQgYWRkICJzcGlfbWF4X3RyYW5z
+ZmVyX3NpemUobWVtLT5zcGkpIGFuZA0KPiBvcGNvZGVfYWRkcl9kdW1teV9zdW0iDQo+ID4gICAt
+QWRqdXN0IHRoZSBmb3JtYXR0aW5nIGFsaWdubWVudCBvZiB0aGUgY29kZQ0KPiA+ICAgLSIodW5z
+aWduZWQgbG9uZylvcC0+ZGF0YS5uYnl0ZXMiIHdhcyBtb2RpZmllZCB0byAiKHVuc2lnbmVkDQo+
+IGxvbmcpKG9wLT5kYXRhLm5ieXRlcykiDQo+ID4gQ2hhbmdlcyBpbiB2MjoNCj4gPiAgIC1QbGFj
+ZSB0aGUgYWRqdXN0ZWQgdHJhbnNmZXIgYnl0ZXMgY29kZSBpbiBzcGlfbWVtX2FkanVzdF9vcF9z
+aXplKCkNCj4gPiBhbmQgIGNoZWNrDQo+ID4gc3BpX21heF9tZXNzYWdlX3NpemUobWVtLT5zcGkp
+IHZhbHVlIGJlZm9yZSBzdWJ0cmFjdGluZyBvcGNvZGUsIGFkZHIgYW5kDQo+IGR1bW15IGJ5dGVz
+DQo+ID4gICAtQ2hhbmdlIHRoZSBjb2RlIGZyb20gZnNsLWVzcGkgY29udHJvbGxlciB0byBnZW5l
+cmljIGNvZGUoVGhlDQo+ID4gYWRqdXN0bWVudCBvZiBzcGkgdHJhbnNtaXNzaW9uIGxlbmd0aCB3
+YXMgb3JpZ2luYWxseSBtb2RpZmllZCBpbiB0aGUNCj4gPiAiZHJpdmVycy9zcGkvc3BpLWZzbC1l
+c3BpLmMiIGZpbGUsIGFuZCBub3cgdGhlIGFkanVzdG1lbnQgb2YgdHJhbnNmZXINCj4gPiBsZW5n
+dGggaXMgbWFkZSBpbiB0aGUgImRyaXZlcnMvc3BpL3NwaS1tZW0uYyIgZmlsZSkNCj4gPg0KPiA+
+ICBkcml2ZXJzL3NwaS9zcGktbWVtLmMgfCAxNSArKysrKysrKysrKysrKysNCj4gPiAgMSBmaWxl
+IGNoYW5nZWQsIDE1IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJz
+L3NwaS9zcGktbWVtLmMgYi9kcml2ZXJzL3NwaS9zcGktbWVtLmMgaW5kZXgNCj4gPiBlNDM4NDJj
+Li5lYjcyZGJhIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1tZW0uYw0KPiA+ICsr
+KyBiL2RyaXZlcnMvc3BpL3NwaS1tZW0uYw0KPiA+IEBAIC0zNDYsMTAgKzM0NiwyNSBAQCBFWFBP
+UlRfU1lNQk9MX0dQTChzcGlfbWVtX2dldF9uYW1lKTsNCj4gPiAgaW50IHNwaV9tZW1fYWRqdXN0
+X29wX3NpemUoc3RydWN0IHNwaV9tZW0gKm1lbSwgc3RydWN0IHNwaV9tZW1fb3ANCj4gPiAqb3Ap
+ICB7DQo+ID4gIAlzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIgPSBtZW0tPnNwaS0+Y29udHJv
+bGxlcjsNCj4gPiArCXNpemVfdCBsZW47DQo+ID4gKw0KPiA+ICsJbGVuID0gc2l6ZW9mKG9wLT5j
+bWQub3Bjb2RlKSArIG9wLT5hZGRyLm5ieXRlcyArIG9wLT5kdW1teS5uYnl0ZXM7DQo+ID4NCj4g
+PiAgCWlmIChjdGxyLT5tZW1fb3BzICYmIGN0bHItPm1lbV9vcHMtPmFkanVzdF9vcF9zaXplKQ0K
+PiA+ICAJCXJldHVybiBjdGxyLT5tZW1fb3BzLT5hZGp1c3Rfb3Bfc2l6ZShtZW0sIG9wKTsNCj4g
+Pg0KPiA+ICsJaWYgKCFjdGxyLT5tZW1fb3BzIHx8ICFjdGxyLT5tZW1fb3BzLT5leGVjX29wKSB7
+DQo+ID4gKwkJaWYgKGxlbiA+IHNwaV9tYXhfdHJhbnNmZXJfc2l6ZShtZW0tPnNwaSkpDQo+ID4g
+KwkJCXJldHVybiAtRUlOVkFMOw0KPiA+ICsNCj4gPiArCQlvcC0+ZGF0YS5uYnl0ZXMgPSBtaW4z
+KChzaXplX3Qpb3AtPmRhdGEubmJ5dGVzLA0KPiA+ICsJCQkJICAgICAgIHNwaV9tYXhfdHJhbnNm
+ZXJfc2l6ZShtZW0tPnNwaSksDQo+ID4gKwkJCQkgICAgICAgc3BpX21heF9tZXNzYWdlX3NpemUo
+bWVtLT5zcGkpIC0NCj4gPiArCQkJCSAgICAgICBsZW4pOw0KPiA+ICsJCWlmICghb3AtPmRhdGEu
+bmJ5dGVzKQ0KPiA+ICsJCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiArCX0NCj4gPiArDQo+ID4gIAly
+ZXR1cm4gMDsNCj4gPiAgfQ0KPiA+ICBFWFBPUlRfU1lNQk9MX0dQTChzcGlfbWVtX2FkanVzdF9v
+cF9zaXplKTsNCg0K

@@ -1,40 +1,47 @@
-From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH 6/7] arm64: defconfig: enable NXP FlexSPI driver
-Date: Fri, 31 Aug 2018 16:00:03 +0530
-Message-ID: <1535711404-29528-7-git-send-email-yogeshnarayan.gaur@nxp.com>
-References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH] spi: dw-mmio: avoid hardcoded field mask
+Date: Fri, 31 Aug 2018 13:40:46 +0200
+Message-ID: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
-        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
-        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org,
-        Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
-        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable driver support of NXP FlexSPI controller.
+Define a mask for the IF_SI_OWNER field.
 
-Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-dw-mmio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 3cfa8ca..75ceddf 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -335,6 +335,7 @@ CONFIG_SPI_QUP=y
- CONFIG_SPI_ROCKCHIP=y
- CONFIG_SPI_S3C64XX=y
- CONFIG_SPI_SPIDEV=m
-+CONFIG_SPI_NXP_FLEXSPI=y
- CONFIG_SPMI=y
- CONFIG_PINCTRL_IPQ8074=y
- CONFIG_PINCTRL_SINGLE=y
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 351f49976161..a768461614a0 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -36,6 +36,7 @@ struct dw_spi_mmio {
+ #define MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL	0x24
+ #define OCELOT_IF_SI_OWNER_OFFSET		4
+ #define JAGUAR2_IF_SI_OWNER_OFFSET		6
++#define MSCC_IF_SI_OWNER_MASK			GENMASK(1, 0)
+ #define MSCC_IF_SI_OWNER_SISL			0
+ #define MSCC_IF_SI_OWNER_SIBM			1
+ #define MSCC_IF_SI_OWNER_SIMC			2
+@@ -102,7 +103,7 @@ static int dw_spi_mscc_init(struct platform_device *pdev,
+ 
+ 	/* Select the owner of the SI interface */
+ 	regmap_update_bits(dwsmscc->syscon, MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL,
+-			   0x3 << if_si_owner_offset,
++			   MSCC_IF_SI_OWNER_MASK << if_si_owner_offset,
+ 			   MSCC_IF_SI_OWNER_SIMC << if_si_owner_offset);
+ 
+ 	dwsmmio->dws.set_cs = dw_spi_mscc_set_cs;
 -- 
-2.7.4
+2.19.0.rc1

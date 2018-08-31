@@ -1,51 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [andriy.shevchenko@linux.intel.com: Re: [PATCH] spi: dw-mmio:
- add MSCC Jaguar2 support]
-Date: Thu, 30 Aug 2018 11:50:41 +0100
-Message-ID: <20180830105041.GA7301@sirena.org.uk>
-References: <20180829150955.GB7459@smile.fi.intel.com>
- <20180829151501.GE27808@sirena.org.uk>
- <20180829180242.GH16561@piout.net>
+From: Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
+Date: Thu, 30 Aug 2018 17:49:36 -0700
+Message-ID: <153567657639.93865.10810620274753191329@swboyd.mtv.corp.google.com>
+References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="liOOAslEiF7prFVr"
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: Girish Mahadevan <girishm@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>
+To: Andy Gross <andy.gross@linaro.org>,
+        David Brown <david.brown@linaro.org>,
+        Dilip Kota <dkota@codeaurora.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>, broonie@kernel.org,
+        devicetree@vger.kernel.org, dianders@chromium.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        mka@chromium.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180829180242.GH16561@piout.net>
+In-Reply-To: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Quoting Dilip Kota (2018-08-24 03:42:15)
+> +
+> +static int __maybe_unused spi_geni_suspend(struct device *dev)
+> +{
+> +       if (!pm_runtime_status_suspended(dev))
+> +               return -EBUSY;
 
---liOOAslEiF7prFVr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This looks odd. Why are we doing this? The i2c driver had a recent fix
+from Evan squashed in that removed this logic so that suspend wouldn't
+be called twice. Can this driver support the direct_complete PM
+mechanism instead? Maybe that works to make this check unnecessary and
+also allows us to avoid suspending subdevices and resuming on system
+resume? It would be good if the i2c/uart/spi drivers could all agree on
+how to handle this.
 
-On Wed, Aug 29, 2018 at 08:02:42PM +0200, Alexandre Belloni wrote:
-
-> Do you want me to send a new version or a patch that you could squash in
-> the second one?
-
-A followup would be best given that I applied it.
-
---liOOAslEiF7prFVr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluHy/4ACgkQJNaLcl1U
-h9BDEQf/Sg5eEdY++mdA1LKs0fAgW/QtDv2RvWwMtbwcBEUO2wuNeq7VyAANVOuD
-Z6J92qS8/gES01pxny06K9pzGwwTPQMcM05BIqUFQb2GZ9drOxWtt36+WpXzJS0k
-8fhVQaaeXzP97fEMwYklCGaeLhAa/+oCLt9P7AQl4v38wqQGYkIuLejUm5ThSjjp
-I+mIecxcauO4heYwy7b5ScN2W43oEQjHgLOzH7i6iEsuVYFcn3AtjUZjcqEfODzY
-T2ceA91nFvVBsXY+FXOH7TgYILAzwY0jLsPXgj1pTCflHiAL9+k+1214qUv0zmEi
-y0deOslRpejH2Ezvg7n4oDf1zVePGw==
-=USG2
------END PGP SIGNATURE-----
-
---liOOAslEiF7prFVr--
+> +       return 0;
+> +}
+> +
+> +static const struct dev_pm_ops spi_geni_pm_ops =3D {
+> +       SET_RUNTIME_PM_OPS(spi_geni_runtime_suspend,
+> +                                       spi_geni_runtime_resume, NULL)
+> +       SET_SYSTEM_SLEEP_PM_OPS(spi_geni_suspend, NULL)
+> +};
+> +

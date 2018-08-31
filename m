@@ -1,58 +1,104 @@
-From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW@KARO-electronics.de>
-Subject: Re: [PATCH 1/7] spi: add slave device size in spi_device struct
-Date: Fri, 31 Aug 2018 13:58:07 +0200
-Message-ID: <20180831135807.22255bce@karo-electronics.de>
-References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Radu Pirea <radu.pirea@microchip.com>
+Subject: [RESEND PATCH v11 0/6] Driver for at91 usart in spi mode
+Date: Fri, 31 Aug 2018 16:41:35 +0300
+Message-ID: <20180831134141.9335-1-radu.pirea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
-        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, mark.rutland@arm.com, robh@kernel.org,
-        linux-kernel@vger.kernel.org, frieder.schrempf@exceet.de,
-        computersforpeace@gmail.com, shawnguo@kernel.org,
-        linux-arm-kernel@lists.infradead.org
-To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-serial@vger.kernel.org>,
+        Radu Pirea <radu.pirea@microchip.com>
+To: <richard.genoud@gmail.com>, <pirea.radu@gmail.com>,
+        <lee.jones@linaro.org>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <gregkh@linuxfoundation.org>,
+        <jslaby@suse.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hello,
 
-On Fri, 31 Aug 2018 15:59:58 +0530 Yogesh Gaur wrote:
-> Add 'size' data variable in spi_device struct.
-> This is to save the size of the connected slave device.
-> 
-> After slave device scan, spi_nor_scan, size being assigned to this
-> from MTD layer.
-> 
-> SFDP read is being requested before completion of spi_nor_scan()
-> routine, thus populate device size before making read request
-> to the SPI controller.
-> 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> ---
->  drivers/mtd/devices/m25p80.c  | 6 ++++++
->  drivers/mtd/spi-nor/spi-nor.c | 2 ++
->  include/linux/spi/spi.h       | 2 ++
->  3 files changed, 10 insertions(+)
-> 
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index fe260cc..6c7ad86 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -124,6 +124,10 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
->  	/* convert the dummy cycles to the number of bytes */
->  	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
->  
-> +	/* for case of SFDP header read commands, populate spi device size */
-> +	if (flash->spimem->spi->size == 0)
-> +		flash->spimem->spi->size = nor->mtd.size;
-> +
-If the 'size' is an spimem specific variable it should be added to the
-spi_mem struct rather than the spi_device struct.
+This is the 11th version of driver. I added a mfd driver which by
+default probes atmel_serial driver and if in dt is specified to probe
+the spi driver, then the spi-at91-usart driver will be probed. The
+compatible for atmel_serial is now the compatible for at91-usart mfd
+driver and compatilbe for atmel_serial driver was changed in order to
+keep the bindings for serial as they are.
 
+@Lee, could you take this patch series into your tree? I addressed all Mark
+remarks.
 
-Lothar Waßmann
+In this resend I changed my email address from MAINTAINERS file.
+
+Changes in v11:
+- removed "depends on HAS_DMA" from drivers/spi/Kconfig because the driver has
+no dma support
+- changed "selects MFD_AT91_USART" to "depends on MFD_AT91_USART" in
+drivers/spi/Kconfig
+- changed comment style in spi-at91-usart.c
+
+Changes in v10:
+-fixed kbuild test robot warning
+
+Changes in v9:
+- minor changes
+- rebased on top of broonie/for-4.19
+
+Changes in v8:
+- fixed passing an empty mfd cell if "atmel,usart-mode" value is invalid
+
+Changes in v7:
+- synced up  SPDIX license with module license
+- numbering of usart modes starts from 0 insteand of 1
+
+Changes in v6:
+- removed unused compatible strings from serial and spi drivers
+
+Changes in v5:
+- fixed usage of stdout-path property with atmel_serial driver
+
+Changes in v4:
+- modified the spi driver to use cs gpio support form spi subsystem
+- fixed dma transfers for serial driver
+- squashed binding for spi and serial and moved them to mfd/atmel-usart.txt
+
+Changes in v3:
+- fixed spi slaves probing
+
+Changes in v2:
+- added at91-usart mfd driver
+- modified spi-at91-usart driver to work as mfd driver child
+- modified atmel_serial driver to work as mfd driver child
+
+Changes in v1:
+- added spi-at91-usart driver
+
+Radu Pirea (6):
+  MAINTAINERS: add at91 usart mfd driver
+  dt-bindings: add binding for atmel-usart in SPI mode
+  mfd: at91-usart: added mfd driver for usart
+  MAINTAINERS: add at91 usart spi driver
+  spi: at91-usart: add driver for at91-usart as spi
+  tty/serial: atmel: change the driver to work under at91-usart mfd
+
+ .../bindings/{serial => mfd}/atmel-usart.txt  |  25 +-
+ MAINTAINERS                                   |  16 +
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/at91-usart.c                      |  71 +++
+ drivers/spi/Kconfig                           |   8 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-at91-usart.c                  | 432 ++++++++++++++++++
+ drivers/tty/serial/Kconfig                    |   1 +
+ drivers/tty/serial/atmel_serial.c             |  42 +-
+ include/dt-bindings/mfd/at91-usart.h          |  17 +
+ 11 files changed, 606 insertions(+), 17 deletions(-)
+ rename Documentation/devicetree/bindings/{serial => mfd}/atmel-usart.txt (76%)
+ create mode 100644 drivers/mfd/at91-usart.c
+ create mode 100644 drivers/spi/spi-at91-usart.c
+ create mode 100644 include/dt-bindings/mfd/at91-usart.h
+
+-- 
+2.18.0

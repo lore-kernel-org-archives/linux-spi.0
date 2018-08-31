@@ -1,7 +1,7 @@
 From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH 7/7] MAINTAINERS: add maintainers for the NXP FlexSPI driver
-Date: Fri, 31 Aug 2018 16:00:04 +0530
-Message-ID: <1535711404-29528-8-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH 6/7] arm64: defconfig: enable NXP FlexSPI driver
+Date: Fri, 31 Aug 2018 16:00:03 +0530
+Message-ID: <1535711404-29528-7-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,29 +17,24 @@ In-Reply-To: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add maintainers for the NXP FlexSPI driver
+Enable driver support of NXP FlexSPI controller.
 
 Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 ---
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9d5eeff..2696898 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10228,6 +10228,12 @@ L:	linux-nfc@lists.01.org (moderated for non-subscribers)
- S:	Supported
- F:	drivers/nfc/nxp-nci
- 
-+NXP FSPI DRIVER
-+M:	Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-+L:	linux-spi@vger.kernel.org
-+S:	Maintained
-+F:	drivers/spi/spi-nxp-fspi.c
-+
- OBJTOOL
- M:	Josh Poimboeuf <jpoimboe@redhat.com>
- M:	Peter Zijlstra <peterz@infradead.org>
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 3cfa8ca..75ceddf 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -335,6 +335,7 @@ CONFIG_SPI_QUP=y
+ CONFIG_SPI_ROCKCHIP=y
+ CONFIG_SPI_S3C64XX=y
+ CONFIG_SPI_SPIDEV=m
++CONFIG_SPI_NXP_FLEXSPI=y
+ CONFIG_SPMI=y
+ CONFIG_PINCTRL_IPQ8074=y
+ CONFIG_PINCTRL_SINGLE=y
 -- 
 2.7.4

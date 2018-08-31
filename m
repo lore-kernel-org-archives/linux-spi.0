@@ -1,59 +1,58 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH] spi: dw-mmio: avoid hardcoded field mask
-Date: Fri, 31 Aug 2018 14:54:57 +0300
-Message-ID: <20180831115457.GX11447@smile.fi.intel.com>
-References: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
+From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW@KARO-electronics.de>
+Subject: Re: [PATCH 1/7] spi: add slave device size in spi_device struct
+Date: Fri, 31 Aug 2018 13:58:07 +0200
+Message-ID: <20180831135807.22255bce@karo-electronics.de>
+References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, mark.rutland@arm.com, robh@kernel.org,
+        linux-kernel@vger.kernel.org, frieder.schrempf@exceet.de,
+        computersforpeace@gmail.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
+In-Reply-To: <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 31, 2018 at 01:40:46PM +0200, Alexandre Belloni wrote:
-> Define a mask for the IF_SI_OWNER field.
+Hi,
+
+On Fri, 31 Aug 2018 15:59:58 +0530 Yogesh Gaur wrote:
+> Add 'size' data variable in spi_device struct.
+> This is to save the size of the connected slave device.
 > 
-
-Thanks!
-
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> After slave device scan, spi_nor_scan, size being assigned to this
+> from MTD layer.
+> 
+> SFDP read is being requested before completion of spi_nor_scan()
+> routine, thus populate device size before making read request
+> to the SPI controller.
+> 
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 > ---
->  drivers/spi/spi-dw-mmio.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/mtd/devices/m25p80.c  | 6 ++++++
+>  drivers/mtd/spi-nor/spi-nor.c | 2 ++
+>  include/linux/spi/spi.h       | 2 ++
+>  3 files changed, 10 insertions(+)
 > 
-> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-> index 351f49976161..a768461614a0 100644
-> --- a/drivers/spi/spi-dw-mmio.c
-> +++ b/drivers/spi/spi-dw-mmio.c
-> @@ -36,6 +36,7 @@ struct dw_spi_mmio {
->  #define MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL	0x24
->  #define OCELOT_IF_SI_OWNER_OFFSET		4
->  #define JAGUAR2_IF_SI_OWNER_OFFSET		6
-> +#define MSCC_IF_SI_OWNER_MASK			GENMASK(1, 0)
->  #define MSCC_IF_SI_OWNER_SISL			0
->  #define MSCC_IF_SI_OWNER_SIBM			1
->  #define MSCC_IF_SI_OWNER_SIMC			2
-> @@ -102,7 +103,7 @@ static int dw_spi_mscc_init(struct platform_device *pdev,
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index fe260cc..6c7ad86 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -124,6 +124,10 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+>  	/* convert the dummy cycles to the number of bytes */
+>  	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
 >  
->  	/* Select the owner of the SI interface */
->  	regmap_update_bits(dwsmscc->syscon, MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL,
-> -			   0x3 << if_si_owner_offset,
-> +			   MSCC_IF_SI_OWNER_MASK << if_si_owner_offset,
->  			   MSCC_IF_SI_OWNER_SIMC << if_si_owner_offset);
->  
->  	dwsmmio->dws.set_cs = dw_spi_mscc_set_cs;
-> -- 
-> 2.19.0.rc1
-> 
+> +	/* for case of SFDP header read commands, populate spi device size */
+> +	if (flash->spimem->spi->size == 0)
+> +		flash->spimem->spi->size = nor->mtd.size;
+> +
+If the 'size' is an spimem specific variable it should be added to the
+spi_mem struct rather than the spi_device struct.
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+Lothar Waßmann

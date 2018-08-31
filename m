@@ -1,43 +1,81 @@
 From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH 2/2] mtd: spi-nor: add entry for mt35xu512aba flash
-Date: Fri, 31 Aug 2018 14:33:02 +0530
-Message-ID: <1535706182-26804-3-git-send-email-yogeshnarayan.gaur@nxp.com>
-References: <1535706182-26804-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH 0/7] spi: spi-mem: Add a driver for NXP FlexSPI controller
+Date: Fri, 31 Aug 2018 15:59:57 +0530
+Message-ID: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: computersforpeace@gmail.com, frieder.schrempf@exceet.de,
-        linux-kernel@vger.kernel.org, david.wolfe@nxp.com,
+Cc: robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org,
         Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com
+        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1535706182-26804-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add entry for mt35xu512aba Micron NOR flash.
-This flash is having uniform sector erase size of 128KB, have
-support of FSR(flag status register), flash size is 64MB and
-supports 4-byte commands.
+- Add a driver for NXP FlexSPI host controller
 
-Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
----
- drivers/mtd/spi-nor/spi-nor.c | 3 +++
- 1 file changed, 3 insertions(+)
+ FlexSPI is a flexsible SPI host controller [1], Chapter 30 page 1475,
+ which supports two SPI channels and up to 4 external devices.
+ Each channel supports Single/Dual/Quad/Octal mode data transfer (1/2/4/8 bidirectional data lines)
+ i.e. FlexSPI acts as an interface to external devices, maximum 4, each with up to 8
+ bidirectional data lines.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 33a55bc..6042df8 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1113,6 +1113,9 @@ static int spi_nor_is_locked(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- 	{ "n25q00a",     INFO(0x20bb21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
- 	{ "mt25qu02g",   INFO(0x20bb22, 0, 64 * 1024, 4096, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
- 
-+	/* Micron */
-+	{ "mt35xu512aba", INFO(0x2c5b1a, 0, 128 * 1024, 512, SECT_4K | USE_FSR | SPI_NOR_4B_OPCODES) },
-+
- 	/* PMC */
- 	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
- 	{ "pm25lv010",   INFO(0,        0, 32 * 1024,    4, SECT_4K_PMC) },
+ FlexSPI controller is similar to the existing Freescale/NXP QuadSPI
+ controller with advanced features.
+
+- Tested this driver with mtd_debug(Erase/Write/Read) utility and JFFS2
+ filesystem mounting and booting on NXP LX2160ARDB[2] and LX2160AQDS targets.
+ LX2160ARDB is having two NOR slave device connected on single bus A
+ i.e. A0 and A1 (CS0 and CS1).
+ LX2160AQDS is having two NOR slave device connected on separate buses
+ one flash on A0 and second on B1 i.e. (CS0 and CS3).
+ Verified this driver on following SPI NOR flashes:
+    Micron, mt35xu512aba[3], [Read - 1 bit mode]
+    Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+
+Patch 1 adds variable size in spi_device struct, to save the
+size of connected slave device.
+Patch 2 adds flags for octal I/O data transfer.
+Support for octal flash commands and other framework changes would going to be done in different
+patch set.
+Patch 3 adds a driver for the NXP FlexSPI controller, driver is based on
+new spi-mem framework.
+Patch 4 add binding file for this driver.
+Patch 5 add device node property for FlexSPI driver for lx2160 SoC.
+Patch 6 enables the config option.
+Patch 7 add MAINTAINERS file.
+
+[1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
+[2] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=9721
+[3] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=63445
+
+This series adds below patches:
+Yogesh Gaur (7):
+  spi: add slave device size in spi_device struct
+  spi: add flags for octal I/O data transfer
+  spi: spi-mem: Add a driver for NXP FlexSPI controller
+  dt-bindings: spi: add binding file for NXP FlexSPI driver
+  arm64: dts: lx2160a: add fspi node property
+  arm64: defconfig: enable NXP FlexSPI driver
+  MAINTAINERS: add maintainers for the NXP FlexSPI driver
+
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt       |   42 +
+ MAINTAINERS                                        |    6 +
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts  |   21 +
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |   12 +
+ arch/arm64/configs/defconfig                       |    1 +
+ drivers/mtd/devices/m25p80.c                       |    6 +
+ drivers/mtd/spi-nor/spi-nor.c                      |    2 +
+ drivers/spi/Kconfig                                |   10 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-nxp-fspi.c                         | 1242 ++++++++++++++++++++
+ include/linux/spi/spi.h                            |    4 +
+ 11 files changed, 1347 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+ create mode 100644 drivers/spi/spi-nxp-fspi.c
+
 -- 
-1.9.1
+2.7.4

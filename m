@@ -1,78 +1,59 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 1/7] spi: add slave device size in spi_device struct
-Date: Fri, 31 Aug 2018 13:41:06 +0200
-Message-ID: <CAMuHMdWbqEkARvSuMxSRusCj0yi7GUYTyQouRhOi+iYJq9R-Kg@mail.gmail.com>
-References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com> <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] spi: dw-mmio: avoid hardcoded field mask
+Date: Fri, 31 Aug 2018 14:54:57 +0300
+Message-ID: <20180831115457.GX11447@smile.fi.intel.com>
+References: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: MTD Maling List <linux-mtd@lists.infradead.org>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microchip.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1535711404-29528-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Disposition: inline
+In-Reply-To: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Yogesh,
+On Fri, Aug 31, 2018 at 01:40:46PM +0200, Alexandre Belloni wrote:
+> Define a mask for the IF_SI_OWNER field.
+> 
 
-Thanks for your patch!
+Thanks!
 
-On Fri, Aug 31, 2018 at 12:33 PM Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> Add 'size' data variable in spi_device struct.
-> This is to save the size of the connected slave device.
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-What is the "size" of an SPI slave device?
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  drivers/spi/spi-dw-mmio.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+> index 351f49976161..a768461614a0 100644
+> --- a/drivers/spi/spi-dw-mmio.c
+> +++ b/drivers/spi/spi-dw-mmio.c
+> @@ -36,6 +36,7 @@ struct dw_spi_mmio {
+>  #define MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL	0x24
+>  #define OCELOT_IF_SI_OWNER_OFFSET		4
+>  #define JAGUAR2_IF_SI_OWNER_OFFSET		6
+> +#define MSCC_IF_SI_OWNER_MASK			GENMASK(1, 0)
+>  #define MSCC_IF_SI_OWNER_SISL			0
+>  #define MSCC_IF_SI_OWNER_SIBM			1
+>  #define MSCC_IF_SI_OWNER_SIMC			2
+> @@ -102,7 +103,7 @@ static int dw_spi_mscc_init(struct platform_device *pdev,
+>  
+>  	/* Select the owner of the SI interface */
+>  	regmap_update_bits(dwsmscc->syscon, MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL,
+> -			   0x3 << if_si_owner_offset,
+> +			   MSCC_IF_SI_OWNER_MASK << if_si_owner_offset,
+>  			   MSCC_IF_SI_OWNER_SIMC << if_si_owner_offset);
+>  
+>  	dwsmmio->dws.set_cs = dw_spi_mscc_set_cs;
+> -- 
+> 2.19.0.rc1
+> 
 
-> After slave device scan, spi_nor_scan, size being assigned to this
-> from MTD layer.
-
-Ah, this is MTD specific?
-
-> SFDP read is being requested before completion of spi_nor_scan()
-> routine, thus populate device size before making read request
-> to the SPI controller.
->
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -127,6 +127,7 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
->   *     for driver coldplugging, and in uevents used for hotplugging
->   * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
->   *     not using a GPIO line)
-> + * @size: size of the connected slave device
-
-Please document what is the meaning of "size".
-
->   *
->   * @statistics: statistics for the spi_device
->   *
-> @@ -168,6 +169,7 @@ struct spi_device {
->         void                    *controller_data;
->         char                    modalias[SPI_NAME_SIZE];
->         int                     cs_gpio;        /* chip select gpio */
-> +       u32                     size;           /* size of slave device */
->
->         /* the statistics */
->         struct spi_statistics   statistics;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+With Best Regards,
+Andy Shevchenko

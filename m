@@ -1,84 +1,49 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw-mmio: avoid hardcoded field mask" to the spi tree
-Date: Fri, 31 Aug 2018 16:43:12 +0100 (BST)
-Message-ID: <20180831154312.183C911226FE@debutante.sirena.org.uk>
-References: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        linux-spi@vger.kernel.org
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: kbuild test robot <lkp@intel.com>
+Subject: Re: [RESEND PATCH v11 5/6] spi: at91-usart: add driver for
+ at91-usart as spi
+Date: Sun, 2 Sep 2018 05:23:40 +0800
+Message-ID: <201809020500.AUGWBTuR%fengguang.wu@intel.com>
+References: <20180831134141.9335-6-radu.pirea@microchip.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: kbuild-all@01.org, richard.genoud@gmail.com, pirea.radu@gmail.com,
+        lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+        gregkh@linuxfoundation.org, jslaby@suse.com, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-serial@vger.kernel.org, Radu Pirea <radu.pirea@microchip.com>
+To: Radu Pirea <radu.pirea@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180831114046.27094-1-alexandre.belloni@bootlin.com>
+Content-Disposition: inline
+In-Reply-To: <20180831134141.9335-6-radu.pirea@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Radu,
 
-   spi: dw-mmio: avoid hardcoded field mask
+I love your patch! Perhaps something to improve:
 
-has been applied to the spi tree at
+[auto build test WARNING on ljones-mfd/for-mfd-next]
+[also build test WARNING on v4.19-rc1 next-20180831]
+[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+url:    https://github.com/0day-ci/linux/commits/Radu-Pirea/Driver-for-at91-usart-in-spi-mode/20180901-165150
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git for-mfd-next
+reproduce:
+        # apt-get install sparse
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF=-D__CHECK_ENDIAN__
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+sparse warnings: (new ones prefixed by >>)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+>> drivers/spi/spi-at91-usart.c:218:5: sparse: symbol 'at91_usart_spi_transfer_one' was not declared. Should it be static?
+>> drivers/spi/spi-at91-usart.c:245:5: sparse: symbol 'at91_usart_spi_prepare_message' was not declared. Should it be static?
+>> drivers/spi/spi-at91-usart.c:259:5: sparse: symbol 'at91_usart_spi_unprepare_message' was not declared. Should it be static?
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Please review and possibly fold the followup patch.
 
-Thanks,
-Mark
-
->From c1d8b0825d50e1eb6b6ea2cb9e450637dba9b4e2 Mon Sep 17 00:00:00 2001
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Date: Fri, 31 Aug 2018 13:40:46 +0200
-Subject: [PATCH] spi: dw-mmio: avoid hardcoded field mask
-
-Define a mask for the IF_SI_OWNER field.
-
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-dw-mmio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 351f49976161..a768461614a0 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -36,6 +36,7 @@ struct dw_spi_mmio {
- #define MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL	0x24
- #define OCELOT_IF_SI_OWNER_OFFSET		4
- #define JAGUAR2_IF_SI_OWNER_OFFSET		6
-+#define MSCC_IF_SI_OWNER_MASK			GENMASK(1, 0)
- #define MSCC_IF_SI_OWNER_SISL			0
- #define MSCC_IF_SI_OWNER_SIBM			1
- #define MSCC_IF_SI_OWNER_SIMC			2
-@@ -102,7 +103,7 @@ static int dw_spi_mscc_init(struct platform_device *pdev,
- 
- 	/* Select the owner of the SI interface */
- 	regmap_update_bits(dwsmscc->syscon, MSCC_CPU_SYSTEM_CTRL_GENERAL_CTRL,
--			   0x3 << if_si_owner_offset,
-+			   MSCC_IF_SI_OWNER_MASK << if_si_owner_offset,
- 			   MSCC_IF_SI_OWNER_SIMC << if_si_owner_offset);
- 
- 	dwsmmio->dws.set_cs = dw_spi_mscc_set_cs;
--- 
-2.19.0.rc1
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation

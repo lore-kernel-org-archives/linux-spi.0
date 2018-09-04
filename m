@@ -1,104 +1,109 @@
 From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/3] spis: mediatek: add bindings for Mediatek MT2712 soc
- platform
-Date: Tue, 4 Sep 2018 08:18:38 -0500
-Message-ID: <5b8e8a7f.1c69fb81.dab09.e985@mx.google.com>
-References: <1535437685-30230-1-git-send-email-leilk.liu@mediatek.com>
- <1535437685-30230-2-git-send-email-leilk.liu@mediatek.com>
+Subject: Re: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexSPI
+ driver
+Date: Mon, 3 Sep 2018 20:33:25 -0500
+Message-ID: <5b8e8a7b.1c69fb81.f713b.79ea@mx.google.com>
+References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, yt.shen@mediatek.com,
- Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
- Matthias Brugger <matthias.bgg@gmail.com>, mengqi.zhang@mediatek.com,
- linux-arm-kernel@lists.infradead.org
-To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, marek.vasut@gmail.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ boris.brezillon@bootlin.com, frieder.schrempf@exceet.de,
+ linux-mtd@lists.infradead.org, computersforpeace@gmail.com,
+ shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <1535437685-30230-2-git-send-email-leilk.liu@mediatek.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 28, 2018 at 02:28:03PM +0800, Leilk Liu wrote:
-> This patch adds a DT binding documentation for the MT2712 soc.
+On Fri, Aug 31, 2018 at 04:00:01PM +0530, Yogesh Gaur wrote:
+> Add binding file for NXP FlexSPI driver.
+
+Bindings are for h/w, not drivers.
+
 > 
-> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 > ---
->  .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |   39 ++++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+>  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 42 ++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
 > new file mode 100644
-> index 0000000..dcb8934
+> index 0000000..9f07116
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> @@ -0,0 +1,39 @@
-> +Binding for MTK SPI Slave controller
-
-Only does slave mode? If not, then the file name and doc should be just 
-for the SPI controller (master and slave). The "spi-slave" property 
-selects the mode. If it is only slave mode, then you don't need the 
-spi-slave property.
-
-
+> +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> @@ -0,0 +1,42 @@
+> +* NXP Flex Serial Peripheral Interface (FSPI)
 > +
 > +Required properties:
-> +- compatible: should be one of the following.
-> +    - mediatek,mt2712-spi: for mt2712 platforms
+> +  - compatible : Should be "nxp,lx2160a-fspi"
+> +  - reg :        First contains the register location and length,
+> +                 Second contains the memory mapping address and length
+> +  - reg-names :  Should contain the resource reg names:
+> +                 - fspi_base: iconfiguration register address space
+> +                 - fspi_mmap: memory mapped address space
+> +  - interrupts : Should contain the interrupt for the device
 > +
-> +- reg: Address and length of the register set for the device
+> +Optional properties:
+> +  - big-endian : See common-properties.txt.
 > +
-> +- interrupts: Should contain spi interrupt
+> +Required SPI slave node properties:
+> +  - reg :        There are two buses (A and B) with two chip selects each.
+> +                 This encodes to which bus and CS the flash is connected:
+> +                 - <0>: Bus A, CS 0
+> +                 - <1>: Bus A, CS 1
+> +                 - <2>: Bus B, CS 0
+> +                 - <3>: Bus B, CS 1
 > +
-> +- clocks: phandles to input clocks.
-> +  The first should be one of the following. It's PLL.
-> +   -  <&topckgen CLK_TOP_UNIVPLL1_D2>: specify parent clock 312MHZ.
-> +				      It's the default one.
-> +   -  <&topckgen CLK_TOP_UNIVPLL1_D4>: specify parent clock 156MHZ.
-> +   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
-> +   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
-> +  The second should be <&topckgen CLK_TOP_SPISLV_SEL>. It's clock mux.
-> +  The third is <&infracfg CLK_INFRA_AO_SPI1>. It's clock gate.
+> +Example showing the usage of two SPI NOR slave devices on bus A:
 > +
-> +- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
-> +  muxes clock, and "spi-clk" for the clock gate.
+> +fspi0: flexspi@20c0000 {
 
-"-clk" is redundant.
+spi@...
 
-Is the parent clock actually connected to the block? The assigned-clocks 
-properties are used for constraints on parent clocks.
-
+> +	compatible = "nxp,lx2160a-fspi";
+> +	reg = <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0 0x10000000>;
+> +	reg-names = "fspi_base", "fspi_mmap";
+> +	interrupts = <0 25 0x4>; /* Level high type */
+> +	clocks = <&clockgen 4 3>, <&clockgen 4 3>;
+> +	clock-names = "fspi_en", "fspi";
 > +
-> +- spi-slave: Empty property indicating the SPI controller is used in slave mode.
-> +
-> +Example:
-> +
-> +- SoC Specific Portion:
-> +spis: spi@10013000 {
-> +	compatible = "mediatek,mt2712-spi-slave";
-> +	reg = <0 0x10013000 0 0x100>;
-> +	interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-> +	clocks = <&topckgen CLK_TOP_UNIVPLL1_D2>,
-> +		<&topckgen CLK_TOP_SPISLV_SEL>,
-> +		<&infracfg CLK_INFRA_AO_SPI1>;
-> +	clock-names = "parent-clk", "sel-clk", "spi-clk";
-> +	spi-slave;
-> +	status = "disabled";
+> +	flash0: mt35xu512aba@0 {
 
-Don't should status in examples.
+flash@0
 
+> +		reg = <0>;
+> +		....
+> +	};
+> +
+> +	flash1: mt35xu512aba@1 {
+
+flash@1
+
+Make sure to fix the dts patch too.
+
+> +		reg = <1>;
+> +		....
+> +	};
 > +};
 > -- 
-> 1.7.9.5
+> 2.7.4
 > 
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

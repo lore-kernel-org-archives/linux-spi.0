@@ -1,109 +1,47 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexSPI
- driver
-Date: Mon, 3 Sep 2018 20:33:25 -0500
-Message-ID: <5b8e8a7b.1c69fb81.f713b.79ea@mx.google.com>
-References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
+Date: Tue, 4 Sep 2018 09:59:08 -0400
+Message-ID: <20180904095908.13298b3d@gandalf.local.home>
+References: <1536012923-16275-1-git-send-email-henrik@austad.us>
+ <20180904113030.GB25177@amd>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, marek.vasut@gmail.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- boris.brezillon@bootlin.com, frieder.schrempf@exceet.de,
- linux-mtd@lists.infradead.org, computersforpeace@gmail.com,
- shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
-To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+ linux-fbdev@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Henrik Austad <henrik@austad.us>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, dri-devel@lists.freedesktop.org,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, Jan Kandziora <jjj@gmx.de>,
+ Paul Mackerras <paulus@samba.org>, Henrik Austad <haustad@cisco.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Evgeniy Polyakov <zbr@ioremap.net>,
+ linux-s390@vger.kernel.org, Ian Kent <raven@themaw.net>,
+ linux-security-module@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
+ Jonathan Corbet <corbet@lwn.net>, Michael Ellerman <mpe@ellerman.id.au>,
+ Helge Deller <deller@gmx.de>,
+ Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ "James E.J. Bottomley" <jejb@parisc-linux.or
+To: Pavel Machek <pavel@ucw.cz>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20180904113030.GB25177@amd>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 31, 2018 at 04:00:01PM +0530, Yogesh Gaur wrote:
-> Add binding file for NXP FlexSPI driver.
-
-Bindings are for h/w, not drivers.
-
-> 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> ---
->  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 42 ++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> new file mode 100644
-> index 0000000..9f07116
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> @@ -0,0 +1,42 @@
-> +* NXP Flex Serial Peripheral Interface (FSPI)
-> +
-> +Required properties:
-> +  - compatible : Should be "nxp,lx2160a-fspi"
-> +  - reg :        First contains the register location and length,
-> +                 Second contains the memory mapping address and length
-> +  - reg-names :  Should contain the resource reg names:
-> +                 - fspi_base: iconfiguration register address space
-> +                 - fspi_mmap: memory mapped address space
-> +  - interrupts : Should contain the interrupt for the device
-> +
-> +Optional properties:
-> +  - big-endian : See common-properties.txt.
-> +
-> +Required SPI slave node properties:
-> +  - reg :        There are two buses (A and B) with two chip selects each.
-> +                 This encodes to which bus and CS the flash is connected:
-> +                 - <0>: Bus A, CS 0
-> +                 - <1>: Bus A, CS 1
-> +                 - <2>: Bus B, CS 0
-> +                 - <3>: Bus B, CS 1
-> +
-> +Example showing the usage of two SPI NOR slave devices on bus A:
-> +
-> +fspi0: flexspi@20c0000 {
-
-spi@...
-
-> +	compatible = "nxp,lx2160a-fspi";
-> +	reg = <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0 0x10000000>;
-> +	reg-names = "fspi_base", "fspi_mmap";
-> +	interrupts = <0 25 0x4>; /* Level high type */
-> +	clocks = <&clockgen 4 3>, <&clockgen 4 3>;
-> +	clock-names = "fspi_en", "fspi";
-> +
-> +	flash0: mt35xu512aba@0 {
-
-flash@0
-
-> +		reg = <0>;
-> +		....
-> +	};
-> +
-> +	flash1: mt35xu512aba@1 {
-
-flash@1
-
-Make sure to fix the dts patch too.
-
-> +		reg = <1>;
-> +		....
-> +	};
-> +};
-> -- 
-> 2.7.4
-> 
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+T24gVHVlLCA0IFNlcCAyMDE4IDEzOjMwOjMwICswMjAwClBhdmVsIE1hY2hlayA8cGF2ZWxAdWN3
+LmN6PiB3cm90ZToKCj4gSSdkIHNheSB0aGlzIGlzIHN0aWxsIHF1aXRlIHZhbHVlYWJsZSwgYW5k
+IGl0IG1pZ2h0IGJlIHdvcnRoIGZpeGluZywKPiByYXRoZXIgdGhlbiByZW1vdmluZyBjb21wbGV0
+ZWx5LgoKSSBhZ3JlZS4gUGVyaGFwcyB3ZSBzaG91bGQgaGF2ZSBhIDAwLURFU0NSSVBUSU9OIGZp
+bGUgaW4gZWFjaApkaXJlY3RvcnksIGFuZCBlYWNoIGZpbGUgY291bGQgc3RhcnQgd2l0aCBhOgoK
+IERFU0NSSVBUSU9OOiA8b25lIGxpbmUgZGVzY3JpcHRpb24gaGVyZT4KCmFuZCB0aGVuIHRoZXNl
+IGZpbGVzIGNvdWxkIGJlIGdlbmVyYXRlZCBieSB0aG9zZSB0aGF0IGhhdmUgdGhlc2UgdGFncy4K
+Ci0tIFN0ZXZlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=

@@ -1,82 +1,93 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexSPI
- driver
-Date: Tue, 4 Sep 2018 14:46:27 +0200
-Message-ID: <20180904144627.1de264b6@bbrezillon>
-References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <VI1PR0402MB385465BEDBFC9CB6A89BEFF4970C0@VI1PR0402MB3854.eurprd04.prod.outlook.com>
+From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+Subject: Re: Query: spi-nor: dummy buswidth calculation
+Date: Tue, 4 Sep 2018 15:10:44 +0200
+Message-ID: <be22e046-48dd-a599-b812-825abde9916d@microchip.com>
+References: <VI1PR04MB1038E10EBE458DD72A1070C499030@VI1PR04MB1038.eurprd04.prod.outlook.com>
+ <20180904143028.4629fe10@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR0402MB385465BEDBFC9CB6A89BEFF4970C0@VI1PR0402MB3854.eurprd04.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "juliensu@mxic.com.tw" <juliensu@mxic.com.tw>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "masonccyang@mxic.com.tw" <masonccyang@mxic.com.tw>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "zhengxunli@mxic.com.tw" <zhengxunli@mxic.com.tw>
+To: Boris Brezillon <boris.brezillon@bootlin.com>, Yogesh Narayan Gaur
+ <yogeshnarayan.gaur@nxp.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180904143028.4629fe10@bbrezillon>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 3 Sep 2018 09:54:08 +0000
-Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com> wrote:
-
-> Dear Yogesh,
-> 
-> > -----Original Message-----
-> > From: linux-kernel-owner@vger.kernel.org <linux-kernel-  
-> > owner@vger.kernel.org> On Behalf Of Yogesh Gaur  
-> > Sent: Friday, August 31, 2018 4:00 PM
-> > To: linux-mtd@lists.infradead.org; boris.brezillon@bootlin.com;
-> > marek.vasut@gmail.com; linux-spi@vger.kernel.org;
-> > devicetree@vger.kernel.org
-> > Cc: robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org; linux-
-> > arm-kernel@lists.infradead.org; computersforpeace@gmail.com;
-> > frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org; Yogesh
-> > Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > Subject: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexSPI driver
-> > 
-> > Add binding file for NXP FlexSPI driver.
-> > 
-> > Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> > ---
-> >  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 42
-> > ++++++++++++++++++++++
-> >  1 file changed, 42 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-
-> > fspi.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > new file mode 100644
-> > index 0000000..9f07116
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > @@ -0,0 +1,42 @@
-> > +* NXP Flex Serial Peripheral Interface (FSPI)
-> > +
-> > +Required properties:
-> > +  - compatible : Should be "nxp,lx2160a-fspi"
-> > +  - reg :        First contains the register location and length,
-> > +                 Second contains the memory mapping address and length  
-> 
-> Why are we overriding reg property.  Is there any special requirement. 
-> 
-> Can we use "reg" and "ranges" property in device tree.
-> Here "reg" represents controller registers and "ranges" represent the memory address of flash.
-
-No, ranges is not used for that. It's used when you need to convert
-from one address space to another, which is not what you're describing
-here. Check section 2.38 of this document [1] for more details.
-
-[1]https://elinux.org/images/c/cf/Power_ePAPR_APPROVED_v1.1.pdf
+SGkgYWxsLAoKTGUgMDQvMDkvMjAxOCDDoCAxNDozMCwgQm9yaXMgQnJlemlsbG9uIGEgw6ljcml0
+wqA6Cj4gK01hY3Jvbml4IHRlYW0KPiAKPiBPbiBUdWUsIDQgU2VwIDIwMTggMDk6Mjg6MTEgKzAw
+MDAKPiBZb2dlc2ggTmFyYXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4gd3Jv
+dGU6Cj4gCj4+IEhpIEJvcmlzLAo+Pgo+PiBJIGhhdmUgcXVlcnkgcmVnYXJkaW5nIGR1bW15IGJ1
+cyB3aWR0aCBjYWxjdWxhdGlvbiBmb3IgdGhlIHJlYWQgY29tbWFuZHMsIGFkZGVkIGluIHRoZSBw
+YXRjaCBzZXJpZXMgWzFdCj4+Cj4+IEluIGZ1bmMgbTI1cDgwX3JlYWQoKSwgZHVtbXkuYnVzd2lk
+dGggaXMgYmVpbmcgYXNzaWduZWQgYXMKPj4gKyAgICAgICBvcC5kdW1teS5idXN3aWR0aCA9IG9w
+LmFkZHIuYnVzd2lkdGg7Cj4+Cj4+IEFib3ZlLCBidXN3aWR0aCBmb3IgZHVtbXkgY29tbWFuZHMg
+YXJlIGJlaW5nIGFzc2lnbmVkIGFuZCBhcmUgbWFya2VkIGVxdWFsIHRvIHRoZSBidXN3aWR0aCBv
+ZiB0aGUgYWRkcmVzcyBjb21tYW5kLgo+PiBUaGlzIGlzIHRydWUgZm9yIGNhc2Ugd2hlbiB3ZSBh
+cmUgZG9pbmcgb3BlcmF0aW9uIGluIDEtNC00IG9yIDEtMi0yIHByb3RvY29sIHdoZXJlIGRhdGEg
+YXMgd2VsbCBhcyBhZGRyZXNzIGFyZSBydW5uaW5nIG9uIHNhbWUgZGF0YSBsaW5lcyBhbmQgaGF2
+aW5nIHNhbWUgYnVzd2lkdGguCj4+Cj4+IEkgYW0gYWRkaW5nIHN1cHBvcnQgb2Ygb2N0YWwgY29t
+bWFuZHMgaW4gZnJhbWV3b3JrIGFuZCBmb3IgdGhpcyBuZWVkcyB0byBhZGQgc3VwcG9ydCBmb3Ig
+MS0xLTggcHJvdG9jb2wgZm9yIE1pY3JvbiBmbGFzaCBNVDM1WFU1MTJBQkExRzEyLgo+PiBGb3Ig
+b2N0YWwgY29tbWFuZCwgN0NoLCBmbGFzaCBpcyBzZW5kaW5nIGRhdGEgYW5kIHRoZSBkdW1teSBv
+biB0aGUgOCBkYXRhIGxpbmVzIGFuZCBhZGRyZXNzIG9uIDEgZGF0YSBsaW5lLgo+IAo+IEludGVy
+ZXN0aW5nLiBNYWNyb25peCBpcyBhbHNvIHdvcmtpbmcgb24gb2N0by1tb2RlIHN1cHBvcnQuIEkg
+dGhpbmsgd2UKPiBzaG91bGQgc3luYyBpbnN0ZWFkIG9mIGR1cGxpY2F0aW5nIHRoZSB3b3JrLgo+
+IAo+Pgo+PiBJZiBJIGRvIGJlbG93IGNvZGUgY2hhbmdlLCB0aGVuIEkgYW0gZ2V0dGluZyBjb3Jy
+ZWN0IGRhdGEgZWxzZSB0aGVyZSBpcyBkYXRhIGNvcnJ1cHRpb24gb25seSBpbiB0aGUgZmlyc3Qg
+Ynl0ZSByZWFkLgo+PiAtICAgICAgIG9wLmR1bW15LmJ1c3dpZHRoID0gb3AuYWRkci5idXN3aWR0
+aDsKPj4gKyAgICAgICBvcC5kdW1teS5idXN3aWR0aCA9IHNwaV9ub3JfZ2V0X3Byb3RvY29sX2Rh
+dGFfbmJpdHMobm9yLT5yZWFkX3Byb3RvKTsKPiAKPiBSZWdhcmRpbmcgdGhpcyBwYXJ0aWN1bGFy
+IGFzcGVjdCwgSSBqdXN0IGZvbGxvd2VkIHdoYXQgd2FzIGRvbmUgYmVmb3JlCj4gdGhlIGNvbnZl
+cnNpb24gdG8gc3BpX21lbV9leGVjX29wKCkuIE1heWJlIGl0IHdhcyBub3QgY29ycmVjdCB0aG91
+Z2guCj4KCkFjdHVhbGx5IHRoaXMgaXMgY29ycmVjdCBhbmQgY2hhbmdpbmcgdGhhdCBmb3IgdGhl
+IGFib3ZlIHByb3Bvc2FsIHdvdWxkCmNsZWFybHkgYnJlYWsgc3VwcG9ydCBvZiBhbGwgZXhpc3Rp
+bmcgbWVtb3JpZXMgaW4gU1BJIDEtMS0yIG9yIFNQSSAxLTEtNC4KClNQSSB4LXkteiBtZWFuczoK
+LSB4IEkvTyBsaW5lKHMpIGZvciB0aGUgaW5zdHJ1Y3Rpb24gb3AgY29kZSBjeWNsZXMKLSB5IEkv
+TyBsaW5lKHMpIGZvciB0aGUgYWRkcmVzcy9tb2RlL2R1bW15IGN5Y2xlcwotIHogSS9PIGxpbmUo
+cykgZm9yIHRoZSBkYXRhIGN5Y2xlcwoKVGlsbCBub3csIHRoaXMgaXMgaG93IGFsbCBEdWFsIG9y
+IFF1YWQgU1BJIE5PUiBmbGFzaCBtZW1vcmllcyB3b3JrLgpCZXNpZGVzLCBhY2NvcmRpbmcgdG8g
+dGhlIHJlY2VudCBKRURFQyBKRVNEMTI2IHJldiBDIHNwZWNpZmljYXRpb24sCmludHJvZHVjaW5n
+IHN1cHBvcnQgdG8gT2N0byBTUEkgcHJvdG9jb2xzOgoKNi40LjIwIEpFREVDIEJhc2ljIEZsYXNo
+IFBhcmFtZXRlciBUYWJsZTogMTd0aCBEV09SRApCaXRzICAgRGVzY3JpcHRpb24KCjIzOjIxICAo
+MS0xLTgpIEZhc3QgUmVhZCBOdW1iZXIgb2YgTW9kZSBDbG9ja3MKCiAgICAgICBUaGlzIGZpbGVk
+IHdpbGwgYmUgMDAwYiBpZiBNb2RlIEJpdHMgYXJlIG5vdCBzdXBwb3J0ZWQuCiAgICAgICBOT1RF
+IFRoaXMgZmllbGQgc2hvdWxkIGJlIGNvdW50ZWQgaW4gY2xvY2tzIG5vdCBudW1iZXIgb2YgYml0
+cwogICAgICAgcmVjZWl2ZWQgYnkgdGhlIHNlcmlhbCBmbGFzaC4gVGhlIG1hc3RlciBkcml2ZXJz
+IHRoZSBidXMgZHVyaW5nCiAgICAgICAibW9kZSBiaXRzIiBjeWNsZXMsIHRoZSBtYXN0ZXIgdHJp
+LXN0YXRlcyB0aGUgYnVzIGR1cmluZwogICAgICAgImR1bW15IiBjeWNsZXMuCgogICAgICAgRXhh
+bXBsZTogSWYgNCBtb2RlIGJpdHMgYXJlIG5lZWRlZCB3aXRoIGEgc2luZ2xlIGlucHV0IGFkZHJl
+c3MKICAgICAgIHBoYXNlIGNvbW1hbmQsIHRoaXMgZmllbGQgd291bGQgYmUgMTAwYi4KCjIwOjE2
+ICAoMS0xLTgpIEZhc3QgUmVhZCBOdW1iZXIgb2YgV2FpdCBzdGF0ZXMgKGR1bW15IGNsb2Nrcykg
+bmVlZGVkCiAgICAgICBiZWZvcmUgdmFsaWQgb3V0cHV0CgogICAgICAgVGhpcyBmaWVsZCB3aWxs
+IGJlIDAwMDAwYiBpZiB3YWl0IHN0YXRlcy9kdW1teSBjbG9ja3MgYXJlIG5vdCBzdXBwb3J0ZWQu
+CiAgICAgICAoVGhlIG51bWJlciBvZiBkdW1teSBjbG9ja3Mgc2hvdWxkIGJlID4gMCB0byBhdm9p
+ZCBjb250ZW50aW9uIG9uIGJpLQogICAgICAgIGRpcmVjdGlvbmFsIHBpbnMuKQoKICAgICAgIEV4
+YW1wbGU6IElmIDggYml0cyBhcmUgbmVlZGVkIHdpdGggYSBzaW5nbGUgaW5wdXQgYWRkcmVzcyBw
+aGFzZSBjb21tYW5kLAogICAgICAgdGhpcyBmaWVsZCB3b3VsZCBiZSAwMTAwMGIuCgpTbyBpdCBs
+b29rcyBsaWtlIFNQSSAxLTEtOCBmb2xsb3dzIHRoZSBzYW1lIGxvZ2ljIGFzIFNQSSAxLTEtMiBh
+bmQgU1BJIDEtMS00LgpUaGVuIGVpdGhlciB0aGVyZSBpcyBhbiBlcnJvciBhYm91dCB0aGUgYWN0
+dWFsIG51bWJlciBvZiBkdW1teSBjbG9jayBjeWNsZXMgdG8KdXNlIG9yIE1pY3JvbiBmb2xrcyBo
+YXZlIGRlY2lkZWQgdG8gZGVzaWduIHRoaW5ncyB0aGVpciBvd24gd2F5LgoKSSd2ZSB0cmllZCB0
+byBkb3dubG9hZCB0aGUgZGF0YXNoZWV0IGZvciBNVDM1WFU1MTJBQkExRzEyIGJ1dCBpdHMgdW5k
+ZXIgTkRBLgoKQmVzdCByZWdhcmRzLAoKQ3lyaWxsZQoKIAo+IFJlZ2FyZHMsCj4gCj4gQm9yaXMK
+PiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KPiBMaW51eCBNVEQgZGlzY3Vzc2lvbiBtYWlsaW5nIGxpc3QKPiBodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8KPiAKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eCBNVEQgZGlzY3Vz
+c2lvbiBtYWlsaW5nIGxpc3QKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9saW51eC1tdGQvCg==

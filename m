@@ -1,47 +1,125 @@
-From: Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
-Date: Tue, 4 Sep 2018 09:59:08 -0400
-Message-ID: <20180904095908.13298b3d@gandalf.local.home>
-References: <1536012923-16275-1-git-send-email-henrik@austad.us>
- <20180904113030.GB25177@amd>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH 3/7] spi: spi-mem: Add a driver for NXP FlexSPI
+ controller
+Date: Tue, 4 Sep 2018 16:58:42 +0200
+Message-ID: <20180904165842.774ed960@bbrezillon>
+References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1535711404-29528-4-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
- linux-fbdev@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Henrik Austad <henrik@austad.us>,
- Lai Jiangshan <jiangshanlai@gmail.com>, dri-devel@lists.freedesktop.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>, Jan Kandziora <jjj@gmx.de>,
- Paul Mackerras <paulus@samba.org>, Henrik Austad <haustad@cisco.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Evgeniy Polyakov <zbr@ioremap.net>,
- linux-s390@vger.kernel.org, Ian Kent <raven@themaw.net>,
- linux-security-module@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
- Jonathan Corbet <corbet@lwn.net>, Michael Ellerman <mpe@ellerman.id.au>,
- Helge Deller <deller@gmx.de>,
- Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- "James E.J. Bottomley" <jejb@parisc-linux.or
-To: Pavel Machek <pavel@ucw.cz>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20180904113030.GB25177@amd>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd@lists.infradead.org, marek.vasut@gmail.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1535711404-29528-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCA0IFNlcCAyMDE4IDEzOjMwOjMwICswMjAwClBhdmVsIE1hY2hlayA8cGF2ZWxAdWN3
-LmN6PiB3cm90ZToKCj4gSSdkIHNheSB0aGlzIGlzIHN0aWxsIHF1aXRlIHZhbHVlYWJsZSwgYW5k
-IGl0IG1pZ2h0IGJlIHdvcnRoIGZpeGluZywKPiByYXRoZXIgdGhlbiByZW1vdmluZyBjb21wbGV0
-ZWx5LgoKSSBhZ3JlZS4gUGVyaGFwcyB3ZSBzaG91bGQgaGF2ZSBhIDAwLURFU0NSSVBUSU9OIGZp
-bGUgaW4gZWFjaApkaXJlY3RvcnksIGFuZCBlYWNoIGZpbGUgY291bGQgc3RhcnQgd2l0aCBhOgoK
-IERFU0NSSVBUSU9OOiA8b25lIGxpbmUgZGVzY3JpcHRpb24gaGVyZT4KCmFuZCB0aGVuIHRoZXNl
-IGZpbGVzIGNvdWxkIGJlIGdlbmVyYXRlZCBieSB0aG9zZSB0aGF0IGhhdmUgdGhlc2UgdGFncy4K
-Ci0tIFN0ZXZlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=
+Hi Yogesh,
+
+On Fri, 31 Aug 2018 16:00:00 +0530
+Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+
+> - Add a driver for NXP FlexSPI host controller
+> 
+> (0) What is the FlexSPI controller?
+>  FlexSPI is a flexsible SPI host controller which supports two SPI
+>  channels and up to 4 external devices.
+>  Each channel supports Single/Dual/Quad/Octal mode data 
+>  transfer (1/2/4/8 bidirectional data lines) 
+>  i.e. FlexSPI acts as an interface to external devices,
+>  maximum 4, each with up to 8 bidirectional data lines.
+> 
+>  It uses new SPI memory interface of the SPI framework to issue flash
+>  memory operations to up to four connected flash chips (2 buses with
+>  2 CS each).
+>  Chipselect for each flash can be selected as per address assigned in
+>  controller specific registers.
+> 
+>  FlexSPI controller is similar to the existing Freescale/NXP QuadSPI
+>  controller with advanced features.
+
+Yep, I had a quick look at the code and they really look similar. Why
+not extending the existing driver instead of creating a new one from
+scratch?
+
+> 
+> (1) The FlexSPI controller is driven by the LUT(Look-up Table)
+>  registers.
+>  The LUT registers are a look-up-table for sequences of instructions.
+>  A valid sequence consists of four LUT registers.
+>  Maximum 32 LUT sequences can be programmed simultaneously.
+> 
+> (2) The definition of the LUT register shows below:
+>  ---------------------------------------------------
+>  | INSTR1 | PAD1 | OPRND1 | INSTR0 | PAD0 | OPRND0 |
+>  ---------------------------------------------------
+> 
+>  There are several types of INSTRx, such as:
+>  CMD     : the SPI NOR command.
+>  ADDR    : the address for the SPI NOR command.
+>  DUMMY   : the dummy cycles needed by the SPI NOR command.
+>  ....
+> 
+>  There are several types of PADx, such as:
+>  PAD1    : use a singe I/O line.
+>  PAD2    : use two I/O lines.
+>  PAD4    : use quad I/O lines.
+>  PAD8    : use octal I/O lines.
+>  ....
+> 
+> (3) LUTs are being created at run-time based on the commands passed
+>  from the spi-mem framework. Thus, using single LUT index.
+> 
+> (4) Software triggered Flash read/write access by IP Bus.
+> 
+> (5) Memory mapped read access by AHB Bus.
+
+Do we really want to have this level of details in the commit message?
+I mean, this is something you can document in the driver, but not here.
+
+BTW, you might want to have a look at [1]. I think we can get rid of
+the ->size field you're adding if this driver implements the dirmap
+hooks.
+
+> 
+> (6) Tested this driver with the mtd_debug and JFFS2 filesystem utility
+>  on NXP LX2160ARDB and LX2160AQDS targets.
+>  LX2160ARDB is having two NOR slave device connected on single bus A
+>  i.e. A0 and A1 (CS0 and CS1).
+>  LX2160AQDS is having two NOR slave device connected on separate buses
+>  one flash on A0 and second on B1 i.e. (CS0 and CS3).
+>  Verified this driver on following SPI NOR flashes:
+>     Micron, mt35xu512ab, [Read - 1 bit mode]
+>     Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+
+Ok, that's good to have in the commit message.
+
+> 
+> - Add config option entry in 'spi-nor/Kconfig' for FlexSPI driver.
+
+But this one is useless. If you add a new driver, you have no other
+choice but to add a new entry in the Kconfig file.
+
+> 
+> - Add entry in the 'spi-nor/Makefile'.
+>
+
+Ditto.
+
+Before you re-send a new version, I'd like to understand why you think
+you need to create a new driver, and I want you to try to implement the
+dirmap hook and check if you can get rid of the ->size field when doing
+that.
+
+I also seem one extra benefit to having a single driver for both
+FlexSPI and QuadSPI IPs: you'll help Frieder debug the last remaining
+problems you reported on the new QuadSPI driver :-P.
+
+Thanks,
+
+Boris

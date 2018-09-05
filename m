@@ -1,26 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sh-msiof: Fix invalid SPI use during system suspend" to the spi tree
-Date: Wed,  5 Sep 2018 12:46:12 +0100 (BST)
-Message-ID: <20180905114612.5DC1711229D0@debutante.sirena.org.uk>
-References: <20180905084939.7401-2-geert+renesas@glider.be>
-Cc: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-spi@vger.kernel.org
-To: Gaku Inami <gaku.inami.xw@bp.renesas.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180905084939.7401-2-geert+renesas@glider.be>
-Sender: stable-owner@vger.kernel.org
+Subject: Applied "spi: Do not print a message if spi_controller_{suspend,
+ resume}() fails" to the spi tree
+Date: Wed,  5 Sep 2018 12:46:16 +0100 (BST)
+Message-ID: <20180905114616.63A8111229D0@debutante.sirena.org.uk>
+References: <20180905085157.7807-1-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Daniel Mack <daniel@zonque.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180905085157.7807-1-geert+renesas@glider.be>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sh-msiof: Fix invalid SPI use during system suspend
+   spi: Do not print a message if spi_controller_{suspend,resume}() fails
 
 has been applied to the spi tree at
 
@@ -45,70 +52,140 @@ to this mail.
 Thanks,
 Mark
 
->From ffa69d6a16f686efe45269342474e421f2aa58b2 Mon Sep 17 00:00:00 2001
-From: Gaku Inami <gaku.inami.xw@bp.renesas.com>
-Date: Wed, 5 Sep 2018 10:49:36 +0200
-Subject: [PATCH] spi: sh-msiof: Fix invalid SPI use during system suspend
+>From 7c5d8a249acadc3e9d5af643c0fe24b608a98269 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 5 Sep 2018 10:51:57 +0200
+Subject: [PATCH] spi: Do not print a message if
+ spi_controller_{suspend,resume}() fails
 
-If the SPI queue is running during system suspend, the system may lock
-up.
+spi_controller_{suspend,resume}() already prints an error message on
+failure, so there is no need to repeat this in individual drivers.
 
-Fix this by stopping/restarting the queue during system suspend/resume
-by calling spi_master_suspend()/spi_master_resume() from the PM
-callbacks.  In-kernel users will receive an -ESHUTDOWN error while
-system suspend/resume is in progress.
+Note: spi_master_{suspend,resume}() is an alias for
+      spi_controller_{suspend,resume}().
 
-Signed-off-by: Gaku Inami <gaku.inami.xw@bp.renesas.com>
-Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-[geert: Cleanup, reword]
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Daniel Mack <daniel@zonque.org>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-sh-msiof.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/spi/spi-atmel.c    | 10 ++--------
+ drivers/spi/spi-dw.c       |  7 +------
+ drivers/spi/spi-fsl-espi.c |  4 +---
+ drivers/spi/spi-pl022.c    |  8 ++------
+ drivers/spi/spi-pxa2xx.c   |  8 +-------
+ 5 files changed, 7 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 539d6d1a277a..bfe4e6d4f7bf 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1426,12 +1426,37 @@ static const struct platform_device_id spi_driver_ids[] = {
- };
- MODULE_DEVICE_TABLE(platform, spi_driver_ids);
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 3f890d162934..74fddcd3282b 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1767,10 +1767,8 @@ static int atmel_spi_suspend(struct device *dev)
  
-+#ifdef CONFIG_PM_SLEEP
-+static int sh_msiof_spi_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
-+
-+	return spi_master_suspend(p->master);
-+}
-+
-+static int sh_msiof_spi_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
-+
-+	return spi_master_resume(p->master);
-+}
-+
-+static SIMPLE_DEV_PM_OPS(sh_msiof_spi_pm_ops, sh_msiof_spi_suspend,
-+			 sh_msiof_spi_resume);
-+#define DEV_PM_OPS	&sh_msiof_spi_pm_ops
-+#else
-+#define DEV_PM_OPS	NULL
-+#endif /* CONFIG_PM_SLEEP */
-+
- static struct platform_driver sh_msiof_spi_drv = {
- 	.probe		= sh_msiof_spi_probe,
- 	.remove		= sh_msiof_spi_remove,
- 	.id_table	= spi_driver_ids,
- 	.driver		= {
- 		.name		= "spi_sh_msiof",
-+		.pm		= DEV_PM_OPS,
- 		.of_match_table = of_match_ptr(sh_msiof_match),
- 	},
- };
+ 	/* Stop the queue running */
+ 	ret = spi_master_suspend(master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	if (!pm_runtime_suspended(dev))
+ 		atmel_spi_runtime_suspend(dev);
+@@ -1799,11 +1797,7 @@ static int atmel_spi_resume(struct device *dev)
+ 	}
+ 
+ 	/* Start the queue running */
+-	ret = spi_master_resume(master);
+-	if (ret)
+-		dev_err(dev, "problem starting queue (%d)\n", ret);
+-
+-	return ret;
++	return spi_master_resume(master);
+ }
+ #endif
+ 
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index ac2eb89ef7a5..1736612ee86b 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -572,13 +572,8 @@ EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
+ 
+ int dw_spi_resume_host(struct dw_spi *dws)
+ {
+-	int ret;
+-
+ 	spi_hw_init(&dws->master->dev, dws);
+-	ret = spi_controller_resume(dws->master);
+-	if (ret)
+-		dev_err(&dws->master->dev, "fail to start queue (%d)\n", ret);
+-	return ret;
++	return spi_controller_resume(dws->master);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_resume_host);
+ 
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 1e8ff6256079..cf2118dc91f4 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -798,10 +798,8 @@ static int of_fsl_espi_suspend(struct device *dev)
+ 	int ret;
+ 
+ 	ret = spi_master_suspend(master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	return pm_runtime_force_suspend(dev);
+ }
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1af8c96b940e..5f5f197b153c 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2325,10 +2325,8 @@ static int pl022_suspend(struct device *dev)
+ 	int ret;
+ 
+ 	ret = spi_master_suspend(pl022->master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	ret = pm_runtime_force_suspend(dev);
+ 	if (ret) {
+@@ -2353,9 +2351,7 @@ static int pl022_resume(struct device *dev)
+ 
+ 	/* Start the queue running */
+ 	ret = spi_master_resume(pl022->master);
+-	if (ret)
+-		dev_err(dev, "problem starting queue (%d)\n", ret);
+-	else
++	if (!ret)
+ 		dev_dbg(dev, "resumed\n");
+ 
+ 	return ret;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 14f4ea59caff..e3cbc66a7061 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1808,13 +1808,7 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 		lpss_ssp_setup(drv_data);
+ 
+ 	/* Start the queue running */
+-	status = spi_controller_resume(drv_data->master);
+-	if (status != 0) {
+-		dev_err(dev, "problem starting queue (%d)\n", status);
+-		return status;
+-	}
+-
+-	return 0;
++	return spi_controller_resume(drv_data->master);
+ }
+ #endif
+ 
 -- 
 2.19.0.rc1

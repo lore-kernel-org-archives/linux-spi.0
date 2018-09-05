@@ -1,23 +1,19 @@
-From: lei liu <leilk.liu@mediatek.com>
-Subject: Re: [PATCH 1/3] spis: mediatek: add bindings for Mediatek MT2712
- soc platform
-Date: Wed, 5 Sep 2018 11:00:53 +0800
-Message-ID: <1536116453.27607.7.camel@mhfsdcap03>
-References: <1535437685-30230-1-git-send-email-leilk.liu@mediatek.com>
- <1535437685-30230-2-git-send-email-leilk.liu@mediatek.com>
- <5b8e8a7f.1c69fb81.dab09.e985@mx.google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: Do not print a message if spi_controller_{suspend,
+ resume}() fails
+Date: Wed,  5 Sep 2018 10:51:57 +0200
+Message-ID: <20180905085157.7807-1-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, yt.shen@mediatek.com,
- Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
- Matthias Brugger <matthias.bgg@gmail.com>, mengqi.zhang@mediatek.com,
- linux-arm-kernel@lists.infradead.org
-To: Rob Herring <robh@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <5b8e8a7f.1c69fb81.dab09.e985@mx.google.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,94 +25,130 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2018-09-04 at 08:18 -0500, Rob Herring wrote:
-> On Tue, Aug 28, 2018 at 02:28:03PM +0800, Leilk Liu wrote:
-> > This patch adds a DT binding documentation for the MT2712 soc.
-> > 
-> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> > ---
-> >  .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |   39 ++++++++++++++++++++
-> >  1 file changed, 39 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> > new file mode 100644
-> > index 0000000..dcb8934
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-> > @@ -0,0 +1,39 @@
-> > +Binding for MTK SPI Slave controller
-> 
-> Only does slave mode? If not, then the file name and doc should be just 
-> for the SPI controller (master and slave). The "spi-slave" property 
-> selects the mode. If it is only slave mode, then you don't need the 
-> spi-slave property.
-> 
+spi_controller_{suspend,resume}() already prints an error message on
+failure, so there is no need to repeat this in individual drivers.
 
-yes, this is only for slave mode, and I'll remove spi-slave property,
-thanks.
+Note: spi_master_{suspend,resume}() is an alias for
+      spi_controller_{suspend,resume}().
 
-> 
-> > +
-> > +Required properties:
-> > +- compatible: should be one of the following.
-> > +    - mediatek,mt2712-spi: for mt2712 platforms
-> > +
-> > +- reg: Address and length of the register set for the device
-> > +
-> > +- interrupts: Should contain spi interrupt
-> > +
-> > +- clocks: phandles to input clocks.
-> > +  The first should be one of the following. It's PLL.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D2>: specify parent clock 312MHZ.
-> > +				      It's the default one.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D4>: specify parent clock 156MHZ.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
-> > +   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
-> > +  The second should be <&topckgen CLK_TOP_SPISLV_SEL>. It's clock mux.
-> > +  The third is <&infracfg CLK_INFRA_AO_SPI1>. It's clock gate.
-> > +
-> > +- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
-> > +  muxes clock, and "spi-clk" for the clock gate.
-> 
-> "-clk" is redundant.
-> 
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-atmel.c    | 10 ++--------
+ drivers/spi/spi-dw.c       |  7 +------
+ drivers/spi/spi-fsl-espi.c |  4 +---
+ drivers/spi/spi-pl022.c    |  8 ++------
+ drivers/spi/spi-pxa2xx.c   |  8 +-------
+ 5 files changed, 7 insertions(+), 30 deletions(-)
 
-ok, I'll fix it, thanks.
-
-> Is the parent clock actually connected to the block? The assigned-clocks 
-> properties are used for constraints on parent clocks.
-> 
-
-Thanks for your comment.
-The parent and sel clk can select the source clk of spi module.
-And I already use assigned-clocks and assigned-clocks-parents to set
-them in patch v2.
-
-> > +
-> > +- spi-slave: Empty property indicating the SPI controller is used in slave mode.
-> > +
-> > +Example:
-> > +
-> > +- SoC Specific Portion:
-> > +spis: spi@10013000 {
-> > +	compatible = "mediatek,mt2712-spi-slave";
-> > +	reg = <0 0x10013000 0 0x100>;
-> > +	interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-> > +	clocks = <&topckgen CLK_TOP_UNIVPLL1_D2>,
-> > +		<&topckgen CLK_TOP_SPISLV_SEL>,
-> > +		<&infracfg CLK_INFRA_AO_SPI1>;
-> > +	clock-names = "parent-clk", "sel-clk", "spi-clk";
-> > +	spi-slave;
-> > +	status = "disabled";
-> 
-> Don't should status in examples.
-> 
-
-ok, I'll fix it, thanks
-
-> > +};
-> > -- 
-> > 1.7.9.5
-> > 
-> 
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 3f890d16293411ba..74fddcd3282b4bea 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1767,10 +1767,8 @@ static int atmel_spi_suspend(struct device *dev)
+ 
+ 	/* Stop the queue running */
+ 	ret = spi_master_suspend(master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	if (!pm_runtime_suspended(dev))
+ 		atmel_spi_runtime_suspend(dev);
+@@ -1799,11 +1797,7 @@ static int atmel_spi_resume(struct device *dev)
+ 	}
+ 
+ 	/* Start the queue running */
+-	ret = spi_master_resume(master);
+-	if (ret)
+-		dev_err(dev, "problem starting queue (%d)\n", ret);
+-
+-	return ret;
++	return spi_master_resume(master);
+ }
+ #endif
+ 
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index ac2eb89ef7a5a061..1736612ee86be7dd 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -572,13 +572,8 @@ EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
+ 
+ int dw_spi_resume_host(struct dw_spi *dws)
+ {
+-	int ret;
+-
+ 	spi_hw_init(&dws->master->dev, dws);
+-	ret = spi_controller_resume(dws->master);
+-	if (ret)
+-		dev_err(&dws->master->dev, "fail to start queue (%d)\n", ret);
+-	return ret;
++	return spi_controller_resume(dws->master);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_resume_host);
+ 
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 1e8ff6256079f134..cf2118dc91f44548 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -798,10 +798,8 @@ static int of_fsl_espi_suspend(struct device *dev)
+ 	int ret;
+ 
+ 	ret = spi_master_suspend(master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	return pm_runtime_force_suspend(dev);
+ }
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1af8c96b940e203d..5f5f197b153c3ec4 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2325,10 +2325,8 @@ static int pl022_suspend(struct device *dev)
+ 	int ret;
+ 
+ 	ret = spi_master_suspend(pl022->master);
+-	if (ret) {
+-		dev_warn(dev, "cannot suspend master\n");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	ret = pm_runtime_force_suspend(dev);
+ 	if (ret) {
+@@ -2353,9 +2351,7 @@ static int pl022_resume(struct device *dev)
+ 
+ 	/* Start the queue running */
+ 	ret = spi_master_resume(pl022->master);
+-	if (ret)
+-		dev_err(dev, "problem starting queue (%d)\n", ret);
+-	else
++	if (!ret)
+ 		dev_dbg(dev, "resumed\n");
+ 
+ 	return ret;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 14f4ea59caff7a23..e3cbc66a7061b42f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1808,13 +1808,7 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 		lpss_ssp_setup(drv_data);
+ 
+ 	/* Start the queue running */
+-	status = spi_controller_resume(drv_data->master);
+-	if (status != 0) {
+-		dev_err(dev, "problem starting queue (%d)\n", status);
+-		return status;
+-	}
+-
+-	return 0;
++	return spi_controller_resume(drv_data->master);
+ }
+ #endif
+ 
+-- 
+2.17.1

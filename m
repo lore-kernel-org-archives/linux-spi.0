@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rspi: Fix interrupted DMA transfers" to the spi tree
-Date: Wed,  5 Sep 2018 12:45:59 +0100 (BST)
-Message-ID: <20180905114559.E12A811229D0@debutante.sirena.org.uk>
-References: <20180905084939.7401-5-geert+renesas@glider.be>
+Subject: Applied "spi: rspi: Fix invalid SPI use during system suspend" to the spi tree
+Date: Wed,  5 Sep 2018 12:46:03 +0100 (BST)
+Message-ID: <20180905114603.E093011229D0@debutante.sirena.org.uk>
+References: <20180905084939.7401-4-geert+renesas@glider.be>
 Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         Gaku Inami <gaku.inami.xw@bp.renesas.com>,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
         linux-sh@vger.kernel.org, linux-spi@vger.kernel.org
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180905084939.7401-5-geert+renesas@glider.be>
+In-Reply-To: <20180905084939.7401-4-geert+renesas@glider.be>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rspi: Fix interrupted DMA transfers
+   spi: rspi: Fix invalid SPI use during system suspend
 
 has been applied to the spi tree at
 
@@ -42,59 +42,68 @@ to this mail.
 Thanks,
 Mark
 
->From 8dbbaa47b96f6ea5f09f922b4effff3c505cd8cf Mon Sep 17 00:00:00 2001
+>From c1ca59c22c56930b377a665fdd1b43351887830b Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Wed, 5 Sep 2018 10:49:39 +0200
-Subject: [PATCH] spi: rspi: Fix interrupted DMA transfers
+Date: Wed, 5 Sep 2018 10:49:38 +0200
+Subject: [PATCH] spi: rspi: Fix invalid SPI use during system suspend
 
-When interrupted, wait_event_interruptible_timeout() returns
--ERESTARTSYS, and the SPI transfer in progress will fail, as expected:
+If the SPI queue is running during system suspend, the system may lock
+up.
 
-    m25p80 spi0.0: SPI transfer failed: -512
-    spi_master spi0: failed to transfer one message from queue
+Fix this by stopping/restarting the queue during system suspend/resume,
+by calling spi_master_suspend()/spi_master_resume() from the PM
+callbacks.  In-kernel users will receive an -ESHUTDOWN error while
+system suspend/resume is in progress.
 
-However, as the underlying DMA transfers may not have completed, all
-subsequent SPI transfers may start to fail:
-
-    spi_master spi0: receive timeout
-    qspi_transfer_out_in() returned -110
-    m25p80 spi0.0: SPI transfer failed: -110
-    spi_master spi0: failed to transfer one message from queue
-
-Fix this by calling dmaengine_terminate_all() not only for timeouts, but
-also for errors.
-
-This can be reproduced on r8a7991/koelsch, using "hd /dev/mtd0" followed
-by CTRL-C.
+Based on a patch for sh-msiof by Gaku Inami.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-rspi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-rspi.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index f93a4587e3fb..b37de1d991d6 100644
+index 95dc4d78618d..f93a4587e3fb 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -598,11 +598,13 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+@@ -1350,12 +1350,36 @@ static const struct platform_device_id spi_driver_ids[] = {
  
- 	ret = wait_event_interruptible_timeout(rspi->wait,
- 					       rspi->dma_callbacked, HZ);
--	if (ret > 0 && rspi->dma_callbacked)
-+	if (ret > 0 && rspi->dma_callbacked) {
- 		ret = 0;
--	else if (!ret) {
--		dev_err(&rspi->master->dev, "DMA timeout\n");
--		ret = -ETIMEDOUT;
-+	} else {
-+		if (!ret) {
-+			dev_err(&rspi->master->dev, "DMA timeout\n");
-+			ret = -ETIMEDOUT;
-+		}
- 		if (tx)
- 			dmaengine_terminate_all(rspi->master->dma_tx);
- 		if (rx)
+ MODULE_DEVICE_TABLE(platform, spi_driver_ids);
+ 
++#ifdef CONFIG_PM_SLEEP
++static int rspi_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct rspi_data *rspi = platform_get_drvdata(pdev);
++
++	return spi_master_suspend(rspi->master);
++}
++
++static int rspi_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct rspi_data *rspi = platform_get_drvdata(pdev);
++
++	return spi_master_resume(rspi->master);
++}
++
++static SIMPLE_DEV_PM_OPS(rspi_pm_ops, rspi_suspend, rspi_resume);
++#define DEV_PM_OPS	&rspi_pm_ops
++#else
++#define DEV_PM_OPS	NULL
++#endif /* CONFIG_PM_SLEEP */
++
+ static struct platform_driver rspi_driver = {
+ 	.probe =	rspi_probe,
+ 	.remove =	rspi_remove,
+ 	.id_table =	spi_driver_ids,
+ 	.driver		= {
+ 		.name = "renesas_spi",
++		.pm = DEV_PM_OPS,
+ 		.of_match_table = of_match_ptr(rspi_of_match),
+ 	},
+ };
 -- 
 2.19.0.rc1

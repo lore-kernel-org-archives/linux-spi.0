@@ -1,101 +1,100 @@
-From: Paul Moore <paul@paul-moore.com>
-Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
-Date: Wed, 5 Sep 2018 07:42:04 -0400
-Message-ID: <CAHC9VhR7Zana3xTEj2jUGXb+hBzyh69g0rBg_p_4tkbjtCUdpw@mail.gmail.com>
-References: <1536012923-16275-1-git-send-email-henrik@austad.us>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-doc@vger.kernel.org, corbet@lwn.net, bhelgaas@google.com,
-        paulmck@linux.vnet.ibm.com, josh@joshtriplett.org,
-        rostedt@goodmis.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, axboe@kernel.dk, robh+dt@kernel.org,
-        mark.rutland@arm.com, b.zolnierkie@samsung.com,
-        linus.walleij@linaro.org, davem@davemloft.net, isdn@linux-pingi.de,
-        yamada.masahiro@socionext.com, michal.lkml@markovi.net,
-        peterz@infradead.org, mingo@redhat.com, will.deacon@arm.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, rjw@rjwysocki.net,
-        len.brown@intel.com, pavel@ucw.cz, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, gregkh@linuxfoundation.org,
-        jslaby@suse.com, broonie@kernel.o
-To: henrik@austad.us
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1536012923-16275-1-git-send-email-henrik@austad.us>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: rspi: Fix interrupted DMA transfers" to the spi tree
+Date: Wed,  5 Sep 2018 12:45:59 +0100 (BST)
+Message-ID: <20180905114559.E12A811229D0@debutante.sirena.org.uk>
+References: <20180905084939.7401-5-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Gaku Inami <gaku.inami.xw@bp.renesas.com>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20180905084939.7401-5-geert+renesas@glider.be>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 3, 2018 at 6:15 PM Henrik Austad <henrik@austad.us> wrote:
-> This is a respin with a wider audience (all that get_maintainer returned)
-> and I know this spams a *lot* of people. Not sure what would be the correct
-> way, so my apologies for ruining your inbox.
->
-> The 00-INDEX files are supposed to give a summary of all files present
-> in a directory, but these files are horribly out of date and their
-> usefulness is brought into question. Often a simple "ls" would reveal
-> the same information as the filenames are generally quite descriptive as
-> a short introduction to what the file covers (it should not surprise
-> anyone what Documentation/sched/sched-design-CFS.txt covers)
->
-> A few years back it was mentioned that these files were no longer really
-> needed, and they have since then grown further out of date, so perhaps
-> it is time to just throw them out.
->
-> A short status yields the following _outdated_ 00-INDEX files, first
-> counter is files listed in 00-INDEX but missing in the directory, last
-> is files present but not listed in 00-INDEX.
->
-> List of outdated 00-INDEX:
-> Documentation: (4/10)
-> Documentation/sysctl: (0/1)
-> Documentation/timers: (1/0)
-> Documentation/blockdev: (3/1)
-> Documentation/w1/slaves: (0/1)
-> Documentation/locking: (0/1)
-> Documentation/devicetree: (0/5)
-> Documentation/power: (1/1)
-> Documentation/powerpc: (0/5)
-> Documentation/arm: (1/0)
-> Documentation/x86: (0/9)
-> Documentation/x86/x86_64: (1/1)
-> Documentation/scsi: (4/4)
-> Documentation/filesystems: (2/9)
-> Documentation/filesystems/nfs: (0/2)
-> Documentation/cgroup-v1: (0/2)
-> Documentation/kbuild: (0/4)
-> Documentation/spi: (1/0)
-> Documentation/virtual/kvm: (1/0)
-> Documentation/scheduler: (0/2)
-> Documentation/fb: (0/1)
-> Documentation/block: (0/1)
-> Documentation/networking: (6/37)
-> Documentation/vm: (1/3)
->
-> Then there are 364 subdirectories in Documentation/ with several files that
-> are missing 00-INDEX alltogether (and another 120 with a single file and no
-> 00-INDEX).
->
-> I don't really have an opinion to whether or not we /should/ have 00-INDEX,
-> but the above 00-INDEX should either be removed or be kept up to date. If
-> we should keep the files, I can try to keep them updated, but I rather not
-> if we just want to delete them anyway.
->
-> As a starting point, remove all index-files and references to 00-INDEX and
-> see where the discussion is going.
->
-> Again, sorry for the insanely wide distribution.
->
-> Signed-off-by: Henrik Austad <henrik@austad.us>
-...
-> Signed-off-by: Henrik Austad <haustad@cisco.com>
-> ---
->  Documentation/00-INDEX                  | 428 --------------------------------
-...
+The patch
 
-Looks reasonable to me, you can add my ACK for the NetLabel bits.
+   spi: rspi: Fix interrupted DMA transfers
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+has been applied to the spi tree at
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 8dbbaa47b96f6ea5f09f922b4effff3c505cd8cf Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 5 Sep 2018 10:49:39 +0200
+Subject: [PATCH] spi: rspi: Fix interrupted DMA transfers
+
+When interrupted, wait_event_interruptible_timeout() returns
+-ERESTARTSYS, and the SPI transfer in progress will fail, as expected:
+
+    m25p80 spi0.0: SPI transfer failed: -512
+    spi_master spi0: failed to transfer one message from queue
+
+However, as the underlying DMA transfers may not have completed, all
+subsequent SPI transfers may start to fail:
+
+    spi_master spi0: receive timeout
+    qspi_transfer_out_in() returned -110
+    m25p80 spi0.0: SPI transfer failed: -110
+    spi_master spi0: failed to transfer one message from queue
+
+Fix this by calling dmaengine_terminate_all() not only for timeouts, but
+also for errors.
+
+This can be reproduced on r8a7991/koelsch, using "hd /dev/mtd0" followed
+by CTRL-C.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/spi/spi-rspi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index f93a4587e3fb..b37de1d991d6 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -598,11 +598,13 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 
+ 	ret = wait_event_interruptible_timeout(rspi->wait,
+ 					       rspi->dma_callbacked, HZ);
+-	if (ret > 0 && rspi->dma_callbacked)
++	if (ret > 0 && rspi->dma_callbacked) {
+ 		ret = 0;
+-	else if (!ret) {
+-		dev_err(&rspi->master->dev, "DMA timeout\n");
+-		ret = -ETIMEDOUT;
++	} else {
++		if (!ret) {
++			dev_err(&rspi->master->dev, "DMA timeout\n");
++			ret = -ETIMEDOUT;
++		}
+ 		if (tx)
+ 			dmaengine_terminate_all(rspi->master->dma_tx);
+ 		if (rx)
 -- 
-paul moore
-www.paul-moore.com
+2.19.0.rc1

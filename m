@@ -1,169 +1,101 @@
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH] spi: Do not print a message if
- spi_controller_{suspend,resume}() fails
-Date: Wed, 5 Sep 2018 12:10:47 +0200
-Message-ID: <463b7aff-bf38-0caf-cc3f-7d1a621fb36f@microchip.com>
-References: <20180905085157.7807-1-geert+renesas@glider.be>
- <20180905092831.GN13888@piout.net>
+From: Paul Moore <paul@paul-moore.com>
+Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
+Date: Wed, 5 Sep 2018 07:42:04 -0400
+Message-ID: <CAHC9VhR7Zana3xTEj2jUGXb+hBzyh69g0rBg_p_4tkbjtCUdpw@mail.gmail.com>
+References: <1536012923-16275-1-git-send-email-henrik@austad.us>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180905092831.GN13888@piout.net>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-doc@vger.kernel.org, corbet@lwn.net, bhelgaas@google.com,
+        paulmck@linux.vnet.ibm.com, josh@joshtriplett.org,
+        rostedt@goodmis.org, mathieu.desnoyers@efficios.com,
+        jiangshanlai@gmail.com, axboe@kernel.dk, robh+dt@kernel.org,
+        mark.rutland@arm.com, b.zolnierkie@samsung.com,
+        linus.walleij@linaro.org, davem@davemloft.net, isdn@linux-pingi.de,
+        yamada.masahiro@socionext.com, michal.lkml@markovi.net,
+        peterz@infradead.org, mingo@redhat.com, will.deacon@arm.com,
+        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        jejb@parisc-linux.org, deller@gmx.de, rjw@rjwysocki.net,
+        len.brown@intel.com, pavel@ucw.cz, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, gregkh@linuxfoundation.org,
+        jslaby@suse.com, broonie@kernel.o
+To: henrik@austad.us
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1536012923-16275-1-git-send-email-henrik@austad.us>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/09/2018 at 11:28, Alexandre Belloni wrote:
-> On 05/09/2018 10:51:57+0200, Geert Uytterhoeven wrote:
->> spi_controller_{suspend,resume}() already prints an error message on
->> failure, so there is no need to repeat this in individual drivers.
->>
->> Note: spi_master_{suspend,resume}() is an alias for
->>        spi_controller_{suspend,resume}().
->>
->> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+On Mon, Sep 3, 2018 at 6:15 PM Henrik Austad <henrik@austad.us> wrote:
+> This is a respin with a wider audience (all that get_maintainer returned)
+> and I know this spams a *lot* of people. Not sure what would be the correct
+> way, so my apologies for ruining your inbox.
+>
+> The 00-INDEX files are supposed to give a summary of all files present
+> in a directory, but these files are horribly out of date and their
+> usefulness is brought into question. Often a simple "ls" would reveal
+> the same information as the filenames are generally quite descriptive as
+> a short introduction to what the file covers (it should not surprise
+> anyone what Documentation/sched/sched-design-CFS.txt covers)
+>
+> A few years back it was mentioned that these files were no longer really
+> needed, and they have since then grown further out of date, so perhaps
+> it is time to just throw them out.
+>
+> A short status yields the following _outdated_ 00-INDEX files, first
+> counter is files listed in 00-INDEX but missing in the directory, last
+> is files present but not listed in 00-INDEX.
+>
+> List of outdated 00-INDEX:
+> Documentation: (4/10)
+> Documentation/sysctl: (0/1)
+> Documentation/timers: (1/0)
+> Documentation/blockdev: (3/1)
+> Documentation/w1/slaves: (0/1)
+> Documentation/locking: (0/1)
+> Documentation/devicetree: (0/5)
+> Documentation/power: (1/1)
+> Documentation/powerpc: (0/5)
+> Documentation/arm: (1/0)
+> Documentation/x86: (0/9)
+> Documentation/x86/x86_64: (1/1)
+> Documentation/scsi: (4/4)
+> Documentation/filesystems: (2/9)
+> Documentation/filesystems/nfs: (0/2)
+> Documentation/cgroup-v1: (0/2)
+> Documentation/kbuild: (0/4)
+> Documentation/spi: (1/0)
+> Documentation/virtual/kvm: (1/0)
+> Documentation/scheduler: (0/2)
+> Documentation/fb: (0/1)
+> Documentation/block: (0/1)
+> Documentation/networking: (6/37)
+> Documentation/vm: (1/3)
+>
+> Then there are 364 subdirectories in Documentation/ with several files that
+> are missing 00-INDEX alltogether (and another 120 with a single file and no
+> 00-INDEX).
+>
+> I don't really have an opinion to whether or not we /should/ have 00-INDEX,
+> but the above 00-INDEX should either be removed or be kept up to date. If
+> we should keep the files, I can try to keep them updated, but I rather not
+> if we just want to delete them anyway.
+>
+> As a starting point, remove all index-files and references to 00-INDEX and
+> see where the discussion is going.
+>
+> Again, sorry for the insanely wide distribution.
+>
+> Signed-off-by: Henrik Austad <henrik@austad.us>
+...
+> Signed-off-by: Henrik Austad <haustad@cisco.com>
+> ---
+>  Documentation/00-INDEX                  | 428 --------------------------------
+...
 
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Looks reasonable to me, you can add my ACK for the NetLabel bits.
 
-> 
->> ---
->>   drivers/spi/spi-atmel.c    | 10 ++--------
->>   drivers/spi/spi-dw.c       |  7 +------
->>   drivers/spi/spi-fsl-espi.c |  4 +---
->>   drivers/spi/spi-pl022.c    |  8 ++------
->>   drivers/spi/spi-pxa2xx.c   |  8 +-------
->>   5 files changed, 7 insertions(+), 30 deletions(-)
->>
->> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
->> index 3f890d16293411ba..74fddcd3282b4bea 100644
->> --- a/drivers/spi/spi-atmel.c
->> +++ b/drivers/spi/spi-atmel.c
->> @@ -1767,10 +1767,8 @@ static int atmel_spi_suspend(struct device *dev)
->>   
->>   	/* Stop the queue running */
->>   	ret = spi_master_suspend(master);
->> -	if (ret) {
->> -		dev_warn(dev, "cannot suspend master\n");
->> +	if (ret)
->>   		return ret;
->> -	}
->>   
->>   	if (!pm_runtime_suspended(dev))
->>   		atmel_spi_runtime_suspend(dev);
->> @@ -1799,11 +1797,7 @@ static int atmel_spi_resume(struct device *dev)
->>   	}
->>   
->>   	/* Start the queue running */
->> -	ret = spi_master_resume(master);
->> -	if (ret)
->> -		dev_err(dev, "problem starting queue (%d)\n", ret);
->> -
->> -	return ret;
->> +	return spi_master_resume(master);
->>   }
->>   #endif
->>   
->> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
->> index ac2eb89ef7a5a061..1736612ee86be7dd 100644
->> --- a/drivers/spi/spi-dw.c
->> +++ b/drivers/spi/spi-dw.c
->> @@ -572,13 +572,8 @@ EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
->>   
->>   int dw_spi_resume_host(struct dw_spi *dws)
->>   {
->> -	int ret;
->> -
->>   	spi_hw_init(&dws->master->dev, dws);
->> -	ret = spi_controller_resume(dws->master);
->> -	if (ret)
->> -		dev_err(&dws->master->dev, "fail to start queue (%d)\n", ret);
->> -	return ret;
->> +	return spi_controller_resume(dws->master);
->>   }
->>   EXPORT_SYMBOL_GPL(dw_spi_resume_host);
->>   
->> diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
->> index 1e8ff6256079f134..cf2118dc91f44548 100644
->> --- a/drivers/spi/spi-fsl-espi.c
->> +++ b/drivers/spi/spi-fsl-espi.c
->> @@ -798,10 +798,8 @@ static int of_fsl_espi_suspend(struct device *dev)
->>   	int ret;
->>   
->>   	ret = spi_master_suspend(master);
->> -	if (ret) {
->> -		dev_warn(dev, "cannot suspend master\n");
->> +	if (ret)
->>   		return ret;
->> -	}
->>   
->>   	return pm_runtime_force_suspend(dev);
->>   }
->> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
->> index 1af8c96b940e203d..5f5f197b153c3ec4 100644
->> --- a/drivers/spi/spi-pl022.c
->> +++ b/drivers/spi/spi-pl022.c
->> @@ -2325,10 +2325,8 @@ static int pl022_suspend(struct device *dev)
->>   	int ret;
->>   
->>   	ret = spi_master_suspend(pl022->master);
->> -	if (ret) {
->> -		dev_warn(dev, "cannot suspend master\n");
->> +	if (ret)
->>   		return ret;
->> -	}
->>   
->>   	ret = pm_runtime_force_suspend(dev);
->>   	if (ret) {
->> @@ -2353,9 +2351,7 @@ static int pl022_resume(struct device *dev)
->>   
->>   	/* Start the queue running */
->>   	ret = spi_master_resume(pl022->master);
->> -	if (ret)
->> -		dev_err(dev, "problem starting queue (%d)\n", ret);
->> -	else
->> +	if (!ret)
->>   		dev_dbg(dev, "resumed\n");
->>   
->>   	return ret;
->> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
->> index 14f4ea59caff7a23..e3cbc66a7061b42f 100644
->> --- a/drivers/spi/spi-pxa2xx.c
->> +++ b/drivers/spi/spi-pxa2xx.c
->> @@ -1808,13 +1808,7 @@ static int pxa2xx_spi_resume(struct device *dev)
->>   		lpss_ssp_setup(drv_data);
->>   
->>   	/* Start the queue running */
->> -	status = spi_controller_resume(drv_data->master);
->> -	if (status != 0) {
->> -		dev_err(dev, "problem starting queue (%d)\n", status);
->> -		return status;
->> -	}
->> -
->> -	return 0;
->> +	return spi_controller_resume(drv_data->master);
->>   }
->>   #endif
->>   
->> -- 
->> 2.17.1
->>
-> 
-
+Acked-by: Paul Moore <paul@paul-moore.com>
 
 -- 
-Nicolas Ferre
+paul moore
+www.paul-moore.com

@@ -1,154 +1,210 @@
-From: Jagdish Gediya <jagdish.gediya@nxp.com>
-Subject: RE: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexSPI
- driver
-Date: Thu, 6 Sep 2018 07:08:16 +0000
-Message-ID: <AM0PR04MB4052840603E71673747DFA7B90010@AM0PR04MB4052.eurprd04.prod.outlook.com>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: [PATCH 3/7] spi: spi-mem: Add a driver for NXP FlexSPI controller
+Date: Thu, 6 Sep 2018 10:26:01 +0200
+Message-ID: <add79e8b-1ab7-e465-5f65-eed6b78161e1@exceet.de>
 References: <1535711404-29528-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1535711404-29528-5-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <VI1PR0402MB385465BEDBFC9CB6A89BEFF4970C0@VI1PR0402MB3854.eurprd04.prod.outlook.com>
- <20180904144627.1de264b6@bbrezillon>
+ <1535711404-29528-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <20180904165842.774ed960@bbrezillon>
+ <VI1PR04MB1038CE65EF4E98ACBEA9990B99020@VI1PR04MB1038.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180904144627.1de264b6@bbrezillon>
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <VI1PR04MB1038CE65EF4E98ACBEA9990B99020@VI1PR04MB1038.eurprd04.prod.outlook.com>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+Hi Yogesh,
 
-Currently FlexSPI controller is present in ARM SoC but NXP is coming with P=
-owerPC SoC with same FlexSPI controller.
+On 05.09.2018 12:07, Yogesh Narayan Gaur wrote:
+> Hi Boris,
+> 
+>> -----Original Message-----
+>> From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
+>> Sent: Tuesday, September 4, 2018 8:29 PM
+>> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+>> Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com; linux-
+>> spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
+>> mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
+>> kernel@lists.infradead.org; computersforpeace@gmail.com;
+>> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
+>> Subject: Re: [PATCH 3/7] spi: spi-mem: Add a driver for NXP FlexSPI controller
+>>
+>> Hi Yogesh,
+>>
+>> On Fri, 31 Aug 2018 16:00:00 +0530
+>> Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+>>
+>>> - Add a driver for NXP FlexSPI host controller
+>>>
+>>> (0) What is the FlexSPI controller?
+>>>   FlexSPI is a flexsible SPI host controller which supports two SPI
+>>> channels and up to 4 external devices.
+>>>   Each channel supports Single/Dual/Quad/Octal mode data  transfer
+>>> (1/2/4/8 bidirectional data lines)  i.e. FlexSPI acts as an interface
+>>> to external devices,  maximum 4, each with up to 8 bidirectional data
+>>> lines.
+>>>
+>>>   It uses new SPI memory interface of the SPI framework to issue flash
+>>> memory operations to up to four connected flash chips (2 buses with
+>>>   2 CS each).
+>>>   Chipselect for each flash can be selected as per address assigned in
+>>> controller specific registers.
+>>>
+>>>   FlexSPI controller is similar to the existing Freescale/NXP QuadSPI
+>>> controller with advanced features.
+>>
+>> Yep, I had a quick look at the code and they really look similar. Why not
+>> extending the existing driver instead of creating a new one from scratch?
+>>
+> 
+> FlexSPI is different controller not related to the QuadSPI controller in its working behavior
+> Both these controller are having
+> * Different registers name, registers address, registers functionality etc, section 30.5.2[1]
+> * Different programming sequence for initialization of the controller, section 30.8.1[1]
+> * Different programming sequence for performing Read and Write operation using IP, section 30.7.9[1] and AHB mode
+> * Different programming sequence for checking controller current state like busy or not
+> * New mechanism to program for the connected slave device i.e. flash access mode and flash memory map 30.7.4[1] and 30.7.5[1]
+> * New entries added for FlexSPI controller for LUT_XX mode for various commands, section 30.7.8[1]
+> 
+> There are few similarities between these two like LUT programming logic is same
+> i.e. LUT needs to be programmed in same sequence of 'INSTR  PAD  OPCODE', but again LUT register address and LUT command mode values are different.
+> 
+> Creating common driver for both FlexSPI and QuadSPI controller, would involve creation of one more layer between driver/spi/spi-xxx and the actual controller driver, this layer would going to have less functionality like doing LUT creation programming and then would re-direct calls to the respective controller driver functionality to perform desired programming sequence.
+> 
+>>>
+>>> (1) The FlexSPI controller is driven by the LUT(Look-up Table)
+>>> registers.
+>>>   The LUT registers are a look-up-table for sequences of instructions.
+>>>   A valid sequence consists of four LUT registers.
+>>>   Maximum 32 LUT sequences can be programmed simultaneously.
+>>>
+>>> (2) The definition of the LUT register shows below:
+>>>   ---------------------------------------------------
+>>>   | INSTR1 | PAD1 | OPRND1 | INSTR0 | PAD0 | OPRND0 |
+>>>   ---------------------------------------------------
+>>>
+>>>   There are several types of INSTRx, such as:
+>>>   CMD     : the SPI NOR command.
+>>>   ADDR    : the address for the SPI NOR command.
+>>>   DUMMY   : the dummy cycles needed by the SPI NOR command.
+>>>   ....
+>>>
+>>>   There are several types of PADx, such as:
+>>>   PAD1    : use a singe I/O line.
+>>>   PAD2    : use two I/O lines.
+>>>   PAD4    : use quad I/O lines.
+>>>   PAD8    : use octal I/O lines.
+>>>   ....
+>>>
+>>> (3) LUTs are being created at run-time based on the commands passed
+>>> from the spi-mem framework. Thus, using single LUT index.
+>>>
+>>> (4) Software triggered Flash read/write access by IP Bus.
+>>>
+>>> (5) Memory mapped read access by AHB Bus.
+>>
+>> Do we really want to have this level of details in the commit message?
+>> I mean, this is something you can document in the driver, but not here.
+>>
+>> BTW, you might want to have a look at [1]. I think we can get rid of the ->size
+>> field you're adding if this driver implements the dirmap hooks.
+>>
+> 
+> I need size information for the connected device to program the controller register FLSHXXCRO as Flash Chip select is determined by flash access address and Flash size setting in register FLSHXXCR0[FLSHz], section 30.7.9[1].
 
-We are trying to use same binding as defined in this patch-set(tested on AR=
-M64 processors) for PowerPC.
-Unfortunately, It is showing issue when driver tries to parse 'fspi_mmap'.
+It's the same situation we had with the QSPI driver before. We decided 
+to **not** pass information about flash size directly to the controller 
+for now. That's why we currently don't support mapping the flash device 
+in the implementation of the QSPI driver.
 
-We did some investigation and figured out that for ARM device trees Periphe=
-rals nodes inside 'soc' node have absolute addresses. For in general NXP's =
-PowerPC device trees, Peripheral nodes have the relative addresses to the u=
-nit-address of the parent 'soc' node. =20
+I think we should not start this discussion all over again for the 
+FlexSPI driver, but stick to what we decided for QSPI.
 
-This creates issue for PowerPC if we follow implementation in this patch-se=
-t.=20
+> 
+> Link for reference of the driver implementing dirmap hooks was missing in mail, please share.
 
-Example of device tree used for upcoming PowerPC SoC with FlexSPI controlle=
-r.
+I guess Boris meant to link to his PoC implementation of the direct 
+mapping API [1]. When this is available we can easily add support for 
+direct memory mappings to the QuadSPI and FlexSPI drivers.
 
-soc@f8000000 {
-	ranges =3D <0x0 0x0 0xf8000000 0x4000000>;
-	.
-	fspi0: flexspi@20c0000 {
-		compatible =3D "nxp,XXX-fspi";
-		reg =3D <0x20c0000 0x10000>, <0xC0000000 0x10000000>;
-		reg-names =3D "fspi_base", "fspi_mmap";
-		.
-		.
-	}
- }=20
+> 
+>>>
+>>> (6) Tested this driver with the mtd_debug and JFFS2 filesystem utility
+>>> on NXP LX2160ARDB and LX2160AQDS targets.
+>>>   LX2160ARDB is having two NOR slave device connected on single bus A
+>>> i.e. A0 and A1 (CS0 and CS1).
+>>>   LX2160AQDS is having two NOR slave device connected on separate buses
+>>> one flash on A0 and second on B1 i.e. (CS0 and CS3).
+>>>   Verified this driver on following SPI NOR flashes:
+>>>      Micron, mt35xu512ab, [Read - 1 bit mode]
+>>>      Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+>>
+>> Ok, that's good to have in the commit message.
+>>
+>>>
+>>> - Add config option entry in 'spi-nor/Kconfig' for FlexSPI driver.
+>>
+>> But this one is useless. If you add a new driver, you have no other choice but to
+>> add a new entry in the Kconfig file.
+>>
+>>>
+>>> - Add entry in the 'spi-nor/Makefile'.
+>>>
+>>
+>> Ditto.
+>>
+>> Before you re-send a new version, I'd like to understand why you think you need
+>> to create a new driver, and I want you to try to implement the dirmap hook and
+>> check if you can get rid of the ->size field when doing that.
+>>
+>> I also seem one extra benefit to having a single driver for both FlexSPI and
+>> QuadSPI IPs: you'll help Frieder debug the last remaining problems you reported
+>> on the new QuadSPI driver :-P.
+> 
+> Regarding testing of the QuadSPI driver on spi-mem framework, I have already given suggestions to the Frieder and my local changes using which flash connected at CS0 and CS1 starts working for read/write/erase commands on ls1088ardb target.
+> 
+> Current v2 which has been shared, data operation for the slave flash device connected at CS1 is not working.
+> I have to make changes for the calculation of flash base address for the requested chip select and changes in address remapping the buffer in AHB read case for CS1 access to work.
 
-As we can see, Final address of 'fspi_base' (0xf8000000 + 0x20c0000) falls =
-into the parent 'soc' range(CCSR) but=20
-for 'fspi_mmap', It is outside of 'soc' range(CCSR). It creates issue when =
-driver tries to parse 'fspi_mmap'.
+Yes you posted your changes to make the driver work for your board. The 
+problem is, that I don't yet understand why they are needed and how they 
+actually fix the chip select issue.
 
-As per definition of ranges, this field can't be used to solve this problem=
-.=20
-Please suggest how to implement the "fspi_mmap"(memory mapping address and =
-length) in case of PowerPC.
+Han has pointed out the reason why ioremap() was added to the driver [2] 
+in the first place and this seems unrelated to the CS selection issue.
+
+Therefore Boris and I have requested more information about how the IP 
+works and more tests from other people.
+
+As long as we don't get more information about the questions posted 
+before [3][4], we are kind of blocked.
+
+[1] https://github.com/bbrezillon/linux/commits/spi-mem-dirmap
+[2] http://lists.infradead.org/pipermail/linux-mtd/2018-August/083218.html
+[3] http://lists.infradead.org/pipermail/linux-mtd/2018-August/083209.html
+[4] http://lists.infradead.org/pipermail/linux-mtd/2018-August/083233.html
 
 Thanks,
-Jagdish
-
-> -----Original Message-----
-> From: linux-kernel-owner@vger.kernel.org <linux-kernel-
-> owner@vger.kernel.org> On Behalf Of Boris Brezillon
-> Sent: Tuesday, September 4, 2018 6:16 PM
-> To: Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>
-> Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>; linux-
-> mtd@lists.infradead.org; marek.vasut@gmail.com; linux-
-> spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
-> mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
-> kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 4/7] dt-bindings: spi: add binding file for NXP FlexS=
-PI
-> driver
->=20
-> On Mon, 3 Sep 2018 09:54:08 +0000
-> Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com> wrote:
->=20
-> > Dear Yogesh,
-> >
-> > > -----Original Message-----
-> > > From: linux-kernel-owner@vger.kernel.org <linux-kernel-
-> > > owner@vger.kernel.org> On Behalf Of Yogesh Gaur
-> > > Sent: Friday, August 31, 2018 4:00 PM
-> > > To: linux-mtd@lists.infradead.org; boris.brezillon@bootlin.com;
-> > > marek.vasut@gmail.com; linux-spi@vger.kernel.org;
-> > > devicetree@vger.kernel.org
-> > > Cc: robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org;
-> > > linux- arm-kernel@lists.infradead.org; computersforpeace@gmail.com;
-> > > frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org; Yogesh
-> > > Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > > Subject: [PATCH 4/7] dt-bindings: spi: add binding file for NXP
-> > > FlexSPI driver
-> > >
-> > > Add binding file for NXP FlexSPI driver.
-> > >
-> > > Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 42
-> > > ++++++++++++++++++++++
-> > >  1 file changed, 42 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-
-> > > fspi.txt
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > > b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > > new file mode 100644
-> > > index 0000000..9f07116
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > > @@ -0,0 +1,42 @@
-> > > +* NXP Flex Serial Peripheral Interface (FSPI)
-> > > +
-> > > +Required properties:
-> > > +  - compatible : Should be "nxp,lx2160a-fspi"
-> > > +  - reg :        First contains the register location and length,
-> > > +                 Second contains the memory mapping address and
-> > > +length
-> >
-> > Why are we overriding reg property.  Is there any special requirement.
-> >
-> > Can we use "reg" and "ranges" property in device tree.
-> > Here "reg" represents controller registers and "ranges" represent the
-> memory address of flash.
->=20
-> No, ranges is not used for that. It's used when you need to convert from =
-one
-> address space to another, which is not what you're describing here. Check
-> section 2.38 of this document [1] for more details.
->=20
-> [1]https://emea01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fe
-> linux.org%2Fimages%2Fc%2Fcf%2FPower_ePAPR_APPROVED_v1.1.pdf&amp;
-> data=3D02%7C01%7Cjagdish.gediya%40nxp.com%7C5bdb57713bd4403a39e90
-> 8d6126472a0%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63671
-> 6619958727753&amp;sdata=3DTB4mbWEm0opk58oPAVEOQFM0xeAFxCsqdzw
-> 37BPuE3A%3D&amp;reserved=3D0
+Frieder

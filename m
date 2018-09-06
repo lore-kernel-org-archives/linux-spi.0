@@ -1,51 +1,96 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] spi: dw: support 4-16 bits per word
-Date: Thu, 6 Sep 2018 12:09:26 +0100
-Message-ID: <20180906110926.GF5360@sirena.org.uk>
-References: <20180817070105.1725-1-simon.k.r.goldschmidt@gmail.com>
- <20180904194944.19721-1-simon.k.r.goldschmidt@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="27ZtN5FSuKKSZcBU"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: dw: support 4-16 bits per word" to the spi tree
+Date: Thu,  6 Sep 2018 12:10:04 +0100 (BST)
+Message-ID: <20180906111004.77B0A1122A1F@debutante.sirena.org.uk>
+References: <20180904194944.19721-1-simon.k.r.goldschmidt@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Trent Piepho <tpiepho@impinj.com>
+        Trent Piepho <tpiepho@impinj.com>, linux-spi@vger.kernel.org
 To: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 In-Reply-To: <20180904194944.19721-1-simon.k.r.goldschmidt@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---27ZtN5FSuKKSZcBU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: dw: support 4-16 bits per word
 
-On Tue, Sep 04, 2018 at 09:49:44PM +0200, Simon Goldschmidt wrote:
-> The spi-dw driver currently only supports 8 or 16 bits per word.
->=20
-> Since the hardware supports 4-16 bits per word, adapt the driver
-> to also support this.
+has been applied to the spi tree at
 
-Please don't send new patches in reply to old patch serieses, it makes
-it harder to follow what the current version of things is and makes it
-much easier for the patches to get lost in the old threads.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---27ZtN5FSuKKSZcBU
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluRCuUACgkQJNaLcl1U
-h9D85wf/YmKZ8aHJOxpyDfdQmNcesGTi5ybZSc9SQDIs6hfflIjwDVpkOXc90rsL
-q8ONe+x8RYrzp7a4Zm/SqAh8MFTfs4xIY16gQ9++yjXh+asVMoY79qFF13NyB+o9
-0xy70bExYIsy+xNMMN4WcQ4MrsfnwjExFXhrZwkMCQkR99FHZogsH0Hw92SxPJ9r
-A+t114XnHyMHYPpDV3VDaersBJJ4BAykA9AiEe7VIlP2yKglAv5jTc8n863npp2f
-pkd0RkEmCIuyDhghJ2QQAJQNbZkfRzEWt0K7HPV5quWrUyJcVOHPhv1ISE94e//z
-az+o622DzjT0GLkwmLISIgm9UD9N9w==
-=vayP
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---27ZtN5FSuKKSZcBU--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From af060b3f72b801962033f75a2fda25fff992796d Mon Sep 17 00:00:00 2001
+From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Date: Tue, 4 Sep 2018 21:49:44 +0200
+Subject: [PATCH] spi: dw: support 4-16 bits per word
+
+The spi-dw driver currently only supports 8 or 16 bits per word.
+
+Since the hardware supports 4-16 bits per word, adapt the driver
+to also support this.
+
+Tested on socfpga cyclone5 with a 9-bit SPI display.
+
+Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-dw.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 1736612ee86b..3e205ab60cd4 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -308,15 +308,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 		dws->current_freq = transfer->speed_hz;
+ 		spi_set_clk(dws, chip->clk_div);
+ 	}
+-	if (transfer->bits_per_word == 8) {
+-		dws->n_bytes = 1;
+-		dws->dma_width = 1;
+-	} else if (transfer->bits_per_word == 16) {
+-		dws->n_bytes = 2;
+-		dws->dma_width = 2;
+-	} else {
+-		return -EINVAL;
+-	}
++
++	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
++	dws->dma_width = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
++
+ 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
+ 	cr0 = (transfer->bits_per_word - 1)
+ 		| (chip->type << SPI_FRF_OFFSET)
+@@ -496,7 +491,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	}
+ 
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
++	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
+ 	master->bus_num = dws->bus_num;
+ 	master->num_chipselect = dws->num_cs;
+ 	master->setup = dw_spi_setup;
+-- 
+2.19.0.rc1

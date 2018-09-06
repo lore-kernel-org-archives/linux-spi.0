@@ -1,51 +1,39 @@
-From: Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
-Date: Thu, 6 Sep 2018 23:39:42 +0200
-Message-ID: <CAKMK7uHoeB89-VVS8qVaoNiP_0waHHJ=dFCUgXkRDTnRkXz69g@mail.gmail.com>
-References: <1536012923-16275-1-git-send-email-henrik@austad.us>
- <20180904113030.GB25177@amd> <20180904095908.13298b3d@gandalf.local.home>
- <20180906095804.5ab2716f@lwn.net> <20180906120120.3dd1fc91@gandalf.local.home>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Linux MIPS Mailing List <linux-mips@linux-mips.org>,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jan Kandziora <jjj@gmx.de>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>, kvm@vger.kernel.org,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
- Mark Brown <broonie@kernel.org>, Henrik Austad <henrik@austad.us>,
- Will Deacon <will.deacon@arm.com>, dri-devel <dri-devel@lists.freedesktop.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>, devicetree@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Henrik Austad <haustad@cisco.com>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- Evgeniy Polyakov <zbr@ioremap.net>, Ian Kent <raven@themaw.net>,
- linux-s390@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
- Jonathan Corbet <cor
-To: Steven Rostedt <rostedt@goodmis.org>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20180906120120.3dd1fc91@gandalf.local.home>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH] spi: pic32: remove unnecessary of_node_get()
+Date: Fri,  7 Sep 2018 01:16:54 +0300
+Message-ID: <1536272214-26219-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBTZXAgNiwgMjAxOCBhdCA2OjAxIFBNLCBTdGV2ZW4gUm9zdGVkdCA8cm9zdGVkdEBn
-b29kbWlzLm9yZz4gd3JvdGU6Cj4gT24gVGh1LCA2IFNlcCAyMDE4IDA5OjU4OjA0IC0wNjAwCj4g
-Sm9uYXRoYW4gQ29yYmV0IDxjb3JiZXRAbHduLm5ldD4gd3JvdGU6Cj4KPj4gVGhhbmtzLAo+Pgo+
-PiBqb24gICh3aG8gaXMgaW5jcmVhc2luZ2x5IGluY2xpbmVkIHRvIGFwcGx5IHRoaXMgcGF0Y2gp
-Cj4KPiBBcyBDb2xpbiBLYWVwZXJuaWNrIG5vdyBzYXlzLi4uICJKdXN0IGRvIGl0ISIKPgo+IDst
-KQoKKzEKCkJ1dCBJJ20gYmlhc2VkLCBJJ20gcGFydCBvZiB0aGUgcGFydHkgdGhhdCBpcyByZXNw
-b25zaWJsZSBmb3IgdGhlIG5ldwpzaGlueSBkb2N1bWVudGF0aW9uIHN5c3RlbSAuLi4KLURhbmll
-bAotLSAKRGFuaWVsIFZldHRlcgpTb2Z0d2FyZSBFbmdpbmVlciwgSW50ZWwgQ29ycG9yYXRpb24K
-KzQxICgwKSA3OSAzNjUgNTcgNDggLSBodHRwOi8vYmxvZy5mZndsbC5jaApfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0
-CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWwK
+Almost all spi drivers assign spi master->dev.of_node from
+its parent platform device without additional refcounting.
+It seems of_node_get() in pic32_spi_probe() is unnecessary
+and there is no corresponding of_node_put().
+
+Found by Linux Driver Verification project (linuxtesting.org).
+
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+ drivers/spi/spi-pic32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index f8a45af1fa9f..46ff76193ee1 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -774,7 +774,7 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_master;
+ 
+-	master->dev.of_node	= of_node_get(pdev->dev.of_node);
++	master->dev.of_node	= pdev->dev.of_node;
+ 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_CS_HIGH;
+ 	master->num_chipselect	= 1; /* single chip-select */
+ 	master->max_speed_hz	= clk_get_rate(pic32s->clk);
+-- 
+2.7.4

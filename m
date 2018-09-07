@@ -1,8 +1,8 @@
 From: Doug Anderson <dianders@chromium.org>
 Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI
  based QUP
-Date: Fri, 7 Sep 2018 09:19:03 -0700
-Message-ID: <CAD=FV=U8rzZcZUixo=zD1C9y0VBBfFfM6jAB9+9uerkfTMrRiQ@mail.gmail.com>
+Date: Fri, 7 Sep 2018 09:19:06 -0700
+Message-ID: <CAD=FV=VzYYyive--RzN=_OCQnFT-wgHwbUy1Vao2-8GADxHDLw@mail.gmail.com>
 References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
  <CAD=FV=XigmU1LXnNbj9NYkjJmj18chBFjbctrBeOKoS=34PLXw@mail.gmail.com> <2493fc3fa3f6e5d2bcdde27cee1c33df@codeaurora.org>
 Mime-Version: 1.0

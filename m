@@ -1,60 +1,49 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Fri, 7 Sep 2018 09:19:06 -0700
-Message-ID: <CAD=FV=VzYYyive--RzN=_OCQnFT-wgHwbUy1Vao2-8GADxHDLw@mail.gmail.com>
-References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
- <CAD=FV=XigmU1LXnNbj9NYkjJmj18chBFjbctrBeOKoS=34PLXw@mail.gmail.com> <2493fc3fa3f6e5d2bcdde27cee1c33df@codeaurora.org>
+From: Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
+Date: Sun, 9 Sep 2018 15:12:37 -0600
+Message-ID: <20180909151237.4bc1b3e2@lwn.net>
+References: <1536012923-16275-1-git-send-email-henrik@austad.us>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "open list:ARM/QUALCOMM SUPPORT" <linux-soc@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Girish Mahadevan <girishm@codeaurora.org>
-To: Dilip Kota <dkota@codeaurora.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2493fc3fa3f6e5d2bcdde27cee1c33df@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+ linux-fbdev@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Will Deacon <will.deacon@arm.com>,
+ dri-devel@lists.freedesktop.org,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, Jan Kandziora <jjj@gmx.de>,
+ Paul Mackerras <paulus@samba.org>, Henrik Austad <haustad@cisco.com>,
+ Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+ Evgeniy Polyakov <zbr@ioremap.net>, linux-s390@vger.kernel.org,
+ Ian Kent <raven@themaw.net>, linux-security-module@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Helge Deller <deller@gmx.de>,
+ Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ "James E.J. Bottomley" <jejb@parisc-linux.org>, Ingo Molnar <mingo@redhat.com>,
+ "Paul E
+To: Henrik Austad <henrik@austad.us>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <1536012923-16275-1-git-send-email-henrik@austad.us>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Fri, Sep 7, 2018 at 3:00 AM,  <dkota@codeaurora.org> wrote:
->> In v2, I said:
->>
->>> I'm not sure where to comment about this, so adding it to the end:
->>>
->>> Between v1 and v2 you totally removed all the locking.  Presumably
->>> this is because you didn't want to hold the lock in
->>> handle_fifo_timeout() while waiting for the completion.  IMO taking
->>> the lock out was the wrong thing to do.  You should keep it, but just
->>> drop the lock before wait_for_completion_timeout() and add it back
->>> afterwards.  Specifically you _don't_ want the IRQ and timeout code
->>> stomping on each other.
->>
->>
->> ...but still no spinlock?
->
-> I see there is no need of taking the spinlock as timeout will be handled
-> after the calculated time as per data size and speed.
-> There is 99.9% less chances of interrupt during the timeout handler.
->>
->>
->>
->> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/1201081
-
-The thing is, we want it to be 100% reliable, not 99.9% reliable.  Is
-it somehow wrong to add the spinlock?  ...or are you noticing
-performance problems with the spinlock there?  It's just nice not to
-have to think about it.
-
--Doug
+T24gVHVlLCAgNCBTZXAgMjAxOCAwMDoxNToyMyArMDIwMApIZW5yaWsgQXVzdGFkIDxoZW5yaWtA
+YXVzdGFkLnVzPiB3cm90ZToKCj4gSSBkb24ndCByZWFsbHkgaGF2ZSBhbiBvcGluaW9uIHRvIHdo
+ZXRoZXIgb3Igbm90IHdlIC9zaG91bGQvIGhhdmUgMDAtSU5ERVgsCj4gYnV0IHRoZSBhYm92ZSAw
+MC1JTkRFWCBzaG91bGQgZWl0aGVyIGJlIHJlbW92ZWQgb3IgYmUga2VwdCB1cCB0byBkYXRlLiBJ
+Zgo+IHdlIHNob3VsZCBrZWVwIHRoZSBmaWxlcywgSSBjYW4gdHJ5IHRvIGtlZXAgdGhlbSB1cGRh
+dGVkLCBidXQgSSByYXRoZXIgbm90Cj4gaWYgd2UganVzdCB3YW50IHRvIGRlbGV0ZSB0aGVtIGFu
+eXdheS4KPiAKPiBBcyBhIHN0YXJ0aW5nIHBvaW50LCByZW1vdmUgYWxsIGluZGV4LWZpbGVzIGFu
+ZCByZWZlcmVuY2VzIHRvIDAwLUlOREVYIGFuZAo+IHNlZSB3aGVyZSB0aGUgZGlzY3Vzc2lvbiBp
+cyBnb2luZy4KCkFwcGxpZWQsIHRoYW5rcy4KCmpvbgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9kcmktZGV2ZWwK

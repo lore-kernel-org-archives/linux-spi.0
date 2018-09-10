@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI Controller
-Date: Mon, 10 Sep 2018 13:59:31 +0200
-Message-ID: <20180910115935.163121-2-lkundrak@v3.sk>
+Subject: [PATCH 3/5] spi: pxa2xx: use an enum for type
+Date: Mon, 10 Sep 2018 13:59:33 +0200
+Message-ID: <20180910115935.163121-4-lkundrak@v3.sk>
 References: <20180910115935.163121-1-lkundrak@v3.sk>
 Cc: linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
@@ -20,44 +20,51 @@ In-Reply-To: <20180910115935.163121-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is the SPI controller found on Marvel MMP2 and perhaps more
-platforms.
+That seems to be the correct type.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../devicetree/bindings/spi/spi-pxa2xx.txt    | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+ drivers/spi/spi-pxa2xx.c   | 6 +++---
+ include/linux/pxa2xx_ssp.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-new file mode 100644
-index 000000000000..75be87cf9909
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-@@ -0,0 +1,24 @@
-+PXA2xx SSP SPI Controller
-+
-+Required properties:
-+- compatible: Must be "marvell,mmp2-ssp".
-+- reg: Offset and length of the device's register set.
-+- interrupts: Should be the interrupt number.
-+- clocks: Should contain a single entry describing the clock input.
-+- #address-cells:  Number of cells required to define a chip select address.
-+- #size-cells: Should be zero.
-+
-+Optional properties:
-+- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
-+  Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+Child nodes represent devices on the SPI bus
-+  See ../spi/spi-bus.txt
-+
-+Example:
-+	ssp1: ssp@d4035000 {
-+		compatible = "marvell,mmp2-ssp";
-+		reg = <0xd4035000 0x1000>;
-+		clocks = <&soc_clocks MMP2_CLK_SSP0>;
-+		interrupts = <0>;
-+	};
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 14f4ea59caff..f674541675bb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1429,7 +1429,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct resource *res;
+ 	const struct acpi_device_id *adev_id = NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
+-	int type;
++	enum pxa_ssp_type type;
+ 
+ 	adev = ACPI_COMPANION(&pdev->dev);
+ 
+@@ -1443,9 +1443,9 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		return NULL;
+ 
+ 	if (adev_id)
+-		type = (int)adev_id->driver_data;
++		type = (enum pxa_ssp_type)adev_id->driver_data;
+ 	else if (pcidev_id)
+-		type = (int)pcidev_id->driver_data;
++		type = (enum pxa_ssp_type)pcidev_id->driver_data;
+ 	else
+ 		return NULL;
+ 
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index 13b4244d44c1..262e1f318836 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -217,7 +217,7 @@ struct ssp_device {
+ 
+ 	const char	*label;
+ 	int		port_id;
+-	int		type;
++	enum pxa_ssp_type type;
+ 	int		use_count;
+ 	int		irq;
+ 
 -- 
 2.17.1

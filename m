@@ -1,55 +1,63 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v12 0/6] Driver for at91 usart in spi mode
-Date: Mon, 10 Sep 2018 14:43:39 +0100
-Message-ID: <20180910134339.GM28860@dell>
-References: <20180904111310.4049-1-radu_nicolae.pirea@upb.ro>
- <20180910094817.GJ28860@dell>
- <2a8ccc95-bbf0-2211-0f88-c5a594600d34@microchip.com>
+From: dkota@codeaurora.org
+Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI
+ based QUP
+Date: Mon, 10 Sep 2018 19:54:27 +0530
+Message-ID: <2c2260787f4c02702b02b8a85cd63187@codeaurora.org>
+References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
+ <CAD=FV=XigmU1LXnNbj9NYkjJmj18chBFjbctrBeOKoS=34PLXw@mail.gmail.com>
+ <2493fc3fa3f6e5d2bcdde27cee1c33df@codeaurora.org>
+ <CAD=FV=VzYYyive--RzN=_OCQnFT-wgHwbUy1Vao2-8GADxHDLw@mail.gmail.com>
+ <c4982ce3fde57c86387cc906332f6d48@codeaurora.org>
+ <20180910112633.GC5856@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>, robh+dt@kernel.org,
-        mark.rutland@arm.com, alexandre.belloni@bootlin.com,
-        gregkh@linuxfoundation.org, broonie@kernel.org, jslaby@suse.com,
-        richard.genoud@gmail.com, davem@davemloft.net,
-        mchehab+samsung@kernel.org, akpm@linux-foundation.org,
-        arnd@arndb.de, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
-To: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Doug Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Andy Gross <andy.gross@linaro.org>,
+        David Brown <david.brown@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "open list:ARM/QUALCOMM SUPPORT" <linux-soc@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        Girish Mahadevan <girishm@codeaurora.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <2a8ccc95-bbf0-2211-0f88-c5a594600d34@microchip.com>
+In-Reply-To: <20180910112633.GC5856@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 10 Sep 2018, Nicolas Ferre wrote:
-
-> Hi Lee,
+On 2018-09-10 16:56, Mark Brown wrote:
+> On Mon, Sep 10, 2018 at 09:27:09AM +0530, dkota@codeaurora.org wrote:
 > 
-> On 10/09/2018 at 11:48, Lee Jones wrote:
-> > On Tue, 04 Sep 2018, Radu Pirea wrote:
-> > > Well, this is the 12th version of this patch series.
-> > > In this version I fixed a warning from kbuild-robot and I have no idea
-> > > how I forgot to add static in declaration of that functions. Also I
-> > > fixed the example for the SPI driver in bindings.
-> > 
-> > Okay great.  So which patches still require Acks?
+>> > The thing is, we want it to be 100% reliable, not 99.9% reliable.  Is
+>> > it somehow wrong to add the spinlock?  ...or are you noticing
+>> > performance problems with the spinlock there?  It's just nice not to
+>> > have to think about it.
 > 
-> None I would say: everything's ready to be integrated into your MFD tree as
-> you proposed some time ago.
+>> As I said, timeout will be handled after the calculated time as per 
+>> data
+>> size and speed. Enough time is given for interrupt, there is no chance 
+>> of
+>> interrupt occurrence during the handle_fifo_timeout(). So there is no 
+>> need
+>> of spinlock.
 > 
-> We are looking forward seeing this series integrated in linux-next as soon
-> as possible.
+> Assuming nothing goes wrong - the system isn't under unusually heavy
+> load for example, there's some oversight in the code, there's no impact
+> from power management causing things to run more slowly than you were
+> expecting, someone uses the driver on a new bit of hardware where there
+> are extra considerations or whatever else might go wrong.  Like Doug
+> says unless we're in some performance critical situation where it's
+> worth thinking *really* hard about how things really are actually safe
+> even though they might not look it it's both easier and more
+> maintainable to just write software that's obviously safe to 
+> inspection.
 
-Very well.
-
-I'm just catching up after an extended vacation - only 300 mails to go!
-
-Please bear with me.
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Agree with this perspective. There wont be any performance impact with 
+spinlock. I will include the spinlock in the code.

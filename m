@@ -1,51 +1,46 @@
-From: dkota@codeaurora.org
-Subject: Re: [PATCH V3] spi: spi-geni-qcom: Add SPI driver support for GENI
- based QUP
-Date: Mon, 10 Sep 2018 09:27:09 +0530
-Message-ID: <c4982ce3fde57c86387cc906332f6d48@codeaurora.org>
-References: <1535107336-2214-1-git-send-email-dkota@codeaurora.org>
- <CAD=FV=XigmU1LXnNbj9NYkjJmj18chBFjbctrBeOKoS=34PLXw@mail.gmail.com>
- <2493fc3fa3f6e5d2bcdde27cee1c33df@codeaurora.org>
- <CAD=FV=VzYYyive--RzN=_OCQnFT-wgHwbUy1Vao2-8GADxHDLw@mail.gmail.com>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v12 0/6] Driver for at91 usart in spi mode
+Date: Mon, 10 Sep 2018 10:48:17 +0100
+Message-ID: <20180910094817.GJ28860@dell>
+References: <20180904111310.4049-1-radu_nicolae.pirea@upb.ro>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "open list:ARM/QUALCOMM SUPPORT" <linux-soc@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Girish Mahadevan <girishm@codeaurora.org>
-To: Doug Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: robh+dt@kernel.org, mark.rutland@arm.com,
+        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+        gregkh@linuxfoundation.org, broonie@kernel.org, jslaby@suse.com,
+        richard.genoud@gmail.com, davem@davemloft.net,
+        mchehab+samsung@kernel.org, akpm@linux-foundation.org,
+        arnd@arndb.de, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAD=FV=VzYYyive--RzN=_OCQnFT-wgHwbUy1Vao2-8GADxHDLw@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20180904111310.4049-1-radu_nicolae.pirea@upb.ro>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, 04 Sep 2018, Radu Pirea wrote:
+> Well, this is the 12th version of this patch series.
+> In this version I fixed a warning from kbuild-robot and I have no idea
+> how I forgot to add static in declaration of that functions. Also I
+> fixed the example for the SPI driver in bindings.
 
->> I see there is no need of taking the spinlock as timeout will be 
->> handled
->> after the calculated time as per data size and speed.
->> There is 99.9% less chances of interrupt during the timeout handler.
->>> 
->>> 
->>> 
->>> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/1201081
-> 
-> The thing is, we want it to be 100% reliable, not 99.9% reliable.  Is
-> it somehow wrong to add the spinlock?  ...or are you noticing
-> performance problems with the spinlock there?  It's just nice not to
-> have to think about it.
+Okay great.  So which patches still require Acks?
 
-As I said, timeout will be handled after the calculated time as per data 
-size and speed. Enough time is given for interrupt, there is no chance 
-of interrupt occurrence during the handle_fifo_timeout(). So there is no 
-need of spinlock.
+[...]
+
+> Radu Pirea (6):
+>   MAINTAINERS: add at91 usart mfd driver
+>   dt-bindings: add binding for atmel-usart in SPI mode
+>   mfd: at91-usart: added mfd driver for usart
+>   MAINTAINERS: add at91 usart spi driver
+>   spi: at91-usart: add driver for at91-usart as spi
+>   tty/serial: atmel: change the driver to work under at91-usart mfd
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

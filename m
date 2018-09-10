@@ -1,49 +1,126 @@
-From: Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
-Date: Sun, 9 Sep 2018 15:12:37 -0600
-Message-ID: <20180909151237.4bc1b3e2@lwn.net>
-References: <1536012923-16275-1-git-send-email-henrik@austad.us>
+From: Peter Shih <pihsun@chromium.org>
+Subject: [PATCH] spi: mediatek: Don't modify spi_transfer when transfer.
+Date: Mon, 10 Sep 2018 11:50:47 +0800
+Message-ID: <20180910035047.98496-1-pihsun@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
- linux-fbdev@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Will Deacon <will.deacon@arm.com>,
- dri-devel@lists.freedesktop.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>, Jan Kandziora <jjj@gmx.de>,
- Paul Mackerras <paulus@samba.org>, Henrik Austad <haustad@cisco.com>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- Evgeniy Polyakov <zbr@ioremap.net>, linux-s390@vger.kernel.org,
- Ian Kent <raven@themaw.net>, linux-security-module@vger.kernel.org,
- Paul Moore <paul@paul-moore.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Helge Deller <deller@gmx.de>,
- Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- "James E.J. Bottomley" <jejb@parisc-linux.org>, Ingo Molnar <mingo@redhat.com>,
- "Paul E
-To: Henrik Austad <henrik@austad.us>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <1536012923-16275-1-git-send-email-henrik@austad.us>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Transfer-Encoding: 8bit
+Cc: pihsun@chromium.org, Mark Brown <broonie@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCAgNCBTZXAgMjAxOCAwMDoxNToyMyArMDIwMApIZW5yaWsgQXVzdGFkIDxoZW5yaWtA
-YXVzdGFkLnVzPiB3cm90ZToKCj4gSSBkb24ndCByZWFsbHkgaGF2ZSBhbiBvcGluaW9uIHRvIHdo
-ZXRoZXIgb3Igbm90IHdlIC9zaG91bGQvIGhhdmUgMDAtSU5ERVgsCj4gYnV0IHRoZSBhYm92ZSAw
-MC1JTkRFWCBzaG91bGQgZWl0aGVyIGJlIHJlbW92ZWQgb3IgYmUga2VwdCB1cCB0byBkYXRlLiBJ
-Zgo+IHdlIHNob3VsZCBrZWVwIHRoZSBmaWxlcywgSSBjYW4gdHJ5IHRvIGtlZXAgdGhlbSB1cGRh
-dGVkLCBidXQgSSByYXRoZXIgbm90Cj4gaWYgd2UganVzdCB3YW50IHRvIGRlbGV0ZSB0aGVtIGFu
-eXdheS4KPiAKPiBBcyBhIHN0YXJ0aW5nIHBvaW50LCByZW1vdmUgYWxsIGluZGV4LWZpbGVzIGFu
-ZCByZWZlcmVuY2VzIHRvIDAwLUlOREVYIGFuZAo+IHNlZSB3aGVyZSB0aGUgZGlzY3Vzc2lvbiBp
-cyBnb2luZy4KCkFwcGxpZWQsIHRoYW5rcy4KCmpvbgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9kcmktZGV2ZWwK
+Mediatek SPI driver modifies some fields (tx_buf, rx_buf, len, tx_dma,
+rx_dma) of the spi_transfer* passed in when doing transfer_one and in
+interrupt handler. This is somewhat unexpected, and there are some
+caller (e.g. Cr50 spi driver) that reuse the spi_transfer for multiple
+messages. Add a field to record how many bytes have been transferred,
+and calculate the right len / buffer based on it instead.
+
+BUG=b:113973051
+TEST=None
+
+Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
+
+Change-Id: I23e218cd964f16c0b2b26127d4a5ca6529867673
+---
+ drivers/spi/spi-mt65xx.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 86bf45667a040..3dc31627c6558 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -98,6 +98,7 @@ struct mtk_spi {
+ 	struct clk *parent_clk, *sel_clk, *spi_clk;
+ 	struct spi_transfer *cur_transfer;
+ 	u32 xfer_len;
++	u32 num_xfered;
+ 	struct scatterlist *tx_sgl, *rx_sgl;
+ 	u32 tx_sgl_len, rx_sgl_len;
+ 	const struct mtk_spi_compatible *dev_comp;
+@@ -385,6 +386,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
+ 
+ 	mdata->cur_transfer = xfer;
+ 	mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, xfer->len);
++	mdata->num_xfered = 0;
+ 	mtk_spi_prepare_transfer(master, xfer);
+ 	mtk_spi_setup_packet(master);
+ 
+@@ -415,6 +417,7 @@ static int mtk_spi_dma_transfer(struct spi_master *master,
+ 	mdata->tx_sgl_len = 0;
+ 	mdata->rx_sgl_len = 0;
+ 	mdata->cur_transfer = xfer;
++	mdata->num_xfered = 0;
+ 
+ 	mtk_spi_prepare_transfer(master, xfer);
+ 
+@@ -482,7 +485,7 @@ static int mtk_spi_setup(struct spi_device *spi)
+ 
+ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ {
+-	u32 cmd, reg_val, cnt, remainder;
++	u32 cmd, reg_val, cnt, remainder, len;
+ 	struct spi_master *master = dev_id;
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+ 	struct spi_transfer *trans = mdata->cur_transfer;
+@@ -497,36 +500,38 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ 		if (trans->rx_buf) {
+ 			cnt = mdata->xfer_len / 4;
+ 			ioread32_rep(mdata->base + SPI_RX_DATA_REG,
+-				     trans->rx_buf, cnt);
++				     trans->rx_buf + mdata->num_xfered, cnt);
+ 			remainder = mdata->xfer_len % 4;
+ 			if (remainder > 0) {
+ 				reg_val = readl(mdata->base + SPI_RX_DATA_REG);
+-				memcpy(trans->rx_buf + (cnt * 4),
+-					&reg_val, remainder);
++				memcpy(trans->rx_buf +
++					mdata->num_xfered +
++					(cnt * 4),
++					&reg_val,
++					remainder);
+ 			}
+ 		}
+ 
+-		trans->len -= mdata->xfer_len;
+-		if (!trans->len) {
++		mdata->num_xfered += mdata->xfer_len;
++		if (mdata->num_xfered == trans->len) {
+ 			spi_finalize_current_transfer(master);
+ 			return IRQ_HANDLED;
+ 		}
+ 
+-		if (trans->tx_buf)
+-			trans->tx_buf += mdata->xfer_len;
+-		if (trans->rx_buf)
+-			trans->rx_buf += mdata->xfer_len;
+-
+-		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, trans->len);
++		len = trans->len - mdata->num_xfered;
++		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, len);
+ 		mtk_spi_setup_packet(master);
+ 
+-		cnt = trans->len / 4;
+-		iowrite32_rep(mdata->base + SPI_TX_DATA_REG, trans->tx_buf, cnt);
++		cnt = len / 4;
++		iowrite32_rep(mdata->base + SPI_TX_DATA_REG,
++				trans->tx_buf + mdata->num_xfered, cnt);
+ 
+-		remainder = trans->len % 4;
++		remainder = len % 4;
+ 		if (remainder > 0) {
+ 			reg_val = 0;
+-			memcpy(&reg_val, trans->tx_buf + (cnt * 4), remainder);
++			memcpy(&reg_val,
++				trans->tx_buf + (cnt * 4) + mdata->num_xfered,
++				remainder);
+ 			writel(reg_val, mdata->base + SPI_TX_DATA_REG);
+ 		}
+ 
+-- 
+2.19.0.rc2.392.g5ba43deb5a-goog

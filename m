@@ -1,63 +1,166 @@
-From: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 2/5] PCI: provide pci_match_id() with CONFIG_PCI=n
-Date: Wed, 12 Sep 2018 12:17:07 -0500
-Message-ID: <20180912171707.GI118330@bhelgaas-glaptop.roam.corp.google.com>
-References: <20180910115935.163121-1-lkundrak@v3.sk>
- <20180910115935.163121-3-lkundrak@v3.sk>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: Questions about the Freescale/NXP QuadSPI controller
+Date: Wed, 12 Sep 2018 20:40:39 +0200
+Message-ID: <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Bjorn Helgaas <bhelgaas@google.com>
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180910115935.163121-3-lkundrak@v3.sk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "richard@nod.at" <richard@nod.at>, Fabio Estevam <fabio.estevam@nxp.com>,
+ David Wolfe <david.wolfe@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>
+To: Han Xu <han.xu@nxp.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Please capitalize the subject as:
-
-  PCI: Provide pci_match_id() with CONFIG_PCI=n
-
-On Mon, Sep 10, 2018 at 01:59:32PM +0200, Lubomir Rintel wrote:
-> This spares drivers from #ifdef-ing on CONFIG_PCI if the driver can be
-> optionally built on machines without PCI bus.
-> 
-> Consistent with acpi_driver_match_device() and similar.
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
-Thanks!
-
-> ---
->  include/linux/pci.h | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index e72ca8dd6241..d2f14eb23ea4 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1702,6 +1702,10 @@ static inline int pci_irqd_intx_xlate(struct irq_domain *d,
->  				      unsigned long *out_hwirq,
->  				      unsigned int *out_type)
->  { return -EINVAL; }
-> +
-> +static inline const struct pci_device_id *pci_match_id(const struct pci_device_id *ids,
-> +							 struct pci_dev *dev)
-> +{ return NULL; }
->  #endif /* CONFIG_PCI */
->  
->  /* Include architecture-dependent settings and functions */
-> -- 
-> 2.17.1
-> 
+SGkgSGFuLAoKT24gMTIuMDkuMjAxOCAxOTowNCwgSGFuIFh1IHdyb3RlOgo+IAo+IAo+PiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+PiBGcm9tOiBGcmllZGVyIFNjaHJlbXBmIFttYWlsdG86
+ZnJpZWRlci5zY2hyZW1wZkBleGNlZXQuZGVdCj4+IFNlbnQ6IE1vbmRheSwgU2VwdGVtYmVyIDMs
+IDIwMTggNDowMiBBTQo+PiBUbzogSGFuIFh1IDxoYW4ueHVAbnhwLmNvbT4KPj4gQ2M6IEJvcmlz
+IEJyZXppbGxvbiA8Ym9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tPjsgRGF2aWQgV29sZmUKPj4g
+PGRhdmlkLndvbGZlQG54cC5jb20+OyBGYWJpbyBFc3RldmFtIDxmYWJpby5lc3RldmFtQG54cC5j
+b20+Owo+PiBQcmFiaGFrYXIgS3VzaHdhaGEgPHByYWJoYWthci5rdXNod2FoYUBueHAuY29tPjsg
+WW9nZXNoIE5hcmF5YW4KPj4gR2F1ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+OyBzaGF3
+bmd1b0BrZXJuZWwub3JnOyBsaW51eC0KPj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4
+LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IGR3bXcyQGluZnJhZGVhZC5vcmc7Cj4+IGNvbXB1dGVyc2Zv
+cnBlYWNlQGdtYWlsLmNvbTsgbWFyZWsudmFzdXRAZ21haWwuY29tOyByaWNoYXJkQG5vZC5hdDsK
+Pj4gbWlxdWVsLnJheW5hbEBib290bGluLmNvbTsgYnJvb25pZUBrZXJuZWwub3JnCj4+IFN1Ympl
+Y3Q6IFJlOiBRdWVzdGlvbnMgYWJvdXQgdGhlIEZyZWVzY2FsZS9OWFAgUXVhZFNQSSBjb250cm9s
+bGVyCj4+Cj4+IEhpIEhhbiwKPj4KPj4gT24gMDQuMDguMjAxOCAxNTozNywgQm9yaXMgQnJlemls
+bG9uIHdyb3RlOgo+Pj4gSGkgSGFuLAo+Pj4KPj4+IE9uIFRodSwgMiBBdWcgMjAxOCAyMTo1ODo0
+OCArMDAwMAo+Pj4gSGFuIFh1IDxoYW4ueHVAbnhwLmNvbT4gd3JvdGU6Cj4+Pgo+Pj4+PiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+Pj4+PiBGcm9tOiBGcmllZGVyIFNjaHJlbXBmIFttYWls
+dG86ZnJpZWRlci5zY2hyZW1wZkBleGNlZXQuZGVdCj4+Pj4+IFNlbnQ6IFRodXJzZGF5LCBBdWd1
+c3QgMiwgMjAxOCA4OjA5IEFNCj4+Pj4+IFRvOiBEYXZpZCBXb2xmZSA8ZGF2aWQud29sZmVAbnhw
+LmNvbT47IEZhYmlvIEVzdGV2YW0KPj4+Pj4gPGZhYmlvLmVzdGV2YW1AbnhwLmNvbT47IFByYWJo
+YWthciBLdXNod2FoYQo+Pj4+PiA8cHJhYmhha2FyLmt1c2h3YWhhQG54cC5jb20+OyBZb2dlc2gg
+TmFyYXlhbiBHYXVyCj4+Pj4+IDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT47IEhhbiBYdSA8
+aGFuLnh1QG54cC5jb20+Owo+Pj4+PiBzaGF3bmd1b0BrZXJuZWwub3JnCj4+Pj4+IENjOiBsaW51
+eC1tdGRAbGlzdHMuaW5mcmFkZWFkLm9yZzsgYm9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tOwo+
+Pj4+PiBsaW51eC0gc3BpQHZnZXIua2VybmVsLm9yZzsgZHdtdzJAaW5mcmFkZWFkLm9yZzsKPj4+
+Pj4gY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOyBtYXJlay52YXN1dEBnbWFpbC5jb207Cj4+
+IHJpY2hhcmRAbm9kLmF0Owo+Pj4+PiBtaXF1ZWwucmF5bmFsQGJvb3RsaW4uY29tOyBicm9vbmll
+QGtlcm5lbC5vcmcKPj4+Pj4gU3ViamVjdDogUmU6IFF1ZXN0aW9ucyBhYm91dCB0aGUgRnJlZXNj
+YWxlL05YUCBRdWFkU1BJIGNvbnRyb2xsZXIKPj4+Pj4KPj4+Pj4gUGluZy4KPj4+Pj4KPj4+Pj4g
+SSdtIG5vdCBzdXJlIGlmIG15IG1lc3NhZ2UgYmVsb3cgd2VudCBvdXQgdG8geW91IGF0IGFsbC4g
+QXQgbGVhc3QgSQo+Pj4+PiBjYW4ndCBmaW5kIGl0IGluIHRoZSBNTCBhcmNoaXZlLgo+Pj4+Pgo+
+Pj4+PiBJIHN0aWxsIGhvcGUgc29tZW9uZSBjYW4gaGVscCB3aXRoIHRoZSBxdWVzdGlvbnMgYmVs
+b3cuCj4+Pj4+Cj4+Pj4+IE1lYW53aGlsZSBmb3IgdGhlIHNlY29uZCBwb2ludCBJIGRpZCBzb21l
+IHRlc3RzIG15c2VsZiB3aXRoIG9uZSBjaGlwCj4+Pj4+IG9uIGVhY2ggb2YgdGhlIHR3byBidXNl
+cyBhbmQgaXQgd29ya2VkIGZpbmUgd2l0aCBteSBsYXRlc3QgdjIgcGF0Y2hlcy4KPj4+Pj4gU28g
+SSdtIG5vdCBzdXJlIGF0IGFsbCB3aHkgWW9nZXNoIGhhcyBwcm9ibGVtcyB3aXRoIGhpcyBzZXR1
+cCAodHdvCj4+Pj4+IGNoaXBzIG9uIHRoZSBmaXJzdCBidXMpLgo+Pj4+Cj4+Pj4gVHJpZWQgdG8g
+dGVzdCB0aGUgdjIgcGF0Y2ggc2V0IG9uIGkuTVg2U1ggU0RCIGJvYXJkIGJ1dCBnZXQgdGhlIG1l
+bW9yeQo+PiBtYXAgZmFpbHVyZS4KPj4+Pgo+Pj4+IFsgICAgMS4yOTg2MzNdIGZzbC1xdWFkc3Bp
+IDIxZTQwMDAucXNwaTogaW9yZW1hcCBmYWlsZWQgZm9yIHJlc291cmNlIFttZW0KPj4gMHg3MDAw
+MDAwMC0weDdmZmZmZmZmXQo+Pj4+IFsgICAgMS4zMDczMzBdIGZzbC1xdWFkc3BpIDIxZTQwMDAu
+cXNwaTogRnJlZXNjYWxlIFF1YWRTUEkgcHJvYmUgZmFpbGVkCj4+Pj4gWyAgICAxLjMxMzkyMl0g
+ZnNsLXF1YWRzcGk6IHByb2JlIG9mIDIxZTQwMDAucXNwaSBmYWlsZWQgd2l0aCBlcnJvciAtMTIK
+Pj4+Pgo+Pj4+IFRoaXMgaXMgdGhlIHJlYXNvbiB3aHkgZHluYW1pYyBpb3JlbWFwIGFkZGVkIGlu
+IHByZXZpb3VzIGRyaXZlciwgcGxlYXNlCj4+IHJlZmVyIHRvCj4+Pj4KPj4+Pgo+PiBodHRwczov
+L3NtZXgxMi01LWVuLWN0cC50cmVuZG1pY3JvLmNvbTo0NDMvd2lzL2NsaWNrdGltZS92MS9xdWVy
+eT91cmw9aHR0cHMlM2ElMmYlMmZlbWVhMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5j
+b20lMmYlM2Z1cmwlM2RodHRwcyUyNTNBJTI1MkYlMjUyRnBhJnVtaWQ9ZDZjYzEwMTQtMTg0OC00
+MmZiLTkyZmQtOTYyNmQ0NWM4MDUwJmF1dGg9NTQxZTQ1MjU1YjY1MTcxMDBkODBjMmIxYjgwYjY5
+MzNiMjAzYzQ5Mi01YWE4ZTE5NzdhOWRiOTQzMDBhOWY2MWY1NDQ2ZTdhMjFiMTc1ZjU2Cj4+Pj4K
+Pj4gdGNod29yay5vemxhYnMub3JnJTJGcGF0Y2glMkY1MDM2NTUlMkYmYW1wO2RhdGE9MDIlN0Mw
+MSU3Q2hhbi54dQo+PiAlNDBueAo+Pj4+Cj4+IHAuY29tJTdDOWY0NWE4YjY2NmQzNDc4ZjA2NTQw
+OGQ2MTE3YmY1MjQlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5Cj4+IDljNWMKPj4+Pgo+PiAzMDE2
+MzUlN0MwJTdDMCU3QzYzNjcxNTYyMTQyNjE5MDQ3MyZhbXA7c2RhdGE9WFdQZldlJTJGdTJlUFcK
+Pj4gbU5QZTE3OUQwCj4+Pj4gdmpUcDZlTHAwJTJGSlJGMnZSYXlEd3VnJTNEJmFtcDtyZXNlcnZl
+ZD0wCj4+Pgo+Pj4gV2UgY2FuIHJlZHVjZSB0aGUgc2l6ZSBvZiB0aGUgaW9tYXAgdG8gMmsgKiA0
+LCBzaW5jZSB0aGlzIGlzIGFsbCB3ZQo+Pj4gdXNlIGN1cnJlbnRseS4gQ2FuIHlvdSB0cnkgdG8g
+Y2hhbmdlIHRoZSBzaXplIG9mIHRoZSBpb3JlbWFwIGNhbGwgdG8KPj4+IDE2ayBhbmQgdGVsbCB1
+cyBpZiBpdCB3b3Jrcy4KPj4KPj4gV2VyZSB5b3UgYWJsZSB0byB0ZXN0IHdpdGggdGhlIHJlZHVj
+ZWQgaW9tYXAgc2l6ZT8KPj4gSXQgd291bGQgYmUgZ3JlYXQgdG8ga25vdyBpZiBpdCB3b3JrcyBv
+biB5b3VyIGJvYXJkLgo+Pgo+PiBUaGFua3MsCj4+IEZyaWVkZXIKPiAKPiBUZXN0IHRoZSBjb2Rl
+IG9uIGkuTVg2U1ggc2FicmVhdXRvIGJvYXJkIHdpdGggdHdvIG1pY3JvbiBuMjVxMjU2YSBjaGlw
+cyBvbiB0d28gQ1MuCj4gRmlyc3QgaXNzdWUgZm91bmQgaXMgX19kaXYwIGtlcm5lbCBkdW1wIHdp
+dGggdGhlc2UgY29kZQo+IC8qIE1heCA2NCBkdW1teSBjbG9jayBjeWNsZXMgc3VwcG9ydGVkICov
+Cj4gaWYgKG9wLT5kdW1teS5uYnl0ZXMgKiA4IC8gb3AtPmR1bW15LmJ1c3dpZHRoID4gNjQpCj4g
+ZHVtbXkuYnVzd2lkdGggd2FzIG5vdCBzZXQgZHVyaW5nIHJlYWQgaWQuCgpGaXJzdCwgdGhhbmsg
+eW91IGZvciBjb21pbmcgYmFjayB0byB0aGlzIGFuZCBkb2luZyB0aGUgdGVzdC4KSSdtIGN1cnJl
+bnRseSBub3Qgc3VyZSBhYm91dCB0aGUgcmVhc29uIGZvciB0aGlzLCBidXQgSSBndWVzcyBCb3Jp
+cyB3aWxsIApmaWd1cmUgaXQgb3V0IGVhc2lseSA7KQoKPiAKPiBTZWNvbmQgaXNzdWUgaXMgdGhl
+IHNlY29uZCBwYXJ0IGZhaWxlZCB0byBiZSBwcm9iZWQsIHRyaWVkIGJvdGggYnVzd2lkdGggNCBh
+bmQgYnVzd2lkdGggMS4KPiAKPiBbICAgIDEuMzY0OTc5XSBtMjVwODAgc3BpNS4wOiBmb3VuZCBu
+MjVxMjU2YSwgZXhwZWN0ZWQgbTI1cDgwCj4gWyAgICAxLjM3MDk4Nl0gbTI1cDgwIHNwaTUuMDog
+bjI1cTI1NmEgKDMyNzY4IEtieXRlcykKPiBbICAgIDEuMzgxMDIwXSBtMjVwODAgc3BpNS4xOiB1
+bnJlY29nbml6ZWQgSkVERUMgaWQgYnl0ZXM6IGZmLCBmZiwgZmYKPiAKPiBUaGVzZSBhcmUgdGhl
+IERUIHNldHRpbmdzOgo+ICZxc3BpMSB7Cj4gICAgICAgICAgcGluY3RybC1uYW1lcyA9ICJkZWZh
+dWx0IjsKPiAgICAgICAgICBwaW5jdHJsLTAgPSA8JnBpbmN0cmxfcXNwaTFfMT47Cj4gICAgICAg
+ICAgc3RhdHVzID0gIm9rYXkiOwo+IAo+ICAgICAgICAgIGZsYXNoMDogbjI1cTI1NmFAMCB7Cj4g
+ICAgICAgICAgwqYgICAgICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gICAgICAgICAgwqYgICAg
+ICAgI3NpemUtY2VsbHMgPSA8MT47Cj4gICAgICAgICAgwqYgICAgICAgY29tcGF0aWJsZSA9ICJt
+aWNyb24sbTI1cDgwIjsKPiAgICAgICAgICDCpiAgICAgICBzcGktbWF4LWZyZXF1ZW5jeSA9IDwy
+OTAwMDAwMD47Cj4gICAgICAgICAgICAgICAgICBzcGktcngtYnVzLXdpZHRoID0gPDQ+Owo+ICAg
+ICAgICAgICAgICAgICAgc3BpLXR4LWJ1cy13aWR0aCA9IDw0PjsKPiAgICAgICAgICDCpiAgICAg
+ICByZWcgPSA8MD47Cj4gICAgICAgICAgfTsKPiAKPiAgICAgICAgICBmbGFzaDE6IG4yNXEyNTZh
+QDEgewo+ICAgICAgICAgIMKmICAgICAgICNhZGRyZXNzLWNlbGxzID0gPDE+Owo+ICAgICAgICAg
+IMKmICAgICAgICNzaXplLWNlbGxzID0gPDE+Owo+ICAgICAgICAgIMKmICAgICAgIGNvbXBhdGli
+bGUgPSAibWljcm9uLG0yNXA4MCI7Cj4gICAgICAgICAgwqYgICAgICAgc3BpLW1heC1mcmVxdWVu
+Y3kgPSA8MjkwMDAwMDA+Owo+ICAgICAgICAgICAgICAgICAgc3BpLXJ4LWJ1cy13aWR0aCA9IDw0
+PjsKPiAgICAgICAgICAgICAgICAgIHNwaS10eC1idXMtd2lkdGggPSA8ND47Cj4gICAgICAgICAg
+wqYgICAgICAgcmVnID0gPDE+Owo+ICAgICAgICAgIH07Cj4gfTsKCkZpcnN0LCBJIHRoaW5rIHlv
+dSBzaG91bGQgYWRkICJqZWRlYyxzcGktbm9yIiB0byB5b3VyIGNvbXBhdGlibGUgcHJvcGVydGll
+cy4KClNlY29uZCwgYXJlIHlvdSBzdXJlLCB0aGF0IHRoZSB0d28gY2hpcHMgYXJlIGJvdGggb24g
+UVNQSUEgdXNpbmcgdGhlIHR3byAKY2hpcCBzZWxlY3RzPwpJIGhhdmUgbm8gc2NoZW1hdGljcyBv
+ZiB0aGUgYm9hcmQsIGJ1dCBpZiBJIGxvb2sgYXQgdGhlIGRldmljZXRyZWUgaW4gCnRoZSBsaW51
+eC1pbXgga2VybmVsIFsxXSBpdCBzZWVtcyB0byBtZSB0aGF0IG9uZSBjaGlwIGlzIG9uIFFTUElB
+IENTMCAKYW5kIHRoZSBvdGhlciBvbiBRU1BJQiBDUzAuCklmIHRoaXMgaXMgdGhlIGNhc2UsIHRo
+ZW4geW91IGhhdmUgdG8gc2V0IHJlZyA9IDwyPiBmb3IgdGhlIHNlY29uZCBjaGlwLgoKVGhhbmtz
+LApGcmllZGVyCgpbMV0gCmh0dHA6Ly9naXQuZnJlZXNjYWxlLmNvbS9naXQvY2dpdC5jZ2kvaW14
+L2xpbnV4LWlteC5naXQvdHJlZS9hcmNoL2FybS9ib290L2R0cy9pbXg2c3gtc2FicmVhdXRvLmR0
+cz9oPWlteF80LjkuMTFfMS4wLjBfZ2Ejbjc3MQoKPj4+Cj4+PiBVbnJlbGF0ZWQgdG8gdGhpcyBp
+c3N1ZSwgd2Ugc3RpbGwgaGF2ZSAyIHF1ZXN0aW9ucyBsZWZ0IHVuYW5zd2VyZWQ6Cj4+Pgo+Pj4g
+MS8gaXMgdGhlcmUgYW4gZWFzeSB3YXkgdG8gaW52YWxpZGF0ZSBBSEIgYnVmZmVycz8gSSBtZWFu
+LCBub3QKPj4+ICAgICAgc29tZXRoaW5nIHRoYXQgaW1wbGllcyBhIGZ1bGwgcmVzZXQgKyBzZXZl
+cmFsIG1pbGxpc2Vjb25kcyBvZiBkZWxheQo+Pj4gICAgICBhZnRlciB0aGUgcmVzZXQuIFJpZ2h0
+IG5vdyB3ZSB0cmljayB0aGUgY2FjaGluZyBsb2dpYyBieSBtYXBwaW5nIGEKPj4+ICAgICAgcG9y
+dGlvbiB0aGF0IGlzIHR3aWNlIHRoZSBzaXplIG9mIHRoZSBidWZmZXIgYW5kIHN3aXRjaGluZyBm
+cm9tIG9uZQo+Pj4gICAgICBzdWItcG9ydGlvbiB0byB0aGlzIG90aGVyIHRvIHRyaWdnZXIgYSBy
+ZWFsIHJlYWQgb24gZWFjaCByZWFkCj4+PiAgICAgIGFjY2VzcywgYnV0IHRoYXQncyBoYWNrLWlz
+aCwgYW5kIEknZCBiZSBzdXJwcmlzZWQgaWYgSFcKPj4+ICAgICAgZW5naW5lZXJzIGhhZG4ndCBw
+bGFubmVkIGZvciB0aGlzICJtYW51YWwgQUhCIGJ1ZmZlciBmbHVzaCIgY2FzZS4KPj4+Cj4+PiAy
+LyBpZiB3ZSB1c2UgRE1BLCBkbyB5b3Uga25vdyB3aGF0IGhhcHBlbnMgd2hlbiB0aGUgVFggRklG
+TyBydW5zIG91dAo+Pj4gICAgICBvZiBkYXRhIHdoaWxlIHRoZSBUWCByZXF1ZXN0IGlzIG5vdCBm
+aW5pc2hlZCB5ZXQuIEluIFBJTyBtb2RlLCBpdAo+Pj4gICAgICBzZWVtcyB0aGUgZW5naW5lIHNl
+bmRzIGdhcmJhZ2Ugb24gdGhlIGJ1cyB3aGVuIHRoYXQgaGFwcGVucywgYW5kIHdlCj4+PiAgICAg
+IGRlZmluaXRlbHkgZG9uJ3Qgd2FudCB0aGF0Lgo+Pj4KPj4+IFdoaWxlICMxIGlzIG5vdCBibG9j
+a2luZyB1cywgIzIgaXMgaWYgd2UgZG9uJ3QgaGF2ZSB0aG9zZSBwYXRjaGVzCj4+PiBbMV1bMl0g
+YXBwbGllZCwgYW5kIE1hcmVrIHdhbnRlZCB0byBiZSBzdXJlIHRoZXJlIHdhcyBubyBvdGhlciB3
+YXlzIHRvCj4+PiBzb2x2ZSB0aGUgIlRYIEZJRk8gc3RhcnZhdGlvbiIgaXNzdWUgYmVmb3JlIGNv
+bnNpZGVyaW5nIHRoZXNlIGNoYW5nZXMuCj4+PiBTbyB0aGF0J2QgYmUgZ3JlYXQgaWYgc29tZW9u
+ZSBmcm9tIE5YUCBjb3VsZCBoYXZlIGEgbG9vay9hc2sgYXJvdW5kCj4+PiBhbmQgZ2l2ZSB1cyBh
+bnN3ZXJzIHRvIHRob3NlIDIgcXVlc3Rpb25zLgo+Pj4KPj4+IFRoYW5rcywKPj4+Cj4+PiBCb3Jp
+cwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K

@@ -1,138 +1,204 @@
-From: Radu Pirea <radu_nicolae.pirea@upb.ro>
-Subject: Re: [PATCH v12 0/6] Driver for at91 usart in spi mode
-Date: Wed, 12 Sep 2018 22:36:40 +0300
-Message-ID: <a143edd3c0de2ba98b64e642b4384edf4323be2b.camel@upb.ro>
-References: <20180911185839.GA25212@piout.net> <20180911224418.GK4185@dell>
-         <20180911225440.GL4185@dell> <20180912073355.GB2557@piout.net>
-         <20180912084143.GN4185@dell>
-         <CAMuHMdWefU0pw=c9TKOa+wGHchpg8JRfE0OnC4+wKDt-qrbH1A@mail.gmail.com>
-         <20180912105407.GR4185@dell> <20180912111757.GC2760@piout.net>
-         <20180912114352.GT4185@dell> <20180912121420.GE2760@piout.net>
-         <20180912131248.GA21544@dell>
+From: Han Xu <han.xu@nxp.com>
+Subject: RE: Questions about the Freescale/NXP QuadSPI controller
+Date: Wed, 12 Sep 2018 21:04:19 +0000
+Message-ID: <AM6PR04MB4967C4B3F97004C41220E310971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>, Jiri Slaby <jslaby@suse.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Lee Jones <lee.jones@linaro.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180912131248.GA21544@dell>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "richard@nod.at" <richard@nod.at>, Fabio Estevam <fabio.estevam@nxp.com>,
+ David Wolfe <david.wolfe@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>
+To: Frieder Schrempf <frieder.schrempf@exceet.de>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2018-09-12 at 14:12 +0100, Lee Jones wrote:
-> On Wed, 12 Sep 2018, Alexandre Belloni wrote:
-> 
-> > On 12/09/2018 12:43:52+0100, Lee Jones wrote:
-> > > > > But ... we can't have it both ways.  *Either* it's a true
-> > > > > MFD, in
-> > > > > which case it can/should have 2 separate compatible strings
-> > > > > which can
-> > > > > be specified directly from the DT.  *Or* it's not an MFD.  In
-> > > > > the
-> > > > > latter case, which I think we're all agreeing on (else we'd
-> > > > > have 2
-> > > > > compatible strings), MFD is not the place to handle this (my
-> > > > > original
-> > > > > point).
-> > > > > 
-> > > > 
-> > > > If that is what bothers you, then let's move it out of mfd.
-> > > 
-> > > As I've already mentioned.  I don't just want it moved out of MFD
-> > > and
-> > > shoved somewhere else.  My aim is to fix this properly.
-> > > 
-> > 
-> > If it is out of MFD, then I'm not sure why you would care too much
-> > about
-> > it as you won't be maintaining that code. And I still this what was
-> > done
-> > was correct but I'm open to test what you suggest.
-> 
-> I care for the kernel in general, not just the areas I'm responsible
-> for.  I guess I'm just that kinda guy! ;)
-
-Well, Lee, like you, I think this driver should not be a MFD driver,
-but Alex has a good point of view. 
-
-> 
-> > > > > So ... this is a USART device which can do SPI, right?
-> > > > > 
-> > > > > My current thinking is that; as this is a USART device first
-> > > > > &
-> > > > > foremost, the USART should be probed in the first instance
-> > > > > regardless,
-> > > > > then if SPI mode is specified it (the USART driver) registers
-> > > > > the SPI
-> > > > > platform driver (as MFD does currently) and exits gracefully,
-> > > > > allowing
-> > > > > the SPI driver to take over.
-> > > > > 
-> > > > > Spanner in the works: is it physically possible to change the
-> > > > > mode at
-> > > > > run-time?  :s
-> > > > 
-> > > > Yes it is possible but on Linux that will not happen without
-> > > > probing
-> > > > the drivers again.
-> > > 
-> > > Not sure I understand what you mean.
-> > 
-> > I was just commenting on changing the mode at runtime.
-> 
-> Oh I see.  My question was relating to whether the H/W is physically
-> capable of changing modes on-the-fly, rather than how Linux would
-> handle that.  If this is something we'd wish to support, then it
-> would
-> have to be a single driver, which is why I was asking.  By separating
-> the drivers this way, we are blocking that as a
-> possibility.  Although
-> I guess the OP has already thought about that and made the decision
-> not to support it.
-
-Is possible to change modes on-the-fly, but you have no reason to do
-that. On the PCB you will have a SPI slave or a serial console :)
-Anyway, the current form of the driver, and through this I want to say
-"this ugly hack", allows the user to switch from serial to SPI mode by
-adding only one property to the device tree node of USART. If the
-driver were in his first form, a simple SPI driver, how you will make a
-dtsi file for an IP like this? You will add two nodes for the same IP
-in dtsi and will take care to enable correct node in dts?
-I think this driver is only a tradeoff between having an ugly hack in
-kernel or having an messy device tree.
-
-> 
-> > > I'm suggesting that you use the same platform_* interfaces MFD
-> > > uses to
-> > > register the SPI driver if SPI mode has been selected.  Only do
-> > > so
-> > > from the appropriate driver i.e. USART.
-> > 
-> > Yeah, I understood that but I didn't comment because I'm not sure
-> > this
-> > will work yet.
-> 
-> Other drivers already do this.
-
-Can you give me an example please?
-I am open to suggestions.
-
-Sorry for that acked-by. There was a lot of "reviewed-by", "acked-by",
-etc in a single version and I messed up :).
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJpZWRlciBTY2hyZW1w
+ZiBbbWFpbHRvOmZyaWVkZXIuc2NocmVtcGZAZXhjZWV0LmRlXQ0KPiBTZW50OiBXZWRuZXNkYXks
+IFNlcHRlbWJlciAxMiwgMjAxOCAxOjQxIFBNDQo+IFRvOiBIYW4gWHUgPGhhbi54dUBueHAuY29t
+Pg0KPiBDYzogQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+OyBE
+YXZpZCBXb2xmZQ0KPiA8ZGF2aWQud29sZmVAbnhwLmNvbT47IEZhYmlvIEVzdGV2YW0gPGZhYmlv
+LmVzdGV2YW1AbnhwLmNvbT47DQo+IFByYWJoYWthciBLdXNod2FoYSA8cHJhYmhha2FyLmt1c2h3
+YWhhQG54cC5jb20+OyBZb2dlc2ggTmFyYXlhbg0KPiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJA
+bnhwLmNvbT47IHNoYXduZ3VvQGtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBtdGRAbGlzdHMuaW5mcmFk
+ZWFkLm9yZzsgbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgZHdtdzJAaW5mcmFkZWFkLm9yZzsN
+Cj4gY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOyBtYXJlay52YXN1dEBnbWFpbC5jb207IHJp
+Y2hhcmRAbm9kLmF0Ow0KPiBtaXF1ZWwucmF5bmFsQGJvb3RsaW4uY29tOyBicm9vbmllQGtlcm5l
+bC5vcmcNCj4gU3ViamVjdDogUmU6IFF1ZXN0aW9ucyBhYm91dCB0aGUgRnJlZXNjYWxlL05YUCBR
+dWFkU1BJIGNvbnRyb2xsZXINCj4gDQo+IEhpIEhhbiwNCj4gDQo+IE9uIDEyLjA5LjIwMTggMTk6
+MDQsIEhhbiBYdSB3cm90ZToNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0t
+LS0tDQo+ID4+IEZyb206IEZyaWVkZXIgU2NocmVtcGYgW21haWx0bzpmcmllZGVyLnNjaHJlbXBm
+QGV4Y2VldC5kZV0NCj4gPj4gU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgMywgMjAxOCA0OjAyIEFN
+DQo+ID4+IFRvOiBIYW4gWHUgPGhhbi54dUBueHAuY29tPg0KPiA+PiBDYzogQm9yaXMgQnJlemls
+bG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+OyBEYXZpZCBXb2xmZQ0KPiA+PiA8ZGF2
+aWQud29sZmVAbnhwLmNvbT47IEZhYmlvIEVzdGV2YW0gPGZhYmlvLmVzdGV2YW1AbnhwLmNvbT47
+DQo+ID4+IFByYWJoYWthciBLdXNod2FoYSA8cHJhYmhha2FyLmt1c2h3YWhhQG54cC5jb20+OyBZ
+b2dlc2ggTmFyYXlhbg0KPiBHYXVyDQo+ID4+IDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT47
+IHNoYXduZ3VvQGtlcm5lbC5vcmc7IGxpbnV4LQ0KPiA+PiBtdGRAbGlzdHMuaW5mcmFkZWFkLm9y
+ZzsgbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsNCj4gPj4gZHdtdzJAaW5mcmFkZWFkLm9yZzsg
+Y29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOw0KPiA+PiBtYXJlay52YXN1dEBnbWFpbC5jb207
+IHJpY2hhcmRAbm9kLmF0OyBtaXF1ZWwucmF5bmFsQGJvb3RsaW4uY29tOw0KPiA+PiBicm9vbmll
+QGtlcm5lbC5vcmcNCj4gPj4gU3ViamVjdDogUmU6IFF1ZXN0aW9ucyBhYm91dCB0aGUgRnJlZXNj
+YWxlL05YUCBRdWFkU1BJIGNvbnRyb2xsZXINCj4gPj4NCj4gPj4gSGkgSGFuLA0KPiA+Pg0KPiA+
+PiBPbiAwNC4wOC4yMDE4IDE1OjM3LCBCb3JpcyBCcmV6aWxsb24gd3JvdGU6DQo+ID4+PiBIaSBI
+YW4sDQo+ID4+Pg0KPiA+Pj4gT24gVGh1LCAyIEF1ZyAyMDE4IDIxOjU4OjQ4ICswMDAwDQo+ID4+
+PiBIYW4gWHUgPGhhbi54dUBueHAuY29tPiB3cm90ZToNCj4gPj4+DQo+ID4+Pj4+IC0tLS0tT3Jp
+Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+Pj4+IEZyb206IEZyaWVkZXIgU2NocmVtcGYgW21haWx0
+bzpmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZV0NCj4gPj4+Pj4gU2VudDogVGh1cnNkYXksIEF1
+Z3VzdCAyLCAyMDE4IDg6MDkgQU0NCj4gPj4+Pj4gVG86IERhdmlkIFdvbGZlIDxkYXZpZC53b2xm
+ZUBueHAuY29tPjsgRmFiaW8gRXN0ZXZhbQ0KPiA+Pj4+PiA8ZmFiaW8uZXN0ZXZhbUBueHAuY29t
+PjsgUHJhYmhha2FyIEt1c2h3YWhhDQo+ID4+Pj4+IDxwcmFiaGFrYXIua3VzaHdhaGFAbnhwLmNv
+bT47IFlvZ2VzaCBOYXJheWFuIEdhdXINCj4gPj4+Pj4gPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAu
+Y29tPjsgSGFuIFh1IDxoYW4ueHVAbnhwLmNvbT47DQo+ID4+Pj4+IHNoYXduZ3VvQGtlcm5lbC5v
+cmcNCj4gPj4+Pj4gQ2M6IGxpbnV4LW10ZEBsaXN0cy5pbmZyYWRlYWQub3JnOyBib3Jpcy5icmV6
+aWxsb25AYm9vdGxpbi5jb207DQo+ID4+Pj4+IGxpbnV4LSBzcGlAdmdlci5rZXJuZWwub3JnOyBk
+d213MkBpbmZyYWRlYWQub3JnOw0KPiA+Pj4+PiBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb207
+IG1hcmVrLnZhc3V0QGdtYWlsLmNvbTsNCj4gPj4gcmljaGFyZEBub2QuYXQ7DQo+ID4+Pj4+IG1p
+cXVlbC5yYXluYWxAYm9vdGxpbi5jb207IGJyb29uaWVAa2VybmVsLm9yZw0KPiA+Pj4+PiBTdWJq
+ZWN0OiBSZTogUXVlc3Rpb25zIGFib3V0IHRoZSBGcmVlc2NhbGUvTlhQIFF1YWRTUEkgY29udHJv
+bGxlcg0KPiA+Pj4+Pg0KPiA+Pj4+PiBQaW5nLg0KPiA+Pj4+Pg0KPiA+Pj4+PiBJJ20gbm90IHN1
+cmUgaWYgbXkgbWVzc2FnZSBiZWxvdyB3ZW50IG91dCB0byB5b3UgYXQgYWxsLiBBdCBsZWFzdA0K
+PiA+Pj4+PiBJIGNhbid0IGZpbmQgaXQgaW4gdGhlIE1MIGFyY2hpdmUuDQo+ID4+Pj4+DQo+ID4+
+Pj4+IEkgc3RpbGwgaG9wZSBzb21lb25lIGNhbiBoZWxwIHdpdGggdGhlIHF1ZXN0aW9ucyBiZWxv
+dy4NCj4gPj4+Pj4NCj4gPj4+Pj4gTWVhbndoaWxlIGZvciB0aGUgc2Vjb25kIHBvaW50IEkgZGlk
+IHNvbWUgdGVzdHMgbXlzZWxmIHdpdGggb25lDQo+ID4+Pj4+IGNoaXAgb24gZWFjaCBvZiB0aGUg
+dHdvIGJ1c2VzIGFuZCBpdCB3b3JrZWQgZmluZSB3aXRoIG15IGxhdGVzdCB2Mg0KPiBwYXRjaGVz
+Lg0KPiA+Pj4+PiBTbyBJJ20gbm90IHN1cmUgYXQgYWxsIHdoeSBZb2dlc2ggaGFzIHByb2JsZW1z
+IHdpdGggaGlzIHNldHVwICh0d28NCj4gPj4+Pj4gY2hpcHMgb24gdGhlIGZpcnN0IGJ1cykuDQo+
+ID4+Pj4NCj4gPj4+PiBUcmllZCB0byB0ZXN0IHRoZSB2MiBwYXRjaCBzZXQgb24gaS5NWDZTWCBT
+REIgYm9hcmQgYnV0IGdldCB0aGUNCj4gPj4+PiBtZW1vcnkNCj4gPj4gbWFwIGZhaWx1cmUuDQo+
+ID4+Pj4NCj4gPj4+PiBbICAgIDEuMjk4NjMzXSBmc2wtcXVhZHNwaSAyMWU0MDAwLnFzcGk6IGlv
+cmVtYXAgZmFpbGVkIGZvciByZXNvdXJjZQ0KPiBbbWVtDQo+ID4+IDB4NzAwMDAwMDAtMHg3ZmZm
+ZmZmZl0NCj4gPj4+PiBbICAgIDEuMzA3MzMwXSBmc2wtcXVhZHNwaSAyMWU0MDAwLnFzcGk6IEZy
+ZWVzY2FsZSBRdWFkU1BJIHByb2JlIGZhaWxlZA0KPiA+Pj4+IFsgICAgMS4zMTM5MjJdIGZzbC1x
+dWFkc3BpOiBwcm9iZSBvZiAyMWU0MDAwLnFzcGkgZmFpbGVkIHdpdGggZXJyb3IgLTEyDQo+ID4+
+Pj4NCj4gPj4+PiBUaGlzIGlzIHRoZSByZWFzb24gd2h5IGR5bmFtaWMgaW9yZW1hcCBhZGRlZCBp
+biBwcmV2aW91cyBkcml2ZXIsDQo+ID4+Pj4gcGxlYXNlDQo+ID4+IHJlZmVyIHRvDQo+ID4+Pj4N
+Cj4gPj4+Pg0KPiA+Pg0KPiBodHRwczovL2VtZWEwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRs
+b29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGc20NCj4gPj4gZXgxMi01LWVuLQ0KPiBjdHAudHJl
+bmRtaWNyby5jb20lM0E0NDMlMkZ3aXMlMkZjbGlja3RpbWUlMkZ2MSUyRnF1ZXJ5JTNGdQ0KPiA+
+Pg0KPiBybCUzRGh0dHBzJTI1M2ElMjUyZiUyNTJmZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0aW9u
+Lm91dGxvb2suY29tJTI1Mg0KPiBmDQo+ID4+ICUyNTNmdXJsJTI1M2RodHRwcyUyNTI1M0ElMjUy
+NTJGJTI1MjUyRnBhJTI2dW1pZCUzRGQ2Y2MxMDE0LQ0KPiAxODQ4LTQyZmINCj4gPj4gLTkyZmQt
+DQo+IDk2MjZkNDVjODA1MCUyNmF1dGglM0Q1NDFlNDUyNTViNjUxNzEwMGQ4MGMyYjFiODBiNjkz
+M2IyMDNjNDkyLQ0KPiA+Pg0KPiA1YWE4ZTE5NzdhOWRiOTQzMDBhOWY2MWY1NDQ2ZTdhMjFiMTc1
+ZjU2JmFtcDtkYXRhPTAyJTdDMDElN0NoYW4ueA0KPiB1JTQwDQo+ID4+DQo+IG54cC5jb20lN0M5
+ZDQzZTliMjlhODI0MTlhMzZjNDA4ZDYxOGRmM2RjMyU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjDQo+
+IGQ5OWMNCj4gPj4NCj4gNWMzMDE2MzUlN0MwJTdDMCU3QzYzNjcyMzc0NDQyNjg5NjIyMyZhbXA7
+c2RhdGE9WTMySTlIOWFkUG4lMkJuDQo+IGxjSUN1Vg0KPiA+PiBNOFVvb3pzaWclMkJNM0Ywck5B
+aGtJRjVaRSUzRCZhbXA7cmVzZXJ2ZWQ9MA0KPiA+Pj4+DQo+ID4+DQo+IHRjaHdvcmsub3psYWJz
+Lm9yZyUyRnBhdGNoJTJGNTAzNjU1JTJGJmFtcDtkYXRhPTAyJTdDMDElN0NoYW4ueHUNCj4gPj4g
+JTQwbngNCj4gPj4+Pg0KPiA+Pg0KPiBwLmNvbSU3QzlmNDVhOGI2NjZkMzQ3OGYwNjU0MDhkNjEx
+N2JmNTI0JTdDNjg2ZWExZDNiYzJiNGM2ZmE5MmNkOQ0KPiA+PiA5YzVjDQo+ID4+Pj4NCj4gPj4N
+Cj4gMzAxNjM1JTdDMCU3QzAlN0M2MzY3MTU2MjE0MjYxOTA0NzMmYW1wO3NkYXRhPVhXUGZXZSUy
+RnUyZVBXDQo+ID4+IG1OUGUxNzlEMA0KPiA+Pj4+IHZqVHA2ZUxwMCUyRkpSRjJ2UmF5RHd1ZyUz
+RCZhbXA7cmVzZXJ2ZWQ9MA0KPiA+Pj4NCj4gPj4+IFdlIGNhbiByZWR1Y2UgdGhlIHNpemUgb2Yg
+dGhlIGlvbWFwIHRvIDJrICogNCwgc2luY2UgdGhpcyBpcyBhbGwgd2UNCj4gPj4+IHVzZSBjdXJy
+ZW50bHkuIENhbiB5b3UgdHJ5IHRvIGNoYW5nZSB0aGUgc2l6ZSBvZiB0aGUgaW9yZW1hcCBjYWxs
+IHRvDQo+ID4+PiAxNmsgYW5kIHRlbGwgdXMgaWYgaXQgd29ya3MuDQo+ID4+DQo+ID4+IFdlcmUg
+eW91IGFibGUgdG8gdGVzdCB3aXRoIHRoZSByZWR1Y2VkIGlvbWFwIHNpemU/DQo+ID4+IEl0IHdv
+dWxkIGJlIGdyZWF0IHRvIGtub3cgaWYgaXQgd29ya3Mgb24geW91ciBib2FyZC4NCj4gPj4NCj4g
+Pj4gVGhhbmtzLA0KPiA+PiBGcmllZGVyDQo+ID4NCj4gPiBUZXN0IHRoZSBjb2RlIG9uIGkuTVg2
+U1ggc2FicmVhdXRvIGJvYXJkIHdpdGggdHdvIG1pY3JvbiBuMjVxMjU2YSBjaGlwcw0KPiBvbiB0
+d28gQ1MuDQo+ID4gRmlyc3QgaXNzdWUgZm91bmQgaXMgX19kaXYwIGtlcm5lbCBkdW1wIHdpdGgg
+dGhlc2UgY29kZQ0KPiA+IC8qIE1heCA2NCBkdW1teSBjbG9jayBjeWNsZXMgc3VwcG9ydGVkICov
+IGlmIChvcC0+ZHVtbXkubmJ5dGVzICogOCAvDQo+ID4gb3AtPmR1bW15LmJ1c3dpZHRoID4gNjQp
+IGR1bW15LmJ1c3dpZHRoIHdhcyBub3Qgc2V0IGR1cmluZyByZWFkIGlkLg0KPiANCj4gRmlyc3Qs
+IHRoYW5rIHlvdSBmb3IgY29taW5nIGJhY2sgdG8gdGhpcyBhbmQgZG9pbmcgdGhlIHRlc3QuDQo+
+IEknbSBjdXJyZW50bHkgbm90IHN1cmUgYWJvdXQgdGhlIHJlYXNvbiBmb3IgdGhpcywgYnV0IEkg
+Z3Vlc3MgQm9yaXMgd2lsbCBmaWd1cmUgaXQNCj4gb3V0IGVhc2lseSA7KQ0KPiANCj4gPg0KPiA+
+IFNlY29uZCBpc3N1ZSBpcyB0aGUgc2Vjb25kIHBhcnQgZmFpbGVkIHRvIGJlIHByb2JlZCwgdHJp
+ZWQgYm90aCBidXN3aWR0aCA0DQo+IGFuZCBidXN3aWR0aCAxLg0KPiA+DQo+ID4gWyAgICAxLjM2
+NDk3OV0gbTI1cDgwIHNwaTUuMDogZm91bmQgbjI1cTI1NmEsIGV4cGVjdGVkIG0yNXA4MA0KPiA+
+IFsgICAgMS4zNzA5ODZdIG0yNXA4MCBzcGk1LjA6IG4yNXEyNTZhICgzMjc2OCBLYnl0ZXMpDQo+
+ID4gWyAgICAxLjM4MTAyMF0gbTI1cDgwIHNwaTUuMTogdW5yZWNvZ25pemVkIEpFREVDIGlkIGJ5
+dGVzOiBmZiwgZmYsIGZmDQo+ID4NCj4gPiBUaGVzZSBhcmUgdGhlIERUIHNldHRpbmdzOg0KPiA+
+ICZxc3BpMSB7DQo+ID4gICAgICAgICAgcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsNCj4gPiAg
+ICAgICAgICBwaW5jdHJsLTAgPSA8JnBpbmN0cmxfcXNwaTFfMT47DQo+ID4gICAgICAgICAgc3Rh
+dHVzID0gIm9rYXkiOw0KPiA+DQo+ID4gICAgICAgICAgZmxhc2gwOiBuMjVxMjU2YUAwIHsNCj4g
+PiAgICAgICAgICDCpiAgICAgICAjYWRkcmVzcy1jZWxscyA9IDwxPjsNCj4gPiAgICAgICAgICDC
+piAgICAgICAjc2l6ZS1jZWxscyA9IDwxPjsNCj4gPiAgICAgICAgICDCpiAgICAgICBjb21wYXRp
+YmxlID0gIm1pY3JvbixtMjVwODAiOw0KPiA+ICAgICAgICAgIMKmICAgICAgIHNwaS1tYXgtZnJl
+cXVlbmN5ID0gPDI5MDAwMDAwPjsNCj4gPiAgICAgICAgICAgICAgICAgIHNwaS1yeC1idXMtd2lk
+dGggPSA8ND47DQo+ID4gICAgICAgICAgICAgICAgICBzcGktdHgtYnVzLXdpZHRoID0gPDQ+Ow0K
+PiA+ICAgICAgICAgIMKmICAgICAgIHJlZyA9IDwwPjsNCj4gPiAgICAgICAgICB9Ow0KPiA+DQo+
+ID4gICAgICAgICAgZmxhc2gxOiBuMjVxMjU2YUAxIHsNCj4gPiAgICAgICAgICDCpiAgICAgICAj
+YWRkcmVzcy1jZWxscyA9IDwxPjsNCj4gPiAgICAgICAgICDCpiAgICAgICAjc2l6ZS1jZWxscyA9
+IDwxPjsNCj4gPiAgICAgICAgICDCpiAgICAgICBjb21wYXRpYmxlID0gIm1pY3JvbixtMjVwODAi
+Ow0KPiA+ICAgICAgICAgIMKmICAgICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDI5MDAwMDAwPjsN
+Cj4gPiAgICAgICAgICAgICAgICAgIHNwaS1yeC1idXMtd2lkdGggPSA8ND47DQo+ID4gICAgICAg
+ICAgICAgICAgICBzcGktdHgtYnVzLXdpZHRoID0gPDQ+Ow0KPiA+ICAgICAgICAgIMKmICAgICAg
+IHJlZyA9IDwxPjsNCj4gPiAgICAgICAgICB9Ow0KPiA+IH07DQo+IA0KPiBGaXJzdCwgSSB0aGlu
+ayB5b3Ugc2hvdWxkIGFkZCAiamVkZWMsc3BpLW5vciIgdG8geW91ciBjb21wYXRpYmxlIHByb3Bl
+cnRpZXMuDQo+IA0KPiBTZWNvbmQsIGFyZSB5b3Ugc3VyZSwgdGhhdCB0aGUgdHdvIGNoaXBzIGFy
+ZSBib3RoIG9uIFFTUElBIHVzaW5nIHRoZSB0d28NCj4gY2hpcCBzZWxlY3RzPw0KPiBJIGhhdmUg
+bm8gc2NoZW1hdGljcyBvZiB0aGUgYm9hcmQsIGJ1dCBpZiBJIGxvb2sgYXQgdGhlIGRldmljZXRy
+ZWUgaW4gdGhlIGxpbnV4LQ0KPiBpbXgga2VybmVsIFsxXSBpdCBzZWVtcyB0byBtZSB0aGF0IG9u
+ZSBjaGlwIGlzIG9uIFFTUElBIENTMCBhbmQgdGhlIG90aGVyIG9uDQo+IFFTUElCIENTMC4NCj4g
+SWYgdGhpcyBpcyB0aGUgY2FzZSwgdGhlbiB5b3UgaGF2ZSB0byBzZXQgcmVnID0gPDI+IGZvciB0
+aGUgc2Vjb25kIGNoaXAuDQoNClllcywgeW91IGFyZSByaWdodCwgdGhlIHNlY29uZCBjaGlwIGNv
+bm5lY3RzIHRvIFFTUElCIENTMCwgd2l0aCB0aGUgRFQgY2hhbmdlLCBib3RoIG9mIHRoZW0gd29y
+ayBmaW5lIHdpdGggX19kaXYwIGlzc3VlIHdvcmthcm91bmQuDQoNCj4gDQo+IFRoYW5rcywNCj4g
+RnJpZWRlcg0KPiANCj4gWzFdDQo+IGh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0aW9u
+Lm91dGxvb2suY29tLz91cmw9aHR0cCUzQSUyRiUyRmdpdC5mDQo+IHJlZXNjYWxlLmNvbSUyRmdp
+dCUyRmNnaXQuY2dpJTJGaW14JTJGbGludXgtDQo+IGlteC5naXQlMkZ0cmVlJTJGYXJjaCUyRmFy
+bSUyRmJvb3QlMkZkdHMlMkZpbXg2c3gtDQo+IHNhYnJlYXV0by5kdHMlM0ZoJTNEaW14XzQuOS4x
+MV8xLjAuMF9nYSUyM243NzEmYW1wO2RhdGE9MDIlN0MwMSUNCj4gN0NoYW4ueHUlNDBueHAuY29t
+JTdDOWQ0M2U5YjI5YTgyNDE5YTM2YzQwOGQ2MThkZjNkYzMlN0M2ODZlYTFkDQo+IDNiYzJiNGM2
+ZmE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMCU3QzYzNjcyMzc0NDQyNjg5NjIyMyZhbXA7c2RhdGEN
+Cj4gPTAzOERkZ01Mak8yM0lvM0NUSG9TVnJKTDJIbyUyQmd4eUhseDklMkJMTXJMV2tRJTNEJmFt
+cDtyZXNlcg0KPiB2ZWQ9MA0KPiANCj4gPj4+DQo+ID4+PiBVbnJlbGF0ZWQgdG8gdGhpcyBpc3N1
+ZSwgd2Ugc3RpbGwgaGF2ZSAyIHF1ZXN0aW9ucyBsZWZ0IHVuYW5zd2VyZWQ6DQo+ID4+Pg0KPiA+
+Pj4gMS8gaXMgdGhlcmUgYW4gZWFzeSB3YXkgdG8gaW52YWxpZGF0ZSBBSEIgYnVmZmVycz8gSSBt
+ZWFuLCBub3QNCj4gPj4+ICAgICAgc29tZXRoaW5nIHRoYXQgaW1wbGllcyBhIGZ1bGwgcmVzZXQg
+KyBzZXZlcmFsIG1pbGxpc2Vjb25kcyBvZiBkZWxheQ0KPiA+Pj4gICAgICBhZnRlciB0aGUgcmVz
+ZXQuIFJpZ2h0IG5vdyB3ZSB0cmljayB0aGUgY2FjaGluZyBsb2dpYyBieSBtYXBwaW5nIGENCj4g
+Pj4+ICAgICAgcG9ydGlvbiB0aGF0IGlzIHR3aWNlIHRoZSBzaXplIG9mIHRoZSBidWZmZXIgYW5k
+IHN3aXRjaGluZyBmcm9tIG9uZQ0KPiA+Pj4gICAgICBzdWItcG9ydGlvbiB0byB0aGlzIG90aGVy
+IHRvIHRyaWdnZXIgYSByZWFsIHJlYWQgb24gZWFjaCByZWFkDQo+ID4+PiAgICAgIGFjY2Vzcywg
+YnV0IHRoYXQncyBoYWNrLWlzaCwgYW5kIEknZCBiZSBzdXJwcmlzZWQgaWYgSFcNCj4gPj4+ICAg
+ICAgZW5naW5lZXJzIGhhZG4ndCBwbGFubmVkIGZvciB0aGlzICJtYW51YWwgQUhCIGJ1ZmZlciBm
+bHVzaCIgY2FzZS4NCj4gPj4+DQo+ID4+PiAyLyBpZiB3ZSB1c2UgRE1BLCBkbyB5b3Uga25vdyB3
+aGF0IGhhcHBlbnMgd2hlbiB0aGUgVFggRklGTyBydW5zDQo+IG91dA0KPiA+Pj4gICAgICBvZiBk
+YXRhIHdoaWxlIHRoZSBUWCByZXF1ZXN0IGlzIG5vdCBmaW5pc2hlZCB5ZXQuIEluIFBJTyBtb2Rl
+LCBpdA0KPiA+Pj4gICAgICBzZWVtcyB0aGUgZW5naW5lIHNlbmRzIGdhcmJhZ2Ugb24gdGhlIGJ1
+cyB3aGVuIHRoYXQgaGFwcGVucywgYW5kDQo+IHdlDQo+ID4+PiAgICAgIGRlZmluaXRlbHkgZG9u
+J3Qgd2FudCB0aGF0Lg0KPiA+Pj4NCj4gPj4+IFdoaWxlICMxIGlzIG5vdCBibG9ja2luZyB1cywg
+IzIgaXMgaWYgd2UgZG9uJ3QgaGF2ZSB0aG9zZSBwYXRjaGVzDQo+ID4+PiBbMV1bMl0gYXBwbGll
+ZCwgYW5kIE1hcmVrIHdhbnRlZCB0byBiZSBzdXJlIHRoZXJlIHdhcyBubyBvdGhlciB3YXlzDQo+
+ID4+PiB0byBzb2x2ZSB0aGUgIlRYIEZJRk8gc3RhcnZhdGlvbiIgaXNzdWUgYmVmb3JlIGNvbnNp
+ZGVyaW5nIHRoZXNlIGNoYW5nZXMuDQo+ID4+PiBTbyB0aGF0J2QgYmUgZ3JlYXQgaWYgc29tZW9u
+ZSBmcm9tIE5YUCBjb3VsZCBoYXZlIGEgbG9vay9hc2sgYXJvdW5kDQo+ID4+PiBhbmQgZ2l2ZSB1
+cyBhbnN3ZXJzIHRvIHRob3NlIDIgcXVlc3Rpb25zLg0KPiA+Pj4NCj4gPj4+IFRoYW5rcywNCj4g
+Pj4+DQo+ID4+PiBCb3Jpcw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K

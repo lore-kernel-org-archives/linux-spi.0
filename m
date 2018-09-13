@@ -1,7 +1,8 @@
 From: David Lechner <david@lechnology.com>
-Subject: [PATCH v2 0/4] spi: introduce SPI_CS_WORD mode flag
-Date: Wed, 12 Sep 2018 19:39:16 -0500
-Message-ID: <20180913003920.30600-1-david@lechnology.com>
+Subject: [PATCH v2 2/4] spi: add software implementation for SPI_CS_WORD
+Date: Wed, 12 Sep 2018 19:39:18 -0500
+Message-ID: <20180913003920.30600-3-david@lechnology.com>
+References: <20180913003920.30600-1-david@lechnology.com>
 Cc: David Lechner <david@lechnology.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -10,50 +11,73 @@ Cc: David Lechner <david@lechnology.com>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
 To: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180913003920.30600-1-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This series introduces a new SPI mode flag, SPI_CS_WORD, that indicates that
-the chip select line should be toggled after each word sent. This series
-includes examples of how this can be implemented for both an SPI controller
-and an SPI device.
+This adds a default software implementation for the SPI_CS_WORD flag for
+controllers that don't have such a feature.
 
-The motivation here is to take advantage of DMA transfers with an analog/digital
-convert chip. This chip requires that the chip select line be toggled after
-each word send in order to drive the internal circuitry of the chip.
+The SPI_CS_WORD flag indicates that the CS line should be toggled
+between each word sent, not just between each transfer. The
+implementation works by using existing functions to split transfers into
+one-word-sized transfers and sets the cs_change bit for each of the
+new transfers.
 
-The way we were accomplishing this was, for example, to read 16 channels, we
-would create 16 SPI _transfer_s in one SPI _message_. Although this works, it
-uses quite a bit of CPU because we have to do work at the end of each transfer
-to get the next transfer ready. When you are polling the chip at 100Hz, this
-CPU usage adds up.
+Signed-off-by: David Lechner <david@lechnology.com>
+---
+ drivers/spi/spi.c | 31 +++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-The SPI controller being used has DMA support, but only on the _transfer_ level
-and not on the _message_ level. So, to take advantage of DMA, we need to read
-all of the A/DC channels in a single _transfer_. The SPI controller is capable
-automatically toggling the chip select line during a DMA transfer, so we are
-adding a new SPI flag in order to take advantage of this.
-
-I have tested both the default software implementation and the spi-davinci
-implementation with the A/DC driver in this series.
-
-v2 changes:
-- dropped patch "spi: spi-bitbang: change flags from u8 to u16" that has already
-  been applied
-- new patch "spi: add software implementation for SPI_CS_WORD" that provides
-  a default implementation of SPI_CS_WORD for controllers
-
-David Lechner (4):
-  spi: add new SPI_CS_WORD flag
-  spi: add software implementation for SPI_CS_WORD
-  iio: adc: ti-ads7950: use SPI_CS_WORD to reduce CPU usage
-  spi: spi-davinci: Add support for SPI_CS_WORD
-
- drivers/iio/adc/ti-ads7950.c | 53 +++++++++++++++++++++---------------
- drivers/spi/spi-davinci.c    | 11 ++++++--
- drivers/spi/spi.c            | 32 +++++++++++++++++++++-
- include/linux/spi/spi.h      |  2 +-
- 4 files changed, 71 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9da0bc5a036c..84518ed58872 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2783,8 +2783,10 @@ int spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	/* help drivers fail *cleanly* when they need options
+ 	 * that aren't supported with their current controller
++	 * SPI_CS_WORD has a fallback software implementation,
++	 * so it is ignored here.
+ 	 */
+-	bad_bits = spi->mode & ~spi->controller->mode_bits;
++	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
+ 	ugly_bits = bad_bits &
+ 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD);
+ 	if (ugly_bits) {
+@@ -2838,6 +2840,33 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 	if (list_empty(&message->transfers))
+ 		return -EINVAL;
+ 
++	/* If an SPI controller does not support toggling the CS line on each
++	 * transfer (indicated by the SPI_CS_WORD flag), we can emulate it by
++	 * splitting transfers into one-word transfers and ensuring that
++	 * cs_change is set for each transfer.
++	 */
++	if ((spi->mode & SPI_CS_WORD) && !(ctlr->mode_bits & SPI_CS_WORD)) {
++		size_t maxsize;
++		int ret;
++
++		maxsize = (spi->bits_per_word + 7) / 8;
++
++		/* spi_split_transfers_maxsize() requires message->spi */
++		message->spi = spi;
++
++		ret = spi_split_transfers_maxsize(ctlr, message, maxsize,
++						  GFP_KERNEL);
++		if (ret)
++			return ret;
++
++		list_for_each_entry(xfer, &message->transfers, transfer_list) {
++			/* don't change cs_change on the last entry in the list */
++			if (list_is_last(&xfer->transfer_list, &message->transfers))
++				break;
++			xfer->cs_change = 1;
++		}
++	}
++
+ 	/* Half-duplex links include original MicroWire, and ones with
+ 	 * only one data pin like SPI_3WIRE (switches direction) or where
+ 	 * either MOSI or MISO is missing.  They can also be caused by
 -- 
 2.17.1

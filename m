@@ -1,91 +1,39 @@
-From: David Lechner <david@lechnology.com>
-Subject: Re: [PATCH v2 4/4] spi: spi-davinci: Add support for SPI_CS_WORD
-Date: Thu, 13 Sep 2018 09:26:48 -0500
-Message-ID: <fb43f4d7-5b19-72be-9216-efdca9b59eba@lechnology.com>
-References: <20180913003920.30600-1-david@lechnology.com>
- <20180913003920.30600-5-david@lechnology.com>
- <CAMuHMdUb=sXBBRLhKNxsWT_Z4PCoLcM16NajvmPVHWsvgoL7_w@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi@vger.kernel.org>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH] spi: pic32-sqi: remove unnecessary of_node_get()
+Date: Fri, 14 Sep 2018 23:05:34 +0300
+Message-ID: <1536955534-22978-1-git-send-email-khoroshilov@ispras.ru>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ldv-project@linuxtesting.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdUb=sXBBRLhKNxsWT_Z4PCoLcM16NajvmPVHWsvgoL7_w@mail.gmail.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/13/2018 08:44 AM, Geert Uytterhoeven wrote:
-> Hi David,
-> 
-> On Thu, Sep 13, 2018 at 2:40 AM David Lechner <david@lechnology.com> wrote:
->> This adds support for the SPI_CS_WORD flag to the TI DaVinci SPI
->> driver. This mode can be used as long as we are using the hardware
->> chip select and not a GPIO chip select.
->>
->> Signed-off-by: David Lechner <david@lechnology.com>
->> ---
->>   drivers/spi/spi-davinci.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
->> index d502cf504deb..8f7dcbc53c57 100644
->> --- a/drivers/spi/spi-davinci.c
->> +++ b/drivers/spi/spi-davinci.c
->> @@ -230,7 +230,8 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
->>                                  !(spi->mode & SPI_CS_HIGH));
->>          } else {
->>                  if (value == BITBANG_CS_ACTIVE) {
->> -                       spidat1 |= SPIDAT1_CSHOLD_MASK;
->> +                       if (!(spi->mode & SPI_CS_WORD))
->> +                               spidat1 |= SPIDAT1_CSHOLD_MASK;
->>                          spidat1 &= ~(0x1 << chip_sel);
->>                  }
->>          }
->> @@ -440,8 +441,12 @@ static int davinci_spi_setup(struct spi_device *spi)
->>                          return retval;
->>                  }
->>
->> -               if (internal_cs)
->> +               if (internal_cs) {
->>                          set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
->> +               } else if (spi->mode & SPI_CS_WORD) {
->> +                       dev_err(&spi->dev, "SPI_CS_WORD can't be use with GPIO CS\n");
->> +                       return -EINVAL;
-> 
-> Does the SPI core fall back to splitting the transfer in this case?
+Almost all spi drivers assign spi master->dev.of_node from
+its parent platform device without additional refcounting.
+It seems of_node_get() in pic32_sqi_probe() is unnecessary
+and there is no corresponding of_node_put().
 
-Hmm... it doesn't look like it.
+Found by Linux Driver Verification project (linuxtesting.org)
 
-I suppose it might be best to modify the SPI core to say:
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+ drivers/spi/spi-pic32-sqi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	if ((spi->mode & SPI_CS_WORD) && (!(ctlr->mode_bits & SPI_CS_WORD) ||
-					  gpio_is_valid(spi->cs_gpio)) {
-
-instead of:
-
-	if ((spi->mode & SPI_CS_WORD) && !(ctlr->mode_bits & SPI_CS_WORD)) {
-
-Then we could drop the error above.
-
-> 
->> +               }
-> 
-> Gr{oetje,eeting}s,
-> 
->                          Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
-> 
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index bd1c6b53283f..62e6bf1f50b1 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -656,7 +656,7 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	master->max_speed_hz	= clk_get_rate(sqi->base_clk);
+ 	master->dma_alignment	= 32;
+ 	master->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
+-	master->dev.of_node	= of_node_get(pdev->dev.of_node);
++	master->dev.of_node	= pdev->dev.of_node;
+ 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
+ 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
+ 	master->flags		= SPI_MASTER_HALF_DUPLEX;
+-- 
+2.7.4

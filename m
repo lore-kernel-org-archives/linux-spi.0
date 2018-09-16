@@ -1,39 +1,61 @@
-From: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Subject: [PATCH] spi: pic32-sqi: remove unnecessary of_node_get()
-Date: Fri, 14 Sep 2018 23:05:34 +0300
-Message-ID: <1536955534-22978-1-git-send-email-khoroshilov@ispras.ru>
-Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ldv-project@linuxtesting.org
-To: Mark Brown <broonie@kernel.org>
+From: Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 1/4] spi: add new SPI_CS_WORD flag
+Date: Sun, 16 Sep 2018 12:29:59 +0100
+Message-ID: <20180916122959.271e4aba@archlinux>
+References: <20180913003920.30600-1-david@lechnology.com>
+        <20180913003920.30600-2-david@lechnology.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
+To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180913003920.30600-2-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Almost all spi drivers assign spi master->dev.of_node from
-its parent platform device without additional refcounting.
-It seems of_node_get() in pic32_sqi_probe() is unnecessary
-and there is no corresponding of_node_put().
+On Wed, 12 Sep 2018 19:39:17 -0500
+David Lechner <david@lechnology.com> wrote:
 
-Found by Linux Driver Verification project (linuxtesting.org)
+> This adds a new SPI mode flag, SPI_CS_WORD, that is used to indicate
+> that a SPI device requires the chip select to be toggled after each
+> word that is transferred.
+> 
+> Signed-off-by: David Lechner <david@lechnology.com>
+Just a general patch ordering / combining comment.
 
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
----
- drivers/spi/spi-pic32-sqi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Seems odd to introduce a flag that a driver might use in a patch
+preceding any implementations!
 
-diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
-index bd1c6b53283f..62e6bf1f50b1 100644
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -656,7 +656,7 @@ static int pic32_sqi_probe(struct platform_device *pdev)
- 	master->max_speed_hz	= clk_get_rate(sqi->base_clk);
- 	master->dma_alignment	= 32;
- 	master->max_dma_len	= PESQI_BD_BUF_LEN_MAX;
--	master->dev.of_node	= of_node_get(pdev->dev.of_node);
-+	master->dev.of_node	= pdev->dev.of_node;
- 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
- 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
- 	master->flags		= SPI_MASTER_HALF_DUPLEX;
--- 
-2.7.4
+I would have combined this with the next patch so the software fallback
+would be in place when the ability to turn it on is added.
+
+Jonathan
+> ---
+>  include/linux/spi/spi.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index d698f9db3484..7bb36145e2ba 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -163,6 +163,7 @@ struct spi_device {
+>  #define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
+>  #define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
+>  #define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
+> +#define SPI_CS_WORD	0x1000			/* toggle cs after each word */
+>  	int			irq;
+>  	void			*controller_state;
+>  	void			*controller_data;
+> @@ -177,7 +178,6 @@ struct spi_device {
+>  	 * the controller talks to each chip, like:
+>  	 *  - memory packing (12 bit samples into low bits, others zeroed)
+>  	 *  - priority
+> -	 *  - drop chipselect after each word
+>  	 *  - chipselect delays
+>  	 *  - ...
+>  	 */

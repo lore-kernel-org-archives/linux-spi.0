@@ -1,55 +1,55 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Gracefully handle power supplies with disabled PM
-Date: Mon, 17 Sep 2018 17:27:32 +0100
-Message-ID: <20180917162732.GA2471@sirena.org.uk>
-References: <20180917121041.21084-1-lkundrak@v3.sk>
+Subject: Re: [PATCH v2 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
+ Controller
+Date: Mon, 17 Sep 2018 10:57:53 -0700
+Message-ID: <20180917175753.GE2471@sirena.org.uk>
+References: <20180917113559.11101-1-lkundrak@v3.sk>
+ <20180917113559.11101-2-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+        protocol="application/pgp-signature"; boundary="7LkOrbQMr4cezO2T"
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
 To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180917121041.21084-1-lkundrak@v3.sk>
+In-Reply-To: <20180917113559.11101-2-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---fdj2RfSjLxBAspz7
+--7LkOrbQMr4cezO2T
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 17, 2018 at 02:10:41PM +0200, Lubomir Rintel wrote:
-> This allows use of SPI when power management is disables, such as on
-> early boot;
->=20
-> See also: commit 31eb74318054 ("PM / runtime: Fix handling of suppliers
-> with disabled runtime PM")
+On Mon, Sep 17, 2018 at 01:35:55PM +0200, Lubomir Rintel wrote:
+> This is the SPI controller found on Marvel MMP2 and perhaps more
+> platforms.
 
->  	if (!was_busy && ctlr->auto_runtime_pm) {
->  		ret =3D pm_runtime_get_sync(ctlr->dev.parent);
-> -		if (ret < 0) {
-> +		if (ret < 0 && ret !=3D -EACCES) {
+I'm missing patches 2 and 5 from this series.  What's going on with
+them, are there any dependencies?
 
-No, this is not at all clever.  If the device uses runtime PM and
-doesn't get resumed then there is every likelyhood that the device won't
-even be clocked.  If users want to disable power management it's going
-to need rather more work than just setting a flag.
+> Changes since v1:
+> - s/ssp@d4035000/spi@d4035000/
 
---fdj2RfSjLxBAspz7
+As covered in SubmittingPatches please put inter-version changelogs
+after the --- so they don't end up in the commits.
+
+--7LkOrbQMr4cezO2T
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluf1fEACgkQJNaLcl1U
-h9BnAggAhCJvRzvP5akGwvZ8hcI7I9qnNqdd91sGNeEAKNCjDvOwu6Ctzdf2ijIN
-uAYTMmflw9KO9sJm+4rVdDvrlYCKXZtriVrNiRFOEy4O2t2v1SAWTwXhVcqMM0Bc
-Th5FLvjJjHZ+nKqbjx/WtNa2sQKBIqxbz143Ze4fZCa1eRlt4zR3IieeImGPiw4l
-MUOE7gaNTsIxEeyYeipe/tVWElh8sqK4TrVcwdVaScl5IQAMtUWv6q8x+80jPv4i
-o1IzggtxS+eyS1K6/Kf9iksxe34sbfVMGAY9tQsF7IOkJl0CAa53djV90LrTS/YY
-/8zdIQBgvKjXYSvl/c8OCuNT/+vHSg==
-=zyyw
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluf6yAACgkQJNaLcl1U
+h9DOQAf8Cv3fHKVpMtxvJzFX3pBXWcxF+8T6rJK1pzP5vPMEtdwL+liUyN2xbcyn
+sa3gE6JVmJ5EdBSFX+GiAw0iCPobbIlTV+k4a1ggJIAuRM94LD/cIgcCbSxFW8/S
+wskVlYdpdBlc2zis+99q7LAGVFnvbdQOe58PU4ZHRzlWSL3BGRitwL0lVrSvm3Yn
+AK3AT+EO4/U9gPntJDnNHlEZFdPXEA+ji7Y1OFrx3x54QgTxjlXSnY/1MT2tlb6q
+WUTtrcWBVVijOU3pZPUmgQTBEdekclIbjrfJZsZiIdcGBC5Msd1R6QP/yvp0tMGL
+radg15LAoOSaw66F8Qf0lOMaG0lZzQ==
+=g2nQ
 -----END PGP SIGNATURE-----
 
---fdj2RfSjLxBAspz7--
+--7LkOrbQMr4cezO2T--

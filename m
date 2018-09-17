@@ -1,7 +1,7 @@
 From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v2 3/5] arm64: dts: lx2160a: add FlexSPI node property
-Date: Mon, 17 Sep 2018 15:18:28 +0530
-Message-ID: <1537177710-9379-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v2 5/5] MAINTAINERS: add maintainers for the NXP FlexSPI driver
+Date: Mon, 17 Sep 2018 15:18:30 +0530
+Message-ID: <1537177710-9379-6-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1537177710-9379-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,75 +17,32 @@ In-Reply-To: <1537177710-9379-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add fspi node property for LX2160A SoC for FlexSPI driver.
-Property added for the FlexSPI controller and for the connected
-slave device for the LX2160ARDB target.
-This is having two SPI-NOR flash device, mt35xu512aba, connected
-at CS0 and CS1.
+Add maintainers for the NXP FlexSPI driver
 
 Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 ---
 Changes for v2:
-- Incorporated Shawn review comments.
+- None.
 
- arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts | 22 ++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi    | 12 ++++++++++++
- 2 files changed, 34 insertions(+)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-index 70fad20..a320b37 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-@@ -32,6 +32,28 @@
- 	status = "okay";
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9d5eeff..2696898 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10228,6 +10228,12 @@ L:	linux-nfc@lists.01.org (moderated for non-subscribers)
+ S:	Supported
+ F:	drivers/nfc/nxp-nci
  
-+&fspi {
-+	status = "okay";
++NXP FSPI DRIVER
++M:	Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	drivers/spi/spi-nxp-fspi.c
 +
-+	mt35xu512aba0: flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "spansion,m25p80";
-+		m25p,fast-read;
-+		spi-max-frequency = <20000000>;
-+		reg = <0>;
-+	};
-+
-+	mt35xu512aba1: flash@1 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "spansion,m25p80";
-+		m25p,fast-read;
-+		spi-max-frequency = <20000000>;
-+		reg = <1>;
-+	};
-+};
-+
- &i2c0 {
- 	status = "okay";
- 	pca9547@77 {
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index e35e494..bd2d606 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -568,5 +568,17 @@
- 			timeout-sec = <30>;
- 		};
- 
-+		fspi: flexspi@20c0000 {
-+			compatible = "nxp,lx2160a-fspi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x0 0x20c0000 0x0 0x10000>,
-+				<0x0 0x20000000 0x0 0x10000000>;
-+			reg-names = "fspi_base", "fspi_mmap";
-+			interrupts = <0 25 0x4>; /* Level high type */
-+			clocks = <&clockgen 4 3>, <&clockgen 4 3>;
-+			clock-names = "fspi_en", "fspi";
-+			status = "disabled";
-+		};
- 	};
- };
+ OBJTOOL
+ M:	Josh Poimboeuf <jpoimboe@redhat.com>
+ M:	Peter Zijlstra <peterz@infradead.org>
 -- 
 2.7.4

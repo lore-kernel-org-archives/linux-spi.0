@@ -1,7 +1,7 @@
 From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v2 4/5] arm64: defconfig: enable NXP FlexSPI driver
-Date: Mon, 17 Sep 2018 15:18:29 +0530
-Message-ID: <1537177710-9379-5-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v2 2/5] dt-bindings: spi: add binding file for NXP FlexSPI controller
+Date: Mon, 17 Sep 2018 15:18:27 +0530
+Message-ID: <1537177710-9379-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1537177710-9379-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,27 +17,64 @@ In-Reply-To: <1537177710-9379-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable driver support of NXP FlexSPI controller.
+Add binding file for NXP FlexSPI controller
 
 Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 ---
 Changes for v2:
-- None.
+- Incorporated Rob review comments.
 
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 42 ++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 3cfa8ca..75ceddf 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -335,6 +335,7 @@ CONFIG_SPI_QUP=y
- CONFIG_SPI_ROCKCHIP=y
- CONFIG_SPI_S3C64XX=y
- CONFIG_SPI_SPIDEV=m
-+CONFIG_SPI_NXP_FLEXSPI=y
- CONFIG_SPMI=y
- CONFIG_PINCTRL_IPQ8074=y
- CONFIG_PINCTRL_SINGLE=y
+diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+new file mode 100644
+index 0000000..94b5203
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+@@ -0,0 +1,42 @@
++* NXP Flex Serial Peripheral Interface (FSPI)
++
++Required properties:
++  - compatible : Should be "nxp,lx2160a-fspi"
++  - reg :        First contains the register location and length,
++                 Second contains the memory mapping address and length
++  - reg-names :  Should contain the resource reg names:
++                 - fspi_base: configuration register address space
++                 - fspi_mmap: memory mapped address space
++  - interrupts : Should contain the interrupt for the device
++
++Optional properties:
++  - big-endian : See common-properties.txt.
++
++Required SPI slave node properties:
++  - reg :        There are two buses (A and B) with two chip selects each.
++                 This encodes to which bus and CS the flash is connected:
++                 - <0>: Bus A, CS 0
++                 - <1>: Bus A, CS 1
++                 - <2>: Bus B, CS 0
++                 - <3>: Bus B, CS 1
++
++Example showing the usage of two SPI NOR slave devices on bus A:
++
++fspi@0: flexspi@20c0000 {
++	compatible = "nxp,lx2160a-fspi";
++	reg = <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0 0x10000000>;
++	reg-names = "fspi_base", "fspi_mmap";
++	interrupts = <0 25 0x4>; /* Level high type */
++	clocks = <&clockgen 4 3>, <&clockgen 4 3>;
++	clock-names = "fspi_en", "fspi";
++
++	flash@0: mt35xu512aba@0 {
++		reg = <0>;
++		....
++	};
++
++	flash@1: mt35xu512aba@1 {
++		reg = <1>;
++		....
++	};
++};
 -- 
 2.7.4

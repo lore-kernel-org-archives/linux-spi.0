@@ -1,12 +1,11 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH v2 5/5] DT: marvell,mmp2: Add SSP1 and SSP3
-Date: Mon, 17 Sep 2018 13:35:59 +0200
-Message-ID: <20180917113559.11101-6-lkundrak@v3.sk>
+Subject: [PATCH v2 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI Controller
+Date: Mon, 17 Sep 2018 13:35:55 +0200
+Message-ID: <20180917113559.11101-2-lkundrak@v3.sk>
 References: <20180917113559.11101-1-lkundrak@v3.sk>
 Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
         linux-spi@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
 To: linux-kernel@vger.kernel.org
@@ -15,56 +14,51 @@ In-Reply-To: <20180917113559.11101-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There seem to be SSP2, SSP4 and perhaps SSP5 too, but Marvel keeps their
-base addresses secret.
+This is the SPI controller found on Marvel MMP2 and perhaps more
+platforms.
 
-The SSP1 and SSP3 addresses were taken from OLPC 1.75, OpenFirmware and
-kernel respectively.
+Changes since v1:
+- s/ssp@d4035000/spi@d4035000/
 
-Cc: Eric Miao <eric.y.miao@gmail.com>
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
 Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- arch/arm/boot/dts/mmp2.dtsi | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ .../devicetree/bindings/spi/spi-pxa2xx.txt    | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
 
-diff --git a/arch/arm/boot/dts/mmp2.dtsi b/arch/arm/boot/dts/mmp2.dtsi
-index 766bbb8495b6..ba55d6483ed0 100644
---- a/arch/arm/boot/dts/mmp2.dtsi
-+++ b/arch/arm/boot/dts/mmp2.dtsi
-@@ -18,6 +18,8 @@
- 		serial3 = &uart4;
- 		i2c0 = &twsi1;
- 		i2c1 = &twsi2;
-+		spi0 = &ssp1;
-+		spi3 = &ssp3;
- 	};
- 
- 	soc {
-@@ -239,6 +241,22 @@
- 				resets = <&soc_clocks MMP2_CLK_RTC>;
- 				status = "disabled";
- 			};
+diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+new file mode 100644
+index 000000000000..0335a9bd2e8a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+@@ -0,0 +1,24 @@
++PXA2xx SSP SPI Controller
 +
-+			ssp1: ssp@d4035000 {
-+				compatible = "marvell,mmp2-ssp";
-+				reg = <0xd4035000 0x1000>;
-+				clocks = <&soc_clocks MMP2_CLK_SSP0>;
-+				interrupts = <0>;
-+				status = "disabled";
-+			};
++Required properties:
++- compatible: Must be "marvell,mmp2-ssp".
++- reg: Offset and length of the device's register set.
++- interrupts: Should be the interrupt number.
++- clocks: Should contain a single entry describing the clock input.
++- #address-cells:  Number of cells required to define a chip select address.
++- #size-cells: Should be zero.
 +
-+			ssp3: ssp@d4037000 {
-+				compatible = "marvell,mmp2-ssp";
-+				reg = <0xd4037000 0x1000>;
-+				clocks = <&soc_clocks MMP2_CLK_SSP2>;
-+				interrupts = <20>;
-+				status = "disabled";
-+			};
- 		};
- 
- 		soc_clocks: clocks{
++Optional properties:
++- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
++  Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Child nodes represent devices on the SPI bus
++  See ../spi/spi-bus.txt
++
++Example:
++	ssp1: spi@d4035000 {
++		compatible = "marvell,mmp2-ssp";
++		reg = <0xd4035000 0x1000>;
++		clocks = <&soc_clocks MMP2_CLK_SSP0>;
++		interrupts = <0>;
++	};
 -- 
 2.17.1

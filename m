@@ -1,57 +1,51 @@
-From: David Lechner <david@lechnology.com>
-Subject: Re: [PATCH v2 3/4] iio: adc: ti-ads7950: use SPI_CS_WORD to reduce
- CPU usage
-Date: Sun, 16 Sep 2018 11:24:16 -0500
-Message-ID: <b8b6201c-3574-d383-e3e8-9f162206e505@lechnology.com>
-References: <20180913003920.30600-1-david@lechnology.com>
- <20180913003920.30600-4-david@lechnology.com>
- <20180916124110.4edfad9d@archlinux>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH v3 0/3] Add Mediatek SPI slave driver
+Date: Mon, 17 Sep 2018 10:19:19 +0800
+Message-ID: <1537150762-7072-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-To: Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <yt.shen@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180916124110.4edfad9d@archlinux>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/16/2018 06:41 AM, Jonathan Cameron wrote:
-> On Wed, 12 Sep 2018 19:39:19 -0500
-> David Lechner <david@lechnology.com> wrote:
-> 
->> This changes how the SPI message for the triggered buffer is setup in
->> the TI ADS7950 A/DC driver. By using the SPI_CS_WORD flag, we can read
->> multiple samples in a single SPI transfer. If the SPI controller
->> supports DMA transfers, we can see a significant reduction in CPU usage.
->>
->> For example, on an ARM9 system running at 456MHz reading just 4 channels
->> at 100Hz: before this change, top shows the CPU usage of the IRQ thread
->> of this driver to be ~7.7%. After this change, the CPU usage drops to
->> ~3.8%.
->>
->> Signed-off-by: David Lechner <david@lechnology.com>
-> 
-> Hi David,
-> 
-> I've managed to forget why we are changing any of the endian related code
-> at all.  The change SPI_CS_WORD result in changes between words which is
-> fine but it doesn't change any ordering within words?  So as such why
-> do we no longer need to do the big endian conversions?
-> 
+>From 82bced99683343899dea4634452940b15d6374eb Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu@mediatek.com>
+Date: Mon, 17 Sep 2018 10:07:45 +0800
+Subject: [PATCH v3 0/3] Add Mediatek SPI slave driver
 
-The big-endian stuff was cargo culted from another driver when this driver
-was originally written. It used an SPI word size of 8 bits and big-endian
-byte ordering to effectively emulate 16 bit words.
+v3:
+1. Fix Rob Herring review comment about bindings.
+2. remove unused variables in driver.
 
-Now, in order to inject a CS toggle between each word, we need to use the
-correct word size, otherwise we would get a CS toggle half way through
-each word 16-bit. The SPI subsystem uses CPU byte ordering for multi-byte
-words. So, the data we get back from the SPI is going to be CPU endian now
-no matter what. Converting that to big endian will just add overhead on
-little endian systems.
+v2:
+1. Fix Sean Wang review comment.
+2. remove unused register and offset define.
+3. update bindings file with assigned-clocks and assigned-clocks-parents.
+
+v1:
+This series are based on 4.19-rc1 and provide three patches to add mediatek spi slave driver.
+
+Leilk Liu (3):
+  spis: mediatek: add bindings for Mediatek MT2712 soc platform
+  spis: mediatek: add spi slave for Mediatek MT2712
+  arm64: dts: Add spi slave dts
+
+ .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |  32 ++
+ arch/arm64/boot/dts/mediatek/mt2712e.dtsi          |  11 +
+ drivers/spi/Kconfig                                |   8 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-slave-mt27xx.c                     | 553 +++++++++++++++++++++
+ 5 files changed, 605 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+ create mode 100644 drivers/spi/spi-slave-mt27xx.c
+
+-- 
+1.9.1

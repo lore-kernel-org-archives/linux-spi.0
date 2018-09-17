@@ -1,55 +1,75 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
- Controller
-Date: Mon, 17 Sep 2018 10:57:53 -0700
-Message-ID: <20180917175753.GE2471@sirena.org.uk>
-References: <20180917113559.11101-1-lkundrak@v3.sk>
- <20180917113559.11101-2-lkundrak@v3.sk>
+Subject: Re: [PATCH v2 0/4] spi: introduce SPI_CS_WORD mode flag
+Date: Mon, 17 Sep 2018 14:17:19 -0700
+Message-ID: <20180917211719.GG2471@sirena.org.uk>
+References: <20180913003920.30600-1-david@lechnology.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7LkOrbQMr4cezO2T"
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-To: Lubomir Rintel <lkundrak@v3.sk>
+        protocol="application/pgp-signature"; boundary="+sHJum3is6Tsg7/J"
+Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org
+To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180917113559.11101-2-lkundrak@v3.sk>
+In-Reply-To: <20180913003920.30600-1-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---7LkOrbQMr4cezO2T
+--+sHJum3is6Tsg7/J
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Sep 17, 2018 at 01:35:55PM +0200, Lubomir Rintel wrote:
-> This is the SPI controller found on Marvel MMP2 and perhaps more
-> platforms.
+On Wed, Sep 12, 2018 at 07:39:16PM -0500, David Lechner wrote:
+> This series introduces a new SPI mode flag, SPI_CS_WORD, that indicates that
+> the chip select line should be toggled after each word sent. This series
+> includes examples of how this can be implemented for both an SPI controller
+> and an SPI device.
 
-I'm missing patches 2 and 5 from this series.  What's going on with
-them, are there any dependencies?
+The following changes since commit 5b394b2ddf0347bef56e50c69a58773c94343ff3:
 
-> Changes since v1:
-> - s/ssp@d4035000/spi@d4035000/
+  Linux 4.19-rc1 (2018-08-26 14:11:59 -0700)
 
-As covered in SubmittingPatches please put inter-version changelogs
-after the --- so they don't end up in the commits.
+are available in the Git repository at:
 
---7LkOrbQMr4cezO2T
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-cs-word
+
+for you to fetch changes up to cbaa62e0094a840fecc853910e0c0454529cec03:
+
+  spi: add software implementation for SPI_CS_WORD (2018-09-17 14:14:18 -0700)
+
+----------------------------------------------------------------
+spi: Provide SPI_CS_WORD
+
+This provides a SPI operation mode which changes chip select after every
+word, used by some devices such as ADCs and DACs.
+
+----------------------------------------------------------------
+David Lechner (2):
+      spi: add new SPI_CS_WORD flag
+      spi: add software implementation for SPI_CS_WORD
+
+ drivers/spi/spi.c       | 31 ++++++++++++++++++++++++++++++-
+ include/linux/spi/spi.h |  2 +-
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+--+sHJum3is6Tsg7/J
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluf6yAACgkQJNaLcl1U
-h9DOQAf8Cv3fHKVpMtxvJzFX3pBXWcxF+8T6rJK1pzP5vPMEtdwL+liUyN2xbcyn
-sa3gE6JVmJ5EdBSFX+GiAw0iCPobbIlTV+k4a1ggJIAuRM94LD/cIgcCbSxFW8/S
-wskVlYdpdBlc2zis+99q7LAGVFnvbdQOe58PU4ZHRzlWSL3BGRitwL0lVrSvm3Yn
-AK3AT+EO4/U9gPntJDnNHlEZFdPXEA+ji7Y1OFrx3x54QgTxjlXSnY/1MT2tlb6q
-WUTtrcWBVVijOU3pZPUmgQTBEdekclIbjrfJZsZiIdcGBC5Msd1R6QP/yvp0tMGL
-radg15LAoOSaw66F8Qf0lOMaG0lZzQ==
-=g2nQ
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlugGd4ACgkQJNaLcl1U
+h9DJIgf/f4joAEfsig+UrOY9kHMRYVZQQFoCjDDAefcaga6TIqBd+4x5xuZQImCY
+inytWF9nN4fkhmdlYAS1yDBSFQJveVIRS26W6A0qPZFJ1ZcIE7DAbcfZ6E5orXlD
+lTNn3SbkZWUDEw2TCSbMvgRPBvIvvaKQW1sqomZTM5Em6IivdRoQRpzR8E6V6oZL
+ThWQ/ApRuVKjdfzz1cho02XDGnPUX+3/AszMIsymBXjRnF+FkViQf+Wz+lvIweeR
+14IJVEdYn1ZeAFKOihoVpGKf0TO4CtviaFYCuAtbmvX6UwLjsz0FpWuA8L4NExVj
+4M06Dc8gbeMtjZT1YF7lia4ShuRNbw==
+=mNnI
 -----END PGP SIGNATURE-----
 
---7LkOrbQMr4cezO2T--
+--+sHJum3is6Tsg7/J--

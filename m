@@ -1,81 +1,35 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
- Controller
-Date: Sun, 16 Sep 2018 22:00:14 -0500
-Message-ID: <5b9f3f71.1c69fb81.46bcf.b351@mx.google.com>
-References: <20180910115935.163121-1-lkundrak@v3.sk>
- <20180910115935.163121-2-lkundrak@v3.sk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Eric Miao <eric.y.miao@gmail.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Daniel Mack <daniel@zonque.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20180910115935.163121-2-lkundrak@v3.sk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: masonccyang@mxic.com.tw
+Subject: [PATCH 0/2] spi: Add Macronix controller driver
+Date: Mon, 17 Sep 2018 15:16:17 +0800
+Message-ID: <1537168579-31593-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: boris.brezillon@bootlin.com, juliensu@mxic.com.tw,
+        zhengxunli@mxic.com.tw, masonccyang@mxic.com.tw
+To: broonie@kernel.org, tpiepho@impinj.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 10, 2018 at 01:59:31PM +0200, Lubomir Rintel wrote:
-> This is the SPI controller found on Marvel MMP2 and perhaps more
-> platforms.
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> ---
->  .../devicetree/bindings/spi/spi-pxa2xx.txt    | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-> new file mode 100644
-> index 000000000000..75be87cf9909
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-> @@ -0,0 +1,24 @@
-> +PXA2xx SSP SPI Controller
-> +
-> +Required properties:
-> +- compatible: Must be "marvell,mmp2-ssp".
-> +- reg: Offset and length of the device's register set.
-> +- interrupts: Should be the interrupt number.
-> +- clocks: Should contain a single entry describing the clock input.
-> +- #address-cells:  Number of cells required to define a chip select address.
-> +- #size-cells: Should be zero.
-> +
-> +Optional properties:
-> +- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
-> +  Documentation/devicetree/bindings/spi/spi-bus.txt
-> +
-> +Child nodes represent devices on the SPI bus
-> +  See ../spi/spi-bus.txt
-> +
-> +Example:
-> +	ssp1: ssp@d4035000 {
+From: Mason Yang <masonccyang@mxic.com.tw>
 
-spi@...
+Hi Mark and Trent,
 
-Otherwise,
+I patched spi-mxic.c and add the run time PM function.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+thanks & best regards,
+Mason
 
-> +		compatible = "marvell,mmp2-ssp";
-> +		reg = <0xd4035000 0x1000>;
-> +		clocks = <&soc_clocks MMP2_CLK_SSP0>;
-> +		interrupts = <0>;
-> +	};
-> -- 
-> 2.17.1
-> 
+Mason Yang (2):
+  spi: Add MXIC controller driver
+  dt-binding: spi: Document Macronix controller bindings
+
+ Documentation/devicetree/bindings/spi/spi-mxic.txt |  34 ++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-mxic.c                             | 674 +++++++++++++++++++++
+ 4 files changed, 715 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mxic.txt
+ create mode 100644 drivers/spi/spi-mxic.c
+
+-- 
+1.9.1

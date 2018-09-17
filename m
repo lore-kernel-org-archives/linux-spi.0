@@ -1,16 +1,44 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH v2 0/5] Make SPI work on DT MMP2
-Date: Mon, 17 Sep 2018 13:35:54 +0200
-Message-ID: <20180917113559.11101-1-lkundrak@v3.sk>
+Subject: [PATCH v2 2/5] PCI: Provide pci_match_id() with CONFIG_PCI=n
+Date: Mon, 17 Sep 2018 13:35:56 +0200
+Message-ID: <20180917113559.11101-3-lkundrak@v3.sk>
+References: <20180917113559.11101-1-lkundrak@v3.sk>
 Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org
+        linux-spi@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>
 To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180917113559.11101-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This makes SPI work on an OPLC 1.75 that is a DT MMP2 platform.
-Changes since v1 are cosmetic, describe in individual patches.
+This spares drivers from #ifdef-ing on CONFIG_PCI if the driver can be
+optionally built on machines without PCI bus.
 
-Thanks,
-Lubo
+Consistent with acpi_driver_match_device() and similar.
+
+Changes since v1:
+- Capitalization in the commit message
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+---
+ include/linux/pci.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 6925828f9f25..2c4755032475 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1705,6 +1705,10 @@ static inline int pci_irqd_intx_xlate(struct irq_domain *d,
+ 				      unsigned long *out_hwirq,
+ 				      unsigned int *out_type)
+ { return -EINVAL; }
++
++static inline const struct pci_device_id *pci_match_id(const struct pci_device_id *ids,
++							 struct pci_dev *dev)
++{ return NULL; }
+ #endif /* CONFIG_PCI */
+ 
+ /* Include architecture-dependent settings and functions */
+-- 
+2.17.1

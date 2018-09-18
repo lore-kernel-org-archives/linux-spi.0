@@ -1,59 +1,62 @@
-From: David Lechner <david@lechnology.com>
-Subject: Re: [PATCH 3/3] iio: adc: ti-ads7950: use SPI_CS_WORD to reduce CPU
- usage
-Date: Tue, 18 Sep 2018 12:14:50 -0500
-Message-ID: <7a70711c-5d38-5ba6-ec90-b2506dc0727d@lechnology.com>
-References: <20180918170850.2749-1-david@lechnology.com>
- <20180918170850.2749-4-david@lechnology.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
+ Controller
+Date: Tue, 18 Sep 2018 10:43:03 -0700
+Message-ID: <20180918174303.GU2471@sirena.org.uk>
+References: <20180917113559.11101-1-lkundrak@v3.sk>
+ <20180917113559.11101-2-lkundrak@v3.sk>
+ <20180917175753.GE2471@sirena.org.uk>
+ <54f5d070c8b0615baa26983e97e2a22401973096.camel@v3.sk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org
-To: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4WCFFtl4AQpQKunj"
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180918170850.2749-4-david@lechnology.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <54f5d070c8b0615baa26983e97e2a22401973096.camel@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/18/2018 12:08 PM, David Lechner wrote:
-> This changes how the SPI message for the triggered buffer is setup in
-> the TI ADS7950 A/DC driver. By using the SPI_CS_WORD flag, we can read
-> multiple samples in a single SPI transfer. If the SPI controller
-> supports DMA transfers, we can see a significant reduction in CPU usage.
-> 
-> For example, on an ARM9 system running at 456MHz reading just 4 channels
-> at 100Hz: before this change, top shows the CPU usage of the IRQ thread
-> of this driver to be ~7.7%. After this change, the CPU usage drops to
-> ~3.8%.
-> 
-> The use of big-endian for the raw data was cargo culted from another
-> driver when this driver was originally written. It used an SPI word size
-> of 8 bits and big-endian byte ordering to effectively emulate 16 bit
-> words.
-> 
-> Now, in order to inject a CS toggle between each word, we need to use
-> the correct word size, otherwise we would get a CS toggle half way
-> through each word 16-bit. The SPI subsystem uses CPU byte ordering for
-> multi-byte words. So, the data we get back from the SPI is going to be
-> CPU endian now no matter what. Converting that to big endian will just
-> add overhead on little endian systems so we opt to change the raw data
-> format from big endian to CPU endian.
-> 
-> There is a small risk that this could break some lazy userspace programs
-> that use the raw data without checking the data format. We can address
-> this if/when it actually comes up.
-> 
-> Signed-off-by: David Lechner <david@lechnology.com>
-> ---
 
-And I just realized I forgot to pick up...
+--4WCFFtl4AQpQKunj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Tue, Sep 18, 2018 at 02:15:12PM +0200, Lubomir Rintel wrote:
+> On Mon, 2018-09-17 at 10:57 -0700, Mark Brown wrote:
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Changes since v1:
+> > > - s/ssp@d4035000/spi@d4035000/
+
+> > As covered in SubmittingPatches please put inter-version changelogs
+> > after the --- so they don't end up in the commits.
+
+> Will do. I was actually not sure about that, so I took a short look at
+> the git log, and it seemed to me that commit messages with the
+> changelogs are quite common.
+
+For various reasons the drm subsystem explicitly does the opposite
+thing and it does leak out in other places (eg, when someone does it and
+then it doesn't get fixed up), it's a bit unfortunate that there's some
+divergence here.
+
+--4WCFFtl4AQpQKunj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluhOSYACgkQJNaLcl1U
+h9AHkgf/cCVVEd+WCSVik9ryhlUhC1/wAgNrQri8wZDg/H5Ljb+1eVnzdtry1IHU
+7sarVWP9dxDqyBro75/ECWPrB6+JEtOJ890j6eyf/4gpBjqSip0/4AKEBAT8ormp
+wL4CSLpyCQhzOkeOKXVHS5la+tUFvbzcstJnzDl4hT6FoOFEJ3zPnOZOvBw3+HNT
+zbcI3SiHIR+Mpp92Mn+ZhEA8tCDrSUyGMUXYxPlGMIT+0+wYdlubXDWFCQOrPQIm
+VSe+0t7pM5yHPMWDkpUm00mFR3Q0LEGtsMpIAnkxu2yzYQyBC/TtV5ajoCkmqdJN
+XXtDt31ZU8YSXyMeSw7Oh9XLEOdJZA==
+=/CR4
+-----END PGP SIGNATURE-----
+
+--4WCFFtl4AQpQKunj--

@@ -1,62 +1,81 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/5] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
- Controller
-Date: Tue, 18 Sep 2018 10:43:03 -0700
-Message-ID: <20180918174303.GU2471@sirena.org.uk>
-References: <20180917113559.11101-1-lkundrak@v3.sk>
- <20180917113559.11101-2-lkundrak@v3.sk>
- <20180917175753.GE2471@sirena.org.uk>
- <54f5d070c8b0615baa26983e97e2a22401973096.camel@v3.sk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4WCFFtl4AQpQKunj"
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-To: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Applied "spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio" to the spi tree
+Date: Tue, 18 Sep 2018 18:45:49 +0100 (BST)
+Message-ID: <20180918174549.DE9B4440078@finisterre.ee.mobilebroadband>
+References: <20180918170850.2749-3-david@lechnology.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <54f5d070c8b0615baa26983e97e2a22401973096.camel@v3.sk>
+In-Reply-To: <20180918170850.2749-3-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---4WCFFtl4AQpQKunj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio
 
-On Tue, Sep 18, 2018 at 02:15:12PM +0200, Lubomir Rintel wrote:
-> On Mon, 2018-09-17 at 10:57 -0700, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > > Changes since v1:
-> > > - s/ssp@d4035000/spi@d4035000/
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > As covered in SubmittingPatches please put inter-version changelogs
-> > after the --- so they don't end up in the commits.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Will do. I was actually not sure about that, so I took a short look at
-> the git log, and it seemed to me that commit messages with the
-> changelogs are quite common.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-For various reasons the drm subsystem explicitly does the opposite
-thing and it does leak out in other places (eg, when someone does it and
-then it doesn't get fixed up), it's a bit unfortunate that there's some
-divergence here.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---4WCFFtl4AQpQKunj
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluhOSYACgkQJNaLcl1U
-h9AHkgf/cCVVEd+WCSVik9ryhlUhC1/wAgNrQri8wZDg/H5Ljb+1eVnzdtry1IHU
-7sarVWP9dxDqyBro75/ECWPrB6+JEtOJ890j6eyf/4gpBjqSip0/4AKEBAT8ormp
-wL4CSLpyCQhzOkeOKXVHS5la+tUFvbzcstJnzDl4hT6FoOFEJ3zPnOZOvBw3+HNT
-zbcI3SiHIR+Mpp92Mn+ZhEA8tCDrSUyGMUXYxPlGMIT+0+wYdlubXDWFCQOrPQIm
-VSe+0t7pM5yHPMWDkpUm00mFR3Q0LEGtsMpIAnkxu2yzYQyBC/TtV5ajoCkmqdJN
-XXtDt31ZU8YSXyMeSw7Oh9XLEOdJZA==
-=/CR4
------END PGP SIGNATURE-----
+>From f34ecdbd5661816ce8bbd7511f33181ffa8f4895 Mon Sep 17 00:00:00 2001
+From: David Lechner <david@lechnology.com>
+Date: Tue, 18 Sep 2018 12:08:49 -0500
+Subject: [PATCH] spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio
 
---4WCFFtl4AQpQKunj--
+This remove the check and subsequent return of error for the case when
+a SPI device requires SPI_CS_WORD and is also configured to use a GPIO
+for the CS line.
+
+Commit a134cc414e86 ("spi: always use software fallback for SPI_CS_WORD
+when using cs_gio") handles this case now, so this check is no longer
+necessary.
+
+Signed-off-by: David Lechner <david@lechnology.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-davinci.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 205f763c7383..56adec83f8fc 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -441,9 +441,6 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 
+ 		if (internal_cs) {
+ 			set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
+-		} else if (spi->mode & SPI_CS_WORD) {
+-			dev_err(&spi->dev, "SPI_CS_WORD can't be use with GPIO CS\n");
+-			return -EINVAL;
+ 		}
+ 	}
+ 
+-- 
+2.19.0

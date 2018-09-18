@@ -1,9 +1,9 @@
 From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH V4 1/4] dt-bindings: soc: qcom: Remove SPI controller
- maximum frequency binding
-Date: Tue, 18 Sep 2018 13:11:01 -0700
-Message-ID: <CAD=FV=URrgXgSOmh-_FXGxH7oZmmKBoPSz3EYx6K9Wr6i38gcQ@mail.gmail.com>
-References: <1537294047-12093-1-git-send-email-dkota@codeaurora.org> <1537294047-12093-2-git-send-email-dkota@codeaurora.org>
+Subject: Re: [PATCH V4 2/4] dt-bindings: soc: qcom: GENI SE SPI controller
+ device tree binding
+Date: Tue, 18 Sep 2018 13:11:13 -0700
+Message-ID: <CAD=FV=VJesdkPuHmg8qSfkM284aC36Gq9OdbeJFTtpwGqtuEmg@mail.gmail.com>
+References: <1537294047-12093-1-git-send-email-dkota@codeaurora.org> <1537294047-12093-3-git-send-email-dkota@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Stephen Boyd <swboyd@chromium.org>,
@@ -20,22 +20,24 @@ Cc: Stephen Boyd <swboyd@chromium.org>,
         devicetree@vger.kernel.org
 To: Dilip Kota <dkota@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1537294047-12093-2-git-send-email-dkota@codeaurora.org>
+In-Reply-To: <1537294047-12093-3-git-send-email-dkota@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi,
-
 On Tue, Sep 18, 2018 at 11:08 AM Dilip Kota <dkota@codeaurora.org> wrote:
 >
-> SPI controller driver should maintain the maximum frequency
-> of the controller instead of relying on device tree bindings.
-> Because maximum frequency is specific property of SPI
-> controller.
+> Move GENI SE SPI controller device-tree bindings
+> from devicetree/bindings/soc/qcom/qcom,geni-se.txt
+> to devicetree/bindings/spi/qcom,spi-geni-qcom.txt.
 >
 > Signed-off-by: Dilip Kota <dkota@codeaurora.org>
 > ---
->  Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt | 2 --
->  1 file changed, 2 deletions(-)
+>  .../devicetree/bindings/soc/qcom/qcom,geni-se.txt  | 27 ++-------------
+>  .../devicetree/bindings/spi/qcom,spi-geni-qcom.txt | 39 ++++++++++++++++++++++
+>  2 files changed, 41 insertions(+), 25 deletions(-)
+
+IMO this matches what Mark Brown requested in a previous email and
+seems like a good idea.
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>

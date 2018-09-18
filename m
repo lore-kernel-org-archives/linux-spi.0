@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio" to the spi tree
-Date: Tue, 18 Sep 2018 18:45:49 +0100 (BST)
-Message-ID: <20180918174549.DE9B4440078@finisterre.ee.mobilebroadband>
-References: <20180918170850.2749-3-david@lechnology.com>
+Subject: Applied "spi: always use software fallback for SPI_CS_WORD when using cs_gio" to the spi tree
+Date: Tue, 18 Sep 2018 18:45:52 +0100 (BST)
+Message-ID: <20180918174552.AAC6D440078@finisterre.ee.mobilebroadband>
+References: <20180918170850.2749-2-david@lechnology.com>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -13,13 +13,13 @@ Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 To: David Lechner <david@lechnology.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180918170850.2749-3-david@lechnology.com>
+In-Reply-To: <20180918170850.2749-2-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio
+   spi: always use software fallback for SPI_CS_WORD when using cs_gio
 
 has been applied to the spi tree at
 
@@ -44,38 +44,43 @@ to this mail.
 Thanks,
 Mark
 
->From f34ecdbd5661816ce8bbd7511f33181ffa8f4895 Mon Sep 17 00:00:00 2001
+>From 71388b21569754ecd36eabd66fd9ca8c6d761fed Mon Sep 17 00:00:00 2001
 From: David Lechner <david@lechnology.com>
-Date: Tue, 18 Sep 2018 12:08:49 -0500
-Subject: [PATCH] spi: spi-davinci: Don't error when SPI_CS_WORD and cs_gpio
+Date: Tue, 18 Sep 2018 12:08:48 -0500
+Subject: [PATCH] spi: always use software fallback for SPI_CS_WORD when using
+ cs_gio
 
-This remove the check and subsequent return of error for the case when
-a SPI device requires SPI_CS_WORD and is also configured to use a GPIO
-for the CS line.
-
-Commit a134cc414e86 ("spi: always use software fallback for SPI_CS_WORD
-when using cs_gio") handles this case now, so this check is no longer
-necessary.
+This modifies the condition for using the software fallback
+implementation for SPI_CS_WORD when the SPI controller is using a GPIO
+for the CS line. When using a GPIO for CS, the hardware implementation
+won't work, so we just enable the software fallback globally in this
+case.
 
 Signed-off-by: David Lechner <david@lechnology.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-davinci.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 205f763c7383..56adec83f8fc 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -441,9 +441,6 @@ static int davinci_spi_setup(struct spi_device *spi)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index be73d236919f..a358acdd98d3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2832,11 +2832,13 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 		return -EINVAL;
  
- 		if (internal_cs) {
- 			set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
--		} else if (spi->mode & SPI_CS_WORD) {
--			dev_err(&spi->dev, "SPI_CS_WORD can't be use with GPIO CS\n");
--			return -EINVAL;
- 		}
- 	}
+ 	/* If an SPI controller does not support toggling the CS line on each
+-	 * transfer (indicated by the SPI_CS_WORD flag), we can emulate it by
++	 * transfer (indicated by the SPI_CS_WORD flag) or we are using a GPIO
++	 * for the CS line, we can emulate the CS-per-word hardware function by
+ 	 * splitting transfers into one-word transfers and ensuring that
+ 	 * cs_change is set for each transfer.
+ 	 */
+-	if ((spi->mode & SPI_CS_WORD) && !(ctlr->mode_bits & SPI_CS_WORD)) {
++	if ((spi->mode & SPI_CS_WORD) && (!(ctlr->mode_bits & SPI_CS_WORD) ||
++					  gpio_is_valid(spi->cs_gpio))) {
+ 		size_t maxsize;
+ 		int ret;
  
 -- 
 2.19.0

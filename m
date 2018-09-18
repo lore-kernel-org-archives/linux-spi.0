@@ -1,74 +1,82 @@
 From: Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH 2/3] ARM: dspi: Provide per DSPI instance of the MCR register (SLAVE mode)
-Date: Tue, 18 Sep 2018 11:34:36 +0200
-Message-ID: <20180918093437.26799-3-lukma@denx.de>
+Subject: Re: [PATCH 0/3] ARM: dspi: Provide slave mode support for Vybryd
+ vf610
+Date: Tue, 18 Sep 2018 11:42:33 +0200
+Message-ID: <20180918114233.0622399c@jawa>
 References: <20180918093437.26799-1-lukma@denx.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/vk1mDwG/8QNvqvfmzq9ddah"; protocol="application/pgp-signature"
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukasz Majewski <lukma@denx.de>
-To: Mark Brown <broonie@kernel.org>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Esben Haabendal <eha@deif.com>,
+        Martin =?UTF-8?B?SHVuZGViw7hsbA==?= <martin@geanix.com>,
+        Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180918093437.26799-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The vf610 Vybryd can work in two DSPI modes - namely master and slave.
-Already we do support master mode.
-This commit serves as a prerequisite to add support for slave mode. For
-slave mode we do need to preserve the MCR register value to change its
-"mode" bit (31) according to the supported state.
+--Sig_/vk1mDwG/8QNvqvfmzq9ddah
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
----
- drivers/spi/spi-fsl-dspi.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+Dear All,
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 7cb3ab0a35a0..472385f0a842 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -126,6 +126,7 @@
- #define DMA_COMPLETION_TIMEOUT	msecs_to_jiffies(3000)
- 
- struct chip_data {
-+	u32 mcr_val;
- 	u32 ctar_val;
- 	u16 void_write_data;
- };
-@@ -696,9 +697,9 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 		else
- 			dspi->bytes_per_word = 4;
- 
--		regmap_update_bits(dspi->regmap, SPI_MCR,
--				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
--				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
-+		regmap_write(dspi->regmap, SPI_MCR, dspi->cur_chip->mcr_val |
-+			     SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
-+
- 		regmap_write(dspi->regmap, SPI_CTAR(0),
- 			     dspi->cur_chip->ctar_val |
- 			     SPI_FRAME_BITS(transfer->bits_per_word));
-@@ -767,6 +768,11 @@ static int dspi_setup(struct spi_device *spi)
- 			return -ENOMEM;
- 	}
- 
-+	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS;
-+
-+	if (dspi->devtype_data->xspi_mode)
-+		chip->mcr_val |= SPI_MCR_XSPI;
-+
- 	pdata = dev_get_platdata(&dspi->pdev->dev);
- 
- 	if (!pdata) {
-@@ -964,8 +970,6 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 
- static void dspi_init(struct fsl_dspi *dspi)
- {
--	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS |
--		     (dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0));
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
- 	if (dspi->devtype_data->xspi_mode)
- 		regmap_write(dspi->regmap, SPI_CTARE(0),
--- 
-2.11.0
+By a mistake I've forgotten to add (to CC/TO) some developers who worked
+on this driver before (they were not generated from get_maintainers.py
+script).
+
+I'm sending the notification now.
+
+> This patch series provides support for DSPI slave mode operation.
+> It tries to maximally reuse current DMA driver (including its
+> limitations).
+>=20
+> For testing the spidev_test program has been used.
+> Test script for this patch can be found here:
+> https://github.com/lmajewski/tests-spi/blob/master/tests/spi/spi_tests.sh
+>=20
+> Lukasz Majewski (3):
+>   dt-bindings: spi: Provide bindings for fsl dspi working in slave
+> mode ARM: dspi: Provide per DSPI instance of the MCR register (SLAVE
+> mode) ARM: dspi: Provide support for DSPI slave more operation (Vybryd
+>     vf610)
+>=20
+>  .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  8 ++++
+>  drivers/spi/spi-fsl-dspi.c                         | 54
+> ++++++++++++++++------ 2 files changed, 49 insertions(+), 13
+> deletions(-)
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+
+--Sig_/vk1mDwG/8QNvqvfmzq9ddah
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlugyIoACgkQAR8vZIA0
+zr2iwwf+JDDXKnvZjSt3h5f4uCKBZ1g48uQLvdPZUdxvlryuUL9ZaXCjaxJ1nQMs
+StKx8nZAQZlAV92Bgr7FdJXX+R7RDb9rRBRUUfKT5Fh1jZHAgMHUTibnyAC43UQO
+0TAUMf1OTFuHUMLmfcgsoOTx3S2MnGGgOJP0vyrn8jkItEk5SVsQuBUAINbzQlNy
+WKI24AQ3PP7NLv63JaGKMwNt049i66On8/RHyzL6uLvIGFMOi3lFGNKxy4FdvsAR
+uG7iXfiHaHxv8kyqnVZL39bXqmzrK7xPKK78sSOAolHmbqq8BZTMdLd9Hawx2ohN
+u+xZSjpW3uLA4VWGFlBbCq4yhhZypg==
+=T+bD
+-----END PGP SIGNATURE-----
+
+--Sig_/vk1mDwG/8QNvqvfmzq9ddah--

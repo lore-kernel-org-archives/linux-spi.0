@@ -1,86 +1,46 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: always use software fallback for SPI_CS_WORD when using cs_gio" to the spi tree
-Date: Tue, 18 Sep 2018 18:45:52 +0100 (BST)
-Message-ID: <20180918174552.AAC6D440078@finisterre.ee.mobilebroadband>
-References: <20180918170850.2749-2-david@lechnology.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: David Lechner <david@lechnology.com>
+From: Dilip Kota <dkota@codeaurora.org>
+Subject: [PATCH V4 0/4] spi-geni-qcom: QUP SPI GENI driver and SPI device tree bindings
+Date: Tue, 18 Sep 2018 23:37:22 +0530
+Message-ID: <1537294047-12093-1-git-send-email-dkota@codeaurora.org>
+Cc: linux-arm-msm@vger.kernel.org, Dilip Kota <dkota@codeaurora.org>
+To: swboyd@chromium.org, dianders@chromium.org, broonie@kernel.org,
+        mka@chromium.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180918170850.2749-2-david@lechnology.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+In this V4 series, submitted changes to remove SPI controller
+max-frquency device tree binding as it is controller
+specific property.
 
-   spi: always use software fallback for SPI_CS_WORD when using cs_gio
+Move the GENI SE SPI controller device tree bindings
+documentation to devicetree/bindings/spi/qcom,spi-geni-qcom.txt.
 
-has been applied to the spi tree at
+Address the reviewer comments to spi-geni-qcom.c in patch-V3.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Adds changes in spi-geni-qcom.c to plugin set_cs API to SPI framework.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Dilip Kota (3):
+  dt-bindings: soc: qcom: Remove SPI controller maximum frequency entry
+  dt-bindings: soc: qcom: GENI SE SPI controller device tree binding
+  spi: spi-geni-qcom: Plugin API to assert and de-assert Chipselect
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Girish Mahadevan (1):
+  spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+ .../devicetree/bindings/soc/qcom/qcom,geni-se.txt  |  29 +-
+ .../devicetree/bindings/spi/qcom,spi-geni-qcom.txt |  39 ++
+ drivers/spi/Kconfig                                |  12 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-geni-qcom.c                        | 680 +++++++++++++++++++++
+ include/linux/spi/spi-geni-qcom.h                  |  14 +
+ 6 files changed, 748 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
+ create mode 100644 drivers/spi/spi-geni-qcom.c
+ create mode 100644 include/linux/spi/spi-geni-qcom.h
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 71388b21569754ecd36eabd66fd9ca8c6d761fed Mon Sep 17 00:00:00 2001
-From: David Lechner <david@lechnology.com>
-Date: Tue, 18 Sep 2018 12:08:48 -0500
-Subject: [PATCH] spi: always use software fallback for SPI_CS_WORD when using
- cs_gio
-
-This modifies the condition for using the software fallback
-implementation for SPI_CS_WORD when the SPI controller is using a GPIO
-for the CS line. When using a GPIO for CS, the hardware implementation
-won't work, so we just enable the software fallback globally in this
-case.
-
-Signed-off-by: David Lechner <david@lechnology.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index be73d236919f..a358acdd98d3 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2832,11 +2832,13 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 		return -EINVAL;
- 
- 	/* If an SPI controller does not support toggling the CS line on each
--	 * transfer (indicated by the SPI_CS_WORD flag), we can emulate it by
-+	 * transfer (indicated by the SPI_CS_WORD flag) or we are using a GPIO
-+	 * for the CS line, we can emulate the CS-per-word hardware function by
- 	 * splitting transfers into one-word transfers and ensuring that
- 	 * cs_change is set for each transfer.
- 	 */
--	if ((spi->mode & SPI_CS_WORD) && !(ctlr->mode_bits & SPI_CS_WORD)) {
-+	if ((spi->mode & SPI_CS_WORD) && (!(ctlr->mode_bits & SPI_CS_WORD) ||
-+					  gpio_is_valid(spi->cs_gpio))) {
- 		size_t maxsize;
- 		int ret;
- 
 -- 
-2.19.0
+Qualcomm Datacenter Technologies as an affiliate of Qualcomm Technologies, Inc.
+Qualcomm Technologies, Inc. is a member of the
+Code Aurora Forum, a Linux Foundation Collaborative Project.

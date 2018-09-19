@@ -1,127 +1,176 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v2 1/5] spi: spi-mem: Add driver for NXP FlexSPI
- controller
-Date: Wed, 19 Sep 2018 10:51:38 +0000
-Message-ID: <VI1PR04MB103854C46FABEDD88EB2D724991C0@VI1PR04MB1038.eurprd04.prod.outlook.com>
-References: <1537177710-9379-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1537177710-9379-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <9a80752f-2db3-bf76-fbf4-e5efaa3974d7@exceet.de>
-        <VI1PR04MB1038EDE4B2F5AFC5B0FDE8DF991D0@VI1PR04MB1038.eurprd04.prod.outlook.com>
- <20180918145201.68adcb8d@bbrezillon>
+From: Lukasz Majewski <lukma@denx.de>
+Subject: Re: Questions about the Freescale/NXP QuadSPI controller
+Date: Wed, 19 Sep 2018 13:02:11 +0200
+Message-ID: <20180919130211.3f2e7e3a@jawa>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+ <AM6PR04MB4967C4B3F97004C41220E310971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <09d39759-390a-bca3-caeb-2ee8ddb29443@exceet.de>
+ <20180919004247.60c6099a@jawa>
+ <e76062cb-f703-2830-8074-d1a812dc14ce@exceet.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180918145201.68adcb8d@bbrezillon>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============0083454060013836886=="
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "richard@nod.at" <richard@nod.at>, "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Albert ARIBAUD <albert.aribaud@3adev.fr>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ David Wolfe <david.wolfe@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Frieder Schrempf <frieder.schrempf@exceet.de>, Fabio Estevam
+ <fabio.estevam@nxp.com>, Han Xu <han.xu@nxp.com>, Huang Shijie
+ <sjhuang@iluvatar.ai>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <e76062cb-f703-2830-8074-d1a812dc14ce@exceet.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgQm9yaXMsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMg
-QnJlemlsbG9uIFttYWlsdG86Ym9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tXQ0KPiBTZW50OiBU
-dWVzZGF5LCBTZXB0ZW1iZXIgMTgsIDIwMTggNjoyMiBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4g
-R2F1ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+DQo+IENjOiBGcmllZGVyIFNjaHJlbXBm
-IDxmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZT47IGxpbnV4LQ0KPiBtdGRAbGlzdHMuaW5mcmFk
-ZWFkLm9yZzsgbWFyZWsudmFzdXRAZ21haWwuY29tOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3Jn
-Ow0KPiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsgcm9iaEBrZXJuZWwub3JnOyBtYXJrLnJ1
-dGxhbmRAYXJtLmNvbTsNCj4gc2hhd25ndW9Aa2VybmVsLm9yZzsgbGludXgtYXJtLWtlcm5lbEBs
-aXN0cy5pbmZyYWRlYWQub3JnOw0KPiBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb207IGxpbnV4
-LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiAxLzVdIHNw
-aTogc3BpLW1lbTogQWRkIGRyaXZlciBmb3IgTlhQIEZsZXhTUEkgY29udHJvbGxlcg0KPiANCj4g
-SGkgWW9nZXNoLA0KPiANCj4gT24gVHVlLCAxOCBTZXAgMjAxOCAxMTozNDoxOCArMDAwMA0KPiBZ
-b2dlc2ggTmFyYXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4gd3JvdGU6DQo+
-IA0KPiA+ID4NCj4gPiA+IERvIHdlIHJlYWxseSBuZWVkIGFsbCB0aG9zZSBtYWNyb3MgZm9yIHJl
-Z2lzdGVycyBhbmQgbW9kZXMsIHRoYXQNCj4gPiA+IGFyZW4ndCBldmVuIHVzZWQgaW4gdGhlIGRy
-aXZlcj8gSSBkb24ndCBrbm93IHdoYXQgdGhlIGNvbW1vbg0KPiA+ID4gcHJhY3RpY2UgaXMsIGJ1
-dCB0byBtZSBpdCBzZWVtcyBsaWtlIHJlbW92aW5nIGFsbCB0aGUgdW51c2VkIG1hY3Jvcw0KPiA+
-ID4gd291bGQgbWFrZSB0aGUgZHJpdmVyIG11Y2ggc21hbGxlciBhbmQgbW9yZSByZWFkYWJsZS4N
-Cj4gPiA+DQo+ID4gV2UgZG9uJ3QgbmVlZCBhbGwgTWFjcm9zIGN1cnJlbnRseSwgYnV0IGNhbiBi
-ZSBuZWVkZWQgaW4gZnV0dXJlIGFuZA0KPiA+IHRoZW4gaGF2ZSB0byBhZGQgYWdhaW4uIEdlbmVy
-YWxseSwgd2UgYWRkIHRoZW0gYWxsIHNvIHRoYXQgaW4gZnV0dXJlDQo+ID4gZG9uJ3QgaGF2ZSB0
-byBkaWcgaW4gZGF0YXNoZWV0IHRvIGFkZCBiYXNpYyByZWdpc3RlciBkZXRhaWxzLg0KPiANCj4g
-SSBndWVzcyBpdCdzIGp1c3QgYSBtYXR0ZXIgb2YgdGFzdGUsIGJ1dCBJIGFsc28gcHJlZmVyIHdo
-ZW4gYWxsIHJlZ3MgYXJlIGRlZmluZWQgZXZlbg0KPiBpZiBub3QgYWxsIG9mIHRoZW0gYXJlIHVz
-ZWQuDQo+IA0KT2suDQoNCj4gWy4uLl0NCj4gDQo+ID4gPg0KPiA+ID4gWW91IGFyZSBvbmx5IGNv
-bnNpZGVyaW5nIDMgYW5kIDQgYnl0ZSBsb25nIGFkZHJlc3Nlcywgd2hpY2ggaXMgZmluZQ0KPiA+
-ID4gZm9yIE5PUiBjaGlwcywgYnV0IHRoZSBTUEkgbWVtIGludGVyZmFjZSBhbGxvd3MgdG8gY29u
-bmVjdCBvdGhlcg0KPiA+ID4gY2hpcHMgbGlrZSBTUEkgTkFORCB3aGljaCBhbHNvIHVzZSAxIGJ5
-dGUgYWRkcmVzc2VzLg0KPiA+ID4NCj4gPiA+IEluIHRoZSBRU1BJIGRyaXZlciBCb3JpcyB3b3Jr
-ZWQgYXJvdW5kIHRoaXMgcmVzdHJpY3Rpb24gYnkgdXNpbmcNCj4gPiA+IExVVF9NT0RFIGluc3Rl
-YWQgb2YgTFVUX0FERFJFU1MuDQo+ID4gPg0KPiA+ID4gRG9lcyB0aGlzIHJlc3RyaWN0aW9uIGFs
-c28gZXhpc3QgZm9yIEZTUEk/DQo+ID4NCj4gPiBZZXMsIEkgaGF2ZSBzZWVuIHRoYXQgaW1wbGVt
-ZW50YXRpb24gYW5kIGZpcnN0IHRyaWVzIHdpdGggdGhhdCBzYW1lDQo+ID4gbG9naWMsIHVzaW5n
-IExVVF9NT0RFIGluc3RlYWQgb2YgTFVUX0FERFIsIGJ1dCBkaWRu4oCZdCB3b3JrIGZvciB0aGUN
-Cj4gPiBGbGV4U1BJIGNvbnRyb2xsZXIuDQo+ID4NCj4gPiBJbiB0aGlzIGNvbnRyb2xsZXIsIHdl
-IGFyZSBoYXZpbmcgc2VwYXJhdGUgTFVUX1hYIGZvciBSb3dBZGRyZXNzIGFuZA0KPiA+IENvbHVt
-bkFkZHJlc3MuIEZvciBjYXNlIG9mIHRoZSBOYW5kIGZsYXNoLCB3ZSBuZWVkIHRvIHByb2dyYW0g
-Ym90aA0KPiA+IFJvd0FkZHJlc3MgYW5kIENvbHVtbkFkZHJlc3MgaW4gc2luZ2xlIExVVCBzZXF1
-ZW5jZS4NCj4gDQo+IEhtLCBJIGRvbid0IGdldCBpdC4gTFVUX01PREUgd2FzIGp1c3QgYSB3YXkg
-dG8gcGFzcyByYXcgZGF0YSBvbiB0aGUgSS9PIGJ1cywgc28NCj4gdGhlIHJvdyB2cyBjb2x1bW4g
-dGhpbmcgaGFzIG5vIG1lYW5pbmcgaW4gdGhpcyBjYXNlLCBhbmQgdGhlIG9mZnNldCB3aXRoaW5n
-IHRoZQ0KPiBRU1BJIEFIQiByYW5nZSBzaG91bGQganVzdCBiZSBpZ25vcmVkLg0KPiANCkkgaGF2
-ZSB0cmllZCB0byBwYXNzIHRoZSBhZGRyZXNzIHdpdGggTFVUX01PREUgYW5kIGl0J3Mgbm90IHdv
-cmtpbmcgZm9yIG1lLg0KSSBhbSBnZXR0aW5nIGJhc2ljIFJlYWQgZmFpbHVyZSBhdCBhZGRyZXNz
-IDB4MDAgd2l0aCBDUzAgYWxzby4NCg0KSSBoYWQgZGlzY3Vzc2lvbiB3aXRoIHRoZSBIVyBJUCBv
-d25lciBhbmQgdGhleSBzdWdnZXN0IHRvIHVzaW5nIExVVF9BRERSIGZvciBzZW5kaW5nIGFkZHJl
-c3MgYnl0ZSBpbmZvcm1hdGlvbi4NCg0KPiA+DQo+ID4gSU1PLCB3aGVuIHN1cHBvcnQgbmVlZHMg
-dG8gYmUgYWRkZWQgZm9yIE5BTkQgZmxhc2gsIHRoZW4gc2xpZ2h0DQo+ID4gbW9kaWZpY2F0aW9u
-IGNhbiBiZSBkb25lIGluIHRoZSBsb2dpYy4gQXMgcGVyIG15IGRpc2N1c3Npb24gd2l0aA0KPiA+
-IGNvbnRyb2xsZXIgdmFsaWRhdGlvbiBndXlzLCBuZWVkcyB0byBzZW5kIDE2LWJpdCBhZGRybGVu
-IGZvcg0KPiA+IFJvd0FkZHJlc3MsIExVVF9BRERSICgweDIpIEFkZHJsZW4gY2FuIHZhcnkgZm9y
-IHRoZSBjb2x1bW4tYWRkcmVzcyBhbmQNCj4gPiBuZWVkcyB0byBiZSBwcm9ncmFtbWVkIGZvciBz
-ZXF1ZW5jZSBMVVRfQ0FERFJfU0RSICgweDMpDQo+IA0KPiBBbmQgdGhhdCdzIGFnYWluIGZsYXNo
-IHNwZWNpZmljIGRldGFpbHMgbGVha2luZyBpbnRvIHRoZSBzcGktbWVtIGxheWVyLCB3aGljaCBJ
-J2QNCj4gbGlrZSB0byBhdm9pZCAoYXMgcmVwZWF0ZWQgbWFueSB0aW1lcyBiZWZvcmUpLg0KDQpB
-Y3R1YWxseSwgRmxleFNQSSBjb250cm9sbGVyIGhhcyBwcm92aWRlZCB0aGUgbWVjaGFuaXNtIHRv
-IHBhc3MgdGhlIHZhbHVlIG9mIHRoZSBhZGRyZXNzIGFzIFJvdyBhbmQgQ29sdW1uIGFkZHJlc3Mg
-cmVxdWlyZWQsIGlmIG5lZWRlZCBmb3Igc2xhdmUgZGV2aWNlLg0KVGh1cywgaWYgbmVlZGVkLCB3
-ZSBjYW4gdXNlIHRoaXMgZmVhdHVyZSBvZiB0aGUgRmxleFNQSSBjb250cm9sbGVyIHRvIHBhc3Mg
-dGhlIGFkZHJlc3MgWzFdLCBzZWN0aW9uIDMwLjcuNiwNCg0KPiANCj4gPiA+DQo+ID4gPiBZb3Ug
-YXJlIHVzaW5nIHRoZSByZW1hcHBpbmcgcHJvY2VkdXJlIGFzIGluIHRoZSBRU1BJIE5PUiBkcml2
-ZXIuDQo+ID4gPiBUaGUgb3JpZ2luYWwgcHVycG9zZSB3YXMgdG8gc3RhcnQgd2l0aCBhIHJhdGhl
-ciBzbWFsbCBtYXBwaW5nIHNpemUNCj4gPiA+IGFuZCBpbmNyZWFzZSBpdCB3aGVuIGEgbGFyZ2Vy
-IG1lbW9yeSBkZXZpY2UgaXMgdXNlZC4NCj4gPiA+DQo+ID4gPiBBdCB0aGUgc2FtZSB0aW1lIHlv
-dSB1c2UgdGhlIGxvZ2ljIGZyb20gdGhlIFFTUEkgU1BJIG1lbSBkcml2ZXIsDQo+ID4gPiB0aGF0
-IGFkanVzdHMgdGhlIGRhdGEubmJ5dGVzIG9mIGVhY2ggcmVhZCBvcCB0byBhIG1heGltdW0gb2YN
-Cj4gPiA+IGFoYl9idWZfc2l6ZSBpbiBueHBfZnNwaV9hZGp1c3Rfb3Bfc2l6ZSgpLg0KPiA+ID4g
-VGhpcyBpcyB0aGUgbG9naWMgdGhhdCBCb3JpcyBpbnRyb2R1Y2VkIGZvciB0aGUgUVNQSSBkcml2
-ZXIgdW50aWwgd2UNCj4gPiA+IHJlcGxhY2UgaXQgd2l0aCBzb21ldGhpbmcgbGlrZSBkaXJtYXAu
-DQo+ID4gPg0KPiA+ID4gVW5sZXNzIHRoZXJlIGlzIHNvbWV0aGluZyBJIG1pc3NlZCwgdGhpcyBt
-ZWFucyB0aGUgcmFtYXBwaW5nIGlzDQo+ID4gPiB1c2VsZXNzIGFuZCBpdCdzIGVub3VnaCB0byBy
-ZXNlcnZlIG1lbW9yeSB3aXRoIHRoZSBmaXhlZCBzaXplIG9mDQo+ID4gPiBhaGJfYnVmX3NpemUu
-DQo+ID4NCj4gPiBNeSBjb25jZXJuIHdhcyBmb3IgcGVyZm9ybWFuY2UgYW5kIHRoYXQncyB3aHkg
-aGFzIGRvbmUgcmVtYXAgZm9yIHRoZQ0KPiA+IDRNQiBidWZmZXIgc2l6ZSBzbyB0aGF0IGlmIGFu
-eSBzdWJzZXF1ZW50IFJlYWQgcmVxdWVzdCB3b3VsZCBjb21lDQo+ID4gd2l0aGluIHRoZSByYW5n
-ZSB0aGVuIGRvbuKAmXQgaGF2ZSB0byBwZXJmb3JtIHJlbWFwIGFuZCBjYW4ganVzdA0KPiA+IGRp
-cmVjdGx5IGRvIG1lbWNweSgpDQo+ID4NCj4gPiBJIHdvdWxkIHJlLXZpc2l0IGFnYWluIGFuZCBz
-ZWUgaWYgZ2V0dGluZyBhbnkgaXNzdWUgaW4gZG9pbmcgZGlyZWN0DQo+ID4gbWVtY3B5KCkgaW5z
-dGVhZCBvZiByZW1hcC4gV2UgbmVlZCB0byBwZXJmb3JtIEFIQiBidWZmZXIgaW52YWxpZGF0aW9u
-DQo+ID4gd2hlbiB1c2luZyBjb250cm9sbGVyIGluIGJvdGggSVAod3JpdGUsIGVyYXNlIGV0Yykg
-YW5kIEFIQiAocmVhZCkNCj4gPiBtb2RlLg0KPiANCj4gVGhlbiB5b3Ugc2hvdWxkIHJlYWxseSBy
-ZXZpZXcgbXkgZGlybWFwIHByb3Bvc2FsIGluc3RlYWQgb2YgdHJ5aW5nIHRvIGhhY2sNCj4gdGhp
-bmdzIGRpcmVjdGx5IGludG8geW91ciBkcml2ZXIuIFRoZSBvbmx5IHJlYXNvbiBJIGRpZCBubyBz
-ZW5kIGEgbmV3IHZlcnNpb24gb2YNCj4gdGhlIGRpcm1hcCBwYXRjaHNldCBpcyBiZWNhdXNlIEkg
-Z290IG5vIHJldmlld3MgZnJvbSBwZW9wbGUgdGhhdCBtaWdodCBuZWVkIGl0LA0KPiBzbyBwbGVh
-c2UgaGF2ZSBhIGxvb2sgYXQgaXQsIHRyeSB0byBpbXBsZW1lbnQgYSBiYWNrZW5kIGZvciB5b3Vy
-IGNvbnRyb2xsZXIsIGFuZA0KPiBsZXQgbWUga25vdyBpZiB5b3UgZmFjZSBhbnkgaXNzdWVzIG9y
-IHRoaW5rIHRoaW5ncyBzaG91bGQgYmUgZG9uZSBkaWZmZXJlbnRseS4NCj4gDQpJIHRyaWVkIHdp
-dGggc2ltaWxhciBpbXBsZW1lbnRhdGlvbiBhcyBiZWluZyBkb25lIGZvciBRdWFkU1BJIGRyaXZl
-ciBhbmQgd2l0aCB0aGF0IG15IEFIQiByZWFkIGFyZSB3b3JraW5nIHdpdGhvdXQgYW55IGlzc3Vl
-IGZvciBib3RoIENTLg0KVGh1cywgZG9u4oCZdCByZXF1aXJlIHRvIHBlcmZvcm0gdGhlIHJlLW1h
-cCBhZ2FpbiBhbmQgYWdhaW4gd2hlbiBkb2luZyBBSEIgZGF0YSB0cmFuc2Zlci4NCldvdWxkIHNl
-bmQgdGhlIGNoYW5nZXMgaW4gbmV4dCB2ZXJzaW9uLg0KDQpSZWdhcmRzDQpZb2dlc2ggR2F1ci4N
-Cg0KWzFdIGh0dHBzOi8vd3d3Lm54cC5jb20vZG9jcy9lbi9yZWZlcmVuY2UtbWFudWFsL0lNWFJU
-MTA1MFJNLnBkZg0KDQo+IFRoYW5rcywNCj4gDQo+IEJvcmlzDQo=
+--===============0083454060013836886==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/vqT2K5+KmOE+OBjbFahC9EX"; protocol="application/pgp-signature"
+
+--Sig_/vqT2K5+KmOE+OBjbFahC9EX
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Frieder,
+
+> Hi Lukasz,
+>=20
+> On 19.09.2018 00:42, Lukasz Majewski wrote:
+> > Dear All,
+> >=20
+> > Maybe I do jump a bit off topic here, but...
+> >=20
+> > I've read through the following thread:
+> > https://patchwork.ozlabs.org/patch/939885/
+> >=20
+> > And it mentions some issues with reading AHB content (buffers) in
+> > fsl-quadspi.c driver discovered when new QuadSPI driver was
+> > developed. =20
+>=20
+> The only setup with two chips that is known to be problematic with
+> the new driver, is when both chips are connected to the same bus
+> (e.g. QSPIA) using separate chip selects.
+
+I'm using QSPI0 controller, with two memories connected to QSPI0_A and
+QSPI0_B lines.
+
+>=20
+> Does your board use this kind of setup, or are the two chips
+> connected two different buses (QSPIA and QSPIB)?
+>=20
+> Have you tested the new driver? It would be great to receive some
+> more feedback.
+
+I will check (test) this new driver. No problem.
+
+>=20
+> > I do have a setup with qspi0 having two SPI memories connected (2x16
+> > MiB), and I'm wondering if anybody has some more info regarding:
+> >=20
+> > (What's more is that there is a bug in
+> >   * the "IP Command Read" in the Vybrid.) found here:
+> > https://elixir.bootlin.com/linux/v4.19-rc4/source/drivers/mtd/spi-nor/f=
+sl-quadspi.c#L671
+> >=20
+> > I've googled for some errata or known issues for vybryd's QSPI IP
+> > block (vf610) but without luck so far ... =20
+>=20
+> Unfortunately I don't know the background for this comment.
+
+The comment was added by some Freescale employee when the driver was
+added to Linux (by Huang - CC'ed).
+
+> Is your=20
+> board using VF610?
+
+Yes, it uses vf610 (A5 + M4 cores).
+
+> Do you experience problems?
+
+I've already observed following issue:
+
+For the current QSPI ML driver (fsl-quadspi.c - 4.19-rc3) only half
+of the AHB buffer is valid. When I do read the whole one - I do see read
+data corruption (on UBI or raw memory).=20
+
+This was pointed out in the patch:
+https://patchwork.ozlabs.org/patch/675401/
+
+Unfortunately, I did not found any info regarding this problem (in
+NXP's errata or other doc).
+
+I will check if this issue shows up on new patches.
+
+Thanks in advance for your help.
+
+>=20
+> Regards,
+> Frieder
+>=20
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+
+--Sig_/vqT2K5+KmOE+OBjbFahC9EX
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAluiLLMACgkQAR8vZIA0
+zr1iSwgAyRvAsZaK9SMBKf/aVHZXYFzozJMsk/CYIMx303TuqjONUJfWLFNQUiZx
+TWzJaQj8oMujqV588jvZtGoYAsj4RXUPRds4gY/rRFop9sjhBDbDXXrK29NlpEgI
+TaSTJxBWi007GcDnPKdDCWOFGYSrew4Mzyr1oNZ+s7MbM6NAJ6ojIhaxGIq/ysWZ
+ZjmRcplsfMi4dJLHq5m19jsjkprnSepr+UaQVbarniMyeLYtWWSnlFuguR964q05
+xjiFaXAilmNW5n49gcrglOKAirJRagihxTzYDmh/RAPNxjMW6S9+p0ouOhrJaLyM
+yfLNcA/CuxdwPHeT7F7KaIx3bGtZVg==
+=2Veg
+-----END PGP SIGNATURE-----
+
+--Sig_/vqT2K5+KmOE+OBjbFahC9EX--
+
+
+--===============0083454060013836886==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============0083454060013836886==--

@@ -1,130 +1,90 @@
-From: Peter Shih <pihsun@chromium.org>
-Subject: [PATCH v3] spi: mediatek: Don't modify spi_transfer when transfer.
-Date: Wed, 19 Sep 2018 14:29:27 +0800
-Message-ID: <20180919062928.238917-1-pihsun@chromium.org>
-References: <20180918161504.GM2471@sirena.org.uk>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: Questions about the Freescale/NXP QuadSPI controller
+Date: Wed, 19 Sep 2018 08:49:14 +0200
+Message-ID: <e76062cb-f703-2830-8074-d1a812dc14ce@exceet.de>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+ <AM6PR04MB4967C4B3F97004C41220E310971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <09d39759-390a-bca3-caeb-2ee8ddb29443@exceet.de>
+ <20180919004247.60c6099a@jawa>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
- pihsun@chromium.org, Matthias Brugger <matthias.bgg@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180918161504.GM2471@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: David Wolfe <david.wolfe@nxp.com>,
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ "richard@nod.at" <richard@nod.at>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ Fabio Estevam <fabio.estevam@nxp.com>, Han Xu <han.xu@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Lukasz Majewski <lukma@denx.de>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180919004247.60c6099a@jawa>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Mediatek SPI driver modifies some fields (tx_buf, rx_buf, len, tx_dma,
-rx_dma) of the spi_transfer* passed in when doing transfer_one and in
-interrupt handler. This is somewhat unexpected, and there are some
-caller (e.g. Cr50 spi driver) that reuse the spi_transfer for multiple
-messages. Add a field to record how many bytes have been transferred,
-and calculate the right len / buffer based on it instead.
+Hi Lukasz,
 
-Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
----
- drivers/spi/spi-mt65xx.c | 37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+On 19.09.2018 00:42, Lukasz Majewski wrote:
+> Dear All,
+> 
+> Maybe I do jump a bit off topic here, but...
+> 
+> I've read through the following thread:
+> https://patchwork.ozlabs.org/patch/939885/
+> 
+> And it mentions some issues with reading AHB content (buffers) in
+> fsl-quadspi.c driver discovered when new QuadSPI driver was developed.
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 86bf45667a040..3dc31627c6558 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -98,6 +98,7 @@ struct mtk_spi {
- 	struct clk *parent_clk, *sel_clk, *spi_clk;
- 	struct spi_transfer *cur_transfer;
- 	u32 xfer_len;
-+	u32 num_xfered;
- 	struct scatterlist *tx_sgl, *rx_sgl;
- 	u32 tx_sgl_len, rx_sgl_len;
- 	const struct mtk_spi_compatible *dev_comp;
-@@ -385,6 +386,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
- 
- 	mdata->cur_transfer = xfer;
- 	mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, xfer->len);
-+	mdata->num_xfered = 0;
- 	mtk_spi_prepare_transfer(master, xfer);
- 	mtk_spi_setup_packet(master);
- 
-@@ -415,6 +417,7 @@ static int mtk_spi_dma_transfer(struct spi_master *master,
- 	mdata->tx_sgl_len = 0;
- 	mdata->rx_sgl_len = 0;
- 	mdata->cur_transfer = xfer;
-+	mdata->num_xfered = 0;
- 
- 	mtk_spi_prepare_transfer(master, xfer);
- 
-@@ -482,7 +485,7 @@ static int mtk_spi_setup(struct spi_device *spi)
- 
- static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
- {
--	u32 cmd, reg_val, cnt, remainder;
-+	u32 cmd, reg_val, cnt, remainder, len;
- 	struct spi_master *master = dev_id;
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
- 	struct spi_transfer *trans = mdata->cur_transfer;
-@@ -497,36 +500,38 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
- 		if (trans->rx_buf) {
- 			cnt = mdata->xfer_len / 4;
- 			ioread32_rep(mdata->base + SPI_RX_DATA_REG,
--				     trans->rx_buf, cnt);
-+				     trans->rx_buf + mdata->num_xfered, cnt);
- 			remainder = mdata->xfer_len % 4;
- 			if (remainder > 0) {
- 				reg_val = readl(mdata->base + SPI_RX_DATA_REG);
--				memcpy(trans->rx_buf + (cnt * 4),
--					&reg_val, remainder);
-+				memcpy(trans->rx_buf +
-+					mdata->num_xfered +
-+					(cnt * 4),
-+					&reg_val,
-+					remainder);
- 			}
- 		}
- 
--		trans->len -= mdata->xfer_len;
--		if (!trans->len) {
-+		mdata->num_xfered += mdata->xfer_len;
-+		if (mdata->num_xfered == trans->len) {
- 			spi_finalize_current_transfer(master);
- 			return IRQ_HANDLED;
- 		}
- 
--		if (trans->tx_buf)
--			trans->tx_buf += mdata->xfer_len;
--		if (trans->rx_buf)
--			trans->rx_buf += mdata->xfer_len;
--
--		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, trans->len);
-+		len = trans->len - mdata->num_xfered;
-+		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, len);
- 		mtk_spi_setup_packet(master);
- 
--		cnt = trans->len / 4;
--		iowrite32_rep(mdata->base + SPI_TX_DATA_REG, trans->tx_buf, cnt);
-+		cnt = len / 4;
-+		iowrite32_rep(mdata->base + SPI_TX_DATA_REG,
-+				trans->tx_buf + mdata->num_xfered, cnt);
- 
--		remainder = trans->len % 4;
-+		remainder = len % 4;
- 		if (remainder > 0) {
- 			reg_val = 0;
--			memcpy(&reg_val, trans->tx_buf + (cnt * 4), remainder);
-+			memcpy(&reg_val,
-+				trans->tx_buf + (cnt * 4) + mdata->num_xfered,
-+				remainder);
- 			writel(reg_val, mdata->base + SPI_TX_DATA_REG);
- 		}
- 
--- 
-2.19.0.rc2.392.g5ba43deb5a-goog
+The only setup with two chips that is known to be problematic with the 
+new driver, is when both chips are connected to the same bus (e.g. 
+QSPIA) using separate chip selects.
+
+Does your board use this kind of setup, or are the two chips connected 
+two different buses (QSPIA and QSPIB)?
+
+Have you tested the new driver? It would be great to receive some more 
+feedback.
+
+> I do have a setup with qspi0 having two SPI memories connected (2x16
+> MiB), and I'm wondering if anybody has some more info regarding:
+> 
+> (What's more is that there is a bug in
+>   * the "IP Command Read" in the Vybrid.) found here:
+> https://elixir.bootlin.com/linux/v4.19-rc4/source/drivers/mtd/spi-nor/fsl-quadspi.c#L671
+> 
+> I've googled for some errata or known issues for vybryd's QSPI IP block
+> (vf610) but without luck so far ...
+
+Unfortunately I don't know the background for this comment. Is your 
+board using VF610? Do you experience problems?
+
+Regards,
+Frieder
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

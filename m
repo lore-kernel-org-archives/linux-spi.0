@@ -1,111 +1,130 @@
-From: lei liu <leilk.liu@mediatek.com>
-Subject: Re: [PATCH v3 2/3] spis: mediatek: add spi slave for Mediatek MT2712
-Date: Wed, 19 Sep 2018 13:50:05 +0800
-Message-ID: <1537336205.27607.23.camel@mhfsdcap03>
-References: <1537150762-7072-1-git-send-email-leilk.liu@mediatek.com>
-         <1537150762-7072-3-git-send-email-leilk.liu@mediatek.com>
-         <20180918163048.GN2471@sirena.org.uk>
+From: Peter Shih <pihsun@chromium.org>
+Subject: [PATCH v3] spi: mediatek: Don't modify spi_transfer when transfer.
+Date: Wed, 19 Sep 2018 14:29:27 +0800
+Message-ID: <20180919062928.238917-1-pihsun@chromium.org>
+References: <20180918161504.GM2471@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <yt.shen@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180918163048.GN2471@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
+ pihsun@chromium.org, Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20180918161504.GM2471@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-  Thanks for your comments.
+Mediatek SPI driver modifies some fields (tx_buf, rx_buf, len, tx_dma,
+rx_dma) of the spi_transfer* passed in when doing transfer_one and in
+interrupt handler. This is somewhat unexpected, and there are some
+caller (e.g. Cr50 spi driver) that reuse the spi_transfer for multiple
+messages. Add a field to record how many bytes have been transferred,
+and calculate the right len / buffer based on it instead.
 
-On Tue, 2018-09-18 at 09:30 -0700, Mark Brown wrote:
-> On Mon, Sep 17, 2018 at 10:19:21AM +0800, Leilk Liu wrote:
-> 
-> This looks overall pretty good, a few smallish comments below:
-> 
-> Please use subject lines matching the style for the subsystem.  This
-> makes it easier for people to identify relevant patches.
-> 
-OK, I'll fix it, thanks.
+Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
+---
+ drivers/spi/spi-mt65xx.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-> >  if SPI_SLAVE
-> > +config SPI_SLAVE_MT27XX
-> > +	tristate "MediaTek SPI slave device"
-> > +	depends on ARCH_MEDIATEK || COMPILE_TEST
-> > +	help
-> > +	  This selects the MediaTek(R) SPI slave device driver.
-> > +	  If you want to use MediaTek(R) SPI slave interface,
-> > +	  say Y or M here.If you are not sure, say N.
-> > +	  SPI slave drivers for Mediatek MT27XX series ARM SoCs.
-> >  
-> >  config SPI_SLAVE_TIME
-> 
-> This is a driver not a slave implementation, it should be with the other
-> drivers in the Kconfig.  The slave implementations are for the
-> functionality that uses the drivers, not the drivers themselves.
-> 
-OK, I'll fix it, thanks.
-
-> > +	/* set the tx/rx endian */
-> > +#ifdef __LITTLE_ENDIAN
-> > +	reg_val &= ~SPIS_TX_ENDIAN;
-> > +	reg_val &= ~SPIS_RX_ENDIAN;
-> > +#else
-> > +	reg_val |= SPIS_TX_ENDIAN;
-> > +	reg_val |= SPIS_RX_ENDIAN;
-> > +#endif
-> > +	writel(reg_val, mdata->base + SPIS_CFG_REG);
-> 
-> This seems weird - it looks like it's changing the endianess of the
-> protocol based on the endianness the processor is running in.  What's
-> going on here?  I'd expect the driver to be just treating everything as
-> a byte stream and letting the protocol driver handle the endianness
-> issues, otherwise we might end up with double converions.
-> 
-OK, I'll set the endian of SPI the same with the processor. Thanks.
-
-> > +		xfer->tx_dma = dma_map_single(dev, (void *)xfer->tx_buf,
-> > +					      xfer->len, DMA_TO_DEVICE);
-> 
-> Why is there a cast to void here?  That's usually a sign that there's a
-> type safety issue, the whole point with void is that it's compatible
-> with any other pointer.
-> 
-tx_buf is a const void*, here it need a void * for the dma mapping.
-And I'll remove void * from dma_map_single((void *)rx_buf).
-Thanks.
-
-> > +static irqreturn_t mtk_spi_slave_interrupt(int irq, void *dev_id)
-> > +{
-> > +	struct spi_controller *ctlr = dev_id;
-> > +	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-> > +	struct spi_transfer *trans = mdata->cur_transfer;
-> > +	u32 int_status, reg_val, cnt, remainder;
-> > +
-> > +	int_status = readl(mdata->base + SPIS_IRQ_ST_REG);
-> > +	writel(int_status, mdata->base + SPIS_IRQ_CLR_REG);
-> > +
-> > +	if (!trans)
-> > +		return IRQ_HANDLED;
-> 
-> Are you sure that this is the right thing to do if we get a spurious
-> interrupt - the normal thing would be to return IRQ_NONE, possibly
-> logging a warning as well?
-> 
-OK, it should reture IRQ_NONE here, thanks.
-
-> > +	if (int_status & CMD_INVALID_ST)
-> > +		dev_err(&ctlr->dev, "cmd invalid\n");
-> 
-> If there's an interrupt that doesn't have any of the interrupt status
-> flags set I'd expect to see a warning and probably IRQ_NONE being
-> returned.  That way if the interrupt line is shared we work correctly
-> and if something goes wrong and the interrupt gets stuck on then the
-> core interrupt code's error handling can kick in.
-OK, I'll fix it, thanks.
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 86bf45667a040..3dc31627c6558 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -98,6 +98,7 @@ struct mtk_spi {
+ 	struct clk *parent_clk, *sel_clk, *spi_clk;
+ 	struct spi_transfer *cur_transfer;
+ 	u32 xfer_len;
++	u32 num_xfered;
+ 	struct scatterlist *tx_sgl, *rx_sgl;
+ 	u32 tx_sgl_len, rx_sgl_len;
+ 	const struct mtk_spi_compatible *dev_comp;
+@@ -385,6 +386,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
+ 
+ 	mdata->cur_transfer = xfer;
+ 	mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, xfer->len);
++	mdata->num_xfered = 0;
+ 	mtk_spi_prepare_transfer(master, xfer);
+ 	mtk_spi_setup_packet(master);
+ 
+@@ -415,6 +417,7 @@ static int mtk_spi_dma_transfer(struct spi_master *master,
+ 	mdata->tx_sgl_len = 0;
+ 	mdata->rx_sgl_len = 0;
+ 	mdata->cur_transfer = xfer;
++	mdata->num_xfered = 0;
+ 
+ 	mtk_spi_prepare_transfer(master, xfer);
+ 
+@@ -482,7 +485,7 @@ static int mtk_spi_setup(struct spi_device *spi)
+ 
+ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ {
+-	u32 cmd, reg_val, cnt, remainder;
++	u32 cmd, reg_val, cnt, remainder, len;
+ 	struct spi_master *master = dev_id;
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+ 	struct spi_transfer *trans = mdata->cur_transfer;
+@@ -497,36 +500,38 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ 		if (trans->rx_buf) {
+ 			cnt = mdata->xfer_len / 4;
+ 			ioread32_rep(mdata->base + SPI_RX_DATA_REG,
+-				     trans->rx_buf, cnt);
++				     trans->rx_buf + mdata->num_xfered, cnt);
+ 			remainder = mdata->xfer_len % 4;
+ 			if (remainder > 0) {
+ 				reg_val = readl(mdata->base + SPI_RX_DATA_REG);
+-				memcpy(trans->rx_buf + (cnt * 4),
+-					&reg_val, remainder);
++				memcpy(trans->rx_buf +
++					mdata->num_xfered +
++					(cnt * 4),
++					&reg_val,
++					remainder);
+ 			}
+ 		}
+ 
+-		trans->len -= mdata->xfer_len;
+-		if (!trans->len) {
++		mdata->num_xfered += mdata->xfer_len;
++		if (mdata->num_xfered == trans->len) {
+ 			spi_finalize_current_transfer(master);
+ 			return IRQ_HANDLED;
+ 		}
+ 
+-		if (trans->tx_buf)
+-			trans->tx_buf += mdata->xfer_len;
+-		if (trans->rx_buf)
+-			trans->rx_buf += mdata->xfer_len;
+-
+-		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, trans->len);
++		len = trans->len - mdata->num_xfered;
++		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, len);
+ 		mtk_spi_setup_packet(master);
+ 
+-		cnt = trans->len / 4;
+-		iowrite32_rep(mdata->base + SPI_TX_DATA_REG, trans->tx_buf, cnt);
++		cnt = len / 4;
++		iowrite32_rep(mdata->base + SPI_TX_DATA_REG,
++				trans->tx_buf + mdata->num_xfered, cnt);
+ 
+-		remainder = trans->len % 4;
++		remainder = len % 4;
+ 		if (remainder > 0) {
+ 			reg_val = 0;
+-			memcpy(&reg_val, trans->tx_buf + (cnt * 4), remainder);
++			memcpy(&reg_val,
++				trans->tx_buf + (cnt * 4) + mdata->num_xfered,
++				remainder);
+ 			writel(reg_val, mdata->base + SPI_TX_DATA_REG);
+ 		}
+ 
+-- 
+2.19.0.rc2.392.g5ba43deb5a-goog

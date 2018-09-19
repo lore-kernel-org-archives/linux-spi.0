@@ -1,53 +1,66 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] spi: mediatek: Don't modify spi_transfer when
- transfer.
-Date: Wed, 19 Sep 2018 10:31:57 -0700
-Message-ID: <20180919173157.GD2471@sirena.org.uk>
-References: <20180918161504.GM2471@sirena.org.uk>
- <20180919062928.238917-1-pihsun@chromium.org>
+Subject: Re: [PATCH 1/2] spi: Add MXIC controller driver
+Date: Wed, 19 Sep 2018 10:46:12 -0700
+Message-ID: <20180919174612.GG2471@sirena.org.uk>
+References: <1537168579-31593-1-git-send-email-masonccyang@mxic.com.tw>
+ <1537168579-31593-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="U1t7w//IUm8YcF8e"
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-To: Peter Shih <pihsun@chromium.org>
+        protocol="application/pgp-signature"; boundary="/zLL6W406Aotuby1"
+Cc: tpiepho@impinj.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
+        juliensu@mxic.com.tw, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180919062928.238917-1-pihsun@chromium.org>
+In-Reply-To: <1537168579-31593-2-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---U1t7w//IUm8YcF8e
+--/zLL6W406Aotuby1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Sep 19, 2018 at 02:29:27PM +0800, Peter Shih wrote:
-> Mediatek SPI driver modifies some fields (tx_buf, rx_buf, len, tx_dma,
-> rx_dma) of the spi_transfer* passed in when doing transfer_one and in
-> interrupt handler. This is somewhat unexpected, and there are some
+On Mon, Sep 17, 2018 at 03:16:18PM +0800, masonccyang@mxic.com.tw wrote:
 
-Please do not submit new versions of already applied patches, please
-submit incremental updates to the existing code.  Modifying existing
-commits creates problems for other users building on top of those
-commits so it's best practice to only change pubished git commits if
-absolutely essential.
+> +static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
+> +{
+> +	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
+> +
+> +	if (!lvl) {
+> +		if (mxic_spi_clk_setup(spi))
+> +			return;
+> +		if (mxic_spi_clk_enable(mxic))
+> +			return;
+> +		writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_EN,
+> +		       mxic->regs + HC_CFG);
+> +		writel(HC_EN_BIT, mxic->regs + HC_EN);
+> +		writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+> +		       mxic->regs + HC_CFG);
 
---U1t7w//IUm8YcF8e
+Like Boris says having the clock management in the chip select
+operations is not good - it's not just redundant with runtime PM, it's
+potentially broken if a device does something like using an inverted
+chip select.  The chip select operation should just be managing the chip
+select, nothing else.  If it does other things it's going to end up
+being broken for some cases.
+
+Otherwise this looks good.
+
+--/zLL6W406Aotuby1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluiiA0ACgkQJNaLcl1U
-h9AEEgf/c9FGN+vhT4tkkoUG3IEtBQICO2atvwYxL9kWS06z6CkM3JjI7Ny4239O
-vaxiEkEkXLgk+C0zZWpm05bu3hv3JL9tePjySlb1JxXKOn7h0waTiuSlBuDZs4hS
-Yb7TwghHPZMbSG+NOS/GzZI/bYrY1FgSb4gUUa6fLSoyI7jnpqHZFzV3UwJOeHCd
-BGGjIjUU8tLjhDMK7UckS9jwjEb0SusWfIEA36tko3xYI8TSN7zkck15KhiQLdsr
-5ZxEtIAjUxh38y6MC9Csitah8PSV0/8ams5WduKybMlzDRCfZLMN2JeEsNDt0N1M
-Ykgidr5LMY02nvK27GgojA3+CDl3tA==
-=R8r6
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluii2MACgkQJNaLcl1U
+h9D50Qf9G9sFzVoF5k2uw3dJxs3w76wu7spHMRRe/DRf1QSI/vHfzhuBGfCL8Xo6
+Z78sgnpiC2Nqa2Uu/oKQdQ9+70SQlb9K3F+o5KwV2eIk6tZpFiMGRN6Y/YFoFvGw
+aLrj/8ruutokwFGxibqEJdTAp/ErE+6ND6cdRln0SAH+VUW/4dzNZbB5LS8NtMJR
+c32ZJaUeN90+UBqYalxG4tm8zSodDv2HqQ4DzfdBIl0KWZqM2g4qjVPbWeFH7KFW
+JPAr35PWWnmTUeYWXrrdm17pAn7xfQMJLjrDDjcuRb3AjqL7XMRtAoxeFiaDcfQR
+f/YWGn4PwtE2acggALgCrE/u0z669w==
+=5LGp
 -----END PGP SIGNATURE-----
 
---U1t7w//IUm8YcF8e--
+--/zLL6W406Aotuby1--

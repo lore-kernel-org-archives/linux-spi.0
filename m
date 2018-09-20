@@ -1,107 +1,52 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [RESEND PATCH 1/2] mtd: spi-nor: add macros related to MICRON
- flash
-Date: Thu, 20 Sep 2018 04:31:41 +0000
-Message-ID: <VI1PR04MB103873DF92DF3380E53C572699130@VI1PR04MB1038.eurprd04.prod.outlook.com>
-References: <1537332608-19561-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1537332608-19561-2-git-send-email-yogeshnarayan.gaur@nxp.com>
- <bd92d56c-fba6-6b79-07a8-cb426de33639@microchip.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH 0/3] spi: spi-mem: Minor fixes/improvements
+Date: Thu, 20 Sep 2018 09:31:09 +0200
+Message-ID: <20180920073112.7897-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <bd92d56c-fba6-6b79-07a8-cb426de33639@microchip.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Boris Brezillon <boris.brezillon@bootlin.com>, linux-mtd@lists.infradead.org,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVHVkb3IsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHVkb3Ig
-QW1iYXJ1cyBbbWFpbHRvOnR1ZG9yLmFtYmFydXNAbWljcm9jaGlwLmNvbV0NCj4gU2VudDogV2Vk
-bmVzZGF5LCBTZXB0ZW1iZXIgMTksIDIwMTggMTA6MDAgUE0NCj4gVG86IFlvZ2VzaCBOYXJheWFu
-IEdhdXIgPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAuY29tPjsgbGludXgtDQo+IG10ZEBsaXN0cy5p
-bmZyYWRlYWQub3JnOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnDQo+IENjOiBib3Jpcy5icmV6
-aWxsb25AYm9vdGxpbi5jb207IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IG1hcmVr
-LnZhc3V0QGdtYWlsLmNvbTsgZnJpZWRlci5zY2hyZW1wZkBleGNlZXQuZGU7DQo+IGN5cmlsbGUu
-cGl0Y2hlbkB3ZWRldjR1LmZyOyBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb20NCj4gU3ViamVj
-dDogUmU6IFtSRVNFTkQgUEFUQ0ggMS8yXSBtdGQ6IHNwaS1ub3I6IGFkZCBtYWNyb3MgcmVsYXRl
-ZCB0byBNSUNST04NCj4gZmxhc2gNCj4gDQo+IEhpLA0KPiANCj4gT24gMDkvMTkvMjAxOCAwNzo1
-MCBBTSwgWW9nZXNoIEdhdXIgd3JvdGU6DQo+ID4gU29tZSBNSUNST04gcmVsYXRlZCBtYWNyb3Mg
-aW4gc3BpLW5vciBkb21haW4gd2VyZSBTVC4NCj4gPiBSZW5hbWUgZW50cmllcyByZWxhdGVkIHRv
-IFNUTWljcm9lbGVjdHJvbmljcyB1bmRlciBtYWNybyBTTk9SX01GUl9TVC4NCj4gPg0KPiA+IEFk
-ZGVkIGVudHJ5IG9mIE1GUiBJZCBmb3IgTWljcm9uIGZsYXNoZXMsIDB4MDAyQy4NCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IFlvZ2VzaCBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4N
-Cj4gPiAtLS0NCj4gPiAgZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMgfCA5ICsrKysrKy0t
-LQ0KPiA+ICBpbmNsdWRlL2xpbnV4L210ZC9jZmkuaCAgICAgICB8IDEgKw0KPiA+ICBpbmNsdWRl
-L2xpbnV4L210ZC9zcGktbm9yLmggICB8IDMgKystDQo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgOSBp
-bnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+ID4gYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1u
-b3IuYyBpbmRleCBmMDI4Mjc3Li4zM2E1NWJjIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbXRk
-L3NwaS1ub3Ivc3BpLW5vci5jDQo+ID4gKysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9y
-LmMNCj4gPiBAQCAtMjcxLDYgKzI3MSw3IEBAIHN0YXRpYyBpbmxpbmUgaW50IHNldF80Ynl0ZShz
-dHJ1Y3Qgc3BpX25vciAqbm9yLCBjb25zdA0KPiBzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywNCj4g
-PiAgCXU4IGNtZDsNCj4gPg0KPiA+ICAJc3dpdGNoIChKRURFQ19NRlIoaW5mbykpIHsNCj4gPiAr
-CWNhc2UgU05PUl9NRlJfU1Q6DQo+IA0KPiBXZSBzaG91bGQgbWFyayBzd2l0Y2ggY2FzZXMgd2hl
-cmUgd2UgYXJlIGV4cGVjdGluZyB0byBmYWxsIHRocm91Z2gsIHNvIHRoYXQgd2UNCj4gd2lsbCBi
-ZSBwcmVwYXJlZCB3aGVuIGVuYWJsaW5nIC1XaW1wbGljaXQtZmFsbHRocm91Z2guDQoNClBsZWFz
-ZSBleHBsYWluIG1vcmUsIG5vdCBhYmxlIHRvIGdldCB0aGlzIGNvbW1lbnQuIFNvcnJ5IGZvciBp
-Z25vcmFuY2UuDQoNCj4gDQo+ID4gIAljYXNlIFNOT1JfTUZSX01JQ1JPTjoNCj4gPiAgCQkvKiBT
-b21lIE1pY3JvbiBuZWVkIFdSRU4gY29tbWFuZDsgYWxsIHdpbGwgYWNjZXB0IGl0ICovDQo+ID4g
-IAkJbmVlZF93cmVuID0gdHJ1ZTsNCj4gPiBAQCAtMTA5Niw3ICsxMDk3LDcgQEAgc3RhdGljIGlu
-dCBzcGlfbm9yX2lzX2xvY2tlZChzdHJ1Y3QgbXRkX2luZm8gKm10ZCwNCj4gbG9mZl90IG9mcywg
-dWludDY0X3QgbGVuKQ0KPiA+ICAJeyAibXg2NmwxZzQ1ZyIsICBJTkZPKDB4YzIyMDFiLCAwLCA2
-NCAqIDEwMjQsIDIwNDgsIFNFQ1RfNEsgfA0KPiBTUElfTk9SX0RVQUxfUkVBRCB8IFNQSV9OT1Jf
-UVVBRF9SRUFEKSB9LA0KPiA+ICAJeyAibXg2NmwxZzU1ZyIsICBJTkZPKDB4YzIyNjFiLCAwLCA2
-NCAqIDEwMjQsIDIwNDgsDQo+ID4gU1BJX05PUl9RVUFEX1JFQUQpIH0sDQo+ID4NCj4gPiAtCS8q
-IE1pY3JvbiAqLw0KPiA+ICsJLyogTWljcm9uIDwtLT4gU1QgTWljcm8gKi8NCj4gPiAgCXsgIm4y
-NXEwMTZhIiwJIElORk8oMHgyMGJiMTUsIDAsIDY0ICogMTAyNCwgICAzMiwgU0VDVF80SyB8DQo+
-IFNQSV9OT1JfUVVBRF9SRUFEKSB9LA0KPiA+ICAJeyAibjI1cTAzMiIsCSBJTkZPKDB4MjBiYTE2
-LCAwLCA2NCAqIDEwMjQsICAgNjQsDQo+IFNQSV9OT1JfUVVBRF9SRUFEKSB9LA0KPiA+ICAJeyAi
-bjI1cTAzMmEiLAkgSU5GTygweDIwYmIxNiwgMCwgNjQgKiAxMDI0LCAgIDY0LA0KPiBTUElfTk9S
-X1FVQURfUkVBRCkgfSwNCj4gPiBAQCAtMjUwMiw2ICsyNTAzLDcgQEAgc3RhdGljIGludCBzcGlf
-bm9yX2luaXRfcGFyYW1zKHN0cnVjdCBzcGlfbm9yICpub3IsDQo+ID4gIAkJCXBhcmFtcy0+cXVh
-ZF9lbmFibGUgPSBtYWNyb25peF9xdWFkX2VuYWJsZTsNCj4gPiAgCQkJYnJlYWs7DQo+ID4NCj4g
-PiArCQljYXNlIFNOT1JfTUZSX1NUOg0KPiA+ICAJCWNhc2UgU05PUl9NRlJfTUlDUk9OOg0KPiA+
-ICAJCQlicmVhazsNCj4gPg0KPiA+IEBAIC0yODc2LDggKzI4NzgsOSBAQCBpbnQgc3BpX25vcl9z
-Y2FuKHN0cnVjdCBzcGlfbm9yICpub3IsIGNvbnN0IGNoYXINCj4gKm5hbWUsDQo+ID4gIAltdGQt
-Pl9yZXN1bWUgPSBzcGlfbm9yX3Jlc3VtZTsNCj4gPg0KPiA+ICAJLyogTk9SIHByb3RlY3Rpb24g
-c3VwcG9ydCBmb3IgU1RtaWNyby9NaWNyb24gY2hpcHMgYW5kIHNpbWlsYXIgKi8NCj4gPiAtCWlm
-IChKRURFQ19NRlIoaW5mbykgPT0gU05PUl9NRlJfTUlDUk9OIHx8DQo+ID4gLQkJCWluZm8tPmZs
-YWdzICYgU1BJX05PUl9IQVNfTE9DSykgew0KPiA+ICsJaWYgKEpFREVDX01GUihpbmZvKSA9PSBT
-Tk9SX01GUl9TVCB8fA0KPiA+ICsJICAgIEpFREVDX01GUihpbmZvKSA9PSBTTk9SX01GUl9NSUNS
-T04gfHwNCj4gPiArCSAgICBpbmZvLT5mbGFncyAmIFNQSV9OT1JfSEFTX0xPQ0spIHsNCj4gPiAg
-CQlub3ItPmZsYXNoX2xvY2sgPSBzdG1fbG9jazsNCj4gPiAgCQlub3ItPmZsYXNoX3VubG9jayA9
-IHN0bV91bmxvY2s7DQo+ID4gIAkJbm9yLT5mbGFzaF9pc19sb2NrZWQgPSBzdG1faXNfbG9ja2Vk
-OyBkaWZmIC0tZ2l0DQo+ID4gYS9pbmNsdWRlL2xpbnV4L210ZC9jZmkuaCBiL2luY2x1ZGUvbGlu
-dXgvbXRkL2NmaS5oIGluZGV4DQo+ID4gOWI1N2E5Yi4uY2JmNzcxNiAxMDA2NDQNCj4gPiAtLS0g
-YS9pbmNsdWRlL2xpbnV4L210ZC9jZmkuaA0KPiA+ICsrKyBiL2luY2x1ZGUvbGludXgvbXRkL2Nm
-aS5oDQo+ID4gQEAgLTM3Nyw2ICszNzcsNyBAQCBzdHJ1Y3QgY2ZpX2ZpeHVwIHsNCj4gPiAgI2Rl
-ZmluZSBDRklfTUZSX1NIQVJQCQkweDAwQjANCj4gPiAgI2RlZmluZSBDRklfTUZSX1NTVAkJMHgw
-MEJGDQo+ID4gICNkZWZpbmUgQ0ZJX01GUl9TVAkJMHgwMDIwIC8qIFNUTWljcm9lbGVjdHJvbmlj
-cyAqLw0KPiA+ICsjZGVmaW5lIENGSV9NRlJfTUlDUk9OCQkweDAwMkMgLyogTWljcm9uICovDQo+
-IA0KPiBDYW4geW91IHBvaW50IHVzIHRvIGEgZGF0YXNoZWV0IHRvIHZlcmlmeSB0aGUgaWQ/DQo+
-IA0KDQpDdXJyZW50bHkgZGF0YSBzaGVldCBvZiB0aGlzIGZsYXNoIGlzIHVuZGVyIE5EQSwgSSBo
-YXZlIGFza2VkIE1pY3JvbiBndXlzIHRvIHByb3ZpZGUgdGhlIHB1YmxpYyBsaW5rIG9mIHRoaXMg
-ZGF0YSBzaGVldC4NCg0KLS0NClJlZ2FyZHMNCllvZ2VzaCBHYXVyLg0KDQo+IEJlc3QsDQo+IHRh
-DQo+IA0KPiA+ICAjZGVmaW5lIENGSV9NRlJfVE9TSElCQQkJMHgwMDk4DQo+ID4gICNkZWZpbmUg
-Q0ZJX01GUl9XSU5CT05ECQkweDAwREENCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xp
-bnV4L210ZC9zcGktbm9yLmggYi9pbmNsdWRlL2xpbnV4L210ZC9zcGktbm9yLmgNCj4gPiBpbmRl
-eCBjOTIyZTk3Li5mNDNiZmM1IDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvbGludXgvbXRkL3Nw
-aS1ub3IuaA0KPiA+ICsrKyBiL2luY2x1ZGUvbGludXgvbXRkL3NwaS1ub3IuaA0KPiA+IEBAIC0y
-Myw3ICsyMyw4IEBADQo+ID4gICNkZWZpbmUgU05PUl9NRlJfQVRNRUwJCUNGSV9NRlJfQVRNRUwN
-Cj4gPiAgI2RlZmluZSBTTk9SX01GUl9HSUdBREVWSUNFCTB4YzgNCj4gPiAgI2RlZmluZSBTTk9S
-X01GUl9JTlRFTAkJQ0ZJX01GUl9JTlRFTA0KPiA+IC0jZGVmaW5lIFNOT1JfTUZSX01JQ1JPTgkJ
-Q0ZJX01GUl9TVCAvKiBTVCBNaWNybyA8LS0+IE1pY3Jvbg0KPiAqLw0KPiA+ICsjZGVmaW5lIFNO
-T1JfTUZSX1NUCQlDRklfTUZSX1NUCS8qIFNUIE1pY3JvICovDQo+ID4gKyNkZWZpbmUgU05PUl9N
-RlJfTUlDUk9OCQlDRklfTUZSX01JQ1JPTgkvKiBNaWNyb24gKi8NCj4gPiAgI2RlZmluZSBTTk9S
-X01GUl9NQUNST05JWAlDRklfTUZSX01BQ1JPTklYDQo+ID4gICNkZWZpbmUgU05PUl9NRlJfU1BB
-TlNJT04JQ0ZJX01GUl9BTUQNCj4gPiAgI2RlZmluZSBTTk9SX01GUl9TU1QJCUNGSV9NRlJfU1NU
-DQo+ID4NCg==
+Hello Mark,
+
+Here is a patchset which, IMO, is improving spi-mem support. The first
+2 patches are fixing/improving the kerneldoc header associated to the
+spi_mem_op struct, and the last one is adding checks on the spi_mem_op
+object passed to spi_mem_{exec,supports}_op().
+
+Regards,
+
+Boris
+
+Boris Brezillon (3):
+  spi: spi-mem: Add missing description for data.nbytes field
+  spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header
+  spi: spi-mem: Add extra sanity checks on the op param
+
+ drivers/spi/spi-mem.c       | 54 ++++++++++++++++++++++++++++++++++++++++-----
+ include/linux/spi/spi-mem.h |  7 +++---
+ 2 files changed, 52 insertions(+), 9 deletions(-)
+
+-- 
+2.14.1
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,19 +1,43 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: Add extra sanity checks on the op param" to
- the spi tree
-Date: Thu, 20 Sep 2018 20:26:20 +0100 (BST)
-Message-ID: <20180920192620.B2817440078@finisterre.ee.mobilebroadband>
-References: <20180920073112.7897-4-boris.brezillon@bootlin.com>
+From: Lukasz Majewski <lukma@denx.de>
+Subject: Re: Questions about the Freescale/NXP QuadSPI controller
+Date: Thu, 20 Sep 2018 22:37:23 +0200
+Message-ID: <20180920223723.4d40f1b7@jawa>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+ <AM6PR04MB4967C4B3F97004C41220E310971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <09d39759-390a-bca3-caeb-2ee8ddb29443@exceet.de>
+ <20180919004247.60c6099a@jawa>
+ <e76062cb-f703-2830-8074-d1a812dc14ce@exceet.de>
+ <20180919130211.3f2e7e3a@jawa> <20180920170032.39fb5073@jawa>
+ <bd116b60-49ce-b4ad-3943-93df505bc710@exceet.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Richard Weinberger <richard@nod.at>, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: multipart/mixed; boundary="===============2964378757281074572=="
+Cc: David Wolfe <david.wolfe@nxp.com>,
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ "richard@nod.at" <richard@nod.at>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Albert ARIBAUD <albert.aribaud@3adev.fr>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ Fabio Estevam <fabio.estevam@nxp.com>, Han Xu <han.xu@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ Huang Shijie <sjhuang@iluvatar.ai>
+To: Frieder Schrempf <frieder.schrempf@exceet.de>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180920073112.7897-4-boris.brezillon@bootlin.com>
+In-Reply-To: <bd116b60-49ce-b4ad-3943-93df505bc710@exceet.de>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -25,141 +49,266 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+--===============2964378757281074572==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK"; protocol="application/pgp-signature"
 
-   spi: spi-mem: Add extra sanity checks on the op param
+--Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+Hi Frieder,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> Hi Lukasz,
+>=20
+> On 20.09.2018 17:00, Lukasz Majewski wrote:
+> > Hi Frieder,
+> >  =20
+> >> Hi Frieder,
+> >> =20
+> >>> Hi Lukasz,
+> >>>
+> >>> On 19.09.2018 00:42, Lukasz Majewski wrote: =20
+> >>>> Dear All,
+> >>>>
+> >>>> Maybe I do jump a bit off topic here, but...
+> >>>>
+> >>>> I've read through the following thread:
+> >>>> https://patchwork.ozlabs.org/patch/939885/
+> >>>>
+> >>>> And it mentions some issues with reading AHB content (buffers) in
+> >>>> fsl-quadspi.c driver discovered when new QuadSPI driver was
+> >>>> developed. =20
+> >>>
+> >>> The only setup with two chips that is known to be problematic with
+> >>> the new driver, is when both chips are connected to the same bus
+> >>> (e.g. QSPIA) using separate chip selects. =20
+> >>
+> >> I'm using QSPI0 controller, with two memories connected to QSPI0_A
+> >> and QSPI0_B lines.
+> >> =20
+> >>>
+> >>> Does your board use this kind of setup, or are the two chips
+> >>> connected two different buses (QSPIA and QSPIB)?
+> >>>
+> >>> Have you tested the new driver? It would be great to receive some
+> >>> more feedback. =20
+> >>
+> >> I will check (test) this new driver. No problem. =20
+> >=20
+> > I've ported your patch on v4.19-rc3.
+> >=20
+> > I had to fix the "div0 issue" by adding:
+> > if (op->dummy.buswidth &&
+> > 	(op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
+> >=20
+> > In fsl_qspi_supports_op() function.
+> >=20
+> >=20
+> > Unfortunately, on Vybrid vf610 when testing I do see corruption of
+> > read data from the mtd device:
+> >=20
+> > ~# hexdump aaa.img
+> > 0000000 464c eec0 baa5 c5ff 7b99 4dfb e0b6 8a2e
+> > 0000010 e98e 5265 683c a635 c069 e402 303f d936
+> > 0000020 c243 01a7 7064 fce8 e3a9 200a 7e85 28bc
+> > 0000030 4296 a30e 1bb4 88d4 b456 b4a6 f3aa 8cff
+> > 0000040 ffff ffff ffff ffff ffff ffff ffff ffff
+> > *
+> > 0000100
+> >=20
+> > ~# hexdump data_test.img
+> > 0000000 464c eec0 baa5 c5ff 7b99 4dfb e0b6 8a2e
+> > 0000010 e98e 5265 683c a635 c069 e402 303f d936
+> > 0000020 c243 01a7 7064 fce8 e3a9 200a 7e85 28bc
+> > 0000030 4296 a30e 1bb4 88d4 b456 b4a6 f3aa 8cff
+> > 0000040 01c9 462d 0a43 f893 0e42 67f1 57f0 787c
+> > 0000050 49c0 fb2a e514 e954 1d21 affa bac4 38f1
+> > 0000060 1ca5 ec46 77eb a854 285b 8e21 12d7 f377
+> > 0000070 b441 2baf ee33 596c 98b6 e71a c1cb 876c
+> >=20
+> >=20
+> > Test case:
+> > flash_erase /dev/mtd3 0 1
+> > dd if=3Ddata_test.img of=3D/dev/mtd3
+> > dd if=3D/dev/mtd3 of=3Daaa.img bs=3D1 count=3D256
+> >=20
+> >=20
+> >  From the code I see that the AHB buffer has 1024B. It is accessed
+> > in 8 bytes packs.
+> >=20
+> > This seems like some cache or HW issue....
+> >=20
+> > In the old driver, to fix this problem one needed to
+> > 1. Reduce the RX fifo size from 128B to 64B
+> >=20
+> > 2. Disable (set to 0) the AHB transfer's BUF3CR ADATSZ field - the
+> > transfer size is the same as in LUT.
+> >=20
+> > (Original patch: https://patchwork.ozlabs.org/patch/675401/) =20
+>=20
+> Thanks a lot for doing the test. It seems like Vybrid needs some
+> special handling to work around this problem.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I'm not sure if it is special - it looks like there may be some HW
+issue with Vybrid.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> So this means the current driver has never worked for Vybrid, as the=20
+> mentioned patch was never merged!?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+At least on my setup. You cannot use MTD memory for anything as you
+cannot read correctly data from it.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I'm wondering if any other vybrid users (with QSPI) also experience
+such problems.
 
-Thanks,
-Mark
+>=20
+> As these issues seem to be specific to Vybrid and as they seem to
+> exist in the current driver too, I would like to fix them after we
+> have a first version of the new driver that works for the other
+> platforms.
 
->From 380583227c0c7f52383b0cd5c0e2de93ed31d553 Mon Sep 17 00:00:00 2001
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Date: Thu, 20 Sep 2018 09:31:12 +0200
-Subject: [PATCH] spi: spi-mem: Add extra sanity checks on the op param
+It is fine for me - I hope that I will find solution soon (and rebase
+it on top of your patch).
 
-Some combinations are simply not valid and should be rejected before
-the op is passed to the SPI controller driver.
+>=20
+> I hope we can figure out the other issues soon.
 
-Add an spi_mem_check_op() helper and use it in spi_mem_exec_op() and
-spi_mem_supports_op() to make sure the spi-mem operation is valid.
+I would be very happy if anybody from NXP could look on this issue and
+forward it to HW engineers for some insight.
 
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-mem.c | 54 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 6 deletions(-)
+(Vybryd has some old "chip errata document":
+https://community.nxp.com/message/1059701 , but it mentions other issue
+with QSPI).
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index eb72dba71d83..cc3d425aae56 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -12,6 +12,8 @@
- 
- #include "internals.h"
- 
-+#define SPI_MEM_MAX_BUSWIDTH		4
-+
- /**
-  * spi_controller_dma_map_mem_op_data() - DMA-map the buffer attached to a
-  *					  memory operation
-@@ -149,6 +151,44 @@ static bool spi_mem_default_supports_op(struct spi_mem *mem,
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
- 
-+static bool spi_mem_buswidth_is_valid(u8 buswidth)
-+{
-+	if (hweight8(buswidth) > 1 || buswidth > SPI_MEM_MAX_BUSWIDTH)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int spi_mem_check_op(const struct spi_mem_op *op)
-+{
-+	if (!op->cmd.buswidth)
-+		return -EINVAL;
-+
-+	if ((op->addr.nbytes && !op->addr.buswidth) ||
-+	    (op->dummy.nbytes && !op->dummy.buswidth) ||
-+	    (op->data.nbytes && !op->data.buswidth))
-+		return -EINVAL;
-+
-+	if (spi_mem_buswidth_is_valid(op->cmd.buswidth) ||
-+	    spi_mem_buswidth_is_valid(op->addr.buswidth) ||
-+	    spi_mem_buswidth_is_valid(op->dummy.buswidth) ||
-+	    spi_mem_buswidth_is_valid(op->data.buswidth))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static bool spi_mem_internal_supports_op(struct spi_mem *mem,
-+					 const struct spi_mem_op *op)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
-+		return ctlr->mem_ops->supports_op(mem, op);
-+
-+	return spi_mem_default_supports_op(mem, op);
-+}
-+
- /**
-  * spi_mem_supports_op() - Check if a memory device and the controller it is
-  *			   connected to support a specific memory operation
-@@ -166,12 +206,10 @@ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-  */
- bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
--	struct spi_controller *ctlr = mem->spi->controller;
--
--	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
--		return ctlr->mem_ops->supports_op(mem, op);
-+	if (spi_mem_check_op(op))
-+		return false;
- 
--	return spi_mem_default_supports_op(mem, op);
-+	return spi_mem_internal_supports_op(mem, op);
- }
- EXPORT_SYMBOL_GPL(spi_mem_supports_op);
- 
-@@ -196,7 +234,11 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	u8 *tmpbuf;
- 	int ret;
- 
--	if (!spi_mem_supports_op(mem, op))
-+	ret = spi_mem_check_op(op);
-+	if (ret)
-+		return ret;
-+
-+	if (!spi_mem_internal_supports_op(mem, op))
- 		return -ENOTSUPP;
- 
- 	if (ctlr->mem_ops) {
--- 
-2.19.0
+>=20
+> Thanks,
+> Frieder
+>=20
+> >=20
+> >  =20
+> >> =20
+> >>>     =20
+> >>>> I do have a setup with qspi0 having two SPI memories connected
+> >>>> (2x16 MiB), and I'm wondering if anybody has some more info
+> >>>> regarding:
+> >>>>
+> >>>> (What's more is that there is a bug in
+> >>>>    * the "IP Command Read" in the Vybrid.) found here: =20
+> > 	^^^^^^^^^^^^^^^^^^^^^^^^ - It would be handy to have the
+> > exact explanation of this issue.
+> >  =20
+> >>>> https://elixir.bootlin.com/linux/v4.19-rc4/source/drivers/mtd/spi-no=
+r/fsl-quadspi.c#L67
+> >>>>
+> >>>> I've googled for some errata or known issues for vybryd's QSPI IP
+> >>>> block (vf610) but without luck so far ... =20
+> >>>
+> >>> Unfortunately I don't know the background for this comment. =20
+> >>
+> >> The comment was added by some Freescale employee when the driver
+> >> was added to Linux (by Huang - CC'ed).
+> >> =20
+> >>> Is your
+> >>> board using VF610? =20
+> >>
+> >> Yes, it uses vf610 (A5 + M4 cores).
+> >> =20
+> >>> Do you experience problems? =20
+> >>
+> >> I've already observed following issue:
+> >>
+> >> For the current QSPI ML driver (fsl-quadspi.c - 4.19-rc3) only half
+> >> of the AHB buffer is valid. When I do read the whole one - I do see
+> >> read data corruption (on UBI or raw memory).
+> >>
+> >> This was pointed out in the patch:
+> >> https://patchwork.ozlabs.org/patch/675401/
+> >>
+> >> Unfortunately, I did not found any info regarding this problem (in
+> >> NXP's errata or other doc).
+> >>
+> >> I will check if this issue shows up on new patches.
+> >>
+> >> Thanks in advance for your help.
+> >> =20
+> >>>
+> >>> Regards,
+> >>> Frieder
+> >>>
+> >>> ______________________________________________________
+> >>> Linux MTD discussion mailing list
+> >>> http://lists.infradead.org/mailman/listinfo/linux-mtd/ =20
+> >>
+> >> Best regards,
+> >>
+> >> Lukasz Majewski
+> >>
+> >> --
+> >>
+> >> DENX Software Engineering GmbH,      Managing Director: Wolfgang
+> >> Denk HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
+> >> Germany Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email:
+> >> wd@denx.de =20
+> >=20
+> >=20
+> >=20
+> >=20
+> > Best regards,
+> >=20
+> > Lukasz Majewski
+> >=20
+> > --
+> >=20
+> > DENX Software Engineering GmbH,      Managing Director: Wolfgang
+> > Denk HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
+> > Germany Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email:
+> > wd@denx.de=20
+>=20
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+
+--Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlukBQQACgkQAR8vZIA0
+zr1uiAf+IRW31KOqwIetIBOvAA6zBwA3EW5xTAbfFyi1+hLRQ6XOo4oo2jSmgcPy
+xj2kacy3RbeBrgPPVHFzN2SIFpYl8gjjV48Hdgy9lg6TuKpL6tiK0oNtjBzW7DTH
+zNM6hZcK5D4tjEvpnvErtTkCcU5bQiMliMsabLNo5cwB21YqOXbUlgRlutxjarVP
+eWblDLpaM4w/Zbecrjfg8yim5nadeMI243z+fZqvz73eHX6IutjbXf41/6TeR+DM
+3xD+ft9grJqmZJVKMzg8Men7AaV4Zel7qtryGTTQok+TiPp1soHdrxUsPtMtlKrh
+vvxrpHOKveEDfX19Sh1fBVLBb+S0xg==
+=sD+O
+-----END PGP SIGNATURE-----
+
+--Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK--
+
+
+--===============2964378757281074572==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============2964378757281074572==--

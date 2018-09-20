@@ -1,7 +1,7 @@
 From: Lukasz Majewski <lukma@denx.de>
 Subject: Re: Questions about the Freescale/NXP QuadSPI controller
-Date: Thu, 20 Sep 2018 22:37:23 +0200
-Message-ID: <20180920223723.4d40f1b7@jawa>
+Date: Fri, 21 Sep 2018 00:13:23 +0200
+Message-ID: <20180921001323.596a39c8@jawa>
 References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
  <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
  <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
@@ -18,7 +18,7 @@ References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
  <20180919130211.3f2e7e3a@jawa> <20180920170032.39fb5073@jawa>
  <bd116b60-49ce-b4ad-3943-93df505bc710@exceet.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2964378757281074572=="
+Content-Type: multipart/mixed; boundary="===============3507236534488758677=="
 Cc: David Wolfe <david.wolfe@nxp.com>,
  Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
  Boris Brezillon <boris.brezillon@bootlin.com>,
@@ -49,15 +49,17 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2964378757281074572==
+--===============3507236534488758677==
 Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK"; protocol="application/pgp-signature"
+ boundary="Sig_/PAb3Bmzn=T6ivPbr9QPMxAI"; protocol="application/pgp-signature"
 
---Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK
+--Sig_/PAb3Bmzn=T6ivPbr9QPMxAI
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi Frieder,
+
+Please find some more comments regarding the new spi-fsl-qspi.c driver.
 
 > Hi Lukasz,
 >=20
@@ -149,38 +151,15 @@ Hi Frieder,
 >=20
 > Thanks a lot for doing the test. It seems like Vybrid needs some
 > special handling to work around this problem.
-
-I'm not sure if it is special - it looks like there may be some HW
-issue with Vybrid.
-
 > So this means the current driver has never worked for Vybrid, as the=20
 > mentioned patch was never merged!?
-
-At least on my setup. You cannot use MTD memory for anything as you
-cannot read correctly data from it.
-
-I'm wondering if any other vybrid users (with QSPI) also experience
-such problems.
-
 >=20
 > As these issues seem to be specific to Vybrid and as they seem to
 > exist in the current driver too, I would like to fix them after we
 > have a first version of the new driver that works for the other
 > platforms.
-
-It is fine for me - I hope that I will find solution soon (and rebase
-it on top of your patch).
-
 >=20
 > I hope we can figure out the other issues soon.
-
-I would be very happy if anybody from NXP could look on this issue and
-forward it to HW engineers for some insight.
-
-(Vybryd has some old "chip errata document":
-https://community.nxp.com/message/1059701 , but it mentions other issue
-with QSPI).
-
 >=20
 > Thanks,
 > Frieder
@@ -199,7 +178,27 @@ with QSPI).
 > > exact explanation of this issue.
 > >  =20
 > >>>> https://elixir.bootlin.com/linux/v4.19-rc4/source/drivers/mtd/spi-no=
-r/fsl-quadspi.c#L67
+r/fsl-quadspi.c#L671
+       ^^^^^^^^^^^^ - [1]
+
+
+I've looked a bit closer to the new spi-fsl-qspi.c driver and it looks
+like it uses fsl_qspi_exec_op() and then calls fsl_qspi_do_op().
+
+In the last function we setup the QUADSPI_IPCR register to initiate the
+transfer between SPI-NOR and the internal RX buffer.
+
+Please correct me if I'm wrong but it seems to me like we are using "IP
+Command Read" approach here.
+
+If this is true - what was the rationale to use it in the new driver, as
+in the old one the "AHB Command Read" approach was recommended (i.e.
+faster) [1]?
+
+To be even more problematic the info in link [1] states that on vybrid
+there is a bug on the "IP Command Read" HW block and it should be
+avoided.
+
 > >>>>
 > >>>> I've googled for some errata or known issues for vybryd's QSPI IP
 > >>>> block (vf610) but without luck so far ... =20
@@ -282,26 +281,26 @@ DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
 
---Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK
+--Sig_/PAb3Bmzn=T6ivPbr9QPMxAI
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlukBQQACgkQAR8vZIA0
-zr1uiAf+IRW31KOqwIetIBOvAA6zBwA3EW5xTAbfFyi1+hLRQ6XOo4oo2jSmgcPy
-xj2kacy3RbeBrgPPVHFzN2SIFpYl8gjjV48Hdgy9lg6TuKpL6tiK0oNtjBzW7DTH
-zNM6hZcK5D4tjEvpnvErtTkCcU5bQiMliMsabLNo5cwB21YqOXbUlgRlutxjarVP
-eWblDLpaM4w/Zbecrjfg8yim5nadeMI243z+fZqvz73eHX6IutjbXf41/6TeR+DM
-3xD+ft9grJqmZJVKMzg8Men7AaV4Zel7qtryGTTQok+TiPp1soHdrxUsPtMtlKrh
-vvxrpHOKveEDfX19Sh1fBVLBb+S0xg==
-=sD+O
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlukG4MACgkQAR8vZIA0
+zr3lrwf/du5GHJWsNZ4xVkEsozpsto7uYs7gRGP7UGfxIi2xw4OrDJlVusW9US7v
+gDQicqQBz3JICYME6eMjQ0YrUX2hseSggE4ie5dALT5w9HQ4Q4LWGsW0QqWJTbFl
+wMzhQ1y6h9gZojKRv2LVOT5l67UE+dOeiMge0LgE80Al0IESjsueL9aY0zC7BQAK
+7wVBFPUvfFoQQtF0pGJ0PE1/c3NiUpS76vDoLNk158uKzwY/RqK6t8M+Yxsl4lIz
+ieBSGJvJMjzzRm3tsJaoXyrKFO/oT+47UlgXwMhnDirO+qoqBcwcJLsNh8UqbX2U
+4kfvtOnIZszyvYeMVKMn0sVjqyfcgQ==
+=iBj6
 -----END PGP SIGNATURE-----
 
---Sig_/ZZ6p/CNCCCKnDMWw8Ax9AlK--
+--Sig_/PAb3Bmzn=T6ivPbr9QPMxAI--
 
 
---===============2964378757281074572==
+--===============3507236534488758677==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -311,4 +310,4 @@ ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
---===============2964378757281074572==--
+--===============3507236534488758677==--

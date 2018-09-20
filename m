@@ -1,7 +1,9 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH 0/3] spi: spi-mem: Minor fixes/improvements
-Date: Thu, 20 Sep 2018 09:31:09 +0200
-Message-ID: <20180920073112.7897-1-boris.brezillon@bootlin.com>
+Subject: [PATCH 1/3] spi: spi-mem: Add missing description for data.nbytes
+ field
+Date: Thu, 20 Sep 2018 09:31:10 +0200
+Message-ID: <20180920073112.7897-2-boris.brezillon@bootlin.com>
+References: <20180920073112.7897-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,6 +14,7 @@ Cc: Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
 To: Mark Brown <broonie@kernel.org>,
 	linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180920073112.7897-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -23,26 +26,27 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Mark,
+Add a description for spi_mem_op.data.nbytes to the kerneldoc header.
 
-Here is a patchset which, IMO, is improving spi-mem support. The first
-2 patches are fixing/improving the kerneldoc header associated to the
-spi_mem_op struct, and the last one is adding checks on the spi_mem_op
-object passed to spi_mem_{exec,supports}_op().
+Fixes: c36ff266dc82 ("spi: Extend the core to ease integration of SPI memory controllers")
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+ include/linux/spi/spi-mem.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Regards,
-
-Boris
-
-Boris Brezillon (3):
-  spi: spi-mem: Add missing description for data.nbytes field
-  spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header
-  spi: spi-mem: Add extra sanity checks on the op param
-
- drivers/spi/spi-mem.c       | 54 ++++++++++++++++++++++++++++++++++++++++-----
- include/linux/spi/spi-mem.h |  7 +++---
- 2 files changed, 52 insertions(+), 9 deletions(-)
-
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index b2bd4b4127c4..aeb87c02cf1d 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -81,6 +81,8 @@ enum spi_mem_data_dir {
+  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
+  * @data.buswidth: number of IO lanes used to send/receive the data
+  * @data.dir: direction of the transfer
++ * @data.nbytes: number of data bytes to send/receive. Can be zero if the
++ *		 operation does not involve transferring data
+  * @data.buf.in: input buffer
+  * @data.buf.out: output buffer
+  */
 -- 
 2.14.1
 

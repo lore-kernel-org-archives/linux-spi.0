@@ -1,60 +1,72 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH] spi: spi-mem: Adjust op len based on message/transfer
- size limitations
-Date: Fri, 21 Sep 2018 07:15:48 +0000
-Message-ID: <AM6PR04MB435758E6422596CB5FB0E2B397120@AM6PR04MB4357.eurprd04.prod.outlook.com>
-References: <20180921070628.35153-1-chuanhua.han@nxp.com>
- <20180921070628.35153-3-chuanhua.han@nxp.com>
+From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v3 0/5] spi: spi-mem: Add driver for NXP FlexSPI controller
+Date: Fri, 21 Sep 2018 15:51:58 +0530
+Message-ID: <1537525323-20730-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-To: Chuanhua Han <chuanhua.han@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20180921070628.35153-3-chuanhua.han@nxp.com>
-Content-Language: en-US
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org,
+        Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2h1YW5odWEgSGFuIDxj
-aHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU2VudDogMjAxOMTqOdTCMjHI1SAxNTowNg0KPiBUbzog
-YnJvb25pZUBrZXJuZWwub3JnDQo+IENjOiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
-eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBlaGFAZGVpZi5jb207DQo+IGJvcmlzLmJyZXppbGxv
-bkBib290bGluLmNvbTsgQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT47DQo+IHN0
-YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogW1BBVENIXSBzcGk6IHNwaS1tZW06IEFk
-anVzdCBvcCBsZW4gYmFzZWQgb24gbWVzc2FnZS90cmFuc2ZlciBzaXplDQo+IGxpbWl0YXRpb25z
-DQo+IA0KPiBXZSBuZWVkIHRoYXQgdG8gYWRqdXN0IHRoZSBsZW4gb2YgdGhlIDJuZCB0cmFuc2Zl
-ciAoY2FsbGVkIGRhdGEgaW4NCj4gc3BpLW1lbSkgaWYgaXQncyB0b28gbG9uZyB0byBmaXQgaW4g
-YSBTUEkgbWVzc2FnZSBvciBTUEkgdHJhbnNmZXIuDQo+IA0KPiBGaXhlczogYzM2ZmYyNjZkYzgy
-ICgic3BpOiBFeHRlbmQgdGhlIGNvcmUgdG8gZWFzZSBpbnRlZ3JhdGlvbiBvZiBTUEkgbWVtb3J5
-DQo+IGNvbnRyb2xsZXJzIikNCj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPg0KPiBTaWdu
-ZWQtb2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPg0KPiBSZXZpZXdl
-ZC1ieTogQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNp
-Z25lZC1vZmYtYnk6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4NCj4gLS0tDQo+ICBk
-cml2ZXJzL3NwaS9zcGktbWVtLmMgfCAxNSArKysrKysrKysrKysrKysNCj4gIDEgZmlsZSBjaGFu
-Z2VkLCAxNSBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3Bp
-LW1lbS5jIGIvZHJpdmVycy9zcGkvc3BpLW1lbS5jIGluZGV4DQo+IDk5MDc3MGRmYTVjZi4uZWMw
-YzI0ZTg3M2NkIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMNCj4gKysrIGIv
-ZHJpdmVycy9zcGkvc3BpLW1lbS5jDQo+IEBAIC0zMjgsMTAgKzMyOCwyNSBAQCBFWFBPUlRfU1lN
-Qk9MX0dQTChzcGlfbWVtX2V4ZWNfb3ApOw0KPiAgaW50IHNwaV9tZW1fYWRqdXN0X29wX3NpemUo
-c3RydWN0IHNwaV9tZW0gKm1lbSwgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KPiB7DQo+ICAJc3Ry
-dWN0IHNwaV9jb250cm9sbGVyICpjdGxyID0gbWVtLT5zcGktPmNvbnRyb2xsZXI7DQo+ICsJc2l6
-ZV90IGxlbjsNCj4gKw0KPiArCWxlbiA9IHNpemVvZihvcC0+Y21kLm9wY29kZSkgKyBvcC0+YWRk
-ci5uYnl0ZXMgKyBvcC0+ZHVtbXkubmJ5dGVzOw0KPiANCj4gIAlpZiAoY3Rsci0+bWVtX29wcyAm
-JiBjdGxyLT5tZW1fb3BzLT5hZGp1c3Rfb3Bfc2l6ZSkNCj4gIAkJcmV0dXJuIGN0bHItPm1lbV9v
-cHMtPmFkanVzdF9vcF9zaXplKG1lbSwgb3ApOw0KPiANCj4gKwlpZiAoIWN0bHItPm1lbV9vcHMg
-fHwgIWN0bHItPm1lbV9vcHMtPmV4ZWNfb3ApIHsNCj4gKwkJaWYgKGxlbiA+IHNwaV9tYXhfdHJh
-bnNmZXJfc2l6ZShtZW0tPnNwaSkpDQo+ICsJCQlyZXR1cm4gLUVJTlZBTDsNCj4gKw0KPiArCQlv
-cC0+ZGF0YS5uYnl0ZXMgPSBtaW4zKChzaXplX3Qpb3AtPmRhdGEubmJ5dGVzLA0KPiArCQkJCSAg
-ICAgICBzcGlfbWF4X3RyYW5zZmVyX3NpemUobWVtLT5zcGkpLA0KPiArCQkJCSAgICAgICBzcGlf
-bWF4X21lc3NhZ2Vfc2l6ZShtZW0tPnNwaSkgLQ0KPiArCQkJCSAgICAgICBsZW4pOw0KPiArCQlp
-ZiAoIW9wLT5kYXRhLm5ieXRlcykNCj4gKwkJCXJldHVybiAtRUlOVkFMOw0KPiArCX0NCj4gKw0K
-PiAgCXJldHVybiAwOw0KPiAgfQ0KPiAgRVhQT1JUX1NZTUJPTF9HUEwoc3BpX21lbV9hZGp1c3Rf
-b3Bfc2l6ZSk7DQo+IC0tDQo+IDIuMTcuMQ0KSSdtIHJlYWxseSBzb3JyeSBmb3IgbXkgZXJyb3Ig
-aW4gb3BlcmF0aW9uLCB0aGlzIGhhcyBiZWVuIGFwcGxpZWQgdG8gdGhlIGxhdGVzdCBrZXJuZWws
-IHBsZWFzZSBpZ25vcmUgdGhpcyBwYXRjaCBpbiBlbWFpbCEhIQ0K
+- Add driver for NXP FlexSPI host controller
+
+ FlexSPI is a flexsible SPI host controller [1], Chapter 30 page 1475,
+ which supports two SPI channels and up to 4 external devices.
+ Each channel supports Single/Dual/Quad/Octal mode data transfer (1/2/4/8 bidirectional data lines)
+ i.e. FlexSPI acts as an interface to external devices, maximum 4, each with up to 8
+ bidirectional data lines.
+
+- Tested this driver with mtd_debug(Erase/Write/Read) utility and JFFS2
+ filesystem mounting and booting on NXP LX2160ARDB[2] and LX2160AQDS targets.
+ LX2160ARDB is having two NOR slave device connected on single bus A
+ i.e. A0 and A1 (CS0 and CS1).
+ LX2160AQDS is having two NOR slave device connected on separate buses
+ one flash on A0 and second on B1 i.e. (CS0 and CS3).
+ Verified this driver on following SPI NOR flashes:
+   Micron, mt35xu512aba[3], [Read - 1 bit mode]
+   Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+
+ Support for octal flash commands and other Octal data transfer related framework
+ changes work is in progress.
+
+[1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
+[2] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=9721
+[3] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=63445
+
+Yogesh Gaur (5):
+  spi: spi-mem: Add driver for NXP FlexSPI controller
+  dt-bindings: spi: add binding file for NXP FlexSPI controller
+  arm64: dts: lx2160a: add FlexSPI node property
+  arm64: defconfig: enable NXP FlexSPI driver
+  MAINTAINERS: add maintainers for the NXP FlexSPI driver
+
+Changes for v3:
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+Changes for v2:
+- Incorporated Boris review comments and drop below patches as per the comments.
+ - Patch 'spi: add slave device size in spi_device struct'
+ - Patch 'spi: add flags for octal I/O data transfer'
+- Incorporated DTS and Binding file review comments of Shawn Guo and Rob Herring.
+
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt       |   42 +
+ MAINTAINERS                                        |    6 +
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts  |   22 +
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |   12 +
+ arch/arm64/configs/defconfig                       |    1 +
+ drivers/spi/Kconfig                                |   10 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-nxp-fspi.c                         | 1231 ++++++++++++++++++++
+ 8 files changed, 1324 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+ create mode 100644 drivers/spi/spi-nxp-fspi.c
+
+-- 
+2.7.4

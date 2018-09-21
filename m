@@ -1,58 +1,92 @@
 From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: [PATCH] spi: spi-mem: Adjust op len based on message/transfer size limitations
-Date: Fri, 21 Sep 2018 15:06:28 +0800
-Message-ID: <20180921070628.35153-3-chuanhua.han@nxp.com>
+Subject: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport mode
+Date: Fri, 21 Sep 2018 15:06:27 +0800
+Message-ID: <20180921070628.35153-2-chuanhua.han@nxp.com>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         eha@deif.com, boris.brezillon@bootlin.com,
-        Chuanhua Han <chuanhua.han@nxp.com>, stable@vger.kernel.org
+        Chuanhua Han <chuanhua.han@nxp.com>
 To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20180921070628.35153-1-chuanhua.han@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We need that to adjust the len of the 2nd transfer (called data in
-spi-mem) if it's too long to fit in a SPI message or SPI transfer.
+This patch fixes the problem that the XSPI mode of the dspi controller
+cannot transfer data properly.
+In XSPI mode, cmd_fifo is written before tx_fifo, which transforms the
+byte order of sending and receiving data.
 
-Fixes: c36ff266dc82 ("spi: Extend the core to ease integration of SPI memory controllers")
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mem.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 990770dfa5cf..ec0c24e873cd 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -328,10 +328,25 @@ EXPORT_SYMBOL_GPL(spi_mem_exec_op);
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- {
- 	struct spi_controller *ctlr = mem->spi->controller;
-+	size_t len;
-+
-+	len = sizeof(op->cmd.opcode) + op->addr.nbytes + op->dummy.nbytes;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..44cc2bd0120e 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -220,9 +220,15 @@ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
+ 		if (dspi->bytes_per_word == 1)
+ 			txdata = *(u8 *)dspi->tx;
+ 		else if (dspi->bytes_per_word == 2)
+-			txdata = *(u16 *)dspi->tx;
++			if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
++				txdata =  cpu_to_le16(*(u16 *)dspi->tx);
++			else
++				txdata =  cpu_to_be16(*(u16 *)dspi->tx);
+ 		else  /* dspi->bytes_per_word == 4 */
+-			txdata = *(u32 *)dspi->tx;
++			if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
++				txdata = cpu_to_le32(*(u32 *)dspi->tx);
++			else
++				txdata = cpu_to_be32(*(u32 *)dspi->tx);
+ 		dspi->tx += dspi->bytes_per_word;
+ 	}
+ 	dspi->len -= dspi->bytes_per_word;
+@@ -243,15 +249,18 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+ 	if (!dspi->rx)
+ 		return;
  
- 	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
- 		return ctlr->mem_ops->adjust_op_size(mem, op);
- 
-+	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
-+		if (len > spi_max_transfer_size(mem->spi))
-+			return -EINVAL;
-+
-+		op->data.nbytes = min3((size_t)op->data.nbytes,
-+				       spi_max_transfer_size(mem->spi),
-+				       spi_max_message_size(mem->spi) -
-+				       len);
-+		if (!op->data.nbytes)
-+			return -EINVAL;
-+	}
-+
- 	return 0;
+-	/* Mask of undefined bits */
+-	rxdata &= (1 << dspi->bits_per_word) - 1;
+-
+ 	if (dspi->bytes_per_word == 1)
+ 		*(u8 *)dspi->rx = rxdata;
+ 	else if (dspi->bytes_per_word == 2)
+-		*(u16 *)dspi->rx = rxdata;
++		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
++			*(u16 *)dspi->rx = be16_to_cpu(rxdata);
++		else
++			*(u16 *)dspi->rx = be16_to_cpu(rxdata);
+ 	else /* dspi->bytes_per_word == 4 */
+-		*(u32 *)dspi->rx = rxdata;
++		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
++			*(u32 *)dspi->rx = le32_to_cpu(rxdata);
++		else
++			*(u32 *)dspi->rx = be32_to_cpu(rxdata);
+ 	dspi->rx += dspi->bytes_per_word;
  }
- EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+ 
+@@ -593,16 +602,16 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
+ 		 */
+ 		u32 data = dspi_pop_tx(dspi);
+ 
++		cmd_fifo_write(dspi);
+ 		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1)) {
+ 			/* LSB */
+-			tx_fifo_write(dspi, data & 0xFFFF);
+ 			tx_fifo_write(dspi, data >> 16);
++			tx_fifo_write(dspi, data & 0xFFFF);
+ 		} else {
+ 			/* MSB */
+-			tx_fifo_write(dspi, data >> 16);
+ 			tx_fifo_write(dspi, data & 0xFFFF);
++			tx_fifo_write(dspi, data >> 16);
+ 		}
+-		cmd_fifo_write(dspi);
+ 	} else {
+ 		/* Write one entry to both TX FIFO and CMD FIFO
+ 		 * simultaneously.
 -- 
 2.17.1

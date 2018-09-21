@@ -1,92 +1,60 @@
 From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport mode
-Date: Fri, 21 Sep 2018 15:06:27 +0800
-Message-ID: <20180921070628.35153-2-chuanhua.han@nxp.com>
+Subject: RE: [PATCH] spi: spi-mem: Adjust op len based on message/transfer
+ size limitations
+Date: Fri, 21 Sep 2018 07:15:48 +0000
+Message-ID: <AM6PR04MB435758E6422596CB5FB0E2B397120@AM6PR04MB4357.eurprd04.prod.outlook.com>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        eha@deif.com, boris.brezillon@bootlin.com,
-        Chuanhua Han <chuanhua.han@nxp.com>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180921070628.35153-1-chuanhua.han@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
+ <20180921070628.35153-3-chuanhua.han@nxp.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+To: Chuanhua Han <chuanhua.han@nxp.com>,
+        "broonie@kernel.org" <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20180921070628.35153-3-chuanhua.han@nxp.com>
+Content-Language: en-US
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes the problem that the XSPI mode of the dspi controller
-cannot transfer data properly.
-In XSPI mode, cmd_fifo is written before tx_fifo, which transforms the
-byte order of sending and receiving data.
-
-Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
----
- drivers/spi/spi-fsl-dspi.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3082e72e4f6c..44cc2bd0120e 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -220,9 +220,15 @@ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
- 		if (dspi->bytes_per_word == 1)
- 			txdata = *(u8 *)dspi->tx;
- 		else if (dspi->bytes_per_word == 2)
--			txdata = *(u16 *)dspi->tx;
-+			if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
-+				txdata =  cpu_to_le16(*(u16 *)dspi->tx);
-+			else
-+				txdata =  cpu_to_be16(*(u16 *)dspi->tx);
- 		else  /* dspi->bytes_per_word == 4 */
--			txdata = *(u32 *)dspi->tx;
-+			if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
-+				txdata = cpu_to_le32(*(u32 *)dspi->tx);
-+			else
-+				txdata = cpu_to_be32(*(u32 *)dspi->tx);
- 		dspi->tx += dspi->bytes_per_word;
- 	}
- 	dspi->len -= dspi->bytes_per_word;
-@@ -243,15 +249,18 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
- 	if (!dspi->rx)
- 		return;
- 
--	/* Mask of undefined bits */
--	rxdata &= (1 << dspi->bits_per_word) - 1;
--
- 	if (dspi->bytes_per_word == 1)
- 		*(u8 *)dspi->rx = rxdata;
- 	else if (dspi->bytes_per_word == 2)
--		*(u16 *)dspi->rx = rxdata;
-+		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
-+			*(u16 *)dspi->rx = be16_to_cpu(rxdata);
-+		else
-+			*(u16 *)dspi->rx = be16_to_cpu(rxdata);
- 	else /* dspi->bytes_per_word == 4 */
--		*(u32 *)dspi->rx = rxdata;
-+		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1))
-+			*(u32 *)dspi->rx = le32_to_cpu(rxdata);
-+		else
-+			*(u32 *)dspi->rx = be32_to_cpu(rxdata);
- 	dspi->rx += dspi->bytes_per_word;
- }
- 
-@@ -593,16 +602,16 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
- 		 */
- 		u32 data = dspi_pop_tx(dspi);
- 
-+		cmd_fifo_write(dspi);
- 		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1)) {
- 			/* LSB */
--			tx_fifo_write(dspi, data & 0xFFFF);
- 			tx_fifo_write(dspi, data >> 16);
-+			tx_fifo_write(dspi, data & 0xFFFF);
- 		} else {
- 			/* MSB */
--			tx_fifo_write(dspi, data >> 16);
- 			tx_fifo_write(dspi, data & 0xFFFF);
-+			tx_fifo_write(dspi, data >> 16);
- 		}
--		cmd_fifo_write(dspi);
- 	} else {
- 		/* Write one entry to both TX FIFO and CMD FIFO
- 		 * simultaneously.
--- 
-2.17.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2h1YW5odWEgSGFuIDxj
+aHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU2VudDogMjAxOMTqOdTCMjHI1SAxNTowNg0KPiBUbzog
+YnJvb25pZUBrZXJuZWwub3JnDQo+IENjOiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBlaGFAZGVpZi5jb207DQo+IGJvcmlzLmJyZXppbGxv
+bkBib290bGluLmNvbTsgQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT47DQo+IHN0
+YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogW1BBVENIXSBzcGk6IHNwaS1tZW06IEFk
+anVzdCBvcCBsZW4gYmFzZWQgb24gbWVzc2FnZS90cmFuc2ZlciBzaXplDQo+IGxpbWl0YXRpb25z
+DQo+IA0KPiBXZSBuZWVkIHRoYXQgdG8gYWRqdXN0IHRoZSBsZW4gb2YgdGhlIDJuZCB0cmFuc2Zl
+ciAoY2FsbGVkIGRhdGEgaW4NCj4gc3BpLW1lbSkgaWYgaXQncyB0b28gbG9uZyB0byBmaXQgaW4g
+YSBTUEkgbWVzc2FnZSBvciBTUEkgdHJhbnNmZXIuDQo+IA0KPiBGaXhlczogYzM2ZmYyNjZkYzgy
+ICgic3BpOiBFeHRlbmQgdGhlIGNvcmUgdG8gZWFzZSBpbnRlZ3JhdGlvbiBvZiBTUEkgbWVtb3J5
+DQo+IGNvbnRyb2xsZXJzIikNCj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPg0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPg0KPiBSZXZpZXdl
+ZC1ieTogQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNp
+Z25lZC1vZmYtYnk6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4NCj4gLS0tDQo+ICBk
+cml2ZXJzL3NwaS9zcGktbWVtLmMgfCAxNSArKysrKysrKysrKysrKysNCj4gIDEgZmlsZSBjaGFu
+Z2VkLCAxNSBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3Bp
+LW1lbS5jIGIvZHJpdmVycy9zcGkvc3BpLW1lbS5jIGluZGV4DQo+IDk5MDc3MGRmYTVjZi4uZWMw
+YzI0ZTg3M2NkIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMNCj4gKysrIGIv
+ZHJpdmVycy9zcGkvc3BpLW1lbS5jDQo+IEBAIC0zMjgsMTAgKzMyOCwyNSBAQCBFWFBPUlRfU1lN
+Qk9MX0dQTChzcGlfbWVtX2V4ZWNfb3ApOw0KPiAgaW50IHNwaV9tZW1fYWRqdXN0X29wX3NpemUo
+c3RydWN0IHNwaV9tZW0gKm1lbSwgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KPiB7DQo+ICAJc3Ry
+dWN0IHNwaV9jb250cm9sbGVyICpjdGxyID0gbWVtLT5zcGktPmNvbnRyb2xsZXI7DQo+ICsJc2l6
+ZV90IGxlbjsNCj4gKw0KPiArCWxlbiA9IHNpemVvZihvcC0+Y21kLm9wY29kZSkgKyBvcC0+YWRk
+ci5uYnl0ZXMgKyBvcC0+ZHVtbXkubmJ5dGVzOw0KPiANCj4gIAlpZiAoY3Rsci0+bWVtX29wcyAm
+JiBjdGxyLT5tZW1fb3BzLT5hZGp1c3Rfb3Bfc2l6ZSkNCj4gIAkJcmV0dXJuIGN0bHItPm1lbV9v
+cHMtPmFkanVzdF9vcF9zaXplKG1lbSwgb3ApOw0KPiANCj4gKwlpZiAoIWN0bHItPm1lbV9vcHMg
+fHwgIWN0bHItPm1lbV9vcHMtPmV4ZWNfb3ApIHsNCj4gKwkJaWYgKGxlbiA+IHNwaV9tYXhfdHJh
+bnNmZXJfc2l6ZShtZW0tPnNwaSkpDQo+ICsJCQlyZXR1cm4gLUVJTlZBTDsNCj4gKw0KPiArCQlv
+cC0+ZGF0YS5uYnl0ZXMgPSBtaW4zKChzaXplX3Qpb3AtPmRhdGEubmJ5dGVzLA0KPiArCQkJCSAg
+ICAgICBzcGlfbWF4X3RyYW5zZmVyX3NpemUobWVtLT5zcGkpLA0KPiArCQkJCSAgICAgICBzcGlf
+bWF4X21lc3NhZ2Vfc2l6ZShtZW0tPnNwaSkgLQ0KPiArCQkJCSAgICAgICBsZW4pOw0KPiArCQlp
+ZiAoIW9wLT5kYXRhLm5ieXRlcykNCj4gKwkJCXJldHVybiAtRUlOVkFMOw0KPiArCX0NCj4gKw0K
+PiAgCXJldHVybiAwOw0KPiAgfQ0KPiAgRVhQT1JUX1NZTUJPTF9HUEwoc3BpX21lbV9hZGp1c3Rf
+b3Bfc2l6ZSk7DQo+IC0tDQo+IDIuMTcuMQ0KSSdtIHJlYWxseSBzb3JyeSBmb3IgbXkgZXJyb3Ig
+aW4gb3BlcmF0aW9uLCB0aGlzIGhhcyBiZWVuIGFwcGxpZWQgdG8gdGhlIGxhdGVzdCBrZXJuZWws
+IHBsZWFzZSBpZ25vcmUgdGhpcyBwYXRjaCBpbiBlbWFpbCEhIQ0K

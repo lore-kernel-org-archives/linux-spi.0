@@ -1,50 +1,62 @@
-From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v3 5/5] MAINTAINERS: add maintainers for the NXP FlexSPI driver
-Date: Fri, 21 Sep 2018 15:52:03 +0530
-Message-ID: <1537525323-20730-6-git-send-email-yogeshnarayan.gaur@nxp.com>
-References: <1537525323-20730-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/2] spi: Introduce new driver for Qualcomm QuadSPI
+ controller
+Date: Fri, 21 Sep 2018 09:31:34 -0700
+Message-ID: <20180921163134.GD20825@sirena.org.uk>
+References: <20180920224055.164856-1-ryandcase@chromium.org>
+ <20180920224055.164856-2-ryandcase@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
-        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
-        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org,
-        Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
-        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="8w3uRX/HFJGApMzv"
+Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Doug Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Ryan Case <ryandcase@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1537525323-20730-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Disposition: inline
+In-Reply-To: <20180920224055.164856-2-ryandcase@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add maintainers for the NXP FlexSPI driver
 
-Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
----
-Changes for v3:
-- None
-Changes for v2:
-- None
+--8w3uRX/HFJGApMzv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Thu, Sep 20, 2018 at 03:40:55PM -0700, Ryan Case wrote:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9d5eeff..2696898 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10228,6 +10228,12 @@ L:	linux-nfc@lists.01.org (moderated for non-subscribers)
- S:	Supported
- F:	drivers/nfc/nxp-nci
- 
-+NXP FSPI DRIVER
-+M:	Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-+L:	linux-spi@vger.kernel.org
-+S:	Maintained
-+F:	drivers/spi/spi-nxp-fspi.c
-+
- OBJTOOL
- M:	Josh Poimboeuf <jpoimboe@redhat.com>
- M:	Peter Zijlstra <peterz@infradead.org>
--- 
-2.7.4
+> +static int qcom_qspi_setup(struct spi_device *spi)
+> +{
+
+> +	/*
+> +	 * Ensure that the configuration goes through by reading back
+> +	 * a register from the IO space.
+> +	 */
+> +	mstr_cfg = readl(ctrl->base + MSTR_CONFIG);
+
+Your setup() function shouldn't be affecting the status of the hardware
+for any other SPI devices using the controller, otherwise it might
+disturb an active transfer.  prepare_message() is typically the best
+place to do this stuff.
+
+Otherwise this looks good.
+
+--8w3uRX/HFJGApMzv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlulHOUACgkQJNaLcl1U
+h9AQAgf/Zh+oen4pzwNai7h7WkEDetUqq8QAgw3/J0FeM13RQmJLz0TTqfn7mKGD
+5BbkdhnehODoAedL7aZEImHgmp5rx/IcUlqixyeDDkZaAPpXRqNEQuAJKNGlZWWG
+MpedK4gy41VbTEfDTPEYIvFzA6MoPrF/yA96qC6g6RgGWR4QpO+8DbXsFeyoxH9u
+h48XP4ttP2Cwz1mn+KpdblKH8MZnXZM2JuDEHfoQsxNtmLInWhISVFvh5/qx2JbG
+GPhXkkaBoD0S5vzvf09Fcc4g/L2Va4c/MqZ7dzmYtXD6br8UYRZ8cawEcpj+Atdu
+eajQ1OiCkL6TEjJz0yJ9iGzeGUJbzw==
+=l2cj
+-----END PGP SIGNATURE-----
+
+--8w3uRX/HFJGApMzv--

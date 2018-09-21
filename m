@@ -1,62 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: Introduce new driver for Qualcomm QuadSPI
- controller
-Date: Fri, 21 Sep 2018 09:31:34 -0700
-Message-ID: <20180921163134.GD20825@sirena.org.uk>
+From: Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Qualcomm Quad SPI(QSPI) documentation
+Date: Fri, 21 Sep 2018 10:30:57 -0700
+Message-ID: <153755105782.119890.8484594239463905156@swboyd.mtv.corp.google.com>
 References: <20180920224055.164856-1-ryandcase@chromium.org>
- <20180920224055.164856-2-ryandcase@chromium.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8w3uRX/HFJGApMzv"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
-        Stephen Boyd <swboyd@chromium.org>,
         Doug Anderson <dianders@chromium.org>,
         linux-arm-msm@vger.kernel.org,
         Girish Mahadevan <girishm@codeaurora.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Ryan Case <ryandcase@chromium.org>
+        Ryan Case <ryandcase@chromium.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+To: Mark Brown <broonie@kernel.org>, Ryan Case <ryandcase@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20180920224055.164856-2-ryandcase@chromium.org>
+In-Reply-To: <20180920224055.164856-1-ryandcase@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Quoting Ryan Case (2018-09-20 15:40:54)
+> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt=
+ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+> new file mode 100644
+> index 000000000000..ecfb1e2bd520
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+> @@ -0,0 +1,36 @@
+> +Qualcomm Quad Serial Peripheral Interface (QSPI)
+> +
+> +The QSPI controller allows SPI protocol communication in single, dual, o=
+r quad
+> +wire transmission modes for read/write access to slaves such as NOR flas=
+h.
+> +
+> +Required properties:
+> +- compatible:  Should contain:
+> +               "qcom,sdm845-qspi"
 
---8w3uRX/HFJGApMzv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Does someone have a more generic compatible string that can be added
+here to indicate the type of quad SPI controller this is? I really doubt
+this is a one-off hardware block for the specific SDM845 SoC. =
 
-On Thu, Sep 20, 2018 at 03:40:55PM -0700, Ryan Case wrote:
 
-> +static int qcom_qspi_setup(struct spi_device *spi)
-> +{
-
-> +	/*
-> +	 * Ensure that the configuration goes through by reading back
-> +	 * a register from the IO space.
-> +	 */
-> +	mstr_cfg = readl(ctrl->base + MSTR_CONFIG);
-
-Your setup() function shouldn't be affecting the status of the hardware
-for any other SPI devices using the controller, otherwise it might
-disturb an active transfer.  prepare_message() is typically the best
-place to do this stuff.
-
-Otherwise this looks good.
-
---8w3uRX/HFJGApMzv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlulHOUACgkQJNaLcl1U
-h9AQAgf/Zh+oen4pzwNai7h7WkEDetUqq8QAgw3/J0FeM13RQmJLz0TTqfn7mKGD
-5BbkdhnehODoAedL7aZEImHgmp5rx/IcUlqixyeDDkZaAPpXRqNEQuAJKNGlZWWG
-MpedK4gy41VbTEfDTPEYIvFzA6MoPrF/yA96qC6g6RgGWR4QpO+8DbXsFeyoxH9u
-h48XP4ttP2Cwz1mn+KpdblKH8MZnXZM2JuDEHfoQsxNtmLInWhISVFvh5/qx2JbG
-GPhXkkaBoD0S5vzvf09Fcc4g/L2Va4c/MqZ7dzmYtXD6br8UYRZ8cawEcpj+Atdu
-eajQ1OiCkL6TEjJz0yJ9iGzeGUJbzw==
-=l2cj
------END PGP SIGNATURE-----
-
---8w3uRX/HFJGApMzv--
+> +- reg:         Should contain the base register location and length.
+> +- interrupts:  Interrupt number used by the controller.
+> +- clocks:      Should contain the core and AHB clock.
+> +- clock-names: Should be "core" for core clock and "iface" for AHB clock.
+> +

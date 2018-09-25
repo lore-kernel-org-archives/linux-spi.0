@@ -1,625 +1,301 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH v4 2/3] spi: mediatek: add spi slave for Mediatek MT2712
-Date: Tue, 25 Sep 2018 10:20:42 +0800
-Message-ID: <1537842043-15255-3-git-send-email-leilk.liu@mediatek.com>
-References: <1537842043-15255-1-git-send-email-leilk.liu@mediatek.com>
+From: Frieder Schrempf <frieder.schrempf@exceet.de>
+Subject: Re: Questions about the Freescale/NXP QuadSPI controller
+Date: Tue, 25 Sep 2018 08:49:20 +0200
+Message-ID: <b3a25bd9-25a7-c1a5-ec50-c711d25f1b7e@exceet.de>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <1530789310-16254-4-git-send-email-frieder.schrempf@exceet.de>
+ <7e95c72c-2cd1-f138-a687-6cca362c95b7@exceet.de>
+ <63462dd2-b61b-6522-0619-0cdc89148193@exceet.de>
+ <VI1PR0401MB2221D006E89A06B7D343A5E5972C0@VI1PR0401MB2221.eurprd04.prod.outlook.com>
+ <20180804153728.0a99d28f@bbrezillon>
+ <121b89ad-712f-166b-83d2-6b0f1bdc750e@exceet.de>
+ <AM6PR04MB4967E918792A1C0D7D3D5C18971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <b2a29f52-f658-d92c-7b42-3096af6449f1@exceet.de>
+ <AM6PR04MB4967C4B3F97004C41220E310971B0@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <09d39759-390a-bca3-caeb-2ee8ddb29443@exceet.de>
+ <20180919004247.60c6099a@jawa>
+ <e76062cb-f703-2830-8074-d1a812dc14ce@exceet.de>
+ <20180919130211.3f2e7e3a@jawa> <20180920170032.39fb5073@jawa>
+ <bd116b60-49ce-b4ad-3943-93df505bc710@exceet.de>
+ <20180921001323.596a39c8@jawa>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <yt.shen@mediatek.com>, Leilk Liu <leilk.liu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1537842043-15255-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: David Wolfe <david.wolfe@nxp.com>,
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ "richard@nod.at" <richard@nod.at>,
+ Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Albert ARIBAUD <albert.aribaud@3adev.fr>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ Fabio Estevam <fabio.estevam@nxp.com>, Han Xu <han.xu@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ Huang Shijie <sjhuang@iluvatar.ai>
+To: Lukasz Majewski <lukma@denx.de>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180921001323.596a39c8@jawa>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds basic spi slave for MT2712.
+Hi Lukasz,
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
----
- drivers/spi/Kconfig            |   10 +
- drivers/spi/Makefile           |    1 +
- drivers/spi/spi-slave-mt27xx.c |  554 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 565 insertions(+)
- create mode 100644 drivers/spi/spi-slave-mt27xx.c
+On 21.09.2018 00:13, Lukasz Majewski wrote:
+> Hi Frieder,
+> 
+> Please find some more comments regarding the new spi-fsl-qspi.c driver.
+> 
+>> Hi Lukasz,
+>>
+>> On 20.09.2018 17:00, Lukasz Majewski wrote:
+>>> Hi Frieder,
+>>>    
+>>>> Hi Frieder,
+>>>>   
+>>>>> Hi Lukasz,
+>>>>>
+>>>>> On 19.09.2018 00:42, Lukasz Majewski wrote:
+>>>>>> Dear All,
+>>>>>>
+>>>>>> Maybe I do jump a bit off topic here, but...
+>>>>>>
+>>>>>> I've read through the following thread:
+>>>>>> https://patchwork.ozlabs.org/patch/939885/
+>>>>>>
+>>>>>> And it mentions some issues with reading AHB content (buffers) in
+>>>>>> fsl-quadspi.c driver discovered when new QuadSPI driver was
+>>>>>> developed.
+>>>>>
+>>>>> The only setup with two chips that is known to be problematic with
+>>>>> the new driver, is when both chips are connected to the same bus
+>>>>> (e.g. QSPIA) using separate chip selects.
+>>>>
+>>>> I'm using QSPI0 controller, with two memories connected to QSPI0_A
+>>>> and QSPI0_B lines.
+>>>>   
+>>>>>
+>>>>> Does your board use this kind of setup, or are the two chips
+>>>>> connected two different buses (QSPIA and QSPIB)?
+>>>>>
+>>>>> Have you tested the new driver? It would be great to receive some
+>>>>> more feedback.
+>>>>
+>>>> I will check (test) this new driver. No problem.
+>>>
+>>> I've ported your patch on v4.19-rc3.
+>>>
+>>> I had to fix the "div0 issue" by adding:
+>>> if (op->dummy.buswidth &&
+>>> 	(op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
+>>>
+>>> In fsl_qspi_supports_op() function.
+>>>
+>>>
+>>> Unfortunately, on Vybrid vf610 when testing I do see corruption of
+>>> read data from the mtd device:
+>>>
+>>> ~# hexdump aaa.img
+>>> 0000000 464c eec0 baa5 c5ff 7b99 4dfb e0b6 8a2e
+>>> 0000010 e98e 5265 683c a635 c069 e402 303f d936
+>>> 0000020 c243 01a7 7064 fce8 e3a9 200a 7e85 28bc
+>>> 0000030 4296 a30e 1bb4 88d4 b456 b4a6 f3aa 8cff
+>>> 0000040 ffff ffff ffff ffff ffff ffff ffff ffff
+>>> *
+>>> 0000100
+>>>
+>>> ~# hexdump data_test.img
+>>> 0000000 464c eec0 baa5 c5ff 7b99 4dfb e0b6 8a2e
+>>> 0000010 e98e 5265 683c a635 c069 e402 303f d936
+>>> 0000020 c243 01a7 7064 fce8 e3a9 200a 7e85 28bc
+>>> 0000030 4296 a30e 1bb4 88d4 b456 b4a6 f3aa 8cff
+>>> 0000040 01c9 462d 0a43 f893 0e42 67f1 57f0 787c
+>>> 0000050 49c0 fb2a e514 e954 1d21 affa bac4 38f1
+>>> 0000060 1ca5 ec46 77eb a854 285b 8e21 12d7 f377
+>>> 0000070 b441 2baf ee33 596c 98b6 e71a c1cb 876c
+>>>
+>>>
+>>> Test case:
+>>> flash_erase /dev/mtd3 0 1
+>>> dd if=data_test.img of=/dev/mtd3
+>>> dd if=/dev/mtd3 of=aaa.img bs=1 count=256
+>>>
+>>>
+>>>   From the code I see that the AHB buffer has 1024B. It is accessed
+>>> in 8 bytes packs.
+>>>
+>>> This seems like some cache or HW issue....
+>>>
+>>> In the old driver, to fix this problem one needed to
+>>> 1. Reduce the RX fifo size from 128B to 64B
+>>>
+>>> 2. Disable (set to 0) the AHB transfer's BUF3CR ADATSZ field - the
+>>> transfer size is the same as in LUT.
+>>>
+>>> (Original patch: https://patchwork.ozlabs.org/patch/675401/)
+>>
+>> Thanks a lot for doing the test. It seems like Vybrid needs some
+>> special handling to work around this problem.
+>> So this means the current driver has never worked for Vybrid, as the
+>> mentioned patch was never merged!?
+>>
+>> As these issues seem to be specific to Vybrid and as they seem to
+>> exist in the current driver too, I would like to fix them after we
+>> have a first version of the new driver that works for the other
+>> platforms.
+>>
+>> I hope we can figure out the other issues soon.
+>>
+>> Thanks,
+>> Frieder
+>>
+>>>
+>>>    
+>>>>   
+>>>>>       
+>>>>>> I do have a setup with qspi0 having two SPI memories connected
+>>>>>> (2x16 MiB), and I'm wondering if anybody has some more info
+>>>>>> regarding:
+>>>>>>
+>>>>>> (What's more is that there is a bug in
+>>>>>>     * the "IP Command Read" in the Vybrid.) found here:
+>>> 	^^^^^^^^^^^^^^^^^^^^^^^^ - It would be handy to have the
+>>> exact explanation of this issue.
+>>>    
+>>>>>> https://elixir.bootlin.com/linux/v4.19-rc4/source/drivers/mtd/spi-nor/fsl-quadspi.c#L671
+>         ^^^^^^^^^^^^ - [1]
+> 
+> 
+> I've looked a bit closer to the new spi-fsl-qspi.c driver and it looks
+> like it uses fsl_qspi_exec_op() and then calls fsl_qspi_do_op().
+> 
+> In the last function we setup the QUADSPI_IPCR register to initiate the
+> transfer between SPI-NOR and the internal RX buffer.
+> 
+> Please correct me if I'm wrong but it seems to me like we are using "IP
+> Command Read" approach here.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 671d078..60b13c6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -596,6 +596,16 @@ config SPI_SIRF
- 	help
- 	  SPI driver for CSR SiRFprimaII SoCs
- 
-+config SPI_SLAVE_MT27XX
-+	tristate "MediaTek SPI slave device"
-+	depends on ARCH_MEDIATEK || COMPILE_TEST
-+	depends on SPI_SLAVE
-+	help
-+	  This selects the MediaTek(R) SPI slave device driver.
-+	  If you want to use MediaTek(R) SPI slave interface,
-+	  say Y or M here.If you are not sure, say N.
-+	  SPI slave drivers for Mediatek MT27XX series ARM SoCs.
-+
- config SPI_SPRD_ADI
- 	tristate "Spreadtrum ADI controller"
- 	depends on ARCH_SPRD || COMPILE_TEST
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index a90d559..3b469fa 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -88,6 +88,7 @@ obj-$(CONFIG_SPI_SH_HSPI)		+= spi-sh-hspi.o
- obj-$(CONFIG_SPI_SH_MSIOF)		+= spi-sh-msiof.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi-sh-sci.o
- obj-$(CONFIG_SPI_SIRF)		+= spi-sirf.o
-+obj-$(CONFIG_SPI_SLAVE_MT27XX)          += spi-slave-mt27xx.o
- obj-$(CONFIG_SPI_SPRD_ADI)		+= spi-sprd-adi.o
- obj-$(CONFIG_SPI_STM32) 		+= spi-stm32.o
- obj-$(CONFIG_SPI_ST_SSC4)		+= spi-st-ssc4.o
-diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
-new file mode 100644
-index 0000000..d1075433
---- /dev/null
-+++ b/drivers/spi/spi-slave-mt27xx.c
-@@ -0,0 +1,554 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// Copyright (c) 2018 MediaTek Inc.
-+
-+#include <linux/clk.h>
-+#include <linux/device.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/spi/spi.h>
-+
-+#define SPIS_IRQ_EN_REG		0x0
-+#define SPIS_IRQ_CLR_REG	0x4
-+#define SPIS_IRQ_ST_REG		0x8
-+#define SPIS_IRQ_MASK_REG	0xc
-+#define SPIS_CFG_REG		0x10
-+#define SPIS_RX_DATA_REG	0x14
-+#define SPIS_TX_DATA_REG	0x18
-+#define SPIS_RX_DST_REG		0x1c
-+#define SPIS_TX_SRC_REG		0x20
-+#define SPIS_DMA_CFG_REG	0x30
-+#define SPIS_SOFT_RST_REG	0x40
-+
-+/* SPIS_IRQ_EN_REG */
-+#define DMA_DONE_EN		BIT(7)
-+#define DATA_DONE_EN		BIT(2)
-+#define RSTA_DONE_EN		BIT(1)
-+#define CMD_INVALID_EN		BIT(0)
-+
-+/* SPIS_IRQ_ST_REG */
-+#define DMA_DONE_ST		BIT(7)
-+#define DATA_DONE_ST		BIT(2)
-+#define RSTA_DONE_ST		BIT(1)
-+#define CMD_INVALID_ST		BIT(0)
-+
-+/* SPIS_IRQ_MASK_REG */
-+#define DMA_DONE_MASK		BIT(7)
-+#define DATA_DONE_MASK		BIT(2)
-+#define RSTA_DONE_MASK		BIT(1)
-+#define CMD_INVALID_MASK	BIT(0)
-+
-+/* SPIS_CFG_REG */
-+#define SPIS_TX_ENDIAN		BIT(7)
-+#define SPIS_RX_ENDIAN		BIT(6)
-+#define SPIS_TXMSBF		BIT(5)
-+#define SPIS_RXMSBF		BIT(4)
-+#define SPIS_CPHA		BIT(3)
-+#define SPIS_CPOL		BIT(2)
-+#define SPIS_TX_EN		BIT(1)
-+#define SPIS_RX_EN		BIT(0)
-+
-+/* SPIS_DMA_CFG_REG */
-+#define TX_DMA_TRIG_EN		BIT(31)
-+#define TX_DMA_EN		BIT(30)
-+#define RX_DMA_EN		BIT(29)
-+#define TX_DMA_LEN		0xfffff
-+
-+/* SPIS_SOFT_RST_REG */
-+#define SPIS_DMA_ADDR_EN	BIT(1)
-+#define SPIS_SOFT_RST		BIT(0)
-+
-+#define MTK_SPI_SLAVE_MAX_FIFO_SIZE 512U
-+
-+struct mtk_spi_slave {
-+	struct device *dev;
-+	void __iomem *base;
-+	struct clk *spi_clk;
-+	struct completion xfer_done;
-+	struct spi_transfer *cur_transfer;
-+	bool slave_aborted;
-+};
-+
-+static const struct of_device_id mtk_spi_slave_of_match[] = {
-+	{ .compatible = "mediatek,mt2712-spi-slave", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, mtk_spi_slave_of_match);
-+
-+static void mtk_spi_slave_disable_dma(struct mtk_spi_slave *mdata)
-+{
-+	u32 reg_val;
-+
-+	reg_val = readl(mdata->base + SPIS_DMA_CFG_REG);
-+	reg_val &= ~RX_DMA_EN;
-+	reg_val &= ~TX_DMA_EN;
-+	writel(reg_val, mdata->base + SPIS_DMA_CFG_REG);
-+}
-+
-+static void mtk_spi_slave_disable_xfer(struct mtk_spi_slave *mdata)
-+{
-+	u32 reg_val;
-+
-+	reg_val = readl(mdata->base + SPIS_CFG_REG);
-+	reg_val &= ~SPIS_TX_EN;
-+	reg_val &= ~SPIS_RX_EN;
-+	writel(reg_val, mdata->base + SPIS_CFG_REG);
-+}
-+
-+static int mtk_spi_slave_wait_for_completion(struct mtk_spi_slave *mdata)
-+{
-+	if (wait_for_completion_interruptible(&mdata->xfer_done) ||
-+	    mdata->slave_aborted) {
-+		dev_err(mdata->dev, "interrupted\n");
-+		return -EINTR;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mtk_spi_slave_prepare_message(struct spi_controller *ctlr,
-+					 struct spi_message *msg)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	struct spi_device *spi = msg->spi;
-+	bool cpha, cpol;
-+	u32 reg_val;
-+
-+	cpha = spi->mode & SPI_CPHA ? 1 : 0;
-+	cpol = spi->mode & SPI_CPOL ? 1 : 0;
-+
-+	reg_val = readl(mdata->base + SPIS_CFG_REG);
-+	if (cpha)
-+		reg_val |= SPIS_CPHA;
-+	else
-+		reg_val &= ~SPIS_CPHA;
-+	if (cpol)
-+		reg_val |= SPIS_CPOL;
-+	else
-+		reg_val &= ~SPIS_CPOL;
-+
-+	if (spi->mode & SPI_LSB_FIRST)
-+		reg_val &= ~(SPIS_TXMSBF | SPIS_RXMSBF);
-+	else
-+		reg_val |= SPIS_TXMSBF | SPIS_RXMSBF;
-+
-+	reg_val &= ~SPIS_TX_ENDIAN;
-+	reg_val &= ~SPIS_RX_ENDIAN;
-+	writel(reg_val, mdata->base + SPIS_CFG_REG);
-+
-+	return 0;
-+}
-+
-+static int mtk_spi_slave_fifo_transfer(struct spi_controller *ctlr,
-+				       struct spi_device *spi,
-+				       struct spi_transfer *xfer)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	int reg_val, cnt, remainder, ret;
-+
-+	writel(SPIS_SOFT_RST, mdata->base + SPIS_SOFT_RST_REG);
-+
-+	reg_val = readl(mdata->base + SPIS_CFG_REG);
-+	if (xfer->rx_buf)
-+		reg_val |= SPIS_RX_EN;
-+	if (xfer->tx_buf)
-+		reg_val |= SPIS_TX_EN;
-+	writel(reg_val, mdata->base + SPIS_CFG_REG);
-+
-+	cnt = xfer->len / 4;
-+	if (xfer->tx_buf)
-+		iowrite32_rep(mdata->base + SPIS_TX_DATA_REG,
-+			      xfer->tx_buf, cnt);
-+
-+	remainder = xfer->len % 4;
-+	if (xfer->tx_buf && remainder > 0) {
-+		reg_val = 0;
-+		memcpy(&reg_val, xfer->tx_buf + cnt * 4, remainder);
-+		writel(reg_val, mdata->base + SPIS_TX_DATA_REG);
-+	}
-+
-+	ret = mtk_spi_slave_wait_for_completion(mdata);
-+	if (ret) {
-+		mtk_spi_slave_disable_xfer(mdata);
-+		writel(SPIS_SOFT_RST, mdata->base + SPIS_SOFT_RST_REG);
-+	}
-+
-+	return ret;
-+}
-+
-+static int mtk_spi_slave_dma_transfer(struct spi_controller *ctlr,
-+				      struct spi_device *spi,
-+				      struct spi_transfer *xfer)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	struct device *dev = mdata->dev;
-+	int reg_val, ret;
-+
-+	writel(SPIS_SOFT_RST, mdata->base + SPIS_SOFT_RST_REG);
-+
-+	if (xfer->tx_buf) {
-+		/* tx_buf is a const void* where we need a void * for
-+		 * the dma mapping
-+		 */
-+		void *nonconst_tx = (void *)xfer->tx_buf;
-+
-+		xfer->tx_dma = dma_map_single(dev, nonconst_tx,
-+					      xfer->len, DMA_TO_DEVICE);
-+		if (dma_mapping_error(dev, xfer->tx_dma)) {
-+			ret = -ENOMEM;
-+			goto disable_transfer;
-+		}
-+	}
-+
-+	if (xfer->rx_buf) {
-+		xfer->rx_dma = dma_map_single(dev, xfer->rx_buf,
-+					      xfer->len, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(dev, xfer->rx_dma)) {
-+			ret = -ENOMEM;
-+			goto unmap_txdma;
-+		}
-+	}
-+
-+	writel(xfer->tx_dma, mdata->base + SPIS_TX_SRC_REG);
-+	writel(xfer->rx_dma, mdata->base + SPIS_RX_DST_REG);
-+
-+	writel(SPIS_DMA_ADDR_EN, mdata->base + SPIS_SOFT_RST_REG);
-+
-+	/* enable config reg tx rx_enable */
-+	reg_val = readl(mdata->base + SPIS_CFG_REG);
-+	if (xfer->tx_buf)
-+		reg_val |= SPIS_TX_EN;
-+	if (xfer->rx_buf)
-+		reg_val |= SPIS_RX_EN;
-+	writel(reg_val, mdata->base + SPIS_CFG_REG);
-+
-+	/* config dma */
-+	reg_val = 0;
-+	reg_val |= (xfer->len - 1) & TX_DMA_LEN;
-+	writel(reg_val, mdata->base + SPIS_DMA_CFG_REG);
-+
-+	reg_val = readl(mdata->base + SPIS_DMA_CFG_REG);
-+	if (xfer->tx_buf)
-+		reg_val |= TX_DMA_EN;
-+	if (xfer->rx_buf)
-+		reg_val |= RX_DMA_EN;
-+	reg_val |= TX_DMA_TRIG_EN;
-+	writel(reg_val, mdata->base + SPIS_DMA_CFG_REG);
-+
-+	ret = mtk_spi_slave_wait_for_completion(mdata);
-+	if (ret)
-+		goto unmap_rxdma;
-+
-+	return 0;
-+
-+unmap_rxdma:
-+	if (xfer->rx_buf)
-+		dma_unmap_single(dev, xfer->rx_dma,
-+				 xfer->len, DMA_FROM_DEVICE);
-+
-+unmap_txdma:
-+	if (xfer->tx_buf)
-+		dma_unmap_single(dev, xfer->tx_dma,
-+				 xfer->len, DMA_TO_DEVICE);
-+
-+disable_transfer:
-+	mtk_spi_slave_disable_dma(mdata);
-+	mtk_spi_slave_disable_xfer(mdata);
-+	writel(SPIS_SOFT_RST, mdata->base + SPIS_SOFT_RST_REG);
-+
-+	return ret;
-+}
-+
-+static int mtk_spi_slave_transfer_one(struct spi_controller *ctlr,
-+				      struct spi_device *spi,
-+				      struct spi_transfer *xfer)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+
-+	reinit_completion(&mdata->xfer_done);
-+	mdata->slave_aborted = false;
-+	mdata->cur_transfer = xfer;
-+
-+	if (xfer->len > MTK_SPI_SLAVE_MAX_FIFO_SIZE)
-+		return mtk_spi_slave_dma_transfer(ctlr, spi, xfer);
-+	else
-+		return mtk_spi_slave_fifo_transfer(ctlr, spi, xfer);
-+}
-+
-+static int mtk_spi_slave_setup(struct spi_device *spi)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(spi->master);
-+	u32 reg_val;
-+
-+	reg_val = DMA_DONE_EN | DATA_DONE_EN |
-+		  RSTA_DONE_EN | CMD_INVALID_EN;
-+	writel(reg_val, mdata->base + SPIS_IRQ_EN_REG);
-+
-+	reg_val = DMA_DONE_MASK | DATA_DONE_MASK |
-+		  RSTA_DONE_MASK | CMD_INVALID_MASK;
-+	writel(reg_val, mdata->base + SPIS_IRQ_MASK_REG);
-+
-+	mtk_spi_slave_disable_dma(mdata);
-+	mtk_spi_slave_disable_xfer(mdata);
-+
-+	return 0;
-+}
-+
-+static int mtk_slave_abort(struct spi_controller *ctlr)
-+{
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+
-+	mdata->slave_aborted = true;
-+	complete(&mdata->xfer_done);
-+
-+	return 0;
-+}
-+
-+static irqreturn_t mtk_spi_slave_interrupt(int irq, void *dev_id)
-+{
-+	struct spi_controller *ctlr = dev_id;
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	struct spi_transfer *trans = mdata->cur_transfer;
-+	u32 int_status, reg_val, cnt, remainder;
-+
-+	int_status = readl(mdata->base + SPIS_IRQ_ST_REG);
-+	writel(int_status, mdata->base + SPIS_IRQ_CLR_REG);
-+
-+	if (!trans)
-+		return IRQ_NONE;
-+
-+	if ((int_status & DMA_DONE_ST) &&
-+	    ((int_status & DATA_DONE_ST) ||
-+	    (int_status & RSTA_DONE_ST))) {
-+		writel(SPIS_SOFT_RST, mdata->base + SPIS_SOFT_RST_REG);
-+
-+		if (trans->tx_buf)
-+			dma_unmap_single(mdata->dev, trans->tx_dma,
-+					 trans->len, DMA_TO_DEVICE);
-+		if (trans->rx_buf)
-+			dma_unmap_single(mdata->dev, trans->rx_dma,
-+					 trans->len, DMA_FROM_DEVICE);
-+
-+		mtk_spi_slave_disable_dma(mdata);
-+		mtk_spi_slave_disable_xfer(mdata);
-+	}
-+
-+	if ((!(int_status & DMA_DONE_ST)) &&
-+	    ((int_status & DATA_DONE_ST) ||
-+	    (int_status & RSTA_DONE_ST))) {
-+		cnt = trans->len / 4;
-+		if (trans->rx_buf)
-+			ioread32_rep(mdata->base + SPIS_RX_DATA_REG,
-+				     trans->rx_buf, cnt);
-+		remainder = trans->len % 4;
-+		if (trans->rx_buf && remainder > 0) {
-+			reg_val = readl(mdata->base + SPIS_RX_DATA_REG);
-+			memcpy(trans->rx_buf + (cnt * 4),
-+			       &reg_val, remainder);
-+		}
-+
-+		mtk_spi_slave_disable_xfer(mdata);
-+	}
-+
-+	if (int_status & CMD_INVALID_ST) {
-+		dev_warn(&ctlr->dev, "cmd invalid\n");
-+		return IRQ_NONE;
-+	}
-+
-+	mdata->cur_transfer = NULL;
-+	complete(&mdata->xfer_done);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int mtk_spi_slave_probe(struct platform_device *pdev)
-+{
-+	struct spi_controller *ctlr;
-+	struct mtk_spi_slave *mdata;
-+	struct resource *res;
-+	int irq, ret;
-+
-+	ctlr = spi_alloc_slave(&pdev->dev, sizeof(*mdata));
-+	if (!ctlr) {
-+		dev_err(&pdev->dev, "failed to alloc spi slave\n");
-+		return -ENOMEM;
-+	}
-+
-+	ctlr->auto_runtime_pm = true;
-+	ctlr->dev.of_node = pdev->dev.of_node;
-+	ctlr->mode_bits = SPI_CPOL | SPI_CPHA;
-+	ctlr->mode_bits |= SPI_LSB_FIRST;
-+
-+	ctlr->prepare_message = mtk_spi_slave_prepare_message;
-+	ctlr->transfer_one = mtk_spi_slave_transfer_one;
-+	ctlr->setup = mtk_spi_slave_setup;
-+	ctlr->slave_abort = mtk_slave_abort;
-+
-+	mdata = spi_controller_get_devdata(ctlr);
-+
-+	platform_set_drvdata(pdev, ctlr);
-+
-+	init_completion(&mdata->xfer_done);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		ret = -ENODEV;
-+		dev_err(&pdev->dev, "failed to determine base address\n");
-+		goto err_put_ctlr;
-+	}
-+
-+	mdata->dev = &pdev->dev;
-+
-+	mdata->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(mdata->base)) {
-+		ret = PTR_ERR(mdata->base);
-+		goto err_put_ctlr;
-+	}
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "failed to get irq (%d)\n", irq);
-+		ret = irq;
-+		goto err_put_ctlr;
-+	}
-+
-+	ret = devm_request_irq(&pdev->dev, irq, mtk_spi_slave_interrupt,
-+			       IRQF_TRIGGER_NONE, dev_name(&pdev->dev), ctlr);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to register irq (%d)\n", ret);
-+		goto err_put_ctlr;
-+	}
-+
-+	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi");
-+	if (IS_ERR(mdata->spi_clk)) {
-+		ret = PTR_ERR(mdata->spi_clk);
-+		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
-+		goto err_put_ctlr;
-+	}
-+
-+	ret = clk_prepare_enable(mdata->spi_clk);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "failed to enable spi_clk (%d)\n", ret);
-+		goto err_put_ctlr;
-+	}
-+
-+	pm_runtime_enable(&pdev->dev);
-+
-+	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"failed to register slave controller(%d)\n", ret);
-+		clk_disable_unprepare(mdata->spi_clk);
-+		goto err_disable_runtime_pm;
-+	}
-+
-+	clk_disable_unprepare(mdata->spi_clk);
-+
-+	return 0;
-+
-+err_disable_runtime_pm:
-+	pm_runtime_disable(&pdev->dev);
-+err_put_ctlr:
-+	spi_controller_put(ctlr);
-+
-+	return ret;
-+}
-+
-+static int mtk_spi_slave_remove(struct platform_device *pdev)
-+{
-+	pm_runtime_disable(&pdev->dev);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int mtk_spi_slave_suspend(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	int ret;
-+
-+	ret = spi_controller_suspend(ctlr);
-+	if (ret)
-+		return ret;
-+
-+	if (!pm_runtime_suspended(dev))
-+		clk_disable_unprepare(mdata->spi_clk);
-+
-+	return ret;
-+}
-+
-+static int mtk_spi_slave_resume(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	int ret;
-+
-+	if (!pm_runtime_suspended(dev)) {
-+		ret = clk_prepare_enable(mdata->spi_clk);
-+		if (ret < 0) {
-+			dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = spi_controller_resume(ctlr);
-+	if (ret < 0)
-+		clk_disable_unprepare(mdata->spi_clk);
-+
-+	return ret;
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
-+#ifdef CONFIG_PM
-+static int mtk_spi_slave_runtime_suspend(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+
-+	clk_disable_unprepare(mdata->spi_clk);
-+
-+	return 0;
-+}
-+
-+static int mtk_spi_slave_runtime_resume(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_spi_slave *mdata = spi_controller_get_devdata(ctlr);
-+	int ret;
-+
-+	ret = clk_prepare_enable(mdata->spi_clk);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+#endif /* CONFIG_PM */
-+
-+static const struct dev_pm_ops mtk_spi_slave_pm = {
-+	SET_SYSTEM_SLEEP_PM_OPS(mtk_spi_slave_suspend, mtk_spi_slave_resume)
-+	SET_RUNTIME_PM_OPS(mtk_spi_slave_runtime_suspend,
-+			   mtk_spi_slave_runtime_resume, NULL)
-+};
-+
-+static struct platform_driver mtk_spi_slave_driver = {
-+	.driver = {
-+		.name = "mtk-spi-slave",
-+		.pm	= &mtk_spi_slave_pm,
-+		.of_match_table = mtk_spi_slave_of_match,
-+	},
-+	.probe = mtk_spi_slave_probe,
-+	.remove = mtk_spi_slave_remove,
-+};
-+
-+module_platform_driver(mtk_spi_slave_driver);
-+
-+MODULE_DESCRIPTION("MTK SPI Slave Controller driver");
-+MODULE_AUTHOR("Leilk Liu <leilk.liu@mediatek.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform:mtk-spi-slave");
--- 
-1.7.9.5
+"IP Read" is only used if data size is smaller then RX FIFO size (128 
+bytes for Vybrid). For bigger chunks of data "AHB Read" is used.
+
+> 
+> If this is true - what was the rationale to use it in the new driver, as
+> in the old one the "AHB Command Read" approach was recommended (i.e.
+> faster) [1]?
+
+As explained above we only use "IP Read" for small chunks of data. To 
+speed up the tranfer for bigger chunks we do use "AHB Read".
+And in the future we plan to add an interface for mapping memory, so we 
+can use the "AHB Read" even more efficiently.
+
+> 
+> To be even more problematic the info in link [1] states that on vybrid
+> there is a bug on the "IP Command Read" HW block and it should be
+> avoided.
+
+If "IP Read" should be avoided completely for Vybrid, we have to add 
+some kind of quirk.
+
+Thanks for you comments,
+Frieder
+
+> 
+>>>>>>
+>>>>>> I've googled for some errata or known issues for vybryd's QSPI IP
+>>>>>> block (vf610) but without luck so far ...
+>>>>>
+>>>>> Unfortunately I don't know the background for this comment.
+>>>>
+>>>> The comment was added by some Freescale employee when the driver
+>>>> was added to Linux (by Huang - CC'ed).
+>>>>   
+>>>>> Is your
+>>>>> board using VF610?
+>>>>
+>>>> Yes, it uses vf610 (A5 + M4 cores).
+>>>>   
+>>>>> Do you experience problems?
+>>>>
+>>>> I've already observed following issue:
+>>>>
+>>>> For the current QSPI ML driver (fsl-quadspi.c - 4.19-rc3) only half
+>>>> of the AHB buffer is valid. When I do read the whole one - I do see
+>>>> read data corruption (on UBI or raw memory).
+>>>>
+>>>> This was pointed out in the patch:
+>>>> https://patchwork.ozlabs.org/patch/675401/
+>>>>
+>>>> Unfortunately, I did not found any info regarding this problem (in
+>>>> NXP's errata or other doc).
+>>>>
+>>>> I will check if this issue shows up on new patches.
+>>>>
+>>>> Thanks in advance for your help.
+>>>>   
+>>>>>
+>>>>> Regards,
+>>>>> Frieder
+>>>>>
+>>>>> ______________________________________________________
+>>>>> Linux MTD discussion mailing list
+>>>>> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+>>>>
+>>>> Best regards,
+>>>>
+>>>> Lukasz Majewski
+>>>>
+>>>> --
+>>>>
+>>>> DENX Software Engineering GmbH,      Managing Director: Wolfgang
+>>>> Denk HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
+>>>> Germany Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email:
+>>>> wd@denx.de
+>>>
+>>>
+>>>
+>>>
+>>> Best regards,
+>>>
+>>> Lukasz Majewski
+>>>
+>>> --
+>>>
+>>> DENX Software Engineering GmbH,      Managing Director: Wolfgang
+>>> Denk HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
+>>> Germany Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email:
+>>> wd@denx.de
+>>
+>> ______________________________________________________
+>> Linux MTD discussion mailing list
+>> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> 
+> 
+> 
+> 
+> Best regards,
+> 
+> Lukasz Majewski
+> 
+> --
+> 
+> DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+> Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+> 
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

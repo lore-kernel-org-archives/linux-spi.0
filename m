@@ -1,31 +1,35 @@
 From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
-Subject: [PATCH 0/2] spi: fsl-lpspi: Option to prevent FIFO under/overrun
-Date: Wed, 26 Sep 2018 03:36:59 +0700
-Message-ID: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
+Subject: [PATCH 1/2] dt-bindings: spi: fsl-lpspi: Option to allow stalling
+Date: Wed, 26 Sep 2018 03:37:00 +0700
+Message-ID: <20180925203701.13605-2-dangtranhieu2012@gmail.com>
+References: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
 Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Gao Pan <pandy.gao@nxp.com>
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Gao Pan <pandy.gao@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Certain devices don't work well when a transmit FIFO underrun or
-receive FIFO overrun occurs. Example is the SAF400x radio chip when
-running at high speed which leads to garbage being sent to/received from
-the chip. In which case, it should stall waiting for further data to be
-available before proceeding. This patch add option to configure the SPI
-controller to allow stalling (unset NOSTALL bit in CFGR1).
+This patch add fsl,allow-stalling property documentation for fsl-lpspi
 
-Hieu Tran Dang (2):
-  dt-bindings: spi: fsl-lpspi: Option to allow stalling
-  spi: fsl-lpspi: Option to prevent FIFO under/overrun
+Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+---
+ Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../devicetree/bindings/spi/spi-fsl-lpspi.txt          |  2 ++
- drivers/spi/spi-fsl-lpspi.c                            | 10 +++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+index 4af132606b37..2b012b8cb05e 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+@@ -6,6 +6,8 @@ Required properties:
+ - reg : address and length of the lpspi master registers
+ - interrupts : lpspi interrupt
+ - clocks : lpspi clock specifier
++- fsl,allow-stall : allow stalling of transfers when the transmit FIFO is empty
++  or when the receive FIFO is full
+ 
+ Examples:
+ 
 -- 
 2.17.1

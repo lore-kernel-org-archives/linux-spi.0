@@ -1,41 +1,31 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH V4 3/4] spi: spi-geni-qcom: Add SPI driver support for
- GENI based QUP
-Date: Tue, 25 Sep 2018 12:54:35 -0700
-Message-ID: <CAD=FV=VJA_qUDp3mxej4gANpzY6TFy7bpK_VzFy=W1X31vmifQ@mail.gmail.com>
-References: <1537294047-12093-1-git-send-email-dkota@codeaurora.org>
- <1537294047-12093-4-git-send-email-dkota@codeaurora.org> <153780767551.119890.9339380838620508307@swboyd.mtv.corp.google.com>
- <8866de0e7a687cea1d800d6b3dcfb60b@codeaurora.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Girish Mahadevan <girishm@codeaurora.org>
-To: Dilip Kota <dkota@codeaurora.org>
+From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+Subject: [PATCH 0/2] spi: fsl-lpspi: Option to prevent FIFO under/overrun
+Date: Wed, 26 Sep 2018 03:36:59 +0700
+Message-ID: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
+Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Gao Pan <pandy.gao@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <8866de0e7a687cea1d800d6b3dcfb60b@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Certain devices don't work well when a transmit FIFO underrun or
+receive FIFO overrun occurs. Example is the SAF400x radio chip when
+running at high speed which leads to garbage being sent to/received from
+the chip. In which case, it should stall waiting for further data to be
+available before proceeding. This patch add option to configure the SPI
+controller to allow stalling (unset NOSTALL bit in CFGR1).
 
-On Tue, Sep 25, 2018 at 12:36 PM <dkota@codeaurora.org> wrote:
-> >> +       unsigned int cur_speed_hz;
-> >
-> > unsigned long for Hz? The clk framework uses that type.
->
-> cur_speed_hz stores the speed value requested as part of transfer (not
-> the resultant or rounded off frequency got from clk framework. It is u32
-> type, i will change cur_speed_hz to u32 type instead of unsigned long.
-> Code snippet:
->          mas->cur_speed_hz = xfer->speed_hz;
+Hieu Tran Dang (2):
+  dt-bindings: spi: fsl-lpspi: Option to allow stalling
+  spi: fsl-lpspi: Option to prevent FIFO under/overrun
 
-Change it to "unsigned long" anyway to match the clock framework.  In
-theory maybe the "xfer" structure will be updated eventually.
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt          |  2 ++
+ drivers/spi/spi-fsl-lpspi.c                            | 10 +++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-
--Doug
+-- 
+2.17.1

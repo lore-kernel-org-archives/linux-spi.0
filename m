@@ -1,7 +1,7 @@
 From: Lukasz Majewski <lukma@denx.de>
-Subject: [RFC/RFT PATCH v1 5/9] mtd: spi: Provide LUT entry to perform DUAL read
-Date: Thu, 27 Sep 2018 00:07:35 +0200
-Message-ID: <20180926220739.620-6-lukma@denx.de>
+Subject: [RFC/RFT PATCH v1 6/9] mtd: spi: Enhance the fsl_qspi_read() method to support DUAL and QUAD
+Date: Thu, 27 Sep 2018 00:07:36 +0200
+Message-ID: <20180926220739.620-7-lukma@denx.de>
 References: <20180926220739.620-1-lukma@denx.de>
 Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
@@ -19,50 +19,53 @@ In-Reply-To: <20180926220739.620-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This commit adds LUT sequence to perform DUAL read (as opposite to the
-default QUAD for this controller).
+This commit not only provides the DUAL and QUAD read capability for QSPI
+controller, but also resets the AHB pointer sequence (as recommended) and
+makes sure that AHB - not IP - mode is used for reading SPI-NOR data to
+internal buffer.
 
 Signed-off-by: Lukasz Majewski <lukma@denx.de>
 ---
- drivers/mtd/spi-nor/fsl-quadspi.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/mtd/spi-nor/fsl-quadspi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
-index 4f0c78ba6fcb..0c381cdfb39f 100644
+index 0c381cdfb39f..97546fa70b79 100644
 --- a/drivers/mtd/spi-nor/fsl-quadspi.c
 +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-@@ -207,6 +207,7 @@
- #define SEQID_RDCR		9
- #define SEQID_EN4B		10
- #define SEQID_BRWR		11
-+#define SEQID_DUAL_READ	12
+@@ -119,6 +119,10 @@
+ #define QUADSPI_FR			0x160
+ #define QUADSPI_FR_TFF_MASK		0x1
  
- #define QUADSPI_MIN_IOMAP SZ_4M
- 
-@@ -482,6 +483,15 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- 	qspi_writel(q, LUT0(CMD, PAD1, SPINOR_OP_BRWR),
- 			base + QUADSPI_LUT(lut_base));
- 
-+	/* Dual Read */
-+	lut_base = SEQID_DUAL_READ * 4;
++#define QUADSPI_SPTRCLR                 0x16c
++#define QUADSPI_SPTRCLR_BFPTRC_SHIFT    0
++#define QUADSPI_SPTRCLR_BFPTRC_MASK     (0x1 << QUADSPI_SPTRCLR_BFPTRC_SHIFT)
 +
-+	qspi_writel(q, LUT0(CMD, PAD1, SPINOR_OP_READ_1_1_2) |
-+		    LUT1(ADDR, PAD1, addrlen), base + QUADSPI_LUT(lut_base));
-+	qspi_writel(q, LUT0(DUMMY, PAD1, read_dm) |
-+		    LUT1(FSL_READ, PAD2, rxfifo),
-+			base + QUADSPI_LUT(lut_base + 1));
+ #define QUADSPI_SFA1AD			0x180
+ #define QUADSPI_SFA2AD			0x184
+ #define QUADSPI_SFB1AD			0x188
+@@ -903,6 +907,22 @@ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+ {
+ 	struct fsl_qspi *q = nor->priv;
+ 	u8 cmd = nor->read_opcode;
++	int seqid;
 +
- 	fsl_qspi_lock_lut(q);
- }
++	/* Set the actual lut sequence for AHB Read from the considered nor. */
++	seqid = fsl_qspi_get_seqid(q, nor->read_opcode);
++	if (seqid < 0)
++		return seqid;
++
++	qspi_writel(q, seqid << QUADSPI_BFGENCR_SEQID_SHIFT,
++		    q->iobase + QUADSPI_BFGENCR);
++
++	/* Reset the AHB sequence pointer */
++	qspi_writel(q, QUADSPI_SPTRCLR_BFPTRC_MASK,
++		    q->iobase + QUADSPI_SPTRCLR);
++
++	/* make sure the Rx buffer is read through AHB, not IP */
++	qspi_writel(q, QUADSPI_RBCT_WMRK_MASK, q->iobase + QUADSPI_RBCT);
  
-@@ -513,6 +523,8 @@ static int fsl_qspi_get_seqid(struct fsl_qspi *q, u8 cmd)
- 		return SEQID_EN4B;
- 	case SPINOR_OP_BRWR:
- 		return SEQID_BRWR;
-+	case SPINOR_OP_READ_1_1_2:
-+		return SEQID_DUAL_READ;
- 	default:
- 		if (cmd == q->nor[0].erase_opcode)
- 			return SEQID_SE;
+ 	/* if necessary,ioremap buffer before AHB read, */
+ 	if (!q->ahb_addr) {
 -- 
 2.11.0

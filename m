@@ -1,62 +1,67 @@
-From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
-Subject: [PATCH 2/2] spi: fsl-lpspi: Option to prevent FIFO under/overrun
-Date: Wed, 26 Sep 2018 03:37:01 +0700
-Message-ID: <20180925203701.13605-3-dangtranhieu2012@gmail.com>
-References: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
-Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Gao Pan <pandy.gao@nxp.com>
+From: Chen-Yu Tsai <wens@csie.org>
+Subject: [PATCH] arm64: dts: rockchip: Enable SPI NOR flash on Rock64
+Date: Wed, 26 Sep 2018 12:53:57 +0800
+Message-ID: <20180926045357.20722-1-wens@csie.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Chen-Yu Tsai <wens@csie.org>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Heiko Stuebner <heiko@sntech.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Certain devices don't work well when a transmit FIFO underrun or
-receive FIFO overrun occurs. Example is the SAF400x radio chip when
-running at high speed which leads to garbage being sent to/received from
-the chip. In which case, it should stall waiting for further data to be
-available before proceeding. This patch add option to configure the SPI
-controller to allow stalling (unset NOSTALL bit in CFGR1).
+The Pine64 Rock64 board comes with a GigaDevice GD25Q128CSIG
+or GD25Q127CSIG chip, which is a 128 Mbit SPI NOR flash chip
+that supports the JEDEC read-ID command.
 
-Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+This patch enables the SPI controller and adds a device node
+for the flash chip using the generic "jedec,spi-nor" comaptible.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index e6d5cc6ab108..7588b62ef08b 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -73,6 +73,7 @@ struct lpspi_config {
- 	u8 prescale;
- 	u16 mode;
- 	u32 speed_hz;
-+	bool nostall;
+This was working on linux-next 20180910, but now fails on linux-next
+20180925, with the following error messages:
+
+    m25p80 spi0.0: error -22 reading 9f
+    m25p80: probe of spi0.0 failed with error -2
+
+Reverting the spi/for-next branch makes it work again:
+
+    m25p80 spi0.0: gd25q128 (16384 Kbytes)
+
+Not sure what's up.
+
+---
+ arch/arm64/boot/dts/rockchip/rk3328-rock64.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+index 9ee4f57557f3..2170cf63845e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+@@ -290,6 +290,18 @@
+ 	};
  };
  
- struct fsl_lpspi_data {
-@@ -276,7 +277,11 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 
- 	fsl_lpspi_set_watermark(fsl_lpspi);
- 
--	temp = CFGR1_PCSCFG | CFGR1_MASTER | CFGR1_NOSTALL;
-+	temp = CFGR1_PCSCFG | CFGR1_MASTER;
++&spi0 {
++	status = "okay";
 +
-+	if (fsl_lpspi->config.nostall)
-+		temp |= CFGR1_NOSTALL;
++	spiflash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>;
 +
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- 		temp |= CFGR1_PCSPOL;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
-@@ -475,6 +480,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(fsl_lpspi->clk);
- 
-+	fsl_lpspi->config.nostall =
-+		!of_get_property(pdev->dev.of_node, "fsl,allow-stall", NULL);
++		/* maximum speed for Rockchip SPI */
++		spi-max-frequency = <50000000>;
++	};
++};
 +
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_master error.\n");
+ &tsadc {
+ 	rockchip,hw-tshut-mode = <0>;
+ 	rockchip,hw-tshut-polarity = <0>;
 -- 
-2.17.1
+2.19.0

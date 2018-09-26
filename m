@@ -1,46 +1,53 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: [RFC/RFT PATCH v1 9/9] mtd: spi: Skip reading the Serial Flash Discoverable Parameters
-Date: Thu, 27 Sep 2018 00:07:39 +0200
-Message-ID: <20180926220739.620-10-lukma@denx.de>
-References: <20180926220739.620-1-lukma@denx.de>
-Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
-        richard@nod.at, Stefan Agner <stefan@agner.ch>,
-        Fabio Estevam <festevam@gmail.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        prabhakar.kushwaha@nxp.com, han.xu@nxp.com, broonie@kernel.org,
-        david.wolfe@nxp.com, computersforpeace@gmail.com,
-        dwmw2@infradead.org, albert.aribaud@3adev.fr,
-        Lukasz Majewski <lukma@denx.de>
-To: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        boris.brezillon@bootlin.com, Mark Rutland <mark.rutland@arm.com>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: spi: Qualcomm Quad SPI(QSPI) documentation
+Date: Wed, 26 Sep 2018 15:23:28 -0700
+Message-ID: <CAD=FV=VNe8BjTx9AXx01tpPk5+dUEwOqU12H3r9_H40Asgte2A@mail.gmail.com>
+References: <20180926205204.184898-1-ryandcase@chromium.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Trent Piepho <tpiepho@impinj.com>, boris.brezillon@bootlin.com,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+To: ryandcase@chromium.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926220739.620-1-lukma@denx.de>
+In-Reply-To: <20180926205204.184898-1-ryandcase@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The fsl-quadspi.c driver is not supporting SPINOR_OP_RDSFDP (0x5a)
-read opcode - in the legacy driver we do read some garbage
-data from AHB mapped area and then return on the first check
-(L2376 @ ./mtd/spi-nor/spi-nor.c)
+Hi,
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
----
- drivers/mtd/spi-nor/spi-nor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Sep 26, 2018 at 1:54 PM Ryan Case <ryandcase@chromium.org> wrote:
+>
+> From: Girish Mahadevan <girishm@codeaurora.org>
+>
+> Bindings for Qualcomm Quad SPI used on SoCs such as sdm845.
+>
+> Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
+> Signed-off-by: Ryan Case <ryandcase@chromium.org>
+> ---
+>
+> Changes in v3:
+> - Added generic compatible string in addition to specific SoC
+>
+> Changes in v2:
+> - Added commit text
+> - Removed invalid property
+> - Updated example to match sdm845 with attached spi-nor
+>
+>  .../bindings/spi/qcom,spi-qcom-qspi.txt       | 36 +++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 442102be174e..c79b8c33aeeb 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1103,7 +1103,7 @@ static const struct flash_info spi_nor_ids[] = {
- 	{ "n25q064",     INFO(0x20ba17, 0, 64 * 1024,  128, SECT_4K | SPI_NOR_QUAD_READ) },
- 	{ "n25q064a",    INFO(0x20bb17, 0, 64 * 1024,  128, SECT_4K | SPI_NOR_QUAD_READ) },
- 	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, SECT_4K | SPI_NOR_QUAD_READ) },
--	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, SECT_4K | SPI_NOR_QUAD_READ | SPI_NOR_DUAL_READ) },
-+	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, SECT_4K | SPI_NOR_QUAD_READ | SPI_NOR_DUAL_READ | SPI_NOR_SKIP_SFDP) },
- 	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "n25q256ax1",  INFO(0x20bb19, 0, 64 * 1024,  512, SECT_4K | SPI_NOR_QUAD_READ) },
- 	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
--- 
-2.11.0
+This looks good to me and change in v3 to add the SoC-specific string
+in addition to the more generic string identifying the IP block
+version matches my understanding of the correct things to do (as
+discussed in the v2 patch).
+
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

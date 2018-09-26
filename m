@@ -1,134 +1,66 @@
 From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [PATCH 1/3] dt-bindings: spi: Provide bindings for fsl dspi
- working in slave mode
-Date: Wed, 26 Sep 2018 23:33:59 +0200
-Message-ID: <20180926233359.2ca0d344@jawa>
-References: <20180918093437.26799-1-lukma@denx.de>
-        <20180918093437.26799-2-lukma@denx.de>
-        <5baa1aee.1c69fb81.cc7c6.340b@mx.google.com>
-        <20180926163212.17646e43@jawa>
-        <CAMuHMdWWYvhGX+SmG+WuLJZAX6PdCSd0hzNqiNB1r_A+B6tbSA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/YPc5BhSZ8A/Cni0/zVR7toh"; protocol="application/pgp-signature"
-Cc: Rob Herring <robh@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for fsl-quadspi.c driver (vybrid HW)
+Date: Thu, 27 Sep 2018 00:07:30 +0200
+Message-ID: <20180926220739.620-1-lukma@denx.de>
+Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
+        richard@nod.at, Stefan Agner <stefan@agner.ch>,
+        Fabio Estevam <festevam@gmail.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        prabhakar.kushwaha@nxp.com, han.xu@nxp.com, broonie@kernel.org,
+        david.wolfe@nxp.com, computersforpeace@gmail.com,
+        dwmw2@infradead.org, albert.aribaud@3adev.fr,
+        Lukasz Majewski <lukma@denx.de>
+To: Frieder Schrempf <frieder.schrempf@exceet.de>,
+        boris.brezillon@bootlin.com, Mark Rutland <mark.rutland@arm.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdWWYvhGX+SmG+WuLJZAX6PdCSd0hzNqiNB1r_A+B6tbSA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/YPc5BhSZ8A/Cni0/zVR7toh
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Please find following set of patches, which provide improved behaviour
+of the fsl-quadspi.c driver on Vybrid vf610 HW.
 
-Hi Geert,
+Below code is based on previous work done by Albert ARIBAUD:
+https://patchwork.ozlabs.org/patch/675401/
 
-> Hi Lukasz,
->=20
-> On Wed, Sep 26, 2018 at 4:33 PM Lukasz Majewski <lukma@denx.de> wrote:
-> > > On Tue, Sep 18, 2018 at 11:34:35AM +0200, Lukasz Majewski wrote: =20
-> > > > This commit provides the description of new property:
-> > > > "fsl,spi-slave-mode" which enables support for DSPI driver
-> > > > working in slave mode.
-> > > >
-> > > > As the new compatible shall be used with SPI bus equipped with
-> > > > master device a new "spidev" based node has been introduced to
-> > > > avoid confusion.
-> > > >
-> > > > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 8
-> > > > ++++++++ 1 file changed, 8 insertions(+)
-> > > >
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-> > > > b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt index
-> > > > 18eeafe359d8..b30af19a2bc5 100644 ---
-> > > > a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt +++
-> > > > b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt @@
-> > > > -26,6 +26,7 @@ Optional SPI properties for slave nodes:
-> > > >  - fsl,spi-sck-cs-delay: a delay in nanoseconds between stopping
-> > > > the clock signal and deactivating chip select, at the end of a
-> > > > transfer.
-> > > >  - bus-num : the slave chip chipselect signal number.
-> > > > +- fsl,spi-slave-mode: if present, controller runs in slave
-> > > > mode. =20
-> > >
-> > > There's a standard property for this. =20
-> >
-> > I've just realised that there is "spi-slave" property in the
-> > Documentation/devicetree/bindings/spi/spi-bus.txt
-> >
-> > I will convert the code to use it.
-> > =20
-> > > =20
-> > > >
-> > > >  Example:
-> > > >
-> > > > @@ -56,6 +57,13 @@ dspi0@4002c000 {
-> > > >             fsl,spi-cs-sck-delay =3D <100>;
-> > > >             fsl,spi-sck-cs-delay =3D <50>;
-> > > >     };
-> > > > +
-> > > > +   spidev3@1 {
-> > > > +           compatible =3D "fsl,vf610-dspi";
-> > > > +           spi-max-frequency =3D <30000000>;
-> > > > +           reg =3D <1>;
-> > > > +           fsl,spi-slave-mode; =20
-> > >
-> > > This doesn't look right for how slave mode is described. =20
-> >
-> > You mean that I shall replace fsl,spi-slave-mode; with "spi-slave" ?
-> >
-> > Or is there any other issue with this code? =20
->=20
-> According to Documentation/devicetree/bindings/spi/spi-bus.txt:
->   1. "spi-slave" should be a property of the controller node, not of
-> the slave node,
->   2. the slave node should be called "slave", without unit address,
-> and without "reg" property.
+I've cleaned up the code a bit, make separate patches, exclude not
+needed parts and port it to v4.19-rc3.
 
-Thanks for clarification.
+After applying those patches, the quadspi controller on vf610 works
+with UBI/UBIFS.
+The problem is with some corner case writes to raw MTD device
+(like writing 1023B with single byte writes). Those fail sometimes.
 
->=20
-> Gr{oetje,eeting}s,
->=20
->                         Geert
->=20
+Regression tests can be found in the following repository:
+https://github.com/lmajewski/tests-spi/tree/master/tests
 
+(Please read README.txt).
 
+The NXP's community thread regarding HW issues in this block on
+the vf610:
+https://community.nxp.com/thread/485139
 
+Maybe those patches will be helpful with the new, work in progress
+driver for spi-fsl-qspi.c
 
-Best regards,
+Lukasz Majewski (9):
+  Revert "mtd: fsl-quadspi: Rename SEQID_QUAD_READ to SEQID_READ"
+  mtd: qspi: Provide quirk to read only half of RX buffer (NXP's vybrid)
+  mtd: spi: Do not setup the default seqid as we got it set for DUAL and
+    QUAD
+  mtd: spi: Modify the HW capability mask according to supported RX
+    lanes
+  mtd: spi: Provide LUT entry to perform DUAL read
+  mtd: spi: Enhance the fsl_qspi_read() method to support DUAL and QUAD
+  mtd: spi: Add SPI_NOR_DUAL_READ property for the 'n25q128a13' Micron
+    memory
+  mtd: spi: Allocate memory corresponding to maximal fsl-quadspi.c
+    controller area
+  mtd: spi: Skip reading the Serial Flash Discoverable Parameters
 
-Lukasz Majewski
+ drivers/mtd/spi-nor/fsl-quadspi.c | 103 +++++++++++++++++++++++++++++---------
+ drivers/mtd/spi-nor/spi-nor.c     |   2 +-
+ 2 files changed, 79 insertions(+), 26 deletions(-)
 
---
-
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-
---Sig_/YPc5BhSZ8A/Cni0/zVR7toh
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlur+0cACgkQAR8vZIA0
-zr3bjwgAsuYJZZ2Q8RQJosawxvqIMAiG7KLKjE6cIc9gPTY5QcpULYUM4mAa84wc
-1AZqKHUO5MyrFd/OcrGLA758mf5f0AmV/h4dS2qJO7veFFZVfovgX0qpPBMvSbK5
-Vm/TnG04009T8Cha047ioaVpSnljM5x4ztAXW0Takl76NxhwrLUvVkEN6xZwXtFj
-TspzdBAHWUpywoT2xx/COR7ZU0rt8vr98COmnHWLdQ7G6WCDoO0WiUKIKJe6a9Eq
-leXTRJzS0IdDUpa5Cb0KhcwuFCNUV+fYKp7P1puFJA+ljf4gfC5+4ZSxf3Zdos/I
-RD3y3o3n+0N/dDNVPUdu4Lrsgmg0zw==
-=r8ku
------END PGP SIGNATURE-----
-
---Sig_/YPc5BhSZ8A/Cni0/zVR7toh--
+-- 
+2.11.0

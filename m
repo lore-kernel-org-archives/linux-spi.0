@@ -1,61 +1,86 @@
-From: dkota@codeaurora.org
-Subject: Re: [PATCH V4 3/4] spi: spi-geni-qcom: Add SPI driver support for
- GENI based QUP
-Date: Thu, 27 Sep 2018 00:06:50 +0530
-Message-ID: <12ec7543043b89eeb848a2cc87db5c47@codeaurora.org>
-References: <1537294047-12093-1-git-send-email-dkota@codeaurora.org>
- <1537294047-12093-4-git-send-email-dkota@codeaurora.org>
- <153780767551.119890.9339380838620508307@swboyd.mtv.corp.google.com>
- <8866de0e7a687cea1d800d6b3dcfb60b@codeaurora.org>
- <CAD=FV=VJA_qUDp3mxej4gANpzY6TFy7bpK_VzFy=W1X31vmifQ@mail.gmail.com>
+From: Ryan Case <ryandcase@chromium.org>
+Subject: [PATCH v3 1/2] dt-bindings: spi: Qualcomm Quad SPI(QSPI) documentation
+Date: Wed, 26 Sep 2018 13:52:03 -0700
+Message-ID: <20180926205204.184898-1-ryandcase@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Girish Mahadevan <girishm@codeaurora.org>, dkota@codeaurora.org
-To: Doug Anderson <dianders@chromium.org>
+Content-Transfer-Encoding: 8bit
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-arm-msm@vger.kernel.org,
+        Doug Anderson <dianders@chromium.org>,
+        Trent Piepho <tpiepho@impinj.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Ryan Case <ryandcase@chromium.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAD=FV=VJA_qUDp3mxej4gANpzY6TFy7bpK_VzFy=W1X31vmifQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2018-09-26 01:24, Doug Anderson wrote:
-> Hi,
-> 
-> On Tue, Sep 25, 2018 at 12:36 PM <dkota@codeaurora.org> wrote:
->> >> +       unsigned int cur_speed_hz;
->> >
->> > unsigned long for Hz? The clk framework uses that type.
->> 
->> cur_speed_hz stores the speed value requested as part of transfer (not
->> the resultant or rounded off frequency got from clk framework. It is 
->> u32
->> type, i will change cur_speed_hz to u32 type instead of unsigned long.
->> Code snippet:
->>          mas->cur_speed_hz = xfer->speed_hz;
-> 
-> Change it to "unsigned long" anyway to match the clock framework.  In
-> theory maybe the "xfer" structure will be updated eventually.
-Ok. WIll update it
-> 
+From: Girish Mahadevan <girishm@codeaurora.org>
 
+Bindings for Qualcomm Quad SPI used on SoCs such as sdm845.
 
->> Is it possible for all three conditions above to happen in one
->> interrupt? I ask because 'ret' is overwritten and so what may have 
->> been
->> IRQ_HANDLED may become IRQ_NONE which will lead to confusion in the 
->> irq
->> layer. Maybe the handle tx/rx functions can return a bool, that gets
->> orred together each time so that we know if something handled an
->> interrupt?
->> 
-> Will check it again by running fullduplex transfer and update.
-Added the changes in V5 to ensure return value doesn't get overwritten.
+Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
+Signed-off-by: Ryan Case <ryandcase@chromium.org>
+---
 
---Dilip
+Changes in v3:
+- Added generic compatible string in addition to specific SoC
+
+Changes in v2:
+- Added commit text
+- Removed invalid property
+- Updated example to match sdm845 with attached spi-nor
+
+ .../bindings/spi/qcom,spi-qcom-qspi.txt       | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+new file mode 100644
+index 000000000000..e13f5bb314ad
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.txt
+@@ -0,0 +1,36 @@
++Qualcomm Quad Serial Peripheral Interface (QSPI)
++
++The QSPI controller allows SPI protocol communication in single, dual, or quad
++wire transmission modes for read/write access to slaves such as NOR flash.
++
++Required properties:
++- compatible:	An SoC specific identifier followed by "qcom,qspi-v1", such as
++		"qcom,sdm845-qspi", "qcom,qspi-v1"
++- reg:		Should contain the base register location and length.
++- interrupts:	Interrupt number used by the controller.
++- clocks:	Should contain the core and AHB clock.
++- clock-names:	Should be "core" for core clock and "iface" for AHB clock.
++
++SPI slave nodes must be children of the SPI master node and can contain
++properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Example:
++
++	qspi: qspi@88df000 {
++		compatible = "qcom,sdm845-qspi", "qcom,qspi-v1";
++		reg = <0x88df000 0x600>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
++		clock-names = "iface", "core";
++		clocks = <&gcc GCC_QSPI_CNOC_PERIPH_AHB_CLK>,
++			 <&gcc GCC_QSPI_CORE_CLK>;
++
++		device@0 {
++			compatible = "jedec,spi-nor";
++			reg = <0>;
++			spi-max-frequency = <25000000>;
++			spi-tx-bus-width = <2>;
++			spi-rx-bus-width = <2>;
++		};
++	};
+-- 
+2.19.0.605.g01d371f741-goog

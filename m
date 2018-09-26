@@ -1,32 +1,41 @@
-From: Heiko Stuebner <heiko@sntech.de>
-Subject: Re: [PATCH] arm64: dts: rockchip: Enable SPI NOR flash on Rock64
-Date: Wed, 26 Sep 2018 13:38:53 +0200
-Message-ID: <2872521.VFYVRVU0oA@phil>
-References: <20180926045357.20722-1-wens@csie.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Chen-Yu Tsai <wens@csie.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] spi: sprd: don't mark remove function as __exit
+Date: Wed, 26 Sep 2018 14:58:21 +0200
+Message-ID: <20180926125833.2225931-1-arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+        Lanqing Liu <lanqing.liu@spreadtrum.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926045357.20722-1-wens@csie.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am Mittwoch, 26. September 2018, 06:53:57 CEST schrieb Chen-Yu Tsai:
-> The Pine64 Rock64 board comes with a GigaDevice GD25Q128CSIG
-> or GD25Q127CSIG chip, which is a 128 Mbit SPI NOR flash chip
-> that supports the JEDEC read-ID command.
-> 
-> This patch enables the SPI controller and adds a device node
-> for the flash chip using the generic "jedec,spi-nor" comaptible.
-> 
-> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+The __exit section is left out for built-in drivers, so a
+'remove' callback must not be marked as such to avoid breaking when
+we unbind a device at runtime. This was pointed out by kbuild:
 
-applied for 4.20
+`sprd_spi_remove' referenced in section `.data' of drivers/spi/spi-sprd.o: defined in discarded section `.exit.text' of drivers/spi/spi-sprd.o
 
-Thanks
-Heiko
+Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/spi/spi-sprd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+index a9a6c5ed443f..8daa24eec624 100644
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -676,7 +676,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int __exit sprd_spi_remove(struct platform_device *pdev)
++static int sprd_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *sctlr = platform_get_drvdata(pdev);
+ 	struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
+-- 
+2.18.0

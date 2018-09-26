@@ -1,68 +1,67 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v3 2/2] spi: Introduce new driver for Qualcomm QuadSPI controller
-Date: Wed, 26 Sep 2018 15:26:59 -0700
-Message-ID: <CAD=FV=XUiL__kts+QH3AZpA61p_adc7j3Ai1_H5VcMjV_MLOgQ@mail.gmail.com>
-References: <20180926205204.184898-1-ryandcase@chromium.org> <20180926205204.184898-2-ryandcase@chromium.org>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v3 1/3] spis: mediatek: add bindings for Mediatek MT2712
+ soc platform
+Date: Wed, 26 Sep 2018 17:33:18 -0500
+Message-ID: <20180926223318.GA18703@bogus>
+References: <1537150762-7072-1-git-send-email-leilk.liu@mediatek.com>
+ <1537150762-7072-2-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Trent Piepho <tpiepho@impinj.com>, boris.brezillon@bootlin.com,
-        Girish Mahadevan <girishm@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: ryandcase@chromium.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926205204.184898-2-ryandcase@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, yt.shen@mediatek.com,
+ Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Leilk Liu <leilk.liu@mediatek.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <1537150762-7072-2-git-send-email-leilk.liu@mediatek.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Ryan,
-
-On Wed, Sep 26, 2018 at 1:54 PM Ryan Case <ryandcase@chromium.org> wrote:
->
-> From: Girish Mahadevan <girishm@codeaurora.org>
->
-> New driver for Qualcomm QuadSPI(QSPI) controller that is used to
-> communicate with slaves such flash memory devices. The QSPI controller
-> can operate in 2 or 4 wire mode but only supports SPI Mode 0. The
-> controller can also operate in Single or Dual data rate modes.
->
-> Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
-> Signed-off-by: Ryan Case <ryandcase@chromium.org>
+On Mon, Sep 17, 2018 at 10:19:20AM +0800, Leilk Liu wrote:
+> This patch adds a DT binding documentation for the MT2712 soc.
+> 
+> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 > ---
->
-> Changes in v3:
-> - Corrected QPSPI typo
-> - Removed setup function and moved configurations to prepare_message
-> - Added __maybe_unused to suspend and resume functions
->
-> Changes in v2:
-> - Addressed formatting feedback
-> - Squashed bug fixes and features from Doug
-> - Now uses transfer_one_message instead of mem_ops
-> - Fixed suspend/resume
-> - Added spinlocks
->
->  drivers/spi/Kconfig         |   6 +
->  drivers/spi/Makefile        |   1 +
->  drivers/spi/spi-qcom-qspi.c | 598 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 605 insertions(+)
->  create mode 100644 drivers/spi/spi-qcom-qspi.c
+>  .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |   32 ++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> new file mode 100644
+> index 0000000..09cb2c4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> @@ -0,0 +1,32 @@
+> +Binding for MTK SPI Slave controller
+> +
+> +Required properties:
+> +- compatible: should be one of the following.
+> +    - mediatek,mt2712-spi-slave: for mt2712 platforms
+> +- reg: Address and length of the register set for the device.
+> +- interrupts: Should contain spi interrupt.
+> +- clocks: phandles to input clocks.
+> +  It's clock gate, and should be <&infracfg CLK_INFRA_AO_SPI1>.
+> +- clock-names: should be "spi" for the clock gate.
+> +
+> +Optional properties:
+> +- assigned-clocks: it's mux clock, should be <&topckgen CLK_TOP_SPISLV_SEL>.
+> +- assigned-clock-parents: parent of mux clock.
+> +  It's PLL, and should be on of the following.
 
-This looks good to me and addresses all outstanding feedback I'm aware
-of from v2.  I've also tested this patch and it's working fine.  Thus:
+s/on/one/
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
+With that fixed,
 
-NOTE to Mark: please be aware that there are currently _two_ SPI
-drivers in flight for sdm845 since there are two totally different SPI
-IP blocks in SDM845.  We need both this driver (the Quad SPI one) and
-also the other driver (the GENI SPI one).  As I understand it Dilip
-plans to send the next spin of the GENI SPI driver some time in the
-next day or two.
-
--Doug
+Reviewed-by: Rob Herring <robh@kernel.org>

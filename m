@@ -1,57 +1,64 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH] spi: sprd: don't mark remove function as __exit
-Date: Thu, 27 Sep 2018 09:01:21 +0800
-Message-ID: <CAMz4kuKeDorMtrO4vgnrMGmXgQms-pw14vb11Xbi0kQ-fX8egQ@mail.gmail.com>
-References: <20180926125833.2225931-1-arnd@arndb.de>
+From: lei liu <leilk.liu@mediatek.com>
+Subject: Re: [PATCH v3 1/3] spis: mediatek: add bindings for Mediatek MT2712
+ soc platform
+Date: Thu, 27 Sep 2018 09:12:12 +0800
+Message-ID: <1538010732.27607.25.camel@mhfsdcap03>
+References: <1537150762-7072-1-git-send-email-leilk.liu@mediatek.com>
+         <1537150762-7072-2-git-send-email-leilk.liu@mediatek.com>
+         <20180926223318.GA18703@bogus>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Lanqing Liu <lanqing.liu@spreadtrum.com>,
-        linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <yt.shen@mediatek.com>
+To: Rob Herring <robh@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926125833.2225931-1-arnd@arndb.de>
+In-Reply-To: <20180926223318.GA18703@bogus>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 26 September 2018 at 20:58, Arnd Bergmann <arnd@arndb.de> wrote:
-> The __exit section is left out for built-in drivers, so a
-> 'remove' callback must not be marked as such to avoid breaking when
-> we unbind a device at runtime. This was pointed out by kbuild:
->
-> `sprd_spi_remove' referenced in section `.data' of drivers/spi/spi-sprd.o: defined in discarded section `.exit.text' of drivers/spi/spi-sprd.o
->
-> Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, 2018-09-26 at 17:33 -0500, Rob Herring wrote:
+> On Mon, Sep 17, 2018 at 10:19:20AM +0800, Leilk Liu wrote:
+> > This patch adds a DT binding documentation for the MT2712 soc.
+> > 
+> > Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+> > ---
+> >  .../devicetree/bindings/spi/spi-slave-mt27xx.txt   |   32 ++++++++++++++++++++
+> >  1 file changed, 32 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> > new file mode 100644
+> > index 0000000..09cb2c4
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+> > @@ -0,0 +1,32 @@
+> > +Binding for MTK SPI Slave controller
+> > +
+> > +Required properties:
+> > +- compatible: should be one of the following.
+> > +    - mediatek,mt2712-spi-slave: for mt2712 platforms
+> > +- reg: Address and length of the register set for the device.
+> > +- interrupts: Should contain spi interrupt.
+> > +- clocks: phandles to input clocks.
+> > +  It's clock gate, and should be <&infracfg CLK_INFRA_AO_SPI1>.
+> > +- clock-names: should be "spi" for the clock gate.
+> > +
+> > +Optional properties:
+> > +- assigned-clocks: it's mux clock, should be <&topckgen CLK_TOP_SPISLV_SEL>.
+> > +- assigned-clock-parents: parent of mux clock.
+> > +  It's PLL, and should be on of the following.
+> 
+> s/on/one/
+> 
+> With that fixed,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Thanks Arnd.
-
-Acked-by: Baolin Wang <baolin.wang@linaro.org>
-
-> ---
->  drivers/spi/spi-sprd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-> index a9a6c5ed443f..8daa24eec624 100644
-> --- a/drivers/spi/spi-sprd.c
-> +++ b/drivers/spi/spi-sprd.c
-> @@ -676,7 +676,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
->         return ret;
->  }
->
-> -static int __exit sprd_spi_remove(struct platform_device *pdev)
-> +static int sprd_spi_remove(struct platform_device *pdev)
->  {
->         struct spi_controller *sctlr = platform_get_drvdata(pdev);
->         struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
-> --
-> 2.18.0
->
-
-
-
--- 
-Baolin Wang
-Best Regards
+Yes, it's a mistake, I'll fix it, thanks

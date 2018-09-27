@@ -1,26 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: don't mark remove function as __exit" to the spi tree
-Date: Thu, 27 Sep 2018 23:40:31 +0100 (BST)
-Message-ID: <20180927224031.61209440078@finisterre.ee.mobilebroadband>
-References: <20180926125833.2225931-1-arnd@arndb.de>
-Cc: Baolin Wang <baolin.wang@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Lanqing Liu <lanqing.liu@spreadtrum.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+Subject: Applied "spi: spi-mem: Fix inverted logic in op sanity check" to the spi tree
+Date: Thu, 27 Sep 2018 23:40:22 +0100 (BST)
+Message-ID: <20180927224022.C5007440078@finisterre.ee.mobilebroadband>
+References: <20180925094655.11438-1-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926125833.2225931-1-arnd@arndb.de>
+In-Reply-To: <20180925094655.11438-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: don't mark remove function as __exit
+   spi: spi-mem: Fix inverted logic in op sanity check
 
 has been applied to the spi tree at
 
@@ -45,37 +44,45 @@ to this mail.
 Thanks,
 Mark
 
->From 71d9a846fbcac1113b3810c06a8a3ddd936ada01 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 26 Sep 2018 14:58:21 +0200
-Subject: [PATCH] spi: sprd: don't mark remove function as __exit
+>From aea3877e24f3acc6145094848dbb85f9ce85674a Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 25 Sep 2018 11:46:55 +0200
+Subject: [PATCH] spi: spi-mem: Fix inverted logic in op sanity check
 
-The __exit section is left out for built-in drivers, so a
-'remove' callback must not be marked as such to avoid breaking when
-we unbind a device at runtime. This was pointed out by kbuild:
+On r8a7791/koelsch:
 
-`sprd_spi_remove' referenced in section `.data' of drivers/spi/spi-sprd.o: defined in discarded section `.exit.text' of drivers/spi/spi-sprd.o
+    m25p80 spi0.0: error -22 reading 9f
+    m25p80: probe of spi0.0 failed with error -22
 
-Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Baolin Wang <baolin.wang@linaro.org>
+Apparently the logic in spi_mem_check_op() is wrong, rejecting the
+spi-mem operation if any buswidth is valid, instead of invalid.
+
+Fixes: 380583227c0c7f52 ("spi: spi-mem: Add extra sanity checks on the op param")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index a9a6c5ed443f..8daa24eec624 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -676,7 +676,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index cc3d425aae56..62a7b80801d2 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -169,10 +169,10 @@ static int spi_mem_check_op(const struct spi_mem_op *op)
+ 	    (op->data.nbytes && !op->data.buswidth))
+ 		return -EINVAL;
  
--static int __exit sprd_spi_remove(struct platform_device *pdev)
-+static int sprd_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *sctlr = platform_get_drvdata(pdev);
- 	struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
+-	if (spi_mem_buswidth_is_valid(op->cmd.buswidth) ||
+-	    spi_mem_buswidth_is_valid(op->addr.buswidth) ||
+-	    spi_mem_buswidth_is_valid(op->dummy.buswidth) ||
+-	    spi_mem_buswidth_is_valid(op->data.buswidth))
++	if (!spi_mem_buswidth_is_valid(op->cmd.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->addr.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->dummy.buswidth) ||
++	    !spi_mem_buswidth_is_valid(op->data.buswidth))
+ 		return -EINVAL;
+ 
+ 	return 0;
 -- 
 2.19.0

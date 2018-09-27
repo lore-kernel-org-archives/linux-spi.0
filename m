@@ -1,37 +1,57 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH V4 2/4] dt-bindings: soc: qcom: GENI SE SPI controller
- device tree binding
-Date: Wed, 26 Sep 2018 17:51:20 -0500
-Message-ID: <20180926225120.GA14357@bogus>
-References: <1537294047-12093-1-git-send-email-dkota@codeaurora.org>
- <1537294047-12093-3-git-send-email-dkota@codeaurora.org>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH] spi: sprd: don't mark remove function as __exit
+Date: Thu, 27 Sep 2018 09:01:21 +0800
+Message-ID: <CAMz4kuKeDorMtrO4vgnrMGmXgQms-pw14vb11Xbi0kQ-fX8egQ@mail.gmail.com>
+References: <20180926125833.2225931-1-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: swboyd@chromium.org, dianders@chromium.org, broonie@kernel.org,
-        mka@chromium.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org,
-        devicetree@vger.kernel.org, Dilip Kota <dkota@codeaurora.org>
-To: Dilip Kota <dkota@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Lanqing Liu <lanqing.liu@spreadtrum.com>,
+        linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1537294047-12093-3-git-send-email-dkota@codeaurora.org>
+In-Reply-To: <20180926125833.2225931-1-arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 18 Sep 2018 23:37:24 +0530, Dilip Kota wrote:
-> Move GENI SE SPI controller device-tree bindings
-> from devicetree/bindings/soc/qcom/qcom,geni-se.txt
-> to devicetree/bindings/spi/qcom,spi-geni-qcom.txt.
-> 
-> Signed-off-by: Dilip Kota <dkota@codeaurora.org>
-> ---
->  .../devicetree/bindings/soc/qcom/qcom,geni-se.txt  | 27 ++-------------
->  .../devicetree/bindings/spi/qcom,spi-geni-qcom.txt | 39 ++++++++++++++++++++++
->  2 files changed, 41 insertions(+), 25 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
-> 
+On 26 September 2018 at 20:58, Arnd Bergmann <arnd@arndb.de> wrote:
+> The __exit section is left out for built-in drivers, so a
+> 'remove' callback must not be marked as such to avoid breaking when
+> we unbind a device at runtime. This was pointed out by kbuild:
+>
+> `sprd_spi_remove' referenced in section `.data' of drivers/spi/spi-sprd.o: defined in discarded section `.exit.text' of drivers/spi/spi-sprd.o
+>
+> Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Thanks Arnd.
+
+Acked-by: Baolin Wang <baolin.wang@linaro.org>
+
+> ---
+>  drivers/spi/spi-sprd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+> index a9a6c5ed443f..8daa24eec624 100644
+> --- a/drivers/spi/spi-sprd.c
+> +++ b/drivers/spi/spi-sprd.c
+> @@ -676,7 +676,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
+>         return ret;
+>  }
+>
+> -static int __exit sprd_spi_remove(struct platform_device *pdev)
+> +static int sprd_spi_remove(struct platform_device *pdev)
+>  {
+>         struct spi_controller *sctlr = platform_get_drvdata(pdev);
+>         struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
+> --
+> 2.18.0
+>
+
+
+
+-- 
+Baolin Wang
+Best Regards

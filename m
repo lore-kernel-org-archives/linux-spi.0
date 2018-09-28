@@ -1,100 +1,89 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mediatek: add bindings for Mediatek MT2712 soc platform" to the spi tree
-Date: Fri, 28 Sep 2018 15:05:17 +0100 (BST)
-Message-ID: <20180928140517.8E077440078@finisterre.ee.mobilebroadband>
-References: <1538131985-9471-2-git-send-email-leilk.liu@mediatek.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, yt.shen@mediatek.com,
-        linux-spi@vger.kernel.org
-To: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [GIT PULL] spi fixes for v4.19
+Date: Fri, 28 Sep 2018 15:30:41 +0100
+Message-ID: <20180928143041.GQ20825@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xYEXny2b0/vlBQCR"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1538131985-9471-2-git-send-email-leilk.liu@mediatek.com>
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: mediatek: add bindings for Mediatek MT2712 soc platform
+--xYEXny2b0/vlBQCR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+The following changes since commit 5223c9c1cbfc0cd4d0a1b50758e0949af3290fa1:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+  spi: spi-fsl-dspi: fix broken DSPI_EOQ_MODE (2018-08-28 20:55:23 +0100)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+are available in the Git repository at:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.19-rc5
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+for you to fetch changes up to c949a8e8b43f2c75567269bcc9a50d704ae3c420:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+  spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header (2018-09-20 12:23:31 -0700)
 
-Thanks,
-Mark
+----------------------------------------------------------------
+spi: Fixes for v4.19
 
->From c0116e6b30473c7a75d33077bfd60f3b4eec7808 Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu@mediatek.com>
-Date: Fri, 28 Sep 2018 18:53:03 +0800
-Subject: [PATCH] spi: mediatek: add bindings for Mediatek MT2712 soc platform
+Quite a few fixes for the Renesas drivers in here, plus a fix for the
+Tegra driver and some documentation fixes for the recently added spi-mem
+code.  The Tegra fix is relatively large but fairly straightforward and
+mechanical, it runs on probe so it's been reasonably well covered in
+-next testing.
 
-This patch adds a DT binding documentation for the MT2712 soc.
+----------------------------------------------------------------
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- .../bindings/spi/spi-slave-mt27xx.txt         | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
+There's also a small fix for error checking in the bitbanging GPIO
+driver I forgot to mention above.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-new file mode 100644
-index 000000000000..c37e5a179b21
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-slave-mt27xx.txt
-@@ -0,0 +1,32 @@
-+Binding for MTK SPI Slave controller
-+
-+Required properties:
-+- compatible: should be one of the following.
-+    - mediatek,mt2712-spi-slave: for mt2712 platforms
-+- reg: Address and length of the register set for the device.
-+- interrupts: Should contain spi interrupt.
-+- clocks: phandles to input clocks.
-+  It's clock gate, and should be <&infracfg CLK_INFRA_AO_SPI1>.
-+- clock-names: should be "spi" for the clock gate.
-+
-+Optional properties:
-+- assigned-clocks: it's mux clock, should be <&topckgen CLK_TOP_SPISLV_SEL>.
-+- assigned-clock-parents: parent of mux clock.
-+  It's PLL, and should be one of the following.
-+   -  <&topckgen CLK_TOP_UNIVPLL1_D2>: specify parent clock 312MHZ.
-+				       It's the default one.
-+   -  <&topckgen CLK_TOP_UNIVPLL1_D4>: specify parent clock 156MHZ.
-+   -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
-+   -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
-+
-+Example:
-+- SoC Specific Portion:
-+spis1: spi@10013000 {
-+	compatible = "mediatek,mt2712-spi-slave";
-+	reg = <0 0x10013000 0 0x100>;
-+	interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-+	clocks = <&infracfg CLK_INFRA_AO_SPI1>;
-+	clock-names = "spi";
-+	assigned-clocks = <&topckgen CLK_TOP_SPISLV_SEL>;
-+	assigned-clock-parents = <&topckgen CLK_TOP_UNIVPLL1_D2>;
-+};
--- 
-2.19.0
+Boris Brezillon (2):
+      spi: spi-mem: Add missing description for data.nbytes field
+      spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header
+
+Gaku Inami (1):
+      spi: sh-msiof: Fix invalid SPI use during system suspend
+
+Geert Uytterhoeven (2):
+      spi: rspi: Fix invalid SPI use during system suspend
+      spi: rspi: Fix interrupted DMA transfers
+
+Hiromitsu Yamasaki (1):
+      spi: sh-msiof: Fix handling of write value for SISTR register
+
+Linus Walleij (1):
+      spi: gpio: Fix copy-and-paste error
+
+Marcel Ziswiler (1):
+      spi: tegra20-slink: explicitly enable/disable clock
+
+ drivers/spi/spi-gpio.c          |  4 ++--
+ drivers/spi/spi-rspi.c          | 34 ++++++++++++++++++++++++++++++----
+ drivers/spi/spi-sh-msiof.c      | 28 +++++++++++++++++++++++++++-
+ drivers/spi/spi-tegra20-slink.c | 31 +++++++++++++++++++++++--------
+ include/linux/spi/spi-mem.h     |  7 ++++---
+ 5 files changed, 86 insertions(+), 18 deletions(-)
+
+--xYEXny2b0/vlBQCR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluuOxEACgkQJNaLcl1U
+h9B7aggAgQW3GoHvmPvS9TM5XOANT/6KBbq5XAadZdUQMry0SNJx4FKtzsLFTf7G
+xeMXPAC5RgYwoNrVtLkJatWATXzt5Gc7tshwlZDiARIEWFHtsL99C3PyyRhlxw5m
+jVHJkyXxPXZbHRc5Ou2E0PouSB7W/ej5/53XWo92HsdaW1ld/Ll/ZYXaf9W8oT6M
+Zby2XpQRFsUrlF2l4aGw2zT576rpKlueSCN17aQfzt0+mJleroP7qWy0TxIaj6/j
+lCIxFxrBJcCxkJsVSD61wvFThQoOnfegXd5haeYxhb4WnTips+WMZQ3ewUCVGMbF
+wGX50uh7eWi++f57H3/VprB1RrY/7Q==
+=aExT
+-----END PGP SIGNATURE-----
+
+--xYEXny2b0/vlBQCR--

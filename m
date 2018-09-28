@@ -1,71 +1,82 @@
-From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
-Subject: Re: [RFC/RFT PATCH v1 9/9] mtd: spi: Skip reading the Serial Flash
- Discoverable Parameters
-Date: Fri, 28 Sep 2018 18:01:06 +0200
-Message-ID: <1a85becb-6cb0-ede4-be0a-2608e8532c9e@wedev4u.fr>
-References: <20180926220739.620-1-lukma@denx.de>
- <20180926220739.620-10-lukma@denx.de>
+From: Ryan Case <ryandcase@chromium.org>
+Subject: Re: [PATCH v3 2/2] spi: Introduce new driver for Qualcomm QuadSPI controller
+Date: Fri, 28 Sep 2018 11:19:51 -0700
+Message-ID: <CACjz--=Qj8Jd9yCvox1MGh1PFkHAzpt1L0OwPkMhtV30_jCDWA@mail.gmail.com>
+References: <20180926205204.184898-1-ryandcase@chromium.org>
+ <20180926205204.184898-2-ryandcase@chromium.org> <153803059441.119890.891880266219521584@swboyd.mtv.corp.google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: yogeshnarayan.gaur@nxp.com, richard@nod.at, prabhakar.kushwaha@nxp.com,
- linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
- linux-spi@vger.kernel.org, albert.aribaud@3adev.fr, broonie@kernel.org,
- linux-mtd@lists.infradead.org, han.xu@nxp.com,
- Fabio Estevam <fabio.estevam@nxp.com>, david.wolfe@nxp.com,
- computersforpeace@gmail.com, Fabio Estevam <festevam@gmail.com>,
- dwmw2@infradead.org
-To: Lukasz Majewski <lukma@denx.de>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, boris.brezillon@bootlin.com,
- Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20180926220739.620-10-lukma@denx.de>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-arm-msm@vger.kernel.org,
+        Doug Anderson <dianders@chromium.org>,
+        Trent Piepho <tpiepho@impinj.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Stephen Boyd <swboyd@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <153803059441.119890.891880266219521584@swboyd.mtv.corp.google.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTHVrYXN6LAoKTGUgMjcvMDkvMjAxOCDDoCAwMDowNywgTHVrYXN6IE1hamV3c2tpIGEgw6lj
-cml0wqA6Cj4gVGhlIGZzbC1xdWFkc3BpLmMgZHJpdmVyIGlzIG5vdCBzdXBwb3J0aW5nIFNQSU5P
-Ul9PUF9SRFNGRFAgKDB4NWEpCj4gcmVhZCBvcGNvZGUgLSBpbiB0aGUgbGVnYWN5IGRyaXZlciB3
-ZSBkbyByZWFkIHNvbWUgZ2FyYmFnZQo+IGRhdGEgZnJvbSBBSEIgbWFwcGVkIGFyZWEgYW5kIHRo
-ZW4gcmV0dXJuIG9uIHRoZSBmaXJzdCBjaGVjawoKSWYgeW91ciBjb250cm9sbGVyIHJlYWRzIGdh
-cmJhZ2UgdGhlbiBzcGlfbm9yX3BhcnNlX3NmZHAoKSBmYWlscyBhbmQgZXhpc3RzIG9uIHRoZQp2
-ZXJ5IGZpcnN0IGNoZWNrOiBzaWduYXR1cmUgb2YgdGhlIFNGRFAgaGVhZGVyLiBIZW5jZSBldmVy
-eXRoaW5nIHNob3VsZCBhbHJlYWR5IGdvIG9uCmFzIGlmIHRoZSBTUElfTk9SX1NLSVBfU0ZEUCBm
-bGFnIGlzIHNldC4KClNvIHRoaXMgcGF0Y2ggZG9lc24ndCBjaGFuZ2UgYW55dGhpbmcgZm9yIHlv
-dXIgY29udHJvbGxlciBidXQgcHJldmVudHMgb3RoZXIgY29udHJvbGxlcgpmcm9tIHVzaW5nIFFT
-UEkgcHJvdG9jb2xzIGxpa2UgU1BJIDEtNC00LgoKVGhpcyBwYXRjaCBpbnRyb2R1Y2VzIGEgcmVn
-cmVzc2lvbiBmb3Igb3RoZXIgY2hpcHMuCgpCZXN0IHJlZ2FyZHMsCgpDeXJpbGxlCgo+IChMMjM3
-NiBAIC4vbXRkL3NwaS1ub3Ivc3BpLW5vci5jKQo+IAo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzeiBN
-YWpld3NraSA8bHVrbWFAZGVueC5kZT4KPiAtLS0KPiAgZHJpdmVycy9tdGQvc3BpLW5vci9zcGkt
-bm9yLmMgfCAyICstCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlv
-bigtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBiL2Ry
-aXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jCj4gaW5kZXggNDQyMTAyYmUxNzRlLi5jNzliOGMz
-M2FlZWIgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKPiArKysg
-Yi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYwo+IEBAIC0xMTAzLDcgKzExMDMsNyBAQCBz
-dGF0aWMgY29uc3Qgc3RydWN0IGZsYXNoX2luZm8gc3BpX25vcl9pZHNbXSA9IHsKPiAgCXsgIm4y
-NXEwNjQiLCAgICAgSU5GTygweDIwYmExNywgMCwgNjQgKiAxMDI0LCAgMTI4LCBTRUNUXzRLIHwg
-U1BJX05PUl9RVUFEX1JFQUQpIH0sCj4gIAl7ICJuMjVxMDY0YSIsICAgIElORk8oMHgyMGJiMTcs
-IDAsIDY0ICogMTAyNCwgIDEyOCwgU0VDVF80SyB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+ICAJ
-eyAibjI1cTEyOGExMSIsICBJTkZPKDB4MjBiYjE4LCAwLCA2NCAqIDEwMjQsICAyNTYsIFNFQ1Rf
-NEsgfCBTUElfTk9SX1FVQURfUkVBRCkgfSwKPiAtCXsgIm4yNXExMjhhMTMiLCAgSU5GTygweDIw
-YmExOCwgMCwgNjQgKiAxMDI0LCAgMjU2LCBTRUNUXzRLIHwgU1BJX05PUl9RVUFEX1JFQUQgfCBT
-UElfTk9SX0RVQUxfUkVBRCkgfSwKPiArCXsgIm4yNXExMjhhMTMiLCAgSU5GTygweDIwYmExOCwg
-MCwgNjQgKiAxMDI0LCAgMjU2LCBTRUNUXzRLIHwgU1BJX05PUl9RVUFEX1JFQUQgfCBTUElfTk9S
-X0RVQUxfUkVBRCB8IFNQSV9OT1JfU0tJUF9TRkRQKSB9LAo+ICAJeyAibjI1cTI1NmEiLCAgICBJ
-TkZPKDB4MjBiYTE5LCAwLCA2NCAqIDEwMjQsICA1MTIsIFNFQ1RfNEsgfCBTUElfTk9SX0RVQUxf
-UkVBRCB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+ICAJeyAibjI1cTI1NmF4MSIsICBJTkZPKDB4
-MjBiYjE5LCAwLCA2NCAqIDEwMjQsICA1MTIsIFNFQ1RfNEsgfCBTUElfTk9SX1FVQURfUkVBRCkg
-fSwKPiAgCXsgIm4yNXE1MTJhIiwgICAgSU5GTygweDIwYmIyMCwgMCwgNjQgKiAxMDI0LCAxMDI0
-LCBTRUNUXzRLIHwgVVNFX0ZTUiB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+IAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4IE1URCBk
-aXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2xpbnV4LW10ZC8K
+On Wed, Sep 26, 2018 at 11:43 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> Quoting Ryan Case (2018-09-26 13:52:04)
+> > From: Girish Mahadevan <girishm@codeaurora.org>
+> > +#include <asm/unaligned.h>
+> > +
+> > +#define AHB_MIN_HZ             9600000UL
+>
+> Is this used?
+
+Nope. Do you want all currently unused defines removed or specifically this
+one? I saw precedent in other drivers for defining registers/flags/values of
+supported but unused functionality so I left these (big endian, DDR, ...).
+
+
+> > +       speed_hz = slv->max_speed_hz;
+> > +       if (xfer->speed_hz)
+> > +               speed_hz = xfer->speed_hz;
+> > +
+> > +       ret = clk_set_rate(ctrl->clks[QSPI_CLK_CORE].clk, speed_hz * 4);
+>
+> Why 4? Is that related to the number of wires?
+
+In normal operation the core clock should be running at 4x the rate of the
+transfer clock regardless of number of wires used.
+
+> > +                       put_unaligned(rd_fifo, word_buf++);
+> > +               }
+> > +               ctrl->xfer.rx_buf = word_buf;
+> > +       }
+> > +
+> > +       if (bytes_to_read) {
+> > +               byte_buf = ctrl->xfer.rx_buf;
+>
+> Does this need to move forward by words_to_read bytes so that the left
+> over bytes are tacked onto the end? Or this should be an else if
+> statement?
+
+When the words block completes it updates the rx_buf location so it is already
+at the correct offset for bytes.
+
+> > +
+> > +       master->max_speed_hz = 300000000;
+> > +       master->num_chipselect = QSPI_NUM_CS;
+> > +       master->bus_num = pdev->id;
+>
+> Can this come from DT aliases? I've never thought about qspi and
+> "regular" spi being in the same spi bus numbering system, but I suppose
+> that will happen now and we need to make sure that qspi numbers start
+> after the regular ones?
+
+I'm not sure. Can look into it.
+
+>
+> > +       master->dev.of_node = pdev->dev.of_node;
+> > +       master->mode_bits = SPI_MODE_0 |
+> > +                           SPI_TX_DUAL | SPI_RX_DUAL |
+> > +                           SPI_TX_QUAD | SPI_RX_QUAD;
+> > +       master->flags = SPI_MASTER_HALF_DUPLEX;
+> > +       master->prepare_message = qcom_qspi_prepare_message;
+> > +       master->transfer_one = qcom_qspi_transfer_one;

@@ -1,67 +1,89 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: fsl-lpspi: Option to allow stalling
-Date: Thu, 27 Sep 2018 23:47:23 +0100
-Message-ID: <20180927224723.GF20825@sirena.org.uk>
-References: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
- <20180925203701.13605-2-dangtranhieu2012@gmail.com>
- <CABGGiszY6+UDwzfuS6ob0C1zcGL4DfhcZ_iYjUGSXwWcbjPYRg@mail.gmail.com>
- <CAAObPoHOEYrDj8uoFK-gW8jvy8i-vtRhTkEEm5aVNn8ucLxRMg@mail.gmail.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Fri, 28 Sep 2018 06:37:11 +0000
+Message-ID: <AM6PR04MB4357D5C59CBCD3A628B2F7B197EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+References: <20180921070628.35153-1-chuanhua.han@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TUvp6TiFcfhGC84w"
-Cc: robh@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: =?utf-8?B?xJDhurduZyBUcuG6p24gSGnhur91?=
-        <dangtranhieu2012@gmail.com>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>
+To: Chuanhua Han <chuanhua.han@nxp.com>,
+        "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAAObPoHOEYrDj8uoFK-gW8jvy8i-vtRhTkEEm5aVNn8ucLxRMg@mail.gmail.com>
+In-Reply-To: <20180921070628.35153-1-chuanhua.han@nxp.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---TUvp6TiFcfhGC84w
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Sep 26, 2018 at 09:37:39PM +0700, =C4=90=E1=BA=B7ng Tr=E1=BA=A7n Hi=
-=E1=BA=BFu wrote:
-
-> Default value of the register is to allow stalling (NOSTALL bit not
-> set) but the spi-fsl-lpspi driver defaults to setting the NOSTALL bit
-> in CFGR1. To me, it's more logical to leave the NOSTALL bit off with
-> fsl,nostall binding to set the bit but as I am not sure if there are
-> other drivers depending on the NOSTALL bit being set and not wanting
-> to break other drivers hence introduction of this binding to keep the
-> current default behavior.
-
-I can't see a situation where you'd actively want to report an error
-rather than stall, stalling allows us to handle things gracefully by
-restarting things.  Even if it's a timeout situation it sounds like we
-can unblock by reading/writing the stalled FIFO, and normally you'd be
-resetting the entire IP anyway.  I'd imagine the driver is this way
-either through an oversight or because there's some bug on some silicon
-which means that stalling breaks.
-
-Probably best to just always enable stalling unless I'm misreading
-things, if it is silicon bugs on some versions then either a whitelist
-or blacklist of SoCs to enable on (depending on how common the bug is)
-would be the way forwards - that way SoCs where it works get the benefit.
-
---TUvp6TiFcfhGC84w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlutXfoACgkQJNaLcl1U
-h9ABMgf/czCL8Xz21qJvcfFwf1QCjMgUyRCWY9a16J/vrdk/aDgSAtCrloo/6M6e
-Q2hByQEEQzinBT10Y280ZFhpfdqOCLJcXVGtEC4QIXUdY0FeNRWFvNyh2ipJ0WB+
-ovlbt0puUcGIX0BQHCW/k9Yd33r5fawXq9ZYmmota43b6JjT+83LIXD8YwF+3MFH
-RtRvcfN7hp09oQO1xiWsdbY8JTnvlnbV4Sriij8eMnlDBXfiAHEEcmZbeZ0kZ5M4
-Y/x+x0A/RZgws5P2WKasI0DTbp3fJj72hdbStB7vfwXOcOmzAzGk6assdQNGgrKi
-OFk3SNnVV8OGl7rwuNvyZ74whmIJqw==
-=1ny+
------END PGP SIGNATURE-----
-
---TUvp6TiFcfhGC84w--
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2h1YW5odWEgSGFuIDxj
+aHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU2VudDogMjAxOMTqOdTCMjHI1SAxNTowNg0KPiBUbzog
+YnJvb25pZUBrZXJuZWwub3JnDQo+IENjOiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBlaGFAZGVpZi5jb207DQo+IGJvcmlzLmJyZXppbGxv
+bkBib290bGluLmNvbTsgQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU3Vi
+amVjdDogW1BBVENIIDEvMl0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcg
+ZnVuY3Rpb24NCj4gDQo+IEJlZm9yZSB3ZSBhZGQgdGhpcyBzcGlfdHJhbnNmZXIgdG8gdGhlIHNw
+aV9tZXNzYWdlIGNoYWluIHRhYmxlLCB3ZSBuZWVkDQo+IGJpdHNfcGVyX3dvcmRfbWFzayBiYXNl
+ZCBvbiBzcGlfY29udHJvbCB0byBzZXQgdGhlIGJpdHNfcGVyX3dvcmQgb2YgdGhpcw0KPiBzcGlf
+dHJhbnNmZXIuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhh
+bkBueHAuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvc3BpL3NwaS1tZW0uYyB8IDM5ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgMSBmaWxlIGNoYW5nZWQsIDM5IGlu
+c2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMgYi9k
+cml2ZXJzL3NwaS9zcGktbWVtLmMgaW5kZXgNCj4gZWI3MmRiYTcxZDgzLi43MTdlNzExYzA5NTIg
+MTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1tZW0uYw0KPiArKysgYi9kcml2ZXJzL3Nw
+aS9zcGktbWVtLmMNCj4gQEAgLTE3NSw2ICsxNzUsNDEgQEAgYm9vbCBzcGlfbWVtX3N1cHBvcnRz
+X29wKHN0cnVjdCBzcGlfbWVtICptZW0sDQo+IGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkg
+IH0NCj4gRVhQT1JUX1NZTUJPTF9HUEwoc3BpX21lbV9zdXBwb3J0c19vcCk7DQo+IA0KPiArLyoq
+DQo+ICsgKiBzcGlfc2V0X3hmZXJfYnB3KCkgLSBTZXQgdGhlIGJpdHNfcGVyX3dvcmQgZm9yIGVh
+Y2ggdHJhbnNmZXIgYmFzZWQgb24NCj4gKyAqCQkJdGhlIGJpdHNfcGVyX3dvcmRfbWFzayBvZiB0
+aGUgc3BpIGNvbnRyb2xsZXINCj4gKyAqIEBjdHJsOiB0aGUgc3BpIGNvbnRyb2xsZXINCj4gKyAq
+IEB4ZmVyOiB0aGUgc3BpIHRyYW5zZmVyDQo+ICsgKg0KPiArICogVGhpcyBmdW5jdGlvbiBzZXRz
+IHRoZSBiaXRzX3Blcl93b3JkIGZvciBlYWNoIHRyYW5zZmVyIGJhc2VkIG9uIHRoZQ0KPiArc3Bp
+DQo+ICsgKiBjb250cm9sbGVyJ3MgYml0c19wZXJfd29yZF9tYXNrIHRvIGltcHJvdmUgdGhlIGVm
+ZmljaWVuY3kgb2Ygc3BpIHRyYW5zcG9ydC4NCj4gKyAqDQo+ICsgKiBSZXR1cm46IDAgaW4gY2Fz
+ZSBvZiBzdWNjZXNzLCBhIG5lZ2F0aXZlIGVycm9yIGNvZGUgb3RoZXJ3aXNlLg0KPiArICovDQo+
+ICtpbnQgc3BpX3NldF94ZmVyX2JwdyhzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsIHN0cnVj
+dCBzcGlfdHJhbnNmZXINCj4gKyp4ZmVyKSB7DQo+ICsJaWYgKCFjdGxyIHx8ICF4ZmVyKSB7DQo+
+ICsJCWRldl9lcnIoJmN0bHItPmRldiwNCj4gKwkJCSJGYWlsIHRvIHNldCBiaXRzX3Blcl93b3Jk
+IGZvciBzcGkgdHJhbnNmZXJcbiIpOw0KPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gKwl9DQo+ICsN
+Cj4gKwlpZiAoY3Rsci0+Yml0c19wZXJfd29yZF9tYXNrKSB7DQo+ICsJCWlmICghKHhmZXItPmxl
+biAlIDQpKSB7DQo+ICsJCQlpZiAoY3Rsci0+Yml0c19wZXJfd29yZF9tYXNrICYgU1BJX0JQV19N
+QVNLKDMyKSkNCj4gKwkJCQl4ZmVyLT5iaXRzX3Blcl93b3JkID0gMzI7DQo+ICsJCX0gZWxzZSBp
+ZiAoISh4ZmVyLT5sZW4gJSAyKSkgew0KPiArCQkJaWYgKGN0bHItPmJpdHNfcGVyX3dvcmRfbWFz
+ayAmIFNQSV9CUFdfTUFTSygxNikpDQo+ICsJCQkJeGZlci0+Yml0c19wZXJfd29yZCA9IDE2Ow0K
+PiArCQl9IGVsc2Ugew0KPiArCQkJeGZlci0+Yml0c19wZXJfd29yZCA9IDg7DQo+ICsJCX0NCj4g
+Kwl9DQo+ICsNCj4gKwlyZXR1cm4gMDsNCj4gK30NCj4gK0VYUE9SVF9TWU1CT0xfR1BMKHNwaV9z
+ZXRfeGZlcl9icHcpOw0KPiArDQo+ICAvKioNCj4gICAqIHNwaV9tZW1fZXhlY19vcCgpIC0gRXhl
+Y3V0ZSBhIG1lbW9yeSBvcGVyYXRpb24NCj4gICAqIEBtZW06IHRoZSBTUEkgbWVtb3J5DQo+IEBA
+IC0yNTIsNiArMjg3LDcgQEAgaW50IHNwaV9tZW1fZXhlY19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVt
+LCBjb25zdA0KPiBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQo+ICAJeGZlcnNbeGZlcnBvc10udHhf
+YnVmID0gdG1wYnVmOw0KPiAgCXhmZXJzW3hmZXJwb3NdLmxlbiA9IHNpemVvZihvcC0+Y21kLm9w
+Y29kZSk7DQo+ICAJeGZlcnNbeGZlcnBvc10udHhfbmJpdHMgPSBvcC0+Y21kLmJ1c3dpZHRoOw0K
+PiArCXNwaV9zZXRfeGZlcl9icHcoY3RsciwgJnhmZXJzW3hmZXJwb3NdKTsNCj4gIAlzcGlfbWVz
+c2FnZV9hZGRfdGFpbCgmeGZlcnNbeGZlcnBvc10sICZtc2cpOw0KPiAgCXhmZXJwb3MrKzsNCj4g
+IAl0b3RhbHhmZXJsZW4rKzsNCj4gQEAgLTI2Niw2ICszMDIsNyBAQCBpbnQgc3BpX21lbV9leGVj
+X29wKHN0cnVjdCBzcGlfbWVtICptZW0sIGNvbnN0DQo+IHN0cnVjdCBzcGlfbWVtX29wICpvcCkN
+Cj4gIAkJeGZlcnNbeGZlcnBvc10udHhfYnVmID0gdG1wYnVmICsgMTsNCj4gIAkJeGZlcnNbeGZl
+cnBvc10ubGVuID0gb3AtPmFkZHIubmJ5dGVzOw0KPiAgCQl4ZmVyc1t4ZmVycG9zXS50eF9uYml0
+cyA9IG9wLT5hZGRyLmJ1c3dpZHRoOw0KPiArCQlzcGlfc2V0X3hmZXJfYnB3KGN0bHIsICZ4ZmVy
+c1t4ZmVycG9zXSk7DQo+ICAJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ4ZmVyc1t4ZmVycG9zXSwg
+Jm1zZyk7DQo+ICAJCXhmZXJwb3MrKzsNCj4gIAkJdG90YWx4ZmVybGVuICs9IG9wLT5hZGRyLm5i
+eXRlczsNCj4gQEAgLTI3Niw2ICszMTMsNyBAQCBpbnQgc3BpX21lbV9leGVjX29wKHN0cnVjdCBz
+cGlfbWVtICptZW0sIGNvbnN0DQo+IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCj4gIAkJeGZlcnNb
+eGZlcnBvc10udHhfYnVmID0gdG1wYnVmICsgb3AtPmFkZHIubmJ5dGVzICsgMTsNCj4gIAkJeGZl
+cnNbeGZlcnBvc10ubGVuID0gb3AtPmR1bW15Lm5ieXRlczsNCj4gIAkJeGZlcnNbeGZlcnBvc10u
+dHhfbmJpdHMgPSBvcC0+ZHVtbXkuYnVzd2lkdGg7DQo+ICsJCXNwaV9zZXRfeGZlcl9icHcoY3Rs
+ciwgJnhmZXJzW3hmZXJwb3NdKTsNCj4gIAkJc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnhmZXJzW3hm
+ZXJwb3NdLCAmbXNnKTsNCj4gIAkJeGZlcnBvcysrOw0KPiAgCQl0b3RhbHhmZXJsZW4gKz0gb3At
+PmR1bW15Lm5ieXRlczsNCj4gQEAgLTI5MSw2ICszMjksNyBAQCBpbnQgc3BpX21lbV9leGVjX29w
+KHN0cnVjdCBzcGlfbWVtICptZW0sIGNvbnN0DQo+IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCj4g
+IAkJfQ0KPiANCj4gIAkJeGZlcnNbeGZlcnBvc10ubGVuID0gb3AtPmRhdGEubmJ5dGVzOw0KPiAr
+CQlzcGlfc2V0X3hmZXJfYnB3KGN0bHIsICZ4ZmVyc1t4ZmVycG9zXSk7DQo+ICAJCXNwaV9tZXNz
+YWdlX2FkZF90YWlsKCZ4ZmVyc1t4ZmVycG9zXSwgJm1zZyk7DQo+ICAJCXhmZXJwb3MrKzsNCj4g
+IAkJdG90YWx4ZmVybGVuICs9IG9wLT5kYXRhLm5ieXRlczsNCj4gLS0NCj4gMi4xNy4xDQpIaSxh
+bGwNCkNvdWxkIHlvdSBwbGVhc2UgaGVscCBtZSB0byBzZWUgdGhlIGZpeCBvZiB0aGlzIHBhdGNo
+PyBXaGF0IGNoYW5nZXMgbmVlZCB0byBiZSBtYWRlPyANCkxvb2tpbmcgZm9yd2FyZCB0byB5b3Vy
+IHZhbHVhYmxlIGNvbW1lbnRzIGFuZCBjcml0aWNpc20sIHRoYW5rIHlvdSB2ZXJ5IG11Y2ghISEN
+ClRoYW5rcywNCkNodWFuaHVhDQoNCg==

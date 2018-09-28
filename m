@@ -1,89 +1,71 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] spi fixes for v4.19
-Date: Fri, 28 Sep 2018 15:30:41 +0100
-Message-ID: <20180928143041.GQ20825@sirena.org.uk>
+From: Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>
+Subject: Re: [RFC/RFT PATCH v1 9/9] mtd: spi: Skip reading the Serial Flash
+ Discoverable Parameters
+Date: Fri, 28 Sep 2018 18:01:06 +0200
+Message-ID: <1a85becb-6cb0-ede4-be0a-2608e8532c9e@wedev4u.fr>
+References: <20180926220739.620-1-lukma@denx.de>
+ <20180926220739.620-10-lukma@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xYEXny2b0/vlBQCR"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: yogeshnarayan.gaur@nxp.com, richard@nod.at, prabhakar.kushwaha@nxp.com,
+ linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
+ linux-spi@vger.kernel.org, albert.aribaud@3adev.fr, broonie@kernel.org,
+ linux-mtd@lists.infradead.org, han.xu@nxp.com,
+ Fabio Estevam <fabio.estevam@nxp.com>, david.wolfe@nxp.com,
+ computersforpeace@gmail.com, Fabio Estevam <festevam@gmail.com>,
+ dwmw2@infradead.org
+To: Lukasz Majewski <lukma@denx.de>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, boris.brezillon@bootlin.com,
+ Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20180926220739.620-10-lukma@denx.de>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-
---xYEXny2b0/vlBQCR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-The following changes since commit 5223c9c1cbfc0cd4d0a1b50758e0949af3290fa1:
-
-  spi: spi-fsl-dspi: fix broken DSPI_EOQ_MODE (2018-08-28 20:55:23 +0100)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.19-rc5
-
-for you to fetch changes up to c949a8e8b43f2c75567269bcc9a50d704ae3c420:
-
-  spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header (2018-09-20 12:23:31 -0700)
-
-----------------------------------------------------------------
-spi: Fixes for v4.19
-
-Quite a few fixes for the Renesas drivers in here, plus a fix for the
-Tegra driver and some documentation fixes for the recently added spi-mem
-code.  The Tegra fix is relatively large but fairly straightforward and
-mechanical, it runs on probe so it's been reasonably well covered in
--next testing.
-
-----------------------------------------------------------------
-
-There's also a small fix for error checking in the bitbanging GPIO
-driver I forgot to mention above.
-
-Boris Brezillon (2):
-      spi: spi-mem: Add missing description for data.nbytes field
-      spi: spi-mem: Move the DMA-able constraint doc to the kerneldoc header
-
-Gaku Inami (1):
-      spi: sh-msiof: Fix invalid SPI use during system suspend
-
-Geert Uytterhoeven (2):
-      spi: rspi: Fix invalid SPI use during system suspend
-      spi: rspi: Fix interrupted DMA transfers
-
-Hiromitsu Yamasaki (1):
-      spi: sh-msiof: Fix handling of write value for SISTR register
-
-Linus Walleij (1):
-      spi: gpio: Fix copy-and-paste error
-
-Marcel Ziswiler (1):
-      spi: tegra20-slink: explicitly enable/disable clock
-
- drivers/spi/spi-gpio.c          |  4 ++--
- drivers/spi/spi-rspi.c          | 34 ++++++++++++++++++++++++++++++----
- drivers/spi/spi-sh-msiof.c      | 28 +++++++++++++++++++++++++++-
- drivers/spi/spi-tegra20-slink.c | 31 +++++++++++++++++++++++--------
- include/linux/spi/spi-mem.h     |  7 ++++---
- 5 files changed, 86 insertions(+), 18 deletions(-)
-
---xYEXny2b0/vlBQCR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluuOxEACgkQJNaLcl1U
-h9B7aggAgQW3GoHvmPvS9TM5XOANT/6KBbq5XAadZdUQMry0SNJx4FKtzsLFTf7G
-xeMXPAC5RgYwoNrVtLkJatWATXzt5Gc7tshwlZDiARIEWFHtsL99C3PyyRhlxw5m
-jVHJkyXxPXZbHRc5Ou2E0PouSB7W/ej5/53XWo92HsdaW1ld/Ll/ZYXaf9W8oT6M
-Zby2XpQRFsUrlF2l4aGw2zT576rpKlueSCN17aQfzt0+mJleroP7qWy0TxIaj6/j
-lCIxFxrBJcCxkJsVSD61wvFThQoOnfegXd5haeYxhb4WnTips+WMZQ3ewUCVGMbF
-wGX50uh7eWi++f57H3/VprB1RrY/7Q==
-=aExT
------END PGP SIGNATURE-----
-
---xYEXny2b0/vlBQCR--
+SGkgTHVrYXN6LAoKTGUgMjcvMDkvMjAxOCDDoCAwMDowNywgTHVrYXN6IE1hamV3c2tpIGEgw6lj
+cml0wqA6Cj4gVGhlIGZzbC1xdWFkc3BpLmMgZHJpdmVyIGlzIG5vdCBzdXBwb3J0aW5nIFNQSU5P
+Ul9PUF9SRFNGRFAgKDB4NWEpCj4gcmVhZCBvcGNvZGUgLSBpbiB0aGUgbGVnYWN5IGRyaXZlciB3
+ZSBkbyByZWFkIHNvbWUgZ2FyYmFnZQo+IGRhdGEgZnJvbSBBSEIgbWFwcGVkIGFyZWEgYW5kIHRo
+ZW4gcmV0dXJuIG9uIHRoZSBmaXJzdCBjaGVjawoKSWYgeW91ciBjb250cm9sbGVyIHJlYWRzIGdh
+cmJhZ2UgdGhlbiBzcGlfbm9yX3BhcnNlX3NmZHAoKSBmYWlscyBhbmQgZXhpc3RzIG9uIHRoZQp2
+ZXJ5IGZpcnN0IGNoZWNrOiBzaWduYXR1cmUgb2YgdGhlIFNGRFAgaGVhZGVyLiBIZW5jZSBldmVy
+eXRoaW5nIHNob3VsZCBhbHJlYWR5IGdvIG9uCmFzIGlmIHRoZSBTUElfTk9SX1NLSVBfU0ZEUCBm
+bGFnIGlzIHNldC4KClNvIHRoaXMgcGF0Y2ggZG9lc24ndCBjaGFuZ2UgYW55dGhpbmcgZm9yIHlv
+dXIgY29udHJvbGxlciBidXQgcHJldmVudHMgb3RoZXIgY29udHJvbGxlcgpmcm9tIHVzaW5nIFFT
+UEkgcHJvdG9jb2xzIGxpa2UgU1BJIDEtNC00LgoKVGhpcyBwYXRjaCBpbnRyb2R1Y2VzIGEgcmVn
+cmVzc2lvbiBmb3Igb3RoZXIgY2hpcHMuCgpCZXN0IHJlZ2FyZHMsCgpDeXJpbGxlCgo+IChMMjM3
+NiBAIC4vbXRkL3NwaS1ub3Ivc3BpLW5vci5jKQo+IAo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzeiBN
+YWpld3NraSA8bHVrbWFAZGVueC5kZT4KPiAtLS0KPiAgZHJpdmVycy9tdGQvc3BpLW5vci9zcGkt
+bm9yLmMgfCAyICstCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlv
+bigtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBiL2Ry
+aXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jCj4gaW5kZXggNDQyMTAyYmUxNzRlLi5jNzliOGMz
+M2FlZWIgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMKPiArKysg
+Yi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYwo+IEBAIC0xMTAzLDcgKzExMDMsNyBAQCBz
+dGF0aWMgY29uc3Qgc3RydWN0IGZsYXNoX2luZm8gc3BpX25vcl9pZHNbXSA9IHsKPiAgCXsgIm4y
+NXEwNjQiLCAgICAgSU5GTygweDIwYmExNywgMCwgNjQgKiAxMDI0LCAgMTI4LCBTRUNUXzRLIHwg
+U1BJX05PUl9RVUFEX1JFQUQpIH0sCj4gIAl7ICJuMjVxMDY0YSIsICAgIElORk8oMHgyMGJiMTcs
+IDAsIDY0ICogMTAyNCwgIDEyOCwgU0VDVF80SyB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+ICAJ
+eyAibjI1cTEyOGExMSIsICBJTkZPKDB4MjBiYjE4LCAwLCA2NCAqIDEwMjQsICAyNTYsIFNFQ1Rf
+NEsgfCBTUElfTk9SX1FVQURfUkVBRCkgfSwKPiAtCXsgIm4yNXExMjhhMTMiLCAgSU5GTygweDIw
+YmExOCwgMCwgNjQgKiAxMDI0LCAgMjU2LCBTRUNUXzRLIHwgU1BJX05PUl9RVUFEX1JFQUQgfCBT
+UElfTk9SX0RVQUxfUkVBRCkgfSwKPiArCXsgIm4yNXExMjhhMTMiLCAgSU5GTygweDIwYmExOCwg
+MCwgNjQgKiAxMDI0LCAgMjU2LCBTRUNUXzRLIHwgU1BJX05PUl9RVUFEX1JFQUQgfCBTUElfTk9S
+X0RVQUxfUkVBRCB8IFNQSV9OT1JfU0tJUF9TRkRQKSB9LAo+ICAJeyAibjI1cTI1NmEiLCAgICBJ
+TkZPKDB4MjBiYTE5LCAwLCA2NCAqIDEwMjQsICA1MTIsIFNFQ1RfNEsgfCBTUElfTk9SX0RVQUxf
+UkVBRCB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+ICAJeyAibjI1cTI1NmF4MSIsICBJTkZPKDB4
+MjBiYjE5LCAwLCA2NCAqIDEwMjQsICA1MTIsIFNFQ1RfNEsgfCBTUElfTk9SX1FVQURfUkVBRCkg
+fSwKPiAgCXsgIm4yNXE1MTJhIiwgICAgSU5GTygweDIwYmIyMCwgMCwgNjQgKiAxMDI0LCAxMDI0
+LCBTRUNUXzRLIHwgVVNFX0ZTUiB8IFNQSV9OT1JfUVVBRF9SRUFEKSB9LAo+IAoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4IE1URCBk
+aXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2xpbnV4LW10ZC8K

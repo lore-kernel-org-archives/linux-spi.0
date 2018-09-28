@@ -1,59 +1,76 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [PATCH v5 3/3] arm64: dts: Add spi slave dts
-Date: Fri, 28 Sep 2018 23:07:32 +0200
-Message-ID: <aef8fb56-e774-b9bd-e361-a1ea69e1885d@gmail.com>
-References: <1538131985-9471-1-git-send-email-leilk.liu@mediatek.com>
- <1538131985-9471-4-git-send-email-leilk.liu@mediatek.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
+ fsl-quadspi.c driver (vybrid HW)
+Date: Sat, 29 Sep 2018 00:03:59 +0200
+Message-ID: <20180929000359.34fe18ae@bbrezillon>
+References: <20180926220739.620-1-lukma@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, yt.shen@mediatek.com
-To: Leilk Liu <leilk.liu@mediatek.com>, Mark Brown <broonie@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
+        richard@nod.at, Stefan Agner <stefan@agner.ch>,
+        Fabio Estevam <festevam@gmail.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        prabhakar.kushwaha@nxp.com, han.xu@nxp.com, broonie@kernel.org,
+        david.wolfe@nxp.com, computersforpeace@gmail.com,
+        dwmw2@infradead.org, albert.aribaud@3adev.fr
+To: Lukasz Majewski <lukma@denx.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1538131985-9471-4-git-send-email-leilk.liu@mediatek.com>
-Content-Language: en-US
+In-Reply-To: <20180926220739.620-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Lukasz,
 
+On Thu, 27 Sep 2018 00:07:30 +0200
+Lukasz Majewski <lukma@denx.de> wrote:
 
-On 28/09/2018 12:53, Leilk Liu wrote:
-> This patch adds MT2712 spi slave into device tree.
+> Please find following set of patches, which provide improved behaviour
+> of the fsl-quadspi.c driver on Vybrid vf610 HW.
 > 
-> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> ---
-
-Pushed to v4.19-next/dts64
-
-Thanks!
-
->  arch/arm64/boot/dts/mediatek/mt2712e.dtsi |   11 +++++++++++
->  1 file changed, 11 insertions(+)
+> Below code is based on previous work done by Albert ARIBAUD:
+> https://patchwork.ozlabs.org/patch/675401/
 > 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-> index 75cc0f7..ee627a7 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-> @@ -301,6 +301,17 @@
->  		status = "disabled";
->  	};
->  
-> +	spis1: spi@10013000 {
-> +		compatible = "mediatek,mt2712-spi-slave";
-> +		reg = <0 0x10013000 0 0x100>;
-> +		interrupts = <GIC_SPI 283 IRQ_TYPE_LEVEL_LOW>;
-> +		clocks = <&infracfg CLK_INFRA_AO_SPI1>;
-> +		clock-names = "spi";
-> +		assigned-clocks = <&topckgen CLK_TOP_SPISLV_SEL>;
-> +		assigned-clock-parents = <&topckgen CLK_TOP_UNIVPLL1_D2>;
-> +		status = "disabled";
-> +	};
-> +
->  	apmixedsys: syscon@10209000 {
->  		compatible = "mediatek,mt2712-apmixedsys", "syscon";
->  		reg = <0 0x10209000 0 0x1000>;
+> I've cleaned up the code a bit, make separate patches, exclude not
+> needed parts and port it to v4.19-rc3.
 > 
+> After applying those patches, the quadspi controller on vf610 works
+> with UBI/UBIFS.
+> The problem is with some corner case writes to raw MTD device
+> (like writing 1023B with single byte writes). Those fail sometimes.
+> 
+> Regression tests can be found in the following repository:
+> https://github.com/lmajewski/tests-spi/tree/master/tests
+> 
+> (Please read README.txt).
+> 
+> The NXP's community thread regarding HW issues in this block on
+> the vf610:
+> https://community.nxp.com/thread/485139
+> 
+> Maybe those patches will be helpful with the new, work in progress
+> driver for spi-fsl-qspi.c
+
+Talking about that, can you try to port your fixes on top of Frieder's
+patchset? I'm pretty sure some bug fixes are irrelevant after the
+migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9 should be dropped I
+think).
+
+> 
+> Lukasz Majewski (9):
+>   Revert "mtd: fsl-quadspi: Rename SEQID_QUAD_READ to SEQID_READ"
+>   mtd: qspi: Provide quirk to read only half of RX buffer (NXP's vybrid)
+>   mtd: spi: Do not setup the default seqid as we got it set for DUAL and
+>     QUAD
+>   mtd: spi: Modify the HW capability mask according to supported RX
+>     lanes
+>   mtd: spi: Provide LUT entry to perform DUAL read
+>   mtd: spi: Enhance the fsl_qspi_read() method to support DUAL and QUAD
+>   mtd: spi: Add SPI_NOR_DUAL_READ property for the 'n25q128a13' Micron
+>     memory
+>   mtd: spi: Allocate memory corresponding to maximal fsl-quadspi.c
+>     controller area
+>   mtd: spi: Skip reading the Serial Flash Discoverable Parameters

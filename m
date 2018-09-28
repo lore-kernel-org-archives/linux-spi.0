@@ -1,41 +1,53 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Fri, 28 Sep 2018 09:18:33 +0200
-Message-ID: <20180928091833.15e95f7f@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Fri, 28 Sep 2018 07:29:18 +0000
+Message-ID: <AM6PR04MB435700CF27EE20D9271C0A2397EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
         <20180928084431.300b7bf9@bbrezillon>
         <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20180928091833.15e95f7f@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Cc: "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "eha@deif.com" <eha@deif.com>
-To: Chuanhua Han <chuanhua.han@nxp.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+In-Reply-To: <20180928091833.15e95f7f@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 28 Sep 2018 06:59:58 +0000
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> > 
-> > It's still unclear why you need to specify a bits_per_word value,
-> > but if this is needed, it's probably something you want to add to
-> > spi.c, when a message is queued.  
-> To specify a specific bits_per_word to be able to use the xspi
-> (32bit) mode of the fsl_dspi module to transfer data, you can look at
-> my PATCH 2/2. Do not add a value in spis.c that takes into account
-> that the value assigned to bits_per_word is decided before the
-> transfer. Thanks for your check and reply!
-
-I might be wrong, but that's not my understanding of ->bits_per_word.
-To me, it's something that you can use when your *device* (not
-controller) expects non-byte aligned words [1]. The spi-mem protocol is
-definitely designed to work with 1byte large words, so, as I said, I
-suspect you're abusing xfer->bits_per_word to address a controller
-driver issue.
-
-[1]https://elixir.bootlin.com/linux/latest/source/include/linux/spi/spi.h#L114
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jnUwjI4yNUgMTU6
+MTkNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEv
+Ml0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4gDQo+
+IE9uIEZyaSwgMjggU2VwIDIwMTggMDY6NTk6NTggKzAwMDANCj4gQ2h1YW5odWEgSGFuIDxjaHVh
+bmh1YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+IA0KPiA+ID4NCj4gPiA+IEl0J3Mgc3RpbGwgdW5j
+bGVhciB3aHkgeW91IG5lZWQgdG8gc3BlY2lmeSBhIGJpdHNfcGVyX3dvcmQgdmFsdWUsDQo+ID4g
+PiBidXQgaWYgdGhpcyBpcyBuZWVkZWQsIGl0J3MgcHJvYmFibHkgc29tZXRoaW5nIHlvdSB3YW50
+IHRvIGFkZCB0bw0KPiA+ID4gc3BpLmMsIHdoZW4gYSBtZXNzYWdlIGlzIHF1ZXVlZC4NCj4gPiBU
+byBzcGVjaWZ5IGEgc3BlY2lmaWMgYml0c19wZXJfd29yZCB0byBiZSBhYmxlIHRvIHVzZSB0aGUg
+eHNwaQ0KPiA+ICgzMmJpdCkgbW9kZSBvZiB0aGUgZnNsX2RzcGkgbW9kdWxlIHRvIHRyYW5zZmVy
+IGRhdGEsIHlvdSBjYW4gbG9vayBhdA0KPiA+IG15IFBBVENIIDIvMi4gRG8gbm90IGFkZCBhIHZh
+bHVlIGluIHNwaXMuYyB0aGF0IHRha2VzIGludG8gYWNjb3VudA0KPiA+IHRoYXQgdGhlIHZhbHVl
+IGFzc2lnbmVkIHRvIGJpdHNfcGVyX3dvcmQgaXMgZGVjaWRlZCBiZWZvcmUgdGhlDQo+ID4gdHJh
+bnNmZXIuIFRoYW5rcyBmb3IgeW91ciBjaGVjayBhbmQgcmVwbHkhDQo+IA0KPiBJIG1pZ2h0IGJl
+IHdyb25nLCBidXQgdGhhdCdzIG5vdCBteSB1bmRlcnN0YW5kaW5nIG9mIC0+Yml0c19wZXJfd29y
+ZC4NCj4gVG8gbWUsIGl0J3Mgc29tZXRoaW5nIHRoYXQgeW91IGNhbiB1c2Ugd2hlbiB5b3VyICpk
+ZXZpY2UqIChub3QNCj4gY29udHJvbGxlcikgZXhwZWN0cyBub24tYnl0ZSBhbGlnbmVkIHdvcmRz
+IFsxXS4gVGhlIHNwaS1tZW0gcHJvdG9jb2wgaXMNCj4gZGVmaW5pdGVseSBkZXNpZ25lZCB0byB3
+b3JrIHdpdGggMWJ5dGUgbGFyZ2Ugd29yZHMsIHNvLCBhcyBJIHNhaWQsIEkgc3VzcGVjdA0KPiB5
+b3UncmUgYWJ1c2luZyB4ZmVyLT5iaXRzX3Blcl93b3JkIHRvIGFkZHJlc3MgYSBjb250cm9sbGVy
+IGRyaXZlciBpc3N1ZS4NCj4gDQo+IFsxXWh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0
+aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZlbGkNCj4geGlyLmJvb3RsaW4uY29t
+JTJGbGludXglMkZsYXRlc3QlMkZzb3VyY2UlMkZpbmNsdWRlJTJGbGludXglMkZzcGklMkZzcGkN
+Cj4gLmglMjNMMTE0JmFtcDtkYXRhPTAyJTdDMDElN0NjaHVhbmh1YS5oYW4lNDBueHAuY29tJTdD
+N2VjNjFkNmQNCj4gN2VmNzQxYWJhODQ0MDhkNjI1MTJhOWUxJTdDNjg2ZWExZDNiYzJiNGM2ZmE5
+MmNkOTljNWMzMDE2MzUlN0MwDQo+ICU3QzAlN0M2MzY3MzcxNTk0MjA4MjAwNTAmYW1wO3NkYXRh
+PWl3RmdYRzN5RnZIN1J1YWM3TUdDb2FQOGgNCj4gbDJNOTE2bTklMkJaZVY3bmtzVGclM0QmYW1w
+O3Jlc2VydmVkPTANCkFoLCBJJ2xsIHN0dWR5IGl0LiBUaGFuayB5b3WjoQ0K

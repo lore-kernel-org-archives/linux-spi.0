@@ -1,81 +1,121 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport
- mode
-Date: Fri, 28 Sep 2018 06:37:24 +0000
-Message-ID: <AM6PR04MB43576D8B41B1878B0DBCD35797EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Fri, 28 Sep 2018 08:44:31 +0200
+Message-ID: <20180928084431.300b7bf9@bbrezillon>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
- <20180921070628.35153-2-chuanhua.han@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>
-To: Chuanhua Han <chuanhua.han@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, eha@deif.com
+To: Chuanhua Han <chuanhua.han@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180921070628.35153-2-chuanhua.han@nxp.com>
-Content-Language: en-US
+In-Reply-To: <20180921070628.35153-1-chuanhua.han@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2h1YW5odWEgSGFuIDxj
-aHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU2VudDogMjAxOMTqOdTCMjHI1SAxNTowNg0KPiBUbzog
-YnJvb25pZUBrZXJuZWwub3JnDQo+IENjOiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
-eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBlaGFAZGVpZi5jb207DQo+IGJvcmlzLmJyZXppbGxv
-bkBib290bGluLmNvbTsgQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gU3Vi
-amVjdDogW1BBVENIIDIvMl0gc3BpOiBzcGktZnNsLWRzcGk6IEZpeCBzdXBwb3J0IGZvciBYU1BJ
-IHRyYW5zcG9ydCBtb2RlDQo+IA0KPiBUaGlzIHBhdGNoIGZpeGVzIHRoZSBwcm9ibGVtIHRoYXQg
-dGhlIFhTUEkgbW9kZSBvZiB0aGUgZHNwaSBjb250cm9sbGVyIGNhbm5vdA0KPiB0cmFuc2ZlciBk
-YXRhIHByb3Blcmx5Lg0KPiBJbiBYU1BJIG1vZGUsIGNtZF9maWZvIGlzIHdyaXR0ZW4gYmVmb3Jl
-IHR4X2ZpZm8sIHdoaWNoIHRyYW5zZm9ybXMgdGhlIGJ5dGUNCj4gb3JkZXIgb2Ygc2VuZGluZyBh
-bmQgcmVjZWl2aW5nIGRhdGEuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNo
-dWFuaHVhLmhhbkBueHAuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvc3BpL3NwaS1mc2wtZHNwaS5j
-IHwgMjkgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAx
-OSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2
-ZXJzL3NwaS9zcGktZnNsLWRzcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtZHNwaS5jIGluZGV4
-DQo+IDMwODJlNzJlNGY2Yy4uNDRjYzJiZDAxMjBlIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3Nw
-aS9zcGktZnNsLWRzcGkuYw0KPiArKysgYi9kcml2ZXJzL3NwaS9zcGktZnNsLWRzcGkuYw0KPiBA
-QCAtMjIwLDkgKzIyMCwxNSBAQCBzdGF0aWMgdTMyIGRzcGlfcG9wX3R4KHN0cnVjdCBmc2xfZHNw
-aSAqZHNwaSkNCj4gIAkJaWYgKGRzcGktPmJ5dGVzX3Blcl93b3JkID09IDEpDQo+ICAJCQl0eGRh
-dGEgPSAqKHU4ICopZHNwaS0+dHg7DQo+ICAJCWVsc2UgaWYgKGRzcGktPmJ5dGVzX3Blcl93b3Jk
-ID09IDIpDQo+IC0JCQl0eGRhdGEgPSAqKHUxNiAqKWRzcGktPnR4Ow0KPiArCQkJaWYgKGRzcGkt
-PmN1cl9jaGlwLT5jdGFyX3ZhbCAmIFNQSV9DVEFSX0xTQkZFKDEpKQ0KPiArCQkJCXR4ZGF0YSA9
-ICBjcHVfdG9fbGUxNigqKHUxNiAqKWRzcGktPnR4KTsNCj4gKwkJCWVsc2UNCj4gKwkJCQl0eGRh
-dGEgPSAgY3B1X3RvX2JlMTYoKih1MTYgKilkc3BpLT50eCk7DQo+ICAJCWVsc2UgIC8qIGRzcGkt
-PmJ5dGVzX3Blcl93b3JkID09IDQgKi8NCj4gLQkJCXR4ZGF0YSA9ICoodTMyICopZHNwaS0+dHg7
-DQo+ICsJCQlpZiAoZHNwaS0+Y3VyX2NoaXAtPmN0YXJfdmFsICYgU1BJX0NUQVJfTFNCRkUoMSkp
-DQo+ICsJCQkJdHhkYXRhID0gY3B1X3RvX2xlMzIoKih1MzIgKilkc3BpLT50eCk7DQo+ICsJCQll
-bHNlDQo+ICsJCQkJdHhkYXRhID0gY3B1X3RvX2JlMzIoKih1MzIgKilkc3BpLT50eCk7DQo+ICAJ
-CWRzcGktPnR4ICs9IGRzcGktPmJ5dGVzX3Blcl93b3JkOw0KPiAgCX0NCj4gIAlkc3BpLT5sZW4g
-LT0gZHNwaS0+Ynl0ZXNfcGVyX3dvcmQ7DQo+IEBAIC0yNDMsMTUgKzI0OSwxOCBAQCBzdGF0aWMg
-dm9pZCBkc3BpX3B1c2hfcngoc3RydWN0IGZzbF9kc3BpICpkc3BpLCB1MzINCj4gcnhkYXRhKQ0K
-PiAgCWlmICghZHNwaS0+cngpDQo+ICAJCXJldHVybjsNCj4gDQo+IC0JLyogTWFzayBvZiB1bmRl
-ZmluZWQgYml0cyAqLw0KPiAtCXJ4ZGF0YSAmPSAoMSA8PCBkc3BpLT5iaXRzX3Blcl93b3JkKSAt
-IDE7DQo+IC0NCj4gIAlpZiAoZHNwaS0+Ynl0ZXNfcGVyX3dvcmQgPT0gMSkNCj4gIAkJKih1OCAq
-KWRzcGktPnJ4ID0gcnhkYXRhOw0KPiAgCWVsc2UgaWYgKGRzcGktPmJ5dGVzX3Blcl93b3JkID09
-IDIpDQo+IC0JCSoodTE2ICopZHNwaS0+cnggPSByeGRhdGE7DQo+ICsJCWlmIChkc3BpLT5jdXJf
-Y2hpcC0+Y3Rhcl92YWwgJiBTUElfQ1RBUl9MU0JGRSgxKSkNCj4gKwkJCSoodTE2ICopZHNwaS0+
-cnggPSBiZTE2X3RvX2NwdShyeGRhdGEpOw0KPiArCQllbHNlDQo+ICsJCQkqKHUxNiAqKWRzcGkt
-PnJ4ID0gYmUxNl90b19jcHUocnhkYXRhKTsNCj4gIAllbHNlIC8qIGRzcGktPmJ5dGVzX3Blcl93
-b3JkID09IDQgKi8NCj4gLQkJKih1MzIgKilkc3BpLT5yeCA9IHJ4ZGF0YTsNCj4gKwkJaWYgKGRz
-cGktPmN1cl9jaGlwLT5jdGFyX3ZhbCAmIFNQSV9DVEFSX0xTQkZFKDEpKQ0KPiArCQkJKih1MzIg
-Kilkc3BpLT5yeCA9IGxlMzJfdG9fY3B1KHJ4ZGF0YSk7DQo+ICsJCWVsc2UNCj4gKwkJCSoodTMy
-ICopZHNwaS0+cnggPSBiZTMyX3RvX2NwdShyeGRhdGEpOw0KPiAgCWRzcGktPnJ4ICs9IGRzcGkt
-PmJ5dGVzX3Blcl93b3JkOw0KPiAgfQ0KPiANCj4gQEAgLTU5MywxNiArNjAyLDE2IEBAIHN0YXRp
-YyB2b2lkIGRzcGlfdGNmcV93cml0ZShzdHJ1Y3QgZnNsX2RzcGkgKmRzcGkpDQo+ICAJCSAqLw0K
-PiAgCQl1MzIgZGF0YSA9IGRzcGlfcG9wX3R4KGRzcGkpOw0KPiANCj4gKwkJY21kX2ZpZm9fd3Jp
-dGUoZHNwaSk7DQo+ICAJCWlmIChkc3BpLT5jdXJfY2hpcC0+Y3Rhcl92YWwgJiBTUElfQ1RBUl9M
-U0JGRSgxKSkgew0KPiAgCQkJLyogTFNCICovDQo+IC0JCQl0eF9maWZvX3dyaXRlKGRzcGksIGRh
-dGEgJiAweEZGRkYpOw0KPiAgCQkJdHhfZmlmb193cml0ZShkc3BpLCBkYXRhID4+IDE2KTsNCj4g
-KwkJCXR4X2ZpZm9fd3JpdGUoZHNwaSwgZGF0YSAmIDB4RkZGRik7DQo+ICAJCX0gZWxzZSB7DQo+
-ICAJCQkvKiBNU0IgKi8NCj4gLQkJCXR4X2ZpZm9fd3JpdGUoZHNwaSwgZGF0YSA+PiAxNik7DQo+
-ICAJCQl0eF9maWZvX3dyaXRlKGRzcGksIGRhdGEgJiAweEZGRkYpOw0KPiArCQkJdHhfZmlmb193
-cml0ZShkc3BpLCBkYXRhID4+IDE2KTsNCj4gIAkJfQ0KPiAtCQljbWRfZmlmb193cml0ZShkc3Bp
-KTsNCj4gIAl9IGVsc2Ugew0KPiAgCQkvKiBXcml0ZSBvbmUgZW50cnkgdG8gYm90aCBUWCBGSUZP
-IGFuZCBDTUQgRklGTw0KPiAgCQkgKiBzaW11bHRhbmVvdXNseS4NCj4gLS0NCj4gMi4xNy4xDQpI
-aSxhbGwNCkNvdWxkIHlvdSBwbGVhc2UgaGVscCBtZSB0byBzZWUgdGhlIGZpeCBvZiB0aGlzIHBh
-dGNoPyBXaGF0IGNoYW5nZXMgbmVlZCB0byBiZSBtYWRlPyANCkxvb2tpbmcgZm9yd2FyZCB0byB5
-b3VyIHZhbHVhYmxlIGNvbW1lbnRzIGFuZCBjcml0aWNpc20sIHRoYW5rIHlvdSB2ZXJ5IG11Y2gh
-ISENClRoYW5rcywNCkNodWFuaHVhDQo=
+Hi Chuanhua,
+
+On Fri, 21 Sep 2018 15:06:26 +0800
+Chuanhua Han <chuanhua.han@nxp.com> wrote:
+
+> Before we add this spi_transfer to the spi_message chain table, we need
+> bits_per_word_mask based on spi_control to set the bits_per_word of
+> this spi_transfer.
+
+It's not clear to me what you're trying to fix/improve. Can you give
+more details on what the problem is?
+
+> 
+> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> ---
+>  drivers/spi/spi-mem.c | 39 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index eb72dba71d83..717e711c0952 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -175,6 +175,41 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  }
+>  EXPORT_SYMBOL_GPL(spi_mem_supports_op);
+>  
+> +/**
+> + * spi_set_xfer_bpw() - Set the bits_per_word for each transfer based on
+> + *			the bits_per_word_mask of the spi controller
+> + * @ctrl: the spi controller
+> + * @xfer: the spi transfer
+> + *
+> + * This function sets the bits_per_word for each transfer based on the spi
+> + * controller's bits_per_word_mask to improve the efficiency of spi transport.
+> + *
+> + * Return: 0 in case of success, a negative error code otherwise.
+> + */
+> +int spi_set_xfer_bpw(struct spi_controller *ctlr, struct spi_transfer *xfer)
+> +{
+> +	if (!ctlr || !xfer) {
+> +		dev_err(&ctlr->dev,
+> +			"Fail to set bits_per_word for spi transfer\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (ctlr->bits_per_word_mask) {
+> +		if (!(xfer->len % 4)) {
+> +			if (ctlr->bits_per_word_mask & SPI_BPW_MASK(32))
+> +				xfer->bits_per_word = 32;
+> +		} else if (!(xfer->len % 2)) {
+> +			if (ctlr->bits_per_word_mask & SPI_BPW_MASK(16))
+> +				xfer->bits_per_word = 16;
+> +		} else {
+> +			xfer->bits_per_word = 8;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_set_xfer_bpw);
+
+Why is this function placed in spi-mem.c, and more importantly, why is
+it exported?
+
+> +
+>  /**
+>   * spi_mem_exec_op() - Execute a memory operation
+>   * @mem: the SPI memory
+> @@ -252,6 +287,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  	xfers[xferpos].tx_buf = tmpbuf;
+>  	xfers[xferpos].len = sizeof(op->cmd.opcode);
+>  	xfers[xferpos].tx_nbits = op->cmd.buswidth;
+> +	spi_set_xfer_bpw(ctlr, &xfers[xferpos]);
+
+It's still unclear why you need to specify a bits_per_word value, but
+if this is needed, it's probably something you want to add to spi.c,
+when a message is queued.
+
+>  	spi_message_add_tail(&xfers[xferpos], &msg);
+>  	xferpos++;
+>  	totalxferlen++;
+> @@ -266,6 +302,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  		xfers[xferpos].tx_buf = tmpbuf + 1;
+>  		xfers[xferpos].len = op->addr.nbytes;
+>  		xfers[xferpos].tx_nbits = op->addr.buswidth;
+> +		spi_set_xfer_bpw(ctlr, &xfers[xferpos]);
+>  		spi_message_add_tail(&xfers[xferpos], &msg);
+>  		xferpos++;
+>  		totalxferlen += op->addr.nbytes;
+> @@ -276,6 +313,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  		xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
+>  		xfers[xferpos].len = op->dummy.nbytes;
+>  		xfers[xferpos].tx_nbits = op->dummy.buswidth;
+> +		spi_set_xfer_bpw(ctlr, &xfers[xferpos]);
+>  		spi_message_add_tail(&xfers[xferpos], &msg);
+>  		xferpos++;
+>  		totalxferlen += op->dummy.nbytes;
+> @@ -291,6 +329,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  		}
+>  
+>  		xfers[xferpos].len = op->data.nbytes;
+> +		spi_set_xfer_bpw(ctlr, &xfers[xferpos]);
+>  		spi_message_add_tail(&xfers[xferpos], &msg);
+>  		xferpos++;
+>  		totalxferlen += op->data.nbytes;

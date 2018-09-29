@@ -1,76 +1,46 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
- fsl-quadspi.c driver (vybrid HW)
-Date: Sat, 29 Sep 2018 00:03:59 +0200
-Message-ID: <20180929000359.34fe18ae@bbrezillon>
-References: <20180926220739.620-1-lukma@denx.de>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v3 2/2] spi: Introduce new driver for Qualcomm QuadSPI controller
+Date: Fri, 28 Sep 2018 17:18:47 -0700
+Message-ID: <CAD=FV=VY_BvyQywUQMwTuRw=Niq0JMaaJQNrpsGiNF8kt_Wsww@mail.gmail.com>
+References: <20180926205204.184898-1-ryandcase@chromium.org>
+ <20180926205204.184898-2-ryandcase@chromium.org> <153803059441.119890.891880266219521584@swboyd.mtv.corp.google.com>
+ <CACjz--=Qj8Jd9yCvox1MGh1PFkHAzpt1L0OwPkMhtV30_jCDWA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
-        richard@nod.at, Stefan Agner <stefan@agner.ch>,
-        Fabio Estevam <festevam@gmail.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        prabhakar.kushwaha@nxp.com, han.xu@nxp.com, broonie@kernel.org,
-        david.wolfe@nxp.com, computersforpeace@gmail.com,
-        dwmw2@infradead.org, albert.aribaud@3adev.fr
-To: Lukasz Majewski <lukma@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Stephen Boyd <swboyd@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Trent Piepho <tpiepho@impinj.com>, boris.brezillon@bootlin.com,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: ryandcase@chromium.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180926220739.620-1-lukma@denx.de>
+In-Reply-To: <CACjz--=Qj8Jd9yCvox1MGh1PFkHAzpt1L0OwPkMhtV30_jCDWA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lukasz,
+Hi,
 
-On Thu, 27 Sep 2018 00:07:30 +0200
-Lukasz Majewski <lukma@denx.de> wrote:
+On Fri, Sep 28, 2018 at 11:20 AM Ryan Case <ryandcase@chromium.org> wrote:
+> > > +       master->max_speed_hz = 300000000;
+> > > +       master->num_chipselect = QSPI_NUM_CS;
+> > > +       master->bus_num = pdev->id;
+> >
+> > Can this come from DT aliases? I've never thought about qspi and
+> > "regular" spi being in the same spi bus numbering system, but I suppose
+> > that will happen now and we need to make sure that qspi numbers start
+> > after the regular ones?
+>
+> I'm not sure. Can look into it.
 
-> Please find following set of patches, which provide improved behaviour
-> of the fsl-quadspi.c driver on Vybrid vf610 HW.
-> 
-> Below code is based on previous work done by Albert ARIBAUD:
-> https://patchwork.ozlabs.org/patch/675401/
-> 
-> I've cleaned up the code a bit, make separate patches, exclude not
-> needed parts and port it to v4.19-rc3.
-> 
-> After applying those patches, the quadspi controller on vf610 works
-> with UBI/UBIFS.
-> The problem is with some corner case writes to raw MTD device
-> (like writing 1023B with single byte writes). Those fail sometimes.
-> 
-> Regression tests can be found in the following repository:
-> https://github.com/lmajewski/tests-spi/tree/master/tests
-> 
-> (Please read README.txt).
-> 
-> The NXP's community thread regarding HW issues in this block on
-> the vf610:
-> https://community.nxp.com/thread/485139
-> 
-> Maybe those patches will be helpful with the new, work in progress
-> driver for spi-fsl-qspi.c
+In a previous response for the other Qualcomm SPI driver Mark said to
+set this to -1.  Specifically the code was checking the alias and Mark
+said:
 
-Talking about that, can you try to port your fixes on top of Frieder's
-patchset? I'm pretty sure some bug fixes are irrelevant after the
-migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9 should be dropped I
-think).
+> Don't do this, just set bus_num to -1 and let the core assign an ID.
 
-> 
-> Lukasz Majewski (9):
->   Revert "mtd: fsl-quadspi: Rename SEQID_QUAD_READ to SEQID_READ"
->   mtd: qspi: Provide quirk to read only half of RX buffer (NXP's vybrid)
->   mtd: spi: Do not setup the default seqid as we got it set for DUAL and
->     QUAD
->   mtd: spi: Modify the HW capability mask according to supported RX
->     lanes
->   mtd: spi: Provide LUT entry to perform DUAL read
->   mtd: spi: Enhance the fsl_qspi_read() method to support DUAL and QUAD
->   mtd: spi: Add SPI_NOR_DUAL_READ property for the 'n25q128a13' Micron
->     memory
->   mtd: spi: Allocate memory corresponding to maximal fsl-quadspi.c
->     controller area
->   mtd: spi: Skip reading the Serial Flash Discoverable Parameters
+[1] https://lkml.kernel.org/r/20180503233849.GF13402@sirena.org.uk
+
+-Doug

@@ -1,58 +1,267 @@
-From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: Re: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport mode
-Date: Sat, 29 Sep 2018 16:56:17 +0200
-Message-ID: <87y3bkcpym.fsf@gmail.com>
-References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-        <20180921070628.35153-2-chuanhua.han@nxp.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v3 1/5] spi: spi-mem: Add driver for NXP FlexSPI
+ controller
+Date: Sat, 29 Sep 2018 17:40:23 +0200
+Message-ID: <20180929174023.51b1e284@bbrezillon>
+References: <1537525323-20730-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1537525323-20730-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, boris.brezillon@bootlin.com
-To: Chuanhua Han <chuanhua.han@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd@lists.infradead.org, marek.vasut@gmail.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180921070628.35153-2-chuanhua.han@nxp.com> (Chuanhua Han's
-        message of "Fri, 21 Sep 2018 15:06:27 +0800")
+In-Reply-To: <1537525323-20730-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Chuanhua Han <chuanhua.han@nxp.com> writes:
+Hi Yogesh,
 
-> This patch fixes the problem that the XSPI mode of the dspi controller
-> cannot transfer data properly.
-> In XSPI mode, cmd_fifo is written before tx_fifo, which transforms the
-> byte order of sending and receiving data.
+On Fri, 21 Sep 2018 15:51:59 +0530
+Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-Did you find documentation on proper ordering of writes to related
-TX FIFO and CMD FIFO entries?
+> +/* Registers used by the driver */
+> +#define FSPI_MCR0			0x00
+> +#define FSPI_MCR0_AHB_TIMEOUT_SHIFT	24
+> +#define FSPI_MCR0_AHB_TIMEOUT_MASK	(0xFF << FSPI_MCR0_AHB_TIMEOUT_SHIFT)
+> +#define FSPI_MCR0_IP_TIMEOUT_SHIFT	16
+> +#define FSPI_MCR0_IP_TIMEOUT_MASK	(0xFF << FSPI_MCR0_IP_TIMEOUT_SHIFT)
+> +#define FSPI_MCR0_LEARN_EN_SHIFT	15
+> +#define FSPI_MCR0_LEARN_EN_MASK		(1 << FSPI_MCR0_LEARN_EN_SHIFT)
+> +#define FSPI_MCR0_SCRFRUN_EN_SHIFT	14
+> +#define FSPI_MCR0_SCRFRUN_EN_MASK	(1 << FSPI_MCR0_SCRFRUN_EN_SHIFT)
+> +#define FSPI_MCR0_OCTCOMB_EN_SHIFT	13
+> +#define FSPI_MCR0_OCTCOMB_EN_MASK	(1 << FSPI_MCR0_OCTCOMB_EN_SHIFT)
+> +#define FSPI_MCR0_DOZE_EN_SHIFT		12
+> +#define FSPI_MCR0_DOZE_EN_MASK		(1 << FSPI_MCR0_DOZE_EN_SHIFT)
+> +#define FSPI_MCR0_HSEN_SHIFT		11
+> +#define FSPI_MCR0_HSEN_MASK		(1 << FSPI_MCR0_HSEN_SHIFT)
+> +#define FSPI_MCR0_SERCLKDIV_SHIFT	8
+> +#define FSPI_MCR0_SERCLKDIV_MASK	(7 << FSPI_MCR0_SERCLKDIV_SHIFT)
+> +#define FSPI_MCR0_ATDF_EN_SHIFT		7
+> +#define FSPI_MCR0_ATDF_EN_MASK		(1 << FSPI_MCR0_ATDF_EN_SHIFT)
+> +#define FSPI_MCR0_ARDF_EN_SHIFT		6
+> +#define FSPI_MCR0_ARDF_EN_MASK		(1 << FSPI_MCR0_ARDF_EN_SHIFT)
+> +#define FSPI_MCR0_RXCLKSRC_SHIFT	4
+> +#define FSPI_MCR0_RXCLKSRC_MASK		(3 << FSPI_MCR0_RXCLKSRC_SHIFT)
+> +#define FSPI_MCR0_END_CFG_SHIFT		2
+> +#define FSPI_MCR0_END_CFG_MASK		(3 << FSPI_MCR0_END_CFG_SHIFT)
+> +#define FSPI_MCR0_MDIS_SHIFT		1
+> +#define FSPI_MCR0_MDIS_MASK		(1 << FSPI_MCR0_MDIS_SHIFT)
+> +#define FSPI_MCR0_SWRST_SHIFT		0
+> +#define FSPI_MCR0_SWRST_MASK		(1 << FSPI_MCR0_SWRST_SHIFT)
 
-I have failed to find such information, and thus opted for what I
-believed would be the safe approach, writing to TX FIFO first, so that
-when CMD FIFO is written, it will already have data in place.  And it
-seems to work.
+Do we really need all those _SHIFT/_MASK defs? I mean
 
-But, I now see that SPIx_SR[TFIWF] hints that it should be done the
-other way around.
+#define FSPI_MCR0_SWRST		BIT(0)
 
-    Tranmit FIFO Invalid Write Flag - Indicates Data Write on TX FIFO
-    while CMD FIFO is empty. Without a Command, the Data entries present
-    in TXFIFO are invalid.
+or
 
-But I fail to see how that should be related to byte ordering.
+#define FSPI_MCR0_AHB_TIMEOUT(x)	((x) << 24)
+#define FSPI_MCR0_AHB_TIMEOUT_MASK	GENMASK(31, 24)
 
-So I believe this patch is doing two things.
+are just fine.
 
-1. Changing write ordering of TX FIFO and CMD FIFO.
-2. Handling byte ordering based on SPIx_CTARn[LSBFE] flag.
+> +
+> +enum nxp_fspi_devtype {
+> +	NXP_FSPI_LX2160A,
+> +};
 
-It would be nice if we could get clarification from NXP on
-what is the right way to do the TX FIFO and CMD FIFO write ordering.
+I'm pretty sure you don't need this enum if you describe all dev caps
+in the nxp_fspi_devtype_data struct.
 
-But as for the byte ordering changes, I don't think it looks write.  The
-meaning of SPIx_CTARn[LSBFE] is according to the documentaiton the bit
-ordering on the wire, and should not be related to register byte
-ordering.
+> +
+> +struct nxp_fspi_devtype_data {
+> +	enum nxp_fspi_devtype devtype;
+> +	unsigned int rxfifo;
+> +	unsigned int txfifo;
+> +	unsigned int ahb_buf_size;
+> +	unsigned int quirks;
+> +	bool endianness;
 
-You should probably split this patch in two, so they can be reviewed and
-merged independently.
+How about renaming this variable big_endian and dropping the
+{L,B}_ENDIAN macros?
 
-/Esben
+> +};
+
+[...]
+
+> +struct nxp_fspi {
+> +	void __iomem *iobase;
+> +	void __iomem *ahb_addr;
+> +	u32 memmap_phy;
+> +	u32 memmap_phy_size;
+> +	struct clk *clk, *clk_en;
+> +	struct device *dev;
+> +	struct completion c;
+> +	const struct nxp_fspi_devtype_data *devtype_data;
+> +	struct mutex lock;
+> +	struct pm_qos_request pm_qos_req;
+> +	int selected;
+> +	void (*write)(u32 val, void __iomem *addr);
+> +	u32 (*read)(void __iomem *addr);
+> +};
+> +
+> +static void fspi_writel_be(u32 val, void __iomem *addr)
+> +{
+> +	iowrite32be(val, addr);
+> +}
+> +
+> +static void fspi_writel(u32 val, void __iomem *addr)
+> +{
+> +	iowrite32(val, addr);
+> +}
+> +
+> +static u32 fspi_readl_be(void __iomem *addr)
+> +{
+> +	return ioread32be(addr);
+> +}
+> +
+> +static u32 fspi_readl(void __iomem *addr)
+> +{
+> +	return ioread32(addr);
+> +}
+
+Hm, I'd recommend dropping the ->read/write() hooks and providing the
+following functions:
+
+static void fspi_writel(struct nxp_fspi *f, u32 val, void __iomem *addr)
+{
+	if (f->big_endian)
+		iowrite32be(val, addr);
+	else
+		iowrite32(val, addr);
+}
+
+
+static u32 fspi_readl(struct nxp_fspi *f, void __iomem *addr)
+{
+	if (f->big_endian)
+		return ioread32be(addr);
+	else
+		return ioread32(addr);
+}
+
+> +
+> +static irqreturn_t nxp_fspi_irq_handler(int irq, void *dev_id)
+> +{
+> +	struct nxp_fspi *f = dev_id;
+> +	u32 reg;
+> +
+> +	/* clear interrupt */
+> +	reg = f->read(f->iobase + FSPI_INTR);
+> +	f->write(FSPI_INTR_IPCMDDONE_MASK, f->iobase + FSPI_INTR);
+> +
+> +	if (reg & FSPI_INTR_IPCMDDONE_MASK)
+> +		complete(&f->c);
+> +
+> +	return IRQ_HANDLED;
+> +}
+
+[...]
+
+> +/*
+> + * If the slave device content being changed by Write/Erase, need to
+> + * invalidate the AHB buffer. This can be achieved by doing the reset
+> + * of controller after setting MCR0[SWRESET] bit.
+> + */
+> +static inline void nxp_fspi_invalid(struct nxp_fspi *f)
+> +{
+> +	u32 reg;
+> +
+> +	reg = f->read(f->iobase + FSPI_MCR0);
+> +	f->write(reg | FSPI_MCR0_SWRST_MASK, f->iobase + FSPI_MCR0);
+> +
+> +	while (f->read(f->iobase + FSPI_MCR0) & FSPI_MCR0_SWRST_MASK)
+> +		;
+
+Did you consider using readl_poll_timeout[_atomic]()?
+
+	if (f->big_endian)
+		mask = (u32)cpu_to_be32(FSPI_MCR0_SWRST_MASK);
+	else
+		mask = (u32)cpu_to_be32(FSPI_MCR0_SWRST_MASK);
+
+	ret = readl_poll_timeout(f->iobase + FSPI_MCR0, reg,
+				 reg & mask, 0, FSPI_SWRST_TIMEOUT);
+	WARN_ON(ret);
+
+> +}
+
+[...]
+
+> +static void nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
+> +{
+> +	u32 len = op->data.nbytes;
+> +
+> +	/* Read out the data directly from the AHB buffer. */
+> +	memcpy_fromio(op->data.buf.in, (f->ahb_addr + op->addr.val), len);
+
+Don't know if it's supported, but if it is, I recommend using DMA to do
+this copy, because otherwise you might stall the CPU for quite a long
+time if the flash is operating in a low-speed mode, and RT maintainers
+will complain about that at some point ;-).
+
+> +}
+> +
+> +static void nxp_fspi_fill_txfifo(struct nxp_fspi *f,
+> +				 const struct spi_mem_op *op)
+> +{
+> +	void __iomem *base = f->iobase;
+> +	int i, j;
+> +	int size, tmp_size, wm_size;
+> +	u32 data = 0;
+> +	u32 *txbuf = (u32 *) op->data.buf.out;
+> +
+> +	/* clear the TX FIFO. */
+> +	f->write(FSPI_IPTXFCR_CLR_MASK, base + FSPI_IPTXFCR);
+> +
+> +	/* Default value of water mark level is 8 bytes. */
+> +	wm_size = 8;
+> +	size = op->data.nbytes / wm_size;
+> +	for (i = 0; i < size; i++) {
+> +		/* Wait for TXFIFO empty */
+> +		while (!(f->read(base + FSPI_INTR) & FSPI_INTR_IPTXWE_MASK))
+> +			;
+
+Use readl_poll_timeout(), or even better, provide an helper
+(fspi_readl_poll_timeout()?) that hides the BE/LE stuff, so that you
+can reuse it when this pattern occurs. 
+
+[...]
+
+> +static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+> +{
+> +	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
+> +	void __iomem *base = f->iobase;
+> +	int err = 0;
+> +	unsigned int timeout = 1000;
+> +
+> +	mutex_lock(&f->lock);
+> +
+> +	/* wait for the controller being ready */
+> +	do {
+> +		u32 status;
+> +
+> +		status = f->read(base + FSPI_STS0);
+> +		if ((status & FSPI_STS0_ARB_IDLE_MASK) &&
+> +		    (status & FSPI_STS0_SEQ_IDLE_MASK))
+> +			break;
+> +		udelay(1);
+> +		dev_dbg(f->dev, "The controller is busy, 0x%x\n", status);
+
+Same here.
+
+Note that I didn't spend time looking at how the IP works, which
+explains why I focus on tiny details here. Unfortunately, I won't have
+time to review the driver in more details, so I'll leave that to
+someone else, or let Mark decides if he's happy enough with the current
+version.
+
+Regards,
+
+Boris

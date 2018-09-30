@@ -1,27 +1,29 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of undefined bitmask for rxdata
-Date: Sun, 30 Sep 2018 12:29:14 +0200
-Message-ID: <87ftxr6zyd.fsf@gmail.com>
+Subject: Re: [PATCH v2 3/4] spi: spi-fsl-dspi: Fix cmd_fifo is written before tx_fifo
+Date: Sun, 30 Sep 2018 12:30:43 +0200
+Message-ID: <87bm8f6zvw.fsf@gmail.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930092535.24544-2-chuanhua.han@nxp.com>
+        <20180930092535.24544-3-chuanhua.han@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, boris.brezillon@bootlin.com
 To: Chuanhua Han <chuanhua.han@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930092535.24544-2-chuanhua.han@nxp.com> (Chuanhua Han's
-        message of "Sun, 30 Sep 2018 17:25:33 +0800")
+In-Reply-To: <20180930092535.24544-3-chuanhua.han@nxp.com> (Chuanhua Han's
+        message of "Sun, 30 Sep 2018 17:25:34 +0800")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Chuanhua Han <chuanhua.han@nxp.com> writes:
 
-> This patch fixes the problem of rxdata being equal to 0 during the XSPI
+> This patch fixes the problem of invalid data writing during the XSPI
 > mode transfer of the dspi controller.
-> In XSPI mode, If it is not deleted, the value of rxdata will be equal
-> to 0, and the data received will not be received correctly, causing the
-> receiving transfer of the spi to fail.
+> In XSPI mode,When I executed TX FIFO first and then CMD FIFO for XSPI
+> transmission, I found that SPIx_SR[TFIWF]=1(Invalid Data present in TX
+> FIFO since CMD FIFO is empty).
+> This is the time when no data can be read or written (all the data
+> obtained is equal to 0).
 >
 > Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
 > ---
@@ -30,25 +32,30 @@ Chuanhua Han <chuanhua.han@nxp.com> writes:
 > patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
 > mode"),one of which is segmented.
 >
->  drivers/spi/spi-fsl-dspi.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  drivers/spi/spi-fsl-dspi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 3082e72e4f6c..4dc1064bf408 100644
+> index 4dc1064bf408..96e790e90997 100644
 > --- a/drivers/spi/spi-fsl-dspi.c
 > +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
->  	if (!dspi->rx)
->  		return;
+> @@ -590,6 +590,7 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
+>  		 */
+>  		u32 data = dspi_pop_tx(dspi);
 >  
-> -	/* Mask of undefined bits */
-> -	rxdata &= (1 << dspi->bits_per_word) - 1;
+> +		cmd_fifo_write(dspi);
+>  		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE(1)) {
+>  			/* LSB */
+>  			tx_fifo_write(dspi, data & 0xFFFF);
+> @@ -599,7 +600,6 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
+>  			tx_fifo_write(dspi, data >> 16);
+>  			tx_fifo_write(dspi, data & 0xFFFF);
+>  		}
+> -		cmd_fifo_write(dspi);
+>  	} else {
+>  		/* Write one entry to both TX FIFO and CMD FIFO
+>  		 * simultaneously.
 
-What is the dspi->bits_per_word value when your rxdata is set equal to
-0?  Could this perhaps also be related to byte ordering problems?
-
->  	if (dspi->bytes_per_word == 1)
->  		*(u8 *)dspi->rx = rxdata;
->  	else if (dspi->bytes_per_word == 2)
+I will try and find time to test this on our systems at work.
 
 /Esben

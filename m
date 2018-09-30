@@ -1,64 +1,46 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
- fsl-quadspi.c driver (vybrid HW)
-Date: Sun, 30 Sep 2018 07:39:27 +0200
-Message-ID: <20180930073927.001c16d2@bbrezillon>
-References: <20180926220739.620-1-lukma@denx.de>
-        <20180929000359.34fe18ae@bbrezillon>
-        <20180929230240.1c8d844d@jawa>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
-        richard@nod.at, Stefan Agner <stefan@agner.ch>,
-        Fabio Estevam <fabio.estevam@nxp.com>, broonie@kernel.org,
-        david.wolfe@nxp.com, computersforpeace@gmail.com,
-        dwmw2@infradead.org, albert.aribaud@3adev.fr
-To: Lukasz Majewski <lukma@denx.de>,
-        Fabio Estevam <festevam@gmail.com>, prabhakar.kushwaha@nxp.com,
-        han.xu@nxp.com
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of undefined bitmask for rxdata
+Date: Sun, 30 Sep 2018 17:25:33 +0800
+Message-ID: <20180930092535.24544-2-chuanhua.han@nxp.com>
+References: <20180930092535.24544-1-chuanhua.han@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        boris.brezillon@bootlin.com, eha@deif.com,
+        Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180929230240.1c8d844d@jawa>
+In-Reply-To: <20180930092535.24544-1-chuanhua.han@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lukasz,
+This patch fixes the problem of rxdata being equal to 0 during the XSPI
+mode transfer of the dspi controller.
+In XSPI mode, If it is not deleted, the value of rxdata will be equal
+to 0, and the data received will not be received correctly, causing the
+receiving transfer of the spi to fail.
 
-On Sat, 29 Sep 2018 23:02:40 +0200
-Lukasz Majewski <lukma@denx.de> wrote:
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+---
+Changes in v2:
+ -The original patch is divided into multiple patches(the original
+patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
+mode"),one of which is segmented.
 
-> > Talking about that, can you try to port your fixes on top of Frieder's
-> > patchset? I'm pretty sure some bug fixes are irrelevant after the
-> > migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9 should be dropped I
-> > think).  
-> 
-> The problem is that Frieder's patch is using IP command mode for
-> transfers smaller than AHB RX fifo size.
-> This according to the comment in the current driver is broken in HW for
-> Vybrid (so this is a regression).
+ drivers/spi/spi-fsl-dspi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Why not fixing that in the new driver?
-
-> 
-> I'm also wondering if other users of vf610 based boards experience
-> issues with QSPI?
-
-Are you sure the 4 I/O lines are wired on your design? Anyway, if it's
-a bug that only hurts vf610, you should mask quad modes in ->hwcaps (or
-patch fsl_qspi_supports_op() in the new driver), not change the SPI NOR
-definition.
-
-> 
-> In my case, after running the UBI/UBIFS tests (on the original and
-> new driver without those "fixes") I cannot mount the volume after
-> creation as the header is wrongly read.
-
-I'm not denying this fact, I'm just saying, now that you've found where
-the issue comes from, you can also port the fix to the new driver.
-
-Regards,
-
-Boris
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..4dc1064bf408 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+ 	if (!dspi->rx)
+ 		return;
+ 
+-	/* Mask of undefined bits */
+-	rxdata &= (1 << dspi->bits_per_word) - 1;
+-
+ 	if (dspi->bytes_per_word == 1)
+ 		*(u8 *)dspi->rx = rxdata;
+ 	else if (dspi->bytes_per_word == 2)
+-- 
+2.17.1

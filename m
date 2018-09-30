@@ -1,59 +1,54 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Sun, 30 Sep 2018 12:40:08 +0200
-Message-ID: <20180930124008.365831bf@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Sun, 30 Sep 2018 10:40:35 +0000
+Message-ID: <AM0PR04MB4353EC1BE55AF0A23E7BE3C597EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930120425.7715cb29@bbrezillon>
-        <AM0PR04MB4353635C85F0D744D090A14C97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+        <20180930120425.7715cb29@bbrezillon> <87o9cf70ht.fsf@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Cc: "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>
-To: Chuanhua Han <chuanhua.han@nxp.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Esben Haabendal <esben.haabendal@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AM0PR04MB4353635C85F0D744D090A14C97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+In-Reply-To: <87o9cf70ht.fsf@gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 30 Sep 2018 10:18:18 +0000
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> > -----Original Message-----
-> > From: Boris Brezillon <boris.brezillon@bootlin.com>
-> > Sent: 2018年9月30日 18:04
-> > To: Chuanhua Han <chuanhua.han@nxp.com>
-> > Cc: broonie@kernel.org; linux-spi@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; eha@deif.com
-> > Subject: Re: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
-> > 
-> > Hi Chuanhua,
-> > 
-> > On Sun, 30 Sep 2018 17:25:32 +0800
-> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
-> >   
-> > > Before we add this spi_transfer to the spi_message chain table, we
-> > > need bits_per_word_mask based on spi_control to set the bits_per_word
-> > > of this spi_transfer.  
-> > 
-> > Let's make it clearer: this is wrong. The spi-mem protocol is just using bytes,
-> > not custom size words. Fix the fsl-dspi driver if needed, but don't try to adjust
-> > xfer->bits_per_word in spi-mem.c, because this is inappropriate.  
-> The value of bits_per_word is only known before the spi_message_add_tail function is called,
-
-No, it's not. It's known from the beginning, and spi_setup() defaults
-to 8 when spidev->bits_per_word is 0, which is exactly what we
-want. Then, when you send a message through, spi_sync(), spi_validate()
-makes sure that each transfer in the message has a
-xfer->bits_per_word != 0 and when that's not the case, it sets it to
-spi->bits_per_word [2].
-
-Really, there's nothing to fix in spi-mem.c, because it's already doing
-the right thing (leaving ->bits_per_word to 0 so that it's set to
-spi->bits_per_word, which should be 8). Maybe we have a bug somewhere
-else though.
-
-[1]https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi.c#L2803
-[2]https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi.c#L2869
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXNiZW4gSGFhYmVuZGFs
+IDxlc2JlbmhhYWJlbmRhbEBnbWFpbC5jb20+IE9uIEJlaGFsZiBPZiBFc2Jlbg0KPiBIYWFiZW5k
+YWwNCj4gU2VudDogMjAxOMTqOdTCMzDI1SAxODoxOA0KPiBUbzogQm9yaXMgQnJlemlsbG9uIDxi
+b3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IENjOiBDaHVhbmh1YSBIYW4gPGNodWFuaHVh
+LmhhbkBueHAuY29tPjsgYnJvb25pZUBrZXJuZWwub3JnOw0KPiBsaW51eC1zcGlAdmdlci5rZXJu
+ZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFU
+Q0ggdjIgMS80XSBzcGk6IHNwaS1tZW06IEFkZCB0aGUgc3BpX3NldF94ZmVyX2JwdyBmdW5jdGlv
+bg0KPiANCj4gQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+IHdy
+aXRlczoNCj4gDQo+ID4gSGkgQ2h1YW5odWEsDQo+ID4NCj4gPiBPbiBTdW4sIDMwIFNlcCAyMDE4
+IDE3OjI1OjMyICswODAwDQo+ID4gQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4g
+d3JvdGU6DQo+ID4NCj4gPj4gQmVmb3JlIHdlIGFkZCB0aGlzIHNwaV90cmFuc2ZlciB0byB0aGUg
+c3BpX21lc3NhZ2UgY2hhaW4gdGFibGUsIHdlDQo+ID4+IG5lZWQgYml0c19wZXJfd29yZF9tYXNr
+IGJhc2VkIG9uIHNwaV9jb250cm9sIHRvIHNldCB0aGUgYml0c19wZXJfd29yZA0KPiA+PiBvZiB0
+aGlzIHNwaV90cmFuc2Zlci4NCj4gPg0KPiA+IExldCdzIG1ha2UgaXQgY2xlYXJlcjogdGhpcyBp
+cyB3cm9uZy4gVGhlIHNwaS1tZW0gcHJvdG9jb2wgaXMganVzdA0KPiA+IHVzaW5nIGJ5dGVzLCBu
+b3QgY3VzdG9tIHNpemUgd29yZHMuIEZpeCB0aGUgZnNsLWRzcGkgZHJpdmVyIGlmIG5lZWRlZCwN
+Cj4gPiBidXQgZG9uJ3QgdHJ5IHRvIGFkanVzdCB4ZmVyLT5iaXRzX3Blcl93b3JkIGluIHNwaS1t
+ZW0uYywgYmVjYXVzZSB0aGlzDQo+ID4gaXMgaW5hcHByb3ByaWF0ZS4NCj4gDQo+IEkgZG9uJ3Qg
+dGhpbmsgdGhlcmUgaXMgYSAiZml4IiBuZWVkZWQgaW4gZnNsLWRzcGkgZHJpdmVyIGZvciB0aGlz
+Lg0KPiANCj4gSSBhbSBub3Qgc3VyZSwgYnV0IEkgdGhpbmsgdGhhdCB3aGF0IEhhbiBpcyB0cnlp
+bmcgdG8gYWNoaWV2ZSBoZXJlIGlzIGJldHRlcg0KPiBwZXJmb3JtYW5jZS4NCj4gQW5kIHdpbGUg
+dGhlIFhTUEkgbW9kZSBkb2VzIHByb3ZpZGUgYmV0dGVyIHBlcmZvcm1hbmNlIGZvciBzZW5kaW5n
+IG9uZQ0KPiAzMiBiaXQgd29yZCwgdGhhbiBub3JtYWwgbW9kZSBwcm92aWRlZXMgZm9yIHNlbmRp
+bmcgNCB4IDggYml0IHdvcmRzLg0KPiBCdXQgYXMgeW91IHNheSwgdGhpcyBpcyB3cm9uZy4NCj4g
+DQo+IFRvIGltcHJvdmUgcGVyZm9ybWFuY2UsIHRoZSBmc2wtZHNwaSBkcml2ZXIgc2hvdWxkIGJl
+IGZpeGVkIHRvIHdvcmsgaW4gRE1BDQo+IG1vZGUuICBJbXBsZW1lbnRhdGlvbiBvZiBlcnJhdHVt
+IEEtMDExMjE4IGlzIG5lY2Vzc2FyeSBpbiBvcmRlciB0byB1c2UNCj4gRFNQSSBETUEgbW9kZSBv
+biBMUzEwMjFBLg0KPiBJIHdhcyBwbGFubmluZyB0byB3b3JrIG9uIHRoYXQsIGJ1dCBoYXZlbid0
+IGhhZCB0aGUgdGltZSBmb3IgaXQuDQo+IFNvIGlmIHlvdSB3YW50IGJldHRlciBwZXJmb3JtYW5j
+ZSBmb3Igc3BpLW1lbSBvbiBMUzEwMjFBIERTUEksIHBsZWFzZSB3b3JrDQo+IG9uIHRoaXMuDQo+
+IA0KPiAvRXNiZW4NCkhpo6wNCkFub3RoZXIgY29sbGVhZ3VlIGlzIHJlc3BvbnNpYmxlIGZvciB0
+aGUgRE1BIHRyYW5zbWlzc2lvbiBvZiBkc3BpLg0KSSBhbSBub3QgY2xlYXIgYWJvdXQgaXQuIEkg
+anVzdCBmaXggdGhlIHRyYW5zbWlzc2lvbiBvZiBYU1BJIG1vZGUgd2l0aCBzZXZlcmFsIHBhdGNo
+ZXMuIA0KVGhhbmsgeW91IGZvciB5b3VyIGNvbW1lbnRzLg0K

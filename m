@@ -1,49 +1,103 @@
-From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: Re: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Sun, 30 Sep 2018 12:17:34 +0200
-Message-ID: <87o9cf70ht.fsf@gmail.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Sun, 30 Sep 2018 10:18:18 +0000
+Message-ID: <AM0PR04MB4353635C85F0D744D090A14C97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930120425.7715cb29@bbrezillon>
+ <20180930120425.7715cb29@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Chuanhua Han <chuanhua.han@nxp.com>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>
 To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930120425.7715cb29@bbrezillon> (Boris Brezillon's message
-        of "Sun, 30 Sep 2018 12:04:25 +0200")
+In-Reply-To: <20180930120425.7715cb29@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Boris Brezillon <boris.brezillon@bootlin.com> writes:
-
-> Hi Chuanhua,
->
-> On Sun, 30 Sep 2018 17:25:32 +0800
-> Chuanhua Han <chuanhua.han@nxp.com> wrote:
->
->> Before we add this spi_transfer to the spi_message chain table, we need
->> bits_per_word_mask based on spi_control to set the bits_per_word of
->> this spi_transfer.
->
-> Let's make it clearer: this is wrong. The spi-mem protocol is just
-> using bytes, not custom size words. Fix the fsl-dspi driver if needed,
-> but don't try to adjust xfer->bits_per_word in spi-mem.c, because this
-> is inappropriate.
-
-I don't think there is a "fix" needed in fsl-dspi driver for this.
-
-I am not sure, but I think that what Han is trying to achieve here is
-better performance.
-And wile the XSPI mode does provide better performance for sending one
-32 bit word, than normal mode providees for sending 4 x 8 bit words.
-But as you say, this is wrong.
-
-To improve performance, the fsl-dspi driver should be fixed to work in
-DMA mode.  Implementation of erratum A-011218 is necessary in order to
-use DSPI DMA mode on LS1021A.
-I was planning to work on that, but haven't had the time for it.
-So if you want better performance for spi-mem on LS1021A DSPI, please
-work on this.
-
-/Esben
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jnUwjMwyNUgMTg6
+MDQNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYy
+IDEvNF0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4g
+DQo+IEhpIENodWFuaHVhLA0KPiANCj4gT24gU3VuLCAzMCBTZXAgMjAxOCAxNzoyNTozMiArMDgw
+MA0KPiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPiB3cm90ZToNCj4gDQo+ID4g
+QmVmb3JlIHdlIGFkZCB0aGlzIHNwaV90cmFuc2ZlciB0byB0aGUgc3BpX21lc3NhZ2UgY2hhaW4g
+dGFibGUsIHdlDQo+ID4gbmVlZCBiaXRzX3Blcl93b3JkX21hc2sgYmFzZWQgb24gc3BpX2NvbnRy
+b2wgdG8gc2V0IHRoZSBiaXRzX3Blcl93b3JkDQo+ID4gb2YgdGhpcyBzcGlfdHJhbnNmZXIuDQo+
+IA0KPiBMZXQncyBtYWtlIGl0IGNsZWFyZXI6IHRoaXMgaXMgd3JvbmcuIFRoZSBzcGktbWVtIHBy
+b3RvY29sIGlzIGp1c3QgdXNpbmcgYnl0ZXMsDQo+IG5vdCBjdXN0b20gc2l6ZSB3b3Jkcy4gRml4
+IHRoZSBmc2wtZHNwaSBkcml2ZXIgaWYgbmVlZGVkLCBidXQgZG9uJ3QgdHJ5IHRvIGFkanVzdA0K
+PiB4ZmVyLT5iaXRzX3Blcl93b3JkIGluIHNwaS1tZW0uYywgYmVjYXVzZSB0aGlzIGlzIGluYXBw
+cm9wcmlhdGUuDQpUaGUgdmFsdWUgb2YgYml0c19wZXJfd29yZCBpcyBvbmx5IGtub3duIGJlZm9y
+ZSB0aGUgc3BpX21lc3NhZ2VfYWRkX3RhaWwgZnVuY3Rpb24gaXMgY2FsbGVkLCANCmFuZCBkc3Bp
+IGNvbnRyb2xsZXJzIG9ubHkgZGVjaWRlIHdoaWNoIG1vZGUgKDhiaXQsIDE2Yml0LCBvciAzMmJp
+dCkgdG8gdXNlIGZvciBkYXRhDQp0cmFuc2ZlciBiYXNlZCBvbiB0aGUgdmFsdWUgb2YgdGhlIHRy
+YW5zZmVyLT5iaXRzX3Blcl93b3JkLg0KDQo+IA0KPiBSZWdhcmRzLA0KPiANCj4gQm9yaXMNCj4g
+DQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAu
+Y29tPg0KPiA+IC0tLQ0KPiA+IENoYW5nZXMgaW4gdjI6DQo+ID4gIC1UaGUgb3JpZ2luYWwgcGF0
+Y2ggaXMgZGl2aWRlZCBpbnRvIG11bHRpcGxlIHBhdGNoZXModGhlIG9yaWdpbmFsDQo+ID4gcGF0
+Y2ggdGhlbWUgaXMgInNwaTogc3BpLWZzbC1kc3BpOiBGaXggc3VwcG9ydCBmb3IgWFNQSSB0cmFu
+c3BvcnQNCj4gPiBtb2RlIiksb25lIG9mIHdoaWNoIGlzIHNlZ21lbnRlZC4NCj4gPg0KPiA+ICBk
+cml2ZXJzL3NwaS9zcGktbWVtLmMgfCAzOQ0KPiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKykNCj4gPg0K
+PiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMgYi9kcml2ZXJzL3NwaS9zcGkt
+bWVtLmMgaW5kZXgNCj4gPiBlYjcyZGJhNzFkODMuLjcxN2U3MTFjMDk1MiAxMDA2NDQNCj4gPiAt
+LS0gYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktbWVt
+LmMNCj4gPiBAQCAtMTc1LDYgKzE3NSw0MSBAQCBib29sIHNwaV9tZW1fc3VwcG9ydHNfb3Aoc3Ry
+dWN0IHNwaV9tZW0NCj4gKm1lbSwNCj4gPiBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApICB9
+DQo+ID4gRVhQT1JUX1NZTUJPTF9HUEwoc3BpX21lbV9zdXBwb3J0c19vcCk7DQo+ID4NCj4gPiAr
+LyoqDQo+ID4gKyAqIHNwaV9zZXRfeGZlcl9icHcoKSAtIFNldCB0aGUgYml0c19wZXJfd29yZCBm
+b3IgZWFjaCB0cmFuc2ZlciBiYXNlZCBvbg0KPiA+ICsgKgkJCXRoZSBiaXRzX3Blcl93b3JkX21h
+c2sgb2YgdGhlIHNwaSBjb250cm9sbGVyDQo+ID4gKyAqIEBjdHJsOiB0aGUgc3BpIGNvbnRyb2xs
+ZXINCj4gPiArICogQHhmZXI6IHRoZSBzcGkgdHJhbnNmZXINCj4gPiArICoNCj4gPiArICogVGhp
+cyBmdW5jdGlvbiBzZXRzIHRoZSBiaXRzX3Blcl93b3JkIGZvciBlYWNoIHRyYW5zZmVyIGJhc2Vk
+IG9uDQo+ID4gK3RoZSBzcGkNCj4gPiArICogY29udHJvbGxlcidzIGJpdHNfcGVyX3dvcmRfbWFz
+ayB0byBpbXByb3ZlIHRoZSBlZmZpY2llbmN5IG9mIHNwaQ0KPiB0cmFuc3BvcnQuDQo+ID4gKyAq
+DQo+ID4gKyAqIFJldHVybjogMCBpbiBjYXNlIG9mIHN1Y2Nlc3MsIGEgbmVnYXRpdmUgZXJyb3Ig
+Y29kZSBvdGhlcndpc2UuDQo+ID4gKyAqLw0KPiA+ICtpbnQgc3BpX3NldF94ZmVyX2JwdyhzdHJ1
+Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsIHN0cnVjdCBzcGlfdHJhbnNmZXINCj4gPiArKnhmZXIp
+IHsNCj4gPiArCWlmICghY3RsciB8fCAheGZlcikgew0KPiA+ICsJCWRldl9lcnIoJmN0bHItPmRl
+diwNCj4gPiArCQkJIkZhaWwgdG8gc2V0IGJpdHNfcGVyX3dvcmQgZm9yIHNwaSB0cmFuc2Zlclxu
+Iik7DQo+ID4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJaWYgKGN0
+bHItPmJpdHNfcGVyX3dvcmRfbWFzaykgew0KPiA+ICsJCWlmICghKHhmZXItPmxlbiAlIDQpKSB7
+DQo+ID4gKwkJCWlmIChjdGxyLT5iaXRzX3Blcl93b3JkX21hc2sgJiBTUElfQlBXX01BU0soMzIp
+KQ0KPiA+ICsJCQkJeGZlci0+Yml0c19wZXJfd29yZCA9IDMyOw0KPiA+ICsJCX0gZWxzZSBpZiAo
+ISh4ZmVyLT5sZW4gJSAyKSkgew0KPiA+ICsJCQlpZiAoY3Rsci0+Yml0c19wZXJfd29yZF9tYXNr
+ICYgU1BJX0JQV19NQVNLKDE2KSkNCj4gPiArCQkJCXhmZXItPmJpdHNfcGVyX3dvcmQgPSAxNjsN
+Cj4gPiArCQl9IGVsc2Ugew0KPiA+ICsJCQl4ZmVyLT5iaXRzX3Blcl93b3JkID0gODsNCj4gPiAr
+CQl9DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArRVhQT1JU
+X1NZTUJPTF9HUEwoc3BpX3NldF94ZmVyX2Jwdyk7DQo+ID4gKw0KPiA+ICAvKioNCj4gPiAgICog
+c3BpX21lbV9leGVjX29wKCkgLSBFeGVjdXRlIGEgbWVtb3J5IG9wZXJhdGlvbg0KPiA+ICAgKiBA
+bWVtOiB0aGUgU1BJIG1lbW9yeQ0KPiA+IEBAIC0yNTIsNiArMjg3LDcgQEAgaW50IHNwaV9tZW1f
+ZXhlY19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLCBjb25zdA0KPiBzdHJ1Y3Qgc3BpX21lbV9vcCAq
+b3ApDQo+ID4gIAl4ZmVyc1t4ZmVycG9zXS50eF9idWYgPSB0bXBidWY7DQo+ID4gIAl4ZmVyc1t4
+ZmVycG9zXS5sZW4gPSBzaXplb2Yob3AtPmNtZC5vcGNvZGUpOw0KPiA+ICAJeGZlcnNbeGZlcnBv
+c10udHhfbmJpdHMgPSBvcC0+Y21kLmJ1c3dpZHRoOw0KPiA+ICsJc3BpX3NldF94ZmVyX2Jwdyhj
+dGxyLCAmeGZlcnNbeGZlcnBvc10pOw0KPiA+ICAJc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnhmZXJz
+W3hmZXJwb3NdLCAmbXNnKTsNCj4gPiAgCXhmZXJwb3MrKzsNCj4gPiAgCXRvdGFseGZlcmxlbisr
+Ow0KPiA+IEBAIC0yNjYsNiArMzAyLDcgQEAgaW50IHNwaV9tZW1fZXhlY19vcChzdHJ1Y3Qgc3Bp
+X21lbSAqbWVtLCBjb25zdA0KPiBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQo+ID4gIAkJeGZlcnNb
+eGZlcnBvc10udHhfYnVmID0gdG1wYnVmICsgMTsNCj4gPiAgCQl4ZmVyc1t4ZmVycG9zXS5sZW4g
+PSBvcC0+YWRkci5uYnl0ZXM7DQo+ID4gIAkJeGZlcnNbeGZlcnBvc10udHhfbmJpdHMgPSBvcC0+
+YWRkci5idXN3aWR0aDsNCj4gPiArCQlzcGlfc2V0X3hmZXJfYnB3KGN0bHIsICZ4ZmVyc1t4ZmVy
+cG9zXSk7DQo+ID4gIAkJc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnhmZXJzW3hmZXJwb3NdLCAmbXNn
+KTsNCj4gPiAgCQl4ZmVycG9zKys7DQo+ID4gIAkJdG90YWx4ZmVybGVuICs9IG9wLT5hZGRyLm5i
+eXRlczsNCj4gPiBAQCAtMjc2LDYgKzMxMyw3IEBAIGludCBzcGlfbWVtX2V4ZWNfb3Aoc3RydWN0
+IHNwaV9tZW0gKm1lbSwgY29uc3QNCj4gc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KPiA+ICAJCXhm
+ZXJzW3hmZXJwb3NdLnR4X2J1ZiA9IHRtcGJ1ZiArIG9wLT5hZGRyLm5ieXRlcyArIDE7DQo+ID4g
+IAkJeGZlcnNbeGZlcnBvc10ubGVuID0gb3AtPmR1bW15Lm5ieXRlczsNCj4gPiAgCQl4ZmVyc1t4
+ZmVycG9zXS50eF9uYml0cyA9IG9wLT5kdW1teS5idXN3aWR0aDsNCj4gPiArCQlzcGlfc2V0X3hm
+ZXJfYnB3KGN0bHIsICZ4ZmVyc1t4ZmVycG9zXSk7DQo+ID4gIAkJc3BpX21lc3NhZ2VfYWRkX3Rh
+aWwoJnhmZXJzW3hmZXJwb3NdLCAmbXNnKTsNCj4gPiAgCQl4ZmVycG9zKys7DQo+ID4gIAkJdG90
+YWx4ZmVybGVuICs9IG9wLT5kdW1teS5uYnl0ZXM7DQo+ID4gQEAgLTI5MSw2ICszMjksNyBAQCBp
+bnQgc3BpX21lbV9leGVjX29wKHN0cnVjdCBzcGlfbWVtICptZW0sIGNvbnN0DQo+IHN0cnVjdCBz
+cGlfbWVtX29wICpvcCkNCj4gPiAgCQl9DQo+ID4NCj4gPiAgCQl4ZmVyc1t4ZmVycG9zXS5sZW4g
+PSBvcC0+ZGF0YS5uYnl0ZXM7DQo+ID4gKwkJc3BpX3NldF94ZmVyX2JwdyhjdGxyLCAmeGZlcnNb
+eGZlcnBvc10pOw0KPiA+ICAJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ4ZmVyc1t4ZmVycG9zXSwg
+Jm1zZyk7DQo+ID4gIAkJeGZlcnBvcysrOw0KPiA+ICAJCXRvdGFseGZlcmxlbiArPSBvcC0+ZGF0
+YS5uYnl0ZXM7DQoNCg==

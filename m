@@ -1,78 +1,64 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport
- mode
-Date: Sun, 30 Sep 2018 02:49:20 +0000
-Message-ID: <AM6PR04MB43575CFD4D00B8EAC1F52BD097EE0@AM6PR04MB4357.eurprd04.prod.outlook.com>
-References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-        <20180921070628.35153-2-chuanhua.han@nxp.com> <87y3bkcpym.fsf@gmail.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
+ fsl-quadspi.c driver (vybrid HW)
+Date: Sun, 30 Sep 2018 07:39:27 +0200
+Message-ID: <20180930073927.001c16d2@bbrezillon>
+References: <20180926220739.620-1-lukma@denx.de>
+        <20180929000359.34fe18ae@bbrezillon>
+        <20180929230240.1c8d844d@jawa>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>
-To: Esben Haabendal <esben.haabendal@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
+        richard@nod.at, Stefan Agner <stefan@agner.ch>,
+        Fabio Estevam <fabio.estevam@nxp.com>, broonie@kernel.org,
+        david.wolfe@nxp.com, computersforpeace@gmail.com,
+        dwmw2@infradead.org, albert.aribaud@3adev.fr
+To: Lukasz Majewski <lukma@denx.de>,
+        Fabio Estevam <festevam@gmail.com>, prabhakar.kushwaha@nxp.com,
+        han.xu@nxp.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <87y3bkcpym.fsf@gmail.com>
-Content-Language: en-US
+In-Reply-To: <20180929230240.1c8d844d@jawa>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXNiZW4gSGFhYmVuZGFs
-IDxlc2JlbmhhYWJlbmRhbEBnbWFpbC5jb20+IE9uIEJlaGFsZiBPZiBFc2Jlbg0KPiBIYWFiZW5k
-YWwNCj4gU2VudDogMjAxOMTqOdTCMjnI1SAyMjo1Ng0KPiBUbzogQ2h1YW5odWEgSGFuIDxjaHVh
-bmh1YS5oYW5AbnhwLmNvbT4NCj4gQ2M6IGJyb29uaWVAa2VybmVsLm9yZzsgbGludXgtc3BpQHZn
-ZXIua2VybmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgYm9yaXMuYnJl
-emlsbG9uQGJvb3RsaW4uY29tDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8yXSBzcGk6IHNwaS1m
-c2wtZHNwaTogRml4IHN1cHBvcnQgZm9yIFhTUEkgdHJhbnNwb3J0IG1vZGUNCj4gDQo+IENodWFu
-aHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+IHdyaXRlczoNCj4gDQo+ID4gVGhpcyBwYXRj
-aCBmaXhlcyB0aGUgcHJvYmxlbSB0aGF0IHRoZSBYU1BJIG1vZGUgb2YgdGhlIGRzcGkgY29udHJv
-bGxlcg0KPiA+IGNhbm5vdCB0cmFuc2ZlciBkYXRhIHByb3Blcmx5Lg0KPiA+IEluIFhTUEkgbW9k
-ZSwgY21kX2ZpZm8gaXMgd3JpdHRlbiBiZWZvcmUgdHhfZmlmbywgd2hpY2ggdHJhbnNmb3JtcyB0
-aGUNCj4gPiBieXRlIG9yZGVyIG9mIHNlbmRpbmcgYW5kIHJlY2VpdmluZyBkYXRhLg0KPiANCj4g
-RGlkIHlvdSBmaW5kIGRvY3VtZW50YXRpb24gb24gcHJvcGVyIG9yZGVyaW5nIG9mIHdyaXRlcyB0
-byByZWxhdGVkIFRYIEZJRk8NCj4gYW5kIENNRCBGSUZPIGVudHJpZXM/DQo+IA0KPiBJIGhhdmUg
-ZmFpbGVkIHRvIGZpbmQgc3VjaCBpbmZvcm1hdGlvbiwgYW5kIHRodXMgb3B0ZWQgZm9yIHdoYXQg
-SSBiZWxpZXZlZCB3b3VsZA0KPiBiZSB0aGUgc2FmZSBhcHByb2FjaCwgd3JpdGluZyB0byBUWCBG
-SUZPIGZpcnN0LCBzbyB0aGF0IHdoZW4gQ01EIEZJRk8gaXMNCj4gd3JpdHRlbiwgaXQgd2lsbCBh
-bHJlYWR5IGhhdmUgZGF0YSBpbiBwbGFjZS4gIEFuZCBpdCBzZWVtcyB0byB3b3JrLg0KPiANCj4g
-QnV0LCBJIG5vdyBzZWUgdGhhdCBTUEl4X1NSW1RGSVdGXSBoaW50cyB0aGF0IGl0IHNob3VsZCBi
-ZSBkb25lIHRoZSBvdGhlciB3YXkNCj4gYXJvdW5kLg0KPiANCj4gICAgIFRyYW5taXQgRklGTyBJ
-bnZhbGlkIFdyaXRlIEZsYWcgLSBJbmRpY2F0ZXMgRGF0YSBXcml0ZSBvbiBUWCBGSUZPDQo+ICAg
-ICB3aGlsZSBDTUQgRklGTyBpcyBlbXB0eS4gV2l0aG91dCBhIENvbW1hbmQsIHRoZSBEYXRhIGVu
-dHJpZXMgcHJlc2VudA0KPiAgICAgaW4gVFhGSUZPIGFyZSBpbnZhbGlkLg0KPiANCj4gQnV0IEkg
-ZmFpbCB0byBzZWUgaG93IHRoYXQgc2hvdWxkIGJlIHJlbGF0ZWQgdG8gYnl0ZSBvcmRlcmluZy4N
-Cj4gDQo+IFNvIEkgYmVsaWV2ZSB0aGlzIHBhdGNoIGlzIGRvaW5nIHR3byB0aGluZ3MuDQo+IA0K
-PiAxLiBDaGFuZ2luZyB3cml0ZSBvcmRlcmluZyBvZiBUWCBGSUZPIGFuZCBDTUQgRklGTy4NCj4g
-Mi4gSGFuZGxpbmcgYnl0ZSBvcmRlcmluZyBiYXNlZCBvbiBTUEl4X0NUQVJuW0xTQkZFXSBmbGFn
-Lg0KPiANCj4gSXQgd291bGQgYmUgbmljZSBpZiB3ZSBjb3VsZCBnZXQgY2xhcmlmaWNhdGlvbiBm
-cm9tIE5YUCBvbiB3aGF0IGlzIHRoZSByaWdodCB3YXkNCj4gdG8gZG8gdGhlIFRYIEZJRk8gYW5k
-IENNRCBGSUZPIHdyaXRlIG9yZGVyaW5nLg0KPiANCj4gQnV0IGFzIGZvciB0aGUgYnl0ZSBvcmRl
-cmluZyBjaGFuZ2VzLCBJIGRvbid0IHRoaW5rIGl0IGxvb2tzIHdyaXRlLiAgVGhlIG1lYW5pbmcN
-Cj4gb2YgU1BJeF9DVEFSbltMU0JGRV0gaXMgYWNjb3JkaW5nIHRvIHRoZSBkb2N1bWVudGFpdG9u
-IHRoZSBiaXQgb3JkZXJpbmcgb24NCj4gdGhlIHdpcmUsIGFuZCBzaG91bGQgbm90IGJlIHJlbGF0
-ZWQgdG8gcmVnaXN0ZXIgYnl0ZSBvcmRlcmluZy4NCj4gDQo+IFlvdSBzaG91bGQgcHJvYmFibHkg
-c3BsaXQgdGhpcyBwYXRjaCBpbiB0d28sIHNvIHRoZXkgY2FuIGJlIHJldmlld2VkIGFuZA0KPiBt
-ZXJnZWQgaW5kZXBlbmRlbnRseS4NCj4gDQo+IC9Fc2Jlbg0KSGksIEVzYmVuDQpGaXJzdCBvZiBh
-bGwsIHRoYW5rIHlvdSBmb3IgeW91ciB2YWx1YWJsZSBhZHZpY2UuIEknbSBnb2luZyB0byBkbyB0
-d28gdGhpbmdzOg0KMS4gRGl2aWRlIHRoaXMgcGF0Y2ggaW50byBtdWx0aXBsZSBwYXRjaGVzLg0K
-Mi4gVmVyaWZ5IChpZiB5b3UgY2FuKSBmcm9tIHRoZSByZWxldmFudCBOWFAgZG9jdW1lbnRhdGlv
-bi4NCg0KU2Vjb25kLCBsZXQgbWUgbWVudGlvbiB0aGUgaXNzdWVzIEkgZm91bmQgb24gZml4aW5n
-IGZzbF9kc3BpJ3MgWFNQSSBwYXR0ZXJuIG5vdCB3b3JraW5nOg0KMS4gV2hlbiBJIGV4ZWN1dGVk
-IFRYIEZJRk8gZmlyc3QgYW5kIHRoZW4gQ01EIEZJRk8gZm9yIFhTUEkgdHJhbnNtaXNzaW9uLCBJ
-IGZvdW5kIHRoYXQgU1BJeF9TUltURklXRl09MSAoSW52YWxpZCBEYXRhIHByZXNlbnQgaW4gVFgg
-RklGTyBzaW5jZSBDTUQgRklGTyBpcyBlbXB0eSkuDQogVGhpcyBpcyB0aGUgdGltZSB3aGVuIG5v
-IERhdGEgY2FuIGJlIHJlYWQgb3Igd3JpdHRlbiAoYWxsIHRoZSBEYXRhIG9idGFpbmVkIGlzIGVx
-dWFsIHRvIDApLg0KMi4gV2hlbiBJIHJlYWQgYW5kIHdyaXRlIGRhdGEgd2l0aG91dCBjb252ZXJ0
-aW5nIGRhdGEgYnl0ZSBvcmRlciwgYW5kIHJlYWQgYW5kIHdyaXRlIGRhdGEgZGlyZWN0bHksDQog
-SSB0ZXN0ZWQgc3BpLWZsYXNoIGNvbm5lY3RlZCBieSBmc2xfZHNwaSBjb250cm9sbGVyLCBhbmQg
-Zm91bmQgdGhhdCBkYXRhIGJ5dGUgb3JkZXIgd2FzIHJldmVyc2VkIHdpdGggdGhlIGNvcnJlY3Qg
-Ynl0ZSBvcmRlci4gDQpXaGVuIEkgY2hhbmdlZCB0aGUgYnl0ZSBvcmRlciBhY2NvcmRpbmcgdG8g
-dGhlIFNQSXhfQ1RBUm5bTFNCRkVdIGZsYWcsIHRoZSBjb3JyZWN0IGRhdGEgd2FzIG9idGFpbmVk
-IChub3QgZXhwbGFpbmVkIGluIHRoaXMgZGF0YSBtYW51YWwpLg0KMy4gSW4gdGhlIGRzcGlfcHVz
-aF9yeCBmdW5jdGlvbiwgaWYgeW91IGFkZCB5b3VyICJyeGRhdGEgJj0gKDEgPDwgZHNwaS0+Yml0
-c19wZXJfd29yZCkgLTEiIHN0YXRlbWVudCwgdGhlIHJ4ZGF0YT0wIGlzIG9idGFpbmVkIHdoZW4g
-eHNwaSBpcyB0cmFuc21pdHRlZCwgDQphbmQgdGhlIGNvcnJlY3QgZGF0YSBjYW5ub3QgYmUgdHJh
-bnNtaXR0ZWQgYXQgdGhpcyB0aW1lIChJIGRvbid0IHF1aXRlIHVuZGVyc3RhbmQgd2h5IHlvdSBh
-ZGRlZCB0aGlzIHN0YXRlbWVudCkuDQpUaGFua3MsDQpDaHVhbmh1YQ0K
+Hi Lukasz,
+
+On Sat, 29 Sep 2018 23:02:40 +0200
+Lukasz Majewski <lukma@denx.de> wrote:
+
+> > Talking about that, can you try to port your fixes on top of Frieder's
+> > patchset? I'm pretty sure some bug fixes are irrelevant after the
+> > migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9 should be dropped I
+> > think).  
+> 
+> The problem is that Frieder's patch is using IP command mode for
+> transfers smaller than AHB RX fifo size.
+> This according to the comment in the current driver is broken in HW for
+> Vybrid (so this is a regression).
+
+Why not fixing that in the new driver?
+
+> 
+> I'm also wondering if other users of vf610 based boards experience
+> issues with QSPI?
+
+Are you sure the 4 I/O lines are wired on your design? Anyway, if it's
+a bug that only hurts vf610, you should mask quad modes in ->hwcaps (or
+patch fsl_qspi_supports_op() in the new driver), not change the SPI NOR
+definition.
+
+> 
+> In my case, after running the UBI/UBIFS tests (on the original and
+> new driver without those "fixes") I cannot mount the volume after
+> creation as the header is wrongly read.
+
+I'm not denying this fact, I'm just saying, now that you've found where
+the issue comes from, you can also port the fix to the new driver.
+
+Regards,
+
+Boris

@@ -1,39 +1,54 @@
 From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: Re: [PATCH v2 4/4] spi: spi-fsl-dspi: Fix adjust the byte order when sending and receiving data
-Date: Sun, 30 Sep 2018 12:27:24 +0200
-Message-ID: <87k1n3701f.fsf@gmail.com>
+Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of undefined bitmask for rxdata
+Date: Sun, 30 Sep 2018 12:29:14 +0200
+Message-ID: <87ftxr6zyd.fsf@gmail.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930092535.24544-4-chuanhua.han@nxp.com>
+        <20180930092535.24544-2-chuanhua.han@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, boris.brezillon@bootlin.com
 To: Chuanhua Han <chuanhua.han@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930092535.24544-4-chuanhua.han@nxp.com> (Chuanhua Han's
-        message of "Sun, 30 Sep 2018 17:25:35 +0800")
+In-Reply-To: <20180930092535.24544-2-chuanhua.han@nxp.com> (Chuanhua Han's
+        message of "Sun, 30 Sep 2018 17:25:33 +0800")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Chuanhua Han <chuanhua.han@nxp.com> writes:
 
-> This patch fixes the byte order inversion problem in the XSPI mode of
-> the dspi controller during data transfer.
-> In XSPI mode,When I read and write data without converting the byte
-> order of the data, and read and write the data directly, I tested spi
-> flash connected by the dspi controller and found that the byte
-> order of the data was reversed by the correct byte order.
-> When I changed the byte order according to the SPIx_CTARn[LSBFE] flag,
-> the correct data was obtained.
+> This patch fixes the problem of rxdata being equal to 0 during the XSPI
+> mode transfer of the dspi controller.
+> In XSPI mode, If it is not deleted, the value of rxdata will be equal
+> to 0, and the data received will not be received correctly, causing the
+> receiving transfer of the spi to fail.
+>
+> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> ---
+> Changes in v2:
+>  -The original patch is divided into multiple patches(the original
+> patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
+> mode"),one of which is segmented.
+>
+>  drivers/spi/spi-fsl-dspi.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 3082e72e4f6c..4dc1064bf408 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+>  	if (!dspi->rx)
+>  		return;
+>  
+> -	/* Mask of undefined bits */
+> -	rxdata &= (1 << dspi->bits_per_word) - 1;
 
-I believe this is related to patch 1/4 of this series, and your attempt
-on pushing the 8-bit spi-mem data into 32-bit SPI words.  The
-byte-ordering for that does not belong here, and will likely break
-byte-ordering for other (proper) use of XSPI mode.
+What is the dspi->bits_per_word value when your rxdata is set equal to
+0?  Could this perhaps also be related to byte ordering problems?
 
-My advice is that you focus your effort on implementing/fixing DMA mode,
-ie. erratum A-011218.
-A proper implementation of that will be appreciated, and should give you
-much better performance than XSPI mode would be able to give you.
+>  	if (dspi->bytes_per_word == 1)
+>  		*(u8 *)dspi->rx = rxdata;
+>  	else if (dspi->bytes_per_word == 2)
 
 /Esben

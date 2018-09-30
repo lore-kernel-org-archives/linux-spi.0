@@ -1,57 +1,56 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
  undefined bitmask for rxdata
-Date: Sun, 30 Sep 2018 12:06:59 +0200
-Message-ID: <20180930120659.71b0e1e5@bbrezillon>
+Date: Sun, 30 Sep 2018 10:10:14 +0000
+Message-ID: <AM0PR04MB4353B48117292E511AC1E09F97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
         <20180930092535.24544-2-chuanhua.han@nxp.com>
+ <20180930120659.71b0e1e5@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, eha@deif.com
-To: Chuanhua Han <chuanhua.han@nxp.com>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930092535.24544-2-chuanhua.han@nxp.com>
+In-Reply-To: <20180930120659.71b0e1e5@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 30 Sep 2018 17:25:33 +0800
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
-
-> This patch fixes the problem of rxdata being equal to 0 during the XSPI
-> mode transfer of the dspi controller.
-> In XSPI mode, If it is not deleted, the value of rxdata will be equal
-> to 0, and the data received will not be received correctly, causing the
-> receiving transfer of the spi to fail.
-> 
-> Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-> ---
-> Changes in v2:
->  -The original patch is divided into multiple patches(the original
-> patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
-> mode"),one of which is segmented.
-> 
->  drivers/spi/spi-fsl-dspi.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 3082e72e4f6c..4dc1064bf408 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
->  	if (!dspi->rx)
->  		return;
->  
-> -	/* Mask of undefined bits */
-> -	rxdata &= (1 << dspi->bits_per_word) - 1;
-> -
-
-Why not
-
-	if (dspi->bits_per_word)
-		rxdata &= (1 << dspi->bits_per_word) - 1;
-
->  	if (dspi->bytes_per_word == 1)
->  		*(u8 *)dspi->rx = rxdata;
->  	else if (dspi->bytes_per_word == 2)
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jnUwjMwyNUgMTg6
+MDcNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYy
+IDIvNF0gc3BpOiBzcGktZnNsLWRzcGk6IEZpeCBkZWxldGUgdGhlIHByb2Nlc3Npbmcgb2YNCj4g
+dW5kZWZpbmVkIGJpdG1hc2sgZm9yIHJ4ZGF0YQ0KPiANCj4gT24gU3VuLCAzMCBTZXAgMjAxOCAx
+NzoyNTozMyArMDgwMA0KPiBDaHVhbmh1YSBIYW4gPGNodWFuaHVhLmhhbkBueHAuY29tPiB3cm90
+ZToNCj4gDQo+ID4gVGhpcyBwYXRjaCBmaXhlcyB0aGUgcHJvYmxlbSBvZiByeGRhdGEgYmVpbmcg
+ZXF1YWwgdG8gMCBkdXJpbmcgdGhlDQo+ID4gWFNQSSBtb2RlIHRyYW5zZmVyIG9mIHRoZSBkc3Bp
+IGNvbnRyb2xsZXIuDQo+ID4gSW4gWFNQSSBtb2RlLCBJZiBpdCBpcyBub3QgZGVsZXRlZCwgdGhl
+IHZhbHVlIG9mIHJ4ZGF0YSB3aWxsIGJlIGVxdWFsDQo+ID4gdG8gMCwgYW5kIHRoZSBkYXRhIHJl
+Y2VpdmVkIHdpbGwgbm90IGJlIHJlY2VpdmVkIGNvcnJlY3RseSwgY2F1c2luZw0KPiA+IHRoZSBy
+ZWNlaXZpbmcgdHJhbnNmZXIgb2YgdGhlIHNwaSB0byBmYWlsLg0KPiA+DQo+ID4gU2lnbmVkLW9m
+Zi1ieTogQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBD
+aGFuZ2VzIGluIHYyOg0KPiA+ICAtVGhlIG9yaWdpbmFsIHBhdGNoIGlzIGRpdmlkZWQgaW50byBt
+dWx0aXBsZSBwYXRjaGVzKHRoZSBvcmlnaW5hbA0KPiA+IHBhdGNoIHRoZW1lIGlzICJzcGk6IHNw
+aS1mc2wtZHNwaTogRml4IHN1cHBvcnQgZm9yIFhTUEkgdHJhbnNwb3J0DQo+ID4gbW9kZSIpLG9u
+ZSBvZiB3aGljaCBpcyBzZWdtZW50ZWQuDQo+ID4NCj4gPiAgZHJpdmVycy9zcGkvc3BpLWZzbC1k
+c3BpLmMgfCAzIC0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMyBkZWxldGlvbnMoLSkNCj4gPg0K
+PiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWRzcGkuYyBiL2RyaXZlcnMvc3Bp
+L3NwaS1mc2wtZHNwaS5jDQo+ID4gaW5kZXggMzA4MmU3MmU0ZjZjLi40ZGMxMDY0YmY0MDggMTAw
+NjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWZzbC1kc3BpLmMNCj4gPiArKysgYi9kcml2
+ZXJzL3NwaS9zcGktZnNsLWRzcGkuYw0KPiA+IEBAIC0yNDMsOSArMjQzLDYgQEAgc3RhdGljIHZv
+aWQgZHNwaV9wdXNoX3J4KHN0cnVjdCBmc2xfZHNwaSAqZHNwaSwgdTMyDQo+IHJ4ZGF0YSkNCj4g
+PiAgCWlmICghZHNwaS0+cngpDQo+ID4gIAkJcmV0dXJuOw0KPiA+DQo+ID4gLQkvKiBNYXNrIG9m
+IHVuZGVmaW5lZCBiaXRzICovDQo+ID4gLQlyeGRhdGEgJj0gKDEgPDwgZHNwaS0+Yml0c19wZXJf
+d29yZCkgLSAxOw0KPiA+IC0NCj4gDQo+IFdoeSBub3QNCkluIHhzcGkgbW9kZSwgdGhlIHZhbHVl
+IG9mIHJ4ZGF0YSBhZnRlciB0aGUgc3RhdGVtZW50IGlzIHByb2Nlc3NlZCBpcyBlcXVhbCB0byAw
+IG5vIG1hdHRlciB3aGF0IGRhdGEgaXMgcmVjZWl2ZWQuDQo+IA0KPiAJaWYgKGRzcGktPmJpdHNf
+cGVyX3dvcmQpDQo+IAkJcnhkYXRhICY9ICgxIDw8IGRzcGktPmJpdHNfcGVyX3dvcmQpIC0gMTsN
+Cj4gDQo+ID4gIAlpZiAoZHNwaS0+Ynl0ZXNfcGVyX3dvcmQgPT0gMSkNCj4gPiAgCQkqKHU4ICop
+ZHNwaS0+cnggPSByeGRhdGE7DQo+ID4gIAllbHNlIGlmIChkc3BpLT5ieXRlc19wZXJfd29yZCA9
+PSAyKQ0KDQo=

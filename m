@@ -1,128 +1,78 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
- fsl-quadspi.c driver (vybrid HW)
-Date: Sat, 29 Sep 2018 23:02:40 +0200
-Message-ID: <20180929230240.1c8d844d@jawa>
-References: <20180926220739.620-1-lukma@denx.de>
-        <20180929000359.34fe18ae@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH 2/2] spi: spi-fsl-dspi: Fix support for XSPI transport
+ mode
+Date: Sun, 30 Sep 2018 02:49:20 +0000
+Message-ID: <AM6PR04MB43575CFD4D00B8EAC1F52BD097EE0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+References: <20180921070628.35153-1-chuanhua.han@nxp.com>
+        <20180921070628.35153-2-chuanhua.han@nxp.com> <87y3bkcpym.fsf@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/a+5Md_GOwEt4zKecGlK.e2J"; protocol="application/pgp-signature"
-Cc: Frieder Schrempf <frieder.schrempf@exceet.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yogeshnarayan.gaur@nxp.com,
-        richard@nod.at, Stefan Agner <stefan@agner.ch>,
-        Fabio Estevam <festevam@gmail.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        prabhakar.kushwaha@nxp.com, han.xu@nxp.com, broonie@kernel.org,
-        david.wolfe@nxp.com, computersforpeace@gmail.com,
-        dwmw2@infradead.org, albert.aribaud@3adev.fr
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>
+To: Esben Haabendal <esben.haabendal@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180929000359.34fe18ae@bbrezillon>
+In-Reply-To: <87y3bkcpym.fsf@gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/a+5Md_GOwEt4zKecGlK.e2J
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, 29 Sep 2018 00:03:59 +0200
-Boris Brezillon <boris.brezillon@bootlin.com> wrote:
-
-> Hi Lukasz,
->=20
-> On Thu, 27 Sep 2018 00:07:30 +0200
-> Lukasz Majewski <lukma@denx.de> wrote:
->=20
-> > Please find following set of patches, which provide improved
-> > behaviour of the fsl-quadspi.c driver on Vybrid vf610 HW.
-> >=20
-> > Below code is based on previous work done by Albert ARIBAUD:
-> > https://patchwork.ozlabs.org/patch/675401/
-> >=20
-> > I've cleaned up the code a bit, make separate patches, exclude not
-> > needed parts and port it to v4.19-rc3.
-> >=20
-> > After applying those patches, the quadspi controller on vf610 works
-> > with UBI/UBIFS.
-> > The problem is with some corner case writes to raw MTD device
-> > (like writing 1023B with single byte writes). Those fail sometimes.
-> >=20
-> > Regression tests can be found in the following repository:
-> > https://github.com/lmajewski/tests-spi/tree/master/tests
-> >=20
-> > (Please read README.txt).
-> >=20
-> > The NXP's community thread regarding HW issues in this block on
-> > the vf610:
-> > https://community.nxp.com/thread/485139
-> >=20
-> > Maybe those patches will be helpful with the new, work in progress
-> > driver for spi-fsl-qspi.c =20
->=20
-> Talking about that, can you try to port your fixes on top of Frieder's
-> patchset? I'm pretty sure some bug fixes are irrelevant after the
-> migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9 should be dropped I
-> think).
-
-The problem is that Frieder's patch is using IP command mode for
-transfers smaller than AHB RX fifo size.
-This according to the comment in the current driver is broken in HW for
-Vybrid (so this is a regression).
-
-I'm also wondering if other users of vf610 based boards experience
-issues with QSPI?
-
-In my case, after running the UBI/UBIFS tests (on the original and
-new driver without those "fixes") I cannot mount the volume after
-creation as the header is wrongly read.
-
->=20
-> >=20
-> > Lukasz Majewski (9):
-> >   Revert "mtd: fsl-quadspi: Rename SEQID_QUAD_READ to SEQID_READ"
-> >   mtd: qspi: Provide quirk to read only half of RX buffer (NXP's
-> > vybrid) mtd: spi: Do not setup the default seqid as we got it set
-> > for DUAL and QUAD
-> >   mtd: spi: Modify the HW capability mask according to supported RX
-> >     lanes
-> >   mtd: spi: Provide LUT entry to perform DUAL read
-> >   mtd: spi: Enhance the fsl_qspi_read() method to support DUAL and
-> > QUAD mtd: spi: Add SPI_NOR_DUAL_READ property for the 'n25q128a13'
-> > Micron memory
-> >   mtd: spi: Allocate memory corresponding to maximal fsl-quadspi.c
-> >     controller area
-> >   mtd: spi: Skip reading the Serial Flash Discoverable Parameters =20
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-
---Sig_/a+5Md_GOwEt4zKecGlK.e2J
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAluv6HAACgkQAR8vZIA0
-zr3DSQf+MEplYTdDBoHPVllbuUN0dKuaja0gdqV9dqFT+C/V5Jj55UP2zTvgUjff
-nBqk9jHlSOnhQMJ+kz7ghxlE1gUvsX0OpnnOA3NHJB4rGQDH5BQzbo2v/ETDhZSl
-XkIM1O0s9c4993R5fyGe03cEVfXrUq9ptOUIZfUHrq9TCmq61uUATDskYAGNhTOB
-MTODnTLqenhOLIHhTr/plWtDNgOpiUmwIukcnBfLT4SHdOIONenSufiOyEF5wkJh
-ZJJyNdM5pQdPgD2+Pv/wgV1KLyxNSqVfoeNFIp3PZcj0Rov8pnUEdpGhk5ojMJEZ
-M3qJzSvBSdVrJIayVboPyFpVrFPNVw==
-=zRab
------END PGP SIGNATURE-----
-
---Sig_/a+5Md_GOwEt4zKecGlK.e2J--
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXNiZW4gSGFhYmVuZGFs
+IDxlc2JlbmhhYWJlbmRhbEBnbWFpbC5jb20+IE9uIEJlaGFsZiBPZiBFc2Jlbg0KPiBIYWFiZW5k
+YWwNCj4gU2VudDogMjAxOMTqOdTCMjnI1SAyMjo1Ng0KPiBUbzogQ2h1YW5odWEgSGFuIDxjaHVh
+bmh1YS5oYW5AbnhwLmNvbT4NCj4gQ2M6IGJyb29uaWVAa2VybmVsLm9yZzsgbGludXgtc3BpQHZn
+ZXIua2VybmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgYm9yaXMuYnJl
+emlsbG9uQGJvb3RsaW4uY29tDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8yXSBzcGk6IHNwaS1m
+c2wtZHNwaTogRml4IHN1cHBvcnQgZm9yIFhTUEkgdHJhbnNwb3J0IG1vZGUNCj4gDQo+IENodWFu
+aHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+IHdyaXRlczoNCj4gDQo+ID4gVGhpcyBwYXRj
+aCBmaXhlcyB0aGUgcHJvYmxlbSB0aGF0IHRoZSBYU1BJIG1vZGUgb2YgdGhlIGRzcGkgY29udHJv
+bGxlcg0KPiA+IGNhbm5vdCB0cmFuc2ZlciBkYXRhIHByb3Blcmx5Lg0KPiA+IEluIFhTUEkgbW9k
+ZSwgY21kX2ZpZm8gaXMgd3JpdHRlbiBiZWZvcmUgdHhfZmlmbywgd2hpY2ggdHJhbnNmb3JtcyB0
+aGUNCj4gPiBieXRlIG9yZGVyIG9mIHNlbmRpbmcgYW5kIHJlY2VpdmluZyBkYXRhLg0KPiANCj4g
+RGlkIHlvdSBmaW5kIGRvY3VtZW50YXRpb24gb24gcHJvcGVyIG9yZGVyaW5nIG9mIHdyaXRlcyB0
+byByZWxhdGVkIFRYIEZJRk8NCj4gYW5kIENNRCBGSUZPIGVudHJpZXM/DQo+IA0KPiBJIGhhdmUg
+ZmFpbGVkIHRvIGZpbmQgc3VjaCBpbmZvcm1hdGlvbiwgYW5kIHRodXMgb3B0ZWQgZm9yIHdoYXQg
+SSBiZWxpZXZlZCB3b3VsZA0KPiBiZSB0aGUgc2FmZSBhcHByb2FjaCwgd3JpdGluZyB0byBUWCBG
+SUZPIGZpcnN0LCBzbyB0aGF0IHdoZW4gQ01EIEZJRk8gaXMNCj4gd3JpdHRlbiwgaXQgd2lsbCBh
+bHJlYWR5IGhhdmUgZGF0YSBpbiBwbGFjZS4gIEFuZCBpdCBzZWVtcyB0byB3b3JrLg0KPiANCj4g
+QnV0LCBJIG5vdyBzZWUgdGhhdCBTUEl4X1NSW1RGSVdGXSBoaW50cyB0aGF0IGl0IHNob3VsZCBi
+ZSBkb25lIHRoZSBvdGhlciB3YXkNCj4gYXJvdW5kLg0KPiANCj4gICAgIFRyYW5taXQgRklGTyBJ
+bnZhbGlkIFdyaXRlIEZsYWcgLSBJbmRpY2F0ZXMgRGF0YSBXcml0ZSBvbiBUWCBGSUZPDQo+ICAg
+ICB3aGlsZSBDTUQgRklGTyBpcyBlbXB0eS4gV2l0aG91dCBhIENvbW1hbmQsIHRoZSBEYXRhIGVu
+dHJpZXMgcHJlc2VudA0KPiAgICAgaW4gVFhGSUZPIGFyZSBpbnZhbGlkLg0KPiANCj4gQnV0IEkg
+ZmFpbCB0byBzZWUgaG93IHRoYXQgc2hvdWxkIGJlIHJlbGF0ZWQgdG8gYnl0ZSBvcmRlcmluZy4N
+Cj4gDQo+IFNvIEkgYmVsaWV2ZSB0aGlzIHBhdGNoIGlzIGRvaW5nIHR3byB0aGluZ3MuDQo+IA0K
+PiAxLiBDaGFuZ2luZyB3cml0ZSBvcmRlcmluZyBvZiBUWCBGSUZPIGFuZCBDTUQgRklGTy4NCj4g
+Mi4gSGFuZGxpbmcgYnl0ZSBvcmRlcmluZyBiYXNlZCBvbiBTUEl4X0NUQVJuW0xTQkZFXSBmbGFn
+Lg0KPiANCj4gSXQgd291bGQgYmUgbmljZSBpZiB3ZSBjb3VsZCBnZXQgY2xhcmlmaWNhdGlvbiBm
+cm9tIE5YUCBvbiB3aGF0IGlzIHRoZSByaWdodCB3YXkNCj4gdG8gZG8gdGhlIFRYIEZJRk8gYW5k
+IENNRCBGSUZPIHdyaXRlIG9yZGVyaW5nLg0KPiANCj4gQnV0IGFzIGZvciB0aGUgYnl0ZSBvcmRl
+cmluZyBjaGFuZ2VzLCBJIGRvbid0IHRoaW5rIGl0IGxvb2tzIHdyaXRlLiAgVGhlIG1lYW5pbmcN
+Cj4gb2YgU1BJeF9DVEFSbltMU0JGRV0gaXMgYWNjb3JkaW5nIHRvIHRoZSBkb2N1bWVudGFpdG9u
+IHRoZSBiaXQgb3JkZXJpbmcgb24NCj4gdGhlIHdpcmUsIGFuZCBzaG91bGQgbm90IGJlIHJlbGF0
+ZWQgdG8gcmVnaXN0ZXIgYnl0ZSBvcmRlcmluZy4NCj4gDQo+IFlvdSBzaG91bGQgcHJvYmFibHkg
+c3BsaXQgdGhpcyBwYXRjaCBpbiB0d28sIHNvIHRoZXkgY2FuIGJlIHJldmlld2VkIGFuZA0KPiBt
+ZXJnZWQgaW5kZXBlbmRlbnRseS4NCj4gDQo+IC9Fc2Jlbg0KSGksIEVzYmVuDQpGaXJzdCBvZiBh
+bGwsIHRoYW5rIHlvdSBmb3IgeW91ciB2YWx1YWJsZSBhZHZpY2UuIEknbSBnb2luZyB0byBkbyB0
+d28gdGhpbmdzOg0KMS4gRGl2aWRlIHRoaXMgcGF0Y2ggaW50byBtdWx0aXBsZSBwYXRjaGVzLg0K
+Mi4gVmVyaWZ5IChpZiB5b3UgY2FuKSBmcm9tIHRoZSByZWxldmFudCBOWFAgZG9jdW1lbnRhdGlv
+bi4NCg0KU2Vjb25kLCBsZXQgbWUgbWVudGlvbiB0aGUgaXNzdWVzIEkgZm91bmQgb24gZml4aW5n
+IGZzbF9kc3BpJ3MgWFNQSSBwYXR0ZXJuIG5vdCB3b3JraW5nOg0KMS4gV2hlbiBJIGV4ZWN1dGVk
+IFRYIEZJRk8gZmlyc3QgYW5kIHRoZW4gQ01EIEZJRk8gZm9yIFhTUEkgdHJhbnNtaXNzaW9uLCBJ
+IGZvdW5kIHRoYXQgU1BJeF9TUltURklXRl09MSAoSW52YWxpZCBEYXRhIHByZXNlbnQgaW4gVFgg
+RklGTyBzaW5jZSBDTUQgRklGTyBpcyBlbXB0eSkuDQogVGhpcyBpcyB0aGUgdGltZSB3aGVuIG5v
+IERhdGEgY2FuIGJlIHJlYWQgb3Igd3JpdHRlbiAoYWxsIHRoZSBEYXRhIG9idGFpbmVkIGlzIGVx
+dWFsIHRvIDApLg0KMi4gV2hlbiBJIHJlYWQgYW5kIHdyaXRlIGRhdGEgd2l0aG91dCBjb252ZXJ0
+aW5nIGRhdGEgYnl0ZSBvcmRlciwgYW5kIHJlYWQgYW5kIHdyaXRlIGRhdGEgZGlyZWN0bHksDQog
+SSB0ZXN0ZWQgc3BpLWZsYXNoIGNvbm5lY3RlZCBieSBmc2xfZHNwaSBjb250cm9sbGVyLCBhbmQg
+Zm91bmQgdGhhdCBkYXRhIGJ5dGUgb3JkZXIgd2FzIHJldmVyc2VkIHdpdGggdGhlIGNvcnJlY3Qg
+Ynl0ZSBvcmRlci4gDQpXaGVuIEkgY2hhbmdlZCB0aGUgYnl0ZSBvcmRlciBhY2NvcmRpbmcgdG8g
+dGhlIFNQSXhfQ1RBUm5bTFNCRkVdIGZsYWcsIHRoZSBjb3JyZWN0IGRhdGEgd2FzIG9idGFpbmVk
+IChub3QgZXhwbGFpbmVkIGluIHRoaXMgZGF0YSBtYW51YWwpLg0KMy4gSW4gdGhlIGRzcGlfcHVz
+aF9yeCBmdW5jdGlvbiwgaWYgeW91IGFkZCB5b3VyICJyeGRhdGEgJj0gKDEgPDwgZHNwaS0+Yml0
+c19wZXJfd29yZCkgLTEiIHN0YXRlbWVudCwgdGhlIHJ4ZGF0YT0wIGlzIG9idGFpbmVkIHdoZW4g
+eHNwaSBpcyB0cmFuc21pdHRlZCwgDQphbmQgdGhlIGNvcnJlY3QgZGF0YSBjYW5ub3QgYmUgdHJh
+bnNtaXR0ZWQgYXQgdGhpcyB0aW1lIChJIGRvbid0IHF1aXRlIHVuZGVyc3RhbmQgd2h5IHlvdSBh
+ZGRlZCB0aGlzIHN0YXRlbWVudCkuDQpUaGFua3MsDQpDaHVhbmh1YQ0K

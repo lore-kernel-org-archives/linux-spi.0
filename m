@@ -1,54 +1,97 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Sun, 30 Sep 2018 10:40:35 +0000
-Message-ID: <AM0PR04MB4353EC1BE55AF0A23E7BE3C597EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
+ undefined bitmask for rxdata
+Date: Sun, 30 Sep 2018 12:41:51 +0200
+Message-ID: <20180930124151.7ffed180@bbrezillon>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930120425.7715cb29@bbrezillon> <87o9cf70ht.fsf@gmail.com>
+        <20180930092535.24544-2-chuanhua.han@nxp.com>
+        <20180930120659.71b0e1e5@bbrezillon>
+        <AM0PR04MB4353B48117292E511AC1E09F97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+        <20180930121707.4724edd6@bbrezillon>
+        <877ej36zkd.fsf@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Esben Haabendal <esben.haabendal@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: Chuanhua Han <chuanhua.han@nxp.com>,
+        "broonie\@kernel.org" <broonie@kernel.org>,
+        "linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Esben Haabendal <esben.haabendal@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <87o9cf70ht.fsf@gmail.com>
-Content-Language: en-US
+In-Reply-To: <877ej36zkd.fsf@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXNiZW4gSGFhYmVuZGFs
-IDxlc2JlbmhhYWJlbmRhbEBnbWFpbC5jb20+IE9uIEJlaGFsZiBPZiBFc2Jlbg0KPiBIYWFiZW5k
-YWwNCj4gU2VudDogMjAxOMTqOdTCMzDI1SAxODoxOA0KPiBUbzogQm9yaXMgQnJlemlsbG9uIDxi
-b3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IENjOiBDaHVhbmh1YSBIYW4gPGNodWFuaHVh
-LmhhbkBueHAuY29tPjsgYnJvb25pZUBrZXJuZWwub3JnOw0KPiBsaW51eC1zcGlAdmdlci5rZXJu
-ZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0ggdjIgMS80XSBzcGk6IHNwaS1tZW06IEFkZCB0aGUgc3BpX3NldF94ZmVyX2JwdyBmdW5jdGlv
-bg0KPiANCj4gQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+IHdy
-aXRlczoNCj4gDQo+ID4gSGkgQ2h1YW5odWEsDQo+ID4NCj4gPiBPbiBTdW4sIDMwIFNlcCAyMDE4
-IDE3OjI1OjMyICswODAwDQo+ID4gQ2h1YW5odWEgSGFuIDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4g
-d3JvdGU6DQo+ID4NCj4gPj4gQmVmb3JlIHdlIGFkZCB0aGlzIHNwaV90cmFuc2ZlciB0byB0aGUg
-c3BpX21lc3NhZ2UgY2hhaW4gdGFibGUsIHdlDQo+ID4+IG5lZWQgYml0c19wZXJfd29yZF9tYXNr
-IGJhc2VkIG9uIHNwaV9jb250cm9sIHRvIHNldCB0aGUgYml0c19wZXJfd29yZA0KPiA+PiBvZiB0
-aGlzIHNwaV90cmFuc2Zlci4NCj4gPg0KPiA+IExldCdzIG1ha2UgaXQgY2xlYXJlcjogdGhpcyBp
-cyB3cm9uZy4gVGhlIHNwaS1tZW0gcHJvdG9jb2wgaXMganVzdA0KPiA+IHVzaW5nIGJ5dGVzLCBu
-b3QgY3VzdG9tIHNpemUgd29yZHMuIEZpeCB0aGUgZnNsLWRzcGkgZHJpdmVyIGlmIG5lZWRlZCwN
-Cj4gPiBidXQgZG9uJ3QgdHJ5IHRvIGFkanVzdCB4ZmVyLT5iaXRzX3Blcl93b3JkIGluIHNwaS1t
-ZW0uYywgYmVjYXVzZSB0aGlzDQo+ID4gaXMgaW5hcHByb3ByaWF0ZS4NCj4gDQo+IEkgZG9uJ3Qg
-dGhpbmsgdGhlcmUgaXMgYSAiZml4IiBuZWVkZWQgaW4gZnNsLWRzcGkgZHJpdmVyIGZvciB0aGlz
-Lg0KPiANCj4gSSBhbSBub3Qgc3VyZSwgYnV0IEkgdGhpbmsgdGhhdCB3aGF0IEhhbiBpcyB0cnlp
-bmcgdG8gYWNoaWV2ZSBoZXJlIGlzIGJldHRlcg0KPiBwZXJmb3JtYW5jZS4NCj4gQW5kIHdpbGUg
-dGhlIFhTUEkgbW9kZSBkb2VzIHByb3ZpZGUgYmV0dGVyIHBlcmZvcm1hbmNlIGZvciBzZW5kaW5n
-IG9uZQ0KPiAzMiBiaXQgd29yZCwgdGhhbiBub3JtYWwgbW9kZSBwcm92aWRlZXMgZm9yIHNlbmRp
-bmcgNCB4IDggYml0IHdvcmRzLg0KPiBCdXQgYXMgeW91IHNheSwgdGhpcyBpcyB3cm9uZy4NCj4g
-DQo+IFRvIGltcHJvdmUgcGVyZm9ybWFuY2UsIHRoZSBmc2wtZHNwaSBkcml2ZXIgc2hvdWxkIGJl
-IGZpeGVkIHRvIHdvcmsgaW4gRE1BDQo+IG1vZGUuICBJbXBsZW1lbnRhdGlvbiBvZiBlcnJhdHVt
-IEEtMDExMjE4IGlzIG5lY2Vzc2FyeSBpbiBvcmRlciB0byB1c2UNCj4gRFNQSSBETUEgbW9kZSBv
-biBMUzEwMjFBLg0KPiBJIHdhcyBwbGFubmluZyB0byB3b3JrIG9uIHRoYXQsIGJ1dCBoYXZlbid0
-IGhhZCB0aGUgdGltZSBmb3IgaXQuDQo+IFNvIGlmIHlvdSB3YW50IGJldHRlciBwZXJmb3JtYW5j
-ZSBmb3Igc3BpLW1lbSBvbiBMUzEwMjFBIERTUEksIHBsZWFzZSB3b3JrDQo+IG9uIHRoaXMuDQo+
-IA0KPiAvRXNiZW4NCkhpo6wNCkFub3RoZXIgY29sbGVhZ3VlIGlzIHJlc3BvbnNpYmxlIGZvciB0
-aGUgRE1BIHRyYW5zbWlzc2lvbiBvZiBkc3BpLg0KSSBhbSBub3QgY2xlYXIgYWJvdXQgaXQuIEkg
-anVzdCBmaXggdGhlIHRyYW5zbWlzc2lvbiBvZiBYU1BJIG1vZGUgd2l0aCBzZXZlcmFsIHBhdGNo
-ZXMuIA0KVGhhbmsgeW91IGZvciB5b3VyIGNvbW1lbnRzLg0K
+On Sun, 30 Sep 2018 12:37:38 +0200
+Esben Haabendal <esben.haabendal@gmail.com> wrote:
+
+> Boris Brezillon <boris.brezillon@bootlin.com> writes:
+> 
+> > On Sun, 30 Sep 2018 10:10:14 +0000
+> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
+> >  
+> >> > -----Original Message-----
+> >> > From: Boris Brezillon <boris.brezillon@bootlin.com>
+> >> > Sent: 2018年9月30日 18:07
+> >> > To: Chuanhua Han <chuanhua.han@nxp.com>
+> >> > Cc: broonie@kernel.org; linux-spi@vger.kernel.org;
+> >> > linux-kernel@vger.kernel.org; eha@deif.com
+> >> > Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
+> >> > undefined bitmask for rxdata
+> >> > 
+> >> > On Sun, 30 Sep 2018 17:25:33 +0800
+> >> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
+> >> >     
+> >> > > This patch fixes the problem of rxdata being equal to 0 during the
+> >> > > XSPI mode transfer of the dspi controller.
+> >> > > In XSPI mode, If it is not deleted, the value of rxdata will be equal
+> >> > > to 0, and the data received will not be received correctly, causing
+> >> > > the receiving transfer of the spi to fail.
+> >> > >
+> >> > > Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+> >> > > ---
+> >> > > Changes in v2:
+> >> > >  -The original patch is divided into multiple patches(the original
+> >> > > patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
+> >> > > mode"),one of which is segmented.
+> >> > >
+> >> > >  drivers/spi/spi-fsl-dspi.c | 3 ---
+> >> > >  1 file changed, 3 deletions(-)
+> >> > >
+> >> > > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> >> > > index 3082e72e4f6c..4dc1064bf408 100644
+> >> > > --- a/drivers/spi/spi-fsl-dspi.c
+> >> > > +++ b/drivers/spi/spi-fsl-dspi.c
+> >> > > @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32    
+> >> > rxdata)    
+> >> > >  	if (!dspi->rx)
+> >> > >  		return;
+> >> > >
+> >> > > -	/* Mask of undefined bits */
+> >> > > -	rxdata &= (1 << dspi->bits_per_word) - 1;
+> >> > > -    
+> >> > 
+> >> > Why not    
+> >> In xspi mode, the value of rxdata after the statement is processed is equal
+> >> to 0 no matter what data is received.  
+> >
+> > Only if dspi->bits_per_word is 0.
+> >
+> > Actually, I just had a look, and xfer->bits_per_word should never be 0
+> > because spi_validate() makes sure it's initialized [1]. Don't know
+> > where dpsi->bits_per_word comes from, but maybe you have a problem
+> > there (dpsi->bits_per_word and xfer->bits_per_word not in sync).
+> >
+> > [1]https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi.c#L2869  
+> 
+> dspi->bits_per_word = xfer->bits_per_word
+> 
+> https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi-fsl-dspi.c#L697
+> 
+> So it should never be out of sync, and it should never be 0.
+> 
+> As I mentioned in another mail, I suspect what Han is observing is
+> caused by byte ordering, so that the mask masks the wrong data.
+> Maybe related to the byte-ordering fix patch.
+
+Okay. Wait and see then.

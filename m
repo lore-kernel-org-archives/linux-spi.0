@@ -1,77 +1,128 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Sun, 30 Sep 2018 10:48:31 +0000
-Message-ID: <AM0PR04MB4353252D3D6703FA14BCE4BA97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
-References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930120425.7715cb29@bbrezillon>
-        <AM0PR04MB4353635C85F0D744D090A14C97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
- <20180930124008.365831bf@bbrezillon>
+From: Lukasz Majewski <lukma@denx.de>
+Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
+ fsl-quadspi.c driver (vybrid HW)
+Date: Sun, 30 Sep 2018 18:22:20 +0200
+Message-ID: <20180930182220.30d0ccf3@jawa>
+References: <20180926220739.620-1-lukma@denx.de>
+        <20180929000359.34fe18ae@bbrezillon>
+        <20180929230240.1c8d844d@jawa>
+        <20180930073927.001c16d2@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu"; protocol="application/pgp-signature"
+Cc: Fabio Estevam <festevam@gmail.com>, prabhakar.kushwaha@nxp.com,
+        han.xu@nxp.com, Mark Rutland <mark.rutland@arm.com>,
+        yogeshnarayan.gaur@nxp.com, richard@nod.at,
+        linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
+        linux-spi@vger.kernel.org, albert.aribaud@3adev.fr,
+        Frieder Schrempf <frieder.schrempf@exceet.de>,
+        broonie@kernel.org, linux-mtd@lists.infradead.org,
+        Fabio Estevam <fabio.estevam@nxp.com>, david.wolfe@nxp.com,
+        computersforpeace@gmail.com, dwmw2@infradead.org
 To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930124008.365831bf@bbrezillon>
-Content-Language: en-US
+In-Reply-To: <20180930073927.001c16d2@bbrezillon>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
-IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjlubQ55pyIMzDml6Ug
-MTg6NDANCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBi
-cm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
-cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENI
-IHYyIDEvNF0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24N
-Cj4gDQo+IE9uIFN1biwgMzAgU2VwIDIwMTggMTA6MTg6MTggKzAwMDANCj4gQ2h1YW5odWEgSGFu
-IDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+IA0KPiA+ID4gLS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJlemlsbG9u
-QGJvb3RsaW4uY29tPg0KPiA+ID4gU2VudDogMjAxOOW5tDnmnIgzMOaXpSAxODowNA0KPiA+ID4g
-VG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+ID4gPiBDYzogYnJvb25p
-ZUBrZXJuZWwub3JnOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOw0KPiA+ID4gbGludXgta2Vy
-bmVsQHZnZXIua2VybmVsLm9yZzsgZWhhQGRlaWYuY29tDQo+ID4gPiBTdWJqZWN0OiBSZTogW1BB
-VENIIHYyIDEvNF0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcNCj4gPiA+
-IGZ1bmN0aW9uDQo+ID4gPg0KPiA+ID4gSGkgQ2h1YW5odWEsDQo+ID4gPg0KPiA+ID4gT24gU3Vu
-LCAzMCBTZXAgMjAxOCAxNzoyNTozMiArMDgwMA0KPiA+ID4gQ2h1YW5odWEgSGFuIDxjaHVhbmh1
-YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+ID4gPg0KPiA+ID4gPiBCZWZvcmUgd2UgYWRkIHRoaXMg
-c3BpX3RyYW5zZmVyIHRvIHRoZSBzcGlfbWVzc2FnZSBjaGFpbiB0YWJsZSwgd2UNCj4gPiA+ID4g
-bmVlZCBiaXRzX3Blcl93b3JkX21hc2sgYmFzZWQgb24gc3BpX2NvbnRyb2wgdG8gc2V0IHRoZQ0K
-PiA+ID4gPiBiaXRzX3Blcl93b3JkIG9mIHRoaXMgc3BpX3RyYW5zZmVyLg0KPiA+ID4NCj4gPiA+
-IExldCdzIG1ha2UgaXQgY2xlYXJlcjogdGhpcyBpcyB3cm9uZy4gVGhlIHNwaS1tZW0gcHJvdG9j
-b2wgaXMganVzdA0KPiA+ID4gdXNpbmcgYnl0ZXMsIG5vdCBjdXN0b20gc2l6ZSB3b3Jkcy4gRml4
-IHRoZSBmc2wtZHNwaSBkcml2ZXIgaWYNCj4gPiA+IG5lZWRlZCwgYnV0IGRvbid0IHRyeSB0byBh
-ZGp1c3QNCj4gPiA+IHhmZXItPmJpdHNfcGVyX3dvcmQgaW4gc3BpLW1lbS5jLCBiZWNhdXNlIHRo
-aXMgaXMgaW5hcHByb3ByaWF0ZS4NCj4gPiBUaGUgdmFsdWUgb2YgYml0c19wZXJfd29yZCBpcyBv
-bmx5IGtub3duIGJlZm9yZSB0aGUNCj4gPiBzcGlfbWVzc2FnZV9hZGRfdGFpbCBmdW5jdGlvbiBp
-cyBjYWxsZWQsDQo+IA0KPiBObywgaXQncyBub3QuIEl0J3Mga25vd24gZnJvbSB0aGUgYmVnaW5u
-aW5nLCBhbmQgc3BpX3NldHVwKCkgZGVmYXVsdHMgdG8gOCB3aGVuDQo+IHNwaWRldi0+Yml0c19w
-ZXJfd29yZCBpcyAwLCB3aGljaCBpcyBleGFjdGx5IHdoYXQgd2Ugd2FudC4gVGhlbiwgd2hlbiB5
-b3UNCj4gc2VuZCBhIG1lc3NhZ2UgdGhyb3VnaCwgc3BpX3N5bmMoKSwgc3BpX3ZhbGlkYXRlKCkg
-bWFrZXMgc3VyZSB0aGF0IGVhY2gNCj4gdHJhbnNmZXIgaW4gdGhlIG1lc3NhZ2UgaGFzIGENCj4g
-eGZlci0+Yml0c19wZXJfd29yZCAhPSAwIGFuZCB3aGVuIHRoYXQncyBub3QgdGhlIGNhc2UsIGl0
-IHNldHMgaXQgdG8NCj4gc3BpLT5iaXRzX3Blcl93b3JkIFsyXS4NCj4gDQo+IFJlYWxseSwgdGhl
-cmUncyBub3RoaW5nIHRvIGZpeCBpbiBzcGktbWVtLmMsIGJlY2F1c2UgaXQncyBhbHJlYWR5IGRv
-aW5nIHRoZSByaWdodA0KPiB0aGluZyAobGVhdmluZyAtPmJpdHNfcGVyX3dvcmQgdG8gMCBzbyB0
-aGF0IGl0J3Mgc2V0IHRvDQo+IHNwaS0+Yml0c19wZXJfd29yZCwgd2hpY2ggc2hvdWxkIGJlIDgp
-LiBNYXliZSB3ZSBoYXZlIGEgYnVnIHNvbWV3aGVyZQ0KPiBlbHNlIHRob3VnaC4NCj4gDQo+IFsx
-XWh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0
-cHMlM0ElMkYlMkZlbGkNCj4geGlyLmJvb3RsaW4uY29tJTJGbGludXglMkZ2NC4xOS1yYzUlMkZz
-b3VyY2UlMkZkcml2ZXJzJTJGc3BpJTJGc3BpLmMlMjMNCj4gTDI4MDMmYW1wO2RhdGE9MDIlN0Mw
-MSU3Q2NodWFuaHVhLmhhbiU0MG54cC5jb20lN0M0ODY5NGQ1ZDdjZA0KPiBhNDYwYjNlMGIwOGQ2
-MjZjMTFlM2YlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5OWM1YzMwMTYzNSU3QzAlNw0KPiBDMCU3
-QzYzNjczOTAwODIxMjI4NzgxNCZhbXA7c2RhdGE9NXdZeUZhWmprOWtrYlp0UjB3MHVTMllGbGZO
-akMNCj4gR3ozU044MFdzNTk5ajAlM0QmYW1wO3Jlc2VydmVkPTANCj4gWzJdaHR0cHM6Ly9lbWVh
-MDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRmVs
-aQ0KPiB4aXIuYm9vdGxpbi5jb20lMkZsaW51eCUyRnY0LjE5LXJjNSUyRnNvdXJjZSUyRmRyaXZl
-cnMlMkZzcGklMkZzcGkuYyUyMw0KPiBMMjg2OSZhbXA7ZGF0YT0wMiU3QzAxJTdDY2h1YW5odWEu
-aGFuJTQwbnhwLmNvbSU3QzQ4Njk0ZDVkN2NkDQo+IGE0NjBiM2UwYjA4ZDYyNmMxMWUzZiU3QzY4
-NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3DQo+IEMwJTdDNjM2NzM5MDA4MjEy
-Mjg3ODE0JmFtcDtzZGF0YT1pYndsJTJCWnVrJTJGTUxhZ3N1ZE5ldHdnZGENCj4gaFIxVlZLQnFJ
-MkJ5TDYyMjVINTAlM0QmYW1wO3Jlc2VydmVkPTANCkknbGwgdGFrZSB0aGUgdGltZSB0byBzdHVk
-eSB0aGlzLg0KT2N0b2JlciAxIHRvIE9jdG9iZXIgNyBpcyB0aGUgTmF0aW9uYWwgRGF5IG9mIG91
-ciBjb3VudHJ5LiBJIG5lZWQgdG8gdGFrZSBhIHZhY2F0aW9uLg0KSSBtYXkgbm90IHJlcGx5IHRv
-IHRoZSBlbWFpbCBpbiB0aW1lIGR1cmluZyB0aGlzIHBlcmlvZC4gDQpUaGFuayB5b3UgdmVyeSBt
-dWNoIGZvciB5b3VyIHZhbHVhYmxlIGFkdmljZSEhIQ0K
+--Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Boris,
+
+> Hi Lukasz,
+>=20
+> On Sat, 29 Sep 2018 23:02:40 +0200
+> Lukasz Majewski <lukma@denx.de> wrote:
+>=20
+> > > Talking about that, can you try to port your fixes on top of
+> > > Frieder's patchset? I'm pretty sure some bug fixes are irrelevant
+> > > after the migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9
+> > > should be dropped I think).   =20
+> >=20
+> > The problem is that Frieder's patch is using IP command mode for
+> > transfers smaller than AHB RX fifo size.
+> > This according to the comment in the current driver is broken in HW
+> > for Vybrid (so this is a regression). =20
+>=20
+> Why not fixing that in the new driver?
+
+I did not say that I will not fix it in the new driver :-)
+
+The problem is that I'm waiting for NXP's community reply - to get some
+more info regarding the bug.
+
+>=20
+> >=20
+> > I'm also wondering if other users of vf610 based boards experience
+> > issues with QSPI? =20
+>=20
+> Are you sure the 4 I/O lines are wired on your design?=20
+
+This is a somewhat special case.
+
+There are two identical SPI-NOR memories: one with QUAD lines connected
+and second only for DUAL due to HW design decision.
+
+> Anyway, if it's
+> a bug that only hurts vf610, you should mask quad modes in ->hwcaps
+> (or patch fsl_qspi_supports_op() in the new driver), not change the
+> SPI NOR definition.
+
+Yes, this was also pointed out by Cyrille - and yes, I do agree that I
+shouldn't mask it.
+
+>=20
+> >=20
+> > In my case, after running the UBI/UBIFS tests (on the original and
+> > new driver without those "fixes") I cannot mount the volume after
+> > creation as the header is wrongly read. =20
+>=20
+> I'm not denying this fact, I'm just saying, now that you've found
+> where the issue comes from, you can also port the fix to the new
+> driver.
+
+Yes, as the old driver is now in a "good enough" shape (though I don't
+know the exact HW bug reason) - the code can be ported to the new
+driver.
+
+>=20
+> Regards,
+>=20
+> Boris
+>=20
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+
+--Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAluw+D0ACgkQAR8vZIA0
+zr146Af/dhtgZ/5O+ftarCkoh9hIJfxK8FtCQq5b7Hkn1jTcXEMBLGfANjyJdI1Y
+Xttr/TthJg3CiP39pT5gzwUKb8d+UtAEqsDY1NXCob13frFBTQp/n6o5vLgBaZxr
+byMwlDs/BaITsof0O6c2yq6j3OHVEWg28wXd8usK4R9V3N6w9YZmAVPPpvsDGfmY
+egeGAeQc3TjZItMdNLme8sCz4hmXJaXsiHoNY2Gf/nG4XRe+y2oO2nG01dwpjxae
+xGjwngWsgizShYrlWUAU7gMxkcH3PZ8F+68esDjFzzvXHNAeGSpqzxcIISw8uYtU
+chcHEIFwQY5J8yd3BN//yobEPW0hfA==
+=jIv+
+-----END PGP SIGNATURE-----
+
+--Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu--

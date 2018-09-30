@@ -1,77 +1,49 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
- undefined bitmask for rxdata
-Date: Sun, 30 Sep 2018 12:17:07 +0200
-Message-ID: <20180930121707.4724edd6@bbrezillon>
+From: Esben Haabendal <esben.haabendal@gmail.com>
+Subject: Re: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Sun, 30 Sep 2018 12:17:34 +0200
+Message-ID: <87o9cf70ht.fsf@gmail.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930092535.24544-2-chuanhua.han@nxp.com>
-        <20180930120659.71b0e1e5@bbrezillon>
-        <AM0PR04MB4353B48117292E511AC1E09F97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+        <20180930120425.7715cb29@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>
-To: Chuanhua Han <chuanhua.han@nxp.com>
+Content-Type: text/plain
+Cc: Chuanhua Han <chuanhua.han@nxp.com>, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AM0PR04MB4353B48117292E511AC1E09F97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+In-Reply-To: <20180930120425.7715cb29@bbrezillon> (Boris Brezillon's message
+        of "Sun, 30 Sep 2018 12:04:25 +0200")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 30 Sep 2018 10:10:14 +0000
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
+Boris Brezillon <boris.brezillon@bootlin.com> writes:
 
-> > -----Original Message-----
-> > From: Boris Brezillon <boris.brezillon@bootlin.com>
-> > Sent: 2018年9月30日 18:07
-> > To: Chuanhua Han <chuanhua.han@nxp.com>
-> > Cc: broonie@kernel.org; linux-spi@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; eha@deif.com
-> > Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
-> > undefined bitmask for rxdata
-> > 
-> > On Sun, 30 Sep 2018 17:25:33 +0800
-> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
-> >   
-> > > This patch fixes the problem of rxdata being equal to 0 during the
-> > > XSPI mode transfer of the dspi controller.
-> > > In XSPI mode, If it is not deleted, the value of rxdata will be equal
-> > > to 0, and the data received will not be received correctly, causing
-> > > the receiving transfer of the spi to fail.
-> > >
-> > > Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-> > > ---
-> > > Changes in v2:
-> > >  -The original patch is divided into multiple patches(the original
-> > > patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
-> > > mode"),one of which is segmented.
-> > >
-> > >  drivers/spi/spi-fsl-dspi.c | 3 ---
-> > >  1 file changed, 3 deletions(-)
-> > >
-> > > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> > > index 3082e72e4f6c..4dc1064bf408 100644
-> > > --- a/drivers/spi/spi-fsl-dspi.c
-> > > +++ b/drivers/spi/spi-fsl-dspi.c
-> > > @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32  
-> > rxdata)  
-> > >  	if (!dspi->rx)
-> > >  		return;
-> > >
-> > > -	/* Mask of undefined bits */
-> > > -	rxdata &= (1 << dspi->bits_per_word) - 1;
-> > > -  
-> > 
-> > Why not  
-> In xspi mode, the value of rxdata after the statement is processed is equal to 0 no matter what data is received.
+> Hi Chuanhua,
+>
+> On Sun, 30 Sep 2018 17:25:32 +0800
+> Chuanhua Han <chuanhua.han@nxp.com> wrote:
+>
+>> Before we add this spi_transfer to the spi_message chain table, we need
+>> bits_per_word_mask based on spi_control to set the bits_per_word of
+>> this spi_transfer.
+>
+> Let's make it clearer: this is wrong. The spi-mem protocol is just
+> using bytes, not custom size words. Fix the fsl-dspi driver if needed,
+> but don't try to adjust xfer->bits_per_word in spi-mem.c, because this
+> is inappropriate.
 
-Only if dspi->bits_per_word is 0.
+I don't think there is a "fix" needed in fsl-dspi driver for this.
 
-Actually, I just had a look, and xfer->bits_per_word should never be 0
-because spi_validate() makes sure it's initialized [1]. Don't know
-where dpsi->bits_per_word comes from, but maybe you have a problem
-there (dpsi->bits_per_word and xfer->bits_per_word not in sync).
+I am not sure, but I think that what Han is trying to achieve here is
+better performance.
+And wile the XSPI mode does provide better performance for sending one
+32 bit word, than normal mode providees for sending 4 x 8 bit words.
+But as you say, this is wrong.
 
-[1]https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi.c#L2869
+To improve performance, the fsl-dspi driver should be fixed to work in
+DMA mode.  Implementation of erratum A-011218 is necessary in order to
+use DSPI DMA mode on LS1021A.
+I was planning to work on that, but haven't had the time for it.
+So if you want better performance for spi-mem on LS1021A DSPI, please
+work on this.
+
+/Esben

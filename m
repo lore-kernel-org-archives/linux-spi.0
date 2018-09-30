@@ -1,97 +1,77 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
- undefined bitmask for rxdata
-Date: Sun, 30 Sep 2018 12:41:51 +0200
-Message-ID: <20180930124151.7ffed180@bbrezillon>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH v2 1/4] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Sun, 30 Sep 2018 10:48:31 +0000
+Message-ID: <AM0PR04MB4353252D3D6703FA14BCE4BA97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
 References: <20180930092535.24544-1-chuanhua.han@nxp.com>
-        <20180930092535.24544-2-chuanhua.han@nxp.com>
-        <20180930120659.71b0e1e5@bbrezillon>
-        <AM0PR04MB4353B48117292E511AC1E09F97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
-        <20180930121707.4724edd6@bbrezillon>
-        <877ej36zkd.fsf@gmail.com>
+        <20180930120425.7715cb29@bbrezillon>
+        <AM0PR04MB4353635C85F0D744D090A14C97EE0@AM0PR04MB4353.eurprd04.prod.outlook.com>
+ <20180930124008.365831bf@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: Chuanhua Han <chuanhua.han@nxp.com>,
-        "broonie\@kernel.org" <broonie@kernel.org>,
-        "linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Esben Haabendal <esben.haabendal@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <877ej36zkd.fsf@gmail.com>
+In-Reply-To: <20180930124008.365831bf@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 30 Sep 2018 12:37:38 +0200
-Esben Haabendal <esben.haabendal@gmail.com> wrote:
-
-> Boris Brezillon <boris.brezillon@bootlin.com> writes:
-> 
-> > On Sun, 30 Sep 2018 10:10:14 +0000
-> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
-> >  
-> >> > -----Original Message-----
-> >> > From: Boris Brezillon <boris.brezillon@bootlin.com>
-> >> > Sent: 2018年9月30日 18:07
-> >> > To: Chuanhua Han <chuanhua.han@nxp.com>
-> >> > Cc: broonie@kernel.org; linux-spi@vger.kernel.org;
-> >> > linux-kernel@vger.kernel.org; eha@deif.com
-> >> > Subject: Re: [PATCH v2 2/4] spi: spi-fsl-dspi: Fix delete the processing of
-> >> > undefined bitmask for rxdata
-> >> > 
-> >> > On Sun, 30 Sep 2018 17:25:33 +0800
-> >> > Chuanhua Han <chuanhua.han@nxp.com> wrote:
-> >> >     
-> >> > > This patch fixes the problem of rxdata being equal to 0 during the
-> >> > > XSPI mode transfer of the dspi controller.
-> >> > > In XSPI mode, If it is not deleted, the value of rxdata will be equal
-> >> > > to 0, and the data received will not be received correctly, causing
-> >> > > the receiving transfer of the spi to fail.
-> >> > >
-> >> > > Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
-> >> > > ---
-> >> > > Changes in v2:
-> >> > >  -The original patch is divided into multiple patches(the original
-> >> > > patch theme is "spi: spi-fsl-dspi: Fix support for XSPI transport
-> >> > > mode"),one of which is segmented.
-> >> > >
-> >> > >  drivers/spi/spi-fsl-dspi.c | 3 ---
-> >> > >  1 file changed, 3 deletions(-)
-> >> > >
-> >> > > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> >> > > index 3082e72e4f6c..4dc1064bf408 100644
-> >> > > --- a/drivers/spi/spi-fsl-dspi.c
-> >> > > +++ b/drivers/spi/spi-fsl-dspi.c
-> >> > > @@ -243,9 +243,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32    
-> >> > rxdata)    
-> >> > >  	if (!dspi->rx)
-> >> > >  		return;
-> >> > >
-> >> > > -	/* Mask of undefined bits */
-> >> > > -	rxdata &= (1 << dspi->bits_per_word) - 1;
-> >> > > -    
-> >> > 
-> >> > Why not    
-> >> In xspi mode, the value of rxdata after the statement is processed is equal
-> >> to 0 no matter what data is received.  
-> >
-> > Only if dspi->bits_per_word is 0.
-> >
-> > Actually, I just had a look, and xfer->bits_per_word should never be 0
-> > because spi_validate() makes sure it's initialized [1]. Don't know
-> > where dpsi->bits_per_word comes from, but maybe you have a problem
-> > there (dpsi->bits_per_word and xfer->bits_per_word not in sync).
-> >
-> > [1]https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi.c#L2869  
-> 
-> dspi->bits_per_word = xfer->bits_per_word
-> 
-> https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/spi/spi-fsl-dspi.c#L697
-> 
-> So it should never be out of sync, and it should never be 0.
-> 
-> As I mentioned in another mail, I suspect what Han is observing is
-> caused by byte ordering, so that the mask masks the wrong data.
-> Maybe related to the byte-ordering fix patch.
-
-Okay. Wait and see then.
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjlubQ55pyIMzDml6Ug
+MTg6NDANCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBi
+cm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
+cm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENI
+IHYyIDEvNF0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24N
+Cj4gDQo+IE9uIFN1biwgMzAgU2VwIDIwMTggMTA6MTg6MTggKzAwMDANCj4gQ2h1YW5odWEgSGFu
+IDxjaHVhbmh1YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+IA0KPiA+ID4gLS0tLS1PcmlnaW5hbCBN
+ZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJlemlsbG9u
+QGJvb3RsaW4uY29tPg0KPiA+ID4gU2VudDogMjAxOOW5tDnmnIgzMOaXpSAxODowNA0KPiA+ID4g
+VG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+ID4gPiBDYzogYnJvb25p
+ZUBrZXJuZWwub3JnOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOw0KPiA+ID4gbGludXgta2Vy
+bmVsQHZnZXIua2VybmVsLm9yZzsgZWhhQGRlaWYuY29tDQo+ID4gPiBTdWJqZWN0OiBSZTogW1BB
+VENIIHYyIDEvNF0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcNCj4gPiA+
+IGZ1bmN0aW9uDQo+ID4gPg0KPiA+ID4gSGkgQ2h1YW5odWEsDQo+ID4gPg0KPiA+ID4gT24gU3Vu
+LCAzMCBTZXAgMjAxOCAxNzoyNTozMiArMDgwMA0KPiA+ID4gQ2h1YW5odWEgSGFuIDxjaHVhbmh1
+YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+ID4gPg0KPiA+ID4gPiBCZWZvcmUgd2UgYWRkIHRoaXMg
+c3BpX3RyYW5zZmVyIHRvIHRoZSBzcGlfbWVzc2FnZSBjaGFpbiB0YWJsZSwgd2UNCj4gPiA+ID4g
+bmVlZCBiaXRzX3Blcl93b3JkX21hc2sgYmFzZWQgb24gc3BpX2NvbnRyb2wgdG8gc2V0IHRoZQ0K
+PiA+ID4gPiBiaXRzX3Blcl93b3JkIG9mIHRoaXMgc3BpX3RyYW5zZmVyLg0KPiA+ID4NCj4gPiA+
+IExldCdzIG1ha2UgaXQgY2xlYXJlcjogdGhpcyBpcyB3cm9uZy4gVGhlIHNwaS1tZW0gcHJvdG9j
+b2wgaXMganVzdA0KPiA+ID4gdXNpbmcgYnl0ZXMsIG5vdCBjdXN0b20gc2l6ZSB3b3Jkcy4gRml4
+IHRoZSBmc2wtZHNwaSBkcml2ZXIgaWYNCj4gPiA+IG5lZWRlZCwgYnV0IGRvbid0IHRyeSB0byBh
+ZGp1c3QNCj4gPiA+IHhmZXItPmJpdHNfcGVyX3dvcmQgaW4gc3BpLW1lbS5jLCBiZWNhdXNlIHRo
+aXMgaXMgaW5hcHByb3ByaWF0ZS4NCj4gPiBUaGUgdmFsdWUgb2YgYml0c19wZXJfd29yZCBpcyBv
+bmx5IGtub3duIGJlZm9yZSB0aGUNCj4gPiBzcGlfbWVzc2FnZV9hZGRfdGFpbCBmdW5jdGlvbiBp
+cyBjYWxsZWQsDQo+IA0KPiBObywgaXQncyBub3QuIEl0J3Mga25vd24gZnJvbSB0aGUgYmVnaW5u
+aW5nLCBhbmQgc3BpX3NldHVwKCkgZGVmYXVsdHMgdG8gOCB3aGVuDQo+IHNwaWRldi0+Yml0c19w
+ZXJfd29yZCBpcyAwLCB3aGljaCBpcyBleGFjdGx5IHdoYXQgd2Ugd2FudC4gVGhlbiwgd2hlbiB5
+b3UNCj4gc2VuZCBhIG1lc3NhZ2UgdGhyb3VnaCwgc3BpX3N5bmMoKSwgc3BpX3ZhbGlkYXRlKCkg
+bWFrZXMgc3VyZSB0aGF0IGVhY2gNCj4gdHJhbnNmZXIgaW4gdGhlIG1lc3NhZ2UgaGFzIGENCj4g
+eGZlci0+Yml0c19wZXJfd29yZCAhPSAwIGFuZCB3aGVuIHRoYXQncyBub3QgdGhlIGNhc2UsIGl0
+IHNldHMgaXQgdG8NCj4gc3BpLT5iaXRzX3Blcl93b3JkIFsyXS4NCj4gDQo+IFJlYWxseSwgdGhl
+cmUncyBub3RoaW5nIHRvIGZpeCBpbiBzcGktbWVtLmMsIGJlY2F1c2UgaXQncyBhbHJlYWR5IGRv
+aW5nIHRoZSByaWdodA0KPiB0aGluZyAobGVhdmluZyAtPmJpdHNfcGVyX3dvcmQgdG8gMCBzbyB0
+aGF0IGl0J3Mgc2V0IHRvDQo+IHNwaS0+Yml0c19wZXJfd29yZCwgd2hpY2ggc2hvdWxkIGJlIDgp
+LiBNYXliZSB3ZSBoYXZlIGEgYnVnIHNvbWV3aGVyZQ0KPiBlbHNlIHRob3VnaC4NCj4gDQo+IFsx
+XWh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0
+cHMlM0ElMkYlMkZlbGkNCj4geGlyLmJvb3RsaW4uY29tJTJGbGludXglMkZ2NC4xOS1yYzUlMkZz
+b3VyY2UlMkZkcml2ZXJzJTJGc3BpJTJGc3BpLmMlMjMNCj4gTDI4MDMmYW1wO2RhdGE9MDIlN0Mw
+MSU3Q2NodWFuaHVhLmhhbiU0MG54cC5jb20lN0M0ODY5NGQ1ZDdjZA0KPiBhNDYwYjNlMGIwOGQ2
+MjZjMTFlM2YlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5OWM1YzMwMTYzNSU3QzAlNw0KPiBDMCU3
+QzYzNjczOTAwODIxMjI4NzgxNCZhbXA7c2RhdGE9NXdZeUZhWmprOWtrYlp0UjB3MHVTMllGbGZO
+akMNCj4gR3ozU044MFdzNTk5ajAlM0QmYW1wO3Jlc2VydmVkPTANCj4gWzJdaHR0cHM6Ly9lbWVh
+MDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRmVs
+aQ0KPiB4aXIuYm9vdGxpbi5jb20lMkZsaW51eCUyRnY0LjE5LXJjNSUyRnNvdXJjZSUyRmRyaXZl
+cnMlMkZzcGklMkZzcGkuYyUyMw0KPiBMMjg2OSZhbXA7ZGF0YT0wMiU3QzAxJTdDY2h1YW5odWEu
+aGFuJTQwbnhwLmNvbSU3QzQ4Njk0ZDVkN2NkDQo+IGE0NjBiM2UwYjA4ZDYyNmMxMWUzZiU3QzY4
+NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3DQo+IEMwJTdDNjM2NzM5MDA4MjEy
+Mjg3ODE0JmFtcDtzZGF0YT1pYndsJTJCWnVrJTJGTUxhZ3N1ZE5ldHdnZGENCj4gaFIxVlZLQnFJ
+MkJ5TDYyMjVINTAlM0QmYW1wO3Jlc2VydmVkPTANCkknbGwgdGFrZSB0aGUgdGltZSB0byBzdHVk
+eSB0aGlzLg0KT2N0b2JlciAxIHRvIE9jdG9iZXIgNyBpcyB0aGUgTmF0aW9uYWwgRGF5IG9mIG91
+ciBjb3VudHJ5LiBJIG5lZWQgdG8gdGFrZSBhIHZhY2F0aW9uLg0KSSBtYXkgbm90IHJlcGx5IHRv
+IHRoZSBlbWFpbCBpbiB0aW1lIGR1cmluZyB0aGlzIHBlcmlvZC4gDQpUaGFuayB5b3UgdmVyeSBt
+dWNoIGZvciB5b3VyIHZhbHVhYmxlIGFkdmljZSEhIQ0K

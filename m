@@ -1,55 +1,91 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spidev: Enable the Liebherr's BK4 board to work with
- spidev driver
-Date: Mon, 1 Oct 2018 15:22:19 +0100
-Message-ID: <20181001142219.GB19099@sirena.org.uk>
-References: <20180927223152.24990-1-lukma@denx.de>
- <47e37a54-6df6-47c0-b38b-ad35e9bd4ce4@cesnet.cz>
+Subject: Re: [PATCH v3 1/2] spi: Add MXIC controller driver
+Date: Mon, 1 Oct 2018 16:35:01 +0100
+Message-ID: <20181001153501.GD19099@sirena.org.uk>
+References: <1538120112-15530-1-git-send-email-masonccyang@mxic.com.tw>
+ <1538120112-15530-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cmJC7u66zC7hs+87"
-Cc: Lukasz Majewski <lukma@denx.de>, Shawn Guo <shawnguo@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat@cesnet.cz>
+        protocol="application/pgp-signature"; boundary="0IvGJv3f9h+YhkrH"
+Cc: tpiepho@impinj.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
+        juliensu@mxic.com.tw, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <47e37a54-6df6-47c0-b38b-ad35e9bd4ce4@cesnet.cz>
+In-Reply-To: <1538120112-15530-2-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---cmJC7u66zC7hs+87
-Content-Type: text/plain; charset=iso-8859-1
+--0IvGJv3f9h+YhkrH
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 01, 2018 at 04:20:32PM +0200, Jan Kundr=E1t wrote:
+On Fri, Sep 28, 2018 at 03:35:11PM +0800, masonccyang@mxic.com.tw wrote:
 
-> Hi Lukasz,
-> I tried submitting a similar patch for another devicem but got no reaction
-> [1]. In the meanwhile, there has been another proposal [2] which moves
+This looks mostly good, a couple of fairly small things:
 
-As documented in SubmittingPatches please send patches to the=20
-maintainers for the code you would like to change.  The normal kernel
-workflow is that people apply patches from their inboxes, if they aren't
-copied they are likely to not see the patch at all and it is much more
-difficult to apply patches.
+> +static int mxic_spi_clk_enable(struct mxic_spi *mxic)
+> +{
+> +	int ret;
+> +
+> +	ret = clk_prepare_enable(mxic->send_clk);
+> +	if (ret)
+> +		goto err_send_clk;
+> +
+> +	ret = clk_prepare_enable(mxic->send_dly_clk);
+> +	if (ret)
+> +		goto err_send_dly_clk;
+> +
+> +	return ret;
+> +
+> +err_send_dly_clk:
+> +	clk_disable_unprepare(mxic->send_dly_clk);
+> +err_send_clk:
+> +	clk_disable_unprepare(mxic->send_clk);
 
---cmJC7u66zC7hs+87
+You should only undo operations that succeeded in the error path, if
+something failed you don't need to revert it.
+
+> +static int mxic_spi_setup(struct spi_device *spi)
+> +{
+> +	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
+> +	unsigned long freq = spi->max_speed_hz;
+> +	int ret;
+> +
+> +	ret = clk_set_rate(mxic->send_clk, freq);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = clk_set_rate(mxic->send_dly_clk, freq);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * A constant delay range from 0x0 ~ 0x1F for input delay,
+> +	 * the unit is 78 ps, the max input delay is 2.418 ns.
+> +	 */
+> +	mxic_spi_set_input_delay_dqs(mxic, 0xf);
+
+This is changing the hardware state for all slaves, not just the device
+being configured - setup() isn't supposed to do that (yes, it's a
+confusing API but unfortunately a legacy one that'll be a pain to clean
+up).  prepare_transfer_hardware() is usually a better place to do this.
+
+--0IvGJv3f9h+YhkrH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluyLZoACgkQJNaLcl1U
-h9DH9Qf/SFVF/bDGp17OoeMy7ATxeW7zOlHxpeL3lM+opXvngLi1zcktNPRyjOz9
-Hhj1g1JlATLU7HmbqDXhF5uZCTS+vN7AIqWg8uYl5ilEuVuTCgUHLc2R9YgAVAro
-/r2fVn/cFOgbfd+xj2hrgtbvZupbAIlynIweEiCJVGJQrAi96edBLHI5Ha5RgVR9
-lOtWINYAayeZf5J6oR+dwyAMVGISIajyaHdxaPKvd59Eu1Mexh9SWuNYu5ZdA4ue
-JWFgAGrql4jHH5lHf9Ggjj1ouEy+BCZfqtUpJCv9Wdbh+X20NVIqN92buHf+7yyy
-uMvoqNjgiGs9XjnlV7Aq8/SldLtDoA==
-=cu4q
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluyPqQACgkQJNaLcl1U
+h9D+OAf+OsIceza4zPHL128gdHi4SlAfaeWnDUGRfFSOdl18iGjgRQC+7WpCexxK
+qMYJ5/rdWJYZp5PunuGP2c9shVpCwLjfvfWRnAGPkvIhTrF1YlLH3weDDemaHg9p
+YsyCdRzj9lrQes2LixuTk1YmET3BncPCEMQ+1dV9cNP9TlY6UrTfiBloMOfgWtrJ
+eYL8i3dXnpuyXhT47xdeuX5s0gbhumZK8R4cQvFnVg34ctQiekn9RRLs0RtmDwIZ
+PyJ7FFjn+llo2X72XrmUl3sGUadsF5UEDrW0F1aCmH4n4VaaAnk5XhoaT3EiLHVr
+gHjBC7zA5IIrmJVnYcPNwa99s2N7Iw==
+=AGZk
 -----END PGP SIGNATURE-----
 
---cmJC7u66zC7hs+87--
+--0IvGJv3f9h+YhkrH--

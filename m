@@ -1,128 +1,46 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [RFC/RFT PATCH v1 0/9] mtd: fsl: quadspi: Fixes for
- fsl-quadspi.c driver (vybrid HW)
-Date: Sun, 30 Sep 2018 18:22:20 +0200
-Message-ID: <20180930182220.30d0ccf3@jawa>
-References: <20180926220739.620-1-lukma@denx.de>
-        <20180929000359.34fe18ae@bbrezillon>
-        <20180929230240.1c8d844d@jawa>
-        <20180930073927.001c16d2@bbrezillon>
+From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: fsl-lpspi: Option to allow stalling
+Date: Mon, 1 Oct 2018 08:12:42 +0700
+Message-ID: <CAAObPoFfhJZpr_iwcmub2zndTV4GK5byV0DFBybeqA_vB8mbQQ@mail.gmail.com>
+References: <20180925203701.13605-1-dangtranhieu2012@gmail.com>
+ <20180925203701.13605-2-dangtranhieu2012@gmail.com> <CABGGiszY6+UDwzfuS6ob0C1zcGL4DfhcZ_iYjUGSXwWcbjPYRg@mail.gmail.com>
+ <CAAObPoHOEYrDj8uoFK-gW8jvy8i-vtRhTkEEm5aVNn8ucLxRMg@mail.gmail.com> <20180927224723.GF20825@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu"; protocol="application/pgp-signature"
-Cc: Fabio Estevam <festevam@gmail.com>, prabhakar.kushwaha@nxp.com,
-        han.xu@nxp.com, Mark Rutland <mark.rutland@arm.com>,
-        yogeshnarayan.gaur@nxp.com, richard@nod.at,
-        linux-kernel@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
-        linux-spi@vger.kernel.org, albert.aribaud@3adev.fr,
-        Frieder Schrempf <frieder.schrempf@exceet.de>,
-        broonie@kernel.org, linux-mtd@lists.infradead.org,
-        Fabio Estevam <fabio.estevam@nxp.com>, david.wolfe@nxp.com,
-        computersforpeace@gmail.com, dwmw2@infradead.org
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: robh@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180930073927.001c16d2@bbrezillon>
+In-Reply-To: <20180927224723.GF20825@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Agree. I will create new patch which will just allow stalling by default.
 
-Hi Boris,
-
-> Hi Lukasz,
->=20
-> On Sat, 29 Sep 2018 23:02:40 +0200
-> Lukasz Majewski <lukma@denx.de> wrote:
->=20
-> > > Talking about that, can you try to port your fixes on top of
-> > > Frieder's patchset? I'm pretty sure some bug fixes are irrelevant
-> > > after the migration to spi-mem (patch 1, 3, 4, 5, 6, 7 and 9
-> > > should be dropped I think).   =20
-> >=20
-> > The problem is that Frieder's patch is using IP command mode for
-> > transfers smaller than AHB RX fifo size.
-> > This according to the comment in the current driver is broken in HW
-> > for Vybrid (so this is a regression). =20
->=20
-> Why not fixing that in the new driver?
-
-I did not say that I will not fix it in the new driver :-)
-
-The problem is that I'm waiting for NXP's community reply - to get some
-more info regarding the bug.
-
->=20
-> >=20
-> > I'm also wondering if other users of vf610 based boards experience
-> > issues with QSPI? =20
->=20
-> Are you sure the 4 I/O lines are wired on your design?=20
-
-This is a somewhat special case.
-
-There are two identical SPI-NOR memories: one with QUAD lines connected
-and second only for DUAL due to HW design decision.
-
-> Anyway, if it's
-> a bug that only hurts vf610, you should mask quad modes in ->hwcaps
-> (or patch fsl_qspi_supports_op() in the new driver), not change the
-> SPI NOR definition.
-
-Yes, this was also pointed out by Cyrille - and yes, I do agree that I
-shouldn't mask it.
-
->=20
-> >=20
-> > In my case, after running the UBI/UBIFS tests (on the original and
-> > new driver without those "fixes") I cannot mount the volume after
-> > creation as the header is wrongly read. =20
->=20
-> I'm not denying this fact, I'm just saying, now that you've found
-> where the issue comes from, you can also port the fix to the new
-> driver.
-
-Yes, as the old driver is now in a "good enough" shape (though I don't
-know the exact HW bug reason) - the code can be ported to the new
-driver.
-
->=20
-> Regards,
->=20
-> Boris
->=20
-> ______________________________________________________
-> Linux MTD discussion mailing list
-> http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-
---Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAluw+D0ACgkQAR8vZIA0
-zr146Af/dhtgZ/5O+ftarCkoh9hIJfxK8FtCQq5b7Hkn1jTcXEMBLGfANjyJdI1Y
-Xttr/TthJg3CiP39pT5gzwUKb8d+UtAEqsDY1NXCob13frFBTQp/n6o5vLgBaZxr
-byMwlDs/BaITsof0O6c2yq6j3OHVEWg28wXd8usK4R9V3N6w9YZmAVPPpvsDGfmY
-egeGAeQc3TjZItMdNLme8sCz4hmXJaXsiHoNY2Gf/nG4XRe+y2oO2nG01dwpjxae
-xGjwngWsgizShYrlWUAU7gMxkcH3PZ8F+68esDjFzzvXHNAeGSpqzxcIISw8uYtU
-chcHEIFwQY5J8yd3BN//yobEPW0hfA==
-=jIv+
------END PGP SIGNATURE-----
-
---Sig_/gQ0Z.Lv4IK3bPj90mSrGgqu--
+V=C3=A0o Th 6, 28 thg 9, 2018 v=C3=A0o l=C3=BAc 05:47 Mark Brown <broonie@k=
+ernel.org> =C4=91=C3=A3 vi=E1=BA=BFt:
+>
+> On Wed, Sep 26, 2018 at 09:37:39PM +0700, =C4=90=E1=BA=B7ng Tr=E1=BA=A7n =
+Hi=E1=BA=BFu wrote:
+>
+> > Default value of the register is to allow stalling (NOSTALL bit not
+> > set) but the spi-fsl-lpspi driver defaults to setting the NOSTALL bit
+> > in CFGR1. To me, it's more logical to leave the NOSTALL bit off with
+> > fsl,nostall binding to set the bit but as I am not sure if there are
+> > other drivers depending on the NOSTALL bit being set and not wanting
+> > to break other drivers hence introduction of this binding to keep the
+> > current default behavior.
+>
+> I can't see a situation where you'd actively want to report an error
+> rather than stall, stalling allows us to handle things gracefully by
+> restarting things.  Even if it's a timeout situation it sounds like we
+> can unblock by reading/writing the stalled FIFO, and normally you'd be
+> resetting the entire IP anyway.  I'd imagine the driver is this way
+> either through an oversight or because there's some bug on some silicon
+> which means that stalling breaks.
+>
+> Probably best to just always enable stalling unless I'm misreading
+> things, if it is silicon bugs on some versions then either a whitelist
+> or blacklist of SoCs to enable on (depending on how common the bug is)
+> would be the way forwards - that way SoCs where it works get the benefit.

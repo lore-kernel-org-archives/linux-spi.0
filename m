@@ -1,288 +1,193 @@
-From: Frieder Schrempf <frieder.schrempf@exceet.de>
-Subject: Re: [PATCH v3 1/5] spi: spi-mem: Add driver for NXP FlexSPI controller
-Date: Mon, 1 Oct 2018 08:18:21 +0200
-Message-ID: <7c10ced6-91af-187a-0c34-ce9b3e897e2e@exceet.de>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v3 1/5] spi: spi-mem: Add driver for NXP FlexSPI
+ controller
+Date: Mon, 1 Oct 2018 09:02:32 +0000
+Message-ID: <VI1PR04MB10381FD703F054F33B9BA6BE99EF0@VI1PR04MB1038.eurprd04.prod.outlook.com>
 References: <1537525323-20730-1-git-send-email-yogeshnarayan.gaur@nxp.com>
  <1537525323-20730-2-git-send-email-yogeshnarayan.gaur@nxp.com>
  <20180929174023.51b1e284@bbrezillon>
+ <7c10ced6-91af-187a-0c34-ce9b3e897e2e@exceet.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, robh@kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, marek.vasut@gmail.com,
- linux-mtd@lists.infradead.org, computersforpeace@gmail.com,
- shawnguo@kernel.org, linux-arm-kernel@lists.infradead.org
-To: Boris Brezillon <boris.brezillon@bootlin.com>,
- Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20180929174023.51b1e284@bbrezillon>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Frieder Schrempf <frieder.schrempf@exceet.de>,
+        Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <7c10ced6-91af-187a-0c34-ce9b3e897e2e@exceet.de>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
-
-On 29.09.2018 17:40, Boris Brezillon wrote:
-> Hi Yogesh,
-> 
-> On Fri, 21 Sep 2018 15:51:59 +0530
-> Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> 
->> +/* Registers used by the driver */
->> +#define FSPI_MCR0			0x00
->> +#define FSPI_MCR0_AHB_TIMEOUT_SHIFT	24
->> +#define FSPI_MCR0_AHB_TIMEOUT_MASK	(0xFF << FSPI_MCR0_AHB_TIMEOUT_SHIFT)
->> +#define FSPI_MCR0_IP_TIMEOUT_SHIFT	16
->> +#define FSPI_MCR0_IP_TIMEOUT_MASK	(0xFF << FSPI_MCR0_IP_TIMEOUT_SHIFT)
->> +#define FSPI_MCR0_LEARN_EN_SHIFT	15
->> +#define FSPI_MCR0_LEARN_EN_MASK		(1 << FSPI_MCR0_LEARN_EN_SHIFT)
->> +#define FSPI_MCR0_SCRFRUN_EN_SHIFT	14
->> +#define FSPI_MCR0_SCRFRUN_EN_MASK	(1 << FSPI_MCR0_SCRFRUN_EN_SHIFT)
->> +#define FSPI_MCR0_OCTCOMB_EN_SHIFT	13
->> +#define FSPI_MCR0_OCTCOMB_EN_MASK	(1 << FSPI_MCR0_OCTCOMB_EN_SHIFT)
->> +#define FSPI_MCR0_DOZE_EN_SHIFT		12
->> +#define FSPI_MCR0_DOZE_EN_MASK		(1 << FSPI_MCR0_DOZE_EN_SHIFT)
->> +#define FSPI_MCR0_HSEN_SHIFT		11
->> +#define FSPI_MCR0_HSEN_MASK		(1 << FSPI_MCR0_HSEN_SHIFT)
->> +#define FSPI_MCR0_SERCLKDIV_SHIFT	8
->> +#define FSPI_MCR0_SERCLKDIV_MASK	(7 << FSPI_MCR0_SERCLKDIV_SHIFT)
->> +#define FSPI_MCR0_ATDF_EN_SHIFT		7
->> +#define FSPI_MCR0_ATDF_EN_MASK		(1 << FSPI_MCR0_ATDF_EN_SHIFT)
->> +#define FSPI_MCR0_ARDF_EN_SHIFT		6
->> +#define FSPI_MCR0_ARDF_EN_MASK		(1 << FSPI_MCR0_ARDF_EN_SHIFT)
->> +#define FSPI_MCR0_RXCLKSRC_SHIFT	4
->> +#define FSPI_MCR0_RXCLKSRC_MASK		(3 << FSPI_MCR0_RXCLKSRC_SHIFT)
->> +#define FSPI_MCR0_END_CFG_SHIFT		2
->> +#define FSPI_MCR0_END_CFG_MASK		(3 << FSPI_MCR0_END_CFG_SHIFT)
->> +#define FSPI_MCR0_MDIS_SHIFT		1
->> +#define FSPI_MCR0_MDIS_MASK		(1 << FSPI_MCR0_MDIS_SHIFT)
->> +#define FSPI_MCR0_SWRST_SHIFT		0
->> +#define FSPI_MCR0_SWRST_MASK		(1 << FSPI_MCR0_SWRST_SHIFT)
-> 
-> Do we really need all those _SHIFT/_MASK defs? I mean
-> 
-> #define FSPI_MCR0_SWRST		BIT(0)
-> 
-> or
-> 
-> #define FSPI_MCR0_AHB_TIMEOUT(x)	((x) << 24)
-> #define FSPI_MCR0_AHB_TIMEOUT_MASK	GENMASK(31, 24)
-> 
-> are just fine.
-> 
->> +
->> +enum nxp_fspi_devtype {
->> +	NXP_FSPI_LX2160A,
->> +};
-> 
-> I'm pretty sure you don't need this enum if you describe all dev caps
-> in the nxp_fspi_devtype_data struct.
-> 
->> +
->> +struct nxp_fspi_devtype_data {
->> +	enum nxp_fspi_devtype devtype;
->> +	unsigned int rxfifo;
->> +	unsigned int txfifo;
->> +	unsigned int ahb_buf_size;
->> +	unsigned int quirks;
->> +	bool endianness;
-> 
-> How about renaming this variable big_endian and dropping the
-> {L,B}_ENDIAN macros?
-> 
->> +};
-> 
-> [...]
-> 
->> +struct nxp_fspi {
->> +	void __iomem *iobase;
->> +	void __iomem *ahb_addr;
->> +	u32 memmap_phy;
->> +	u32 memmap_phy_size;
->> +	struct clk *clk, *clk_en;
->> +	struct device *dev;
->> +	struct completion c;
->> +	const struct nxp_fspi_devtype_data *devtype_data;
->> +	struct mutex lock;
->> +	struct pm_qos_request pm_qos_req;
->> +	int selected;
->> +	void (*write)(u32 val, void __iomem *addr);
->> +	u32 (*read)(void __iomem *addr);
->> +};
->> +
->> +static void fspi_writel_be(u32 val, void __iomem *addr)
->> +{
->> +	iowrite32be(val, addr);
->> +}
->> +
->> +static void fspi_writel(u32 val, void __iomem *addr)
->> +{
->> +	iowrite32(val, addr);
->> +}
->> +
->> +static u32 fspi_readl_be(void __iomem *addr)
->> +{
->> +	return ioread32be(addr);
->> +}
->> +
->> +static u32 fspi_readl(void __iomem *addr)
->> +{
->> +	return ioread32(addr);
->> +}
-> 
-> Hm, I'd recommend dropping the ->read/write() hooks and providing the
-> following functions:
-> 
-> static void fspi_writel(struct nxp_fspi *f, u32 val, void __iomem *addr)
-> {
-> 	if (f->big_endian)
-> 		iowrite32be(val, addr);
-> 	else
-> 		iowrite32(val, addr);
-> }
-> 
-> 
-> static u32 fspi_readl(struct nxp_fspi *f, void __iomem *addr)
-> {
-> 	if (f->big_endian)
-> 		return ioread32be(addr);
-> 	else
-> 		return ioread32(addr);
-> }
-
-I introduced the ->read/write() hooks in the QSPI driver because I was 
-told to remove the conditional in the read/write path, but I can't 
-really tell if this really makes any difference.
-
-Regards,
-Frieder
-
-> 
->> +
->> +static irqreturn_t nxp_fspi_irq_handler(int irq, void *dev_id)
->> +{
->> +	struct nxp_fspi *f = dev_id;
->> +	u32 reg;
->> +
->> +	/* clear interrupt */
->> +	reg = f->read(f->iobase + FSPI_INTR);
->> +	f->write(FSPI_INTR_IPCMDDONE_MASK, f->iobase + FSPI_INTR);
->> +
->> +	if (reg & FSPI_INTR_IPCMDDONE_MASK)
->> +		complete(&f->c);
->> +
->> +	return IRQ_HANDLED;
->> +}
-> 
-> [...]
-> 
->> +/*
->> + * If the slave device content being changed by Write/Erase, need to
->> + * invalidate the AHB buffer. This can be achieved by doing the reset
->> + * of controller after setting MCR0[SWRESET] bit.
->> + */
->> +static inline void nxp_fspi_invalid(struct nxp_fspi *f)
->> +{
->> +	u32 reg;
->> +
->> +	reg = f->read(f->iobase + FSPI_MCR0);
->> +	f->write(reg | FSPI_MCR0_SWRST_MASK, f->iobase + FSPI_MCR0);
->> +
->> +	while (f->read(f->iobase + FSPI_MCR0) & FSPI_MCR0_SWRST_MASK)
->> +		;
-> 
-> Did you consider using readl_poll_timeout[_atomic]()?
-> 
-> 	if (f->big_endian)
-> 		mask = (u32)cpu_to_be32(FSPI_MCR0_SWRST_MASK);
-> 	else
-> 		mask = (u32)cpu_to_be32(FSPI_MCR0_SWRST_MASK);
-> 
-> 	ret = readl_poll_timeout(f->iobase + FSPI_MCR0, reg,
-> 				 reg & mask, 0, FSPI_SWRST_TIMEOUT);
-> 	WARN_ON(ret);
-> 
->> +}
-> 
-> [...]
-> 
->> +static void nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
->> +{
->> +	u32 len = op->data.nbytes;
->> +
->> +	/* Read out the data directly from the AHB buffer. */
->> +	memcpy_fromio(op->data.buf.in, (f->ahb_addr + op->addr.val), len);
-> 
-> Don't know if it's supported, but if it is, I recommend using DMA to do
-> this copy, because otherwise you might stall the CPU for quite a long
-> time if the flash is operating in a low-speed mode, and RT maintainers
-> will complain about that at some point ;-).
-> 
->> +}
->> +
->> +static void nxp_fspi_fill_txfifo(struct nxp_fspi *f,
->> +				 const struct spi_mem_op *op)
->> +{
->> +	void __iomem *base = f->iobase;
->> +	int i, j;
->> +	int size, tmp_size, wm_size;
->> +	u32 data = 0;
->> +	u32 *txbuf = (u32 *) op->data.buf.out;
->> +
->> +	/* clear the TX FIFO. */
->> +	f->write(FSPI_IPTXFCR_CLR_MASK, base + FSPI_IPTXFCR);
->> +
->> +	/* Default value of water mark level is 8 bytes. */
->> +	wm_size = 8;
->> +	size = op->data.nbytes / wm_size;
->> +	for (i = 0; i < size; i++) {
->> +		/* Wait for TXFIFO empty */
->> +		while (!(f->read(base + FSPI_INTR) & FSPI_INTR_IPTXWE_MASK))
->> +			;
-> 
-> Use readl_poll_timeout(), or even better, provide an helper
-> (fspi_readl_poll_timeout()?) that hides the BE/LE stuff, so that you
-> can reuse it when this pattern occurs.
-> 
-> [...]
-> 
->> +static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
->> +{
->> +	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
->> +	void __iomem *base = f->iobase;
->> +	int err = 0;
->> +	unsigned int timeout = 1000;
->> +
->> +	mutex_lock(&f->lock);
->> +
->> +	/* wait for the controller being ready */
->> +	do {
->> +		u32 status;
->> +
->> +		status = f->read(base + FSPI_STS0);
->> +		if ((status & FSPI_STS0_ARB_IDLE_MASK) &&
->> +		    (status & FSPI_STS0_SEQ_IDLE_MASK))
->> +			break;
->> +		udelay(1);
->> +		dev_dbg(f->dev, "The controller is busy, 0x%x\n", status);
-> 
-> Same here.
-> 
-> Note that I didn't spend time looking at how the IP works, which
-> explains why I focus on tiny details here. Unfortunately, I won't have
-> time to review the driver in more details, so I'll leave that to
-> someone else, or let Mark decides if he's happy enough with the current
-> version.
-> 
-> Regards,
-> 
-> Boris
-> 
+SGkgQm9yaXMsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJpZWRl
+ciBTY2hyZW1wZiBbbWFpbHRvOmZyaWVkZXIuc2NocmVtcGZAZXhjZWV0LmRlXQ0KPiBTZW50OiBN
+b25kYXksIE9jdG9iZXIgMSwgMjAxOCAxMTo0OCBBTQ0KPiBUbzogQm9yaXMgQnJlemlsbG9uIDxi
+b3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+OyBZb2dlc2ggTmFyYXlhbiBHYXVyDQo+IDx5b2dl
+c2huYXJheWFuLmdhdXJAbnhwLmNvbT4NCj4gQ2M6IGxpbnV4LW10ZEBsaXN0cy5pbmZyYWRlYWQu
+b3JnOyBtYXJlay52YXN1dEBnbWFpbC5jb207IGxpbnV4LQ0KPiBzcGlAdmdlci5rZXJuZWwub3Jn
+OyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsgcm9iaEBrZXJuZWwub3JnOw0KPiBtYXJrLnJ1
+dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsgbGludXgtYXJtLQ0KPiBrZXJuZWxA
+bGlzdHMuaW5mcmFkZWFkLm9yZzsgY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOyBsaW51eC0N
+Cj4ga2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDEvNV0g
+c3BpOiBzcGktbWVtOiBBZGQgZHJpdmVyIGZvciBOWFAgRmxleFNQSSBjb250cm9sbGVyDQo+IA0K
+PiBIaSBCb3JpcywNCj4gDQo+IE9uIDI5LjA5LjIwMTggMTc6NDAsIEJvcmlzIEJyZXppbGxvbiB3
+cm90ZToNCj4gPiBIaSBZb2dlc2gsDQo+ID4NCj4gPiBPbiBGcmksIDIxIFNlcCAyMDE4IDE1OjUx
+OjU5ICswNTMwDQo+ID4gWW9nZXNoIEdhdXIgPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAuY29tPiB3
+cm90ZToNCj4gPg0KPiA+PiArLyogUmVnaXN0ZXJzIHVzZWQgYnkgdGhlIGRyaXZlciAqLw0KPiA+
+PiArI2RlZmluZSBGU1BJX01DUjAJCQkweDAwDQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9BSEJf
+VElNRU9VVF9TSElGVAkyNA0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfQUhCX1RJTUVPVVRfTUFT
+SwkoMHhGRiA8PA0KPiBGU1BJX01DUjBfQUhCX1RJTUVPVVRfU0hJRlQpDQo+ID4+ICsjZGVmaW5l
+IEZTUElfTUNSMF9JUF9USU1FT1VUX1NISUZUCTE2DQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9J
+UF9USU1FT1VUX01BU0sJKDB4RkYgPDwNCj4gRlNQSV9NQ1IwX0lQX1RJTUVPVVRfU0hJRlQpDQo+
+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9MRUFSTl9FTl9TSElGVAkxNQ0KPiA+PiArI2RlZmluZSBG
+U1BJX01DUjBfTEVBUk5fRU5fTUFTSwkJKDEgPDwNCj4gRlNQSV9NQ1IwX0xFQVJOX0VOX1NISUZU
+KQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfU0NSRlJVTl9FTl9TSElGVAkxNA0KPiA+PiArI2Rl
+ZmluZSBGU1BJX01DUjBfU0NSRlJVTl9FTl9NQVNLCSgxIDw8DQo+IEZTUElfTUNSMF9TQ1JGUlVO
+X0VOX1NISUZUKQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfT0NUQ09NQl9FTl9TSElGVAkxMw0K
+PiA+PiArI2RlZmluZSBGU1BJX01DUjBfT0NUQ09NQl9FTl9NQVNLCSgxIDw8DQo+IEZTUElfTUNS
+MF9PQ1RDT01CX0VOX1NISUZUKQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfRE9aRV9FTl9TSElG
+VAkJMTINCj4gPj4gKyNkZWZpbmUgRlNQSV9NQ1IwX0RPWkVfRU5fTUFTSwkJKDEgPDwNCj4gRlNQ
+SV9NQ1IwX0RPWkVfRU5fU0hJRlQpDQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9IU0VOX1NISUZU
+CQkxMQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfSFNFTl9NQVNLCQkoMSA8PCBGU1BJX01DUjBf
+SFNFTl9TSElGVCkNCj4gPj4gKyNkZWZpbmUgRlNQSV9NQ1IwX1NFUkNMS0RJVl9TSElGVAk4DQo+
+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9TRVJDTEtESVZfTUFTSwkoNyA8PA0KPiBGU1BJX01DUjBf
+U0VSQ0xLRElWX1NISUZUKQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfQVRERl9FTl9TSElGVAkJ
+Nw0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfQVRERl9FTl9NQVNLCQkoMSA8PA0KPiBGU1BJX01D
+UjBfQVRERl9FTl9TSElGVCkNCj4gPj4gKyNkZWZpbmUgRlNQSV9NQ1IwX0FSREZfRU5fU0hJRlQJ
+CTYNCj4gPj4gKyNkZWZpbmUgRlNQSV9NQ1IwX0FSREZfRU5fTUFTSwkJKDEgPDwNCj4gRlNQSV9N
+Q1IwX0FSREZfRU5fU0hJRlQpDQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9SWENMS1NSQ19TSElG
+VAk0DQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9SWENMS1NSQ19NQVNLCQkoMyA8PA0KPiBGU1BJ
+X01DUjBfUlhDTEtTUkNfU0hJRlQpDQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9FTkRfQ0ZHX1NI
+SUZUCQkyDQo+ID4+ICsjZGVmaW5lIEZTUElfTUNSMF9FTkRfQ0ZHX01BU0sJCSgzIDw8DQo+IEZT
+UElfTUNSMF9FTkRfQ0ZHX1NISUZUKQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfTURJU19TSElG
+VAkJMQ0KPiA+PiArI2RlZmluZSBGU1BJX01DUjBfTURJU19NQVNLCQkoMSA8PCBGU1BJX01DUjBf
+TURJU19TSElGVCkNCj4gPj4gKyNkZWZpbmUgRlNQSV9NQ1IwX1NXUlNUX1NISUZUCQkwDQo+ID4+
+ICsjZGVmaW5lIEZTUElfTUNSMF9TV1JTVF9NQVNLCQkoMSA8PA0KPiBGU1BJX01DUjBfU1dSU1Rf
+U0hJRlQpDQo+ID4NCj4gPiBEbyB3ZSByZWFsbHkgbmVlZCBhbGwgdGhvc2UgX1NISUZUL19NQVNL
+IGRlZnM/IEkgbWVhbg0KPiA+DQo+ID4gI2RlZmluZSBGU1BJX01DUjBfU1dSU1QJCUJJVCgwKQ0K
+PiA+DQo+ID4gb3INCj4gPg0KPiA+ICNkZWZpbmUgRlNQSV9NQ1IwX0FIQl9USU1FT1VUKHgpCSgo
+eCkgPDwgMjQpDQo+ID4gI2RlZmluZSBGU1BJX01DUjBfQUhCX1RJTUVPVVRfTUFTSwlHRU5NQVNL
+KDMxLCAyNCkNCj4gPg0KPiA+IGFyZSBqdXN0IGZpbmUuDQo+ID4NCj4gPj4gKw0KPiA+PiArZW51
+bSBueHBfZnNwaV9kZXZ0eXBlIHsNCj4gPj4gKwlOWFBfRlNQSV9MWDIxNjBBLA0KPiA+PiArfTsN
+Cj4gPg0KPiA+IEknbSBwcmV0dHkgc3VyZSB5b3UgZG9uJ3QgbmVlZCB0aGlzIGVudW0gaWYgeW91
+IGRlc2NyaWJlIGFsbCBkZXYgY2Fwcw0KPiA+IGluIHRoZSBueHBfZnNwaV9kZXZ0eXBlX2RhdGEg
+c3RydWN0Lg0KPiA+DQo+ID4+ICsNCj4gPj4gK3N0cnVjdCBueHBfZnNwaV9kZXZ0eXBlX2RhdGEg
+ew0KPiA+PiArCWVudW0gbnhwX2ZzcGlfZGV2dHlwZSBkZXZ0eXBlOw0KPiA+PiArCXVuc2lnbmVk
+IGludCByeGZpZm87DQo+ID4+ICsJdW5zaWduZWQgaW50IHR4ZmlmbzsNCj4gPj4gKwl1bnNpZ25l
+ZCBpbnQgYWhiX2J1Zl9zaXplOw0KPiA+PiArCXVuc2lnbmVkIGludCBxdWlya3M7DQo+ID4+ICsJ
+Ym9vbCBlbmRpYW5uZXNzOw0KPiA+DQo+ID4gSG93IGFib3V0IHJlbmFtaW5nIHRoaXMgdmFyaWFi
+bGUgYmlnX2VuZGlhbiBhbmQgZHJvcHBpbmcgdGhlDQo+ID4ge0wsQn1fRU5ESUFOIG1hY3Jvcz8N
+Cj4gPg0KPiA+PiArfTsNCj4gPg0KPiA+IFsuLi5dDQo+ID4NCj4gPj4gK3N0cnVjdCBueHBfZnNw
+aSB7DQo+ID4+ICsJdm9pZCBfX2lvbWVtICppb2Jhc2U7DQo+ID4+ICsJdm9pZCBfX2lvbWVtICph
+aGJfYWRkcjsNCj4gPj4gKwl1MzIgbWVtbWFwX3BoeTsNCj4gPj4gKwl1MzIgbWVtbWFwX3BoeV9z
+aXplOw0KPiA+PiArCXN0cnVjdCBjbGsgKmNsaywgKmNsa19lbjsNCj4gPj4gKwlzdHJ1Y3QgZGV2
+aWNlICpkZXY7DQo+ID4+ICsJc3RydWN0IGNvbXBsZXRpb24gYzsNCj4gPj4gKwljb25zdCBzdHJ1
+Y3QgbnhwX2ZzcGlfZGV2dHlwZV9kYXRhICpkZXZ0eXBlX2RhdGE7DQo+ID4+ICsJc3RydWN0IG11
+dGV4IGxvY2s7DQo+ID4+ICsJc3RydWN0IHBtX3Fvc19yZXF1ZXN0IHBtX3Fvc19yZXE7DQo+ID4+
+ICsJaW50IHNlbGVjdGVkOw0KPiA+PiArCXZvaWQgKCp3cml0ZSkodTMyIHZhbCwgdm9pZCBfX2lv
+bWVtICphZGRyKTsNCj4gPj4gKwl1MzIgKCpyZWFkKSh2b2lkIF9faW9tZW0gKmFkZHIpOw0KPiA+
+PiArfTsNCj4gPj4gKw0KPiA+PiArc3RhdGljIHZvaWQgZnNwaV93cml0ZWxfYmUodTMyIHZhbCwg
+dm9pZCBfX2lvbWVtICphZGRyKSB7DQo+ID4+ICsJaW93cml0ZTMyYmUodmFsLCBhZGRyKTsNCj4g
+Pj4gK30NCj4gPj4gKw0KPiA+PiArc3RhdGljIHZvaWQgZnNwaV93cml0ZWwodTMyIHZhbCwgdm9p
+ZCBfX2lvbWVtICphZGRyKSB7DQo+ID4+ICsJaW93cml0ZTMyKHZhbCwgYWRkcik7DQo+ID4+ICt9
+DQo+ID4+ICsNCj4gPj4gK3N0YXRpYyB1MzIgZnNwaV9yZWFkbF9iZSh2b2lkIF9faW9tZW0gKmFk
+ZHIpIHsNCj4gPj4gKwlyZXR1cm4gaW9yZWFkMzJiZShhZGRyKTsNCj4gPj4gK30NCj4gPj4gKw0K
+PiA+PiArc3RhdGljIHUzMiBmc3BpX3JlYWRsKHZvaWQgX19pb21lbSAqYWRkcikgew0KPiA+PiAr
+CXJldHVybiBpb3JlYWQzMihhZGRyKTsNCj4gPj4gK30NCj4gPg0KPiA+IEhtLCBJJ2QgcmVjb21t
+ZW5kIGRyb3BwaW5nIHRoZSAtPnJlYWQvd3JpdGUoKSBob29rcyBhbmQgcHJvdmlkaW5nIHRoZQ0K
+PiA+IGZvbGxvd2luZyBmdW5jdGlvbnM6DQo+ID4NCj4gPiBzdGF0aWMgdm9pZCBmc3BpX3dyaXRl
+bChzdHJ1Y3QgbnhwX2ZzcGkgKmYsIHUzMiB2YWwsIHZvaWQgX19pb21lbQ0KPiA+ICphZGRyKSB7
+DQo+ID4gCWlmIChmLT5iaWdfZW5kaWFuKQ0KPiA+IAkJaW93cml0ZTMyYmUodmFsLCBhZGRyKTsN
+Cj4gPiAJZWxzZQ0KPiA+IAkJaW93cml0ZTMyKHZhbCwgYWRkcik7DQo+ID4gfQ0KPiA+DQo+ID4N
+Cj4gPiBzdGF0aWMgdTMyIGZzcGlfcmVhZGwoc3RydWN0IG54cF9mc3BpICpmLCB2b2lkIF9faW9t
+ZW0gKmFkZHIpIHsNCj4gPiAJaWYgKGYtPmJpZ19lbmRpYW4pDQo+ID4gCQlyZXR1cm4gaW9yZWFk
+MzJiZShhZGRyKTsNCj4gPiAJZWxzZQ0KPiA+IAkJcmV0dXJuIGlvcmVhZDMyKGFkZHIpOw0KPiA+
+IH0NCj4gDQo+IEkgaW50cm9kdWNlZCB0aGUgLT5yZWFkL3dyaXRlKCkgaG9va3MgaW4gdGhlIFFT
+UEkgZHJpdmVyIGJlY2F1c2UgSSB3YXMgdG9sZCB0bw0KPiByZW1vdmUgdGhlIGNvbmRpdGlvbmFs
+IGluIHRoZSByZWFkL3dyaXRlIHBhdGgsIGJ1dCBJIGNhbid0IHJlYWxseSB0ZWxsIGlmIHRoaXMg
+cmVhbGx5DQo+IG1ha2VzIGFueSBkaWZmZXJlbmNlLg0KPiANClllcywgSSBoYXZlIHRha2VuIHRo
+ZXNlIGhvb2tzIGJ5IGxvb2tpbmcgaW50byB0aGUgY29tbWVudHMgcmVjZWl2ZWQgZm9yIEZyaWVk
+ZXIncyBRU1BJIHBhdGNoIHNlcmllcy4NCkZvciBtZSB0aGlzIGxvb2tzIG1vcmUgY2xlYW4gYW5k
+IGNhbiBiZSBkZWNpZGVkIGluIHRoZSBjb250cm9sbGVyIGluaXRpYWxpemF0aW9uIHNlcXVlbmNl
+IHdoaWNoIGhvb2sgd291bGQgZ29pbmcgdG8gYmUgaW52b2tlZC4NCg0KPiBSZWdhcmRzLA0KPiBG
+cmllZGVyDQo+IA0KPiA+DQo+ID4+ICsNCj4gPj4gK3N0YXRpYyBpcnFyZXR1cm5fdCBueHBfZnNw
+aV9pcnFfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpkZXZfaWQpIHsNCj4gPj4gKwlzdHJ1Y3Qgbnhw
+X2ZzcGkgKmYgPSBkZXZfaWQ7DQo+ID4+ICsJdTMyIHJlZzsNCj4gPj4gKw0KPiA+PiArCS8qIGNs
+ZWFyIGludGVycnVwdCAqLw0KPiA+PiArCXJlZyA9IGYtPnJlYWQoZi0+aW9iYXNlICsgRlNQSV9J
+TlRSKTsNCj4gPj4gKwlmLT53cml0ZShGU1BJX0lOVFJfSVBDTURET05FX01BU0ssIGYtPmlvYmFz
+ZSArIEZTUElfSU5UUik7DQo+ID4+ICsNCj4gPj4gKwlpZiAocmVnICYgRlNQSV9JTlRSX0lQQ01E
+RE9ORV9NQVNLKQ0KPiA+PiArCQljb21wbGV0ZSgmZi0+Yyk7DQo+ID4+ICsNCj4gPj4gKwlyZXR1
+cm4gSVJRX0hBTkRMRUQ7DQo+ID4+ICt9DQo+ID4NCj4gPiBbLi4uXQ0KPiA+DQo+ID4+ICsvKg0K
+PiA+PiArICogSWYgdGhlIHNsYXZlIGRldmljZSBjb250ZW50IGJlaW5nIGNoYW5nZWQgYnkgV3Jp
+dGUvRXJhc2UsIG5lZWQgdG8NCj4gPj4gKyAqIGludmFsaWRhdGUgdGhlIEFIQiBidWZmZXIuIFRo
+aXMgY2FuIGJlIGFjaGlldmVkIGJ5IGRvaW5nIHRoZQ0KPiA+PiArcmVzZXQNCj4gPj4gKyAqIG9m
+IGNvbnRyb2xsZXIgYWZ0ZXIgc2V0dGluZyBNQ1IwW1NXUkVTRVRdIGJpdC4NCj4gPj4gKyAqLw0K
+PiA+PiArc3RhdGljIGlubGluZSB2b2lkIG54cF9mc3BpX2ludmFsaWQoc3RydWN0IG54cF9mc3Bp
+ICpmKSB7DQo+ID4+ICsJdTMyIHJlZzsNCj4gPj4gKw0KPiA+PiArCXJlZyA9IGYtPnJlYWQoZi0+
+aW9iYXNlICsgRlNQSV9NQ1IwKTsNCj4gPj4gKwlmLT53cml0ZShyZWcgfCBGU1BJX01DUjBfU1dS
+U1RfTUFTSywgZi0+aW9iYXNlICsgRlNQSV9NQ1IwKTsNCj4gPj4gKw0KPiA+PiArCXdoaWxlIChm
+LT5yZWFkKGYtPmlvYmFzZSArIEZTUElfTUNSMCkgJiBGU1BJX01DUjBfU1dSU1RfTUFTSykNCj4g
+Pj4gKwkJOw0KPiA+DQo+ID4gRGlkIHlvdSBjb25zaWRlciB1c2luZyByZWFkbF9wb2xsX3RpbWVv
+dXRbX2F0b21pY10oKT8NCj4gPg0KPiA+IAlpZiAoZi0+YmlnX2VuZGlhbikNCj4gPiAJCW1hc2sg
+PSAodTMyKWNwdV90b19iZTMyKEZTUElfTUNSMF9TV1JTVF9NQVNLKTsNCj4gPiAJZWxzZQ0KPiA+
+IAkJbWFzayA9ICh1MzIpY3B1X3RvX2JlMzIoRlNQSV9NQ1IwX1NXUlNUX01BU0spOw0KPiA+DQo+
+ID4gCXJldCA9IHJlYWRsX3BvbGxfdGltZW91dChmLT5pb2Jhc2UgKyBGU1BJX01DUjAsIHJlZywN
+Cj4gPiAJCQkJIHJlZyAmIG1hc2ssIDAsIEZTUElfU1dSU1RfVElNRU9VVCk7DQo+ID4gCVdBUk5f
+T04ocmV0KTsNCj4gPg0KPiA+PiArfQ0KT2ssIHdvdWxkIGNoZWNrIHVzYWdlIG9mIHJlYWRsX3Bv
+bGxfdGltZW91dF9hdG9taWMoKSBhbmQgbW9kaWZ5IGN1cnJlbnQgaW1wbGVtZW50YXRpb24gb2Yg
+ZG9pbmcgYnVzeSB3YWl0aW5nIHVzaW5nIHdoaWxlKCkgbG9vcC4NCg0KLS0NClJlZ2FyZHMNCllv
+Z2VzaCBHYXVyLg0KDQo+ID4NCj4gPiBbLi4uXQ0KPiA+DQo+ID4+ICtzdGF0aWMgdm9pZCBueHBf
+ZnNwaV9yZWFkX2FoYihzdHJ1Y3QgbnhwX2ZzcGkgKmYsIGNvbnN0IHN0cnVjdA0KPiA+PiArc3Bp
+X21lbV9vcCAqb3ApIHsNCj4gPj4gKwl1MzIgbGVuID0gb3AtPmRhdGEubmJ5dGVzOw0KPiA+PiAr
+DQo+ID4+ICsJLyogUmVhZCBvdXQgdGhlIGRhdGEgZGlyZWN0bHkgZnJvbSB0aGUgQUhCIGJ1ZmZl
+ci4gKi8NCj4gPj4gKwltZW1jcHlfZnJvbWlvKG9wLT5kYXRhLmJ1Zi5pbiwgKGYtPmFoYl9hZGRy
+ICsgb3AtPmFkZHIudmFsKSwgbGVuKTsNCj4gPg0KPiA+IERvbid0IGtub3cgaWYgaXQncyBzdXBw
+b3J0ZWQsIGJ1dCBpZiBpdCBpcywgSSByZWNvbW1lbmQgdXNpbmcgRE1BIHRvDQo+ID4gZG8gdGhp
+cyBjb3B5LCBiZWNhdXNlIG90aGVyd2lzZSB5b3UgbWlnaHQgc3RhbGwgdGhlIENQVSBmb3IgcXVp
+dGUgYQ0KPiA+IGxvbmcgdGltZSBpZiB0aGUgZmxhc2ggaXMgb3BlcmF0aW5nIGluIGEgbG93LXNw
+ZWVkIG1vZGUsIGFuZCBSVA0KPiA+IG1haW50YWluZXJzIHdpbGwgY29tcGxhaW4gYWJvdXQgdGhh
+dCBhdCBzb21lIHBvaW50IDstKS4NCj4gPg0KPiA+PiArfQ0KPiA+PiArDQo+ID4+ICtzdGF0aWMg
+dm9pZCBueHBfZnNwaV9maWxsX3R4ZmlmbyhzdHJ1Y3QgbnhwX2ZzcGkgKmYsDQo+ID4+ICsJCQkJ
+IGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCj4gPj4gK3sNCj4gPj4gKwl2b2lkIF9faW9t
+ZW0gKmJhc2UgPSBmLT5pb2Jhc2U7DQo+ID4+ICsJaW50IGksIGo7DQo+ID4+ICsJaW50IHNpemUs
+IHRtcF9zaXplLCB3bV9zaXplOw0KPiA+PiArCXUzMiBkYXRhID0gMDsNCj4gPj4gKwl1MzIgKnR4
+YnVmID0gKHUzMiAqKSBvcC0+ZGF0YS5idWYub3V0Ow0KPiA+PiArDQo+ID4+ICsJLyogY2xlYXIg
+dGhlIFRYIEZJRk8uICovDQo+ID4+ICsJZi0+d3JpdGUoRlNQSV9JUFRYRkNSX0NMUl9NQVNLLCBi
+YXNlICsgRlNQSV9JUFRYRkNSKTsNCj4gPj4gKw0KPiA+PiArCS8qIERlZmF1bHQgdmFsdWUgb2Yg
+d2F0ZXIgbWFyayBsZXZlbCBpcyA4IGJ5dGVzLiAqLw0KPiA+PiArCXdtX3NpemUgPSA4Ow0KPiA+
+PiArCXNpemUgPSBvcC0+ZGF0YS5uYnl0ZXMgLyB3bV9zaXplOw0KPiA+PiArCWZvciAoaSA9IDA7
+IGkgPCBzaXplOyBpKyspIHsNCj4gPj4gKwkJLyogV2FpdCBmb3IgVFhGSUZPIGVtcHR5ICovDQo+
+ID4+ICsJCXdoaWxlICghKGYtPnJlYWQoYmFzZSArIEZTUElfSU5UUikgJiBGU1BJX0lOVFJfSVBU
+WFdFX01BU0spKQ0KPiA+PiArCQkJOw0KPiA+DQo+ID4gVXNlIHJlYWRsX3BvbGxfdGltZW91dCgp
+LCBvciBldmVuIGJldHRlciwgcHJvdmlkZSBhbiBoZWxwZXINCj4gPiAoZnNwaV9yZWFkbF9wb2xs
+X3RpbWVvdXQoKT8pIHRoYXQgaGlkZXMgdGhlIEJFL0xFIHN0dWZmLCBzbyB0aGF0IHlvdQ0KPiA+
+IGNhbiByZXVzZSBpdCB3aGVuIHRoaXMgcGF0dGVybiBvY2N1cnMuDQo+ID4NCj4gPiBbLi4uXQ0K
+PiA+DQo+ID4+ICtzdGF0aWMgaW50IG54cF9mc3BpX2V4ZWNfb3Aoc3RydWN0IHNwaV9tZW0gKm1l
+bSwgY29uc3Qgc3RydWN0DQo+ID4+ICtzcGlfbWVtX29wICpvcCkgew0KPiA+PiArCXN0cnVjdCBu
+eHBfZnNwaSAqZiA9IHNwaV9jb250cm9sbGVyX2dldF9kZXZkYXRhKG1lbS0+c3BpLT5tYXN0ZXIp
+Ow0KPiA+PiArCXZvaWQgX19pb21lbSAqYmFzZSA9IGYtPmlvYmFzZTsNCj4gPj4gKwlpbnQgZXJy
+ID0gMDsNCj4gPj4gKwl1bnNpZ25lZCBpbnQgdGltZW91dCA9IDEwMDA7DQo+ID4+ICsNCj4gPj4g
+KwltdXRleF9sb2NrKCZmLT5sb2NrKTsNCj4gPj4gKw0KPiA+PiArCS8qIHdhaXQgZm9yIHRoZSBj
+b250cm9sbGVyIGJlaW5nIHJlYWR5ICovDQo+ID4+ICsJZG8gew0KPiA+PiArCQl1MzIgc3RhdHVz
+Ow0KPiA+PiArDQo+ID4+ICsJCXN0YXR1cyA9IGYtPnJlYWQoYmFzZSArIEZTUElfU1RTMCk7DQo+
+ID4+ICsJCWlmICgoc3RhdHVzICYgRlNQSV9TVFMwX0FSQl9JRExFX01BU0spICYmDQo+ID4+ICsJ
+CSAgICAoc3RhdHVzICYgRlNQSV9TVFMwX1NFUV9JRExFX01BU0spKQ0KPiA+PiArCQkJYnJlYWs7
+DQo+ID4+ICsJCXVkZWxheSgxKTsNCj4gPj4gKwkJZGV2X2RiZyhmLT5kZXYsICJUaGUgY29udHJv
+bGxlciBpcyBidXN5LCAweCV4XG4iLCBzdGF0dXMpOw0KPiA+DQo+ID4gU2FtZSBoZXJlLg0KPiA+
+DQo+ID4gTm90ZSB0aGF0IEkgZGlkbid0IHNwZW5kIHRpbWUgbG9va2luZyBhdCBob3cgdGhlIElQ
+IHdvcmtzLCB3aGljaA0KPiA+IGV4cGxhaW5zIHdoeSBJIGZvY3VzIG9uIHRpbnkgZGV0YWlscyBo
+ZXJlLiBVbmZvcnR1bmF0ZWx5LCBJIHdvbid0IGhhdmUNCj4gPiB0aW1lIHRvIHJldmlldyB0aGUg
+ZHJpdmVyIGluIG1vcmUgZGV0YWlscywgc28gSSdsbCBsZWF2ZSB0aGF0IHRvDQo+ID4gc29tZW9u
+ZSBlbHNlLCBvciBsZXQgTWFyayBkZWNpZGVzIGlmIGhlJ3MgaGFwcHkgZW5vdWdoIHdpdGggdGhl
+DQo+ID4gY3VycmVudCB2ZXJzaW9uLg0KPiA+DQo+ID4gUmVnYXJkcywNCj4gPg0KPiA+IEJvcmlz
+DQo+ID4NCg==

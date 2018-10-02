@@ -1,49 +1,38 @@
-From: Axel Lin <axel.lin@ingics.com>
-Subject: [PATCH] spi: at91-usart: Remove duplicated checking for spi->bits_per_word
-Date: Tue,  2 Oct 2018 18:10:10 +0800
-Message-ID: <20181002101010.29723-1-axel.lin@ingics.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        Radu Pirea <radu.pirea@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-spi@vger.kernel.org,
-        Axel Lin <axel.lin@ingics.com>
-To: linux-kernel@vger.kernel.org
+From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+Subject: [PATCH] spi: fsl-lpspi: Prevent FIFO under/overrun by default
+Date: Tue,  2 Oct 2018 18:06:36 +0700
+Message-ID: <20181002110636.5052-1-dangtranhieu2012@gmail.com>
+Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This checking is already done in __spi_validate_bits_per_word().
+Certain devices don't work well when a transmit FIFO underrun or
+receive FIFO overrun occurs. Example is the SAF400x radio chip when
+running at high speed which leads to garbage being sent to/received from
+the chip. In which case, it should stall waiting for further data to be
+available before proceeding. This patch unset the NOSTALL bit in CFGR1
+by default to prevent this issue.
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
+Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
 ---
- drivers/spi/spi-at91-usart.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index a924657642fa..519853f14934 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -176,12 +176,6 @@ static int at91_usart_spi_setup(struct spi_device *spi)
- 	struct at91_usart_spi *aus = spi_master_get_devdata(spi->controller);
- 	u32 *ausd = spi->controller_state;
- 	unsigned int mr = at91_usart_spi_readl(aus, MR);
--	u8 bits = spi->bits_per_word;
--
--	if (bits != 8) {
--		dev_dbg(&spi->dev, "Only 8 bits per word are supported\n");
--		return -EINVAL;
--	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index e6d5cc6ab108..51670976faa3 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -276,7 +276,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
  
- 	if (spi->mode & SPI_CPOL)
- 		mr |= US_MR_CPOL;
-@@ -210,7 +204,7 @@ static int at91_usart_spi_setup(struct spi_device *spi)
+ 	fsl_lpspi_set_watermark(fsl_lpspi);
  
- 	dev_dbg(&spi->dev,
- 		"setup: bpw %u mode 0x%x -> mr %d %08x\n",
--		bits, spi->mode, spi->chip_select, mr);
-+		spi->bits_per_word, spi->mode, spi->chip_select, mr);
- 
- 	return 0;
- }
+-	temp = CFGR1_PCSCFG | CFGR1_MASTER | CFGR1_NOSTALL;
++	temp = CFGR1_PCSCFG | CFGR1_MASTER;
+ 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
+ 		temp |= CFGR1_PCSPOL;
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
 -- 
 2.17.1

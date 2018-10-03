@@ -1,59 +1,41 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH] mtd: spi-nor: Support controllers with limited TX FIFO
- size
-Date: Wed, 3 Oct 2018 09:10:58 +0200
-Message-ID: <20181003091058.07a13965@bbrezillon>
-References: <1528870092-14526-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] spi: pxa2xx: Mark expected switch fall-through
+Date: Wed, 3 Oct 2018 14:12:11 +0200
+Message-ID: <20181003121211.GA28108@embeddedor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-mtd@lists.infradead.org, frieder.schrempf@exceet.de,
-        computersforpeace@gmail.com, david.wolfe@nxp.com, han.xu@nxp.com,
-        festevam@gmail.com, marek.vasut@gmail.com,
-        prabhakar.kushwaha@nxp.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1528870092-14526-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 13 Jun 2018 11:38:12 +0530
-Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+In preparation to enabling -Wimplicit-fallthrough, mark switch cases
+where we are expecting to fall through.
 
-> Some SPI controllers can't write nor->page_size bytes in a single
-> step because their TX FIFO is too small.
-> 
-> Allow nor->write() to return a size that is smaller than the requested
-> write size to gracefully handle this case.
-> 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Addresses-Coverity-ID: 1056539 ("Missing break in switch")
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/spi/spi-pxa2xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Queued to spi-nor/next.
-
-Thanks,
-
-Boris
-
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 5bfa36e..3e63543 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -1431,13 +1431,6 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->  			goto write_err;
->  		*retlen += written;
->  		i += written;
-> -		if (written != page_remain) {
-> -			dev_err(nor->dev,
-> -				"While writing %zu bytes written %zd bytes\n",
-> -				page_remain, written);
-> -			ret = -EIO;
-> -			goto write_err;
-> -		}
->  	}
->  
->  write_err:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index fc9aac2..728b5f3 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -666,6 +666,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 			switch (drv_data->n_bytes) {
+ 			case 4:
+ 				bytes_left >>= 1;
++				/* Fall through */
+ 			case 2:
+ 				bytes_left >>= 1;
+ 			}
+-- 
+2.7.4

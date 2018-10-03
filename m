@@ -1,9 +1,9 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH] mtd: devices: m25p80: Make sure WRITE_EN is issued
- before each write
-Date: Wed, 3 Oct 2018 09:10:03 +0200
-Message-ID: <20181003091003.5fb134e1@bbrezillon>
-References: <1528870158-14781-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: Re: [PATCH] mtd: spi-nor: Support controllers with limited TX FIFO
+ size
+Date: Wed, 3 Oct 2018 09:10:58 +0200
+Message-ID: <20181003091058.07a13965@bbrezillon>
+References: <1528870092-14526-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -14,21 +14,18 @@ Cc: linux-mtd@lists.infradead.org, frieder.schrempf@exceet.de,
         linux-kernel@vger.kernel.org
 To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1528870158-14781-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <1528870092-14526-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 13 Jun 2018 11:39:18 +0530
+On Wed, 13 Jun 2018 11:38:12 +0530
 Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-> Some SPI controllers can't write nor->page_size bytes in a single step
-> because their TX FIFO is too small, but when that happens we should
-> make sure a WRITE_EN command before each write access and READ_SR command
-> after each write access is issued.
+> Some SPI controllers can't write nor->page_size bytes in a single
+> step because their TX FIFO is too small.
 > 
-> The core is already taking care of that, so all we have to do here is
-> return the actual number of bytes that were written during the
-> spi_mem_exec_op() operation.
+> Allow nor->write() to return a size that is smaller than the requested
+> write size to gracefully handle this case.
 > 
 > Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 
@@ -39,49 +36,24 @@ Thanks,
 Boris
 
 > ---
->  drivers/mtd/devices/m25p80.c | 23 ++++++++---------------
->  1 file changed, 8 insertions(+), 15 deletions(-)
+>  drivers/mtd/spi-nor/spi-nor.c | 7 -------
+>  1 file changed, 7 deletions(-)
 > 
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index e84563d..60224fe 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -72,7 +72,6 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
->  				   SPI_MEM_OP_ADDR(nor->addr_width, to, 1),
->  				   SPI_MEM_OP_DUMMY(0, 1),
->  				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
-> -	size_t remaining = len;
->  	int ret;
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 5bfa36e..3e63543 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -1431,13 +1431,6 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+>  			goto write_err;
+>  		*retlen += written;
+>  		i += written;
+> -		if (written != page_remain) {
+> -			dev_err(nor->dev,
+> -				"While writing %zu bytes written %zd bytes\n",
+> -				page_remain, written);
+> -			ret = -EIO;
+> -			goto write_err;
+> -		}
+>  	}
 >  
->  	/* get transfer protocols. */
-> @@ -84,22 +83,16 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
->  	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
->  		op.addr.nbytes = 0;
->  
-> -	while (remaining) {
-> -		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
-> -		ret = spi_mem_adjust_op_size(flash->spimem, &op);
-> -		if (ret)
-> -			return ret;
-> -
-> -		ret = spi_mem_exec_op(flash->spimem, &op);
-> -		if (ret)
-> -			return ret;
-> +	ret = spi_mem_adjust_op_size(flash->spimem, &op);
-> +	if (ret)
-> +		return ret;
-> +	op.data.nbytes = len < op.data.nbytes ? len : op.data.nbytes;
->  
-> -		op.addr.val += op.data.nbytes;
-> -		remaining -= op.data.nbytes;
-> -		op.data.buf.out += op.data.nbytes;
-> -	}
-> +	ret = spi_mem_exec_op(flash->spimem, &op);
-> +	if (ret)
-> +		return ret;
->  
-> -	return len;
-> +	return op.data.nbytes;
->  }
->  
->  /*
+>  write_err:

@@ -1,41 +1,39 @@
 From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] spi: pxa2xx: Mark expected switch fall-through
-Date: Wed, 3 Oct 2018 14:12:11 +0200
-Message-ID: <20181003121211.GA28108@embeddedor.com>
+Subject: [PATCH] spi: slave: Fix missing break in switch
+Date: Wed, 3 Oct 2018 14:33:28 +0200
+Message-ID: <20181003123328.GA29471@embeddedor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In preparation to enabling -Wimplicit-fallthrough, mark switch cases
-where we are expecting to fall through.
+Apparently, this code does not actually fall through to the next case
+because the machine restarts before it has a chance. However, for the
+sake of maintenance and readability, we better add the missing break
+statement.
 
-Addresses-Coverity-ID: 1056539 ("Missing break in switch")
+Addresses-Coverity-ID: 1437892 ("Missing break in switch")
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/spi/spi-pxa2xx.c | 1 +
+ drivers/spi/spi-slave-system-control.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index fc9aac2..728b5f3 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -666,6 +666,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 			switch (drv_data->n_bytes) {
- 			case 4:
- 				bytes_left >>= 1;
-+				/* Fall through */
- 			case 2:
- 				bytes_left >>= 1;
- 			}
+diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
+index c0257e9..169f3d5 100644
+--- a/drivers/spi/spi-slave-system-control.c
++++ b/drivers/spi/spi-slave-system-control.c
+@@ -60,6 +60,7 @@ static void spi_slave_system_control_complete(void *arg)
+ 	case CMD_REBOOT:
+ 		dev_info(&priv->spi->dev, "Rebooting system...\n");
+ 		kernel_restart(NULL);
++		break;
+ 
+ 	case CMD_POWEROFF:
+ 		dev_info(&priv->spi->dev, "Powering off system...\n");
 -- 
 2.7.4

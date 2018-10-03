@@ -1,52 +1,47 @@
 From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] spi: pxa2xx: Mark expected switch fall-through
-Date: Wed, 3 Oct 2018 17:53:38 +0200
-Message-ID: <64472b50-f00d-e22c-5dff-aa290c6559c5@embeddedor.com>
-References: <20181003121211.GA28108@embeddedor.com>
- <20181003152255.GE7132@sirena.org.uk>
- <22e7d33d-db33-d2e4-30b1-fa87176e4277@embeddedor.com>
+Subject: [PATCH] spi: pxa2xx: Rewrite switch code block in interrupt_transfer
+Date: Wed, 3 Oct 2018 17:55:22 +0200
+Message-ID: <20181003155522.GA31045@embeddedor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Daniel Mack <daniel@zonque.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <22e7d33d-db33-d2e4-30b1-fa87176e4277@embeddedor.com>
-Content-Language: en-GB
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Rewrite switch code block to directly do the expected number
+of shifts in each case and have break statements.
 
+Addresses-Coverity-ID: 1056539 ("Missing break in switch")
+Suggested-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/spi/spi-pxa2xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 10/3/18 5:27 PM, Gustavo A. R. Silva wrote:
-> 
-> 
-> On 10/3/18 5:22 PM, Mark Brown wrote:
->> On Wed, Oct 03, 2018 at 02:12:11PM +0200, Gustavo A. R. Silva wrote:
->>
->>>  			switch (drv_data->n_bytes) {
->>>  			case 4:
->>>  				bytes_left >>= 1;
->>> +				/* Fall through */
->>>  			case 2:
->>>  				bytes_left >>= 1;
->>>  			}
->>
->> I think this code is just being too cute and it'd be better to just
->> rewrite it to directly do the expected number of shifts directly in each
->> case and have break statements; your fix is good but still not ideal for
->> readability I think.
->>
-> 
-> Okay. I agree. I'll rewrite and send v2.
-> 
-
-I'll actually send a completely new patch for this.
-
-Thanks
---
-Gustavo
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index fc9aac2..d68f511 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -665,9 +665,11 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 			bytes_left = drv_data->rx_end - drv_data->rx;
+ 			switch (drv_data->n_bytes) {
+ 			case 4:
+-				bytes_left >>= 1;
++				bytes_left >>= 2;
++				break;
+ 			case 2:
+ 				bytes_left >>= 1;
++				break;
+ 			}
+ 
+ 			rx_thre = pxa2xx_spi_get_rx_default_thre(drv_data);
+-- 
+2.7.4

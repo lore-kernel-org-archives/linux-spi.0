@@ -1,56 +1,50 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: pxa2xx: Mark expected switch fall-through
-Date: Wed, 3 Oct 2018 16:22:55 +0100
-Message-ID: <20181003152255.GE7132@sirena.org.uk>
-References: <20181003121211.GA28108@embeddedor.com>
+Subject: Re: [PATCH] spi: slave: Fix missing break in switch
+Date: Wed, 3 Oct 2018 16:24:00 +0100
+Message-ID: <20181003152400.GF7132@sirena.org.uk>
+References: <20181003123328.GA29471@embeddedor.com>
+ <CAMuHMdX2YL2PG390ej0WMct7DciAbzO=66z7TJ-VnS8_phjdaQ@mail.gmail.com>
+ <20181003150111.GD7132@sirena.org.uk>
+ <37edd7c9-c93f-49a1-6621-880d8f88f345@embeddedor.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pY3vCvL1qV+PayAL"
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        protocol="application/pgp-signature"; boundary="NQTVMVnDVuULnIzU"
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181003121211.GA28108@embeddedor.com>
+In-Reply-To: <37edd7c9-c93f-49a1-6621-880d8f88f345@embeddedor.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---pY3vCvL1qV+PayAL
+--NQTVMVnDVuULnIzU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Oct 03, 2018 at 02:12:11PM +0200, Gustavo A. R. Silva wrote:
+On Wed, Oct 03, 2018 at 05:05:04PM +0200, Gustavo A. R. Silva wrote:
 
->  			switch (drv_data->n_bytes) {
->  			case 4:
->  				bytes_left >>= 1;
-> +				/* Fall through */
->  			case 2:
->  				bytes_left >>= 1;
->  			}
+> I'll include the __noreturn in addition to the break statement.
+> I'll send v2 shortly.
 
-I think this code is just being too cute and it'd be better to just
-rewrite it to directly do the expected number of shifts directly in each
-case and have break statements; your fix is good but still not ideal for
-readability I think.
+No need for a v2, I already applied this - adding __noreturn seems like
+a separate (although desirable) effort.
 
---pY3vCvL1qV+PayAL
+--NQTVMVnDVuULnIzU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu03s4ACgkQJNaLcl1U
-h9BzTAf9GdSvoAIZoKPwAu9TkxBbtZF9kfEGoENWDZsf6o/QUHVRh6cDaCm08nO3
-HAqK9wt7fN2SPSNxAXPRN2/XS020aV4Vvlbq6UvMK9zGfhjMEMtkTNTTOd9D4q0x
-eHQrUGANKN0h8wPn/MISL1DxROeUmOjl5bl2sp28LJ40RadQQoHi9ICrKkXRR69k
-k+8+lQOliYMTP6C68YpJcFR6uo8lslvcA0XoGazLaYZkTbH+YE+Hq5Jfneng+ZRQ
-HdkOdIB7QoNB4y3hnP69D8DCZKuQUSKvmx+3lTLbqRLidDerScZy1iHJlfY3QTAl
-fl+f6NHqsI20KHJ8eI5IKkC2b207oQ==
-=BYK9
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu03w8ACgkQJNaLcl1U
+h9AoBgf/XblnzeKCFq8Y+RvmPxZI4aKxu5DCn1XBQbor/kDEzvrfkjV4p06uvFsE
+/VHvfH/IZVJ1sxMqU7GUQ6s/pOEmTRH2jH857dERMItTxB3RwL73g1zYTfDE9QsW
+ifDn93bax2auLHxRCIXzKFo30kutXHR9+u4/N9Lut825Q3QBYQ25K+GbXCE5BwdF
+Qr2KVWFC/8navypKrEIr8UzcTWcLe+WNZNQRhwmNWW/9X8zXUamdWQNpVOR3MHaf
+NBs1iYIzT7NeweRTZnL8Zac9M7ity63AS7bJrKr1f0R8Bnmi+2+ohXf+/RwvHp47
+6Dsm9QswTT763Av49x3CuelovYyrjA==
+=H4K7
 -----END PGP SIGNATURE-----
 
---pY3vCvL1qV+PayAL--
+--NQTVMVnDVuULnIzU--

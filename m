@@ -1,75 +1,59 @@
 From: Alok Chauhan <alokc@codeaurora.org>
-Subject: [PATCH V5 0/3] spi-geni-qcom: QUP SPI GENI driver and SPI device tree bindings
-Date: Wed,  3 Oct 2018 19:14:22 +0530
-Message-ID: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
-Cc: linux-arm-msm@vger.kernel.org, Alok Chauhan <alokc@codeaurora.org>
+Subject: [PATCH V5 1/3] dt-bindings: soc: qcom: Remove SPI controller maximum frequency binding
+Date: Wed,  3 Oct 2018 19:14:23 +0530
+Message-ID: <1538574265-30235-2-git-send-email-alokc@codeaurora.org>
+References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
+Cc: Dilip Kota <dkota@codeaurora.org>,
+        Alok Chauhan <alokc@codeaurora.org>
 To: swboyd@chromium.org, dianders@chromium.org, broonie@kernel.org,
         mka@chromium.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
+        linux-spi@vger.kernel.org, Andy Gross <andy.gross@linaro.org>,
+        David Brown <david.brown@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch series adds the driver for GENI based Qualcomm Universal
-Peripheral (QUP) Serial Peripheral Interface (SPI) and SPI device tree
-bindings.
+From: Dilip Kota <dkota@codeaurora.org>
 
-An overview of the GENI SE SPI controller device tree components are in
-patch 2 and 1. Patch 3 adds the SPI driver for GENI QUP HW.
+SPI controller driver should maintain the maximum frequency
+of the controller instead of relying on device tree bindings.
+Because maximum frequency is specific property of SPI
+controller.
 
-changes from v4:
-- Patch 1/3 and 2/3 are unchanged
-- squashed patch 4/4 into 3/4 as suggested
-- Patch 3/3 changes are follows:
-        * Add SPI M_COMMAND OPCODE to handle different geni command
-	  handling
-        * Remove forward declaration of ISR
-        * Remove unused variable rx_fifo_depth in spi_master structure
-        * Declare cur_speed_hz as unsigned long to match clock framework
-        * Declare cur_xfer as const pointer
-        * Newline in error print
-        * Correct consecutive spelling
-        * Rename trans_len to len and restructure the lines in
-	  setup_fifo_xfer()
-        * Rename timeout to time_left and restructure the
-	  handle_fifo_timeout()
-        * Add check for '0' bytes transfer as part of
-	  spi_geni_transfer_one()
-        * Correct if-else check in geni_byte_per_fifo_word()
-        * Remove NULL current transfer check in
-	  geni_spi_handle_tx()/geni_spi_handle_rx() and make these
-	  functions as void.
-        * Hoist rx_last_byte_valid variable into function scope
-        * Remove RT check in ISR and add cur_mcmd handling
-        * Correct the error prints in ISR
-        * In spi_alloc_master() pass 2nd arg as sizeof(*mas) for code
-	  clarity
-        * Use ret = PTR_ERR(se->base) for devm_ioremap_resource() err
-	  return
-        * Move request irq code to probe() and used request_irq() in place
-	  of devm_request_irq()
-        * Rewrite suspend/resume function
-        * Add MODULE_DEVICE_TABLE(of, spi_geni_dt_match);
-        * Remove include/linux/spi/spi-geni-qcom.h file
-	
+Signed-off-by: Dilip Kota <dkota@codeaurora.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
+---
+ Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt | 2 --
+ 1 file changed, 2 deletions(-)
 
-Dilip Kota (2):
-  dt-bindings: soc: qcom: Remove SPI controller maximum frequency
-    binding
-  dt-bindings: soc: qcom: GENI SE SPI controller device tree binding
-
-Girish Mahadevan (1):
-  spi: spi-geni-qcom: Add SPI driver support for GENI based QUP
-
- .../devicetree/bindings/soc/qcom/qcom,geni-se.txt  |  29 +-
- .../devicetree/bindings/spi/qcom,spi-geni-qcom.txt |  39 ++
- drivers/spi/Kconfig                                |  12 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-geni-qcom.c                        | 703 +++++++++++++++++++++
- 5 files changed, 757 insertions(+), 27 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.txt
- create mode 100644 drivers/spi/spi-geni-qcom.c
-
+diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
+index ff92e5a..b9d0c21 100644
+--- a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
++++ b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
+@@ -60,7 +60,6 @@ Required properties:
+ - interrupts:		Must contain SPI controller interrupts.
+ - clock-names:		Must contain "se".
+ - clocks:		Serial engine core clock needed by the device.
+-- spi-max-frequency:	Specifies maximum SPI clock frequency, units - Hz.
+ - #address-cells:	Must be <1> to define a chip select address on
+ 			the SPI bus.
+ - #size-cells:		Must be <0>.
+@@ -112,7 +111,6 @@ Example:
+ 			pinctrl-names = "default", "sleep";
+ 			pinctrl-0 = <&qup_1_spi_2_active>;
+ 			pinctrl-1 = <&qup_1_spi_2_sleep>;
+-			spi-max-frequency = <19200000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 		};
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
 a Linux Foundation Collaborative Project

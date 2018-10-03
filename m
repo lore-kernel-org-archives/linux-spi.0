@@ -1,87 +1,87 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v6 2/2] spi: Introduce new driver for Qualcomm QuadSPI controller
-Date: Tue, 2 Oct 2018 15:40:12 -0700
-Message-ID: <CAD=FV=WiMbuVmimp9dQoW0MErm=Pw-w7N-mMTOStgtuLg7Vz8A@mail.gmail.com>
-References: <20181002214709.162330-1-ryandcase@chromium.org> <20181002214709.162330-2-ryandcase@chromium.org>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH] mtd: devices: m25p80: Make sure WRITE_EN is issued
+ before each write
+Date: Wed, 3 Oct 2018 09:10:03 +0200
+Message-ID: <20181003091003.5fb134e1@bbrezillon>
+References: <1528870158-14781-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Trent Piepho <tpiepho@impinj.com>, boris.brezillon@bootlin.com,
-        Girish Mahadevan <girishm@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: ryandcase@chromium.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd@lists.infradead.org, frieder.schrempf@exceet.de,
+        computersforpeace@gmail.com, david.wolfe@nxp.com, han.xu@nxp.com,
+        festevam@gmail.com, marek.vasut@gmail.com,
+        prabhakar.kushwaha@nxp.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181002214709.162330-2-ryandcase@chromium.org>
+In-Reply-To: <1528870158-14781-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Wed, 13 Jun 2018 11:39:18 +0530
+Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-On Tue, Oct 2, 2018 at 2:48 PM Ryan Case <ryandcase@chromium.org> wrote:
-> +#define RD_FIFO_STATUS 0x002c
-> +#define FIFO_EMPTY     BIT(11)
-> +#define WR_CNTS_MSK    0x7f0
-> +#define WR_CNTS_SHFT   4
-> +#define RDY_64BYTE     BIT(3)
-> +#define RDY_32BYTE     BIT(2)
-> +#define RDY_16BYTE     BIT(1)
-> +#define FIFO_RDY       BIT(0)
-> +
-> +#define RD_FIFO_CFG            0x0028
-> +#define CONTINUOUS_MODE                BIT(0)
+> Some SPI controllers can't write nor->page_size bytes in a single step
+> because their TX FIFO is too small, but when that happens we should
+> make sure a WRITE_EN command before each write access and READ_SR command
+> after each write access is issued.
+> 
+> The core is already taking care of that, so all we have to do here is
+> return the actual number of bytes that were written during the
+> spi_mem_exec_op() operation.
+> 
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 
-You missed the above when re-sorting.  The section for 0x0028 should
-be above the section for 0x002c.
+Queued to spi-nor/next.
 
-IMO there's been enough spins of this patch and it's a pretty minor
-change.  Mark: maybe you'd be OK with applying the current patch and
-either fixing up the sort order as you apply or letting us know to
-post a followup patch?  ...or if you'd like a v7 then please yell.
+Thanks,
 
+Boris
 
-> +static int __maybe_unused qcom_qspi_suspend(struct device *dev)
-> +{
-> +       struct spi_master *master = dev_get_drvdata(dev);
-> +       int ret;
-> +
-> +       ret = spi_master_suspend(master);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = pm_runtime_force_suspend(dev);
-> +       if (ret)
-> +               spi_master_resume(master);
-> +
-> +       return ret;
-> +}
-> +
-> +static int __maybe_unused qcom_qspi_resume(struct device *dev)
-> +{
-> +       struct spi_master *master = dev_get_drvdata(dev);
-> +       int ret;
-> +
-> +       ret = pm_runtime_force_resume(dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = spi_master_resume(master);
-> +       if (ret)
-> +               pm_runtime_force_suspend(dev);
-> +
-> +       return ret;
-> +}
-
-As per my new understanding (now that I've been educated by Rafael)
-[1] possibly the error handling here could be revamped to handle the
-case where suspend() may be called again after a failed resume().  I'd
-rather not block this patch based on that discussion though, so this
-feels like something to address by a follow-up patch.  Thus:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-
-
-[1] https://lkml.kernel.org/r/CAJZ5v0hSohUZvJcVcQzy_DdSyPVppOABk0HELsa3dpvf12LMPQ@mail.gmail.com
+> ---
+>  drivers/mtd/devices/m25p80.c | 23 ++++++++---------------
+>  1 file changed, 8 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index e84563d..60224fe 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -72,7 +72,6 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+>  				   SPI_MEM_OP_ADDR(nor->addr_width, to, 1),
+>  				   SPI_MEM_OP_DUMMY(0, 1),
+>  				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
+> -	size_t remaining = len;
+>  	int ret;
+>  
+>  	/* get transfer protocols. */
+> @@ -84,22 +83,16 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+>  	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
+>  		op.addr.nbytes = 0;
+>  
+> -	while (remaining) {
+> -		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
+> -		ret = spi_mem_adjust_op_size(flash->spimem, &op);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret = spi_mem_exec_op(flash->spimem, &op);
+> -		if (ret)
+> -			return ret;
+> +	ret = spi_mem_adjust_op_size(flash->spimem, &op);
+> +	if (ret)
+> +		return ret;
+> +	op.data.nbytes = len < op.data.nbytes ? len : op.data.nbytes;
+>  
+> -		op.addr.val += op.data.nbytes;
+> -		remaining -= op.data.nbytes;
+> -		op.data.buf.out += op.data.nbytes;
+> -	}
+> +	ret = spi_mem_exec_op(flash->spimem, &op);
+> +	if (ret)
+> +		return ret;
+>  
+> -	return len;
+> +	return op.data.nbytes;
+>  }
+>  
+>  /*

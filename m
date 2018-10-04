@@ -1,122 +1,121 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-ep93xx: Change dir type in
- ep93xx_spi_dma_{finish,prepare}
-Date: Thu, 4 Oct 2018 11:32:47 +0100
-Message-ID: <20181004103247.GC6412@sirena.org.uk>
-References: <20181004023926.15847-1-natechancellor@gmail.com>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH 1/4] spi: add support for octal I/O data transfer
+Date: Thu, 4 Oct 2018 12:07:17 +0000
+Message-ID: <VI1PR04MB10384B74E6E27435313CC73099EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
+References: <1538642920-3843-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1538642920-3843-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <20181004110446.5e1bb255@bbrezillon>
+        <VI1PR04MB10380FD9CE99E34BA27E55B699EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
+ <20181004111941.0da33ec0@bbrezillon>
+ <VI1PR04MB1038E23CBFE9CFD5C2ECCD3299EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6zdv2QT/q3FMhpsV"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        H Hartley Sweeten <hartleys@visionengravers.com>,
-        Mika Westerberg <mika.westerberg@iki.fi>
-To: Nathan Chancellor <natechancellor@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181004023926.15847-1-natechancellor@gmail.com>
+In-Reply-To: <VI1PR04MB1038E23CBFE9CFD5C2ECCD3299EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Boris,
 
---6zdv2QT/q3FMhpsV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Oct 03, 2018 at 07:39:26PM -0700, Nathan Chancellor wrote:
-> Clang warns when one enumerated type is implicitly converted to another.
+> -----Original Message-----
+> From: Yogesh Narayan Gaur
+> Sent: Thursday, October 4, 2018 2:56 PM
+> To: 'Boris Brezillon' <boris.brezillon@bootlin.com>
+> Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com; vigneshr@ti.com=
+;
+> linux-spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
+> mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
+> kernel@lists.infradead.org; computersforpeace@gmail.com;
+> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
+> Subject: RE: [PATCH 1/4] spi: add support for octal I/O data transfer
 >=20
-> drivers/spi/spi-ep93xx.c:342:62: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-
-Please remember to CC driver maintainers and authors on patch
-submissions so they can review things, copying in Hartley and Mika.
-
-> type 'enum dma_data_direction' [-Wenum-conversion]
->         nents =3D dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir=
-);
->                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:428:58: note: expanded from macro
-> 'dma_map_sg'
-> \#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
->                                ~~~~~~~~~~~~~~~~          ^
-> drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-> type 'enum dma_data_direction' [-Wenum-conversion]
->                 dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir=
-);
->                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
-> 'dma_unmap_sg'
-> \#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
->                                  ~~~~~~~~~~~~~~~~~~          ^
-> drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-> type 'enum dma_data_direction' [-Wenum-conversion]
->         dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
->         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
-> 'dma_unmap_sg'
-> \#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
->                                  ~~~~~~~~~~~~~~~~~~          ^
-> 3 warnings generated.
+> Hi Boris,
 >=20
-> dma_{,un}map_sg expects an enum of type dma_data_direction but this
-> driver uses dma_transfer_direction for everything. Converting to
-> dma_data_direction would be desirable but there are a few shared
-> structures that expect dma_transfer_direction so it is just simpler to
-> change the parameter here. dma_transfer_direction and dma_data_direction
-> are different sizes but this driver only uses the 1 and 2 values which
-> mean the same thing so this change is safe.
+> > -----Original Message-----
+> > From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
+> > Sent: Thursday, October 4, 2018 2:50 PM
+> > To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+> > Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com;
+> > vigneshr@ti.com; linux-spi@vger.kernel.org;
+> > devicetree@vger.kernel.org; robh@kernel.org; mark.rutland@arm.com;
+> > shawnguo@kernel.org; linux-arm- kernel@lists.infradead.org;
+> > computersforpeace@gmail.com; frieder.schrempf@exceet.de;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH 1/4] spi: add support for octal I/O data transfer
+> >
+> > On Thu, 4 Oct 2018 09:14:36 +0000
+> > Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+> >
+> > > Hi Boris,
+> > >
+> > > > -----Original Message-----
+> > > > From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
+> > > > Sent: Thursday, October 4, 2018 2:35 PM
+> > > > To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+> > > > Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com;
+> > > > vigneshr@ti.com; linux-spi@vger.kernel.org;
+> > > > devicetree@vger.kernel.org; robh@kernel.org; mark.rutland@arm.com;
+> > > > shawnguo@kernel.org; linux-arm- kernel@lists.infradead.org;
+> > > > computersforpeace@gmail.com; frieder.schrempf@exceet.de;
+> > > > linux-kernel@vger.kernel.org Subject: Re: [PATCH 1/4] spi: add
+> > > > support for octal I/O data transfer
+> > > >
+> > > > Hi Yogesh,
+> > > >
+[...]
+> > > > > +#define	SPI_RX_OCTAL
+> > > > > 0x2000			/* receive with 8 wires
+> > > > */
+> > > > >  	int			irq;
+> > > > >  	void			*controller_state;
+> > > > >  	void			*controller_data;
+> > > >
+> > > > You're still not updating spi-mem.c to check those flags and
+> > > > SPI_MEM_MAX_BUSWIDTH is not updated to match the new limit (8
+> > > > instead of 4).
+> > > >
+> > > Yes and its strange that my octal mode communication is working fine
+> > > without adding support in spi-mem.c and that's why this has been
+> > > missed from me.
+> >
+> > Are you based on top of spi-next?
 >=20
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
->  drivers/spi/spi-ep93xx.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-> index f1526757aaf6..189fc2225b69 100644
-> --- a/drivers/spi/spi-ep93xx.c
-> +++ b/drivers/spi/spi-ep93xx.c
-> @@ -256,8 +256,7 @@ static int ep93xx_spi_read_write(struct spi_master *m=
-aster)
->   * in case of failure.
->   */
->  static struct dma_async_tx_descriptor *
-> -ep93xx_spi_dma_prepare(struct spi_master *master,
-> -		       enum dma_transfer_direction dir)
-> +ep93xx_spi_dma_prepare(struct spi_master *master, int dir)
->  {
->  	struct ep93xx_spi *espi =3D spi_master_get_devdata(master);
->  	struct spi_transfer *xfer =3D master->cur_msg->state;
-> @@ -359,8 +358,7 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
->   * Function finishes with the DMA transfer. After this, the DMA buffer is
->   * unmapped.
->   */
-> -static void ep93xx_spi_dma_finish(struct spi_master *master,
-> -				  enum dma_transfer_direction dir)
-> +static void ep93xx_spi_dma_finish(struct spi_master *master, int dir)
->  {
->  	struct ep93xx_spi *espi =3D spi_master_get_devdata(master);
->  	struct dma_chan *chan;
-> --=20
-> 2.19.0
->=20
+> Ok, that might be the reason. I have rebased few days back.
+> Would rebase with current tip and add support in spi-mem interface too.
 
---6zdv2QT/q3FMhpsV
-Content-Type: application/pgp-signature; name="signature.asc"
+I have rebased spi-next and currently on top but still my octal command sup=
+port is working fine without any issue with current shared patch series, pe=
+rformed data sanity.
 
------BEGIN PGP SIGNATURE-----
+=3D>  git log  --pretty=3Doneline -3
+	496c415717b8bb7d37181127fcfad0ba450eb10d mtd: spi-nor: fsl-quadspi: Don't =
+let -EINVAL on the bus
+	2336d3a7b125683c9e8b25d6efa6064310d19dbe mtd: devices: m25p80: Make sure W=
+RITE_EN is issued before each write
+	e55841874471282d32eec595997afce43a5f55c0 mtd: spi-nor: Support controllers=
+ with limited TX FIFO size
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu17E4ACgkQJNaLcl1U
-h9BaGAf/fV+/e0h6rs2itGWzMcx4OzEXDa6d3Whxpc9ruajYoMwZK0hkzvnNBCQZ
-gz8L4JJSqds/ycFS8JHiDL93Gs9j7tQb9WoCAAReY0SjUoUak/bawG4VrtRq0qlx
-w8lfCmhGMYSOJuXrA3RosGo3MgoImRk2xtE/545LXDE4a7rhfv5Q2JMHiME9r6jI
-Jzmu9UlajUQahpTGiGgwyYJ0e4pJ5eqtbgtSu3dqW8TXaVLH29DnfDf7dSTCX3fs
-v9Yw4OwvtwwXRoaEBp3+M/jwoyF53ncPxgD2kYI6i2V0w2kEVsdZLcVuwTUyJ+Zb
-EpmKELAeQlaD5q4CFbezTAalgurhKw==
-=bvKK
------END PGP SIGNATURE-----
+GIT Repo - 	git://git.infradead.org/linux-mtd.git
+Branch -	remotes/origin/spi-nor/next
 
---6zdv2QT/q3FMhpsV--
+Also, I am not able to find string SPI_MEM_MAX_BUSWIDTH in current source c=
+ode, can you share the GIT details where these changes are pushed.
+--
+Regards
+Yogesh Gaur.

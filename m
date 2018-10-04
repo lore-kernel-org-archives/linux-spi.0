@@ -1,91 +1,72 @@
-From: Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH v2] spi: spi-ep93xx: Change dir type in ep93xx_spi_dma_{finish,prepare}
-Date: Wed,  3 Oct 2018 19:40:11 -0700
-Message-ID: <20181004024010.15986-1-natechancellor@gmail.com>
-References: <20181004023926.15847-1-natechancellor@gmail.com>
+From: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH 0/4] spi: add support for octal mode data transfer
+Date: Thu,  4 Oct 2018 14:18:36 +0530
+Message-ID: <1538642920-3843-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain
+Cc: robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org,
+        Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+To: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+        marek.vasut@gmail.com, vigneshr@ti.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181004023926.15847-1-natechancellor@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Clang warns when one enumerated type is implicitly converted to another.
+Add support for octal mode IO data transfer.
+Micron flash, mt35xu512aba, supports octal mode data transfer and
+NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
 
-drivers/spi/spi-ep93xx.c:342:62: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-        nents = dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:428:58: note: expanded from macro
-'dma_map_sg'
-#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
-                               ~~~~~~~~~~~~~~~~          ^
-drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-                dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:429:62: note: expanded from macro
-'dma_unmap_sg'
-#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
-                                 ~~~~~~~~~~~~~~~~~~          ^
-drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-        dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:429:62: note: expanded from macro
-'dma_unmap_sg'
-#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
-                                 ~~~~~~~~~~~~~~~~~~          ^
-3 warnings generated.
+Patch series 
+* Add support for octal mode flags and parsing of same in spi driver.
+* Add octal data communication commands required for mt35xu512aba [1] flash.
+* Add support for Read and Write proto for (1-1-8/1-8-8) mode.
+* Add mode bit required for octal mode in nxp-fspi driver [2].
+* Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
 
-dma_{,un}map_sg expects an enum of type dma_data_direction but this
-driver uses dma_transfer_direction for everything. Converting to
-dma_data_direction would be desirable but there are a few shared
-structures that expect dma_transfer_direction so it is just simpler to
-change the parameter here. dma_transfer_direction and dma_data_direction
-are different sizes but this driver only uses the 1 and 2 values which
-mean the same thing so this change is safe.
+Tested on LX2160ARDB target with nxp-fspi driver, below are
+Read performance number of 1-1-1 and 1-1-8 read protocol.
 
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
+ root@lxxx:~# cat /proc/mtd
+ dev:    size   erasesize  name
+ mtd0: 04000000 00001000 "spi0.0"
+ mtd1: 04000000 00001000 "spi0.1"
+ root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
+ 
+ real    0m2.792s
+ user    0m0.000s
+ sys     0m2.790s
+ root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
+ 
+ real    0m0.441s
+ user    0m0.000s
+ sys     0m0.440s
+ root@ls1012ardb:~#
 
-v1 -> v2:
+ Flash device MTD0 configured in 1-1-1 protocol.
+ Flash device MTD1 configured in 1-1-8 protocol.
 
-* Fix escaped hash symbols for '#define' lines
+[1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=66317
+[2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=66887
 
- drivers/spi/spi-ep93xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Yogesh Gaur (4):
+  spi: add support for octal I/O data transfer
+  mtd: spi-nor: add support for octal mode data transfer
+  spi: nxp-fspi: add mode flag bit for octal support
+  arm64: dts: lx2160a: update fspi node
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index f1526757aaf6..189fc2225b69 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -256,8 +256,7 @@ static int ep93xx_spi_read_write(struct spi_master *master)
-  * in case of failure.
-  */
- static struct dma_async_tx_descriptor *
--ep93xx_spi_dma_prepare(struct spi_master *master,
--		       enum dma_transfer_direction dir)
-+ep93xx_spi_dma_prepare(struct spi_master *master, int dir)
- {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 	struct spi_transfer *xfer = master->cur_msg->state;
-@@ -359,8 +358,7 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
-  * Function finishes with the DMA transfer. After this, the DMA buffer is
-  * unmapped.
-  */
--static void ep93xx_spi_dma_finish(struct spi_master *master,
--				  enum dma_transfer_direction dir)
-+static void ep93xx_spi_dma_finish(struct spi_master *master, int dir)
- {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 	struct dma_chan *chan;
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
+ drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
+ drivers/mtd/spi-nor/spi-nor.c                     | 14 +++++++++++++-
+ drivers/spi/spi-nxp-fspi.c                        |  4 ++--
+ drivers/spi/spi.c                                 |  6 ++++++
+ include/linux/mtd/spi-nor.h                       |  8 ++++++++
+ include/linux/spi/spi.h                           |  2 ++
+ 7 files changed, 43 insertions(+), 4 deletions(-)
+
 -- 
-2.19.0
+2.7.4

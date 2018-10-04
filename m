@@ -1,21 +1,13 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH 4/4] arm64: dts: lx2160a: update fspi node
-Date: Thu, 4 Oct 2018 09:27:07 +0000
-Message-ID: <VI1PR04MB1038A3CE7098227B6912C6F699EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
+Subject: RE: [PATCH 0/4] spi: add support for octal mode data transfer
+Date: Thu, 4 Oct 2018 09:28:05 +0000
+Message-ID: <VI1PR04MB103828C628A6550F7E1B942E99EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
 References: <1538642920-3843-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1538642920-3843-5-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <20181004111822.48ab1f5c@bbrezillon>
-        <VI1PR04MB1038ECE25B571117405A617799EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
- <20181004112608.3ae23d99@bbrezillon>
+ <43cff872-0dc5-d3ce-ca35-082faa0e0e7c@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "robh@kernel.org" <robh@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
@@ -23,94 +15,80 @@ Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+To: Vignesh R <vigneshr@ti.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181004112608.3ae23d99@bbrezillon>
+In-Reply-To: <43cff872-0dc5-d3ce-ca35-082faa0e0e7c@ti.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> Sent: Thursday, October 4, 2018 2:56 PM
-> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com; vigneshr@ti.com=
-;
-> linux-spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
-> mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
-> kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 4/4] arm64: dts: lx2160a: update fspi node
->=20
-> On Thu, 4 Oct 2018 09:24:57 +0000
-> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
->=20
-> > Hi Boris,
-> >
-> > > -----Original Message-----
-> > > From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> > > Sent: Thursday, October 4, 2018 2:48 PM
-> > > To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > > Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com;
-> > > vigneshr@ti.com; linux-spi@vger.kernel.org;
-> > > devicetree@vger.kernel.org; robh@kernel.org; mark.rutland@arm.com;
-> > > shawnguo@kernel.org; linux-arm- kernel@lists.infradead.org;
-> > > computersforpeace@gmail.com; frieder.schrempf@exceet.de;
-> > > linux-kernel@vger.kernel.org
-> > > Subject: Re: [PATCH 4/4] arm64: dts: lx2160a: update fspi node
-> > >
-> > > On Thu,  4 Oct 2018 14:18:40 +0530
-> > > Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> > >
-> > > > Flash mt35xu512aba connected to FlexSPI controller supports
-> > > > 1-1-8 protocol.
-> > > > Added flag spi-rx-bus-width and spi-tx-bus-width with values as
-> > > > 8 and 1 respectively for both flashes connected at CS0 and CS1.
-> > > >
-> > > > Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts | 4 ++++
-> > > >  1 file changed, 4 insertions(+)
-> > > >
-> > > > diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > > > b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > > > index 901ca346..817175a 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > > > +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > > > @@ -42,6 +42,8 @@
-> > > >  		m25p,fast-read;
-> > > >  		spi-max-frequency =3D <20000000>;
-> > > >  		reg =3D <0>;
-> > > > +		spi-rx-bus-width =3D <8>;
-> > > > +		spi-tx-bus-width =3D <1>;
-> > >
-> > > Why 1? The flash is already flagged with SPI_NOR_OCTAL_READ, which
-> > > means only the read path will use 1-1-8 mode, so you can safely set
-> > > spi-tx-bus-width
->=20
-> I meant 'set spi-tx-bus-width to 8' here
-
-Yes.
-
->=20
-> > > here and let the framework choose the appropriate mode based on the
-> > > flash capabilities.
-> >
-> > Ok.
-> >
-> > >
-> > > >  	};
-> > > >
-> > > >  	mt35xu512aba1: flash@1 {
-> > > > @@ -51,6 +53,8 @@
-> > > >  		m25p,fast-read;
-> > > >  		spi-max-frequency =3D <20000000>;
-> > > >  		reg =3D <1>;
-> > > > +		spi-rx-bus-width =3D <8>;
-> > > > +		spi-tx-bus-width =3D <1>;
-> > > >  	};
-> > > >  };
-> > > >
-> >
+SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWdu
+ZXNoIFIgW21haWx0bzp2aWduZXNockB0aS5jb21dDQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVy
+IDQsIDIwMTggMjo1MiBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1ciA8eW9nZXNobmFyYXlh
+bi5nYXVyQG54cC5jb20+OyBsaW51eC0NCj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IGJvcmlz
+LmJyZXppbGxvbkBib290bGluLmNvbTsgbWFyZWsudmFzdXRAZ21haWwuY29tOw0KPiBsaW51eC1z
+cGlAdmdlci5rZXJuZWwub3JnOyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZw0KPiBDYzogcm9i
+aEBrZXJuZWwub3JnOyBtYXJrLnJ1dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsg
+bGludXgtDQo+IGFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgY29tcHV0ZXJzZm9ycGVh
+Y2VAZ21haWwuY29tOw0KPiBmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZTsgbGludXgta2VybmVs
+QHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDAvNF0gc3BpOiBhZGQgc3Vw
+cG9ydCBmb3Igb2N0YWwgbW9kZSBkYXRhIHRyYW5zZmVyDQo+IA0KPiBIaSBZb2dlc2gsDQo+IA0K
+PiBPbiBUaHVyc2RheSAwNCBPY3RvYmVyIDIwMTggMDI6MTggUE0sIFlvZ2VzaCBHYXVyIHdyb3Rl
+Og0KPiA+IEFkZCBzdXBwb3J0IGZvciBvY3RhbCBtb2RlIElPIGRhdGEgdHJhbnNmZXIuDQo+ID4g
+TWljcm9uIGZsYXNoLCBtdDM1eHU1MTJhYmEsIHN1cHBvcnRzIG9jdGFsIG1vZGUgZGF0YSB0cmFu
+c2ZlciBhbmQgTlhQDQo+ID4gRmxleFNQSSBjb250cm9sbGVyIHN1cHBvcnRzIDggZGF0YSBsaW5l
+cyBmb3IgZGF0YSB0cmFuc2ZlciAoUngvVHgpLg0KPiA+DQo+ID4gUGF0Y2ggc2VyaWVzDQo+ID4g
+KiBBZGQgc3VwcG9ydCBmb3Igb2N0YWwgbW9kZSBmbGFncyBhbmQgcGFyc2luZyBvZiBzYW1lIGlu
+IHNwaSBkcml2ZXIuDQo+ID4gKiBBZGQgb2N0YWwgZGF0YSBjb21tdW5pY2F0aW9uIGNvbW1hbmRz
+IHJlcXVpcmVkIGZvciBtdDM1eHU1MTJhYmEgWzFdDQo+IGZsYXNoLg0KPiA+ICogQWRkIHN1cHBv
+cnQgZm9yIFJlYWQgYW5kIFdyaXRlIHByb3RvIGZvciAoMS0xLTgvMS04LTgpIG1vZGUuDQo+ID4g
+KiBBZGQgbW9kZSBiaXQgcmVxdWlyZWQgZm9yIG9jdGFsIG1vZGUgaW4gbnhwLWZzcGkgZHJpdmVy
+IFsyXS4NCj4gPiAqIERlZmluZSBiaW5kaW5nIHByb3BlcnR5ICdzcGktcngvdHgtYnVzLXdpZHRo
+JyBmb3IgTFgyMTYwQVJEQiB0YXJnZXQgWzJdLg0KPiA+DQo+ID4gVGVzdGVkIG9uIExYMjE2MEFS
+REIgdGFyZ2V0IHdpdGggbnhwLWZzcGkgZHJpdmVyLCBiZWxvdyBhcmUgUmVhZA0KPiA+IHBlcmZv
+cm1hbmNlIG51bWJlciBvZiAxLTEtMSBhbmQgMS0xLTggcmVhZCBwcm90b2NvbC4NCj4gPg0KPiA+
+ICByb290QGx4eHg6fiMgY2F0IC9wcm9jL210ZA0KPiA+ICBkZXY6ICAgIHNpemUgICBlcmFzZXNp
+emUgIG5hbWUNCj4gPiAgbXRkMDogMDQwMDAwMDAgMDAwMDEwMDAgInNwaTAuMCINCj4gPiAgbXRk
+MTogMDQwMDAwMDAgMDAwMDEwMDAgInNwaTAuMSINCj4gPiAgcm9vdEBseHh4On4jIHRpbWUgbXRk
+X2RlYnVnIHJlYWQgL2Rldi9tdGQwIDB4MCAweDEwMDAwMDAgMHJlYWQNCj4gPiBDb3BpZWQgMTY3
+NzcyMTYgYnl0ZXMgZnJvbSBhZGRyZXNzIDB4MDAwMDAwMDAgaW4gZmxhc2ggdG8gMHJlYWQNCj4g
+Pg0KPiA+ICByZWFsICAgIDBtMi43OTJzDQo+ID4gIHVzZXIgICAgMG0wLjAwMHMNCj4gPiAgc3lz
+ICAgICAwbTIuNzkwcw0KPiA+ICByb290QGx4eHg6fiMgdGltZSBtdGRfZGVidWcgcmVhZCAvZGV2
+L210ZDEgMHgwIDB4MTAwMDAwMCAwcmVhZA0KPiA+IENvcGllZCAxNjc3NzIxNiBieXRlcyBmcm9t
+IGFkZHJlc3MgMHgwMDAwMDAwMCBpbiBmbGFzaCB0byAwcmVhZA0KPiA+DQo+ID4gIHJlYWwgICAg
+MG0wLjQ0MXMNCj4gPiAgdXNlciAgICAwbTAuMDAwcw0KPiA+ICBzeXMgICAgIDBtMC40NDBzDQo+
+ID4gIHJvb3RAbHMxMDEyYXJkYjp+Iw0KPiA+DQo+ID4gIEZsYXNoIGRldmljZSBNVEQwIGNvbmZp
+Z3VyZWQgaW4gMS0xLTEgcHJvdG9jb2wuDQo+ID4gIEZsYXNoIGRldmljZSBNVEQxIGNvbmZpZ3Vy
+ZWQgaW4gMS0xLTggcHJvdG9jb2wuDQo+ID4NCj4gPiBbMV0NCj4gPiBodHRwczovL2VtZWEwMS5z
+YWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGcGF0DQo+
+ID4gY2h3b3JrLm96bGFicy5vcmclMkZwcm9qZWN0JTJGbGludXgtDQo+IG10ZCUyRmxpc3QlMkYl
+M0ZzZXJpZXMlM0Q2NjMxNyZhbXANCj4gPiA7ZGF0YT0wMiU3QzAxJTdDeW9nZXNobmFyYXlhbi5n
+YXVyJTQwbnhwLmNvbSU3QzdhYWU4YmE3MWQ4MDQyMGQ0DQo+IDQ5ZjA4ZA0KPiA+DQo+IDYyOWRh
+ZDQ0ZCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3QzAlN0M2MzY3NDI0
+MTcNCj4gMTg5MzAwDQo+ID4NCj4gNTc0JmFtcDtzZGF0YT14c1NwbW9SekRLSjlaNk81NmtURzVw
+SFBvamptVWZTejlyQjVjV1FsUEVNJTNEJmFtDQo+IHA7cmVzZXINCj4gPiB2ZWQ9MCBbMl0NCj4g
+PiBodHRwczovL2VtZWEwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0
+dHBzJTNBJTJGJTJGcGF0DQo+ID4gY2h3b3JrLm96bGFicy5vcmclMkZwcm9qZWN0JTJGbGludXgt
+DQo+IG10ZCUyRmxpc3QlMkYlM0ZzZXJpZXMlM0Q2Njg4NyZhbXANCj4gPiA7ZGF0YT0wMiU3QzAx
+JTdDeW9nZXNobmFyYXlhbi5nYXVyJTQwbnhwLmNvbSU3QzdhYWU4YmE3MWQ4MDQyMGQ0DQo+IDQ5
+ZjA4ZA0KPiA+DQo+IDYyOWRhZDQ0ZCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1
+JTdDMCU3QzAlN0M2MzY3NDI0MTcNCj4gMTg5MzAwDQo+ID4NCj4gNTc0JmFtcDtzZGF0YT1vRnNm
+VHRwdDBHRGkzeTBGaSUyQiUyRjlTRnA4WnZid1BQZTVxTU5GSXdWdzd3RSUzRA0KPiAmYW1wO3IN
+Cj4gPiBlc2VydmVkPTANCj4gPg0KPiA+IFlvZ2VzaCBHYXVyICg0KToNCj4gPiAgIHNwaTogYWRk
+IHN1cHBvcnQgZm9yIG9jdGFsIEkvTyBkYXRhIHRyYW5zZmVyDQo+ID4gICBtdGQ6IHNwaS1ub3I6
+IGFkZCBzdXBwb3J0IGZvciBvY3RhbCBtb2RlIGRhdGEgdHJhbnNmZXINCj4gPiAgIHNwaTogbnhw
+LWZzcGk6IGFkZCBtb2RlIGZsYWcgYml0IGZvciBvY3RhbCBzdXBwb3J0DQo+ID4gICBhcm02NDog
+ZHRzOiBseDIxNjBhOiB1cGRhdGUgZnNwaSBub2RlDQo+IA0KPiBUaGlzIGlzIGEgYml0IGNvbmZ1
+c2luZyBhbmQgZGlmZmljdWx0IHRvIGZvbGxvdy4gSSBzdWdnZXN0IHRvIG9yZGVyIHBhdGNoZXMg
+c3VjaCB0aGF0DQo+IHNwaS1ub3IgbGF5ZXIgY2hhbmdlcyBhcmUgYXQgdGhlIGZpcnN0LCB0aGVu
+IG0yNXA4MCByZWxhdGVkIHRoaW5ncywgZm9sbG93ZWQgYnkNCj4gc3BpLW1lbSAoaWYgbmVlZGVk
+IHNwaSkgY2hhbmdlcyBhbmQgZmluYWxseSBzcGktbWVtIGNvbnRyb2xsZXIgZHJpdmVyIGNoYW5n
+ZXMuDQo+IA0KDQpUaGFua3MgZm9yIHRoZSBjb21tZW50Lg0KV291bGQgY2hhbmdlIHRoZSBwYXRj
+aCBvcmRlciBhcyBzdWdnZXN0ZWQgYW5kIGJyZWFrIHRoZSBmdW5jdGlvbmFsaXR5IGluIHNtYWxs
+IHBhdGNoZXMgYXMgc3VnZ2VzdGVkIGJ5IEJvcmlzLg0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdh
+dXINCg0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==

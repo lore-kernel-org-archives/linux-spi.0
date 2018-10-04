@@ -1,94 +1,122 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH 0/4] spi: add support for octal mode data transfer
-Date: Thu, 4 Oct 2018 09:28:05 +0000
-Message-ID: <VI1PR04MB103828C628A6550F7E1B942E99EA0@VI1PR04MB1038.eurprd04.prod.outlook.com>
-References: <1538642920-3843-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <43cff872-0dc5-d3ce-ca35-082faa0e0e7c@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spi-ep93xx: Change dir type in
+ ep93xx_spi_dma_{finish,prepare}
+Date: Thu, 4 Oct 2018 11:32:47 +0100
+Message-ID: <20181004103247.GC6412@sirena.org.uk>
+References: <20181004023926.15847-1-natechancellor@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Vignesh R <vigneshr@ti.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6zdv2QT/q3FMhpsV"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        H Hartley Sweeten <hartleys@visionengravers.com>,
+        Mika Westerberg <mika.westerberg@iki.fi>
+To: Nathan Chancellor <natechancellor@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <43cff872-0dc5-d3ce-ca35-082faa0e0e7c@ti.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20181004023926.15847-1-natechancellor@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWdu
-ZXNoIFIgW21haWx0bzp2aWduZXNockB0aS5jb21dDQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVy
-IDQsIDIwMTggMjo1MiBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1ciA8eW9nZXNobmFyYXlh
-bi5nYXVyQG54cC5jb20+OyBsaW51eC0NCj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IGJvcmlz
-LmJyZXppbGxvbkBib290bGluLmNvbTsgbWFyZWsudmFzdXRAZ21haWwuY29tOw0KPiBsaW51eC1z
-cGlAdmdlci5rZXJuZWwub3JnOyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZw0KPiBDYzogcm9i
-aEBrZXJuZWwub3JnOyBtYXJrLnJ1dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsg
-bGludXgtDQo+IGFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgY29tcHV0ZXJzZm9ycGVh
-Y2VAZ21haWwuY29tOw0KPiBmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZTsgbGludXgta2VybmVs
-QHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDAvNF0gc3BpOiBhZGQgc3Vw
-cG9ydCBmb3Igb2N0YWwgbW9kZSBkYXRhIHRyYW5zZmVyDQo+IA0KPiBIaSBZb2dlc2gsDQo+IA0K
-PiBPbiBUaHVyc2RheSAwNCBPY3RvYmVyIDIwMTggMDI6MTggUE0sIFlvZ2VzaCBHYXVyIHdyb3Rl
-Og0KPiA+IEFkZCBzdXBwb3J0IGZvciBvY3RhbCBtb2RlIElPIGRhdGEgdHJhbnNmZXIuDQo+ID4g
-TWljcm9uIGZsYXNoLCBtdDM1eHU1MTJhYmEsIHN1cHBvcnRzIG9jdGFsIG1vZGUgZGF0YSB0cmFu
-c2ZlciBhbmQgTlhQDQo+ID4gRmxleFNQSSBjb250cm9sbGVyIHN1cHBvcnRzIDggZGF0YSBsaW5l
-cyBmb3IgZGF0YSB0cmFuc2ZlciAoUngvVHgpLg0KPiA+DQo+ID4gUGF0Y2ggc2VyaWVzDQo+ID4g
-KiBBZGQgc3VwcG9ydCBmb3Igb2N0YWwgbW9kZSBmbGFncyBhbmQgcGFyc2luZyBvZiBzYW1lIGlu
-IHNwaSBkcml2ZXIuDQo+ID4gKiBBZGQgb2N0YWwgZGF0YSBjb21tdW5pY2F0aW9uIGNvbW1hbmRz
-IHJlcXVpcmVkIGZvciBtdDM1eHU1MTJhYmEgWzFdDQo+IGZsYXNoLg0KPiA+ICogQWRkIHN1cHBv
-cnQgZm9yIFJlYWQgYW5kIFdyaXRlIHByb3RvIGZvciAoMS0xLTgvMS04LTgpIG1vZGUuDQo+ID4g
-KiBBZGQgbW9kZSBiaXQgcmVxdWlyZWQgZm9yIG9jdGFsIG1vZGUgaW4gbnhwLWZzcGkgZHJpdmVy
-IFsyXS4NCj4gPiAqIERlZmluZSBiaW5kaW5nIHByb3BlcnR5ICdzcGktcngvdHgtYnVzLXdpZHRo
-JyBmb3IgTFgyMTYwQVJEQiB0YXJnZXQgWzJdLg0KPiA+DQo+ID4gVGVzdGVkIG9uIExYMjE2MEFS
-REIgdGFyZ2V0IHdpdGggbnhwLWZzcGkgZHJpdmVyLCBiZWxvdyBhcmUgUmVhZA0KPiA+IHBlcmZv
-cm1hbmNlIG51bWJlciBvZiAxLTEtMSBhbmQgMS0xLTggcmVhZCBwcm90b2NvbC4NCj4gPg0KPiA+
-ICByb290QGx4eHg6fiMgY2F0IC9wcm9jL210ZA0KPiA+ICBkZXY6ICAgIHNpemUgICBlcmFzZXNp
-emUgIG5hbWUNCj4gPiAgbXRkMDogMDQwMDAwMDAgMDAwMDEwMDAgInNwaTAuMCINCj4gPiAgbXRk
-MTogMDQwMDAwMDAgMDAwMDEwMDAgInNwaTAuMSINCj4gPiAgcm9vdEBseHh4On4jIHRpbWUgbXRk
-X2RlYnVnIHJlYWQgL2Rldi9tdGQwIDB4MCAweDEwMDAwMDAgMHJlYWQNCj4gPiBDb3BpZWQgMTY3
-NzcyMTYgYnl0ZXMgZnJvbSBhZGRyZXNzIDB4MDAwMDAwMDAgaW4gZmxhc2ggdG8gMHJlYWQNCj4g
-Pg0KPiA+ICByZWFsICAgIDBtMi43OTJzDQo+ID4gIHVzZXIgICAgMG0wLjAwMHMNCj4gPiAgc3lz
-ICAgICAwbTIuNzkwcw0KPiA+ICByb290QGx4eHg6fiMgdGltZSBtdGRfZGVidWcgcmVhZCAvZGV2
-L210ZDEgMHgwIDB4MTAwMDAwMCAwcmVhZA0KPiA+IENvcGllZCAxNjc3NzIxNiBieXRlcyBmcm9t
-IGFkZHJlc3MgMHgwMDAwMDAwMCBpbiBmbGFzaCB0byAwcmVhZA0KPiA+DQo+ID4gIHJlYWwgICAg
-MG0wLjQ0MXMNCj4gPiAgdXNlciAgICAwbTAuMDAwcw0KPiA+ICBzeXMgICAgIDBtMC40NDBzDQo+
-ID4gIHJvb3RAbHMxMDEyYXJkYjp+Iw0KPiA+DQo+ID4gIEZsYXNoIGRldmljZSBNVEQwIGNvbmZp
-Z3VyZWQgaW4gMS0xLTEgcHJvdG9jb2wuDQo+ID4gIEZsYXNoIGRldmljZSBNVEQxIGNvbmZpZ3Vy
-ZWQgaW4gMS0xLTggcHJvdG9jb2wuDQo+ID4NCj4gPiBbMV0NCj4gPiBodHRwczovL2VtZWEwMS5z
-YWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGcGF0DQo+
-ID4gY2h3b3JrLm96bGFicy5vcmclMkZwcm9qZWN0JTJGbGludXgtDQo+IG10ZCUyRmxpc3QlMkYl
-M0ZzZXJpZXMlM0Q2NjMxNyZhbXANCj4gPiA7ZGF0YT0wMiU3QzAxJTdDeW9nZXNobmFyYXlhbi5n
-YXVyJTQwbnhwLmNvbSU3QzdhYWU4YmE3MWQ4MDQyMGQ0DQo+IDQ5ZjA4ZA0KPiA+DQo+IDYyOWRh
-ZDQ0ZCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3QzAlN0M2MzY3NDI0
-MTcNCj4gMTg5MzAwDQo+ID4NCj4gNTc0JmFtcDtzZGF0YT14c1NwbW9SekRLSjlaNk81NmtURzVw
-SFBvamptVWZTejlyQjVjV1FsUEVNJTNEJmFtDQo+IHA7cmVzZXINCj4gPiB2ZWQ9MCBbMl0NCj4g
-PiBodHRwczovL2VtZWEwMS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0
-dHBzJTNBJTJGJTJGcGF0DQo+ID4gY2h3b3JrLm96bGFicy5vcmclMkZwcm9qZWN0JTJGbGludXgt
-DQo+IG10ZCUyRmxpc3QlMkYlM0ZzZXJpZXMlM0Q2Njg4NyZhbXANCj4gPiA7ZGF0YT0wMiU3QzAx
-JTdDeW9nZXNobmFyYXlhbi5nYXVyJTQwbnhwLmNvbSU3QzdhYWU4YmE3MWQ4MDQyMGQ0DQo+IDQ5
-ZjA4ZA0KPiA+DQo+IDYyOWRhZDQ0ZCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1
-JTdDMCU3QzAlN0M2MzY3NDI0MTcNCj4gMTg5MzAwDQo+ID4NCj4gNTc0JmFtcDtzZGF0YT1vRnNm
-VHRwdDBHRGkzeTBGaSUyQiUyRjlTRnA4WnZid1BQZTVxTU5GSXdWdzd3RSUzRA0KPiAmYW1wO3IN
-Cj4gPiBlc2VydmVkPTANCj4gPg0KPiA+IFlvZ2VzaCBHYXVyICg0KToNCj4gPiAgIHNwaTogYWRk
-IHN1cHBvcnQgZm9yIG9jdGFsIEkvTyBkYXRhIHRyYW5zZmVyDQo+ID4gICBtdGQ6IHNwaS1ub3I6
-IGFkZCBzdXBwb3J0IGZvciBvY3RhbCBtb2RlIGRhdGEgdHJhbnNmZXINCj4gPiAgIHNwaTogbnhw
-LWZzcGk6IGFkZCBtb2RlIGZsYWcgYml0IGZvciBvY3RhbCBzdXBwb3J0DQo+ID4gICBhcm02NDog
-ZHRzOiBseDIxNjBhOiB1cGRhdGUgZnNwaSBub2RlDQo+IA0KPiBUaGlzIGlzIGEgYml0IGNvbmZ1
-c2luZyBhbmQgZGlmZmljdWx0IHRvIGZvbGxvdy4gSSBzdWdnZXN0IHRvIG9yZGVyIHBhdGNoZXMg
-c3VjaCB0aGF0DQo+IHNwaS1ub3IgbGF5ZXIgY2hhbmdlcyBhcmUgYXQgdGhlIGZpcnN0LCB0aGVu
-IG0yNXA4MCByZWxhdGVkIHRoaW5ncywgZm9sbG93ZWQgYnkNCj4gc3BpLW1lbSAoaWYgbmVlZGVk
-IHNwaSkgY2hhbmdlcyBhbmQgZmluYWxseSBzcGktbWVtIGNvbnRyb2xsZXIgZHJpdmVyIGNoYW5n
-ZXMuDQo+IA0KDQpUaGFua3MgZm9yIHRoZSBjb21tZW50Lg0KV291bGQgY2hhbmdlIHRoZSBwYXRj
-aCBvcmRlciBhcyBzdWdnZXN0ZWQgYW5kIGJyZWFrIHRoZSBmdW5jdGlvbmFsaXR5IGluIHNtYWxs
-IHBhdGNoZXMgYXMgc3VnZ2VzdGVkIGJ5IEJvcmlzLg0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdh
-dXINCg0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==
+
+--6zdv2QT/q3FMhpsV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Oct 03, 2018 at 07:39:26PM -0700, Nathan Chancellor wrote:
+> Clang warns when one enumerated type is implicitly converted to another.
+>=20
+> drivers/spi/spi-ep93xx.c:342:62: warning: implicit conversion from
+> enumeration type 'enum dma_transfer_direction' to different enumeration
+
+Please remember to CC driver maintainers and authors on patch
+submissions so they can review things, copying in Hartley and Mika.
+
+> type 'enum dma_data_direction' [-Wenum-conversion]
+>         nents =3D dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir=
+);
+>                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+> ./include/linux/dma-mapping.h:428:58: note: expanded from macro
+> 'dma_map_sg'
+> \#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
+>                                ~~~~~~~~~~~~~~~~          ^
+> drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
+> enumeration type 'enum dma_transfer_direction' to different enumeration
+> type 'enum dma_data_direction' [-Wenum-conversion]
+>                 dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir=
+);
+>                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
+> 'dma_unmap_sg'
+> \#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
+>                                  ~~~~~~~~~~~~~~~~~~          ^
+> drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
+> enumeration type 'enum dma_transfer_direction' to different enumeration
+> type 'enum dma_data_direction' [-Wenum-conversion]
+>         dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
+>         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
+> 'dma_unmap_sg'
+> \#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
+>                                  ~~~~~~~~~~~~~~~~~~          ^
+> 3 warnings generated.
+>=20
+> dma_{,un}map_sg expects an enum of type dma_data_direction but this
+> driver uses dma_transfer_direction for everything. Converting to
+> dma_data_direction would be desirable but there are a few shared
+> structures that expect dma_transfer_direction so it is just simpler to
+> change the parameter here. dma_transfer_direction and dma_data_direction
+> are different sizes but this driver only uses the 1 and 2 values which
+> mean the same thing so this change is safe.
+>=20
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/spi/spi-ep93xx.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> index f1526757aaf6..189fc2225b69 100644
+> --- a/drivers/spi/spi-ep93xx.c
+> +++ b/drivers/spi/spi-ep93xx.c
+> @@ -256,8 +256,7 @@ static int ep93xx_spi_read_write(struct spi_master *m=
+aster)
+>   * in case of failure.
+>   */
+>  static struct dma_async_tx_descriptor *
+> -ep93xx_spi_dma_prepare(struct spi_master *master,
+> -		       enum dma_transfer_direction dir)
+> +ep93xx_spi_dma_prepare(struct spi_master *master, int dir)
+>  {
+>  	struct ep93xx_spi *espi =3D spi_master_get_devdata(master);
+>  	struct spi_transfer *xfer =3D master->cur_msg->state;
+> @@ -359,8 +358,7 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
+>   * Function finishes with the DMA transfer. After this, the DMA buffer is
+>   * unmapped.
+>   */
+> -static void ep93xx_spi_dma_finish(struct spi_master *master,
+> -				  enum dma_transfer_direction dir)
+> +static void ep93xx_spi_dma_finish(struct spi_master *master, int dir)
+>  {
+>  	struct ep93xx_spi *espi =3D spi_master_get_devdata(master);
+>  	struct dma_chan *chan;
+> --=20
+> 2.19.0
+>=20
+
+--6zdv2QT/q3FMhpsV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu17E4ACgkQJNaLcl1U
+h9BaGAf/fV+/e0h6rs2itGWzMcx4OzEXDa6d3Whxpc9ruajYoMwZK0hkzvnNBCQZ
+gz8L4JJSqds/ycFS8JHiDL93Gs9j7tQb9WoCAAReY0SjUoUak/bawG4VrtRq0qlx
+w8lfCmhGMYSOJuXrA3RosGo3MgoImRk2xtE/545LXDE4a7rhfv5Q2JMHiME9r6jI
+Jzmu9UlajUQahpTGiGgwyYJ0e4pJ5eqtbgtSu3dqW8TXaVLH29DnfDf7dSTCX3fs
+v9Yw4OwvtwwXRoaEBp3+M/jwoyF53ncPxgD2kYI6i2V0w2kEVsdZLcVuwTUyJ+Zb
+EpmKELAeQlaD5q4CFbezTAalgurhKw==
+=bvKK
+-----END PGP SIGNATURE-----
+
+--6zdv2QT/q3FMhpsV--

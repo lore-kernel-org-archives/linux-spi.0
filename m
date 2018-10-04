@@ -1,7 +1,8 @@
 From: Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] spi: spi-ep93xx: Change dir type in ep93xx_spi_dma_{finish,prepare}
-Date: Wed,  3 Oct 2018 19:39:26 -0700
-Message-ID: <20181004023926.15847-1-natechancellor@gmail.com>
+Subject: [PATCH v2] spi: spi-ep93xx: Change dir type in ep93xx_spi_dma_{finish,prepare}
+Date: Wed,  3 Oct 2018 19:40:11 -0700
+Message-ID: <20181004024010.15986-1-natechancellor@gmail.com>
+References: <20181004023926.15847-1-natechancellor@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -9,6 +10,7 @@ Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Nathan Chancellor <natechancellor@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181004023926.15847-1-natechancellor@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -21,7 +23,7 @@ type 'enum dma_data_direction' [-Wenum-conversion]
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
 ./include/linux/dma-mapping.h:428:58: note: expanded from macro
 'dma_map_sg'
-\#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
+#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
                                ~~~~~~~~~~~~~~~~          ^
 drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
 enumeration type 'enum dma_transfer_direction' to different enumeration
@@ -30,7 +32,7 @@ type 'enum dma_data_direction' [-Wenum-conversion]
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
 ./include/linux/dma-mapping.h:429:62: note: expanded from macro
 'dma_unmap_sg'
-\#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
+#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
                                  ~~~~~~~~~~~~~~~~~~          ^
 drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
 enumeration type 'enum dma_transfer_direction' to different enumeration
@@ -39,7 +41,7 @@ type 'enum dma_data_direction' [-Wenum-conversion]
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
 ./include/linux/dma-mapping.h:429:62: note: expanded from macro
 'dma_unmap_sg'
-\#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
+#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
                                  ~~~~~~~~~~~~~~~~~~          ^
 3 warnings generated.
 
@@ -53,6 +55,11 @@ mean the same thing so this change is safe.
 
 Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 ---
+
+v1 -> v2:
+
+* Fix escaped hash symbols for '#define' lines
+
  drivers/spi/spi-ep93xx.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 

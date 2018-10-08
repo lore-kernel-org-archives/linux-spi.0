@@ -1,204 +1,310 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-ep93xx: Use dma_data_direction for ep93xx_spi_dma_{finish,prepare}" to the spi tree
-Date: Tue,  9 Oct 2018 00:34:51 +0100 (BST)
-Message-ID: <20181008233451.EE62F440078@finisterre.ee.mobilebroadband>
-References: <20181008180846.14119-1-natechancellor@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        H Hartley Sweeten <hartleys@visionengravers.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-spi@vger.kernel.org
-To: Nathan Chancellor <natechancellor@gmail.com>
+From: Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH V5 3/3] spi: spi-geni-qcom: Add SPI driver support for GENI based
+ QUP
+Date: Mon, 08 Oct 2018 16:43:17 -0700
+Message-ID: <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
+References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
+ <1538574265-30235-4-git-send-email-alokc@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-arm-msm@vger.kernel.org,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>,
+        Alok Chauhan <alokc@codeaurora.org>
+To: Alok Chauhan <alokc@codeaurora.org>, broonie@kernel.org,
+        dianders@chromium.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, mka@chromium.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181008180846.14119-1-natechancellor@gmail.com>
+In-Reply-To: <1538574265-30235-4-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Quoting Alok Chauhan (2018-10-03 06:44:25)
+>
 
-   spi: spi-ep93xx: Use dma_data_direction for ep93xx_spi_dma_{finish,prepare}
+I just have a handful of nitpicks which can be fixed later in
+follow-ups. Otherwise:
 
-has been applied to the spi tree at
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> new file mode 100644
+> index 0000000..6432ecc
+> --- /dev/null
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -0,0 +1,703 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
+> +
+[...]
+> +#define SPI_TX_ONLY            1
+> +#define SPI_RX_ONLY            2
+> +#define SPI_FULL_DUPLEX                3
+> +#define SPI_TX_RX              7
+> +#define SPI_CS_ASSERT          8
+> +#define SPI_CS_DEASSERT                9
+> +#define SPI_SCK_ONLY           10
+> +/* M_CMD params for SPI */
+> +#define SPI_PRE_CMD_DELAY      BIT(0)
+> +#define TIMESTAMP_BEFORE       BIT(1)
+> +#define FRAGMENTATION          BIT(2)
+> +#define TIMESTAMP_AFTER                BIT(3)
+> +#define POST_CMD_DELAY         BIT(4)
+> +
+> +/* SPI M_COMMAND OPCODE */
+> +enum spi_mcmd_code {
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Nitpick: rename spi_m_cmd_opcode and drop the comment?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> +       CMD_NONE,
+> +       CMD_XFER,
+> +       CMD_CS,
+> +       CMD_CANCEL,
+> +};
+> +
+> +
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Nitpick: Drop double newline.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> +struct spi_geni_master {
+> +       struct geni_se se;
+> +       struct device *dev;
+> +       u32 tx_fifo_depth;
+> +       u32 fifo_width_bits;
+> +       u32 tx_wm;
+> +       unsigned long cur_speed_hz;
+> +       unsigned int cur_bits_per_word;
+> +       unsigned int tx_rem_bytes;
+> +       unsigned int rx_rem_bytes;
+> +       const struct spi_transfer *cur_xfer;
+> +       struct completion xfer_done;
+> +       unsigned int oversampling;
+> +       spinlock_t lock;
+> +       unsigned int cur_mcmd;
 
-Thanks,
-Mark
+Niptick: Use the enum?
 
->From a1108c7b2efb892350ba6a0e932dfd45622f4e2b Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <natechancellor@gmail.com>
-Date: Mon, 8 Oct 2018 11:08:47 -0700
-Subject: [PATCH] spi: spi-ep93xx: Use dma_data_direction for
- ep93xx_spi_dma_{finish,prepare}
+> +       int irq;
+> +};
+> +
+> +static void handle_fifo_timeout(struct spi_master *spi,
+> +                               struct spi_message *msg);
+> +
+> +static int get_spi_clk_cfg(unsigned int speed_hz,
+> +                       struct spi_geni_master *mas,
+> +                       unsigned int *clk_idx,
+> +                       unsigned int *clk_div)
+> +{
+> +       unsigned long sclk_freq;
+> +       unsigned int actual_hz;
+> +       struct geni_se *se =3D &mas->se;
+> +       int ret;
+> +
+> +       ret =3D geni_se_clk_freq_match(&mas->se,
+> +                               speed_hz * mas->oversampling,
+> +                               clk_idx, &sclk_freq, false);
+> +       if (ret) {
+> +               dev_err(mas->dev, "Failed(%d) to find src clk for %dHz\n",
+> +                                                       ret, speed_hz);
+> +               return ret;
+> +       }
+> +
+> +       *clk_div =3D DIV_ROUND_UP(sclk_freq, mas->oversampling * speed_hz=
+);
+> +       actual_hz =3D sclk_freq / (mas->oversampling * *clk_div);
+> +
+> +       dev_dbg(mas->dev, "req %u=3D>%u sclk %lu, idx %d, div %d\n", spee=
+d_hz,
+> +                               actual_hz, sclk_freq, *clk_idx, *clk_div);
+> +       ret =3D clk_set_rate(se->clk, sclk_freq);
+> +       if (ret)
+> +               dev_err(mas->dev, "clk_set_rate failed %d\n", ret);
+> +       return ret;
+> +}
+> +
+> +static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
+> +{
+> +       struct spi_geni_master *mas =3D spi_master_get_devdata(slv->maste=
+r);
+> +       struct spi_master *spi =3D dev_get_drvdata(mas->dev);
+> +       struct geni_se *se =3D &mas->se;
+> +       unsigned long timeout;
+> +
+> +       reinit_completion(&mas->xfer_done);
+> +       pm_runtime_get_sync(mas->dev);
+> +       if (!(slv->mode & SPI_CS_HIGH))
+> +               set_flag =3D !set_flag;
+> +
+> +       mas->cur_mcmd =3D CMD_CS;
+> +       if (set_flag)
+> +               geni_se_setup_m_cmd(se, SPI_CS_ASSERT, 0);
+> +       else
+> +               geni_se_setup_m_cmd(se, SPI_CS_DEASSERT, 0);
+> +
+> +       timeout =3D wait_for_completion_timeout(&mas->xfer_done, HZ);
 
-Clang warns when one enumerated type is implicitly converted to another.
+Nitpick: s/timeout/time_left/
 
-drivers/spi/spi-ep93xx.c:342:62: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-        nents = dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:428:58: note: expanded from macro
-'dma_map_sg'
-#define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
-                               ~~~~~~~~~~~~~~~~          ^
-drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-                dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:429:62: note: expanded from macro
-'dma_unmap_sg'
-#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
-                                 ~~~~~~~~~~~~~~~~~~          ^
-drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
-enumeration type 'enum dma_transfer_direction' to different enumeration
-type 'enum dma_data_direction' [-Wenum-conversion]
-        dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-./include/linux/dma-mapping.h:429:62: note: expanded from macro
-'dma_unmap_sg'
-#define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
-                                 ~~~~~~~~~~~~~~~~~~          ^
-3 warnings generated.
+> +       if (!timeout)
+> +               handle_fifo_timeout(spi, NULL);
+> +
+> +       pm_runtime_put(mas->dev);
+> +}
+> +
+[...]
+> +
+> +static irqreturn_t geni_spi_isr(int irq, void *data)
+> +{
+> +       struct spi_master *spi =3D data;
+> +       struct spi_geni_master *mas =3D spi_master_get_devdata(spi);
+> +       struct geni_se *se =3D &mas->se;
+> +       u32 m_irq;
+> +       unsigned long flags;
+> +       irqreturn_t ret =3D IRQ_HANDLED;
+> +
+> +       if (mas->cur_mcmd =3D=3D CMD_NONE)
+> +               return IRQ_NONE;
+> +
+> +       spin_lock_irqsave(&mas->lock, flags);
+> +       m_irq =3D readl(se->base + SE_GENI_M_IRQ_STATUS);
+> +
+> +       if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & M_RX_FIFO_LAST_E=
+N))
+> +               geni_spi_handle_rx(mas);
+> +
+> +       if (m_irq & M_TX_FIFO_WATERMARK_EN)
+> +               geni_spi_handle_tx(mas);
+> +
+> +       if (m_irq & M_CMD_DONE_EN) {
+> +               if (mas->cur_mcmd =3D=3D CMD_XFER)
+> +                       spi_finalize_current_transfer(spi);
+> +               else if (mas->cur_mcmd =3D=3D CMD_CS)
+> +                       complete(&mas->xfer_done);
+> +               mas->cur_mcmd =3D CMD_NONE;
+> +               /*
+> +                * If this happens, then a CMD_DONE came before all the Tx
+> +                * buffer bytes were sent out. This is unusual, log this
+> +                * condition and disable the WM interrupt to prevent the
+> +                * system from stalling due an interrupt storm.
+> +                * If this happens when all Rx bytes haven't been receive=
+d, log
+> +                * the condition.
+> +                * The only known time this can happen is if bits_per_wor=
+d !=3D 8
+> +                * and some registers that expect xfer lengths in num spi=
+_words
+> +                * weren't written correctly.
+> +                */
+> +               if (mas->tx_rem_bytes) {
+> +                       writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
+> +                       dev_err(mas->dev, "Premature done. tx_rem =3D %d =
+bpw%d\n",
+> +                               mas->tx_rem_bytes, mas->cur_bits_per_word=
+);
+> +               }
+> +               if (mas->rx_rem_bytes)
+> +                       dev_err(mas->dev, "Premature done. rx_rem =3D %d =
+bpw%d\n",
+> +                               mas->rx_rem_bytes, mas->cur_bits_per_word=
+);
+> +       }
+> +
+> +       if ((m_irq & M_CMD_CANCEL_EN) || (m_irq & M_CMD_ABORT_EN)) {
+> +               mas->cur_mcmd =3D CMD_NONE;
+> +               complete(&mas->xfer_done);
+> +       }
+> +
+> +       writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
+> +       spin_unlock_irqrestore(&mas->lock, flags);
+> +       return ret;
 
-dma_{,un}map_sg expect an enum of type dma_data_direction but this
-driver uses dma_transfer_direction for everything. Convert the driver to
-use dma_data_direction for these two functions.
+Nitpick: Now this always returns IRQ_HANDLED, and we assign ret just to
+do that. Perhaps only return IRQ_HANDLED if one of the above if
+conditions is taken?
 
-There are two places that strictly require an enum of type
-dma_transfer_direction: the direction member in struct dma_slave_config
-and the direction parameter in dmaengine_prep_slave_sg. To avoid using
-an explicit cast, add a simple function, ep93xx_dma_data_to_trans_dir,
-to safely map between the two types because they are not 1 to 1 in
-meaning.
+> +}
+> +
+> +static int spi_geni_probe(struct platform_device *pdev)
+> +{
+> +       int ret;
+> +       struct spi_master *spi;
+> +       struct spi_geni_master *mas;
+> +       struct resource *res;
+> +       struct geni_se *se;
+> +
+> +       spi =3D spi_alloc_master(&pdev->dev, sizeof(*mas));
+> +       if (!spi)
+> +               return -ENOMEM;
+> +
+> +       platform_set_drvdata(pdev, spi);
+> +       mas =3D spi_master_get_devdata(spi);
+> +       mas->dev =3D &pdev->dev;
+> +       mas->se.dev =3D &pdev->dev;
+> +       mas->se.wrapper =3D dev_get_drvdata(pdev->dev.parent);
+> +       se =3D &mas->se;
+> +
+> +       spi->bus_num =3D -1;
+> +       spi->dev.of_node =3D pdev->dev.of_node;
+> +       mas->se.clk =3D devm_clk_get(&pdev->dev, "se");
+> +       if (IS_ERR(mas->se.clk)) {
+> +               ret =3D PTR_ERR(mas->se.clk);
+> +               dev_err(&pdev->dev, "Err getting SE Core clk %d\n", ret);
+> +               goto spi_geni_probe_err;
+> +       }
+> +
+> +       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       se->base =3D devm_ioremap_resource(&pdev->dev, res);
+> +       if (IS_ERR(se->base)) {
+> +               ret =3D PTR_ERR(se->base);
+> +               goto spi_geni_probe_err;
+> +       }
+> +
+> +       spi->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_CS_HIGH;
+> +       spi->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(4, 32);
+> +       spi->num_chipselect =3D 4;
+> +       spi->max_speed_hz =3D 50000000;
+> +       spi->prepare_message =3D spi_geni_prepare_message;
+> +       spi->transfer_one =3D spi_geni_transfer_one;
+> +       spi->auto_runtime_pm =3D true;
+> +       spi->handle_err =3D handle_fifo_timeout;
+> +       spi->set_cs =3D spi_geni_set_cs;
+> +
+> +       init_completion(&mas->xfer_done);
+> +       spin_lock_init(&mas->lock);
+> +       pm_runtime_enable(&pdev->dev);
+> +
+> +       ret =3D spi_geni_init(mas);
+> +       if (ret)
+> +               goto spi_geni_probe_runtime_disable;
+> +
+> +       mas->irq =3D platform_get_irq(pdev, 0);
+> +       if (mas->irq < 0) {
+> +               ret =3D mas->irq;
+> +               dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
+> +               goto spi_geni_probe_runtime_disable;
+> +       }
 
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-ep93xx.c | 36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+Nitpick: If you got the irq earlier before allocating anything then nothing=
+ has
+to be put on failure path.
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index f1526757aaf6..79fc3940245a 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -246,6 +246,19 @@ static int ep93xx_spi_read_write(struct spi_master *master)
- 	return -EINPROGRESS;
- }
- 
-+static enum dma_transfer_direction
-+ep93xx_dma_data_to_trans_dir(enum dma_data_direction dir)
-+{
-+	switch (dir) {
-+	case DMA_TO_DEVICE:
-+		return DMA_MEM_TO_DEV;
-+	case DMA_FROM_DEVICE:
-+		return DMA_DEV_TO_MEM;
-+	default:
-+		return DMA_TRANS_NONE;
-+	}
-+}
-+
- /**
-  * ep93xx_spi_dma_prepare() - prepares a DMA transfer
-  * @master: SPI master
-@@ -257,7 +270,7 @@ static int ep93xx_spi_read_write(struct spi_master *master)
-  */
- static struct dma_async_tx_descriptor *
- ep93xx_spi_dma_prepare(struct spi_master *master,
--		       enum dma_transfer_direction dir)
-+		       enum dma_data_direction dir)
- {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 	struct spi_transfer *xfer = master->cur_msg->state;
-@@ -277,9 +290,9 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
- 		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
- 
- 	memset(&conf, 0, sizeof(conf));
--	conf.direction = dir;
-+	conf.direction = ep93xx_dma_data_to_trans_dir(dir);
- 
--	if (dir == DMA_DEV_TO_MEM) {
-+	if (dir == DMA_FROM_DEVICE) {
- 		chan = espi->dma_rx;
- 		buf = xfer->rx_buf;
- 		sgt = &espi->rx_sgt;
-@@ -343,7 +356,8 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
- 	if (!nents)
- 		return ERR_PTR(-ENOMEM);
- 
--	txd = dmaengine_prep_slave_sg(chan, sgt->sgl, nents, dir, DMA_CTRL_ACK);
-+	txd = dmaengine_prep_slave_sg(chan, sgt->sgl, nents, conf.direction,
-+				      DMA_CTRL_ACK);
- 	if (!txd) {
- 		dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
- 		return ERR_PTR(-ENOMEM);
-@@ -360,13 +374,13 @@ ep93xx_spi_dma_prepare(struct spi_master *master,
-  * unmapped.
-  */
- static void ep93xx_spi_dma_finish(struct spi_master *master,
--				  enum dma_transfer_direction dir)
-+				  enum dma_data_direction dir)
- {
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 	struct dma_chan *chan;
- 	struct sg_table *sgt;
- 
--	if (dir == DMA_DEV_TO_MEM) {
-+	if (dir == DMA_FROM_DEVICE) {
- 		chan = espi->dma_rx;
- 		sgt = &espi->rx_sgt;
- 	} else {
-@@ -381,8 +395,8 @@ static void ep93xx_spi_dma_callback(void *callback_param)
- {
- 	struct spi_master *master = callback_param;
- 
--	ep93xx_spi_dma_finish(master, DMA_MEM_TO_DEV);
--	ep93xx_spi_dma_finish(master, DMA_DEV_TO_MEM);
-+	ep93xx_spi_dma_finish(master, DMA_TO_DEVICE);
-+	ep93xx_spi_dma_finish(master, DMA_FROM_DEVICE);
- 
- 	spi_finalize_current_transfer(master);
- }
-@@ -392,15 +406,15 @@ static int ep93xx_spi_dma_transfer(struct spi_master *master)
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 	struct dma_async_tx_descriptor *rxd, *txd;
- 
--	rxd = ep93xx_spi_dma_prepare(master, DMA_DEV_TO_MEM);
-+	rxd = ep93xx_spi_dma_prepare(master, DMA_FROM_DEVICE);
- 	if (IS_ERR(rxd)) {
- 		dev_err(&master->dev, "DMA RX failed: %ld\n", PTR_ERR(rxd));
- 		return PTR_ERR(rxd);
- 	}
- 
--	txd = ep93xx_spi_dma_prepare(master, DMA_MEM_TO_DEV);
-+	txd = ep93xx_spi_dma_prepare(master, DMA_TO_DEVICE);
- 	if (IS_ERR(txd)) {
--		ep93xx_spi_dma_finish(master, DMA_DEV_TO_MEM);
-+		ep93xx_spi_dma_finish(master, DMA_FROM_DEVICE);
- 		dev_err(&master->dev, "DMA TX failed: %ld\n", PTR_ERR(txd));
- 		return PTR_ERR(txd);
- 	}
--- 
-2.19.0
+> +
+> +       ret =3D request_irq(mas->irq, geni_spi_isr,
+> +                       IRQF_TRIGGER_HIGH, "spi_geni", spi);
+> +       if (ret)
+> +               goto spi_geni_probe_runtime_disable;
+> +
+> +       ret =3D spi_register_master(spi);
+> +       if (ret)
+> +               goto spi_geni_probe_free_irq;
+> +
+> +       return 0;
+> +spi_geni_probe_free_irq:
+> +       free_irq(mas->irq, spi);
+> +spi_geni_probe_runtime_disable:
+> +       pm_runtime_disable(&pdev->dev);
+> +spi_geni_probe_err:
+> +       spi_master_put(spi);
+> +       return ret;
+> +}

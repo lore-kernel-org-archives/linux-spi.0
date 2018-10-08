@@ -1,66 +1,51 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v4] spi: spi-ep93xx: Use dma_data_direction for
- ep93xx_spi_dma_{finish,prepare}
-Date: Mon, 8 Oct 2018 21:53:02 +0300
-Message-ID: <20181008185302.GE2302@lahna.fi.intel.com>
-References: <20181005192508.18659-1-natechancellor@gmail.com>
- <20181008180846.14119-1-natechancellor@gmail.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v4 1/5] spi: spi-mem: Add driver for NXP FlexSPI
+ controller
+Date: Mon, 8 Oct 2018 21:10:53 +0200
+Message-ID: <20181008211053.71171cff@bbrezillon>
+References: <1538997103-11152-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1538997103-11152-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: H Hartley Sweeten <hartleys@visionengravers.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>
-To: Nathan Chancellor <natechancellor@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd@lists.infradead.org, marek.vasut@gmail.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        robh@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, computersforpeace@gmail.com,
+        frieder.schrempf@exceet.de, linux-kernel@vger.kernel.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181008180846.14119-1-natechancellor@gmail.com>
+In-Reply-To: <1538997103-11152-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 08, 2018 at 11:08:47AM -0700, Nathan Chancellor wrote:
-> Clang warns when one enumerated type is implicitly converted to another.
-> 
-> drivers/spi/spi-ep93xx.c:342:62: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-> type 'enum dma_data_direction' [-Wenum-conversion]
->         nents = dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
->                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:428:58: note: expanded from macro
-> 'dma_map_sg'
-> #define dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)
->                                ~~~~~~~~~~~~~~~~          ^
-> drivers/spi/spi-ep93xx.c:348:57: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-> type 'enum dma_data_direction' [-Wenum-conversion]
->                 dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
->                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
-> 'dma_unmap_sg'
-> #define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
->                                  ~~~~~~~~~~~~~~~~~~          ^
-> drivers/spi/spi-ep93xx.c:377:56: warning: implicit conversion from
-> enumeration type 'enum dma_transfer_direction' to different enumeration
-> type 'enum dma_data_direction' [-Wenum-conversion]
->         dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
->         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-> ./include/linux/dma-mapping.h:429:62: note: expanded from macro
-> 'dma_unmap_sg'
-> #define dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)
->                                  ~~~~~~~~~~~~~~~~~~          ^
-> 3 warnings generated.
-> 
-> dma_{,un}map_sg expect an enum of type dma_data_direction but this
-> driver uses dma_transfer_direction for everything. Convert the driver to
-> use dma_data_direction for these two functions.
-> 
-> There are two places that strictly require an enum of type
-> dma_transfer_direction: the direction member in struct dma_slave_config
-> and the direction parameter in dmaengine_prep_slave_sg. To avoid using
-> an explicit cast, add a simple function, ep93xx_dma_data_to_trans_dir,
-> to safely map between the two types because they are not 1 to 1 in
-> meaning.
-> 
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+On Mon,  8 Oct 2018 16:41:39 +0530
+Yogesh Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> +/* Registers used by the driver */
+> +#define FSPI_MCR0			0x00
+> +#define FSPI_MCR0_AHB_TIMEOUT_MASK	GENMASK(31, 24)
+> +#define FSPI_MCR0_IP_TIMEOUT_MASK	GENMASK(23, 16)
+
+You never mask the IP_TIMEOUT val, so you don't need a _MASK macro
+here. Just define
+
+#define FSPI_MCR0_IP_TIMEOUT(x)		((x) < 16)
+
+The same goes for any field that you don't need to mask.
+
+The only case you might need a mask def is when you have the following
+pattern:
+
+	val = readl(reg);
+	val &= ~XXXX_MASK;
+	val |= XXXX(new_field_val);
+	writel(val, reg);
+
+> +#define FSPI_MCR0_LEARN_EN_MASK		BIT(15)
+> +#define FSPI_MCR0_SCRFRUN_EN_MASK	BIT(14)
+> +#define FSPI_MCR0_OCTCOMB_EN_MASK	BIT(13)
+
+Drop the _MASK suffix for any single-bit field:
+
+#define FSPI_MCR0_OCTCOMB_EN		BIT(13)

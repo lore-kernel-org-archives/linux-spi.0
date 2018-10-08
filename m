@@ -1,53 +1,76 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 1/2] spi: Add MXIC controller driver
-Date: Mon, 8 Oct 2018 14:37:52 +0100
-Message-ID: <20181008133752.GF5684@sirena.org.uk>
-References: <1538965532-8908-1-git-send-email-masonccyang@mxic.com.tw>
- <1538965532-8908-2-git-send-email-masonccyang@mxic.com.tw>
- <20181008103812.106389c1@bbrezillon>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vA66WO2vHvL/CRSR"
-Cc: masonccyang@mxic.com.tw, tpiepho@impinj.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        juliensu@mxic.com.tw, zhengxunli@mxic.com.tw
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Applied "spidev: Enable the Liebherr's BK4 board to work with spidev driver" to the spi tree
+Date: Mon,  8 Oct 2018 14:57:21 +0100 (BST)
+Message-ID: <20181008135721.21E431122339@debutante.sirena.org.uk>
+References: <20180927223152.24990-1-lukma@denx.de>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Lukasz Majewski <lukma@denx.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181008103812.106389c1@bbrezillon>
+In-Reply-To: <20180927223152.24990-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---vA66WO2vHvL/CRSR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spidev: Enable the Liebherr's BK4 board to work with spidev driver
 
-On Mon, Oct 08, 2018 at 10:38:12AM +0200, Boris Brezillon wrote:
+has been applied to the spi tree at
 
-> This is wrong, ->cur_speed_hz should be updated in
-> mxic_prepare_transfer_hardware() or mxic_spi_clk_check(), not when
-> ->setup() is called. Also, you seem to ignore the xfer->speed_hz value,
-> which might be different from spi->max_speed_hz. Maybe the
-> ->prepare_transfer() hook is not the right place to do this
-> ->cur_speed_hz selection in the end.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-xfer->speed_hz should always be filled in so it's the only one you need
-to pay attention to (as the code Boris proposed does).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---vA66WO2vHvL/CRSR
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu7XbAACgkQJNaLcl1U
-h9Azggf+KEqx8zCV97yIui9BQiy+hHtNztRjvGmyBDUh20puENxqOTeWCYwoat8g
-tnlAllUGejF3B1Dfv3sgGinOrXrvfpLexIL59YZp76X9DN+sEliRyR98dvvgKp2L
-38b5xMG1+gzHS0Agv+8cGVuWocAVCyr2jH++siOVJZ/liJEatZl/jtvGNsAztDeg
-/sHLWbdckRtd/63c43o6sXbn3jAA06lyto1EFauYt4V63beRC3p8OXasmPU/fwn5
-i0N7MX1Zs3xx4hJENMgGAMF/e8Vrj7bD5cVH4YEd+sRAAd2/njTBdf1AVrk5/7dj
-/V8SPMbNr4Y+RwHIodVt8hs2KvUY5w==
-=XY4n
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---vA66WO2vHvL/CRSR--
+Thanks,
+Mark
+
+>From 5e9feb3544a72321553d17fcfa0c7e88435ea7ad Mon Sep 17 00:00:00 2001
+From: Lukasz Majewski <lukma@denx.de>
+Date: Fri, 28 Sep 2018 00:31:52 +0200
+Subject: [PATCH] spidev: Enable the Liebherr's BK4 board to work with spidev
+ driver
+
+With this commit the DSPI driver on the BK4 board can be used for SPI
+transmission managed from user space (via /dev/spidev0.0).
+
+Example usage/testing:
+insmod ./spi-fsl-dspi.ko
+./spidev_test -D /dev/spidev0.0 -s 3000000 -v -H -b 8 -p "\xCC\x11\x22\x74"
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index cda10719d1d1..07f4d05563ea 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -669,6 +669,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "lineartechnology,ltc2488" },
+ 	{ .compatible = "ge,achc" },
+ 	{ .compatible = "semtech,sx1301" },
++	{ .compatible = "lwn,bk4" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-- 
+2.19.0.rc2

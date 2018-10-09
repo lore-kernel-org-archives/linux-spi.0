@@ -1,140 +1,155 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] dt-bindings: Add bindings for aliases node
-Date: Tue, 9 Oct 2018 09:22:07 +0200
-Message-ID: <CAMuHMdWe5JYp5eC2PvuG4xEud908Crhm+BhrtxPJ4Uo1-LCc4g@mail.gmail.com>
-References: <20180925210255.172734-1-mka@chromium.org> <20181009010711.GA1577@ban.mtv.corp.google.com>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v12 0/6] Driver for at91 usart in spi mode
+Date: Tue, 9 Oct 2018 02:04:54 -0700
+Message-ID: <20181009090454.GD4939@dell>
+References: <20180911225440.GL4185@dell>
+ <20180912073355.GB2557@piout.net>
+ <20180912084143.GN4185@dell>
+ <CAMuHMdWefU0pw=c9TKOa+wGHchpg8JRfE0OnC4+wKDt-qrbH1A@mail.gmail.com>
+ <20180912105407.GR4185@dell>
+ <20180912111757.GC2760@piout.net>
+ <20180912114352.GT4185@dell>
+ <20180912121420.GE2760@piout.net>
+ <20180912131248.GA21544@dell>
+ <a143edd3c0de2ba98b64e642b4384edf4323be2b.camel@upb.ro>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Cc: Matthias Kaehlcke <mka@chromium.org>,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
         <devicetree@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, swboyd@chromium.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-To: Brian Norris <briannorris@chromium.org>
+        "open list:SERIAL DRIVERS" <linux-serial@vger.k
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181009010711.GA1577@ban.mtv.corp.google.com>
+Content-Disposition: inline
+In-Reply-To: <a143edd3c0de2ba98b64e642b4384edf4323be2b.camel@upb.ro>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Brian,
+On Wed, 12 Sep 2018, Radu Pirea wrote:
 
-On Tue, Oct 9, 2018 at 3:07 AM Brian Norris <briannorris@chromium.org> wrote:
-> On Tue, Sep 25, 2018 at 02:02:55PM -0700, Matthias Kaehlcke wrote:
-> > Add a global binding for the 'aliases' node. This includes an initial list
-> > of standardized alias names for some hardware components that are commonly
-> > found in 'aliases'.
-> >
-> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> On Wed, 2018-09-12 at 14:12 +0100, Lee Jones wrote:
+> > On Wed, 12 Sep 2018, Alexandre Belloni wrote:
+> > 
+> > > On 12/09/2018 12:43:52+0100, Lee Jones wrote:
+> > > > > > But ... we can't have it both ways.  *Either* it's a true
+> > > > > > MFD, in
+> > > > > > which case it can/should have 2 separate compatible strings
+> > > > > > which can
+> > > > > > be specified directly from the DT.  *Or* it's not an MFD.  In
+> > > > > > the
+> > > > > > latter case, which I think we're all agreeing on (else we'd
+> > > > > > have 2
+> > > > > > compatible strings), MFD is not the place to handle this (my
+> > > > > > original
+> > > > > > point).
+> > > > > > 
+> > > > > 
+> > > > > If that is what bothers you, then let's move it out of mfd.
+> > > > 
+> > > > As I've already mentioned.  I don't just want it moved out of MFD
+> > > > and
+> > > > shoved somewhere else.  My aim is to fix this properly.
+> > > > 
+> > > 
+> > > If it is out of MFD, then I'm not sure why you would care too much
+> > > about
+> > > it as you won't be maintaining that code. And I still this what was
+> > > done
+> > > was correct but I'm open to test what you suggest.
+> > 
+> > I care for the kernel in general, not just the areas I'm responsible
+> > for.  I guess I'm just that kinda guy! ;)
+> 
+> Well, Lee, like you, I think this driver should not be a MFD driver,
+> but Alex has a good point of view. 
+> 
+> > 
+> > > > > > So ... this is a USART device which can do SPI, right?
+> > > > > > 
+> > > > > > My current thinking is that; as this is a USART device first
+> > > > > > &
+> > > > > > foremost, the USART should be probed in the first instance
+> > > > > > regardless,
+> > > > > > then if SPI mode is specified it (the USART driver) registers
+> > > > > > the SPI
+> > > > > > platform driver (as MFD does currently) and exits gracefully,
+> > > > > > allowing
+> > > > > > the SPI driver to take over.
+> > > > > > 
+> > > > > > Spanner in the works: is it physically possible to change the
+> > > > > > mode at
+> > > > > > run-time?  :s
+> > > > > 
+> > > > > Yes it is possible but on Linux that will not happen without
+> > > > > probing
+> > > > > the drivers again.
+> > > > 
+> > > > Not sure I understand what you mean.
+> > > 
+> > > I was just commenting on changing the mode at runtime.
+> > 
+> > Oh I see.  My question was relating to whether the H/W is physically
+> > capable of changing modes on-the-fly, rather than how Linux would
+> > handle that.  If this is something we'd wish to support, then it
+> > would
+> > have to be a single driver, which is why I was asking.  By separating
+> > the drivers this way, we are blocking that as a
+> > possibility.  Although
+> > I guess the OP has already thought about that and made the decision
+> > not to support it.
+> 
+> Is possible to change modes on-the-fly, but you have no reason to do
+> that. On the PCB you will have a SPI slave or a serial console :)
+> Anyway, the current form of the driver, and through this I want to say
+> "this ugly hack", allows the user to switch from serial to SPI mode by
+> adding only one property to the device tree node of USART. If the
+> driver were in his first form, a simple SPI driver, how you will make a
+> dtsi file for an IP like this? You will add two nodes for the same IP
+> in dtsi and will take care to enable correct node in dts?
+> I think this driver is only a tradeoff between having an ugly hack in
+> kernel or having an messy device tree.
+> 
+> > 
+> > > > I'm suggesting that you use the same platform_* interfaces MFD
+> > > > uses to
+> > > > register the SPI driver if SPI mode has been selected.  Only do
+> > > > so
+> > > > from the appropriate driver i.e. USART.
+> > > 
+> > > Yeah, I understood that but I didn't comment because I'm not sure
+> > > this
+> > > will work yet.
+> > 
+> > Other drivers already do this.
+> 
+> Can you give me an example please?
 
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/aliases.txt
-> > @@ -0,0 +1,47 @@
-> > +The aliases node
-> > +----------------
->
-> I like the idea in general, and it might be good to note (e.g., commit
-> message) that this was inspired by this thread:
->
-> https://lore.kernel.org/lkml/20180815221601.GB24830@rob-hp-laptop/
->
-> where we were interested in firmware-to-device-tree path stability --
-> and the answer was basically: don't memorize paths, just use aliases
-> instead. But then, it was clear that aliases were not documented very
-> formally at all.
->
-> So here we are!
->
-> > +
-> > +The aliases node contains properties that represent aliases to device tree
-> > +nodes. The name of the property is the alias name, the value is the path of
-> > +a the device tree node that corresponds to the alias. The path may be
-> > +specified as a string or a phandle.
-> > +
-> > +Alias names are often suffixed with a numeric ID, especially when there may
-> > +be multiple instances of the same type. The ID typically corresponds to the
-> > +hardware layout, it may also be used by drivers for a stable mapping of
-> > +device names and hardware entities.
-> > +
-> > +Alias names
-> > +-----------
-> > +
-> > +The devicetree specification doesn't require the use of specific alias
-> > +names to refer to hardware entities of a given type, however the Linux
-> > +kernel aims for a certain level of consistency.
-> > +
-> > +The following standardized alias names shall be used for their
+Sorry for the delay, I have been on vacation.
 
-s/shall/may/
+Grep for 'platform_device_add' in drivers/
 
-> > +corresponding hardware components:
-> > +
-> > +  bluetoothN         Bluetooth controller
-> > +  ethernetN          Ethernet interface
-> > +  gpioN                      GPIO controller
-> > +  i2cN                       i2c bus
-> > +  mmcN                       MMC bus
-> > +  rtcN                       Real time clock
-> > +  serialN            UART port
-> > +  spiN                       SPI bus
-> > +  wifiN                      Wireless network interface
->
-> For the network-device-related names (bluetooth, ethernet, and wifi), I
-> think there's a clear documented reason for this (supporting MAC address
-> plumbing from a DT-aware bootloader). I'm not quite as sure about all
-> the others, and unfortunately, I'm aware of at least one subsystem owner
-> that explicitly does NOT like the aliases usage that is currently
-> supported (spi), and shot down a patch where I tried to use it in a DTS
-> file (despite its regular usage in many other DTS files).
->
-> So I guess I'm saying: perhaps we should get buy-in from various
-> subsystems before we include them? So maybe it's wiser to start
-> small(er) and only add once we're sure they are useful? Or perhaps Rob
-> has other thoughts.
+> I am open to suggestions.
+> 
+> Sorry for that acked-by. There was a lot of "reviewed-by", "acked-by",
+> etc in a single version and I messed up :).
+> 
 
-Please note these aliases become cumbersome once you start considering
-(dynamic) DT overlays.  That's why I made them optional in the sh-sci
-serial driver, cfr. commit 7678f4c20fa7670f ("serial: sh-sci: Add support
-for dynamic instances").
-Relevant parts of the commit description are:
-
-    On DT platforms, the sh-sci driver requires the presence of "serialN"
-    aliases in DT, from which instance IDs are derived.  If a DT alias is
-    missing, the drivers fails to probe the corresponding serial port.
-
-    This becomes cumbersome when considering DT overlays, as currently
-    there is no upstream support for dynamically updating the /aliases node
-    in DT.  Furthermore, even in the presence of such support, hardcoded
-    instance IDs in independent overlays are prone to conflicts.
-
-    Hence add support for dynamic instance IDs, to be used in the absence of
-    a DT alias.  This makes serial ports behave similar to I2C and SPI
-    buses, which already support dynamic instances.
-
-To clarify my point: R-Car M2-W has 4 different types of serial ports, for a
-total of 18 ports, and the two ports on a board labeled 0 and 1 may not
-correspond to the physical first two ports (what's "first" in a collection of
-4 different types?).
-
-Aliases may be fine for referring to the main serial console (labeled
-port 0 on the device, too), and the primary Ethernet interface (so U-Boot
-knows where to add the "local-mac-address" property), but beyond that,
-I think they should be avoided.
-
-Just my two^H^H^Hfive €c.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

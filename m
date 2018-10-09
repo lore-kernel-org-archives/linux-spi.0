@@ -1,103 +1,119 @@
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: Re: [PATCH v3 1/2] Driver core: add bus_find_device_by_fwnode
-Date: Tue, 9 Oct 2018 11:48:19 -0600
-Message-ID: <CANLsYkxcUvBBFRFD9Vco559Y5LFw=X0H3Lyzm=nFat6z5yH44g@mail.gmail.com>
-References: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
- <20181009172726.GA2182@xps15> <CAJZ5v0gckkg0jyTc7=JYPpUruQQXL_FhEjm03-0mrFcxH60cHA@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH V5 3/3] spi: spi-geni-qcom: Add SPI driver support for
+ GENI based QUP
+Date: Tue, 9 Oct 2018 10:48:55 -0700
+Message-ID: <CAD=FV=U-ZZQhFKR9kxYnw=F1j+dExrsgFvjabYJ8AVmBDM4eXA@mail.gmail.com>
+References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
+ <1538574265-30235-4-git-send-email-alokc@codeaurora.org> <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
+ <CAD=FV=XnYucy4JmgATrB89RYHTbzRC_GaouaRjHAocD4-H0ncg@mail.gmail.com> <153910152600.119890.14820584405992384926@swboyd.mtv.corp.google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Silesh C V <svellattu@mvista.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        Lijun Ou <oulijun@huawei.com>,
-        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        David Miller <davem@
-To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: alokc@codeaurora.org, Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>
+To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAJZ5v0gckkg0jyTc7=JYPpUruQQXL_FhEjm03-0mrFcxH60cHA@mail.gmail.com>
+In-Reply-To: <153910152600.119890.14820584405992384926@swboyd.mtv.corp.google.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 9 Oct 2018 at 11:39, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Tue, Oct 9, 2018 at 7:27 PM Mathieu Poirier
-> <mathieu.poirier@linaro.org> wrote:
-> >
-> > Hi Silesh,
-> >
-> > On Tue, Oct 09, 2018 at 03:47:24PM +0530, Silesh C V wrote:
-> > > Some drivers need to find the device on a bus having a specific firmware
-> > > node. Currently, such drivers have their own implementations to do this.
-> > > Provide a helper similar to bus_find_device_by_name so that each driver
-> > > does not have to reinvent this.
-> > >
-> > > Signed-off-by: Silesh C V <svellattu@mvista.com>
-> > > ---
-> > > Changes since v2:
-> > >       - make use of dev_fwnode in match_fwnode.
-> > >
-> > >  drivers/base/bus.c     | 20 ++++++++++++++++++++
-> > >  include/linux/device.h |  3 +++
-> > >  2 files changed, 23 insertions(+)
-> > >
-> > > diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-> > > index 8bfd27e..a2f39db 100644
-> > > --- a/drivers/base/bus.c
-> > > +++ b/drivers/base/bus.c
-> > > @@ -17,6 +17,7 @@
-> > >  #include <linux/string.h>
-> > >  #include <linux/mutex.h>
-> > >  #include <linux/sysfs.h>
-> > > +#include <linux/property.h>
-> > >  #include "base.h"
-> > >  #include "power/power.h"
-> > >
-> > > @@ -373,6 +374,25 @@ struct device *bus_find_device_by_name(struct bus_type *bus,
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(bus_find_device_by_name);
-> > >
-> > > +static int match_fwnode(struct device *dev, void *fwnode)
-> > > +{
-> > > +     return dev_fwnode(dev) == fwnode;
-> > > +}
-> > > +
-> > > +/**
-> > > + * bus_find_device_by_fwnode - device iterator for locating a particular device
-> > > + * having a specific firmware node
-> > > + * @bus: bus type
-> > > + * @start: Device to begin with
-> > > + * @fwnode: firmware node of the device to match
-> > > + */
-> > > +struct device *bus_find_device_by_fwnode(struct bus_type *bus, struct device *start,
-> > > +                                     struct fwnode_handle *fwnode)
-> >
-> > I get the following when running checkpatch on your set:
-> >
-> > mpoirier@xps15:~/work/linaro/coresight/kernel-maint$ ./scripts/checkpatch.pl
-> > 0001-Driver-core-add-bus_find_device_by_fwnode.patch
-> > WARNING: line over 80 characters
->
-> Lines longer than 80 chars often are legitimate.  No need to send
-> extra reports about those cases in general.
+Hi,
 
-In this case I don't see a reason not to abide to the guideline.
-Wrapping the function declaration to 80 characters would be easy
-without effecting code readability.
-
-Mathieu
-
+On Tue, Oct 9, 2018 at 9:12 AM Stephen Boyd <swboyd@chromium.org> wrote:
 >
-> Thanks,
-> Rafael
+> Quoting Doug Anderson (2018-10-08 16:52:36)
+> > Hi,
+> >
+> > On Mon, Oct 8, 2018 at 4:43 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> > > > +       mas->irq = platform_get_irq(pdev, 0);
+> > > > +       if (mas->irq < 0) {
+> > > > +               ret = mas->irq;
+> > > > +               dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
+> > > > +               goto spi_geni_probe_runtime_disable;
+> > > > +       }
+> > >
+> > > Nitpick: If you got the irq earlier before allocating anything then nothing has
+> > > to be put on failure path.
+> >
+> > I think this might have been in response to previous feedback from you
+> > suggesting that we should get the irq as late as possible.  Ah, here
+> > ya go:
+> >
+> > https://lkml.kernel.org/r/153780767551.119890.9339380838620508307@swboyd.mtv.corp.google.com
+>
+> Yes I suggested we register for the irq as last as possible, but I
+> didn't suggest calling platform_get_irq() this late. It could be called
+> earlier so that if there isn't any irq then nothing to do besides return
+> failure.
+
+Ah, you're suggesting separating the platform_get_irq() and the
+request_irq() so that we call platform_get_irq() as the first thing in
+the function but don't do the request_irq() until later.  Yeah, that
+could be done and I guess if you feel strongly about it I wouldn't
+object to the change, but I don't feel it buys us a lot and I kind of
+like keeping the two next to each other.  Specifically why I don't
+think it buys us a lot:
+
+1. You still need the "dev_err" print, right?  platform_get_irq()
+doesn't automatically print errors for you I think.
+
+2. You now need a local variable "irq".  By putting the
+platform_get_irq() before the memory allocation you now can't store it
+directly in mas->irq.  We could try using "ret" as a temporary
+variable but that seems worse in this case since it'd be a bit
+fragile.
+
+3. You don't get rid of any error labels / error handling so we don't
+really save any code
+
+When I tried this my diffstat says 8 lines added and 7 removed, so a
+net increase in LOC FWIW.  I'm relying in gmail so my patch will be
+whitespace-damaged (sigh), but you can find a clean one at:
+
+https://chromium.googlesource.com/chromiumos/third_party/kernel/+/e0325d618e209c22379e3a4269c14627b19243a8%5E%21/#F0
+
+...the basic idea is this though:
+
+@@ -543,6 +543,13 @@
+   struct spi_geni_master *mas;
+   struct resource *res;
+   struct geni_se *se;
++  int irq;
++
++  irq = platform_get_irq(pdev, 0);
++  if (irq < 0) {
++    dev_err(&pdev->dev, "Err getting IRQ %d\n", irq);
++    return irq;
++  }
+
+   spi = spi_alloc_master(&pdev->dev, sizeof(*mas));
+   if (!spi)
+@@ -553,6 +560,7 @@
+   mas->dev = &pdev->dev;
+   mas->se.dev = &pdev->dev;
+   mas->se.wrapper = dev_get_drvdata(pdev->dev.parent);
++  mas->irq = irq;
+   se = &mas->se;
+
+   spi->bus_num = -1;
+@@ -589,13 +597,6 @@
+   if (ret)
+     goto spi_geni_probe_runtime_disable;
+
+-  mas->irq = platform_get_irq(pdev, 0);
+-  if (mas->irq < 0) {
+-    ret = mas->irq;
+-    dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
+-    goto spi_geni_probe_runtime_disable;
+-  }
+-
+   ret = request_irq(mas->irq, geni_spi_isr,
+       IRQF_TRIGGER_HIGH, "spi_geni", spi);
+   if (ret)
+
+
+-Doug

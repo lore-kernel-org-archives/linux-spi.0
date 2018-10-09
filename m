@@ -1,66 +1,52 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Tue, 9 Oct 2018 09:52:23 +0000
-Message-ID: <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Tue, 9 Oct 2018 12:05:22 +0200
+Message-ID: <20181009120522.6b2bd15a@bbrezillon>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
         <20180928084431.300b7bf9@bbrezillon>
         <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
- <20180928091833.15e95f7f@bbrezillon>
+        <20180928091833.15e95f7f@bbrezillon>
+        <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Cc: "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "eha@deif.com" <eha@deif.com>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+To: Chuanhua Han <chuanhua.han@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180928091833.15e95f7f@bbrezillon>
-Content-Language: en-US
+In-Reply-To: <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
-IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jnUwjI4yNUgMTU6
-MTkNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
-bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEv
-Ml0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4gDQo+
-IE9uIEZyaSwgMjggU2VwIDIwMTggMDY6NTk6NTggKzAwMDANCj4gQ2h1YW5odWEgSGFuIDxjaHVh
-bmh1YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+IA0KPiA+ID4NCj4gPiA+IEl0J3Mgc3RpbGwgdW5j
-bGVhciB3aHkgeW91IG5lZWQgdG8gc3BlY2lmeSBhIGJpdHNfcGVyX3dvcmQgdmFsdWUsDQo+ID4g
-PiBidXQgaWYgdGhpcyBpcyBuZWVkZWQsIGl0J3MgcHJvYmFibHkgc29tZXRoaW5nIHlvdSB3YW50
-IHRvIGFkZCB0bw0KPiA+ID4gc3BpLmMsIHdoZW4gYSBtZXNzYWdlIGlzIHF1ZXVlZC4NCj4gPiBU
-byBzcGVjaWZ5IGEgc3BlY2lmaWMgYml0c19wZXJfd29yZCB0byBiZSBhYmxlIHRvIHVzZSB0aGUg
-eHNwaQ0KPiA+ICgzMmJpdCkgbW9kZSBvZiB0aGUgZnNsX2RzcGkgbW9kdWxlIHRvIHRyYW5zZmVy
-IGRhdGEsIHlvdSBjYW4gbG9vayBhdA0KPiA+IG15IFBBVENIIDIvMi4gRG8gbm90IGFkZCBhIHZh
-bHVlIGluIHNwaXMuYyB0aGF0IHRha2VzIGludG8gYWNjb3VudA0KPiA+IHRoYXQgdGhlIHZhbHVl
-IGFzc2lnbmVkIHRvIGJpdHNfcGVyX3dvcmQgaXMgZGVjaWRlZCBiZWZvcmUgdGhlDQo+ID4gdHJh
-bnNmZXIuIFRoYW5rcyBmb3IgeW91ciBjaGVjayBhbmQgcmVwbHkhDQo+IA0KPiBJIG1pZ2h0IGJl
-IHdyb25nLCBidXQgdGhhdCdzIG5vdCBteSB1bmRlcnN0YW5kaW5nIG9mIC0+Yml0c19wZXJfd29y
-ZC4NCj4gVG8gbWUsIGl0J3Mgc29tZXRoaW5nIHRoYXQgeW91IGNhbiB1c2Ugd2hlbiB5b3VyICpk
-ZXZpY2UqIChub3QNCj4gY29udHJvbGxlcikgZXhwZWN0cyBub24tYnl0ZSBhbGlnbmVkIHdvcmRz
-IFsxXS4gVGhlIHNwaS1tZW0gcHJvdG9jb2wgaXMNCj4gZGVmaW5pdGVseSBkZXNpZ25lZCB0byB3
-b3JrIHdpdGggMWJ5dGUgbGFyZ2Ugd29yZHMsIHNvLCBhcyBJIHNhaWQsIEkgc3VzcGVjdA0KPiB5
-b3UncmUgYWJ1c2luZyB4ZmVyLT5iaXRzX3Blcl93b3JkIHRvIGFkZHJlc3MgYSBjb250cm9sbGVy
-IGRyaXZlciBpc3N1ZS4NCj4gDQo+IFsxXWh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0
-aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZlbGkNCj4geGlyLmJvb3RsaW4uY29t
-JTJGbGludXglMkZsYXRlc3QlMkZzb3VyY2UlMkZpbmNsdWRlJTJGbGludXglMkZzcGklMkZzcGkN
-Cj4gLmglMjNMMTE0JmFtcDtkYXRhPTAyJTdDMDElN0NjaHVhbmh1YS5oYW4lNDBueHAuY29tJTdD
-N2VjNjFkNmQNCj4gN2VmNzQxYWJhODQ0MDhkNjI1MTJhOWUxJTdDNjg2ZWExZDNiYzJiNGM2ZmE5
-MmNkOTljNWMzMDE2MzUlN0MwDQo+ICU3QzAlN0M2MzY3MzcxNTk0MjA4MjAwNTAmYW1wO3NkYXRh
-PWl3RmdYRzN5RnZIN1J1YWM3TUdDb2FQOGgNCj4gbDJNOTE2bTklMkJaZVY3bmtzVGclM0QmYW1w
-O3Jlc2VydmVkPTANCjEuIEluIHRoZSBkc3BpIGRyaXZlciAoc3BpIGNvbnRyb2xsZXIpLCBiaXRz
-X3Blcl93b3JkIChkc3BpLT5iaXRzX3Blcl93b3JkID0gdHJhbnNmZXItPmJpdHNfcGVyX3dvcmQp
-IHBhc3NlZCBmcm9tIHRoZSB1cHBlciBsYXllciAoc3BpLW1lbS5jKSBpcyB1c2VkLiANCkluIHRo
-aXMgd2F5LCBJIGNhbiBvbmx5IGFzc2lnbiB0aGUgYXBwcm9wcmlhdGUgdmFsdWUgb2YgdHJhbnNm
-ZXItPmJpdHNfcGVyX3dvcmQgYmVmb3JlIHBhc3NpbmcgdG8gdGhlIGNvbnRyb2xsZXIsIHRoYXQg
-aXMsIHRoZSBjb250cm9sbGVyIGRyaXZlciBkb2VzIG5vdA0Ka25vdyB0aGUgdmFsdWUgb2YgYml0
-c19wZXJfd29yZCwgYW5kIGl0IHdpbGwgdXNlIHRoaXMgdmFsdWUgd2hlbiB0aGUgdXBwZXIgbGV2
-ZWwgc2V0cyB3aGF0IHZhbHVlIGlzIHBhc3NlZC4NCjIuIEFzIEkgdW5kZXJzdGFuZCwgYml0c19w
-ZXJfd29yZCBkb2VzIG5vdCBleGlzdCBmb3Igbm9uLWJ5dGUgYWxpZ25tZW50LCBidXQgZm9yIHRo
-ZSBuZWVkIHRvIHJlc2VydmUgbm9uLWJ5dGUgdHJhbnNtaXNzaW9uIG1vZGUgdGhhdCBtZWV0cyB0
-aGUgY29udHJvbGxlci4NCjMuIEluIGFkZGl0aW9uLCBub3cgdGhlIFhTUEkgb2YgZHNwaSBjYW5u
-b3QgdHJhbnNmZXIgZGF0YSBub3JtYWxseSwgc28gdGhpcyBwcm9ibGVtIG5lZWRzIHRvIGJlIHNv
-bHZlZC4gQXMgZm9yIHRoZSBETUEgdHJhbnNmZXIgbW9kZSwgc29tZSBjb2xsZWFndWVzIHdpbGwg
-c3R1ZHkgaXQuDQo=
+On Tue, 9 Oct 2018 09:52:23 +0000
+Chuanhua Han <chuanhua.han@nxp.com> wrote:
+
+> 1. In the dspi driver (spi controller), bits_per_word
+> (dspi->bits_per_word = transfer->bits_per_word) passed from the upper
+> layer (spi-mem.c) is used. In this way, I can only assign the
+> appropriate value of transfer->bits_per_word before passing to the
+> controller, that is, the controller driver does not know the value of
+> bits_per_word, and it will use this value when the upper level sets
+> what value is passed.
+
+I think you're missing my point: ->bits_per_word is not what you're
+looking for if what you're trying to do is use 32-bits accesses when
+things are properly aligned.
+
+> 2. As I understand, bits_per_word does not
+> exist for non-byte alignment, but for the need to reserve non-byte
+> transmission mode that meets the controller.
+
+Exactly. It's an optimization you have to take care of inside your
+driver. The core cannot help you with that.
+
+> 3. In addition, now the
+> XSPI of dspi cannot transfer data normally, so this problem needs to
+> be solved.
+
+I still don't understand what the problem is.
+
+> As for the DMA transfer mode, some colleagues will study
+> it.

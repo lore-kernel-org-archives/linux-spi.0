@@ -1,155 +1,66 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v12 0/6] Driver for at91 usart in spi mode
-Date: Tue, 9 Oct 2018 02:04:54 -0700
-Message-ID: <20181009090454.GD4939@dell>
-References: <20180911225440.GL4185@dell>
- <20180912073355.GB2557@piout.net>
- <20180912084143.GN4185@dell>
- <CAMuHMdWefU0pw=c9TKOa+wGHchpg8JRfE0OnC4+wKDt-qrbH1A@mail.gmail.com>
- <20180912105407.GR4185@dell>
- <20180912111757.GC2760@piout.net>
- <20180912114352.GT4185@dell>
- <20180912121420.GE2760@piout.net>
- <20180912131248.GA21544@dell>
- <a143edd3c0de2ba98b64e642b4384edf4323be2b.camel@upb.ro>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Tue, 9 Oct 2018 09:52:23 +0000
+Message-ID: <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+References: <20180921070628.35153-1-chuanhua.han@nxp.com>
+        <20180928084431.300b7bf9@bbrezillon>
+        <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20180928091833.15e95f7f@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>, Jiri Slaby <jslaby@suse.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.k
-To: Radu Pirea <radu_nicolae.pirea@upb.ro>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <a143edd3c0de2ba98b64e642b4384edf4323be2b.camel@upb.ro>
+In-Reply-To: <20180928091833.15e95f7f@bbrezillon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 12 Sep 2018, Radu Pirea wrote:
-
-> On Wed, 2018-09-12 at 14:12 +0100, Lee Jones wrote:
-> > On Wed, 12 Sep 2018, Alexandre Belloni wrote:
-> > 
-> > > On 12/09/2018 12:43:52+0100, Lee Jones wrote:
-> > > > > > But ... we can't have it both ways.  *Either* it's a true
-> > > > > > MFD, in
-> > > > > > which case it can/should have 2 separate compatible strings
-> > > > > > which can
-> > > > > > be specified directly from the DT.  *Or* it's not an MFD.  In
-> > > > > > the
-> > > > > > latter case, which I think we're all agreeing on (else we'd
-> > > > > > have 2
-> > > > > > compatible strings), MFD is not the place to handle this (my
-> > > > > > original
-> > > > > > point).
-> > > > > > 
-> > > > > 
-> > > > > If that is what bothers you, then let's move it out of mfd.
-> > > > 
-> > > > As I've already mentioned.  I don't just want it moved out of MFD
-> > > > and
-> > > > shoved somewhere else.  My aim is to fix this properly.
-> > > > 
-> > > 
-> > > If it is out of MFD, then I'm not sure why you would care too much
-> > > about
-> > > it as you won't be maintaining that code. And I still this what was
-> > > done
-> > > was correct but I'm open to test what you suggest.
-> > 
-> > I care for the kernel in general, not just the areas I'm responsible
-> > for.  I guess I'm just that kinda guy! ;)
-> 
-> Well, Lee, like you, I think this driver should not be a MFD driver,
-> but Alex has a good point of view. 
-> 
-> > 
-> > > > > > So ... this is a USART device which can do SPI, right?
-> > > > > > 
-> > > > > > My current thinking is that; as this is a USART device first
-> > > > > > &
-> > > > > > foremost, the USART should be probed in the first instance
-> > > > > > regardless,
-> > > > > > then if SPI mode is specified it (the USART driver) registers
-> > > > > > the SPI
-> > > > > > platform driver (as MFD does currently) and exits gracefully,
-> > > > > > allowing
-> > > > > > the SPI driver to take over.
-> > > > > > 
-> > > > > > Spanner in the works: is it physically possible to change the
-> > > > > > mode at
-> > > > > > run-time?  :s
-> > > > > 
-> > > > > Yes it is possible but on Linux that will not happen without
-> > > > > probing
-> > > > > the drivers again.
-> > > > 
-> > > > Not sure I understand what you mean.
-> > > 
-> > > I was just commenting on changing the mode at runtime.
-> > 
-> > Oh I see.  My question was relating to whether the H/W is physically
-> > capable of changing modes on-the-fly, rather than how Linux would
-> > handle that.  If this is something we'd wish to support, then it
-> > would
-> > have to be a single driver, which is why I was asking.  By separating
-> > the drivers this way, we are blocking that as a
-> > possibility.  Although
-> > I guess the OP has already thought about that and made the decision
-> > not to support it.
-> 
-> Is possible to change modes on-the-fly, but you have no reason to do
-> that. On the PCB you will have a SPI slave or a serial console :)
-> Anyway, the current form of the driver, and through this I want to say
-> "this ugly hack", allows the user to switch from serial to SPI mode by
-> adding only one property to the device tree node of USART. If the
-> driver were in his first form, a simple SPI driver, how you will make a
-> dtsi file for an IP like this? You will add two nodes for the same IP
-> in dtsi and will take care to enable correct node in dts?
-> I think this driver is only a tradeoff between having an ugly hack in
-> kernel or having an messy device tree.
-> 
-> > 
-> > > > I'm suggesting that you use the same platform_* interfaces MFD
-> > > > uses to
-> > > > register the SPI driver if SPI mode has been selected.  Only do
-> > > > so
-> > > > from the appropriate driver i.e. USART.
-> > > 
-> > > Yeah, I understood that but I didn't comment because I'm not sure
-> > > this
-> > > will work yet.
-> > 
-> > Other drivers already do this.
-> 
-> Can you give me an example please?
-
-Sorry for the delay, I have been on vacation.
-
-Grep for 'platform_device_add' in drivers/
-
-> I am open to suggestions.
-> 
-> Sorry for that acked-by. There was a lot of "reviewed-by", "acked-by",
-> etc in a single version and I messed up :).
-> 
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jnUwjI4yNUgMTU6
+MTkNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEv
+Ml0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4gDQo+
+IE9uIEZyaSwgMjggU2VwIDIwMTggMDY6NTk6NTggKzAwMDANCj4gQ2h1YW5odWEgSGFuIDxjaHVh
+bmh1YS5oYW5AbnhwLmNvbT4gd3JvdGU6DQo+IA0KPiA+ID4NCj4gPiA+IEl0J3Mgc3RpbGwgdW5j
+bGVhciB3aHkgeW91IG5lZWQgdG8gc3BlY2lmeSBhIGJpdHNfcGVyX3dvcmQgdmFsdWUsDQo+ID4g
+PiBidXQgaWYgdGhpcyBpcyBuZWVkZWQsIGl0J3MgcHJvYmFibHkgc29tZXRoaW5nIHlvdSB3YW50
+IHRvIGFkZCB0bw0KPiA+ID4gc3BpLmMsIHdoZW4gYSBtZXNzYWdlIGlzIHF1ZXVlZC4NCj4gPiBU
+byBzcGVjaWZ5IGEgc3BlY2lmaWMgYml0c19wZXJfd29yZCB0byBiZSBhYmxlIHRvIHVzZSB0aGUg
+eHNwaQ0KPiA+ICgzMmJpdCkgbW9kZSBvZiB0aGUgZnNsX2RzcGkgbW9kdWxlIHRvIHRyYW5zZmVy
+IGRhdGEsIHlvdSBjYW4gbG9vayBhdA0KPiA+IG15IFBBVENIIDIvMi4gRG8gbm90IGFkZCBhIHZh
+bHVlIGluIHNwaXMuYyB0aGF0IHRha2VzIGludG8gYWNjb3VudA0KPiA+IHRoYXQgdGhlIHZhbHVl
+IGFzc2lnbmVkIHRvIGJpdHNfcGVyX3dvcmQgaXMgZGVjaWRlZCBiZWZvcmUgdGhlDQo+ID4gdHJh
+bnNmZXIuIFRoYW5rcyBmb3IgeW91ciBjaGVjayBhbmQgcmVwbHkhDQo+IA0KPiBJIG1pZ2h0IGJl
+IHdyb25nLCBidXQgdGhhdCdzIG5vdCBteSB1bmRlcnN0YW5kaW5nIG9mIC0+Yml0c19wZXJfd29y
+ZC4NCj4gVG8gbWUsIGl0J3Mgc29tZXRoaW5nIHRoYXQgeW91IGNhbiB1c2Ugd2hlbiB5b3VyICpk
+ZXZpY2UqIChub3QNCj4gY29udHJvbGxlcikgZXhwZWN0cyBub24tYnl0ZSBhbGlnbmVkIHdvcmRz
+IFsxXS4gVGhlIHNwaS1tZW0gcHJvdG9jb2wgaXMNCj4gZGVmaW5pdGVseSBkZXNpZ25lZCB0byB3
+b3JrIHdpdGggMWJ5dGUgbGFyZ2Ugd29yZHMsIHNvLCBhcyBJIHNhaWQsIEkgc3VzcGVjdA0KPiB5
+b3UncmUgYWJ1c2luZyB4ZmVyLT5iaXRzX3Blcl93b3JkIHRvIGFkZHJlc3MgYSBjb250cm9sbGVy
+IGRyaXZlciBpc3N1ZS4NCj4gDQo+IFsxXWh0dHBzOi8vZW1lYTAxLnNhZmVsaW5rcy5wcm90ZWN0
+aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZlbGkNCj4geGlyLmJvb3RsaW4uY29t
+JTJGbGludXglMkZsYXRlc3QlMkZzb3VyY2UlMkZpbmNsdWRlJTJGbGludXglMkZzcGklMkZzcGkN
+Cj4gLmglMjNMMTE0JmFtcDtkYXRhPTAyJTdDMDElN0NjaHVhbmh1YS5oYW4lNDBueHAuY29tJTdD
+N2VjNjFkNmQNCj4gN2VmNzQxYWJhODQ0MDhkNjI1MTJhOWUxJTdDNjg2ZWExZDNiYzJiNGM2ZmE5
+MmNkOTljNWMzMDE2MzUlN0MwDQo+ICU3QzAlN0M2MzY3MzcxNTk0MjA4MjAwNTAmYW1wO3NkYXRh
+PWl3RmdYRzN5RnZIN1J1YWM3TUdDb2FQOGgNCj4gbDJNOTE2bTklMkJaZVY3bmtzVGclM0QmYW1w
+O3Jlc2VydmVkPTANCjEuIEluIHRoZSBkc3BpIGRyaXZlciAoc3BpIGNvbnRyb2xsZXIpLCBiaXRz
+X3Blcl93b3JkIChkc3BpLT5iaXRzX3Blcl93b3JkID0gdHJhbnNmZXItPmJpdHNfcGVyX3dvcmQp
+IHBhc3NlZCBmcm9tIHRoZSB1cHBlciBsYXllciAoc3BpLW1lbS5jKSBpcyB1c2VkLiANCkluIHRo
+aXMgd2F5LCBJIGNhbiBvbmx5IGFzc2lnbiB0aGUgYXBwcm9wcmlhdGUgdmFsdWUgb2YgdHJhbnNm
+ZXItPmJpdHNfcGVyX3dvcmQgYmVmb3JlIHBhc3NpbmcgdG8gdGhlIGNvbnRyb2xsZXIsIHRoYXQg
+aXMsIHRoZSBjb250cm9sbGVyIGRyaXZlciBkb2VzIG5vdA0Ka25vdyB0aGUgdmFsdWUgb2YgYml0
+c19wZXJfd29yZCwgYW5kIGl0IHdpbGwgdXNlIHRoaXMgdmFsdWUgd2hlbiB0aGUgdXBwZXIgbGV2
+ZWwgc2V0cyB3aGF0IHZhbHVlIGlzIHBhc3NlZC4NCjIuIEFzIEkgdW5kZXJzdGFuZCwgYml0c19w
+ZXJfd29yZCBkb2VzIG5vdCBleGlzdCBmb3Igbm9uLWJ5dGUgYWxpZ25tZW50LCBidXQgZm9yIHRo
+ZSBuZWVkIHRvIHJlc2VydmUgbm9uLWJ5dGUgdHJhbnNtaXNzaW9uIG1vZGUgdGhhdCBtZWV0cyB0
+aGUgY29udHJvbGxlci4NCjMuIEluIGFkZGl0aW9uLCBub3cgdGhlIFhTUEkgb2YgZHNwaSBjYW5u
+b3QgdHJhbnNmZXIgZGF0YSBub3JtYWxseSwgc28gdGhpcyBwcm9ibGVtIG5lZWRzIHRvIGJlIHNv
+bHZlZC4gQXMgZm9yIHRoZSBETUEgdHJhbnNmZXIgbW9kZSwgc29tZSBjb2xsZWFndWVzIHdpbGwg
+c3R1ZHkgaXQuDQo=

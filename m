@@ -1,68 +1,66 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Tue, 9 Oct 2018 10:24:49 +0000
-Message-ID: <AM6PR04MB43575B32D7C8FBFC3FD7B45A97E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Tue, 9 Oct 2018 11:33:28 +0100
+Message-ID: <20181009103328.GA20774@sirena.org.uk>
 References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-        <20180928084431.300b7bf9@bbrezillon>
-        <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
-        <20180928091833.15e95f7f@bbrezillon>
-        <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20180928084431.300b7bf9@bbrezillon>
+ <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20180928091833.15e95f7f@bbrezillon>
+ <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
  <20181009120522.6b2bd15a@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="W/nzBZO5zC0uMSeA"
+Cc: Chuanhua Han <chuanhua.han@nxp.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "eha@deif.com" <eha@deif.com>
 To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <20181009120522.6b2bd15a@bbrezillon>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
-IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jEw1MI5yNUgMTg6
-MDUNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
-bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEv
-Ml0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4gDQo+
-IE9uIFR1ZSwgOSBPY3QgMjAxOCAwOTo1MjoyMyArMDAwMA0KPiBDaHVhbmh1YSBIYW4gPGNodWFu
-aHVhLmhhbkBueHAuY29tPiB3cm90ZToNCj4gDQo+ID4gMS4gSW4gdGhlIGRzcGkgZHJpdmVyIChz
-cGkgY29udHJvbGxlciksIGJpdHNfcGVyX3dvcmQNCj4gPiAoZHNwaS0+Yml0c19wZXJfd29yZCA9
-IHRyYW5zZmVyLT5iaXRzX3Blcl93b3JkKSBwYXNzZWQgZnJvbSB0aGUgdXBwZXINCj4gPiBsYXll
-ciAoc3BpLW1lbS5jKSBpcyB1c2VkLiBJbiB0aGlzIHdheSwgSSBjYW4gb25seSBhc3NpZ24gdGhl
-DQo+ID4gYXBwcm9wcmlhdGUgdmFsdWUgb2YgdHJhbnNmZXItPmJpdHNfcGVyX3dvcmQgYmVmb3Jl
-IHBhc3NpbmcgdG8gdGhlDQo+ID4gY29udHJvbGxlciwgdGhhdCBpcywgdGhlIGNvbnRyb2xsZXIg
-ZHJpdmVyIGRvZXMgbm90IGtub3cgdGhlIHZhbHVlIG9mDQo+ID4gYml0c19wZXJfd29yZCwgYW5k
-IGl0IHdpbGwgdXNlIHRoaXMgdmFsdWUgd2hlbiB0aGUgdXBwZXIgbGV2ZWwgc2V0cw0KPiA+IHdo
-YXQgdmFsdWUgaXMgcGFzc2VkLg0KPiANCj4gSSB0aGluayB5b3UncmUgbWlzc2luZyBteSBwb2lu
-dDogLT5iaXRzX3Blcl93b3JkIGlzIG5vdCB3aGF0IHlvdSdyZSBsb29raW5nIGZvcg0KPiBpZiB3
-aGF0IHlvdSdyZSB0cnlpbmcgdG8gZG8gaXMgdXNlIDMyLWJpdHMgYWNjZXNzZXMgd2hlbiB0aGlu
-Z3MgYXJlIHByb3Blcmx5DQo+IGFsaWduZWQuDQo+IA0KSW4gdGhlIGRzcGkgZHJpdmVyIChzcGkg
-Y29udHJvbGxlciBkcml2ZXIpLCBpdCBpcyBiYXNlZCBvbiB3aGV0aGVyIC0+Yml0c19wZXJfd29y
-ZCBpcyANCmxhcmdlciB0aGFuIDE2IHRvIGRlY2lkZSB3aGV0aGVyIHRvIHVzZSB0aGUgWFNQSSBt
-b2RlICgzMmJpdCkgdG8gdHJhbnNmZXIgZGF0YS4NCklmIC0+Yml0c19wZXJfd29yZCBpcyBub3Qg
-c2V0IGFuZCB0aGUgZGVmYXVsdCBiaXRzX3Blcl93b3JkID04IGlzIHBhc3NlZCB0byB0aGUgDQpk
-c3BpIGRyaXZlciwgdGhlIFhTUEkgbW9kZSAoMzJiaXQpIGlzIG5vdCB1c2VkIGZvciBkYXRhIHRy
-YW5zZmVyIGluIHRoZSBkc3BpIGRyaXZlcg0KPiA+IDIuIEFzIEkgdW5kZXJzdGFuZCwgYml0c19w
-ZXJfd29yZCBkb2VzIG5vdCBleGlzdCBmb3Igbm9uLWJ5dGUNCj4gPiBhbGlnbm1lbnQsIGJ1dCBm
-b3IgdGhlIG5lZWQgdG8gcmVzZXJ2ZSBub24tYnl0ZSB0cmFuc21pc3Npb24gbW9kZSB0aGF0DQo+
-ID4gbWVldHMgdGhlIGNvbnRyb2xsZXIuDQo+IA0KPiBFeGFjdGx5LiBJdCdzIGFuIG9wdGltaXph
-dGlvbiB5b3UgaGF2ZSB0byB0YWtlIGNhcmUgb2YgaW5zaWRlIHlvdXIgZHJpdmVyLiBUaGUgY29y
-ZQ0KPiBjYW5ub3QgaGVscCB5b3Ugd2l0aCB0aGF0Lg0KPiANClRoZSBjb3JlIGxheWVyIGlzIHRo
-ZSB1cHBlciBsYXllci4gSWYgeW91IGRvbid0IHNldCAtPmJpdHNfcGVyX3dvcmQsIGJpdHNfcGVy
-X3dvcmQNCiB3aWxsIHVzZSB0aGUgZGVmYXVsdCB2YWx1ZSBvZiA4LCBzbyB0aGF0IHRoZSBjb250
-cm9sbGVyJ3Mgc3BlY2lmaWMgbW9kZSBmb3IgdHJhbnNmZXJyaW5nDQogZGF0YSBjYW5ub3QgYmUg
-dXNlZCAoZWc6IFhTUEkgbW9kZSkuDQo+ID4gMy4gSW4gYWRkaXRpb24sIG5vdyB0aGUNCj4gPiBY
-U1BJIG9mIGRzcGkgY2Fubm90IHRyYW5zZmVyIGRhdGEgbm9ybWFsbHksIHNvIHRoaXMgcHJvYmxl
-bSBuZWVkcyB0bw0KPiA+IGJlIHNvbHZlZC4NCj4gDQo+IEkgc3RpbGwgZG9uJ3QgdW5kZXJzdGFu
-ZCB3aGF0IHRoZSBwcm9ibGVtIGlzLg0KPiANClRoZSBwcm9ibGVtIGlzIHRoYXQgSSB0ZXN0ZWQg
-dGhlIFhTUEkgbW9kZSBhbmQgY291bGQgbm90IHdvcmssIHRoYXQgaXMsIHRoZSBkYXRhIGNvdWxk
-DQpub3QgYmUgdHJhbnNtaXR0ZWQgbm9ybWFsbHkuIEkgdXNlZCBzcGkgZmxhc2ggY29ubmVjdGVk
-IG9uIGRzcGkgdG8gY29uZHVjdCB0aGUgdGVzdC4gDQpJbiBhbnkgY2FzZSwgdGhlIGNvbnRyb2xs
-ZXIgaXMgaW5kZXBlbmRlbnQgb2YgY29ubmVjdGVkIHNsYXZlIGRldmljZXMsIGFuZCB0aGUgZGF0
-YSBzaG91bGQNCmJlIHRyYW5zbWl0dGVkIGJ5IHNwaS1mbGFzaCBkZXZpY2VzIGFuZCBvdGhlciBz
-cGkgZGV2aWNlcy4NCg0KPiA+IEFzIGZvciB0aGUgRE1BIHRyYW5zZmVyIG1vZGUsIHNvbWUgY29s
-bGVhZ3VlcyB3aWxsIHN0dWR5IGl0Lg0KDQo=
+
+--W/nzBZO5zC0uMSeA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Oct 09, 2018 at 12:05:22PM +0200, Boris Brezillon wrote:
+> On Tue, 9 Oct 2018 09:52:23 +0000
+> Chuanhua Han <chuanhua.han@nxp.com> wrote:
+
+> > 1. In the dspi driver (spi controller), bits_per_word
+> > (dspi->bits_per_word = transfer->bits_per_word) passed from the upper
+> > layer (spi-mem.c) is used. In this way, I can only assign the
+> > appropriate value of transfer->bits_per_word before passing to the
+> > controller, that is, the controller driver does not know the value of
+> > bits_per_word, and it will use this value when the upper level sets
+> > what value is passed.
+
+> I think you're missing my point: ->bits_per_word is not what you're
+> looking for if what you're trying to do is use 32-bits accesses when
+> things are properly aligned.
+
+To be clear: bits_per_word affects what goes out on the SPI bus (4 byte
+words swapped to be in MSB first order), it needn't have any effect on
+on what goes on inside the SoC - many controllers fill their FIFO in 32
+bit blocks even when sending 8 bit SPI words.
+
+--W/nzBZO5zC0uMSeA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu8g/UACgkQJNaLcl1U
+h9DLawf/WlD+TLCVZMYkPjr2exJkiriLytbS+tBT2Ajv3GJ3iEz5RaT1I/vULM7/
+gQAcl9hvJGEMQQHTwdY7ZCwaP81liqd2qG5R/qX/yfoZh4Z3FCMYjEbdOHPpNgLA
+aATd4k7ve4rsOhYUPkFYgtfcGz+Y004RSLuraaDUcDHLuOOF895vEfRpRg0PgLwy
+c1fVHgAyOoxbOfj1oF9mmupmBqiTx+NiNrZGq16xST6RPGqRLhpFmGAZ8++7p3kw
+RyZtmnq5b/U7fPk4HftVsJk1uxp1/0/xFUYv1tU5gHgc18Jcu0lFa1D1guwqa1Xn
+ibh1mtxlboxFIDXVp2Gu1Nj3zS9x5g==
+=gyE5
+-----END PGP SIGNATURE-----
+
+--W/nzBZO5zC0uMSeA--

@@ -1,52 +1,96 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Tue, 9 Oct 2018 12:05:22 +0200
-Message-ID: <20181009120522.6b2bd15a@bbrezillon>
-References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-        <20180928084431.300b7bf9@bbrezillon>
-        <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
-        <20180928091833.15e95f7f@bbrezillon>
-        <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "eha@deif.com" <eha@deif.com>
-To: Chuanhua Han <chuanhua.han@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Silesh C V <svellattu@mvista.com>
+Subject: [PATCH v3 1/2] Driver core: add bus_find_device_by_fwnode
+Date: Tue,  9 Oct 2018 15:47:24 +0530
+Message-ID: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Silesh C V <svellattu@mvista.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Return-path: <netdev-owner@vger.kernel.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 9 Oct 2018 09:52:23 +0000
-Chuanhua Han <chuanhua.han@nxp.com> wrote:
+Some drivers need to find the device on a bus having a specific firmware
+node. Currently, such drivers have their own implementations to do this.
+Provide a helper similar to bus_find_device_by_name so that each driver
+does not have to reinvent this.
 
-> 1. In the dspi driver (spi controller), bits_per_word
-> (dspi->bits_per_word = transfer->bits_per_word) passed from the upper
-> layer (spi-mem.c) is used. In this way, I can only assign the
-> appropriate value of transfer->bits_per_word before passing to the
-> controller, that is, the controller driver does not know the value of
-> bits_per_word, and it will use this value when the upper level sets
-> what value is passed.
+Signed-off-by: Silesh C V <svellattu@mvista.com>
+---
+Changes since v2: 
+	- make use of dev_fwnode in match_fwnode.
 
-I think you're missing my point: ->bits_per_word is not what you're
-looking for if what you're trying to do is use 32-bits accesses when
-things are properly aligned.
+ drivers/base/bus.c     | 20 ++++++++++++++++++++
+ include/linux/device.h |  3 +++
+ 2 files changed, 23 insertions(+)
 
-> 2. As I understand, bits_per_word does not
-> exist for non-byte alignment, but for the need to reserve non-byte
-> transmission mode that meets the controller.
-
-Exactly. It's an optimization you have to take care of inside your
-driver. The core cannot help you with that.
-
-> 3. In addition, now the
-> XSPI of dspi cannot transfer data normally, so this problem needs to
-> be solved.
-
-I still don't understand what the problem is.
-
-> As for the DMA transfer mode, some colleagues will study
-> it.
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 8bfd27e..a2f39db 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -17,6 +17,7 @@
+ #include <linux/string.h>
+ #include <linux/mutex.h>
+ #include <linux/sysfs.h>
++#include <linux/property.h>
+ #include "base.h"
+ #include "power/power.h"
+ 
+@@ -373,6 +374,25 @@ struct device *bus_find_device_by_name(struct bus_type *bus,
+ }
+ EXPORT_SYMBOL_GPL(bus_find_device_by_name);
+ 
++static int match_fwnode(struct device *dev, void *fwnode)
++{
++	return dev_fwnode(dev) == fwnode;
++}
++
++/**
++ * bus_find_device_by_fwnode - device iterator for locating a particular device
++ * having a specific firmware node
++ * @bus: bus type
++ * @start: Device to begin with
++ * @fwnode: firmware node of the device to match
++ */
++struct device *bus_find_device_by_fwnode(struct bus_type *bus, struct device *start,
++					struct fwnode_handle *fwnode)
++{
++	return bus_find_device(bus, start, (void *)fwnode, match_fwnode);
++}
++EXPORT_SYMBOL_GPL(bus_find_device_by_fwnode);
++
+ /**
+  * subsys_find_device_by_id - find a device with a specific enumeration number
+  * @subsys: subsystem
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 8f88254..09384f6 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -171,6 +171,9 @@ struct device *bus_find_device(struct bus_type *bus, struct device *start,
+ struct device *bus_find_device_by_name(struct bus_type *bus,
+ 				       struct device *start,
+ 				       const char *name);
++struct device *bus_find_device_by_fwnode(struct bus_type *bus,
++				       struct device *start,
++				       struct fwnode_handle *fwnode);
+ struct device *subsys_find_device_by_id(struct bus_type *bus, unsigned int id,
+ 					struct device *hint);
+ int bus_for_each_drv(struct bus_type *bus, struct device_driver *start,
+-- 
+1.9.1

@@ -1,104 +1,68 @@
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v3 1/2] Driver core: add bus_find_device_by_fwnode
-Date: Tue, 9 Oct 2018 12:20:29 +0200
-Message-ID: <CAJZ5v0joQi-N=-6TUMUQXQbxYtvS2AOLJD3KUqUAL-w9hJTQeg@mail.gmail.com>
-References: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: RE: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
+Date: Tue, 9 Oct 2018 10:24:49 +0000
+Message-ID: <AM6PR04MB43575B32D7C8FBFC3FD7B45A97E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+References: <20180921070628.35153-1-chuanhua.han@nxp.com>
+        <20180928084431.300b7bf9@bbrezillon>
+        <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
+        <20180928091833.15e95f7f@bbrezillon>
+        <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
+ <20181009120522.6b2bd15a@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-rdma@vger.kernel.org, netdev <netdev@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Wolfram Sang <wsa@the-dreams.de>, oulijun@huawei.com,
-        xavier.huwei@huawei.com, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, srinivas.kandagatla@linaro.org,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mark Brown <broonie@ke
-To: svellattu@mvista.com
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
-Sender: netdev-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "eha@deif.com" <eha@deif.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181009120522.6b2bd15a@bbrezillon>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 9, 2018 at 12:18 PM Silesh C V <svellattu@mvista.com> wrote:
->
-> Some drivers need to find the device on a bus having a specific firmware
-> node. Currently, such drivers have their own implementations to do this.
-> Provide a helper similar to bus_find_device_by_name so that each driver
-> does not have to reinvent this.
->
-> Signed-off-by: Silesh C V <svellattu@mvista.com>
-
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-> ---
-> Changes since v2:
->         - make use of dev_fwnode in match_fwnode.
->
->  drivers/base/bus.c     | 20 ++++++++++++++++++++
->  include/linux/device.h |  3 +++
->  2 files changed, 23 insertions(+)
->
-> diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-> index 8bfd27e..a2f39db 100644
-> --- a/drivers/base/bus.c
-> +++ b/drivers/base/bus.c
-> @@ -17,6 +17,7 @@
->  #include <linux/string.h>
->  #include <linux/mutex.h>
->  #include <linux/sysfs.h>
-> +#include <linux/property.h>
->  #include "base.h"
->  #include "power/power.h"
->
-> @@ -373,6 +374,25 @@ struct device *bus_find_device_by_name(struct bus_type *bus,
->  }
->  EXPORT_SYMBOL_GPL(bus_find_device_by_name);
->
-> +static int match_fwnode(struct device *dev, void *fwnode)
-> +{
-> +       return dev_fwnode(dev) == fwnode;
-> +}
-> +
-> +/**
-> + * bus_find_device_by_fwnode - device iterator for locating a particular device
-> + * having a specific firmware node
-> + * @bus: bus type
-> + * @start: Device to begin with
-> + * @fwnode: firmware node of the device to match
-> + */
-> +struct device *bus_find_device_by_fwnode(struct bus_type *bus, struct device *start,
-> +                                       struct fwnode_handle *fwnode)
-> +{
-> +       return bus_find_device(bus, start, (void *)fwnode, match_fwnode);
-> +}
-> +EXPORT_SYMBOL_GPL(bus_find_device_by_fwnode);
-> +
->  /**
->   * subsys_find_device_by_id - find a device with a specific enumeration number
->   * @subsys: subsystem
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 8f88254..09384f6 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -171,6 +171,9 @@ struct device *bus_find_device(struct bus_type *bus, struct device *start,
->  struct device *bus_find_device_by_name(struct bus_type *bus,
->                                        struct device *start,
->                                        const char *name);
-> +struct device *bus_find_device_by_fwnode(struct bus_type *bus,
-> +                                      struct device *start,
-> +                                      struct fwnode_handle *fwnode);
->  struct device *subsys_find_device_by_id(struct bus_type *bus, unsigned int id,
->                                         struct device *hint);
->  int bus_for_each_drv(struct bus_type *bus, struct device_driver *start,
-> --
-> 1.9.1
->
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXMgQnJlemlsbG9u
+IDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDIwMTjE6jEw1MI5yNUgMTg6
+MDUNCj4gVG86IENodWFuaHVhIEhhbiA8Y2h1YW5odWEuaGFuQG54cC5jb20+DQo+IENjOiBicm9v
+bmllQGtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IGVoYUBkZWlmLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEv
+Ml0gc3BpOiBzcGktbWVtOiBBZGQgdGhlIHNwaV9zZXRfeGZlcl9icHcgZnVuY3Rpb24NCj4gDQo+
+IE9uIFR1ZSwgOSBPY3QgMjAxOCAwOTo1MjoyMyArMDAwMA0KPiBDaHVhbmh1YSBIYW4gPGNodWFu
+aHVhLmhhbkBueHAuY29tPiB3cm90ZToNCj4gDQo+ID4gMS4gSW4gdGhlIGRzcGkgZHJpdmVyIChz
+cGkgY29udHJvbGxlciksIGJpdHNfcGVyX3dvcmQNCj4gPiAoZHNwaS0+Yml0c19wZXJfd29yZCA9
+IHRyYW5zZmVyLT5iaXRzX3Blcl93b3JkKSBwYXNzZWQgZnJvbSB0aGUgdXBwZXINCj4gPiBsYXll
+ciAoc3BpLW1lbS5jKSBpcyB1c2VkLiBJbiB0aGlzIHdheSwgSSBjYW4gb25seSBhc3NpZ24gdGhl
+DQo+ID4gYXBwcm9wcmlhdGUgdmFsdWUgb2YgdHJhbnNmZXItPmJpdHNfcGVyX3dvcmQgYmVmb3Jl
+IHBhc3NpbmcgdG8gdGhlDQo+ID4gY29udHJvbGxlciwgdGhhdCBpcywgdGhlIGNvbnRyb2xsZXIg
+ZHJpdmVyIGRvZXMgbm90IGtub3cgdGhlIHZhbHVlIG9mDQo+ID4gYml0c19wZXJfd29yZCwgYW5k
+IGl0IHdpbGwgdXNlIHRoaXMgdmFsdWUgd2hlbiB0aGUgdXBwZXIgbGV2ZWwgc2V0cw0KPiA+IHdo
+YXQgdmFsdWUgaXMgcGFzc2VkLg0KPiANCj4gSSB0aGluayB5b3UncmUgbWlzc2luZyBteSBwb2lu
+dDogLT5iaXRzX3Blcl93b3JkIGlzIG5vdCB3aGF0IHlvdSdyZSBsb29raW5nIGZvcg0KPiBpZiB3
+aGF0IHlvdSdyZSB0cnlpbmcgdG8gZG8gaXMgdXNlIDMyLWJpdHMgYWNjZXNzZXMgd2hlbiB0aGlu
+Z3MgYXJlIHByb3Blcmx5DQo+IGFsaWduZWQuDQo+IA0KSW4gdGhlIGRzcGkgZHJpdmVyIChzcGkg
+Y29udHJvbGxlciBkcml2ZXIpLCBpdCBpcyBiYXNlZCBvbiB3aGV0aGVyIC0+Yml0c19wZXJfd29y
+ZCBpcyANCmxhcmdlciB0aGFuIDE2IHRvIGRlY2lkZSB3aGV0aGVyIHRvIHVzZSB0aGUgWFNQSSBt
+b2RlICgzMmJpdCkgdG8gdHJhbnNmZXIgZGF0YS4NCklmIC0+Yml0c19wZXJfd29yZCBpcyBub3Qg
+c2V0IGFuZCB0aGUgZGVmYXVsdCBiaXRzX3Blcl93b3JkID04IGlzIHBhc3NlZCB0byB0aGUgDQpk
+c3BpIGRyaXZlciwgdGhlIFhTUEkgbW9kZSAoMzJiaXQpIGlzIG5vdCB1c2VkIGZvciBkYXRhIHRy
+YW5zZmVyIGluIHRoZSBkc3BpIGRyaXZlcg0KPiA+IDIuIEFzIEkgdW5kZXJzdGFuZCwgYml0c19w
+ZXJfd29yZCBkb2VzIG5vdCBleGlzdCBmb3Igbm9uLWJ5dGUNCj4gPiBhbGlnbm1lbnQsIGJ1dCBm
+b3IgdGhlIG5lZWQgdG8gcmVzZXJ2ZSBub24tYnl0ZSB0cmFuc21pc3Npb24gbW9kZSB0aGF0DQo+
+ID4gbWVldHMgdGhlIGNvbnRyb2xsZXIuDQo+IA0KPiBFeGFjdGx5LiBJdCdzIGFuIG9wdGltaXph
+dGlvbiB5b3UgaGF2ZSB0byB0YWtlIGNhcmUgb2YgaW5zaWRlIHlvdXIgZHJpdmVyLiBUaGUgY29y
+ZQ0KPiBjYW5ub3QgaGVscCB5b3Ugd2l0aCB0aGF0Lg0KPiANClRoZSBjb3JlIGxheWVyIGlzIHRo
+ZSB1cHBlciBsYXllci4gSWYgeW91IGRvbid0IHNldCAtPmJpdHNfcGVyX3dvcmQsIGJpdHNfcGVy
+X3dvcmQNCiB3aWxsIHVzZSB0aGUgZGVmYXVsdCB2YWx1ZSBvZiA4LCBzbyB0aGF0IHRoZSBjb250
+cm9sbGVyJ3Mgc3BlY2lmaWMgbW9kZSBmb3IgdHJhbnNmZXJyaW5nDQogZGF0YSBjYW5ub3QgYmUg
+dXNlZCAoZWc6IFhTUEkgbW9kZSkuDQo+ID4gMy4gSW4gYWRkaXRpb24sIG5vdyB0aGUNCj4gPiBY
+U1BJIG9mIGRzcGkgY2Fubm90IHRyYW5zZmVyIGRhdGEgbm9ybWFsbHksIHNvIHRoaXMgcHJvYmxl
+bSBuZWVkcyB0bw0KPiA+IGJlIHNvbHZlZC4NCj4gDQo+IEkgc3RpbGwgZG9uJ3QgdW5kZXJzdGFu
+ZCB3aGF0IHRoZSBwcm9ibGVtIGlzLg0KPiANClRoZSBwcm9ibGVtIGlzIHRoYXQgSSB0ZXN0ZWQg
+dGhlIFhTUEkgbW9kZSBhbmQgY291bGQgbm90IHdvcmssIHRoYXQgaXMsIHRoZSBkYXRhIGNvdWxk
+DQpub3QgYmUgdHJhbnNtaXR0ZWQgbm9ybWFsbHkuIEkgdXNlZCBzcGkgZmxhc2ggY29ubmVjdGVk
+IG9uIGRzcGkgdG8gY29uZHVjdCB0aGUgdGVzdC4gDQpJbiBhbnkgY2FzZSwgdGhlIGNvbnRyb2xs
+ZXIgaXMgaW5kZXBlbmRlbnQgb2YgY29ubmVjdGVkIHNsYXZlIGRldmljZXMsIGFuZCB0aGUgZGF0
+YSBzaG91bGQNCmJlIHRyYW5zbWl0dGVkIGJ5IHNwaS1mbGFzaCBkZXZpY2VzIGFuZCBvdGhlciBz
+cGkgZGV2aWNlcy4NCg0KPiA+IEFzIGZvciB0aGUgRE1BIHRyYW5zZmVyIG1vZGUsIHNvbWUgY29s
+bGVhZ3VlcyB3aWxsIHN0dWR5IGl0Lg0KDQo=

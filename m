@@ -1,119 +1,99 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH V5 3/3] spi: spi-geni-qcom: Add SPI driver support for
- GENI based QUP
-Date: Tue, 9 Oct 2018 10:48:55 -0700
-Message-ID: <CAD=FV=U-ZZQhFKR9kxYnw=F1j+dExrsgFvjabYJ8AVmBDM4eXA@mail.gmail.com>
-References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
- <1538574265-30235-4-git-send-email-alokc@codeaurora.org> <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
- <CAD=FV=XnYucy4JmgATrB89RYHTbzRC_GaouaRjHAocD4-H0ncg@mail.gmail.com> <153910152600.119890.14820584405992384926@swboyd.mtv.corp.google.com>
+From: Brian Norris <briannorris@chromium.org>
+Subject: Re: [PATCH] dt-bindings: Add bindings for aliases node
+Date: Tue, 9 Oct 2018 11:31:42 -0700
+Message-ID: <20181009183141.GA126050@ban.mtv.corp.google.com>
+References: <20180925210255.172734-1-mka@chromium.org>
+ <20181009010711.GA1577@ban.mtv.corp.google.com>
+ <CAMuHMdWe5JYp5eC2PvuG4xEud908Crhm+BhrtxPJ4Uo1-LCc4g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: alokc@codeaurora.org, Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: Matthias Kaehlcke <mka@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Girish Mahadevan <girishm@codeaurora.org>,
-        Dilip Kota <dkota@codeaurora.org>
-To: Stephen Boyd <swboyd@chromium.org>
+        netdev <netdev@vger.kernel.org>, swboyd@chromium.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <153910152600.119890.14820584405992384926@swboyd.mtv.corp.google.com>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWe5JYp5eC2PvuG4xEud908Crhm+BhrtxPJ4Uo1-LCc4g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Tue, Oct 09, 2018 at 09:22:07AM +0200, Geert Uytterhoeven wrote:
+> Please note these aliases become cumbersome once you start considering
+> (dynamic) DT overlays.  That's why I made them optional in the sh-sci
+> serial driver, cfr. commit 7678f4c20fa7670f ("serial: sh-sci: Add support
+> for dynamic instances").
 
-On Tue, Oct 9, 2018 at 9:12 AM Stephen Boyd <swboyd@chromium.org> wrote:
->
-> Quoting Doug Anderson (2018-10-08 16:52:36)
-> > Hi,
-> >
-> > On Mon, Oct 8, 2018 at 4:43 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> > > > +       mas->irq = platform_get_irq(pdev, 0);
-> > > > +       if (mas->irq < 0) {
-> > > > +               ret = mas->irq;
-> > > > +               dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
-> > > > +               goto spi_geni_probe_runtime_disable;
-> > > > +       }
-> > >
-> > > Nitpick: If you got the irq earlier before allocating anything then nothing has
-> > > to be put on failure path.
-> >
-> > I think this might have been in response to previous feedback from you
-> > suggesting that we should get the irq as late as possible.  Ah, here
-> > ya go:
-> >
-> > https://lkml.kernel.org/r/153780767551.119890.9339380838620508307@swboyd.mtv.corp.google.com
->
-> Yes I suggested we register for the irq as last as possible, but I
-> didn't suggest calling platform_get_irq() this late. It could be called
-> earlier so that if there isn't any irq then nothing to do besides return
-> failure.
+Note that as I understand it, the entire point of documenting this sort
+of thing is to help solidify the interface between a DT aware boot
+program (e.g., bootloader) and a device tree which is provided
+separately, to avoid memorizing node/path hierarchy. It doesn't need to
+(and doesn't, as I read it) enforce an OS's device naming policy.
 
-Ah, you're suggesting separating the platform_get_irq() and the
-request_irq() so that we call platform_get_irq() as the first thing in
-the function but don't do the request_irq() until later.  Yeah, that
-could be done and I guess if you feel strongly about it I wouldn't
-object to the change, but I don't feel it buys us a lot and I kind of
-like keeping the two next to each other.  Specifically why I don't
-think it buys us a lot:
+> Relevant parts of the commit description are:
+> 
+>     On DT platforms, the sh-sci driver requires the presence of "serialN"
+>     aliases in DT, from which instance IDs are derived.  If a DT alias is
+>     missing, the drivers fails to probe the corresponding serial port.
+> 
+>     This becomes cumbersome when considering DT overlays, as currently
+>     there is no upstream support for dynamically updating the /aliases node
+>     in DT.
 
-1. You still need the "dev_err" print, right?  platform_get_irq()
-doesn't automatically print errors for you I think.
+That part is not a DT spec problem :)
 
-2. You now need a local variable "irq".  By putting the
-platform_get_irq() before the memory allocation you now can't store it
-directly in mas->irq.  We could try using "ret" as a temporary
-variable but that seems worse in this case since it'd be a bit
-fragile.
+>     Furthermore, even in the presence of such support, hardcoded
+>     instance IDs in independent overlays are prone to conflicts.
+> 
+>     Hence add support for dynamic instance IDs, to be used in the absence of
+>     a DT alias.  This makes serial ports behave similar to I2C and SPI
+>     buses, which already support dynamic instances.
 
-3. You don't get rid of any error labels / error handling so we don't
-really save any code
+This seems to be a much different sort of problem. People always love
+having predictable IDs given by the OS (myself included), but that's
+just plain hard to do and impossible in some cases. I don't think that's
+what this document is about though.
 
-When I tried this my diffstat says 8 lines added and 7 removed, so a
-net increase in LOC FWIW.  I'm relying in gmail so my patch will be
-whitespace-damaged (sigh), but you can find a clean one at:
+IOW, this document seems pretty consistent with the above: it doesn't
+require the usage of aliases (and it seems silly to have a driver
+*require* an alias) -- it just documents how one should name such an
+alias if you expect multiple independent software components to
+understand it.
 
-https://chromium.googlesource.com/chromiumos/third_party/kernel/+/e0325d618e209c22379e3a4269c14627b19243a8%5E%21/#F0
+> To clarify my point: R-Car M2-W has 4 different types of serial ports, for a
+> total of 18 ports, and the two ports on a board labeled 0 and 1 may not
+> correspond to the physical first two ports (what's "first" in a collection of
+> 4 different types?).
+> 
+> Aliases may be fine for referring to the main serial console (labeled
+> port 0 on the device, too), and the primary Ethernet interface (so U-Boot
+> knows where to add the "local-mac-address" property), but beyond that,
+> I think they should be avoided.
 
-...the basic idea is this though:
+That's fair enough. Just because the solution isn't an all-purpose tool
+doesn't mean it shouldn't be documented. The general concept is already
+in ePAPR, but it's just not very specific about property names.
 
-@@ -543,6 +543,13 @@
-   struct spi_geni_master *mas;
-   struct resource *res;
-   struct geni_se *se;
-+  int irq;
-+
-+  irq = platform_get_irq(pdev, 0);
-+  if (irq < 0) {
-+    dev_err(&pdev->dev, "Err getting IRQ %d\n", irq);
-+    return irq;
-+  }
+> Just my two^H^H^Hfive €c.
 
-   spi = spi_alloc_master(&pdev->dev, sizeof(*mas));
-   if (!spi)
-@@ -553,6 +560,7 @@
-   mas->dev = &pdev->dev;
-   mas->se.dev = &pdev->dev;
-   mas->se.wrapper = dev_get_drvdata(pdev->dev.parent);
-+  mas->irq = irq;
-   se = &mas->se;
+Thanks,
+Brian
 
-   spi->bus_num = -1;
-@@ -589,13 +597,6 @@
-   if (ret)
-     goto spi_geni_probe_runtime_disable;
-
--  mas->irq = platform_get_irq(pdev, 0);
--  if (mas->irq < 0) {
--    ret = mas->irq;
--    dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
--    goto spi_geni_probe_runtime_disable;
--  }
--
-   ret = request_irq(mas->irq, geni_spi_isr,
-       IRQF_TRIGGER_HIGH, "spi_geni", spi);
-   if (ret)
-
-
--Doug
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds

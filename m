@@ -1,49 +1,95 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH V5 3/3] spi: spi-geni-qcom: Add SPI driver support for
- GENI based QUP
-Date: Mon, 8 Oct 2018 16:52:36 -0700
-Message-ID: <CAD=FV=XnYucy4JmgATrB89RYHTbzRC_GaouaRjHAocD4-H0ncg@mail.gmail.com>
-References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
- <1538574265-30235-4-git-send-email-alokc@codeaurora.org> <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
+From: Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v4 2/5] dt-bindings: spi: add binding file for NXP
+ FlexSPI controller
+Date: Tue, 9 Oct 2018 08:25:39 +0800
+Message-ID: <20181009002537.GV3587@dragon>
+References: <1538997103-11152-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1538997103-11152-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: alokc@codeaurora.org, Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Girish Mahadevan <girishm@codeaurora.org>,
-        Dilip Kota <dkota@codeaurora.org>
-To: Stephen Boyd <swboyd@chromium.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mtd@lists.infradead.org, boris.brezillon@bootlin.com,
+        marek.vasut@gmail.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, mark.rutland@arm.com, robh@kernel.org,
+        linux-kernel@vger.kernel.org, frieder.schrempf@exceet.de,
+        computersforpeace@gmail.com, linux-arm-kernel@lists.infradead.org
+To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
+Content-Disposition: inline
+In-Reply-To: <1538997103-11152-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Mon, Oct 08, 2018 at 04:41:40PM +0530, Yogesh Gaur wrote:
+> Add binding file for NXP FlexSPI controller
+> 
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> ---
+> Changes for v4:
+> - Incorporated Rob review comments.
+> Changes for v3:
+> - Removed node property 'big-endian'.
+> Changes for v2:
+> - Incorporated Rob review comments.
+> 
+>  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 39 ++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> new file mode 100644
+> index 0000000..402e2b7
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> @@ -0,0 +1,39 @@
+> +* NXP Flex Serial Peripheral Interface (FSPI)
+> +
+> +Required properties:
+> +  - compatible : Should be "nxp,lx2160a-fspi"
+> +  - reg :        First contains the register location and length,
+> +                 Second contains the memory mapping address and length
+> +  - reg-names :  Should contain the resource reg names:
+> +	         - fspi_base: configuration register address space
+> +                 - fspi_mmap: memory mapped address space
+> +  - interrupts : Should contain the interrupt for the device
+> +
+> +Required SPI slave node properties:
+> +  - reg :        There are two buses (A and B) with two chip selects each.
+> +                 This encodes to which bus and CS the flash is connected:
+> +                 - <0>: Bus A, CS 0
+> +                 - <1>: Bus A, CS 1
+> +                 - <2>: Bus B, CS 0
+> +                 - <3>: Bus B, CS 1
+> +
+> +Example showing the usage of two SPI NOR slave devices on bus A:
+> +
+> +spi0: flexspi@20c0000 {
 
-On Mon, Oct 8, 2018 at 4:43 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> > +       mas->irq = platform_get_irq(pdev, 0);
-> > +       if (mas->irq < 0) {
-> > +               ret = mas->irq;
-> > +               dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
-> > +               goto spi_geni_probe_runtime_disable;
-> > +       }
->
-> Nitpick: If you got the irq earlier before allocating anything then nothing has
-> to be put on failure path.
+It seems that Rob's comment on node name in v3 review gets overlooked?
 
-I think this might have been in response to previous feedback from you
-suggesting that we should get the irq as late as possible.  Ah, here
-ya go:
+Shawn
 
-https://lkml.kernel.org/r/153780767551.119890.9339380838620508307@swboyd.mtv.corp.google.com
-
-> Can you request this irq as late as possible in the probe function? I
-> worry there may be some pending irq line set and then this will cause an
-> interrupt storm with IRQ_NONE returned because the device is runtime
-> suspended.
-
-I'd rather handle the failure path then get the IRQ too early.
-
--Doug
+> +	compatible = "nxp,lx2160a-fspi";
+> +	reg = <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0 0x10000000>;
+> +	reg-names = "fspi_base", "fspi_mmap";
+> +	interrupts = <0 25 0x4>; /* Level high type */
+> +	clocks = <&clockgen 4 3>, <&clockgen 4 3>;
+> +	clock-names = "fspi_en", "fspi";
+> +
+> +	mt35xu512aba0: flash@0 {
+> +		reg = <0>;
+> +		....
+> +	};
+> +
+> +	mt35xu512aba1: flash@1 {
+> +		reg = <1>;
+> +		....
+> +	};
+> +};
+> -- 
+> 2.7.4
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

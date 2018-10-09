@@ -1,69 +1,65 @@
-From: Esben Haabendal <esben.haabendal@gmail.com>
-Subject: Re: [PATCH 1/2] spi: spi-mem: Add the spi_set_xfer_bpw function
-Date: Tue, 09 Oct 2018 15:50:45 +0200
-Message-ID: <87o9c32pqi.fsf@gmail.com>
-References: <20180921070628.35153-1-chuanhua.han@nxp.com>
-        <20180928084431.300b7bf9@bbrezillon>
-        <AM6PR04MB43573478FFD0E512A117484097EC0@AM6PR04MB4357.eurprd04.prod.outlook.com>
-        <20180928091833.15e95f7f@bbrezillon>
-        <AM6PR04MB4357280CD4F77FCB01AB5C7097E70@AM6PR04MB4357.eurprd04.prod.outlook.com>
-        <20181009120522.6b2bd15a@bbrezillon>
-        <20181009103328.GA20774@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 1/2] Driver core: add bus_find_device_by_fwnode
+Date: Tue, 9 Oct 2018 16:15:33 +0100
+Message-ID: <20181009151533.GC20774@sirena.org.uk>
+References: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
+ <20181009110210.i6xphyuy5jkcfaug@katana>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
-        Chuanhua Han <chuanhua.han@nxp.com>,
-        "linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181009103328.GA20774@sirena.org.uk> (Mark Brown's message of
-        "Tue, 9 Oct 2018 11:33:28 +0100")
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kfjH4zxOES6UT95V"
+Cc: Silesh C V <svellattu@mvista.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        "David S. Miller" <davem@davemloft.n
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <netdev-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181009110210.i6xphyuy5jkcfaug@katana>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Mark Brown <broonie@kernel.org> writes:
 
-> On Tue, Oct 09, 2018 at 12:05:22PM +0200, Boris Brezillon wrote:
->> On Tue, 9 Oct 2018 09:52:23 +0000
->> Chuanhua Han <chuanhua.han@nxp.com> wrote:
->
->> > 1. In the dspi driver (spi controller), bits_per_word
->> > (dspi->bits_per_word = transfer->bits_per_word) passed from the upper
->> > layer (spi-mem.c) is used. In this way, I can only assign the
->> > appropriate value of transfer->bits_per_word before passing to the
->> > controller, that is, the controller driver does not know the value of
->> > bits_per_word, and it will use this value when the upper level sets
->> > what value is passed.
->
->> I think you're missing my point: ->bits_per_word is not what you're
->> looking for if what you're trying to do is use 32-bits accesses when
->> things are properly aligned.
->
-> To be clear: bits_per_word affects what goes out on the SPI bus (4 byte
-> words swapped to be in MSB first order), it needn't have any effect on
-> on what goes on inside the SoC - many controllers fill their FIFO in 32
-> bit blocks even when sending 8 bit SPI words.
+--kfjH4zxOES6UT95V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Exactly.
+On Tue, Oct 09, 2018 at 01:02:10PM +0200, Wolfram Sang wrote:
 
-I believe behind all the confusion here, is the fact that the current
-spi-fsl-dspi.c driver does not utilize all the possible features of the
-DSPI controller.
+> We recently had this discussion in I2C world about using the parent if
+> the (logical) device has a NULL fw_node [1]. I don't know if the other
+> subsystems you modify use logical devices as well? If no, it seems we
+> need an additional check for the parent in the I2C core only. If yes,
+> this might be considered in your patchset?
 
-1. DMA support requires a nasty workaround before it can be enabled for
-   LS1021A.
-2. EOQ mode is not enabled (and not tested) for some platforms which
-   might actually support it.
-3. Cyclic command transfer is not implemented.
+SPI has a logical controller device as well.
 
-So in order to improve performance on LS1021A, I propose to do work on
-above issues.  I believe the performance improvement that can be gained
-is likely to be biggest for 1 (DMA support), and smallest for 3 (cyclic
-command transfer).
+--kfjH4zxOES6UT95V
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I don't have access to any coldfire boards, so I haven't tested EOQ mode
-(it is only enabled for coldfire currently), so I cannot really know if
-there are some bugs hiding there.
+-----BEGIN PGP SIGNATURE-----
 
-/Esben
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu8xhQACgkQJNaLcl1U
+h9AH2gf8C9kz4kG030ID6648vQo9YUHUoHqyzVjXg2u/cPM6H4/AVpiOaeJqSMij
+Pl2KZbqPFisjnybJq3lPJaDx3f53TRfGL8/P5Q2AjVPvWMXWDO98JuQ0AA2MhHl2
+i7FcqD3mn8QkQu5wbJZOrYj//rnaWXcrVWyDotQXWSKwzHaZp6tBHdfVoUMWgo6w
+c45J4E19sRqtAlqFq2/GAR6Mo8Q0nRM410agaluau0zmBIZeTbL1SEDZO0DoVM2p
+XgspSOm1lWaSBoRA9wc/+gVG5V/g+5IdLqm+UmOdWasBd4loPAr6Bl9f/CNrlVig
+BBjsiPDh9yO9eGKeBQ/CMU7nXOlYqQ==
+=Jk+F
+-----END PGP SIGNATURE-----
+
+--kfjH4zxOES6UT95V--

@@ -1,107 +1,140 @@
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
-Subject: Re: [RESEND PATCH 1/2] mtd: spi-nor: add macros related to MICRON
- flash
-Date: Tue, 9 Oct 2018 07:01:21 +0300
-Message-ID: <6f692aa5-99af-2da8-95db-8ac71197c9a7@microchip.com>
-References: <1537332608-19561-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1537332608-19561-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] dt-bindings: Add bindings for aliases node
+Date: Tue, 9 Oct 2018 09:22:07 +0200
+Message-ID: <CAMuHMdWe5JYp5eC2PvuG4xEud908Crhm+BhrtxPJ4Uo1-LCc4g@mail.gmail.com>
+References: <20180925210255.172734-1-mka@chromium.org> <20181009010711.GA1577@ban.mtv.corp.google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <boris.brezillon@bootlin.com>, <linux-kernel@vger.kernel.org>,
-        <marek.vasut@gmail.com>, <frieder.schrempf@exceet.de>,
-        <cyrille.pitchen@wedev4u.fr>, <computersforpeace@gmail.com>
-To: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Cc: Matthias Kaehlcke <mka@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, swboyd@chromium.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+To: Brian Norris <briannorris@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1537332608-19561-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
+In-Reply-To: <20181009010711.GA1577@ban.mtv.corp.google.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Brian,
 
+On Tue, Oct 9, 2018 at 3:07 AM Brian Norris <briannorris@chromium.org> wrote:
+> On Tue, Sep 25, 2018 at 02:02:55PM -0700, Matthias Kaehlcke wrote:
+> > Add a global binding for the 'aliases' node. This includes an initial list
+> > of standardized alias names for some hardware components that are commonly
+> > found in 'aliases'.
+> >
+> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
 
-On 09/19/2018 07:50 AM, Yogesh Gaur wrote:
-> Some MICRON related macros in spi-nor domain were ST.
-> Rename entries related to STMicroelectronics under macro SNOR_MFR_ST.
-> 
-> Added entry of MFR Id for Micron flashes, 0x002C.
-> 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/aliases.txt
+> > @@ -0,0 +1,47 @@
+> > +The aliases node
+> > +----------------
+>
+> I like the idea in general, and it might be good to note (e.g., commit
+> message) that this was inspired by this thread:
+>
+> https://lore.kernel.org/lkml/20180815221601.GB24830@rob-hp-laptop/
+>
+> where we were interested in firmware-to-device-tree path stability --
+> and the answer was basically: don't memorize paths, just use aliases
+> instead. But then, it was clear that aliases were not documented very
+> formally at all.
+>
+> So here we are!
+>
+> > +
+> > +The aliases node contains properties that represent aliases to device tree
+> > +nodes. The name of the property is the alias name, the value is the path of
+> > +a the device tree node that corresponds to the alias. The path may be
+> > +specified as a string or a phandle.
+> > +
+> > +Alias names are often suffixed with a numeric ID, especially when there may
+> > +be multiple instances of the same type. The ID typically corresponds to the
+> > +hardware layout, it may also be used by drivers for a stable mapping of
+> > +device names and hardware entities.
+> > +
+> > +Alias names
+> > +-----------
+> > +
+> > +The devicetree specification doesn't require the use of specific alias
+> > +names to refer to hardware entities of a given type, however the Linux
+> > +kernel aims for a certain level of consistency.
+> > +
+> > +The following standardized alias names shall be used for their
 
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+s/shall/may/
 
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 9 ++++++---
->  include/linux/mtd/cfi.h       | 1 +
->  include/linux/mtd/spi-nor.h   | 3 ++-
->  3 files changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index f028277..33a55bc 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -271,6 +271,7 @@ static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
->  	u8 cmd;
->  
->  	switch (JEDEC_MFR(info)) {
-> +	case SNOR_MFR_ST:
->  	case SNOR_MFR_MICRON:
->  		/* Some Micron need WREN command; all will accept it */
->  		need_wren = true;
-> @@ -1096,7 +1097,7 @@ static int spi_nor_is_locked(struct mtd_info *mtd, loff_t ofs, uint64_t len)
->  	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
->  	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048, SPI_NOR_QUAD_READ) },
->  
-> -	/* Micron */
-> +	/* Micron <--> ST Micro */
->  	{ "n25q016a",	 INFO(0x20bb15, 0, 64 * 1024,   32, SECT_4K | SPI_NOR_QUAD_READ) },
->  	{ "n25q032",	 INFO(0x20ba16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
->  	{ "n25q032a",	 INFO(0x20bb16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
-> @@ -2502,6 +2503,7 @@ static int spi_nor_init_params(struct spi_nor *nor,
->  			params->quad_enable = macronix_quad_enable;
->  			break;
->  
-> +		case SNOR_MFR_ST:
->  		case SNOR_MFR_MICRON:
->  			break;
->  
-> @@ -2876,8 +2878,9 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
->  	mtd->_resume = spi_nor_resume;
->  
->  	/* NOR protection support for STmicro/Micron chips and similar */
-> -	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
-> -			info->flags & SPI_NOR_HAS_LOCK) {
-> +	if (JEDEC_MFR(info) == SNOR_MFR_ST ||
-> +	    JEDEC_MFR(info) == SNOR_MFR_MICRON ||
-> +	    info->flags & SPI_NOR_HAS_LOCK) {
->  		nor->flash_lock = stm_lock;
->  		nor->flash_unlock = stm_unlock;
->  		nor->flash_is_locked = stm_is_locked;
-> diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h
-> index 9b57a9b..cbf7716 100644
-> --- a/include/linux/mtd/cfi.h
-> +++ b/include/linux/mtd/cfi.h
-> @@ -377,6 +377,7 @@ struct cfi_fixup {
->  #define CFI_MFR_SHARP		0x00B0
->  #define CFI_MFR_SST		0x00BF
->  #define CFI_MFR_ST		0x0020 /* STMicroelectronics */
-> +#define CFI_MFR_MICRON		0x002C /* Micron */
->  #define CFI_MFR_TOSHIBA		0x0098
->  #define CFI_MFR_WINBOND		0x00DA
->  
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index c922e97..f43bfc5 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -23,7 +23,8 @@
->  #define SNOR_MFR_ATMEL		CFI_MFR_ATMEL
->  #define SNOR_MFR_GIGADEVICE	0xc8
->  #define SNOR_MFR_INTEL		CFI_MFR_INTEL
-> -#define SNOR_MFR_MICRON		CFI_MFR_ST /* ST Micro <--> Micron */
-> +#define SNOR_MFR_ST		CFI_MFR_ST	/* ST Micro */
-> +#define SNOR_MFR_MICRON		CFI_MFR_MICRON	/* Micron */
->  #define SNOR_MFR_MACRONIX	CFI_MFR_MACRONIX
->  #define SNOR_MFR_SPANSION	CFI_MFR_AMD
->  #define SNOR_MFR_SST		CFI_MFR_SST
-> 
+> > +corresponding hardware components:
+> > +
+> > +  bluetoothN         Bluetooth controller
+> > +  ethernetN          Ethernet interface
+> > +  gpioN                      GPIO controller
+> > +  i2cN                       i2c bus
+> > +  mmcN                       MMC bus
+> > +  rtcN                       Real time clock
+> > +  serialN            UART port
+> > +  spiN                       SPI bus
+> > +  wifiN                      Wireless network interface
+>
+> For the network-device-related names (bluetooth, ethernet, and wifi), I
+> think there's a clear documented reason for this (supporting MAC address
+> plumbing from a DT-aware bootloader). I'm not quite as sure about all
+> the others, and unfortunately, I'm aware of at least one subsystem owner
+> that explicitly does NOT like the aliases usage that is currently
+> supported (spi), and shot down a patch where I tried to use it in a DTS
+> file (despite its regular usage in many other DTS files).
+>
+> So I guess I'm saying: perhaps we should get buy-in from various
+> subsystems before we include them? So maybe it's wiser to start
+> small(er) and only add once we're sure they are useful? Or perhaps Rob
+> has other thoughts.
+
+Please note these aliases become cumbersome once you start considering
+(dynamic) DT overlays.  That's why I made them optional in the sh-sci
+serial driver, cfr. commit 7678f4c20fa7670f ("serial: sh-sci: Add support
+for dynamic instances").
+Relevant parts of the commit description are:
+
+    On DT platforms, the sh-sci driver requires the presence of "serialN"
+    aliases in DT, from which instance IDs are derived.  If a DT alias is
+    missing, the drivers fails to probe the corresponding serial port.
+
+    This becomes cumbersome when considering DT overlays, as currently
+    there is no upstream support for dynamically updating the /aliases node
+    in DT.  Furthermore, even in the presence of such support, hardcoded
+    instance IDs in independent overlays are prone to conflicts.
+
+    Hence add support for dynamic instance IDs, to be used in the absence of
+    a DT alias.  This makes serial ports behave similar to I2C and SPI
+    buses, which already support dynamic instances.
+
+To clarify my point: R-Car M2-W has 4 different types of serial ports, for a
+total of 18 ports, and the two ports on a board labeled 0 and 1 may not
+correspond to the physical first two ports (what's "first" in a collection of
+4 different types?).
+
+Aliases may be fine for referring to the main serial console (labeled
+port 0 on the device, too), and the primary Ethernet interface (so U-Boot
+knows where to add the "local-mac-address" property), but beyond that,
+I think they should be avoided.
+
+Just my two^H^H^Hfive €c.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

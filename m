@@ -1,44 +1,34 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: [PATCH v1 3/3] spi: imx: use PIO mode if size is small
-Date: Wed, 10 Oct 2018 10:32:48 +0000
-Message-ID: <1539196453-8704-4-git-send-email-yibin.gong@nxp.com>
-References: <1539196453-8704-1-git-send-email-yibin.gong@nxp.com>
+From: Talel Shenhar <talel@amazon.com>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: dw: add cs-override property
+Date: Wed, 10 Oct 2018 14:23:40 +0300
+Message-ID: <dbac7f00-e9cc-ddac-5734-9763b5985ead@amazon.com>
+References: <1539155293-21750-1-git-send-email-talel@amazon.com>
+ <20181010101825.GA6294@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <linux-spi@vger.kernel.org>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <ronenk@amazon.com>,
+        <barakw@amazon.com>, David Woodhouse <dwmw@amazon.co.uk>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539196453-8704-1-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <20181010101825.GA6294@sirena.org.uk>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use PIO mode instead if size is smaller than fifo size, since
-dma may be less efficient.
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
----
- drivers/spi/spi-imx.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 037abbb..dd1ce12 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -224,6 +224,9 @@ static bool spi_imx_can_dma(struct spi_master *master, =
-struct spi_device *spi,
- 	if (spi_imx->slave_mode)
- 		return false;
-=20
-+	if (transfer->len < spi_imx->devtype_data->fifo_size)
-+		return false;
-+
- 	spi_imx->dynamic_burst =3D 0;
-=20
- 	return true;
---=20
-2.7.4
+On 10/10/2018 01:18 PM, Mark Brown wrote:
+> On Wed, Oct 10, 2018 at 10:08:12AM +0300, Talel Shenhar wrote:
+>
+>> The dw spi controller has an auto-deselect of Chip-Select, in case there is
+>> no data inside the Tx FIFO. While working on platforms with Alpine chips,
+> Why would we ever want to use this behaviour?  It will be broken for any
+> non-trivial SPI message such as those made with multiple transfers
+> anyway.  Why not just unconditionally control it manually?
+
+This behavior (auto-deselect of Chip-Select) is the default behavior of dw spi controller hw.
+On Alpine chip there is additional behavior added to the dw spi controller hw that allows the sw to disable this behavior.
+This patch allows the dw driver to enable this hw workaround and add the needed sw manual control for it.

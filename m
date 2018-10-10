@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 1/3] eeprom: at25: Drop obsolete cast in at25_ee_write()
-Date: Wed, 10 Oct 2018 15:40:34 +0200
-Message-ID: <20181010134036.8296-2-geert+renesas@glider.be>
+Subject: [PATCH 2/3] eeprom: at25: Use spi_message_init_with_transfers() instead of open coding
+Date: Wed, 10 Oct 2018 15:40:35 +0200
+Message-ID: <20181010134036.8296-3-geert+renesas@glider.be>
 References: <20181010134036.8296-1-geert+renesas@glider.be>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-mtd@vger.kernel.org,
@@ -14,27 +14,36 @@ In-Reply-To: <20181010134036.8296-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since commit 01973a01f9ec34b7 ("eeprom: at25: remove nvmem regmap
-dependency") changed the type of "off" from "loff_t" to "unsigned int",
-there is no longer a need to cast it to "unsigned".
+Reduce code duplication in at25_ee_read() by using the
+spi_message_init_with_transfers() helper.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/misc/eeprom/at25.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/eeprom/at25.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-index 840afb398f9e4c88..7707d3fb49b526d9 100644
+index 7707d3fb49b526d9..5c8dc7ad391435f7 100644
 --- a/drivers/misc/eeprom/at25.c
 +++ b/drivers/misc/eeprom/at25.c
-@@ -160,7 +160,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
- 	do {
- 		unsigned long	timeout, retries;
- 		unsigned	segment;
--		unsigned	offset = (unsigned) off;
-+		unsigned	offset = off;
- 		u8		*cp = bounce;
- 		int		sr;
- 		u8		instr;
+@@ -103,16 +103,15 @@ static int at25_ee_read(void *priv, unsigned int offset,
+ 		*cp++ = offset >> 0;
+ 	}
+ 
+-	spi_message_init(&m);
+ 	memset(t, 0, sizeof(t));
+ 
+ 	t[0].tx_buf = command;
+ 	t[0].len = at25->addrlen + 1;
+-	spi_message_add_tail(&t[0], &m);
+ 
+ 	t[1].rx_buf = buf;
+ 	t[1].len = count;
+-	spi_message_add_tail(&t[1], &m);
++
++	spi_message_init_with_transfers(&m, t, ARRAY_SIZE(t));
+ 
+ 	mutex_lock(&at25->lock);
+ 
 -- 
 2.17.1

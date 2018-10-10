@@ -1,105 +1,49 @@
-From: Talel Shenhar <talel@amazon.com>
-Subject: [PATCH 2/2] dw: spi: add support for Alpine spi controller
-Date: Wed, 10 Oct 2018 18:15:16 +0300
-Message-ID: <1539184516-8200-2-git-send-email-talel@amazon.com>
-References: <1539155293-21750-1-git-send-email-talel@amazon.com>
- <1539184516-8200-1-git-send-email-talel@amazon.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: [PATCH 0/11] spi: pxa2xx: add DT and slave mode support
+Date: Wed, 10 Oct 2018 19:09:25 +0200
+Message-ID: <20181010170936.316862-1-lkundrak@v3.sk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <talel@amazon.com>, <jonnyc@amazon.com>, <ronenk@amazon.com>,
-        <barakw@amazon.com>, David Woodhouse <dwmw@amazon.co.uk>
-To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Cc: James Cameron <quozl@laptop.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539184516-8200-1-git-send-email-talel@amazon.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for a new devicetree compatible string called
-'al,alpine-apb-ssi', which is necessary for the Amazon Alpine spi
-controller. 'al,alpine-dw-apb-ssi' is used in the dw spi driver if
-specified in the devicetree.  Otherwise, fall back to driver default
-behavior, i.e. original dw IP hw driver behavior.
+Hi.
 
-Signed-off-by: Talel Shenhar <talel@amazon.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- drivers/spi/spi-dw-mmio.c | 9 +++++++++
- drivers/spi/spi-dw.c      | 6 ++++++
- drivers/spi/spi-dw.h      | 2 ++
- 3 files changed, 17 insertions(+)
+This patchset adds devicetree and slave mode support to pxa2xx SPI
+controller. The objective is that it will be able to support the
+OLPC XO 1.75 embedded controller that is a SPI master talking to a
+MMP2 SOC. The EC driver will be submitted in a separate patch set
+shortly.
+=20
+These patches have been submitted previously, but not applied:
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index a768461..88b04d2 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -126,6 +126,14 @@ static int dw_spi_mscc_jaguar2_init(struct platform_device *pdev,
- 				JAGUAR2_IF_SI_OWNER_OFFSET);
- }
- 
-+static int dw_spi_alpine_init(struct platform_device *pdev,
-+			      struct dw_spi_mmio *dwsmmio)
-+{
-+	dwsmmio->dws.cs_override = 1;
-+
-+	return 0;
-+}
-+
- static int dw_spi_mmio_probe(struct platform_device *pdev)
- {
- 	int (*init_func)(struct platform_device *pdev,
-@@ -230,6 +238,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "snps,dw-apb-ssi", },
- 	{ .compatible = "mscc,ocelot-spi", .data = dw_spi_mscc_ocelot_init},
- 	{ .compatible = "mscc,jaguar2-spi", .data = dw_spi_mscc_jaguar2_init},
-+	{ .compatible = "al,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 3e205ab..b705f2b 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -144,6 +144,8 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
- 
- 	if (!enable)
- 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
-+	else if (dws->cs_override)
-+		dw_writel(dws, DW_SPI_SER, 0);
- }
- EXPORT_SYMBOL_GPL(dw_spi_set_cs);
- 
-@@ -463,6 +465,10 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
- 		dws->fifo_len = (fifo == 1) ? 0 : fifo;
- 		dev_dbg(dev, "Detected FIFO size: %u bytes\n", dws->fifo_len);
- 	}
-+
-+	/* enable HW fixup for explicit CS deselect for Amazon's alpine chip */
-+	if (dws->cs_override)
-+		dw_writel(dws, DW_SPI_CS_OVERRIDE, 0xF);
- }
- 
- int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 0168b08..c9c1588 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -32,6 +32,7 @@
- #define DW_SPI_IDR			0x58
- #define DW_SPI_VERSION			0x5c
- #define DW_SPI_DR			0x60
-+#define DW_SPI_CS_OVERRIDE		0xf4
- 
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
-@@ -109,6 +110,7 @@ struct dw_spi {
- 	u32			fifo_len;	/* depth of the FIFO buffer */
- 	u32			max_freq;	/* max bus freq supported */
- 
-+	int			cs_override;
- 	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
--- 
-2.7.4
+[PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
+[PATCH v2 02/11] PCI: Provide pci_match_id() with CONFIG_PCI=3Dn
+[PATCH 03/11] spi: pxa2xx: Use an enum for type
+[PATCH 04/11] spi: pxa2xx: Add devicetree support
+[PATCH v2 05/11] DT: marvell,mmp2: Add SSP1 and SSP3
+
+These are new:
+
+[PATCH 06/11] dt-bindings: spi/spi-pxa2xx: Add spi-slave property
+[PATCH 07/11] spi: Deal with slaves that return from transfer_one()
+[PATCH 08/11] spi: pxa2xx: Add slave mode support
+[PATCH 09/11] dt-bindings: spi/spi-pxa2xx: Add ready GPIO signal
+[PATCH 10/11] spi: pxa2xx: Add ready signal
+[PATCH 11/11] spi: pxa2xx: Deal with the leftover garbage in TXFIFO
+
+Verified on a OLPC XO 1.75 machine.
+
+Thank you,
+Lubo

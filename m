@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 10/11] spi: pxa2xx: Add ready signal
-Date: Wed, 10 Oct 2018 19:09:35 +0200
-Message-ID: <20181010170936.316862-11-lkundrak@v3.sk>
+Subject: [PATCH 09/11] dt-bindings: spi/spi-pxa2xx: Add ready GPIO signal
+Date: Wed, 10 Oct 2018 19:09:34 +0200
+Message-ID: <20181010170936.316862-10-lkundrak@v3.sk>
 References: <20181010170936.316862-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -21,61 +21,31 @@ In-Reply-To: <20181010170936.316862-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Strobe a GPIO line when the slave TX FIFO is filled. This is how the
-Embedded Controller on an OLPC XO-1.75 machine, that happens to be a SPI
-master, learns that it can initiate a transaction.
+This this is used to let the SPI master know that our FIFO is filled and
+we're ready to service a transfer. Only useful in slave mode.
+
+A signal like this is used by an embedded controller on a OLPC XO 1.75
+machine, that happens to be a SPI master.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- drivers/spi/spi-pxa2xx.c | 12 ++++++++++++
- drivers/spi/spi-pxa2xx.h |  3 +++
- 2 files changed, 15 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-pxa2xx.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 3848842d68fd..a3b4b12c1077 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1079,6 +1079,9 @@ static int pxa2xx_spi_transfer_one(struct spi_contr=
-oller *master,
- 	if (spi_controller_is_slave(master)) {
- 		while (drv_data->write(drv_data))
- 			;
-+		gpiod_set_value(drv_data->gpiod_ready, 1);
-+		udelay(1);
-+		gpiod_set_value(drv_data->gpiod_ready, 0);
- 	}
+diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Docum=
+entation/devicetree/bindings/spi/spi-pxa2xx.txt
+index 89b2832283e3..681a82b40e6f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+@@ -12,6 +12,8 @@ Optional properties:
+ - cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+   Documentation/devicetree/bindings/spi/spi-bus.txt
+ - spi-slave: Empty property indicating the SPI controller is used in sla=
+ve mode.
++- ready-gpio: GPIO used to signal a SPI master that the FIFO is filled
++  and we're ready to service a transfer. Only useful in slave mode.
 =20
- 	/*
-@@ -1784,6 +1787,15 @@ static int pxa2xx_spi_probe(struct platform_device=
- *pdev)
- 		}
- 	}
-=20
-+	if (platform_info->is_slave) {
-+		drv_data->gpiod_ready =3D devm_gpiod_get_optional(dev,
-+						"ready", GPIOD_OUT_LOW);
-+		if (IS_ERR(drv_data->gpiod_ready)) {
-+			status =3D (int)PTR_ERR(drv_data->gpiod_ready);
-+			goto out_error_clock_enabled;
-+		}
-+	}
-+
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 513c53aaeab2..4e324da66ef7 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -64,6 +64,9 @@ struct driver_data {
-=20
- 	/* GPIOs for chip selects */
- 	struct gpio_desc **cs_gpiods;
-+
-+	/* Optional slave FIFO ready signal */
-+	struct gpio_desc *gpiod_ready;
- };
-=20
- struct chip_data {
+ Child nodes represent devices on the SPI bus
+   See ../spi/spi-bus.txt
 --=20
 2.19.0

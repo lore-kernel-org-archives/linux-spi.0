@@ -1,76 +1,49 @@
-From: Ben Whitten <Ben.Whitten@lairdtech.com>
-Subject: RE: [PATCH v2 lora-next 1/4] net: lora: sx1301: convert burst spi
- functions to regmap raw
-Date: Wed, 10 Oct 2018 09:22:25 +0000
-Message-ID: <BY1PR02MB111434B540B4C653E1A2AECEE7E00@BY1PR02MB1114.namprd02.prod.outlook.com>
-References: <1539089532-2481-1-git-send-email-ben.whitten@lairdtech.com>
- <1539089532-2481-2-git-send-email-ben.whitten@lairdtech.com>
- <3959c93b-edb5-c6ff-ec36-57f84ab8623f@suse.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: dw: add cs-override property
+Date: Wed, 10 Oct 2018 11:18:25 +0100
+Message-ID: <20181010101825.GA6294@sirena.org.uk>
+References: <1539155293-21750-1-git-send-email-talel@amazon.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "starnight@g.ncu.edu.tw" <starnight@g.ncu.edu.tw>,
-        "hasnain.virk@arm.com" <hasnain.virk@arm.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "liuxuenetmail@gmail.com" <liuxuenetmail@gmail.com>,
-        "shess@hessware.de" <shess@hessware.de>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>
-To: =?utf-8?B?QW5kcmVhcyBGw6RyYmVy?= <afaerber@suse.de>,
-        Ben Whitten <ben.whitten@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <3959c93b-edb5-c6ff-ec36-57f84ab8623f@suse.de>
-Content-Language: en-US
-Sender: netdev-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="J2SCkAp4GZ/dPZZf"
+Cc: linux-spi@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ronenk@amazon.com, barakw@amazon.com,
+        David Woodhouse <dwmw@amazon.co.uk>
+To: Talel Shenhar <talel@amazon.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1539155293-21750-1-git-send-email-talel@amazon.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIGxvcmEtbmV4dCAxLzRdIG5ldDogbG9yYTogc3gxMzAx
-Og0KPiBjb252ZXJ0IGJ1cnN0IHNwaSBmdW5jdGlvbnMgdG8gcmVnbWFwIHJhdw0KPiANCj4gSGkg
-QmVuIGFuZCBNYXJrLA0KPiANCj4gQW0gMDkuMTAuMTggdW0gMTQ6NTIgc2NocmllYiBCZW4gV2hp
-dHRlbjoNCj4gPiBBcyB3ZSBoYXZlIGNhY2hpbmcgZGlzYWJsZWQgd2UgY2FuIGFjY2VzcyB0aGUg
-cmVnbWFwDQo+IHVzaW5nIHJhdyBmb3Igb3VyDQo+ID4gZmlybXdhcmUgcmVhZGluZyBhbmQgd3Jp
-dGluZyBidXJzdHMuDQo+ID4gV2UgYWxzbyByZW1vdmUgdGhlIG5vdyBkZWZ1bmN0IHNwaSBlbGVt
-ZW50IGZyb20gdGhlDQo+IHN0cnVjdHVyZSBhcyB0aGlzDQo+ID4gY29tcGxldGVzIHRoZSBtb3Zl
-IHRvIHJlZ21hcC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEJlbiBXaGl0dGVuDQo+IDxiZW4u
-d2hpdHRlbkBsYWlyZHRlY2guY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC9sb3JhL3N4
-MTMwMS5jIHwgMjYgKysrKysrKysrKysrKysrKystLS0tLS0NCj4gLS0tDQo+ID4gIGRyaXZlcnMv
-bmV0L2xvcmEvc3gxMzAxLmggfCAgMiAtLQ0KPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDE3IGluc2Vy
-dGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bmV0L2xvcmEvc3gxMzAxLmMNCj4gYi9kcml2ZXJzL25ldC9sb3JhL3N4MTMwMS5jDQo+ID4gaW5k
-ZXggZmQyOTI1OC4uNWFiMGUyZCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9sb3JhL3N4
-MTMwMS5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvbG9yYS9zeDEzMDEuYw0KPiA+IEBAIC03Niwx
-OSArNzYsMjggQEAgc3RhdGljIHN0cnVjdCByZWdtYXBfY29uZmlnDQo+IHN4MTMwMV9yZWdtYXBf
-Y29uZmlnID0gew0KPiA+DQo+ID4gIHN0YXRpYyBpbnQgc3gxMzAxX3JlYWRfYnVyc3Qoc3RydWN0
-IHN4MTMwMV9wcml2ICpwcml2LCB1OA0KPiByZWcsIHU4ICp2YWwsIHNpemVfdCBsZW4pDQo+ID4g
-IHsNCj4gPiAtCXU4IGFkZHIgPSByZWcgJiAweDdmOw0KPiA+IC0JcmV0dXJuIHNwaV93cml0ZV90
-aGVuX3JlYWQocHJpdi0+c3BpLCAmYWRkciwgMSwgdmFsLA0KPiBsZW4pOw0KPiA+ICsJc2l6ZV90
-IG1heDsNCj4gPiArDQo+ID4gKwltYXggPSByZWdtYXBfZ2V0X3Jhd19yZWFkX21heChwcml2LT5y
-ZWdtYXApOw0KPiA+ICsJaWYgKG1heCAmJiBtYXggPCBsZW4pIHsNCj4gPiArCQlkZXZfZXJyKHBy
-aXYtPmRldiwgIkJ1cnN0IGdyZWF0ZXIgdGhlbiBtYXgNCj4gcmF3IHJlYWRcbiIpOw0KPiA+ICsJ
-CXJldHVybiAtRUlOVkFMOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCXJldHVybiByZWdtYXBfcmF3
-X3JlYWQocHJpdi0+cmVnbWFwLCByZWcsIHZhbCwNCj4gbGVuKTsNCj4gDQo+IEkgYmVsaWV2ZSB0
-aGUgd2F5IHdlIGFyZSB1c2luZyBpdCB3aXRoIGEgc2luZ2xlIHJlZ2lzdGVyIG5lZWRzDQo+IHJl
-Z21hcF9ub2luY19yZWFkKCkgaW5zdGVhZCwgaW4gY2FzZSB3ZSBldmVyIHdhbnQgdG8NCj4gZW5h
-YmxlIGNhY2hpbmc/IC4uLg0KDQpDZXJ0YWlubHksIHRoZSBub2luYyB3YXMgaW50cm9kdWNlZCBp
-biA0LjE5IGxldHMgcmViYXNlIGxvcmEtbmV4dA0KYW5kIHVzZSB0aGlzIEFQSSBpbnN0ZWFkLg0K
-DQo+IA0KPiA+ICB9DQo+ID4NCj4gPiAgc3RhdGljIGludCBzeDEzMDFfd3JpdGVfYnVyc3Qoc3Ry
-dWN0IHN4MTMwMV9wcml2ICpwcml2LCB1OA0KPiByZWcsIGNvbnN0IHU4ICp2YWwsIHNpemVfdCBs
-ZW4pDQo+ID4gIHsNCj4gPiAtCXU4IGFkZHIgPSByZWcgfCBCSVQoNyk7DQo+ID4gLQlzdHJ1Y3Qg
-c3BpX3RyYW5zZmVyIHhmclsyXSA9IHsNCj4gPiAtCQl7IC50eF9idWYgPSAmYWRkciwgLmxlbiA9
-IDEgfSwNCj4gPiAtCQl7IC50eF9idWYgPSB2YWwsIC5sZW4gPSBsZW4gfSwNCj4gPiAtCX07DQo+
-ID4gKwlzaXplX3QgbWF4Ow0KPiA+ICsNCj4gPiArCW1heCA9IHJlZ21hcF9nZXRfcmF3X3dyaXRl
-X21heChwcml2LT5yZWdtYXApOw0KPiA+ICsJaWYgKG1heCAmJiBtYXggPCBsZW4pIHsNCj4gPiAr
-CQlkZXZfZXJyKHByaXYtPmRldiwgIkJ1cnN0IGdyZWF0ZXIgdGhlbiBtYXgNCj4gcmF3IHdyaXRl
-XG4iKTsNCj4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiArCX0NCj4gPg0KPiA+IC0JcmV0dXJu
-IHNwaV9zeW5jX3RyYW5zZmVyKHByaXYtPnNwaSwgeGZyLCAyKTsNCj4gPiArCXJldHVybiByZWdt
-YXBfcmF3X3dyaXRlKHByaXYtPnJlZ21hcCwgcmVnLCB2YWwsDQo+IGxlbik7DQo+IA0KPiAuLi4g
-V2hpY2ggd291bGQgbWVhbiB3ZSBhcmUgbGFja2luZyBhIG5vaW5jIEFQSSBmb3Igd3JpdGUNCj4g
-aGVyZSENCj4gDQo+IEBNYXJrL1N0ZWZhbiwgYW55IHJlYXNvbiBub2luYyB3YXMgbm90IGltcGxl
-bWVudGVkDQo+IHN5bW1ldHJpY2FsbHk/DQo+IA0KPiBGb3Igc3gxMjc2IEkgaGF2ZSBsb2NhbCBy
-ZWdtYXAgY29udmVyc2lvbiBwYXRjaGVzLCBidXQgSQ0KPiBrZXB0IGdldHRpbmcNCj4gLUVJTlZB
-TCBmb3IgYnVyc3RzIGFuZCBoYXZlbid0IGZpZ3VyZWQgb3V0IHdoeSB5ZXQuIE5lZWQgdG8NCj4g
-Y29tcGFyZSB0bw0KPiB5b3VyIGNvZGUgLSBJIGFzc3VtZSB5b3Ugc3VjY2Vzc2Z1bGx5IHRlc3Rl
-ZCB0aGlzLCBCZW4uDQoNClllcyBJIHdhcyBhYmxlIHRvIGxvYWQgYW5kIHZlcmlmeS9ydW4gdGhl
-IGZpcm13YXJlIHVzaW5nIHRoaXMNCnBhdGNoIG9uIG15IFNlbnRyaXVzIFJHMXh4IGJvYXJkLg0K
-DQpUaGFua3MsDQpCZW4NCg==
+
+--J2SCkAp4GZ/dPZZf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Oct 10, 2018 at 10:08:12AM +0300, Talel Shenhar wrote:
+
+> The dw spi controller has an auto-deselect of Chip-Select, in case there is
+> no data inside the Tx FIFO. While working on platforms with Alpine chips,
+
+Why would we ever want to use this behaviour?  It will be broken for any
+non-trivial SPI message such as those made with multiple transfers
+anyway.  Why not just unconditionally control it manually?
+
+--J2SCkAp4GZ/dPZZf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu90e4ACgkQJNaLcl1U
+h9Bw6gf/QW1tmWlXcmNLTdpo0qIz7z7c3z3/ydzStF3ZHJLeoS6YHY0bu8R5MtlQ
+FkYVdvvF7/Zfqlr8tkOHFjnBh+fiT2+6EKvDu8zyPMZJNxDWBkllWxkdVhHUc75u
+4/l5n9vgzCiedfz1SXfqDmBeBoKZBLl+vmu1w2a3InRcLhKqsDGsnENKdrfGEttO
+0Vc946hptVhHjOKQ3I/XBotjOhqogZ4cr8QwOwLEJK7iBcQq6qhq2zP4EaBf0irD
+aTew8Rff3BJJjASRVpP9EUULMUuhlt93Zea9cFfp8ildUt2sYXVaupf5HTpv+azb
+BNuY0SoMbROx7VARMhHTEfgL1qmK4w==
+=VGYE
+-----END PGP SIGNATURE-----
+
+--J2SCkAp4GZ/dPZZf--

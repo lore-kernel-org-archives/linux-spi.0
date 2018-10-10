@@ -1,57 +1,49 @@
-From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: Re: [PATCH 3/5] spi: pxa2xx: use an enum for type
-Date: Wed, 10 Oct 2018 19:26:56 +0200
-Message-ID: <817b05ed7a619e9c46594f395ebc02d7cde9fc24.camel@v3.sk>
-References: <20180910115935.163121-1-lkundrak@v3.sk>
-         <20180910115935.163121-4-lkundrak@v3.sk> <87d0t64mkk.fsf@belgarion.home>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 2/2] treewide: use bus_find_device_by_fwnode
+Date: Wed, 10 Oct 2018 14:05:43 -0500
+Message-ID: <CAL_JsqJsF0Zr=chBQ_Euq+27TJftpSR5dpi-tYyiwEFdsEh6vQ@mail.gmail.com>
+References: <1539080245-25818-1-git-send-email-svellattu@mvista.com>
+ <1539080245-25818-2-git-send-email-svellattu@mvista.com> <20181009174428.GB2182@xps15>
+ <CALabi0FgQWGL8KMpCKt9N6Kkoig77LxOsea3Oe47tk5nOH10-Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <87d0t64mkk.fsf@belgarion.home>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        linux-rdma@vger.kernel.org, netdev <netdev@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-spi <linux-spi@vger.kernel.org>,
+        Wolfram Sang <wsa@the-dreams.de>, oulijun@huawei.com,
+        xavier.huwei@huawei.com, Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Frank Rowand <frowand.list@gm
+To: svellattu@mvista.com
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <CALabi0FgQWGL8KMpCKt9N6Kkoig77LxOsea3Oe47tk5nOH10-Q@mail.gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2018-09-21 at 22:34 +0200, Robert Jarzmik wrote:
-> Lubomir Rintel <lkundrak@v3.sk> writes:
-> 
-> > That seems to be the correct type.
-> Okay, but what happens here when adev_id->driver_data is a value out
-> of enum
-> range ? Does the following assignment make sense ?
-> > +		type = (enum pxa_ssp_type)adev_id->driver_data;
-> 
-> As a side note, could you join for the next throw to the review :
->  - Jarkko Nikula <jarkko.nikula@linux.intel.com>
->  - Mika Westerberg <mika.westerberg@linux.intel.com>
+On Tue, Oct 9, 2018 at 9:59 PM Silesh C V <svellattu@mvista.com> wrote:
+>
+> Hello Mathieu,
+>
+> On Tue, Oct 9, 2018 at 11:14 PM Mathieu Poirier
+> <mathieu.poirier@linaro.org> wrote:
+> >
+> >
+> > This doesn't apply on linux-next.  This late in the cycle you may want to rebase
+> > your work on that tree.
+>
+> OK. Will send v4 after rebasing onto linux-next.
 
-Argh, of course I forgot. My apologies.
+That doesn't help anything unless you are targeting 4.21. If you are
+it would be easiest to apply patch 1 in 4.20 and split this patch by
+subsystem for 4.21. That avoids any cross subsystem dependencies.
 
-Jarkko & Mika, I'm wondering if you could take a look at the [1] thread
-and tell me what you think. (I can forward it to you via e-mail too, if
-you're not subscribed to lists it has been Cc'd to, if that would be
-more convenient).
-
-[1] [PATCH 0/11] spi: pxa2xx: add DT and slave mode support"
-    https://lore.kernel.org/lkml/20181010170936.316862-1-lkundrak@v3.sk/T/#t
-
-Thanks
-Lubo
-
-> 
-> Even if they are Intel, I think they have worked a lot on this driver
-> for Intel
-> platforms.
-> 
-> Cheers.
-> 
+Rob

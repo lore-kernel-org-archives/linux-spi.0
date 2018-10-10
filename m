@@ -1,7 +1,7 @@
 From: Emil Renner Berthing <kernel@esmil.dk>
-Subject: [PATCH 1/7] spi: rockchip: initialize dma_slave_config properly
-Date: Wed, 10 Oct 2018 11:00:32 +0200
-Message-ID: <20181010090038.20834-2-kernel@esmil.dk>
+Subject: [PATCH 4/7] spi: rockchip: remove unneeded dma_caps
+Date: Wed, 10 Oct 2018 11:00:35 +0200
+Message-ID: <20181010090038.20834-5-kernel@esmil.dk>
 References: <20181010090038.20834-1-kernel@esmil.dk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -18,39 +18,41 @@ Cc: Emil Renner Berthing <kernel@esmil.dk>,
         Klaus Goger <klaus.goger@theobroma-systems.com>,
         Randy Li <ayaka@soulik.info>, Chris Zhong <zyw@rock-chips.com>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Huibin Hong <huibin.hong@rock-chips.com>
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 To: linux-rockchip@lists.infradead.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20181010090038.20834-1-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Huibin Hong <huibin.hong@rock-chips.com>
+We no longer need the dma_caps since the dma driver
+already clamps the burst length to the hardware limit,
+so don't request and store dma_caps in device data.
 
-The rxconf and txconf structs are allocated on the
-stack, so make sure we zero them before filling out
-the relevant fields.
-
-Signed-off-by: Huibin Hong <huibin.hong@rock-chips.com>
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/spi/spi-rockchip.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-rockchip.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index fdcf3076681b..185bbdce62b1 100644
+index ede3002215cd..85358f96f78f 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -445,6 +445,9 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 	struct dma_slave_config rxconf, txconf;
- 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
+@@ -207,7 +207,6 @@ struct rockchip_spi {
+ 	struct sg_table rx_sg;
+ 	struct rockchip_spi_dma_data dma_rx;
+ 	struct rockchip_spi_dma_data dma_tx;
+-	struct dma_slave_caps dma_caps;
+ };
  
-+	memset(&rxconf, 0, sizeof(rxconf));
-+	memset(&txconf, 0, sizeof(txconf));
-+
- 	spin_lock_irqsave(&rs->lock, flags);
- 	rs->state &= ~RXBUSY;
- 	rs->state &= ~TXBUSY;
+ static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
+@@ -777,7 +776,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
+-		dma_get_slave_caps(rs->dma_rx.ch, &(rs->dma_caps));
+ 		rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
+ 		rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
+ 		rs->dma_tx.direction = DMA_MEM_TO_DEV;
 -- 
 2.19.1

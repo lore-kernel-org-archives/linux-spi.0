@@ -1,74 +1,58 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl-lpspi: Prevent FIFO under/overrun by default" to the spi tree
-Date: Wed, 10 Oct 2018 15:52:21 +0100 (BST)
-Message-ID: <20181010145221.A46C11122395@debutante.sirena.org.uk>
-References: <20181002110636.5052-1-dangtranhieu2012@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+From: Talel Shenhar <talel@amazon.com>
+Subject: [PATCH 1/2] dt-bindings: spi: dw: add compatible for Alpine spi controller
+Date: Wed, 10 Oct 2018 18:15:15 +0300
+Message-ID: <1539184516-8200-1-git-send-email-talel@amazon.com>
+References: <1539155293-21750-1-git-send-email-talel@amazon.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <talel@amazon.com>, <jonnyc@amazon.com>, <ronenk@amazon.com>,
+        <barakw@amazon.com>, David Woodhouse <dwmw@amazon.co.uk>
+To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181002110636.5052-1-dangtranhieu2012@gmail.com>
+In-Reply-To: <1539155293-21750-1-git-send-email-talel@amazon.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+This compatible adds the ability for dw spi controller driver to work with
+the dw spi controller found on Alpine chips.
 
-   spi: fsl-lpspi: Prevent FIFO under/overrun by default
+The dw spi controller has an auto-deselect of Chip-Select, in case there is
+no data inside the Tx FIFO. While working on platforms with Alpine chips,
+auto-deselect mode causes an issue for some spi devices that can't handle
+the Chip-Select deselect in the middle of a transaction. It is a normal
+behavior for a Tx FIFO to be empty in the middle of a transaction, due to
+busy cpu. In the Alpine chip family an option to change the default
+behavior was added to the original dw spi controller to prevent this issue
+of de-asserting Chip-Select once TX FIFO is empty. The change was to allow
+SW manual control of the Chip-Select. With this change, as long as the
+Slave Enable Register is asserted, the Chip-Select will be asserted. As a
+result, it is necessary to deselect the Slave Select Register once the
+transaction is done. This feature is enabled via a new device compatible
+string called 'al,alpine-dw-apb-ssi'.  Once the driver identifies the new
+compatible string, it enables the hw fixup logic, by writing to a dedicated
+register found in the IP reserved area and will start manual deselecting
+the Slave Select Register when the transfer ends.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From de8978c388c66b8fca192213ec9f0727e964c652 Mon Sep 17 00:00:00 2001
-From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
-Date: Tue, 2 Oct 2018 18:06:36 +0700
-Subject: [PATCH] spi: fsl-lpspi: Prevent FIFO under/overrun by default
-
-Certain devices don't work well when a transmit FIFO underrun or
-receive FIFO overrun occurs. Example is the SAF400x radio chip when
-running at high speed which leads to garbage being sent to/received from
-the chip. In which case, it should stall waiting for further data to be
-available before proceeding. This patch unset the NOSTALL bit in CFGR1
-by default to prevent this issue.
-
-Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Talel Shenhar <talel@amazon.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index e6d5cc6ab108..51670976faa3 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -276,7 +276,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+index 642d3fb..d25b1f8 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+@@ -2,7 +2,7 @@ Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
  
- 	fsl_lpspi_set_watermark(fsl_lpspi);
- 
--	temp = CFGR1_PCSCFG | CFGR1_MASTER | CFGR1_NOSTALL;
-+	temp = CFGR1_PCSCFG | CFGR1_MASTER;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- 		temp |= CFGR1_PCSPOL;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
+ Required properties:
+ - compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi", where soc is "ocelot" or
+-  "jaguar2"
++  "jaguar2", or "al,alpine-dw-apb-ssi"
+ - reg : The register base for the controller. For "mscc,<soc>-spi", a second
+   register set is required (named ICPU_CFG:SPI_MST)
+ - interrupts : One interrupt, used by the controller.
 -- 
-2.19.0.rc2
+2.7.4

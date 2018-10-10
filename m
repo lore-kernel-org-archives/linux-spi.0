@@ -1,7 +1,7 @@
 From: Emil Renner Berthing <kernel@esmil.dk>
-Subject: [PATCH 5/7] spi: rockchip: mark use_dma as bool
-Date: Wed, 10 Oct 2018 11:00:36 +0200
-Message-ID: <20181010090038.20834-6-kernel@esmil.dk>
+Subject: [PATCH 2/7] spi: rockchip: adjust dma watermark and burstlen
+Date: Wed, 10 Oct 2018 11:00:33 +0200
+Message-ID: <20181010090038.20834-3-kernel@esmil.dk>
 References: <20181010090038.20834-1-kernel@esmil.dk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -18,46 +18,63 @@ Cc: Emil Renner Berthing <kernel@esmil.dk>,
         Klaus Goger <klaus.goger@theobroma-systems.com>,
         Randy Li <ayaka@soulik.info>, Chris Zhong <zyw@rock-chips.com>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Huibin Hong <huibin.hong@rock-chips.com>
 To: linux-rockchip@lists.infradead.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20181010090038.20834-1-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver data has a u32 field use_dma which is
-only ever used as a boolean, so change its type
-to reflect that.
+From: Huibin Hong <huibin.hong@rock-chips.com>
 
+Signal tx dma when spi fifo is less than half full,
+and limit tx bursts to half the fifo length.
+
+Clamp rx burst length to 1 to avoid alignment issues.
+
+Signed-off-by: Huibin Hong <huibin.hong@rock-chips.com>
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/spi/spi-rockchip.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-rockchip.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 85358f96f78f..1d8bf45304a5 100644
+index 185bbdce62b1..ede3002215cd 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -202,7 +202,7 @@ struct rockchip_spi {
+@@ -458,10 +458,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		rxconf.direction = rs->dma_rx.direction;
+ 		rxconf.src_addr = rs->dma_rx.addr;
+ 		rxconf.src_addr_width = rs->n_bytes;
+-		if (rs->dma_caps.max_burst > 4)
+-			rxconf.src_maxburst = 4;
+-		else
+-			rxconf.src_maxburst = 1;
++		rxconf.src_maxburst = 1;
+ 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
  
- 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
+ 		rxdesc = dmaengine_prep_slave_sg(
+@@ -480,10 +477,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		txconf.direction = rs->dma_tx.direction;
+ 		txconf.dst_addr = rs->dma_tx.addr;
+ 		txconf.dst_addr_width = rs->n_bytes;
+-		if (rs->dma_caps.max_burst > 4)
+-			txconf.dst_maxburst = 4;
+-		else
+-			txconf.dst_maxburst = 1;
++		txconf.dst_maxburst = rs->fifo_len / 2;
+ 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
  
--	u32 use_dma;
-+	bool use_dma;
- 	struct sg_table tx_sg;
- 	struct sg_table rx_sg;
- 	struct rockchip_spi_dma_data dma_rx;
-@@ -631,9 +631,9 @@ static int rockchip_spi_transfer_one(
+ 		txdesc = dmaengine_prep_slave_sg(
+@@ -581,7 +575,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
+ 	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_TXFTLR);
+ 	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
  
- 	/* we need prepare dma before spi was enabled */
- 	if (master->can_dma && master->can_dma(master, spi, xfer))
--		rs->use_dma = 1;
-+		rs->use_dma = true;
- 	else
--		rs->use_dma = 0;
-+		rs->use_dma = false;
- 
- 	rockchip_spi_config(rs);
+-	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMATDLR);
++	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_DMATDLR);
+ 	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMARDLR);
+ 	writel_relaxed(dmacr, rs->regs + ROCKCHIP_SPI_DMACR);
  
 -- 
 2.19.1

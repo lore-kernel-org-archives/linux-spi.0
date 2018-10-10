@@ -1,61 +1,49 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 0/15] Add support for OLPC XO 1.75 Embedded Controller
-Date: Wed, 10 Oct 2018 14:26:39 -0500
-Message-ID: <CAL_Jsq+MYBrkZ=OEv3avxC_NZ+q3+stOF8CsHeXUsomKZD9+AA@mail.gmail.com>
-References: <20181010172300.317643-1-lkundrak@v3.sk>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Re: [PATCH 3/3] eeprom: at25: Split writes in two SPI transfers to
+ optimize DMA
+Date: Wed, 10 Oct 2018 21:47:44 +0000
+Message-ID: <1539208063.1944.12.camel@impinj.com>
+References: <20181010134036.8296-1-geert+renesas@glider.be>
+         <20181010134036.8296-4-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Cameron <quozl@laptop.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-        <linux-arm-kernel@lists.infradead.org>,
-        platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
-To: Lubomir Rintel <lkundrak@v3.sk>
+        "linux-mtd@vger.kernel.org" <linux-mtd@vger.kernel.org>
+To: "geert+renesas@glider.be" <geert+renesas@glider.be>,
+        "srinivas.kandagatla@linaro.org" <srinivas.kandagatla@linaro.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "arnd@arndb.de" <arnd@arndb.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010172300.317643-1-lkundrak@v3.sk>
+In-Reply-To: <20181010134036.8296-4-geert+renesas@glider.be>
+Content-Language: en-US
+Content-ID: <FD31C196B848E14FB1B404D2DC096035@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 10, 2018 at 12:23 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
->
-> Hi.
->
-> This patchset adds support for the Embedded Controller on an OLPC XO
-> 1.75 machine. OLPC XO 1.75 is a MMP2 based ARM laptop. It plugs into
-> the existing OLPC platform infrastructure, currently used by the x86
-> based models.
->
-> The EC operates in SPI master mode, meaning the SOC is the SPI slave. It
-> uses extra handshake signal to signal readiness of SOC to accept data
-> from EC and to initiate a transaction if SOC wishes to submit data.
->
-> The SPI slave support for MMP2 was submitted separately:
-> https://lore.kernel.org/lkml/20181010170936.316862-1-lkundrak@v3.sk/T/#t
->
-> THe "power: supply: olpc_battery: correct the temperature" patch was
-> already sent out separately, but I'm including it because the last
-> commit of the set depends on it.
->
-> Tested to work on an OLPC XO 1.75 and also tested not to break x86
-> support with an OLPC XO 1 machine. I don't have a XO 1.5, but it's
-> unlikely this breaks it when XO 1 works.
-
-I asked this on the OLPC devel list recently, but I don't think my
-message ever got past the moderator. Could you generate a DT dump from
-/proc/device-tree of an XO 1 and send to me? I have some DT changes
-planned and need to see if they'd be okay for x86 OLPC.
-
-Rob
+T24gV2VkLCAyMDE4LTEwLTEwIGF0IDE1OjQwICswMjAwLCBHZWVydCBVeXR0ZXJob2V2ZW4gd3Jv
+dGU6DQo+IEN1cnJlbnRseSBFRVBST00gd3JpdGVzIGFyZSBpbXBsZW1lbnRlZCB1c2luZyBhIHNp
+bmdsZSBTUEkgdHJhbnNmZXIsDQo+IHdoaWNoIGNvbnRhaW5zIGFsbCBvZiBjb21tYW5kLCBhZGRy
+ZXNzLCBhbmQgcGF5bG9hZCBkYXRhIGJ5dGVzLg0KPiBBcyBzb21lIFNQSSBjb250cm9sbGVycyBp
+bXBvc2UgbGltaXRhdGlvbnMgb24gdHJhbnNmZXJzIHdpdGggcmVzcGVjdCB0bw0KPiB0aGUgdXNl
+IG9mIERNQSwgdGhleSBtYXkgaGF2ZSB0byBmYWxsIGJhY2sgdG8gUElPLiBFLmcuIERNQSBtYXkg
+cmVxdWlyZQ0KPiB0aGUgdHJhbnNmZXIgbGVuZ3RoIHRvIGJlIGEgbXVsdGlwbGUgb2YgNCBieXRl
+cy4NCj4gDQo+IE9wdGltaXplIHdyaXRlcyBmb3IgRE1BIGJ5IHNwbGl0dGluZyB3cml0ZXMgaW4g
+dHdvIFNQSSB0cmFuc2ZlcnM6DQo+ICAgLSBUaGUgZmlyc3QgdHJhbnNmZXIgY29udGFpbnMgY29t
+bWFuZCBhbmQgYWRkcmVzcyBieXRlcywNCj4gICAtIFRoZSBzZWNvbmQgdHJhbnNmZXIgY29udGFp
+bnMgdGhlIGFjdHVhbCBwYXlsb2FkIGRhdGEsIG5vdyBzdG9yZWQgYXQNCj4gICAgIHRoZSBzdGFy
+dCBvZiB0aGUgKGttYWxsb2MoKSBhbGlnbmVkKSBidWZmZXIsIHRvIGltcHJvdmUgcGF5bG9hZA0K
+PiAgICAgYWxpZ25tZW50Lg0KDQpEb2VzIHRoaXMgYWx3YXlzIG9wdGltaXplPyAgQSBtYXN0ZXIg
+Y2FwYWJsZSBvZiBhbiBvZiBhbGlnbmVkIDE4IGJ5dGUNCkRNQSB4ZmVyIHdvdWxkIG5vdyBoYXZl
+IGEgMiBieXRlIHhmZXIgdGhhdCB3b3VsZCBwcm9iYWJseSBiZSBQSU8NCmZvbGxvd2VkIGJ5IGEg
+MTYgYnl0ZSBETUEuDQoNCk9yIHdyaXRpbmcgMTQgYnl0ZXMgdG8gdGhlIEVFUFJPTSBoYXMgY2hh
+bmdlZCBmcm9tIGFuIGFsaWduZWQgMTYgYnl0ZQ0Kd3JpdGUgdG8gYSAyIGJ5dGUgYW5kIGEgMTQg
+Ynl0ZSwgd2hpY2ggaXMgbm93IHdvcnNlIGZvciB0aGUgNCBieXRlDQptdWx0aXBsZSByZXF1aXJl
+bWVudCBtYXN0ZXIgd2hpY2ggY2FuIHVzZSBhbnkgRE1BIGFueW1vcmUuDQoNCkl0IHNlZW1zIGxp
+a2UgYW4gZW5oYW5jZW1lbnQgdG8gdGhlIERNQSBjb2RlIHRvIGxvb2sgbW9yZSBsaWtlIGENCmVm
+ZmljaWVudCBtZW1jcHkoKSB0aGF0IGFsaWducyB0aGUgYWRkcmVzcywgdGhlbiB4ZmVycyBlZmZp
+Y2llbnQNCmJsb2NrcywgdGhlbiBmaW5pc2hlcyB0aGUgc3ViLWJsb2NrIHRhaWwgd291bGQgYmUg
+bW9yZSBnZW5lcmFsbHkNCmFwcGxpY2FibGUuDQoNCk9yIG1vcmUgc2ltcGx5LCBnaXZlbiBhbiBh
+bGlnbmVkIDE4IGJ5dGUgeGZlciwgdGhlIGRyaXZlciBzaG91bGQgZG8gYW4NCmFsaWduZWQgMTYg
+Ynl0ZSBETUEgYW5kIHRoZW4gdHdvIG1vcmUgYnl0ZXMuDQo=

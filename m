@@ -1,7 +1,7 @@
 From: Emil Renner Berthing <kernel@esmil.dk>
-Subject: [PATCH 3/7] arm64: dts: rockchip: add rk3399 SPI DMAs
-Date: Wed, 10 Oct 2018 11:00:34 +0200
-Message-ID: <20181010090038.20834-4-kernel@esmil.dk>
+Subject: [PATCH 6/7] spi: rockchip: directly use direction constants
+Date: Wed, 10 Oct 2018 11:00:37 +0200
+Message-ID: <20181010090038.20834-7-kernel@esmil.dk>
 References: <20181010090038.20834-1-kernel@esmil.dk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,61 +25,71 @@ In-Reply-To: <20181010090038.20834-1-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add spi dma channels as specified by the rk3399 TRM.
+The dma direction for the tx and rx dma channels never
+change, so just use the constants directly rather
+than storing them in device data.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-rockchip.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index c88e603396f6..c11b5ae6f1ad 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -653,6 +653,8 @@
- 		clocks = <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
- 		clock-names = "spiclk", "apb_pclk";
- 		interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH 0>;
-+		dmas = <&dmac_peri 10>, <&dmac_peri 11>;
-+		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi0_clk &spi0_tx &spi0_rx &spi0_cs0>;
- 		#address-cells = <1>;
-@@ -666,6 +668,8 @@
- 		clocks = <&cru SCLK_SPI1>, <&cru PCLK_SPI1>;
- 		clock-names = "spiclk", "apb_pclk";
- 		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH 0>;
-+		dmas = <&dmac_peri 12>, <&dmac_peri 13>;
-+		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi1_clk &spi1_tx &spi1_rx &spi1_cs0>;
- 		#address-cells = <1>;
-@@ -679,6 +683,8 @@
- 		clocks = <&cru SCLK_SPI2>, <&cru PCLK_SPI2>;
- 		clock-names = "spiclk", "apb_pclk";
- 		interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH 0>;
-+		dmas = <&dmac_peri 14>, <&dmac_peri 15>;
-+		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi2_clk &spi2_tx &spi2_rx &spi2_cs0>;
- 		#address-cells = <1>;
-@@ -692,6 +698,8 @@
- 		clocks = <&cru SCLK_SPI4>, <&cru PCLK_SPI4>;
- 		clock-names = "spiclk", "apb_pclk";
- 		interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH 0>;
-+		dmas = <&dmac_peri 18>, <&dmac_peri 19>;
-+		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi4_clk &spi4_tx &spi4_rx &spi4_cs0>;
- 		#address-cells = <1>;
-@@ -705,6 +713,8 @@
- 		clocks = <&cru SCLK_SPI5>, <&cru PCLK_SPI5>;
- 		clock-names = "spiclk", "apb_pclk";
- 		interrupts = <GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH 0>;
-+		dmas = <&dmac_bus 8>, <&dmac_bus 9>;
-+		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi5_clk &spi5_tx &spi5_rx &spi5_cs0>;
- 		power-domains = <&power RK3399_PD_SDIOAUDIO>;
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 1d8bf45304a5..1044849a352d 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -164,7 +164,6 @@ enum rockchip_ssi_type {
+ 
+ struct rockchip_spi_dma_data {
+ 	struct dma_chan *ch;
+-	enum dma_transfer_direction direction;
+ 	dma_addr_t addr;
+ };
+ 
+@@ -454,7 +453,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 
+ 	rxdesc = NULL;
+ 	if (rs->rx) {
+-		rxconf.direction = rs->dma_rx.direction;
++		rxconf.direction = DMA_DEV_TO_MEM;
+ 		rxconf.src_addr = rs->dma_rx.addr;
+ 		rxconf.src_addr_width = rs->n_bytes;
+ 		rxconf.src_maxburst = 1;
+@@ -463,7 +462,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		rxdesc = dmaengine_prep_slave_sg(
+ 				rs->dma_rx.ch,
+ 				rs->rx_sg.sgl, rs->rx_sg.nents,
+-				rs->dma_rx.direction, DMA_PREP_INTERRUPT);
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT);
+ 		if (!rxdesc)
+ 			return -EINVAL;
+ 
+@@ -473,7 +472,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 
+ 	txdesc = NULL;
+ 	if (rs->tx) {
+-		txconf.direction = rs->dma_tx.direction;
++		txconf.direction = DMA_MEM_TO_DEV;
+ 		txconf.dst_addr = rs->dma_tx.addr;
+ 		txconf.dst_addr_width = rs->n_bytes;
+ 		txconf.dst_maxburst = rs->fifo_len / 2;
+@@ -482,7 +481,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		txdesc = dmaengine_prep_slave_sg(
+ 				rs->dma_tx.ch,
+ 				rs->tx_sg.sgl, rs->tx_sg.nents,
+-				rs->dma_tx.direction, DMA_PREP_INTERRUPT);
++				DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT);
+ 		if (!txdesc) {
+ 			if (rxdesc)
+ 				dmaengine_terminate_sync(rs->dma_rx.ch);
+@@ -778,8 +777,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
+ 		rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
+ 		rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
+-		rs->dma_tx.direction = DMA_MEM_TO_DEV;
+-		rs->dma_rx.direction = DMA_DEV_TO_MEM;
+ 
+ 		master->can_dma = rockchip_spi_can_dma;
+ 		master->dma_tx = rs->dma_tx.ch;
 -- 
 2.19.1

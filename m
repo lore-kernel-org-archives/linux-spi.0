@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 05/11] DT: marvell,mmp2: Add SSP1 and SSP3
-Date: Wed, 10 Oct 2018 19:09:30 +0200
-Message-ID: <20181010170936.316862-6-lkundrak@v3.sk>
+Subject: [PATCH 03/11] spi: pxa2xx: Use an enum for type
+Date: Wed, 10 Oct 2018 19:09:28 +0200
+Message-ID: <20181010170936.316862-4-lkundrak@v3.sk>
 References: <20181010170936.316862-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -21,47 +21,51 @@ In-Reply-To: <20181010170936.316862-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There seem to be SSP2, SSP4 and perhaps SSP5 too, but Marvel keeps their
-base addresses secret.
-
-The SSP1 and SSP3 addresses were taken from OLPC 1.75, OpenFirmware and
-kernel respectively.
+That seems to be the correct type.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-
 ---
-Changes since v1:
-- Dropped the aliases
+ drivers/spi/spi-pxa2xx.c   | 6 +++---
+ include/linux/pxa2xx_ssp.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
- arch/arm/boot/dts/mmp2.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/arch/arm/boot/dts/mmp2.dtsi b/arch/arm/boot/dts/mmp2.dtsi
-index 766bbb8495b6..c16531f4d4c7 100644
---- a/arch/arm/boot/dts/mmp2.dtsi
-+++ b/arch/arm/boot/dts/mmp2.dtsi
-@@ -239,6 +239,22 @@
- 				resets =3D <&soc_clocks MMP2_CLK_RTC>;
- 				status =3D "disabled";
- 			};
-+
-+			ssp1: ssp@d4035000 {
-+				compatible =3D "marvell,mmp2-ssp";
-+				reg =3D <0xd4035000 0x1000>;
-+				clocks =3D <&soc_clocks MMP2_CLK_SSP0>;
-+				interrupts =3D <0>;
-+				status =3D "disabled";
-+			};
-+
-+			ssp3: ssp@d4037000 {
-+				compatible =3D "marvell,mmp2-ssp";
-+				reg =3D <0xd4037000 0x1000>;
-+				clocks =3D <&soc_clocks MMP2_CLK_SSP2>;
-+				interrupts =3D <20>;
-+				status =3D "disabled";
-+			};
- 		};
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 14f4ea59caff..f674541675bb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1429,7 +1429,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct resource *res;
+ 	const struct acpi_device_id *adev_id =3D NULL;
+ 	const struct pci_device_id *pcidev_id =3D NULL;
+-	int type;
++	enum pxa_ssp_type type;
 =20
- 		soc_clocks: clocks{
+ 	adev =3D ACPI_COMPANION(&pdev->dev);
+=20
+@@ -1443,9 +1443,9 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 		return NULL;
+=20
+ 	if (adev_id)
+-		type =3D (int)adev_id->driver_data;
++		type =3D (enum pxa_ssp_type)adev_id->driver_data;
+ 	else if (pcidev_id)
+-		type =3D (int)pcidev_id->driver_data;
++		type =3D (enum pxa_ssp_type)pcidev_id->driver_data;
+ 	else
+ 		return NULL;
+=20
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index 13b4244d44c1..262e1f318836 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -217,7 +217,7 @@ struct ssp_device {
+=20
+ 	const char	*label;
+ 	int		port_id;
+-	int		type;
++	enum pxa_ssp_type type;
+ 	int		use_count;
+ 	int		irq;
+=20
 --=20
 2.19.0

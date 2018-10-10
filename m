@@ -1,59 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 lora-next 1/4] net: lora: sx1301: convert burst spi
- functions to regmap raw
-Date: Wed, 10 Oct 2018 11:19:54 +0100
-Message-ID: <20181010101954.GB6294@sirena.org.uk>
-References: <1539089532-2481-1-git-send-email-ben.whitten@lairdtech.com>
- <1539089532-2481-2-git-send-email-ben.whitten@lairdtech.com>
- <3959c93b-edb5-c6ff-ec36-57f84ab8623f@suse.de>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: [PATCH v1 0/3] Correct wml setting for spi-imx in dma mode
+Date: Wed, 10 Oct 2018 10:32:39 +0000
+Message-ID: <1539196453-8704-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/WwmFnJnmDyWGHa4"
-Cc: Ben Whitten <ben.whitten@gmail.com>, starnight@g.ncu.edu.tw,
-        hasnain.virk@arm.com, netdev@vger.kernel.org,
-        liuxuenetmail@gmail.com, shess@hessware.de,
-        Ben Whitten <ben.whitten@lairdtech.com>,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>
-To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
-Return-path: <netdev-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <3959c93b-edb5-c6ff-ec36-57f84ab8623f@suse.de>
-Sender: netdev-owner@vger.kernel.org
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---/WwmFnJnmDyWGHa4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Current dynamic burst length is based on the whole transfer length,
+that's ok if there is only one sg, but is not right in case multi sgs
+in one transfer,because the tail data should be based on the last sg
+length instead of the whole transfer length. Othwise, the last dma
+done interrupt will never be triggered. It could be caught in
+mtd_stresstest case without this patchset as below:
 
-On Wed, Oct 10, 2018 at 09:59:29AM +0200, Andreas F=E4rber wrote:
-> Am 09.10.18 um 14:52 schrieb Ben Whitten:
+insmod mtd_stresstest.ko dev=3D0
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+mtd_stresstest: MTD device: 0
+mtd_stresstest: not NAND flash, assume page size is 512 bytes.
+mtd_stresstest: MTD device size 4194304, eraseblock size 65536, page size 5=
+12, count of eraseblocks 64, pa0
+mtd_stresstest: doing operations
+mtd_stresstest: 0 operations done
+mtd_test: mtd_read from 1ff532, size 880
+mtd_test: mtd_read from 20c267, size 64998
+spi_master spi0: I/O Error in DMA RX
+m25p80 spi0.0: SPI transfer failed: -110
+spi_master spi0: failed to transfer one message from queue
+mtd_test: error: read failed at 0x20c267
+mtd_stresstest: error -110 occurred
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+insmod: ERROR: could not insert module mtd_stresstest.ko: Connection timed =
+out
 
-> > -	return spi_sync_transfer(priv->spi, xfr, 2);
-> > +	return regmap_raw_write(priv->regmap, reg, val, len);
+Robin Gong (3):
+  spi: imx: move wml setting to later than setup_transfer
+  spi: imx: correct wml as the last sg length
+  spi: imx: use PIO mode if size is small
 
-> ... Which would mean we are lacking a noinc API for write here!
+ drivers/spi/spi-imx.c | 53 ++++++++++++++++++++++++++++++++++-------------=
+----
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
-> @Mark/Stefan, any reason noinc was not implemented symmetrically?
-
-Nobody wanted it enough to do the work of implementing it, there's
-nothing stopping someone doing that.
-
---/WwmFnJnmDyWGHa4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu90kkACgkQJNaLcl1U
-h9DHNgf/Xv17B2oWZrj1HsaHVphsjqdKNaklxC5zlucjYMYScg5zj92WQt7WA/ek
-4RDss68Z3S/AhSdenHCwZ4P2fYfdnJcNcjNk5Ap1MXybBzH8wuwGG+QHU7gM01xF
-j93vWfmS0c8gZbhlxl6CQ0uqhmTm6QzB1QwUzgmqAa8a2EmpeAc1qRYNxbIYi+6C
-S7Ky2e1ALZDuyUwWznwtWu26BMVm9T+xgErpkvl+njyyXUSI/e0J4KyOcfVLy4zA
-rNl8Cl5AhBfWiJI20HfUV/XUyXAN/PFLsBrzt4X6+zdQJIfEF9v6gSJjw3YYW0UE
-3z/b8OZqf38PgROXX6/5psQaFz4m3A==
-=v4f9
------END PGP SIGNATURE-----
-
---/WwmFnJnmDyWGHa4--
+--=20
+2.7.4

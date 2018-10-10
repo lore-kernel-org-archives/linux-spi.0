@@ -1,7 +1,8 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 0/11] spi: pxa2xx: add DT and slave mode support
-Date: Wed, 10 Oct 2018 19:09:25 +0200
-Message-ID: <20181010170936.316862-1-lkundrak@v3.sk>
+Subject: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI Controller
+Date: Wed, 10 Oct 2018 19:09:26 +0200
+Message-ID: <20181010170936.316862-2-lkundrak@v3.sk>
+References: <20181010170936.316862-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Cc: James Cameron <quozl@laptop.org>, Rob Herring <robh+dt@kernel.org>,
@@ -11,39 +12,60 @@ Cc: James Cameron <quozl@laptop.org>, Rob Herring <robh+dt@kernel.org>,
         Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Lubomir Rintel <lkundrak@v3.sk>
 To: Mark Brown <broonie@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181010170936.316862-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi.
+This is the SPI controller found on Marvel MMP2 and perhaps more
+platforms.
 
-This patchset adds devicetree and slave mode support to pxa2xx SPI
-controller. The objective is that it will be able to support the
-OLPC XO 1.75 embedded controller that is a SPI master talking to a
-MMP2 SOC. The EC driver will be submitted in a separate patch set
-shortly.
-=20
-These patches have been submitted previously, but not applied:
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
-[PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
-[PATCH v2 02/11] PCI: Provide pci_match_id() with CONFIG_PCI=3Dn
-[PATCH 03/11] spi: pxa2xx: Use an enum for type
-[PATCH 04/11] spi: pxa2xx: Add devicetree support
-[PATCH v2 05/11] DT: marvell,mmp2: Add SSP1 and SSP3
+---
+Changes since v1:
+- s/ssp@d4035000/spi@d4035000/
 
-These are new:
+ .../devicetree/bindings/spi/spi-pxa2xx.txt    | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
 
-[PATCH 06/11] dt-bindings: spi/spi-pxa2xx: Add spi-slave property
-[PATCH 07/11] spi: Deal with slaves that return from transfer_one()
-[PATCH 08/11] spi: pxa2xx: Add slave mode support
-[PATCH 09/11] dt-bindings: spi/spi-pxa2xx: Add ready GPIO signal
-[PATCH 10/11] spi: pxa2xx: Add ready signal
-[PATCH 11/11] spi: pxa2xx: Deal with the leftover garbage in TXFIFO
-
-Verified on a OLPC XO 1.75 machine.
-
-Thank you,
-Lubo
+diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Docum=
+entation/devicetree/bindings/spi/spi-pxa2xx.txt
+new file mode 100644
+index 000000000000..0335a9bd2e8a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+@@ -0,0 +1,24 @@
++PXA2xx SSP SPI Controller
++
++Required properties:
++- compatible: Must be "marvell,mmp2-ssp".
++- reg: Offset and length of the device's register set.
++- interrupts: Should be the interrupt number.
++- clocks: Should contain a single entry describing the clock input.
++- #address-cells:  Number of cells required to define a chip select addr=
+ess.
++- #size-cells: Should be zero.
++
++Optional properties:
++- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
++  Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Child nodes represent devices on the SPI bus
++  See ../spi/spi-bus.txt
++
++Example:
++	ssp1: spi@d4035000 {
++		compatible =3D "marvell,mmp2-ssp";
++		reg =3D <0xd4035000 0x1000>;
++		clocks =3D <&soc_clocks MMP2_CLK_SSP0>;
++		interrupts =3D <0>;
++	};
+--=20
+2.19.0

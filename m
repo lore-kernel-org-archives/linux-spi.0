@@ -1,16 +1,17 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 Subject: [PATCH 2/3] eeprom: at25: Use spi_message_init_with_transfers() instead of open coding
-Date: Wed, 10 Oct 2018 15:40:35 +0200
-Message-ID: <20181010134036.8296-3-geert+renesas@glider.be>
+Date: Wed, 10 Oct 2018 15:43:16 +0200
+Message-ID: <20181010134317.8466-3-geert+renesas@glider.be>
 References: <20181010134036.8296-1-geert+renesas@glider.be>
+ <20181010134317.8466-1-geert+renesas@glider.be>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mtd@vger.kernel.org,
+        linux-mtd@lists.infradead.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
 To: Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010134036.8296-1-geert+renesas@glider.be>
+In-Reply-To: <20181010134317.8466-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

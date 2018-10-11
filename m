@@ -1,52 +1,48 @@
-From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: Re: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP
- SPI Controller
-Date: Thu, 11 Oct 2018 19:59:15 +0200
-Message-ID: <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
-References: <20181010170936.316862-1-lkundrak@v3.sk>
-         <20181010170936.316862-2-lkundrak@v3.sk>
-         <20181011142719.GE25351@sirena.org.uk>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v4 2/5] dt-bindings: spi: add binding file for NXP
+ FlexSPI  controller
+Date: Thu, 11 Oct 2018 17:17:30 -0500
+Message-ID: <20181011221730.GA7293@bogus>
+References: <1539255519-1408-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1539255519-1408-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        James Cameron <quozl@laptop.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181011142719.GE25351@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <1539255519-1408-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2018-10-11 at 15:27 +0100, Mark Brown wrote:
-> On Wed, Oct 10, 2018 at 07:09:26PM +0200, Lubomir Rintel wrote:
-> > This is the SPI controller found on Marvel MMP2 and perhaps more
-> > platforms.
+On Thu, 11 Oct 2018 11:00:38 +0000, Yogesh Narayan Gaur wrote:
+> Add binding file for NXP FlexSPI controller
 > 
-> *Way* more.
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> ---
+> Changes for v4:
+> - Incorporated Rob review comments.
+> Changes for v3:
+> - Removed node property 'big-endian'.
+> Changes for v2:
+> - Incorporated Rob review comments.
 > 
-> Please use subject lines matching the style for the subsystem.  This
-> makes it easier for people to identify relevant patches.
+>  .../devicetree/bindings/spi/spi-nxp-fspi.txt       | 39 ++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> 
 
-Thanks for the response.
-
-I'm a little confused here. Why I chose this subject line is because I
-did this:
-
-  git log --no-merges Documentation/devicetree/bindings/
-
-to figure out what's the typical subject for the DT binding changes.
-
-I also believed that's the right way to get Rob Herring's and Mark
-Rutland's attention. Do the device tree binding documentation typically
-go in with the associated drivers, or via their tree ("OPEN FIRMWARE
-AND FLATTENED DEVICE TREE BINDINGS" in MAINTIANERS)?
-
-Lubo
+Reviewed-by: Rob Herring <robh@kernel.org>

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: initialize dma_slave_config properly" to the spi tree
-Date: Thu, 11 Oct 2018 15:56:11 +0100 (BST)
-Message-ID: <20181011145611.E2B9B11223ED@debutante.sirena.org.uk>
-References: <20181010090038.20834-2-kernel@esmil.dk>
+Subject: Applied "spi: rockchip: adjust dma watermark and burstlen" to the spi tree
+Date: Thu, 11 Oct 2018 15:56:08 +0100 (BST)
+Message-ID: <20181011145608.1C92911223ED@debutante.sirena.org.uk>
+References: <20181010090038.20834-3-kernel@esmil.dk>
 Cc: Emil Renner Berthing <kernel@esmil.dk>,
         Mark Brown <broonie@kernel.org>,
         linux-rockchip@lists.infradead.org,
@@ -23,13 +23,13 @@ Cc: Emil Renner Berthing <kernel@esmil.dk>,
         linux-spi@vger.k
 To: Huibin Hong <huibin.hong@rock-chips.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010090038.20834-2-kernel@esmil.dk>
+In-Reply-To: <20181010090038.20834-3-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: initialize dma_slave_config properly
+   spi: rockchip: adjust dma watermark and burstlen
 
 has been applied to the spi tree at
 
@@ -54,35 +54,59 @@ to this mail.
 Thanks,
 Mark
 
->From dd8fd2cbc73f8650f651da71fc61a6e4f30c1566 Mon Sep 17 00:00:00 2001
+>From dcfc861d24ec19f0d0d3d55bb016646794571fbb Mon Sep 17 00:00:00 2001
 From: Huibin Hong <huibin.hong@rock-chips.com>
-Date: Wed, 10 Oct 2018 11:00:32 +0200
-Subject: [PATCH] spi: rockchip: initialize dma_slave_config properly
+Date: Wed, 10 Oct 2018 11:00:33 +0200
+Subject: [PATCH] spi: rockchip: adjust dma watermark and burstlen
 
-The rxconf and txconf structs are allocated on the
-stack, so make sure we zero them before filling out
-the relevant fields.
+Signal tx dma when spi fifo is less than half full,
+and limit tx bursts to half the fifo length.
+
+Clamp rx burst length to 1 to avoid alignment issues.
 
 Signed-off-by: Huibin Hong <huibin.hong@rock-chips.com>
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-rockchip.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index fdcf3076681b..185bbdce62b1 100644
+index fdcf3076681b..2f825702cd90 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -445,6 +445,9 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 	struct dma_slave_config rxconf, txconf;
- 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
+@@ -455,10 +455,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		rxconf.direction = rs->dma_rx.direction;
+ 		rxconf.src_addr = rs->dma_rx.addr;
+ 		rxconf.src_addr_width = rs->n_bytes;
+-		if (rs->dma_caps.max_burst > 4)
+-			rxconf.src_maxburst = 4;
+-		else
+-			rxconf.src_maxburst = 1;
++		rxconf.src_maxburst = 1;
+ 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
  
-+	memset(&rxconf, 0, sizeof(rxconf));
-+	memset(&txconf, 0, sizeof(txconf));
-+
- 	spin_lock_irqsave(&rs->lock, flags);
- 	rs->state &= ~RXBUSY;
- 	rs->state &= ~TXBUSY;
+ 		rxdesc = dmaengine_prep_slave_sg(
+@@ -477,10 +474,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		txconf.direction = rs->dma_tx.direction;
+ 		txconf.dst_addr = rs->dma_tx.addr;
+ 		txconf.dst_addr_width = rs->n_bytes;
+-		if (rs->dma_caps.max_burst > 4)
+-			txconf.dst_maxburst = 4;
+-		else
+-			txconf.dst_maxburst = 1;
++		txconf.dst_maxburst = rs->fifo_len / 2;
+ 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
+ 
+ 		txdesc = dmaengine_prep_slave_sg(
+@@ -578,7 +572,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
+ 	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_TXFTLR);
+ 	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
+ 
+-	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMATDLR);
++	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_DMATDLR);
+ 	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMARDLR);
+ 	writel_relaxed(dmacr, rs->regs + ROCKCHIP_SPI_DMACR);
+ 
 -- 
 2.19.0.rc2

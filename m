@@ -1,79 +1,54 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 10/11] spi: pxa2xx: Add ready signal
-Date: Thu, 11 Oct 2018 09:28:39 +0200
-Message-ID: <CAMuHMdXmsw3jjp8wFuuK_Vz8kwCP4=L59sc4kZafXzrb=hKv7g@mail.gmail.com>
-References: <20181010170936.316862-1-lkundrak@v3.sk> <20181010170936.316862-11-lkundrak@v3.sk>
+From: Talel Shenhar <talel@amazon.com>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: dw: add cs-override property
+Date: Thu, 11 Oct 2018 10:39:22 +0300
+Message-ID: <3ad7fac8-2f13-690b-9e4b-c6b2373756b0@amazon.com>
+References: <1539155293-21750-1-git-send-email-talel@amazon.com>
+ <1539210111.1944.31.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>, quozl@laptop.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-To: Lubomir Rintel <lkundrak@v3.sk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: "barakw@amazon.com" <barakw@amazon.com>,
+        "ronenk@amazon.com" <ronenk@amazon.com>,
+        "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>, <jonnyc@amazon.com>
+To: Trent Piepho <tpiepho@impinj.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010170936.316862-11-lkundrak@v3.sk>
+In-Reply-To: <1539210111.1944.31.camel@impinj.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lubomir,
 
-On Wed, Oct 10, 2018 at 7:10 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
-> Strobe a GPIO line when the slave TX FIFO is filled. This is how the
-> Embedded Controller on an OLPC XO-1.75 machine, that happens to be a SPI
-> master, learns that it can initiate a transaction.
+
+On 10/11/2018 01:21 AM, Trent Piepho wrote:
+> On Wed, 2018-10-10 at 10:08 +0300, Talel Shenhar wrote:
+>> The dw spi controller has an auto-deselect of Chip-Select, in case there is
+>> no data inside the Tx FIFO. While working on platforms with Alpine chips,
+>> auto-deselect mode causes an issue for some spi devices that can't handle
+>> the Chip-Select deselect in the middle of a transaction. It is a normal
+>> behavior for a Tx FIFO to be empty in the middle of a transaction, due to
+>>
+> So that's the problem!  I, like everyone else I suspect, switched to
+> using GPIO chip selects with this driver because of this.  I narrowed
+> it down to a CS de-assert when the bus switched from TX to RX, which of
+> course makes a SPI register read fail on most devices.  The TX FIFO
+> would empty at this point, so that would explain it.
 >
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-
-Thanks for your patch!
-
-I'm repeating my comments on the RFC below:
-
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -1079,6 +1079,9 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *master,
->         if (spi_controller_is_slave(master)) {
->                 while (drv_data->write(drv_data))
->                         ;
-> +               gpiod_set_value(drv_data->gpiod_ready, 1);
-> +               udelay(1);
-> +               gpiod_set_value(drv_data->gpiod_ready, 0);
-
-While gpiod_set_value() handles the case of no GPIO fine, I think it's
-better to explicitly check for that, so you can avoid spinning for 1 µs if
-the GPIO is not present.
-
->         }
+> Did the designers of this IP ever read a SPI device datasheet???
 >
->         /*
-> @@ -1784,6 +1787,15 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
->                 }
->         }
->
-> +       if (platform_info->is_slave) {
-> +               drv_data->gpiod_ready = devm_gpiod_get_optional(dev,
-> +                                               "ready", GPIOD_OUT_LOW);
-> +               if (IS_ERR(drv_data->gpiod_ready)) {
-> +                       status = (int)PTR_ERR(drv_data->gpiod_ready);
-
-The cast to int is not needed.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> Got to agree with Mark Brown, why would anyone ever want to NOT have it
+> work properly?  The previous behavior is not "alternate correct", it's
+> Broken.
+This patch allow the Amazon changed hw to work in a correct way.
+Unfortunately, the original hw doesn't support auto-deselect disable.
+auto-deselect disable is a hw fixup Amazon hw engineers added on top
+of the original dw IP.
+The fix was to disable the auto-deselect and to allow sw
+to manually control the chip-select.
+This patch enables the above described Amazon hw fixup and
+adds manual control over chip-select.

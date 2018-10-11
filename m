@@ -1,76 +1,98 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 3/3] eeprom: at25: Split writes in two SPI transfers to
- optimize DMA
-Date: Thu, 11 Oct 2018 08:59:13 +0200
-Message-ID: <CAMuHMdVUGW06O9ugzJQh4h5v=Gmf_7byvKPutB=YdQWyWcgN_w@mail.gmail.com>
-References: <20181010134036.8296-1-geert+renesas@glider.be>
- <20181010134036.8296-4-geert+renesas@glider.be> <1539208063.1944.12.camel@impinj.com>
+From: alokc@codeaurora.org
+Subject: Re: [PATCH V5 3/3] spi: spi-geni-qcom: Add SPI driver support for
+ GENI based QUP
+Date: Thu, 11 Oct 2018 12:43:56 +0530
+Message-ID: <0cffce97ad9c25e397a450c43e31c397@codeaurora.org>
+References: <1538574265-30235-1-git-send-email-alokc@codeaurora.org>
+ <1538574265-30235-4-git-send-email-alokc@codeaurora.org>
+ <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mtd@vger.kernel.org
-To: Trent Piepho <tpiepho@impinj.com>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, dianders@chromium.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        mka@chromium.org, linux-arm-msm@vger.kernel.org,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>
+To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539208063.1944.12.camel@impinj.com>
+In-Reply-To: <153904219713.119890.7463642233895152532@swboyd.mtv.corp.google.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Trent,
+>> +static irqreturn_t geni_spi_isr(int irq, void *data)
+>> +{
+>> +       struct spi_master *spi = data;
+>> +       struct spi_geni_master *mas = spi_master_get_devdata(spi);
+>> +       struct geni_se *se = &mas->se;
+>> +       u32 m_irq;
+>> +       unsigned long flags;
+>> +       irqreturn_t ret = IRQ_HANDLED;
+>> +
+>> +       if (mas->cur_mcmd == CMD_NONE)
+>> +               return IRQ_NONE;
+>> +
+>> +       spin_lock_irqsave(&mas->lock, flags);
+>> +       m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
+>> +
+>> +       if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & 
+>> M_RX_FIFO_LAST_EN))
+>> +               geni_spi_handle_rx(mas);
+>> +
+>> +       if (m_irq & M_TX_FIFO_WATERMARK_EN)
+>> +               geni_spi_handle_tx(mas);
+>> +
+>> +       if (m_irq & M_CMD_DONE_EN) {
+>> +               if (mas->cur_mcmd == CMD_XFER)
+>> +                       spi_finalize_current_transfer(spi);
+>> +               else if (mas->cur_mcmd == CMD_CS)
+>> +                       complete(&mas->xfer_done);
+>> +               mas->cur_mcmd = CMD_NONE;
+>> +               /*
+>> +                * If this happens, then a CMD_DONE came before all 
+>> the Tx
+>> +                * buffer bytes were sent out. This is unusual, log 
+>> this
+>> +                * condition and disable the WM interrupt to prevent 
+>> the
+>> +                * system from stalling due an interrupt storm.
+>> +                * If this happens when all Rx bytes haven't been 
+>> received, log
+>> +                * the condition.
+>> +                * The only known time this can happen is if 
+>> bits_per_word != 8
+>> +                * and some registers that expect xfer lengths in num 
+>> spi_words
+>> +                * weren't written correctly.
+>> +                */
+>> +               if (mas->tx_rem_bytes) {
+>> +                       writel(0, se->base + 
+>> SE_GENI_TX_WATERMARK_REG);
+>> +                       dev_err(mas->dev, "Premature done. tx_rem = %d 
+>> bpw%d\n",
+>> +                               mas->tx_rem_bytes, 
+>> mas->cur_bits_per_word);
+>> +               }
+>> +               if (mas->rx_rem_bytes)
+>> +                       dev_err(mas->dev, "Premature done. rx_rem = %d 
+>> bpw%d\n",
+>> +                               mas->rx_rem_bytes, 
+>> mas->cur_bits_per_word);
+>> +       }
+>> +
+>> +       if ((m_irq & M_CMD_CANCEL_EN) || (m_irq & M_CMD_ABORT_EN)) {
+>> +               mas->cur_mcmd = CMD_NONE;
+>> +               complete(&mas->xfer_done);
+>> +       }
+>> +
+>> +       writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
+>> +       spin_unlock_irqrestore(&mas->lock, flags);
+>> +       return ret;
+> 
+> Nitpick: Now this always returns IRQ_HANDLED, and we assign ret just to
+> do that. Perhaps only return IRQ_HANDLED if one of the above if
+> conditions is taken?
 
-On Wed, Oct 10, 2018 at 11:47 PM Trent Piepho <tpiepho@impinj.com> wrote:
-> On Wed, 2018-10-10 at 15:40 +0200, Geert Uytterhoeven wrote:
-> > Currently EEPROM writes are implemented using a single SPI transfer,
-> > which contains all of command, address, and payload data bytes.
-> > As some SPI controllers impose limitations on transfers with respect to
-> > the use of DMA, they may have to fall back to PIO. E.g. DMA may require
-> > the transfer length to be a multiple of 4 bytes.
-> >
-> > Optimize writes for DMA by splitting writes in two SPI transfers:
-> >   - The first transfer contains command and address bytes,
-> >   - The second transfer contains the actual payload data, now stored at
-> >     the start of the (kmalloc() aligned) buffer, to improve payload
-> >     alignment.
->
-> Does this always optimize?  A master capable of an of aligned 18 byte
-> DMA xfer would now have a 2 byte xfer that would probably be PIO
-> followed by a 16 byte DMA.
->
-> Or writing 14 bytes to the EEPROM has changed from an aligned 16 byte
-> write to a 2 byte and a 14 byte, which is now worse for the 4 byte
-> multiple requirement master which can use any DMA anymore.
-
-That's correct. I did consider this case.
-However, with the small page sizes used (16, 64, or 256 bytes), I'd expect
-EEPROM users to consider them for their data formats, and thus it IMHO
-makes sense to optimize for the optimal case, which is currently not the
-case.
-
-Note there may be 1, 2, or 3 address bytes, so it can be a total of 2 + len
-or 3 + len bytes, too.
-
-> It seems like an enhancement to the DMA code to look more like a
-> efficient memcpy() that aligns the address, then xfers efficient
-> blocks, then finishes the sub-block tail would be more generally
-> applicable.
->
-> Or more simply, given an aligned 18 byte xfer, the driver should do an
-> aligned 16 byte DMA and then two more bytes.
-
-That's another option, but that probably needs changes in several drivers,
-and/or the SPI core (if we want to handle it there).
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Not always. If ISR get triggered without setting proper cur_mcmd then it 
+will return IRQ_NONE.

@@ -1,57 +1,690 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
- Controller
-Date: Thu, 11 Oct 2018 15:27:19 +0100
-Message-ID: <20181011142719.GE25351@sirena.org.uk>
-References: <20181010170936.316862-1-lkundrak@v3.sk>
- <20181010170936.316862-2-lkundrak@v3.sk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="a+b56+3nqLzpiR9O"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        James Cameron <quozl@laptop.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Applied "spi: Introduce new driver for Qualcomm QuadSPI controller" to the spi tree
+Date: Thu, 11 Oct 2018 15:56:15 +0100 (BST)
+Message-ID: <20181011145615.A3C0E11223ED@debutante.sirena.org.uk>
+References: <20181002214709.162330-2-ryandcase@chromium.org>
+Cc: Ryan Case <ryandcase@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-arm-msm@vger.kernel.org,
+        Doug Anderson <dianders@chromium.org>,
+        Trent Piepho <tpiepho@impinj.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Ryan Case <ryandcase@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Girish Mahadevan <girishm@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181010170936.316862-2-lkundrak@v3.sk>
+In-Reply-To: <20181002214709.162330-2-ryandcase@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---a+b56+3nqLzpiR9O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Introduce new driver for Qualcomm QuadSPI controller
 
-On Wed, Oct 10, 2018 at 07:09:26PM +0200, Lubomir Rintel wrote:
-> This is the SPI controller found on Marvel MMP2 and perhaps more
-> platforms.
+has been applied to the spi tree at
 
-*Way* more.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---a+b56+3nqLzpiR9O
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlu/XccACgkQJNaLcl1U
-h9Dn4wf/dFr/ysMnQUtut+ehLhJxGdV4dMToFsTrQhYDOk2kvEfVrH4FVEYEwiXg
-jpE/ZJTn26gJEwdDrCewyvvMzUAC9g9Xhjfv8dOvUCtauA1IDwGu6V/WLSDrQTm9
-GbLb2DZPjmxWRHWl1S8DqFXyfgN/21yd5xrblF1xx4vfHklvpyJsCZoQQWaPQ04g
-9H+BVnzWXp1KqOPq1Dz0hA3XCLvQcZwDQk/VdYTfrHqvyLDcp0qY4JZRUM8WS/Wx
-npjK9MYUE8msSGLgzZV/2y1kYQpby2IOeXYujmpj7lU6YpV1t7yJsKhtrzIkH0Um
-NH92EqNJ7lG1qcpDO6gvlcgARDQ4zw==
-=RRfV
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---a+b56+3nqLzpiR9O--
+Thanks,
+Mark
+
+>From 04000dc6f7e3ce24677f2895ea41746ed29a4498 Mon Sep 17 00:00:00 2001
+From: Girish Mahadevan <girishm@codeaurora.org>
+Date: Tue, 2 Oct 2018 14:47:08 -0700
+Subject: [PATCH] spi: Introduce new driver for Qualcomm QuadSPI controller
+
+New driver for Qualcomm QuadSPI(QSPI) controller that is used to
+communicate with slaves such as flash memory devices. The QSPI controller
+can operate in 2 or 4 wire mode but only supports SPI Mode 0. The
+controller can also operate in Single or Dual data rate modes.
+
+Signed-off-by: Girish Mahadevan <girishm@codeaurora.org>
+Signed-off-by: Ryan Case <ryandcase@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/Kconfig         |   6 +
+ drivers/spi/Makefile        |   1 +
+ drivers/spi/spi-qcom-qspi.c | 581 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 588 insertions(+)
+ create mode 100644 drivers/spi/spi-qcom-qspi.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index e6b430890f7a..881d499c69b2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -520,6 +520,12 @@ config SPI_RSPI
+ 	help
+ 	  SPI driver for Renesas RSPI and QSPI blocks.
+ 
++config SPI_QCOM_QSPI
++	tristate "QTI QSPI controller"
++	depends on ARCH_QCOM
++	help
++	  QSPI(Quad SPI) driver for Qualcomm QSPI controller.
++
+ config SPI_QUP
+ 	tristate "Qualcomm SPI controller with QUP interface"
+ 	depends on ARCH_QCOM || (ARM && COMPILE_TEST)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 644b22ecb4b1..0eb8b185d8e5 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -74,6 +74,7 @@ obj-$(CONFIG_SPI_PPC4xx)		+= spi-ppc4xx.o
+ spi-pxa2xx-platform-objs		:= spi-pxa2xx.o spi-pxa2xx-dma.o
+ obj-$(CONFIG_SPI_PXA2XX)		+= spi-pxa2xx-platform.o
+ obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
++obj-$(CONFIG_SPI_QCOM_QSPI)		+= spi-qcom-qspi.o
+ obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
+ obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
+ obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+new file mode 100644
+index 000000000000..b8163b40bb92
+--- /dev/null
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -0,0 +1,581 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
++
++#include <linux/clk.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/pm_runtime.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
++
++
++#define QSPI_NUM_CS		2
++#define QSPI_BYTES_PER_WORD	4
++
++#define MSTR_CONFIG		0x0000
++#define FULL_CYCLE_MODE		BIT(3)
++#define FB_CLK_EN		BIT(4)
++#define PIN_HOLDN		BIT(6)
++#define PIN_WPN			BIT(7)
++#define DMA_ENABLE		BIT(8)
++#define BIG_ENDIAN_MODE		BIT(9)
++#define SPI_MODE_MSK		0xc00
++#define SPI_MODE_SHFT		10
++#define CHIP_SELECT_NUM		BIT(12)
++#define SBL_EN			BIT(13)
++#define LPA_BASE_MSK		0x3c000
++#define LPA_BASE_SHFT		14
++#define TX_DATA_DELAY_MSK	0xc0000
++#define TX_DATA_DELAY_SHFT	18
++#define TX_CLK_DELAY_MSK	0x300000
++#define TX_CLK_DELAY_SHFT	20
++#define TX_CS_N_DELAY_MSK	0xc00000
++#define TX_CS_N_DELAY_SHFT	22
++#define TX_DATA_OE_DELAY_MSK	0x3000000
++#define TX_DATA_OE_DELAY_SHFT	24
++
++#define AHB_MASTER_CFG				0x0004
++#define HMEM_TYPE_START_MID_TRANS_MSK		0x7
++#define HMEM_TYPE_START_MID_TRANS_SHFT		0
++#define HMEM_TYPE_LAST_TRANS_MSK		0x38
++#define HMEM_TYPE_LAST_TRANS_SHFT		3
++#define USE_HMEMTYPE_LAST_ON_DESC_OR_CHAIN_MSK	0xc0
++#define USE_HMEMTYPE_LAST_ON_DESC_OR_CHAIN_SHFT	6
++#define HMEMTYPE_READ_TRANS_MSK			0x700
++#define HMEMTYPE_READ_TRANS_SHFT		8
++#define HSHARED					BIT(11)
++#define HINNERSHARED				BIT(12)
++
++#define MSTR_INT_EN		0x000C
++#define MSTR_INT_STATUS		0x0010
++#define RESP_FIFO_UNDERRUN	BIT(0)
++#define RESP_FIFO_NOT_EMPTY	BIT(1)
++#define RESP_FIFO_RDY		BIT(2)
++#define HRESP_FROM_NOC_ERR	BIT(3)
++#define WR_FIFO_EMPTY		BIT(9)
++#define WR_FIFO_FULL		BIT(10)
++#define WR_FIFO_OVERRUN		BIT(11)
++#define TRANSACTION_DONE	BIT(16)
++#define QSPI_ERR_IRQS		(RESP_FIFO_UNDERRUN | HRESP_FROM_NOC_ERR | \
++				 WR_FIFO_OVERRUN)
++#define QSPI_ALL_IRQS		(QSPI_ERR_IRQS | RESP_FIFO_RDY | \
++				 WR_FIFO_EMPTY | WR_FIFO_FULL | \
++				 TRANSACTION_DONE)
++
++#define PIO_XFER_CTRL		0x0014
++#define REQUEST_COUNT_MSK	0xffff
++
++#define PIO_XFER_CFG		0x0018
++#define TRANSFER_DIRECTION	BIT(0)
++#define MULTI_IO_MODE_MSK	0xe
++#define MULTI_IO_MODE_SHFT	1
++#define TRANSFER_FRAGMENT	BIT(8)
++#define SDR_1BIT		1
++#define SDR_2BIT		2
++#define SDR_4BIT		3
++#define DDR_1BIT		5
++#define DDR_2BIT		6
++#define DDR_4BIT		7
++#define DMA_DESC_SINGLE_SPI	1
++#define DMA_DESC_DUAL_SPI	2
++#define DMA_DESC_QUAD_SPI	3
++
++#define PIO_XFER_STATUS		0x001c
++#define WR_FIFO_BYTES_MSK	0xffff0000
++#define WR_FIFO_BYTES_SHFT	16
++
++#define PIO_DATAOUT_1B		0x0020
++#define PIO_DATAOUT_4B		0x0024
++
++#define RD_FIFO_STATUS	0x002c
++#define FIFO_EMPTY	BIT(11)
++#define WR_CNTS_MSK	0x7f0
++#define WR_CNTS_SHFT	4
++#define RDY_64BYTE	BIT(3)
++#define RDY_32BYTE	BIT(2)
++#define RDY_16BYTE	BIT(1)
++#define FIFO_RDY	BIT(0)
++
++#define RD_FIFO_CFG		0x0028
++#define CONTINUOUS_MODE		BIT(0)
++
++#define RD_FIFO_RESET		0x0030
++#define RESET_FIFO		BIT(0)
++
++#define CUR_MEM_ADDR		0x0048
++#define HW_VERSION		0x004c
++#define RD_FIFO			0x0050
++#define SAMPLING_CLK_CFG	0x0090
++#define SAMPLING_CLK_STATUS	0x0094
++
++
++enum qspi_dir {
++	QSPI_READ,
++	QSPI_WRITE,
++};
++
++struct qspi_xfer {
++	union {
++		const void *tx_buf;
++		void *rx_buf;
++	};
++	unsigned int rem_bytes;
++	unsigned int buswidth;
++	enum qspi_dir dir;
++	bool is_last;
++};
++
++enum qspi_clocks {
++	QSPI_CLK_CORE,
++	QSPI_CLK_IFACE,
++	QSPI_NUM_CLKS
++};
++
++struct qcom_qspi {
++	void __iomem *base;
++	struct device *dev;
++	struct clk_bulk_data clks[QSPI_NUM_CLKS];
++	struct qspi_xfer xfer;
++	/* Lock to protect data accessed by IRQs */
++	spinlock_t lock;
++};
++
++static u32 qspi_buswidth_to_iomode(struct qcom_qspi *ctrl,
++				   unsigned int buswidth)
++{
++	switch (buswidth) {
++	case 1:
++		return SDR_1BIT << MULTI_IO_MODE_SHFT;
++	case 2:
++		return SDR_2BIT << MULTI_IO_MODE_SHFT;
++	case 4:
++		return SDR_4BIT << MULTI_IO_MODE_SHFT;
++	default:
++		dev_warn_once(ctrl->dev,
++				"Unexpected bus width: %u\n", buswidth);
++		return SDR_1BIT << MULTI_IO_MODE_SHFT;
++	}
++}
++
++static void qcom_qspi_pio_xfer_cfg(struct qcom_qspi *ctrl)
++{
++	u32 pio_xfer_cfg;
++	const struct qspi_xfer *xfer;
++
++	xfer = &ctrl->xfer;
++	pio_xfer_cfg = readl(ctrl->base + PIO_XFER_CFG);
++	pio_xfer_cfg &= ~TRANSFER_DIRECTION;
++	pio_xfer_cfg |= xfer->dir;
++	if (xfer->is_last)
++		pio_xfer_cfg &= ~TRANSFER_FRAGMENT;
++	else
++		pio_xfer_cfg |= TRANSFER_FRAGMENT;
++	pio_xfer_cfg &= ~MULTI_IO_MODE_MSK;
++	pio_xfer_cfg |= qspi_buswidth_to_iomode(ctrl, xfer->buswidth);
++
++	writel(pio_xfer_cfg, ctrl->base + PIO_XFER_CFG);
++}
++
++static void qcom_qspi_pio_xfer_ctrl(struct qcom_qspi *ctrl)
++{
++	u32 pio_xfer_ctrl;
++
++	pio_xfer_ctrl = readl(ctrl->base + PIO_XFER_CTRL);
++	pio_xfer_ctrl &= ~REQUEST_COUNT_MSK;
++	pio_xfer_ctrl |= ctrl->xfer.rem_bytes;
++	writel(pio_xfer_ctrl, ctrl->base + PIO_XFER_CTRL);
++}
++
++static void qcom_qspi_pio_xfer(struct qcom_qspi *ctrl)
++{
++	u32 ints;
++
++	qcom_qspi_pio_xfer_cfg(ctrl);
++
++	/* Ack any previous interrupts that might be hanging around */
++	writel(QSPI_ALL_IRQS, ctrl->base + MSTR_INT_STATUS);
++
++	/* Setup new interrupts */
++	if (ctrl->xfer.dir == QSPI_WRITE)
++		ints = QSPI_ERR_IRQS | WR_FIFO_EMPTY;
++	else
++		ints = QSPI_ERR_IRQS | RESP_FIFO_RDY;
++	writel(ints, ctrl->base + MSTR_INT_EN);
++
++	/* Kick off the transfer */
++	qcom_qspi_pio_xfer_ctrl(ctrl);
++}
++
++static void qcom_qspi_handle_err(struct spi_master *master,
++				 struct spi_message *msg)
++{
++	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ctrl->lock, flags);
++	writel(0, ctrl->base + MSTR_INT_EN);
++	ctrl->xfer.rem_bytes = 0;
++	spin_unlock_irqrestore(&ctrl->lock, flags);
++}
++
++static int qcom_qspi_transfer_one(struct spi_master *master,
++				  struct spi_device *slv,
++				  struct spi_transfer *xfer)
++{
++	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	int ret;
++	unsigned long speed_hz;
++	unsigned long flags;
++
++	speed_hz = slv->max_speed_hz;
++	if (xfer->speed_hz)
++		speed_hz = xfer->speed_hz;
++
++	/* In regular operation (SBL_EN=1) core must be 4x transfer clock */
++	ret = clk_set_rate(ctrl->clks[QSPI_CLK_CORE].clk, speed_hz * 4);
++	if (ret) {
++		dev_err(ctrl->dev, "Failed to set core clk %d\n", ret);
++		return ret;
++	}
++
++	spin_lock_irqsave(&ctrl->lock, flags);
++
++	/* We are half duplex, so either rx or tx will be set */
++	if (xfer->rx_buf) {
++		ctrl->xfer.dir = QSPI_READ;
++		ctrl->xfer.buswidth = xfer->rx_nbits;
++		ctrl->xfer.rx_buf = xfer->rx_buf;
++	} else {
++		ctrl->xfer.dir = QSPI_WRITE;
++		ctrl->xfer.buswidth = xfer->tx_nbits;
++		ctrl->xfer.tx_buf = xfer->tx_buf;
++	}
++	ctrl->xfer.is_last = list_is_last(&xfer->transfer_list,
++					  &master->cur_msg->transfers);
++	ctrl->xfer.rem_bytes = xfer->len;
++	qcom_qspi_pio_xfer(ctrl);
++
++	spin_unlock_irqrestore(&ctrl->lock, flags);
++
++	/* We'll call spi_finalize_current_transfer() when done */
++	return 1;
++}
++
++static int qcom_qspi_prepare_message(struct spi_master *master,
++				     struct spi_message *message)
++{
++	u32 mstr_cfg;
++	struct qcom_qspi *ctrl;
++	int tx_data_oe_delay = 1;
++	int tx_data_delay = 1;
++	unsigned long flags;
++
++	ctrl = spi_master_get_devdata(master);
++	spin_lock_irqsave(&ctrl->lock, flags);
++
++	mstr_cfg = readl(ctrl->base + MSTR_CONFIG);
++	mstr_cfg &= ~CHIP_SELECT_NUM;
++	if (message->spi->chip_select)
++		mstr_cfg |= CHIP_SELECT_NUM;
++
++	mstr_cfg |= FB_CLK_EN | PIN_WPN | PIN_HOLDN | SBL_EN | FULL_CYCLE_MODE;
++	mstr_cfg &= ~(SPI_MODE_MSK | TX_DATA_OE_DELAY_MSK | TX_DATA_DELAY_MSK);
++	mstr_cfg |= message->spi->mode << SPI_MODE_SHFT;
++	mstr_cfg |= tx_data_oe_delay << TX_DATA_OE_DELAY_SHFT;
++	mstr_cfg |= tx_data_delay << TX_DATA_DELAY_SHFT;
++	mstr_cfg &= ~DMA_ENABLE;
++
++	writel(mstr_cfg, ctrl->base + MSTR_CONFIG);
++	spin_unlock_irqrestore(&ctrl->lock, flags);
++
++	return 0;
++}
++
++static irqreturn_t pio_read(struct qcom_qspi *ctrl)
++{
++	u32 rd_fifo_status;
++	u32 rd_fifo;
++	unsigned int wr_cnts;
++	unsigned int bytes_to_read;
++	unsigned int words_to_read;
++	u32 *word_buf;
++	u8 *byte_buf;
++	int i;
++
++	rd_fifo_status = readl(ctrl->base + RD_FIFO_STATUS);
++
++	if (!(rd_fifo_status & FIFO_RDY)) {
++		dev_dbg(ctrl->dev, "Spurious IRQ %#x\n", rd_fifo_status);
++		return IRQ_NONE;
++	}
++
++	wr_cnts = (rd_fifo_status & WR_CNTS_MSK) >> WR_CNTS_SHFT;
++	wr_cnts = min(wr_cnts, ctrl->xfer.rem_bytes);
++
++	words_to_read = wr_cnts / QSPI_BYTES_PER_WORD;
++	bytes_to_read = wr_cnts % QSPI_BYTES_PER_WORD;
++
++	if (words_to_read) {
++		word_buf = ctrl->xfer.rx_buf;
++		ctrl->xfer.rem_bytes -= words_to_read * QSPI_BYTES_PER_WORD;
++		ioread32_rep(ctrl->base + RD_FIFO, word_buf, words_to_read);
++		ctrl->xfer.rx_buf = word_buf + words_to_read;
++	}
++
++	if (bytes_to_read) {
++		byte_buf = ctrl->xfer.rx_buf;
++		rd_fifo = readl(ctrl->base + RD_FIFO);
++		ctrl->xfer.rem_bytes -= bytes_to_read;
++		for (i = 0; i < bytes_to_read; i++)
++			*byte_buf++ = rd_fifo >> (i * BITS_PER_BYTE);
++		ctrl->xfer.rx_buf = byte_buf;
++	}
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t pio_write(struct qcom_qspi *ctrl)
++{
++	const void *xfer_buf = ctrl->xfer.tx_buf;
++	const int *word_buf;
++	const char *byte_buf;
++	unsigned int wr_fifo_bytes;
++	unsigned int wr_fifo_words;
++	unsigned int wr_size;
++	unsigned int rem_words;
++
++	wr_fifo_bytes = readl(ctrl->base + PIO_XFER_STATUS);
++	wr_fifo_bytes >>= WR_FIFO_BYTES_SHFT;
++
++	if (ctrl->xfer.rem_bytes < QSPI_BYTES_PER_WORD) {
++		/* Process the last 1-3 bytes */
++		wr_size = min(wr_fifo_bytes, ctrl->xfer.rem_bytes);
++		ctrl->xfer.rem_bytes -= wr_size;
++
++		byte_buf = xfer_buf;
++		while (wr_size--)
++			writel(*byte_buf++,
++			       ctrl->base + PIO_DATAOUT_1B);
++		ctrl->xfer.tx_buf = byte_buf;
++	} else {
++		/*
++		 * Process all the whole words; to keep things simple we'll
++		 * just wait for the next interrupt to handle the last 1-3
++		 * bytes if we don't have an even number of words.
++		 */
++		rem_words = ctrl->xfer.rem_bytes / QSPI_BYTES_PER_WORD;
++		wr_fifo_words = wr_fifo_bytes / QSPI_BYTES_PER_WORD;
++
++		wr_size = min(rem_words, wr_fifo_words);
++		ctrl->xfer.rem_bytes -= wr_size * QSPI_BYTES_PER_WORD;
++
++		word_buf = xfer_buf;
++		iowrite32_rep(ctrl->base + PIO_DATAOUT_4B, word_buf, wr_size);
++		ctrl->xfer.tx_buf = word_buf + wr_size;
++
++	}
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t qcom_qspi_irq(int irq, void *dev_id)
++{
++	u32 int_status;
++	struct qcom_qspi *ctrl = dev_id;
++	irqreturn_t ret = IRQ_NONE;
++	unsigned long flags;
++
++	spin_lock_irqsave(&ctrl->lock, flags);
++
++	int_status = readl(ctrl->base + MSTR_INT_STATUS);
++	writel(int_status, ctrl->base + MSTR_INT_STATUS);
++
++	if (ctrl->xfer.dir == QSPI_WRITE) {
++		if (int_status & WR_FIFO_EMPTY)
++			ret = pio_write(ctrl);
++	} else {
++		if (int_status & RESP_FIFO_RDY)
++			ret = pio_read(ctrl);
++	}
++
++	if (int_status & QSPI_ERR_IRQS) {
++		if (int_status & RESP_FIFO_UNDERRUN)
++			dev_err(ctrl->dev, "IRQ error: FIFO underrun\n");
++		if (int_status & WR_FIFO_OVERRUN)
++			dev_err(ctrl->dev, "IRQ error: FIFO overrun\n");
++		if (int_status & HRESP_FROM_NOC_ERR)
++			dev_err(ctrl->dev, "IRQ error: NOC response error\n");
++		ret = IRQ_HANDLED;
++	}
++
++	if (!ctrl->xfer.rem_bytes) {
++		writel(0, ctrl->base + MSTR_INT_EN);
++		spi_finalize_current_transfer(dev_get_drvdata(ctrl->dev));
++	}
++
++	spin_unlock_irqrestore(&ctrl->lock, flags);
++	return ret;
++}
++
++static int qcom_qspi_probe(struct platform_device *pdev)
++{
++	int ret;
++	struct device *dev;
++	struct resource *res;
++	struct spi_master *master;
++	struct qcom_qspi *ctrl;
++
++	dev = &pdev->dev;
++
++	master = spi_alloc_master(dev, sizeof(*ctrl));
++	if (!master)
++		return -ENOMEM;
++
++	platform_set_drvdata(pdev, master);
++
++	ctrl = spi_master_get_devdata(master);
++
++	spin_lock_init(&ctrl->lock);
++	ctrl->dev = dev;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	ctrl->base = devm_ioremap_resource(dev, res);
++	if (IS_ERR(ctrl->base)) {
++		ret = PTR_ERR(ctrl->base);
++		goto exit_probe_master_put;
++	}
++
++	ctrl->clks[QSPI_CLK_CORE].id = "core";
++	ctrl->clks[QSPI_CLK_IFACE].id = "iface";
++	ret = devm_clk_bulk_get(dev, QSPI_NUM_CLKS, ctrl->clks);
++	if (ret)
++		goto exit_probe_master_put;
++
++	ret = platform_get_irq(pdev, 0);
++	if (ret < 0) {
++		dev_err(dev, "Failed to get irq %d\n", ret);
++		goto exit_probe_master_put;
++	}
++	ret = devm_request_irq(dev, ret, qcom_qspi_irq,
++			IRQF_TRIGGER_HIGH, dev_name(dev), ctrl);
++	if (ret) {
++		dev_err(dev, "Failed to request irq %d\n", ret);
++		goto exit_probe_master_put;
++	}
++
++	master->max_speed_hz = 300000000;
++	master->num_chipselect = QSPI_NUM_CS;
++	master->bus_num = -1;
++	master->dev.of_node = pdev->dev.of_node;
++	master->mode_bits = SPI_MODE_0 |
++			    SPI_TX_DUAL | SPI_RX_DUAL |
++			    SPI_TX_QUAD | SPI_RX_QUAD;
++	master->flags = SPI_MASTER_HALF_DUPLEX;
++	master->prepare_message = qcom_qspi_prepare_message;
++	master->transfer_one = qcom_qspi_transfer_one;
++	master->handle_err = qcom_qspi_handle_err;
++	master->auto_runtime_pm = true;
++
++	pm_runtime_enable(dev);
++
++	ret = spi_register_master(master);
++	if (!ret)
++		return 0;
++
++	pm_runtime_disable(dev);
++
++exit_probe_master_put:
++	spi_master_put(master);
++
++	return ret;
++}
++
++static int qcom_qspi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++
++	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
++	spi_unregister_master(master);
++
++	pm_runtime_disable(&pdev->dev);
++
++	return 0;
++}
++
++static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++
++	clk_bulk_disable_unprepare(QSPI_NUM_CLKS, ctrl->clks);
++
++	return 0;
++}
++
++static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++
++	return clk_bulk_prepare_enable(QSPI_NUM_CLKS, ctrl->clks);
++}
++
++static int __maybe_unused qcom_qspi_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	int ret;
++
++	ret = spi_master_suspend(master);
++	if (ret)
++		return ret;
++
++	ret = pm_runtime_force_suspend(dev);
++	if (ret)
++		spi_master_resume(master);
++
++	return ret;
++}
++
++static int __maybe_unused qcom_qspi_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_resume(dev);
++	if (ret)
++		return ret;
++
++	ret = spi_master_resume(master);
++	if (ret)
++		pm_runtime_force_suspend(dev);
++
++	return ret;
++}
++
++static const struct dev_pm_ops qcom_qspi_dev_pm_ops = {
++	SET_RUNTIME_PM_OPS(qcom_qspi_runtime_suspend,
++			   qcom_qspi_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(qcom_qspi_suspend, qcom_qspi_resume)
++};
++
++static const struct of_device_id qcom_qspi_dt_match[] = {
++	{ .compatible = "qcom,qspi-v1", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, qcom_qspi_dt_match);
++
++static struct platform_driver qcom_qspi_driver = {
++	.driver = {
++		.name		= "qcom_qspi",
++		.pm		= &qcom_qspi_dev_pm_ops,
++		.of_match_table = qcom_qspi_dt_match,
++	},
++	.probe = qcom_qspi_probe,
++	.remove = qcom_qspi_remove,
++};
++module_platform_driver(qcom_qspi_driver);
++
++MODULE_DESCRIPTION("SPI driver for QSPI cores");
++MODULE_LICENSE("GPL v2");
+-- 
+2.19.0.rc2

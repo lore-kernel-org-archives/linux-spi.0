@@ -1,61 +1,53 @@
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
-Subject: Re: [PATCH v2 2/2] mtd: spi-nor: add entry for mt35xu512aba flash
-Date: Thu, 11 Oct 2018 19:03:09 +0300
-Message-ID: <d390e12b-94e3-ab5a-3b7e-05381c090724@microchip.com>
-References: <1539245630-26611-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1539245630-26611-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Re: [PATCH 10/11] spi: pxa2xx: Add ready signal
+Date: Thu, 11 Oct 2018 18:13:26 +0200
+Message-ID: <a13569d534e4393abff2ac704cee45df2bcd9656.camel@v3.sk>
+References: <20181010170936.316862-1-lkundrak@v3.sk>
+         <20181010170936.316862-11-lkundrak@v3.sk>
+         <CAMuHMdXmsw3jjp8wFuuK_Vz8kwCP4=L59sc4kZafXzrb=hKv7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>, quozl@laptop.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539245630-26611-3-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
+In-Reply-To: <CAMuHMdXmsw3jjp8wFuuK_Vz8kwCP4=L59sc4kZafXzrb=hKv7g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-On 10/11/2018 11:15 AM, Yogesh Narayan Gaur wrote:
-> Add entry for mt35xu512aba Micron NOR flash.
-> This flash is having uniform sector erase size of 128KB, have
-> support of FSR(flag status register), flash size is 64MB and
-> supports 4-byte commands.
+On Thu, 2018-10-11 at 09:28 +0200, Geert Uytterhoeven wrote:
+> Hi Lubomir,
 > 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> ---
-> Changes for v2:
-> - Removed checkpatch warning, 80 character limit.
+> On Wed, Oct 10, 2018 at 7:10 PM Lubomir Rintel <lkundrak@v3.sk>
+> wrote:
+> > Strobe a GPIO line when the slave TX FIFO is filled. This is how
+> > the
+> > Embedded Controller on an OLPC XO-1.75 machine, that happens to be
+> > a SPI
+> > master, learns that it can initiate a transaction.
+> > 
+> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 > 
->  drivers/mtd/spi-nor/spi-nor.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> Thanks for your patch!
 > 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index b8b494f..e0d95ac 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -1405,6 +1405,10 @@ static const struct flash_info spi_nor_ids[] = {
->  	{ "n25q00a",     INFO(0x20bb21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
->  	{ "mt25qu02g",   INFO(0x20bb22, 0, 64 * 1024, 4096, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
->  
-> +	/* Micron */
-> +	{ "mt35xu512aba", INFO(0x2c5b1a, 0, 128 * 1024, 512,
-> +		SECT_4K | USE_FSR | SPI_NOR_4B_OPCODES) },
-> +
+> I'm repeating my comments on the RFC below:
 
-The style is slightly different from what Brian proposed back in
-9648388fc7737365be7a8092e77df78ccc2cd1a4. For consistency reasons, I think we
-should use the same style in all entries.
+Ah, sorry for not addressing those; it somehow slipped through my
+fingers. I'll wait a while to collect more feedback before sending v2
+and then I'll include fixes for those.
 
-Since I verified the correctness of the patch and my comment targets just a
-cosmetic change, I'll let the maintainers decide:
+Thanks for the review.
 
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Lubo

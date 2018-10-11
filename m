@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: mark use_dma as bool" to the spi tree
-Date: Thu, 11 Oct 2018 15:56:00 +0100 (BST)
-Message-ID: <20181011145600.9F3DC11223ED@debutante.sirena.org.uk>
-References: <20181010090038.20834-6-kernel@esmil.dk>
+Subject: Applied "spi: rockchip: simplify spi enable logic" to the spi tree
+Date: Thu, 11 Oct 2018 15:55:53 +0100 (BST)
+Message-ID: <20181011145553.07C8111223ED@debutante.sirena.org.uk>
+References: <20181010090038.20834-8-kernel@esmil.dk>
 Cc: Mark Brown <broonie@kernel.org>,
         linux-rockchip@lists.infradead.org,
         Rob Herring <robh+dt@kernel.org>,
@@ -21,13 +21,13 @@ Cc: Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010090038.20834-6-kernel@esmil.dk>
+In-Reply-To: <20181010090038.20834-8-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: mark use_dma as bool
+   spi: rockchip: simplify spi enable logic
 
 has been applied to the spi tree at
 
@@ -52,45 +52,90 @@ to this mail.
 Thanks,
 Mark
 
->From f340b920511a666b02d371e88801d3817ea7a880 Mon Sep 17 00:00:00 2001
+>From a3c174021ce780f5d2e9b2105e2cb4903a37226d Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 10 Oct 2018 11:00:36 +0200
-Subject: [PATCH] spi: rockchip: mark use_dma as bool
+Date: Wed, 10 Oct 2018 11:00:38 +0200
+Subject: [PATCH] spi: rockchip: simplify spi enable logic
 
-The driver data has a u32 field use_dma which is
-only ever used as a boolean, so change its type
-to reflect that.
+Let the dma/non-dma code paths handle the spi enable
+flag themselves. This removes some logic to determine
+if the flag should be turned on before or after dma
+and also don't leave the spi enabled if the dma path
+fails.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-rockchip.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 6a53b940f2f5..99943aa71bc1 100644
+index 6fa809da61dd..ffa564fbf970 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -202,7 +202,7 @@ struct rockchip_spi {
+@@ -379,6 +379,8 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ {
+ 	int remain = 0;
  
- 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
++	spi_enable_chip(rs, 1);
++
+ 	do {
+ 		if (rs->tx) {
+ 			remain = rs->tx_end - rs->tx;
+@@ -498,6 +500,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		dma_async_issue_pending(rs->dma_rx.ch);
+ 	}
  
--	u32 use_dma;
-+	bool use_dma;
- 	struct sg_table tx_sg;
- 	struct sg_table rx_sg;
- 	struct rockchip_spi_dma_data dma_rx;
-@@ -628,9 +628,9 @@ static int rockchip_spi_transfer_one(
++	spi_enable_chip(rs, 1);
++
+ 	if (txdesc) {
+ 		spin_lock_irqsave(&rs->lock, flags);
+ 		rs->state |= TXBUSY;
+@@ -506,7 +510,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		dma_async_issue_pending(rs->dma_tx.ch);
+ 	}
  
- 	/* we need prepare dma before spi was enabled */
- 	if (master->can_dma && master->can_dma(master, spi, xfer))
--		rs->use_dma = 1;
-+		rs->use_dma = true;
- 	else
--		rs->use_dma = 0;
-+		rs->use_dma = false;
+-	return 0;
++	/* 1 means the transfer is in progress */
++	return 1;
+ }
+ 
+ static void rockchip_spi_config(struct rockchip_spi *rs)
+@@ -589,7 +594,6 @@ static int rockchip_spi_transfer_one(
+ 		struct spi_device *spi,
+ 		struct spi_transfer *xfer)
+ {
+-	int ret = 0;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+ 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
+@@ -633,24 +637,10 @@ static int rockchip_spi_transfer_one(
  
  	rockchip_spi_config(rs);
  
+-	if (rs->use_dma) {
+-		if (rs->tmode == CR0_XFM_RO) {
+-			/* rx: dma must be prepared first */
+-			ret = rockchip_spi_prepare_dma(rs);
+-			spi_enable_chip(rs, 1);
+-		} else {
+-			/* tx or tr: spi must be enabled first */
+-			spi_enable_chip(rs, 1);
+-			ret = rockchip_spi_prepare_dma(rs);
+-		}
+-		/* successful DMA prepare means the transfer is in progress */
+-		ret = ret ? ret : 1;
+-	} else {
+-		spi_enable_chip(rs, 1);
+-		ret = rockchip_spi_pio_transfer(rs);
+-	}
++	if (rs->use_dma)
++		return rockchip_spi_prepare_dma(rs);
+ 
+-	return ret;
++	return rockchip_spi_pio_transfer(rs);
+ }
+ 
+ static bool rockchip_spi_can_dma(struct spi_master *master,
 -- 
 2.19.0.rc2

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: simplify spi enable logic" to the spi tree
-Date: Thu, 11 Oct 2018 15:55:53 +0100 (BST)
-Message-ID: <20181011145553.07C8111223ED@debutante.sirena.org.uk>
-References: <20181010090038.20834-8-kernel@esmil.dk>
+Subject: Applied "spi: rockchip: directly use direction constants" to the spi tree
+Date: Thu, 11 Oct 2018 15:55:56 +0100 (BST)
+Message-ID: <20181011145556.B71F911223ED@debutante.sirena.org.uk>
+References: <20181010090038.20834-7-kernel@esmil.dk>
 Cc: Mark Brown <broonie@kernel.org>,
         linux-rockchip@lists.infradead.org,
         Rob Herring <robh+dt@kernel.org>,
@@ -21,13 +21,13 @@ Cc: Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010090038.20834-8-kernel@esmil.dk>
+In-Reply-To: <20181010090038.20834-7-kernel@esmil.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: simplify spi enable logic
+   spi: rockchip: directly use direction constants
 
 has been applied to the spi tree at
 
@@ -52,90 +52,77 @@ to this mail.
 Thanks,
 Mark
 
->From a3c174021ce780f5d2e9b2105e2cb4903a37226d Mon Sep 17 00:00:00 2001
+>From d9071b7e9fc474e474e3b865428a8d30d88daaf4 Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 10 Oct 2018 11:00:38 +0200
-Subject: [PATCH] spi: rockchip: simplify spi enable logic
+Date: Wed, 10 Oct 2018 11:00:37 +0200
+Subject: [PATCH] spi: rockchip: directly use direction constants
 
-Let the dma/non-dma code paths handle the spi enable
-flag themselves. This removes some logic to determine
-if the flag should be turned on before or after dma
-and also don't leave the spi enabled if the dma path
-fails.
+The dma direction for the tx and rx dma channels never
+change, so just use the constants directly rather
+than storing them in device data.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/spi/spi-rockchip.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 6fa809da61dd..ffa564fbf970 100644
+index 99943aa71bc1..6fa809da61dd 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -379,6 +379,8 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- {
- 	int remain = 0;
+@@ -164,7 +164,6 @@ enum rockchip_ssi_type {
  
-+	spi_enable_chip(rs, 1);
-+
- 	do {
- 		if (rs->tx) {
- 			remain = rs->tx_end - rs->tx;
-@@ -498,6 +500,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		dma_async_issue_pending(rs->dma_rx.ch);
- 	}
+ struct rockchip_spi_dma_data {
+ 	struct dma_chan *ch;
+-	enum dma_transfer_direction direction;
+ 	dma_addr_t addr;
+ };
  
-+	spi_enable_chip(rs, 1);
-+
- 	if (txdesc) {
- 		spin_lock_irqsave(&rs->lock, flags);
- 		rs->state |= TXBUSY;
-@@ -506,7 +510,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		dma_async_issue_pending(rs->dma_tx.ch);
- 	}
+@@ -451,7 +450,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
--	return 0;
-+	/* 1 means the transfer is in progress */
-+	return 1;
- }
+ 	rxdesc = NULL;
+ 	if (rs->rx) {
+-		rxconf.direction = rs->dma_rx.direction;
++		rxconf.direction = DMA_DEV_TO_MEM;
+ 		rxconf.src_addr = rs->dma_rx.addr;
+ 		rxconf.src_addr_width = rs->n_bytes;
+ 		rxconf.src_maxburst = 1;
+@@ -460,7 +459,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		rxdesc = dmaengine_prep_slave_sg(
+ 				rs->dma_rx.ch,
+ 				rs->rx_sg.sgl, rs->rx_sg.nents,
+-				rs->dma_rx.direction, DMA_PREP_INTERRUPT);
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT);
+ 		if (!rxdesc)
+ 			return -EINVAL;
  
- static void rockchip_spi_config(struct rockchip_spi *rs)
-@@ -589,7 +594,6 @@ static int rockchip_spi_transfer_one(
- 		struct spi_device *spi,
- 		struct spi_transfer *xfer)
- {
--	int ret = 0;
- 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+@@ -470,7 +469,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
- 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
-@@ -633,24 +637,10 @@ static int rockchip_spi_transfer_one(
+ 	txdesc = NULL;
+ 	if (rs->tx) {
+-		txconf.direction = rs->dma_tx.direction;
++		txconf.direction = DMA_MEM_TO_DEV;
+ 		txconf.dst_addr = rs->dma_tx.addr;
+ 		txconf.dst_addr_width = rs->n_bytes;
+ 		txconf.dst_maxburst = rs->fifo_len / 2;
+@@ -479,7 +478,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		txdesc = dmaengine_prep_slave_sg(
+ 				rs->dma_tx.ch,
+ 				rs->tx_sg.sgl, rs->tx_sg.nents,
+-				rs->dma_tx.direction, DMA_PREP_INTERRUPT);
++				DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT);
+ 		if (!txdesc) {
+ 			if (rxdesc)
+ 				dmaengine_terminate_sync(rs->dma_rx.ch);
+@@ -775,8 +774,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
+ 		rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
+ 		rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
+-		rs->dma_tx.direction = DMA_MEM_TO_DEV;
+-		rs->dma_rx.direction = DMA_DEV_TO_MEM;
  
- 	rockchip_spi_config(rs);
- 
--	if (rs->use_dma) {
--		if (rs->tmode == CR0_XFM_RO) {
--			/* rx: dma must be prepared first */
--			ret = rockchip_spi_prepare_dma(rs);
--			spi_enable_chip(rs, 1);
--		} else {
--			/* tx or tr: spi must be enabled first */
--			spi_enable_chip(rs, 1);
--			ret = rockchip_spi_prepare_dma(rs);
--		}
--		/* successful DMA prepare means the transfer is in progress */
--		ret = ret ? ret : 1;
--	} else {
--		spi_enable_chip(rs, 1);
--		ret = rockchip_spi_pio_transfer(rs);
--	}
-+	if (rs->use_dma)
-+		return rockchip_spi_prepare_dma(rs);
- 
--	return ret;
-+	return rockchip_spi_pio_transfer(rs);
- }
- 
- static bool rockchip_spi_can_dma(struct spi_master *master,
+ 		master->can_dma = rockchip_spi_can_dma;
+ 		master->dma_tx = rs->dma_tx.ch;
 -- 
 2.19.0.rc2

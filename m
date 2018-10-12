@@ -1,8 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH RFC 12/18] mtd: spi-nor: Provide a hook to tweak flash
- parameters
-Date: Fri, 12 Oct 2018 10:48:19 +0200
-Message-ID: <20181012084825.23697-13-boris.brezillon@bootlin.com>
+Subject: [PATCH RFC 11/18] mtd: spi-nor: Prepare things for 2byte opcodes
+Date: Fri, 12 Oct 2018 10:48:18 +0200
+Message-ID: <20181012084825.23697-12-boris.brezillon@bootlin.com>
 References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -29,189 +28,110 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Some NORs implement X-X-X operations in a vendor/chip-specific way,
-and adding all cases to the common op selection logic would hurt
-readability.
-
-Add a ->tweak_params() hook to flash_info such that NORs that need this
-kind of customization process can specify it.
-
-Note that we need to move struct spi_nor_flash_parameter definition
-(and all its dependencies) before struct flash_info definition to
-avoid a forward declaration of struct spi_nor_flash_parameter.
+When operating in octo mode we might have to use 2byte opcodes. Patch
+struct spi_nor_{read,pp}_command to take that into account.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 135 ++++++++++++++++++++++--------------------
- 1 file changed, 70 insertions(+), 65 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 26 ++++++++++++++++++--------
+ include/linux/mtd/spi-nor.h   |  2 ++
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 86625f1e25b3..7660fe27d82a 100644
+index 33a07d9eb7a8..86625f1e25b3 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -43,6 +43,71 @@
- #define SPI_NOR_MAX_ID_LEN	6
- #define SPI_NOR_MAX_ADDR_WIDTH	4
+@@ -200,6 +200,9 @@ static ssize_t spi_nor_spimem_read_data(struct spi_nor *nor, loff_t ofs,
+ 	/* convert the dummy cycles to the number of bytes */
+ 	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
  
-+struct spi_nor_read_command {
-+	u8			num_mode_clocks;
-+	u8			num_wait_states;
++	if (nor->read_proto & SNOR_PROTO_INST_2BYTE)
++		op.cmd.nbytes = 2;
++
+ 	spi_nor_adjust_op(nor, &op);
+ 
+ 	while (remaining) {
+@@ -258,6 +261,9 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t ofs,
+ 	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
+ 	op.data.buswidth = spi_nor_get_protocol_data_nbits(nor->write_proto);
+ 
++	if (nor->write_proto & SNOR_PROTO_INST_2BYTE)
++		op.cmd.nbytes = 2;
++
+ 	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
+ 		op.addr.nbytes = 0;
+ 
+@@ -2433,13 +2439,13 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
+ struct spi_nor_read_command {
+ 	u8			num_mode_clocks;
+ 	u8			num_wait_states;
+-	u8			opcode;
+-	enum spi_nor_protocol	proto;
 +	u16			opcode;
 +	u32			proto;
-+};
-+
-+struct spi_nor_pp_command {
-+	u16			opcode;
-+	u32			proto;
-+};
-+
-+enum spi_nor_read_command_index {
-+	SNOR_CMD_READ,
-+	SNOR_CMD_READ_FAST,
-+	SNOR_CMD_READ_1_1_1_DTR,
-+
-+	/* Dual SPI */
-+	SNOR_CMD_READ_1_1_2,
-+	SNOR_CMD_READ_1_2_2,
-+	SNOR_CMD_READ_2_2_2,
-+	SNOR_CMD_READ_1_2_2_DTR,
-+
-+	/* Quad SPI */
-+	SNOR_CMD_READ_1_1_4,
-+	SNOR_CMD_READ_1_4_4,
-+	SNOR_CMD_READ_4_4_4,
-+	SNOR_CMD_READ_1_4_4_DTR,
-+
-+	/* Octo SPI */
-+	SNOR_CMD_READ_1_1_8,
-+	SNOR_CMD_READ_1_8_8,
-+	SNOR_CMD_READ_8_8_8,
-+	SNOR_CMD_READ_1_8_8_DTR,
-+
-+	SNOR_CMD_READ_MAX
-+};
-+
-+enum spi_nor_pp_command_index {
-+	SNOR_CMD_PP,
-+
-+	/* Quad SPI */
-+	SNOR_CMD_PP_1_1_4,
-+	SNOR_CMD_PP_1_4_4,
-+	SNOR_CMD_PP_4_4_4,
-+
-+	/* Octo SPI */
-+	SNOR_CMD_PP_1_1_8,
-+	SNOR_CMD_PP_1_8_8,
-+	SNOR_CMD_PP_8_8_8,
-+
-+	SNOR_CMD_PP_MAX
-+};
-+
-+struct spi_nor_flash_parameter {
-+	u64				size;
-+	u32				page_size;
-+
-+	struct spi_nor_hwcaps		hwcaps;
-+	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
-+	struct spi_nor_pp_command	page_programs[SNOR_CMD_PP_MAX];
-+
-+	int (*quad_enable)(struct spi_nor *nor);
-+};
-+
- struct flash_info {
- 	char		*name;
- 
-@@ -93,6 +158,8 @@ struct flash_info {
- #define USE_CLSR		BIT(14)	/* use CLSR command */
- 
- 	int	(*quad_enable)(struct spi_nor *nor);
-+	void	(*tweak_params)(struct spi_nor *nor,
-+				struct spi_nor_flash_parameter *params);
- 	int	(*change_mode)(struct spi_nor *nor, u32 newmode);
- 	void	(*adjust_op)(struct spi_nor *nor, struct spi_mem_op *op);
  };
-@@ -2436,71 +2503,6 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
- 	return 0;
- }
  
--struct spi_nor_read_command {
--	u8			num_mode_clocks;
--	u8			num_wait_states;
--	u16			opcode;
--	u32			proto;
--};
--
--struct spi_nor_pp_command {
--	u16			opcode;
--	u32			proto;
--};
--
--enum spi_nor_read_command_index {
--	SNOR_CMD_READ,
--	SNOR_CMD_READ_FAST,
--	SNOR_CMD_READ_1_1_1_DTR,
--
--	/* Dual SPI */
--	SNOR_CMD_READ_1_1_2,
--	SNOR_CMD_READ_1_2_2,
--	SNOR_CMD_READ_2_2_2,
--	SNOR_CMD_READ_1_2_2_DTR,
--
--	/* Quad SPI */
--	SNOR_CMD_READ_1_1_4,
--	SNOR_CMD_READ_1_4_4,
--	SNOR_CMD_READ_4_4_4,
--	SNOR_CMD_READ_1_4_4_DTR,
--
--	/* Octo SPI */
--	SNOR_CMD_READ_1_1_8,
--	SNOR_CMD_READ_1_8_8,
--	SNOR_CMD_READ_8_8_8,
--	SNOR_CMD_READ_1_8_8_DTR,
--
--	SNOR_CMD_READ_MAX
--};
--
--enum spi_nor_pp_command_index {
--	SNOR_CMD_PP,
--
--	/* Quad SPI */
--	SNOR_CMD_PP_1_1_4,
--	SNOR_CMD_PP_1_4_4,
--	SNOR_CMD_PP_4_4_4,
--
--	/* Octo SPI */
--	SNOR_CMD_PP_1_1_8,
--	SNOR_CMD_PP_1_8_8,
--	SNOR_CMD_PP_8_8_8,
--
--	SNOR_CMD_PP_MAX
--};
--
--struct spi_nor_flash_parameter {
--	u64				size;
--	u32				page_size;
--
--	struct spi_nor_hwcaps		hwcaps;
--	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
--	struct spi_nor_pp_command	page_programs[SNOR_CMD_PP_MAX];
--
--	int (*quad_enable)(struct spi_nor *nor);
--};
--
- static void
+ struct spi_nor_pp_command {
+-	u8			opcode;
+-	enum spi_nor_protocol	proto;
++	u16			opcode;
++	u32			proto;
+ };
+ 
+ enum spi_nor_read_command_index {
+@@ -2499,8 +2505,7 @@ static void
  spi_nor_set_read_settings(struct spi_nor_read_command *read,
  			  u8 num_mode_clocks,
-@@ -3775,6 +3777,9 @@ static int spi_nor_init_params(struct spi_nor *nor,
- 			memcpy(params, &sfdp_params, sizeof(*params));
- 	}
+ 			  u8 num_wait_states,
+-			  u8 opcode,
+-			  enum spi_nor_protocol proto)
++			  u16 opcode, u32 proto)
+ {
+ 	read->num_mode_clocks = num_mode_clocks;
+ 	read->num_wait_states = num_wait_states;
+@@ -2510,8 +2515,7 @@ spi_nor_set_read_settings(struct spi_nor_read_command *read,
  
-+	if (info->tweak_params)
-+		info->tweak_params(nor, params);
+ static void
+ spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
+-			u8 opcode,
+-			enum spi_nor_protocol proto)
++			u16 opcode, u32 proto)
+ {
+ 	pp->opcode = opcode;
+ 	pp->proto = proto;
+@@ -2887,6 +2891,9 @@ static int spi_nor_spimem_check_readop(struct spi_nor *nor,
+ 	op.dummy.nbytes = (read->num_mode_clocks + read->num_wait_states) *
+ 			  op.dummy.buswidth / 8;
+ 
++	if (read->proto & SNOR_PROTO_INST_2BYTE)
++		op.cmd.nbytes = 2;
 +
- 	return 0;
- }
+ 	/*
+ 	 * First test with 3 address bytes. The opcode itself might already
+ 	 * be a 4B addressing opcode but we don't care, because SPI controller
+@@ -2915,6 +2922,9 @@ static int spi_nor_spimem_check_progop(struct spi_nor *nor,
+ 	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(pp->proto);
+ 	op.data.buswidth = spi_nor_get_protocol_data_nbits(pp->proto);
  
++	if (pp->proto & SNOR_PROTO_INST_2BYTE)
++		op.cmd.nbytes = 2;
++
+ 	/*
+ 	 * First test with 3 address bytes. The opcode itself might already
+ 	 * be a 4B addressing opcode but we don't care, because SPI controller
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index f80aba464eb2..5b0045720049 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -166,6 +166,8 @@
+ 
+ #define SNOR_PROTO_IS_DTR	BIT(24)	/* Double Transfer Rate */
+ 
++#define SNOR_PROTO_INST_2BYTE	BIT(31)
++
+ #define SNOR_PROTO_STR(_inst_nbits, _addr_nbits, _data_nbits)	\
+ 	(SNOR_PROTO_INST(_inst_nbits) |				\
+ 	 SNOR_PROTO_ADDR(_addr_nbits) |				\
 -- 
 2.14.1
 

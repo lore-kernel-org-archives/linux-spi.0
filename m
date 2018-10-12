@@ -1,78 +1,74 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
- Controller
-Date: Fri, 12 Oct 2018 19:00:02 +0200
-Message-ID: <20181012170002.GJ2340@sirena.org.uk>
-References: <20181010170936.316862-1-lkundrak@v3.sk>
- <20181010170936.316862-2-lkundrak@v3.sk>
- <20181011142719.GE25351@sirena.org.uk>
- <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="d6iqOn7HZPWKXx18"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        James Cameron <quozl@laptop.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Applied "spi: imx: use PIO mode if size is small" to the spi tree
+Date: Fri, 12 Oct 2018 19:01:22 +0200 (CEST)
+Message-ID: <20181012170122.C66EC440078@finisterre.ee.mobilebroadband>
+References: <1539196453-8704-4-git-send-email-yibin.gong@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>, linux-spi@vger.kernel.org
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
+In-Reply-To: <1539196453-8704-4-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---d6iqOn7HZPWKXx18
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: use PIO mode if size is small
 
-On Thu, Oct 11, 2018 at 07:59:15PM +0200, Lubomir Rintel wrote:
-> On Thu, 2018-10-11 at 15:27 +0100, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > Please use subject lines matching the style for the subsystem.  This
-> > makes it easier for people to identify relevant patches.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Thanks for the response.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> I'm a little confused here. Why I chose this subject line is because I
-> did this:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
->   git log --no-merges Documentation/devicetree/bindings/
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Try Documentation/devicetree/bindings/spi instead :)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> to figure out what's the typical subject for the DT binding changes.
+Thanks,
+Mark
 
-> I also believed that's the right way to get Rob Herring's and Mark
-> Rutland's attention. Do the device tree binding documentation typically
+>From 133eb8e38b02c6c63a039523fca12737009a6686 Mon Sep 17 00:00:00 2001
+From: Robin Gong <yibin.gong@nxp.com>
+Date: Wed, 10 Oct 2018 10:32:48 +0000
+Subject: [PATCH] spi: imx: use PIO mode if size is small
 
-There *is* some debate for the DT bindings unfortunately.
+Use PIO mode instead if size is smaller than fifo size, since
+dma may be less efficient.
 
-> go in with the associated drivers, or via their tree ("OPEN FIRMWARE
-> AND FLATTENED DEVICE TREE BINDINGS" in MAINTIANERS)?
+Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-They usually go in with the drivers.  This one isn't so bad since it
-does mention SPI, it's a worse problem when that's not present at all.
-
---d6iqOn7HZPWKXx18
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvA0wgACgkQJNaLcl1U
-h9C+/wf/SHmOue+GuQ4l/70jaDVkiGXd2VViu1AvPbMXSLSjt+FF+6Tuag1eyP2v
-4RcuNedih8M3DD3vSEtJPT9vUj5H8pvxuBM1aZno+axfPv1dXDnPAck8+pJ7PfrF
-jtnnZVxBcSIC/QX1DrmkMzvP+T38bQ2hA4wMSVOkH6t+/PkoS3hDUBp+CbqNRMPA
-OOliuTtDUaPJt1QombMTDjAe9o+Tf93YE1QxaXBOy1Wj+m/MERloSws19bxDt+22
-hDQxEQq0xgpNY+GN45hlkMvTlgKmPelc7gvLyGeMOtYbw33NgVD7G3aOT5NM3gH9
-bxf76NSvtFG/O864dHnvw4mKxq+vjA==
-=O9td
------END PGP SIGNATURE-----
-
---d6iqOn7HZPWKXx18--
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 037abbb852a4..dd1ce12aa386 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -224,6 +224,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	if (spi_imx->slave_mode)
+ 		return false;
+ 
++	if (transfer->len < spi_imx->devtype_data->fifo_size)
++		return false;
++
+ 	spi_imx->dynamic_burst = 0;
+ 
+ 	return true;
+-- 
+2.19.0

@@ -1,8 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH RFC 13/18] mtd: spi-nor: Add 8-8-8 mode support to Macronix
- mx25uw51245g
-Date: Fri, 12 Oct 2018 10:48:20 +0200
-Message-ID: <20181012084825.23697-14-boris.brezillon@bootlin.com>
+Subject: [PATCH RFC 10/18] mtd: spi-nor: Add support for X-X-X modes
+Date: Fri, 12 Oct 2018 10:48:17 +0200
+Message-ID: <20181012084825.23697-11-boris.brezillon@bootlin.com>
 References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -29,280 +28,259 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-mx25uw51245g support only 1-1-1 and 8-8-8. Add the necessary hooks to
-support 8-8-8 mode.
+Some NORs only support 1-1-1 and X-X-X modes, and in the case, the
+benefit of using X-X-X mode is obvious, even if this implies extra
+complexity in the core logic, since now the protocol used for a given
+operation depends on the mode the NOR is currently operating in.
+
+To deal with this stateful aspect, we add a ->mode field which keeps
+track of the current mode. We also add a ->change_mode() hook, so that
+NORs can have their own procedure to switch from one mode to another,
+and ->adjust_op() is here to live patch spi_mem_op when a given
+operation is executed (depending on the mode, it might involve extending
+the number of dummy cycle, adding address or cmd cycles, ...).
+
+Finally, ->preferred_mode is here let the core know what mode it should
+enter when resuming or at init time. The preferred mode selection logic
+(spi_nor_select_preferred_mode()) is pretty basic and might be extended
+at some point.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 198 +++++++++++++++++++++++++++++++++++++-----
- include/linux/mtd/spi-nor.h   |  10 +++
- 2 files changed, 187 insertions(+), 21 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 96 +++++++++++++++++++++++++++++++++++++++++--
+ include/linux/mtd/spi-nor.h   | 12 ++++++
+ 2 files changed, 105 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 7660fe27d82a..9cd8677b8cb2 100644
+index 42f299a0b76f..33a07d9eb7a8 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -166,6 +166,26 @@ struct flash_info {
+@@ -93,10 +93,18 @@ struct flash_info {
+ #define USE_CLSR		BIT(14)	/* use CLSR command */
+ 
+ 	int	(*quad_enable)(struct spi_nor *nor);
++	int	(*change_mode)(struct spi_nor *nor, u32 newmode);
++	void	(*adjust_op)(struct spi_nor *nor, struct spi_mem_op *op);
+ };
  
  #define JEDEC_MFR(info)	((info)->id[0])
  
-+static void
-+spi_nor_set_read_settings(struct spi_nor_read_command *read,
-+			  u8 num_mode_clocks,
-+			  u8 num_wait_states,
-+			  u16 opcode, u32 proto)
++static void spi_nor_adjust_op(struct spi_nor *nor, struct spi_mem_op *op)
 +{
-+	read->num_mode_clocks = num_mode_clocks;
-+	read->num_wait_states = num_wait_states;
-+	read->opcode = opcode;
-+	read->proto = proto;
++	if (nor->adjust_op)
++		nor->adjust_op(nor, op);
 +}
 +
-+static void
-+spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
-+			u16 opcode, u32 proto)
-+{
-+	pp->opcode = opcode;
-+	pp->proto = proto;
-+}
-+
- static void spi_nor_adjust_op(struct spi_nor *nor, struct spi_mem_op *op)
+ static int spi_nor_exec_op(struct spi_nor *nor, struct spi_mem_op *op,
+ 			   u64 *addr, void *buf, unsigned int len)
  {
- 	if (nor->adjust_op)
-@@ -515,6 +535,37 @@ static int write_disable(struct spi_nor *nor)
+@@ -106,6 +114,8 @@ static int spi_nor_exec_op(struct spi_nor *nor, struct spi_mem_op *op,
+ 	if (!op || (len && !buf))
+ 		return -EINVAL;
+ 
++	spi_nor_adjust_op(nor, op);
++
+ 	if (op->addr.nbytes && addr)
+ 		op->addr.val = *addr;
+ 
+@@ -150,11 +160,17 @@ static int spi_nor_nodata_op(struct spi_nor *nor, struct spi_mem_op *op)
+ 
+ static int spi_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *val, int len)
+ {
++	if (WARN_ON_ONCE(nor->mode != SPI_NOR_MODE_SPI))
++		return -ENOTSUPP;
++
+ 	return nor->read_reg(nor, opcode, val, len);
+ }
+ 
+ static int spi_nor_write_reg(struct spi_nor *nor, u8 opcode, u8 *val, int len)
+ {
++	if (WARN_ON_ONCE(nor->mode != SPI_NOR_MODE_SPI))
++		return -ENOTSUPP;
++
+ 	return nor->write_reg(nor, opcode, val, len);
+ }
+ 
+@@ -184,6 +200,8 @@ static ssize_t spi_nor_spimem_read_data(struct spi_nor *nor, loff_t ofs,
+ 	/* convert the dummy cycles to the number of bytes */
+ 	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
+ 
++	spi_nor_adjust_op(nor, &op);
++
+ 	while (remaining) {
+ 		op.data.nbytes = remaining < UINT_MAX ? remaining : UINT_MAX;
+ 		if (!usebouncebuf)
+@@ -243,6 +261,8 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t ofs,
+ 	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
+ 		op.addr.nbytes = 0;
+ 
++	spi_nor_adjust_op(nor, &op);
++
+ 	op.data.nbytes = len < UINT_MAX ? len : UINT_MAX;
+ 
+ 	if (!usebouncebuf) {
+@@ -422,6 +442,25 @@ static int write_disable(struct spi_nor *nor)
  	return spi_nor_write_reg(nor, SPINOR_OP_WRDI, NULL, 0);
  }
  
-+static int read_cr2(struct spi_nor *nor, u32 addr, u8 *cr2)
++static int spi_nor_change_mode(struct spi_nor *nor, u32 newmode)
 +{
-+	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RDCR2, 1),
-+					  SPI_MEM_OP_ADDR(4, addr, 1),
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_IN(0, NULL, 1));
-+
-+	if (!nor->spimem)
-+		return -ENOTSUPP;
-+
-+	return spi_nor_data_op(nor, &op, cr2, 1);
-+}
-+
-+static int write_cr2(struct spi_nor *nor, u32 addr, u8 cr2)
-+{
-+	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_WRCR2, 1),
-+					  SPI_MEM_OP_ADDR(4, addr, 1),
-+					  SPI_MEM_OP_NO_DUMMY,
-+					  SPI_MEM_OP_DATA_OUT(0, NULL, 1));
 +	int ret;
 +
-+	if (!nor->spimem)
++	if (newmode == nor->mode)
++		return 0;
++
++	if (!nor->change_mode)
 +		return -ENOTSUPP;
 +
-+	ret = write_enable(nor);
++	ret = nor->change_mode(nor, newmode);
 +	if (ret)
 +		return ret;
 +
-+	return spi_nor_data_op(nor, &op, &cr2, 1);
++	nor->mode = newmode;
++
++	return 0;
 +}
 +
- static int spi_nor_change_mode(struct spi_nor *nor, u32 newmode)
+ static struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
  {
- 	int ret;
-@@ -1626,6 +1677,125 @@ static int macronix_quad_enable(struct spi_nor *nor)
+ 	return mtd->priv;
+@@ -2902,9 +2941,6 @@ spi_nor_spimem_adjust_hwcaps(struct spi_nor *nor,
+ 	/* DTR modes are not supported yet, mask them all. */
+ 	*hwcaps &= ~SNOR_HWCAPS_DTR;
+ 
+-	/* X-X-X modes are not supported yet, mask them all. */
+-	*hwcaps &= ~SNOR_HWCAPS_X_X_X;
+-
+ 	/* Start with read commands. */
+ 	for (cap = 0; cap < 32; cap++) {
+ 		int idx;
+@@ -3884,6 +3920,46 @@ static int spi_nor_select_erase(struct spi_nor *nor, u32 wanted_size)
  	return 0;
  }
  
-+static int macronix_opi_change_mode(struct spi_nor *nor,
-+				    enum spi_nor_mode newmode)
++static void spi_nor_select_preferred_mode(struct spi_nor *nor, u32 hwcaps)
 +{
-+	int ret;
-+	u8 val;
-+
-+	ret = read_cr2(nor, CR2_REG0, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= ~GENMASK(1, 0);
-+
-+	switch (newmode) {
-+	case SPI_NOR_MODE_SPI:
-+		val |= CR2_REG0_MODE_SPI;
-+		break;
-+
-+	case SPI_NOR_MODE_OPI:
-+		val |= CR2_REG0_MODE_OPI_STR;
-+		break;
-+
-+	default:
-+		/*
-+		 * If we reach that point, there's a serious problem in the
-+		 * hwcaps selection logic.
-+		 */
-+		WARN_ONCE(1, "mode %08x is not supported", newmode);
-+		return -ENOTSUPP;
-+	}
-+
-+	return write_cr2(nor, CR2_REG0, val);
-+}
-+
-+static void macronix_opi_adjust_op(struct spi_nor *nor, struct spi_mem_op *op)
-+{
-+	if (nor->mode == SPI_NOR_MODE_SPI)
-+		return;
-+
-+	switch (op->cmd.opcode) {
-+	case SPINOR_OP_READ:
-+	case SPINOR_OP_READ_FAST:
-+	case SPINOR_OP_READ_4B:
-+	case SPINOR_OP_READ_FAST_4B:
-+		op->dummy.nbytes = 20;
-+		op->cmd.opcode = 0xec;
-+		break;
-+
-+	case SPINOR_OP_PP:
-+		op->cmd.opcode = SPINOR_OP_PP_4B;
-+		op->addr.nbytes = 4;
-+		break;
-+
-+	case SPINOR_OP_SE:
-+		op->cmd.opcode = SPINOR_OP_SE_4B;
-+		op->addr.nbytes = 4;
-+		break;
-+
-+	case SPINOR_OP_BE_4K:
-+		op->cmd.opcode = SPINOR_OP_BE_4K_4B;
-+		op->addr.nbytes = 4;
-+		break;
-+
-+	case SPINOR_OP_RDSFDP:
-+		op->dummy.nbytes = 20;
-+		op->addr.nbytes = 4;
-+		break;
-+
-+	case SPINOR_OP_RDCR2:
-+		op->dummy.nbytes = 4;
-+		break;
-+
-+	case SPINOR_OP_RDID:
-+	case SPINOR_OP_RDSR:
-+		op->dummy.nbytes = 4;
-+		/* fallthrough */
-+
-+	case SPINOR_OP_WRSR:
-+		op->addr.nbytes = 4;
-+		op->addr.val = 0;
-+		break;
-+
-+	case SPINOR_OP_RDCR:
-+		op->addr.nbytes = 4;
-+		op->addr.val = 1;
-+		break;
-+	}
-+
-+	/* Force buswidth to 8. */
-+	op->cmd.buswidth = 8;
-+
-+	if (op->addr.nbytes)
-+		op->addr.buswidth = 8;
-+
-+	if (op->dummy.nbytes)
-+		op->dummy.buswidth = 8;
-+
-+	if (op->data.buswidth)
-+		op->data.buswidth = 8;
++	nor->preferred_mode = SPI_NOR_MODE_SPI;
 +
 +	/*
-+	 * OPI mode implies 2 bytes opcodes, the first byte (MSB) being the
-+	 * original opcode, and the second the reverse of the original opcode.
++	 * Let's just avoid using stateful modes when SNOR_F_BROKEN_RESET is
++	 * set.
 +	 */
-+	op->cmd.nbytes = 2;
-+	op->cmd.opcode = (op->cmd.opcode << 8) | ((~op->cmd.opcode) & 0xff);
++	if (nor->flags & SNOR_F_BROKEN_RESET)
++		return;
++
++	/*
++	 * Stateless (1-n-n or 1-1-n) opcodes should always be preferred to
++	 * stateful (n-n-n) ones if supported.
++	 */
++	if (hwcaps & SNOR_HWCPAS_READ_OCTO && hwcaps & SNOR_HWCAPS_PP_OCTO)
++		return;
++
++	if (hwcaps & SNOR_HWCAPS_OPI) {
++		nor->preferred_mode = SPI_NOR_MODE_OPI;
++		return;
++	}
++
++	if (hwcaps & SNOR_HWCAPS_READ_QUAD && hwcaps & SNOR_HWCAPS_PP_QUAD)
++		return;
++
++	if (hwcaps & SNOR_HWCAPS_QPI) {
++		nor->preferred_mode = SPI_NOR_MODE_QPI;
++		return;
++	}
++
++	if (hwcaps & SNOR_HWCAPS_READ_DUAL)
++		return;
++
++	if (hwcaps & SNOR_HWCAPS_DPI) {
++		nor->preferred_mode = SPI_NOR_MODE_DPI;
++		return;
++	}
 +}
 +
-+static void macronix_opi_tweak_params(struct spi_nor *nor,
-+				      struct spi_nor_flash_parameter *params)
-+{
-+	params->hwcaps.mask |= SNOR_HWCAPS_OPI;
-+	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8],
-+				  0, 20, 0xec13,
-+				  SNOR_PROTO_8_8_8 | SNOR_PROTO_INST_2BYTE);
-+	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8_8_8],
-+				0x12ed,
-+				SNOR_PROTO_8_8_8 | SNOR_PROTO_INST_2BYTE);
-+}
+ static int spi_nor_setup(struct spi_nor *nor, const struct flash_info *info,
+ 			 const struct spi_nor_flash_parameter *params,
+ 			 const struct spi_nor_hwcaps *hwcaps)
+@@ -3892,6 +3968,10 @@ static int spi_nor_setup(struct spi_nor *nor, const struct flash_info *info,
+ 	bool enable_quad_io;
+ 	int err;
+ 
++	/* Set ->adjust_op() and ->change_mode(). */
++	nor->adjust_op = info->adjust_op;
++	nor->change_mode = info->change_mode;
 +
- /* Used when the "_ext_id" is two bytes at most */
- #define INFO(_jedec_id, _ext_id, _sector_size, _n_sectors, _flags)	\
- 		.id = {							\
-@@ -1807,7 +1977,13 @@ static const struct flash_info spi_nor_ids[] = {
- 	{ "mx25l25635e", INFO(0xc22019, 0, 64 * 1024, 512, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "mx25u25635f", INFO(0xc22539, 0, 64 * 1024, 512, SECT_4K | SPI_NOR_4B_OPCODES) },
- 	{ "mx25l25655e", INFO(0xc22619, 0, 64 * 1024, 512, 0) },
--	{ "mx25uw51245g", INFO(0xc2813a, 0, 64 * 1024, 1024, SECT_4K | SPI_NOR_4B_OPCODES) },
-+	{
-+		"mx25uw51245g",	INFO(0xc2813a, 0, 64 * 1024, 1024,
-+			SECT_4K | SPI_NOR_4B_OPCODES)
-+			.tweak_params = macronix_opi_tweak_params,
-+			.adjust_op = macronix_opi_adjust_op,
-+			.change_mode = macronix_opi_change_mode,
-+	},
- 	{ "mx66l51235l", INFO(0xc2201a, 0, 64 * 1024, 1024, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | SPI_NOR_4B_OPCODES) },
- 	{ "mx66u51235f", INFO(0xc2253a, 0, 64 * 1024, 1024, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | SPI_NOR_4B_OPCODES) },
- 	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
-@@ -2503,26 +2679,6 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
+ 	/*
+ 	 * Keep only the hardware capabilities supported by both the SPI
+ 	 * controller and the SPI flash memory.
+@@ -3951,6 +4031,8 @@ static int spi_nor_setup(struct spi_nor *nor, const struct flash_info *info,
+ 	else
+ 		nor->quad_enable = NULL;
+ 
++	spi_nor_select_preferred_mode(nor, shared_mask);
++
  	return 0;
  }
  
--static void
--spi_nor_set_read_settings(struct spi_nor_read_command *read,
--			  u8 num_mode_clocks,
--			  u8 num_wait_states,
--			  u16 opcode, u32 proto)
--{
--	read->num_mode_clocks = num_mode_clocks;
--	read->num_wait_states = num_wait_states;
--	read->opcode = opcode;
--	read->proto = proto;
--}
--
--static void
--spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
--			u16 opcode, u32 proto)
--{
--	pp->opcode = opcode;
--	pp->proto = proto;
--}
--
- /*
-  * Serial Flash Discoverable Parameters (SFDP) parsing.
-  */
+@@ -3971,6 +4053,11 @@ static int spi_nor_init(struct spi_nor *nor)
+ 		spi_nor_wait_till_ready(nor);
+ 	}
+ 
++	err = spi_nor_change_mode(nor, nor->preferred_mode);
++	if (err)
++		dev_err(nor->dev, "failed to switch to mode %x",
++			nor->preferred_mode);
++
+ 	if (nor->quad_enable) {
+ 		err = nor->quad_enable(nor);
+ 		if (err) {
+@@ -4011,6 +4098,9 @@ static void spi_nor_resume(struct mtd_info *mtd)
+ 
+ void spi_nor_restore(struct spi_nor *nor)
+ {
++	/* Restore the NOR to SPI mode. */
++	spi_nor_change_mode(nor, SPI_NOR_MODE_SPI);
++
+ 	/* restore the addressing mode */
+ 	if ((nor->addr_width == 4) &&
+ 	    !(nor->info->flags & SPI_NOR_4B_OPCODES) &&
 diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 5b0045720049..e497f3b93a74 100644
+index f2154672f75a..f80aba464eb2 100644
 --- a/include/linux/mtd/spi-nor.h
 +++ b/include/linux/mtd/spi-nor.h
-@@ -102,6 +102,9 @@
- #define XSR_PAGESIZE		BIT(0)	/* Page size in Po2 or Linear */
- #define XSR_RDY			BIT(7)	/* Ready */
+@@ -333,6 +333,14 @@ struct spi_nor_erase_map {
+  */
+ struct flash_info;
  
-+/* Used for Macronix flashes only. */
-+#define SPINOR_OP_RDCR2		0x71	/* Read configuration register 2 */
-+#define SPINOR_OP_WRCR2		0x72	/* Write configuration register 2 */
- 
- /* Used for Macronix and Winbond flashes. */
- #define SPINOR_OP_EN4B		0xb7	/* Enter 4-byte mode */
-@@ -145,6 +148,13 @@
- /* Status Register 2 bits. */
- #define SR2_QUAD_EN_BIT7	BIT(7)
- 
-+/* Configuration register 2, offset 0 */
-+#define CR2_REG0			0x0
-+#define CR2_REG0_MODE_MASK	GENMASK(1, 0)
-+#define CR2_REG0_MODE_SPI	0
-+#define CR2_REG0_MODE_OPI_STR	1
-+#define CR2_REG0_MODE_OPI_DTR	2
++enum spi_nor_mode {
++	SPI_NOR_MODE_SPI,
++	SPI_NOR_MODE_DPI,
++	SPI_NOR_MODE_QPI,
++	SPI_NOR_MODE_OPI,
++	SPI_NOR_NUM_MODES,
++};
 +
- /* Supported SPI protocols */
- #define SNOR_PROTO_INST_MASK	GENMASK(23, 16)
- #define SNOR_PROTO_INST_SHIFT	16
+ /**
+  * struct spi_nor - Structure for defining a the SPI NOR layer
+  * @mtd:		point to a mtd_info structure
+@@ -381,6 +389,8 @@ struct spi_nor {
+ 	struct spi_mem		*spimem;
+ 	void			*bouncebuf;
+ 	unsigned int		bouncebuf_size;
++	enum spi_nor_mode	preferred_mode;
++	enum spi_nor_mode	mode;
+ 	const struct flash_info	*info;
+ 	u32			page_size;
+ 	u8			addr_width;
+@@ -412,6 +422,8 @@ struct spi_nor {
+ 	int (*flash_is_locked)(struct spi_nor *nor, loff_t ofs, uint64_t len);
+ 	int (*quad_enable)(struct spi_nor *nor);
+ 	int (*set_4byte)(struct spi_nor *nor, bool enable);
++	int (*change_mode)(struct spi_nor *nor, enum spi_nor_mode newmode);
++	void (*adjust_op)(struct spi_nor *nor, struct spi_mem_op *op);
+ 
+ 	void *priv;
+ };
 -- 
 2.14.1
 

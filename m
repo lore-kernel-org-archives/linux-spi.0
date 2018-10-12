@@ -1,61 +1,65 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v3 2/2] mtd: spi-nor: add entry for mt35xu512aba flash
-Date: Fri, 12 Oct 2018 02:23:13 +0000
-Message-ID: <1539310881-17438-3-git-send-email-yogeshnarayan.gaur@nxp.com>
-References: <1539310881-17438-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v2 2/2] mtd: spi-nor: add entry for mt35xu512aba flash
+Date: Fri, 12 Oct 2018 02:24:06 +0000
+Message-ID: <VI1PR04MB10387F73D1F4550ACC8B8CBD99E20@VI1PR04MB1038.eurprd04.prod.outlook.com>
+References: <1539245630-26611-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1539245630-26611-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <d390e12b-94e3-ab5a-3b7e-05381c090724@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
         "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Tudor Ambarus <tudor.ambarus@microchip.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539310881-17438-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <d390e12b-94e3-ab5a-3b7e-05381c090724@microchip.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add entry for mt35xu512aba Micron NOR flash.
-This flash is having uniform sector erase size of 128KB, have
-support of FSR(flag status register), flash size is 64MB and
-supports 4-byte commands.
-
-Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
----
-Changes for v3:
-- Modified flash node style as suggested by Tudor.
-Changes for v2:
-- Removed checkpatch warning, 80 character limit.
- drivers/mtd/spi-nor/spi-nor.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index b8b494f..0b8a6e0 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1405,6 +1405,12 @@ static int spi_nor_is_locked(struct mtd_info *mtd, l=
-off_t ofs, uint64_t len)
- 	{ "n25q00a",     INFO(0x20bb21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | S=
-PI_NOR_QUAD_READ | NO_CHIP_ERASE) },
- 	{ "mt25qu02g",   INFO(0x20bb22, 0, 64 * 1024, 4096, SECT_4K | USE_FSR | S=
-PI_NOR_QUAD_READ | NO_CHIP_ERASE) },
-=20
-+	/* Micron */
-+	{
-+		"mt35xu512aba", INFO(0x2c5b1a, 0, 128 * 1024, 512,
-+			SECT_4K | USE_FSR | SPI_NOR_4B_OPCODES)
-+	},
-+
- 	/* PMC */
- 	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
- 	{ "pm25lv010",   INFO(0,        0, 32 * 1024,    4, SECT_4K_PMC) },
---=20
-1.9.1
+SGkgVHVkb3IsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHVkb3Ig
+QW1iYXJ1cyBbbWFpbHRvOnR1ZG9yLmFtYmFydXNAbWljcm9jaGlwLmNvbV0NCj4gU2VudDogVGh1
+cnNkYXksIE9jdG9iZXIgMTEsIDIwMTggOTozMyBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1
+ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+OyBsaW51eC0NCj4gbXRkQGxpc3RzLmluZnJh
+ZGVhZC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IG1hcmVrLnZhc3V0QGdt
+YWlsLmNvbTsgY3lyaWxsZS5waXRjaGVuQHdlZGV2NHUuZnI7DQo+IGJvcmlzLmJyZXppbGxvbkBi
+b290bGluLmNvbTsgY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOw0KPiBmcmllZGVyLnNjaHJl
+bXBmQGV4Y2VldC5kZTsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBS
+ZTogW1BBVENIIHYyIDIvMl0gbXRkOiBzcGktbm9yOiBhZGQgZW50cnkgZm9yIG10MzV4dTUxMmFi
+YSBmbGFzaA0KPiANCj4gDQo+IA0KPiBPbiAxMC8xMS8yMDE4IDExOjE1IEFNLCBZb2dlc2ggTmFy
+YXlhbiBHYXVyIHdyb3RlOg0KPiA+IEFkZCBlbnRyeSBmb3IgbXQzNXh1NTEyYWJhIE1pY3JvbiBO
+T1IgZmxhc2guDQo+ID4gVGhpcyBmbGFzaCBpcyBoYXZpbmcgdW5pZm9ybSBzZWN0b3IgZXJhc2Ug
+c2l6ZSBvZiAxMjhLQiwgaGF2ZSBzdXBwb3J0DQo+ID4gb2YgRlNSKGZsYWcgc3RhdHVzIHJlZ2lz
+dGVyKSwgZmxhc2ggc2l6ZSBpcyA2NE1CIGFuZCBzdXBwb3J0cyA0LWJ5dGUNCj4gPiBjb21tYW5k
+cy4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlvZ2VzaCBHYXVyIDx5b2dlc2huYXJheWFuLmdh
+dXJAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBDaGFuZ2VzIGZvciB2MjoNCj4gPiAtIFJlbW92ZWQg
+Y2hlY2twYXRjaCB3YXJuaW5nLCA4MCBjaGFyYWN0ZXIgbGltaXQuDQo+ID4NCj4gPiAgZHJpdmVy
+cy9tdGQvc3BpLW5vci9zcGktbm9yLmMgfCA0ICsrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDQg
+aW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Iv
+c3BpLW5vci5jDQo+ID4gYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBpbmRleCBiOGI0
+OTRmLi5lMGQ5NWFjIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5v
+ci5jDQo+ID4gKysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMNCj4gPiBAQCAtMTQw
+NSw2ICsxNDA1LDEwIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgZmxhc2hfaW5mbyBzcGlfbm9yX2lk
+c1tdID0gew0KPiA+ICAJeyAibjI1cTAwYSIsICAgICBJTkZPKDB4MjBiYjIxLCAwLCA2NCAqIDEw
+MjQsIDIwNDgsIFNFQ1RfNEsgfCBVU0VfRlNSDQo+IHwgU1BJX05PUl9RVUFEX1JFQUQgfCBOT19D
+SElQX0VSQVNFKSB9LA0KPiA+ICAJeyAibXQyNXF1MDJnIiwgICBJTkZPKDB4MjBiYjIyLCAwLCA2
+NCAqIDEwMjQsIDQwOTYsIFNFQ1RfNEsgfA0KPiBVU0VfRlNSIHwgU1BJX05PUl9RVUFEX1JFQUQg
+fCBOT19DSElQX0VSQVNFKSB9LA0KPiA+DQo+ID4gKwkvKiBNaWNyb24gKi8NCj4gPiArCXsgIm10
+MzV4dTUxMmFiYSIsIElORk8oMHgyYzViMWEsIDAsIDEyOCAqIDEwMjQsIDUxMiwNCj4gPiArCQlT
+RUNUXzRLIHwgVVNFX0ZTUiB8IFNQSV9OT1JfNEJfT1BDT0RFUykgfSwNCj4gPiArDQo+IA0KPiBU
+aGUgc3R5bGUgaXMgc2xpZ2h0bHkgZGlmZmVyZW50IGZyb20gd2hhdCBCcmlhbiBwcm9wb3NlZCBi
+YWNrIGluDQo+IDk2NDgzODhmYzc3MzczNjViZTdhODA5MmU3N2RmNzhjY2MyY2QxYTQuIEZvciBj
+b25zaXN0ZW5jeSByZWFzb25zLCBJIHRoaW5rDQo+IHdlIHNob3VsZCB1c2UgdGhlIHNhbWUgc3R5
+bGUgaW4gYWxsIGVudHJpZXMuDQo+IA0KDQpPaywgSSBoYXZlIHNlbmQgdGhlIG5leHQgdmVyc2lv
+biBvZiB0aGUgcGF0Y2hlcyB3aXRoIHRoZSBzdHlsZSBjaGFuZ2VzIGFzIHByb3Bvc2VkIGJ5IEJy
+aWFuLg0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdhdXIuDQoNCj4gU2luY2UgSSB2ZXJpZmllZCB0
+aGUgY29ycmVjdG5lc3Mgb2YgdGhlIHBhdGNoIGFuZCBteSBjb21tZW50IHRhcmdldHMganVzdCBh
+DQo+IGNvc21ldGljIGNoYW5nZSwgSSdsbCBsZXQgdGhlIG1haW50YWluZXJzIGRlY2lkZToNCj4g
+DQo+IFJldmlld2VkLWJ5OiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVzQG1pY3JvY2hpcC5j
+b20+DQo=

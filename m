@@ -1,23 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: move wml setting to later than setup_transfer" to the spi tree
-Date: Fri, 12 Oct 2018 19:01:32 +0200 (CEST)
-Message-ID: <20181012170132.4B40D440078@finisterre.ee.mobilebroadband>
-References: <1539196453-8704-2-git-send-email-yibin.gong@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>, linux-spi@vger.kernel.org
-To: Robin Gong <yibin.gong@nxp.com>
+Subject: Applied "spi: Make GPIO CSs honour the SPI_NO_CS flag" to the spi tree
+Date: Fri, 12 Oct 2018 19:03:37 +0200 (CEST)
+Message-ID: <20181012170337.681EC440078@finisterre.ee.mobilebroadband>
+References: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Phil Elwell <phil@raspberrypi.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539196453-8704-2-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: move wml setting to later than setup_transfer
+   spi: Make GPIO CSs honour the SPI_NO_CS flag
 
 has been applied to the spi tree at
 
@@ -42,100 +39,38 @@ to this mail.
 Thanks,
 Mark
 
->From 987a2dfe3f0485a82d87106e7e1c43f35c1d3b09 Mon Sep 17 00:00:00 2001
-From: Robin Gong <yibin.gong@nxp.com>
-Date: Wed, 10 Oct 2018 10:32:42 +0000
-Subject: [PATCH] spi: imx: move wml setting to later than setup_transfer
+>From 25972d0c33deb5c49708baa48e7796c8d0348e98 Mon Sep 17 00:00:00 2001
+From: Phil Elwell <phil@raspberrypi.org>
+Date: Fri, 12 Oct 2018 10:23:18 +0100
+Subject: [PATCH] spi: Make GPIO CSs honour the SPI_NO_CS flag
 
-Current dynamic burst length is based on the whole transfer length,
-that's ok if there is only one sg, but is not right in case multi sgs
-in one transfer,because the tail data should be based on the last sg
-length instead of the whole transfer length. Move wml setting for DMA
-to the later place, thus, the next patch could get the right last sg
-length for wml setting. This patch is a preparation one, no any
-function change involved.
+The SPI configuration state includes an SPI_NO_CS flag that disables
+all CS line manipulation, for applications that want to manage their
+own chip selects. However, this flag is ignored by the GPIO CS code
+in the SPI framework.
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+Correct this omission with a trivial patch.
+
+Signed-off-by: Phil Elwell <phil@raspberrypi.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/spi/spi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 08dd3a31a3e5..e861157e3459 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -63,6 +63,7 @@ struct spi_imx_devtype_data {
- 	void (*trigger)(struct spi_imx_data *);
- 	int (*rx_available)(struct spi_imx_data *);
- 	void (*reset)(struct spi_imx_data *);
-+	void (*setup_wml)(struct spi_imx_data *);
- 	void (*disable)(struct spi_imx_data *);
- 	bool has_dmamode;
- 	bool has_slavemode;
-@@ -583,6 +584,11 @@ static int mx51_ecspi_config(struct spi_device *spi)
- 	else			/* SCLK is _very_ slow */
- 		usleep_range(delay, delay + 10);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index fcbd4cfd2818..ea3e5e146764 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -775,7 +775,9 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 		enable = !enable;
  
-+	return 0;
-+}
-+
-+static void mx51_setup_wml(struct spi_imx_data *spi_imx)
-+{
- 	/*
- 	 * Configure the DMA register: setup the watermark
- 	 * and enable DMA request.
-@@ -593,8 +599,6 @@ static int mx51_ecspi_config(struct spi_device *spi)
- 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
- 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
- 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
--
--	return 0;
- }
- 
- static int mx51_ecspi_rx_available(struct spi_imx_data *spi_imx)
-@@ -931,6 +935,7 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
- 	.trigger = mx51_ecspi_trigger,
- 	.rx_available = mx51_ecspi_rx_available,
- 	.reset = mx51_ecspi_reset,
-+	.setup_wml = mx51_setup_wml,
- 	.fifo_size = 64,
- 	.has_dmamode = true,
- 	.dynamic_burst = true,
-@@ -1138,7 +1143,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 				 struct spi_transfer *t)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
--	int ret;
- 
- 	if (!t)
- 		return 0;
-@@ -1179,12 +1183,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 	else
- 		spi_imx->usedma = 0;
- 
--	if (spi_imx->usedma) {
--		ret = spi_imx_dma_configure(spi->master);
--		if (ret)
--			return ret;
--	}
--
- 	if (is_imx53_ecspi(spi_imx) && spi_imx->slave_mode) {
- 		spi_imx->rx = mx53_ecspi_rx_slave;
- 		spi_imx->tx = mx53_ecspi_tx_slave;
-@@ -1289,6 +1287,13 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-+	int ret;
-+
-+	ret = spi_imx_dma_configure(master);
-+	if (ret)
-+		return ret;
-+
-+	spi_imx->devtype_data->setup_wml(spi_imx);
- 
- 	/*
- 	 * The TX DMA setup starts the transfer, so make sure RX is configured
+ 	if (gpio_is_valid(spi->cs_gpio)) {
+-		gpio_set_value(spi->cs_gpio, !enable);
++		/* Honour the SPI_NO_CS flag */
++		if (!(spi->mode & SPI_NO_CS))
++			gpio_set_value(spi->cs_gpio, !enable);
+ 		/* Some SPI masters need both GPIO CS & slave_select */
+ 		if ((spi->controller->flags & SPI_MASTER_GPIO_SS) &&
+ 		    spi->controller->set_cs)
 -- 
 2.19.0

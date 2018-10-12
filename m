@@ -1,8 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH RFC 18/18] mtd: spi-nor: Make sure the 8D-8D-8D can be
- selected on mx25uw51245g
-Date: Fri, 12 Oct 2018 10:48:25 +0200
-Message-ID: <20181012084825.23697-19-boris.brezillon@bootlin.com>
+Subject: [PATCH RFC 12/18] mtd: spi-nor: Provide a hook to tweak flash
+ parameters
+Date: Fri, 12 Oct 2018 10:48:19 +0200
+Message-ID: <20181012084825.23697-13-boris.brezillon@bootlin.com>
 References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -29,70 +29,189 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-mx25uw51245g support 8D-8D-8D mode. Patch the macronix_opi_change_mode()
-and macronix_opi_tweak_params() functions to support this mode.
+Some NORs implement X-X-X operations in a vendor/chip-specific way,
+and adding all cases to the common op selection logic would hurt
+readability.
+
+Add a ->tweak_params() hook to flash_info such that NORs that need this
+kind of customization process can specify it.
+
+Note that we need to move struct spi_nor_flash_parameter definition
+(and all its dependencies) before struct flash_info definition to
+avoid a forward declaration of struct spi_nor_flash_parameter.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 135 ++++++++++++++++++++++--------------------
+ 1 file changed, 70 insertions(+), 65 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index d961e3a7b500..e8bd807b7520 100644
+index 86625f1e25b3..7660fe27d82a 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1709,6 +1709,10 @@ static int macronix_opi_change_mode(struct spi_nor *nor,
- 		val |= CR2_REG0_MODE_OPI_STR;
- 		break;
+@@ -43,6 +43,71 @@
+ #define SPI_NOR_MAX_ID_LEN	6
+ #define SPI_NOR_MAX_ADDR_WIDTH	4
  
-+	case SPI_NOR_MODE_OPI_FULL_DTR:
-+		val |= CR2_REG0_MODE_OPI_DTR;
-+		break;
++struct spi_nor_read_command {
++	u8			num_mode_clocks;
++	u8			num_wait_states;
++	u16			opcode;
++	u32			proto;
++};
 +
- 	default:
- 		/*
- 		 * If we reach that point, there's a serious problem in the
-@@ -1732,7 +1736,11 @@ static void macronix_opi_adjust_op(struct spi_nor *nor, struct spi_mem_op *op)
- 	case SPINOR_OP_READ_4B:
- 	case SPINOR_OP_READ_FAST_4B:
- 		op->dummy.nbytes = 20;
--		op->cmd.opcode = 0xec;
-+		if (nor->mode == SPI_NOR_MODE_OPI_FULL_DTR)
-+			op->cmd.opcode = 0xee;
-+		else
-+			op->cmd.opcode = 0xec;
++struct spi_nor_pp_command {
++	u16			opcode;
++	u32			proto;
++};
 +
- 		break;
- 
- 	case SPINOR_OP_PP:
-@@ -1781,8 +1789,11 @@ static void macronix_opi_adjust_op(struct spi_nor *nor, struct spi_mem_op *op)
- 	if (op->addr.nbytes)
- 		op->addr.buswidth = 8;
- 
--	if (op->dummy.nbytes)
-+	if (op->dummy.nbytes) {
- 		op->dummy.buswidth = 8;
-+		if (op->dummy.dtr)
-+			op->dummy.nbytes *= 2;
-+	}
- 
- 	if (op->data.buswidth)
- 		op->data.buswidth = 8;
-@@ -1805,6 +1816,14 @@ static void macronix_opi_tweak_params(struct spi_nor *nor,
- 	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8_8_8],
- 				0x12ed,
- 				SNOR_PROTO_8_8_8 | SNOR_PROTO_INST_2BYTE);
++enum spi_nor_read_command_index {
++	SNOR_CMD_READ,
++	SNOR_CMD_READ_FAST,
++	SNOR_CMD_READ_1_1_1_DTR,
 +
-+	params->hwcaps.mask |= SNOR_HWCAPS_OPI_FULL_DTR;
-+	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8D_8D_8D],
-+				  0, 20, 0xee11,
-+				  SNOR_PROTO_8D_8D_8D | SNOR_PROTO_INST_2BYTE);
-+	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8D_8D_8D],
-+				0x12ed,
-+				SNOR_PROTO_8D_8D_8D | SNOR_PROTO_INST_2BYTE);
++	/* Dual SPI */
++	SNOR_CMD_READ_1_1_2,
++	SNOR_CMD_READ_1_2_2,
++	SNOR_CMD_READ_2_2_2,
++	SNOR_CMD_READ_1_2_2_DTR,
++
++	/* Quad SPI */
++	SNOR_CMD_READ_1_1_4,
++	SNOR_CMD_READ_1_4_4,
++	SNOR_CMD_READ_4_4_4,
++	SNOR_CMD_READ_1_4_4_DTR,
++
++	/* Octo SPI */
++	SNOR_CMD_READ_1_1_8,
++	SNOR_CMD_READ_1_8_8,
++	SNOR_CMD_READ_8_8_8,
++	SNOR_CMD_READ_1_8_8_DTR,
++
++	SNOR_CMD_READ_MAX
++};
++
++enum spi_nor_pp_command_index {
++	SNOR_CMD_PP,
++
++	/* Quad SPI */
++	SNOR_CMD_PP_1_1_4,
++	SNOR_CMD_PP_1_4_4,
++	SNOR_CMD_PP_4_4_4,
++
++	/* Octo SPI */
++	SNOR_CMD_PP_1_1_8,
++	SNOR_CMD_PP_1_8_8,
++	SNOR_CMD_PP_8_8_8,
++
++	SNOR_CMD_PP_MAX
++};
++
++struct spi_nor_flash_parameter {
++	u64				size;
++	u32				page_size;
++
++	struct spi_nor_hwcaps		hwcaps;
++	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
++	struct spi_nor_pp_command	page_programs[SNOR_CMD_PP_MAX];
++
++	int (*quad_enable)(struct spi_nor *nor);
++};
++
+ struct flash_info {
+ 	char		*name;
+ 
+@@ -93,6 +158,8 @@ struct flash_info {
+ #define USE_CLSR		BIT(14)	/* use CLSR command */
+ 
+ 	int	(*quad_enable)(struct spi_nor *nor);
++	void	(*tweak_params)(struct spi_nor *nor,
++				struct spi_nor_flash_parameter *params);
+ 	int	(*change_mode)(struct spi_nor *nor, u32 newmode);
+ 	void	(*adjust_op)(struct spi_nor *nor, struct spi_mem_op *op);
+ };
+@@ -2436,71 +2503,6 @@ static int s3an_nor_scan(const struct flash_info *info, struct spi_nor *nor)
+ 	return 0;
  }
  
- /* Used when the "_ext_id" is two bytes at most */
+-struct spi_nor_read_command {
+-	u8			num_mode_clocks;
+-	u8			num_wait_states;
+-	u16			opcode;
+-	u32			proto;
+-};
+-
+-struct spi_nor_pp_command {
+-	u16			opcode;
+-	u32			proto;
+-};
+-
+-enum spi_nor_read_command_index {
+-	SNOR_CMD_READ,
+-	SNOR_CMD_READ_FAST,
+-	SNOR_CMD_READ_1_1_1_DTR,
+-
+-	/* Dual SPI */
+-	SNOR_CMD_READ_1_1_2,
+-	SNOR_CMD_READ_1_2_2,
+-	SNOR_CMD_READ_2_2_2,
+-	SNOR_CMD_READ_1_2_2_DTR,
+-
+-	/* Quad SPI */
+-	SNOR_CMD_READ_1_1_4,
+-	SNOR_CMD_READ_1_4_4,
+-	SNOR_CMD_READ_4_4_4,
+-	SNOR_CMD_READ_1_4_4_DTR,
+-
+-	/* Octo SPI */
+-	SNOR_CMD_READ_1_1_8,
+-	SNOR_CMD_READ_1_8_8,
+-	SNOR_CMD_READ_8_8_8,
+-	SNOR_CMD_READ_1_8_8_DTR,
+-
+-	SNOR_CMD_READ_MAX
+-};
+-
+-enum spi_nor_pp_command_index {
+-	SNOR_CMD_PP,
+-
+-	/* Quad SPI */
+-	SNOR_CMD_PP_1_1_4,
+-	SNOR_CMD_PP_1_4_4,
+-	SNOR_CMD_PP_4_4_4,
+-
+-	/* Octo SPI */
+-	SNOR_CMD_PP_1_1_8,
+-	SNOR_CMD_PP_1_8_8,
+-	SNOR_CMD_PP_8_8_8,
+-
+-	SNOR_CMD_PP_MAX
+-};
+-
+-struct spi_nor_flash_parameter {
+-	u64				size;
+-	u32				page_size;
+-
+-	struct spi_nor_hwcaps		hwcaps;
+-	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
+-	struct spi_nor_pp_command	page_programs[SNOR_CMD_PP_MAX];
+-
+-	int (*quad_enable)(struct spi_nor *nor);
+-};
+-
+ static void
+ spi_nor_set_read_settings(struct spi_nor_read_command *read,
+ 			  u8 num_mode_clocks,
+@@ -3775,6 +3777,9 @@ static int spi_nor_init_params(struct spi_nor *nor,
+ 			memcpy(params, &sfdp_params, sizeof(*params));
+ 	}
+ 
++	if (info->tweak_params)
++		info->tweak_params(nor, params);
++
+ 	return 0;
+ }
+ 
 -- 
 2.14.1
 

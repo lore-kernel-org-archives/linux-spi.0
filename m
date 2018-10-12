@@ -1,61 +1,78 @@
-From: Christian Lamparter <chunkeey@gmail.com>
-Subject: Re: [PATCH] dt-bindings: Add bindings for aliases node
-Date: Fri, 12 Oct 2018 18:31:11 +0200
-Message-ID: <1626442.UsWqDEgn3j@debian64>
-References: <20180925210255.172734-1-mka@chromium.org> <20181009183141.GA126050@ban.mtv.corp.google.com> <20181012000837.GP22824@google.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
+ Controller
+Date: Fri, 12 Oct 2018 19:00:02 +0200
+Message-ID: <20181012170002.GJ2340@sirena.org.uk>
+References: <20181010170936.316862-1-lkundrak@v3.sk>
+ <20181010170936.316862-2-lkundrak@v3.sk>
+ <20181011142719.GE25351@sirena.org.uk>
+ <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Brian Norris <briannorris@chromium.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="d6iqOn7HZPWKXx18"
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        James Cameron <quozl@laptop.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, swboyd@chromium.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-To: Matthias Kaehlcke <mka@chromium.org>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20181012000837.GP22824@google.com>
-Sender: netdev-owner@vger.kernel.org
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Lubomir Rintel <lkundrak@v3.sk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, October 12, 2018 2:08:37 AM CEST Matthias Kaehlcke wrote:
-> Maybe the doc should include a recommendation to use aliases
-> sparingly? I'm open to input on that from folks who have a better
-> understanding of the potential pitfalls 
 
-I had a similar discussion with the OpenWrt devs over the
-use of "led-$function" aliases in a DTS. I did a bit of digging and
-found this wonderful emails from Mark Rutland regarding the general
-use and abuse of aliases in a reply to a patch by Christer Weinigel 
-"devicetree - document using aliases to set spi bus number."
+--d6iqOn7HZPWKXx18
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-<https://patchwork.kernel.org/patch/9133903/#19207021>
+On Thu, Oct 11, 2018 at 07:59:15PM +0200, Lubomir Rintel wrote:
+> On Thu, 2018-10-11 at 15:27 +0100, Mark Brown wrote:
 
-|"If those ports are physically organised and labelled the same, then
-|using aliases could make sense, to describe the well-defined physical
-|labels. If you've assigned the numbers artificially, or if the physical
-|organisation differs across boards, then aliases are not the right tool
-|for the job.
-|
-|In the latter cases we're altering the hardware description to suit an
-|application, rather than providing the necessary abstraction, which is
-|the kind of (ab)use of aliases which we want to avoid."
+> > Please use subject lines matching the style for the subsystem.  This
+> > makes it easier for people to identify relevant patches.
 
-And he followed it up with a summary:
-<https://patchwork.kernel.org/comment/19207071/>
+> Thanks for the response.
 
-|Typically, serial ports are much more user-accessible (physically), and
-|much more directly useful to a user in a generic fashion. They're often
-|labelled (physically or in a manual) with a number, and we use aliases
-|to describe those labels to the kernel. The fact that the kernel may use
-|that to drive its own internal numbering is immaterial to the binding.
+> I'm a little confused here. Why I chose this subject line is because I
+> did this:
 
-So the gist of this is that aliases are meant for user-accessible /
-physically devices/ports/etc... that are labeled as such. And this of
-course works perfectly for power/status LEDs and such because they
-usually have little "power" symbols/pictograms/lables near them. 
+>   git log --no-merges Documentation/devicetree/bindings/
+
+Try Documentation/devicetree/bindings/spi instead :)
+
+> to figure out what's the typical subject for the DT binding changes.
+
+> I also believed that's the right way to get Rob Herring's and Mark
+> Rutland's attention. Do the device tree binding documentation typically
+
+There *is* some debate for the DT bindings unfortunately.
+
+> go in with the associated drivers, or via their tree ("OPEN FIRMWARE
+> AND FLATTENED DEVICE TREE BINDINGS" in MAINTIANERS)?
+
+They usually go in with the drivers.  This one isn't so bad since it
+does mention SPI, it's a worse problem when that's not present at all.
+
+--d6iqOn7HZPWKXx18
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvA0wgACgkQJNaLcl1U
+h9C+/wf/SHmOue+GuQ4l/70jaDVkiGXd2VViu1AvPbMXSLSjt+FF+6Tuag1eyP2v
+4RcuNedih8M3DD3vSEtJPT9vUj5H8pvxuBM1aZno+axfPv1dXDnPAck8+pJ7PfrF
+jtnnZVxBcSIC/QX1DrmkMzvP+T38bQ2hA4wMSVOkH6t+/PkoS3hDUBp+CbqNRMPA
+OOliuTtDUaPJt1QombMTDjAe9o+Tf93YE1QxaXBOy1Wj+m/MERloSws19bxDt+22
+hDQxEQq0xgpNY+GN45hlkMvTlgKmPelc7gvLyGeMOtYbw33NgVD7G3aOT5NM3gH9
+bxf76NSvtFG/O864dHnvw4mKxq+vjA==
+=O9td
+-----END PGP SIGNATURE-----
+
+--d6iqOn7HZPWKXx18--

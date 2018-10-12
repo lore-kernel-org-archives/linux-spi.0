@@ -1,8 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH RFC 04/18] spi: spi-mem: Prepare things for dual bytes opcodes
- support
-Date: Fri, 12 Oct 2018 10:48:11 +0200
-Message-ID: <20181012084825.23697-5-boris.brezillon@bootlin.com>
+Subject: [PATCH RFC 02/18] spi: Prepare things for octo mode support
+Date: Fri, 12 Oct 2018 10:48:09 +0200
+Message-ID: <20181012084825.23697-3-boris.brezillon@bootlin.com>
 References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -29,97 +28,90 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Some SPI NORs are using 2bytes opcodes when operated in OPI (Octo
-Peripheral Interface). Make opcode an u16 and add an nbytes field to
-specify the number of opcode bytes.
-
-Also add the SPI_MEM_OP_[DTR_]CMD_16B() to declare 2bytes opcodes and
-update spi_mem_default_supports_op() to reject operations with 2 bytes
-opcodes.
+Add the necessary flags and checks in spi.h, spi.c and spi-mem.c to
+support octo mode.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/spi/spi-mem.c       |  5 ++++-
- include/linux/spi/spi-mem.h | 21 ++++++++++++++++++++-
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mem.c   |  7 +++++++
+ drivers/spi/spi.c       | 12 ++++++++++--
+ include/linux/spi/spi.h |  2 ++
+ 3 files changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 3da57219b539..10bb852cfaea 100644
+index 4a84b07a3186..2379efcaf1c6 100644
 --- a/drivers/spi/spi-mem.c
 +++ b/drivers/spi/spi-mem.c
-@@ -157,6 +157,9 @@ static bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		return false;
+@@ -121,6 +121,13 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
  
-+	if (op->cmd.nbytes != 1)
-+		return false;
+ 		break;
+ 
++	case 8:
++		if ((tx && (mode & SPI_TX_OCTO)) ||
++		    (!tx && (mode & SPI_RX_OCTO)))
++			return 0;
 +
- 	return true;
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-@@ -171,7 +174,7 @@ static bool spi_mem_buswidth_is_valid(u8 buswidth)
- 
- static int spi_mem_check_op(const struct spi_mem_op *op)
- {
--	if (!op->cmd.buswidth)
-+	if (!op->cmd.buswidth || op->cmd.nbytes < 1 || op->cmd.nbytes > 2)
++		break;
++
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9da0bc5a036c..bc6fc74ff4ec 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1573,6 +1573,9 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 		case 4:
+ 			spi->mode |= SPI_TX_QUAD;
+ 			break;
++		case 8:
++			spi->mode |= SPI_TX_OCTO;
++			break;
+ 		default:
+ 			dev_warn(&ctlr->dev,
+ 				"spi-tx-bus-width %d not supported\n",
+@@ -1591,6 +1594,9 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 		case 4:
+ 			spi->mode |= SPI_RX_QUAD;
+ 			break;
++		case 8:
++			spi->mode |= SPI_RX_OCTO;
++			break;
+ 		default:
+ 			dev_warn(&ctlr->dev,
+ 				"spi-rx-bus-width %d not supported\n",
+@@ -2779,14 +2785,16 @@ int spi_setup(struct spi_device *spi)
+ 	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
+ 	 */
+ 	if ((spi->mode & SPI_3WIRE) && (spi->mode &
+-		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
++		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTO | SPI_RX_DUAL |
++		 SPI_RX_QUAD | SPI_RX_OCTO)))
  		return -EINVAL;
- 
- 	if ((op->addr.nbytes && !op->addr.buswidth) ||
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index cad116005034..af54a1c91f93 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -17,12 +17,29 @@
- 	{							\
- 		.buswidth = __buswidth,				\
- 		.opcode = __opcode,				\
-+		.nbytes = 1,					\
- 	}
- 
- #define SPI_MEM_OP_DTR_CMD(__opcode, __buswidth)		\
- 	{							\
- 		.buswidth = __buswidth,				\
- 		.opcode = __opcode,				\
-+		.nbytes = 1,					\
-+		.dtr = true,					\
-+	}
-+
-+#define SPI_MEM_OP_CMD_16B(__opcode, __buswidth)		\
-+	{							\
-+		.buswidth = __buswidth,				\
-+		.opcode = __opcode,				\
-+		.nbytes = 2,					\
-+	}
-+
-+#define SPI_MEM_OP_DTR_CMD_16B(__opcode, __buswidth)		\
-+	{							\
-+		.buswidth = __buswidth,				\
-+		.opcode = __opcode,				\
-+		.nbytes = 2,					\
- 		.dtr = true,					\
- 	}
- 
-@@ -107,6 +124,7 @@ enum spi_mem_data_dir {
- 
- /**
-  * struct spi_mem_op - describes a SPI memory operation
-+ * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid)
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.dtr: set true to transfer opcode in double transfer rate mode
-  * @cmd.opcode: operation opcode
-@@ -132,9 +150,10 @@ enum spi_mem_data_dir {
-  */
- struct spi_mem_op {
- 	struct {
-+		u8 nbytes;
- 		u8 buswidth;
- 		bool dtr;
--		u8 opcode;
-+		u16 opcode;
- 	} cmd;
- 
- 	struct {
+ 	/* help drivers fail *cleanly* when they need options
+ 	 * that aren't supported with their current controller
+ 	 */
+ 	bad_bits = spi->mode & ~spi->controller->mode_bits;
+ 	ugly_bits = bad_bits &
+-		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD);
++		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTO | SPI_RX_DUAL |
++		     SPI_RX_QUAD | SPI_RX_OCTO);
+ 	if (ugly_bits) {
+ 		dev_warn(&spi->dev,
+ 			 "setup: ignoring unsupported mode bits %x\n",
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index a64235e05321..cea4e49a9e53 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -163,6 +163,8 @@ struct spi_device {
+ #define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
+ #define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
+ #define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
++#define	SPI_TX_OCTO	0x1000			/* transmit with 8 wires */
++#define	SPI_RX_OCTO	0x2000			/* receive with 8 wires */
+ 	int			irq;
+ 	void			*controller_state;
+ 	void			*controller_data;
 -- 
 2.14.1
 

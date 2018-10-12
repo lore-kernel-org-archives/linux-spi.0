@@ -1,115 +1,158 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v3 1/2] mtd: spi-nor: add macros related to MICRON flash
-Date: Fri, 12 Oct 2018 08:07:53 +0200
-Message-ID: <20181012080753.2a59b75c@bbrezillon>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v3 1/2] mtd: spi-nor: add macros related to MICRON flash
+Date: Fri, 12 Oct 2018 06:31:51 +0000
+Message-ID: <VI1PR04MB1038A3680E02FC107367E5FF99E20@VI1PR04MB1038.eurprd04.prod.outlook.com>
 References: <1539310881-17438-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <20181012080753.2a59b75c@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181012080753.2a59b75c@bbrezillon>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 12 Oct 2018 02:23:08 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+Hi Boris,
 
-> Some MICRON related macros in spi-nor domain were ST.
-> Rename entries related to STMicroelectronics under macro SNOR_MFR_ST.
+> -----Original Message-----
+> From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
+> Sent: Friday, October 12, 2018 11:38 AM
+> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+> Cc: linux-mtd@lists.infradead.org; linux-spi@vger.kernel.org;
+> tudor.ambarus@microchip.com; marek.vasut@gmail.com;
+> cyrille.pitchen@wedev4u.fr; computersforpeace@gmail.com;
+> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH v3 1/2] mtd: spi-nor: add macros related to MICRON flash
 > 
-> Added entry of MFR Id for Micron flashes, 0x002C.
+> On Fri, 12 Oct 2018 02:23:08 +0000
+> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 > 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> ---
-> Changes for v3:
-> - None
-> Changes for v2:
-> - None
+> > Some MICRON related macros in spi-nor domain were ST.
+> > Rename entries related to STMicroelectronics under macro SNOR_MFR_ST.
+> >
+> > Added entry of MFR Id for Micron flashes, 0x002C.
+> >
+> > Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> > Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> > ---
+> > Changes for v3:
+> > - None
+> > Changes for v2:
+> > - None
+> >
+> >  drivers/mtd/spi-nor/spi-nor.c | 9 ++++++---
+> >  include/linux/mtd/cfi.h       | 1 +
+> >  include/linux/mtd/spi-nor.h   | 3 ++-
+> >  3 files changed, 9 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/mtd/spi-nor/spi-nor.c
+> > b/drivers/mtd/spi-nor/spi-nor.c index 9407ca5..b8b494f 100644
+> > --- a/drivers/mtd/spi-nor/spi-nor.c
+> > +++ b/drivers/mtd/spi-nor/spi-nor.c
+> > @@ -284,6 +284,7 @@ static inline int set_4byte(struct spi_nor *nor, const
+> struct flash_info *info,
+> >  	u8 cmd;
+> >
+> >  	switch (JEDEC_MFR(info)) {
+> > +	case SNOR_MFR_ST:
+> >  	case SNOR_MFR_MICRON:
+> >  		/* Some Micron need WREN command; all will accept it */
+> >  		need_wren = true;
+> > @@ -1388,7 +1389,7 @@ static int spi_nor_is_locked(struct mtd_info *mtd,
+> loff_t ofs, uint64_t len)
+> >  	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048, SECT_4K |
+> SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
+> >  	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048,
+> > SPI_NOR_QUAD_READ) },
+> >
+> > -	/* Micron */
+> > +	/* Micron <--> ST Micro */
+> >  	{ "n25q016a",	 INFO(0x20bb15, 0, 64 * 1024,   32, SECT_4K |
+> SPI_NOR_QUAD_READ) },
+> >  	{ "n25q032",	 INFO(0x20ba16, 0, 64 * 1024,   64,
+> SPI_NOR_QUAD_READ) },
+> >  	{ "n25q032a",	 INFO(0x20bb16, 0, 64 * 1024,   64,
+> SPI_NOR_QUAD_READ) },
+> > @@ -3223,6 +3224,7 @@ static int spi_nor_init_params(struct spi_nor *nor,
+> >  			params->quad_enable = macronix_quad_enable;
+> >  			break;
+> >
+> > +		case SNOR_MFR_ST:
+> >  		case SNOR_MFR_MICRON:
+> >  			break;
+> >
+> > @@ -3671,8 +3673,9 @@ int spi_nor_scan(struct spi_nor *nor, const char
+> *name,
+> >  	mtd->_resume = spi_nor_resume;
+> >
+> >  	/* NOR protection support for STmicro/Micron chips and similar */
+> > -	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
+> > -			info->flags & SPI_NOR_HAS_LOCK) {
+> > +	if (JEDEC_MFR(info) == SNOR_MFR_ST ||
+> > +	    JEDEC_MFR(info) == SNOR_MFR_MICRON ||
+> > +	    info->flags & SPI_NOR_HAS_LOCK) {
+> >  		nor->flash_lock = stm_lock;
+> >  		nor->flash_unlock = stm_unlock;
+> >  		nor->flash_is_locked = stm_is_locked;
 > 
->  drivers/mtd/spi-nor/spi-nor.c | 9 ++++++---
->  include/linux/mtd/cfi.h       | 1 +
->  include/linux/mtd/spi-nor.h   | 3 ++-
->  3 files changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 9407ca5..b8b494f 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -284,6 +284,7 @@ static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
->  	u8 cmd;
->  
->  	switch (JEDEC_MFR(info)) {
-> +	case SNOR_MFR_ST:
->  	case SNOR_MFR_MICRON:
->  		/* Some Micron need WREN command; all will accept it */
->  		need_wren = true;
-> @@ -1388,7 +1389,7 @@ static int spi_nor_is_locked(struct mtd_info *mtd, loff_t ofs, uint64_t len)
->  	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
->  	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048, SPI_NOR_QUAD_READ) },
->  
-> -	/* Micron */
-> +	/* Micron <--> ST Micro */
->  	{ "n25q016a",	 INFO(0x20bb15, 0, 64 * 1024,   32, SECT_4K | SPI_NOR_QUAD_READ) },
->  	{ "n25q032",	 INFO(0x20ba16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
->  	{ "n25q032a",	 INFO(0x20bb16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
-> @@ -3223,6 +3224,7 @@ static int spi_nor_init_params(struct spi_nor *nor,
->  			params->quad_enable = macronix_quad_enable;
->  			break;
->  
-> +		case SNOR_MFR_ST:
->  		case SNOR_MFR_MICRON:
->  			break;
->  
-> @@ -3671,8 +3673,9 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
->  	mtd->_resume = spi_nor_resume;
->  
->  	/* NOR protection support for STmicro/Micron chips and similar */
-> -	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
-> -			info->flags & SPI_NOR_HAS_LOCK) {
-> +	if (JEDEC_MFR(info) == SNOR_MFR_ST ||
-> +	    JEDEC_MFR(info) == SNOR_MFR_MICRON ||
-> +	    info->flags & SPI_NOR_HAS_LOCK) {
->  		nor->flash_lock = stm_lock;
->  		nor->flash_unlock = stm_unlock;
->  		nor->flash_is_locked = stm_is_locked;
+> Are you sure ST and Micron NORs work the same way WRT locking, 4-byte
+> addressing mode and Quad enable?
 
-Are you sure ST and Micron NORs work the same way WRT locking, 4-byte
-addressing mode and Quad enable?
+Have checked for the Micron flash, MT35x wrt locking, 4-byte addressing mode.
+For Macronix and Spansion flash there is special handling required for quad mode but not needed for ST flash.
+This flash didn't support quad mode and have checked that other Micron flash also didn't need special handling for quad mode.
+--
+Regards
+Yogesh Gaur.
+> 
+> > diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h index
+> > 9b57a9b..cbf7716 100644
+> > --- a/include/linux/mtd/cfi.h
+> > +++ b/include/linux/mtd/cfi.h
+> > @@ -377,6 +377,7 @@ struct cfi_fixup {
+> >  #define CFI_MFR_SHARP		0x00B0
+> >  #define CFI_MFR_SST		0x00BF
+> >  #define CFI_MFR_ST		0x0020 /* STMicroelectronics */
+> > +#define CFI_MFR_MICRON		0x002C /* Micron */
+> >  #define CFI_MFR_TOSHIBA		0x0098
+> >  #define CFI_MFR_WINBOND		0x00DA
+> >
+> > diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+> > index 7f0c730..8b1acf6 100644
+> > --- a/include/linux/mtd/spi-nor.h
+> > +++ b/include/linux/mtd/spi-nor.h
+> > @@ -23,7 +23,8 @@
+> >  #define SNOR_MFR_ATMEL		CFI_MFR_ATMEL
+> >  #define SNOR_MFR_GIGADEVICE	0xc8
+> >  #define SNOR_MFR_INTEL		CFI_MFR_INTEL
+> > -#define SNOR_MFR_MICRON		CFI_MFR_ST /* ST Micro <--> Micron
+> */
+> > +#define SNOR_MFR_ST		CFI_MFR_ST	/* ST Micro */
+> > +#define SNOR_MFR_MICRON		CFI_MFR_MICRON	/* Micron */
+> >  #define SNOR_MFR_MACRONIX	CFI_MFR_MACRONIX
+> >  #define SNOR_MFR_SPANSION	CFI_MFR_AMD
+> >  #define SNOR_MFR_SST		CFI_MFR_SST
 
-> diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h
-> index 9b57a9b..cbf7716 100644
-> --- a/include/linux/mtd/cfi.h
-> +++ b/include/linux/mtd/cfi.h
-> @@ -377,6 +377,7 @@ struct cfi_fixup {
->  #define CFI_MFR_SHARP		0x00B0
->  #define CFI_MFR_SST		0x00BF
->  #define CFI_MFR_ST		0x0020 /* STMicroelectronics */
-> +#define CFI_MFR_MICRON		0x002C /* Micron */
->  #define CFI_MFR_TOSHIBA		0x0098
->  #define CFI_MFR_WINBOND		0x00DA
->  
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index 7f0c730..8b1acf6 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -23,7 +23,8 @@
->  #define SNOR_MFR_ATMEL		CFI_MFR_ATMEL
->  #define SNOR_MFR_GIGADEVICE	0xc8
->  #define SNOR_MFR_INTEL		CFI_MFR_INTEL
-> -#define SNOR_MFR_MICRON		CFI_MFR_ST /* ST Micro <--> Micron */
-> +#define SNOR_MFR_ST		CFI_MFR_ST	/* ST Micro */
-> +#define SNOR_MFR_MICRON		CFI_MFR_MICRON	/* Micron */
->  #define SNOR_MFR_MACRONIX	CFI_MFR_MACRONIX
->  #define SNOR_MFR_SPANSION	CFI_MFR_AMD
->  #define SNOR_MFR_SST		CFI_MFR_SST
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

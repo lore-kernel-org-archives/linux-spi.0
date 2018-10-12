@@ -1,65 +1,115 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v2 2/2] mtd: spi-nor: add entry for mt35xu512aba flash
-Date: Fri, 12 Oct 2018 02:24:06 +0000
-Message-ID: <VI1PR04MB10387F73D1F4550ACC8B8CBD99E20@VI1PR04MB1038.eurprd04.prod.outlook.com>
-References: <1539245630-26611-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1539245630-26611-3-git-send-email-yogeshnarayan.gaur@nxp.com>
- <d390e12b-94e3-ab5a-3b7e-05381c090724@microchip.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v3 1/2] mtd: spi-nor: add macros related to MICRON flash
+Date: Fri, 12 Oct 2018 08:07:53 +0200
+Message-ID: <20181012080753.2a59b75c@bbrezillon>
+References: <1539310881-17438-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
         "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <d390e12b-94e3-ab5a-3b7e-05381c090724@microchip.com>
-Content-Language: en-US
+In-Reply-To: <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVHVkb3IsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHVkb3Ig
-QW1iYXJ1cyBbbWFpbHRvOnR1ZG9yLmFtYmFydXNAbWljcm9jaGlwLmNvbV0NCj4gU2VudDogVGh1
-cnNkYXksIE9jdG9iZXIgMTEsIDIwMTggOTozMyBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1
-ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+OyBsaW51eC0NCj4gbXRkQGxpc3RzLmluZnJh
-ZGVhZC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IG1hcmVrLnZhc3V0QGdt
-YWlsLmNvbTsgY3lyaWxsZS5waXRjaGVuQHdlZGV2NHUuZnI7DQo+IGJvcmlzLmJyZXppbGxvbkBi
-b290bGluLmNvbTsgY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOw0KPiBmcmllZGVyLnNjaHJl
-bXBmQGV4Y2VldC5kZTsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBS
-ZTogW1BBVENIIHYyIDIvMl0gbXRkOiBzcGktbm9yOiBhZGQgZW50cnkgZm9yIG10MzV4dTUxMmFi
-YSBmbGFzaA0KPiANCj4gDQo+IA0KPiBPbiAxMC8xMS8yMDE4IDExOjE1IEFNLCBZb2dlc2ggTmFy
-YXlhbiBHYXVyIHdyb3RlOg0KPiA+IEFkZCBlbnRyeSBmb3IgbXQzNXh1NTEyYWJhIE1pY3JvbiBO
-T1IgZmxhc2guDQo+ID4gVGhpcyBmbGFzaCBpcyBoYXZpbmcgdW5pZm9ybSBzZWN0b3IgZXJhc2Ug
-c2l6ZSBvZiAxMjhLQiwgaGF2ZSBzdXBwb3J0DQo+ID4gb2YgRlNSKGZsYWcgc3RhdHVzIHJlZ2lz
-dGVyKSwgZmxhc2ggc2l6ZSBpcyA2NE1CIGFuZCBzdXBwb3J0cyA0LWJ5dGUNCj4gPiBjb21tYW5k
-cy4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlvZ2VzaCBHYXVyIDx5b2dlc2huYXJheWFuLmdh
-dXJAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBDaGFuZ2VzIGZvciB2MjoNCj4gPiAtIFJlbW92ZWQg
-Y2hlY2twYXRjaCB3YXJuaW5nLCA4MCBjaGFyYWN0ZXIgbGltaXQuDQo+ID4NCj4gPiAgZHJpdmVy
-cy9tdGQvc3BpLW5vci9zcGktbm9yLmMgfCA0ICsrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDQg
-aW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Iv
-c3BpLW5vci5jDQo+ID4gYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBpbmRleCBiOGI0
-OTRmLi5lMGQ5NWFjIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5v
-ci5jDQo+ID4gKysrIGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMNCj4gPiBAQCAtMTQw
-NSw2ICsxNDA1LDEwIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgZmxhc2hfaW5mbyBzcGlfbm9yX2lk
-c1tdID0gew0KPiA+ICAJeyAibjI1cTAwYSIsICAgICBJTkZPKDB4MjBiYjIxLCAwLCA2NCAqIDEw
-MjQsIDIwNDgsIFNFQ1RfNEsgfCBVU0VfRlNSDQo+IHwgU1BJX05PUl9RVUFEX1JFQUQgfCBOT19D
-SElQX0VSQVNFKSB9LA0KPiA+ICAJeyAibXQyNXF1MDJnIiwgICBJTkZPKDB4MjBiYjIyLCAwLCA2
-NCAqIDEwMjQsIDQwOTYsIFNFQ1RfNEsgfA0KPiBVU0VfRlNSIHwgU1BJX05PUl9RVUFEX1JFQUQg
-fCBOT19DSElQX0VSQVNFKSB9LA0KPiA+DQo+ID4gKwkvKiBNaWNyb24gKi8NCj4gPiArCXsgIm10
-MzV4dTUxMmFiYSIsIElORk8oMHgyYzViMWEsIDAsIDEyOCAqIDEwMjQsIDUxMiwNCj4gPiArCQlT
-RUNUXzRLIHwgVVNFX0ZTUiB8IFNQSV9OT1JfNEJfT1BDT0RFUykgfSwNCj4gPiArDQo+IA0KPiBU
-aGUgc3R5bGUgaXMgc2xpZ2h0bHkgZGlmZmVyZW50IGZyb20gd2hhdCBCcmlhbiBwcm9wb3NlZCBi
-YWNrIGluDQo+IDk2NDgzODhmYzc3MzczNjViZTdhODA5MmU3N2RmNzhjY2MyY2QxYTQuIEZvciBj
-b25zaXN0ZW5jeSByZWFzb25zLCBJIHRoaW5rDQo+IHdlIHNob3VsZCB1c2UgdGhlIHNhbWUgc3R5
-bGUgaW4gYWxsIGVudHJpZXMuDQo+IA0KDQpPaywgSSBoYXZlIHNlbmQgdGhlIG5leHQgdmVyc2lv
-biBvZiB0aGUgcGF0Y2hlcyB3aXRoIHRoZSBzdHlsZSBjaGFuZ2VzIGFzIHByb3Bvc2VkIGJ5IEJy
-aWFuLg0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdhdXIuDQoNCj4gU2luY2UgSSB2ZXJpZmllZCB0
-aGUgY29ycmVjdG5lc3Mgb2YgdGhlIHBhdGNoIGFuZCBteSBjb21tZW50IHRhcmdldHMganVzdCBh
-DQo+IGNvc21ldGljIGNoYW5nZSwgSSdsbCBsZXQgdGhlIG1haW50YWluZXJzIGRlY2lkZToNCj4g
-DQo+IFJldmlld2VkLWJ5OiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVzQG1pY3JvY2hpcC5j
-b20+DQo=
+On Fri, 12 Oct 2018 02:23:08 +0000
+Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+
+> Some MICRON related macros in spi-nor domain were ST.
+> Rename entries related to STMicroelectronics under macro SNOR_MFR_ST.
+> 
+> Added entry of MFR Id for Micron flashes, 0x002C.
+> 
+> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> ---
+> Changes for v3:
+> - None
+> Changes for v2:
+> - None
+> 
+>  drivers/mtd/spi-nor/spi-nor.c | 9 ++++++---
+>  include/linux/mtd/cfi.h       | 1 +
+>  include/linux/mtd/spi-nor.h   | 3 ++-
+>  3 files changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 9407ca5..b8b494f 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -284,6 +284,7 @@ static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
+>  	u8 cmd;
+>  
+>  	switch (JEDEC_MFR(info)) {
+> +	case SNOR_MFR_ST:
+>  	case SNOR_MFR_MICRON:
+>  		/* Some Micron need WREN command; all will accept it */
+>  		need_wren = true;
+> @@ -1388,7 +1389,7 @@ static int spi_nor_is_locked(struct mtd_info *mtd, loff_t ofs, uint64_t len)
+>  	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048, SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
+>  	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048, SPI_NOR_QUAD_READ) },
+>  
+> -	/* Micron */
+> +	/* Micron <--> ST Micro */
+>  	{ "n25q016a",	 INFO(0x20bb15, 0, 64 * 1024,   32, SECT_4K | SPI_NOR_QUAD_READ) },
+>  	{ "n25q032",	 INFO(0x20ba16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
+>  	{ "n25q032a",	 INFO(0x20bb16, 0, 64 * 1024,   64, SPI_NOR_QUAD_READ) },
+> @@ -3223,6 +3224,7 @@ static int spi_nor_init_params(struct spi_nor *nor,
+>  			params->quad_enable = macronix_quad_enable;
+>  			break;
+>  
+> +		case SNOR_MFR_ST:
+>  		case SNOR_MFR_MICRON:
+>  			break;
+>  
+> @@ -3671,8 +3673,9 @@ int spi_nor_scan(struct spi_nor *nor, const char *name,
+>  	mtd->_resume = spi_nor_resume;
+>  
+>  	/* NOR protection support for STmicro/Micron chips and similar */
+> -	if (JEDEC_MFR(info) == SNOR_MFR_MICRON ||
+> -			info->flags & SPI_NOR_HAS_LOCK) {
+> +	if (JEDEC_MFR(info) == SNOR_MFR_ST ||
+> +	    JEDEC_MFR(info) == SNOR_MFR_MICRON ||
+> +	    info->flags & SPI_NOR_HAS_LOCK) {
+>  		nor->flash_lock = stm_lock;
+>  		nor->flash_unlock = stm_unlock;
+>  		nor->flash_is_locked = stm_is_locked;
+
+Are you sure ST and Micron NORs work the same way WRT locking, 4-byte
+addressing mode and Quad enable?
+
+> diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h
+> index 9b57a9b..cbf7716 100644
+> --- a/include/linux/mtd/cfi.h
+> +++ b/include/linux/mtd/cfi.h
+> @@ -377,6 +377,7 @@ struct cfi_fixup {
+>  #define CFI_MFR_SHARP		0x00B0
+>  #define CFI_MFR_SST		0x00BF
+>  #define CFI_MFR_ST		0x0020 /* STMicroelectronics */
+> +#define CFI_MFR_MICRON		0x002C /* Micron */
+>  #define CFI_MFR_TOSHIBA		0x0098
+>  #define CFI_MFR_WINBOND		0x00DA
+>  
+> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+> index 7f0c730..8b1acf6 100644
+> --- a/include/linux/mtd/spi-nor.h
+> +++ b/include/linux/mtd/spi-nor.h
+> @@ -23,7 +23,8 @@
+>  #define SNOR_MFR_ATMEL		CFI_MFR_ATMEL
+>  #define SNOR_MFR_GIGADEVICE	0xc8
+>  #define SNOR_MFR_INTEL		CFI_MFR_INTEL
+> -#define SNOR_MFR_MICRON		CFI_MFR_ST /* ST Micro <--> Micron */
+> +#define SNOR_MFR_ST		CFI_MFR_ST	/* ST Micro */
+> +#define SNOR_MFR_MICRON		CFI_MFR_MICRON	/* Micron */
+>  #define SNOR_MFR_MACRONIX	CFI_MFR_MACRONIX
+>  #define SNOR_MFR_SPANSION	CFI_MFR_AMD
+>  #define SNOR_MFR_SST		CFI_MFR_SST

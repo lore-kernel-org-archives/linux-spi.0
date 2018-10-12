@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH RFC 14/18] mtd: spi-nor: Clarify where DTR mode applies
-Date: Fri, 12 Oct 2018 10:48:21 +0200
-Message-ID: <20181012084825.23697-15-boris.brezillon@bootlin.com>
+Subject: [PATCH RFC 09/18] mtd: spi-nor: Add spi_nor_{read,
+ write}_reg() helpers
+Date: Fri, 12 Oct 2018 10:48:16 +0200
+Message-ID: <20181012084825.23697-10-boris.brezillon@bootlin.com>
 References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -28,211 +29,202 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-In its current state, '_DTR' means 'send everything except the
-instruction in DTR mode'. Clarify that by renaming the macros into
-_1_xD_xD so that we can later support full DTR modes (where the
-instruction byte is also sent in DTR mode).
+Add the spi_nor_{read,write}_reg() helpers (which are just thin
+wrappers around ->{read,write}_reg()) in order to prepare things for
+X-X-X modes support. The idea is to reject calls to
+->{read,write}_reg() when the chip has entered such a mode, because
+SPI NOR controller drivers are not ready for that.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 22 ++++++++--------
- include/linux/mtd/spi-nor.h   | 61 ++++++++++++++++++++++++++-----------------
- 2 files changed, 48 insertions(+), 35 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 48 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 9cd8677b8cb2..98dab7f6938e 100644
+index 7fad94588c55..42f299a0b76f 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -58,25 +58,25 @@ struct spi_nor_pp_command {
- enum spi_nor_read_command_index {
- 	SNOR_CMD_READ,
- 	SNOR_CMD_READ_FAST,
--	SNOR_CMD_READ_1_1_1_DTR,
-+	SNOR_CMD_READ_1_1D_1D,
- 
- 	/* Dual SPI */
- 	SNOR_CMD_READ_1_1_2,
- 	SNOR_CMD_READ_1_2_2,
- 	SNOR_CMD_READ_2_2_2,
--	SNOR_CMD_READ_1_2_2_DTR,
-+	SNOR_CMD_READ_1_2D_2D,
- 
- 	/* Quad SPI */
- 	SNOR_CMD_READ_1_1_4,
- 	SNOR_CMD_READ_1_4_4,
- 	SNOR_CMD_READ_4_4_4,
--	SNOR_CMD_READ_1_4_4_DTR,
-+	SNOR_CMD_READ_1_4D_4D,
- 
- 	/* Octo SPI */
- 	SNOR_CMD_READ_1_1_8,
- 	SNOR_CMD_READ_1_8_8,
- 	SNOR_CMD_READ_8_8_8,
--	SNOR_CMD_READ_1_8_8_DTR,
-+	SNOR_CMD_READ_1_8D_8D,
- 
- 	SNOR_CMD_READ_MAX
- };
-@@ -613,9 +613,9 @@ static u8 spi_nor_convert_3to4_read(u8 opcode)
- 		{ SPINOR_OP_READ_1_1_4,	SPINOR_OP_READ_1_1_4_4B },
- 		{ SPINOR_OP_READ_1_4_4,	SPINOR_OP_READ_1_4_4_4B },
- 
--		{ SPINOR_OP_READ_1_1_1_DTR,	SPINOR_OP_READ_1_1_1_DTR_4B },
--		{ SPINOR_OP_READ_1_2_2_DTR,	SPINOR_OP_READ_1_2_2_DTR_4B },
--		{ SPINOR_OP_READ_1_4_4_DTR,	SPINOR_OP_READ_1_4_4_DTR_4B },
-+		{ SPINOR_OP_READ_1_1D_1D,	SPINOR_OP_READ_1_1D_1D_4B },
-+		{ SPINOR_OP_READ_1_2D_2D,	SPINOR_OP_READ_1_2D_2D_4B },
-+		{ SPINOR_OP_READ_1_4D_4D,	SPINOR_OP_READ_1_4D_4D_4B },
- 	};
- 
- 	return spi_nor_convert_opcode(opcode, spi_nor_3to4_read,
-@@ -2999,19 +2999,19 @@ static int spi_nor_hwcaps_read2cmd(u32 hwcaps)
- 	static const int hwcaps_read2cmd[][2] = {
- 		{ SNOR_HWCAPS_READ,		SNOR_CMD_READ },
- 		{ SNOR_HWCAPS_READ_FAST,	SNOR_CMD_READ_FAST },
--		{ SNOR_HWCAPS_READ_1_1_1_DTR,	SNOR_CMD_READ_1_1_1_DTR },
-+		{ SNOR_HWCAPS_READ_1_1D_1D,	SNOR_CMD_READ_1_1D_1D },
- 		{ SNOR_HWCAPS_READ_1_1_2,	SNOR_CMD_READ_1_1_2 },
- 		{ SNOR_HWCAPS_READ_1_2_2,	SNOR_CMD_READ_1_2_2 },
- 		{ SNOR_HWCAPS_DPI,		SNOR_CMD_READ_2_2_2 },
--		{ SNOR_HWCAPS_READ_1_2_2_DTR,	SNOR_CMD_READ_1_2_2_DTR },
-+		{ SNOR_HWCAPS_READ_1_2D_2D,	SNOR_CMD_READ_1_2D_2D },
- 		{ SNOR_HWCAPS_READ_1_1_4,	SNOR_CMD_READ_1_1_4 },
- 		{ SNOR_HWCAPS_READ_1_4_4,	SNOR_CMD_READ_1_4_4 },
- 		{ SNOR_HWCAPS_QPI,		SNOR_CMD_READ_4_4_4 },
--		{ SNOR_HWCAPS_READ_1_4_4_DTR,	SNOR_CMD_READ_1_4_4_DTR },
-+		{ SNOR_HWCAPS_READ_1_4D_4D,	SNOR_CMD_READ_1_4D_4D },
- 		{ SNOR_HWCAPS_READ_1_1_8,	SNOR_CMD_READ_1_1_8 },
- 		{ SNOR_HWCAPS_READ_1_8_8,	SNOR_CMD_READ_1_8_8 },
- 		{ SNOR_HWCAPS_OPI,		SNOR_CMD_READ_8_8_8 },
--		{ SNOR_HWCAPS_READ_1_8_8_DTR,	SNOR_CMD_READ_1_8_8_DTR },
-+		{ SNOR_HWCAPS_READ_1_8D_8D,	SNOR_CMD_READ_1_8D_8D },
- 	};
- 
- 	return spi_nor_hwcaps2cmd(hwcaps, hwcaps_read2cmd,
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index e497f3b93a74..1035706bc6db 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -81,13 +81,13 @@
- #define SPINOR_OP_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
- 
- /* Double Transfer Rate opcodes - defined in JEDEC JESD216B. */
--#define SPINOR_OP_READ_1_1_1_DTR	0x0d
--#define SPINOR_OP_READ_1_2_2_DTR	0xbd
--#define SPINOR_OP_READ_1_4_4_DTR	0xed
-+#define SPINOR_OP_READ_1_1D_1D		0x0d
-+#define SPINOR_OP_READ_1_2D_2D		0xbd
-+#define SPINOR_OP_READ_1_4D_4D		0xed
- 
--#define SPINOR_OP_READ_1_1_1_DTR_4B	0x0e
--#define SPINOR_OP_READ_1_2_2_DTR_4B	0xbe
--#define SPINOR_OP_READ_1_4_4_DTR_4B	0xee
-+#define SPINOR_OP_READ_1_1D_1D_4B	0x0e
-+#define SPINOR_OP_READ_1_2D_2D_4B	0xbe
-+#define SPINOR_OP_READ_1_4D_4D_4B	0xee
- 
- /* Used for SST flashes only. */
- #define SPINOR_OP_BP		0x02	/* Byte program */
-@@ -174,7 +174,10 @@
- 	((((unsigned long)(_nbits)) << SNOR_PROTO_DATA_SHIFT) & \
- 	 SNOR_PROTO_DATA_MASK)
- 
--#define SNOR_PROTO_IS_DTR	BIT(24)	/* Double Transfer Rate */
-+/* Double Transfer Rate flags */
-+#define SNOR_PROTO_INST_IS_DTR	BIT(26)
-+#define SNOR_PROTO_ADDR_IS_DTR	BIT(25)
-+#define SNOR_PROTO_DATA_IS_DTR	BIT(24)
- 
- #define SNOR_PROTO_INST_2BYTE	BIT(31)
- 
-@@ -182,9 +185,9 @@
- 	(SNOR_PROTO_INST(_inst_nbits) |				\
- 	 SNOR_PROTO_ADDR(_addr_nbits) |				\
- 	 SNOR_PROTO_DATA(_data_nbits))
--#define SNOR_PROTO_DTR(_inst_nbits, _addr_nbits, _data_nbits)	\
--	(SNOR_PROTO_IS_DTR |					\
--	 SNOR_PROTO_STR(_inst_nbits, _addr_nbits, _data_nbits))
-+#define SNOR_PROTO_1_XD_XD(_nbits)				\
-+	(SNOR_PROTO_DATA_IS_DTR | SNOR_PROTO_ADDR_IS_DTR |	\
-+	 SNOR_PROTO_STR(1, _nbits, _nbits))
- 
- enum spi_nor_protocol {
- 	SNOR_PROTO_1_1_1 = SNOR_PROTO_STR(1, 1, 1),
-@@ -198,15 +201,25 @@ enum spi_nor_protocol {
- 	SNOR_PROTO_4_4_4 = SNOR_PROTO_STR(4, 4, 4),
- 	SNOR_PROTO_8_8_8 = SNOR_PROTO_STR(8, 8, 8),
- 
--	SNOR_PROTO_1_1_1_DTR = SNOR_PROTO_DTR(1, 1, 1),
--	SNOR_PROTO_1_2_2_DTR = SNOR_PROTO_DTR(1, 2, 2),
--	SNOR_PROTO_1_4_4_DTR = SNOR_PROTO_DTR(1, 4, 4),
--	SNOR_PROTO_1_8_8_DTR = SNOR_PROTO_DTR(1, 8, 8),
-+	SNOR_PROTO_1_1D_1D = SNOR_PROTO_1_XD_XD(1),
-+	SNOR_PROTO_1_2D_2D = SNOR_PROTO_1_XD_XD(2),
-+	SNOR_PROTO_1_4D_4D = SNOR_PROTO_1_XD_XD(4),
-+	SNOR_PROTO_1_8D_8D = SNOR_PROTO_1_XD_XD(8),
- };
- 
--static inline bool spi_nor_protocol_is_dtr(enum spi_nor_protocol proto)
-+static inline bool spi_nor_protocol_inst_is_dtr(enum spi_nor_protocol proto)
- {
--	return !!(proto & SNOR_PROTO_IS_DTR);
-+	return !!(proto & SNOR_PROTO_INST_IS_DTR);
-+}
-+
-+static inline bool spi_nor_protocol_addr_is_dtr(enum spi_nor_protocol proto)
-+{
-+	return !!(proto & SNOR_PROTO_ADDR_IS_DTR);
-+}
-+
-+static inline bool spi_nor_protocol_data_is_dtr(enum spi_nor_protocol proto)
-+{
-+	return !!(proto & SNOR_PROTO_DATA_IS_DTR);
+@@ -148,6 +148,16 @@ static int spi_nor_nodata_op(struct spi_nor *nor, struct spi_mem_op *op)
+ 	return spi_nor_exec_op(nor, op, NULL, NULL, 0);
  }
  
- static inline u8 spi_nor_get_protocol_inst_nbits(enum spi_nor_protocol proto)
-@@ -499,22 +512,22 @@ struct spi_nor_hwcaps {
- #define SNOR_HWCAPS_READ_MASK		GENMASK(11, 0)
- #define SNOR_HWCAPS_READ		BIT(0)
- #define SNOR_HWCAPS_READ_FAST		BIT(1)
--#define SNOR_HWCAPS_READ_1_1_1_DTR	BIT(2)
-+#define SNOR_HWCAPS_READ_1_1D_1D	BIT(2)
++static int spi_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *val, int len)
++{
++	return nor->read_reg(nor, opcode, val, len);
++}
++
++static int spi_nor_write_reg(struct spi_nor *nor, u8 opcode, u8 *val, int len)
++{
++	return nor->write_reg(nor, opcode, val, len);
++}
++
+ static ssize_t spi_nor_spimem_read_data(struct spi_nor *nor, loff_t ofs,
+ 					size_t len, u8 *buf)
+ {
+@@ -283,7 +293,7 @@ static int read_sr(struct spi_nor *nor)
  
- #define SNOR_HWCAPS_READ_DUAL		GENMASK(5, 3)
- #define SNOR_HWCAPS_READ_1_1_2		BIT(3)
- #define SNOR_HWCAPS_READ_1_2_2		BIT(4)
--#define SNOR_HWCAPS_READ_1_2_2_DTR	BIT(5)
-+#define SNOR_HWCAPS_READ_1_2D_2D	BIT(5)
+ 		ret = spi_nor_data_op(nor, &op, &val, 1);
+ 	} else {
+-		ret = nor->read_reg(nor, SPINOR_OP_RDSR, &val, 1);
++		ret = spi_nor_read_reg(nor, SPINOR_OP_RDSR, &val, 1);
+ 	}
  
- #define SNOR_HWCAPS_READ_QUAD		GENMASK(8, 6)
- #define SNOR_HWCAPS_READ_1_1_4		BIT(6)
- #define SNOR_HWCAPS_READ_1_4_4		BIT(7)
--#define SNOR_HWCAPS_READ_1_4_4_DTR	BIT(8)
-+#define SNOR_HWCAPS_READ_1_4D_4D	BIT(8)
+ 	if (ret < 0) {
+@@ -313,7 +323,7 @@ static int read_fsr(struct spi_nor *nor)
  
- #define SNOR_HWCPAS_READ_OCTO		GENMASK(11, 9)
- #define SNOR_HWCAPS_READ_1_1_8		BIT(9)
- #define SNOR_HWCAPS_READ_1_8_8		BIT(10)
--#define SNOR_HWCAPS_READ_1_8_8_DTR	BIT(11)
-+#define SNOR_HWCAPS_READ_1_8D_8D	BIT(11)
+ 		ret = spi_nor_data_op(nor, &op, &val, 1);
+ 	} else {
+-		ret = nor->read_reg(nor, SPINOR_OP_RDFSR, &val, 1);
++		ret = spi_nor_read_reg(nor, SPINOR_OP_RDFSR, &val, 1);
+ 	}
+ 
+ 	if (ret < 0) {
+@@ -343,7 +353,7 @@ static int read_cr(struct spi_nor *nor)
+ 
+ 		ret = spi_nor_data_op(nor, &op, &val, 1);
+ 	} else {
+-		ret = nor->read_reg(nor, SPINOR_OP_RDCR, &val, 1);
++		ret = spi_nor_read_reg(nor, SPINOR_OP_RDCR, &val, 1);
+ 	}
+ 
+ 	if (ret < 0) {
+@@ -371,7 +381,7 @@ static int write_sr(struct spi_nor *nor, u8 val)
+ 	}
+ 
+ 	nor->cmd_buf[0] = val;
+-	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1);
++	return spi_nor_write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1);
+ }
+ 
+ 
+@@ -391,7 +401,7 @@ static int write_enable(struct spi_nor *nor)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0);
++	return spi_nor_write_reg(nor, SPINOR_OP_WREN, NULL, 0);
+ }
  
  /*
-  * Page Program capabilities.
-@@ -553,10 +566,10 @@ struct spi_nor_hwcaps {
- 				 SNOR_HWCAPS_QPI |		\
- 				 SNOR_HWCAPS_OPI)
+@@ -409,7 +419,7 @@ static int write_disable(struct spi_nor *nor)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
  
--#define SNOR_HWCAPS_DTR		(SNOR_HWCAPS_READ_1_1_1_DTR |	\
--				 SNOR_HWCAPS_READ_1_2_2_DTR |	\
--				 SNOR_HWCAPS_READ_1_4_4_DTR |	\
--				 SNOR_HWCAPS_READ_1_8_8_DTR)
-+#define SNOR_HWCAPS_DTR		(SNOR_HWCAPS_READ_1_1D_1D |	\
-+				 SNOR_HWCAPS_READ_1_2D_2D |	\
-+				 SNOR_HWCAPS_READ_1_4D_4D |	\
-+				 SNOR_HWCAPS_READ_1_8D_8D)
+-	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0);
++	return spi_nor_write_reg(nor, SPINOR_OP_WRDI, NULL, 0);
+ }
  
- #define SNOR_HWCAPS_ALL		(SNOR_HWCAPS_READ_MASK |	\
- 				 SNOR_HWCAPS_PP_MASK |		\
+ static struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
+@@ -515,7 +525,7 @@ static int set_4byte(struct spi_nor *nor, bool enable)
+ 		return spi_nor_data_op(nor, &op, nor->cmd_buf, 1);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_BRWR, nor->cmd_buf, 1);
++	return spi_nor_write_reg(nor, SPINOR_OP_BRWR, nor->cmd_buf, 1);
+ }
+ 
+ static int xread_sr(struct spi_nor *nor, u8 *sr)
+@@ -530,7 +540,7 @@ static int xread_sr(struct spi_nor *nor, u8 *sr)
+ 		return spi_nor_data_op(nor, &op, sr, 1);
+ 	}
+ 
+-	return nor->read_reg(nor, SPINOR_OP_XRDSR, sr, 1);
++	return spi_nor_read_reg(nor, SPINOR_OP_XRDSR, sr, 1);
+ }
+ 
+ static int s3an_sr_ready(struct spi_nor *nor)
+@@ -560,7 +570,7 @@ static int clear_sr(struct spi_nor *nor)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_CLSR, NULL, 0);
++	return spi_nor_write_reg(nor, SPINOR_OP_CLSR, NULL, 0);
+ }
+ 
+ static int spi_nor_sr_ready(struct spi_nor *nor)
+@@ -594,7 +604,7 @@ static int clear_fsr(struct spi_nor *nor)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_CLFSR, NULL, 0);
++	return spi_nor_write_reg(nor, SPINOR_OP_CLFSR, NULL, 0);
+ }
+ 
+ static int spi_nor_fsr_ready(struct spi_nor *nor)
+@@ -692,7 +702,7 @@ static int erase_chip(struct spi_nor *nor)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
++	return spi_nor_write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0);
+ }
+ 
+ static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
+@@ -774,7 +784,7 @@ static int spi_nor_erase_sector(struct spi_nor *nor, u32 addr)
+ 		addr >>= 8;
+ 	}
+ 
+-	return nor->write_reg(nor, nor->erase_opcode, buf, nor->addr_width);
++	return spi_nor_write_reg(nor, nor->erase_opcode, buf, nor->addr_width);
+ }
+ 
+ /**
+@@ -1873,7 +1883,7 @@ static int read_id(struct spi_nor *nor, u8 *id)
+ 		return spi_nor_data_op(nor, &op, id, SPI_NOR_MAX_ID_LEN);
+ 	}
+ 
+-	return nor->read_reg(nor, SPINOR_OP_RDID, id, SPI_NOR_MAX_ID_LEN);
++	return spi_nor_read_reg(nor, SPINOR_OP_RDID, id, SPI_NOR_MAX_ID_LEN);
+ }
+ 
+ static const struct flash_info *spi_nor_read_id(struct spi_nor *nor)
+@@ -2102,7 +2112,7 @@ static int write_sr_cr(struct spi_nor *nor, u8 *sr_cr)
+ 
+ 		ret = spi_nor_data_op(nor, &op, sr_cr, 2);
+ 	} else {
+-		ret = nor->write_reg(nor, SPINOR_OP_WRSR, sr_cr, 2);
++		ret = spi_nor_write_reg(nor, SPINOR_OP_WRSR, sr_cr, 2);
+ 	}
+ 
+ 	if (ret < 0) {
+@@ -2258,7 +2268,7 @@ static int write_sr2(struct spi_nor *nor, u8 sr2)
+ 		return spi_nor_data_op(nor, &op, &sr2, 1);
+ 	}
+ 
+-	return nor->write_reg(nor, SPINOR_OP_WRSR2, &sr2, 1);
++	return spi_nor_write_reg(nor, SPINOR_OP_WRSR2, &sr2, 1);
+ }
+ 
+ static int read_sr2(struct spi_nor *nor, u8 *sr2)
+@@ -2273,7 +2283,7 @@ static int read_sr2(struct spi_nor *nor, u8 *sr2)
+ 		return spi_nor_data_op(nor, &op, sr2, 1);
+ 	}
+ 
+-	return nor->read_reg(nor, SPINOR_OP_RDSR2, sr2, 1);
++	return spi_nor_read_reg(nor, SPINOR_OP_RDSR2, sr2, 1);
+ }
+ 
+ /**
+@@ -4024,8 +4034,8 @@ static int macronix_set_4byte(struct spi_nor *nor, bool enable)
+ 		return spi_nor_nodata_op(nor, &op);
+ 	}
+ 
+-	return nor->write_reg(nor, enable ? SPINOR_OP_EN4B : SPINOR_OP_EX4B,
+-			      NULL, 0);
++	return spi_nor_write_reg(nor, enable ? SPINOR_OP_EN4B : SPINOR_OP_EX4B,
++				 NULL, 0);
+ }
+ 
+ static int micron_set_4byte(struct spi_nor *nor, bool enable)
+@@ -4052,7 +4062,7 @@ static int write_ear(struct spi_nor *nor, u8 ear)
+ 	}
+ 
+ 	nor->cmd_buf[0] = ear;
+-	return nor->write_reg(nor, SPINOR_OP_WREAR, nor->cmd_buf, 1);
++	return spi_nor_write_reg(nor, SPINOR_OP_WREAR, nor->cmd_buf, 1);
+ }
+ 
+ static int winbond_set_4byte(struct spi_nor *nor, bool enable)
 -- 
 2.14.1
 

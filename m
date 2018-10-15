@@ -1,72 +1,99 @@
-From: Sekhar Nori <nsekhar@ti.com>
-Subject: Re: [PATCH 3/3] spi: omap2-mcspi: Add slave mode support
-Date: Mon, 15 Oct 2018 15:34:37 +0530
-Message-ID: <87459424-1083-0716-0481-89d7b7e3f08c@ti.com>
-References: <20181015063829.26978-1-vigneshr@ti.com>
- <20181015063829.26978-4-vigneshr@ti.com>
- <2bef1218-ef43-cdc1-303f-b85863887a6b@ti.com>
- <28333ef8-22ca-e95f-b9d5-c0aeece20603@ti.com>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v2 0/7] spi: add support for octal mode
+Date: Mon, 15 Oct 2018 11:47:55 +0000
+Message-ID: <1539603969-21076-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-To: Vignesh R <vigneshr@ti.com>, Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <28333ef8-22ca-e95f-b9d5-c0aeece20603@ti.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 15 October 2018 03:12 PM, Vignesh R wrote:
-> Hi Sekhar,
-> 
-> On Monday 15 October 2018 01:53 PM, Sekhar Nori wrote:
-> 
-> [...]
->>>  
->>> +static irqreturn_t omap2_mcspi_irq_handler(int irq, void *data)
->>> +{
->>> +	struct omap2_mcspi *mcspi = data;
->>> +	u32 irqstat;
->>> +
->>> +	irqstat	= mcspi_read_reg(mcspi->master, OMAP2_MCSPI_IRQSTATUS);
->>> +	if (!irqstat)
->>> +		return IRQ_NONE;
->>> +
->>> +	/* Disable IRQ and wakeup slave xfer task */
->>> +	mcspi_write_reg(mcspi->master, OMAP2_MCSPI_IRQENABLE, 0);
->>> +	if (irqstat & OMAP2_MCSPI_IRQSTATUS_EOW)
->>> +		complete(&mcspi->txdone);
->>> +
->>> +	return IRQ_HANDLED;
->>
->> You need to have the:
->>
->> pm_runtime_get_sync();
->>
->> /* access registers */
->>
->> pm_runtime_mark_last_busy();
->> pm_runtime_put_autosuspend();
->>
->> sequence here. I think thats also missing from the dma callbacks.
->> Probably working by chance today.
->>
-> 
-> This is taken care of by the SPI core as part of __spi_pump_messages():
-> pm_runtime_get_sync()
-> ...
-> spi_transfer_one_message
-> ...
-> 	omap2_mcspi_transfer_one
-> 	...
-> 		omap2_mcspi_txrx_dma
-> 
-> So, both in dma callbacks and in IRQ handler, SPI controller is in
-> active state.
+Add support for octal mode IO data transfer.
+Micron flash, mt35xu512aba, supports octal mode data transfer and
+NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
 
-Ah, okay then. False alarm :)
+Patch series
+* Add support for octal mode flags and parsing of same in spi driver.
+* Add opcodes for octal I/O commands in spi-nor framework, Read and Write p=
+roto for (1-1-8/1-8-8) mode.
+  Opcodes are added as per octal data IO commands required for mt35xu512aba=
+ [1] flash.
+* Add parsing logic for spi-mem framework and m25p80.c device file.
+* Add mode bit required for octal mode in nxp-fspi driver [2].
+* Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
 
-Regards,
-Sekhar
+Cherry pick below 2 patches (from: https://git.kernel.org/pub/scm/linux/ker=
+nel/git/broonie/spi.git):
+    c639f871febe6667d9afce28108c634e5636c735 spi: spi-mem: Fix inverted log=
+ic in op sanity check
+    db122eb8a749a1eff038f9a282c620ab16c4be1d spi: spi-mem: Add extra sanity=
+ checks on the op param
+
+Tested on LX2160ARDB target with nxp-fspi driver, below are
+Read performance number of 1-1-1 and 1-1-8 read protocol.
+
+ root@lxxx:~# cat /proc/mtd
+ dev:    size   erasesize  name
+ mtd0: 04000000 00001000 "spi0.0"
+ mtd1: 04000000 00001000 "spi0.1"
+ root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
+
+ real    0m2.792s
+ user    0m0.000s
+ sys     0m2.790s
+ root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
+
+ real    0m0.441s
+ user    0m0.000s
+ sys     0m0.440s
+ root@ls1012ardb:~#
+
+ Flash device MTD0 configured in 1-1-1 protocol.
+ Flash device MTD1 configured in 1-1-8 protocol.
+
+[1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70384
+[2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70210
+
+Yogesh Gaur (7):
+  spi: add support for octal I/O data transfer
+  mtd: spi-nor: add opcodes for octal Read/Write commands
+  mtd: spi-nor: add octal read flag for flash mt35xu512aba
+  mtd: m25p80: add support of octal I/O transfer
+  spi: spi-mem: add support for octal I/O data transfer
+  spi: nxp-fspi: add mode flag bit for octal support
+  arm64: dts: lx2160a: update fspi node
+
+Changes for v2:
+ Incorporated review comments of Boris and Vignesh.
+
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
+ drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
+ drivers/mtd/spi-nor/spi-nor.c                     | 15 ++++++++++++++-
+ drivers/spi/spi-mem.c                             |  9 ++++++++-
+ drivers/spi/spi-nxp-fspi.c                        |  4 ++--
+ drivers/spi/spi.c                                 |  6 ++++++
+ include/linux/mtd/spi-nor.h                       |  8 ++++++++
+ include/linux/spi/spi.h                           |  2 ++
+ 8 files changed, 52 insertions(+), 5 deletions(-)
+
+--=20
+2.7.4

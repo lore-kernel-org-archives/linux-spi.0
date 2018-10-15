@@ -1,66 +1,70 @@
-From: Benjamin Gaignard <benjamin.gaignard@linaro.org>
-Subject: Re: [PATCH 7/8] media: sti/bdisp: don't pass GFP_DMA32 to dma_alloc_attrs
-Date: Mon, 15 Oct 2018 11:12:55 +0200
-Message-ID: <CA+M3ks5KO-Yr_PEczaENhTfirthFz2gW1uv4bwZe5mjy3-jZyg@mail.gmail.com>
-References: <20181013151707.32210-1-hch@lst.de> <20181013151707.32210-8-hch@lst.de>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH 3/3] spi: omap2-mcspi: Add slave mode support
+Date: Mon, 15 Oct 2018 15:12:38 +0530
+Message-ID: <28333ef8-22ca-e95f-b9d5-c0aeece20603@ti.com>
+References: <20181015063829.26978-1-vigneshr@ti.com>
+ <20181015063829.26978-4-vigneshr@ti.com>
+ <2bef1218-ef43-cdc1-303f-b85863887a6b@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-media@vger.kernel.org, linux-spi@vger.kernel.org,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        alsa-devel@alsa-project.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: <linux-spi@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+To: Sekhar Nori <nsekhar@ti.com>, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181013151707.32210-8-hch@lst.de>
+In-Reply-To: <2bef1218-ef43-cdc1-303f-b85863887a6b@ti.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Le sam. 13 oct. 2018 =C3=A0 17:18, Christoph Hellwig <hch@lst.de> a =C3=A9c=
-rit :
->
-> The DMA API does its own zone decisions based on the coherent_dma_mask.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Hi Sekhar,
 
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@linaro.org>
+On Monday 15 October 2018 01:53 PM, Sekhar Nori wrote:
 
-> ---
->  drivers/media/platform/sti/bdisp/bdisp-hw.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/media/platform/sti/bdisp/bdisp-hw.c b/drivers/media/=
-platform/sti/bdisp/bdisp-hw.c
-> index 26d9fa7aeb5f..4372abbb5950 100644
-> --- a/drivers/media/platform/sti/bdisp/bdisp-hw.c
-> +++ b/drivers/media/platform/sti/bdisp/bdisp-hw.c
-> @@ -510,7 +510,7 @@ int bdisp_hw_alloc_filters(struct device *dev)
->
->         /* Allocate all the filters within a single memory page */
->         size =3D (BDISP_HF_NB * NB_H_FILTER) + (BDISP_VF_NB * NB_V_FILTER=
-);
-> -       base =3D dma_alloc_attrs(dev, size, &paddr, GFP_KERNEL | GFP_DMA,
-> +       base =3D dma_alloc_attrs(dev, size, &paddr, GFP_KERNEL,
->                                DMA_ATTR_WRITE_COMBINE);
->         if (!base)
->                 return -ENOMEM;
-> --
-> 2.19.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+[...]
+>>  
+>> +static irqreturn_t omap2_mcspi_irq_handler(int irq, void *data)
+>> +{
+>> +	struct omap2_mcspi *mcspi = data;
+>> +	u32 irqstat;
+>> +
+>> +	irqstat	= mcspi_read_reg(mcspi->master, OMAP2_MCSPI_IRQSTATUS);
+>> +	if (!irqstat)
+>> +		return IRQ_NONE;
+>> +
+>> +	/* Disable IRQ and wakeup slave xfer task */
+>> +	mcspi_write_reg(mcspi->master, OMAP2_MCSPI_IRQENABLE, 0);
+>> +	if (irqstat & OMAP2_MCSPI_IRQSTATUS_EOW)
+>> +		complete(&mcspi->txdone);
+>> +
+>> +	return IRQ_HANDLED;
+> 
+> You need to have the:
+> 
+> pm_runtime_get_sync();
+> 
+> /* access registers */
+> 
+> pm_runtime_mark_last_busy();
+> pm_runtime_put_autosuspend();
+> 
+> sequence here. I think thats also missing from the dma callbacks.
+> Probably working by chance today.
+> 
+
+This is taken care of by the SPI core as part of __spi_pump_messages():
+pm_runtime_get_sync()
+...
+spi_transfer_one_message
+...
+	omap2_mcspi_transfer_one
+	...
+		omap2_mcspi_txrx_dma
+
+So, both in dma callbacks and in IRQ handler, SPI controller is in
+active state.
 
 
-
---=20
-Benjamin Gaignard
-
-Graphic Study Group
-
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-
-Follow Linaro: Facebook | Twitter | Blog
+-- 
+Regards
+Vignesh

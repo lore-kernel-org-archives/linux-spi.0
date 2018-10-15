@@ -1,99 +1,38 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: Add bindings for aliases node
-Date: Mon, 15 Oct 2018 13:00:46 -0500
-Message-ID: <20181015180046.GA18294@bogus>
-References: <20180925210255.172734-1-mka@chromium.org>
- <20181009010711.GA1577@ban.mtv.corp.google.com>
- <CAMuHMdWe5JYp5eC2PvuG4xEud908Crhm+BhrtxPJ4Uo1-LCc4g@mail.gmail.com>
- <20181009183141.GA126050@ban.mtv.corp.google.com>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Re: [PATCH] spi: Make GPIO CSs honour the SPI_NO_CS flag
+Date: Mon, 15 Oct 2018 18:34:18 +0000
+Message-ID: <1539628457.30311.5.camel@impinj.com>
+References: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, swboyd@chromium.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-To: Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "phil@raspberrypi.org" <phil@raspberrypi.org>,
+        "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181009183141.GA126050@ban.mtv.corp.google.com>
+In-Reply-To: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
+Content-Language: en-US
+Content-ID: <3B933B9511D28C4FBC6B2214E1F2F79F@namprd06.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 09, 2018 at 11:31:42AM -0700, Brian Norris wrote:
-> On Tue, Oct 09, 2018 at 09:22:07AM +0200, Geert Uytterhoeven wrote:
-> > Please note these aliases become cumbersome once you start considering
-> > (dynamic) DT overlays.  That's why I made them optional in the sh-sci
-> > serial driver, cfr. commit 7678f4c20fa7670f ("serial: sh-sci: Add support
-> > for dynamic instances").
-> 
-> Note that as I understand it, the entire point of documenting this sort
-> of thing is to help solidify the interface between a DT aware boot
-> program (e.g., bootloader) and a device tree which is provided
-> separately, to avoid memorizing node/path hierarchy. It doesn't need to
-> (and doesn't, as I read it) enforce an OS's device naming policy.
-
-I'm all for documenting this primarily to prevent folks from just adding 
-whatever they wish in /aliases. Some platforms seem to want to have 
-aliases for everything.
-
-> > Relevant parts of the commit description are:
-> > 
-> >     On DT platforms, the sh-sci driver requires the presence of "serialN"
-> >     aliases in DT, from which instance IDs are derived.  If a DT alias is
-> >     missing, the drivers fails to probe the corresponding serial port.
-> > 
-> >     This becomes cumbersome when considering DT overlays, as currently
-> >     there is no upstream support for dynamically updating the /aliases node
-> >     in DT.
-> 
-> That part is not a DT spec problem :)
-> 
-> >     Furthermore, even in the presence of such support, hardcoded
-> >     instance IDs in independent overlays are prone to conflicts.
-> > 
-> >     Hence add support for dynamic instance IDs, to be used in the absence of
-> >     a DT alias.  This makes serial ports behave similar to I2C and SPI
-> >     buses, which already support dynamic instances.
-> 
-> This seems to be a much different sort of problem. People always love
-> having predictable IDs given by the OS (myself included), but that's
-> just plain hard to do and impossible in some cases. I don't think that's
-> what this document is about though.
-> 
-> IOW, this document seems pretty consistent with the above: it doesn't
-> require the usage of aliases (and it seems silly to have a driver
-> *require* an alias) -- it just documents how one should name such an
-> alias if you expect multiple independent software components to
-> understand it.
-> 
-> > To clarify my point: R-Car M2-W has 4 different types of serial ports, for a
-> > total of 18 ports, and the two ports on a board labeled 0 and 1 may not
-> > correspond to the physical first two ports (what's "first" in a collection of
-> > 4 different types?).
-> > 
-> > Aliases may be fine for referring to the main serial console (labeled
-> > port 0 on the device, too), and the primary Ethernet interface (so U-Boot
-> > knows where to add the "local-mac-address" property), but beyond that,
-> > I think they should be avoided.
-
-This basically matches my opinion on aliases.
- 
-I'd decouple it from board labels a bit. Sometimes the numbering may 
-match, but others not. What if a board serial port is labeled "DBG" for 
-example? I think 'label' is the right way to handle human identifible 
-ports (and then we should have something like /dev/serial/by-label/...).
-
-> That's fair enough. Just because the solution isn't an all-purpose tool
-> doesn't mean it shouldn't be documented. The general concept is already
-> in ePAPR, but it's just not very specific about property names.
-
-Agreed. I guess the question is what to do on used, but not recommended 
-aliases. I would put SPI and I2C into that category BTW.
-
-Rob
+T24gRnJpLCAyMDE4LTEwLTEyIGF0IDEwOjIzICswMTAwLCBQaGlsIEVsd2VsbCB3cm90ZToNCj4g
+VGhlIFNQSSBjb25maWd1cmF0aW9uIHN0YXRlIGluY2x1ZGVzIGFuIFNQSV9OT19DUyBmbGFnIHRo
+YXQgZGlzYWJsZXMNCj4gYWxsIENTIGxpbmUgbWFuaXB1bGF0aW9uLCBmb3IgYXBwbGljYXRpb25z
+IHRoYXQgd2FudCB0byBtYW5hZ2UgdGhlaXINCj4gb3duIGNoaXAgc2VsZWN0cy4gSG93ZXZlciwg
+dGhpcyBmbGFnIGlzIGlnbm9yZWQgYnkgdGhlIEdQSU8gQ1MgY29kZQ0KPiBpbiB0aGUgU1BJIGZy
+YW1ld29yay4NCg0KPiBAQCAtNzI5LDcgKzcyOSw5IEBAIHN0YXRpYyB2b2lkIHNwaV9zZXRfY3Mo
+c3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgYm9vbCBlbmFibGUpDQo+ICAJCWVuYWJsZSA9ICFlbmFi
+bGU7DQo+ICANCj4gIAlpZiAoZ3Bpb19pc192YWxpZChzcGktPmNzX2dwaW8pKSB7DQo+IC0JCWdw
+aW9fc2V0X3ZhbHVlKHNwaS0+Y3NfZ3BpbywgIWVuYWJsZSk7DQo+ICsJCS8qIEhvbm91ciB0aGUg
+U1BJX05PX0NTIGZsYWcgKi8NCj4gKwkJaWYgKCEoc3BpLT5tb2RlICYgU1BJX05PX0NTKSkNCj4g
+KwkJCWdwaW9fc2V0X3ZhbHVlKHNwaS0+Y3NfZ3BpbywgIWVuYWJsZSk7DQo+ICAJCS8qIFNvbWUg
+U1BJIG1hc3RlcnMgbmVlZCBib3RoIEdQSU8gQ1MgJiBzbGF2ZV9zZWxlY3QgKi8NCj4gIAkJaWYg
+KChzcGktPmNvbnRyb2xsZXItPmZsYWdzICYgU1BJX01BU1RFUl9HUElPX1NTKSAmJg0KPiAgCQkg
+ICAgc3BpLT5jb250cm9sbGVyLT5zZXRfY3MpDQoNCldoYXQgYWJvdXQgdGhlIGNhbGxzIHRvIHNw
+aS0+Y29udHJvbGxlci0+c2V0X2NzKCkgYWZ0ZXIgdGhpcz8gU2hvdWxkIGENCmRyaXZlciBwcm92
+aWRlZCBzZXRfY3MgbWV0aG9kIGJlIHJlc3BvbnNpYmxlIGZvciBjaGVja2luZyBTUElfTk9fQ1M/
+IA0KT3Igc2hvdWxkIGl0IG5vdCBiZSBjYWxsZWQgaW4gdGhlIGZpcnN0IHBsYWNlPw0KDQpJIGlt
+YWdpbmUgaXQgZGVwZW5kcyBvbiB3aGF0IHNldF9jcyBuZWVkcyB0byBkbywgd2hpY2ggbWlnaHQg
+bm90IGJlDQpzb2xlbHkgcmVsYXRlZCB0byBjaGFuZ2luZyB0aGUgQ1MgbGluZS4=

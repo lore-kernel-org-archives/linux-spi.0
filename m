@@ -1,38 +1,56 @@
-From: Trent Piepho <tpiepho@impinj.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: Make GPIO CSs honour the SPI_NO_CS flag
-Date: Mon, 15 Oct 2018 18:34:18 +0000
-Message-ID: <1539628457.30311.5.camel@impinj.com>
+Date: Tue, 16 Oct 2018 10:03:10 +0100
+Message-ID: <20181016090310.GA7449@sirena.org.uk>
 References: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
+ <1539628457.30311.5.camel@impinj.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+HP7ph2BbKc20aGI"
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "phil@raspberrypi.org" <phil@raspberrypi.org>,
-        "broonie@kernel.org" <broonie@kernel.org>
+        "phil@raspberrypi.org" <phil@raspberrypi.org>
+To: Trent Piepho <tpiepho@impinj.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
-Content-Language: en-US
-Content-ID: <3B933B9511D28C4FBC6B2214E1F2F79F@namprd06.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <1539628457.30311.5.camel@impinj.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCAyMDE4LTEwLTEyIGF0IDEwOjIzICswMTAwLCBQaGlsIEVsd2VsbCB3cm90ZToNCj4g
-VGhlIFNQSSBjb25maWd1cmF0aW9uIHN0YXRlIGluY2x1ZGVzIGFuIFNQSV9OT19DUyBmbGFnIHRo
-YXQgZGlzYWJsZXMNCj4gYWxsIENTIGxpbmUgbWFuaXB1bGF0aW9uLCBmb3IgYXBwbGljYXRpb25z
-IHRoYXQgd2FudCB0byBtYW5hZ2UgdGhlaXINCj4gb3duIGNoaXAgc2VsZWN0cy4gSG93ZXZlciwg
-dGhpcyBmbGFnIGlzIGlnbm9yZWQgYnkgdGhlIEdQSU8gQ1MgY29kZQ0KPiBpbiB0aGUgU1BJIGZy
-YW1ld29yay4NCg0KPiBAQCAtNzI5LDcgKzcyOSw5IEBAIHN0YXRpYyB2b2lkIHNwaV9zZXRfY3Mo
-c3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgYm9vbCBlbmFibGUpDQo+ICAJCWVuYWJsZSA9ICFlbmFi
-bGU7DQo+ICANCj4gIAlpZiAoZ3Bpb19pc192YWxpZChzcGktPmNzX2dwaW8pKSB7DQo+IC0JCWdw
-aW9fc2V0X3ZhbHVlKHNwaS0+Y3NfZ3BpbywgIWVuYWJsZSk7DQo+ICsJCS8qIEhvbm91ciB0aGUg
-U1BJX05PX0NTIGZsYWcgKi8NCj4gKwkJaWYgKCEoc3BpLT5tb2RlICYgU1BJX05PX0NTKSkNCj4g
-KwkJCWdwaW9fc2V0X3ZhbHVlKHNwaS0+Y3NfZ3BpbywgIWVuYWJsZSk7DQo+ICAJCS8qIFNvbWUg
-U1BJIG1hc3RlcnMgbmVlZCBib3RoIEdQSU8gQ1MgJiBzbGF2ZV9zZWxlY3QgKi8NCj4gIAkJaWYg
-KChzcGktPmNvbnRyb2xsZXItPmZsYWdzICYgU1BJX01BU1RFUl9HUElPX1NTKSAmJg0KPiAgCQkg
-ICAgc3BpLT5jb250cm9sbGVyLT5zZXRfY3MpDQoNCldoYXQgYWJvdXQgdGhlIGNhbGxzIHRvIHNw
-aS0+Y29udHJvbGxlci0+c2V0X2NzKCkgYWZ0ZXIgdGhpcz8gU2hvdWxkIGENCmRyaXZlciBwcm92
-aWRlZCBzZXRfY3MgbWV0aG9kIGJlIHJlc3BvbnNpYmxlIGZvciBjaGVja2luZyBTUElfTk9fQ1M/
-IA0KT3Igc2hvdWxkIGl0IG5vdCBiZSBjYWxsZWQgaW4gdGhlIGZpcnN0IHBsYWNlPw0KDQpJIGlt
-YWdpbmUgaXQgZGVwZW5kcyBvbiB3aGF0IHNldF9jcyBuZWVkcyB0byBkbywgd2hpY2ggbWlnaHQg
-bm90IGJlDQpzb2xlbHkgcmVsYXRlZCB0byBjaGFuZ2luZyB0aGUgQ1MgbGluZS4=
+
+--+HP7ph2BbKc20aGI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Oct 15, 2018 at 06:34:18PM +0000, Trent Piepho wrote:
+
+> What about the calls to spi->controller->set_cs() after this? Should a
+> driver provided set_cs method be responsible for checking SPI_NO_CS?=20
+> Or should it not be called in the first place?
+
+This seems like something that should be done entirely in the framework,
+no point in every single driver having to open code the same thing.
+
+> I imagine it depends on what set_cs needs to do, which might not be
+> solely related to changing the CS line.
+
+It should be.  If something is hanging other work on set_cs() then it's
+going to break.
+
+--+HP7ph2BbKc20aGI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvFqUsACgkQJNaLcl1U
+h9B40Qf/TWJfMXhUwEge5VIGkgNJ235s7i0tQoLwS4JTQM243PCrC82le63VYmD2
+Eki8KRNtCo94pMOPeIXMwu1SIfnt8FYqDZElPRNBHb+rruJtXwOLEbKOVoiFbO4j
+J2Gv7hmiT3XmP2t0Bvkg31eTaqp5r5iyxSrbWP2Hw4ehMqgm5t9eh2+03skLOcGI
+AfyGjbIxEK6weMp1otBBWnM5KftDtSTaTgajbRtX0wvtv15sGqxX8P/9+mbUlfZx
+3JcZxdhMtBfIYqSJm8XfKMg7qonEKA9QxyV3RLFy1xjkt2+DgoZkdHt2GaYzZy8O
+aBz685qXms+1TN2LD3HY0gFY5cXsaQ==
+=oQmb
+-----END PGP SIGNATURE-----
+
+--+HP7ph2BbKc20aGI--

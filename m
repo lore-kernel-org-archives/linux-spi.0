@@ -1,37 +1,65 @@
-From: Heiko Stuebner <heiko@sntech.de>
-Subject: Re: [PATCH 3/7] arm64: dts: rockchip: add rk3399 SPI DMAs
-Date: Tue, 16 Oct 2018 14:32:34 +0200
-Message-ID: <2907390.NKaBHyzm1c@phil>
-References: <20181010090038.20834-1-kernel@esmil.dk> <20181010090038.20834-4-kernel@esmil.dk>
+From: Benjamin Gaignard <benjamin.gaignard@linaro.org>
+Subject: Re: [PATCH 6/8] drm: sti: don't pass GFP_DMA32 to dma_alloc_wc
+Date: Tue, 16 Oct 2018 14:41:23 +0200
+Message-ID: <CA+M3ks6a-D4j425JGBof+ma3NX5Fo52k5fadRNRauexOBXuaaw@mail.gmail.com>
+References: <20181013151707.32210-1-hch@lst.de>
+ <20181013151707.32210-7-hch@lst.de>
+ <CA+M3ks66FL-F8dk+UcG-gR8Gz4N6gz7eYuT_Ht_scw7foPaP0A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-rockchip@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Nickey Yang <nickey.yang@rock-chips.com>,
-        Klaus Goger <klaus.goger@theobroma-systems.com>,
-        Randy Li <ayaka@soulik.info>, Chris Zhong <zyw@rock-chips.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Emil Renner Berthing <kernel@esmil.dk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010090038.20834-4-kernel@esmil.dk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ linux-pm@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ alsa-devel@alsa-project.org, ML dri-devel <dri-devel@lists.freedesktop.org>,
+ linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux-media@vger.kernel.org
+To: Christoph Hellwig <hch@lst.de>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <CA+M3ks66FL-F8dk+UcG-gR8Gz4N6gz7eYuT_Ht_scw7foPaP0A@mail.gmail.com>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-Am Mittwoch, 10. Oktober 2018, 11:00:34 CEST schrieb Emil Renner Berthing:
-> Add spi dma channels as specified by the rk3399 TRM.
-> 
-> Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
-
-applied for 4.21 with Enric's test-tag
-
-
-Thanks
-Heiko
+TGUgbHVuLiAxNSBvY3QuIDIwMTggw6AgMTE6MTIsIEJlbmphbWluIEdhaWduYXJkCjxiZW5qYW1p
+bi5nYWlnbmFyZEBsaW5hcm8ub3JnPiBhIMOpY3JpdCA6Cj4KPiBMZSBzYW0uIDEzIG9jdC4gMjAx
+OCDDoCAxNzoxNywgQ2hyaXN0b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+IGEgw6ljcml0IDoKPiA+
+Cj4gPiBUaGUgRE1BIEFQSSBkb2VzIGl0cyBvd24gem9uZSBkZWNpc2lvbnMgYmFzZWQgb24gdGhl
+IGNvaGVyZW50X2RtYV9tYXNrLgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IENocmlzdG9waCBIZWxs
+d2lnIDxoY2hAbHN0LmRlPgo+Cj4gUmV2aWV3ZWQtYnk6IEJlbmphbWluIEdhaWduYXJkIDxiZW5q
+YW1pbi5nYWlnbmFyZEBsaW5hcm8ub3JnPgoKQ2hyaXN0b3BoIGRvIHlvdSBwbGFuIHRvIG1lcmdl
+IHRoaXMgcGF0Y2ggb24geW91ciBvd24gdHJlZSA/IG9yIHdvdWxkCmxpa2UgSSBwdXQgaXQgZGly
+ZWN0bHkgaW4gZHJtLW1pc2MtbmV4dCBicmFuY2ggPwoKUmVnYXJkcywKQmVuamFtaW4KPgo+ID4g
+LS0tCj4gPiAgZHJpdmVycy9ncHUvZHJtL3N0aS9zdGlfZ2RwLmMgfCAyICstCj4gPiAgMSBmaWxl
+IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gPgo+ID4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvZ3B1L2RybS9zdGkvc3RpX2dkcC5jIGIvZHJpdmVycy9ncHUvZHJtL3N0aS9z
+dGlfZ2RwLmMKPiA+IGluZGV4IGMzMmRlNmNiZjA2MS4uY2RmMGExMzk2ZTAwIDEwMDY0NAo+ID4g
+LS0tIGEvZHJpdmVycy9ncHUvZHJtL3N0aS9zdGlfZ2RwLmMKPiA+ICsrKyBiL2RyaXZlcnMvZ3B1
+L2RybS9zdGkvc3RpX2dkcC5jCj4gPiBAQCAtNTE3LDcgKzUxNyw3IEBAIHN0YXRpYyB2b2lkIHN0
+aV9nZHBfaW5pdChzdHJ1Y3Qgc3RpX2dkcCAqZ2RwKQo+ID4gICAgICAgICAvKiBBbGxvY2F0ZSBh
+bGwgdGhlIG5vZGVzIHdpdGhpbiBhIHNpbmdsZSBtZW1vcnkgcGFnZSAqLwo+ID4gICAgICAgICBz
+aXplID0gc2l6ZW9mKHN0cnVjdCBzdGlfZ2RwX25vZGUpICoKPiA+ICAgICAgICAgICAgIEdEUF9O
+T0RFX1BFUl9GSUVMRCAqIEdEUF9OT0RFX05CX0JBTks7Cj4gPiAtICAgICAgIGJhc2UgPSBkbWFf
+YWxsb2Nfd2MoZ2RwLT5kZXYsIHNpemUsICZkbWFfYWRkciwgR0ZQX0tFUk5FTCB8IEdGUF9ETUEp
+Owo+ID4gKyAgICAgICBiYXNlID0gZG1hX2FsbG9jX3djKGdkcC0+ZGV2LCBzaXplLCAmZG1hX2Fk
+ZHIsIEdGUF9LRVJORUwpOwo+ID4KPiA+ICAgICAgICAgaWYgKCFiYXNlKSB7Cj4gPiAgICAgICAg
+ICAgICAgICAgRFJNX0VSUk9SKCJGYWlsZWQgdG8gYWxsb2NhdGUgbWVtb3J5IGZvciBHRFAgbm9k
+ZVxuIik7Cj4gPiAtLQo+ID4gMi4xOS4xCj4gPgo+ID4gX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KPiA+IGRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKPiA+IGRy
+aS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiA+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCj4KPgo+Cj4gLS0KPiBCZW5qYW1pbiBH
+YWlnbmFyZAo+Cj4gR3JhcGhpYyBTdHVkeSBHcm91cAo+Cj4gTGluYXJvLm9yZyDilIIgT3BlbiBz
+b3VyY2Ugc29mdHdhcmUgZm9yIEFSTSBTb0NzCj4KPiBGb2xsb3cgTGluYXJvOiBGYWNlYm9vayB8
+IFR3aXR0ZXIgfCBCbG9nCgoKCi0tIApCZW5qYW1pbiBHYWlnbmFyZAoKR3JhcGhpYyBTdHVkeSBH
+cm91cAoKTGluYXJvLm9yZyDilIIgT3BlbiBzb3VyY2Ugc29mdHdhcmUgZm9yIEFSTSBTb0NzCgpG
+b2xsb3cgTGluYXJvOiBGYWNlYm9vayB8IFR3aXR0ZXIgfCBCbG9nCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJp
+LWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbAo=

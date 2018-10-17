@@ -1,67 +1,72 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Make GPIO CSs honour the SPI_NO_CS flag
-Date: Wed, 17 Oct 2018 10:42:08 +0100
-Message-ID: <20181017094208.GA24097@sirena.org.uk>
-References: <1539336198-84179-1-git-send-email-phil@raspberrypi.org>
- <1539628457.30311.5.camel@impinj.com>
- <20181016090310.GA7449@sirena.org.uk>
- <1539718160.30311.10.camel@impinj.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qDbXVdCdHGoSgWSk"
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "phil@raspberrypi.org" <phil@raspberrypi.org>
-To: Trent Piepho <tpiepho@impinj.com>
+Subject: Applied "ASoC: intel: don't pass GFP_DMA32 to dma_alloc_coherent" to the asoc tree
+Date: Wed, 17 Oct 2018 12:54:54 +0100 (BST)
+Message-ID: <20181017115454.BA5D611224C4@debutante.sirena.org.uk>
+References: <20181013151707.32210-6-hch@lst.de>
+Cc: Mark Brown <broonie@kernel.org>, linux-pm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
+To: Christoph Hellwig <hch@lst.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1539718160.30311.10.camel@impinj.com>
+In-Reply-To: <20181013151707.32210-6-hch@lst.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---qDbXVdCdHGoSgWSk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   ASoC: intel: don't pass GFP_DMA32 to dma_alloc_coherent
 
-On Tue, Oct 16, 2018 at 07:29:21PM +0000, Trent Piepho wrote:
-> On Tue, 2018-10-16 at 10:03 +0100, Mark Brown wrote:
-> > On Mon, Oct 15, 2018 at 06:34:18PM +0000, Trent Piepho wrote:
+has been applied to the asoc tree at
 
-> > > I imagine it depends on what set_cs needs to do, which might not be
-> > > solely related to changing the CS line.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
 
-> > It should be.  If something is hanging other work on set_cs() then it's
-> > going to break.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> IIRC, for spi-dw setting CS is the only way to trigger the master to do
-> anything.  I think orion is the same way.  Even if you don't want a CS
-> line the driver still needs to assert one.  Which CS to use as the
-> dummy CS is a challenge that has come up before.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> bcm2835_spi_set_cs() does check SPI_NO_CS, but it still does a lot of
-> other stuff even if that is set, likely because of the above issue.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-For hardware that's that broken I'd recommend deferring the actual CS
-setting operation to the transfer operation instead; that way we can
-guarantee it happens for any pattern of access to the chip select (or
-error out if we can't represent it properly, though obviously a lot of
-such systems use a GPIO for the chip select to work around the broken
-hardware).
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---qDbXVdCdHGoSgWSk
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From 3b991038498bc5011b063d6a804503c577a79434 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Sat, 13 Oct 2018 17:17:04 +0200
+Subject: [PATCH] ASoC: intel: don't pass GFP_DMA32 to dma_alloc_coherent
 
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvHA+wACgkQJNaLcl1U
-h9D7iAf1E+tEL/0/m02X3vYOi4VSrh4lRPpsHO7rts6ytFWFkd2if6GN5KTNI921
-CGCgTeiqOm6csLuUi9LBJ65ccwenslCgyo8/ik8PsHOS722dUg4UCqCeBpCVE9CR
-B3nsnAvJfa3uAk53a8I4OR0iDTtOauGugTs6oPLF1CU2QsJSevLgJeZP5cgg14Pn
-RR5OnK99UQXzMuTThTagDkPhg4lfXrodYGJ4ZpxhlY1ebE1mLhwQ9wqXKGBFKfdT
-nTNmTY0zP5Kl6rPT3M2NvIXaML747kQjqrJOv6rh1uIimZD1kejxXfMTqHIX3aXy
-pncogI5DiwuHvRwgaM9LbeHalGwQ
-=XpV0
------END PGP SIGNATURE-----
+The DMA API does its own zone decisions based on the coherent_dma_mask.
 
---qDbXVdCdHGoSgWSk--
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/intel/common/sst-firmware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/intel/common/sst-firmware.c b/sound/soc/intel/common/sst-firmware.c
+index 11041aedea31..1e067504b604 100644
+--- a/sound/soc/intel/common/sst-firmware.c
++++ b/sound/soc/intel/common/sst-firmware.c
+@@ -355,7 +355,7 @@ struct sst_fw *sst_fw_new(struct sst_dsp *dsp,
+ 
+ 	/* allocate DMA buffer to store FW data */
+ 	sst_fw->dma_buf = dma_alloc_coherent(dsp->dma_dev, sst_fw->size,
+-				&sst_fw->dmable_fw_paddr, GFP_DMA | GFP_KERNEL);
++				&sst_fw->dmable_fw_paddr, GFP_KERNEL);
+ 	if (!sst_fw->dma_buf) {
+ 		dev_err(dsp->dev, "error: DMA alloc failed\n");
+ 		kfree(sst_fw);
+-- 
+2.19.0.rc2

@@ -1,67 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pic32-sqi: don't pass GFP_DMA32 to dma_alloc_coherent"
- to the spi tree
-Date: Wed, 17 Oct 2018 12:55:04 +0100 (BST)
-Message-ID: <20181017115504.2A15E11224C4@debutante.sirena.org.uk>
-References: <20181013151707.32210-4-hch@lst.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-fbdev@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
- dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-tegra@vger.kernel.org,
- linux-media@vger.kernel.org
-To: Christoph Hellwig <hch@lst.de>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20181013151707.32210-4-hch@lst.de>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] spi: pxa2xx: fix PCI dependency
+Date: Wed, 17 Oct 2018 20:50:52 +0200
+Message-ID: <20181017185128.2634666-1-arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlIHBhdGNoCgogICBzcGk6IHBpYzMyLXNxaTogZG9uJ3QgcGFzcyBHRlBfRE1BMzIgdG8gZG1h
-X2FsbG9jX2NvaGVyZW50CgpoYXMgYmVlbiBhcHBsaWVkIHRvIHRoZSBzcGkgdHJlZSBhdAoKICAg
-aHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvYnJvb25pZS9z
-cGkuZ2l0IAoKQWxsIGJlaW5nIHdlbGwgdGhpcyBtZWFucyB0aGF0IGl0IHdpbGwgYmUgaW50ZWdy
-YXRlZCBpbnRvIHRoZSBsaW51eC1uZXh0CnRyZWUgKHVzdWFsbHkgc29tZXRpbWUgaW4gdGhlIG5l
-eHQgMjQgaG91cnMpIGFuZCBzZW50IHRvIExpbnVzIGR1cmluZwp0aGUgbmV4dCBtZXJnZSB3aW5k
-b3cgKG9yIHNvb25lciBpZiBpdCBpcyBhIGJ1ZyBmaXgpLCBob3dldmVyIGlmCnByb2JsZW1zIGFy
-ZSBkaXNjb3ZlcmVkIHRoZW4gdGhlIHBhdGNoIG1heSBiZSBkcm9wcGVkIG9yIHJldmVydGVkLiAg
-CgpZb3UgbWF5IGdldCBmdXJ0aGVyIGUtbWFpbHMgcmVzdWx0aW5nIGZyb20gYXV0b21hdGVkIG9y
-IG1hbnVhbCB0ZXN0aW5nCmFuZCByZXZpZXcgb2YgdGhlIHRyZWUsIHBsZWFzZSBlbmdhZ2Ugd2l0
-aCBwZW9wbGUgcmVwb3J0aW5nIHByb2JsZW1zIGFuZApzZW5kIGZvbGxvd3VwIHBhdGNoZXMgYWRk
-cmVzc2luZyBhbnkgaXNzdWVzIHRoYXQgYXJlIHJlcG9ydGVkIGlmIG5lZWRlZC4KCklmIGFueSB1
-cGRhdGVzIGFyZSByZXF1aXJlZCBvciB5b3UgYXJlIHN1Ym1pdHRpbmcgZnVydGhlciBjaGFuZ2Vz
-IHRoZXkKc2hvdWxkIGJlIHNlbnQgYXMgaW5jcmVtZW50YWwgdXBkYXRlcyBhZ2FpbnN0IGN1cnJl
-bnQgZ2l0LCBleGlzdGluZwpwYXRjaGVzIHdpbGwgbm90IGJlIHJlcGxhY2VkLgoKUGxlYXNlIGFk
-ZCBhbnkgcmVsZXZhbnQgbGlzdHMgYW5kIG1haW50YWluZXJzIHRvIHRoZSBDQ3Mgd2hlbiByZXBs
-eWluZwp0byB0aGlzIG1haWwuCgpUaGFua3MsCk1hcmsKCkZyb20gZWM1MDZlOTI0NmJmNDI3OTVm
-MWZhOGE1Y2QwMDc0MGU1Njg2YmE3MyBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKRnJvbTogQ2hy
-aXN0b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+CkRhdGU6IFNhdCwgMTMgT2N0IDIwMTggMTc6MTc6
-MDIgKzAyMDAKU3ViamVjdDogW1BBVENIXSBzcGk6IHBpYzMyLXNxaTogZG9uJ3QgcGFzcyBHRlBf
-RE1BMzIgdG8gZG1hX2FsbG9jX2NvaGVyZW50CgpUaGUgRE1BIEFQSSBkb2VzIGl0cyBvd24gem9u
-ZSBkZWNpc2lvbnMgYmFzZWQgb24gdGhlIGNvaGVyZW50X2RtYV9tYXNrLgoKU2lnbmVkLW9mZi1i
-eTogQ2hyaXN0b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+ClNpZ25lZC1vZmYtYnk6IE1hcmsgQnJv
-d24gPGJyb29uaWVAa2VybmVsLm9yZz4KLS0tCiBkcml2ZXJzL3NwaS9zcGktcGljMzItc3FpLmMg
-fCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRp
-ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktcGljMzItc3FpLmMgYi9kcml2ZXJzL3NwaS9zcGkt
-cGljMzItc3FpLmMKaW5kZXggNjJlNmJmMWY1MGIxLi5kN2U0ZTE4ZWMzZGYgMTAwNjQ0Ci0tLSBh
-L2RyaXZlcnMvc3BpL3NwaS1waWMzMi1zcWkuYworKysgYi9kcml2ZXJzL3NwaS9zcGktcGljMzIt
-c3FpLmMKQEAgLTQ2OCw3ICs0NjgsNyBAQCBzdGF0aWMgaW50IHJpbmdfZGVzY19yaW5nX2FsbG9j
-KHN0cnVjdCBwaWMzMl9zcWkgKnNxaSkKIAkvKiBhbGxvY2F0ZSBjb2hlcmVudCBETUFhYmxlIG1l
-bW9yeSBmb3IgaGFyZHdhcmUgYnVmZmVyIGRlc2NyaXB0b3JzLiAqLwogCXNxaS0+YmQgPSBkbWFf
-emFsbG9jX2NvaGVyZW50KCZzcWktPm1hc3Rlci0+ZGV2LAogCQkJCSAgICAgIHNpemVvZigqYmQp
-ICogUEVTUUlfQkRfQ09VTlQsCi0JCQkJICAgICAgJnNxaS0+YmRfZG1hLCBHRlBfRE1BMzIpOwor
-CQkJCSAgICAgICZzcWktPmJkX2RtYSwgR0ZQX0tFUk5FTCk7CiAJaWYgKCFzcWktPmJkKSB7CiAJ
-CWRldl9lcnIoJnNxaS0+bWFzdGVyLT5kZXYsICJmYWlsZWQgYWxsb2NhdGluZyBkbWEgYnVmZmVy
-XG4iKTsKIAkJcmV0dXJuIC1FTk9NRU07Ci0tIAoyLjE5LjAucmMyCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRy
-aS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWwK
+The code reorganization broke building without CONFIG_PCI:
+
+drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_init_pdata':
+drivers/spi/spi-pxa2xx.c:1457:15: error: implicit declaration of function 'pci_match_id'; did you mean 'pci_map_sg'? [-Werror=implicit-function-declaration]
+
+Add back an #ifdef around the code block that requires it.
+
+Fixes: 87ae1d2d7077 ("spi: pxa2xx: Add devicetree support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/spi/spi-pxa2xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 612cc49db28f..c1c30109dd1f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1453,9 +1453,11 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (pdev->dev.of_node)
+ 		of_id = of_match_device(pdev->dev.driver->of_match_table,
+ 					&pdev->dev);
++#ifdef CONFIG_PCI
+ 	else if (dev_is_pci(pdev->dev.parent))
+ 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
+ 					 to_pci_dev(pdev->dev.parent));
++#endif
+ 	else if (adev)
+ 		adev_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
+ 					    &pdev->dev);
+-- 
+2.18.0

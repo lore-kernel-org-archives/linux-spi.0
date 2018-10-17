@@ -1,40 +1,37 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: add stm32 qspi controller
-Date: Tue, 16 Oct 2018 17:36:31 -0500
-Message-ID: <20181016223631.GA19725@bogus>
-References: <1538725383-19781-1-git-send-email-ludovic.Barre@st.com>
- <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        devicetree@vger.kernel.org, Ludovic Barre <ludovic.barre@st.com>
-To: Ludovic Barre <ludovic.Barre@st.com>
+From: masonccyang@mxic.com.tw
+Subject: [PATCH v6 0/2] spi: Add Macronix controller driver
+Date: Wed, 17 Oct 2018 10:08:10 +0800
+Message-ID: <1539742092-7049-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: boris.brezillon@bootlin.com, juliensu@mxic.com.tw,
+        zhengxunli@mxic.com.tw, masonccyang@mxic.com.tw
+To: broonie@kernel.org, tpiepho@impinj.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 5 Oct 2018 09:43:02 +0200, Ludovic Barre wrote:
-> From: Ludovic Barre <ludovic.barre@st.com>
-> 
-> This patch adds the documentation of device tree bindings
-> for the STM32 QSPI controller. It is a specialized communication
-> interface targeting single, dual or quad SPI Flash memories (NOR/NAND).
-> 
-> Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
-> ---
->  .../devicetree/bindings/spi/spi-stm32-qspi.txt     | 44 ++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
-> 
+From: Mason Yang <masonccyang@mxic.com.tw>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Hi Mark & Boris,
+
+I patched v6 spi-mxic.c based on Boris's comments of v5.
+
+Thanks for your review.
+
+best regards,
+Mason
+
+Mason Yang (2):
+  spi: Add MXIC controller driver
+  dt-binding: spi: Document Macronix controller bindings
+
+ Documentation/devicetree/bindings/spi/spi-mxic.txt |  34 ++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-mxic.c                             | 619 +++++++++++++++++++++
+ 4 files changed, 660 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mxic.txt
+ create mode 100644 drivers/spi/spi-mxic.c
+
+-- 
+1.9.1

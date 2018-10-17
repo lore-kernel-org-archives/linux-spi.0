@@ -1,48 +1,80 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] spi: pxa2xx: fix PCI dependency
-Date: Wed, 17 Oct 2018 20:50:52 +0200
-Message-ID: <20181017185128.2634666-1-arnd@arndb.de>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Daniel Mack <daniel@zonque.org>,
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 01/11] dt-bindings: spi/spi-pxa2xx: add PXA2xx SSP SPI
+ Controller
+Date: Wed, 17 Oct 2018 14:32:18 -0500
+Message-ID: <20181017193218.GA8853@bogus>
+References: <20181010170936.316862-1-lkundrak@v3.sk>
+ <20181010170936.316862-2-lkundrak@v3.sk>
+ <20181011142719.GE25351@sirena.org.uk>
+ <8cafa3f97fbe2a01ccf968b39469751b449e324b.camel@v3.sk>
+ <20181012170002.GJ2340@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        James Cameron <quozl@laptop.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181012170002.GJ2340@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The code reorganization broke building without CONFIG_PCI:
+On Fri, Oct 12, 2018 at 07:00:02PM +0200, Mark Brown wrote:
+> On Thu, Oct 11, 2018 at 07:59:15PM +0200, Lubomir Rintel wrote:
+> > On Thu, 2018-10-11 at 15:27 +0100, Mark Brown wrote:
+> 
+> > > Please use subject lines matching the style for the subsystem.  This
+> > > makes it easier for people to identify relevant patches.
+> 
+> > Thanks for the response.
+> 
+> > I'm a little confused here. Why I chose this subject line is because I
+> > did this:
+> 
+> >   git log --no-merges Documentation/devicetree/bindings/
+> 
+> Try Documentation/devicetree/bindings/spi instead :)
 
-drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_init_pdata':
-drivers/spi/spi-pxa2xx.c:1457:15: error: implicit declaration of function 'pci_match_id'; did you mean 'pci_map_sg'? [-Werror=implicit-function-declaration]
+Just so you know, pretty much everything else except SPI, regulators, 
+and ASoC follows 'dt-bindings: <binding dir>:' these days.
 
-Add back an #ifdef around the code block that requires it.
+I don't really care so much about the difference, but it is tribal 
+knowledge that submitters have to learn. 
 
-Fixes: 87ae1d2d7077 ("spi: pxa2xx: Add devicetree support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/spi/spi-pxa2xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+Really, this could all be solved with tooling using MAINTAINERS and 
+get_maintainers.pl, but limping around in checkpatch.pl occasionally is 
+enough perl for me.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 612cc49db28f..c1c30109dd1f 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1453,9 +1453,11 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	if (pdev->dev.of_node)
- 		of_id = of_match_device(pdev->dev.driver->of_match_table,
- 					&pdev->dev);
-+#ifdef CONFIG_PCI
- 	else if (dev_is_pci(pdev->dev.parent))
- 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
- 					 to_pci_dev(pdev->dev.parent));
-+#endif
- 	else if (adev)
- 		adev_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
- 					    &pdev->dev);
--- 
-2.18.0
+> > to figure out what's the typical subject for the DT binding changes.
+> 
+> > I also believed that's the right way to get Rob Herring's and Mark
+> > Rutland's attention. 
+
+All that matters is CC'ing the DT list really. And Mark R is pretty much
+AWOL. Reviewing bindings in front of your own will get yours reviewed 
+faster. :)
+
+> Do the device tree binding documentation typically
+> 
+> There *is* some debate for the DT bindings unfortunately.
+> 
+> > go in with the associated drivers, or via their tree ("OPEN FIRMWARE
+> > AND FLATTENED DEVICE TREE BINDINGS" in MAINTIANERS)?
+> 
+> They usually go in with the drivers.  This one isn't so bad since it
+> does mention SPI, it's a worse problem when that's not present at all.
+
+Right.
+
+I generally only take single patches not in a series with dts or driver 
+changes and when/if the subsystem maintainer doesn't pick them up. Or 
+any standalone fixes I'll take.
+
+Rob

@@ -1,56 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 lora-next 1/5] regmap: Add regmap_noinc_write API
-Date: Thu, 18 Oct 2018 18:18:04 +0100
-Message-ID: <20181018171804.GD25340@sirena.org.uk>
-References: <1539361567-3602-1-git-send-email-ben.whitten@lairdtech.com>
- <1539361567-3602-2-git-send-email-ben.whitten@lairdtech.com>
- <2908e406-a2e3-29cb-579c-949ddd383e97@suse.de>
+From: "A.s. Dong" <aisheng.dong@nxp.com>
+Subject: [PATCH V3 5/8] dt-bindings: spi: lpspi: add imx8qxp compatible string
+Date: Thu, 18 Oct 2018 18:19:34 +0000
+Message-ID: <1539886483-15775-6-git-send-email-aisheng.dong@nxp.com>
+References: <1539886483-15775-1-git-send-email-aisheng.dong@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="AbQceqfdZEv+FvjW"
-Cc: Ben Whitten <ben.whitten@gmail.com>, starnight@g.ncu.edu.tw,
-        hasnain.virk@arm.com, netdev@vger.kernel.org,
-        liuxuenetmail@gmail.com, shess@hessware.de,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, Stefan Rehm <rehm@miromico.ch>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <2908e406-a2e3-29cb-579c-949ddd383e97@suse.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "A.s. Dong" <aisheng.dong@nxp.com>, Mark Rutland <mark.rutland@arm.com>,
+ "dongas86@gmail.com" <dongas86@gmail.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ Mark Brown <broonie@kernel.org>, "will.deacon@arm.com" <will.deacon@arm.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ Fabio Estevam <fabio.estevam@nxp.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>
+To: "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1539886483-15775-1-git-send-email-aisheng.dong@nxp.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Add imx8qxp compatible string
 
---AbQceqfdZEv+FvjW
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-spi@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+---
+ Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Thu, Oct 18, 2018 at 06:59:52PM +0200, Andreas F=E4rber wrote:
-
-> Mark, please take this one through your tree - I'll rebase the LoRa
-> parts on linux-next then.
-
-I don't have a copy of it, if I didn't apply it already and send a pull
-request I probably got confused and thought I'd done that already, sorry
-- can someone resend please?
-
---AbQceqfdZEv+FvjW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvIwEwACgkQJNaLcl1U
-h9DDuAf+Pt2HLaplxmuFbcp9svmodeVogLA7yzwMi8BIBpYy5W6KBRWmQhofb0b4
-Lw7yfyWMCe8CEMnkzSBzuqeLHLOlPMhmOpVzL1d5andcBEYUxda6Aq/+lwZVR0D5
-3ZEgqjvoCiQpJieuoiJbMK0aiZFSeUkjths0zuAFWpuscN+oeNlL2dmYjK8tl1gn
-8QSCZqKtIryODavgzDodxDESBR70wQ8g7JacIdpdlp8fUXYB5dCUkiQ4WUBRp8Af
-RRmGTUjnvI/Hc+HX4QwcqseNZ36Wx+iCDtEYJZ6QJnERnJs1NgDVGTYjTM0XoDjp
-9a5DYcrI+eFogbrZ8YjUFo2CwOTr5g==
-=o83J
------END PGP SIGNATURE-----
-
---AbQceqfdZEv+FvjW--
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+index 4af1326..8d178a4 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+@@ -3,6 +3,7 @@
+ Required properties:
+ - compatible :
+   - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
++  - "fsl,imx8qxp-spi" for LPSPI compatible with the one integrated on i.MX8QXP soc
+ - reg : address and length of the lpspi master registers
+ - interrupts : lpspi interrupt
+ - clocks : lpspi clock specifier
+-- 
+2.7.4

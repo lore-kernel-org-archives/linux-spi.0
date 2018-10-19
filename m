@@ -1,21 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: omap2-mcspi: Switch to readl_poll_timeout()" to the spi tree
-Date: Fri, 19 Oct 2018 13:29:51 +0100 (BST)
-Message-ID: <20181019122951.F3F881122548@debutante.sirena.org.uk>
-References: <20181015063829.26978-2-vigneshr@ti.com>
+Subject: Applied "dt-bindings: spi: add stm32 qspi controller" to the spi tree
+Date: Fri, 19 Oct 2018 13:29:58 +0100 (BST)
+Message-ID: <20181019122958.67B8D1122548@debutante.sirena.org.uk>
+References: <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
 Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>,
-        linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
+        Marek Vasut <marek.vasut@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+To: Ludovic Barre <ludovic.barre@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181015063829.26978-2-vigneshr@ti.com>
+In-Reply-To: <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: omap2-mcspi: Switch to readl_poll_timeout()
+   dt-bindings: spi: add stm32 qspi controller
 
 has been applied to the spi tree at
 
@@ -40,53 +46,72 @@ to this mail.
 Thanks,
 Mark
 
->From 4d3eea971b45792882a5b6b7bc7ceccea4ae6c76 Mon Sep 17 00:00:00 2001
-From: Vignesh R <vigneshr@ti.com>
-Date: Mon, 15 Oct 2018 12:08:27 +0530
-Subject: [PATCH] spi: omap2-mcspi: Switch to readl_poll_timeout()
+>From 0c0eb3ba9186138b0ffed91e994d473d0f0960cf Mon Sep 17 00:00:00 2001
+From: Ludovic Barre <ludovic.barre@st.com>
+Date: Fri, 5 Oct 2018 09:43:02 +0200
+Subject: [PATCH] dt-bindings: spi: add stm32 qspi controller
 
-Use standard readl_poll_timeout() macro for polling on status bits.
+This patch adds the documentation of device tree bindings
+for the STM32 QSPI controller. It is a specialized communication
+interface targeting single, dual or quad SPI Flash memories (NOR/NAND).
 
-Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ .../bindings/spi/spi-stm32-qspi.txt           | 44 +++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 508c61c669e7..985f00d8a964 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -33,6 +33,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/gcd.h>
-+#include <linux/iopoll.h>
- 
- #include <linux/spi/spi.h>
- #include <linux/gpio.h>
-@@ -353,19 +354,9 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
- 
- static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
- {
--	unsigned long timeout;
--
--	timeout = jiffies + msecs_to_jiffies(1000);
--	while (!(readl_relaxed(reg) & bit)) {
--		if (time_after(jiffies, timeout)) {
--			if (!(readl_relaxed(reg) & bit))
--				return -ETIMEDOUT;
--			else
--				return 0;
--		}
--		cpu_relax();
--	}
--	return 0;
-+	u32 val;
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt b/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+new file mode 100644
+index 000000000000..adeeb63e84b9
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+@@ -0,0 +1,44 @@
++* STMicroelectronics Quad Serial Peripheral Interface(QSPI)
 +
-+	return readl_poll_timeout(reg, val, val & bit, 1, MSEC_PER_SEC);
- }
- 
- static void omap2_mcspi_rx_callback(void *data)
++Required properties:
++- compatible: should be "st,stm32f469-qspi"
++- reg: the first contains the register location and length.
++       the second contains the memory mapping address and length
++- reg-names: should contain the reg names "qspi" "qspi_mm"
++- interrupts: should contain the interrupt for the device
++- clocks: the phandle of the clock needed by the QSPI controller
++- A pinctrl must be defined to set pins in mode of operation for QSPI transfer
++
++Optional properties:
++- resets: must contain the phandle to the reset controller.
++
++A spi flash (NOR/NAND) must be a child of spi node and could have some
++properties. Also see jedec,spi-nor.txt.
++
++Required properties:
++- reg: chip-Select number (QSPI controller may connect 2 flashes)
++- spi-max-frequency: max frequency of spi bus
++
++Optional property:
++- spi-rx-bus-width: see ./spi-bus.txt for the description
++
++Example:
++
++qspi: spi@a0001000 {
++	compatible = "st,stm32f469-qspi";
++	reg = <0xa0001000 0x1000>, <0x90000000 0x10000000>;
++	reg-names = "qspi", "qspi_mm";
++	interrupts = <91>;
++	resets = <&rcc STM32F4_AHB3_RESET(QSPI)>;
++	clocks = <&rcc 0 STM32F4_AHB3_CLOCK(QSPI)>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_qspi0>;
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-rx-bus-width = <4>;
++		spi-max-frequency = <108000000>;
++		...
++	};
++};
 -- 
 2.19.0.rc2

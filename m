@@ -1,57 +1,96 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: pxa2xx: fix PCI dependency" to the spi tree
-Date: Fri, 19 Oct 2018 13:32:30 +0100
-Message-ID: <20181019123230.GK5895@sirena.org.uk>
-References: <20181017185128.2634666-1-arnd@arndb.de>
- <20181019123002.196D21122548@debutante.sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 01/15] power: supply: olpc_battery: correct the
+ temperature units
+Date: Fri, 19 Oct 2018 16:00:32 +0300
+Message-ID: <CAHp75VenECSZWR3RVh=t35Os93t-MzEH_YzPgT=qQWL-SwjgFQ@mail.gmail.com>
+References: <20181010172300.317643-1-lkundrak@v3.sk> <20181010172300.317643-2-lkundrak@v3.sk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cN0A5YokcrYPGsSB"
-Cc: Daniel Mack <daniel@zonque.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181019123002.196D21122548@debutante.sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.or
+To: Lubomir Rintel <lkundrak@v3.sk>,
+        David Woodhouse <dwmw2@infradead.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20181010172300.317643-2-lkundrak@v3.sk>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Oct 10, 2018 at 8:23 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
+>
+> According to [1] and [2], the temperature values are in tenths of degree
+> Celsius. Exposing the Celsius value makes the battery appear on fire:
+>
+>   $ upower -i /org/freedesktop/UPower/devices/battery_olpc_battery
+>   ...
+>       temperature:         236.9 degrees C
+>
+> Tested on OLPC XO-1 and OLPC XO-1.75 laptops.
 
---cN0A5YokcrYPGsSB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It's interesting that the very author of that code is not included in
+so-o long Cc list :)
+Cc: David.
 
-On Fri, Oct 19, 2018 at 01:30:02PM +0100, Mark Brown wrote:
-> The patch
->=20
->    spi: pxa2xx: fix PCI dependency
->=20
-> has been applied to the spi tree at
->=20
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git=20
+David, do you remember if and how you had tested temperature report of
+the battery on OLPC?
+I guess this kind of error would be appear immediately.
 
-Sorry, I'll drop this one - I forgot it had already been applied when
-it was pointed out that the stub function was added.
+OTOH it might be that power framework had changed requirements (which
+would be noticeable change).
+If the latter is true, this patch misses Fixes tag. Actually in any
+case it misses it.
 
---cN0A5YokcrYPGsSB
-Content-Type: application/pgp-signature; name="signature.asc"
+>
+> [1] include/linux/power_supply.h
+> [2] Documentation/power/power_supply_class.txt
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> ---
+>  drivers/power/supply/olpc_battery.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply/olpc_battery.c
+> index 6da79ae14860..5a97e42a3547 100644
+> --- a/drivers/power/supply/olpc_battery.c
+> +++ b/drivers/power/supply/olpc_battery.c
+> @@ -428,14 +428,14 @@ static int olpc_bat_get_property(struct power_supply *psy,
+>                 if (ret)
+>                         return ret;
+>
+> -               val->intval = (s16)be16_to_cpu(ec_word) * 100 / 256;
+> +               val->intval = (s16)be16_to_cpu(ec_word) * 10 / 256;
+>                 break;
+>         case POWER_SUPPLY_PROP_TEMP_AMBIENT:
+>                 ret = olpc_ec_cmd(EC_AMB_TEMP, NULL, 0, (void *)&ec_word, 2);
+>                 if (ret)
+>                         return ret;
+>
+> -               val->intval = (int)be16_to_cpu(ec_word) * 100 / 256;
+> +               val->intval = (int)be16_to_cpu(ec_word) * 10 / 256;
+>                 break;
+>         case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+>                 ret = olpc_ec_cmd(EC_BAT_ACR, NULL, 0, (void *)&ec_word, 2);
+> --
+> 2.19.0
+>
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvJzt0ACgkQJNaLcl1U
-h9C51gf/a8e6IrR3tgcgkRkU+Y/jEok7Z2KGCF9qQwCwSkPYDQkkA0yau3+7F93e
-f9QkRV8cWzAmH+3W0u7Cab0+t2M4T2wh6uNpXEg7ytkTRZ8nlGP4/ZCJdwvPSvQF
-RUjnR9A9jcMpD4gihuUPdj6nW1Duybk/PMEbx8NiiPyG3GPN/1/2xNkYTOTE2jkb
-VLHOhw7x0Ea6hoWFzcBI82cecmZHo7N3mUacjlWica/DODkwVzDvwKjXTEXpgRtD
-5LD6q36tXNSj2CF46rhk+X2H73+pBHb6D+JWm83iurmgqC3ekQRvn6TpoKHGz8zJ
-eultAMnFlM/cEa7eLT4V+iY5MAwjDQ==
-=tqBu
------END PGP SIGNATURE-----
-
---cN0A5YokcrYPGsSB--
+-- 
+With Best Regards,
+Andy Shevchenko

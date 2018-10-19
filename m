@@ -1,136 +1,63 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 15/15] power: supply: olpc_battery: Add OLPC XO 1.75 support
-Date: Fri, 19 Oct 2018 16:55:25 +0300
-Message-ID: <CAHp75VepkJ2yy==rDO+WCrmj28_GDvin_3+MEnL7k0n4ZVP8QA@mail.gmail.com>
-References: <20181010172300.317643-1-lkundrak@v3.sk> <20181010172300.317643-16-lkundrak@v3.sk>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH RFC 00/18] mtd: spi-nor: Proposal for 8-8-8 mode support
+Date: Fri, 19 Oct 2018 14:59:20 +0200
+Message-ID: <20181019145920.43f9d5ec@bbrezillon>
+References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
+ <20181019122527.GJ5895@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        devel@driverdev.osuosl.or
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181010172300.317643-16-lkundrak@v3.sk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
+ linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ linux-mtd@lists.infradead.org, Mason Yang <masonccyang@mxic.com.tw>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181019122527.GJ5895@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 10, 2018 at 8:24 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
->
-> The battery and the protocol are essentially the same as OLPC XO 1.5,
-> but the responses from the EC are LSB first.
->
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> ---
->  drivers/power/supply/olpc_battery.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply/olpc_battery.c
-> index dde9863e5c4a..2adf33b9f641 100644
-> --- a/drivers/power/supply/olpc_battery.c
-> +++ b/drivers/power/supply/olpc_battery.c
-> @@ -56,6 +56,7 @@ struct olpc_battery_data {
->         struct power_supply *olpc_bat;
->         char bat_serial[17];
->         int new_proto;
-> +       int little_endian;
->  };
->
->  /*********************************************************************
-> @@ -321,6 +322,14 @@ static int olpc_bat_get_voltage_max_design(union power_supply_propval *val)
->         return ret;
->  }
->
-> +static s16 ecword_to_cpu(struct olpc_battery_data *data, u16 ec_byte)
+Hi Mark,
 
-ec_byte is misleading name. It's a 16-bit word. and since we called in
-I/O accessor it as word, you may do the similar here.
+On Fri, 19 Oct 2018 13:25:27 +0100
+Mark Brown <broonie@kernel.org> wrote:
 
-And why result is s16 and not u16?
+> On Fri, Oct 12, 2018 at 10:48:07AM +0200, Boris Brezillon wrote:
+> 
+> > First question that might come to mind is why should we support such
+> > stateful modes? If you think about it, the gain of transmitting the
+> > opcode on 8 IO lines is rather small compared to the pain it is to
+> > teach the SPI NOR framework how to deal with that. The problem is,
+> > some SPI NOR manufacturers (Macronix for instance) only implement 1-1-1
+> > and 8-8-8 (or 8D-8D-8D), and they want to be able to use their NORs in
+> > 8-8-8 mode when the controller supports it.  
+> 
+> The SPI framework changes definitely look OK to me, if everyone agrees
+> that this is a good way to go from a MTD point of view I'm happy to
+> apply them.  I have no strong opinion on the MTD bits of the series.
 
-> +{
-> +       if (data->little_endian)
-> +               return le16_to_cpu(ec_byte);
-> +       else
-> +               return be16_to_cpu(ec_byte);
+Actually, Yogesh posted similar patches before me, so maybe you can
+look at this series [1]. The spi/spi-mem side of things is rather
+uncontroversial. Feel free to apply them if you think they're good
+enough to go in.
 
-> +
->  /*********************************************************************
->   *             Battery properties
->   *********************************************************************/
-> @@ -393,7 +402,7 @@ static int olpc_bat_get_property(struct power_supply *psy,
->                 if (ret)
->                         return ret;
->
-> -               val->intval = (s16)be16_to_cpu(ec_word) * 9760L / 32;
-> +               val->intval = ecword_to_cpu(data, ec_word) * 9760L / 32;
->                 break;
->         case POWER_SUPPLY_PROP_CURRENT_AVG:
->         case POWER_SUPPLY_PROP_CURRENT_NOW:
-> @@ -401,7 +410,7 @@ static int olpc_bat_get_property(struct power_supply *psy,
->                 if (ret)
->                         return ret;
->
-> -               val->intval = (s16)be16_to_cpu(ec_word) * 15625L / 120;
-> +               val->intval = ecword_to_cpu(data, ec_word) * 15625L / 120;
->                 break;
->         case POWER_SUPPLY_PROP_CAPACITY:
->                 ret = olpc_ec_cmd(EC_BAT_SOC, NULL, 0, &ec_byte, 1);
-> @@ -432,21 +441,21 @@ static int olpc_bat_get_property(struct power_supply *psy,
->                 if (ret)
->                         return ret;
->
-> -               val->intval = (s16)be16_to_cpu(ec_word) * 10 / 256;
-> +               val->intval = ecword_to_cpu(data, ec_word) * 10 / 256;
->                 break;
->         case POWER_SUPPLY_PROP_TEMP_AMBIENT:
->                 ret = olpc_ec_cmd(EC_AMB_TEMP, NULL, 0, (void *)&ec_word, 2);
->                 if (ret)
->                         return ret;
->
-> -               val->intval = (int)be16_to_cpu(ec_word) * 10 / 256;
-> +               val->intval = (int)ecword_to_cpu(data, ec_word) * 10 / 256;
->                 break;
->         case POWER_SUPPLY_PROP_CHARGE_COUNTER:
->                 ret = olpc_ec_cmd(EC_BAT_ACR, NULL, 0, (void *)&ec_word, 2);
->                 if (ret)
->                         return ret;
->
-> -               val->intval = (s16)be16_to_cpu(ec_word) * 6250 / 15;
-> +               val->intval = ecword_to_cpu(data, ec_word) * 6250 / 15;
->                 break;
->         case POWER_SUPPLY_PROP_SERIAL_NUMBER:
->                 ret = olpc_ec_cmd(EC_BAT_SERIAL, NULL, 0, (void *)&ser_buf, 8);
-> @@ -626,6 +635,10 @@ static int olpc_battery_probe(struct platform_device *pdev)
->         if (ecver[0] > 0x44) {
->                 /* XO 1 or 1.5 with a new EC firmware. */
->                 data->new_proto = 1;
-> +       } else if (of_find_compatible_node(NULL, NULL, "olpc,xo1.75-ec")) {
-> +               /* XO 1.75 */
-> +               data->new_proto = 1;
-> +               data->little_endian = 1;
->         } else if (ecver[0] < 0x44) {
->                 /*
->                  * We've seen a number of EC protocol changes; this driver
-> --
-> 2.19.0
->
+Thanks for your review.
 
+Boris
 
--- 
-With Best Regards,
-Andy Shevchenko
+[1]http://patchwork.ozlabs.org/project/linux-mtd/list/?series=70822
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

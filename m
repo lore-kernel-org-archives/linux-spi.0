@@ -1,63 +1,73 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH RFC 00/18] mtd: spi-nor: Proposal for 8-8-8 mode support
-Date: Fri, 19 Oct 2018 14:59:20 +0200
-Message-ID: <20181019145920.43f9d5ec@bbrezillon>
-References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
- <20181019122527.GJ5895@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 0/15] Add support for OLPC XO 1.75 Embedded Controller
+Date: Fri, 19 Oct 2018 16:57:04 +0300
+Message-ID: <CAHp75Vd_9RmfDFnSzkNOQyfKVOR1tfzbMPy0_J7_DfZ2e4A16g@mail.gmail.com>
+References: <20181010172300.317643-1-lkundrak@v3.sk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- linux-mtd@lists.infradead.org, Mason Yang <masonccyang@mxic.com.tw>,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181019122527.GJ5895@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.or
+To: Lubomir Rintel <lkundrak@v3.sk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181010172300.317643-1-lkundrak@v3.sk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On Wed, Oct 10, 2018 at 8:23 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
+>
+> Hi.
+>
+> This patchset adds support for the Embedded Controller on an OLPC XO
+> 1.75 machine. OLPC XO 1.75 is a MMP2 based ARM laptop. It plugs into
+> the existing OLPC platform infrastructure, currently used by the x86
+> based models.
+>
+> The EC operates in SPI master mode, meaning the SOC is the SPI slave. It
+> uses extra handshake signal to signal readiness of SOC to accept data
+> from EC and to initiate a transaction if SOC wishes to submit data.
+>
+> The SPI slave support for MMP2 was submitted separately:
+> https://lore.kernel.org/lkml/20181010170936.316862-1-lkundrak@v3.sk/T/#t
+>
 
-On Fri, 19 Oct 2018 13:25:27 +0100
-Mark Brown <broonie@kernel.org> wrote:
+> THe "power: supply: olpc_battery: correct the temperature" patch was
 
-> On Fri, Oct 12, 2018 at 10:48:07AM +0200, Boris Brezillon wrote:
-> 
-> > First question that might come to mind is why should we support such
-> > stateful modes? If you think about it, the gain of transmitting the
-> > opcode on 8 IO lines is rather small compared to the pain it is to
-> > teach the SPI NOR framework how to deal with that. The problem is,
-> > some SPI NOR manufacturers (Macronix for instance) only implement 1-1-1
-> > and 8-8-8 (or 8D-8D-8D), and they want to be able to use their NORs in
-> > 8-8-8 mode when the controller supports it.  
-> 
-> The SPI framework changes definitely look OK to me, if everyone agrees
-> that this is a good way to go from a MTD point of view I'm happy to
-> apply them.  I have no strong opinion on the MTD bits of the series.
+The
 
-Actually, Yogesh posted similar patches before me, so maybe you can
-look at this series [1]. The spi/spi-mem side of things is rather
-uncontroversial. Feel free to apply them if you think they're good
-enough to go in.
+> already sent out separately, but I'm including it because the last
+> commit of the set depends on it.
+>
+> Tested to work on an OLPC XO 1.75 and also tested not to break x86
+> support with an OLPC XO 1 machine. I don't have a XO 1.5, but it's
+> unlikely this breaks it when XO 1 works.
+>
+> Thanks in advance for reviews and feedback of any kind.
 
-Thanks for your review.
+Thanks for the series.
+I'm about to review the patch 6, otherwise read my comments for the
+rest and consider addressing them.
 
-Boris
+>
+> Lubo
+>
 
-[1]http://patchwork.ozlabs.org/project/linux-mtd/list/?series=70822
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -1,27 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "dt-bindings: spi: add stm32 qspi controller" to the spi tree
-Date: Fri, 19 Oct 2018 13:29:58 +0100 (BST)
-Message-ID: <20181019122958.67B8D1122548@debutante.sirena.org.uk>
-References: <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
-To: Ludovic Barre <ludovic.barre@st.com>
+Subject: Applied "spi: pxa2xx: fix PCI dependency" to the spi tree
+Date: Fri, 19 Oct 2018 13:30:02 +0100 (BST)
+Message-ID: <20181019123002.196D21122548@debutante.sirena.org.uk>
+References: <20181017185128.2634666-1-arnd@arndb.de>
+Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1538725383-19781-2-git-send-email-ludovic.Barre@st.com>
+In-Reply-To: <20181017185128.2634666-1-arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   dt-bindings: spi: add stm32 qspi controller
+   spi: pxa2xx: fix PCI dependency
 
 has been applied to the spi tree at
 
@@ -46,72 +44,40 @@ to this mail.
 Thanks,
 Mark
 
->From 0c0eb3ba9186138b0ffed91e994d473d0f0960cf Mon Sep 17 00:00:00 2001
-From: Ludovic Barre <ludovic.barre@st.com>
-Date: Fri, 5 Oct 2018 09:43:02 +0200
-Subject: [PATCH] dt-bindings: spi: add stm32 qspi controller
+>From 23aa9fdea2d364924fadf3dcc1509bd578ac1f00 Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 17 Oct 2018 20:50:52 +0200
+Subject: [PATCH] spi: pxa2xx: fix PCI dependency
 
-This patch adds the documentation of device tree bindings
-for the STM32 QSPI controller. It is a specialized communication
-interface targeting single, dual or quad SPI Flash memories (NOR/NAND).
+The code reorganization broke building without CONFIG_PCI:
 
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_init_pdata':
+drivers/spi/spi-pxa2xx.c:1457:15: error: implicit declaration of function 'pci_match_id'; did you mean 'pci_map_sg'? [-Werror=implicit-function-declaration]
+
+Add back an #ifdef around the code block that requires it.
+
+Fixes: 87ae1d2d7077 ("spi: pxa2xx: Add devicetree support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- .../bindings/spi/spi-stm32-qspi.txt           | 44 +++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+ drivers/spi/spi-pxa2xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt b/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
-new file mode 100644
-index 000000000000..adeeb63e84b9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
-@@ -0,0 +1,44 @@
-+* STMicroelectronics Quad Serial Peripheral Interface(QSPI)
-+
-+Required properties:
-+- compatible: should be "st,stm32f469-qspi"
-+- reg: the first contains the register location and length.
-+       the second contains the memory mapping address and length
-+- reg-names: should contain the reg names "qspi" "qspi_mm"
-+- interrupts: should contain the interrupt for the device
-+- clocks: the phandle of the clock needed by the QSPI controller
-+- A pinctrl must be defined to set pins in mode of operation for QSPI transfer
-+
-+Optional properties:
-+- resets: must contain the phandle to the reset controller.
-+
-+A spi flash (NOR/NAND) must be a child of spi node and could have some
-+properties. Also see jedec,spi-nor.txt.
-+
-+Required properties:
-+- reg: chip-Select number (QSPI controller may connect 2 flashes)
-+- spi-max-frequency: max frequency of spi bus
-+
-+Optional property:
-+- spi-rx-bus-width: see ./spi-bus.txt for the description
-+
-+Example:
-+
-+qspi: spi@a0001000 {
-+	compatible = "st,stm32f469-qspi";
-+	reg = <0xa0001000 0x1000>, <0x90000000 0x10000000>;
-+	reg-names = "qspi", "qspi_mm";
-+	interrupts = <91>;
-+	resets = <&rcc STM32F4_AHB3_RESET(QSPI)>;
-+	clocks = <&rcc 0 STM32F4_AHB3_CLOCK(QSPI)>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_qspi0>;
-+
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-rx-bus-width = <4>;
-+		spi-max-frequency = <108000000>;
-+		...
-+	};
-+};
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 612cc49db28f..c1c30109dd1f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1453,9 +1453,11 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (pdev->dev.of_node)
+ 		of_id = of_match_device(pdev->dev.driver->of_match_table,
+ 					&pdev->dev);
++#ifdef CONFIG_PCI
+ 	else if (dev_is_pci(pdev->dev.parent))
+ 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
+ 					 to_pci_dev(pdev->dev.parent));
++#endif
+ 	else if (adev)
+ 		adev_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
+ 					    &pdev->dev);
 -- 
 2.19.0.rc2

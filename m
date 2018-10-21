@@ -1,71 +1,87 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Allow building SPI_BCM63XX_HSSPI on ARM-based SoCs" to the spi tree
-Date: Sun, 21 Oct 2018 13:09:15 +0200 (CEST)
-Message-ID: <20181021110915.A57A6440078@finisterre.ee.mobilebroadband>
-References: <20181019181233.10227-1-f.fainelli@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        jonas.gorski@gmail.com, Mark Brown <broonie@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Florian Fainelli <f.fainelli@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181019181233.10227-1-f.fainelli@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Re: [PATCH RFC 00/18] mtd: spi-nor: Proposal for 8-8-8 mode support
+Date: Sun, 21 Oct 2018 14:36:00 +0100
+Message-ID: <20181021133600.GE8554@sirena.org.uk>
+References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
+ <20181019122527.GJ5895@sirena.org.uk>
+ <20181019145920.43f9d5ec@bbrezillon>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5954474173847264477=="
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
+ linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ linux-mtd@lists.infradead.org, Mason Yang <masonccyang@mxic.com.tw>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181019145920.43f9d5ec@bbrezillon>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: Allow building SPI_BCM63XX_HSSPI on ARM-based SoCs
+--===============5954474173847264477==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ieNMXl1Fr3cevapt"
+Content-Disposition: inline
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+--ieNMXl1Fr3cevapt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+On Fri, Oct 19, 2018 at 02:59:20PM +0200, Boris Brezillon wrote:
+> Mark Brown <broonie@kernel.org> wrote:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> > The SPI framework changes definitely look OK to me, if everyone agrees
+> > that this is a good way to go from a MTD point of view I'm happy to
+> > apply them.  I have no strong opinion on the MTD bits of the series.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> Actually, Yogesh posted similar patches before me, so maybe you can
+> look at this series [1]. The spi/spi-mem side of things is rather
+> uncontroversial. Feel free to apply them if you think they're good
+> enough to go in.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Ugh, unfortunately he didn't send me them so I'll have to try to find
+them on the list and it looks like there's been no review from any of
+the other MTD people.  It'd be good to get some consensus, yours seems a
+bit more complete so my inclination would be to go that way.
 
-Thanks,
-Mark
+--ieNMXl1Fr3cevapt
+Content-Type: application/pgp-signature; name="signature.asc"
 
->From 79a15f4974ce9613134648e6e1dd0eb7ca199de6 Mon Sep 17 00:00:00 2001
-From: Florian Fainelli <f.fainelli@gmail.com>
-Date: Fri, 19 Oct 2018 11:12:32 -0700
-Subject: [PATCH] spi: Allow building SPI_BCM63XX_HSSPI on ARM-based SoCs
+-----BEGIN PGP SIGNATURE-----
 
-ARM-based 63xx DSL platforms have the spi-bcm63xx-hsspi controller
-present, allow using this driver there as well.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvMgL0ACgkQJNaLcl1U
+h9DZ6wf/cnQtBWcvGvsEUyUogeZOm9SrDiC4eCgj+xC1bxOYdJChmLpSpZIC0npZ
+iVBUmJ3EXQFQ6XhYFW3WcfprR187gdCaibG2nUnk5MZvbsXmaWIOcBKo06XejpHR
+59sbMO9ODLCK3u7KZHW7AhnOysU7O+/bnHTwc8aTyRhKvBIw6fSC7+qT7O/DNzOJ
+T3C4VlwcFL4b4iTc3Awe4Sj2Nxm76eqn6L0I7d110XwFKEpDEOKjooSk5BGoXCtQ
+WwV5GMbBMKVJDHi6tdSB1PmnmDHP5Ov6Kf2nUHsao5Us/SHS0Ob8HI0q3K9iVE2f
+NO9tBwp9VxBaSkDkmdMv63eUHVOMnA==
+=XkDj
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--ieNMXl1Fr3cevapt--
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 71851d00f47d..f756450a8914 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -129,7 +129,7 @@ config SPI_BCM63XX
- 
- config SPI_BCM63XX_HSSPI
- 	tristate "Broadcom BCM63XX HS SPI controller driver"
--	depends on BCM63XX || COMPILE_TEST
-+	depends on BCM63XX || ARCH_BCM_63XX || COMPILE_TEST
- 	help
- 	  This enables support for the High Speed SPI controller present on
- 	  newer Broadcom BCM63XX SoCs.
--- 
-2.19.0
+
+--===============5954474173847264477==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============5954474173847264477==--

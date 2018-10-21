@@ -1,66 +1,147 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH RFC 00/18] mtd: spi-nor: Proposal for 8-8-8 mode support
-Date: Mon, 22 Oct 2018 10:21:26 +0200
-Message-ID: <20181022102126.529bebb3@bbrezillon>
-References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
- <20181019122527.GJ5895@sirena.org.uk>
- <20181019145920.43f9d5ec@bbrezillon>
- <20181021133600.GE8554@sirena.org.uk>
+From: Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH 01/15] power: supply: olpc_battery: correct the
+ temperature units
+Date: Sun, 21 Oct 2018 23:27:37 +0200
+Message-ID: <20181021212737.v546ychvlnkxxvrp@earth.universe>
+References: <20181010172300.317643-1-lkundrak@v3.sk>
+ <20181010172300.317643-2-lkundrak@v3.sk>
+ <CAHp75VenECSZWR3RVh=t35Os93t-MzEH_YzPgT=qQWL-SwjgFQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mason Yang <masonccyang@mxic.com.tw>, Vignesh R <vigneshr@ti.com>,
- Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
-To: Mark Brown <broonie@kernel.org>, Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181021133600.GE8554@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="a3qwmqvb2q2d7nto"
+Cc: Lubomir Rintel <lkundrak@v3.sk>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.ke
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAHp75VenECSZWR3RVh=t35Os93t-MzEH_YzPgT=qQWL-SwjgFQ@mail.gmail.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 21 Oct 2018 14:36:00 +0100
-Mark Brown <broonie@kernel.org> wrote:
 
-> On Fri, Oct 19, 2018 at 02:59:20PM +0200, Boris Brezillon wrote:
-> > Mark Brown <broonie@kernel.org> wrote:  
-> 
-> > > The SPI framework changes definitely look OK to me, if everyone agrees
-> > > that this is a good way to go from a MTD point of view I'm happy to
-> > > apply them.  I have no strong opinion on the MTD bits of the series.  
-> 
-> > Actually, Yogesh posted similar patches before me, so maybe you can
-> > look at this series [1]. The spi/spi-mem side of things is rather
-> > uncontroversial. Feel free to apply them if you think they're good
-> > enough to go in.  
-> 
-> Ugh, unfortunately he didn't send me them so I'll have to try to find
-> them on the list and it looks like there's been no review from any of
-> the other MTD people.  It'd be good to get some consensus, yours seems a
-> bit more complete so my inclination would be to go that way.
+--a3qwmqvb2q2d7nto
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Indeed, looks like Yogesh version is not patching spi_setup() to
-support octal mode. Anyway, it seems unfair to push for my own version
-while I was clearly aware of Yogesh's patchset before posting my RFC
-(the only reason I did not use his patches is laziness on my side: I had
-my own working version, and the RFC was not really about these
-spi/spi-mem aspects, more the spi-nor side of things :-)).
+Hi,
 
-So, if you don't mind, I'll ask him to send a new version addressing
-this problem (which should make our patches almost identical, except for
-the naming: OCTAL vs OCTO), and I'll put my R-b.
+On Fri, Oct 19, 2018 at 04:00:32PM +0300, Andy Shevchenko wrote:
+> On Wed, Oct 10, 2018 at 8:23 PM Lubomir Rintel <lkundrak@v3.sk> wrote:
+> >
+> > According to [1] and [2], the temperature values are in tenths of degree
+> > Celsius. Exposing the Celsius value makes the battery appear on fire:
+> >
+> >   $ upower -i /org/freedesktop/UPower/devices/battery_olpc_battery
+> >   ...
+> >       temperature:         236.9 degrees C
+> >
+> > Tested on OLPC XO-1 and OLPC XO-1.75 laptops.
+>=20
+> It's interesting that the very author of that code is not included in
+> so-o long Cc list :)
+> Cc: David.
+>=20
+> David, do you remember if and how you had tested temperature report of
+> the battery on OLPC? I guess this kind of error would be appear immediate=
+ly.
 
+It depends on the way of testing. It's not so obvious when you just
+do a `cat /sys/class/power_supply/.../temperature`, since you just
+get the raw integer.
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> OTOH it might be that power framework had changed requirements (which
+> would be noticeable change).
+
+As far as I know, power-supply has always used 1/10 =B0C. People tend
+to get units wrong all the time though (i.e. mV instead of uV). I'm
+not surprised, that this sneaked into the kernel.
+
+> If the latter is true, this patch misses Fixes tag. Actually in any
+> case it misses it.
+
+Yes, this should probably have Fixes: fb972873a767 ("[BATTERY] One Laptop
+Per Child power/battery driver").
+
+-- Sebastian
+
+> > [1] include/linux/power_supply.h
+> > [2] Documentation/power/power_supply_class.txt
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> > ---
+> >  drivers/power/supply/olpc_battery.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply=
+/olpc_battery.c
+> > index 6da79ae14860..5a97e42a3547 100644
+> > --- a/drivers/power/supply/olpc_battery.c
+> > +++ b/drivers/power/supply/olpc_battery.c
+> > @@ -428,14 +428,14 @@ static int olpc_bat_get_property(struct power_sup=
+ply *psy,
+> >                 if (ret)
+> >                         return ret;
+> >
+> > -               val->intval =3D (s16)be16_to_cpu(ec_word) * 100 / 256;
+> > +               val->intval =3D (s16)be16_to_cpu(ec_word) * 10 / 256;
+> >                 break;
+> >         case POWER_SUPPLY_PROP_TEMP_AMBIENT:
+> >                 ret =3D olpc_ec_cmd(EC_AMB_TEMP, NULL, 0, (void *)&ec_w=
+ord, 2);
+> >                 if (ret)
+> >                         return ret;
+> >
+> > -               val->intval =3D (int)be16_to_cpu(ec_word) * 100 / 256;
+> > +               val->intval =3D (int)be16_to_cpu(ec_word) * 10 / 256;
+> >                 break;
+> >         case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+> >                 ret =3D olpc_ec_cmd(EC_BAT_ACR, NULL, 0, (void *)&ec_wo=
+rd, 2);
+> > --
+> > 2.19.0
+> >
+>=20
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
+
+--a3qwmqvb2q2d7nto
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAlvM70YACgkQ2O7X88g7
++pqmfg/+JkX1Lw0K3PAD9UrZW1Yplr9O68D98XVu9TPSb1cJu1whYaXFPvNEYhIQ
+yjG6I1tIKgf17VinnZAcm+uvrAnhzIKYebyPOhY35ao3XxWZri4fmQ5r8jicsD/0
+BIe5TqZz28RwdQA6qpXLU1SKtSLfwD/5VlLHQQaSwhD5s8KArMnNU1VGYApzjqe3
+53SbAjyzyepvXhEbAfLQiKnxMcH92asZuYGjx1js+nMF85rBMQ4AdQKFwPm7ltOy
+C6LGh5mMdS5JkmOxPEekNwbdsX7LDcvVtQ7YFaZXlORT/OmJncYkoCOBt4klzM75
+zj96dzoXwLUwbNZQYlxsfjyWwwrzMtMNYdvuygERH88JKlpm3jL+7KnAgivE4JoS
+CuwcVQKHlThf3qZ6qCxaZyMAVsGP5qA8sRKh0G/MJtRe3quP9vQSrbFmRQi8XSf7
+yQWrYwJl86mt1po7xINqr3+7AOLqw3FKexdMATLXFDzu6FGJDQHhc8MnxamfVT0r
+VkmwM88lqeI/jkZTV0wwFmYK/xVjN3/o8usjOofp9vsoDYl4VpbHfncw2veNP5ch
+FdXBpCqRvZO1ysE/7VgnX3QNJ5CViqa8n14eWxCArh1j+fb6Bx5UXrYLgt2zKFho
+foxb3JrVPR+VY0UIF+4BLwLuPcCO47Zbq9DOjfjimmEqEfBNyPE=
+=e80x
+-----END PGP SIGNATURE-----
+
+--a3qwmqvb2q2d7nto--

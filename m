@@ -1,88 +1,78 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: add imx8qxp compatible string" to the spi tree
-Date: Sun, 21 Oct 2018 17:59:08 +0200 (CEST)
-Message-ID: <20181021155908.81C2F440078@finisterre.ee.mobilebroadband>
-References: <1539886483-15775-6-git-send-email-aisheng.dong@nxp.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 0/3] spi: simplify getting .driver_data
+Date: Sun, 21 Oct 2018 22:00:44 +0200
+Message-ID: <20181021200048.2114-1-wsa+renesas@sang-engineering.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "A.s. Dong" <aisheng.dong@nxp.com>, Mark Rutland <mark.rutland@arm.com>,
- "dongas86@gmail.com" <dongas86@gmail.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will.deacon@arm.com" <will.deacon@arm.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Fabio Estevam <fabio.estevam@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: A.s. Dong <aisheng.dong@nxp.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1539886483-15775-6-git-send-email-aisheng.dong@nxp.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Transfer-Encoding: 8bit
+Cc: linux-renesas-soc@vger.kernel.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+I got tired of fixing this in Renesas drivers manually, so I took the big
+hammer. Remove this cumbersome code pattern which got copy-pasted too much
+already:
 
-   spi: lpspi: add imx8qxp compatible string
+-	struct platform_device *pdev = to_platform_device(dev);
+-	struct ep93xx_keypad *keypad = platform_get_drvdata(pdev);
++	struct ep93xx_keypad *keypad = dev_get_drvdata(dev);
 
-has been applied to the spi tree at
+A branch, tested by buildbot, can be found here:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git coccinelle/get_drvdata
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I have been asked if it couldn't be done for dev_set_drvdata as well. I checked
+it and did not find one occasion where it could be simplified like this. Not
+much of a surprise because driver_data is usually set in probe() functions
+which access struct platform_device in many other ways.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I am open for other comments, suggestions, too, of course.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Here is the cocci-script I created:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+@@
+struct device* d;
+identifier pdev;
+expression *ptr;
+@@
+(
+-	struct platform_device *pdev = to_platform_device(d);
+|
+-	struct platform_device *pdev;
+	...
+-	pdev = to_platform_device(d);
+)
+	<... when != pdev
+-	&pdev->dev
++	d
+	...>
 
-Thanks,
-Mark
+	ptr =
+-	platform_get_drvdata(pdev)
++	dev_get_drvdata(d)
 
->From 0c903aafc8529f64d24d2cd6df32f2bf16aad20b Mon Sep 17 00:00:00 2001
-From: "A.s. Dong" <aisheng.dong@nxp.com>
-Date: Thu, 18 Oct 2018 18:19:34 +0000
-Subject: [PATCH] spi: lpspi: add imx8qxp compatible string
+	<... when != pdev
+-	&pdev->dev
++	d
+	...>
 
-Add imx8qxp compatible string
+Kind regards,
 
-Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt | 1 +
- 1 file changed, 1 insertion(+)
+   Wolfram
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-index 4af132606b37..8d178a4503cf 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-@@ -3,6 +3,7 @@
- Required properties:
- - compatible :
-   - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
-+  - "fsl,imx8qxp-spi" for LPSPI compatible with the one integrated on i.MX8QXP soc
- - reg : address and length of the lpspi master registers
- - interrupts : lpspi interrupt
- - clocks : lpspi clock specifier
+
+Wolfram Sang (3):
+  spi: spi-rspi: simplify getting .driver_data
+  spi: spi-sh-msiof: simplify getting .driver_data
+  spi: spi-zynqmp-gqspi: simplify getting .driver_data
+
+ drivers/spi/spi-rspi.c         | 6 ++----
+ drivers/spi/spi-sh-msiof.c     | 6 ++----
+ drivers/spi/spi-zynqmp-gqspi.c | 6 ++----
+ 3 files changed, 6 insertions(+), 12 deletions(-)
+
 -- 
 2.19.0

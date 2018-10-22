@@ -1,109 +1,118 @@
-From: Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 0/15] Add support for OLPC XO 1.75 Embedded Controller
-Date: Sun, 21 Oct 2018 23:45:54 +0200
-Message-ID: <20181021214554.i2mb5yn2doabyt5a@earth.universe>
-References: <20181010172300.317643-1-lkundrak@v3.sk>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v4 0/5] spi: spi-mem: Add driver for NXP FlexSPI
+ controller
+Date: Mon, 22 Oct 2018 11:43:40 +0000
+Message-ID: <VI1PR04MB1038034CFABEE936C6892D7D99F40@VI1PR04MB1038.eurprd04.prod.outlook.com>
+References: <1539255519-1408-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4634300731478293321=="
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- devel@driverdev.osuosl.org, Eric Miao <eric.y.miao@gmail.com>,
- James Cameron <quozl@laptop.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, Daniel Mack <daniel@zonque.org>,
- Darren Hart <dvhart@infradead.org>, platform-driver-x86@vger.kernel.org,
- Robert Jarzmik <robert.jarzmik@free.fr>, Andy Shevchenko <andy@infradead.org>,
- linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20181010172300.317643-1-lkundrak@v3.sk>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1539255519-1408-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
++ Mark Brown
 
---===============4634300731478293321==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jnox64lrvnzk7wym"
-Content-Disposition: inline
+Complete patch series[1]
+[1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70210
 
+--
+Regards,
+Yogesh Gaur
 
---jnox64lrvnzk7wym
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Wed, Oct 10, 2018 at 07:22:45PM +0200, Lubomir Rintel wrote:
-> Hi.
+> -----Original Message-----
+> From: Yogesh Narayan Gaur [mailto:yogeshnarayan.gaur@nxp.com]
+> Sent: Thursday, October 11, 2018 4:30 PM
+> To: linux-mtd@lists.infradead.org; boris.brezillon@bootlin.com;
+> marek.vasut@gmail.com; linux-spi@vger.kernel.org;
+> devicetree@vger.kernel.org
+> Cc: robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org; linux-
+> arm-kernel@lists.infradead.org; computersforpeace@gmail.com;
+> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org; Yogesh Narayan
+> Gaur <yogeshnarayan.gaur@nxp.com>
+> Subject: [PATCH v4 0/5] spi: spi-mem: Add driver for NXP FlexSPI controll=
+er
 >=20
-> This patchset adds support for the Embedded Controller on an OLPC XO
-> 1.75 machine. OLPC XO 1.75 is a MMP2 based ARM laptop. It plugs into
-> the existing OLPC platform infrastructure, currently used by the x86
-> based models.
+> - Add driver for NXP FlexSPI host controller
 >=20
-> The EC operates in SPI master mode, meaning the SOC is the SPI slave. It
-> uses extra handshake signal to signal readiness of SOC to accept data
-> from EC and to initiate a transaction if SOC wishes to submit data.
+>  FlexSPI is a flexsible SPI host controller [1], Chapter 30 page 1475,  w=
+hich
+> supports two SPI channels and up to 4 external devices.
+>  Each channel supports Single/Dual/Quad/Octal mode data transfer (1/2/4/8
+> bidirectional data lines)  i.e. FlexSPI acts as an interface to external =
+devices,
+> maximum 4, each with up to 8  bidirectional data lines.
 >=20
-> The SPI slave support for MMP2 was submitted separately:
-> https://lore.kernel.org/lkml/20181010170936.316862-1-lkundrak@v3.sk/T/#t
+> - Tested this driver with mtd_debug(Erase/Write/Read) utility and JFFS2
+> filesystem mounting and booting on NXP LX2160ARDB[2] and LX2160AQDS
+> targets.
+>  LX2160ARDB is having two NOR slave device connected on single bus A  i.e=
+. A0
+> and A1 (CS0 and CS1).
+>  LX2160AQDS is having two NOR slave device connected on separate buses  o=
+ne
+> flash on A0 and second on B1 i.e. (CS0 and CS3).
+>  Verified this driver on following SPI NOR flashes:
+>    Micron, mt35xu512aba[3], [Read - 1 bit mode]
+>    Cypress, s25fl512s, [Read - 1/2/4 bit mode]
 >=20
-> THe "power: supply: olpc_battery: correct the temperature" patch was
-> already sent out separately, but I'm including it because the last
-> commit of the set depends on it.
+> [1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
+> [2] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D=
+26689
+> [3] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70179
 >=20
-> Tested to work on an OLPC XO 1.75 and also tested not to break x86
-> support with an OLPC XO 1 machine. I don't have a XO 1.5, but it's
-> unlikely this breaks it when XO 1 works.
+> Yogesh Gaur (5):
+>   spi: spi-mem: Add driver for NXP FlexSPI controller
+>   dt-bindings: spi: add binding file for NXP FlexSPI controller
+>   arm64: dts: lx2160a: add FlexSPI node property
+>   arm64: defconfig: enable NXP FlexSPI driver
+>   MAINTAINERS: add maintainers for the NXP FlexSPI driver
 >=20
-> Thanks in advance for reviews and feedback of any kind.
-
-I reviewed the power-supply related patches (1, 10, 12-15) and think
-they are fine apart from the things found by Andy Shevchenko.
-
--- Sebastian
-
---jnox64lrvnzk7wym
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAlvM848ACgkQ2O7X88g7
-+pqfnA//TKs8BES/kjdXsbsj0Q2N00S/gqI2yAJfPVzPjGUx8CwKBsRzW1yiQa5L
-PLupI4oHdeRkThPP8o3aS1kLwHuJXxDt9VWCNQl98LpoTPs9iTDGfraFfSlVSFYG
-arjQBKbPBt1wLt2hsEOgiipPA9nNZM+rFcO3nzYbTKgmf+wQ+bpKettsf/3qDeNV
-3ZPj2LK/WX3jY0cnIw2y1vuR5PJj4eBsPwWC+FeOj63JJBtCHfY6jvfMv0rcOOz3
-u9AQQJdhd23BK5xWT8qrOQ0OPLWvr9sFpImAvUjwT52okULTzCUJsFUR+X3iWHBg
-FtHSUjwzf4tMVHQFsQmUGOdjrzXNnAOFs+OV3r/MHRNPc/eHHSE1GfPlgE3o0MBp
-dFFs60geDQStMBxkGnCi1ILoU2pzOkBG/t0Hzd0rWGHWJPYApZIv5yJ8b/EBO+nJ
-+e5/dXhe3d6lpdr6mECRoMXnpeGZAmhX95LLi6CdyMb9BfZVP2PVugBeD3pIaGwH
-sEj21DXPTFM1lhgKFjD884E2CQEEpnxRhbcLCnpDmFjkt20h8irChVqq3NPaCphX
-+4DgSj3ZRE9EgNNWgAA2K4UoJFupeGxk9EatMxMpxWybnoYgwyBg+SFZeh/v7LJt
-9LC2H1BGBA0eP1A6UUc+ETcV9Qj2C/BGVbbKUfR7hLCxrx8WDaQ=
-=Xjo8
------END PGP SIGNATURE-----
-
---jnox64lrvnzk7wym--
-
---===============4634300731478293321==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devel mailing list
-devel@linuxdriverproject.org
-http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
-
---===============4634300731478293321==--
+> Changes for v4:
+> - Incorporated review comments for
+>   patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> - Incorporated binding file review comments.
+> Changes for v3:
+> - Incorporated review comments for
+>   patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> Changes for v2:
+> - Incorporated Boris review comments and drop below patches as per the
+> comments.
+>  - Patch 'spi: add slave device size in spi_device struct'
+>  - Patch 'spi: add flags for octal I/O data transfer'
+> - Incorporated DTS and Binding file review comments of Shawn Guo and Rob
+> Herring.
+>=20
+>  .../devicetree/bindings/spi/spi-nxp-fspi.txt       |   39 +
+>  MAINTAINERS                                        |    6 +
+>  arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts  |   22 +
+>  arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |   12 +
+>  arch/arm64/configs/defconfig                       |    1 +
+>  drivers/spi/Kconfig                                |   10 +
+>  drivers/spi/Makefile                               |    1 +
+>  drivers/spi/spi-nxp-fspi.c                         | 1158 ++++++++++++++=
+++++++
+>  8 files changed, 1249 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.tx=
+t
+>  create mode 100644 drivers/spi/spi-nxp-fspi.c
+>=20
+> --
+> 2.7.4

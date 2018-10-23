@@ -1,75 +1,55 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v3 2/7] spi: spi-mem: add support for octo mode I/O data
- transfer
-Date: Tue, 23 Oct 2018 11:49:00 +0200
-Message-ID: <20181023114900.2ff4cbfc@bbrezillon>
-References: <1540287311-1572-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1540287311-1572-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: Re: [PATCH v3 1/2] mtd: spi-nor: add macros related to MICRON flash
+Date: Tue, 23 Oct 2018 11:56:34 +0200
+Message-ID: <20181023115634.00dd6d23@bbrezillon>
+References: <1539310881-17438-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1539310881-17438-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <20181012080753.2a59b75c@bbrezillon>
+        <VI1PR04MB1038A3680E02FC107367E5FF99E20@VI1PR04MB1038.eurprd04.prod.outlook.com>
+        <VI1PR04MB1038969FFFCC16DD6094031599F50@VI1PR04MB1038.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
+Cc: Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "cyrille.pitchen@wedev4u.fr" <cyrille.pitchen@wedev4u.fr>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1540287311-1572-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <VI1PR04MB1038969FFFCC16DD6094031599F50@VI1PR04MB1038.eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 23 Oct 2018 09:37:13 +0000
+Hi Yogesh,
+
+On Tue, 23 Oct 2018 09:39:25 +0000
 Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-> Add support for octo mode I/O data transfer in spi-mem framework.
+> Hi,
 > 
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+> Did we have have any comments or remarks about this patch-series,  if not please apply.
 
-Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
+Sorry, but it was already too late for this release, and the merge
+window just started, so it will have to wait at least 2 more weeks.
 
-> ---
-> Changes for v3:
-> - Modified string 'octal' with 'octo'.
-> Changes for v2:
-> - Patch added in v2 version.
+We've been lagging with SPI NOR patches for the last couple releases
+because I clearly don't have time to review those contributions, and it
+seems Marek does not have time either.
+
 > 
->  drivers/spi/spi-mem.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-> index c6bdea7..2379efc 100644
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -12,7 +12,7 @@
->  
->  #include "internals.h"
->  
-> -#define SPI_MEM_MAX_BUSWIDTH		4
-> +#define SPI_MEM_MAX_BUSWIDTH		8
->  
->  /**
->   * spi_controller_dma_map_mem_op_data() - DMA-map the buffer attached to a
-> @@ -121,6 +121,13 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
->  
->  		break;
->  
-> +	case 8:
-> +		if ((tx && (mode & SPI_TX_OCTO)) ||
-> +		    (!tx && (mode & SPI_RX_OCTO)))
-> +			return 0;
-> +
-> +		break;
-> +
->  	default:
->  		break;
->  	}
+> Both patches in the series been reviewed by Tudor.
+
+Things are improving a bit thanks to Tudor's involvement in the review
+process, but I'd like to remember you that you, as a regular
+contributor to the spi-nor subsystem, can help us with that too. That
+is, help review patches coming from others instead of only focusing on
+your own contributions.
+
+Regards,
+
+Boris

@@ -1,89 +1,62 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 0/7] spi: add support for octal mode
-Date: Mon, 22 Oct 2018 14:40:07 +0200
-Message-ID: <20181022144007.367830c6@bbrezillon>
-References: <1539605534-22302-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Ryan Case <ryandcase@chromium.org>
+Subject: [PATCH v1] spi: spi-qcom-qspi: Fix remaining driver nits
+Date: Mon, 22 Oct 2018 18:07:07 -0700
+Message-ID: <20181023010707.153647-1-ryandcase@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Transfer-Encoding: 8bit
+Cc: linux-arm-msm@vger.kernel.org,
+        Doug Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Ryan Case <ryandcase@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1539605534-22302-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-+Mark
+Address remaining comments from original driver patch series
 
-Hi Yogesh,
+* Move RD_FIFO_CFG to be ordered corretly
+* Expand spinlock comment
 
-On Mon, 15 Oct 2018 12:13:57 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+Signed-off-by: Ryan Case <ryandcase@chromium.org>
+---
 
-> Add support for octal mode IO data transfer.
-> Micron flash, mt35xu512aba, supports octal mode data transfer and
-> NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
-> 
-> Patch series
-> * Add support for octal mode flags and parsing of same in spi driver.
-> * Add parsing logic for spi-mem framework and m25p80.c device file.
-> * Add opcodes for octal I/O commands in spi-nor framework, Read and Write proto for (1-1-8/1-8-8) mode.
->   Opcodes are added as per octal data IO commands required for mt35xu512aba [1] flash.
-> * Add mode bit required for octal mode in nxp-fspi driver [2].
-> * Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
-> 
-> Cherry pick below 2 patches (from: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git):
->     c639f871febe6667d9afce28108c634e5636c735 spi: spi-mem: Fix inverted logic in op sanity check
->     db122eb8a749a1eff038f9a282c620ab16c4be1d spi: spi-mem: Add extra sanity checks on the op param
-> 
-> Tested on LX2160ARDB target with nxp-fspi driver, below are
-> Read performance number of 1-1-1 and 1-1-8 read protocol.
-> 
->  root@lxxx:~# cat /proc/mtd
->  dev:    size   erasesize  name
->  mtd0: 04000000 00001000 "spi0.0"
->  mtd1: 04000000 00001000 "spi0.1"
->  root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
->  Copied 16777216 bytes from address 0x00000000 in flash to 0read
-> 
->  real    0m2.792s
->  user    0m0.000s
->  sys     0m2.790s
->  root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
->  Copied 16777216 bytes from address 0x00000000 in flash to 0read
-> 
->  real    0m0.441s
->  user    0m0.000s
->  sys     0m0.440s
->  root@ls1012ardb:~#
-> 
->  Flash device MTD0 configured in 1-1-1 protocol.
->  Flash device MTD1 configured in 1-1-8 protocol.
-> 
-> [1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=70384
-> [2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=70210
-> 
-> Yogesh Gaur (7):
->   spi: add support for octal I/O data transfer
+ drivers/spi/spi-qcom-qspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-I guess you've followed the discussion with Mark on the "mtd: spi-nor:
-Proposal for 8-8-8 mode support" series. Can you please send a new
-version of this patchset after adding patching spi_setup() to support
-octal mode?
-
-Thanks,
-
-Boris
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index b8163b40bb92..e0f061139c8f 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -90,6 +90,9 @@
+ #define PIO_DATAOUT_1B		0x0020
+ #define PIO_DATAOUT_4B		0x0024
+ 
++#define RD_FIFO_CFG		0x0028
++#define CONTINUOUS_MODE		BIT(0)
++
+ #define RD_FIFO_STATUS	0x002c
+ #define FIFO_EMPTY	BIT(11)
+ #define WR_CNTS_MSK	0x7f0
+@@ -99,9 +102,6 @@
+ #define RDY_16BYTE	BIT(1)
+ #define FIFO_RDY	BIT(0)
+ 
+-#define RD_FIFO_CFG		0x0028
+-#define CONTINUOUS_MODE		BIT(0)
+-
+ #define RD_FIFO_RESET		0x0030
+ #define RESET_FIFO		BIT(0)
+ 
+@@ -139,7 +139,7 @@ struct qcom_qspi {
+ 	struct device *dev;
+ 	struct clk_bulk_data clks[QSPI_NUM_CLKS];
+ 	struct qspi_xfer xfer;
+-	/* Lock to protect data accessed by IRQs */
++	/* Lock to protect xfer and IRQ accessed registers */
+ 	spinlock_t lock;
+ };
+ 
+-- 
+2.19.1.568.g152ad8e336-goog

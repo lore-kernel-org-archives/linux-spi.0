@@ -1,97 +1,125 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH RESEND v4 1/5] spi: spi-mem: Add driver for NXP FlexSPI
- controller
-Date: Tue, 23 Oct 2018 09:12:52 +0000
-Message-ID: <VI1PR04MB1038247D1A2B65268F76F8F099F50@VI1PR04MB1038.eurprd04.prod.outlook.com>
-References: <1540284888-32307-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1540284888-32307-2-git-send-email-yogeshnarayan.gaur@nxp.com>
- <20181023110634.26ff2629@bbrezillon>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+From: Lukasz Majewski <lukma@denx.de>
+Subject: [RESEND PATCHv2] ARM: dspi: Provide support for DSPI slave more operation (Vybryd vf610)
+Date: Tue, 23 Oct 2018 11:13:19 +0200
+Message-ID: <20181023091319.27868-1-lukma@denx.de>
+References: <20180927150709.17010-1-lukma@denx.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Esben Haabendal <eha@deif.com>,
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        Andrey Smirnov <andrew.smirnov@gmail.com>,
+        Lukasz Majewski <lukma@denx.de>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181023110634.26ff2629@bbrezillon>
-Content-Language: en-US
+In-Reply-To: <20180927150709.17010-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+The NXP's Vybryd vf610 can work as a SPI slave device (the CS and clock
+signals are provided by master).
 
-> -----Original Message-----
-> From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> Sent: Tuesday, October 23, 2018 2:37 PM
-> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> Cc: linux-mtd@lists.infradead.org; marek.vasut@gmail.com;
-> broonie@kernel.org; linux-spi@vger.kernel.org; devicetree@vger.kernel.org=
-;
-> robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
-> kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH RESEND v4 1/5] spi: spi-mem: Add driver for NXP FlexS=
-PI
-> controller
->=20
-> On Tue, 23 Oct 2018 08:56:46 +0000
-> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
->=20
-> > +struct nxp_fspi {
-> > +	void __iomem *iobase;
-> > +	void __iomem *ahb_addr;
-> > +	u32 memmap_phy;
-> > +	u32 memmap_phy_size;
-> > +	struct clk *clk, *clk_en;
-> > +	struct device *dev;
-> > +	struct completion c;
-> > +	const struct nxp_fspi_devtype_data *devtype_data;
-> > +	struct mutex lock;
-> > +	struct pm_qos_request pm_qos_req;
-> > +	int selected;
-> > +	void (*write)(u32 val, void __iomem *addr);
-> > +	u32 (*read)(void __iomem *addr);
->=20
-> I think I already commented on this aspect, and I keep thinking having a =
-function
-> pointer is overkill here.
-> Just declare 2 functions and do the f->devtype_data->little_endian check =
-in
-> there:
->=20
-> static u32 fspi_readl(struct nxp_fspi *f, void __iomem *addr) {
-> 	if (f->devtype_data->little_endian)
-> 		return ioread32(addr);
->=20
-> 	return ioread32be(addr);
-> }
->=20
-> static void fspi_writel(struct nxp_fspi *f, u32 val, void __iomem *addr) =
-{
-> 	if (f->devtype_data->little_endian)
-> 		iowrite32(val, addr);
->=20
-> 	iowrite32be(val, addr);
-> }
+It is possible to specify a single device to work in that mode. As we do
+use DMA for transferring data, the RX channel must be prepared for
+incoming data.
+Moreover, in slave mode we just set a subset of control fields in
+configuration registers (CTAR0, PUSHR).
 
-This, I have kept same as being done in spi-fsl-qspi.c driver file as Fried=
-er have got the comment to remove the condition in read/write path and he h=
-as introduced these hooks there.
+For testing the spidev_test program has been used.
+Test script for this patch can be found here:
+https://github.com/lmajewski/tests-spi/blob/master/tests/spi/spi_tests.sh
 
-Would remove in next version. Please review other changes and complete driv=
-er file.
 
---
-Regards
-Yogesh Gaur
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
+Changes for v2:
+
+- Remove patch which adds extra NXP specific DTS property to support slave
+mode and reuse the generic one (spi-slave)
+- Remove patch which brings back the mcr_register local copy. It is not
+needed as generic SPI slave infrastructure is used.
+- Rewrite the code to use spi_controller_is_slave() helper functions
+---
+ drivers/spi/spi-fsl-dspi.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..94b6a9690062 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -233,6 +233,9 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
+ {
+ 	u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
+ 
++	if (spi_controller_is_slave(dspi->master))
++		return data;
++
+ 	if (dspi->len > 0)
+ 		cmd |= SPI_PUSHR_CMD_CONT;
+ 	return cmd << 16 | data;
+@@ -329,6 +332,11 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 	dma_async_issue_pending(dma->chan_rx);
+ 	dma_async_issue_pending(dma->chan_tx);
+ 
++	if (spi_controller_is_slave(dspi->master)) {
++		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
++		return 0;
++	}
++
+ 	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
+ 					DMA_COMPLETION_TIMEOUT);
+ 	if (time_left == 0) {
+@@ -798,14 +806,18 @@ static int dspi_setup(struct spi_device *spi)
+ 	ns_delay_scale(&pasc, &asc, sck_cs_delay, clkrate);
+ 
+ 	chip->ctar_val = SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+-		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+-		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
+-		| SPI_CTAR_PCSSCK(pcssck)
+-		| SPI_CTAR_CSSCK(cssck)
+-		| SPI_CTAR_PASC(pasc)
+-		| SPI_CTAR_ASC(asc)
+-		| SPI_CTAR_PBR(pbr)
+-		| SPI_CTAR_BR(br);
++		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0);
++
++	if (!spi_controller_is_slave(dspi->master)) {
++		chip->ctar_val |= SPI_CTAR_LSBFE(spi->mode &
++						 SPI_LSB_FIRST ? 1 : 0)
++			| SPI_CTAR_PCSSCK(pcssck)
++			| SPI_CTAR_CSSCK(cssck)
++			| SPI_CTAR_PASC(pasc)
++			| SPI_CTAR_ASC(asc)
++			| SPI_CTAR_PBR(pbr)
++			| SPI_CTAR_BR(br);
++	}
+ 
+ 	spi_set_ctldata(spi, chip);
+ 
+@@ -970,8 +982,13 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 
+ static void dspi_init(struct fsl_dspi *dspi)
+ {
+-	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS |
+-		     (dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0));
++	unsigned int mcr = SPI_MCR_PCSIS |
++		(dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0);
++
++	if (!spi_controller_is_slave(dspi->master))
++		mcr |= SPI_MCR_MASTER;
++
++	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ 	if (dspi->devtype_data->xspi_mode)
+ 		regmap_write(dspi->regmap, SPI_CTARE(0),
+@@ -1027,6 +1044,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 		master->bus_num = bus_num;
+ 
++		if (of_property_read_bool(np, "spi-slave"))
++			master->slave = true;
++
+ 		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
+ 		if (!dspi->devtype_data) {
+ 			dev_err(&pdev->dev, "can't get devtype_data\n");
+-- 
+2.11.0

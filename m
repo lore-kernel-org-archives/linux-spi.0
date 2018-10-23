@@ -1,7 +1,8 @@
 From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH 0/3] Fix MODULE_LICENSE of bcm2835 drivers
-Date: Tue, 23 Oct 2018 13:06:05 +0200
-Message-ID: <1540292769-5905-1-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH 2/3] dma: bcm2835: make license text and module license match
+Date: Tue, 23 Oct 2018 13:06:07 +0200
+Message-ID: <1540292769-5905-3-git-send-email-stefan.wahren@i2se.com>
+References: <1540292769-5905-1-git-send-email-stefan.wahren@i2se.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,6 +14,7 @@ Cc: Stefan Wahren <stefan.wahren@i2se.com>, Stephen Boyd <sboyd@kernel.org>,
 To: Florian Meier <florian.meier@koalo.de>, Chris Boot <bootc@bootc.net>,
  Martin Sperl <kernel@martin.sperl.org>, Eric Anholt <eric@anholt.net>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1540292769-5905-1-git-send-email-stefan.wahren@i2se.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,23 +26,24 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-In preparation of a treewide switch of all bcm2835 drivers to SPDX tags,
-we need to make sure that the license text and MODULE_LICENSE matches.
+The license text is specifying GPL v2 or later but the MODULE_LICENSE
+is set to GPL v2 which means GNU Public License v2 only. So choose the
+license text as the correct one.
 
-This series starts sooner than usual to have more time to collect the authors
-ACK.
+Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+---
+ drivers/dma/bcm2835-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Stefan Wahren (3):
-  clk: bcm2835: make license text and module license match
-  dma: bcm2835: make license text and module license match
-  spi: bcm2835: make license text and module license match
-
- drivers/clk/bcm/clk-bcm2835-aux.c | 2 +-
- drivers/clk/bcm/clk-bcm2835.c     | 2 +-
- drivers/dma/bcm2835-dma.c         | 2 +-
- drivers/spi/spi-bcm2835.c         | 2 +-
- drivers/spi/spi-bcm2835aux.c      | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/dma/bcm2835-dma.c b/drivers/dma/bcm2835-dma.c
+index 847f84a..112b071 100644
+--- a/drivers/dma/bcm2835-dma.c
++++ b/drivers/dma/bcm2835-dma.c
+@@ -1064,4 +1064,4 @@ module_platform_driver(bcm2835_dma_driver);
+ MODULE_ALIAS("platform:bcm2835-dma");
+ MODULE_DESCRIPTION("BCM2835 DMA engine driver");
+ MODULE_AUTHOR("Florian Meier <florian.meier@koalo.de>");
+-MODULE_LICENSE("GPL v2");
++MODULE_LICENSE("GPL");
 -- 
 2.7.4

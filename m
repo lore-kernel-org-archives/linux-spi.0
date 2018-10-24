@@ -1,95 +1,54 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: uniphier: fix incorrect property items" to the spi tree
-Date: Wed, 24 Oct 2018 12:32:27 +0200 (CEST)
-Message-ID: <20181024103227.AA308440078@finisterre.ee.mobilebroadband>
-References: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
-        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
-        hayashibara.keiji@socionext.com, linux-spi@vger.kernel.org
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
-Sender: stable-owner@vger.kernel.org
+Subject: Re: [PATCH V2 3/5] spi: lpspi: Add 8qm/qxp support for lpspi
+Date: Wed, 24 Oct 2018 11:37:11 +0100
+Message-ID: <20181024103711.GN2103@sirena.org.uk>
+References: <20181024075617.19548-1-xiaoning.wang@nxp.com>
+ <20181024075617.19548-3-xiaoning.wang@nxp.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xdWF/UuCWMRSqXrg"
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Clark Wang <xiaoning.wang@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181024075617.19548-3-xiaoning.wang@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: uniphier: fix incorrect property items
+--xdWF/UuCWMRSqXrg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Wed, Oct 24, 2018 at 07:58:27AM +0000, Clark Wang wrote:
+> Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+I'm missing both the cover letter and rest of the series so I don't know
+what's going on with dependencies here - what's the story?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> Signed-off-by: Xiaoning Wang <xiaoning.wang@nxp.com>
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Please try to at least have the git commit author (which would show up
+as an in-body From: if you use git send-email), especially given that
+it's not just a spelling variation but actually a different name used in
+both places it's really not clear at the minute that you're not
+forwarding a patch at the minute, if that were the case there'd be a
+missing Signed-off-by here.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--xdWF/UuCWMRSqXrg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvQS1YACgkQJNaLcl1U
+h9CdmAf/RBZVq2mu96SbISFysTMd4FiSr3nwNfAlxiyxAx/bVBlrpoDAjD7/pyJI
+GV5ACm255IOkwCZbymD49D1wN5A6rFOLJ/VC2Mu71NBNUGUJIQ8qLuSzn87hYFhT
+v+vwaGT+wJZxQhH+Sx3jhZSsVLfDkK2eunCHb+ABNK2nXlwiosi8EJOITd5di4Pu
+ZkRc92UZHBEl4Io6PaMfFyMXeM9We4vnRd/Pujx6mzPe88pEjDWcc8Tk4MulIMEc
+wR4K265UraZGsuJRWddNZcRPXyNkAP6TxTtstO8ULWG3vh985MhCUR2we0S4dH7z
+RkovkCOK3CZcplbWMHQfeqpCPCiZEg==
+=d6CN
+-----END PGP SIGNATURE-----
 
->From 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf Mon Sep 17 00:00:00 2001
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Date: Wed, 24 Oct 2018 18:34:29 +0900
-Subject: [PATCH] spi: uniphier: fix incorrect property items
-
-This commit fixes incorrect property because it was different
-from the actual.
-The parameters of '#address-cells' and '#size-cells' were removed,
-and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
-
-Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-index 504a4ecfc7b1..b04e66a52de5 100644
---- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-@@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
- Required properties:
-  - compatible: should be "socionext,uniphier-scssi"
-  - reg: address and length of the spi master registers
-- - #address-cells: must be <1>, see spi-bus.txt
-- - #size-cells: must be <0>, see spi-bus.txt
-- - clocks: A phandle to the clock for the device.
-- - resets: A phandle to the reset control for the device.
-+ - interrupts: a single interrupt specifier
-+ - pinctrl-names: should be "default"
-+ - pinctrl-0: pin control state for the default mode
-+ - clocks: a phandle to the clock for the device
-+ - resets: a phandle to the reset control for the device
- 
- Example:
- 
- spi0: spi@54006000 {
- 	compatible = "socionext,uniphier-scssi";
- 	reg = <0x54006000 0x100>;
--	#address-cells = <1>;
--	#size-cells = <0>;
-+	interrupts = <0 39 4>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_spi0>;
- 	clocks = <&peri_clk 11>;
- 	resets = <&peri_rst 11>;
- };
--- 
-2.19.0
+--xdWF/UuCWMRSqXrg--

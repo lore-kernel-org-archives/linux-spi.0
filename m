@@ -1,16 +1,52 @@
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Subject: [PATCH] spi: uniphier: fix incorrect property items
-Date: Wed, 24 Oct 2018 18:34:29 +0900
-Message-ID: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
-Cc: stable@vger.kernel.org, masami.hiramatsu@linaro.org,
-        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
-        hayashibara.keiji@socionext.com
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: uniphier: fix incorrect property items" to the spi tree
+Date: Wed, 24 Oct 2018 12:32:27 +0200 (CEST)
+Message-ID: <20181024103227.AA308440078@finisterre.ee.mobilebroadband>
+References: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com,
         yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
+        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
+        hayashibara.keiji@socionext.com, linux-spi@vger.kernel.org
+To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+The patch
+
+   spi: uniphier: fix incorrect property items
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf Mon Sep 17 00:00:00 2001
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Date: Wed, 24 Oct 2018 18:34:29 +0900
+Subject: [PATCH] spi: uniphier: fix incorrect property items
 
 This commit fixes incorrect property because it was different
 from the actual.
@@ -19,12 +55,13 @@ and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
 
 Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
 Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-uniphier.txt | 14 ++++++++------
+ .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++++++------
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-index 504a4ec..b04e66a 100644
+index 504a4ecfc7b1..b04e66a52de5 100644
 --- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
 +++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
 @@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
@@ -55,4 +92,4 @@ index 504a4ec..b04e66a 100644
  	resets = <&peri_rst 11>;
  };
 -- 
-2.7.4
+2.19.0

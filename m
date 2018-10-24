@@ -1,8 +1,7 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 2/5] spi: lpspi: Improve the stability of lpspi data
- transmission
-Date: Wed, 24 Oct 2018 07:58:25 +0000
-Message-ID: <20181024075617.19548-2-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 3/5] spi: lpspi: Add 8qm/qxp support for lpspi
+Date: Wed, 24 Oct 2018 07:58:27 +0000
+Message-ID: <20181024075617.19548-3-xiaoning.wang@nxp.com>
 References: <20181024075617.19548-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -17,162 +16,132 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use SR_TDF to judge if need send data, and SR_FCF to judge if
-transmission end to replace the waiting after transmission end. This
-waiting has no actual meaning, for the real end will set the FCF
-flag.
-
-Resolved an issue that could cause a transmission timeout when
-transferring large amounts of data.
-
-After making these changes, there is no need to use
-fsl_lpspi_txfifo_empty(), so remove it.
+Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
 
 Signed-off-by: Xiaoning Wang <xiaoning.wang@nxp.com>
 ---
 V2:
- - Sorry for my negligence.
-   Fix an issue which happened when I split the patch from my work git
-   tree. Forgot to delete fsl_lpspi_txfifo_empty() code.
+ - No changes.
 ---
- drivers/spi/spi-fsl-lpspi.c | 63 +++++++++++++------------------------
- 1 file changed, 21 insertions(+), 42 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 52 +++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 86cb38d98a39..79a3d4a82628 100644
+index 79a3d4a82628..b51746c2de00 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -49,9 +49,11 @@
- #define CR_RST		BIT(1)
- #define CR_MEN		BIT(0)
- #define SR_TCF		BIT(10)
-+#define SR_FCF		BIT(9)
- #define SR_RDF		BIT(1)
- #define SR_TDF		BIT(0)
- #define IER_TCIE	BIT(10)
-+#define IER_FCIE	BIT(9)
- #define IER_RDIE	BIT(1)
- #define IER_TDIE	BIT(0)
- #define CFGR1_PCSCFG	BIT(27)
-@@ -161,28 +163,10 @@ static int lpspi_unprepare_xfer_hardware(struct spi_c=
-ontroller *controller)
- 	return 0;
- }
+@@ -82,7 +82,8 @@ struct lpspi_config {
+ struct fsl_lpspi_data {
+ 	struct device *dev;
+ 	void __iomem *base;
+-	struct clk *clk;
++	struct clk *clk_ipg;
++	struct clk *clk_per;
+ 	bool is_slave;
 =20
--static int fsl_lpspi_txfifo_empty(struct fsl_lpspi_data *fsl_lpspi)
--{
--	u32 txcnt;
--	unsigned long orig_jiffies =3D jiffies;
--
--	do {
--		txcnt =3D readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
--
--		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
--			dev_dbg(fsl_lpspi->dev, "txfifo empty timeout\n");
--			return -ETIMEDOUT;
--		}
--		cond_resched();
--
--	} while (txcnt);
--
--	return 0;
--}
--
- static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+ 	void *rx_buf;
+@@ -149,8 +150,19 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
+roller *controller)
  {
- 	u8 txfifo_cnt;
-+	u32 temp;
-=20
- 	txfifo_cnt =3D readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
-=20
-@@ -193,9 +177,15 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_d=
-ata *fsl_lpspi)
- 		txfifo_cnt++;
- 	}
-=20
--	if (!fsl_lpspi->remain && (txfifo_cnt < fsl_lpspi->txfifosize))
--		writel(0, fsl_lpspi->base + IMX7ULP_TDR);
--	else
-+	if (txfifo_cnt < fsl_lpspi->txfifosize) {
-+		if (!fsl_lpspi->is_slave) {
-+			temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
-+			temp &=3D ~TCR_CONTC;
-+			writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-+		}
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
++	int ret;
 +
-+		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
-+	} else
- 		fsl_lpspi_intctrl(fsl_lpspi, IER_TDIE);
- }
-=20
-@@ -394,12 +384,6 @@ static int fsl_lpspi_transfer_one(struct spi_controlle=
-r *controller,
- 	if (ret)
- 		return ret;
-=20
--	ret =3D fsl_lpspi_txfifo_empty(fsl_lpspi);
--	if (ret)
--		return ret;
--
--	fsl_lpspi_read_rx_fifo(fsl_lpspi);
--
- 	return 0;
- }
-=20
-@@ -411,7 +395,6 @@ static int fsl_lpspi_transfer_one_msg(struct spi_contro=
-ller *controller,
- 	struct spi_device *spi =3D msg->spi;
- 	struct spi_transfer *xfer;
- 	bool is_first_xfer =3D true;
--	u32 temp;
- 	int ret =3D 0;
-=20
- 	msg->status =3D 0;
-@@ -431,13 +414,6 @@ static int fsl_lpspi_transfer_one_msg(struct spi_contr=
-oller *controller,
- 	}
-=20
- complete:
--	if (!fsl_lpspi->is_slave) {
--		/* de-assert SS, then finalize current message */
--		temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
--		temp &=3D ~TCR_CONTC;
--		writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
--	}
--
- 	msg->status =3D ret;
- 	spi_finalize_current_message(controller);
-=20
-@@ -446,20 +422,23 @@ static int fsl_lpspi_transfer_one_msg(struct spi_cont=
-roller *controller,
-=20
- static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- {
-+	u32 temp_SR, temp_IER;
- 	struct fsl_lpspi_data *fsl_lpspi =3D dev_id;
--	u32 temp;
-=20
-+	temp_IER =3D readl(fsl_lpspi->base + IMX7ULP_IER);
- 	fsl_lpspi_intctrl(fsl_lpspi, 0);
--	temp =3D readl(fsl_lpspi->base + IMX7ULP_SR);
-+	temp_SR =3D readl(fsl_lpspi->base + IMX7ULP_SR);
-=20
- 	fsl_lpspi_read_rx_fifo(fsl_lpspi);
-=20
--	if (temp & SR_TDF) {
-+	if ((temp_SR & SR_TDF) && (temp_IER & IER_TDIE)) {
- 		fsl_lpspi_write_tx_fifo(fsl_lpspi);
-+		return IRQ_HANDLED;
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret)
++		return ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
++	if (ret) {
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
++		return ret;
 +	}
 =20
--		if (!fsl_lpspi->remain)
--			complete(&fsl_lpspi->xfer_done);
--
-+	if (temp_SR & SR_FCF && (temp_IER & IER_FCIE)) {
-+		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
-+		complete(&fsl_lpspi->xfer_done);
- 		return IRQ_HANDLED;
+-	return clk_prepare_enable(fsl_lpspi->clk);
++	return 0;
+ }
+=20
+ static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
+)
+@@ -158,7 +170,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
+troller *controller)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
+=20
+ 	return 0;
+ }
+@@ -242,7 +255,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	unsigned int perclk_rate, scldiv;
+ 	u8 prescale;
+=20
+-	perclk_rate =3D clk_get_rate(fsl_lpspi->clk);
++	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
+ 	for (prescale =3D 0; prescale < 8; prescale++) {
+ 		scldiv =3D perclk_rate /
+ 			 (clkdivs[prescale] * config.speed_hz) - 2;
+@@ -504,15 +517,30 @@ static int fsl_lpspi_probe(struct platform_device *pd=
+ev)
+ 		goto out_controller_put;
  	}
 =20
+-	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
+-	if (IS_ERR(fsl_lpspi->clk)) {
+-		ret =3D PTR_ERR(fsl_lpspi->clk);
++	fsl_lpspi->clk_per =3D devm_clk_get(&pdev->dev, "per");
++	if (IS_ERR(fsl_lpspi->clk_per)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_per);
++		goto out_controller_put;
++	}
++
++	fsl_lpspi->clk_ipg =3D devm_clk_get(&pdev->dev, "ipg");
++	if (IS_ERR(fsl_lpspi->clk_ipg)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_ipg);
++		goto out_controller_put;
++	}
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
+ 		goto out_controller_put;
+ 	}
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk);
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
++		dev_err(&pdev->dev,
++			"can't enable lpspi per clock, ret=3D%d\n", ret);
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
+ 		goto out_controller_put;
+ 	}
+=20
+@@ -520,7 +548,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
+)
+ 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
+@@ -542,7 +571,8 @@ static int fsl_lpspi_remove(struct platform_device *pde=
+v)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	return 0;
+ }
 --=20
 2.17.1

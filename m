@@ -1,14 +1,15 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 4/5] spi: lpspi: enable runtime pm for lpspi
-Date: Wed, 24 Oct 2018 07:58:30 +0000
-Message-ID: <20181024075617.19548-4-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 2/5] spi: lpspi: Improve the stability of lpspi data
+ transmission
+Date: Wed, 24 Oct 2018 07:58:25 +0000
+Message-ID: <20181024075617.19548-2-xiaoning.wang@nxp.com>
 References: <20181024075617.19548-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>, Han Xu <han.xu@nxp.com>
+        Clark Wang <xiaoning.wang@nxp.com>
 To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20181024075617.19548-1-xiaoning.wang@nxp.com>
@@ -16,221 +17,162 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable the runtime pm for lpspi module
+Use SR_TDF to judge if need send data, and SR_FCF to judge if
+transmission end to replace the waiting after transmission end. This
+waiting has no actual meaning, for the real end will set the FCF
+flag.
 
-BuildInfo:
-	- U-Boot 2018.03-imx_4.14.y
+Resolved an issue that could cause a transmission timeout when
+transferring large amounts of data.
 
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
+After making these changes, there is no need to use
+fsl_lpspi_txfifo_empty(), so remove it.
+
 Signed-off-by: Xiaoning Wang <xiaoning.wang@nxp.com>
 ---
 V2:
- - Add pinctrl/consumer.h include to fix the Warning error: implicit
-   declaration of function 'pinctrl_pm_select_sleep_state'.
+ - Sorry for my negligence.
+   Fix an issue which happened when I split the patch from my work git
+   tree. Forgot to delete fsl_lpspi_txfifo_empty() code.
 ---
- drivers/spi/spi-fsl-lpspi.c | 117 ++++++++++++++++++++++++++++--------
- 1 file changed, 92 insertions(+), 25 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 63 +++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index b51746c2de00..1be29daa9f92 100644
+index 86cb38d98a39..79a3d4a82628 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -16,7 +16,9 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -24,6 +26,8 @@
+@@ -49,9 +49,11 @@
+ #define CR_RST		BIT(1)
+ #define CR_MEN		BIT(0)
+ #define SR_TCF		BIT(10)
++#define SR_FCF		BIT(9)
+ #define SR_RDF		BIT(1)
+ #define SR_TDF		BIT(0)
+ #define IER_TCIE	BIT(10)
++#define IER_FCIE	BIT(9)
+ #define IER_RDIE	BIT(1)
+ #define IER_TDIE	BIT(0)
+ #define CFGR1_PCSCFG	BIT(27)
+@@ -161,28 +163,10 @@ static int lpspi_unprepare_xfer_hardware(struct spi_c=
+ontroller *controller)
+ 	return 0;
+ }
 =20
- #define DRIVER_NAME "fsl_lpspi"
+-static int fsl_lpspi_txfifo_empty(struct fsl_lpspi_data *fsl_lpspi)
+-{
+-	u32 txcnt;
+-	unsigned long orig_jiffies =3D jiffies;
+-
+-	do {
+-		txcnt =3D readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
+-
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(fsl_lpspi->dev, "txfifo empty timeout\n");
+-			return -ETIMEDOUT;
+-		}
+-		cond_resched();
+-
+-	} while (txcnt);
+-
+-	return 0;
+-}
+-
+ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	u8 txfifo_cnt;
++	u32 temp;
 =20
-+#define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
+ 	txfifo_cnt =3D readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
+=20
+@@ -193,9 +177,15 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_d=
+ata *fsl_lpspi)
+ 		txfifo_cnt++;
+ 	}
+=20
+-	if (!fsl_lpspi->remain && (txfifo_cnt < fsl_lpspi->txfifosize))
+-		writel(0, fsl_lpspi->base + IMX7ULP_TDR);
+-	else
++	if (txfifo_cnt < fsl_lpspi->txfifosize) {
++		if (!fsl_lpspi->is_slave) {
++			temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
++			temp &=3D ~TCR_CONTC;
++			writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
++		}
 +
- /* i.MX7ULP LPSPI registers */
- #define IMX7ULP_VERID	0x0
- #define IMX7ULP_PARAM	0x4
-@@ -152,13 +156,9 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
-roller *controller)
- 				spi_controller_get_devdata(controller);
- 	int ret;
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++	} else
+ 		fsl_lpspi_intctrl(fsl_lpspi, IER_TDIE);
+ }
 =20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
+@@ -394,12 +384,6 @@ static int fsl_lpspi_transfer_one(struct spi_controlle=
+r *controller,
+ 	if (ret)
+ 		return ret;
+=20
+-	ret =3D fsl_lpspi_txfifo_empty(fsl_lpspi);
 -	if (ret)
 -		return ret;
 -
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
- 		return ret;
- 	}
-=20
-@@ -170,8 +170,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
-troller *controller)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
--	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	pm_runtime_mark_last_busy(fsl_lpspi->dev);
-+	pm_runtime_put_autosuspend(fsl_lpspi->dev);
-=20
- 	return 0;
- }
-@@ -458,6 +458,45 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id=
-)
- 	return IRQ_NONE;
- }
-=20
-+int fsl_lpspi_runtime_resume(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
-+	if (ret) {
-+		clk_disable_unprepare(fsl_lpspi->clk_per);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int fsl_lpspi_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+
-+	return 0;
-+}
-+
-+static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
-+{
-+	struct device *dev =3D fsl_lpspi->dev;
-+
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, FSL_LPSPI_RPM_TIMEOUT);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi;
-@@ -483,6 +522,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
-)
-=20
- 	fsl_lpspi =3D spi_controller_get_devdata(controller);
- 	fsl_lpspi->dev =3D &pdev->dev;
-+	dev_set_drvdata(&pdev->dev, fsl_lpspi);
- 	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
- 						    "spi-slave");
-=20
-@@ -529,28 +569,21 @@ static int fsl_lpspi_probe(struct platform_device *pd=
-ev)
- 		goto out_controller_put;
- 	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
-+	/* enable the clock */
-+	ret =3D fsl_lpspi_init_rpm(fsl_lpspi);
-+	if (ret)
- 		goto out_controller_put;
--	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi per clock, ret=3D%d\n", ret);
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
--		goto out_controller_put;
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
-+		return ret;
- 	}
-=20
- 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
- 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+-	fsl_lpspi_read_rx_fifo(fsl_lpspi);
 -
- 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_controller error.\n");
-@@ -571,16 +604,50 @@ static int fsl_lpspi_remove(struct platform_device *p=
-dev)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	pm_runtime_disable(fsl_lpspi->dev);
-+
-+	spi_master_put(controller);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int fsl_lpspi_suspend(struct device *dev)
-+{
-+	int ret;
-+
-+	pinctrl_pm_select_sleep_state(dev);
-+	ret =3D pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_lpspi_resume(struct device *dev)
-+{
-+	int ret;
-+
-+	ret =3D pm_runtime_force_resume(dev);
-+	if (ret) {
-+		dev_err(dev, "Error in resume: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pinctrl_pm_select_default_state(dev);
-=20
  	return 0;
  }
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static const struct dev_pm_ops fsl_lpspi_pm_ops =3D {
-+	SET_RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
-+				fsl_lpspi_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(fsl_lpspi_suspend, fsl_lpspi_resume)
-+};
 =20
- static struct platform_driver fsl_lpspi_driver =3D {
- 	.driver =3D {
- 		.name =3D DRIVER_NAME,
- 		.of_match_table =3D fsl_lpspi_dt_ids,
-+		.pm =3D &fsl_lpspi_pm_ops,
- 	},
- 	.probe =3D fsl_lpspi_probe,
- 	.remove =3D fsl_lpspi_remove,
+@@ -411,7 +395,6 @@ static int fsl_lpspi_transfer_one_msg(struct spi_contro=
+ller *controller,
+ 	struct spi_device *spi =3D msg->spi;
+ 	struct spi_transfer *xfer;
+ 	bool is_first_xfer =3D true;
+-	u32 temp;
+ 	int ret =3D 0;
+=20
+ 	msg->status =3D 0;
+@@ -431,13 +414,6 @@ static int fsl_lpspi_transfer_one_msg(struct spi_contr=
+oller *controller,
+ 	}
+=20
+ complete:
+-	if (!fsl_lpspi->is_slave) {
+-		/* de-assert SS, then finalize current message */
+-		temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
+-		temp &=3D ~TCR_CONTC;
+-		writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
+-	}
+-
+ 	msg->status =3D ret;
+ 	spi_finalize_current_message(controller);
+=20
+@@ -446,20 +422,23 @@ static int fsl_lpspi_transfer_one_msg(struct spi_cont=
+roller *controller,
+=20
+ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ {
++	u32 temp_SR, temp_IER;
+ 	struct fsl_lpspi_data *fsl_lpspi =3D dev_id;
+-	u32 temp;
+=20
++	temp_IER =3D readl(fsl_lpspi->base + IMX7ULP_IER);
+ 	fsl_lpspi_intctrl(fsl_lpspi, 0);
+-	temp =3D readl(fsl_lpspi->base + IMX7ULP_SR);
++	temp_SR =3D readl(fsl_lpspi->base + IMX7ULP_SR);
+=20
+ 	fsl_lpspi_read_rx_fifo(fsl_lpspi);
+=20
+-	if (temp & SR_TDF) {
++	if ((temp_SR & SR_TDF) && (temp_IER & IER_TDIE)) {
+ 		fsl_lpspi_write_tx_fifo(fsl_lpspi);
++		return IRQ_HANDLED;
++	}
+=20
+-		if (!fsl_lpspi->remain)
+-			complete(&fsl_lpspi->xfer_done);
+-
++	if (temp_SR & SR_FCF && (temp_IER & IER_FCIE)) {
++		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
++		complete(&fsl_lpspi->xfer_done);
+ 		return IRQ_HANDLED;
+ 	}
+=20
 --=20
 2.17.1

@@ -1,41 +1,38 @@
-From: Jaewon Kim <jaewon02.kim@gmail.com>
-Subject: [PATCH] spi: dw: fix buffer end address
-Date: Thu, 25 Oct 2018 00:37:17 +0900
-Message-ID: <1540395437-6623-1-git-send-email-jaewon02.kim@samsung.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-        Jaewon Kim <jaewon02.kim@samsung.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH 1/3] dspi: lx2160a: use IRQF_SHARED mode to request IRQ
+Date: Thu, 25 Oct 2018 16:29:37 +0800
+Message-ID: <20181025082937.648-1-chuanhua.han@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Buffer address can be NULL, if user does not want to receive TX/RX data.
-In this case, driver should not set the rx/tx_end value with len.
+Some SoC share one irq number between DSPI controllers.
+For example, on the LX2160 board, DSPI0 and DSPI1 share one irq number.
+In this case, only one DSPI controller can register successfully,
+and others will fail.
 
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
 ---
- drivers/spi/spi-dw.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index b705f2b..34e6fca 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -293,9 +293,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->dma_mapped = 0;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..5e10dc5c93a5 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1090,8 +1090,8 @@ static int dspi_probe(struct platform_device *pdev)
+ 		goto out_clk_put;
+ 	}
  
- 	dws->tx = (void *)transfer->tx_buf;
--	dws->tx_end = dws->tx + transfer->len;
-+	dws->tx_end = dws->tx;
-+	if (dws->tx)
-+		dws->tx_end += transfer->len;
- 	dws->rx = transfer->rx_buf;
--	dws->rx_end = dws->rx + transfer->len;
-+	dws->rx_end = dws->rx;
-+	if (dws->rx)
-+		dws->rx_end += transfer->len;
- 	dws->len = transfer->len;
- 
- 	spi_enable_chip(dws, 0);
+-	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
+-			pdev->name, dspi);
++	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
++			       IRQF_SHARED, pdev->name, dspi);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
+ 		goto out_clk_put;
 -- 
-2.7.4
+2.17.1

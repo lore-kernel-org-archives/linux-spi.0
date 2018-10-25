@@ -1,41 +1,69 @@
-From: alokc@codeaurora.org
-Subject: Re: [PATCH 0/2] spi-geni-qcom: Cleanup nitpicks and simplify probe
- function
-Date: Thu, 25 Oct 2018 22:23:04 +0530
-Message-ID: <b391e2df12e31be9ba5e48f197a86471@codeaurora.org>
-References: <1540485629-5970-1-git-send-email-alokc@codeaurora.org>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] spi: uniphier: fix incorrect property items
+Date: Thu, 25 Oct 2018 14:59:07 -0500
+Message-ID: <20181025195906.GA22391@bogus>
+References: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: swboyd@chromium.org, dianders@chromium.org,
-        Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, mark.rutland@arm.com,
+        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
+        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org
+To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1540485629-5970-1-git-send-email-alokc@codeaurora.org>
+Content-Disposition: inline
+In-Reply-To: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2018-10-25 22:10, Alok Chauhan wrote:
-> This patch series fixed the following:
-> * nitpicks from the previous review
->  (https://patchwork.kernel.org/patch/10624849/)
-> * Cleanup probe function by re-arranging existing APIs to starting of
->   function and hence avoiding one goto jump and remove few redundant
->   variables.
+On Wed, Oct 24, 2018 at 06:34:29PM +0900, Keiji Hayashibara wrote:
+> This commit fixes incorrect property because it was different
+> from the actual.
+> The parameters of '#address-cells' and '#size-cells' were removed,
+> and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
 > 
-> Alok Chauhan (2):
->   spi: spi-geni-qcom: fix nitpicks
->   spi: spi-geni-qcom: Simplify probe function
+> Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
+> Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-uniphier.txt | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
 > 
->  drivers/spi/spi-geni-qcom.c | 64 
-> +++++++++++++++++++++------------------------
->  1 file changed, 30 insertions(+), 34 deletions(-)
+> diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> index 504a4ec..b04e66a 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> @@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
+>  Required properties:
+>   - compatible: should be "socionext,uniphier-scssi"
+>   - reg: address and length of the spi master registers
+> - - #address-cells: must be <1>, see spi-bus.txt
+> - - #size-cells: must be <0>, see spi-bus.txt
 
-Added more folks as some them got missed by get_maintainer.pl for this 
-patch.
+How is removing these correct? They are needed if you have any child 
+devices.
 
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
-Forum,a Linux Foundation Collaborative Project
+> - - clocks: A phandle to the clock for the device.
+> - - resets: A phandle to the reset control for the device.
+> + - interrupts: a single interrupt specifier
+> + - pinctrl-names: should be "default"
+> + - pinctrl-0: pin control state for the default mode
+> + - clocks: a phandle to the clock for the device
+> + - resets: a phandle to the reset control for the device
+>  
+>  Example:
+>  
+>  spi0: spi@54006000 {
+>  	compatible = "socionext,uniphier-scssi";
+>  	reg = <0x54006000 0x100>;
+> -	#address-cells = <1>;
+> -	#size-cells = <0>;
+> +	interrupts = <0 39 4>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_spi0>;
+>  	clocks = <&peri_clk 11>;
+>  	resets = <&peri_rst 11>;
+>  };
+> -- 
+> 2.7.4
+> 

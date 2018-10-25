@@ -1,69 +1,44 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] spi: uniphier: fix incorrect property items
-Date: Thu, 25 Oct 2018 14:59:07 -0500
-Message-ID: <20181025195906.GA22391@bogus>
-References: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 1/2] spi: spi-geni-qcom: fix nitpicks
+Date: Thu, 25 Oct 2018 13:00:53 -0700
+Message-ID: <CAD=FV=X7Rhwhz2YH8EZ0mBRuC0rO-Wns=MOuy1-FCnwn0Z=wAg@mail.gmail.com>
+References: <1540485629-5970-1-git-send-email-alokc@codeaurora.org> <1540485629-5970-2-git-send-email-alokc@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
-        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Stephen Boyd <swboyd@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>
+To: alokc@codeaurora.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com>
+In-Reply-To: <1540485629-5970-2-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 24, 2018 at 06:34:29PM +0900, Keiji Hayashibara wrote:
-> This commit fixes incorrect property because it was different
-> from the actual.
-> The parameters of '#address-cells' and '#size-cells' were removed,
-> and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
-> 
-> Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
-> Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-uniphier.txt | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-> index 504a4ec..b04e66a 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-> @@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
->  Required properties:
->   - compatible: should be "socionext,uniphier-scssi"
->   - reg: address and length of the spi master registers
-> - - #address-cells: must be <1>, see spi-bus.txt
-> - - #size-cells: must be <0>, see spi-bus.txt
+Hi,
+On Thu, Oct 25, 2018 at 9:40 AM Alok Chauhan <alokc@codeaurora.org> wrote:
+>
+> fixed the nitpicks.
 
-How is removing these correct? They are needed if you have any child 
-devices.
+I probably would have put more a proper sentence, like:
 
-> - - clocks: A phandle to the clock for the device.
-> - - resets: A phandle to the reset control for the device.
-> + - interrupts: a single interrupt specifier
-> + - pinctrl-names: should be "default"
-> + - pinctrl-0: pin control state for the default mode
-> + - clocks: a phandle to the clock for the device
-> + - resets: a phandle to the reset control for the device
->  
->  Example:
->  
->  spi0: spi@54006000 {
->  	compatible = "socionext,uniphier-scssi";
->  	reg = <0x54006000 0x100>;
-> -	#address-cells = <1>;
-> -	#size-cells = <0>;
-> +	interrupts = <0 39 4>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_spi0>;
->  	clocks = <&peri_clk 11>;
->  	resets = <&peri_rst 11>;
->  };
-> -- 
-> 2.7.4
-> 
+Fixed small nits that were pointed out on the mailing list.  No
+functional change expected.
+
+...but I guess it's up to Mark if he cares.
+
+
+> @@ -533,7 +530,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+>
+>         writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
+>         spin_unlock_irqrestore(&mas->lock, flags);
+> -       return ret;
+> +       return IRQ_HANDLED;
+
+I probably would have put a blank line before the return while I was
+at it, but it's not a big deal to me.
+
+Thanks for following up.
+
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

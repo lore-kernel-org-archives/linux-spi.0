@@ -1,35 +1,97 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH 2/2] spi: spi-geni-qcom: Simplify probe function
-Date: Thu, 25 Oct 2018 13:06:52 -0700
-Message-ID: <CAD=FV=VUB6jxQE61eXdFQBcc45uLz5Lc9PO2K4pmOY=6PjNDnQ@mail.gmail.com>
-References: <1540485629-5970-1-git-send-email-alokc@codeaurora.org> <1540485629-5970-3-git-send-email-alokc@codeaurora.org>
+From: "Keiji Hayashibara" <hayashibara.keiji@socionext.com>
+Subject: RE: [PATCH] spi: uniphier: fix incorrect property items
+Date: Fri, 26 Oct 2018 09:12:09 +0900
+Message-ID: <000c01d46cc0$89d0a520$9d71ef60$@socionext.com>
+References: <1540373669-18969-1-git-send-email-hayashibara.keiji@socionext.com> <20181025195906.GA22391@bogus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>
-To: alokc@codeaurora.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1540485629-5970-3-git-send-email-alokc@codeaurora.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain;
+        charset="iso-2022-jp"
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <mark.rutland@arm.com>,
+        =?iso-2022-jp?B?WWFtYWRhLCBNYXNhaGlyby8bJEI7M0VEGyhCIBskQj8/OTAbKEI=?=
+        <yamada.masahiro@socionext.com>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <stable@vger.kernel.org>,
+        <masami.hiramatsu@linaro.org>, <jaswinder.singh@linaro.org>,
+        <linux-kernel@vger.kernel.org>
+To: "'Rob Herring'" <robh@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20181025195906.GA22391@bogus>
+Content-Language: ja
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hello Rob,
 
-On Thu, Oct 25, 2018 at 9:40 AM Alok Chauhan <alokc@codeaurora.org> wrote:
->
-> Re-arrange existing APIs in probe function to
-> avoid using goto and remove redundant variables.
->
-> Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
-> ---
->  drivers/spi/spi-geni-qcom.c | 49 ++++++++++++++++++++++-----------------------
->  1 file changed, 24 insertions(+), 25 deletions(-)
+> -----Original Message-----
+> From: Rob Herring [mailto:robh@kernel.org]
+> Sent: Friday, October 26, 2018 4:59 AM
+> To: Hayashibara, Keiji/林原 啓二 <hayashibara.keiji@socionext.com>
+> Cc: broonie@kernel.org; mark.rutland@arm.com; Yamada, Masahiro/山田 真弘 <yamada.masahiro@socionext.com>;
+> linux-spi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> stable@vger.kernel.org; masami.hiramatsu@linaro.org; jaswinder.singh@linaro.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] spi: uniphier: fix incorrect property items
+> 
+> On Wed, Oct 24, 2018 at 06:34:29PM +0900, Keiji Hayashibara wrote:
+> > This commit fixes incorrect property because it was different from the
+> > actual.
+> > The parameters of '#address-cells' and '#size-cells' were removed, and
+> > 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
+> >
+> > Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI
+> > controller")
+> > Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+> > ---
+> >  Documentation/devicetree/bindings/spi/spi-uniphier.txt | 14
+> > ++++++++------
+> >  1 file changed, 8 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> > b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> > index 504a4ec..b04e66a 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> > +++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+> > @@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
+> >  Required properties:
+> >   - compatible: should be "socionext,uniphier-scssi"
+> >   - reg: address and length of the spi master registers
+> > - - #address-cells: must be <1>, see spi-bus.txt
+> > - - #size-cells: must be <0>, see spi-bus.txt
+> 
+> How is removing these correct? They are needed if you have any child devices.
 
-I agree that this is what Stephen was looking for in his review
-feedback.  I personally thought it was fine the way it was but I have
-no objections to this.  Thanks for following up.
+They are necessary when the child device is connected.
+I removed it because it was specified in spi-bus.txt,
+but I will leave them in next patch.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> 
+> > - - clocks: A phandle to the clock for the device.
+> > - - resets: A phandle to the reset control for the device.
+> > + - interrupts: a single interrupt specifier
+> > + - pinctrl-names: should be "default"
+> > + - pinctrl-0: pin control state for the default mode
+> > + - clocks: a phandle to the clock for the device
+> > + - resets: a phandle to the reset control for the device
+> >
+> >  Example:
+> >
+> >  spi0: spi@54006000 {
+> >  	compatible = "socionext,uniphier-scssi";
+> >  	reg = <0x54006000 0x100>;
+> > -	#address-cells = <1>;
+> > -	#size-cells = <0>;
+> > +	interrupts = <0 39 4>;
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_spi0>;
+> >  	clocks = <&peri_clk 11>;
+> >  	resets = <&peri_rst 11>;
+> >  };
+> > --
+> > 2.7.4
+> >
+
+Thank you.
+
+---
+Best Regards,
+Keiji Hayashibara

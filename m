@@ -1,41 +1,38 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 1/3] spi: spi-rspi: simplify getting .driver_data
-Date: Sun, 28 Oct 2018 14:28:56 +0100
-Message-ID: <CAMuHMdUBf7AZSeEX4SffGapBRainhRCoKKVrEXA1dmyM=7kh6A@mail.gmail.com>
-References: <20181021200048.2114-1-wsa+renesas@sang-engineering.com> <20181021200048.2114-2-wsa+renesas@sang-engineering.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH RESEND] spi: spi-fsl-dspi: use IRQF_SHARED mode to request IRQ
+Date: Mon, 29 Oct 2018 11:11:16 +0800
+Message-ID: <20181029031116.37282-1-chuanhua.han@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181021200048.2114-2-wsa+renesas@sang-engineering.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
+Some SoC share one irq number between DSPI controllers.
+For example, on the LX2160 board, DSPI0 and DSPI1 share one irq number.
+In this case, only one DSPI controller can register successfully,
+and others will fail.
 
-On Sun, Oct 21, 2018 at 10:03 PM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> We should get 'driver_data' from 'struct device' directly. Going via
-> platform_device is an unneeded step back and forth.
->
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->
-> Build tested only. buildbot is happy.
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+---
+ drivers/spi/spi-fsl-dspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-How disappointing, you do have a Lager ;-)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..5e10dc5c93a5 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1090,8 +1090,8 @@ static int dspi_probe(struct platform_device *pdev)
+ 		goto out_clk_put;
+ 	}
+ 
+-	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
+-			pdev->name, dspi);
++	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
++			       IRQF_SHARED, pdev->name, dspi);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
+ 		goto out_clk_put;
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.17.1

@@ -1,38 +1,39 @@
-From: Chuanhua Han <chuanhua.han@nxp.com>
-Subject: [PATCH RESEND] spi: spi-fsl-dspi: use IRQF_SHARED mode to request IRQ
-Date: Mon, 29 Oct 2018 11:11:16 +0800
-Message-ID: <20181029031116.37282-1-chuanhua.han@nxp.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuanhua Han <chuanhua.han@nxp.com>
-To: broonie@kernel.org
+From: James Cameron <quozl@laptop.org>
+Subject: Re: [PATCH 05/11] DT: marvell,mmp2: Add SSP1 and SSP3
+Date: Mon, 29 Oct 2018 16:35:29 +1100
+Message-ID: <20181029053529.GG29685@us.netrek.org>
+References: <20181010170936.316862-1-lkundrak@v3.sk>
+ <20181010170936.316862-6-lkundrak@v3.sk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181010170936.316862-6-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some SoC share one irq number between DSPI controllers.
-For example, on the LX2160 board, DSPI0 and DSPI1 share one irq number.
-In this case, only one DSPI controller can register successfully,
-and others will fail.
+On Wed, Oct 10, 2018 at 07:09:30PM +0200, Lubomir Rintel wrote:
+> There seem to be SSP2, SSP4 and perhaps SSP5 too, but Marvel keeps their
+> base addresses secret.
+> 
+> The SSP1 and SSP3 addresses were taken from OLPC 1.75, OpenFirmware and
+> kernel respectively.
 
-Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
----
- drivers/spi/spi-fsl-dspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sorry for the delay.  Love your work!  From my notes, SSP2 is
+0xd4036000, and SSP4 is 0xd4039000.  Can be probed by hand in
+OpenFirmware or CForth once clocks are on.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3082e72e4f6c..5e10dc5c93a5 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1090,8 +1090,8 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto out_clk_put;
- 	}
- 
--	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt, 0,
--			pdev->name, dspi);
-+	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
-+			       IRQF_SHARED, pdev->name, dspi);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
- 		goto out_clk_put;
 -- 
-2.17.1
+James Cameron
+http://quozl.netrek.org/

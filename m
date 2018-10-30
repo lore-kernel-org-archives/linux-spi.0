@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v2 3/7] spi: spi-mem: Split spi_mem_exec_op() code
-Date: Tue, 30 Oct 2018 14:36:34 +0100
-Message-ID: <20181030133638.3322-4-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 7/7] spi: mxic: Add support for direct mapping
+Date: Tue, 30 Oct 2018 14:36:38 +0100
+Message-ID: <20181030133638.3322-8-boris.brezillon@bootlin.com>
 References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -30,102 +30,216 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The logic surrounding the ->exec_op() call applies to direct mapping
-accessors. Move this code to separate functions to avoid duplicating
-code.
+Implement the ->dirmap_create() and ->dirmap_read() hooks to provide a
+fast path for read accesses. Write dirmap is not supported yet.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
-Changes:
+Changes in v2:
 - New patch
 ---
- drivers/spi/spi-mem.c | 63 ++++++++++++++++++++++++++++---------------
- 1 file changed, 42 insertions(+), 21 deletions(-)
+ drivers/spi/spi-mxic.c | 140 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 113 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 967f581bca4f..7916e655afc8 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -213,6 +213,44 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- }
- EXPORT_SYMBOL_GPL(spi_mem_supports_op);
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index e41ae6ef0f8a..5cf4c3badfd4 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -172,6 +172,11 @@ struct mxic_spi {
+ 	struct clk *send_dly_clk;
+ 	void __iomem *regs;
+ 	u32 cur_speed_hz;
++	struct {
++		void __iomem *map;
++		dma_addr_t dma;
++		size_t size;
++	} linear;
+ };
  
-+static int spi_mem_access_start(struct spi_mem *mem)
+ static int mxic_spi_clk_enable(struct mxic_spi *mxic)
+@@ -280,6 +285,42 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	       mxic->regs + HC_CFG);
+ }
+ 
++static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
 +{
-+	struct spi_controller *ctlr = mem->spi->controller;
++	u32 cfg = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
 +
-+	/*
-+	 * Flush the message queue before executing our SPI memory
-+	 * operation to prevent preemption of regular SPI transfers.
-+	 */
-+	spi_flush_queue(ctlr);
++	if (op->addr.nbytes)
++		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
++		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
 +
-+	if (ctlr->auto_runtime_pm) {
-+		int ret;
++	if (op->dummy.nbytes)
++		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
 +
-+		ret = pm_runtime_get_sync(ctlr->dev.parent);
-+		if (ret < 0) {
-+			dev_err(&ctlr->dev, "Failed to power device: %d\n",
-+				ret);
-+			return ret;
-+		}
++	if (op->data.dir != SPI_MEM_NO_DATA) {
++		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			cfg |= OP_READ;
 +	}
 +
-+	mutex_lock(&ctlr->bus_lock_mutex);
-+	mutex_lock(&ctlr->io_mutex);
++	return cfg;
++}
++
++static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
++	int nio = 1;
++
++	if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++		nio = 4;
++	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
++		nio = 2;
++
++	writel(flags | HC_CFG_NIO(nio) |
++	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
++	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
++	       mxic->regs + HC_CFG);
++}
++
+ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 			      void *rxbuf, unsigned int len)
+ {
+@@ -332,6 +373,37 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 	return 0;
+ }
+ 
++static ssize_t mxic_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++					u64 offs, size_t len, void *buf)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++	int ret;
++	u32 sts;
++
++	mxic_spi_set_hc_cfg(desc->mem->spi, 0);
++
++	writel(LMODE_CMD0(desc->info.op_tmpl.cmd.opcode) |
++	       LMODE_SLV_ACT(desc->mem->spi->chip_select) |
++	       LMODE_EN,
++	       mxic->regs + LRD_CTRL);
++	writel(mxic_spi_mem_prep_op_cfg(&desc->info.op_tmpl),
++	       mxic->regs + LRD_CFG);
++	writel(desc->info.offset, mxic->regs + LRD_ADDR);
++	writel(desc->info.length, mxic->regs + LRD_RANGE);
++
++	memcpy_fromio(buf, mxic->linear.map + offs, len);
++
++	writel(INT_LRD_DIS, mxic->regs + INT_STS);
++	writel(0, mxic->regs + LRD_CTRL);
++
++	ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++				 sts & INT_LRD_DIS, 0, USEC_PER_SEC);
++	if (ret)
++		return ret;
++
++	return len;
++}
++
+ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 				     const struct spi_mem_op *op)
+ {
+@@ -349,46 +421,49 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 	return true;
+ }
+ 
++static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++
++	if (!mxic->linear.map)
++		return -ENOTSUPP;
++
++	/*
++	 * TODO: overcome this limitation by moving LWR/LRD_ADDR during a
++	 * read/write operation.
++	 */
++	if (desc->info.length > mxic->linear.size)
++		return -ENOTSUPP;
++
++	if (desc->info.offset + desc->info.length > U32_MAX)
++		return -ENOTSUPP;
++
++	if (!mxic_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
++		return -ENOTSUPP;
++
++	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
++		return -ENOTSUPP;
 +
 +	return 0;
 +}
 +
-+static void spi_mem_access_end(struct spi_mem *mem)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	mutex_unlock(&ctlr->io_mutex);
-+	mutex_unlock(&ctlr->bus_lock_mutex);
-+
-+	if (ctlr->auto_runtime_pm)
-+		pm_runtime_put(ctlr->dev.parent);
-+}
-+
- /**
-  * spi_mem_exec_op() - Execute a memory operation
-  * @mem: the SPI memory
-@@ -242,30 +280,13 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		return -ENOTSUPP;
+ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+-	int nio = 1, i, ret;
+-	u32 ss_ctrl;
++	int i, ret;
+ 	u8 addr[8];
  
- 	if (ctlr->mem_ops) {
--		/*
--		 * Flush the message queue before executing our SPI memory
--		 * operation to prevent preemption of regular SPI transfers.
--		 */
--		spi_flush_queue(ctlr);
+ 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+-		nio = 4;
+-	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+-		nio = 2;
++	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
+ 
+-	writel(HC_CFG_NIO(nio) |
+-	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
+-	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
+-	       HC_CFG_MAN_CS_EN,
+-	       mxic->regs + HC_CFG);
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
+ 
+-	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
 -
--		if (ctlr->auto_runtime_pm) {
--			ret = pm_runtime_get_sync(ctlr->dev.parent);
--			if (ret < 0) {
--				dev_err(&ctlr->dev,
--					"Failed to power device: %d\n",
--					ret);
--				return ret;
--			}
--		}
-+		ret = spi_mem_access_start(mem);
-+		if (ret)
-+			return ret;
+-	if (op->addr.nbytes)
+-		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
+-			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
+-
+-	if (op->dummy.nbytes)
+-		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
+-
+-	if (op->data.nbytes) {
+-		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
+-		if (op->data.dir == SPI_MEM_DATA_IN)
+-			ss_ctrl |= OP_READ;
+-	}
+-
+-	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
++	writel(mxic_spi_mem_prep_op_cfg(op),
++	       mxic->regs + SS_CTRL(mem->spi->chip_select));
  
--		mutex_lock(&ctlr->bus_lock_mutex);
--		mutex_lock(&ctlr->io_mutex);
- 		ret = ctlr->mem_ops->exec_op(mem, op);
--		mutex_unlock(&ctlr->io_mutex);
--		mutex_unlock(&ctlr->bus_lock_mutex);
+ 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+ 	       mxic->regs + HC_CFG);
+@@ -426,6 +501,8 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ static const struct spi_controller_mem_ops mxic_spi_mem_ops = {
+ 	.supports_op = mxic_spi_mem_supports_op,
+ 	.exec_op = mxic_spi_mem_exec_op,
++	.dirmap_create = mxic_spi_mem_dirmap_create,
++	.dirmap_read = mxic_spi_mem_dirmap_read,
+ };
  
--		if (ctlr->auto_runtime_pm)
--			pm_runtime_put(ctlr->dev.parent);
-+		spi_mem_access_end(mem);
+ static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
+@@ -557,6 +634,15 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mxic->regs))
+ 		return PTR_ERR(mxic->regs);
  
- 		/*
- 		 * Some controllers only optimize specific paths (typically the
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
++	mxic->linear.map = devm_ioremap_resource(&pdev->dev, res);
++	if (!IS_ERR(mxic->linear.map)) {
++		mxic->linear.dma = res->start;
++		mxic->linear.size = resource_size(res);
++	} else {
++		mxic->linear.map = NULL;
++	}
++
+ 	pm_runtime_enable(&pdev->dev);
+ 	master->auto_runtime_pm = true;
+ 
 -- 
 2.17.1
 

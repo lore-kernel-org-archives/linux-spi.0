@@ -1,51 +1,87 @@
-From: Jaewon Kim <jaewon02.kim@gmail.com>
-Subject: Re: [PATCH] spi: dw: fix buffer end address
-Date: Tue, 30 Oct 2018 01:35:15 +0900
-Message-ID: <762bc63e-7b01-0d77-3939-7b236dbda37f@gmail.com>
-References: <1540395437-6623-1-git-send-email-jaewon02.kim@samsung.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH v2 2/7] spi: spi-mem: Add SPI_MEM_NO_DATA to the
+ spi_mem_data_dir enum
+Date: Tue, 30 Oct 2018 14:36:33 +0100
+Message-ID: <20181030133638.3322-3-boris.brezillon@bootlin.com>
+References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=euc-kr; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-        Jaewon Kim <jaewon02.kim@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1540395437-6623-1-git-send-email-jaewon02.kim@samsung.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+ David Woodhouse <dwmw2@infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ linux-mtd@lists.infradead.org
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181030133638.3322-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-There is some side effect on this patch.
+When defining spi_mem_op templates we don't necessarily know the size
+that will be passed when the template is actually used, and basing the
+supports_op() check on op->data.nbytes to know whether there will be
+data transferred for a specific operation is this not possible.
 
-So, I revoke this patch.
+Add SPI_MEM_NO_DATA to the spi_mem_data_dir enum so that we can base
+our checks on op->data.dir instead of op->data.nbytes.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+Changes in v2:
+- New patch
+---
+ drivers/spi/spi-mem.c       | 2 +-
+ include/linux/spi/spi-mem.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 62a7b80801d2..967f581bca4f 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -142,7 +142,7 @@ static bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
+ 		return false;
+ 
+-	if (op->data.nbytes &&
++	if (op->data.dir != SPI_MEM_NO_DATA &&
+ 	    spi_check_buswidth_req(mem, op->data.buswidth,
+ 				   op->data.dir == SPI_MEM_DATA_OUT))
+ 		return false;
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 867839cc69a7..250b6f5c47c2 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -57,10 +57,12 @@
+ /**
+  * enum spi_mem_data_dir - describes the direction of a SPI memory data
+  *			   transfer from the controller perspective
++ * @SPI_MEM_NO_DATA: no data transferred
+  * @SPI_MEM_DATA_IN: data coming from the SPI memory
+  * @SPI_MEM_DATA_OUT: data sent to the SPI memory
+  */
+ enum spi_mem_data_dir {
++	SPI_MEM_NO_DATA,
+ 	SPI_MEM_DATA_IN,
+ 	SPI_MEM_DATA_OUT,
+ };
+-- 
+2.17.1
 
 
-18. 10. 25. 오전 12:37에 Jaewon Kim 이(가) 쓴 글:
-> Buffer address can be NULL, if user does not want to receive TX/RX data.
-> In this case, driver should not set the rx/tx_end value with len.
->
-> Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
-> ---
->   drivers/spi/spi-dw.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-> index b705f2b..34e6fca 100644
-> --- a/drivers/spi/spi-dw.c
-> +++ b/drivers/spi/spi-dw.c
-> @@ -293,9 +293,13 @@ static int dw_spi_transfer_one(struct spi_controller *master,
->   	dws->dma_mapped = 0;
->   
->   	dws->tx = (void *)transfer->tx_buf;
-> -	dws->tx_end = dws->tx + transfer->len;
-> +	dws->tx_end = dws->tx;
-> +	if (dws->tx)
-> +		dws->tx_end += transfer->len;
->   	dws->rx = transfer->rx_buf;
-> -	dws->rx_end = dws->rx + transfer->len;
-> +	dws->rx_end = dws->rx;
-> +	if (dws->rx)
-> +		dws->rx_end += transfer->len;
->   	dws->len = transfer->len;
->   
->   	spi_enable_chip(dws, 0);
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

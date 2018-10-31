@@ -1,7 +1,7 @@
 From: Emil Renner Berthing <esmil@mailme.dk>
-Subject: [PATCH v1 13/14] spi: rockchip: support 4bit words
-Date: Wed, 31 Oct 2018 11:57:10 +0100
-Message-ID: <20181031105711.19575-14-esmil@mailme.dk>
+Subject: [PATCH v1 04/14] spi: rockchip: use atomic_t state
+Date: Wed, 31 Oct 2018 11:57:01 +0100
+Message-ID: <20181031105711.19575-5-esmil@mailme.dk>
 References: <20181031105711.19575-1-esmil@mailme.dk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -19,106 +19,179 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Emil Renner Berthing <kernel@esmil.dk>
 
-The hardware supports 4, 8 and 16bit spi words,
-so add the missing support for 4bit words.
+The state field is currently only used to make sure
+only the last of the tx and rx dma callbacks issue
+an spi_finalize_current_transfer.
+Rather than using a spinlock we can get away
+with just turning the state field into an atomic_t.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/spi/spi-rockchip.c | 41 +++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ drivers/spi/spi-rockchip.c | 75 +++++++++++++-------------------------
+ 1 file changed, 25 insertions(+), 50 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 1297f081818d..9e47e81553a1 100644
+index 7fac4253075e..1c813797f963 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -54,6 +54,9 @@
+@@ -142,8 +142,9 @@
+ #define RF_DMA_EN					(1 << 0)
+ #define TF_DMA_EN					(1 << 1)
  
- /* Bit fields in CTRLR0 */
- #define CR0_DFS_OFFSET				0
-+#define CR0_DFS_4BIT				0x0
-+#define CR0_DFS_8BIT				0x1
-+#define CR0_DFS_16BIT				0x2
+-#define RXBUSY						(1 << 0)
+-#define TXBUSY						(1 << 1)
++/* Driver state flags */
++#define RXDMA					(1 << 0)
++#define TXDMA					(1 << 1)
  
- #define CR0_CFS_OFFSET				2
+ /* sclk_out: spi master internal logic in rk3x can support 50Mhz */
+ #define MAX_SCLK_OUT		50000000
+@@ -169,6 +170,9 @@ struct rockchip_spi {
+ 	struct clk *apb_pclk;
  
-@@ -464,15 +467,14 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 		struct spi_device *spi, struct spi_transfer *xfer,
- 		bool use_dma)
- {
--	u32 dmacr = 0;
--
- 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
- 	        | CR0_BHT_8BIT << CR0_BHT_OFFSET
- 	        | CR0_SSD_ONE  << CR0_SSD_OFFSET
- 	        | CR0_EM_BIG   << CR0_EM_OFFSET;
-+	u32 cr1;
-+	u32 dmacr = 0;
- 
- 	cr0 |= rs->rsd << CR0_RSD_OFFSET;
--	cr0 |= (rs->n_bytes << CR0_DFS_OFFSET);
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 
- 	if (xfer->rx_buf && xfer->tx_buf)
-@@ -482,6 +484,27 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 	else if (use_dma)
- 		cr0 |= CR0_XFM_TO << CR0_XFM_OFFSET;
- 
-+	switch (xfer->bits_per_word) {
-+	case 4:
-+		cr0 |= CR0_DFS_4BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len - 1;
-+		break;
-+	case 8:
-+		cr0 |= CR0_DFS_8BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len - 1;
-+		break;
-+	case 16:
-+		cr0 |= CR0_DFS_16BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len / 2 - 1;
-+		break;
-+	default:
-+		/* we only whitelist 4, 8 and 16 bit words in
-+		 * master->bits_per_word_mask, so this shouldn't
-+		 * happen
-+		 */
-+		unreachable();
-+	}
+ 	void __iomem *regs;
 +
- 	if (use_dma) {
- 		if (xfer->tx_buf)
- 			dmacr |= TF_DMA_EN;
-@@ -490,13 +513,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 	}
++	atomic_t state;
++
+ 	/*depth of the FIFO buffer */
+ 	u32 fifo_len;
+ 	/* max bus freq supported */
+@@ -187,10 +191,6 @@ struct rockchip_spi {
+ 	void *rx;
+ 	void *rx_end;
  
- 	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
+-	u32 state;
+-	/* protect state */
+-	spinlock_t lock;
 -
--	if (rs->n_bytes == 1)
--		writel_relaxed(xfer->len - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
--	else if (rs->n_bytes == 2)
--		writel_relaxed((xfer->len / 2) - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
--	else
--		writel_relaxed((xfer->len * 2) - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
-+	writel_relaxed(cr1, rs->regs + ROCKCHIP_SPI_CTRLR1);
+ 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
  
- 	/* unfortunately setting the fifo threshold level to generate an
- 	 * interrupt exactly when the fifo is full doesn't seem to work,
-@@ -545,7 +562,7 @@ static int rockchip_spi_transfer_one(
- 		return -EINVAL;
+ 	bool use_dma;
+@@ -302,28 +302,21 @@ static int rockchip_spi_prepare_message(struct spi_master *master,
+ static void rockchip_spi_handle_err(struct spi_master *master,
+ 				    struct spi_message *msg)
+ {
+-	unsigned long flags;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+-	spin_lock_irqsave(&rs->lock, flags);
+-
+ 	/*
+ 	 * For DMA mode, we need terminate DMA channel and flush
+ 	 * fifo for the next transfer if DMA thansfer timeout.
+ 	 * handle_err() was called by core if transfer failed.
+ 	 * Maybe it is reasonable for error handling here.
+ 	 */
+-	if (rs->use_dma) {
+-		if (rs->state & RXBUSY) {
+-			dmaengine_terminate_async(rs->dma_rx.ch);
+-			flush_fifo(rs);
+-		}
++	if (atomic_read(&rs->state) & TXDMA)
++		dmaengine_terminate_async(rs->dma_tx.ch);
+ 
+-		if (rs->state & TXBUSY)
+-			dmaengine_terminate_async(rs->dma_tx.ch);
++	if (atomic_read(&rs->state) & RXDMA) {
++		dmaengine_terminate_async(rs->dma_rx.ch);
++		flush_fifo(rs);
+ 	}
+-
+-	spin_unlock_irqrestore(&rs->lock, flags);
+ }
+ 
+ static int rockchip_spi_unprepare_message(struct spi_master *master,
+@@ -398,48 +391,36 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ 
+ static void rockchip_spi_dma_rxcb(void *data)
+ {
+-	unsigned long flags;
+ 	struct rockchip_spi *rs = data;
++	int state = atomic_fetch_andnot(RXDMA, &rs->state);
+ 
+-	spin_lock_irqsave(&rs->lock, flags);
+-
+-	rs->state &= ~RXBUSY;
+-	if (!(rs->state & TXBUSY)) {
+-		spi_enable_chip(rs, false);
+-		spi_finalize_current_transfer(rs->master);
+-	}
++	if (state & TXDMA)
++		return;
+ 
+-	spin_unlock_irqrestore(&rs->lock, flags);
++	spi_enable_chip(rs, false);
++	spi_finalize_current_transfer(rs->master);
+ }
+ 
+ static void rockchip_spi_dma_txcb(void *data)
+ {
+-	unsigned long flags;
+ 	struct rockchip_spi *rs = data;
++	int state = atomic_fetch_andnot(TXDMA, &rs->state);
++
++	if (state & RXDMA)
++		return;
+ 
+ 	/* Wait until the FIFO data completely. */
+ 	wait_for_idle(rs);
+ 
+-	spin_lock_irqsave(&rs->lock, flags);
+-
+-	rs->state &= ~TXBUSY;
+-	if (!(rs->state & RXBUSY)) {
+-		spi_enable_chip(rs, false);
+-		spi_finalize_current_transfer(rs->master);
+-	}
+-
+-	spin_unlock_irqrestore(&rs->lock, flags);
++	spi_enable_chip(rs, false);
++	spi_finalize_current_transfer(rs->master);
+ }
+ 
+ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ {
+-	unsigned long flags;
+ 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
+ 
+-	spin_lock_irqsave(&rs->lock, flags);
+-	rs->state &= ~RXBUSY;
+-	rs->state &= ~TXBUSY;
+-	spin_unlock_irqrestore(&rs->lock, flags);
++	atomic_set(&rs->state, 0);
+ 
+ 	rxdesc = NULL;
+ 	if (rs->rx) {
+@@ -490,9 +471,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 
+ 	/* rx must be started before tx due to spi instinct */
+ 	if (rxdesc) {
+-		spin_lock_irqsave(&rs->lock, flags);
+-		rs->state |= RXBUSY;
+-		spin_unlock_irqrestore(&rs->lock, flags);
++		atomic_or(RXDMA, &rs->state);
+ 		dmaengine_submit(rxdesc);
+ 		dma_async_issue_pending(rs->dma_rx.ch);
+ 	}
+@@ -500,9 +479,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	spi_enable_chip(rs, true);
+ 
+ 	if (txdesc) {
+-		spin_lock_irqsave(&rs->lock, flags);
+-		rs->state |= TXBUSY;
+-		spin_unlock_irqrestore(&rs->lock, flags);
++		atomic_or(TXDMA, &rs->state);
+ 		dmaengine_submit(txdesc);
+ 		dma_async_issue_pending(rs->dma_tx.ch);
+ 	}
+@@ -716,8 +693,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		goto err_disable_spiclk;
  	}
  
--	rs->n_bytes = xfer->bits_per_word >> 3;
-+	rs->n_bytes = xfer->bits_per_word <= 8 ? 1 : 2;
- 
- 	use_dma = master->can_dma ? master->can_dma(master, spi, xfer) : false;
- 
-@@ -667,7 +684,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
- 	master->num_chipselect = ROCKCHIP_SPI_MAX_CS_NUM;
- 	master->dev.of_node = pdev->dev.of_node;
--	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
-+	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8) | SPI_BPW_MASK(4);
- 	master->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
- 	master->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
+-	spin_lock_init(&rs->lock);
+-
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
 -- 
 2.19.1

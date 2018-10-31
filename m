@@ -1,66 +1,64 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v2 5/7] mtd: devices: m25p80: Use the spi-mem dirmap API
-Date: Wed, 31 Oct 2018 11:49:51 +0100
-Message-ID: <20181031114951.55f662cc@bbrezillon>
-References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
- <20181030133638.3322-6-boris.brezillon@bootlin.com>
- <VI1PR04MB57269B26A682B1FCFAC4E6F399CD0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Emil Renner Berthing <esmil@mailme.dk>
+Subject: [PATCH v1 00/14] Rockchip SPI cleanup and use interrupts
+Date: Wed, 31 Oct 2018 11:56:57 +0100
+Message-ID: <20181031105711.19575-1-esmil@mailme.dk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <VI1PR04MB57269B26A682B1FCFAC4E6F399CD0@VI1PR04MB5726.eurprd04.prod.outlook.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Transfer-Encoding: 8bit
+Cc: Emil Renner Berthing <kernel@esmil.dk>,
+        Addy Ke <addy.ke@rock-chips.com>,
+        Mark Brown <broonie@kernel.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+To: linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 31 Oct 2018 10:28:04 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+From: Emil Renner Berthing <kernel@esmil.dk>
 
+Hi,
 
-> > +static int m25p_create_read_dirmap(struct m25p *flash) {
-> > +	struct spi_nor *nor = &flash->spi_nor;
-> > +	struct spi_mem_dirmap_info info = {
-> > +		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor-  
-> > >read_opcode, 1),  
-> > +				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
-> > +				      SPI_MEM_OP_DUMMY(nor->read_dummy,
-> > 1),
-> > +				      SPI_MEM_OP_DATA_IN(0, NULL, 1)),
-> > +		.offset = 0,
-> > +		.length = flash->spi_nor.mtd.size,  
-> 
-> I want to understand the sequence of calling up of this routine from drivers/mtd/spi-nor/spi-nor.c file.
-> Because till point of JedecID read and SFDP command read mtd.size is not being populated and having value as 0. This would make length as 0.
+I took another look at the rockchip spi driver and ended up
+with more cleanups and implementing an interrupt handler
+to fill/empty the tx and rx fifos rather than busy-looping.
 
-When the dirmap is created mtd->size has been initialized already. But
-you're right, nor->read() might be called before the read dirmap has
-been created (SFDP read), which will lead to a NULL pointer exception.
+I have two question though:
 
-> 
-> Did these read follow different path?
+The driver sets the SPI_LOOP flag in master->mode_bits,
+but never checks if the flag is set on an spi device.
+That looks suspicious to me, but I'm not exactly sure what
+that flag means, so it might be ok?
 
-Nope.
+The driver registers a master->max_transfer_size function
+to always return 0xffff, but also checks each transfer
+for xfer->len > 0xffff.
+I thought that was redundant, but it turns out I can
+trigger it with a simple
+dd if=/dev/mtd0 of=/dev/null bs=[something > 0xffff]
+Is that a bug or have I just not understood what
+master->max_transfer_size is supposed to do?
 
+/Emil
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Emil Renner Berthing (14):
+  spi: rockchip: make spi_enable_chip take bool
+  spi: rockchip: use designated init for dma config
+  spi: rockchip: always use SPI mode
+  spi: rockchip: use atomic_t state
+  spi: rockchip: disable spi on error
+  spi: rockchip: read transfer info directly
+  spi: rockchip: don't store dma channels twice
+  spi: rockchip: remove master pointer from dev data
+  spi: rockchip: simplify use_dma logic
+  spi: rockchip: set min/max speed
+  spi: rockchip: precompute rx sample delay
+  spi: rockchip: use irq rather than polling
+  spi: rockchip: support 4bit words
+  spi: rockchip: support lsb-first mode
+
+ drivers/spi/spi-rockchip.c | 579 +++++++++++++++++--------------------
+ 1 file changed, 264 insertions(+), 315 deletions(-)
+
+-- 
+2.19.1

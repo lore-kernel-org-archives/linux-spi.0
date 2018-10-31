@@ -1,7 +1,7 @@
 From: Emil Renner Berthing <esmil@mailme.dk>
-Subject: [PATCH v1 01/14] spi: rockchip: make spi_enable_chip take bool
-Date: Wed, 31 Oct 2018 11:56:58 +0100
-Message-ID: <20181031105711.19575-2-esmil@mailme.dk>
+Subject: [PATCH v1 02/14] spi: rockchip: use designated init for dma config
+Date: Wed, 31 Oct 2018 11:56:59 +0100
+Message-ID: <20181031105711.19575-3-esmil@mailme.dk>
 References: <20181031105711.19575-1-esmil@mailme.dk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -19,92 +19,67 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Emil Renner Berthing <kernel@esmil.dk>
 
-The spi_enable_chip function takes a boolean
-argument. Change the type to reflect that.
+Use C99 designated initializers for dma slave config
+structures. This also makes sure uninitialized fields
+are zeroed so we don't need an explicit memset.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/spi/spi-rockchip.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-rockchip.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 51ef632bca52..7e54e1a69cc8 100644
+index 7e54e1a69cc8..87d1b9837d94 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -208,9 +208,9 @@ struct rockchip_spi {
- 	struct rockchip_spi_dma_data dma_tx;
- };
- 
--static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
-+static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+@@ -442,12 +442,8 @@ static void rockchip_spi_dma_txcb(void *data)
+ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  {
--	writel_relaxed((enable ? 1 : 0), rs->regs + ROCKCHIP_SPI_SSIENR);
-+	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
- }
+ 	unsigned long flags;
+-	struct dma_slave_config rxconf, txconf;
+ 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
  
- static inline void spi_set_clk(struct rockchip_spi *rs, u16 div)
-@@ -339,7 +339,7 @@ static int rockchip_spi_unprepare_message(struct spi_master *master,
- {
- 	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
- 
- 	return 0;
- }
-@@ -379,7 +379,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- {
- 	int remain = 0;
- 
--	spi_enable_chip(rs, 1);
-+	spi_enable_chip(rs, true);
- 
- 	do {
- 		if (rs->tx) {
-@@ -399,7 +399,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- 	if (rs->tx)
- 		wait_for_idle(rs);
- 
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
- 
- 	return 0;
- }
-@@ -413,7 +413,7 @@ static void rockchip_spi_dma_rxcb(void *data)
- 
+-	memset(&rxconf, 0, sizeof(rxconf));
+-	memset(&txconf, 0, sizeof(txconf));
+-
+ 	spin_lock_irqsave(&rs->lock, flags);
  	rs->state &= ~RXBUSY;
- 	if (!(rs->state & TXBUSY)) {
--		spi_enable_chip(rs, 0);
-+		spi_enable_chip(rs, false);
- 		spi_finalize_current_transfer(rs->master);
- 	}
- 
-@@ -432,7 +432,7 @@ static void rockchip_spi_dma_txcb(void *data)
- 
  	rs->state &= ~TXBUSY;
- 	if (!(rs->state & RXBUSY)) {
--		spi_enable_chip(rs, 0);
-+		spi_enable_chip(rs, false);
- 		spi_finalize_current_transfer(rs->master);
- 	}
+@@ -455,10 +451,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
-@@ -503,7 +503,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		dma_async_issue_pending(rs->dma_rx.ch);
- 	}
+ 	rxdesc = NULL;
+ 	if (rs->rx) {
+-		rxconf.direction = DMA_DEV_TO_MEM;
+-		rxconf.src_addr = rs->dma_rx.addr;
+-		rxconf.src_addr_width = rs->n_bytes;
+-		rxconf.src_maxburst = 1;
++		struct dma_slave_config rxconf = {
++			.direction = DMA_DEV_TO_MEM,
++			.src_addr = rs->dma_rx.addr,
++			.src_addr_width = rs->n_bytes,
++			.src_maxburst = 1,
++		};
++
+ 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
  
--	spi_enable_chip(rs, 1);
-+	spi_enable_chip(rs, true);
+ 		rxdesc = dmaengine_prep_slave_sg(
+@@ -474,10 +473,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
- 	if (txdesc) {
- 		spin_lock_irqsave(&rs->lock, flags);
-@@ -705,7 +705,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		goto err_disable_apbclk;
- 	}
+ 	txdesc = NULL;
+ 	if (rs->tx) {
+-		txconf.direction = DMA_MEM_TO_DEV;
+-		txconf.dst_addr = rs->dma_tx.addr;
+-		txconf.dst_addr_width = rs->n_bytes;
+-		txconf.dst_maxburst = rs->fifo_len / 2;
++		struct dma_slave_config txconf = {
++			.direction = DMA_MEM_TO_DEV,
++			.dst_addr = rs->dma_tx.addr,
++			.dst_addr_width = rs->n_bytes,
++			.dst_maxburst = rs->fifo_len / 2,
++		};
++
+ 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
  
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
- 
- 	rs->type = SSI_MOTO_SPI;
- 	rs->master = master;
+ 		txdesc = dmaengine_prep_slave_sg(
 -- 
 2.19.1

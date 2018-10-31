@@ -1,127 +1,215 @@
-From: Emil Renner Berthing <esmil@mailme.dk>
-Subject: [PATCH v1 08/14] spi: rockchip: remove master pointer from dev data
-Date: Wed, 31 Oct 2018 11:57:05 +0100
-Message-ID: <20181031105711.19575-9-esmil@mailme.dk>
-References: <20181031105711.19575-1-esmil@mailme.dk>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v2 5/7] mtd: devices: m25p80: Use the spi-mem dirmap API
+Date: Wed, 31 Oct 2018 12:03:55 +0100
+Message-ID: <20181031120355.4c2da37e@bbrezillon>
+References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
+ <20181030133638.3322-6-boris.brezillon@bootlin.com>
+ <VI1PR04MB57269B26A682B1FCFAC4E6F399CD0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <20181031114951.55f662cc@bbrezillon>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Emil Renner Berthing <kernel@esmil.dk>,
-        Addy Ke <addy.ke@rock-chips.com>,
-        Mark Brown <broonie@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-1-esmil@mailme.dk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181031114951.55f662cc@bbrezillon>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Emil Renner Berthing <kernel@esmil.dk>
+On Wed, 31 Oct 2018 11:49:51 +0100
+Boris Brezillon <boris.brezillon@bootlin.com> wrote:
 
-In almost all cases we already have a pointer to the
-spi master structure where we have the driver data.
+> On Wed, 31 Oct 2018 10:28:04 +0000
+> Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+> 
+> 
+> > > +static int m25p_create_read_dirmap(struct m25p *flash) {
+> > > +	struct spi_nor *nor = &flash->spi_nor;
+> > > +	struct spi_mem_dirmap_info info = {
+> > > +		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor-    
+> > > >read_opcode, 1),    
+> > > +				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
+> > > +				      SPI_MEM_OP_DUMMY(nor->read_dummy,
+> > > 1),
+> > > +				      SPI_MEM_OP_DATA_IN(0, NULL, 1)),
+> > > +		.offset = 0,
+> > > +		.length = flash->spi_nor.mtd.size,    
+> > 
+> > I want to understand the sequence of calling up of this routine from drivers/mtd/spi-nor/spi-nor.c file.
+> > Because till point of JedecID read and SFDP command read mtd.size is not being populated and having value as 0. This would make length as 0.  
+> 
+> When the dirmap is created mtd->size has been initialized already. But
+> you're right, nor->read() might be called before the read dirmap has
+> been created (SFDP read), which will lead to a NULL pointer exception.
 
-The only exceptions are the dma callbacks which are
-easily fixed by passing them the master and using
-spi_master_get_devdata to retrieve the driver data.
+The following version should fix the problem:
 
-Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
----
- drivers/spi/spi-rockchip.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index f3fe6d4cf6f6..45a1479c1a29 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -159,7 +159,6 @@
+--->8---
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c4a1d04b8c80..847188e8a99e 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -31,8 +31,70 @@
+ struct m25p {
+        struct spi_mem          *spimem;
+        struct spi_nor          spi_nor;
++       struct {
++               struct spi_mem_dirmap_desc *rdesc;
++               struct spi_mem_dirmap_desc *wdesc;
++       } dirmap;
+ };
  
- struct rockchip_spi {
- 	struct device *dev;
--	struct spi_master *master;
- 
- 	struct clk *spiclk;
- 	struct clk *apb_pclk;
-@@ -350,19 +349,21 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- 
- static void rockchip_spi_dma_rxcb(void *data)
++static int m25p_create_write_dirmap(struct m25p *flash)
++{
++       struct spi_nor *nor = &flash->spi_nor;
++       struct spi_mem_dirmap_info info = {
++               .op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
++                                     SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
++                                     SPI_MEM_OP_NO_DUMMY,
++                                     SPI_MEM_OP_DATA_OUT(0, NULL, 1)),
++               .offset = 0,
++               .length = flash->spi_nor.mtd.size,
++       };
++       struct spi_mem_op *op = &info.op_tmpl;
++
++       /* get transfer protocols. */
++       op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
++       op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
++       op->dummy.buswidth = op->addr.buswidth;
++       op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->write_proto);
++
++       if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
++               op->addr.nbytes = 0;
++
++       flash->dirmap.wdesc = spi_mem_dirmap_create(flash->spimem, &info);
++       if (IS_ERR(flash->dirmap.wdesc))
++               return PTR_ERR(flash->dirmap.wdesc);
++
++       return 0;
++}
++
++static int m25p_create_read_dirmap(struct m25p *flash)
++{
++       struct spi_nor *nor = &flash->spi_nor;
++       struct spi_mem_dirmap_info info = {
++               .op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
++                                     SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
++                                     SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
++                                     SPI_MEM_OP_DATA_IN(0, NULL, 1)),
++               .offset = 0,
++               .length = flash->spi_nor.mtd.size,
++       };
++       struct spi_mem_op *op = &info.op_tmpl;
++
++       /* get transfer protocols. */
++       op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
++       op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
++       op->dummy.buswidth = op->addr.buswidth;
++       op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
++
++       /* convert the dummy cycles to the number of bytes */
++       op->dummy.nbytes = (nor->read_dummy * op->dummy.buswidth) / 8;
++
++       flash->dirmap.rdesc = spi_mem_dirmap_create(flash->spimem, &info);
++       if (IS_ERR(flash->dirmap.rdesc))
++               return PTR_ERR(flash->dirmap.rdesc);
++
++       return 0;
++}
++
+ static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)
  {
--	struct rockchip_spi *rs = data;
-+	struct spi_master *master = data;
-+	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
+        struct m25p *flash = nor->priv;
+@@ -92,6 +154,9 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+                                   SPI_MEM_OP_DATA_OUT(len, buf, 1));
+        int ret;
  
- 	if (state & TXDMA)
- 		return;
++       if (flash->dirmap.wdesc)
++               return spi_mem_dirmap_write(flash->dirmap.wdesc, to, len, buf);
++
+        /* get transfer protocols. */
+        op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
+        op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
+@@ -128,6 +193,9 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+        size_t remaining = len;
+        int ret;
  
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(rs->master);
-+	spi_finalize_current_transfer(master);
++       if (flash->dirmap.rdesc)
++               return spi_mem_dirmap_read(flash->dirmap.rdesc, from, len, buf);
++
+        /* get transfer protocols. */
+        op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
+        op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
+@@ -231,19 +299,47 @@ static int m25p_probe(struct spi_mem *spimem)
+        if (ret)
+                return ret;
+ 
+-       return mtd_device_register(&nor->mtd, data ? data->parts : NULL,
+-                                  data ? data->nr_parts : 0);
++       ret = m25p_create_write_dirmap(flash);
++       if (ret)
++               return ret;
++
++       ret = m25p_create_read_dirmap(flash);
++       if (ret)
++               goto err_destroy_write_dirmap;
++
++       ret = mtd_device_register(&nor->mtd, data ? data->parts : NULL,
++                                 data ? data->nr_parts : 0);
++       if (ret)
++               goto err_destroy_read_dirmap;
++
++       return 0;
++
++err_destroy_read_dirmap:
++       spi_mem_dirmap_destroy(flash->dirmap.rdesc);
++
++err_destroy_write_dirmap:
++       spi_mem_dirmap_destroy(flash->dirmap.wdesc);
++
++       return ret;
  }
  
- static void rockchip_spi_dma_txcb(void *data)
+ 
+ static int m25p_remove(struct spi_mem *spimem)
  {
--	struct rockchip_spi *rs = data;
-+	struct spi_master *master = data;
-+	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
+        struct m25p     *flash = spi_mem_get_drvdata(spimem);
++       int ret;
  
- 	if (state & RXDMA)
-@@ -372,7 +373,7 @@ static void rockchip_spi_dma_txcb(void *data)
- 	wait_for_idle(rs);
+        spi_nor_restore(&flash->spi_nor);
  
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(rs->master);
-+	spi_finalize_current_transfer(master);
+        /* Clean up MTD stuff. */
+-       return mtd_device_unregister(&flash->spi_nor.mtd);
++       ret = mtd_device_unregister(&flash->spi_nor.mtd);
++       if (ret)
++               return ret;
++
++       spi_mem_dirmap_destroy(flash->dirmap.rdesc);
++       spi_mem_dirmap_destroy(flash->dirmap.wdesc);
++
++       return 0;
  }
  
- static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
-@@ -401,7 +402,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			return -EINVAL;
- 
- 		rxdesc->callback = rockchip_spi_dma_rxcb;
--		rxdesc->callback_param = rs;
-+		rxdesc->callback_param = master;
- 	}
- 
- 	txdesc = NULL;
-@@ -426,7 +427,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 		}
- 
- 		txdesc->callback = rockchip_spi_dma_txcb;
--		txdesc->callback_param = rs;
-+		txdesc->callback_param = master;
- 	}
- 
- 	/* rx must be started before tx due to spi instinct */
-@@ -633,7 +634,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 
- 	spi_enable_chip(rs, false);
- 
--	rs->master = master;
- 	rs->dev = &pdev->dev;
- 	rs->max_freq = clk_get_rate(rs->spiclk);
- 
-@@ -746,9 +746,8 @@ static int rockchip_spi_suspend(struct device *dev)
- {
- 	int ret;
- 	struct spi_master *master = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 
--	ret = spi_master_suspend(rs->master);
-+	ret = spi_master_suspend(master);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -773,7 +772,7 @@ static int rockchip_spi_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = spi_master_resume(rs->master);
-+	ret = spi_master_resume(master);
- 	if (ret < 0) {
- 		clk_disable_unprepare(rs->spiclk);
- 		clk_disable_unprepare(rs->apb_pclk);
--- 
-2.19.1
+ static void m25p_shutdown(struct spi_mem *spimem)
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

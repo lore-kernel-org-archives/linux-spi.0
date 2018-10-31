@@ -1,33 +1,46 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: uniphier: re-add addressing properties
-Date: Tue, 30 Oct 2018 16:46:31 -0500
-Message-ID: <20181030214631.GA16773@bogus>
-References: <1540533525-1816-1-git-send-email-hayashibara.keiji@socionext.com>
- <1540533525-1816-3-git-send-email-hayashibara.keiji@socionext.com>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH] spi: mediatek: use correct mata->xfer_len when in fifo transfer
+Date: Wed, 31 Oct 2018 16:49:16 +0800
+Message-ID: <1540975756-2021-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
-        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
-        hayashibara.keiji@socionext.com
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Return-path: <stable-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1540533525-1816-3-git-send-email-hayashibara.keiji@socionext.com>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <xinping.qian@mediatek.com>, Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 26 Oct 2018 14:58:45 +0900, Keiji Hayashibara wrote:
-> In commit 7662d1dc17d4 ("spi: uniphier: fix incorrect property items")
-> addressing properties of #address-cells and #size-cells were removed.
-> Since it is not necessary to remove them, they are back again.
-> 
-> Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-uniphier.txt | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
+when xfer_len is greater than 64 bytes and use fifo mode
+to transfer, the actual length from the third time is mata->xfer_len
+but not len in mtk_spi_interrupt().
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+---
+ drivers/spi/spi-mt65xx.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 3dc3162..0c2867d 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -522,11 +522,11 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ 		mdata->xfer_len = min(MTK_SPI_MAX_FIFO_SIZE, len);
+ 		mtk_spi_setup_packet(master);
+ 
+-		cnt = len / 4;
++		cnt = mdata->xfer_len / 4;
+ 		iowrite32_rep(mdata->base + SPI_TX_DATA_REG,
+ 				trans->tx_buf + mdata->num_xfered, cnt);
+ 
+-		remainder = len % 4;
++		remainder = mdata->xfer_len % 4;
+ 		if (remainder > 0) {
+ 			reg_val = 0;
+ 			memcpy(&reg_val,
+-- 
+1.7.9.5

@@ -1,7 +1,8 @@
 From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: add SPI driver support for mt8183
-Date: Thu, 1 Nov 2018 14:02:17 +0800
-Message-ID: <1541052139-8845-1-git-send-email-leilk.liu@mediatek.com>
+Subject: [PATCH 1/2] spi: mediatek: Add bindings for mediatek MT8183 soc platform
+Date: Thu, 1 Nov 2018 14:02:18 +0800
+Message-ID: <1541052139-8845-2-git-send-email-leilk.liu@mediatek.com>
+References: <1541052139-8845-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: Mark Rutland <mark.rutland@arm.com>,
@@ -9,26 +10,32 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
+        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        Leilk Liu <leilk.liu@mediatek.com>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1541052139-8845-1-git-send-email-leilk.liu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
->From 44b1c34bc19d9bfdc736664439c0530fbb2c75b8 Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu@mediatek.com>
-Date: Thu, 1 Nov 2018 11:48:20 +0800
-Subject: [PATCH 0/2] add SPI driver support for mt8183
+This patch adds a DT binding documentation for the MT8183 soc.
 
-This series are based on 4.19-rc1 and provide two patches to support mt8183 IC.
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+---
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |    1 +
+ 1 file changed, 1 insertion(+)
 
-Leilk Liu (2):
-  spi: mediatek: Add bindings for mediatek MT8183 soc platform
-  spi: mediatek: add spi support for mt8183 IC
-
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
- drivers/spi/spi-mt65xx.c                             | 9 +++++++++
- 2 files changed, 10 insertions(+)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index 236dcb0..7940940 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -8,6 +8,7 @@ Required properties:
+     - mediatek,mt7622-spi: for mt7622 platforms
+     - mediatek,mt8135-spi: for mt8135 platforms
+     - mediatek,mt8173-spi: for mt8173 platforms
++    - mediatek,mt8183-spi: for mt8183 platforms
+ 
+ - #address-cells: should be 1.
+ 
 -- 
-2.19.1
+1.7.9.5

@@ -1,7 +1,7 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH 2/4] mtd: spi-nor: Add support for is25lp016d
-Date: Thu,  1 Nov 2018 12:35:03 +0000
-Message-ID: <1541075705-1333-3-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH 1/4] spi: rspi: Add r8a77470 to the compatible list
+Date: Thu,  1 Nov 2018 12:35:02 +0000
+Message-ID: <1541075705-1333-2-git-send-email-fabrizio.castro@bp.renesas.com>
 References: <1541075705-1333-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,27 +31,33 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The is25lp016d is found on the iwg23s from iWave, therefore
-add driver support for it so that we can upstream board support.
+Add r8a77470 to the list of examples with soctypes.
+No driver change is needed as "renesas,qspi" will activate
+the right code within the corresponding driver.
 
 Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
----
- drivers/mtd/spi-nor/spi-nor.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 9407ca5..85d869b 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1352,6 +1352,8 @@ static const struct flash_info spi_nor_ids[] = {
- 	{ "is25cd512",  INFO(0x7f9d20, 0, 32 * 1024,   2, SECT_4K) },
- 	{ "is25lq040b", INFO(0x9d4013, 0, 64 * 1024,   8,
- 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
-+	{ "is25lp016d", INFO(0x9d6015, 0, 64 * 1024,  32,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp080d", INFO(0x9d6014, 0, 64 * 1024,  16,
- 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp128",  INFO(0x9d6018, 0, 64 * 1024, 256,
+---
+
+As per Mark Brown's comment on patch "dt-bindings: spi: rspi: Add
+r8a7744 to the compatible list", this patch doesn't come with the
+"dt-bindings" prefix in the title.
+
+ Documentation/devicetree/bindings/spi/spi-rspi.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+index fc97ad6..421722b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -15,6 +15,7 @@ Required properties:
+ 			- "renesas,qspi-r8a7743" (RZ/G1M)
+ 			- "renesas,qspi-r8a7744" (RZ/G1N)
+ 			- "renesas,qspi-r8a7745" (RZ/G1E)
++			- "renesas,qspi-r8a77470" (RZ/G1C)
+ 			- "renesas,qspi-r8a7790" (R-Car H2)
+ 			- "renesas,qspi-r8a7791" (R-Car M2-W)
+ 			- "renesas,qspi-r8a7792" (R-Car V2H)
 -- 
 2.7.4
 

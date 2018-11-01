@@ -1,7 +1,7 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH 4/4] ARM: dts: iwg23s-sbc: Add QSPI flash support
-Date: Thu,  1 Nov 2018 12:35:05 +0000
-Message-ID: <1541075705-1333-5-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
+Date: Thu,  1 Nov 2018 12:35:04 +0000
+Message-ID: <1541075705-1333-4-git-send-email-fabrizio.castro@bp.renesas.com>
 References: <1541075705-1333-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,58 +31,65 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This commit adds QSPI flash support to the iwg23s board specific
-device tree.
+Add QSPI[01] support to the RZ/G1C SoC specific device tree.
 
 Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 ---
- arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/arm/boot/dts/r8a77470.dtsi | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts b/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
-index 18d2263..5245a1e 100644
---- a/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
-+++ b/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
-@@ -88,6 +88,11 @@
- 		power-source = <1800>;
+diff --git a/arch/arm/boot/dts/r8a77470.dtsi b/arch/arm/boot/dts/r8a77470.dtsi
+index e6407e5..04a8877 100644
+--- a/arch/arm/boot/dts/r8a77470.dtsi
++++ b/arch/arm/boot/dts/r8a77470.dtsi
+@@ -20,6 +20,8 @@
+ 		i2c2 = &i2c2;
+ 		i2c3 = &i2c3;
+ 		i2c4 = &i2c4;
++		spi0 = &qspi0;
++		spi1 = &qspi1;
  	};
  
-+	qspi0_pins: qspi0 {
-+		groups = "qspi0_ctrl", "qspi0_data2";
-+		function = "qspi0";
-+	};
-+
- 	scif1_pins: scif1 {
- 		groups = "scif1_data_b";
- 		function = "scif1";
-@@ -106,6 +111,27 @@
- 	};
- };
+ 	cpus {
+@@ -460,6 +462,38 @@
+ 			status = "disabled";
+ 		};
  
-+&qspi0 {
-+	pinctrl-0 = <&qspi0_pins>;
-+	pinctrl-names = "default";
++		qspi0: spi@e6b10000 {
++			compatible = "renesas,qspi-r8a77470", "renesas,qspi";
++			reg = <0 0xe6b10000 0 0x2c>;
++			interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&cpg CPG_MOD 918>;
++			dmas = <&dmac0 0x17>, <&dmac0 0x18>,
++			       <&dmac1 0x17>, <&dmac1 0x18>;
++			dma-names = "tx", "rx", "tx", "rx";
++			power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			resets = <&cpg 918>;
++			status = "disabled";
++		};
 +
-+	status = "okay";
++		qspi1: spi@ee200000 {
++			compatible = "renesas,qspi-r8a77470", "renesas,qspi";
++			reg = <0 0xee200000 0 0x2c>;
++			interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&cpg CPG_MOD 917>;
++			dmas = <&dmac0 0xd1>, <&dmac0 0xd2>,
++			       <&dmac1 0xd1>, <&dmac1 0xd2>;
++			dma-names = "tx", "rx", "tx", "rx";
++			power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
++			num-cs = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			resets = <&cpg 917>;
++			status = "disabled";
++		};
 +
-+	/* WARNING - This device contains the bootloader. Handle with care. */
-+	flash: flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "issi,is25lp016d", "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <133000000>;
-+		spi-tx-bus-width = <1>;
-+		spi-rx-bus-width = <1>;
-+		m25p,fast-read;
-+		spi-cpol;
-+		spi-cpha;
-+	};
-+};
-+
- &rwdt {
- 	timeout-sec = <60>;
- 	status = "okay";
+ 		scif0: serial@e6e60000 {
+ 			compatible = "renesas,scif-r8a77470",
+ 				     "renesas,rcar-gen2-scif", "renesas,scif";
 -- 
 2.7.4
 

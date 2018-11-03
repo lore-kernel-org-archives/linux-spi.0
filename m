@@ -1,77 +1,96 @@
 From: Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH] spi: Gracefully handle power supplies with disabled PM
-Date: Sat, 3 Nov 2018 20:12:00 +0100
-Message-ID: <20181103191200.GE31179@amd>
-References: <20180917121041.21084-1-lkundrak@v3.sk>
+Subject: Re: [PATCH] spi: pxa2xx: Remove the shutdown callback
+Date: Sat, 3 Nov 2018 20:13:46 +0100
+Message-ID: <20181103191346.GF31179@amd>
+References: <20180917121124.21305-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Oiv9uiLrevHtW1RS"
+        protocol="application/pgp-signature"; boundary="R6sEYoIZpp9JErk7"
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>
 To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20180917121041.21084-1-lkundrak@v3.sk>
+In-Reply-To: <20180917121124.21305-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Oiv9uiLrevHtW1RS
+--R6sEYoIZpp9JErk7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon 2018-09-17 14:10:41, Lubomir Rintel wrote:
-> This allows use of SPI when power management is disables, such as on
-> early boot;
+On Mon 2018-09-17 14:11:24, Lubomir Rintel wrote:
+> It makes no sense to remove the device on shutdown. And it break things
+> when the hardware crucial for shutdown (such as the embedded controller)
+> is attached to the SPI bus.
 
-disabled
-boot.
+Again, are you sure?
 
-> See also: commit 31eb74318054 ("PM / runtime: Fix handling of suppliers
-> with disabled runtime PM")
->=20
-> Cc: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+On some hardware (sharp zaurus, phones) it is good idea to shut down
+hardware before poweroff, as they don't have embedded controller that
+would cut the power.
 
-Plus.. I'm not sure.
-
-I thought you'd cause imbalance between _put and _get, but that one is
-probably ok.
-
-On early boot, you probably need to proceed, but is ret =3D=3D -EACCESS
-the right test?
+Will this increase power consumption while "off" on such platforms?
 									Pavel
 
-> index ec395a6baf9c..6546564e41d0 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1212,7 +1212,7 @@ static void __spi_pump_messages(struct spi_controll=
-er *ctlr, bool in_kthread)
+> Cc: Daniel Mack <daniel@zonque.org>
+> Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+> Cc: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> ---
+>  drivers/spi/spi-pxa2xx.c | 9 ---------
+>  1 file changed, 9 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 14f4ea59caff..b06f37fb29f6 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1764,14 +1764,6 @@ static int pxa2xx_spi_remove(struct platform_devic=
+e *pdev)
+>  	return 0;
+>  }
 > =20
->  	if (!was_busy && ctlr->auto_runtime_pm) {
->  		ret =3D pm_runtime_get_sync(ctlr->dev.parent);
-> -		if (ret < 0) {
-> +		if (ret < 0 && ret !=3D -EACCES) {
->  			pm_runtime_put_noidle(ctlr->dev.parent);
->  			dev_err(&ctlr->dev, "Failed to power device: %d\n",
->  				ret);
+> -static void pxa2xx_spi_shutdown(struct platform_device *pdev)
+> -{
+> -	int status =3D 0;
+> -
+> -	if ((status =3D pxa2xx_spi_remove(pdev)) !=3D 0)
+> -		dev_err(&pdev->dev, "shutdown failed with %d\n", status);
+> -}
+> -
+>  #ifdef CONFIG_PM_SLEEP
+>  static int pxa2xx_spi_suspend(struct device *dev)
+>  {
+> @@ -1851,7 +1843,6 @@ static struct platform_driver driver =3D {
+>  	},
+>  	.probe =3D pxa2xx_spi_probe,
+>  	.remove =3D pxa2xx_spi_remove,
+> -	.shutdown =3D pxa2xx_spi_shutdown,
+>  };
+> =20
+>  static int __init pxa2xx_spi_init(void)
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---Oiv9uiLrevHtW1RS
+--R6sEYoIZpp9JErk7
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAlvd8wAACgkQMOfwapXb+vKItgCfWcm4iN84KxRwQqZ0yJVpARNc
-7KIAoK6qpoLBDhkD5veduIkcgxSH2fGs
-=HGEW
+iEYEARECAAYFAlvd82oACgkQMOfwapXb+vLaUwCfenRFkDxK+3sEu/J9yVsj+7QM
+0pYAoKXD1uEnyLqJmfXI360WRKKZGlmk
+=UbcJ
 -----END PGP SIGNATURE-----
 
---Oiv9uiLrevHtW1RS--
+--R6sEYoIZpp9JErk7--

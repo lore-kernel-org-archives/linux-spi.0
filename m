@@ -1,12 +1,12 @@
 From: Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH 08/11] spi: pxa2xx: Add slave mode support
-Date: Sun, 4 Nov 2018 13:12:24 +0100
-Message-ID: <20181104121224.GT23864@amd>
+Subject: Re: [PATCH 09/11] dt-bindings: spi/spi-pxa2xx: Add ready GPIO signal
+Date: Sun, 4 Nov 2018 13:13:14 +0100
+Message-ID: <20181104121314.GU23864@amd>
 References: <20181010170936.316862-1-lkundrak@v3.sk>
- <20181010170936.316862-9-lkundrak@v3.sk>
+ <20181010170936.316862-10-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="0M7E0x35R+W+EAky"
+        protocol="application/pgp-signature"; boundary="kbZGpL0ScFxCd8mt"
 Cc: Mark Brown <broonie@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         James Cameron <quozl@laptop.org>,
@@ -21,40 +21,62 @@ Cc: Mark Brown <broonie@kernel.org>,
 To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181010170936.316862-9-lkundrak@v3.sk>
+In-Reply-To: <20181010170936.316862-10-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---0M7E0x35R+W+EAky
+--kbZGpL0ScFxCd8mt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2018-10-10 19:09:33, Lubomir Rintel wrote:
-> Tested on an OLPC XO-1.75 machine, where the Embedded Controller happens
-> to be a SPI master.
+On Wed 2018-10-10 19:09:34, Lubomir Rintel wrote:
+> This this is used to let the SPI master know that our FIFO is filled and
+> we're ready to service a transfer. Only useful in slave mode.
+>=20
+> A signal like this is used by an embedded controller on a OLPC XO 1.75
+> machine, that happens to be a SPI master.
 >=20
 > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
 Acked-by: Pavel Machek <pavel@ucw.cz>
 
+> ---
+>  Documentation/devicetree/bindings/spi/spi-pxa2xx.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Docum=
+entation/devicetree/bindings/spi/spi-pxa2xx.txt
+> index 89b2832283e3..681a82b40e6f 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+> @@ -12,6 +12,8 @@ Optional properties:
+>  - cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+>    Documentation/devicetree/bindings/spi/spi-bus.txt
+>  - spi-slave: Empty property indicating the SPI controller is used in sla=
+ve mode.
+> +- ready-gpio: GPIO used to signal a SPI master that the FIFO is filled
+> +  and we're ready to service a transfer. Only useful in slave mode.
+> =20
+>  Child nodes represent devices on the SPI bus
+>    See ../spi/spi-bus.txt
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---0M7E0x35R+W+EAky
+--kbZGpL0ScFxCd8mt
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAlve4igACgkQMOfwapXb+vIosACbBfijjrxrRT0J1q/mVTUyOD5k
-AbcAn3+QqaunHntxJS/qoFFthhRAs7Sh
-=RCm/
+iEYEARECAAYFAlve4loACgkQMOfwapXb+vJAEACeLnzOenWyJ9mVWkVKlX/SZ0BI
+BgQAn1ykaXNIbZT3Pw/0VFrLn8Nqqw8D
+=Wloq
 -----END PGP SIGNATURE-----
 
---0M7E0x35R+W+EAky--
+--kbZGpL0ScFxCd8mt--

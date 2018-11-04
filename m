@@ -1,12 +1,12 @@
 From: Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH v2 02/11] PCI: Provide pci_match_id() with CONFIG_PCI=n
-Date: Sun, 4 Nov 2018 13:02:26 +0100
-Message-ID: <20181104120225.GN23864@amd>
+Subject: Re: [PATCH 03/11] spi: pxa2xx: Use an enum for type
+Date: Sun, 4 Nov 2018 13:03:41 +0100
+Message-ID: <20181104120341.GO23864@amd>
 References: <20181010170936.316862-1-lkundrak@v3.sk>
- <20181010170936.316862-3-lkundrak@v3.sk>
+ <20181010170936.316862-4-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="0kRkyLZR5zsR9u2P"
+        protocol="application/pgp-signature"; boundary="c2gYorpyS4gG0T74"
 Cc: Mark Brown <broonie@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         James Cameron <quozl@laptop.org>,
@@ -21,43 +21,38 @@ Cc: Mark Brown <broonie@kernel.org>,
 To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181010170936.316862-3-lkundrak@v3.sk>
+In-Reply-To: <20181010170936.316862-4-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---0kRkyLZR5zsR9u2P
+--c2gYorpyS4gG0T74
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2018-10-10 19:09:27, Lubomir Rintel wrote:
-> This spares drivers from #ifdef-ing on CONFIG_PCI if the driver can be
-> optionally built on machines without PCI bus.
+On Wed 2018-10-10 19:09:28, Lubomir Rintel wrote:
+> That seems to be the correct type.
 >=20
-> Consistent with acpi_driver_match_device() and similar.
->=20
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
 Acked-by: Pavel Machek <pavel@ucw.cz>
-									Pavel
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---0kRkyLZR5zsR9u2P
+--c2gYorpyS4gG0T74
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAlve39EACgkQMOfwapXb+vLo7wCfVr9Ov7i84YWFMz6uKkOTmCsG
-BwcAmwaOQxx+O5fZHqEi+JsNzH3eYXbS
-=oR86
+iEYEARECAAYFAlve4B0ACgkQMOfwapXb+vKTMACgnFgreb+vpmsLhWZdtoiCnfw1
+qBAAoKxMheTObkGP9vcJEPZno7Zug0fX
+=GqV+
 -----END PGP SIGNATURE-----
 
---0kRkyLZR5zsR9u2P--
+--c2gYorpyS4gG0T74--

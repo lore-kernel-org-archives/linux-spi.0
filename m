@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: use designated init for dma config" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:55 +0000 (GMT)
-Message-ID: <20181105120655.15DAC1124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-3-esmil@mailme.dk>
+Subject: Applied "spi: rockchip: make spi_enable_chip take bool" to the spi tree
+Date: Mon,  5 Nov 2018 12:06:58 +0000 (GMT)
+Message-ID: <20181105120659.0191B1124D98@debutante.sirena.org.uk>
+References: <20181031105711.19575-2-esmil@mailme.dk>
 Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
         Mark Brown <broonie@kernel.org>,
@@ -12,13 +12,13 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-3-esmil@mailme.dk>
+In-Reply-To: <20181031105711.19575-2-esmil@mailme.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: use designated init for dma config
+   spi: rockchip: make spi_enable_chip take bool
 
 has been applied to the spi tree at
 
@@ -43,74 +43,99 @@ to this mail.
 Thanks,
 Mark
 
->From 31bcb57be12fd815a9051f07d64334809b8cb472 Mon Sep 17 00:00:00 2001
+>From 30688e4e670d21126aa596df4523940e2f8d24de Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:56:59 +0100
-Subject: [PATCH] spi: rockchip: use designated init for dma config
+Date: Wed, 31 Oct 2018 11:56:58 +0100
+Subject: [PATCH] spi: rockchip: make spi_enable_chip take bool
 
-Use C99 designated initializers for dma slave config
-structures. This also makes sure uninitialized fields
-are zeroed so we don't need an explicit memset.
+The spi_enable_chip function takes a boolean
+argument. Change the type to reflect that.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/spi/spi-rockchip.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 7e54e1a69cc8..87d1b9837d94 100644
+index 51ef632bca52..7e54e1a69cc8 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -442,12 +442,8 @@ static void rockchip_spi_dma_txcb(void *data)
- static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+@@ -208,9 +208,9 @@ struct rockchip_spi {
+ 	struct rockchip_spi_dma_data dma_tx;
+ };
+ 
+-static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
++static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
  {
- 	unsigned long flags;
--	struct dma_slave_config rxconf, txconf;
- 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
+-	writel_relaxed((enable ? 1 : 0), rs->regs + ROCKCHIP_SPI_SSIENR);
++	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
+ }
  
--	memset(&rxconf, 0, sizeof(rxconf));
--	memset(&txconf, 0, sizeof(txconf));
--
- 	spin_lock_irqsave(&rs->lock, flags);
+ static inline void spi_set_clk(struct rockchip_spi *rs, u16 div)
+@@ -339,7 +339,7 @@ static int rockchip_spi_unprepare_message(struct spi_master *master,
+ {
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+-	spi_enable_chip(rs, 0);
++	spi_enable_chip(rs, false);
+ 
+ 	return 0;
+ }
+@@ -379,7 +379,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ {
+ 	int remain = 0;
+ 
+-	spi_enable_chip(rs, 1);
++	spi_enable_chip(rs, true);
+ 
+ 	do {
+ 		if (rs->tx) {
+@@ -399,7 +399,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ 	if (rs->tx)
+ 		wait_for_idle(rs);
+ 
+-	spi_enable_chip(rs, 0);
++	spi_enable_chip(rs, false);
+ 
+ 	return 0;
+ }
+@@ -413,7 +413,7 @@ static void rockchip_spi_dma_rxcb(void *data)
+ 
  	rs->state &= ~RXBUSY;
+ 	if (!(rs->state & TXBUSY)) {
+-		spi_enable_chip(rs, 0);
++		spi_enable_chip(rs, false);
+ 		spi_finalize_current_transfer(rs->master);
+ 	}
+ 
+@@ -432,7 +432,7 @@ static void rockchip_spi_dma_txcb(void *data)
+ 
  	rs->state &= ~TXBUSY;
-@@ -455,10 +451,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	if (!(rs->state & RXBUSY)) {
+-		spi_enable_chip(rs, 0);
++		spi_enable_chip(rs, false);
+ 		spi_finalize_current_transfer(rs->master);
+ 	}
  
- 	rxdesc = NULL;
- 	if (rs->rx) {
--		rxconf.direction = DMA_DEV_TO_MEM;
--		rxconf.src_addr = rs->dma_rx.addr;
--		rxconf.src_addr_width = rs->n_bytes;
--		rxconf.src_maxburst = 1;
-+		struct dma_slave_config rxconf = {
-+			.direction = DMA_DEV_TO_MEM,
-+			.src_addr = rs->dma_rx.addr,
-+			.src_addr_width = rs->n_bytes,
-+			.src_maxburst = 1,
-+		};
-+
- 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
+@@ -503,7 +503,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		dma_async_issue_pending(rs->dma_rx.ch);
+ 	}
  
- 		rxdesc = dmaengine_prep_slave_sg(
-@@ -474,10 +473,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+-	spi_enable_chip(rs, 1);
++	spi_enable_chip(rs, true);
  
- 	txdesc = NULL;
- 	if (rs->tx) {
--		txconf.direction = DMA_MEM_TO_DEV;
--		txconf.dst_addr = rs->dma_tx.addr;
--		txconf.dst_addr_width = rs->n_bytes;
--		txconf.dst_maxburst = rs->fifo_len / 2;
-+		struct dma_slave_config txconf = {
-+			.direction = DMA_MEM_TO_DEV,
-+			.dst_addr = rs->dma_tx.addr,
-+			.dst_addr_width = rs->n_bytes,
-+			.dst_maxburst = rs->fifo_len / 2,
-+		};
-+
- 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
+ 	if (txdesc) {
+ 		spin_lock_irqsave(&rs->lock, flags);
+@@ -705,7 +705,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		goto err_disable_apbclk;
+ 	}
  
- 		txdesc = dmaengine_prep_slave_sg(
+-	spi_enable_chip(rs, 0);
++	spi_enable_chip(rs, false);
+ 
+ 	rs->type = SSI_MOTO_SPI;
+ 	rs->master = master;
 -- 
 2.19.0.rc2

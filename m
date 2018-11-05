@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: always use SPI mode" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:51 +0000 (GMT)
-Message-ID: <20181105120651.28D0E1124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-4-esmil@mailme.dk>
+Subject: Applied "spi: rockchip: use designated init for dma config" to the spi tree
+Date: Mon,  5 Nov 2018 12:06:55 +0000 (GMT)
+Message-ID: <20181105120655.15DAC1124D98@debutante.sirena.org.uk>
+References: <20181031105711.19575-3-esmil@mailme.dk>
 Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
         Mark Brown <broonie@kernel.org>,
@@ -12,13 +12,13 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-4-esmil@mailme.dk>
+In-Reply-To: <20181031105711.19575-3-esmil@mailme.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: always use SPI mode
+   spi: rockchip: use designated init for dma config
 
 has been applied to the spi tree at
 
@@ -43,75 +43,74 @@ to this mail.
 Thanks,
 Mark
 
->From 2410d6a3c3070e205169a1a741aa78898e30a642 Mon Sep 17 00:00:00 2001
+>From 31bcb57be12fd815a9051f07d64334809b8cb472 Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:57:00 +0100
-Subject: [PATCH] spi: rockchip: always use SPI mode
+Date: Wed, 31 Oct 2018 11:56:59 +0100
+Subject: [PATCH] spi: rockchip: use designated init for dma config
 
-The hardware supports 3 different variants of SPI
-and there were some code around it, but nothing
-to actually set it to anything but "Motorola SPI".
-Just drop that code and always use that mode.
+Use C99 designated initializers for dma slave config
+structures. This also makes sure uninitialized fields
+are zeroed so we don't need an explicit memset.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ drivers/spi/spi-rockchip.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 87d1b9837d94..7fac4253075e 100644
+index 7e54e1a69cc8..87d1b9837d94 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -156,12 +156,6 @@
+@@ -442,12 +442,8 @@ static void rockchip_spi_dma_txcb(void *data)
+ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ {
+ 	unsigned long flags;
+-	struct dma_slave_config rxconf, txconf;
+ 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
  
- #define ROCKCHIP_SPI_MAX_CS_NUM			2
- 
--enum rockchip_ssi_type {
--	SSI_MOTO_SPI = 0,
--	SSI_TI_SSP,
--	SSI_NS_MICROWIRE,
--};
+-	memset(&rxconf, 0, sizeof(rxconf));
+-	memset(&txconf, 0, sizeof(txconf));
 -
- struct rockchip_spi_dma_data {
- 	struct dma_chan *ch;
- 	dma_addr_t addr;
-@@ -179,8 +173,6 @@ struct rockchip_spi {
- 	u32 fifo_len;
- 	/* max bus freq supported */
- 	u32 max_freq;
--	/* supported slave numbers */
--	enum rockchip_ssi_type type;
+ 	spin_lock_irqsave(&rs->lock, flags);
+ 	rs->state &= ~RXBUSY;
+ 	rs->state &= ~TXBUSY;
+@@ -455,10 +451,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
- 	u16 mode;
- 	u8 tmode;
-@@ -525,14 +517,14 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
- 	u32 dmacr = 0;
- 	int rsd = 0;
+ 	rxdesc = NULL;
+ 	if (rs->rx) {
+-		rxconf.direction = DMA_DEV_TO_MEM;
+-		rxconf.src_addr = rs->dma_rx.addr;
+-		rxconf.src_addr_width = rs->n_bytes;
+-		rxconf.src_maxburst = 1;
++		struct dma_slave_config rxconf = {
++			.direction = DMA_DEV_TO_MEM,
++			.src_addr = rs->dma_rx.addr,
++			.src_addr_width = rs->n_bytes,
++			.src_maxburst = 1,
++		};
++
+ 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
  
--	u32 cr0 = (CR0_BHT_8BIT << CR0_BHT_OFFSET)
--		| (CR0_SSD_ONE << CR0_SSD_OFFSET)
--		| (CR0_EM_BIG << CR0_EM_OFFSET);
-+	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
-+	        | CR0_BHT_8BIT << CR0_BHT_OFFSET
-+	        | CR0_SSD_ONE  << CR0_SSD_OFFSET
-+	        | CR0_EM_BIG   << CR0_EM_OFFSET;
+ 		rxdesc = dmaengine_prep_slave_sg(
+@@ -474,10 +473,13 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  
- 	cr0 |= (rs->n_bytes << CR0_DFS_OFFSET);
- 	cr0 |= ((rs->mode & 0x3) << CR0_SCPH_OFFSET);
- 	cr0 |= (rs->tmode << CR0_XFM_OFFSET);
--	cr0 |= (rs->type << CR0_FRF_OFFSET);
+ 	txdesc = NULL;
+ 	if (rs->tx) {
+-		txconf.direction = DMA_MEM_TO_DEV;
+-		txconf.dst_addr = rs->dma_tx.addr;
+-		txconf.dst_addr_width = rs->n_bytes;
+-		txconf.dst_maxburst = rs->fifo_len / 2;
++		struct dma_slave_config txconf = {
++			.direction = DMA_MEM_TO_DEV,
++			.dst_addr = rs->dma_tx.addr,
++			.dst_addr_width = rs->n_bytes,
++			.dst_maxburst = rs->fifo_len / 2,
++		};
++
+ 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
  
- 	if (rs->use_dma) {
- 		if (rs->tx)
-@@ -709,7 +701,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 
- 	spi_enable_chip(rs, false);
- 
--	rs->type = SSI_MOTO_SPI;
- 	rs->master = master;
- 	rs->dev = &pdev->dev;
- 	rs->max_freq = clk_get_rate(rs->spiclk);
+ 		txdesc = dmaengine_prep_slave_sg(
 -- 
 2.19.0.rc2

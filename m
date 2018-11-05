@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: make spi_enable_chip take bool" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:58 +0000 (GMT)
-Message-ID: <20181105120659.0191B1124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-2-esmil@mailme.dk>
+Subject: Applied "spi: rockchip: remove master pointer from dev data" to the spi tree
+Date: Mon,  5 Nov 2018 12:06:30 +0000 (GMT)
+Message-ID: <20181105120630.2BE051124D98@debutante.sirena.org.uk>
+References: <20181031105711.19575-9-esmil@mailme.dk>
 Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
         Mark Brown <broonie@kernel.org>,
@@ -12,13 +12,13 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-2-esmil@mailme.dk>
+In-Reply-To: <20181031105711.19575-9-esmil@mailme.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: make spi_enable_chip take bool
+   spi: rockchip: remove master pointer from dev data
 
 has been applied to the spi tree at
 
@@ -43,99 +43,116 @@ to this mail.
 Thanks,
 Mark
 
->From 30688e4e670d21126aa596df4523940e2f8d24de Mon Sep 17 00:00:00 2001
+>From d790c342e689ea77a5cf72d5b993299911ee5276 Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:56:58 +0100
-Subject: [PATCH] spi: rockchip: make spi_enable_chip take bool
+Date: Wed, 31 Oct 2018 11:57:05 +0100
+Subject: [PATCH] spi: rockchip: remove master pointer from dev data
 
-The spi_enable_chip function takes a boolean
-argument. Change the type to reflect that.
+In almost all cases we already have a pointer to the
+spi master structure where we have the driver data.
+
+The only exceptions are the dma callbacks which are
+easily fixed by passing them the master and using
+spi_master_get_devdata to retrieve the driver data.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-rockchip.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 51ef632bca52..7e54e1a69cc8 100644
+index f3fe6d4cf6f6..45a1479c1a29 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -208,9 +208,9 @@ struct rockchip_spi {
- 	struct rockchip_spi_dma_data dma_tx;
- };
+@@ -159,7 +159,6 @@
  
--static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
-+static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+ struct rockchip_spi {
+ 	struct device *dev;
+-	struct spi_master *master;
+ 
+ 	struct clk *spiclk;
+ 	struct clk *apb_pclk;
+@@ -350,19 +349,21 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ 
+ static void rockchip_spi_dma_rxcb(void *data)
  {
--	writel_relaxed((enable ? 1 : 0), rs->regs + ROCKCHIP_SPI_SSIENR);
-+	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
+-	struct rockchip_spi *rs = data;
++	struct spi_master *master = data;
++	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
+ 
+ 	if (state & TXDMA)
+ 		return;
+ 
+ 	spi_enable_chip(rs, false);
+-	spi_finalize_current_transfer(rs->master);
++	spi_finalize_current_transfer(master);
  }
  
- static inline void spi_set_clk(struct rockchip_spi *rs, u16 div)
-@@ -339,7 +339,7 @@ static int rockchip_spi_unprepare_message(struct spi_master *master,
+ static void rockchip_spi_dma_txcb(void *data)
  {
- 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+-	struct rockchip_spi *rs = data;
++	struct spi_master *master = data;
++	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
  
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
+ 	if (state & RXDMA)
+@@ -372,7 +373,7 @@ static void rockchip_spi_dma_txcb(void *data)
+ 	wait_for_idle(rs);
  
- 	return 0;
+ 	spi_enable_chip(rs, false);
+-	spi_finalize_current_transfer(rs->master);
++	spi_finalize_current_transfer(master);
  }
-@@ -379,7 +379,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
+ 
+ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+@@ -401,7 +402,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+ 			return -EINVAL;
+ 
+ 		rxdesc->callback = rockchip_spi_dma_rxcb;
+-		rxdesc->callback_param = rs;
++		rxdesc->callback_param = master;
+ 	}
+ 
+ 	txdesc = NULL;
+@@ -426,7 +427,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+ 		}
+ 
+ 		txdesc->callback = rockchip_spi_dma_txcb;
+-		txdesc->callback_param = rs;
++		txdesc->callback_param = master;
+ 	}
+ 
+ 	/* rx must be started before tx due to spi instinct */
+@@ -633,7 +634,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	spi_enable_chip(rs, false);
+ 
+-	rs->master = master;
+ 	rs->dev = &pdev->dev;
+ 	rs->max_freq = clk_get_rate(rs->spiclk);
+ 
+@@ -746,9 +746,8 @@ static int rockchip_spi_suspend(struct device *dev)
  {
- 	int remain = 0;
+ 	int ret;
+ 	struct spi_master *master = dev_get_drvdata(dev);
+-	struct rockchip_spi *rs = spi_master_get_devdata(master);
  
--	spi_enable_chip(rs, 1);
-+	spi_enable_chip(rs, true);
+-	ret = spi_master_suspend(rs->master);
++	ret = spi_master_suspend(master);
+ 	if (ret < 0)
+ 		return ret;
  
- 	do {
- 		if (rs->tx) {
-@@ -399,7 +399,7 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- 	if (rs->tx)
- 		wait_for_idle(rs);
+@@ -773,7 +772,7 @@ static int rockchip_spi_resume(struct device *dev)
+ 	if (ret < 0)
+ 		return ret;
  
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
- 
- 	return 0;
- }
-@@ -413,7 +413,7 @@ static void rockchip_spi_dma_rxcb(void *data)
- 
- 	rs->state &= ~RXBUSY;
- 	if (!(rs->state & TXBUSY)) {
--		spi_enable_chip(rs, 0);
-+		spi_enable_chip(rs, false);
- 		spi_finalize_current_transfer(rs->master);
- 	}
- 
-@@ -432,7 +432,7 @@ static void rockchip_spi_dma_txcb(void *data)
- 
- 	rs->state &= ~TXBUSY;
- 	if (!(rs->state & RXBUSY)) {
--		spi_enable_chip(rs, 0);
-+		spi_enable_chip(rs, false);
- 		spi_finalize_current_transfer(rs->master);
- 	}
- 
-@@ -503,7 +503,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		dma_async_issue_pending(rs->dma_rx.ch);
- 	}
- 
--	spi_enable_chip(rs, 1);
-+	spi_enable_chip(rs, true);
- 
- 	if (txdesc) {
- 		spin_lock_irqsave(&rs->lock, flags);
-@@ -705,7 +705,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		goto err_disable_apbclk;
- 	}
- 
--	spi_enable_chip(rs, 0);
-+	spi_enable_chip(rs, false);
- 
- 	rs->type = SSI_MOTO_SPI;
- 	rs->master = master;
+-	ret = spi_master_resume(rs->master);
++	ret = spi_master_resume(master);
+ 	if (ret < 0) {
+ 		clk_disable_unprepare(rs->spiclk);
+ 		clk_disable_unprepare(rs->apb_pclk);
 -- 
 2.19.0.rc2

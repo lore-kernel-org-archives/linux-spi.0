@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: support 4bit words" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:09 +0000 (GMT)
-Message-ID: <20181105120609.37CCD1124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-14-esmil@mailme.dk>
+Subject: Applied "spi: rockchip: set min/max speed" to the spi tree
+Date: Mon,  5 Nov 2018 12:06:21 +0000 (GMT)
+Message-ID: <20181105120621.755631124D98@debutante.sirena.org.uk>
+References: <20181031105711.19575-11-esmil@mailme.dk>
 Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
         Mark Brown <broonie@kernel.org>,
@@ -12,13 +12,13 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-14-esmil@mailme.dk>
+In-Reply-To: <20181031105711.19575-11-esmil@mailme.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: support 4bit words
+   spi: rockchip: set min/max speed
 
 has been applied to the spi tree at
 
@@ -43,113 +43,170 @@ to this mail.
 Thanks,
 Mark
 
->From 65498c6ae2414a1425aa6c4231e79e2998afec05 Mon Sep 17 00:00:00 2001
+>From 420b82f842941a32adf309ca1b193adfc77616b0 Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:57:10 +0100
-Subject: [PATCH] spi: rockchip: support 4bit words
+Date: Wed, 31 Oct 2018 11:57:07 +0100
+Subject: [PATCH] spi: rockchip: set min/max speed
 
-The hardware supports 4, 8 and 16bit spi words,
-so add the missing support for 4bit words.
+The driver previously checked each transfer if the
+requested speed was higher than possible with the
+current spi clock rate and raised the clock rate
+accordingly.
+
+However, there is no check to see if the spi clock
+was actually set that high and no way to dynamically
+lower the spi clock rate again.
+
+So it seems any potiential users of this functionality
+are better off just setting the spi clock rate at init
+using the assigned-clock-rates devicetree property.
+
+Removing this dynamic spi clock rate raising allows
+us let the spi framework handle min/max speeds
+for us.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 41 +++++++++++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ drivers/spi/spi-rockchip.c | 52 +++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 1297f081818d..9e47e81553a1 100644
+index ba60cbcd45c2..d1b3ba2b1532 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -54,6 +54,9 @@
+@@ -115,6 +115,10 @@
+ /* Bit fields in SER, 2bit */
+ #define SER_MASK					0x3
  
- /* Bit fields in CTRLR0 */
- #define CR0_DFS_OFFSET				0
-+#define CR0_DFS_4BIT				0x0
-+#define CR0_DFS_8BIT				0x1
-+#define CR0_DFS_16BIT				0x2
++/* Bit fields in BAUDR */
++#define BAUDR_SCKDV_MIN				2
++#define BAUDR_SCKDV_MAX				65534
++
+ /* Bit fields in SR, 5bit */
+ #define SR_MASK						0x1f
+ #define SR_BUSY						(1 << 0)
+@@ -147,7 +151,7 @@
+ #define TXDMA					(1 << 1)
  
- #define CR0_CFS_OFFSET				2
+ /* sclk_out: spi master internal logic in rk3x can support 50Mhz */
+-#define MAX_SCLK_OUT		50000000
++#define MAX_SCLK_OUT				50000000U
  
-@@ -464,15 +467,14 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+ /*
+  * SPI_CTRLR1 is 16-bits, so we should support lengths of 0xffff + 1. However,
+@@ -171,12 +175,11 @@ struct rockchip_spi {
+ 
+ 	/*depth of the FIFO buffer */
+ 	u32 fifo_len;
+-	/* max bus freq supported */
+-	u32 max_freq;
++	/* frequency of spiclk */
++	u32 freq;
+ 
+ 	u8 n_bytes;
+ 	u32 rsd_nsecs;
+-	u32 speed;
+ 
+ 	const void *tx;
+ 	const void *tx_end;
+@@ -191,11 +194,6 @@ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+ 	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
+ }
+ 
+-static inline void spi_set_clk(struct rockchip_spi *rs, u16 div)
+-{
+-	writel_relaxed(div, rs->regs + ROCKCHIP_SPI_BAUDR);
+-}
+-
+ static inline void wait_for_idle(struct rockchip_spi *rs)
+ {
+ 	unsigned long timeout = jiffies + msecs_to_jiffies(5);
+@@ -451,7 +449,6 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
  		struct spi_device *spi, struct spi_transfer *xfer,
  		bool use_dma)
  {
--	u32 dmacr = 0;
--
- 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
- 	        | CR0_BHT_8BIT << CR0_BHT_OFFSET
- 	        | CR0_SSD_ONE  << CR0_SSD_OFFSET
- 	        | CR0_EM_BIG   << CR0_EM_OFFSET;
-+	u32 cr1;
-+	u32 dmacr = 0;
+-	u32 div = 0;
+ 	u32 dmacr = 0;
+ 	int rsd = 0;
  
- 	cr0 |= rs->rsd << CR0_RSD_OFFSET;
--	cr0 |= (rs->n_bytes << CR0_DFS_OFFSET);
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 
- 	if (xfer->rx_buf && xfer->tx_buf)
-@@ -482,6 +484,27 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 	else if (use_dma)
- 		cr0 |= CR0_XFM_TO << CR0_XFM_OFFSET;
- 
-+	switch (xfer->bits_per_word) {
-+	case 4:
-+		cr0 |= CR0_DFS_4BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len - 1;
-+		break;
-+	case 8:
-+		cr0 |= CR0_DFS_8BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len - 1;
-+		break;
-+	case 16:
-+		cr0 |= CR0_DFS_16BIT << CR0_DFS_OFFSET;
-+		cr1 = xfer->len / 2 - 1;
-+		break;
-+	default:
-+		/* we only whitelist 4, 8 and 16 bit words in
-+		 * master->bits_per_word_mask, so this shouldn't
-+		 * happen
-+		 */
-+		unreachable();
-+	}
-+
- 	if (use_dma) {
- 		if (xfer->tx_buf)
- 			dmacr |= TF_DMA_EN;
-@@ -490,13 +513,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+@@ -477,30 +474,17 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+ 			dmacr |= RF_DMA_EN;
  	}
  
- 	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
+-	if (WARN_ON(rs->speed > MAX_SCLK_OUT))
+-		rs->speed = MAX_SCLK_OUT;
 -
--	if (rs->n_bytes == 1)
--		writel_relaxed(xfer->len - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
--	else if (rs->n_bytes == 2)
--		writel_relaxed((xfer->len / 2) - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
--	else
--		writel_relaxed((xfer->len * 2) - 1, rs->regs + ROCKCHIP_SPI_CTRLR1);
-+	writel_relaxed(cr1, rs->regs + ROCKCHIP_SPI_CTRLR1);
+-	/* the minimum divisor is 2 */
+-	if (rs->max_freq < 2 * rs->speed) {
+-		clk_set_rate(rs->spiclk, 2 * rs->speed);
+-		rs->max_freq = clk_get_rate(rs->spiclk);
+-	}
+-
+-	/* div doesn't support odd number */
+-	div = DIV_ROUND_UP(rs->max_freq, rs->speed);
+-	div = (div + 1) & 0xfffe;
+-
+ 	/* Rx sample delay is expressed in parent clock cycles (max 3) */
+-	rsd = DIV_ROUND_CLOSEST(rs->rsd_nsecs * (rs->max_freq >> 8),
++	rsd = DIV_ROUND_CLOSEST(rs->rsd_nsecs * (rs->freq >> 8),
+ 				1000000000 >> 8);
+ 	if (!rsd && rs->rsd_nsecs) {
+ 		pr_warn_once("rockchip-spi: %u Hz are too slow to express %u ns delay\n",
+-			     rs->max_freq, rs->rsd_nsecs);
++			     rs->freq, rs->rsd_nsecs);
+ 	} else if (rsd > 3) {
+ 		rsd = 3;
+ 		pr_warn_once("rockchip-spi: %u Hz are too fast to express %u ns delay, clamping at %u ns\n",
+-			     rs->max_freq, rs->rsd_nsecs,
+-			     rsd * 1000000000U / rs->max_freq);
++			     rs->freq, rs->rsd_nsecs,
++			     rsd * 1000000000U / rs->freq);
+ 	}
+ 	cr0 |= rsd << CR0_RSD_OFFSET;
  
- 	/* unfortunately setting the fifo threshold level to generate an
- 	 * interrupt exactly when the fifo is full doesn't seem to work,
-@@ -545,7 +562,7 @@ static int rockchip_spi_transfer_one(
+@@ -520,9 +504,12 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+ 	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMARDLR);
+ 	writel_relaxed(dmacr, rs->regs + ROCKCHIP_SPI_DMACR);
+ 
+-	spi_set_clk(rs, div);
+-
+-	dev_dbg(rs->dev, "cr0 0x%x, div %d\n", cr0, div);
++	/* the hardware only supports an even clock divisor, so
++	 * round divisor = spiclk / speed up to nearest even number
++	 * so that the resulting speed is <= the requested speed
++	 */
++	writel_relaxed(2 * DIV_ROUND_UP(rs->freq, 2 * xfer->speed_hz),
++			rs->regs + ROCKCHIP_SPI_BAUDR);
+ }
+ 
+ static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
+@@ -551,7 +538,6 @@ static int rockchip_spi_transfer_one(
  		return -EINVAL;
  	}
  
--	rs->n_bytes = xfer->bits_per_word >> 3;
-+	rs->n_bytes = xfer->bits_per_word <= 8 ? 1 : 2;
+-	rs->speed = xfer->speed_hz;
+ 	rs->n_bytes = xfer->bits_per_word >> 3;
  
- 	use_dma = master->can_dma ? master->can_dma(master, spi, xfer) : false;
+ 	rs->tx = xfer->tx_buf;
+@@ -631,7 +617,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	spi_enable_chip(rs, false);
  
-@@ -667,7 +684,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
+ 	rs->dev = &pdev->dev;
+-	rs->max_freq = clk_get_rate(rs->spiclk);
++	rs->freq = clk_get_rate(rs->spiclk);
+ 
+ 	if (!of_property_read_u32(pdev->dev.of_node, "rx-sample-delay-ns",
+ 				  &rsd_nsecs))
+@@ -653,6 +639,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
  	master->num_chipselect = ROCKCHIP_SPI_MAX_CS_NUM;
  	master->dev.of_node = pdev->dev.of_node;
--	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
-+	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8) | SPI_BPW_MASK(4);
- 	master->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
- 	master->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
+ 	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
++	master->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
++	master->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
  
+ 	master->set_cs = rockchip_spi_set_cs;
+ 	master->transfer_one = rockchip_spi_transfer_one;
 -- 
 2.19.0.rc2

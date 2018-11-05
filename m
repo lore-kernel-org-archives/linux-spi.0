@@ -1,24 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: uniphier: re-add addressing properties" to the spi tree
-Date: Mon,  5 Nov 2018 12:01:53 +0000 (GMT)
-Message-ID: <20181105120153.EB1181124D98@debutante.sirena.org.uk>
-References: <1540533525-1816-3-git-send-email-hayashibara.keiji@socionext.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        yamada.masahiro@socionext.com, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org, masami.hiramatsu@linaro.org,
-        jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
-        hayashibara.keiji@socionext.com, linux-spi@vger.kernel.org
-To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Subject: Applied "spi: spi-geni-qcom: Simplify probe function" to the spi tree
+Date: Mon,  5 Nov 2018 12:03:47 +0000 (GMT)
+Message-ID: <20181105120347.0C2521124D98@debutante.sirena.org.uk>
+References: <1540485629-5970-3-git-send-email-alokc@codeaurora.org>
+Cc: Mark Brown <broonie@kernel.org>, swboyd@chromium.org,
+        dianders@chromium.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org
+To: Alok Chauhan <alokc@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1540533525-1816-3-git-send-email-hayashibara.keiji@socionext.com>
+In-Reply-To: <1540485629-5970-3-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: uniphier: re-add addressing properties
+   spi: spi-geni-qcom: Simplify probe function
 
 has been applied to the spi tree at
 
@@ -43,43 +40,111 @@ to this mail.
 Thanks,
 Mark
 
->From 2a35a643f138a97e3bfee0c599c72e5ca80ebe7c Mon Sep 17 00:00:00 2001
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Date: Fri, 26 Oct 2018 14:58:45 +0900
-Subject: [PATCH] spi: uniphier: re-add addressing properties
+>From 6a34e285de9afc4441ee81ce76865acd30ed9263 Mon Sep 17 00:00:00 2001
+From: Alok Chauhan <alokc@codeaurora.org>
+Date: Thu, 25 Oct 2018 22:10:29 +0530
+Subject: [PATCH] spi: spi-geni-qcom: Simplify probe function
 
-In commit 7662d1dc17d4 ("spi: uniphier: fix incorrect property items")
-addressing properties of #address-cells and #size-cells were removed.
-Since it is not necessary to remove them, they are back again.
+Re-arrange existing APIs in probe function to
+avoid using goto and remove redundant variables.
 
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-uniphier.txt | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 49 ++++++++++++++++++-------------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-index b04e66a52de5..e1201573a29a 100644
---- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-@@ -5,6 +5,8 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
- Required properties:
-  - compatible: should be "socionext,uniphier-scssi"
-  - reg: address and length of the spi master registers
-+ - #address-cells: must be <1>, see spi-bus.txt
-+ - #size-cells: must be <0>, see spi-bus.txt
-  - interrupts: a single interrupt specifier
-  - pinctrl-names: should be "default"
-  - pinctrl-0: pin control state for the default mode
-@@ -16,6 +18,8 @@ Example:
- spi0: spi@54006000 {
- 	compatible = "socionext,uniphier-scssi";
- 	reg = <0x54006000 0x100>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
- 	interrupts = <0 39 4>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_spi0>;
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index d1830fbf2fc6..fdb7cb88fb56 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -535,11 +535,30 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 
+ static int spi_geni_probe(struct platform_device *pdev)
+ {
+-	int ret;
++	int ret, irq;
+ 	struct spi_master *spi;
+ 	struct spi_geni_master *mas;
+ 	struct resource *res;
+-	struct geni_se *se;
++	void __iomem *base;
++	struct clk *clk;
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "Err getting IRQ %d\n", irq);
++		return irq;
++	}
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	clk = devm_clk_get(&pdev->dev, "se");
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "Err getting SE Core clk %ld\n",
++						PTR_ERR(clk));
++		return PTR_ERR(clk);
++	}
+ 
+ 	spi = spi_alloc_master(&pdev->dev, sizeof(*mas));
+ 	if (!spi)
+@@ -547,27 +566,15 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, spi);
+ 	mas = spi_master_get_devdata(spi);
++	mas->irq = irq;
+ 	mas->dev = &pdev->dev;
+ 	mas->se.dev = &pdev->dev;
+ 	mas->se.wrapper = dev_get_drvdata(pdev->dev.parent);
+-	se = &mas->se;
++	mas->se.base = base;
++	mas->se.clk = clk;
+ 
+ 	spi->bus_num = -1;
+ 	spi->dev.of_node = pdev->dev.of_node;
+-	mas->se.clk = devm_clk_get(&pdev->dev, "se");
+-	if (IS_ERR(mas->se.clk)) {
+-		ret = PTR_ERR(mas->se.clk);
+-		dev_err(&pdev->dev, "Err getting SE Core clk %d\n", ret);
+-		goto spi_geni_probe_err;
+-	}
+-
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	se->base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(se->base)) {
+-		ret = PTR_ERR(se->base);
+-		goto spi_geni_probe_err;
+-	}
+-
+ 	spi->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_CS_HIGH;
+ 	spi->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	spi->num_chipselect = 4;
+@@ -586,13 +593,6 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto spi_geni_probe_runtime_disable;
+ 
+-	mas->irq = platform_get_irq(pdev, 0);
+-	if (mas->irq < 0) {
+-		ret = mas->irq;
+-		dev_err(&pdev->dev, "Err getting IRQ %d\n", ret);
+-		goto spi_geni_probe_runtime_disable;
+-	}
+-
+ 	ret = request_irq(mas->irq, geni_spi_isr,
+ 			IRQF_TRIGGER_HIGH, "spi_geni", spi);
+ 	if (ret)
+@@ -607,7 +607,6 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	free_irq(mas->irq, spi);
+ spi_geni_probe_runtime_disable:
+ 	pm_runtime_disable(&pdev->dev);
+-spi_geni_probe_err:
+ 	spi_master_put(spi);
+ 	return ret;
+ }
 -- 
 2.19.0.rc2

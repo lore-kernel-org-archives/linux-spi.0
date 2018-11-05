@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: precompute rx sample delay" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:17 +0000 (GMT)
-Message-ID: <20181105120617.35F9F1124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-12-esmil@mailme.dk>
+Subject: Applied "spi: rockchip: simplify use_dma logic" to the spi tree
+Date: Mon,  5 Nov 2018 12:06:25 +0000 (GMT)
+Message-ID: <20181105120625.CA85A1124D98@debutante.sirena.org.uk>
+References: <20181031105711.19575-10-esmil@mailme.dk>
 Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
         Mark Brown <broonie@kernel.org>,
@@ -12,13 +12,13 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Emil Renner Berthing <kernel@esmil.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-12-esmil@mailme.dk>
+In-Reply-To: <20181031105711.19575-10-esmil@mailme.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rockchip: precompute rx sample delay
+   spi: rockchip: simplify use_dma logic
 
 has been applied to the spi tree at
 
@@ -43,102 +43,80 @@ to this mail.
 Thanks,
 Mark
 
->From 74b7efa82b11914c21e30d987ed61d3daa57ff21 Mon Sep 17 00:00:00 2001
+>From eff0275e5253604429aedc42b008c5fcaa6cc597 Mon Sep 17 00:00:00 2001
 From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:57:08 +0100
-Subject: [PATCH] spi: rockchip: precompute rx sample delay
+Date: Wed, 31 Oct 2018 11:57:06 +0100
+Subject: [PATCH] spi: rockchip: simplify use_dma logic
 
-Now that we no longer potentially change spi clock
-at runtime we can precompute the rx sample delay
-at probe time rather than for each transfer.
+We only need to know if we're using dma when setting
+up the transfer, so just use a local variable for
+that.
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/spi/spi-rockchip.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index d1b3ba2b1532..5fe6099ff366 100644
+index 45a1479c1a29..ba60cbcd45c2 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -94,6 +94,7 @@
- #define CR0_BHT_8BIT				0x1
+@@ -184,8 +184,6 @@ struct rockchip_spi {
+ 	void *rx_end;
  
- #define CR0_RSD_OFFSET				14
-+#define CR0_RSD_MAX				0x3
- 
- #define CR0_FRF_OFFSET				16
- #define CR0_FRF_SPI					0x0
-@@ -179,7 +180,7 @@ struct rockchip_spi {
- 	u32 freq;
- 
- 	u8 n_bytes;
--	u32 rsd_nsecs;
-+	u8 rsd;
- 
- 	const void *tx;
- 	const void *tx_end;
-@@ -450,13 +451,13 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 		bool use_dma)
- {
- 	u32 dmacr = 0;
--	int rsd = 0;
- 
- 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
- 	        | CR0_BHT_8BIT << CR0_BHT_OFFSET
- 	        | CR0_SSD_ONE  << CR0_SSD_OFFSET
- 	        | CR0_EM_BIG   << CR0_EM_OFFSET;
- 
-+	cr0 |= rs->rsd << CR0_RSD_OFFSET;
- 	cr0 |= (rs->n_bytes << CR0_DFS_OFFSET);
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 
-@@ -474,20 +475,6 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 			dmacr |= RF_DMA_EN;
- 	}
- 
--	/* Rx sample delay is expressed in parent clock cycles (max 3) */
--	rsd = DIV_ROUND_CLOSEST(rs->rsd_nsecs * (rs->freq >> 8),
--				1000000000 >> 8);
--	if (!rsd && rs->rsd_nsecs) {
--		pr_warn_once("rockchip-spi: %u Hz are too slow to express %u ns delay\n",
--			     rs->freq, rs->rsd_nsecs);
--	} else if (rsd > 3) {
--		rsd = 3;
--		pr_warn_once("rockchip-spi: %u Hz are too fast to express %u ns delay, clamping at %u ns\n",
--			     rs->freq, rs->rsd_nsecs,
--			     rsd * 1000000000U / rs->freq);
--	}
--	cr0 |= rsd << CR0_RSD_OFFSET;
+ 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
 -
- 	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
+-	bool use_dma;
+ };
  
- 	if (rs->n_bytes == 1)
-@@ -620,8 +607,21 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	rs->freq = clk_get_rate(rs->spiclk);
+ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
+@@ -450,7 +448,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+ }
  
- 	if (!of_property_read_u32(pdev->dev.of_node, "rx-sample-delay-ns",
--				  &rsd_nsecs))
--		rs->rsd_nsecs = rsd_nsecs;
-+				  &rsd_nsecs)) {
-+		/* rx sample delay is expressed in parent clock cycles (max 3) */
-+		u32 rsd = DIV_ROUND_CLOSEST(rsd_nsecs * (rs->freq >> 8),
-+				1000000000 >> 8);
-+		if (!rsd) {
-+			dev_warn(rs->dev, "%u Hz are too slow to express %u ns delay\n",
-+					rs->freq, rsd_nsecs);
-+		} else if (rsd > CR0_RSD_MAX) {
-+			rsd = CR0_RSD_MAX;
-+			dev_warn(rs->dev, "%u Hz are too fast to express %u ns delay, clamping at %u ns\n",
-+					rs->freq, rsd_nsecs,
-+					CR0_RSD_MAX * 1000000000U / rs->freq);
-+		}
-+		rs->rsd = rsd;
-+	}
+ static void rockchip_spi_config(struct rockchip_spi *rs,
+-		struct spi_device *spi, struct spi_transfer *xfer)
++		struct spi_device *spi, struct spi_transfer *xfer,
++		bool use_dma)
+ {
+ 	u32 div = 0;
+ 	u32 dmacr = 0;
+@@ -471,7 +470,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+ 	else
+ 		cr0 |= CR0_XFM_TO << CR0_XFM_OFFSET;
  
- 	rs->fifo_len = get_fifo_len(rs);
- 	if (!rs->fifo_len) {
+-	if (rs->use_dma) {
++	if (use_dma) {
+ 		if (xfer->tx_buf)
+ 			dmacr |= TF_DMA_EN;
+ 		if (xfer->rx_buf)
+@@ -537,6 +536,7 @@ static int rockchip_spi_transfer_one(
+ 		struct spi_transfer *xfer)
+ {
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
++	bool use_dma;
+ 
+ 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
+ 		(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY));
+@@ -559,15 +559,11 @@ static int rockchip_spi_transfer_one(
+ 	rs->rx = xfer->rx_buf;
+ 	rs->rx_end = rs->rx + xfer->len;
+ 
+-	/* we need prepare dma before spi was enabled */
+-	if (master->can_dma && master->can_dma(master, spi, xfer))
+-		rs->use_dma = true;
+-	else
+-		rs->use_dma = false;
++	use_dma = master->can_dma ? master->can_dma(master, spi, xfer) : false;
+ 
+-	rockchip_spi_config(rs, spi, xfer);
++	rockchip_spi_config(rs, spi, xfer, use_dma);
+ 
+-	if (rs->use_dma)
++	if (use_dma)
+ 		return rockchip_spi_prepare_dma(rs, master, xfer);
+ 
+ 	return rockchip_spi_pio_transfer(rs);
 -- 
 2.19.0.rc2

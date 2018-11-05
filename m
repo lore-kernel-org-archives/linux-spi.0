@@ -1,85 +1,99 @@
-From: Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH 15/15] power: supply: olpc_battery: Add OLPC XO 1.75
- support
-Date: Sun, 4 Nov 2018 15:39:54 +0100
-Message-ID: <20181104143954.GH23864@amd>
-References: <20181010172300.317643-1-lkundrak@v3.sk>
- <20181010172300.317643-16-lkundrak@v3.sk>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8555616779526665986=="
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- devel@driverdev.osuosl.org, Eric Miao <eric.y.miao@gmail.com>,
- James Cameron <quozl@laptop.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Daniel Mack <daniel@zonque.org>, Darren Hart <dvhart@infradead.org>,
- platform-driver-x86@vger.kernel.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Andy Shevchenko <andy@infradead.org>, linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20181010172300.317643-16-lkundrak@v3.sk>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+From: Piotr Bugalski <bugalski.piotr@gmail.com>
+Subject: [PATCH v3 0/6] New QuadSPI driver for Atmel SAMA5D2
+Date: Mon,  5 Nov 2018 11:36:19 +0100
+Message-ID: <20181105103625.9644-1-bugalski.piotr@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Piotr Bugalski <bugalski.piotr@gmail.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello,
 
---===============8555616779526665986==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="yxUjl2uTvAeSG6i1"
-Content-Disposition: inline
+Atmel SAMA5D2 is equipped with two QSPI interfaces. These interfaces can
+work as in SPI-compatible mode or use two / four lines to improve
+communication speed. At the moment there is QSPI driver strongly tied to
+NOR-flash memory and MTD subsystem.
+Intention of this change is to provide new driver which will not be tied
+to MTD and allows using QSPI with NAND-flash memory or other peripherals
+New spi-mem API provides abstraction layer which can disconnect QSPI
+from MTD. This driver doesn't support regular SPI interface, it should
+be used with spi-mem interface only.
+Unfortunately SAMA5D2 hardware by default supports only NOR-flash
+memory. It allows 24- and 32-bit addressing while NAND-flash requires
+16-bit long. To workaround hardware limitation driver is a bit more
+complicated.
 
+Request to spi-mem contains three fiels: opcode (command), address,
+dummy bytes. SAMA5D2 QSPI hardware supports opcode, address, dummy and
+option byte where address field can only be 24- or 32- bytes long.
+Handling 8-bits long addresses is done using option field. For 16-bits
+address behaviour depends of number of requested dummy bits. If there
+are 8 or more dummy cycles, address is shifted and sent with first dummy
+byte. Otherwise opcode is disabled and first byte of address contains
+command opcode (works only if opcode and address use the same buswidth).
+The limitation is when 16-bit address is used without enough dummy
+cycles and opcode is using different buswidth than address. Other modes
+are supported with described workaround.
 
---yxUjl2uTvAeSG6i1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It looks like hardware has some limitation in performance. The same issue
+exists in current QSPI driver (MTD/nor-flash) and soft-pack (bare-metal
+library from Atmel). Without using DMA read speed is much worse than
+maximum bandwidth (efficiency 30-40%). Any help with performance
+improvement is highly welcome, especially for NAND-flash memories which
+offers higher capacity than NOR-flash used with previous driver.
 
-On Wed 2018-10-10 19:23:00, Lubomir Rintel wrote:
-> The battery and the protocol are essentially the same as OLPC XO 1.5,
-> but the responses from the EC are LSB first.
->=20
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Best Regards,
+Piotr
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
+v3 changes:
+ - add get_name implementation
+ - email address fix
 
+v2 changes:
+ - driver is now replacement of existing atmel-quadspi
+ - code was re-written to follow original code structure
+ - deinitialization order fixed
+ - empty atmel_qspi_adjust_op_size function removed
+ - code formatting fixes
+ - use spi_device->max_speed_hz to get spi speed
+ - spi freqency set in spi_controller->setup() hook
+ - address range checkng for 4-bytes addressing
+ - use timeout to avoid infinite waiting
 
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+Piotr Bugalski (6):
+  mtd: spi-nor: atmel-quaspi: Typo fix
+  mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi
+  mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi
+    driver
+  mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi
+    driver
+  spi: Add QuadSPI driver for Atmel SAMA5D2
+  dt-bindings: spi: QuadSPI driver for Atmel SAMA5D2
 
---yxUjl2uTvAeSG6i1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ .../bindings/{mtd => spi}/atmel-quadspi.txt        |   0
+ drivers/mtd/spi-nor/Kconfig                        |   9 -
+ drivers/mtd/spi-nor/Makefile                       |   1 -
+ drivers/spi/Kconfig                                |   9 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/{mtd/spi-nor => spi}/atmel-quadspi.c       | 528 ++++++---------------
+ 6 files changed, 158 insertions(+), 390 deletions(-)
+ rename Documentation/devicetree/bindings/{mtd => spi}/atmel-quadspi.txt (100%)
+ rename drivers/{mtd/spi-nor => spi}/atmel-quadspi.c (53%)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAlvfBLoACgkQMOfwapXb+vL6VgCgvhs/3bLXmA2/Vwrtr8dYpZmV
-z5YAnjz/o0XS+wz1xeB8nkXw5v0zfcoV
-=scdI
------END PGP SIGNATURE-----
-
---yxUjl2uTvAeSG6i1--
-
---===============8555616779526665986==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devel mailing list
-devel@linuxdriverproject.org
-http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
-
---===============8555616779526665986==--
+-- 
+2.11.0

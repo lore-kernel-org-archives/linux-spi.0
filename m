@@ -1,112 +1,80 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v3 0/6] New QuadSPI driver for Atmel SAMA5D2
-Date: Mon, 5 Nov 2018 12:02:19 +0100
-Message-ID: <20181105120219.03ab3b4c@bbrezillon>
-References: <20181105103625.9644-1-bugalski.piotr@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>
-To: Piotr Bugalski <bugalski.piotr@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-rspi: simplify getting .driver_data" to the spi tree
+Date: Mon,  5 Nov 2018 12:01:41 +0000 (GMT)
+Message-ID: <20181105120141.553C41124D98@debutante.sirena.org.uk>
+References: <20181021200048.2114-2-wsa+renesas@sang-engineering.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181105103625.9644-1-bugalski.piotr@gmail.com>
+In-Reply-To: <20181021200048.2114-2-wsa+renesas@sang-engineering.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Piotr,
+The patch
 
-On Mon,  5 Nov 2018 11:36:19 +0100
-Piotr Bugalski <bugalski.piotr@gmail.com> wrote:
+   spi: spi-rspi: simplify getting .driver_data
 
-> Hello,
-> 
-> Atmel SAMA5D2 is equipped with two QSPI interfaces. These interfaces can
-> work as in SPI-compatible mode or use two / four lines to improve
-> communication speed. At the moment there is QSPI driver strongly tied to
-> NOR-flash memory and MTD subsystem.
-> Intention of this change is to provide new driver which will not be tied
-> to MTD and allows using QSPI with NAND-flash memory or other peripherals
-> New spi-mem API provides abstraction layer which can disconnect QSPI
-> from MTD. This driver doesn't support regular SPI interface, it should
-> be used with spi-mem interface only.
-> Unfortunately SAMA5D2 hardware by default supports only NOR-flash
-> memory. It allows 24- and 32-bit addressing while NAND-flash requires
-> 16-bit long. To workaround hardware limitation driver is a bit more
-> complicated.
-> 
-> Request to spi-mem contains three fiels: opcode (command), address,
-> dummy bytes. SAMA5D2 QSPI hardware supports opcode, address, dummy and
-> option byte where address field can only be 24- or 32- bytes long.
-> Handling 8-bits long addresses is done using option field. For 16-bits
-> address behaviour depends of number of requested dummy bits. If there
-> are 8 or more dummy cycles, address is shifted and sent with first dummy
-> byte. Otherwise opcode is disabled and first byte of address contains
-> command opcode (works only if opcode and address use the same buswidth).
-> The limitation is when 16-bit address is used without enough dummy
-> cycles and opcode is using different buswidth than address. Other modes
-> are supported with described workaround.
-> 
-> It looks like hardware has some limitation in performance. The same issue
-> exists in current QSPI driver (MTD/nor-flash) and soft-pack (bare-metal
-> library from Atmel). Without using DMA read speed is much worse than
-> maximum bandwidth (efficiency 30-40%). Any help with performance
-> improvement is highly welcome, especially for NAND-flash memories which
-> offers higher capacity than NOR-flash used with previous driver.
+has been applied to the spi tree at
 
-I think you can try to implement the dirmap interface proposed here [1]
-and use DMA+TRSFR_READ/WRITE_MEMORY for such direct mappings. This
-should optimize path where we really matter about perfs.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> 
-> Best Regards,
-> Piotr
-> 
-> v3 changes:
->  - add get_name implementation
->  - email address fix
-> 
-> v2 changes:
->  - driver is now replacement of existing atmel-quadspi
->  - code was re-written to follow original code structure
->  - deinitialization order fixed
->  - empty atmel_qspi_adjust_op_size function removed
->  - code formatting fixes
->  - use spi_device->max_speed_hz to get spi speed
->  - spi freqency set in spi_controller->setup() hook
->  - address range checkng for 4-bytes addressing
->  - use timeout to avoid infinite waiting
-> 
-> Piotr Bugalski (6):
->   mtd: spi-nor: atmel-quaspi: Typo fix
->   mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi
->   mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi
->     driver
->   mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi
->     driver
->   spi: Add QuadSPI driver for Atmel SAMA5D2
->   dt-bindings: spi: QuadSPI driver for Atmel SAMA5D2
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-The patch series is
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Acked-by: Boris Brezillon <boris.brezillon@bootlin.com>
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Mark, if you're okay with the new implementation, would you mind taking
-those patches in the spi tree?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
+Mark
 
-Boris
+>From be0bf62e3df9afcb3f7a72de347770568dd60af6 Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Sun, 21 Oct 2018 22:00:45 +0200
+Subject: [PATCH] spi: spi-rspi: simplify getting .driver_data
 
-[1]http://patchwork.ozlabs.org/project/linux-mtd/list/?series=73235
+We should get 'driver_data' from 'struct device' directly. Going via
+platform_device is an unneeded step back and forth.
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-rspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 55f8e55327b3..a4ef641b5227 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1347,16 +1347,14 @@ MODULE_DEVICE_TABLE(platform, spi_driver_ids);
+ #ifdef CONFIG_PM_SLEEP
+ static int rspi_suspend(struct device *dev)
+ {
+-	struct platform_device *pdev = to_platform_device(dev);
+-	struct rspi_data *rspi = platform_get_drvdata(pdev);
++	struct rspi_data *rspi = dev_get_drvdata(dev);
+ 
+ 	return spi_master_suspend(rspi->master);
+ }
+ 
+ static int rspi_resume(struct device *dev)
+ {
+-	struct platform_device *pdev = to_platform_device(dev);
+-	struct rspi_data *rspi = platform_get_drvdata(pdev);
++	struct rspi_data *rspi = dev_get_drvdata(dev);
+ 
+ 	return spi_master_resume(rspi->master);
+ }
+-- 
+2.19.0.rc2

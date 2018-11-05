@@ -1,158 +1,39 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: remove master pointer from dev data" to the spi tree
-Date: Mon,  5 Nov 2018 12:06:30 +0000 (GMT)
-Message-ID: <20181105120630.2BE051124D98@debutante.sirena.org.uk>
-References: <20181031105711.19575-9-esmil@mailme.dk>
-Cc: Heiko Stuebner <heiko@sntech.de>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, Addy Ke <addy.ke@rock-chips.com>,
-        Mark Brown <broonie@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Emil Renner Berthing <kernel@esmil.dk>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v1] spi: spi-qcom-qspi: Fix remaining driver nits
+Date: Mon, 5 Nov 2018 10:29:43 -0800
+Message-ID: <CAD=FV=XGwyUEN3U-SzFB_VOLJ3LMcMttugKz7skgvMaBjt3H_w@mail.gmail.com>
+References: <20181023010707.153647-1-ryandcase@chromium.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: ryandcase@chromium.org, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181031105711.19575-9-esmil@mailme.dk>
+In-Reply-To: <20181023010707.153647-1-ryandcase@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Mark,
 
-   spi: rockchip: remove master pointer from dev data
+On Mon, Oct 22, 2018 at 6:07 PM Ryan Case <ryandcase@chromium.org> wrote:
+>
+> Address remaining comments from original driver patch series
+>
+> * Move RD_FIFO_CFG to be ordered corretly
+> * Expand spinlock comment
+>
+> Signed-off-by: Ryan Case <ryandcase@chromium.org>
+> ---
+>
+>  drivers/spi/spi-qcom-qspi.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-has been applied to the spi tree at
+No huge deal (obviously) but I noticed that you landed a batch of
+similar patches last night but didn't land this one.  Did it fall off
+your radar or is there some other reason not to land it?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Thanks!
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d790c342e689ea77a5cf72d5b993299911ee5276 Mon Sep 17 00:00:00 2001
-From: Emil Renner Berthing <kernel@esmil.dk>
-Date: Wed, 31 Oct 2018 11:57:05 +0100
-Subject: [PATCH] spi: rockchip: remove master pointer from dev data
-
-In almost all cases we already have a pointer to the
-spi master structure where we have the driver data.
-
-The only exceptions are the dma callbacks which are
-easily fixed by passing them the master and using
-spi_master_get_devdata to retrieve the driver data.
-
-Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-rockchip.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index f3fe6d4cf6f6..45a1479c1a29 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -159,7 +159,6 @@
- 
- struct rockchip_spi {
- 	struct device *dev;
--	struct spi_master *master;
- 
- 	struct clk *spiclk;
- 	struct clk *apb_pclk;
-@@ -350,19 +349,21 @@ static int rockchip_spi_pio_transfer(struct rockchip_spi *rs)
- 
- static void rockchip_spi_dma_rxcb(void *data)
- {
--	struct rockchip_spi *rs = data;
-+	struct spi_master *master = data;
-+	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
- 
- 	if (state & TXDMA)
- 		return;
- 
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(rs->master);
-+	spi_finalize_current_transfer(master);
- }
- 
- static void rockchip_spi_dma_txcb(void *data)
- {
--	struct rockchip_spi *rs = data;
-+	struct spi_master *master = data;
-+	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
- 
- 	if (state & RXDMA)
-@@ -372,7 +373,7 @@ static void rockchip_spi_dma_txcb(void *data)
- 	wait_for_idle(rs);
- 
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(rs->master);
-+	spi_finalize_current_transfer(master);
- }
- 
- static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
-@@ -401,7 +402,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			return -EINVAL;
- 
- 		rxdesc->callback = rockchip_spi_dma_rxcb;
--		rxdesc->callback_param = rs;
-+		rxdesc->callback_param = master;
- 	}
- 
- 	txdesc = NULL;
-@@ -426,7 +427,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 		}
- 
- 		txdesc->callback = rockchip_spi_dma_txcb;
--		txdesc->callback_param = rs;
-+		txdesc->callback_param = master;
- 	}
- 
- 	/* rx must be started before tx due to spi instinct */
-@@ -633,7 +634,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 
- 	spi_enable_chip(rs, false);
- 
--	rs->master = master;
- 	rs->dev = &pdev->dev;
- 	rs->max_freq = clk_get_rate(rs->spiclk);
- 
-@@ -746,9 +746,8 @@ static int rockchip_spi_suspend(struct device *dev)
- {
- 	int ret;
- 	struct spi_master *master = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
- 
--	ret = spi_master_suspend(rs->master);
-+	ret = spi_master_suspend(master);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -773,7 +772,7 @@ static int rockchip_spi_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = spi_master_resume(rs->master);
-+	ret = spi_master_resume(master);
- 	if (ret < 0) {
- 		clk_disable_unprepare(rs->spiclk);
- 		clk_disable_unprepare(rs->apb_pclk);
--- 
-2.19.0.rc2
+-Doug

@@ -1,8 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 3/7] spi: spi-mem: Split spi_mem_exec_op() code
-Date: Tue,  6 Nov 2018 17:05:32 +0100
-Message-ID: <20181106160536.13415-4-boris.brezillon@bootlin.com>
-References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 0/7] spi: spi-mem: Add a direct mapping API
+Date: Tue,  6 Nov 2018 17:05:29 +0100
+Message-ID: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,7 +18,6 @@ To: David Woodhouse <dwmw2@infradead.org>,
  linux-mtd@lists.infradead.org, Mark Brown <broonie@kernel.org>,
  linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -31,106 +29,34 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The logic surrounding the ->exec_op() call applies to direct mapping
-accessors. Move this code to separate functions to avoid duplicating
-code.
+Hello,
 
-Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
-Changes in v3:
-- Add Miquel's R-b
+Here is a v3 addressing the comment I received from Yogesh on the
+m25p80 modifications. Note that this part is still untested (I only
+tested on a spinand device so far), so that'd be great if someone
+could test it.
 
-Changes in v2:
-- New patch
----
- drivers/spi/spi-mem.c | 63 ++++++++++++++++++++++++++++---------------
- 1 file changed, 42 insertions(+), 21 deletions(-)
+Thanks,
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 967f581bca4f..7916e655afc8 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -213,6 +213,44 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- }
- EXPORT_SYMBOL_GPL(spi_mem_supports_op);
- 
-+static int spi_mem_access_start(struct spi_mem *mem)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	/*
-+	 * Flush the message queue before executing our SPI memory
-+	 * operation to prevent preemption of regular SPI transfers.
-+	 */
-+	spi_flush_queue(ctlr);
-+
-+	if (ctlr->auto_runtime_pm) {
-+		int ret;
-+
-+		ret = pm_runtime_get_sync(ctlr->dev.parent);
-+		if (ret < 0) {
-+			dev_err(&ctlr->dev, "Failed to power device: %d\n",
-+				ret);
-+			return ret;
-+		}
-+	}
-+
-+	mutex_lock(&ctlr->bus_lock_mutex);
-+	mutex_lock(&ctlr->io_mutex);
-+
-+	return 0;
-+}
-+
-+static void spi_mem_access_end(struct spi_mem *mem)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+
-+	mutex_unlock(&ctlr->io_mutex);
-+	mutex_unlock(&ctlr->bus_lock_mutex);
-+
-+	if (ctlr->auto_runtime_pm)
-+		pm_runtime_put(ctlr->dev.parent);
-+}
-+
- /**
-  * spi_mem_exec_op() - Execute a memory operation
-  * @mem: the SPI memory
-@@ -242,30 +280,13 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		return -ENOTSUPP;
- 
- 	if (ctlr->mem_ops) {
--		/*
--		 * Flush the message queue before executing our SPI memory
--		 * operation to prevent preemption of regular SPI transfers.
--		 */
--		spi_flush_queue(ctlr);
--
--		if (ctlr->auto_runtime_pm) {
--			ret = pm_runtime_get_sync(ctlr->dev.parent);
--			if (ret < 0) {
--				dev_err(&ctlr->dev,
--					"Failed to power device: %d\n",
--					ret);
--				return ret;
--			}
--		}
-+		ret = spi_mem_access_start(mem);
-+		if (ret)
-+			return ret;
- 
--		mutex_lock(&ctlr->bus_lock_mutex);
--		mutex_lock(&ctlr->io_mutex);
- 		ret = ctlr->mem_ops->exec_op(mem, op);
--		mutex_unlock(&ctlr->io_mutex);
--		mutex_unlock(&ctlr->bus_lock_mutex);
- 
--		if (ctlr->auto_runtime_pm)
--			pm_runtime_put(ctlr->dev.parent);
-+		spi_mem_access_end(mem);
- 
- 		/*
- 		 * Some controllers only optimize specific paths (typically the
+Boris
+
+Boris Brezillon (7):
+  spi: spi-mem: Add missing word in the SPI_MEM_DATA_OUT description
+  spi: spi-mem: Add SPI_MEM_NO_DATA to the spi_mem_data_dir enum
+  spi: spi-mem: Split spi_mem_exec_op() code
+  spi: spi-mem: Add a new API to support direct mapping
+  mtd: devices: m25p80: Use the spi-mem dirmap API
+  mtd: spinand: Use the spi-mem dirmap API
+  spi: mxic: Add support for direct mapping
+
+ drivers/mtd/devices/m25p80.c | 102 ++++++++++++-
+ drivers/mtd/nand/spi/core.c  | 231 +++++++++++++++++-------------
+ drivers/spi/spi-mem.c        | 269 ++++++++++++++++++++++++++++++++---
+ drivers/spi/spi-mxic.c       | 137 ++++++++++++++----
+ include/linux/mtd/spinand.h  |   7 +
+ include/linux/spi/spi-mem.h  |  84 ++++++++++-
+ 6 files changed, 677 insertions(+), 153 deletions(-)
+
 -- 
 2.17.1
 

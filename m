@@ -1,8 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 2/7] spi: spi-mem: Add SPI_MEM_NO_DATA to the
- spi_mem_data_dir enum
-Date: Tue,  6 Nov 2018 17:05:31 +0100
-Message-ID: <20181106160536.13415-3-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 3/7] spi: spi-mem: Split spi_mem_exec_op() code
+Date: Tue,  6 Nov 2018 17:05:32 +0100
+Message-ID: <20181106160536.13415-4-boris.brezillon@bootlin.com>
 References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,13 +31,9 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-When defining spi_mem_op templates we don't necessarily know the size
-that will be passed when the template is actually used, and basing the
-supports_op() check on op->data.nbytes to know whether there will be
-data transferred for a specific operation is this not possible.
-
-Add SPI_MEM_NO_DATA to the spi_mem_data_dir enum so that we can base
-our checks on op->data.dir instead of op->data.nbytes.
+The logic surrounding the ->exec_op() call applies to direct mapping
+accessors. Move this code to separate functions to avoid duplicating
+code.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
@@ -49,40 +44,93 @@ Changes in v3:
 Changes in v2:
 - New patch
 ---
- drivers/spi/spi-mem.c       | 2 +-
- include/linux/spi/spi-mem.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mem.c | 63 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 42 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 62a7b80801d2..967f581bca4f 100644
+index 967f581bca4f..7916e655afc8 100644
 --- a/drivers/spi/spi-mem.c
 +++ b/drivers/spi/spi-mem.c
-@@ -142,7 +142,7 @@ static bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
- 		return false;
+@@ -213,6 +213,44 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_supports_op);
  
--	if (op->data.nbytes &&
-+	if (op->data.dir != SPI_MEM_NO_DATA &&
- 	    spi_check_buswidth_req(mem, op->data.buswidth,
- 				   op->data.dir == SPI_MEM_DATA_OUT))
- 		return false;
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 867839cc69a7..250b6f5c47c2 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -57,10 +57,12 @@
++static int spi_mem_access_start(struct spi_mem *mem)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++
++	/*
++	 * Flush the message queue before executing our SPI memory
++	 * operation to prevent preemption of regular SPI transfers.
++	 */
++	spi_flush_queue(ctlr);
++
++	if (ctlr->auto_runtime_pm) {
++		int ret;
++
++		ret = pm_runtime_get_sync(ctlr->dev.parent);
++		if (ret < 0) {
++			dev_err(&ctlr->dev, "Failed to power device: %d\n",
++				ret);
++			return ret;
++		}
++	}
++
++	mutex_lock(&ctlr->bus_lock_mutex);
++	mutex_lock(&ctlr->io_mutex);
++
++	return 0;
++}
++
++static void spi_mem_access_end(struct spi_mem *mem)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++
++	mutex_unlock(&ctlr->io_mutex);
++	mutex_unlock(&ctlr->bus_lock_mutex);
++
++	if (ctlr->auto_runtime_pm)
++		pm_runtime_put(ctlr->dev.parent);
++}
++
  /**
-  * enum spi_mem_data_dir - describes the direction of a SPI memory data
-  *			   transfer from the controller perspective
-+ * @SPI_MEM_NO_DATA: no data transferred
-  * @SPI_MEM_DATA_IN: data coming from the SPI memory
-  * @SPI_MEM_DATA_OUT: data sent to the SPI memory
-  */
- enum spi_mem_data_dir {
-+	SPI_MEM_NO_DATA,
- 	SPI_MEM_DATA_IN,
- 	SPI_MEM_DATA_OUT,
- };
+  * spi_mem_exec_op() - Execute a memory operation
+  * @mem: the SPI memory
+@@ -242,30 +280,13 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		return -ENOTSUPP;
+ 
+ 	if (ctlr->mem_ops) {
+-		/*
+-		 * Flush the message queue before executing our SPI memory
+-		 * operation to prevent preemption of regular SPI transfers.
+-		 */
+-		spi_flush_queue(ctlr);
+-
+-		if (ctlr->auto_runtime_pm) {
+-			ret = pm_runtime_get_sync(ctlr->dev.parent);
+-			if (ret < 0) {
+-				dev_err(&ctlr->dev,
+-					"Failed to power device: %d\n",
+-					ret);
+-				return ret;
+-			}
+-		}
++		ret = spi_mem_access_start(mem);
++		if (ret)
++			return ret;
+ 
+-		mutex_lock(&ctlr->bus_lock_mutex);
+-		mutex_lock(&ctlr->io_mutex);
+ 		ret = ctlr->mem_ops->exec_op(mem, op);
+-		mutex_unlock(&ctlr->io_mutex);
+-		mutex_unlock(&ctlr->bus_lock_mutex);
+ 
+-		if (ctlr->auto_runtime_pm)
+-			pm_runtime_put(ctlr->dev.parent);
++		spi_mem_access_end(mem);
+ 
+ 		/*
+ 		 * Some controllers only optimize specific paths (typically the
 -- 
 2.17.1
 

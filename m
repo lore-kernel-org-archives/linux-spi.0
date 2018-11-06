@@ -1,22 +1,26 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v2 0/7] spi: spi-mem: Add a direct mapping API
-Date: Tue, 6 Nov 2018 14:21:49 +0100
-Message-ID: <20181106142149.13e35c98@xps13>
-References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH 1/4] spi: rspi: Add r8a77470 to the compatible list
+Date: Tue, 6 Nov 2018 15:09:05 +0100
+Message-ID: <20181106140905.yfhr7fayi6decjzz@verge.net.au>
+References: <1541075705-1333-1-git-send-email-fabrizio.castro@bp.renesas.com>
+ <1541075705-1333-2-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Chris Paterson <Chris.Paterson2@renesas.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Magnus Damm <magnus.damm@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, Biju Das <biju.das@bp.renesas.com>
+To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181030133638.3322-1-boris.brezillon@bootlin.com>
+Content-Disposition: inline
+In-Reply-To: <1541075705-1333-2-git-send-email-fabrizio.castro@bp.renesas.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -28,36 +32,41 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
-d3JvdGUgb24gVHVlLCAzMCBPY3QgMjAxOAoxNDozNjozMSArMDEwMDoKCj4gSGVsbG8sCj4gCj4g
-SSBkaWRuJ3QgaGF2ZSBtdWNoIHJldmlldyBvbiB0aGUgUkZDLCBzbyBJJ20gcmVzZW5kaW5nIHRo
-aXMgc2VyaWVzCj4gd2l0aG91dCAiUkZDIiBpbiB0aGUgc3ViamVjdC4gTWF5YmUgSSdsbCBnZXQg
-bW9yZSByZXZpZXdzIHRoaXMgdGltZS4KPiAKPiBBIGZldyB0aGluZ3MgaGF2ZSBjaGFuZ2VkIHNp
-bmNlIEkgc3VibWl0dGVkIHRoZSBSRkMKPiAtIFRoZSBzcGktbmFuZCBmcmFtZXdvcmsgaGFzIGJl
-ZW4gbWVyZ2VkLCBhbmQgSSBjYW4gdGh1cyBwYXRjaCB0aGlzCj4gICBkcml2ZXIgdG8gdXNlIHRo
-ZSBkaXJtYXAgQVBJCj4gLSBUaGUgTVhJQyBjb250cm9sbGVyIGhhcyBiZWVuIHN1Ym1pdHRlZCwg
-YW5kIHNpbmNlIEkgZGlkIG15IHRlc3RzCj4gICB3aXRoIHRoaXMgY29udHJvbGxlciwgSSBjYW4g
-YWxzbyBhZGQgYSBwYXRjaCBzaG93aW5nIGhvdyB0bwo+ICAgaW1wbGVtZW50IHRoZSBkaXJtYXAg
-aG9va3MKPiAKPiBPdGhlciBjaGFuZ2VzIGFyZSBhZGRyZXNzaW5nIHRoZSBjb21tZW50cyBJIHJl
-Y2VpdmVkIGZyb20gTWlxdWVsLgo+IAo+IEknZCBzdGlsbCBsaWtlIHRvIGdldCBmZWVkYmFjayBv
-biB0aGUgQVBJIGFuZCBjb250cm9sbGVyIGludGVyZmFjZSBpZgo+IGFueW9uZSBpcyBpbnRlcmVz
-dGVkIGluIHJldmlld2luZyBpdC4KPiAKPiBUaGFua3MsCj4gCj4gQm9yaXMKPiAKPiBCb3JpcyBC
-cmV6aWxsb24gKDcpOgo+ICAgc3BpOiBzcGktbWVtOiBBZGQgbWlzc2luZyB3b3JkIGluIHRoZSBT
-UElfTUVNX0RBVEFfT1VUIGRlc2NyaXB0aW9uCj4gICBzcGk6IHNwaS1tZW06IEFkZCBTUElfTUVN
-X05PX0RBVEEgdG8gdGhlIHNwaV9tZW1fZGF0YV9kaXIgZW51bQo+ICAgc3BpOiBzcGktbWVtOiBT
-cGxpdCBzcGlfbWVtX2V4ZWNfb3AoKSBjb2RlCj4gICBzcGk6IHNwaS1tZW06IEFkZCBhIG5ldyBB
-UEkgdG8gc3VwcG9ydCBkaXJlY3QgbWFwcGluZwo+ICAgbXRkOiBkZXZpY2VzOiBtMjVwODA6IFVz
-ZSB0aGUgc3BpLW1lbSBkaXJtYXAgQVBJCj4gICBtdGQ6IHNwaW5hbmQ6IFVzZSB0aGUgc3BpLW1l
-bSBkaXJtYXAgQVBJCj4gICBzcGk6IG14aWM6IEFkZCBzdXBwb3J0IGZvciBkaXJlY3QgbWFwcGlu
-Zwo+IAo+ICBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jIHwgMTQyICsrKysrKysrKysrLS0t
-LS0tLQo+ICBkcml2ZXJzL210ZC9uYW5kL3NwaS9jb3JlLmMgIHwgMjMxICsrKysrKysrKysrKysr
-KysrLS0tLS0tLS0tLS0tLQo+ICBkcml2ZXJzL3NwaS9zcGktbWVtLmMgICAgICAgIHwgMjY5ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tCj4gIGRyaXZlcnMvc3BpL3NwaS1teGlj
-LmMgICAgICAgfCAxNDAgKysrKysrKysrKysrKystLS0tCj4gIGluY2x1ZGUvbGludXgvbXRkL3Nw
-aW5hbmQuaCAgfCAgIDcgKwo+ICBpbmNsdWRlL2xpbnV4L3NwaS9zcGktbWVtLmggIHwgIDg0ICsr
-KysrKysrKystCj4gIDYgZmlsZXMgY2hhbmdlZCwgNjcwIGluc2VydGlvbnMoKyksIDIwMyBkZWxl
-dGlvbnMoLSkKPiAKCkZvciB0aGUgd2hvbGUgc2VyaWVzOgoKUmV2aWV3ZWQtYnk6IE1pcXVlbCBS
-YXluYWwgPG1pcXVlbC5yYXluYWxAYm9vdGxpbi5jb20+CgoKVGhhbmtzLApNaXF1w6hsCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgg
-TVREIGRpc2N1c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vbGludXgtbXRkLwo=
+On Thu, Nov 01, 2018 at 12:35:02PM +0000, Fabrizio Castro wrote:
+> Add r8a77470 to the list of examples with soctypes.
+> No driver change is needed as "renesas,qspi" will activate
+> the right code within the corresponding driver.
+> 
+> Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+
+> 
+> ---
+> 
+> As per Mark Brown's comment on patch "dt-bindings: spi: rspi: Add
+> r8a7744 to the compatible list", this patch doesn't come with the
+> "dt-bindings" prefix in the title.
+> 
+>  Documentation/devicetree/bindings/spi/spi-rspi.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> index fc97ad6..421722b 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> @@ -15,6 +15,7 @@ Required properties:
+>  			- "renesas,qspi-r8a7743" (RZ/G1M)
+>  			- "renesas,qspi-r8a7744" (RZ/G1N)
+>  			- "renesas,qspi-r8a7745" (RZ/G1E)
+> +			- "renesas,qspi-r8a77470" (RZ/G1C)
+>  			- "renesas,qspi-r8a7790" (R-Car H2)
+>  			- "renesas,qspi-r8a7791" (R-Car M2-W)
+>  			- "renesas,qspi-r8a7792" (R-Car V2H)
+> -- 
+> 2.7.4
+> 
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

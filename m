@@ -1,42 +1,63 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v3 6/6] dt-bindings: spi: QuadSPI driver for Atmel SAMA5D2
-Date: Mon, 5 Nov 2018 15:21:48 -0600
-Message-ID: <20181105212148.GA13045@bogus>
-References: <20181105103625.9644-1-bugalski.piotr@gmail.com>
- <20181105103625.9644-7-bugalski.piotr@gmail.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v2 0/7] spi: spi-mem: Add a direct mapping API
+Date: Tue, 6 Nov 2018 14:21:49 +0100
+Message-ID: <20181106142149.13e35c98@xps13>
+References: <20181030133638.3322-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Piotr Bugalski <bugalski.piotr@gmail.com>
-To: Piotr Bugalski <bugalski.piotr@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181105103625.9644-7-bugalski.piotr@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-spi@vger.kernel.org,
+ Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181030133638.3322-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon,  5 Nov 2018 11:36:25 +0100, Piotr Bugalski wrote:
-> Atmel SAMA5D2 QuadSPI driver was moved from mtd to spi subsystem,
-> this change is just moving DT-binding documentation.
-> 
-> Suggested-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> Signed-off-by: Piotr Bugalski <bugalski.piotr@gmail.com>
-> ---
->  Documentation/devicetree/bindings/{mtd => spi}/atmel-quadspi.txt | 0
->  1 file changed, 0 insertions(+), 0 deletions(-)
->  rename Documentation/devicetree/bindings/{mtd => spi}/atmel-quadspi.txt (100%)
-> 
-
-Reviewed-by: Rob Herring <robh@kernel.org>
+SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
+d3JvdGUgb24gVHVlLCAzMCBPY3QgMjAxOAoxNDozNjozMSArMDEwMDoKCj4gSGVsbG8sCj4gCj4g
+SSBkaWRuJ3QgaGF2ZSBtdWNoIHJldmlldyBvbiB0aGUgUkZDLCBzbyBJJ20gcmVzZW5kaW5nIHRo
+aXMgc2VyaWVzCj4gd2l0aG91dCAiUkZDIiBpbiB0aGUgc3ViamVjdC4gTWF5YmUgSSdsbCBnZXQg
+bW9yZSByZXZpZXdzIHRoaXMgdGltZS4KPiAKPiBBIGZldyB0aGluZ3MgaGF2ZSBjaGFuZ2VkIHNp
+bmNlIEkgc3VibWl0dGVkIHRoZSBSRkMKPiAtIFRoZSBzcGktbmFuZCBmcmFtZXdvcmsgaGFzIGJl
+ZW4gbWVyZ2VkLCBhbmQgSSBjYW4gdGh1cyBwYXRjaCB0aGlzCj4gICBkcml2ZXIgdG8gdXNlIHRo
+ZSBkaXJtYXAgQVBJCj4gLSBUaGUgTVhJQyBjb250cm9sbGVyIGhhcyBiZWVuIHN1Ym1pdHRlZCwg
+YW5kIHNpbmNlIEkgZGlkIG15IHRlc3RzCj4gICB3aXRoIHRoaXMgY29udHJvbGxlciwgSSBjYW4g
+YWxzbyBhZGQgYSBwYXRjaCBzaG93aW5nIGhvdyB0bwo+ICAgaW1wbGVtZW50IHRoZSBkaXJtYXAg
+aG9va3MKPiAKPiBPdGhlciBjaGFuZ2VzIGFyZSBhZGRyZXNzaW5nIHRoZSBjb21tZW50cyBJIHJl
+Y2VpdmVkIGZyb20gTWlxdWVsLgo+IAo+IEknZCBzdGlsbCBsaWtlIHRvIGdldCBmZWVkYmFjayBv
+biB0aGUgQVBJIGFuZCBjb250cm9sbGVyIGludGVyZmFjZSBpZgo+IGFueW9uZSBpcyBpbnRlcmVz
+dGVkIGluIHJldmlld2luZyBpdC4KPiAKPiBUaGFua3MsCj4gCj4gQm9yaXMKPiAKPiBCb3JpcyBC
+cmV6aWxsb24gKDcpOgo+ICAgc3BpOiBzcGktbWVtOiBBZGQgbWlzc2luZyB3b3JkIGluIHRoZSBT
+UElfTUVNX0RBVEFfT1VUIGRlc2NyaXB0aW9uCj4gICBzcGk6IHNwaS1tZW06IEFkZCBTUElfTUVN
+X05PX0RBVEEgdG8gdGhlIHNwaV9tZW1fZGF0YV9kaXIgZW51bQo+ICAgc3BpOiBzcGktbWVtOiBT
+cGxpdCBzcGlfbWVtX2V4ZWNfb3AoKSBjb2RlCj4gICBzcGk6IHNwaS1tZW06IEFkZCBhIG5ldyBB
+UEkgdG8gc3VwcG9ydCBkaXJlY3QgbWFwcGluZwo+ICAgbXRkOiBkZXZpY2VzOiBtMjVwODA6IFVz
+ZSB0aGUgc3BpLW1lbSBkaXJtYXAgQVBJCj4gICBtdGQ6IHNwaW5hbmQ6IFVzZSB0aGUgc3BpLW1l
+bSBkaXJtYXAgQVBJCj4gICBzcGk6IG14aWM6IEFkZCBzdXBwb3J0IGZvciBkaXJlY3QgbWFwcGlu
+Zwo+IAo+ICBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jIHwgMTQyICsrKysrKysrKysrLS0t
+LS0tLQo+ICBkcml2ZXJzL210ZC9uYW5kL3NwaS9jb3JlLmMgIHwgMjMxICsrKysrKysrKysrKysr
+KysrLS0tLS0tLS0tLS0tLQo+ICBkcml2ZXJzL3NwaS9zcGktbWVtLmMgICAgICAgIHwgMjY5ICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tCj4gIGRyaXZlcnMvc3BpL3NwaS1teGlj
+LmMgICAgICAgfCAxNDAgKysrKysrKysrKysrKystLS0tCj4gIGluY2x1ZGUvbGludXgvbXRkL3Nw
+aW5hbmQuaCAgfCAgIDcgKwo+ICBpbmNsdWRlL2xpbnV4L3NwaS9zcGktbWVtLmggIHwgIDg0ICsr
+KysrKysrKystCj4gIDYgZmlsZXMgY2hhbmdlZCwgNjcwIGluc2VydGlvbnMoKyksIDIwMyBkZWxl
+dGlvbnMoLSkKPiAKCkZvciB0aGUgd2hvbGUgc2VyaWVzOgoKUmV2aWV3ZWQtYnk6IE1pcXVlbCBS
+YXluYWwgPG1pcXVlbC5yYXluYWxAYm9vdGxpbi5jb20+CgoKVGhhbmtzLApNaXF1w6hsCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgg
+TVREIGRpc2N1c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vbGludXgtbXRkLwo=

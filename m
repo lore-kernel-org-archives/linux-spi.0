@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 0/7] spi: spi-mem: Add a direct mapping API
-Date: Tue,  6 Nov 2018 17:05:29 +0100
-Message-ID: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 4/7] spi: spi-mem: Add a new API to support direct mapping
+Date: Tue,  6 Nov 2018 17:05:33 +0100
+Message-ID: <20181106160536.13415-5-boris.brezillon@bootlin.com>
+References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,6 +19,7 @@ To: David Woodhouse <dwmw2@infradead.org>,
  linux-mtd@lists.infradead.org, Mark Brown <broonie@kernel.org>,
  linux-spi@vger.kernel.org
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -29,34 +31,360 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Most modern SPI controllers can directly map a SPI memory (or a portion
+of the SPI memory) in the CPU address space. Most of the time this
+brings significant performance improvements as it automates the whole
+process of sending SPI memory operations every time a new region is
+accessed.
 
-Here is a v3 addressing the comment I received from Yogesh on the
-m25p80 modifications. Note that this part is still untested (I only
-tested on a spinand device so far), so that'd be great if someone
-could test it.
+This new API allows SPI memory drivers to create direct mappings and
+then use them to access the memory instead of using spi_mem_exec_op().
 
-Thanks,
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+Changes in v3:
+- Add Miquel's R-b
 
-Boris
+Changes in v2:
+- Clearly state that spi_mem_dirmap_read/write() can return less than
+  the requested len
+---
+ drivers/spi/spi-mem.c       | 204 ++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h |  80 ++++++++++++++
+ 2 files changed, 284 insertions(+)
 
-Boris Brezillon (7):
-  spi: spi-mem: Add missing word in the SPI_MEM_DATA_OUT description
-  spi: spi-mem: Add SPI_MEM_NO_DATA to the spi_mem_data_dir enum
-  spi: spi-mem: Split spi_mem_exec_op() code
-  spi: spi-mem: Add a new API to support direct mapping
-  mtd: devices: m25p80: Use the spi-mem dirmap API
-  mtd: spinand: Use the spi-mem dirmap API
-  spi: mxic: Add support for direct mapping
-
- drivers/mtd/devices/m25p80.c | 102 ++++++++++++-
- drivers/mtd/nand/spi/core.c  | 231 +++++++++++++++++-------------
- drivers/spi/spi-mem.c        | 269 ++++++++++++++++++++++++++++++++---
- drivers/spi/spi-mxic.c       | 137 ++++++++++++++----
- include/linux/mtd/spinand.h  |   7 +
- include/linux/spi/spi-mem.h  |  84 ++++++++++-
- 6 files changed, 677 insertions(+), 153 deletions(-)
-
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 7916e655afc8..b12a7974b665 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -432,6 +432,210 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+ 
++static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
++				      u64 offs, size_t len, void *buf)
++{
++	struct spi_mem_op op = desc->info.op_tmpl;
++	int ret;
++
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.in = buf;
++	op.data.nbytes = len;
++	ret = spi_mem_adjust_op_size(desc->mem, &op);
++	if (ret)
++		return ret;
++
++	ret = spi_mem_exec_op(desc->mem, &op);
++	if (ret)
++		return ret;
++
++	return op.data.nbytes;
++}
++
++static ssize_t spi_mem_no_dirmap_write(struct spi_mem_dirmap_desc *desc,
++				       u64 offs, size_t len, const void *buf)
++{
++	struct spi_mem_op op = desc->info.op_tmpl;
++	int ret;
++
++	op.addr.val = desc->info.offset + offs;
++	op.data.buf.out = buf;
++	op.data.nbytes = len;
++	ret = spi_mem_adjust_op_size(desc->mem, &op);
++	if (ret)
++		return ret;
++
++	ret = spi_mem_exec_op(desc->mem, &op);
++	if (ret)
++		return ret;
++
++	return op.data.nbytes;
++}
++
++/**
++ * spi_mem_dirmap_create() - Create a direct mapping descriptor
++ * @mem: SPI mem device this direct mapping should be created for
++ * @info: direct mapping information
++ *
++ * This function is creating a direct mapping descriptor which can then be used
++ * to access the memory using spi_mem_dirmap_read() or spi_mem_dirmap_write().
++ * If the SPI controller driver does not support direct mapping, this function
++ * fallback to an implementation using spi_mem_exec_op(), so that the caller
++ * doesn't have to bother implementing a fallback on his own.
++ *
++ * Return: a valid pointer in case of success, and ERR_PTR() otherwise.
++ */
++struct spi_mem_dirmap_desc *
++spi_mem_dirmap_create(struct spi_mem *mem,
++		      const struct spi_mem_dirmap_info *info)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++	struct spi_mem_dirmap_desc *desc;
++	int ret = -ENOTSUPP;
++
++	/* Make sure the number of address cycles is between 1 and 8 bytes. */
++	if (!info->op_tmpl.addr.nbytes || info->op_tmpl.addr.nbytes > 8)
++		return ERR_PTR(-EINVAL);
++
++	/* data.dir should either be SPI_MEM_DATA_IN or SPI_MEM_DATA_OUT. */
++	if (info->op_tmpl.data.dir == SPI_MEM_NO_DATA)
++		return ERR_PTR(-EINVAL);
++
++	desc = kzalloc(sizeof(*desc), GFP_KERNEL);
++	if (!desc)
++		return ERR_PTR(-ENOMEM);
++
++	desc->mem = mem;
++	desc->info = *info;
++	if (ctlr->mem_ops && ctlr->mem_ops->dirmap_create)
++		ret = ctlr->mem_ops->dirmap_create(desc);
++
++	if (ret) {
++		desc->nodirmap = true;
++		if (!spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
++			ret = -ENOTSUPP;
++		else
++			ret = 0;
++	}
++
++	if (ret) {
++		kfree(desc);
++		return ERR_PTR(ret);
++	}
++
++	return desc;
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_create);
++
++/**
++ * spi_mem_dirmap_destroy() - Destroy a direct mapping descriptor
++ * @desc: the direct mapping descriptor to destroy
++ * @info: direct mapping information
++ *
++ * This function destroys a direct mapping descriptor previously created by
++ * spi_mem_dirmap_create().
++ */
++void spi_mem_dirmap_destroy(struct spi_mem_dirmap_desc *desc)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
++
++	if (!desc->nodirmap && ctlr->mem_ops && ctlr->mem_ops->dirmap_destroy)
++		ctlr->mem_ops->dirmap_destroy(desc);
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_destroy);
++
++/**
++ * spi_mem_dirmap_dirmap_read() - Read data through a direct mapping
++ * @desc: direct mapping descriptor
++ * @offs: offset to start reading from. Note that this is not an absolute
++ *	  offset, but the offset within the direct mapping which already has
++ *	  its own offset
++ * @len: length in bytes
++ * @buf: destination buffer. This buffer must be DMA-able
++ *
++ * This function reads data from a memory device using a direct mapping
++ * previously instantiated with spi_mem_dirmap_create().
++ *
++ * Return: the amount of data read from the memory device or a negative error
++ * code. Note that the returned size might be smaller than @len, and the caller
++ * is responsible for calling spi_mem_dirmap_read() again when that happens.
++ */
++ssize_t spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++			    u64 offs, size_t len, void *buf)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
++	ssize_t ret;
++
++	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_IN)
++		return -EINVAL;
++
++	if (!len)
++		return 0;
++
++	if (desc->nodirmap) {
++		ret = spi_mem_no_dirmap_read(desc, offs, len, buf);
++	} else if (ctlr->mem_ops && ctlr->mem_ops->dirmap_read) {
++		ret = spi_mem_access_start(desc->mem);
++		if (ret)
++			return ret;
++
++		ret = ctlr->mem_ops->dirmap_read(desc, offs, len, buf);
++
++		spi_mem_access_end(desc->mem);
++	} else {
++		ret = -ENOTSUPP;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_read);
++
++/**
++ * spi_mem_dirmap_dirmap_write() - Write data through a direct mapping
++ * @desc: direct mapping descriptor
++ * @offs: offset to start writing from. Note that this is not an absolute
++ *	  offset, but the offset within the direct mapping which already has
++ *	  its own offset
++ * @len: length in bytes
++ * @buf: source buffer. This buffer must be DMA-able
++ *
++ * This function writes data to a memory device using a direct mapping
++ * previously instantiated with spi_mem_dirmap_create().
++ *
++ * Return: the amount of data written to the memory device or a negative error
++ * code. Note that the returned size might be smaller than @len, and the caller
++ * is responsible for calling spi_mem_dirmap_write() again when that happens.
++ */
++ssize_t spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
++			     u64 offs, size_t len, const void *buf)
++{
++	struct spi_controller *ctlr = desc->mem->spi->controller;
++	ssize_t ret;
++
++	if (desc->info.op_tmpl.data.dir != SPI_MEM_DATA_OUT)
++		return -EINVAL;
++
++	if (!len)
++		return 0;
++
++	if (desc->nodirmap) {
++		ret = spi_mem_no_dirmap_write(desc, offs, len, buf);
++	} else if (ctlr->mem_ops && ctlr->mem_ops->dirmap_write) {
++		ret = spi_mem_access_start(desc->mem);
++		if (ret)
++			return ret;
++
++		ret = ctlr->mem_ops->dirmap_write(desc, offs, len, buf);
++
++		spi_mem_access_end(desc->mem);
++	} else {
++		ret = -ENOTSUPP;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_mem_dirmap_write);
++
+ static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
+ {
+ 	return container_of(drv, struct spi_mem_driver, spidrv.driver);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 250b6f5c47c2..3fe24500c5ee 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -124,6 +124,49 @@ struct spi_mem_op {
+ 		.data = __data,					\
+ 	}
+ 
++/**
++ * struct spi_mem_dirmap_info - Direct mapping information
++ * @op_tmpl: operation template that should be used by the direct mapping when
++ *	     the memory device is accessed
++ * @offset: absolute offset this direct mapping is pointing to
++ * @length: length in byte of this direct mapping
++ *
++ * These information are used by the controller specific implementation to know
++ * the portion of memory that is directly mapped and the spi_mem_op that should
++ * be used to access the device.
++ * A direct mapping is only valid for one direction (read or write) and this
++ * direction is directly encoded in the ->op_tmpl.data.dir field.
++ */
++struct spi_mem_dirmap_info {
++	struct spi_mem_op op_tmpl;
++	u64 offset;
++	u64 length;
++};
++
++/**
++ * struct spi_mem_dirmap_desc - Direct mapping descriptor
++ * @mem: the SPI memory device this direct mapping is attached to
++ * @info: information passed at direct mapping creation time
++ * @nodirmap: set to 1 if the SPI controller does not implement
++ *	      ->mem_ops->dirmap_create() or when this function returned an
++ *	      error. If @nodirmap is true, all spi_mem_dirmap_{read,write}()
++ *	      calls will use spi_mem_exec_op() to access the memory. This is a
++ *	      degraded mode that allows spi_mem drivers to use the same code
++ *	      no matter whether the controller supports direct mapping or not
++ * @priv: field pointing to controller specific data
++ *
++ * Common part of a direct mapping descriptor. This object is created by
++ * spi_mem_dirmap_create() and controller implementation of ->create_dirmap()
++ * can create/attach direct mapping resources to the descriptor in the ->priv
++ * field.
++ */
++struct spi_mem_dirmap_desc {
++	struct spi_mem *mem;
++	struct spi_mem_dirmap_info info;
++	unsigned int nodirmap;
++	void *priv;
++};
++
+ /**
+  * struct spi_mem - describes a SPI memory device
+  * @spi: the underlying SPI device
+@@ -179,10 +222,32 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
+  *	      Note that if the implementation of this function allocates memory
+  *	      dynamically, then it should do so with devm_xxx(), as we don't
+  *	      have a ->free_name() function.
++ * @dirmap_create: create a direct mapping descriptor that can later be used to
++ *		   access the memory device. This method is optional
++ * @dirmap_destroy: destroy a memory descriptor previous created by
++ *		    ->dirmap_create()
++ * @dirmap_read: read data from the memory device using the direct mapping
++ *		 created by ->dirmap_create(). The function can return less
++ *		 data than requested (for example when the request is crossing
++ *		 the currently mapped area), and the caller of
++ *		 spi_mem_dirmap_read() is responsible for calling it again in
++ *		 this case.
++ * @dirmap_write: write data to the memory device using the direct mapping
++ *		  created by ->dirmap_create(). The function can return less
++ *		  data than requested (for example when the request is crossing
++ *		  the currently mapped area), and the caller of
++ *		  spi_mem_dirmap_write() is responsible for calling it again in
++ *		  this case.
+  *
+  * This interface should be implemented by SPI controllers providing an
+  * high-level interface to execute SPI memory operation, which is usually the
+  * case for QSPI controllers.
++ *
++ * Note on ->dirmap_{read,write}(): drivers should avoid accessing the direct
++ * mapping from the CPU because doing that can stall the CPU waiting for the
++ * SPI mem transaction to finish, and this will make real-time maintainers
++ * unhappy and might make your system less reactive. Instead, drivers should
++ * use DMA to access this direct mapping.
+  */
+ struct spi_controller_mem_ops {
+ 	int (*adjust_op_size)(struct spi_mem *mem, struct spi_mem_op *op);
+@@ -191,6 +256,12 @@ struct spi_controller_mem_ops {
+ 	int (*exec_op)(struct spi_mem *mem,
+ 		       const struct spi_mem_op *op);
+ 	const char *(*get_name)(struct spi_mem *mem);
++	int (*dirmap_create)(struct spi_mem_dirmap_desc *desc);
++	void (*dirmap_destroy)(struct spi_mem_dirmap_desc *desc);
++	ssize_t (*dirmap_read)(struct spi_mem_dirmap_desc *desc,
++			       u64 offs, size_t len, void *buf);
++	ssize_t (*dirmap_write)(struct spi_mem_dirmap_desc *desc,
++				u64 offs, size_t len, const void *buf);
+ };
+ 
+ /**
+@@ -251,6 +322,15 @@ int spi_mem_exec_op(struct spi_mem *mem,
+ 
+ const char *spi_mem_get_name(struct spi_mem *mem);
+ 
++struct spi_mem_dirmap_desc *
++spi_mem_dirmap_create(struct spi_mem *mem,
++		      const struct spi_mem_dirmap_info *info);
++void spi_mem_dirmap_destroy(struct spi_mem_dirmap_desc *desc);
++ssize_t spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++			    u64 offs, size_t len, void *buf);
++ssize_t spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
++			     u64 offs, size_t len, const void *buf);
++
+ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 				       struct module *owner);
+ 
 -- 
 2.17.1
 

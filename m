@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 5/7] mtd: devices: m25p80: Use the spi-mem dirmap API
-Date: Tue,  6 Nov 2018 17:05:34 +0100
-Message-ID: <20181106160536.13415-6-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 7/7] spi: mxic: Add support for direct mapping
+Date: Tue,  6 Nov 2018 17:05:36 +0100
+Message-ID: <20181106160536.13415-8-boris.brezillon@bootlin.com>
 References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,172 +31,216 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Make use of the spi-mem direct mapping API to let advanced controllers
-optimize read/write operations when they support direct mapping.
+Implement the ->dirmap_create() and ->dirmap_read() hooks to provide a
+fast path for read accesses. Write dirmap is not supported yet.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
 Changes in v3:
-- Make nor->read/write() functional before the direct mappings have been
-  created
-- Add Miquel's R-b
+- Relax the limitation on the linear iomem size
 
 Changes in v2:
-- Rename the dirmap fields
-- Return directly after calling dirmap_read/write() and let the spi-nor
-  framework call us again if those functions returned less than the
-  requested length
+- New patch
 ---
- drivers/mtd/devices/m25p80.c | 102 +++++++++++++++++++++++++++++++++--
- 1 file changed, 99 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mxic.c | 137 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 110 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index c4a1d04b8c80..847188e8a99e 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -31,8 +31,70 @@
- struct m25p {
- 	struct spi_mem		*spimem;
- 	struct spi_nor		spi_nor;
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index e41ae6ef0f8a..d32c65d3700a 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -172,6 +172,11 @@ struct mxic_spi {
+ 	struct clk *send_dly_clk;
+ 	void __iomem *regs;
+ 	u32 cur_speed_hz;
 +	struct {
-+		struct spi_mem_dirmap_desc *rdesc;
-+		struct spi_mem_dirmap_desc *wdesc;
-+	} dirmap;
++		void __iomem *map;
++		dma_addr_t dma;
++		size_t size;
++	} linear;
  };
  
-+static int m25p_create_write_dirmap(struct m25p *flash)
+ static int mxic_spi_clk_enable(struct mxic_spi *mxic)
+@@ -280,6 +285,42 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	       mxic->regs + HC_CFG);
+ }
+ 
++static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
 +{
-+	struct spi_nor *nor = &flash->spi_nor;
-+	struct spi_mem_dirmap_info info = {
-+		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->program_opcode, 1),
-+				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
-+				      SPI_MEM_OP_NO_DUMMY,
-+				      SPI_MEM_OP_DATA_OUT(0, NULL, 1)),
-+		.offset = 0,
-+		.length = flash->spi_nor.mtd.size,
-+	};
-+	struct spi_mem_op *op = &info.op_tmpl;
++	u32 cfg = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
 +
-+	/* get transfer protocols. */
-+	op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
-+	op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
-+	op->dummy.buswidth = op->addr.buswidth;
-+	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->write_proto);
++	if (op->addr.nbytes)
++		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
++		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
 +
-+	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
-+		op->addr.nbytes = 0;
++	if (op->dummy.nbytes)
++		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
 +
-+	flash->dirmap.wdesc = spi_mem_dirmap_create(flash->spimem, &info);
-+	if (IS_ERR(flash->dirmap.wdesc))
-+		return PTR_ERR(flash->dirmap.wdesc);
++	if (op->data.dir != SPI_MEM_NO_DATA) {
++		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			cfg |= OP_READ;
++	}
 +
-+	return 0;
++	return cfg;
 +}
 +
-+static int m25p_create_read_dirmap(struct m25p *flash)
++static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
 +{
-+	struct spi_nor *nor = &flash->spi_nor;
-+	struct spi_mem_dirmap_info info = {
-+		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 1),
-+				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
-+				      SPI_MEM_OP_DUMMY(nor->read_dummy, 1),
-+				      SPI_MEM_OP_DATA_IN(0, NULL, 1)),
-+		.offset = 0,
-+		.length = flash->spi_nor.mtd.size,
-+	};
-+	struct spi_mem_op *op = &info.op_tmpl;
++	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
++	int nio = 1;
 +
-+	/* get transfer protocols. */
-+	op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
-+	op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
-+	op->dummy.buswidth = op->addr.buswidth;
-+	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
++	if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++		nio = 4;
++	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
++		nio = 2;
 +
-+	/* convert the dummy cycles to the number of bytes */
-+	op->dummy.nbytes = (nor->read_dummy * op->dummy.buswidth) / 8;
-+
-+	flash->dirmap.rdesc = spi_mem_dirmap_create(flash->spimem, &info);
-+	if (IS_ERR(flash->dirmap.rdesc))
-+		return PTR_ERR(flash->dirmap.rdesc);
-+
-+	return 0;
++	writel(flags | HC_CFG_NIO(nio) |
++	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
++	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
++	       mxic->regs + HC_CFG);
 +}
 +
- static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)
+ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 			      void *rxbuf, unsigned int len)
  {
- 	struct m25p *flash = nor->priv;
-@@ -92,6 +154,9 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
- 				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
- 	int ret;
+@@ -332,6 +373,41 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 	return 0;
+ }
  
-+	if (flash->dirmap.wdesc)
-+		return spi_mem_dirmap_write(flash->dirmap.wdesc, to, len, buf);
++static ssize_t mxic_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
++					u64 offs, size_t len, void *buf)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
++	int ret;
++	u32 sts;
 +
- 	/* get transfer protocols. */
- 	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
- 	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
-@@ -128,6 +193,9 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 	size_t remaining = len;
- 	int ret;
++	if (WARN_ON(offs + desc->info.offset + len > U32_MAX))
++		return -EINVAL;
++
++	mxic_spi_set_hc_cfg(desc->mem->spi, 0);
++
++	writel(LMODE_CMD0(desc->info.op_tmpl.cmd.opcode) |
++	       LMODE_SLV_ACT(desc->mem->spi->chip_select) |
++	       LMODE_EN,
++	       mxic->regs + LRD_CTRL);
++	writel(mxic_spi_mem_prep_op_cfg(&desc->info.op_tmpl),
++	       mxic->regs + LRD_CFG);
++	writel(desc->info.offset + offs, mxic->regs + LRD_ADDR);
++	len = min_t(size_t, len, mxic->linear.size);
++	writel(len, mxic->regs + LRD_RANGE);
++
++	memcpy_fromio(buf, mxic->linear.map, len);
++
++	writel(INT_LRD_DIS, mxic->regs + INT_STS);
++	writel(0, mxic->regs + LRD_CTRL);
++
++	ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++				 sts & INT_LRD_DIS, 0, USEC_PER_SEC);
++	if (ret)
++		return ret;
++
++	return len;
++}
++
+ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 				     const struct spi_mem_op *op)
+ {
+@@ -349,46 +425,42 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 	return true;
+ }
  
-+	if (flash->dirmap.rdesc)
-+		return spi_mem_dirmap_read(flash->dirmap.rdesc, from, len, buf);
++static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
 +
- 	/* get transfer protocols. */
- 	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
- 	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
-@@ -231,19 +299,47 @@ static int m25p_probe(struct spi_mem *spimem)
++	if (!mxic->linear.map)
++		return -ENOTSUPP;
++
++	if (desc->info.offset + desc->info.length > U32_MAX)
++		return -ENOTSUPP;
++
++	if (!mxic_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
++		return -ENOTSUPP;
++
++	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
++		return -ENOTSUPP;
++
++	return 0;
++}
++
+ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+-	int nio = 1, i, ret;
+-	u32 ss_ctrl;
++	int i, ret;
+ 	u8 addr[8];
+ 
+ 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
  	if (ret)
  		return ret;
  
--	return mtd_device_register(&nor->mtd, data ? data->parts : NULL,
--				   data ? data->nr_parts : 0);
-+	ret = m25p_create_write_dirmap(flash);
-+	if (ret)
-+		return ret;
-+
-+	ret = m25p_create_read_dirmap(flash);
-+	if (ret)
-+		goto err_destroy_write_dirmap;
-+
-+	ret = mtd_device_register(&nor->mtd, data ? data->parts : NULL,
-+				  data ? data->nr_parts : 0);
-+	if (ret)
-+		goto err_destroy_read_dirmap;
-+
-+	return 0;
-+
-+err_destroy_read_dirmap:
-+	spi_mem_dirmap_destroy(flash->dirmap.rdesc);
-+
-+err_destroy_write_dirmap:
-+	spi_mem_dirmap_destroy(flash->dirmap.wdesc);
-+
-+	return ret;
- }
+-	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+-		nio = 4;
+-	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+-		nio = 2;
++	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
  
+-	writel(HC_CFG_NIO(nio) |
+-	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
+-	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
+-	       HC_CFG_MAN_CS_EN,
+-	       mxic->regs + HC_CFG);
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
  
- static int m25p_remove(struct spi_mem *spimem)
- {
- 	struct m25p	*flash = spi_mem_get_drvdata(spimem);
-+	int ret;
+-	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
+-
+-	if (op->addr.nbytes)
+-		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
+-			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
+-
+-	if (op->dummy.nbytes)
+-		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
+-
+-	if (op->data.nbytes) {
+-		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
+-		if (op->data.dir == SPI_MEM_DATA_IN)
+-			ss_ctrl |= OP_READ;
+-	}
+-
+-	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
++	writel(mxic_spi_mem_prep_op_cfg(op),
++	       mxic->regs + SS_CTRL(mem->spi->chip_select));
  
- 	spi_nor_restore(&flash->spi_nor);
+ 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+ 	       mxic->regs + HC_CFG);
+@@ -426,6 +498,8 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ static const struct spi_controller_mem_ops mxic_spi_mem_ops = {
+ 	.supports_op = mxic_spi_mem_supports_op,
+ 	.exec_op = mxic_spi_mem_exec_op,
++	.dirmap_create = mxic_spi_mem_dirmap_create,
++	.dirmap_read = mxic_spi_mem_dirmap_read,
+ };
  
- 	/* Clean up MTD stuff. */
--	return mtd_device_unregister(&flash->spi_nor.mtd);
-+	ret = mtd_device_unregister(&flash->spi_nor.mtd);
-+	if (ret)
-+		return ret;
+ static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
+@@ -557,6 +631,15 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mxic->regs))
+ 		return PTR_ERR(mxic->regs);
+ 
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
++	mxic->linear.map = devm_ioremap_resource(&pdev->dev, res);
++	if (!IS_ERR(mxic->linear.map)) {
++		mxic->linear.dma = res->start;
++		mxic->linear.size = resource_size(res);
++	} else {
++		mxic->linear.map = NULL;
++	}
 +
-+	spi_mem_dirmap_destroy(flash->dirmap.rdesc);
-+	spi_mem_dirmap_destroy(flash->dirmap.wdesc);
-+
-+	return 0;
- }
+ 	pm_runtime_enable(&pdev->dev);
+ 	master->auto_runtime_pm = true;
  
- static void m25p_shutdown(struct spi_mem *spimem)
 -- 
 2.17.1
 

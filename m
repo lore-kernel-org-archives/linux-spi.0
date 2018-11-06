@@ -1,7 +1,7 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: [PATCH v3 7/7] spi: mxic: Add support for direct mapping
-Date: Tue,  6 Nov 2018 17:05:36 +0100
-Message-ID: <20181106160536.13415-8-boris.brezillon@bootlin.com>
+Subject: [PATCH v3 6/7] mtd: spinand: Use the spi-mem dirmap API
+Date: Tue,  6 Nov 2018 17:05:35 +0100
+Message-ID: <20181106160536.13415-7-boris.brezillon@bootlin.com>
 References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,216 +31,385 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Implement the ->dirmap_create() and ->dirmap_read() hooks to provide a
-fast path for read accesses. Write dirmap is not supported yet.
+Make use of the spi-mem direct mapping API to let advanced controllers
+optimize read/write operations when they support direct mapping.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
 Changes in v3:
-- Relax the limitation on the linear iomem size
+- Add Miquel's R-b
 
 Changes in v2:
 - New patch
 ---
- drivers/spi/spi-mxic.c | 137 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 110 insertions(+), 27 deletions(-)
+ drivers/mtd/nand/spi/core.c | 231 ++++++++++++++++++++----------------
+ include/linux/mtd/spinand.h |   7 ++
+ 2 files changed, 138 insertions(+), 100 deletions(-)
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index e41ae6ef0f8a..d32c65d3700a 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -172,6 +172,11 @@ struct mxic_spi {
- 	struct clk *send_dly_clk;
- 	void __iomem *regs;
- 	u32 cur_speed_hz;
-+	struct {
-+		void __iomem *map;
-+		dma_addr_t dma;
-+		size_t size;
-+	} linear;
- };
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 30f83649c481..0fe3fa4867a8 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -19,21 +19,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
  
- static int mxic_spi_clk_enable(struct mxic_spi *mxic)
-@@ -280,6 +285,42 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
- 	       mxic->regs + HC_CFG);
+-static void spinand_cache_op_adjust_colum(struct spinand_device *spinand,
+-					  const struct nand_page_io_req *req,
+-					  u16 *column)
+-{
+-	struct nand_device *nand = spinand_to_nand(spinand);
+-	unsigned int shift;
+-
+-	if (nand->memorg.planes_per_lun < 2)
+-		return;
+-
+-	/* The plane number is passed in MSB just above the column address */
+-	shift = fls(nand->memorg.pagesize);
+-	*column |= req->pos.plane << shift;
+-}
+-
+ static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
+ {
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(reg,
+@@ -227,27 +212,21 @@ static int spinand_load_page_op(struct spinand_device *spinand,
+ static int spinand_read_from_cache_op(struct spinand_device *spinand,
+ 				      const struct nand_page_io_req *req)
+ {
+-	struct spi_mem_op op = *spinand->op_templates.read_cache;
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	struct mtd_info *mtd = nanddev_to_mtd(nand);
+-	struct nand_page_io_req adjreq = *req;
++	struct spi_mem_dirmap_desc *rdesc;
+ 	unsigned int nbytes = 0;
+ 	void *buf = NULL;
+ 	u16 column = 0;
+-	int ret;
++	ssize_t ret;
+ 
+ 	if (req->datalen) {
+-		adjreq.datalen = nanddev_page_size(nand);
+-		adjreq.dataoffs = 0;
+-		adjreq.databuf.in = spinand->databuf;
+ 		buf = spinand->databuf;
+-		nbytes = adjreq.datalen;
++		nbytes = nanddev_page_size(nand);
++		column = 0;
+ 	}
+ 
+ 	if (req->ooblen) {
+-		adjreq.ooblen = nanddev_per_page_oobsize(nand);
+-		adjreq.ooboffs = 0;
+-		adjreq.oobbuf.in = spinand->oobbuf;
+ 		nbytes += nanddev_per_page_oobsize(nand);
+ 		if (!buf) {
+ 			buf = spinand->oobbuf;
+@@ -255,28 +234,18 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
+ 		}
+ 	}
+ 
+-	spinand_cache_op_adjust_colum(spinand, &adjreq, &column);
+-	op.addr.val = column;
++	rdesc = spinand->dirmaps[req->pos.plane].rdesc;
+ 
+-	/*
+-	 * Some controllers are limited in term of max RX data size. In this
+-	 * case, just repeat the READ_CACHE operation after updating the
+-	 * column.
+-	 */
+ 	while (nbytes) {
+-		op.data.buf.in = buf;
+-		op.data.nbytes = nbytes;
+-		ret = spi_mem_adjust_op_size(spinand->spimem, &op);
+-		if (ret)
+-			return ret;
++		ret = spi_mem_dirmap_read(rdesc, column, nbytes, buf);
++		if (!ret || ret > nbytes)
++			ret = -EIO;
+ 
+-		ret = spi_mem_exec_op(spinand->spimem, &op);
+-		if (ret)
++		if (ret < 0)
+ 			return ret;
+ 
+-		buf += op.data.nbytes;
+-		nbytes -= op.data.nbytes;
+-		op.addr.val += op.data.nbytes;
++		nbytes -= ret;
++		column += ret;
+ 	}
+ 
+ 	if (req->datalen)
+@@ -300,28 +269,18 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
+ static int spinand_write_to_cache_op(struct spinand_device *spinand,
+ 				     const struct nand_page_io_req *req)
+ {
+-	struct spi_mem_op op = *spinand->op_templates.write_cache;
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	struct mtd_info *mtd = nanddev_to_mtd(nand);
+-	struct nand_page_io_req adjreq = *req;
+-	unsigned int nbytes = 0;
+-	void *buf = NULL;
+-	u16 column = 0;
+-	int ret;
++	struct spi_mem_dirmap_desc *wdesc;
++	unsigned int nbytes, column = 0;
++	ssize_t ret;
+ 
+-	memset(spinand->databuf, 0xff,
+-	       nanddev_page_size(nand) +
+-	       nanddev_per_page_oobsize(nand));
++	nbytes = nanddev_page_size(nand) + nanddev_per_page_oobsize(nand);
++	memset(spinand->databuf, 0xff, nbytes);
+ 
+-	if (req->datalen) {
++	if (req->datalen)
+ 		memcpy(spinand->databuf + req->dataoffs, req->databuf.out,
+ 		       req->datalen);
+-		adjreq.dataoffs = 0;
+-		adjreq.datalen = nanddev_page_size(nand);
+-		adjreq.databuf.out = spinand->databuf;
+-		nbytes = adjreq.datalen;
+-		buf = spinand->databuf;
+-	}
+ 
+ 	if (req->ooblen) {
+ 		if (req->mode == MTD_OPS_AUTO_OOB)
+@@ -332,52 +291,21 @@ static int spinand_write_to_cache_op(struct spinand_device *spinand,
+ 		else
+ 			memcpy(spinand->oobbuf + req->ooboffs, req->oobbuf.out,
+ 			       req->ooblen);
+-
+-		adjreq.ooblen = nanddev_per_page_oobsize(nand);
+-		adjreq.ooboffs = 0;
+-		nbytes += nanddev_per_page_oobsize(nand);
+-		if (!buf) {
+-			buf = spinand->oobbuf;
+-			column = nanddev_page_size(nand);
+-		}
+ 	}
+ 
+-	spinand_cache_op_adjust_colum(spinand, &adjreq, &column);
+-
+-	op = *spinand->op_templates.write_cache;
+-	op.addr.val = column;
++	wdesc = spinand->dirmaps[req->pos.plane].wdesc;
+ 
+-	/*
+-	 * Some controllers are limited in term of max TX data size. In this
+-	 * case, split the operation into one LOAD CACHE and one or more
+-	 * LOAD RANDOM CACHE.
+-	 */
+ 	while (nbytes) {
+-		op.data.buf.out = buf;
+-		op.data.nbytes = nbytes;
++		ret = spi_mem_dirmap_read(wdesc, column, nbytes,
++					  spinand->databuf + column);
++		if (!ret || ret > nbytes)
++			ret = -EIO;
+ 
+-		ret = spi_mem_adjust_op_size(spinand->spimem, &op);
+-		if (ret)
+-			return ret;
+-
+-		ret = spi_mem_exec_op(spinand->spimem, &op);
+-		if (ret)
++		if (ret < 0)
+ 			return ret;
+ 
+-		buf += op.data.nbytes;
+-		nbytes -= op.data.nbytes;
+-		op.addr.val += op.data.nbytes;
+-
+-		/*
+-		 * We need to use the RANDOM LOAD CACHE operation if there's
+-		 * more than one iteration, because the LOAD operation resets
+-		 * the cache to 0xff.
+-		 */
+-		if (nbytes) {
+-			column = op.addr.val;
+-			op = *spinand->op_templates.update_cache;
+-			op.addr.val = column;
+-		}
++		nbytes -= ret;
++		column += ret;
+ 	}
+ 
+ 	return 0;
+@@ -757,6 +685,97 @@ static int spinand_mtd_block_isreserved(struct mtd_info *mtd, loff_t offs)
+ 	return ret;
  }
  
-+static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
++static int spinand_create_dirmap(struct spinand_device *spinand,
++				 unsigned int plane)
 +{
-+	u32 cfg = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
++	struct nand_device *nand = spinand_to_nand(spinand);
++	struct spi_mem_dirmap_info info = {
++		.length = nanddev_page_size(nand) +
++			  nanddev_per_page_oobsize(nand),
++	};
++	struct spi_mem_dirmap_desc *desc;
 +
-+	if (op->addr.nbytes)
-+		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
-+		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
++	/* The plane number is passed in MSB just above the column address */
++	info.offset = plane << fls(nand->memorg.pagesize);
 +
-+	if (op->dummy.nbytes)
-+		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
++	info.op_tmpl = *spinand->op_templates.update_cache;
++	desc = spi_mem_dirmap_create(spinand->spimem, &info);
++	if (IS_ERR(desc))
++		return PTR_ERR(desc);
 +
-+	if (op->data.dir != SPI_MEM_NO_DATA) {
-+		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
-+		if (op->data.dir == SPI_MEM_DATA_IN)
-+			cfg |= OP_READ;
++	spinand->dirmaps[plane].wdesc = desc;
++
++	info.op_tmpl = *spinand->op_templates.read_cache;
++	desc = spi_mem_dirmap_create(spinand->spimem, &info);
++	if (IS_ERR(desc)) {
++		spi_mem_dirmap_destroy(spinand->dirmaps[plane].wdesc);
++		spinand->dirmaps[plane].wdesc = NULL;
++		return PTR_ERR(desc);
 +	}
 +
-+	return cfg;
-+}
-+
-+static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
-+	int nio = 1;
-+
-+	if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
-+		nio = 4;
-+	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
-+		nio = 2;
-+
-+	writel(flags | HC_CFG_NIO(nio) |
-+	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
-+	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
-+	       mxic->regs + HC_CFG);
-+}
-+
- static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 			      void *rxbuf, unsigned int len)
- {
-@@ -332,6 +373,41 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 	return 0;
- }
- 
-+static ssize_t mxic_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
-+					u64 offs, size_t len, void *buf)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
-+	int ret;
-+	u32 sts;
-+
-+	if (WARN_ON(offs + desc->info.offset + len > U32_MAX))
-+		return -EINVAL;
-+
-+	mxic_spi_set_hc_cfg(desc->mem->spi, 0);
-+
-+	writel(LMODE_CMD0(desc->info.op_tmpl.cmd.opcode) |
-+	       LMODE_SLV_ACT(desc->mem->spi->chip_select) |
-+	       LMODE_EN,
-+	       mxic->regs + LRD_CTRL);
-+	writel(mxic_spi_mem_prep_op_cfg(&desc->info.op_tmpl),
-+	       mxic->regs + LRD_CFG);
-+	writel(desc->info.offset + offs, mxic->regs + LRD_ADDR);
-+	len = min_t(size_t, len, mxic->linear.size);
-+	writel(len, mxic->regs + LRD_RANGE);
-+
-+	memcpy_fromio(buf, mxic->linear.map, len);
-+
-+	writel(INT_LRD_DIS, mxic->regs + INT_STS);
-+	writel(0, mxic->regs + LRD_CTRL);
-+
-+	ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+				 sts & INT_LRD_DIS, 0, USEC_PER_SEC);
-+	if (ret)
-+		return ret;
-+
-+	return len;
-+}
-+
- static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
- 				     const struct spi_mem_op *op)
- {
-@@ -349,46 +425,42 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
- 	return true;
- }
- 
-+static int mxic_spi_mem_dirmap_create(struct spi_mem_dirmap_desc *desc)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(desc->mem->spi->master);
-+
-+	if (!mxic->linear.map)
-+		return -ENOTSUPP;
-+
-+	if (desc->info.offset + desc->info.length > U32_MAX)
-+		return -ENOTSUPP;
-+
-+	if (!mxic_spi_mem_supports_op(desc->mem, &desc->info.op_tmpl))
-+		return -ENOTSUPP;
-+
-+	if (desc->info.op_tmpl.data.dir == SPI_MEM_DATA_OUT)
-+		return -ENOTSUPP;
++	spinand->dirmaps[plane].rdesc = desc;
 +
 +	return 0;
 +}
 +
- static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 				const struct spi_mem_op *op)
- {
- 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
--	int nio = 1, i, ret;
--	u32 ss_ctrl;
++static void spinand_destroy_dirmap(struct spinand_device *spinand,
++				   unsigned int plane)
++{
++	spi_mem_dirmap_destroy(spinand->dirmaps[plane].rdesc);
++	spi_mem_dirmap_destroy(spinand->dirmaps[plane].wdesc);
++}
++
++static int spinand_create_dirmaps(struct spinand_device *spinand)
++{
++	struct nand_device *nand = spinand_to_nand(spinand);
 +	int i, ret;
- 	u8 addr[8];
- 
- 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
- 	if (ret)
- 		return ret;
- 
--	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
--		nio = 4;
--	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
--		nio = 2;
-+	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
- 
--	writel(HC_CFG_NIO(nio) |
--	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
--	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
--	       HC_CFG_MAN_CS_EN,
--	       mxic->regs + HC_CFG);
- 	writel(HC_EN_BIT, mxic->regs + HC_EN);
- 
--	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
--
--	if (op->addr.nbytes)
--		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
--			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
--
--	if (op->dummy.nbytes)
--		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
--
--	if (op->data.nbytes) {
--		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
--		if (op->data.dir == SPI_MEM_DATA_IN)
--			ss_ctrl |= OP_READ;
--	}
--
--	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
-+	writel(mxic_spi_mem_prep_op_cfg(op),
-+	       mxic->regs + SS_CTRL(mem->spi->chip_select));
- 
- 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
- 	       mxic->regs + HC_CFG);
-@@ -426,6 +498,8 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- static const struct spi_controller_mem_ops mxic_spi_mem_ops = {
- 	.supports_op = mxic_spi_mem_supports_op,
- 	.exec_op = mxic_spi_mem_exec_op,
-+	.dirmap_create = mxic_spi_mem_dirmap_create,
-+	.dirmap_read = mxic_spi_mem_dirmap_read,
- };
- 
- static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
-@@ -557,6 +631,15 @@ static int mxic_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(mxic->regs))
- 		return PTR_ERR(mxic->regs);
- 
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dirmap");
-+	mxic->linear.map = devm_ioremap_resource(&pdev->dev, res);
-+	if (!IS_ERR(mxic->linear.map)) {
-+		mxic->linear.dma = res->start;
-+		mxic->linear.size = resource_size(res);
-+	} else {
-+		mxic->linear.map = NULL;
++
++	spinand->dirmaps = devm_kzalloc(&spinand->spimem->spi->dev,
++					sizeof(*spinand->dirmaps) *
++					nand->memorg.planes_per_lun,
++					GFP_KERNEL);
++	if (!spinand->dirmaps)
++		return -ENOMEM;
++
++	for (i = 0; i < nand->memorg.planes_per_lun; i++) {
++		ret = spinand_create_dirmap(spinand, i);
++		if (ret)
++			goto err_destroy_dirmaps;
 +	}
 +
- 	pm_runtime_enable(&pdev->dev);
- 	master->auto_runtime_pm = true;
++	return 0;
++
++err_destroy_dirmaps:
++	for (i--; i >= 0; i--)
++		spinand_destroy_dirmap(spinand, i);
++
++	return ret;
++}
++
++static void spinand_destroy_dirmaps(struct spinand_device *spinand)
++{
++	struct nand_device *nand = spinand_to_nand(spinand);
++	int i;
++
++	for (i = 0; i < nand->memorg.planes_per_lun; i++)
++		spinand_destroy_dirmap(spinand, i);
++}
++
++const struct spi_mem_op *
++spinand_find_supported_op(struct spinand_device *spinand,
++			  const struct spi_mem_op *ops,
++			  unsigned int nops)
++{
++	unsigned int i;
++
++	for (i = 0; i < nops; i++) {
++		if (spi_mem_supports_op(spinand->spimem, &ops[i]))
++			return &ops[i];
++	}
++
++	return NULL;
++}
++
+ static const struct nand_ops spinand_ops = {
+ 	.erase = spinand_erase,
+ 	.markbad = spinand_markbad,
+@@ -1012,20 +1031,28 @@ static int spinand_init(struct spinand_device *spinand)
+ 		goto err_free_bufs;
+ 	}
  
++	ret = spinand_create_dirmaps(spinand);
++	if (ret) {
++		dev_err(dev,
++			"Failed to create direct mappings for read/write operations (err = %d)\n",
++			ret);
++		goto err_manuf_cleanup;
++	}
++
+ 	/* After power up, all blocks are locked, so unlock them here. */
+ 	for (i = 0; i < nand->memorg.ntargets; i++) {
+ 		ret = spinand_select_target(spinand, i);
+ 		if (ret)
+-			goto err_free_bufs;
++			goto err_destroy_dirmaps;
+ 
+ 		ret = spinand_lock_block(spinand, BL_ALL_UNLOCKED);
+ 		if (ret)
+-			goto err_free_bufs;
++			goto err_destroy_dirmaps;
+ 	}
+ 
+ 	ret = nanddev_init(nand, &spinand_ops, THIS_MODULE);
+ 	if (ret)
+-		goto err_manuf_cleanup;
++		goto err_destroy_dirmaps;
+ 
+ 	/*
+ 	 * Right now, we don't support ECC, so let the whole oob
+@@ -1054,6 +1081,9 @@ static int spinand_init(struct spinand_device *spinand)
+ err_cleanup_nanddev:
+ 	nanddev_cleanup(nand);
+ 
++err_destroy_dirmaps:
++	spinand_destroy_dirmaps(spinand);
++
+ err_manuf_cleanup:
+ 	spinand_manufacturer_cleanup(spinand);
+ 
+@@ -1068,6 +1098,7 @@ static void spinand_cleanup(struct spinand_device *spinand)
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 
+ 	nanddev_cleanup(nand);
++	spinand_destroy_dirmaps(spinand);
+ 	spinand_manufacturer_cleanup(spinand);
+ 	kfree(spinand->databuf);
+ 	kfree(spinand->scratchbuf);
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 088ff96c3eb6..1f6a9e8b4a37 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -300,6 +300,11 @@ struct spinand_info {
+ 		__VA_ARGS__						\
+ 	}
+ 
++struct spinand_dirmap {
++	struct spi_mem_dirmap_desc *wdesc;
++	struct spi_mem_dirmap_desc *rdesc;
++};
++
+ /**
+  * struct spinand_device - SPI NAND device instance
+  * @base: NAND device instance
+@@ -339,6 +344,8 @@ struct spinand_device {
+ 		const struct spi_mem_op *update_cache;
+ 	} op_templates;
+ 
++	struct spinand_dirmap *dirmaps;
++
+ 	int (*select_target)(struct spinand_device *spinand,
+ 			     unsigned int target);
+ 	unsigned int cur_target;
 -- 
 2.17.1
 

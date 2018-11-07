@@ -1,41 +1,73 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v4 00/10] Port the FSL QSPI driver to the SPI framework
-Date: Wed, 7 Nov 2018 15:53:15 +0100
-Message-ID: <20181107155315.056a0d47@bbrezillon>
-References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: yogeshnarayan.gaur@nxp.com, richard@nod.at, prabhakar.kushwaha@nxp.com,
- shawnguo@kernel.org, linux-spi@vger.kernel.org, marek.vasut@gmail.com,
- han.xu@nxp.com, broonie@kernel.org, linux-mtd@lists.infradead.org,
- miquel.raynal@bootlin.com, fabio.estevam@nxp.com, david.wolfe@nxp.com,
- computersforpeace@gmail.com, dwmw2@infradead.org
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Kconfig: Enable McSPI driver for K3 platforms" to the spi tree
+Date: Wed,  7 Nov 2018 15:01:19 +0000 (GMT)
+Message-ID: <20181107150119.6F3831124E14@debutante.sirena.org.uk>
+References: <20181107103926.32550-3-vigneshr@ti.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181107103926.32550-3-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed,  7 Nov 2018 15:43:17 +0100
-Frieder Schrempf <frieder.schrempf@kontron.de> wrote:
+The patch
 
-> Changes in v4:
-> ==============
-> * Rebase on top of v4.20-rc1
-> * Drop patches that were merged separately
-> * Address change of company name and email address
+   spi: Kconfig: Enable McSPI driver for K3 platforms
 
-Looks like your SoB and Author fields are still using the old address.
+has been applied to the spi tree at
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 81df42d10457d3aef5321e9772c8eef173adf7f7 Mon Sep 17 00:00:00 2001
+From: Vignesh R <vigneshr@ti.com>
+Date: Wed, 7 Nov 2018 16:09:26 +0530
+Subject: [PATCH] spi: Kconfig: Enable McSPI driver for K3 platforms
+
+Enable McSPI driver to be built for K3 platforms, to support McSPI on
+AM654 SoC of K3 family.
+
+Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 91d45c9ac439..b9be21cc07d2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -435,7 +435,7 @@ config SPI_OMAP_UWIRE
+ 
+ config SPI_OMAP24XX
+ 	tristate "McSPI driver for OMAP"
+-	depends on ARCH_OMAP2PLUS || COMPILE_TEST
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select SG_SPLIT
+ 	help
+ 	  SPI master controller for OMAP24XX and later Multichannel SPI
+-- 
+2.19.0.rc2

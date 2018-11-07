@@ -1,32 +1,39 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi driver" to the spi tree
-Date: Wed,  7 Nov 2018 15:03:32 +0000 (GMT)
-Message-ID: <20181107150332.6C0171124E14@debutante.sirena.org.uk>
-References: <20181105103625.9644-5-bugalski.piotr@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        linux-spi@vger.kernel.org
+Subject: Applied "mtd: spi-nor: atmel-quadspi: Add spi-mem support to
+ atmel-quadspi" to the spi tree
+Date: Wed,  7 Nov 2018 15:05:49 +0000 (GMT)
+Message-ID: <20181107150549.A68641124E14@debutante.sirena.org.uk>
+References: <20181105103625.9644-3-bugalski.piotr@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-spi@vger.kernel.org, Boris Brezillon <boris.brezillon@bootlin.com>,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>
 To: Piotr Bugalski <bugalski.piotr@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181105103625.9644-5-bugalski.piotr@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20181105103625.9644-3-bugalski.piotr@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi driver
+   mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi
 
 has been applied to the spi tree at
 
@@ -51,440 +58,273 @@ to this mail.
 Thanks,
 Mark
 
->From 6ca622c87149a20a47abbb954f896f515e2292a7 Mon Sep 17 00:00:00 2001
+>From d5433def31531bd07984f167f6ab0afef70b6a3e Mon Sep 17 00:00:00 2001
 From: Piotr Bugalski <bugalski.piotr@gmail.com>
-Date: Mon, 5 Nov 2018 11:36:23 +0100
-Subject: [PATCH] mtd: spi-nor: atmel-quadspi: Remove unused code from
- atmel-quadspi driver
+Date: Mon, 5 Nov 2018 11:36:21 +0100
+Subject: [PATCH] mtd: spi-nor: atmel-quadspi: Add spi-mem support to
+ atmel-quadspi
 
-Code used for previous interface is no longer needed.
-This change just removes obsolete code.
+This patch adds new interface to existing driver. New code is not used yet,
+it will be enabled later.
+Changes are prepared in small steps to keep patches readable.
 
 Suggested-by: Boris Brezillon <boris.brezillon@bootlin.com>
 Signed-off-by: Piotr Bugalski <bugalski.piotr@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/mtd/spi-nor/atmel-quadspi.c | 388 ----------------------------
- 1 file changed, 388 deletions(-)
+ drivers/mtd/spi-nor/atmel-quadspi.c | 211 ++++++++++++++++++++++++++++
+ 1 file changed, 211 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/atmel-quadspi.c b/drivers/mtd/spi-nor/atmel-quadspi.c
-index 644e3f0c1558..ddc712410812 100644
+index 1c5ba8feaa5e..896478a290ec 100644
 --- a/drivers/mtd/spi-nor/atmel-quadspi.c
 +++ b/drivers/mtd/spi-nor/atmel-quadspi.c
-@@ -29,14 +29,9 @@
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
--#include <linux/mtd/mtd.h>
--#include <linux/mtd/partitions.h>
--#include <linux/mtd/spi-nor.h>
--#include <linux/platform_data/atmel.h>
- #include <linux/of.h>
+@@ -2,8 +2,10 @@
+  * Driver for Atmel QSPI Controller
+  *
+  * Copyright (C) 2015 Atmel Corporation
++ * Copyright (C) 2018 Cryptera A/S
+  *
+  * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
++ * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 as
+@@ -35,6 +37,7 @@
  
  #include <linux/io.h>
--#include <linux/gpio/consumer.h>
- #include <linux/spi/spi-mem.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/spi/spi-mem.h>
  
  /* QSPI register offsets */
-@@ -160,35 +155,9 @@ struct atmel_qspi {
- 	struct clk		*clk;
- 	struct platform_device	*pdev;
- 	u32			pending;
--
--	struct spi_nor		nor;
--	u32			clk_rate;
- 	struct completion	cmd_completion;
+ #define QSPI_CR      0x0000  /* Control Register */
+@@ -186,6 +189,23 @@ struct atmel_qspi_command {
+ 	void		*rx_buf;
  };
  
--struct atmel_qspi_command {
--	union {
--		struct {
--			u32	instruction:1;
--			u32	address:3;
--			u32	mode:1;
--			u32	dummy:1;
--			u32	data:1;
--			u32	reserved:25;
--		}		bits;
--		u32	word;
--	}	enable;
--	u8	instruction;
--	u8	mode;
--	u8	num_mode_cycles;
--	u8	num_dummy_cycles;
--	u32	address;
--
--	size_t		buf_len;
--	const void	*tx_buf;
--	void		*rx_buf;
--};
--
- struct qspi_mode {
- 	u8 cmd_buswidth;
- 	u8 addr_buswidth;
-@@ -407,363 +376,6 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 	return 0;
++struct qspi_mode {
++	u8 cmd_buswidth;
++	u8 addr_buswidth;
++	u8 data_buswidth;
++	u32 config;
++};
++
++static const struct qspi_mode sama5d2_qspi_modes[] = {
++	{ 1, 1, 1, QSPI_IFR_WIDTH_SINGLE_BIT_SPI },
++	{ 1, 1, 2, QSPI_IFR_WIDTH_DUAL_OUTPUT },
++	{ 1, 1, 4, QSPI_IFR_WIDTH_QUAD_OUTPUT },
++	{ 1, 2, 2, QSPI_IFR_WIDTH_DUAL_IO },
++	{ 1, 4, 4, QSPI_IFR_WIDTH_QUAD_IO },
++	{ 2, 2, 2, QSPI_IFR_WIDTH_DUAL_CMD },
++	{ 4, 4, 4, QSPI_IFR_WIDTH_QUAD_CMD },
++};
++
+ /* Register access functions */
+ static inline u32 qspi_readl(struct atmel_qspi *aq, u32 reg)
+ {
+@@ -197,6 +217,196 @@ static inline void qspi_writel(struct atmel_qspi *aq, u32 reg, u32 value)
+ 	writel_relaxed(value, aq->regs + reg);
  }
  
--static int atmel_qspi_run_transfer(struct atmel_qspi *aq,
--				   const struct atmel_qspi_command *cmd)
--{
--	void __iomem *ahb_mem;
--
--	/* Then fallback to a PIO transfer (memcpy() DOES NOT work!) */
--	ahb_mem = aq->mem;
--	if (cmd->enable.bits.address)
--		ahb_mem += cmd->address;
--	if (cmd->tx_buf)
--		_memcpy_toio(ahb_mem, cmd->tx_buf, cmd->buf_len);
--	else
--		_memcpy_fromio(cmd->rx_buf, ahb_mem, cmd->buf_len);
--
--	return 0;
--}
--
--#ifdef DEBUG
--static void atmel_qspi_debug_command(struct atmel_qspi *aq,
--				     const struct atmel_qspi_command *cmd,
--				     u32 ifr)
--{
--	u8 cmd_buf[SPI_NOR_MAX_CMD_SIZE];
--	size_t len = 0;
--	int i;
--
--	if (cmd->enable.bits.instruction)
--		cmd_buf[len++] = cmd->instruction;
--
--	for (i = cmd->enable.bits.address-1; i >= 0; --i)
--		cmd_buf[len++] = (cmd->address >> (i << 3)) & 0xff;
--
--	if (cmd->enable.bits.mode)
--		cmd_buf[len++] = cmd->mode;
--
--	if (cmd->enable.bits.dummy) {
--		int num = cmd->num_dummy_cycles;
--
--		switch (ifr & QSPI_IFR_WIDTH_MASK) {
--		case QSPI_IFR_WIDTH_SINGLE_BIT_SPI:
--		case QSPI_IFR_WIDTH_DUAL_OUTPUT:
--		case QSPI_IFR_WIDTH_QUAD_OUTPUT:
--			num >>= 3;
--			break;
--		case QSPI_IFR_WIDTH_DUAL_IO:
--		case QSPI_IFR_WIDTH_DUAL_CMD:
--			num >>= 2;
--			break;
--		case QSPI_IFR_WIDTH_QUAD_IO:
--		case QSPI_IFR_WIDTH_QUAD_CMD:
--			num >>= 1;
--			break;
--		default:
--			return;
--		}
--
--		for (i = 0; i < num; ++i)
--			cmd_buf[len++] = 0;
--	}
--
--	/* Dump the SPI command */
--	print_hex_dump(KERN_DEBUG, "qspi cmd: ", DUMP_PREFIX_NONE,
--		       32, 1, cmd_buf, len, false);
--
--#ifdef VERBOSE_DEBUG
--	/* If verbose debug is enabled, also dump the TX data */
--	if (cmd->enable.bits.data && cmd->tx_buf)
--		print_hex_dump(KERN_DEBUG, "qspi tx : ", DUMP_PREFIX_NONE,
--			       32, 1, cmd->tx_buf, cmd->buf_len, false);
--#endif
--}
--#else
--#define atmel_qspi_debug_command(aq, cmd, ifr)
--#endif
--
--static int atmel_qspi_run_command(struct atmel_qspi *aq,
--				  const struct atmel_qspi_command *cmd,
--				  u32 ifr_tfrtyp, enum spi_nor_protocol proto)
--{
--	u32 iar, icr, ifr, sr;
--	int err = 0;
--
--	iar = 0;
--	icr = 0;
--	ifr = ifr_tfrtyp;
--
--	/* Set the SPI protocol */
--	switch (proto) {
--	case SNOR_PROTO_1_1_1:
--		ifr |= QSPI_IFR_WIDTH_SINGLE_BIT_SPI;
--		break;
--
--	case SNOR_PROTO_1_1_2:
--		ifr |= QSPI_IFR_WIDTH_DUAL_OUTPUT;
--		break;
--
--	case SNOR_PROTO_1_1_4:
--		ifr |= QSPI_IFR_WIDTH_QUAD_OUTPUT;
--		break;
--
--	case SNOR_PROTO_1_2_2:
--		ifr |= QSPI_IFR_WIDTH_DUAL_IO;
--		break;
--
--	case SNOR_PROTO_1_4_4:
--		ifr |= QSPI_IFR_WIDTH_QUAD_IO;
--		break;
--
--	case SNOR_PROTO_2_2_2:
--		ifr |= QSPI_IFR_WIDTH_DUAL_CMD;
--		break;
--
--	case SNOR_PROTO_4_4_4:
--		ifr |= QSPI_IFR_WIDTH_QUAD_CMD;
--		break;
--
--	default:
--		return -EINVAL;
--	}
--
--	/* Compute instruction parameters */
--	if (cmd->enable.bits.instruction) {
--		icr |= QSPI_ICR_INST(cmd->instruction);
--		ifr |= QSPI_IFR_INSTEN;
--	}
--
--	/* Compute address parameters */
--	switch (cmd->enable.bits.address) {
--	case 4:
--		ifr |= QSPI_IFR_ADDRL;
--		/* fall through to the 24bit (3 byte) address case. */
--	case 3:
--		iar = (cmd->enable.bits.data) ? 0 : cmd->address;
--		ifr |= QSPI_IFR_ADDREN;
--		break;
--	case 0:
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	/* Compute option parameters */
--	if (cmd->enable.bits.mode && cmd->num_mode_cycles) {
--		u32 mode_cycle_bits, mode_bits;
--
--		icr |= QSPI_ICR_OPT(cmd->mode);
--		ifr |= QSPI_IFR_OPTEN;
--
--		switch (ifr & QSPI_IFR_WIDTH_MASK) {
--		case QSPI_IFR_WIDTH_SINGLE_BIT_SPI:
--		case QSPI_IFR_WIDTH_DUAL_OUTPUT:
--		case QSPI_IFR_WIDTH_QUAD_OUTPUT:
--			mode_cycle_bits = 1;
--			break;
--		case QSPI_IFR_WIDTH_DUAL_IO:
--		case QSPI_IFR_WIDTH_DUAL_CMD:
--			mode_cycle_bits = 2;
--			break;
--		case QSPI_IFR_WIDTH_QUAD_IO:
--		case QSPI_IFR_WIDTH_QUAD_CMD:
--			mode_cycle_bits = 4;
--			break;
--		default:
--			return -EINVAL;
--		}
--
--		mode_bits = cmd->num_mode_cycles * mode_cycle_bits;
--		switch (mode_bits) {
--		case 1:
--			ifr |= QSPI_IFR_OPTL_1BIT;
--			break;
--
--		case 2:
--			ifr |= QSPI_IFR_OPTL_2BIT;
--			break;
--
--		case 4:
--			ifr |= QSPI_IFR_OPTL_4BIT;
--			break;
--
--		case 8:
--			ifr |= QSPI_IFR_OPTL_8BIT;
--			break;
--
--		default:
--			return -EINVAL;
--		}
--	}
--
--	/* Set number of dummy cycles */
--	if (cmd->enable.bits.dummy)
--		ifr |= QSPI_IFR_NBDUM(cmd->num_dummy_cycles);
--
--	/* Set data enable */
--	if (cmd->enable.bits.data) {
--		ifr |= QSPI_IFR_DATAEN;
--
--		/* Special case for Continuous Read Mode */
--		if (!cmd->tx_buf && !cmd->rx_buf)
--			ifr |= QSPI_IFR_CRM;
--	}
--
--	/* Clear pending interrupts */
--	(void)qspi_readl(aq, QSPI_SR);
--
--	/* Set QSPI Instruction Frame registers */
--	atmel_qspi_debug_command(aq, cmd, ifr);
--	qspi_writel(aq, QSPI_IAR, iar);
--	qspi_writel(aq, QSPI_ICR, icr);
--	qspi_writel(aq, QSPI_IFR, ifr);
--
--	/* Skip to the final steps if there is no data */
--	if (!cmd->enable.bits.data)
--		goto no_data;
--
--	/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
--	(void)qspi_readl(aq, QSPI_IFR);
--
--	/* Stop here for continuous read */
--	if (!cmd->tx_buf && !cmd->rx_buf)
--		return 0;
--	/* Send/Receive data */
--	err = atmel_qspi_run_transfer(aq, cmd);
--
--	/* Release the chip-select */
--	qspi_writel(aq, QSPI_CR, QSPI_CR_LASTXFER);
--
--	if (err)
--		return err;
--
--#if defined(DEBUG) && defined(VERBOSE_DEBUG)
--	/*
--	 * If verbose debug is enabled, also dump the RX data in addition to
--	 * the SPI command previously dumped by atmel_qspi_debug_command()
--	 */
--	if (cmd->rx_buf)
--		print_hex_dump(KERN_DEBUG, "qspi rx : ", DUMP_PREFIX_NONE,
--			       32, 1, cmd->rx_buf, cmd->buf_len, false);
--#endif
--no_data:
--	/* Poll INSTRuction End status */
--	sr = qspi_readl(aq, QSPI_SR);
--	if ((sr & QSPI_SR_CMD_COMPLETED) == QSPI_SR_CMD_COMPLETED)
--		return err;
--
--	/* Wait for INSTRuction End interrupt */
--	reinit_completion(&aq->cmd_completion);
--	aq->pending = sr & QSPI_SR_CMD_COMPLETED;
--	qspi_writel(aq, QSPI_IER, QSPI_SR_CMD_COMPLETED);
--	if (!wait_for_completion_timeout(&aq->cmd_completion,
--					 msecs_to_jiffies(1000)))
--		err = -ETIMEDOUT;
--	qspi_writel(aq, QSPI_IDR, QSPI_SR_CMD_COMPLETED);
--
--	return err;
--}
--
--static int atmel_qspi_read_reg(struct spi_nor *nor, u8 opcode,
--			       u8 *buf, int len)
--{
--	struct atmel_qspi *aq = nor->priv;
--	struct atmel_qspi_command cmd;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.enable.bits.instruction = 1;
--	cmd.enable.bits.data = 1;
--	cmd.instruction = opcode;
--	cmd.rx_buf = buf;
--	cmd.buf_len = len;
--	return atmel_qspi_run_command(aq, &cmd, QSPI_IFR_TFRTYP_TRSFR_READ,
--				      nor->reg_proto);
--}
--
--static int atmel_qspi_write_reg(struct spi_nor *nor, u8 opcode,
--				u8 *buf, int len)
--{
--	struct atmel_qspi *aq = nor->priv;
--	struct atmel_qspi_command cmd;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.enable.bits.instruction = 1;
--	cmd.enable.bits.data = (buf != NULL && len > 0);
--	cmd.instruction = opcode;
--	cmd.tx_buf = buf;
--	cmd.buf_len = len;
--	return atmel_qspi_run_command(aq, &cmd, QSPI_IFR_TFRTYP_TRSFR_WRITE,
--				      nor->reg_proto);
--}
--
--static ssize_t atmel_qspi_write(struct spi_nor *nor, loff_t to, size_t len,
--				const u_char *write_buf)
--{
--	struct atmel_qspi *aq = nor->priv;
--	struct atmel_qspi_command cmd;
--	ssize_t ret;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.enable.bits.instruction = 1;
--	cmd.enable.bits.address = nor->addr_width;
--	cmd.enable.bits.data = 1;
--	cmd.instruction = nor->program_opcode;
--	cmd.address = (u32)to;
--	cmd.tx_buf = write_buf;
--	cmd.buf_len = len;
--	ret = atmel_qspi_run_command(aq, &cmd, QSPI_IFR_TFRTYP_TRSFR_WRITE_MEM,
--				     nor->write_proto);
--	return (ret < 0) ? ret : len;
--}
--
--static int atmel_qspi_erase(struct spi_nor *nor, loff_t offs)
--{
--	struct atmel_qspi *aq = nor->priv;
--	struct atmel_qspi_command cmd;
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.enable.bits.instruction = 1;
--	cmd.enable.bits.address = nor->addr_width;
--	cmd.instruction = nor->erase_opcode;
--	cmd.address = (u32)offs;
--	return atmel_qspi_run_command(aq, &cmd, QSPI_IFR_TFRTYP_TRSFR_WRITE,
--				      nor->reg_proto);
--}
--
--static ssize_t atmel_qspi_read(struct spi_nor *nor, loff_t from, size_t len,
--			       u_char *read_buf)
--{
--	struct atmel_qspi *aq = nor->priv;
--	struct atmel_qspi_command cmd;
--	u8 num_mode_cycles, num_dummy_cycles;
--	ssize_t ret;
--
--	if (nor->read_dummy >= 2) {
--		num_mode_cycles = 2;
--		num_dummy_cycles = nor->read_dummy - 2;
--	} else {
--		num_mode_cycles = nor->read_dummy;
--		num_dummy_cycles = 0;
--	}
--
--	memset(&cmd, 0, sizeof(cmd));
--	cmd.enable.bits.instruction = 1;
--	cmd.enable.bits.address = nor->addr_width;
--	cmd.enable.bits.mode = (num_mode_cycles > 0);
--	cmd.enable.bits.dummy = (num_dummy_cycles > 0);
--	cmd.enable.bits.data = 1;
--	cmd.instruction = nor->read_opcode;
--	cmd.address = (u32)from;
--	cmd.mode = 0xff; /* This value prevents from entering the 0-4-4 mode */
--	cmd.num_mode_cycles = num_mode_cycles;
--	cmd.num_dummy_cycles = num_dummy_cycles;
--	cmd.rx_buf = read_buf;
--	cmd.buf_len = len;
--	ret = atmel_qspi_run_command(aq, &cmd, QSPI_IFR_TFRTYP_TRSFR_READ_MEM,
--				     nor->read_proto);
--	return (ret < 0) ? ret : len;
--}
--
- static int atmel_qspi_init(struct atmel_qspi *aq)
++static inline bool is_compatible(const struct spi_mem_op *op,
++				 const struct qspi_mode *mode)
++{
++	if (op->cmd.buswidth != mode->cmd_buswidth)
++		return false;
++
++	if (op->addr.nbytes && op->addr.buswidth != mode->addr_buswidth)
++		return false;
++
++	if (op->data.nbytes && op->data.buswidth != mode->data_buswidth)
++		return false;
++
++	return true;
++}
++
++static int find_mode(const struct spi_mem_op *op)
++{
++	u32 i;
++
++	for (i = 0; i < ARRAY_SIZE(sama5d2_qspi_modes); i++)
++		if (is_compatible(op, &sama5d2_qspi_modes[i]))
++			return i;
++
++	return -1;
++}
++
++static bool atmel_qspi_supports_op(struct spi_mem *mem,
++				   const struct spi_mem_op *op)
++{
++	if (find_mode(op) < 0)
++		return false;
++
++	/* special case not supported by hardware */
++	if (op->addr.nbytes == 2 && op->cmd.buswidth != op->addr.buswidth &&
++		op->dummy.nbytes == 0)
++		return false;
++
++	return true;
++}
++
++static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	struct atmel_qspi *aq = spi_controller_get_devdata(mem->spi->master);
++	int mode;
++	u32 dummy_cycles = 0;
++	u32 iar, icr, ifr, sr;
++	int err = 0;
++
++	iar = 0;
++	icr = QSPI_ICR_INST(op->cmd.opcode);
++	ifr = QSPI_IFR_INSTEN;
++
++	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
++
++	mode = find_mode(op);
++	if (mode < 0)
++		return -ENOTSUPP;
++
++	ifr |= sama5d2_qspi_modes[mode].config;
++
++	if (op->dummy.buswidth && op->dummy.nbytes)
++		dummy_cycles = op->dummy.nbytes * 8 / op->dummy.buswidth;
++
++	if (op->addr.buswidth) {
++		switch (op->addr.nbytes) {
++		case 0:
++			break;
++		case 1:
++			ifr |= QSPI_IFR_OPTEN | QSPI_IFR_OPTL_8BIT;
++			icr |= QSPI_ICR_OPT(op->addr.val & 0xff);
++			break;
++		case 2:
++			if (dummy_cycles < 8 / op->addr.buswidth) {
++				ifr &= ~QSPI_IFR_INSTEN;
++				ifr |= QSPI_IFR_ADDREN;
++				iar = (op->cmd.opcode << 16) |
++					(op->addr.val & 0xffff);
++			} else {
++				ifr |= QSPI_IFR_ADDREN;
++				iar = (op->addr.val << 8) & 0xffffff;
++				dummy_cycles -= 8 / op->addr.buswidth;
++			}
++			break;
++		case 3:
++			ifr |= QSPI_IFR_ADDREN;
++			iar = op->addr.val & 0xffffff;
++			break;
++		case 4:
++			ifr |= QSPI_IFR_ADDREN | QSPI_IFR_ADDRL;
++			iar = op->addr.val & 0x7ffffff;
++			break;
++		default:
++			return -ENOTSUPP;
++		}
++	}
++
++	/* Set number of dummy cycles */
++	if (dummy_cycles)
++		ifr |= QSPI_IFR_NBDUM(dummy_cycles);
++
++	/* Set data enable */
++	if (op->data.nbytes)
++		ifr |= QSPI_IFR_DATAEN;
++
++	if (op->data.dir == SPI_MEM_DATA_IN && op->data.nbytes)
++		ifr |= QSPI_IFR_TFRTYP_TRSFR_READ;
++	else
++		ifr |= QSPI_IFR_TFRTYP_TRSFR_WRITE;
++
++	/* Clear pending interrupts */
++	(void)qspi_readl(aq, QSPI_SR);
++
++	/* Set QSPI Instruction Frame registers */
++	qspi_writel(aq, QSPI_IAR, iar);
++	qspi_writel(aq, QSPI_ICR, icr);
++	qspi_writel(aq, QSPI_IFR, ifr);
++
++	/* Skip to the final steps if there is no data */
++	if (op->data.nbytes) {
++		/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
++		(void)qspi_readl(aq, QSPI_IFR);
++
++		/* Send/Receive data */
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			_memcpy_fromio(op->data.buf.in,
++				aq->mem + iar, op->data.nbytes);
++		else
++			_memcpy_toio(aq->mem + iar,
++				op->data.buf.out, op->data.nbytes);
++
++		/* Release the chip-select */
++		qspi_writel(aq, QSPI_CR, QSPI_CR_LASTXFER);
++	}
++
++	/* Poll INSTRuction End status */
++	sr = qspi_readl(aq, QSPI_SR);
++	if ((sr & QSPI_SR_CMD_COMPLETED) == QSPI_SR_CMD_COMPLETED)
++		return err;
++
++	/* Wait for INSTRuction End interrupt */
++	reinit_completion(&aq->cmd_completion);
++	aq->pending = sr & QSPI_SR_CMD_COMPLETED;
++	qspi_writel(aq, QSPI_IER, QSPI_SR_CMD_COMPLETED);
++	if (!wait_for_completion_timeout(&aq->cmd_completion,
++					 msecs_to_jiffies(1000)))
++		err = -ETIMEDOUT;
++	qspi_writel(aq, QSPI_IDR, QSPI_SR_CMD_COMPLETED);
++
++	return err;
++}
++
++const char *atmel_qspi_get_name(struct spi_mem *spimem)
++{
++	return dev_name(spimem->spi->dev.parent);
++}
++
++static const struct spi_controller_mem_ops atmel_qspi_mem_ops = {
++	.supports_op = atmel_qspi_supports_op,
++	.exec_op = atmel_qspi_exec_op,
++	.get_name = atmel_qspi_get_name
++};
++
++static int atmel_qspi_setup(struct spi_device *spi)
++{
++	struct spi_controller *ctrl = spi->master;
++	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
++	unsigned long src_rate;
++	u32 scr, scbr;
++
++	if (ctrl->busy)
++		return -EBUSY;
++
++	if (!spi->max_speed_hz)
++		return -EINVAL;
++
++	src_rate = clk_get_rate(aq->clk);
++	if (!src_rate)
++		return -EINVAL;
++
++	/* Compute the QSPI baudrate */
++	scbr = DIV_ROUND_UP(src_rate, spi->max_speed_hz);
++	if (scbr > 0)
++		scbr--;
++
++	scr = QSPI_SCR_SCBR(scbr);
++	qspi_writel(aq, QSPI_SCR, scr);
++
++	return 0;
++}
++
+ static int atmel_qspi_run_transfer(struct atmel_qspi *aq,
+ 				   const struct atmel_qspi_command *cmd)
  {
- 	/* Reset the QSPI controller */
+@@ -777,5 +987,6 @@ static struct platform_driver atmel_qspi_driver = {
+ module_platform_driver(atmel_qspi_driver);
+ 
+ MODULE_AUTHOR("Cyrille Pitchen <cyrille.pitchen@atmel.com>");
++MODULE_AUTHOR("Piotr Bugalski <bugalski.piotr@gmail.com");
+ MODULE_DESCRIPTION("Atmel QSPI Controller driver");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.19.0.rc2

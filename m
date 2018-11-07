@@ -1,40 +1,29 @@
 From: Vignesh R <vigneshr@ti.com>
-Subject: [PATCH 1/2] dt-bindings: spi: omap-spi: Add compatible for AM654 SoC
-Date: Wed, 7 Nov 2018 16:09:25 +0530
-Message-ID: <20181107103926.32550-2-vigneshr@ti.com>
-References: <20181107103926.32550-1-vigneshr@ti.com>
+Subject: [PATCH 0/2] McSPI: Enable mcspi driver for AM654 SoCs
+Date: Wed, 7 Nov 2018 16:09:24 +0530
+Message-ID: <20181107103926.32550-1-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Cc: Mark Rutland <mark.rutland@arm.com>, <linux-spi@vger.kernel.org>,
         Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Vignesh R <vigneshr@ti.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181107103926.32550-1-vigneshr@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-AM654 SoC has same McSPI IP as OMAP2+ platforms. Add new compatible to
-support McSPI on AM654 SoC.
+Couple of patches to enable mcspi driver to be used with TI's new
+AM654 SoCs.
 
-Signed-off-by: Vignesh R <vigneshr@ti.com>
----
+Vignesh R (2):
+  dt-bindings: spi: omap-spi: Add compatible for AM654 SoC
+  spi: Kconfig: Enable McSPI driver for K3 platforms
+
  Documentation/devicetree/bindings/spi/omap-spi.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/Kconfig                                | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/omap-spi.txt b/Documentation/devicetree/bindings/spi/omap-spi.txt
-index 2ba5f9c023ac..487208c256c0 100644
---- a/Documentation/devicetree/bindings/spi/omap-spi.txt
-+++ b/Documentation/devicetree/bindings/spi/omap-spi.txt
-@@ -2,6 +2,7 @@ OMAP2+ McSPI device
- 
- Required properties:
- - compatible :
-+  - "ti,am654-mcspi" for AM654.
-   - "ti,omap2-mcspi" for OMAP2 & OMAP3.
-   - "ti,omap4-mcspi" for OMAP4+.
- - ti,spi-num-cs : Number of chipselect supported  by the instance.
 -- 
 2.19.1

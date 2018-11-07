@@ -1,8 +1,8 @@
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
-Subject: [PATCH v4 08/10] ARM: dts: ls1021a: Remove fsl,
+Subject: [PATCH v4 09/10] ARM64: dts: ls1046a: Remove fsl,
  qspi-has-second-chip as it is not used
-Date: Wed,  7 Nov 2018 15:43:25 +0100
-Message-ID: <1541601809-16950-9-git-send-email-frieder.schrempf@kontron.de>
+Date: Wed,  7 Nov 2018 15:43:26 +0100
+Message-ID: <1541601809-16950-10-git-send-email-frieder.schrempf@kontron.de>
 References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -40,21 +40,21 @@ the chipselect.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
 ---
- arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts | 1 -
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-index 6a83f30..d3a1a73 100644
---- a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-+++ b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-@@ -203,7 +203,6 @@
- };
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
+index 51cbd50..9e083f6 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
+@@ -213,7 +213,6 @@
+ 			clock-names = "qspi_en", "qspi";
+ 			clocks = <&clockgen 4 1>, <&clockgen 4 1>;
+ 			big-endian;
+-			fsl,qspi-has-second-chip;
+ 			status = "disabled";
+ 		};
  
- &qspi {
--	fsl,qspi-has-second-chip;
- 	status = "okay";
- 
- 	flash: flash@0 {
 -- 
 2.7.4
 

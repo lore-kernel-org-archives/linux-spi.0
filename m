@@ -1,142 +1,187 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v2 00/12] Port the FSL QSPI driver to the SPI framework
-Date: Thu, 8 Nov 2018 08:35:28 +0000
-Message-ID: <903083f9-ab85-597f-3749-579789bdf85a@kontron.de>
-References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
- <20181031144055.32e1c8f1@bbrezillon>
- <dd4b9af1-82f3-469e-e70f-2858e85a5dfe@kontron.de>
- <20181031153125.3c5dfca1@bbrezillon>
- <e895f059-f8fe-6d4c-3744-ab8cfa4a2147@kontron.de>
- <20181108091957.013dc540@bbrezillon>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v4 02/10] dt-bindings: spi: Move the bindings for the
+ FSL QSPI driver
+Date: Thu, 8 Nov 2018 09:37:51 +0100
+Message-ID: <20181108093751.39f43e8d@bbrezillon>
+References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
+        <1541601809-16950-3-git-send-email-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
- "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
- "richard@nod.at" <richard@nod.at>, "broonie@kernel.org" <broonie@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
- "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
- "han.xu@nxp.com" <han.xu@nxp.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181108091957.013dc540@bbrezillon>
-Content-Language: en-US
-Content-ID: <E62DE01305F98A43BF206727669F0A2F@snt-world.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        dwmw2@infradead.org, computersforpeace@gmail.com,
+        marek.vasut@gmail.com, richard@nod.at, miquel.raynal@bootlin.com,
+        broonie@kernel.org, david.wolfe@nxp.com, fabio.estevam@nxp.com,
+        prabhakar.kushwaha@nxp.com, yogeshnarayan.gaur@nxp.com,
+        han.xu@nxp.com, shawnguo@kernel.org,
+        Frieder Schrempf <frieder.schrempf@exceet.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1541601809-16950-3-git-send-email-frieder.schrempf@kontron.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08.11.18 09:19, Boris Brezillon wrote:
-> Hi Frieder,
-> 
-> On Thu, 8 Nov 2018 08:15:55 +0000
-> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
-> 
->> Hi Boris, hi Yogesh,
->>
->> On 31.10.18 15:31, Boris Brezillon wrote:
->>> On Wed, 31 Oct 2018 13:54:29 +0000
->>> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
->>>    
->>>> Hi Boris,
->>>>
->>>> On 31.10.18 14:40, Boris Brezillon wrote:
->>>>> Hi Frieder, Yogesh,
->>>>>
->>>>> On Thu,  5 Jul 2018 13:14:56 +0200
->>>>> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
->>>>>       
->>>>>> Now that the SPI memory interface was introduced by Boris [1], it is
->>>>>> possible to move drivers from mtd/spi-nor to the SPI framework in order
->>>>>> to use them for different type of SPI memory chips.
->>>>>>
->>>>>> Patch 1 adds a function spi_mem_get_name() to the SPI memory interface
->>>>>> and a ->name field to struct spi_mem.
->>>>>> Patch 2 uses it in m25p80.c to make it possible for SPI controller
->>>>>> drivers to provide a custom naming scheme for the flash chip.
->>>>>> This is needed to avoid breaking compatibility of mtdparts when switching
->>>>>> from the old to the new driver.
->>>>>>
->>>>>> Patch 3 adds a driver for the Freescale QSPI controller to the SPI
->>>>>> framework. Together with m25p80.c it can be used to interface SPI
->>>>>> NOR flashes just as the old driver did. For this to work properly a few
->>>>>> minor changes to the devicetrees are necessary (see patches 5 to 7).
->>>>>>
->>>>>> Patch 8 changes the defconfigs to use the new driver and patch 9 removes
->>>>>> the old driver.
->>>>>>
->>>>>> Patch 10 and 11 remove 'fsl,qspi-has-second-chip' from the devicetrees.
->>>>>> Patch 12 adjusts the MAINTAINERS file.
->>>>>>
->>>>>> The new driver was tested with i.MX6UL and a Micron SPI NOR @ 60MHz.
->>>>>> The read performance of the new driver is almost the same or even better
->>>>>> than the old driver, depending on the block size.
->>>>>> The write performance is a bit slower on average (~10-15%).
->>>>>>
->>>>>> The new driver was also tested with the SPI NAND framework [2] and a
->>>>>> Winbond W25M02GV flash.
->>>>>>
->>>>>> If someone has a board that uses both chips selects and/or both busses,
->>>>>> it would be really nice to have the driver be tested on such a setup.
->>>>>
->>>>> Any progress on this front? Yogesh, can you please remind us the
->>>>> remaining issues? I'd really like to make some progress, otherwise the
->>>>> conversion to spi-mem will take ages.
->>>>
->>>> I definitely want to continue this. I just did not have the time to work
->>>> on it.
->>>>
->>>> I think the only remaining blocking issues is the one that Yogesh
->>>> reported while testing with two chips on the same bus.
->>>
->>> Maybe you can send a new version rebased on v4.20-rc1 (when it's out)
->>> and push it somewhere so that Yogesh can test it (again). Yogesh, can we
->>> please make some progress on this? If you really have a bug, that'd be
->>> great to have a serious investigation on what is causing this bug. The
->>> explanation we had so far were not really helpful in understanding the
->>> problem.
->>
->> I have sent a v4 that is based on v4.20-rc1. I only applied small fixes
->> and cosmetic changes.
->>
->> There is still the hack to avoid AHB buffer invalidation delay (not sure
->> if we should keep it for now)
-> 
-> IIRC, Yogesh proposed to replace this hack by a RESET+smaller-delay.
-> Maybe you can try that.
+On Wed,  7 Nov 2018 15:43:19 +0100
+Frieder Schrempf <frieder.schrempf@kontron.de> wrote:
 
-Right, I will do some experiments.
+> From: Frieder Schrempf <frieder.schrempf@exceet.de>
+> 
+> Move the documentation of the old SPI NOR driver to the place of the new
+> SPI memory interface based driver.
+> 
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>
+> ---
+>  .../devicetree/bindings/mtd/fsl-quadspi.txt     | 65 --------------------
+>  .../devicetree/bindings/spi/spi-fsl-qspi.txt    | 65 ++++++++++++++++++++
 
->> and we still need to figure out the
->> reported problems with two chips on one bus.
->>
->> As Yogesh is the only one how has a hardware setup for this, maybe you
->> can retry and provide some debugging info?
->>
->> Unfortunately I'll probably do not have time to switch to the dirmap API
->> now, so I'd rather do that as a second step, as it probably won't solve
->> our problems either.
+Did you use -M when you generated patches with git format-patch?
+Normally, when you move a file without changing anything, the diff is
+smaller than that.
+
+>  2 files changed, 65 insertions(+), 65 deletions(-)
 > 
-> Totally agree with that.
-> 
-> Thanks for sending a v4.
-> 
-> Boris
-> 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> diff --git a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> deleted file mode 100644
+> index 483e9cf..0000000
+> --- a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> +++ /dev/null
+> @@ -1,65 +0,0 @@
+> -* Freescale Quad Serial Peripheral Interface(QuadSPI)
+> -
+> -Required properties:
+> -  - compatible : Should be "fsl,vf610-qspi", "fsl,imx6sx-qspi",
+> -		 "fsl,imx7d-qspi", "fsl,imx6ul-qspi",
+> -		 "fsl,ls1021a-qspi"
+> -		 or
+> -		 "fsl,ls2080a-qspi" followed by "fsl,ls1021a-qspi",
+> -		 "fsl,ls1043a-qspi" followed by "fsl,ls1021a-qspi"
+> -  - reg : the first contains the register location and length,
+> -          the second contains the memory mapping address and length
+> -  - reg-names: Should contain the reg names "QuadSPI" and "QuadSPI-memory"
+> -  - interrupts : Should contain the interrupt for the device
+> -  - clocks : The clocks needed by the QuadSPI controller
+> -  - clock-names : Should contain the name of the clocks: "qspi_en" and "qspi".
+> -
+> -Optional properties:
+> -  - fsl,qspi-has-second-chip: The controller has two buses, bus A and bus B.
+> -                              Each bus can be connected with two NOR flashes.
+> -			      Most of the time, each bus only has one NOR flash
+> -			      connected, this is the default case.
+> -			      But if there are two NOR flashes connected to the
+> -			      bus, you should enable this property.
+> -			      (Please check the board's schematic.)
+> -  - big-endian : That means the IP register is big endian
+> -
+> -Example:
+> -
+> -qspi0: quadspi@40044000 {
+> -	compatible = "fsl,vf610-qspi";
+> -	reg = <0x40044000 0x1000>, <0x20000000 0x10000000>;
+> -	reg-names = "QuadSPI", "QuadSPI-memory";
+> -	interrupts = <0 24 IRQ_TYPE_LEVEL_HIGH>;
+> -	clocks = <&clks VF610_CLK_QSPI0_EN>,
+> -		<&clks VF610_CLK_QSPI0>;
+> -	clock-names = "qspi_en", "qspi";
+> -
+> -	flash0: s25fl128s@0 {
+> -		....
+> -	};
+> -};
+> -
+> -Example showing the usage of two SPI NOR devices:
+> -
+> -&qspi2 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_qspi2>;
+> -	status = "okay";
+> -
+> -	flash0: n25q256a@0 {
+> -		#address-cells = <1>;
+> -		#size-cells = <1>;
+> -		compatible = "micron,n25q256a", "jedec,spi-nor";
+> -		spi-max-frequency = <29000000>;
+> -		reg = <0>;
+> -	};
+> -
+> -	flash1: n25q256a@1 {
+> -		#address-cells = <1>;
+> -		#size-cells = <1>;
+> -		compatible = "micron,n25q256a", "jedec,spi-nor";
+> -		spi-max-frequency = <29000000>;
+> -		reg = <1>;
+> -	};
+> -};
+> diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
+> new file mode 100644
+> index 0000000..483e9cf
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
+> @@ -0,0 +1,65 @@
+> +* Freescale Quad Serial Peripheral Interface(QuadSPI)
+> +
+> +Required properties:
+> +  - compatible : Should be "fsl,vf610-qspi", "fsl,imx6sx-qspi",
+> +		 "fsl,imx7d-qspi", "fsl,imx6ul-qspi",
+> +		 "fsl,ls1021a-qspi"
+> +		 or
+> +		 "fsl,ls2080a-qspi" followed by "fsl,ls1021a-qspi",
+> +		 "fsl,ls1043a-qspi" followed by "fsl,ls1021a-qspi"
+> +  - reg : the first contains the register location and length,
+> +          the second contains the memory mapping address and length
+> +  - reg-names: Should contain the reg names "QuadSPI" and "QuadSPI-memory"
+> +  - interrupts : Should contain the interrupt for the device
+> +  - clocks : The clocks needed by the QuadSPI controller
+> +  - clock-names : Should contain the name of the clocks: "qspi_en" and "qspi".
+> +
+> +Optional properties:
+> +  - fsl,qspi-has-second-chip: The controller has two buses, bus A and bus B.
+> +                              Each bus can be connected with two NOR flashes.
+> +			      Most of the time, each bus only has one NOR flash
+> +			      connected, this is the default case.
+> +			      But if there are two NOR flashes connected to the
+> +			      bus, you should enable this property.
+> +			      (Please check the board's schematic.)
+> +  - big-endian : That means the IP register is big endian
+> +
+> +Example:
+> +
+> +qspi0: quadspi@40044000 {
+> +	compatible = "fsl,vf610-qspi";
+> +	reg = <0x40044000 0x1000>, <0x20000000 0x10000000>;
+> +	reg-names = "QuadSPI", "QuadSPI-memory";
+> +	interrupts = <0 24 IRQ_TYPE_LEVEL_HIGH>;
+> +	clocks = <&clks VF610_CLK_QSPI0_EN>,
+> +		<&clks VF610_CLK_QSPI0>;
+> +	clock-names = "qspi_en", "qspi";
+> +
+> +	flash0: s25fl128s@0 {
+> +		....
+> +	};
+> +};
+> +
+> +Example showing the usage of two SPI NOR devices:
+> +
+> +&qspi2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_qspi2>;
+> +	status = "okay";
+> +
+> +	flash0: n25q256a@0 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "micron,n25q256a", "jedec,spi-nor";
+> +		spi-max-frequency = <29000000>;
+> +		reg = <0>;
+> +	};
+> +
+> +	flash1: n25q256a@1 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "micron,n25q256a", "jedec,spi-nor";
+> +		spi-max-frequency = <29000000>;
+> +		reg = <1>;
+> +	};
+> +};

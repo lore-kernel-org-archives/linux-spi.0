@@ -1,127 +1,103 @@
-From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: RE: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
-Date: Thu, 8 Nov 2018 10:48:48 +0000
-Message-ID: <TY1PR01MB1770655F73AF7D8CB2EB6389C0C50@TY1PR01MB1770.jpnprd01.prod.outlook.com>
-References: <1541075705-1333-1-git-send-email-fabrizio.castro@bp.renesas.com>
- <1541075705-1333-4-git-send-email-fabrizio.castro@bp.renesas.com>
- <20181102114946.5tqk2lyisaey475w@verge.net.au>
- <TY1PR01MB1770FA3764370E7AEA5D30C6C0C50@TY1PR01MB1770.jpnprd01.prod.outlook.com>
- <CAMuHMdX=L9d=1dq24WErcjYLv987=yKL2K7hxnS7hhsZpbKEBA@mail.gmail.com>
- <TY1PR01MB1770AD277B0A1C5DF1776F60C0C50@TY1PR01MB1770.jpnprd01.prod.outlook.com>
- <CAMuHMdWiDM8LprsjBpj0uOKSta1mMpn61tTo8SCxtC6RquSVbw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Applied "spi: Add QuadSPI driver for Atmel SAMA5D2" to the spi
+ tree
+Date: Thu, 8 Nov 2018 12:07:52 +0000
+Message-ID: <20181108120752.GC6675@sirena.org.uk>
+References: <20181105103625.9644-6-bugalski.piotr@gmail.com>
+ <20181107150327.B6DC41124E14@debutante.sirena.org.uk>
+ <20181107151836.GB6809@sirena.org.uk>
+ <20181108095022.66ad3ad1@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, "open
- list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Chris Paterson <Chris.Paterson2@renesas.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Marek Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
- Mark Brown <broonie@kernel.org>, Magnus Damm <magnus.damm@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, linux-spi <linux-spi@vger.kernel.org>,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
- Boris Brezillon <boris.brezillon@bootlin.com>,
- Simon Horman <horms@verge.net.au>,
- MTD Maling List <linux-mtd@lists.infradead.org>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, Biju Das <biju.das@bp.renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAMuHMdWiDM8LprsjBpj0uOKSta1mMpn61tTo8SCxtC6RquSVbw@mail.gmail.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ncSAzJYg3Aa9+CRW"
+Cc: Piotr Bugalski <bugalski.piotr@gmail.com>,
+        linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Cyrille Pitchen <cyrille.pitchen@microchip.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181108095022.66ad3ad1@bbrezillon>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
 
-Thank you for your feedback!
+--ncSAzJYg3Aa9+CRW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Subject: Re: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
->
-> Hi Fabrizio,
->
-> On Thu, Nov 8, 2018 at 11:31 AM Fabrizio Castro
-> <fabrizio.castro@bp.renesas.com> wrote:
-> > > On Thu, Nov 8, 2018 at 11:22 AM Fabrizio Castro
-> > > <fabrizio.castro@bp.renesas.com> wrote:
-> > > > > From: Simon Horman <horms@verge.net.au>
-> > > > > Sent: 02 November 2018 11:50
-> > > > > Subject: Re: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
-> > > > >
-> > > > > On Thu, Nov 01, 2018 at 12:35:04PM +0000, Fabrizio Castro wrote:
-> > > > > > Add QSPI[01] support to the RZ/G1C SoC specific device tree.
-> > > > > >
-> > > > > > Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-> > > > > > ---
-> > > > > >  arch/arm/boot/dts/r8a77470.dtsi | 34 ++++++++++++++++++++++++++++++++++
-> > > > > >  1 file changed, 34 insertions(+)
-> > > > > >
-> > > > > > diff --git a/arch/arm/boot/dts/r8a77470.dtsi b/arch/arm/boot/dts/r8a77470.dtsi
-> > > > > > index e6407e5..04a8877 100644
-> > > > > > --- a/arch/arm/boot/dts/r8a77470.dtsi
-> > > > > > +++ b/arch/arm/boot/dts/r8a77470.dtsi
-> > > > > > @@ -20,6 +20,8 @@
-> > > > > >  i2c2 = &i2c2;
-> > > > > >  i2c3 = &i2c3;
-> > > > > >  i2c4 = &i2c4;
-> > > > > > +spi0 = &qspi0;
-> > > > > > +spi1 = &qspi1;
-> > > > > >  };
-> > > > >
-> > > > > Geert can comment but I believe we are moving away from using aliases
-> > > > > in this way and that it would be best if the above hunk was dropped
-> > > > > from this patch.
-> > > > >
-> > > > > https://patchwork.kernel.org/patch/10644159/
-> > > >
-> > > > Geert, what do you want me to do here?
-> > >
-> > > Please drop the aliases. Thanks!
-> >
-> > Will do, will send a new version without the additional aliases.
->
-> Thanks!
->
-> > My understanding is that your personal preference is to only leave debug console and ethernet,
->
-> Labeled serial ports and primary Ethernet, so U-Boot knows which MAC address
-> property to update.
->
-> > shall I also  get rid of what was already upstreamed for RZ/G related boards that is not in line
-> > with the new policy?
->
-> I believe these are all serial ports, using aliases that match the documented
-> and/or labeled port names? So they don't have to be removed.
+On Thu, Nov 08, 2018 at 09:50:22AM +0100, Boris Brezillon wrote:
+> Mark Brown <broonie@kernel.org> wrote:
 
-We have also been using aliases for i2c, spi (like in this case), vin, etc., for all of the RZ/G boards,
-shall I get rid of those?
+> > Sorry, I got confused about which patch series Boris had asked me to
+> > apply for him - it wasn't this one!  Since the review looked like it was
+> > just one minor issue last time I'll just leave them for now, they were
+> > applied on a separate branch for sharing with the MTD tree so it's easy
+> > for me to drop them if that's required or if I should put together the
+> > pull request for MTD.  Sorry for any confusion this ends up causing,
+> > it's entirely my mistake.
 
-Cheers,
-Fab
+> I'm probably missing something, but I don't see where you made a
+> mistake :-). It's indeed the series I asked you to merge, the only
+> comment I had was actually a suggestion to help Piotr solve his perf
+> issue (which was already present in the old driver).
 
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
+Oh, OK.  Then we can definitively say I'm confused then :)
 
+> And thanks for creating the mtd topic branch BTW.
 
+Here's a signed tag for just the MTD bits:
 
-Renesas Electronics Europe Ltd, Dukes Meadow, Millboard Road, Bourne End, Buckinghamshire, SL8 5FH, UK. Registered in England & Wales under Registered No. 04586709.
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+The following changes since commit 651022382c7f8da46cb4872a545ee1da6d097d2a:
+
+  Linux 4.20-rc1 (2018-11-04 15:37:52 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-mtd-atmel
+
+for you to fetch changes up to 6ca622c87149a20a47abbb954f896f515e2292a7:
+
+  mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi driver (2018-11-07 13:21:10 +0000)
+
+----------------------------------------------------------------
+mtd: Atmel QuadSPI changes for MTD
+
+These changes are dependencies for a branch merged into the SPI tree,
+create a signed tag to share them with the MTD tree.
+
+----------------------------------------------------------------
+Piotr Bugalski (4):
+      mtd: spi-nor: atmel-quaspi: Typo fix
+      mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi
+      mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver
+      mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi driver
+
+ drivers/mtd/spi-nor/atmel-quadspi.c | 528 ++++++++++--------------------------
+ 1 file changed, 148 insertions(+), 380 deletions(-)
+
+--ncSAzJYg3Aa9+CRW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvkJxgACgkQJNaLcl1U
+h9BcJgf+NBCkwqCGZqSr7hUTakUsHoRWEPxfsKxf2iq4IXSlsq9ilM+d/TwJXXjf
+YQLK9WPUFg2xKylbtQscBOgt49oVGP+cCywuEWrnO32Ix5by1e9BGRFt1n2scsBT
+LyAlHyJaQr4HAagkp2F2AZjoBrXq5nRinpYSAjSfRWfL3fFl/9JIScVg+RPxraqW
+SZT8C87kQRLcU7AIIij0Q5kSuHthsunFv5tz6DFRILgDMbB5/e4BXwIHbULFj0aq
+dIBjhVMkCyhq+MJtief7hTLcO/VGVyCh1tPW449+y6UiSWh1X6bh/t9HHKYAov/e
+zZrrK+gCRC9BfrVwEvDZ5ycn4koNOQ==
+=C77L
+-----END PGP SIGNATURE-----
+
+--ncSAzJYg3Aa9+CRW--

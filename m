@@ -1,23 +1,25 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH v2 0/3] Add QSPI flash support to iwg23s
-Date: Thu,  8 Nov 2018 17:04:40 +0000
-Message-ID: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH v2 3/3] ARM: dts: iwg23s-sbc: Add QSPI flash support
+Date: Thu,  8 Nov 2018 17:04:43 +0000
+Message-ID: <1541696684-21235-4-git-send-email-fabrizio.castro@bp.renesas.com>
+References: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
- devicetree@vger.kernel.org, Chris Paterson <Chris.Paterson2@renesas.com>,
- Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-mtd@lists.infradead.org,
- Biju Das <biju.das@bp.renesas.com>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Marek Vasut <marek.vasut@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Brian Norris <computersforpeace@gmail.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Chris Paterson <Chris.Paterson2@renesas.com>,
  Boris Brezillon <boris.brezillon@bootlin.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Simon Horman <horms@verge.net.au>, Richard Weinberger <richard@nod.at>
+ Richard Weinberger <richard@nod.at>, Mark Brown <broonie@kernel.org>,
+ Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, Biju Das <biju.das@bp.renesas.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Simon Horman <horms@verge.net.au>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -29,28 +31,62 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear All,
+This commit adds QSPI flash support to the iwg23s board specific
+device tree.
 
-this series includes all that is necessary to add QSPI flash
-support to the iwg23s board powered by the RZ/G1C SoC (a.k.a.
-r8a77470). The second version of this series is to address
-a comment made by both Simon and Geert on one of the patches.
+Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 
-This series applies on top of renesas-devel-20181108v3-v4.20-rc1
+---
+v1->v2:
+* No Change
 
-Thanks,
-Fab
+ arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-Fabrizio Castro (3):
-  mtd: spi-nor: Add support for is25lp016d
-  ARM: dts: r8a77470: Add QSPI support
-  ARM: dts: iwg23s-sbc: Add QSPI flash support
-
- arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts | 26 +++++++++++++++++++++++++
- arch/arm/boot/dts/r8a77470.dtsi           | 32 +++++++++++++++++++++++++++++++
- drivers/mtd/spi-nor/spi-nor.c             |  2 ++
- 3 files changed, 60 insertions(+)
-
+diff --git a/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts b/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
+index 52f23b8..40b7f98 100644
+--- a/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
++++ b/arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts
+@@ -96,6 +96,11 @@
+ 		power-source = <1800>;
+ 	};
+ 
++	qspi0_pins: qspi0 {
++		groups = "qspi0_ctrl", "qspi0_data2";
++		function = "qspi0";
++	};
++
+ 	scif1_pins: scif1 {
+ 		groups = "scif1_data_b";
+ 		function = "scif1";
+@@ -114,6 +119,27 @@
+ 	};
+ };
+ 
++&qspi0 {
++	pinctrl-0 = <&qspi0_pins>;
++	pinctrl-names = "default";
++
++	status = "okay";
++
++	/* WARNING - This device contains the bootloader. Handle with care. */
++	flash: flash@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "issi,is25lp016d", "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <133000000>;
++		spi-tx-bus-width = <1>;
++		spi-rx-bus-width = <1>;
++		m25p,fast-read;
++		spi-cpol;
++		spi-cpha;
++	};
++};
++
+ &rwdt {
+ 	timeout-sec = <60>;
+ 	status = "okay";
 -- 
 2.7.4
 

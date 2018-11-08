@@ -1,134 +1,74 @@
-From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 7/7] spi: bcm2835: Speed up FIFO access if fill level is known
-Date: Thu, 8 Nov 2018 08:06:10 +0100
-Message-ID: <901ff28c305e56d3349d3e044781c095d8e77a3d.1541659680.git.lukas@wunner.de>
-References: <cover.1541659680.git.lukas@wunner.de>
+From: Schrempf Frieder <frieder.schrempf@kontron.De>
+Subject: Re: [PATCH v4 00/10] Port the FSL QSPI driver to the SPI framework
+Date: Thu, 8 Nov 2018 07:59:43 +0000
+Message-ID: <454d5661-5f52-7d81-da02-f8207b3ce8c3@kontron.de>
+References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
+ <20181107155315.056a0d47@bbrezillon>
+ <c9b12dba-3922-9deb-e600-8a3aa1b3dfb5@kontron.de>
+ <20181107161039.4b509a80@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
- Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
- Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <cover.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
+ "richard@nod.at" <richard@nod.at>,
+ "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "han.xu@nxp.com" <han.xu@nxp.com>, "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
+ "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181107161039.4b509a80@bbrezillon>
+Content-Language: en-US
+Content-ID: <5E0709148A70F643953F95E36EA4FB01@snt-world.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlIFJYIGFuZCBUWCBGSUZPIG9mIHRoZSBCQ00yODM1IFNQSSBtYXN0ZXIgZWFjaCBhY2NvbW1v
-ZGF0ZSA2NCBieXRlcwooMTYgMzItYml0IGR3b3JkcykuICBUaGUgQ1MgcmVnaXN0ZXIgcHJvdmlk
-ZXMgaGludHMgb24gdGhlaXIgZmlsbCBsZXZlbDoKCiAgICJCaXQgMTkgIFJYUiAtIFJYIEZJRk8g
-bmVlZHMgUmVhZGluZyAoW8K+XSBmdWxsKQogICAgMCA9IFJYIEZJRk8gaXMgbGVzcyB0aGFuIFvC
-vl0gZnVsbCAob3Igbm90IGFjdGl2ZSBUQSA9IDApLgogICAgMSA9IFJYIEZJRk8gaXMgW8K+XSBv
-ciBtb3JlIGZ1bGwuIENsZWFyZWQgYnkgcmVhZGluZyBzdWZmaWNpZW50CiAgICAgICAgZGF0YSBm
-cm9tIHRoZSBSWCBGSUZPIG9yIHNldHRpbmcgVEEgdG8gMC4iCgogICAiQml0IDE2ICBET05FIC0g
-VHJhbnNmZXIgRG9uZQogICAgMCA9IFRyYW5zZmVyIGlzIGluIHByb2dyZXNzIChvciBub3QgYWN0
-aXZlIFRBID0gMCkuCiAgICAxID0gVHJhbnNmZXIgaXMgY29tcGxldGUuIENsZWFyZWQgYnkgd3Jp
-dGluZyBtb3JlIGRhdGEgdG8gdGhlCiAgICAgICAgVFggRklGTyBvciBzZXR0aW5nIFRBIHRvIDAu
-IgoKICAgIklmIERPTkUgaXMgc2V0IFsuLi5dLCB3cml0ZSB1cCB0byAxNiBbZHdvcmRzXSB0byBT
-UElfRklGTy4gWy4uLl0KICAgIElmIFJYUiBpcyBzZXQgcmVhZCAxMiBbZHdvcmRzXSBkYXRhIGZy
-b20gU1BJX0ZJRk8uIgoKICAgW1NvdXJjZTogUGFnZXMgMTUzLCAxNTQgYW5kIDE1OCBvZgogICAg
-aHR0cHM6Ly93d3cucmFzcGJlcnJ5cGkub3JnL2FwcC91cGxvYWRzLzIwMTIvMDIvQkNNMjgzNS1B
-Uk0tUGVyaXBoZXJhbHMucGRmCiAgICBOb3RlOiBUaGUgc3BlYyBpcyBtaXNzaW5nIHRoZSAiwr4i
-IGNoYXJhY3RlciwgcHJlc3VtYWJseSBkdWUgdG8KICAgIGNvcHktcGFzdGluZyBmcm9tIGEgZGlm
-ZmVyZW50IGNoYXJzZXQuICBJdCBhbHNvIGluY29ycmVjdGx5CiAgICByZWZlcnMgdG8gMTYgYW5k
-IDEyICJieXRlcyIgaW5zdGVhZCBvZiAzMi1iaXQgZHdvcmRzLl0KCkluIHNob3J0LCB0aGUgUlhS
-IGJpdCBpbmRpY2F0ZXMgdGhhdCA0OCBieXRlcyBjYW4gYmUgcmVhZCBhbmQgdGhlIERPTkUKYml0
-IGluZGljYXRlcyA2NCBieXRlcyBjYW4gYmUgd3JpdHRlbi4gIExldmVyYWdlIHRoaXMga25vd2xl
-ZGdlIHRvIHJlYWQKb3Igd3JpdGUgYnl0ZXMgYmxpbmRseSB0byB0aGUgRklGTywgd2l0aG91dCBw
-b2xsaW5nIHdoZXRoZXIgZGF0YSBjYW4gYmUKcmVhZCBvciBmcmVlIHNwYWNlIGlzIGF2YWlsYWJs
-ZSB0byB3cml0ZS4gIE1vcmVvdmVyLCB3aGVuIGEgdHJhbnNmZXIgaXMKc3RhcnRpbmcsIHRoZSBU
-WCBGSUZPIGlzIGtub3duIHRvIGJlIGVtcHR5LCBsaWtld2lzZSBhbGxvd2luZyBhIGJsaW5kCndy
-aXRlIG9mIDY0IGJ5dGVzLgoKVGhpcyBjdXRzIHRoZSBudW1iZXIgb2YgYnVzIGFjY2Vzc2VzIGlu
-IGhhbGYgaWYgdGhlIGZpbGwgbGV2ZWwgaXMga25vd24uCkFsc28sIHRoZSAocG9zdGVkKSB3cml0
-ZSBhY2Nlc3NlcyBjYW4gYmUgcGlwZWxpbmVkIG9uIHRoZSBBWEkgYnVzIHNpbmNlCnRoZXkgYXJl
-IG5vIGxvbmdlciBpbnRlcmxlYXZlZCB3aXRoIChub24tcG9zdGVkKSByZWFkcy4KCmJjbTI4MzVf
-c3BpX3RyYW5zZmVyX29uZV9wb2xsKCkgcHJldmlvdXNseSBzd2l0Y2hlZCB0byBpbnRlcnJ1cHQg
-bW9kZQp3aGVuIGV4Y2VlZGluZyBhIHRpbWUgbGltaXQgYnkgY2FsbGluZyBiY20yODM1X3NwaV90
-cmFuc2Zlcl9vbmVfaXJxKCkuCkJlY2F1c2UgdGhlIGxhdHRlciBub3cgYXNzdW1lcyBhbiBlbXB0
-eSBGSUZPLCBpdCBjYW4gbm8gbG9uZ2VyIGJlIGNhbGxlZApkaXJlY3RseS4gIE1vZGlmeSB0aGUg
-Q1MgcmVnaXN0ZXIgaW5zdGVhZCB0byBhY2hpZXZlIHRoZSBzYW1lIHJlc3VsdC4KClNpZ25lZC1v
-ZmYtYnk6IEx1a2FzIFd1bm5lciA8bHVrYXNAd3VubmVyLmRlPgpDYzogTWF0aGlhcyBEdWNrZWNr
-IDxtLmR1Y2tlY2tAa3VuYnVzLmRlPgpDYzogRnJhbmsgUGF2bGljIDxmLnBhdmxpY0BrdW5idXMu
-ZGU+CkNjOiBNYXJ0aW4gU3BlcmwgPGtlcm5lbEBtYXJ0aW4uc3Blcmwub3JnPgpDYzogTm9yYWxm
-IFRyw7hubmVzIDxub3JhbGZAdHJvbm5lcy5vcmc+Ci0tLQogZHJpdmVycy9zcGkvc3BpLWJjbTI4
-MzUuYyB8IDY2ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLQogMSBmaWxl
-IGNoYW5nZWQsIDYyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKaW5k
-ZXggMzY3MTlkMmNjMTJkLi5mZDlhNzM5NjNmOGMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3Nw
-aS1iY20yODM1LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYwpAQCAtNzIsNiArNzIs
-OCBAQAogI2RlZmluZSBCQ00yODM1X1NQSV9DU19DU18xMAkJMHgwMDAwMDAwMgogI2RlZmluZSBC
-Q00yODM1X1NQSV9DU19DU18wMQkJMHgwMDAwMDAwMQogCisjZGVmaW5lIEJDTTI4MzVfU1BJX0ZJ
-Rk9fU0laRQkJNjQKKyNkZWZpbmUgQkNNMjgzNV9TUElfRklGT19TSVpFXzNfNAk0OAogI2RlZmlu
-ZSBCQ00yODM1X1NQSV9QT0xMSU5HX0xJTUlUX1VTCTMwCiAjZGVmaW5lIEJDTTI4MzVfU1BJX1BP
-TExJTkdfSklGRklFUwkyCiAjZGVmaW5lIEJDTTI4MzVfU1BJX0RNQV9NSU5fTEVOR1RICTk2CkBA
-IC0yMTMsNiArMjE1LDQ1IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBiY20yODM1X3dhaXRfdHhfZmlm
-b19lbXB0eShzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzKQogCQljcHVfcmVsYXgoKTsKIH0KIAorLyoq
-CisgKiBiY20yODM1X3JkX2ZpZm9fYmxpbmQoKSAtIGJsaW5kbHkgcmVhZCB1cCB0byBAY291bnQg
-Ynl0ZXMgZnJvbSBSWCBGSUZPCisgKiBAYnM6IEJDTTI4MzUgU1BJIGNvbnRyb2xsZXIKKyAqIEBj
-b3VudDogYnl0ZXMgYXZhaWxhYmxlIGZvciByZWFkaW5nIGluIFJYIEZJRk8KKyAqLworc3RhdGlj
-IGlubGluZSB2b2lkIGJjbTI4MzVfcmRfZmlmb19ibGluZChzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJz
-LCBpbnQgY291bnQpCit7CisJdTggdmFsOworCisJY291bnQgPSBtaW4oY291bnQsIGJzLT5yeF9s
-ZW4pOworCWJzLT5yeF9sZW4gLT0gY291bnQ7CisKKwl3aGlsZSAoY291bnQpIHsKKwkJdmFsID0g
-YmNtMjgzNV9yZChicywgQkNNMjgzNV9TUElfRklGTyk7CisJCWlmIChicy0+cnhfYnVmKQorCQkJ
-KmJzLT5yeF9idWYrKyA9IHZhbDsKKwkJY291bnQtLTsKKwl9Cit9CisKKy8qKgorICogYmNtMjgz
-NV93cl9maWZvX2JsaW5kKCkgLSBibGluZGx5IHdyaXRlIHVwIHRvIEBjb3VudCBieXRlcyB0byBU
-WCBGSUZPCisgKiBAYnM6IEJDTTI4MzUgU1BJIGNvbnRyb2xsZXIKKyAqIEBjb3VudDogYnl0ZXMg
-YXZhaWxhYmxlIGZvciB3cml0aW5nIGluIFRYIEZJRk8KKyAqLworc3RhdGljIGlubGluZSB2b2lk
-IGJjbTI4MzVfd3JfZmlmb19ibGluZChzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzLCBpbnQgY291bnQp
-Cit7CisJdTggdmFsOworCisJY291bnQgPSBtaW4oY291bnQsIGJzLT50eF9sZW4pOworCWJzLT50
-eF9sZW4gLT0gY291bnQ7CisKKwl3aGlsZSAoY291bnQpIHsKKwkJdmFsID0gYnMtPnR4X2J1ZiA/
-ICpicy0+dHhfYnVmKysgOiAwOworCQliY20yODM1X3dyKGJzLCBCQ00yODM1X1NQSV9GSUZPLCB2
-YWwpOworCQljb3VudC0tOworCX0KK30KKwogc3RhdGljIHZvaWQgYmNtMjgzNV9zcGlfcmVzZXRf
-aHcoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlcikKIHsKIAlzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJz
-ID0gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwpAQCAtMjM2LDYgKzI3NywyMCBAQCBz
-dGF0aWMgaXJxcmV0dXJuX3QgYmNtMjgzNV9zcGlfaW50ZXJydXB0KGludCBpcnEsIHZvaWQgKmRl
-dl9pZCkKIHsKIAlzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyID0gZGV2X2lkOwogCXN0cnVjdCBi
-Y20yODM1X3NwaSAqYnMgPSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7CisJdTMyIGNz
-ID0gYmNtMjgzNV9yZChicywgQkNNMjgzNV9TUElfQ1MpOworCisJLyoKKwkgKiBBbiBpbnRlcnJ1
-cHQgaXMgc2lnbmFsZWQgZWl0aGVyIGlmIFJYUiBpcyBzZXQgKFJYIEZJRk8gPj0gwr4gZnVsbCkK
-KwkgKiBvciBpZiBET05FIGlzIHNldCAoVFggRklGTyBlbXB0eSwgYnV0IFJYIEZJRk8gbWF5IGNv
-bnRhaW4gcmVzaWR1ZSkuCisJICogVFggaXMgaGFsdGVkIG9uY2UgdGhlIFJYIEZJRk8gaXMgZnVs
-bCwgc28gZHJhaW4gdGhlIFJYIEZJRk8gZmlyc3QuCisJICovCisJaWYgKGNzICYgQkNNMjgzNV9T
-UElfQ1NfUlhGKQorCQliY20yODM1X3JkX2ZpZm9fYmxpbmQoYnMsIEJDTTI4MzVfU1BJX0ZJRk9f
-U0laRSk7CisJZWxzZSBpZiAoY3MgJiBCQ00yODM1X1NQSV9DU19SWFIpCisJCWJjbTI4MzVfcmRf
-Zmlmb19ibGluZChicywgQkNNMjgzNV9TUElfRklGT19TSVpFXzNfNCk7CisKKwlpZiAoYnMtPnR4
-X2xlbiAmJiBjcyAmIEJDTTI4MzVfU1BJX0NTX0RPTkUpCisJCWJjbTI4MzVfd3JfZmlmb19ibGlu
-ZChicywgQkNNMjgzNV9TUElfRklGT19TSVpFKTsKIAogCS8qIFJlYWQgYXMgbWFueSBieXRlcyBh
-cyBwb3NzaWJsZSBmcm9tIEZJRk8gKi8KIAliY20yODM1X3JkX2ZpZm8oYnMpOwpAQCAtMjY2LDYg
-KzMyMSw3IEBAIHN0YXRpYyBpbnQgYmNtMjgzNV9zcGlfdHJhbnNmZXJfb25lX2lycShzdHJ1Y3Qg
-c3BpX21hc3RlciAqbWFzdGVyLAogCWJjbTI4MzVfd3IoYnMsIEJDTTI4MzVfU1BJX0NTLCBjcyB8
-IEJDTTI4MzVfU1BJX0NTX1RBKTsKIAogCS8qIGZpbGwgVFggRklGTyBhcyBtdWNoIGFzIHBvc3Np
-YmxlICovCisJYmNtMjgzNV93cl9maWZvX2JsaW5kKGJzLCBCQ00yODM1X1NQSV9GSUZPX1NJWkUp
-OwogCWJjbTI4MzVfd3JfZmlmbyhicyk7CiAKIAkvKiBlbmFibGUgaW50ZXJydXB0cyAqLwpAQCAt
-NjcyLDEzICs3MjgsMTMgQEAgc3RhdGljIGludCBiY20yODM1X3NwaV90cmFuc2Zlcl9vbmVfcG9s
-bChzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAogCXVuc2lnbmVkIGxvbmcgdGltZW91dDsKIAog
-CS8qIGVuYWJsZSBIVyBibG9jayB3aXRob3V0IGludGVycnVwdHMgKi8KLQliY20yODM1X3dyKGJz
-LCBCQ00yODM1X1NQSV9DUywgY3MgfCBCQ00yODM1X1NQSV9DU19UQSk7CisJYmNtMjgzNV93cihi
-cywgQkNNMjgzNV9TUElfQ1MsIGNzIHw9IEJDTTI4MzVfU1BJX0NTX1RBKTsKIAogCS8qIGZpbGwg
-aW4gdGhlIGZpZm8gYmVmb3JlIHRpbWVvdXQgY2FsY3VsYXRpb25zCiAJICogaWYgd2UgYXJlIGlu
-dGVycnVwdGVkIGhlcmUsIHRoZW4gdGhlIGRhdGEgaXMKIAkgKiBnZXR0aW5nIHRyYW5zZmVycmVk
-IGJ5IHRoZSBIVyB3aGlsZSB3ZSBhcmUgaW50ZXJydXB0ZWQKIAkgKi8KLQliY20yODM1X3dyX2Zp
-Zm8oYnMpOworCWJjbTI4MzVfd3JfZmlmb19ibGluZChicywgQkNNMjgzNV9TUElfRklGT19TSVpF
-KTsKIAogCS8qIHNldCB0aGUgdGltZW91dCAqLwogCXRpbWVvdXQgPSBqaWZmaWVzICsgQkNNMjgz
-NV9TUElfUE9MTElOR19KSUZGSUVTOwpAQCAtNzAwLDggKzc1NiwxMCBAQCBzdGF0aWMgaW50IGJj
-bTI4MzVfc3BpX3RyYW5zZmVyX29uZV9wb2xsKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIsCiAJ
-CQkJCSAgICBqaWZmaWVzIC0gdGltZW91dCwKIAkJCQkJICAgIGJzLT50eF9sZW4sIGJzLT5yeF9s
-ZW4pOwogCQkJLyogZmFsbCBiYWNrIHRvIGludGVycnVwdCBtb2RlICovCi0JCQlyZXR1cm4gYmNt
-MjgzNV9zcGlfdHJhbnNmZXJfb25lX2lycShtYXN0ZXIsIHNwaSwKLQkJCQkJCQkgICAgdGZyLCBj
-cyk7CisJCQljcyB8PSBCQ00yODM1X1NQSV9DU19JTlRSIHwgQkNNMjgzNV9TUElfQ1NfSU5URDsK
-KwkJCWJjbTI4MzVfd3IoYnMsIEJDTTI4MzVfU1BJX0NTLCBjcyk7CisJCQkvKiB0ZWxsIFNQSSBj
-b3JlIHRvIHdhaXQgZm9yIGNvbXBsZXRpb24gKi8KKwkJCXJldHVybiAxOwogCQl9CiAJfQogCi0t
-IAoyLjE5LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpsaW51eC1ycGkta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1ycGkta2VybmVsQGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9s
-aW51eC1ycGkta2VybmVsCg==
+On 07.11.18 16:10, Boris Brezillon wrote:
+> On Wed, 7 Nov 2018 15:07:37 +0000
+> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
+> 
+>> On 07.11.18 15:53, Boris Brezillon wrote:
+>>> On Wed,  7 Nov 2018 15:43:17 +0100
+>>> Frieder Schrempf <frieder.schrempf@kontron.de> wrote:
+>>>    
+>>>> Changes in v4:
+>>>> ==============
+>>>> * Rebase on top of v4.20-rc1
+>>>> * Drop patches that were merged separately
+>>>> * Address change of company name and email address
+>>>
+>>> Looks like your SoB and Author fields are still using the old address.
+>>
+>> I changed my git user email and git send-email added a "From:" field to
+>> each patch because the old SoB doesn't match the new git user config.
+>>
+>> I can change the SoB fields in the next version.
+> 
+> Yep, you'd better update both the SoB and author (they have to match):
+> 
+> git commit --amend --author="Schrempf Frieder <frieder.schrempf@kontron.de>" -s
+> 
+> (and don't forget to remove the old SoB)
+
+Thank you for the hint. I ended up using the following command which is 
+even a bit simpler:
+
+git commit --amend --reset-author -s
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

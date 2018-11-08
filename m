@@ -1,85 +1,142 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v4 06/10] ARM: defconfig: Use the new FSL QSPI driver
- under the SPI framework
-Date: Thu, 8 Nov 2018 09:34:51 +0100
-Message-ID: <20181108093451.08dfe63e@bbrezillon>
-References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
-        <1541601809-16950-7-git-send-email-frieder.schrempf@kontron.de>
-        <CAOesGMgPwwwmizC+R4W1aLpvgcuVOYQr2qR2Vqb6171zGfarRw@mail.gmail.com>
-        <b12936f5-871d-a982-13c5-9d894f4a1521@kontron.de>
+From: Schrempf Frieder <frieder.schrempf@kontron.De>
+Subject: Re: [PATCH v2 00/12] Port the FSL QSPI driver to the SPI framework
+Date: Thu, 8 Nov 2018 08:35:28 +0000
+Message-ID: <903083f9-ab85-597f-3749-579789bdf85a@kontron.de>
+References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
+ <20181031144055.32e1c8f1@bbrezillon>
+ <dd4b9af1-82f3-469e-e70f-2858e85a5dfe@kontron.de>
+ <20181031153125.3c5dfca1@bbrezillon>
+ <e895f059-f8fe-6d4c-3744-ab8cfa4a2147@kontron.de>
+ <20181108091957.013dc540@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Olof Johansson <olof@lixom.net>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "Brian Norris" <computersforpeace@gmail.com>,
-        Mark Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
-        "han.xu@nxp.com" <han.xu@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-To: Schrempf Frieder <frieder.schrempf@kontron.De>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <b12936f5-871d-a982-13c5-9d894f4a1521@kontron.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
+ "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
+ "richard@nod.at" <richard@nod.at>, "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
+ "han.xu@nxp.com" <han.xu@nxp.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181108091957.013dc540@bbrezillon>
+Content-Language: en-US
+Content-ID: <E62DE01305F98A43BF206727669F0A2F@snt-world.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 7 Nov 2018 16:36:13 +0000
-Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
-
-> Hi Olof,
+On 08.11.18 09:19, Boris Brezillon wrote:
+> Hi Frieder,
 > 
-> On 07.11.18 17:20, Olof Johansson wrote:
-> > On Wed, Nov 7, 2018 at 6:44 AM Frieder Schrempf
-> > <frieder.schrempf@kontron.de> wrote:  
-> >>
-> >> From: Frieder Schrempf <frieder.schrempf@exceet.de>
-> >>
-> >> The new driver at spi/spi-fsl-qspi.c replaces the old SPI NOR driver
-> >> at mtd/fsl-quadspi.c. Switch to the new driver in the defconfigs.
-> >>
-> >> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>  
-> > 
-> > Hi Frieder,
-> > 
-> > This patch is part of a series that I didn't see the rest of, but in
-> > general we prefer to merge these through arm-soc even if the driver
-> > goes in through another tree. The way we'd prefer to handle it is that
-> > once the driver lands, we'll take the config option change to turn it
-> > on. To avoid our branches to break until both sides have landed, it
-> > might be a good idea to keep both drivers on for a short while (one
-> > release).
-> > 
-> > So, I'm not going to ack this since we avoid taking defconfig changes
-> > through driver trees (these two defconfigs tend to churn a lot and we
-> > don't want to create merge conflicts where we don't have to), but
-> > we'll be happy to pick it up when the time comes.  
+> On Thu, 8 Nov 2018 08:15:55 +0000
+> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
 > 
-> Ok, thank you for explaining the common practice. I will drop the config 
-> changes for the next version and send it separately when the time is ready.
+>> Hi Boris, hi Yogesh,
+>>
+>> On 31.10.18 15:31, Boris Brezillon wrote:
+>>> On Wed, 31 Oct 2018 13:54:29 +0000
+>>> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
+>>>    
+>>>> Hi Boris,
+>>>>
+>>>> On 31.10.18 14:40, Boris Brezillon wrote:
+>>>>> Hi Frieder, Yogesh,
+>>>>>
+>>>>> On Thu,  5 Jul 2018 13:14:56 +0200
+>>>>> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
+>>>>>       
+>>>>>> Now that the SPI memory interface was introduced by Boris [1], it is
+>>>>>> possible to move drivers from mtd/spi-nor to the SPI framework in order
+>>>>>> to use them for different type of SPI memory chips.
+>>>>>>
+>>>>>> Patch 1 adds a function spi_mem_get_name() to the SPI memory interface
+>>>>>> and a ->name field to struct spi_mem.
+>>>>>> Patch 2 uses it in m25p80.c to make it possible for SPI controller
+>>>>>> drivers to provide a custom naming scheme for the flash chip.
+>>>>>> This is needed to avoid breaking compatibility of mtdparts when switching
+>>>>>> from the old to the new driver.
+>>>>>>
+>>>>>> Patch 3 adds a driver for the Freescale QSPI controller to the SPI
+>>>>>> framework. Together with m25p80.c it can be used to interface SPI
+>>>>>> NOR flashes just as the old driver did. For this to work properly a few
+>>>>>> minor changes to the devicetrees are necessary (see patches 5 to 7).
+>>>>>>
+>>>>>> Patch 8 changes the defconfigs to use the new driver and patch 9 removes
+>>>>>> the old driver.
+>>>>>>
+>>>>>> Patch 10 and 11 remove 'fsl,qspi-has-second-chip' from the devicetrees.
+>>>>>> Patch 12 adjusts the MAINTAINERS file.
+>>>>>>
+>>>>>> The new driver was tested with i.MX6UL and a Micron SPI NOR @ 60MHz.
+>>>>>> The read performance of the new driver is almost the same or even better
+>>>>>> than the old driver, depending on the block size.
+>>>>>> The write performance is a bit slower on average (~10-15%).
+>>>>>>
+>>>>>> The new driver was also tested with the SPI NAND framework [2] and a
+>>>>>> Winbond W25M02GV flash.
+>>>>>>
+>>>>>> If someone has a board that uses both chips selects and/or both busses,
+>>>>>> it would be really nice to have the driver be tested on such a setup.
+>>>>>
+>>>>> Any progress on this front? Yogesh, can you please remind us the
+>>>>> remaining issues? I'd really like to make some progress, otherwise the
+>>>>> conversion to spi-mem will take ages.
+>>>>
+>>>> I definitely want to continue this. I just did not have the time to work
+>>>> on it.
+>>>>
+>>>> I think the only remaining blocking issues is the one that Yogesh
+>>>> reported while testing with two chips on the same bus.
+>>>
+>>> Maybe you can send a new version rebased on v4.20-rc1 (when it's out)
+>>> and push it somewhere so that Yogesh can test it (again). Yogesh, can we
+>>> please make some progress on this? If you really have a bug, that'd be
+>>> great to have a serious investigation on what is causing this bug. The
+>>> explanation we had so far were not really helpful in understanding the
+>>> problem.
+>>
+>> I have sent a v4 that is based on v4.20-rc1. I only applied small fixes
+>> and cosmetic changes.
+>>
+>> There is still the hack to avoid AHB buffer invalidation delay (not sure
+>> if we should keep it for now)
 > 
-> Both the old driver and the new one use the same compatible strings for 
-> probing. Wouldn't that cause problems if both drivers are enabled for a 
-> while, or am I missing something?
+> IIRC, Yogesh proposed to replace this hack by a RESET+smaller-delay.
+> Maybe you can try that.
 
-Or maybe we should not introduce a new Kconfig option and just reuse
-the old one. It probably requires re-ordering patches a bit (patch 1
-should be moved after patch 5). Then you have 2 choices:
+Right, I will do some experiments.
 
-1/ merge patch 1 and 6 so that the new driver effectively replaces the
-   old one but uses the same Kconfig option
-2/ remove the ability to compile the old driver when the new one is
-   introduced: remove the line from drivers/mtd/spi-nor Makefile and
-   move the Kconfig entry from drivers/mtd/spi-nor/Kconfig to
-   drivers/spi/Kconfig. And remove the old code in a separate patch
-
-I'm fine either way, but option #2 will probably make the patch
-introducing the new driver bigger and hurt readability.
+>> and we still need to figure out the
+>> reported problems with two chips on one bus.
+>>
+>> As Yogesh is the only one how has a hardware setup for this, maybe you
+>> can retry and provide some debugging info?
+>>
+>> Unfortunately I'll probably do not have time to switch to the dirmap API
+>> now, so I'd rather do that as a second step, as it probably won't solve
+>> our problems either.
+> 
+> Totally agree with that.
+> 
+> Thanks for sending a v4.
+> 
+> Boris
+> 
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

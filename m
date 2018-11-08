@@ -1,8 +1,7 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH v2 1/3] mtd: spi-nor: Add support for is25lp016d
-Date: Thu,  8 Nov 2018 17:04:41 +0000
-Message-ID: <1541696684-21235-2-git-send-email-fabrizio.castro@bp.renesas.com>
-References: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH v2 0/3] Add QSPI flash support to iwg23s
+Date: Thu,  8 Nov 2018 17:04:40 +0000
+Message-ID: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,7 +18,6 @@ To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
  Geert Uytterhoeven <geert+renesas@glider.be>,
  Simon Horman <horms@verge.net.au>, Richard Weinberger <richard@nod.at>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -31,31 +29,28 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The is25lp016d is found on the iwg23s from iWave, therefore
-add driver support for it so that we can upstream board support.
+Dear All,
 
-Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+this series includes all that is necessary to add QSPI flash
+support to the iwg23s board powered by the RZ/G1C SoC (a.k.a.
+r8a77470). The second version of this series is to address
+a comment made by both Simon and Geert on one of the patches.
 
----
-v1->v2:
-* No change
+This series applies on top of renesas-devel-20181108v3-v4.20-rc1
 
- drivers/mtd/spi-nor/spi-nor.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks,
+Fab
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 9407ca5..85d869b 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1352,6 +1352,8 @@ static const struct flash_info spi_nor_ids[] = {
- 	{ "is25cd512",  INFO(0x7f9d20, 0, 32 * 1024,   2, SECT_4K) },
- 	{ "is25lq040b", INFO(0x9d4013, 0, 64 * 1024,   8,
- 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
-+	{ "is25lp016d", INFO(0x9d6015, 0, 64 * 1024,  32,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp080d", INFO(0x9d6014, 0, 64 * 1024,  16,
- 			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp128",  INFO(0x9d6018, 0, 64 * 1024, 256,
+Fabrizio Castro (3):
+  mtd: spi-nor: Add support for is25lp016d
+  ARM: dts: r8a77470: Add QSPI support
+  ARM: dts: iwg23s-sbc: Add QSPI flash support
+
+ arch/arm/boot/dts/r8a77470-iwg23s-sbc.dts | 26 +++++++++++++++++++++++++
+ arch/arm/boot/dts/r8a77470.dtsi           | 32 +++++++++++++++++++++++++++++++
+ drivers/mtd/spi-nor/spi-nor.c             |  2 ++
+ 3 files changed, 60 insertions(+)
+
 -- 
 2.7.4
 

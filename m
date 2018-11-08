@@ -1,16 +1,19 @@
 From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 0/7] Raspberry Pi spi0 improvements
+Subject: [PATCH 1/7] spi: bcm2835: Avoid finishing transfer prematurely in IRQ
+ mode
 Date: Thu, 8 Nov 2018 08:06:10 +0100
-Message-ID: <cover.1541659680.git.lukas@wunner.de>
+Message-ID: <35fe64abf7111de32fb6a0746944337cfd9d16b9.1541659680.git.lukas@wunner.de>
+References: <cover.1541659680.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
  Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
  Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
  Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <cover.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -22,41 +25,44 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Here's a first batch of improvements for the spi0 master on the
-Raspberry Pi.  The meat of the series is in its last two patches:
-
-* Patch [6/7] allows DMA for transfer buffers starting at an offset not a
-  multiple of 4.  This overcomes a limitation affecting Ethernet drivers
-  such as ks8851 which call netdev_alloc_skb_ip_align() to allocate
-  deliberately unaligned receive buffers.
-
-* Patch [7/7] speeds up PIO transfers by not polling the RX FIFO when it
-  is known to contain data, or the TX FIFO when it is known to have free
-  space.
-
-The preceding patches fix rarely encountered bugs, remove obsolete code
-and add documentation.
-
-The series has been tested extensively on the "Revolution Pi" family of
-open source PLCs (https://revolution.kunbus.com/), but further testing
-would be welcome to raise the confidence.
-
-Thanks,
-
-Lukas
-
-
-Lukas Wunner (7):
-  spi: bcm2835: Avoid finishing transfer prematurely in IRQ mode
-  spi: bcm2835: Fix book-keeping of DMA termination
-  spi: bcm2835: Fix race on DMA termination
-  spi: bcm2835: Drop unused code for native Chip Select
-  spi: bcm2835: Document struct bcm2835_spi
-  spi: bcm2835: Overcome sglist entry length limitation
-  spi: bcm2835: Speed up FIFO access if fill level is known
-
- drivers/spi/spi-bcm2835.c | 478 ++++++++++++++++++++++++++------------
- 1 file changed, 334 insertions(+), 144 deletions(-)
-
--- 
-2.19.1
+VGhlIElSUSBoYW5kbGVyIGJjbTI4MzVfc3BpX2ludGVycnVwdCgpIGZpcnN0IHJlYWRzIGFzIG11
+Y2ggYXMgcG9zc2libGUKZnJvbSB0aGUgUlggRklGTywgdGhlbiB3cml0ZXMgYXMgbXVjaCBhcyBw
+b3NzaWJsZSB0byB0aGUgVFggRklGTy4KQWZ0ZXJ3YXJkcyBpdCBkZWNpZGVzIHdoZXRoZXIgdGhl
+IHRyYW5zZmVyIGlzIGZpbmlzaGVkIGJ5IGNoZWNraW5nIGlmCnRoZSBUWCBGSUZPIGlzIGVtcHR5
+LgoKSWYgdmVyeSBmZXcgYnl0ZXMgd2VyZSB3cml0dGVuIHRvIHRoZSBUWCBGSUZPLCB0aGV5IG1h
+eSBhbHJlYWR5IGhhdmUKYmVlbiB0cmFuc21pdHRlZCBieSB0aGUgdGltZSB0aGUgRklGTydzIGVt
+cHRpbmVzcyBpcyBjaGVja2VkLiAgQXMgYQpyZXN1bHQsIHRoZSB0cmFuc2ZlciB3aWxsIGJlIGRl
+Y2xhcmVkIGZpbmlzaGVkIGFuZCB0aGUgY2hpcCB3aWxsIGJlCnJlc2V0IHdpdGhvdXQgcmVhZGlu
+ZyB0aGUgY29ycmVzcG9uZGluZyByZWNlaXZlZCBieXRlcyBmcm9tIHRoZSBSWCBGSUZPLgoKVGhl
+IG9kZHMgb2YgdGhpcyBoYXBwZW5pbmcgaW5jcmVhc2Ugd2l0aCBhIGhpZ2ggY2xvY2sgZnJlcXVl
+bmN5IChzdWNoCnRoYXQgdGhlIFRYIEZJRk8gZHJhaW5zIHF1aWNrbHkpIGFuZCBlaXRoZXIgcGFz
+c2luZyAidGhyZWFkaXJxcyIgb24gdGhlCmNvbW1hbmQgbGluZSBvciBlbmFibGluZyBDT05GSUdf
+UFJFRU1QVF9SVF9CQVNFIChzdWNoIHRoYXQgdGhlIElSUQpoYW5kbGVyIG1heSBiZSBwcmVlbXB0
+ZWQgYmV0d2VlbiBmaWxsaW5nIHRoZSBUWCBGSUZPIGFuZCBjaGVja2luZyBpdHMKZW1wdGluZXNz
+KS4KCkZpeCBieSBpbnN0ZWFkIGNoZWNraW5nIHdoZXRoZXIgcnhfbGVuIGhhcyByZWFjaGVkIHpl
+cm8sIHdoaWNoIG1lYW5zCnRoYXQgdGhlIHRyYW5zZmVyIGhhcyBiZWVuIHJlY2VpdmVkIGluIGZ1
+bGwuICBUaGlzIGlzIGFsc28gbW9yZQplZmZpY2llbnQgYXMgaXQgYXZvaWRzIG9uZSBidXMgcmVh
+ZCBhY2Nlc3MgcGVyIGludGVycnVwdC4gIE5vdGUgdGhhdApiY20yODM1X3NwaV90cmFuc2Zlcl9v
+bmVfcG9sbCgpIGxpa2V3aXNlIHVzZXMgcnhfbGVuIHRvIGRldGVybWluZQp3aGV0aGVyIHRoZSB0
+cmFuc2ZlciBoYXMgZmluaXNoZWQuCgpTaWduZWQtb2ZmLWJ5OiBMdWthcyBXdW5uZXIgPGx1a2Fz
+QHd1bm5lci5kZT4KRml4ZXM6IGUzNGZmMDExYzcwZSAoInNwaTogYmNtMjgzNTogbW92ZSB0byB0
+aGUgdHJhbnNmZXJfb25lIGRyaXZlciBtb2RlbCIpCkNjOiBzdGFibGVAdmdlci5rZXJuZWwub3Jn
+ICMgdjQuMSsKQ2M6IE1hdGhpYXMgRHVja2VjayA8bS5kdWNrZWNrQGt1bmJ1cy5kZT4KQ2M6IEZy
+YW5rIFBhdmxpYyA8Zi5wYXZsaWNAa3VuYnVzLmRlPgpDYzogTWFydGluIFNwZXJsIDxrZXJuZWxA
+bWFydGluLnNwZXJsLm9yZz4KQ2M6IE5vcmFsZiBUcsO4bm5lcyA8bm9yYWxmQHRyb25uZXMub3Jn
+PgotLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgfCAzICstLQogMSBmaWxlIGNoYW5nZWQs
+IDEgaW5zZXJ0aW9uKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3Bp
+L3NwaS1iY20yODM1LmMgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCmluZGV4IGYzNWNjMTA3
+NzJmNi4uZmE3ODQ0YTk1NmM3IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5j
+CisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKQEAgLTE1NSw4ICsxNTUsNyBAQCBzdGF0
+aWMgaXJxcmV0dXJuX3QgYmNtMjgzNV9zcGlfaW50ZXJydXB0KGludCBpcnEsIHZvaWQgKmRldl9p
+ZCkKIAkvKiBXcml0ZSBhcyBtYW55IGJ5dGVzIGFzIHBvc3NpYmxlIHRvIEZJRk8gKi8KIAliY20y
+ODM1X3dyX2ZpZm8oYnMpOwogCi0JLyogYmFzZWQgb24gZmxhZ3MgZGVjaWRlIGlmIHdlIGNhbiBm
+aW5pc2ggdGhlIHRyYW5zZmVyICovCi0JaWYgKGJjbTI4MzVfcmQoYnMsIEJDTTI4MzVfU1BJX0NT
+KSAmIEJDTTI4MzVfU1BJX0NTX0RPTkUpIHsKKwlpZiAoIWJzLT5yeF9sZW4pIHsKIAkJLyogVHJh
+bnNmZXIgY29tcGxldGUgLSByZXNldCBTUEkgSFcgKi8KIAkJYmNtMjgzNV9zcGlfcmVzZXRfaHco
+bWFzdGVyKTsKIAkJLyogd2FrZSB1cCB0aGUgZnJhbWV3b3JrICovCi0tIAoyLjE5LjEKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1ycGkta2Vy
+bmVsIG1haWxpbmcgbGlzdApsaW51eC1ycGkta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1ycGkta2VybmVs
+Cg==

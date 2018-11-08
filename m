@@ -1,34 +1,30 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v2 00/12] Port the FSL QSPI driver to the SPI framework
-Date: Thu, 8 Nov 2018 08:57:19 +0000
-Message-ID: <48bc2883-3b9a-55ca-8c54-d40edf161feb@kontron.de>
-References: <1530789310-16254-1-git-send-email-frieder.schrempf@exceet.de>
- <20181031144055.32e1c8f1@bbrezillon>
- <dd4b9af1-82f3-469e-e70f-2858e85a5dfe@kontron.de>
- <20181031153125.3c5dfca1@bbrezillon>
- <e895f059-f8fe-6d4c-3744-ab8cfa4a2147@kontron.de>
- <20181108091957.013dc540@bbrezillon>
+From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+Subject: RE: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
+Date: Thu, 8 Nov 2018 10:21:49 +0000
+Message-ID: <TY1PR01MB1770FA3764370E7AEA5D30C6C0C50@TY1PR01MB1770.jpnprd01.prod.outlook.com>
+References: <1541075705-1333-1-git-send-email-fabrizio.castro@bp.renesas.com>
+ <1541075705-1333-4-git-send-email-fabrizio.castro@bp.renesas.com>
+ <20181102114946.5tqk2lyisaey475w@verge.net.au>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
- "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
- "richard@nod.at" <richard@nod.at>, "broonie@kernel.org" <broonie@kernel.org>,
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Chris Paterson <Chris.Paterson2@renesas.com>,
+ Boris Brezillon <boris.brezillon@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Mark Brown <broonie@kernel.org>,
+ Magnus Damm <magnus.damm@gmail.com>,
  "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+ "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+ Marek Vasut <marek.vasut@gmail.com>, Rob Herring <robh+dt@kernel.org>,
  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
- "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
- "han.xu@nxp.com" <han.xu@nxp.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, Biju Das <biju.das@bp.renesas.com>
+To: Simon Horman <horms@verge.net.au>, Geert Uytterhoeven
+ <geert+renesas@glider.be>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181108091957.013dc540@bbrezillon>
+In-Reply-To: <20181102114946.5tqk2lyisaey475w@verge.net.au>
 Content-Language: en-US
-Content-ID: <372C0D333850DC4C85AB1E71D7DC6984@snt-world.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -40,106 +36,97 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08.11.18 09:19, Boris Brezillon wrote:
-> Hi Frieder,
-> 
-> On Thu, 8 Nov 2018 08:15:55 +0000
-> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
-> 
->> Hi Boris, hi Yogesh,
->>
->> On 31.10.18 15:31, Boris Brezillon wrote:
->>> On Wed, 31 Oct 2018 13:54:29 +0000
->>> Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
->>>    
->>>> Hi Boris,
->>>>
->>>> On 31.10.18 14:40, Boris Brezillon wrote:
->>>>> Hi Frieder, Yogesh,
->>>>>
->>>>> On Thu,  5 Jul 2018 13:14:56 +0200
->>>>> Frieder Schrempf <frieder.schrempf@exceet.de> wrote:
->>>>>       
->>>>>> Now that the SPI memory interface was introduced by Boris [1], it is
->>>>>> possible to move drivers from mtd/spi-nor to the SPI framework in order
->>>>>> to use them for different type of SPI memory chips.
->>>>>>
->>>>>> Patch 1 adds a function spi_mem_get_name() to the SPI memory interface
->>>>>> and a ->name field to struct spi_mem.
->>>>>> Patch 2 uses it in m25p80.c to make it possible for SPI controller
->>>>>> drivers to provide a custom naming scheme for the flash chip.
->>>>>> This is needed to avoid breaking compatibility of mtdparts when switching
->>>>>> from the old to the new driver.
->>>>>>
->>>>>> Patch 3 adds a driver for the Freescale QSPI controller to the SPI
->>>>>> framework. Together with m25p80.c it can be used to interface SPI
->>>>>> NOR flashes just as the old driver did. For this to work properly a few
->>>>>> minor changes to the devicetrees are necessary (see patches 5 to 7).
->>>>>>
->>>>>> Patch 8 changes the defconfigs to use the new driver and patch 9 removes
->>>>>> the old driver.
->>>>>>
->>>>>> Patch 10 and 11 remove 'fsl,qspi-has-second-chip' from the devicetrees.
->>>>>> Patch 12 adjusts the MAINTAINERS file.
->>>>>>
->>>>>> The new driver was tested with i.MX6UL and a Micron SPI NOR @ 60MHz.
->>>>>> The read performance of the new driver is almost the same or even better
->>>>>> than the old driver, depending on the block size.
->>>>>> The write performance is a bit slower on average (~10-15%).
->>>>>>
->>>>>> The new driver was also tested with the SPI NAND framework [2] and a
->>>>>> Winbond W25M02GV flash.
->>>>>>
->>>>>> If someone has a board that uses both chips selects and/or both busses,
->>>>>> it would be really nice to have the driver be tested on such a setup.
->>>>>
->>>>> Any progress on this front? Yogesh, can you please remind us the
->>>>> remaining issues? I'd really like to make some progress, otherwise the
->>>>> conversion to spi-mem will take ages.
->>>>
->>>> I definitely want to continue this. I just did not have the time to work
->>>> on it.
->>>>
->>>> I think the only remaining blocking issues is the one that Yogesh
->>>> reported while testing with two chips on the same bus.
->>>
->>> Maybe you can send a new version rebased on v4.20-rc1 (when it's out)
->>> and push it somewhere so that Yogesh can test it (again). Yogesh, can we
->>> please make some progress on this? If you really have a bug, that'd be
->>> great to have a serious investigation on what is causing this bug. The
->>> explanation we had so far were not really helpful in understanding the
->>> problem.
->>
->> I have sent a v4 that is based on v4.20-rc1. I only applied small fixes
->> and cosmetic changes.
+Hello Simon,
 
-I forgot to add, that I have pushed the v4 here if someone needs it:
+Thank you for your feedback!
 
-https://github.com/fschrempf/linux/commits/fsl-qspi-next-4
+> From: Simon Horman <horms@verge.net.au>
+> Sent: 02 November 2018 11:50
+> Subject: Re: [PATCH 3/4] ARM: dts: r8a77470: Add QSPI support
+>
+> On Thu, Nov 01, 2018 at 12:35:04PM +0000, Fabrizio Castro wrote:
+> > Add QSPI[01] support to the RZ/G1C SoC specific device tree.
+> >
+> > Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+> > ---
+> >  arch/arm/boot/dts/r8a77470.dtsi | 34 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 34 insertions(+)
+> >
+> > diff --git a/arch/arm/boot/dts/r8a77470.dtsi b/arch/arm/boot/dts/r8a77470.dtsi
+> > index e6407e5..04a8877 100644
+> > --- a/arch/arm/boot/dts/r8a77470.dtsi
+> > +++ b/arch/arm/boot/dts/r8a77470.dtsi
+> > @@ -20,6 +20,8 @@
+> >  i2c2 = &i2c2;
+> >  i2c3 = &i2c3;
+> >  i2c4 = &i2c4;
+> > +spi0 = &qspi0;
+> > +spi1 = &qspi1;
+> >  };
+>
+> Geert can comment but I believe we are moving away from using aliases
+> in this way and that it would be best if the above hunk was dropped
+> from this patch.
+>
+> https://patchwork.kernel.org/patch/10644159/
 
->>
->> There is still the hack to avoid AHB buffer invalidation delay (not sure
->> if we should keep it for now)
-> 
-> IIRC, Yogesh proposed to replace this hack by a RESET+smaller-delay.
-> Maybe you can try that.
-> 
->> and we still need to figure out the
->> reported problems with two chips on one bus.
->>
->> As Yogesh is the only one how has a hardware setup for this, maybe you
->> can retry and provide some debugging info?
->>
->> Unfortunately I'll probably do not have time to switch to the dirmap API
->> now, so I'd rather do that as a second step, as it probably won't solve
->> our problems either.
-> 
-> Totally agree with that.
-> 
-> Thanks for sending a v4.
-> 
-> Boris
-> 
+Geert, what do you want me to do here?
+
+Thanks,
+Fab
+
+>
+> The rest of the patch looks fine to me.
+>
+> >
+> >  cpus {
+> > @@ -460,6 +462,38 @@
+> >  status = "disabled";
+> >  };
+> >
+> > +qspi0: spi@e6b10000 {
+> > +compatible = "renesas,qspi-r8a77470", "renesas,qspi";
+> > +reg = <0 0xe6b10000 0 0x2c>;
+> > +interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
+> > +clocks = <&cpg CPG_MOD 918>;
+> > +dmas = <&dmac0 0x17>, <&dmac0 0x18>,
+> > +       <&dmac1 0x17>, <&dmac1 0x18>;
+> > +dma-names = "tx", "rx", "tx", "rx";
+> > +power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
+> > +num-cs = <1>;
+> > +#address-cells = <1>;
+> > +#size-cells = <0>;
+> > +resets = <&cpg 918>;
+> > +status = "disabled";
+> > +};
+> > +
+> > +qspi1: spi@ee200000 {
+> > +compatible = "renesas,qspi-r8a77470", "renesas,qspi";
+> > +reg = <0 0xee200000 0 0x2c>;
+> > +interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
+> > +clocks = <&cpg CPG_MOD 917>;
+> > +dmas = <&dmac0 0xd1>, <&dmac0 0xd2>,
+> > +       <&dmac1 0xd1>, <&dmac1 0xd2>;
+> > +dma-names = "tx", "rx", "tx", "rx";
+> > +power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
+> > +num-cs = <1>;
+> > +#address-cells = <1>;
+> > +#size-cells = <0>;
+> > +resets = <&cpg 917>;
+> > +status = "disabled";
+> > +};
+> > +
+> >  scif0: serial@e6e60000 {
+> >  compatible = "renesas,scif-r8a77470",
+> >       "renesas,rcar-gen2-scif", "renesas,scif";
+> > --
+> > 2.7.4
+> >
+
+
+
+Renesas Electronics Europe Ltd, Dukes Meadow, Millboard Road, Bourne End, Buckinghamshire, SL8 5FH, UK. Registered in England & Wales under Registered No. 04586709.
+
 ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/

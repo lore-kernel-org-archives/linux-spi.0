@@ -1,122 +1,62 @@
-From: Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
-Subject: Re: [PATCH 6/7] spi: bcm2835: Overcome sglist entry length limitation
-Date: Fri, 9 Nov 2018 16:43:43 +0100
-Message-ID: <a30f83bf-1856-e994-3950-02f428099c34@i2se.com>
-References: <cover.1541659680.git.lukas@wunner.de>
- <eb5ce210b06fb68580961038412f9499c3e56a76.1541659680.git.lukas@wunner.de>
+From: Florian Kauer <florian.kauer@koalo.de>
+Subject: Re: [PATCH 0/3] Fix MODULE_LICENSE of bcm2835 drivers
+Date: Fri, 9 Nov 2018 19:48:02 +0100
+Message-ID: <26a93a5d-0ed2-b82d-3a0b-ef2888c59af0@koalo.de>
+References: <1540292769-5905-1-git-send-email-stefan.wahren@i2se.com>
+ <815844594.141792.1541616607053@email.ionos.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
- Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <eb5ce210b06fb68580961038412f9499c3e56a76.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Chris Boot <bootc@bootc.net>, Stephen Boyd <sboyd@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, linux-spi@vger.kernel.org,
+ Eric Anholt <eric@anholt.net>, Florian Meier <florian.meier@koalo.de>,
+ dmaengine@vger.kernel.org, Martin Sperl <kernel@martin.sperl.org>,
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Stefan Wahren <stefan.wahren@i2se.com>, Mark Brown <broonie@kernel.org>,
+ Vinod Koul <vkoul@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <815844594.141792.1541616607053@email.ionos.de>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-QW0gMDguMTEuMTggdW0gMDg6MDYgc2NocmllYiBMdWthcyBXdW5uZXI6Cj4gV2hlbiBpbiBETUEg
-bW9kZSwgdGhlIEJDTTI4MzUgU1BJIGNvbnRyb2xsZXIgcmVxdWlyZXMgdGhhdCB0aGUgRklGTyBp
-cwo+IGFjY2Vzc2VkIGluIDQgYnl0ZSBjaHVua3MuICBUaGlzIHJ1bGUgaXMgbm90IGZ1bGZpbGxl
-ZCBpZiBhIHRyYW5zZmVyCj4gY29uc2lzdHMgb2YgbXVsdGlwbGUgc2dsaXN0IGVudHJpZXMsIG9u
-ZSBwZXIgcGFnZSwgYW5kIHRoZSBmaXJzdCBlbnRyeQo+IHN0YXJ0cyBpbiB0aGUgbWlkZGxlIG9m
-IGEgcGFnZSB3aXRoIGFuIG9mZnNldCBub3QgYSBtdWx0aXBsZSBvZiA0Lgo+Cj4gVGhlIGRyaXZl
-ciBjdXJyZW50bHkgZmFsbHMgYmFjayB0byBwcm9ncmFtbWVkIEkvTyBmb3Igc3VjaCB0cmFuc2Zl
-cnMsCj4gaW5jdXJyaW5nIGEgc2lnbmlmaWNhbnQgcGVyZm9ybWFuY2UgcGVuYWx0eS4KPgo+IE92
-ZXJjb21lIHRoaXMgaGFyZHdhcmUgbGltaXRhdGlvbiBieSB0cmFuc2ZlcnJpbmcgdGhlIGZpcnN0
-IGZldyBieXRlcyBvZgo+IGEgdHJhbnNmZXIgd2l0aG91dCBETUEgc3VjaCB0aGF0IHRoZSByZW1h
-aW5kZXIgb2YgdGhlIGZpcnN0IHNnbGlzdCBlbnRyeQo+IGJlY29tZXMgYSBtdWx0aXBsZSBvZiA0
-LiAgU3BlY2lmaWNzIGFyZSBwcm92aWRlZCBpbiBrZXJuZWxkb2MgY29tbWVudHMuCj4KPiBBbiBh
-bHRlcm5hdGl2ZSBhcHByb2FjaCB3b3VsZCBoYXZlIGJlZW4gdG8gc3BsaXQgdHJhbnNmZXJzIGlu
-IHRoZQo+IC0+cHJlcGFyZV9tZXNzYWdlIGhvb2ssIGJ1dCB0aGlzIG1heSBuZWNlc3NpdGF0ZSB0
-d28gdHJhbnNmZXJzIHBlciBwYWdlLAo+IGRlZmVhdGluZyB0aGUgZ29hbCBvZiBjbHVzdGVyaW5n
-IG11bHRpcGxlIHBhZ2VzIHRvZ2V0aGVyIGluIGEgc2luZ2xlCj4gdHJhbnNmZXIgZm9yIGVmZmlj
-aWVuY3kuICBFLmcuIGlmIHRoZSBmaXJzdCBUWCBzZ2xpc3QgZW50cnkncyBsZW5ndGggaXMKPiAy
-MyBhbmQgdGhlIGZpcnN0IFJYJ3MgaXMgNDAsIHRoZSBmaXJzdCB0cmFuc2ZlciB3b3VsZCBzZW5k
-IGFuZCByZWNlaXZlCj4gMjMgYnl0ZXMsIHRoZSBzZWNvbmQgNDAgLSAyMyA9IDE3IGJ5dGVzLCB0
-aGUgdGhpcmQgNDA5NiAtIDE3ID0gNDA3OQo+IGJ5dGVzLCB0aGUgZm91cnRoIDQwOTYgLSA0MDc5
-ID0gMTcgYnl0ZXMgYW5kIHNvIG9uLiAgSW4gb3RoZXIgd29yZHMsCj4gTyhuKSB0cmFuc2ZlcnMg
-YXJlIG5lY2Vzc2FyeSAobiA9IG51bWJlciBvZiBzZ2xpc3QgZW50cmllcyksIHdoZXJlYXMKPiB0
-aGUgYWxnb3JpdGhtIGltcGxlbWVudGVkIGhlcmVpbiBvbmx5IHJlcXVpcmVzIE8oMSkgYWRkaXRp
-b25hbCB3b3JrLgo+Cj4gU2lnbmVkLW9mZi1ieTogTHVrYXMgV3VubmVyIDxsdWthc0B3dW5uZXIu
-ZGU+Cj4gQ2M6IE1hdGhpYXMgRHVja2VjayA8bS5kdWNrZWNrQGt1bmJ1cy5kZT4KPiBDYzogRnJh
-bmsgUGF2bGljIDxmLnBhdmxpY0BrdW5idXMuZGU+Cj4gQ2M6IE1hcnRpbiBTcGVybCA8a2VybmVs
-QG1hcnRpbi5zcGVybC5vcmc+Cj4gQ2M6IE5vcmFsZiBUcsO4bm5lcyA8bm9yYWxmQHRyb25uZXMu
-b3JnPgo+IC0tLQo+ICBkcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jIHwgMjkxICsrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKystLS0tLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAyNDIgaW5zZXJ0
-aW9ucygrKSwgNDkgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3Bp
-LWJjbTI4MzUuYyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKPiBpbmRleCA5YjliOTkyNmE5
-NTYuLjM2NzE5ZDJjYzEyZCAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5j
-Cj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYwo+IEBAIC04NSwyMCArODUsMzAgQEAK
-PiAgICogQHJlZ3M6IGJhc2UgYWRkcmVzcyBvZiByZWdpc3RlciBtYXAKPiAgICogQGNsazogY29y
-ZSBjbG9jaywgZGl2aWRlZCB0byBjYWxjdWxhdGUgc2VyaWFsIGNsb2NrCj4gICAqIEBpcnE6IGlu
-dGVycnVwdCwgc2lnbmFscyBUWCBGSUZPIGVtcHR5IG9yIFJYIEZJRk8gwr4gZnVsbAo+ICsgKiBA
-dGZyOiBTUEkgdHJhbnNmZXIgY3VycmVudGx5IHByb2Nlc3NlZAo+ICAgKiBAdHhfYnVmOiBwb2lu
-dGVyIHdoZW5jZSBuZXh0IHRyYW5zbWl0dGVkIGJ5dGUgaXMgcmVhZAo+ICAgKiBAcnhfYnVmOiBw
-b2ludGVyIHdoZXJlIG5leHQgcmVjZWl2ZWQgYnl0ZSBpcyB3cml0dGVuCj4gICAqIEB0eF9sZW46
-IHJlbWFpbmluZyBieXRlcyB0byB0cmFuc21pdAo+ICAgKiBAcnhfbGVuOiByZW1haW5pbmcgYnl0
-ZXMgdG8gcmVjZWl2ZQo+ICsgKiBAdHhfcHJvbG9ndWU6IGJ5dGVzIHRyYW5zbWl0dGVkIHdpdGhv
-dXQgRE1BIGlmIGZpcnN0IFRYIHNnbGlzdCBlbnRyeSdzCj4gKyAqCWxlbmd0aCBpcyBub3QgYSBt
-dWx0aXBsZSBvZiA0ICh0byBvdmVyY29tZSBoYXJkd2FyZSBsaW1pdGF0aW9uKQo+ICsgKiBAcnhf
-cHJvbG9ndWU6IGJ5dGVzIHJlY2VpdmVkIHdpdGhvdXQgRE1BIGlmIGZpcnN0IFJYIHNnbGlzdCBl
-bnRyeSdzCj4gKyAqCWxlbmd0aCBpcyBub3QgYSBtdWx0aXBsZSBvZiA0ICh0byBvdmVyY29tZSBo
-YXJkd2FyZSBsaW1pdGF0aW9uKQo+ICsgKiBAdHhfc3BpbGxvdmVyOiB3aGV0aGVyIEB0eF9wcm9s
-b2d1ZSBzcGlsbHMgb3ZlciB0byBzZWNvbmQgVFggc2dsaXN0IGVudHJ5Cj4gICAqIEBkbWFfcGVu
-ZGluZzogd2hldGhlciBhIERNQSB0cmFuc2ZlciBpcyBpbiBwcm9ncmVzcwo+ICAgKi8KPiAgc3Ry
-dWN0IGJjbTI4MzVfc3BpIHsKPiAgCXZvaWQgX19pb21lbSAqcmVnczsKPiAgCXN0cnVjdCBjbGsg
-KmNsazsKPiAgCWludCBpcnE7Cj4gKwlzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0ZnI7Cj4gIAljb25z
-dCB1OCAqdHhfYnVmOwo+ICAJdTggKnJ4X2J1ZjsKPiAgCWludCB0eF9sZW47Cj4gIAlpbnQgcnhf
-bGVuOwo+ICsJaW50IHR4X3Byb2xvZ3VlOwo+ICsJaW50IHJ4X3Byb2xvZ3VlOwo+ICsJYm9vbCB0
-eF9zcGlsbG92ZXI7Cj4gIAlib29sIGRtYV9wZW5kaW5nOwo+ICB9Owo+ICAKPiBAQCAtMTM3LDYg
-KzE0Nyw3MiBAQCBzdGF0aWMgaW5saW5lIHZvaWQgYmNtMjgzNV93cl9maWZvKHN0cnVjdCBiY20y
-ODM1X3NwaSAqYnMpCj4gIAl9Cj4gIH0KPiAgCj4gKy8qKgo+ICsgKiBiY20yODM1X3JkX2ZpZm9f
-Y291bnQoKSAtIGJsaW5kbHkgcmVhZCBleGFjdGx5IEBjb3VudCBieXRlcyBmcm9tIFJYIEZJRk8K
-PiArICogQGJzOiBCQ00yODM1IFNQSSBjb250cm9sbGVyCj4gKyAqIEBjb3VudDogYnl0ZXMgdG8g
-cmVhZCBmcm9tIFJYIEZJRk8KPiArICoKPiArICogVGhlIGNhbGxlciBtdXN0IGVuc3VyZSB0aGF0
-IEBicy0+cnhfbGVuIGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byBAY291bnQsCj4gKyAqIHRo
-YXQgdGhlIFJYIEZJRk8gY29udGFpbnMgYXQgbGVhc3QgQGNvdW50IGJ5dGVzIGFuZCB0aGF0IHRo
-ZSBETUEgRW5hYmxlIGZsYWcKPiArICogaW4gdGhlIENTIHJlZ2lzdGVyIGlzIHNldCAoc3VjaCB0
-aGF0IGEgcmVhZCBmcm9tIHRoZSBGSUZPIHJlZ2lzdGVyIHJlY2VpdmVzCj4gKyAqIDMyLWJpdCBp
-bnN0ZWFkIG9mIGp1c3QgOC1iaXQpLgo+ICsgKi8KPiArc3RhdGljIGlubGluZSB2b2lkIGJjbTI4
-MzVfcmRfZmlmb19jb3VudChzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzLCBpbnQgY291bnQpCj4gK3sK
-PiArCXUzMiB2YWw7Cj4gKwo+ICsJYnMtPnJ4X2xlbiAtPSBjb3VudDsKPiArCj4gKwl3aGlsZSAo
-Y291bnQgPiAwKSB7Cj4gKwkJdmFsID0gYmNtMjgzNV9yZChicywgQkNNMjgzNV9TUElfRklGTyk7
-Cj4gKwkJaWYgKGJzLT5yeF9idWYpIHsKPiArCQkJaW50IGxlbiA9IG1pbihjb3VudCwgNCk7Cj4g
-KwkJCW1lbWNweShicy0+cnhfYnVmLCAmdmFsLCBsZW4pOwo+ICsJCQlicy0+cnhfYnVmICs9IGxl
-bjsKPiArCQl9Cj4gKwkJY291bnQgLT0gNDsKPiArCX0KPiArfQo+ICsKPiArLyoqCj4gKyAqIGJj
-bTI4MzVfd3JfZmlmb19jb3VudCgpIC0gYmxpbmRseSB3cml0ZSBleGFjdGx5IEBjb3VudCBieXRl
-cyB0byBUWCBGSUZPCj4gKyAqIEBiczogQkNNMjgzNSBTUEkgY29udHJvbGxlcgo+ICsgKiBAY291
-bnQ6IGJ5dGVzIHRvIHdyaXRlIHRvIFRYIEZJRk8KPiArICoKPiArICogVGhlIGNhbGxlciBtdXN0
-IGVuc3VyZSB0aGF0IEBicy0+dHhfbGVuIGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byBAY291
-bnQsCj4gKyAqIHRoYXQgdGhlIFRYIEZJRk8gY2FuIGFjY29tbW9kYXRlIEBjb3VudCBieXRlcyBh
-bmQgdGhhdCB0aGUgRE1BIEVuYWJsZSBmbGFnCj4gKyAqIGluIHRoZSBDUyByZWdpc3RlciBpcyBz
-ZXQgKHN1Y2ggdGhhdCBhIHdyaXRlIHRvIHRoZSBGSUZPIHJlZ2lzdGVyIHRyYW5zbWl0cwo+ICsg
-KiAzMi1iaXQgaW5zdGVhZCBvZiBqdXN0IDgtYml0KS4KPiArICovCj4gK3N0YXRpYyBpbmxpbmUg
-dm9pZCBiY20yODM1X3dyX2ZpZm9fY291bnQoc3RydWN0IGJjbTI4MzVfc3BpICpicywgaW50IGNv
-dW50KQo+ICt7Cj4gKwl1MzIgdmFsOwo+ICsKPiArCWJzLT50eF9sZW4gLT0gY291bnQ7Cj4gKwo+
-ICsJd2hpbGUgKGNvdW50ID4gMCkgewo+ICsJCWlmIChicy0+dHhfYnVmKSB7Cj4gKwkJCWludCBs
-ZW4gPSBtaW4oY291bnQsIDQpOwo+ICsJCQltZW1jcHkoJnZhbCwgYnMtPnR4X2J1ZiwgbGVuKTsK
-PiArCQkJYnMtPnR4X2J1ZiArPSBsZW47Cj4gKwkJfSBlbHNlIHsKPiArCQkJdmFsID0gMDsKPiAr
-CQl9Cj4gKwkJYmNtMjgzNV93cihicywgQkNNMjgzNV9TUElfRklGTywgdmFsKTsKPiArCQljb3Vu
-dCAtPSA0Owo+ICsJfQo+ICt9Cj4gKwo+ICsvKioKPiArICogYmNtMjgzNV93YWl0X3R4X2ZpZm9f
-ZW1wdHkoKSAtIGJ1c3ktd2FpdCBmb3IgVFggRklGTyB0byBlbXB0eQo+ICsgKiBAYnM6IEJDTTI4
-MzUgU1BJIGNvbnRyb2xsZXIKPiArICovCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBiY20yODM1X3dh
-aXRfdHhfZmlmb19lbXB0eShzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzKQo+ICt7Cj4gKwl3aGlsZSAo
-IShiY20yODM1X3JkKGJzLCBCQ00yODM1X1NQSV9DUykgJiBCQ00yODM1X1NQSV9DU19ET05FKSkK
-PiArCQljcHVfcmVsYXgoKTsKPiArfQpDYW4gd2UgaGF2ZSBzb21lIGtpbmQgb2YgdGltZW91dCBo
-ZXJlLCBzbyB3ZSBuZXZlciBzcGluIGZvcmV2ZXIgaW4gY2FzZQpodyBkb2Vzbid0IGJlaGF2ZSBh
-cyBleHBlY3RlZD8KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmxpbnV4LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2xpbnV4LXJwaS1rZXJuZWwK
+Sorry for not replying in time. I became father recently ;-)
+So if it is still relevant:
+Acked-by: Florian Kauer <florian.kauer@koalo.de>
+
+On 07.11.2018 19:50, Stefan Wahren wrote:
+> Hi Mark,
+> hi Vinod,
+> 
+>> Stefan Wahren <stefan.wahren@i2se.com> hat am 23. Oktober 2018 um 13:06 geschrieben:
+>>
+>>
+>> In preparation of a treewide switch of all bcm2835 drivers to SPDX tags,
+>> we need to make sure that the license text and MODULE_LICENSE matches.
+>>
+>> This series starts sooner than usual to have more time to collect the authors
+>> ACK.
+>>
+>> Stefan Wahren (3):
+>>    clk: bcm2835: make license text and module license match
+>>    dma: bcm2835: make license text and module license match
+>>    spi: bcm2835: make license text and module license match
+>>
+>>   drivers/clk/bcm/clk-bcm2835-aux.c | 2 +-
+>>   drivers/clk/bcm/clk-bcm2835.c     | 2 +-
+>>   drivers/dma/bcm2835-dma.c         | 2 +-
+>>   drivers/spi/spi-bcm2835.c         | 2 +-
+>>   drivers/spi/spi-bcm2835aux.c      | 2 +-
+>>   5 files changed, 5 insertions(+), 5 deletions(-)
+>>
+> 
+> since i didn't receive any objections from the authors, could you please apply or should i resend with Eric's Reviewed-by?
+> 

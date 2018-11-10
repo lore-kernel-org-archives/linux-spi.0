@@ -1,17 +1,19 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: Re: [PATCH 0/7] Raspberry Pi spi0 improvements
-Date: Sat, 10 Nov 2018 10:13:22 +0100
-Message-ID: <60EACAB3-5D50-4D99-A6A7-0B12F6F5C4A7@martin.sperl.org>
+Subject: Re: [PATCH 7/7] spi: bcm2835: Speed up FIFO access if fill level is
+ known
+Date: Sat, 10 Nov 2018 11:03:17 +0100
+Message-ID: <807EBC97-54BD-49D5-86C8-3768FB4C0105@martin.sperl.org>
 References: <cover.1541659680.git.lukas@wunner.de>
+ <901ff28c305e56d3349d3e044781c095d8e77a3d.1541659680.git.lukas@wunner.de>
 Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
  linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
  linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
 To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <cover.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <901ff28c305e56d3349d3e044781c095d8e77a3d.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -23,47 +25,80 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Patches: 1-5:
-Reviewed-By: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-> On 08.11.2018, at 08:06, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
-> 
-> Here's a first batch of improvements for the spi0 master on the
-> Raspberry Pi.  The meat of the series is in its last two patches:
-> 
-> * Patch [6/7] allows DMA for transfer buffers starting at an offset not a
->  multiple of 4.  This overcomes a limitation affecting Ethernet drivers
->  such as ks8851 which call netdev_alloc_skb_ip_align() to allocate
->  deliberately unaligned receive buffers.
-> 
-> * Patch [7/7] speeds up PIO transfers by not polling the RX FIFO when it
->  is known to contain data, or the TX FIFO when it is known to have free
->  space.
-> 
-> The preceding patches fix rarely encountered bugs, remove obsolete code
-> and add documentation.
-> 
-> The series has been tested extensively on the "Revolution Pi" family of
-> open source PLCs (https://revolution.kunbus.com/), but further testing
-> would be welcome to raise the confidence.
-> 
-> Thanks,
-> 
-> Lukas
-> 
-> 
-> Lukas Wunner (7):
->  spi: bcm2835: Avoid finishing transfer prematurely in IRQ mode
->  spi: bcm2835: Fix book-keeping of DMA termination
->  spi: bcm2835: Fix race on DMA termination
->  spi: bcm2835: Drop unused code for native Chip Select
->  spi: bcm2835: Document struct bcm2835_spi
->  spi: bcm2835: Overcome sglist entry length limitation
->  spi: bcm2835: Speed up FIFO access if fill level is known
-> 
-> drivers/spi/spi-bcm2835.c | 478 ++++++++++++++++++++++++++------------
-> 1 file changed, 334 insertions(+), 144 deletions(-)
-> 
-> -- 
-> 2.19.1
-> 
+Cj4gT24gMDguMTEuMjAxOCwgYXQgMDg6MDYsIEx1a2FzIFd1bm5lciA8bHVrYXNAd3VubmVyLmRl
+PiB3cm90ZToKPiAKPiBUaGUgUlggYW5kIFRYIEZJRk8gb2YgdGhlIEJDTTI4MzUgU1BJIG1hc3Rl
+ciBlYWNoIGFjY29tbW9kYXRlIDY0IGJ5dGVzCj4gKDE2IDMyLWJpdCBkd29yZHMpLiAgVGhlIENT
+IHJlZ2lzdGVyIHByb3ZpZGVzIGhpbnRzIG9uIHRoZWlyIGZpbGwgbGV2ZWw6Cj4gCj4gICAiQml0
+IDE5ICBSWFIgLSBSWCBGSUZPIG5lZWRzIFJlYWRpbmcgKFvCvl0gZnVsbCkKPiAgICAwID0gUlgg
+RklGTyBpcyBsZXNzIHRoYW4gW8K+XSBmdWxsIChvciBub3QgYWN0aXZlIFRBID0gMCkuCj4gICAg
+MSA9IFJYIEZJRk8gaXMgW8K+XSBvciBtb3JlIGZ1bGwuIENsZWFyZWQgYnkgcmVhZGluZyBzdWZm
+aWNpZW50Cj4gICAgICAgIGRhdGEgZnJvbSB0aGUgUlggRklGTyBvciBzZXR0aW5nIFRBIHRvIDAu
+Igo+IAo+ICAgIkJpdCAxNiAgRE9ORSAtIFRyYW5zZmVyIERvbmUKPiAgICAwID0gVHJhbnNmZXIg
+aXMgaW4gcHJvZ3Jlc3MgKG9yIG5vdCBhY3RpdmUgVEEgPSAwKS4KPiAgICAxID0gVHJhbnNmZXIg
+aXMgY29tcGxldGUuIENsZWFyZWQgYnkgd3JpdGluZyBtb3JlIGRhdGEgdG8gdGhlCj4gICAgICAg
+IFRYIEZJRk8gb3Igc2V0dGluZyBUQSB0byAwLiIKPiAKPiAgICJJZiBET05FIGlzIHNldCBbLi4u
+XSwgd3JpdGUgdXAgdG8gMTYgW2R3b3Jkc10gdG8gU1BJX0ZJRk8uIFsuLi5dCj4gICAgSWYgUlhS
+IGlzIHNldCByZWFkIDEyIFtkd29yZHNdIGRhdGEgZnJvbSBTUElfRklGTy4iCj4gCj4gICBbU291
+cmNlOiBQYWdlcyAxNTMsIDE1NCBhbmQgMTU4IG9mCj4gICAgaHR0cHM6Ly93d3cucmFzcGJlcnJ5
+cGkub3JnL2FwcC91cGxvYWRzLzIwMTIvMDIvQkNNMjgzNS1BUk0tUGVyaXBoZXJhbHMucGRmCj4g
+ICAgTm90ZTogVGhlIHNwZWMgaXMgbWlzc2luZyB0aGUgIsK+IiBjaGFyYWN0ZXIsIHByZXN1bWFi
+bHkgZHVlIHRvCj4gICAgY29weS1wYXN0aW5nIGZyb20gYSBkaWZmZXJlbnQgY2hhcnNldC4gIEl0
+IGFsc28gaW5jb3JyZWN0bHkKPiAgICByZWZlcnMgdG8gMTYgYW5kIDEyICJieXRlcyIgaW5zdGVh
+ZCBvZiAzMi1iaXQgZHdvcmRzLl0KPiAKPiBJbiBzaG9ydCwgdGhlIFJYUiBiaXQgaW5kaWNhdGVz
+IHRoYXQgNDggYnl0ZXMgY2FuIGJlIHJlYWQgYW5kIHRoZSBET05FCj4gYml0IGluZGljYXRlcyA2
+NCBieXRlcyBjYW4gYmUgd3JpdHRlbi4gIExldmVyYWdlIHRoaXMga25vd2xlZGdlIHRvIHJlYWQK
+PiBvciB3cml0ZSBieXRlcyBibGluZGx5IHRvIHRoZSBGSUZPLCB3aXRob3V0IHBvbGxpbmcgd2hl
+dGhlciBkYXRhIGNhbiBiZQo+IHJlYWQgb3IgZnJlZSBzcGFjZSBpcyBhdmFpbGFibGUgdG8gd3Jp
+dGUuICBNb3Jlb3Zlciwgd2hlbiBhIHRyYW5zZmVyIGlzCj4gc3RhcnRpbmcsIHRoZSBUWCBGSUZP
+IGlzIGtub3duIHRvIGJlIGVtcHR5LCBsaWtld2lzZSBhbGxvd2luZyBhIGJsaW5kCj4gd3JpdGUg
+b2YgNjQgYnl0ZXMuCj4gCj4gVGhpcyBjdXRzIHRoZSBudW1iZXIgb2YgYnVzIGFjY2Vzc2VzIGlu
+IGhhbGYgaWYgdGhlIGZpbGwgbGV2ZWwgaXMga25vd24uCj4gQWxzbywgdGhlIChwb3N0ZWQpIHdy
+aXRlIGFjY2Vzc2VzIGNhbiBiZSBwaXBlbGluZWQgb24gdGhlIEFYSSBidXMgc2luY2UKPiB0aGV5
+IGFyZSBubyBsb25nZXIgaW50ZXJsZWF2ZWQgd2l0aCAobm9uLXBvc3RlZCkgcmVhZHMuCj4gCj4g
+YmNtMjgzNV9zcGlfdHJhbnNmZXJfb25lX3BvbGwoKSBwcmV2aW91c2x5IHN3aXRjaGVkIHRvIGlu
+dGVycnVwdCBtb2RlCj4gd2hlbiBleGNlZWRpbmcgYSB0aW1lIGxpbWl0IGJ5IGNhbGxpbmcgYmNt
+MjgzNV9zcGlfdHJhbnNmZXJfb25lX2lycSgpLgo+IEJlY2F1c2UgdGhlIGxhdHRlciBub3cgYXNz
+dW1lcyBhbiBlbXB0eSBGSUZPLCBpdCBjYW4gbm8gbG9uZ2VyIGJlIGNhbGxlZAo+IGRpcmVjdGx5
+LiAgTW9kaWZ5IHRoZSBDUyByZWdpc3RlciBpbnN0ZWFkIHRvIGFjaGlldmUgdGhlIHNhbWUgcmVz
+dWx0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzIFd1bm5lciA8bHVrYXNAd3VubmVyLmRlPgo+
+IENjOiBNYXRoaWFzIER1Y2tlY2sgPG0uZHVja2Vja0BrdW5idXMuZGU+Cj4gQ2M6IEZyYW5rIFBh
+dmxpYyA8Zi5wYXZsaWNAa3VuYnVzLmRlPgo+IENjOiBNYXJ0aW4gU3BlcmwgPGtlcm5lbEBtYXJ0
+aW4uc3Blcmwub3JnPgo+IENjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4K
+PiAtLS0KPiBkcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jIHwgNjYgKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrLS0tCj4gMSBmaWxlIGNoYW5nZWQsIDYyIGluc2VydGlvbnMoKyks
+IDQgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1
+LmMgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCj4gaW5kZXggMzY3MTlkMmNjMTJkLi5mZDlh
+NzM5NjNmOGMgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYwo+ICsrKyBi
+L2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKPiBAQCAtNzIsNiArNzIsOCBAQAo+ICNkZWZpbmUg
+QkNNMjgzNV9TUElfQ1NfQ1NfMTAJCTB4MDAwMDAwMDIKPiAjZGVmaW5lIEJDTTI4MzVfU1BJX0NT
+X0NTXzAxCQkweDAwMDAwMDAxCj4gCj4gKyNkZWZpbmUgQkNNMjgzNV9TUElfRklGT19TSVpFCQk2
+NAo+ICsjZGVmaW5lIEJDTTI4MzVfU1BJX0ZJRk9fU0laRV8zXzQJNDgKTm90IHN1cmUgaWYgdGhp
+cyBzaG91bGQgbm90IGJlIGEgRFQgcGFyYW1ldGVyIGRlc2NyaWJpbmcgdGhlIEhXIGJsb2NrCmFu
+ZCBub3QgYmVpbmcgaGFyZGNvZGVkIGluIHRoZSBkcml2ZXIuCgo+IEBAIC02NzIsMTMgKzcyOCwx
+MyBAQCBzdGF0aWMgaW50IGJjbTI4MzVfc3BpX3RyYW5zZmVyX29uZV9wb2xsKHN0cnVjdCBzcGlf
+bWFzdGVyICptYXN0ZXIsCj4gCXVuc2lnbmVkIGxvbmcgdGltZW91dDsKPiAKPiAJLyogZW5hYmxl
+IEhXIGJsb2NrIHdpdGhvdXQgaW50ZXJydXB0cyAqLwo+IC0JYmNtMjgzNV93cihicywgQkNNMjgz
+NV9TUElfQ1MsIGNzIHwgQkNNMjgzNV9TUElfQ1NfVEEpOwo+ICsJYmNtMjgzNV93cihicywgQkNN
+MjgzNV9TUElfQ1MsIGNzIHw9IEJDTTI4MzVfU1BJX0NTX1RBKTsKSSBiZWxpZXZlIGNvZGluZyBz
+dHlsZSBzYXlzOiB2YXJpYWJsZSBhc3NpZ25tZW50cyBzaG91bGQgYmUgc2VwYXJhdGVkCmZyb20g
+ZnVuY3Rpb24gY2FsbCBmb3IgcmVhZGFiaWxpdHkuCihzaW1pbGFyIHRvIHRoZSBjb2RlIGJlbG93
+KQo+IEBAIC03MDAsOCArNzU2LDEwIEBAIHN0YXRpYyBpbnQgYmNtMjgzNV9zcGlfdHJhbnNmZXJf
+b25lX3BvbGwoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKPiAJCQkJCSAgICBqaWZmaWVzIC0g
+dGltZW91dCwKPiAJCQkJCSAgICBicy0+dHhfbGVuLCBicy0+cnhfbGVuKTsKPiAJCQkvKiBmYWxs
+IGJhY2sgdG8gaW50ZXJydXB0IG1vZGUgKi8KPiAtCQkJcmV0dXJuIGJjbTI4MzVfc3BpX3RyYW5z
+ZmVyX29uZV9pcnEobWFzdGVyLCBzcGksCj4gLQkJCQkJCQkgICAgdGZyLCBjcyk7Cj4gKwkJCWNz
+IHw9IEJDTTI4MzVfU1BJX0NTX0lOVFIgfCBCQ00yODM1X1NQSV9DU19JTlREOwo+ICsJCQliY20y
+ODM1X3dyKGJzLCBCQ00yODM1X1NQSV9DUywgY3MpOwo+ICsJCQkvKiB0ZWxsIFNQSSBjb3JlIHRv
+IHdhaXQgZm9yIGNvbXBsZXRpb24gKi8KPiArCQkJcmV0dXJuIDE7Cj4gCQl9Cj4gCX0KV2hhdCBp
+cyB3cm9uZyBhYm91dCB1c2luZyBiY20yODM1X3NwaV90cmFuc2Zlcl9vbmVfaXJxPwpJdCBtYWtl
+cyB0aGUgaW50ZW50aW9uIGNsZWFyIHRoYXQgd2Ugc3dpdGNoIHRvIGlycSBtb2RlLgoKV2h5IGFy
+ZSB5b3Ugb3Blbi1jb2RpbmcgaXQgaW5zdGVhZD8KCklmIHRoZXJlIGlzIGEgc2xpZ2h0IGRpZmZl
+cmVudCBiZWhhdmlvciBub3cgdGhlbiBJIHdvdWxkIHJlY29tbWVuZCBhbWVuZGluZwp0aGUgdHJh
+bnNmZXJfb25lX2lycSB0byBoYW5kbGUgdGhlIGJlaGF2aW9yLgoKSWYgaXQgaXMgZG9uZSBieSBh
+ZGRpbmcgYSDigJxmaWxsIGJ5dGVz4oCdIGFyZ3VtZW50IHRvIHRyYW5zZmVyX29uZV9pcnEgdGhh
+dCAKbWF5IGJlIHNldCB0byAwIGluIHRoaXMgY2FzZSB0aGVuIHRoZSBjb21waWxlciBzaG91bGQg
+YmUgYWJsZSB0byBvcHRpbWl6ZQp0aGUgdW5uZWNlc3NhcnkgY29kZSBhd2F5LgoKTWFydGluCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJwaS1r
+ZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1rZXJu
+ZWwK

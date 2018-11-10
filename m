@@ -1,89 +1,45 @@
-From: Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
-Subject: Re: [PATCH 7/7] spi: bcm2835: Speed up FIFO access if fill level is
- known
-Date: Sat, 10 Nov 2018 12:25:34 +0100 (CET)
-Message-ID: <52205641.172367.1541849134970@email.ionos.de>
-References: <cover.1541659680.git.lukas@wunner.de>
- <901ff28c305e56d3349d3e044781c095d8e77a3d.1541659680.git.lukas@wunner.de>
- <807EBC97-54BD-49D5-86C8-3768FB4C0105@martin.sperl.org>
+From: Stefan Wahren <stefan.wahren@i2se.com>
+Subject: Re: [PATCH 0/3] Fix MODULE_LICENSE of bcm2835 drivers
+Date: Sat, 10 Nov 2018 12:37:15 +0100 (CET)
+Message-ID: <1682361655.172416.1541849835591@email.ionos.de>
+References: <1540292769-5905-1-git-send-email-stefan.wahren@i2se.com>
+ <815844594.141792.1541616607053@email.ionos.de>
+ <26a93a5d-0ed2-b82d-3a0b-ef2888c59af0@koalo.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <807EBC97-54BD-49D5-86C8-3768FB4C0105-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Chris Boot <bootc@bootc.net>, Stephen Boyd <sboyd@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, linux-spi@vger.kernel.org,
+ Eric Anholt <eric@anholt.net>, dmaengine@vger.kernel.org,
+ Martin Sperl <kernel@martin.sperl.org>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+To: Florian Kauer <florian.kauer@koalo.de>, Mark Brown <broonie@kernel.org>,
+ Vinod Koul <vkoul@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <26a93a5d-0ed2-b82d-3a0b-ef2888c59af0@koalo.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-PiBrZXJuZWxAbWFydGluLnNwZXJsLm9yZyBoYXQgYW0gMTAuIE5vdmVtYmVyIDIwMTggdW0gMTE6
-MDMgZ2VzY2hyaWViZW46Cj4gCj4gCj4gCj4gPiBPbiAwOC4xMS4yMDE4LCBhdCAwODowNiwgTHVr
-YXMgV3VubmVyIDxsdWthc0B3dW5uZXIuZGU+IHdyb3RlOgo+ID4gCj4gPiBUaGUgUlggYW5kIFRY
-IEZJRk8gb2YgdGhlIEJDTTI4MzUgU1BJIG1hc3RlciBlYWNoIGFjY29tbW9kYXRlIDY0IGJ5dGVz
-Cj4gPiAoMTYgMzItYml0IGR3b3JkcykuICBUaGUgQ1MgcmVnaXN0ZXIgcHJvdmlkZXMgaGludHMg
-b24gdGhlaXIgZmlsbCBsZXZlbDoKPiA+IAo+ID4gICAiQml0IDE5ICBSWFIgLSBSWCBGSUZPIG5l
-ZWRzIFJlYWRpbmcgKFvCvl0gZnVsbCkKPiA+ICAgIDAgPSBSWCBGSUZPIGlzIGxlc3MgdGhhbiBb
-wr5dIGZ1bGwgKG9yIG5vdCBhY3RpdmUgVEEgPSAwKS4KPiA+ICAgIDEgPSBSWCBGSUZPIGlzIFvC
-vl0gb3IgbW9yZSBmdWxsLiBDbGVhcmVkIGJ5IHJlYWRpbmcgc3VmZmljaWVudAo+ID4gICAgICAg
-IGRhdGEgZnJvbSB0aGUgUlggRklGTyBvciBzZXR0aW5nIFRBIHRvIDAuIgo+ID4gCj4gPiAgICJC
-aXQgMTYgIERPTkUgLSBUcmFuc2ZlciBEb25lCj4gPiAgICAwID0gVHJhbnNmZXIgaXMgaW4gcHJv
-Z3Jlc3MgKG9yIG5vdCBhY3RpdmUgVEEgPSAwKS4KPiA+ICAgIDEgPSBUcmFuc2ZlciBpcyBjb21w
-bGV0ZS4gQ2xlYXJlZCBieSB3cml0aW5nIG1vcmUgZGF0YSB0byB0aGUKPiA+ICAgICAgICBUWCBG
-SUZPIG9yIHNldHRpbmcgVEEgdG8gMC4iCj4gPiAKPiA+ICAgIklmIERPTkUgaXMgc2V0IFsuLi5d
-LCB3cml0ZSB1cCB0byAxNiBbZHdvcmRzXSB0byBTUElfRklGTy4gWy4uLl0KPiA+ICAgIElmIFJY
-UiBpcyBzZXQgcmVhZCAxMiBbZHdvcmRzXSBkYXRhIGZyb20gU1BJX0ZJRk8uIgo+ID4gCj4gPiAg
-IFtTb3VyY2U6IFBhZ2VzIDE1MywgMTU0IGFuZCAxNTggb2YKPiA+ICAgIGh0dHBzOi8vd3d3LnJh
-c3BiZXJyeXBpLm9yZy9hcHAvdXBsb2Fkcy8yMDEyLzAyL0JDTTI4MzUtQVJNLVBlcmlwaGVyYWxz
-LnBkZgo+ID4gICAgTm90ZTogVGhlIHNwZWMgaXMgbWlzc2luZyB0aGUgIsK+IiBjaGFyYWN0ZXIs
-IHByZXN1bWFibHkgZHVlIHRvCj4gPiAgICBjb3B5LXBhc3RpbmcgZnJvbSBhIGRpZmZlcmVudCBj
-aGFyc2V0LiAgSXQgYWxzbyBpbmNvcnJlY3RseQo+ID4gICAgcmVmZXJzIHRvIDE2IGFuZCAxMiAi
-Ynl0ZXMiIGluc3RlYWQgb2YgMzItYml0IGR3b3Jkcy5dCj4gPiAKPiA+IEluIHNob3J0LCB0aGUg
-UlhSIGJpdCBpbmRpY2F0ZXMgdGhhdCA0OCBieXRlcyBjYW4gYmUgcmVhZCBhbmQgdGhlIERPTkUK
-PiA+IGJpdCBpbmRpY2F0ZXMgNjQgYnl0ZXMgY2FuIGJlIHdyaXR0ZW4uICBMZXZlcmFnZSB0aGlz
-IGtub3dsZWRnZSB0byByZWFkCj4gPiBvciB3cml0ZSBieXRlcyBibGluZGx5IHRvIHRoZSBGSUZP
-LCB3aXRob3V0IHBvbGxpbmcgd2hldGhlciBkYXRhIGNhbiBiZQo+ID4gcmVhZCBvciBmcmVlIHNw
-YWNlIGlzIGF2YWlsYWJsZSB0byB3cml0ZS4gIE1vcmVvdmVyLCB3aGVuIGEgdHJhbnNmZXIgaXMK
-PiA+IHN0YXJ0aW5nLCB0aGUgVFggRklGTyBpcyBrbm93biB0byBiZSBlbXB0eSwgbGlrZXdpc2Ug
-YWxsb3dpbmcgYSBibGluZAo+ID4gd3JpdGUgb2YgNjQgYnl0ZXMuCj4gPiAKPiA+IFRoaXMgY3V0
-cyB0aGUgbnVtYmVyIG9mIGJ1cyBhY2Nlc3NlcyBpbiBoYWxmIGlmIHRoZSBmaWxsIGxldmVsIGlz
-IGtub3duLgo+ID4gQWxzbywgdGhlIChwb3N0ZWQpIHdyaXRlIGFjY2Vzc2VzIGNhbiBiZSBwaXBl
-bGluZWQgb24gdGhlIEFYSSBidXMgc2luY2UKPiA+IHRoZXkgYXJlIG5vIGxvbmdlciBpbnRlcmxl
-YXZlZCB3aXRoIChub24tcG9zdGVkKSByZWFkcy4KPiA+IAo+ID4gYmNtMjgzNV9zcGlfdHJhbnNm
-ZXJfb25lX3BvbGwoKSBwcmV2aW91c2x5IHN3aXRjaGVkIHRvIGludGVycnVwdCBtb2RlCj4gPiB3
-aGVuIGV4Y2VlZGluZyBhIHRpbWUgbGltaXQgYnkgY2FsbGluZyBiY20yODM1X3NwaV90cmFuc2Zl
-cl9vbmVfaXJxKCkuCj4gPiBCZWNhdXNlIHRoZSBsYXR0ZXIgbm93IGFzc3VtZXMgYW4gZW1wdHkg
-RklGTywgaXQgY2FuIG5vIGxvbmdlciBiZSBjYWxsZWQKPiA+IGRpcmVjdGx5LiAgTW9kaWZ5IHRo
-ZSBDUyByZWdpc3RlciBpbnN0ZWFkIHRvIGFjaGlldmUgdGhlIHNhbWUgcmVzdWx0Lgo+ID4gCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBMdWthcyBXdW5uZXIgPGx1a2FzQHd1bm5lci5kZT4KPiA+IENjOiBN
-YXRoaWFzIER1Y2tlY2sgPG0uZHVja2Vja0BrdW5idXMuZGU+Cj4gPiBDYzogRnJhbmsgUGF2bGlj
-IDxmLnBhdmxpY0BrdW5idXMuZGU+Cj4gPiBDYzogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGlu
-LnNwZXJsLm9yZz4KPiA+IENjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4K
-PiA+IC0tLQo+ID4gZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYyB8IDY2ICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKy0tLQo+ID4gMSBmaWxlIGNoYW5nZWQsIDYyIGluc2VydGlv
-bnMoKyksIDQgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9z
-cGktYmNtMjgzNS5jIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYwo+ID4gaW5kZXggMzY3MTlk
-MmNjMTJkLi5mZDlhNzM5NjNmOGMgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNt
-MjgzNS5jCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCj4gPiBAQCAtNzIsNiAr
-NzIsOCBAQAo+ID4gI2RlZmluZSBCQ00yODM1X1NQSV9DU19DU18xMAkJMHgwMDAwMDAwMgo+ID4g
-I2RlZmluZSBCQ00yODM1X1NQSV9DU19DU18wMQkJMHgwMDAwMDAwMQo+ID4gCj4gPiArI2RlZmlu
-ZSBCQ00yODM1X1NQSV9GSUZPX1NJWkUJCTY0Cj4gPiArI2RlZmluZSBCQ00yODM1X1NQSV9GSUZP
-X1NJWkVfM180CTQ4Cj4gTm90IHN1cmUgaWYgdGhpcyBzaG91bGQgbm90IGJlIGEgRFQgcGFyYW1l
-dGVyIGRlc2NyaWJpbmcgdGhlIEhXIGJsb2NrCj4gYW5kIG5vdCBiZWluZyBoYXJkY29kZWQgaW4g
-dGhlIGRyaXZlci4KCkkgc2VlIG5vIHJlYXNvbiBmb3IgdGhpcy4gQUZBSUsgYWxsIHZhcmlhbnRz
-IG9mIHRoZSBCQ00yODM1IGhhdmUgdGhlIHNhbWUgRklGTyBsZW5ndGgsIHNvIGknbSBmaW5lIHdp
-dGggdGhlIGRlZmluZXMuIEkgb25seSBoYXZlIGRvdWJ0cyBhYm91dCB0aGUgbmFtaW5nIEZJRk9f
-U0laRV8zXzQgYmVjYXVzZSBpdCBkZXNjcmliZSBhIGZpbGwgbGV2ZWwgbm90IGEgc2l6ZS4KClN0
-ZWZhbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGlu
-dXgtcnBpLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgt
-cnBpLWtlcm5lbAo=
+Hi Florian,
+
+> Florian Kauer <florian.kauer@koalo.de> hat am 9. November 2018 um 19:48 geschrieben:
+> 
+> 
+> Sorry for not replying in time. I became father recently ;-)
+
+no problem and congratulation.
+
+> So if it is still relevant:
+> Acked-by: Florian Kauer <florian.kauer@koalo.de>
+
+Yes, thanks. I wasn't aware of your name change.
+
+Stefan

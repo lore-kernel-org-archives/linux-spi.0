@@ -1,16 +1,17 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
 Subject: Re: [PATCH v4 06/10] ARM: defconfig: Use the new FSL QSPI driver
  under the SPI framework
-Date: Mon, 12 Nov 2018 10:46:45 +0000
-Message-ID: <b01d70ae-9feb-985a-8001-dba54206662d@kontron.de>
+Date: Mon, 12 Nov 2018 11:56:28 +0100
+Message-ID: <20181112115628.68a84b92@bbrezillon>
 References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
- <1541601809-16950-7-git-send-email-frieder.schrempf@kontron.de>
- <CAOesGMgPwwwmizC+R4W1aLpvgcuVOYQr2qR2Vqb6171zGfarRw@mail.gmail.com>
- <b12936f5-871d-a982-13c5-9d894f4a1521@kontron.de>
- <20181108093451.08dfe63e@bbrezillon>
+        <1541601809-16950-7-git-send-email-frieder.schrempf@kontron.de>
+        <CAOesGMgPwwwmizC+R4W1aLpvgcuVOYQr2qR2Vqb6171zGfarRw@mail.gmail.com>
+        <b12936f5-871d-a982-13c5-9d894f4a1521@kontron.de>
+        <20181108093451.08dfe63e@bbrezillon>
+        <b01d70ae-9feb-985a-8001-dba54206662d@kontron.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Cc: Olof Johansson <olof@lixom.net>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
@@ -27,62 +28,87 @@ Cc: Olof Johansson <olof@lixom.net>,
         "han.xu@nxp.com" <han.xu@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         Sascha Hauer <s.hauer@pengutronix.de>,
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+To: Schrempf Frieder <frieder.schrempf@kontron.De>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181108093451.08dfe63e@bbrezillon>
-Content-Language: en-US
-Content-ID: <488850F0A853A84A8DE0BBCA83E1F7B7@snt-world.com>
+In-Reply-To: <b01d70ae-9feb-985a-8001-dba54206662d@kontron.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMDguMTEuMTggMDk6MzQsIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24gV2VkLCA3IE5v
-diAyMDE4IDE2OjM2OjEzICswMDAwDQo+IFNjaHJlbXBmIEZyaWVkZXIgPGZyaWVkZXIuc2NocmVt
-cGZAa29udHJvbi5EZT4gd3JvdGU6DQo+IA0KPj4gSGkgT2xvZiwNCj4+DQo+PiBPbiAwNy4xMS4x
-OCAxNzoyMCwgT2xvZiBKb2hhbnNzb24gd3JvdGU6DQo+Pj4gT24gV2VkLCBOb3YgNywgMjAxOCBh
-dCA2OjQ0IEFNIEZyaWVkZXIgU2NocmVtcGYNCj4+PiA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9u
-LmRlPiB3cm90ZToNCj4+Pj4NCj4+Pj4gRnJvbTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRlci5z
-Y2hyZW1wZkBleGNlZXQuZGU+DQo+Pj4+DQo+Pj4+IFRoZSBuZXcgZHJpdmVyIGF0IHNwaS9zcGkt
-ZnNsLXFzcGkuYyByZXBsYWNlcyB0aGUgb2xkIFNQSSBOT1IgZHJpdmVyDQo+Pj4+IGF0IG10ZC9m
-c2wtcXVhZHNwaS5jLiBTd2l0Y2ggdG8gdGhlIG5ldyBkcml2ZXIgaW4gdGhlIGRlZmNvbmZpZ3Mu
-DQo+Pj4+DQo+Pj4+IFNpZ25lZC1vZmYtYnk6IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVkZXIuc2No
-cmVtcGZAZXhjZWV0LmRlPg0KPj4+DQo+Pj4gSGkgRnJpZWRlciwNCj4+Pg0KPj4+IFRoaXMgcGF0
-Y2ggaXMgcGFydCBvZiBhIHNlcmllcyB0aGF0IEkgZGlkbid0IHNlZSB0aGUgcmVzdCBvZiwgYnV0
-IGluDQo+Pj4gZ2VuZXJhbCB3ZSBwcmVmZXIgdG8gbWVyZ2UgdGhlc2UgdGhyb3VnaCBhcm0tc29j
-IGV2ZW4gaWYgdGhlIGRyaXZlcg0KPj4+IGdvZXMgaW4gdGhyb3VnaCBhbm90aGVyIHRyZWUuIFRo
-ZSB3YXkgd2UnZCBwcmVmZXIgdG8gaGFuZGxlIGl0IGlzIHRoYXQNCj4+PiBvbmNlIHRoZSBkcml2
-ZXIgbGFuZHMsIHdlJ2xsIHRha2UgdGhlIGNvbmZpZyBvcHRpb24gY2hhbmdlIHRvIHR1cm4gaXQN
-Cj4+PiBvbi4gVG8gYXZvaWQgb3VyIGJyYW5jaGVzIHRvIGJyZWFrIHVudGlsIGJvdGggc2lkZXMg
-aGF2ZSBsYW5kZWQsIGl0DQo+Pj4gbWlnaHQgYmUgYSBnb29kIGlkZWEgdG8ga2VlcCBib3RoIGRy
-aXZlcnMgb24gZm9yIGEgc2hvcnQgd2hpbGUgKG9uZQ0KPj4+IHJlbGVhc2UpLg0KPj4+DQo+Pj4g
-U28sIEknbSBub3QgZ29pbmcgdG8gYWNrIHRoaXMgc2luY2Ugd2UgYXZvaWQgdGFraW5nIGRlZmNv
-bmZpZyBjaGFuZ2VzDQo+Pj4gdGhyb3VnaCBkcml2ZXIgdHJlZXMgKHRoZXNlIHR3byBkZWZjb25m
-aWdzIHRlbmQgdG8gY2h1cm4gYSBsb3QgYW5kIHdlDQo+Pj4gZG9uJ3Qgd2FudCB0byBjcmVhdGUg
-bWVyZ2UgY29uZmxpY3RzIHdoZXJlIHdlIGRvbid0IGhhdmUgdG8pLCBidXQNCj4+PiB3ZSdsbCBi
-ZSBoYXBweSB0byBwaWNrIGl0IHVwIHdoZW4gdGhlIHRpbWUgY29tZXMuDQo+Pg0KPj4gT2ssIHRo
-YW5rIHlvdSBmb3IgZXhwbGFpbmluZyB0aGUgY29tbW9uIHByYWN0aWNlLiBJIHdpbGwgZHJvcCB0
-aGUgY29uZmlnDQo+PiBjaGFuZ2VzIGZvciB0aGUgbmV4dCB2ZXJzaW9uIGFuZCBzZW5kIGl0IHNl
-cGFyYXRlbHkgd2hlbiB0aGUgdGltZSBpcyByZWFkeS4NCj4+DQo+PiBCb3RoIHRoZSBvbGQgZHJp
-dmVyIGFuZCB0aGUgbmV3IG9uZSB1c2UgdGhlIHNhbWUgY29tcGF0aWJsZSBzdHJpbmdzIGZvcg0K
-Pj4gcHJvYmluZy4gV291bGRuJ3QgdGhhdCBjYXVzZSBwcm9ibGVtcyBpZiBib3RoIGRyaXZlcnMg
-YXJlIGVuYWJsZWQgZm9yIGENCj4+IHdoaWxlLCBvciBhbSBJIG1pc3Npbmcgc29tZXRoaW5nPw0K
-PiANCj4gT3IgbWF5YmUgd2Ugc2hvdWxkIG5vdCBpbnRyb2R1Y2UgYSBuZXcgS2NvbmZpZyBvcHRp
-b24gYW5kIGp1c3QgcmV1c2UNCj4gdGhlIG9sZCBvbmUuIEl0IHByb2JhYmx5IHJlcXVpcmVzIHJl
-LW9yZGVyaW5nIHBhdGNoZXMgYSBiaXQgKHBhdGNoIDENCj4gc2hvdWxkIGJlIG1vdmVkIGFmdGVy
-IHBhdGNoIDUpLiBUaGVuIHlvdSBoYXZlIDIgY2hvaWNlczoNCj4gDQo+IDEvIG1lcmdlIHBhdGNo
-IDEgYW5kIDYgc28gdGhhdCB0aGUgbmV3IGRyaXZlciBlZmZlY3RpdmVseSByZXBsYWNlcyB0aGUN
-Cj4gICAgIG9sZCBvbmUgYnV0IHVzZXMgdGhlIHNhbWUgS2NvbmZpZyBvcHRpb24NCj4gMi8gcmVt
-b3ZlIHRoZSBhYmlsaXR5IHRvIGNvbXBpbGUgdGhlIG9sZCBkcml2ZXIgd2hlbiB0aGUgbmV3IG9u
-ZSBpcw0KPiAgICAgaW50cm9kdWNlZDogcmVtb3ZlIHRoZSBsaW5lIGZyb20gZHJpdmVycy9tdGQv
-c3BpLW5vciBNYWtlZmlsZSBhbmQNCj4gICAgIG1vdmUgdGhlIEtjb25maWcgZW50cnkgZnJvbSBk
-cml2ZXJzL210ZC9zcGktbm9yL0tjb25maWcgdG8NCj4gICAgIGRyaXZlcnMvc3BpL0tjb25maWcu
-IEFuZCByZW1vdmUgdGhlIG9sZCBjb2RlIGluIGEgc2VwYXJhdGUgcGF0Y2gNCj4gDQo+IEknbSBm
-aW5lIGVpdGhlciB3YXksIGJ1dCBvcHRpb24gIzIgd2lsbCBwcm9iYWJseSBtYWtlIHRoZSBwYXRj
-aA0KPiBpbnRyb2R1Y2luZyB0aGUgbmV3IGRyaXZlciBiaWdnZXIgYW5kIGh1cnQgcmVhZGFiaWxp
-dHkuDQoNCkkgdGhpbmsgaGF2aW5nIGJvdGggZHJpdmVycyBpbiB0aGUgdHJlZSBmb3IgYSB3aGls
-ZSB3b3VsZG4ndCBiZSBzbyBiYWQuIA0KU28gaWYgYW55IGNvbXBhdGliaWxpdHkgaXNzdWVzIGNv
-bWUgdXAgd2l0aCB0aGUgbmV3IGRyaXZlciwgcGVvcGxlIGNhbiANCnN0aWxsIHVzZSB0aGUgb2xk
-IG9uZS4NCg0KVGhlcmVmb3JlIEkgdGhpbmsgSSB3aWxsIGRyb3AgdGhlIHBhdGNoZXMgdGhhdCBj
-aGFuZ2UgdGhlIGRlZmNvbmZpZyBhbmQgDQpyZW1vdmUgdGhlIG9sZCBkcml2ZXIgY29kZSBhbmQg
-a2VlcCB0aGUgZGlmZmVyZW50IEtjb25maWcgb3B0aW9ucy4gQW5kIA0KbWF5YmUgYWRkIGFuIGV4
-Y2x1c2l2ZSBkZXBlbmRlbmN5IGluIEtjb25maWcsIHNvIGJvdGggZHJpdmVycyBjYW4gbm90IGJl
-IA0KZW5hYmxlZCBhdCB0aGUgc2FtZSB0aW1lLg0KDQpEb2VzIHRoaXMgbWFrZSBzZW5zZT8=
+On Mon, 12 Nov 2018 10:46:45 +0000
+Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
+
+> On 08.11.18 09:34, Boris Brezillon wrote:
+> > On Wed, 7 Nov 2018 16:36:13 +0000
+> > Schrempf Frieder <frieder.schrempf@kontron.De> wrote:
+> >   
+> >> Hi Olof,
+> >>
+> >> On 07.11.18 17:20, Olof Johansson wrote:  
+> >>> On Wed, Nov 7, 2018 at 6:44 AM Frieder Schrempf
+> >>> <frieder.schrempf@kontron.de> wrote:  
+> >>>>
+> >>>> From: Frieder Schrempf <frieder.schrempf@exceet.de>
+> >>>>
+> >>>> The new driver at spi/spi-fsl-qspi.c replaces the old SPI NOR driver
+> >>>> at mtd/fsl-quadspi.c. Switch to the new driver in the defconfigs.
+> >>>>
+> >>>> Signed-off-by: Frieder Schrempf <frieder.schrempf@exceet.de>  
+> >>>
+> >>> Hi Frieder,
+> >>>
+> >>> This patch is part of a series that I didn't see the rest of, but in
+> >>> general we prefer to merge these through arm-soc even if the driver
+> >>> goes in through another tree. The way we'd prefer to handle it is that
+> >>> once the driver lands, we'll take the config option change to turn it
+> >>> on. To avoid our branches to break until both sides have landed, it
+> >>> might be a good idea to keep both drivers on for a short while (one
+> >>> release).
+> >>>
+> >>> So, I'm not going to ack this since we avoid taking defconfig changes
+> >>> through driver trees (these two defconfigs tend to churn a lot and we
+> >>> don't want to create merge conflicts where we don't have to), but
+> >>> we'll be happy to pick it up when the time comes.  
+> >>
+> >> Ok, thank you for explaining the common practice. I will drop the config
+> >> changes for the next version and send it separately when the time is ready.
+> >>
+> >> Both the old driver and the new one use the same compatible strings for
+> >> probing. Wouldn't that cause problems if both drivers are enabled for a
+> >> while, or am I missing something?  
+> > 
+> > Or maybe we should not introduce a new Kconfig option and just reuse
+> > the old one. It probably requires re-ordering patches a bit (patch 1
+> > should be moved after patch 5). Then you have 2 choices:
+> > 
+> > 1/ merge patch 1 and 6 so that the new driver effectively replaces the
+> >     old one but uses the same Kconfig option
+> > 2/ remove the ability to compile the old driver when the new one is
+> >     introduced: remove the line from drivers/mtd/spi-nor Makefile and
+> >     move the Kconfig entry from drivers/mtd/spi-nor/Kconfig to
+> >     drivers/spi/Kconfig. And remove the old code in a separate patch
+> > 
+> > I'm fine either way, but option #2 will probably make the patch
+> > introducing the new driver bigger and hurt readability.  
+> 
+> I think having both drivers in the tree for a while wouldn't be so bad. 
+> So if any compatibility issues come up with the new driver, people can 
+> still use the old one.
+
+Except that's not what happens in practice. Believe me, I tried this
+approach several times, and people keep using the old driver until
+they're forced to switch to the new one. So you actually don't address
+the problem, you just delay it a bit, and you'll have to fix
+regressions anyway.
+
+> 
+> Therefore I think I will drop the patches that change the defconfig and 
+> remove the old driver code and keep the different Kconfig options. And 
+> maybe add an exclusive dependency in Kconfig, so both drivers can not be 
+> enabled at the same time.
+> 
+> Does this make sense?
+
+I'd really prefer to have the removal of the old driver in the same
+release the new driver is introduced but if that's not possible, let's
+have a clear plan, like "introduce new driver in release X, remove the
+old one in release X+1".

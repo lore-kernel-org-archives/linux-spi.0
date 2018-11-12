@@ -1,590 +1,544 @@
-From: Emil Renner Berthing <kernel@esmil.dk>
-Subject: [RFC PATCH] spi: add driver for the SiFive SPI controller
-Date: Mon, 12 Nov 2018 15:27:36 +0100
-Message-ID: <20181112142736.15009-1-kernel@esmil.dk>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Emil Renner Berthing <kernel@esmil.dk>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-To: linux-spi@vger.kernel.org
+From: Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH v1 2/2] spi: npcm: add NPCM PSPI controller driver
+Date: Mon, 12 Nov 2018 18:42:32 +0200
+Message-ID: <20181112164232.435629-3-tmaimon77@gmail.com>
+References: <20181112164232.435629-1-tmaimon77@gmail.com>
+Cc: linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Tomer Maimon <tmaimon77@gmail.com>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        yuenn@google.com, venture@google.com, brendanhiggins@google.com,
+        avifishman70@gmail.com, joel@jms.id.au
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181112164232.435629-1-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Palmer Dabbelt <palmer@sifive.com>
+Add Nuvoton NPCM BMC Peripheral SPI controller driver.
 
-Add driver for the SiFive SPI controller
-on the HiFive Unleashed board.
-
-Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 ---
- .../devicetree/bindings/spi/spi-sifive.txt    |  29 ++
- drivers/spi/Kconfig                           |   6 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-sifive.c                      | 442 ++++++++++++++++++
- 4 files changed, 478 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
- create mode 100644 drivers/spi/spi-sifive.c
+ drivers/spi/Kconfig         |   7 +
+ drivers/spi/Makefile        |   1 +
+ drivers/spi/spi-npcm-pspi.c | 480 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 488 insertions(+)
+ create mode 100644 drivers/spi/spi-npcm-pspi.c
 
-Hi all,
-
-I know the discussions about the sifive devicetree compatible
-strings haven't come to a conclusion, so I'm sending this as
-an RFC to get some feedback on the rest of the code.
-
-Compared to the original[1] I've done the following:
-
-- Update register names and bit fields to the ones in the
-  FU540-C000 documentation.
-
-- Change the optional devicetree property from "sifive,buffer-size"
-  to "sifive,fifo-depth". The string "fifo-depth" seems to have more
-  hits in the existing devicetree bindings and is IMHO a little more
-  descriptive.
-
-- Change the optional devicetree property from "sifive,bits-per-word"
-  to "sifive,max-bits-per-word". For a long time I wondered why the
-  SPI word size was a property on the controller and not the device.
-  This change makes the meaning a little more clear.
-
-- Be honest about only supporting 8bit SPI words in the driver.
-  Without SPI_LSB_FIRST and bits_per_word < 8 we need some code
-  to shift the bits in each byte which is not yet there.
-
-- Program the csdef, csid and sckmode registers from prepare_message
-  rather than transfer_one. This way we only do it once pr. message
-  rather than every transfer.
-
-- Drop the irq field from driver data. With devm_request_irq we
-  don't need to remember it after requesting the irq.
-
-- Drop hz = t->speed_hz ? t->speed_hz : device->max_speed_hz;
-  The SPI framework handles this for us, so we can just always
-  use t->speed_hz.
-
-- Fix most checkpatch warnings.
-
-[1]: https://github.com/riscv/riscv-linux/commit/801805694740ad0895e21d10b8f124d138beefbb
-
-/Emil
-
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.txt b/Documentation/devicetree/bindings/spi/spi-sifive.txt
-new file mode 100644
-index 000000000000..96339afcc74f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-sifive.txt
-@@ -0,0 +1,29 @@
-+SiFive SPI controller Device Tree Bindings
-+------------------------------------------
-+
-+Required properties:
-+- compatible		: Should be "sifive,spi0"
-+- reg			: Physical base address and size of SPI registers map
-+			  A second (optional) range can indicate memory mapped flash
-+- interrupts		: Must contain one entry
-+- interrupt-parent	: Must be core interrupt controller
-+- clocks		: Must reference the frequency given to the controller
-+- #address-cells	: Must be '1', indicating which CS to use
-+- #size-cells		: Must be '0'
-+
-+Optional properties:
-+- sifive,fifo-depth		: Depth of hardware queues; defaults to 8
-+- sifive,max-bits-per-word	: Maximum bits per word; defaults to 8
-+
-+Example:
-+	spi: spi@10040000 {
-+		compatible = "sifive,spi0";
-+		reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
-+		interrupt-parent = <&plic>;
-+		interrupts = <51>;
-+		clocks = <&tlclk>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		sifive,fifo-depth = <8>;
-+		sifive,max-bits-per-word = <8>;
-+	};
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 7d3a5c94727e..50bfadd24c32 100644
+index 7d3a5c94727e..21eb08405127 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -615,6 +615,12 @@ config SPI_SH_HSPI
- 	help
- 	  SPI driver for SuperH HSPI blocks.
+@@ -397,6 +397,13 @@ config SPI_MT65XX
+ 	  say Y or M here.If you are not sure, say N.
+ 	  SPI drivers for Mediatek MT65XX and MT81XX series ARM SoCs.
  
-+config SPI_SIFIVE
-+	tristate "SiFive SPI controller"
-+	depends on HAS_IOMEM
++config SPI_NPCM_PSPI
++	tristate "Nuvoton NPCM PSPI Controller"
++	depends on ARCH_NPCM || COMPILE_TEST
 +	help
-+	  This exposes the SPI controller IP from SiFive.
++	  This driver provides support for Nuvoton NPCM BMC
++	  Peripheral SPI controller in master mode.
 +
- config SPI_SIRF
- 	tristate "CSR SiRFprimaII SPI controller"
- 	depends on SIRF_DMA
+ config SPI_NUC900
+ 	tristate "Nuvoton NUC900 series SPI"
+ 	depends on ARCH_W90X900
 diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 3575205c5c27..76216f1861df 100644
+index 3575205c5c27..d40a3611809c 100644
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -90,6 +90,7 @@ obj-$(CONFIG_SPI_SH)			+= spi-sh.o
- obj-$(CONFIG_SPI_SH_HSPI)		+= spi-sh-hspi.o
- obj-$(CONFIG_SPI_SH_MSIOF)		+= spi-sh-msiof.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi-sh-sci.o
-+obj-$(CONFIG_SPI_SIFIVE)		+= spi-sifive.o
- obj-$(CONFIG_SPI_SIRF)		+= spi-sirf.o
- obj-$(CONFIG_SPI_SLAVE_MT27XX)          += spi-slave-mt27xx.o
- obj-$(CONFIG_SPI_SPRD)			+= spi-sprd.o
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+@@ -59,6 +59,7 @@ obj-$(CONFIG_SPI_MPC52xx_PSC)		+= spi-mpc52xx-psc.o
+ obj-$(CONFIG_SPI_MPC52xx)		+= spi-mpc52xx.o
+ obj-$(CONFIG_SPI_MT65XX)                += spi-mt65xx.o
+ obj-$(CONFIG_SPI_MXS)			+= spi-mxs.o
++obj-$(CONFIG_SPI_NPCM_PSPI)		+= spi-npcm-pspi.o
+ obj-$(CONFIG_SPI_NUC900)		+= spi-nuc900.o
+ obj-$(CONFIG_SPI_OC_TINY)		+= spi-oc-tiny.o
+ spi-octeon-objs				:= spi-cavium.o spi-cavium-octeon.o
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
 new file mode 100644
-index 000000000000..8df19d2b8b7f
+index 000000000000..51777515c83f
 --- /dev/null
-+++ b/drivers/spi/spi-sifive.c
-@@ -0,0 +1,442 @@
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -0,0 +1,480 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * SiFive SPI controller driver (master mode only)
-+ *
-+ * Author: SiFive, Inc.
-+ * sifive@sifive.com
-+ *
-+ * Copyright 2018 SiFive, Inc.
-+ */
++// Copyright (c) 2018 Nuvoton Technology corporation.
 +
++#include <linux/kernel.h>
++#include <linux/bitfield.h>
++#include <linux/bitops.h>
 +#include <linux/clk.h>
-+#include <linux/module.h>
 +#include <linux/interrupt.h>
-+#include <linux/of.h>
++#include <linux/io.h>
++#include <linux/module.h>
 +#include <linux/platform_device.h>
 +#include <linux/spi/spi.h>
-+#include <linux/io.h>
-+#include <linux/log2.h>
++#include <linux/gpio.h>
++#include <linux/of_gpio.h>
 +
-+/* for consistency we need this symbol */
-+#ifdef REG_FMT
-+#undef REG_FMT
-+#endif
++#include <asm/unaligned.h>
 +
-+#define SIFIVE_SPI_MAX_CS        32
++#include <linux/regmap.h>
++#include <linux/mfd/syscon.h>
 +
-+#define SIFIVE_SPI_NAME          "sifive_spi"
-+
-+#define SIFIVE_SPI_DEFAULT_DEPTH 8
-+#define SIFIVE_SPI_DEFAULT_BITS  8
-+
-+/* register offsets */
-+#define REG_SCKDIV               0x00 /* Serial clock divisor */
-+#define REG_SCKMODE              0x04 /* Serial clock mode */
-+#define REG_CSID                 0x10 /* Chip select ID */
-+#define REG_CSDEF                0x14 /* Chip select default */
-+#define REG_CSMODE               0x18 /* Chip select mode */
-+#define REG_DELAY0               0x28 /* Delay control 0 */
-+#define REG_DELAY1               0x2c /* Delay control 1 */
-+#define REG_FMT                  0x40 /* Frame format */
-+#define REG_TXDATA               0x48 /* Tx FIFO data */
-+#define REG_RXDATA               0x4c /* Rx FIFO data */
-+#define REG_TXMARK               0x50 /* Tx FIFO watermark */
-+#define REG_RXMARK               0x54 /* Rx FIFO watermark */
-+#define REG_FCTRL                0x60 /* SPI flash interface control */
-+#define REG_FFMT                 0x64 /* SPI flash instruction format */
-+#define REG_IE                   0x70 /* Interrupt Enable Register */
-+#define REG_IP                   0x74 /* Interrupt Pendings Register */
-+
-+/* sckdiv bits */
-+#define SCKDIV_DIV_MASK          0xfffU
-+
-+/* sckmode bits */
-+#define SCKMODE_PHA              (1U << 0)
-+#define SCKMODE_POL              (1U << 1)
-+#define SCKMODE_MODE_MASK        (SCKMODE_PHA | SCKMODE_POL)
-+
-+/* csmode bits */
-+#define CSMODE_MODE_AUTO         0U
-+#define CSMODE_MODE_HOLD         2U
-+#define CSMODE_MODE_OFF          3U
-+
-+/* delay0 bits */
-+#define DELAY0_CSSCK_MASK        0xffU
-+#define DELAY0_SCKCS_MASK        (0xffU << 16)
-+
-+/* delay1 bits */
-+#define DELAY1_INTERCS_MASK      0xffU
-+#define DELAY1_INTERXFR_MASK     (0xffU << 16)
-+
-+/* fmt bits */
-+#define FMT_PROTO_SINGLE         0U
-+#define FMT_PROTO_DUAL           1U
-+#define FMT_PROTO_QUAD           2U
-+#define FMT_PROTO_MASK           3U
-+#define FMT_ENDIAN               (1U << 2)
-+#define FMT_DIR                  (1U << 3)
-+#define FMT_LEN(x)               ((u32)(x) << 16)
-+#define FMT_LEN_MASK             (0xfU << 16)
-+
-+/* txdata bits */
-+#define TXDATA_DATA_MASK         0xffU
-+#define TXDATA_FULL              (1U << 31)
-+
-+/* rxdata bits */
-+#define RXDATA_DATA_MASK         0xffU
-+#define RXDATA_EMPTY             (1U << 31)
-+
-+/* ie and ip bits */
-+#define IP_TXWM                  (1U << 0)
-+#define IP_RXWM                  (1U << 1)
-+
-+struct sifive_spi {
-+	void __iomem      *regs;        /* virt. address of control registers */
-+	struct clk        *clk;         /* bus clock */
-+	unsigned int      fifo_depth;   /* fifo depth in words */
-+	u32               cs_inactive;  /* level of the CS pins when inactive */
-+	struct completion done;         /* wake-up from interrupt */
++struct npcm_pspi {
++	struct completion xfer_done;
++	struct regmap *rst_regmap;
++	struct spi_master *master;
++	unsigned int tx_bytes;
++	unsigned int rx_bytes;
++	void __iomem *base;
++	bool is_save_param;
++	u8 bits_per_word;
++	const u8 *tx_buf;
++	struct clk *clk;
++	u32 speed_hz;
++	u8 *rx_buf;
++	u16 mode;
++	u32 id;
 +};
 +
-+static void sifive_spi_write(struct sifive_spi *spi, int offset, u32 value)
++#define DRIVER_NAME "npcm-pspi"
++
++#define NPCM_PSPI_DATA		0x00
++#define NPCM_PSPI_CTL1		0x02
++#define NPCM_PSPI_STAT		0x04
++
++/* definitions for control and status register */
++#define NPCM_PSPI_CTL1_SPIEN	BIT(0)
++#define NPCM_PSPI_CTL1_MOD	BIT(2)
++#define NPCM_PSPI_CTL1_EIR	BIT(5)
++#define NPCM_PSPI_CTL1_EIW	BIT(6)
++#define NPCM_PSPI_CTL1_SCM	BIT(7)
++#define NPCM_PSPI_CTL1_SCIDL	BIT(8)
++#define NPCM_PSPI_CTL1_SCDV6_0	GENMASK(15, 9)
++
++#define NPCM_PSPI_STAT_BSY	BIT(0)
++#define NPCM_PSPI_STAT_RBF	BIT(1)
++
++/* general definitions */
++#define NPCM_PSPI_TIMEOUT_MS		2000
++#define NPCM_PSPI_MAX_CLK_DIVIDER	256
++#define NPCM_PSPI_MIN_CLK_DIVIDER	4
++#define NPCM_PSPI_DEFAULT_CLK		25000000
++
++/* reset register */
++#define NPCM7XX_IPSRST2_OFFSET	0x24
++
++#define NPCM7XX_PSPI1_RESET	BIT(22)
++#define NPCM7XX_PSPI2_RESET	BIT(23)
++
++static inline unsigned int bytes_per_word(unsigned int bits)
 +{
-+	iowrite32(value, spi->regs + offset);
++	return bits <= 8 ? 1 : 2;
 +}
 +
-+static u32 sifive_spi_read(struct sifive_spi *spi, int offset)
++static inline void npcm_pspi_irq_enable(struct npcm_pspi *priv, u16 mask)
 +{
-+	return ioread32(spi->regs + offset);
++	u16 val;
++
++	val = ioread16(priv->base + NPCM_PSPI_CTL1);
++	val |= mask;
++	iowrite16(val, priv->base + NPCM_PSPI_CTL1);
 +}
 +
-+static void sifive_spi_init(struct sifive_spi *spi)
++static inline void npcm_pspi_irq_disable(struct npcm_pspi *priv, u16 mask)
 +{
-+	/* Watermark interrupts are disabled by default */
-+	sifive_spi_write(spi, REG_IE, 0);
++	u16 val;
 +
-+	/* Default watermark FIFO threshold values */
-+	sifive_spi_write(spi, REG_TXMARK, 1);
-+	sifive_spi_write(spi, REG_RXMARK, 0);
-+
-+	/* Set CS/SCK Delays and Inactive Time to defaults */
-+
-+	/* Exit specialized memory-mapped SPI flash mode */
-+	sifive_spi_write(spi, REG_FCTRL, 0);
++	val = ioread16(priv->base + NPCM_PSPI_CTL1);
++	val &= ~mask;
++	iowrite16(val, priv->base + NPCM_PSPI_CTL1);
 +}
 +
-+static int sifive_spi_prepare_message(struct spi_master *master,
-+		struct spi_message *msg)
++static inline void npcm_pspi_enable(struct npcm_pspi *priv)
 +{
-+	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	struct spi_device *device = msg->spi;
++	u16 val;
 +
-+	/* Update the chip select polarity */
-+	if (device->mode & SPI_CS_HIGH)
-+		spi->cs_inactive &= ~BIT(device->chip_select);
-+	else
-+		spi->cs_inactive |= BIT(device->chip_select);
-+	sifive_spi_write(spi, REG_CSDEF, spi->cs_inactive);
++	val = ioread16(priv->base + NPCM_PSPI_CTL1);
++	val |= NPCM_PSPI_CTL1_SPIEN;
++	iowrite16(val, priv->base + NPCM_PSPI_CTL1);
++}
 +
-+	/* Select the correct device */
-+	sifive_spi_write(spi, REG_CSID, device->chip_select);
++static inline void npcm_pspi_disable(struct npcm_pspi *priv)
++{
++	u16 val;
 +
-+	/* Set clock mode */
-+	sifive_spi_write(spi, REG_SCKMODE, device->mode & SCKMODE_MODE_MASK);
++	val = ioread16(priv->base + NPCM_PSPI_CTL1);
++	val &= ~NPCM_PSPI_CTL1_SPIEN;
++	iowrite16(val, priv->base + NPCM_PSPI_CTL1);
++}
++
++static void npcm_pspi_set_mode(struct spi_device *spi)
++{
++	struct npcm_pspi *priv = spi_master_get_devdata(spi->master);
++	u16 regtemp;
++	u16 mode_val;
++
++	switch (spi->mode & (SPI_CPOL | SPI_CPHA)) {
++	case SPI_MODE_0:
++		mode_val = 0;
++		break;
++	case SPI_MODE_1:
++		mode_val = NPCM_PSPI_CTL1_SCIDL;
++		break;
++	case SPI_MODE_2:
++		mode_val = NPCM_PSPI_CTL1_SCM;
++		break;
++	case SPI_MODE_3:
++		mode_val = NPCM_PSPI_CTL1_SCIDL | NPCM_PSPI_CTL1_SCM;
++		break;
++	}
++
++	regtemp = ioread16(priv->base + NPCM_PSPI_CTL1);
++	regtemp &= ~(NPCM_PSPI_CTL1_SCM | NPCM_PSPI_CTL1_SCIDL);
++	iowrite16(regtemp | mode_val, priv->base + NPCM_PSPI_CTL1);
++}
++
++static void npcm_pspi_set_transfer_size(struct npcm_pspi *priv, int size)
++{
++	u16 regtemp;
++
++	regtemp = ioread16(NPCM_PSPI_CTL1 + priv->base);
++
++	switch (size) {
++	case 8:
++		regtemp &= ~NPCM_PSPI_CTL1_MOD;
++		break;
++	case 16:
++		regtemp |= NPCM_PSPI_CTL1_MOD;
++		break;
++	}
++
++	iowrite16(regtemp, NPCM_PSPI_CTL1 + priv->base);
++}
++
++static void npcm_pspi_set_baudrate(struct npcm_pspi *priv, unsigned int speed)
++{
++	u32 ckdiv;
++	u16 regtemp;
++
++	/* the supported rates are numbers from 4 to 256. */
++	ckdiv = DIV_ROUND_CLOSEST(clk_get_rate(priv->clk), (2 * speed)) - 1;
++
++	regtemp = ioread16(NPCM_PSPI_CTL1 + priv->base);
++	regtemp &= ~NPCM_PSPI_CTL1_SCDV6_0;
++	iowrite16(regtemp | (ckdiv << 9), NPCM_PSPI_CTL1 + priv->base);
++}
++
++static void npcm_pspi_setup_transfer(struct spi_device *spi,
++				     struct spi_transfer *t)
++{
++	struct npcm_pspi *priv = spi_master_get_devdata(spi->master);
++
++	priv->tx_buf = t->tx_buf;
++	priv->rx_buf = t->rx_buf;
++	priv->tx_bytes = t->len;
++	priv->rx_bytes = t->len;
++
++	if (!priv->is_save_param || priv->mode != spi->mode) {
++		npcm_pspi_set_mode(spi);
++		priv->mode = spi->mode;
++	}
++
++	if (!priv->is_save_param || priv->bits_per_word != t->bits_per_word) {
++		npcm_pspi_set_transfer_size(priv, t->bits_per_word);
++		priv->bits_per_word = t->bits_per_word;
++	}
++
++	if (!priv->is_save_param || priv->speed_hz != t->speed_hz) {
++		npcm_pspi_set_baudrate(priv, t->speed_hz);
++		priv->speed_hz = t->speed_hz;
++	}
++
++	if (!priv->is_save_param)
++		priv->is_save_param = true;
++}
++
++static void npcm_pspi_send(struct npcm_pspi *priv)
++{
++	int wsize;
++
++	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
++	priv->tx_bytes -= wsize;
++
++	if (priv->tx_buf) {
++		if (wsize == 1)
++			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++		if (wsize == 2)
++			iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++
++		priv->tx_buf += wsize;
++	}
++}
++
++static void npcm_pspi_recv(struct npcm_pspi *priv)
++{
++	int rsize;
++	u16 val;
++
++	rsize = min(bytes_per_word(priv->bits_per_word), priv->rx_bytes);
++	priv->rx_bytes -= rsize;
++
++	if (priv->rx_buf) {
++		if (rsize == 1)
++			val = ioread8(priv->base + NPCM_PSPI_DATA);
++		if (rsize == 2)
++			val = ioread16(priv->base + NPCM_PSPI_DATA);
++
++		*priv->rx_buf = val;
++		priv->rx_buf += rsize;
++	}
++}
++
++static int npcm_pspi_transfer_one(struct spi_master *master,
++				  struct spi_device *spi,
++				  struct spi_transfer *t)
++{
++	struct npcm_pspi *priv = spi_master_get_devdata(master);
++	int status;
++
++	npcm_pspi_setup_transfer(spi, t);
++	reinit_completion(&priv->xfer_done);
++	npcm_pspi_enable(priv);
++	status = wait_for_completion_timeout(&priv->xfer_done,
++					     msecs_to_jiffies
++					     (NPCM_PSPI_TIMEOUT_MS));
++	if (status == 0) {
++		npcm_pspi_disable(priv);
++		return -ETIMEDOUT;
++	}
 +
 +	return 0;
 +}
 +
-+static int sifive_spi_prep_transfer(struct sifive_spi *spi,
-+		struct spi_device *device, struct spi_transfer *t)
++static int npcm_pspi_prepare_transfer_hardware(struct spi_master *master)
 +{
-+	u32 cr;
-+	unsigned int mode;
++	struct npcm_pspi *priv = spi_master_get_devdata(master);
 +
-+	/* Calculate and program the clock rate */
-+	cr = DIV_ROUND_UP(clk_get_rate(spi->clk) >> 1, t->speed_hz) - 1;
-+	cr &= SCKDIV_DIV_MASK;
-+	sifive_spi_write(spi, REG_SCKDIV, cr);
++	npcm_pspi_irq_enable(priv, NPCM_PSPI_CTL1_EIR | NPCM_PSPI_CTL1_EIW);
 +
-+	mode = max_t(unsigned int, t->rx_nbits, t->tx_nbits);
-+
-+	/* Set frame format */
-+	cr = FMT_LEN(t->bits_per_word);
-+	switch (mode) {
-+	case SPI_NBITS_QUAD:
-+		cr |= FMT_PROTO_QUAD;
-+		break;
-+	case SPI_NBITS_DUAL:
-+		cr |= FMT_PROTO_DUAL;
-+		break;
-+	default:
-+		cr |= FMT_PROTO_SINGLE;
-+		break;
-+	}
-+	if (device->mode & SPI_LSB_FIRST)
-+		cr |= FMT_ENDIAN;
-+	if (!t->rx_buf)
-+		cr |= FMT_DIR;
-+	sifive_spi_write(spi, REG_FMT, cr);
-+
-+	/* We will want to poll if the time we need to wait is
-+	 * less than the context switching time.
-+	 * Let's call that threshold 5us. The operation will take:
-+	 *    (8/mode) * fifo_depth / hz <= 5 * 10^-6
-+	 *    1600000 * fifo_depth <= hz * mode
-+	 */
-+	return 1600000 * spi->fifo_depth <= t->speed_hz * mode;
++	return 0;
 +}
 +
-+static void sifive_spi_tx(struct sifive_spi *spi, const u8 *tx_ptr)
++static int npcm_pspi_unprepare_transfer_hardware(struct spi_master *master)
 +{
-+	WARN_ON_ONCE((sifive_spi_read(spi, REG_TXDATA) & TXDATA_FULL) != 0);
-+	sifive_spi_write(spi, REG_TXDATA, *tx_ptr & TXDATA_DATA_MASK);
++	struct npcm_pspi *priv = spi_master_get_devdata(master);
++
++	npcm_pspi_irq_disable(priv, NPCM_PSPI_CTL1_EIR | NPCM_PSPI_CTL1_EIW);
++
++	return 0;
 +}
 +
-+static void sifive_spi_rx(struct sifive_spi *spi, u8 *rx_ptr)
++static void npcm_pspi_reset_hw(struct npcm_pspi *priv)
 +{
-+	u32 data = sifive_spi_read(spi, REG_RXDATA);
-+
-+	WARN_ON_ONCE((data & RXDATA_EMPTY) != 0);
-+	*rx_ptr = data & RXDATA_DATA_MASK;
++	regmap_write(priv->rst_regmap, NPCM7XX_IPSRST2_OFFSET,
++		     NPCM7XX_PSPI1_RESET << priv->id);
++	regmap_write(priv->rst_regmap, NPCM7XX_IPSRST2_OFFSET, 0x0);
 +}
 +
-+static void sifive_spi_wait(struct sifive_spi *spi, u32 bit, int poll)
++static irqreturn_t npcm_pspi_handler(int irq, void *dev_id)
 +{
-+	if (poll) {
-+		u32 cr;
-+		do cr = sifive_spi_read(spi, REG_IP);
-+		while (!(cr & bit));
-+	} else {
-+		reinit_completion(&spi->done);
-+		sifive_spi_write(spi, REG_IE, bit);
-+		wait_for_completion(&spi->done);
-+	}
-+}
++	struct npcm_pspi *priv = dev_id;
++	u16 val;
++	u8 stat;
 +
-+static void sifive_spi_execute(struct sifive_spi *spi,
-+		struct spi_transfer *t, int poll)
-+{
-+	const u8 *tx_ptr = t->tx_buf;
-+	u8 *rx_ptr = t->rx_buf;
-+	unsigned int remaining_words = t->len;
++	stat = ioread8(priv->base + NPCM_PSPI_STAT);
 +
-+	while (remaining_words) {
-+		unsigned int n_words = min(remaining_words, spi->fifo_depth);
-+		unsigned int i;
++	if (!priv->tx_buf && !priv->rx_buf)
++		return IRQ_NONE;
 +
-+		/* Enqueue n_words for transmission */
-+		for (i = 0; i < n_words; i++)
-+			sifive_spi_tx(spi, tx_ptr++);
-+
-+		if (rx_ptr) {
-+			/* Wait for transmission + reception to complete */
-+			sifive_spi_write(spi, REG_RXMARK, n_words-1);
-+			sifive_spi_wait(spi, IP_RXWM, poll);
-+
-+			/* Read out all the data from the RX FIFO */
-+			for (i = 0; i < n_words; i++)
-+				sifive_spi_rx(spi, rx_ptr++);
-+		} else {
-+			/* Wait for transmission to complete */
-+			sifive_spi_wait(spi, IP_TXWM, poll);
++	if (priv->tx_buf) {
++		if (stat & NPCM_PSPI_STAT_RBF) {
++			val = ioread8(NPCM_PSPI_DATA + priv->base);
++			if (priv->tx_bytes == 0) {
++				npcm_pspi_disable(priv);
++				complete(&priv->xfer_done);
++				return IRQ_HANDLED;
++			}
 +		}
 +
-+		remaining_words -= n_words;
-+	}
-+}
-+
-+static int sifive_spi_transfer_one(struct spi_master *master,
-+		struct spi_device *device, struct spi_transfer *t)
-+{
-+	struct sifive_spi *spi = spi_master_get_devdata(master);
-+	int poll = sifive_spi_prep_transfer(spi, device, t);
-+
-+	sifive_spi_execute(spi, t, poll);
-+
-+	return 0;
-+}
-+
-+static void sifive_spi_set_cs(struct spi_device *device, bool is_high)
-+{
-+	struct sifive_spi *spi = spi_master_get_devdata(device->master);
-+
-+	/* Reverse polarity is handled by SCMR/CPOL. Not inverted CS. */
-+	if (device->mode & SPI_CS_HIGH)
-+		is_high = !is_high;
-+
-+	sifive_spi_write(spi, REG_CSMODE,
-+			is_high ? CSMODE_MODE_AUTO : CSMODE_MODE_HOLD);
-+}
-+
-+static irqreturn_t sifive_spi_irq(int irq, void *dev_id)
-+{
-+	struct sifive_spi *spi = dev_id;
-+	u32 ip = sifive_spi_read(spi, REG_IP);
-+
-+	if (ip & (IP_TXWM | IP_RXWM)) {
-+		/* Disable interrupts until next transfer */
-+		sifive_spi_write(spi, REG_IE, 0);
-+		complete(&spi->done);
-+		return IRQ_HANDLED;
++		if ((stat & NPCM_PSPI_STAT_BSY) == 0)
++			if (priv->tx_bytes)
++				npcm_pspi_send(priv);
 +	}
 +
-+	return IRQ_NONE;
++	if (priv->rx_buf) {
++		if (stat & NPCM_PSPI_STAT_RBF) {
++			if (!priv->rx_bytes)
++				return IRQ_NONE;
++
++			npcm_pspi_recv(priv);
++
++			if (!priv->rx_bytes) {
++				npcm_pspi_disable(priv);
++				complete(&priv->xfer_done);
++				return IRQ_HANDLED;
++			}
++		}
++
++		if (((stat & NPCM_PSPI_STAT_BSY) == 0) && !priv->tx_buf)
++			iowrite8(0x0, NPCM_PSPI_DATA + priv->base);
++	}
++
++	return IRQ_HANDLED;
 +}
 +
-+static int sifive_spi_probe(struct platform_device *pdev)
++static int npcm_pspi_probe(struct platform_device *pdev)
 +{
-+	struct sifive_spi *spi;
-+	struct resource *res;
-+	int ret, irq, num_cs;
-+	u32 cs_bits, max_bits_per_word;
++	struct npcm_pspi *priv;
 +	struct spi_master *master;
++	struct resource *res;
++	unsigned long clk_hz;
++	struct device_node *np = pdev->dev.of_node;
++	int num_cs, i;
++	u32 csgpio;
++	int irq;
++	int ret;
 +
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct sifive_spi));
-+	if (!master) {
-+		dev_err(&pdev->dev, "out of memory\n");
++	num_cs = of_gpio_named_count(np, "cs-gpios");
++	if (num_cs < 0)
++		return num_cs;
++
++	pdev->id = of_alias_get_id(np, "spi");
++	if (pdev->id < 0)
++		pdev->id = 0;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
++	if (!master)
 +		return -ENOMEM;
-+	}
 +
-+	spi = spi_master_get_devdata(master);
-+	init_completion(&spi->done);
 +	platform_set_drvdata(pdev, master);
 +
++	priv = spi_master_get_devdata(master);
++	priv->master = master;
++	priv->is_save_param = false;
++	priv->id = pdev->id;
++
 +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	spi->regs = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(spi->regs)) {
-+		dev_err(&pdev->dev, "Unable to map IO resources\n");
-+		ret = PTR_ERR(spi->regs);
-+		goto put_master;
++	priv->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(priv->base)) {
++		ret = PTR_ERR(priv->base);
++		goto out_master_put;
 +	}
 +
-+	spi->clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(spi->clk)) {
-+		dev_err(&pdev->dev, "Unable to find bus clock\n");
-+		ret = PTR_ERR(spi->clk);
-+		goto put_master;
++	priv->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(priv->clk)) {
++		dev_err(&pdev->dev, "failed to get clock\n");
++		ret = PTR_ERR(priv->clk);
++		goto out_master_put;
 +	}
++
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		goto out_master_put;
 +
 +	irq = platform_get_irq(pdev, 0);
 +	if (irq < 0) {
-+		dev_err(&pdev->dev, "Unable to find interrupt\n");
++		dev_err(&pdev->dev, "failed to get IRQ\n");
 +		ret = irq;
-+		goto put_master;
++		goto out_disable_clk;
 +	}
 +
-+	/* Optional parameters */
-+	ret = of_property_read_u32(pdev->dev.of_node,
-+			"sifive,fifo-depth", &spi->fifo_depth);
-+	if (ret < 0)
-+		spi->fifo_depth = SIFIVE_SPI_DEFAULT_DEPTH;
-+
-+	ret = of_property_read_u32(pdev->dev.of_node,
-+			"sifive,max-bits-per-word", &max_bits_per_word);
-+	if (!ret && max_bits_per_word < 8) {
-+		dev_err(&pdev->dev, "Only 8bit SPI words are supported by the driver\n");
-+		ret = -EINVAL;
-+		goto put_master;
++	priv->rst_regmap =
++		syscon_regmap_lookup_by_compatible("nuvoton,npcm750-rst");
++	if (IS_ERR(priv->rst_regmap)) {
++		dev_err(&pdev->dev, "failed to find nuvoton,npcm750-rst\n");
++		return IS_ERR(priv->rst_regmap);
 +	}
 +
-+	/* Spin up the bus clock before hitting registers */
-+	ret = clk_prepare_enable(spi->clk);
++	/* reset SPI-HW block */
++	npcm_pspi_reset_hw(priv);
++
++	ret = devm_request_irq(&pdev->dev, irq, npcm_pspi_handler, 0,
++			       "npcm-pspi", priv);
 +	if (ret) {
-+		dev_err(&pdev->dev, "Unable to enable bus clock\n");
-+		goto put_master;
++		dev_err(&pdev->dev, "failed to request IRQ\n");
++		goto out_disable_clk;
 +	}
 +
-+	/* probe the number of CS lines */
-+	spi->cs_inactive = sifive_spi_read(spi, REG_CSDEF);
-+	sifive_spi_write(spi, REG_CSDEF, 0xffffffffU);
-+	cs_bits = sifive_spi_read(spi, REG_CSDEF);
-+	sifive_spi_write(spi, REG_CSDEF, spi->cs_inactive);
-+	if (!cs_bits) {
-+		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
-+		ret = -EINVAL;
-+		goto put_master;
-+	}
++	init_completion(&priv->xfer_done);
 +
-+	num_cs = ilog2(cs_bits) + 1;
-+	if (num_cs > SIFIVE_SPI_MAX_CS) {
-+		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
-+		ret = -EINVAL;
-+		goto put_master;
-+	}
++	clk_hz = clk_get_rate(priv->clk);
 +
-+	/* Define our master */
++	master->max_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MIN_CLK_DIVIDER);
++	master->min_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MAX_CLK_DIVIDER);
++	master->mode_bits = SPI_CPHA | SPI_CPOL;
 +	master->dev.of_node = pdev->dev.of_node;
 +	master->bus_num = pdev->id;
++	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
++	master->transfer_one = npcm_pspi_transfer_one;
++	master->prepare_transfer_hardware =
++		npcm_pspi_prepare_transfer_hardware;
++	master->unprepare_transfer_hardware =
++		npcm_pspi_unprepare_transfer_hardware;
 +	master->num_chipselect = num_cs;
-+	master->mode_bits = SPI_CPHA | SPI_CPOL
-+	                  | SPI_CS_HIGH | SPI_LSB_FIRST
-+	                  | SPI_TX_DUAL | SPI_TX_QUAD
-+	                  | SPI_RX_DUAL | SPI_RX_QUAD;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->flags = SPI_CONTROLLER_MUST_TX | SPI_MASTER_GPIO_SS;
-+	master->prepare_message = sifive_spi_prepare_message;
-+	master->set_cs = sifive_spi_set_cs;
-+	master->transfer_one = sifive_spi_transfer_one;
 +
-+	/* If mmc_spi sees a dma_mask, it starts using dma mapped buffers.
-+	 * Probably it should rely on the SPI core auto mapping instead.
-+	 */
-+	pdev->dev.dma_mask = NULL;
-+
-+	/* Configure the SPI master hardware */
-+	sifive_spi_init(spi);
-+
-+	/* Register for SPI Interrupt */
-+	ret = devm_request_irq(&pdev->dev, irq, sifive_spi_irq, 0,
-+				dev_name(&pdev->dev), spi);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
-+		goto put_master;
++	for (i = 0; i < num_cs; i++) {
++		csgpio = of_get_named_gpio(np, "cs-gpios", i);
++		if (csgpio < 0) {
++			dev_err(&pdev->dev, "failed to get csgpio#%u\n", i);
++			goto out_disable_clk;
++		}
++		dev_dbg(&pdev->dev, "csgpio#%u = %u\n", i, csgpio);
++		ret = devm_gpio_request_one(&pdev->dev, csgpio,
++					    GPIOF_OUT_INIT_HIGH, DRIVER_NAME);
++		if (ret < 0) {
++			dev_err(&pdev->dev,
++				"failed to configure csgpio#%u %u\n"
++				, i, csgpio);
++			goto out_disable_clk;
++		}
 +	}
 +
-+	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
-+		irq, master->num_chipselect);
++	/* set to default clock rate */
++	npcm_pspi_set_baudrate(priv, NPCM_PSPI_DEFAULT_CLK);
 +
 +	ret = devm_spi_register_master(&pdev->dev, master);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_master failed\n");
-+		goto put_master;
-+	}
++	if (ret)
++		goto out_disable_clk;
++
++	pr_info("NPCM Peripheral SPI %d probed\n", pdev->id);
 +
 +	return 0;
 +
-+put_master:
-+	spi_master_put(master);
++out_disable_clk:
++	clk_disable_unprepare(priv->clk);
 +
++out_master_put:
++	spi_master_put(master);
 +	return ret;
 +}
 +
-+static int sifive_spi_remove(struct platform_device *pdev)
++static int npcm_pspi_remove(struct platform_device *pdev)
 +{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct sifive_spi *spi = spi_master_get_devdata(master);
++	struct npcm_pspi *priv = platform_get_drvdata(pdev);
 +
-+	/* Disable all the interrupts just in case */
-+	sifive_spi_write(spi, REG_IE, 0);
-+	spi_master_put(master);
++	npcm_pspi_reset_hw(priv);
++	clk_disable_unprepare(priv->clk);
 +
 +	return 0;
 +}
 +
-+static const struct of_device_id sifive_spi_of_match[] = {
-+	{ .compatible = "sifive,spi0", },
++static const struct of_device_id npcm_pspi_match[] = {
++	{ .compatible = "nuvoton,npcm750-pspi", .data = NULL },
 +	{}
 +};
-+MODULE_DEVICE_TABLE(of, sifive_spi_of_match);
++MODULE_DEVICE_TABLE(of, npcm_pspi_match);
 +
-+static struct platform_driver sifive_spi_driver = {
-+	.probe = sifive_spi_probe,
-+	.remove = sifive_spi_remove,
-+	.driver = {
-+		.name = SIFIVE_SPI_NAME,
-+		.of_match_table = sifive_spi_of_match,
++static struct platform_driver npcm_pspi_driver = {
++	.driver		= {
++		.name		= DRIVER_NAME,
++		.of_match_table	= npcm_pspi_match,
++		.owner		= THIS_MODULE,
 +	},
++	.probe		= npcm_pspi_probe,
++	.remove		= npcm_pspi_remove,
 +};
-+module_platform_driver(sifive_spi_driver);
++module_platform_driver(npcm_pspi_driver);
 +
-+MODULE_AUTHOR("SiFive, Inc. <sifive@sifive.com>");
-+MODULE_DESCRIPTION("SiFive SPI driver");
-+MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("NPCM peripheral SPI Controller driver");
++MODULE_AUTHOR("Tomer Maimon <tomer.maimon@nuvoton.com>");
++MODULE_LICENSE("GPL v2");
++
 -- 
-2.19.1
+2.14.1

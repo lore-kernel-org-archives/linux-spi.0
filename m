@@ -1,473 +1,88 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH] spi: lpspi: Add Slave Mode support for LPSPI
-Date: Mon, 12 Nov 2018 06:47:08 +0000
-Message-ID: <20181112064439.28584-1-xiaoning.wang@nxp.com>
+From: Schrempf Frieder <frieder.schrempf@kontron.De>
+Subject: Re: [PATCH v4 06/10] ARM: defconfig: Use the new FSL QSPI driver
+ under the SPI framework
+Date: Mon, 12 Nov 2018 10:46:45 +0000
+Message-ID: <b01d70ae-9feb-985a-8001-dba54206662d@kontron.de>
+References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
+ <1541601809-16950-7-git-send-email-frieder.schrempf@kontron.de>
+ <CAOesGMgPwwwmizC+R4W1aLpvgcuVOYQr2qR2Vqb6171zGfarRw@mail.gmail.com>
+ <b12936f5-871d-a982-13c5-9d894f4a1521@kontron.de>
+ <20181108093451.08dfe63e@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Olof Johansson <olof@lixom.net>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "Brian Norris" <computersforpeace@gmail.com>,
+        Mark Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        Mark Brown <broonie@kernel.org>,
+        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
+        "han.xu@nxp.com" <han.xu@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181108093451.08dfe63e@bbrezillon>
 Content-Language: en-US
+Content-ID: <488850F0A853A84A8DE0BBCA83E1F7B7@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-i.MX LPSPI controller only works in Master mode previously.
-This patch adds SPI slave mode support for i.MX7ulp and i.MX8qm/qxp
-in PIO mode.
-
-Currently SPI Slave mode support patch has the following limitations:
-1. The stale data in RXFIFO will be dropped when the Slave does any new
-   transfer.
-2. One transfer can be finished only after all transfer->len data been
-   transferred to master device
-3. Slave device only accepts transfer->len data. Any data longer than this
-   from master device will be dropped. Any data shorter than this from
-   master will cause LPSPI to stuck due to mentioned limitation 2.
-4. Only PIO transfer is supported in Slave Mode.
-
-Can add "spi-slave;" attribute in spi node of dts file to boot as LPSPI
-Slave Mode.
-
-Wire connection:
-GND, SCK, MISO(to MISO of slave), MOSI(to MOSI of slave), SCS
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
----
- drivers/spi/spi-fsl-lpspi.c | 209 ++++++++++++++++++++++++------------
- 1 file changed, 139 insertions(+), 70 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 51670976faa3..86cb38d98a39 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -3,6 +3,7 @@
- // Freescale i.MX7ULP LPSPI driver
- //
- // Copyright 2016 Freescale Semiconductor, Inc.
-+// Copyright 2018 NXP
-=20
- #include <linux/clk.h>
- #include <linux/completion.h>
-@@ -54,6 +55,7 @@
- #define IER_RDIE	BIT(1)
- #define IER_TDIE	BIT(0)
- #define CFGR1_PCSCFG	BIT(27)
-+#define CFGR1_PINCFG	(BIT(24)|BIT(25))
- #define CFGR1_PCSPOL	BIT(8)
- #define CFGR1_NOSTALL	BIT(3)
- #define CFGR1_MASTER	BIT(0)
-@@ -79,6 +81,7 @@ struct fsl_lpspi_data {
- 	struct device *dev;
- 	void __iomem *base;
- 	struct clk *clk;
-+	bool is_slave;
-=20
- 	void *rx_buf;
- 	const void *tx_buf;
-@@ -86,11 +89,14 @@ struct fsl_lpspi_data {
- 	void (*rx)(struct fsl_lpspi_data *);
-=20
- 	u32 remain;
-+	u8 watermark;
- 	u8 txfifosize;
- 	u8 rxfifosize;
-=20
- 	struct lpspi_config config;
- 	struct completion xfer_done;
-+
-+	bool slave_aborted;
- };
-=20
- static const struct of_device_id fsl_lpspi_dt_ids[] =3D {
-@@ -137,16 +143,18 @@ static void fsl_lpspi_intctrl(struct fsl_lpspi_data *=
-fsl_lpspi,
- 	writel(enable, fsl_lpspi->base + IMX7ULP_IER);
- }
-=20
--static int lpspi_prepare_xfer_hardware(struct spi_master *master)
-+static int lpspi_prepare_xfer_hardware(struct spi_controller *controller)
- {
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(master);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-=20
- 	return clk_prepare_enable(fsl_lpspi->clk);
- }
-=20
--static int lpspi_unprepare_xfer_hardware(struct spi_master *master)
-+static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
-)
- {
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(master);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-=20
- 	clk_disable_unprepare(fsl_lpspi->clk);
-=20
-@@ -202,22 +210,26 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *=
-fsl_lpspi,
- {
- 	u32 temp =3D 0;
-=20
--	temp |=3D fsl_lpspi->config.bpw - 1;
--	temp |=3D fsl_lpspi->config.prescale << 27;
--	temp |=3D (fsl_lpspi->config.mode & 0x3) << 30;
--	temp |=3D (fsl_lpspi->config.chip_select & 0x3) << 24;
--
--	/*
--	 * Set TCR_CONT will keep SS asserted after current transfer.
--	 * For the first transfer, clear TCR_CONTC to assert SS.
--	 * For subsequent transfer, set TCR_CONTC to keep SS asserted.
--	 */
--	temp |=3D TCR_CONT;
--	if (is_first_xfer)
--		temp &=3D ~TCR_CONTC;
--	else
--		temp |=3D TCR_CONTC;
--
-+	if (!fsl_lpspi->is_slave) {
-+		temp |=3D fsl_lpspi->config.bpw - 1;
-+		temp |=3D fsl_lpspi->config.prescale << 27;
-+		temp |=3D (fsl_lpspi->config.mode & 0x3) << 30;
-+		temp |=3D (fsl_lpspi->config.chip_select & 0x3) << 24;
-+
-+		/*
-+		 * Set TCR_CONT will keep SS asserted after current transfer.
-+		 * For the first transfer, clear TCR_CONTC to assert SS.
-+		 * For subsequent transfer, set TCR_CONTC to keep SS asserted.
-+		 */
-+		temp |=3D TCR_CONT;
-+		if (is_first_xfer)
-+			temp &=3D ~TCR_CONTC;
-+		else
-+			temp |=3D TCR_CONTC;
-+	} else {
-+		temp |=3D fsl_lpspi->config.bpw - 1;
-+		temp |=3D (fsl_lpspi->config.mode & 0x3) << 30;
-+	}
- 	writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-=20
- 	dev_dbg(fsl_lpspi->dev, "TCR=3D0x%x\n", temp);
-@@ -227,7 +239,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_da=
-ta *fsl_lpspi)
- {
- 	u32 temp;
-=20
--	temp =3D fsl_lpspi->txfifosize >> 1 | (fsl_lpspi->rxfifosize >> 1) << 16;
-+	temp =3D fsl_lpspi->watermark >> 1 | (fsl_lpspi->watermark >> 1) << 16;
-=20
- 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
-=20
-@@ -253,7 +265,8 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
-*fsl_lpspi)
- 	if (prescale =3D=3D 8 && scldiv >=3D 256)
- 		return -EINVAL;
-=20
--	writel(scldiv, fsl_lpspi->base + IMX7ULP_CCR);
-+	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
-+					fsl_lpspi->base + IMX7ULP_CCR);
-=20
- 	dev_dbg(fsl_lpspi->dev, "perclk=3D%d, speed=3D%d, prescale =3D%d, scldiv=
-=3D%d\n",
- 		perclk_rate, config.speed_hz, prescale, scldiv);
-@@ -270,13 +283,18 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fs=
-l_lpspi)
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CR);
- 	writel(0, fsl_lpspi->base + IMX7ULP_CR);
-=20
--	ret =3D fsl_lpspi_set_bitrate(fsl_lpspi);
--	if (ret)
--		return ret;
-+	if (!fsl_lpspi->is_slave) {
-+		ret =3D fsl_lpspi_set_bitrate(fsl_lpspi);
-+		if (ret)
-+			return ret;
-+	}
-=20
- 	fsl_lpspi_set_watermark(fsl_lpspi);
-=20
--	temp =3D CFGR1_PCSCFG | CFGR1_MASTER;
-+	if (!fsl_lpspi->is_slave)
-+		temp =3D CFGR1_MASTER;
-+	else
-+		temp =3D CFGR1_PINCFG;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- 		temp |=3D CFGR1_PCSPOL;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
-@@ -291,7 +309,8 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_=
-lpspi)
- static void fsl_lpspi_setup_transfer(struct spi_device *spi,
- 				     struct spi_transfer *t)
- {
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(spi->master);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(spi->controller);
-=20
- 	fsl_lpspi->config.mode =3D spi->mode;
- 	fsl_lpspi->config.bpw =3D t ? t->bits_per_word : spi->bits_per_word;
-@@ -315,14 +334,51 @@ static void fsl_lpspi_setup_transfer(struct spi_devic=
-e *spi,
- 		fsl_lpspi->tx =3D fsl_lpspi_buf_tx_u32;
- 	}
-=20
-+	if (t->len <=3D fsl_lpspi->txfifosize)
-+		fsl_lpspi->watermark =3D t->len;
-+	else
-+		fsl_lpspi->watermark =3D fsl_lpspi->txfifosize;
-+
- 	fsl_lpspi_config(fsl_lpspi);
- }
-=20
--static int fsl_lpspi_transfer_one(struct spi_master *master,
-+static int fsl_lpspi_slave_abort(struct spi_controller *controller)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-+
-+	fsl_lpspi->slave_aborted =3D true;
-+	complete(&fsl_lpspi->xfer_done);
-+	return 0;
-+}
-+
-+static int fsl_lpspi_wait_for_completion(struct spi_controller *controller=
-)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-+
-+	if (fsl_lpspi->is_slave) {
-+		if (wait_for_completion_interruptible(&fsl_lpspi->xfer_done) ||
-+			fsl_lpspi->slave_aborted) {
-+			dev_dbg(fsl_lpspi->dev, "interrupted\n");
-+			return -EINTR;
-+		}
-+	} else {
-+		if (!wait_for_completion_timeout(&fsl_lpspi->xfer_done, HZ)) {
-+			dev_dbg(fsl_lpspi->dev, "wait for completion timeout\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int fsl_lpspi_transfer_one(struct spi_controller *controller,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *t)
- {
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(master);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
- 	int ret;
-=20
- 	fsl_lpspi->tx_buf =3D t->tx_buf;
-@@ -330,13 +386,13 @@ static int fsl_lpspi_transfer_one(struct spi_master *=
-master,
- 	fsl_lpspi->remain =3D t->len;
-=20
- 	reinit_completion(&fsl_lpspi->xfer_done);
-+	fsl_lpspi->slave_aborted =3D false;
-+
- 	fsl_lpspi_write_tx_fifo(fsl_lpspi);
-=20
--	ret =3D wait_for_completion_timeout(&fsl_lpspi->xfer_done, HZ);
--	if (!ret) {
--		dev_dbg(fsl_lpspi->dev, "wait for completion timeout\n");
--		return -ETIMEDOUT;
--	}
-+	ret =3D fsl_lpspi_wait_for_completion(controller);
-+	if (ret)
-+		return ret;
-=20
- 	ret =3D fsl_lpspi_txfifo_empty(fsl_lpspi);
- 	if (ret)
-@@ -347,10 +403,11 @@ static int fsl_lpspi_transfer_one(struct spi_master *=
-master,
- 	return 0;
- }
-=20
--static int fsl_lpspi_transfer_one_msg(struct spi_master *master,
-+static int fsl_lpspi_transfer_one_msg(struct spi_controller *controller,
- 				      struct spi_message *msg)
- {
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(master);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
- 	struct spi_device *spi =3D msg->spi;
- 	struct spi_transfer *xfer;
- 	bool is_first_xfer =3D true;
-@@ -366,7 +423,7 @@ static int fsl_lpspi_transfer_one_msg(struct spi_master=
- *master,
-=20
- 		is_first_xfer =3D false;
-=20
--		ret =3D fsl_lpspi_transfer_one(master, spi, xfer);
-+		ret =3D fsl_lpspi_transfer_one(controller, spi, xfer);
- 		if (ret < 0)
- 			goto complete;
-=20
-@@ -374,13 +431,15 @@ static int fsl_lpspi_transfer_one_msg(struct spi_mast=
-er *master,
- 	}
-=20
- complete:
--	/* de-assert SS, then finalize current message */
--	temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
--	temp &=3D ~TCR_CONTC;
--	writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-+	if (!fsl_lpspi->is_slave) {
-+		/* de-assert SS, then finalize current message */
-+		temp =3D readl(fsl_lpspi->base + IMX7ULP_TCR);
-+		temp &=3D ~TCR_CONTC;
-+		writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
-+	}
-=20
- 	msg->status =3D ret;
--	spi_finalize_current_message(master);
-+	spi_finalize_current_message(controller);
-=20
- 	return ret;
- }
-@@ -410,30 +469,39 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_i=
-d)
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi;
--	struct spi_master *master;
-+	struct spi_controller *controller;
- 	struct resource *res;
- 	int ret, irq;
- 	u32 temp;
-=20
--	master =3D spi_alloc_master(&pdev->dev, sizeof(struct fsl_lpspi_data));
--	if (!master)
-+	if (of_property_read_bool((&pdev->dev)->of_node, "spi-slave"))
-+		controller =3D spi_alloc_slave(&pdev->dev,
-+					sizeof(struct fsl_lpspi_data));
-+	else
-+		controller =3D spi_alloc_master(&pdev->dev,
-+					sizeof(struct fsl_lpspi_data));
-+
-+	if (!controller)
- 		return -ENOMEM;
-=20
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, controller);
-=20
--	master->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
--	master->bus_num =3D pdev->id;
-+	controller->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
-+	controller->bus_num =3D pdev->id;
-=20
--	fsl_lpspi =3D spi_master_get_devdata(master);
-+	fsl_lpspi =3D spi_controller_get_devdata(controller);
- 	fsl_lpspi->dev =3D &pdev->dev;
--
--	master->transfer_one_message =3D fsl_lpspi_transfer_one_msg;
--	master->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
--	master->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware;
--	master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	master->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
--	master->dev.of_node =3D pdev->dev.of_node;
--	master->bus_num =3D pdev->id;
-+	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
-+						    "spi-slave");
-+
-+	controller->transfer_one_message =3D fsl_lpspi_transfer_one_msg;
-+	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
-+	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
-;
-+	controller->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	controller->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
-+	controller->dev.of_node =3D pdev->dev.of_node;
-+	controller->bus_num =3D pdev->id;
-+	controller->slave_abort =3D fsl_lpspi_slave_abort;
-=20
- 	init_completion(&fsl_lpspi->xfer_done);
-=20
-@@ -441,32 +509,32 @@ static int fsl_lpspi_probe(struct platform_device *pd=
-ev)
- 	fsl_lpspi->base =3D devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(fsl_lpspi->base)) {
- 		ret =3D PTR_ERR(fsl_lpspi->base);
--		goto out_master_put;
-+		goto out_controller_put;
- 	}
-=20
- 	irq =3D platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret =3D irq;
--		goto out_master_put;
-+		goto out_controller_put;
- 	}
-=20
- 	ret =3D devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, 0,
- 			       dev_name(&pdev->dev), fsl_lpspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
--		goto out_master_put;
-+		goto out_controller_put;
- 	}
-=20
- 	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
- 	if (IS_ERR(fsl_lpspi->clk)) {
- 		ret =3D PTR_ERR(fsl_lpspi->clk);
--		goto out_master_put;
-+		goto out_controller_put;
- 	}
-=20
- 	ret =3D clk_prepare_enable(fsl_lpspi->clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
--		goto out_master_put;
-+		goto out_controller_put;
- 	}
-=20
- 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
-@@ -475,24 +543,25 @@ static int fsl_lpspi_probe(struct platform_device *pd=
-ev)
-=20
- 	clk_disable_unprepare(fsl_lpspi->clk);
-=20
--	ret =3D devm_spi_register_master(&pdev->dev, master);
-+	ret =3D devm_spi_register_controller(&pdev->dev, controller);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_master error.\n");
--		goto out_master_put;
-+		dev_err(&pdev->dev, "spi_register_controller error.\n");
-+		goto out_controller_put;
- 	}
-=20
- 	return 0;
-=20
--out_master_put:
--	spi_master_put(master);
-+out_controller_put:
-+	spi_controller_put(controller);
-=20
- 	return ret;
- }
-=20
- static int fsl_lpspi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master =3D platform_get_drvdata(pdev);
--	struct fsl_lpspi_data *fsl_lpspi =3D spi_master_get_devdata(master);
-+	struct spi_controller *controller =3D platform_get_drvdata(pdev);
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-=20
- 	clk_disable_unprepare(fsl_lpspi->clk);
-=20
-@@ -509,6 +578,6 @@ static struct platform_driver fsl_lpspi_driver =3D {
- };
- module_platform_driver(fsl_lpspi_driver);
-=20
--MODULE_DESCRIPTION("LPSPI Master Controller driver");
-+MODULE_DESCRIPTION("LPSPI Controller driver");
- MODULE_AUTHOR("Gao Pan <pandy.gao@nxp.com>");
- MODULE_LICENSE("GPL");
---=20
-2.17.1
+T24gMDguMTEuMTggMDk6MzQsIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24gV2VkLCA3IE5v
+diAyMDE4IDE2OjM2OjEzICswMDAwDQo+IFNjaHJlbXBmIEZyaWVkZXIgPGZyaWVkZXIuc2NocmVt
+cGZAa29udHJvbi5EZT4gd3JvdGU6DQo+IA0KPj4gSGkgT2xvZiwNCj4+DQo+PiBPbiAwNy4xMS4x
+OCAxNzoyMCwgT2xvZiBKb2hhbnNzb24gd3JvdGU6DQo+Pj4gT24gV2VkLCBOb3YgNywgMjAxOCBh
+dCA2OjQ0IEFNIEZyaWVkZXIgU2NocmVtcGYNCj4+PiA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9u
+LmRlPiB3cm90ZToNCj4+Pj4NCj4+Pj4gRnJvbTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRlci5z
+Y2hyZW1wZkBleGNlZXQuZGU+DQo+Pj4+DQo+Pj4+IFRoZSBuZXcgZHJpdmVyIGF0IHNwaS9zcGkt
+ZnNsLXFzcGkuYyByZXBsYWNlcyB0aGUgb2xkIFNQSSBOT1IgZHJpdmVyDQo+Pj4+IGF0IG10ZC9m
+c2wtcXVhZHNwaS5jLiBTd2l0Y2ggdG8gdGhlIG5ldyBkcml2ZXIgaW4gdGhlIGRlZmNvbmZpZ3Mu
+DQo+Pj4+DQo+Pj4+IFNpZ25lZC1vZmYtYnk6IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVkZXIuc2No
+cmVtcGZAZXhjZWV0LmRlPg0KPj4+DQo+Pj4gSGkgRnJpZWRlciwNCj4+Pg0KPj4+IFRoaXMgcGF0
+Y2ggaXMgcGFydCBvZiBhIHNlcmllcyB0aGF0IEkgZGlkbid0IHNlZSB0aGUgcmVzdCBvZiwgYnV0
+IGluDQo+Pj4gZ2VuZXJhbCB3ZSBwcmVmZXIgdG8gbWVyZ2UgdGhlc2UgdGhyb3VnaCBhcm0tc29j
+IGV2ZW4gaWYgdGhlIGRyaXZlcg0KPj4+IGdvZXMgaW4gdGhyb3VnaCBhbm90aGVyIHRyZWUuIFRo
+ZSB3YXkgd2UnZCBwcmVmZXIgdG8gaGFuZGxlIGl0IGlzIHRoYXQNCj4+PiBvbmNlIHRoZSBkcml2
+ZXIgbGFuZHMsIHdlJ2xsIHRha2UgdGhlIGNvbmZpZyBvcHRpb24gY2hhbmdlIHRvIHR1cm4gaXQN
+Cj4+PiBvbi4gVG8gYXZvaWQgb3VyIGJyYW5jaGVzIHRvIGJyZWFrIHVudGlsIGJvdGggc2lkZXMg
+aGF2ZSBsYW5kZWQsIGl0DQo+Pj4gbWlnaHQgYmUgYSBnb29kIGlkZWEgdG8ga2VlcCBib3RoIGRy
+aXZlcnMgb24gZm9yIGEgc2hvcnQgd2hpbGUgKG9uZQ0KPj4+IHJlbGVhc2UpLg0KPj4+DQo+Pj4g
+U28sIEknbSBub3QgZ29pbmcgdG8gYWNrIHRoaXMgc2luY2Ugd2UgYXZvaWQgdGFraW5nIGRlZmNv
+bmZpZyBjaGFuZ2VzDQo+Pj4gdGhyb3VnaCBkcml2ZXIgdHJlZXMgKHRoZXNlIHR3byBkZWZjb25m
+aWdzIHRlbmQgdG8gY2h1cm4gYSBsb3QgYW5kIHdlDQo+Pj4gZG9uJ3Qgd2FudCB0byBjcmVhdGUg
+bWVyZ2UgY29uZmxpY3RzIHdoZXJlIHdlIGRvbid0IGhhdmUgdG8pLCBidXQNCj4+PiB3ZSdsbCBi
+ZSBoYXBweSB0byBwaWNrIGl0IHVwIHdoZW4gdGhlIHRpbWUgY29tZXMuDQo+Pg0KPj4gT2ssIHRo
+YW5rIHlvdSBmb3IgZXhwbGFpbmluZyB0aGUgY29tbW9uIHByYWN0aWNlLiBJIHdpbGwgZHJvcCB0
+aGUgY29uZmlnDQo+PiBjaGFuZ2VzIGZvciB0aGUgbmV4dCB2ZXJzaW9uIGFuZCBzZW5kIGl0IHNl
+cGFyYXRlbHkgd2hlbiB0aGUgdGltZSBpcyByZWFkeS4NCj4+DQo+PiBCb3RoIHRoZSBvbGQgZHJp
+dmVyIGFuZCB0aGUgbmV3IG9uZSB1c2UgdGhlIHNhbWUgY29tcGF0aWJsZSBzdHJpbmdzIGZvcg0K
+Pj4gcHJvYmluZy4gV291bGRuJ3QgdGhhdCBjYXVzZSBwcm9ibGVtcyBpZiBib3RoIGRyaXZlcnMg
+YXJlIGVuYWJsZWQgZm9yIGENCj4+IHdoaWxlLCBvciBhbSBJIG1pc3Npbmcgc29tZXRoaW5nPw0K
+PiANCj4gT3IgbWF5YmUgd2Ugc2hvdWxkIG5vdCBpbnRyb2R1Y2UgYSBuZXcgS2NvbmZpZyBvcHRp
+b24gYW5kIGp1c3QgcmV1c2UNCj4gdGhlIG9sZCBvbmUuIEl0IHByb2JhYmx5IHJlcXVpcmVzIHJl
+LW9yZGVyaW5nIHBhdGNoZXMgYSBiaXQgKHBhdGNoIDENCj4gc2hvdWxkIGJlIG1vdmVkIGFmdGVy
+IHBhdGNoIDUpLiBUaGVuIHlvdSBoYXZlIDIgY2hvaWNlczoNCj4gDQo+IDEvIG1lcmdlIHBhdGNo
+IDEgYW5kIDYgc28gdGhhdCB0aGUgbmV3IGRyaXZlciBlZmZlY3RpdmVseSByZXBsYWNlcyB0aGUN
+Cj4gICAgIG9sZCBvbmUgYnV0IHVzZXMgdGhlIHNhbWUgS2NvbmZpZyBvcHRpb24NCj4gMi8gcmVt
+b3ZlIHRoZSBhYmlsaXR5IHRvIGNvbXBpbGUgdGhlIG9sZCBkcml2ZXIgd2hlbiB0aGUgbmV3IG9u
+ZSBpcw0KPiAgICAgaW50cm9kdWNlZDogcmVtb3ZlIHRoZSBsaW5lIGZyb20gZHJpdmVycy9tdGQv
+c3BpLW5vciBNYWtlZmlsZSBhbmQNCj4gICAgIG1vdmUgdGhlIEtjb25maWcgZW50cnkgZnJvbSBk
+cml2ZXJzL210ZC9zcGktbm9yL0tjb25maWcgdG8NCj4gICAgIGRyaXZlcnMvc3BpL0tjb25maWcu
+IEFuZCByZW1vdmUgdGhlIG9sZCBjb2RlIGluIGEgc2VwYXJhdGUgcGF0Y2gNCj4gDQo+IEknbSBm
+aW5lIGVpdGhlciB3YXksIGJ1dCBvcHRpb24gIzIgd2lsbCBwcm9iYWJseSBtYWtlIHRoZSBwYXRj
+aA0KPiBpbnRyb2R1Y2luZyB0aGUgbmV3IGRyaXZlciBiaWdnZXIgYW5kIGh1cnQgcmVhZGFiaWxp
+dHkuDQoNCkkgdGhpbmsgaGF2aW5nIGJvdGggZHJpdmVycyBpbiB0aGUgdHJlZSBmb3IgYSB3aGls
+ZSB3b3VsZG4ndCBiZSBzbyBiYWQuIA0KU28gaWYgYW55IGNvbXBhdGliaWxpdHkgaXNzdWVzIGNv
+bWUgdXAgd2l0aCB0aGUgbmV3IGRyaXZlciwgcGVvcGxlIGNhbiANCnN0aWxsIHVzZSB0aGUgb2xk
+IG9uZS4NCg0KVGhlcmVmb3JlIEkgdGhpbmsgSSB3aWxsIGRyb3AgdGhlIHBhdGNoZXMgdGhhdCBj
+aGFuZ2UgdGhlIGRlZmNvbmZpZyBhbmQgDQpyZW1vdmUgdGhlIG9sZCBkcml2ZXIgY29kZSBhbmQg
+a2VlcCB0aGUgZGlmZmVyZW50IEtjb25maWcgb3B0aW9ucy4gQW5kIA0KbWF5YmUgYWRkIGFuIGV4
+Y2x1c2l2ZSBkZXBlbmRlbmN5IGluIEtjb25maWcsIHNvIGJvdGggZHJpdmVycyBjYW4gbm90IGJl
+IA0KZW5hYmxlZCBhdCB0aGUgc2FtZSB0aW1lLg0KDQpEb2VzIHRoaXMgbWFrZSBzZW5zZT8=

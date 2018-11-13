@@ -1,78 +1,85 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 15/17] spi: bcm2835: Switch to SPDX identifier
-Date: Tue, 13 Nov 2018 10:02:51 -0800
-Message-ID: <20181113180251.GD2089@sirena.org.uk>
-References: <1541868612-8268-1-git-send-email-stefan.wahren@i2se.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2594677996197233552=="
-Cc: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1541868612-8268-1-git-send-email-stefan.wahren-eS4NqCHxEME@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: pxa2xx: dt-bindings: Add ready GPIO signal" to the spi tree
+Date: Tue, 13 Nov 2018 18:34:56 +0000 (GMT)
+Message-ID: <20181113183456.EF1D144007A@finisterre.ee.mobilebroadband>
+References: <20181113102228.820214-5-lkundrak@v3.sk>
+Cc: Pavel Machek <pavel@ucw.cz>, Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        James Cameron <quozl@laptop.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org
+To: Lubomir Rintel <lkundrak@v3.sk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181113102228.820214-5-lkundrak@v3.sk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============2594677996197233552==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rz+pwK2yUstbofK6"
-Content-Disposition: inline
+   spi: pxa2xx: dt-bindings: Add ready GPIO signal
 
+has been applied to the spi tree at
 
---rz+pwK2yUstbofK6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Sat, Nov 10, 2018 at 05:50:12PM +0100, Stefan Wahren wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> index b0b87ff..a418683 100644
-> --- a/drivers/spi/spi-bcm2835.c
-> +++ b/drivers/spi/spi-bcm2835.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0+
->  /*
->   * Driver for Broadcom BCM2835 SPI Controllers
->   *
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Please convert the entire comment to a C++ one so it looks more
-intentional.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---rz+pwK2yUstbofK6
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvrEcsACgkQJNaLcl1U
-h9CpvAf/TpI2h2buVNpo8TANxwOC9Cr48YWTxToUEL+oTPBMVNwZN3w6z9NLVRYQ
-xZambESLA+ABa9q15Hs8VDbwje+xUSD7Z3IVlAhEaTKwHWZ3afi9Xc/+wBBHkHOU
-7z0GCRugivWVN4Z4/1Ya12eecmBfinYw06fptf9vcbXNUGg0DDrzBzsm1lNqSUfG
-91Odgp9FXhJLrPkTIFjjaH7bnz1MujBQBIQdN0nbRUavVKhQsbd+8HH1bf64ICFa
-6CORgTV8Y1JPeWYnLl7kcpazk7dyTEtd6kAOozXbx+1F3YUETJoRH9WVlgJpkalZ
-VoifJduJRXgz5Ap6eiJOI9EQjAH0EQ==
-=9fMB
------END PGP SIGNATURE-----
+>From 8ae13d0b0d4bb4af99bec8c50152f0c8f5cbcc06 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Tue, 13 Nov 2018 11:22:26 +0100
+Subject: [PATCH] spi: pxa2xx: dt-bindings: Add ready GPIO signal
 
---rz+pwK2yUstbofK6--
+This this is used to let the SPI master know that our FIFO is filled and
+we're ready to service a transfer. Only useful in slave mode.
 
+A signal like this is used by an embedded controller on a OLPC XO 1.75
+machine, that happens to be a SPI master.
 
---===============2594677996197233552==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-pxa2xx.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============2594677996197233552==--
+diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+index 89b2832283e3..e30e0c2a4bce 100644
+--- a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+@@ -12,6 +12,8 @@ Optional properties:
+ - cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+   Documentation/devicetree/bindings/spi/spi-bus.txt
+ - spi-slave: Empty property indicating the SPI controller is used in slave mode.
++- ready-gpios: GPIO used to signal a SPI master that the FIFO is filled
++  and we're ready to service a transfer. Only useful in slave mode.
+ 
+ Child nodes represent devices on the SPI bus
+   See ../spi/spi-bus.txt
+-- 
+2.19.1

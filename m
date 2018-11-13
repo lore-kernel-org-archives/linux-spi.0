@@ -1,10 +1,10 @@
 From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH v2 2/3] ARM: dts: r8a77470: Add QSPI support
-Date: Tue, 13 Nov 2018 06:35:04 -0800
-Message-ID: <20181113143504.b47unq3p23bvzzsc@verge.net.au>
+Subject: Re: [PATCH v2 3/3] ARM: dts: iwg23s-sbc: Add QSPI flash support
+Date: Tue, 13 Nov 2018 06:35:52 -0800
+Message-ID: <20181113143551.sxfj333de5bbf6pu@verge.net.au>
 References: <1541696684-21235-1-git-send-email-fabrizio.castro@bp.renesas.com>
- <1541696684-21235-3-git-send-email-fabrizio.castro@bp.renesas.com>
- <20181109100556.3yh7lkg5ehnbkrzi@verge.net.au>
+ <1541696684-21235-4-git-send-email-fabrizio.castro@bp.renesas.com>
+ <20181109100607.3axbfrfizs5dqtxk@verge.net.au>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,7 +21,7 @@ Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
 To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <20181109100556.3yh7lkg5ehnbkrzi@verge.net.au>
+In-Reply-To: <20181109100607.3axbfrfizs5dqtxk@verge.net.au>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -33,9 +33,10 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 09, 2018 at 11:05:56AM +0100, Simon Horman wrote:
-> On Thu, Nov 08, 2018 at 05:04:42PM +0000, Fabrizio Castro wrote:
-> > Add QSPI[01] support to the RZ/G1C SoC specific device tree.
+On Fri, Nov 09, 2018 at 11:06:07AM +0100, Simon Horman wrote:
+> On Thu, Nov 08, 2018 at 05:04:43PM +0000, Fabrizio Castro wrote:
+> > This commit adds QSPI flash support to the iwg23s board specific
+> > device tree.
 > > 
 > > Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 > 

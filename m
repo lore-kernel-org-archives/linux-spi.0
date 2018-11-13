@@ -1,43 +1,159 @@
-From: Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
-Subject: Re: [PATCH 7/7] spi: bcm2835: Speed up FIFO access if fill level is
- known
-Date: Tue, 13 Nov 2018 20:07:17 +0100 (CET)
-Message-ID: <230536172.259102.1542136037433@email.ionos.de>
-References: <807EBC97-54BD-49D5-86C8-3768FB4C0105@martin.sperl.org>
- <52205641.172367.1541849134970@email.ionos.de>
- <20181113080740.lrhfo656m7e4kb7a@wunner.de>
+From: Emil Renner Berthing <kernel@esmil.dk>
+Subject: Re: [RFC PATCH] spi: add driver for the SiFive SPI controller
+Date: Tue, 13 Nov 2018 20:48:43 +0100
+Message-ID: <CANBLGcxF-WgsBVFHf4jGRR+Ox2vz=ewzhwGP1CZX-R5HpDAVBg@mail.gmail.com>
+References: <20181112142736.15009-1-kernel@esmil.dk> <20181113183527.GG2089@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20181113080740.lrhfo656m7e4kb7a-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
+        linux-riscv@lists.infradead.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181113183527.GG2089@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> hat am 13. November 2018 um 09:07 geschrieben:
-> 
-> 
-> On Sat, Nov 10, 2018 at 12:25:34PM +0100, Stefan Wahren wrote:
-> > > On 08.11.2018, at 08:06, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
-> > > > +#define BCM2835_SPI_FIFO_SIZE		64
-> > > > +#define BCM2835_SPI_FIFO_SIZE_3_4	48
-> > 
-> > I only have doubts about the naming FIFO_SIZE_3_4 because it describe
-> > a fill level not a size.
-> 
-> Hm, it's three quarters of the FIFO's size, so seems sufficiently apt?
+Hi Mark,
+On Tue, 13 Nov 2018 at 19:35, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Nov 12, 2018 at 03:27:36PM +0100, Emil Renner Berthing wrote:
+>
+> > I know the discussions about the sifive devicetree compatible
+> > strings haven't come to a conclusion, so I'm sending this as
+> > an RFC to get some feedback on the rest of the code.
+>
+> I've not seen any of these discussions or earlier versions of this
+> driver so I've no idea what's going on here :(
 
-Just a thought because only from the define name i wouldn't think of three quarters first.
-Since i don't have a better solution, please go on.
+No, sorry. This has been discussed on linux-riscv for other drivers
+like the uart. See my last answer.
+
+> > +Optional properties:
+> > +- sifive,fifo-depth          : Depth of hardware queues; defaults to 8
+> > +- sifive,max-bits-per-word   : Maximum bits per word; defaults to 8
+> > +
+>
+> If the hardware isn't fixed yet making these enumerable from the
+> hardware would be good...
+
+Agreed, but unfortunately this is already in the FU540-C000 chip on
+the HiFive Unleashed board sold by SiFive.
+
+> > @@ -0,0 +1,442 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * SiFive SPI controller driver (master mode only)
+> > + *
+>
+> Please make the entire comment a C++ one to make this look more
+> intentinal.
+
+Will do.
+
+> > +/* for consistency we need this symbol */
+> > +#ifdef REG_FMT
+> > +#undef REG_FMT
+> > +#endif
+>
+> We do?  For consistency with what?
+
+Below all the register offsets are defined as
+REG_<register name>. This is is a pattern I
+copied from other drivers, but here we have a
+register called "fmt" - hence REG_FMT.
+If you have a better pattern that doesn't clash
+with REG_FMT please let me know.
+
+> > +static void sifive_spi_init(struct sifive_spi *spi)
+> > +{
+>
+> > +     /* Set CS/SCK Delays and Inactive Time to defaults */
+> > +
+> > +     /* Exit specialized memory-mapped SPI flash mode */
+>
+> ...or not?
+
+Right. Will add that or just delete the comment.
+
+> > +     /* Set frame format */
+> > +     cr = FMT_LEN(t->bits_per_word);
+> > +     switch (mode) {
+> > +     case SPI_NBITS_QUAD:
+> > +             cr |= FMT_PROTO_QUAD;
+> > +             break;
+>
+> Some namespacing on the driver #defines would be a bit safer against the
+> possibility of collision with future changes in headers.
+
+Right.
+
+> > +static void sifive_spi_wait(struct sifive_spi *spi, u32 bit, int poll)
+> > +{
+> > +     if (poll) {
+> > +             u32 cr;
+> > +             do cr = sifive_spi_read(spi, REG_IP);
+> > +             while (!(cr & bit));
+>
+> Please add some braces, indentation or something to make it more clear
+> that the read is part of a do/while loop - right now it's not
+> immediately obvious that this is correct.
+
+Good point. Will do.
+
+> > +static int sifive_spi_transfer_one(struct spi_master *master,
+> > +             struct spi_device *device, struct spi_transfer *t)
+> > +{
+> > +     struct sifive_spi *spi = spi_master_get_devdata(master);
+> > +     int poll = sifive_spi_prep_transfer(spi, device, t);
+> > +
+> > +     sifive_spi_execute(spi, t, poll);
+> > +
+>
+> Why not just inline the execute function here?  It's the only caller
+> AFAICT.
+
+Yeah, it is. Will do.
+
+> > +static void sifive_spi_set_cs(struct spi_device *device, bool is_high)
+> > +{
+> > +     struct sifive_spi *spi = spi_master_get_devdata(device->master);
+> > +
+> > +     /* Reverse polarity is handled by SCMR/CPOL. Not inverted CS. */
+> > +     if (device->mode & SPI_CS_HIGH)
+> > +             is_high = !is_high;
+>
+> spi_set_cs() will handle CS_HIGH for you.
+>
+> > +     master->bits_per_word_mask = SPI_BPW_MASK(8);
+>
+> I thought the device supported other bits per word values?
+
+It does, but the driver doesn't yet. When bits per word is < 8
+we need to shift the bits in each byte to be "left-aligned"
+(unless SPI_LSB_FIRST is set).
+
+> > +     /* If mmc_spi sees a dma_mask, it starts using dma mapped buffers.
+> > +      * Probably it should rely on the SPI core auto mapping instead.
+> > +      */
+> > +     pdev->dev.dma_mask = NULL;
+>
+> If this is a problem please fix it in the MMC core, don't bodge it like
+> this.
+
+Gotcha. Will remove this.
+
+> > +static const struct of_device_id sifive_spi_of_match[] = {
+> > +     { .compatible = "sifive,spi0", },
+> > +     {}
+> > +};
+> > +MODULE_DEVICE_TABLE(of, sifive_spi_of_match);
+>
+> spi0 is a *weird* compatible name.
+
+Exactly. Hence the discussion about the compatible strings.
+Once this discussion comes to a conclusion I'll update this.
+
+Thank you for the review!
+/Emil

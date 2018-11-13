@@ -1,159 +1,102 @@
-From: Emil Renner Berthing <kernel@esmil.dk>
-Subject: Re: [RFC PATCH] spi: add driver for the SiFive SPI controller
-Date: Tue, 13 Nov 2018 20:48:43 +0100
-Message-ID: <CANBLGcxF-WgsBVFHf4jGRR+Ox2vz=ewzhwGP1CZX-R5HpDAVBg@mail.gmail.com>
-References: <20181112142736.15009-1-kernel@esmil.dk> <20181113183527.GG2089@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "dt-binding: spi: add NPCM PSPI controller documentation" to the spi tree
+Date: Tue, 13 Nov 2018 20:02:55 +0000 (GMT)
+Message-ID: <20181113200255.3B117440079@finisterre.ee.mobilebroadband>
+References: <20181112164232.435629-2-tmaimon77@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, yuenn@google.com,
+        venture@google.com, brendanhiggins@google.com,
+        avifishman70@gmail.com, joel@jms.id.au, linux-spi@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181113183527.GG2089@sirena.org.uk>
+In-Reply-To: <20181112164232.435629-2-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-On Tue, 13 Nov 2018 at 19:35, Mark Brown <broonie@kernel.org> wrote:
-> On Mon, Nov 12, 2018 at 03:27:36PM +0100, Emil Renner Berthing wrote:
->
-> > I know the discussions about the sifive devicetree compatible
-> > strings haven't come to a conclusion, so I'm sending this as
-> > an RFC to get some feedback on the rest of the code.
->
-> I've not seen any of these discussions or earlier versions of this
-> driver so I've no idea what's going on here :(
+The patch
 
-No, sorry. This has been discussed on linux-riscv for other drivers
-like the uart. See my last answer.
+   dt-binding: spi: add NPCM PSPI controller documentation
 
-> > +Optional properties:
-> > +- sifive,fifo-depth          : Depth of hardware queues; defaults to 8
-> > +- sifive,max-bits-per-word   : Maximum bits per word; defaults to 8
-> > +
->
-> If the hardware isn't fixed yet making these enumerable from the
-> hardware would be good...
+has been applied to the spi tree at
 
-Agreed, but unfortunately this is already in the FU540-C000 chip on
-the HiFive Unleashed board sold by SiFive.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > @@ -0,0 +1,442 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * SiFive SPI controller driver (master mode only)
-> > + *
->
-> Please make the entire comment a C++ one to make this look more
-> intentinal.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Will do.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> > +/* for consistency we need this symbol */
-> > +#ifdef REG_FMT
-> > +#undef REG_FMT
-> > +#endif
->
-> We do?  For consistency with what?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Below all the register offsets are defined as
-REG_<register name>. This is is a pattern I
-copied from other drivers, but here we have a
-register called "fmt" - hence REG_FMT.
-If you have a better pattern that doesn't clash
-with REG_FMT please let me know.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> > +static void sifive_spi_init(struct sifive_spi *spi)
-> > +{
->
-> > +     /* Set CS/SCK Delays and Inactive Time to defaults */
-> > +
-> > +     /* Exit specialized memory-mapped SPI flash mode */
->
-> ...or not?
+Thanks,
+Mark
 
-Right. Will add that or just delete the comment.
+>From 4ad26864df53b265976c4a3ae61b1e6cad92fe40 Mon Sep 17 00:00:00 2001
+From: Tomer Maimon <tmaimon77@gmail.com>
+Date: Mon, 12 Nov 2018 18:42:31 +0200
+Subject: [PATCH] dt-binding: spi: add NPCM PSPI controller documentation
 
-> > +     /* Set frame format */
-> > +     cr = FMT_LEN(t->bits_per_word);
-> > +     switch (mode) {
-> > +     case SPI_NBITS_QUAD:
-> > +             cr |= FMT_PROTO_QUAD;
-> > +             break;
->
-> Some namespacing on the driver #defines would be a bit safer against the
-> possibility of collision with future changes in headers.
+Added device tree binding documentation for Nuvoton BMC
+NPCM Peripheral SPI controller.
 
-Right.
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ .../bindings/spi/nuvoton,npcm-pspi.txt        | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
 
-> > +static void sifive_spi_wait(struct sifive_spi *spi, u32 bit, int poll)
-> > +{
-> > +     if (poll) {
-> > +             u32 cr;
-> > +             do cr = sifive_spi_read(spi, REG_IP);
-> > +             while (!(cr & bit));
->
-> Please add some braces, indentation or something to make it more clear
-> that the read is part of a do/while loop - right now it's not
-> immediately obvious that this is correct.
-
-Good point. Will do.
-
-> > +static int sifive_spi_transfer_one(struct spi_master *master,
-> > +             struct spi_device *device, struct spi_transfer *t)
-> > +{
-> > +     struct sifive_spi *spi = spi_master_get_devdata(master);
-> > +     int poll = sifive_spi_prep_transfer(spi, device, t);
-> > +
-> > +     sifive_spi_execute(spi, t, poll);
-> > +
->
-> Why not just inline the execute function here?  It's the only caller
-> AFAICT.
-
-Yeah, it is. Will do.
-
-> > +static void sifive_spi_set_cs(struct spi_device *device, bool is_high)
-> > +{
-> > +     struct sifive_spi *spi = spi_master_get_devdata(device->master);
-> > +
-> > +     /* Reverse polarity is handled by SCMR/CPOL. Not inverted CS. */
-> > +     if (device->mode & SPI_CS_HIGH)
-> > +             is_high = !is_high;
->
-> spi_set_cs() will handle CS_HIGH for you.
->
-> > +     master->bits_per_word_mask = SPI_BPW_MASK(8);
->
-> I thought the device supported other bits per word values?
-
-It does, but the driver doesn't yet. When bits per word is < 8
-we need to shift the bits in each byte to be "left-aligned"
-(unless SPI_LSB_FIRST is set).
-
-> > +     /* If mmc_spi sees a dma_mask, it starts using dma mapped buffers.
-> > +      * Probably it should rely on the SPI core auto mapping instead.
-> > +      */
-> > +     pdev->dev.dma_mask = NULL;
->
-> If this is a problem please fix it in the MMC core, don't bodge it like
-> this.
-
-Gotcha. Will remove this.
-
-> > +static const struct of_device_id sifive_spi_of_match[] = {
-> > +     { .compatible = "sifive,spi0", },
-> > +     {}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, sifive_spi_of_match);
->
-> spi0 is a *weird* compatible name.
-
-Exactly. Hence the discussion about the compatible strings.
-Once this discussion comes to a conclusion I'll update this.
-
-Thank you for the review!
-/Emil
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+new file mode 100644
+index 000000000000..99606b22e5c2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+@@ -0,0 +1,35 @@
++Nuvoton NPCM Peripheral Serial Peripheral Interface(PSPI) controller driver
++
++Nuvoton NPCM7xx SOC support two PSPI channels.
++
++Required properties:
++ - compatible : "nuvoton,npcm750-pspi" for NPCM7XX BMC
++ - #address-cells : should be 1. see spi-bus.txt
++ - #size-cells : should be 0. see spi-bus.txt
++ - specifies physical base address and size of the register.
++ - interrupts : contain PSPI interrupt.
++ - clocks : phandle of PSPI reference clock.
++ - clock-names: Should be "clk_apb5".
++ - pinctrl-names : a pinctrl state named "default" must be defined.
++ - pinctrl-0 : phandle referencing pin configuration of the device.
++ - cs-gpios: Specifies the gpio pins to be used for chipselects.
++            See: Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Optional properties:
++- clock-frequency : Input clock frequency to the PSPI block in Hz.
++		    Default is 25000000 Hz.
++
++Example:
++
++spi0: spi@f0200000 {
++	compatible = "nuvoton,npcm750-pspi";
++	reg = <0xf0200000 0x1000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pspi1_pins>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&clk NPCM7XX_CLK_APB5>;
++	clock-names = "clk_apb5";
++	cs-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
++};
+-- 
+2.19.1

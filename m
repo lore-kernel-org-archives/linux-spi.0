@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH v3 1/6] spi: pxa2xx: dt-bindings: Add spi-slave property
-Date: Tue, 13 Nov 2018 11:22:23 +0100
-Message-ID: <20181113102228.820214-2-lkundrak@v3.sk>
+Subject: [PATCH v3 4/6] spi: pxa2xx: dt-bindings: Add ready GPIO signal
+Date: Tue, 13 Nov 2018 11:22:26 +0100
+Message-ID: <20181113102228.820214-5-lkundrak@v3.sk>
 References: <20181113102228.820214-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -21,32 +21,35 @@ In-Reply-To: <20181113102228.820214-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is used to indicate that the chip attached to this controller is a S=
-PI
-master.
+This this is used to let the SPI master know that our FIFO is filled and
+we're ready to service a transfer. Only useful in slave mode.
+
+A signal like this is used by an embedded controller on a OLPC XO 1.75
+machine, that happens to be a SPI master.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Acked-by: Pavel Machek <pavel@ucw.cz>
 
 ---
 Changes since v2:
+- s/ready-gpio/ready-gpios/
 - Updated the subject line to conform with subsystem customs
 
- Documentation/devicetree/bindings/spi/spi-pxa2xx.txt | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/spi/spi-pxa2xx.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Docum=
 entation/devicetree/bindings/spi/spi-pxa2xx.txt
-index 0335a9bd2e8a..89b2832283e3 100644
+index 89b2832283e3..e30e0c2a4bce 100644
 --- a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
 +++ b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
-@@ -11,6 +11,7 @@ Required properties:
- Optional properties:
+@@ -12,6 +12,8 @@ Optional properties:
  - cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
    Documentation/devicetree/bindings/spi/spi-bus.txt
-+- spi-slave: Empty property indicating the SPI controller is used in sla=
+ - spi-slave: Empty property indicating the SPI controller is used in sla=
 ve mode.
++- ready-gpios: GPIO used to signal a SPI master that the FIFO is filled
++  and we're ready to service a transfer. Only useful in slave mode.
 =20
  Child nodes represent devices on the SPI bus
    See ../spi/spi-bus.txt

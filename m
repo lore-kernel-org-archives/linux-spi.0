@@ -1,8 +1,9 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v3 5/6] spi: pxa2xx: Add ready signal
-Date: Tue, 13 Nov 2018 11:31:02 +0100
-Message-ID: <CAMuHMdV-WvoFN_JOj46fA5st2o3CrX7VK0qQ2rSo+cgFoMD5+A@mail.gmail.com>
-References: <20181113102228.820214-1-lkundrak@v3.sk> <20181113102228.820214-6-lkundrak@v3.sk>
+Subject: Re: [PATCH v3 2/6] spi: Deal with slaves that return from
+ transfer_one() unfinished
+Date: Tue, 13 Nov 2018 11:33:43 +0100
+Message-ID: <CAMuHMdU0_CnXGzWNkb4q1dm1yoVOkG=Hhr0BnS3dYdjd-7A-+Q@mail.gmail.com>
+References: <20181113102228.820214-1-lkundrak@v3.sk> <20181113102228.820214-3-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Mark Brown <broonie@kernel.org>,
@@ -20,17 +21,21 @@ Cc: Mark Brown <broonie@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181113102228.820214-6-lkundrak@v3.sk>
+In-Reply-To: <20181113102228.820214-3-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tue, Nov 13, 2018 at 11:23 AM Lubomir Rintel <lkundrak@v3.sk> wrote:
-> Strobe a GPIO line when the slave TX FIFO is filled. This is how the
-> Embedded Controller on an OLPC XO-1.75 machine, that happens to be a SPI
-> master, learns that it can initiate a transaction.
+> Some drivers, such as spi-pxa2xx return from the transfer_one callback
+> immediately, idicating that the transfer will be finished asynchronously.
+>
+> Normally, spi_transfer_one_message() synchronously waits for the
+> transfer to finish with wait_for_completion_timeout(). For slaves, we
+> don't want the transaction to time out as it can complete in a long time
+> in future. Use wait_for_completion_interruptible() instead.
 >
 > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> Tested-by: Pavel Machek <pavel@ucw.cz>
+> Acked-by: Pavel Machek <pavel@ucw.cz>
 
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 

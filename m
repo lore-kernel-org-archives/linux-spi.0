@@ -1,145 +1,162 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH] spi: add driver for the SiFive SPI controller
-Date: Tue, 13 Nov 2018 10:35:27 -0800
-Message-ID: <20181113183527.GG2089@sirena.org.uk>
-References: <20181112142736.15009-1-kernel@esmil.dk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="df+09Je9rNq3P+GE"
-Cc: linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+Subject: Applied "spi: Deal with slaves that return from transfer_one() unfinished" to the spi tree
+Date: Tue, 13 Nov 2018 18:35:48 +0000 (GMT)
+Message-ID: <20181113183548.ECDDF440079@finisterre.ee.mobilebroadband>
+References: <20181113102228.820214-3-lkundrak@v3.sk>
+Cc: Pavel Machek <pavel@ucw.cz>, Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        James Cameron <quozl@laptop.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Emil Renner Berthing <kernel@esmil.dk>
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org
+To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181112142736.15009-1-kernel@esmil.dk>
+In-Reply-To: <20181113102228.820214-3-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---df+09Je9rNq3P+GE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Deal with slaves that return from transfer_one() unfinished
 
-On Mon, Nov 12, 2018 at 03:27:36PM +0100, Emil Renner Berthing wrote:
+has been applied to the spi tree at
 
-> I know the discussions about the sifive devicetree compatible
-> strings haven't come to a conclusion, so I'm sending this as
-> an RFC to get some feedback on the rest of the code.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-I've not seen any of these discussions or earlier versions of this
-driver so I've no idea what's going on here :(
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> +Optional properties:
-> +- sifive,fifo-depth		: Depth of hardware queues; defaults to 8
-> +- sifive,max-bits-per-word	: Maximum bits per word; defaults to 8
-> +
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-If the hardware isn't fixed yet making these enumerable from the
-hardware would be good...
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> @@ -0,0 +1,442 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * SiFive SPI controller driver (master mode only)
-> + *
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Please make the entire comment a C++ one to make this look more
-intentinal.
+Thanks,
+Mark
 
-> +/* for consistency we need this symbol */
-> +#ifdef REG_FMT
-> +#undef REG_FMT
-> +#endif
+>From 810923f3bf06c11022b7bb370dd3130a956a222e Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Tue, 13 Nov 2018 11:22:24 +0100
+Subject: [PATCH] spi: Deal with slaves that return from transfer_one()
+ unfinished
 
-We do?  For consistency with what?
+Some drivers, such as spi-pxa2xx return from the transfer_one callback
+immediately, idicating that the transfer will be finished asynchronously.
 
-> +static void sifive_spi_init(struct sifive_spi *spi)
-> +{
+Normally, spi_transfer_one_message() synchronously waits for the
+transfer to finish with wait_for_completion_timeout(). For slaves, we
+don't want the transaction to time out as it can complete in a long time
+in future. Use wait_for_completion_interruptible() instead.
 
-> +	/* Set CS/SCK Delays and Inactive Time to defaults */
-> +
-> +	/* Exit specialized memory-mapped SPI flash mode */
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 62 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 39 insertions(+), 23 deletions(-)
 
-...or not?
-
-> +	/* Set frame format */
-> +	cr = FMT_LEN(t->bits_per_word);
-> +	switch (mode) {
-> +	case SPI_NBITS_QUAD:
-> +		cr |= FMT_PROTO_QUAD;
-> +		break;
-
-Some namespacing on the driver #defines would be a bit safer against the
-possibility of collision with future changes in headers.
-
-> +static void sifive_spi_wait(struct sifive_spi *spi, u32 bit, int poll)
-> +{
-> +	if (poll) {
-> +		u32 cr;
-> +		do cr = sifive_spi_read(spi, REG_IP);
-> +		while (!(cr & bit));
-
-Please add some braces, indentation or something to make it more clear
-that the read is part of a do/while loop - right now it's not
-immediately obvious that this is correct.
-
-> +static int sifive_spi_transfer_one(struct spi_master *master,
-> +		struct spi_device *device, struct spi_transfer *t)
-> +{
-> +	struct sifive_spi *spi = spi_master_get_devdata(master);
-> +	int poll = sifive_spi_prep_transfer(spi, device, t);
-> +
-> +	sifive_spi_execute(spi, t, poll);
-> +
-
-Why not just inline the execute function here?  It's the only caller
-AFAICT.
-
-> +static void sifive_spi_set_cs(struct spi_device *device, bool is_high)
-> +{
-> +	struct sifive_spi *spi = spi_master_get_devdata(device->master);
-> +
-> +	/* Reverse polarity is handled by SCMR/CPOL. Not inverted CS. */
-> +	if (device->mode & SPI_CS_HIGH)
-> +		is_high = !is_high;
-
-spi_set_cs() will handle CS_HIGH for you.
-
-> +	master->bits_per_word_mask = SPI_BPW_MASK(8);
-
-I thought the device supported other bits per word values?
-
-> +	/* If mmc_spi sees a dma_mask, it starts using dma mapped buffers.
-> +	 * Probably it should rely on the SPI core auto mapping instead.
-> +	 */
-> +	pdev->dev.dma_mask = NULL;
-
-If this is a problem please fix it in the MMC core, don't bodge it like
-this.
-
-> +static const struct of_device_id sifive_spi_of_match[] = {
-> +	{ .compatible = "sifive,spi0", },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, sifive_spi_of_match);
-
-spi0 is a *weird* compatible name.
-
---df+09Je9rNq3P+GE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvrGW4ACgkQJNaLcl1U
-h9Afuwf/Y1cjBT6JU+ydckCZJW0OKyMIVU51jBKHs7/iW9J/d/All96iTXJxDSik
-NwWuGbuQ9J0npiReDRWdPFv86Cx+vaDJP7W4Sh5n0t65wgIsYe2/GF47guIRTaaz
-6Z1s0inTYuu50N35m8rIfstMtkPVb42BRpEYnSZV1t1eGBEl8K/tDoxgxDv6ecHv
-ohTAo3k/4Ol4XFYfcIN4rYqL83e+dg1AMfNfdPqxPSWDuKbLh5/23jrhdqmaJIsf
-gEtyDHuRoEmC2Jud3Upt7iGtbA3Ezfa11yZ+wlAG6nBnB53FjusLylyrlDlsp0om
-qX/8rsCTyN0pMK1cCu1sDzOsVfn+SA==
-=fZ/2
------END PGP SIGNATURE-----
-
---df+09Je9rNq3P+GE--
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6ca59406b0b7..498d3b9bf3ae 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1037,6 +1037,42 @@ static int spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	return __spi_map_msg(ctlr, msg);
+ }
+ 
++static int spi_transfer_wait(struct spi_controller *ctlr,
++			     struct spi_message *msg,
++			     struct spi_transfer *xfer)
++{
++	struct spi_statistics *statm = &ctlr->statistics;
++	struct spi_statistics *stats = &msg->spi->statistics;
++	unsigned long long ms = 1;
++
++	if (spi_controller_is_slave(ctlr)) {
++		if (wait_for_completion_interruptible(&ctlr->xfer_completion)) {
++			dev_dbg(&msg->spi->dev, "SPI transfer interrupted\n");
++			return -EINTR;
++		}
++	} else {
++		ms = 8LL * 1000LL * xfer->len;
++		do_div(ms, xfer->speed_hz);
++		ms += ms + 200; /* some tolerance */
++
++		if (ms > UINT_MAX)
++			ms = UINT_MAX;
++
++		ms = wait_for_completion_timeout(&ctlr->xfer_completion,
++						 msecs_to_jiffies(ms));
++
++		if (ms == 0) {
++			SPI_STATISTICS_INCREMENT_FIELD(statm, timedout);
++			SPI_STATISTICS_INCREMENT_FIELD(stats, timedout);
++			dev_err(&msg->spi->dev,
++				"SPI transfer timed out\n");
++			return -ETIMEDOUT;
++		}
++	}
++
++	return 0;
++}
++
+ /*
+  * spi_transfer_one_message - Default implementation of transfer_one_message()
+  *
+@@ -1050,7 +1086,6 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_transfer *xfer;
+ 	bool keep_cs = false;
+ 	int ret = 0;
+-	unsigned long long ms = 1;
+ 	struct spi_statistics *statm = &ctlr->statistics;
+ 	struct spi_statistics *stats = &msg->spi->statistics;
+ 
+@@ -1079,28 +1114,9 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 				goto out;
+ 			}
+ 
+-			if (ret > 0) {
+-				ret = 0;
+-				ms = 8LL * 1000LL * xfer->len;
+-				do_div(ms, xfer->speed_hz);
+-				ms += ms + 200; /* some tolerance */
+-
+-				if (ms > UINT_MAX)
+-					ms = UINT_MAX;
+-
+-				ms = wait_for_completion_timeout(&ctlr->xfer_completion,
+-								 msecs_to_jiffies(ms));
+-			}
+-
+-			if (ms == 0) {
+-				SPI_STATISTICS_INCREMENT_FIELD(statm,
+-							       timedout);
+-				SPI_STATISTICS_INCREMENT_FIELD(stats,
+-							       timedout);
+-				dev_err(&msg->spi->dev,
+-					"SPI transfer timed out\n");
+-				msg->status = -ETIMEDOUT;
+-			}
++			ret = spi_transfer_wait(ctlr, msg, xfer);
++			if (ret < 0)
++				msg->status = ret;
+ 		} else {
+ 			if (xfer->len)
+ 				dev_err(&msg->spi->dev,
+-- 
+2.19.1

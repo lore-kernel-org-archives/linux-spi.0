@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH v3 2/6] spi: Deal with slaves that return from transfer_one() unfinished
-Date: Tue, 13 Nov 2018 11:22:24 +0100
-Message-ID: <20181113102228.820214-3-lkundrak@v3.sk>
+Subject: [PATCH v3 3/6] spi: pxa2xx: Add slave mode support
+Date: Tue, 13 Nov 2018 11:22:25 +0100
+Message-ID: <20181113102228.820214-4-lkundrak@v3.sk>
 References: <20181113102228.820214-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -21,115 +21,193 @@ In-Reply-To: <20181113102228.820214-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some drivers, such as spi-pxa2xx return from the transfer_one callback
-immediately, idicating that the transfer will be finished asynchronously.
-
-Normally, spi_transfer_one_message() synchronously waits for the
-transfer to finish with wait_for_completion_timeout(). For slaves, we
-don't want the transaction to time out as it can complete in a long time
-in future. Use wait_for_completion_interruptible() instead.
+Tested on an OLPC XO-1.75 machine, where the Embedded Controller happens
+to be a SPI master.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 Acked-by: Pavel Machek <pavel@ucw.cz>
-
 ---
-Changed since v2:
-- Corrected the spi_transfer_wait() return value handling to avoid early
-  bail out without the necessary cleanup (thanks Geert Uytterhoeven)
+ drivers/spi/spi-pxa2xx.c       | 81 +++++++++++++++++++++++++++++++---
+ include/linux/spi/pxa2xx_spi.h |  1 +
+ 2 files changed, 75 insertions(+), 7 deletions(-)
 
- drivers/spi/spi.c | 62 +++++++++++++++++++++++++++++------------------
- 1 file changed, 39 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6ca59406b0b7..498d3b9bf3ae 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1037,6 +1037,42 @@ static int spi_map_msg(struct spi_controller *ctlr=
-, struct spi_message *msg)
- 	return __spi_map_msg(ctlr, msg);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 612cc49db28f..54ae77f1227c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -626,6 +626,11 @@ static irqreturn_t interrupt_transfer(struct driver_=
+data *drv_data)
+ 		return IRQ_HANDLED;
+ 	}
+=20
++	if (irq_status & SSSR_TUR) {
++		int_error_stop(drv_data, "interrupt_transfer: fifo underrun");
++		return IRQ_HANDLED;
++	}
++
+ 	if (irq_status & SSSR_TINT) {
+ 		pxa2xx_spi_write(drv_data, SSSR, SSSR_TINT);
+ 		if (drv_data->read(drv_data)) {
+@@ -1073,6 +1078,11 @@ static int pxa2xx_spi_transfer_one(struct spi_cont=
+roller *master,
+ 			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
+ 	}
+=20
++	if (spi_controller_is_slave(master)) {
++		while (drv_data->write(drv_data))
++			;
++	}
++
+ 	/*
+ 	 * Release the data by enabling service requests and interrupts,
+ 	 * without changing any mode bits
+@@ -1082,6 +1092,27 @@ static int pxa2xx_spi_transfer_one(struct spi_cont=
+roller *master,
+ 	return 1;
  }
 =20
-+static int spi_transfer_wait(struct spi_controller *ctlr,
-+			     struct spi_message *msg,
-+			     struct spi_transfer *xfer)
++static int pxa2xx_spi_slave_abort(struct spi_master *master)
 +{
-+	struct spi_statistics *statm =3D &ctlr->statistics;
-+	struct spi_statistics *stats =3D &msg->spi->statistics;
-+	unsigned long long ms =3D 1;
++	struct driver_data *drv_data =3D spi_controller_get_devdata(master);
 +
-+	if (spi_controller_is_slave(ctlr)) {
-+		if (wait_for_completion_interruptible(&ctlr->xfer_completion)) {
-+			dev_dbg(&msg->spi->dev, "SPI transfer interrupted\n");
-+			return -EINTR;
-+		}
-+	} else {
-+		ms =3D 8LL * 1000LL * xfer->len;
-+		do_div(ms, xfer->speed_hz);
-+		ms +=3D ms + 200; /* some tolerance */
++	/* Stop and reset SSP */
++	write_SSSR_CS(drv_data, drv_data->clear_sr);
++	reset_sccr1(drv_data);
++	if (!pxa25x_ssp_comp(drv_data))
++		pxa2xx_spi_write(drv_data, SSTO, 0);
++	pxa2xx_spi_flush(drv_data);
++	pxa2xx_spi_write(drv_data, SSCR0,
++			 pxa2xx_spi_read(drv_data, SSCR0) & ~SSCR0_SSE);
 +
-+		if (ms > UINT_MAX)
-+			ms =3D UINT_MAX;
++	dev_dbg(&drv_data->pdev->dev, "transfer aborted\n");
 +
-+		ms =3D wait_for_completion_timeout(&ctlr->xfer_completion,
-+						 msecs_to_jiffies(ms));
-+
-+		if (ms =3D=3D 0) {
-+			SPI_STATISTICS_INCREMENT_FIELD(statm, timedout);
-+			SPI_STATISTICS_INCREMENT_FIELD(stats, timedout);
-+			dev_err(&msg->spi->dev,
-+				"SPI transfer timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
++	drv_data->master->cur_msg->status =3D -EINTR;
++	spi_finalize_current_transfer(drv_data->master);
 +
 +	return 0;
 +}
 +
- /*
-  * spi_transfer_one_message - Default implementation of transfer_one_mes=
-sage()
-  *
-@@ -1050,7 +1086,6 @@ static int spi_transfer_one_message(struct spi_cont=
-roller *ctlr,
- 	struct spi_transfer *xfer;
- 	bool keep_cs =3D false;
- 	int ret =3D 0;
--	unsigned long long ms =3D 1;
- 	struct spi_statistics *statm =3D &ctlr->statistics;
- 	struct spi_statistics *stats =3D &msg->spi->statistics;
+ static void pxa2xx_spi_handle_err(struct spi_controller *master,
+ 				 struct spi_message *msg)
+ {
+@@ -1209,9 +1240,14 @@ static int setup(struct spi_device *spi)
+ 		rx_thres =3D config->rx_threshold;
+ 		break;
+ 	default:
+-		tx_thres =3D TX_THRESH_DFLT;
+ 		tx_hi_thres =3D 0;
+-		rx_thres =3D RX_THRESH_DFLT;
++		if (spi_controller_is_slave(drv_data->master)) {
++			tx_thres =3D 1;
++			rx_thres =3D 2;
++		} else {
++			tx_thres =3D TX_THRESH_DFLT;
++			rx_thres =3D RX_THRESH_DFLT;
++		}
+ 		break;
+ 	}
 =20
-@@ -1079,28 +1114,9 @@ static int spi_transfer_one_message(struct spi_con=
-troller *ctlr,
- 				goto out;
- 			}
+@@ -1255,6 +1291,12 @@ static int setup(struct spi_device *spi)
+ 		if (chip_info->enable_loopback)
+ 			chip->cr1 =3D SSCR1_LBM;
+ 	}
++	if (spi_controller_is_slave(drv_data->master)) {
++		chip->cr1 |=3D SSCR1_SCFR;
++		chip->cr1 |=3D SSCR1_SCLKDIR;
++		chip->cr1 |=3D SSCR1_SFRMDIR;
++		chip->cr1 |=3D SSCR1_SPH;
++	}
 =20
--			if (ret > 0) {
--				ret =3D 0;
--				ms =3D 8LL * 1000LL * xfer->len;
--				do_div(ms, xfer->speed_hz);
--				ms +=3D ms + 200; /* some tolerance */
--
--				if (ms > UINT_MAX)
--					ms =3D UINT_MAX;
--
--				ms =3D wait_for_completion_timeout(&ctlr->xfer_completion,
--								 msecs_to_jiffies(ms));
--			}
--
--			if (ms =3D=3D 0) {
--				SPI_STATISTICS_INCREMENT_FIELD(statm,
--							       timedout);
--				SPI_STATISTICS_INCREMENT_FIELD(stats,
--							       timedout);
--				dev_err(&msg->spi->dev,
--					"SPI transfer timed out\n");
--				msg->status =3D -ETIMEDOUT;
--			}
-+			ret =3D spi_transfer_wait(ctlr, msg, xfer);
-+			if (ret < 0)
-+				msg->status =3D ret;
- 		} else {
- 			if (xfer->len)
- 				dev_err(&msg->spi->dev,
+ 	chip->lpss_rx_threshold =3D SSIRF_RxThresh(rx_thres);
+ 	chip->lpss_tx_threshold =3D SSITF_TxLoThresh(tx_thres)
+@@ -1494,6 +1536,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev=
+)
+ 	}
+ #endif
+=20
++#if CONFIG_OF
++	if (of_id) {
++		pdata->is_slave =3D of_property_read_bool(pdev->dev.of_node,
++								"spi-slave");
++	}
++#endif
++
+ 	ssp->clk =3D devm_clk_get(&pdev->dev, NULL);
+ 	ssp->irq =3D platform_get_irq(pdev, 0);
+ 	ssp->type =3D type;
+@@ -1559,7 +1608,11 @@ static int pxa2xx_spi_probe(struct platform_device=
+ *pdev)
+ 		return -ENODEV;
+ 	}
+=20
+-	master =3D spi_alloc_master(dev, sizeof(struct driver_data));
++	if (platform_info->is_slave)
++		master =3D spi_alloc_slave(dev, sizeof(struct driver_data));
++	else
++		master =3D spi_alloc_master(dev, sizeof(struct driver_data));
++
+ 	if (!master) {
+ 		dev_err(&pdev->dev, "cannot alloc spi_master\n");
+ 		pxa_ssp_free(ssp);
+@@ -1581,6 +1634,7 @@ static int pxa2xx_spi_probe(struct platform_device =
+*pdev)
+ 	master->setup =3D setup;
+ 	master->set_cs =3D pxa2xx_spi_set_cs;
+ 	master->transfer_one =3D pxa2xx_spi_transfer_one;
++	master->slave_abort =3D pxa2xx_spi_slave_abort;
+ 	master->handle_err =3D pxa2xx_spi_handle_err;
+ 	master->unprepare_transfer_hardware =3D pxa2xx_spi_unprepare_transfer;
+ 	master->fw_translate_cs =3D pxa2xx_spi_fw_translate_cs;
+@@ -1610,7 +1664,8 @@ static int pxa2xx_spi_probe(struct platform_device =
+*pdev)
+ 		drv_data->int_cr1 =3D SSCR1_TIE | SSCR1_RIE | SSCR1_TINTE;
+ 		drv_data->dma_cr1 =3D DEFAULT_DMA_CR1;
+ 		drv_data->clear_sr =3D SSSR_ROR | SSSR_TINT;
+-		drv_data->mask_sr =3D SSSR_TINT | SSSR_RFS | SSSR_TFS | SSSR_ROR;
++		drv_data->mask_sr =3D SSSR_TINT | SSSR_RFS | SSSR_TFS
++						| SSSR_ROR | SSSR_TUR;
+ 	}
+=20
+ 	status =3D request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
+@@ -1658,10 +1713,22 @@ static int pxa2xx_spi_probe(struct platform_devic=
+e *pdev)
+ 		pxa2xx_spi_write(drv_data, SSCR0, tmp);
+ 		break;
+ 	default:
+-		tmp =3D SSCR1_RxTresh(RX_THRESH_DFLT) |
+-		      SSCR1_TxTresh(TX_THRESH_DFLT);
++
++		if (spi_controller_is_slave(master)) {
++			tmp =3D SSCR1_SCFR |
++			      SSCR1_SCLKDIR |
++			      SSCR1_SFRMDIR |
++			      SSCR1_RxTresh(2) |
++			      SSCR1_TxTresh(1) |
++			      SSCR1_SPH;
++		} else {
++			tmp =3D SSCR1_RxTresh(RX_THRESH_DFLT) |
++			      SSCR1_TxTresh(TX_THRESH_DFLT);
++		}
+ 		pxa2xx_spi_write(drv_data, SSCR1, tmp);
+-		tmp =3D SSCR0_SCR(2) | SSCR0_Motorola | SSCR0_DataSize(8);
++		tmp =3D SSCR0_Motorola | SSCR0_DataSize(8);
++		if (!spi_controller_is_slave(master))
++			tmp |=3D SSCR0_SCR(2);
+ 		pxa2xx_spi_write(drv_data, SSCR0, tmp);
+ 		break;
+ 	}
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_sp=
+i.h
+index 9ec4c147abbc..b0674e330ef6 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -25,6 +25,7 @@ struct dma_chan;
+ struct pxa2xx_spi_master {
+ 	u16 num_chipselect;
+ 	u8 enable_dma;
++	bool is_slave;
+=20
+ 	/* DMA engine specific config */
+ 	bool (*dma_filter)(struct dma_chan *chan, void *param);
 --=20
 2.19.1

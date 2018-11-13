@@ -1,57 +1,82 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v4 01/10] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Tue, 13 Nov 2018 13:56:53 +0000
-Message-ID: <134abbb1-57fb-0450-3087-8d28609c36b3@kontron.de>
-References: <1541601809-16950-1-git-send-email-frieder.schrempf@kontron.de>
- <1541601809-16950-2-git-send-email-frieder.schrempf@kontron.de>
- <VI1PR04MB57269B88E1A064F6429D410999C20@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Re: [PATCH 04/15] Platform: OLPC: Remove an unused include
+Date: Tue, 13 Nov 2018 14:59:18 +0100
+Message-ID: <5a4c548be4cf9fb3fb6ce5128d6780eea3005215.camel@v3.sk>
+References: <20181010172300.317643-1-lkundrak@v3.sk>
+         <20181010172300.317643-5-lkundrak@v3.sk>
+         <CAHp75Veb++-F3yd9r5h305UQFvBFosRQvmPDfTTMFak9ZNVc7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        "Han Xu" <han.xu@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "Frieder Schrempf" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.or
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB57269B88E1A064F6429D410999C20@VI1PR04MB5726.eurprd04.prod.outlook.com>
-Content-Language: en-US
-Content-ID: <907125CF1118794283A47AA55D5C04EE@snt-world.com>
+In-Reply-To: <CAHp75Veb++-F3yd9r5h305UQFvBFosRQvmPDfTTMFak9ZNVc7g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgWW9nZXNoLA0KDQpPbiAxMy4xMS4xOCAwOToyMiwgWW9nZXNoIE5hcmF5YW4gR2F1ciB3cm90
-ZToNClsuLi5dDQo+PiArDQo+PiArc3RhdGljIHZvaWQgZnNsX3FzcGlfcmVhZF9haGIoc3RydWN0
-IGZzbF9xc3BpICpxLCBjb25zdCBzdHJ1Y3QNCj4+ICtzcGlfbWVtX29wICpvcCkgew0KPj4gKwkv
-Kg0KPj4gKwkgKiBXZSB3YW50IHRvIGF2b2lkIG5lZWRpbmcgdG8gaW52YWxpZGF0ZSB0aGUgY2Fj
-aGUgYnkgaXNzdWVpbmcNCj4+ICsJICogYSByZXNldCB0byB0aGUgQUhCIGFuZCBTZXJpYWwgRmxh
-c2ggZG9tYWluLCBhcyB0aGlzIG5lZWRzDQo+PiArCSAqIHRpbWUuIFNvIHdlIGNoYW5nZSB0aGUg
-YWRkcmVzcyBvbiBlYWNoIHJlYWQgdG8gdHJpZ2dlciBhbg0KPj4gKwkgKiBhY3R1YWwgcmVhZCBv
-cGVyYXRpb24gb24gdGhlIGZsYXNoLiBUaGUgYWN0dWFsIGFkZHJlc3MgZm9yDQo+PiArCSAqIHRo
-ZSBmbGFzaCBtZW1vcnkgaXMgc2V0IGJ5IHByb2dyYW1taW5nIHRoZSBMVVQuDQo+PiArCSAqLw0K
-PiBBcyBkaXNjdXNzZWQgcHJldmlvdXNseSwgcGxlYXNlIGdvIGF3YXkgd2l0aCB0aGlzIGhhY2sg
-YW5kIHVzZSBBSEIgYnVzIGludmFsaWRhdGlvbiBtZXRob2Qgd2l0aCBzbWFsbGVyIHRpbWVvdXQg
-dmFsdWUuDQo+IA0KPiBJIHdvdWxkIHN0YXJ0IGRvaW5nIHZhbGlkYXRpb24gb2YgdGhpcyBwYXRj
-aCBzZXJpZXMgZnJvbSBuZXh0IHZlcnNpb24gb253YXJkLiBBcyB5b3UgaGF2ZSBtZW50aW9uZWQg
-aW4gb3RoZXIgbWFpbCBkaXNjdXNzaW9uIGFib3V0IGlzc3VlIGluIHRoZSBicmVhayBjb25kaXRp
-b24gZm9yIGZ1bmN0aW9uICBmc2xfcXNwaV9yZWFkbF9wb2xsX3RvdXQoKS4NCg0KVGhhbmsgeW91
-IGZvciB5b3VyIGNvbW1lbnRzLiBJIGp1c3Qgc2VudCB2NSB3aXRoIHNvbWUgZml4ZXMsIGluY2x1
-ZGluZyANCmZpeGVkIGZzbF9xc3BpX3JlYWRsX3BvbGxfdG91dCgpLg0KDQpJIGFsc28gcmVtb3Zl
-ZCB0aGUgaGFjayBhYm92ZSBhbmQgSSdtIHByb3Blcmx5IHJlc2V0dGluZyB0aGUgQUhCIGRvbWFp
-biANCm5vdy4gSSdtIHVzaW5nIGEgMXVzIGRlbGF5IGp1c3QgbGlrZSBpbiB0aGUgb2xkIGRyaXZl
-ci4gSW4gbXkgdGVzdHMgdGhlIA0KcGVyZm9ybWFuY2UgaW1wYWN0IHdhcyB2ZXJ5IHNtYWxsICh+
-MiUpIGFuZCBpdCBkaWRuJ3QgZ2V0IGJldHRlciB3aGVuIA0KdXNpbmcgbmRlbGF5Lg0KDQpUaGFu
-a3MsDQpGcmllZGVy
+Hi,
+
+thank you for the response.
+
+On Fri, 2018-10-19 at 16:05 +0300, Andy Shevchenko wrote:
+> On Wed, Oct 10, 2018 at 8:23 PM Lubomir Rintel <lkundrak@v3.sk>
+> wrote:
+> > Also, the header is x86 specific, while there are non-x86 OLPC
+> > machines.
+> 
+> Same concern. as per patch 2.
+
+Which concern? If it's that it doesn't make sense in that particular
+place in the patch set, then I don't think so; this header is
+unnecessary and the patch has no other dependencies. But the changes
+that enable the OLPC EC platform code depend on this.
+
+> Also, you might want to sort headers in alphabetical order.
+
+But should I? Doing so in the same commit would obscure the actual
+change, and a separate commit would needlessly clobber git annotate.
+
+Thank you
+Lubo
+
+> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> > ---
+> >  drivers/platform/olpc/olpc-ec.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/drivers/platform/olpc/olpc-ec.c
+> > b/drivers/platform/olpc/olpc-ec.c
+> > index f99b183d5296..35a21c66cd0d 100644
+> > --- a/drivers/platform/olpc/olpc-ec.c
+> > +++ b/drivers/platform/olpc/olpc-ec.c
+> > @@ -15,7 +15,6 @@
+> >  #include <linux/module.h>
+> >  #include <linux/list.h>
+> >  #include <linux/olpc-ec.h>
+> > -#include <asm/olpc.h>
+> > 
+> >  struct ec_cmd_desc {
+> >         u8 cmd;
+> > --
+> > 2.19.0
+> > 
+> 
+> 

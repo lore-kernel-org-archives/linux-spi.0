@@ -1,128 +1,152 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: [PATCHv3] ARM: dspi: Provide support for DSPI slave mode operation (Vybryd vf610)
-Date: Tue, 13 Nov 2018 13:06:31 +0100
-Message-ID: <20181113120631.13514-1-lukma@denx.de>
-References: <20180927150709.17010-1-lukma@denx.de>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Esben Haabendal <eha@deif.com>,
-        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Lukasz Majewski <lukma@denx.de>
-To: Mark Brown <broonie@kernel.org>
+From: Schrempf Frieder <frieder.schrempf@kontron.De>
+Subject: [PATCH v5 1/9] ARM: dts: Reflect change of FSL QSPI driver and remove
+ unused properties
+Date: Tue, 13 Nov 2018 13:47:16 +0000
+Message-ID: <1542116782-13118-2-git-send-email-frieder.schrempf@kontron.de>
+References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
+        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
+        "han.xu@nxp.com" <han.xu@nxp.com>,
+        Schrempf Frieder <frieder.schrempf@kontron.De>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Mark Rutland" <mark.rutland@arm.com>, Li Yang <leoyang.li@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20180927150709.17010-1-lukma@denx.de>
+In-Reply-To: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The NXP's Vybryd vf610 can work as a SPI slave device (the CS and clock
-signals are provided by master).
+The FSL QSPI driver will be moved to the SPI framework and it then
+acts as a SPI controller. Therefore the subnodes need to set
+spi-[rx/tx]-bus-width = <4>, so quad mode is used just as before.
 
-It is possible to specify a single device to work in that mode. As we do
-use DMA for transferring data, the RX channel must be prepared for
-incoming data.
-Moreover, in slave mode we just set a subset of control fields in
-configuration registers (CTAR0, PUSHR).
+Also the properties 'bus-num', 'fsl,spi-num-chipselects' and
+'fsl,spi-flash-chipselects' were never read by the driver and
+can be removed.
 
-For testing the spidev_test program has been used.
-Test script for this patch can be found here:
-https://github.com/lmajewski/tests-spi/blob/master/tests/spi/spi_tests.sh
+The 'reg' properties are adjusted to reflect what bus and
+chipselect the flash is connected to, as the new driver needs
+this information.
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
+The property 'fsl,qspi-has-second-chip' is not needed anymore
+and will be removed after the old driver was disabled to avoid
+breaking ls1021a-moxa-uc-8410a.dts.
+
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
-Changes for v3:
+ arch/arm/boot/dts/imx6sx-sdb-reva.dts       | 8 ++++++--
+ arch/arm/boot/dts/imx6sx-sdb.dts            | 8 ++++++--
+ arch/arm/boot/dts/imx6ul-14x14-evk.dtsi     | 2 ++
+ arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts | 5 ++---
+ 4 files changed, 16 insertions(+), 7 deletions(-)
 
-- Rebase to v4.20-rc2 (no code changes needed)
-
-Changes for v2:
-
-- Remove patch which adds extra NXP specific DTS property to support slave
-mode and reuse the generic one (spi-slave)
-- Remove patch which brings back the mcr_register local copy. It is not
-needed as generic SPI slave infrastructure is used.
-- Rewrite the code to use spi_controller_is_slave() helper functions
----
- drivers/spi/spi-fsl-dspi.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3082e72e4f6c..94b6a9690062 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -233,6 +233,9 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
- {
- 	u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
+diff --git a/arch/arm/boot/dts/imx6sx-sdb-reva.dts b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
+index 9cc6ff2..9997156 100644
+--- a/arch/arm/boot/dts/imx6sx-sdb-reva.dts
++++ b/arch/arm/boot/dts/imx6sx-sdb-reva.dts
+@@ -132,13 +132,17 @@
+ 		#size-cells = <1>;
+ 		compatible = "spansion,s25fl128s", "jedec,spi-nor";
+ 		spi-max-frequency = <66000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 	};
  
-+	if (spi_controller_is_slave(dspi->master))
-+		return data;
-+
- 	if (dspi->len > 0)
- 		cmd |= SPI_PUSHR_CMD_CONT;
- 	return cmd << 16 | data;
-@@ -329,6 +332,11 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
- 	dma_async_issue_pending(dma->chan_rx);
- 	dma_async_issue_pending(dma->chan_tx);
+-	flash1: s25fl128s@1 {
+-		reg = <1>;
++	flash1: s25fl128s@2 {
++		reg = <2>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "spansion,s25fl128s", "jedec,spi-nor";
+ 		spi-max-frequency = <66000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/imx6sx-sdb.dts b/arch/arm/boot/dts/imx6sx-sdb.dts
+index 6dd9beb..9acfda8 100644
+--- a/arch/arm/boot/dts/imx6sx-sdb.dts
++++ b/arch/arm/boot/dts/imx6sx-sdb.dts
+@@ -117,15 +117,19 @@
+ 		#size-cells = <1>;
+ 		compatible = "micron,n25q256a", "jedec,spi-nor";
+ 		spi-max-frequency = <29000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 		reg = <0>;
+ 	};
  
-+	if (spi_controller_is_slave(dspi->master)) {
-+		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
-+		return 0;
-+	}
-+
- 	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
- 					DMA_COMPLETION_TIMEOUT);
- 	if (time_left == 0) {
-@@ -798,14 +806,18 @@ static int dspi_setup(struct spi_device *spi)
- 	ns_delay_scale(&pasc, &asc, sck_cs_delay, clkrate);
+-	flash1: n25q256a@1 {
++	flash1: n25q256a@2 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "micron,n25q256a", "jedec,spi-nor";
+ 		spi-max-frequency = <29000000>;
+-		reg = <1>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
++		reg = <2>;
+ 	};
+ };
  
- 	chip->ctar_val = SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
--		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
--		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
--		| SPI_CTAR_PCSSCK(pcssck)
--		| SPI_CTAR_CSSCK(cssck)
--		| SPI_CTAR_PASC(pasc)
--		| SPI_CTAR_ASC(asc)
--		| SPI_CTAR_PBR(pbr)
--		| SPI_CTAR_BR(br);
-+		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0);
-+
-+	if (!spi_controller_is_slave(dspi->master)) {
-+		chip->ctar_val |= SPI_CTAR_LSBFE(spi->mode &
-+						 SPI_LSB_FIRST ? 1 : 0)
-+			| SPI_CTAR_PCSSCK(pcssck)
-+			| SPI_CTAR_CSSCK(cssck)
-+			| SPI_CTAR_PASC(pasc)
-+			| SPI_CTAR_ASC(asc)
-+			| SPI_CTAR_PBR(pbr)
-+			| SPI_CTAR_BR(br);
-+	}
+diff --git a/arch/arm/boot/dts/imx6ul-14x14-evk.dtsi b/arch/arm/boot/dts/imx6ul-14x14-evk.dtsi
+index 32a0723..c2c9a2a 100644
+--- a/arch/arm/boot/dts/imx6ul-14x14-evk.dtsi
++++ b/arch/arm/boot/dts/imx6ul-14x14-evk.dtsi
+@@ -176,6 +176,8 @@
+ 		#size-cells = <1>;
+ 		compatible = "micron,n25q256a";
+ 		spi-max-frequency = <29000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 		reg = <0>;
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
+index d01f64b..6a83f30 100644
+--- a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
++++ b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
+@@ -203,9 +203,6 @@
+ };
  
- 	spi_set_ctldata(spi, chip);
+ &qspi {
+-	bus-num = <0>;
+-	fsl,spi-num-chipselects = <2>;
+-	fsl,spi-flash-chipselects = <0>;
+ 	fsl,qspi-has-second-chip;
+ 	status = "okay";
  
-@@ -970,8 +982,13 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+@@ -214,6 +211,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		spi-max-frequency = <20000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 		reg = <0>;
  
- static void dspi_init(struct fsl_dspi *dspi)
- {
--	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS |
--		     (dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0));
-+	unsigned int mcr = SPI_MCR_PCSIS |
-+		(dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0);
-+
-+	if (!spi_controller_is_slave(dspi->master))
-+		mcr |= SPI_MCR_MASTER;
-+
-+	regmap_write(dspi->regmap, SPI_MCR, mcr);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
- 	if (dspi->devtype_data->xspi_mode)
- 		regmap_write(dspi->regmap, SPI_CTARE(0),
-@@ -1027,6 +1044,9 @@ static int dspi_probe(struct platform_device *pdev)
- 		}
- 		master->bus_num = bus_num;
- 
-+		if (of_property_read_bool(np, "spi-slave"))
-+			master->slave = true;
-+
- 		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
- 		if (!dspi->devtype_data) {
- 			dev_err(&pdev->dev, "can't get devtype_data\n");
+ 		partitions@0 {
 -- 
-2.11.0
+2.7.4

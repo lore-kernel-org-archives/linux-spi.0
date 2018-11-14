@@ -1,87 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH] spi: add driver for the SiFive SPI controller
-Date: Tue, 13 Nov 2018 14:38:22 -0800
-Message-ID: <20181113223822.GN2089@sirena.org.uk>
-References: <20181112142736.15009-1-kernel@esmil.dk>
- <20181113183527.GG2089@sirena.org.uk>
- <CANBLGcxF-WgsBVFHf4jGRR+Ox2vz=ewzhwGP1CZX-R5HpDAVBg@mail.gmail.com>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/7] Raspberry Pi spi0 improvements
+Date: Tue, 13 Nov 2018 21:12:01 -0800
+Message-ID: <7ba12f83-a78f-4827-b962-4b08cad341fa@gmail.com>
+References: <cover.1541659680.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="HxQt9wRz9wbL5Edg"
-Cc: linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Emil Renner Berthing <kernel@esmil.dk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CANBLGcxF-WgsBVFHf4jGRR+Ox2vz=ewzhwGP1CZX-R5HpDAVBg@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+ Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <cover.1541659680.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---HxQt9wRz9wbL5Edg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Nov 13, 2018 at 08:48:43PM +0100, Emil Renner Berthing wrote:
-> On Tue, 13 Nov 2018 at 19:35, Mark Brown <broonie@kernel.org> wrote:
-> > On Mon, Nov 12, 2018 at 03:27:36PM +0100, Emil Renner Berthing wrote:
+On 11/7/2018 11:06 PM, Lukas Wunner wrote:
+> Here's a first batch of improvements for the spi0 master on the
+> Raspberry Pi.  The meat of the series is in its last two patches:
+> 
+> * Patch [6/7] allows DMA for transfer buffers starting at an offset not a
+>   multiple of 4.  This overcomes a limitation affecting Ethernet drivers
+>   such as ks8851 which call netdev_alloc_skb_ip_align() to allocate
+>   deliberately unaligned receive buffers.
+> 
+> * Patch [7/7] speeds up PIO transfers by not polling the RX FIFO when it
+>   is known to contain data, or the TX FIFO when it is known to have free
+>   space.
+> 
+> The preceding patches fix rarely encountered bugs, remove obsolete code
+> and add documentation.
+> 
+> The series has been tested extensively on the "Revolution Pi" family of
+> open source PLCs (https://revolution.kunbus.com/), but further testing
+> would be welcome to raise the confidence.
 
-> > > I know the discussions about the sifive devicetree compatible
-> > > strings haven't come to a conclusion, so I'm sending this as
-> > > an RFC to get some feedback on the rest of the code.
-
-> > I've not seen any of these discussions or earlier versions of this
-> > driver so I've no idea what's going on here :(
-
-> No, sorry. This has been discussed on linux-riscv for other drivers
-> like the uart. See my last answer.
-
-> > > +Optional properties:
-> > > +- sifive,fifo-depth          : Depth of hardware queues; defaults to 8
-> > > +- sifive,max-bits-per-word   : Maximum bits per word; defaults to 8
-
-> > If the hardware isn't fixed yet making these enumerable from the
-> > hardware would be good...
-
-> Agreed, but unfortunately this is already in the FU540-C000 chip on
-> the HiFive Unleashed board sold by SiFive.
-
-Pick an unused register you can read safely and define that value to the
-default :)
-
-> > > +/* for consistency we need this symbol */
-> > > +#ifdef REG_FMT
-> > > +#undef REG_FMT
-> > > +#endif
-
-> > We do?  For consistency with what?
-
-> Below all the register offsets are defined as
-> REG_<register name>. This is is a pattern I
-> copied from other drivers, but here we have a
-> register called "fmt" - hence REG_FMT.
-> If you have a better pattern that doesn't clash
-> with REG_FMT please let me know.
-
-You shouldn't be using such generic names for your internal identifiers,
-add a prefix to everything.
-
---HxQt9wRz9wbL5Edg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvrUlsACgkQJNaLcl1U
-h9Dh5Qf/VUw8Ra+KYUjDwFvhBTQ/WLhdXFh/koVtPuDeo/mLnyehCCyuEv/oSrll
-0udob665plGSH3CYnEz4V9b5tmNdSJxp07aKox6x89MFVLEX7uvGcKBn3H5fWEs2
-DVuySHjWrLqii2wO0CMIfOl36cv98tXKrY266JrfjDcOf8hCb/anRAo3kVpWjWb4
-Xsu1swOFX21MIYzQvoSveObgSveQq6uKuvBZMlcBFvCMUVY3Nmz7txmmJybH/2Dt
-1i2G85fW+vNQCnQMziZGIEcrZHimx+xUeW3gofnpedoiYMAFcJ90il6N2tGal4HV
-791AgaI0CuowfiED5NUNrWxpANZX9A==
-=XS6h
------END PGP SIGNATURE-----
-
---HxQt9wRz9wbL5Edg--
+Do you have some performance numbers that you could share before/after,
+e.g: transfer latencies, number of interrupts and pure throughput?
+Thanks for doing this work!
+-- 
+Florian

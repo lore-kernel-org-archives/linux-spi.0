@@ -1,55 +1,64 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH] spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
-Date: Wed, 14 Nov 2018 20:15:52 +0100
-Message-ID: <87lg5vjwrb.fsf@belgarion.home>
-References: <20181114173107.1229717-1-lkundrak@v3.sk>
+From: Colin King <colin.king@canonical.com>
+Subject: [PATCH][next] spi: npcm: fix u32 csgpio being checked for less than zero
+Date: Wed, 14 Nov 2018 21:42:46 +0000
+Message-ID: <20181114214246.15591-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Lubomir Rintel <lkundrak@v3.sk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
+        linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181114173107.1229717-1-lkundrak@v3.sk> (Lubomir Rintel's
-        message of "Wed, 14 Nov 2018 18:31:07 +0100")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Lubomir Rintel <lkundrak@v3.sk> writes:
+From: Colin Ian King <colin.king@canonical.com>
 
-> A careless oversight. Sorry.
->
-> Fixes: 0a897143b7c9 ("spi: pxa2xx: Add slave mode support")
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> ---
->  drivers/spi/spi-pxa2xx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index 29e6025f104c..7194070e4009 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -1555,7 +1555,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
->  	}
->  #endif
->  
-> -#if CONFIG_OF
-> +#ifdef CONFIG_OF
->  	if (of_id) {
->  		pdata->is_slave = of_property_read_bool(pdev->dev.of_node,
->  								"spi-slave");
-While at it, why not simply remove the "#if CONFIG_OF", the if (of_id), and
-write simply this, without any ifs ? :
-	pdata->is_slave = of_property_read_bool(pdev->dev.of_node,
-						"spi-slave");
+The u32 variable csgpio is being checked for an error return
+from the call to of_get_named_gpio, however, since this is unsigned
+this comparison will always be false. Fix this by making csgpio an
+int and fix up the %u format specifiers to %d accordingly.
 
-If CONFIG_OF=n, of_property_read_bool() is guaranteed to return false. If the
-device is not found through devicetree, of_node == NULL and a false will
-still be returned. And the last case is your bool read case (ie. when devicetree
-probed the device).
+Detected by CoverityScan, CID#1475476 ("Unsigned compared against 0")
 
-Cheers.
+Fixes: 2a22f1b30cee ("spi: npcm: add NPCM PSPI controller driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/spi/spi-npcm-pspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index 51777515c83f..6dae91091143 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -329,7 +329,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	unsigned long clk_hz;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	int num_cs, i;
+-	u32 csgpio;
++	int csgpio;
+ 	int irq;
+ 	int ret;
+ 
+@@ -417,12 +417,12 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev, "failed to get csgpio#%u\n", i);
+ 			goto out_disable_clk;
+ 		}
+-		dev_dbg(&pdev->dev, "csgpio#%u = %u\n", i, csgpio);
++		dev_dbg(&pdev->dev, "csgpio#%u = %d\n", i, csgpio);
+ 		ret = devm_gpio_request_one(&pdev->dev, csgpio,
+ 					    GPIOF_OUT_INIT_HIGH, DRIVER_NAME);
+ 		if (ret < 0) {
+ 			dev_err(&pdev->dev,
+-				"failed to configure csgpio#%u %u\n"
++				"failed to configure csgpio#%u %d\n"
+ 				, i, csgpio);
+ 			goto out_disable_clk;
+ 		}
 -- 
-Robert
+2.19.1

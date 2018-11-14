@@ -1,12 +1,13 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
  controller
-Date: Wed, 14 Nov 2018 09:03:09 +0000
-Message-ID: <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
+Date: Wed, 14 Nov 2018 10:43:00 +0000
+Message-ID: <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
 References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
  <1542116782-13118-4-git-send-email-frieder.schrempf@kontron.de>
  <VI1PR04MB572679944542ED6A438FD2FB99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
  <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
+ <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
@@ -16,51 +17,36 @@ Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
         "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
         David Wolfe <david.wolfe@nxp.com>,
         Fabio Estevam <fabio.estevam@nxp.com>,
-        "Prabhakar Kushwaha" <prabhakar.kushwaha@nxp.com>,
+        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+To: Schrempf Frieder <frieder.schrempf@kontron.De>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         Marek Vasut <marek.vasut@gmail.com>,
         Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
+In-Reply-To: <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
 Content-Language: en-US
-Content-ID: <12895E4EB0F7AD4789A6187064E7B09A@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgWW9nZXNoLA0KDQpPbiAxNC4xMS4xOCAwOTo1MCwgRnJpZWRlciBTY2hyZW1wZiB3cm90ZToN
-Cj4gSGkgWW9nZXNoLA0KPiANCj4gT24gMTQuMTEuMTggMDk6MzksIFlvZ2VzaCBOYXJheWFuIEdh
-dXIgd3JvdGU6DQo+PiBIaSBGcmllZGVyLA0KPj4NCj4+IEkgaGF2ZSB0cmllZCB2NSB2ZXJzaW9u
-IG9mIHRoZSBwYXRjaCBhbmQgaGF2ZSBvYnNlcnZlZCB0aGF0IFJlYWQgaXMgDQo+PiBmYWlsaW5n
-IGZvciBDUzEuDQo+IA0KPiBUaGFua3MgYSBsb3QgZm9yIGRvaW5nIHRoZSB0ZXN0LiBJIHJlYWxs
-eSBhcHByZWNpYXRlIGl0Lg0KPiANCj4+IEluIG15IHRhcmdldCAyIGZsYXNoIGRldmljZXMgYXJl
-IGNvbm5lY3RlZCBvbiBzYW1lIGJ1cyBpLmUuIEExIC0+IENTMCANCj4+IGFuZCBBMiAtPiBDUzEu
-DQo+Pg0KPj4gT24gaW5pdGlhbCBkZWJ1Z2dpbmcsIEkgZmlndXJlZCB0aGF0IFJlYWQgaXMgZmFp
-bGluZyBmb3IgdGhlIEFIQiBtb2RlIA0KPj4gaS5lLiBpZiBJIGF0dGVtcHQgdG8gcmVhZCBkYXRh
-IHNpemUgbGVzcyB0aGFuIHJ4ZmlmbyByZWFkIGlzIHdvcmtpbmcgDQo+PiBmaW5lIHdpdGhvdXQg
-YW55IGlzc3VlLg0KPj4NCj4+IEZvciBkYXRhIHNpemUgbW9yZSB0aGFuIHJ4ZmlmbyBSZWFkIG91
-dCBkYXRhIGlzIGNvbnRlbnQgb2Ygc2FtZSANCj4+IHJlcXVlc3RlZCBhZGRyZXNzIG9mIENTMC4N
-Cj4+IMKgwqDCoMKgbXRkX2RlYnVnIHJlYWQgL2Rldi9tdGQxIDB4ZjAwMDAwIDB4NzAgcmVhZCAt
-LT4gRGF0YSBpcyBjb3JyZWN0DQo+PiDCoMKgwqDCoG10ZF9kZWJ1ZyByZWFkIC9kZXYvbXRkMSAw
-eGYwMDAwMCAweDEwMCByZWFkIC0tPiBEYXRhIGlzIA0KPj4gaW4tY29ycmVjdCBhbmQgZGF0YSBj
-b250ZW50IGFyZSBvZiB0aGUgYWRkcmVzcyAweGYwMDAwMCBvZiBDUzAgDQo+PiBjb25uZWN0ZWQg
-Zmxhc2ggZGV2aWNlLg0KPiANCj4gT2ssIEkgd2lsbCBoYXZlIGEgbG9vayBhdCB3aGF0IGNvdWxk
-IG1ha2UgdGhlIGNoaXAgc2VsZWN0aW9uIGZhaWwgaW4gDQo+IGNhc2Ugb2YgQUhCIHJlYWQuDQoN
-CkNvdWxkIHlvdSB0cnkgd2l0aCB0aGlzIGNoYW5nZSBhcHBsaWVkOg0KDQpAQCAtNTAzLDcgKzUw
-Myw3IEBAIHN0YXRpYyB2b2lkIGZzbF9xc3BpX3NlbGVjdF9tZW0oc3RydWN0IGZzbF9xc3BpICpx
-LCANCnN0cnVjdCBzcGlfZGV2aWNlICpzcGkpDQogICAgICAgICAgICAgICAgICAgICAgICAgbWFw
-X2FkZHIgPSBxLT5tZW1tYXBfcGh5Ow0KICAgICAgICAgICAgICAgICBlbHNlDQogICAgICAgICAg
-ICAgICAgICAgICAgICAgbWFwX2FkZHIgPSBxLT5tZW1tYXBfcGh5ICsNCi0gICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgMiAqIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplOw0K
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBxLT5kZXZ0eXBlX2RhdGEtPmFoYl9i
-dWZfc2l6ZTsNCg0KICAgICAgICAgICAgICAgICBxc3BpX3dyaXRlbChxLCBtYXBfYWRkciwgcS0+
-aW9iYXNlICsgUVVBRFNQSV9TRkExQUQgKyANCihpICogNCkpOw0KICAgICAgICAgfQ0KDQo+IA0K
-Pj4gT24gdGhlIHNldHVwIHdoZXJlIHlvdSBoYXZlIGRvbmUgdGVzdGluZywgZGlkIEFIQiBtb2Rl
-IHJlYWQgaXMgYmVpbmcgDQo+PiB2ZXJpZmllZCBmb3IgQ1MxPw0KPiANCj4gTm8sIEkgY3VycmVu
-dGx5IGhhdmUgb25seSBoYXJkd2FyZSB3aXRoIENTMCBjb25uZWN0ZWQuIFNvIEkgZGlkbid0IHRl
-c3QgDQo+IHdpdGggQ1MxLg0KPiANCj4+DQo+PiBJIGFtIGRvaW5nIGZ1cnRoZXIgZGVidWdnaW5n
-IG9mIHRoaXMgaXNzdWUuDQo+IA0KPiBUaGFua3MsDQo+IEZyaWVkZXI=
+SGkgRnJpZWRlciwNCg0KWy4uXQ0KPiA+DQo+ID4gT2ssIEkgd2lsbCBoYXZlIGEgbG9vayBhdCB3
+aGF0IGNvdWxkIG1ha2UgdGhlIGNoaXAgc2VsZWN0aW9uIGZhaWwgaW4NCj4gPiBjYXNlIG9mIEFI
+QiByZWFkLg0KPiANCj4gQ291bGQgeW91IHRyeSB3aXRoIHRoaXMgY2hhbmdlIGFwcGxpZWQ6DQo+
+IA0KPiBAQCAtNTAzLDcgKzUwMyw3IEBAIHN0YXRpYyB2b2lkIGZzbF9xc3BpX3NlbGVjdF9tZW0o
+c3RydWN0IGZzbF9xc3BpICpxLCBzdHJ1Y3QNCj4gc3BpX2RldmljZSAqc3BpKQ0KPiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgbWFwX2FkZHIgPSBxLT5tZW1tYXBfcGh5Ow0KPiAgICAgICAgICAg
+ICAgICAgIGVsc2UNCj4gICAgICAgICAgICAgICAgICAgICAgICAgIG1hcF9hZGRyID0gcS0+bWVt
+bWFwX3BoeSArDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMiAqIHEtPmRl
+dnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplOw0KPiANCj4gICAgICAgICAgICAg
+ICAgICBxc3BpX3dyaXRlbChxLCBtYXBfYWRkciwgcS0+aW9iYXNlICsgUVVBRFNQSV9TRkExQUQg
+Kw0KPiAoaSAqIDQpKTsNCj4gICAgICAgICAgfQ0KPiANCg0KSSBoYXZlIHRyaWVkIGFib3ZlIGNo
+YW5nZSBhbmQgYWxzbyBoYXZlIGRvbmUgZmV3IG1vcmUgY2hhbmdlcyBidXQgc3RpbGwgQUhCIHJl
+YWQgZm9yIENTMSBpcyBmYWxsaW5nLg0KDQpJIGd1ZXNzIHdlIG5lZWQgdG8gaW1wbGVtZW50IGR5
+bmFtaWMgbWVtb3J5IG1hcHBpbmcgWzFdIGZvciBBSEIgUmVhZCBhcyB3YXMgYmVpbmcgZG9uZSBp
+biBwcmV2aW91cyBkcml2ZXIgaW1wbGVtZW50YXRpb24uDQpXb3VsZCB0cnkgdGhpcyBhbmQgdXBk
+YXRlIHlvdS4NCg0KWzFdIGh0dHBzOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcGF0Y2gvNTAzNjU1
+Lw0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdhdXINClsuLl0NCg==

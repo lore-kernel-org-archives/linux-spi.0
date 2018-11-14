@@ -1,55 +1,155 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Wed, 14 Nov 2018 11:07:04 +0000
-Message-ID: <eb4b79be-c12b-16e7-e1dd-86a157cfdc7d@kontron.de>
-References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
- <1542116782-13118-4-git-send-email-frieder.schrempf@kontron.de>
- <VI1PR04MB572679944542ED6A438FD2FB99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
- <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
- <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Re: [PATCH 08/15] Platform: OLPC: Move EC-specific functionality
+ out from x86
+Date: Wed, 14 Nov 2018 17:20:53 +0100
+Message-ID: <df41a91f83387770de53bde204365ae85f2137dc.camel@v3.sk>
+References: <20181010172300.317643-1-lkundrak@v3.sk>
+         <20181010172300.317643-9-lkundrak@v3.sk>
+         <CAHp75VfVYUyurEkrCuRsuC_jk94e3CqsxPket+DZqNk0VNMPFA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        "Prabhakar Kushwaha" <prabhakar.kushwaha@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.or
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
-Content-Language: en-US
-Content-ID: <89687489640DA44EB6C07997A23F0A96@snt-world.com>
+In-Reply-To: <CAHp75VfVYUyurEkrCuRsuC_jk94e3CqsxPket+DZqNk0VNMPFA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDE0LjExLjE4IDExOjQzLCBZb2dlc2ggTmFyYXlhbiBHYXVyIHdyb3RlOg0KPiBIaSBG
-cmllZGVyLA0KPiANCj4gWy4uXQ0KPj4+DQo+Pj4gT2ssIEkgd2lsbCBoYXZlIGEgbG9vayBhdCB3
-aGF0IGNvdWxkIG1ha2UgdGhlIGNoaXAgc2VsZWN0aW9uIGZhaWwgaW4NCj4+PiBjYXNlIG9mIEFI
-QiByZWFkLg0KPj4NCj4+IENvdWxkIHlvdSB0cnkgd2l0aCB0aGlzIGNoYW5nZSBhcHBsaWVkOg0K
-Pj4NCj4+IEBAIC01MDMsNyArNTAzLDcgQEAgc3RhdGljIHZvaWQgZnNsX3FzcGlfc2VsZWN0X21l
-bShzdHJ1Y3QgZnNsX3FzcGkgKnEsIHN0cnVjdA0KPj4gc3BpX2RldmljZSAqc3BpKQ0KPj4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICBtYXBfYWRkciA9IHEtPm1lbW1hcF9waHk7DQo+PiAgICAg
-ICAgICAgICAgICAgICBlbHNlDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgIG1hcF9hZGRy
-ID0gcS0+bWVtbWFwX3BoeSArDQo+PiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IDIgKiBxLT5kZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZTsNCj4+ICsgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgcS0+ZGV2dHlwZV9kYXRhLT5haGJfYnVmX3NpemU7DQo+Pg0KPj4g
-ICAgICAgICAgICAgICAgICAgcXNwaV93cml0ZWwocSwgbWFwX2FkZHIsIHEtPmlvYmFzZSArIFFV
-QURTUElfU0ZBMUFEICsNCj4+IChpICogNCkpOw0KPj4gICAgICAgICAgIH0NCj4+DQo+IA0KPiBJ
-IGhhdmUgdHJpZWQgYWJvdmUgY2hhbmdlIGFuZCBhbHNvIGhhdmUgZG9uZSBmZXcgbW9yZSBjaGFu
-Z2VzIGJ1dCBzdGlsbCBBSEIgcmVhZCBmb3IgQ1MxIGlzIGZhbGxpbmcuDQoNCk1heWJlIENTMSBp
-cyBub3Qgc2VsZWN0ZWQgYmVjYXVzZSB3ZSByZXVzZSB0aGUgc2FtZSBtZW1vcnkgb2Zmc2V0IGFz
-IGZvciANCkNTMC4gQ2FuIHlvdSB0cnkgd2l0aCBhIGZpeGVkIG1hcHBpbmcgZm9yIGFsbCBmb3Vy
-IENTIGxpbmVzLCBsaWtlIHRoaXM6IA0KaHR0cHM6Ly9wYXN0ZS5lZS9wL21Zd2pQPw0KDQpUaGFu
-a3MsDQpGcmllZGVy
+Hello,
+
+On Fri, 2018-10-19 at 16:36 +0300, Andy Shevchenko wrote:
+> On Wed, Oct 10, 2018 at 8:24 PM Lubomir Rintel <lkundrak@v3.sk>
+> wrote:
+> > It is actually plaform independent. Move it to the olpc-ec driver
+> > from
+> > the X86 OLPC platform, so that it could be used by the ARM based
+> > laptops
+> > too.
+> 
+> What is platform independent exactly?
+
+The commands with their argument and responses are mostly the same, but
+the delivery mechanism is different (SPI on ARM vs. LPC on x86).
+
+Notably, the driver for the OLPC battery (which is the same on all XO
+generations) builds on the API provided by the olpc-ec driver.
+
+I'll try to extend the commit message to make this clear.
+
+> >  #define OLPC_F_PRESENT         0x01
+> >  #define OLPC_F_DCON            0x02
+> > -#define OLPC_F_EC_WIDE_SCI     0x04
+> 
+> I think these lines grouped on purpose. Thus, I don't like this.
+> Either move either all or none.
+
+I'm not moving this -- I'm removing it and using the EC version
+instead.
+
+This flag doesn't make sense for non-x86 ECs -- they don't use SCIs to
+deliver EC-to-CPU communication, but initiate SPI transactions instead.
+
+> 
+> > +int olpc_ec_mask_write(u16 bits)
+> > +{
+> >  #ifdef CONFIG_DEBUG_FS
+> > 
+> >  /*
+> > @@ -277,14 +369,17 @@ static int olpc_ec_probe(struct
+> > platform_device *pdev)
+> >         ec_priv = ec;
+> >         platform_set_drvdata(pdev, ec);
+> > 
+> > +       /* EC version 0x5f adds support for wide SCI mask */
+> > +       if (ec->version >= 0x5f) {
+> > +               __be16 ec_word = cpu_to_be16(bits);
+> > +
+> > +               return olpc_ec_cmd(EC_WRITE_EXT_SCI_MASK, (void *)
+> > &ec_word, 2,
+> > +                                  NULL, 0);
+> 
+> I would leave it on one line.
+
+Okay. I do agree this looks better, but was not sure how seriously to
+take checkpatch.pl's warnings.
+
+> 
+> > +       } else {
+> > +               unsigned char ec_byte = bits & 0xff;
+> 
+> You may noticed that the parameter is of type u8, which clearly makes
+> & 0xff part redundant.
+
+At least for me, the explicit mask makes this easier for me to read.
+
+But I don't mind really. If you'd really like to see this changes I can
+follow up with such change (or am happy to ack such change from you).
+
+> 
+> > +               return olpc_ec_cmd(EC_WRITE_SCI_MASK, &ec_byte, 1,
+> > NULL, 0);
+> > +       }
+> > +}
+> > +EXPORT_SYMBOL_GPL(olpc_ec_mask_write);
+> 
+> I see that the above is inherited from older code, so, no need to
+> address those comments in here, but consider a follow up fix.
+> 
+> 
+> > +int olpc_ec_sci_query(u16 *sci_value)
+> > +{
+> > +}
+> > +EXPORT_SYMBOL_GPL(olpc_ec_sci_query);
+> 
+> Similar comments are applied here.
+> 
+> > +
+> > -       err = ec_driver->probe ? ec_driver->probe(pdev) : 0;
+> > +       /* get the EC revision */
+> > +       err = olpc_ec_cmd(EC_FIRMWARE_REV, NULL, 0,
+> > +               (unsigned char *) &ec->version, 1);
+> 
+> Perhaps version should be defined as u8.
+
+Yes.
+
+> > +/* SCI source values */
+> > +#define EC_SCI_SRC_EMPTY        0x00
+> > +#define EC_SCI_SRC_GAME         0x01
+> > +#define EC_SCI_SRC_BATTERY      0x02
+> > +#define EC_SCI_SRC_BATSOC       0x04
+> > +#define EC_SCI_SRC_BATERR       0x08
+> > +#define EC_SCI_SRC_EBOOK        0x10    /* XO-1 only */
+> > +#define EC_SCI_SRC_WLAN         0x20    /* XO-1 only */
+> > +#define EC_SCI_SRC_ACPWR        0x40
+> > +#define EC_SCI_SRC_BATCRIT      0x80
+> > +#define EC_SCI_SRC_GPWAKE       0x100   /* XO-1.5 only */
+> 
+> BIT() ?
+> 
+> > +#define EC_SCI_SRC_ALL          0x1FF
+> 
+> GENMASK()?
+
+Yes. I meant to move this, but it turns out I've left the original ones
+in place. Will fix them in a follow-up commit also.
+
+Lubo

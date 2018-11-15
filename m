@@ -1,56 +1,83 @@
-From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: Re: [PATCH 02/15] Revert "platform/olpc: Make ec explicitly
- non-modular"
-Date: Thu, 15 Nov 2018 19:57:44 +0100
-Message-ID: <49eee45692f16dcbcf8aceaf3a999bb7f33178ba.camel@v3.sk>
-References: <20181010172300.317643-1-lkundrak@v3.sk>
-         <20181010172300.317643-3-lkundrak@v3.sk> <20181102221626.GC5322@amd>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 0/7] spi: spi-mem: Add a direct mapping API
+Date: Thu, 15 Nov 2018 11:56:40 -0800
+Message-ID: <20181115195640.GP2089@sirena.org.uk>
+References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Cameron <quozl@laptop.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-pm@vger.kernel.org
-To: Pavel Machek <pavel@ucw.cz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181102221626.GC5322@amd>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============2899751204274707696=="
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>, Piotr Bugalski <bugalski.piotr@gmail.com>,
+ linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-mtd@lists.infradead.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2018-11-02 at 23:16 +0100, Pavel Machek wrote:
-> On Wed 2018-10-10 19:22:47, Lubomir Rintel wrote:
-> > It doesn't make sense to always have this built-in, e.g. on ARM
-> > multiplatform kernels. A better way to address the problem the
-> > original
-> > commit aimed to solve is to fix Kconfig.
-> > 
-> > This reverts commit f48d1496b8537d75776478c6942dd87f34d7f270.
-> 
-> This looks ok, but I don't see the Kconfig fix in the series. Is it
-> needed?
 
-It's flipped to a tristate in "Platform: OLPC: Move OLPC config symbol
-out of x86 tree" and mentioned in the commit message.
+--===============2899751204274707696==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gbLSGltGDiWAAjZc"
+Content-Disposition: inline
 
-Perhaps I could made that clear by separating the change into a
-separate patch. I'm keeping it as it is in next version of the patch
-set, but I'm going to improve this one's commit message and sort the
-patches closer together.
 
-> 							Pavel
+--gbLSGltGDiWAAjZc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Lubo								
+On Tue, Nov 06, 2018 at 05:05:29PM +0100, Boris Brezillon wrote:
+> Hello,
+>=20
+> Here is a v3 addressing the comment I received from Yogesh on the
+> m25p80 modifications. Note that this part is still untested (I only
+> tested on a spinand device so far), so that'd be great if someone
+> could test it.
+
+The SPI bits are all fine FWIW, leaving for a bit longer for testing but
+I could also just apply those bits immediately and send a branch as I
+think it's the MTD bits that really need the testing?
+
+--gbLSGltGDiWAAjZc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvtz3cACgkQJNaLcl1U
+h9ADfgf/QL1xgnd6jTbOPn5LJ1fKcx/lVRNbwwD7H8MlI2XRTY2ozKTavuJ4H4XU
+0+WWgvbC7q4FbyEk+M9GukzMr0jlxY1efTqXH+tmQzgRTyuu+Rw1NG9uNPr+z/hP
+8RRzUmDQNSbLqU6XDO3o1BpkEltGDSEf5XXcB7SLHZPa04wzuRNp8nop3NlNrCFI
+o5F2MrEiv6rgy4zelTQPQJrRFWXgccgT4OKWqVnHLvwh9ZdkSrbl4CARHhm8SYuZ
+g1LQVxXyXmnEmdV8savJXNMZeAbJ9568qbIhqV6xUUqMz4Q/f1E/rMETqVr2EE3Y
+9GUs1Qw0KRoVSlajHo8Fc1KfOW7ghA==
+=P+G2
+-----END PGP SIGNATURE-----
+
+--gbLSGltGDiWAAjZc--
+
+
+--===============2899751204274707696==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============2899751204274707696==--

@@ -1,64 +1,107 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.De>
-Subject: Re: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Thu, 15 Nov 2018 14:01:42 +0000
-Message-ID: <11f45245-efc4-f1cf-3ead-578a5ca4bf29@kontron.de>
-References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
- <1542116782-13118-4-git-send-email-frieder.schrempf@kontron.de>
- <VI1PR04MB572679944542ED6A438FD2FB99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
- <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
- <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <eb4b79be-c12b-16e7-e1dd-86a157cfdc7d@kontron.de>
- <VI1PR04MB57265222E26C013D5D9C009B99DC0@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <3e9aa917-cf3a-cf0e-8516-4e73d30eb2a1@kontron.de>
- <20181115141252.52a5b32d@bbrezillon>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Re: [PATCH 12/15] power: supply: olpc_battery: Use DT to get
+ battery version
+Date: Thu, 15 Nov 2018 19:33:05 +0100
+Message-ID: <320e92fd7d942f364c83a1e8411629c1f8979d5f.camel@v3.sk>
+References: <20181010172300.317643-1-lkundrak@v3.sk>
+         <20181010172300.317643-13-lkundrak@v3.sk>
+         <CAHp75VeEFK+47pz+he6Su630jnoGKPamhatuoXopS5Ee=LZtTg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.or
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181115141252.52a5b32d@bbrezillon>
-Content-Language: en-US
-Content-ID: <8AFC4BC7E3BC2943BFE1E80638A5616A@snt-world.com>
+In-Reply-To: <CAHp75VeEFK+47pz+he6Su630jnoGKPamhatuoXopS5Ee=LZtTg@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgWW9nZXNoLA0KDQpPbiAxNS4xMS4xOCAxNDoxMiwgQm9yaXMgQnJlemlsbG9uIHdyb3RlOg0K
-PiBPbiBUaHUsIDE1IE5vdiAyMDE4IDExOjQzOjA1ICswMDAwDQo+IFNjaHJlbXBmIEZyaWVkZXIg
-PGZyaWVkZXIuc2NocmVtcGZAa29udHJvbi5EZT4gd3JvdGU6DQo+IA0KPj4gT24gMTUuMTEuMTgg
-MDc6MjIsIFlvZ2VzaCBOYXJheWFuIEdhdXIgd3JvdGU6DQo+Pj4gSGkgRnJpZWRlciwNCj4+Pg0K
-Pj4+IFdpdGggYmVsb3cgcGF0Y2ggb24gdG9wIG9mIHlvdXIgdjUsIFJlYWQvV3JpdGUvRXJhc2Ug
-b24gQ1MxIGlzIHdvcmtpbmcgZmluZSBmb3IgbWUuDQo+Pg0KPj4gT2ssIGFyZSB5b3Ugc3VyZSwg
-dGhhdCBBSEIgcmVhZCBpcyB3b3JraW5nIHRvbyB3aXRoIHRoaXMgcGF0Y2g/DQo+PiBZb3UgYXJl
-IHJlbW92aW5nIHRoZSBtZW1tYXBfcGh5IG9mZnNldCBmcm9tIFNGQVIgYW5kIHRoZSBTRlhYQUQg
-cmVnaXN0ZXINCj4+IHZhbHVlcy4NCj4+DQo+PiBJIGNhbiB1bmRlcnN0YW5kIHRoYXQgc2VsZWN0
-aW9uIG9mIHRoZSBDUyBhbmQgSVAgY29tbWFuZHMgd2lsbCB3b3JrIGxpa2UNCj4+IHRoaXMsIGJ1
-dCBJIGNhbid0IHVuZGVyc3RhbmQgaG93IEFIQiByZWFkIHNob3VsZCB3b3JrIHdpdGhvdXQgdGhl
-IGJhc2UNCj4+IGFkZHJlc3Mgb2YgdGhlIG1hcHBlZCBtZW1vcnkuDQo+Pg0KPj4gSSdtIGFmcmFp
-ZCBJIHN0aWxsIGRvbid0IGZ1bGx5IHVuZGVyc3RhbmQgdGhlIGJhY2tncm91bmQgb2YgdGhlc2UN
-Cj4+IHRoaW5ncywNCj4gDQo+IFNhbWUgaGVyZS4gWW9nZXNoLCBjYW4geW91IGdpdmUgdXMgbW9y
-ZSBkZXRhaWwgb24gd2h5IHlvdSBkZWNpZGVkIHRvDQo+IGRyb3AgdGhlIG1lbW1hcF9waHkgb2Zm
-c2V0Pw0KDQpZb3VyIGNoYW5nZXMgZG8gbm90IHdvcmsgb24gbXkgc2V0dXAgKGkuTVg2VUwpLiBJ
-dCBsb29rcyBsaWtlIHlvdXIgDQpoYXJkd2FyZSBpcyBkaWZmZXJlbnQuDQoNCkkgZm91bmQgdGhp
-cyBwYXRjaCBmb3IgTFMyMDgwQTogWzFdLiBUaGlzIHdvdWxkIGV4cGxhaW4gd2h5IHlvdSBuZWVk
-IHRvIA0KcmVtb3ZlIHRoZSBvZmZzZXQgdG8gbWFrZSBpdCB3b3JrLg0KDQpUbyB2ZXJpZnkgdGhp
-cywgY291bGQgeW91IHBsZWFzZSB0ZXN0IHlvdXIgc2V0dXAgd2l0aCB0aGUgY3VycmVudCANCnNw
-aS1ub3IgZHJpdmVyIChmc2xfcXVhZHNwaS5jKS4gSWYgb3VyIGFzc3VtcHRpb25zIGFyZSByaWdo
-dCwgaXQgc2hvdWxkIA0Kb25seSB3b3JrIG9uIENTMCBhbmQgQ1MxIHdpdGggWzFdIGFwcGxpZWQu
-DQoNClRoYW5rcywNCkZyaWVkZXINCg0KWzFdOiBodHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcv
-cGF0Y2gvNjYwMzY0Lw==
+On Fri, 2018-10-19 at 16:45 +0300, Andy Shevchenko wrote:
+> On Wed, Oct 10, 2018 at 8:23 PM Lubomir Rintel <lkundrak@v3.sk>
+> wrote:
+> > Avoid using the x86 OLPC platform specific call to get the board
+> > version. It won't work on FDT-based ARM MMP2 platform.
+> > 
+> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> > ---
+> >  drivers/power/supply/olpc_battery.c | 10 +++++++---
+> >  1 file changed, 7 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/power/supply/olpc_battery.c
+> > b/drivers/power/supply/olpc_battery.c
+> > index 5a97e42a3547..540d44bf536f 100644
+> > --- a/drivers/power/supply/olpc_battery.c
+> > +++ b/drivers/power/supply/olpc_battery.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/jiffies.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/olpc-ec.h>
+> > +#include <linux/of.h>
+> >  #include <asm/olpc.h>
+> 
+> Keep it sorted, otherwise the change is good!
+
+Yes, but... the headers are not sorted at the moment. I'll sort the new
+include before <linux/platform_device.h> so that I don't mess it up
+even more, but I don't feel like just sorting everything so that I
+don't obscure the actual change.
+
+
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+> > 
+> > @@ -622,11 +623,13 @@ static int olpc_battery_probe(struct
+> > platform_device *pdev)
+> >         olpc_ac = power_supply_register(&pdev->dev, &olpc_ac_desc,
+> > NULL);
+> >         if (IS_ERR(olpc_ac))
+> >                 return PTR_ERR(olpc_ac);
+> > -
+> > -       if (olpc_board_at_least(olpc_board_pre(0xd0))) { /* XO-1.5
+> > */
+> > +       if (of_property_match_string(pdev->dev.of_node,
+> > "compatible",
+> > +                                       "olpc,xo1.5-battery") >= 0)
+> > {
+> > +               /* XO-1.5 */
+> >                 olpc_bat_desc.properties = olpc_xo15_bat_props;
+> >                 olpc_bat_desc.num_properties =
+> > ARRAY_SIZE(olpc_xo15_bat_props);
+> > -       } else { /* XO-1 */
+> > +       } else {
+> > +               /* XO-1 */
+> >                 olpc_bat_desc.properties = olpc_xo1_bat_props;
+> >                 olpc_bat_desc.num_properties =
+> > ARRAY_SIZE(olpc_xo1_bat_props);
+> >         }
+> > @@ -672,6 +675,7 @@ static int olpc_battery_remove(struct
+> > platform_device *pdev)
+> > 
+> >  static const struct of_device_id olpc_battery_ids[] = {
+> >         { .compatible = "olpc,xo1-battery" },
+> > +       { .compatible = "olpc,xo1.5-battery" },
+> >         {}
+> >  };
+> >  MODULE_DEVICE_TABLE(of, olpc_battery_ids);
+> > --
+> > 2.19.0
+> > 
+
+Lubo

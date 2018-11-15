@@ -1,94 +1,51 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Thu, 15 Nov 2018 06:22:12 +0000
-Message-ID: <VI1PR04MB57265222E26C013D5D9C009B99DC0@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
- <1542116782-13118-4-git-send-email-frieder.schrempf@kontron.de>
- <VI1PR04MB572679944542ED6A438FD2FB99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
- <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
- <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <eb4b79be-c12b-16e7-e1dd-86a157cfdc7d@kontron.de>
+From: kbuild test robot <fengguang.wu@intel.com>
+Subject: [PATCH] spi: npcm: fix platform_no_drv_owner.cocci warnings
+Date: Thu, 15 Nov 2018 15:11:13 +0800
+Message-ID: <20181115071113.GA99225@ivb43>
+References: <201811151510.lC0S0JPS%fengguang.wu@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.De>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: kbuild-all@01.org, Mark Brown <broonie@kernel.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <eb4b79be-c12b-16e7-e1dd-86a157cfdc7d@kontron.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <201811151510.lC0S0JPS%fengguang.wu@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgRnJpZWRlciwNCg0KV2l0aCBiZWxvdyBwYXRjaCBvbiB0b3Agb2YgeW91ciB2NSwgUmVhZC9X
-cml0ZS9FcmFzZSBvbiBDUzEgaXMgd29ya2luZyBmaW5lIGZvciBtZS4NCg0KSSBoYXZlIHRlc3Rl
-ZCB3aXRoIEpGRlMyIG1vdW50aW5nIGFuZCBib290aW5nIGFsc28gZm9yIGJvdGggQ1MwIGFuZCBD
-UzEuDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLXFzcGkuYyBiL2RyaXZlcnMv
-c3BpL3NwaS1mc2wtcXNwaS5jDQppbmRleCBjZTQ1ZThlLi40NDY3OTgzIDEwMDY0NA0KLS0tIGEv
-ZHJpdmVycy9zcGkvc3BpLWZzbC1xc3BpLmMNCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtcXNw
-aS5jDQpAQCAtNDkwLDI4ICs0OTAsMTAgQEAgc3RhdGljIHZvaWQgZnNsX3FzcGlfc2VsZWN0X21l
-bShzdHJ1Y3QgZnNsX3FzcGkgKnEsIHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpDQogew0KICAgICAg
-ICB1bnNpZ25lZCBsb25nIHJhdGUgPSBzcGktPm1heF9zcGVlZF9oejsNCiAgICAgICAgaW50IHJl
-dCwgaTsNCi0gICAgICAgdTMyIG1hcF9hZGRyOw0KDQogICAgICAgIGlmIChxLT5zZWxlY3RlZCA9
-PSBzcGktPmNoaXBfc2VsZWN0KQ0KICAgICAgICAgICAgICAgIHJldHVybjsNCg0KLSAgICAgICAv
-Kg0KLSAgICAgICAgKiBJbiBIVyB0aGVyZSBjYW4gYmUgYSBtYXhpbXVtIG9mIGZvdXIgY2hpcHMg
-b24gdHdvIGJ1c2VzIHdpdGgNCi0gICAgICAgICogdHdvIGNoaXAgc2VsZWN0cyBvbiBlYWNoIGJ1
-cy4gV2UgdXNlIGZvdXIgY2hpcCBzZWxlY3RzIGluIFNXDQotICAgICAgICAqIHRvIGRpZmZlcmVu
-dGlhdGUgYmV0d2VlbiB0aGUgZm91ciBjaGlwcy4NCi0gICAgICAgICogV2UgdXNlIHRoZSBTRkEx
-QUQsIFNGQTJBRCwgU0ZCMUFELCBTRkIyQUQgcmVnaXN0ZXJzIHRvIHNlbGVjdA0KLSAgICAgICAg
-KiB0aGUgY2hpcCB3ZSB3YW50IHRvIGFjY2Vzcy4NCi0gICAgICAgICovDQotICAgICAgIGZvciAo
-aSA9IDA7IGkgPCA0OyBpKyspIHsNCi0gICAgICAgICAgICAgICBpZiAoaSA8IHNwaS0+Y2hpcF9z
-ZWxlY3QpDQotICAgICAgICAgICAgICAgICAgICAgICBtYXBfYWRkciA9IHEtPm1lbW1hcF9waHk7
-DQotICAgICAgICAgICAgICAgZWxzZQ0KLSAgICAgICAgICAgICAgICAgICAgICAgbWFwX2FkZHIg
-PSBxLT5tZW1tYXBfcGh5ICsNCi0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMiAq
-IHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplOw0KLQ0KLSAgICAgICAgICAgICAgIHFzcGlf
-d3JpdGVsKHEsIG1hcF9hZGRyLCBxLT5pb2Jhc2UgKyBRVUFEU1BJX1NGQTFBRCArIChpICogNCkp
-Ow0KLSAgICAgICB9DQotDQogICAgICAgIGlmIChuZWVkc180eF9jbG9jayhxKSkNCiAgICAgICAg
-ICAgICAgICByYXRlICo9IDQ7DQoNCkBAIC01MzQsNyArNTE2LDkgQEAgc3RhdGljIHZvaWQgZnNs
-X3FzcGlfc2VsZWN0X21lbShzdHJ1Y3QgZnNsX3FzcGkgKnEsIHN0cnVjdCBzcGlfZGV2aWNlICpz
-cGkpDQoNCiBzdGF0aWMgdm9pZCBmc2xfcXNwaV9yZWFkX2FoYihzdHJ1Y3QgZnNsX3FzcGkgKnEs
-IGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCiB7DQotICAgICAgIG1lbWNweV9mcm9taW8o
-b3AtPmRhdGEuYnVmLmluLCBxLT5haGJfYWRkciwgb3AtPmRhdGEubmJ5dGVzKTsNCisgICAgICAg
-bWVtY3B5X2Zyb21pbyhvcC0+ZGF0YS5idWYuaW4sDQorICAgICAgICAgICAgICAgICAgICAgcS0+
-YWhiX2FkZHIgKyBxLT5zZWxlY3RlZCAqIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplLA0K
-KyAgICAgICAgICAgICAgICAgICAgIG9wLT5kYXRhLm5ieXRlcyk7DQogfQ0KDQogc3RhdGljIHZv
-aWQgZnNsX3FzcGlfZmlsbF90eGZpZm8oc3RydWN0IGZzbF9xc3BpICpxLA0KQEAgLTYzNCw3ICs2
-MTgsOSBAQCBzdGF0aWMgaW50IGZzbF9xc3BpX2V4ZWNfb3Aoc3RydWN0IHNwaV9tZW0gKm1lbSwg
-Y29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KDQogICAgICAgIGZzbF9xc3BpX3NlbGVjdF9t
-ZW0ocSwgbWVtLT5zcGkpOw0KDQotICAgICAgIHFzcGlfd3JpdGVsKHEsIHEtPm1lbW1hcF9waHks
-IGJhc2UgKyBRVUFEU1BJX1NGQVIpOw0KKyAgICAgICBxc3BpX3dyaXRlbChxLA0KKyAgICAgICAg
-ICAgICAgICAgICBxLT5zZWxlY3RlZCAqIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplLA0K
-KyAgICAgICAgICAgICAgICAgICBiYXNlICsgUVVBRFNQSV9TRkFSKTsNCg0KICAgICAgICBxc3Bp
-X3dyaXRlbChxLCBxc3BpX3JlYWRsKHEsIGJhc2UgKyBRVUFEU1BJX01DUikgfA0KICAgICAgICAg
-ICAgICAgICAgICBRVUFEU1BJX01DUl9DTFJfUlhGX01BU0sgfCBRVUFEU1BJX01DUl9DTFJfVFhG
-X01BU0ssDQpAQCAtNzMzLDYgKzcxOSwxOSBAQCBzdGF0aWMgaW50IGZzbF9xc3BpX2RlZmF1bHRf
-c2V0dXAoc3RydWN0IGZzbF9xc3BpICpxKQ0KICAgICAgICAgICAgICAgICAgICBRVUFEU1BJX0JV
-RjNDUl9BREFUU1oocS0+ZGV2dHlwZV9kYXRhLT5haGJfYnVmX3NpemUgLyA4KSwNCiAgICAgICAg
-ICAgICAgICAgICAgYmFzZSArIFFVQURTUElfQlVGM0NSKTsNCg0KKyAgICAgICAvKg0KKyAgICAg
-ICAgKiBJbiBIVyB0aGVyZSBjYW4gYmUgYSBtYXhpbXVtIG9mIGZvdXIgY2hpcHMgb24gdHdvIGJ1
-c2VzIHdpdGgNCisgICAgICAgICogdHdvIGNoaXAgc2VsZWN0cyBvbiBlYWNoIGJ1cy4gV2UgdXNl
-IGZvdXIgY2hpcCBzZWxlY3RzIGluIFNXDQorICAgICAgICAqIHRvIGRpZmZlcmVudGlhdGUgYmV0
-d2VlbiB0aGUgZm91ciBjaGlwcy4NCisgICAgICAgICogV2UgdXNlIHRoZSBTRkExQUQsIFNGQTJB
-RCwgU0ZCMUFELCBTRkIyQUQgcmVnaXN0ZXJzIHRvIHNlbGVjdA0KKyAgICAgICAgKiB0aGUgY2hp
-cCB3ZSB3YW50IHRvIGFjY2Vzcy4NCisgICAgICAgICovDQorDQorICAgICAgIHFzcGlfd3JpdGVs
-KHEsIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplLCBiYXNlICsgUVVBRFNQSV9TRkExQUQp
-Ow0KKyAgICAgICBxc3BpX3dyaXRlbChxLCBxLT5kZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSAq
-IDIgLCBiYXNlICsgUVVBRFNQSV9TRkEyQUQpOw0KKyAgICAgICBxc3BpX3dyaXRlbChxLCBxLT5k
-ZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSAqIDMgLCBiYXNlICsgUVVBRFNQSV9TRkIxQUQpOw0K
-KyAgICAgICBxc3BpX3dyaXRlbChxLCBxLT5kZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSAqIDQg
-LCBiYXNlICsgUVVBRFNQSV9TRkIyQUQpOw0KKw0KICAgICAgICBxLT5zZWxlY3RlZCA9IC0xOw0K
-DQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdhdXINCg0KWy4uXQ0K
+From: kbuild test robot <fengguang.wu@intel.com>
+
+drivers/spi/spi-npcm-pspi.c:470:3-8: No need to set .owner here. The core will do it.
+
+ Remove .owner field if calls are used which set it automatically
+
+Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+
+Fixes: 2a22f1b30cee ("spi: npcm: add NPCM PSPI controller driver")
+CC: Tomer Maimon <tmaimon77@gmail.com>
+Signed-off-by: kbuild test robot <fengguang.wu@intel.com>
+---
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   f4ad10924cb922842beafe644dd1b2aa8fa55189
+commit: 2a22f1b30cee8d1e104a6c5062a609bedbfd5c39 [2986/3290] spi: npcm: add NPCM PSPI controller driver
+
+ spi-npcm-pspi.c |    1 -
+ 1 file changed, 1 deletion(-)
+
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -467,7 +467,6 @@ static struct platform_driver npcm_pspi_
+ 	.driver		= {
+ 		.name		= DRIVER_NAME,
+ 		.of_match_table	= npcm_pspi_match,
+-		.owner		= THIS_MODULE,
+ 	},
+ 	.probe		= npcm_pspi_probe,
+ 	.remove		= npcm_pspi_remove,

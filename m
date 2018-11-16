@@ -1,83 +1,108 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 0/7] spi: spi-mem: Add a direct mapping API
-Date: Thu, 15 Nov 2018 11:56:40 -0800
-Message-ID: <20181115195640.GP2089@sirena.org.uk>
-References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+From: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+Subject: Re: [PATCH 0/7] Raspberry Pi spi0 improvements
+Date: Thu, 15 Nov 2018 21:11:01 -0800
+Message-ID: <87r2flli8q.fsf@anholt.net>
+References: <cover.1541659680.git.lukas@wunner.de>
+ <7ba12f83-a78f-4827-b962-4b08cad341fa@gmail.com>
+ <20181114055121.5xpwxcu6a5qsgjqv@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2899751204274707696=="
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>, Piotr Bugalski <bugalski.piotr@gmail.com>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-mtd@lists.infradead.org,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181106160536.13415-1-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="===============7982950052250171217=="
+Cc: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20181114055121.5xpwxcu6a5qsgjqv-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============7982950052250171217==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
---===============2899751204274707696==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gbLSGltGDiWAAjZc"
-Content-Disposition: inline
-
-
---gbLSGltGDiWAAjZc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--=-=-=
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 06, 2018 at 05:05:29PM +0100, Boris Brezillon wrote:
-> Hello,
->=20
-> Here is a v3 addressing the comment I received from Yogesh on the
-> m25p80 modifications. Note that this part is still untested (I only
-> tested on a spinand device so far), so that'd be great if someone
-> could test it.
+Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> writes:
 
-The SPI bits are all fine FWIW, leaving for a bit longer for testing but
-I could also just apply those bits immediately and send a branch as I
-think it's the MTD bits that really need the testing?
+> On Tue, Nov 13, 2018 at 09:12:01PM -0800, Florian Fainelli wrote:
+>> On 11/7/2018 11:06 PM, Lukas Wunner wrote:
+>> > Here's a first batch of improvements for the spi0 master on the
+>> > Raspberry Pi.  The meat of the series is in its last two patches:
+>> >=20
+>> > * Patch [6/7] allows DMA for transfer buffers starting at an offset no=
+t a
+>> >   multiple of 4.  This overcomes a limitation affecting Ethernet drive=
+rs
+>> >   such as ks8851 which call netdev_alloc_skb_ip_align() to allocate
+>> >   deliberately unaligned receive buffers.
+>> >=20
+>> > * Patch [7/7] speeds up PIO transfers by not polling the RX FIFO when =
+it
+>> >   is known to contain data, or the TX FIFO when it is known to have fr=
+ee
+>> >   space.
+>>=20
+>> Do you have some performance numbers that you could share before/after,
+>> e.g: transfer latencies, number of interrupts and pure throughput?
+>
+> The throughput is primarily determined by the serial clock configured in
+> the DT for a specific SPI slave.  There's nothing we can improve there
+> in software.
+>
+> This series is about reducing CPU usage.  E.g. without patch [6/7],
+> transfer buffers not aligned to 32-bit are transmitted with programmed I/O
+> instead of DMA.  Thus, constantly receiving packets on a ks8851 Ethernet
+> chip with a serial clock of 20 MHz occupies 25% of a CPU on a RasPi 3
+> (for the ks8851 IRQ thread).  With the patch, it drops to a negligible
+> percentage.  The spi-bcm2835.c driver currently forces PIO even for
+> kmalloc'ed buffers which are always contiguous in physical memory,
+> i.e. for no reason at all.
 
---gbLSGltGDiWAAjZc
+With the whole series, I got an improvement in kmscube on my hx8357d spi
+panel and vc4 rendering from 5.9fps to 6.6fps.  No stats, but the
+numbers seem fairly stable between runs.
+
+--=-=-=
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvtz3cACgkQJNaLcl1U
-h9ADfgf/QL1xgnd6jTbOPn5LJ1fKcx/lVRNbwwD7H8MlI2XRTY2ozKTavuJ4H4XU
-0+WWgvbC7q4FbyEk+M9GukzMr0jlxY1efTqXH+tmQzgRTyuu+Rw1NG9uNPr+z/hP
-8RRzUmDQNSbLqU6XDO3o1BpkEltGDSEf5XXcB7SLHZPa04wzuRNp8nop3NlNrCFI
-o5F2MrEiv6rgy4zelTQPQJrRFWXgccgT4OKWqVnHLvwh9ZdkSrbl4CARHhm8SYuZ
-g1LQVxXyXmnEmdV8savJXNMZeAbJ9568qbIhqV6xUUqMz4Q/f1E/rMETqVr2EE3Y
-9GUs1Qw0KRoVSlajHo8Fc1KfOW7ghA==
-=P+G2
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlvuUWUACgkQtdYpNtH8
+nuiTPQ//f1mli40xsWMGIOshWzvumGqvHsUfSiF9aVrKBPTe9g12ezr0ZfbwoN0Q
+VZbCWelYEuNlZ809JdcDoLWDqlO7CorbzZHhSvXHKcbNiw5qC+cyHklrWAhqKPGo
+MqNJoLzbm6h3RPYwK4CzmxweSDP5s/p7d0MM0jm2cFFAbps9EeTw+bi0vSlf+zBm
+iDrUMDUlkX7ekjdRDG/qc3QTAWJlScUhX8fCPt5Pr3sgl7fhEEeGEk84AmGflUls
+deFdJszoLtrpI5EwMxeZ8YXtCiGYZQD8z4mjK28DsFHeSmqXxNTGZ4LOIYksMAj8
+RuZNJ7wdGA5SgO0qnIzdArSau9exg89DxFJCVp0bjZ21rZ8rjfGXEzBjMYpx7GiX
+h0IeSLIVxNG0ZBTUrjRaVEATfTeUfrf3KPrgimmo211icCO+3rwRzaGOFgpcpzv5
+wdo1irem1FVp+Hdji6USmsHcPXvmWuTjlyo/tM61N18FJu8f4wImcwDcvQL4yu/J
++i4QTYYluGPgVBM2tmVWxnD4I7HyUnvD1pAM35alvVC6Cpz9ikoELkWuE8Pq2r/p
+JLb7nPdFOlW60EzwO2jtnwzRWDa0P4bIxSZowqeopc2Okss/svfVWpc03wd6zgnz
+eRlTCXkJnl2QFbwp6aQO+vrlX1aG3dTLfhACx7GTaDS6txJ7tR0=
+=6c9b
 -----END PGP SIGNATURE-----
+--=-=-=--
 
---gbLSGltGDiWAAjZc--
 
-
---===============2899751204274707696==
+--===============7982950052250171217==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
 
---===============2899751204274707696==--
+--===============7982950052250171217==--

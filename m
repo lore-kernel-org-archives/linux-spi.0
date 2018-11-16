@@ -1,108 +1,173 @@
-From: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Subject: Re: [PATCH 0/7] Raspberry Pi spi0 improvements
-Date: Thu, 15 Nov 2018 21:11:01 -0800
-Message-ID: <87r2flli8q.fsf@anholt.net>
-References: <cover.1541659680.git.lukas@wunner.de>
- <7ba12f83-a78f-4827-b962-4b08cad341fa@gmail.com>
- <20181114055121.5xpwxcu6a5qsgjqv@wunner.de>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v5 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
+ controller
+Date: Fri, 16 Nov 2018 05:41:56 +0000
+Message-ID: <VI1PR04MB572631414249F5941C1646D999DD0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de>
+ <1542116782-13118-4-git-send-email-frieder.schrempf@kontron.de>
+ <VI1PR04MB572679944542ED6A438FD2FB99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <ce9cbfc0-3257-f117-aa21-cdee068579ce@kontron.de>
+ <65577d13-b17d-8f69-313c-01d23240d1d9@kontron.de>
+ <VI1PR04MB572664063A0E237D2EB7203A99C30@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <eb4b79be-c12b-16e7-e1dd-86a157cfdc7d@kontron.de>
+ <VI1PR04MB57265222E26C013D5D9C009B99DC0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <3e9aa917-cf3a-cf0e-8516-4e73d30eb2a1@kontron.de>
+ <20181115141252.52a5b32d@bbrezillon>
+ <11f45245-efc4-f1cf-3ead-578a5ca4bf29@kontron.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7982950052250171217=="
-Cc: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20181114055121.5xpwxcu6a5qsgjqv-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        David Wolfe <david.wolfe@nxp.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Schrempf Frieder <frieder.schrempf@kontron.De>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <11f45245-efc4-f1cf-3ead-578a5ca4bf29@kontron.de>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7982950052250171217==
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
-
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> writes:
-
-> On Tue, Nov 13, 2018 at 09:12:01PM -0800, Florian Fainelli wrote:
->> On 11/7/2018 11:06 PM, Lukas Wunner wrote:
->> > Here's a first batch of improvements for the spi0 master on the
->> > Raspberry Pi.  The meat of the series is in its last two patches:
->> >=20
->> > * Patch [6/7] allows DMA for transfer buffers starting at an offset no=
-t a
->> >   multiple of 4.  This overcomes a limitation affecting Ethernet drive=
-rs
->> >   such as ks8851 which call netdev_alloc_skb_ip_align() to allocate
->> >   deliberately unaligned receive buffers.
->> >=20
->> > * Patch [7/7] speeds up PIO transfers by not polling the RX FIFO when =
-it
->> >   is known to contain data, or the TX FIFO when it is known to have fr=
-ee
->> >   space.
->>=20
->> Do you have some performance numbers that you could share before/after,
->> e.g: transfer latencies, number of interrupts and pure throughput?
->
-> The throughput is primarily determined by the serial clock configured in
-> the DT for a specific SPI slave.  There's nothing we can improve there
-> in software.
->
-> This series is about reducing CPU usage.  E.g. without patch [6/7],
-> transfer buffers not aligned to 32-bit are transmitted with programmed I/O
-> instead of DMA.  Thus, constantly receiving packets on a ks8851 Ethernet
-> chip with a serial clock of 20 MHz occupies 25% of a CPU on a RasPi 3
-> (for the ks8851 IRQ thread).  With the patch, it drops to a negligible
-> percentage.  The spi-bcm2835.c driver currently forces PIO even for
-> kmalloc'ed buffers which are always contiguous in physical memory,
-> i.e. for no reason at all.
-
-With the whole series, I got an improvement in kmscube on my hx8357d spi
-panel and vc4 rendering from 5.9fps to 6.6fps.  No stats, but the
-numbers seem fairly stable between runs.
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlvuUWUACgkQtdYpNtH8
-nuiTPQ//f1mli40xsWMGIOshWzvumGqvHsUfSiF9aVrKBPTe9g12ezr0ZfbwoN0Q
-VZbCWelYEuNlZ809JdcDoLWDqlO7CorbzZHhSvXHKcbNiw5qC+cyHklrWAhqKPGo
-MqNJoLzbm6h3RPYwK4CzmxweSDP5s/p7d0MM0jm2cFFAbps9EeTw+bi0vSlf+zBm
-iDrUMDUlkX7ekjdRDG/qc3QTAWJlScUhX8fCPt5Pr3sgl7fhEEeGEk84AmGflUls
-deFdJszoLtrpI5EwMxeZ8YXtCiGYZQD8z4mjK28DsFHeSmqXxNTGZ4LOIYksMAj8
-RuZNJ7wdGA5SgO0qnIzdArSau9exg89DxFJCVp0bjZ21rZ8rjfGXEzBjMYpx7GiX
-h0IeSLIVxNG0ZBTUrjRaVEATfTeUfrf3KPrgimmo211icCO+3rwRzaGOFgpcpzv5
-wdo1irem1FVp+Hdji6USmsHcPXvmWuTjlyo/tM61N18FJu8f4wImcwDcvQL4yu/J
-+i4QTYYluGPgVBM2tmVWxnD4I7HyUnvD1pAM35alvVC6Cpz9ikoELkWuE8Pq2r/p
-JLb7nPdFOlW60EzwO2jtnwzRWDa0P4bIxSZowqeopc2Okss/svfVWpc03wd6zgnz
-eRlTCXkJnl2QFbwp6aQO+vrlX1aG3dTLfhACx7GTaDS6txJ7tR0=
-=6c9b
------END PGP SIGNATURE-----
---=-=-=--
-
-
---===============7982950052250171217==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============7982950052250171217==--
+SGkgRnJpZWRlciwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBTY2hy
+ZW1wZiBGcmllZGVyIFttYWlsdG86ZnJpZWRlci5zY2hyZW1wZkBrb250cm9uLkRlXQ0KPiBTZW50
+OiBUaHVyc2RheSwgTm92ZW1iZXIgMTUsIDIwMTggNzozMiBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5
+YW4gR2F1ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+DQo+IENjOiBCb3JpcyBCcmV6aWxs
+b24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT47IGxpbnV4LW10ZEBsaXN0cy5pbmZyYWRl
+YWQub3JnOw0KPiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOyBNYXJlayBWYXN1dCA8bWFyZWsu
+dmFzdXRAZ21haWwuY29tPjsgTWFyaw0KPiBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPjsgSGFu
+IFh1IDxoYW4ueHVAbnhwLmNvbT47DQo+IGR3bXcyQGluZnJhZGVhZC5vcmc7IGNvbXB1dGVyc2Zv
+cnBlYWNlQGdtYWlsLmNvbTsgcmljaGFyZEBub2QuYXQ7DQo+IG1pcXVlbC5yYXluYWxAYm9vdGxp
+bi5jb207IERhdmlkIFdvbGZlIDxkYXZpZC53b2xmZUBueHAuY29tPjsgRmFiaW8NCj4gRXN0ZXZh
+bSA8ZmFiaW8uZXN0ZXZhbUBueHAuY29tPjsgUHJhYmhha2FyIEt1c2h3YWhhDQo+IDxwcmFiaGFr
+YXIua3VzaHdhaGFAbnhwLmNvbT47IHNoYXduZ3VvQGtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBrZXJu
+ZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjUgMy85XSBzcGk6IEFk
+ZCBhIGRyaXZlciBmb3IgdGhlIEZyZWVzY2FsZS9OWFAgUXVhZFNQSQ0KPiBjb250cm9sbGVyDQo+
+IA0KPiBIaSBZb2dlc2gsDQo+IA0KPiBPbiAxNS4xMS4xOCAxNDoxMiwgQm9yaXMgQnJlemlsbG9u
+IHdyb3RlOg0KPiA+IE9uIFRodSwgMTUgTm92IDIwMTggMTE6NDM6MDUgKzAwMDANCj4gPiBTY2hy
+ZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uRGU+IHdyb3RlOg0KPiA+DQo+
+ID4+IE9uIDE1LjExLjE4IDA3OjIyLCBZb2dlc2ggTmFyYXlhbiBHYXVyIHdyb3RlOg0KPiA+Pj4g
+SGkgRnJpZWRlciwNCj4gPj4+DQo+ID4+PiBXaXRoIGJlbG93IHBhdGNoIG9uIHRvcCBvZiB5b3Vy
+IHY1LCBSZWFkL1dyaXRlL0VyYXNlIG9uIENTMSBpcyB3b3JraW5nDQo+IGZpbmUgZm9yIG1lLg0K
+PiA+Pg0KPiA+PiBPaywgYXJlIHlvdSBzdXJlLCB0aGF0IEFIQiByZWFkIGlzIHdvcmtpbmcgdG9v
+IHdpdGggdGhpcyBwYXRjaD8NCj4gPj4gWW91IGFyZSByZW1vdmluZyB0aGUgbWVtbWFwX3BoeSBv
+ZmZzZXQgZnJvbSBTRkFSIGFuZCB0aGUgU0ZYWEFEDQo+ID4+IHJlZ2lzdGVyIHZhbHVlcy4NCj4g
+Pj4NCj4gPj4gSSBjYW4gdW5kZXJzdGFuZCB0aGF0IHNlbGVjdGlvbiBvZiB0aGUgQ1MgYW5kIElQ
+IGNvbW1hbmRzIHdpbGwgd29yaw0KPiA+PiBsaWtlIHRoaXMsIGJ1dCBJIGNhbid0IHVuZGVyc3Rh
+bmQgaG93IEFIQiByZWFkIHNob3VsZCB3b3JrIHdpdGhvdXQNCj4gPj4gdGhlIGJhc2UgYWRkcmVz
+cyBvZiB0aGUgbWFwcGVkIG1lbW9yeS4NCj4gPj4NCj4gPj4gSSdtIGFmcmFpZCBJIHN0aWxsIGRv
+bid0IGZ1bGx5IHVuZGVyc3RhbmQgdGhlIGJhY2tncm91bmQgb2YgdGhlc2UNCj4gPj4gdGhpbmdz
+LA0KPiA+DQo+ID4gU2FtZSBoZXJlLiBZb2dlc2gsIGNhbiB5b3UgZ2l2ZSB1cyBtb3JlIGRldGFp
+bCBvbiB3aHkgeW91IGRlY2lkZWQgdG8NCj4gPiBkcm9wIHRoZSBtZW1tYXBfcGh5IG9mZnNldD8N
+Cj4gDQo+IFlvdXIgY2hhbmdlcyBkbyBub3Qgd29yayBvbiBteSBzZXR1cCAoaS5NWDZVTCkuIEl0
+IGxvb2tzIGxpa2UgeW91ciBoYXJkd2FyZSBpcw0KPiBkaWZmZXJlbnQuDQo+IA0KPiBJIGZvdW5k
+IHRoaXMgcGF0Y2ggZm9yIExTMjA4MEE6IFsxXS4gVGhpcyB3b3VsZCBleHBsYWluIHdoeSB5b3Ug
+bmVlZCB0byByZW1vdmUNCj4gdGhlIG9mZnNldCB0byBtYWtlIGl0IHdvcmsuDQo+IA0KPiBUbyB2
+ZXJpZnkgdGhpcywgY291bGQgeW91IHBsZWFzZSB0ZXN0IHlvdXIgc2V0dXAgd2l0aCB0aGUgY3Vy
+cmVudCBzcGktbm9yIGRyaXZlcg0KPiAoZnNsX3F1YWRzcGkuYykuIElmIG91ciBhc3N1bXB0aW9u
+cyBhcmUgcmlnaHQsIGl0IHNob3VsZCBvbmx5IHdvcmsgb24gQ1MwIGFuZCBDUzENCj4gd2l0aCBb
+MV0gYXBwbGllZC4NCj4gDQoNClllcywgSSBuZWVkIHRvIHJlbW92ZSB0aGUgb2Zmc2V0IHRvIG1h
+a2UgaXQgd29yayBhbmQgdGhpcyBpcyByZXF1aXJlZCBmb3IgdGhlIE5YUCBMYXllcnNjYXBlLTIu
+eCBTb0NzIGxpa2UgTFMyMDh4L0xzMTA4eCBldGMuDQoNCkkgaGF2ZSBtb2RpZmllZCB0aGUgcGF0
+Y2ggYW5kIGhhdmUgaW50cm9kdWNlZCBlbnRyeSBpbiBxdWlya3MgZm9yIGxzMjA4MGEuIFdpdGgg
+dGhpcyBSZWFkL1dyaXRlL0VyYXNlIGFyZSB3b3JraW5nIGZvciBtZSBmb3IgYm90aCBDUy4NCg0K
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtcXNwaS5jIGIvZHJpdmVycy9zcGkvc3Bp
+LWZzbC1xc3BpLmMNCmluZGV4IGNlNDVlOGUuLjVkMjZmNzMgMTAwNjQ0DQotLS0gYS9kcml2ZXJz
+L3NwaS9zcGktZnNsLXFzcGkuYw0KKysrIGIvZHJpdmVycy9zcGkvc3BpLWZzbC1xc3BpLmMNCkBA
+IC0xNzUsNiArMTc1LDkgQEANCiAvKiBUS1QyNDU2MTgsIHRoZSBjb250cm9sbGVyIGNhbm5vdCB3
+YWtlIHVwIGZyb20gd2FpdCBtb2RlICovDQogI2RlZmluZSBRVUFEU1BJX1FVSVJLX1RLVDI0NTYx
+OCAgICAgICAgICAgICAgICBCSVQoMykNCg0KKy8qIFFTUElfQU1CQV9CQVNFIGlzIGludGVybmFs
+bHkgYWRkZWQgYnkgU09DIGRlc2lnbiBmb3IgTFMtMi54IGFyY2hpdGVjdHVyZSAqLw0KKyNkZWZp
+bmUgUVVBRFNQSV9BTUJBX0JBU0VfSU5URVJOQUwgICAgIEJJVCg0KQ0KKw0KIHN0cnVjdCBmc2xf
+cXNwaV9kZXZ0eXBlX2RhdGEgew0KICAgICAgICB1bnNpZ25lZCBpbnQgcnhmaWZvOw0KICAgICAg
+ICB1bnNpZ25lZCBpbnQgdHhmaWZvOw0KQEAgLTIyNyw3ICsyMzAsNyBAQCBzdGF0aWMgY29uc3Qg
+c3RydWN0IGZzbF9xc3BpX2RldnR5cGVfZGF0YSBsczIwODBhX2RhdGEgPSB7DQogICAgICAgIC5y
+eGZpZm8gPSBTWl8xMjgsDQogICAgICAgIC50eGZpZm8gPSBTWl82NCwNCiAgICAgICAgLmFoYl9i
+dWZfc2l6ZSA9IFNaXzFLLA0KLSAgICAgICAucXVpcmtzID0gUVVBRFNQSV9RVUlSS19US1QyNTM4
+OTAsDQorICAgICAgIC5xdWlya3MgPSBRVUFEU1BJX1FVSVJLX1RLVDI1Mzg5MCB8IFFVQURTUElf
+QU1CQV9CQVNFX0lOVEVSTkFMLA0KICAgICAgICAubGl0dGxlX2VuZGlhbiA9IHRydWUsDQogfTsN
+Cg0KQEAgLTIzNSw2ICsyMzgsNyBAQCBzdHJ1Y3QgZnNsX3FzcGkgew0KICAgICAgICB2b2lkIF9f
+aW9tZW0gKmlvYmFzZTsNCiAgICAgICAgdm9pZCBfX2lvbWVtICphaGJfYWRkcjsNCiAgICAgICAg
+dTMyIG1lbW1hcF9waHk7DQorICAgICAgIHUzMiBhbWJhX2Jhc2VfYWRkcjsNCiAgICAgICAgc3Ry
+dWN0IGNsayAqY2xrLCAqY2xrX2VuOw0KICAgICAgICBzdHJ1Y3QgZGV2aWNlICpkZXY7DQogICAg
+ICAgIHN0cnVjdCBjb21wbGV0aW9uIGM7DQpAQCAtMjY0LDYgKzI2OCwxMSBAQCBzdGF0aWMgaW5s
+aW5lIGludCBuZWVkc193YWtldXBfd2FpdF9tb2RlKHN0cnVjdCBmc2xfcXNwaSAqcSkNCiAgICAg
+ICAgcmV0dXJuIHEtPmRldnR5cGVfZGF0YS0+cXVpcmtzICYgUVVBRFNQSV9RVUlSS19US1QyNDU2
+MTg7DQogfQ0KDQorc3RhdGljIGlubGluZSBpbnQgaGFzX2FkZGVkX2FtYmFfYmFzZV9pbnRlcm5h
+bChzdHJ1Y3QgZnNsX3FzcGkgKnEpDQorew0KKyAgICAgICByZXR1cm4gcS0+ZGV2dHlwZV9kYXRh
+LT5xdWlya3MgJiBRVUFEU1BJX0FNQkFfQkFTRV9JTlRFUk5BTDsNCit9DQorDQogLyoNCiAgKiBB
+biBJQyBidWcgbWFrZXMgaXQgbmVjZXNzYXJ5IHRvIHJlYXJyYW5nZSB0aGUgMzItYml0IGRhdGEu
+DQogICogTGF0ZXIgY2hpcHMsIHN1Y2ggYXMgSU1YNlNMWCwgaGF2ZSBmaXhlZCB0aGlzIGJ1Zy4N
+CkBAIC00ODksMjkgKzQ5OCwxMSBAQCBzdGF0aWMgdm9pZCBmc2xfcXNwaV9pbnZhbGlkYXRlKHN0
+cnVjdCBmc2xfcXNwaSAqcSkNCiBzdGF0aWMgdm9pZCBmc2xfcXNwaV9zZWxlY3RfbWVtKHN0cnVj
+dCBmc2xfcXNwaSAqcSwgc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkNCiB7DQogICAgICAgIHVuc2ln
+bmVkIGxvbmcgcmF0ZSA9IHNwaS0+bWF4X3NwZWVkX2h6Ow0KLSAgICAgICBpbnQgcmV0LCBpOw0K
+LSAgICAgICB1MzIgbWFwX2FkZHI7DQorICAgICAgIGludCByZXQ7DQoNCiAgICAgICAgaWYgKHEt
+PnNlbGVjdGVkID09IHNwaS0+Y2hpcF9zZWxlY3QpDQogICAgICAgICAgICAgICAgcmV0dXJuOw0K
+DQotICAgICAgIC8qDQotICAgICAgICAqIEluIEhXIHRoZXJlIGNhbiBiZSBhIG1heGltdW0gb2Yg
+Zm91ciBjaGlwcyBvbiB0d28gYnVzZXMgd2l0aA0KLSAgICAgICAgKiB0d28gY2hpcCBzZWxlY3Rz
+IG9uIGVhY2ggYnVzLiBXZSB1c2UgZm91ciBjaGlwIHNlbGVjdHMgaW4gU1cNCi0gICAgICAgICog
+dG8gZGlmZmVyZW50aWF0ZSBiZXR3ZWVuIHRoZSBmb3VyIGNoaXBzLg0KLSAgICAgICAgKiBXZSB1
+c2UgdGhlIFNGQTFBRCwgU0ZBMkFELCBTRkIxQUQsIFNGQjJBRCByZWdpc3RlcnMgdG8gc2VsZWN0
+DQotICAgICAgICAqIHRoZSBjaGlwIHdlIHdhbnQgdG8gYWNjZXNzLg0KLSAgICAgICAgKi8NCi0g
+ICAgICAgZm9yIChpID0gMDsgaSA8IDQ7IGkrKykgew0KLSAgICAgICAgICAgICAgIGlmIChpIDwg
+c3BpLT5jaGlwX3NlbGVjdCkNCi0gICAgICAgICAgICAgICAgICAgICAgIG1hcF9hZGRyID0gcS0+
+bWVtbWFwX3BoeTsNCi0gICAgICAgICAgICAgICBlbHNlDQotICAgICAgICAgICAgICAgICAgICAg
+ICBtYXBfYWRkciA9IHEtPm1lbW1hcF9waHkgKw0KLSAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAyICogcS0+ZGV2dHlwZV9kYXRhLT5haGJfYnVmX3NpemU7DQotDQotICAgICAgICAg
+ICAgICAgcXNwaV93cml0ZWwocSwgbWFwX2FkZHIsIHEtPmlvYmFzZSArIFFVQURTUElfU0ZBMUFE
+ICsgKGkgKiA0KSk7DQotICAgICAgIH0NCi0NCiAgICAgICAgaWYgKG5lZWRzXzR4X2Nsb2NrKHEp
+KQ0KICAgICAgICAgICAgICAgIHJhdGUgKj0gNDsNCg0KQEAgLTUzNCw3ICs1MjUsOSBAQCBzdGF0
+aWMgdm9pZCBmc2xfcXNwaV9zZWxlY3RfbWVtKHN0cnVjdCBmc2xfcXNwaSAqcSwgc3RydWN0IHNw
+aV9kZXZpY2UgKnNwaSkNCg0KIHN0YXRpYyB2b2lkIGZzbF9xc3BpX3JlYWRfYWhiKHN0cnVjdCBm
+c2xfcXNwaSAqcSwgY29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KIHsNCi0gICAgICAgbWVt
+Y3B5X2Zyb21pbyhvcC0+ZGF0YS5idWYuaW4sIHEtPmFoYl9hZGRyLCBvcC0+ZGF0YS5uYnl0ZXMp
+Ow0KKyAgICAgICBtZW1jcHlfZnJvbWlvKG9wLT5kYXRhLmJ1Zi5pbiwNCisgICAgICAgICAgICAg
+ICAgICAgICBxLT5haGJfYWRkciArIHEtPnNlbGVjdGVkICogcS0+ZGV2dHlwZV9kYXRhLT5haGJf
+YnVmX3NpemUsDQorICAgICAgICAgICAgICAgICAgICAgb3AtPmRhdGEubmJ5dGVzKTsNCiB9DQoN
+CiBzdGF0aWMgdm9pZCBmc2xfcXNwaV9maWxsX3R4ZmlmbyhzdHJ1Y3QgZnNsX3FzcGkgKnEsDQpA
+QCAtNjM0LDcgKzYyNyw5IEBAIHN0YXRpYyBpbnQgZnNsX3FzcGlfZXhlY19vcChzdHJ1Y3Qgc3Bp
+X21lbSAqbWVtLCBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQoNCiAgICAgICAgZnNsX3Fz
+cGlfc2VsZWN0X21lbShxLCBtZW0tPnNwaSk7DQoNCi0gICAgICAgcXNwaV93cml0ZWwocSwgcS0+
+bWVtbWFwX3BoeSwgYmFzZSArIFFVQURTUElfU0ZBUik7DQorICAgICAgIHFzcGlfd3JpdGVsKHEs
+IHEtPmFtYmFfYmFzZV9hZGRyICsNCisgICAgICAgICAgICAgICAgICAgcS0+c2VsZWN0ZWQgKiBx
+LT5kZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSwNCisgICAgICAgICAgICAgICAgICAgYmFzZSAr
+IFFVQURTUElfU0ZBUik7DQoNCiAgICAgICAgcXNwaV93cml0ZWwocSwgcXNwaV9yZWFkbChxLCBi
+YXNlICsgUVVBRFNQSV9NQ1IpIHwNCiAgICAgICAgICAgICAgICAgICAgUVVBRFNQSV9NQ1JfQ0xS
+X1JYRl9NQVNLIHwgUVVBRFNQSV9NQ1JfQ0xSX1RYRl9NQVNLLA0KQEAgLTczMyw2ICs3MjgsMjMg
+QEAgc3RhdGljIGludCBmc2xfcXNwaV9kZWZhdWx0X3NldHVwKHN0cnVjdCBmc2xfcXNwaSAqcSkN
+CiAgICAgICAgICAgICAgICAgICAgUVVBRFNQSV9CVUYzQ1JfQURBVFNaKHEtPmRldnR5cGVfZGF0
+YS0+YWhiX2J1Zl9zaXplIC8gOCksDQogICAgICAgICAgICAgICAgICAgIGJhc2UgKyBRVUFEU1BJ
+X0JVRjNDUik7DQoNCisgICAgICAgLyoNCisgICAgICAgICogSW4gSFcgdGhlcmUgY2FuIGJlIGEg
+bWF4aW11bSBvZiBmb3VyIGNoaXBzIG9uIHR3byBidXNlcyB3aXRoDQorICAgICAgICAqIHR3byBj
+aGlwIHNlbGVjdHMgb24gZWFjaCBidXMuIFdlIHVzZSBmb3VyIGNoaXAgc2VsZWN0cyBpbiBTVw0K
+KyAgICAgICAgKiB0byBkaWZmZXJlbnRpYXRlIGJldHdlZW4gdGhlIGZvdXIgY2hpcHMuDQorICAg
+ICAgICAqIFdlIHVzZSB0aGUgU0ZBMUFELCBTRkEyQUQsIFNGQjFBRCwgU0ZCMkFEIHJlZ2lzdGVy
+cyB0byBzZWxlY3QNCisgICAgICAgICogdGhlIGNoaXAgd2Ugd2FudCB0byBhY2Nlc3MuDQorICAg
+ICAgICAqLw0KKw0KKyAgICAgICBxc3BpX3dyaXRlbChxLCBxLT5hbWJhX2Jhc2VfYWRkciArIHEt
+PmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplLA0KKyAgICAgICAgICAgICAgICAgICBiYXNlICsg
+UVVBRFNQSV9TRkExQUQpOw0KKyAgICAgICBxc3BpX3dyaXRlbChxLCBxLT5hbWJhX2Jhc2VfYWRk
+ciArIHEtPmRldnR5cGVfZGF0YS0+YWhiX2J1Zl9zaXplICogMiwNCisgICAgICAgICAgICAgICAg
+ICAgYmFzZSArIFFVQURTUElfU0ZBMkFEKTsNCisgICAgICAgcXNwaV93cml0ZWwocSwgcS0+YW1i
+YV9iYXNlX2FkZHIgKyBxLT5kZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSAqIDMsDQorICAgICAg
+ICAgICAgICAgICAgIGJhc2UgKyBRVUFEU1BJX1NGQjFBRCk7DQorICAgICAgIHFzcGlfd3JpdGVs
+KHEsIHEtPmFtYmFfYmFzZV9hZGRyICsgcS0+ZGV2dHlwZV9kYXRhLT5haGJfYnVmX3NpemUgKiA0
+LA0KKyAgICAgICAgICAgICAgICAgICBiYXNlICsgUVVBRFNQSV9TRkIyQUQpOw0KKw0KICAgICAg
+ICBxLT5zZWxlY3RlZCA9IC0xOw0KDQogICAgICAgIC8qIEVuYWJsZSB0aGUgbW9kdWxlICovDQpA
+QCAtODI1LDYgKzgzNywxMSBAQCBzdGF0aWMgaW50IGZzbF9xc3BpX3Byb2JlKHN0cnVjdCBwbGF0
+Zm9ybV9kZXZpY2UgKnBkZXYpDQoNCiAgICAgICAgcS0+bWVtbWFwX3BoeSA9IHJlcy0+c3RhcnQ7
+DQoNCisgICAgICAgaWYgKGhhc19hZGRlZF9hbWJhX2Jhc2VfaW50ZXJuYWwocSkpDQorICAgICAg
+ICAgICAgICAgcS0+YW1iYV9iYXNlX2FkZHIgPSAwOw0KKyAgICAgICBlbHNlDQorICAgICAgICAg
+ICAgICAgcS0+YW1iYV9iYXNlX2FkZHIgPSBxLT5tZW1tYXBfcGh5Ow0KKw0KICAgICAgICAvKiBm
+aW5kIHRoZSBjbG9ja3MgKi8NCiAgICAgICAgcS0+Y2xrX2VuID0gZGV2bV9jbGtfZ2V0KGRldiwg
+InFzcGlfZW4iKTsNCiAgICAgICAgaWYgKElTX0VSUihxLT5jbGtfZW4pKSB7DQoNCi0tDQpSZWdh
+cmRzDQpZb2dlc2ggR2F1cg0KWy4uLl0NCg==

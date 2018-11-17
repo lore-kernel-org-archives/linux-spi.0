@@ -1,67 +1,84 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v5 5/9] dt-bindings: spi: Adjust the bindings for the FSL QSPI  driver
-Date: Fri, 16 Nov 2018 16:59:26 -0600
-Message-ID: <5bef4bcf.1c69fb81.39c0b.e18d@mx.google.com>
-References: <1542116782-13118-1-git-send-email-frieder.schrempf@kontron.de> <1542116782-13118-6-git-send-email-frieder.schrempf@kontron.de>
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.De>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning" to the spi tree
+Date: Sat, 17 Nov 2018 03:29:15 +0000 (GMT)
+Message-ID: <20181117032915.A847B440078@finisterre.ee.mobilebroadband>
+References: <20181115103209.20619-1-lkundrak@v3.sk>
+Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Lubomir Rintel <lkundrak@v3.sk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1542116782-13118-6-git-send-email-frieder.schrempf@kontron.de>
-CC: "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
-        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
-        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
-        "han.xu@nxp.com" <han.xu@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        Schrempf Frieder <frieder.schrempf@kontron.De>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+In-Reply-To: <20181115103209.20619-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 13 Nov 2018 13:47:37 +0000, Schrempf Frieder wrote:
-> Adjust the documentation of the new SPI memory interface based
-> driver to reflect the new drivers settings.
-> 
-> The "old" driver was using the "fsl,qspi-has-second-chip" property to
-> select one of two dual chip setups (two chips on one bus or two chips
-> on separate buses). And it used the order in which the subnodes are
-> defined in the dt to select the CS, the chip is connected to.
-> 
-> Both methods are wrong and in fact the "reg" property should be used to
-> determine which bus and CS a chip is connected to. This also enables us
-> to use different setups than just single chip, or symmetric dual chip.
-> 
-> So the porting of the driver from the MTD to the SPI framework actually
-> enforces the use of the "reg" properties and makes
-> "fsl,qspi-has-second-chip" superfluous.
-> 
-> As all boards that have "fsl,qspi-has-second-chip" set, also have
-> correct "reg" properties, the removal of this property shouldn't lead to
-> any incompatibilities.
-> 
-> The only compatibility issues I can see are with imx6sx-sdb.dts and
-> imx6sx-sdb-reva.dts, which have their reg properties set incorrectly
-> (see explanation here: [2]), all other boards should stay compatible.
-> 
-> Also the "big-endian" flag was removed, as this setting is now selected
-> by the driver, depending on which SoC is in use.
-> 
-> [2] https://patchwork.ozlabs.org/patch/922817/#1925445
-> 
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-> ---
->  .../devicetree/bindings/spi/spi-fsl-qspi.txt      | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
-> 
+The patch
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+   spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From f0915dfc44365b487a720d447ad3faa66de5205c Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Thu, 15 Nov 2018 11:32:09 +0100
+Subject: [PATCH] spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
+
+A careless oversight. Sorry.
+
+Fixes: 0a897143b7c9 ("spi: pxa2xx: Add slave mode support")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index e6a606354f62..d84b893a64d7 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1555,19 +1555,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	}
+ #endif
+ 
+-#if CONFIG_OF
+-	if (of_id) {
+-		pdata->is_slave = of_property_read_bool(pdev->dev.of_node,
+-								"spi-slave");
+-	}
+-#endif
+-
+ 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
+ 	ssp->irq = platform_get_irq(pdev, 0);
+ 	ssp->type = type;
+ 	ssp->pdev = pdev;
+ 	ssp->port_id = pxa2xx_spi_get_port_id(adev);
+ 
++	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+ 	pdata->num_chipselect = 1;
+ 	pdata->enable_dma = true;
+ 
+-- 
+2.19.1

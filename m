@@ -1,84 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning" to the spi tree
-Date: Sat, 17 Nov 2018 03:29:15 +0000 (GMT)
-Message-ID: <20181117032915.A847B440078@finisterre.ee.mobilebroadband>
-References: <20181115103209.20619-1-lkundrak@v3.sk>
-Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Lubomir Rintel <lkundrak@v3.sk>
+From: Olof Johansson <olof@lixom.net>
+Subject: [PATCH] spi: npcm: Fix uninitialized variable warning
+Date: Fri, 16 Nov 2018 19:55:04 -0800
+Message-ID: <20181117035504.95804-1-olof@lixom.net>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        opembmc@lists.ozlabs.org, Tomer Maimon <tmaimon77@gmail.com>,
+        Olof Johansson <olof@lixom.net>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181115103209.20619-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+The compiler has no way to know that rsize 1 or 2 are the only valid
+values. Also simplify the code a bit with early return.
 
-   spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
+The warning was:
 
-has been applied to the spi tree at
+drivers/spi/spi-npcm-pspi.c:215:6: warning: 'val' may be used uninitialized in this function [-Wmaybe-uninitialized]
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f0915dfc44365b487a720d447ad3faa66de5205c Mon Sep 17 00:00:00 2001
-From: Lubomir Rintel <lkundrak@v3.sk>
-Date: Thu, 15 Nov 2018 11:32:09 +0100
-Subject: [PATCH] spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
-
-A careless oversight. Sorry.
-
-Fixes: 0a897143b7c9 ("spi: pxa2xx: Add slave mode support")
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Olof Johansson <olof@lixom.net>
 ---
- drivers/spi/spi-pxa2xx.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/spi/spi-npcm-pspi.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index e6a606354f62..d84b893a64d7 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1555,19 +1555,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index 342178e282bcd..be0539cb19e49 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -217,15 +217,23 @@ static void npcm_pspi_recv(struct npcm_pspi *priv)
+ 	rsize = min(bytes_per_word(priv->bits_per_word), priv->rx_bytes);
+ 	priv->rx_bytes -= rsize;
+ 
+-	if (priv->rx_buf) {
+-		if (rsize == 1)
+-			val = ioread8(priv->base + NPCM_PSPI_DATA);
+-		if (rsize == 2)
+-			val = ioread16(priv->base + NPCM_PSPI_DATA);
++	if (!priv->rx_buf)
++		return;
+ 
+-		*priv->rx_buf = val;
+-		priv->rx_buf += rsize;
++	switch (rsize) {
++	case 1:
++		val = ioread8(priv->base + NPCM_PSPI_DATA);
++		break;
++	case 2:
++		val = ioread16(priv->base + NPCM_PSPI_DATA);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return;
  	}
- #endif
++
++	*priv->rx_buf = val;
++	priv->rx_buf += rsize;
+ }
  
--#if CONFIG_OF
--	if (of_id) {
--		pdata->is_slave = of_property_read_bool(pdev->dev.of_node,
--								"spi-slave");
--	}
--#endif
--
- 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
- 	ssp->irq = platform_get_irq(pdev, 0);
- 	ssp->type = type;
- 	ssp->pdev = pdev;
- 	ssp->port_id = pxa2xx_spi_get_port_id(adev);
- 
-+	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
- 	pdata->num_chipselect = 1;
- 	pdata->enable_dma = true;
- 
+ static int npcm_pspi_transfer_one(struct spi_master *master,
 -- 
-2.19.1
+2.11.0

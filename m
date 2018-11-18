@@ -1,54 +1,60 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 02/17] dt-bindings: olpc,xo1.75-ec: Add OLPC XO-1.75
- EC bindings
-Date: Sat, 17 Nov 2018 10:03:05 -0600
-Message-ID: <20181117160305.GA31494@bogus>
-References: <20181116162403.49854-1-lkundrak@v3.sk>
- <20181116162403.49854-3-lkundrak@v3.sk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Cameron <quozl@laptop.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-pm@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>
-To: Lubomir Rintel <lkundrak@v3.sk>
+From: Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH v1 1/1] spi: npcm: fix uninitialized 'val' warning in receive function
+Date: Sun, 18 Nov 2018 14:35:04 +0200
+Message-ID: <20181118123504.83082-2-tmaimon77@gmail.com>
+References: <20181118123504.83082-1-tmaimon77@gmail.com>
+Cc: linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Tomer Maimon <tmaimon77@gmail.com>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        yuenn@google.com, venture@google.com, brendanhiggins@google.com,
+        avifishman70@gmail.com, joel@jms.id.au
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181116162403.49854-3-lkundrak@v3.sk>
+In-Reply-To: <20181118123504.83082-1-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 16 Nov 2018 17:23:48 +0100, Lubomir Rintel wrote:
-> The OLPC XO-1.75 Embedded Controller is a SPI master that uses extra
-> signals for handshaking. It needs to know when is the slave (Linux)
-> side's TX FIFO ready for transfer (the ready-gpio signal on the SPI
-> controller node) and when does it wish to respond with a command (the
-> cmd-gpio property).
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> Acked-by: Pavel Machek <pavel@ucw.cz>
-> 
-> ---
-> Changes since v1:
-> - s/cmd-gpio/cmd-gpios/
-> - s/ready-gpio/ready-gpios/ in the documentation paragraph
-> - Remove status = "okay" from the example
-> 
->  .../bindings/misc/olpc,xo1.75-ec.txt          | 23 +++++++++++++++++++
->  1 file changed, 23 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.txt
-> 
+Fix uninitialized 'val' warning receive function, send function
+has been modify to be aligned with the receive function.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+---
+ drivers/spi/spi-npcm-pspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index 6dae91091143..f75df49ab84e 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -199,11 +199,11 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
+ 	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
+ 	priv->tx_bytes -= wsize;
+ 
+-	if (priv->tx_buf) {
+-		if (wsize == 1)
+-			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++	if (priv->tx_buf && wsize) {
+ 		if (wsize == 2)
+ 			iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++		else
++			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
+ 
+ 		priv->tx_buf += wsize;
+ 	}
+@@ -217,11 +217,11 @@ static void npcm_pspi_recv(struct npcm_pspi *priv)
+ 	rsize = min(bytes_per_word(priv->bits_per_word), priv->rx_bytes);
+ 	priv->rx_bytes -= rsize;
+ 
+-	if (priv->rx_buf) {
+-		if (rsize == 1)
+-			val = ioread8(priv->base + NPCM_PSPI_DATA);
++	if (priv->rx_buf && rsize) {
+ 		if (rsize == 2)
+ 			val = ioread16(priv->base + NPCM_PSPI_DATA);
++		else
++			val = ioread8(priv->base + NPCM_PSPI_DATA);
+ 
+ 		*priv->rx_buf = val;
+ 		priv->rx_buf += rsize;
+-- 
+2.14.1

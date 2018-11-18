@@ -1,32 +1,94 @@
-From: Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v1 0/1] npcm: fix uninitialized 'val' warning in receive function
-Date: Sun, 18 Nov 2018 14:35:03 +0200
-Message-ID: <20181118123504.83082-1-tmaimon77@gmail.com>
-Cc: linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Tomer Maimon <tmaimon77@gmail.com>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        yuenn@google.com, venture@google.com, brendanhiggins@google.com,
-        avifishman70@gmail.com, joel@jms.id.au
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH RFC 05/18] spi: spi-mem: mxic: Add support for DTR and
+ Octo mode
+Date: Sun, 18 Nov 2018 18:21:11 +0100
+Message-ID: <20181118182111.3c199434@xps13>
+References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
+ <20181012084825.23697-6-boris.brezillon@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
+ linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ Mason Yang <masonccyang@mxic.com.tw>,
+ Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181012084825.23697-6-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Addressed comments from:.
- - kbuild test robot : drivers/spi/spi-npcm-pspi.c:226:17: warning:
-  'val' may be used uninitialized in this function.
-  
-Fix uninitialized 'val' warning receive function.
-Send function has been modify to be aligned with 
-the receive function.
-
-The NPCM PSPI driver tested on NPCM750 evaluation board.
-
-Tomer Maimon (1):
-  spi: npcm: fix uninitialized 'val' warning in receive function
-
- drivers/spi/spi-npcm-pspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
--- 
-2.14.1
+SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
+d3JvdGUgb24gRnJpLCAxMiBPY3QgMjAxOAoxMDo0ODoxMiArMDIwMDoKCj4gU2lnbmVkLW9mZi1i
+eTogQm9yaXMgQnJlemlsbG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+Cj4gLS0tCj4g
+IGRyaXZlcnMvc3BpL3NwaS1teGljLmMgfCAyNyArKysrKysrKysrKysrKysrKysrKystLS0tLS0K
+PiAgMSBmaWxlIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCj4gCj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1teGljLmMgYi9kcml2ZXJzL3NwaS9zcGktbXhp
+Yy5jCj4gaW5kZXggY2U1OWVhMmVjZmUyLi43MGU2YmM5YTA5OWUgMTAwNjQ0Cj4gLS0tIGEvZHJp
+dmVycy9zcGkvc3BpLW14aWMuYwo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1teGljLmMKPiBAQCAt
+MjgxLDEwICsyODEsMTEgQEAgc3RhdGljIGludCBteGljX3NwaV9kYXRhX3hmZXIoc3RydWN0IG14
+aWNfc3BpICpteGljLCBjb25zdCB2b2lkICp0eGJ1ZiwKPiAgc3RhdGljIGJvb2wgbXhpY19zcGlf
+bWVtX3N1cHBvcnRzX29wKHN0cnVjdCBzcGlfbWVtICptZW0sCj4gIAkJCQkgICAgIGNvbnN0IHN0
+cnVjdCBzcGlfbWVtX29wICpvcCkKPiAgewo+IC0JaWYgKG9wLT5kYXRhLmJ1c3dpZHRoID4gNCB8
+fCBvcC0+YWRkci5idXN3aWR0aCA+IDQgfHwKPiAtCSAgICBvcC0+ZHVtbXkuYnVzd2lkdGggPiA0
+IHx8IG9wLT5jbWQuYnVzd2lkdGggPiA0KQo+ICsJaWYgKG9wLT5kYXRhLmJ1c3dpZHRoID4gOCB8
+fCBvcC0+YWRkci5idXN3aWR0aCA+IDggfHwKPiArCSAgICBvcC0+ZHVtbXkuYnVzd2lkdGggPiA4
+IHx8IG9wLT5jbWQuYnVzd2lkdGggPiA4KQo+ICAJCXJldHVybiBmYWxzZTsKPiAgCj4gKwoKRXh0
+cmEgc3BhY2UgaGVyZQoKPiAgCWlmIChvcC0+ZGF0YS5uYnl0ZXMgJiYgb3AtPmR1bW15Lm5ieXRl
+cyAmJgo+ICAJICAgIG9wLT5kYXRhLmJ1c3dpZHRoICE9IG9wLT5kdW1teS5idXN3aWR0aCkKPiAg
+CQlyZXR1cm4gZmFsc2U7Cj4gQEAgLTMwMiw2ICszMDMsNyBAQCBzdGF0aWMgaW50IG14aWNfc3Bp
+X21lbV9leGVjX29wKHN0cnVjdCBzcGlfbWVtICptZW0sCj4gIAlpbnQgbmlvID0gMSwgaSwgcmV0
+Owo+ICAJdTMyIHNzX2N0cmw7Cj4gIAl1OCBhZGRyWzhdOwo+ICsJdTggY21kWzJdOwo+ICAKPiAg
+CXJldCA9IG14aWNfc3BpX2Nsa19zZXR1cChtZW0tPnNwaSk7Cj4gIAlpZiAocmV0KQo+IEBAIC0z
+MTEsNiArMzEzLDggQEAgc3RhdGljIGludCBteGljX3NwaV9tZW1fZXhlY19vcChzdHJ1Y3Qgc3Bp
+X21lbSAqbWVtLAo+ICAJaWYgKHJldCkKPiAgCQlyZXR1cm4gcmV0Owo+ICAKPiArCWlmIChtZW0t
+PnNwaS0+bW9kZSAmIChTUElfUlhfT0NUTyB8IFNQSV9UWF9PQ1RPKSkKPiArCQluaW8gPSA4Owo+
+ICAJaWYgKG1lbS0+c3BpLT5tb2RlICYgKFNQSV9UWF9RVUFEIHwgU1BJX1JYX1FVQUQpKQo+ICAJ
+CW5pbyA9IDQ7Cj4gIAllbHNlIGlmIChtZW0tPnNwaS0+bW9kZSAmIChTUElfVFhfRFVBTCB8IFNQ
+SV9SWF9EVUFMKSkKPiBAQCAtMzIzLDE3ICszMjcsMjEgQEAgc3RhdGljIGludCBteGljX3NwaV9t
+ZW1fZXhlY19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLAo+ICAJICAgICAgIG14aWMtPnJlZ3MgKyBI
+Q19DRkcpOwo+ICAJd3JpdGVsKEhDX0VOX0JJVCwgbXhpYy0+cmVncyArIEhDX0VOKTsKPiAgCj4g
+LQlzc19jdHJsID0gT1BfQ01EX0JZVEVTKDEpIHwgT1BfQ01EX0JVU1coZmxzKG9wLT5jbWQuYnVz
+d2lkdGgpIC0gMSk7Cj4gKwlzc19jdHJsID0gT1BfQ01EX0JZVEVTKG9wLT5jbWQubmJ5dGVzKSB8
+Cj4gKwkJICBPUF9DTURfQlVTVyhmbHMob3AtPmNtZC5idXN3aWR0aCkgLSAxKSB8Cj4gKwkJICAo
+b3AtPmNtZC5kdHIgPyBPUF9DTURfRERSIDogMCk7Cj4gIAo+ICAJaWYgKG9wLT5hZGRyLm5ieXRl
+cykKPiAgCQlzc19jdHJsIHw9IE9QX0FERFJfQllURVMob3AtPmFkZHIubmJ5dGVzKSB8Cj4gLQkJ
+CSAgIE9QX0FERFJfQlVTVyhmbHMob3AtPmFkZHIuYnVzd2lkdGgpIC0gMSk7Cj4gKwkJCSAgIE9Q
+X0FERFJfQlVTVyhmbHMob3AtPmFkZHIuYnVzd2lkdGgpIC0gMSkgfAo+ICsJCQkgICAob3AtPmFk
+ZHIuZHRyID8gT1BfQUREUl9ERFIgOiAwKTsKPiAgCj4gIAlpZiAob3AtPmR1bW15Lm5ieXRlcykK
+PiAgCQlzc19jdHJsIHw9IE9QX0RVTU1ZX0NZQyhvcC0+ZHVtbXkubmJ5dGVzKTsKPiAgCj4gIAlp
+ZiAob3AtPmRhdGEubmJ5dGVzKSB7Cj4gLQkJc3NfY3RybCB8PSBPUF9EQVRBX0JVU1coZmxzKG9w
+LT5kYXRhLmJ1c3dpZHRoKSAtIDEpOwo+ICsJCXNzX2N0cmwgfD0gT1BfREFUQV9CVVNXKGZscyhv
+cC0+ZGF0YS5idXN3aWR0aCkgLSAxKSB8Cj4gKwkJCSAgIChvcC0+ZGF0YS5kdHIgPyBPUF9EQVRB
+X0REUiA6IDApOwo+ICAJCWlmIChvcC0+ZGF0YS5kaXIgPT0gU1BJX01FTV9EQVRBX0lOKQo+ICAJ
+CQlzc19jdHJsIHw9IE9QX1JFQUQ7Cj4gIAl9Cj4gQEAgLTM0Myw3ICszNTEsMTQgQEAgc3RhdGlj
+IGludCBteGljX3NwaV9tZW1fZXhlY19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLAo+ICAJd3JpdGVs
+KHJlYWRsKG14aWMtPnJlZ3MgKyBIQ19DRkcpIHwgSENfQ0ZHX01BTl9DU19BU1NFUlQsCj4gIAkg
+ICAgICAgbXhpYy0+cmVncyArIEhDX0NGRyk7Cj4gIAo+IC0JcmV0ID0gbXhpY19zcGlfZGF0YV94
+ZmVyKG14aWMsICZvcC0+Y21kLm9wY29kZSwgTlVMTCwgMSk7Cj4gKwlpZiAob3AtPmNtZC5uYnl0
+ZXMgPT0gMikgewo+ICsJCWNtZFswXSA9IG9wLT5jbWQub3Bjb2RlID4+IDg7Cj4gKwkJY21kWzFd
+ID0gb3AtPmNtZC5vcGNvZGU7Cj4gKwl9IGVsc2Ugewo+ICsJCWNtZFswXSA9IG9wLT5jbWQub3Bj
+b2RlOwo+ICsJfQoKSSBoYXZlbid0IHBsYXllZCB3aXRoIHRoaXMgY29kZSB5ZXQgYW5kIG1heWJl
+IEknbGwgcmVncmV0IHRoaXMgYnV0CndvdWxkbid0IGJlIGVhc2llciBmb3IgZGV2ZWxvcGVycyB0
+byBoYXZlIHRoaXMgaW4gcGF0Y2ggNDoKCiBzdHJ1Y3Qgc3BpX21lbV9vcCB7CiAJc3RydWN0IHsK
+KwkJdTggbmJ5dGVzOwogCQl1OCBidXN3aWR0aDsKIAkJYm9vbCBkdHI7Ci0JCXU4IG9wY29kZTsK
+KwkJdTggb3Bjb2RlWzJdOyAvKiA8LSBhbiBhcnJheSBvZiBvcGNvZGVzIGluc3RlYWQgb2YgYW4g
+dTE2PyAqLwogCX0gY21kOwoKVGhpcyB3YXkgSSB0aGluayB3ZSB3b3VsZCBhdm9pZCBlbmRpYW5u
+ZXNzIGNvbnNpZGVyYXRpb25zIGFuZCByZWFkaW5nCndvdWxkIGJlIGVhc2VkLgoKPiArCj4gKwly
+ZXQgPSBteGljX3NwaV9kYXRhX3hmZXIobXhpYywgY21kLCBOVUxMLCBvcC0+Y21kLm5ieXRlcyk7
+Cj4gIAlpZiAocmV0KQo+ICAJCWdvdG8gb3V0Owo+ICAKCgpUaGFua3MsCk1pcXXDqGwKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eCBN
+VEQgZGlzY3Vzc2lvbiBtYWlsaW5nIGxpc3QKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9saW51eC1tdGQvCg==

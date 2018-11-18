@@ -1,103 +1,69 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH RFC 05/18] spi: spi-mem: mxic: Add support for DTR and
- Octo mode
-Date: Sun, 18 Nov 2018 18:32:48 +0100
-Message-ID: <20181118183248.5ef63c04@bbrezillon>
-References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
- <20181012084825.23697-6-boris.brezillon@bootlin.com>
- <20181118182111.3c199434@xps13>
+From: Olof Johansson <olof@lixom.net>
+Subject: Re: [PATCH v1 1/1] spi: npcm: fix uninitialized 'val' warning in
+ receive function
+Date: Sun, 18 Nov 2018 13:38:05 -0800
+Message-ID: <CAOesGMjUJ1+qmbPWcVFm1F_F0fcdg-54YY6o4iK=PYWoAuEczA@mail.gmail.com>
+References: <20181118123504.83082-1-tmaimon77@gmail.com> <20181118123504.83082-2-tmaimon77@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
- Julien Su <juliensu@mxic.com.tw>, Richard Weinberger <richard@nod.at>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
- Mason Yang <masonccyang@mxic.com.tw>,
- Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181118182111.3c199434@xps13>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, yuenn@google.com,
+        venture@google.com, brendanhiggins@google.com,
+        avifishman70@gmail.com, Joel Stanley <joel@jms.id.au>,
+        linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+To: Tomer Maimon <tmaimon77@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181118123504.83082-2-tmaimon77@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU3VuLCAxOCBOb3YgMjAxOCAxODoyMToxMSArMDEwMApNaXF1ZWwgUmF5bmFsIDxtaXF1ZWwu
-cmF5bmFsQGJvb3RsaW4uY29tPiB3cm90ZToKCj4gSGkgQm9yaXMsCj4gCj4gQm9yaXMgQnJlemls
-bG9uIDxib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb20+IHdyb3RlIG9uIEZyaSwgMTIgT2N0IDIw
-MTgKPiAxMDo0ODoxMiArMDIwMDoKPiAKPiA+IFNpZ25lZC1vZmYtYnk6IEJvcmlzIEJyZXppbGxv
-biA8Ym9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tPgo+ID4gLS0tCj4gPiAgZHJpdmVycy9zcGkv
-c3BpLW14aWMuYyB8IDI3ICsrKysrKysrKysrKysrKysrKysrKy0tLS0tLQo+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCAyMSBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9zcGkvc3BpLW14aWMuYyBiL2RyaXZlcnMvc3BpL3NwaS1teGljLmMKPiA+
-IGluZGV4IGNlNTllYTJlY2ZlMi4uNzBlNmJjOWEwOTllIDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVy
-cy9zcGkvc3BpLW14aWMuYwo+ID4gKysrIGIvZHJpdmVycy9zcGkvc3BpLW14aWMuYwo+ID4gQEAg
-LTI4MSwxMCArMjgxLDExIEBAIHN0YXRpYyBpbnQgbXhpY19zcGlfZGF0YV94ZmVyKHN0cnVjdCBt
-eGljX3NwaSAqbXhpYywgY29uc3Qgdm9pZCAqdHhidWYsCj4gPiAgc3RhdGljIGJvb2wgbXhpY19z
-cGlfbWVtX3N1cHBvcnRzX29wKHN0cnVjdCBzcGlfbWVtICptZW0sCj4gPiAgCQkJCSAgICAgY29u
-c3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQo+ID4gIHsKPiA+IC0JaWYgKG9wLT5kYXRhLmJ1c3dp
-ZHRoID4gNCB8fCBvcC0+YWRkci5idXN3aWR0aCA+IDQgfHwKPiA+IC0JICAgIG9wLT5kdW1teS5i
-dXN3aWR0aCA+IDQgfHwgb3AtPmNtZC5idXN3aWR0aCA+IDQpCj4gPiArCWlmIChvcC0+ZGF0YS5i
-dXN3aWR0aCA+IDggfHwgb3AtPmFkZHIuYnVzd2lkdGggPiA4IHx8Cj4gPiArCSAgICBvcC0+ZHVt
-bXkuYnVzd2lkdGggPiA4IHx8IG9wLT5jbWQuYnVzd2lkdGggPiA4KQo+ID4gIAkJcmV0dXJuIGZh
-bHNlOwo+ID4gIAo+ID4gKyAgCj4gCj4gRXh0cmEgc3BhY2UgaGVyZQo+IAo+ID4gIAlpZiAob3At
-PmRhdGEubmJ5dGVzICYmIG9wLT5kdW1teS5uYnl0ZXMgJiYKPiA+ICAJICAgIG9wLT5kYXRhLmJ1
-c3dpZHRoICE9IG9wLT5kdW1teS5idXN3aWR0aCkKPiA+ICAJCXJldHVybiBmYWxzZTsKPiA+IEBA
-IC0zMDIsNiArMzAzLDcgQEAgc3RhdGljIGludCBteGljX3NwaV9tZW1fZXhlY19vcChzdHJ1Y3Qg
-c3BpX21lbSAqbWVtLAo+ID4gIAlpbnQgbmlvID0gMSwgaSwgcmV0Owo+ID4gIAl1MzIgc3NfY3Ry
-bDsKPiA+ICAJdTggYWRkcls4XTsKPiA+ICsJdTggY21kWzJdOwo+ID4gIAo+ID4gIAlyZXQgPSBt
-eGljX3NwaV9jbGtfc2V0dXAobWVtLT5zcGkpOwo+ID4gIAlpZiAocmV0KQo+ID4gQEAgLTMxMSw2
-ICszMTMsOCBAQCBzdGF0aWMgaW50IG14aWNfc3BpX21lbV9leGVjX29wKHN0cnVjdCBzcGlfbWVt
-ICptZW0sCj4gPiAgCWlmIChyZXQpCj4gPiAgCQlyZXR1cm4gcmV0Owo+ID4gIAo+ID4gKwlpZiAo
-bWVtLT5zcGktPm1vZGUgJiAoU1BJX1JYX09DVE8gfCBTUElfVFhfT0NUTykpCj4gPiArCQluaW8g
-PSA4Owo+ID4gIAlpZiAobWVtLT5zcGktPm1vZGUgJiAoU1BJX1RYX1FVQUQgfCBTUElfUlhfUVVB
-RCkpCj4gPiAgCQluaW8gPSA0Owo+ID4gIAllbHNlIGlmIChtZW0tPnNwaS0+bW9kZSAmIChTUElf
-VFhfRFVBTCB8IFNQSV9SWF9EVUFMKSkKPiA+IEBAIC0zMjMsMTcgKzMyNywyMSBAQCBzdGF0aWMg
-aW50IG14aWNfc3BpX21lbV9leGVjX29wKHN0cnVjdCBzcGlfbWVtICptZW0sCj4gPiAgCSAgICAg
-ICBteGljLT5yZWdzICsgSENfQ0ZHKTsKPiA+ICAJd3JpdGVsKEhDX0VOX0JJVCwgbXhpYy0+cmVn
-cyArIEhDX0VOKTsKPiA+ICAKPiA+IC0Jc3NfY3RybCA9IE9QX0NNRF9CWVRFUygxKSB8IE9QX0NN
-RF9CVVNXKGZscyhvcC0+Y21kLmJ1c3dpZHRoKSAtIDEpOwo+ID4gKwlzc19jdHJsID0gT1BfQ01E
-X0JZVEVTKG9wLT5jbWQubmJ5dGVzKSB8Cj4gPiArCQkgIE9QX0NNRF9CVVNXKGZscyhvcC0+Y21k
-LmJ1c3dpZHRoKSAtIDEpIHwKPiA+ICsJCSAgKG9wLT5jbWQuZHRyID8gT1BfQ01EX0REUiA6IDAp
-Owo+ID4gIAo+ID4gIAlpZiAob3AtPmFkZHIubmJ5dGVzKQo+ID4gIAkJc3NfY3RybCB8PSBPUF9B
-RERSX0JZVEVTKG9wLT5hZGRyLm5ieXRlcykgfAo+ID4gLQkJCSAgIE9QX0FERFJfQlVTVyhmbHMo
-b3AtPmFkZHIuYnVzd2lkdGgpIC0gMSk7Cj4gPiArCQkJICAgT1BfQUREUl9CVVNXKGZscyhvcC0+
-YWRkci5idXN3aWR0aCkgLSAxKSB8Cj4gPiArCQkJICAgKG9wLT5hZGRyLmR0ciA/IE9QX0FERFJf
-RERSIDogMCk7Cj4gPiAgCj4gPiAgCWlmIChvcC0+ZHVtbXkubmJ5dGVzKQo+ID4gIAkJc3NfY3Ry
-bCB8PSBPUF9EVU1NWV9DWUMob3AtPmR1bW15Lm5ieXRlcyk7Cj4gPiAgCj4gPiAgCWlmIChvcC0+
-ZGF0YS5uYnl0ZXMpIHsKPiA+IC0JCXNzX2N0cmwgfD0gT1BfREFUQV9CVVNXKGZscyhvcC0+ZGF0
-YS5idXN3aWR0aCkgLSAxKTsKPiA+ICsJCXNzX2N0cmwgfD0gT1BfREFUQV9CVVNXKGZscyhvcC0+
-ZGF0YS5idXN3aWR0aCkgLSAxKSB8Cj4gPiArCQkJICAgKG9wLT5kYXRhLmR0ciA/IE9QX0RBVEFf
-RERSIDogMCk7Cj4gPiAgCQlpZiAob3AtPmRhdGEuZGlyID09IFNQSV9NRU1fREFUQV9JTikKPiA+
-ICAJCQlzc19jdHJsIHw9IE9QX1JFQUQ7Cj4gPiAgCX0KPiA+IEBAIC0zNDMsNyArMzUxLDE0IEBA
-IHN0YXRpYyBpbnQgbXhpY19zcGlfbWVtX2V4ZWNfb3Aoc3RydWN0IHNwaV9tZW0gKm1lbSwKPiA+
-ICAJd3JpdGVsKHJlYWRsKG14aWMtPnJlZ3MgKyBIQ19DRkcpIHwgSENfQ0ZHX01BTl9DU19BU1NF
-UlQsCj4gPiAgCSAgICAgICBteGljLT5yZWdzICsgSENfQ0ZHKTsKPiA+ICAKPiA+IC0JcmV0ID0g
-bXhpY19zcGlfZGF0YV94ZmVyKG14aWMsICZvcC0+Y21kLm9wY29kZSwgTlVMTCwgMSk7Cj4gPiAr
-CWlmIChvcC0+Y21kLm5ieXRlcyA9PSAyKSB7Cj4gPiArCQljbWRbMF0gPSBvcC0+Y21kLm9wY29k
-ZSA+PiA4Owo+ID4gKwkJY21kWzFdID0gb3AtPmNtZC5vcGNvZGU7Cj4gPiArCX0gZWxzZSB7Cj4g
-PiArCQljbWRbMF0gPSBvcC0+Y21kLm9wY29kZTsKPiA+ICsJfSAgCj4gCj4gSSBoYXZlbid0IHBs
-YXllZCB3aXRoIHRoaXMgY29kZSB5ZXQgYW5kIG1heWJlIEknbGwgcmVncmV0IHRoaXMgYnV0Cj4g
-d291bGRuJ3QgYmUgZWFzaWVyIGZvciBkZXZlbG9wZXJzIHRvIGhhdmUgdGhpcyBpbiBwYXRjaCA0
-Ogo+IAo+ICBzdHJ1Y3Qgc3BpX21lbV9vcCB7Cj4gIAlzdHJ1Y3Qgewo+ICsJCXU4IG5ieXRlczsK
-PiAgCQl1OCBidXN3aWR0aDsKPiAgCQlib29sIGR0cjsKPiAtCQl1OCBvcGNvZGU7Cj4gKwkJdTgg
-b3Bjb2RlWzJdOyAvKiA8LSBhbiBhcnJheSBvZiBvcGNvZGVzIGluc3RlYWQgb2YgYW4gdTE2PyAq
-LwoKSnVzdCB3YW50ZWQgdG8gc3RheSBjb25zaXN0ZW50IHdpdGggd2hhdCB3ZSBoYXZlIGZvciB0
-aGUgYWRkcmVzcwpjeWNsZXMsIGJ1dCBtYXliZSBJIHNob3VsZCBjbGFyaWZ5IGhvdyB0aGUgb3Bj
-b2RlIHNob3VsZCBiZQp0cmFuc21pdHRlZCBvbiB0aGUgd2lyZSAoTVNCIGZpcnN0KS4KCj4gIAl9
-IGNtZDsKPiAKPiBUaGlzIHdheSBJIHRoaW5rIHdlIHdvdWxkIGF2b2lkIGVuZGlhbm5lc3MgY29u
-c2lkZXJhdGlvbnMgYW5kIHJlYWRpbmcKPiB3b3VsZCBiZSBlYXNlZC4KPiAKPiA+ICsKPiA+ICsJ
-cmV0ID0gbXhpY19zcGlfZGF0YV94ZmVyKG14aWMsIGNtZCwgTlVMTCwgb3AtPmNtZC5uYnl0ZXMp
-Owo+ID4gIAlpZiAocmV0KQo+ID4gIAkJZ290byBvdXQ7Cj4gPiAgICAKPiAKPiAKPiBUaGFua3Ms
-Cj4gTWlxdcOobAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpMaW51eCBNVEQgZGlzY3Vzc2lvbiBtYWlsaW5nIGxpc3QKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1tdGQvCg==
+On Sun, Nov 18, 2018 at 4:36 AM Tomer Maimon <tmaimon77@gmail.com> wrote:
+>
+> Fix uninitialized 'val' warning receive function, send function
+> has been modify to be aligned with the receive function.
+>
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+> ---
+>  drivers/spi/spi-npcm-pspi.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+> index 6dae91091143..f75df49ab84e 100644
+> --- a/drivers/spi/spi-npcm-pspi.c
+> +++ b/drivers/spi/spi-npcm-pspi.c
+> @@ -199,11 +199,11 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
+>         wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
+>         priv->tx_bytes -= wsize;
+>
+> -       if (priv->tx_buf) {
+> -               if (wsize == 1)
+> -                       iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
+> +       if (priv->tx_buf && wsize) {
+
+In general, doing an early:
+        if (!condition)
+                return;
+
+is a pattern we prefer in the kernel. Setting up the assumptions at
+the beginning of the function makes it easier to follow the code flow,
+and saves a level of indentation.
+
+It's a matter of taste though, and this function has only one level.
+So, either way is OK. Just mentioning it.
+
+>                 if (wsize == 2)
+>                         iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
+> +               else
+> +                       iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
+
+I think this is broken? If wsize is something else than 1 or 2, you'll
+do a one-byte write but advance the buffer pointer with a different
+amount.
+
+It'll be fairly tricky to debug if this ever happens (it shouldn't,
+but still). This is why I added a WARN_ON_ONCE() in my patch instead.
+
+
+-Olof

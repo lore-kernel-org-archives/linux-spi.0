@@ -1,58 +1,51 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v3 0/7] spi: spi-mem: Add a direct mapping API
-Date: Mon, 19 Nov 2018 22:13:22 +0100
-Message-ID: <20181119221322.2b449570@bbrezillon>
-References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
- <20181115195640.GP2089@sirena.org.uk>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH 1/2] spi: Add Renesas R-Car RPC SPI controller driver
+Date: Mon, 19 Nov 2018 23:10:04 +0100
+Message-ID: <cbbc3dba-7f85-c6a3-525f-01eb23e50592@gmail.com>
+References: <1542621690-10229-1-git-send-email-masonccyang@mxic.com.tw>
+ <1542621690-10229-2-git-send-email-masonccyang@mxic.com.tw>
+ <0223f43b-c6a6-eade-49af-4e7b7ef7f022@gmail.com>
+ <20181119152735.GB3535@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>, Piotr Bugalski <bugalski.piotr@gmail.com>,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-mtd@lists.infradead.org,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
+Cc: Mason Yang <masonccyang@mxic.com.tw>, tpiepho@impinj.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Simon Horman <horms@verge.net.au>, boris.brezillon@bootlin.com,
+        juliensu@mxic.com.tw, Geert Uytterhoeven <geert+renesas@glider.be>,
+        zhengxunli@mxic.com.tw
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181115195640.GP2089@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181119152735.GB3535@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-
-On Thu, 15 Nov 2018 11:56:40 -0800
-Mark Brown <broonie@kernel.org> wrote:
-
-> On Tue, Nov 06, 2018 at 05:05:29PM +0100, Boris Brezillon wrote:
-> > Hello,
-> > 
-> > Here is a v3 addressing the comment I received from Yogesh on the
-> > m25p80 modifications. Note that this part is still untested (I only
-> > tested on a spinand device so far), so that'd be great if someone
-> > could test it.  
+On 11/19/2018 04:27 PM, Mark Brown wrote:
+> On Mon, Nov 19, 2018 at 03:12:00PM +0100, Marek Vasut wrote:
+>> On 11/19/2018 11:01 AM, Mason Yang wrote:
 > 
-> The SPI bits are all fine FWIW, leaving for a bit longer for testing but
-> I could also just apply those bits immediately and send a branch as I
-> think it's the MTD bits that really need the testing?
+>>> +++ b/drivers/spi/spi-renesas-rpc.c
+>>> @@ -0,0 +1,750 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +//
+>>> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
+>>> +// Copyright (C) 2018 Macronix International Co., Ltd.
+>>> +//
+>>> +// R-Car D3 RPC SPI/QSPI/Octa driver
+>>> +//
+>>> +// Authors:
+>>> +//	Mason Yang <masonccyang@mxic.com.tw>
+>>> +//
+> 
+>> Fix multiline comment please.
+> 
+> The SPDX header needs to be C++ style so I push people to make the whole
+> block C++ otherwise it looks messy.
 
-Feel free to apply the SPI bits.
+OK, I'm not gonna wrestle you on this, but I think it looks horrible ;-)
 
-Regards,
-
-Boris
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+-- 
+Best regards,
+Marek Vasut

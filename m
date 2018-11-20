@@ -1,81 +1,68 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] dt-binding: spi: Document Renesas R-Car RPC
- controller bindings
-Date: Tue, 20 Nov 2018 09:07:44 +0100
-Message-ID: <CAMuHMdXhx2iudXaPQto-c1kYAYdKc1T9vMr5yYNqONJwoNmRCw@mail.gmail.com>
-References: <1542621690-10229-1-git-send-email-masonccyang@mxic.com.tw> <1542621690-10229-3-git-send-email-masonccyang@mxic.com.tw>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH 1/2] spi: Add Renesas R-Car RPC SPI controller driver
+Date: Tue, 20 Nov 2018 09:10:52 +0100
+Message-ID: <20181120091052.096ab7e3@bbrezillon>
+References: <1542621690-10229-1-git-send-email-masonccyang@mxic.com.tw>
+        <1542621690-10229-2-git-send-email-masonccyang@mxic.com.tw>
+        <CAMuHMdVjqkHsqEjEgBWg0eGtE-9ND+a=OeHwu=r39LrfkQq=Yw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, Trent Piepho <tpiepho@impinj.com>,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: masonccyang@mxic.com.tw, Mark Brown <broonie@kernel.org>,
+        Trent Piepho <tpiepho@impinj.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Simon Horman <horms@verge.net.au>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        juliensu@mxic.com.tw, Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1542621690-10229-3-git-send-email-masonccyang@mxic.com.tw>
+In-Reply-To: <CAMuHMdVjqkHsqEjEgBWg0eGtE-9ND+a=OeHwu=r39LrfkQq=Yw@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+On Tue, 20 Nov 2018 09:01:29 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-On Mon, Nov 19, 2018 at 11:02 AM Mason Yang <masonccyang@mxic.com.tw> wrote:
-> Document the bindings used by the Renesas R-Car D3 RPC controller.
->
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> > --- /dev/null
+> > +++ b/drivers/spi/spi-renesas-rpc.c
+> > @@ -0,0 +1,750 @@  
+> 
+> > +static int rpc_spi_set_freq(struct rpc_spi *rpc, unsigned long freq)
+> > +{
+> > +       int ret;
+> > +
+> > +       if (rpc->cur_speed_hz == freq)
+> > +               return 0;
+> > +
+> > +       clk_disable_unprepare(rpc->clk_rpc);
+> > +       ret = clk_set_rate(rpc->clk_rpc, freq);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       ret = clk_prepare_enable(rpc->clk_rpc);
+> > +       if (ret)
+> > +               return ret;  
+> 
+> The clk_{disable_unprepare,prepare_enable}() may be needed on the Macronix
+> controller you based this driver on, but will be futile on Renesas SoCs.
+> 
+> As the RPC is part of the CPG/MSSR clock domain, its clock will be controlled
+> by the Runtime PM.  As you've already called pm_runtime_get_sync() from your
+> .probe() calback, Runtime PM will have enabled the clock.
+> If you disable it manually, you create an imbalance between automatic and
+> manual clock control.
+> 
+> So please don't control the clock explicitly, but always use
+> pm_runtime_*() calls.
 
-Thanks for your patch
+More about that. The reason we did that on MXIC is that the clk rate
+can't be changed when the clk is enabled. So we have to
 
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> @@ -0,0 +1,33 @@
-> +Renesas R-Car D3 RPC controller Device Tree Bindings
+1/ explicitly disable the clk that has been enabled by runtime PM
+2/ set the new rate
+3/ re-enable the clk
 
-R-Car Gen3
-
-> +----------------------------------------------------
-> +
-> +Required properties:
-> +- compatible: should be "renesas,rpc-r8a77995"
-
-Please use "renesas,r8a77995-rpc".
-
-> +- #address-cells: should be 1
-> +- #size-cells: should be 0
-> +- reg: should contain 2 entries, one for the registers and one for the direct
-> +       mapping area
-> +- reg-names: should contain "rpc_regs" and "dirmap"
-> +- interrupts: interrupt line connected to the RPC SPI controller
-> +- clock-names: should contain "clk_rpc"
-> +- clocks: should contain 1 entries for the CPG Module 917 clocks
-
-... for the module's clock
-
-> +
-> +Example:
-> +
-> +       rpc: spi@ee200000 {
-> +               compatible = "renesas,rpc-r8a77995";
-> +               reg = <0 0xee200000 0 0x8100>, <0 0x08000000 0 0x4000000>;
-> +               reg-names = "rpc_regs", "dirmap";
-> +               clocks = <&cpg CPG_MOD 917>;
-> +               clock-names = "clk_rpc";
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-
-power-domains?
-resets?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+So the clk enable/disable are not unbalanced, but it's also true that
+this disable/set_rate/enable dance might be unneeded on your platform.

@@ -1,99 +1,64 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH 2/2] dt-binding: spi: Document Renesas R-Car RPC
- controller bindings
-Date: Tue, 20 Nov 2018 13:57:21 +0100
-Message-ID: <e7fd0653-75a7-249a-462a-18a7bf4616d1@gmail.com>
-References: <1542621690-10229-1-git-send-email-masonccyang@mxic.com.tw>
- <1542621690-10229-3-git-send-email-masonccyang@mxic.com.tw>
- <629a5d6f-5c13-9b24-1c21-461d09f1aa8a@gmail.com>
- <OFDD04CD59.10199EDD-ON4825834B.001E1390-4825834B.001F65DD@mxic.com.tw>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1 1/1] spi: npcm: fix uninitialized 'val' warning in
+ receive function
+Date: Tue, 20 Nov 2018 13:02:10 +0000
+Message-ID: <20181120130210.GA3894@sirena.org.uk>
+References: <20181118123504.83082-1-tmaimon77@gmail.com>
+ <20181118123504.83082-2-tmaimon77@gmail.com>
+ <CAOesGMjUJ1+qmbPWcVFm1F_F0fcdg-54YY6o4iK=PYWoAuEczA@mail.gmail.com>
+ <CAP6Zq1j46ch8UUxJkO7SnrHWyP3Y7g58Fodejr98WN-TW8jhEw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, tpiepho@impinj.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="T4sUOijqQbZv57TR"
+Cc: olof@lixom.net, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Patrick Venture <venture@google.com>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Joel Stanley <joel@jms.id.au>, linux-spi@vger.kernel.org,
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFDD04CD59.10199EDD-ON4825834B.001E1390-4825834B.001F65DD@mxic.com.tw>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <CAP6Zq1j46ch8UUxJkO7SnrHWyP3Y7g58Fodejr98WN-TW8jhEw@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/20/2018 06:42 AM, masonccyang@mxic.com.tw wrote:
-> Hi Marek,
-> 
-> Marek Vasut <marek.vasut@gmail.com> 已在 2018/11/19 下午 09:49:31 上寫入:
-> 
->> Marek Vasut <marek.vasut@gmail.com>
->> 2018/11/19 下午 09:49
->>
->> To
->>
->> Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
->> tpiepho@impinj.com, linux-kernel@vger.kernel.org, linux-
->> spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Simon Horman
->> <horms@verge.net.au>,
->>
->> cc
->>
->> boris.brezillon@bootlin.com, juliensu@mxic.com.tw, Geert
->> Uytterhoeven <geert+renesas@glider.be>, zhengxunli@mxic.com.tw
->>
->> Subject
->>
->> Re: [PATCH 2/2] dt-binding: spi: Document Renesas R-Car RPC
->> controller bindings
->>
->> On 11/19/2018 11:01 AM, Mason Yang wrote:
->> > Document the bindings used by the Renesas R-Car D3 RPC controller.
->> >
->> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> > ---
->> >  .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 33 +++++++++
->> +++++++++++++
->> >  1 file changed, 33 insertions(+)
->> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-
->> renesas-rpc.txt
->> >
->> > diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-
->> rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
->> > new file mode 100644
->> > index 0000000..8286cc8
->> > --- /dev/null
->> > +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
->> > @@ -0,0 +1,33 @@
->> > +Renesas R-Car D3 RPC controller Device Tree Bindings
->> > +----------------------------------------------------
->> > +
->> > +Required properties:
->> > +- compatible: should be "renesas,rpc-r8a77995"
->> > +- #address-cells: should be 1
->> > +- #size-cells: should be 0
->> > +- reg: should contain 2 entries, one for the registers and one
->> for the direct
->> > +       mapping area
->> > +- reg-names: should contain "rpc_regs" and "dirmap"
->> > +- interrupts: interrupt line connected to the RPC SPI controller
->>
->> Do you also plan to support the RPC HF mode ? And if so, how would that
->> look in the bindings ? I'd like to avoid having to redesign the bindings
->> later to handle both the SPI and HF modes.
->>
-> 
-> I patched this RPC SPI/Octa driver is for mx25uw51245g and you may also
-> refer to Boris's patch. [1][2][3]
 
-Does this mean the driver is specific to one particular kind of flash ?
+--T4sUOijqQbZv57TR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> [1] https://patchwork.kernel.org/cover/10638055/
-> [2] https://patchwork.kernel.org/patch/10638057/
-> [3] https://patchwork.kernel.org/patch/10638085/
+On Tue, Nov 20, 2018 at 12:51:19PM +0200, Tomer Maimon wrote:
 
+> We just tried to reduce the number of lines to minimum, so we have debug it
+> quite a lot (with all the numbers that can
+> get from priv->tx_bytes) and the only numbers that minimum function return
+> are 0, 1 or 2.
 
--- 
-Best regards,
-Marek Vasut
+> But in the end of the day,  we don't have an issue with your solution as
+> long it will be done also in the transfer function.
+
+In general it's better to have the code be obviously correct than to try
+to push down the line count - it saves people the effort of figuring out
+if things are safe every time they look at it.
+
+--T4sUOijqQbZv57TR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv0BdAACgkQJNaLcl1U
+h9ASIQf/cI3kpprBTkLEFxruAQbRVP4iqcAlySu6P7KxALXVKRtjn5bSW6zo68KR
+pdQQSaIy69W6iehi7+9YacuKmtJcDiqfRItJLuj5FK4PM0Wfv5SjLEs5oS5SahGi
++CZsjlLWD7IKm/eiBfgpujOh1SuuAhJd0VuuEFkWE9ICbZWqaXYNTa4+5UVjwKPJ
+FQqUz1BO7UYUZ9rsECcO0IpJBThxcdSrSl3UV5CAivmve0HEo3FTD6Os9wO8wAx1
+e5+3m35TBPjUatI3kdyB9PrQNSroqgGe5Ou3atz7GXwXPR5eA0Zt391/0I53kPsx
+vc11Ia8qPkKFJBlJQKYJRNzdRMdBXw==
+=b+mA
+-----END PGP SIGNATURE-----
+
+--T4sUOijqQbZv57TR--

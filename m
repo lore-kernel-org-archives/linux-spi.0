@@ -1,111 +1,77 @@
-From: Anatolij Gustschin <agust@denx.de>
-Subject: Re: [PATCH v2 1/3] usb: misc: add driver for FT232H based FPGA
- configuration devices
-Date: Tue, 20 Nov 2018 15:49:47 +0100
-Message-ID: <20181120154947.4dbc90d6@crub>
-References: <20181120002821.12794-1-agust@denx.de>
-        <20181120002821.12794-2-agust@denx.de>
-        <1542675372.30311.573.camel@impinj.com>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH 2/2] dt-binding: spi: Document Renesas R-Car RPC
+ controller bindings
+Date: Wed, 21 Nov 2018 02:51:08 +0100
+Message-ID: <163dfc15-71b2-fdbe-f872-f6c6e4c3e14e@gmail.com>
+References: <1542621690-10229-1-git-send-email-masonccyang@mxic.com.tw>
+ <1542621690-10229-3-git-send-email-masonccyang@mxic.com.tw>
+ <629a5d6f-5c13-9b24-1c21-461d09f1aa8a@gmail.com>
+ <OFDD04CD59.10199EDD-ON4825834B.001E1390-4825834B.001F65DD@mxic.com.tw>
+ <e7fd0653-75a7-249a-462a-18a7bf4616d1@gmail.com>
+ <OF26D8352D.B4B02BBE-ON4825834C.00043726-4825834C.0004E2F7@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-fpga@vger.kernel.org" <linux-fpga@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "atull@kernel.org" <atull@kernel.org>,
-        "mdf@kernel.org" <mdf@kernel.org>
-To: Trent Piepho <tpiepho@impinj.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, tpiepho@impinj.com,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1542675372.30311.573.camel@impinj.com>
+In-Reply-To: <OF26D8352D.B4B02BBE-ON4825834C.00043726-4825834C.0004E2F7@mxic.com.tw>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 20 Nov 2018 00:56:13 +0000
-Trent Piepho tpiepho@impinj.com wrote:
+On 11/21/2018 01:53 AM, masonccyang@mxic.com.tw wrote:
+> Hi Marek,
 
->On Tue, 2018-11-20 at 01:28 +0100, Anatolij Gustschin wrote:
->> Add USB interface driver for ARRI FPGA configuration devices based on
->> FTDI FT232H chip. Depending on USB PID the driver registers different
->> platform devices describing an FPGA configuration interface.  
->
->Is ARRI different than Arria?
+Hi,
 
-yes, ARRI is a company name.
+>> Marek Vasut <marek.vasut@gmail.com>
+>> 2018/11/20 下午 08:57
+>>
+>> >> > diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-
+>> >> rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+>> >> > new file mode 100644
+>> >> > index 0000000..8286cc8
+>> >> > --- /dev/null
+>> >> > +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+>> >> > @@ -0,0 +1,33 @@
+>> >> > +Renesas R-Car D3 RPC controller Device Tree Bindings
+>> >> > +----------------------------------------------------
+>> >> > +
+>> >> > +Required properties:
+>> >> > +- compatible: should be "renesas,rpc-r8a77995"
+>> >> > +- #address-cells: should be 1
+>> >> > +- #size-cells: should be 0
+>> >> > +- reg: should contain 2 entries, one for the registers and one
+>> >> for the direct
+>> >> > +       mapping area
+>> >> > +- reg-names: should contain "rpc_regs" and "dirmap"
+>> >> > +- interrupts: interrupt line connected to the RPC SPI controller
+>> >>
+>> >> Do you also plan to support the RPC HF mode ? And if so, how would that
+>> >> look in the bindings ? I'd like to avoid having to redesign the
+> bindings
+>> >> later to handle both the SPI and HF modes.
+>> >>
+>> >
+>> > I patched this RPC SPI/Octa driver is for mx25uw51245g and you may also
+>> > refer to Boris's patch. [1][2][3]
+>>
+>> Does this mean the driver is specific to one particular kind of flash ?
+>>
+> 
+> No, this driver supports all SPI flash, spi, qspi and octa flash.
+> 
+> The target is Octa 8-8-8 DDR2 mode once spi-nor layer is merged.[1][2][3]
 
->> +/* Use baudrate calculation borrowed from libftdi */
->> +static int ftdi_to_clkbits(int baudrate, unsigned int clk, int clk_div,  
->
->Linux uses unsigned values for clocks.  Does it make any sense to mix
->the unsigned clk with signed values?  Seems like baudrate and clk_div
->should also be unsigned.
+The HyperFlash must also be supported, cfr my previous comment that I'd
+like to avoid redesigning the bindings again when the HF mode is added.
 
-okay, will fix to unsigned.
-
->> +			   unsigned long *encoded_divisor)  
->
->unsigned long is an odd choice here.  Is there any to reason to use an
->unsigned long to store the result of right shifting a signed int
->(best_div)?  It can't be longer than a int, but it can be negative.
-
-okay, I'll change that to unsigned int.
-
->> +{
->> +	static const char frac_code[8] = { 0, 3, 2, 4, 1, 5, 6, 7 };
->> +	int best_baud = 0;
->> +	int div, best_div;
->> +
->> +	if (baudrate >= clk / clk_div) {
->> +		*encoded_divisor = 0;
->> +		best_baud = clk / clk_div;
->> +	} else if (baudrate >= clk / (clk_div + clk_div / 2)) {
->> +		*encoded_divisor = 1;
->> +		best_baud = clk / (clk_div + clk_div / 2);
->> +	} else if (baudrate >= clk / (2 * clk_div)) {
->> +		*encoded_divisor = 2;
->> +		best_baud = clk / (2 * clk_div);
->> +	} else {
->> +		/*
->> +		 * Divide by 16 to have 3 fractional bits and
->> +		 * one bit for rounding
->> +		 */
->> +		div = clk * 16 / clk_div / baudrate;
->> 
->> +		if (div & 1)	/* Decide if to round up or down */
->> +			best_div = div / 2 + 1;
->> +		else
->> +			best_div = div / 2;  
->
->In Linux we would write:
->
->best_div = DIV_ROUND_UP(div, 2);
->
->Though I think you can combine that with the above to get:
->
->best_div = DIV_ROUND_CLOSEST(clk * 8 / clk_div, baudrate);
->
->That what the above is trying to accomplish in a round about way
-
-will rework this, too. Thanks for suggestions.
-
->> +		if (best_div > 0x20000)
->> +			best_div = 0x1ffff;
-
->Looks like the above was probably supposed to be >=
-
-I'll check it.
-
->> +		best_baud = clk * 16 / clk_div / best_div;
->> +		if (best_baud & 1)	/* Decide if to round up or down */
->> +			best_baud = best_baud / 2 + 1;
->> +		else
->> +			best_baud = best_baud / 2;  
->
->Again, looks like a complicated way to round to the nearest.
-
-will change this, too.
-
-Thanks,
-Anatolij
+-- 
+Best regards,
+Marek Vasut

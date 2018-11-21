@@ -1,358 +1,54 @@
-From: Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH 3/3] spi: at91-usart: add DMA support
-Date: Wed, 21 Nov 2018 17:38:04 +0000
-Message-ID: <fe367c1a-700d-c6e3-6b09-ded1a47f2475@arm.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 2/3] dt-bindings: mfd: atmel-usart: add DMA bindings for
+ SPI mode
+Date: Wed, 21 Nov 2018 14:52:29 -0600
+Message-ID: <CAL_JsqLO_L+rTZh70nrpBMU1+CYKct7HhNY0gLGUnU7=JVRuQw@mail.gmail.com>
 References: <20181121112732.15690-1-radu_nicolae.pirea@upb.ro>
- <20181121112732.15690-4-radu_nicolae.pirea@upb.ro>
+ <20181121112732.15690-3-radu_nicolae.pirea@upb.ro> <CAL_JsqLNURZTWCb5WOyJvN-trUP9r-ueftwUOGWPnrEaQPBKSw@mail.gmail.com>
+ <20181121164820.GC12656@piout.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Radu Pirea <radu_nicolae.pirea@upb.ro>, richard.genoud@gmail.com,
-        lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        ludovic.desroches@microchip.co, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: radu_nicolae.pirea@upb.ro,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.co>,
+        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181121112732.15690-4-radu_nicolae.pirea@upb.ro>
-Content-Language: en-GB
+In-Reply-To: <20181121164820.GC12656@piout.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 21/11/2018 11:27, Radu Pirea wrote:
-> This patch adds support for DMA. Transfers are done with dma only if
-> they are longer than 16 bytes in order to achieve a better performance.
-> DMA setup introduces a little overhead and for transfers shorter than 16
-> bytes there is no performance improvement.
-> 
-> Signed-off-by: Radu Pirea <radu_nicolae.pirea@upb.ro>
-> ---
->   drivers/spi/spi-at91-usart.c | 223 ++++++++++++++++++++++++++++++++++-
->   1 file changed, 221 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-> index 0b07c746453d..4d908afeaec9 100644
-> --- a/drivers/spi/spi-at91-usart.c
-> +++ b/drivers/spi/spi-at91-usart.c
-> @@ -8,9 +8,12 @@
->   
->   #include <linux/clk.h>
->   #include <linux/delay.h>
-> +#include <linux/dmaengine.h>
-> +#include <linux/dma-direction.h>
+On Wed, Nov 21, 2018 at 10:48 AM Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+>
+> Hi Rob,
+>
+> On 21/11/2018 10:41:01-0600, Rob Herring wrote:
+> > > +Optional properties in serial and SPI mode:
+> > > +- dma bindings for dma transfer:
+> > > +       - dmas: DMA specifier, consisting of a phandle to DMA controller node,
+> > > +               memory peripheral interface and USART DMA channel ID, FIFO configuration.
+> > > +               Refer to dma.txt and atmel-dma.txt for details.
+> > > +       - dma-names: "rx" for RX channel, "tx" for TX channel.
+> >
+> > > +               dma-names = "tx", "rx";
+> >
+> > The dma-names should have a defined order.
+> >
+>
+> Why is that? Isn't the purpose of names to get rid of any particular
+> ordering?
 
-It looks rather odd to include this from a driver that isn't otherwise 
-touching anything from linux/dma-mapping.h.
+Because a fundamental rule of DT is the order is defined and
+important. The purpose was to allow for cases that had a variable
+number of entries, but even a variable number still have a defined
+order.
 
->   #include <linux/interrupt.h>
->   #include <linux/kernel.h>
->   #include <linux/module.h>
-> +#include <linux/of_platform.h>
->   #include <linux/of_gpio.h>
->   #include <linux/platform_device.h>
->   #include <linux/pm_runtime.h>
-> @@ -58,6 +61,8 @@
->   
->   #define US_INIT \
->   	(US_MR_SPI_MASTER | US_MR_CHRL | US_MR_CLKO | US_MR_WRDBT)
-> +#define US_DMA_MIN_BYTES       16
-> +#define US_DMA_TIMEOUT         (msecs_to_jiffies(1000))
->   
->   /* Register access macros */
->   #define at91_usart_spi_readl(port, reg) \
-> @@ -71,14 +76,19 @@
->   	writeb_relaxed((value), (port)->regs + US_##reg)
->   
->   struct at91_usart_spi {
-> +	struct platform_device  *mpdev;
->   	struct spi_transfer	*current_transfer;
->   	void __iomem		*regs;
->   	struct device		*dev;
->   	struct clk		*clk;
->   
-> +	struct completion	xfer_completion;
-> +
->   	/*used in interrupt to protect data reading*/
->   	spinlock_t		lock;
->   
-> +	phys_addr_t		phybase;
-> +
->   	int			irq;
->   	unsigned int		current_tx_remaining_bytes;
->   	unsigned int		current_rx_remaining_bytes;
-> @@ -87,8 +97,184 @@ struct at91_usart_spi {
->   	u32			status;
->   
->   	bool			xfer_failed;
-> +	bool			use_dma;
->   };
->   
-> +static void dma_callback(void *data)
-> +{
-> +	struct spi_controller   *ctlr = data;
-> +	struct at91_usart_spi   *aus = spi_master_get_devdata(ctlr);
-> +
-> +	at91_usart_spi_writel(aus, IER, US_IR_RXRDY);
-> +	aus->current_rx_remaining_bytes = 0;
-> +	complete(&aus->xfer_completion);
-> +}
-> +
-> +static bool at91_usart_spi_can_dma(struct spi_controller *ctrl,
-> +				   struct spi_device *spi,
-> +				   struct spi_transfer *xfer)
-> +{
-> +	struct at91_usart_spi *aus = spi_master_get_devdata(ctrl);
-> +
-> +	return aus->use_dma && xfer->len >= US_DMA_MIN_BYTES;
-> +}
-> +
-> +static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
-> +					struct at91_usart_spi *aus)
-> +{
-> +	struct dma_slave_config slave_config;
-> +	struct device *dev = &aus->mpdev->dev;
-> +	phys_addr_t phybase = aus->phybase;
-> +	dma_cap_mask_t mask;
-> +	int err = 0;
-> +
-> +	dma_cap_zero(mask);
-> +	dma_cap_set(DMA_SLAVE, mask);
-> +
-> +	ctlr->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-> +	if (IS_ERR_OR_NULL(ctlr->dma_tx)) {
-> +		if (IS_ERR(ctlr->dma_tx)) {
-> +			err = PTR_ERR(ctlr->dma_tx);
-> +			goto at91_usart_spi_error_clear;
-> +		}
-> +
-> +		dev_dbg(dev,
-> +			"DMA TX channel not available, SPI unable to use DMA\n");
-> +		err = -EBUSY;
-> +		goto at91_usart_spi_error_clear;
-> +	}
-> +
-> +	ctlr->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-> +	if (IS_ERR_OR_NULL(ctlr->dma_rx)) {
-> +		if (IS_ERR(ctlr->dma_rx)) {
-> +			err = PTR_ERR(ctlr->dma_rx);
-> +			goto at91_usart_spi_error;
-> +		}
-> +
-> +		dev_dbg(dev,
-> +			"DMA RX channel not available, SPI unable to use DMA\n");
-> +		err = -EBUSY;
-> +		goto at91_usart_spi_error;
-> +	}
-> +
-> +	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> +	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> +	slave_config.dst_addr = (dma_addr_t)phybase + US_THR;
-> +	slave_config.src_addr = (dma_addr_t)phybase + US_RHR;
-> +	slave_config.src_maxburst = 1;
-> +	slave_config.dst_maxburst = 1;
-> +	slave_config.device_fc = false;
-> +
-> +	slave_config.direction = DMA_DEV_TO_MEM;
-> +	if (dmaengine_slave_config(ctlr->dma_rx, &slave_config)) {
-> +		dev_err(&ctlr->dev,
-> +			"failed to configure rx dma channel\n");
-> +		err = -EINVAL;
-> +		goto at91_usart_spi_error;
-> +	}
-> +
-> +	slave_config.direction = DMA_MEM_TO_DEV;
-> +	if (dmaengine_slave_config(ctlr->dma_tx, &slave_config)) {
-> +		dev_err(&ctlr->dev,
-> +			"failed to configure tx dma channel\n");
-> +		err = -EINVAL;
-> +		goto at91_usart_spi_error;
-> +	}
-> +
-> +	aus->use_dma = true;
-> +	return 0;
-> +
-> +at91_usart_spi_error:
-> +	if (!IS_ERR_OR_NULL(ctlr->dma_tx))
-> +		dma_release_channel(ctlr->dma_tx);
-> +	if (!IS_ERR_OR_NULL(ctlr->dma_rx))
-> +		dma_release_channel(ctlr->dma_rx);
-> +	ctlr->dma_tx = NULL;
-> +	ctlr->dma_rx = NULL;
-> +
-> +at91_usart_spi_error_clear:
-> +	return err;
-> +}
-> +
-> +static void at91_usart_spi_release_dma(struct spi_controller *ctlr)
-> +{
-> +	if (ctlr->dma_rx)
-> +		dma_release_channel(ctlr->dma_rx);
-> +	if (ctlr->dma_tx)
-> +		dma_release_channel(ctlr->dma_tx);
-> +}
-> +
-> +static void at91_usart_spi_stop_dma(struct spi_controller *ctlr)
-> +{
-> +	if (ctlr->dma_rx)
-> +		dmaengine_terminate_all(ctlr->dma_rx);
-> +	if (ctlr->dma_tx)
-> +		dmaengine_terminate_all(ctlr->dma_tx);
-> +}
-> +
-> +static int at91_usart_spi_dma_transfer(struct spi_controller *ctlr,
-> +				       struct spi_transfer *xfer)
-> +{
-> +	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
-> +	struct dma_chan	 *rxchan = ctlr->dma_rx;
-> +	struct dma_chan *txchan = ctlr->dma_tx;
-> +	struct dma_async_tx_descriptor *rxdesc;
-> +	struct dma_async_tx_descriptor *txdesc;
-> +	dma_cookie_t cookie;
-> +
-> +	rxdesc = dmaengine_prep_slave_sg(rxchan,
-> +					 xfer->rx_sg.sgl,
-> +					 xfer->rx_sg.nents,
-> +					 DMA_FROM_DEVICE,
-
-Ah, this argument should be a dma_transfer_direction, not a 
-dma_data_direction (confusing I know, but they belong to different 
-APIs). I assume you mean DMA_DEV_TO_MEM here...
-
-> +					 DMA_PREP_INTERRUPT |
-> +					 DMA_CTRL_ACK);
-> +	if (!rxdesc)
-> +		goto at91_usart_spi_err_dma;
-> +
-> +	txdesc = dmaengine_prep_slave_sg(txchan,
-> +					 xfer->tx_sg.sgl,
-> +					 xfer->tx_sg.nents,
-> +					 DMA_TO_DEVICE,
-
-...and DMA_MEM_TO_DEV here.
-
-Robin.
-
-> +					 DMA_PREP_INTERRUPT |
-> +					 DMA_CTRL_ACK);
-> +	if (!txdesc)
-> +		goto at91_usart_spi_err_dma;
-> +
-> +	/* Disable RX interrupt */
-> +	at91_usart_spi_writel(aus, IDR, US_IR_RXRDY);
-> +
-> +	rxdesc->callback = dma_callback;
-> +	rxdesc->callback_param = ctlr;
-> +
-> +	cookie = rxdesc->tx_submit(rxdesc);
-> +	if (dma_submit_error(cookie))
-> +		goto at91_usart_spi_err_dma;
-> +
-> +	cookie = txdesc->tx_submit(txdesc);
-> +	if (dma_submit_error(cookie))
-> +		goto at91_usart_spi_err_dma;
-> +
-> +	rxchan->device->device_issue_pending(rxchan);
-> +	txchan->device->device_issue_pending(txchan);
-> +
-> +	return 0;
-> +
-> +at91_usart_spi_err_dma:
-> +	/* Enable RX interrupt if submission of any of descriptors fails
-> +	 * and fallback to PIO
-> +	 */
-> +	at91_usart_spi_writel(aus, IER, US_IR_RXRDY);
-> +	at91_usart_spi_stop_dma(ctlr);
-> +
-> +	return -ENOMEM;
-> +}
-> +
-> +static unsigned long at91_usart_spi_dma_timeout(struct at91_usart_spi *aus)
-> +{
-> +	return wait_for_completion_timeout(&aus->xfer_completion,
-> +					   US_DMA_TIMEOUT);
-> +}
-> +
->   static inline u32 at91_usart_spi_tx_ready(struct at91_usart_spi *aus)
->   {
->   	return aus->status & US_IR_TXRDY;
-> @@ -221,6 +407,8 @@ static int at91_usart_spi_transfer_one(struct spi_controller *ctlr,
->   				       struct spi_transfer *xfer)
->   {
->   	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
-> +	unsigned long dma_timeout = 0;
-> +	int ret = 0;
->   
->   	at91_usart_spi_set_xfer_speed(aus, xfer);
->   	aus->xfer_failed = false;
-> @@ -230,8 +418,25 @@ static int at91_usart_spi_transfer_one(struct spi_controller *ctlr,
->   
->   	while ((aus->current_tx_remaining_bytes ||
->   		aus->current_rx_remaining_bytes) && !aus->xfer_failed) {
-> -		at91_usart_spi_read_status(aus);
-> -		at91_usart_spi_tx(aus);
-> +		reinit_completion(&aus->xfer_completion);
-> +		if (at91_usart_spi_can_dma(ctlr, spi, xfer) &&
-> +		    !ret) {
-> +			ret = at91_usart_spi_dma_transfer(ctlr, xfer);
-> +			if (ret)
-> +				continue;
-> +
-> +			dma_timeout = at91_usart_spi_dma_timeout(aus);
-> +
-> +			if (WARN_ON(dma_timeout == 0)) {
-> +				dev_err(&spi->dev, "DMA transfer timeout\n");
-> +				return -EIO;
-> +			}
-> +			aus->current_tx_remaining_bytes = 0;
-> +		} else {
-> +			at91_usart_spi_read_status(aus);
-> +			at91_usart_spi_tx(aus);
-> +		}
-> +
->   		cpu_relax();
->   	}
->   
-> @@ -350,6 +555,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
->   	controller->transfer_one = at91_usart_spi_transfer_one;
->   	controller->prepare_message = at91_usart_spi_prepare_message;
->   	controller->unprepare_message = at91_usart_spi_unprepare_message;
-> +	controller->can_dma = at91_usart_spi_can_dma;
->   	controller->cleanup = at91_usart_spi_cleanup;
->   	controller->max_speed_hz = DIV_ROUND_UP(clk_get_rate(clk),
->   						US_MIN_CLK_DIV);
-> @@ -381,7 +587,17 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
->   	aus->spi_clk = clk_get_rate(clk);
->   	at91_usart_spi_init(aus);
->   
-> +	aus->phybase = regs->start;
-> +
-> +	aus->mpdev = to_platform_device(pdev->dev.parent);
-> +
-> +	ret = at91_usart_spi_configure_dma(controller, aus);
-> +	if (ret)
-> +		goto at91_usart_fail_dma;
-> +
->   	spin_lock_init(&aus->lock);
-> +	init_completion(&aus->xfer_completion);
-> +
->   	ret = devm_spi_register_master(&pdev->dev, controller);
->   	if (ret)
->   		goto at91_usart_fail_register_master;
-> @@ -394,6 +610,8 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
->   	return 0;
->   
->   at91_usart_fail_register_master:
-> +	at91_usart_spi_release_dma(controller);
-> +at91_usart_fail_dma:
->   	clk_disable_unprepare(clk);
->   at91_usart_spi_probe_fail:
->   	spi_master_put(controller);
-> @@ -458,6 +676,7 @@ static int at91_usart_spi_remove(struct platform_device *pdev)
->   	struct spi_controller *ctlr = platform_get_drvdata(pdev);
->   	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
->   
-> +	at91_usart_spi_release_dma(ctlr);
->   	clk_disable_unprepare(aus->clk);
->   
->   	return 0;
-> 
+Rob

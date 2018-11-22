@@ -1,7 +1,8 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v4 5/7] mtd: m25p80: add support of octo mode I/O transfer
-Date: Thu, 22 Nov 2018 05:14:54 +0000
-Message-ID: <1542863544-21257-6-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v4 6/7] spi: nxp-fspi: add octo mode flag bit for octal
+ support
+Date: Thu, 22 Nov 2018 05:15:00 +0000
+Message-ID: <1542863544-21257-7-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -28,9 +29,8 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for octo mode I/O data transfer based on the controller (spi)
-mode.
-Assign hw-capability mask bits for octo transfer.
+Add octo mode flags for octal I/O data transfer support.
+NXP FlexSPI controller supports 8 lines Rx/Tx data transfer.
 
 Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 ---
@@ -39,30 +39,25 @@ Changes for v4:
 Changes for v3:
 - Modified string 'octal' with 'octo'.
 Changes for v2:
-- Incorporated review comments of Boris.
+- None
 
- drivers/mtd/devices/m25p80.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index c4a1d04..6f3c280 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -195,7 +195,14 @@ static int m25p_probe(struct spi_mem *spimem)
- 	spi_mem_set_drvdata(spimem, flash);
- 	flash->spimem =3D spimem;
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index a35013b..f0d37e0 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -995,8 +995,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (!ctlr)
+ 		return -ENOMEM;
 =20
--	if (spi->mode & SPI_RX_QUAD) {
-+	if (spi->mode & SPI_RX_OCTO) {
-+		hwcaps.mask |=3D SNOR_HWCAPS_READ_1_1_8;
-+
-+		if (spi->mode & SPI_TX_OCTO)
-+			hwcaps.mask |=3D (SNOR_HWCAPS_READ_1_8_8 |
-+					SNOR_HWCAPS_PP_1_1_8 |
-+					SNOR_HWCAPS_PP_1_8_8);
-+	} else if (spi->mode & SPI_RX_QUAD) {
- 		hwcaps.mask |=3D SNOR_HWCAPS_READ_1_1_4;
+-	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD |
+-			  SPI_TX_DUAL | SPI_TX_QUAD;
++	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTO |
++			  SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTO;
 =20
- 		if (spi->mode & SPI_TX_QUAD)
+ 	f =3D spi_controller_get_devdata(ctlr);
+ 	f->dev =3D dev;
 --=20
 2.7.4

@@ -1,65 +1,114 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [PATCH 2/3] dt-bindings: mfd: atmel-usart: add DMA bindings for
- SPI mode
-Date: Wed, 21 Nov 2018 22:21:57 +0100
-Message-ID: <20181121212157.GD12656@piout.net>
-References: <20181121112732.15690-1-radu_nicolae.pirea@upb.ro>
- <20181121112732.15690-3-radu_nicolae.pirea@upb.ro>
- <CAL_JsqLNURZTWCb5WOyJvN-trUP9r-ueftwUOGWPnrEaQPBKSw@mail.gmail.com>
- <20181121164820.GC12656@piout.net>
- <CAL_JsqLO_L+rTZh70nrpBMU1+CYKct7HhNY0gLGUnU7=JVRuQw@mail.gmail.com>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v4 1/7] spi: add support for octo mode I/O data transfer
+Date: Thu, 22 Nov 2018 05:14:31 +0000
+Message-ID: <1542863544-21257-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+References: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: radu_nicolae.pirea@upb.ro,
-        Richard Genoud <richard.genoud@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.co>,
-        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Rob Herring <robh+dt@kernel.org>
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLO_L+rTZh70nrpBMU1+CYKct7HhNY0gLGUnU7=JVRuQw@mail.gmail.com>
+In-Reply-To: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 21/11/2018 14:52:29-0600, Rob Herring wrote:
-> On Wed, Nov 21, 2018 at 10:48 AM Alexandre Belloni
-> <alexandre.belloni@bootlin.com> wrote:
-> >
-> > Hi Rob,
-> >
-> > On 21/11/2018 10:41:01-0600, Rob Herring wrote:
-> > > > +Optional properties in serial and SPI mode:
-> > > > +- dma bindings for dma transfer:
-> > > > +       - dmas: DMA specifier, consisting of a phandle to DMA controller node,
-> > > > +               memory peripheral interface and USART DMA channel ID, FIFO configuration.
-> > > > +               Refer to dma.txt and atmel-dma.txt for details.
-> > > > +       - dma-names: "rx" for RX channel, "tx" for TX channel.
-> > >
-> > > > +               dma-names = "tx", "rx";
-> > >
-> > > The dma-names should have a defined order.
-> > >
-> >
-> > Why is that? Isn't the purpose of names to get rid of any particular
-> > ordering?
-> 
-> Because a fundamental rule of DT is the order is defined and
-> important. The purpose was to allow for cases that had a variable
-> number of entries, but even a variable number still have a defined
-> order.
-> 
+Add flags for Octo mode I/O data transfer
+Required for the SPI controller which can do the data transfer (TX/RX)
+on 8 data lines e.g. NXP FlexSPI controller.
+ SPI_TX_OCTO: transmit with 8 wires
+ SPI_RX_OCTO: receive with 8 wires
 
-Thank you for the clarification!
+Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+Changes for v4:
+- Rebase on top of v4.20-rc2
+Changes for v3:
+- Modified string 'octal' with 'octo'.
+- Add octo mode support in spi_setup().
+Changes for v2:
+- Incorporated review comments of Boris.
+---
+ drivers/spi/spi.c       | 12 ++++++++++--
+ include/linux/spi/spi.h |  4 +++-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6ca5940..af4e4c6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1617,6 +1617,9 @@ static int of_spi_parse_dt(struct spi_controller *ctl=
+r, struct spi_device *spi,
+ 		case 4:
+ 			spi->mode |=3D SPI_TX_QUAD;
+ 			break;
++		case 8:
++			spi->mode |=3D SPI_TX_OCTO;
++			break;
+ 		default:
+ 			dev_warn(&ctlr->dev,
+ 				"spi-tx-bus-width %d not supported\n",
+@@ -1635,6 +1638,9 @@ static int of_spi_parse_dt(struct spi_controller *ctl=
+r, struct spi_device *spi,
+ 		case 4:
+ 			spi->mode |=3D SPI_RX_QUAD;
+ 			break;
++		case 8:
++			spi->mode |=3D SPI_RX_OCTO;
++			break;
+ 		default:
+ 			dev_warn(&ctlr->dev,
+ 				"spi-rx-bus-width %d not supported\n",
+@@ -2823,7 +2829,8 @@ int spi_setup(struct spi_device *spi)
+ 	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
+ 	 */
+ 	if ((spi->mode & SPI_3WIRE) && (spi->mode &
+-		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
++		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTO |
++		 SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTO)))
+ 		return -EINVAL;
+ 	/* help drivers fail *cleanly* when they need options
+ 	 * that aren't supported with their current controller
+@@ -2832,7 +2839,8 @@ int spi_setup(struct spi_device *spi)
+ 	 */
+ 	bad_bits =3D spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
+ 	ugly_bits =3D bad_bits &
+-		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD);
++		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTO |
++		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTO);
+ 	if (ugly_bits) {
+ 		dev_warn(&spi->dev,
+ 			 "setup: ignoring unsupported mode bits %x\n",
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6be77fa..e2d69eb 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -154,7 +154,9 @@ struct spi_device {
+ #define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
+ #define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
+ #define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
+-#define SPI_CS_WORD	0x1000			/* toggle cs after each word */
++#define	SPI_CS_WORD	0x1000			/* toggle cs after each word */
++#define	SPI_TX_OCTO	0x2000			/* transmit with 8 wires */
++#define	SPI_RX_OCTO	0x4000			/* receive with 8 wires */
+ 	int			irq;
+ 	void			*controller_state;
+ 	void			*controller_data;
+--=20
+2.7.4

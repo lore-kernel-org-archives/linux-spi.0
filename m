@@ -1,7 +1,9 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v4 0/7] spi: add support for octo mode
-Date: Thu, 22 Nov 2018 05:14:25 +0000
-Message-ID: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v4 2/7] spi: spi-mem: add support for octo mode I/O data
+ transfer
+Date: Thu, 22 Nov 2018 05:14:37 +0000
+Message-ID: <1542863544-21257-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+References: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -22,79 +24,53 @@ To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1542863544-21257-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for octo mode IO data transfer.
-Micron flash, mt35xu512aba, supports octal mode data transfer and
-NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
+Add support for octo mode I/O data transfer in spi-mem framework.
 
-Patch series
-* Add support for octo mode flags and parsing of same in spi driver.
-* Add parsing logic for spi-mem framework and m25p80.c device file.
-* Add opcodes for octo I/O commands in spi-nor framework, Read and Write pr=
-oto for (1-1-8/1-8-8) mode.
-  Opcodes are added as per octal data IO commands required for mt35xu512aba=
- [1] flash.
-* Add mode bit required for octo mode in nxp-fspi driver [2].
-* Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
-
-Tested on LX2160ARDB target with nxp-fspi driver, below are
-Read performance number of 1-1-1 and 1-1-8 read protocol.
-
- root@lxxx:~# cat /proc/mtd
- dev:    size   erasesize  name
- mtd0: 04000000 00001000 "spi0.0"
- mtd1: 04000000 00001000 "spi0.1"
- root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
- Copied 16777216 bytes from address 0x00000000 in flash to 0read
-
- real    0m2.792s
- user    0m0.000s
- sys     0m2.790s
- root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
- Copied 16777216 bytes from address 0x00000000 in flash to 0read
-
- real    0m0.441s
- user    0m0.000s
- sys     0m0.440s
- root@ls1012ardb:~#
-
- Flash device MTD0 configured in 1-1-1 protocol.
- Flash device MTD1 configured in 1-1-8 protocol.
-
-[1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70384&sta=
-te=3D*
-[2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D76402
-
-Yogesh Gaur (7):
-  spi: add support for octo mode I/O data transfer
-  spi: spi-mem: add support for octo mode I/O data transfer
-  mtd: spi-nor: add opcodes for octo Read/Write commands
-  mtd: spi-nor: add octo read flag for flash mt35xu512aba
-  mtd: m25p80: add support of octo mode I/O transfer
-  spi: nxp-fspi: add octo mode flag bit for octal support
-  arm64: dts: lx2160a: update fspi node
-
+Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
 Changes for v4:
-- Rebase on top of v4.20-rc2.
-- Modify octo entries enum value in spi.h.
+- None
 Changes for v3:
-- Add octo mode support in spi_setup().
-- Rename all patches with 'octal' string modified as 'octo'.
+- Modified string 'octal' with 'octo'.
 Changes for v2:
-- Incorporated review comments of Boris and Vignesh.
+- Patch added in v2 version.
 
- arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
- drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
- drivers/mtd/spi-nor/spi-nor.c                     | 15 ++++++++++++++-
- drivers/spi/spi-mem.c                             |  9 ++++++++-
- drivers/spi/spi-nxp-fspi.c                        |  4 ++--
- drivers/spi/spi.c                                 | 12 ++++++++++--
- include/linux/mtd/spi-nor.h                       |  8 ++++++++
- include/linux/spi/spi.h                           |  4 +++-
- 8 files changed, 57 insertions(+), 8 deletions(-)
+ drivers/spi/spi-mem.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 62a7b80..388f849 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -12,7 +12,7 @@
+=20
+ #include "internals.h"
+=20
+-#define SPI_MEM_MAX_BUSWIDTH		4
++#define SPI_MEM_MAX_BUSWIDTH		8
+=20
+ /**
+  * spi_controller_dma_map_mem_op_data() - DMA-map the buffer attached to a
+@@ -121,6 +121,13 @@ static int spi_check_buswidth_req(struct spi_mem *mem,=
+ u8 buswidth, bool tx)
+=20
+ 		break;
+=20
++	case 8:
++		if ((tx && (mode & SPI_TX_OCTO)) ||
++		    (!tx && (mode & SPI_RX_OCTO)))
++			return 0;
++
++		break;
++
+ 	default:
+ 		break;
+ 	}
 --=20
 2.7.4

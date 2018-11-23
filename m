@@ -1,35 +1,71 @@
-From: Anatolij Gustschin <agust@denx.de>
-Subject: Re: [PATCH] usb: misc: fix boolconv.cocci warnings
-Date: Fri, 23 Nov 2018 16:29:49 +0100
-Message-ID: <20181123162949.0ca117d0@crub>
-References: <alpine.DEB.2.21.1811211832430.2779@hadrien>
-        <20181123151054.GA18175@kroah.com>
+From: Radu Nicolae Pirea <radu_nicolae.pirea@upb.ro>
+Subject: Re: [PATCH 2/3] dt-bindings: mfd: atmel-usart: add DMA bindings for
+ SPI mode
+Date: Fri, 23 Nov 2018 18:07:40 +0200
+Message-ID: <975b9de554cea6f905afd1f54a2d5510c2e24bd4.camel@upb.ro>
+References: <20181121112732.15690-1-radu_nicolae.pirea@upb.ro>
+         <20181121112732.15690-3-radu_nicolae.pirea@upb.ro>
+         <CAL_JsqLNURZTWCb5WOyJvN-trUP9r-ueftwUOGWPnrEaQPBKSw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Julia Lawall <julia.lawall@lip6.fr>, linux-usb@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-kernel@vger.kernel.org, broonie@kernel.org, atull@kernel.org,
-        mdf@kernel.org, kbuild-all@01.org
-To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Richard Genoud <richard.genoud@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.co>,
+        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Rob Herring <robh+dt@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181123151054.GA18175@kroah.com>
+In-Reply-To: <CAL_JsqLNURZTWCb5WOyJvN-trUP9r-ueftwUOGWPnrEaQPBKSw@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 23 Nov 2018 16:10:54 +0100
-Greg KH gregkh@linuxfoundation.org wrote:
-...
->> Fixes: 0772a5bf580c ("usb: misc: add driver for FT232H based FPGA configuration devices")  
->
->I can't find this commit anywhere, nor the file that this patch touches.
->
->What tree is it in?
+On Wed, 2018-11-21 at 10:41 -0600, Rob Herring wrote:
+> On Wed, Nov 21, 2018 at 5:29 AM Radu Pirea <radu_nicolae.pirea@upb.ro
+> > wrote:
+> > The bindings for DMA are now common for both drivers of the USART
+> > IP.
+> > 
+> > The node given as an example for USART in SPI mode has been updated
+> > in
+> > order to include DMA bindings.
+> > 
+> > Signed-off-by: Radu Pirea <radu_nicolae.pirea@upb.ro>
+> > ---
+> >  .../devicetree/bindings/mfd/atmel-usart.txt       | 15 ++++++++++-
+> > ----
+> >  1 file changed, 10 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+> > b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+> > index 7f0cd72f47d2..8ad008175343 100644
+> > --- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+> > +++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+> > @@ -17,17 +17,19 @@ Required properties for USART in SPI mode:
+> >  - cs-gpios: chipselects (internal cs not supported)
+> >  - atmel,usart-mode : Must be <AT91_USART_MODE_SPI> (found in dt-
+> > bindings/mfd/at91-usart.h)
+> > 
+> > +Optional properties in serial and SPI mode:
+> > +- dma bindings for dma transfer:
+> > +       - dmas: DMA specifier, consisting of a phandle to DMA
+> > controller node,
+> > +               memory peripheral interface and USART DMA channel
+> > ID, FIFO configuration.
+> > +               Refer to dma.txt and atmel-dma.txt for details.
+> > +       - dma-names: "rx" for RX channel, "tx" for TX channel.
+> > +               dma-names = "tx", "rx";
+> 
+> The dma-names should have a defined order.
 
-This new driver was submitted to the lists and is not in mainline
-tree yet. It was committed to some tree for build testing the
-submitted patches, it seems.
+Thanks Rob.
+I will specify in bindings a fixed order for dmas and dma-names.
 
-Thanks,
-
-Anatolij
+> 
+> Rob

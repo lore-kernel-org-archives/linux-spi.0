@@ -1,64 +1,57 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH v6 1/9] ARM: dts: Reflect change of FSL QSPI driver and
- remove unused properties
-Date: Tue, 27 Nov 2018 12:01:34 +0100
-Message-ID: <20181127110134.7xdwo7ird44qj2ih@pengutronix.de>
-References: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
- <1543314174-28580-2-git-send-email-frieder.schrempf@kontron.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 0/1] add SPI driver support for mt7629
+Date: Tue, 27 Nov 2018 11:43:24 +0000
+Message-ID: <20181127114324.GA3206@sirena.org.uk>
+References: <1543285790-11379-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "marek.vasut@
-To: Schrempf Frieder <frieder.schrempf@kontron.de>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, ryder.lee@mediatek.com
+To: Leilk Liu <leilk.liu@mediatek.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1543314174-28580-2-git-send-email-frieder.schrempf@kontron.de>
+In-Reply-To: <1543285790-11379-1-git-send-email-leilk.liu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
 
-On Tue, Nov 27, 2018 at 10:24:19AM +0000, Schrempf Frieder wrote:
-> The FSL QSPI driver will be moved to the SPI framework and it then
-> acts as a SPI controller. Therefore the subnodes need to set
-> spi-[rx/tx]-bus-width = <4>, so quad mode is used just as before.
-> 
-> Also the properties 'bus-num', 'fsl,spi-num-chipselects' and
-> 'fsl,spi-flash-chipselects' were never read by the driver and
-> can be removed.
-> 
-> The 'reg' properties are adjusted to reflect what bus and
-> chipselect the flash is connected to, as the new driver needs
-> this information.
-> 
-> The property 'fsl,qspi-has-second-chip' is not needed anymore
-> and will be removed after the old driver was disabled to avoid
-> breaking ls1021a-moxa-uc-8410a.dts.
-> 
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-do we need to change the binding document accordingly?
+On Tue, Nov 27, 2018 at 10:29:49AM +0800, Leilk Liu wrote:
+> From cf719ac350c36cb58e2013b58f73ad04f6981384 Mon Sep 17 00:00:00 2001
+> From: Leilk Liu <leilk.liu@mediatek.com>
+> Date: Tue, 27 Nov 2018 10:18:30 +0800
+> Subject: [PATCH v2 0/1] add SPI driver support for mt7629
+>=20
+> v2:
+> remove "mediatek,mt7629-spi" compatible according Matthias's advice.
 
-Best regards
-Uwe
+Please don't send cover letters for single patches, if there is anything
+that needs saying put it in the changelog of the patch or after the ---
+if it's administrative stuff.  This reduces mail volume and ensures that=20
+any important information is recorded in the changelog rather than being
+lost.=20
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+--RnlQjJ0d97Da+TV1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv9LdsACgkQJNaLcl1U
+h9DaMQf+M5cu0Zb2/dENEP6o5v7mVH7OBjhuL8YgALsv8xX+mjDdgGbEsY6Y3EzR
+EWNY63wGZNCCm5Z043Tus5ydXXjYMWTpy5EXSNRk5tH1B97jTxUNMEBHX9qjWvQq
+QqVkactN22X6g2zYOfl/cJ1FlCnENgriobKXbWlhmkuA02qJtVjL/o7WrwFETNZp
+F37eUSc1/5txuMl4o7jJpg/8eB0VtaHtDqDrN7lFc0aHIDlPlIUFtDPWkA0eDYx9
+zcRgnRdoqhG2VMZefG+KTXJJaRlOE5RANRQEbCffpLZDIFYLPThAhM4GdhiRmup1
+RMDHEjOcgQX4wEsCnMvm0db4JIMDNg==
+=eCFa
+-----END PGP SIGNATURE-----
+
+--RnlQjJ0d97Da+TV1--

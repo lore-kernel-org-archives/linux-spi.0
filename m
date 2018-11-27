@@ -1,8 +1,8 @@
 From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: [PATCH v6 7/9] ARM: dts: ls1021a: Remove fsl,qspi-has-second-chip as
- it is not used
-Date: Tue, 27 Nov 2018 10:24:36 +0000
-Message-ID: <1543314174-28580-8-git-send-email-frieder.schrempf@kontron.de>
+Subject: [PATCH v6 9/9] MAINTAINERS: Move the Freescale QSPI driver to the SPI
+ framework
+Date: Tue, 27 Nov 2018 10:24:50 +0000
+Message-ID: <1543314174-28580-10-git-send-email-frieder.schrempf@kontron.de>
 References: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -18,45 +18,45 @@ Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
         "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
         "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
         "han.xu@nxp.com" <han.xu@nxp.com>,
-        "Schrempf Frieder" <frieder.schrempf@kontron.de>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        Schrempf Frieder <frieder.schrempf@kontron.de>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
 To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-After switching to the new FSL QSPI driver the property
-'fsl,qspi-has-second-chip' is not needed anymore.
-
-The driver now uses the 'reg' property to determine the bus and
-the chipselect.
+The driver was ported to the SPI framework so it can be used as
+a generic SPI memory driver and not only for SPI NOR.
+Reflect this transition in the MAINTAINERS file.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-index 6a83f30..d3a1a73 100644
---- a/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-+++ b/arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dts
-@@ -203,7 +203,6 @@
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f485597..1ff3c5b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5932,9 +5932,9 @@ F:	Documentation/devicetree/bindings/ptp/ptp-qoriq.txt
  
- &qspi {
--	fsl,qspi-has-second-chip;
- 	status = "okay";
+ FREESCALE QUAD SPI DRIVER
+ M:	Han Xu <han.xu@nxp.com>
+-L:	linux-mtd@lists.infradead.org
++L:	linux-spi@vger.kernel.org
+ S:	Maintained
+-F:	drivers/mtd/spi-nor/fsl-quadspi.c
++F:	drivers/spi/spi-fsl-qspi.c
  
- 	flash: flash@0 {
+ FREESCALE QUICC ENGINE LIBRARY
+ M:	Qiang Zhao <qiang.zhao@nxp.com>
 -- 
 2.7.4

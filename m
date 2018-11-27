@@ -1,58 +1,145 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH v6 1/9] ARM: dts: Reflect change of FSL QSPI driver and
- remove unused properties
-Date: Tue, 27 Nov 2018 14:51:07 +0000
-Message-ID: <145763f0-1e5c-3886-a11f-b37677715989@kontron.de>
-References: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
- <1543314174-28580-2-git-send-email-frieder.schrempf@kontron.de>
- <20181127110134.7xdwo7ird44qj2ih@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "han.xu@nxp.com" <han.xu@nxp.com>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-To: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-        <u.kleine-koenig@pengutronix.de>
+From: Anatolij Gustschin <agust@denx.de>
+Subject: [PATCH v3 0/3] Add support for ARRI FPGA configuration
+Date: Tue, 27 Nov 2018 18:54:35 +0100
+Message-ID: <20181127175438.16116-1-agust@denx.de>
+Cc: gregkh@linuxfoundation.org, broonie@kernel.org, atull@kernel.org,
+        mdf@kernel.org
+To: linux-usb@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181127110134.7xdwo7ird44qj2ih@pengutronix.de>
-Content-Language: en-US
-Content-ID: <5841465BB16FB44B85413D4E8E3104D8@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVXdlLA0KDQpJIGFjY2lkZW50YWxseSByZXBsaWVkIHRvIHRoZSBNVEQgbGlzdCBvbmx5LCBt
-aXNzaW5nIHRoZSBvdGhlciANCnJlY2lwaWVudHMsIGVhcmxpZXIgdG9kYXkuIFNvIGhlcmUgY29t
-ZXMgdGhlIHJlcGx5IGFnYWluLg0KDQpPbiAyNy4xMS4xOCAxMjowMSwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6DQo+IEhlbGxvLA0KPiANCj4gT24gVHVlLCBOb3YgMjcsIDIwMTggYXQgMTA6MjQ6
-MTlBTSArMDAwMCwgU2NocmVtcGYgRnJpZWRlciB3cm90ZToNCj4+IFRoZSBGU0wgUVNQSSBkcml2
-ZXIgd2lsbCBiZSBtb3ZlZCB0byB0aGUgU1BJIGZyYW1ld29yayBhbmQgaXQgdGhlbg0KPj4gYWN0
-cyBhcyBhIFNQSSBjb250cm9sbGVyLiBUaGVyZWZvcmUgdGhlIHN1Ym5vZGVzIG5lZWQgdG8gc2V0
-DQo+PiBzcGktW3J4L3R4XS1idXMtd2lkdGggPSA8ND4sIHNvIHF1YWQgbW9kZSBpcyB1c2VkIGp1
-c3QgYXMgYmVmb3JlLg0KPj4NCj4+IEFsc28gdGhlIHByb3BlcnRpZXMgJ2J1cy1udW0nLCAnZnNs
-LHNwaS1udW0tY2hpcHNlbGVjdHMnIGFuZA0KPj4gJ2ZzbCxzcGktZmxhc2gtY2hpcHNlbGVjdHMn
-IHdlcmUgbmV2ZXIgcmVhZCBieSB0aGUgZHJpdmVyIGFuZA0KPj4gY2FuIGJlIHJlbW92ZWQuDQo+
-Pg0KPj4gVGhlICdyZWcnIHByb3BlcnRpZXMgYXJlIGFkanVzdGVkIHRvIHJlZmxlY3Qgd2hhdCBi
-dXMgYW5kDQo+PiBjaGlwc2VsZWN0IHRoZSBmbGFzaCBpcyBjb25uZWN0ZWQgdG8sIGFzIHRoZSBu
-ZXcgZHJpdmVyIG5lZWRzDQo+PiB0aGlzIGluZm9ybWF0aW9uLg0KPj4NCj4+IFRoZSBwcm9wZXJ0
-eSAnZnNsLHFzcGktaGFzLXNlY29uZC1jaGlwJyBpcyBub3QgbmVlZGVkIGFueW1vcmUNCj4+IGFu
-ZCB3aWxsIGJlIHJlbW92ZWQgYWZ0ZXIgdGhlIG9sZCBkcml2ZXIgd2FzIGRpc2FibGVkIHRvIGF2
-b2lkDQo+PiBicmVha2luZyBsczEwMjFhLW1veGEtdWMtODQxMGEuZHRzLg0KPj4NCj4+IFNpZ25l
-ZC1vZmYtYnk6IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVkZXIuc2NocmVtcGZAa29udHJvbi5kZT4N
-Cj4gDQo+IGRvIHdlIG5lZWQgdG8gY2hhbmdlIHRoZSBiaW5kaW5nIGRvY3VtZW50IGFjY29yZGlu
-Z2x5Pw0KDQpCaW5kaW5ncyBhcmUgY2hhbmdlZCBoZXJlOiBodHRwczovL3BhdGNod29yay5vemxh
-YnMub3JnL3BhdGNoLzEwMDM3NjEvDQoNClRoYW5rcywNCkZyaWVkZXI=
+This series adds drivers and FPGA manager support required
+for FT232H based ARRI FPGA configuration adapters.
+
+Patch 1/3 adds FT232H interface driver (for ARRI USB PIDs)
+implementing commonly used FTDI USB transfer operations and
+ACBUS/MPSSE GPIO controllers. Depending on USB PIDs it creates
+platform devices for MPSSE SPI bus with attached SPI slaves
+or platform devices for ARRI FPP FPGA manager.
+
+Patch 2/3 adds MPSSE SPI controller driver which registers
+an FTDI USB-SPI bus with attached SPI slaves from description
+in platform data, so existing SPI protocol drivers can be
+used for these slave devices (in our case altera-ps-spi).
+Via interface driver in patch 1/3 it is easily possible to add
+support for other slave devices using custom USB PIDs (e.g.
+spi-nor flash W25Q32 with m25p80 driver has beed used for
+testing MPSSE SPI controller driver).
+
+Patch 3/3 adds FPGA manager driver for ARRI FPP adapters for
+FPGA configuration via Altera fast passive parallel interface.
+
+Changes since v2:
+  Patch 1/3
+  - use unsigned type for baudrate and clk divider calculation
+    (don't mix signed/unsigned types)
+  - switch to unsigned int for 'encoded_divisor' 
+  - use DIV_ROUND_CLOSEST() in ftdi_to_clkbits()
+  - update error messages in ftdi_convert_baudrate()
+  - update return code check of ftdi_to_clkbits()
+  - fix boolconv coccinelle warning
+  - add and use macro for MPSSE GPIOs number
+  - update struct mpsse_spi_platform_data to drop pin description
+    fields and add mpsse_spi_dev_data struct instead. This allows
+    easier pin description and init for multiple SPI devices with
+    multiple control pins. Pass pin description via platform_data
+    of spi_bus_info for esier IO pin init code in MPSSE driver.
+    Update spi_board_info table accordingly
+  - keep Makefile entry sorted
+
+  Patch 2/3
+  - keep Makefile entry sorted
+  - make the entire comment block a C++ one
+  - don't use magic number for the size of the lookup table
+  - use sizeof() instead of magic number for the buffer size
+  - rework gpio chip select function to use it as .set_cs()
+  - convert to use transfer_one instead of transfer_one_message
+  - update dev_*() to use MPSSE platform device prefix
+  - s/spi_master/spi_controller
+  - use u16 for chip_select vars and update dev_dbg format
+  - use unsigned type for index vars
+  - reduce arguments number for ftdi_spi_tx()/ftdi_spi_rx()
+  - fix ftdi_spi_tx() to send all buffer data correctly even if
+    the USB driver signals transfer of less data than requested
+  - update ftdi_spi_init_io() to differentiate between platform
+    data for devices using MPSSE I/O pins and other SPI devices
+    (e.g. using flash_platform_data, mmc_spi_platform_data, etc.).
+    This makes the driver more generic and allows using multiple
+    SPI slaves on the MPSSE bus
+  - reduce !xfer->len checks
+
+  Patch 3/3
+    fix 'specified bound 8 equals destination size' gcc 8 warning
+
+Changes since v1:
+  Patch 1/3
+  - add myself as a maintainer for these drivers
+  - update copyright line to include 2018
+  - include required linux headers
+  - fix gcc 7.3.0 build warnings -Wunused-const-variable=
+  - make ftdi functions and spi_board_info struct static
+  - use KBUILD_MODNAME in drivers struct
+  - use dev_err() for error messages instead of dev_info()
+  - drop not needed output about number of used MPSSE pins
+    since it is constant (not configurable)
+  - remove ftdi function prototypes from header ft232h-intf.h
+    as these are not exported anymore
+  - update comments (don't use kernel-doc format as we do not
+    export symbols anymore and functions are "static")
+
+  Patch 2/3
+  - fix build breakage when building with ARCH=i386 allmodconfig
+  - add checks for ops->lock/ops->unlock presence in pdata
+  - update copyright line to include 2018
+  - remove printing numbers in parentheses (%d)
+
+  Patch 3/3
+  - update copyright line to include 2018
+  - add sysfs ABI documentation
+ 
+Changes since initial version (MFD based):
+  - don't use MFD framework
+  - don't use original FT232H USB PID (it is too generic and collides
+    with existing ftdi_sio driver)
+  - don't add separate CBUS GPIO driver based on FT232H MFD device
+  - redesign/rework the drivers as described under [4]
+  - add basic FT232H interface driver under drivers/usb/misc/
+  - use custom reserved USB PIDs in the USB driver for adapter devices
+  - add notes about borrowed protocol code from libftdi to commit log
+    and header file
+  - add MPSSE SPI controller driver supporting USB-SPI bus with
+    dynamically added SPI slaves from description in platform data
+    (the initial attempt didn't include USB SPI bus support for PS-
+     SPI FPGA configuration via USB)
+  - rework FPP fpga manager driver based on new FT232H interface
+    driver and extend it according to CPLD changes for additional
+    support of new hardware revision B.
+
+Anatolij Gustschin (3):
+  usb: misc: add driver for FT232H based FPGA configuration devices
+  spi: add FTDI MPSSE SPI controller driver
+  fpga: Add fpga manager driver for ARRI Altera FPP
+
+ .../ABI/testing/sysfs-driver-ftdi-fifo-fpp    |    7 +
+ MAINTAINERS                                   |    8 +
+ drivers/fpga/Kconfig                          |    7 +
+ drivers/fpga/Makefile                         |    1 +
+ drivers/fpga/ftdi-fifo-fpp.c                  |  594 +++++++
+ drivers/spi/Kconfig                           |    7 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/spi-ftdi-mpsse.c                  |  651 ++++++++
+ drivers/usb/misc/Kconfig                      |    9 +
+ drivers/usb/misc/Makefile                     |    1 +
+ drivers/usb/misc/ft232h-intf.c                | 1467 +++++++++++++++++
+ include/linux/usb/ft232h-intf.h               |  206 +++
+ 12 files changed, 2959 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-driver-ftdi-fifo-fpp
+ create mode 100644 drivers/fpga/ftdi-fifo-fpp.c
+ create mode 100644 drivers/spi/spi-ftdi-mpsse.c
+ create mode 100644 drivers/usb/misc/ft232h-intf.c
+ create mode 100644 include/linux/usb/ft232h-intf.h
+
+-- 
+2.17.1

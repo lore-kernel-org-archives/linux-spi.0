@@ -1,21 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: npcm: Fix uninitialized variable warning" to the spi tree
-Date: Wed, 28 Nov 2018 16:05:56 +0000 (GMT)
-Message-ID: <20181128160556.0D951112521B@debutante.sirena.org.uk>
-References: <20181117035504.95804-1-olof@lixom.net>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        opembmc@lists.ozlabs.org, Tomer Maimon <tmaimon77@gmail.com>,
+Subject: Applied "spi: mediatek: add spi support for mt7629 IC" to the spi tree
+Date: Wed, 28 Nov 2018 16:05:52 +0000 (GMT)
+Message-ID: <20181128160552.7DDA5112521B@debutante.sirena.org.uk>
+References: <1542703268-17285-3-git-send-email-leilk.liu@mediatek.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, ryder.lee@mediatek.com,
         linux-spi@vger.kernel.org
-To: Olof Johansson <olof@lixom.net>
+To: Leilk Liu <leilk.liu@mediatek.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181117035504.95804-1-olof@lixom.net>
+In-Reply-To: <1542703268-17285-3-git-send-email-leilk.liu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: npcm: Fix uninitialized variable warning
+   spi: mediatek: add spi support for mt7629 IC
 
 has been applied to the spi tree at
 
@@ -40,58 +43,32 @@ to this mail.
 Thanks,
 Mark
 
->From 1d2319efb6a970d5f5740a60828244e6c309df2b Mon Sep 17 00:00:00 2001
-From: Olof Johansson <olof@lixom.net>
-Date: Fri, 16 Nov 2018 19:55:04 -0800
-Subject: [PATCH] spi: npcm: Fix uninitialized variable warning
+>From 942779c6f1f899bc54332f7bb67666244f3f6d6c Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu@mediatek.com>
+Date: Tue, 20 Nov 2018 16:41:08 +0800
+Subject: [PATCH] spi: mediatek: add spi support for mt7629 IC
 
-The compiler has no way to know that rsize 1 or 2 are the only valid
-values. Also simplify the code a bit with early return.
+this patch add support for mt7629 IC.
 
-The warning was:
-
-drivers/spi/spi-npcm-pspi.c:215:6: warning: 'val' may be used uninitialized in this function [-Wmaybe-uninitialized]
-
-Signed-off-by: Olof Johansson <olof@lixom.net>
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-npcm-pspi.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/spi/spi-mt65xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index fed05b02007c..dda91c19af93 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -217,15 +217,23 @@ static void npcm_pspi_recv(struct npcm_pspi *priv)
- 	rsize = min(bytes_per_word(priv->bits_per_word), priv->rx_bytes);
- 	priv->rx_bytes -= rsize;
- 
--	if (priv->rx_buf) {
--		if (rsize == 1)
--			val = ioread8(priv->base + NPCM_PSPI_DATA);
--		if (rsize == 2)
--			val = ioread16(priv->base + NPCM_PSPI_DATA);
-+	if (!priv->rx_buf)
-+		return;
- 
--		*priv->rx_buf = val;
--		priv->rx_buf += rsize;
-+	switch (rsize) {
-+	case 1:
-+		val = ioread8(priv->base + NPCM_PSPI_DATA);
-+		break;
-+	case 2:
-+		val = ioread16(priv->base + NPCM_PSPI_DATA);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return;
- 	}
-+
-+	*priv->rx_buf = val;
-+	priv->rx_buf += rsize;
- }
- 
- static int npcm_pspi_transfer_one(struct spi_master *master,
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 9ee1fe968a2d..0cce6f0ba824 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -150,6 +150,9 @@ static const struct of_device_id mtk_spi_of_match[] = {
+ 	{ .compatible = "mediatek,mt7622-spi",
+ 		.data = (void *)&mt7622_compat,
+ 	},
++	{ .compatible = "mediatek,mt7629-spi",
++		.data = (void *)&mt7622_compat,
++	},
+ 	{ .compatible = "mediatek,mt8135-spi",
+ 		.data = (void *)&mtk_common_compat,
+ 	},
 -- 
 2.19.0.rc2

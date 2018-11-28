@@ -1,63 +1,73 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/3] spi: add FTDI MPSSE SPI controller driver
-Date: Wed, 28 Nov 2018 09:14:40 +0000
-Message-ID: <20181128091439.GA6828@sirena.org.uk>
-References: <20181120002821.12794-1-agust@denx.de>
- <20181120002821.12794-3-agust@denx.de>
- <20181121124237.GC8059@sirena.org.uk>
- <20181127012127.24e455b6@crub>
+Subject: [GIT PULL] SPI fixes for v4.20
+Date: Wed, 28 Nov 2018 15:54:04 +0000
+Message-ID: <20181128155404.GJ6828@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
-Cc: linux-usb@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, atull@kernel.org, mdf@kernel.org
-To: Anatolij Gustschin <agust@denx.de>
+        protocol="application/pgp-signature"; boundary="0FRtVia6Q6lt+M0P"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181127012127.24e455b6@crub>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---tKW2IUtsqtDRztdT
+--0FRtVia6Q6lt+M0P
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 27, 2018 at 01:21:27AM +0100, Anatolij Gustschin wrote:
-> Mark Brown broonie@kernel.org wrote:
+The following changes since commit 0c903aafc8529f64d24d2cd6df32f2bf16aad20b:
 
-> >> +	if (max_cs > 12) {
-> >> +		dev_err(dev, "Invalid max CS in platform data: %d\n", max_cs);
-> >> +		return -EINVAL;
-> >> +	}
-> >> +	dev_dbg(dev, "CS count %d, max CS %d\n", num_cs, max_cs);
-> >> +	max_cs +=3D 1; /* including CS0 */ =20
+  spi: lpspi: add imx8qxp compatible string (2018-10-21 16:55:23 +0100)
 
-> >Why not just size the array based on the platform data?
+are available in the Git repository at:
 
-> The driver must also support multiple SPI slaves with additional control
-> pins (besides SPI chip-select gpios). There are devices with not adjacent
-> chip-select gpios or devices with single chip-select gpio starting at
-> some offset. The array size is not always the number of chip-selects
-> or the max. chip-select, e.g.:
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git spi-fix-v4.20-rc4
 
-A few unused entries really won't matter.
+for you to fetch changes up to 91b9deefedf4c35a01027ce38bed7299605026a3:
 
---tKW2IUtsqtDRztdT
+  spi: omap2-mcspi: Add missing suspend and resume calls (2018-11-15 16:20:43 -0800)
+
+----------------------------------------------------------------
+spi: Fixes for v4.20
+
+A few driver specific fixes here, nothing big or that stands out for
+anyone other than the driver users.
+
+----------------------------------------------------------------
+
+Forgot to note that the mcspi thing is a fix for issues that started
+showing up with a change in defconfig in this release to make cpuidle
+get turned on by default.
+
+Keiji Hayashibara (1):
+      spi: uniphier: fix incorrect property items
+
+Leilk Liu (1):
+      spi: mediatek: use correct mata->xfer_len when in fifo transfer
+
+Tony Lindgren (1):
+      spi: omap2-mcspi: Add missing suspend and resume calls
+
+ .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++----
+ drivers/spi/spi-mt65xx.c                           |  4 +--
+ drivers/spi/spi-omap2-mcspi.c                      | 37 +++++++++++++++-------
+ 3 files changed, 35 insertions(+), 20 deletions(-)
+
+--0FRtVia6Q6lt+M0P
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv+XH0ACgkQJNaLcl1U
-h9BN6Qf8Cf8z9g7M2CSYTvbGRDLuKh4WWK/9Bj96Cg/lOX0H+++0glbKaXR9LZdW
-C3Kq93XpWg+pjvDcHSP1OEOgeG4nXIiunOIgIUTALoTqhYVxDy+XnHF2cYgz5epK
-y4BBtFVsUbA0WxN0YjEGoPRc8R2Mx/duLdpeRw2O1RvGLxZYaPYNAd5WZnoahP0c
-zjoUB0uH+H12whUSCHQuky6IEOGC2/VkKNF6zZ4sMaFaAYV94VGp5ZWYvzHrjoJg
-R8d+RKvq4vuobYgmvclOk+pKI5hr9PY2wkZ/539VoPtn6kMFDshiWeWXEQNr9AVf
-mDfS4RQOzpO6S1CfGm7XQKcqzzNrkg==
-=i8pS
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv+uhsACgkQJNaLcl1U
+h9CQ2Qf8Ch14TJIWzZKoqdxC0TfLYDzF4DXB0Yyc8XXKk00RGB1LFbjw7qL4M2jL
+5w941OlkAdVxz6g2V4ZX5JPwl7vFeCvdXvfVCprs95BGJfrFHJv5X4QdSOqJbTAI
+dWft8/QU8xk167iuf2JZdk0nmCLQxnSddktavaTwMoqqRWGRfT/kl+jP45fwYEZN
+EBciJtOjTe+0if3VaX0tMnRE7cchhAvv/nS405XHDyuENPIdT/5Rq6JKQQcPiRea
+bSlSx+spCGstk7rO24LkatJSSKt95kX1vgX6h5jzFX/i6fmOs9pTyHs3csXZ//jP
+BFujcsR6hqJcOnyQLBMcNEDrSoaFxw==
+=eYeu
 -----END PGP SIGNATURE-----
 
---tKW2IUtsqtDRztdT--
+--0FRtVia6Q6lt+M0P--

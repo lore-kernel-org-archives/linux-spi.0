@@ -1,73 +1,91 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v4.20
-Date: Wed, 28 Nov 2018 15:54:04 +0000
-Message-ID: <20181128155404.GJ6828@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 7/7] spi: bcm2835: Speed up FIFO access if fill level is
+ known
+Date: Wed, 28 Nov 2018 15:58:49 +0000
+Message-ID: <20181128155849.GK6828@sirena.org.uk>
+References: <cover.1541659680.git.lukas@wunner.de>
+ <901ff28c305e56d3349d3e044781c095d8e77a3d.1541659680.git.lukas@wunner.de>
+ <807EBC97-54BD-49D5-86C8-3768FB4C0105@martin.sperl.org>
+ <52205641.172367.1541849134970@email.ionos.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0FRtVia6Q6lt+M0P"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8800693047314042790=="
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mathias Duckeck <m.duckeck-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>,
+ Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
+To: Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <52205641.172367.1541849134970-uEpKuDZ350hmhno068Nerg@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---0FRtVia6Q6lt+M0P
+--===============8800693047314042790==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="DfnuYBTqzt7sVGu3"
+Content-Disposition: inline
+
+
+--DfnuYBTqzt7sVGu3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit 0c903aafc8529f64d24d2cd6df32f2bf16aad20b:
+On Sat, Nov 10, 2018 at 12:25:34PM +0100, Stefan Wahren wrote:
 
-  spi: lpspi: add imx8qxp compatible string (2018-10-21 16:55:23 +0100)
+> > > +#define BCM2835_SPI_FIFO_SIZE		64
+> > > +#define BCM2835_SPI_FIFO_SIZE_3_4	48
 
-are available in the Git repository at:
+> > Not sure if this should not be a DT parameter describing the HW block
+> > and not being hardcoded in the driver.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git spi-fix-v4.20-rc4
+> I see no reason for this. AFAIK all variants of the BCM2835 have the
+> same FIFO length, so i'm fine with the defines. I only have doubts
+> about the naming FIFO_SIZE_3_4 because it describe a fill level not a
+> size.
 
-for you to fetch changes up to 91b9deefedf4c35a01027ce38bed7299605026a3:
+It's also the sort of thing we should be picking up from the compatible
+string since we have a per-SoC compatible rather than parameterizing in
+the DT - that way the SoC just needs the right compatible string in the
+DT and then new quirks for that SoC don't need DT changes.
 
-  spi: omap2-mcspi: Add missing suspend and resume calls (2018-11-15 16:20:43 -0800)
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-----------------------------------------------------------------
-spi: Fixes for v4.20
-
-A few driver specific fixes here, nothing big or that stands out for
-anyone other than the driver users.
-
-----------------------------------------------------------------
-
-Forgot to note that the mcspi thing is a fix for issues that started
-showing up with a change in defconfig in this release to make cpuidle
-get turned on by default.
-
-Keiji Hayashibara (1):
-      spi: uniphier: fix incorrect property items
-
-Leilk Liu (1):
-      spi: mediatek: use correct mata->xfer_len when in fifo transfer
-
-Tony Lindgren (1):
-      spi: omap2-mcspi: Add missing suspend and resume calls
-
- .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++----
- drivers/spi/spi-mt65xx.c                           |  4 +--
- drivers/spi/spi-omap2-mcspi.c                      | 37 +++++++++++++++-------
- 3 files changed, 35 insertions(+), 20 deletions(-)
-
---0FRtVia6Q6lt+M0P
+--DfnuYBTqzt7sVGu3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv+uhsACgkQJNaLcl1U
-h9CQ2Qf8Ch14TJIWzZKoqdxC0TfLYDzF4DXB0Yyc8XXKk00RGB1LFbjw7qL4M2jL
-5w941OlkAdVxz6g2V4ZX5JPwl7vFeCvdXvfVCprs95BGJfrFHJv5X4QdSOqJbTAI
-dWft8/QU8xk167iuf2JZdk0nmCLQxnSddktavaTwMoqqRWGRfT/kl+jP45fwYEZN
-EBciJtOjTe+0if3VaX0tMnRE7cchhAvv/nS405XHDyuENPIdT/5Rq6JKQQcPiRea
-bSlSx+spCGstk7rO24LkatJSSKt95kX1vgX6h5jzFX/i6fmOs9pTyHs3csXZ//jP
-BFujcsR6hqJcOnyQLBMcNEDrSoaFxw==
-=eYeu
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlv+uzgACgkQJNaLcl1U
+h9B4tQf+LGgXjzztWuUj2g57WQU7mPmRJcecCQbv9i4uq5CLk/SFuUmO9xfhl8Ov
+m5yS5U8bx5pu8MNtbhhfMfe883BGWRtUVzv89zXBj3F9aEAviMxKxPDAA6ln6Qqj
+V9gdpgfkeKP31frG1mTqyYzgBKstl/7C5TTOTKlNFlWNz1f9JdB5cgFsILo1LPBH
+oYyB3k7VqH+mctto1Z2+Op+OYDx895sU3Eu5S/Y66KIvMWQOF5MyY3WcQlTSAI/H
+6ylPU92KsphUtzuBE843/LkLmZfMZT9eqBX7bALzP0NozZLas0EWN4eWnSS35XEQ
+qDhPH8sYBfs/IGCZ95zfWs9MRgNQPg==
+=83DL
 -----END PGP SIGNATURE-----
 
---0FRtVia6Q6lt+M0P--
+--DfnuYBTqzt7sVGu3--
+
+
+--===============8800693047314042790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============8800693047314042790==--

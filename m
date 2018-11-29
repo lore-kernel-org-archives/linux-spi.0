@@ -1,14 +1,16 @@
-From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH for-4.20] spi: bcm2835: Unbreak the build of esoteric configs
-Date: Thu, 29 Nov 2018 15:14:49 +0100
-Message-ID: <4a53a5c59b9e454476a2313735d6353428e982cb.1543500560.git.lukas@wunner.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH for-4.20] spi: bcm2835: Unbreak the build of esoteric
+ configs
+Date: Thu, 29 Nov 2018 15:31:05 +0000
+Message-ID: <20181129153105.GF10570@sirena.org.uk>
+References: <4a53a5c59b9e454476a2313735d6353428e982cb.1543500560.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============5834582760590313441=="
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
  linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Frank Pavlic <f.pavlic-XB/JSsFECOqzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <4a53a5c59b9e454476a2313735d6353428e982cb.1543500560.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -20,26 +22,55 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q29tbWl0IGU4MmIwYjM4Mjg0NSAoInNwaTogYmNtMjgzNTogRml4IHJhY2Ugb24gRE1BIHRlcm1p
-bmF0aW9uIikgYnJva2UKdGhlIGJ1aWxkIHdpdGggQ09NUElMRV9URVNUPXkgb24gYXJjaGVzIHdo
-b3NlIGNtcHhjaGcoKSByZXF1aXJlcyAzMi1iaXQKb3BlcmFuZHMgKHh0ZW5zYSwgb2xkZXIgYXJt
-IElTQXMpLgoKVW5mb3J0dW5hdGVseSB0aGUgY29tbWl0IHdhcyBhcHBsaWVkIGRlc3BpdGUgcHJp
-b3Igd2FybmluZyB0aGF0IGl0IG5lZWRzCnRvIGJlIHJlc3B1bjoKaHR0cHM6Ly9tYXJjLmluZm8v
-P2w9bGludXgtc3BpJm09MTU0MTg2MDE5NjI2Njc1Jnc9MgoKRml4IGJ5IGNoYW5naW5nIHRoZSBk
-bWFfcGVuZGluZyBmbGFnJ3MgdHlwZSBmcm9tIGJvb2wgdG8gdW5zaWduZWQgaW50LgoKU2lnbmVk
-LW9mZi1ieTogTHVrYXMgV3VubmVyIDxsdWthc0B3dW5uZXIuZGU+CkZpeGVzOiBlODJiMGIzODI4
-NDUgKCJzcGk6IGJjbTI4MzU6IEZpeCByYWNlIG9uIERNQSB0ZXJtaW5hdGlvbiIpCkNjOiBGcmFu
-ayBQYXZsaWMgPGYucGF2bGljQGt1bmJ1cy5kZT4KQ2M6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1h
-cnRpbi5zcGVybC5vcmc+CkNjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4K
-LS0tCiBkcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEg
-aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3Bp
-LWJjbTI4MzUuYyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKaW5kZXggNzc0MTYxYi4uMjVh
-YmYyZCAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYworKysgYi9kcml2ZXJz
-L3NwaS9zcGktYmNtMjgzNS5jCkBAIC04OCw3ICs4OCw3IEBAIHN0cnVjdCBiY20yODM1X3NwaSB7
-CiAJdTggKnJ4X2J1ZjsKIAlpbnQgdHhfbGVuOwogCWludCByeF9sZW47Ci0JYm9vbCBkbWFfcGVu
-ZGluZzsKKwl1bnNpZ25lZCBpbnQgZG1hX3BlbmRpbmc7CiB9OwogCiBzdGF0aWMgaW5saW5lIHUz
-MiBiY20yODM1X3JkKHN0cnVjdCBiY20yODM1X3NwaSAqYnMsIHVuc2lnbmVkIHJlZykKLS0gCjIu
-MTkuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxp
-bnV4LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4
-LXJwaS1rZXJuZWwK
+
+--===============5834582760590313441==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+ts6NCQ4mrNQIV8p"
+Content-Disposition: inline
+
+
+--+ts6NCQ4mrNQIV8p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Nov 29, 2018 at 03:14:49PM +0100, Lukas Wunner wrote:
+
+> Unfortunately the commit was applied despite prior warning that it needs
+> to be respun:
+> https://marc.info/?l=linux-spi&m=154186019626675&w=2
+
+Sorry about that, I started scanning the changelog when it hit
+discussion about doing a more involved fix for -next - it's good to draw
+attention to reasons not to merge the patch a bit more prominently as it
+helps avoid things like that.
+
+--+ts6NCQ4mrNQIV8p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwABikACgkQJNaLcl1U
+h9BXqAf/TvYJAy2z4fzX7+i6q/yqmvYzj3LTz5V6/Y8dxdstM9weM3QBpl2fM5Jo
+sUM/jkZsTH0eDPAhVTna1zuZAS3OY2sR+sreVxAaDde+9TtlXEkao9lT/3WjDfnu
+HWB8FoSBaslShnn5jqhlR+mgERelQd+ZrdAalBwjpH6b1tFtXAjgi4ZMCDjjdYhj
+ejNfOWjmrU5Nh44zgACYMomcztFaYgOhRIgIgHGybRLbIUCUW8+uRBZFYLEIryhN
+QLjWpAw8pZn3YreiVIpLQ0f55M7Rlc/op/URZt7vTT3XUa9o5wfCC3Qavgf/jgZX
+cOnmDlfdFeGiaIA3ZQth0fZDqROigA==
+=0FmN
+-----END PGP SIGNATURE-----
+
+--+ts6NCQ4mrNQIV8p--
+
+
+--===============5834582760590313441==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============5834582760590313441==--

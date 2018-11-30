@@ -1,49 +1,54 @@
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: [PTCH -next] spi: fix spi-at91-usart.c build errors when PINCTRL is
- not set
-Date: Thu, 29 Nov 2018 14:34:15 -0800
-Message-ID: <744804c8-49c4-d0b6-d58c-2d573765f28b@infradead.org>
+From: Clark Wang <xiaoning.wang@nxp.com>
+Subject: [PATCH V2 0/4] spi: lpspi: Add Slave Mode support for LPSPI
+Date: Fri, 30 Nov 2018 04:29:03 +0000
+Message-ID: <20181130042753.28756-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Radu Pirea <radu.pirea@microchip.com>
-To: LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Hi Mark,
 
-Fix build errors when CONFIG_PINCTRL is not enabled.
-The header file <linux/pinctrl/consumer.h> handles both CONFIG_PINCTRL
-enabled and disabled cases.
+i.MX LPSPI controller only works in Master mode previously. This patch
+series adds support slave mode to LPSPI controller, including:
+ - Replace all related structure names and object names which is named
+   "master" with "controller",
+ - adds SPI slave mode support for i.MX7ulp and i.MX8qm/qxp in PIO mode,
+ - DT binding updates for slave mode.
 
-  CC [M]  drivers/spi/spi-at91-usart.o
-../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_suspend':
-../drivers/spi/spi-at91-usart.c:409:2: error: implicit declaration of function 'pinctrl_pm_select_sleep_state' [-Werror=implicit-function-declaration]
-  pinctrl_pm_select_sleep_state(dev);
-../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_resume':
-../drivers/spi/spi-at91-usart.c:419:2: error: implicit declaration of function 'pinctrl_pm_select_default_state' [-Werror=implicit-function-declaration]
-  pinctrl_pm_select_default_state(dev);
+Currently SPI Slave mode support patch has the following limitations:
+1. The stale data in RXFIFO will be dropped when the Slave does any new
+   transfer.
+2. One transfer can be finished only after all transfer->len data been
+   transferred to master device
+3. Slave device only accepts transfer->len data. Any data longer than this
+   from master device will be dropped. Any data shorter than this from
+   master will cause LPSPI to stuck due to mentioned limitation 2.
+4. Only PIO transfer is supported in Slave Mode.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Radu Pirea <radu.pirea@microchip.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
----
- drivers/spi/spi-at91-usart.c |    1 +
- 1 file changed, 1 insertion(+)
+Wire connection:
+GND, SCK, MISO(to MISO of slave), MOSI(to MOSI of slave), SCS
 
---- linux-next-20181129.orig/drivers/spi/spi-at91-usart.c
-+++ linux-next-20181129/drivers/spi/spi-at91-usart.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of_gpio.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- 
+Change log:
+V2:=20
+ - Split last version patch into 3 patches, and add the doc update.
+
+Clark Wang (4):
+  spi: lpspi: Replace all "master" with "controller"
+  spi: lpspi: Add slave mode support
+  spi: lpspi: Let watermark change with send data length
+  doc: lpspi: Document DT bindings for LPSPI slave mode
+
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt |   5 +-
+ drivers/spi/spi-fsl-lpspi.c                   | 202 ++++++++++++------
+ 2 files changed, 138 insertions(+), 69 deletions(-)
+
+--=20
+2.17.1

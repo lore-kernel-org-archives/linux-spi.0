@@ -1,92 +1,73 @@
-From: Darren Hart <dvhart@infradead.org>
-Subject: Re: [PATCH v2 17/17] power: supply: olpc_battery: Add OLPC XO 1.75
- support
-Date: Sun, 2 Dec 2018 15:34:58 -0800
-Message-ID: <20181202233458.GE23087@wrath>
-References: <20181116162403.49854-1-lkundrak@v3.sk>
- <20181116162403.49854-18-lkundrak@v3.sk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2 06/17] Platform: OLPC: Add XO-1.75 EC driver
+Date: Mon, 3 Dec 2018 09:54:40 +0200
+Message-ID: <CAHp75Vc9pbj-jTQ86qV54FDtxzzoY-vvgH9qtvoFWWY1JQOMew@mail.gmail.com>
+References: <20181116162403.49854-1-lkundrak@v3.sk> <20181116162403.49854-7-lkundrak@v3.sk>
+ <20181202231328.GB23087@wrath>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- devel@driverdev.osuosl.org, Eric Miao <eric.y.miao@gmail.com>,
- James Cameron <quozl@laptop.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Daniel Mack <daniel@zonque.org>, platform-driver-x86@vger.kernel.org,
- Robert Jarzmik <robert.jarzmik@free.fr>, Andy Shevchenko <andy@infradead.org>,
- linux-arm-kernel@lists.infradead.org
-To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20181116162403.49854-18-lkundrak@v3.sk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Lubomir Rintel <lkundrak@v3.sk>, Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        quozl@laptop.org, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        devel@driverdev.osuosl.org, Linux PM
+To: Darren Hart <dvhart@infradead.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181202231328.GB23087@wrath>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 16, 2018 at 05:24:03PM +0100, Lubomir Rintel wrote:
-> The battery and the protocol are essentially the same as OLPC XO 1.5,
-> but the responses from the EC are LSB first.
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> Acked-by: Pavel Machek <pavel@ucw.cz>
-> 
-> ---
-> Changes since v1:
-> - s/s16 ecword_to_cpu/u16 ecword_to_cpu/
-> - s/u16 ec_byte/u16 ec_word/
-> 
->  drivers/power/supply/olpc_battery.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply/olpc_battery.c
+On Mon, Dec 3, 2018 at 1:13 AM Darren Hart <dvhart@infradead.org> wrote:
+> On Fri, Nov 16, 2018 at 05:23:52PM +0100, Lubomir Rintel wrote:
+> > It's based off the driver from the OLPC kernel sources. Somewhat
+> > modernized and cleaned up, for better or worse.
+> >
+> > Modified to plug into the olpc-ec driver infrastructure (so that battery
+> > interface and debugfs could be reused) and the SPI slave framework.
 
-...
+> > - Count the terminating NUL in LOG_BUF_SIZE
+> > - Make olpc_xo175_ec_is_valid_cmd() return -EINVAL instead of -1
+> >   on error
+> > - Spell keyboard/touchpad in full for CHAN_KEYBOARD/TOUCHPAD messages
+> > - Use a #define for PM wakeup processing time
+> > - Log a message on unknown event
+> > - Escape logging payload with %*pE
+> > - Replace an open-coded min()
+> > - Correct an error code on short read
+> > - replaced PM callback #ifdefs with __maybe_unusedm SET_RUNTIME_PM_OPS
+> >   and SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
+> > - dev_get_drvdata() instead of a round-trip through platform device
+> > - s/unsigned char x/u8 x/ in olpc_xo175_ec_resume()
+> > - Use GENMASK() instead of 0xffff for the event mask
+> > - Replace cmd tx/resp rx buffers with structures
+> > - Turned suspend hint arguments into a struct, and tidied up the comment
+>
+> Just from these comments, each of these could be a separate patch. You
+> can group related things together, or those that change the same line or
+> function for example. Order them with cleanups / non-functional-changes
+> first, followed by functional changes.
+>
+> >
+> > Basically all of the above is based on the review by Andy Shevchenko.
+>
+> Andy, what was your intent for Lubomir here? From the above, this looks
+> like it should be several patches to me.
 
-> @@ -626,6 +635,10 @@ static int olpc_battery_probe(struct platform_device *pdev)
->  	if (ecver > 0x44) {
->  		/* XO 1 or 1.5 with a new EC firmware. */
->  		data->new_proto = 1;
-> +	} else if (of_find_compatible_node(NULL, NULL, "olpc,xo1.75-ec")) {
-
-This if/else blocks concerns me a bit, but I might just be missing some
-context.
-
-This tests both ecver as well as the OF compatible string, is this reliable? Do
-we know that for all xo1.75-ec compatible nodes the ecver will be <= 0x44? Or,
-is ecver undefined? If the latter, then perhaps this test should be performed
-first?
-
-if (of_find_compatible_node....x01.75-ec...)
-	...
-else if (ecver > 0x44)
-	...
-else
-	...
-
-And what happens when ecver == 0x44? We test for > and < but not ==, <=,
-or >= in this block
-
-> +		/* XO 1.75 */
-> +		data->new_proto = 1;
-> +		data->little_endian = 1;
->  	} else if (ecver < 0x44) {
->  		/*
->  		 * We've seen a number of EC protocol changes; this driver
-> -- 
-> 2.19.1
-> 
-> 
+This is a new module, I don't see why it can't be one patch. For the
+existing code I agree with you.
 
 -- 
-Darren Hart
-VMware Open Source Technology Center
+With Best Regards,
+Andy Shevchenko

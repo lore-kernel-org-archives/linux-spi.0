@@ -1,49 +1,87 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
-Date: Mon, 3 Dec 2018 10:19:37 +0100
-Message-ID: <20181203101937.7b01a0ad@bbrezillon>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: fix spi-at91-usart.c build errors when PINCTRL is not set" to the spi tree
+Date: Mon,  3 Dec 2018 12:07:28 +0000 (GMT)
+Message-ID: <20181203120728.55B4F440080@finisterre.ee.mobilebroadband>
+References: <744804c8-49c4-d0b6-d58c-2d573765f28b@infradead.org>
+Cc: Radu Pirea <radu.pirea@microchip.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Radu Pirea <radu.pirea@microchip.com>,
+        linux-spi@vger.kernel.org
+To: Randy Dunlap <rdunlap@infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <744804c8-49c4-d0b6-d58c-2d573765f28b@infradead.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+The patch
 
-On Mon, 3 Dec 2018 08:39:00 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+   spi: fix spi-at91-usart.c build errors when PINCTRL is not set
 
-> 
-> Yogesh Gaur (7):
->   spi: add support for octal mode I/O data transfer
->   spi: spi-mem: add support for octal mode I/O data transfer
+has been applied to the spi tree at
 
-Can you take those 2 patches in your tree for 4.21/5.0?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
->   mtd: spi-nor: add opcodes for octal Read/Write commands
->   mtd: spi-nor: add octal read flag for flash mt35xu512aba
->   mtd: m25p80: add support of octal mode I/O transfer
->   spi: nxp-fspi: add octal mode flag bit for octal support
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I'll queue these ones after 4.21-rc1/5.0-rc1 is out (which means
-they'll appear in 4.22/5.1).
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
->   arm64: dts: lx2160a: update fspi node
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c2b142cc3939e932d4fa2210c2a5155df5736590 Mon Sep 17 00:00:00 2001
+From: Randy Dunlap <rdunlap@infradead.org>
+Date: Thu, 29 Nov 2018 14:34:15 -0800
+Subject: [PATCH] spi: fix spi-at91-usart.c build errors when PINCTRL is not
+ set
+
+Fix build errors when CONFIG_PINCTRL is not enabled.
+The header file <linux/pinctrl/consumer.h> handles both CONFIG_PINCTRL
+enabled and disabled cases.
+
+  CC [M]  drivers/spi/spi-at91-usart.o
+../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_suspend':
+../drivers/spi/spi-at91-usart.c:409:2: error: implicit declaration of function 'pinctrl_pm_select_sleep_state' [-Werror=implicit-function-declaration]
+  pinctrl_pm_select_sleep_state(dev);
+../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_resume':
+../drivers/spi/spi-at91-usart.c:419:2: error: implicit declaration of function 'pinctrl_pm_select_default_state' [-Werror=implicit-function-declaration]
+  pinctrl_pm_select_default_state(dev);
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Radu Pirea <radu.pirea@microchip.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-at91-usart.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 0b07c746453d..a694d702e574 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of_gpio.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ 
+-- 
+2.20.0.rc1

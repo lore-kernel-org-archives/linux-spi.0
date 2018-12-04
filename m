@@ -1,7 +1,7 @@
 From: Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v1] spi: npcm: Modify pspi send function
-Date: Tue,  4 Dec 2018 15:40:35 +0200
-Message-ID: <20181204134035.124079-1-tmaimon77@gmail.com>
+Subject: [PATCH v1] dt-binding: spi: Update NPCM PSPI controller documentation
+Date: Tue,  4 Dec 2018 15:54:42 +0200
+Message-ID: <20181204135442.125269-1-tmaimon77@gmail.com>
 Cc: linux-spi@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Tomer Maimon <tmaimon77@gmail.com>
@@ -12,46 +12,34 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Align pspi send function code with the recieve function
-code, Also simplify the code a bit with early return.
+Update the PSPI NPCM binding document of the spi aliases use
+to define the spi ID number.
 
 Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 ---
- drivers/spi/spi-npcm-pspi.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index dda91c19af93..e1dca79b9090 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -199,14 +199,22 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
- 	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
- 	priv->tx_bytes -= wsize;
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+index 99606b22e5c2..1fd9a4406a1d 100644
+--- a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+@@ -19,8 +19,16 @@ Optional properties:
+ - clock-frequency : Input clock frequency to the PSPI block in Hz.
+ 		    Default is 25000000 Hz.
  
--	if (priv->tx_buf) {
--		if (wsize == 1)
--			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
--		if (wsize == 2)
--			iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+	if (!priv->tx_buf)
-+		return;
- 
--		priv->tx_buf += wsize;
-+	switch (wsize) {
-+	case 1:
-+		iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		break;
-+	case 2:
-+		iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return;
- 	}
++Aliases:
++- All the SPI controller nodes should be represented in the aliases node using
++  the following format 'spi{n}' withe the correct numbered in "aliases" node.
 +
-+	priv->tx_buf += wsize;
- }
+ Example:
  
- static void npcm_pspi_recv(struct npcm_pspi *priv)
++aliases {
++	spi0 = &spi0;
++};
++
+ spi0: spi@f0200000 {
+ 	compatible = "nuvoton,npcm750-pspi";
+ 	reg = <0xf0200000 0x1000>;
 -- 
 2.14.1

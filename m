@@ -1,179 +1,142 @@
-From: Han Xu <han.xu@nxp.com>
-Subject: RE: [PATCH v6 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
- controller
-Date: Mon, 3 Dec 2018 20:54:29 +0000
-Message-ID: <AM6PR04MB49670EA07FC3C9FC8EF1AFB097AE0@AM6PR04MB4967.eurprd04.prod.outlook.com>
-References: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
- <1543314174-28580-4-git-send-email-frieder.schrempf@kontron.de>
- <3981845c-327a-bb14-2908-47dd443971bf@kontron.de>
- <VI1PR04MB572644A2AE3214356A62478799D20@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <f4c584e5-8930-bec3-0c4e-2216a89606b0@kontron.de>
- <AM6PR04MB496732760F72A0B5B5F4A5A997D20@AM6PR04MB4967.eurprd04.prod.outlook.com>
- <1389ab35-b015-cb5d-1ae9-c8309074a5f9@kontron.de>
+From: Clark Wang <xiaoning.wang@nxp.com>
+Subject: [PATCH] spi: lpspi: Add i.MX8 boards support for lpspi
+Date: Tue, 4 Dec 2018 05:33:38 +0000
+Message-ID: <20181204053247.27022-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        David Wolfe <david.wolfe@nxp.com>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.de>,
-        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1389ab35-b015-cb5d-1ae9-c8309074a5f9@kontron.de>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2NocmVtcGYgRnJpZWRl
-ciA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9uLmRlPg0KPiBTZW50OiBUaHVyc2RheSwgTm92ZW1i
-ZXIgMjksIDIwMTggMTE6MzYgQU0NCj4gVG86IEhhbiBYdSA8aGFuLnh1QG54cC5jb20+OyBZb2dl
-c2ggTmFyYXlhbiBHYXVyDQo+IDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT47IGxpbnV4LW10
-ZEBsaXN0cy5pbmZyYWRlYWQub3JnOw0KPiBib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb207IGxp
-bnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IE1hcmVrIFZhc3V0DQo+IDxtYXJlay52YXN1dEBnbWFp
-bC5jb20+OyBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+DQo+IENjOiBkd213MkBpbmZy
-YWRlYWQub3JnOyBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb207DQo+IHJpY2hhcmRAbm9kLmF0
-OyBtaXF1ZWwucmF5bmFsQGJvb3RsaW4uY29tOyBEYXZpZCBXb2xmZQ0KPiA8ZGF2aWQud29sZmVA
-bnhwLmNvbT47IEZhYmlvIEVzdGV2YW0gPGZhYmlvLmVzdGV2YW1AbnhwLmNvbT47DQo+IFByYWJo
-YWthciBLdXNod2FoYSA8cHJhYmhha2FyLmt1c2h3YWhhQG54cC5jb20+Ow0KPiBzaGF3bmd1b0Br
-ZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjYgMy85XSBzcGk6IEFkZCBhIGRyaXZlciBmb3IgdGhlIEZyZWVzY2FsZS9OWFAgUXVh
-ZFNQSQ0KPiBjb250cm9sbGVyDQo+IA0KPiBIaSBIYW4sDQo+IA0KPiBPbiAyOS4xMS4xOCAxNzoz
-MCwgSGFuIFh1IHdyb3RlOg0KPiA+DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
-LS0NCj4gPj4gRnJvbTogU2NocmVtcGYgRnJpZWRlciA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9u
-LmRlPg0KPiA+PiBTZW50OiBUaHVyc2RheSwgTm92ZW1iZXIgMjksIDIwMTggNTo1NCBBTQ0KPiA+
-PiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1ciA8eW9nZXNobmFyYXlhbi5nYXVyQG54cC5jb20+OyBs
-aW51eC0NCj4gPj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IGJvcmlzLmJyZXppbGxvbkBib290
-bGluLmNvbTsgbGludXgtDQo+ID4+IHNwaUB2Z2VyLmtlcm5lbC5vcmc7IE1hcmVrIFZhc3V0IDxt
-YXJlay52YXN1dEBnbWFpbC5jb20+OyBNYXJrDQo+IEJyb3duDQo+ID4+IDxicm9vbmllQGtlcm5l
-bC5vcmc+OyBIYW4gWHUgPGhhbi54dUBueHAuY29tPg0KPiA+PiBDYzogZHdtdzJAaW5mcmFkZWFk
-Lm9yZzsgY29tcHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOw0KPiByaWNoYXJkQG5vZC5hdDsNCj4g
-Pj4gbWlxdWVsLnJheW5hbEBib290bGluLmNvbTsgRGF2aWQgV29sZmUgPGRhdmlkLndvbGZlQG54
-cC5jb20+OyBGYWJpbw0KPiA+PiBFc3RldmFtIDxmYWJpby5lc3RldmFtQG54cC5jb20+OyBQcmFi
-aGFrYXIgS3VzaHdhaGENCj4gPj4gPHByYWJoYWthci5rdXNod2FoYUBueHAuY29tPjsgc2hhd25n
-dW9Aa2VybmVsLm9yZzsNCj4gPj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+PiBT
-dWJqZWN0OiBSZTogW1BBVENIIHY2IDMvOV0gc3BpOiBBZGQgYSBkcml2ZXIgZm9yIHRoZSBGcmVl
-c2NhbGUvTlhQDQo+ID4+IFF1YWRTUEkgY29udHJvbGxlcg0KPiA+Pg0KPiA+PiBIaSBZb2dlc2gs
-DQo+ID4+DQo+ID4+IE9uIDI5LjExLjE4IDEyOjM4LCBZb2dlc2ggTmFyYXlhbiBHYXVyIHdyb3Rl
-Og0KPiA+Pj4gSGkgRnJpZWRlciwNCj4gPj4+DQo+ID4+Pj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCj4gPj4+PiBGcm9tOiBTY2hyZW1wZiBGcmllZGVyIFttYWlsdG86ZnJpZWRlci5zY2hy
-ZW1wZkBrb250cm9uLmRlXQ0KPiA+Pj4+IFNlbnQ6IFdlZG5lc2RheSwgTm92ZW1iZXIgMjgsIDIw
-MTggMTo1OCBQTQ0KPiA+Pj4+IFRvOiBsaW51eC1tdGRAbGlzdHMuaW5mcmFkZWFkLm9yZzsgYm9y
-aXMuYnJlemlsbG9uQGJvb3RsaW4uY29tOw0KPiA+Pj4+IGxpbnV4LSBzcGlAdmdlci5rZXJuZWwu
-b3JnOyBNYXJlayBWYXN1dCA8bWFyZWsudmFzdXRAZ21haWwuY29tPjsNCj4gPj4gTWFyaw0KPiA+
-Pj4+IEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+OyBIYW4gWHUgPGhhbi54dUBueHAuY29tPg0K
-PiA+Pj4+IENjOiBkd213MkBpbmZyYWRlYWQub3JnOyBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5j
-b207DQo+ID4+IHJpY2hhcmRAbm9kLmF0Ow0KPiA+Pj4+IG1pcXVlbC5yYXluYWxAYm9vdGxpbi5j
-b207IERhdmlkIFdvbGZlIDxkYXZpZC53b2xmZUBueHAuY29tPjsNCj4gRmFiaW8NCj4gPj4+PiBF
-c3RldmFtIDxmYWJpby5lc3RldmFtQG54cC5jb20+OyBQcmFiaGFrYXIgS3VzaHdhaGENCj4gPj4+
-PiA8cHJhYmhha2FyLmt1c2h3YWhhQG54cC5jb20+OyBZb2dlc2ggTmFyYXlhbiBHYXVyDQo+ID4+
-Pj4gPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAuY29tPjsgc2hhd25ndW9Aa2VybmVsLm9yZzsgbGlu
-dXgtDQo+ID4+Pj4ga2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+Pj4+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjYgMy85XSBzcGk6IEFkZCBhIGRyaXZlciBmb3IgdGhlIEZyZWVzY2FsZS9OWFANCj4g
-Pj4+PiBRdWFkU1BJIGNvbnRyb2xsZXINCj4gPj4+Pg0KPiA+Pj4+IE9uIDI3LjExLjE4IDExOjI0
-LCBTY2hyZW1wZiBGcmllZGVyIHdyb3RlOg0KPiA+Pj4+PiBUaGlzIGRyaXZlciBpcyBkZXJpdmVk
-IGZyb20gdGhlIFNQSSBOT1IgZHJpdmVyIGF0DQo+ID4+Pj4+IG10ZC9zcGktbm9yL2ZzbC1xdWFk
-c3BpLmMuIEl0IHVzZXMgdGhlIG5ldyBTUEkgbWVtb3J5IGludGVyZmFjZSBvZg0KPiA+Pj4+PiB0
-aGUgU1BJIGZyYW1ld29yayB0byBpc3N1ZSBmbGFzaCBtZW1vcnkgb3BlcmF0aW9ucyB0byB1cCB0
-byBmb3VyDQo+ID4+Pj4+IGNvbm5lY3RlZCBmbGFzaCBjaGlwcyAoMiBidXNlcyB3aXRoIDIgQ1Mg
-ZWFjaCkuDQo+ID4+Pj4+DQo+ID4+Pj4+IFRoZSBjb250cm9sbGVyIGRvZXMgbm90IHN1cHBvcnQg
-Z2VuZXJpYyBTUEkgbWVzc2FnZXMuDQo+ID4+Pj4+DQo+ID4+Pj4+IFRoaXMgcGF0Y2ggYWxzbyBk
-aXNhYmxlcyB0aGUgYnVpbGQgb2YgdGhlICJvbGQiIGRyaXZlciBhbmQgcmV1c2VzDQo+ID4+Pj4+
-IGl0cyBLY29uZmlnIG9wdGlvbiBDT05GSUdfU1BJX0ZTTF9RVUFEU1BJIHRvIHJlcGxhY2UgaXQu
-DQo+ID4+Pj4+DQo+ID4+Pj4+IFNpZ25lZC1vZmYtYnk6IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVk
-ZXIuc2NocmVtcGZAa29udHJvbi5kZT4NCj4gPj4+Pj4gLS0tDQo+ID4+Pj4+ICAgICBkcml2ZXJz
-L210ZC9zcGktbm9yL0tjb25maWcgIHwgICA5IC0NCj4gPj4+Pj4gICAgIGRyaXZlcnMvbXRkL3Nw
-aS1ub3IvTWFrZWZpbGUgfCAgIDEgLQ0KPiA+Pj4+PiAgICAgZHJpdmVycy9zcGkvS2NvbmZpZyAg
-ICAgICAgICB8ICAxMSArDQo+ID4+Pj4+ICAgICBkcml2ZXJzL3NwaS9NYWtlZmlsZSAgICAgICAg
-IHwgICAxICsNCj4gPj4+Pj4gICAgIGRyaXZlcnMvc3BpL3NwaS1mc2wtcXNwaS5jICAgfCA5NjcN
-Cj4gPj4+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+Pj4+PiAg
-ICAgNSBmaWxlcyBjaGFuZ2VkLCA5NzkgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pDQo+
-ID4+Pj4+DQo+ID4+Pj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9zcGktbm9yL0tjb25maWcN
-Cj4gPj4+Pj4gYi9kcml2ZXJzL210ZC9zcGktbm9yL0tjb25maWcgaW5kZXggNmNjOWM5Mi4uZDFj
-YTMwNyAxMDA2NDQNCj4gPj4+Pj4gLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9LY29uZmlnDQo+
-ID4+Pj4+ICsrKyBiL2RyaXZlcnMvbXRkL3NwaS1ub3IvS2NvbmZpZw0KPiA+Pj4+PiBAQCAtNTks
-MTUgKzU5LDYgQEAgY29uZmlnIFNQSV9DQURFTkNFX1FVQURTUEkNCj4gPj4+Pj4gICAgIAkgIGRl
-dmljZSB3aXRoIGEgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXIgYW5kIHdhbnQgdG8gYWNjZXNzDQo+
-IHRoZQ0KPiA+Pj4+PiAgICAgCSAgRmxhc2ggYXMgYW4gTVREIGRldmljZS4NCj4gPj4+Pj4NCj4g
-Pj4+Pj4gLWNvbmZpZyBTUElfRlNMX1FVQURTUEkNCj4gPj4+Pj4gLQl0cmlzdGF0ZSAiRnJlZXNj
-YWxlIFF1YWQgU1BJIGNvbnRyb2xsZXIiDQo+ID4+Pj4+IC0JZGVwZW5kcyBvbiBBUkNIX01YQyB8
-fCBTT0NfTFMxMDIxQSB8fA0KPiBBUkNIX0xBWUVSU0NBUEUgfHwNCj4gPj4+PiBDT01QSUxFX1RF
-U1QNCj4gPj4+Pj4gLQlkZXBlbmRzIG9uIEhBU19JT01FTQ0KPiA+Pj4+PiAtCWhlbHANCj4gPj4+
-Pj4gLQkgIFRoaXMgZW5hYmxlcyBzdXBwb3J0IGZvciB0aGUgUXVhZCBTUEkgY29udHJvbGxlciBp
-biBtYXN0ZXINCj4gbW9kZS4NCj4gPj4+Pj4gLQkgIFRoaXMgY29udHJvbGxlciBkb2VzIG5vdCBz
-dXBwb3J0IGdlbmVyaWMgU1BJLiBJdCBvbmx5IHN1cHBvcnRzDQo+ID4+Pj4+IC0JICBTUEkgTk9S
-Lg0KPiA+Pj4+PiAtDQo+ID4+Pj4+ICAgICBjb25maWcgU1BJX0hJU0lfU0ZDDQo+ID4+Pj4+ICAg
-ICAJdHJpc3RhdGUgIkhpc2lsaWNvbiBTUEktTk9SIEZsYXNoIENvbnRyb2xsZXIoU0ZDKSINCj4g
-Pj4+Pj4gICAgIAlkZXBlbmRzIG9uIEFSQ0hfSElTSSB8fCBDT01QSUxFX1RFU1QgZGlmZiAtLWdp
-dA0KPiA+Pj4+PiBhL2RyaXZlcnMvbXRkL3NwaS1ub3IvTWFrZWZpbGUgYi9kcml2ZXJzL210ZC9z
-cGktbm9yL01ha2VmaWxlDQo+ID4+Pj4+IGluZGV4DQo+ID4+Pj4+IGY0YzYxZDIuLjNmMTYwYzJl
-MyAxMDA2NDQNCj4gPj4+Pj4gLS0tIGEvZHJpdmVycy9tdGQvc3BpLW5vci9NYWtlZmlsZQ0KPiA+
-Pj4+PiArKysgYi9kcml2ZXJzL210ZC9zcGktbm9yL01ha2VmaWxlDQo+ID4+Pj4+IEBAIC0zLDcg
-KzMsNiBAQCBvYmotJChDT05GSUdfTVREX1NQSV9OT1IpCSs9IHNwaS1ub3Iubw0KPiA+Pj4+PiAg
-ICAgb2JqLSQoQ09ORklHX1NQSV9BU1BFRURfU01DKQkrPSBhc3BlZWQtc21jLm8NCj4gPj4+Pj4g
-ICAgIG9iai0kKENPTkZJR19TUElfQVRNRUxfUVVBRFNQSSkJKz0gYXRtZWwtcXVhZHNwaS5vDQo+
-ID4+Pj4+ICAgICBvYmotJChDT05GSUdfU1BJX0NBREVOQ0VfUVVBRFNQSSkJKz0gY2FkZW5jZS0N
-Cj4gcXVhZHNwaS5vDQo+ID4+Pj4+IC1vYmotJChDT05GSUdfU1BJX0ZTTF9RVUFEU1BJKQkrPSBm
-c2wtcXVhZHNwaS5vDQo+ID4+Pj4+ICAgICBvYmotJChDT05GSUdfU1BJX0hJU0lfU0ZDKQkrPSBo
-aXNpLXNmYy5vDQo+ID4+Pj4+ICAgICBvYmotJChDT05GSUdfTVREX01UODF4eF9OT1IpICAgICs9
-IG10ay1xdWFkc3BpLm8NCj4gPj4+Pj4gICAgIG9iai0kKENPTkZJR19TUElfTlhQX1NQSUZJKQkr
-PSBueHAtc3BpZmkubw0KPiA+Pj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvS2NvbmZpZyBi
-L2RyaXZlcnMvc3BpL0tjb25maWcgaW5kZXgNCj4gPj4+Pj4gN2QzYTVjOS4uOGM4NDE4NiAxMDA2
-NDQNCj4gPj4+Pj4gLS0tIGEvZHJpdmVycy9zcGkvS2NvbmZpZw0KPiA+Pj4+PiArKysgYi9kcml2
-ZXJzL3NwaS9LY29uZmlnDQo+ID4+Pj4+IEBAIC0yNTksNiArMjU5LDE3IEBAIGNvbmZpZyBTUElf
-RlNMX0xQU1BJDQo+ID4+Pj4+ICAgICAJaGVscA0KPiA+Pj4+PiAgICAgCSAgVGhpcyBlbmFibGVz
-IEZyZWVzY2FsZSBpLk1YIExQU1BJIGNvbnRyb2xsZXJzIGluIG1hc3Rlcg0KPiBtb2RlLg0KPiA+
-Pj4+Pg0KPiA+Pj4+PiArY29uZmlnIFNQSV9GU0xfUVVBRFNQSQ0KPiA+Pj4+PiArCXRyaXN0YXRl
-ICJGcmVlc2NhbGUgUVNQSSBjb250cm9sbGVyIg0KPiA+Pj4+PiArCWRlcGVuZHMgb24gQVJDSF9N
-WEMgfHwgU09DX0xTMTAyMUEgfHwNCj4gQVJDSF9MQVlFUlNDQVBFIHx8DQo+ID4+Pj4gQ09NUElM
-RV9URVNUDQo+ID4+Pj4+ICsJZGVwZW5kcyBvbiBIQVNfSU9NRU0NCj4gPj4+Pj4gKwloZWxwDQo+
-ID4+Pj4+ICsJICBUaGlzIGVuYWJsZXMgc3VwcG9ydCBmb3IgdGhlIFF1YWQgU1BJIGNvbnRyb2xs
-ZXIgaW4gbWFzdGVyDQo+IG1vZGUuDQo+ID4+Pj4+ICsJICBVcCB0byBmb3VyIGZsYXNoIGNoaXBz
-IGNhbiBiZSBjb25uZWN0ZWQgb24gdHdvIGJ1c2VzIHdpdGgNCj4gdHdvDQo+ID4+Pj4+ICsJICBj
-aGlwc2VsZWN0cyBlYWNoLg0KPiA+Pj4+PiArCSAgVGhpcyBjb250cm9sbGVyIGRvZXMgbm90IHN1
-cHBvcnQgZ2VuZXJpYyBTUEkgbWVzc2FnZXMuIEl0DQo+IG9ubHkNCj4gPj4+Pj4gKwkgIHN1cHBv
-cnRzIHRoZSBoaWdoLWxldmVsIFNQSSBtZW1vcnkgaW50ZXJmYWNlLg0KPiA+Pj4+PiArDQo+ID4+
-PiBbLi4uXQ0KPiA+Pj4+PiArc3RhdGljIHZvaWQgZnNsX3FzcGlfc2VsZWN0X21lbShzdHJ1Y3Qg
-ZnNsX3FzcGkgKnEsIHN0cnVjdA0KPiA+Pj4+PiArc3BpX2RldmljZSAqc3BpKSB7DQo+ID4+Pj4+
-ICsJdW5zaWduZWQgbG9uZyByYXRlID0gc3BpLT5tYXhfc3BlZWRfaHo7DQo+ID4+Pj4+ICsJaW50
-IHJldCwgaTsNCj4gPj4+Pj4gKwl1MzIgbWFwX2FkZHI7DQo+ID4+Pj4NCj4gPj4+PiBGb3Jnb3Qg
-dG8gZHJvcCBzb21lIHVudXNlZCB2YXJzIGhlcmUuIEkgd2lsbCByZW1vdmUgdGhlbSBpbiB0aGUN
-Cj4gPj4+PiBuZXh0IHZlcnNpb24uDQo+ID4+Pj4NCj4gPj4+DQo+ID4+PiBZZXMsIGJlbG93IGFy
-ZSB0aGUgYnVpbGQgd2FybmluZ3MgbWVzc2FnZXMgY29taW5nIGZvciB0aGlzIHZlcnNpb24NCj4g
-Pj4+IG9mIHRoZQ0KPiA+PiBwYXRjaC4NCj4gPj4+DQo+ID4+PiAJZHJpdmVycy9zcGkvc3BpLWZz
-bC1xc3BpLmM6IEluIGZ1bmN0aW9uIOKAmGZzbF9xc3BpX3NlbGVjdF9tZW3igJk6DQo+ID4+PiAJ
-ZHJpdmVycy9zcGkvc3BpLWZzbC1xc3BpLmM6NTAwOjY6IHdhcm5pbmc6IHVudXNlZCB2YXJpYWJs
-ZSDigJhtYXBfYWRkcuKAmQ0KPiA+PiBbLVd1bnVzZWQtdmFyaWFibGVdDQo+ID4+PiAJICB1MzIg
-bWFwX2FkZHI7DQo+ID4+PiAJICAgICAgXg0KPiA+Pj4gCWRyaXZlcnMvc3BpL3NwaS1mc2wtcXNw
-aS5jOjQ5OToxMTogd2FybmluZzogdW51c2VkIHZhcmlhYmxlIOKAmGnigJkgWy0NCj4gPj4gV3Vu
-dXNlZC12YXJpYWJsZV0NCj4gPj4+IAkgIGludCByZXQsIGk7DQo+ID4+Pg0KPiA+Pj4+PiArDQo+
-ID4+Pj4+ICsJaWYgKHEtPnNlbGVjdGVkID09IHNwaS0+Y2hpcF9zZWxlY3QpDQo+ID4+PiBbLi4u
-XQ0KPiA+Pj4NCj4gPj4+IFZlcmlmaWVkIHRoaXMgcGF0Y2ggc2VyaWVzIG9uIExheWVyU2NhcGUt
-Mi54IGFyY2hpdGVjdHVyZSBib2FyZHMuDQo+ID4+PiBMUzEwODhhcmRiLCBpcyBoYXZpbmcgdHdv
-IGNvbm5lY3RlZCBmbGFzaCBzbGF2ZSBkZXZpY2VzIG9uIENTMCBhbmQgQ1MxLg0KPiA+Pj4NCj4g
-Pj4+IFZlcmlmaWVkIHdpdGggc2ltcGxlIFJlYWQvV3JpdGUvRXJhc2Ugb3BlcmF0aW9ucyBhbG9u
-ZyB3aXRoIEpGRlMyDQo+ID4+IG1vdW50aW5nIGFuZCBib290aW5nIGZyb20gZmxhc2ggTVREIHBh
-cnRpdGlvbiBmb3IgYm90aCBzbGF2ZSBkZXZpY2VzLg0KPiA+Pg0KPiA+PiBUaGFuayB5b3UgZm9y
-IHRlc3RpbmchIERvZXMgdGhpcyBtZWFuIEkgY2FuIGFkZCB5b3VyIFRlc3RlZC1ieSB0YWc/DQo+
-ID4+IElmIHlvdSBoYXZlIGRvbmUgYSByZXZpZXcgb2YgYW55IG9mIHRoZSBwYXRjaGVzIGluIHRo
-aXMgc2V0LCBwbGVhc2UNCj4gPj4gYWxzbyBhZGQgYSBSZXZpZXdlZC1ieSB0YWcuDQo+ID4NCj4g
-PiBIaSBTY2hyZW1wZiwgSSBhbSByZXZpZXdpbmcgYW5kIHRlc3Rpbmcgb24gc29tZSBpLk1YIHBs
-YXRmb3JtcywgcGxlYXNlDQo+IGhvbGQgb24gZm9yIGEgd2hpbGUgZm9yIHRoZSByZXN1bHQuDQo+
-IA0KPiBPa2F5LCB0aGFua3MhIEknbSBsb29raW5nIGZvcndhcmQgdG8gc2VlIHRoZSByZXN1bHRz
-Lg0KDQpIaSBTY2hyZW1wZiwgSSBhbSBnb29kIHdpdGggdGhlIHBhdGNoIHNldCh3aXRoIHdhcm5p
-bmcgZml4KSBhbmQgaXQgd29ya3MgZmluZSBvbiBpLk1YIHBsYXRmb3Jtcy4gSSB3aWxsIGFkZCBy
-ZXZpZXcgYW5kIHRlc3QgdGFncyBmb3IgbmV4dCB2ZXJzaW9uLg0KDQpJIGhhdmUgb25lIHF1ZXN0
-aW9ucyBhYm91dCB0aGUgRERSIG1vZGUgc3VwcG9ydCwgaXQgdGhlcmUgYW55IGZ1cnRoZXIgcGxh
-bnMgZm9yIEREUiBtb2RlIHN1cHBvcnQgcmF0aGVyIHRoYW4gU0RSIG9ubHk/DQoNCj4gDQo+IFJl
-Z2FyZHMsDQo+IEZyaWVkZXINCg==
+Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
+
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 52 +++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 08dcc3c22e88..5802f188051b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -80,7 +80,8 @@ struct lpspi_config {
+ struct fsl_lpspi_data {
+ 	struct device *dev;
+ 	void __iomem *base;
+-	struct clk *clk;
++	struct clk *clk_ipg;
++	struct clk *clk_per;
+ 	bool is_slave;
+=20
+ 	void *rx_buf;
+@@ -147,8 +148,19 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
+roller *controller)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
++	int ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret)
++		return ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
++	if (ret) {
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
++		return ret;
++	}
+=20
+-	return clk_prepare_enable(fsl_lpspi->clk);
++	return 0;
+ }
+=20
+ static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
+)
+@@ -156,7 +168,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
+troller *controller)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
+=20
+ 	return 0;
+ }
+@@ -249,7 +262,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	unsigned int perclk_rate, scldiv;
+ 	u8 prescale;
+=20
+-	perclk_rate =3D clk_get_rate(fsl_lpspi->clk);
++	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
+ 	for (prescale =3D 0; prescale < 8; prescale++) {
+ 		scldiv =3D perclk_rate /
+ 			 (clkdivs[prescale] * config.speed_hz) - 2;
+@@ -522,15 +535,30 @@ static int fsl_lpspi_probe(struct platform_device *pd=
+ev)
+ 		goto out_controller_put;
+ 	}
+=20
+-	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
+-	if (IS_ERR(fsl_lpspi->clk)) {
+-		ret =3D PTR_ERR(fsl_lpspi->clk);
++	fsl_lpspi->clk_per =3D devm_clk_get(&pdev->dev, "per");
++	if (IS_ERR(fsl_lpspi->clk_per)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_per);
++		goto out_controller_put;
++	}
++
++	fsl_lpspi->clk_ipg =3D devm_clk_get(&pdev->dev, "ipg");
++	if (IS_ERR(fsl_lpspi->clk_ipg)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_ipg);
++		goto out_controller_put;
++	}
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
+ 		goto out_controller_put;
+ 	}
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk);
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
++		dev_err(&pdev->dev,
++			"can't enable lpspi per clock, ret=3D%d\n", ret);
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
+ 		goto out_controller_put;
+ 	}
+=20
+@@ -538,7 +566,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
+)
+ 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
+@@ -560,7 +589,8 @@ static int fsl_lpspi_remove(struct platform_device *pde=
+v)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	return 0;
+ }
+--=20
+2.17.1

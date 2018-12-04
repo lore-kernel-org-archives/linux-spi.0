@@ -1,171 +1,54 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH] spi: lpspi: Add cs-gpio support
-Date: Tue, 4 Dec 2018 06:24:59 +0000
-Message-ID: <20181204062313.28942-1-xiaoning.wang@nxp.com>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH v6 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
+ controller
+Date: Tue, 4 Dec 2018 08:20:03 +0000
+Message-ID: <f12ea437-5fa5-7ca8-a5ba-b4cc1e9b38f7@kontron.de>
+References: <1543314174-28580-1-git-send-email-frieder.schrempf@kontron.de>
+ <1543314174-28580-4-git-send-email-frieder.schrempf@kontron.de>
+ <3981845c-327a-bb14-2908-47dd443971bf@kontron.de>
+ <VI1PR04MB572644A2AE3214356A62478799D20@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <f4c584e5-8930-bec3-0c4e-2216a89606b0@kontron.de>
+ <AM6PR04MB496732760F72A0B5B5F4A5A997D20@AM6PR04MB4967.eurprd04.prod.outlook.com>
+ <1389ab35-b015-cb5d-1ae9-c8309074a5f9@kontron.de>
+ <AM6PR04MB49670EA07FC3C9FC8EF1AFB097AE0@AM6PR04MB4967.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        David Wolfe <david.wolfe@nxp.com>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        "Prabhakar Kushwaha" <prabhakar.kushwaha@nxp.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Han Xu <han.xu@nxp.com>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AM6PR04MB49670EA07FC3C9FC8EF1AFB097AE0@AM6PR04MB4967.eurprd04.prod.outlook.com>
 Content-Language: en-US
+Content-ID: <6C2714F5A2C98A4CBD04DE6E3244A864@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add cs-gpio feature for LPSPI. Use fsl_lpspi_prepare_message() and
-fsl_lpspi_unprepare_message() to enable and control cs line.
-These two functions will be only called at the beginning and the ending
-of a message transfer.
-
-Still support using the mode without cs-gpio. It depends on if attribute
-cs-gpio has been configured in dts file.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
----
- drivers/spi/spi-fsl-lpspi.c | 79 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 78 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index a7d01b79827b..c6fe3f94de19 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -9,6 +9,7 @@
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-+#include <linux/gpio.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-@@ -16,7 +17,9 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/of_gpio.h>
- #include <linux/pinctrl/consumer.h>
-+#include <linux/platform_data/spi-imx.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-@@ -28,6 +31,10 @@
-=20
- #define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
-=20
-+#define LPSPI_CS_ACTIVE		1
-+#define LPSPI_CS_INACTIVE	0
-+#define LPSPI_CS_DELAY		100
-+
- /* i.MX7ULP LPSPI registers */
- #define IMX7ULP_VERID	0x0
- #define IMX7ULP_PARAM	0x4
-@@ -104,6 +111,8 @@ struct fsl_lpspi_data {
- 	struct completion xfer_done;
-=20
- 	bool slave_aborted;
-+
-+	int chipselect[0];
- };
-=20
- static const struct of_device_id fsl_lpspi_dt_ids[] =3D {
-@@ -176,6 +185,48 @@ static int lpspi_unprepare_xfer_hardware(struct spi_co=
-ntroller *controller)
- 	return 0;
- }
-=20
-+static void fsl_lpspi_chipselect(struct spi_device *spi, bool enable)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(spi->controller);
-+	int gpio =3D fsl_lpspi->chipselect[spi->chip_select];
-+
-+	enable =3D (!!(spi->mode & SPI_CS_HIGH) =3D=3D enable);
-+
-+	if (!gpio_is_valid(gpio))
-+		return;
-+
-+	gpio_set_value_cansleep(gpio, enable);
-+}
-+
-+static int fsl_lpspi_prepare_message(struct spi_controller *controller,
-+						struct spi_message *msg)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D
-+				spi_controller_get_devdata(controller);
-+	struct spi_device *spi =3D msg->spi;
-+	int gpio =3D fsl_lpspi->chipselect[spi->chip_select];
-+
-+	if (gpio_is_valid(gpio)) {
-+		gpio_direction_output(gpio,
-+				fsl_lpspi->config.mode & SPI_CS_HIGH ? 0 : 1);
-+	}
-+
-+	fsl_lpspi_chipselect(spi, LPSPI_CS_ACTIVE);
-+
-+	return 0;
-+}
-+
-+static int fsl_lpspi_unprepare_message(struct spi_controller *controller,
-+						struct spi_message *msg)
-+{
-+	struct spi_device *spi =3D msg->spi;
-+
-+	fsl_lpspi_chipselect(spi, LPSPI_CS_INACTIVE);
-+
-+	return 0;
-+}
-+
- static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u8 txfifo_cnt;
-@@ -512,10 +563,13 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *=
-fsl_lpspi)
-=20
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
-+	struct device_node *np =3D pdev->dev.of_node;
- 	struct fsl_lpspi_data *fsl_lpspi;
- 	struct spi_controller *controller;
-+	struct spi_imx_master *lpspi_platform_info =3D
-+		dev_get_platdata(&pdev->dev);
- 	struct resource *res;
--	int ret, irq;
-+	int i, ret, irq;
- 	u32 temp;
-=20
- 	if (of_property_read_bool((&pdev->dev)->of_node, "spi-slave"))
-@@ -539,6 +593,29 @@ static int fsl_lpspi_probe(struct platform_device *pde=
-v)
- 	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
- 						    "spi-slave");
-=20
-+	if (!fsl_lpspi->is_slave) {
-+		for (i =3D 0; i < controller->num_chipselect; i++) {
-+			int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
-+
-+			if (!gpio_is_valid(cs_gpio) && lpspi_platform_info)
-+				cs_gpio =3D lpspi_platform_info->chipselect[i];
-+
-+			fsl_lpspi->chipselect[i] =3D cs_gpio;
-+			if (!gpio_is_valid(cs_gpio))
-+				continue;
-+
-+			ret =3D devm_gpio_request(&pdev->dev,
-+					fsl_lpspi->chipselect[i], DRIVER_NAME);
-+			if (ret) {
-+				dev_err(&pdev->dev, "can't get cs gpios\n");
-+				goto out_controller_put;
-+			}
-+		}
-+
-+		controller->prepare_message =3D fsl_lpspi_prepare_message;
-+		controller->unprepare_message =3D fsl_lpspi_unprepare_message;
-+	}
-+
- 	controller->transfer_one_message =3D fsl_lpspi_transfer_one_msg;
- 	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
- 	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
-;
---=20
-2.17.1
+SGkgSGFuLA0KDQpPbiAwMy4xMi4xOCAyMTo1NCwgSGFuIFh1IHdyb3RlOg0KWy4uLl0NCj4+Pg0K
+Pj4+IEhpIFNjaHJlbXBmLCBJIGFtIHJldmlld2luZyBhbmQgdGVzdGluZyBvbiBzb21lIGkuTVgg
+cGxhdGZvcm1zLCBwbGVhc2UNCj4+IGhvbGQgb24gZm9yIGEgd2hpbGUgZm9yIHRoZSByZXN1bHQu
+DQo+Pg0KPj4gT2theSwgdGhhbmtzISBJJ20gbG9va2luZyBmb3J3YXJkIHRvIHNlZSB0aGUgcmVz
+dWx0cy4NCj4gDQo+IEhpIFNjaHJlbXBmLCBJIGFtIGdvb2Qgd2l0aCB0aGUgcGF0Y2ggc2V0KHdp
+dGggd2FybmluZyBmaXgpIGFuZCBpdCB3b3JrcyBmaW5lIG9uIGkuTVggcGxhdGZvcm1zLiBJIHdp
+bGwgYWRkIHJldmlldyBhbmQgdGVzdCB0YWdzIGZvciBuZXh0IHZlcnNpb24uDQoNCk9rLCB0aGFu
+a3MgZm9yIGRvaW5nIHRoZSB0ZXN0cy4gSSB3aWxsIHNlbmQgdGhlIG5leHQgdmVyc2lvbiBzb29u
+Lg0KDQo+IEkgaGF2ZSBvbmUgcXVlc3Rpb25zIGFib3V0IHRoZSBERFIgbW9kZSBzdXBwb3J0LCBp
+dCB0aGVyZSBhbnkgZnVydGhlciBwbGFucyBmb3IgRERSIG1vZGUgc3VwcG9ydCByYXRoZXIgdGhh
+biBTRFIgb25seT8NCkkgZGlkbid0IGxvb2sgYXQgRERSIG1vZGUgc3VwcG9ydCB5ZXQuIEkgZ3Vl
+c3Mgc29tZSBjaGFuZ2VzIGluIHRoZSBTUEkgDQpOT1IgYW5kIFNQSSBNRU0gbGF5ZXJzIGFyZSBu
+ZWNlc3NhcnksIGJlZm9yZSB0aGUgY29udHJvbGxlciBkcml2ZXJzIGNhbiANCmltcGxlbWVudCBE
+RFIgbW9kZSBzdXBwb3J0Lg0KDQpUaGFua3MsDQpGcmllZGVy

@@ -1,151 +1,65 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v2 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
- driver
-Date: Wed, 5 Dec 2018 14:34:22 +0100
-Message-ID: <941aca45-185a-fb99-f5d1-d12b3bcad6de@gmail.com>
-References: <1543828720-18345-1-git-send-email-masonccyang@mxic.com.tw>
- <1543828720-18345-2-git-send-email-masonccyang@mxic.com.tw>
- <cebe44a3-80be-9091-e70b-acba6f3fff4f@gmail.com>
- <OF0ED3C578.141B72CA-ON4825835A.0025CA62-4825835A.002A7BDF@mxic.com.tw>
- <84e3c55b-687e-28f6-0a7c-1c48c822ef05@gmail.com>
- <CAMuHMdV-Ca5sderSKmdbtovKrd-Z7piwVZbwDtB6vVXPa8Q5AA@mail.gmail.com>
- <8e667f91-70bd-795c-094f-23c919c3802c@gmail.com>
- <CAMuHMdXF9PtWgjUKaTomkr4X_00HARQ_1uZPROWUr910HLVMCA@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
+Date: Wed, 5 Dec 2018 14:18:03 +0000
+Message-ID: <20181205141803.GD6205@sirena.org.uk>
+References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <20181203101937.7b01a0ad@bbrezillon>
+ <214dadd9-859c-ca88-1aff-1c83fcfa3c0b@ti.com>
+ <20181205134618.56223758@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: masonccyang@mxic.com.tw,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>, zhengxunli@mxic.com.tw
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mSxgbZZZvrAyzONB"
+Cc: Vignesh R <vigneshr@ti.com>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdXF9PtWgjUKaTomkr4X_00HARQ_1uZPROWUr910HLVMCA@mail.gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20181205134618.56223758@bbrezillon>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/05/2018 02:31 PM, Geert Uytterhoeven wrote:
-> Hi Marek,
 
-Hi,
+--mSxgbZZZvrAyzONB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On Wed, Dec 5, 2018 at 2:25 PM Marek Vasut <marek.vasut@gmail.com> wrote:
->> On 12/05/2018 02:15 PM, Geert Uytterhoeven wrote:
->>> On Wed, Dec 5, 2018 at 1:57 PM Marek Vasut <marek.vasut@gmail.com> wrote:
->>>> On 12/05/2018 08:44 AM, masonccyang@mxic.com.tw wrote:
->>>>>> "Marek Vasut" <marek.vasut@gmail.com>
->>>>>> 2018/12/05 上午 10:04
->>>>>> On 12/03/2018 10:18 AM, Mason Yang wrote:
->>>>>>> Add a driver for Renesas R-Car Gen3 RPC SPI controller.
->>>>>>>
->>>>>>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->>>
->>>>>>> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
->>>>>>> +{
->>>>>>> +   /*
->>>>>>> +    * NOTE: The 0x260 are undocumented bits, but they must be set.
->>>>>>> +    *   RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
->>>>>>> +    *   0x0 : the delay is biggest,
->>>>>>> +    *   0x1 : the delay is 2nd biggest,
->>>>>>> +    *   0x3 or 0x6 is a recommended value.
->>>>>>> +    */
->>>>>>
->>>>>> Doesn't this vary by SoC ? I think H3 ES1.0 had different value here,
->>>>>> but I might be wrong.
->>>>>
->>>>> I check the Renesas bare-metal code, mini_monitor v4.01.
->>>>> It set 0x03 or 0x0 and I test them w/ 0x0, 0x3 and 0x6 are all OK.
->>>>
->>>> Shouldn't this somehow use the soc_device_match() then and configure it
->>>> accordingly for various chips ? Like eg. the r8a7795-cpg-mssr driver does.
->>>
->>> Please don't use soc_device_match() for per-SoC configuration, if
->>> you already have of_device_id.data.
->>
->> I mean, the value is different on H3 ES1 and ES2 iirc, that's what
->> soc_device_match() is for, right ?
-> 
-> Oh, it differs between revisions, too?
-> Yes, in that case you need soc_device_match().
-> 
->>> BTW, this drivers support r8a7795 only (for now), as per the compatible
->>> value.
->>
->> 77995
-> 
-> Sorry, typo on my side. So H3 is not yet supported ;-)
+On Wed, Dec 05, 2018 at 01:46:18PM +0100, Boris Brezillon wrote:
+> Vignesh R <vigneshr@ti.com> wrote:
 
-It's coming the minute this lands mainline, so we should make it easy to
-add.
+> > >>   spi: nxp-fspi: add octal mode flag bit for octal support =20
 
->>>>>>> +#ifdef CONFIG_RESET_CONTROLLER
->>>>>>
->>>>>> Just make the driver depend on reset controller.
->>>>>
->>>>> ?
->>>>> please refer to
->>>>> https://github.com/torvalds/linux/blob/master/drivers/clk/renesas/renesas-cpg-mssr.c
->>>>>
->>>>> line 124 ~ 126
->>>>
->>>> This seems like a stopgap measure for systems which do not have a reset
->>>> api compatible controller. Geert ?
->>>
->>> So far CONFIG_RESET_CONTROLLER is optional.
->>
->> My understanding is that for this IP, it can well be mandatory, since
->> all the chips have a reset wired to the IP internally.
-> 
-> That's what I was trying to find out, hence my question about the purpose.
-> 
->>>>>>> +         regmap_write(rpc->regmap, RPC_SMWDR0,
->>>>>>> +                 *(u32 *)(tx_buf + pos));
->>>>>>
->>>>>> *(u32 *) cast is probably not needed , fix casts globally.
->>>>>
->>>>> It must have it!
->>>>
->>>> Why ?
->>>
->>> Else you get a compiler warning, as tx_bug is void *.
->>
->> Don't you need some get_unaligned() in that case ? txbuf+pos can well be
->> unaligned if it's void * .
-> 
-> True, but IIRC, arm64 can handle that, right?
-> Don't know about SuperH.
+> Mark, I think you can pick this one too.
 
-Oh, that's right, there are SH systems with RPC. Right.
+I don't have this any more, it looked like this was stuck behind the
+otehr MTD changes which seemed to have problems.  If someone could
+resend?
 
->>>>>>> +#ifdef CONFIG_PM_SLEEP
->>>>>>> +static int rpc_spi_suspend(struct device *dev)
->>>>>>> +{
->>>>>>> +   struct platform_device *pdev = to_platform_device(dev);
->>>>>>> +   struct spi_master *master = platform_get_drvdata(pdev);
->>>>>>> +
->>>>>>> +   return spi_master_suspend(master);
->>>>>>
->>>>>> Won't the SPI NOR lose state across suspend ? Is that a problem ?
->>>>>
->>>>> I don't think so.
->>>>> Because when the device is not in operation and CS# is high,
->>>>> it is put in stand-by mode.
->>>>
->>>> Is the power to the SPI NOR retained ?
->>>
->>> Not if PSCI system suspend turns of power to the SoC.
->>
->> And is that a problem ?
-> 
-> Good question!
+--mSxgbZZZvrAyzONB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-That's what we need an answer to :)
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Best regards,
-Marek Vasut
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwH3hsACgkQJNaLcl1U
+h9AQ7gf/aJLlaDvMy6aZuK7FrotyfySX7CJt+US7KUsb63DCSjupYyNQDjrU+hY+
+MkA22EG1ml0RP1q5rOL+fgDnWtogzWGPApXwhT/R2prcgyK0YKqhk8eM2dAhzT6L
+JfO+E9rGSM3rBYu5XaGZ7h++3H8mgH9GwkK/GQhgdSc/rOsUJtFZWpBr0+9AYlgi
+UvQunc+4z95nlS73u7ZB+LOvC4L+h8vSp6yPIeN+TIpWc7pwSpbbCcYc3Rv81Usw
+KqmpkRh9/rgai7zX844+tqa9KqPIZ++29cZHd2vmItMO0PMLcG+fk3S0jps5q27x
+ZdLFbvdUupJ3Klk6uxPk8REewVaDog==
+=6Sez
+-----END PGP SIGNATURE-----
+
+--mSxgbZZZvrAyzONB--

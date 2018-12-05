@@ -1,73 +1,65 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller driver
-Date: Wed, 5 Dec 2018 10:11:34 +0100
-Message-ID: <CAMuHMdXS_039E6F3=+UgfE_KgJcwmVvA-zPraOiQPUXMEwck2A@mail.gmail.com>
-References: <1543828720-18345-1-git-send-email-masonccyang@mxic.com.tw>
- <1543828720-18345-2-git-send-email-masonccyang@mxic.com.tw>
- <cebe44a3-80be-9091-e70b-acba6f3fff4f@gmail.com> <OF0ED3C578.141B72CA-ON4825835A.0025CA62-4825835A.002A7BDF@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Cc: Marek Vasut <marek.vasut@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 002/123] spi: uniphier: fix incorrect property items
+Date: Wed,  5 Dec 2018 04:33:54 -0500
+Message-ID: <20181205093555.5386-2-sashal@kernel.org>
+References: <20181205093555.5386-1-sashal@kernel.org>
+Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>,
         Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF0ED3C578.141B72CA-ON4825835A.0025CA62-4825835A.002A7BDF@mxic.com.tw>
-Sender: linux-kernel-owner@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20181205093555.5386-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 
-On Wed, Dec 5, 2018 at 8:44 AM <masonccyang@mxic.com.tw> wrote:
-> > "Marek Vasut" <marek.vasut@gmail.com>
-> > 2018/12/05 上午 10:04
-> > On 12/03/2018 10:18 AM, Mason Yang wrote:
-> > > Add a driver for Renesas R-Car Gen3 RPC SPI controller.
-> > >
-> > > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+[ Upstream commit 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf ]
 
-> > > +static u8 rpc_bits_xfer(u32 nbytes)
-> > > +{
-> > > +   if (nbytes > 4)
-> > > +      nbytes = 4;
-> >
-> > Use clamp() ?
-> >
->
-> nbytes = clamp(nbytes, 1, 4);
->
-> got many warnings, something like,
-> ./include/linux/kernel.h:845:29: warning: comparison of distinct pointer types lacks a cast
+This commit fixes incorrect property because it was different
+from the actual.
+The parameters of '#address-cells' and '#size-cells' were removed,
+and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
 
-You can either make the constants unsigned (1U and 4U), or
-use clamp_t(u32, ...).
+Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
+Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-> > > +         rpc->smenr |= RPC_SMENR_SPIDE(rpc_bits_xfer
-> > > +               (op->data.nbytes)) | RPC_SMENR_SPIDB
-> > > +               (fls(op->data.buswidth >> 1));
-> >
-> > Drop parenthesis around fls()
->
-> ?
-> no way.
-
-Please split the line before RPC_SMENR_SPIDB, and join the next line
-with the parameters, so it becomes obvious the parentheses are needed
-because RPC_SMENR_SPIDB() is a macro taking parameters.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+index 504a4ecfc7b1..b04e66a52de5 100644
+--- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
++++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+@@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
+ Required properties:
+  - compatible: should be "socionext,uniphier-scssi"
+  - reg: address and length of the spi master registers
+- - #address-cells: must be <1>, see spi-bus.txt
+- - #size-cells: must be <0>, see spi-bus.txt
+- - clocks: A phandle to the clock for the device.
+- - resets: A phandle to the reset control for the device.
++ - interrupts: a single interrupt specifier
++ - pinctrl-names: should be "default"
++ - pinctrl-0: pin control state for the default mode
++ - clocks: a phandle to the clock for the device
++ - resets: a phandle to the reset control for the device
+ 
+ Example:
+ 
+ spi0: spi@54006000 {
+ 	compatible = "socionext,uniphier-scssi";
+ 	reg = <0x54006000 0x100>;
+-	#address-cells = <1>;
+-	#size-cells = <0>;
++	interrupts = <0 39 4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_spi0>;
+ 	clocks = <&peri_clk 11>;
+ 	resets = <&peri_rst 11>;
+ };
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.17.1

@@ -1,39 +1,37 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v2 2/2] dt-binding: spi: Document Renesas R-Car Gen3 RPC
- controller bindings
-Date: Wed, 5 Dec 2018 21:56:57 +0300
-Message-ID: <8de55806-ee08-69c6-df1b-45b1eba607a6@cogentembedded.com>
-References: <1543828720-18345-1-git-send-email-masonccyang@mxic.com.tw>
- <1543828720-18345-3-git-send-email-masonccyang@mxic.com.tw>
- <2e719883-4cfd-b456-b894-853e99515092@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Subject: [PATCH] SPI: Use of_node_name_eq for node name comparisons
+Date: Wed,  5 Dec 2018 13:50:41 -0600
+Message-ID: <20181205195050.4759-25-robh@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Marek Vasut <marek.vasut@gmail.com>,
-        Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        boris.brezillon@bootlin.com, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2e719883-4cfd-b456-b894-853e99515092@gmail.com>
-Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/04/2018 09:19 PM, Marek Vasut wrote:
+Convert string compares of DT node names to use of_node_name_eq helper
+instead. This removes direct access to the node name pointer.
 
->> Document the bindings used by the Renesas R-Car Gen3 RPC SPI controller.
-> 
-> RPC is SPI and HF controller, it is not a pure SPI controller.
-> 
-> How does this deal with the HF part ? Keep in mind the bindings are ABI
-> and it will be difficult to redo them later.
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   Perhaps we need a "mode" prop, maybe w/vendor prefix? 
-
->> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-[...]
-
-MBR, Sergei
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6ca59406b0b7..d27b6b0dee43 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1644,7 +1644,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	}
+ 
+ 	if (spi_controller_is_slave(ctlr)) {
+-		if (strcmp(nc->name, "slave")) {
++		if (!of_node_name_eq(nc, "slave")) {
+ 			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
+ 				nc);
+ 			return -EINVAL;
+-- 
+2.19.1

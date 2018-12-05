@@ -1,65 +1,96 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 002/123] spi: uniphier: fix incorrect property items
-Date: Wed,  5 Dec 2018 04:33:54 -0500
-Message-ID: <20181205093555.5386-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 037/123] spi: omap2-mcspi: Add missing suspend and resume calls
+Date: Wed,  5 Dec 2018 04:34:29 -0500
+Message-ID: <20181205093555.5386-37-sashal@kernel.org>
 References: <20181205093555.5386-1-sashal@kernel.org>
-Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
+Cc: Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20181205093555.5386-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf ]
+[ Upstream commit 91b9deefedf4c35a01027ce38bed7299605026a3 ]
 
-This commit fixes incorrect property because it was different
-from the actual.
-The parameters of '#address-cells' and '#size-cells' were removed,
-and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
+I've been wondering still about omap2-mcspi related suspend and resume
+flakeyness and looks like we're missing calls to spi_master_suspend()
+and spi_master_resume(). Adding those and using pm_runtime_force_suspend()
+and pm_runtime_force_resume() makes things work for suspend and resume
+and allows us to stop using noirq suspend and resume.
 
-Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+And while at it, let's use SET_SYSTEM_SLEEP_PM_OPS to simplify things
+further.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 37 +++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-index 504a4ecfc7b1..b04e66a52de5 100644
---- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
-@@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
- Required properties:
-  - compatible: should be "socionext,uniphier-scssi"
-  - reg: address and length of the spi master registers
-- - #address-cells: must be <1>, see spi-bus.txt
-- - #size-cells: must be <0>, see spi-bus.txt
-- - clocks: A phandle to the clock for the device.
-- - resets: A phandle to the reset control for the device.
-+ - interrupts: a single interrupt specifier
-+ - pinctrl-names: should be "default"
-+ - pinctrl-0: pin control state for the default mode
-+ - clocks: a phandle to the clock for the device
-+ - resets: a phandle to the reset control for the device
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 508c61c669e7..e2be7da74343 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1455,13 +1455,26 @@ static int omap2_mcspi_remove(struct platform_device *pdev)
+ /* work with hotplug and coldplug */
+ MODULE_ALIAS("platform:omap2_mcspi");
  
- Example:
+-#ifdef	CONFIG_SUSPEND
+-static int omap2_mcspi_suspend_noirq(struct device *dev)
++static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
+ {
+-	return pinctrl_pm_select_sleep_state(dev);
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
++	int error;
++
++	error = pinctrl_pm_select_sleep_state(dev);
++	if (error)
++		dev_warn(mcspi->dev, "%s: failed to set pins: %i\n",
++			 __func__, error);
++
++	error = spi_master_suspend(master);
++	if (error)
++		dev_warn(mcspi->dev, "%s: master suspend failed: %i\n",
++			 __func__, error);
++
++	return pm_runtime_force_suspend(dev);
+ }
  
- spi0: spi@54006000 {
- 	compatible = "socionext,uniphier-scssi";
- 	reg = <0x54006000 0x100>;
--	#address-cells = <1>;
--	#size-cells = <0>;
-+	interrupts = <0 39 4>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_spi0>;
- 	clocks = <&peri_clk 11>;
- 	resets = <&peri_rst 11>;
+-static int omap2_mcspi_resume_noirq(struct device *dev)
++static int __maybe_unused omap2_mcspi_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
+@@ -1472,17 +1485,17 @@ static int omap2_mcspi_resume_noirq(struct device *dev)
+ 		dev_warn(mcspi->dev, "%s: failed to set pins: %i\n",
+ 			 __func__, error);
+ 
+-	return 0;
+-}
++	error = spi_master_resume(master);
++	if (error)
++		dev_warn(mcspi->dev, "%s: master resume failed: %i\n",
++			 __func__, error);
+ 
+-#else
+-#define omap2_mcspi_suspend_noirq	NULL
+-#define omap2_mcspi_resume_noirq	NULL
+-#endif
++	return pm_runtime_force_resume(dev);
++}
+ 
+ static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+-	.suspend_noirq = omap2_mcspi_suspend_noirq,
+-	.resume_noirq = omap2_mcspi_resume_noirq,
++	SET_SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend,
++				omap2_mcspi_resume)
+ 	.runtime_resume	= omap_mcspi_runtime_resume,
  };
+ 
 -- 
 2.17.1

@@ -1,96 +1,35 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 037/123] spi: omap2-mcspi: Add missing suspend and resume calls
-Date: Wed,  5 Dec 2018 04:34:29 -0500
-Message-ID: <20181205093555.5386-37-sashal@kernel.org>
-References: <20181205093555.5386-1-sashal@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Anatolij Gustschin <agust@denx.de>
+Subject: Re: [PATCH v3 3/3] fpga: Add fpga manager driver for ARRI Altera
+ FPP
+Date: Wed, 5 Dec 2018 10:50:08 +0100
+Message-ID: <20181205105008.4a32956c@crub>
+References: <20181127175438.16116-1-agust@denx.de>
+        <20181127175438.16116-4-agust@denx.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-usb@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+        gregkh@linuxfoundation.org, broonie@kernel.org, mdf@kernel.org
+To: atull@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181205093555.5386-1-sashal@kernel.org>
+In-Reply-To: <20181127175438.16116-4-agust@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+Hi Alan,
 
-[ Upstream commit 91b9deefedf4c35a01027ce38bed7299605026a3 ]
+On Tue, 27 Nov 2018 18:54:38 +0100
+Anatolij Gustschin agust@denx.de wrote:
 
-I've been wondering still about omap2-mcspi related suspend and resume
-flakeyness and looks like we're missing calls to spi_master_suspend()
-and spi_master_resume(). Adding those and using pm_runtime_force_suspend()
-and pm_runtime_force_resume() makes things work for suspend and resume
-and allows us to stop using noirq suspend and resume.
+>Add FPGA manager driver for loading ARRI Altera FPGAs via fast
+>passive parallel (FPP) interface using FTDI FT232H chip.
 
-And while at it, let's use SET_SYSTEM_SLEEP_PM_OPS to simplify things
-further.
+Ping. Is this patch okay? I suppose that it will go via usb tree
+as part of the whole series (you send fpga driver patches to Greg
+anyway). Can you ack this patch or is there something that should
+be changed? I'd like to see it merged in v4.21, so if there are
+issues with this patch, I'll try to address it before it is to late.
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-omap2-mcspi.c | 37 +++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 508c61c669e7..e2be7da74343 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1455,13 +1455,26 @@ static int omap2_mcspi_remove(struct platform_device *pdev)
- /* work with hotplug and coldplug */
- MODULE_ALIAS("platform:omap2_mcspi");
- 
--#ifdef	CONFIG_SUSPEND
--static int omap2_mcspi_suspend_noirq(struct device *dev)
-+static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
- {
--	return pinctrl_pm_select_sleep_state(dev);
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-+	int error;
-+
-+	error = pinctrl_pm_select_sleep_state(dev);
-+	if (error)
-+		dev_warn(mcspi->dev, "%s: failed to set pins: %i\n",
-+			 __func__, error);
-+
-+	error = spi_master_suspend(master);
-+	if (error)
-+		dev_warn(mcspi->dev, "%s: master suspend failed: %i\n",
-+			 __func__, error);
-+
-+	return pm_runtime_force_suspend(dev);
- }
- 
--static int omap2_mcspi_resume_noirq(struct device *dev)
-+static int __maybe_unused omap2_mcspi_resume(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-@@ -1472,17 +1485,17 @@ static int omap2_mcspi_resume_noirq(struct device *dev)
- 		dev_warn(mcspi->dev, "%s: failed to set pins: %i\n",
- 			 __func__, error);
- 
--	return 0;
--}
-+	error = spi_master_resume(master);
-+	if (error)
-+		dev_warn(mcspi->dev, "%s: master resume failed: %i\n",
-+			 __func__, error);
- 
--#else
--#define omap2_mcspi_suspend_noirq	NULL
--#define omap2_mcspi_resume_noirq	NULL
--#endif
-+	return pm_runtime_force_resume(dev);
-+}
- 
- static const struct dev_pm_ops omap2_mcspi_pm_ops = {
--	.suspend_noirq = omap2_mcspi_suspend_noirq,
--	.resume_noirq = omap2_mcspi_resume_noirq,
-+	SET_SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend,
-+				omap2_mcspi_resume)
- 	.runtime_resume	= omap_mcspi_runtime_resume,
- };
- 
--- 
-2.17.1
+Thanks,
+Anatolij

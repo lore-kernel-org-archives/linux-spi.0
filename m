@@ -1,45 +1,72 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
-Date: Wed, 5 Dec 2018 13:46:18 +0100
-Message-ID: <20181205134618.56223758@bbrezillon>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <20181203101937.7b01a0ad@bbrezillon>
-        <214dadd9-859c-ca88-1aff-1c83fcfa3c0b@ti.com>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v2 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
+ driver
+Date: Wed, 5 Dec 2018 13:35:34 +0100
+Message-ID: <4b06ed22-8711-6700-056b-c66799d0e616@gmail.com>
+References: <1543828720-18345-1-git-send-email-masonccyang@mxic.com.tw>
+ <1543828720-18345-2-git-send-email-masonccyang@mxic.com.tw>
+ <cebe44a3-80be-9091-e70b-acba6f3fff4f@gmail.com>
+ <OF0ED3C578.141B72CA-ON4825835A.0025CA62-4825835A.002A7BDF@mxic.com.tw>
+ <CAMuHMdXS_039E6F3=+UgfE_KgJcwmVvA-zPraOiQPUXMEwck2A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Vignesh R <vigneshr@ti.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>, zhengxunli@mxic.com.tw
+To: Geert Uytterhoeven <geert@linux-m68k.org>, masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <214dadd9-859c-ca88-1aff-1c83fcfa3c0b@ti.com>
+In-Reply-To: <CAMuHMdXS_039E6F3=+UgfE_KgJcwmVvA-zPraOiQPUXMEwck2A@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 5 Dec 2018 17:25:12 +0530
-Vignesh R <vigneshr@ti.com> wrote:
-
-> >>   mtd: spi-nor: add opcodes for octal Read/Write commands
-> >>   mtd: spi-nor: add octal read flag for flash mt35xu512aba  
+On 12/05/2018 10:11 AM, Geert Uytterhoeven wrote:
+> Hi Mason,
 > 
-> Could you consider merging these two patches alone for v4.21?
-> These can be applied independent of other patches in the series and
-> would allow supporting OSPI flash at SPI NOR level with Cadence QSPI driver.
+> On Wed, Dec 5, 2018 at 8:44 AM <masonccyang@mxic.com.tw> wrote:
+>>> "Marek Vasut" <marek.vasut@gmail.com>
+>>> 2018/12/05 上午 10:04
+>>> On 12/03/2018 10:18 AM, Mason Yang wrote:
+>>>> Add a driver for Renesas R-Car Gen3 RPC SPI controller.
+>>>>
+>>>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> 
+>>>> +static u8 rpc_bits_xfer(u32 nbytes)
+>>>> +{
+>>>> +   if (nbytes > 4)
+>>>> +      nbytes = 4;
+>>>
+>>> Use clamp() ?
+>>>
+>>
+>> nbytes = clamp(nbytes, 1, 4);
+>>
+>> got many warnings, something like,
+>> ./include/linux/kernel.h:845:29: warning: comparison of distinct pointer types lacks a cast
+> 
+> You can either make the constants unsigned (1U and 4U), or
+> use clamp_t(u32, ...).
+> 
+>>>> +         rpc->smenr |= RPC_SMENR_SPIDE(rpc_bits_xfer
+>>>> +               (op->data.nbytes)) | RPC_SMENR_SPIDB
+>>>> +               (fls(op->data.buswidth >> 1));
+>>>
+>>> Drop parenthesis around fls()
+>>
+>> ?
+>> no way.
+> 
+> Please split the line before RPC_SMENR_SPIDB, and join the next line
+> with the parameters, so it becomes obvious the parentheses are needed
+> because RPC_SMENR_SPIDB() is a macro taking parameters.
 
-Yep, I'll queue them to spi-nor/next.
+Oh, I didn't notice that, right.
 
-> >>   spi: nxp-fspi: add octal mode flag bit for octal support  
-
-Mark, I think you can pick this one too.
+-- 
+Best regards,
+Marek Vasut

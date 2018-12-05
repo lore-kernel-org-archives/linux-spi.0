@@ -1,51 +1,55 @@
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 7/8] media: sti/bdisp: don't pass GFP_DMA32 to
- dma_alloc_attrs
-Date: Wed, 5 Dec 2018 08:31:29 -0200
-Message-ID: <20181205083129.20b6b0be@coco.lan>
-References: <20181013151707.32210-1-hch@lst.de>
- <20181013151707.32210-8-hch@lst.de>
- <CA+M3ks5KO-Yr_PEczaENhTfirthFz2gW1uv4bwZe5mjy3-jZyg@mail.gmail.com>
- <20181017072020.GD23407@lst.de>
- <CA+M3ks5ebGDgFtMS5mSYz38AnyrTMQr8C_JkbFEzp=k+izJjUQ@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.19 002/123] spi: uniphier: fix incorrect
+ property items
+Date: Wed, 5 Dec 2018 11:38:20 +0000
+Message-ID: <20181205113820.GB6205@sirena.org.uk>
+References: <20181205093555.5386-1-sashal@kernel.org>
+ <20181205093555.5386-2-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- linux-pm@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- alsa-devel@alsa-project.org, ML dri-devel <dri-devel@lists.freedesktop.org>,
- linux-spi@vger.kernel.org, Hans Verkuil <hans.verkuil@cisco.com>,
- linux-tegra@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- linux-media@vger.kernel.org
-To: Benjamin Gaignard <benjamin.gaignard@linaro.org>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <CA+M3ks5ebGDgFtMS5mSYz38AnyrTMQr8C_JkbFEzp=k+izJjUQ@mail.gmail.com>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="OwLcNYc0lM97+oe1"
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Keiji Hayashibara <hayashibara.keiji@socionext.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+To: Sasha Levin <sashal@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181205093555.5386-2-sashal@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gVGh1LCAxOCBPY3QgMjAxOCAxNDowMDo0MCArMDIwMApCZW5qYW1pbiBHYWlnbmFyZCA8YmVu
-amFtaW4uZ2FpZ25hcmRAbGluYXJvLm9yZz4gZXNjcmV2ZXU6Cgo+IExlIG1lci4gMTcgb2N0LiAy
-MDE4IMOgIDA5OjIwLCBDaHJpc3RvcGggSGVsbHdpZyA8aGNoQGxzdC5kZT4gYSDDqWNyaXQgOgo+
-ID4KPiA+IE9uIE1vbiwgT2N0IDE1LCAyMDE4IGF0IDExOjEyOjU1QU0gKzAyMDAsIEJlbmphbWlu
-IEdhaWduYXJkIHdyb3RlOiAgCj4gPiA+IExlIHNhbS4gMTMgb2N0LiAyMDE4IMOgIDE3OjE4LCBD
-aHJpc3RvcGggSGVsbHdpZyA8aGNoQGxzdC5kZT4gYSDDqWNyaXQgOiAgCj4gPiA+ID4KPiA+ID4g
-PiBUaGUgRE1BIEFQSSBkb2VzIGl0cyBvd24gem9uZSBkZWNpc2lvbnMgYmFzZWQgb24gdGhlIGNv
-aGVyZW50X2RtYV9tYXNrLgo+ID4gPiA+Cj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogQ2hyaXN0b3Bo
-IEhlbGx3aWcgPGhjaEBsc3QuZGU+ICAKPiA+ID4KPiA+ID4gUmV2aWV3ZWQtYnk6IEJlbmphbWlu
-IEdhaWduYXJkIDxiZW5qYW1pbi5nYWlnbmFyZEBsaW5hcm8ub3JnPiAgCj4gPgo+ID4gQ2FuIHlv
-dSBwaWNrIGl0IHVwIHRocm91Z2ggdGhlIG1lZGlhIHRyZWU/ICAKPiAKPiBObyBidXQgTWF1cm9z
-IG9yIEhhbnMgKGluIENDKSBjYW4gYWRkIGl0LgoKSSdtIGFkZGluZyBpdC4gU29ycnkgZm9yIHRo
-ZSBkZWxheS4gQWxsIHRob3NlIHRyaXBzIGZvciBNUy9LUyBtYWRlCmhhcmRlciB0byBoYW5kbGUg
-aXQgZWFybGllci4KClRoYW5rcywKTWF1cm8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vZHJpLWRldmVsCg==
+
+--OwLcNYc0lM97+oe1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Dec 05, 2018 at 04:33:54AM -0500, Sasha Levin wrote:
+> From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+>=20
+> [ Upstream commit 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf ]
+>=20
+> This commit fixes incorrect property because it was different
+> from the actual.
+> The parameters of '#address-cells' and '#size-cells' were removed,
+> and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
+
+Not sure we should be backporting documentation changes like this to
+stable, especially not without accompanying code changes...
+
+--OwLcNYc0lM97+oe1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwHuKsACgkQJNaLcl1U
+h9BdGQf/cVEzlCz8LauxdMkpmxd0zk92aQB/jLXrj3Pj09j/PoB86dqeUI1VB7Q3
+yGMxw6fC9Zir4cVF/r3J5I3js+BkF8F+5qCBsw2oa2v6oM8Laqat8l0U36zUulyR
+Qr53SzOSGC64SH8tiXju/jRVAFAeTF07eNlSHg2Q4+cNdOqrdnn/tIDWvpC8Fqvf
+9HlSLMnT19FHWm3U9f/nkzqm+UmxirUKyg2sJl1CSApMgoRqNDiMn7vkTArYXISs
+V97WQ+CUSCJIca6/Etko7By+ky8wTpodYSi40uZTomzM8HoHunoxRaVGRa9vAXto
+2j1FDIiwmilt8t6WBNlGI9GZ5i8p7Q==
+=/7CJ
+-----END PGP SIGNATURE-----
+
+--OwLcNYc0lM97+oe1--

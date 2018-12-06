@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: npcm: Modify pspi send function" to the spi tree
-Date: Thu,  6 Dec 2018 20:26:23 +0000 (GMT)
-Message-ID: <20181206202623.45BB811252F7@debutante.sirena.org.uk>
-References: <20181204134035.124079-1-tmaimon77@gmail.com>
+Subject: Applied "spi: Update NPCM PSPI controller documentation" to the spi tree
+Date: Thu,  6 Dec 2018 20:26:21 +0000 (GMT)
+Message-ID: <20181206202621.6D6ED11252F7@debutante.sirena.org.uk>
+References: <20181204135442.125269-1-tmaimon77@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         robh+dt@kernel.org, mark.rutland@arm.com, yuenn@google.com,
         venture@google.com, brendanhiggins@google.com,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
         devicetree@vger.kernel.org, linux-spi@vger.kernel.org
 To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181204134035.124079-1-tmaimon77@gmail.com>
+In-Reply-To: <20181204135442.125269-1-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: npcm: Modify pspi send function
+   spi: Update NPCM PSPI controller documentation
 
 has been applied to the spi tree at
 
@@ -42,52 +42,40 @@ to this mail.
 Thanks,
 Mark
 
->From 1fa33be36cfc8908be951ed56113906f422add50 Mon Sep 17 00:00:00 2001
+>From 6ab4a3502923c20c5a6921868e787e5fd033409b Mon Sep 17 00:00:00 2001
 From: Tomer Maimon <tmaimon77@gmail.com>
-Date: Tue, 4 Dec 2018 15:40:35 +0200
-Subject: [PATCH] spi: npcm: Modify pspi send function
+Date: Tue, 4 Dec 2018 15:54:42 +0200
+Subject: [PATCH] spi: Update NPCM PSPI controller documentation
 
-Align pspi send function code with the recieve function
-code, Also simplify the code a bit with early return.
+Update the PSPI NPCM binding document of the spi aliases use
+to define the spi ID number.
 
 Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-npcm-pspi.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/spi/nuvoton,npcm-pspi.txt         | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index dda91c19af93..e1dca79b9090 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -199,14 +199,22 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
- 	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
- 	priv->tx_bytes -= wsize;
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+index 99606b22e5c2..1fd9a4406a1d 100644
+--- a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+@@ -19,8 +19,16 @@ Optional properties:
+ - clock-frequency : Input clock frequency to the PSPI block in Hz.
+ 		    Default is 25000000 Hz.
  
--	if (priv->tx_buf) {
--		if (wsize == 1)
--			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
--		if (wsize == 2)
--			iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+	if (!priv->tx_buf)
-+		return;
- 
--		priv->tx_buf += wsize;
-+	switch (wsize) {
-+	case 1:
-+		iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		break;
-+	case 2:
-+		iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return;
- 	}
++Aliases:
++- All the SPI controller nodes should be represented in the aliases node using
++  the following format 'spi{n}' withe the correct numbered in "aliases" node.
 +
-+	priv->tx_buf += wsize;
- }
+ Example:
  
- static void npcm_pspi_recv(struct npcm_pspi *priv)
++aliases {
++	spi0 = &spi0;
++};
++
+ spi0: spi@f0200000 {
+ 	compatible = "nuvoton,npcm750-pspi";
+ 	reg = <0xf0200000 0x1000>;
 -- 
 2.19.0.rc2

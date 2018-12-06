@@ -1,49 +1,70 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V2 2/4] spi: lpspi: Add slave mode support
-Date: Thu, 6 Dec 2018 20:25:06 +0000
-Message-ID: <20181206202506.GF3084@sirena.org.uk>
-References: <20181130042753.28756-1-xiaoning.wang@nxp.com>
- <20181130042753.28756-3-xiaoning.wang@nxp.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2FkSFaIQeDFoAt0B"
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Clark Wang <xiaoning.wang@nxp.com>
+Subject: Applied "spi: Use of_node_name_eq for node name comparisons" to the spi tree
+Date: Thu,  6 Dec 2018 20:26:25 +0000 (GMT)
+Message-ID: <20181206202625.1C37711252F7@debutante.sirena.org.uk>
+References: <20181205195050.4759-25-robh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+To: Rob Herring <robh@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20181130042753.28756-3-xiaoning.wang@nxp.com>
+In-Reply-To: <20181205195050.4759-25-robh@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---2FkSFaIQeDFoAt0B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: Use of_node_name_eq for node name comparisons
 
-On Fri, Nov 30, 2018 at 04:29:07AM +0000, Clark Wang wrote:
-> Add slave mode support to the fsl-lpspi driver, only in PIO mode.
->=20
-> For now, there are some limitations for slave mode transmission, which
-> have been mentioned in cover-letter.
+has been applied to the spi tree at
 
-The cover letter doesn't end up in git, it would be better to include
-this information here :(
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---2FkSFaIQeDFoAt0B
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwJhaEACgkQJNaLcl1U
-h9BPFQf9H6drQEU8AddzQIyy1gN9Wcvo3cYwMpDs6HuWtjGgERbXyZ83HK8qLD1O
-5JTciY6t2U8neNkyHC/JziMl4gs6eJ8ac1lZIAqsPAAXJHNk7es936T17EhHn5UL
-2Ivanb5aDZqgrkzyVyNqOWLsBUaMdsBEDou2cf42qkLR6ey0b7Hnjc02DdgYqoVP
-xAhUlGYEhjte5OwvzUm1ESQcPrMWkDnyxIcuJEaNensh49P5We1AMJXbM9hlFD8L
-jWWgnL5JUtEOZM/k1S96UZAW3ubN6/DUTLJzW+I2y3muGQIyMKPs5BnUmm7rzkP9
-BPwYEEARlkSoavo9LSZIwTBemG+YgA==
-=rHPc
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---2FkSFaIQeDFoAt0B--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 194276b073a10f04b420484bd81fa4dbb3ae0e1e Mon Sep 17 00:00:00 2001
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 5 Dec 2018 13:50:41 -0600
+Subject: [PATCH] spi: Use of_node_name_eq for node name comparisons
+
+Convert string compares of DT node names to use of_node_name_eq helper
+instead. This removes direct access to the node name pointer.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 18ebc400249c..9a7def7c3237 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1666,7 +1666,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	}
+ 
+ 	if (spi_controller_is_slave(ctlr)) {
+-		if (strcmp(nc->name, "slave")) {
++		if (!of_node_name_eq(nc, "slave")) {
+ 			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
+ 				nc);
+ 			return -EINVAL;
+-- 
+2.19.0.rc2

@@ -1,20 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Use of_node_name_eq for node name comparisons" to the spi tree
-Date: Thu,  6 Dec 2018 20:26:25 +0000 (GMT)
-Message-ID: <20181206202625.1C37711252F7@debutante.sirena.org.uk>
-References: <20181205195050.4759-25-robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
-To: Rob Herring <robh@kernel.org>
+Subject: Applied "spi: npcm: Modify pspi send function" to the spi tree
+Date: Thu,  6 Dec 2018 20:26:23 +0000 (GMT)
+Message-ID: <20181206202623.45BB811252F7@debutante.sirena.org.uk>
+References: <20181204134035.124079-1-tmaimon77@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com, yuenn@google.com,
+        venture@google.com, brendanhiggins@google.com,
+        avifishman70@gmail.com, joel@jms.id.au, linux-spi@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181205195050.4759-25-robh@kernel.org>
+In-Reply-To: <20181204134035.124079-1-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Use of_node_name_eq for node name comparisons
+   spi: npcm: Modify pspi send function
 
 has been applied to the spi tree at
 
@@ -39,32 +42,52 @@ to this mail.
 Thanks,
 Mark
 
->From 194276b073a10f04b420484bd81fa4dbb3ae0e1e Mon Sep 17 00:00:00 2001
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 5 Dec 2018 13:50:41 -0600
-Subject: [PATCH] spi: Use of_node_name_eq for node name comparisons
+>From 1fa33be36cfc8908be951ed56113906f422add50 Mon Sep 17 00:00:00 2001
+From: Tomer Maimon <tmaimon77@gmail.com>
+Date: Tue, 4 Dec 2018 15:40:35 +0200
+Subject: [PATCH] spi: npcm: Modify pspi send function
 
-Convert string compares of DT node names to use of_node_name_eq helper
-instead. This removes direct access to the node name pointer.
+Align pspi send function code with the recieve function
+code, Also simplify the code a bit with early return.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-npcm-pspi.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 18ebc400249c..9a7def7c3237 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1666,7 +1666,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 	}
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index dda91c19af93..e1dca79b9090 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -199,14 +199,22 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
+ 	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
+ 	priv->tx_bytes -= wsize;
  
- 	if (spi_controller_is_slave(ctlr)) {
--		if (strcmp(nc->name, "slave")) {
-+		if (!of_node_name_eq(nc, "slave")) {
- 			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
- 				nc);
- 			return -EINVAL;
+-	if (priv->tx_buf) {
+-		if (wsize == 1)
+-			iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
+-		if (wsize == 2)
+-			iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++	if (!priv->tx_buf)
++		return;
+ 
+-		priv->tx_buf += wsize;
++	switch (wsize) {
++	case 1:
++		iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++		break;
++	case 2:
++		iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return;
+ 	}
++
++	priv->tx_buf += wsize;
+ }
+ 
+ static void npcm_pspi_recv(struct npcm_pspi *priv)
 -- 
 2.19.0.rc2

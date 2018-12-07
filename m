@@ -1,763 +1,451 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v7 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH v7 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
  controller
-Date: Fri, 7 Dec 2018 05:46:40 +0000
-Message-ID: <VI1PR04MB572683D945EB3615348227CB99AA0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+Date: Fri, 7 Dec 2018 09:27:11 +0000
+Message-ID: <a414ebd5-82ff-4b43-0fd8-6d1045eb2308@kontron.de>
 References: <1543932685-15011-1-git-send-email-frieder.schrempf@kontron.de>
  <1543932685-15011-4-git-send-email-frieder.schrempf@kontron.de>
+ <VI1PR04MB572683D945EB3615348227CB99AA0@VI1PR04MB5726.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "richard@nod.at" <richard@nod.at>,
         "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
         David Wolfe <david.wolfe@nxp.com>,
         Fabio Estevam <fabio.estevam@nxp.com>,
-        Prabhakar Kushwaha <prabhakar.kushwaha@nxp.com>,
+        "Prabhakar Kushwaha" <prabhakar.kushwaha@nxp.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.de>,
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         Marek Vasut <marek.vasut@gmail.com>,
         Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1543932685-15011-4-git-send-email-frieder.schrempf@kontron.de>
+In-Reply-To: <VI1PR04MB572683D945EB3615348227CB99AA0@VI1PR04MB5726.eurprd04.prod.outlook.com>
 Content-Language: en-US
+Content-ID: <81221F730256DA47A0747DC93B49E05D@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Frieder,
-
-> -----Original Message-----
-> From: Schrempf Frieder [mailto:frieder.schrempf@kontron.de]
-> Sent: Tuesday, December 4, 2018 7:45 PM
-> To: linux-mtd@lists.infradead.org; boris.brezillon@bootlin.com; linux-
-> spi@vger.kernel.org; Marek Vasut <marek.vasut@gmail.com>; Mark Brown
-> <broonie@kernel.org>; Han Xu <han.xu@nxp.com>
-> Cc: dwmw2@infradead.org; computersforpeace@gmail.com; richard@nod.at;
-> miquel.raynal@bootlin.com; David Wolfe <david.wolfe@nxp.com>; Fabio
-> Estevam <fabio.estevam@nxp.com>; Prabhakar Kushwaha
-> <prabhakar.kushwaha@nxp.com>; Yogesh Narayan Gaur
-> <yogeshnarayan.gaur@nxp.com>; shawnguo@kernel.org; Schrempf Frieder
-> <frieder.schrempf@kontron.de>; linux-kernel@vger.kernel.org
-> Subject: [PATCH v7 3/9] spi: Add a driver for the Freescale/NXP QuadSPI
-> controller
->=20
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
->=20
-> This driver is derived from the SPI NOR driver at mtd/spi-nor/fsl-quadspi=
-.c. It
-> uses the new SPI memory interface of the SPI framework to issue flash mem=
-ory
-> operations to up to four connected flash chips (2 buses with 2 CS each).
->=20
-> The controller does not support generic SPI messages.
->=20
-> This patch also disables the build of the "old" driver and reuses its Kco=
-nfig option
-> CONFIG_SPI_FSL_QUADSPI to replace it.
->=20
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-> ---
->  drivers/mtd/spi-nor/Kconfig  |   9 -
->  drivers/mtd/spi-nor/Makefile |   1 -
->  drivers/spi/Kconfig          |  11 +
->  drivers/spi/Makefile         |   1 +
->  drivers/spi/spi-fsl-qspi.c   | 966 +++++++++++++++++++++++++++++++++++++=
-+
->  5 files changed, 978 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kconfig in=
-dex
-> 6cc9c92..d1ca307 100644
-> --- a/drivers/mtd/spi-nor/Kconfig
-> +++ b/drivers/mtd/spi-nor/Kconfig
-> @@ -59,15 +59,6 @@ config SPI_CADENCE_QUADSPI
->  	  device with a Cadence QSPI controller and want to access the
->  	  Flash as an MTD device.
->=20
-> -config SPI_FSL_QUADSPI
-> -	tristate "Freescale Quad SPI controller"
-> -	depends on ARCH_MXC || SOC_LS1021A || ARCH_LAYERSCAPE ||
-> COMPILE_TEST
-> -	depends on HAS_IOMEM
-> -	help
-> -	  This enables support for the Quad SPI controller in master mode.
-> -	  This controller does not support generic SPI. It only supports
-> -	  SPI NOR.
-> -
->  config SPI_HISI_SFC
->  	tristate "Hisilicon SPI-NOR Flash Controller(SFC)"
->  	depends on ARCH_HISI || COMPILE_TEST
-> diff --git a/drivers/mtd/spi-nor/Makefile b/drivers/mtd/spi-nor/Makefile =
-index
-> f4c61d2..3f160c2e3 100644
-> --- a/drivers/mtd/spi-nor/Makefile
-> +++ b/drivers/mtd/spi-nor/Makefile
-> @@ -3,7 +3,6 @@ obj-$(CONFIG_MTD_SPI_NOR)	+=3D spi-nor.o
->  obj-$(CONFIG_SPI_ASPEED_SMC)	+=3D aspeed-smc.o
->  obj-$(CONFIG_SPI_ATMEL_QUADSPI)	+=3D atmel-quadspi.o
->  obj-$(CONFIG_SPI_CADENCE_QUADSPI)	+=3D cadence-quadspi.o
-> -obj-$(CONFIG_SPI_FSL_QUADSPI)	+=3D fsl-quadspi.o
->  obj-$(CONFIG_SPI_HISI_SFC)	+=3D hisi-sfc.o
->  obj-$(CONFIG_MTD_MT81xx_NOR)    +=3D mtk-quadspi.o
->  obj-$(CONFIG_SPI_NXP_SPIFI)	+=3D nxp-spifi.o
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig index 7d3a5c9..8c8=
-4186
-> 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -259,6 +259,17 @@ config SPI_FSL_LPSPI
->  	help
->  	  This enables Freescale i.MX LPSPI controllers in master mode.
->=20
-> +config SPI_FSL_QUADSPI
-> +	tristate "Freescale QSPI controller"
-> +	depends on ARCH_MXC || SOC_LS1021A || ARCH_LAYERSCAPE ||
-> COMPILE_TEST
-> +	depends on HAS_IOMEM
-> +	help
-> +	  This enables support for the Quad SPI controller in master mode.
-> +	  Up to four flash chips can be connected on two buses with two
-> +	  chipselects each.
-> +	  This controller does not support generic SPI messages. It only
-> +	  supports the high-level SPI memory interface.
-> +
->  config SPI_GPIO
->  	tristate "GPIO-based bitbanging SPI Master"
->  	depends on GPIOLIB || COMPILE_TEST
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile index 3575205..5=
-377e61
-> 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -44,6 +44,7 @@ obj-$(CONFIG_SPI_FSL_DSPI)		+=3D spi-fsl-
-> dspi.o
->  obj-$(CONFIG_SPI_FSL_LIB)		+=3D spi-fsl-lib.o
->  obj-$(CONFIG_SPI_FSL_ESPI)		+=3D spi-fsl-espi.o
->  obj-$(CONFIG_SPI_FSL_LPSPI)		+=3D spi-fsl-lpspi.o
-> +obj-$(CONFIG_SPI_FSL_QUADSPI)		+=3D spi-fsl-qspi.o
->  obj-$(CONFIG_SPI_FSL_SPI)		+=3D spi-fsl-spi.o
->  obj-$(CONFIG_SPI_GPIO)			+=3D spi-gpio.o
->  obj-$(CONFIG_SPI_IMG_SPFI)		+=3D spi-img-spfi.o
-> diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c new =
-file mode
-> 100644 index 0000000..f0a3400
-> --- /dev/null
-> +++ b/drivers/spi/spi-fsl-qspi.c
-> @@ -0,0 +1,966 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +
-> +/*
-> + * Freescale QuadSPI driver.
-> + *
-> + * Copyright (C) 2013 Freescale Semiconductor, Inc.
-> + * Copyright (C) 2018 Bootlin
-> + * Copyright (C) 2018 exceet electronics GmbH
-> + * Copyright (C) 2018 Kontron Electronics GmbH
-> + *
-> + * Transition to SPI MEM interface:
-> + * Authors:
-> + *     Boris Brezillion <boris.brezillon@bootlin.com>
-> + *     Frieder Schrempf <frieder.schrempf@kontron.de>
-> + *     Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> + *     Suresh Gupta <suresh.gupta@nxp.com>
-> + *
-> + * Based on the original fsl-quadspi.c spi-nor driver:
-> + * Author: Freescale Semiconductor, Inc.
-> + *
-> + */
-> +
-> +#include <linux/bitops.h>
-> +#include <linux/clk.h>
-> +#include <linux/completion.h>
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/errno.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/jiffies.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_qos.h>
-> +#include <linux/sizes.h>
-> +
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/spi-mem.h>
-> +
-> +/*
-> + * The driver only uses one single LUT entry, that is updated on
-> + * each call of exec_op(). Index 0 is preset at boot with a basic
-> + * read operation, so let's use the last entry (15).
-> + */
-> +#define	SEQID_LUT			15
-> +
-> +/* Registers used by the driver */
-> +#define QUADSPI_MCR			0x00
-> +#define QUADSPI_MCR_RESERVED_MASK	GENMASK(19, 16)
-> +#define QUADSPI_MCR_MDIS_MASK		BIT(14)
-> +#define QUADSPI_MCR_CLR_TXF_MASK	BIT(11)
-> +#define QUADSPI_MCR_CLR_RXF_MASK	BIT(10)
-> +#define QUADSPI_MCR_DDR_EN_MASK		BIT(7)
-> +#define QUADSPI_MCR_END_CFG_MASK	GENMASK(3, 2)
-> +#define QUADSPI_MCR_SWRSTHD_MASK	BIT(1)
-> +#define QUADSPI_MCR_SWRSTSD_MASK	BIT(0)
-> +
-> +#define QUADSPI_IPCR			0x08
-> +#define QUADSPI_IPCR_SEQID(x)		((x) << 24)
-> +
-> +#define QUADSPI_BUF3CR			0x1c
-> +#define QUADSPI_BUF3CR_ALLMST_MASK	BIT(31)
-> +#define QUADSPI_BUF3CR_ADATSZ(x)	((x) << 8)
-> +#define QUADSPI_BUF3CR_ADATSZ_MASK	GENMASK(15, 8)
-> +
-> +#define QUADSPI_BFGENCR			0x20
-> +#define QUADSPI_BFGENCR_SEQID(x)	((x) << 12)
-> +
-> +#define QUADSPI_BUF0IND			0x30
-> +#define QUADSPI_BUF1IND			0x34
-> +#define QUADSPI_BUF2IND			0x38
-> +#define QUADSPI_SFAR			0x100
-> +
-> +#define QUADSPI_SMPR			0x108
-> +#define QUADSPI_SMPR_DDRSMP_MASK	GENMASK(18, 16)
-> +#define QUADSPI_SMPR_FSDLY_MASK		BIT(6)
-> +#define QUADSPI_SMPR_FSPHS_MASK		BIT(5)
-> +#define QUADSPI_SMPR_HSENA_MASK		BIT(0)
-> +
-> +#define QUADSPI_RBCT			0x110
-> +#define QUADSPI_RBCT_WMRK_MASK		GENMASK(4, 0)
-> +#define QUADSPI_RBCT_RXBRD_USEIPS	BIT(8)
-> +
-> +#define QUADSPI_TBDR			0x154
-> +
-> +#define QUADSPI_SR			0x15c
-> +#define QUADSPI_SR_IP_ACC_MASK		BIT(1)
-> +#define QUADSPI_SR_AHB_ACC_MASK		BIT(2)
-> +
-> +#define QUADSPI_FR			0x160
-> +#define QUADSPI_FR_TFF_MASK		BIT(0)
-> +
-> +#define QUADSPI_SPTRCLR			0x16c
-> +#define QUADSPI_SPTRCLR_IPPTRC		BIT(8)
-> +#define QUADSPI_SPTRCLR_BFPTRC		BIT(0)
-> +
-> +#define QUADSPI_SFA1AD			0x180
-> +#define QUADSPI_SFA2AD			0x184
-> +#define QUADSPI_SFB1AD			0x188
-> +#define QUADSPI_SFB2AD			0x18c
-> +#define QUADSPI_RBDR(x)			(0x200 + ((x) * 4))
-> +
-> +#define QUADSPI_LUTKEY			0x300
-> +#define QUADSPI_LUTKEY_VALUE		0x5AF05AF0
-> +
-> +#define QUADSPI_LCKCR			0x304
-> +#define QUADSPI_LCKER_LOCK		BIT(0)
-> +#define QUADSPI_LCKER_UNLOCK		BIT(1)
-> +
-> +#define QUADSPI_RSER			0x164
-> +#define QUADSPI_RSER_TFIE		BIT(0)
-> +
-> +#define QUADSPI_LUT_BASE		0x310
-> +#define QUADSPI_LUT_OFFSET		(SEQID_LUT * 4 * 4)
-> +#define QUADSPI_LUT_REG(idx) \
-> +	(QUADSPI_LUT_BASE + QUADSPI_LUT_OFFSET + (idx) * 4)
-> +
-> +/* Instruction set for the LUT register */
-> +#define LUT_STOP		0
-> +#define LUT_CMD			1
-> +#define LUT_ADDR		2
-> +#define LUT_DUMMY		3
-> +#define LUT_MODE		4
-> +#define LUT_MODE2		5
-> +#define LUT_MODE4		6
-> +#define LUT_FSL_READ		7
-> +#define LUT_FSL_WRITE		8
-> +#define LUT_JMP_ON_CS		9
-> +#define LUT_ADDR_DDR		10
-> +#define LUT_MODE_DDR		11
-> +#define LUT_MODE2_DDR		12
-> +#define LUT_MODE4_DDR		13
-> +#define LUT_FSL_READ_DDR	14
-> +#define LUT_FSL_WRITE_DDR	15
-> +#define LUT_DATA_LEARN		16
-> +
-> +/*
-> + * The PAD definitions for LUT register.
-> + *
-> + * The pad stands for the number of IO lines [0:3].
-> + * For example, the quad read needs four IO lines,
-> + * so you should use LUT_PAD(4).
-> + */
-> +#define LUT_PAD(x) (fls(x) - 1)
-> +
-> +/*
-> + * Macro for constructing the LUT entries with the following
-> + * register layout:
-> + *
-> + *  ---------------------------------------------------
-> + *  | INSTR1 | PAD1 | OPRND1 | INSTR0 | PAD0 | OPRND0 |
-> + *  ---------------------------------------------------
-> + */
-> +#define LUT_DEF(idx, ins, pad, opr)					\
-> +	((((ins) << 10) | ((pad) << 8) | (opr)) << (((idx) % 2) * 16))
-> +
-> +/* Controller needs driver to swap endianness */
-> +#define QUADSPI_QUIRK_SWAP_ENDIAN	BIT(0)
-> +
-> +/* Controller needs 4x internal clock */
-> +#define QUADSPI_QUIRK_4X_INT_CLK	BIT(1)
-> +
-> +/*
-> + * TKT253890, the controller needs the driver to fill the txfifo with
-> + * 16 bytes at least to trigger a data transfer, even though the extra
-> + * data won't be transferred.
-> + */
-> +#define QUADSPI_QUIRK_TKT253890		BIT(2)
-> +
-> +/* TKT245618, the controller cannot wake up from wait mode */
-> +#define QUADSPI_QUIRK_TKT245618		BIT(3)
-> +
-> +/*
-> + * Controller adds QSPI_AMBA_BASE (base address of the mapped memory)
-> + * internally. No need to add it when setting SFXXAD and SFAR registers
-> +*/
-> +#define QUADSPI_QUIRK_BASE_INTERNAL	BIT(4)
-> +
-> +struct fsl_qspi_devtype_data {
-> +	unsigned int rxfifo;
-> +	unsigned int txfifo;
-> +	unsigned int ahb_buf_size;
-> +	unsigned int quirks;
-> +	bool little_endian;
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data vybrid_data =3D {
-> +	.rxfifo =3D SZ_128,
-> +	.txfifo =3D SZ_64,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D QUADSPI_QUIRK_SWAP_ENDIAN,
-> +	.little_endian =3D true,
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data imx6sx_data =3D {
-> +	.rxfifo =3D SZ_128,
-> +	.txfifo =3D SZ_512,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D QUADSPI_QUIRK_4X_INT_CLK | QUADSPI_QUIRK_TKT245618,
-> +	.little_endian =3D true,
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data imx7d_data =3D {
-> +	.rxfifo =3D SZ_512,
-> +	.txfifo =3D SZ_512,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
-> +	.little_endian =3D true,
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data imx6ul_data =3D {
-> +	.rxfifo =3D SZ_128,
-> +	.txfifo =3D SZ_512,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
-> +	.little_endian =3D true,
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data ls1021a_data =3D {
-> +	.rxfifo =3D SZ_128,
-> +	.txfifo =3D SZ_64,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D 0,
-> +	.little_endian =3D false,
-> +};
-> +
-> +static const struct fsl_qspi_devtype_data ls2080a_data =3D {
-> +	.rxfifo =3D SZ_128,
-> +	.txfifo =3D SZ_64,
-> +	.ahb_buf_size =3D SZ_1K,
-> +	.quirks =3D QUADSPI_QUIRK_TKT253890 |
-> QUADSPI_QUIRK_BASE_INTERNAL,
-> +	.little_endian =3D true,
-> +};
-> +
-> +struct fsl_qspi {
-> +	void __iomem *iobase;
-> +	void __iomem *ahb_addr;
-> +	u32 memmap_phy;
-> +	struct clk *clk, *clk_en;
-> +	struct device *dev;
-> +	struct completion c;
-> +	const struct fsl_qspi_devtype_data *devtype_data;
-> +	struct mutex lock;
-> +	struct pm_qos_request pm_qos_req;
-> +	int selected;
-> +};
-> +
-> +static inline int needs_swap_endian(struct fsl_qspi *q) {
-> +	return q->devtype_data->quirks & QUADSPI_QUIRK_SWAP_ENDIAN; }
-> +
-> +static inline int needs_4x_clock(struct fsl_qspi *q) {
-> +	return q->devtype_data->quirks & QUADSPI_QUIRK_4X_INT_CLK; }
-> +
-> +static inline int needs_fill_txfifo(struct fsl_qspi *q) {
-> +	return q->devtype_data->quirks & QUADSPI_QUIRK_TKT253890; }
-> +
-> +static inline int needs_wakeup_wait_mode(struct fsl_qspi *q) {
-> +	return q->devtype_data->quirks & QUADSPI_QUIRK_TKT245618; }
-> +
-> +static inline int needs_amba_base_offset(struct fsl_qspi *q) {
-> +	return !(q->devtype_data->quirks &
-> QUADSPI_QUIRK_BASE_INTERNAL); }
-> +
-> +/*
-> + * An IC bug makes it necessary to rearrange the 32-bit data.
-> + * Later chips, such as IMX6SLX, have fixed this bug.
-> + */
-> +static inline u32 fsl_qspi_endian_xchg(struct fsl_qspi *q, u32 a) {
-> +	return needs_swap_endian(q) ? __swab32(a) : a; }
-> +
-> +/*
-> + * R/W functions for big- or little-endian registers:
-> + * The QSPI controller's endianness is independent of
-> + * the CPU core's endianness. So far, although the CPU
-> + * core is little-endian the QSPI controller can use
-> + * big-endian or little-endian.
-> + */
-> +static void qspi_writel(struct fsl_qspi *q, u32 val, void __iomem
-> +*addr) {
-> +	if (q->devtype_data->little_endian)
-> +		iowrite32(val, addr);
-> +	else
-> +		iowrite32be(val, addr);
-> +}
-> +
-> +static u32 qspi_readl(struct fsl_qspi *q, void __iomem *addr) {
-> +	if (q->devtype_data->little_endian)
-> +		return ioread32(addr);
-> +
-> +	return ioread32be(addr);
-> +}
-> +
-> +static irqreturn_t fsl_qspi_irq_handler(int irq, void *dev_id) {
-> +	struct fsl_qspi *q =3D dev_id;
-> +	u32 reg;
-> +
-> +	/* clear interrupt */
-> +	reg =3D qspi_readl(q, q->iobase + QUADSPI_FR);
-> +	qspi_writel(q, reg, q->iobase + QUADSPI_FR);
-> +
-> +	if (reg & QUADSPI_FR_TFF_MASK)
-> +		complete(&q->c);
-> +
-> +	dev_dbg(q->dev, "QUADSPI_FR : 0x%.8x:0x%.8x\n", 0, reg);
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int fsl_qspi_check_buswidth(struct fsl_qspi *q, u8 width) {
-> +	switch (width) {
-> +	case 1:
-> +	case 2:
-> +	case 4:
-> +		return 0;
-> +	}
-> +
-> +	return -ENOTSUPP;
-> +}
-> +
-> +static bool fsl_qspi_supports_op(struct spi_mem *mem,
-> +				 const struct spi_mem_op *op)
-> +{
-> +	struct fsl_qspi *q =3D spi_controller_get_devdata(mem->spi->master);
-> +	int ret;
-> +
-> +	ret =3D fsl_qspi_check_buswidth(q, op->cmd.buswidth);
-> +
-> +	if (op->addr.nbytes)
-> +		ret |=3D fsl_qspi_check_buswidth(q, op->addr.buswidth);
-> +
-> +	if (op->dummy.nbytes)
-> +		ret |=3D fsl_qspi_check_buswidth(q, op->dummy.buswidth);
-> +
-> +	if (op->data.nbytes)
-> +		ret |=3D fsl_qspi_check_buswidth(q, op->data.buswidth);
-> +
-> +	if (ret)
-> +		return false;
-> +
-> +	/*
-> +	 * The number of instructions needed for the op, needs
-> +	 * to fit into a single LUT entry.
-> +	 */
-> +	if (op->addr.nbytes +
-> +	   (op->dummy.nbytes ? 1:0) +
-> +	   (op->data.nbytes ? 1:0) > 6)
-> +		return false;
-> +
-> +	/* Max 64 dummy clock cycles supported */
-> +	if (op->dummy.nbytes &&
-> +	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
-> +		return false;
-> +
-> +	/* Max data length, check controller limits and alignment */
-> +	if (op->data.dir =3D=3D SPI_MEM_DATA_IN &&
-> +	    (op->data.nbytes > q->devtype_data->ahb_buf_size ||
-> +	     (op->data.nbytes > q->devtype_data->rxfifo - 4 &&
-> +	      !IS_ALIGNED(op->data.nbytes, 8))))
-> +		return false;
-> +
-> +	if (op->data.dir =3D=3D SPI_MEM_DATA_OUT &&
-> +	    op->data.nbytes > q->devtype_data->txfifo)
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
-> +				 const struct spi_mem_op *op)
-> +{
-> +	void __iomem *base =3D q->iobase;
-> +	u32 lutval[4] =3D {};
-> +	int lutidx =3D 1, i;
-> +
-> +	lutval[0] |=3D LUT_DEF(0, LUT_CMD, LUT_PAD(op->cmd.buswidth),
-> +			     op->cmd.opcode);
-> +
-> +	/*
-> +	 * For some unknown reason, using LUT_ADDR doesn't work in some
-> +	 * cases (at least with only one byte long addresses), so
-> +	 * let's use LUT_MODE to write the address bytes one by one
-> +	 */
-> +	for (i =3D 0; i < op->addr.nbytes; i++) {
-> +		u8 addrbyte =3D op->addr.val >> (8 * (op->addr.nbytes - i - 1));
-> +
-> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_MODE,
-> +					      LUT_PAD(op->addr.buswidth),
-> +					      addrbyte);
-> +		lutidx++;
-> +	}
-> +
-> +	if (op->dummy.nbytes) {
-> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_DUMMY,
-> +					      LUT_PAD(op->dummy.buswidth),
-> +					      op->dummy.nbytes * 8 /
-> +					      op->dummy.buswidth);
-> +		lutidx++;
-> +	}
-> +
-> +	if (op->data.nbytes) {
-> +		lutval[lutidx / 2] |=3D LUT_DEF(lutidx,
-> +					      op->data.dir =3D=3D
-> SPI_MEM_DATA_IN ?
-> +					      LUT_FSL_READ : LUT_FSL_WRITE,
-> +					      LUT_PAD(op->data.buswidth),
-> +					      0);
-> +		lutidx++;
-> +	}
-> +
-> +	lutval[lutidx / 2] |=3D LUT_DEF(lutidx, LUT_STOP, 0, 0);
-> +
-> +	/* unlock LUT */
-> +	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
-> +	qspi_writel(q, QUADSPI_LCKER_UNLOCK, q->iobase + QUADSPI_LCKCR);
-> +
-> +	/* fill LUT */
-> +	for (i =3D 0; i < ARRAY_SIZE(lutval); i++)
-> +		qspi_writel(q, lutval[i], base + QUADSPI_LUT_REG(i));
-> +
-> +	/* lock LUT */
-> +	qspi_writel(q, QUADSPI_LUTKEY_VALUE, q->iobase + QUADSPI_LUTKEY);
-> +	qspi_writel(q, QUADSPI_LCKER_LOCK, q->iobase + QUADSPI_LCKCR); }
-> +
-> +static int fsl_qspi_clk_prep_enable(struct fsl_qspi *q) {
-> +	int ret;
-> +
-> +	ret =3D clk_prepare_enable(q->clk_en);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D clk_prepare_enable(q->clk);
-> +	if (ret) {
-> +		clk_disable_unprepare(q->clk_en);
-> +		return ret;
-> +	}
-> +
-> +	if (needs_wakeup_wait_mode(q))
-> +		pm_qos_add_request(&q->pm_qos_req,
-> PM_QOS_CPU_DMA_LATENCY, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static void fsl_qspi_clk_disable_unprep(struct fsl_qspi *q) {
-> +	if (needs_wakeup_wait_mode(q))
-> +		pm_qos_remove_request(&q->pm_qos_req);
-> +
-> +	clk_disable_unprepare(q->clk);
-> +	clk_disable_unprepare(q->clk_en);
-> +}
-> +
-> +/*
-> + * If we have changed the content of the flash by writing or erasing,
-> +or if we
-> + * read from flash with a different offset into the page buffer, we
-> +need to
-> + * invalidate the AHB buffer. If we do not do so, we may read out the
-> +wrong
-> + * data. The spec tells us reset the AHB domain and Serial Flash domain
-> +at
-> + * the same time.
-> + */
-> +static void fsl_qspi_invalidate(struct fsl_qspi *q) {
-> +	u32 reg;
-> +
-> +	reg =3D qspi_readl(q, q->iobase + QUADSPI_MCR);
-> +	reg |=3D QUADSPI_MCR_SWRSTHD_MASK |
-> QUADSPI_MCR_SWRSTSD_MASK;
-> +	qspi_writel(q, reg, q->iobase + QUADSPI_MCR);
-> +
-> +	/*
-> +	 * The minimum delay : 1 AHB + 2 SFCK clocks.
-> +	 * Delay 1 us is enough.
-> +	 */
-> +	udelay(1);
-> +
-> +	reg &=3D ~(QUADSPI_MCR_SWRSTHD_MASK |
-> QUADSPI_MCR_SWRSTSD_MASK);
-> +	qspi_writel(q, reg, q->iobase + QUADSPI_MCR); }
-> +
-> +static void fsl_qspi_select_mem(struct fsl_qspi *q, struct spi_device
-> +*spi) {
-> +	unsigned long rate =3D spi->max_speed_hz;
-> +	int ret;
-> +
-> +	if (q->selected =3D=3D spi->chip_select)
-> +		return;
-> +
-> +	if (needs_4x_clock(q))
-> +		rate *=3D 4;
-> +
-> +	fsl_qspi_clk_disable_unprep(q);
-> +
-> +	ret =3D clk_set_rate(q->clk, rate);
-> +	if (ret)
-> +		return;
-> +
-> +	ret =3D fsl_qspi_clk_prep_enable(q);
-> +	if (ret)
-> +		return;
-> +
-> +	q->selected =3D spi->chip_select;
-> +
-> +	fsl_qspi_invalidate(q);
-> +}
-> +
-> +static void fsl_qspi_read_ahb(struct fsl_qspi *q, const struct
-> +spi_mem_op *op) {
-> +	memcpy_fromio(op->data.buf.in,
-> +		      q->ahb_addr + q->selected * q->devtype_data-
-> >ahb_buf_size,
-> +		      op->data.nbytes);
-> +}
-> +
-> +static void fsl_qspi_fill_txfifo(struct fsl_qspi *q,
-> +				 const struct spi_mem_op *op)
-> +{
-> +	void __iomem *base =3D q->iobase;
-> +	int i;
-> +	u32 val;
-> +
-> +	for (i =3D 0; i < ALIGN_DOWN(op->data.nbytes, 4); i +=3D 4) {
-> +		memcpy(&val, op->data.buf.out + i, 4);
-> +		val =3D fsl_qspi_endian_xchg(q, val);
-> +		qspi_writel(q, val, base + QUADSPI_TBDR);
-> +	}
-> +
-> +	if (i < op->data.nbytes) {
-> +		memcpy(&val, op->data.buf.out + i, op->data.nbytes - i);
-> +		val =3D fsl_qspi_endian_xchg(q, val);
-> +		qspi_writel(q, val, base + QUADSPI_TBDR);
-> +	}
-> +
-> +	if (needs_fill_txfifo(q)) {
-> +		for (i =3D op->data.nbytes; i < 16; i +=3D 4)
-> +			qspi_writel(q, 0, base + QUADSPI_TBDR);
-> +	}
-> +}
-> +
-> +static void fsl_qspi_read_rxfifo(struct fsl_qspi *q,
-> +			  const struct spi_mem_op *op)
-> +{
-> +	void __iomem *base =3D q->iobase;
-> +	int i;
-> +	u8 *buf =3D op->data.buf.in;
-> +	u32 val;
-> +
-> +	for (i =3D 0; i < ALIGN_DOWN(op->data.nbytes, 4); i +=3D 4) {
-> +		val =3D qspi_readl(q, base + QUADSPI_RBDR(i / 4));
-> +		val =3D fsl_qspi_endian_xchg(q, val);
-> +		memcpy(buf + i, &val, 4);
-> +	}
-> +
-> +	if (i < op->data.nbytes) {
-> +		val =3D qspi_readl(q, base + QUADSPI_RBDR(i / 4));
-> +		val =3D fsl_qspi_endian_xchg(q, val);
-> +		memcpy(buf + i, &val, op->data.nbytes - i);
-> +	}
-> +}
-> +
-> +static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op
-> +*op) {
-> +	void __iomem *base =3D q->iobase;
-> +	int err =3D 0;
-> +
-> +	init_completion(&q->c);
-> +
-> +	/*
-> +	 * Always start the sequence at the same index since we update
-> +	 * the LUT at each exec_op() call. And also specify the DATA
-> +	 * length, since it's has not been specified in the LUT.
-> +	 */
-> +	qspi_writel(q, op->data.nbytes | QUADSPI_IPCR_SEQID(SEQID_LUT),
-> +		    base + QUADSPI_IPCR);
-> +
-> +	/* Wait for the interrupt. */
-> +	if (!wait_for_completion_timeout(&q->c, msecs_to_jiffies(1000)))
-> +		err =3D -ETIMEDOUT;
-> +
-> +	if (!err && op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_IN)
-> +		fsl_qspi_read_rxfifo(q, op);
-> +
-> +	return err;
-> +}
-> +
-> +static int fsl_qspi_readl_poll_tout(struct fsl_qspi *q, void __iomem *ba=
-se,
-> +				    u32 mask, u32 delay_us, u32 timeout_us) {
-> +	u32 reg;
-> +
-> +	if (!q->devtype_data->little_endian)
-> +		mask =3D (u32)cpu_to_be32(mask);
-> +
-
-reg is being used as an un-initialized variable, didn't it needs to be init=
-ialized with some proper value?
-
-> +	return readl_poll_timeout(base, reg, !(reg & mask), delay_us,
-> +				  timeout_us);
-> +}
-> +
-
---
-Regards
-Yogesh Gaur.
-
-[...]
+T24gMDcuMTIuMTggMDY6NDYsIFlvZ2VzaCBOYXJheWFuIEdhdXIgd3JvdGU6DQo+IEhpIEZyaWVk
+ZXIsDQo+IA0KPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4+IEZyb206IFNjaHJlbXBm
+IEZyaWVkZXIgW21haWx0bzpmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGVdDQo+PiBTZW50OiBU
+dWVzZGF5LCBEZWNlbWJlciA0LCAyMDE4IDc6NDUgUE0NCj4+IFRvOiBsaW51eC1tdGRAbGlzdHMu
+aW5mcmFkZWFkLm9yZzsgYm9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tOyBsaW51eC0NCj4+IHNw
+aUB2Z2VyLmtlcm5lbC5vcmc7IE1hcmVrIFZhc3V0IDxtYXJlay52YXN1dEBnbWFpbC5jb20+OyBN
+YXJrIEJyb3duDQo+PiA8YnJvb25pZUBrZXJuZWwub3JnPjsgSGFuIFh1IDxoYW4ueHVAbnhwLmNv
+bT4NCj4+IENjOiBkd213MkBpbmZyYWRlYWQub3JnOyBjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5j
+b207IHJpY2hhcmRAbm9kLmF0Ow0KPj4gbWlxdWVsLnJheW5hbEBib290bGluLmNvbTsgRGF2aWQg
+V29sZmUgPGRhdmlkLndvbGZlQG54cC5jb20+OyBGYWJpbw0KPj4gRXN0ZXZhbSA8ZmFiaW8uZXN0
+ZXZhbUBueHAuY29tPjsgUHJhYmhha2FyIEt1c2h3YWhhDQo+PiA8cHJhYmhha2FyLmt1c2h3YWhh
+QG54cC5jb20+OyBZb2dlc2ggTmFyYXlhbiBHYXVyDQo+PiA8eW9nZXNobmFyYXlhbi5nYXVyQG54
+cC5jb20+OyBzaGF3bmd1b0BrZXJuZWwub3JnOyBTY2hyZW1wZiBGcmllZGVyDQo+PiA8ZnJpZWRl
+ci5zY2hyZW1wZkBrb250cm9uLmRlPjsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPj4g
+U3ViamVjdDogW1BBVENIIHY3IDMvOV0gc3BpOiBBZGQgYSBkcml2ZXIgZm9yIHRoZSBGcmVlc2Nh
+bGUvTlhQIFF1YWRTUEkNCj4+IGNvbnRyb2xsZXINCj4+DQo+PiBGcm9tOiBGcmllZGVyIFNjaHJl
+bXBmIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+DQo+Pg0KPj4gVGhpcyBkcml2ZXIgaXMg
+ZGVyaXZlZCBmcm9tIHRoZSBTUEkgTk9SIGRyaXZlciBhdCBtdGQvc3BpLW5vci9mc2wtcXVhZHNw
+aS5jLiBJdA0KPj4gdXNlcyB0aGUgbmV3IFNQSSBtZW1vcnkgaW50ZXJmYWNlIG9mIHRoZSBTUEkg
+ZnJhbWV3b3JrIHRvIGlzc3VlIGZsYXNoIG1lbW9yeQ0KPj4gb3BlcmF0aW9ucyB0byB1cCB0byBm
+b3VyIGNvbm5lY3RlZCBmbGFzaCBjaGlwcyAoMiBidXNlcyB3aXRoIDIgQ1MgZWFjaCkuDQo+Pg0K
+Pj4gVGhlIGNvbnRyb2xsZXIgZG9lcyBub3Qgc3VwcG9ydCBnZW5lcmljIFNQSSBtZXNzYWdlcy4N
+Cj4+DQo+PiBUaGlzIHBhdGNoIGFsc28gZGlzYWJsZXMgdGhlIGJ1aWxkIG9mIHRoZSAib2xkIiBk
+cml2ZXIgYW5kIHJldXNlcyBpdHMgS2NvbmZpZyBvcHRpb24NCj4+IENPTkZJR19TUElfRlNMX1FV
+QURTUEkgdG8gcmVwbGFjZSBpdC4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBGcmllZGVyIFNjaHJl
+bXBmIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+DQo+PiAtLS0NCj4+ICAgZHJpdmVycy9t
+dGQvc3BpLW5vci9LY29uZmlnICB8ICAgOSAtDQo+PiAgIGRyaXZlcnMvbXRkL3NwaS1ub3IvTWFr
+ZWZpbGUgfCAgIDEgLQ0KPj4gICBkcml2ZXJzL3NwaS9LY29uZmlnICAgICAgICAgIHwgIDExICsN
+Cj4+ICAgZHJpdmVycy9zcGkvTWFrZWZpbGUgICAgICAgICB8ICAgMSArDQo+PiAgIGRyaXZlcnMv
+c3BpL3NwaS1mc2wtcXNwaS5jICAgfCA5NjYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysNCj4+ICAgNSBmaWxlcyBjaGFuZ2VkLCA5NzggaW5zZXJ0aW9ucygrKSwgMTAgZGVs
+ZXRpb25zKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3IvS2NvbmZp
+ZyBiL2RyaXZlcnMvbXRkL3NwaS1ub3IvS2NvbmZpZyBpbmRleA0KPj4gNmNjOWM5Mi4uZDFjYTMw
+NyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3IvS2NvbmZpZw0KPj4gKysrIGIv
+ZHJpdmVycy9tdGQvc3BpLW5vci9LY29uZmlnDQo+PiBAQCAtNTksMTUgKzU5LDYgQEAgY29uZmln
+IFNQSV9DQURFTkNFX1FVQURTUEkNCj4+ICAgCSAgZGV2aWNlIHdpdGggYSBDYWRlbmNlIFFTUEkg
+Y29udHJvbGxlciBhbmQgd2FudCB0byBhY2Nlc3MgdGhlDQo+PiAgIAkgIEZsYXNoIGFzIGFuIE1U
+RCBkZXZpY2UuDQo+Pg0KPj4gLWNvbmZpZyBTUElfRlNMX1FVQURTUEkNCj4+IC0JdHJpc3RhdGUg
+IkZyZWVzY2FsZSBRdWFkIFNQSSBjb250cm9sbGVyIg0KPj4gLQlkZXBlbmRzIG9uIEFSQ0hfTVhD
+IHx8IFNPQ19MUzEwMjFBIHx8IEFSQ0hfTEFZRVJTQ0FQRSB8fA0KPj4gQ09NUElMRV9URVNUDQo+
+PiAtCWRlcGVuZHMgb24gSEFTX0lPTUVNDQo+PiAtCWhlbHANCj4+IC0JICBUaGlzIGVuYWJsZXMg
+c3VwcG9ydCBmb3IgdGhlIFF1YWQgU1BJIGNvbnRyb2xsZXIgaW4gbWFzdGVyIG1vZGUuDQo+PiAt
+CSAgVGhpcyBjb250cm9sbGVyIGRvZXMgbm90IHN1cHBvcnQgZ2VuZXJpYyBTUEkuIEl0IG9ubHkg
+c3VwcG9ydHMNCj4+IC0JICBTUEkgTk9SLg0KPj4gLQ0KPj4gICBjb25maWcgU1BJX0hJU0lfU0ZD
+DQo+PiAgIAl0cmlzdGF0ZSAiSGlzaWxpY29uIFNQSS1OT1IgRmxhc2ggQ29udHJvbGxlcihTRkMp
+Ig0KPj4gICAJZGVwZW5kcyBvbiBBUkNIX0hJU0kgfHwgQ09NUElMRV9URVNUDQo+PiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9tdGQvc3BpLW5vci9NYWtlZmlsZSBiL2RyaXZlcnMvbXRkL3NwaS1ub3Iv
+TWFrZWZpbGUgaW5kZXgNCj4+IGY0YzYxZDIuLjNmMTYwYzJlMyAxMDA2NDQNCj4+IC0tLSBhL2Ry
+aXZlcnMvbXRkL3NwaS1ub3IvTWFrZWZpbGUNCj4+ICsrKyBiL2RyaXZlcnMvbXRkL3NwaS1ub3Iv
+TWFrZWZpbGUNCj4+IEBAIC0zLDcgKzMsNiBAQCBvYmotJChDT05GSUdfTVREX1NQSV9OT1IpCSs9
+IHNwaS1ub3Iubw0KPj4gICBvYmotJChDT05GSUdfU1BJX0FTUEVFRF9TTUMpCSs9IGFzcGVlZC1z
+bWMubw0KPj4gICBvYmotJChDT05GSUdfU1BJX0FUTUVMX1FVQURTUEkpCSs9IGF0bWVsLXF1YWRz
+cGkubw0KPj4gICBvYmotJChDT05GSUdfU1BJX0NBREVOQ0VfUVVBRFNQSSkJKz0gY2FkZW5jZS1x
+dWFkc3BpLm8NCj4+IC1vYmotJChDT05GSUdfU1BJX0ZTTF9RVUFEU1BJKQkrPSBmc2wtcXVhZHNw
+aS5vDQo+PiAgIG9iai0kKENPTkZJR19TUElfSElTSV9TRkMpCSs9IGhpc2ktc2ZjLm8NCj4+ICAg
+b2JqLSQoQ09ORklHX01URF9NVDgxeHhfTk9SKSAgICArPSBtdGstcXVhZHNwaS5vDQo+PiAgIG9i
+ai0kKENPTkZJR19TUElfTlhQX1NQSUZJKQkrPSBueHAtc3BpZmkubw0KPj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvc3BpL0tjb25maWcgYi9kcml2ZXJzL3NwaS9LY29uZmlnIGluZGV4IDdkM2E1Yzku
+LjhjODQxODYNCj4+IDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9zcGkvS2NvbmZpZw0KPj4gKysr
+IGIvZHJpdmVycy9zcGkvS2NvbmZpZw0KPj4gQEAgLTI1OSw2ICsyNTksMTcgQEAgY29uZmlnIFNQ
+SV9GU0xfTFBTUEkNCj4+ICAgCWhlbHANCj4+ICAgCSAgVGhpcyBlbmFibGVzIEZyZWVzY2FsZSBp
+Lk1YIExQU1BJIGNvbnRyb2xsZXJzIGluIG1hc3RlciBtb2RlLg0KPj4NCj4+ICtjb25maWcgU1BJ
+X0ZTTF9RVUFEU1BJDQo+PiArCXRyaXN0YXRlICJGcmVlc2NhbGUgUVNQSSBjb250cm9sbGVyIg0K
+Pj4gKwlkZXBlbmRzIG9uIEFSQ0hfTVhDIHx8IFNPQ19MUzEwMjFBIHx8IEFSQ0hfTEFZRVJTQ0FQ
+RSB8fA0KPj4gQ09NUElMRV9URVNUDQo+PiArCWRlcGVuZHMgb24gSEFTX0lPTUVNDQo+PiArCWhl
+bHANCj4+ICsJICBUaGlzIGVuYWJsZXMgc3VwcG9ydCBmb3IgdGhlIFF1YWQgU1BJIGNvbnRyb2xs
+ZXIgaW4gbWFzdGVyIG1vZGUuDQo+PiArCSAgVXAgdG8gZm91ciBmbGFzaCBjaGlwcyBjYW4gYmUg
+Y29ubmVjdGVkIG9uIHR3byBidXNlcyB3aXRoIHR3bw0KPj4gKwkgIGNoaXBzZWxlY3RzIGVhY2gu
+DQo+PiArCSAgVGhpcyBjb250cm9sbGVyIGRvZXMgbm90IHN1cHBvcnQgZ2VuZXJpYyBTUEkgbWVz
+c2FnZXMuIEl0IG9ubHkNCj4+ICsJICBzdXBwb3J0cyB0aGUgaGlnaC1sZXZlbCBTUEkgbWVtb3J5
+IGludGVyZmFjZS4NCj4+ICsNCj4+ICAgY29uZmlnIFNQSV9HUElPDQo+PiAgIAl0cmlzdGF0ZSAi
+R1BJTy1iYXNlZCBiaXRiYW5naW5nIFNQSSBNYXN0ZXIiDQo+PiAgIAlkZXBlbmRzIG9uIEdQSU9M
+SUIgfHwgQ09NUElMRV9URVNUDQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvTWFrZWZpbGUg
+Yi9kcml2ZXJzL3NwaS9NYWtlZmlsZSBpbmRleCAzNTc1MjA1Li41Mzc3ZTYxDQo+PiAxMDA2NDQN
+Cj4+IC0tLSBhL2RyaXZlcnMvc3BpL01ha2VmaWxlDQo+PiArKysgYi9kcml2ZXJzL3NwaS9NYWtl
+ZmlsZQ0KPj4gQEAgLTQ0LDYgKzQ0LDcgQEAgb2JqLSQoQ09ORklHX1NQSV9GU0xfRFNQSSkJCSs9
+IHNwaS1mc2wtDQo+PiBkc3BpLm8NCj4+ICAgb2JqLSQoQ09ORklHX1NQSV9GU0xfTElCKQkJKz0g
+c3BpLWZzbC1saWIubw0KPj4gICBvYmotJChDT05GSUdfU1BJX0ZTTF9FU1BJKQkJKz0gc3BpLWZz
+bC1lc3BpLm8NCj4+ICAgb2JqLSQoQ09ORklHX1NQSV9GU0xfTFBTUEkpCQkrPSBzcGktZnNsLWxw
+c3BpLm8NCj4+ICtvYmotJChDT05GSUdfU1BJX0ZTTF9RVUFEU1BJKQkJKz0gc3BpLWZzbC1xc3Bp
+Lm8NCj4+ICAgb2JqLSQoQ09ORklHX1NQSV9GU0xfU1BJKQkJKz0gc3BpLWZzbC1zcGkubw0KPj4g
+ICBvYmotJChDT05GSUdfU1BJX0dQSU8pCQkJKz0gc3BpLWdwaW8ubw0KPj4gICBvYmotJChDT05G
+SUdfU1BJX0lNR19TUEZJKQkJKz0gc3BpLWltZy1zcGZpLm8NCj4+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL3NwaS9zcGktZnNsLXFzcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtcXNwaS5jIG5ldyBm
+aWxlIG1vZGUNCj4+IDEwMDY0NCBpbmRleCAwMDAwMDAwLi5mMGEzNDAwDQo+PiAtLS0gL2Rldi9u
+dWxsDQo+PiArKysgYi9kcml2ZXJzL3NwaS9zcGktZnNsLXFzcGkuYw0KPj4gQEAgLTAsMCArMSw5
+NjYgQEANCj4+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCsNCj4+ICsNCj4+
+ICsvKg0KPj4gKyAqIEZyZWVzY2FsZSBRdWFkU1BJIGRyaXZlci4NCj4+ICsgKg0KPj4gKyAqIENv
+cHlyaWdodCAoQykgMjAxMyBGcmVlc2NhbGUgU2VtaWNvbmR1Y3RvciwgSW5jLg0KPj4gKyAqIENv
+cHlyaWdodCAoQykgMjAxOCBCb290bGluDQo+PiArICogQ29weXJpZ2h0IChDKSAyMDE4IGV4Y2Vl
+dCBlbGVjdHJvbmljcyBHbWJIDQo+PiArICogQ29weXJpZ2h0IChDKSAyMDE4IEtvbnRyb24gRWxl
+Y3Ryb25pY3MgR21iSA0KPj4gKyAqDQo+PiArICogVHJhbnNpdGlvbiB0byBTUEkgTUVNIGludGVy
+ZmFjZToNCj4+ICsgKiBBdXRob3JzOg0KPj4gKyAqICAgICBCb3JpcyBCcmV6aWxsaW9uIDxib3Jp
+cy5icmV6aWxsb25AYm9vdGxpbi5jb20+DQo+PiArICogICAgIEZyaWVkZXIgU2NocmVtcGYgPGZy
+aWVkZXIuc2NocmVtcGZAa29udHJvbi5kZT4NCj4+ICsgKiAgICAgWW9nZXNoIEdhdXIgPHlvZ2Vz
+aG5hcmF5YW4uZ2F1ckBueHAuY29tPg0KPj4gKyAqICAgICBTdXJlc2ggR3VwdGEgPHN1cmVzaC5n
+dXB0YUBueHAuY29tPg0KPj4gKyAqDQo+PiArICogQmFzZWQgb24gdGhlIG9yaWdpbmFsIGZzbC1x
+dWFkc3BpLmMgc3BpLW5vciBkcml2ZXI6DQo+PiArICogQXV0aG9yOiBGcmVlc2NhbGUgU2VtaWNv
+bmR1Y3RvciwgSW5jLg0KPj4gKyAqDQo+PiArICovDQo+PiArDQo+PiArI2luY2x1ZGUgPGxpbnV4
+L2JpdG9wcy5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9jbGsuaD4NCj4+ICsjaW5jbHVkZSA8bGlu
+dXgvY29tcGxldGlvbi5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9kZWxheS5oPg0KPj4gKyNpbmNs
+dWRlIDxsaW51eC9lcnIuaD4NCj4+ICsjaW5jbHVkZSA8bGludXgvZXJybm8uaD4NCj4+ICsjaW5j
+bHVkZSA8bGludXgvaW50ZXJydXB0Lmg+DQo+PiArI2luY2x1ZGUgPGxpbnV4L2lvLmg+DQo+PiAr
+I2luY2x1ZGUgPGxpbnV4L2lvcG9sbC5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9qaWZmaWVzLmg+
+DQo+PiArI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9tb2R1
+bGUuaD4NCj4+ICsjaW5jbHVkZSA8bGludXgvbXV0ZXguaD4NCj4+ICsjaW5jbHVkZSA8bGludXgv
+b2YuaD4NCj4+ICsjaW5jbHVkZSA8bGludXgvb2ZfZGV2aWNlLmg+DQo+PiArI2luY2x1ZGUgPGxp
+bnV4L3BsYXRmb3JtX2RldmljZS5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9wbV9xb3MuaD4NCj4+
+ICsjaW5jbHVkZSA8bGludXgvc2l6ZXMuaD4NCj4+ICsNCj4+ICsjaW5jbHVkZSA8bGludXgvc3Bp
+L3NwaS5oPg0KPj4gKyNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLW1lbS5oPg0KPj4gKw0KPj4gKy8q
+DQo+PiArICogVGhlIGRyaXZlciBvbmx5IHVzZXMgb25lIHNpbmdsZSBMVVQgZW50cnksIHRoYXQg
+aXMgdXBkYXRlZCBvbg0KPj4gKyAqIGVhY2ggY2FsbCBvZiBleGVjX29wKCkuIEluZGV4IDAgaXMg
+cHJlc2V0IGF0IGJvb3Qgd2l0aCBhIGJhc2ljDQo+PiArICogcmVhZCBvcGVyYXRpb24sIHNvIGxl
+dCdzIHVzZSB0aGUgbGFzdCBlbnRyeSAoMTUpLg0KPj4gKyAqLw0KPj4gKyNkZWZpbmUJU0VRSURf
+TFVUCQkJMTUNCj4+ICsNCj4+ICsvKiBSZWdpc3RlcnMgdXNlZCBieSB0aGUgZHJpdmVyICovDQo+
+PiArI2RlZmluZSBRVUFEU1BJX01DUgkJCTB4MDANCj4+ICsjZGVmaW5lIFFVQURTUElfTUNSX1JF
+U0VSVkVEX01BU0sJR0VOTUFTSygxOSwgMTYpDQo+PiArI2RlZmluZSBRVUFEU1BJX01DUl9NRElT
+X01BU0sJCUJJVCgxNCkNCj4+ICsjZGVmaW5lIFFVQURTUElfTUNSX0NMUl9UWEZfTUFTSwlCSVQo
+MTEpDQo+PiArI2RlZmluZSBRVUFEU1BJX01DUl9DTFJfUlhGX01BU0sJQklUKDEwKQ0KPj4gKyNk
+ZWZpbmUgUVVBRFNQSV9NQ1JfRERSX0VOX01BU0sJCUJJVCg3KQ0KPj4gKyNkZWZpbmUgUVVBRFNQ
+SV9NQ1JfRU5EX0NGR19NQVNLCUdFTk1BU0soMywgMikNCj4+ICsjZGVmaW5lIFFVQURTUElfTUNS
+X1NXUlNUSERfTUFTSwlCSVQoMSkNCj4+ICsjZGVmaW5lIFFVQURTUElfTUNSX1NXUlNUU0RfTUFT
+SwlCSVQoMCkNCj4+ICsNCj4+ICsjZGVmaW5lIFFVQURTUElfSVBDUgkJCTB4MDgNCj4+ICsjZGVm
+aW5lIFFVQURTUElfSVBDUl9TRVFJRCh4KQkJKCh4KSA8PCAyNCkNCj4+ICsNCj4+ICsjZGVmaW5l
+IFFVQURTUElfQlVGM0NSCQkJMHgxYw0KPj4gKyNkZWZpbmUgUVVBRFNQSV9CVUYzQ1JfQUxMTVNU
+X01BU0sJQklUKDMxKQ0KPj4gKyNkZWZpbmUgUVVBRFNQSV9CVUYzQ1JfQURBVFNaKHgpCSgoeCkg
+PDwgOCkNCj4+ICsjZGVmaW5lIFFVQURTUElfQlVGM0NSX0FEQVRTWl9NQVNLCUdFTk1BU0soMTUs
+IDgpDQo+PiArDQo+PiArI2RlZmluZSBRVUFEU1BJX0JGR0VOQ1IJCQkweDIwDQo+PiArI2RlZmlu
+ZSBRVUFEU1BJX0JGR0VOQ1JfU0VRSUQoeCkJKCh4KSA8PCAxMikNCj4+ICsNCj4+ICsjZGVmaW5l
+IFFVQURTUElfQlVGMElORAkJCTB4MzANCj4+ICsjZGVmaW5lIFFVQURTUElfQlVGMUlORAkJCTB4
+MzQNCj4+ICsjZGVmaW5lIFFVQURTUElfQlVGMklORAkJCTB4MzgNCj4+ICsjZGVmaW5lIFFVQURT
+UElfU0ZBUgkJCTB4MTAwDQo+PiArDQo+PiArI2RlZmluZSBRVUFEU1BJX1NNUFIJCQkweDEwOA0K
+Pj4gKyNkZWZpbmUgUVVBRFNQSV9TTVBSX0REUlNNUF9NQVNLCUdFTk1BU0soMTgsIDE2KQ0KPj4g
+KyNkZWZpbmUgUVVBRFNQSV9TTVBSX0ZTRExZX01BU0sJCUJJVCg2KQ0KPj4gKyNkZWZpbmUgUVVB
+RFNQSV9TTVBSX0ZTUEhTX01BU0sJCUJJVCg1KQ0KPj4gKyNkZWZpbmUgUVVBRFNQSV9TTVBSX0hT
+RU5BX01BU0sJCUJJVCgwKQ0KPj4gKw0KPj4gKyNkZWZpbmUgUVVBRFNQSV9SQkNUCQkJMHgxMTAN
+Cj4+ICsjZGVmaW5lIFFVQURTUElfUkJDVF9XTVJLX01BU0sJCUdFTk1BU0soNCwgMCkNCj4+ICsj
+ZGVmaW5lIFFVQURTUElfUkJDVF9SWEJSRF9VU0VJUFMJQklUKDgpDQo+PiArDQo+PiArI2RlZmlu
+ZSBRVUFEU1BJX1RCRFIJCQkweDE1NA0KPj4gKw0KPj4gKyNkZWZpbmUgUVVBRFNQSV9TUgkJCTB4
+MTVjDQo+PiArI2RlZmluZSBRVUFEU1BJX1NSX0lQX0FDQ19NQVNLCQlCSVQoMSkNCj4+ICsjZGVm
+aW5lIFFVQURTUElfU1JfQUhCX0FDQ19NQVNLCQlCSVQoMikNCj4+ICsNCj4+ICsjZGVmaW5lIFFV
+QURTUElfRlIJCQkweDE2MA0KPj4gKyNkZWZpbmUgUVVBRFNQSV9GUl9URkZfTUFTSwkJQklUKDAp
+DQo+PiArDQo+PiArI2RlZmluZSBRVUFEU1BJX1NQVFJDTFIJCQkweDE2Yw0KPj4gKyNkZWZpbmUg
+UVVBRFNQSV9TUFRSQ0xSX0lQUFRSQwkJQklUKDgpDQo+PiArI2RlZmluZSBRVUFEU1BJX1NQVFJD
+TFJfQkZQVFJDCQlCSVQoMCkNCj4+ICsNCj4+ICsjZGVmaW5lIFFVQURTUElfU0ZBMUFECQkJMHgx
+ODANCj4+ICsjZGVmaW5lIFFVQURTUElfU0ZBMkFECQkJMHgxODQNCj4+ICsjZGVmaW5lIFFVQURT
+UElfU0ZCMUFECQkJMHgxODgNCj4+ICsjZGVmaW5lIFFVQURTUElfU0ZCMkFECQkJMHgxOGMNCj4+
+ICsjZGVmaW5lIFFVQURTUElfUkJEUih4KQkJCSgweDIwMCArICgoeCkgKiA0KSkNCj4+ICsNCj4+
+ICsjZGVmaW5lIFFVQURTUElfTFVUS0VZCQkJMHgzMDANCj4+ICsjZGVmaW5lIFFVQURTUElfTFVU
+S0VZX1ZBTFVFCQkweDVBRjA1QUYwDQo+PiArDQo+PiArI2RlZmluZSBRVUFEU1BJX0xDS0NSCQkJ
+MHgzMDQNCj4+ICsjZGVmaW5lIFFVQURTUElfTENLRVJfTE9DSwkJQklUKDApDQo+PiArI2RlZmlu
+ZSBRVUFEU1BJX0xDS0VSX1VOTE9DSwkJQklUKDEpDQo+PiArDQo+PiArI2RlZmluZSBRVUFEU1BJ
+X1JTRVIJCQkweDE2NA0KPj4gKyNkZWZpbmUgUVVBRFNQSV9SU0VSX1RGSUUJCUJJVCgwKQ0KPj4g
+Kw0KPj4gKyNkZWZpbmUgUVVBRFNQSV9MVVRfQkFTRQkJMHgzMTANCj4+ICsjZGVmaW5lIFFVQURT
+UElfTFVUX09GRlNFVAkJKFNFUUlEX0xVVCAqIDQgKiA0KQ0KPj4gKyNkZWZpbmUgUVVBRFNQSV9M
+VVRfUkVHKGlkeCkgXA0KPj4gKwkoUVVBRFNQSV9MVVRfQkFTRSArIFFVQURTUElfTFVUX09GRlNF
+VCArIChpZHgpICogNCkNCj4+ICsNCj4+ICsvKiBJbnN0cnVjdGlvbiBzZXQgZm9yIHRoZSBMVVQg
+cmVnaXN0ZXIgKi8NCj4+ICsjZGVmaW5lIExVVF9TVE9QCQkwDQo+PiArI2RlZmluZSBMVVRfQ01E
+CQkJMQ0KPj4gKyNkZWZpbmUgTFVUX0FERFIJCTINCj4+ICsjZGVmaW5lIExVVF9EVU1NWQkJMw0K
+Pj4gKyNkZWZpbmUgTFVUX01PREUJCTQNCj4+ICsjZGVmaW5lIExVVF9NT0RFMgkJNQ0KPj4gKyNk
+ZWZpbmUgTFVUX01PREU0CQk2DQo+PiArI2RlZmluZSBMVVRfRlNMX1JFQUQJCTcNCj4+ICsjZGVm
+aW5lIExVVF9GU0xfV1JJVEUJCTgNCj4+ICsjZGVmaW5lIExVVF9KTVBfT05fQ1MJCTkNCj4+ICsj
+ZGVmaW5lIExVVF9BRERSX0REUgkJMTANCj4+ICsjZGVmaW5lIExVVF9NT0RFX0REUgkJMTENCj4+
+ICsjZGVmaW5lIExVVF9NT0RFMl9ERFIJCTEyDQo+PiArI2RlZmluZSBMVVRfTU9ERTRfRERSCQkx
+Mw0KPj4gKyNkZWZpbmUgTFVUX0ZTTF9SRUFEX0REUgkxNA0KPj4gKyNkZWZpbmUgTFVUX0ZTTF9X
+UklURV9ERFIJMTUNCj4+ICsjZGVmaW5lIExVVF9EQVRBX0xFQVJOCQkxNg0KPj4gKw0KPj4gKy8q
+DQo+PiArICogVGhlIFBBRCBkZWZpbml0aW9ucyBmb3IgTFVUIHJlZ2lzdGVyLg0KPj4gKyAqDQo+
+PiArICogVGhlIHBhZCBzdGFuZHMgZm9yIHRoZSBudW1iZXIgb2YgSU8gbGluZXMgWzA6M10uDQo+
+PiArICogRm9yIGV4YW1wbGUsIHRoZSBxdWFkIHJlYWQgbmVlZHMgZm91ciBJTyBsaW5lcywNCj4+
+ICsgKiBzbyB5b3Ugc2hvdWxkIHVzZSBMVVRfUEFEKDQpLg0KPj4gKyAqLw0KPj4gKyNkZWZpbmUg
+TFVUX1BBRCh4KSAoZmxzKHgpIC0gMSkNCj4+ICsNCj4+ICsvKg0KPj4gKyAqIE1hY3JvIGZvciBj
+b25zdHJ1Y3RpbmcgdGhlIExVVCBlbnRyaWVzIHdpdGggdGhlIGZvbGxvd2luZw0KPj4gKyAqIHJl
+Z2lzdGVyIGxheW91dDoNCj4+ICsgKg0KPj4gKyAqICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4+ICsgKiAgfCBJTlNUUjEgfCBQQUQxIHwgT1BS
+TkQxIHwgSU5TVFIwIHwgUEFEMCB8IE9QUk5EMCB8DQo+PiArICogIC0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPj4gKyAqLw0KPj4gKyNkZWZpbmUg
+TFVUX0RFRihpZHgsIGlucywgcGFkLCBvcHIpCQkJCQlcDQo+PiArCSgoKChpbnMpIDw8IDEwKSB8
+ICgocGFkKSA8PCA4KSB8IChvcHIpKSA8PCAoKChpZHgpICUgMikgKiAxNikpDQo+PiArDQo+PiAr
+LyogQ29udHJvbGxlciBuZWVkcyBkcml2ZXIgdG8gc3dhcCBlbmRpYW5uZXNzICovDQo+PiArI2Rl
+ZmluZSBRVUFEU1BJX1FVSVJLX1NXQVBfRU5ESUFOCUJJVCgwKQ0KPj4gKw0KPj4gKy8qIENvbnRy
+b2xsZXIgbmVlZHMgNHggaW50ZXJuYWwgY2xvY2sgKi8NCj4+ICsjZGVmaW5lIFFVQURTUElfUVVJ
+UktfNFhfSU5UX0NMSwlCSVQoMSkNCj4+ICsNCj4+ICsvKg0KPj4gKyAqIFRLVDI1Mzg5MCwgdGhl
+IGNvbnRyb2xsZXIgbmVlZHMgdGhlIGRyaXZlciB0byBmaWxsIHRoZSB0eGZpZm8gd2l0aA0KPj4g
+KyAqIDE2IGJ5dGVzIGF0IGxlYXN0IHRvIHRyaWdnZXIgYSBkYXRhIHRyYW5zZmVyLCBldmVuIHRo
+b3VnaCB0aGUgZXh0cmENCj4+ICsgKiBkYXRhIHdvbid0IGJlIHRyYW5zZmVycmVkLg0KPj4gKyAq
+Lw0KPj4gKyNkZWZpbmUgUVVBRFNQSV9RVUlSS19US1QyNTM4OTAJCUJJVCgyKQ0KPj4gKw0KPj4g
+Ky8qIFRLVDI0NTYxOCwgdGhlIGNvbnRyb2xsZXIgY2Fubm90IHdha2UgdXAgZnJvbSB3YWl0IG1v
+ZGUgKi8NCj4+ICsjZGVmaW5lIFFVQURTUElfUVVJUktfVEtUMjQ1NjE4CQlCSVQoMykNCj4+ICsN
+Cj4+ICsvKg0KPj4gKyAqIENvbnRyb2xsZXIgYWRkcyBRU1BJX0FNQkFfQkFTRSAoYmFzZSBhZGRy
+ZXNzIG9mIHRoZSBtYXBwZWQgbWVtb3J5KQ0KPj4gKyAqIGludGVybmFsbHkuIE5vIG5lZWQgdG8g
+YWRkIGl0IHdoZW4gc2V0dGluZyBTRlhYQUQgYW5kIFNGQVIgcmVnaXN0ZXJzDQo+PiArKi8NCj4+
+ICsjZGVmaW5lIFFVQURTUElfUVVJUktfQkFTRV9JTlRFUk5BTAlCSVQoNCkNCj4+ICsNCj4+ICtz
+dHJ1Y3QgZnNsX3FzcGlfZGV2dHlwZV9kYXRhIHsNCj4+ICsJdW5zaWduZWQgaW50IHJ4ZmlmbzsN
+Cj4+ICsJdW5zaWduZWQgaW50IHR4ZmlmbzsNCj4+ICsJdW5zaWduZWQgaW50IGFoYl9idWZfc2l6
+ZTsNCj4+ICsJdW5zaWduZWQgaW50IHF1aXJrczsNCj4+ICsJYm9vbCBsaXR0bGVfZW5kaWFuOw0K
+Pj4gK307DQo+PiArDQo+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBmc2xfcXNwaV9kZXZ0eXBlX2Rh
+dGEgdnlicmlkX2RhdGEgPSB7DQo+PiArCS5yeGZpZm8gPSBTWl8xMjgsDQo+PiArCS50eGZpZm8g
+PSBTWl82NCwNCj4+ICsJLmFoYl9idWZfc2l6ZSA9IFNaXzFLLA0KPj4gKwkucXVpcmtzID0gUVVB
+RFNQSV9RVUlSS19TV0FQX0VORElBTiwNCj4+ICsJLmxpdHRsZV9lbmRpYW4gPSB0cnVlLA0KPj4g
+K307DQo+PiArDQo+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBmc2xfcXNwaV9kZXZ0eXBlX2RhdGEg
+aW14NnN4X2RhdGEgPSB7DQo+PiArCS5yeGZpZm8gPSBTWl8xMjgsDQo+PiArCS50eGZpZm8gPSBT
+Wl81MTIsDQo+PiArCS5haGJfYnVmX3NpemUgPSBTWl8xSywNCj4+ICsJLnF1aXJrcyA9IFFVQURT
+UElfUVVJUktfNFhfSU5UX0NMSyB8IFFVQURTUElfUVVJUktfVEtUMjQ1NjE4LA0KPj4gKwkubGl0
+dGxlX2VuZGlhbiA9IHRydWUsDQo+PiArfTsNCj4+ICsNCj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0
+IGZzbF9xc3BpX2RldnR5cGVfZGF0YSBpbXg3ZF9kYXRhID0gew0KPj4gKwkucnhmaWZvID0gU1pf
+NTEyLA0KPj4gKwkudHhmaWZvID0gU1pfNTEyLA0KPj4gKwkuYWhiX2J1Zl9zaXplID0gU1pfMUss
+DQo+PiArCS5xdWlya3MgPSBRVUFEU1BJX1FVSVJLX1RLVDI1Mzg5MCB8IFFVQURTUElfUVVJUktf
+NFhfSU5UX0NMSywNCj4+ICsJLmxpdHRsZV9lbmRpYW4gPSB0cnVlLA0KPj4gK307DQo+PiArDQo+
+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBmc2xfcXNwaV9kZXZ0eXBlX2RhdGEgaW14NnVsX2RhdGEg
+PSB7DQo+PiArCS5yeGZpZm8gPSBTWl8xMjgsDQo+PiArCS50eGZpZm8gPSBTWl81MTIsDQo+PiAr
+CS5haGJfYnVmX3NpemUgPSBTWl8xSywNCj4+ICsJLnF1aXJrcyA9IFFVQURTUElfUVVJUktfVEtU
+MjUzODkwIHwgUVVBRFNQSV9RVUlSS180WF9JTlRfQ0xLLA0KPj4gKwkubGl0dGxlX2VuZGlhbiA9
+IHRydWUsDQo+PiArfTsNCj4+ICsNCj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGZzbF9xc3BpX2Rl
+dnR5cGVfZGF0YSBsczEwMjFhX2RhdGEgPSB7DQo+PiArCS5yeGZpZm8gPSBTWl8xMjgsDQo+PiAr
+CS50eGZpZm8gPSBTWl82NCwNCj4+ICsJLmFoYl9idWZfc2l6ZSA9IFNaXzFLLA0KPj4gKwkucXVp
+cmtzID0gMCwNCj4+ICsJLmxpdHRsZV9lbmRpYW4gPSBmYWxzZSwNCj4+ICt9Ow0KPj4gKw0KPj4g
+K3N0YXRpYyBjb25zdCBzdHJ1Y3QgZnNsX3FzcGlfZGV2dHlwZV9kYXRhIGxzMjA4MGFfZGF0YSA9
+IHsNCj4+ICsJLnJ4ZmlmbyA9IFNaXzEyOCwNCj4+ICsJLnR4ZmlmbyA9IFNaXzY0LA0KPj4gKwku
+YWhiX2J1Zl9zaXplID0gU1pfMUssDQo+PiArCS5xdWlya3MgPSBRVUFEU1BJX1FVSVJLX1RLVDI1
+Mzg5MCB8DQo+PiBRVUFEU1BJX1FVSVJLX0JBU0VfSU5URVJOQUwsDQo+PiArCS5saXR0bGVfZW5k
+aWFuID0gdHJ1ZSwNCj4+ICt9Ow0KPj4gKw0KPj4gK3N0cnVjdCBmc2xfcXNwaSB7DQo+PiArCXZv
+aWQgX19pb21lbSAqaW9iYXNlOw0KPj4gKwl2b2lkIF9faW9tZW0gKmFoYl9hZGRyOw0KPj4gKwl1
+MzIgbWVtbWFwX3BoeTsNCj4+ICsJc3RydWN0IGNsayAqY2xrLCAqY2xrX2VuOw0KPj4gKwlzdHJ1
+Y3QgZGV2aWNlICpkZXY7DQo+PiArCXN0cnVjdCBjb21wbGV0aW9uIGM7DQo+PiArCWNvbnN0IHN0
+cnVjdCBmc2xfcXNwaV9kZXZ0eXBlX2RhdGEgKmRldnR5cGVfZGF0YTsNCj4+ICsJc3RydWN0IG11
+dGV4IGxvY2s7DQo+PiArCXN0cnVjdCBwbV9xb3NfcmVxdWVzdCBwbV9xb3NfcmVxOw0KPj4gKwlp
+bnQgc2VsZWN0ZWQ7DQo+PiArfTsNCj4+ICsNCj4+ICtzdGF0aWMgaW5saW5lIGludCBuZWVkc19z
+d2FwX2VuZGlhbihzdHJ1Y3QgZnNsX3FzcGkgKnEpIHsNCj4+ICsJcmV0dXJuIHEtPmRldnR5cGVf
+ZGF0YS0+cXVpcmtzICYgUVVBRFNQSV9RVUlSS19TV0FQX0VORElBTjsgfQ0KPj4gKw0KPj4gK3N0
+YXRpYyBpbmxpbmUgaW50IG5lZWRzXzR4X2Nsb2NrKHN0cnVjdCBmc2xfcXNwaSAqcSkgew0KPj4g
+KwlyZXR1cm4gcS0+ZGV2dHlwZV9kYXRhLT5xdWlya3MgJiBRVUFEU1BJX1FVSVJLXzRYX0lOVF9D
+TEs7IH0NCj4+ICsNCj4+ICtzdGF0aWMgaW5saW5lIGludCBuZWVkc19maWxsX3R4ZmlmbyhzdHJ1
+Y3QgZnNsX3FzcGkgKnEpIHsNCj4+ICsJcmV0dXJuIHEtPmRldnR5cGVfZGF0YS0+cXVpcmtzICYg
+UVVBRFNQSV9RVUlSS19US1QyNTM4OTA7IH0NCj4+ICsNCj4+ICtzdGF0aWMgaW5saW5lIGludCBu
+ZWVkc193YWtldXBfd2FpdF9tb2RlKHN0cnVjdCBmc2xfcXNwaSAqcSkgew0KPj4gKwlyZXR1cm4g
+cS0+ZGV2dHlwZV9kYXRhLT5xdWlya3MgJiBRVUFEU1BJX1FVSVJLX1RLVDI0NTYxODsgfQ0KPj4g
+Kw0KPj4gK3N0YXRpYyBpbmxpbmUgaW50IG5lZWRzX2FtYmFfYmFzZV9vZmZzZXQoc3RydWN0IGZz
+bF9xc3BpICpxKSB7DQo+PiArCXJldHVybiAhKHEtPmRldnR5cGVfZGF0YS0+cXVpcmtzICYNCj4+
+IFFVQURTUElfUVVJUktfQkFTRV9JTlRFUk5BTCk7IH0NCj4+ICsNCj4+ICsvKg0KPj4gKyAqIEFu
+IElDIGJ1ZyBtYWtlcyBpdCBuZWNlc3NhcnkgdG8gcmVhcnJhbmdlIHRoZSAzMi1iaXQgZGF0YS4N
+Cj4+ICsgKiBMYXRlciBjaGlwcywgc3VjaCBhcyBJTVg2U0xYLCBoYXZlIGZpeGVkIHRoaXMgYnVn
+Lg0KPj4gKyAqLw0KPj4gK3N0YXRpYyBpbmxpbmUgdTMyIGZzbF9xc3BpX2VuZGlhbl94Y2hnKHN0
+cnVjdCBmc2xfcXNwaSAqcSwgdTMyIGEpIHsNCj4+ICsJcmV0dXJuIG5lZWRzX3N3YXBfZW5kaWFu
+KHEpID8gX19zd2FiMzIoYSkgOiBhOyB9DQo+PiArDQo+PiArLyoNCj4+ICsgKiBSL1cgZnVuY3Rp
+b25zIGZvciBiaWctIG9yIGxpdHRsZS1lbmRpYW4gcmVnaXN0ZXJzOg0KPj4gKyAqIFRoZSBRU1BJ
+IGNvbnRyb2xsZXIncyBlbmRpYW5uZXNzIGlzIGluZGVwZW5kZW50IG9mDQo+PiArICogdGhlIENQ
+VSBjb3JlJ3MgZW5kaWFubmVzcy4gU28gZmFyLCBhbHRob3VnaCB0aGUgQ1BVDQo+PiArICogY29y
+ZSBpcyBsaXR0bGUtZW5kaWFuIHRoZSBRU1BJIGNvbnRyb2xsZXIgY2FuIHVzZQ0KPj4gKyAqIGJp
+Zy1lbmRpYW4gb3IgbGl0dGxlLWVuZGlhbi4NCj4+ICsgKi8NCj4+ICtzdGF0aWMgdm9pZCBxc3Bp
+X3dyaXRlbChzdHJ1Y3QgZnNsX3FzcGkgKnEsIHUzMiB2YWwsIHZvaWQgX19pb21lbQ0KPj4gKyph
+ZGRyKSB7DQo+PiArCWlmIChxLT5kZXZ0eXBlX2RhdGEtPmxpdHRsZV9lbmRpYW4pDQo+PiArCQlp
+b3dyaXRlMzIodmFsLCBhZGRyKTsNCj4+ICsJZWxzZQ0KPj4gKwkJaW93cml0ZTMyYmUodmFsLCBh
+ZGRyKTsNCj4+ICt9DQo+PiArDQo+PiArc3RhdGljIHUzMiBxc3BpX3JlYWRsKHN0cnVjdCBmc2xf
+cXNwaSAqcSwgdm9pZCBfX2lvbWVtICphZGRyKSB7DQo+PiArCWlmIChxLT5kZXZ0eXBlX2RhdGEt
+PmxpdHRsZV9lbmRpYW4pDQo+PiArCQlyZXR1cm4gaW9yZWFkMzIoYWRkcik7DQo+PiArDQo+PiAr
+CXJldHVybiBpb3JlYWQzMmJlKGFkZHIpOw0KPj4gK30NCj4+ICsNCj4+ICtzdGF0aWMgaXJxcmV0
+dXJuX3QgZnNsX3FzcGlfaXJxX2hhbmRsZXIoaW50IGlycSwgdm9pZCAqZGV2X2lkKSB7DQo+PiAr
+CXN0cnVjdCBmc2xfcXNwaSAqcSA9IGRldl9pZDsNCj4+ICsJdTMyIHJlZzsNCj4+ICsNCj4+ICsJ
+LyogY2xlYXIgaW50ZXJydXB0ICovDQo+PiArCXJlZyA9IHFzcGlfcmVhZGwocSwgcS0+aW9iYXNl
+ICsgUVVBRFNQSV9GUik7DQo+PiArCXFzcGlfd3JpdGVsKHEsIHJlZywgcS0+aW9iYXNlICsgUVVB
+RFNQSV9GUik7DQo+PiArDQo+PiArCWlmIChyZWcgJiBRVUFEU1BJX0ZSX1RGRl9NQVNLKQ0KPj4g
+KwkJY29tcGxldGUoJnEtPmMpOw0KPj4gKw0KPj4gKwlkZXZfZGJnKHEtPmRldiwgIlFVQURTUElf
+RlIgOiAweCUuOHg6MHglLjh4XG4iLCAwLCByZWcpOw0KPj4gKwlyZXR1cm4gSVJRX0hBTkRMRUQ7
+DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgZnNsX3FzcGlfY2hlY2tfYnVzd2lkdGgoc3Ry
+dWN0IGZzbF9xc3BpICpxLCB1OCB3aWR0aCkgew0KPj4gKwlzd2l0Y2ggKHdpZHRoKSB7DQo+PiAr
+CWNhc2UgMToNCj4+ICsJY2FzZSAyOg0KPj4gKwljYXNlIDQ6DQo+PiArCQlyZXR1cm4gMDsNCj4+
+ICsJfQ0KPj4gKw0KPj4gKwlyZXR1cm4gLUVOT1RTVVBQOw0KPj4gK30NCj4+ICsNCj4+ICtzdGF0
+aWMgYm9vbCBmc2xfcXNwaV9zdXBwb3J0c19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLA0KPj4gKwkJ
+CQkgY29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KPj4gK3sNCj4+ICsJc3RydWN0IGZzbF9x
+c3BpICpxID0gc3BpX2NvbnRyb2xsZXJfZ2V0X2RldmRhdGEobWVtLT5zcGktPm1hc3Rlcik7DQo+
+PiArCWludCByZXQ7DQo+PiArDQo+PiArCXJldCA9IGZzbF9xc3BpX2NoZWNrX2J1c3dpZHRoKHEs
+IG9wLT5jbWQuYnVzd2lkdGgpOw0KPj4gKw0KPj4gKwlpZiAob3AtPmFkZHIubmJ5dGVzKQ0KPj4g
+KwkJcmV0IHw9IGZzbF9xc3BpX2NoZWNrX2J1c3dpZHRoKHEsIG9wLT5hZGRyLmJ1c3dpZHRoKTsN
+Cj4+ICsNCj4+ICsJaWYgKG9wLT5kdW1teS5uYnl0ZXMpDQo+PiArCQlyZXQgfD0gZnNsX3FzcGlf
+Y2hlY2tfYnVzd2lkdGgocSwgb3AtPmR1bW15LmJ1c3dpZHRoKTsNCj4+ICsNCj4+ICsJaWYgKG9w
+LT5kYXRhLm5ieXRlcykNCj4+ICsJCXJldCB8PSBmc2xfcXNwaV9jaGVja19idXN3aWR0aChxLCBv
+cC0+ZGF0YS5idXN3aWR0aCk7DQo+PiArDQo+PiArCWlmIChyZXQpDQo+PiArCQlyZXR1cm4gZmFs
+c2U7DQo+PiArDQo+PiArCS8qDQo+PiArCSAqIFRoZSBudW1iZXIgb2YgaW5zdHJ1Y3Rpb25zIG5l
+ZWRlZCBmb3IgdGhlIG9wLCBuZWVkcw0KPj4gKwkgKiB0byBmaXQgaW50byBhIHNpbmdsZSBMVVQg
+ZW50cnkuDQo+PiArCSAqLw0KPj4gKwlpZiAob3AtPmFkZHIubmJ5dGVzICsNCj4+ICsJICAgKG9w
+LT5kdW1teS5uYnl0ZXMgPyAxOjApICsNCj4+ICsJICAgKG9wLT5kYXRhLm5ieXRlcyA/IDE6MCkg
+PiA2KQ0KPj4gKwkJcmV0dXJuIGZhbHNlOw0KPj4gKw0KPj4gKwkvKiBNYXggNjQgZHVtbXkgY2xv
+Y2sgY3ljbGVzIHN1cHBvcnRlZCAqLw0KPj4gKwlpZiAob3AtPmR1bW15Lm5ieXRlcyAmJg0KPj4g
+KwkgICAgKG9wLT5kdW1teS5uYnl0ZXMgKiA4IC8gb3AtPmR1bW15LmJ1c3dpZHRoID4gNjQpKQ0K
+Pj4gKwkJcmV0dXJuIGZhbHNlOw0KPj4gKw0KPj4gKwkvKiBNYXggZGF0YSBsZW5ndGgsIGNoZWNr
+IGNvbnRyb2xsZXIgbGltaXRzIGFuZCBhbGlnbm1lbnQgKi8NCj4+ICsJaWYgKG9wLT5kYXRhLmRp
+ciA9PSBTUElfTUVNX0RBVEFfSU4gJiYNCj4+ICsJICAgIChvcC0+ZGF0YS5uYnl0ZXMgPiBxLT5k
+ZXZ0eXBlX2RhdGEtPmFoYl9idWZfc2l6ZSB8fA0KPj4gKwkgICAgIChvcC0+ZGF0YS5uYnl0ZXMg
+PiBxLT5kZXZ0eXBlX2RhdGEtPnJ4ZmlmbyAtIDQgJiYNCj4+ICsJICAgICAgIUlTX0FMSUdORUQo
+b3AtPmRhdGEubmJ5dGVzLCA4KSkpKQ0KPj4gKwkJcmV0dXJuIGZhbHNlOw0KPj4gKw0KPj4gKwlp
+ZiAob3AtPmRhdGEuZGlyID09IFNQSV9NRU1fREFUQV9PVVQgJiYNCj4+ICsJICAgIG9wLT5kYXRh
+Lm5ieXRlcyA+IHEtPmRldnR5cGVfZGF0YS0+dHhmaWZvKQ0KPj4gKwkJcmV0dXJuIGZhbHNlOw0K
+Pj4gKw0KPj4gKwlyZXR1cm4gdHJ1ZTsNCj4+ICt9DQo+PiArDQo+PiArc3RhdGljIHZvaWQgZnNs
+X3FzcGlfcHJlcGFyZV9sdXQoc3RydWN0IGZzbF9xc3BpICpxLA0KPj4gKwkJCQkgY29uc3Qgc3Ry
+dWN0IHNwaV9tZW1fb3AgKm9wKQ0KPj4gK3sNCj4+ICsJdm9pZCBfX2lvbWVtICpiYXNlID0gcS0+
+aW9iYXNlOw0KPj4gKwl1MzIgbHV0dmFsWzRdID0ge307DQo+PiArCWludCBsdXRpZHggPSAxLCBp
+Ow0KPj4gKw0KPj4gKwlsdXR2YWxbMF0gfD0gTFVUX0RFRigwLCBMVVRfQ01ELCBMVVRfUEFEKG9w
+LT5jbWQuYnVzd2lkdGgpLA0KPj4gKwkJCSAgICAgb3AtPmNtZC5vcGNvZGUpOw0KPj4gKw0KPj4g
+KwkvKg0KPj4gKwkgKiBGb3Igc29tZSB1bmtub3duIHJlYXNvbiwgdXNpbmcgTFVUX0FERFIgZG9l
+c24ndCB3b3JrIGluIHNvbWUNCj4+ICsJICogY2FzZXMgKGF0IGxlYXN0IHdpdGggb25seSBvbmUg
+Ynl0ZSBsb25nIGFkZHJlc3NlcyksIHNvDQo+PiArCSAqIGxldCdzIHVzZSBMVVRfTU9ERSB0byB3
+cml0ZSB0aGUgYWRkcmVzcyBieXRlcyBvbmUgYnkgb25lDQo+PiArCSAqLw0KPj4gKwlmb3IgKGkg
+PSAwOyBpIDwgb3AtPmFkZHIubmJ5dGVzOyBpKyspIHsNCj4+ICsJCXU4IGFkZHJieXRlID0gb3At
+PmFkZHIudmFsID4+ICg4ICogKG9wLT5hZGRyLm5ieXRlcyAtIGkgLSAxKSk7DQo+PiArDQo+PiAr
+CQlsdXR2YWxbbHV0aWR4IC8gMl0gfD0gTFVUX0RFRihsdXRpZHgsIExVVF9NT0RFLA0KPj4gKwkJ
+CQkJICAgICAgTFVUX1BBRChvcC0+YWRkci5idXN3aWR0aCksDQo+PiArCQkJCQkgICAgICBhZGRy
+Ynl0ZSk7DQo+PiArCQlsdXRpZHgrKzsNCj4+ICsJfQ0KPj4gKw0KPj4gKwlpZiAob3AtPmR1bW15
+Lm5ieXRlcykgew0KPj4gKwkJbHV0dmFsW2x1dGlkeCAvIDJdIHw9IExVVF9ERUYobHV0aWR4LCBM
+VVRfRFVNTVksDQo+PiArCQkJCQkgICAgICBMVVRfUEFEKG9wLT5kdW1teS5idXN3aWR0aCksDQo+
+PiArCQkJCQkgICAgICBvcC0+ZHVtbXkubmJ5dGVzICogOCAvDQo+PiArCQkJCQkgICAgICBvcC0+
+ZHVtbXkuYnVzd2lkdGgpOw0KPj4gKwkJbHV0aWR4Kys7DQo+PiArCX0NCj4+ICsNCj4+ICsJaWYg
+KG9wLT5kYXRhLm5ieXRlcykgew0KPj4gKwkJbHV0dmFsW2x1dGlkeCAvIDJdIHw9IExVVF9ERUYo
+bHV0aWR4LA0KPj4gKwkJCQkJICAgICAgb3AtPmRhdGEuZGlyID09DQo+PiBTUElfTUVNX0RBVEFf
+SU4gPw0KPj4gKwkJCQkJICAgICAgTFVUX0ZTTF9SRUFEIDogTFVUX0ZTTF9XUklURSwNCj4+ICsJ
+CQkJCSAgICAgIExVVF9QQUQob3AtPmRhdGEuYnVzd2lkdGgpLA0KPj4gKwkJCQkJICAgICAgMCk7
+DQo+PiArCQlsdXRpZHgrKzsNCj4+ICsJfQ0KPj4gKw0KPj4gKwlsdXR2YWxbbHV0aWR4IC8gMl0g
+fD0gTFVUX0RFRihsdXRpZHgsIExVVF9TVE9QLCAwLCAwKTsNCj4+ICsNCj4+ICsJLyogdW5sb2Nr
+IExVVCAqLw0KPj4gKwlxc3BpX3dyaXRlbChxLCBRVUFEU1BJX0xVVEtFWV9WQUxVRSwgcS0+aW9i
+YXNlICsgUVVBRFNQSV9MVVRLRVkpOw0KPj4gKwlxc3BpX3dyaXRlbChxLCBRVUFEU1BJX0xDS0VS
+X1VOTE9DSywgcS0+aW9iYXNlICsgUVVBRFNQSV9MQ0tDUik7DQo+PiArDQo+PiArCS8qIGZpbGwg
+TFVUICovDQo+PiArCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGx1dHZhbCk7IGkrKykNCj4+
+ICsJCXFzcGlfd3JpdGVsKHEsIGx1dHZhbFtpXSwgYmFzZSArIFFVQURTUElfTFVUX1JFRyhpKSk7
+DQo+PiArDQo+PiArCS8qIGxvY2sgTFVUICovDQo+PiArCXFzcGlfd3JpdGVsKHEsIFFVQURTUElf
+TFVUS0VZX1ZBTFVFLCBxLT5pb2Jhc2UgKyBRVUFEU1BJX0xVVEtFWSk7DQo+PiArCXFzcGlfd3Jp
+dGVsKHEsIFFVQURTUElfTENLRVJfTE9DSywgcS0+aW9iYXNlICsgUVVBRFNQSV9MQ0tDUik7IH0N
+Cj4+ICsNCj4+ICtzdGF0aWMgaW50IGZzbF9xc3BpX2Nsa19wcmVwX2VuYWJsZShzdHJ1Y3QgZnNs
+X3FzcGkgKnEpIHsNCj4+ICsJaW50IHJldDsNCj4+ICsNCj4+ICsJcmV0ID0gY2xrX3ByZXBhcmVf
+ZW5hYmxlKHEtPmNsa19lbik7DQo+PiArCWlmIChyZXQpDQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4g
+Kw0KPj4gKwlyZXQgPSBjbGtfcHJlcGFyZV9lbmFibGUocS0+Y2xrKTsNCj4+ICsJaWYgKHJldCkg
+ew0KPj4gKwkJY2xrX2Rpc2FibGVfdW5wcmVwYXJlKHEtPmNsa19lbik7DQo+PiArCQlyZXR1cm4g
+cmV0Ow0KPj4gKwl9DQo+PiArDQo+PiArCWlmIChuZWVkc193YWtldXBfd2FpdF9tb2RlKHEpKQ0K
+Pj4gKwkJcG1fcW9zX2FkZF9yZXF1ZXN0KCZxLT5wbV9xb3NfcmVxLA0KPj4gUE1fUU9TX0NQVV9E
+TUFfTEFURU5DWSwgMCk7DQo+PiArDQo+PiArCXJldHVybiAwOw0KPj4gK30NCj4+ICsNCj4+ICtz
+dGF0aWMgdm9pZCBmc2xfcXNwaV9jbGtfZGlzYWJsZV91bnByZXAoc3RydWN0IGZzbF9xc3BpICpx
+KSB7DQo+PiArCWlmIChuZWVkc193YWtldXBfd2FpdF9tb2RlKHEpKQ0KPj4gKwkJcG1fcW9zX3Jl
+bW92ZV9yZXF1ZXN0KCZxLT5wbV9xb3NfcmVxKTsNCj4+ICsNCj4+ICsJY2xrX2Rpc2FibGVfdW5w
+cmVwYXJlKHEtPmNsayk7DQo+PiArCWNsa19kaXNhYmxlX3VucHJlcGFyZShxLT5jbGtfZW4pOw0K
+Pj4gK30NCj4+ICsNCj4+ICsvKg0KPj4gKyAqIElmIHdlIGhhdmUgY2hhbmdlZCB0aGUgY29udGVu
+dCBvZiB0aGUgZmxhc2ggYnkgd3JpdGluZyBvciBlcmFzaW5nLA0KPj4gK29yIGlmIHdlDQo+PiAr
+ICogcmVhZCBmcm9tIGZsYXNoIHdpdGggYSBkaWZmZXJlbnQgb2Zmc2V0IGludG8gdGhlIHBhZ2Ug
+YnVmZmVyLCB3ZQ0KPj4gK25lZWQgdG8NCj4+ICsgKiBpbnZhbGlkYXRlIHRoZSBBSEIgYnVmZmVy
+LiBJZiB3ZSBkbyBub3QgZG8gc28sIHdlIG1heSByZWFkIG91dCB0aGUNCj4+ICt3cm9uZw0KPj4g
+KyAqIGRhdGEuIFRoZSBzcGVjIHRlbGxzIHVzIHJlc2V0IHRoZSBBSEIgZG9tYWluIGFuZCBTZXJp
+YWwgRmxhc2ggZG9tYWluDQo+PiArYXQNCj4+ICsgKiB0aGUgc2FtZSB0aW1lLg0KPj4gKyAqLw0K
+Pj4gK3N0YXRpYyB2b2lkIGZzbF9xc3BpX2ludmFsaWRhdGUoc3RydWN0IGZzbF9xc3BpICpxKSB7
+DQo+PiArCXUzMiByZWc7DQo+PiArDQo+PiArCXJlZyA9IHFzcGlfcmVhZGwocSwgcS0+aW9iYXNl
+ICsgUVVBRFNQSV9NQ1IpOw0KPj4gKwlyZWcgfD0gUVVBRFNQSV9NQ1JfU1dSU1RIRF9NQVNLIHwN
+Cj4+IFFVQURTUElfTUNSX1NXUlNUU0RfTUFTSzsNCj4+ICsJcXNwaV93cml0ZWwocSwgcmVnLCBx
+LT5pb2Jhc2UgKyBRVUFEU1BJX01DUik7DQo+PiArDQo+PiArCS8qDQo+PiArCSAqIFRoZSBtaW5p
+bXVtIGRlbGF5IDogMSBBSEIgKyAyIFNGQ0sgY2xvY2tzLg0KPj4gKwkgKiBEZWxheSAxIHVzIGlz
+IGVub3VnaC4NCj4+ICsJICovDQo+PiArCXVkZWxheSgxKTsNCj4+ICsNCj4+ICsJcmVnICY9IH4o
+UVVBRFNQSV9NQ1JfU1dSU1RIRF9NQVNLIHwNCj4+IFFVQURTUElfTUNSX1NXUlNUU0RfTUFTSyk7
+DQo+PiArCXFzcGlfd3JpdGVsKHEsIHJlZywgcS0+aW9iYXNlICsgUVVBRFNQSV9NQ1IpOyB9DQo+
+PiArDQo+PiArc3RhdGljIHZvaWQgZnNsX3FzcGlfc2VsZWN0X21lbShzdHJ1Y3QgZnNsX3FzcGkg
+KnEsIHN0cnVjdCBzcGlfZGV2aWNlDQo+PiArKnNwaSkgew0KPj4gKwl1bnNpZ25lZCBsb25nIHJh
+dGUgPSBzcGktPm1heF9zcGVlZF9oejsNCj4+ICsJaW50IHJldDsNCj4+ICsNCj4+ICsJaWYgKHEt
+PnNlbGVjdGVkID09IHNwaS0+Y2hpcF9zZWxlY3QpDQo+PiArCQlyZXR1cm47DQo+PiArDQo+PiAr
+CWlmIChuZWVkc180eF9jbG9jayhxKSkNCj4+ICsJCXJhdGUgKj0gNDsNCj4+ICsNCj4+ICsJZnNs
+X3FzcGlfY2xrX2Rpc2FibGVfdW5wcmVwKHEpOw0KPj4gKw0KPj4gKwlyZXQgPSBjbGtfc2V0X3Jh
+dGUocS0+Y2xrLCByYXRlKTsNCj4+ICsJaWYgKHJldCkNCj4+ICsJCXJldHVybjsNCj4+ICsNCj4+
+ICsJcmV0ID0gZnNsX3FzcGlfY2xrX3ByZXBfZW5hYmxlKHEpOw0KPj4gKwlpZiAocmV0KQ0KPj4g
+KwkJcmV0dXJuOw0KPj4gKw0KPj4gKwlxLT5zZWxlY3RlZCA9IHNwaS0+Y2hpcF9zZWxlY3Q7DQo+
+PiArDQo+PiArCWZzbF9xc3BpX2ludmFsaWRhdGUocSk7DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRp
+YyB2b2lkIGZzbF9xc3BpX3JlYWRfYWhiKHN0cnVjdCBmc2xfcXNwaSAqcSwgY29uc3Qgc3RydWN0
+DQo+PiArc3BpX21lbV9vcCAqb3ApIHsNCj4+ICsJbWVtY3B5X2Zyb21pbyhvcC0+ZGF0YS5idWYu
+aW4sDQo+PiArCQkgICAgICBxLT5haGJfYWRkciArIHEtPnNlbGVjdGVkICogcS0+ZGV2dHlwZV9k
+YXRhLQ0KPj4+IGFoYl9idWZfc2l6ZSwNCj4+ICsJCSAgICAgIG9wLT5kYXRhLm5ieXRlcyk7DQo+
+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyB2b2lkIGZzbF9xc3BpX2ZpbGxfdHhmaWZvKHN0cnVjdCBm
+c2xfcXNwaSAqcSwNCj4+ICsJCQkJIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCj4+ICt7
+DQo+PiArCXZvaWQgX19pb21lbSAqYmFzZSA9IHEtPmlvYmFzZTsNCj4+ICsJaW50IGk7DQo+PiAr
+CXUzMiB2YWw7DQo+PiArDQo+PiArCWZvciAoaSA9IDA7IGkgPCBBTElHTl9ET1dOKG9wLT5kYXRh
+Lm5ieXRlcywgNCk7IGkgKz0gNCkgew0KPj4gKwkJbWVtY3B5KCZ2YWwsIG9wLT5kYXRhLmJ1Zi5v
+dXQgKyBpLCA0KTsNCj4+ICsJCXZhbCA9IGZzbF9xc3BpX2VuZGlhbl94Y2hnKHEsIHZhbCk7DQo+
+PiArCQlxc3BpX3dyaXRlbChxLCB2YWwsIGJhc2UgKyBRVUFEU1BJX1RCRFIpOw0KPj4gKwl9DQo+
+PiArDQo+PiArCWlmIChpIDwgb3AtPmRhdGEubmJ5dGVzKSB7DQo+PiArCQltZW1jcHkoJnZhbCwg
+b3AtPmRhdGEuYnVmLm91dCArIGksIG9wLT5kYXRhLm5ieXRlcyAtIGkpOw0KPj4gKwkJdmFsID0g
+ZnNsX3FzcGlfZW5kaWFuX3hjaGcocSwgdmFsKTsNCj4+ICsJCXFzcGlfd3JpdGVsKHEsIHZhbCwg
+YmFzZSArIFFVQURTUElfVEJEUik7DQo+PiArCX0NCj4+ICsNCj4+ICsJaWYgKG5lZWRzX2ZpbGxf
+dHhmaWZvKHEpKSB7DQo+PiArCQlmb3IgKGkgPSBvcC0+ZGF0YS5uYnl0ZXM7IGkgPCAxNjsgaSAr
+PSA0KQ0KPj4gKwkJCXFzcGlfd3JpdGVsKHEsIDAsIGJhc2UgKyBRVUFEU1BJX1RCRFIpOw0KPj4g
+Kwl9DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyB2b2lkIGZzbF9xc3BpX3JlYWRfcnhmaWZvKHN0
+cnVjdCBmc2xfcXNwaSAqcSwNCj4+ICsJCQkgIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkN
+Cj4+ICt7DQo+PiArCXZvaWQgX19pb21lbSAqYmFzZSA9IHEtPmlvYmFzZTsNCj4+ICsJaW50IGk7
+DQo+PiArCXU4ICpidWYgPSBvcC0+ZGF0YS5idWYuaW47DQo+PiArCXUzMiB2YWw7DQo+PiArDQo+
+PiArCWZvciAoaSA9IDA7IGkgPCBBTElHTl9ET1dOKG9wLT5kYXRhLm5ieXRlcywgNCk7IGkgKz0g
+NCkgew0KPj4gKwkJdmFsID0gcXNwaV9yZWFkbChxLCBiYXNlICsgUVVBRFNQSV9SQkRSKGkgLyA0
+KSk7DQo+PiArCQl2YWwgPSBmc2xfcXNwaV9lbmRpYW5feGNoZyhxLCB2YWwpOw0KPj4gKwkJbWVt
+Y3B5KGJ1ZiArIGksICZ2YWwsIDQpOw0KPj4gKwl9DQo+PiArDQo+PiArCWlmIChpIDwgb3AtPmRh
+dGEubmJ5dGVzKSB7DQo+PiArCQl2YWwgPSBxc3BpX3JlYWRsKHEsIGJhc2UgKyBRVUFEU1BJX1JC
+RFIoaSAvIDQpKTsNCj4+ICsJCXZhbCA9IGZzbF9xc3BpX2VuZGlhbl94Y2hnKHEsIHZhbCk7DQo+
+PiArCQltZW1jcHkoYnVmICsgaSwgJnZhbCwgb3AtPmRhdGEubmJ5dGVzIC0gaSk7DQo+PiArCX0N
+Cj4+ICt9DQo+PiArDQo+PiArc3RhdGljIGludCBmc2xfcXNwaV9kb19vcChzdHJ1Y3QgZnNsX3Fz
+cGkgKnEsIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wDQo+PiArKm9wKSB7DQo+PiArCXZvaWQgX19p
+b21lbSAqYmFzZSA9IHEtPmlvYmFzZTsNCj4+ICsJaW50IGVyciA9IDA7DQo+PiArDQo+PiArCWlu
+aXRfY29tcGxldGlvbigmcS0+Yyk7DQo+PiArDQo+PiArCS8qDQo+PiArCSAqIEFsd2F5cyBzdGFy
+dCB0aGUgc2VxdWVuY2UgYXQgdGhlIHNhbWUgaW5kZXggc2luY2Ugd2UgdXBkYXRlDQo+PiArCSAq
+IHRoZSBMVVQgYXQgZWFjaCBleGVjX29wKCkgY2FsbC4gQW5kIGFsc28gc3BlY2lmeSB0aGUgREFU
+QQ0KPj4gKwkgKiBsZW5ndGgsIHNpbmNlIGl0J3MgaGFzIG5vdCBiZWVuIHNwZWNpZmllZCBpbiB0
+aGUgTFVULg0KPj4gKwkgKi8NCj4+ICsJcXNwaV93cml0ZWwocSwgb3AtPmRhdGEubmJ5dGVzIHwg
+UVVBRFNQSV9JUENSX1NFUUlEKFNFUUlEX0xVVCksDQo+PiArCQkgICAgYmFzZSArIFFVQURTUElf
+SVBDUik7DQo+PiArDQo+PiArCS8qIFdhaXQgZm9yIHRoZSBpbnRlcnJ1cHQuICovDQo+PiArCWlm
+ICghd2FpdF9mb3JfY29tcGxldGlvbl90aW1lb3V0KCZxLT5jLCBtc2Vjc190b19qaWZmaWVzKDEw
+MDApKSkNCj4+ICsJCWVyciA9IC1FVElNRURPVVQ7DQo+PiArDQo+PiArCWlmICghZXJyICYmIG9w
+LT5kYXRhLm5ieXRlcyAmJiBvcC0+ZGF0YS5kaXIgPT0gU1BJX01FTV9EQVRBX0lOKQ0KPj4gKwkJ
+ZnNsX3FzcGlfcmVhZF9yeGZpZm8ocSwgb3ApOw0KPj4gKw0KPj4gKwlyZXR1cm4gZXJyOw0KPj4g
+K30NCj4+ICsNCj4+ICtzdGF0aWMgaW50IGZzbF9xc3BpX3JlYWRsX3BvbGxfdG91dChzdHJ1Y3Qg
+ZnNsX3FzcGkgKnEsIHZvaWQgX19pb21lbSAqYmFzZSwNCj4+ICsJCQkJICAgIHUzMiBtYXNrLCB1
+MzIgZGVsYXlfdXMsIHUzMiB0aW1lb3V0X3VzKSB7DQo+PiArCXUzMiByZWc7DQo+PiArDQo+PiAr
+CWlmICghcS0+ZGV2dHlwZV9kYXRhLT5saXR0bGVfZW5kaWFuKQ0KPj4gKwkJbWFzayA9ICh1MzIp
+Y3B1X3RvX2JlMzIobWFzayk7DQo+PiArDQo+IA0KPiByZWcgaXMgYmVpbmcgdXNlZCBhcyBhbiB1
+bi1pbml0aWFsaXplZCB2YXJpYWJsZSwgZGlkbid0IGl0IG5lZWRzIHRvIGJlIGluaXRpYWxpemVk
+IHdpdGggc29tZSBwcm9wZXIgdmFsdWU/DQoNCk5vLCBpdCBkb2VzIG5vdCBuZWVkIHRvIGJlIGlu
+aXRpYWxpemVkLiBUaGlzIGlzIG9ubHkgdG8gYXNzaWduIHNvbWUgDQptZW1vcnkgZm9yIHRoZSBy
+ZWFkeF9wb2xsX3RpbWVvdXQoKSBtYWNybzogWzFdLg0KDQpbMV0gDQpodHRwczovL2VsaXhpci5i
+b290bGluLmNvbS9saW51eC9sYXRlc3Qvc291cmNlL2luY2x1ZGUvbGludXgvaW9wb2xsLmgjTDUw
+DQoNCj4gDQo+PiArCXJldHVybiByZWFkbF9wb2xsX3RpbWVvdXQoYmFzZSwgcmVnLCAhKHJlZyAm
+IG1hc2spLCBkZWxheV91cywNCj4+ICsJCQkJICB0aW1lb3V0X3VzKTsNCj4+ICt9DQo+PiArDQo+
+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFlvZ2VzaCBHYXVyLg0KPiANCj4gWy4uLl0NCj4g

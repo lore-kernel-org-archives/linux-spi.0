@@ -1,69 +1,58 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
-Date: Thu, 6 Dec 2018 20:29:56 +0000
-Message-ID: <20181206202956.GG3084@sirena.org.uk>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <20181203101937.7b01a0ad@bbrezillon>
- <214dadd9-859c-ca88-1aff-1c83fcfa3c0b@ti.com>
- <20181205134618.56223758@bbrezillon>
- <VI1PR04MB572646B71C6CB7BAAB4A1E1999A90@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <20181206074554.0ec0aecb@bbrezillon>
- <VI1PR04MB572620BB57CB01A352904BB999A90@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
+Subject: [PATCH V3 0/4] spi: lpspi: Add Slave Mode support for LPSPI
+Date: Fri, 7 Dec 2018 02:50:32 +0000
+Message-ID: <20181207024924.6315-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Wtrm9ATX0sn6fFKv"
-Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
-        Vignesh R <vigneshr@ti.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <VI1PR04MB572620BB57CB01A352904BB999A90@VI1PR04MB5726.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---Wtrm9ATX0sn6fFKv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+i.MX LPSPI controller only works in Master mode previously. This patch
+series adds support slave mode to LPSPI controller, including:
+ - Replace all related structure names and object names which is named
+   "master" with "controller",
+ - adds SPI slave mode support for i.MX7ulp and i.MX8qm/qxp in PIO mode,
+ - DT binding updates for slave mode.
 
-On Thu, Dec 06, 2018 at 06:49:08AM +0000, Yogesh Narayan Gaur wrote:
+Currently SPI Slave mode support patch has the following limitations:
+1. The stale data in RXFIFO will be dropped when the Slave does any new
+   transfer.
+2. One transfer can be finished only after all transfer->len data been
+   transferred to master device
+3. Slave device only accepts transfer->len data. Any data longer than
+   this from master device will be dropped. Any data shorter than this
+   from master will cause LPSPI to stuck due to mentioned limitation 2.
+4. Only PIO transfer is supported in Slave Mode.
 
-> Sorry for ignorance. Did patches needs to be applied by Mark Brown, should I resend the patch series again?
-> Also can you please review the series [1] and add your Reviewed-by tag.
+Wire connection:
+GND, SCK, MISO(to MISO of slave), MOSI(to MOSI of slave), SCS
 
-As I said in my reply earlier today in the same thread:
+Change log:
+V2:=20
+ - Split last version patch into 3 patches, and add the doc update.
+V3:
+ - Add more detailed description in commit message of the second patch.
+ - Keep the description of "fsl,imx8qxp-spi" in spi-fsl-lpspi.txt in the
+   fourth patch.
 
-| I don't have this any more, it looked like this was stuck behind the
-| otehr MTD changes which seemed to have problems.  If someone could
-| resend?
+Clark Wang (4):
+  spi: lpspi: Replace all "master" with "controller"
+  spi: lpspi: Add slave mode support
+  spi: lpspi: Let watermark change with send data length
+  doc: lpspi: Document DT bindings for LPSPI slave mode
 
-so please resend.
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt |   4 +
+ drivers/spi/spi-fsl-lpspi.c                   | 202 ++++++++++++------
+ 2 files changed, 138 insertions(+), 68 deletions(-)
 
---Wtrm9ATX0sn6fFKv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwJhsMACgkQJNaLcl1U
-h9BxUwf/VXXXtAILeX5fLDCHtNVLqX9fo3DPdIf/7DKJkI4KipztYRdwnXr1gyWL
-PR//PfTDevtSYPomTWiO4oFiJ6dq8AKfE9HZl4SYBvNVO5W5DQwfa070uPVc/jGh
-Il9aC3h1wwb1de9+Y2x+Nfy1YJ485Em7sboYr6Zqra4viyht3EqXRcNup9JKsSUN
-IU3/wVOq00MFhxhqdevBClFHBQ8O/YfDQeRRU/yUcrTnr3L+x1OGoGMtkQKb+1M5
-jhTQd97LgT0Unlh69N67ofameyu+nVtp1HkgU2JbgF9eKZUqDq3ANGpK7XFRzmpU
-hBp/WucrDVjytmprJvexzb4Fz8BDbw==
-=rcQD
------END PGP SIGNATURE-----
-
---Wtrm9ATX0sn6fFKv--
+--=20
+2.17.1

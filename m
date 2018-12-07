@@ -1,7 +1,7 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V3 4/4] doc: lpspi: Document DT bindings for LPSPI slave mode
-Date: Fri, 7 Dec 2018 02:50:41 +0000
-Message-ID: <20181207024924.6315-5-xiaoning.wang@nxp.com>
+Subject: [PATCH V3 3/4] spi: lpspi: Let watermark change with send data length
+Date: Fri, 7 Dec 2018 02:50:38 +0000
+Message-ID: <20181207024924.6315-4-xiaoning.wang@nxp.com>
 References: <20181207024924.6315-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -16,44 +16,64 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add introductions of interrupt-parent and spi-slave.
+Configure watermark to change with the length of the sent data.
+Support LPSPI sending message shorter than tx/rxfifosize.
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 ---
 Change log:
-V2:
+V2/V3:
  - No change.
-V3:
- - Keep the description of "fsl,imx8qxp-spi" in spi-fsl-lpspi.txt.
 ---
- Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Docu=
-mentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-index 8d178a4503cf..6cc3c6fe25a3 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-@@ -5,8 +5,11 @@ Required properties:
-   - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX=
-7ULP soc
-   - "fsl,imx8qxp-spi" for LPSPI compatible with the one integrated on i.MX=
-8QXP soc
- - reg : address and length of the lpspi master registers
-+- interrupt-parent : core interrupt controller
- - interrupts : lpspi interrupt
- - clocks : lpspi clock specifier
-+- spi-slave : spi slave mode support. In slave mode, add this attribute wi=
-thout
-+	      value. In master mode, remove it.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index cbf165e7bd17..08dcc3c22e88 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -89,6 +89,7 @@ struct fsl_lpspi_data {
+ 	void (*rx)(struct fsl_lpspi_data *);
 =20
- Examples:
+ 	u32 remain;
++	u8 watermark;
+ 	u8 txfifosize;
+ 	u8 rxfifosize;
 =20
-@@ -16,4 +19,5 @@ lpspi2: lpspi@40290000 {
- 	interrupt-parent =3D <&intc>;
- 	interrupts =3D <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
- 	clocks =3D <&clks IMX7ULP_CLK_LPSPI2>;
-+	spi-slave;
- };
+@@ -235,7 +236,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_da=
+ta *fsl_lpspi)
+ {
+ 	u32 temp;
+=20
+-	temp =3D fsl_lpspi->txfifosize >> 1 | (fsl_lpspi->rxfifosize >> 1) << 16;
++	temp =3D fsl_lpspi->watermark >> 1 | (fsl_lpspi->watermark >> 1) << 16;
+=20
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
+=20
+@@ -261,7 +262,8 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	if (prescale =3D=3D 8 && scldiv >=3D 256)
+ 		return -EINVAL;
+=20
+-	writel(scldiv, fsl_lpspi->base + IMX7ULP_CCR);
++	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
++					fsl_lpspi->base + IMX7ULP_CCR);
+=20
+ 	dev_dbg(fsl_lpspi->dev, "perclk=3D%d, speed=3D%d, prescale =3D%d, scldiv=
+=3D%d\n",
+ 		perclk_rate, config.speed_hz, prescale, scldiv);
+@@ -329,6 +331,11 @@ static void fsl_lpspi_setup_transfer(struct spi_device=
+ *spi,
+ 		fsl_lpspi->tx =3D fsl_lpspi_buf_tx_u32;
+ 	}
+=20
++	if (t->len <=3D fsl_lpspi->txfifosize)
++		fsl_lpspi->watermark =3D t->len;
++	else
++		fsl_lpspi->watermark =3D fsl_lpspi->txfifosize;
++
+ 	fsl_lpspi_config(fsl_lpspi);
+ }
+=20
 --=20
 2.17.1

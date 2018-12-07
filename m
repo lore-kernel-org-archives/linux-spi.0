@@ -1,79 +1,35 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V3 3/4] spi: lpspi: Let watermark change with send data length
-Date: Fri, 7 Dec 2018 02:50:38 +0000
-Message-ID: <20181207024924.6315-4-xiaoning.wang@nxp.com>
-References: <20181207024924.6315-1-xiaoning.wang@nxp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+From: shaftarger <sholchen@gmail.com>
+Subject: [PATCH] spi: dw: fix potential variable assignment error
+Date: Fri,  7 Dec 2018 11:28:32 +0800
+Message-ID: <20181207032832.3156-1-shol@livemail.tw>
+Cc: shaftarger <shol@livemail.tw>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181207024924.6315-1-xiaoning.wang@nxp.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Configure watermark to change with the length of the sent data.
-Support LPSPI sending message shorter than tx/rxfifosize.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+spi::mode is defined by framework for several SPI capabilities,
+such as polarity, phase, bit-endian, wire number. Directly use this
+variable for setting controller's polarity and phase causes other
+bit in register being set. Since SPI framework has its definition,
+fetch required bit in spi::mode and set to register.
 ---
-Change log:
-V2/V3:
- - No change.
----
- drivers/spi/spi-fsl-lpspi.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index cbf165e7bd17..08dcc3c22e88 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -89,6 +89,7 @@ struct fsl_lpspi_data {
- 	void (*rx)(struct fsl_lpspi_data *);
-=20
- 	u32 remain;
-+	u8 watermark;
- 	u8 txfifosize;
- 	u8 rxfifosize;
-=20
-@@ -235,7 +236,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_da=
-ta *fsl_lpspi)
- {
- 	u32 temp;
-=20
--	temp =3D fsl_lpspi->txfifosize >> 1 | (fsl_lpspi->rxfifosize >> 1) << 16;
-+	temp =3D fsl_lpspi->watermark >> 1 | (fsl_lpspi->watermark >> 1) << 16;
-=20
- 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
-=20
-@@ -261,7 +262,8 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
-*fsl_lpspi)
- 	if (prescale =3D=3D 8 && scldiv >=3D 256)
- 		return -EINVAL;
-=20
--	writel(scldiv, fsl_lpspi->base + IMX7ULP_CCR);
-+	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
-+					fsl_lpspi->base + IMX7ULP_CCR);
-=20
- 	dev_dbg(fsl_lpspi->dev, "perclk=3D%d, speed=3D%d, prescale =3D%d, scldiv=
-=3D%d\n",
- 		perclk_rate, config.speed_hz, prescale, scldiv);
-@@ -329,6 +331,11 @@ static void fsl_lpspi_setup_transfer(struct spi_device=
- *spi,
- 		fsl_lpspi->tx =3D fsl_lpspi_buf_tx_u32;
- 	}
-=20
-+	if (t->len <=3D fsl_lpspi->txfifosize)
-+		fsl_lpspi->watermark =3D t->len;
-+	else
-+		fsl_lpspi->watermark =3D fsl_lpspi->txfifosize;
-+
- 	fsl_lpspi_config(fsl_lpspi);
- }
-=20
---=20
-2.17.1
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index b705f2bdb8b9..c1b0ae5698ba 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -317,7 +317,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
+ 	cr0 = (transfer->bits_per_word - 1)
+ 		| (chip->type << SPI_FRF_OFFSET)
+-		| (spi->mode << SPI_MODE_OFFSET)
++		| ((((spi->mode & SPI_CPOL)?1:0) << SPI_SCOL_OFFSET) |
++			(((spi->mode & SPI_CPHA)?1:0) << SPI_SCPH_OFFSET))
+ 		| (chip->tmode << SPI_TMOD_OFFSET);
+ 
+ 	/*
+-- 
+2.12.2.windows.2

@@ -1,58 +1,57 @@
-From: cezary.gapinski@gmail.com
-Subject: [PATCH 5/5] spi: stm32: add description about STM32F4 bindings
-Date: Sun,  9 Dec 2018 14:53:56 +0100
-Message-ID: <1544363636-12161-6-git-send-email-cezary.gapinski@gmail.com>
-References: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Cezary Gapinski <cezary.gapinski@gmail.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v3 0/2] spi: Add Renesas R-Car Gen3 RPC SPI driver
+Date: Sun, 9 Dec 2018 18:37:52 +0300
+Message-ID: <1148d04d-96b1-ef91-e3d9-2603e9a5c6fc@cogentembedded.com>
+References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
+In-Reply-To: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Cezary Gapinski <cezary.gapinski@gmail.com>
+On 12/07/2018 02:13 PM, Mason Yang wrote:
 
-Add description that STM32F4 can be used in compatible property.
-Master Inter-Data Idleness optional property cannot be used in STM32F4.
+> This Renesas R-Car Gen3 RPC SPI driver is based on Boris's new
+> spi-mem direct mapping read/write mode [1][2].
+> 
+> v3 patch is according to Marek and Geert's comments including:
+> 1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+> 2) get_unaligned()
+> 3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+> 4) coding style and so on.
+> 
+> 
+> v2 patch including:
+> 1) remove RPC clock enable/dis-able control,
+> 2) patch run time PM, 
+> 3) add RPC module software reset, 
+> 4) add regmap,
+> 5) other coding style and so on.
+> 
+> thanks for your review.
+> 
+> best regards,
+> Mason
+> 
+> [1] https://patchwork.kernel.org/patch/10670753
+> [2] https://patchwork.kernel.org/patch/10670747
+> 
+> 
+> Mason Yang (2):
+>   spi: Add Renesas R-Car Gen3 RPC SPI controller driver
+>   dt-binding: spi: Document Renesas R-Car Gen3 RPC controller bindings
 
-Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
----
- Documentation/devicetree/bindings/spi/spi-stm32.txt | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+   Probably a stupid question: how did you test this driver (especially
+the dirmap related parts)?
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-index 1b3fa2c1..d82755c 100644
---- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-@@ -7,7 +7,9 @@ from 4 to 32-bit data size. Although it can be configured as master or slave,
- only master is supported by the driver.
- 
- Required properties:
--- compatible: Must be "st,stm32h7-spi".
-+- compatible: Should be one of:
-+  "st,stm32h7-spi"
-+  "st,stm32f4-spi"
- - reg: Offset and length of the device's register set.
- - interrupts: Must contain the interrupt id.
- - clocks: Must contain an entry for spiclk (which feeds the internal clock
-@@ -30,8 +32,9 @@ Child nodes represent devices on the SPI bus
-   See ../spi/spi-bus.txt
- 
- Optional properties:
--- st,spi-midi-ns: (Master Inter-Data Idleness) minimum time delay in
--		  nanoseconds inserted between two consecutive data frames.
-+- st,spi-midi-ns: Only for STM32H7, (Master Inter-Data Idleness) minimum time
-+		  delay in nanoseconds inserted between two consecutive data
-+		  frames.
- 
- 
- Example:
--- 
-2.7.4
+MBR, Sergei

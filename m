@@ -1,57 +1,132 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v3 0/2] spi: Add Renesas R-Car Gen3 RPC SPI driver
-Date: Sun, 9 Dec 2018 18:37:52 +0300
-Message-ID: <1148d04d-96b1-ef91-e3d9-2603e9a5c6fc@cogentembedded.com>
-References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+From: Lukasz Majewski <lukma@denx.de>
+Subject: [PATCHv4] ARM: dspi: Provide support for DSPI slave mode operation (Vybryd vf610)
+Date: Sun,  9 Dec 2018 22:57:21 +0100
+Message-ID: <20181209215721.23063-1-lukma@denx.de>
+References: <20180927150709.17010-1-lukma@denx.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Esben Haabendal <eha@deif.com>,
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        Andrey Smirnov <andrew.smirnov@gmail.com>,
+        Lukasz Majewski <lukma@denx.de>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20180927150709.17010-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/07/2018 02:13 PM, Mason Yang wrote:
+The NXP's Vybryd vf610 can work as a SPI slave device (the CS and clock
+signals are provided by master).
 
-> This Renesas R-Car Gen3 RPC SPI driver is based on Boris's new
-> spi-mem direct mapping read/write mode [1][2].
-> 
-> v3 patch is according to Marek and Geert's comments including:
-> 1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
-> 2) get_unaligned()
-> 3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
-> 4) coding style and so on.
-> 
-> 
-> v2 patch including:
-> 1) remove RPC clock enable/dis-able control,
-> 2) patch run time PM, 
-> 3) add RPC module software reset, 
-> 4) add regmap,
-> 5) other coding style and so on.
-> 
-> thanks for your review.
-> 
-> best regards,
-> Mason
-> 
-> [1] https://patchwork.kernel.org/patch/10670753
-> [2] https://patchwork.kernel.org/patch/10670747
-> 
-> 
-> Mason Yang (2):
->   spi: Add Renesas R-Car Gen3 RPC SPI controller driver
->   dt-binding: spi: Document Renesas R-Car Gen3 RPC controller bindings
+It is possible to specify a single device to work in that mode. As we do
+use DMA for transferring data, the RX channel must be prepared for
+incoming data.
+Moreover, in slave mode we just set a subset of control fields in
+configuration registers (CTAR0, PUSHR).
 
-   Probably a stupid question: how did you test this driver (especially
-the dirmap related parts)?
+For testing the spidev_test program has been used.
+Test script for this patch can be found here:
+https://github.com/lmajewski/tests-spi/blob/master/tests/spi/spi_tests.sh
 
-MBR, Sergei
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
+Changes for v4:
+
+- Rebase to v4.20-rc5 (no code changes needed)
+
+Changes for v3:
+
+- Rebase to v4.20-rc2 (no code changes needed)
+
+Changes for v2:
+
+- Remove patch which adds extra NXP specific DTS property to support slave
+mode and reuse the generic one (spi-slave)
+- Remove patch which brings back the mcr_register local copy. It is not
+needed as generic SPI slave infrastructure is used.
+- Rewrite the code to use spi_controller_is_slave() helper functions
+---
+ drivers/spi/spi-fsl-dspi.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3082e72e4f6c..94b6a9690062 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -233,6 +233,9 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
+ {
+ 	u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
+ 
++	if (spi_controller_is_slave(dspi->master))
++		return data;
++
+ 	if (dspi->len > 0)
+ 		cmd |= SPI_PUSHR_CMD_CONT;
+ 	return cmd << 16 | data;
+@@ -329,6 +332,11 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 	dma_async_issue_pending(dma->chan_rx);
+ 	dma_async_issue_pending(dma->chan_tx);
+ 
++	if (spi_controller_is_slave(dspi->master)) {
++		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
++		return 0;
++	}
++
+ 	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
+ 					DMA_COMPLETION_TIMEOUT);
+ 	if (time_left == 0) {
+@@ -798,14 +806,18 @@ static int dspi_setup(struct spi_device *spi)
+ 	ns_delay_scale(&pasc, &asc, sck_cs_delay, clkrate);
+ 
+ 	chip->ctar_val = SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+-		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+-		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
+-		| SPI_CTAR_PCSSCK(pcssck)
+-		| SPI_CTAR_CSSCK(cssck)
+-		| SPI_CTAR_PASC(pasc)
+-		| SPI_CTAR_ASC(asc)
+-		| SPI_CTAR_PBR(pbr)
+-		| SPI_CTAR_BR(br);
++		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0);
++
++	if (!spi_controller_is_slave(dspi->master)) {
++		chip->ctar_val |= SPI_CTAR_LSBFE(spi->mode &
++						 SPI_LSB_FIRST ? 1 : 0)
++			| SPI_CTAR_PCSSCK(pcssck)
++			| SPI_CTAR_CSSCK(cssck)
++			| SPI_CTAR_PASC(pasc)
++			| SPI_CTAR_ASC(asc)
++			| SPI_CTAR_PBR(pbr)
++			| SPI_CTAR_BR(br);
++	}
+ 
+ 	spi_set_ctldata(spi, chip);
+ 
+@@ -970,8 +982,13 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 
+ static void dspi_init(struct fsl_dspi *dspi)
+ {
+-	regmap_write(dspi->regmap, SPI_MCR, SPI_MCR_MASTER | SPI_MCR_PCSIS |
+-		     (dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0));
++	unsigned int mcr = SPI_MCR_PCSIS |
++		(dspi->devtype_data->xspi_mode ? SPI_MCR_XSPI : 0);
++
++	if (!spi_controller_is_slave(dspi->master))
++		mcr |= SPI_MCR_MASTER;
++
++	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ 	if (dspi->devtype_data->xspi_mode)
+ 		regmap_write(dspi->regmap, SPI_CTARE(0),
+@@ -1027,6 +1044,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 		master->bus_num = bus_num;
+ 
++		if (of_property_read_bool(np, "spi-slave"))
++			master->slave = true;
++
+ 		dspi->devtype_data = of_device_get_match_data(&pdev->dev);
+ 		if (!dspi->devtype_data) {
+ 			dev_err(&pdev->dev, "can't get devtype_data\n");
+-- 
+2.11.0

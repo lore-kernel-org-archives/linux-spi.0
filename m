@@ -1,51 +1,107 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] mtd: atmel-quadspi: disallow building on ebsa110
-Date: Mon, 10 Dec 2018 21:38:16 +0100
-Message-ID: <20181210203837.2118450-1-arnd@arndb.de>
-Cc: cyrille.pitchen@microchip.com, Arnd Bergmann <arnd@arndb.de>,
-        stable@vger.kernel.org,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Piotr Bugalski <bugalski.piotr@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH] ARM: dts: at91: sama5d2 Xplained: add QSPI0 + SPI NOR
+ memory nodes
+Date: Mon, 10 Dec 2018 22:35:53 +0100
+Message-ID: <20181210213553.GK8952@piout.net>
+References: <20181210171511.21002-1-tudor.ambarus@microchip.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Nicolas.Ferre@microchip.com, Ludovic.Desroches@microchip.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        Cyrille.Pitchen@microchip.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, boris.brezillon@bootlin.com,
+        linux-mtd@lists.infradead.org, broonie@kernel.org,
+        linux-spi@vger.kernel.org
+To: Tudor.Ambarus@microchip.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20181210171511.21002-1-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-I ran into a link-time error with the atmel-quadspi driver on the
-EBSA110 platform:
+Hi,
 
-drivers/mtd/built-in.o: In function `atmel_qspi_run_command':
-:(.text+0x1ee3c): undefined reference to `_memcpy_toio'
-:(.text+0x1ee48): undefined reference to `_memcpy_fromio'
+On 10/12/2018 17:15:29+0000, Tudor.Ambarus@microchip.com wrote:
+> From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+> 
+> This patch configures the QSPI0 controller pin muxing and declares
+> a jedec,spi-nor memory.
+> 
+> sama5d2 Xplained RevB and RevC use the Macronix MX25L25673G flash
+> memory which advertises a maximum frequency of 80MHz for Quad IO
+> Fast Read. Set the spi-max-frequency to 80MHz knowing that actually
+> the QSPI drver will set the SPI bus clock to 166MHz / 3 = 55.3MHz.
+> 
+> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+> [tudor.ambarus@microchip.com:
+> - drop partitions,
+> - add spi-rx/tx-bus-width
+> - change spi-max-frequency to match the 80MHz limit advertised by
+>   MX25L25673G for Quad IO Fast Read,
+> - reword commit message and subject.]
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> ---
+>  arch/arm/boot/dts/at91-sama5d2_xplained.dts | 31 +++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/at91-sama5d2_xplained.dts b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> index 518e2b095ccf..171bc82cfbbf 100644
+> --- a/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> +++ b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> @@ -108,6 +108,21 @@
+>  		};
+>  
+>  		apb {
+> +			qspi0: spi@f0020000 {
+> +				pinctrl-names = "default";
+> +				pinctrl-0 = <&pinctrl_qspi0_default>;
+> +				/* status = "okay"; */ /* conflict with sdmmc1 */
 
-The problem is that _memcpy_toio/_memcpy_fromio are not available on
-that platform, and we have to prevent building the driver there.
+Isn't that conflicting then because I think the default is okay.
 
-In case we want to backport this to older kernels: between linux-4.8
-and linux-4.20, the Kconfig entry was in drivers/mtd/spi-nor/Kconfig
-but had the same problem.
+> +
+> +				flash@0 {
+> +					compatible = "jedec,spi-nor";
+> +					reg = <0>;
+> +					spi-max-frequency = <80000000>;
+> +					spi-tx-bus-width = <4>;
+> +					spi-rx-bus-width = <4>;
+> +					m25p,fast-read;
+> +				};
+> +			};
+> +
+>  			spi0: spi@f8000000 {
+>  				pinctrl-names = "default";
+>  				pinctrl-0 = <&pinctrl_spi0_default>;
+> @@ -485,6 +500,22 @@
+>  					bias-disable;
+>  				};
+>  
+> +				pinctrl_qspi0_default: qspi0_default {
+> +					sck_cs {
+> +						pinmux = <PIN_PA22__QSPI0_SCK>,
+> +							 <PIN_PA23__QSPI0_CS>;
+> +						bias-disable;
+> +					};
+> +
+> +					data {
+> +						pinmux = <PIN_PA24__QSPI0_IO0>,
+> +							 <PIN_PA25__QSPI0_IO1>,
+> +							 <PIN_PA26__QSPI0_IO2>,
+> +							 <PIN_PA27__QSPI0_IO3>;
+> +						bias-pull-up;
+> +					};
+> +				};
+> +
+>  				pinctrl_sdmmc0_default: sdmmc0_default {
+>  					cmd_data {
+>  						pinmux = <PIN_PA1__SDMMC0_CMD>,
+> -- 
+> 2.9.4
+> 
 
-Link: https://lore.kernel.org/patchwork/patch/812860/
-Fixes: 161aaab8a067 ("mtd: atmel-quadspi: add driver for Atmel QSPI controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 55d5ffb50750..9f89cb134549 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -93,7 +93,7 @@ config SPI_AT91_USART
- 
- config SPI_ATMEL_QUADSPI
- 	tristate "Atmel Quad SPI Controller"
--	depends on ARCH_AT91 || (ARM && COMPILE_TEST)
-+	depends on ARCH_AT91 || (ARM && COMPILE_TEST && !ARCH_EBSA110)
- 	depends on OF && HAS_IOMEM
- 	help
- 	  This enables support for the Quad SPI controller in master mode.
 -- 
-2.18.0
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

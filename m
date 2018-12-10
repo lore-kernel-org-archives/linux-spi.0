@@ -1,97 +1,57 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH v5 3/7] mtd: spi-nor: add opcodes for octal Read/Write
- commands
-Date: Mon, 10 Dec 2018 10:44:44 +0000
-Message-ID: <ac569071-3c69-ebc8-2c18-ea1399210549@microchip.com>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1543826226-30898-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI
+ controller
+Date: Mon, 10 Dec 2018 11:50:01 +0100
+Message-ID: <20181210115001.6c7af1d7@bbrezillon>
+References: <1542366701-16065-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <1542366701-16065-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <eb8a31d8-2ba6-f27c-addf-545c77921b77@kontron.de>
+        <VI1PR04MB57267D9F69719B4BEF38BF8699A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+        <20181210111909.35384eee@bbrezillon>
+        <VI1PR04MB57268740CA806FFB164780EB99A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <robh@kernel.org>, <mark.rutland@arm.com>, <shawnguo@kernel.org>,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Schrempf Frieder <frieder.schrempf@kontron.de>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
-        <computersforpeace@gmail.com>, <frieder.schrempf@exceet.de>,
-        <linux-kernel@vger.kernel.org>
-To: <yogeshnarayan.gaur@nxp.com>, <linux-mtd@lists.infradead.org>,
-        <boris.brezillon@bootlin.com>, <broonie@kernel.org>,
-        <marek.vasut@gmail.com>, <vigneshr@ti.com>,
-        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1543826226-30898-4-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
-Content-ID: <3677578BA72704419DF709B3AB20C86D@namprd11.prod.outlook.com>
+In-Reply-To: <VI1PR04MB57268740CA806FFB164780EB99A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksIFlvZ2VzaCwNCg0KT24gMTIvMDMvMjAxOCAxMDozOSBBTSwgWW9nZXNoIE5hcmF5YW4gR2F1
-ciB3cm90ZToNCj4gLSBBZGQgb3Bjb2RlcyBmb3Igb2N0YWwgSS9PIGNvbW1hbmRzDQo+ICAgKiBS
-ZWFkICA6IDEtMS04IGFuZCAxLTgtOCBwcm90b2NvbA0KPiAgICogV3JpdGUgOiAxLTEtOCBhbmQg
-MS04LTggcHJvdG9jb2wNCj4gICAqIG9wY29kZXMgZm9yIDQtYnl0ZSBhZGRyZXNzIG1vZGUgY29t
-bWFuZA0KPiANCj4gLSBFbnRyeSBvZiBtYWNyb3MgaW4gX2NvbnZlcnRfM3RvNF94eHggZnVuY3Rp
-b24NCj4gDQo+IC0gQWRkIGZsYWcgc3BlY2lmeWluZyBmbGFzaCBzdXBwb3J0IG9jdGFsIHJlYWQg
-Y29tbWFuZHMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBWaWduZXNoIFIgPHZpZ25lc2hyQHRpLmNv
-bT4NCj4gU2lnbmVkLW9mZi1ieTogWW9nZXNoIEdhdXIgPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAu
-Y29tPg0KPiAtLS0NCj4gQ2hhbmdlcyBmb3IgdjU6DQo+IC0gTW9kaWZpZWQgc3RyaW5nICdvY3Rv
-JyB3aXRoICdvY3RhbCcuDQo+IENoYW5nZXMgZm9yIHY0Og0KPiAtIE5vbmUNCj4gQ2hhbmdlcyBm
-b3IgdjM6DQo+IC0gTW9kaWZpZWQgc3RyaW5nICdvY3RhbCcgd2l0aCAnb2N0bycuDQo+IENoYW5n
-ZXMgZm9yIHYyOg0KPiAtIEluY29ycG9yYXRlZCByZXZpZXcgY29tbWVudHMgb2YgQm9yaXMgYW5k
-IFZpZ25lc2gNCj4gDQo+ICBkcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyB8IDE2ICsrKysr
-KysrKysrKysrLS0NCj4gIGluY2x1ZGUvbGludXgvbXRkL3NwaS1ub3IuaCAgIHwgIDggKysrKysr
-KysNCj4gIDIgZmlsZXMgY2hhbmdlZCwgMjIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkN
-Cj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBiL2RyaXZl
-cnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+IGluZGV4IDM5OGQyNzMuLjdhMjE3NmQgMTAwNjQ0
-DQo+IC0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+ICsrKyBiL2RyaXZlcnMv
-bXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+IEBAIC05MCw2ICs5MCw3IEBAIHN0cnVjdCBmbGFzaF9p
-bmZvIHsNCj4gICNkZWZpbmUgTk9fQ0hJUF9FUkFTRQkJQklUKDEyKSAvKiBDaGlwIGRvZXMgbm90
-IHN1cHBvcnQgY2hpcCBlcmFzZSAqLw0KPiAgI2RlZmluZSBTUElfTk9SX1NLSVBfU0ZEUAlCSVQo
-MTMpCS8qIFNraXAgcGFyc2luZyBvZiBTRkRQIHRhYmxlcyAqLw0KPiAgI2RlZmluZSBVU0VfQ0xT
-UgkJQklUKDE0KQkvKiB1c2UgQ0xTUiBjb21tYW5kICovDQo+ICsjZGVmaW5lIFNQSV9OT1JfT0NU
-QUxfUkVBRAlCSVQoMTUpCS8qIEZsYXNoIHN1cHBvcnRzIE9jdGFsIFJlYWQgKi8NCj4gIA0KPiAg
-CWludAkoKnF1YWRfZW5hYmxlKShzdHJ1Y3Qgc3BpX25vciAqbm9yKTsNCj4gIH07DQo+IEBAIC0y
-MDksNiArMjEwLDggQEAgc3RhdGljIGlubGluZSB1OCBzcGlfbm9yX2NvbnZlcnRfM3RvNF9yZWFk
-KHU4IG9wY29kZSkNCj4gIAkJeyBTUElOT1JfT1BfUkVBRF8xXzJfMiwJU1BJTk9SX09QX1JFQURf
-MV8yXzJfNEIgfSwNCj4gIAkJeyBTUElOT1JfT1BfUkVBRF8xXzFfNCwJU1BJTk9SX09QX1JFQURf
-MV8xXzRfNEIgfSwNCj4gIAkJeyBTUElOT1JfT1BfUkVBRF8xXzRfNCwJU1BJTk9SX09QX1JFQURf
-MV80XzRfNEIgfSwNCj4gKwkJeyBTUElOT1JfT1BfUkVBRF8xXzFfOCwJU1BJTk9SX09QX1JFQURf
-MV8xXzhfNEIgfSwNCj4gKwkJeyBTUElOT1JfT1BfUkVBRF8xXzhfOCwJU1BJTk9SX09QX1JFQURf
-MV84XzhfNEIgfSwNCj4gIA0KPiAgCQl7IFNQSU5PUl9PUF9SRUFEXzFfMV8xX0RUUiwJU1BJTk9S
-X09QX1JFQURfMV8xXzFfRFRSXzRCIH0sDQo+ICAJCXsgU1BJTk9SX09QX1JFQURfMV8yXzJfRFRS
-LAlTUElOT1JfT1BfUkVBRF8xXzJfMl9EVFJfNEIgfSwNCj4gQEAgLTIyNSw2ICsyMjgsOCBAQCBz
-dGF0aWMgaW5saW5lIHU4IHNwaV9ub3JfY29udmVydF8zdG80X3Byb2dyYW0odTggb3Bjb2RlKQ0K
-PiAgCQl7IFNQSU5PUl9PUF9QUCwJCVNQSU5PUl9PUF9QUF80QiB9LA0KPiAgCQl7IFNQSU5PUl9P
-UF9QUF8xXzFfNCwJU1BJTk9SX09QX1BQXzFfMV80XzRCIH0sDQo+ICAJCXsgU1BJTk9SX09QX1BQ
-XzFfNF80LAlTUElOT1JfT1BfUFBfMV80XzRfNEIgfSwNCj4gKwkJeyBTUElOT1JfT1BfUFBfMV8x
-XzgsCVNQSU5PUl9PUF9QUF8xXzFfOF80QiB9LA0KPiArCQl7IFNQSU5PUl9PUF9QUF8xXzhfOCwJ
-U1BJTk9SX09QX1BQXzFfOF84XzRCIH0sDQo+ICAJfTsNCj4gIA0KPiAgCXJldHVybiBzcGlfbm9y
-X2NvbnZlcnRfb3Bjb2RlKG9wY29kZSwgc3BpX25vcl8zdG80X3Byb2dyYW0sDQo+IEBAIC0yMDkz
-LDcgKzIwOTgsNyBAQCBlbnVtIHNwaV9ub3JfcmVhZF9jb21tYW5kX2luZGV4IHsNCj4gIAlTTk9S
-X0NNRF9SRUFEXzRfNF80LA0KPiAgCVNOT1JfQ01EX1JFQURfMV80XzRfRFRSLA0KPiAgDQo+IC0J
-LyogT2N0byBTUEkgKi8NCj4gKwkvKiBPY3RhbCBTUEkgKi8NCj4gIAlTTk9SX0NNRF9SRUFEXzFf
-MV84LA0KPiAgCVNOT1JfQ01EX1JFQURfMV84XzgsDQo+ICAJU05PUl9DTURfUkVBRF84XzhfOCwN
-Cj4gQEAgLTIxMTAsNyArMjExNSw3IEBAIGVudW0gc3BpX25vcl9wcF9jb21tYW5kX2luZGV4IHsN
-Cj4gIAlTTk9SX0NNRF9QUF8xXzRfNCwNCj4gIAlTTk9SX0NNRF9QUF80XzRfNCwNCj4gIA0KPiAt
-CS8qIE9jdG8gU1BJICovDQo+ICsJLyogT2N0YWwgU1BJICovDQo+ICAJU05PUl9DTURfUFBfMV8x
-XzgsDQo+ICAJU05PUl9DTURfUFBfMV84XzgsDQo+ICAJU05PUl9DTURfUFBfOF84XzgsDQo+IEBA
-IC0zMTk1LDYgKzMyMDAsMTMgQEAgc3RhdGljIGludCBzcGlfbm9yX2luaXRfcGFyYW1zKHN0cnVj
-dCBzcGlfbm9yICpub3IsDQo+ICAJCQkJCSAgU05PUl9QUk9UT18xXzFfNCk7DQo+ICAJfQ0KPiAg
-DQo+ICsJaWYgKGluZm8tPmZsYWdzICYgU1BJX05PUl9PQ1RBTF9SRUFEKSB7DQo+ICsJCXBhcmFt
-cy0+aHdjYXBzLm1hc2sgfD0gU05PUl9IV0NBUFNfUkVBRF8xXzFfODsNCj4gKwkJc3BpX25vcl9z
-ZXRfcmVhZF9zZXR0aW5ncygmcGFyYW1zLT5yZWFkc1tTTk9SX0NNRF9SRUFEXzFfMV84XSwNCj4g
-KwkJCQkJICAwLCA4LCBTUElOT1JfT1BfUkVBRF8xXzFfOCwNCj4gKwkJCQkJICBTTk9SX1BST1RP
-XzFfMV84KTsNCj4gKwl9DQo+ICs+ICAJLyogUGFnZSBQcm9ncmFtIHNldHRpbmdzLiAqLw0KPiAg
-CXBhcmFtcy0+aHdjYXBzLm1hc2sgfD0gU05PUl9IV0NBUFNfUFA7DQo+ICAJc3BpX25vcl9zZXRf
-cHBfc2V0dGluZ3MoJnBhcmFtcy0+cGFnZV9wcm9ncmFtc1tTTk9SX0NNRF9QUF0sDQoNCkF0IHRo
-ZSBlbmQgb2Ygc3BpX25vcl9pbml0X3BhcmFtcyB3ZSBjaGVjayB0aGUgY29uZGl0aW9ucyBmb3Ig
-cGFyc2luZyB0aGUgc2ZkcC4NClNob3VsZG4ndCBTUElfTk9SX09DVEFMX1JFQUQgdHJpZ2dlciB0
-aGUgc2ZkcCBwYXJzaW5nIHdoZW4gU1BJX05PUl9TS0lQX1NGRFAgaXMNCm5vdCBzZXQ/DQoNCj4g
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbXRkL3NwaS1ub3IuaCBiL2luY2x1ZGUvbGludXgv
-bXRkL3NwaS1ub3IuaA0KPiBpbmRleCA4YjFhY2Y2Li4wMTlmNTM0IDEwMDY0NA0KPiAtLS0gYS9p
-bmNsdWRlL2xpbnV4L210ZC9zcGktbm9yLmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC9tdGQvc3Bp
-LW5vci5oDQo+IEBAIC01MCw5ICs1MCwxMyBAQA0KDQpDYW4geW91IHBsZWFzZSBzL29jdG8vb2N0
-YWwgb24gdGhlc2UgYXMgd2VsbDoNCiQgIGdyZXAgLW5pIG9jdG8gaW5jbHVkZS9saW51eC9tdGQv
-c3BpLW5vci5oDQo0NzE6ICogQXMgYSBtYXR0ZXIgb2YgcGVyZm9ybWFuY2VzLCBpdCBpcyByZWxl
-dmFudCB0byB1c2UgT2N0byBTUEkgcHJvdG9jb2xzIGZpcnN0LA0KNDkyOiNkZWZpbmUgU05PUl9I
-V0NQQVNfUkVBRF9PQ1RPCQlHRU5NQVNLKDE0LCAxMSkNCjUwMTogKiBMaWtlIChGYXN0KSBSZWFk
-IGNhcGFiaWxpdGllcywgT2N0by9RdWFkIFNQSSBwcm90b2NvbHMgYXJlIHByZWZlcnJlZCB0byB0
-aGUNCjUxNTojZGVmaW5lIFNOT1JfSFdDQVBTX1BQX09DVE8JR0VOTUFTSygyMiwgMjApDQoNCnRo
-YW5rcywNCnRhDQo=
+On Mon, 10 Dec 2018 10:43:56 +0000
+Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+
+> > > Thus, in LUT preparation we have assigned only the base address.
+> > > Now if I have assigned ahb_buf_size to FSPI_FLSHXXCR0 register then for  
+> > read/write data beyond limit of ahb_buf_size offset I get data corruption.
+> > 
+> > Why would you do that? We have the ->adjust_op_size() exactly for this reason,
+> > so, if someone tries to do a spi_mem_op with data.nbytes > ahb_buf_size you
+> > should return an error.
+> >   
+> Let me explain my implementation with example. If I have to write data of size 0x100 bytes at offset 0x1200 for CS1, I would program as below:
+> In func nxp_fspi_select_mem(), would set value of controller address space size, memmap_phy_size, to FSPI_FLSHA2CR0 and rest all FSPI_FLSHXXCR0 as 0. 
+> Value of memmap_phy_size is 0x10000000 i.e. 256 MB for my LX2160ARDB target.
+> Then in nxp_fspi_prepare_lut(), I would prepare LUT ADDR with address length requirement 3/4 byte for NOR or 1/2/3/4 bytes for NAND flash.
+> Also for LUT_NXP_WRITE would program data bytes as 0.
+> 
+> Then inside func nxp_fspi_do_op(), set register FSPI_IPCR0 as the address offset i.e. 0x1200 and in register FSPI_IPCR1 program the data size to write i.e. 0x100
+> 
+> If, as suggested if I tries to mark value of register FSPI_FLSHA2CR0 equal to ahb_buf_size (0x800), then access for address 0x1200 gives me wrong data. This is because as per the controller specification access to flash connected at CS1 can be performed under range of FSPI_ FLSHA1CR0 and FSPI_ FLSHA2CR0.
+
+Don't you have a way to set an offset to apply to the address accessed
+through the AHB? And if you don't, how will it work if your mapping
+is smaller than the flash size?

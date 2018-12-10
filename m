@@ -1,67 +1,96 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH 0/5] Prepare devicetrees for the new FSL QSPI driver
-Date: Mon, 10 Dec 2018 16:31:03 +0000
-Message-ID: <ce1442f3-357b-d647-958e-cc4a89282b79@kontron.de>
-References: <1544459182-23655-1-git-send-email-frieder.schrempf@kontron.de>
+From: <Tudor.Ambarus@microchip.com>
+Subject: [PATCH] ARM: dts: at91: sama5d2 Xplained: add QSPI0 + SPI NOR memory
+ nodes
+Date: Mon, 10 Dec 2018 17:15:29 +0000
+Message-ID: <20181210171511.21002-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <boris.brezillon@bootlin.com>, <linux-mtd@lists.infradead.org>,
+        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <Tudor.Ambarus@microchip.com>
+To: <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <Cyrille.Pitchen@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1544459182-23655-1-git-send-email-frieder.schrempf@kontron.de>
 Content-Language: en-US
-Content-ID: <BCFF43A4956638429CD7C267D0D3E012@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgRlNML0FSTSBtYWludGFpbmVycywNCg0KT24gMTAuMTIuMTggMTc6MjYsIFNjaHJlbXBmIEZy
-aWVkZXIgd3JvdGU6DQo+IEZyb206IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVkZXIuc2NocmVtcGZA
-a29udHJvbi5kZT4NCj4gDQo+IFdlIGhhdmUgcHJlcGFyZWQgYSBuZXcgZHJpdmVyIGZvciB0aGUg
-RlNMIFFTUEkgY29udHJvbGxlciB0aGF0IHdvcmtzIHVuZGVyDQo+IHRoZSBTUEkgZnJhbWV3b3Jr
-LiBUaGUgY3VycmVudCBkZXZpY2V0cmVlcyBhcmUgYnJva2VuIGJlY2F1c2UgdGhleSB1c2UgYW4N
-Cj4gaW5jb25zaXN0ZW50IHNjaGVtZSBmb3IgYXNzaWduaW5nIHRoZSByZWcgcHJvcGVydGllcy4N
-Cj4gDQo+IEFzLCBpbiBjb250cmFzdCB0byB0aGUgY3VycmVudCBkcml2ZXIsIHRoZSBuZXcgZHJp
-dmVyIHdpbGwgdXNlIHRoZSByZWcNCj4gcHJvcGVydGllcyB0byBzZWxlY3QgdGhlIGNvcnJlY3Qg
-Y2hpcCwgd2UgbmVlZCB0byBmaXggdGhlbS4NCj4gDQo+IFdlIGFsc28gYWRkIHNwaS1bdHgvcnhd
-LWJ1cy13aWR0aCB0byBtYWtlIHN1cmUgdGhlIGZ1bGwgYnVzd2lkdGggd2lsbCBiZSB1c2VkDQo+
-IGFuZCB3aGlsZSBhdCBpdCBjbGVhbiB1cCBhbmQgcmVtb3ZlIHNvbWUgdW51c2VkIHByb3BlcnRp
-ZXMuDQoNCmNvdWxkIHlvdSBwbGVhc2UgY29uc2lkZXIgdGhlc2UgZGV2aWNldHJlZSBwYXRjaGVz
-IGZvciB2NC4yMT8NCg0KV2UgaGF2ZSB0aGUgbmV3IEZTTCBRU1BJIGRyaXZlciB1bmRlciB0aGUg
-U1BJIGZyYW1ld29yayAoWzFdKSByZWFkeSwgYnV0IA0Kd2UgbmVlZCBzb21lIHNtYWxsIGZpeGVz
-IHRvIHRoZSBkZXZpY2V0cmVlcyB0aGF0IGFyZSBjdXJyZW50bHkgYnJva2VuLg0KDQpBcyB0aGUg
-bmV3IGRyaXZlciBkZXBlbmRzIG9uIHRoZXNlIGNoYW5nZXMgKG1haW5seSB0aGUgY2hhbmdlIHRv
-IHRoZSByZWcgDQpwcm9wZXJ0aWVzKSBhbmQgaXQgaXMgbm90IHBvc3NpYmxlIHRvIGFkZCBjb21w
-YXRpYmlsaXR5IGZvciB0aGUgb2xkIA0KYmluZGluZ3MsIGl0IHdvdWxkIGJlIHJlYWxseSBuaWNl
-IHRvIGhhdmUgdGhlbSBpbiB2NC4yMSwgc28gd2UgY2FuIHF1ZXVlIA0KdGhlIGRyaXZlciBmb3Ig
-djQuMjIgb3Igd2hhdGV2ZXIgdGhlIG5leHQgcmVsZWFzZSB3aWxsIGJlIGNhbGxlZC4NCg0KUGxl
-YXNlIGFsc28gc2VlIFsyXSBmb3Igc29tZSBtb3JlIGV4cGxhbmF0aW9uLg0KDQpUaGFua3MsDQpG
-cmllZGVyDQoNClsxXSBodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL2NvdmVyLzEwMDc2NDEv
-DQpbMl0gaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC85MjI4MTcvIzE5MjU0NDUN
-Cg0KPiANCj4gRnJpZWRlciBTY2hyZW1wZiAoNSk6DQo+ICAgIGFybTY0OiBkdHM6IFJlbW92ZSB1
-bnVzZWQgcHJvcGVydGllcyBmcm9tIEZTTCBRU1BJIGRyaXZlciBub2Rlcw0KPiAgICBBUk06IGR0
-czogUmVtb3ZlIHVudXNlZCBwcm9wZXJ0aWVzIGZyb20gRlNMIFFTUEkgZHJpdmVyIG5vZGVzDQo+
-ICAgIEFSTTogZHRzOiBpbXg2c3gtc2RiOiBGaXggdGhlIHJlZyBwcm9wZXJ0aWVzIGZvciB0aGUg
-RlNMIFFTUEkgbm9kZXMNCj4gICAgYXJtNjQ6IGR0czogQWRkIHNwaS1bdHgvcnhdLWJ1cy13aWR0
-aCBmb3IgdGhlIEZTTCBRU1BJIGNvbnRyb2xsZXINCj4gICAgQVJNOiBkdHM6IEFkZCBzcGktW3R4
-L3J4XS1idXMtd2lkdGggZm9yIHRoZSBGU0wgUVNQSSBjb250cm9sbGVyDQo+IA0KPiAgIGFyY2gv
-YXJtL2Jvb3QvZHRzL2lteDZzeC1zZGItcmV2YS5kdHMgICAgICAgICAgICAgIHwgOCArKysrKyst
-LQ0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZzeC1zZGIuZHRzICAgICAgICAgICAgICAgICAg
-IHwgOCArKysrKystLQ0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZ1bC0xNHgxNC1ldmsuZHRz
-aSAgICAgICAgICAgIHwgMiArKw0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2xzMTAyMWEtbW94YS11
-Yy04NDEwYS5kdHMgICAgICAgIHwgNSArKy0tLQ0KPiAgIGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJl
-ZXNjYWxlL2ZzbC1sczEwNDNhLXFkcy5kdHMgIHwgMyArKy0NCj4gICBhcmNoL2FybTY0L2Jvb3Qv
-ZHRzL2ZyZWVzY2FsZS9mc2wtbHMxMDQ2YS1xZHMuZHRzICB8IDQgKystLQ0KPiAgIGFyY2gvYXJt
-NjQvYm9vdC9kdHMvZnJlZXNjYWxlL2ZzbC1sczEwNDZhLXJkYi5kdHMgIHwgNiArKysrLS0NCj4g
-ICBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHMyMDh4YS1xZHMuZHRzaSB8IDQg
-KysrKw0KPiAgIDggZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25z
-KC0pDQo+IA==
+From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+
+This patch configures the QSPI0 controller pin muxing and declares
+a jedec,spi-nor memory.
+
+sama5d2 Xplained RevB and RevC use the Macronix MX25L25673G flash
+memory which advertises a maximum frequency of 80MHz for Quad IO
+Fast Read. Set the spi-max-frequency to 80MHz knowing that actually
+the QSPI drver will set the SPI bus clock to 166MHz / 3 =3D 55.3MHz.
+
+Signed-off-by: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+[tudor.ambarus@microchip.com:
+- drop partitions,
+- add spi-rx/tx-bus-width
+- change spi-max-frequency to match the 80MHz limit advertised by
+  MX25L25673G for Quad IO Fast Read,
+- reword commit message and subject.]
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+---
+ arch/arm/boot/dts/at91-sama5d2_xplained.dts | 31 +++++++++++++++++++++++++=
+++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/arch/arm/boot/dts/at91-sama5d2_xplained.dts b/arch/arm/boot/dt=
+s/at91-sama5d2_xplained.dts
+index 518e2b095ccf..171bc82cfbbf 100644
+--- a/arch/arm/boot/dts/at91-sama5d2_xplained.dts
++++ b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+@@ -108,6 +108,21 @@
+ 		};
+=20
+ 		apb {
++			qspi0: spi@f0020000 {
++				pinctrl-names =3D "default";
++				pinctrl-0 =3D <&pinctrl_qspi0_default>;
++				/* status =3D "okay"; */ /* conflict with sdmmc1 */
++
++				flash@0 {
++					compatible =3D "jedec,spi-nor";
++					reg =3D <0>;
++					spi-max-frequency =3D <80000000>;
++					spi-tx-bus-width =3D <4>;
++					spi-rx-bus-width =3D <4>;
++					m25p,fast-read;
++				};
++			};
++
+ 			spi0: spi@f8000000 {
+ 				pinctrl-names =3D "default";
+ 				pinctrl-0 =3D <&pinctrl_spi0_default>;
+@@ -485,6 +500,22 @@
+ 					bias-disable;
+ 				};
+=20
++				pinctrl_qspi0_default: qspi0_default {
++					sck_cs {
++						pinmux =3D <PIN_PA22__QSPI0_SCK>,
++							 <PIN_PA23__QSPI0_CS>;
++						bias-disable;
++					};
++
++					data {
++						pinmux =3D <PIN_PA24__QSPI0_IO0>,
++							 <PIN_PA25__QSPI0_IO1>,
++							 <PIN_PA26__QSPI0_IO2>,
++							 <PIN_PA27__QSPI0_IO3>;
++						bias-pull-up;
++					};
++				};
++
+ 				pinctrl_sdmmc0_default: sdmmc0_default {
+ 					cmd_data {
+ 						pinmux =3D <PIN_PA1__SDMMC0_CMD>,
+--=20
+2.9.4

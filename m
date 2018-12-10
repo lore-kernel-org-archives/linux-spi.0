@@ -1,139 +1,102 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI
- controller
-Date: Mon, 10 Dec 2018 13:11:00 +0100
-Message-ID: <20181210131100.6e4801e2@bbrezillon>
-References: <1542366701-16065-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1542366701-16065-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <eb8a31d8-2ba6-f27c-addf-545c77921b77@kontron.de>
-        <VI1PR04MB57267D9F69719B4BEF38BF8699A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
-        <20181210111909.35384eee@bbrezillon>
-        <VI1PR04MB57268740CA806FFB164780EB99A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
-        <20181210115001.6c7af1d7@bbrezillon>
-        <VI1PR04MB5726F0DDAC84F1AEC20B56DF99A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
-        <20181210120925.3c6336f6@bbrezillon>
-        <VI1PR04MB57269A32C1FF1592F117B97799A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Amelie DELAUNAY <amelie.delaunay@st.com>
+Subject: Re: [PATCH 0/5] Add support for STM32F4 SPI
+Date: Mon, 10 Dec 2018 12:37:56 +0000
+Message-ID: <ede8544f-c71d-0901-5522-e97215d23f85@st.com>
+References: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Schrempf Frieder <frieder.schrempf@kontron.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB57269A32C1FF1592F117B97799A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Alexandre TORGUE <alexandre.torgue@st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: "cezary.gapinski@gmail.com" <cezary.gapinski@gmail.com>, Mark Brown
+ <broonie@kernel.org>, "linux-spi@vger.kernel.org"
+ <linux-spi@vger.kernel.org>, "linux-stm32@st-md-mailman.stormreply.com"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
+Content-Language: en-US
+Content-ID: <3AC5027D79CC5B45A933F00D59740D08@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 10 Dec 2018 11:25:55 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+Hi Cezary,
 
-> Hi Boris,
+On 12/9/18 2:53 PM, cezary.gapinski@gmail.com wrote:
+> From: Cezary Gapinski <cezary.gapinski@gmail.com>
 > 
-> > -----Original Message-----
-> > From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> > Sent: Monday, December 10, 2018 4:39 PM
-> > To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > Cc: Schrempf Frieder <frieder.schrempf@kontron.de>; linux-
-> > mtd@lists.infradead.org; marek.vasut@gmail.com; broonie@kernel.org; linux-
-> > spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
-> > mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
-> > kernel@lists.infradead.org; computersforpeace@gmail.com; linux-
-> > kernel@vger.kernel.org
-> > Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI controller
-> > 
-> > On Mon, 10 Dec 2018 10:59:54 +0000
-> > Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> >   
-> > > Hi Boris,
-> > >  
-> > > > -----Original Message-----
-> > > > From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> > > > Sent: Monday, December 10, 2018 4:20 PM
-> > > > To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > > > Cc: Schrempf Frieder <frieder.schrempf@kontron.de>; linux-
-> > > > mtd@lists.infradead.org; marek.vasut@gmail.com; broonie@kernel.org;
-> > > > linux- spi@vger.kernel.org; devicetree@vger.kernel.org;
-> > > > robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org;
-> > > > linux-arm- kernel@lists.infradead.org; computersforpeace@gmail.com;
-> > > > linux- kernel@vger.kernel.org
-> > > > Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI
-> > > > controller
-> > > >
-> > > > On Mon, 10 Dec 2018 10:43:56 +0000
-> > > > Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-> > > >  
-> > > > > > > Thus, in LUT preparation we have assigned only the base address.
-> > > > > > > Now if I have assigned ahb_buf_size to FSPI_FLSHXXCR0 register
-> > > > > > > then for  
-> > > > > > read/write data beyond limit of ahb_buf_size offset I get data corruption.
-> > > > > >
-> > > > > > Why would you do that? We have the ->adjust_op_size() exactly
-> > > > > > for this reason, so, if someone tries to do a spi_mem_op with
-> > > > > > data.nbytes > ahb_buf_size you should return an error.
-> > > > > >  
-> > > > > Let me explain my implementation with example. If I have to write
-> > > > > data of size  
-> > > > 0x100 bytes at offset 0x1200 for CS1, I would program as below:  
-> > > > > In func nxp_fspi_select_mem(), would set value of controller
-> > > > > address space  
-> > > > size, memmap_phy_size, to FSPI_FLSHA2CR0 and rest all FSPI_FLSHXXCR0 as  
-> > 0.  
-> > > > > Value of memmap_phy_size is 0x10000000 i.e. 256 MB for my
-> > > > > LX2160ARDB  
-> > > > target.  
-> > > > > Then in nxp_fspi_prepare_lut(), I would prepare LUT ADDR with
-> > > > > address length  
-> > > > requirement 3/4 byte for NOR or 1/2/3/4 bytes for NAND flash.  
-> > > > > Also for LUT_NXP_WRITE would program data bytes as 0.
-> > > > >
-> > > > > Then inside func nxp_fspi_do_op(), set register FSPI_IPCR0 as the
-> > > > > address offset i.e. 0x1200 and in register FSPI_IPCR1 program the
-> > > > > data size to write i.e. 0x100
-> > > > >
-> > > > > If, as suggested if I tries to mark value of register
-> > > > > FSPI_FLSHA2CR0 equal to  
-> > > > ahb_buf_size (0x800), then access for address 0x1200 gives me wrong
-> > > > data. This is because as per the controller specification access to
-> > > > flash connected at CS1 can be performed under range of FSPI_ FLSHA1CR0  
-> > and FSPI_ FLSHA2CR0.  
-> > > >
-> > > > Don't you have a way to set an offset to apply to the address
-> > > > accessed through the AHB? And if you don't, how will it work if your
-> > > > mapping is smaller than the flash size?  
-> > >
-> > > Write operations are triggered using IP commands instead of AHB command.
-> > > For Read AHB command is used and in this we are adding the offset when  
-> > performing memcpy_fromIO operation  
-> > >       memcpy_fromio(op->data.buf.in, (f->ahb_addr + op->addr.val),
-> > > len);
-> > >
-> > > AHB/IP operations are independent of the way how CS got selected. CS  
-> > selection depends, e.g. CS1 on the value of register FSPI_FLSHA1CR0 and
-> > FSPI_FLSHA2CR0.  
-> > >
-> > > Mapping can never going to be smaller than the connected flash size as per  
-> > discussion with the Board design team and if it's possible by user manually
-> > changes the non-soldered part then flash area beyond complete mapping is not
-> > accessible.  
-> > > On LX2160ARDB, with mapping of 256MB, for now we are having 4 flash  
-> > devices connected with size as 64 MB. If user wants he can have only one single
-> > flash with flash size of 256MB.
-> > 
-> > Given that the dirmap interface has now been merged and the MTD side of
-> > things is soon to be merged, I'd recommend you to implement it in your
-> > v6 and only use non-AHB accesses for the ->exec_op() implementation.  
+> This series of patches adds support for first generation of SPI interface
+> for STM32F4 family.
 > 
-> This would going to be performance hit if I would use non-AHB accesses for ->exec_op().
 
-Not if you implement the dirmap hooks.
+First of all, thanks for adding STM32F4 SPI support.
+
+> This version of driver is mostly different to STM32H7 one. Based on linux
+> kernel I2C drivers for STM32 where drivers were splited into STM32F4 and
+> STM32F7 family the same approach seems to be sufficient for SPI STM32
+> drivers. Therefore STM32H7 driver was moved to spi-stm32h7.c file and
+> register and functions were renamed to be more specific to STM32H7.
+> 
+
+You're right, STM32F4 SPI is slightly different from STM32H7 one: 
+register map/bits offsets are different and STM32H7 has an RX and TX FIFO.
+But if you have a look on STM32F7 SPI [1], you'll see that STM32F7 SPI 
+is based on STM32F4 SPI with new features (data frames & FIFOs) also 
+available on STM32H7 SPI.
+
+That's why STM32H7 SPI driver was called spi-stm32. The goal was to use 
+compatible & match data to differentiate each STM32Fx specificities.
+
+You can have a look on how it is managed in drivers/rtc/rtc-stm32.c (the 
+same driver covers 2 HW version of STM32 RTC), or in 
+drivers/iio/dac/stm32-dac-core.c and stm32-dac.c (the same driver also 
+covers 2 HW version of STM32 DAC).
+
+As your spi-stm32f4.c file is highly based on the existing spi-stm32.c 
+file, I think that common code could be factored and specificities could 
+be handled with compatible and match data.
+
+Regards,
+Amelie
+
+
+[1] 
+https://www.st.com/content/ccc/resource/technical/document/reference_manual/c5/cf/ef/52/c0/f1/4b/fa/DM00124865.pdf/files/DM00124865.pdf/jcr:content/translations/en.DM00124865.pdf
+
+> For current version master mode with full-duplex and 8/16 bit data frame
+> format are supported. There is no TX and RX FIFOs like in STM32H7.
+> DMA capabilility is supported for messages longer than arbitrary number
+> of bytes (that is set already to 16 bytes) when TX and RX channels are
+> set at the same time.
+> 
+> Cezary Gapinski (5):
+>    spi: stm32: rename STM32 SPI registers and functions to STM32H7
+>    spi: stm32: rename spi-stm32 to spi-stm32h7
+>    spi: stm32: add driver for STM32F4 controller
+>    ARM: dts: stm32: add SPI support on STM32F429 SoC
+>    spi: stm32: add description about STM32F4 bindings
+> 
+>   .../devicetree/bindings/spi/spi-stm32.txt          |    9 +-
+>   arch/arm/boot/dts/stm32f429.dtsi                   |   60 +
+>   drivers/spi/Kconfig                                |   18 +-
+>   drivers/spi/Makefile                               |    3 +-
+>   drivers/spi/spi-stm32.c                            | 1322 -------------------
+>   drivers/spi/spi-stm32f4.c                          | 1002 +++++++++++++++
+>   drivers/spi/spi-stm32h7.c                          | 1340 ++++++++++++++++++++
+>   7 files changed, 2424 insertions(+), 1330 deletions(-)
+>   delete mode 100644 drivers/spi/spi-stm32.c
+>   create mode 100644 drivers/spi/spi-stm32f4.c
+>   create mode 100644 drivers/spi/spi-stm32h7.c
+>

@@ -1,79 +1,67 @@
 From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: [PATCH 1/5] arm64: dts: Remove unused properties from FSL QSPI driver
- nodes
-Date: Mon, 10 Dec 2018 16:28:48 +0000
-Message-ID: <1544459182-23655-2-git-send-email-frieder.schrempf@kontron.de>
+Subject: Re: [PATCH 0/5] Prepare devicetrees for the new FSL QSPI driver
+Date: Mon, 10 Dec 2018 16:31:03 +0000
+Message-ID: <ce1442f3-357b-d647-958e-cc4a89282b79@kontron.de>
 References: <1544459182-23655-1-git-send-email-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Schrempf Frieder <frieder.schrempf@kontron.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1544459182-23655-1-git-send-email-frieder.schrempf@kontron.de>
 Content-Language: en-US
+Content-ID: <BCFF43A4956638429CD7C267D0D3E012@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-
-The properties 'num-cs' and 'bus-num' were never read by the driver
-and can be removed.
-
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
- arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts | 1 -
- arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts | 2 --
- arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts | 2 --
- 3 files changed, 5 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts
-index dff3d64..d2c06ad4 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts
-@@ -135,7 +135,6 @@
- };
- 
- &qspi {
--	bus-num = <0>;
- 	status = "okay";
- 
- 	qflash0: s25fl128s@0 {
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-index e58a8ca..6ec1adb 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-@@ -163,8 +163,6 @@
- };
- 
- &qspi {
--	num-cs = <2>;
--	bus-num = <0>;
- 	status = "okay";
- 
- 	qflash0: s25fl128s@0 {
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-index a59b482..17f1298 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-@@ -99,8 +99,6 @@
- };
- 
- &qspi {
--	num-cs = <2>;
--	bus-num = <0>;
- 	status = "okay";
- 
- 	qflash0: s25fs512s@0 {
--- 
-2.7.4
+SGkgRlNML0FSTSBtYWludGFpbmVycywNCg0KT24gMTAuMTIuMTggMTc6MjYsIFNjaHJlbXBmIEZy
+aWVkZXIgd3JvdGU6DQo+IEZyb206IEZyaWVkZXIgU2NocmVtcGYgPGZyaWVkZXIuc2NocmVtcGZA
+a29udHJvbi5kZT4NCj4gDQo+IFdlIGhhdmUgcHJlcGFyZWQgYSBuZXcgZHJpdmVyIGZvciB0aGUg
+RlNMIFFTUEkgY29udHJvbGxlciB0aGF0IHdvcmtzIHVuZGVyDQo+IHRoZSBTUEkgZnJhbWV3b3Jr
+LiBUaGUgY3VycmVudCBkZXZpY2V0cmVlcyBhcmUgYnJva2VuIGJlY2F1c2UgdGhleSB1c2UgYW4N
+Cj4gaW5jb25zaXN0ZW50IHNjaGVtZSBmb3IgYXNzaWduaW5nIHRoZSByZWcgcHJvcGVydGllcy4N
+Cj4gDQo+IEFzLCBpbiBjb250cmFzdCB0byB0aGUgY3VycmVudCBkcml2ZXIsIHRoZSBuZXcgZHJp
+dmVyIHdpbGwgdXNlIHRoZSByZWcNCj4gcHJvcGVydGllcyB0byBzZWxlY3QgdGhlIGNvcnJlY3Qg
+Y2hpcCwgd2UgbmVlZCB0byBmaXggdGhlbS4NCj4gDQo+IFdlIGFsc28gYWRkIHNwaS1bdHgvcnhd
+LWJ1cy13aWR0aCB0byBtYWtlIHN1cmUgdGhlIGZ1bGwgYnVzd2lkdGggd2lsbCBiZSB1c2VkDQo+
+IGFuZCB3aGlsZSBhdCBpdCBjbGVhbiB1cCBhbmQgcmVtb3ZlIHNvbWUgdW51c2VkIHByb3BlcnRp
+ZXMuDQoNCmNvdWxkIHlvdSBwbGVhc2UgY29uc2lkZXIgdGhlc2UgZGV2aWNldHJlZSBwYXRjaGVz
+IGZvciB2NC4yMT8NCg0KV2UgaGF2ZSB0aGUgbmV3IEZTTCBRU1BJIGRyaXZlciB1bmRlciB0aGUg
+U1BJIGZyYW1ld29yayAoWzFdKSByZWFkeSwgYnV0IA0Kd2UgbmVlZCBzb21lIHNtYWxsIGZpeGVz
+IHRvIHRoZSBkZXZpY2V0cmVlcyB0aGF0IGFyZSBjdXJyZW50bHkgYnJva2VuLg0KDQpBcyB0aGUg
+bmV3IGRyaXZlciBkZXBlbmRzIG9uIHRoZXNlIGNoYW5nZXMgKG1haW5seSB0aGUgY2hhbmdlIHRv
+IHRoZSByZWcgDQpwcm9wZXJ0aWVzKSBhbmQgaXQgaXMgbm90IHBvc3NpYmxlIHRvIGFkZCBjb21w
+YXRpYmlsaXR5IGZvciB0aGUgb2xkIA0KYmluZGluZ3MsIGl0IHdvdWxkIGJlIHJlYWxseSBuaWNl
+IHRvIGhhdmUgdGhlbSBpbiB2NC4yMSwgc28gd2UgY2FuIHF1ZXVlIA0KdGhlIGRyaXZlciBmb3Ig
+djQuMjIgb3Igd2hhdGV2ZXIgdGhlIG5leHQgcmVsZWFzZSB3aWxsIGJlIGNhbGxlZC4NCg0KUGxl
+YXNlIGFsc28gc2VlIFsyXSBmb3Igc29tZSBtb3JlIGV4cGxhbmF0aW9uLg0KDQpUaGFua3MsDQpG
+cmllZGVyDQoNClsxXSBodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL2NvdmVyLzEwMDc2NDEv
+DQpbMl0gaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC85MjI4MTcvIzE5MjU0NDUN
+Cg0KPiANCj4gRnJpZWRlciBTY2hyZW1wZiAoNSk6DQo+ICAgIGFybTY0OiBkdHM6IFJlbW92ZSB1
+bnVzZWQgcHJvcGVydGllcyBmcm9tIEZTTCBRU1BJIGRyaXZlciBub2Rlcw0KPiAgICBBUk06IGR0
+czogUmVtb3ZlIHVudXNlZCBwcm9wZXJ0aWVzIGZyb20gRlNMIFFTUEkgZHJpdmVyIG5vZGVzDQo+
+ICAgIEFSTTogZHRzOiBpbXg2c3gtc2RiOiBGaXggdGhlIHJlZyBwcm9wZXJ0aWVzIGZvciB0aGUg
+RlNMIFFTUEkgbm9kZXMNCj4gICAgYXJtNjQ6IGR0czogQWRkIHNwaS1bdHgvcnhdLWJ1cy13aWR0
+aCBmb3IgdGhlIEZTTCBRU1BJIGNvbnRyb2xsZXINCj4gICAgQVJNOiBkdHM6IEFkZCBzcGktW3R4
+L3J4XS1idXMtd2lkdGggZm9yIHRoZSBGU0wgUVNQSSBjb250cm9sbGVyDQo+IA0KPiAgIGFyY2gv
+YXJtL2Jvb3QvZHRzL2lteDZzeC1zZGItcmV2YS5kdHMgICAgICAgICAgICAgIHwgOCArKysrKyst
+LQ0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZzeC1zZGIuZHRzICAgICAgICAgICAgICAgICAg
+IHwgOCArKysrKystLQ0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZ1bC0xNHgxNC1ldmsuZHRz
+aSAgICAgICAgICAgIHwgMiArKw0KPiAgIGFyY2gvYXJtL2Jvb3QvZHRzL2xzMTAyMWEtbW94YS11
+Yy04NDEwYS5kdHMgICAgICAgIHwgNSArKy0tLQ0KPiAgIGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJl
+ZXNjYWxlL2ZzbC1sczEwNDNhLXFkcy5kdHMgIHwgMyArKy0NCj4gICBhcmNoL2FybTY0L2Jvb3Qv
+ZHRzL2ZyZWVzY2FsZS9mc2wtbHMxMDQ2YS1xZHMuZHRzICB8IDQgKystLQ0KPiAgIGFyY2gvYXJt
+NjQvYm9vdC9kdHMvZnJlZXNjYWxlL2ZzbC1sczEwNDZhLXJkYi5kdHMgIHwgNiArKysrLS0NCj4g
+ICBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHMyMDh4YS1xZHMuZHRzaSB8IDQg
+KysrKw0KPiAgIDggZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25z
+KC0pDQo+IA==

@@ -1,17 +1,17 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
 Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI
  controller
-Date: Mon, 10 Dec 2018 11:19:09 +0100
-Message-ID: <20181210111909.35384eee@bbrezillon>
+Date: Mon, 10 Dec 2018 10:31:57 +0000
+Message-ID: <f51ab7b2-bc23-1a8f-5970-18c2d200eb6a@kontron.de>
 References: <1542366701-16065-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1542366701-16065-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <eb8a31d8-2ba6-f27c-addf-545c77921b77@kontron.de>
-        <VI1PR04MB57267D9F69719B4BEF38BF8699A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <1542366701-16065-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <eb8a31d8-2ba6-f27c-addf-545c77921b77@kontron.de>
+ <VI1PR04MB57267D9F69719B4BEF38BF8699A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+ <20181210111909.35384eee@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: Schrempf Frieder <frieder.schrempf@kontron.de>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
@@ -23,253 +23,192 @@ Cc: Schrempf Frieder <frieder.schrempf@kontron.de>,
         <linux-arm-kernel@lists.infradead.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+To: Boris Brezillon <boris.brezillon@bootlin.com>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB57267D9F69719B4BEF38BF8699A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+In-Reply-To: <20181210111909.35384eee@bbrezillon>
+Content-Language: en-US
+Content-ID: <2CCC3BC2C14DEA43B7D54317F57635ED@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 10 Dec 2018 09:41:51 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
-
-> > > +/* Instead of busy looping invoke readl_poll_timeout functionality.
-> > > +*/ static int fspi_readl_poll_tout(struct nxp_fspi *f, void __iomem *base,
-> > > +				u32 mask, u32 delay_us,
-> > > +				u32 timeout_us, bool condition)
-> > > +{
-> > > +	u32 reg;
-> > > +
-> > > +	if (!f->devtype_data->little_endian)
-> > > +		mask = (u32)cpu_to_be32(mask);
-> > > +
-> > > +	if (condition)
-> > > +		return readl_poll_timeout(base, reg, (reg & mask),
-> > > +					  delay_us, timeout_us);
-> > > +	else
-> > > +		return readl_poll_timeout(base, reg, !(reg & mask),
-> > > +					  delay_us, timeout_us);  
-> > 
-> > I would rather use a local variable to store the condition:
-> > 
-> > bool c = condition ? (reg & mask):!(reg & mask);
-> >   
-> With these type of usage getting below warning messages.
->  
-> drivers/spi/spi-nxp-fspi.c: In function ‘fspi_readl_poll_tout.isra.10.constprop’:
-> drivers/spi/spi-nxp-fspi.c:446:21: warning: ‘reg’ may be used uninitialized in this function [-Wmaybe-uninitialized]
->   bool cn = c ? (reg & mask) : !(reg & mask);
-> 
-> If assign value to reg = 0xffffffff then timeout is start getting hit for False case and if assign value 0 then start getting timeout hit for true case.
-> 
-> I would rather not try to modify this function.
-
-I agree. Let's keep this function readable even if this implies
-duplicating a few lines of code.
-
-> 
-> > return readl_poll_timeout(base, reg, c, delay_us, timeout_us);
-> >   
-> > > +}
-> > > +
-> > > +/*
-> > > + * If the slave device content being changed by Write/Erase, need to
-> > > + * invalidate the AHB buffer. This can be achieved by doing the reset
-> > > + * of controller after setting MCR0[SWRESET] bit.
-> > > + */
-> > > +static inline void nxp_fspi_invalid(struct nxp_fspi *f) {
-> > > +	u32 reg;
-> > > +	int ret;
-> > > +
-> > > +	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-> > > +	fspi_writel(f, reg | FSPI_MCR0_SWRST, f->iobase + FSPI_MCR0);
-> > > +
-> > > +	/* w1c register, wait unit clear */
-> > > +	ret = fspi_readl_poll_tout(f, f->iobase + FSPI_MCR0,
-> > > +				   FSPI_MCR0_SWRST, 0, POLL_TOUT, false);
-> > > +	WARN_ON(ret);
-> > > +}
-> > > +
-> > > +static void nxp_fspi_prepare_lut(struct nxp_fspi *f,
-> > > +				 const struct spi_mem_op *op)
-> > > +{
-> > > +	void __iomem *base = f->iobase;
-> > > +	u32 lutval[4] = {};
-> > > +	int lutidx = 1, i;
-> > > +
-> > > +	/* cmd */
-> > > +	lutval[0] |= LUT_DEF(0, LUT_CMD, LUT_PAD(op->cmd.buswidth),
-> > > +			     op->cmd.opcode);
-> > > +
-> > > +	/* addr bus width */
-> > > +	if (op->addr.nbytes) {
-> > > +		u32 addrlen = 0;
-> > > +
-> > > +		switch (op->addr.nbytes) {
-> > > +		case 1:
-> > > +			addrlen = ADDR8BIT;
-> > > +			break;
-> > > +		case 2:
-> > > +			addrlen = ADDR16BIT;
-> > > +			break;
-> > > +		case 3:
-> > > +			addrlen = ADDR24BIT;
-> > > +			break;
-> > > +		case 4:
-> > > +			addrlen = ADDR32BIT;
-> > > +			break;
-> > > +		default:
-> > > +			dev_err(f->dev, "In-correct address length\n");
-> > > +			return;
-> > > +		}  
-> > 
-> > You don't need to validate op->addr.nbytes here, this is already done in
-> > nxp_fspi_supports_op().  
-> 
-> Yes, I need to validate op->addr.nbytes else LUT would going to be programmed for 0 addrlen.
-> I have checked this on the target.
-
-Also agree there. Some operations have 0 address bytes. We could also
-test addr.buswidth, but I'm fine with the addr.nbytes test too.
-
-
-> > > +static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device
-> > > +*spi) {
-> > > +	unsigned long rate = spi->max_speed_hz;
-> > > +	int ret;
-> > > +	uint64_t size_kb;
-> > > +
-> > > +	/*
-> > > +	 * Return, if previously selected slave device is same as current
-> > > +	 * requested slave device.
-> > > +	 */
-> > > +	if (f->selected == spi->chip_select)
-> > > +		return;
-> > > +
-> > > +	/* Reset FLSHxxCR0 registers */
-> > > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHA1CR0);
-> > > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHA2CR0);
-> > > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHB1CR0);
-> > > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHB2CR0);
-> > > +
-> > > +	/* Assign controller memory mapped space as size, KBytes, of flash. */
-> > > +	size_kb = FSPI_FLSHXCR0_SZ(f->memmap_phy_size);  
-> >   
-> Above description of this function, explains the reason for using memmap_phy_size.
-> This is not the arbitrary size, but the memory mapped size being assigned to the controller.
-> 
-> > You are still using memory of arbitrary size (memmap_phy_size) for mapping the
-> > flash. Why not use the same approach as in the QSPI driver and just map
-> > ahb_buf_size until we implement the dirmap API?  
-> The approach which being used in QSPI driver didn't work here, I have tried with that.
-> In QSPI driver, while preparing LUT we are assigning read/write address in the LUT preparation and have to for some unknown hack have to provide macro for LUT_MODE instead of LUT_ADDR.
-> But this thing didn't work for FlexSPI.
-> I discussed with HW IP owner and they suggested only to use LUT_ADDR for specifying the address length of the command i.e. 3-byte or 4-byte address command (NOR) or 1-2 byte address command for NAND.
-
-Actually, we would have used a LUT_ADDR too if the QSPI IP was support
-ADDR instructions with a number of bytes < 3, but for some unknown
-reasons it does not work. 
-
-> 
-> Thus, in LUT preparation we have assigned only the base address.
-> Now if I have assigned ahb_buf_size to FSPI_FLSHXXCR0 register then for read/write data beyond limit of ahb_buf_size offset I get data corruption.
-
-Why would you do that? We have the ->adjust_op_size() exactly for this
-reason, so, if someone tries to do a spi_mem_op with data.nbytes >
-ahb_buf_size you should return an error.
-
-> 
-> Thus, for generic approach have assigned FSPI_FLSHXXCR0 equal to the memory mapped size to the controller. This would also not going to depend on the number of CS present on the target.
-
-I kind of agree with Frieder on that one, I think it's preferable to
-limit the per-read-op size to ahb_buf_size and let the upper layer
-split the request in several sub-requests. On the controller side of
-things, you just have to have a mapping of ahb_buf_size per-CS. If you
-want to further optimize things, implement the dirmap hooks.
-
-> 
-> > You are already aligning the AHB reads for this in nxp_fspi_adjust_op_size().
-> >   
-> Yes, max read data size can be ahb_buf_size. Thus we need to check max read size with ahb_buf_size.
-
-Well, it's never a bad thing to check it twice, just in case the
-spi-mem user is misusing the API.
-
-> > > +static void nxp_fspi_fill_txfifo(struct nxp_fspi *f,
-> > > +				 const struct spi_mem_op *op)
-> > > +{
-> > > +	void __iomem *base = f->iobase;
-> > > +	int i, j, ret;
-> > > +	int size, tmp_size, wm_size;
-> > > +	u32 data = 0;
-> > > +	u32 *txbuf = (u32 *) op->data.buf.out;
-> > > +
-> > > +	/* clear the TX FIFO. */
-> > > +	fspi_writel(f, FSPI_IPTXFCR_CLR, base + FSPI_IPTXFCR);
-> > > +
-> > > +	/* Default value of water mark level is 8 bytes. */
-> > > +	wm_size = 8;
-> > > +	size = op->data.nbytes / wm_size;
-> > > +	for (i = 0; i < size; i++) {
-> > > +		/* Wait for TXFIFO empty */
-> > > +		ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > > +					   FSPI_INTR_IPTXWE, 0,
-> > > +					   POLL_TOUT, true);
-> > > +		WARN_ON(ret);
-> > > +
-> > > +		j = 0;
-> > > +		tmp_size = wm_size;
-> > > +		while (tmp_size > 0) {
-> > > +			data = 0;
-> > > +			memcpy(&data, txbuf, 4);
-> > > +			fspi_writel(f, data, base + FSPI_TFDR + j * 4);
-> > > +			tmp_size -= 4;
-> > > +			j++;
-> > > +			txbuf += 1;
-> > > +		}
-> > > +		fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR);
-> > > +	}
-> > > +
-> > > +	size = op->data.nbytes % wm_size;
-> > > +	if (size) {
-> > > +		/* Wait for TXFIFO empty */
-> > > +		ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > > +					   FSPI_INTR_IPTXWE, 0,
-> > > +					   POLL_TOUT, true);
-> > > +		WARN_ON(ret);
-> > > +
-> > > +		j = 0;
-> > > +		tmp_size = 0;
-> > > +		while (size > 0) {
-> > > +			data = 0;
-> > > +			tmp_size = (size < 4) ? size : 4;
-> > > +			memcpy(&data, txbuf, tmp_size);
-> > > +			fspi_writel(f, data, base + FSPI_TFDR + j * 4);
-> > > +			size -= tmp_size;
-> > > +			j++;
-> > > +			txbuf += 1;
-> > > +		}
-> > > +		fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR);
-> > > +	}  
-> > 
-> > All these nested loops to fill the TX buffer and also the ones below to read the
-> > RX buffer look much more complicated than they should really be. Can you try to
-> > make this more readable?  
-> Yes
-> > 
-> > Maybe something like this would work:
-> > 
-> > for (i = 0; i < ALIGN_DOWN(op->data.nbytes, 8); i += 8) {
-> > 	/* Wait for TXFIFO empty */
-> > 	ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > 				   FSPI_INTR_IPTXWE, 0,
-> > 				   POLL_TOUT, true);
-> > 
-> > 	fspi_writel(f, op->data.buf.out + i, base + FSPI_TFDR);
-> > 	fspi_writel(f, op->data.buf.out + i + 4, base + FSPI_TFDR + 4);
-> > 	fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR); }  
-> With this above 2 lines we are hardcoding it for read/write with watermark size as 8 bytes.
-> Watermark size can be variable and depends on the value of IPRXFCR/IPTXFCR register with default value as 8 bytes
-> Thus, I would still prefer to use the internal for loop instead of 2 fspi_writel(...) for FSPI_TFDR and FSPI_TFDR + 4 register write commands.
-
-Just like you're hardcoding wm_size to 8, so I don't see a difference
-here. And I indeed prefer Frieder's version.
+SGkgWW9nZXNoLCBCb3JpcywNCg0KT24gMTAuMTIuMTggMTE6MTksIEJvcmlzIEJyZXppbGxvbiB3
+cm90ZToNCj4gT24gTW9uLCAxMCBEZWMgMjAxOCAwOTo0MTo1MSArMDAwMA0KPiBZb2dlc2ggTmFy
+YXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4gd3JvdGU6DQo+IA0KPj4+PiAr
+LyogSW5zdGVhZCBvZiBidXN5IGxvb3BpbmcgaW52b2tlIHJlYWRsX3BvbGxfdGltZW91dCBmdW5j
+dGlvbmFsaXR5Lg0KPj4+PiArKi8gc3RhdGljIGludCBmc3BpX3JlYWRsX3BvbGxfdG91dChzdHJ1
+Y3QgbnhwX2ZzcGkgKmYsIHZvaWQgX19pb21lbSAqYmFzZSwNCj4+Pj4gKwkJCQl1MzIgbWFzaywg
+dTMyIGRlbGF5X3VzLA0KPj4+PiArCQkJCXUzMiB0aW1lb3V0X3VzLCBib29sIGNvbmRpdGlvbikN
+Cj4+Pj4gK3sNCj4+Pj4gKwl1MzIgcmVnOw0KPj4+PiArDQo+Pj4+ICsJaWYgKCFmLT5kZXZ0eXBl
+X2RhdGEtPmxpdHRsZV9lbmRpYW4pDQo+Pj4+ICsJCW1hc2sgPSAodTMyKWNwdV90b19iZTMyKG1h
+c2spOw0KPj4+PiArDQo+Pj4+ICsJaWYgKGNvbmRpdGlvbikNCj4+Pj4gKwkJcmV0dXJuIHJlYWRs
+X3BvbGxfdGltZW91dChiYXNlLCByZWcsIChyZWcgJiBtYXNrKSwNCj4+Pj4gKwkJCQkJICBkZWxh
+eV91cywgdGltZW91dF91cyk7DQo+Pj4+ICsJZWxzZQ0KPj4+PiArCQlyZXR1cm4gcmVhZGxfcG9s
+bF90aW1lb3V0KGJhc2UsIHJlZywgIShyZWcgJiBtYXNrKSwNCj4+Pj4gKwkJCQkJICBkZWxheV91
+cywgdGltZW91dF91cyk7DQo+Pj4NCj4+PiBJIHdvdWxkIHJhdGhlciB1c2UgYSBsb2NhbCB2YXJp
+YWJsZSB0byBzdG9yZSB0aGUgY29uZGl0aW9uOg0KPj4+DQo+Pj4gYm9vbCBjID0gY29uZGl0aW9u
+ID8gKHJlZyAmIG1hc2spOiEocmVnICYgbWFzayk7DQo+Pj4gICAgDQo+PiBXaXRoIHRoZXNlIHR5
+cGUgb2YgdXNhZ2UgZ2V0dGluZyBiZWxvdyB3YXJuaW5nIG1lc3NhZ2VzLg0KPj4gICANCj4+IGRy
+aXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5jOiBJbiBmdW5jdGlvbiDigJhmc3BpX3JlYWRsX3BvbGxf
+dG91dC5pc3JhLjEwLmNvbnN0cHJvcOKAmToNCj4+IGRyaXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5j
+OjQ0NjoyMTogd2FybmluZzog4oCYcmVn4oCZIG1heSBiZSB1c2VkIHVuaW5pdGlhbGl6ZWQgaW4g
+dGhpcyBmdW5jdGlvbiBbLVdtYXliZS11bmluaXRpYWxpemVkXQ0KPj4gICAgYm9vbCBjbiA9IGMg
+PyAocmVnICYgbWFzaykgOiAhKHJlZyAmIG1hc2spOw0KPj4NCj4+IElmIGFzc2lnbiB2YWx1ZSB0
+byByZWcgPSAweGZmZmZmZmZmIHRoZW4gdGltZW91dCBpcyBzdGFydCBnZXR0aW5nIGhpdCBmb3Ig
+RmFsc2UgY2FzZSBhbmQgaWYgYXNzaWduIHZhbHVlIDAgdGhlbiBzdGFydCBnZXR0aW5nIHRpbWVv
+dXQgaGl0IGZvciB0cnVlIGNhc2UuDQo+Pg0KPj4gSSB3b3VsZCByYXRoZXIgbm90IHRyeSB0byBt
+b2RpZnkgdGhpcyBmdW5jdGlvbi4NCj4gDQo+IEkgYWdyZWUuIExldCdzIGtlZXAgdGhpcyBmdW5j
+dGlvbiByZWFkYWJsZSBldmVuIGlmIHRoaXMgaW1wbGllcw0KPiBkdXBsaWNhdGluZyBhIGZldyBs
+aW5lcyBvZiBjb2RlLg0KDQpNeSBiYWQuIFRoaXMgZG9lc24ndCB3b3JrIG9mIGNvdXJzZS4gV2Ug
+bmVlZCB0byBwYXNzIHRoZSBhY3R1YWwgDQpleHByZXNzaW9uIGNvbnRhaW5pbmcgcmVnIHRvIHRo
+ZSByZWFkbF9wb2xsX3RpbWVvdXQoKSBtYWNyby4gU28gZm9yZ2V0IA0KYWJvdXQgbXkgY29tbWVu
+dC4NCg0KPiANCj4+DQo+Pj4gcmV0dXJuIHJlYWRsX3BvbGxfdGltZW91dChiYXNlLCByZWcsIGMs
+IGRlbGF5X3VzLCB0aW1lb3V0X3VzKTsNCj4+PiAgICANCj4+Pj4gK30NCj4+Pj4gKw0KPj4+PiAr
+LyoNCj4+Pj4gKyAqIElmIHRoZSBzbGF2ZSBkZXZpY2UgY29udGVudCBiZWluZyBjaGFuZ2VkIGJ5
+IFdyaXRlL0VyYXNlLCBuZWVkIHRvDQo+Pj4+ICsgKiBpbnZhbGlkYXRlIHRoZSBBSEIgYnVmZmVy
+LiBUaGlzIGNhbiBiZSBhY2hpZXZlZCBieSBkb2luZyB0aGUgcmVzZXQNCj4+Pj4gKyAqIG9mIGNv
+bnRyb2xsZXIgYWZ0ZXIgc2V0dGluZyBNQ1IwW1NXUkVTRVRdIGJpdC4NCj4+Pj4gKyAqLw0KPj4+
+PiArc3RhdGljIGlubGluZSB2b2lkIG54cF9mc3BpX2ludmFsaWQoc3RydWN0IG54cF9mc3BpICpm
+KSB7DQo+Pj4+ICsJdTMyIHJlZzsNCj4+Pj4gKwlpbnQgcmV0Ow0KPj4+PiArDQo+Pj4+ICsJcmVn
+ID0gZnNwaV9yZWFkbChmLCBmLT5pb2Jhc2UgKyBGU1BJX01DUjApOw0KPj4+PiArCWZzcGlfd3Jp
+dGVsKGYsIHJlZyB8IEZTUElfTUNSMF9TV1JTVCwgZi0+aW9iYXNlICsgRlNQSV9NQ1IwKTsNCj4+
+Pj4gKw0KPj4+PiArCS8qIHcxYyByZWdpc3Rlciwgd2FpdCB1bml0IGNsZWFyICovDQo+Pj4+ICsJ
+cmV0ID0gZnNwaV9yZWFkbF9wb2xsX3RvdXQoZiwgZi0+aW9iYXNlICsgRlNQSV9NQ1IwLA0KPj4+
+PiArCQkJCSAgIEZTUElfTUNSMF9TV1JTVCwgMCwgUE9MTF9UT1VULCBmYWxzZSk7DQo+Pj4+ICsJ
+V0FSTl9PTihyZXQpOw0KPj4+PiArfQ0KPj4+PiArDQo+Pj4+ICtzdGF0aWMgdm9pZCBueHBfZnNw
+aV9wcmVwYXJlX2x1dChzdHJ1Y3QgbnhwX2ZzcGkgKmYsDQo+Pj4+ICsJCQkJIGNvbnN0IHN0cnVj
+dCBzcGlfbWVtX29wICpvcCkNCj4+Pj4gK3sNCj4+Pj4gKwl2b2lkIF9faW9tZW0gKmJhc2UgPSBm
+LT5pb2Jhc2U7DQo+Pj4+ICsJdTMyIGx1dHZhbFs0XSA9IHt9Ow0KPj4+PiArCWludCBsdXRpZHgg
+PSAxLCBpOw0KPj4+PiArDQo+Pj4+ICsJLyogY21kICovDQo+Pj4+ICsJbHV0dmFsWzBdIHw9IExV
+VF9ERUYoMCwgTFVUX0NNRCwgTFVUX1BBRChvcC0+Y21kLmJ1c3dpZHRoKSwNCj4+Pj4gKwkJCSAg
+ICAgb3AtPmNtZC5vcGNvZGUpOw0KPj4+PiArDQo+Pj4+ICsJLyogYWRkciBidXMgd2lkdGggKi8N
+Cj4+Pj4gKwlpZiAob3AtPmFkZHIubmJ5dGVzKSB7DQo+Pj4+ICsJCXUzMiBhZGRybGVuID0gMDsN
+Cj4+Pj4gKw0KPj4+PiArCQlzd2l0Y2ggKG9wLT5hZGRyLm5ieXRlcykgew0KPj4+PiArCQljYXNl
+IDE6DQo+Pj4+ICsJCQlhZGRybGVuID0gQUREUjhCSVQ7DQo+Pj4+ICsJCQlicmVhazsNCj4+Pj4g
+KwkJY2FzZSAyOg0KPj4+PiArCQkJYWRkcmxlbiA9IEFERFIxNkJJVDsNCj4+Pj4gKwkJCWJyZWFr
+Ow0KPj4+PiArCQljYXNlIDM6DQo+Pj4+ICsJCQlhZGRybGVuID0gQUREUjI0QklUOw0KPj4+PiAr
+CQkJYnJlYWs7DQo+Pj4+ICsJCWNhc2UgNDoNCj4+Pj4gKwkJCWFkZHJsZW4gPSBBRERSMzJCSVQ7
+DQo+Pj4+ICsJCQlicmVhazsNCj4+Pj4gKwkJZGVmYXVsdDoNCj4+Pj4gKwkJCWRldl9lcnIoZi0+
+ZGV2LCAiSW4tY29ycmVjdCBhZGRyZXNzIGxlbmd0aFxuIik7DQo+Pj4+ICsJCQlyZXR1cm47DQo+
+Pj4+ICsJCX0NCj4+Pg0KPj4+IFlvdSBkb24ndCBuZWVkIHRvIHZhbGlkYXRlIG9wLT5hZGRyLm5i
+eXRlcyBoZXJlLCB0aGlzIGlzIGFscmVhZHkgZG9uZSBpbg0KPj4+IG54cF9mc3BpX3N1cHBvcnRz
+X29wKCkuDQo+Pg0KPj4gWWVzLCBJIG5lZWQgdG8gdmFsaWRhdGUgb3AtPmFkZHIubmJ5dGVzIGVs
+c2UgTFVUIHdvdWxkIGdvaW5nIHRvIGJlIHByb2dyYW1tZWQgZm9yIDAgYWRkcmxlbi4NCj4+IEkg
+aGF2ZSBjaGVja2VkIHRoaXMgb24gdGhlIHRhcmdldC4NCj4gDQo+IEFsc28gYWdyZWUgdGhlcmUu
+IFNvbWUgb3BlcmF0aW9ucyBoYXZlIDAgYWRkcmVzcyBieXRlcy4gV2UgY291bGQgYWxzbw0KPiB0
+ZXN0IGFkZHIuYnVzd2lkdGgsIGJ1dCBJJ20gZmluZSB3aXRoIHRoZSBhZGRyLm5ieXRlcyB0ZXN0
+IHRvby4NCg0KVGhlICJpZiAob3AtPmFkZHIubmJ5dGVzKSIgaXMgbmVlZGVkIG9mIGNvdXJzZSwg
+YnV0IEkgdGhpbmsgdGhlIGRlZmF1bHQgDQpjYXNlIGluIHRoZSBzd2l0Y2ggc3RhdGVtZW50IChh
+bmQgZm9yIG90aGVyIHJlYXNvbnMgdGhlIHdob2xlIHN3aXRjaCANCnN0YXRlbWVudCkgaXMgbm90
+IG5lZWRlZCBhbmQgcmF0aGVyIGEgY2hlY2sgZm9yIG9wLT5hZGRyLm5ieXRlcyA+IDQgDQpzaG91
+bGQgYmUgYWRkZWQgdG8gbnhwX2ZzcGlfc3VwcG9ydHNfb3AoKS4gSSB3cm9uZ2x5IGFzc3VtZWQg
+dGhpcyBjaGVjayANCmFscmVhZHkgZXhpc3RzIGluIG54cF9mc3BpX3N1cHBvcnRzX29wKCkuDQoN
+Cj4gDQo+Pj4+ICtzdGF0aWMgdm9pZCBueHBfZnNwaV9zZWxlY3RfbWVtKHN0cnVjdCBueHBfZnNw
+aSAqZiwgc3RydWN0IHNwaV9kZXZpY2UNCj4+Pj4gKypzcGkpIHsNCj4+Pj4gKwl1bnNpZ25lZCBs
+b25nIHJhdGUgPSBzcGktPm1heF9zcGVlZF9oejsNCj4+Pj4gKwlpbnQgcmV0Ow0KPj4+PiArCXVp
+bnQ2NF90IHNpemVfa2I7DQo+Pj4+ICsNCj4+Pj4gKwkvKg0KPj4+PiArCSAqIFJldHVybiwgaWYg
+cHJldmlvdXNseSBzZWxlY3RlZCBzbGF2ZSBkZXZpY2UgaXMgc2FtZSBhcyBjdXJyZW50DQo+Pj4+
+ICsJICogcmVxdWVzdGVkIHNsYXZlIGRldmljZS4NCj4+Pj4gKwkgKi8NCj4+Pj4gKwlpZiAoZi0+
+c2VsZWN0ZWQgPT0gc3BpLT5jaGlwX3NlbGVjdCkNCj4+Pj4gKwkJcmV0dXJuOw0KPj4+PiArDQo+
+Pj4+ICsJLyogUmVzZXQgRkxTSHh4Q1IwIHJlZ2lzdGVycyAqLw0KPj4+PiArCWZzcGlfd3JpdGVs
+KGYsIDAsIGYtPmlvYmFzZSArIEZTUElfRkxTSEExQ1IwKTsNCj4+Pj4gKwlmc3BpX3dyaXRlbChm
+LCAwLCBmLT5pb2Jhc2UgKyBGU1BJX0ZMU0hBMkNSMCk7DQo+Pj4+ICsJZnNwaV93cml0ZWwoZiwg
+MCwgZi0+aW9iYXNlICsgRlNQSV9GTFNIQjFDUjApOw0KPj4+PiArCWZzcGlfd3JpdGVsKGYsIDAs
+IGYtPmlvYmFzZSArIEZTUElfRkxTSEIyQ1IwKTsNCj4+Pj4gKw0KPj4+PiArCS8qIEFzc2lnbiBj
+b250cm9sbGVyIG1lbW9yeSBtYXBwZWQgc3BhY2UgYXMgc2l6ZSwgS0J5dGVzLCBvZiBmbGFzaC4g
+Ki8NCj4+Pj4gKwlzaXplX2tiID0gRlNQSV9GTFNIWENSMF9TWihmLT5tZW1tYXBfcGh5X3NpemUp
+Ow0KPj4+ICAgIA0KPj4gQWJvdmUgZGVzY3JpcHRpb24gb2YgdGhpcyBmdW5jdGlvbiwgZXhwbGFp
+bnMgdGhlIHJlYXNvbiBmb3IgdXNpbmcgbWVtbWFwX3BoeV9zaXplLg0KPj4gVGhpcyBpcyBub3Qg
+dGhlIGFyYml0cmFyeSBzaXplLCBidXQgdGhlIG1lbW9yeSBtYXBwZWQgc2l6ZSBiZWluZyBhc3Np
+Z25lZCB0byB0aGUgY29udHJvbGxlci4NCj4+DQo+Pj4gWW91IGFyZSBzdGlsbCB1c2luZyBtZW1v
+cnkgb2YgYXJiaXRyYXJ5IHNpemUgKG1lbW1hcF9waHlfc2l6ZSkgZm9yIG1hcHBpbmcgdGhlDQo+
+Pj4gZmxhc2guIFdoeSBub3QgdXNlIHRoZSBzYW1lIGFwcHJvYWNoIGFzIGluIHRoZSBRU1BJIGRy
+aXZlciBhbmQganVzdCBtYXANCj4+PiBhaGJfYnVmX3NpemUgdW50aWwgd2UgaW1wbGVtZW50IHRo
+ZSBkaXJtYXAgQVBJPw0KPj4gVGhlIGFwcHJvYWNoIHdoaWNoIGJlaW5nIHVzZWQgaW4gUVNQSSBk
+cml2ZXIgZGlkbid0IHdvcmsgaGVyZSwgSSBoYXZlIHRyaWVkIHdpdGggdGhhdC4NCj4+IEluIFFT
+UEkgZHJpdmVyLCB3aGlsZSBwcmVwYXJpbmcgTFVUIHdlIGFyZSBhc3NpZ25pbmcgcmVhZC93cml0
+ZSBhZGRyZXNzIGluIHRoZSBMVVQgcHJlcGFyYXRpb24gYW5kIGhhdmUgdG8gZm9yIHNvbWUgdW5r
+bm93biBoYWNrIGhhdmUgdG8gcHJvdmlkZSBtYWNybyBmb3IgTFVUX01PREUgaW5zdGVhZCBvZiBM
+VVRfQUREUi4NCj4+IEJ1dCB0aGlzIHRoaW5nIGRpZG4ndCB3b3JrIGZvciBGbGV4U1BJLg0KPj4g
+SSBkaXNjdXNzZWQgd2l0aCBIVyBJUCBvd25lciBhbmQgdGhleSBzdWdnZXN0ZWQgb25seSB0byB1
+c2UgTFVUX0FERFIgZm9yIHNwZWNpZnlpbmcgdGhlIGFkZHJlc3MgbGVuZ3RoIG9mIHRoZSBjb21t
+YW5kIGkuZS4gMy1ieXRlIG9yIDQtYnl0ZSBhZGRyZXNzIGNvbW1hbmQgKE5PUikgb3IgMS0yIGJ5
+dGUgYWRkcmVzcyBjb21tYW5kIGZvciBOQU5ELg0KPiANCj4gQWN0dWFsbHksIHdlIHdvdWxkIGhh
+dmUgdXNlZCBhIExVVF9BRERSIHRvbyBpZiB0aGUgUVNQSSBJUCB3YXMgc3VwcG9ydA0KPiBBRERS
+IGluc3RydWN0aW9ucyB3aXRoIGEgbnVtYmVyIG9mIGJ5dGVzIDwgMywgYnV0IGZvciBzb21lIHVu
+a25vd24NCj4gcmVhc29ucyBpdCBkb2VzIG5vdCB3b3JrLg0KPiANCj4+DQo+PiBUaHVzLCBpbiBM
+VVQgcHJlcGFyYXRpb24gd2UgaGF2ZSBhc3NpZ25lZCBvbmx5IHRoZSBiYXNlIGFkZHJlc3MuDQo+
+PiBOb3cgaWYgSSBoYXZlIGFzc2lnbmVkIGFoYl9idWZfc2l6ZSB0byBGU1BJX0ZMU0hYWENSMCBy
+ZWdpc3RlciB0aGVuIGZvciByZWFkL3dyaXRlIGRhdGEgYmV5b25kIGxpbWl0IG9mIGFoYl9idWZf
+c2l6ZSBvZmZzZXQgSSBnZXQgZGF0YSBjb3JydXB0aW9uLg0KPiANCj4gV2h5IHdvdWxkIHlvdSBk
+byB0aGF0PyBXZSBoYXZlIHRoZSAtPmFkanVzdF9vcF9zaXplKCkgZXhhY3RseSBmb3IgdGhpcw0K
+PiByZWFzb24sIHNvLCBpZiBzb21lb25lIHRyaWVzIHRvIGRvIGEgc3BpX21lbV9vcCB3aXRoIGRh
+dGEubmJ5dGVzID4NCj4gYWhiX2J1Zl9zaXplIHlvdSBzaG91bGQgcmV0dXJuIGFuIGVycm9yLg0K
+PiANCj4+DQo+PiBUaHVzLCBmb3IgZ2VuZXJpYyBhcHByb2FjaCBoYXZlIGFzc2lnbmVkIEZTUElf
+RkxTSFhYQ1IwIGVxdWFsIHRvIHRoZSBtZW1vcnkgbWFwcGVkIHNpemUgdG8gdGhlIGNvbnRyb2xs
+ZXIuIFRoaXMgd291bGQgYWxzbyBub3QgZ29pbmcgdG8gZGVwZW5kIG9uIHRoZSBudW1iZXIgb2Yg
+Q1MgcHJlc2VudCBvbiB0aGUgdGFyZ2V0Lg0KPiANCj4gSSBraW5kIG9mIGFncmVlIHdpdGggRnJp
+ZWRlciBvbiB0aGF0IG9uZSwgSSB0aGluayBpdCdzIHByZWZlcmFibGUgdG8NCj4gbGltaXQgdGhl
+IHBlci1yZWFkLW9wIHNpemUgdG8gYWhiX2J1Zl9zaXplIGFuZCBsZXQgdGhlIHVwcGVyIGxheWVy
+DQo+IHNwbGl0IHRoZSByZXF1ZXN0IGluIHNldmVyYWwgc3ViLXJlcXVlc3RzLiBPbiB0aGUgY29u
+dHJvbGxlciBzaWRlIG9mDQo+IHRoaW5ncywgeW91IGp1c3QgaGF2ZSB0byBoYXZlIGEgbWFwcGlu
+ZyBvZiBhaGJfYnVmX3NpemUgcGVyLUNTLiBJZiB5b3UNCj4gd2FudCB0byBmdXJ0aGVyIG9wdGlt
+aXplIHRoaW5ncywgaW1wbGVtZW50IHRoZSBkaXJtYXAgaG9va3MuDQo+IA0KPj4NCj4+PiBZb3Ug
+YXJlIGFscmVhZHkgYWxpZ25pbmcgdGhlIEFIQiByZWFkcyBmb3IgdGhpcyBpbiBueHBfZnNwaV9h
+ZGp1c3Rfb3Bfc2l6ZSgpLg0KPj4+ICAgIA0KPj4gWWVzLCBtYXggcmVhZCBkYXRhIHNpemUgY2Fu
+IGJlIGFoYl9idWZfc2l6ZS4gVGh1cyB3ZSBuZWVkIHRvIGNoZWNrIG1heCByZWFkIHNpemUgd2l0
+aCBhaGJfYnVmX3NpemUuDQo+IA0KPiBXZWxsLCBpdCdzIG5ldmVyIGEgYmFkIHRoaW5nIHRvIGNo
+ZWNrIGl0IHR3aWNlLCBqdXN0IGluIGNhc2UgdGhlDQo+IHNwaS1tZW0gdXNlciBpcyBtaXN1c2lu
+ZyB0aGUgQVBJLg0KPiANCj4+Pj4gK3N0YXRpYyB2b2lkIG54cF9mc3BpX2ZpbGxfdHhmaWZvKHN0
+cnVjdCBueHBfZnNwaSAqZiwNCj4+Pj4gKwkJCQkgY29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9w
+KQ0KPj4+PiArew0KPj4+PiArCXZvaWQgX19pb21lbSAqYmFzZSA9IGYtPmlvYmFzZTsNCj4+Pj4g
+KwlpbnQgaSwgaiwgcmV0Ow0KPj4+PiArCWludCBzaXplLCB0bXBfc2l6ZSwgd21fc2l6ZTsNCj4+
+Pj4gKwl1MzIgZGF0YSA9IDA7DQo+Pj4+ICsJdTMyICp0eGJ1ZiA9ICh1MzIgKikgb3AtPmRhdGEu
+YnVmLm91dDsNCj4+Pj4gKw0KPj4+PiArCS8qIGNsZWFyIHRoZSBUWCBGSUZPLiAqLw0KPj4+PiAr
+CWZzcGlfd3JpdGVsKGYsIEZTUElfSVBUWEZDUl9DTFIsIGJhc2UgKyBGU1BJX0lQVFhGQ1IpOw0K
+Pj4+PiArDQo+Pj4+ICsJLyogRGVmYXVsdCB2YWx1ZSBvZiB3YXRlciBtYXJrIGxldmVsIGlzIDgg
+Ynl0ZXMuICovDQo+Pj4+ICsJd21fc2l6ZSA9IDg7DQo+Pj4+ICsJc2l6ZSA9IG9wLT5kYXRhLm5i
+eXRlcyAvIHdtX3NpemU7DQo+Pj4+ICsJZm9yIChpID0gMDsgaSA8IHNpemU7IGkrKykgew0KPj4+
+PiArCQkvKiBXYWl0IGZvciBUWEZJRk8gZW1wdHkgKi8NCj4+Pj4gKwkJcmV0ID0gZnNwaV9yZWFk
+bF9wb2xsX3RvdXQoZiwgZi0+aW9iYXNlICsgRlNQSV9JTlRSLA0KPj4+PiArCQkJCQkgICBGU1BJ
+X0lOVFJfSVBUWFdFLCAwLA0KPj4+PiArCQkJCQkgICBQT0xMX1RPVVQsIHRydWUpOw0KPj4+PiAr
+CQlXQVJOX09OKHJldCk7DQo+Pj4+ICsNCj4+Pj4gKwkJaiA9IDA7DQo+Pj4+ICsJCXRtcF9zaXpl
+ID0gd21fc2l6ZTsNCj4+Pj4gKwkJd2hpbGUgKHRtcF9zaXplID4gMCkgew0KPj4+PiArCQkJZGF0
+YSA9IDA7DQo+Pj4+ICsJCQltZW1jcHkoJmRhdGEsIHR4YnVmLCA0KTsNCj4+Pj4gKwkJCWZzcGlf
+d3JpdGVsKGYsIGRhdGEsIGJhc2UgKyBGU1BJX1RGRFIgKyBqICogNCk7DQo+Pj4+ICsJCQl0bXBf
+c2l6ZSAtPSA0Ow0KPj4+PiArCQkJaisrOw0KPj4+PiArCQkJdHhidWYgKz0gMTsNCj4+Pj4gKwkJ
+fQ0KPj4+PiArCQlmc3BpX3dyaXRlbChmLCBGU1BJX0lOVFJfSVBUWFdFLCBiYXNlICsgRlNQSV9J
+TlRSKTsNCj4+Pj4gKwl9DQo+Pj4+ICsNCj4+Pj4gKwlzaXplID0gb3AtPmRhdGEubmJ5dGVzICUg
+d21fc2l6ZTsNCj4+Pj4gKwlpZiAoc2l6ZSkgew0KPj4+PiArCQkvKiBXYWl0IGZvciBUWEZJRk8g
+ZW1wdHkgKi8NCj4+Pj4gKwkJcmV0ID0gZnNwaV9yZWFkbF9wb2xsX3RvdXQoZiwgZi0+aW9iYXNl
+ICsgRlNQSV9JTlRSLA0KPj4+PiArCQkJCQkgICBGU1BJX0lOVFJfSVBUWFdFLCAwLA0KPj4+PiAr
+CQkJCQkgICBQT0xMX1RPVVQsIHRydWUpOw0KPj4+PiArCQlXQVJOX09OKHJldCk7DQo+Pj4+ICsN
+Cj4+Pj4gKwkJaiA9IDA7DQo+Pj4+ICsJCXRtcF9zaXplID0gMDsNCj4+Pj4gKwkJd2hpbGUgKHNp
+emUgPiAwKSB7DQo+Pj4+ICsJCQlkYXRhID0gMDsNCj4+Pj4gKwkJCXRtcF9zaXplID0gKHNpemUg
+PCA0KSA/IHNpemUgOiA0Ow0KPj4+PiArCQkJbWVtY3B5KCZkYXRhLCB0eGJ1ZiwgdG1wX3NpemUp
+Ow0KPj4+PiArCQkJZnNwaV93cml0ZWwoZiwgZGF0YSwgYmFzZSArIEZTUElfVEZEUiArIGogKiA0
+KTsNCj4+Pj4gKwkJCXNpemUgLT0gdG1wX3NpemU7DQo+Pj4+ICsJCQlqKys7DQo+Pj4+ICsJCQl0
+eGJ1ZiArPSAxOw0KPj4+PiArCQl9DQo+Pj4+ICsJCWZzcGlfd3JpdGVsKGYsIEZTUElfSU5UUl9J
+UFRYV0UsIGJhc2UgKyBGU1BJX0lOVFIpOw0KPj4+PiArCX0NCj4+Pg0KPj4+IEFsbCB0aGVzZSBu
+ZXN0ZWQgbG9vcHMgdG8gZmlsbCB0aGUgVFggYnVmZmVyIGFuZCBhbHNvIHRoZSBvbmVzIGJlbG93
+IHRvIHJlYWQgdGhlDQo+Pj4gUlggYnVmZmVyIGxvb2sgbXVjaCBtb3JlIGNvbXBsaWNhdGVkIHRo
+YW4gdGhleSBzaG91bGQgcmVhbGx5IGJlLiBDYW4geW91IHRyeSB0bw0KPj4+IG1ha2UgdGhpcyBt
+b3JlIHJlYWRhYmxlPw0KPj4gWWVzDQo+Pj4NCj4+PiBNYXliZSBzb21ldGhpbmcgbGlrZSB0aGlz
+IHdvdWxkIHdvcms6DQo+Pj4NCj4+PiBmb3IgKGkgPSAwOyBpIDwgQUxJR05fRE9XTihvcC0+ZGF0
+YS5uYnl0ZXMsIDgpOyBpICs9IDgpIHsNCj4+PiAJLyogV2FpdCBmb3IgVFhGSUZPIGVtcHR5ICov
+DQo+Pj4gCXJldCA9IGZzcGlfcmVhZGxfcG9sbF90b3V0KGYsIGYtPmlvYmFzZSArIEZTUElfSU5U
+UiwNCj4+PiAJCQkJICAgRlNQSV9JTlRSX0lQVFhXRSwgMCwNCj4+PiAJCQkJICAgUE9MTF9UT1VU
+LCB0cnVlKTsNCj4+Pg0KPj4+IAlmc3BpX3dyaXRlbChmLCBvcC0+ZGF0YS5idWYub3V0ICsgaSwg
+YmFzZSArIEZTUElfVEZEUik7DQo+Pj4gCWZzcGlfd3JpdGVsKGYsIG9wLT5kYXRhLmJ1Zi5vdXQg
+KyBpICsgNCwgYmFzZSArIEZTUElfVEZEUiArIDQpOw0KPj4+IAlmc3BpX3dyaXRlbChmLCBGU1BJ
+X0lOVFJfSVBUWFdFLCBiYXNlICsgRlNQSV9JTlRSKTsgfQ0KPj4gV2l0aCB0aGlzIGFib3ZlIDIg
+bGluZXMgd2UgYXJlIGhhcmRjb2RpbmcgaXQgZm9yIHJlYWQvd3JpdGUgd2l0aCB3YXRlcm1hcmsg
+c2l6ZSBhcyA4IGJ5dGVzLg0KPj4gV2F0ZXJtYXJrIHNpemUgY2FuIGJlIHZhcmlhYmxlIGFuZCBk
+ZXBlbmRzIG9uIHRoZSB2YWx1ZSBvZiBJUFJYRkNSL0lQVFhGQ1IgcmVnaXN0ZXIgd2l0aCBkZWZh
+dWx0IHZhbHVlIGFzIDggYnl0ZXMNCj4+IFRodXMsIEkgd291bGQgc3RpbGwgcHJlZmVyIHRvIHVz
+ZSB0aGUgaW50ZXJuYWwgZm9yIGxvb3AgaW5zdGVhZCBvZiAyIGZzcGlfd3JpdGVsKC4uLikgZm9y
+IEZTUElfVEZEUiBhbmQgRlNQSV9URkRSICsgNCByZWdpc3RlciB3cml0ZSBjb21tYW5kcy4NCj4g
+DQo+IEp1c3QgbGlrZSB5b3UncmUgaGFyZGNvZGluZyB3bV9zaXplIHRvIDgsIHNvIEkgZG9uJ3Qg
+c2VlIGEgZGlmZmVyZW5jZQ0KPiBoZXJlLiBBbmQgSSBpbmRlZWQgcHJlZmVyIEZyaWVkZXIncyB2
+ZXJzaW9uLg0KDQpZZXMsIGFzIGxvbmcgYXMgdGhlIHdhdGVybWFyayBsZXZlbCBpcyBmaXhlZCwg
+d2UgZG9uJ3QgbmVlZCB0aGUgaW5uZXIgbG9vcC4=

@@ -1,8 +1,8 @@
 From: Boris Brezillon <boris.brezillon@bootlin.com>
 Subject: Re: [PATCH v5 1/5] spi: spi-mem: Add driver for NXP FlexSPI
  controller
-Date: Mon, 10 Dec 2018 12:03:59 +0100
-Message-ID: <20181210120359.24a2ea9a@bbrezillon>
+Date: Mon, 10 Dec 2018 12:09:25 +0100
+Message-ID: <20181210120925.3c6336f6@bbrezillon>
 References: <1542366701-16065-1-git-send-email-yogeshnarayan.gaur@nxp.com>
         <1542366701-16065-2-git-send-email-yogeshnarayan.gaur@nxp.com>
         <eb8a31d8-2ba6-f27c-addf-545c77921b77@kontron.de>
@@ -92,7 +92,8 @@ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 > AHB/IP operations are independent of the way how CS got selected. CS selection depends, e.g. CS1 on the value of register FSPI_FLSHA1CR0 and FSPI_FLSHA2CR0.
 > 
 > Mapping can never going to be smaller than the connected flash size as per discussion with the Board design team and if it's possible by user manually changes the non-soldered part then flash area beyond complete mapping is not accessible.
+> On LX2160ARDB, with mapping of 256MB, for now we are having 4 flash devices connected with size as 64 MB. If user wants he can have only one single flash with flash size of 256MB.
 
-How unfortunate is that, especially when all that was required was an
-extra reg to specify a "flash_offset" to apply to the address passed by
-the AHB logic.
+Given that the dirmap interface has now been merged and the MTD side of
+things is soon to be merged, I'd recommend you to implement it in your
+v6 and only use non-AHB accesses for the ->exec_op() implementation.

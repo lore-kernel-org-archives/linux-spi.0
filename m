@@ -1,7 +1,7 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v5 0/7] spi: add support for octal mode
-Date: Mon, 10 Dec 2018 04:13:28 +0000
-Message-ID: <VI1PR04MB572641541BB83E587541BBD099A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
+Date: Mon, 10 Dec 2018 09:22:08 +0100
+Message-ID: <20181210092208.0971c3be@bbrezillon>
 References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
  <20181203101937.7b01a0ad@bbrezillon>
  <214dadd9-859c-ca88-1aff-1c83fcfa3c0b@ti.com>
@@ -10,67 +10,54 @@ References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
  <20181206074554.0ec0aecb@bbrezillon>
  <VI1PR04MB572620BB57CB01A352904BB999A90@VI1PR04MB5726.eurprd04.prod.outlook.com>
  <20181206202956.GG3084@sirena.org.uk>
+ <VI1PR04MB572641541BB83E587541BBD099A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: Boris Brezillon <boris.brezillon@bootlin.com>,
-        Vignesh R <vigneshr@ti.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181206202956.GG3084@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Vignesh R <vigneshr@ti.com>, "robh@kernel.org" <robh@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+ Mark Brown <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <VI1PR04MB572641541BB83E587541BBD099A50@VI1PR04MB5726.eurprd04.prod.outlook.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Yogesh,
 
-Patch has been resend [1], this patch is depends on the series of patch[2] =
-and this series has been applied by Boris already.
+On Mon, 10 Dec 2018 04:13:28 +0000
+Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
 
-[1] https://patchwork.ozlabs.org/patch/1010253/
-[2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70384&sta=
-te=3D*
+> Hi Mark,
+> 
+> Patch has been resend [1], this patch is depends on the series of patch[2] and this series has been applied by Boris already.
 
---
-Regards
-Yogesh Gaur
+You're still not asking the right person. Every patches touching
+things in drivers/mtd/ should be taken by me (or another MTD
+maintainer), and patches touching things in drivers/spi/ should be
+taken by Mark. So, the patch you're pointing to should be applied by
+me. Plus, I told you I would apply it after 4.21-rc1 because I don't
+want to deal with the mtd -> spi dependency.
 
-> -----Original Message-----
-> From: Mark Brown [mailto:broonie@kernel.org]
-> Sent: Friday, December 7, 2018 2:00 AM
-> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> Cc: Boris Brezillon <boris.brezillon@bootlin.com>; Vignesh R <vigneshr@ti=
-.com>;
-> linux-mtd@lists.infradead.org; marek.vasut@gmail.com; linux-
-> spi@vger.kernel.org; devicetree@vger.kernel.org; robh@kernel.org;
-> mark.rutland@arm.com; shawnguo@kernel.org; linux-arm-
-> kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@exceet.de; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH v5 0/7] spi: add support for octal mode
->=20
-> On Thu, Dec 06, 2018 at 06:49:08AM +0000, Yogesh Narayan Gaur wrote:
->=20
-> > Sorry for ignorance. Did patches needs to be applied by Mark Brown, sho=
-uld I
-> resend the patch series again?
-> > Also can you please review the series [1] and add your Reviewed-by tag.
->=20
-> As I said in my reply earlier today in the same thread:
->=20
-> | I don't have this any more, it looked like this was stuck behind the
-> | otehr MTD changes which seemed to have problems.  If someone could
-> | resend?
->=20
-> so please resend.
+Please be patient.
+
+Regards,
+
+Boris

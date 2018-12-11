@@ -1,93 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 0/5] spi: imx: Fix polarity switching for mx51-ecspi
-Date: Tue, 11 Dec 2018 11:56:01 +0000
-Message-ID: <20181211115601.GB6686@sirena.org.uk>
-References: <20181130064709.6998-1-u.kleine-koenig@pengutronix.de>
- <20181210215241.umiy7olfi4y7ghs2@pengutronix.de>
- <20181211011428.GH3004@sirena.org.uk>
- <20181211071300.7xxmzhfj26qt2tle@pengutronix.de>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH] ARM: dts: at91: sama5d2 Xplained: add QSPI0 + SPI NOR
+ memory nodes
+Date: Tue, 11 Dec 2018 12:32:40 +0000
+Message-ID: <22730de3-55f0-df21-312a-560a02f02dc7@microchip.com>
+References: <20181210171511.21002-1-tudor.ambarus@microchip.com>
+ <20181210213553.GK8952@piout.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7694963425899343601=="
-Cc: Marek Vasut <marex@denx.de>, linux-spi@vger.kernel.org,
- NXP Linux Team <linux-imx@nxp.com>, kernel@pengutronix.de,
- Robin Gong <yibin.gong@nxp.com>, linux-arm-kernel@lists.infradead.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20181211071300.7xxmzhfj26qt2tle@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <Nicolas.Ferre@microchip.com>, <Ludovic.Desroches@microchip.com>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Cyrille.Pitchen@microchip.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <boris.brezillon@bootlin.com>, <linux-mtd@lists.infradead.org>,
+        <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+To: <alexandre.belloni@bootlin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20181210213553.GK8952@piout.net>
+Content-Language: en-US
+Content-ID: <FDD38498AEBB3547A3FAB81144C33D0F@namprd11.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============7694963425899343601==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hQiwHBbRI9kgIhsi"
-Content-Disposition: inline
-
-
---hQiwHBbRI9kgIhsi
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Dec 11, 2018 at 08:13:00AM +0100, Uwe Kleine-K=F6nig wrote:
-> On Tue, Dec 11, 2018 at 01:14:28AM +0000, Mark Brown wrote:
-
-> > It looked like there was an unanswered question about if patch 2 was
-> > needed or not?  Marek?
-
-> I cannot find an unanswered question. There is a workaround that Marek
-> introduced in 6fd8b8503a0dcf66510314dc054745087ae89f94 that might not be
-> needed any more with my patch 2. So it's the other way round: If Marek's
-> problem is fixed by patch 2, my patch is the better one. I have problems
-> with SCK changing polarity when CS is already asserted in the presence
-> of Marek's change. After my change they are gone. Even if this
-> workaround is superflous now, it doesn't hurt and IMHO the question if
-> it is needed or not should not delay my fix.
-
-That was the unanswered question.
-
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
-
---hQiwHBbRI9kgIhsi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwPpdAACgkQJNaLcl1U
-h9AW2wf/epfY5+fNfX7inQ4diih/d8xpOviNzpNb71+mgdpdynVe0TmXF6Lcn3me
-sw4EI2zIxKds7J1Of2r3US7XO3J9kt+DqJ3uT5tlvUuFJVqk/MnMfVbZWG2OeccX
-MRm5Ovg+0tE00wmHNiP6lNWJuMK9VBGyjkznwzjttaKqzfGOCqIGR5+paFD0JX20
-Z1ikU9kgdFdk8E/K1WzAvy9okixqJke4BsPzAKwT5qWDuF2H6+TeTMdOA/LDds8r
-PyshDXwDDtfL2clIW3z0lvkGJXCsHOHESW+2/2/N+5OGWm89JdNR0gO1Buvw3H/U
-scoD/2+21EZQoYwFyAxDmfPYEFiR8Q==
-=cae1
------END PGP SIGNATURE-----
-
---hQiwHBbRI9kgIhsi--
-
-
---===============7694963425899343601==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============7694963425899343601==--
+SGksIEFsZXhhbmRyZSwNCg0KT24gMTIvMTAvMjAxOCAxMTozNSBQTSwgQWxleGFuZHJlIEJlbGxv
+bmkgd3JvdGU6DQo+IEhpLA0KPiANCj4gT24gMTAvMTIvMjAxOCAxNzoxNToyOSswMDAwLCBUdWRv
+ci5BbWJhcnVzQG1pY3JvY2hpcC5jb20gd3JvdGU6DQo+PiBGcm9tOiBDeXJpbGxlIFBpdGNoZW4g
+PGN5cmlsbGUucGl0Y2hlbkBtaWNyb2NoaXAuY29tPg0KPj4NCj4+IFRoaXMgcGF0Y2ggY29uZmln
+dXJlcyB0aGUgUVNQSTAgY29udHJvbGxlciBwaW4gbXV4aW5nIGFuZCBkZWNsYXJlcw0KPj4gYSBq
+ZWRlYyxzcGktbm9yIG1lbW9yeS4NCj4+DQo+PiBzYW1hNWQyIFhwbGFpbmVkIFJldkIgYW5kIFJl
+dkMgdXNlIHRoZSBNYWNyb25peCBNWDI1TDI1NjczRyBmbGFzaA0KPj4gbWVtb3J5IHdoaWNoIGFk
+dmVydGlzZXMgYSBtYXhpbXVtIGZyZXF1ZW5jeSBvZiA4ME1IeiBmb3IgUXVhZCBJTw0KPj4gRmFz
+dCBSZWFkLiBTZXQgdGhlIHNwaS1tYXgtZnJlcXVlbmN5IHRvIDgwTUh6IGtub3dpbmcgdGhhdCBh
+Y3R1YWxseQ0KPj4gdGhlIFFTUEkgZHJ2ZXIgd2lsbCBzZXQgdGhlIFNQSSBidXMgY2xvY2sgdG8g
+MTY2TUh6IC8gMyA9IDU1LjNNSHouDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogQ3lyaWxsZSBQaXRj
+aGVuIDxjeXJpbGxlLnBpdGNoZW5AbWljcm9jaGlwLmNvbT4NCj4+IFt0dWRvci5hbWJhcnVzQG1p
+Y3JvY2hpcC5jb206DQo+PiAtIGRyb3AgcGFydGl0aW9ucywNCj4+IC0gYWRkIHNwaS1yeC90eC1i
+dXMtd2lkdGgNCj4+IC0gY2hhbmdlIHNwaS1tYXgtZnJlcXVlbmN5IHRvIG1hdGNoIHRoZSA4ME1I
+eiBsaW1pdCBhZHZlcnRpc2VkIGJ5DQo+PiAgIE1YMjVMMjU2NzNHIGZvciBRdWFkIElPIEZhc3Qg
+UmVhZCwNCj4+IC0gcmV3b3JkIGNvbW1pdCBtZXNzYWdlIGFuZCBzdWJqZWN0Ll0NCj4+IFNpZ25l
+ZC1vZmYtYnk6IFR1ZG9yIEFtYmFydXMgPHR1ZG9yLmFtYmFydXNAbWljcm9jaGlwLmNvbT4NCj4+
+IC0tLQ0KPj4gIGFyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94cGxhaW5lZC5kdHMgfCAz
+MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gIDEgZmlsZSBjaGFuZ2VkLCAzMSBp
+bnNlcnRpb25zKCspDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jvb3QvZHRzL2F0OTEt
+c2FtYTVkMl94cGxhaW5lZC5kdHMgYi9hcmNoL2FybS9ib290L2R0cy9hdDkxLXNhbWE1ZDJfeHBs
+YWluZWQuZHRzDQo+PiBpbmRleCA1MThlMmIwOTVjY2YuLjE3MWJjODJjZmJiZiAxMDA2NDQNCj4+
+IC0tLSBhL2FyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94cGxhaW5lZC5kdHMNCj4+ICsr
+KyBiL2FyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94cGxhaW5lZC5kdHMNCj4+IEBAIC0x
+MDgsNiArMTA4LDIxIEBADQo+PiAgCQl9Ow0KPj4gIA0KPj4gIAkJYXBiIHsNCj4+ICsJCQlxc3Bp
+MDogc3BpQGYwMDIwMDAwIHsNCj4+ICsJCQkJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsNCj4+
+ICsJCQkJcGluY3RybC0wID0gPCZwaW5jdHJsX3FzcGkwX2RlZmF1bHQ+Ow0KPj4gKwkJCQkvKiBz
+dGF0dXMgPSAib2theSI7ICovIC8qIGNvbmZsaWN0IHdpdGggc2RtbWMxICovDQo+IA0KPiBJc24n
+dCB0aGF0IGNvbmZsaWN0aW5nIHRoZW4gYmVjYXVzZSBJIHRoaW5rIHRoZSBkZWZhdWx0IGlzIG9r
+YXkuDQpxc3BpMCBpcyBkaXNhYmxlZCBpbiBzYW1hNWQyLmR0c2kuDQoNClRoYW5rcywNCnRhDQo=

@@ -1,51 +1,47 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: lpspi: enable runtime pm for lpspi
-Date: Tue, 11 Dec 2018 14:28:17 +0000
-Message-ID: <20181211142817.GH6686@sirena.org.uk>
-References: <20181204061904.28567-1-xiaoning.wang@nxp.com>
+Subject: Re: [PATCH] spi: lpspi: Improve the stability of lpspi data
+ transmission
+Date: Tue, 11 Dec 2018 14:29:19 +0000
+Message-ID: <20181211142919.GI6686@sirena.org.uk>
+References: <20181204062122.28745-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tcC6YSqBgqqkz7Sb"
+        protocol="application/pgp-signature"; boundary="3U8TY7m7wOx7RL1F"
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 To: Clark Wang <xiaoning.wang@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181204061904.28567-1-xiaoning.wang@nxp.com>
+In-Reply-To: <20181204062122.28745-1-xiaoning.wang@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---tcC6YSqBgqqkz7Sb
+--3U8TY7m7wOx7RL1F
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 04, 2018 at 06:19:48AM +0000, Clark Wang wrote:
-> 	From: Han Xu <han.xu@nxp.com>
->=20
-> 	Enable the runtime power management for lpspi module.
->=20
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> Reviewed-by: Frank Li <frank.li@nxp.com>
-> ---
+On Tue, Dec 04, 2018 at 06:22:15AM +0000, Clark Wang wrote:
+> Use SR_TDF to judge if need to send data, and SR_FCF is to judge if
+> transmission end and to replace the waiting after transmission end.
+> This waiting has no actual meaning, for module will set the FCF
+> flag at the real end.
 
-There's no signed-off-by from you here?  These are required, please see
-submitting-patches.rst.
+This doesn't apply against current code, please check and resend.
 
---tcC6YSqBgqqkz7Sb
+--3U8TY7m7wOx7RL1F
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwPyYEACgkQJNaLcl1U
-h9A9Uwf/aUuyT1NOiWcTUqBmy7bH6x49cZHklJMQKrGTKmN83W4CdGSTprqBjzf6
-RczLCUfy+L8uTXtl7M7ZOu8tyBZf59G5amhjI5QDhtmhoTMqjz2iLLIEyFdC8ylp
-jPrp+anLGApxfMLAmNzcTdlf2I+1ONvf6TDYC4TZWH++MOW562Sa9vN2bOx22thf
-ps/awOEY0M2oAzK/y+SILaliLLr+ilJooqF6iDOstXNAFN9ZL2KxZTgH/a7clHzo
-9isM6zV3rDdB2wn3s2e4TKb5g9dQSCNDv93TgyQJ6bL/Su2qFRa8gGXS5oBEvWbu
-BjH9gg366MsrybCXyV7kXIfCgqpj+A==
-=4naq
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwPyb4ACgkQJNaLcl1U
+h9CHXAf9FzW3QYoHquCa9xNOaHc8+L8/4d8c8CsaMHI/hjWw2TNzTKR15YFgmJZf
+68l/M19BJNklr7pLcp+Vp0C39N5GM8FXxZXrOJqRQ7c8Vxp5tBajb4oxNaoag9xc
+Gc7nq55WTK4zyp3A2d4K7aATEuo4eEYCaZGKbIFgowKstKYAJ6JMGFWrUTi7DoPx
+KN+odSPJxxRB0HqLmNYRLsPB5S07e4cI7cVd8Kr79YvIbwJgMsmqFEzSpY40x1//
++la+hkQ09O39H0MCZkBnt17T1PWJLwj/vozapy6ElTnoVEMs+0aLMpt5zwtY21O2
+2ZtYP2FphHoJT1vnvKkz7IEBKkojag==
+=iClv
 -----END PGP SIGNATURE-----
 
---tcC6YSqBgqqkz7Sb--
+--3U8TY7m7wOx7RL1F--

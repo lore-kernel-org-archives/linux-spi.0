@@ -1,81 +1,62 @@
-From: Ludovic Desroches <ludovic.desroches@microchip.com>
+From: <Tudor.Ambarus@microchip.com>
 Subject: Re: [PATCH] ARM: dts: at91: sama5d2 Xplained: add QSPI0 + SPI NOR
  memory nodes
-Date: Tue, 11 Dec 2018 15:48:58 +0100
-Message-ID: <20181211144858.dnbj5iozgk74wzdm@M43218.corp.atmel.com>
+Date: Tue, 11 Dec 2018 14:49:44 +0000
+Message-ID: <6e2aa831-dc12-8431-d089-10f35cec4cd6@microchip.com>
 References: <20181210171511.21002-1-tudor.ambarus@microchip.com>
  <20181211154033.076506aa@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <Tudor.Ambarus@microchip.com>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <robh+dt@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <robh+dt@kernel.org>,
         <mark.rutland@arm.com>, <Cyrille.Pitchen@microchip.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-mtd@lists.infradead.org>, <broonie@kernel.org>,
         <linux-spi@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
+To: <boris.brezillon@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 In-Reply-To: <20181211154033.076506aa@bbrezillon>
+Content-Language: en-US
+Content-ID: <5AE205E46F5C584988A42C922C116D79@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 11, 2018 at 03:40:33PM +0100, Boris Brezillon wrote:
-> On Mon, 10 Dec 2018 17:15:29 +0000
-> <Tudor.Ambarus@microchip.com> wrote:
-> 
-> > From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
-> > 
-> > This patch configures the QSPI0 controller pin muxing and declares
-> > a jedec,spi-nor memory.
-> > 
-> > sama5d2 Xplained RevB and RevC use the Macronix MX25L25673G flash
-> > memory which advertises a maximum frequency of 80MHz for Quad IO
-> > Fast Read. Set the spi-max-frequency to 80MHz knowing that actually
-> > the QSPI drver will set the SPI bus clock to 166MHz / 3 = 55.3MHz.
-> > 
-> > Signed-off-by: Cyrille Pitchen <cyrille.pitchen@microchip.com>
-> > [tudor.ambarus@microchip.com:
-> > - drop partitions,
-> > - add spi-rx/tx-bus-width
-> > - change spi-max-frequency to match the 80MHz limit advertised by
-> >   MX25L25673G for Quad IO Fast Read,
-> > - reword commit message and subject.]
-> > Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> > ---
-> >  arch/arm/boot/dts/at91-sama5d2_xplained.dts | 31 +++++++++++++++++++++++++++++
-> >  1 file changed, 31 insertions(+)
-> > 
-> > diff --git a/arch/arm/boot/dts/at91-sama5d2_xplained.dts b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-> > index 518e2b095ccf..171bc82cfbbf 100644
-> > --- a/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-> > +++ b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-> > @@ -108,6 +108,21 @@
-> >  		};
-> >  
-> >  		apb {
-> > +			qspi0: spi@f0020000 {
-> > +				pinctrl-names = "default";
-> > +				pinctrl-0 = <&pinctrl_qspi0_default>;
-> > +				/* status = "okay"; */ /* conflict with sdmmc1 */
-> > +
-> > +				flash@0 {
-> > +					compatible = "jedec,spi-nor";
-> > +					reg = <0>;
-> > +					spi-max-frequency = <80000000>;
-> > +					spi-tx-bus-width = <4>;
-> > +					spi-rx-bus-width = <4>;
-> > +					m25p,fast-read;
-> > +				};
-> 
-> I'm a bit lost. What's the point of defining this if the QSPI
-> controller is not enabled?
-
-It's a way to avoid customer struggling with the device tree. If he
-doesn't care about sdmmc1, he can easily enable the qpsi controller and
-get access to the memory.
-
-Regards
-
-Ludovic
+SGksIEJvcmlzLA0KDQpPbiAxMi8xMS8yMDE4IDA0OjQwIFBNLCBCb3JpcyBCcmV6aWxsb24gd3Jv
+dGU6DQo+IE9uIE1vbiwgMTAgRGVjIDIwMTggMTc6MTU6MjkgKzAwMDANCj4gPFR1ZG9yLkFtYmFy
+dXNAbWljcm9jaGlwLmNvbT4gd3JvdGU6DQo+IA0KPj4gRnJvbTogQ3lyaWxsZSBQaXRjaGVuIDxj
+eXJpbGxlLnBpdGNoZW5AbWljcm9jaGlwLmNvbT4NCj4+DQo+PiBUaGlzIHBhdGNoIGNvbmZpZ3Vy
+ZXMgdGhlIFFTUEkwIGNvbnRyb2xsZXIgcGluIG11eGluZyBhbmQgZGVjbGFyZXMNCj4+IGEgamVk
+ZWMsc3BpLW5vciBtZW1vcnkuDQo+Pg0KPj4gc2FtYTVkMiBYcGxhaW5lZCBSZXZCIGFuZCBSZXZD
+IHVzZSB0aGUgTWFjcm9uaXggTVgyNUwyNTY3M0cgZmxhc2gNCj4+IG1lbW9yeSB3aGljaCBhZHZl
+cnRpc2VzIGEgbWF4aW11bSBmcmVxdWVuY3kgb2YgODBNSHogZm9yIFF1YWQgSU8NCj4+IEZhc3Qg
+UmVhZC4gU2V0IHRoZSBzcGktbWF4LWZyZXF1ZW5jeSB0byA4ME1IeiBrbm93aW5nIHRoYXQgYWN0
+dWFsbHkNCj4+IHRoZSBRU1BJIGRydmVyIHdpbGwgc2V0IHRoZSBTUEkgYnVzIGNsb2NrIHRvIDE2
+Nk1IeiAvIDMgPSA1NS4zTUh6Lg0KDQpzL2RydmVyL2RyaXZlcg0KDQo+Pg0KPj4gU2lnbmVkLW9m
+Zi1ieTogQ3lyaWxsZSBQaXRjaGVuIDxjeXJpbGxlLnBpdGNoZW5AbWljcm9jaGlwLmNvbT4NCj4+
+IFt0dWRvci5hbWJhcnVzQG1pY3JvY2hpcC5jb206DQo+PiAtIGRyb3AgcGFydGl0aW9ucywNCj4+
+IC0gYWRkIHNwaS1yeC90eC1idXMtd2lkdGgNCj4+IC0gY2hhbmdlIHNwaS1tYXgtZnJlcXVlbmN5
+IHRvIG1hdGNoIHRoZSA4ME1IeiBsaW1pdCBhZHZlcnRpc2VkIGJ5DQo+PiAgIE1YMjVMMjU2NzNH
+IGZvciBRdWFkIElPIEZhc3QgUmVhZCwNCj4+IC0gcmV3b3JkIGNvbW1pdCBtZXNzYWdlIGFuZCBz
+dWJqZWN0Ll0NCj4+IFNpZ25lZC1vZmYtYnk6IFR1ZG9yIEFtYmFydXMgPHR1ZG9yLmFtYmFydXNA
+bWljcm9jaGlwLmNvbT4NCj4+IC0tLQ0KPj4gIGFyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVk
+Ml94cGxhaW5lZC5kdHMgfCAzMSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gIDEg
+ZmlsZSBjaGFuZ2VkLCAzMSBpbnNlcnRpb25zKCspDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94cGxhaW5lZC5kdHMgYi9hcmNoL2FybS9ib290L2R0
+cy9hdDkxLXNhbWE1ZDJfeHBsYWluZWQuZHRzDQo+PiBpbmRleCA1MThlMmIwOTVjY2YuLjE3MWJj
+ODJjZmJiZiAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94
+cGxhaW5lZC5kdHMNCj4+ICsrKyBiL2FyY2gvYXJtL2Jvb3QvZHRzL2F0OTEtc2FtYTVkMl94cGxh
+aW5lZC5kdHMNCj4+IEBAIC0xMDgsNiArMTA4LDIxIEBADQo+PiAgCQl9Ow0KPj4gIA0KPj4gIAkJ
+YXBiIHsNCj4+ICsJCQlxc3BpMDogc3BpQGYwMDIwMDAwIHsNCj4+ICsJCQkJcGluY3RybC1uYW1l
+cyA9ICJkZWZhdWx0IjsNCj4+ICsJCQkJcGluY3RybC0wID0gPCZwaW5jdHJsX3FzcGkwX2RlZmF1
+bHQ+Ow0KPj4gKwkJCQkvKiBzdGF0dXMgPSAib2theSI7ICovIC8qIGNvbmZsaWN0IHdpdGggc2Rt
+bWMxICovDQo+PiArDQo+PiArCQkJCWZsYXNoQDAgew0KPj4gKwkJCQkJY29tcGF0aWJsZSA9ICJq
+ZWRlYyxzcGktbm9yIjsNCj4+ICsJCQkJCXJlZyA9IDwwPjsNCj4+ICsJCQkJCXNwaS1tYXgtZnJl
+cXVlbmN5ID0gPDgwMDAwMDAwPjsNCj4+ICsJCQkJCXNwaS10eC1idXMtd2lkdGggPSA8ND47DQo+
+PiArCQkJCQlzcGktcngtYnVzLXdpZHRoID0gPDQ+Ow0KPj4gKwkJCQkJbTI1cCxmYXN0LXJlYWQ7
+DQo+PiArCQkJCX07DQo+IA0KPiBJJ20gYSBiaXQgbG9zdC4gV2hhdCdzIHRoZSBwb2ludCBvZiBk
+ZWZpbmluZyB0aGlzIGlmIHRoZSBRU1BJDQo+IGNvbnRyb2xsZXIgaXMgbm90IGVuYWJsZWQ/DQoN
+CllvdSBjYW4gZW5hYmxlIHFzcGkgaWYgeW91IGRpc2FibGUgc2RtbWMxLiBJIHRob3VnaHQgb2Yg
+aGF2aW5nIGFsbCBkZXNjcmliZWQNCnRvZ2V0aGVyIGFuZCBjaG9vc2Ugb25lIG9yIGFub3RoZXIg
+ZGVwZW5kaW5nIG9uIG5lZWRzLg0KDQp0YQ0K

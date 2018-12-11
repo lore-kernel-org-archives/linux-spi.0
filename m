@@ -1,135 +1,60 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v5 3/7] mtd: spi-nor: add opcodes for octal Read/Write
- commands
-Date: Tue, 11 Dec 2018 04:55:29 +0000
-Message-ID: <VI1PR04MB57264CBB25E2984DF221ED2E99A60@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1543826226-30898-4-git-send-email-yogeshnarayan.gaur@nxp.com>
- <ac569071-3c69-ebc8-2c18-ea1399210549@microchip.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v3 0/5] spi: imx: Fix polarity switching for mx51-ecspi
+Date: Tue, 11 Dec 2018 08:13:00 +0100
+Message-ID: <20181211071300.7xxmzhfj26qt2tle@pengutronix.de>
+References: <20181130064709.6998-1-u.kleine-koenig@pengutronix.de>
+ <20181210215241.umiy7olfi4y7ghs2@pengutronix.de>
+ <20181211011428.GH3004@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Tudor.Ambarus@microchip.com" <Tudor.Ambarus@microchip.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ac569071-3c69-ebc8-2c18-ea1399210549@microchip.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Marek Vasut <marex@denx.de>, linux-spi@vger.kernel.org,
+ NXP Linux Team <linux-imx@nxp.com>, kernel@pengutronix.de,
+ Robin Gong <yibin.gong@nxp.com>, linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20181211011428.GH3004@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVHVkb3IsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHVkb3Iu
-QW1iYXJ1c0BtaWNyb2NoaXAuY29tIFttYWlsdG86VHVkb3IuQW1iYXJ1c0BtaWNyb2NoaXAuY29t
-XQ0KPiBTZW50OiBNb25kYXksIERlY2VtYmVyIDEwLCAyMDE4IDQ6MTUgUE0NCj4gVG86IFlvZ2Vz
-aCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5hcmF5YW4uZ2F1ckBueHAuY29tPjsgbGludXgtDQo+IG10
-ZEBsaXN0cy5pbmZyYWRlYWQub3JnOyBib3Jpcy5icmV6aWxsb25AYm9vdGxpbi5jb207IGJyb29u
-aWVAa2VybmVsLm9yZzsNCj4gbWFyZWsudmFzdXRAZ21haWwuY29tOyB2aWduZXNockB0aS5jb207
-IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3Jn
-DQo+IENjOiByb2JoQGtlcm5lbC5vcmc7IG1hcmsucnV0bGFuZEBhcm0uY29tOyBzaGF3bmd1b0Br
-ZXJuZWwub3JnOyBsaW51eC0NCj4gYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBjb21w
-dXRlcnNmb3JwZWFjZUBnbWFpbC5jb207DQo+IGZyaWVkZXIuc2NocmVtcGZAZXhjZWV0LmRlOyBs
-aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjUgMy83
-XSBtdGQ6IHNwaS1ub3I6IGFkZCBvcGNvZGVzIGZvciBvY3RhbCBSZWFkL1dyaXRlDQo+IGNvbW1h
-bmRzDQo+IA0KPiBIaSwgWW9nZXNoLA0KPiANCj4gT24gMTIvMDMvMjAxOCAxMDozOSBBTSwgWW9n
-ZXNoIE5hcmF5YW4gR2F1ciB3cm90ZToNCj4gPiAtIEFkZCBvcGNvZGVzIGZvciBvY3RhbCBJL08g
-Y29tbWFuZHMNCj4gPiAgICogUmVhZCAgOiAxLTEtOCBhbmQgMS04LTggcHJvdG9jb2wNCj4gPiAg
-ICogV3JpdGUgOiAxLTEtOCBhbmQgMS04LTggcHJvdG9jb2wNCj4gPiAgICogb3Bjb2RlcyBmb3Ig
-NC1ieXRlIGFkZHJlc3MgbW9kZSBjb21tYW5kDQo+ID4NCj4gPiAtIEVudHJ5IG9mIG1hY3JvcyBp
-biBfY29udmVydF8zdG80X3h4eCBmdW5jdGlvbg0KPiA+DQo+ID4gLSBBZGQgZmxhZyBzcGVjaWZ5
-aW5nIGZsYXNoIHN1cHBvcnQgb2N0YWwgcmVhZCBjb21tYW5kcy4NCj4gPg0KPiA+IFNpZ25lZC1v
-ZmYtYnk6IFZpZ25lc2ggUiA8dmlnbmVzaHJAdGkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlv
-Z2VzaCBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiBDaGFu
-Z2VzIGZvciB2NToNCj4gPiAtIE1vZGlmaWVkIHN0cmluZyAnb2N0bycgd2l0aCAnb2N0YWwnLg0K
-PiA+IENoYW5nZXMgZm9yIHY0Og0KPiA+IC0gTm9uZQ0KPiA+IENoYW5nZXMgZm9yIHYzOg0KPiA+
-IC0gTW9kaWZpZWQgc3RyaW5nICdvY3RhbCcgd2l0aCAnb2N0bycuDQo+ID4gQ2hhbmdlcyBmb3Ig
-djI6DQo+ID4gLSBJbmNvcnBvcmF0ZWQgcmV2aWV3IGNvbW1lbnRzIG9mIEJvcmlzIGFuZCBWaWdu
-ZXNoDQo+ID4NCj4gPiAgZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMgfCAxNiArKysrKysr
-KysrKysrKy0tDQo+ID4gIGluY2x1ZGUvbGludXgvbXRkL3NwaS1ub3IuaCAgIHwgIDggKysrKysr
-KysNCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygt
-KQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+
-ID4gYi9kcml2ZXJzL210ZC9zcGktbm9yL3NwaS1ub3IuYyBpbmRleCAzOThkMjczLi43YTIxNzZk
-IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jDQo+ID4gKysr
-IGIvZHJpdmVycy9tdGQvc3BpLW5vci9zcGktbm9yLmMNCj4gPiBAQCAtOTAsNiArOTAsNyBAQCBz
-dHJ1Y3QgZmxhc2hfaW5mbyB7DQo+ID4gICNkZWZpbmUgTk9fQ0hJUF9FUkFTRQkJQklUKDEyKSAv
-KiBDaGlwIGRvZXMgbm90IHN1cHBvcnQgY2hpcA0KPiBlcmFzZSAqLw0KPiA+ICAjZGVmaW5lIFNQ
-SV9OT1JfU0tJUF9TRkRQCUJJVCgxMykJLyogU2tpcCBwYXJzaW5nIG9mIFNGRFAgdGFibGVzICov
-DQo+ID4gICNkZWZpbmUgVVNFX0NMU1IJCUJJVCgxNCkJLyogdXNlIENMU1IgY29tbWFuZCAqLw0K
-PiA+ICsjZGVmaW5lIFNQSV9OT1JfT0NUQUxfUkVBRAlCSVQoMTUpCS8qIEZsYXNoIHN1cHBvcnRz
-IE9jdGFsIFJlYWQgKi8NCj4gPg0KPiA+ICAJaW50CSgqcXVhZF9lbmFibGUpKHN0cnVjdCBzcGlf
-bm9yICpub3IpOw0KPiA+ICB9Ow0KPiA+IEBAIC0yMDksNiArMjEwLDggQEAgc3RhdGljIGlubGlu
-ZSB1OCBzcGlfbm9yX2NvbnZlcnRfM3RvNF9yZWFkKHU4IG9wY29kZSkNCj4gPiAgCQl7IFNQSU5P
-Ul9PUF9SRUFEXzFfMl8yLAlTUElOT1JfT1BfUkVBRF8xXzJfMl80QiB9LA0KPiA+ICAJCXsgU1BJ
-Tk9SX09QX1JFQURfMV8xXzQsCVNQSU5PUl9PUF9SRUFEXzFfMV80XzRCIH0sDQo+ID4gIAkJeyBT
-UElOT1JfT1BfUkVBRF8xXzRfNCwJU1BJTk9SX09QX1JFQURfMV80XzRfNEIgfSwNCj4gPiArCQl7
-IFNQSU5PUl9PUF9SRUFEXzFfMV84LAlTUElOT1JfT1BfUkVBRF8xXzFfOF80QiB9LA0KPiA+ICsJ
-CXsgU1BJTk9SX09QX1JFQURfMV84XzgsCVNQSU5PUl9PUF9SRUFEXzFfOF84XzRCIH0sDQo+ID4N
-Cj4gPiAgCQl7IFNQSU5PUl9PUF9SRUFEXzFfMV8xX0RUUiwNCj4gCVNQSU5PUl9PUF9SRUFEXzFf
-MV8xX0RUUl80QiB9LA0KPiA+ICAJCXsgU1BJTk9SX09QX1JFQURfMV8yXzJfRFRSLA0KPiAJU1BJ
-Tk9SX09QX1JFQURfMV8yXzJfRFRSXzRCIH0sDQo+ID4gQEAgLTIyNSw2ICsyMjgsOCBAQCBzdGF0
-aWMgaW5saW5lIHU4IHNwaV9ub3JfY29udmVydF8zdG80X3Byb2dyYW0odTgNCj4gb3Bjb2RlKQ0K
-PiA+ICAJCXsgU1BJTk9SX09QX1BQLAkJU1BJTk9SX09QX1BQXzRCIH0sDQo+ID4gIAkJeyBTUElO
-T1JfT1BfUFBfMV8xXzQsCVNQSU5PUl9PUF9QUF8xXzFfNF80QiB9LA0KPiA+ICAJCXsgU1BJTk9S
-X09QX1BQXzFfNF80LAlTUElOT1JfT1BfUFBfMV80XzRfNEIgfSwNCj4gPiArCQl7IFNQSU5PUl9P
-UF9QUF8xXzFfOCwJU1BJTk9SX09QX1BQXzFfMV84XzRCIH0sDQo+ID4gKwkJeyBTUElOT1JfT1Bf
-UFBfMV84XzgsCVNQSU5PUl9PUF9QUF8xXzhfOF80QiB9LA0KPiA+ICAJfTsNCj4gPg0KPiA+ICAJ
-cmV0dXJuIHNwaV9ub3JfY29udmVydF9vcGNvZGUob3Bjb2RlLCBzcGlfbm9yXzN0bzRfcHJvZ3Jh
-bSwgQEANCj4gPiAtMjA5Myw3ICsyMDk4LDcgQEAgZW51bSBzcGlfbm9yX3JlYWRfY29tbWFuZF9p
-bmRleCB7DQo+ID4gIAlTTk9SX0NNRF9SRUFEXzRfNF80LA0KPiA+ICAJU05PUl9DTURfUkVBRF8x
-XzRfNF9EVFIsDQo+ID4NCj4gPiAtCS8qIE9jdG8gU1BJICovDQo+ID4gKwkvKiBPY3RhbCBTUEkg
-Ki8NCj4gPiAgCVNOT1JfQ01EX1JFQURfMV8xXzgsDQo+ID4gIAlTTk9SX0NNRF9SRUFEXzFfOF84
-LA0KPiA+ICAJU05PUl9DTURfUkVBRF84XzhfOCwNCj4gPiBAQCAtMjExMCw3ICsyMTE1LDcgQEAg
-ZW51bSBzcGlfbm9yX3BwX2NvbW1hbmRfaW5kZXggew0KPiA+ICAJU05PUl9DTURfUFBfMV80XzQs
-DQo+ID4gIAlTTk9SX0NNRF9QUF80XzRfNCwNCj4gPg0KPiA+IC0JLyogT2N0byBTUEkgKi8NCj4g
-PiArCS8qIE9jdGFsIFNQSSAqLw0KPiA+ICAJU05PUl9DTURfUFBfMV8xXzgsDQo+ID4gIAlTTk9S
-X0NNRF9QUF8xXzhfOCwNCj4gPiAgCVNOT1JfQ01EX1BQXzhfOF84LA0KPiA+IEBAIC0zMTk1LDYg
-KzMyMDAsMTMgQEAgc3RhdGljIGludCBzcGlfbm9yX2luaXRfcGFyYW1zKHN0cnVjdCBzcGlfbm9y
-ICpub3IsDQo+ID4gIAkJCQkJICBTTk9SX1BST1RPXzFfMV80KTsNCj4gPiAgCX0NCj4gPg0KPiA+
-ICsJaWYgKGluZm8tPmZsYWdzICYgU1BJX05PUl9PQ1RBTF9SRUFEKSB7DQo+ID4gKwkJcGFyYW1z
-LT5od2NhcHMubWFzayB8PSBTTk9SX0hXQ0FQU19SRUFEXzFfMV84Ow0KPiA+ICsJCXNwaV9ub3Jf
-c2V0X3JlYWRfc2V0dGluZ3MoJnBhcmFtcy0NCj4gPnJlYWRzW1NOT1JfQ01EX1JFQURfMV8xXzhd
-LA0KPiA+ICsJCQkJCSAgMCwgOCwgU1BJTk9SX09QX1JFQURfMV8xXzgsDQo+ID4gKwkJCQkJICBT
-Tk9SX1BST1RPXzFfMV84KTsNCj4gPiArCX0NCj4gPiArPiAgCS8qIFBhZ2UgUHJvZ3JhbSBzZXR0
-aW5ncy4gKi8NCj4gPiAgCXBhcmFtcy0+aHdjYXBzLm1hc2sgfD0gU05PUl9IV0NBUFNfUFA7DQo+
-ID4gIAlzcGlfbm9yX3NldF9wcF9zZXR0aW5ncygmcGFyYW1zLT5wYWdlX3Byb2dyYW1zW1NOT1Jf
-Q01EX1BQXSwNCj4gDQo+IEF0IHRoZSBlbmQgb2Ygc3BpX25vcl9pbml0X3BhcmFtcyB3ZSBjaGVj
-ayB0aGUgY29uZGl0aW9ucyBmb3IgcGFyc2luZyB0aGUgc2ZkcC4NCj4gU2hvdWxkbid0IFNQSV9O
-T1JfT0NUQUxfUkVBRCB0cmlnZ2VyIHRoZSBzZmRwIHBhcnNpbmcgd2hlbg0KPiBTUElfTk9SX1NL
-SVBfU0ZEUCBpcyBub3Qgc2V0Pw0KDQpJIGd1ZXNzIGZvciBub3cgc2V0dGluZyBvbmx5IFNQSV9O
-T1JfT0NUQUxfUkVBRCBkaWRuJ3QgdHJpZ2dlciBTRkRQIHBhcnNpbmcgYXMgU0ZEUCBwYXJzaW5n
-IHdvdWxkIHN0YXJ0IG9ubHkgd2hlbiB3ZSBoYXZlIGJvdGggb2YgdGhlIGJlbG93IGNvbmRpdGlv
-biBhcmUgdHJ1ZQ0KICAgICAgICBpZiAoKGluZm8tPmZsYWdzICYgKFNQSV9OT1JfRFVBTF9SRUFE
-IHwgU1BJX05PUl9RVUFEX1JFQUQpKSAmJg0KICAgICAgICAgICAgIShpbmZvLT5mbGFncyAmIFNQ
-SV9OT1JfU0tJUF9TRkRQKSkgew0KQnV0IGZvciBjYXNlIHdoZW4gd2UgaGF2ZSBvbmx5IHNldCBT
-UElfTk9SX09DVEFMX1JFQUQgdGhlbiBmaXJzdCBjb25kaXRpb24gY2hlY2sgd291bGQgYmUgZmFs
-c2UgYW5kIGhlbmNlIFNGRFAgcGFyc2luZyB3b24ndCBvY2N1ci4NCg0KSSBndWVzcywgd2UgbmVl
-ZG4ndCB0byBoYXZlIFNGRFAgcGFyc2luZyBvbmx5IHdoZW4gU1BJX05PUl9TS0lQX1NGRFAgaXMg
-c2V0Lg0KVGh1cyB3b3VsZCBnb2luZyB0byBtb2RpZnkgdGhlIGNvbmRpdGlvbiBjaGVjayBhcyBi
-ZWxvdywgc28gdGhhdCBTRkRQIHBhcnNpbmcgd291bGQgYWxzbyBiZSBwZXJmb3JtZWQgd2hlbiBT
-UElfTk9SX09DVEFMX1JFQUQgaXMgc2V0LiBDb3JyZWN0Pw0KDQogICAgICAgIGlmICgoaW5mby0+
-ZmxhZ3MgJiAoU1BJX05PUl9EVUFMX1JFQUQgfCBTUElfTk9SX1FVQURfUkVBRCB8DQogICAgICAg
-ICAgICAgU1BJX05PUl9PQ1RBTF9SRUFEKSkgJiYgIShpbmZvLT5mbGFncyAmIFNQSV9OT1JfU0tJ
-UF9TRkRQKSkgew0KDQotLQ0KUmVnYXJkcw0KWW9nZXNoIEdhdXINCg0KPiANCj4gPiBkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9saW51eC9tdGQvc3BpLW5vci5oIGIvaW5jbHVkZS9saW51eC9tdGQvc3Bp
-LW5vci5oDQo+ID4gaW5kZXggOGIxYWNmNi4uMDE5ZjUzNCAxMDA2NDQNCj4gPiAtLS0gYS9pbmNs
-dWRlL2xpbnV4L210ZC9zcGktbm9yLmgNCj4gPiArKysgYi9pbmNsdWRlL2xpbnV4L210ZC9zcGkt
-bm9yLmgNCj4gPiBAQCAtNTAsOSArNTAsMTMgQEANCj4gDQo+IENhbiB5b3UgcGxlYXNlIHMvb2N0
-by9vY3RhbCBvbiB0aGVzZSBhcyB3ZWxsOg0KPiAkICBncmVwIC1uaSBvY3RvIGluY2x1ZGUvbGlu
-dXgvbXRkL3NwaS1ub3IuaA0KPiA0NzE6ICogQXMgYSBtYXR0ZXIgb2YgcGVyZm9ybWFuY2VzLCBp
-dCBpcyByZWxldmFudCB0byB1c2UgT2N0byBTUEkgcHJvdG9jb2xzIGZpcnN0LA0KPiA0OTI6I2Rl
-ZmluZSBTTk9SX0hXQ1BBU19SRUFEX09DVE8JCUdFTk1BU0soMTQsIDExKQ0KPiA1MDE6ICogTGlr
-ZSAoRmFzdCkgUmVhZCBjYXBhYmlsaXRpZXMsIE9jdG8vUXVhZCBTUEkgcHJvdG9jb2xzIGFyZSBw
-cmVmZXJyZWQgdG8NCj4gdGhlDQo+IDUxNTojZGVmaW5lIFNOT1JfSFdDQVBTX1BQX09DVE8JR0VO
-TUFTSygyMiwgMjApDQo+IA0KPiB0aGFua3MsDQo+IHRhDQo=
+Hello Mark,
+
+On Tue, Dec 11, 2018 at 01:14:28AM +0000, Mark Brown wrote:
+> On Mon, Dec 10, 2018 at 10:52:41PM +0100, Uwe Kleine-K=F6nig wrote:
+> =
+
+> > In my eyes this series is ready to go in. The feedback I got so far was
+> > only that there could be done still more. And given that patch 2 is a
+> > fix I'd like to see this in 4.21.
+> =
+
+> It looked like there was an unanswered question about if patch 2 was
+> needed or not?  Marek?
+
+I cannot find an unanswered question. There is a workaround that Marek
+introduced in 6fd8b8503a0dcf66510314dc054745087ae89f94 that might not be
+needed any more with my patch 2. So it's the other way round: If Marek's
+problem is fixed by patch 2, my patch is the better one. I have problems
+with SCK changing polarity when CS is already asserted in the presence
+of Marek's change. After my change they are gone. Even if this
+workaround is superflous now, it doesn't hurt and IMHO the question if
+it is needed or not should not delay my fix.
+
+If I miss something, can you please point out the message-id?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

@@ -1,46 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: lpspi: Fix CLK pin becomes low before one transfer
-Date: Tue, 11 Dec 2018 14:30:05 +0000
-Message-ID: <20181211143005.GJ6686@sirena.org.uk>
-References: <20181204062224.28844-1-xiaoning.wang@nxp.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH] ARM: dts: at91: sama5d2 Xplained: add QSPI0 + SPI NOR
+ memory nodes
+Date: Tue, 11 Dec 2018 15:35:45 +0100
+Message-ID: <20181211143545.GR8952@piout.net>
+References: <20181210171511.21002-1-tudor.ambarus@microchip.com>
+ <20181210213553.GK8952@piout.net>
+ <22730de3-55f0-df21-312a-560a02f02dc7@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yr/DzoowOgTDcSCF"
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Clark Wang <xiaoning.wang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: Nicolas.Ferre@microchip.com, Ludovic.Desroches@microchip.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        Cyrille.Pitchen@microchip.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, boris.brezillon@bootlin.com,
+        linux-mtd@lists.infradead.org, broonie@kernel.org,
+        linux-spi@vger.kernel.org
+To: Tudor.Ambarus@microchip.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20181204062224.28844-1-xiaoning.wang@nxp.com>
+In-Reply-To: <22730de3-55f0-df21-312a-560a02f02dc7@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 11/12/2018 12:32:40+0000, Tudor.Ambarus@microchip.com wrote:
+> Hi, Alexandre,
+> 
+> On 12/10/2018 11:35 PM, Alexandre Belloni wrote:
+> > Hi,
+> > 
+> > On 10/12/2018 17:15:29+0000, Tudor.Ambarus@microchip.com wrote:
+> >> From: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+> >>
+> >> This patch configures the QSPI0 controller pin muxing and declares
+> >> a jedec,spi-nor memory.
+> >>
+> >> sama5d2 Xplained RevB and RevC use the Macronix MX25L25673G flash
+> >> memory which advertises a maximum frequency of 80MHz for Quad IO
+> >> Fast Read. Set the spi-max-frequency to 80MHz knowing that actually
+> >> the QSPI drver will set the SPI bus clock to 166MHz / 3 = 55.3MHz.
+> >>
+> >> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@microchip.com>
+> >> [tudor.ambarus@microchip.com:
+> >> - drop partitions,
+> >> - add spi-rx/tx-bus-width
+> >> - change spi-max-frequency to match the 80MHz limit advertised by
+> >>   MX25L25673G for Quad IO Fast Read,
+> >> - reword commit message and subject.]
+> >> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> >> ---
+> >>  arch/arm/boot/dts/at91-sama5d2_xplained.dts | 31 +++++++++++++++++++++++++++++
+> >>  1 file changed, 31 insertions(+)
+> >>
+> >> diff --git a/arch/arm/boot/dts/at91-sama5d2_xplained.dts b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> >> index 518e2b095ccf..171bc82cfbbf 100644
+> >> --- a/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> >> +++ b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
+> >> @@ -108,6 +108,21 @@
+> >>  		};
+> >>  
+> >>  		apb {
+> >> +			qspi0: spi@f0020000 {
+> >> +				pinctrl-names = "default";
+> >> +				pinctrl-0 = <&pinctrl_qspi0_default>;
+> >> +				/* status = "okay"; */ /* conflict with sdmmc1 */
+> > 
+> > Isn't that conflicting then because I think the default is okay.
+> qspi0 is disabled in sama5d2.dtsi.
+> 
 
---yr/DzoowOgTDcSCF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Ok, then maybe that comment is not necessary at all.
 
-On Tue, Dec 04, 2018 at 06:23:19AM +0000, Clark Wang wrote:
-> Remove Reset operation in fsl_lpspi_config(). This RST may cause both CLK
-> and CS pins go from high to low level under cs-gpio mode.
-> Add fsl_lpspi_reset() function after one message transfer to clear all
-> flags in use.
-
-This doesn't apply against current code, please check and resend.
-
---yr/DzoowOgTDcSCF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwPye0ACgkQJNaLcl1U
-h9BAygf/dnLhg3GtANkZTYpKtHYETF7XJSIoWNyd9k0A9sJ5RoRZsze7LKQwR7rz
-D6PtMkNEv5HJDLOYZLz19V1TuTSwRHAKJ3w4Lz+Yb6vl9guscyXTncXcv3steZX5
-nSZQgWl2aBGKynQy5/lv7uOlLr6hcCZFkZq0sD183oPGCw7HPqMokISo+FQPndUh
-ZKNVqpcEF5YZJJE0YPbrGp0rHqW4AaLdYDuOrM6zgwqmdu0G1eZkNNww9ulI0g1N
-mzB+tUd8Oup0u/LfyYQcfNpcfgaf2h5m2+rL5snG8CVSF0gHFPQHyojfev4QGfZS
-ppfXA3gov1qTmMysUM25YMpq52mRIA==
-=pMcg
------END PGP SIGNATURE-----
-
---yr/DzoowOgTDcSCF--
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

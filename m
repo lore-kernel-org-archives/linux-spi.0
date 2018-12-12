@@ -1,133 +1,93 @@
-From: Pankaj Bansal <pankaj.bansal@nxp.com>
-Subject: RE: [PATCH v5 3/5] arm64: dts: lx2160a: add FlexSPI node property
-Date: Wed, 12 Dec 2018 08:15:40 +0000
-Message-ID: <HE1PR0402MB332315D53C681D842865B6B5F1A70@HE1PR0402MB3323.eurprd04.prod.outlook.com>
-References: <1542366701-16065-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1542366701-16065-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 0/5] spi: imx: Fix polarity switching for mx51-ecspi
+Date: Wed, 12 Dec 2018 09:21:48 +0000
+Message-ID: <20181212092148.GA6920@sirena.org.uk>
+References: <20181130064709.6998-1-u.kleine-koenig@pengutronix.de>
+ <20181210215241.umiy7olfi4y7ghs2@pengutronix.de>
+ <20181211011428.GH3004@sirena.org.uk>
+ <20181211071300.7xxmzhfj26qt2tle@pengutronix.de>
+ <20181211115601.GB6686@sirena.org.uk>
+ <20181211201126.vl6s7sesnzukbybt@pengutronix.de>
+ <20181211204047.GR6686@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1542366701-16065-4-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============1340525942455187310=="
+Cc: Marek Vasut <marex@denx.de>, linux-spi@vger.kernel.org,
+ NXP Linux Team <linux-imx@nxp.com>, kernel@pengutronix.de,
+ Robin Gong <yibin.gong@nxp.com>, linux-arm-kernel@lists.infradead.org
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20181211204047.GR6686@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 
+--===============1340525942455187310==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FL5UXtIhxfXey3p5"
+Content-Disposition: inline
 
-> -----Original Message-----
-> From: devicetree-owner@vger.kernel.org [mailto:devicetree-
-> owner@vger.kernel.org] On Behalf Of Yogesh Narayan Gaur
-> Sent: Friday, November 16, 2018 4:44 PM
-> To: linux-mtd@lists.infradead.org; boris.brezillon@bootlin.com;
-> marek.vasut@gmail.com; broonie@kernel.org; linux-spi@vger.kernel.org;
-> devicetree@vger.kernel.org
-> Cc: robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org; linux-
-> arm-kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@kontron.de; linux-kernel@vger.kernel.org; Yogesh Narayan
-> Gaur <yogeshnarayan.gaur@nxp.com>
-> Subject: [PATCH v5 3/5] arm64: dts: lx2160a: add FlexSPI node property
->=20
-> Add fspi node property for LX2160A SoC for FlexSPI driver.
-> Property added for the FlexSPI controller and for the connected slave dev=
-ice for
-> the LX2160ARDB target.
-> This is having two SPI-NOR flash device, mt35xu512aba, connected at CS0 a=
-nd
-> CS1.
->=20
-> Signed-off-by: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-> ---
-> Changes for v5:
-> - None
-> Changes for v4:
-> - Incorporated Rob review comments.
-> Changes for v3:
-> - None.
-> Changes for v2:
-> - - Incorporated Shawn review comments.
-> ---
->  arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts | 22
-> ++++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi    | 13 +++++++++++++
->  2 files changed, 35 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> index 1483071..3b20c97 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> @@ -35,6 +35,28 @@
->  	status =3D "okay";
->  };
->=20
-> +&fspi {
-> +	status =3D "okay";
-> +
-> +	mt35xu512aba0: flash@0 {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
-> +		compatible =3D "spansion,m25p80";
-> +		m25p,fast-read;
-> +		spi-max-frequency =3D <20000000>;
 
-The SPI flash supports 50MHz frequency. Please update to 50Mhz
+--FL5UXtIhxfXey3p5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +		reg =3D <0>;
-> +	};
-> +
-> +	mt35xu512aba1: flash@1 {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
-> +		compatible =3D "spansion,m25p80";
-> +		m25p,fast-read;
-> +		spi-max-frequency =3D <20000000>;
-> +		reg =3D <1>;
-> +	};
-> +};
-> +
->  &i2c0 {
->  	status =3D "okay";
->  	i2c-mux@77 {
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> index c758268..5d0025a 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> @@ -698,5 +698,18 @@
->  			interrupts =3D <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
->  			timeout-sec =3D <30>;
->  		};
-> +
-> +		fspi: spi@20c0000 {
-> +			compatible =3D "nxp,lx2160a-fspi";
-> +			#address-cells =3D <1>;
-> +			#size-cells =3D <0>;
-> +			reg =3D <0x0 0x20c0000 0x0 0x10000>,
-> +				<0x0 0x20000000 0x0 0x10000000>;
-> +			reg-names =3D "fspi_base", "fspi_mmap";
-> +			interrupts =3D <0 25 0x4>; /* Level high type */
-> +			clocks =3D <&clockgen 4 3>, <&clockgen 4 3>;
-> +			clock-names =3D "fspi_en", "fspi";
-> +			status =3D "disabled";
-> +		};
->  	};
->  };
-> --
-> 2.7.4
+On Tue, Dec 11, 2018 at 08:40:47PM +0000, Mark Brown wrote:
+> On Tue, Dec 11, 2018 at 09:11:26PM +0100, Uwe Kleine-K=F6nig wrote:
+
+> > FTR: your reference to an "unanswered question" wasn't optimal either. I
+> > had to search my inbox for a while to determine what you could have
+> > meant :-)
+
+> At the time I wrote that I didn't actually know, I just knew that I'd
+> remembered the subthread ended with a question to Marek about if this
+> was needed.
+
+Just to expand on this a bit: the way I'm working here is that I'm
+remembering if there's some reason I'm expecting some additional
+replies, either because there's someone likely to do review on the
+relevant code, there was some specific question I remember or because
+there was a discussion that seemed to peter out without conclusion
+between people who are likely to respond.  If something like that is
+happening I'll leave a bit longer for replies than I might otherwise
+(conversely if it's something where it's very unlikely that there will
+be any comment I'll tend to leave less time).
+
+--FL5UXtIhxfXey3p5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwQ0yoACgkQJNaLcl1U
+h9Bn7wf/TLLMY32QQOzcMf5lWIv8sUd0izrZaVfMgE6eRdFZdpcpSpE+fVqK4zPt
+w6Qk0MN1hoF8HsJvR7W0Gn0rLb9CgcLYj0qFgbD1JvU/rtOrkP1C4JnB8hAsRHKj
+brBBOSsVjy+47KmSR24a17e1/6B9Yvbt62HI6ylAQtpXf7Aom3o6ndAogOkyDyOo
+HKCV6xcFZge5/vamJQJ3HxDS4K+EnESq/8u9ORrFetqhaG1Dl74Mt+HzMK58f5w5
+mbCFkUJ8r+NbMfTPP3Lyd0smXfLAI4cSMdqod0tVkoX0De9WGsdNhwOnO6kW+FrU
+zbk94YmHaVvqy0vqa7CKAvRVNBXhdQ==
+=HWCU
+-----END PGP SIGNATURE-----
+
+--FL5UXtIhxfXey3p5--
+
+
+--===============1340525942455187310==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============1340525942455187310==--

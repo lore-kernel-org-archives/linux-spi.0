@@ -1,79 +1,70 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH 0/5] Prepare devicetrees for the new FSL QSPI driver
-Date: Thu, 13 Dec 2018 09:45:04 +0000
-Message-ID: <1ad93cdf-7ba1-ff49-f330-6bbd0f6c6972@kontron.de>
-References: <1544459182-23655-1-git-send-email-frieder.schrempf@kontron.de>
- <ce1442f3-357b-d647-958e-cc4a89282b79@kontron.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/3] spi: meson-axg: enhance output enable feature
+Date: Thu, 13 Dec 2018 11:53:45 +0000
+Message-ID: <20181213115345.GC10669@sirena.org.uk>
+References: <1544690354-16409-1-git-send-email-sunny.luo@amlogic.com>
+ <1544690354-16409-3-git-send-email-sunny.luo@amlogic.com>
+ <af721e7a752ca468046de0a4ad1ac4a0c220360c.camel@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="s9fJI615cBHmzTOP"
+Cc: Sunny Luo <sunny.luo@amlogic.com>,
+        Yixun Lan <yixun.lan@amlogic.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Carlo Caione <carlo@caione.org>,
+        Jianxin Pan <jianxin.pan@amlogic.com>,
+        Xingyu Chen <xingyu.chen@amlogic.com>,
+        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Jerome Brunet <jbrunet@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ce1442f3-357b-d647-958e-cc4a89282b79@kontron.de>
-Content-Language: en-US
-Content-ID: <C1B04C5ECA6D974FBFDB5AE84BF4749D@snt-world.com>
+Content-Disposition: inline
+In-Reply-To: <af721e7a752ca468046de0a4ad1ac4a0c220360c.camel@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-KyBTaGF3biwgU2FzY2hhDQoNCk9uIDEwLjEyLjE4IDE3OjMxLCBTY2hyZW1wZiBGcmllZGVyIHdy
-b3RlOg0KPiBIaSBGU0wvQVJNIG1haW50YWluZXJzLA0KPiANCj4gT24gMTAuMTIuMTggMTc6MjYs
-IFNjaHJlbXBmIEZyaWVkZXIgd3JvdGU6DQo+PiBGcm9tOiBGcmllZGVyIFNjaHJlbXBmIDxmcmll
-ZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+DQo+Pg0KPj4gV2UgaGF2ZSBwcmVwYXJlZCBhIG5ldyBk
-cml2ZXIgZm9yIHRoZSBGU0wgUVNQSSBjb250cm9sbGVyIHRoYXQgd29ya3MgdW5kZXINCj4+IHRo
-ZSBTUEkgZnJhbWV3b3JrLiBUaGUgY3VycmVudCBkZXZpY2V0cmVlcyBhcmUgYnJva2VuIGJlY2F1
-c2UgdGhleSB1c2UgYW4NCj4+IGluY29uc2lzdGVudCBzY2hlbWUgZm9yIGFzc2lnbmluZyB0aGUg
-cmVnIHByb3BlcnRpZXMuDQo+Pg0KPj4gQXMsIGluIGNvbnRyYXN0IHRvIHRoZSBjdXJyZW50IGRy
-aXZlciwgdGhlIG5ldyBkcml2ZXIgd2lsbCB1c2UgdGhlIHJlZw0KPj4gcHJvcGVydGllcyB0byBz
-ZWxlY3QgdGhlIGNvcnJlY3QgY2hpcCwgd2UgbmVlZCB0byBmaXggdGhlbS4NCj4+DQo+PiBXZSBh
-bHNvIGFkZCBzcGktW3R4L3J4XS1idXMtd2lkdGggdG8gbWFrZSBzdXJlIHRoZSBmdWxsIGJ1c3dp
-ZHRoIHdpbGwgYmUgdXNlZA0KPj4gYW5kIHdoaWxlIGF0IGl0IGNsZWFuIHVwIGFuZCByZW1vdmUg
-c29tZSB1bnVzZWQgcHJvcGVydGllcy4NCj4gDQo+IGNvdWxkIHlvdSBwbGVhc2UgY29uc2lkZXIg
-dGhlc2UgZGV2aWNldHJlZSBwYXRjaGVzIGZvciB2NC4yMT8NCg0KQW55IGNoYW5jZSB0byBnZXQg
-dGhpcyBtZXJnZWQ/IE90aGVyd2lzZSB3ZSB3b3VsZCBuZWVkIHRvIHBvc3Rwb25lIHRoZSANCm5l
-dyBkcml2ZXIgZXZlbiBmdXJ0aGVyLg0KDQpBbGwgdGhlIGNoYW5nZXMgdG8gdGhlIGRldmljZXRy
-ZWVzIGluIHRoaXMgc2VyaWVzIGFyZSBub24taW50cnVzaXZlIGFuZCANCnVuY3JpdGljYWwsIGFu
-eXdheS4NCg0KVGhhbmtzLA0KRnJpZWRlcg0KDQo+IA0KPiBXZSBoYXZlIHRoZSBuZXcgRlNMIFFT
-UEkgZHJpdmVyIHVuZGVyIHRoZSBTUEkgZnJhbWV3b3JrIChbMV0pIHJlYWR5LCBidXQNCj4gd2Ug
-bmVlZCBzb21lIHNtYWxsIGZpeGVzIHRvIHRoZSBkZXZpY2V0cmVlcyB0aGF0IGFyZSBjdXJyZW50
-bHkgYnJva2VuLg0KPiANCj4gQXMgdGhlIG5ldyBkcml2ZXIgZGVwZW5kcyBvbiB0aGVzZSBjaGFu
-Z2VzIChtYWlubHkgdGhlIGNoYW5nZSB0byB0aGUgcmVnDQo+IHByb3BlcnRpZXMpIGFuZCBpdCBp
-cyBub3QgcG9zc2libGUgdG8gYWRkIGNvbXBhdGliaWxpdHkgZm9yIHRoZSBvbGQNCj4gYmluZGlu
-Z3MsIGl0IHdvdWxkIGJlIHJlYWxseSBuaWNlIHRvIGhhdmUgdGhlbSBpbiB2NC4yMSwgc28gd2Ug
-Y2FuIHF1ZXVlDQo+IHRoZSBkcml2ZXIgZm9yIHY0LjIyIG9yIHdoYXRldmVyIHRoZSBuZXh0IHJl
-bGVhc2Ugd2lsbCBiZSBjYWxsZWQuDQo+IA0KPiBQbGVhc2UgYWxzbyBzZWUgWzJdIGZvciBzb21l
-IG1vcmUgZXhwbGFuYXRpb24uDQo+IA0KPiBUaGFua3MsDQo+IEZyaWVkZXINCj4gDQo+IFsxXSBo
-dHRwczovL3BhdGNod29yay5vemxhYnMub3JnL2NvdmVyLzEwMDc2NDEvDQo+IFsyXSBodHRwczov
-L3BhdGNod29yay5vemxhYnMub3JnL3BhdGNoLzkyMjgxNy8jMTkyNTQ0NQ0KPiANCj4+DQo+PiBG
-cmllZGVyIFNjaHJlbXBmICg1KToNCj4+ICAgICBhcm02NDogZHRzOiBSZW1vdmUgdW51c2VkIHBy
-b3BlcnRpZXMgZnJvbSBGU0wgUVNQSSBkcml2ZXIgbm9kZXMNCj4+ICAgICBBUk06IGR0czogUmVt
-b3ZlIHVudXNlZCBwcm9wZXJ0aWVzIGZyb20gRlNMIFFTUEkgZHJpdmVyIG5vZGVzDQo+PiAgICAg
-QVJNOiBkdHM6IGlteDZzeC1zZGI6IEZpeCB0aGUgcmVnIHByb3BlcnRpZXMgZm9yIHRoZSBGU0wg
-UVNQSSBub2Rlcw0KPj4gICAgIGFybTY0OiBkdHM6IEFkZCBzcGktW3R4L3J4XS1idXMtd2lkdGgg
-Zm9yIHRoZSBGU0wgUVNQSSBjb250cm9sbGVyDQo+PiAgICAgQVJNOiBkdHM6IEFkZCBzcGktW3R4
-L3J4XS1idXMtd2lkdGggZm9yIHRoZSBGU0wgUVNQSSBjb250cm9sbGVyDQo+Pg0KPj4gICAgYXJj
-aC9hcm0vYm9vdC9kdHMvaW14NnN4LXNkYi1yZXZhLmR0cyAgICAgICAgICAgICAgfCA4ICsrKysr
-Ky0tDQo+PiAgICBhcmNoL2FybS9ib290L2R0cy9pbXg2c3gtc2RiLmR0cyAgICAgICAgICAgICAg
-ICAgICB8IDggKysrKysrLS0NCj4+ICAgIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZ1bC0xNHgxNC1l
-dmsuZHRzaSAgICAgICAgICAgIHwgMiArKw0KPj4gICAgYXJjaC9hcm0vYm9vdC9kdHMvbHMxMDIx
-YS1tb3hhLXVjLTg0MTBhLmR0cyAgICAgICAgfCA1ICsrLS0tDQo+PiAgICBhcmNoL2FybTY0L2Jv
-b3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHMxMDQzYS1xZHMuZHRzICB8IDMgKystDQo+PiAgICBhcmNo
-L2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHMxMDQ2YS1xZHMuZHRzICB8IDQgKystLQ0K
-Pj4gICAgYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvZnNsLWxzMTA0NmEtcmRiLmR0cyAg
-fCA2ICsrKystLQ0KPj4gICAgYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvZnNsLWxzMjA4
-eGEtcWRzLmR0c2kgfCA0ICsrKysNCj4+ICAgIDggZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9u
-cygrKSwgMTIgZGVsZXRpb25zKC0pDQo+Pg0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gTGludXggTVREIGRpc2N1c3Npb24gbWFpbGlu
-ZyBsaXN0DQo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGlu
-dXgtbXRkLw0KPiA=
+
+--s9fJI615cBHmzTOP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 13, 2018 at 10:04:56AM +0100, Jerome Brunet wrote:
+> On Thu, 2018-12-13 at 16:39 +0800, Sunny Luo wrote:
+
+> > =20
+> >  	writel_bits_relaxed(BIT(24), BIT(24), spicc->base + SPICC_TESTREG);
+> > =20
+> > +	meson_spicc_oen_enable(spicc);
+> > +
+
+> Any specific reason for doing this in prepare_message() ? It looks like
+> something that could/should be done during the probe ?
+
+If it's for power management then there should be a matching disable in
+unprepare_message() (or this should just be in the runtime PM code,
+though it's possible there's stuff that's only needed while actually
+doing transfers in which case this could make sense).
+
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
+
+--s9fJI615cBHmzTOP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwSSEkACgkQJNaLcl1U
+h9CHGwf8CNMeR7WV+TrBE53uFRRrhrKajnV4JWbLuA67Kua7X2ESoTqkgJ8tc9T/
+8RQ7EfxtVkGspy1ZkjpiGBrWgY0YGk6/R+N/OkMmuCDJmk5cQNdZtRy5WGIEm1ZI
+I751ssIVt3EZCSE/GcpV4bJ8O7x2fGTWRbnjczwnypYeWwBqfnCxta5+N2DS7T8V
+jis/mZjM8VmLv+qtryIqyfrRGlDaXB47AgQeXBCZcQh68/ab8QoUIdh4Dn/Zecl1
+OBpuTheeAmfkjbLiHQNFi/XWclWK7RGACX/Xlmr+9BVmcl6CAFekXKImBoNMj8jv
+kTkvW7/4I1wvzOJIkaRS0DGZFqF7Yg==
+=Aegn
+-----END PGP SIGNATURE-----
+
+--s9fJI615cBHmzTOP--

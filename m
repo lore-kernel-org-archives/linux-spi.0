@@ -1,80 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "doc: lpspi: Document DT bindings for LPSPI slave mode" to the spi tree
-Date: Thu, 13 Dec 2018 12:09:16 +0000 (GMT)
-Message-ID: <20181213120916.1C82111254D1@debutante.sirena.org.uk>
-References: <20181207024924.6315-5-xiaoning.wang@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Clark Wang <xiaoning.wang@nxp.com>
+From: Sunny Luo <sunny.luo@amlogic.com>
+Subject: Re: [PATCH v2 2/3] spi: meson-axg: enhance output enable feature
+Date: Thu, 13 Dec 2018 20:50:28 +0800
+Message-ID: <cb02aadd-d317-fc66-de4a-519dc8d8bfb7@amlogic.com>
+References: <1544690354-16409-1-git-send-email-sunny.luo@amlogic.com>
+ <1544690354-16409-3-git-send-email-sunny.luo@amlogic.com>
+ <af721e7a752ca468046de0a4ad1ac4a0c220360c.camel@baylibre.com>
+ <20181213115345.GC10669@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Yixun Lan <yixun.lan@amlogic.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Carlo Caione <carlo@caione.org>,
+        Jianxin Pan <jianxin.pan@amlogic.com>,
+        Xingyu Chen <xingyu.chen@amlogic.com>,
+        <linux-spi@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181207024924.6315-5-xiaoning.wang@nxp.com>
+In-Reply-To: <20181213115345.GC10669@sirena.org.uk>
+Content-Language: en-GB
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Mark&Jerome,
 
-   doc: lpspi: Document DT bindings for LPSPI slave mode
+On 2018/12/13 19:53, Mark Brown wrote:
+> On Thu, Dec 13, 2018 at 10:04:56AM +0100, Jerome Brunet wrote:
+>> On Thu, 2018-12-13 at 16:39 +0800, Sunny Luo wrote:
+> 
+>>>   
+>>>   	writel_bits_relaxed(BIT(24), BIT(24), spicc->base + SPICC_TESTREG);
+>>>   
+>>> +	meson_spicc_oen_enable(spicc);
+>>> +
+> 
+>> Any specific reason for doing this in prepare_message() ? It looks like
+>> something that could/should be done during the probe ?
+> 
+> If it's for power management then there should be a matching disable in
+> unprepare_message() (or this should just be in the runtime PM code,
+> though it's possible there's stuff that's only needed while actually
+> doing transfers in which case this could make sense).
+> 
+OEN is only used to avoid the signals floating in unexpected state, i 
+will move it into probe next patch.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 62f82df488ce16f7068c7285820b2b7f7dcd7597 Mon Sep 17 00:00:00 2001
-From: Clark Wang <xiaoning.wang@nxp.com>
-Date: Fri, 7 Dec 2018 02:50:41 +0000
-Subject: [PATCH] doc: lpspi: Document DT bindings for LPSPI slave mode
-
-Add introductions of interrupt-parent and spi-slave.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-index 8d178a4503cf..6cc3c6fe25a3 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
-@@ -5,8 +5,11 @@ Required properties:
-   - "fsl,imx7ulp-spi" for LPSPI compatible with the one integrated on i.MX7ULP soc
-   - "fsl,imx8qxp-spi" for LPSPI compatible with the one integrated on i.MX8QXP soc
- - reg : address and length of the lpspi master registers
-+- interrupt-parent : core interrupt controller
- - interrupts : lpspi interrupt
- - clocks : lpspi clock specifier
-+- spi-slave : spi slave mode support. In slave mode, add this attribute without
-+	      value. In master mode, remove it.
- 
- Examples:
- 
-@@ -16,4 +19,5 @@ lpspi2: lpspi@40290000 {
- 	interrupt-parent = <&intc>;
- 	interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
- 	clocks = <&clks IMX7ULP_CLK_LPSPI2>;
-+	spi-slave;
- };
--- 
-2.19.0.rc2
+> Please delete unneeded context from mails when replying.  Doing this
+> makes it much easier to find your reply in the message, helping ensure
+> it won't be missed by people scrolling through the irrelevant quoted
+> material.
+> 
+OK.

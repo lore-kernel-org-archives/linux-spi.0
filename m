@@ -1,117 +1,152 @@
-From: Jerome Brunet <jbrunet@baylibre.com>
-Subject: Re: [PATCH v2 3/3] spi: meson-axg: add a linear clock divider
- support
-Date: Thu, 13 Dec 2018 16:01:24 +0100
-Message-ID: <d2ecc15badf2b273ce9a62ecbbb0962051a46bc1.camel@baylibre.com>
-References: <1544690354-16409-1-git-send-email-sunny.luo@amlogic.com>
-         <1544690354-16409-4-git-send-email-sunny.luo@amlogic.com>
-         <3cc699dc-4021-b993-2b47-b00b40f380f8@baylibre.com>
-         <e6d5220e45a54d5251bec0f8fd3c147307f8b071.camel@baylibre.com>
-         <d9ec856c-d93f-4e4a-c5d4-7b2182f93cf7@amlogic.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v3 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
+ driver
+Date: Thu, 13 Dec 2018 22:48:02 +0300
+Message-ID: <557c8114-2819-7be3-21b8-02918aa89c04@cogentembedded.com>
+References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
+ <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Yixun Lan <yixun.lan@amlogic.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Carlo Caione <carlo@caione.org>,
-        Jianxin Pan <jianxin.pan@amlogic.com>,
-        Xingyu Chen <xingyu.chen@amlogic.com>,
-        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Sunny Luo <sunny.luo@amlogic.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Mark Brown <broonie@kernel.org>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <d9ec856c-d93f-4e4a-c5d4-7b2182f93cf7@amlogic.com>
+In-Reply-To: <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2018-12-13 at 22:37 +0800, Sunny Luo wrote:
-> Hi Jerome,
+On 12/07/2018 02:13 PM, Mason Yang wrote:
+
+> Add a driver for Renesas R-Car Gen3 RPC SPI controller.
 > 
-> On 2018/12/13 17:28, Jerome Brunet wrote:
-> > On Thu, 2018-12-13 at 09:55 +0100, Neil Armstrong wrote:
-> > > > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> > > >   config SPI_MESON_SPICC
-> > > >   	tristate "Amlogic Meson SPICC controller"
-> > > > -	depends on ARCH_MESON || COMPILE_TEST
-> > > > +	depends on OF && COMMON_CLK && (ARCH_MESON || COMPILE_TEST)
-> > 
-> > The purpose of this patch is clock, right ? Why does it add a dependency
-> > on OF
-> > ?
-> > I did it by the way. Maybe it's better to add it in patch 1.
-> > > > +static int meson_spicc_clk_init(struct meson_spicc_device *spicc)
-> > > > +{
-> > > > +	struct device *dev = &spicc->pdev->dev;
-> > > > +	struct clk_fixed_factor *div0;
-> > > > +	struct clk_divider *div1;
-> > 
-> > Could you come up with something better than div0 and div1 ? it is
-> > confusing,
-> > especially with the comment above about div3 and 4 ... fixed_factor, div
-> > maybe
-> > ?
-> > Good, It is really confusing, I will change next patch.
-> > > > +	div1 = &meson_spicc_div1;
-> > > > +	div1->reg = spicc->base + (u64)div1->reg;
-> > 
-> > So you have static data which you override here. This works only if there
-> > is a
-> > single instance ... and does not really improve readability in your case.
-> > 
-> > IMO, you'd be better off without the static data above.
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  drivers/spi/Kconfig           |   6 +
+>  drivers/spi/Makefile          |   1 +
+>  drivers/spi/spi-renesas-rpc.c | 776 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 783 insertions(+)
+>  create mode 100644 drivers/spi/spi-renesas-rpc.c
 > 
-> This is a terrible bug for more than one instances. I must overwrite it.
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 7d3a5c9..54b40f8 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+[...]
+> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
+> new file mode 100644
+> index 0000000..cec5669
+> --- /dev/null
+> +++ b/drivers/spi/spi-renesas-rpc.c
+> @@ -0,0 +1,776 @@
+[...]
+> +static int rpc_spi_do_reset(struct rpc_spi *rpc)
+> +{
+> +	int ret;
+> +
+> +	ret = reset_control_reset(rpc->rstc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
 
-You must set them properly, yes ... having these static data is not necessary
+   This degrades to:
 
-> 
-> 
-> > > > +	if (!spicc->data->has_enhance_clk_div) {
-> > 
-> > Do all SoC with 'has_oen' have 'has_enhance_clk_div' too ?
-> > DO you really need two flags ?
-> 
-> Yes, all Soc with 'has_oen' must have 'has_enhance_clk_div' too.
-> It is distinct to use two flags here, what do you think of it?
+{
+	return reset_control_reset(rpc->rstc);
+}
 
-I wonder if you should be using of_device_is_compatible() instead of adding
-these flags.
+   So, we hardly need this function now...
 
-> 
-> > > > +	mux = &meson_spicc_sel;
-> > > > +	snprintf(name, sizeof(name), "%s#_sel", dev_name(dev));
-> > > > +	init.name = name;
-> > > > +	init.ops = &clk_mux_ops;
-> > > > +	init.parent_names = mux_parent_names;
-> > > > +	init.num_parents = 2;
-> > > > +	init.flags = CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT;
-> > 
-> > Why CLK_SET_RATE_NO_REPARENT ? CCF should pick the parent that give the
-> > best
-> > results, best to let it do its task ...
-> > 
-> There are two div in AXG, one is the coarse old-div and the other is 
-> enhance-div. From SoCs designer's opinion, the ehance-div aims to take 
-> place of the old-div.
+[...]
+> +static int rpc_spi_io_xfer(struct rpc_spi *rpc,
+> +			   const void *tx_buf, void *rx_buf)
+> +{
+> +	u32 smenr, smcr, data, pos = 0;
+> +	int ret = 0;
+> +
+> +	regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
+> +				  RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
+> +				  RPC_CMNCR_BSZ(0));
+> +	regmap_write(rpc->regmap, RPC_SMDRENR, 0x0);
+> +	regmap_write(rpc->regmap, RPC_SMCMR, rpc->cmd);
+> +	regmap_write(rpc->regmap, RPC_SMDMCR, rpc->dummy);
+> +	regmap_write(rpc->regmap, RPC_SMADR, rpc->addr);
+> +
+> +	if (tx_buf) {
+> +		smenr = rpc->smenr;
+> +
+> +		while (pos < rpc->xferlen) {
+> +			u32 nbytes = rpc->xferlen  - pos;
+> +
+> +			regmap_write(rpc->regmap, RPC_SMWDR0,
+> +				     get_unaligned((u32 *)(tx_buf + pos)));
+> +
+> +			if (nbytes > 4) {
+> +				nbytes = 4;
+> +				smcr = rpc->smcr |
+> +				       RPC_SMCR_SPIE | RPC_SMCR_SSLKP;
+> +			} else {
+> +				smcr = rpc->smcr | RPC_SMCR_SPIE;
+> +			}
+> +
+> +			regmap_write(rpc->regmap, RPC_SMENR, smenr);
+> +			regmap_write(rpc->regmap, RPC_SMCR, smcr);
+> +			ret = wait_msg_xfer_end(rpc);
+> +			if (ret)
+> +				goto out;
+> +
+> +			pos += nbytes;
+> +			smenr = rpc->smenr & ~RPC_SMENR_CDE &
+> +					     ~RPC_SMENR_ADE(0xf);
+> +		}
+> +	} else if (rx_buf) {
+> +		while (pos < rpc->xferlen) {
+> +			u32 nbytes = rpc->xferlen  - pos;
+> +
+> +			if (nbytes > 4)
+> +				nbytes = 4;
+> +
+> +			regmap_write(rpc->regmap, RPC_SMENR, rpc->smenr);
+> +			regmap_write(rpc->regmap, RPC_SMCR,
+> +				     rpc->smcr | RPC_SMCR_SPIE);
 
-... and all likelyhood, CCF will pick it BUT, unless the old path is broken,
-please let the framework do its job. 
+   Hm... our flash chip (Spansion S25FS512S) doesn't get detected; it sends
+JEDEC ID bytes 0..3 repeatedly, unless I copy the SSLKP logic from the writing
+branch above...
 
-If the old path was broken you should not have described it ... but we have
-been using it so far, so we know it works fine.
+> +			ret = wait_msg_xfer_end(rpc);
+> +			if (ret)
+> +				goto out;
+> +
+> +			regmap_read(rpc->regmap, RPC_SMRDR0, &data);
+> +			memcpy_fromio(rx_buf + pos, (void *)&data, nbytes);
+> +			pos += nbytes;
 
-it's a very simple fix: drop CLK_SET_RATE_NO_REPARENT and your call
-clk_set_parent()
+   ... and it skips byte 4 unless I copy the code from the end of the writing
+branch, clearing CDE/ADE. But even then the byte 4 reads as 0x03 instead of 0.
 
-> 
-> 
+> +			regmap_write(rpc->regmap, RPC_SMCMR, rpc->cmd);
+> +			regmap_write(rpc->regmap, RPC_SMDMCR, rpc->dummy);
+> +			regmap_write(rpc->regmap, RPC_SMADR, rpc->addr + pos);
+> +		}
+> +	} else {
+> +		regmap_write(rpc->regmap, RPC_SMENR, rpc->smenr);
+> +		regmap_write(rpc->regmap, RPC_SMCR, rpc->smcr | RPC_SMCR_SPIE);
+> +		ret = wait_msg_xfer_end(rpc);
+> +		if (ret)
+> +			goto out;
+> +	}
+> +
+> +	return ret;
+> +out:
+> +	return rpc_spi_do_reset(rpc);
+> +}
+[...]
 
-Last but not least, I did not see it in my initial review, but:
-
-I see you call clk_set_rate(spicc->clk, ...) but I don't see any call to
-clk_prepare_enable() and clk_disable_unprepare().
-
-It works because the input clock and your local tree does not gate, but it is
-wrong. A driver should not assume that they clock is enabled by default.
+MBR, Sergei

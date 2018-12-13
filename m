@@ -1,70 +1,149 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/3] spi: meson-axg: enhance output enable feature
-Date: Thu, 13 Dec 2018 11:53:45 +0000
-Message-ID: <20181213115345.GC10669@sirena.org.uk>
+From: Sunny Luo <sunny.luo@amlogic.com>
+Subject: Re: [PATCH v2 1/3] spi: meson-axg: support MAX 80M clock
+Date: Thu, 13 Dec 2018 19:55:15 +0800
+Message-ID: <13e10889-50ce-4f67-cf60-f7a4917f84f5@amlogic.com>
 References: <1544690354-16409-1-git-send-email-sunny.luo@amlogic.com>
- <1544690354-16409-3-git-send-email-sunny.luo@amlogic.com>
- <af721e7a752ca468046de0a4ad1ac4a0c220360c.camel@baylibre.com>
+ <1544690354-16409-2-git-send-email-sunny.luo@amlogic.com>
+ <2d438907-91b5-7443-24f9-57a406aaa040@baylibre.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="s9fJI615cBHmzTOP"
-Cc: Sunny Luo <sunny.luo@amlogic.com>,
-        Yixun Lan <yixun.lan@amlogic.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Yixun Lan <yixun.lan@amlogic.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
         Kevin Hilman <khilman@baylibre.com>,
         Carlo Caione <carlo@caione.org>,
         Jianxin Pan <jianxin.pan@amlogic.com>,
         Xingyu Chen <xingyu.chen@amlogic.com>,
-        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Jerome Brunet <jbrunet@baylibre.com>
+        <linux-spi@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+To: Neil Armstrong <narmstrong@baylibre.com>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <af721e7a752ca468046de0a4ad1ac4a0c220360c.camel@baylibre.com>
+In-Reply-To: <2d438907-91b5-7443-24f9-57a406aaa040@baylibre.com>
+Content-Language: en-GB
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Neil,
 
---s9fJI615cBHmzTOP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2018/12/13 16:49, Neil Armstrong wrote:
+> Hi Sunny,
+> 
+> On 13/12/2018 09:39, Sunny Luo wrote:
+>> The SPICC controller in Meson-AXG is capable of running at 80M clock.
+>> The ASIC IP is improved and the clock is actually running higher than
+>> previous old SoCs.
+>>
+>> Signed-off-by: Sunny Luo <sunny.luo@amlogic.com>
+>> Signed-off-by: Yixun Lan <yixun.lan@amlogic.com>
+>> ---
+>>   drivers/spi/spi-meson-spicc.c | 37 +++++++++++++++++++++++++++++--------
+>>   1 file changed, 29 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+>> index 7fe4488..b56249d 100644
+>> --- a/drivers/spi/spi-meson-spicc.c
+>> +++ b/drivers/spi/spi-meson-spicc.c
+>> @@ -9,11 +9,13 @@
+>>   
+>>   #include <linux/bitfield.h>
+>>   #include <linux/clk.h>
+>> +#include <linux/clk-provider.h>
+>>   #include <linux/device.h>
+>>   #include <linux/io.h>
+>>   #include <linux/kernel.h>
+>>   #include <linux/module.h>
+>>   #include <linux/of.h>
+>> +#include <linux/of_device.h>
+>>   #include <linux/platform_device.h>
+>>   #include <linux/spi/spi.h>
+>>   #include <linux/types.h>
+>> @@ -34,7 +36,6 @@
+>>    *   to have a CS go down over the full transfer
+>>    */
+>>   
+>> -#define SPICC_MAX_FREQ	30000000
+>>   #define SPICC_MAX_BURST	128
+>>   
+>>   /* Register Map */
+>> @@ -120,6 +121,10 @@
+>>   #define SPICC_BURST_MAX	16
+>>   #define SPICC_FIFO_HALF 10
+>>   
+>> +struct meson_spicc_data {
+>> +	unsigned int			max_speed_hz;
+>> +};
+>> +
+>>   struct meson_spicc_device {
+>>   	struct spi_master		*master;
+>>   	struct platform_device		*pdev;
+>> @@ -127,6 +132,7 @@ struct meson_spicc_device {
+>>   	struct clk			*core;
+>>   	struct spi_message		*message;
+>>   	struct spi_transfer		*xfer;
+>> +	const struct meson_spicc_data	*data;
+>>   	u8				*tx_buf;
+>>   	u8				*rx_buf;
+>>   	unsigned int			bytes_per_word;
+>> @@ -517,6 +523,9 @@ static int meson_spicc_probe(struct platform_device *pdev)
+>>   	spicc->pdev = pdev;
+>>   	platform_set_drvdata(pdev, spicc);
+>>   
+>> +	spicc->data = (const struct meson_spicc_data *)
+>> +		of_device_get_match_data(&pdev->dev);
+>> +
+>>   	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>   	spicc->base = devm_ioremap_resource(&pdev->dev, res);
+>>   	if (IS_ERR(spicc->base)) {
+>> @@ -567,11 +576,9 @@ static int meson_spicc_probe(struct platform_device *pdev)
+>>   	master->unprepare_transfer_hardware = meson_spicc_unprepare_transfer;
+>>   	master->transfer_one = meson_spicc_transfer_one;
+>>   
+>> -	/* Setup max rate according to the Meson GX datasheet */
+>> -	if ((rate >> 2) > SPICC_MAX_FREQ)
+>> -		master->max_speed_hz = SPICC_MAX_FREQ;
+>> -	else
+>> -		master->max_speed_hz = rate >> 2;
+>> +	/* Setup max rate according to the Meson datasheet */
+>> +	master->max_speed_hz = min_t(unsigned int, rate >> 1,
+>> +				     spicc->data->max_speed_hz);
+> 
+> I think "rate >> 1" here depends on patch 3, either move patch 3 before this one
+> or keep "rate >> 2" and change it back to "rate >> 1" on patch 3.
+> 
+Yes, this change should be in patch 3.
 
-On Thu, Dec 13, 2018 at 10:04:56AM +0100, Jerome Brunet wrote:
-> On Thu, 2018-12-13 at 16:39 +0800, Sunny Luo wrote:
-
-> > =20
-> >  	writel_bits_relaxed(BIT(24), BIT(24), spicc->base + SPICC_TESTREG);
-> > =20
-> > +	meson_spicc_oen_enable(spicc);
-> > +
-
-> Any specific reason for doing this in prepare_message() ? It looks like
-> something that could/should be done during the probe ?
-
-If it's for power management then there should be a matching disable in
-unprepare_message() (or this should just be in the runtime PM code,
-though it's possible there's stuff that's only needed while actually
-doing transfers in which case this could make sense).
-
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
-
---s9fJI615cBHmzTOP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwSSEkACgkQJNaLcl1U
-h9CHGwf8CNMeR7WV+TrBE53uFRRrhrKajnV4JWbLuA67Kua7X2ESoTqkgJ8tc9T/
-8RQ7EfxtVkGspy1ZkjpiGBrWgY0YGk6/R+N/OkMmuCDJmk5cQNdZtRy5WGIEm1ZI
-I751ssIVt3EZCSE/GcpV4bJ8O7x2fGTWRbnjczwnypYeWwBqfnCxta5+N2DS7T8V
-jis/mZjM8VmLv+qtryIqyfrRGlDaXB47AgQeXBCZcQh68/ab8QoUIdh4Dn/Zecl1
-OBpuTheeAmfkjbLiHQNFi/XWclWK7RGACX/Xlmr+9BVmcl6CAFekXKImBoNMj8jv
-kTkvW7/4I1wvzOJIkaRS0DGZFqF7Yg==
-=Aegn
------END PGP SIGNATURE-----
-
---s9fJI615cBHmzTOP--
+>>   
+>>   	ret = devm_spi_register_master(&pdev->dev, master);
+>>   	if (ret) {
+>> @@ -602,9 +609,23 @@ static int meson_spicc_remove(struct platform_device *pdev)
+>>   	return 0;
+>>   }
+>>   
+>> +static const struct meson_spicc_data meson_spicc_gx_data = {
+>> +	.max_speed_hz	= 30000000,
+>> +};
+>> +
+>> +static const struct meson_spicc_data meson_spicc_axg_data = {
+>> +	.max_speed_hz	= 80000000,
+>> +};
+>> +
+>>   static const struct of_device_id meson_spicc_of_match[] = {
+>> -	{ .compatible = "amlogic,meson-gx-spicc", },
+>> -	{ .compatible = "amlogic,meson-axg-spicc", },
+>> +	{
+>> +		.compatible	= "amlogic,meson-gx-spicc",
+>> +		.data		= &meson_spicc_gx_data,
+>> +	},
+>> +	{
+>> +		.compatible = "amlogic,meson-axg-spicc",
+>> +		.data		= &meson_spicc_axg_data,
+>> +	},
+>>   	{ /* sentinel */ }
+>>   };
+>>   MODULE_DEVICE_TABLE(of, meson_spicc_of_match);
+>>
+> 
+> .
+> 

@@ -1,120 +1,139 @@
-From: Amelie DELAUNAY <amelie.delaunay@st.com>
-Subject: Re: [PATCH 0/5] Add support for STM32F4 SPI
-Date: Mon, 17 Dec 2018 12:51:30 +0000
-Message-ID: <b7424f2c-a644-fd60-7871-6306d035e688@st.com>
-References: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
- <ede8544f-c71d-0901-5522-e97215d23f85@st.com>
- <1544468722.17722.45.camel@gmail.com>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v3 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
+ driver
+Date: Mon, 17 Dec 2018 14:23:29 +0100
+Message-ID: <a4c18176-783b-70db-4668-31cc332705a7@gmail.com>
+References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
+ <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
+ <557c8114-2819-7be3-21b8-02918aa89c04@cogentembedded.com>
+ <OFAE786891.A102E46D-ON48258366.002779D7-48258366.002A5C36@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Alexandre TORGUE <alexandre.torgue@st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-To: =?utf-8?B?Q2V6YXJ5IEdhcGnFhHNraQ==?= <cezary.gapinski@gmail.com>, "Mark
- Brown" <broonie@kernel.org>, "linux-spi@vger.kernel.org"
- <linux-spi@vger.kernel.org>, "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1544468722.17722.45.camel@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <OFAE786891.A102E46D-ON48258366.002779D7-48258366.002A5C36@mxic.com.tw>
 Content-Language: en-US
-Content-ID: <425933B326777444BABF246114C5C6E6@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgQ2V6YXJ5LA0KDQpPbiAxMi8xMC8xOCA4OjA1IFBNLCBDZXphcnkgR2FwacWEc2tpIHdyb3Rl
-Og0KPiBIaSBBbWVsaWUsDQo+IA0KPiBPbiBNb24sIDIwMTgtMTItMTAgYXQgMTI6MzcgKzAwMDAs
-IEFtZWxpZSBERUxBVU5BWSB3cm90ZToNCj4+IEhpIENlemFyeSwNCj4+DQo+PiBPbiAxMi85LzE4
-IDI6NTMgUE0sIGNlemFyeS5nYXBpbnNraUBnbWFpbC5jb20gd3JvdGU6DQo+Pj4NCj4+PiBGcm9t
-OiBDZXphcnkgR2FwaW5za2kgPGNlemFyeS5nYXBpbnNraUBnbWFpbC5jb20+DQo+Pj4NCj4+PiBU
-aGlzIHNlcmllcyBvZiBwYXRjaGVzIGFkZHMgc3VwcG9ydCBmb3IgZmlyc3QgZ2VuZXJhdGlvbiBv
-ZiBTUEkNCj4+PiBpbnRlcmZhY2UNCj4+PiBmb3IgU1RNMzJGNCBmYW1pbHkuDQo+Pj4NCj4+IEZp
-cnN0IG9mIGFsbCwgdGhhbmtzIGZvciBhZGRpbmcgU1RNMzJGNCBTUEkgc3VwcG9ydC4NCj4gDQo+
-IFRoYW5rcyBmb3IgeW91ciBhbnN3ZXIgYW5kIGhpbnRzIGZvciBjb3JyZWN0IGFwcHJvYWNoIHRv
-IHRoaXMgZHJpdmVyLg0KPiANCj4+Pg0KPj4+IFRoaXMgdmVyc2lvbiBvZiBkcml2ZXIgaXMgbW9z
-dGx5IGRpZmZlcmVudCB0byBTVE0zMkg3IG9uZS4gQmFzZWQgb24NCj4+PiBsaW51eA0KPj4+IGtl
-cm5lbCBJMkMgZHJpdmVycyBmb3IgU1RNMzIgd2hlcmUgZHJpdmVycyB3ZXJlIHNwbGl0ZWQgaW50
-bw0KPj4+IFNUTTMyRjQgYW5kDQo+Pj4gU1RNMzJGNyBmYW1pbHkgdGhlIHNhbWUgYXBwcm9hY2gg
-c2VlbXMgdG8gYmUgc3VmZmljaWVudCBmb3IgU1BJDQo+Pj4gU1RNMzINCj4+PiBkcml2ZXJzLiBU
-aGVyZWZvcmUgU1RNMzJINyBkcml2ZXIgd2FzIG1vdmVkIHRvIHNwaS1zdG0zMmg3LmMgZmlsZQ0K
-Pj4+IGFuZA0KPj4+IHJlZ2lzdGVyIGFuZCBmdW5jdGlvbnMgd2VyZSByZW5hbWVkIHRvIGJlIG1v
-cmUgc3BlY2lmaWMgdG8gU1RNMzJINy4NCj4+Pg0KPj4gWW91J3JlIHJpZ2h0LCBTVE0zMkY0IFNQ
-SSBpcyBzbGlnaHRseSBkaWZmZXJlbnQgZnJvbSBTVE0zMkg3IG9uZToNCj4+IHJlZ2lzdGVyIG1h
-cC9iaXRzIG9mZnNldHMgYXJlIGRpZmZlcmVudCBhbmQgU1RNMzJINyBoYXMgYW4gUlggYW5kIFRY
-DQo+PiBGSUZPLg0KPj4gQnV0IGlmIHlvdSBoYXZlIGEgbG9vayBvbiBTVE0zMkY3IFNQSSBbMV0s
-IHlvdSdsbCBzZWUgdGhhdCBTVE0zMkY3DQo+PiBTUEkNCj4+IGlzIGJhc2VkIG9uIFNUTTMyRjQg
-U1BJIHdpdGggbmV3IGZlYXR1cmVzIChkYXRhIGZyYW1lcyAmIEZJRk9zKSBhbHNvDQo+PiBhdmFp
-bGFibGUgb24gU1RNMzJINyBTUEkuDQo+Pg0KPj4gVGhhdCdzIHdoeSBTVE0zMkg3IFNQSSBkcml2
-ZXIgd2FzIGNhbGxlZCBzcGktc3RtMzIuIFRoZSBnb2FsIHdhcyB0bw0KPj4gdXNlDQo+PiBjb21w
-YXRpYmxlICYgbWF0Y2ggZGF0YSB0byBkaWZmZXJlbnRpYXRlIGVhY2ggU1RNMzJGeCBzcGVjaWZp
-Y2l0aWVzLg0KPj4NCj4+IFlvdSBjYW4gaGF2ZSBhIGxvb2sgb24gaG93IGl0IGlzIG1hbmFnZWQg
-aW4gZHJpdmVycy9ydGMvcnRjLXN0bTMyLmMNCj4+ICh0aGUNCj4+IHNhbWUgZHJpdmVyIGNvdmVy
-cyAyIEhXIHZlcnNpb24gb2YgU1RNMzIgUlRDKSwgb3IgaW4NCj4+IGRyaXZlcnMvaWlvL2RhYy9z
-dG0zMi1kYWMtY29yZS5jIGFuZCBzdG0zMi1kYWMuYyAodGhlIHNhbWUgZHJpdmVyDQo+PiBhbHNv
-DQo+PiBjb3ZlcnMgMiBIVyB2ZXJzaW9uIG9mIFNUTTMyIERBQykuDQo+PiBBcyB5b3VyIHNwaS1z
-dG0zMmY0LmMgZmlsZSBpcyBoaWdobHkgYmFzZWQgb24gdGhlIGV4aXN0aW5nIHNwaS0NCj4+IHN0
-bTMyLmMNCj4+IGZpbGUsIEkgdGhpbmsgdGhhdCBjb21tb24gY29kZSBjb3VsZCBiZSBmYWN0b3Jl
-ZCBhbmQgc3BlY2lmaWNpdGllcw0KPj4gY291bGQNCj4+IGJlIGhhbmRsZWQgd2l0aCBjb21wYXRp
-YmxlIGFuZCBtYXRjaCBkYXRhLg0KPiANCj4gSSBoYXZlIHNlZW4gdGhlc2UgZHJpdmVycyBiZWZv
-cmUuIEkgaGF2ZSBiZWVuIHRyeWluZyB0byBkbyB0aGlzIGZvciBteQ0KPiBwcmV2aW91cyBhcHBy
-b2FjaCBhbmQgaXQgaXMgc3RpbGwgb24gbXkgc2Vjb25kIGJyYW5jaC4gVGhlcmUgd2FzIG5vdA0K
-PiB0b28gbXVjaCBjb21tb24gcGFydHMgYW5kIEkgaGF2ZSBzdHVjayB3aXRoIGNvbXBsZXggY29t
-cGF0aWJsZSBkYXRhDQo+IGNvbmZpZ3VyYXRpb25zLiBJIHRob3VnaHQgdGhhdCB3YXMgdG9vIHZl
-cmJvc2UsIHRoZXJlZm9yZSBJIHJlc2lnbmVkDQo+IGZvciBpdCBhbmQgaGF2ZSBnb25lIGludG8g
-aWRlYSB3aXRoIHR3byB0b3RhbGx5IGRpZmZlcmVudCBmaWxlcy4gSQ0KPiB0aGluayBJIG5lZWQg
-dG8gZ2V0IGRvd24gYWdhaW4gdG8gaWRlYSB5b3UgcHJvcG9zZWQuDQo+IA0KPiBJdCBzZWVtcyB0
-byBiZSBtb3JlIGRpZmZpY3VsdCBhcHByb2FjaCBhbmQgaXQgaXMgZ29ubmEgdGFrZSBhIHdoaWxl
-DQo+IGJlZm9yZSBJIHNlbmQgc2Vjb25kIHZlcnNpb24gb2YgdGhlc2UgcGF0Y2hlcy4NCj4gDQo+
-IFJlZ2FyZHMsDQo+IENlemFyeQ0KPiANCg0KU3VyZSBpdCBpc24ndCB0aGUgZWFzaWVzdCBhcHBy
-b2FjaCBidXQgaXQgd2lsbCBiZSBsZXNzIGRpZmZpY3VsdCB0byBhZGQgDQpTVE0zMkY3IFNQSSBz
-dXBwb3J0IHRoZW4hDQoNCkkgY291bGQgdGVzdCB5b3VyIHNlY29uZCB2ZXJzaW9uIHdoZW4gaXQg
-d2lsbCBiZSBhdmFpbGFibGUsIG9uIA0KU1RNMzJINzQzaS1ldmFsIGlmIHlvdSBkb24ndCBoYXZl
-IG9uZS4NCg0KUmVnYXJkcywNCkFtZWxpZQ0KDQo+PiBSZWdhcmRzLA0KPj4gQW1lbGllDQo+PiBb
-MV0NCj4+IGh0dHBzOi8vd3d3LnN0LmNvbS9jb250ZW50L2NjYy9yZXNvdXJjZS90ZWNobmljYWwv
-ZG9jdW1lbnQvcmVmZXJlbmNlXw0KPj4gbWFudWFsL2M1L2NmL2VmLzUyL2MwL2YxLzRiL2ZhL0RN
-MDAxMjQ4NjUucGRmL2ZpbGVzL0RNMDAxMjQ4NjUucGRmL2pjDQo+PiByOmNvbnRlbnQvdHJhbnNs
-YXRpb25zL2VuLkRNMDAxMjQ4NjUucGRmDQo+Pg0KPj4+DQo+Pj4gRm9yIGN1cnJlbnQgdmVyc2lv
-biBtYXN0ZXIgbW9kZSB3aXRoIGZ1bGwtZHVwbGV4IGFuZCA4LzE2IGJpdCBkYXRhDQo+Pj4gZnJh
-bWUNCj4+PiBmb3JtYXQgYXJlIHN1cHBvcnRlZC4gVGhlcmUgaXMgbm8gVFggYW5kIFJYIEZJRk9z
-IGxpa2UgaW4gU1RNMzJINy4NCj4+PiBETUEgY2FwYWJpbGlsaXR5IGlzIHN1cHBvcnRlZCBmb3Ig
-bWVzc2FnZXMgbG9uZ2VyIHRoYW4gYXJiaXRyYXJ5DQo+Pj4gbnVtYmVyDQo+Pj4gb2YgYnl0ZXMg
-KHRoYXQgaXMgc2V0IGFscmVhZHkgdG8gMTYgYnl0ZXMpIHdoZW4gVFggYW5kIFJYIGNoYW5uZWxz
-DQo+Pj4gYXJlDQo+Pj4gc2V0IGF0IHRoZSBzYW1lIHRpbWUuDQo+Pj4NCj4+PiBDZXphcnkgR2Fw
-aW5za2kgKDUpOg0KPj4+ICDCoMKgwqBzcGk6IHN0bTMyOiByZW5hbWUgU1RNMzIgU1BJIHJlZ2lz
-dGVycyBhbmQgZnVuY3Rpb25zIHRvIFNUTTMySDcNCj4+PiAgwqDCoMKgc3BpOiBzdG0zMjogcmVu
-YW1lIHNwaS1zdG0zMiB0byBzcGktc3RtMzJoNw0KPj4+ICDCoMKgwqBzcGk6IHN0bTMyOiBhZGQg
-ZHJpdmVyIGZvciBTVE0zMkY0IGNvbnRyb2xsZXINCj4+PiAgwqDCoMKgQVJNOiBkdHM6IHN0bTMy
-OiBhZGQgU1BJIHN1cHBvcnQgb24gU1RNMzJGNDI5IFNvQw0KPj4+ICDCoMKgwqBzcGk6IHN0bTMy
-OiBhZGQgZGVzY3JpcHRpb24gYWJvdXQgU1RNMzJGNCBiaW5kaW5ncw0KPj4+DQo+Pj4gIMKgIC4u
-Li9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktc3RtMzIudHh0wqDCoMKgwqDCoMKgwqDCoMKg
-wqB8wqDCoMKgwqA5ICstDQo+Pj4gIMKgIGFyY2gvYXJtL2Jvb3QvZHRzL3N0bTMyZjQyOS5kdHNp
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoMKgNjAgKw0KPj4+ICDC
-oCBkcml2ZXJzL3NwaS9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgwqAxOCArLQ0KPj4+ICDCoCBkcml2ZXJz
-L3NwaS9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgfMKgwqDCoMKgMyArLQ0KPj4+ICDCoCBkcml2ZXJzL3NwaS9zcGkt
-c3RtMzIuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgfCAxMzIyIC0tLS0tDQo+Pj4gLS0tLS0tLS0tLS0tLS0NCj4+PiAgwqAgZHJpdmVycy9z
-cGkvc3BpLXN0bTMyZjQuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB8IDEwMDINCj4+PiArKysrKysrKysrKysrKysNCj4+PiAgwqAgZHJpdmVycy9z
-cGkvc3BpLXN0bTMyaDcuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB8IDEzNDANCj4+PiArKysrKysrKysrKysrKysrKysrKw0KPj4+ICDCoCA3IGZp
-bGVzIGNoYW5nZWQsIDI0MjQgaW5zZXJ0aW9ucygrKSwgMTMzMCBkZWxldGlvbnMoLSkNCj4+PiAg
-wqAgZGVsZXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvc3BpL3NwaS1zdG0zMi5jDQo+Pj4gIMKgIGNy
-ZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL3NwaS9zcGktc3RtMzJmNC5jDQo+Pj4gIMKgIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL3NwaS9zcGktc3RtMzJoNy5jCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBs
-aXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+On 12/17/2018 08:42 AM, masonccyang@mxic.com.tw wrote:
+> Hi Sergei,
+> 
+> 
+>> > +static int rpc_spi_io_xfer(struct rpc_spi *rpc,
+>> > +            const void *tx_buf, void *rx_buf)
+>> > +{
+>> > +   u32 smenr, smcr, data, pos = 0;
+>> > +   int ret = 0;
+>> > +
+>> > +   regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
+>> > +              RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
+>> > +              RPC_CMNCR_BSZ(0));
+>> > +   regmap_write(rpc->regmap, RPC_SMDRENR, 0x0);
+>> > +   regmap_write(rpc->regmap, RPC_SMCMR, rpc->cmd);
+>> > +   regmap_write(rpc->regmap, RPC_SMDMCR, rpc->dummy);
+>> > +   regmap_write(rpc->regmap, RPC_SMADR, rpc->addr);
+>> > +
+>> > +   if (tx_buf) {
+>> > +      smenr = rpc->smenr;
+>> > +
+>> > +      while (pos < rpc->xferlen) {
+>> > +         u32 nbytes = rpc->xferlen  - pos;
+>> > +
+>> > +         regmap_write(rpc->regmap, RPC_SMWDR0,
+>> > +                 get_unaligned((u32 *)(tx_buf + pos)));
+>> > +
+>> > +         if (nbytes > 4) {
+>> > +            nbytes = 4;
+>> > +            smcr = rpc->smcr |
+>> > +                   RPC_SMCR_SPIE | RPC_SMCR_SSLKP;
+>> > +         } else {
+>> > +            smcr = rpc->smcr | RPC_SMCR_SPIE;
+>> > +         }
+>> > +
+>> > +         regmap_write(rpc->regmap, RPC_SMENR, smenr);
+>> > +         regmap_write(rpc->regmap, RPC_SMCR, smcr);
+>> > +         ret = wait_msg_xfer_end(rpc);
+>> > +         if (ret)
+>> > +            goto out;
+>> > +
+>> > +         pos += nbytes;
+>> > +         smenr = rpc->smenr & ~RPC_SMENR_CDE &
+>> > +                    ~RPC_SMENR_ADE(0xf);
+>> > +      }
+>> > +   } else if (rx_buf) {
+>> > +      while (pos < rpc->xferlen) {
+>> > +         u32 nbytes = rpc->xferlen  - pos;
+>> > +
+>> > +         if (nbytes > 4)
+>> > +            nbytes = 4;
+>> > +
+>> > +         regmap_write(rpc->regmap, RPC_SMENR, rpc->smenr);
+>> > +         regmap_write(rpc->regmap, RPC_SMCR,
+>> > +                 rpc->smcr | RPC_SMCR_SPIE);
+>>
+>>    Hm... our flash chip (Spansion S25FS512S) doesn't get detected; it
+> sends
+>> JEDEC ID bytes 0..3 repeatedly, unless I copy the SSLKP logic from the
+> writing
+>> branch above...
+> 
+> Do you switch the SW1, SW2, SW3, SW13, SW31 and SW10 to on-board QSPI
+> mode ?
+> Because R-Car D3 Draak board default is booting from HyperFlsah.
+
+So this puts us back to the original discussion -- the driver should
+support HF mode as well IMO.
+
+> what follows is my booting log, FYI.
+> ------------------------------------------------------------------
+> [    1.625053] m25p80 spi5.0: s25fl129p1 (16384 Kbytes)
+> [    1.634391] 12 fixed-partitions partitions found on MTD device spi5.0
+> [    1.642198] Creating 12 MTD partitions on "spi5.0":
+> [    1.647598] 0x000000000000-0x000000040000 : "Bank 1 - Boot parameter"
+> [    1.660893] 0x000000040000-0x000000180000 : "Bank 1 - Loader-BL2"
+> [    1.671287] 0x000000180000-0x0000001c0000 : "Bank 1 - Certification"
+> -----------------------------------------------------------------------
+> 
+>>
+>> > +         ret = wait_msg_xfer_end(rpc);
+>> > +         if (ret)
+>> > +            goto out;
+>> > +
+>> > +         regmap_read(rpc->regmap, RPC_SMRDR0, &data);
+>> > +         memcpy_fromio(rx_buf + pos, (void *)&data, nbytes);
+>> > +         pos += nbytes;
+>>
+>>    ... and it skips byte 4 unless I copy the code from the end of the
+> writing
+>> branch, clearing CDE/ADE. But even then the byte 4 reads as 0x03
+> instead of 0.
+> 
+> yup, I think this is some kind of RPC HW limitation,
+> in RPC manual I/O mode, it only could read 4 bytes data w/ one command.
+> 
+> That is, one command + read 4 bytes data + read 4 bytes data + read 4
+> bytes data + ...
+> will get the incorrect data.
+> 
+> That's why RPC in manual I/O mode, driver only could do,
+> one command + read 4 bytes data; one command + read 4 bytes data and so on.
+> 
+> But RPC in external address space read mode(here we call it direct
+> mapping read mode)
+> is ok for one command + read 4 bytes data + read 4 bytes data + ....
+
+I think the U-Boot driver solves those problems, since it works in both
+RPC and HF mode on all of Gen3 boards , not just D3 in non-standard SPI
+boot configuration. Please take a look.
+
+-- 
+Best regards,
+Marek Vasut

@@ -1,8 +1,8 @@
 From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Subject: Re: [PATCH v3 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
  driver
-Date: Mon, 17 Dec 2018 21:55:25 +0300
-Message-ID: <bfda743d-4aa0-732f-e240-9435647a4856@cogentembedded.com>
+Date: Tue, 18 Dec 2018 19:45:03 +0300
+Message-ID: <a7ec6634-fa56-9fa1-df22-3bbf786cb95a@cogentembedded.com>
 References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
  <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
  <557c8114-2819-7be3-21b8-02918aa89c04@cogentembedded.com>
@@ -22,8 +22,6 @@ In-Reply-To: <OFAE786891.A102E46D-ON48258366.002779D7-48258366.002A5C36@mxic.com
 Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
-
-Hello!
 
 On 12/17/2018 10:42 AM, masonccyang@mxic.com.tw wrote:
 
@@ -82,21 +80,14 @@ On 12/17/2018 10:42 AM, masonccyang@mxic.com.tw wrote:
 >>    Hm... our flash chip (Spansion S25FS512S) doesn't get detected; it sends
 >> JEDEC ID bytes 0..3 repeatedly, unless I copy the SSLKP logic from the writing
 >> branch above...
-> 
-> Do you switch the SW1, SW2, SW3, SW13, SW31 and SW10 to on-board QSPI mode ?
-> Because R-Car D3 Draak board default is booting from HyperFlsah.
 
-   I was testing your patch on the V3H-based Condor and Starter Kit boards --
-it should have worked without much ado...
-   It works with *our* driver, living under drivers/mtd/spi-nor/ (which makes
-it outdated, AFAIU) and I was going to push it upstream before I learned about
-your driver. :-)
+[...]
 
 > what follows is my booting log, FYI.
 > ------------------------------------------------------------------
 > [    1.625053] m25p80 spi5.0: s25fl129p1 (16384 Kbytes)
 
-   So another Spansion flash?
+   Looking at the spi_nor_ids[], this chip has 0x01 in both byte 0 and byte 4...
 
 > [    1.634391] 12 fixed-partitions partitions found on MTD device spi5.0
 > [    1.642198] Creating 12 MTD partitions on "spi5.0":
@@ -119,25 +110,17 @@ your driver. :-)
 > 
 > yup, I think this is some kind of RPC HW limitation,
 > in RPC manual I/O mode, it only could read 4 bytes data w/ one command.
-
-   Thank for the info -- seems worth a comment though...
-
+> 
 > That is, one command + read 4 bytes data + read 4 bytes data + read 4 bytes data + ...
 > will get the incorrect data.
-
-   What if we want to read less than 4 bytes (the ID read requests SPI_NOR_MAX_ID_LEN
-(6) bytes, i.e. 4 + 2)? You seem to always expect 4 bytes...
-
+> 
 > That's why RPC in manual I/O mode, driver only could do,
 > one command + read 4 bytes data; one command + read 4 bytes data and so on.
 
-   The question is why it just duplicates the ID bytes 0..3 on the 2nd iteration
-in our case...
-
-> But RPC in external address space read mode(here we call it direct mapping read mode)
-> is ok for one command + read 4 bytes data + read 4 bytes data + ....
-
-   Sounds promising... if only we could make the probing work. :-)
+   Yes. But the problem is you can't work around by reading 4 bytes at most
+for the RDID command -- it has no address phase. Every time you "restart"
+reading, you get bytes 0..3 again, like me. It seems that this approach works
+for you only by chance...
 
 > thanks & best regards,
 > Mason

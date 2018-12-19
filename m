@@ -1,17 +1,13 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v5 3/7] mtd: spi-nor: add opcodes for octal Read/Write
- commands
-Date: Wed, 19 Dec 2018 10:15:00 +0000
-Message-ID: <VI1PR04MB5726FBFD2CBEB7A3F0454A5999BE0@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <1543826226-30898-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1543826226-30898-4-git-send-email-yogeshnarayan.gaur@nxp.com>
- <ac569071-3c69-ebc8-2c18-ea1399210549@microchip.com>
- <VI1PR04MB57264CBB25E2984DF221ED2E99A60@VI1PR04MB5726.eurprd04.prod.outlook.com>
- <141c6d79-ae7a-60aa-865a-f6b6997f8da9@microchip.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v6 0/7] spi: add support for octal mode
+Date: Wed, 19 Dec 2018 18:13:42 +0530
+Message-ID: <10b25865-b93d-382a-aa4d-b21fbd9c3ba9@ti.com>
+References: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh@kernel.org" <robh@kernel.org>,
+Content-Transfer-Encoding: 7bit
+Cc: "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "robh@kernel.org" <robh@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
@@ -19,48 +15,128 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Tudor.Ambarus@microchip.com" <Tudor.Ambarus@microchip.com>,
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <141c6d79-ae7a-60aa-865a-f6b6997f8da9@microchip.com>
+In-Reply-To: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVHVkb3IsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHVkb3Iu
-QW1iYXJ1c0BtaWNyb2NoaXAuY29tIFttYWlsdG86VHVkb3IuQW1iYXJ1c0BtaWNyb2NoaXAuY29t
-XQ0KPiBTZW50OiBUdWVzZGF5LCBEZWNlbWJlciAxMSwgMjAxOCAxOjQwIFBNDQo+IFRvOiBZb2dl
-c2ggTmFyYXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT47IGxpbnV4LQ0KPiBt
-dGRAbGlzdHMuaW5mcmFkZWFkLm9yZzsgYm9yaXMuYnJlemlsbG9uQGJvb3RsaW4uY29tOyBicm9v
-bmllQGtlcm5lbC5vcmc7DQo+IG1hcmVrLnZhc3V0QGdtYWlsLmNvbTsgdmlnbmVzaHJAdGkuY29t
-OyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnOw0KPiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9y
-Zw0KPiBDYzogcm9iaEBrZXJuZWwub3JnOyBtYXJrLnJ1dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9A
-a2VybmVsLm9yZzsgbGludXgtDQo+IGFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgY29t
-cHV0ZXJzZm9ycGVhY2VAZ21haWwuY29tOw0KPiBmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZTsg
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY1IDMv
-N10gbXRkOiBzcGktbm9yOiBhZGQgb3Bjb2RlcyBmb3Igb2N0YWwgUmVhZC9Xcml0ZQ0KPiBjb21t
-YW5kcw0KPiANCj4gSGksDQo+IA0KPiBPbiAxMi8xMS8yMDE4IDA2OjU1IEFNLCBZb2dlc2ggTmFy
-YXlhbiBHYXVyIHdyb3RlOg0KPiA+IFRodXMgd291bGQgZ29pbmcgdG8gbW9kaWZ5IHRoZSBjb25k
-aXRpb24gY2hlY2sgYXMgYmVsb3csIHNvIHRoYXQgU0ZEUA0KPiBwYXJzaW5nIHdvdWxkIGFsc28g
-YmUgcGVyZm9ybWVkIHdoZW4gU1BJX05PUl9PQ1RBTF9SRUFEIGlzIHNldC4gQ29ycmVjdD8NCj4g
-Pg0KPiA+ICAgICAgICAgaWYgKChpbmZvLT5mbGFncyAmIChTUElfTk9SX0RVQUxfUkVBRCB8IFNQ
-SV9OT1JfUVVBRF9SRUFEIHwNCj4gPiAgICAgICAgICAgICAgU1BJX05PUl9PQ1RBTF9SRUFEKSkg
-JiYgIShpbmZvLT5mbGFncyAmDQo+ID4gU1BJX05PUl9TS0lQX1NGRFApKSB7DQo+IA0KPiBZZXMs
-IHRoaXMgaXMgd2hhdCBJIHdhcyBzdWdnZXN0aW5nLiBPbiBhIHNlY29uZCB0aG91Z2h0LCB3ZSBo
-YXZlbid0IGFkZGVkIHlldA0KPiBzdXBwb3J0IGZvciBwYXJzaW5nIHNmZHAgdG8gZ2V0IHRoZSBv
-Y3RhbCBtb2RlIGluZm8sIHNvIHRoZSBwYXJzaW5nIHdpbGwgYmUgZG9uZQ0KPiBncmF0dWl0b3Vz
-bHkuIExldCdzIGRyb3AgdGhpcyBjaGFuZ2UgYW5kIGFkZCBpdCB3aGVuIGFkZGluZyBzdXBwb3J0
-IGZvciBwYXJzaW5nDQo+IG9jdGFsIG1vZGUgaW5mbyBmcm9tIHNmZHAuIEknbGwgcHJlcGFyZSBh
-IHBhdGNoIGZvciB0aGlzLg0KPiANCj4gUGxlYXNlIHJlYmFzZSBvbiB0b3Agb2Ygc3BpLW5vci9u
-ZXh0LCBzL29jdG8vb2N0YWwgaW4gc3BpLW5vci5oIGFuZCBjb3JyZWN0IHlvdXINCj4gUy1vLWIg
-dGFnIGFuZCB5b3UnbGwgaGF2ZSBteSBSLWIgdGFnLg0KPiANCk5leHQgdmVyc2lvbiwgdjYsIHNl
-bnQgZm9yIHJldmlld1sxXS4NClNvcnJ5IGZvciBsYXRlIHJlcGx5LCB3YXMgb24gbGVhdmUuDQoN
-Ci0tDQpSZWdhcmRzDQpZb2dlc2ggR2F1cg0KDQpbMV0gaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJz
-Lm9yZy9wcm9qZWN0L2xpbnV4LW10ZC9saXN0Lz9zZXJpZXM9ODI4MTUNCg0KPiBUaGFua3MgWW9n
-ZXNoLA0KPiB0YQ0K
+Hi,
+
+On 19/12/18 3:41 PM, Yogesh Narayan Gaur wrote:
+> Add support for octal mode IO data transfer.
+> Micron flash, mt35xu512aba, supports octal mode data transfer and
+> NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
+> 
+> Patch series
+> * Add support for octal mode flags and parsing of same in spi driver.
+> * Add parsing logic for spi-mem framework and m25p80.c device file.
+> * Add opcodes for octal I/O commands in spi-nor framework, Read and Write proto for (1-1-8/1-8-8) mode.
+>   Opcodes are added as per octal data IO commands required for mt35xu512aba [1] flash.
+> * Add mode bit required for octal mode in nxp-fspi driver [2].
+> * Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
+> 
+> Tested on LX2160ARDB target with nxp-fspi driver, below are
+> Read performance number of 1-1-1 and 1-1-8 read protocol.
+> 
+>  root@lxxx:~# cat /proc/mtd
+>  dev:    size   erasesize  name
+>  mtd0: 04000000 00001000 "spi0.0"
+>  mtd1: 04000000 00001000 "spi0.1"
+>  root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
+>  Copied 16777216 bytes from address 0x00000000 in flash to 0read
+> 
+>  real    0m2.792s
+>  user    0m0.000s
+>  sys     0m2.790s
+>  root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
+>  Copied 16777216 bytes from address 0x00000000 in flash to 0read
+> 
+>  real    0m0.441s
+>  user    0m0.000s
+>  sys     0m0.440s
+>  root@ls1012ardb:~#
+> 
+> 
+>  Flash device MTD0 configured in 1-1-1 protocol.
+>  Flash device MTD1 configured in 1-1-8 protocol.
+> 
+> [1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=70384&state=*
+> [2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=76402
+> 
+> Yogesh Gaur (7):
+>   spi: add support for octal mode I/O data transfer
+>   spi: spi-mem: add support for octal mode I/O data transfer
+
+
+These two patches are already merged and is now part of linux-next[1].
+Its preferred to send patches based on top of latest linux-next so as to
+avoid resending patches that have already been picked up by the maintainer.
+
+[1]
+commit 6b03061f882de49b83ccf44beb3a12c920a2da1b
+Author: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Date:   Mon Dec 3 08:39:06 2018 +0000
+
+    spi: add support for octal mode I/O data transfer
+
+commit b12a084c8729ef423089bb9a5a143eed39cd94e7
+Author: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Date:   Mon Dec 3 08:39:12 2018 +0000
+
+    spi: spi-mem: add support for octal mode I/O data transfer
+
+
+Regards
+Vignesh
+
+>   mtd: spi-nor: add opcodes for octal Read/Write commands
+>   mtd: spi-nor: add octal read flag for flash mt35xu512aba
+>   mtd: m25p80: add support of octal mode I/O transfer
+>   spi: nxp-fspi: add octal mode flag bit for octal support
+>   arm64: dts: lx2160a: update fspi node
+> 
+> Changes for v6:
+> - Correct S-o-b tag with full author name as 'Yogesh Narayan Gaur'.
+> - Rebase on top of v4.20-rc5.
+> Changes for v5:
+> - Modified string 'octo' as 'octal' in all patches.
+> Changes for v4:
+> - Rebase on top of v4.20-rc2.
+> - Modify octo entries enum value in spi.h.
+> Changes for v3:
+> - Add octo mode support in spi_setup().
+> - Rename all patches with 'octal' string modified as 'octo'.
+> Changes for v2:
+> - Incorporated review comments of Boris and Vignesh.
+> 
+> Yogesh Gaur (7):
+>   spi: add support for octal mode I/O data transfer
+>   spi: spi-mem: add support for octal mode I/O data transfer
+>   mtd: spi-nor: add opcodes for octal Read/Write commands
+>   mtd: spi-nor: add octal read flag for flash mt35xu512aba
+>   mtd: m25p80: add support of octal mode I/O transfer
+>   spi: nxp-fspi: add octal mode flag bit for octal support
+>   arm64: dts: lx2160a: update fspi node
+> 
+>  arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
+>  drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
+>  drivers/mtd/spi-nor/spi-nor.c                     | 19 ++++++++++++++++---
+>  drivers/spi/spi-mem.c                             |  9 ++++++++-
+>  drivers/spi/spi-nxp-fspi.c                        |  4 ++--
+>  drivers/spi/spi.c                                 | 12 ++++++++++--
+>  include/linux/mtd/spi-nor.h                       | 16 ++++++++++++----
+>  include/linux/spi/spi.h                           |  4 +++-
+>  8 files changed, 63 insertions(+), 14 deletions(-)
+> 
+
+-- 
+Regards
+Vignesh

@@ -1,128 +1,116 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v3 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
- driver
-Date: Tue, 18 Dec 2018 19:45:03 +0300
-Message-ID: <a7ec6634-fa56-9fa1-df22-3bbf786cb95a@cogentembedded.com>
-References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
- <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
- <557c8114-2819-7be3-21b8-02918aa89c04@cogentembedded.com>
- <OFAE786891.A102E46D-ON48258366.002779D7-48258366.002A5C36@mxic.com.tw>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v6 0/7] spi: add support for octal mode
+Date: Wed, 19 Dec 2018 10:11:43 +0000
+Message-ID: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFAE786891.A102E46D-ON48258366.002779D7-48258366.002A5C36@mxic.com.tw>
-Content-Language: en-MW
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/17/2018 10:42 AM, masonccyang@mxic.com.tw wrote:
+Add support for octal mode IO data transfer.
+Micron flash, mt35xu512aba, supports octal mode data transfer and
+NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
 
->> > +static int rpc_spi_io_xfer(struct rpc_spi *rpc,
->> > +            const void *tx_buf, void *rx_buf)
->> > +{
->> > +   u32 smenr, smcr, data, pos = 0;
->> > +   int ret = 0;
->> > +
->> > +   regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
->> > +              RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
->> > +              RPC_CMNCR_BSZ(0));
->> > +   regmap_write(rpc->regmap, RPC_SMDRENR, 0x0);
->> > +   regmap_write(rpc->regmap, RPC_SMCMR, rpc->cmd);
->> > +   regmap_write(rpc->regmap, RPC_SMDMCR, rpc->dummy);
->> > +   regmap_write(rpc->regmap, RPC_SMADR, rpc->addr);
->> > +
->> > +   if (tx_buf) {
->> > +      smenr = rpc->smenr;
->> > +
->> > +      while (pos < rpc->xferlen) {
->> > +         u32 nbytes = rpc->xferlen  - pos;
->> > +
->> > +         regmap_write(rpc->regmap, RPC_SMWDR0,
->> > +                 get_unaligned((u32 *)(tx_buf + pos)));
->> > +
->> > +         if (nbytes > 4) {
->> > +            nbytes = 4;
->> > +            smcr = rpc->smcr |
->> > +                   RPC_SMCR_SPIE | RPC_SMCR_SSLKP;
->> > +         } else {
->> > +            smcr = rpc->smcr | RPC_SMCR_SPIE;
->> > +         }
->> > +
->> > +         regmap_write(rpc->regmap, RPC_SMENR, smenr);
->> > +         regmap_write(rpc->regmap, RPC_SMCR, smcr);
->> > +         ret = wait_msg_xfer_end(rpc);
->> > +         if (ret)
->> > +            goto out;
->> > +
->> > +         pos += nbytes;
->> > +         smenr = rpc->smenr & ~RPC_SMENR_CDE &
->> > +                    ~RPC_SMENR_ADE(0xf);
->> > +      }
->> > +   } else if (rx_buf) {
->> > +      while (pos < rpc->xferlen) {
->> > +         u32 nbytes = rpc->xferlen  - pos;
->> > +
->> > +         if (nbytes > 4)
->> > +            nbytes = 4;
->> > +
->> > +         regmap_write(rpc->regmap, RPC_SMENR, rpc->smenr);
->> > +         regmap_write(rpc->regmap, RPC_SMCR,
->> > +                 rpc->smcr | RPC_SMCR_SPIE);
->>
->>    Hm... our flash chip (Spansion S25FS512S) doesn't get detected; it sends
->> JEDEC ID bytes 0..3 repeatedly, unless I copy the SSLKP logic from the writing
->> branch above...
+Patch series
+* Add support for octal mode flags and parsing of same in spi driver.
+* Add parsing logic for spi-mem framework and m25p80.c device file.
+* Add opcodes for octal I/O commands in spi-nor framework, Read and Write p=
+roto for (1-1-8/1-8-8) mode.
+  Opcodes are added as per octal data IO commands required for mt35xu512aba=
+ [1] flash.
+* Add mode bit required for octal mode in nxp-fspi driver [2].
+* Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
 
-[...]
+Tested on LX2160ARDB target with nxp-fspi driver, below are
+Read performance number of 1-1-1 and 1-1-8 read protocol.
 
-> what follows is my booting log, FYI.
-> ------------------------------------------------------------------
-> [    1.625053] m25p80 spi5.0: s25fl129p1 (16384 Kbytes)
+ root@lxxx:~# cat /proc/mtd
+ dev:    size   erasesize  name
+ mtd0: 04000000 00001000 "spi0.0"
+ mtd1: 04000000 00001000 "spi0.1"
+ root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
 
-   Looking at the spi_nor_ids[], this chip has 0x01 in both byte 0 and byte 4...
+ real    0m2.792s
+ user    0m0.000s
+ sys     0m2.790s
+ root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
+ Copied 16777216 bytes from address 0x00000000 in flash to 0read
 
-> [    1.634391] 12 fixed-partitions partitions found on MTD device spi5.0
-> [    1.642198] Creating 12 MTD partitions on "spi5.0":
-> [    1.647598] 0x000000000000-0x000000040000 : "Bank 1 - Boot parameter"
-> [    1.660893] 0x000000040000-0x000000180000 : "Bank 1 - Loader-BL2"
-> [    1.671287] 0x000000180000-0x0000001c0000 : "Bank 1 - Certification"
-> -----------------------------------------------------------------------
-> 
->>
->> > +         ret = wait_msg_xfer_end(rpc);
->> > +         if (ret)
->> > +            goto out;
->> > +
->> > +         regmap_read(rpc->regmap, RPC_SMRDR0, &data);
->> > +         memcpy_fromio(rx_buf + pos, (void *)&data, nbytes);
->> > +         pos += nbytes;
->>
->>    ... and it skips byte 4 unless I copy the code from the end of the writing
->> branch, clearing CDE/ADE. But even then the byte 4 reads as 0x03 instead of 0.
-> 
-> yup, I think this is some kind of RPC HW limitation,
-> in RPC manual I/O mode, it only could read 4 bytes data w/ one command.
-> 
-> That is, one command + read 4 bytes data + read 4 bytes data + read 4 bytes data + ...
-> will get the incorrect data.
-> 
-> That's why RPC in manual I/O mode, driver only could do,
-> one command + read 4 bytes data; one command + read 4 bytes data and so on.
+ real    0m0.441s
+ user    0m0.000s
+ sys     0m0.440s
+ root@ls1012ardb:~#
 
-   Yes. But the problem is you can't work around by reading 4 bytes at most
-for the RDID command -- it has no address phase. Every time you "restart"
-reading, you get bytes 0..3 again, like me. It seems that this approach works
-for you only by chance...
 
-> thanks & best regards,
-> Mason
+ Flash device MTD0 configured in 1-1-1 protocol.
+ Flash device MTD1 configured in 1-1-8 protocol.
 
-MBR, Sergei
+[1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D70384&sta=
+te=3D*
+[2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=3D76402
+
+Yogesh Gaur (7):
+  spi: add support for octal mode I/O data transfer
+  spi: spi-mem: add support for octal mode I/O data transfer
+  mtd: spi-nor: add opcodes for octal Read/Write commands
+  mtd: spi-nor: add octal read flag for flash mt35xu512aba
+  mtd: m25p80: add support of octal mode I/O transfer
+  spi: nxp-fspi: add octal mode flag bit for octal support
+  arm64: dts: lx2160a: update fspi node
+
+Changes for v6:
+- Correct S-o-b tag with full author name as 'Yogesh Narayan Gaur'.
+- Rebase on top of v4.20-rc5.
+Changes for v5:
+- Modified string 'octo' as 'octal' in all patches.
+Changes for v4:
+- Rebase on top of v4.20-rc2.
+- Modify octo entries enum value in spi.h.
+Changes for v3:
+- Add octo mode support in spi_setup().
+- Rename all patches with 'octal' string modified as 'octo'.
+Changes for v2:
+- Incorporated review comments of Boris and Vignesh.
+
+Yogesh Gaur (7):
+  spi: add support for octal mode I/O data transfer
+  spi: spi-mem: add support for octal mode I/O data transfer
+  mtd: spi-nor: add opcodes for octal Read/Write commands
+  mtd: spi-nor: add octal read flag for flash mt35xu512aba
+  mtd: m25p80: add support of octal mode I/O transfer
+  spi: nxp-fspi: add octal mode flag bit for octal support
+  arm64: dts: lx2160a: update fspi node
+
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
+ drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
+ drivers/mtd/spi-nor/spi-nor.c                     | 19 ++++++++++++++++---
+ drivers/spi/spi-mem.c                             |  9 ++++++++-
+ drivers/spi/spi-nxp-fspi.c                        |  4 ++--
+ drivers/spi/spi.c                                 | 12 ++++++++++--
+ include/linux/mtd/spi-nor.h                       | 16 ++++++++++++----
+ include/linux/spi/spi.h                           |  4 +++-
+ 8 files changed, 63 insertions(+), 14 deletions(-)
+
+--=20
+2.7.4

@@ -1,8 +1,7 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v6 6/7] spi: nxp-fspi: add octal mode flag bit for octal
- support
-Date: Wed, 19 Dec 2018 10:12:20 +0000
-Message-ID: <1545214186-16987-7-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH 7/7] arm64: dts: lx2160a: update fspi node
+Date: Wed, 19 Dec 2018 10:12:26 +0000
+Message-ID: <1545214186-16987-8-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -30,39 +29,49 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add octal mode flags for octal I/O data transfer support.
-NXP FlexSPI controller supports 8 lines Rx/Tx data transfer.
+Flash mt35xu512aba connected to FlexSPI controller supports
+1-1-8/1-8-8 protocol.
+Added flag spi-rx-bus-width and spi-tx-bus-width with values as
+8 and 8 respectively for both flashes connected at CS0 and CS1.
 
 Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 ---
 Changes for v6:
 - Correct S-o-b tag with full author name as 'Yogesh Narayan Gaur'.
 Changes for v5:
-- Modified string 'octo' with 'octal'.
+- None
 Changes for v4:
 - None
 Changes for v3:
-- Modified string 'octal' with 'octo'.
+- None
 Changes for v2:
 - None
 
- drivers/spi/spi-nxp-fspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 6d497f4..cfd3126 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -995,8 +995,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (!ctlr)
- 		return -ENOMEM;
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts b/arch/arm64=
+/boot/dts/freescale/fsl-lx2160a-rdb.dts
+index 3b20c97..24cc41c 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
+@@ -45,6 +45,8 @@
+ 		m25p,fast-read;
+ 		spi-max-frequency =3D <20000000>;
+ 		reg =3D <0>;
++		spi-rx-bus-width =3D <8>;
++		spi-tx-bus-width =3D <8>;
+ 	};
 =20
--	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD |
--			  SPI_TX_DUAL | SPI_TX_QUAD;
-+	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL |
-+			  SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL;
+ 	mt35xu512aba1: flash@1 {
+@@ -54,6 +56,8 @@
+ 		m25p,fast-read;
+ 		spi-max-frequency =3D <20000000>;
+ 		reg =3D <1>;
++		spi-rx-bus-width =3D <8>;
++		spi-tx-bus-width =3D <8>;
+ 	};
+ };
 =20
- 	f =3D spi_controller_get_devdata(ctlr);
- 	f->dev =3D dev;
 --=20
 2.7.4

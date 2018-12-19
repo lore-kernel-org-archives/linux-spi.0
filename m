@@ -1,7 +1,8 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v6 1/7] spi: add support for octal mode I/O data transfer
-Date: Wed, 19 Dec 2018 10:11:49 +0000
-Message-ID: <1545214186-16987-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v6 2/7] spi: spi-mem: add support for octal mode I/O data
+ transfer
+Date: Wed, 19 Dec 2018 10:11:55 +0000
+Message-ID: <1545214186-16987-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -29,11 +30,7 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add flags for Octal mode I/O data transfer
-Required for the SPI controller which can do the data transfer (TX/RX)
-on 8 data lines e.g. NXP FlexSPI controller.
- SPI_TX_OCTAL: transmit with 8 wires
- SPI_RX_OCTAL: receive with 8 wires
+Add support for octal mode I/O data transfer in spi-mem framework.
 
 Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Reviewed-by: Boris Brezillon <boris.brezillon@bootlin.com>
@@ -43,77 +40,42 @@ Changes for v6:
 Changes for v5:
 - Modified string 'octo' with 'octal'.
 Changes for v4:
-- Rebase on top of v4.20-rc2
+- None
 Changes for v3:
 - Modified string 'octal' with 'octo'.
-- Add octo mode support in spi_setup().
 Changes for v2:
-- Incorporated review comments of Boris.
+- Patch added in v2 version.
 
- drivers/spi/spi.c       | 12 ++++++++++--
- include/linux/spi/spi.h |  4 +++-
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mem.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6ca5940..95249b8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1617,6 +1617,9 @@ static int of_spi_parse_dt(struct spi_controller *ctl=
-r, struct spi_device *spi,
- 		case 4:
- 			spi->mode |=3D SPI_TX_QUAD;
- 			break;
-+		case 8:
-+			spi->mode |=3D SPI_TX_OCTAL;
-+			break;
- 		default:
- 			dev_warn(&ctlr->dev,
- 				"spi-tx-bus-width %d not supported\n",
-@@ -1635,6 +1638,9 @@ static int of_spi_parse_dt(struct spi_controller *ctl=
-r, struct spi_device *spi,
- 		case 4:
- 			spi->mode |=3D SPI_RX_QUAD;
- 			break;
-+		case 8:
-+			spi->mode |=3D SPI_RX_OCTAL;
-+			break;
- 		default:
- 			dev_warn(&ctlr->dev,
- 				"spi-rx-bus-width %d not supported\n",
-@@ -2823,7 +2829,8 @@ int spi_setup(struct spi_device *spi)
- 	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
- 	 */
- 	if ((spi->mode & SPI_3WIRE) && (spi->mode &
--		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
-+		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
-+		 SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL)))
- 		return -EINVAL;
- 	/* help drivers fail *cleanly* when they need options
- 	 * that aren't supported with their current controller
-@@ -2832,7 +2839,8 @@ int spi_setup(struct spi_device *spi)
- 	 */
- 	bad_bits =3D spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
- 	ugly_bits =3D bad_bits &
--		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD);
-+		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
-+		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
- 	if (ugly_bits) {
- 		dev_warn(&spi->dev,
- 			 "setup: ignoring unsupported mode bits %x\n",
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 6be77fa..0c1ca5d 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -154,7 +154,9 @@ struct spi_device {
- #define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
- #define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
- #define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
--#define SPI_CS_WORD	0x1000			/* toggle cs after each word */
-+#define	SPI_CS_WORD	0x1000			/* toggle cs after each word */
-+#define	SPI_TX_OCTAL	0x2000			/* transmit with 8 wires */
-+#define	SPI_RX_OCTAL	0x4000			/* receive with 8 wires */
- 	int			irq;
- 	void			*controller_state;
- 	void			*controller_data;
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 62a7b80..5e15d62 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -12,7 +12,7 @@
+=20
+ #include "internals.h"
+=20
+-#define SPI_MEM_MAX_BUSWIDTH		4
++#define SPI_MEM_MAX_BUSWIDTH		8
+=20
+ /**
+  * spi_controller_dma_map_mem_op_data() - DMA-map the buffer attached to a
+@@ -121,6 +121,13 @@ static int spi_check_buswidth_req(struct spi_mem *mem,=
+ u8 buswidth, bool tx)
+=20
+ 		break;
+=20
++	case 8:
++		if ((tx && (mode & SPI_TX_OCTAL)) ||
++		    (!tx && (mode & SPI_RX_OCTAL)))
++			return 0;
++
++		break;
++
+ 	default:
+ 		break;
+ 	}
 --=20
 2.7.4

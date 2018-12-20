@@ -1,108 +1,37 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [GIT PULL] FSL QSPI device tree cleanup for 4.21
-Date: Thu, 20 Dec 2018 19:23:34 +0100
-Message-ID: <CAMuHMdW1NsqEHWBBn77wTAYnXi068iT2Lo8rxUUSvbo5UHDTkA@mail.gmail.com>
-References: <20181216084854.GJ13243@dragon>
- <CAK8P3a34R+Gv+H8_jjGP452i2kSqq+u0PsE-4pDnRRtY14SG0w@mail.gmail.com>
- <a73f86ff-15ce-9512-bbf0-be852cf39a35@kontron.de>
- <CAK8P3a1PMoR-WWcb_G8sTVW9HKUKvKfUZmcinkOEy9mJ5c=Lxw@mail.gmail.com>
- <6dde2248-da0d-7bd3-801b-b42b2974c038@kontron.de>
- <CAK8P3a0WCOcVjSegBKRPw3kkokE8S4JEXManqBkq4CjfcBRSMg@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 5/5] spi: stm32: add description about STM32F4 bindings
+Date: Thu, 20 Dec 2018 13:49:11 -0600
+Message-ID: <20181220194911.GA17409@bogus>
+References: <1544363636-12161-1-git-send-email-cezary.gapinski@gmail.com>
+ <1544363636-12161-6-git-send-email-cezary.gapinski@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: frieder.schrempf@kontron.de, linux-spi <linux-spi@vger.kernel.org>,
- arm-soc <arm@kernel.org>, linux-mtd <linux-mtd@lists.infradead.org>,
- linux-imx@nxp.com, Sascha Hauer <kernel@pengutronix.de>,
- Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAK8P3a0WCOcVjSegBKRPw3kkokE8S4JEXManqBkq4CjfcBRSMg@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Cezary Gapinski <cezary.gapinski@gmail.com>
+To: cezary.gapinski@gmail.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1544363636-12161-6-git-send-email-cezary.gapinski@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Arnd,
+On Sun,  9 Dec 2018 14:53:56 +0100, cezary.gapinski@gmail.com wrote:
+> From: Cezary Gapinski <cezary.gapinski@gmail.com>
+> 
+> Add description that STM32F4 can be used in compatible property.
+> Master Inter-Data Idleness optional property cannot be used in STM32F4.
+> 
+> Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-stm32.txt | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
 
-On Thu, Dec 20, 2018 at 5:33 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Thu, Dec 20, 2018 at 5:23 PM Schrempf Frieder
-> <frieder.schrempf@kontron.de> wrote:
-> > On 20.12.18 17:11, Arnd Bergmann wrote:
-> > > On Thu, Dec 20, 2018 at 5:03 PM Schrempf Frieder
-> > > <frieder.schrempf@kontron.de> wrote:
-> > >>
-> > >> On 20.12.18 16:50, Arnd Bergmann wrote:
-> > >>> On Sun, Dec 16, 2018 at 9:50 AM Shawn Guo <shawnguo@kernel.org> wrote:
-> > >>>> As the series cleans up both i.MX/Freescale arm32 and arm64 device
-> > >>>> trees, the pull request is based on a merge of tag imx-dt-4.21 and
-> > >>>> imx-dt64-4.21 that have already been pulled into arm-soc next/dt branch.
-> > >>>> This comes a bit late, and we appreciate it if you can pull it for 4.21,
-> > >>>> as it paves the way for new QSPI driver under SPI framework to land in
-> > >>>> the next release cycle.  Thanks.
-> > >>>
-> > >>> Pulled into next/dt. For my understanding, what is going to happen
-> > >>> with the fsl-quadspi mtd driver? Will it remain as part of the kernel
-> > >>> to support old DTB files, or will that transitions mean those stop
-> > >>> working with new kernels and have to be updated the same way?
-> > >>
-> > >> Thanks for pulling these late changes. The old SPI NOR driver
-> > >> (fsl-quadspi.c) will be replaced by the new SPI driver. Old dtb files
-> > >> will work with the new driver if they already have the reg properties
-> > >> set up correctly (which should be the case, but who knows what setups
-> > >> exist out-of-tree).
-> > >
-> > > Ok, good.
-> > >
-> > >> There will be a performance penalty though if you do not set
-> > >> spi-[tx/rx]-bus-width to 4.
-> > >
-> > > I guess that's acceptable, but what is the reason for requiring
-> > > this? Would it be possible to have the qspi driver add those
-> > > properties and print a warning whenever the dtb doesn't
-> > > already contain them?
-> >
-> > As the new driver is a SPI driver, the common rules in
-> > Documentation/devicetree/bindings/spi/spi-bus.txt apply and
-> > spi-[tx/rx]-bus-width are defined to default to 1 if not specified.
-> > So we can't set those properties in the driver if they are missing in
-> > the dtb as we would deviate from the standard, although it would make
-> > more sense for a *Quad*-SPI driver to default to 4.
->
-> Right, I guess that makes sense.
->
-> Now, you could change the binding for the fsl-quadspi driver to
-> require the bus-width properties, which would then just make
-> the old dtb files invalid, and you give us an excuse to override
-> the properties by adding the =4 ones, once that is documented
-> in the driver specific binding.
->
-> Since it's only a performance difference, I suppose we can live
-> with the limitation and stay a little closer to the normal binding.
-
-Please note that a quad-capable SPI FLASH may be physically wired
-to a quad-capable SPI controller using only 2 wires, so defaulting to
-4 may cause issues.  Defaulting to 2 may work, if the device is
-dual-capable.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Reviewed-by: Rob Herring <robh@kernel.org>

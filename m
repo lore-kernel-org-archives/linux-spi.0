@@ -1,11 +1,12 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v6 0/7] spi: add support for octal mode
-Date: Wed, 19 Dec 2018 18:13:42 +0530
-Message-ID: <10b25865-b93d-382a-aa4d-b21fbd9c3ba9@ti.com>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: RE: [PATCH v6 0/7] spi: add support for octal mode
+Date: Thu, 20 Dec 2018 05:32:03 +0000
+Message-ID: <VI1PR04MB5726D65958C532965E12EE4F99BF0@VI1PR04MB5726.eurprd04.prod.outlook.com>
 References: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <10b25865-b93d-382a-aa4d-b21fbd9c3ba9@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 Cc: "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
         "robh@kernel.org" <robh@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
@@ -15,7 +16,7 @@ Cc: "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
         "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+To: Vignesh R <vigneshr@ti.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "broonie@kernel.org" <broonie@kernel.org>,
@@ -23,120 +24,119 @@ To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <10b25865-b93d-382a-aa4d-b21fbd9c3ba9@ti.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On 19/12/18 3:41 PM, Yogesh Narayan Gaur wrote:
-> Add support for octal mode IO data transfer.
-> Micron flash, mt35xu512aba, supports octal mode data transfer and
-> NXP FlexSPI controller supports 8 data lines for data transfer (Rx/Tx).
-> 
-> Patch series
-> * Add support for octal mode flags and parsing of same in spi driver.
-> * Add parsing logic for spi-mem framework and m25p80.c device file.
-> * Add opcodes for octal I/O commands in spi-nor framework, Read and Write proto for (1-1-8/1-8-8) mode.
->   Opcodes are added as per octal data IO commands required for mt35xu512aba [1] flash.
-> * Add mode bit required for octal mode in nxp-fspi driver [2].
-> * Define binding property 'spi-rx/tx-bus-width' for LX2160ARDB target [2].
-> 
-> Tested on LX2160ARDB target with nxp-fspi driver, below are
-> Read performance number of 1-1-1 and 1-1-8 read protocol.
-> 
->  root@lxxx:~# cat /proc/mtd
->  dev:    size   erasesize  name
->  mtd0: 04000000 00001000 "spi0.0"
->  mtd1: 04000000 00001000 "spi0.1"
->  root@lxxx:~# time mtd_debug read /dev/mtd0 0x0 0x1000000 0read
->  Copied 16777216 bytes from address 0x00000000 in flash to 0read
-> 
->  real    0m2.792s
->  user    0m0.000s
->  sys     0m2.790s
->  root@lxxx:~# time mtd_debug read /dev/mtd1 0x0 0x1000000 0read
->  Copied 16777216 bytes from address 0x00000000 in flash to 0read
-> 
->  real    0m0.441s
->  user    0m0.000s
->  sys     0m0.440s
->  root@ls1012ardb:~#
-> 
-> 
->  Flash device MTD0 configured in 1-1-1 protocol.
->  Flash device MTD1 configured in 1-1-8 protocol.
-> 
-> [1] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=70384&state=*
-> [2] https://patchwork.ozlabs.org/project/linux-mtd/list/?series=76402
-> 
-> Yogesh Gaur (7):
->   spi: add support for octal mode I/O data transfer
->   spi: spi-mem: add support for octal mode I/O data transfer
-
-
-These two patches are already merged and is now part of linux-next[1].
-Its preferred to send patches based on top of latest linux-next so as to
-avoid resending patches that have already been picked up by the maintainer.
-
-[1]
-commit 6b03061f882de49b83ccf44beb3a12c920a2da1b
-Author: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Date:   Mon Dec 3 08:39:06 2018 +0000
-
-    spi: add support for octal mode I/O data transfer
-
-commit b12a084c8729ef423089bb9a5a143eed39cd94e7
-Author: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Date:   Mon Dec 3 08:39:12 2018 +0000
-
-    spi: spi-mem: add support for octal mode I/O data transfer
-
-
-Regards
-Vignesh
-
->   mtd: spi-nor: add opcodes for octal Read/Write commands
->   mtd: spi-nor: add octal read flag for flash mt35xu512aba
->   mtd: m25p80: add support of octal mode I/O transfer
->   spi: nxp-fspi: add octal mode flag bit for octal support
->   arm64: dts: lx2160a: update fspi node
-> 
-> Changes for v6:
-> - Correct S-o-b tag with full author name as 'Yogesh Narayan Gaur'.
-> - Rebase on top of v4.20-rc5.
-> Changes for v5:
-> - Modified string 'octo' as 'octal' in all patches.
-> Changes for v4:
-> - Rebase on top of v4.20-rc2.
-> - Modify octo entries enum value in spi.h.
-> Changes for v3:
-> - Add octo mode support in spi_setup().
-> - Rename all patches with 'octal' string modified as 'octo'.
-> Changes for v2:
-> - Incorporated review comments of Boris and Vignesh.
-> 
-> Yogesh Gaur (7):
->   spi: add support for octal mode I/O data transfer
->   spi: spi-mem: add support for octal mode I/O data transfer
->   mtd: spi-nor: add opcodes for octal Read/Write commands
->   mtd: spi-nor: add octal read flag for flash mt35xu512aba
->   mtd: m25p80: add support of octal mode I/O transfer
->   spi: nxp-fspi: add octal mode flag bit for octal support
->   arm64: dts: lx2160a: update fspi node
-> 
->  arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts |  4 ++++
->  drivers/mtd/devices/m25p80.c                      |  9 ++++++++-
->  drivers/mtd/spi-nor/spi-nor.c                     | 19 ++++++++++++++++---
->  drivers/spi/spi-mem.c                             |  9 ++++++++-
->  drivers/spi/spi-nxp-fspi.c                        |  4 ++--
->  drivers/spi/spi.c                                 | 12 ++++++++++--
->  include/linux/mtd/spi-nor.h                       | 16 ++++++++++++----
->  include/linux/spi/spi.h                           |  4 +++-
->  8 files changed, 63 insertions(+), 14 deletions(-)
-> 
-
--- 
-Regards
-Vignesh
+SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWdu
+ZXNoIFIgW21haWx0bzp2aWduZXNockB0aS5jb21dDQo+IFNlbnQ6IFdlZG5lc2RheSwgRGVjZW1i
+ZXIgMTksIDIwMTggNjoxNCBQTQ0KPiBUbzogWW9nZXNoIE5hcmF5YW4gR2F1ciA8eW9nZXNobmFy
+YXlhbi5nYXVyQG54cC5jb20+OyBsaW51eC0NCj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IGJv
+cmlzLmJyZXppbGxvbkBib290bGluLmNvbTsgYnJvb25pZUBrZXJuZWwub3JnOw0KPiBtYXJlay52
+YXN1dEBnbWFpbC5jb207IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGRldmljZXRyZWVA
+dmdlci5rZXJuZWwub3JnDQo+IENjOiB0dWRvci5hbWJhcnVzQG1pY3JvY2hpcC5jb207IHJvYmhA
+a2VybmVsLm9yZzsgbWFyay5ydXRsYW5kQGFybS5jb207DQo+IHNoYXduZ3VvQGtlcm5lbC5vcmc7
+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsNCj4gY29tcHV0ZXJzZm9ycGVh
+Y2VAZ21haWwuY29tOyBmcmllZGVyLnNjaHJlbXBmQGV4Y2VldC5kZTsgbGludXgtDQo+IGtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAwLzddIHNwaTogYWRk
+IHN1cHBvcnQgZm9yIG9jdGFsIG1vZGUNCj4gDQo+IEhpLA0KPiANCj4gT24gMTkvMTIvMTggMzo0
+MSBQTSwgWW9nZXNoIE5hcmF5YW4gR2F1ciB3cm90ZToNCj4gPiBBZGQgc3VwcG9ydCBmb3Igb2N0
+YWwgbW9kZSBJTyBkYXRhIHRyYW5zZmVyLg0KPiA+IE1pY3JvbiBmbGFzaCwgbXQzNXh1NTEyYWJh
+LCBzdXBwb3J0cyBvY3RhbCBtb2RlIGRhdGEgdHJhbnNmZXIgYW5kIE5YUA0KPiA+IEZsZXhTUEkg
+Y29udHJvbGxlciBzdXBwb3J0cyA4IGRhdGEgbGluZXMgZm9yIGRhdGEgdHJhbnNmZXIgKFJ4L1R4
+KS4NCj4gPg0KPiA+IFBhdGNoIHNlcmllcw0KPiA+ICogQWRkIHN1cHBvcnQgZm9yIG9jdGFsIG1v
+ZGUgZmxhZ3MgYW5kIHBhcnNpbmcgb2Ygc2FtZSBpbiBzcGkgZHJpdmVyLg0KPiA+ICogQWRkIHBh
+cnNpbmcgbG9naWMgZm9yIHNwaS1tZW0gZnJhbWV3b3JrIGFuZCBtMjVwODAuYyBkZXZpY2UgZmls
+ZS4NCj4gPiAqIEFkZCBvcGNvZGVzIGZvciBvY3RhbCBJL08gY29tbWFuZHMgaW4gc3BpLW5vciBm
+cmFtZXdvcmssIFJlYWQgYW5kIFdyaXRlDQo+IHByb3RvIGZvciAoMS0xLTgvMS04LTgpIG1vZGUu
+DQo+ID4gICBPcGNvZGVzIGFyZSBhZGRlZCBhcyBwZXIgb2N0YWwgZGF0YSBJTyBjb21tYW5kcyBy
+ZXF1aXJlZCBmb3INCj4gbXQzNXh1NTEyYWJhIFsxXSBmbGFzaC4NCj4gPiAqIEFkZCBtb2RlIGJp
+dCByZXF1aXJlZCBmb3Igb2N0YWwgbW9kZSBpbiBueHAtZnNwaSBkcml2ZXIgWzJdLg0KPiA+ICog
+RGVmaW5lIGJpbmRpbmcgcHJvcGVydHkgJ3NwaS1yeC90eC1idXMtd2lkdGgnIGZvciBMWDIxNjBB
+UkRCIHRhcmdldCBbMl0uDQo+ID4NCj4gPiBUZXN0ZWQgb24gTFgyMTYwQVJEQiB0YXJnZXQgd2l0
+aCBueHAtZnNwaSBkcml2ZXIsIGJlbG93IGFyZSBSZWFkDQo+ID4gcGVyZm9ybWFuY2UgbnVtYmVy
+IG9mIDEtMS0xIGFuZCAxLTEtOCByZWFkIHByb3RvY29sLg0KPiA+DQo+ID4gIHJvb3RAbHh4eDp+
+IyBjYXQgL3Byb2MvbXRkDQo+ID4gIGRldjogICAgc2l6ZSAgIGVyYXNlc2l6ZSAgbmFtZQ0KPiA+
+ICBtdGQwOiAwNDAwMDAwMCAwMDAwMTAwMCAic3BpMC4wIg0KPiA+ICBtdGQxOiAwNDAwMDAwMCAw
+MDAwMTAwMCAic3BpMC4xIg0KPiA+ICByb290QGx4eHg6fiMgdGltZSBtdGRfZGVidWcgcmVhZCAv
+ZGV2L210ZDAgMHgwIDB4MTAwMDAwMCAwcmVhZA0KPiA+IENvcGllZCAxNjc3NzIxNiBieXRlcyBm
+cm9tIGFkZHJlc3MgMHgwMDAwMDAwMCBpbiBmbGFzaCB0byAwcmVhZA0KPiA+DQo+ID4gIHJlYWwg
+ICAgMG0yLjc5MnMNCj4gPiAgdXNlciAgICAwbTAuMDAwcw0KPiA+ICBzeXMgICAgIDBtMi43OTBz
+DQo+ID4gIHJvb3RAbHh4eDp+IyB0aW1lIG10ZF9kZWJ1ZyByZWFkIC9kZXYvbXRkMSAweDAgMHgx
+MDAwMDAwIDByZWFkDQo+ID4gQ29waWVkIDE2Nzc3MjE2IGJ5dGVzIGZyb20gYWRkcmVzcyAweDAw
+MDAwMDAwIGluIGZsYXNoIHRvIDByZWFkDQo+ID4NCj4gPiAgcmVhbCAgICAwbTAuNDQxcw0KPiA+
+ICB1c2VyICAgIDBtMC4wMDBzDQo+ID4gIHN5cyAgICAgMG0wLjQ0MHMNCj4gPiAgcm9vdEBsczEw
+MTJhcmRiOn4jDQo+ID4NCj4gPg0KPiA+ICBGbGFzaCBkZXZpY2UgTVREMCBjb25maWd1cmVkIGlu
+IDEtMS0xIHByb3RvY29sLg0KPiA+ICBGbGFzaCBkZXZpY2UgTVREMSBjb25maWd1cmVkIGluIDEt
+MS04IHByb3RvY29sLg0KPiA+DQo+ID4gWzFdDQo+ID4gaHR0cHM6Ly9lbWVhMDEuc2FmZWxpbmtz
+LnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnBhdA0KPiA+IGNod29y
+ay5vemxhYnMub3JnJTJGcHJvamVjdCUyRmxpbnV4LQ0KPiBtdGQlMkZsaXN0JTJGJTNGc2VyaWVz
+JTNENzAzODQlMjZzDQo+ID4NCj4gdGF0ZSUzRComYW1wO2RhdGE9MDIlN0MwMSU3Q3lvZ2VzaG5h
+cmF5YW4uZ2F1ciU0MG54cC5jb20lN0NhYzVjOQ0KPiBjYTRhZDANCj4gPg0KPiA4NGYxMDc2MjIw
+OGQ2NjVhZjkxMzAlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5OWM1YzMwMTYzNSU3QzAlN0MwDQo+
+ICU3QzYzNg0KPiA+DQo+IDgwODIwMjA2NDE4MTAzMiZhbXA7c2RhdGE9TENqbyUyQiUyRmhJcEVZ
+eWdzTEhNRnpiNjVadFhqc0RkaEVBVlY0DQo+ICUyQmpRDQo+ID4gaXlVdEklM0QmYW1wO3Jlc2Vy
+dmVkPTAgWzJdDQo+ID4gaHR0cHM6Ly9lbWVhMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9v
+ay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnBhdA0KPiA+IGNod29yay5vemxhYnMub3JnJTJGcHJv
+amVjdCUyRmxpbnV4LQ0KPiBtdGQlMkZsaXN0JTJGJTNGc2VyaWVzJTNENzY0MDImYW1wDQo+ID4g
+O2RhdGE9MDIlN0MwMSU3Q3lvZ2VzaG5hcmF5YW4uZ2F1ciU0MG54cC5jb20lN0NhYzVjOWNhNGFk
+MDg0ZjEwNw0KPiA2MjIwOGQNCj4gPg0KPiA2NjVhZjkxMzAlN0M2ODZlYTFkM2JjMmI0YzZmYTky
+Y2Q5OWM1YzMwMTYzNSU3QzAlN0MwJTdDNjM2ODA4MjAyDQo+IDA2NDE4MQ0KPiA+DQo+IDAzMiZh
+bXA7c2RhdGE9QTloQVg0b1R5SlB6YzRKM3kzUHF3TmFnV0VxdnBHb2xmOFJFOVJ5WVYyOCUzRCZh
+bQ0KPiBwO3Jlc2VyDQo+ID4gdmVkPTANCj4gPg0KPiA+IFlvZ2VzaCBHYXVyICg3KToNCj4gPiAg
+IHNwaTogYWRkIHN1cHBvcnQgZm9yIG9jdGFsIG1vZGUgSS9PIGRhdGEgdHJhbnNmZXINCj4gPiAg
+IHNwaTogc3BpLW1lbTogYWRkIHN1cHBvcnQgZm9yIG9jdGFsIG1vZGUgSS9PIGRhdGEgdHJhbnNm
+ZXINCj4gDQo+IA0KPiBUaGVzZSB0d28gcGF0Y2hlcyBhcmUgYWxyZWFkeSBtZXJnZWQgYW5kIGlz
+IG5vdyBwYXJ0IG9mIGxpbnV4LW5leHRbMV0uDQo+IEl0cyBwcmVmZXJyZWQgdG8gc2VuZCBwYXRj
+aGVzIGJhc2VkIG9uIHRvcCBvZiBsYXRlc3QgbGludXgtbmV4dCBzbyBhcyB0byBhdm9pZA0KPiBy
+ZXNlbmRpbmcgcGF0Y2hlcyB0aGF0IGhhdmUgYWxyZWFkeSBiZWVuIHBpY2tlZCB1cCBieSB0aGUg
+bWFpbnRhaW5lci4NCj4gDQo+IFsxXQ0KPiBjb21taXQgNmIwMzA2MWY4ODJkZTQ5YjgzY2NmNDRi
+ZWIzYTEyYzkyMGEyZGExYg0KPiBBdXRob3I6IFlvZ2VzaCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5h
+cmF5YW4uZ2F1ckBueHAuY29tPg0KPiBEYXRlOiAgIE1vbiBEZWMgMyAwODozOTowNiAyMDE4ICsw
+MDAwDQo+IA0KPiAgICAgc3BpOiBhZGQgc3VwcG9ydCBmb3Igb2N0YWwgbW9kZSBJL08gZGF0YSB0
+cmFuc2Zlcg0KPiANCj4gY29tbWl0IGIxMmEwODRjODcyOWVmNDIzMDg5YmI5YTVhMTQzZWVkMzlj
+ZDk0ZTcNCj4gQXV0aG9yOiBZb2dlc2ggTmFyYXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJA
+bnhwLmNvbT4NCj4gRGF0ZTogICBNb24gRGVjIDMgMDg6Mzk6MTIgMjAxOCArMDAwMA0KPiANCj4g
+ICAgIHNwaTogc3BpLW1lbTogYWRkIHN1cHBvcnQgZm9yIG9jdGFsIG1vZGUgSS9PIGRhdGEgdHJh
+bnNmZXINCj4gDQo+IA0KSSBoYXZlIGNoZWNrZWQgb24gcmVwbyAiZ2l0Oi8vZ2l0LmluZnJhZGVh
+ZC5vcmcvbGludXgtbXRkLmdpdCIgb24gYnJhbmNoICJzcGktbm9yL25leHQiIGFuZCBpbiB0aGF0
+IGtlcm5lbCB2ZXJzaW9uIGlzIDQuMjAuLXJjNS4NCkluIHRoaXMgcmVwbyBhYm92ZSAyIHBhdGNo
+ZXMgYXJlIG5vdCBwcmVzZW50IGFuZCBoZW5jZSBoYXMgc2VuZCB0aGUgcGF0Y2hlcyBieSBtb3Zp
+bmcgdG8gdG9wIG9mIHRoaXMgcmVwby4NCg0KQ2FuIHlvdSBwbGVhc2UgbGV0IG1lIGtub3cgdGhl
+IHJlcG8gb2YgbGludXgtbmV4dCBhbmQgYnJhbmNoIHRvIHVzZS4NCg0KLS0NClJlZ2FyZHMNCllv
+Z2VzaCBHYXVyDQoNCj4gUmVnYXJkcw0KPiBWaWduZXNoDQo+IA0KPiA+ICAgbXRkOiBzcGktbm9y
+OiBhZGQgb3Bjb2RlcyBmb3Igb2N0YWwgUmVhZC9Xcml0ZSBjb21tYW5kcw0KPiA+ICAgbXRkOiBz
+cGktbm9yOiBhZGQgb2N0YWwgcmVhZCBmbGFnIGZvciBmbGFzaCBtdDM1eHU1MTJhYmENCj4gPiAg
+IG10ZDogbTI1cDgwOiBhZGQgc3VwcG9ydCBvZiBvY3RhbCBtb2RlIEkvTyB0cmFuc2Zlcg0KPiA+
+ICAgc3BpOiBueHAtZnNwaTogYWRkIG9jdGFsIG1vZGUgZmxhZyBiaXQgZm9yIG9jdGFsIHN1cHBv
+cnQNCj4gPiAgIGFybTY0OiBkdHM6IGx4MjE2MGE6IHVwZGF0ZSBmc3BpIG5vZGUNCj4gPg0KPiA+
+IENoYW5nZXMgZm9yIHY2Og0KPiA+IC0gQ29ycmVjdCBTLW8tYiB0YWcgd2l0aCBmdWxsIGF1dGhv
+ciBuYW1lIGFzICdZb2dlc2ggTmFyYXlhbiBHYXVyJy4NCj4gPiAtIFJlYmFzZSBvbiB0b3Agb2Yg
+djQuMjAtcmM1Lg0KPiA+IENoYW5nZXMgZm9yIHY1Og0KPiA+IC0gTW9kaWZpZWQgc3RyaW5nICdv
+Y3RvJyBhcyAnb2N0YWwnIGluIGFsbCBwYXRjaGVzLg0KPiA+IENoYW5nZXMgZm9yIHY0Og0KPiA+
+IC0gUmViYXNlIG9uIHRvcCBvZiB2NC4yMC1yYzIuDQo+ID4gLSBNb2RpZnkgb2N0byBlbnRyaWVz
+IGVudW0gdmFsdWUgaW4gc3BpLmguDQo+ID4gQ2hhbmdlcyBmb3IgdjM6DQo+ID4gLSBBZGQgb2N0
+byBtb2RlIHN1cHBvcnQgaW4gc3BpX3NldHVwKCkuDQo+ID4gLSBSZW5hbWUgYWxsIHBhdGNoZXMg
+d2l0aCAnb2N0YWwnIHN0cmluZyBtb2RpZmllZCBhcyAnb2N0bycuDQo+ID4gQ2hhbmdlcyBmb3Ig
+djI6DQo+ID4gLSBJbmNvcnBvcmF0ZWQgcmV2aWV3IGNvbW1lbnRzIG9mIEJvcmlzIGFuZCBWaWdu
+ZXNoLg0KPiA+DQo+ID4gWW9nZXNoIEdhdXIgKDcpOg0KPiA+ICAgc3BpOiBhZGQgc3VwcG9ydCBm
+b3Igb2N0YWwgbW9kZSBJL08gZGF0YSB0cmFuc2Zlcg0KPiA+ICAgc3BpOiBzcGktbWVtOiBhZGQg
+c3VwcG9ydCBmb3Igb2N0YWwgbW9kZSBJL08gZGF0YSB0cmFuc2Zlcg0KPiA+ICAgbXRkOiBzcGkt
+bm9yOiBhZGQgb3Bjb2RlcyBmb3Igb2N0YWwgUmVhZC9Xcml0ZSBjb21tYW5kcw0KPiA+ICAgbXRk
+OiBzcGktbm9yOiBhZGQgb2N0YWwgcmVhZCBmbGFnIGZvciBmbGFzaCBtdDM1eHU1MTJhYmENCj4g
+PiAgIG10ZDogbTI1cDgwOiBhZGQgc3VwcG9ydCBvZiBvY3RhbCBtb2RlIEkvTyB0cmFuc2Zlcg0K
+PiA+ICAgc3BpOiBueHAtZnNwaTogYWRkIG9jdGFsIG1vZGUgZmxhZyBiaXQgZm9yIG9jdGFsIHN1
+cHBvcnQNCj4gPiAgIGFybTY0OiBkdHM6IGx4MjE2MGE6IHVwZGF0ZSBmc3BpIG5vZGUNCj4gPg0K
+PiA+ICBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHgyMTYwYS1yZGIuZHRzIHwg
+IDQgKysrKw0KPiA+ICBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDkgKysrKysrKystDQo+ID4gIGRyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5j
+ICAgICAgICAgICAgICAgICAgICAgfCAxOSArKysrKysrKysrKysrKysrLS0tDQo+ID4gIGRyaXZl
+cnMvc3BpL3NwaS1tZW0uYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgOSArKysrKysr
+Ky0NCj4gPiAgZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLmMgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICA0ICsrLS0NCj4gPiAgZHJpdmVycy9zcGkvc3BpLmMgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8IDEyICsrKysrKysrKystLQ0KPiA+ICBpbmNsdWRlL2xpbnV4L210ZC9zcGkt
+bm9yLmggICAgICAgICAgICAgICAgICAgICAgIHwgMTYgKysrKysrKysrKysrLS0tLQ0KPiA+ICBp
+bmNsdWRlL2xpbnV4L3NwaS9zcGkuaCAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQgKysr
+LQ0KPiA+ICA4IGZpbGVzIGNoYW5nZWQsIDYzIGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygt
+KQ0KPiA+DQo+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==

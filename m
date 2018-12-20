@@ -1,44 +1,46 @@
-From: Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH v6 0/7] spi: add support for octal mode
-Date: Thu, 20 Dec 2018 09:39:09 +0100
-Message-ID: <20181220093909.0e3ad8f1@bbrezillon>
-References: <1545214186-16987-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <10b25865-b93d-382a-aa4d-b21fbd9c3ba9@ti.com>
-        <VI1PR04MB5726D65958C532965E12EE4F99BF0@VI1PR04MB5726.eurprd04.prod.outlook.com>
-        <d513cf77-b308-a089-71cf-4598bfd2f085@ti.com>
-        <VI1PR04MB5726FABF724D8EE0144E2C8499BF0@VI1PR04MB5726.eurprd04.prod.outlook.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [GIT PULL] FSL QSPI device tree cleanup for 4.21
+Date: Thu, 20 Dec 2018 16:50:49 +0100
+Message-ID: <CAK8P3a34R+Gv+H8_jjGP452i2kSqq+u0PsE-4pDnRRtY14SG0w@mail.gmail.com>
+References: <20181216084854.GJ13243@dragon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vignesh R <vigneshr@ti.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB5726FABF724D8EE0144E2C8499BF0@VI1PR04MB5726.eurprd04.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: frieder.schrempf@kontron.de, linux-spi <linux-spi@vger.kernel.org>,
+ arm-soc <arm@kernel.org>, linux-mtd <linux-mtd@lists.infradead.org>,
+ linux-imx@nxp.com, Sascha Hauer <kernel@pengutronix.de>,
+ Fabio Estevam <fabio.estevam@nxp.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+To: Shawn Guo <shawnguo@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20181216084854.GJ13243@dragon>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 20 Dec 2018 08:23:07 +0000
-Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com> wrote:
+On Sun, Dec 16, 2018 at 9:50 AM Shawn Guo <shawnguo@kernel.org> wrote:
+>
+> Hi,
+>
+> As the series cleans up both i.MX/Freescale arm32 and arm64 device
+> trees, the pull request is based on a merge of tag imx-dt-4.21 and
+> imx-dt64-4.21 that have already been pulled into arm-soc next/dt branch.
+> This comes a bit late, and we appreciate it if you can pull it for 4.21,
+> as it paves the way for new QSPI driver under SPI framework to land in
+> the next release cycle.  Thanks.
 
-> Octal mode support patch series has dependency over these patches.
-> Should I send these two patches again or specifies them as dependency patches in the cover letter.
+Pulled into next/dt. For my understanding, what is going to happen
+with the fsl-quadspi mtd driver? Will it remain as part of the kernel
+to support old DTB files, or will that transitions mean those stop
+working with new kernels and have to be updated the same way?
 
-No, you should either base your work on the master branch of the
-linux-next repo [1] (as suggested by Vignesh) or wait
-for 4.21-rc1/5.0-rc1 before sending a new version.
+Thanks,
 
-[1]https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/
+      Arnd

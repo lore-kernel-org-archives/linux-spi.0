@@ -1,68 +1,85 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [GIT PULL] FSL QSPI device tree cleanup for 4.21
-Date: Thu, 20 Dec 2018 23:41:37 +0100
-Message-ID: <CAK8P3a0QxoNyq=5LzQObFnq2i7mVRJDj73j7ur+cQ9rmoKZpMQ@mail.gmail.com>
-References: <20181216084854.GJ13243@dragon>
- <CAK8P3a34R+Gv+H8_jjGP452i2kSqq+u0PsE-4pDnRRtY14SG0w@mail.gmail.com>
- <a73f86ff-15ce-9512-bbf0-be852cf39a35@kontron.de>
- <CAK8P3a1PMoR-WWcb_G8sTVW9HKUKvKfUZmcinkOEy9mJ5c=Lxw@mail.gmail.com>
- <6dde2248-da0d-7bd3-801b-b42b2974c038@kontron.de>
- <CAK8P3a0WCOcVjSegBKRPw3kkokE8S4JEXManqBkq4CjfcBRSMg@mail.gmail.com>
- <CAMuHMdW1NsqEHWBBn77wTAYnXi068iT2Lo8rxUUSvbo5UHDTkA@mail.gmail.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v3 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
+ driver
+Date: Fri, 21 Dec 2018 13:22:26 +0300
+Message-ID: <9945f585-ab50-978a-7290-249336b7f107@cogentembedded.com>
+References: <1544181199-3373-1-git-send-email-masonccyang@mxic.com.tw>
+ <1544181199-3373-2-git-send-email-masonccyang@mxic.com.tw>
+ <b638fedc-551a-63e4-9654-f9fed8d0e292@cogentembedded.com>
+ <OFC335F545.7543A0F2-ON4825836A.0007E65A-4825836A.0008428D@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: frieder.schrempf@kontron.de, linux-spi <linux-spi@vger.kernel.org>,
- arm-soc <arm@kernel.org>, linux-mtd <linux-mtd@lists.infradead.org>,
- linux-imx@nxp.com, Sascha Hauer <kernel@pengutronix.de>,
- Fabio Estevam <fabio.estevam@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAMuHMdW1NsqEHWBBn77wTAYnXi068iT2Lo8rxUUSvbo5UHDTkA@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <OFC335F545.7543A0F2-ON4825836A.0007E65A-4825836A.0008428D@mxic.com.tw>
+Content-Language: en-MW
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 20, 2018 at 7:23 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Thu, Dec 20, 2018 at 5:33 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > On Thu, Dec 20, 2018 at 5:23 PM Schrempf Frieder
-> > > As the new driver is a SPI driver, the common rules in
-> > > Documentation/devicetree/bindings/spi/spi-bus.txt apply and
-> > > spi-[tx/rx]-bus-width are defined to default to 1 if not specified.
-> > > So we can't set those properties in the driver if they are missing in
-> > > the dtb as we would deviate from the standard, although it would make
-> > > more sense for a *Quad*-SPI driver to default to 4.
-> >
-> > Right, I guess that makes sense.
-> >
-> > Now, you could change the binding for the fsl-quadspi driver to
-> > require the bus-width properties, which would then just make
-> > the old dtb files invalid, and you give us an excuse to override
-> > the properties by adding the =4 ones, once that is documented
-> > in the driver specific binding.
-> >
-> > Since it's only a performance difference, I suppose we can live
-> > with the limitation and stay a little closer to the normal binding.
->
-> Please note that a quad-capable SPI FLASH may be physically wired
-> to a quad-capable SPI controller using only 2 wires, so defaulting to
-> 4 may cause issues.  Defaulting to 2 may work, if the device is
-> dual-capable.
+Hello!
 
-Right, this would only work because the old driver used 4 wires
-in the absence of the DT property, and the driver would warn
-when it's not there for new dtb files.
+On 12/21/2018 04:30 AM, masonccyang@mxic.com.tw wrote:
 
-      Arnd
+>> > diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
+>> > new file mode 100644
+>> > index 0000000..cec5669
+>> > --- /dev/null
+>> > +++ b/drivers/spi/spi-renesas-rpc.c
+>> > @@ -0,0 +1,776 @@
+>> [...]
+>> > +static const struct soc_device_attribute r8a7795es1[] __initconst = {
+>>
+>>    This __initconst shouldn't be there, it causes a build warning.
+>>
+>> > +   { .soc_id = "r8a7795", .revision = "ES1.*" },
+>>
+>>    Wait, the driver doesn't really probe on R8A7795 yet!
+> 
+> yup, this is for RPC_PHYCNT_STRTIM setting by Marek's comments.
+> 
+> On H3 ES1.x, the value should be 0, while on others, the value should be 6.
+> 
+> ES1.x is r8a7795.
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+   Why care if we don't support H3 yet? Add this when the R8A77950 support is added.
+
+>> > +   { /* sentinel */ }
+>> > +};
+>> > +
+>> > +static void rpc_spi_hw_init(struct rpc_spi *rpc)
+>> > +{
+>> > +   int strtim;
+>> > +   /*
+>> > +    * NOTE: The 0x260 are undocumented bits, but they must be set.
+>> > +    *   RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
+>> > +    *   0x0 : the delay is biggest,
+>> > +    *   0x1 : the delay is 2nd biggest,
+>> > +    *   On H3 ES1.x, the value should be 0, while on others,
+>> > +    *   the value should be 6.
+>> > +    */
+>> > +   if (soc_device_match(r8a7795es1))
+>> > +      strtim = 0;
+>> > +   else
+>> > +      strtim = 6;
+>> [...]
+>> > +static const struct of_device_id rpc_spi_of_ids[] = {
+>> > +   { .compatible = "renesas,r8a77995-rpc", },
+>>
+>>    We only support R8A77995 now.
+> 
+> see above !
+
+   There's difference between R8A77995 and R8A77950, right?
+
+[...]
+> thanks & best regards,
+> Mason
+
+MBR, Sergei

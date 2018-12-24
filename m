@@ -1,7 +1,7 @@
 From: cezary.gapinski@gmail.com
-Subject: [PATCH v2 13/14] ARM: dts: stm32: add SPI support on STM32F429 SoC
-Date: Mon, 24 Dec 2018 23:00:39 +0100
-Message-ID: <1545688840-23992-14-git-send-email-cezary.gapinski@gmail.com>
+Subject: [PATCH v2 14/14] spi: stm32: add description about STM32F4 bindings
+Date: Mon, 24 Dec 2018 23:00:40 +0100
+Message-ID: <1545688840-23992-15-git-send-email-cezary.gapinski@gmail.com>
 References: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
@@ -19,97 +19,40 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Cezary Gapinski <cezary.gapinski@gmail.com>
 
-This patch adds all SPI instances of the STM32F429 SoC.
+Add description that STM32F4 can be used in compatible property.
+Master Inter-Data Idleness optional property cannot be used in STM32F4.
 
 Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
 ---
- arch/arm/boot/dts/stm32f429.dtsi | 60 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-stm32.txt | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32f429.dtsi b/arch/arm/boot/dts/stm32f429.dtsi
-index 8d6f028..8dbec00 100644
---- a/arch/arm/boot/dts/stm32f429.dtsi
-+++ b/arch/arm/boot/dts/stm32f429.dtsi
-@@ -314,6 +314,26 @@
- 			status = "disabled";
- 		};
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+index 1b3fa2c1..d82755c 100644
+--- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
++++ b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+@@ -7,7 +7,9 @@ from 4 to 32-bit data size. Although it can be configured as master or slave,
+ only master is supported by the driver.
  
-+		spi2: spi@40003800 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40003800 0x400>;
-+			interrupts = <36>;
-+			clocks = <&rcc 0 STM32F4_APB1_CLOCK(SPI2)>;
-+			status = "disabled";
-+		};
-+
-+		spi3: spi@40003C00 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40003C00 0x400>;
-+			interrupts = <51>;
-+			clocks = <&rcc 0 STM32F4_APB1_CLOCK(SPI3)>;
-+			status = "disabled";
-+		};
-+
- 		usart2: serial@40004400 {
- 			compatible = "st,stm32-uart";
- 			reg = <0x40004400 0x400>;
-@@ -523,6 +543,26 @@
- 			status = "disabled";
- 		};
+ Required properties:
+-- compatible: Must be "st,stm32h7-spi".
++- compatible: Should be one of:
++  "st,stm32h7-spi"
++  "st,stm32f4-spi"
+ - reg: Offset and length of the device's register set.
+ - interrupts: Must contain the interrupt id.
+ - clocks: Must contain an entry for spiclk (which feeds the internal clock
+@@ -30,8 +32,9 @@ Child nodes represent devices on the SPI bus
+   See ../spi/spi-bus.txt
  
-+		spi1: spi@40013000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40013000 0x400>;
-+			interrupts = <35>;
-+			clocks = <&rcc 0 STM32F4_APB2_CLOCK(SPI1)>;
-+			status = "disabled";
-+		};
-+
-+		spi4: spi@40013400 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40013400 0x400>;
-+			interrupts = <84>;
-+			clocks = <&rcc 0 STM32F4_APB2_CLOCK(SPI4)>;
-+			status = "disabled";
-+		};
-+
- 		syscfg: system-config@40013800 {
- 			compatible = "syscon";
- 			reg = <0x40013800 0x400>;
-@@ -587,6 +627,26 @@
- 			};
- 		};
+ Optional properties:
+-- st,spi-midi-ns: (Master Inter-Data Idleness) minimum time delay in
+-		  nanoseconds inserted between two consecutive data frames.
++- st,spi-midi-ns: Only for STM32H7, (Master Inter-Data Idleness) minimum time
++		  delay in nanoseconds inserted between two consecutive data
++		  frames.
  
-+		spi5: spi@40015000 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40015000 0x400>;
-+			interrupts = <85>;
-+			clocks = <&rcc 0 STM32F4_APB2_CLOCK(SPI5)>;
-+			status = "disabled";
-+		};
-+
-+		spi6: spi@40015400 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			compatible = "st,stm32f4-spi";
-+			reg = <0x40015400 0x400>;
-+			interrupts = <86>;
-+			clocks = <&rcc 0 STM32F4_APB2_CLOCK(SPI6)>;
-+			status = "disabled";
-+		};
-+
- 		pwrcfg: power-config@40007000 {
- 			compatible = "syscon";
- 			reg = <0x40007000 0x400>;
+ 
+ Example:
 -- 
 2.7.4

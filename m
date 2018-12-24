@@ -1,291 +1,67 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v4.21
-Date: Mon, 24 Dec 2018 19:10:47 +0000
-Message-ID: <20181224191047.GB1846@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="RASg3xLB4tUQ4RcS"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
+From: cezary.gapinski@gmail.com
+Subject: [PATCH v2 00/14] Add support for STM32F4 SPI
+Date: Mon, 24 Dec 2018 23:00:26 +0100
+Message-ID: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Cezary Gapinski <cezary.gapinski@gmail.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Amelie Delaunay <amelie.delaunay@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Cezary Gapinski <cezary.gapinski@gmail.com>
 
---RASg3xLB4tUQ4RcS
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series of patches adds support for first generation of SPI
+interface for STM32F4 family.
 
-The following changes since commit 7566ec393f4161572ba6f11ad5171fd5d59b0fbd:
+This version of driver is mostly different to STM32H7 one. Based on
+linux kernel I2C drivers for STM32 where drivers were splited into
+STM32F4 and STM32F7 family the same approach seems to be sufficient for
+SPI STM32 drivers. Therefore STM32H7 driver was moved to spi-stm32h7.c
+file and register and functions were renamed to be more specific to
+STM32H7.
 
-  Linux 4.20-rc7 (2018-12-16 15:46:55 -0800)
+For current version master mode with full-duplex and 8/16 bit data
+frame format are supported. There is no TX and RX FIFOs like
+in STM32H7. DMA capabilility is supported for messages longer than
+arbitrary number of bytes (that is set already to 16 bytes) when TX
+and RX channels are set at the same time.
 
-are available in the Git repository at:
+v2:
+Based on Amelie Delaunay recommendation only one common file
+spi-stm32.c is used. Before adding support for STM32F4 driver, first six
+patches adds some improvements to actual driver.
+Next patches rearrange driver to be more useful for new STM32F4 SPI
+and adding support for this family.
+This version also supports simplex-tx and 3wire-tx modes.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
-v4.21
+Cezary Gapinski (14):
+  spi: stm32: switch to SPDX identifier
+  spi: stm32: use NULL pointer instead of plain integer
+  spi: stm32: fix DMA configuration with only one channel
+  spi: fix typo in SPI_STM32 help text
+  spi: stm32: use explicit CPOL and CPHA mode bits
+  spi: stm32: remove SPI LOOP mode
+  spi: stm32: rename STM32 SPI registers to STM32H7
+  spi: stm32: rename interrupt function
+  spi: stm32: split transfer one setup function
+  spi: stm32: add start dma transfer function
+  spi: stm32: introduce compatible data cfg
+  spi: stm32: add support for STM32F4
+  ARM: dts: stm32: add SPI support on STM32F429 SoC
+  spi: stm32: add description about STM32F4 bindings
 
-for you to fetch changes up to 74ff666bd7ba2da563f99f2a8af7bf9f20008bc9:
+ .../devicetree/bindings/spi/spi-stm32.txt          |    9 +-
+ arch/arm/boot/dts/stm32f429.dtsi                   |   60 +
+ drivers/spi/Kconfig                                |    2 +-
+ drivers/spi/spi-stm32.c                            | 1403 +++++++++++++++-----
+ 4 files changed, 1139 insertions(+), 335 deletions(-)
 
-  Merge remote-tracking branches 'spi/topic/mem' and 'spi/topic/mtd' into s=
-pi-next (2018-12-20 16:01:30 +0000)
-
-----------------------------------------------------------------
-spi: Updates for v4.21
-
-The main thing this release has been a lot of work on the integration
-with SPI NOR flashes, there's been some specific support for a while for
-controller features designed to make them perform better but it's not
-worked out as well as hoped so the interface has been redesigned in a
-way that will hopefully do better - it's already been adopted by a
-number of additional controllers so things are looking good.  Otherwise
-most of the work has been driver specific:
-
- - Support for better integration with NOR flashes from Boris Brezillon
-   and Yogesh Narayan Gaur plus usage of it in several drivers.
- - A big cleanup of the Rockchip driver from Emil Renner Berthing.
- - Lots of performance improvements for bcm2835 from Lukas Wunner.
- - Slave mode support for pxa2xx from Lubomir Rintel.
- - Support for Macronix MXIC, Mediatek MT7629 and MT8183, NPCM PSPI,
-   and Renesas r8a77470.
-
-----------------------------------------------------------------
-Alok Chauhan (2):
-      spi: spi-geni-qcom: fix nitpicks
-      spi: spi-geni-qcom: Simplify probe function
-
-Arnd Bergmann (1):
-      mtd: atmel-quadspi: disallow building on ebsa110
-
-Boris Brezillon (4):
-      spi: spi-mem: Add missing word in the SPI_MEM_DATA_OUT description
-      spi: spi-mem: Add SPI_MEM_NO_DATA to the spi_mem_data_dir enum
-      spi: spi-mem: Split spi_mem_exec_op() code
-      spi: spi-mem: Add a new API to support direct mapping
-
-Chuanhua Han (1):
-      spi: spi-fsl-dspi: use IRQF_SHARED mode to request IRQ
-
-Clark Wang (4):
-      spi: lpspi: Replace all "master" with "controller"
-      spi: lpspi: Add slave mode support
-      spi: lpspi: Let watermark change with send data length
-      doc: lpspi: Document DT bindings for LPSPI slave mode
-
-Colin Ian King (1):
-      spi: npcm: fix u32 csgpio being checked for less than zero
-
-Dan Carpenter (1):
-      spi: npcm: Fix an error code in the probe function
-
-Emil Renner Berthing (14):
-      spi: rockchip: make spi_enable_chip take bool
-      spi: rockchip: use designated init for dma config
-      spi: rockchip: always use SPI mode
-      spi: rockchip: use atomic_t state
-      spi: rockchip: disable spi on error
-      spi: rockchip: read transfer info directly
-      spi: rockchip: don't store dma channels twice
-      spi: rockchip: remove master pointer from dev data
-      spi: rockchip: simplify use_dma logic
-      spi: rockchip: set min/max speed
-      spi: rockchip: precompute rx sample delay
-      spi: rockchip: use irq rather than polling
-      spi: rockchip: support 4bit words
-      spi: rockchip: support lsb-first mode
-
-Fabrizio Castro (2):
-      spi: rspi: Add r8a77470 to the compatible list
-      spi: sh-msiof: Add r8a774c0 support
-
-Fredrik Ternerot (1):
-      spi: pl022: Handle cs_change for last transfer
-
-Hoan Nguyen An (1):
-      spi: sh-msiof: Reduce the number of times write to and perform the tr=
-ansmission from FIFO
-
-Jarkko Nikula (1):
-      spi: pxa2xx: Remove LPSS private register restoring during resume
-
-Jay Fang (1):
-      spi: dw-mmio: add ACPI support
-
-Keiji Hayashibara (2):
-      spi: uniphier: fix incorrect property items
-      spi: uniphier: re-add addressing properties
-
-Leilk Liu (4):
-      spi: mediatek: Add bindings for mediatek MT8183 soc platform
-      spi: mediatek: add spi support for mt8183 IC
-      spi: mediatek: Add bindings for mediatek MT7629 soc platform
-      spi: mediatek: add spi support for mt7629 IC
-
-Linus Walleij (1):
-      spi: gpio: Support 3WIRE high-impedance turn-around
-
-Lubomir Rintel (7):
-      spi: pxa2xx: dt-bindings: Add spi-slave property
-      spi: Deal with slaves that return from transfer_one() unfinished
-      spi: pxa2xx: Add slave mode support
-      spi: pxa2xx: dt-bindings: Add ready GPIO signal
-      spi: pxa2xx: Add ready signal
-      spi: pxa2xx: Deal with the leftover garbage in TXFIFO
-      spi: pxa2xx: Fix '"CONFIG_OF" is not defined' warning
-
-Lukas Wunner (10):
-      spi: bcm2835: Avoid finishing transfer prematurely in IRQ mode
-      spi: bcm2835: Fix book-keeping of DMA termination
-      spi: bcm2835: Fix race on DMA termination
-      spi: bcm2835: Drop unused code for native Chip Select
-      spi: bcm2835: Document struct bcm2835_spi
-      spi: bcm2835: Overcome sglist entry length limitation
-      spi: bcm2835: Unbreak the build of esoteric configs
-      spi: bcm2835: Polish transfer of DMA prologue
-      spi: bcm2835: Speed up FIFO access if fill level is known
-      spi: bcm2835: Synchronize with callback on DMA termination
-
-Mark Brown (9):
-      Merge branch 'spi-4.20' into spi-4.21 for uniphier DT
-      spi: Fix core transfer waits after slave support
-      Merge branch 'spi-4.20' into spi-4.21 for bcm stuff.
-      Merge branch 'for-4.20' of https://git.kernel.org/.../broonie/spi int=
-o spi-4.21
-      spi: Fix formatting of header block
-      Merge branch 'topic/3wire-gpio' of https://git.kernel.org/.../broonie=
-/spi into spi-4.21 mode conflict
-      Merge branch 'spi-4.20' into spi-linus
-      Merge branch 'spi-4.21' into spi-next
-      Merge remote-tracking branches 'spi/topic/mem' and 'spi/topic/mtd' in=
-to spi-next
-
-Mason Yang (2):
-      spi: Add MXIC controller driver
-      dt-binding: spi: Document Macronix controller bindings
-
-Olof Johansson (1):
-      spi: npcm: Fix uninitialized variable warning
-
-Piotr Bugalski (6):
-      mtd: spi-nor: atmel-quaspi: Typo fix
-      mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi
-      mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi =
-driver
-      mtd: spi-nor: atmel-quadspi: Remove unused code from atmel-quadspi dr=
-iver
-      spi: Add QuadSPI driver for Atmel SAMA5D2
-      dt-bindings: spi: QuadSPI driver for Atmel SAMA5D2
-
-Radu Pirea (1):
-      spi: at91-usart: add power management support
-
-Randy Dunlap (1):
-      spi: fix spi-at91-usart.c build errors when PINCTRL is not set
-
-Rob Herring (1):
-      spi: Use of_node_name_eq for node name comparisons
-
-Stefan Wahren (1):
-      spi: bcm2835: make license text and module license match
-
-Tomer Maimon (4):
-      dt-binding: spi: add NPCM PSPI controller documentation
-      spi: npcm: add NPCM PSPI controller driver
-      spi: npcm: Modify pspi send function
-      spi: Update NPCM PSPI controller documentation
-
-Uwe Kleine-K=F6nig (5):
-      spi: imx: add a device specific prepare_message callback
-      spi: imx: mx51-ecspi: Move some initialisation to prepare_message hoo=
-k.
-      spi: imx: style fixes
-      spi: imx: rename config callback and add useful parameters
-      spi: imx: drop useless member speed_hz from driver data struct
-
-Vignesh R (2):
-      spi: omap-spi: Add compatible for AM654 SoC
-      spi: Kconfig: Enable McSPI driver for K3 platforms
-
-Wolfram Sang (3):
-      spi: spi-sh-msiof: simplify getting .driver_data
-      spi: spi-zynqmp-gqspi: simplify getting .driver_data
-      spi: spi-rspi: simplify getting .driver_data
-
-Yogesh Narayan Gaur (2):
-      spi: add support for octal mode I/O data transfer
-      spi: spi-mem: add support for octal mode I/O data transfer
-
-kbuild test robot (1):
-      spi: npcm: fix platform_no_drv_owner.cocci warnings
-
- .../bindings/{mtd =3D> spi}/atmel-quadspi.txt        |   0
- .../devicetree/bindings/spi/nuvoton,npcm-pspi.txt  |  43 ++
- Documentation/devicetree/bindings/spi/omap-spi.txt |   1 +
- Documentation/devicetree/bindings/spi/sh-msiof.txt |   1 +
- .../devicetree/bindings/spi/spi-fsl-lpspi.txt      |   4 +
- .../devicetree/bindings/spi/spi-mt65xx.txt         |   2 +
- Documentation/devicetree/bindings/spi/spi-mxic.txt |  34 ++
- .../devicetree/bindings/spi/spi-pxa2xx.txt         |   3 +
- Documentation/devicetree/bindings/spi/spi-rspi.txt |   1 +
- .../devicetree/bindings/spi/spi-uniphier.txt       |   4 +
- drivers/mtd/spi-nor/Kconfig                        |   9 -
- drivers/mtd/spi-nor/Makefile                       |   1 -
- drivers/spi/Kconfig                                |  24 +-
- drivers/spi/Makefile                               |   3 +
- drivers/{mtd/spi-nor =3D> spi}/atmel-quadspi.c       | 528 +++++----------=
----
- drivers/spi/spi-at91-usart.c                       |  62 +++
- drivers/spi/spi-bcm2835.c                          | 496 ++++++++++++-----
- drivers/spi/spi-bcm2835aux.c                       |   2 +-
- drivers/spi/spi-dw-mmio.c                          |   8 +
- drivers/spi/spi-dw.c                               |   1 +
- drivers/spi/spi-fsl-dspi.c                         |   4 +-
- drivers/spi/spi-fsl-lpspi.c                        | 202 ++++---
- drivers/spi/spi-geni-qcom.c                        |  64 +--
- drivers/spi/spi-gpio.c                             |  24 +-
- drivers/spi/spi-imx.c                              | 156 ++++--
- drivers/spi/spi-mem.c                              | 278 ++++++++-
- drivers/spi/spi-mt65xx.c                           |  12 +
- drivers/spi/spi-mxic.c                             | 619 +++++++++++++++++=
-++++
- drivers/spi/spi-npcm-pspi.c                        | 495 ++++++++++++++++
- drivers/spi/spi-pl022.c                            |  14 +-
- drivers/spi/spi-pxa2xx.c                           | 109 +++-
- drivers/spi/spi-pxa2xx.h                           |   3 +
- drivers/spi/spi-rockchip.c                         | 579 +++++++++--------=
---
- drivers/spi/spi-rspi.c                             |   6 +-
- drivers/spi/spi-sh-msiof.c                         |  16 +-
- drivers/spi/spi-zynqmp-gqspi.c                     |   6 +-
- drivers/spi/spi.c                                  |  84 ++-
- include/linux/spi/pxa2xx_spi.h                     |   1 +
- include/linux/spi/spi-mem.h                        |  84 ++-
- include/linux/spi/spi.h                            |   5 +-
- 40 files changed, 2885 insertions(+), 1103 deletions(-)
- rename Documentation/devicetree/bindings/{mtd =3D> spi}/atmel-quadspi.txt =
-(100%)
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi=
-=2Etxt
- create mode 100644 Documentation/devicetree/bindings/spi/spi-mxic.txt
- rename drivers/{mtd/spi-nor =3D> spi}/atmel-quadspi.c (53%)
- create mode 100644 drivers/spi/spi-mxic.c
- create mode 100644 drivers/spi/spi-npcm-pspi.c
-
---RASg3xLB4tUQ4RcS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwhLzYACgkQJNaLcl1U
-h9Bc0wf/Up4aEA8+s/WBk4yfj/00cfvVA+kqozLMmOqn/C3teUuMCQJuiyUyiVV6
-CnAqm6kGz9girf7sJrb0mLyKGfvIl+WuyGF79GcHPyWqFt7Vbfu6hmPMb7rNErvB
-DDCOJaSX2/2EVb2XERo5w1m/nPxxF08DFg2IjeKZBMjf0J4+UD3aNxe36Nbecpof
-F6l11gPlUIqZqy1C7teglO16M2WxxpD350YrHfHvo+dFaPvftjnkiCqdVlH3HJul
-LLQiALdXXYE3Z//IPD4idqgeBRpA/rTvVtaHcppd4BjCML+2ZgtDcX3gynoohlBe
-3Kf7dV4HDxvpWIPlCpBA412ZCeEWBg==
-=uHRb
------END PGP SIGNATURE-----
-
---RASg3xLB4tUQ4RcS--
+-- 
+2.7.4

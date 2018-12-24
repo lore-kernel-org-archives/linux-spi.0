@@ -1,7 +1,7 @@
 From: cezary.gapinski@gmail.com
-Subject: [PATCH v2 01/14] spi: stm32: switch to SPDX identifier
-Date: Mon, 24 Dec 2018 23:00:27 +0100
-Message-ID: <1545688840-23992-2-git-send-email-cezary.gapinski@gmail.com>
+Subject: [PATCH v2 03/14] spi: stm32: fix DMA configuration with only one channel
+Date: Mon, 24 Dec 2018 23:00:29 +0100
+Message-ID: <1545688840-23992-4-git-send-email-cezary.gapinski@gmail.com>
 References: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
@@ -19,48 +19,92 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Cezary Gapinski <cezary.gapinski@gmail.com>
 
-Adopt the SPDX license identifier headers to ease license compliance
-management.
+When SPI driver is configured to work only with TX or RX DMA channel
+then dmaengine functions can dereferene NULL pointer.
+
+Running full-duplex mode when when only RX or TX DMA channel is
+available can cause overrun condition or incorrect writing to transmit
+buffer so disable this types of DMA configuration and go back to
+interrupt mode.
 
 Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
 ---
- drivers/spi/spi-stm32.c | 27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ drivers/spi/spi-stm32.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index ad1e55d..5f30578 100644
+index 51d7f72..8310f14 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -1,23 +1,10 @@
--/*
-- * STMicroelectronics STM32 SPI Controller driver (master mode only)
-- *
-- * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
-- * Author(s): Amelie Delaunay <amelie.delaunay@st.com> for STMicroelectronics.
-- *
-- * License terms: GPL V2.0.
-- *
-- * spi_stm32 driver is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License version 2 as published by
-- * the Free Software Foundation.
-- *
-- * spi_stm32 driver is distributed in the hope that it will be useful, but
-- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License along with
-- * spi_stm32 driver. If not, see <http://www.gnu.org/licenses/>.
-- */
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// STMicroelectronics STM32 SPI Controller driver (master mode only)
-+//
-+// Copyright (C) 2017, STMicroelectronics - All Rights Reserved
-+// Author(s): Amelie Delaunay <amelie.delaunay@st.com> for STMicroelectronics.
+@@ -427,9 +427,9 @@ static void stm32_spi_disable(struct stm32_spi *spi)
+ 	if (!spi->cur_usedma && spi->rx_buf && (spi->rx_len > 0))
+ 		stm32_spi_read_rxfifo(spi, true);
+ 
+-	if (spi->cur_usedma && spi->tx_buf)
++	if (spi->cur_usedma && spi->dma_tx)
+ 		dmaengine_terminate_all(spi->dma_tx);
+-	if (spi->cur_usedma && spi->rx_buf)
++	if (spi->cur_usedma && spi->dma_rx)
+ 		dmaengine_terminate_all(spi->dma_rx);
+ 
+ 	stm32_spi_clr_bits(spi, STM32_SPI_CR1, SPI_CR1_SPE);
+@@ -750,7 +750,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 	spin_lock_irqsave(&spi->lock, flags);
+ 
+ 	rx_dma_desc = NULL;
+-	if (spi->rx_buf) {
++	if (spi->rx_buf && spi->dma_rx) {
+ 		stm32_spi_dma_config(spi, &rx_dma_conf, DMA_DEV_TO_MEM);
+ 		dmaengine_slave_config(spi->dma_rx, &rx_dma_conf);
+ 
+@@ -765,7 +765,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 	}
+ 
+ 	tx_dma_desc = NULL;
+-	if (spi->tx_buf) {
++	if (spi->tx_buf && spi->dma_tx) {
+ 		stm32_spi_dma_config(spi, &tx_dma_conf, DMA_MEM_TO_DEV);
+ 		dmaengine_slave_config(spi->dma_tx, &tx_dma_conf);
+ 
+@@ -776,8 +776,11 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 					DMA_PREP_INTERRUPT);
+ 	}
+ 
+-	if ((spi->tx_buf && !tx_dma_desc) ||
+-	    (spi->rx_buf && !rx_dma_desc))
++	if ((spi->tx_buf && spi->dma_tx && !tx_dma_desc) ||
++	    (spi->rx_buf && spi->dma_rx && !rx_dma_desc))
++		goto dma_desc_error;
 +
- #include <linux/debugfs.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
++	if (spi->cur_comm == SPI_FULL_DUPLEX && (!tx_dma_desc || !rx_dma_desc))
+ 		goto dma_desc_error;
+ 
+ 	if (rx_dma_desc) {
+@@ -822,7 +825,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 	return 1;
+ 
+ dma_submit_error:
+-	if (spi->rx_buf)
++	if (spi->dma_rx)
+ 		dmaengine_terminate_all(spi->dma_rx);
+ 
+ dma_desc_error:
+@@ -832,6 +835,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+ 
+ 	dev_info(spi->dev, "DMA issue: fall back to irq transfer\n");
+ 
++	spi->cur_usedma = false;
+ 	return stm32_spi_transfer_one_irq(spi);
+ }
+ 
+@@ -984,7 +988,7 @@ static int stm32_spi_transfer_one(struct spi_master *master,
+ 	spi->rx_len = spi->rx_buf ? transfer->len : 0;
+ 
+ 	spi->cur_usedma = (master->can_dma &&
+-			   stm32_spi_can_dma(master, spi_dev, transfer));
++			   master->can_dma(master, spi_dev, transfer));
+ 
+ 	ret = stm32_spi_transfer_one_setup(spi, spi_dev, transfer);
+ 	if (ret) {
 -- 
 2.7.4

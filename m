@@ -1,7 +1,7 @@
 From: cezary.gapinski@gmail.com
-Subject: [PATCH v2 05/14] spi: stm32: use explicit CPOL and CPHA mode bits
-Date: Mon, 24 Dec 2018 23:00:31 +0100
-Message-ID: <1545688840-23992-6-git-send-email-cezary.gapinski@gmail.com>
+Subject: [PATCH v2 04/14] spi: fix typo in SPI_STM32 help text
+Date: Mon, 24 Dec 2018 23:00:30 +0100
+Message-ID: <1545688840-23992-5-git-send-email-cezary.gapinski@gmail.com>
 References: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
@@ -19,27 +19,25 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Cezary Gapinski <cezary.gapinski@gmail.com>
 
-Driver supports SPI mode 0 to 3 not only the mode 3.
-Use SPI_CPOL and SPI_CPHA indicates that these bits
-can be changed to obtain modes 0 - 3.
+Fix typo from STMicroelectonics to STMicroelectronics.
 
 Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
 ---
- drivers/spi/spi-stm32.c | 2 +-
+ drivers/spi/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8310f14..f7056b7 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1142,7 +1142,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->auto_runtime_pm = true;
- 	master->bus_num = pdev->id;
--	master->mode_bits = SPI_MODE_3 | SPI_CS_HIGH | SPI_LSB_FIRST |
-+	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
- 			    SPI_3WIRE | SPI_LOOP;
- 	master->bits_per_word_mask = stm32_spi_get_bpw_mask(spi);
- 	master->max_speed_hz = spi->clk_rate / SPI_MBR_DIV_MIN;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9f89cb1..ceb6b7e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -665,7 +665,7 @@ config SPI_STM32
+ 	tristate "STMicroelectronics STM32 SPI controller"
+ 	depends on ARCH_STM32 || COMPILE_TEST
+ 	help
+-	  SPI driver for STMicroelectonics STM32 SoCs.
++	  SPI driver for STMicroelectronics STM32 SoCs.
+ 
+ 	  STM32 SPI controller supports DMA and PIO modes. When DMA
+ 	  is not available, the driver automatically falls back to
 -- 
 2.7.4

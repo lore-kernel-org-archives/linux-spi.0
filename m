@@ -1,7 +1,7 @@
 From: cezary.gapinski@gmail.com
-Subject: [PATCH v2 10/14] spi: stm32: add start dma transfer function
-Date: Mon, 24 Dec 2018 23:00:36 +0100
-Message-ID: <1545688840-23992-11-git-send-email-cezary.gapinski@gmail.com>
+Subject: [PATCH v2 06/14] spi: stm32: remove SPI LOOP mode
+Date: Mon, 24 Dec 2018 23:00:32 +0100
+Message-ID: <1545688840-23992-7-git-send-email-cezary.gapinski@gmail.com>
 References: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
@@ -19,65 +19,26 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Cezary Gapinski <cezary.gapinski@gmail.com>
 
-Add transfer_one_dma_start function to be more generic for other
-stm32 SPI family drivers.
+This driver does not support SPI LOOP mode by configuration
+in registers.
 
 Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
 ---
- drivers/spi/spi-stm32.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index bc8513f..b19d02b 100644
+index f7056b7..b639be7 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -748,6 +748,23 @@ static int stm32_spi_transfer_one_irq(struct stm32_spi *spi)
- }
- 
- /**
-+ * stm32_spi_transfer_one_dma_start - Set SPI driver registers to start transfer
-+ *				      using DMA
-+ */
-+static void stm32_spi_transfer_one_dma_start(struct stm32_spi *spi)
-+{
-+	/* Enable the interrupts relative to the end of transfer */
-+	stm32_spi_set_bits(spi, STM32H7_SPI_IER, STM32H7_SPI_IER_EOTIE |
-+						 STM32H7_SPI_IER_TXTFIE |
-+						 STM32H7_SPI_IER_OVRIE |
-+						 STM32H7_SPI_IER_MODFIE);
-+
-+	stm32_spi_enable(spi);
-+
-+	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
-+}
-+
-+/**
-  * stm32_spi_transfer_one_dma - transfer a single spi_transfer using DMA
-  *
-  * It must returns 0 if the transfer is finished or 1 if the transfer is still
-@@ -759,7 +776,6 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 	struct dma_slave_config tx_dma_conf, rx_dma_conf;
- 	struct dma_async_tx_descriptor *tx_dma_desc, *rx_dma_desc;
- 	unsigned long flags;
--	u32 ier = 0;
- 
- 	spin_lock_irqsave(&spi->lock, flags);
- 
-@@ -829,14 +845,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
- 				   STM32H7_SPI_CFG1_TXDMAEN);
- 	}
- 
--	/* Enable the interrupts relative to the end of transfer */
--	ier |= STM32H7_SPI_IER_EOTIE | STM32H7_SPI_IER_TXTFIE |
--	       STM32H7_SPI_IER_OVRIE | STM32H7_SPI_IER_MODFIE;
--	writel_relaxed(ier, spi->base + STM32H7_SPI_IER);
--
--	stm32_spi_enable(spi);
--
--	stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
-+	stm32_spi_transfer_one_dma_start(spi);
- 
- 	spin_unlock_irqrestore(&spi->lock, flags);
- 
+@@ -1143,7 +1143,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	master->auto_runtime_pm = true;
+ 	master->bus_num = pdev->id;
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
+-			    SPI_3WIRE | SPI_LOOP;
++			    SPI_3WIRE;
+ 	master->bits_per_word_mask = stm32_spi_get_bpw_mask(spi);
+ 	master->max_speed_hz = spi->clk_rate / SPI_MBR_DIV_MIN;
+ 	master->min_speed_hz = spi->clk_rate / SPI_MBR_DIV_MAX;
 -- 
 2.7.4

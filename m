@@ -1,7 +1,8 @@
 From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v4 0/2] spi: Add Renesas R-Car Gen3 RPC SPI driver
-Date: Mon, 24 Dec 2018 14:52:36 +0800
-Message-ID: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v4 2/2] dt-bindings: spi: Document Renesas R-Car Gen3 RPC controller bindings
+Date: Mon, 24 Dec 2018 14:52:38 +0800
+Message-ID: <1545634358-17485-3-git-send-email-masonccyang@mxic.com.tw>
+References: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
 Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
         zhengxunli@mxic.com.tw, Mason Yang <masonccyang@mxic.com.tw>
 To: broonie@kernel.org, marek.vasut@gmail.com,
@@ -10,54 +11,60 @@ To: broonie@kernel.org, marek.vasut@gmail.com,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         sergei.shtylyov@cogentembedded.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Document the bindings used by the Renesas R-Car Gen3 RPC controller.
 
-This Renesas R-Car Gen3 RPC SPI driver is based on Boris's new
-spi-mem direct mapping read/write mode [1][2].
-
-v4 patch is according to Sergei's comments including:
-1) Drop soc_device_match()
-2) Drop unused RPC registers
-3) Use ilog2() instead of fls()
-4) Patch read 6 bytes ID w/ one command.
-5) Coding style and so on.
-
-v3 patch is according to Marek and Geert's comments including:
-1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
-2) get_unaligned()
-3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
-4) coding style and so on.
-
-v2 patch including:
-1) remove RPC clock enable/dis-able control,
-2) patch run time PM, 
-3) add RPC module software reset, 
-4) add regmap,
-5) other coding style and so on.
-
-thanks for your review.
-
-best regards,
-Mason
-
-[1] https://patchwork.kernel.org/patch/10670753
-[2] https://patchwork.kernel.org/patch/10670747
-
-
-Mason Yang (2):
-  spi: Add Renesas R-Car Gen3 RPC SPI controller driver
-  dt-bindings: spi: Document Renesas R-Car Gen3 RPC controller bindings
-
- .../devicetree/bindings/spi/spi-renesas-rpc.txt    |  37 +
- drivers/spi/Kconfig                                |   6 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-renesas-rpc.c                      | 788 +++++++++++++++++++++
- 4 files changed, 832 insertions(+)
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 37 ++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
- create mode 100644 drivers/spi/spi-renesas-rpc.c
 
+diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+new file mode 100644
+index 0000000..ba863d7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+@@ -0,0 +1,37 @@
++Renesas R-Car Gen3 RPC controller Device Tree Bindings
++------------------------------------------------------
++
++Required properties:
++- compatible: should be "renesas,r8a77995-rpc"
++- #address-cells: should be 1
++- #size-cells: should be 0
++- reg: should contain 2 entries, one for the registers and one for the direct
++       mapping area
++- reg-names: should contain "regs" and "dirmap"
++- clock-names: should contain "rpc"
++- clocks: should contain 1 entries for the module's clock
++- renesas,rpc-mode: should contain "spi" for rpc spi mode or
++			   	   "hyperflash" for rpc hyerflash mode.
++
++Example:
++
++	rpc: rpc@ee200000 {
++		compatible = "renesas,r8a77995-rpc";
++		reg = <0 0xee200000 0 0x8100>, <0 0x08000000 0 0x4000000>;
++		reg-names = "regs", "dirmap";
++		clocks = <&cpg CPG_MOD 917>;
++		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
++		resets = <&cpg 917>;
++		clock-names = "rpc";
++		renesas,rpc-mode = "spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		flash@0 {
++			compatible = "jedec,spi-nor";
++			reg = <0>;
++			spi-max-frequency = <40000000>;
++			spi-tx-bus-width = <1>;
++			spi-rx-bus-width = <1>;
++		};
++	};
 -- 
 1.9.1

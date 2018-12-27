@@ -1,30 +1,42 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v4 0/2] spi: Add Renesas R-Car Gen3 RPC SPI driver
-Date: Thu, 27 Dec 2018 22:08:26 +0300
-Message-ID: <4616a522-63f9-ad70-3a68-9f4d2e038750@cogentembedded.com>
-References: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 14/14] spi: stm32: add description about STM32F4
+ bindings
+Date: Thu, 27 Dec 2018 15:09:52 -0600
+Message-ID: <20181227210952.GA26671@bogus>
+References: <1545688840-23992-1-git-send-email-cezary.gapinski@gmail.com>
+ <1545688840-23992-15-git-send-email-cezary.gapinski@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Cezary Gapinski <cezary.gapinski@gmail.com>
+To: cezary.gapinski@gmail.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+Content-Disposition: inline
+In-Reply-To: <1545688840-23992-15-git-send-email-cezary.gapinski@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/24/2018 09:52 AM, Mason Yang wrote:
+On Mon, 24 Dec 2018 23:00:40 +0100, cezary.gapinski@gmail.com wrote:
+> From: Cezary Gapinski <cezary.gapinski@gmail.com>
+> 
+> Add description that STM32F4 can be used in compatible property.
+> Master Inter-Data Idleness optional property cannot be used in STM32F4.
+> 
+> Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-stm32.txt | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
 
-> Hi Mark,
-> This Renesas R-Car Gen3 RPC SPI driver is based on Boris's new
-> spi-mem direct mapping read/write mode [1][2].
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-   Against which repo/branch these pathes were generated?
-
-MBR, Sergei
+If a tag was not added on purpose, please state why and what changed.

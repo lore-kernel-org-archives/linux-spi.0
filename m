@@ -1,115 +1,90 @@
-From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: Re: [PATCH v2 13/17] power: supply: olpc_battery: Use DT to get
- battery version
-Date: Mon, 07 Jan 2019 19:25:52 +0100
-Message-ID: <4364d7c4dc1266ca45255cdad5ba40fb20a9bea3.camel@v3.sk>
-References: <20181116162403.49854-1-lkundrak@v3.sk>
- <20181116162403.49854-14-lkundrak@v3.sk>
- <20181205205459.bsumxn57hjjzvqaj@earth.universe>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- devel@driverdev.osuosl.org, Eric Miao <eric.y.miao@gmail.com>,
- James Cameron <quozl@laptop.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, Daniel Mack <daniel@zonque.org>,
- Darren Hart <dvhart@infradead.org>, platform-driver-x86@vger.kernel.org,
- Robert Jarzmik <robert.jarzmik@free.fr>, Andy Shevchenko <andy@infradead.org>,
- linux-arm-kernel@lists.infradead.org
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20181205205459.bsumxn57hjjzvqaj@earth.universe>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: stm32: rename interrupt function" to the spi tree
+Date: Mon,  7 Jan 2019 18:59:05 +0000 (GMT)
+Message-ID: <20190107185905.6663D1127491@debutante.sirena.org.uk>
+References: <1545688840-23992-9-git-send-email-cezary.gapinski@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org
+To: Cezary Gapinski <cezary.gapinski@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1545688840-23992-9-git-send-email-cezary.gapinski@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2018-12-05 at 21:54 +0100, Sebastian Reichel wrote:
-> Hi,
-> 
-> On Fri, Nov 16, 2018 at 05:23:59PM +0100, Lubomir Rintel wrote:
-> > Avoid using the x86 OLPC platform specific call to get the board
-> > version. It won't work on FDT-based ARM MMP2 platform.
-> > 
-> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Acked-by: Pavel Machek <pavel@ucw.cz>
-> > 
-> > ---
-> 
-> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> 
-> I assume this patch cannot be applied to power-supply without patch
-> 12 having been merged to avoid breaking XO1.5 devices temporarily?
+The patch
 
-That is true. What's the correct way to deal with a situation like
-this? Just hold the patch until the other changes get in, perhaps via
-linux-platform-drivers-x86.git? Or maybe this can go in together via
-that tree along with the other patches?
+   spi: stm32: rename interrupt function
 
-Thanks
-Lubo
+has been applied to the spi tree at
 
-> -- Sebastian
-> 
-> > Changes since v1:
-> > - Sort the new include a bit higher
-> > 
-> >  drivers/power/supply/olpc_battery.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/power/supply/olpc_battery.c
-> > b/drivers/power/supply/olpc_battery.c
-> > index 5a97e42a3547..5323987d9284 100644
-> > --- a/drivers/power/supply/olpc_battery.c
-> > +++ b/drivers/power/supply/olpc_battery.c
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/types.h>
-> >  #include <linux/err.h>
-> >  #include <linux/device.h>
-> > +#include <linux/of.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/power_supply.h>
-> >  #include <linux/jiffies.h>
-> > @@ -622,11 +623,13 @@ static int olpc_battery_probe(struct
-> > platform_device *pdev)
-> >  	olpc_ac = power_supply_register(&pdev->dev, &olpc_ac_desc,
-> > NULL);
-> >  	if (IS_ERR(olpc_ac))
-> >  		return PTR_ERR(olpc_ac);
-> > -
-> > -	if (olpc_board_at_least(olpc_board_pre(0xd0))) { /* XO-1.5 */
-> > +	if (of_property_match_string(pdev->dev.of_node, "compatible",
-> > +					"olpc,xo1.5-battery") >= 0) {
-> > +		/* XO-1.5 */
-> >  		olpc_bat_desc.properties = olpc_xo15_bat_props;
-> >  		olpc_bat_desc.num_properties =
-> > ARRAY_SIZE(olpc_xo15_bat_props);
-> > -	} else { /* XO-1 */
-> > +	} else {
-> > +		/* XO-1 */
-> >  		olpc_bat_desc.properties = olpc_xo1_bat_props;
-> >  		olpc_bat_desc.num_properties =
-> > ARRAY_SIZE(olpc_xo1_bat_props);
-> >  	}
-> > @@ -672,6 +675,7 @@ static int olpc_battery_remove(struct
-> > platform_device *pdev)
-> >  
-> >  static const struct of_device_id olpc_battery_ids[] = {
-> >  	{ .compatible = "olpc,xo1-battery" },
-> > +	{ .compatible = "olpc,xo1.5-battery" },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(of, olpc_battery_ids);
-> > -- 
-> > 2.19.1
-> > 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a9675337ad3e540cecb2411a7fc71fda133a3932 Mon Sep 17 00:00:00 2001
+From: Cezary Gapinski <cezary.gapinski@gmail.com>
+Date: Mon, 24 Dec 2018 23:00:34 +0100
+Subject: [PATCH] spi: stm32: rename interrupt function
+
+Interrupt function is used as a thread so rename it to express
+meaning directly by more clear function name.
+
+Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-stm32.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 2ece69a75ae4..9cb7d334a5cb 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -466,11 +466,11 @@ static bool stm32_spi_can_dma(struct spi_master *master,
+ }
+ 
+ /**
+- * stm32_spi_irq - Interrupt handler for SPI controller events
++ * stm32_spi_irq_thread - Thread of interrupt handler for SPI controller
+  * @irq: interrupt line
+  * @dev_id: SPI controller master interface
+  */
+-static irqreturn_t stm32_spi_irq(int irq, void *dev_id)
++static irqreturn_t stm32_spi_irq_thread(int irq, void *dev_id)
+ {
+ 	struct spi_master *master = dev_id;
+ 	struct stm32_spi *spi = spi_master_get_devdata(master);
+@@ -1113,7 +1113,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		goto err_master_put;
+ 	}
+ 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq, NULL,
+-					stm32_spi_irq, IRQF_ONESHOT,
++					stm32_spi_irq_thread, IRQF_ONESHOT,
+ 					pdev->name, master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "irq%d request failed: %d\n", spi->irq,
+-- 
+2.20.1

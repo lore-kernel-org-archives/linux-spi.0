@@ -1,26 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: use NULL pointer instead of plain integer" to the spi tree
-Date: Mon,  7 Jan 2019 18:59:16 +0000 (GMT)
-Message-ID: <20190107185916.A15151127491@debutante.sirena.org.uk>
-References: <1545688840-23992-3-git-send-email-cezary.gapinski@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org
-To: Cezary Gapinski <cezary.gapinski@gmail.com>
+Subject: Applied "spi: dw: fix potential variable assignment error" to the spi tree
+Date: Mon,  7 Jan 2019 18:59:20 +0000 (GMT)
+Message-ID: <20190107185920.562411127491@debutante.sirena.org.uk>
+References: <20181228083312.14928-1-shol@livemail.tw>
+Cc: shaftarger <shol@livemail.tw>, Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, shaftarger <shol@livemail.tw>,
+        linux-spi@vger.kernel.org
+To: shaftarger <sholchen@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1545688840-23992-3-git-send-email-cezary.gapinski@gmail.com>
+In-Reply-To: <20181228083312.14928-1-shol@livemail.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: use NULL pointer instead of plain integer
+   spi: dw: fix potential variable assignment error
 
 has been applied to the spi tree at
 
@@ -45,32 +40,38 @@ to this mail.
 Thanks,
 Mark
 
->From d4c9134a6c2c85d18b0d58accdf0e9be447f77a3 Mon Sep 17 00:00:00 2001
-From: Cezary Gapinski <cezary.gapinski@gmail.com>
-Date: Mon, 24 Dec 2018 23:00:28 +0100
-Subject: [PATCH] spi: stm32: use NULL pointer instead of plain integer
+>From e1bc204894eae69b153eb63d9fd65414466fb639 Mon Sep 17 00:00:00 2001
+From: shaftarger <sholchen@gmail.com>
+Date: Fri, 28 Dec 2018 16:33:12 +0800
+Subject: [PATCH] spi: dw: fix potential variable assignment error
 
-Patch fixes sparse warning: Using plain integer as NULL pointer. Replaces
-second argument of function devm_clk_get from 0 to NULL.
+spi::mode is defined by framework for several SPI capabilities,
+such as polarity, phase, bit-endian, wire number. Directly use this
+variable for setting controller's polarity and phase causes other
+bit in register being set. Since SPI framework has its definition,
+SPI_CPOL and SPI_CPHA offset may be changed by framwork change.
+Instead of just mask off the relevant bits,
+fetch required bit in spi::mode and set to register.
 
-Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
+Signed-off-by: shaftarger <shol@livemail.tw>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-dw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 5f30578a4224..51d7f720127b 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1100,7 +1100,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		goto err_master_put;
- 	}
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 2e822a56576a..a945fad3db62 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -317,7 +317,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
+ 	cr0 = (transfer->bits_per_word - 1)
+ 		| (chip->type << SPI_FRF_OFFSET)
+-		| (spi->mode << SPI_MODE_OFFSET)
++		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
++			(((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET))
+ 		| (chip->tmode << SPI_TMOD_OFFSET);
  
--	spi->clk = devm_clk_get(&pdev->dev, 0);
-+	spi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		ret = PTR_ERR(spi->clk);
- 		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
+ 	/*
 -- 
 2.20.1

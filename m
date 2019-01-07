@@ -1,7 +1,7 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH 2/8] spi: lpspi: enable runtime pm for lpspi
-Date: Mon, 7 Jan 2019 07:47:36 +0000
-Message-ID: <20190107074639.6336-3-xiaoning.wang@nxp.com>
+Subject: [PATCH 1/8] spi: lpspi: Add i.MX8 boards support for lpspi
+Date: Mon, 7 Jan 2019 07:47:34 +0000
+Message-ID: <20190107074639.6336-2-xiaoning.wang@nxp.com>
 References: <20190107074639.6336-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -16,218 +16,129 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-	From: Han Xu <han.xu@nxp.com>
-
-	Enable the runtime power management for lpspi module.
-
-Do some adaptation work from kernel 4.9 to 4.14.
+Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
 ---
- drivers/spi/spi-fsl-lpspi.c | 117 ++++++++++++++++++++++++++++--------
- 1 file changed, 92 insertions(+), 25 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 52 +++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 5802f188051b..3e935db5ff02 100644
+index 08dcc3c22e88..5802f188051b 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -16,7 +16,9 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -24,6 +26,8 @@
+@@ -80,7 +80,8 @@ struct lpspi_config {
+ struct fsl_lpspi_data {
+ 	struct device *dev;
+ 	void __iomem *base;
+-	struct clk *clk;
++	struct clk *clk_ipg;
++	struct clk *clk_per;
+ 	bool is_slave;
 =20
- #define DRIVER_NAME "fsl_lpspi"
-=20
-+#define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
-+
- /* i.MX7ULP LPSPI registers */
- #define IMX7ULP_VERID	0x0
- #define IMX7ULP_PARAM	0x4
-@@ -150,13 +154,9 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
+ 	void *rx_buf;
+@@ -147,8 +148,19 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
 roller *controller)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
  				spi_controller_get_devdata(controller);
- 	int ret;
++	int ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret)
++		return ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
++	if (ret) {
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
++		return ret;
++	}
 =20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
--	if (ret)
--		return ret;
--
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
- 		return ret;
- 	}
+-	return clk_prepare_enable(fsl_lpspi->clk);
++	return 0;
+ }
 =20
-@@ -168,8 +168,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
+ static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
+)
+@@ -156,7 +168,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
 troller *controller)
  	struct fsl_lpspi_data *fsl_lpspi =3D
  				spi_controller_get_devdata(controller);
 =20
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
--	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	pm_runtime_mark_last_busy(fsl_lpspi->dev);
-+	pm_runtime_put_autosuspend(fsl_lpspi->dev);
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
 =20
  	return 0;
  }
-@@ -476,6 +476,45 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id=
-)
- 	return IRQ_NONE;
- }
+@@ -249,7 +262,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	unsigned int perclk_rate, scldiv;
+ 	u8 prescale;
 =20
-+int fsl_lpspi_runtime_resume(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
-+	if (ret) {
-+		clk_disable_unprepare(fsl_lpspi->clk_per);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int fsl_lpspi_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+
-+	return 0;
-+}
-+
-+static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
-+{
-+	struct device *dev =3D fsl_lpspi->dev;
-+
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, FSL_LPSPI_RPM_TIMEOUT);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi;
-@@ -501,6 +540,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
-)
-=20
- 	fsl_lpspi =3D spi_controller_get_devdata(controller);
- 	fsl_lpspi->dev =3D &pdev->dev;
-+	dev_set_drvdata(&pdev->dev, fsl_lpspi);
- 	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
- 						    "spi-slave");
-=20
-@@ -547,28 +587,21 @@ static int fsl_lpspi_probe(struct platform_device *pd=
+-	perclk_rate =3D clk_get_rate(fsl_lpspi->clk);
++	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
+ 	for (prescale =3D 0; prescale < 8; prescale++) {
+ 		scldiv =3D perclk_rate /
+ 			 (clkdivs[prescale] * config.speed_hz) - 2;
+@@ -522,15 +535,30 @@ static int fsl_lpspi_probe(struct platform_device *pd=
 ev)
  		goto out_controller_put;
  	}
 =20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
-+	/* enable the clock */
-+	ret =3D fsl_lpspi_init_rpm(fsl_lpspi);
-+	if (ret)
+-	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
+-	if (IS_ERR(fsl_lpspi->clk)) {
+-		ret =3D PTR_ERR(fsl_lpspi->clk);
++	fsl_lpspi->clk_per =3D devm_clk_get(&pdev->dev, "per");
++	if (IS_ERR(fsl_lpspi->clk_per)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_per);
++		goto out_controller_put;
++	}
++
++	fsl_lpspi->clk_ipg =3D devm_clk_get(&pdev->dev, "ipg");
++	if (IS_ERR(fsl_lpspi->clk_ipg)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_ipg);
++		goto out_controller_put;
++	}
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
  		goto out_controller_put;
--	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi per clock, ret=3D%d\n", ret);
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
--		goto out_controller_put;
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
-+		return ret;
  	}
 =20
- 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk);
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
++		dev_err(&pdev->dev,
++			"can't enable lpspi per clock, ret=3D%d\n", ret);
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
+ 		goto out_controller_put;
+ 	}
+=20
+@@ -538,7 +566,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
+)
  	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
  	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
 =20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
--
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
  	ret =3D devm_spi_register_controller(&pdev->dev, controller);
  	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_controller error.\n");
-@@ -589,16 +622,50 @@ static int fsl_lpspi_remove(struct platform_device *p=
-dev)
+@@ -560,7 +589,8 @@ static int fsl_lpspi_remove(struct platform_device *pde=
+v)
  	struct fsl_lpspi_data *fsl_lpspi =3D
  				spi_controller_get_devdata(controller);
 =20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	pm_runtime_disable(fsl_lpspi->dev);
-+
-+	spi_master_put(controller);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int fsl_lpspi_suspend(struct device *dev)
-+{
-+	int ret;
-+
-+	pinctrl_pm_select_sleep_state(dev);
-+	ret =3D pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_lpspi_resume(struct device *dev)
-+{
-+	int ret;
-+
-+	ret =3D pm_runtime_force_resume(dev);
-+	if (ret) {
-+		dev_err(dev, "Error in resume: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pinctrl_pm_select_default_state(dev);
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
 =20
  	return 0;
  }
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static const struct dev_pm_ops fsl_lpspi_pm_ops =3D {
-+	SET_RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
-+				fsl_lpspi_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(fsl_lpspi_suspend, fsl_lpspi_resume)
-+};
-=20
- static struct platform_driver fsl_lpspi_driver =3D {
- 	.driver =3D {
- 		.name =3D DRIVER_NAME,
- 		.of_match_table =3D fsl_lpspi_dt_ids,
-+		.pm =3D &fsl_lpspi_pm_ops,
- 	},
- 	.probe =3D fsl_lpspi_probe,
- 	.remove =3D fsl_lpspi_remove,
 --=20
 2.17.1

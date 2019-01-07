@@ -1,49 +1,97 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v8 4/7] mtd: fsl-quadspi: Remove the driver as it was
- replaced by spi-fsl-qspi.c
-Date: Mon, 7 Jan 2019 17:20:03 +0100
-Message-ID: <20190107172003.1bca8a66@bbrezillon>
-References: <20190107092823.11188-1-frieder.schrempf@kontron.de>
-        <20190107092823.11188-5-frieder.schrempf@kontron.de>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: Re: [PATCH v2 17/17] power: supply: olpc_battery: Add OLPC XO 1.75
+ support
+Date: Mon, 07 Jan 2019 19:02:37 +0100
+Message-ID: <d541d82647338c07fa59b0f2ef63880610733505.camel@v3.sk>
+References: <20181116162403.49854-1-lkundrak@v3.sk>
+         <20181116162403.49854-18-lkundrak@v3.sk> <20181202233458.GE23087@wrath>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
-        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
-        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
-        "han.xu@nxp.com" <han.xu@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-kernel@vger.kern
-To: Schrempf Frieder <frieder.schrempf@kontron.de>
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andy Shevchenko <andy@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        James Cameron <quozl@laptop.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-pm@vger.kernel.org
+To: Darren Hart <dvhart@infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190107092823.11188-5-frieder.schrempf@kontron.de>
+In-Reply-To: <20181202233458.GE23087@wrath>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 7 Jan 2019 09:29:53 +0000
-Schrempf Frieder <frieder.schrempf@kontron.de> wrote:
+On Sun, 2018-12-02 at 15:34 -0800, Darren Hart wrote:
+> On Fri, Nov 16, 2018 at 05:24:03PM +0100, Lubomir Rintel wrote:
+> > The battery and the protocol are essentially the same as OLPC XO 1.5,
+> > but the responses from the EC are LSB first.
+> > 
+> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> > Acked-by: Pavel Machek <pavel@ucw.cz>
+> > 
+> > ---
+> > Changes since v1:
+> > - s/s16 ecword_to_cpu/u16 ecword_to_cpu/
+> > - s/u16 ec_byte/u16 ec_word/
+> > 
+> >  drivers/power/supply/olpc_battery.c | 23 ++++++++++++++++++-----
+> >  1 file changed, 18 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply/olpc_battery.c
+> 
+> ...
+> 
+> > @@ -626,6 +635,10 @@ static int olpc_battery_probe(struct platform_device *pdev)
+> >  	if (ecver > 0x44) {
+> >  		/* XO 1 or 1.5 with a new EC firmware. */
+> >  		data->new_proto = 1;
+> > +	} else if (of_find_compatible_node(NULL, NULL, "olpc,xo1.75-ec")) {
+> 
+> This if/else blocks concerns me a bit, but I might just be missing some
+> context.
+> 
+> This tests both ecver as well as the OF compatible string, is this reliable? Do
+> we know that for all xo1.75-ec compatible nodes the ecver will be <= 0x44? Or,
+> is ecver undefined? If the latter, then perhaps this test should be performed
+> first?
+> 
+> if (of_find_compatible_node....x01.75-ec...)
+> 	...
+> else if (ecver > 0x44)
+> 	...
+> else
+> 	...
+> 
+> And what happens when ecver == 0x44? We test for > and < but not ==, <=,
+> or >= in this block
 
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
-> 
-> There's a new driver using the SPI memory interface of the SPI framework
-> at spi/spi-fsl-qspi.c, which can be used together with m25p80.c to
-> replace the functionality of this SPI NOR driver.
-> 
-> The new driver is already in use and this code is not compiled anymore,
-> so let's remove it.
-> 
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-> Acked-by: Han Xu <han.xu@nxp.com>
-> Tested-by: Han Xu <han.xu@nxp.com>
+You're right, the conditionals are not correct. On XO 1.75 the
+versioning is different (now at level 0x05) and uninteresting,
+therefore the XO 1.75 check needs to go first.
 
-Acked-by: Boris Brezillon <bbrezillon@kernel.org>
+On XO 1 and XO 1.75, we don't support < 0x44. 0x44 is okay, though uses
+stays with an old protocol, and > 0x44 uses a new protocol.
+
+Will follow up with a new version of the patch soon.
+
+> 
+> > +		/* XO 1.75 */
+> > +		data->new_proto = 1;
+> > +		data->little_endian = 1;
+> >  	} else if (ecver < 0x44) {
+> >  		/*
+> >  		 * We've seen a number of EC protocol changes; this driver
+> > -- 
+> > 2.19.1
+
+Thanks
+Lubo

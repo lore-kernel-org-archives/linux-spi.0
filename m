@@ -1,21 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: fix potential variable assignment error" to the spi tree
-Date: Mon,  7 Jan 2019 18:59:20 +0000 (GMT)
-Message-ID: <20190107185920.562411127491@debutante.sirena.org.uk>
-References: <20181228083312.14928-1-shol@livemail.tw>
-Cc: shaftarger <shol@livemail.tw>, Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, shaftarger <shol@livemail.tw>,
+Subject: Applied "spi: lpspi: Fix wrong transmission when don't use CONT" to the spi tree
+Date: Mon,  7 Jan 2019 18:59:37 +0000 (GMT)
+Message-ID: <20190107185937.033D01127491@debutante.sirena.org.uk>
+References: <20190107074639.6336-5-xiaoning.wang@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-spi@vger.kernel.org
-To: shaftarger <sholchen@gmail.com>
+To: Clark Wang <xiaoning.wang@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181228083312.14928-1-shol@livemail.tw>
+In-Reply-To: <20190107074639.6336-5-xiaoning.wang@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: dw: fix potential variable assignment error
+   spi: lpspi: Fix wrong transmission when don't use CONT
 
 has been applied to the spi tree at
 
@@ -40,38 +41,61 @@ to this mail.
 Thanks,
 Mark
 
->From e1bc204894eae69b153eb63d9fd65414466fb639 Mon Sep 17 00:00:00 2001
-From: shaftarger <sholchen@gmail.com>
-Date: Fri, 28 Dec 2018 16:33:12 +0800
-Subject: [PATCH] spi: dw: fix potential variable assignment error
+>From 6a130448498c151d31f1fb6f3003f5cf37b829e0 Mon Sep 17 00:00:00 2001
+From: Clark Wang <xiaoning.wang@nxp.com>
+Date: Mon, 7 Jan 2019 07:47:41 +0000
+Subject: [PATCH] spi: lpspi: Fix wrong transmission when don't use CONT
 
-spi::mode is defined by framework for several SPI capabilities,
-such as polarity, phase, bit-endian, wire number. Directly use this
-variable for setting controller's polarity and phase causes other
-bit in register being set. Since SPI framework has its definition,
-SPI_CPOL and SPI_CPHA offset may be changed by framwork change.
-Instead of just mask off the relevant bits,
-fetch required bit in spi::mode and set to register.
+Add judgment on SR_MBF and FSR_RXCOUNT.
 
-Signed-off-by: shaftarger <shol@livemail.tw>
+In PIO mode, if don't use CONT to keep cs selected in one transfer, the
+transfer will go wrong. FCIE will be set after one frame transfer
+finish. If use CONT, the frame refer to the whole data in one transfer.
+If don't use CONT, the frame refer to one byte of whole data. This will
+cause the transfer ending early.
+
+This patch add a register reading in isr function, it might lead to a
+slight decrease in the max transmission speed in PIO mode.
+
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-dw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 2e822a56576a..a945fad3db62 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -317,7 +317,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	cr0 = (transfer->bits_per_word - 1)
- 		| (chip->type << SPI_FRF_OFFSET)
--		| (spi->mode << SPI_MODE_OFFSET)
-+		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
-+			(((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET))
- 		| (chip->tmode << SPI_TMOD_OFFSET);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index ba207931e209..d0b2d551cc43 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -48,6 +48,7 @@
+ #define CR_RTF		BIT(8)
+ #define CR_RST		BIT(1)
+ #define CR_MEN		BIT(0)
++#define SR_MBF		BIT(24)
+ #define SR_TCF		BIT(10)
+ #define SR_FCF		BIT(9)
+ #define SR_RDF		BIT(1)
+@@ -61,6 +62,7 @@
+ #define CFGR1_PCSPOL	BIT(8)
+ #define CFGR1_NOSTALL	BIT(3)
+ #define CFGR1_MASTER	BIT(0)
++#define FSR_RXCOUNT	(BIT(16)|BIT(17)|BIT(18))
+ #define RSR_RXEMPTY	BIT(1)
+ #define TCR_CPOL	BIT(31)
+ #define TCR_CPHA	BIT(30)
+@@ -433,6 +435,13 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 		return IRQ_HANDLED;
+ 	}
  
- 	/*
++	if (temp_SR & SR_MBF ||
++	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_RXCOUNT) {
++		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++		return IRQ_HANDLED;
++	}
++
+ 	if (temp_SR & SR_FCF && (temp_IER & IER_FCIE)) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+ 			complete(&fsl_lpspi->xfer_done);
 -- 
 2.20.1

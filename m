@@ -1,33 +1,34 @@
 From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: [PATCH v8 2/7] dt-bindings: spi: Move the bindings for the FSL QSPI
- driver
-Date: Mon, 7 Jan 2019 09:29:49 +0000
-Message-ID: <20190107092823.11188-3-frieder.schrempf@kontron.de>
+Subject: [PATCH v8 6/7] ARM64: dts: ls1046a: Remove fsl,qspi-has-second-chip
+ as it is not used
+Date: Mon, 7 Jan 2019 09:29:55 +0000
+Message-ID: <20190107092823.11188-7-frieder.schrempf@kontron.de>
 References: <20190107092823.11188-1-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
-Cc: "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
         "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
         "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
         "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
         "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>,
         "han.xu@nxp.com" <han.xu@nxp.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        Schrempf Frieder <frieder.schrempf@kontron.de>,
+        "Schrempf Frieder" <frieder.schrempf@kontron.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        "linux-kerne
 To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        "Marek Vasut" <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20190107092823.11188-1-frieder.schrempf@kontron.de>
 Content-Language: en-US
@@ -36,18 +37,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Move the documentation of the old SPI NOR driver to the place of the new
-SPI memory interface based driver.
+After switching to the new FSL QSPI driver the property
+'fsl,qspi-has-second-chip' is not needed anymore.
+
+The driver now uses the 'reg' property to determine the bus and
+the chipselect.
 
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../bindings/{mtd/fsl-quadspi.txt => spi/spi-fsl-qspi.txt}           | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-similarity index 100%
-rename from Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
-rename to Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
+index 9a2106e60e19..b2996db5903c 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
+@@ -215,7 +215,6 @@
+ 			clock-names = "qspi_en", "qspi";
+ 			clocks = <&clockgen 4 1>, <&clockgen 4 1>;
+ 			big-endian;
+-			fsl,qspi-has-second-chip;
+ 			status = "disabled";
+ 		};
+ 
 -- 
 2.17.1

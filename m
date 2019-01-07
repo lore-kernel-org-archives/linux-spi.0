@@ -1,7 +1,8 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH 0/8] spi: lpspi: Fix bugs and Add some functions support
-Date: Mon, 7 Jan 2019 07:47:32 +0000
-Message-ID: <20190107074639.6336-1-xiaoning.wang@nxp.com>
+Subject: [PATCH 5/8] spi: lpspi: Fix CLK pin becomes low before one transfer
+Date: Mon, 7 Jan 2019 07:47:43 +0000
+Message-ID: <20190107074639.6336-6-xiaoning.wang@nxp.com>
+References: <20190107074639.6336-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -10,50 +11,73 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         Clark Wang <xiaoning.wang@nxp.com>
 To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190107074639.6336-1-xiaoning.wang@nxp.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Remove Reset operation in fsl_lpspi_config(). This RST may cause both CLK
+and CS pins go from high to low level under cs-gpio mode.
+Add fsl_lpspi_reset() function after one message transfer to clear all
+flags in use.
 
-As subject, these fucntions support, including:
- - Support i.MX8 series boards;
- - Support cs-gpio fucntion;
- - Support DMA mode for both master and salve mode.
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Reviewed-by: Fugang Duan <fugang.duan@nxp.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
->From patch 3 to 6 are some bug-fix for PIO mode. In order to avoid data los=
-s
-and improve data transmission stability.
-
-These are some notes about cs-gpio and DMA:
- - cs-gpio:
-   Because LPSPI driver don't use default implementation of
-   transfer_one_message(), I do the cs-gpio control way as same as the way
-   used in spi core;
-
- - DMA:
-   Any frame length longer than half txfifosize will be sent by DMA mode.
-   For now, there are some limits:
-      1. The maximum transfer speed in master mode depends on the slave dev=
-ice,
-         at least 40MHz on i.MX8 series (tested by spi-nor on 8qm-lpddr4-ar=
-m2
-         base board);
-      2. The maximum transfer speed in slave mode is 15MHz(i.MX7ULP),
-         22MHz(i.MX8 series).
-
-Clark Wang (8):
-  spi: lpspi: Add i.MX8 boards support for lpspi
-  spi: lpspi: enable runtime pm for lpspi
-  spi: lpspi: Improve the stability of lpspi data transmission
-  spi: lpspi: Fix wrong transmission when don't use CONT
-  spi: lpspi: Fix CLK pin becomes low before one transfer
-  spi: lpspi: add the error info of transfer speed setting
-  spi: lpspi: Add cs-gpio support
-  spi: lpspi: add dma mode support
-
- drivers/spi/spi-fsl-lpspi.c | 612 ++++++++++++++++++++++++++++++++----
- 1 file changed, 552 insertions(+), 60 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 51c85cf0bd9f..84dcb9e176b8 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -281,10 +281,6 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl=
+_lpspi)
+ 	u32 temp;
+ 	int ret;
+=20
+-	temp =3D CR_RST;
+-	writel(temp, fsl_lpspi->base + IMX7ULP_CR);
+-	writel(0, fsl_lpspi->base + IMX7ULP_CR);
+-
+ 	if (!fsl_lpspi->is_slave) {
+ 		ret =3D fsl_lpspi_set_bitrate(fsl_lpspi);
+ 		if (ret)
+@@ -375,6 +371,24 @@ static int fsl_lpspi_wait_for_completion(struct spi_co=
+ntroller *controller)
+ 	return 0;
+ }
+=20
++static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
++{
++	u32 temp;
++
++	/* Disable all interrupt */
++	fsl_lpspi_intctrl(fsl_lpspi, 0);
++
++	/* W1C for all flags in SR */
++	temp =3D 0x3F << 8;
++	writel(temp, fsl_lpspi->base + IMX7ULP_SR);
++
++	/* Clear FIFO and disable module */
++	temp =3D CR_RRF | CR_RTF;
++	writel(temp, fsl_lpspi->base + IMX7ULP_CR);
++
++	return 0;
++}
++
+ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 				  struct spi_device *spi,
+ 				  struct spi_transfer *t)
+@@ -396,6 +410,8 @@ static int fsl_lpspi_transfer_one(struct spi_controller=
+ *controller,
+ 	if (ret)
+ 		return ret;
+=20
++	fsl_lpspi_reset(fsl_lpspi);
++
+ 	return 0;
+ }
+=20
 --=20
 2.17.1

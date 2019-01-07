@@ -1,97 +1,115 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: Re: [PATCH v2 17/17] power: supply: olpc_battery: Add OLPC XO 1.75
- support
-Date: Mon, 07 Jan 2019 19:02:37 +0100
-Message-ID: <d541d82647338c07fa59b0f2ef63880610733505.camel@v3.sk>
+Subject: Re: [PATCH v2 13/17] power: supply: olpc_battery: Use DT to get
+ battery version
+Date: Mon, 07 Jan 2019 19:25:52 +0100
+Message-ID: <4364d7c4dc1266ca45255cdad5ba40fb20a9bea3.camel@v3.sk>
 References: <20181116162403.49854-1-lkundrak@v3.sk>
-         <20181116162403.49854-18-lkundrak@v3.sk> <20181202233458.GE23087@wrath>
+ <20181116162403.49854-14-lkundrak@v3.sk>
+ <20181205205459.bsumxn57hjjzvqaj@earth.universe>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Cameron <quozl@laptop.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-pm@vger.kernel.org
-To: Darren Hart <dvhart@infradead.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20181202233458.GE23087@wrath>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ devel@driverdev.osuosl.org, Eric Miao <eric.y.miao@gmail.com>,
+ James Cameron <quozl@laptop.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
+ linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, Daniel Mack <daniel@zonque.org>,
+ Darren Hart <dvhart@infradead.org>, platform-driver-x86@vger.kernel.org,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Andy Shevchenko <andy@infradead.org>,
+ linux-arm-kernel@lists.infradead.org
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <20181205205459.bsumxn57hjjzvqaj@earth.universe>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 2018-12-02 at 15:34 -0800, Darren Hart wrote:
-> On Fri, Nov 16, 2018 at 05:24:03PM +0100, Lubomir Rintel wrote:
-> > The battery and the protocol are essentially the same as OLPC XO 1.5,
-> > but the responses from the EC are LSB first.
+On Wed, 2018-12-05 at 21:54 +0100, Sebastian Reichel wrote:
+> Hi,
+> 
+> On Fri, Nov 16, 2018 at 05:23:59PM +0100, Lubomir Rintel wrote:
+> > Avoid using the x86 OLPC platform specific call to get the board
+> > version. It won't work on FDT-based ARM MMP2 platform.
 > > 
 > > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > > Acked-by: Pavel Machek <pavel@ucw.cz>
 > > 
 > > ---
-> > Changes since v1:
-> > - s/s16 ecword_to_cpu/u16 ecword_to_cpu/
-> > - s/u16 ec_byte/u16 ec_word/
-> > 
-> >  drivers/power/supply/olpc_battery.c | 23 ++++++++++++++++++-----
-> >  1 file changed, 18 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/power/supply/olpc_battery.c b/drivers/power/supply/olpc_battery.c
 > 
-> ...
+> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 > 
-> > @@ -626,6 +635,10 @@ static int olpc_battery_probe(struct platform_device *pdev)
-> >  	if (ecver > 0x44) {
-> >  		/* XO 1 or 1.5 with a new EC firmware. */
-> >  		data->new_proto = 1;
-> > +	} else if (of_find_compatible_node(NULL, NULL, "olpc,xo1.75-ec")) {
-> 
-> This if/else blocks concerns me a bit, but I might just be missing some
-> context.
-> 
-> This tests both ecver as well as the OF compatible string, is this reliable? Do
-> we know that for all xo1.75-ec compatible nodes the ecver will be <= 0x44? Or,
-> is ecver undefined? If the latter, then perhaps this test should be performed
-> first?
-> 
-> if (of_find_compatible_node....x01.75-ec...)
-> 	...
-> else if (ecver > 0x44)
-> 	...
-> else
-> 	...
-> 
-> And what happens when ecver == 0x44? We test for > and < but not ==, <=,
-> or >= in this block
+> I assume this patch cannot be applied to power-supply without patch
+> 12 having been merged to avoid breaking XO1.5 devices temporarily?
 
-You're right, the conditionals are not correct. On XO 1.75 the
-versioning is different (now at level 0x05) and uninteresting,
-therefore the XO 1.75 check needs to go first.
-
-On XO 1 and XO 1.75, we don't support < 0x44. 0x44 is okay, though uses
-stays with an old protocol, and > 0x44 uses a new protocol.
-
-Will follow up with a new version of the patch soon.
-
-> 
-> > +		/* XO 1.75 */
-> > +		data->new_proto = 1;
-> > +		data->little_endian = 1;
-> >  	} else if (ecver < 0x44) {
-> >  		/*
-> >  		 * We've seen a number of EC protocol changes; this driver
-> > -- 
-> > 2.19.1
+That is true. What's the correct way to deal with a situation like
+this? Just hold the patch until the other changes get in, perhaps via
+linux-platform-drivers-x86.git? Or maybe this can go in together via
+that tree along with the other patches?
 
 Thanks
 Lubo
+
+> -- Sebastian
+> 
+> > Changes since v1:
+> > - Sort the new include a bit higher
+> > 
+> >  drivers/power/supply/olpc_battery.c | 10 +++++++---
+> >  1 file changed, 7 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/power/supply/olpc_battery.c
+> > b/drivers/power/supply/olpc_battery.c
+> > index 5a97e42a3547..5323987d9284 100644
+> > --- a/drivers/power/supply/olpc_battery.c
+> > +++ b/drivers/power/supply/olpc_battery.c
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/types.h>
+> >  #include <linux/err.h>
+> >  #include <linux/device.h>
+> > +#include <linux/of.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/power_supply.h>
+> >  #include <linux/jiffies.h>
+> > @@ -622,11 +623,13 @@ static int olpc_battery_probe(struct
+> > platform_device *pdev)
+> >  	olpc_ac = power_supply_register(&pdev->dev, &olpc_ac_desc,
+> > NULL);
+> >  	if (IS_ERR(olpc_ac))
+> >  		return PTR_ERR(olpc_ac);
+> > -
+> > -	if (olpc_board_at_least(olpc_board_pre(0xd0))) { /* XO-1.5 */
+> > +	if (of_property_match_string(pdev->dev.of_node, "compatible",
+> > +					"olpc,xo1.5-battery") >= 0) {
+> > +		/* XO-1.5 */
+> >  		olpc_bat_desc.properties = olpc_xo15_bat_props;
+> >  		olpc_bat_desc.num_properties =
+> > ARRAY_SIZE(olpc_xo15_bat_props);
+> > -	} else { /* XO-1 */
+> > +	} else {
+> > +		/* XO-1 */
+> >  		olpc_bat_desc.properties = olpc_xo1_bat_props;
+> >  		olpc_bat_desc.num_properties =
+> > ARRAY_SIZE(olpc_xo1_bat_props);
+> >  	}
+> > @@ -672,6 +675,7 @@ static int olpc_battery_remove(struct
+> > platform_device *pdev)
+> >  
+> >  static const struct of_device_id olpc_battery_ids[] = {
+> >  	{ .compatible = "olpc,xo1-battery" },
+> > +	{ .compatible = "olpc,xo1.5-battery" },
+> >  	{}
+> >  };
+> >  MODULE_DEVICE_TABLE(of, olpc_battery_ids);
+> > -- 
+> > 2.19.1
+> > 

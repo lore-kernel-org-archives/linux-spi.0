@@ -1,26 +1,35 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: switch to SPDX identifier" to the spi tree
-Date: Mon,  7 Jan 2019 18:59:18 +0000 (GMT)
-Message-ID: <20190107185918.7ACEA1127491@debutante.sirena.org.uk>
-References: <1545688840-23992-2-git-send-email-cezary.gapinski@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org
+Subject: Applied "spi: stm32: use explicit CPOL and CPHA mode bits" to the spi
+ tree
+Date: Mon,  7 Jan 2019 18:59:11 +0000 (GMT)
+Message-ID: <20190107185911.12A251127491@debutante.sirena.org.uk>
+References: <1545688840-23992-6-git-send-email-cezary.gapinski@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Amelie Delaunay <amelie.delaunay@st.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, Mark Brown <broonie@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 To: Cezary Gapinski <cezary.gapinski@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1545688840-23992-2-git-send-email-cezary.gapinski@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1545688840-23992-6-git-send-email-cezary.gapinski@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: switch to SPDX identifier
+   spi: stm32: use explicit CPOL and CPHA mode bits
 
 has been applied to the spi tree at
 
@@ -45,54 +54,33 @@ to this mail.
 Thanks,
 Mark
 
->From d57a984ff7aa1f8aac617c5ccfcd4cca061d2eb3 Mon Sep 17 00:00:00 2001
+>From d6cea11b092a2c28ecf8371c093214cbb112e926 Mon Sep 17 00:00:00 2001
 From: Cezary Gapinski <cezary.gapinski@gmail.com>
-Date: Mon, 24 Dec 2018 23:00:27 +0100
-Subject: [PATCH] spi: stm32: switch to SPDX identifier
+Date: Mon, 24 Dec 2018 23:00:31 +0100
+Subject: [PATCH] spi: stm32: use explicit CPOL and CPHA mode bits
 
-Adopt the SPDX license identifier headers to ease license compliance
-management.
+Driver supports SPI mode 0 to 3 not only the mode 3.
+Use SPI_CPOL and SPI_CPHA indicates that these bits
+can be changed to obtain modes 0 - 3.
 
 Signed-off-by: Cezary Gapinski <cezary.gapinski@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index ad1e55d3d5d5..5f30578a4224 100644
+index 8310f14fe273..f7056b767477 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -1,23 +1,10 @@
--/*
-- * STMicroelectronics STM32 SPI Controller driver (master mode only)
-- *
-- * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
-- * Author(s): Amelie Delaunay <amelie.delaunay@st.com> for STMicroelectronics.
-- *
-- * License terms: GPL V2.0.
-- *
-- * spi_stm32 driver is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License version 2 as published by
-- * the Free Software Foundation.
-- *
-- * spi_stm32 driver is distributed in the hope that it will be useful, but
-- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License along with
-- * spi_stm32 driver. If not, see <http://www.gnu.org/licenses/>.
-- */
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// STMicroelectronics STM32 SPI Controller driver (master mode only)
-+//
-+// Copyright (C) 2017, STMicroelectronics - All Rights Reserved
-+// Author(s): Amelie Delaunay <amelie.delaunay@st.com> for STMicroelectronics.
-+
- #include <linux/debugfs.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
+@@ -1142,7 +1142,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->auto_runtime_pm = true;
+ 	master->bus_num = pdev->id;
+-	master->mode_bits = SPI_MODE_3 | SPI_CS_HIGH | SPI_LSB_FIRST |
++	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
+ 			    SPI_3WIRE | SPI_LOOP;
+ 	master->bits_per_word_mask = stm32_spi_get_bpw_mask(spi);
+ 	master->max_speed_hz = spi->clk_rate / SPI_MBR_DIV_MIN;
 -- 
 2.20.1

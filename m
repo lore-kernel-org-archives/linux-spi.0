@@ -1,182 +1,233 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v4 1/2] spi: Add Renesas R-Car Gen3 RPC SPI controller
- driver
-Date: Fri, 4 Jan 2019 16:42:41 +0300
-Message-ID: <710badb0-c4db-a44b-dba1-01faf2f51a9d@cogentembedded.com>
-References: <1545634358-17485-1-git-send-email-masonccyang@mxic.com.tw>
- <1545634358-17485-2-git-send-email-masonccyang@mxic.com.tw>
- <12cb2574-8ec9-d756-756a-d7fbbd5c7069@cogentembedded.com>
- <OFC561D699.9746ACDB-ON4825836F.000CB709-4825836F.00184155@mxic.com.tw>
- <0f21cd94-08ad-befa-649e-ba191b0e33bc@cogentembedded.com>
- <OFE79BC6CE.BE217C13-ON48258377.001FBC09-48258377.00243859@mxic.com.tw>
+From: Clark Wang <xiaoning.wang@nxp.com>
+Subject: [PATCH 2/8] spi: lpspi: enable runtime pm for lpspi
+Date: Mon, 7 Jan 2019 07:47:36 +0000
+Message-ID: <20190107074639.6336-3-xiaoning.wang@nxp.com>
+References: <20190107074639.6336-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFE79BC6CE.BE217C13-ON48258377.001FBC09-48258377.00243859@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190107074639.6336-1-xiaoning.wang@nxp.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+	From: Han Xu <han.xu@nxp.com>
 
-On 01/03/2019 09:35 AM, masonccyang@mxic.com.tw wrote:
+	Enable the runtime power management for lpspi module.
 
-[...]
->> >> > +#define RPC_CMNCR_MOIIO3(val)   (((val) & 0x3) << 22)
->> >> > +#define RPC_CMNCR_MOIIO2(val)   (((val) & 0x3) << 20)
->> >> > +#define RPC_CMNCR_MOIIO1(val)   (((val) & 0x3) << 18)
->> >> > +#define RPC_CMNCR_MOIIO0(val)   (((val) & 0x3) << 16)
->> >> > +#define RPC_CMNCR_MOIIO_HIZ   (RPC_CMNCR_MOIIO0(3) |
->> >> RPC_CMNCR_MOIIO1(3) | \
->> >> > +             RPC_CMNCR_MOIIO2(3) | RPC_CMNCR_MOIIO3(3))
->> >> > +#define RPC_CMNCR_IO3FV(val)   (((val) & 0x3) << 14)
->> >> > +#define RPC_CMNCR_IO2FV(val)   (((val) & 0x3) << 12)
->> >>
->> >>    Like I said, the above 2 aren't documented in the manual v1.00...
->> >
->> > okay, add a description as:
->> > /* RPC_CMNCR_IO3FV/IO2FV are undocumented bit, but must be set */
->> > #define RPC_CMNCR_IO3FV(val)    (((val) & 0x3) << 14)
->> > #define RPC_CMNCR_IO2FV(val)    (((val) & 0x3) << 12)
->> > #define RPC_CMNCR_IO0FV(val)    (((val) & 0x3) << 8)
->> > #define RPC_CMNCR_IOFV_HIZ      (RPC_CMNCR_IO0FV(3) | RPC_CMNCR_IO2FV(3) | \
->> >                                   RPC_CMNCR_IO3FV(3))
->> >
->> > is it ok?
->>
->>    Yes. But would have been enough if you just commented with // on
->> the same line --
->> it seems these are legal now...
-> 
-> on the same line is over 80 char,
-> #define RPC_CMNCR_IO3FV(val)    (((val) & 0x3) << 14) // undocumented bit, but must be set
-> #define RPC_CMNCR_IO2FV(val)    (((val) & 0x3) << 12) // undocumented bit, but must be set
-> 
-> or just
-> #define RPC_CMNCR_IO3FV(val)    (((val) & 0x3) << 14) // undocumented bit
-> #define RPC_CMNCR_IO2FV(val)    (((val) & 0x3) << 12) // undocumented bit
-> is it ok ?
+Do some adaptation work from kernel 4.9 to 4.14.
 
-   The second variant would be enough.
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Reviewed-by: Frank Li <frank.li@nxp.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 117 ++++++++++++++++++++++++++++--------
+ 1 file changed, 92 insertions(+), 25 deletions(-)
 
-[...]
-
->> >> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
->> >> > +   if (ret)
->> >> > +      return ret;
->> >> > +
->> >> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
->> >> > +                &desc->info.op_tmpl, &offs, &len);
->> >> > +
->> >> > +   regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_SFDE |
->> >> > +           RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
->> >> > +           RPC_CMNCR_BSZ(0));
->> >>
->> >>    Why not set this in the probing time and only set/clear the MD bit?
->> >>
->> >
->> > same above!
->> > Make sure the value in these register are setting correctly
->> > before RPC starting a SPI transfer.
->>
->>    You can set it once and only change the bits you need to change afterwards.
->> What's wrong with it?
->>
-> 
-> if so, it will patch to:
-> ------------------------------------------------------
-> regmap_read(rpc->regmap, RPC_CMNCR, &data);
-> data &= ~RPC_CMNCR_MD;
-> regmap_write(rpc->regmap, RPC_CMNCR, data);
-> ------------------------------------------------------
-> Do you think this way is better ?
-
-    No, this one is better:
-
-	regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD, 0);
-
-> maybe this is better,
-> write(read(rpc->regs + RPC_CMNCR) & ~RPC_CMNCR_MD,
->         rpc->regs + RPC_CMNCR);
-
-   It's effectively the same code as your 1st variant...
- 
-[...]
->> >> > +static void rpc_spi_transfer_setup(struct rpc_spi *rpc,
->> >> > +               struct spi_message *msg)
->> >> > +{
->> >> [...]
->> >> > +   for (i = xfercnt - 1; i < xfercnt && xfercnt > 1; i++) {
->> >> > +      if (xfer[i].rx_buf) {
->> >> > +         rpc->smenr |=
->> >> > +            RPC_SMENR_SPIDE(rpc_bits_set(xfer[i].len)) |
->> >> > +            RPC_SMENR_SPIDB
->> >> > +            (ilog2((unsigned int)xfer[i].rx_nbits));
->> >>
->> >>    Mhm, I would indent this contination line by 1 extra tab...
->> >>
->> >> > +      } else if (xfer[i].tx_buf) {
->> >> > +         rpc->smenr |=
->> >> > +            RPC_SMENR_SPIDE(rpc_bits_set(xfer[i].len)) |
->> >> > +            RPC_SMENR_SPIDB
->> >> > +            (ilog2((unsigned int)xfer[i].tx_nbits));
->> >>
->> >>    And this one...
->> >
->> > like this ?
->> > --------------------------------------------------------------------
->> >          for (i = xfercnt - 1; i < xfercnt && xfercnt > 1; i++) {
->> >                  if (xfer[i].rx_buf) {
->> >                          rpc->smenr |=
->> >                                  RPC_SMENR_SPIDE(rpc_bits_set(xfer
->> [i].len)) |
->> >                                  RPC_SMENR_SPIDB(
->> >                                          ilog2((unsigned int)xfer
->> [i].rx_nbits));
->> >                  } else if (xfer[i].tx_buf) {
->> >                          rpc->smenr |=
->> >                                  RPC_SMENR_SPIDE(rpc_bits_set(xfer
->> [i].len)) |
->> >                                  RPC_SMENR_SPIDB(
->> >                                          ilog2((unsigned int)xfer
->> [i].tx_nbits));
->>
->>    I didn't mean you need to leave ( on the first line, can be left
->> on the  new
->> line, as before.
->>
-> 
-> how about this style ?
-> -------------------------------------------------------------------------------------
->          for (i = xfercnt - 1; i < xfercnt && xfercnt > 1; i++) {
->                  if (xfer[i].rx_buf) {
->                          rpc->smenr |= RPC_SMENR_SPIDE(
->                                          rpc_bits_set(xfer[i].len)) |
->                                        RPC_SMENR_SPIDB(
->                                          ilog2((unsigned int)xfer[i].rx_nbits));
->                  } else if (xfer[i].tx_buf) {
->                          rpc->smenr |= RPC_SMENR_SPIDE(
->                                          rpc_bits_set(xfer[i].len)) |
->                                        RPC_SMENR_SPIDB(
->                                          ilog2((unsigned int)xfer[i].tx_nbits));
->                  }
->          }
-
-   Looks even worse...
-
-> ------------------------------------------------------------------------------------------
-> 
-> best regards,
-> Mason
-
-[...]
-
-MBR, Sergei
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 5802f188051b..3e935db5ff02 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -16,7 +16,9 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+@@ -24,6 +26,8 @@
+=20
+ #define DRIVER_NAME "fsl_lpspi"
+=20
++#define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
++
+ /* i.MX7ULP LPSPI registers */
+ #define IMX7ULP_VERID	0x0
+ #define IMX7ULP_PARAM	0x4
+@@ -150,13 +154,9 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
+roller *controller)
+ 				spi_controller_get_devdata(controller);
+ 	int ret;
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
+-	if (ret)
+-		return ret;
+-
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+-	if (ret) {
+-		clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
++	if (ret < 0) {
++		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
+ 		return ret;
+ 	}
+=20
+@@ -168,8 +168,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
+troller *controller)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+-	clk_disable_unprepare(fsl_lpspi->clk_per);
++	pm_runtime_mark_last_busy(fsl_lpspi->dev);
++	pm_runtime_put_autosuspend(fsl_lpspi->dev);
+=20
+ 	return 0;
+ }
+@@ -476,6 +476,45 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id=
+)
+ 	return IRQ_NONE;
+ }
+=20
++int fsl_lpspi_runtime_resume(struct device *dev)
++{
++	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
++	int ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
++	if (ret)
++		return ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret) {
++		clk_disable_unprepare(fsl_lpspi->clk_per);
++		return ret;
++	}
++
++	return 0;
++}
++
++int fsl_lpspi_runtime_suspend(struct device *dev)
++{
++	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
++
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++
++	return 0;
++}
++
++static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
++{
++	struct device *dev =3D fsl_lpspi->dev;
++
++	pm_runtime_enable(dev);
++	pm_runtime_set_autosuspend_delay(dev, FSL_LPSPI_RPM_TIMEOUT);
++	pm_runtime_use_autosuspend(dev);
++
++	return 0;
++}
++
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi;
+@@ -501,6 +540,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
+)
+=20
+ 	fsl_lpspi =3D spi_controller_get_devdata(controller);
+ 	fsl_lpspi->dev =3D &pdev->dev;
++	dev_set_drvdata(&pdev->dev, fsl_lpspi);
+ 	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
+ 						    "spi-slave");
+=20
+@@ -547,28 +587,21 @@ static int fsl_lpspi_probe(struct platform_device *pd=
+ev)
+ 		goto out_controller_put;
+ 	}
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
+-	if (ret) {
+-		dev_err(&pdev->dev,
+-			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
++	/* enable the clock */
++	ret =3D fsl_lpspi_init_rpm(fsl_lpspi);
++	if (ret)
+ 		goto out_controller_put;
+-	}
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+-	if (ret) {
+-		dev_err(&pdev->dev,
+-			"can't enable lpspi per clock, ret=3D%d\n", ret);
+-		clk_disable_unprepare(fsl_lpspi->clk_ipg);
+-		goto out_controller_put;
++	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
++	if (ret < 0) {
++		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
++		return ret;
+ 	}
+=20
+ 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
+ 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk_per);
+-	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+-
+ 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_controller error.\n");
+@@ -589,16 +622,50 @@ static int fsl_lpspi_remove(struct platform_device *p=
+dev)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk_per);
+-	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	pm_runtime_disable(fsl_lpspi->dev);
++
++	spi_master_put(controller);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM_SLEEP
++static int fsl_lpspi_suspend(struct device *dev)
++{
++	int ret;
++
++	pinctrl_pm_select_sleep_state(dev);
++	ret =3D pm_runtime_force_suspend(dev);
++	return ret;
++}
++
++static int fsl_lpspi_resume(struct device *dev)
++{
++	int ret;
++
++	ret =3D pm_runtime_force_resume(dev);
++	if (ret) {
++		dev_err(dev, "Error in resume: %d\n", ret);
++		return ret;
++	}
++
++	pinctrl_pm_select_default_state(dev);
+=20
+ 	return 0;
+ }
++#endif /* CONFIG_PM_SLEEP */
++
++static const struct dev_pm_ops fsl_lpspi_pm_ops =3D {
++	SET_RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
++				fsl_lpspi_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(fsl_lpspi_suspend, fsl_lpspi_resume)
++};
+=20
+ static struct platform_driver fsl_lpspi_driver =3D {
+ 	.driver =3D {
+ 		.name =3D DRIVER_NAME,
+ 		.of_match_table =3D fsl_lpspi_dt_ids,
++		.pm =3D &fsl_lpspi_pm_ops,
+ 	},
+ 	.probe =3D fsl_lpspi_probe,
+ 	.remove =3D fsl_lpspi_remove,
+--=20
+2.17.1

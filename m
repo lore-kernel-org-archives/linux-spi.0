@@ -1,7 +1,7 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v6 3/5] arm64: dts: lx2160a: add FlexSPI node property
-Date: Tue, 8 Jan 2019 09:24:54 +0000
-Message-ID: <1546939346-20181-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v6 4/5] arm64: defconfig: enable NXP FlexSPI driver
+Date: Tue, 8 Jan 2019 09:25:01 +0000
+Message-ID: <1546939346-20181-5-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1546939346-20181-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -27,86 +27,24 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add fspi node property for LX2160A SoC for FlexSPI driver.
-Property added for the FlexSPI controller and for the connected
-slave device for the LX2160ARDB target.
-This is having two SPI-NOR flash device, mt35xu512aba, connected
-at CS0 and CS1.
+Enable driver support of NXP FlexSPI controller.
 
 Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 ---
-Changes for v6:
-- None
-Changes for v5:
-- None
-Changes for v4:
-- Incorporated Rob review comments.
-Changes for v3:
-- None.
-Changes for v2:
-- Incorporated Shawn review comments.
----
- .../boot/dts/freescale/fsl-lx2160a-rdb.dts    | 22 +++++++++++++++++++
- .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 13 +++++++++++
- 2 files changed, 35 insertions(+)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts b/arch/arm64=
-/boot/dts/freescale/fsl-lx2160a-rdb.dts
-index 6481e5f20e69..70658946fbbe 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-@@ -50,6 +50,28 @@
- 	status =3D "okay";
- };
-=20
-+&fspi {
-+	status =3D "okay";
-+
-+	mt35xu512aba0: flash@0 {
-+		#address-cells =3D <1>;
-+		#size-cells =3D <1>;
-+		compatible =3D "spansion,m25p80";
-+		m25p,fast-read;
-+		spi-max-frequency =3D <50000000>;
-+		reg =3D <0>;
-+	};
-+
-+	mt35xu512aba1: flash@1 {
-+		#address-cells =3D <1>;
-+		#size-cells =3D <1>;
-+		compatible =3D "spansion,m25p80";
-+		m25p,fast-read;
-+		spi-max-frequency =3D <50000000>;
-+		reg =3D <1>;
-+	};
-+};
-+
- &i2c0 {
- 	status =3D "okay";
-=20
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/bo=
-ot/dts/freescale/fsl-lx2160a.dtsi
-index a79f5c1ea56d..e3ff86201f73 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -762,5 +762,18 @@
- 				     <GIC_SPI 209 IRQ_TYPE_LEVEL_HIGH>;
- 			dma-coherent;
- 		};
-+
-+		fspi: spi@20c0000 {
-+			compatible =3D "nxp,lx2160a-fspi";
-+			#address-cells =3D <1>;
-+			#size-cells =3D <0>;
-+			reg =3D <0x0 0x20c0000 0x0 0x10000>,
-+				<0x0 0x20000000 0x0 0x10000000>;
-+			reg-names =3D "fspi_base", "fspi_mmap";
-+			interrupts =3D <0 25 0x4>; /* Level high type */
-+			clocks =3D <&clockgen 4 3>, <&clockgen 4 3>;
-+			clock-names =3D "fspi_en", "fspi";
-+			status =3D "disabled";
-+		};
- 	};
- };
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 3ef443cfbab6..fe7f35824a79 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -362,6 +362,7 @@ CONFIG_SPI_ROCKCHIP=3Dy
+ CONFIG_SPI_QUP=3Dy
+ CONFIG_SPI_S3C64XX=3Dy
+ CONFIG_SPI_SPIDEV=3Dm
++CONFIG_SPI_NXP_FLEXSPI=3Dy
+ CONFIG_SPMI=3Dy
+ CONFIG_PINCTRL_SINGLE=3Dy
+ CONFIG_PINCTRL_MAX77620=3Dy
 --=20
 2.17.1

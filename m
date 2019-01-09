@@ -1,89 +1,150 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
+From: Lukasz Majewski <lukma@denx.de>
 Subject: Re: [PATCH v6 0/5] spi: spi-mem: Add driver for NXP FlexSPI
  controller
-Date: Wed, 9 Jan 2019 14:19:08 +0000
-Message-ID: <7188c406-3dd2-88a6-b6ed-d5e8bf678df8@kontron.de>
+Date: Wed, 9 Jan 2019 15:56:30 +0100
+Message-ID: <20190109155630.3ec34c60@jawa>
 References: <1546939346-20181-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+        <7188c406-3dd2-88a6-b6ed-d5e8bf678df8@kontron.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/qfV7IP6UbfJ_zClhLB+efu+"; protocol="application/pgp-signature"
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
         "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Schrempf Frieder <frieder.schrempf@kontron.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1546939346-20181-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
-Content-ID: <D484D617F02B3D468BA088497AB4F7A5@snt-world.com>
+In-Reply-To: <7188c406-3dd2-88a6-b6ed-d5e8bf678df8@kontron.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMDguMDEuMTkgMTA6MjQsIFlvZ2VzaCBOYXJheWFuIEdhdXIgd3JvdGU6DQo+IC0gQWRkIGRy
-aXZlciBmb3IgTlhQIEZsZXhTUEkgaG9zdCBjb250cm9sbGVyDQo+IA0KPiAgIEZsZXhTUEkgaXMg
-YSBmbGV4c2libGUgU1BJIGhvc3QgY29udHJvbGxlciBbMV0sIENoYXB0ZXIgMzAgcGFnZSAxNDc1
-LA0KPiAgIHdoaWNoIHN1cHBvcnRzIHR3byBTUEkgY2hhbm5lbHMgYW5kIHVwIHRvIDQgZXh0ZXJu
-YWwgZGV2aWNlcy4NCj4gICBFYWNoIGNoYW5uZWwgc3VwcG9ydHMgU2luZ2xlL0R1YWwvUXVhZC9P
-Y3RhbCBtb2RlIGRhdGEgdHJhbnNmZXIgKDEvMi80LzggYmlkaXJlY3Rpb25hbCBkYXRhIGxpbmVz
-KQ0KPiAgIGkuZS4gRmxleFNQSSBhY3RzIGFzIGFuIGludGVyZmFjZSB0byBleHRlcm5hbCBkZXZp
-Y2VzLCBtYXhpbXVtIDQsIGVhY2ggd2l0aCB1cCB0byA4DQo+ICAgYmlkaXJlY3Rpb25hbCBkYXRh
-IGxpbmVzLg0KPiANCj4gLSBUZXN0ZWQgdGhpcyBkcml2ZXIgd2l0aCBtdGRfZGVidWcoRXJhc2Uv
-V3JpdGUvUmVhZCkgdXRpbGl0eSBhbmQgSkZGUzINCj4gICBmaWxlc3lzdGVtIG1vdW50aW5nIGFu
-ZCBib290aW5nIG9uIE5YUCBMWDIxNjBBUkRCWzJdIGFuZCBMWDIxNjBBUURTIHRhcmdldHMuDQo+
-ICAgTFgyMTYwQVJEQiBpcyBoYXZpbmcgdHdvIE5PUiBzbGF2ZSBkZXZpY2UgY29ubmVjdGVkIG9u
-IHNpbmdsZSBidXMgQQ0KPiAgIGkuZS4gQTAgYW5kIEExIChDUzAgYW5kIENTMSkuDQo+ICAgTFgy
-MTYwQVFEUyBpcyBoYXZpbmcgdHdvIE5PUiBzbGF2ZSBkZXZpY2UgY29ubmVjdGVkIG9uIHNlcGFy
-YXRlIGJ1c2VzDQo+ICAgb25lIGZsYXNoIG9uIEEwIGFuZCBzZWNvbmQgb24gQjEgaS5lLiAoQ1Mw
-IGFuZCBDUzMpLg0KPiAgIFZlcmlmaWVkIHRoaXMgZHJpdmVyIG9uIGZvbGxvd2luZyBTUEkgTk9S
-IGZsYXNoZXM6DQo+ICAgICBNaWNyb24sIG10MzV4dTUxMmFiYSwgW1JlYWQgLSAxIGJpdCBtb2Rl
-XQ0KPiAgICAgQ3lwcmVzcywgczI1Zmw1MTJzLCBbUmVhZCAtIDEvMi80IGJpdCBtb2RlXQ0KPiAN
-Cj4gWzFdIGh0dHBzOi8vd3d3Lm54cC5jb20vZG9jcy9lbi9yZWZlcmVuY2UtbWFudWFsL0lNWFJU
-MTA1MFJNLnBkZg0KPiBbMl0gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xp
-bnV4LWFybS1rZXJuZWwvbGlzdC8/c3VibWl0dGVyPTE4MjA5Nw0KPiANCj4gWW9nZXNoIE5hcmF5
-YW4gR2F1ciAoNSk6DQo+ICAgIHNwaTogc3BpLW1lbTogQWRkIGRyaXZlciBmb3IgTlhQIEZsZXhT
-UEkgY29udHJvbGxlcg0KPiAgICBkdC1iaW5kaW5nczogc3BpOiBhZGQgYmluZGluZyBmaWxlIGZv
-ciBOWFAgRmxleFNQSSBjb250cm9sbGVyDQo+ICAgIGFybTY0OiBkdHM6IGx4MjE2MGE6IGFkZCBG
-bGV4U1BJIG5vZGUgcHJvcGVydHkNCj4gICAgYXJtNjQ6IGRlZmNvbmZpZzogZW5hYmxlIE5YUCBG
-bGV4U1BJIGRyaXZlcg0KPiAgICBNQUlOVEFJTkVSUzogYWRkIG1haW50YWluZXJzIGZvciB0aGUg
-TlhQIEZsZXhTUEkgZHJpdmVyDQo+IA0KPiBDaGFuZ2VzIGZvciB2NjoNCj4gLSBSZWJhc2Ugb24g
-dG9wIG9mIHY1LjAtcmMxLg0KDQpZb3VyIHBhdGNoZXMgZG9uJ3QgYXBwbHkgdG8gdjUuMC1yYzEu
-IEl0IHNlZW1zIGxpa2UgeW91IGhhdmUgaW5zdGVhZCANCnJlYmFzZWQgb250byB0aGUgZm9yLTUu
-MSBvciBmb3ItbmV4dCBicmFuY2ggb2YgdGhlIFNQSSB0cmVlLiBJIGd1ZXNzIA0KdGhpcyBpcyBv
-a2F5LCBidXQgeW91IHNob3VsZCBoYXZlIHBvaW50ZWQgdGhhdCBvdXQgY29ycmVjdGx5IGhlcmUu
-DQoNCj4gLSBJbmNvcnBvcmF0ZWQgcmV2aWV3IGNvbW1lbnRzIGZvcg0KPiAgICBwYXRjaCAnc3Bp
-OiBzcGktbWVtOiBBZGQgZHJpdmVyIGZvciBOWFAgRmxleFNQSSBjb250cm9sbGVyJy4NCj4gLSBV
-cGRhdGVkIHMtYiB0YWcgaW4gYWxsIHBhdGNoZXMuDQo+IENoYW5nZXMgZm9yIHY1Og0KPiAtIFJl
-YmFzZSBvbiB0b3Agb2YgdjQuMjAtcmMyDQo+IC0gSW5jb3Jwb3JhdGVkIHJldmlldyBjb21tZW50
-cyBmb3INCj4gICAgcGF0Y2ggJ3NwaTogc3BpLW1lbTogQWRkIGRyaXZlciBmb3IgTlhQIEZsZXhT
-UEkgY29udHJvbGxlcicuDQo+IENoYW5nZXMgZm9yIHY0Og0KPiAtIEluY29ycG9yYXRlZCByZXZp
-ZXcgY29tbWVudHMgZm9yDQo+ICAgIHBhdGNoICdzcGk6IHNwaS1tZW06IEFkZCBkcml2ZXIgZm9y
-IE5YUCBGbGV4U1BJIGNvbnRyb2xsZXInLg0KPiAtIEluY29ycG9yYXRlZCBiaW5kaW5nIGZpbGUg
-cmV2aWV3IGNvbW1lbnRzLg0KPiBDaGFuZ2VzIGZvciB2MzoNCj4gLSBJbmNvcnBvcmF0ZWQgcmV2
-aWV3IGNvbW1lbnRzIGZvcg0KPiAgICBwYXRjaCAnc3BpOiBzcGktbWVtOiBBZGQgZHJpdmVyIGZv
-ciBOWFAgRmxleFNQSSBjb250cm9sbGVyJy4NCj4gQ2hhbmdlcyBmb3IgdjI6DQo+IC0gSW5jb3Jw
-b3JhdGVkIEJvcmlzIHJldmlldyBjb21tZW50cyBhbmQgZHJvcCBiZWxvdyBwYXRjaGVzIGFzIHBl
-ciB0aGUgY29tbWVudHMuDQo+ICAgLSBQYXRjaCAnc3BpOiBhZGQgc2xhdmUgZGV2aWNlIHNpemUg
-aW4gc3BpX2RldmljZSBzdHJ1Y3QnDQo+ICAgLSBQYXRjaCAnc3BpOiBhZGQgZmxhZ3MgZm9yIG9j
-dGFsIEkvTyBkYXRhIHRyYW5zZmVyJw0KPiAtIEluY29ycG9yYXRlZCBEVFMgYW5kIEJpbmRpbmcg
-ZmlsZSByZXZpZXcgY29tbWVudHMgb2YgU2hhd24gR3VvIGFuZCBSb2IgSGVycmluZy4NCj4gDQo+
-ICAgLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1ueHAtZnNwaS50eHQgIHwgICAzOSAr
-DQo+ICAgTUFJTlRBSU5FUlMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-NyArDQo+ICAgLi4uL2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHgyMTYwYS1yZGIuZHRzICAgIHwg
-ICAyMiArDQo+ICAgLi4uL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9mc2wtbHgyMTYwYS5kdHNp
-IHwgICAxMyArDQo+ICAgYXJjaC9hcm02NC9jb25maWdzL2RlZmNvbmZpZyAgICAgICAgICAgICAg
-ICAgIHwgICAgMSArDQo+ICAgZHJpdmVycy9zcGkvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAxMCArDQo+ICAgZHJpdmVycy9zcGkvTWFrZWZpbGUgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICAgMSArDQo+ICAgZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLmMgICAgICAg
-ICAgICAgICAgICAgIHwgMTA5NSArKysrKysrKysrKysrKysrKw0KPiAgIDggZmlsZXMgY2hhbmdl
-ZCwgMTE4OCBpbnNlcnRpb25zKCspDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRp
-b24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLW54cC1mc3BpLnR4dA0KPiAgIGNyZWF0ZSBt
-b2RlIDEwMDY0NCBkcml2ZXJzL3NwaS9zcGktbnhwLWZzcGkuYw0KPiA=
+--Sig_/qfV7IP6UbfJ_zClhLB+efu+
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Schrempf,
+
+> On 08.01.19 10:24, Yogesh Narayan Gaur wrote:
+> > - Add driver for NXP FlexSPI host controller
+> >=20
+> >   FlexSPI is a flexsible SPI host controller [1], Chapter 30 page
+> > 1475, which supports two SPI channels and up to 4 external devices.
+> >   Each channel supports Single/Dual/Quad/Octal mode data transfer
+> > (1/2/4/8 bidirectional data lines) i.e. FlexSPI acts as an
+> > interface to external devices, maximum 4, each with up to 8
+> > bidirectional data lines.
+> >=20
+> > - Tested this driver with mtd_debug(Erase/Write/Read) utility and
+> > JFFS2 filesystem mounting and booting on NXP LX2160ARDB[2] and
+> > LX2160AQDS targets. LX2160ARDB is having two NOR slave device
+> > connected on single bus A i.e. A0 and A1 (CS0 and CS1).
+> >   LX2160AQDS is having two NOR slave device connected on separate
+> > buses one flash on A0 and second on B1 i.e. (CS0 and CS3).
+> >   Verified this driver on following SPI NOR flashes:
+> >     Micron, mt35xu512aba, [Read - 1 bit mode]
+> >     Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+> >=20
+> > [1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
+> > [2]
+> > https://patchwork.kernel.org/project/linux-arm-kernel/list/?submitter=
+=3D182097
+> >=20
+> > Yogesh Narayan Gaur (5):
+> >    spi: spi-mem: Add driver for NXP FlexSPI controller
+> >    dt-bindings: spi: add binding file for NXP FlexSPI controller
+> >    arm64: dts: lx2160a: add FlexSPI node property
+> >    arm64: defconfig: enable NXP FlexSPI driver
+> >    MAINTAINERS: add maintainers for the NXP FlexSPI driver
+> >=20
+> > Changes for v6:
+> > - Rebase on top of v5.0-rc1. =20
+>=20
+> Your patches don't apply to v5.0-rc1. It seems like you have instead=20
+> rebased onto the for-5.1 or for-next branch of the SPI tree. I guess=20
+> this is okay, but you should have pointed that out correctly here.
+
+If I may ask for a few (1-2) days, so I can test this code on vf610 NXP
+SoC.
+
+As fair as I remember there were some issues when I tested it a few
+months back.
+
+>=20
+> > - Incorporated review comments for
+> >    patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> > - Updated s-b tag in all patches.
+> > Changes for v5:
+> > - Rebase on top of v4.20-rc2
+> > - Incorporated review comments for
+> >    patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> > Changes for v4:
+> > - Incorporated review comments for
+> >    patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> > - Incorporated binding file review comments.
+> > Changes for v3:
+> > - Incorporated review comments for
+> >    patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+> > Changes for v2:
+> > - Incorporated Boris review comments and drop below patches as per
+> > the comments.
+> >   - Patch 'spi: add slave device size in spi_device struct'
+> >   - Patch 'spi: add flags for octal I/O data transfer'
+> > - Incorporated DTS and Binding file review comments of Shawn Guo
+> > and Rob Herring.
+> >=20
+> >   .../devicetree/bindings/spi/spi-nxp-fspi.txt  |   39 +
+> >   MAINTAINERS                                   |    7 +
+> >   .../boot/dts/freescale/fsl-lx2160a-rdb.dts    |   22 +
+> >   .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi |   13 +
+> >   arch/arm64/configs/defconfig                  |    1 +
+> >   drivers/spi/Kconfig                           |   10 +
+> >   drivers/spi/Makefile                          |    1 +
+> >   drivers/spi/spi-nxp-fspi.c                    | 1095
+> > +++++++++++++++++ 8 files changed, 1188 insertions(+)
+> >   create mode 100644
+> > Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt create mode
+> > 100644 drivers/spi/spi-nxp-fspi.c=20
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/qfV7IP6UbfJ_zClhLB+efu+
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlw2C54ACgkQAR8vZIA0
+zr0Bygf8CIJkJt1rC2YiQntRmvFJk7rlDUHSGzV+pRjNWOGCzkv9Q8wBs7GUjXeC
+XcOe+RXQgzwhAH3ByyxMBmtdC55PqceJDb30NQyExXCVhMpuqdmU2G0R7l9g6H8D
+odGNDv6IC47oMzaq8zT6dC2f1iddFpfuQ4qvyDjBmEpyqTKPFFSH8KNTRa6Kjoph
+Opg8/CjSvxaPQMtBQkl0MqKI5lr9iSAMPrL6Gk3FnU0hqMtEZmgbBflieJoIZo77
+5mvs1nWSWAs8yEvVqH1VN9HqBLvZSi8RvMgCzvQB4kt/gh3ehGPN9hLbELeMDp24
+xasMUxYP8WrDjPZtm5kwEWX9gcvbxQ==
+=S3Bd
+-----END PGP SIGNATURE-----
+
+--Sig_/qfV7IP6UbfJ_zClhLB+efu+--

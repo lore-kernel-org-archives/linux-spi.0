@@ -1,82 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: fix warning unused variable 'ret'" to the spi tree
-Date: Thu, 10 Jan 2019 11:54:35 +0000 (GMT)
-Message-ID: <20190110115435.6EE0F1127052@debutante.sirena.org.uk>
-References: <20190110101407.7583-1-anders.roxell@linaro.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
-        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Anders Roxell <anders.roxell@linaro.org>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v5 2/2] dt-bindings: spi: Document Renesas R-Car RPC-IF
+ controller bindings
+Date: Thu, 10 Jan 2019 14:43:46 +0100
+Message-ID: <85882d18-9b05-5cc9-105d-093ae7cf0041@gmail.com>
+References: <1546921020-20436-1-git-send-email-masonccyang@mxic.com.tw>
+ <1546921020-20436-3-git-send-email-masonccyang@mxic.com.tw>
+ <05c8e4ac-a9c8-7c24-289f-ce7a089dbc1e@gmail.com>
+ <OFD1D4749F.04B5A6A1-ON4825837E.00331D68-4825837E.00344CA0@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: boris.brezillon@bootlin.com, broonie@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190110101407.7583-1-anders.roxell@linaro.org>
+In-Reply-To: <OFD1D4749F.04B5A6A1-ON4825837E.00331D68-4825837E.00344CA0@mxic.com.tw>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 1/10/19 10:31 AM, masonccyang@mxic.com.tw wrote:
+> Hi Marek,
 
-   spi: dw: fix warning unused variable 'ret'
+Hi,
 
-has been applied to the spi tree at
+>> "Marek Vasut" <marek.vasut@gmail.com>
+>> 2019/01/08 下午 08:06
+>> > diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-
+>> rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+>> > new file mode 100644
+>> > index 0000000..5f96532
+>> > --- /dev/null
+>> > +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+>> > @@ -0,0 +1,37 @@
+>> > +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+>> > +----------------------------------------------------------
+>> > +
+>> > +Required properties:
+>> > +- compatible: should be "renesas,r8a77995-rpc"
+>> > +- #address-cells: should be 1
+>> > +- #size-cells: should be 0
+>> > +- reg: should contain 2 entries, one for the registers and one
+>> for the direct
+>> > +       mapping area
+>> > +- reg-names: should contain "regs" and "dirmap"
+>> > +- clock-names: should contain "rpc"
+>> > +- clocks: should contain 1 entries for the module's clock
+>> > +- renesas,rpc-mode: should contain "spi" for rpc spi mode or
+>> > +                  "hyperflash" for rpc hyperflash mode.
+>>
+>> Why do we need this property ? I believe it is possible to detect the
+>> configuration based on the type of child of the RPC node. If the driver
+>> was properly designed, it could well behave as either CFI NOR driver or
+>> SPI flash driver and all would be good, but it seems this is written
+>> with it being SPI flash driver only and once the HF mode would need to
+>> be added, it'd mean a tremendous undertaking to rework the entire driver.
+>>
+> 
+> Except to check if there are any SPI NOR child nodes by "jedec,spi-nor"
+> compatible, is any other way better ?
+> 
+> any suggestion is welcome.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+That's the one. A MFD RPC driver can sanitize it's child nodes, verify
+that the config is valid and configure the RPC accordingly. All of the
+devices that can be connected to the RPC are either valid jedec-nor or
+CFI NOR (HF), so this should work fine.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4f0a0cd52d6c812fbf737e436b18f04eac2e312e Mon Sep 17 00:00:00 2001
-From: Anders Roxell <anders.roxell@linaro.org>
-Date: Thu, 10 Jan 2019 11:14:07 +0100
-Subject: [PATCH] spi: dw: fix warning unused variable 'ret'
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-When CONFIG_SPI_DESIGNWARE are enabled we see the unused variable
-warning in dw_spi_setup.
-
-../drivers/spi/spi-dw.c: In function ‘dw_spi_setup’:
-../drivers/spi/spi-dw.c:400:6: warning: unused variable ‘ret’ [-Wunused-variable]
-  int ret;
-      ^~~
-
-Remove the unused varable.
-
-Fixes: 9400c41e77b8 ("spi: dw: Convert to use CS GPIO descriptors")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-dw.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index f54b498001a9..7092e58add2c 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -397,7 +397,6 @@ static int dw_spi_setup(struct spi_device *spi)
- {
- 	struct dw_spi_chip *chip_info = NULL;
- 	struct chip_data *chip;
--	int ret;
- 
- 	/* Only alloc on first setup */
- 	chip = spi_get_ctldata(spi);
 -- 
-2.20.1
+Best regards,
+Marek Vasut

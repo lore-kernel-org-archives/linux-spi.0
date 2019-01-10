@@ -1,45 +1,38 @@
-From: Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH] spi: dw: fix warning unused variable 'ret'
-Date: Thu, 10 Jan 2019 11:14:07 +0100
-Message-ID: <20190110101407.7583-1-anders.roxell@linaro.org>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v5 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI
+ controller driver
+Date: Thu, 10 Jan 2019 11:16:18 +0100
+Message-ID: <20190110111601.1dad05a0@bbrezillon>
+References: <1546921020-20436-1-git-send-email-masonccyang@mxic.com.tw>
+        <1546921020-20436-2-git-send-email-masonccyang@mxic.com.tw>
+        <74a5fba6-a77e-f71b-ce49-405fee8e0fda@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Anders Roxell <anders.roxell@linaro.org>
-To: broonie@kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, boris.brezillon@bootlin.com,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <74a5fba6-a77e-f71b-ce49-405fee8e0fda@cogentembedded.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When CONFIG_SPI_DESIGNWARE are enabled we see the unused variable
-warning in dw_spi_setup.
+On Wed, 9 Jan 2019 21:47:48 +0300
+Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> wrote:
 
-../drivers/spi/spi-dw.c: In function ‘dw_spi_setup’:
-../drivers/spi/spi-dw.c:400:6: warning: unused variable ‘ret’ [-Wunused-variable]
-  int ret;
-      ^~~
+> On 01/08/2019 07:16 AM, Mason Yang wrote:
+> 
+> > Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+> > 
+> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>  
+> 
+>    You now need to add:
+> 
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
-Remove the unused varable.
-
-Fixes: 9400c41e77b8 ("spi: dw: Convert to use CS GPIO descriptors")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
----
- drivers/spi/spi-dw.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index f54b498001a9..7092e58add2c 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -397,7 +397,6 @@ static int dw_spi_setup(struct spi_device *spi)
- {
- 	struct dw_spi_chip *chip_info = NULL;
- 	struct chip_data *chip;
--	int ret;
- 
- 	/* Only alloc on first setup */
- 	chip = spi_get_ctldata(spi);
--- 
-2.19.2
+May I ask why?

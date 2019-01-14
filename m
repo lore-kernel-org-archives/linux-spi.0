@@ -1,120 +1,48 @@
-From: David Lechner <david@lechnology.com>
-Subject: Re: [PATCH] Revert "spi: omap2-mcspi: Set FIFO DMA trigger level to
- word length"
-Date: Sun, 13 Jan 2019 14:52:37 -0600
-Message-ID: <7a88c1be-3737-caad-7e8f-5651cbe23248@lechnology.com>
-References: <20190113204905.29795-1-david@lechnology.com>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH v8 5/7] ARM: dts: ls1021a: Remove fsl,qspi-has-second-chip
+ as it is not used
+Date: Mon, 14 Jan 2019 08:18:49 +0000
+Message-ID: <ee3eb5d5-4b04-002e-5e49-d4b766138ec5@kontron.de>
+References: <20190107092823.11188-1-frieder.schrempf@kontron.de>
+ <20190107092823.11188-6-frieder.schrempf@kontron.de>
+ <20190113033117.GG11426@dragon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        Vignesh R <vigneshr@ti.com>, linux-omap@vger.kernel.org
-To: linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
+        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
+        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
+        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>
+To: Shawn Guo <shawnguo@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190113204905.29795-1-david@lechnology.com>
+In-Reply-To: <20190113033117.GG11426@dragon>
 Content-Language: en-US
+Content-ID: <310689CA697D9A40888BAC72345605E9@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CC: OMAP list for good measure
-
-On 1/13/19 2:49 PM, David Lechner wrote:
-> This reverts commit b682cffa3ac6d9d9e16e9b413c45caee3b391fab.
-> 
-> That commit breaks displays using tinydrm drivers, such as ili9225.
-> 
-> It causes corruption in the image that is displayed (it looks like only
-> 1/2 of the framebuffer data is sent, the other half of the display
-> remains blank.)
-> 
-> The following error appears multiple times:
-> 
->      ili9225 spi1.0: EOW timed out
-> 
-> Eventually, the system locks up without any additional errors.
-> 
-> Cc: Vignesh R <vigneshr@ti.com>
-> Signed-off-by: David Lechner <david@lechnology.com>
-> ---
->   drivers/spi/spi-omap2-mcspi.c | 26 +++++++++++++++++++-------
->   1 file changed, 19 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 2fd8881fcd65..5a3854ff2e08 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -306,7 +306,7 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
->   	struct omap2_mcspi_cs *cs = spi->controller_state;
->   	struct omap2_mcspi *mcspi;
->   	unsigned int wcnt;
-> -	int max_fifo_depth, bytes_per_word;
-> +	int max_fifo_depth, fifo_depth, bytes_per_word;
->   	u32 chconf, xferlevel;
->   
->   	mcspi = spi_master_get_devdata(master);
-> @@ -322,6 +322,10 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
->   		else
->   			max_fifo_depth = OMAP2_MCSPI_MAX_FIFODEPTH;
->   
-> +		fifo_depth = gcd(t->len, max_fifo_depth);
-> +		if (fifo_depth < 2 || fifo_depth % bytes_per_word != 0)
-> +			goto disable_fifo;
-> +
->   		wcnt = t->len / bytes_per_word;
->   		if (wcnt > OMAP2_MCSPI_MAX_FIFOWCNT)
->   			goto disable_fifo;
-> @@ -329,17 +333,16 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
->   		xferlevel = wcnt << 16;
->   		if (t->rx_buf != NULL) {
->   			chconf |= OMAP2_MCSPI_CHCONF_FFER;
-> -			xferlevel |= (bytes_per_word - 1) << 8;
-> +			xferlevel |= (fifo_depth - 1) << 8;
->   		}
-> -
->   		if (t->tx_buf != NULL) {
->   			chconf |= OMAP2_MCSPI_CHCONF_FFET;
-> -			xferlevel |= bytes_per_word - 1;
-> +			xferlevel |= fifo_depth - 1;
->   		}
->   
->   		mcspi_write_reg(master, OMAP2_MCSPI_XFERLEVEL, xferlevel);
->   		mcspi_write_chconf0(spi, chconf);
-> -		mcspi->fifo_depth = max_fifo_depth;
-> +		mcspi->fifo_depth = fifo_depth;
->   
->   		return;
->   	}
-> @@ -598,6 +601,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
->   	struct dma_slave_config	cfg;
->   	enum dma_slave_buswidth width;
->   	unsigned es;
-> +	u32			burst;
->   	void __iomem		*chstat_reg;
->   	void __iomem            *irqstat_reg;
->   	int			wait_res;
-> @@ -617,14 +621,22 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
->   	}
->   
->   	count = xfer->len;
-> +	burst = 1;
-> +
-> +	if (mcspi->fifo_depth > 0) {
-> +		if (count > mcspi->fifo_depth)
-> +			burst = mcspi->fifo_depth / es;
-> +		else
-> +			burst = count / es;
-> +	}
->   
->   	memset(&cfg, 0, sizeof(cfg));
->   	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
->   	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
->   	cfg.src_addr_width = width;
->   	cfg.dst_addr_width = width;
-> -	cfg.src_maxburst = es;
-> -	cfg.dst_maxburst = es;
-> +	cfg.src_maxburst = burst;
-> +	cfg.dst_maxburst = burst;
->   
->   	rx = xfer->rx_buf;
->   	tx = xfer->tx_buf;
-> 
+SGkgU2hhd24sDQoNCk9uIDEzLjAxLjE5IDA0OjMxLCBTaGF3biBHdW8gd3JvdGU6DQo+IE9uIE1v
+biwgSmFuIDA3LCAyMDE5IGF0IDA5OjI5OjU0QU0gKzAwMDAsIFNjaHJlbXBmIEZyaWVkZXIgd3Jv
+dGU6DQo+PiBGcm9tOiBGcmllZGVyIFNjaHJlbXBmIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24u
+ZGU+DQo+Pg0KPj4gQWZ0ZXIgc3dpdGNoaW5nIHRvIHRoZSBuZXcgRlNMIFFTUEkgZHJpdmVyIHRo
+ZSBwcm9wZXJ0eQ0KPj4gJ2ZzbCxxc3BpLWhhcy1zZWNvbmQtY2hpcCcgaXMgbm90IG5lZWRlZCBh
+bnltb3JlLg0KPj4NCj4+IFRoZSBkcml2ZXIgbm93IHVzZXMgdGhlICdyZWcnIHByb3BlcnR5IHRv
+IGRldGVybWluZSB0aGUgYnVzIGFuZA0KPj4gdGhlIGNoaXBzZWxlY3QuDQo+Pg0KPj4gU2lnbmVk
+LW9mZi1ieTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9uLmRlPg0K
+PiANCj4gQXBwbGllZCwgdGhhbmtzLg0KDQpJIGp1c3Qgbm90aWNlZCwgdGhhdCB0aGlzIGFuZCB0
+aGUgYXJtNjQgcGF0Y2ggZGVwZW5kIG9uIHRoZSBkcml2ZXIgDQpjaGFuZ2VzIGZvciA1LjEgdGhh
+dCBnbyB0aHJvdWdoIHRoZSBTUEkgdHJlZS4gU28gSSBndWVzcyB3ZSBjYW4ndCBiZSANCnN1cmUg
+dGhhdCB0aGlzIHdpbGwgYmUgbWVyZ2VkIGluIHRoZSByaWdodCBvcmRlciBhbmQgd2UgbmVlZCB0
+byBkZWxheSANCnRoaXMgY2xlYW51cCB0byA1LjIsIG9yIGFtIEkgd3Jvbmc/DQoNClRoYW5rcywN
+CkZyaWVkZXI=

@@ -1,9 +1,12 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-geni-qcom: Get rid of forward declaration" to the spi tree
-Date: Mon, 14 Jan 2019 22:09:56 +0000 (GMT)
-Message-ID: <20190114220956.D5D971127AD0@debutante.sirena.org.uk>
-References: <20190110210253.23219-2-swboyd@chromium.org>
-Cc: Douglas Anderson <dianders@chromium.org>,
+Subject: Applied "spi: spi-geni-qcom: Don't initialize completion for normal message" to the spi tree
+Date: Mon, 14 Jan 2019 22:09:58 +0000 (GMT)
+Message-ID: <20190114220958.B623E1127AD0@debutante.sirena.org.uk>
+References: <20190110210253.23219-1-swboyd@chromium.org>
+Cc: Girish Mahadevan <girishm@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>,
+        Alok Chauhan <alokc@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Mark Brown <broonie@kernel.org>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
@@ -14,13 +17,13 @@ Cc: Douglas Anderson <dianders@chromium.org>,
         linux-spi@vger.kernel.org
 To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190110210253.23219-2-swboyd@chromium.org>
+In-Reply-To: <20190110210253.23219-1-swboyd@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-geni-qcom: Get rid of forward declaration
+   spi: spi-geni-qcom: Don't initialize completion for normal message
 
 has been applied to the spi tree at
 
@@ -45,103 +48,39 @@ to this mail.
 Thanks,
 Mark
 
->From de43affed77b1bd9f246235dbd94eb23b07ab657 Mon Sep 17 00:00:00 2001
+>From 0357a3daada3236da59be5d692f02ae07e2a145e Mon Sep 17 00:00:00 2001
 From: Stephen Boyd <swboyd@chromium.org>
-Date: Thu, 10 Jan 2019 13:02:53 -0800
-Subject: [PATCH] spi: spi-geni-qcom: Get rid of forward declaration
+Date: Thu, 10 Jan 2019 13:02:52 -0800
+Subject: [PATCH] spi: spi-geni-qcom: Don't initialize completion for normal
+ message
 
-We don't need this forward declaration. Move the function to where it
-needed so we can drop it and shave some lines of code.
+We only use this completion when we're doing something that isn't a
+message transfer. For example, changing CS or aborting/canceling a
+command. All of those situations properly reinitialize the completion
+before sending the GENI the special command to change CS or cancel, etc.
+Given that, let's remove the initialization here.
 
-CC: Girish Mahadevan <girishm@codeaurora.org>
-CC: Dilip Kota <dkota@codeaurora.org>
-CC: Alok Chauhan <alokc@codeaurora.org>
+Cc: Girish Mahadevan <girishm@codeaurora.org>
+Cc: Dilip Kota <dkota@codeaurora.org>
+Cc: Alok Chauhan <alokc@codeaurora.org>
 Cc: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 55 ++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 29 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index c3e9464027d4..5f0b0d5bfef4 100644
+index fdb7cb88fb56..c3e9464027d4 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -89,9 +89,6 @@ struct spi_geni_master {
- 	int irq;
- };
+@@ -233,7 +233,6 @@ static int spi_geni_prepare_message(struct spi_master *spi,
+ 	struct geni_se *se = &mas->se;
  
--static void handle_fifo_timeout(struct spi_master *spi,
--				struct spi_message *msg);
--
- static int get_spi_clk_cfg(unsigned int speed_hz,
- 			struct spi_geni_master *mas,
- 			unsigned int *clk_idx,
-@@ -122,6 +119,32 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
- 	return ret;
- }
- 
-+static void handle_fifo_timeout(struct spi_master *spi,
-+				struct spi_message *msg)
-+{
-+	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	unsigned long time_left, flags;
-+	struct geni_se *se = &mas->se;
-+
-+	spin_lock_irqsave(&mas->lock, flags);
-+	reinit_completion(&mas->xfer_done);
-+	mas->cur_mcmd = CMD_CANCEL;
-+	geni_se_cancel_m_cmd(se);
-+	writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-+	spin_unlock_irqrestore(&mas->lock, flags);
-+	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
-+	if (time_left)
-+		return;
-+
-+	spin_lock_irqsave(&mas->lock, flags);
-+	reinit_completion(&mas->xfer_done);
-+	geni_se_abort_m_cmd(se);
-+	spin_unlock_irqrestore(&mas->lock, flags);
-+	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
-+	if (!time_left)
-+		dev_err(mas->dev, "Failed to cancel/abort m_cmd\n");
-+}
-+
- static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
- {
- 	struct spi_geni_master *mas = spi_master_get_devdata(slv->master);
-@@ -356,32 +379,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
- 		writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
- }
- 
--static void handle_fifo_timeout(struct spi_master *spi,
--				struct spi_message *msg)
--{
--	struct spi_geni_master *mas = spi_master_get_devdata(spi);
--	unsigned long time_left, flags;
--	struct geni_se *se = &mas->se;
--
--	spin_lock_irqsave(&mas->lock, flags);
+ 	geni_se_select_mode(se, GENI_SE_FIFO);
 -	reinit_completion(&mas->xfer_done);
--	mas->cur_mcmd = CMD_CANCEL;
--	geni_se_cancel_m_cmd(se);
--	writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
--	spin_unlock_irqrestore(&mas->lock, flags);
--	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
--	if (time_left)
--		return;
--
--	spin_lock_irqsave(&mas->lock, flags);
--	reinit_completion(&mas->xfer_done);
--	geni_se_abort_m_cmd(se);
--	spin_unlock_irqrestore(&mas->lock, flags);
--	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
--	if (!time_left)
--		dev_err(mas->dev, "Failed to cancel/abort m_cmd\n");
--}
--
- static int spi_geni_transfer_one(struct spi_master *spi,
- 				struct spi_device *slv,
- 				struct spi_transfer *xfer)
+ 	ret = setup_fifo_params(spi_msg->spi, spi);
+ 	if (ret)
+ 		dev_err(mas->dev, "Couldn't select mode %d\n", ret);
 -- 
 2.20.1

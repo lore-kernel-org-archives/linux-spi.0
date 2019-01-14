@@ -1,235 +1,166 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v3 5/7] mtd: devices: m25p80: Use the spi-mem dirmap API
-Date: Mon, 14 Jan 2019 09:05:40 +0000
-Message-ID: <VI1PR04MB5726BC9D689A7A300E49082299800@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
- <20181106160536.13415-6-boris.brezillon@bootlin.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH] Revert "spi: omap2-mcspi: Set FIFO DMA trigger level to
+ word length"
+Date: Mon, 14 Jan 2019 18:00:06 +0530
+Message-ID: <829bdc72-cf96-6aee-28d8-a47d0430710d@ti.com>
+References: <20190113204905.29795-1-david@lechnology.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Piotr Bugalski <bugalski.piotr@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>
-To: Boris Brezillon <boris.brezillon@bootlin.com>, David Woodhouse
- <dwmw2@infradead.org>, Brian Norris <computersforpeace@gmail.com>, Marek
- Vasut <marek.vasut@gmail.com>, Richard Weinberger <richard@nod.at>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, Mark Brown
- <broonie@kernel.org>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181106160536.13415-6-boris.brezillon@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+To: David Lechner <david@lechnology.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190113204905.29795-1-david@lechnology.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
 
-> -----Original Message-----
-> From: Boris Brezillon [mailto:boris.brezillon@bootlin.com]
-> Sent: Tuesday, November 6, 2018 9:36 PM
-> To: David Woodhouse <dwmw2@infradead.org>; Brian Norris
-> <computersforpeace@gmail.com>; Boris Brezillon
-> <boris.brezillon@bootlin.com>; Marek Vasut <marek.vasut@gmail.com>;
-> Richard Weinberger <richard@nod.at>; linux-mtd@lists.infradead.org; Mark
-> Brown <broonie@kernel.org>; linux-spi@vger.kernel.org
-> Cc: Vignesh R <vigneshr@ti.com>; Cyrille Pitchen
-> <cyrille.pitchen@microchip.com>; Tudor Ambarus
-> <tudor.ambarus@microchip.com>; Yogesh Narayan Gaur
-> <yogeshnarayan.gaur@nxp.com>; Frieder Schrempf
-> <frieder.schrempf@exceet.de>; Miquel Raynal <miquel.raynal@bootlin.com>;
-> Piotr Bugalski <bugalski.piotr@gmail.com>
-> Subject: [PATCH v3 5/7] mtd: devices: m25p80: Use the spi-mem dirmap API
+On 14/01/19 2:19 AM, David Lechner wrote:
+> This reverts commit b682cffa3ac6d9d9e16e9b413c45caee3b391fab.
 > 
-> Make use of the spi-mem direct mapping API to let advanced controllers
-> optimize read/write operations when they support direct mapping.
+> That commit breaks displays using tinydrm drivers, such as ili9225.
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+> It causes corruption in the image that is displayed (it looks like only
+> 1/2 of the framebuffer data is sent, the other half of the display
+> remains blank.)
+> 
+> The following error appears multiple times:
+> 
+>     ili9225 spi1.0: EOW timed out
+> 
+> Eventually, the system locks up without any additional errors.
+> 
 
+Oops, that's unfortunate. I see ili9225 is using bits_per_word = 16.
+I believe commit b682cffa3ac6d9d broke spi_transfers where 
+bits_per_word anything other than 8 bits.
+I don't have ili9225 HW but was able emulate this condition using a SPI 
+flash as slave on AM335x and successfully reproduced the issue. Could 
+you test if this diff[1] helps in fixing the regression without needing
+to revert commit b682cffa3ac6d9d?
+
+If below diff does not help, then could you post logs of types of 
+spi_transfers being queued by ili9225 driver? I guess you can dump them 
+by enabling DEBUG option in tinydrm-helpers.c.
+Also which TI SoC are you using?
+
+Sorry for the trouble!
+
+[1]:
+
+Adjust maxburst size of DMA xfer according to the DMA trigger level and word length
+instead of just word length
+
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 2fd8881fcd65..6b7edcff0e6b 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -623,8 +623,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+        cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
+        cfg.src_addr_width = width;
+        cfg.dst_addr_width = width;
+-       cfg.src_maxburst = es;
+-       cfg.dst_maxburst = es;
++       cfg.src_maxburst = width / es;
++       cfg.dst_maxburst = width / es;
+ 
+        rx = xfer->rx_buf;
+        tx = xfer->tx_buf;
+
+--
+Regards
+Vignesh
+
+
+
+> Cc: Vignesh R <vigneshr@ti.com>
+> Signed-off-by: David Lechner <david@lechnology.com>
 > ---
-> Changes in v3:
-> - Make nor->read/write() functional before the direct mappings have been
->   created
-> - Add Miquel's R-b
+>  drivers/spi/spi-omap2-mcspi.c | 26 +++++++++++++++++++-------
+>  1 file changed, 19 insertions(+), 7 deletions(-)
 > 
-> Changes in v2:
-> - Rename the dirmap fields
-> - Return directly after calling dirmap_read/write() and let the spi-nor
->   framework call us again if those functions returned less than the
->   requested length
-> ---
->  drivers/mtd/devices/m25p80.c | 102 +++++++++++++++++++++++++++++++++--
->  1 file changed, 99 insertions(+), 3 deletions(-)
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index 2fd8881fcd65..5a3854ff2e08 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -306,7 +306,7 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
+>  	struct omap2_mcspi_cs *cs = spi->controller_state;
+>  	struct omap2_mcspi *mcspi;
+>  	unsigned int wcnt;
+> -	int max_fifo_depth, bytes_per_word;
+> +	int max_fifo_depth, fifo_depth, bytes_per_word;
+>  	u32 chconf, xferlevel;
+>  
+>  	mcspi = spi_master_get_devdata(master);
+> @@ -322,6 +322,10 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
+>  		else
+>  			max_fifo_depth = OMAP2_MCSPI_MAX_FIFODEPTH;
+>  
+> +		fifo_depth = gcd(t->len, max_fifo_depth);
+> +		if (fifo_depth < 2 || fifo_depth % bytes_per_word != 0)
+> +			goto disable_fifo;
+> +
+>  		wcnt = t->len / bytes_per_word;
+>  		if (wcnt > OMAP2_MCSPI_MAX_FIFOWCNT)
+>  			goto disable_fifo;
+> @@ -329,17 +333,16 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
+>  		xferlevel = wcnt << 16;
+>  		if (t->rx_buf != NULL) {
+>  			chconf |= OMAP2_MCSPI_CHCONF_FFER;
+> -			xferlevel |= (bytes_per_word - 1) << 8;
+> +			xferlevel |= (fifo_depth - 1) << 8;
+>  		}
+> -
+>  		if (t->tx_buf != NULL) {
+>  			chconf |= OMAP2_MCSPI_CHCONF_FFET;
+> -			xferlevel |= bytes_per_word - 1;
+> +			xferlevel |= fifo_depth - 1;
+>  		}
+>  
+>  		mcspi_write_reg(master, OMAP2_MCSPI_XFERLEVEL, xferlevel);
+>  		mcspi_write_chconf0(spi, chconf);
+> -		mcspi->fifo_depth = max_fifo_depth;
+> +		mcspi->fifo_depth = fifo_depth;
+>  
+>  		return;
+>  	}
+> @@ -598,6 +601,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+>  	struct dma_slave_config	cfg;
+>  	enum dma_slave_buswidth width;
+>  	unsigned es;
+> +	u32			burst;
+>  	void __iomem		*chstat_reg;
+>  	void __iomem            *irqstat_reg;
+>  	int			wait_res;
+> @@ -617,14 +621,22 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+>  	}
+>  
+>  	count = xfer->len;
+> +	burst = 1;
+> +
+> +	if (mcspi->fifo_depth > 0) {
+> +		if (count > mcspi->fifo_depth)
+> +			burst = mcspi->fifo_depth / es;
+> +		else
+> +			burst = count / es;
+> +	}
+>  
+>  	memset(&cfg, 0, sizeof(cfg));
+>  	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
+>  	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
+>  	cfg.src_addr_width = width;
+>  	cfg.dst_addr_width = width;
+> -	cfg.src_maxburst = es;
+> -	cfg.dst_maxburst = es;
+> +	cfg.src_maxburst = burst;
+> +	cfg.dst_maxburst = burst;
+>  
+>  	rx = xfer->rx_buf;
+>  	tx = xfer->tx_buf;
 > 
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index c4a1d04b8c80..847188e8a99e 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -31,8 +31,70 @@
->  struct m25p {
->  	struct spi_mem		*spimem;
->  	struct spi_nor		spi_nor;
-> +	struct {
-> +		struct spi_mem_dirmap_desc *rdesc;
-> +		struct spi_mem_dirmap_desc *wdesc;
-> +	} dirmap;
->  };
-> 
-> +static int m25p_create_write_dirmap(struct m25p *flash) {
-> +	struct spi_nor *nor = &flash->spi_nor;
-> +	struct spi_mem_dirmap_info info = {
-> +		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor-
-> >program_opcode, 1),
-> +				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
-> +				      SPI_MEM_OP_NO_DUMMY,
-> +				      SPI_MEM_OP_DATA_OUT(0, NULL, 1)),
-> +		.offset = 0,
-> +		.length = flash->spi_nor.mtd.size,
-> +	};
-> +	struct spi_mem_op *op = &info.op_tmpl;
-> +
-> +	/* get transfer protocols. */
-> +	op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor-
-> >write_proto);
-> +	op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor-
-> >write_proto);
-> +	op->dummy.buswidth = op->addr.buswidth;
-> +	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor-
-> >write_proto);
-> +
-> +	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor-
-> >sst_write_second)
-> +		op->addr.nbytes = 0;
-> +
-> +	flash->dirmap.wdesc = spi_mem_dirmap_create(flash->spimem, &info);
-> +	if (IS_ERR(flash->dirmap.wdesc))
-> +		return PTR_ERR(flash->dirmap.wdesc);
-> +
-> +	return 0;
-> +}
-> +
-> +static int m25p_create_read_dirmap(struct m25p *flash) {
-> +	struct spi_nor *nor = &flash->spi_nor;
-> +	struct spi_mem_dirmap_info info = {
-> +		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor-
-> >read_opcode, 1),
-> +				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 1),
-> +				      SPI_MEM_OP_DUMMY(nor->read_dummy,
-> 1),
-> +				      SPI_MEM_OP_DATA_IN(0, NULL, 1)),
-> +		.offset = 0,
-> +		.length = flash->spi_nor.mtd.size,
-> +	};
-> +	struct spi_mem_op *op = &info.op_tmpl;
-> +
-> +	/* get transfer protocols. */
-> +	op->cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
-> +	op->addr.buswidth = spi_nor_get_protocol_addr_nbits(nor-
-> >read_proto);
-> +	op->dummy.buswidth = op->addr.buswidth;
-> +	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor-
-> >read_proto);
-> +
-> +	/* convert the dummy cycles to the number of bytes */
-> +	op->dummy.nbytes = (nor->read_dummy * op->dummy.buswidth) / 8;
-> +
-> +	flash->dirmap.rdesc = spi_mem_dirmap_create(flash->spimem, &info);
-> +	if (IS_ERR(flash->dirmap.rdesc))
-> +		return PTR_ERR(flash->dirmap.rdesc);
-> +
-> +	return 0;
-> +}
-> +
->  static int m25p80_read_reg(struct spi_nor *nor, u8 code, u8 *val, int len)  {
->  	struct m25p *flash = nor->priv;
-> @@ -92,6 +154,9 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to,
-> size_t len,
->  				   SPI_MEM_OP_DATA_OUT(len, buf, 1));
->  	int ret;
-> 
-> +	if (flash->dirmap.wdesc)
-> +		return spi_mem_dirmap_write(flash->dirmap.wdesc, to, len,
-> buf);
-> +
->  	/* get transfer protocols. */
->  	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->write_proto);
->  	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->write_proto);
-> @@ -128,6 +193,9 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t
-> from, size_t len,
->  	size_t remaining = len;
->  	int ret;
-> 
-> +	if (flash->dirmap.rdesc)
-> +		return spi_mem_dirmap_read(flash->dirmap.rdesc, from, len,
-> buf);
-> +
->  	/* get transfer protocols. */
->  	op.cmd.buswidth = spi_nor_get_protocol_inst_nbits(nor->read_proto);
->  	op.addr.buswidth = spi_nor_get_protocol_addr_nbits(nor->read_proto);
-> @@ -231,19 +299,47 @@ static int m25p_probe(struct spi_mem *spimem)
->  	if (ret)
->  		return ret;
-> 
-> -	return mtd_device_register(&nor->mtd, data ? data->parts : NULL,
-> -				   data ? data->nr_parts : 0);
-> +	ret = m25p_create_write_dirmap(flash);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = m25p_create_read_dirmap(flash);
-> +	if (ret)
-> +		goto err_destroy_write_dirmap;
-> +
-> +	ret = mtd_device_register(&nor->mtd, data ? data->parts : NULL,
-> +				  data ? data->nr_parts : 0);
-> +	if (ret)
-> +		goto err_destroy_read_dirmap;
-> +
-> +	return 0;
-> +
-> +err_destroy_read_dirmap:
-> +	spi_mem_dirmap_destroy(flash->dirmap.rdesc);
-> +
-> +err_destroy_write_dirmap:
-> +	spi_mem_dirmap_destroy(flash->dirmap.wdesc);
-> +
-> +	return ret;
->  }
-> 
-> 
->  static int m25p_remove(struct spi_mem *spimem)  {
->  	struct m25p	*flash = spi_mem_get_drvdata(spimem);
-> +	int ret;
-> 
->  	spi_nor_restore(&flash->spi_nor);
-> 
->  	/* Clean up MTD stuff. */
-> -	return mtd_device_unregister(&flash->spi_nor.mtd);
-> +	ret = mtd_device_unregister(&flash->spi_nor.mtd);
-> +	if (ret)
-> +		return ret;
-> +
-> +	spi_mem_dirmap_destroy(flash->dirmap.rdesc);
-> +	spi_mem_dirmap_destroy(flash->dirmap.wdesc);
-> +
-> +	return 0;
->  }
-> 
->  static void m25p_shutdown(struct spi_mem *spimem)
-> --
-> 2.17.1
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

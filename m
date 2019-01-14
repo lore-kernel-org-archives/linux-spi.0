@@ -1,306 +1,67 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v6 1/5] spi: spi-mem: Add driver for NXP FlexSPI
- controller
-Date: Mon, 14 Jan 2019 09:38:07 +0100
-Message-ID: <20190114093759.2ce51b55@bbrezillon>
-References: <1546939346-20181-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <1546939346-20181-2-git-send-email-yogeshnarayan.gaur@nxp.com>
-        <dbb6ddc8-5939-3d4b-7031-931afa79fccb@kontron.de>
+Subject: Re: [PATCH RFC 18/18] mtd: spi-nor: Make sure the 8D-8D-8D can be
+ selected on mx25uw51245g
+Date: Mon, 14 Jan 2019 09:39:54 +0100
+Message-ID: <20190114093954.0e0b0c07@bbrezillon>
+References: <20181012084825.23697-1-boris.brezillon@bootlin.com>
+ <20181012084825.23697-19-boris.brezillon@bootlin.com>
+ <OF300145A1.D60E7B33-ON48258376.002EDC4B-48258376.0031A14C@LocalDomain>
+ <OF3005248A.454B9B59-ON48258382.002767AE-48258382.00293E8D@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <dbb6ddc8-5939-3d4b-7031-931afa79fccb@kontron.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>, Vignesh R <vigneshr@ti.com>,
+ Marek Vasut <marek.vasut@gmail.com>, Julien Su <juliensu@mxic.com.tw>,
+ Richard Weinberger <richard@nod.at>, linux-spi@vger.kernel.org,
+ Boris Brezillon <boris.brezillon@bootlin.com>, Mark Brown <broonie@kernel.org>,
+ linux-mtd@lists.infradead.org, Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <OF3005248A.454B9B59-ON48258382.002767AE-48258382.00293E8D@mxic.com.tw>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 10 Jan 2019 17:28:57 +0000
-Schrempf Frieder <frieder.schrempf@kontron.de> wrote:
+On Mon, 14 Jan 2019 15:30:29 +0800
+masonccyang@mxic.com.tw wrote:
 
-> Hi Yogesh,
+> Hi Boris,
 > 
-> my comments below are mainly about things I already mentioned in my 
-> review for v5 and about removing or simplifying some unnecessary or 
-> complex code.
+> I have patched direct mapping in spi-nor.c layer based on 
+> your direct mapping mode's patch [1][2] as attached file,
+> spi-nor-mxic.patch.
 > 
-> Also as I gathered from your conversation with Boris, there's still a 
-> check for the length of the requested memory missing.
 > 
-> On 08.01.19 10:24, Yogesh Narayan Gaur wrote:
-> [...]
-> > +
-> > +static bool nxp_fspi_supports_op(struct spi_mem *mem,
-> > +				 const struct spi_mem_op *op)
-> > +{
-> > +	struct nxp_fspi *f = spi_controller_get_devdata(mem->spi->master);
-> > +	int ret;
-> > +
-> > +	ret = nxp_fspi_check_buswidth(f, op->cmd.buswidth);
-> > +
-> > +	if (op->addr.nbytes)
-> > +		ret |= nxp_fspi_check_buswidth(f, op->addr.buswidth);
-> > +
-> > +	if (op->dummy.nbytes)
-> > +		ret |= nxp_fspi_check_buswidth(f, op->dummy.buswidth);
-> > +
-> > +	if (op->data.nbytes)
-> > +		ret |= nxp_fspi_check_buswidth(f, op->data.buswidth);
-> > +
-> > +	if (ret)
-> > +		return false;
-> > +
-> > +	/*
-> > +	 * The number of instructions needed for the op, needs
-> > +	 * to fit into a single LUT entry.
-> > +	 */
-> > +	if (op->addr.nbytes +
-> > +	   (op->dummy.nbytes ? 1:0) +
-> > +	   (op->data.nbytes ? 1:0) > 6)
-> > +		return false;  
 > 
-> Actually this check was only needed in the QSPI driver, as we were using 
->   LUT_MODE and there we needed one instruction for each address byte. 
-> Here the number of instructions will always fit into one LUT entry.
 > 
-> Instead of this, a check for op->addr.nbytes > 4 (as already suggested 
-> in my comments for v5) would make more sense. So we can make sure that 
-> the address length passed in is supported (between 1 and 4 bytes).
+> The read performance has got much improvement in direct mapping
+> read mode w/ 8D-8D-8D DDR@25MHz compare to manual I/O mode.
+> i.e,.
+> 62.8 KB/s(manual I/O) is up to 21.8 MB/s(direct mapping read).
 > 
-> > +
-> > +	/* Max 64 dummy clock cycles supported */
-> > +	if (op->dummy.buswidth &&
-> > +	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
-> > +		return false;
-> > +
-> > +	/* Max data length, check controller limits and alignment */
-> > +	if (op->data.dir == SPI_MEM_DATA_IN &&
-> > +	    (op->data.nbytes > f->devtype_data->ahb_buf_size ||
-> > +	     (op->data.nbytes > f->devtype_data->rxfifo - 4 &&
-> > +	      !IS_ALIGNED(op->data.nbytes, 8))))
-> > +		return false;
-> > +
-> > +	if (op->data.dir == SPI_MEM_DATA_OUT &&
-> > +	    op->data.nbytes > f->devtype_data->txfifo)
-> > +		return false;
-> > +
-> > +	return true;
-> > +}
-> > +  
-> [...]
-> > +static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
-> > +{
-> > +	unsigned long rate = spi->max_speed_hz;
-> > +	int ret;
-> > +	uint64_t size_kb;
-> > +
-> > +	/*
-> > +	 * Return, if previously selected slave device is same as current
-> > +	 * requested slave device.
-> > +	 */
-> > +	if (f->selected == spi->chip_select)
-> > +		return;
-> > +
-> > +	/* Reset FLSHxxCR0 registers */
-> > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHA1CR0);
-> > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHA2CR0);
-> > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHB1CR0);
-> > +	fspi_writel(f, 0, f->iobase + FSPI_FLSHB2CR0);
-> > +
-> > +	/* Assign controller memory mapped space as size, KBytes, of flash. */
-> > +	size_kb = FSPI_FLSHXCR0_SZ(f->memmap_phy_size);
-> > +
-> > +	switch (spi->chip_select) {
-> > +	case 0:
-> > +		fspi_writel(f, size_kb, f->iobase + FSPI_FLSHA1CR0);
-> > +		break;
-> > +	case 1:
-> > +		fspi_writel(f, size_kb, f->iobase + FSPI_FLSHA2CR0);
-> > +		break;
-> > +	case 2:
-> > +		fspi_writel(f, size_kb, f->iobase + FSPI_FLSHB1CR0);
-> > +		break;
-> > +	case 3:
-> > +		fspi_writel(f, size_kb, f->iobase + FSPI_FLSHB2CR0);
-> > +		break;
-> > +	}  
+> Looking forward to this direct mapping mode would be merged to mainline 
+> soon. 
 > 
-> The switch statement above can be replaced by:
+> thanks & best regards,
+> Mason
 > 
-> fspi_writel(f, size_kb, f->iobase + FSPI_FLSHA1CR0 +
-> 	    4 * spi->chip_select);
-> 
-> > +
-> > +	dev_dbg(f->dev, "Slave device [CS:%x] selected\n", spi->chip_select);
-> > +
-> > +	nxp_fspi_clk_disable_unprep(f);
-> > +
-> > +	ret = clk_set_rate(f->clk, rate);
-> > +	if (ret)
-> > +		return;
-> > +
-> > +	ret = nxp_fspi_clk_prep_enable(f);
-> > +	if (ret)
-> > +		return;
-> > +
-> > +	f->selected = spi->chip_select;
-> > +}
-> > +
-> > +static void nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
-> > +{
-> > +	u32 len = op->data.nbytes;
-> > +
-> > +	/* Read out the data directly from the AHB buffer. */
-> > +	memcpy_fromio(op->data.buf.in, (f->ahb_addr + op->addr.val), len);
-> > +}
-> > +
-> > +static void nxp_fspi_fill_txfifo(struct nxp_fspi *f,
-> > +				 const struct spi_mem_op *op)
-> > +{
-> > +	void __iomem *base = f->iobase;
-> > +	int i, j, ret;
-> > +	int size, tmp, wm_size;
-> > +	u32 data = 0;
-> > +	u32 *txbuf = (u32 *) op->data.buf.out;  
-> 
-> You can cast the u8 buffer to u32 and increment it by 1 in each cycle 
-> below, or you can just use the u8 buffer and align and increment by 8 as 
-> I did in my proposal for v5.
-> I still like my version better as it seems simpler and easier to 
-> understand ;)
-> 
-> > +
-> > +	/* clear the TX FIFO. */
-> > +	fspi_writel(f, FSPI_IPTXFCR_CLR, base + FSPI_IPTXFCR);
-> > +
-> > +	/* Default value of water mark level is 8 bytes. */
-> > +	wm_size = 8;
-> > +
-> > +	size = op->data.nbytes / wm_size;
-> > +	for (i = 0; i < size; i++) {
-> > +		/* Wait for TXFIFO empty */
-> > +		ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > +					   FSPI_INTR_IPTXWE, 0,
-> > +					   POLL_TOUT, true);
-> > +		WARN_ON(ret);
-> > +
-> > +		for (tmp = wm_size, j = 0; tmp > 0; tmp -= 4, j++)  
-> 
-> I still think the inner loop should only be added when someone 
-> implements watermark levels other than 8. It is of no use at the moment 
-> and makes reading the code more difficult.
-> But if you insist on using it, please at least simplify the code.
-> 
-> What about:	for (j = 0; j < (wm_size / 4); j++)
-> 
-> > +			fspi_writel(f, *txbuf++, base + FSPI_TFDR + j * 4); > +
-> > +		fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR);
-> > +	}
-> > +
-> > +	size = op->data.nbytes % wm_size;
-> > +	if (size) {
-> > +		/* Wait for TXFIFO empty */
-> > +		ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > +					   FSPI_INTR_IPTXWE, 0,
-> > +					   POLL_TOUT, true);
-> > +		WARN_ON(ret);
-> > +
-> > +		for (tmp = size, j = 0; tmp > 0; tmp -= 4, j++) {  
-> 
-> Same here:	for (j = 0; j < (size / 4); j++) {
-> 
-> > +			data = 0;
-> > +			memcpy(&data, txbuf++, 4);
-> > +			fspi_writel(f, data, base + FSPI_TFDR + j * 4);
-> > +		}
-> > +		fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR);
-> > +	}
-> > +}
-> > +
-> > +static void nxp_fspi_read_rxfifo(struct nxp_fspi *f,
-> > +			  const struct spi_mem_op *op)
-> > +{
-> > +	void __iomem *base = f->iobase;
-> > +	int i, j;
-> > +	int size, tmp_size, wm_size, ret;
-> > +	u32 tmp = 0;
-> > +	u8 *buf = op->data.buf.in;
-> > +	u32 len = op->data.nbytes;
-> > +
-> > +	/* Default value of water mark level is 8 bytes. */
-> > +	wm_size = 8;
-> > +
-> > +	while (len > 0) {  
-> 
-> What is this outer loop good for? Below you are first reading aligned to 
-> wm_size and then the remaining bytes. Why would you need to repeat that?
-> It looks like the loop will always be executed only once.
-> 
-> > +		size = len / wm_size;
-> > +		for (i = 0; i < size; i++) {
-> > +			/* Wait for RXFIFO available */
-> > +			ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > +						   FSPI_INTR_IPRXWA, 0,
-> > +						   POLL_TOUT, true);
-> > +			WARN_ON(ret);
-> > +
-> > +			for (tmp_size = wm_size, j = 0; tmp_size > 0;
-> > +			     tmp_size -= 4, j++, buf += 4) {  
-> 
-> What about:		for (j = 0; j < (wm_size / 4); j++, buf += 4) {
-> 
-> > +				tmp = fspi_readl(f, base + FSPI_RFDR + j * 4);
-> > +				memcpy(buf, &tmp, 4);
-> > +			}
-> > +			/* move the FIFO pointer */
-> > +			fspi_writel(f, FSPI_INTR_IPRXWA, base + FSPI_INTR);
-> > +			len -= wm_size;
-> > +		}
-> > +
-> > +		size = len % wm_size;
-> > +		if (size) {
-> > +			/* Wait for RXFIFO available */
-> > +			ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
-> > +						   FSPI_INTR_IPRXWA, 0,
-> > +						   POLL_TOUT, true);
-> > +			WARN_ON(ret);
-> > +
-> > +			for (j = 0; len > 0; len -= size, j++, buf += size) {
-> > +				tmp = fspi_readl(f, base + FSPI_RFDR + j * 4);
-> > +				size = len < 4 ? len : 4;  
-> 
-> What about:			size = min(len, 4);
-> 
-> > +				memcpy(buf, &tmp, size);
-> > +			}
-> > +		}
-> > +
-> > +		/* invalid the RXFIFO */
-> > +		fspi_writel(f, FSPI_IPRXFCR_CLR, base + FSPI_IPRXFCR);
-> > +		/* move the FIFO pointer */
-> > +		fspi_writel(f, FSPI_INTR_IPRXWA, base + FSPI_INTR);
-> > +	}
-> > +}  
-> 
+> [1] https://patchwork.kernel.org/patch/10670753
+> [2] https://patchwork.kernel.org/patch/10670747 
 
-Once you've addressed all of Frieder's comments you can add
+Those 2 patches have been applied already, we only miss [3] which I plan
+to queue for v5.1.
 
-Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
+[3]http://patchwork.ozlabs.org/patch/993805/
 
-Regards,
-
-Boris
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

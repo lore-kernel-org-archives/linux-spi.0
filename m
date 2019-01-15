@@ -1,8 +1,8 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v7 4/5] spi: nxp-fspi: add octal mode flag bit for octal
- support
-Date: Tue, 15 Jan 2019 10:05:29 +0000
-Message-ID: <1547546584-5254-5-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v7 2/5] mtd: spi-nor: add octal read flag for flash
+ mt35xu512aba
+Date: Tue, 15 Jan 2019 10:05:16 +0000
+Message-ID: <1547546584-5254-3-git-send-email-yogeshnarayan.gaur@nxp.com>
 References: <1547546584-5254-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -30,28 +30,31 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add octal mode flags for octal I/O data transfer support.
-NXP FlexSPI controller supports 8 lines Rx/Tx data transfer.
+Add octal read flag for flash mt35xu512aba.
+This flash, mt35xu512aba, is only complaint to SFDP JESD216B and does
+not seem to support newer JESD216C standard that provides auto
+detection of Octal mode capabilities and opcodes. Therefore, this
+capability is manually added using new SPI_NOR_OCTAL_READ flag.
 
+Signed-off-by: Vignesh R <vigneshr@ti.com>
 Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 ---
- drivers/spi/spi-nxp-fspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index e23ad9ef028e..adc3c0e14f38 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -952,8 +952,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (!ctlr)
- 		return -ENOMEM;
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 872d70722672..53a3bcc6a55b 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -1877,7 +1877,8 @@ static const struct flash_info spi_nor_ids[] =3D {
+ 	/* Micron */
+ 	{
+ 		"mt35xu512aba", INFO(0x2c5b1a, 0, 128 * 1024, 512,
+-			SECT_4K | USE_FSR | SPI_NOR_4B_OPCODES)
++			SECT_4K | USE_FSR | SPI_NOR_OCTAL_READ |
++			SPI_NOR_4B_OPCODES)
+ 	},
 =20
--	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD |
--			  SPI_TX_DUAL | SPI_TX_QUAD;
-+	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL |
-+			  SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL;
-=20
- 	f =3D spi_controller_get_devdata(ctlr);
- 	f->dev =3D dev;
+ 	/* PMC */
 --=20
 2.17.1

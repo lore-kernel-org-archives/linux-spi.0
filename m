@@ -1,42 +1,57 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v3 6/7] mtd: spinand: Use the spi-mem dirmap API
-Date: Tue, 15 Jan 2019 17:45:38 +0100
-Message-ID: <20190115174538.0922e193@xps13>
-References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
- <20181106160536.13415-7-boris.brezillon@bootlin.com>
+From: David Lechner <david@lechnology.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix DMA and FIFO event trigger size
+ mismatch
+Date: Tue, 15 Jan 2019 10:48:35 -0600
+Message-ID: <6a923c36-2b61-9f9c-d965-b99dc6831070@lechnology.com>
+References: <20190115065832.23705-1-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>,
- Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-spi@vger.kernel.org,
- Marek Vasut <marek.vasut@gmail.com>,
- Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Piotr Bugalski <bugalski.piotr@gmail.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Boris Brezillon <boris.brezillon@bootlin.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20181106160536.13415-7-boris.brezillon@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190115065832.23705-1-vigneshr@ti.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
-d3JvdGUgb24gVHVlLCAgNiBOb3YgMjAxOAoxNzowNTozNSArMDEwMDoKCj4gTWFrZSB1c2Ugb2Yg
-dGhlIHNwaS1tZW0gZGlyZWN0IG1hcHBpbmcgQVBJIHRvIGxldCBhZHZhbmNlZCBjb250cm9sbGVy
-cwo+IG9wdGltaXplIHJlYWQvd3JpdGUgb3BlcmF0aW9ucyB3aGVuIHRoZXkgc3VwcG9ydCBkaXJl
-Y3QgbWFwcGluZy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJy
-ZXppbGxvbkBib290bGluLmNvbT4KPiBSZXZpZXdlZC1ieTogTWlxdWVsIFJheW5hbCA8bWlxdWVs
-LnJheW5hbEBib290bGluLmNvbT4KPiAtLS0KCkFwcGxpZWQgdG8gbmFuZC9uZXh0LgoKVGhhbmtz
-LApNaXF1w6hsCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KTGludXggTVREIGRpc2N1c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbXRkLwo=
+On 1/15/19 12:58 AM, Vignesh R wrote:
+> Commit b682cffa3ac6 ("spi: omap2-mcspi: Set FIFO DMA trigger level to word length")
+> broke SPI transfers where bits_per_word != 8. This is because of
+> mimsatch between McSPI FIFO level event trigger size (SPI word length) and
+> DMA request size(word length * maxburst). This leads to data
+> corruption, lockup and errors like:
+> 
+> 	spi1.0: EOW timed out
+> 
+> Fix this by setting DMA maxburst size to 1 so that
+> McSPI FIFO level event trigger size matches DMA request size.
+> 
+> Fixes: b682cffa3ac6 ("spi: omap2-mcspi: Set FIFO DMA trigger level to word length")
+> Cc: stable@vger.kernel.org
+> Reported-by: David Lechner <david@lechnology.com>
+> Tested-by: David Lechner <david@lechnology.com>
+> Signed-off-by: Vignesh R <vigneshr@ti.com>
+> ---
+>   drivers/spi/spi-omap2-mcspi.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index 2fd8881fcd65..8be304379628 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -623,8 +623,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+>   	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
+>   	cfg.src_addr_width = width;
+>   	cfg.dst_addr_width = width;
+> -	cfg.src_maxburst = es;
+> -	cfg.dst_maxburst = es;
+> +	cfg.src_maxburst = 1;
+> +	cfg.dst_maxburst = 1;
+>   
+>   	rx = xfer->rx_buf;
+>   	tx = xfer->tx_buf;
+> 
+
+Works for me.

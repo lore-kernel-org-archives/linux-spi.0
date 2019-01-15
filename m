@@ -1,69 +1,80 @@
-From: Martin Sperl <kernel@martin.sperl.org>
-Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync instead run teardown delayed
-Date: Tue, 15 Jan 2019 21:58:55 +0100
-Message-ID: <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
-References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com> <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org> <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com> <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org> <20190115192619.GG5522@sirena.org.uk>
-Mime-Version: 1.0 (1.0)
-Content-Type: text/plain;
-        charset=utf-8
-Content-Transfer-Encoding: 8BIT
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
+ instead run teardown delayed
+Date: Tue, 15 Jan 2019 21:25:39 +0000
+Message-ID: <20190115212539.GK5522@sirena.org.uk>
+References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
+ <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
+ <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
+ <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org>
+ <20190115192619.GG5522@sirena.org.uk>
+ <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+HmK7y6O+lKZIGkr"
 Cc: Jon Hunter <jonathanh@nvidia.com>,
         linux-tegra <linux-tegra@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+To: Martin Sperl <kernel@martin.sperl.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190115192619.GG5522@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-> On 15.01.2019, at 20:26, Mark Brown <broonie@kernel.org> wrote:
-> 
->> On Tue, Jan 15, 2019 at 06:39:27PM +0100, kernel@martin.sperl.org wrote:
->> 
->> Is it possible that the specific flash is not using the “normal” 
->> spi_pump_message, but spi_controller_mem_ops operations? 
-> 
-> Right, that's my best guess at the minute as well.
-> 
->> Maybe we are missing the teardown in that driver or something is
->> changing flags there.
-> 
->> grepping a bit:
-> 
->> I see spi_mem_access_start calling spi_flush_queue, which is calling
->> pump_message, which - if there is no transfer - will trigger a delayed
->> tear-down, while it maybe should not be doing that.
-> 
-> If nothing else it's inefficient.
-> 
->> Maybe spi_mem_access_end needs a call to spi_flush_queue as well?
-> 
-> Hrm, or needs to schedule the queue at any rate (though this will only
-> have an impact in the fairly unusual case where there's something
-> sharing the bus with a flash).
-> 
->> Unfortunately this is theoretical work and quite a lot of guesswork
->> without an actual device available for testing...
-> 
-> Indeed.
+--+HmK7y6O+lKZIGkr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Maybe a bigger change to the reduce the complexity of
-the state machine would solve that problem and also
-reduce code complexity... 
+On Tue, Jan 15, 2019 at 09:58:55PM +0100, Martin Sperl wrote:
 
-I may find some time over the weekend if no solution
-has been found until then.
+> Maybe a bigger change to the reduce the complexity of
+> the state machine would solve that problem and also
+> reduce code complexity...=20
 
-The way I would envision it it would have a “state”
-as a level (0=shutdown, 1=hw enabled, 2=in pump, 
-3=in transfer, 4=in hw-mode,...) and a complete
-to allow waking the shutdown thread (and by this
-avoiding the busy wait loop we have now).
-This would replace those idling, busy, and running flags.
+Yeah, that's where I was getting to with that test patch I posted.
 
-Drawback: it is invasive, but let us see what it
-really looks like...
+> I may find some time over the weekend if no solution
+> has been found until then.
 
-Martin
+Thanks for volunteering :)
+
+> The way I would envision it it would have a =E2=80=9Cstate=E2=80=9D
+> as a level (0=3Dshutdown, 1=3Dhw enabled, 2=3Din pump,=20
+> 3=3Din transfer, 4=3Din hw-mode,...) and a complete
+> to allow waking the shutdown thread (and by this
+> avoiding the busy wait loop we have now).
+> This would replace those idling, busy, and running flags.
+
+That's a good idea, yes - a single enum much more reflects what we can
+actually do in terms of transitions.
+
+> Drawback: it is invasive, but let us see what it
+> really looks like...
+
+I think we need to either drop your change (which would be bad since it
+is a big performance improvement, I'd punted it for later when I did the
+original refactoring to push the work into the caller threads then never
+got around to it) or have a invasive changes to make the new situation
+clearer.  Right now things are just far too complex to reason about
+which isn't helping anyone.
+
+--+HmK7y6O+lKZIGkr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw+T9IACgkQJNaLcl1U
+h9ApOAf+MWM+IL1uhFKV6QS0+G2LKoICXpAb4txk4+PMZjEneaHHCPyywK4NC02y
+gjnpm7BS+A4FuKfDvr2XRFBdd7fkj+08xBv9tGrmUpi4trayMablnZcwwZ293q47
+rxGIy+BkUTmzBxhM0Rk6JgI91ZCoUN5gnPrP3LpkfGNS8tcECdPyCJsQDXKqcSwj
+pNrVxHkArPPGFesoSQNxHDeuGvj0QNURq0kXCk4Dpiy9hvvucO6HImG38RNo5Yow
+tWWx3K4otQ3+eqiGWxML49BqATXtEs+MvKdfM8beeJAJWmqwam/+MSjYCSLzfPfK
+JB7+O0fGjQDtXFbkuA79qWMGmRENOQ==
+=LWLb
+-----END PGP SIGNATURE-----
+
+--+HmK7y6O+lKZIGkr--

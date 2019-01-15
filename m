@@ -1,170 +1,112 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH v7 1/5] spi: spi-mem: Add driver for NXP FlexSPI
- controller
-Date: Tue, 15 Jan 2019 10:35:35 +0000
-Message-ID: <7b9a91f5-7b80-85b3-c8c2-82436d89b195@kontron.de>
-References: <1547545697-4042-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1547545697-4042-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v8 0/5] spi: spi-mem: Add driver for NXP FlexSPI controller
+Date: Tue, 15 Jan 2019 12:00:09 +0000
+Message-ID: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1547545697-4042-2-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "robh@kernel.org" <robh@kernel.org>,
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "bbrezillon@kernel.org" <bbrezillon@kernel.org>, "marek.vasut@gmail.com"
+ <marek.vasut@gmail.com>, "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
 Content-Language: en-US
-Content-ID: <42DA41C8871B404AB70BFAC3A8A144A7@snt-world.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgWW9nZXNoLA0KDQpPbiAxNS4wMS4xOSAxMDo1MCwgWW9nZXNoIE5hcmF5YW4gR2F1ciB3cm90
-ZToNCj4gLSBBZGQgZHJpdmVyIGZvciBOWFAgRmxleFNQSSBob3N0IGNvbnRyb2xsZXINCj4gDQo+
-ICgwKSBXaGF0IGlzIHRoZSBGbGV4U1BJIGNvbnRyb2xsZXI/DQo+ICAgRmxleFNQSSBpcyBhIGZs
-ZXhzaWJsZSBTUEkgaG9zdCBjb250cm9sbGVyIHdoaWNoIHN1cHBvcnRzIHR3byBTUEkNCj4gICBj
-aGFubmVscyBhbmQgdXAgdG8gNCBleHRlcm5hbCBkZXZpY2VzLiBFYWNoIGNoYW5uZWwgc3VwcG9y
-dHMNCj4gICBTaW5nbGUvRHVhbC9RdWFkL09jdGFsIG1vZGUgZGF0YSB0cmFuc2ZlciAoMS8yLzQv
-OCBiaWRpcmVjdGlvbmFsDQo+ICAgZGF0YSBsaW5lcykgaS5lLiBGbGV4U1BJIGFjdHMgYXMgYW4g
-aW50ZXJmYWNlIHRvIGV4dGVybmFsIGRldmljZXMsDQo+ICAgbWF4aW11bSA0LCBlYWNoIHdpdGgg
-dXAgdG8gOCBiaWRpcmVjdGlvbmFsIGRhdGEgbGluZXMuDQo+IA0KPiAgIEl0IHVzZXMgbmV3IFNQ
-SSBtZW1vcnkgaW50ZXJmYWNlIG9mIHRoZSBTUEkgZnJhbWV3b3JrIHRvIGlzc3VlDQo+ICAgZmxh
-c2ggbWVtb3J5IG9wZXJhdGlvbnMgdG8gdXAgdG8gZm91ciBjb25uZWN0ZWQgZmxhc2gNCj4gICBk
-ZXZpY2VzICgyIGJ1c2VzIHdpdGggMiBDUyBlYWNoKS4NCj4gDQo+ICgxKSBUZXN0ZWQgdGhpcyBk
-cml2ZXIgd2l0aCB0aGUgbXRkX2RlYnVnIGFuZCBKRkZTMiBmaWxlc3lzdGVtIHV0aWxpdHkNCj4g
-ICBvbiBOWFAgTFgyMTYwQVJEQiBhbmQgTFgyMTYwQVFEUyB0YXJnZXRzLg0KPiAgIExYMjE2MEFS
-REIgaXMgaGF2aW5nIHR3byBOT1Igc2xhdmUgZGV2aWNlIGNvbm5lY3RlZCBvbiBzaW5nbGUgYnVz
-IEENCj4gICBpLmUuIEEwIGFuZCBBMSAoQ1MwIGFuZCBDUzEpLg0KPiAgIExYMjE2MEFRRFMgaXMg
-aGF2aW5nIHR3byBOT1Igc2xhdmUgZGV2aWNlIGNvbm5lY3RlZCBvbiBzZXBhcmF0ZSBidXNlcw0K
-PiAgIG9uZSBmbGFzaCBvbiBBMCBhbmQgc2Vjb25kIG9uIEIxIGkuZS4gKENTMCBhbmQgQ1MzKS4N
-Cj4gICBWZXJpZmllZCB0aGlzIGRyaXZlciBvbiBmb2xsb3dpbmcgU1BJIE5PUiBmbGFzaGVzOg0K
-PiAgICAgIE1pY3JvbiwgbXQzNXh1NTEyYWIsIFtSZWFkIC0gMSBiaXQgbW9kZV0NCj4gICAgICBD
-eXByZXNzLCBzMjVmbDUxMnMsIFtSZWFkIC0gMS8yLzQgYml0IG1vZGVdDQo+IA0KPiBTaWduZWQt
-b2ZmLWJ5OiBZb2dlc2ggTmFyYXlhbiBHYXVyIDx5b2dlc2huYXJheWFuLmdhdXJAbnhwLmNvbT4N
-Cj4gLS0tDQo+IENoYW5nZXMgZm9yIHY3Og0KPiAtIEFkZCBmdW5jIHBvaW50ZXIgZm9yICcuZ2V0
-X25hbWUnIGZvciBzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXJfbWVtX29wcw0KPiAtIEFkZCBpbnB1dCBh
-ZGRyZXNzIHJhbmdlIGNoZWNrIGFzIHBlciBjb250cm9sbGVyIG1lbW9yeSBtYXBwZWQgc3BhY2UN
-Cj4gLSBVcGRhdGUgX2ZpbGxfdHhmaWZvL19yZWFkX3J4ZmlmbyBmdW5jcyBhcyBwZXIgRnJpZWRl
-ciByZXZpZXcgY29tbWVudHMNCj4gQ2hhbmdlcyBmb3IgdjY6DQo+IC0gUmViYXNlIG9uIHRvcCBv
-ZiB2NS4wLXJjMQ0KPiAtIFVwZGF0ZWQgYXMgcGVyIEZyaWVkZXIgcmV2aWV3IGNvbW1lbnRzIGFu
-ZCBwZXJmb3JtIGNvZGUgY2xlYW51cA0KPiAtIFVwZGF0ZWQgX2ZpbGxfdHhmaWZvL19yZWFkX3J4
-ZmlmbyBmdW5jIHdyaXRlL3JlYWQgbG9naWMNCj4gQ2hhbmdlcyBmb3IgdjU6DQo+IC0gUmViYXNl
-IG9uIHRvcCBvZiB2NC4yMC1yYzINCj4gLSBNb2RpZmllZCBmc3BpX3JlYWRsX3BvbGxfdG91dCgp
-IGFzIHBlciByZXZpZXcgY29tbWVudHMNCj4gLSBBcnJhbmdlIGhlYWRlciBmaWxlIGluIGFscGhh
-YmV0aWNhbCBvcmRlcg0KPiAtIFJlbW92ZWQgdXNhZ2Ugb2YgcmVhZCgpL3dyaXRlKCkgZnVuY3Rp
-b24gY2FsbGJhY2sgcG9pbnRlcg0KPiAtIEFkZCBzdXBwb3J0IGZvciAxIGFuZCAyIGJ5dGUgYWRk
-cmVzcyBsZW5ndGgNCj4gLSBDaGFuZ2UgRnJpZWRlciBlLW1haWwgdG8gbmV3IGUtbWFpbCBhZGRy
-ZXNzDQo+IENoYW5nZXMgZm9yIHY0Og0KPiAtIEluY29ycG9yYXRlIEJvcmlzIHJldmlldyBjb21t
-ZW50cw0KPiAgICAqIFVzZSByZWFkbF9wb2xsX3RpbWVvdXQoKSBpbnN0ZWFkIG9mIGJ1c3kgbG9v
-cGluZy4NCj4gICAgKiBSZS1kZWZpbmUgcmVnaXN0ZXIgbWFza2luZyBhcyBwZXIgY29tbWVudC4N
-Cj4gICAgKiBEcm9wIGZzcGlfZGV2dHlwZSBlbnVtLg0KPiBDaGFuZ2VzIGZvciB2MzoNCj4gLSBB
-ZGRlZCBlbmRpYW5uZXNzIGZsYWcgaW4gcGxhdGZvcm0gc3BlY2lmaWMgc3RydWN0dXJlIGluc3Rl
-YWQgb2YgRFRTLg0KPiAtIE1vZGlmaWVkIG54cF9mc3BpX3JlYWRfYWhiKCksIHJlbW92ZWQgcmVt
-YXBwaW5nIGNvZGUuDQo+IC0gQWRkZWQgQm9yaXMgYW5kIEZyaWVkZXIgYXMgQXV0aG9yIGFuZCBw
-cm92aWRlZCByZWZlcmVuY2Ugb2Ygc3BpLWZzbC1xc3BpLmMNCj4gQ2hhbmdlcyBmb3IgdjI6DQo+
-IC0gSW5jb3Jwb3JhdGVkIEJvcmlzIHJldmlldyBjb21tZW50cy4NCj4gLSBSZW1vdmUgZGVwZW5k
-ZW5jeSBvZiBkcml2ZXIgb3ZlciBjb25uZWN0ZWQgZmxhc2ggZGV2aWNlIHNpemUuDQo+IC0gTW9k
-aWZpZWQgdGhlIGxvZ2ljIHRvIHNlbGVjdCByZXF1ZXN0ZWQgQ1MuDQo+IC0gUmVtb3ZlIFNQSS1P
-Y3RhbCBNYWNyb3MuDQo+IA0KPiAgIGRyaXZlcnMvc3BpL0tjb25maWcgICAgICAgIHwgICAxMCAr
-DQo+ICAgZHJpdmVycy9zcGkvTWFrZWZpbGUgICAgICAgfCAgICAxICsNCj4gICBkcml2ZXJzL3Nw
-aS9zcGktbnhwLWZzcGkuYyB8IDExMDUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrDQo+ICAgMyBmaWxlcyBjaGFuZ2VkLCAxMTE2IGluc2VydGlvbnMoKykNCj4gICBjcmVhdGUg
-bW9kZSAxMDA2NDQgZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLmMNCj4gDQpbLi4uXQ0KPiArDQo+
-ICtzdGF0aWMgYm9vbCBueHBfZnNwaV9zdXBwb3J0c19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLA0K
-PiArCQkJCSBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQo+ICt7DQo+ICsJc3RydWN0IG54
-cF9mc3BpICpmID0gc3BpX2NvbnRyb2xsZXJfZ2V0X2RldmRhdGEobWVtLT5zcGktPm1hc3Rlcik7
-DQo+ICsJaW50IHJldDsNCj4gKw0KPiArCXJldCA9IG54cF9mc3BpX2NoZWNrX2J1c3dpZHRoKGYs
-IG9wLT5jbWQuYnVzd2lkdGgpOw0KPiArDQo+ICsJaWYgKG9wLT5hZGRyLm5ieXRlcykNCj4gKwkJ
-cmV0IHw9IG54cF9mc3BpX2NoZWNrX2J1c3dpZHRoKGYsIG9wLT5hZGRyLmJ1c3dpZHRoKTsNCj4g
-Kw0KPiArCWlmIChvcC0+ZHVtbXkubmJ5dGVzKQ0KPiArCQlyZXQgfD0gbnhwX2ZzcGlfY2hlY2tf
-YnVzd2lkdGgoZiwgb3AtPmR1bW15LmJ1c3dpZHRoKTsNCj4gKw0KPiArCWlmIChvcC0+ZGF0YS5u
-Ynl0ZXMpDQo+ICsJCXJldCB8PSBueHBfZnNwaV9jaGVja19idXN3aWR0aChmLCBvcC0+ZGF0YS5i
-dXN3aWR0aCk7DQo+ICsNCj4gKwlpZiAocmV0KQ0KPiArCQlyZXR1cm4gZmFsc2U7DQo+ICsNCj4g
-KwkvKg0KPiArCSAqIFRoZSBudW1iZXIgb2YgYWRkcmVzcyBieXRlcyBzaG91bGQgYmUgZXF1YWwg
-dG8gYW5kIGxlc3MgdGhhbiA0Ynl0ZXMuDQoNCk5pdHBpY2s6IHVzZSAib3IiIGluc3RlYWQgb2Yg
-ImFuZCIsIGFkZCBhIHNwYWNlIGJldHdlZW4gIjQiIGFuZCAiYnl0ZXMiLg0KDQo+ICsJICovDQo+
-ICsJaWYgKG9wLT5hZGRyLm5ieXRlcyA+IDQpDQo+ICsJCXJldHVybiBmYWxzZTsNCj4gKw0KPiAr
-CS8qDQo+ICsJICogSWYgcmVxdWVzdGVkIGFkZHJlc3MgdmFsdWUgaXMgZ3JlYXRlciB0aGFuIGNv
-bnRyb2xsZXIgYXNzaWduZWQNCj4gKwkgKiBtZW1vcnkgbWFwcGVkIHNwYWNlLCByZXR1cm4gZXJy
-b3IgYXMgaXQgZGlkbid0IGZpdCBpbiB0aGUgcmFuZ2UNCj4gKwkgKiBvZiBhc3NpZ25lZCBhZGRy
-ZXNzIHNwYWNlLg0KPiArCSAqLw0KPiArCWlmIChvcC0+YWRkci52YWwgPj0gZi0+bWVtbWFwX3Bo
-eV9zaXplKQ0KPiArCQlyZXR1cm4gZmFsc2U7DQo+ICsNCj4gKwkvKiBNYXggNjQgZHVtbXkgY2xv
-Y2sgY3ljbGVzIHN1cHBvcnRlZCAqLw0KPiArCWlmIChvcC0+ZHVtbXkuYnVzd2lkdGggJiYNCj4g
-KwkgICAgKG9wLT5kdW1teS5uYnl0ZXMgKiA4IC8gb3AtPmR1bW15LmJ1c3dpZHRoID4gNjQpKQ0K
-PiArCQlyZXR1cm4gZmFsc2U7DQo+ICsNCj4gKwkvKiBNYXggZGF0YSBsZW5ndGgsIGNoZWNrIGNv
-bnRyb2xsZXIgbGltaXRzIGFuZCBhbGlnbm1lbnQgKi8NCj4gKwlpZiAob3AtPmRhdGEuZGlyID09
-IFNQSV9NRU1fREFUQV9JTiAmJg0KPiArCSAgICAob3AtPmRhdGEubmJ5dGVzID4gZi0+ZGV2dHlw
-ZV9kYXRhLT5haGJfYnVmX3NpemUgfHwNCj4gKwkgICAgIChvcC0+ZGF0YS5uYnl0ZXMgPiBmLT5k
-ZXZ0eXBlX2RhdGEtPnJ4ZmlmbyAtIDQgJiYNCj4gKwkgICAgICAhSVNfQUxJR05FRChvcC0+ZGF0
-YS5uYnl0ZXMsIDgpKSkpDQo+ICsJCXJldHVybiBmYWxzZTsNCj4gKw0KPiArCWlmIChvcC0+ZGF0
-YS5kaXIgPT0gU1BJX01FTV9EQVRBX09VVCAmJg0KPiArCSAgICBvcC0+ZGF0YS5uYnl0ZXMgPiBm
-LT5kZXZ0eXBlX2RhdGEtPnR4ZmlmbykNCj4gKwkJcmV0dXJuIGZhbHNlOw0KPiArDQo+ICsJcmV0
-dXJuIHRydWU7DQo+ICt9DQpbLi4uXQ0KPiArc3RhdGljIHZvaWQgbnhwX2ZzcGlfZmlsbF90eGZp
-Zm8oc3RydWN0IG54cF9mc3BpICpmLA0KPiArCQkJCSBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAq
-b3ApDQo+ICt7DQo+ICsJdm9pZCBfX2lvbWVtICpiYXNlID0gZi0+aW9iYXNlOw0KPiArCWludCBp
-LCByZXQ7DQo+ICsNCj4gKwkvKiBjbGVhciB0aGUgVFggRklGTy4gKi8NCj4gKwlmc3BpX3dyaXRl
-bChmLCBGU1BJX0lQVFhGQ1JfQ0xSLCBiYXNlICsgRlNQSV9JUFRYRkNSKTsNCj4gKw0KPiArCS8q
-DQo+ICsJICogRGVmYXVsdCB2YWx1ZSBvZiB3YXRlciBtYXJrIGxldmVsIGlzIDggYnl0ZXMsIGhl
-bmNlIGluIHNpbmdsZQ0KPiArCSAqIHdyaXRlIHJlcXVlc3QgY29udHJvbGxlciBjYW4gd3JpdGUg
-bWF4IDggYnl0ZXMgb2YgZGF0YS4NCj4gKwkgKi8NCj4gKw0KPiArCWZvciAoaSA9IDA7IGkgPCBB
-TElHTl9ET1dOKG9wLT5kYXRhLm5ieXRlcywgOCk7IGkgKz0gOCkgew0KPiArCQkvKiBXYWl0IGZv
-ciBUWEZJRk8gZW1wdHkgKi8NCj4gKwkJcmV0ID0gZnNwaV9yZWFkbF9wb2xsX3RvdXQoZiwgZi0+
-aW9iYXNlICsgRlNQSV9JTlRSLA0KPiArCQkJCQkgICBGU1BJX0lOVFJfSVBUWFdFLCAwLA0KPiAr
-CQkJCQkgICBQT0xMX1RPVVQsIHRydWUpOw0KPiArCQlXQVJOX09OKHJldCk7DQo+ICsNCj4gKwkJ
-ZnNwaV93cml0ZWwoZiwgKih1MzIgKikgKCh1OCAqKW9wLT5kYXRhLmJ1Zi5vdXQgKyBpKSwNCj4g
-KwkJCSAgICBiYXNlICsgRlNQSV9URkRSKTsNCj4gKwkJZnNwaV93cml0ZWwoZiwgKih1MzIgKikg
-KCh1OCAqKW9wLT5kYXRhLmJ1Zi5vdXQgKyBpICsgNCksDQo+ICsJCQkgICAgYmFzZSArIEZTUElf
-VEZEUiArIDQpOw0KDQpOaXRwaWNrOiBBZGQgYSAidTggKmJ1ZiA9ICh1OCAqKW9wLT5kYXRhLmJ1
-Zi5vdXQiIHRvIHRoZSB0b3Agb2YgdGhlIA0KZnVuY3Rpb24gYW5kIHVzZSBpdCBoZXJlLi4uDQoN
-Cj4gKwkJZnNwaV93cml0ZWwoZiwgRlNQSV9JTlRSX0lQVFhXRSwgYmFzZSArIEZTUElfSU5UUik7
-DQo+ICsJfQ0KPiArDQo+ICsJaWYgKGkgPCBvcC0+ZGF0YS5uYnl0ZXMpIHsNCj4gKwkJdTMyIGRh
-dGEgPSAwOw0KPiArCQlpbnQgajsNCj4gKwkJLyogV2FpdCBmb3IgVFhGSUZPIGVtcHR5ICovDQo+
-ICsJCXJldCA9IGZzcGlfcmVhZGxfcG9sbF90b3V0KGYsIGYtPmlvYmFzZSArIEZTUElfSU5UUiwN
-Cj4gKwkJCQkJICAgRlNQSV9JTlRSX0lQVFhXRSwgMCwNCj4gKwkJCQkJICAgUE9MTF9UT1VULCB0
-cnVlKTsNCj4gKwkJV0FSTl9PTihyZXQpOw0KPiArDQo+ICsJCWZvciAoaiA9IDA7IGogPCBBTElH
-TihvcC0+ZGF0YS5uYnl0ZXMgLSBpLCA0KTsgaiArPSA0KSB7DQo+ICsJCQltZW1jcHkoJmRhdGEs
-IG9wLT5kYXRhLmJ1Zi5vdXQgKyBpICsgaiwgNCk7DQoNCi4uLmFuZCBhbHNvIGhlcmUuDQoNCj4g
-KwkJCWZzcGlfd3JpdGVsKGYsIGRhdGEsIGJhc2UgKyBGU1BJX1RGRFIgKyBqKTsNCj4gKwkJfQ0K
-PiArCQlmc3BpX3dyaXRlbChmLCBGU1BJX0lOVFJfSVBUWFdFLCBiYXNlICsgRlNQSV9JTlRSKTsN
-Cj4gKwl9DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIG54cF9mc3BpX3JlYWRfcnhmaWZvKHN0
-cnVjdCBueHBfZnNwaSAqZiwNCj4gKwkJCSAgY29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0K
-PiArew0KPiArCXZvaWQgX19pb21lbSAqYmFzZSA9IGYtPmlvYmFzZTsNCj4gKwlpbnQgaSwgcmV0
-Ow0KPiArCWludCBsZW4gPSBvcC0+ZGF0YS5uYnl0ZXM7DQo+ICsJdTggKmJ1ZiA9ICh1OCAqKSBv
-cC0+ZGF0YS5idWYuaW47DQo+ICsNCj4gKwkvKg0KPiArCSAqIERlZmF1bHQgdmFsdWUgb2Ygd2F0
-ZXIgbWFyayBsZXZlbCBpcyA4IGJ5dGVzLCBoZW5jZSBpbiBzaW5nbGUNCj4gKwkgKiByZWFkIHJl
-cXVlc3QgY29udHJvbGxlciBjYW4gcmVhZCBtYXggOCBieXRlcyBvZiBkYXRhLg0KPiArCSAqLw0K
-PiArCWZvciAoaSA9IDA7IGkgPCBBTElHTl9ET1dOKGxlbiwgOCk7IGkgKz0gOCkgew0KPiArCQkv
-KiBXYWl0IGZvciBSWEZJRk8gYXZhaWxhYmxlICovDQo+ICsJCXJldCA9IGZzcGlfcmVhZGxfcG9s
-bF90b3V0KGYsIGYtPmlvYmFzZSArIEZTUElfSU5UUiwNCj4gKwkJCQkJICAgRlNQSV9JTlRSX0lQ
-UlhXQSwgMCwNCj4gKwkJCQkJICAgUE9MTF9UT1VULCB0cnVlKTsNCj4gKwkJV0FSTl9PTihyZXQp
-Ow0KPiArDQo+ICsJCSoodTMyICopKGJ1ZiArIGkpID0gZnNwaV9yZWFkbChmLCBiYXNlICsgRlNQ
-SV9SRkRSKTsNCj4gKwkJKih1MzIgKikoYnVmICsgaSArIDQpID0gZnNwaV9yZWFkbChmLCBiYXNl
-ICsgRlNQSV9SRkRSICsgNCk7DQo+ICsJCS8qIG1vdmUgdGhlIEZJRk8gcG9pbnRlciAqLw0KPiAr
-CQlmc3BpX3dyaXRlbChmLCBGU1BJX0lOVFJfSVBSWFdBLCBiYXNlICsgRlNQSV9JTlRSKTsNCj4g
-Kwl9DQo+ICsNCj4gKwlpZiAoaSA8IGxlbikgew0KPiArCQl1MzIgdG1wOw0KPiArCQlpbnQgc2l6
-ZSwgajsNCj4gKw0KPiArCQlidWYgPSBvcC0+ZGF0YS5idWYuaW4gKyBpOw0KPiArCQkvKiBXYWl0
-IGZvciBSWEZJRk8gYXZhaWxhYmxlICovDQo+ICsJCXJldCA9IGZzcGlfcmVhZGxfcG9sbF90b3V0
-KGYsIGYtPmlvYmFzZSArIEZTUElfSU5UUiwNCj4gKwkJCQkJICAgRlNQSV9JTlRSX0lQUlhXQSwg
-MCwNCj4gKwkJCQkJICAgUE9MTF9UT1VULCB0cnVlKTsNCj4gKwkJV0FSTl9PTihyZXQpOw0KPiAr
-DQo+ICsJCWxlbiA9IG9wLT5kYXRhLm5ieXRlcyAtIGk7DQo+ICsJCWZvciAoaiA9IDA7IGogPCAo
-QUxJR04obGVuLCA0KSkvNDsgaisrLCBidWYgKz0gc2l6ZSkgew0KPiArCQkJdG1wID0gZnNwaV9y
-ZWFkbChmLCBiYXNlICsgRlNQSV9SRkRSICsgaiAqIDQpOw0KPiArCQkJc2l6ZSA9IG1pbihsZW4s
-IDQpOw0KPiArCQkJbWVtY3B5KGJ1ZiwgJnRtcCwgc2l6ZSk7DQo+ICsJCX0NCg0KSW4gdGhlIHNl
-Y29uZCBpdGVyYXRpb24gb2YgdGhpcyBsb29wLCB0aGUgY2FsY3VsYXRpb24gb2Ygc2l6ZSBzZWVt
-cyANCndyb25nLCBhcyBsZW4gaGFzIG5vdCBjaGFuZ2VkLg0KDQpNYXliZSB0aGlzIGNvdWxkIHdv
-cms/Og0KDQpsZW4gPSBvcC0+ZGF0YS5uYnl0ZXMgLSBpOw0KZm9yIChqID0gMDsgaiA8IG9wLT5k
-YXRhLm5ieXRlcyAtIGk7IGogKz0gNCkgew0KCXRtcCA9IGZzcGlfcmVhZGwoZiwgYmFzZSArIEZT
-UElfUkZEUiArIGopOw0KCXNpemUgPSBtaW4obGVuLCA0KTsNCgltZW1jcHkoYnVmICsgaiwgJnRt
-cCwgc2l6ZSk7DQoJbGVuIC09IHNpemU7DQp9DQoNCldoZW4gdGhpcyBpcyBmaXhlZCBhbmQgdGVz
-dGVkIHlvdSBjYW4gYWRkOg0KDQpSZXZpZXdlZC1ieTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRl
-ci5zY2hyZW1wZkBrb250cm9uLmRlPg0KDQpUaGFua3MsDQpGcmllZGVy
+- Add driver for NXP FlexSPI host controller
+
+ FlexSPI is a flexsible SPI host controller [1], Chapter 30 page 1475,
+ which supports two SPI channels and up to 4 external devices.
+ Each channel supports Single/Dual/Quad/Octal mode data transfer (1/2/4/8 bidirectional data lines)
+ i.e. FlexSPI acts as an interface to external devices, maximum 4, each with up to 8
+ bidirectional data lines.
+
+- Tested this driver with mtd_debug(Erase/Write/Read) utility and JFFS2
+ filesystem mounting and booting on NXP LX2160ARDB[2] and LX2160AQDS targets.
+ LX2160ARDB is having two NOR slave device connected on single bus A
+ i.e. A0 and A1 (CS0 and CS1).
+ LX2160AQDS is having two NOR slave device connected on separate buses
+ one flash on A0 and second on B1 i.e. (CS0 and CS3).
+ Verified this driver on following SPI NOR flashes:
+   Micron, mt35xu512aba, [Read - 1 bit mode]
+   Cypress, s25fl512s, [Read - 1/2/4 bit mode]
+
+[1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
+[2] https://patchwork.kernel.org/project/linux-arm-kernel/list/?submitter=182097
+
+Yogesh Narayan Gaur (5):
+  spi: spi-mem: Add driver for NXP FlexSPI controller
+  dt-bindings: spi: add binding file for NXP FlexSPI controller
+  arm64: dts: lx2160a: add FlexSPI node property
+  arm64: defconfig: enable NXP FlexSPI driver
+  MAINTAINERS: add maintainers for the NXP FlexSPI driver
+
+Changes for v8:
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'
+- Update MAINTAINERS file
+Changes for v7:
+- Rebase on top of SPI tree
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/
+  branch: for-next
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+Changes for v6:
+- Rebase on top of v5.0-rc1.
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+- Updated s-b tag in all patches.
+Changes for v5:
+- Rebase on top of v4.20-rc2
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+Changes for v4:
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+- Incorporated binding file review comments.
+Changes for v3:
+- Incorporated review comments for
+  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+Changes for v2:
+- Incorporated Boris review comments and drop below patches as per the comments.
+ - Patch 'spi: add slave device size in spi_device struct'
+ - Patch 'spi: add flags for octal I/O data transfer'
+- Incorporated DTS and Binding file review comments of Shawn Guo and Rob Herring.
+
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt  |   39 +
+ MAINTAINERS                                   |    8 +
+ .../boot/dts/freescale/fsl-lx2160a-rdb.dts    |   22 +
+ .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi |   13 +
+ arch/arm64/configs/defconfig                  |    1 +
+ drivers/spi/Kconfig                           |   10 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/spi-nxp-fspi.c                    | 1105 +++++++++++++++++
+ 8 files changed, 1199 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+ create mode 100644 drivers/spi/spi-nxp-fspi.c
+
+-- 
+2.17.1
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

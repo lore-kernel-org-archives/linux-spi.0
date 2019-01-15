@@ -1,112 +1,102 @@
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: [PATCH v8 0/5] spi: spi-mem: Add driver for NXP FlexSPI controller
-Date: Tue, 15 Jan 2019 12:00:09 +0000
-Message-ID: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH v8 2/5] dt-bindings: spi: add binding file for NXP FlexSPI
+ controller
+Date: Tue, 15 Jan 2019 12:00:20 +0000
+Message-ID: <1547553487-9936-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+References: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "robh@kernel.org" <robh@kernel.org>,
- Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 To: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "bbrezillon@kernel.org" <bbrezillon@kernel.org>, "marek.vasut@gmail.com"
- <marek.vasut@gmail.com>, "broonie@kernel.org" <broonie@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-- Add driver for NXP FlexSPI host controller
+Add binding file for NXP FlexSPI controller
 
- FlexSPI is a flexsible SPI host controller [1], Chapter 30 page 1475,
- which supports two SPI channels and up to 4 external devices.
- Each channel supports Single/Dual/Quad/Octal mode data transfer (1/2/4/8 bidirectional data lines)
- i.e. FlexSPI acts as an interface to external devices, maximum 4, each with up to 8
- bidirectional data lines.
-
-- Tested this driver with mtd_debug(Erase/Write/Read) utility and JFFS2
- filesystem mounting and booting on NXP LX2160ARDB[2] and LX2160AQDS targets.
- LX2160ARDB is having two NOR slave device connected on single bus A
- i.e. A0 and A1 (CS0 and CS1).
- LX2160AQDS is having two NOR slave device connected on separate buses
- one flash on A0 and second on B1 i.e. (CS0 and CS3).
- Verified this driver on following SPI NOR flashes:
-   Micron, mt35xu512aba, [Read - 1 bit mode]
-   Cypress, s25fl512s, [Read - 1/2/4 bit mode]
-
-[1] https://www.nxp.com/docs/en/reference-manual/IMXRT1050RM.pdf
-[2] https://patchwork.kernel.org/project/linux-arm-kernel/list/?submitter=182097
-
-Yogesh Narayan Gaur (5):
-  spi: spi-mem: Add driver for NXP FlexSPI controller
-  dt-bindings: spi: add binding file for NXP FlexSPI controller
-  arm64: dts: lx2160a: add FlexSPI node property
-  arm64: defconfig: enable NXP FlexSPI driver
-  MAINTAINERS: add maintainers for the NXP FlexSPI driver
-
+Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
 Changes for v8:
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'
-- Update MAINTAINERS file
+- None
 Changes for v7:
-- Rebase on top of SPI tree
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/
-  branch: for-next
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+- None
 Changes for v6:
-- Rebase on top of v5.0-rc1.
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
-- Updated s-b tag in all patches.
+- None
 Changes for v5:
-- Rebase on top of v4.20-rc2
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+- None
 Changes for v4:
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
-- Incorporated binding file review comments.
+- Incorporated Rob review comments.
 Changes for v3:
-- Incorporated review comments for
-  patch 'spi: spi-mem: Add driver for NXP FlexSPI controller'.
+- Removed node property 'big-endian'.
 Changes for v2:
-- Incorporated Boris review comments and drop below patches as per the comments.
- - Patch 'spi: add slave device size in spi_device struct'
- - Patch 'spi: add flags for octal I/O data transfer'
-- Incorporated DTS and Binding file review comments of Shawn Guo and Rob Herring.
+- Incorporated Rob review comments.
 
- .../devicetree/bindings/spi/spi-nxp-fspi.txt  |   39 +
- MAINTAINERS                                   |    8 +
- .../boot/dts/freescale/fsl-lx2160a-rdb.dts    |   22 +
- .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi |   13 +
- arch/arm64/configs/defconfig                  |    1 +
- drivers/spi/Kconfig                           |   10 +
- drivers/spi/Makefile                          |    1 +
- drivers/spi/spi-nxp-fspi.c                    | 1105 +++++++++++++++++
- 8 files changed, 1199 insertions(+)
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt  | 39 +++++++++++++++++++
+ 1 file changed, 39 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
- create mode 100644 drivers/spi/spi-nxp-fspi.c
 
--- 
+diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Docum=
+entation/devicetree/bindings/spi/spi-nxp-fspi.txt
+new file mode 100644
+index 000000000000..2cd67eb727d4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+@@ -0,0 +1,39 @@
++* NXP Flex Serial Peripheral Interface (FSPI)
++
++Required properties:
++  - compatible : Should be "nxp,lx2160a-fspi"
++  - reg :        First contains the register location and length,
++                 Second contains the memory mapping address and length
++  - reg-names :  Should contain the resource reg names:
++	         - fspi_base: configuration register address space
++                 - fspi_mmap: memory mapped address space
++  - interrupts : Should contain the interrupt for the device
++
++Required SPI slave node properties:
++  - reg :        There are two buses (A and B) with two chip selects each.
++                 This encodes to which bus and CS the flash is connected:
++                 - <0>: Bus A, CS 0
++                 - <1>: Bus A, CS 1
++                 - <2>: Bus B, CS 0
++                 - <3>: Bus B, CS 1
++
++Example showing the usage of two SPI NOR slave devices on bus A:
++
++fspi0: spi@20c0000 {
++	compatible =3D "nxp,lx2160a-fspi";
++	reg =3D <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0 0x10000000>;
++	reg-names =3D "fspi_base", "fspi_mmap";
++	interrupts =3D <0 25 0x4>; /* Level high type */
++	clocks =3D <&clockgen 4 3>, <&clockgen 4 3>;
++	clock-names =3D "fspi_en", "fspi";
++
++	mt35xu512aba0: flash@0 {
++		reg =3D <0>;
++		....
++	};
++
++	mt35xu512aba1: flash@1 {
++		reg =3D <1>;
++		....
++	};
++};
+--=20
 2.17.1
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,65 +1,285 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 4/4] spi: sprd: Add DMA mode support
-Date: Tue, 15 Jan 2019 14:30:42 +0000
-Message-ID: <20190115143042.GB5522@sirena.org.uk>
-References: <ab49bb74e921474aa9390f81cdf65f32c3d9d898.1547559542.git.baolin.wang@linaro.org>
- <324f3106dbff2f28baae098b05219f1384fda97a.1547559542.git.baolin.wang@linaro.org>
+Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
+ instead run teardown delayed
+Date: Tue, 15 Jan 2019 15:10:09 +0000
+Message-ID: <20190115151009.GC5522@sirena.org.uk>
+References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
+ <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
+ <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9zSXsLTf0vkW971A"
-Cc: robh+dt@kernel.org, mark.rutland@arm.com, orsonzhai@gmail.com,
-        zhang.lyra@gmail.com, lanqing.liu@unisoc.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Baolin Wang <baolin.wang@linaro.org>
+        protocol="application/pgp-signature"; boundary="1SQmhf2mF2YjsYvc"
+Cc: Martin Sperl <kernel@martin.sperl.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+To: Jon Hunter <jonathanh@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <324f3106dbff2f28baae098b05219f1384fda97a.1547559542.git.baolin.wang@linaro.org>
+In-Reply-To: <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---9zSXsLTf0vkW971A
+--1SQmhf2mF2YjsYvc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 15, 2019 at 09:46:53PM +0800, Baolin Wang wrote:
-> From: Lanqing Liu <lanqing.liu@spreadtrum.com>
->=20
-> Add DMA mode support for the Spreadtrum SPI controller, and we will enable
-> SPI interrupt to help to complete the SPI transfer work in DMA mode.
+On Tue, Jan 15, 2019 at 02:26:02PM +0000, Jon Hunter wrote:
 
-Again this looks good, one thing to check though:
+> It seems that __spi_pump_messages() is getting called several times
+> during boot when registering the spi-flash, then after the spi-flash has
+> been registered, about a 1 sec later spi_pump_idle_teardown() is called
+> (as expected), but exits because 'ctlr->running' is true. However,
+> spi_pump_idle_teardown() is never called again and when we suspend we
+> are stuck in the busy/running state. In this case should something be
+> scheduling spi_pump_idle_teardown() again? Although even if it does I
+> don't see where the busy flag would be cleared in this path?
 
-> +static bool sprd_spi_can_dma(struct spi_controller *sctlr,
-> +			     struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +	struct sprd_spi *ss =3D spi_controller_get_devdata(sctlr);
-> +
-> +	return ss->dma.enable;
-> +}
+Right, I think with the current code we just shouldn't be checking for
+busy in teardown, since there's now a fairly big delay between idle and
+actually turning the hardware off the name is just super misleading and
+the logic confused.  I don't have time to test right now but does
+something like the below which changes it to a flag for the hardware
+being powered up work:
 
-Is it always a benefit to use DMA?  One reason this is a function rather
-than just a property is that even if the device can DMA any size of
-transfer often for short transfers the performance is better if you use
-PIO since the overhead of setting up the DMA controller, waiting and
-then taking the interrupt when it finishes ends up being more than the
-cost of just reading and writing directly to the FIFOs for PIO.
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 3b2a9a6b990d..0170b0ef5d37 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -358,9 +358,6 @@ static int stm32_qspi_setup(struct spi_device *spi)
+ 	struct stm32_qspi_flash *flash;
+ 	u32 cr, presc;
+=20
+-	if (ctrl->busy)
+-		return -EBUSY;
+-
+ 	if (!spi->max_speed_hz)
+ 		return -EINVAL;
+=20
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 5f19016bbf10..3d746a0782eb 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -152,11 +152,6 @@ static int ti_qspi_setup(struct spi_device *spi)
+ 	int clk_div =3D 0, ret;
+ 	u32 clk_ctrl_reg, clk_rate, clk_mask;
+=20
+-	if (spi->master->busy) {
+-		dev_dbg(qspi->dev, "master busy doing other transfers\n");
+-		return -EBUSY;
+-	}
+-
+ 	if (!qspi->spi_max_frequency) {
+ 		dev_err(qspi->dev, "spi max frequency not defined\n");
+ 		return -EINVAL;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 9f83e1b17aa1..a173a3114813 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -487,22 +487,6 @@ static int zynqmp_qspi_setup_transfer(struct spi_devic=
+e *qspi,
+ 	return 0;
+ }
+=20
+-/**
+- * zynqmp_qspi_setup:	Configure the QSPI controller
+- * @qspi:	Pointer to the spi_device structure
+- *
+- * Sets the operational mode of QSPI controller for the next QSPI transfer,
+- * baud rate and divisor value to setup the requested qspi clock.
+- *
+- * Return:	0 on success; error value otherwise.
+- */
+-static int zynqmp_qspi_setup(struct spi_device *qspi)
+-{
+-	if (qspi->master->busy)
+-		return -EBUSY;
+-	return 0;
+-}
+-
+ /**
+  * zynqmp_qspi_filltxfifo:	Fills the TX FIFO as long as there is room in
+  *				the FIFO or the bytes required to be
+@@ -1088,7 +1072,6 @@ static int zynqmp_qspi_probe(struct platform_device *=
+pdev)
+=20
+ 	master->num_chipselect =3D GQSPI_DEFAULT_NUM_CS;
+=20
+-	master->setup =3D zynqmp_qspi_setup;
+ 	master->set_cs =3D zynqmp_qspi_chipselect;
+ 	master->transfer_one =3D zynqmp_qspi_start_transfer;
+ 	master->prepare_transfer_hardware =3D zynqmp_prepare_transfer_hardware;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 06b9139664a3..6d10ad9d768f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1234,7 +1234,7 @@ static void __spi_pump_messages(struct spi_controller=
+ *ctlr, bool in_kthread)
+=20
+ 	/* Check if the queue is idle */
+ 	if (list_empty(&ctlr->queue) || !ctlr->running) {
+-		if (!ctlr->busy) {
++		if (!ctlr->hw_active) {
+ 			spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 			return;
+ 		}
+@@ -1252,10 +1252,10 @@ static void __spi_pump_messages(struct spi_controll=
+er *ctlr, bool in_kthread)
+ 		list_first_entry(&ctlr->queue, struct spi_message, queue);
+=20
+ 	list_del_init(&ctlr->cur_msg->queue);
+-	if (ctlr->busy)
++	if (ctlr->hw_active)
+ 		was_busy =3D true;
+ 	else
+-		ctlr->busy =3D true;
++		ctlr->hw_active =3D true;
+ 	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+=20
+ 	mutex_lock(&ctlr->io_mutex);
+@@ -1362,10 +1362,6 @@ static void spi_pump_idle_teardown(struct kthread_wo=
+rk *work)
+ 	if (ctlr->running)
+ 		goto out;
+=20
+-	/* if the controller is busy then exit */
+-	if (ctlr->busy)
+-		goto out;
+-
+ 	/* if the controller is idling then exit
+ 	 * this is actually a bit strange and would indicate that
+ 	 * this function is scheduled twice, which should not happen
+@@ -1374,7 +1370,6 @@ static void spi_pump_idle_teardown(struct kthread_wor=
+k *work)
+ 		goto out;
+=20
+ 	/* set up the initial states */
+-	ctlr->busy =3D false;
+ 	ctlr->idling =3D true;
+ 	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+=20
+@@ -1384,15 +1379,17 @@ static void spi_pump_idle_teardown(struct kthread_w=
+ork *work)
+ 	kfree(ctlr->dummy_tx);
+ 	ctlr->dummy_tx =3D NULL;
+=20
+-	/* unprepare hardware */
+-	if (ctlr->unprepare_transfer_hardware &&
+-	    ctlr->unprepare_transfer_hardware(ctlr))
+-		dev_err(&ctlr->dev,
+-			"failed to unprepare transfer hardware\n");
+-	/* handle pm */
+-	if (ctlr->auto_runtime_pm) {
+-		pm_runtime_mark_last_busy(ctlr->dev.parent);
+-		pm_runtime_put_autosuspend(ctlr->dev.parent);
++	if (ctlr->hw_active) {
++		/* unprepare hardware */
++		if (ctlr->unprepare_transfer_hardware &&
++		    ctlr->unprepare_transfer_hardware(ctlr))
++			dev_err(&ctlr->dev,
++				"failed to unprepare transfer hardware\n");
++		/* handle pm */
++		if (ctlr->auto_runtime_pm) {
++			pm_runtime_mark_last_busy(ctlr->dev.parent);
++			pm_runtime_put_autosuspend(ctlr->dev.parent);
++		}
+ 	}
+=20
+ 	/* mark controller as idle */
+@@ -1401,6 +1398,7 @@ static void spi_pump_idle_teardown(struct kthread_wor=
+k *work)
+ 	/* finally put us from idling into stopped */
+ 	spin_lock_irqsave(&ctlr->queue_lock, flags);
+ 	ctlr->idling =3D false;
++	ctlr->hw_active =3D false;
+=20
+ out:
+ 	spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+@@ -1411,7 +1409,7 @@ static int spi_init_queue(struct spi_controller *ctlr)
+ 	struct sched_param param =3D { .sched_priority =3D MAX_RT_PRIO - 1 };
+=20
+ 	ctlr->running =3D false;
+-	ctlr->busy =3D false;
++	ctlr->hw_active =3D false;
+=20
+ 	kthread_init_worker(&ctlr->kworker);
+ 	ctlr->kworker_task =3D kthread_run(kthread_worker_fn, &ctlr->kworker,
+@@ -1520,7 +1518,7 @@ static int spi_start_queue(struct spi_controller *ctl=
+r)
+=20
+ 	spin_lock_irqsave(&ctlr->queue_lock, flags);
+=20
+-	if (ctlr->running || ctlr->busy) {
++	if (ctlr->running || ctlr->hw_active) {
+ 		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 		return -EBUSY;
+ 	}
+@@ -1543,18 +1541,19 @@ static int spi_stop_queue(struct spi_controller *ct=
+lr)
+ 	spin_lock_irqsave(&ctlr->queue_lock, flags);
+=20
+ 	/*
+-	 * This is a bit lame, but is optimized for the common execution path.
+-	 * A wait_queue on the ctlr->busy could be used, but then the common
+-	 * execution path (pump_messages) would be required to call wake_up or
+-	 * friends on every SPI message. Do this instead.
++	 * This is a bit sad, but is optimized for the common execution path.
++	 * A wait_queue on the ctlr->hw_active could be used, but then
++	 * the common execution path (pump_messages) would be required
++	 * to call wake_up or friends on every SPI message. Do this
++	 * instead.
+ 	 */
+-	while ((!list_empty(&ctlr->queue) || ctlr->busy) && limit--) {
++	while ((!list_empty(&ctlr->queue) || ctlr->hw_active) && limit--) {
+ 		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 		usleep_range(10000, 11000);
+ 		spin_lock_irqsave(&ctlr->queue_lock, flags);
+ 	}
+=20
+-	if (!list_empty(&ctlr->queue) || ctlr->busy)
++	if (!list_empty(&ctlr->queue) || ctlr->hw_active)
+ 		ret =3D -EBUSY;
+ 	else
+ 		ctlr->running =3D false;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 79ad62e2487c..d9b7be89e50b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -343,7 +343,7 @@ static inline void spi_unregister_driver(struct spi_dri=
+ver *sdrv)
+  *                    in-flight message
+  * @cur_msg_mapped: message has been mapped for DMA
+  * @xfer_completion: used by core transfer_one_message()
+- * @busy: message pump is busy
++ * @hw_active: message pump has hardware powered up
+  * @running: message pump is running
+  * @rt: whether this queue is set to run as a realtime task
+  * @auto_runtime_pm: the core should ensure a runtime PM reference is held
+@@ -538,7 +538,7 @@ struct spi_controller {
+ 	struct list_head		queue;
+ 	struct spi_message		*cur_msg;
+ 	bool				idling;
+-	bool				busy;
++	bool				hw_active;
+ 	bool				running;
+ 	bool				rt;
+ 	bool				auto_runtime_pm;
 
---9zSXsLTf0vkW971A
+--1SQmhf2mF2YjsYvc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw97pEACgkQJNaLcl1U
-h9A9nAf+P9t2LyV+tEMCXlBQkjp0a/mBHna6R0+O2ldyqMIHvFWCYcTrED5sYgFq
-ijPCK+i2c5VdbhxEtOfSgyijaElF1E4GT5rqHMGpcBOsnGHvx0CbLYniyg1WE1xB
-nary/yQzFekPVbGunZnSQNcrIsgiKxBl5RuWhvzJH24X4uXNywQy0nr/ul3xgOcA
-jIOvRfmPOz3M7Rus9RdD+f7pJpIfsgskY58QTR8xid+DyIUH7f2PttbcsAKwSHfB
-Mq2EcAc9nDLP87ubjLGVc/E0JlSxeh5vunO5F/pmnJ1+2RPOvOBRXzYuexWG+uKN
-B0jSxQRAynE4YApO1KR6NUFk3DU/JQ==
-=1wSg
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw999AACgkQJNaLcl1U
+h9CFZgf/ZgHzpfNolv8wgO1rMfTckSe3KxszLPqo57EQEvboaSJ+fuCDdUe8X4x5
+z10gYX3HCEVaaUSCaO4QZS/JJwDrZfgOJ9gAJYATcsQ39xLo/j2QZCXAG4jrM8xg
+oXakulm6iXMAHnmo1pJUW1mAAwHCfIOBciCAMlWpnLLeD/TeK5vC2nGdeGxpQewg
+QxtBKKZexuokLtxpfx/GTtIsUQfgy83Q7dOZYwiNo/HviernlSEtK0o60eV95nFq
+YSfrf9X6dEcfP5r/l4T32ZQAT1rJ06t1M3smeETve3JnkZduYrSwr0h//EYWbaAu
+up2QjeCXy4UrVzxerhwwzZ/nEQ/Y6w==
+=q6jL
 -----END PGP SIGNATURE-----
 
---9zSXsLTf0vkW971A--
+--1SQmhf2mF2YjsYvc--

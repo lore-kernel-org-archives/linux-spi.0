@@ -1,50 +1,42 @@
-From: Jon Hunter <jonathanh@nvidia.com>
-Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
- instead run teardown delayed
-Date: Tue, 15 Jan 2019 16:09:14 +0000
-Message-ID: <313fc9d6-a142-91c2-8868-188bc70c019f@nvidia.com>
-References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
- <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
- <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
- <20190115151009.GC5522@sirena.org.uk>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v3 6/7] mtd: spinand: Use the spi-mem dirmap API
+Date: Tue, 15 Jan 2019 17:45:38 +0100
+Message-ID: <20190115174538.0922e193@xps13>
+References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+ <20181106160536.13415-7-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Martin Sperl <kernel@martin.sperl.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190115151009.GC5522@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-spi@vger.kernel.org,
+ Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ linux-mtd@lists.infradead.org, Piotr Bugalski <bugalski.piotr@gmail.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181106160536.13415-7-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-
-On 15/01/2019 15:10, Mark Brown wrote:
-> On Tue, Jan 15, 2019 at 02:26:02PM +0000, Jon Hunter wrote:
-> 
->> It seems that __spi_pump_messages() is getting called several times
->> during boot when registering the spi-flash, then after the spi-flash has
->> been registered, about a 1 sec later spi_pump_idle_teardown() is called
->> (as expected), but exits because 'ctlr->running' is true. However,
->> spi_pump_idle_teardown() is never called again and when we suspend we
->> are stuck in the busy/running state. In this case should something be
->> scheduling spi_pump_idle_teardown() again? Although even if it does I
->> don't see where the busy flag would be cleared in this path?
-> 
-> Right, I think with the current code we just shouldn't be checking for
-> busy in teardown, since there's now a fairly big delay between idle and
-> actually turning the hardware off the name is just super misleading and
-> the logic confused.  I don't have time to test right now but does
-> something like the below which changes it to a flag for the hardware
-> being powered up work:
-
-I tried your change but the same problem still persists.
-
-Cheers
-Jon
-
--- 
-nvpublic
+SGkgQm9yaXMsCgpCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJyZXppbGxvbkBib290bGluLmNvbT4g
+d3JvdGUgb24gVHVlLCAgNiBOb3YgMjAxOAoxNzowNTozNSArMDEwMDoKCj4gTWFrZSB1c2Ugb2Yg
+dGhlIHNwaS1tZW0gZGlyZWN0IG1hcHBpbmcgQVBJIHRvIGxldCBhZHZhbmNlZCBjb250cm9sbGVy
+cwo+IG9wdGltaXplIHJlYWQvd3JpdGUgb3BlcmF0aW9ucyB3aGVuIHRoZXkgc3VwcG9ydCBkaXJl
+Y3QgbWFwcGluZy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBCb3JpcyBCcmV6aWxsb24gPGJvcmlzLmJy
+ZXppbGxvbkBib290bGluLmNvbT4KPiBSZXZpZXdlZC1ieTogTWlxdWVsIFJheW5hbCA8bWlxdWVs
+LnJheW5hbEBib290bGluLmNvbT4KPiAtLS0KCkFwcGxpZWQgdG8gbmFuZC9uZXh0LgoKVGhhbmtz
+LApNaXF1w6hsCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KTGludXggTVREIGRpc2N1c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbXRkLwo=

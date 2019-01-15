@@ -1,54 +1,50 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH v8 5/7] ARM: dts: ls1021a: Remove fsl,qspi-has-second-chip
- as it is not used
-Date: Tue, 15 Jan 2019 15:24:01 +0000
-Message-ID: <7ffa6d92-3fdd-f838-ab6d-185ea5f1c103@kontron.de>
-References: <20190107092823.11188-1-frieder.schrempf@kontron.de>
- <20190107092823.11188-6-frieder.schrempf@kontron.de>
- <20190113033117.GG11426@dragon>
- <ee3eb5d5-4b04-002e-5e49-d4b766138ec5@kontron.de>
- <20190115151818.GD13895@dragon>
+From: Jon Hunter <jonathanh@nvidia.com>
+Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
+ instead run teardown delayed
+Date: Tue, 15 Jan 2019 16:09:14 +0000
+Message-ID: <313fc9d6-a142-91c2-8868-188bc70c019f@nvidia.com>
+References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
+ <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
+ <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
+ <20190115151009.GC5522@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-        "david.wolfe@nxp.com" <david.wolfe@nxp.com>,
-        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
-        "prabhakar.kushwaha@nxp.com" <prabhakar.kushwaha@nxp.com>,
-        "yogeshnarayan.gaur@nxp.com" <yogeshnarayan.gaur@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190115151818.GD13895@dragon>
+In-Reply-To: <20190115151009.GC5522@sirena.org.uk>
 Content-Language: en-US
-Content-ID: <A70D2C538BB6254E8E263CC9273AD2A0@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMTUuMDEuMTkgMTY6MTgsIFNoYXduIEd1byB3cm90ZToNCj4gT24gTW9uLCBKYW4gMTQsIDIw
-MTkgYXQgMDg6MTg6NDlBTSArMDAwMCwgU2NocmVtcGYgRnJpZWRlciB3cm90ZToNCj4+IEhpIFNo
-YXduLA0KPj4NCj4+IE9uIDEzLjAxLjE5IDA0OjMxLCBTaGF3biBHdW8gd3JvdGU6DQo+Pj4gT24g
-TW9uLCBKYW4gMDcsIDIwMTkgYXQgMDk6Mjk6NTRBTSArMDAwMCwgU2NocmVtcGYgRnJpZWRlciB3
-cm90ZToNCj4+Pj4gRnJvbTogRnJpZWRlciBTY2hyZW1wZiA8ZnJpZWRlci5zY2hyZW1wZkBrb250
-cm9uLmRlPg0KPj4+Pg0KPj4+PiBBZnRlciBzd2l0Y2hpbmcgdG8gdGhlIG5ldyBGU0wgUVNQSSBk
-cml2ZXIgdGhlIHByb3BlcnR5DQo+Pj4+ICdmc2wscXNwaS1oYXMtc2Vjb25kLWNoaXAnIGlzIG5v
-dCBuZWVkZWQgYW55bW9yZS4NCj4+Pj4NCj4+Pj4gVGhlIGRyaXZlciBub3cgdXNlcyB0aGUgJ3Jl
-ZycgcHJvcGVydHkgdG8gZGV0ZXJtaW5lIHRoZSBidXMgYW5kDQo+Pj4+IHRoZSBjaGlwc2VsZWN0
-Lg0KPj4+Pg0KPj4+PiBTaWduZWQtb2ZmLWJ5OiBGcmllZGVyIFNjaHJlbXBmIDxmcmllZGVyLnNj
-aHJlbXBmQGtvbnRyb24uZGU+DQo+Pj4NCj4+PiBBcHBsaWVkLCB0aGFua3MuDQo+Pg0KPj4gSSBq
-dXN0IG5vdGljZWQsIHRoYXQgdGhpcyBhbmQgdGhlIGFybTY0IHBhdGNoIGRlcGVuZCBvbiB0aGUg
-ZHJpdmVyDQo+PiBjaGFuZ2VzIGZvciA1LjEgdGhhdCBnbyB0aHJvdWdoIHRoZSBTUEkgdHJlZS4g
-U28gSSBndWVzcyB3ZSBjYW4ndCBiZQ0KPj4gc3VyZSB0aGF0IHRoaXMgd2lsbCBiZSBtZXJnZWQg
-aW4gdGhlIHJpZ2h0IG9yZGVyIGFuZCB3ZSBuZWVkIHRvIGRlbGF5DQo+PiB0aGlzIGNsZWFudXAg
-dG8gNS4yLCBvciBhbSBJIHdyb25nPw0KPiANCj4gWW91IGFyZSByaWdodC4gIEkganVzdCBkcm9w
-cGVkIHRoZSBib3RoIHBhdGNoZXMuICBQaW5nIG1lIG9yIHJlc2VuZCB3aGVuDQo+IHRoZXkgYXJl
-IHJlYWR5IHRvIGdvLg0KDQpUaGFua3MsIHdpbGwgZG8gc28uDQoNCkZyaWVkZXI=
+
+On 15/01/2019 15:10, Mark Brown wrote:
+> On Tue, Jan 15, 2019 at 02:26:02PM +0000, Jon Hunter wrote:
+> 
+>> It seems that __spi_pump_messages() is getting called several times
+>> during boot when registering the spi-flash, then after the spi-flash has
+>> been registered, about a 1 sec later spi_pump_idle_teardown() is called
+>> (as expected), but exits because 'ctlr->running' is true. However,
+>> spi_pump_idle_teardown() is never called again and when we suspend we
+>> are stuck in the busy/running state. In this case should something be
+>> scheduling spi_pump_idle_teardown() again? Although even if it does I
+>> don't see where the busy flag would be cleared in this path?
+> 
+> Right, I think with the current code we just shouldn't be checking for
+> busy in teardown, since there's now a fairly big delay between idle and
+> actually turning the hardware off the name is just super misleading and
+> the logic confused.  I don't have time to test right now but does
+> something like the below which changes it to a flag for the hardware
+> being powered up work:
+
+I tried your change but the same problem still persists.
+
+Cheers
+Jon
+
+-- 
+nvpublic

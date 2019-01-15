@@ -1,7 +1,7 @@
 From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 2/4] spi: sprd: Add the SPI irq function for the SPI DMA mode
-Date: Tue, 15 Jan 2019 21:46:51 +0800
-Message-ID: <ec1741f29c44c436c1086877ff5b208e6b8af45d.1547559542.git.baolin.wang@linaro.org>
+Subject: [PATCH 3/4] dt-bindings: spi: Add the DMA properties for the SPI dma mode
+Date: Tue, 15 Jan 2019 21:46:52 +0800
+Message-ID: <7538d5806003b8f67e7e0d35638315974b7c2b50.1547559542.git.baolin.wang@linaro.org>
 References: <ab49bb74e921474aa9390f81cdf65f32c3d9d898.1547559542.git.baolin.wang@linaro.org>
 Cc: orsonzhai@gmail.com, zhang.lyra@gmail.com, lanqing.liu@unisoc.com,
         baolin.wang@linaro.org, linux-spi@vger.kernel.org,
@@ -16,97 +16,40 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Lanqing Liu <lanqing.liu@spreadtrum.com>
 
-The SPI irq event will use to complete the SPI work in the SPI DMA mode,
-so this patch is a preparation for the following DMA mode support.
+Add the DMA properties for the SPI dma mode.
 
 Signed-off-by: Lanqing Liu <lanqing.liu@spreadtrum.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/spi/spi-sprd.c |   46 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-sprd.txt |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index fa324ce..bfba30b 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -133,6 +133,7 @@ struct sprd_spi {
- 	void __iomem *base;
- 	struct device *dev;
- 	struct clk *clk;
-+	int irq;
- 	u32 src_clk;
- 	u32 hw_mode;
- 	u32 trans_len;
-@@ -141,6 +142,7 @@ struct sprd_spi {
- 	u32 hw_speed_hz;
- 	u32 len;
- 	int status;
-+	struct completion xfer_completion;
- 	const void *tx_buf;
- 	void *rx_buf;
- 	int (*read_bufs)(struct sprd_spi *ss, u32 len);
-@@ -575,6 +577,45 @@ static int sprd_spi_transfer_one(struct spi_controller *sctlr,
- 	return ret;
- }
+diff --git a/Documentation/devicetree/bindings/spi/spi-sprd.txt b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+index bad211a..01ef53f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-sprd.txt
++++ b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+@@ -14,6 +14,12 @@ Required properties:
+ 	address on the SPI bus. Should be set to 1.
+ - #size-cells: Should be set to 0.
  
-+static irqreturn_t sprd_spi_handle_irq(int irq, void *data)
-+{
-+	struct sprd_spi *ss = (struct sprd_spi *)data;
-+	u32 val = readl_relaxed(ss->base + SPRD_SPI_INT_MASK_STS);
++Optional properties:
++dma-names: Should contain names of the SPI used DMA channel.
++dmas: Should contain DMA channels which the SPI used sorted in the
++	same order as the dma-names property.
++sprd,dma-slave-ids: Should contain the DMA number that the SPI hardware required.
 +
-+	if (val & SPRD_SPI_MASK_TX_END) {
-+		writel_relaxed(SPRD_SPI_TX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
-+		if (!(ss->trans_mode & SPRD_SPI_RX_MODE))
-+			complete(&ss->xfer_completion);
-+		return IRQ_HANDLED;
-+	}
-+
-+	if (val & SPRD_SPI_MASK_RX_END) {
-+		writel_relaxed(SPRD_SPI_RX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
-+		complete(&ss->xfer_completion);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int sprd_spi_irq_init(struct platform_device *pdev, struct sprd_spi *ss)
-+{
-+	int ret;
-+
-+	ss->irq = platform_get_irq(pdev, 0);
-+	if (ss->irq < 0) {
-+		dev_err(&pdev->dev, "failed to get irq resource\n");
-+		return ss->irq;
-+	}
-+
-+	ret = devm_request_irq(&pdev->dev, ss->irq, sprd_spi_handle_irq,
-+				0, pdev->name, ss);
-+	if (ret)
-+		dev_err(&pdev->dev, "failed to request spi irq %d, ret = %d\n",
-+			ss->irq, ret);
-+
-+	return ret;
-+}
-+
- static int sprd_spi_clk_init(struct platform_device *pdev, struct sprd_spi *ss)
- {
- 	struct clk *clk_spi, *clk_parent;
-@@ -635,11 +676,16 @@ static int sprd_spi_probe(struct platform_device *pdev)
- 	sctlr->max_speed_hz = min_t(u32, ss->src_clk >> 1,
- 				    SPRD_SPI_MAX_SPEED_HZ);
- 
-+	init_completion(&ss->xfer_completion);
- 	platform_set_drvdata(pdev, sctlr);
- 	ret = sprd_spi_clk_init(pdev, ss);
- 	if (ret)
- 		goto free_controller;
- 
-+	ret = sprd_spi_irq_init(pdev, ss);
-+	if (ret)
-+		goto free_controller;
-+
- 	ret = clk_prepare_enable(ss->clk);
- 	if (ret)
- 		goto free_controller;
+ Example:
+ spi0: spi@70a00000{
+ 	compatible = "sprd,sc9860-spi";
+@@ -21,6 +27,9 @@ spi0: spi@70a00000{
+ 	interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+ 	clock-names = "spi", "source","enable";
+ 	clocks = <&clk_spi0>, <&ext_26m>, <&clk_ap_apb_gates 5>;
++	dma-names = "rx_chn", "tx_chn";
++	dmas = <&apdma 11>, <&apdma 12>;
++	sprd,dma-slave-ids = <11 12>;
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ };
 -- 
 1.7.9.5

@@ -1,80 +1,81 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
- instead run teardown delayed
-Date: Tue, 15 Jan 2019 21:25:39 +0000
-Message-ID: <20190115212539.GK5522@sirena.org.uk>
-References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
- <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
- <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
- <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org>
- <20190115192619.GG5522@sirena.org.uk>
- <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 2/4] spi: sprd: Add the SPI irq function for the SPI DMA mode
+Date: Wed, 16 Jan 2019 10:21:42 +0800
+Message-ID: <CAMz4ku+nky4YSFjjQ5BGJRCFQHCnXysh+_C7FmFF5YpdpDbZuA@mail.gmail.com>
+References: <ab49bb74e921474aa9390f81cdf65f32c3d9d898.1547559542.git.baolin.wang@linaro.org>
+ <ec1741f29c44c436c1086877ff5b208e6b8af45d.1547559542.git.baolin.wang@linaro.org>
+ <20190115142452.GA5522@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="+HmK7y6O+lKZIGkr"
-Cc: Jon Hunter <jonathanh@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Martin Sperl <kernel@martin.sperl.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, lanqing.liu@unisoc.com,
+        linux-spi@vger.kernel.org, DTML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
+In-Reply-To: <20190115142452.GA5522@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---+HmK7y6O+lKZIGkr
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 15 Jan 2019 at 22:25, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Tue, Jan 15, 2019 at 09:46:51PM +0800, Baolin Wang wrote:
+>
+> This looks good, just one small issue and a thing to check:
+>
+> > +static irqreturn_t sprd_spi_handle_irq(int irq, void *data)
+> > +{
+> > +     struct sprd_spi *ss = (struct sprd_spi *)data;
+> > +     u32 val = readl_relaxed(ss->base + SPRD_SPI_INT_MASK_STS);
+> > +
+> > +     if (val & SPRD_SPI_MASK_TX_END) {
+> > +             writel_relaxed(SPRD_SPI_TX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
+> > +             if (!(ss->trans_mode & SPRD_SPI_RX_MODE))
+> > +                     complete(&ss->xfer_completion);
+> > +             return IRQ_HANDLED;
+> > +     }
+> > +
+> > +     if (val & SPRD_SPI_MASK_RX_END) {
+> > +             writel_relaxed(SPRD_SPI_RX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
+> > +             complete(&ss->xfer_completion);
+> > +     }
+> > +
+> > +     return IRQ_HANDLED;
+> > +}
+>
+> This will return IRQ_HANDLED no matter if there was an interrupt
+> actually handled.  That means that if something goes wrong due to some
+> bug or a hardware change (eg, a new version of the IP) and there's
+> another interrupt fired we won't clear it and the interrupt core won't
+> be able to detect that it's a spurious interrupt and use its own error
+> handling.  It's better to return IRQ_NONE in that case.
 
-On Tue, Jan 15, 2019 at 09:58:55PM +0100, Martin Sperl wrote:
+Yes, you are correct and will fix in next version.
 
-> Maybe a bigger change to the reduce the complexity of
-> the state machine would solve that problem and also
-> reduce code complexity...=20
+> > +     ret = devm_request_irq(&pdev->dev, ss->irq, sprd_spi_handle_irq,
+> > +                             0, pdev->name, ss);
+> > +     if (ret)
+> > +             dev_err(&pdev->dev, "failed to request spi irq %d, ret = %d\n",
+> > +                     ss->irq, ret);
+>
+> Are you sure it's safe to use devm_request_irq(), especially when
+> unloading the driver?  Using it means that we will only disable the
+> interrupt after the driver's remove function has finished so there's a
+> danger of an interrupt firing when some of the resources the hander has
+> used are still in use.  I didn't spot any issues, just something to
+> check especially with the later patches building on top of this.
 
-Yeah, that's where I was getting to with that test patch I posted.
+Yes, we missed this issue, thanks for pointing out this. After some
+discussion with Lanqing, we think we need call the
+spi_controller_suspend() manually in remove function to avoid this
+issue.
 
-> I may find some time over the weekend if no solution
-> has been found until then.
+Thanks for your comments.
 
-Thanks for volunteering :)
-
-> The way I would envision it it would have a =E2=80=9Cstate=E2=80=9D
-> as a level (0=3Dshutdown, 1=3Dhw enabled, 2=3Din pump,=20
-> 3=3Din transfer, 4=3Din hw-mode,...) and a complete
-> to allow waking the shutdown thread (and by this
-> avoiding the busy wait loop we have now).
-> This would replace those idling, busy, and running flags.
-
-That's a good idea, yes - a single enum much more reflects what we can
-actually do in terms of transitions.
-
-> Drawback: it is invasive, but let us see what it
-> really looks like...
-
-I think we need to either drop your change (which would be bad since it
-is a big performance improvement, I'd punted it for later when I did the
-original refactoring to push the work into the caller threads then never
-got around to it) or have a invasive changes to make the new situation
-clearer.  Right now things are just far too complex to reason about
-which isn't helping anyone.
-
---+HmK7y6O+lKZIGkr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw+T9IACgkQJNaLcl1U
-h9ApOAf+MWM+IL1uhFKV6QS0+G2LKoICXpAb4txk4+PMZjEneaHHCPyywK4NC02y
-gjnpm7BS+A4FuKfDvr2XRFBdd7fkj+08xBv9tGrmUpi4trayMablnZcwwZ293q47
-rxGIy+BkUTmzBxhM0Rk6JgI91ZCoUN5gnPrP3LpkfGNS8tcECdPyCJsQDXKqcSwj
-pNrVxHkArPPGFesoSQNxHDeuGvj0QNURq0kXCk4Dpiy9hvvucO6HImG38RNo5Yow
-tWWx3K4otQ3+eqiGWxML49BqATXtEs+MvKdfM8beeJAJWmqwam/+MSjYCSLzfPfK
-JB7+O0fGjQDtXFbkuA79qWMGmRENOQ==
-=LWLb
------END PGP SIGNATURE-----
-
---+HmK7y6O+lKZIGkr--
+-- 
+Baolin Wang
+Best Regards

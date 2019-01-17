@@ -1,23 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: ath79: Enable support for compile test" to the spi tree
-Date: Thu, 17 Jan 2019 12:40:16 +0000 (GMT)
-Message-ID: <20190117124016.3961D1126FE2@debutante.sirena.org.uk>
-References: <20190116185549.23295-3-albeu@free.fr>
+Subject: Applied "spi: bitbang: Don't call chipselect() in spi_bitbang_setup()" to the spi tree
+Date: Thu, 17 Jan 2019 12:40:20 +0000 (GMT)
+Message-ID: <20190117124020.41A871126FE2@debutante.sirena.org.uk>
+References: <20190116185549.23295-1-albeu@free.fr>
 Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-mips@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: Alban Bedel <albeu@free.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190116185549.23295-3-albeu@free.fr>
+In-Reply-To: <20190116185549.23295-1-albeu@free.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: ath79: Enable support for compile test
+   spi: bitbang: Don't call chipselect() in spi_bitbang_setup()
 
 has been applied to the spi tree at
 
@@ -42,88 +39,45 @@ to this mail.
 Thanks,
 Mark
 
->From b172fd0c898022c47161a99cb40be5304b0d3fd0 Mon Sep 17 00:00:00 2001
+>From a666f2619a97ab9264d3b06055a336b3ee75c108 Mon Sep 17 00:00:00 2001
 From: Alban Bedel <albeu@free.fr>
-Date: Wed, 16 Jan 2019 19:55:46 +0100
-Subject: [PATCH] spi: ath79: Enable support for compile test
+Date: Wed, 16 Jan 2019 19:55:44 +0100
+Subject: [PATCH] spi: bitbang: Don't call chipselect() in spi_bitbang_setup()
 
-To allow building this driver in compile test we need to remove all
-dependency on headers from arch/mips/include. To allow this we
-explicitly define all the registers locally instead of using
-ar71xx_regs.h and we move the platform data struct definition to
-include/linux/platform_data/spi-ath79.h.
+spi_setup() already call spi_set_cs() right after calling the
+controller setup method, so there is no need for the bitbang driver to
+do that. Because of this the chipselect() callback was confusingly
+still called when CS is GPIO based.
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- arch/mips/ath79/dev-spi.h                         |  2 +-
- drivers/spi/Kconfig                               |  2 +-
- drivers/spi/spi-ath79.c                           | 15 ++++++++++++---
- .../linux/platform_data/spi-ath79.h               |  0
- 4 files changed, 14 insertions(+), 5 deletions(-)
- rename arch/mips/include/asm/mach-ath79/ath79_spi_platform.h => include/linux/platform_data/spi-ath79.h (100%)
+ drivers/spi/spi-bitbang.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
-index d732565ca736..6e15bc8651be 100644
---- a/arch/mips/ath79/dev-spi.h
-+++ b/arch/mips/ath79/dev-spi.h
-@@ -13,7 +13,7 @@
- #define _ATH79_DEV_SPI_H
+diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+index f29176000b8d..dd9a8c54a693 100644
+--- a/drivers/spi/spi-bitbang.c
++++ b/drivers/spi/spi-bitbang.c
+@@ -213,19 +213,6 @@ int spi_bitbang_setup(struct spi_device *spi)
  
- #include <linux/spi/spi.h>
--#include <asm/mach-ath79/ath79_spi_platform.h>
-+#include <linux/platform_data/spi-ath79.h>
+ 	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
  
- void ath79_register_spi(struct ath79_spi_platform_data *pdata,
- 			 struct spi_board_info const *info,
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 128892c7e21e..71d3d2d5e5d1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -63,7 +63,7 @@ config SPI_ALTERA
- 
- config SPI_ATH79
- 	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
--	depends on ATH79
-+	depends on ATH79 || COMPILE_TEST
- 	select SPI_BITBANG
- 	help
- 	  This enables support for the SPI controller present on the
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index edf695a359f4..09c4fb7fcf7a 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -23,15 +23,24 @@
- #include <linux/bitops.h>
- #include <linux/clk.h>
- #include <linux/err.h>
+-	/* NOTE we _need_ to call chipselect() early, ideally with adapter
+-	 * setup, unless the hardware defaults cooperate to avoid confusion
+-	 * between normal (active low) and inverted chipselects.
+-	 */
 -
--#include <asm/mach-ath79/ar71xx_regs.h>
--#include <asm/mach-ath79/ath79_spi_platform.h>
-+#include <linux/platform_data/spi-ath79.h>
- 
- #define DRV_NAME	"ath79-spi"
- 
- #define ATH79_SPI_RRW_DELAY_FACTOR	12000
- #define MHZ				(1000 * 1000)
- 
-+#define AR71XX_SPI_REG_FS		0x00	/* Function Select */
-+#define AR71XX_SPI_REG_CTRL		0x04	/* SPI Control */
-+#define AR71XX_SPI_REG_IOC		0x08	/* SPI I/O Control */
-+#define AR71XX_SPI_REG_RDS		0x0c	/* Read Data Shift */
-+
-+#define AR71XX_SPI_FS_GPIO		BIT(0)	/* Enable GPIO mode */
-+
-+#define AR71XX_SPI_IOC_DO		BIT(0)	/* Data Out pin */
-+#define AR71XX_SPI_IOC_CLK		BIT(8)	/* CLK pin */
-+#define AR71XX_SPI_IOC_CS(n)		BIT(16 + (n))
-+
- struct ath79_spi {
- 	struct spi_bitbang	bitbang;
- 	u32			ioc_base;
-diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/include/linux/platform_data/spi-ath79.h
-similarity index 100%
-rename from arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
-rename to include/linux/platform_data/spi-ath79.h
+-	/* deselect chip (low or high) */
+-	mutex_lock(&bitbang->lock);
+-	if (!bitbang->busy) {
+-		bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+-		ndelay(cs->nsecs);
+-	}
+-	mutex_unlock(&bitbang->lock);
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(spi_bitbang_setup);
 -- 
 2.20.1

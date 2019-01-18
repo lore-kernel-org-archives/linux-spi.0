@@ -1,55 +1,71 @@
-From: Marek Vasut <marek.vasut@gmail.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Subject: Re: [PATCH v6 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
  RPC-IF controller bindings
-Date: Fri, 18 Jan 2019 09:12:25 +0100
-Message-ID: <33f0ea16-1b87-1aae-e5b7-531182008d6d@gmail.com>
+Date: Fri, 18 Jan 2019 11:18:17 +0300
+Message-ID: <784eb633-138a-b30f-6899-5e0d3cbe6f44@cogentembedded.com>
 References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
  <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
- <CAMuHMdXiW=4qgZGFqvwGHL7V3ZHfQ2EJ2B96dG14B-jh5+XqOw@mail.gmail.com>
- <dc043bfe-7a56-9810-1e5e-802f8b6beee2@gmail.com>
- <CAMuHMdWwvY=4NgoJmjfpOnetNwxPWqCsH-k-y5FqrbRif_PB7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mason Yang <masonccyang@mxic.com.tw>,
-        Mark Brown <broonie@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
         zhengxunli@mxic.com.tw
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdWwvY=4NgoJmjfpOnetNwxPWqCsH-k-y5FqrbRif_PB7g@mail.gmail.com>
+In-Reply-To: <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1/18/19 9:10 AM, Geert Uytterhoeven wrote:
-> Hi Marek,
-> 
-> On Fri, Jan 18, 2019 at 9:08 AM Marek Vasut <marek.vasut@gmail.com> wrote:
->> On 1/18/19 9:03 AM, Geert Uytterhoeven wrote:
->>> On Fri, Jan 18, 2019 at 6:55 AM Mason Yang <masonccyang@mxic.com.tw> wrote:
->>>> --- /dev/null
->>>> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> 
->>>> +Example:
->>>> +
->>>> +       rpc: rpc@ee200000 {
->>>> +               compatible = "renesas,rcar-gen3-rpc";
->>>
->>> compatible = "renesas,r8a7795-rpc," renesas,rcar-gen3-rpc";
->>
->> Without the extra comma after r8a7795-rpc, of course ;-)
-> 
-> Let's move it after the closing double quotes. Would that be OK for you? ^-)
+Hello!
 
-Ack
+On 18.01.2019 8:54, Mason Yang wrote:
 
--- 
-Best regards,
-Marek Vasut
+> Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>   .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 37 ++++++++++++++++++++++
+>   1 file changed, 37 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+> new file mode 100644
+> index 0000000..9b5001e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+> @@ -0,0 +1,37 @@
+> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+> +----------------------------------------------------------
+> +
+> +Required properties:
+> +- compatible: should be "renesas,rcar-gen3-rpc"
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+> +- reg: should contain three register areas:
+> +	first for the base address of rpc-if registers,
+> +	second for the direct mapping read mode and
+> +	third for the write buffer area.
+> +- reg-names: should contain "regs", "dirmap" and "wbuf"
+> +- clock-names: should contain "rpc"
+> +- clocks: should contain 1 entries for the module's clock
+> +
+> +Example:
+> +
+> +	rpc: rpc@ee200000 {
+> +		compatible = "renesas,rcar-gen3-rpc";
+> +		reg = <0 0xee200000 0 0x7fff>, <0 0x08000000 0 0x4000000>,
+
+    s/0x7fff/0x8000/. -- that's size, not limit. But in reality, 0x200 would 
+be enough.
+
+> +		      <0 0xee208000 0 0x100>;
+> +		reg-names = "regs", "dirmap", "<wbuf>;
+
+    Why <>?
+
+MBR, Sergei

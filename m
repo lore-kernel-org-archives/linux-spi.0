@@ -1,87 +1,69 @@
-From: Jiwei Sun <jiwei.sun@windriver.com>
-Subject: [PATCH]spi: pl022: add a message state STATE_TIMEOUT for timeout transfer
-Date: Fri, 18 Jan 2019 11:32:29 +0800
-Message-ID: <20190118033229.22553-1-jiwei.sun@windriver.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-To: <linus.walleij@linaro.org>, <linux-arm-kernel@lists.infradead.org>
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v6 0/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI driver
+Date: Fri, 18 Jan 2019 13:54:13 +0800
+Message-ID: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw, Mason Yang <masonccyang@mxic.com.tw>
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        sergei.shtylyov@cogentembedded.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When transfer timeout, give -EAGAIN to the message's status, and it can
-make the spi device driver choose repeated transimation or not. And if
-transfer timeout, output some useful information for tracing the issue.
+Hi Mark,
 
-Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
----
- drivers/spi/spi-pl022.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+v6 patch is accroding to Geert, Marek and Sergei's comments:
+1) spi_controller for new code. 
+2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc".
+3) patch external address read mode w/o u64 readq().
+4) patch dts for write buffer & drop "renesas,rpc-mode".
+5) coding style and so on.
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 0c793e31d60f..26684178786f 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -253,6 +253,7 @@
- #define STATE_RUNNING			((void *) 1)
- #define STATE_DONE			((void *) 2)
- #define STATE_ERROR			((void *) -1)
-+#define STATE_TIMEOUT			((void *) -2)
- 
- /*
-  * SSP State - Whether Enabled or Disabled
-@@ -1484,6 +1485,30 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
- 	writew(irqflags, SSP_IMSC(pl022->virtbase));
- }
- 
-+static void print_current_status(struct pl022 *pl022)
-+{
-+	u32 read_cr0;
-+	u16 read_cr1, read_dmacr, read_sr;
-+
-+	if (pl022->vendor->extended_cr)
-+		read_cr0 = readl(SSP_CR0(pl022->virtbase));
-+	else
-+		read_cr0 = readw(SSP_CR0(pl022->virtbase));
-+	read_cr1 = readw(SSP_CR1(pl022->virtbase));
-+	read_dmacr = readw(SSP_DMACR(pl022->virtbase));
-+	read_sr = readw(SSP_SR(pl022->virtbase));
-+
-+	dev_warn(&pl022->adev->dev, "spi-pl022 CR0: %x\n", read_cr0);
-+	dev_warn(&pl022->adev->dev, "spi-pl022 CR1: %x\n", read_cr1);
-+	dev_warn(&pl022->adev->dev, "spi-pl022 DMACR: %x\n", read_dmacr);
-+	dev_warn(&pl022->adev->dev, "spi-pl022 SR: %x\n", read_sr);
-+	dev_warn(&pl022->adev->dev,
-+			"spi-pl022 exp_fifo_level/fifodepth: %u/%d\n",
-+			pl022->exp_fifo_level,
-+			pl022->vendor->fifodepth);
-+
-+}
-+
- static void do_polling_transfer(struct pl022 *pl022)
- {
- 	struct spi_message *message = NULL;
-@@ -1535,7 +1560,8 @@ static void do_polling_transfer(struct pl022 *pl022)
- 			if (time_after(time, timeout)) {
- 				dev_warn(&pl022->adev->dev,
- 				"%s: timeout!\n", __func__);
--				message->state = STATE_ERROR;
-+				message->state = STATE_TIMEOUT;
-+				print_current_status(pl022);
- 				goto out;
- 			}
- 			cpu_relax();
-@@ -1553,6 +1579,8 @@ static void do_polling_transfer(struct pl022 *pl022)
- 	/* Handle end of message */
- 	if (message->state == STATE_DONE)
- 		message->status = 0;
-+	else if (message->state == STATE_TIMEOUT)
-+		message->status = -EAGAIN;
- 	else
- 		message->status = -EIO;
- 
+v5 patch is accroding to Sergei's comments:
+1) Read 6 bytes ID from Sergei's patch.
+2) regmap_update_bits()
+3) C++ style comment
+
+v4 patch is according to Sergei's comments including:
+1) Drop soc_device_match()
+2) Drop unused RPC registers
+3) Use ilog2() instead of fls()
+4) Patch read 6 bytes ID w/ one command.
+5) Coding style and so on.
+
+v3 patch is according to Marek and Geert's comments including:
+1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+2) get_unaligned()
+3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+4) coding style and so on.
+
+v2 patch including:
+1) remove RPC clock enable/dis-able control,
+2) patch run time PM,
+3) add RPC module software reset,
+4) add regmap,
+5) other coding style and so on.
+
+thanks for your review.
+
+best regards,
+Mason
+
+Mason Yang (2):
+  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+  dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller
+    bindings
+
+ .../devicetree/bindings/spi/spi-renesas-rpc.txt    |  37 +
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-renesas-rpc.c                      | 800 +++++++++++++++++++++
+ 4 files changed, 844 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+ create mode 100644 drivers/spi/spi-renesas-rpc.c
+
 -- 
-2.20.1
+1.9.1

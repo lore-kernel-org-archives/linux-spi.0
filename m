@@ -1,81 +1,97 @@
-From: Marek Vasut <marek.vasut@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH v6 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
  RPC-IF controller bindings
-Date: Fri, 18 Jan 2019 08:46:04 +0100
-Message-ID: <16bdae9c-bdef-b8eb-73e9-85bc8e724f20@gmail.com>
-References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
- <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
- <8367577a-9717-92e3-cbc8-8dee52876bcb@gmail.com>
- <OF914E6438.79205FE6-ON48258386.002973E8-48258386.002A41F0@mxic.com.tw>
+Date: Fri, 18 Jan 2019 09:03:49 +0100
+Message-ID: <CAMuHMdXiW=4qgZGFqvwGHL7V3ZHfQ2EJ2B96dG14B-jh5+XqOw@mail.gmail.com>
+References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw> <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-        zhengxunli@mxic.com.tw, Chris Brandt <chris.brandt@renesas.com>
-To: masonccyang@mxic.com.tw
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF914E6438.79205FE6-ON48258386.002973E8-48258386.002A41F0@mxic.com.tw>
-Content-Language: en-US
+In-Reply-To: <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1/18/19 8:41 AM, masonccyang@mxic.com.tw wrote:
-> Hi Marek,
+Hi Mason,
 
-Hi,
+On Fri, Jan 18, 2019 at 6:55 AM Mason Yang <masonccyang@mxic.com.tw> wrote:
+> Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+>
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 
->> "Marek Vasut" <marek.vasut@gmail.com>
->> 2019/01/18 下午 03:10
->>
->> > +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
->> > +----------------------------------------------------------
->> > +
->> > +Required properties:
->> > +- compatible: should be "renesas,rcar-gen3-rpc"
->> > +- #address-cells: should be 1
->> > +- #size-cells: should be 0
->> > +- reg: should contain three register areas:
->> > +   first for the base address of rpc-if registers,
->> > +   second for the direct mapping read mode and
->> > +   third for the write buffer area.
->> > +- reg-names: should contain "regs", "dirmap" and "wbuf"
->> > +- clock-names: should contain "rpc"
->> > +- clocks: should contain 1 entries for the module's clock
->> > +
->> > +Example:
->> > +
->> > +   rpc: rpc@ee200000 {
->> > +      compatible = "renesas,rcar-gen3-rpc";
->> > +      reg = <0 0xee200000 0 0x7fff>, <0 0x08000000 0 0x4000000>,
->>
->> 0x7fff should be 0x8000 , right ?
-> 
-> RPC write buffer starts at 0xee208000 w/ 256 bytes size.
+Thanks for the update!
 
-The size of the RPC-IF block is 0x8000 though, is it not ?
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+> @@ -0,0 +1,37 @@
+> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+> +----------------------------------------------------------
+> +
+> +Required properties:
+> +- compatible: should be
 
->> > +            <0 0xee208000 0 0x100>;
->>
->> Isn't the write buffer part of the RPC-IF register set ?
-> 
-> yep, but by Sergei and Geert's comments, we use a separate reg entry
-> for this write buffer.
-> ---- copy the replied email from Geert ---------------------------------
->> Maybe Geert or Marek could comment on it, thanks.
-> 
-> Given the writer buffer is separate from the other registers (it's in
-> a different
-> 4 KiB page, and thus may be at a different offset on future SoCs), and not
-> present on RZ/A1, I think it's a good idea to use a separate reg entry
-> for it.
-> -----------------------------------------------------------------------
+    compatible: should be an SoC-specific compatible value, followed by
+    "renesas,rcar-gen3-rpc" as a fallback.
 
-+CC Chris, the RZ/A1 has no write buffer for the RPC ?
+    Examples of the latter are:
+      - "renesas,r8a7795-rpc" (R-Car H3).
+
+This makes it future-proof, in case the RPC on a specific SoC version needs
+to be handled specially. We already know that is the case for R-Car V3M.
+
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+> +- reg: should contain three register areas:
+> +       first for the base address of rpc-if registers,
+> +       second for the direct mapping read mode and
+> +       third for the write buffer area.
+> +- reg-names: should contain "regs", "dirmap" and "wbuf"
+> +- clock-names: should contain "rpc"
+> +- clocks: should contain 1 entries for the module's clock
+> +
+> +Example:
+> +
+> +       rpc: rpc@ee200000 {
+> +               compatible = "renesas,rcar-gen3-rpc";
+
+compatible = "renesas,r8a7795-rpc," renesas,rcar-gen3-rpc";
+
+> +               reg = <0 0xee200000 0 0x7fff>, <0 0x08000000 0 0x4000000>,
+> +                     <0 0xee208000 0 0x100>;
+> +               reg-names = "regs", "dirmap", "<wbuf>;
+> +               clocks = <&cpg CPG_MOD 917>;
+> +               power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
+> +               resets = <&cpg 917>;
+> +               clock-names = "rpc";
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +
+> +               flash@0 {
+> +                       compatible = "jedec,spi-nor";
+> +                       reg = <0>;
+> +                       spi-max-frequency = <40000000>;
+> +                       spi-tx-bus-width = <1>;
+> +                       spi-rx-bus-width = <1>;
+> +               };
+> +       };
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Best regards,
-Marek Vasut
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

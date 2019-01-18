@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 1/2] eeprom: at25: Merge "off" and "offset" in at25_ee_write()
-Date: Fri, 18 Jan 2019 15:05:24 +0100
-Message-ID: <20190118140525.29189-2-geert+renesas@glider.be>
+Subject: [PATCH v2 2/2] eeprom: at25: Use spi_message_init_with_transfers() instead of open coding
+Date: Fri, 18 Jan 2019 15:05:25 +0100
+Message-ID: <20190118140525.29189-3-geert+renesas@glider.be>
 References: <20190118140525.29189-1-geert+renesas@glider.be>
 Cc: Nguyen An Hoan <na-hoan@jinso.co.jp>, linux-spi@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -13,64 +13,40 @@ In-Reply-To: <20190118140525.29189-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since commit 01973a01f9ec34b7 ("eeprom: at25: remove nvmem regmap
-dependency") changed the type of "off" from "loff_t" to "unsigned int",
-"off" and "offset" are now the same type, and can be merged into a
-single variable.
+Reduce code duplication in at25_ee_read() by using the
+spi_message_init_with_transfers() helper.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
 v2:
-  - Merge "off" and "offset" into a single variable instead of just
-    killing the cast, as suggested by Arnd.
+  - Add Acked-by.
 ---
- drivers/misc/eeprom/at25.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/misc/eeprom/at25.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-index 99de6939cd5ac2e3..2d8e5388e574710d 100644
+index 2d8e5388e574710d..18a093e14517ab45 100644
 --- a/drivers/misc/eeprom/at25.c
 +++ b/drivers/misc/eeprom/at25.c
-@@ -130,7 +130,8 @@ static int at25_ee_read(void *priv, unsigned int offset,
- 	return status;
- }
+@@ -103,16 +103,15 @@ static int at25_ee_read(void *priv, unsigned int offset,
+ 		*cp++ = offset >> 0;
+ 	}
  
--static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
-+static int at25_ee_write(void *priv, unsigned int offset, void *val,
-+			 size_t count)
- {
- 	struct at25_data *at25 = priv;
- 	const char *buf = val;
-@@ -138,10 +139,10 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
- 	unsigned		buf_size;
- 	u8			*bounce;
+-	spi_message_init(&m);
+ 	memset(t, 0, sizeof(t));
  
--	if (unlikely(off >= at25->chip.byte_len))
-+	if (unlikely(offset >= at25->chip.byte_len))
- 		return -EFBIG;
--	if ((off + count) > at25->chip.byte_len)
--		count = at25->chip.byte_len - off;
-+	if ((offset + count) > at25->chip.byte_len)
-+		count = at25->chip.byte_len - offset;
- 	if (unlikely(!count))
- 		return -EINVAL;
+ 	t[0].tx_buf = command;
+ 	t[0].len = at25->addrlen + 1;
+-	spi_message_add_tail(&t[0], &m);
  
-@@ -160,7 +161,6 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
- 	do {
- 		unsigned long	timeout, retries;
- 		unsigned	segment;
--		unsigned	offset = (unsigned) off;
- 		u8		*cp = bounce;
- 		int		sr;
- 		u8		instr;
-@@ -234,7 +234,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
- 			break;
- 		}
+ 	t[1].rx_buf = buf;
+ 	t[1].len = count;
+-	spi_message_add_tail(&t[1], &m);
++
++	spi_message_init_with_transfers(&m, t, ARRAY_SIZE(t));
  
--		off += segment;
-+		offset += segment;
- 		buf += segment;
- 		count -= segment;
+ 	mutex_lock(&at25->lock);
  
 -- 
 2.17.1

@@ -1,104 +1,518 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v6 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Fri, 18 Jan 2019 22:43:24 +0300
-Message-ID: <f4665653-503c-e1a1-a211-b8b322225bd6@cogentembedded.com>
-References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
- <1547790855-22120-2-git-send-email-masonccyang@mxic.com.tw>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v2 0/2] eeprom: at25: SPI transfer improvements
+Date: Fri, 18 Jan 2019 23:07:40 +0100
+Message-ID: <20190118230740.44239fcf@bbrezillon>
+References: <20190118140525.29189-1-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mtd@lists.infradead.org,
+        Nguyen An Hoan <na-hoan@jinso.co.jp>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1547790855-22120-2-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190118140525.29189-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Hi Geert,
 
-On 01/18/2019 08:54 AM, Mason Yang wrote:
+On Fri, 18 Jan 2019 15:05:23 +0100
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+> 	Hi all,
 > 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-[...]
-> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
-> new file mode 100644
-> index 0000000..692c760
-> --- /dev/null
-> +++ b/drivers/spi/spi-renesas-rpc.c
-> @@ -0,0 +1,800 @@
-[...]
-> +#define RPC_DRENR		0x001C	// R/W
-> +#define RPC_DRENR_CDB(o)	(u32)((((o) & 0x3) << 30))
-> +#define RPC_DRENR_OCDB(o)	(((o) & 0x3) << 28)
-> +#define RPC_DRENR_ADB(o)	(((o) & 0x3) << 24)
-> +#define RPC_DRENR_OPDB(o)	(((o) & 0x3) << 20)
-> +#define RPC_DRENR_SPIDB(o)	(((o) & 0x3) << 16)
+> This patch series contains two improvements for the AT25 SPI EEPROM
+> driver, related to SPI transfers.
+> 
+> Changes compared to v1:
+>   - Merge "off" and "offset" into a single variable instead of just
+>     killing the cast, as suggested by Arnd,
+>   - Add Acked-by,
+>   - Dropped "[PATCH 3/3] eeprom: at25: Split writes in two SPI transfers
+>     to optimize DMA", as this is better implemented in the SPI
+>     controller driver (cfr. e.g. "[v2 PATCH 2/2] spi: sh-msiof: Use DMA
+>     if possible",
+>     https://lore.kernel.org/linux-renesas-soc/1547803771-9564-2-git-send-email-na-hoan@jinso.co.jp/)
+> 
+> Tested on a Renesas Ebisu development board with R-Car E3 using MSIOF
+> and a 25LC040 EEPROM.
 
-   Manual v1.00 calls it DRDB, not SPIDB.
+Did you consider converting this driver to spimem? Looks like the
+protocol used to communicate with the memory resembles the one used on
+SPI NANDs/NORs and fits pretty well in the spi_mem_op representation.
 
-[...]
-> +#define RPC_SMENR		0x0030	// R/W
-> +#define RPC_SMENR_CDB(o)	(((o) & 0x2) << 30)
-> +#define RPC_SMENR_OCDB(o)	(((o) & 0x2) << 28)
-> +#define RPC_SMENR_ADB(o)	(((o) & 0x2) << 24)
-> +#define RPC_SMENR_OPDB(o)	(((o) & 0x2) << 20)
-> +#define RPC_SMENR_SPIDB(o)	(((o) & 0x2) << 16)
+By doing this conversion you'd allow people to connect an AT25 EEPROM
+to an advanced SPI controller that does not support regular SPI
+transfers and you wouldn't have to forge SPI messages manually.
 
-   Ugh, s/0x2/0x3/! :-/
+Here is a patch (only compile tested) doing that. The diffstat is not in
+favor of this conversion, but I find the resulting code cleaner and more
+future proof.
 
-[...]
-> +#define RPC_SMDRENR		0x0064	// R/W
-> +#define RPC_SMDRENR_HYPE	(0x5 << 12)
+Regards,
 
-   s/0x5/0x7/, and this is a field, not value.
+Boris
 
-[...]
-> +static int rpc_spi_probe(struct platform_device *pdev)
-> +{
-> +	struct spi_controller *ctlr;
-> +	struct resource *res;
-> +	struct rpc_spi *rpc;
-> +	const struct regmap_config *regmap_config;
-> +	struct device_node *rpc_if;
-> +	int ret;
-> +
-> +	rpc_if = of_find_compatible_node(pdev->dev.of_node, NULL,
-> +					 "jedec,spi-nor");
+drivers/misc/eeprom/at25.c | 302 ++++++++++++++++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 198 insertions(+), 104 deletions(-)
 
-   I doubt that this is a correct function to check for the child node's
-"compatible" prop...
-
-[...]
-> +	regmap_config = &rpc_spi_regmap_config;
-
-   Doesn't look like this variable is needed...
-
-> +	rpc->regmap = devm_regmap_init_mmio(&pdev->dev, rpc->base,
-> +					    regmap_config);
-> +	if (IS_ERR(rpc->regmap)) {
-> +		dev_err(&pdev->dev, "failed to init regmap %ld for rpc-spi\n",
-
-   How about:
-
-		dev_err(&pdev->dev, "failed to init regmap for rpc-spi, error %ld\n",
-
-[...]
-> +	ret = spi_register_controller(ctlr);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "spi_register_master failed\n");
-
-   You forgot to update the message. :-)
-
-[...]
-
-MBR, Sergei
+--->8---
+diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+index 99de6939cd5a..b9697a27e69b 100644
+--- a/drivers/misc/eeprom/at25.c
++++ b/drivers/misc/eeprom/at25.c
+@@ -17,7 +17,7 @@
+ #include <linux/sched.h>
+ 
+ #include <linux/nvmem-provider.h>
+-#include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
+ #include <linux/spi/eeprom.h>
+ #include <linux/property.h>
+ 
+@@ -29,12 +29,17 @@
+  */
+ 
+ struct at25_data {
+-	struct spi_device	*spi;
++	struct spi_mem		*spimem;
+ 	struct mutex		lock;
+ 	struct spi_eeprom	chip;
+ 	unsigned		addrlen;
+ 	struct nvmem_config	nvmem_config;
+ 	struct nvmem_device	*nvmem;
++	void			*scratchbuf;
++	struct {
++		struct spi_mem_dirmap_desc *rdesc[2];
++		struct spi_mem_dirmap_desc *wdesc[2];
++	} dirmap;
+ };
+ 
+ #define	AT25_WREN	0x06		/* latch the write enable */
+@@ -63,17 +68,117 @@ struct at25_data {
+ 
+ #define	io_limit	PAGE_SIZE	/* bytes */
+ 
++static void at25_destroy_dirmaps(struct at25_data *at25)
++{
++	if (at25->dirmap.rdesc[0])
++		spi_mem_dirmap_destroy(at25->dirmap.rdesc[0]);
++	if (at25->dirmap.rdesc[1])
++		spi_mem_dirmap_destroy(at25->dirmap.rdesc[1]);
++	if (at25->dirmap.wdesc[0])
++		spi_mem_dirmap_destroy(at25->dirmap.wdesc[0]);
++	if (at25->dirmap.wdesc[1])
++		spi_mem_dirmap_destroy(at25->dirmap.wdesc[1]);
++}
++
++static int at25_create_dirmaps(struct at25_data *at25)
++{
++	struct spi_mem_dirmap_info info = {
++		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(AT25_READ, 1),
++				      SPI_MEM_OP_ADDR(at25->addrlen, 0, 1),
++				      SPI_MEM_OP_NO_DUMMY,
++				      SPI_MEM_OP_DATA_IN(0, NULL, 1)),
++		.offset = 0,
++		.length = at25->chip.byte_len,
++	};
++	struct spi_mem_dirmap_desc *desc;
++	int ret;
++
++	if (info.length > 1 << at25->addrlen)
++		info.length = at25->chip.byte_len;
++
++	desc = spi_mem_dirmap_create(at25->spimem, &info);
++	if (IS_ERR(desc))
++		return PTR_ERR(desc);
++
++	at25->dirmap.rdesc[0] = desc;
++
++	info.op_tmpl.cmd.opcode = AT25_WRITE;
++	info.op_tmpl.data.dir = SPI_MEM_DATA_OUT;
++
++	desc = spi_mem_dirmap_create(at25->spimem, &info);
++	if (IS_ERR(desc)) {
++		ret = PTR_ERR(desc);
++		goto err_destroy_dirmaps;
++	}
++
++	at25->dirmap.wdesc[0] = desc;
++
++	if (!(at25->chip.flags & EE_INSTR_BIT3_IS_ADDR))
++		return 0;
++
++	info.offset = 256;
++	info.length = at25->chip.byte_len - 256;
++	info.op_tmpl.cmd.opcode = AT25_READ | AT25_INSTR_BIT3;
++	info.op_tmpl.data.dir = SPI_MEM_DATA_IN;
++
++	desc = spi_mem_dirmap_create(at25->spimem, &info);
++	if (IS_ERR(desc)) {
++		ret = PTR_ERR(desc);
++		goto err_destroy_dirmaps;
++	}
++
++	at25->dirmap.rdesc[1] = desc;
++
++	info.op_tmpl.cmd.opcode = AT25_WRITE | AT25_INSTR_BIT3;
++	info.op_tmpl.data.dir = SPI_MEM_DATA_OUT;
++
++	desc = spi_mem_dirmap_create(at25->spimem, &info);
++	if (IS_ERR(desc)) {
++		ret = PTR_ERR(desc);
++		goto err_destroy_dirmaps;
++	}
++
++	at25->dirmap.wdesc[1] = desc;
++
++	return 0;
++
++err_destroy_dirmaps:
++	at25_destroy_dirmaps(at25);
++
++	return ret;
++}
++
++static int at25_rdsr(struct at25_data *at25)
++{
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(AT25_RDSR, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_DATA_IN(1, at25->scratchbuf, 1));
++	int ret;
++
++	ret = spi_mem_exec_op(at25->spimem, &op);
++	if (ret)
++		return ret;
++
++	return *((u8 *)at25->scratchbuf);
++}
++
++static int at25_wren(struct at25_data *at25)
++{
++	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(AT25_WREN, 1),
++					  SPI_MEM_OP_NO_ADDR,
++					  SPI_MEM_OP_NO_DUMMY,
++					  SPI_MEM_OP_NO_DATA);
++
++	return spi_mem_exec_op(at25->spimem, &op);
++}
++
+ static int at25_ee_read(void *priv, unsigned int offset,
+ 			void *val, size_t count)
+ {
++	struct spi_mem_dirmap_desc *desc;
+ 	struct at25_data *at25 = priv;
+-	char *buf = val;
+-	u8			command[EE_MAXADDRLEN + 1];
+-	u8			*cp;
+ 	ssize_t			status;
+-	struct spi_transfer	t[2];
+-	struct spi_message	m;
+-	u8			instr;
+ 
+ 	if (unlikely(offset >= at25->chip.byte_len))
+ 		return -EINVAL;
+@@ -82,37 +187,10 @@ static int at25_ee_read(void *priv, unsigned int offset,
+ 	if (unlikely(!count))
+ 		return -EINVAL;
+ 
+-	cp = command;
+-
+-	instr = AT25_READ;
+-	if (at25->chip.flags & EE_INSTR_BIT3_IS_ADDR)
+-		if (offset >= (1U << (at25->addrlen * 8)))
+-			instr |= AT25_INSTR_BIT3;
+-	*cp++ = instr;
+-
+-	/* 8/16/24-bit address is written MSB first */
+-	switch (at25->addrlen) {
+-	default:	/* case 3 */
+-		*cp++ = offset >> 16;
+-		/* fall through */
+-	case 2:
+-		*cp++ = offset >> 8;
+-		/* fall through */
+-	case 1:
+-	case 0:	/* can't happen: for better codegen */
+-		*cp++ = offset >> 0;
+-	}
+-
+-	spi_message_init(&m);
+-	memset(t, 0, sizeof(t));
+-
+-	t[0].tx_buf = command;
+-	t[0].len = at25->addrlen + 1;
+-	spi_message_add_tail(&t[0], &m);
+-
+-	t[1].rx_buf = buf;
+-	t[1].len = count;
+-	spi_message_add_tail(&t[1], &m);
++	if (at25->chip.flags & EE_INSTR_BIT3_IS_ADDR && offset > 255)
++		desc = at25->dirmap.rdesc[1];
++	else
++		desc = at25->dirmap.rdesc[0];
+ 
+ 	mutex_lock(&at25->lock);
+ 
+@@ -122,8 +200,8 @@ static int at25_ee_read(void *priv, unsigned int offset,
+ 	 * other devices on the bus need to be accessed regularly or
+ 	 * this chip is clocked very slowly
+ 	 */
+-	status = spi_sync(at25->spi, &m);
+-	dev_dbg(&at25->spi->dev, "read %zu bytes at %d --> %zd\n",
++	status = spi_mem_dirmap_read(desc, offset, count, val);
++	dev_dbg(&at25->spimem->spi->dev, "read %zu bytes at %d --> %zd\n",
+ 		count, offset, status);
+ 
+ 	mutex_unlock(&at25->lock);
+@@ -149,7 +227,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 	buf_size = at25->chip.page_size;
+ 	if (buf_size > io_limit)
+ 		buf_size = io_limit;
+-	bounce = kmalloc(buf_size + at25->addrlen + 1, GFP_KERNEL);
++	bounce = kmalloc(buf_size, GFP_KERNEL);
+ 	if (!bounce)
+ 		return -ENOMEM;
+ 
+@@ -158,47 +236,32 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 	 */
+ 	mutex_lock(&at25->lock);
+ 	do {
++		struct spi_mem_dirmap_desc *desc;
+ 		unsigned long	timeout, retries;
+ 		unsigned	segment;
+ 		unsigned	offset = (unsigned) off;
+-		u8		*cp = bounce;
+ 		int		sr;
+-		u8		instr;
+ 
+-		*cp = AT25_WREN;
+-		status = spi_write(at25->spi, cp, 1);
++		status = at25_wren(at25);
+ 		if (status < 0) {
+-			dev_dbg(&at25->spi->dev, "WREN --> %d\n", status);
++			dev_dbg(&at25->spimem->spi->dev, "WREN --> %d\n",
++				status);
+ 			break;
+ 		}
+ 
+-		instr = AT25_WRITE;
+-		if (at25->chip.flags & EE_INSTR_BIT3_IS_ADDR)
+-			if (offset >= (1U << (at25->addrlen * 8)))
+-				instr |= AT25_INSTR_BIT3;
+-		*cp++ = instr;
+-
+-		/* 8/16/24-bit address is written MSB first */
+-		switch (at25->addrlen) {
+-		default:	/* case 3 */
+-			*cp++ = offset >> 16;
+-			/* fall through */
+-		case 2:
+-			*cp++ = offset >> 8;
+-			/* fall through */
+-		case 1:
+-		case 0:	/* can't happen: for better codegen */
+-			*cp++ = offset >> 0;
+-		}
++		if (at25->chip.flags & EE_INSTR_BIT3_IS_ADDR && offset > 255)
++			desc = at25->dirmap.wdesc[1];
++		else
++			desc = at25->dirmap.wdesc[0];
+ 
+ 		/* Write as much of a page as we can */
+ 		segment = buf_size - (offset % buf_size);
+ 		if (segment > count)
+ 			segment = count;
+-		memcpy(cp, buf, segment);
+-		status = spi_write(at25->spi, bounce,
+-				segment + at25->addrlen + 1);
+-		dev_dbg(&at25->spi->dev, "write %u bytes at %u --> %d\n",
++		memcpy(bounce, buf, segment);
++		status = spi_mem_dirmap_write(desc, offset, segment, bounce);
++		dev_dbg(&at25->spimem->spi->dev,
++			"write %u bytes at %u --> %d\n",
+ 			segment, offset, status);
+ 		if (status < 0)
+ 			break;
+@@ -211,10 +274,9 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 		timeout = jiffies + msecs_to_jiffies(EE_TIMEOUT);
+ 		retries = 0;
+ 		do {
+-
+-			sr = spi_w8r8(at25->spi, AT25_RDSR);
++			sr = at25_rdsr(at25);
+ 			if (sr < 0 || (sr & AT25_SR_nRDY)) {
+-				dev_dbg(&at25->spi->dev,
++				dev_dbg(&at25->spimem->spi->dev,
+ 					"rdsr --> %d (%02x)\n", sr, sr);
+ 				/* at HZ=100, this is sloooow */
+ 				msleep(1);
+@@ -225,7 +287,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 		} while (retries++ < 3 || time_before_eq(jiffies, timeout));
+ 
+ 		if ((sr < 0) || (sr & AT25_SR_nRDY)) {
+-			dev_err(&at25->spi->dev,
++			dev_err(&at25->spimem->spi->dev,
+ 				"write %u bytes offset %u, timeout after %u msecs\n",
+ 				segment, offset,
+ 				jiffies_to_msecs(jiffies -
+@@ -304,7 +366,7 @@ static int at25_fw_to_chip(struct device *dev, struct spi_eeprom *chip)
+ 	return 0;
+ }
+ 
+-static int at25_probe(struct spi_device *spi)
++static int at25_probe(struct spi_mem *spimem)
+ {
+ 	struct at25_data	*at25 = NULL;
+ 	struct spi_eeprom	chip;
+@@ -313,12 +375,12 @@ static int at25_probe(struct spi_device *spi)
+ 	int			addrlen;
+ 
+ 	/* Chip description */
+-	if (!spi->dev.platform_data) {
+-		err = at25_fw_to_chip(&spi->dev, &chip);
++	if (!spimem->spi->dev.platform_data) {
++		err = at25_fw_to_chip(&spimem->spi->dev, &chip);
+ 		if (err)
+ 			return err;
+ 	} else
+-		chip = *(struct spi_eeprom *)spi->dev.platform_data;
++		chip = *(struct spi_eeprom *)spimem->spi->dev.platform_data;
+ 
+ 	/* For now we only support 8/16/24 bit addressing */
+ 	if (chip.flags & EE_ADDR1)
+@@ -328,37 +390,48 @@ static int at25_probe(struct spi_device *spi)
+ 	else if (chip.flags & EE_ADDR3)
+ 		addrlen = 3;
+ 	else {
+-		dev_dbg(&spi->dev, "unsupported address type\n");
++		dev_dbg(&spimem->spi->dev, "unsupported address type\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Ping the chip ... the status register is pretty portable,
+-	 * unlike probing manufacturer IDs.  We do expect that system
+-	 * firmware didn't write it in the past few milliseconds!
+-	 */
+-	sr = spi_w8r8(spi, AT25_RDSR);
+-	if (sr < 0 || sr & AT25_SR_nRDY) {
+-		dev_dbg(&spi->dev, "rdsr --> %d (%02x)\n", sr, sr);
+-		return -ENXIO;
+-	}
+-
+-	at25 = devm_kzalloc(&spi->dev, sizeof(struct at25_data), GFP_KERNEL);
++	at25 = devm_kzalloc(&spimem->spi->dev, sizeof(struct at25_data), GFP_KERNEL);
+ 	if (!at25)
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&at25->lock);
+ 	at25->chip = chip;
+-	at25->spi = spi;
+-	spi_set_drvdata(spi, at25);
++	at25->spimem = spimem;
++	spi_mem_set_drvdata(spimem, at25);
+ 	at25->addrlen = addrlen;
+ 
+-	at25->nvmem_config.name = dev_name(&spi->dev);
+-	at25->nvmem_config.dev = &spi->dev;
++	/*
++	 * Can't be allocated with devm_kmalloc() because we need a DMA-safe
++	 * buffer.
++	 */
++	at25->scratchbuf = kmalloc(1, GFP_KERNEL);
++
++	/* Ping the chip ... the status register is pretty portable,
++	 * unlike probing manufacturer IDs.  We do expect that system
++	 * firmware didn't write it in the past few milliseconds!
++	 */
++	sr = at25_rdsr(at25);
++	if (sr < 0 || sr & AT25_SR_nRDY) {
++		dev_dbg(&spimem->spi->dev, "rdsr --> %d (%02x)\n", sr, sr);
++		err = -ENXIO;
++		goto err_free_scratchbuf;
++	}
++
++	err = at25_create_dirmaps(at25);
++	if (err)
++		goto err_free_scratchbuf;
++
++	at25->nvmem_config.name = dev_name(&spimem->spi->dev);
++	at25->nvmem_config.dev = &spimem->spi->dev;
+ 	at25->nvmem_config.read_only = chip.flags & EE_READONLY;
+ 	at25->nvmem_config.root_only = true;
+ 	at25->nvmem_config.owner = THIS_MODULE;
+ 	at25->nvmem_config.compat = true;
+-	at25->nvmem_config.base_dev = &spi->dev;
++	at25->nvmem_config.base_dev = &spimem->spi->dev;
+ 	at25->nvmem_config.reg_read = at25_ee_read;
+ 	at25->nvmem_config.reg_write = at25_ee_write;
+ 	at25->nvmem_config.priv = at25;
+@@ -366,17 +439,38 @@ static int at25_probe(struct spi_device *spi)
+ 	at25->nvmem_config.word_size = 1;
+ 	at25->nvmem_config.size = chip.byte_len;
+ 
+-	at25->nvmem = devm_nvmem_register(&spi->dev, &at25->nvmem_config);
+-	if (IS_ERR(at25->nvmem))
+-		return PTR_ERR(at25->nvmem);
++	at25->nvmem = devm_nvmem_register(&spimem->spi->dev,
++					  &at25->nvmem_config);
++	if (IS_ERR(at25->nvmem)) {
++		err = PTR_ERR(at25->nvmem);
++		goto err_destroy_dirmaps;
++	}
+ 
+-	dev_info(&spi->dev, "%d %s %s eeprom%s, pagesize %u\n",
++	dev_info(&spimem->spi->dev, "%d %s %s eeprom%s, pagesize %u\n",
+ 		(chip.byte_len < 1024) ? chip.byte_len : (chip.byte_len / 1024),
+ 		(chip.byte_len < 1024) ? "Byte" : "KByte",
+ 		at25->chip.name,
+ 		(chip.flags & EE_READONLY) ? " (readonly)" : "",
+ 		at25->chip.page_size);
+ 	return 0;
++
++err_destroy_dirmaps:
++	at25_destroy_dirmaps(at25);
++
++err_free_scratchbuf:
++	kfree(at25->scratchbuf);
++
++	return err;
++}
++
++static int at25_remove(struct spi_mem *spimem)
++{
++	struct at25_data *at25 = spi_mem_get_drvdata(spimem);
++
++	at25_destroy_dirmaps(at25);
++	kfree(at25->scratchbuf);
++
++	return 0;
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -387,15 +481,15 @@ static const struct of_device_id at25_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, at25_of_match);
+ 
+-static struct spi_driver at25_driver = {
+-	.driver = {
+-		.name		= "at25",
++static struct spi_mem_driver at25_driver = {
++	.spidrv.driver = {
++		.name = "at25",
+ 		.of_match_table = at25_of_match,
+ 	},
+-	.probe		= at25_probe,
++	.probe = at25_probe,
++	.remove = at25_remove,
+ };
+-
+-module_spi_driver(at25_driver);
++module_spi_mem_driver(at25_driver);
+ 
+ MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
+ MODULE_AUTHOR("David Brownell");

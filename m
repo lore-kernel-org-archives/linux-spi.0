@@ -1,75 +1,102 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v6 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Fri, 18 Jan 2019 11:23:40 +0300
-Message-ID: <e3843856-fe6b-dfea-ffbe-07398aabc4cf@cogentembedded.com>
-References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
- <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
- <8367577a-9717-92e3-cbc8-8dee52876bcb@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v6 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+Date: Fri, 18 Jan 2019 09:25:26 +0100
+Message-ID: <CAMuHMdW21JEz+pZbU5bb2Jcn8xpopsZ5LbbYhh2iGZFqtWCeQg@mail.gmail.com>
+References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw> <1547790855-22120-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
         zhengxunli@mxic.com.tw
-To: Marek Vasut <marek.vasut@gmail.com>,
-        Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <8367577a-9717-92e3-cbc8-8dee52876bcb@gmail.com>
-Content-Language: en-US
+In-Reply-To: <1547790855-22120-2-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Hi Mason,
 
-On 18.01.2019 9:16, Marek Vasut wrote:
+On Fri, Jan 18, 2019 at 6:55 AM Mason Yang <masonccyang@mxic.com.tw> wrote:
+> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+>
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
->> Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
->>
->> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> ---
->>   .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 37 ++++++++++++++++++++++
->>   1 file changed, 37 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
->> new file mode 100644
->> index 0000000..9b5001e
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
->> @@ -0,0 +1,37 @@
->> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
->> +----------------------------------------------------------
->> +
->> +Required properties:
->> +- compatible: should be "renesas,rcar-gen3-rpc"
->> +- #address-cells: should be 1
->> +- #size-cells: should be 0
->> +- reg: should contain three register areas:
->> +	first for the base address of rpc-if registers,
->> +	second for the direct mapping read mode and
->> +	third for the write buffer area.
->> +- reg-names: should contain "regs", "dirmap" and "wbuf"
->> +- clock-names: should contain "rpc"
->> +- clocks: should contain 1 entries for the module's clock
->> +
->> +Example:
->> +
->> +	rpc: rpc@ee200000 {
->> +		compatible = "renesas,rcar-gen3-rpc";
->> +		reg = <0 0xee200000 0 0x7fff>, <0 0x08000000 0 0x4000000>,
-> 
-> 0x7fff should be 0x8000 , right ?
+Thanks for the update!
 
-    Even 0x200.
 
-> 
->> +		      <0 0xee208000 0 0x100>;
-> 
-> Isn't the write buffer part of the RPC-IF register set ?
+> --- /dev/null
+> +++ b/drivers/spi/spi-renesas-rpc.c
+> @@ -0,0 +1,800 @@
 
-    No, if you look into the manual.
+> +static int rpc_spi_xfer_message(struct rpc_spi *rpc,
+> +                               struct spi_transfer *t)
 
-MBR, Sergei
+As "t" is not an arbitrary transfer, but the last transfer containing the
+actual data, I'd call it "last", or "data_xfer".
+
+> +{
+> +       int ret;
+> +
+> +       ret = rpc_spi_set_freq(rpc, t->speed_hz);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = rpc_spi_io_xfer(rpc,
+> +                             rpc->xfer_dir == SPI_MEM_DATA_OUT ?
+> +                             t->tx_buf : NULL,
+> +                             rpc->xfer_dir == SPI_MEM_DATA_IN ?
+> +                             t->rx_buf : NULL);
+> +
+> +       return ret;
+> +}
+> +
+> +static int rpc_spi_transfer_one_message(struct spi_controller *ctlr,
+> +                                       struct spi_message *msg)
+> +{
+> +       struct rpc_spi *rpc = spi_controller_get_devdata(ctlr);
+> +       struct spi_transfer *t;
+
+Likewise.
+
+> +       int ret;
+> +
+> +       rpc_spi_transfer_setup(rpc, msg);
+> +
+> +       t = list_last_entry(&msg->transfers, struct spi_transfer,
+> +                           transfer_list);
+> +
+> +       ret = rpc_spi_xfer_message(rpc, t);
+
+As this function is small, perhaps just inline it here?
+IMHO that makes the flow clearer.
+
+> +       if (ret)
+> +               goto out;
+> +
+> +       msg->status = 0;
+> +       msg->actual_length = rpc->totalxferlen;
+> +out:
+> +       spi_finalize_current_message(ctlr);
+> +       return 0;
+> +}
+
+The rest looks good to me, thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

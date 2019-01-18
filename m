@@ -1,97 +1,76 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v6 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Fri, 18 Jan 2019 11:39:57 +0100
-Message-ID: <CAMuHMdXeYubQPJrDE_hUf-5hAVA7rMrDynbg3rCW3TpXEpVu+Q@mail.gmail.com>
-References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
- <1547790855-22120-3-git-send-email-masonccyang@mxic.com.tw>
- <CAMuHMdXiW=4qgZGFqvwGHL7V3ZHfQ2EJ2B96dG14B-jh5+XqOw@mail.gmail.com> <OFBD5366C8.433ADACB-ON48258386.00336667-48258386.00340E20@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Boris Brezillon <bbrezillon@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 1/2] eeprom: at25: Merge "off" and "offset" in at25_ee_write()
+Date: Fri, 18 Jan 2019 15:05:24 +0100
+Message-ID: <20190118140525.29189-2-geert+renesas@glider.be>
+References: <20190118140525.29189-1-geert+renesas@glider.be>
+Cc: Nguyen An Hoan <na-hoan@jinso.co.jp>, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFBD5366C8.433ADACB-ON48258386.00336667-48258386.00340E20@mxic.com.tw>
+In-Reply-To: <20190118140525.29189-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+Since commit 01973a01f9ec34b7 ("eeprom: at25: remove nvmem regmap
+dependency") changed the type of "off" from "loff_t" to "unsigned int",
+"off" and "offset" are now the same type, and can be merged into a
+single variable.
 
-On Fri, Jan 18, 2019 at 10:28 AM <masonccyang@mxic.com.tw> wrote:
-> I modified this dts to:
->
-> Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
->  --------------------------------------------------------------------
->
->  Required properties:
->  - compatible: should be an SoC-specific compatible value, followed by
->                "renesas,rcar-gen3-rpc" as a fallback.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+v2:
+  - Merge "off" and "offset" into a single variable instead of just
+    killing the cast, as suggested by Arnd.
+---
+ drivers/misc/eeprom/at25.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Please list the supported SoC-specific compatible values, so
-scripts/checkpatch.pl
-can validate patches adding RPC device nodes to DTS files.
-
->  - #address-cells: should be 1
->  - #size-cells: should be 0
->  - reg: should contain three register areas:
->          first for the base address of rpc-if registers,
->          second for the direct mapping read mode and
->          third for the write buffer area.
->  - reg-names: should contain "regs", "dirmap" and "wbuf"
->  - clock-names: should contain "rpc"
->  - clocks: should contain 1 entries for the module's clock
-
-Please revert the order of clocks and clock-names, cfr. reg and reg-names.
-
->  Example:
->
->          rpc: rpc@ee200000 {
->                  compatible = "renesas,r8a7795-rpc", "renesas,rcar-gen3-rpc";
->                  reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
->                        <0 0xee208000 0 0x100>;
->                  reg-names = "regs", "dirmap", "wbuf";
->                  clocks = <&cpg CPG_MOD 917>;
->                  power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->                  resets = <&cpg 917>;
->                  clock-names = "rpc";
-
-Please move clock-names just below clocks.
-
->                  #address-cells = <1>;
->                  #size-cells = <0>;
->
->                  flash@0 {
->                          compatible = "jedec,spi-nor";
->                          reg = <0>;
->                          spi-max-frequency = <40000000>;
->                          spi-tx-bus-width = <1>;
->                          spi-rx-bus-width = <1>;
->                  };
->          };
->
->
-> If it is ok and I will submit it in [PATCH v7 2/2].
-
-Looks good, with the above changes made.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+index 99de6939cd5ac2e3..2d8e5388e574710d 100644
+--- a/drivers/misc/eeprom/at25.c
++++ b/drivers/misc/eeprom/at25.c
+@@ -130,7 +130,8 @@ static int at25_ee_read(void *priv, unsigned int offset,
+ 	return status;
+ }
+ 
+-static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
++static int at25_ee_write(void *priv, unsigned int offset, void *val,
++			 size_t count)
+ {
+ 	struct at25_data *at25 = priv;
+ 	const char *buf = val;
+@@ -138,10 +139,10 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 	unsigned		buf_size;
+ 	u8			*bounce;
+ 
+-	if (unlikely(off >= at25->chip.byte_len))
++	if (unlikely(offset >= at25->chip.byte_len))
+ 		return -EFBIG;
+-	if ((off + count) > at25->chip.byte_len)
+-		count = at25->chip.byte_len - off;
++	if ((offset + count) > at25->chip.byte_len)
++		count = at25->chip.byte_len - offset;
+ 	if (unlikely(!count))
+ 		return -EINVAL;
+ 
+@@ -160,7 +161,6 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 	do {
+ 		unsigned long	timeout, retries;
+ 		unsigned	segment;
+-		unsigned	offset = (unsigned) off;
+ 		u8		*cp = bounce;
+ 		int		sr;
+ 		u8		instr;
+@@ -234,7 +234,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+ 			break;
+ 		}
+ 
+-		off += segment;
++		offset += segment;
+ 		buf += segment;
+ 		count -= segment;
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.17.1

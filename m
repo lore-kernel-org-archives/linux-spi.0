@@ -1,32 +1,39 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH] pxa2xx: replace spi_master with spi_controller
-Date: Fri, 18 Jan 2019 23:13:51 +0100
-Message-ID: <87won1r4v4.fsf@belgarion.home>
-References: <20190116151330.1971861-1-lkundrak@v3.sk>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Lubomir Rintel <lkundrak@v3.sk>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [v7,3/5] mtd: m25p80: add support of octal mode I/O transfer
+Date: Sat, 19 Jan 2019 16:41:49 +0100
+Message-ID: <20190119154149.3451-1-bbrezillon@kernel.org>
+References: <1547546584-5254-4-git-send-email-yogeshnarayan.gaur@nxp.com>
+Cc: Boris Brezillon <bbrezillon@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190116151330.1971861-1-lkundrak@v3.sk> (Lubomir Rintel's
-        message of "Wed, 16 Jan 2019 16:13:31 +0100")
+In-Reply-To: <1547546584-5254-4-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Lubomir Rintel <lkundrak@v3.sk> writes:
+On Tue, 2019-01-15 at 10:05:22 UTC, Yogesh Narayan Gaur wrote:
+> Add support for octal mode I/O data transfer based on the controller (spi)
+> mode.
+> Assign hw-capability mask bits for octal transfer.
+> 
+> Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+> Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-> It's also a slave controller driver now, calling it "master" is slightly
-> misleading.
+Applied to http://git.infradead.org/linux-mtd.git spi-nor/next, thanks.
 
-I think the patch subject's prefix is not correct, should be :
-"spi: pxa2xx: replace spi_master with spi_controller".
-
-Apart from that, for the mach-pxa:
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-
-Cheers.
-
---
-Robert
+Boris

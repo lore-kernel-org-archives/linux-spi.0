@@ -1,8 +1,8 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [v7,2/5] mtd: spi-nor: add octal read flag for flash mt35xu512aba
-Date: Sat, 19 Jan 2019 16:42:04 +0100
-Message-ID: <20190119154204.3518-1-bbrezillon@kernel.org>
-References: <1547546584-5254-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+Subject: Re: [v7,1/5] mtd: spi-nor: add opcodes for octal Read/Write commands
+Date: Sat, 19 Jan 2019 16:42:19 +0100
+Message-ID: <20190119154219.3597-1-bbrezillon@kernel.org>
+References: <1547546584-5254-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Cc: Boris Brezillon <bbrezillon@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "robh@kernel.org" <robh@kernel.org>,
@@ -22,16 +22,22 @@ To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1547546584-5254-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+In-Reply-To: <1547546584-5254-2-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2019-01-15 at 10:05:16 UTC, Yogesh Narayan Gaur wrote:
-> Add octal read flag for flash mt35xu512aba.
-> This flash, mt35xu512aba, is only complaint to SFDP JESD216B and does
-> not seem to support newer JESD216C standard that provides auto
-> detection of Octal mode capabilities and opcodes. Therefore, this
-> capability is manually added using new SPI_NOR_OCTAL_READ flag.
+On Tue, 2019-01-15 at 10:05:10 UTC, Yogesh Narayan Gaur wrote:
+> - Add opcodes for octal I/O commands
+>   * Read  : 1-1-8 and 1-8-8 protocol
+>   * Write : 1-1-8 and 1-8-8 protocol
+>   * opcodes for 4-byte address mode command
+> 
+> - Entry of macros in _convert_3to4_xxx function
+> 
+> - Add flag SPI_NOR_OCTAL_READ specifying flash support octal read
+>   commands. This flag is required for flashes which didn't provides
+>   support for auto detection of Octal mode capabilities i.e. not
+>   seems to support newer JESD216C standard.
 > 
 > Signed-off-by: Vignesh R <vigneshr@ti.com>
 > Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>

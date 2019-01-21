@@ -1,81 +1,49 @@
-From: Alok Chauhan <alokc@codeaurora.org>
-Subject: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
-Date: Mon, 21 Jan 2019 16:51:41 +0530
-Message-ID: <1548069703-26595-5-git-send-email-alokc@codeaurora.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Mon, 21 Jan 2019 12:43:27 +0000
+Message-ID: <20190121124327.GB12679@sirena.org.uk>
 References: <1548069703-26595-1-git-send-email-alokc@codeaurora.org>
-Cc: andy.gross@linaro.org, david.brown@linaro.org,
+ <1548069703-26595-5-git-send-email-alokc@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="s/l3CgOIzMHHjg/5"
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        andy.gross@linaro.org, david.brown@linaro.org,
         georgi.djakov@linaro.org, dianders@chromium.org,
-        swboyd@chromium.org, bjorn.andersson@linaro.org,
-        Alok Chauhan <alokc@codeaurora.org>
-To: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        swboyd@chromium.org, bjorn.andersson@linaro.org
+To: Alok Chauhan <alokc@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1548069703-26595-1-git-send-email-alokc@codeaurora.org>
+Content-Disposition: inline
+In-Reply-To: <1548069703-26595-5-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Get the interconnect paths for SPI based Serial Engine device
-and vote accordingly based on maximum supported SPI frequency.
 
-Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
----
- drivers/spi/spi-geni-qcom.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+--s/l3CgOIzMHHjg/5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index fdb7cb88..7bbbe9d 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -12,6 +12,7 @@
- #include <linux/qcom-geni-se.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
-+#include <linux/interconnect.h>
- 
- /* SPI SE specific registers and respective register fields */
- #define SE_SPI_CPHA		0x224
-@@ -589,6 +590,15 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	spin_lock_init(&mas->lock);
- 	pm_runtime_enable(&pdev->dev);
- 
-+	/* Set the bus quota to a reasonable value */
-+	mas->se.avg_bw = Bps_to_icc(2500);
-+	mas->se.peak_bw = Bps_to_icc(200000000);
-+	ret = geni_interconnect_init(&mas->se);
-+	if (ret) {
-+		dev_err(&pdev->dev, "interconnect_init failed %d\n", ret);
-+		return ret;
-+	}
-+
- 	ret = spi_geni_init(mas);
- 	if (ret)
- 		goto spi_geni_probe_runtime_disable;
-@@ -628,8 +638,15 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- {
- 	struct spi_master *spi = dev_get_drvdata(dev);
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-+	int ret;
- 
--	return geni_se_resources_off(&mas->se);
-+	ret = geni_se_resources_off(&mas->se);
-+	if (ret)
-+		return ret;
-+
-+	geni_icc_update_bw(&mas->se, false);
-+
-+	return 0;
- }
- 
- static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
-@@ -637,6 +654,7 @@ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- 	struct spi_master *spi = dev_get_drvdata(dev);
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
- 
-+	geni_icc_update_bw(&mas->se, true);
- 	return geni_se_resources_on(&mas->se);
- }
- 
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+On Mon, Jan 21, 2019 at 04:51:41PM +0530, Alok Chauhan wrote:
+> Get the interconnect paths for SPI based Serial Engine device
+> and vote accordingly based on maximum supported SPI frequency.
+
+I don't have any of the other patches in this series or a cover letter -
+what's going on with dependencies here?
+
+--s/l3CgOIzMHHjg/5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxFvm4ACgkQJNaLcl1U
+h9BwHAf9GAJQWLR7hvzjlg9jObQnh1ulxHG6TJhue0l5nEpwbTJUugTlEtXrvxDh
+laFlozIEGlpQOIy4jqrW8QodcPFngge+AS4sn0J+X2E32btYfuU7GX1bmIOfCN2z
+S59CU6sw6bvkBM/kkhVKL+vGsSmbz+4lZ+1FeEWN3MSuhWFoZZ5Tn/yCt9j7kUoH
+QipZsmFJQoclLlUIRcpE5ejuOtesSnI2yC9vk/4dTSwBW4WE1L5+waGEpPzsjWZF
+OlUCNtpS6/zXIDnRY7Gcwd7e/qSN1LrX0LGwx/76wIpsQRQwPOIWFvWTbWfnHFsJ
+0a8wEyoYmn6fUhJ576yIXDBiIpwJgA==
+=Xpu0
+-----END PGP SIGNATURE-----
+
+--s/l3CgOIzMHHjg/5--

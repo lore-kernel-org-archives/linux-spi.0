@@ -1,59 +1,81 @@
-From: kernel@martin.sperl.org
-Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync instead run teardown delayed
-Date: Sun, 20 Jan 2019 12:24:23 +0100
-Message-ID: <EE52ED32-CBB4-40D4-8615-CA814158C826@martin.sperl.org>
-References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com> <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org> <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com> <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org> <20190115192619.GG5522@sirena.org.uk> <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org> <20190115212539.GK5522@sirena.org.uk> <EA757B47-A264-4B4D-9E5F-16611ABA0278@martin.sperl.org> <20190118191202.GG6260@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Cc: Jon Hunter <jonathanh@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+From: Alok Chauhan <alokc@codeaurora.org>
+Subject: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Mon, 21 Jan 2019 16:51:41 +0530
+Message-ID: <1548069703-26595-5-git-send-email-alokc@codeaurora.org>
+References: <1548069703-26595-1-git-send-email-alokc@codeaurora.org>
+Cc: andy.gross@linaro.org, david.brown@linaro.org,
+        georgi.djakov@linaro.org, dianders@chromium.org,
+        swboyd@chromium.org, bjorn.andersson@linaro.org,
+        Alok Chauhan <alokc@codeaurora.org>
+To: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190118191202.GG6260@sirena.org.uk>
+In-Reply-To: <1548069703-26595-1-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark!
+Get the interconnect paths for SPI based Serial Engine device
+and vote accordingly based on maximum supported SPI frequency.
 
-> On 18.01.2019, at 20:12, Mark Brown <broonie@kernel.org> wrote:
-> 
-> On Fri, Jan 18, 2019 at 06:11:31PM +0100, kernel@martin.sperl.org wrote:
-> 
->> Does something like this looks acceptable?
-> 
-> Yes, it does!
+Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
+---
+ drivers/spi/spi-geni-qcom.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-> 
->> SPI_CONTROLLER_MODE_EXCLUSIVE could replace the bus_lock_flag.
->> I am also not sure of the “convention” of memory mode (i.e
->> using mem_ops). Is it maybe implicitly spi_bus_locked - i.e
->> typically only a single device?
-> 
-> Yes, it does - we're basically handing over the entire SPI bus to
-> another bit of hardware that will do memory mapped flash access so we
-> can't really have anything else trying to do SPI operations at the same
-> time.
-
-These kind of changes it requires are consuming a bit more time than
-I was hoping for.
-
-So maybe at this very moment the best is reverting the patch.
-
-I have some patches that would move towards that goal in
-baby steps without having to resort to a big rewrite at
-this very moment.
-
-Maybe Jon can check each patch one after another to see if any is 
-producing the unexpected behavior and only then you would include
-them...
-
-As for the root cause of the regression: my guess is that spi-mem is
-just not triggering a shutdown any more because of how message_pump works.
-
-The improvement of the state-machine can then get addressed
-separately.
-
-Martin
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index fdb7cb88..7bbbe9d 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -12,6 +12,7 @@
+ #include <linux/qcom-geni-se.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spinlock.h>
++#include <linux/interconnect.h>
+ 
+ /* SPI SE specific registers and respective register fields */
+ #define SE_SPI_CPHA		0x224
+@@ -589,6 +590,15 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	spin_lock_init(&mas->lock);
+ 	pm_runtime_enable(&pdev->dev);
+ 
++	/* Set the bus quota to a reasonable value */
++	mas->se.avg_bw = Bps_to_icc(2500);
++	mas->se.peak_bw = Bps_to_icc(200000000);
++	ret = geni_interconnect_init(&mas->se);
++	if (ret) {
++		dev_err(&pdev->dev, "interconnect_init failed %d\n", ret);
++		return ret;
++	}
++
+ 	ret = spi_geni_init(mas);
+ 	if (ret)
+ 		goto spi_geni_probe_runtime_disable;
+@@ -628,8 +638,15 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *spi = dev_get_drvdata(dev);
+ 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
++	int ret;
+ 
+-	return geni_se_resources_off(&mas->se);
++	ret = geni_se_resources_off(&mas->se);
++	if (ret)
++		return ret;
++
++	geni_icc_update_bw(&mas->se, false);
++
++	return 0;
+ }
+ 
+ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
+@@ -637,6 +654,7 @@ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
+ 	struct spi_master *spi = dev_get_drvdata(dev);
+ 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+ 
++	geni_icc_update_bw(&mas->se, true);
+ 	return geni_se_resources_on(&mas->se);
+ }
+ 
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project

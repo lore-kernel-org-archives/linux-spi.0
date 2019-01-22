@@ -1,86 +1,78 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v6 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Mon, 21 Jan 2019 21:14:33 +0300
-Message-ID: <5440645d-6b52-ad72-1c98-2d140f1cd15d@cogentembedded.com>
-References: <1547790855-22120-1-git-send-email-masonccyang@mxic.com.tw>
- <1547790855-22120-2-git-send-email-masonccyang@mxic.com.tw>
- <f4665653-503c-e1a1-a211-b8b322225bd6@cogentembedded.com>
- <OFE50FED81.5C117A38-ON48258389.0012FCE2-48258389.00139BD2@mxic.com.tw>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 3/4] dt-bindings: spi: Add the DMA properties for the SPI
+ dma mode
+Date: Tue, 22 Jan 2019 10:22:58 +0800
+Message-ID: <CAMz4kuK0tvYHL1gGDXCKDzow+YmAj587UoBp=fRi0_sujLh2QQ@mail.gmail.com>
+References: <ab49bb74e921474aa9390f81cdf65f32c3d9d898.1547559542.git.baolin.wang@linaro.org>
+ <7538d5806003b8f67e7e0d35638315974b7c2b50.1547559542.git.baolin.wang@linaro.org>
+ <CAL_Jsq+VpO+pX0A27-v_U+4kQKXKD5O1EWrn708RDeLsqnU1ng@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Lyra Zhang <zhang.lyra@gmail.com>, lanqing.liu@unisoc.com,
+        linux-spi <linux-spi@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Rob Herring <robh+dt@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFE50FED81.5C117A38-ON48258389.0012FCE2-48258389.00139BD2@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <CAL_Jsq+VpO+pX0A27-v_U+4kQKXKD5O1EWrn708RDeLsqnU1ng@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+On Mon, 21 Jan 2019 at 21:53, Rob Herring <robh+dt@kernel.org> wrote:
+>
+> On Tue, Jan 15, 2019 at 7:47 AM Baolin Wang <baolin.wang@linaro.org> wrote:
+> >
+> > From: Lanqing Liu <lanqing.liu@spreadtrum.com>
+>
+> The email address should be updated with unisoc.com.
 
-On 01/21/2019 06:34 AM, masonccyang@mxic.com.tw wrote:
+Sure.
 
->> > +#define RPC_SMENR      0x0030   // R/W
->> > +#define RPC_SMENR_CDB(o)   (((o) & 0x2) << 30)
->> > +#define RPC_SMENR_OCDB(o)   (((o) & 0x2) << 28)
->> > +#define RPC_SMENR_ADB(o)   (((o) & 0x2) << 24)
->> > +#define RPC_SMENR_OPDB(o)   (((o) & 0x2) << 20)
->> > +#define RPC_SMENR_SPIDB(o)   (((o) & 0x2) << 16)
->>
->>    Ugh, s/0x2/0x3/! :-/
->>
->> [...]
->> > +#define RPC_SMDRENR      0x0064   // R/W
->> > +#define RPC_SMDRENR_HYPE   (0x5 << 12)
->>
->>    s/0x5/0x7/, and this is a field, not value.
->>
-> 
-> okay, both 0x2 and 0x5 are just make sure these registers was
-> writing a correct value rather than a prohibited value.
-> anyway, I will patch them.
+>
+> > Add the DMA properties for the SPI dma mode.
+> >
+> > Signed-off-by: Lanqing Liu <lanqing.liu@spreadtrum.com>
+> > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> > ---
+> >  Documentation/devicetree/bindings/spi/spi-sprd.txt |    9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-sprd.txt b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+> > index bad211a..01ef53f 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-sprd.txt
+> > +++ b/Documentation/devicetree/bindings/spi/spi-sprd.txt
+> > @@ -14,6 +14,12 @@ Required properties:
+> >         address on the SPI bus. Should be set to 1.
+> >  - #size-cells: Should be set to 0.
+> >
+> > +Optional properties:
+> > +dma-names: Should contain names of the SPI used DMA channel.
+> > +dmas: Should contain DMA channels which the SPI used sorted in the
+> > +       same order as the dma-names property.
+> > +sprd,dma-slave-ids: Should contain the DMA number that the SPI hardware required.
+> > +
+> >  Example:
+> >  spi0: spi@70a00000{
+> >         compatible = "sprd,sc9860-spi";
+> > @@ -21,6 +27,9 @@ spi0: spi@70a00000{
+> >         interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+> >         clock-names = "spi", "source","enable";
+> >         clocks = <&clk_spi0>, <&ext_26m>, <&clk_ap_apb_gates 5>;
+> > +       dma-names = "rx_chn", "tx_chn";
+> > +       dmas = <&apdma 11>, <&apdma 12>;
+> > +       sprd,dma-slave-ids = <11 12>;
+>
+> When would this be different values from what's in 'dmas'?
 
-   TIA.
+Slave id is not always same with the DMA channel number in 'dmas', and
+it is just coincident for SPI driver. Moreover for different SoC , the
+slave ids for DMA engine consumers are not same. So we need one
+property to specify the slave id for the consumers to trigger DMA
+transfer.
 
->> [...]
->> > +static int rpc_spi_probe(struct platform_device *pdev)
->> > +{
->> > +   struct spi_controller *ctlr;
->> > +   struct resource *res;
->> > +   struct rpc_spi *rpc;
->> > +   const struct regmap_config *regmap_config;
->> > +   struct device_node *rpc_if;
->> > +   int ret;
->> > +
->> > +   rpc_if = of_find_compatible_node(pdev->dev.of_node, NULL,
->> > +                "jedec,spi-nor");
->>
->>    I doubt that this is a correct function to check for the child node's
->> "compatible" prop...
-
-   You need of_get_next_child() or of_get_next_available_child().
-
->>
->> [...]
->> > +   regmap_config = &rpc_spi_regmap_config;
->>
->>    Doesn't look like this variable is needed...
-> 
-> why ?
-
-   Why not just use &rpc_spi_regmap_config below?
-
->> > +   rpc->regmap = devm_regmap_init_mmio(&pdev->dev, rpc->base,
->> > +                   regmap_config);
-[...]
-
-> Mason
-
-MBR, Sergei
+-- 
+Baolin Wang
+Best Regards

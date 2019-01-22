@@ -1,136 +1,59 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v8 2/5] dt-bindings: spi: add binding file for NXP FlexSPI
- controller
-Date: Tue, 22 Jan 2019 09:00:14 +0000
-Message-ID: <VI1PR04MB57266D861937B99899F3C1C699980@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1547553487-9936-3-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH 3/6] i2c: i2c-qcom-geni: Add interconnect support
+Date: Tue, 22 Jan 2019 10:07:50 +0100
+Message-ID: <20190122090750.GA1012@kunai>
+References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
+ <1548138816-1149-4-git-send-email-alokc@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "robh@kernel.org" <robh@kernel.org>, "shawnguo@kernel.org"
- <shawnguo@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1547553487-9936-3-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tThc/1wpZn/ma/RB"
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        georgi.djakov@linaro.org, dianders@chromium.org,
+        swboyd@chromium.org, bjorn.andersson@linaro.org
+To: Alok Chauhan <alokc@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1548138816-1149-4-git-send-email-alokc@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Rob / Shawn,
 
-Can you please apply patches [1] [2].
+--tThc/1wpZn/ma/RB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---
-Regards,
-Yogesh Gaur
+On Tue, Jan 22, 2019 at 12:03:33PM +0530, Alok Chauhan wrote:
+> Get the interconnect paths for I2C based Serial Engine device
+> and vote accordingly based on maximum supported I2C frequency.
+>=20
+> Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
 
-[1] https://patchwork.ozlabs.org/patch/1025136/
-[2] https://patchwork.ozlabs.org/patch/1025137/
+Acked-by: Wolfram Sang <wsa@the-dreams.de>
 
 
+--tThc/1wpZn/ma/RB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> -----Original Message-----
-> From: Yogesh Narayan Gaur
-> Sent: Tuesday, January 15, 2019 5:30 PM
-> To: linux-mtd@lists.infradead.org; bbrezillon@kernel.org;
-> marek.vasut@gmail.com; broonie@kernel.org; linux-spi@vger.kernel.org;
-> devicetree@vger.kernel.org
-> Cc: robh@kernel.org; mark.rutland@arm.com; shawnguo@kernel.org; linux-
-> arm-kernel@lists.infradead.org; computersforpeace@gmail.com;
-> frieder.schrempf@kontron.de; linux-kernel@vger.kernel.org; Yogesh Narayan
-> Gaur <yogeshnarayan.gaur@nxp.com>
-> Subject: [PATCH v8 2/5] dt-bindings: spi: add binding file for NXP FlexSPI
-> controller
-> 
-> Add binding file for NXP FlexSPI controller
-> 
-> Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
-> Changes for v8:
-> - None
-> Changes for v7:
-> - None
-> Changes for v6:
-> - None
-> Changes for v5:
-> - None
-> Changes for v4:
-> - Incorporated Rob review comments.
-> Changes for v3:
-> - Removed node property 'big-endian'.
-> Changes for v2:
-> - Incorporated Rob review comments.
-> 
->  .../devicetree/bindings/spi/spi-nxp-fspi.txt  | 39 +++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> new file mode 100644
-> index 000000000000..2cd67eb727d4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> @@ -0,0 +1,39 @@
-> +* NXP Flex Serial Peripheral Interface (FSPI)
-> +
-> +Required properties:
-> +  - compatible : Should be "nxp,lx2160a-fspi"
-> +  - reg :        First contains the register location and length,
-> +                 Second contains the memory mapping address and length
-> +  - reg-names :  Should contain the resource reg names:
-> +	         - fspi_base: configuration register address space
-> +                 - fspi_mmap: memory mapped address space
-> +  - interrupts : Should contain the interrupt for the device
-> +
-> +Required SPI slave node properties:
-> +  - reg :        There are two buses (A and B) with two chip selects each.
-> +                 This encodes to which bus and CS the flash is connected:
-> +                 - <0>: Bus A, CS 0
-> +                 - <1>: Bus A, CS 1
-> +                 - <2>: Bus B, CS 0
-> +                 - <3>: Bus B, CS 1
-> +
-> +Example showing the usage of two SPI NOR slave devices on bus A:
-> +
-> +fspi0: spi@20c0000 {
-> +	compatible = "nxp,lx2160a-fspi";
-> +	reg = <0x0 0x20c0000 0x0 0x10000>, <0x0 0x20000000 0x0
-> 0x10000000>;
-> +	reg-names = "fspi_base", "fspi_mmap";
-> +	interrupts = <0 25 0x4>; /* Level high type */
-> +	clocks = <&clockgen 4 3>, <&clockgen 4 3>;
-> +	clock-names = "fspi_en", "fspi";
-> +
-> +	mt35xu512aba0: flash@0 {
-> +		reg = <0>;
-> +		....
-> +	};
-> +
-> +	mt35xu512aba1: flash@1 {
-> +		reg = <1>;
-> +		....
-> +	};
-> +};
-> --
-> 2.17.1
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlxG3WIACgkQFA3kzBSg
+KbY+6BAAl5xhp7jUSOyFJXSafZGLgnJuYx3N01zZJhuCm2sGhGhKQcGH2M0EcfUK
+YMTYKp0bvzOjpa9WvJEceZM/OrHSmFMoMzMbsdUC3oxvrN6USnuDIlmkBo4zKGx+
+srmS5YMtb7ekOXsI0rSFJb5VRX3BULLpD/V5vYsysihZsoS6ReFtwqdMWS1uR/JP
+HLpwgPsvynzIblq1TZM0UfTXvz1QBxRAQjKkJcaoXAUGBFZuL5lEmis3yd5amY4N
+Mvwax2A7s6qB9hOazOUwyutoqLZfChk4AtnH07wnvpuf0fFkiv6FeK9BjpwEwXJe
+ofty1FDAF9/KlkohN9TzVJRhITAAbJFLiwXU+yot69bEehGvaVF13qgZkvgDrElF
+vDC2AlBhvlqdfnLetOVdrsbAErUeaj8XDf19y2NzaF9S/cD69aobLlQ3x784ZRch
+JNz3N0J+IgZeCh2ZK9NQxiiiG0XFMJAASY2dyJqR0MFdr7oNFS/rhQTKS2HqwvWx
+012gPahU1GdcQUeo6dx9ZJfd43dGEbe32GPv5JQWtf9lNBvVcGiEXCoH4wMehvxK
+YlixJOpkdTb263JRy335ACAB14A8caTBDHmR1Vhvtw3Rvn3txSldNHrF0ENQ0N9j
+/ZpWV8NT3GhKvUj5v9Erucjn1wTegBlmU4w6aGJI59JPDsr/2as=
+=C1RA
+-----END PGP SIGNATURE-----
+
+--tThc/1wpZn/ma/RB--

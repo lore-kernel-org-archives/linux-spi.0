@@ -1,61 +1,67 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v7 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Wed, 23 Jan 2019 21:06:55 +0300
-Message-ID: <7a2bf711-f51e-82b0-b0c0-5d67f2c1d043@cogentembedded.com>
-References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-3-git-send-email-masonccyang@mxic.com.tw>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 0/2] eeprom: at25: SPI transfer improvements
+Date: Wed, 23 Jan 2019 19:10:56 +0100
+Message-ID: <CAMuHMdUWqcB7cTOenASWt6HXZhGsr9cH9B55Sh-+rmWmAkm4Fg@mail.gmail.com>
+References: <20190118140525.29189-1-geert+renesas@glider.be> <20190118230740.44239fcf@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Nguyen An Hoan <na-hoan@jinso.co.jp>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Boris Brezillon <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1548227352-14910-3-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190118230740.44239fcf@bbrezillon>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/23/2019 10:09 AM, Mason Yang wrote:
+Hi Boris,
 
-> Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 46 ++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> new file mode 100644
-> index 0000000..305bd10
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> @@ -0,0 +1,46 @@
-> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> +--------------------------------------------------------------------
-> +
-> +Required properties:
-> +- compatible: should be an SoC-specific compatible value, followed by
-> +		"renesas,rcar-gen3-rpc" as a fallback, i.e.,
-> +		"renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc".
-> +		"renesas,r8a7795-rpc"	(R-Car H3)
-> +		"renesas,r8a7796-rpc"	(R-Car M3-W)
-> +		"renesas,r8a77965-rpc"	(R-Car M3-N)
-> +		"renesas,r8a77970-rpc"	(R-Car V3M)
-> +		"renesas,r8a77980-rpc"	(R-Car V3H)
-> +		"renesas,r8a77990-rpc"	(R-Car E3)
-> +		"renesas,r8a77995-rpc"	(R-Car D3)
-> +- reg: should contain three register areas:
+On Fri, Jan 18, 2019 at 11:07 PM Boris Brezillon <bbrezillon@kernel.org> wrote:
+> On Fri, 18 Jan 2019 15:05:23 +0100
+> Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+> > This patch series contains two improvements for the AT25 SPI EEPROM
+> > driver, related to SPI transfers.
+> >
+> > Changes compared to v1:
+> >   - Merge "off" and "offset" into a single variable instead of just
+> >     killing the cast, as suggested by Arnd,
+> >   - Add Acked-by,
+> >   - Dropped "[PATCH 3/3] eeprom: at25: Split writes in two SPI transfers
+> >     to optimize DMA", as this is better implemented in the SPI
+> >     controller driver (cfr. e.g. "[v2 PATCH 2/2] spi: sh-msiof: Use DMA
+> >     if possible",
+> >     https://lore.kernel.org/linux-renesas-soc/1547803771-9564-2-git-send-email-na-hoan@jinso.co.jp/)
+> >
+> > Tested on a Renesas Ebisu development board with R-Car E3 using MSIOF
+> > and a 25LC040 EEPROM.
+>
+> Did you consider converting this driver to spimem? Looks like the
+> protocol used to communicate with the memory resembles the one used on
+> SPI NANDs/NORs and fits pretty well in the spi_mem_op representation.
 
-   The driver now handles "dirmap" and "wbuf" resources as optional --
-you need to document that.
+No, I hadn't considered doing that ;-)
 
-[...]
+> By doing this conversion you'd allow people to connect an AT25 EEPROM
+> to an advanced SPI controller that does not support regular SPI
+> transfers and you wouldn't have to forge SPI messages manually.
+>
+> Here is a patch (only compile tested) doing that. The diffstat is not in
+> favor of this conversion, but I find the resulting code cleaner and more
+> future proof.
 
-MBR, Sergei
+Thanks, will give it a try, eventually...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

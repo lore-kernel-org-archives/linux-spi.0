@@ -1,48 +1,49 @@
-From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] spi/topcliff_pch: Fix potential NULL dereference on allocation error
-Date: Wed, 23 Jan 2019 20:00:22 +0800
-Message-ID: <20190123120022.14008-1-yuehaibing@huawei.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Wed, 23 Jan 2019 16:04:29 +0000
+Message-ID: <20190123160429.GE7503@sirena.org.uk>
+References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
+ <1548138816-1149-5-git-send-email-alokc@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-To: <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n+lFg1Zro7sl44OB"
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        georgi.djakov@linaro.org, dianders@chromium.org,
+        swboyd@chromium.org, bjorn.andersson@linaro.org
+To: Alok Chauhan <alokc@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1548138816-1149-5-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In pch_spi_handle_dma, it doesn't check for NULL returns of kcalloc
-so it would result in an Oops.
 
-Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/spi/spi-topcliff-pch.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+--n+lFg1Zro7sl44OB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 97d1375..e7e8ea1 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1008,6 +1008,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 
- 	/* RX */
- 	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
-+	if (!dma->sg_rx_p)
-+		return;
-+
- 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
-@@ -1068,6 +1071,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	}
- 
- 	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
-+	if (!dma->sg_tx_p)
-+		return;
-+
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_tx_p;
--- 
-2.7.0
+On Tue, Jan 22, 2019 at 12:03:34PM +0530, Alok Chauhan wrote:
+> Get the interconnect paths for SPI based Serial Engine device
+> and vote accordingly based on maximum supported SPI frequency.
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--n+lFg1Zro7sl44OB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxIkIwACgkQJNaLcl1U
+h9DSZQf/Z/RXV5oMQ+WeQEjgLJUGNcAKhNgh3h5Ybq6Tn1RanSJMfwLA/kY1mp/e
+9ESnLPEA29E4WCaSUz80AffsHaYge162pI6R8DeR3+MsChdO5dde7S4NwE+Dc9FC
+o3c5MkhxN2gMufWHY30PWI5Hzq/QsKvuLUcN9tBLZZdIXJoIR4+9iBWWbRLbqx5C
+we3GSPuWlVB5xludSl9iAQmiu2FNnzahM4r3OBm4R/+dMOPWViERGMVMIEjI6rrg
+yCKDfUc01EscZyJpO1JcF778OAGzaj+IF6ZDax79W+Y9dke8YwqaJVjOT9l82Xag
+bdX3zyVWgDdLMSOZ+iJD7QBFq3mHSQ==
+=3f7w
+-----END PGP SIGNATURE-----
+
+--n+lFg1Zro7sl44OB--

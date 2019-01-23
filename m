@@ -1,67 +1,223 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 0/2] eeprom: at25: SPI transfer improvements
-Date: Wed, 23 Jan 2019 19:10:56 +0100
-Message-ID: <CAMuHMdUWqcB7cTOenASWt6HXZhGsr9cH9B55Sh-+rmWmAkm4Fg@mail.gmail.com>
-References: <20190118140525.29189-1-geert+renesas@glider.be> <20190118230740.44239fcf@bbrezillon>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH 2/6] soc: qcom: Add wrapper to support for Interconnect
+ path
+Date: Wed, 23 Jan 2019 10:14:38 -0800
+Message-ID: <20190123181438.GM31919@minitux>
+References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
+ <1548138816-1149-3-git-send-email-alokc@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Nguyen An Hoan <na-hoan@jinso.co.jp>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Boris Brezillon <bbrezillon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        Andy Gross <andy.gross@linaro.org>,
+        David Brown <david.brown@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Karthikeyan Ramasubramanian <kramasub@codeaurora.org>,
+        georgi.djakov@linaro.org
+To: Alok Chauhan <alokc@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190118230740.44239fcf@bbrezillon>
+Content-Disposition: inline
+In-Reply-To: <1548138816-1149-3-git-send-email-alokc@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Boris,
+On Mon 21 Jan 22:33 PST 2019, Alok Chauhan wrote:
 
-On Fri, Jan 18, 2019 at 11:07 PM Boris Brezillon <bbrezillon@kernel.org> wrote:
-> On Fri, 18 Jan 2019 15:05:23 +0100
-> Geert Uytterhoeven <geert+renesas@glider.be> wrote:
-> > This patch series contains two improvements for the AT25 SPI EEPROM
-> > driver, related to SPI transfers.
-> >
-> > Changes compared to v1:
-> >   - Merge "off" and "offset" into a single variable instead of just
-> >     killing the cast, as suggested by Arnd,
-> >   - Add Acked-by,
-> >   - Dropped "[PATCH 3/3] eeprom: at25: Split writes in two SPI transfers
-> >     to optimize DMA", as this is better implemented in the SPI
-> >     controller driver (cfr. e.g. "[v2 PATCH 2/2] spi: sh-msiof: Use DMA
-> >     if possible",
-> >     https://lore.kernel.org/linux-renesas-soc/1547803771-9564-2-git-send-email-na-hoan@jinso.co.jp/)
-> >
-> > Tested on a Renesas Ebisu development board with R-Car E3 using MSIOF
-> > and a 25LC040 EEPROM.
->
-> Did you consider converting this driver to spimem? Looks like the
-> protocol used to communicate with the memory resembles the one used on
-> SPI NANDs/NORs and fits pretty well in the spi_mem_op representation.
+> Add the wrapper to support for interconnect path voting
+> from GENI QUP. This wrapper provides the functionalities
+> to individual Serial Engine device to get the interconnect
+> path and to vote for bandwidth based on their need.
+> 
+> This wrapper maintains bandwidth votes from each Serial Engine
+> and send the aggregated vote from GENI QUP to interconnect
+> framework.
+> 
+> Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
+> ---
+>  drivers/soc/qcom/qcom-geni-se.c | 129 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/qcom-geni-se.h    |  11 ++++
+>  2 files changed, 140 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
+> index 6b8ef01..1d8dcb1 100644
+> --- a/drivers/soc/qcom/qcom-geni-se.c
+> +++ b/drivers/soc/qcom/qcom-geni-se.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/pinctrl/consumer.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/qcom-geni-se.h>
+> +#include <linux/interconnect.h>
+>  
+>  /**
+>   * DOC: Overview
+> @@ -84,11 +85,21 @@
+>   * @dev:		Device pointer of the QUP wrapper core
+>   * @base:		Base address of this instance of QUP wrapper core
+>   * @ahb_clks:		Handle to the primary & secondary AHB clocks
+> + * @icc_path:		Array of interconnect path handles
+> + * @geni_wrapper_lock:	Lock to protect the bus bandwidth request
+> + * @cur_avg_bw:		Current Bus Average BW request value from GENI QUP
+> + * @cur_peak_bw:	Current Bus Peak BW request value from GENI QUP
+> + * @peak_bw_list_head:	Sorted resource list based on peak bus BW
+>   */
+>  struct geni_wrapper {
+>  	struct device *dev;
+>  	void __iomem *base;
+>  	struct clk_bulk_data ahb_clks[NUM_AHB_CLKS];
+> +	struct icc_path *icc_path[2];
+> +	struct mutex geni_wrapper_lock;
+> +	u32 cur_avg_bw;
+> +	u32 cur_peak_bw;
+> +	struct list_head peak_bw_list_head;
+>  };
+>  
+>  #define QUP_HW_VER_REG			0x4
+> @@ -440,6 +451,71 @@ static void geni_se_clks_off(struct geni_se *se)
+>  }
+>  
+>  /**
+> + * geni_icc_update_bw() - Request to update bw vote on an interconnect path
+> + * @se:			Pointer to the concerned serial engine.
+> + * @update:		Flag to update bw vote.
 
-No, I hadn't considered doing that ;-)
+So update = false means "yes, do update, but subtract from the global
+sum".
 
-> By doing this conversion you'd allow people to connect an AT25 EEPROM
-> to an advanced SPI controller that does not support regular SPI
-> transfers and you wouldn't have to forge SPI messages manually.
->
-> Here is a patch (only compile tested) doing that. The diffstat is not in
-> favor of this conversion, but I find the resulting code cleaner and more
-> future proof.
 
-Thanks, will give it a try, eventually...
+You track the bandwidth request for each "se", so I would recommend that
+you turn this parameter into a "enabled" and track that as well for each
+se. Then in this function you loop over all the wrapper's se and compute
+the sum of the enabled ses.
 
-Gr{oetje,eeting}s,
+> + *
+> + * This function is used to request set bw vote on interconnect path handle.
+> + */
+> +void geni_icc_update_bw(struct geni_se *se, bool update)
+> +{
+> +	struct geni_se *temp = NULL;
+> +	struct list_head *ins_list_head;
+> +	struct geni_wrapper *wrapper;
+> +
+> +	mutex_lock(&se->wrapper->geni_wrapper_lock);
+> +
+> +	wrapper = se->wrapper;
+> +
+> +	if (update) {
+> +		wrapper->cur_avg_bw += se->avg_bw;
 
-                        Geert
+I find this fragile, as you're relying on the se drivers always doing
+the right thing.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+That said, all you're doing here is sum up all the SEs bandwidth
+requests and send them to the interconnect framework, which will sum
+them up. Why don't you just call the interconnect framework from the SE
+drivers directly?
+
+You can still define the interconnects property in the wrapper DT node
+and have the SEs do of_icc_get() from the parent DT node.
+
+> +		ins_list_head = &wrapper->peak_bw_list_head;
+> +		list_for_each_entry(temp, &wrapper->peak_bw_list_head,
+> +				peak_bw_list) {
+> +			if (temp->peak_bw < se->peak_bw)
+> +				break;
+> +			ins_list_head = &temp->peak_bw_list;
+> +		}
+> +
+> +		list_add(&se->peak_bw_list, ins_list_head);
+> +
+> +		if (ins_list_head == &wrapper->peak_bw_list_head)
+> +			wrapper->cur_peak_bw = se->peak_bw;
+> +	} else {
+> +		if (unlikely(list_empty(&se->peak_bw_list))) {
+> +			mutex_unlock(&wrapper->geni_wrapper_lock);
+> +			return;
+> +		}
+> +
+> +		wrapper->cur_avg_bw -= se->avg_bw;
+> +
+> +		list_del_init(&se->peak_bw_list);
+> +		temp = list_first_entry_or_null(&wrapper->peak_bw_list_head,
+> +					struct geni_se, peak_bw_list);
+> +		if (temp && temp->peak_bw != wrapper->cur_peak_bw)
+> +			wrapper->cur_peak_bw = temp->peak_bw;
+> +		else if (!temp && wrapper->cur_peak_bw)
+> +			wrapper->cur_peak_bw = 0;
+> +	}
+> +
+> +	/*
+> +	 * This bw vote is to enable internal QUP core clock as well as to
+> +	 * enable path towards memory.
+> +	 */
+> +	icc_set_bw(wrapper->icc_path[0], wrapper->cur_avg_bw,
+> +		wrapper->cur_peak_bw);
+> +
+> +	/*
+> +	 * This is just register configuration path so doesn't need avg bw.
+> +	 * Set only peak bw to enable this path.
+> +	 */
+> +	icc_set_bw(wrapper->icc_path[1], 0, wrapper->cur_peak_bw);
+> +
+> +	mutex_unlock(&wrapper->geni_wrapper_lock);
+> +}
+> +EXPORT_SYMBOL(geni_icc_update_bw);
+> +
+> +/**
+>   * geni_se_resources_off() - Turn off resources associated with the serial
+>   *                           engine
+>   * @se:	Pointer to the concerned serial engine.
+> @@ -707,6 +783,47 @@ void geni_se_rx_dma_unprep(struct geni_se *se, dma_addr_t iova, size_t len)
+>  }
+>  EXPORT_SYMBOL(geni_se_rx_dma_unprep);
+>  
+> +/**
+> + * geni_interconnect_init() - Request to get interconnect path handle
+> + * @se:			Pointer to the concerned serial engine.
+> + *
+> + * This function is used to get interconnect path handle.
+> + */
+> +int geni_interconnect_init(struct geni_se *se)
+> +{
+> +	struct geni_wrapper *wrapper_rsc;
+> +
+> +	if (unlikely(!se || !se->wrapper))
+> +		return -EINVAL;
+> +
+> +	wrapper_rsc = se->wrapper;
+> +
+> +	if ((IS_ERR_OR_NULL(wrapper_rsc->icc_path[0]) ||
+> +		IS_ERR_OR_NULL(wrapper_rsc->icc_path[1]))) {
+
+You have a probe function for the wrapper, initialize the interconnects
+from there instead. That way you don't have to do this.
+
+> +
+> +		wrapper_rsc->icc_path[0] = of_icc_get(wrapper_rsc->dev,
+> +						"qup-memory");
+> +		if (IS_ERR(wrapper_rsc->icc_path[0]))
+> +			return PTR_ERR(wrapper_rsc->icc_path[0]);
+> +
+> +		wrapper_rsc->icc_path[1] = of_icc_get(wrapper_rsc->dev,
+> +						"qup-config");
+> +		if (IS_ERR(wrapper_rsc->icc_path[1])) {
+> +			icc_put(wrapper_rsc->icc_path[0]);
+> +			wrapper_rsc->icc_path[0] = NULL;
+> +			return PTR_ERR(wrapper_rsc->icc_path[1]);
+> +		}
+> +
+> +		INIT_LIST_HEAD(&wrapper_rsc->peak_bw_list_head);
+> +		mutex_init(&wrapper_rsc->geni_wrapper_lock);
+> +	}
+> +
+> +	INIT_LIST_HEAD(&se->peak_bw_list);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(geni_interconnect_init);
+> +
+
+Regards,
+Bjorn

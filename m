@@ -1,83 +1,67 @@
-From: Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH 1/6] dt-bindings: soc: qcom: Add interconnect binding for
- GENI QUP
-Date: Wed, 23 Jan 2019 09:07:58 -0800
-Message-ID: <20190123170758.GB512@tuxbook-pro>
-References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
- <1548138816-1149-2-git-send-email-alokc@codeaurora.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync
+ instead run teardown delayed
+Date: Wed, 23 Jan 2019 17:56:09 +0000
+Message-ID: <20190123175609.GG7503@sirena.org.uk>
+References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com>
+ <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org>
+ <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com>
+ <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org>
+ <20190115192619.GG5522@sirena.org.uk>
+ <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org>
+ <20190115212539.GK5522@sirena.org.uk>
+ <EA757B47-A264-4B4D-9E5F-16611ABA0278@martin.sperl.org>
+ <20190118191202.GG6260@sirena.org.uk>
+ <EE52ED32-CBB4-40D4-8615-CA814158C826@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, georgi.djakov@linaro.org,
-        dianders@chromium.org, swboyd@chromium.org
-To: Alok Chauhan <alokc@codeaurora.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="reI/iBAAp9kzkmX4"
+Cc: Jon Hunter <jonathanh@nvidia.com>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+To: kernel@martin.sperl.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1548138816-1149-2-git-send-email-alokc@codeaurora.org>
+In-Reply-To: <EE52ED32-CBB4-40D4-8615-CA814158C826@martin.sperl.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon 21 Jan 22:33 PST 2019, Alok Chauhan wrote:
 
-> Add documentation for the interconnect and interconnect-names bindings
-> for the GENI QUP as detailed by bindings/interconnect/interconnect.txt.
-> 
-> Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
-> ---
->  Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
-> index dab7ca9..44d7e02 100644
-> --- a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
-> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
-> @@ -17,6 +17,12 @@ Required properties if child node exists:
->  - #address-cells: 	Must be <1> for Serial Engine Address
->  - #size-cells: 		Must be <1> for Serial Engine Address Size
->  - ranges: 		Must be present
-> +- interconnects:	phandle to a interconnect provider. Please refer
-> +			../interconnect/interconnect.txt for details.
-> +			Must be 2 paths corresponding to 2 AXI ports.
-> +- interconnect-names:	Port names to differentiate between the
+--reI/iBAAp9kzkmX4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-s/Port names/Path names/
+On Sun, Jan 20, 2019 at 12:24:23PM +0100, kernel@martin.sperl.org wrote:
 
-> +			2 interconnect paths defined with interconnect
-> +			specifier.
+> These kind of changes it requires are consuming a bit more time than
+> I was hoping for.
 
-These two names are significant in that they must match what the driver
-expects, hence you must actually specify them here.
+Thanks for trying.
 
-And as the scope of these strings are local to the QUP node you can omit
-"qup" from them, so make them "memory" and "config" (or perhaps iface,
-to match the clock naming?).
+> So maybe at this very moment the best is reverting the patch.
 
-Regards,
-Bjorn
+Yes, I'm just going to do that for now.
 
->  
->  Properties for children:
->  
-> @@ -67,6 +73,10 @@ Example:
->  		#size-cells = <1>;
->  		ranges;
->  
-> +		interconnects = <&qnoc 11 &qnoc 512>,
-> +				<&qnoc 0 &qnoc 543>;
+> As for the root cause of the regression: my guess is that spi-mem is
+> just not triggering a shutdown any more because of how message_pump works.
 
-I presu
+I'm fairly sure that's what's going on but not been able to get my head
+around things enough to figure out what's going wrong yet.
 
-> +		interconnect-names = "qup-memory", "qup-config";
-> +
->  		i2c0: i2c@a94000 {
->  			compatible = "qcom,geni-i2c";
->  			reg = <0xa94000 0x4000>;
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
-> 
+--reI/iBAAp9kzkmX4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxIqrgACgkQJNaLcl1U
+h9Bo+Qf/R2oUsHmOVhx2IGtp1A69vFPJrwFZJXXjknp2y8JDfLjNHRs47+iFmpfJ
+82jx8AMcTpYf4r4p3oAixX+huXXWP9sVD3jIx9jg4Wh7Nzjg/hqUhZlv0kPl2C0/
+gdFt6vn5gW02ebILvzT8aHQAovButhjV5KObxCKfVJjLC7MSjrrZ66Nu1rIh7HEP
+943ED4O4MSfCrkvbICr8QFEe+dNmlqnh/g1sfo8VMMuVQvizAi7axq7nm2keOMH5
+owQCS7DkgQGa3q9ra8eYwVGwUCDSAt/gA9ccZ31zXmyX1U4FGkqzndh7t1aC0Ij+
+qSH6CmkqaFC5X/Vl2ft/5RTPYJnOVA==
+=qwRN
+-----END PGP SIGNATURE-----
+
+--reI/iBAAp9kzkmX4--

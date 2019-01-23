@@ -1,40 +1,83 @@
-From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH -next] spi: bcm2835aux: remove unneeded NULL check of
- devm_clk_get
-Date: Wed, 23 Jan 2019 17:16:05 +0100 (CET)
-Message-ID: <2064917135.710926.1548260165940@email.ionos.de>
-References: <20190123070507.15404-1-yuehaibing@huawei.com>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH 1/6] dt-bindings: soc: qcom: Add interconnect binding for
+ GENI QUP
+Date: Wed, 23 Jan 2019 09:07:58 -0800
+Message-ID: <20190123170758.GB512@tuxbook-pro>
+References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
+ <1548138816-1149-2-git-send-email-alokc@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org, eric@anholt.net,
- f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190123070507.15404-1-yuehaibing@huawei.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        Andy Gross <andy.gross@linaro.org>,
+        David Brown <david.brown@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, georgi.djakov@linaro.org,
+        dianders@chromium.org, swboyd@chromium.org
+To: Alok Chauhan <alokc@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1548138816-1149-2-git-send-email-alokc@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> YueHaibing <yuehaibing@huawei.com> hat am 23. Januar 2019 um 08:05 geschrieben:
-> 
-> 
-> Fix a static code checker warning:
-> drivers/spi/spi-bcm2835aux.c:460
->  bcm2835aux_spi_probe() warn: passing zero to 'PTR_ERR'
-> 
-> In case of error, the function devm_clk_get() returns ERR_PTR()
-> and not returns NULL.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+On Mon 21 Jan 22:33 PST 2019, Alok Chauhan wrote:
 
-Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
+> Add documentation for the interconnect and interconnect-names bindings
+> for the GENI QUP as detailed by bindings/interconnect/interconnect.txt.
+> 
+> Signed-off-by: Alok Chauhan <alokc@codeaurora.org>
+> ---
+>  Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
+> index dab7ca9..44d7e02 100644
+> --- a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
+> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.txt
+> @@ -17,6 +17,12 @@ Required properties if child node exists:
+>  - #address-cells: 	Must be <1> for Serial Engine Address
+>  - #size-cells: 		Must be <1> for Serial Engine Address Size
+>  - ranges: 		Must be present
+> +- interconnects:	phandle to a interconnect provider. Please refer
+> +			../interconnect/interconnect.txt for details.
+> +			Must be 2 paths corresponding to 2 AXI ports.
+> +- interconnect-names:	Port names to differentiate between the
+
+s/Port names/Path names/
+
+> +			2 interconnect paths defined with interconnect
+> +			specifier.
+
+These two names are significant in that they must match what the driver
+expects, hence you must actually specify them here.
+
+And as the scope of these strings are local to the QUP node you can omit
+"qup" from them, so make them "memory" and "config" (or perhaps iface,
+to match the clock naming?).
+
+Regards,
+Bjorn
+
+>  
+>  Properties for children:
+>  
+> @@ -67,6 +73,10 @@ Example:
+>  		#size-cells = <1>;
+>  		ranges;
+>  
+> +		interconnects = <&qnoc 11 &qnoc 512>,
+> +				<&qnoc 0 &qnoc 543>;
+
+I presu
+
+> +		interconnect-names = "qup-memory", "qup-config";
+> +
+>  		i2c0: i2c@a94000 {
+>  			compatible = "qcom,geni-i2c";
+>  			reg = <0xa94000 0x4000>;
+> -- 
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project
+> 

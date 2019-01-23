@@ -1,78 +1,131 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835aux: remove unneeded NULL check of devm_clk_get" to the spi tree
-Date: Wed, 23 Jan 2019 17:58:00 +0000 (GMT)
-Message-ID: <20190123175800.7DF351127ABA@debutante.sirena.org.uk>
-References: <20190123070507.15404-1-yuehaibing@huawei.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        eric@anholt.net, stefan.wahren@i2se.com, f.fainelli@gmail.com,
-        rjui@broadcom.com, sbranden@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: YueHaibing <yuehaibing@huawei.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Wed, 23 Jan 2019 21:04:26 +0300
+Message-ID: <12af2632-491d-0e01-66c9-0ead4f9d985a@cogentembedded.com>
+References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
+ <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190123070507.15404-1-yuehaibing@huawei.com>
+In-Reply-To: <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hello!
 
-   spi: bcm2835aux: remove unneeded NULL check of devm_clk_get
+On 01/23/2019 10:09 AM, Mason Yang wrote:
 
-has been applied to the spi tree at
+> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+[...]
+> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
+> new file mode 100644
+> index 0000000..0127f25
+> --- /dev/null
+> +++ b/drivers/spi/spi-renesas-rpc.c
+> @@ -0,0 +1,805 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
+> +// Copyright (C) 2018 Macronix International Co., Ltd.
+> +//
+> +// R-Car Gen3 RPC-IF SPI/QSPI/Octa driver
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   Do we really support Octa?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> +//
+> +// Authors:
+> +//	Mason Yang <masonccyang@mxic.com.tw>
+> +//
+[...]
+> +#include <asm/unaligned.h>
+[...]
+> +	} else if (rx_buf) {
+> +		//
+> +		// RPC-IF spoils the data for the commands without an address
+> +		// phase (like RDID) in the manual mode, so we'll have to work
+> +		// around this issue by using the external address space read
+> +		// mode instead.
+> +		//
+> +		if (!(smenr & RPC_SMENR_ADE(0xf))) {
+> +			regmap_update_bits(rpc->regmap, RPC_CMNCR,
+> +					   RPC_CMNCR_MD, 0);
+> +			regmap_write(rpc->regmap, RPC_DRCR,
+> +				     RPC_DRCR_RBURST(32) | RPC_DRCR_RBE);
+> +			regmap_write(rpc->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
+> +			regmap_write(rpc->regmap, RPC_DRCMR, rpc->cmd);
+> +			regmap_write(rpc->regmap, RPC_DRDMCR, rpc->dummy);
+> +			regmap_write(rpc->regmap, RPC_DROPR, 0);
+> +			regmap_write(rpc->regmap, RPC_DRENR, smenr);
+> +			memcpy_fromio(rx_buf, rpc->dirmap, rpc->xferlen);
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+   Just noticed: if rpc->dirmap is NULL (which is now allowed), we have a kernel oops
+here. :-(
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+[...]
+> +static int rpc_spi_probe(struct platform_device *pdev)
+> +{
+> +	struct spi_controller *ctlr;
+> +	struct resource *res;
+> +	struct rpc_spi *rpc;
+> +	struct device_node *rpc_if;
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+   Don't think that's a good name. Why not call it 'flash'?
 
-Thanks,
-Mark
+> +	int ret;
+> +
+> +	rpc_if = of_get_next_child(pdev->dev.of_node, NULL);
+> +	if (!rpc_if) {
+> +		dev_warn(&pdev->dev, "no spi-nor device node found\n");
 
->From bfc7af6d6df8d75b9c693b8eb98c21aa75c1e377 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Wed, 23 Jan 2019 15:05:07 +0800
-Subject: [PATCH] spi: bcm2835aux: remove unneeded NULL check of devm_clk_get
+   How about "no flash node found"?
 
-Fix a static code checker warning:
-drivers/spi/spi-bcm2835aux.c:460
- bcm2835aux_spi_probe() warn: passing zero to 'PTR_ERR'
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret = of_device_is_compatible(rpc_if, "jedec,spi-nor");
+> +	if (!ret) {
+> +		dev_warn(&pdev->dev, "no compatible spi-nor device found\n");
 
-In case of error, the function devm_clk_get() returns ERR_PTR()
-and not returns NULL.
+   "no SPI-NOR device found"?
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm2835aux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[...]
+> +	ret = spi_register_controller(ctlr);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "spi_register_controller failed\n");
+> +		goto err_put_ctlr;
+> +	}
+> +	return 0;
+> +
+> +err_put_ctlr:
+> +	spi_controller_put(ctlr);
+> +	pm_runtime_disable(&pdev->dev);
+> +
+> +	return ret;
+> +}
+[...]
+> +static const struct of_device_id rpc_spi_of_ids[] = {
+> +	{ .compatible = "renesas,r8a77995-rpc", },
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 671e374e1b01..f7e054848ca5 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -456,7 +456,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	bs->clk = devm_clk_get(&pdev->dev, NULL);
--	if ((!bs->clk) || (IS_ERR(bs->clk))) {
-+	if (IS_ERR(bs->clk)) {
- 		err = PTR_ERR(bs->clk);
- 		dev_err(&pdev->dev, "could not get clk: %d\n", err);
- 		goto out_master_put;
--- 
-2.20.1
+   Why (if it has no differences with the generic gen3 value below)?
+Please remove.
+
+> +	{ .compatible = "renesas,rcar-gen3-rpc", },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, rpc_spi_of_ids);
+[...]
+
+MBR, Sergei

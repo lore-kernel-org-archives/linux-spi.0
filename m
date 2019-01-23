@@ -1,44 +1,47 @@
-From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] spi: bcm2835aux: remove unneeded NULL check of devm_clk_get
-Date: Wed, 23 Jan 2019 15:05:07 +0800
-Message-ID: <20190123070507.15404-1-yuehaibing@huawei.com>
+From: alokc@codeaurora.org
+Subject: Re: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Wed, 23 Jan 2019 12:45:30 +0530
+Message-ID: <775cdd29a7d536772330a15a7013f251@codeaurora.org>
+References: <1548138816-1149-1-git-send-email-alokc@codeaurora.org>
+ <1548138816-1149-5-git-send-email-alokc@codeaurora.org>
+ <20190122202924.GL7579@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-To: <broonie@kernel.org>, <eric@anholt.net>, <stefan.wahren@i2se.com>,
-        <f.fainelli@gmail.com>, <rjui@broadcom.com>,
-        <sbranden@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        andy.gross@linaro.org, david.brown@linaro.org,
+        georgi.djakov@linaro.org, dianders@chromium.org,
+        swboyd@chromium.org, bjorn.andersson@linaro.org,
+        linux-serial-owner@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190122202924.GL7579@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix a static code checker warning:
-drivers/spi/spi-bcm2835aux.c:460
- bcm2835aux_spi_probe() warn: passing zero to 'PTR_ERR'
+On 2019-01-23 01:59, Mark Brown wrote:
+> On Tue, Jan 22, 2019 at 12:03:34PM +0530, Alok Chauhan wrote:
+> 
+>> Get the interconnect paths for SPI based Serial Engine device
+>> and vote accordingly based on maximum supported SPI frequency.
+> 
+> Still not seeing anything except this patch here in my inbox - like I
+> said what's the story with dependencies?
 
-In case of error, the function devm_clk_get() returns ERR_PTR()
-and not returns NULL.
+I've added linux-spi mailing list to all the patches sent as part of 
+this series. Not sure why you didn't get other patches. Today I've 
+explicitly added you in all the patches.
+This change series basically enabled interconnect (as per 
+bindings/interconnect/interconnect.txt) support in GENI QUPs based 
+drivers so appropriate BW request can be put based on SE usages.
+here is my complete change series: 
+https://lore.kernel.org/lkml/1548069703-26595-1-git-send-email-alokc@codeaurora.org/
+I hope I answer to your question properly.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/spi/spi-bcm2835aux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 671e374..f7e0548 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -456,7 +456,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	bs->clk = devm_clk_get(&pdev->dev, NULL);
--	if ((!bs->clk) || (IS_ERR(bs->clk))) {
-+	if (IS_ERR(bs->clk)) {
- 		err = PTR_ERR(bs->clk);
- 		dev_err(&pdev->dev, "could not get clk: %d\n", err);
- 		goto out_master_put;
 -- 
-2.7.0
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,a Linux Foundation Collaborative Project

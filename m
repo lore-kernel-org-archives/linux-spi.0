@@ -1,8 +1,8 @@
 From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
  driver
-Date: Thu, 24 Jan 2019 14:27:40 +0300
-Message-ID: <1c47e6ba-66ac-49c5-1dc5-a441f5a8b42c@cogentembedded.com>
+Date: Thu, 24 Jan 2019 14:27:52 +0300
+Message-ID: <25ce4224-54fd-d52e-8512-a3845cfe7682@cogentembedded.com>
 References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
  <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
  <12af2632-491d-0e01-66c9-0ead4f9d985a@cogentembedded.com>
@@ -70,7 +70,7 @@ On 01/24/2019 05:06 AM, masonccyang@mxic.com.tw wrote:
 > 
 > Do you patch your spi-mem.c ?
 
-   What do yuo mean? The only extra patch I have to apply now to renesas.git repo's devel
+   What do you mean? The only extra patch I have to apply now to renesas.git repo's devel
 branch is "mtd: devices: m25p80: Use the spi-mem dirmap API"...
 
 > both dirmap_create() in your rpc driver and spi-mem layer should handle it well.

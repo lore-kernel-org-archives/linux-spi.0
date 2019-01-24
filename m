@@ -1,15 +1,14 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v7 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Thu, 24 Jan 2019 10:06:56 +0100
-Message-ID: <CAMuHMdUqprbwvO=VaoyY__nOoNhowEZ8A-i+Tb+2iBe8-p=_Hg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+Date: Thu, 24 Jan 2019 10:12:54 +0100
+Message-ID: <CAMuHMdU7wOzG4T5DZoNOhmcspTsGQ7Rd6T6fQjB6o0CeZ5yxhg@mail.gmail.com>
 References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-3-git-send-email-masonccyang@mxic.com.tw>
- <ba02ea43-83ce-7e3c-6910-73f2e78f51cf@gmail.com> <OFB904EE00.27B08F2C-ON4825838C.000D6846-4825838C.000E90F7@mxic.com.tw>
+ <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
+ <12af2632-491d-0e01-66c9-0ead4f9d985a@cogentembedded.com> <OFC86383C3.5347178A-ON4825838C.00093E95-4825838C.000B9D6F@mxic.com.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-Cc: Marek Vasut <marek.vasut@gmail.com>,
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Boris Brezillon <bbrezillon@kernel.org>,
         Mark Brown <broonie@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -17,62 +16,47 @@ Cc: Marek Vasut <marek.vasut@gmail.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        zhengxunli@mxic.com.tw
+        Marek Vasut <marek.vasut@gmail.com>, zhengxunli@mxic.com.tw
 To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFB904EE00.27B08F2C-ON4825838C.000D6846-4825838C.000E90F7@mxic.com.tw>
+In-Reply-To: <OFC86383C3.5347178A-ON4825838C.00093E95-4825838C.000B9D6F@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Mason,
 
-On Thu, Jan 24, 2019 at 3:39 AM <masonccyang@mxic.com.tw> wrote:
-> > "Marek Vasut" <marek.vasut@gmail.com>
-> > 2019/01/24 上午 09:54
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-
-> > rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> > > new file mode 100644
-> > > index 0000000..305bd10
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> > > @@ -0,0 +1,46 @@
-> > > +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> > > +--------------------------------------------------------------------
-> > > +
-> > > +Required properties:
-> > > +- compatible: should be an SoC-specific compatible value, followed by
-> > > +      "renesas,rcar-gen3-rpc" as a fallback, i.e.,
-> > > +      "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc".
-> > > +      "renesas,r8a7795-rpc"   (R-Car H3)
-> > > +      "renesas,r8a7796-rpc"   (R-Car M3-W)
-> > > +      "renesas,r8a77965-rpc"   (R-Car M3-N)
-> > > +      "renesas,r8a77970-rpc"   (R-Car V3M)
-> > > +      "renesas,r8a77980-rpc"   (R-Car V3H)
-> > > +      "renesas,r8a77990-rpc"   (R-Car E3)
-> > > +      "renesas,r8a77995-rpc"   (R-Car D3)
+On Thu, Jan 24, 2019 at 3:07 AM <masonccyang@mxic.com.tw> wrote:
+> > "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
+> > 2019/01/24 上午 02:04
+
+> > > +static const struct of_device_id rpc_spi_of_ids[] = {
+> > > +   { .compatible = "renesas,r8a77995-rpc", },
 > >
-> > Was it tested on all of those SoCs and do we already handle all the
-> > quirks of those ?
+> >    Why (if it has no differences with the generic gen3 value below)?
+> > Please remove.
 >
-> These are R-Car Gen3 series and I list these by Geert's comments,
-> or I misunderstand Geert's comments ?
+> By Geert's comments in dts,
+>
+>          rpc: rpc@ee200000 {
+>                 compatible = "renesas,r8a7795-rpc", "renesas,rcar-gen3-rpc";
+>                 reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
+>                       <0 0xee208000 0 0x100>;
+>
+> I modified it to "renesas,r8a77995-rpc" because this is Soc I developed and validated.
 
-I think you misunderstood. Typically we only list the SoC-specific
-compatible values for SoCs that have been tested with the driver.
-So for now I'd go with:
+There's a difference between compatible values in DT and in drivers:
+  - DT should list all compatible values that are applicable, from
+    most-specific to least-specific,
+  - Drivers should match against the least-specific compatible value that
+    is sufficient to get the job done.
+    In this case, that's "renesas,rcar-gen3-rpc".
 
-    - compatible: should be an SoC-specific compatible value, followed by
-                  "renesas,rcar-gen3-rpc" as a fallback.
-                  Supported SoC-specific values are:
-                    - "renesas,r8a77995-rpc"   (R-Car D3)
+The driver will probably have to be extended to match against
+"renesas,r8a77970-rpc" when R-Car V3M support is added, as RPC on V3M
+has an extra register that must be set, and thus cannot be declared
+compatible with "renesas,rcar-gen3-rpc".
 
-The list can be extended when the driver has been tested/enhanced to
-support more SoC types.
-
-Does that sound OK?
-Thanks!
+I hope this explanation makes it clearer.
 
 Gr{oetje,eeting}s,
 

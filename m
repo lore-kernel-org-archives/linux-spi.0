@@ -1,66 +1,58 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Thu, 24 Jan 2019 04:13:11 +0100
-Message-ID: <67fa5f94-886b-f09c-c93d-832e427ffec8@gmail.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v7 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
+ RPC-IF controller bindings
+Date: Thu, 24 Jan 2019 11:16:43 +0300
+Message-ID: <7cdecc93-fc7a-3602-25c2-23107dca2a5e@cogentembedded.com>
 References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
- <bb63b646-b549-dc3b-a604-17ba156e735c@gmail.com>
- <OF767ACC95.EECC73BE-ON4825838C.000BD6A3-4825838C.000D23A6@mxic.com.tw>
+ <1548227352-14910-3-git-send-email-masonccyang@mxic.com.tw>
+ <7a2bf711-f51e-82b0-b0c0-5d67f2c1d043@cogentembedded.com>
+ <OF87800430.BAF731CA-ON4825838C.0006CCEE-4825838C.00092BDE@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Cc: bbrezillon@kernel.org, broonie@kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
         linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
         zhengxunli@mxic.com.tw
 To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF767ACC95.EECC73BE-ON4825838C.000BD6A3-4825838C.000D23A6@mxic.com.tw>
+In-Reply-To: <OF87800430.BAF731CA-ON4825838C.0006CCEE-4825838C.00092BDE@mxic.com.tw>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1/24/19 3:23 AM, masonccyang@mxic.com.tw wrote:
-> Hi Marek,
+On 24.01.2019 4:40, masonccyang@mxic.com.tw wrote:
 
-Hi,
-
->> "Marek Vasut" <marek.vasut@gmail.com>
->> 2019/01/24 上午 09:54
->>
->>
->> > +#define RPC_CMNCR      0x0000   // R/W
->>
->> Is there any reason for using those horrible C++ comments ?
+>  > > @@ -0,0 +1,46 @@
+>  > > +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+>  > > +--------------------------------------------------------------------
+>  > > +
+>  > > +Required properties:
+>  > > +- compatible: should be an SoC-specific compatible value, followed by
+>  > > +      "renesas,rcar-gen3-rpc" as a fallback, i.e.,
+>  > > +      "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc".
+>  > > +      "renesas,r8a7795-rpc" (R-Car H3)
+>  > > +      "renesas,r8a7796-rpc" (R-Car M3-W)
+>  > > +      "renesas,r8a77965-rpc" (R-Car M3-N)
+>  > > +      "renesas,r8a77970-rpc" (R-Car V3M)
+>  > > +      "renesas,r8a77980-rpc" (R-Car V3H)
+>  > > +      "renesas,r8a77990-rpc" (R-Car E3)
+>  > > +      "renesas,r8a77995-rpc" (R-Car D3)
+>  > > +- reg: should contain three register areas:
+>  >
+>  >    The driver now handles "dirmap" and "wbuf" resources as optional --
+>  > you need to document that.
+>  >
 > 
-> By Mark's comments for the SPDX header needs to be C++ style and
-> I patch the whole RPC driver comments using C++ style otherwise it looks
-> messy.
+> Why ?
 
-I think the C++ comments should only be applied to the SPDX identifier,
-maybe the header, but not the entire file.
+    Because the driver treats "dirmap" and "wbuf" as optional resources.
 
->> [...]
->>
->> > +module_platform_driver(rpc_spi_driver);
->>
->> RPC is not a SPI controller, it's a SPI and HF controller.
->>
->> Also, how difficult will it be to add the HF support ?
-> 
-> One of my customers needs RPC SPI driver for our company's
-> Octal-Flash,MX25UW51245G.
-> We don't have HF product and hope you could understanding.
+[...]
 
-I am worried that when we need to add RPC HF support (which is what all
-boards but the D3 Draak use), we will have to rewrite the entire driver
-and/or convert it to MFD and that would be a tremendous undertaking. I'd
-prefer to have the driver ready for the HF addition before it's accepted
-upstream.
+> best regards,
+> Mason
 
--- 
-Best regards,
-Marek Vasut
+MBR, Sergei

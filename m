@@ -1,58 +1,73 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v7 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Thu, 24 Jan 2019 11:16:43 +0300
-Message-ID: <7cdecc93-fc7a-3602-25c2-23107dca2a5e@cogentembedded.com>
-References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-3-git-send-email-masonccyang@mxic.com.tw>
- <7a2bf711-f51e-82b0-b0c0-5d67f2c1d043@cogentembedded.com>
- <OF87800430.BAF731CA-ON4825838C.0006CCEE-4825838C.00092BDE@mxic.com.tw>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v3 6/7] mtd: spinand: Use the spi-mem dirmap API
+Date: Thu, 24 Jan 2019 09:49:44 +0100
+Message-ID: <20190124094944.726dd4e0@bbrezillon>
+References: <20181106160536.13415-1-boris.brezillon@bootlin.com>
+ <20181106160536.13415-7-boris.brezillon@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF87800430.BAF731CA-ON4825838C.0006CCEE-4825838C.00092BDE@mxic.com.tw>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+ Vignesh R <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>,
+ Cyrille Pitchen <cyrille.pitchen@microchip.com>, linux-spi@vger.kernel.org,
+ Marek Vasut <marek.vasut@gmail.com>,
+ Frieder Schrempf <frieder.schrempf@exceet.de>, Mark Brown <broonie@kernel.org>,
+ linux-mtd@lists.infradead.org, Piotr Bugalski <bugalski.piotr@gmail.com>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Boris Brezillon <boris.brezillon@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Stefan Roese <sr@denx.de>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20181106160536.13415-7-boris.brezillon@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 24.01.2019 4:40, masonccyang@mxic.com.tw wrote:
+Hi Miquel,
 
->  > > @@ -0,0 +1,46 @@
->  > > +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
->  > > +--------------------------------------------------------------------
->  > > +
->  > > +Required properties:
->  > > +- compatible: should be an SoC-specific compatible value, followed by
->  > > +      "renesas,rcar-gen3-rpc" as a fallback, i.e.,
->  > > +      "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc".
->  > > +      "renesas,r8a7795-rpc" (R-Car H3)
->  > > +      "renesas,r8a7796-rpc" (R-Car M3-W)
->  > > +      "renesas,r8a77965-rpc" (R-Car M3-N)
->  > > +      "renesas,r8a77970-rpc" (R-Car V3M)
->  > > +      "renesas,r8a77980-rpc" (R-Car V3H)
->  > > +      "renesas,r8a77990-rpc" (R-Car E3)
->  > > +      "renesas,r8a77995-rpc" (R-Car D3)
->  > > +- reg: should contain three register areas:
->  >
->  >    The driver now handles "dirmap" and "wbuf" resources as optional --
->  > you need to document that.
->  >
+On Tue,  6 Nov 2018 17:05:35 +0100
+Boris Brezillon <boris.brezillon@bootlin.com> wrote:
+
+> Make use of the spi-mem direct mapping API to let advanced controllers
+> optimize read/write operations when they support direct mapping.
 > 
-> Why ?
+> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-    Because the driver treats "dirmap" and "wbuf" as optional resources.
+Can we drop/revert this patch until we find out what's going on with
+Stefan's setup. 
 
-[...]
+> +const struct spi_mem_op *
+> +spinand_find_supported_op(struct spinand_device *spinand,
+> +			  const struct spi_mem_op *ops,
+> +			  unsigned int nops)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < nops; i++) {
+> +		if (spi_mem_supports_op(spinand->spimem, &ops[i]))
+> +			return &ops[i];
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
 
-> best regards,
-> Mason
+Looks like this function is never used. Probably a leftover from
+early versions of this patch :-/.
 
-MBR, Sergei
+Regards,
+
+Boris
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

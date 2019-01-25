@@ -1,72 +1,99 @@
-From: Jonas Bonn <jonas@norrbonn.se>
-Subject: Re: [PATCH 2/2] spi-atmel: support inter-word delay
-Date: Fri, 25 Jan 2019 12:47:15 +0100
-Message-ID: <296f8326-a33d-8db1-ca71-c6aba21b1302@norrbonn.se>
-References: <20190125114429.20066-1-jonas@norrbonn.se>
- <20190125114429.20066-3-jonas@norrbonn.se>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH 1/2] spi: support inter-word delay requirement for devices
+Date: Fri, 25 Jan 2019 19:53:13 +0800
+Message-ID: <CAMz4ku+sqzK19994BpdSfaDjNdXW_-gnCutr_fYQiv5ynxOq2g@mail.gmail.com>
+References: <20190125114429.20066-1-jonas@norrbonn.se> <20190125114429.20066-2-jonas@norrbonn.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
         Mark Brown <broonie@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org
-To: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        DTML <devicetree@vger.kernel.org>
+To: Jonas Bonn <jonas@norrbonn.se>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190125114429.20066-3-jonas@norrbonn.se>
-Content-Language: en-US
+In-Reply-To: <20190125114429.20066-2-jonas@norrbonn.se>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
+On Fri, 25 Jan 2019 at 19:44, Jonas Bonn <jonas@norrbonn.se> wrote:
+>
+> Some devices are slow and cannot keep up with the SPI bus and therefore
+> require a short delay between words of the SPI transfer.
+>
+> The example of this that I'm looking at is a SAMA5D2 with a minimum SPI
+> clock of 400kHz talking to an AVR-based SPI slave.  The AVR cannot put
+> bytes on the bus fast enough to keep up with the SoC's SPI controller
+> even at the lowest bus speed.
+>
+> This patch introduces the ability to specify a required inter-word
+> delay for SPI devices.  It is up to the controller driver to configure
+> itself accordingly in order to introduce the requested delay.
 
+Can we configure it at runtime by the device rather than at DT time by
+the controller? If yes, we already have a patch for this, please
+check:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eeaceb8b7d1fb64b6030249ca0dd1d902ef3069e
 
-On 25/01/2019 12:44, Jonas Bonn wrote:
-> If the SPI slave requires an inter-word delay, configure the DLYBCT
-> register accordingly.
-> 
-> Tested on a SAMA5D2 board (derived from SAMA5D2-Xplained reference
-> board).
-> 
+>
 > Signed-off-by: Jonas Bonn <jonas@norrbonn.se>
-> CC: Nicolas Ferre <nicolas.ferre@microchip.com>
 > CC: Mark Brown <broonie@kernel.org>
-> CC: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> CC: Ludovic Desroches <ludovic.desroches@microchip.com>
+> CC: Rob Herring <robh+dt@kernel.org>
+> CC: Mark Rutland <mark.rutland@arm.com>
 > CC: linux-spi@vger.kernel.org
-> CC: linux-arm-kernel@lists.infradead.org
+> CC: devicetree@vger.kernel.org
 > ---
->   drivers/spi/spi-atmel.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 74fddcd3282b..88ff3fef56e9 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1209,13 +1209,14 @@ static int atmel_spi_setup(struct spi_device *spi)
->   		csr |= SPI_BIT(CSAAT);
->   
->   	/* DLYBS is mostly irrelevant since we manage chipselect using GPIOs.
-> -	 *
-> -	 * DLYBCT would add delays between words, slowing down transfers.
-> -	 * It could potentially be useful to cope with DMA bottlenecks, but
-> -	 * in those cases it's probably best to just use a lower bitrate.
->   	 */
->   	csr |= SPI_BF(DLYBS, 0);
-> -	csr |= SPI_BF(DLYBCT, 0);
+>  Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
+>  drivers/spi/spi.c                                 | 4 ++++
+>  include/linux/spi/spi.h                           | 1 +
+>  3 files changed, 6 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> index 1f6e86f787ef..a5f20060676d 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> @@ -77,6 +77,7 @@ All slave nodes can contain the following optional properties:
+>                     Defaults to 1 if not present.
+>  - spi-rx-delay-us - Microsecond delay after a read transfer.
+>  - spi-tx-delay-us - Microsecond delay after a write transfer.
+> +- spi-word-delay-us - Microsecond delay between individual words of a transfer
+>
+>  Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+>  It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 9a7def7c3237..cd4d4065eca2 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1692,6 +1692,10 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>         }
+>         spi->max_speed_hz = value;
+>
+> +       if (!of_property_read_u32(nc, "spi-word-delay-us", &value)) {
+> +               spi->word_delay = value;
+> +       }
 > +
-> +	/* DLYBCT adds delays between words.  This is useful for slow devices
-> +	 * that need a bit of time to setup the next transfer.
-> +	 */
-> +	csr |= SPI_BF(DLYBCT,
-> +		clamp_t(u8, (as->spi_clk/1000000*spi->word_delay)>>5, 1, 255));
+>         return 0;
+>  }
+>
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 314d922ca607..e5200dd9d750 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -164,6 +164,7 @@ struct spi_device {
+>         char                    modalias[SPI_NAME_SIZE];
+>         const char              *driver_override;
+>         int                     cs_gpio;        /* chip select gpio */
+> +       uint16_t                word_delay;     /* inter-word delay (us) */
+>
+>         /* the statistics */
+>         struct spi_statistics   statistics;
+> --
+> 2.19.1
+>
 
-Ah... this is stupid.  The clamping here _always_ introduces a delay, 
-which is not what we want...  will resubmit this.
 
-/Jonas
-
->   
->   	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
->   	npcs_pin = (unsigned long)spi->controller_data;
-> 
+-- 
+Baolin Wang
+Best Regards

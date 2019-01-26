@@ -1,71 +1,86 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Sat, 26 Jan 2019 10:41:07 +0100
-Message-ID: <0b3ea94f-a4f3-0780-301b-f88ff2ad2fb1@gmail.com>
-References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
- <bb63b646-b549-dc3b-a604-17ba156e735c@gmail.com>
- <OF767ACC95.EECC73BE-ON4825838C.000BD6A3-4825838C.000D23A6@mxic.com.tw>
- <67fa5f94-886b-f09c-c93d-832e427ffec8@gmail.com>
- <OF891E176A.614DBEEF-ON4825838C.0022D454-4825838C.002396ED@mxic.com.tw>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v2 1/2] eeprom: at25: Merge "off" and "offset" in
+ at25_ee_write()
+Date: Sat, 26 Jan 2019 11:06:05 +0100
+Message-ID: <20190126110546.360190cc@bbrezillon>
+References: <20190118140525.29189-1-geert+renesas@glider.be>
+        <20190118140525.29189-2-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=big5
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mtd@lists.infradead.org,
+        Nguyen An Hoan <na-hoan@jinso.co.jp>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF891E176A.614DBEEF-ON4825838C.0022D454-4825838C.002396ED@mxic.com.tw>
-Content-Language: en-US
+In-Reply-To: <20190118140525.29189-2-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1/24/19 7:28 AM, masonccyang@mxic.com.tw wrote:
-> Hi Marek,
+On Fri, 18 Jan 2019 15:05:24 +0100
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-Hi,
-
->> "Marek Vasut" <marek.vasut@gmail.com>
->> 2019/01/24 ¤W¤È 11:14
->> >>
->> >> > +module_platform_driver(rpc_spi_driver);
->> >>
->> >> RPC is not a SPI controller, it's a SPI and HF controller.
->> >>
->> >> Also, how difficult will it be to add the HF support ?
->> >
->> > One of my customers needs RPC SPI driver for our company's
->> > Octal-Flash,MX25UW51245G.
->> > We don't have HF product and hope you could understanding.
->>
->> I am worried that when we need to add RPC HF support (which is what all
->> boards but the D3 Draak use), we will have to rewrite the entire driver
->> and/or convert it to MFD and that would be a tremendous undertaking. I'd
->> prefer to have the driver ready for the HF addition before it's accepted
->> upstream.
->>
+> Since commit 01973a01f9ec34b7 ("eeprom: at25: remove nvmem regmap
+> dependency") changed the type of "off" from "loff_t" to "unsigned int",
+> "off" and "offset" are now the same type, and can be merged into a
+> single variable.
 > 
-> I think maybe your concerned would be happened only if HF driver goes with
-> spi-mem layer.
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
+
+> ---
+> v2:
+>   - Merge "off" and "offset" into a single variable instead of just
+>     killing the cast, as suggested by Arnd.
+> ---
+>  drivers/misc/eeprom/at25.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> A comment for HF from Daniel Fishman. FYR.
-> 
-> https://www.quora.com/What-is-a-hyper-flash-memory-and-how-is-it-different-from-normal-flash-memory
-
-I have a decent idea what HF and SPI NOR are, since I wrote the RPC
-driver for both HF and SPI mode for U-Boot (as I mentioned earlier).
-
-The HF in Linux would use the CFI NOR part of MTD framework. My concern
-is that when we need to add HF support into this driver, this driver
-will have to be basically rewritten, since the architecture won't allow
-for that. I'd like to avoid that, since the majority of Gen3 boards,
-expect for the D3 Draak, use RPC in HF mode.
-
--- 
-Best regards,
-Marek Vasut
+> diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+> index 99de6939cd5ac2e3..2d8e5388e574710d 100644
+> --- a/drivers/misc/eeprom/at25.c
+> +++ b/drivers/misc/eeprom/at25.c
+> @@ -130,7 +130,8 @@ static int at25_ee_read(void *priv, unsigned int offset,
+>  	return status;
+>  }
+>  
+> -static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+> +static int at25_ee_write(void *priv, unsigned int offset, void *val,
+> +			 size_t count)
+>  {
+>  	struct at25_data *at25 = priv;
+>  	const char *buf = val;
+> @@ -138,10 +139,10 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+>  	unsigned		buf_size;
+>  	u8			*bounce;
+>  
+> -	if (unlikely(off >= at25->chip.byte_len))
+> +	if (unlikely(offset >= at25->chip.byte_len))
+>  		return -EFBIG;
+> -	if ((off + count) > at25->chip.byte_len)
+> -		count = at25->chip.byte_len - off;
+> +	if ((offset + count) > at25->chip.byte_len)
+> +		count = at25->chip.byte_len - offset;
+>  	if (unlikely(!count))
+>  		return -EINVAL;
+>  
+> @@ -160,7 +161,6 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+>  	do {
+>  		unsigned long	timeout, retries;
+>  		unsigned	segment;
+> -		unsigned	offset = (unsigned) off;
+>  		u8		*cp = bounce;
+>  		int		sr;
+>  		u8		instr;
+> @@ -234,7 +234,7 @@ static int at25_ee_write(void *priv, unsigned int off, void *val, size_t count)
+>  			break;
+>  		}
+>  
+> -		off += segment;
+> +		offset += segment;
+>  		buf += segment;
+>  		count -= segment;
+>  

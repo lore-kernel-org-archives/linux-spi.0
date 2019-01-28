@@ -1,57 +1,64 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 1/2] spi: support inter-word delay requirement for devices
-Date: Mon, 28 Jan 2019 12:54:06 +0100
-Message-ID: <CAMuHMdVzstrjbKvNr8mbW_XLH6sYE+Asd=St-bZKt+rKjJhd+g@mail.gmail.com>
-References: <20190125114429.20066-1-jonas@norrbonn.se> <20190125114429.20066-2-jonas@norrbonn.se>
- <CAMz4ku+sqzK19994BpdSfaDjNdXW_-gnCutr_fYQiv5ynxOq2g@mail.gmail.com>
- <f34151c8-28a3-3d53-a27e-b5ff512d9c94@norrbonn.se> <20190125174713.GA6939@sirena.org.uk>
- <20190125175031.GA25898@sirena.org.uk> <84d6c40f-62bb-fd00-0dcb-d2f390b136c1@norrbonn.se>
- <CAMuHMdUyt=DDMwDZA-TB0Yac13NJQCo2LxzvqnRzvn6LZ5F98w@mail.gmail.com>
- <ed62564f-d36b-1492-8e65-60166c0aa4a6@norrbonn.se> <CAMuHMdXQONq1UFuFHwny_xfAtxY7sOv2K3yi2i9T22OovMqFhw@mail.gmail.com>
- <20190128114757.GA11699@sirena.org.uk> <94c7514c-de1f-ff70-d2b7-6394f9747942@norrbonn.se>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v7 4/5] spi: nxp-fspi: add octal mode flag bit for octal
+ support
+Date: Mon, 28 Jan 2019 12:26:31 +0000
+Message-ID: <20190128122631.GD11699@sirena.org.uk>
+References: <1547546584-5254-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+ <1547546584-5254-5-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        DTML <devicetree@vger.kernel.org>
-To: Jonas Bonn <jonas@norrbonn.se>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="8w3uRX/HFJGApMzv"
+Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <94c7514c-de1f-ff70-d2b7-6394f9747942@norrbonn.se>
+Content-Disposition: inline
+In-Reply-To: <1547546584-5254-5-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jonas,
 
-On Mon, Jan 28, 2019 at 12:51 PM Jonas Bonn <jonas@norrbonn.se> wrote:
-> On 28/01/2019 12:47, Mark Brown wrote:
-> > On Mon, Jan 28, 2019 at 08:41:05AM +0100, Geert Uytterhoeven wrote:
-> >> On Sat, Jan 26, 2019 at 4:40 PM Jonas Bonn <jonas@norrbonn.se> wrote:
-> >
-> >>> spi-3wire: again, only set by MAXIM DS-1302 which always needs this
-> >>> setting; driver could set this
-> >
-> >> For DS1302, this is probable true.
-> >> Some devices may support both 4-wire or 3-wire mode?
-> >
-> > IIRC yes.
->
-> Just for the record, the datasheet says it's exclusively 3-wire.  But
-> it's not important...
+--8w3uRX/HFJGApMzv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-With "some devices" I meant "some other non-DS1302 devices supporting
-3-wire mode". Sorry for being unclear.
+On Tue, Jan 15, 2019 at 10:05:29AM +0000, Yogesh Narayan Gaur wrote:
 
-Gr{oetje,eeting}s,
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index e23ad9ef028e..adc3c0e14f38 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -952,8 +952,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
 
-                        Geert
+This does not apply against current code, the above file is not present
+upstream.  Please do not submit patches to out of tree code upstream.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--8w3uRX/HFJGApMzv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxO9PYACgkQJNaLcl1U
+h9Bc7wf+PzfVYK47sKb7gYCwrFPhskxTV0PfgznGOSHdzhtJmhuLjfDzsgLC+PH5
+T25AIY5kF5IKbod3WbKT8atM1uQCDHDae81MTD0m6da0uNCpqPsGBquyU+WPiwJA
+SOEpzPRyV0GSI/TQW5fKWnWVUxLVKdMEzTBZnvu9I7EvOpv+eiS0udKenqsE8iVp
+U0EgQng2D51VRhvVOmRY4bmvtby54bzZXjt/4TYsdvNux2ar00OzH8FOJ2XTKnOO
+JdDZlmY/K0NSgjE5T1JYHT4CDn8LLL1wJQ4g04CN/WAKdbGU1GgSMcnxK8OD0C2i
+t3E/tHBlG4R/WC4KdDO76rZk6mCTTg==
+=DbNg
+-----END PGP SIGNATURE-----
+
+--8w3uRX/HFJGApMzv--

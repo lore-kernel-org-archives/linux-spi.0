@@ -1,54 +1,123 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 1/2] spi: support inter-word delay requirement for
- devices
-Date: Mon, 28 Jan 2019 18:10:38 +0000
-Message-ID: <20190128181038.GF11699@sirena.org.uk>
-References: <20190126163220.26421-1-jonas@norrbonn.se>
- <20190126163220.26421-2-jonas@norrbonn.se>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uTRFFR9qmiCqR05s"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
-To: Jonas Bonn <jonas@norrbonn.se>
+Subject: Applied "spi: pl022: add a message state STATE_TIMEOUT for timeout transfer" to the spi tree
+Date: Mon, 28 Jan 2019 18:25:57 +0000 (GMT)
+Message-ID: <20190128182557.A0AAA1127D29@debutante.sirena.org.uk>
+References: <20190118033229.22553-1-jiwei.sun@windriver.com>
+Cc: Mark Brown <broonie@kernel.org>, linus.walleij@linaro.org,
+        linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Jiwei Sun <jiwei.sun@windriver.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190126163220.26421-2-jonas@norrbonn.se>
+In-Reply-To: <20190118033229.22553-1-jiwei.sun@windriver.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---uTRFFR9qmiCqR05s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pl022: add a message state STATE_TIMEOUT for timeout transfer
 
-On Sat, Jan 26, 2019 at 05:32:19PM +0100, Jonas Bonn wrote:
+has been applied to the spi tree at
 
-> @@ -164,6 +166,7 @@ struct spi_device {
->  	char			modalias[SPI_NAME_SIZE];
->  	const char		*driver_override;
->  	int			cs_gpio;	/* chip select gpio */
-> +	uint16_t		word_delay;	/* inter-word delay (us) */
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-This needs some code in the core joining it up with the per-transfer
-word delay similar to what we have for speed_hz and bits_per_word in
-__spi_validate().  Then the controller drivers can just look at the
-per-transfer value and support both without having to duplicate logic.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---uTRFFR9qmiCqR05s
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxPRZ0ACgkQJNaLcl1U
-h9Ac7Qf+PnvdYqut3vqHiLuZnIkM0rUN8LzkQjuzbXAcNDhc1Mng0wacMxY8/197
-iHfg/0ZtyZGvI3LXfVstZaUtryS7tT5sUzuf7zLhUMANNTPT73J+RxabEMojYVdC
-gXAcYSvZklqJW1C8SPR+KyxvrrkVJzfTDOt1QjIP2RuKTzqqrXZMXsUyw+8ZveMP
-kfDi8HPRqFwpN3TnofAUG8pXYFWUnuBqYBZtZ1p44E741r3DXPP2aT3JMNEvl3lI
-Du0WLYv06i4T8VjinvD7aChUtWcPdBYBjh157S+/E7YExhJvqXFKav7BtPc54VJu
-Z/iGAOazu9hGpRh6EnHpkMMyFfyNqA==
-=ilNl
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---uTRFFR9qmiCqR05s--
+Thanks,
+Mark
+
+>From 7aef2b646b24247d880a353e09d4e10614a61cd6 Mon Sep 17 00:00:00 2001
+From: Jiwei Sun <jiwei.sun@windriver.com>
+Date: Fri, 18 Jan 2019 11:32:29 +0800
+Subject: [PATCH] spi: pl022: add a message state STATE_TIMEOUT for timeout
+ transfer
+
+When transfer timeout, give -EAGAIN to the message's status, and it can
+make the spi device driver choose repeated transimation or not. And if
+transfer timeout, output some useful information for tracing the issue.
+
+Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pl022.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 0c793e31d60f..26684178786f 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -253,6 +253,7 @@
+ #define STATE_RUNNING			((void *) 1)
+ #define STATE_DONE			((void *) 2)
+ #define STATE_ERROR			((void *) -1)
++#define STATE_TIMEOUT			((void *) -2)
+ 
+ /*
+  * SSP State - Whether Enabled or Disabled
+@@ -1484,6 +1485,30 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
+ 	writew(irqflags, SSP_IMSC(pl022->virtbase));
+ }
+ 
++static void print_current_status(struct pl022 *pl022)
++{
++	u32 read_cr0;
++	u16 read_cr1, read_dmacr, read_sr;
++
++	if (pl022->vendor->extended_cr)
++		read_cr0 = readl(SSP_CR0(pl022->virtbase));
++	else
++		read_cr0 = readw(SSP_CR0(pl022->virtbase));
++	read_cr1 = readw(SSP_CR1(pl022->virtbase));
++	read_dmacr = readw(SSP_DMACR(pl022->virtbase));
++	read_sr = readw(SSP_SR(pl022->virtbase));
++
++	dev_warn(&pl022->adev->dev, "spi-pl022 CR0: %x\n", read_cr0);
++	dev_warn(&pl022->adev->dev, "spi-pl022 CR1: %x\n", read_cr1);
++	dev_warn(&pl022->adev->dev, "spi-pl022 DMACR: %x\n", read_dmacr);
++	dev_warn(&pl022->adev->dev, "spi-pl022 SR: %x\n", read_sr);
++	dev_warn(&pl022->adev->dev,
++			"spi-pl022 exp_fifo_level/fifodepth: %u/%d\n",
++			pl022->exp_fifo_level,
++			pl022->vendor->fifodepth);
++
++}
++
+ static void do_polling_transfer(struct pl022 *pl022)
+ {
+ 	struct spi_message *message = NULL;
+@@ -1535,7 +1560,8 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 			if (time_after(time, timeout)) {
+ 				dev_warn(&pl022->adev->dev,
+ 				"%s: timeout!\n", __func__);
+-				message->state = STATE_ERROR;
++				message->state = STATE_TIMEOUT;
++				print_current_status(pl022);
+ 				goto out;
+ 			}
+ 			cpu_relax();
+@@ -1553,6 +1579,8 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 	/* Handle end of message */
+ 	if (message->state == STATE_DONE)
+ 		message->status = 0;
++	else if (message->state == STATE_TIMEOUT)
++		message->status = -EAGAIN;
+ 	else
+ 		message->status = -EIO;
+ 
+-- 
+2.20.1

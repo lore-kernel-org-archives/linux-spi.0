@@ -1,87 +1,71 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Mon, 28 Jan 2019 12:03:00 +0100
-Message-ID: <2d762c16-d714-9171-9450-b6adf1a6509c@gmail.com>
-References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
- <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
- <bb63b646-b549-dc3b-a604-17ba156e735c@gmail.com>
- <OF767ACC95.EECC73BE-ON4825838C.000BD6A3-4825838C.000D23A6@mxic.com.tw>
- <67fa5f94-886b-f09c-c93d-832e427ffec8@gmail.com>
- <OF891E176A.614DBEEF-ON4825838C.0022D454-4825838C.002396ED@mxic.com.tw>
- <0b3ea94f-a4f3-0780-301b-f88ff2ad2fb1@gmail.com>
- <OFEAAE10B4.20C3E45D-ON48258390.0007CD37-48258390.0009066E@mxic.com.tw>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: support inter-word delay requirement for devices
+Date: Mon, 28 Jan 2019 11:47:57 +0000
+Message-ID: <20190128114757.GA11699@sirena.org.uk>
+References: <20190125114429.20066-1-jonas@norrbonn.se>
+ <20190125114429.20066-2-jonas@norrbonn.se>
+ <CAMz4ku+sqzK19994BpdSfaDjNdXW_-gnCutr_fYQiv5ynxOq2g@mail.gmail.com>
+ <f34151c8-28a3-3d53-a27e-b5ff512d9c94@norrbonn.se>
+ <20190125174713.GA6939@sirena.org.uk>
+ <20190125175031.GA25898@sirena.org.uk>
+ <84d6c40f-62bb-fd00-0dcb-d2f390b136c1@norrbonn.se>
+ <CAMuHMdUyt=DDMwDZA-TB0Yac13NJQCo2LxzvqnRzvn6LZ5F98w@mail.gmail.com>
+ <ed62564f-d36b-1492-8e65-60166c0aa4a6@norrbonn.se>
+ <CAMuHMdXQONq1UFuFHwny_xfAtxY7sOv2K3yi2i9T22OovMqFhw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Cc: Jonas Bonn <jonas@norrbonn.se>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        DTML <devicetree@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFEAAE10B4.20C3E45D-ON48258390.0007CD37-48258390.0009066E@mxic.com.tw>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXQONq1UFuFHwny_xfAtxY7sOv2K3yi2i9T22OovMqFhw@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1/28/19 2:38 AM, masonccyang@mxic.com.tw wrote:
-> Hi Marek,
 
-Hi,
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> "Marek Vasut" <marek.vasut@gmail.com>
->> >> >> > +module_platform_driver(rpc_spi_driver);
->> >> >>
->> >> >> RPC is not a SPI controller, it's a SPI and HF controller.
->> >> >>
->> >> >> Also, how difficult will it be to add the HF support ?
->> >> >
->> >> > One of my customers needs RPC SPI driver for our company's
->> >> > Octal-Flash,MX25UW51245G.
->> >> > We don't have HF product and hope you could understanding.
->> >>
->> >> I am worried that when we need to add RPC HF support (which is what all
->> >> boards but the D3 Draak use), we will have to rewrite the entire driver
->> >> and/or convert it to MFD and that would be a tremendous
-> undertaking. I'd
->> >> prefer to have the driver ready for the HF addition before it's
-> accepted
->> >> upstream.
->> >>
->> >
->> > I think maybe your concerned would be happened only if HF driver
-> goes with
->> > spi-mem layer.
->> >
->> > A comment for HF from Daniel Fishman. FYR.
->> >
->> > https://www.quora.com/What-is-a-hyper-flash-memory-and-how-is-it-
->> different-from-normal-flash-memory
->>
->> I have a decent idea what HF and SPI NOR are, since I wrote the RPC
->> driver for both HF and SPI mode for U-Boot (as I mentioned earlier).
->>
->> The HF in Linux would use the CFI NOR part of MTD framework. My concern
->> is that when we need to add HF support into this driver, this driver
->> will have to be basically rewritten, since the architecture won't allow
->> for that. I'd like to avoid that, since the majority of Gen3 boards,
->> expect for the D3 Draak, use RPC in HF mode.
-> 
-> FYI~
-> 
-> MX25UW51245g(64MByte Octa)                      S26KL512S(64MByte HF)
->    8 IO                                                  8 IO
-> 200MHz DDR@1.8v                                   166MHz DDR@1.8v
-> 
-> support Read-while-write                       Not support
-> good for OTA,etc
-> powerful application
+On Mon, Jan 28, 2019 at 08:41:05AM +0100, Geert Uytterhoeven wrote:
+> On Sat, Jan 26, 2019 at 4:40 PM Jonas Bonn <jonas@norrbonn.se> wrote:
 
-What does that mean ?
+> > spi-3wire: again, only set by MAXIM DS-1302 which always needs this
+> > setting; driver could set this
 
--- 
-Best regards,
-Marek Vasut
+> For DS1302, this is probable true.
+> Some devices may support both 4-wire or 3-wire mode?
+
+IIRC yes.
+
+> > Yeah, that one make sense.  But if the DT is only overriding the maximum
+> > device frequency that the driver should otherwise be setting, why is
+> > spi-max-frequency a _required_ property?
+
+> That's a good question. Legacy?
+
+It's a documentation error.
+
+--PNTmBPCT7hxwcZjr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxO6+wACgkQJNaLcl1U
+h9AOgwf+IkdFBShqKG2xdlfJ5VF8oSqgYM0JOZyBmGJJrw4Uv4l/Ov5QffmAICt3
+J8VIcm0Z9wr9iTi7bWCra8BPMGiqLM7Tx/aPErD2CtnuAVialMEwLVNejnFu9NnV
+Dwd3HPacCIx/QXZdfZwiMTJvRZdRyn/0WFT7TUWuUklm6g6fq4aye60aq9w/wQRd
+nbU1b/nwRl3m6+y0Y6i/grTCw5ZtVvrlgczav6EP1/yc1utZQ0tBXj95DXs6MJoQ
+K8VBky1Kza8/lLaoOECEf+98MNbVFxKyJttu6nC0uwxqbvBCV1RMFfCDtnHMQxqY
+OiLKZ8HXn9XlrCQrmsugXESuWcGxKQ==
+=KFrc
+-----END PGP SIGNATURE-----
+
+--PNTmBPCT7hxwcZjr--

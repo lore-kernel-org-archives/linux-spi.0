@@ -1,71 +1,88 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v7 4/5] spi: nxp-fspi: add octal mode flag bit for octal
- support
-Date: Mon, 28 Jan 2019 12:30:50 +0000
-Message-ID: <20190128123050.GE11699@sirena.org.uk>
-References: <1547546584-5254-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1547546584-5254-5-git-send-email-yogeshnarayan.gaur@nxp.com>
- <20190128122631.GD11699@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="r7U+bLA8boMOj+mD"
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "boris.brezillon@bootlin.com" <boris.brezillon@bootlin.com>,
+Subject: Applied "MAINTAINERS: add maintainers for the NXP FlexSPI driver" to the spi tree
+Date: Mon, 28 Jan 2019 12:36:06 +0000 (GMT)
+Message-ID: <20190128123606.2F8641127D29@debutante.sirena.org.uk>
+References: <1547553487-9936-6-git-send-email-yogeshnarayan.gaur@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
         "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
         "robh@kernel.org" <robh@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
         "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "frieder.schrempf@exceet.de" <frieder.schrempf@exceet.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org
 To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190128122631.GD11699@sirena.org.uk>
+In-Reply-To: <1547553487-9936-6-git-send-email-yogeshnarayan.gaur@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---r7U+bLA8boMOj+mD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   MAINTAINERS: add maintainers for the NXP FlexSPI driver
 
-On Mon, Jan 28, 2019 at 12:26:31PM +0000, Mark Brown wrote:
-> On Tue, Jan 15, 2019 at 10:05:29AM +0000, Yogesh Narayan Gaur wrote:
+has been applied to the spi tree at
 
-> > diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> > index e23ad9ef028e..adc3c0e14f38 100644
-> > --- a/drivers/spi/spi-nxp-fspi.c
-> > +++ b/drivers/spi/spi-nxp-fspi.c
-> > @@ -952,8 +952,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> This does not apply against current code, the above file is not present
-> upstream.  Please do not submit patches to out of tree code upstream.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-So it turns out your other series was adding that driver.  Please if
-you're doing this make sure you call out any interdependencies in either
-the patch itself or the cover letter, if you're sending separate patch
-serieses you should expect them to be handled separately.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---r7U+bLA8boMOj+mD
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxO9fkACgkQJNaLcl1U
-h9BsYQf6A45qVJRvph5tyVH50pk3XTa/3pcow8e2pPLdqTbQDypz5tpGQaDC4jqB
-nsGIHXjKMru6xRvC49DPoKm4XGOpdHyW/qWGvaZmVnbGK2YX61L8BHQyfkN5LEGo
-NsW89904eo5ycNYgapwwDwpUoUoE8Vj/9oYI/mDpW9Nr1QqyyIOHsh7yRXrZTdEV
-S6pR/iU+KWgAFP3zrEXxkZqm8mdjwA5SEuAJ6oNl78Lz+Vtt3TleiLSnG2K+enTQ
-WJYfS3mvVCjI6XQILWXracX0HmeC9T58GiyKyr8V4l8JEJS0YJI/zqb6b9ccSjgb
-2YJA6Gp3Bh4MozVa3Dq+m2WFYN3giw==
-=llBo
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---r7U+bLA8boMOj+mD--
+>From c71f9fd4503addcfa306f9bec95c3e7deade7ce1 Mon Sep 17 00:00:00 2001
+From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Date: Tue, 15 Jan 2019 12:00:37 +0000
+Subject: [PATCH] MAINTAINERS: add maintainers for the NXP FlexSPI driver
+
+Add maintainers for the NXP FlexSPI driver
+
+Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8b6c0d454d7e..5e7ec7cda3bb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10927,6 +10927,14 @@ F:	lib/objagg.c
+ F:	lib/test_objagg.c
+ F:	include/linux/objagg.h
+ 
++NXP FSPI DRIVER
++R:	Yogesh Gaur <yogeshgaur.83@gmail.com>
++M:	Ashish Kumar <ashish.kumar@nxp.com>
++L:	linux-spi@vger.kernel.org
++S:	Maintained
++F:	drivers/spi/spi-nxp-fspi.c
++F:	Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
++
+ OBJTOOL
+ M:	Josh Poimboeuf <jpoimboe@redhat.com>
+ M:	Peter Zijlstra <peterz@infradead.org>
+-- 
+2.20.1

@@ -1,130 +1,87 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 1/2] spi: support inter-word delay requirement for devices
-Date: Mon, 28 Jan 2019 08:41:05 +0100
-Message-ID: <CAMuHMdXQONq1UFuFHwny_xfAtxY7sOv2K3yi2i9T22OovMqFhw@mail.gmail.com>
-References: <20190125114429.20066-1-jonas@norrbonn.se> <20190125114429.20066-2-jonas@norrbonn.se>
- <CAMz4ku+sqzK19994BpdSfaDjNdXW_-gnCutr_fYQiv5ynxOq2g@mail.gmail.com>
- <f34151c8-28a3-3d53-a27e-b5ff512d9c94@norrbonn.se> <20190125174713.GA6939@sirena.org.uk>
- <20190125175031.GA25898@sirena.org.uk> <84d6c40f-62bb-fd00-0dcb-d2f390b136c1@norrbonn.se>
- <CAMuHMdUyt=DDMwDZA-TB0Yac13NJQCo2LxzvqnRzvn6LZ5F98w@mail.gmail.com> <ed62564f-d36b-1492-8e65-60166c0aa4a6@norrbonn.se>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v7 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Mon, 28 Jan 2019 12:03:00 +0100
+Message-ID: <2d762c16-d714-9171-9450-b6adf1a6509c@gmail.com>
+References: <1548227352-14910-1-git-send-email-masonccyang@mxic.com.tw>
+ <1548227352-14910-2-git-send-email-masonccyang@mxic.com.tw>
+ <bb63b646-b549-dc3b-a604-17ba156e735c@gmail.com>
+ <OF767ACC95.EECC73BE-ON4825838C.000BD6A3-4825838C.000D23A6@mxic.com.tw>
+ <67fa5f94-886b-f09c-c93d-832e427ffec8@gmail.com>
+ <OF891E176A.614DBEEF-ON4825838C.0022D454-4825838C.002396ED@mxic.com.tw>
+ <0b3ea94f-a4f3-0780-301b-f88ff2ad2fb1@gmail.com>
+ <OFEAAE10B4.20C3E45D-ON48258390.0007CD37-48258390.0009066E@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        DTML <devicetree@vger.kernel.org>
-To: Jonas Bonn <jonas@norrbonn.se>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ed62564f-d36b-1492-8e65-60166c0aa4a6@norrbonn.se>
+In-Reply-To: <OFEAAE10B4.20C3E45D-ON48258390.0007CD37-48258390.0009066E@mxic.com.tw>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jonas,
+On 1/28/19 2:38 AM, masonccyang@mxic.com.tw wrote:
+> Hi Marek,
 
-On Sat, Jan 26, 2019 at 4:40 PM Jonas Bonn <jonas@norrbonn.se> wrote:
-> On 26/01/2019 11:25, Geert Uytterhoeven wrote:
-> > On Sat, Jan 26, 2019 at 8:53 AM Jonas Bonn <jonas@norrbonn.se> wrote:
-> >> On 25/01/2019 18:50, Mark Brown wrote:
-> >>> On Fri, Jan 25, 2019 at 05:47:13PM +0000, Mark Brown wrote:
-> >>>> On Fri, Jan 25, 2019 at 01:06:45PM +0100, Jonas Bonn wrote:
-> >>>>> Having this as device property rather than a transfer property allows this
-> >>>>> to be configured one time in setup() rather than having to fiddle with the
-> >>>>> configuration register for every transfer.
-> >>>
-> >>>> That doesn't mean that the coniguration should be done in DT though, and
-> >>>> given that this presumably is a property of the device there seems to be
-> >>>> no reason why we'd have it in DT - if every instance of the device is
-> >>>> going to need to set the property we should just figure it out from the
-> >>>> compatble string instead.
-> >>>
-> >>> To be clear here: the suggestion is to add a parameter the slave device
-> >>> can set in spi_device which sets the default word_delay similarly to how
-> >>> max_speed_hz works.
-> >>
-> >> I'm confused... isn't that exactly what this patch does?  It adds a
-> >> field word_delay to spi_device in the same manner as max_speed_hz.
-> >>
-> >> I also added the ability to set it via DT, which I can break out into a
-> >> separate patch if that's an issue.  Or is the problem that it's set via
-> >> DT, at all?  Documentation/devicetree/bindings/spi-bus.txt documents 10
-> >> other slave-node properties related to transfer characteristics;
-> >> word_delay is just another such characteristic.
-> >>
-> >> But again, I'm having trouble parsing your response  Is the patch wrong,
-> >> should be broken up, or you just misunderstood it?
-> >
-> > IIUIC, Mark means that it may be a non-configurable property of the slave
-> > device, and thus should be handled (fixed setting) in the SPI slave driver.
->
-> OK, so given that the "compatible" property identifies the hardware and
-> there is no other _hardware_ configuration detail that affects the
-> required inter-word delay, then setting the property in the device tree
-> is not allowed as the driver has enough info to set it properly.  Fair
-> enough!
->
-> >
-> > Compare this to CPHA/CPOL, which are properties of the SPI slave device,
-> > but which may be configurable. E.g. many SPI FLASHes support multiple
-> > configurations. See e.g. commit 9c5becce21af35e5 ("ARM: shmobile: koelsch:
-> > Fix QSPI mode of SPI-Flash into mode3").
->
-> There is nothing about the hardware referenced in that patch that
-> enforces either mode.  Why does the driver get to defer to DT here?
+Hi,
 
-The default is non-cpol and non-pha.
-The device supports both (perhaps even all four modes, didn't check).
+>> "Marek Vasut" <marek.vasut@gmail.com>
+>> >> >> > +module_platform_driver(rpc_spi_driver);
+>> >> >>
+>> >> >> RPC is not a SPI controller, it's a SPI and HF controller.
+>> >> >>
+>> >> >> Also, how difficult will it be to add the HF support ?
+>> >> >
+>> >> > One of my customers needs RPC SPI driver for our company's
+>> >> > Octal-Flash,MX25UW51245G.
+>> >> > We don't have HF product and hope you could understanding.
+>> >>
+>> >> I am worried that when we need to add RPC HF support (which is what all
+>> >> boards but the D3 Draak use), we will have to rewrite the entire driver
+>> >> and/or convert it to MFD and that would be a tremendous
+> undertaking. I'd
+>> >> prefer to have the driver ready for the HF addition before it's
+> accepted
+>> >> upstream.
+>> >>
+>> >
+>> > I think maybe your concerned would be happened only if HF driver
+> goes with
+>> > spi-mem layer.
+>> >
+>> > A comment for HF from Daniel Fishman. FYR.
+>> >
+>> > https://www.quora.com/What-is-a-hyper-flash-memory-and-how-is-it-
+>> different-from-normal-flash-memory
+>>
+>> I have a decent idea what HF and SPI NOR are, since I wrote the RPC
+>> driver for both HF and SPI mode for U-Boot (as I mentioned earlier).
+>>
+>> The HF in Linux would use the CFI NOR part of MTD framework. My concern
+>> is that when we need to add HF support into this driver, this driver
+>> will have to be basically rewritten, since the architecture won't allow
+>> for that. I'd like to avoid that, since the majority of Gen3 boards,
+>> expect for the D3 Draak, use RPC in HF mode.
+> 
+> FYI~
+> 
+> MX25UW51245g(64MByte Octa)                      S26KL512S(64MByte HF)
+>    8 IO                                                  8 IO
+> 200MHz DDR@1.8v                                   166MHz DDR@1.8v
+> 
+> support Read-while-write                       Not support
+> good for OTA,etc
+> powerful application
 
-> Looking at Documentation/devicetree/bindings/spi/spi-bus.txt:
->
-> spi-lsb-first:  used only by MAXIM DS-1302 which is always LSB first;
-> driver should set this
-
-For DS1302, this is probable true.
-For e.g. a generic shift register (e.g. hc595), the driver cannot know.
-
-> spi-3wire: again, only set by MAXIM DS-1302 which always needs this
-> setting; driver could set this
-
-For DS1302, this is probable true.
-Some devices may support both 4-wire or 3-wire mode?
-
-> spi-tx-delay-us:
-> spi-rx-delay-us:  only parsed by RMI4 driver... no DTS files in kernel
-> set these.  I hardly see how these are "hardware" settings rather than
-> message settings, but the driver can set these in any case.
->
-> Anyway, the point is, looking at the current documentation, it's pretty
-> difficult to understand whether devicetree is restricted to describing
-> hardware or is also for configuring drivers...
-
-True.
-
-> > Again, max_speed_hz is something different: while both the SPI master and
-> > slave may support high speeds, board wiring (capacitance/inductance) may
-> > need to force a slower speed than supported by the devices, so it makes
-> > sense to make that configurable from DT.
->
-> Yeah, that one make sense.  But if the DT is only overriding the maximum
-> device frequency that the driver should otherwise be setting, why is
-> spi-max-frequency a _required_ property?
-
-That's a good question. Legacy?
-
-> Thanks for taking the time to provide the additional explanation.  I had
-> to ruminate on it for a bit, but I think it's starting to sink in now!
-
-You're welcome!
-
-Gr{oetje,eeting}s,
-
-                        Geert
+What does that mean ?
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best regards,
+Marek Vasut

@@ -1,43 +1,69 @@
-From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH] spi: spi-mem: spi-nxp-fspi: add module license info
-Date: Tue, 29 Jan 2019 08:45:52 +0000
-Message-ID: <0a8ae87a-5c71-0d07-e3c0-b3f665f4ea35@kontron.de>
-References: <1548750550-23565-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: Re: [PATCH v3 1/2] spi: support inter-word delay requirement for devices
+Date: Tue, 29 Jan 2019 17:04:15 +0800
+Message-ID: <CAMz4kuK9HAmntmqG-_s6re854tK7UL6wwCh0Lm8=bzpFZsseaw@mail.gmail.com>
+References: <20190126163220.26421-1-jonas@norrbonn.se> <20190126163220.26421-2-jonas@norrbonn.se>
+ <20190128181038.GF11699@sirena.org.uk> <1b9807aa-3e6e-16f2-a2c2-ebe5e186d904@norrbonn.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "sfr@canb.auug.org.au" <sfr@canb.auug.org.au>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
-To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lanqing Liu <lanqing.liu@spreadtrum.com>
+To: Jonas Bonn <jonas@norrbonn.se>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1548750550-23565-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-Content-Language: en-US
-Content-ID: <1BA1732D09912D4C94190E3C2F1947D7@snt-world.com>
+In-Reply-To: <1b9807aa-3e6e-16f2-a2c2-ebe5e186d904@norrbonn.se>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMjkuMDEuMTkgMDk6MzEsIFlvZ2VzaCBOYXJheWFuIEdhdXIgd3JvdGU6DQo+IEFkZCBNT0RV
-TEVfTElDRU5TRSBpbmZvIHRvIGZpeCBiZWxvdyB3YXJuaW5nOg0KPiBXQVJOSU5HOiBtb2Rwb3N0
-OiBtaXNzaW5nIE1PRFVMRV9MSUNFTlNFKCkgaW4gZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLm8N
-Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IFlvZ2VzaCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5hcmF5YW4u
-Z2F1ckBueHAuY29tPg0KPiAtLS0NCj4gICBkcml2ZXJzL3NwaS9zcGktbnhwLWZzcGkuYyB8IDEg
-Kw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiANCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5jIGIvZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLmMN
-Cj4gaW5kZXggMDMyNzIxNmVmN2FhLi45MGYzZDJlNGZlNWQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
-cnMvc3BpL3NwaS1ueHAtZnNwaS5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5j
-DQo+IEBAIC0xMTAzLDMgKzExMDMsNCBAQCBNT0RVTEVfQVVUSE9SKCJOWFAgU2VtaWNvbmR1Y3Rv
-ciIpOw0KPiAgIE1PRFVMRV9BVVRIT1IoIllvZ2VzaCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5hcmF5
-YW4uZ2F1ckBueHAuY29tPiIpOw0KPiAgIE1PRFVMRV9BVVRIT1IoIkJvcmlzIEJyZXppbGxpb24g
-PGJicmV6aWxsb25Aa2VybmVsLm9yZz4iKTsNCg0KSSBqdXN0IGZvdW5kIGEgdHlwbyBpbiBCb3Jp
-cycgbGFzdCBuYW1lIHdoZW4gSSBsb29rZWQgYXQgdGhpcyBkaWZmLiBUaGUgDQpzZWNvbmQgJ2kn
-IGlzIHRvbyBtdWNoLg0KVGhlIHNhbWUgdHlwbyBjYW4gYWxzbyBiZSBmb3VuZCBpbiB0aGUgY29t
-bWVudCBoZWFkZXIgb2YgdGhlIGZpbGUuDQoNCj4gICBNT0RVTEVfQVVUSE9SKCJGcmllZGVyIFNj
-aHJlbXBmIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+Iik7DQo+ICtNT0RVTEVfTElDRU5T
-RSgiR1BMIHYyIik7DQo+IA==
+Hi Jonas,
+On Tue, 29 Jan 2019 at 05:28, Jonas Bonn <jonas@norrbonn.se> wrote:
+>
+> Hi,
+>
+> On 28/01/2019 19:10, Mark Brown wrote:
+> > On Sat, Jan 26, 2019 at 05:32:19PM +0100, Jonas Bonn wrote:
+> >
+> >> @@ -164,6 +166,7 @@ struct spi_device {
+> >>      char                    modalias[SPI_NAME_SIZE];
+> >>      const char              *driver_override;
+> >>      int                     cs_gpio;        /* chip select gpio */
+> >> +    uint16_t                word_delay;     /* inter-word delay (us) */
+> >
+> > This needs some code in the core joining it up with the per-transfer
+> > word delay similar to what we have for speed_hz and bits_per_word in
+> > __spi_validate().  Then the controller drivers can just look at the
+> > per-transfer value and support both without having to duplicate logic.
+> >
+>
+> So spi_transfer already has a field word_delay and it's defined as
+> _clock cycles_ to delay between words.  I defined word_delay in
+> spi_device as _microseconds_ to delay along the lines of delay_usecs.
+>
+> Given that the inter-word delay is a function of the slave device speed
+> and not of the SPI bus speed, I'm inclined to say that a time-based
+> delay is what we want (to be independent of bus speed).  As such, I want
+> to know if I should add word_delay_usecs to _both_ spi_transfer and
+> spi_device?
+>
+> There's only one user of word_delay from spi_transfer.  Just looking at
+> it quickly, it looks like it wants the word_delay in
+> SPI-controller-clock cycles and not SCK cycles which seems pretty broken
+> to me.  Adding Baolin and Lanqing to CC: for comment.  Could we rework
+> that to be microseconds and do the calculation in the driver?
+
+The Spreadtrum SPI controller's word delay unit is clock cycle of the
+SPI clock, since the SPI source clock can be changed, we can not force
+user to know the real microseconds. But can we change it to a union
+structure? not sure if this is a good way.
+
+union {
+     int word_delay_us;
+     int word_delay_cycle;
+} w;
+
+-- 
+Baolin Wang
+Best Regards

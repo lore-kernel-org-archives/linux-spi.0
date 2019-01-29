@@ -1,55 +1,72 @@
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [PATCH v4 2/2] spi-atmel: support inter-word delay
-Date: Tue, 29 Jan 2019 16:05:49 +0100
-Message-ID: <20190129150549.GA19959@piout.net>
-References: <20190129083844.20572-1-jonas@norrbonn.se>
- <20190129083844.20572-3-jonas@norrbonn.se>
- <995b3885-254b-7932-8d05-77271a2c070d@microchip.com>
- <7a6efd1a-5920-60e5-bc68-dfbe6866e522@norrbonn.se>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 1/2] spi: support inter-word delay requirement for
+ devices
+Date: Tue, 29 Jan 2019 16:41:43 +0000
+Message-ID: <20190129164143.GF10524@sirena.org.uk>
+References: <20190126163220.26421-1-jonas@norrbonn.se>
+ <20190126163220.26421-2-jonas@norrbonn.se>
+ <20190128181038.GF11699@sirena.org.uk>
+ <1b9807aa-3e6e-16f2-a2c2-ebe5e186d904@norrbonn.se>
+ <CAMz4kuK9HAmntmqG-_s6re854tK7UL6wwCh0Lm8=bzpFZsseaw@mail.gmail.com>
+ <28617b72-fbc0-4274-d9d1-34c37f03f867@norrbonn.se>
+ <CAMz4kuLOSx9mQ-RG9qqy9Qbor97Nj5oYdOgLg_dNfxFeT+XK5g@mail.gmail.com>
+ <abb0749c-629f-5a81-1dba-0be260b0fb8d@norrbonn.se>
+ <CAMuHMdXyuWMPUdipwW0oQUdPLDyZhssZ1NHQfMF9hWTtMkTZ1A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Nicolas.Ferre@microchip.com, linux-kernel@vger.kernel.org,
-        broonie@kernel.org, Ludovic.Desroches@microchip.com,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Tudor.Ambarus@microchip.com
-To: Jonas Bonn <jonas@norrbonn.se>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/QKKmeG/X/bPShih"
+Cc: Jonas Bonn <jonas@norrbonn.se>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lanqing Liu <lanqing.liu@spreadtrum.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <7a6efd1a-5920-60e5-bc68-dfbe6866e522@norrbonn.se>
+In-Reply-To: <CAMuHMdXyuWMPUdipwW0oQUdPLDyZhssZ1NHQfMF9hWTtMkTZ1A@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-On 29/01/2019 15:56:31+0100, Jonas Bonn wrote:
-> On 29/01/2019 15:27, Nicolas.Ferre@microchip.com wrote:
-> > On 29/01/2019 at 09:38, Jonas Bonn wrote:
-> > > 
-> > > +	/* DLYBCT adds delays between words.  This is useful for slow devices
-> > > +	 * that need a bit of time to setup the next transfer.
-> > > +	 */
-> > > +	if (spi->word_delay_us) {
-> > 
-> > Well...
-> > 
-> > > +		csr |= SPI_BF(DLYBCT,
-> > > +			clamp_t(u8,
-> > > +				(as->spi_clk/1000000*spi->word_delay_us)>>5,
-> > > +				1, 255));
-> > 
-> > ... why not simplifying to:
-> > +				0, 255));
-> > and remove the test altogether, after all?
-> 
-> Hmm... that seemed too easy!  This started out as something else and looking
-> at it now I think even the clamp_t() is unnecessary.  The value is already
-> 0-255 and the way SPI_BF works any overflow is already truncated...  I'll
-> rework this and resubmit once I get some feedback on the word_delay_us bits.
-> 
+--/QKKmeG/X/bPShih
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-While at it, note that you need to add spaces around the operators.
+On Tue, Jan 29, 2019 at 11:07:50AM +0100, Geert Uytterhoeven wrote:
+> On Tue, Jan 29, 2019 at 10:50 AM Jonas Bonn <jonas@norrbonn.se> wrote:
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> > OK.  So the user (perhaps in userspace using spidev) has to know the
+> > rate of the IO clock that the SPI controller sits behind and then has to
+> > match this to the required delay of the slave device...  Doesn't sound
+> > very portable.
+
+I think if we're doing translation we should just do it in the core and
+either say that clients should only set one or the other or pick what
+looks like the higher value.
+
+> I can see the value of having both:
+> On some slaves, the delay may depend on a fixed internal or
+> external clock[1] on the SPI slave, so it should be specified in time units.
+> Some slaves may be clocked by the SPI clock[2], so the delay should be
+> specified in SPI clock cycles.
+
+Yes, they're definitely both useful.
+
+--/QKKmeG/X/bPShih
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxQgkYACgkQJNaLcl1U
+h9BpcQf/ccdkXJ6vmh0isqva90NnEMmC8ctfpWCZ1lh5senmjaIQrllQrXgfsAkm
+9V/XOGrByMBLbS1U5dBaA3CPcWuZjtph1axjDkhJy2GG5e+gDZNIFq4sTQvSmTCS
+nb8DQgRtHbz/RGFuaW7frG9gCDbQb9T7FSvuLaGFrPABiUJKLKGkRgm3tpxrXXPd
+Bo3UGsJgPiO9mjI7IZO60aXSgS46rsE+hnfiJ1v3fc/8ySa6w5zsU6bJh2g8hGj1
+ti6kAIrk3dicYPzhSkfgwdNFeJ/din8SBITm04xLbUA4GAFxyWCnohbRDZdZPHHb
+LBkls9P3mXpe3gV/9oxc5YGkE0kBzg==
+=vhvC
+-----END PGP SIGNATURE-----
+
+--/QKKmeG/X/bPShih--

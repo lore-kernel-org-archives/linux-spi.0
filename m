@@ -1,84 +1,88 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-mem: spi-fsl-qspi: typo fix in author name
-Date: Tue, 29 Jan 2019 12:12:33 +0000
-Message-ID: <20190129121233.GC10524@sirena.org.uk>
-References: <1548755607-27544-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <4759d7a9-71a2-70a7-2704-0ef7fa37b2ca@kontron.de>
- <20190129115937.GB10524@sirena.org.uk>
- <24c8ce00-5a7c-cec0-df5b-fca6e13bccb0@kontron.de>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2338167772557171242=="
-Cc: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
- "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>
-To: Schrempf Frieder <frieder.schrempf@kontron.de>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <24c8ce00-5a7c-cec0-df5b-fca6e13bccb0@kontron.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Subject: Applied "spi: ti-qspi: Fix mmap read when more than one CS in use" to the spi tree
+Date: Tue, 29 Jan 2019 12:14:22 +0000 (GMT)
+Message-ID: <20190129121422.0C02F1127D50@debutante.sirena.org.uk>
+References: <20190129074422.10025-1-vigneshr@ti.com>
+Cc: stable@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190129074422.10025-1-vigneshr@ti.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============2338167772557171242==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tqI+Z3u+9OQ7kwn0"
-Content-Disposition: inline
+   spi: ti-qspi: Fix mmap read when more than one CS in use
 
+has been applied to the spi tree at
 
---tqI+Z3u+9OQ7kwn0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Tue, Jan 29, 2019 at 12:08:26PM +0000, Schrempf Frieder wrote:
-> On 29.01.19 12:59, Mark Brown wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> > That'd mean a rebase unfortunately.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> Ah, ok no problem. Then please just apply it with:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI=20
-> controller")
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Yes, that's what I've done already.
+Thanks,
+Mark
 
---tqI+Z3u+9OQ7kwn0
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 673c865efbdc5fec3cc525c46d71844d42c60072 Mon Sep 17 00:00:00 2001
+From: Vignesh R <vigneshr@ti.com>
+Date: Tue, 29 Jan 2019 13:14:22 +0530
+Subject: [PATCH] spi: ti-qspi: Fix mmap read when more than one CS in use
 
------BEGIN PGP SIGNATURE-----
+Commit 4dea6c9b0b64 ("spi: spi-ti-qspi: add mmap mode read support") has
+has got order of parameter wrong when calling regmap_update_bits() to
+select CS for mmap access. Mask and value arguments are interchanged.
+Code will work on a system with single slave, but fails when more than
+one CS is in use. Fix this by correcting the order of parameters when
+calling regmap_update_bits().
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxQQzEACgkQJNaLcl1U
-h9DMcwf+KKr/ECVMpHPmbzMnvYy5tmCK8+f3G7YcVEOCr3+D4MEKm351tKbNM+rm
-RsDaghI4Rembs/uE6pYjdOyuGD3yAKcAzM0Pljd4P5/L4Gg3zC4jJoLIP8N2yeaJ
-SuwOJ6YxEW7NJdoQIvO1h7vaZ5rhMkV8UZJ9YSWczmygcjUhtFE8aAXpz6g70NTz
-DuGIFum5YgZbdAeRF1C8GesdLxvmonmMNiLxtgq1qJv7rxoMzB0UOKbs4Vvh8Ue3
-24eM1MjseMTFrWHhUYcSKksUTEiMZ/C+I2pEXpYP8A7hzojKxP3BdiFYRryYIYi6
-VBnom7LI2OySeVRHOe6ZvxzTqfRfxw==
-=JkNH
------END PGP SIGNATURE-----
+Fixes: 4dea6c9b0b64 ("spi: spi-ti-qspi: add mmap mode read support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-ti-qspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---tqI+Z3u+9OQ7kwn0--
-
-
---===============2338167772557171242==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============2338167772557171242==--
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 5f19016bbf10..b9fb6493cd6b 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -490,8 +490,8 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
+ 	ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
+ 	if (qspi->ctrl_base) {
+ 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+-				   MEM_CS_EN(spi->chip_select),
+-				   MEM_CS_MASK);
++				   MEM_CS_MASK,
++				   MEM_CS_EN(spi->chip_select));
+ 	}
+ 	qspi->mmap_enabled = true;
+ }
+@@ -503,7 +503,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+ 	ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
+ 	if (qspi->ctrl_base)
+ 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+-				   0, MEM_CS_MASK);
++				   MEM_CS_MASK, 0);
+ 	qspi->mmap_enabled = false;
+ }
+ 
+-- 
+2.20.1

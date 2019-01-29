@@ -1,77 +1,43 @@
-From: Jonas Bonn <jonas@norrbonn.se>
-Subject: [PATCH v4 2/2] spi-atmel: support inter-word delay
-Date: Tue, 29 Jan 2019 09:38:44 +0100
-Message-ID: <20190129083844.20572-3-jonas@norrbonn.se>
-References: <20190129083844.20572-1-jonas@norrbonn.se>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH] spi: spi-mem: spi-nxp-fspi: add module license info
+Date: Tue, 29 Jan 2019 08:45:52 +0000
+Message-ID: <0a8ae87a-5c71-0d07-e3c0-b3f665f4ea35@kontron.de>
+References: <1548750550-23565-1-git-send-email-yogeshnarayan.gaur@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Jonas Bonn <jonas@norrbonn.se>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190129083844.20572-1-jonas@norrbonn.se>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+        "sfr@canb.auug.org.au" <sfr@canb.auug.org.au>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>
+To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1548750550-23565-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Content-Language: en-US
+Content-ID: <1BA1732D09912D4C94190E3C2F1947D7@snt-world.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-If the SPI slave requires an inter-word delay, configure the DLYBCT
-register accordingly.
-
-Tested on a SAMA5D2 board (derived from SAMA5D2-Xplained reference
-board).
-
-Signed-off-by: Jonas Bonn <jonas@norrbonn.se>
-CC: Nicolas Ferre <nicolas.ferre@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: Alexandre Belloni <alexandre.belloni@bootlin.com>
-CC: Ludovic Desroches <ludovic.desroches@microchip.com>
-CC: linux-spi@vger.kernel.org
-CC: linux-arm-kernel@lists.infradead.org
----
- drivers/spi/spi-atmel.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 74fddcd3282b..6389a228d2f5 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1209,13 +1209,21 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		csr |= SPI_BIT(CSAAT);
- 
- 	/* DLYBS is mostly irrelevant since we manage chipselect using GPIOs.
--	 *
--	 * DLYBCT would add delays between words, slowing down transfers.
--	 * It could potentially be useful to cope with DMA bottlenecks, but
--	 * in those cases it's probably best to just use a lower bitrate.
- 	 */
- 	csr |= SPI_BF(DLYBS, 0);
--	csr |= SPI_BF(DLYBCT, 0);
-+
-+	/* DLYBCT adds delays between words.  This is useful for slow devices
-+	 * that need a bit of time to setup the next transfer.
-+	 */
-+	if (spi->word_delay_us) {
-+		csr |= SPI_BF(DLYBCT,
-+			clamp_t(u8,
-+				(as->spi_clk/1000000*spi->word_delay_us)>>5,
-+				1, 255));
-+	} else {
-+		csr |= SPI_BF(DLYBCT, 0);
-+	}
-+
- 
- 	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
- 	npcs_pin = (unsigned long)spi->controller_data;
--- 
-2.19.1
+T24gMjkuMDEuMTkgMDk6MzEsIFlvZ2VzaCBOYXJheWFuIEdhdXIgd3JvdGU6DQo+IEFkZCBNT0RV
+TEVfTElDRU5TRSBpbmZvIHRvIGZpeCBiZWxvdyB3YXJuaW5nOg0KPiBXQVJOSU5HOiBtb2Rwb3N0
+OiBtaXNzaW5nIE1PRFVMRV9MSUNFTlNFKCkgaW4gZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLm8N
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IFlvZ2VzaCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5hcmF5YW4u
+Z2F1ckBueHAuY29tPg0KPiAtLS0NCj4gICBkcml2ZXJzL3NwaS9zcGktbnhwLWZzcGkuYyB8IDEg
+Kw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiANCj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5jIGIvZHJpdmVycy9zcGkvc3BpLW54cC1mc3BpLmMN
+Cj4gaW5kZXggMDMyNzIxNmVmN2FhLi45MGYzZDJlNGZlNWQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
+cnMvc3BpL3NwaS1ueHAtZnNwaS5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1ueHAtZnNwaS5j
+DQo+IEBAIC0xMTAzLDMgKzExMDMsNCBAQCBNT0RVTEVfQVVUSE9SKCJOWFAgU2VtaWNvbmR1Y3Rv
+ciIpOw0KPiAgIE1PRFVMRV9BVVRIT1IoIllvZ2VzaCBOYXJheWFuIEdhdXIgPHlvZ2VzaG5hcmF5
+YW4uZ2F1ckBueHAuY29tPiIpOw0KPiAgIE1PRFVMRV9BVVRIT1IoIkJvcmlzIEJyZXppbGxpb24g
+PGJicmV6aWxsb25Aa2VybmVsLm9yZz4iKTsNCg0KSSBqdXN0IGZvdW5kIGEgdHlwbyBpbiBCb3Jp
+cycgbGFzdCBuYW1lIHdoZW4gSSBsb29rZWQgYXQgdGhpcyBkaWZmLiBUaGUgDQpzZWNvbmQgJ2kn
+IGlzIHRvbyBtdWNoLg0KVGhlIHNhbWUgdHlwbyBjYW4gYWxzbyBiZSBmb3VuZCBpbiB0aGUgY29t
+bWVudCBoZWFkZXIgb2YgdGhlIGZpbGUuDQoNCj4gICBNT0RVTEVfQVVUSE9SKCJGcmllZGVyIFNj
+aHJlbXBmIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+Iik7DQo+ICtNT0RVTEVfTElDRU5T
+RSgiR1BMIHYyIik7DQo+IA==

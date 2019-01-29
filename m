@@ -1,36 +1,30 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: spi-fsl-qspi: typo fix in author name" to the
- spi tree
-Date: Tue, 29 Jan 2019 12:14:19 +0000 (GMT)
-Message-ID: <20190129121419.E61F61127D50@debutante.sirena.org.uk>
-References: <1548755607-27544-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
- "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
- linux-spi@vger.kernel.org, "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>
+Subject: Applied "spi: spi-mem: spi-nxp-fspi: add module license info" to the spi tree
+Date: Tue, 29 Jan 2019 12:14:24 +0000 (GMT)
+Message-ID: <20190129121424.23FA01127D50@debutante.sirena.org.uk>
+References: <1548755240-27319-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+        Mark Brown <broonie@kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+        "sfr@canb.auug.org.au" <sfr@canb.auug.org.au>,
+        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
+        linux-spi@vger.kernel.org
 To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1548755607-27544-1-git-send-email-yogeshnarayan.gaur@nxp.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1548755240-27319-1-git-send-email-yogeshnarayan.gaur@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: spi-fsl-qspi: typo fix in author name
+   spi: spi-mem: spi-nxp-fspi: add module license info
 
 has been applied to the spi tree at
 
@@ -55,47 +49,44 @@ to this mail.
 Thanks,
 Mark
 
->From c55d0e8c543bfd21f0dce73024e5f6a9a306b834 Mon Sep 17 00:00:00 2001
+>From ce6f0697ebadb90cc37a6ef081384c115bdda196 Mon Sep 17 00:00:00 2001
 From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Date: Tue, 29 Jan 2019 09:55:27 +0000
-Subject: [PATCH] spi: spi-mem: spi-fsl-qspi: typo fix in author name
+Date: Tue, 29 Jan 2019 09:49:22 +0000
+Subject: [PATCH] spi: spi-mem: spi-nxp-fspi: add module license info
 
-Typo fix in Author Boris Brezillon last name and update with new
-email address.
+Add MODULE_LICENSE info to fix below warning:
+WARNING: modpost: missing MODULE_LICENSE() in drivers/spi/spi-nxp-fspi.o
 
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
+Typo fix in Boris Brezillon last name.
+
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index f0a340026ba4..6a713f78a62e 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -10,7 +10,7 @@
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 0327216ef7aa..8894f98cc99c 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -26,7 +26,7 @@
   *
-  * Transition to SPI MEM interface:
-  * Authors:
-- *     Boris Brezillion <boris.brezillon@bootlin.com>
+  * Author:
+  *     Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+- *     Boris Brezillion <bbrezillon@kernel.org>
 + *     Boris Brezillon <bbrezillon@kernel.org>
   *     Frieder Schrempf <frieder.schrempf@kontron.de>
-  *     Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
-  *     Suresh Gupta <suresh.gupta@nxp.com>
-@@ -959,7 +959,7 @@ module_platform_driver(fsl_qspi_driver);
+  */
  
- MODULE_DESCRIPTION("Freescale QuadSPI Controller Driver");
- MODULE_AUTHOR("Freescale Semiconductor Inc.");
--MODULE_AUTHOR("Boris Brezillion <boris.brezillon@bootlin.com>");
+@@ -1101,5 +1101,6 @@ module_platform_driver(nxp_fspi_driver);
+ MODULE_DESCRIPTION("NXP FSPI Controller Driver");
+ MODULE_AUTHOR("NXP Semiconductor");
+ MODULE_AUTHOR("Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>");
+-MODULE_AUTHOR("Boris Brezillion <bbrezillon@kernel.org>");
 +MODULE_AUTHOR("Boris Brezillon <bbrezillon@kernel.org>");
  MODULE_AUTHOR("Frieder Schrempf <frieder.schrempf@kontron.de>");
- MODULE_AUTHOR("Yogesh Gaur <yogeshnarayan.gaur@nxp.com>");
- MODULE_AUTHOR("Suresh Gupta <suresh.gupta@nxp.com>");
++MODULE_LICENSE("GPL v2");
 -- 
 2.20.1
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

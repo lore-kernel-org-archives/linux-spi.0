@@ -1,56 +1,49 @@
-From: <Nicolas.Ferre@microchip.com>
+From: Jonas Bonn <jonas@norrbonn.se>
 Subject: Re: [PATCH v4 2/2] spi-atmel: support inter-word delay
-Date: Tue, 29 Jan 2019 14:27:50 +0000
-Message-ID: <995b3885-254b-7932-8d05-77271a2c070d@microchip.com>
+Date: Tue, 29 Jan 2019 15:56:31 +0100
+Message-ID: <7a6efd1a-5920-60e5-bc68-dfbe6866e522@norrbonn.se>
 References: <20190129083844.20572-1-jonas@norrbonn.se>
  <20190129083844.20572-3-jonas@norrbonn.se>
+ <995b3885-254b-7932-8d05-77271a2c070d@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <broonie@kernel.org>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <jonas@norrbonn.se>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, alexandre.belloni@bootlin.com,
+        Ludovic.Desroches@microchip.com, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, Tudor.Ambarus@microchip.com
+To: Nicolas.Ferre@microchip.com, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190129083844.20572-3-jonas@norrbonn.se>
+In-Reply-To: <995b3885-254b-7932-8d05-77271a2c070d@microchip.com>
 Content-Language: en-US
-Content-ID: <3F49B008FA53E043A2C06EAF1D5FC410@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMjkvMDEvMjAxOSBhdCAwOTozOCwgSm9uYXMgQm9ubiB3cm90ZToNCj4gSWYgdGhlIFNQSSBz
-bGF2ZSByZXF1aXJlcyBhbiBpbnRlci13b3JkIGRlbGF5LCBjb25maWd1cmUgdGhlIERMWUJDVA0K
-PiByZWdpc3RlciBhY2NvcmRpbmdseS4NCj4gDQo+IFRlc3RlZCBvbiBhIFNBTUE1RDIgYm9hcmQg
-KGRlcml2ZWQgZnJvbSBTQU1BNUQyLVhwbGFpbmVkIHJlZmVyZW5jZQ0KPiBib2FyZCkuDQo+IA0K
-PiBTaWduZWQtb2ZmLWJ5OiBKb25hcyBCb25uIDxqb25hc0Bub3JyYm9ubi5zZT4NCj4gQ0M6IE5p
-Y29sYXMgRmVycmUgPG5pY29sYXMuZmVycmVAbWljcm9jaGlwLmNvbT4NCj4gQ0M6IE1hcmsgQnJv
-d24gPGJyb29uaWVAa2VybmVsLm9yZz4NCj4gQ0M6IEFsZXhhbmRyZSBCZWxsb25pIDxhbGV4YW5k
-cmUuYmVsbG9uaUBib290bGluLmNvbT4NCj4gQ0M6IEx1ZG92aWMgRGVzcm9jaGVzIDxsdWRvdmlj
-LmRlc3JvY2hlc0BtaWNyb2NoaXAuY29tPg0KPiBDQzogbGludXgtc3BpQHZnZXIua2VybmVsLm9y
-Zw0KPiBDQzogbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+IC0tLQ0KPiAg
-IGRyaXZlcnMvc3BpL3NwaS1hdG1lbC5jIHwgMTggKysrKysrKysrKysrKy0tLS0tDQo+ICAgMSBm
-aWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwu
-Yw0KPiBpbmRleCA3NGZkZGNkMzI4MmIuLjYzODlhMjI4ZDJmNSAxMDA2NDQNCj4gLS0tIGEvZHJp
-dmVycy9zcGkvc3BpLWF0bWVsLmMNCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMNCj4g
-QEAgLTEyMDksMTMgKzEyMDksMjEgQEAgc3RhdGljIGludCBhdG1lbF9zcGlfc2V0dXAoc3RydWN0
-IHNwaV9kZXZpY2UgKnNwaSkNCj4gICAJCWNzciB8PSBTUElfQklUKENTQUFUKTsNCj4gICANCj4g
-ICAJLyogRExZQlMgaXMgbW9zdGx5IGlycmVsZXZhbnQgc2luY2Ugd2UgbWFuYWdlIGNoaXBzZWxl
-Y3QgdXNpbmcgR1BJT3MuDQo+IC0JICoNCj4gLQkgKiBETFlCQ1Qgd291bGQgYWRkIGRlbGF5cyBi
-ZXR3ZWVuIHdvcmRzLCBzbG93aW5nIGRvd24gdHJhbnNmZXJzLg0KPiAtCSAqIEl0IGNvdWxkIHBv
-dGVudGlhbGx5IGJlIHVzZWZ1bCB0byBjb3BlIHdpdGggRE1BIGJvdHRsZW5lY2tzLCBidXQNCj4g
-LQkgKiBpbiB0aG9zZSBjYXNlcyBpdCdzIHByb2JhYmx5IGJlc3QgdG8ganVzdCB1c2UgYSBsb3dl
-ciBiaXRyYXRlLg0KPiAgIAkgKi8NCj4gICAJY3NyIHw9IFNQSV9CRihETFlCUywgMCk7DQo+IC0J
-Y3NyIHw9IFNQSV9CRihETFlCQ1QsIDApOw0KPiArDQo+ICsJLyogRExZQkNUIGFkZHMgZGVsYXlz
-IGJldHdlZW4gd29yZHMuICBUaGlzIGlzIHVzZWZ1bCBmb3Igc2xvdyBkZXZpY2VzDQo+ICsJICog
-dGhhdCBuZWVkIGEgYml0IG9mIHRpbWUgdG8gc2V0dXAgdGhlIG5leHQgdHJhbnNmZXIuDQo+ICsJ
-ICovDQo+ICsJaWYgKHNwaS0+d29yZF9kZWxheV91cykgew0KDQpXZWxsLi4uDQoNCj4gKwkJY3Ny
-IHw9IFNQSV9CRihETFlCQ1QsDQo+ICsJCQljbGFtcF90KHU4LA0KPiArCQkJCShhcy0+c3BpX2Ns
-ay8xMDAwMDAwKnNwaS0+d29yZF9kZWxheV91cyk+PjUsDQo+ICsJCQkJMSwgMjU1KSk7DQoNCi4u
-LiB3aHkgbm90IHNpbXBsaWZ5aW5nIHRvOg0KKwkJCQkwLCAyNTUpKTsNCmFuZCByZW1vdmUgdGhl
-IHRlc3QgYWx0b2dldGhlciwgYWZ0ZXIgYWxsPw0KDQo+ICsJfSBlbHNlIHsNCj4gKwkJY3NyIHw9
-IFNQSV9CRihETFlCQ1QsIDApOw0KPiArCX0NCj4gKw0KPiAgIA0KPiAgIAkvKiBjaGlwc2VsZWN0
-IG11c3QgaGF2ZSBiZWVuIG11eGVkIGFzIEdQSU8gKGUuZy4gaW4gYm9hcmQgc2V0dXApICovDQo+
-ICAgCW5wY3NfcGluID0gKHVuc2lnbmVkIGxvbmcpc3BpLT5jb250cm9sbGVyX2RhdGE7DQo+IA0K
-DQoNCi0tIA0KTmljb2xhcyBGZXJyZQ0K
+Hi,
+
+On 29/01/2019 15:27, Nicolas.Ferre@microchip.com wrote:
+> On 29/01/2019 at 09:38, Jonas Bonn wrote:
+>> 
+>> +	/* DLYBCT adds delays between words.  This is useful for slow devices
+>> +	 * that need a bit of time to setup the next transfer.
+>> +	 */
+>> +	if (spi->word_delay_us) {
+> 
+> Well...
+> 
+>> +		csr |= SPI_BF(DLYBCT,
+>> +			clamp_t(u8,
+>> +				(as->spi_clk/1000000*spi->word_delay_us)>>5,
+>> +				1, 255));
+> 
+> ... why not simplifying to:
+> +				0, 255));
+> and remove the test altogether, after all?
+
+Hmm... that seemed too easy!  This started out as something else and 
+looking at it now I think even the clamp_t() is unnecessary.  The value 
+is already 0-255 and the way SPI_BF works any overflow is already 
+truncated...  I'll rework this and resubmit once I get some feedback on 
+the word_delay_us bits.
+
+Thanks,
+/Jonas

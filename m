@@ -1,64 +1,61 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH 6/9] spi: atmel-quadspi: switch to SPDX license identifiers
-Date: Wed, 30 Jan 2019 15:08:40 +0000
-Message-ID: <20190130150818.24902-7-tudor.ambarus@microchip.com>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH 1/9] spi: atmel-quadspi: optimize qspi init
+Date: Wed, 30 Jan 2019 18:15:15 +0100
+Message-ID: <20190130181505.4f495d3a@bbrezillon>
 References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
+        <20190130150818.24902-2-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-Content-Language: en-US
+In-Reply-To: <20190130150818.24902-2-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+On Wed, 30 Jan 2019 15:08:29 +0000
+<Tudor.Ambarus@microchip.com> wrote:
 
-Adopt the SPDX license identifiers to ease license compliance
-management.
+> From: Tudor Ambarus <tudor.ambarus@microchip.com>
+> 
+> Set the QSPI controller in Serial Memory Mode at init and not
+> at each exec_op() call.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
----
- drivers/spi/atmel-quadspi.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+If you ever want to support regular SPI you'll have to put it back to
+atmel_qspi_exec_op(), so I'm not sure this is a good move. Another
+approach would be to cache the MR value to avoid doing a write access
+on the bus when the value hasn't changed.
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index e6de6e3d1345..1d21db7851e9 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Driver for Atmel QSPI Controller
-  *
-@@ -7,18 +8,6 @@
-  * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-  * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
-  *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful, but WIT=
-HOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License f=
-or
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along=
- with
-- * this program.  If not, see <http://www.gnu.org/licenses/>.
-- *
-  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
-e.
-  */
-=20
---=20
-2.9.5
+> 
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> ---
+>  drivers/spi/atmel-quadspi.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+> index ddc712410812..f79b17792a11 100644
+> --- a/drivers/spi/atmel-quadspi.c
+> +++ b/drivers/spi/atmel-quadspi.c
+> @@ -238,8 +238,6 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  	icr = QSPI_ICR_INST(op->cmd.opcode);
+>  	ifr = QSPI_IFR_INSTEN;
+>  
+> -	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> -
+>  	mode = find_mode(op);
+>  	if (mode < 0)
+>  		return -ENOTSUPP;
+> @@ -381,6 +379,9 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
+>  	/* Reset the QSPI controller */
+>  	qspi_writel(aq, QSPI_CR, QSPI_CR_SWRST);
+>  
+> +	/* Set the QSPI controller in Serial Memory Mode */
+> +	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +
+>  	/* Enable the QSPI controller */
+>  	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIEN);
+>  

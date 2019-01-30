@@ -1,10 +1,10 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH 8/9] dt-bindings: spi: atmel-quadspi: QuadSPI driver for
- Microchip SAM9X60
-Date: Wed, 30 Jan 2019 18:30:07 +0100
-Message-ID: <20190130182958.528e5ac0@bbrezillon>
+Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
+ controller
+Date: Wed, 30 Jan 2019 18:43:13 +0100
+Message-ID: <20190130184313.281f5374@bbrezillon>
 References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-        <20190130150818.24902-9-tudor.ambarus@microchip.com>
+        <20190130150818.24902-10-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -14,79 +14,81 @@ Cc: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
 To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190130150818.24902-9-tudor.ambarus@microchip.com>
+In-Reply-To: <20190130150818.24902-10-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 30 Jan 2019 15:08:45 +0000
+On Wed, 30 Jan 2019 15:08:47 +0000
 <Tudor.Ambarus@microchip.com> wrote:
 
-> From: Tudor Ambarus <tudor.ambarus@microchip.com>
-> 
-> The sam9x60 qspi controller uses 2 clocks, one for the peripheral register
-> access, the other for the qspi core and phy. Both are mandatory.
-> 
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> ---
->  .../devicetree/bindings/spi/atmel-quadspi.txt      | 28 ++++++++++++++++++++--
->  1 file changed, 26 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-> index e9dae6264d89..e7b7f297c5d7 100644
-> --- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-> @@ -1,14 +1,22 @@
->  * Atmel Quad Serial Peripheral Interface (QSPI)
->  
->  Required properties:
-> -- compatible:     Should be "atmel,sama5d2-qspi".
-> +- compatible:     Should be one of the following
-> +		  - "atmel,sama5d2-qspi"
-> +		  - "microchip,sam9x60-qspi"
->  - reg:            Should contain the locations and lengths of the base registers
->                    and the mapped memory.
->  - reg-names:      Should contain the resource reg names:
->                    - qspi_base: configuration register address space
->                    - qspi_mmap: memory mapped address space
->  - interrupts:     Should contain the interrupt for the device.
-> -- clocks:         The phandle of the clock needed by the QSPI controller.
-> +- clocks:	  - "atmel,sama5d2-qspi": the phandle of the clock needed by the
-> +		  QSPI controller.
-> +		  - "microchip,sam9x60-qspi": should reference the peripheral
-> +		  and system QSPI clocks.
-> +- clock-names:    Only for sam9x60 - should contain two strigs:
-
-							   ^strings
-
-And I think naming clocks even for sama5d2 is a good practice, so I'd
-suggest making "pclk" mandatory even if you support unnamed clk in the
-driver to be backward compatible with old DTs.
-
-> +		  - "pclk" for the peripheral clock
-> +		  - "qspick" for the system clock
->  - #address-cells: Should be <1>.
->  - #size-cells:    Should be <0>.
->  
-> @@ -29,3 +37,19 @@ spi@f0020000 {
->  		...
->  	};
->  };
+> +static int atmel_sam9x60_qspi_clk_prepare_enable(struct atmel_qspi *aq)
+> +{
+> +	struct device *dev = &aq->pdev->dev;
+> +	int ret;
 > +
-> +qspi@f0014000 {
-> +	compatible = "microchip,sam9x60-qspi";
-> +	reg = <0xf0014000 0x100>, <0x70000000 0x08000000>;
-> +	reg-names = "qspi_base", "qspi_mmap";
-> +	interrupts = <35 IRQ_TYPE_LEVEL_HIGH 7>;
-> +	clocks =  <&pmc PMC_TYPE_PERIPHERAL 35>, <&pmc PMC_TYPE_SYSTEM 19>;
-> +	clock-names = "pclk", "qspick";
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	pinctrl-names = "default";
+> +	if (!aq->clk) {
+> +		/* Get the peripheral clock */
+> +		aq->clk = devm_clk_get(dev, "pclk");
+> +		if (IS_ERR(aq->clk)) {
+> +			dev_err(dev, "missing peripheral clock\n");
+> +			return PTR_ERR(aq->clk);
+> +		}
+> +	}
 > +
-> +	flash@0 {
-> +		...
-> +	};
-> +};
+> +	if (!aq->qspick) {
+> +		/* Get the QSPI system clock */
+> +		aq->qspick = devm_clk_get(dev, "qspick");
+> +		if (IS_ERR(aq->qspick)) {
+> +			dev_err(dev, "missing system clock\n");
+> +			return PTR_ERR(aq->qspick);
+> +		}
+> +	}
 
-No need to add one example per compat, especially when all that
-changes is the compat string and an extra clk. 
+Move the devm_clk_get() calls to the probe path instead of doing it at
+prepare time, and you can make it generic for both compats with
+something like:
+
+	aq->clk = devm_clk_get(dev, "pclk");
+	if (IS_ERR(aq->clk))
+		aq->clk = devm_clk_get(dev, NULL);
+
+	if (IS_ERR(aq->clk))
+		return PTR_ERR(aq->clk);
+
+	if (aq->caps->qspick_required) {
+		aq->qspick = devm_clk_get(dev, "qspick");
+		if (IS_ERR(aq->qspick)) {
+			return PTR_ERR(aq->qspick);
+	}
+
+> +
+> +	/* Enable the peripheral clock */
+> +	ret = clk_prepare_enable(aq->clk);
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable the peripheral clock\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Enable the QSPI system clock */
+> +	ret = clk_prepare_enable(aq->qspick);
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable the QSPI system clock\n");
+> +		clk_disable_unprepare(aq->clk);
+> +	}
+
+Again, you can make the enable function generic since
+clk_prepare_enable(NULL) is a NO-OP that returns 0 and aq->qspick will
+be NULL when it's not required.
+
+> +
+> +	return ret;
+> +}
+> +
+> +static void atmel_sam9x60_qspi_clk_disable_unprepare(struct atmel_qspi *aq)
+> +{
+> +	clk_disable_unprepare(aq->qspick);
+> +	clk_disable_unprepare(aq->clk);
+
+Ditto.
+
+> +}

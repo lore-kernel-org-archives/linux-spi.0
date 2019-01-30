@@ -1,9 +1,10 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH 5/9] spi: atmel-quadspi: return appropriate error code
-Date: Wed, 30 Jan 2019 18:21:00 +0100
-Message-ID: <20190130182100.3429fa36@bbrezillon>
+Subject: Re: [PATCH 6/9] spi: atmel-quadspi: switch to SPDX license
+ identifiers
+Date: Wed, 30 Jan 2019 18:23:58 +0100
+Message-ID: <20190130182344.07e1d635@bbrezillon>
 References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-        <20190130150818.24902-6-tudor.ambarus@microchip.com>
+        <20190130150818.24902-7-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -13,45 +14,51 @@ Cc: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
 To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190130150818.24902-6-tudor.ambarus@microchip.com>
+In-Reply-To: <20190130150818.24902-7-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 30 Jan 2019 15:08:38 +0000
+On Wed, 30 Jan 2019 15:08:40 +0000
 <Tudor.Ambarus@microchip.com> wrote:
 
 > From: Tudor Ambarus <tudor.ambarus@microchip.com>
 > 
-> Return -ENOTSUPP when atmel_qspi_find_mode() fails. Propagate
-> the error in atmel_qspi_exec_op().
+> Adopt the SPDX license identifiers to ease license compliance
+> management.
 > 
 > Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 
 Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 
 > ---
->  drivers/spi/atmel-quadspi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/spi/atmel-quadspi.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
 > 
 > diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> index 3643f0c851b0..e6de6e3d1345 100644
+> index e6de6e3d1345..1d21db7851e9 100644
 > --- a/drivers/spi/atmel-quadspi.c
 > +++ b/drivers/spi/atmel-quadspi.c
-> @@ -208,7 +208,7 @@ static int atmel_qspi_find_mode(const struct spi_mem_op *op)
->  		if (atmel_qspi_is_compatible(op, &sama5d2_qspi_modes[i]))
->  			return i;
->  
-> -	return -1;
-> +	return -ENOTSUPP;
->  }
->  
->  static bool atmel_qspi_supports_op(struct spi_mem *mem,
-> @@ -239,7 +239,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
->  
->  	mode = atmel_qspi_find_mode(op);
->  	if (mode < 0)
-> -		return -ENOTSUPP;
-> +		return mode;
->  
->  	ifr |= sama5d2_qspi_modes[mode].config;
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * Driver for Atmel QSPI Controller
+>   *
+> @@ -7,18 +8,6 @@
+>   * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+>   * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
+>   *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2 as
+> - * published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful, but WITHOUT
+> - * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> - * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> - * more details.
+> - *
+> - * You should have received a copy of the GNU General Public License along with
+> - * this program.  If not, see <http://www.gnu.org/licenses/>.
+> - *
+>   * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescale.
+>   */
 >  

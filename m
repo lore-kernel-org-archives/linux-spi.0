@@ -1,64 +1,64 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH 2/9] spi: atmel-quadspi: order header files inclusion
- alphabetically
-Date: Wed, 30 Jan 2019 15:08:31 +0000
-Message-ID: <20190130150818.24902-3-tudor.ambarus@microchip.com>
+Subject: [PATCH 6/9] spi: atmel-quadspi: switch to SPDX license identifiers
+Date: Wed, 30 Jan 2019 15:08:40 +0000
+Message-ID: <20190130150818.24902-7-tudor.ambarus@microchip.com>
 References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Tudor.Ambarus@microchip.com, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <Tudor.Ambarus@microchip.com>
 To: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
- <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20190130150818.24902-1-tudor.ambarus@microchip.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Cosmetic change, no functional change.
+Adopt the SPDX license identifiers to ease license compliance
+management.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 ---
- drivers/spi/atmel-quadspi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/spi/atmel-quadspi.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index f79b17792a11..64475ad16c83 100644
+index e6de6e3d1345..1d21db7851e9 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -22,16 +22,15 @@
-  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescale.
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * Driver for Atmel QSPI Controller
+  *
+@@ -7,18 +8,6 @@
+  * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+  * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
+  *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful, but WIT=
+HOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License f=
+or
+- * more details.
+- *
+- * You should have received a copy of the GNU General Public License along=
+ with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
+e.
   */
- 
--#include <linux/kernel.h>
- #include <linux/clk.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
--#include <linux/of.h>
--
- #include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/spi/spi-mem.h>
- 
- /* QSPI register offsets */
--- 
+=20
+--=20
 2.9.5

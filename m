@@ -1,94 +1,69 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
- controller
-Date: Wed, 30 Jan 2019 18:43:13 +0100
-Message-ID: <20190130184313.281f5374@bbrezillon>
-References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-        <20190130150818.24902-10-tudor.ambarus@microchip.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 0/2] eeprom: at25: SPI transfer improvements
+Date: Wed, 30 Jan 2019 20:40:59 +0100
+Message-ID: <20190130194059.GC21181@kroah.com>
+References: <20190118140525.29189-1-geert+renesas@glider.be>
+ <20190118230740.44239fcf@bbrezillon>
+ <CAMuHMdVfVHUQnjwvFikqQJ8HBD+0A7DSCTcdDN4e7V4c=4Usug@mail.gmail.com>
+ <20190130145054.GA990@kroah.com>
+ <20190130160839.55f99e63@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: <Tudor.Ambarus@microchip.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Nguyen An Hoan <na-hoan@jinso.co.jp>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Boris Brezillon <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190130150818.24902-10-tudor.ambarus@microchip.com>
+Content-Disposition: inline
+In-Reply-To: <20190130160839.55f99e63@bbrezillon>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 30 Jan 2019 15:08:47 +0000
-<Tudor.Ambarus@microchip.com> wrote:
+On Wed, Jan 30, 2019 at 04:08:39PM +0100, Boris Brezillon wrote:
+> Hi Greg,
+> 
+> On Wed, 30 Jan 2019 15:50:54 +0100
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Tue, Jan 29, 2019 at 08:02:37PM +0100, Geert Uytterhoeven wrote:
+> > > Hi Boris,
+> > > 
+> > > On Fri, Jan 18, 2019 at 11:07 PM Boris Brezillon <bbrezillon@kernel.org> wrote:  
+> > > > Did you consider converting this driver to spimem? Looks like the
+> > > > protocol used to communicate with the memory resembles the one used on
+> > > > SPI NANDs/NORs and fits pretty well in the spi_mem_op representation.
+> > > >
+> > > > By doing this conversion you'd allow people to connect an AT25 EEPROM
+> > > > to an advanced SPI controller that does not support regular SPI
+> > > > transfers and you wouldn't have to forge SPI messages manually.
+> > > >
+> > > > Here is a patch (only compile tested) doing that. The diffstat is not in
+> > > > favor of this conversion, but I find the resulting code cleaner and more
+> > > > future proof.  
+> > > 
+> > > Thanks, seems to work fine, with the 512-byte 25LC040 I have!
+> > > 
+> > > Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > 
+> > > I did notice that the first two-byte transfer (command+offset) of each
+> > > message is now split in two one-byte transfers, though.  
+> > 
+> > Ok, I'll drop this patch series and wait for the updated version to be
+> > sent out :)
+> 
+> I'd like to further simplify the patch by using the recently introduced
+> devm_spi_mem_dirmap_create() function (queued to Mark's spi/for-5.1
+> branch), which means I'll have to wait v5.1-rc1 before sending a new
+> version. I'll let you decide if it's worth applying Geert's patches in
+> the meantime.
 
-> +static int atmel_sam9x60_qspi_clk_prepare_enable(struct atmel_qspi *aq)
-> +{
-> +	struct device *dev = &aq->pdev->dev;
-> +	int ret;
-> +
-> +	if (!aq->clk) {
-> +		/* Get the peripheral clock */
-> +		aq->clk = devm_clk_get(dev, "pclk");
-> +		if (IS_ERR(aq->clk)) {
-> +			dev_err(dev, "missing peripheral clock\n");
-> +			return PTR_ERR(aq->clk);
-> +		}
-> +	}
-> +
-> +	if (!aq->qspick) {
-> +		/* Get the QSPI system clock */
-> +		aq->qspick = devm_clk_get(dev, "qspick");
-> +		if (IS_ERR(aq->qspick)) {
-> +			dev_err(dev, "missing system clock\n");
-> +			return PTR_ERR(aq->qspick);
-> +		}
-> +	}
+If you all want Geert's patches merged now, someone has to resend them
+please :)
 
-Move the devm_clk_get() calls to the probe path instead of doing it at
-prepare time, and you can make it generic for both compats with
-something like:
+thanks,
 
-	aq->clk = devm_clk_get(dev, "pclk");
-	if (IS_ERR(aq->clk))
-		aq->clk = devm_clk_get(dev, NULL);
-
-	if (IS_ERR(aq->clk))
-		return PTR_ERR(aq->clk);
-
-	if (aq->caps->qspick_required) {
-		aq->qspick = devm_clk_get(dev, "qspick");
-		if (IS_ERR(aq->qspick)) {
-			return PTR_ERR(aq->qspick);
-	}
-
-> +
-> +	/* Enable the peripheral clock */
-> +	ret = clk_prepare_enable(aq->clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable the peripheral clock\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Enable the QSPI system clock */
-> +	ret = clk_prepare_enable(aq->qspick);
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable the QSPI system clock\n");
-> +		clk_disable_unprepare(aq->clk);
-> +	}
-
-Again, you can make the enable function generic since
-clk_prepare_enable(NULL) is a NO-OP that returns 0 and aq->qspick will
-be NULL when it's not required.
-
-> +
-> +	return ret;
-> +}
-> +
-> +static void atmel_sam9x60_qspi_clk_disable_unprepare(struct atmel_qspi *aq)
-> +{
-> +	clk_disable_unprepare(aq->qspick);
-> +	clk_disable_unprepare(aq->clk);
-
-Ditto.
-
-> +}
+greg k-h

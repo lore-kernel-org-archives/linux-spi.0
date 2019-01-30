@@ -1,53 +1,63 @@
-From: <Nicolas.Ferre@microchip.com>
-Subject: Re: [PATCH v5 2/2] spi-atmel: support inter-word delay
-Date: Wed, 30 Jan 2019 08:15:56 +0000
-Message-ID: <78389342-af93-b233-e12e-5f6945bcb154@microchip.com>
-References: <20190129205502.7741-1-jonas@norrbonn.se>
- <20190129205502.7741-3-jonas@norrbonn.se>
+From: Jonas Bonn <jonas@norrbonn.se>
+Subject: [PATCH v6 2/2] spi-atmel: support inter-word delay
+Date: Wed, 30 Jan 2019 09:40:05 +0100
+Message-ID: <20190130084005.18649-3-jonas@norrbonn.se>
+References: <20190130084005.18649-1-jonas@norrbonn.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <jonas@norrbonn.se>, <linux-kernel@vger.kernel.org>,
-        <broonie@kernel.org>
+Content-Transfer-Encoding: 8bit
+Cc: Jonas Bonn <jonas@norrbonn.se>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190129205502.7741-3-jonas@norrbonn.se>
-Content-Language: en-US
-Content-ID: <BC46FB6882A4F040AF9276E15F98AE91@namprd11.prod.outlook.com>
+In-Reply-To: <20190130084005.18649-1-jonas@norrbonn.se>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMjkvMDEvMjAxOSBhdCAyMTo1NSwgSm9uYXMgQm9ubiB3cm90ZToNCj4gSWYgdGhlIFNQSSBz
-bGF2ZSByZXF1aXJlcyBhbiBpbnRlci13b3JkIGRlbGF5LCBjb25maWd1cmUgdGhlIERMWUJDVA0K
-PiByZWdpc3RlciBhY2NvcmRpbmdseS4NCj4gDQo+IFRlc3RlZCBvbiBhIFNBTUE1RDIgYm9hcmQg
-KGRlcml2ZWQgZnJvbSBTQU1BNUQyLVhwbGFpbmVkIHJlZmVyZW5jZQ0KPiBib2FyZCkuDQo+IA0K
-PiBTaWduZWQtb2ZmLWJ5OiBKb25hcyBCb25uIDxqb25hc0Bub3JyYm9ubi5zZT4NCj4gQ0M6IE5p
-Y29sYXMgRmVycmUgPG5pY29sYXMuZmVycmVAbWljcm9jaGlwLmNvbT4NCj4gQ0M6IE1hcmsgQnJv
-d24gPGJyb29uaWVAa2VybmVsLm9yZz4NCj4gQ0M6IEFsZXhhbmRyZSBCZWxsb25pIDxhbGV4YW5k
-cmUuYmVsbG9uaUBib290bGluLmNvbT4NCj4gQ0M6IEx1ZG92aWMgRGVzcm9jaGVzIDxsdWRvdmlj
-LmRlc3JvY2hlc0BtaWNyb2NoaXAuY29tPg0KPiBDQzogbGludXgtc3BpQHZnZXIua2VybmVsLm9y
-Zw0KPiBDQzogbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+IC0tLQ0KPiAg
-IGRyaXZlcnMvc3BpL3NwaS1hdG1lbC5jIHwgMTEgKysrKysrLS0tLS0NCj4gICAxIGZpbGUgY2hh
-bmdlZCwgNiBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jIGIvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMNCj4gaW5k
-ZXggZjUzZjBjNWU2M2RhLi41N2NjNzExMGY5ZTggMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3Bp
-L3NwaS1hdG1lbC5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jDQo+IEBAIC0xMjAx
-LDEzICsxMjAxLDE0IEBAIHN0YXRpYyBpbnQgYXRtZWxfc3BpX3NldHVwKHN0cnVjdCBzcGlfZGV2
-aWNlICpzcGkpDQo+ICAgCQljc3IgfD0gU1BJX0JJVChDU0FBVCk7DQo+ICAgDQo+ICAgCS8qIERM
-WUJTIGlzIG1vc3RseSBpcnJlbGV2YW50IHNpbmNlIHdlIG1hbmFnZSBjaGlwc2VsZWN0IHVzaW5n
-IEdQSU9zLg0KPiAtCSAqDQo+IC0JICogRExZQkNUIHdvdWxkIGFkZCBkZWxheXMgYmV0d2VlbiB3
-b3Jkcywgc2xvd2luZyBkb3duIHRyYW5zZmVycy4NCj4gLQkgKiBJdCBjb3VsZCBwb3RlbnRpYWxs
-eSBiZSB1c2VmdWwgdG8gY29wZSB3aXRoIERNQSBib3R0bGVuZWNrcywgYnV0DQo+IC0JICogaW4g
-dGhvc2UgY2FzZXMgaXQncyBwcm9iYWJseSBiZXN0IHRvIGp1c3QgdXNlIGEgbG93ZXIgYml0cmF0
-ZS4NCj4gICAJICovDQo+ICAgCWNzciB8PSBTUElfQkYoRExZQlMsIDApOw0KPiAtCWNzciB8PSBT
-UElfQkYoRExZQkNULCAwKTsNCj4gKw0KPiArCS8qIERMWUJDVCBhZGRzIGRlbGF5cyBiZXR3ZWVu
-IHdvcmRzLiAgVGhpcyBpcyB1c2VmdWwgZm9yIHNsb3cgZGV2aWNlcw0KPiArCSAqIHRoYXQgbmVl
-ZCBhIGJpdCBvZiB0aW1lIHRvIHNldHVwIHRoZSBuZXh0IHRyYW5zZmVyLg0KPiArCSAqLw0KPiAr
-CWNzciB8PSBTUElfQkYoRExZQkNULA0KPiArCQkJKGFzLT5zcGlfY2xrIC8gMTAwMDAwMCAqIHNw
-aS0+d29yZF9kZWxheV91cykgPj4gNSk7DQoNCkxvb2tzIGdvb2QgdG8gbWU6DQpBY2tlZC1ieTog
-Tmljb2xhcyBGZXJyZSA8bmljb2xhcy5mZXJyZUBtaWNyb2NoaXAuY29tPg0KDQoNCj4gICAJYXNk
-ID0gc3BpLT5jb250cm9sbGVyX3N0YXRlOw0KPiAgIAlpZiAoIWFzZCkgew0KPiANCg0KDQotLSAN
-Ck5pY29sYXMgRmVycmUNCg==
+If the SPI slave requires an inter-word delay, configure the DLYBCT
+register accordingly.
+
+Tested on a SAMA5D2 board (derived from SAMA5D2-Xplained reference
+board).
+
+Signed-off-by: Jonas Bonn <jonas@norrbonn.se>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+CC: Nicolas Ferre <nicolas.ferre@microchip.com>
+CC: Mark Brown <broonie@kernel.org>
+CC: Alexandre Belloni <alexandre.belloni@bootlin.com>
+CC: Ludovic Desroches <ludovic.desroches@microchip.com>
+CC: linux-spi@vger.kernel.org
+CC: linux-arm-kernel@lists.infradead.org
+---
+ drivers/spi/spi-atmel.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index f53f0c5e63da..4954f0ab1606 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1201,13 +1201,14 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		csr |= SPI_BIT(CSAAT);
+ 
+ 	/* DLYBS is mostly irrelevant since we manage chipselect using GPIOs.
+-	 *
+-	 * DLYBCT would add delays between words, slowing down transfers.
+-	 * It could potentially be useful to cope with DMA bottlenecks, but
+-	 * in those cases it's probably best to just use a lower bitrate.
+ 	 */
+ 	csr |= SPI_BF(DLYBS, 0);
+-	csr |= SPI_BF(DLYBCT, 0);
++
++	/* DLYBCT adds delays between words.  This is useful for slow devices
++	 * that need a bit of time to setup the next transfer.
++	 */
++	csr |= SPI_BF(DLYBCT,
++			(as->spi_clk / 1000000 * spi->word_delay_usecs) >> 5);
+ 
+ 	asd = spi->controller_state;
+ 	if (!asd) {
+-- 
+2.19.1

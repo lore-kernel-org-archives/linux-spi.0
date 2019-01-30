@@ -1,85 +1,64 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH 8/9] dt-bindings: spi: atmel-quadspi: QuadSPI driver for
- Microchip SAM9X60
-Date: Wed, 30 Jan 2019 15:08:45 +0000
-Message-ID: <20190130150818.24902-9-tudor.ambarus@microchip.com>
-References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v2 0/2] eeprom: at25: SPI transfer improvements
+Date: Wed, 30 Jan 2019 16:08:39 +0100
+Message-ID: <20190130160839.55f99e63@bbrezillon>
+References: <20190118140525.29189-1-geert+renesas@glider.be>
+        <20190118230740.44239fcf@bbrezillon>
+        <CAMuHMdVfVHUQnjwvFikqQJ8HBD+0A7DSCTcdDN4e7V4c=4Usug@mail.gmail.com>
+        <20190130145054.GA990@kroah.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Nguyen An Hoan <na-hoan@jinso.co.jp>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-Content-Language: en-US
+In-Reply-To: <20190130145054.GA990@kroah.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+Hi Greg,
 
-The sam9x60 qspi controller uses 2 clocks, one for the peripheral register
-access, the other for the qspi core and phy. Both are mandatory.
+On Wed, 30 Jan 2019 15:50:54 +0100
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
----
- .../devicetree/bindings/spi/atmel-quadspi.txt      | 28 ++++++++++++++++++=
-++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+> On Tue, Jan 29, 2019 at 08:02:37PM +0100, Geert Uytterhoeven wrote:
+> > Hi Boris,
+> > 
+> > On Fri, Jan 18, 2019 at 11:07 PM Boris Brezillon <bbrezillon@kernel.org> wrote:  
+> > > Did you consider converting this driver to spimem? Looks like the
+> > > protocol used to communicate with the memory resembles the one used on
+> > > SPI NANDs/NORs and fits pretty well in the spi_mem_op representation.
+> > >
+> > > By doing this conversion you'd allow people to connect an AT25 EEPROM
+> > > to an advanced SPI controller that does not support regular SPI
+> > > transfers and you wouldn't have to forge SPI messages manually.
+> > >
+> > > Here is a patch (only compile tested) doing that. The diffstat is not in
+> > > favor of this conversion, but I find the resulting code cleaner and more
+> > > future proof.  
+> > 
+> > Thanks, seems to work fine, with the 512-byte 25LC040 I have!
+> > 
+> > Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > 
+> > I did notice that the first two-byte transfer (command+offset) of each
+> > message is now split in two one-byte transfers, though.  
+> 
+> Ok, I'll drop this patch series and wait for the updated version to be
+> sent out :)
 
-diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
-mentation/devicetree/bindings/spi/atmel-quadspi.txt
-index e9dae6264d89..e7b7f297c5d7 100644
---- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-+++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-@@ -1,14 +1,22 @@
- * Atmel Quad Serial Peripheral Interface (QSPI)
-=20
- Required properties:
--- compatible:     Should be "atmel,sama5d2-qspi".
-+- compatible:     Should be one of the following
-+		  - "atmel,sama5d2-qspi"
-+		  - "microchip,sam9x60-qspi"
- - reg:            Should contain the locations and lengths of the base reg=
-isters
-                   and the mapped memory.
- - reg-names:      Should contain the resource reg names:
-                   - qspi_base: configuration register address space
-                   - qspi_mmap: memory mapped address space
- - interrupts:     Should contain the interrupt for the device.
--- clocks:         The phandle of the clock needed by the QSPI controller.
-+- clocks:	  - "atmel,sama5d2-qspi": the phandle of the clock needed by the
-+		  QSPI controller.
-+		  - "microchip,sam9x60-qspi": should reference the peripheral
-+		  and system QSPI clocks.
-+- clock-names:    Only for sam9x60 - should contain two strigs:
-+		  - "pclk" for the peripheral clock
-+		  - "qspick" for the system clock
- - #address-cells: Should be <1>.
- - #size-cells:    Should be <0>.
-=20
-@@ -29,3 +37,19 @@ spi@f0020000 {
- 		...
- 	};
- };
-+
-+qspi@f0014000 {
-+	compatible =3D "microchip,sam9x60-qspi";
-+	reg =3D <0xf0014000 0x100>, <0x70000000 0x08000000>;
-+	reg-names =3D "qspi_base", "qspi_mmap";
-+	interrupts =3D <35 IRQ_TYPE_LEVEL_HIGH 7>;
-+	clocks =3D  <&pmc PMC_TYPE_PERIPHERAL 35>, <&pmc PMC_TYPE_SYSTEM 19>;
-+	clock-names =3D "pclk", "qspick";
-+	#address-cells =3D <1>;
-+	#size-cells =3D <0>;
-+	pinctrl-names =3D "default";
-+
-+	flash@0 {
-+		...
-+	};
-+};
---=20
-2.9.5
+I'd like to further simplify the patch by using the recently introduced
+devm_spi_mem_dirmap_create() function (queued to Mark's spi/for-5.1
+branch), which means I'll have to wait v5.1-rc1 before sending a new
+version. I'll let you decide if it's worth applying Geert's patches in
+the meantime.
+
+Regards,
+
+Boris

@@ -1,8 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v2 09/10] dt-bindings: spi: atmel-quadspi: QuadSPI driver for
- Microchip SAM9X60
-Date: Thu, 31 Jan 2019 16:15:48 +0000
-Message-ID: <20190131161515.21605-10-tudor.ambarus@microchip.com>
+Subject: [PATCH v2 08/10] dt-bindings: spi: atmel-quadspi: update example to
+ new clock binding
+Date: Thu, 31 Jan 2019 16:15:46 +0000
+Message-ID: <20190131161515.21605-9-tudor.ambarus@microchip.com>
 References: <20190131161515.21605-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -22,49 +22,31 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-The sam9x60 qspi controller uses 2 clocks, one for the peripheral register
-access, the other for the qspi core and phy. Both are mandatory.
+Introduced in:
+commit b60557876849 ("ARM: dts: at91: sama5d2: switch to new clock binding"=
+)
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v2:
-- make "pclk" mandatory even for sama5d2. Unnamed clk will be
-supported in the driver.
-- drop unneeded example
+v2: collect R-b
 
- Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
 mentation/devicetree/bindings/spi/atmel-quadspi.txt
-index e9dae6264d89..f949f9197636 100644
+index b93c1e2f25dd..e9dae6264d89 100644
 --- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
 +++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-@@ -1,14 +1,22 @@
- * Atmel Quad Serial Peripheral Interface (QSPI)
-=20
- Required properties:
--- compatible:     Should be "atmel,sama5d2-qspi".
-+- compatible:     Should be one of the following:
-+		  - "atmel,sama5d2-qspi"
-+		  - "microchip,sam9x60-qspi"
- - reg:            Should contain the locations and lengths of the base reg=
-isters
-                   and the mapped memory.
- - reg-names:      Should contain the resource reg names:
-                   - qspi_base: configuration register address space
-                   - qspi_mmap: memory mapped address space
- - interrupts:     Should contain the interrupt for the device.
--- clocks:         The phandle of the clock needed by the QSPI controller.
-+- clocks:	  - "atmel,sama5d2-qspi": the phandle of the clock needed by the
-+		  QSPI controller.
-+		  - "microchip,sam9x60-qspi": should reference the peripheral
-+		  and system QSPI clocks.
-+- clock-names:    Should contain:
-+		  - "pclk" for the peripheral clock
-+		  - "qspick" for the system clock, when available (sam9x60)
- - #address-cells: Should be <1>.
- - #size-cells:    Should be <0>.
-=20
+@@ -19,7 +19,7 @@ spi@f0020000 {
+ 	reg =3D <0xf0020000 0x100>, <0xd0000000 0x8000000>;
+ 	reg-names =3D "qspi_base", "qspi_mmap";
+ 	interrupts =3D <52 IRQ_TYPE_LEVEL_HIGH 7>;
+-	clocks =3D <&spi0_clk>;
++	clocks =3D <&pmc PMC_TYPE_PERIPHERAL 52>;
+ 	#address-cells =3D <1>;
+ 	#size-cells =3D <0>;
+ 	pinctrl-names =3D "default";
 --=20
 2.9.5

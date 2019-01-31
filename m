@@ -1,48 +1,61 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
+From: <Tudor.Ambarus@microchip.com>
 Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
  controller
-Date: Thu, 31 Jan 2019 13:01:50 +0100
-Message-ID: <20190131130137.52b592f8@bbrezillon>
+Date: Thu, 31 Jan 2019 12:40:04 +0000
+Message-ID: <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
 References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
  <20190130150818.24902-10-tudor.ambarus@microchip.com>
+ <20190131125504.3eff449d@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
- Ludovic.Desroches@microchip.com, broonie@kernel.org,
- linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: <Tudor.Ambarus@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190130150818.24902-10-tudor.ambarus@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+To: <bbrezillon@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190131125504.3eff449d@bbrezillon>
+Content-Language: en-US
+Content-ID: <0D3620EBDEE88C4B8700FAC63CE881D0@namprd11.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 30 Jan 2019 15:08:47 +0000
-<Tudor.Ambarus@microchip.com> wrote:
-
-> +/*
-> + * atmel_qspi_set_address_mode() - set address mode.
-> + * @cfg:	contains register values
-> + * @op:		describes a SPI memory operation
-> + *
-> + * The controller allows 24 and 32-bit addressing while NAND-flash requires
-> + * 16-bit long. Handling 8-bit long addresses is done using the option field.
-> + * For the 16-bit addresses, the workaround depends of the number of requested
-> + * dummy bits. If there are 8 or more dummy cycles, the address is shifted and
-> + * sent with the first dummy byte. Otherwise opcode is disabled and the first
-> + * byte of the address contains the command opcode (works only if the opcode and
-> + * address use the same buswidth). The limitation is when the 16-bit address is
-> + * used without enough dummy cycles and the opcode is using a different buswidth
-> + * than the address.
-
-Too bad they didn't patch the IP to support 1 to 4 address bytes
-instead of only 3 or 4 :-(.
+DQoNCk9uIDAxLzMxLzIwMTkgMDE6NTUgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
+V2VkLCAzMCBKYW4gMjAxOSAxNTowODo0NyArMDAwMA0KPiA8VHVkb3IuQW1iYXJ1c0BtaWNyb2No
+aXAuY29tPiB3cm90ZToNCj4gDQo+PiArDQo+PiArc3RhdGljIGludCBhdG1lbF9zYW05eDYwX3Fz
+cGlfc2V0X2NmZyhzdHJ1Y3QgYXRtZWxfcXNwaSAqYXEsDQo+PiArCQkJCSAgICAgIGNvbnN0IHN0
+cnVjdCBzcGlfbWVtX29wICpvcCwNCj4+ICsJCQkJICAgICAgc3RydWN0IGF0bWVsX3FzcGlfY2Zn
+ICpjZmcpDQo+PiArew0KPj4gKwlpbnQgcmV0ID0gYXRtZWxfcXNwaV9zZXRfbW9kZShjZmcsIG9w
+KTsNCj4+ICsNCj4+ICsJaWYgKHJldCkNCj4+ICsJCXJldHVybiByZXQ7DQo+PiArDQo+PiArCWNm
+Zy0+aWNyID0gUVNQSV9JQ1JfSU5TVChvcC0+Y21kLm9wY29kZSk7DQo+PiArDQo+PiArCWlmICgh
+b3AtPmFkZHIubmJ5dGVzKSB7DQo+PiArCQljZmctPmlmciB8PSBRU1BJX0lGUl9URlJUWVBfVFJT
+RlJfUkVHOw0KPj4gKwkJaWYgKG9wLT5kYXRhLmRpciA9PSBTUElfTUVNX0RBVEFfT1VUKQ0KPj4g
+KwkJCWNmZy0+aWZyIHw9IFFTUElfSUZSX0FQQlRGUlRZUF9XUklURTsNCj4+ICsJCWVsc2UNCj4+
+ICsJCQljZmctPmlmciB8PSBRU1BJX0lGUl9BUEJURlJUWVBfUkVBRDsNCj4+ICsJfSBlbHNlIHsN
+Cj4+ICsJCWNmZy0+aWZyIHw9IFFTUElfSUZSX1RGUlRZUF9UUlNGUl9NRU07DQo+IA0KPiBXaHkg
+ZG8geW91IHVzZSBhIE1FTSB0cmFuc2ZlciBoZXJlPyBXaGF0J3MgdGhlIGRpZmZlcmVuY2Ugd2l0
+aCBhDQo+IHJlZ3VsYXIgdHJhbnNmZXI/DQoNClFTUElfSUZSX1RGUlRZUF9UUlNGUl9NRU0gbXVz
+dCBiZSBzZXQgd2hlbiBvbmUgd2FudHMgdG8gcmVhZC93cml0ZSBpbiB0aGUgc2VyaWFsDQptZW1v
+cnksIGFuZCBwYXJ0aWN1bGFybHkgYSBtZW1vcnkgZGF0YS4NCg0KUVNQSV9JRlJfVEZSVFlQX1RS
+U0ZSX1JFRyBtdXN0IGJlIHNldCB3aGVuIG9uZSB3YW50cyB0byByZWFkIG9yIHdyaXRlIHRvIHNl
+cmlhbA0KbWVtb3J5LCBidXQgbm90IGEgbWVtb3J5IGRhdGEuDQpSZWFkIGV4YW1wbGVzOiBKRURF
+Q19JRCBvciBRU1BJX1NSDQpXcml0ZSBleGFtcGxlczogd3JpdGluZyB0aGUgY29uZmlndXJhdGlv
+biBvciB0aGUgUVNQSV9TUi4NCg0KRG9lcyB0aGlzIGFuc3dlcnMgeW91ciBxdWVzdGlvbj8NCg0K
+PiANCj4+ICsJfQ0KPj4gKw0KPj4gKwkvKiBTZXQgZGF0YSBlbmFibGUgKi8NCj4+ICsJaWYgKG9w
+LT5kYXRhLm5ieXRlcykNCj4+ICsJCWNmZy0+aWZyIHw9IFFTUElfSUZSX0RBVEFFTjsNCj4+ICsN
+Cj4+ICsJcmV0ID0gYXRtZWxfcXNwaV9zZXRfYWRkcmVzc19tb2RlKGNmZywgb3ApOw0KPj4gKwlp
+ZiAocmV0KQ0KPj4gKwkJcmV0dXJuIHJldDsNCj4+ICANCj4+ICAJLyogQ2xlYXIgcGVuZGluZyBp
+bnRlcnJ1cHRzICovDQo+PiAgCSh2b2lkKWF0bWVsX3FzcGlfcmVhZGwoYXEsIFFTUElfU1IpOw0K
+Pj4gIA0KPj4gIAkvKiBTZXQgUVNQSSBJbnN0cnVjdGlvbiBGcmFtZSByZWdpc3RlcnMgKi8NCj4+
+IC0JYXRtZWxfcXNwaV93cml0ZWwoYXEsIFFTUElfSUFSLCBpYXIpOw0KPj4gLQlhdG1lbF9xc3Bp
+X3dyaXRlbChhcSwgUVNQSV9JQ1IsIGljcik7DQo+PiAtCWF0bWVsX3FzcGlfd3JpdGVsKGFxLCBR
+U1BJX0lGUiwgaWZyKTsNCj4+ICsJYXRtZWxfcXNwaV93cml0ZWwoYXEsIFFTUElfSUFSLCBjZmct
+Pmlhcik7DQo+PiArCWlmIChvcC0+ZGF0YS5kaXIgPT0gU1BJX01FTV9EQVRBX09VVCkNCj4+ICsJ
+CWF0bWVsX3FzcGlfd3JpdGVsKGFxLCBRU1BJX0lDUiwgY2ZnLT5pY3IpOw0KPj4gKwllbHNlDQo+
+PiArCQlhdG1lbF9xc3BpX3dyaXRlbChhcSwgUVNQSV9SSUNSLCBjZmctPmljcik7DQo+PiArCWF0
+bWVsX3FzcGlfd3JpdGVsKGFxLCBRU1BJX0lGUiwgY2ZnLT5pZnIpOw0KPj4gKw0KPj4gKwlyZXR1
+cm4gMDsNCj4+ICt9DQo+IA0KPiANCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18NCj4gbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QNCj4gbGludXgt
+YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbA0KPiANCg==

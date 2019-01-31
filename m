@@ -1,89 +1,33 @@
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [RFC/PATCH 0/5] DVFS in the OPP core
-Date: Thu, 31 Jan 2019 16:11:53 +0530
-Message-ID: <20190131104153.ojyp3razjbzm6pnc@vireshk-i7>
-References: <20190129015547.213276-1-swboyd@chromium.org>
- <20190131092349.fksfqemm23qddkhw@vireshk-i7>
- <CAJZ5v0jY5Zjg0R7uC6ewJT5Pi-15Mohotj=im9k8w4THJSM0Dw@mail.gmail.com>
- <20190131100628.6ex6ic3kspuxxxt7@vireshk-i7>
- <CAJZ5v0jA0U1Z=AeRrEGXH2j+AenzNaiD+tV-yKwKanKwiNVW7g@mail.gmail.com>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH 1/9] spi: atmel-quadspi: optimize qspi init
+Date: Thu, 31 Jan 2019 10:42:45 +0000
+Message-ID: <3ae8f1c2-b201-f7ee-5715-e49f39b9cdc1@microchip.com>
+References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
+ <20190130150818.24902-2-tudor.ambarus@microchip.com>
+ <20190130181505.4f495d3a@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Stephen Boyd <swboyd@chromium.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        grahamr@codeaurora.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Doug Anderson <dianders@chromium.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-spi@vger.kernel.org>
+To: <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jA0U1Z=AeRrEGXH2j+AenzNaiD+tV-yKwKanKwiNVW7g@mail.gmail.com>
+In-Reply-To: <20190130181505.4f495d3a@bbrezillon>
+Content-Language: en-US
+Content-ID: <762667507B21874EA0F1817206AD37BD@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 31-01-19, 11:36, Rafael J. Wysocki wrote:
-> On Thu, Jan 31, 2019 at 11:06 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > On 31-01-19, 10:58, Rafael J. Wysocki wrote:
-> > > On Thu, Jan 31, 2019 at 10:23 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > > >
-> > > > Adding few folks to the thread who might be interested in this stuff.
-> > > >
-> > > > On 28-01-19, 17:55, Stephen Boyd wrote:
-> > > > > This patch series is an RFC around how we can implement DVFS for devices
-> > > > > that aren't your typical OPPish device (i.e. GPU/CPU). They don't have a
-> > > > > strict set of frequencies that they have been tested at to derive some
-> > > > > operating performance point. Instead they have a coarser set of
-> > > > > frequency max or 'fmax' OPPs that describe the maiximum frequency the
-> > > > > device can operate at with a given voltage.
-> > > > >
-> > > > > The approach we take is to let the devm_pm_opp_set_rate() API accept 0
-> > > > > as a valid frequency indicating the frequency isn't required anymore and
-> > > > > to make the same API use the clk framework to round the frequency passed
-> > > > > in instead of relying on the OPP table to specify each frequency that
-> > > > > can be used. Once we have these two patches in place, we can use the OPP
-> > > > > API to change clk rates instead of clk_set_rate() and use all the recent
-> > > > > OPP enhancements that have been made around required-opps and genpd
-> > > > > performance states to do DVFS for all devices.
-> > > >
-> > > > Generally speaking I am fine with such an approach but I am not sure
-> > > > about what others would say on this as they had objections to using
-> > > > OPP core for setting the rate itself.
-> > > >
-> > > > FWIW, I suggested exactly this solution sometime back [1]
-> > > >
-> > > > - Drivers need to use two API sets to change clock rate (OPP helpers)
-> > > >   and enable/disable them (CLK framework helpers) and this leads us to
-> > > >   exactly that combination. Is that acceptable ? It doesn't look great
-> > > >   to me as well..
-> > >
-> > > I agree here.
-> > >
-> > > > - Do we expect the callers will disable clk before calling
-> > > >   opp-set-rate with 0 ? We should remove the regulator requirements as
-> > > >   well along with perf-state.
-> > >
-> > > Well, disabling clk affects HW in general, doesn't it?
-> >
-> > Yeah, but the regulator may be shared and is running at higher
-> > voltages just because of the clock requirement of the device getting
-> > disabled here. Or did I misunderstood what you wanted to say ?
-> 
-> What I wanted to say is that if the caller is required to disable clk
-> beforehand, that may be as good as setting its rate to zero already.
-
-Right, but that doesn't mean that the requirements put on the
-regulator and genpd are gone as well and that is why I favor the OPP
-core to handle all the parts otherwise write the rules explicitly. If
-the OPP core doesn't disable the clock and the caller also hasn't done
-the same, then disabling the genpd/regulator may break things up.
-
--- 
-viresh
+DQoNCk9uIDAxLzMwLzIwMTkgMDc6MTUgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
+V2VkLCAzMCBKYW4gMjAxOSAxNTowODoyOSArMDAwMA0KPiA8VHVkb3IuQW1iYXJ1c0BtaWNyb2No
+aXAuY29tPiB3cm90ZToNCj4gDQo+PiBGcm9tOiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVz
+QG1pY3JvY2hpcC5jb20+DQo+Pg0KPj4gU2V0IHRoZSBRU1BJIGNvbnRyb2xsZXIgaW4gU2VyaWFs
+IE1lbW9yeSBNb2RlIGF0IGluaXQgYW5kIG5vdA0KPj4gYXQgZWFjaCBleGVjX29wKCkgY2FsbC4N
+Cj4gDQo+IElmIHlvdSBldmVyIHdhbnQgdG8gc3VwcG9ydCByZWd1bGFyIFNQSSB5b3UnbGwgaGF2
+ZSB0byBwdXQgaXQgYmFjayB0bw0KPiBhdG1lbF9xc3BpX2V4ZWNfb3AoKSwgc28gSSdtIG5vdCBz
+dXJlIHRoaXMgaXMgYSBnb29kIG1vdmUuIEFub3RoZXINCj4gYXBwcm9hY2ggd291bGQgYmUgdG8g
+Y2FjaGUgdGhlIE1SIHZhbHVlIHRvIGF2b2lkIGRvaW5nIGEgd3JpdGUgYWNjZXNzDQo+IG9uIHRo
+ZSBidXMgd2hlbiB0aGUgdmFsdWUgaGFzbid0IGNoYW5nZWQuDQoNCkknbGwgY2FjaGUgTVIgdmFs
+dWUsIHRoYW5rcyENCg0KdGENCg==

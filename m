@@ -1,8 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v2 01/10] spi: atmel-quadspi: cache MR value to avoid a write
- access
-Date: Thu, 31 Jan 2019 16:15:28 +0000
-Message-ID: <20190131161515.21605-2-tudor.ambarus@microchip.com>
+Subject: [PATCH v2 02/10] spi: atmel-quadspi: order header files inclusion
+ alphabetically
+Date: Thu, 31 Jan 2019 16:15:31 +0000
+Message-ID: <20190131161515.21605-3-tudor.ambarus@microchip.com>
 References: <20190131161515.21605-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -22,40 +22,41 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Cache MR value to avoid write access when setting the controller
-in Serial Memory Mode (SMM). SMM is set in exec_op() and not at
-probe time, to let room for future regular SPI support.
+Cosmetic change, no functional change.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v2: cache MR value instead of moving the write access at probe
+v2: collect R-b
 
- drivers/spi/atmel-quadspi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ddc712410812..fe05aee5d845 100644
+index fe05aee5d845..c986daa895a1 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -155,6 +155,7 @@ struct atmel_qspi {
- 	struct clk		*clk;
- 	struct platform_device	*pdev;
- 	u32			pending;
-+	u32			mr;
- 	struct completion	cmd_completion;
- };
+@@ -22,16 +22,15 @@
+  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
+e.
+  */
 =20
-@@ -238,7 +239,9 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, cons=
-t struct spi_mem_op *op)
- 	icr =3D QSPI_ICR_INST(op->cmd.opcode);
- 	ifr =3D QSPI_IFR_INSTEN;
+-#include <linux/kernel.h>
+ #include <linux/clk.h>
+-#include <linux/module.h>
+-#include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+-#include <linux/of.h>
+-
+ #include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ #include <linux/spi/spi-mem.h>
 =20
--	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+	/* Set the QSPI controller in Serial Memory Mode */
-+	if (!(aq->mr & QSPI_MR_SMM))
-+		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-=20
- 	mode =3D find_mode(op);
- 	if (mode < 0)
+ /* QSPI register offsets */
 --=20
 2.9.5

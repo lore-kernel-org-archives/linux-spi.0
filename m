@@ -1,76 +1,58 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
+From: <Tudor.Ambarus@microchip.com>
+Subject: [PATCH v2 00/10] spi: atmel-quadspi: introduce sam9x60 qspi
  controller
-Date: Thu, 31 Jan 2019 14:12:35 +0100
-Message-ID: <20190131141235.418e8e9c@bbrezillon>
-References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
-        <20190130150818.24902-10-tudor.ambarus@microchip.com>
-        <20190131125504.3eff449d@bbrezillon>
-        <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
+Date: Thu, 31 Jan 2019 16:15:25 +0000
+Message-ID: <20190131161515.21605-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
-        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-To: <Tudor.Ambarus@microchip.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <Tudor.Ambarus@microchip.com>
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 31 Jan 2019 12:40:04 +0000
-<Tudor.Ambarus@microchip.com> wrote:
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-> On 01/31/2019 01:55 PM, Boris Brezillon wrote:
-> > On Wed, 30 Jan 2019 15:08:47 +0000
-> > <Tudor.Ambarus@microchip.com> wrote:
-> >   
-> >> +
-> >> +static int atmel_sam9x60_qspi_set_cfg(struct atmel_qspi *aq,
-> >> +				      const struct spi_mem_op *op,
-> >> +				      struct atmel_qspi_cfg *cfg)
-> >> +{
-> >> +	int ret = atmel_qspi_set_mode(cfg, op);
-> >> +
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	cfg->icr = QSPI_ICR_INST(op->cmd.opcode);
-> >> +
-> >> +	if (!op->addr.nbytes) {
-> >> +		cfg->ifr |= QSPI_IFR_TFRTYP_TRSFR_REG;
-> >> +		if (op->data.dir == SPI_MEM_DATA_OUT)
-> >> +			cfg->ifr |= QSPI_IFR_APBTFRTYP_WRITE;
-> >> +		else
-> >> +			cfg->ifr |= QSPI_IFR_APBTFRTYP_READ;
-> >> +	} else {
-> >> +		cfg->ifr |= QSPI_IFR_TFRTYP_TRSFR_MEM;  
-> > 
-> > Why do you use a MEM transfer here? What's the difference with a
-> > regular transfer?  
-> 
-> QSPI_IFR_TFRTYP_TRSFR_MEM must be set when one wants to read/write in the serial
-> memory, and particularly a memory data.
-> 
-> QSPI_IFR_TFRTYP_TRSFR_REG must be set when one wants to read or write to serial
-> memory, but not a memory data.
-> Read examples: JEDEC_ID or QSPI_SR
-> Write examples: writing the configuration or the QSPI_SR.
-> 
-> Does this answers your question?
+Patches from 1 to 8 are minor fixes or cosmetics.
+Patches 9 and 10 introduce the sam9x60 qspi controller.
 
-Not really :-). From the SPI bus perspective, there's no difference
-between a read/write from/to actual memory blocks or a read/write
-reg/param-page, so there must be something different on the controller
-side. I think regular transfers should work for anything, which is why
-I initially suggested to use that in the ->exec_op() implementation.
-If memory accesses are optimized somehow and do not work for all
-accesses, then we should keep them for the dirmap implementation.
+sam9x60 qspi controller tested with sst26vf064b jedec,spi-nor flash.
+Backward compatibility test done on sama5d2 qspi controller and
+mx25l25635e jedec,spi-nor flash.
 
-After reading the sama5d2 datasheet, I have the feeling that the only
-difference is the fact that the address is directly extracted from the
-AHB window offset when using mem accesses (instead of being taken from
-the IAR register), plus the possibility to enable the data
-scrambler/randomize.
+The patches are generated on top of for-next branch.
+
+v2:
+- cache MR value,
+- drop iomem wrappers,
+- make "pclk" clock-name mandatory even for sama5d2,
+- rework clock handling,
+- reorder setting of register values in set_cfg() calls,
+- collect R-b tags.
+
+Tudor Ambarus (10):
+  spi: atmel-quadspi: cache MR value to avoid a write access
+  spi: atmel-quadspi: order header files inclusion alphabetically
+  spi: atmel-quadspi: drop wrappers for iomem accesses
+  spi: atmel-quadspi: fix naming scheme
+  spi: atmel-quadspi: remove unnecessary cast
+  spi: atmel-quadspi: return appropriate error code
+  spi: atmel-quadspi: switch to SPDX license identifiers
+  dt-bindings: spi: atmel-quadspi: update example to new clock binding
+  dt-bindings: spi: atmel-quadspi: QuadSPI driver for Microchip SAM9X60
+  spi: atmel-quadspi: add support for sam9x60 qspi controller
+
+ .../devicetree/bindings/spi/atmel-quadspi.txt      |  14 +-
+ drivers/spi/atmel-quadspi.c                        | 374 +++++++++++++++--=
+----
+ 2 files changed, 281 insertions(+), 107 deletions(-)
+
+--=20
+2.9.5

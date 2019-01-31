@@ -1,7 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v2 06/10] spi: atmel-quadspi: return appropriate error code
-Date: Thu, 31 Jan 2019 16:15:41 +0000
-Message-ID: <20190131161515.21605-7-tudor.ambarus@microchip.com>
+Subject: [PATCH v2 09/10] dt-bindings: spi: atmel-quadspi: QuadSPI driver for
+ Microchip SAM9X60
+Date: Thu, 31 Jan 2019 16:15:48 +0000
+Message-ID: <20190131161515.21605-10-tudor.ambarus@microchip.com>
 References: <20190131161515.21605-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -21,40 +22,49 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Return -ENOTSUPP when atmel_qspi_find_mode() fails. Propagate
-the error in atmel_qspi_exec_op().
+The sam9x60 qspi controller uses 2 clocks, one for the peripheral register
+access, the other for the qspi core and phy. Both are mandatory.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v2: collect R-b
+v2:
+- make "pclk" mandatory even for sama5d2. Unnamed clk will be
+supported in the driver.
+- drop unneeded example
 
- drivers/spi/atmel-quadspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 2db935488270..1f7cf5d2953a 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -198,7 +198,7 @@ static int atmel_qspi_find_mode(const struct spi_mem_op=
- *op)
- 		if (atmel_qspi_is_compatible(op, &sama5d2_qspi_modes[i]))
- 			return i;
+diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
+mentation/devicetree/bindings/spi/atmel-quadspi.txt
+index e9dae6264d89..f949f9197636 100644
+--- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
++++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
+@@ -1,14 +1,22 @@
+ * Atmel Quad Serial Peripheral Interface (QSPI)
 =20
--	return -1;
-+	return -ENOTSUPP;
- }
-=20
- static bool atmel_qspi_supports_op(struct spi_mem *mem,
-@@ -234,7 +234,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, cons=
-t struct spi_mem_op *op)
-=20
- 	mode =3D atmel_qspi_find_mode(op);
- 	if (mode < 0)
--		return -ENOTSUPP;
-+		return mode;
-=20
- 	ifr |=3D sama5d2_qspi_modes[mode].config;
+ Required properties:
+-- compatible:     Should be "atmel,sama5d2-qspi".
++- compatible:     Should be one of the following:
++		  - "atmel,sama5d2-qspi"
++		  - "microchip,sam9x60-qspi"
+ - reg:            Should contain the locations and lengths of the base reg=
+isters
+                   and the mapped memory.
+ - reg-names:      Should contain the resource reg names:
+                   - qspi_base: configuration register address space
+                   - qspi_mmap: memory mapped address space
+ - interrupts:     Should contain the interrupt for the device.
+-- clocks:         The phandle of the clock needed by the QSPI controller.
++- clocks:	  - "atmel,sama5d2-qspi": the phandle of the clock needed by the
++		  QSPI controller.
++		  - "microchip,sam9x60-qspi": should reference the peripheral
++		  and system QSPI clocks.
++- clock-names:    Should contain:
++		  - "pclk" for the peripheral clock
++		  - "qspick" for the system clock, when available (sam9x60)
+ - #address-cells: Should be <1>.
+ - #size-cells:    Should be <0>.
 =20
 --=20
 2.9.5

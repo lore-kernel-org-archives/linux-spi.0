@@ -1,59 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 1/2] spi: support inter-word delay requirement for
- devices
-Date: Thu, 31 Jan 2019 12:46:13 +0000
-Message-ID: <20190131124613.GD20797@sirena.org.uk>
-References: <20190129205502.7741-1-jonas@norrbonn.se>
- <20190129205502.7741-2-jonas@norrbonn.se>
- <CAMuHMdXv6U-VeznbXrTNk9oY1kCkYu-b+_o3KH_R6BMgpVn7YA@mail.gmail.com>
- <d9c495ac-825e-6dd0-5455-817c3f27b840@norrbonn.se>
- <CAMuHMdXAjLBpQ6OXLwRsCzt5ydjuGFK6M6dKuFU4EL+6o0NB6Q@mail.gmail.com>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
+ controller
+Date: Thu, 31 Jan 2019 14:12:35 +0100
+Message-ID: <20190131141235.418e8e9c@bbrezillon>
+References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
+        <20190130150818.24902-10-tudor.ambarus@microchip.com>
+        <20190131125504.3eff449d@bbrezillon>
+        <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VV4b6MQE+OnNyhkM"
-Cc: Jonas Bonn <jonas@norrbonn.se>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXAjLBpQ6OXLwRsCzt5ydjuGFK6M6dKuFU4EL+6o0NB6Q@mail.gmail.com>
+In-Reply-To: <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, 31 Jan 2019 12:40:04 +0000
+<Tudor.Ambarus@microchip.com> wrote:
 
---VV4b6MQE+OnNyhkM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On 01/31/2019 01:55 PM, Boris Brezillon wrote:
+> > On Wed, 30 Jan 2019 15:08:47 +0000
+> > <Tudor.Ambarus@microchip.com> wrote:
+> >   
+> >> +
+> >> +static int atmel_sam9x60_qspi_set_cfg(struct atmel_qspi *aq,
+> >> +				      const struct spi_mem_op *op,
+> >> +				      struct atmel_qspi_cfg *cfg)
+> >> +{
+> >> +	int ret = atmel_qspi_set_mode(cfg, op);
+> >> +
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	cfg->icr = QSPI_ICR_INST(op->cmd.opcode);
+> >> +
+> >> +	if (!op->addr.nbytes) {
+> >> +		cfg->ifr |= QSPI_IFR_TFRTYP_TRSFR_REG;
+> >> +		if (op->data.dir == SPI_MEM_DATA_OUT)
+> >> +			cfg->ifr |= QSPI_IFR_APBTFRTYP_WRITE;
+> >> +		else
+> >> +			cfg->ifr |= QSPI_IFR_APBTFRTYP_READ;
+> >> +	} else {
+> >> +		cfg->ifr |= QSPI_IFR_TFRTYP_TRSFR_MEM;  
+> > 
+> > Why do you use a MEM transfer here? What's the difference with a
+> > regular transfer?  
+> 
+> QSPI_IFR_TFRTYP_TRSFR_MEM must be set when one wants to read/write in the serial
+> memory, and particularly a memory data.
+> 
+> QSPI_IFR_TFRTYP_TRSFR_REG must be set when one wants to read or write to serial
+> memory, but not a memory data.
+> Read examples: JEDEC_ID or QSPI_SR
+> Write examples: writing the configuration or the QSPI_SR.
+> 
+> Does this answers your question?
 
-On Wed, Jan 30, 2019 at 09:15:09AM +0100, Geert Uytterhoeven wrote:
-> On Wed, Jan 30, 2019 at 9:10 AM Jonas Bonn <jonas@norrbonn.se> wrote:
+Not really :-). From the SPI bus perspective, there's no difference
+between a read/write from/to actual memory blocks or a read/write
+reg/param-page, so there must be something different on the controller
+side. I think regular transfers should work for anything, which is why
+I initially suggested to use that in the ->exec_op() implementation.
+If memory accesses are optimized somehow and do not work for all
+accesses, then we should keep them for the dirmap implementation.
 
-> > And with that said, if you insist having a u16 for this, I'll change it.
-> >   Just let me know.
-
-> I'll defer that to the maintainer (Mark).
-
-It's an internal kernel thing, if we end up needing more space we can
-just change it.
-
---VV4b6MQE+OnNyhkM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxS7hQACgkQJNaLcl1U
-h9Blbgf/UdZ/fY6wb4r2MpFasZi5arBoDtRp9jFfNtbLbH/ydhvLOQbNDVX3Kcs2
-sUbSgUbzBwmyK8vG4IgAKSLZIDenVwmlQNsIamLzo5sHHz0XWfMD4hWRlPrEc3zK
-FR7Xb7A3HugGnruRQM8WNJmGABn2Zv8XP7G8NuQ0WuoPip5UO9H2up46PTtqQXOV
-h042QZGPXO1AuFJfeFmPeUF+XIstPdX/HwvebpKAev8pZJ87Qg8IBE+NwgldmxgS
-0xKV08PhvDlHF0JqUsaMuSYtSpBKBQFxy56pEf0EyedJIcLXg2U05hsR2DyAHx1b
-kIvh/KifBVjBDBVcgnFJxznRWwopiQ==
-=Og52
------END PGP SIGNATURE-----
-
---VV4b6MQE+OnNyhkM--
+After reading the sama5d2 datasheet, I have the feeling that the only
+difference is the fact that the address is directly extracted from the
+AHB window offset when using mem accesses (instead of being taken from
+the IAR register), plus the possibility to enable the data
+scrambler/randomize.

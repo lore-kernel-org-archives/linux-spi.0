@@ -1,61 +1,59 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH 9/9] spi: atmel-quadspi: add support for sam9x60 qspi
- controller
-Date: Thu, 31 Jan 2019 12:40:04 +0000
-Message-ID: <5a91b6b2-0fed-f411-6e96-568e610f15fa@microchip.com>
-References: <20190130150818.24902-1-tudor.ambarus@microchip.com>
- <20190130150818.24902-10-tudor.ambarus@microchip.com>
- <20190131125504.3eff449d@bbrezillon>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v5 1/2] spi: support inter-word delay requirement for
+ devices
+Date: Thu, 31 Jan 2019 12:46:13 +0000
+Message-ID: <20190131124613.GD20797@sirena.org.uk>
+References: <20190129205502.7741-1-jonas@norrbonn.se>
+ <20190129205502.7741-2-jonas@norrbonn.se>
+ <CAMuHMdXv6U-VeznbXrTNk9oY1kCkYu-b+_o3KH_R6BMgpVn7YA@mail.gmail.com>
+ <d9c495ac-825e-6dd0-5455-817c3f27b840@norrbonn.se>
+ <CAMuHMdXAjLBpQ6OXLwRsCzt5ydjuGFK6M6dKuFU4EL+6o0NB6Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
-        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-To: <bbrezillon@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VV4b6MQE+OnNyhkM"
+Cc: Jonas Bonn <jonas@norrbonn.se>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190131125504.3eff449d@bbrezillon>
-Content-Language: en-US
-Content-ID: <0D3620EBDEE88C4B8700FAC63CE881D0@namprd11.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXAjLBpQ6OXLwRsCzt5ydjuGFK6M6dKuFU4EL+6o0NB6Q@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDAxLzMxLzIwMTkgMDE6NTUgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
-V2VkLCAzMCBKYW4gMjAxOSAxNTowODo0NyArMDAwMA0KPiA8VHVkb3IuQW1iYXJ1c0BtaWNyb2No
-aXAuY29tPiB3cm90ZToNCj4gDQo+PiArDQo+PiArc3RhdGljIGludCBhdG1lbF9zYW05eDYwX3Fz
-cGlfc2V0X2NmZyhzdHJ1Y3QgYXRtZWxfcXNwaSAqYXEsDQo+PiArCQkJCSAgICAgIGNvbnN0IHN0
-cnVjdCBzcGlfbWVtX29wICpvcCwNCj4+ICsJCQkJICAgICAgc3RydWN0IGF0bWVsX3FzcGlfY2Zn
-ICpjZmcpDQo+PiArew0KPj4gKwlpbnQgcmV0ID0gYXRtZWxfcXNwaV9zZXRfbW9kZShjZmcsIG9w
-KTsNCj4+ICsNCj4+ICsJaWYgKHJldCkNCj4+ICsJCXJldHVybiByZXQ7DQo+PiArDQo+PiArCWNm
-Zy0+aWNyID0gUVNQSV9JQ1JfSU5TVChvcC0+Y21kLm9wY29kZSk7DQo+PiArDQo+PiArCWlmICgh
-b3AtPmFkZHIubmJ5dGVzKSB7DQo+PiArCQljZmctPmlmciB8PSBRU1BJX0lGUl9URlJUWVBfVFJT
-RlJfUkVHOw0KPj4gKwkJaWYgKG9wLT5kYXRhLmRpciA9PSBTUElfTUVNX0RBVEFfT1VUKQ0KPj4g
-KwkJCWNmZy0+aWZyIHw9IFFTUElfSUZSX0FQQlRGUlRZUF9XUklURTsNCj4+ICsJCWVsc2UNCj4+
-ICsJCQljZmctPmlmciB8PSBRU1BJX0lGUl9BUEJURlJUWVBfUkVBRDsNCj4+ICsJfSBlbHNlIHsN
-Cj4+ICsJCWNmZy0+aWZyIHw9IFFTUElfSUZSX1RGUlRZUF9UUlNGUl9NRU07DQo+IA0KPiBXaHkg
-ZG8geW91IHVzZSBhIE1FTSB0cmFuc2ZlciBoZXJlPyBXaGF0J3MgdGhlIGRpZmZlcmVuY2Ugd2l0
-aCBhDQo+IHJlZ3VsYXIgdHJhbnNmZXI/DQoNClFTUElfSUZSX1RGUlRZUF9UUlNGUl9NRU0gbXVz
-dCBiZSBzZXQgd2hlbiBvbmUgd2FudHMgdG8gcmVhZC93cml0ZSBpbiB0aGUgc2VyaWFsDQptZW1v
-cnksIGFuZCBwYXJ0aWN1bGFybHkgYSBtZW1vcnkgZGF0YS4NCg0KUVNQSV9JRlJfVEZSVFlQX1RS
-U0ZSX1JFRyBtdXN0IGJlIHNldCB3aGVuIG9uZSB3YW50cyB0byByZWFkIG9yIHdyaXRlIHRvIHNl
-cmlhbA0KbWVtb3J5LCBidXQgbm90IGEgbWVtb3J5IGRhdGEuDQpSZWFkIGV4YW1wbGVzOiBKRURF
-Q19JRCBvciBRU1BJX1NSDQpXcml0ZSBleGFtcGxlczogd3JpdGluZyB0aGUgY29uZmlndXJhdGlv
-biBvciB0aGUgUVNQSV9TUi4NCg0KRG9lcyB0aGlzIGFuc3dlcnMgeW91ciBxdWVzdGlvbj8NCg0K
-PiANCj4+ICsJfQ0KPj4gKw0KPj4gKwkvKiBTZXQgZGF0YSBlbmFibGUgKi8NCj4+ICsJaWYgKG9w
-LT5kYXRhLm5ieXRlcykNCj4+ICsJCWNmZy0+aWZyIHw9IFFTUElfSUZSX0RBVEFFTjsNCj4+ICsN
-Cj4+ICsJcmV0ID0gYXRtZWxfcXNwaV9zZXRfYWRkcmVzc19tb2RlKGNmZywgb3ApOw0KPj4gKwlp
-ZiAocmV0KQ0KPj4gKwkJcmV0dXJuIHJldDsNCj4+ICANCj4+ICAJLyogQ2xlYXIgcGVuZGluZyBp
-bnRlcnJ1cHRzICovDQo+PiAgCSh2b2lkKWF0bWVsX3FzcGlfcmVhZGwoYXEsIFFTUElfU1IpOw0K
-Pj4gIA0KPj4gIAkvKiBTZXQgUVNQSSBJbnN0cnVjdGlvbiBGcmFtZSByZWdpc3RlcnMgKi8NCj4+
-IC0JYXRtZWxfcXNwaV93cml0ZWwoYXEsIFFTUElfSUFSLCBpYXIpOw0KPj4gLQlhdG1lbF9xc3Bp
-X3dyaXRlbChhcSwgUVNQSV9JQ1IsIGljcik7DQo+PiAtCWF0bWVsX3FzcGlfd3JpdGVsKGFxLCBR
-U1BJX0lGUiwgaWZyKTsNCj4+ICsJYXRtZWxfcXNwaV93cml0ZWwoYXEsIFFTUElfSUFSLCBjZmct
-Pmlhcik7DQo+PiArCWlmIChvcC0+ZGF0YS5kaXIgPT0gU1BJX01FTV9EQVRBX09VVCkNCj4+ICsJ
-CWF0bWVsX3FzcGlfd3JpdGVsKGFxLCBRU1BJX0lDUiwgY2ZnLT5pY3IpOw0KPj4gKwllbHNlDQo+
-PiArCQlhdG1lbF9xc3BpX3dyaXRlbChhcSwgUVNQSV9SSUNSLCBjZmctPmljcik7DQo+PiArCWF0
-bWVsX3FzcGlfd3JpdGVsKGFxLCBRU1BJX0lGUiwgY2ZnLT5pZnIpOw0KPj4gKw0KPj4gKwlyZXR1
-cm4gMDsNCj4+ICt9DQo+IA0KPiANCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18NCj4gbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QNCj4gbGludXgt
-YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbA0KPiANCg==
+
+--VV4b6MQE+OnNyhkM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jan 30, 2019 at 09:15:09AM +0100, Geert Uytterhoeven wrote:
+> On Wed, Jan 30, 2019 at 9:10 AM Jonas Bonn <jonas@norrbonn.se> wrote:
+
+> > And with that said, if you insist having a u16 for this, I'll change it.
+> >   Just let me know.
+
+> I'll defer that to the maintainer (Mark).
+
+It's an internal kernel thing, if we end up needing more space we can
+just change it.
+
+--VV4b6MQE+OnNyhkM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxS7hQACgkQJNaLcl1U
+h9Blbgf/UdZ/fY6wb4r2MpFasZi5arBoDtRp9jFfNtbLbH/ydhvLOQbNDVX3Kcs2
+sUbSgUbzBwmyK8vG4IgAKSLZIDenVwmlQNsIamLzo5sHHz0XWfMD4hWRlPrEc3zK
+FR7Xb7A3HugGnruRQM8WNJmGABn2Zv8XP7G8NuQ0WuoPip5UO9H2up46PTtqQXOV
+h042QZGPXO1AuFJfeFmPeUF+XIstPdX/HwvebpKAev8pZJ87Qg8IBE+NwgldmxgS
+0xKV08PhvDlHF0JqUsaMuSYtSpBKBQFxy56pEf0EyedJIcLXg2U05hsR2DyAHx1b
+kIvh/KifBVjBDBVcgnFJxznRWwopiQ==
+=Og52
+-----END PGP SIGNATURE-----
+
+--VV4b6MQE+OnNyhkM--

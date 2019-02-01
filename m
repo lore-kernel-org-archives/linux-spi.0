@@ -1,170 +1,57 @@
-From: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Subject: RE: [PATCH v8 3/5] arm64: dts: lx2160a: add FlexSPI node property
-Date: Fri, 1 Feb 2019 05:05:49 +0000
-Message-ID: <VI1PR04MB5726460C6F341F0DFEA8BA8899920@VI1PR04MB5726.eurprd04.prod.outlook.com>
-References: <1547553487-9936-1-git-send-email-yogeshnarayan.gaur@nxp.com>
- <1547553487-9936-4-git-send-email-yogeshnarayan.gaur@nxp.com>
- <20190201025405.GA19882@dragon>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH v2 01/10] spi: atmel-quadspi: cache MR value to avoid a
+ write access
+Date: Fri, 1 Feb 2019 06:51:39 +0000
+Message-ID: <a0f6dbf3-e9c3-6695-2b85-3907b3f679cd@microchip.com>
+References: <20190131161515.21605-1-tudor.ambarus@microchip.com>
+ <20190131161515.21605-2-tudor.ambarus@microchip.com>
+ <20190131175535.3f60ccff@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
-        "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-        "linux-arm-kernel@lists.infradead.org"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
+        <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+        <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
+        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
+        <linux-mtd@lists.infradead.org>,
         <linux-arm-kernel@lists.infradead.org>
-To: Shawn Guo <shawnguo@kernel.org>
+To: <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190201025405.GA19882@dragon>
+In-Reply-To: <20190131175535.3f60ccff@bbrezillon>
 Content-Language: en-US
+Content-ID: <AD8D57D6CCC52140A936C75E8005BF0F@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Shawn Guo [mailto:shawnguo@kernel.org]
-> Sent: Friday, February 1, 2019 8:24 AM
-> To: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> Cc: linux-mtd@lists.infradead.org; bbrezillon@kernel.org;
-> marek.vasut@gmail.com; broonie@kernel.org; linux-spi@vger.kernel.org;
-> devicetree@vger.kernel.org; mark.rutland@arm.com; robh@kernel.org; linux-
-> kernel@vger.kernel.org; frieder.schrempf@kontron.de;
-> computersforpeace@gmail.com; linux-arm-kernel@lists.infradead.org
-> Subject: Re: [PATCH v8 3/5] arm64: dts: lx2160a: add FlexSPI node propert=
-y
->=20
-> On Tue, Jan 15, 2019 at 12:00:26PM +0000, Yogesh Narayan Gaur wrote:
-> > Add fspi node property for LX2160A SoC for FlexSPI driver.
-> > Property added for the FlexSPI controller and for the connected slave
-> > device for the LX2160ARDB target.
-> > This is having two SPI-NOR flash device, mt35xu512aba, connected at
-> > CS0 and CS1.
-> >
-> > Signed-off-by: Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-> > ---
-> > Changes for v8:
-> > - None
-> > Changes for v7:
-> > - None
-> > Changes for v6:
-> > - None
-> > Changes for v5:
-> > - None
-> > Changes for v4:
-> > - Incorporated Rob review comments.
-> > Changes for v3:
-> > - None.
-> > Changes for v2:
-> > - Incorporated Shawn review comments.
-> >
-> >  .../boot/dts/freescale/fsl-lx2160a-rdb.dts    | 22 +++++++++++++++++++
-> >  .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 13 +++++++++++
-> >  2 files changed, 35 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > index 6481e5f20e69..70658946fbbe 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dts
-> > @@ -50,6 +50,28 @@
-> >  	status =3D "okay";
-> >  };
-> >
-> > +&fspi {
-> > +	status =3D "okay";
-> > +
-> > +	mt35xu512aba0: flash@0 {
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <1>;
-> > +		compatible =3D "spansion,m25p80";
-> > +		m25p,fast-read;
-> > +		spi-max-frequency =3D <50000000>;
-> > +		reg =3D <0>;
-> > +	};
-> > +
-> > +	mt35xu512aba1: flash@1 {
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <1>;
-> > +		compatible =3D "spansion,m25p80";
-> > +		m25p,fast-read;
-> > +		spi-max-frequency =3D <50000000>;
-> > +		reg =3D <1>;
-> > +	};
-> > +};
-> > +
-> >  &i2c0 {
-> >  	status =3D "okay";
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> > b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> > index a79f5c1ea56d..e3ff86201f73 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-> > @@ -762,5 +762,18 @@
-> >  				     <GIC_SPI 209 IRQ_TYPE_LEVEL_HIGH>;
-> >  			dma-coherent;
-> >  		};
-> > +
-> > +		fspi: spi@20c0000 {
->=20
-> To keep the nodes sorted in unit-address, it should go after i2c@2070000.
->=20
-> > +			compatible =3D "nxp,lx2160a-fspi";
-> > +			#address-cells =3D <1>;
-> > +			#size-cells =3D <0>;
-> > +			reg =3D <0x0 0x20c0000 0x0 0x10000>,
-> > +				<0x0 0x20000000 0x0 0x10000000>;
->=20
-> I would align the indentation with the above.
->=20
-> > +			reg-names =3D "fspi_base", "fspi_mmap";
-> > +			interrupts =3D <0 25 0x4>; /* Level high type */
->=20
-> interrupts =3D <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>; so that we can save the
-> comment there.
->=20
-> I fixed up all these small things and applied the patch.
->=20
-Ok, Thanks.
-
---
-Regards
-Yogesh Gaur.
-
-> Shawn
->=20
-> > +			clocks =3D <&clockgen 4 3>, <&clockgen 4 3>;
-> > +			clock-names =3D "fspi_en", "fspi";
-> > +			status =3D "disabled";
-> > +		};
-> >  	};
-> >  };
-> > --
-> > 2.17.1
-> >
-> >
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > https://emea01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Flis=
-t
-> > s.infradead.org%2Fmailman%2Flistinfo%2Flinux-arm-
-> kernel&amp;data=3D02%7C
-> >
-> 01%7Cyogeshnarayan.gaur%40nxp.com%7C6308464db1a541247dfd08d687f09
-> 124%7
-> >
-> C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C636845864632818753&a
-> mp;sda
-> >
-> ta=3DurGFUKDP6ZZZOTXS1ccfLceCV2OBV5%2BiZq9foCu7ZX8%3D&amp;reserved=3D
-> 0
+DQoNCk9uIDAxLzMxLzIwMTkgMDY6NTUgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
+VGh1LCAzMSBKYW4gMjAxOSAxNjoxNToyOCArMDAwMA0KPiA8VHVkb3IuQW1iYXJ1c0BtaWNyb2No
+aXAuY29tPiB3cm90ZToNCj4gDQo+PiBGcm9tOiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVz
+QG1pY3JvY2hpcC5jb20+DQo+Pg0KPj4gQ2FjaGUgTVIgdmFsdWUgdG8gYXZvaWQgd3JpdGUgYWNj
+ZXNzIHdoZW4gc2V0dGluZyB0aGUgY29udHJvbGxlcg0KPj4gaW4gU2VyaWFsIE1lbW9yeSBNb2Rl
+IChTTU0pLiBTTU0gaXMgc2V0IGluIGV4ZWNfb3AoKSBhbmQgbm90IGF0DQo+PiBwcm9iZSB0aW1l
+LCB0byBsZXQgcm9vbSBmb3IgZnV0dXJlIHJlZ3VsYXIgU1BJIHN1cHBvcnQuDQo+Pg0KPj4gU2ln
+bmVkLW9mZi1ieTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0K
+Pj4gLS0tDQo+PiB2MjogY2FjaGUgTVIgdmFsdWUgaW5zdGVhZCBvZiBtb3ZpbmcgdGhlIHdyaXRl
+IGFjY2VzcyBhdCBwcm9iZQ0KPj4NCj4+ICBkcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMgfCA1
+ICsrKystDQo+PiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
+KQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMgYi9kcml2
+ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMNCj4+IGluZGV4IGRkYzcxMjQxMDgxMi4uZmUwNWFlZTVk
+ODQ1IDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jDQo+PiArKysg
+Yi9kcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMNCj4+IEBAIC0xNTUsNiArMTU1LDcgQEAgc3Ry
+dWN0IGF0bWVsX3FzcGkgew0KPj4gIAlzdHJ1Y3QgY2xrCQkqY2xrOw0KPj4gIAlzdHJ1Y3QgcGxh
+dGZvcm1fZGV2aWNlCSpwZGV2Ow0KPj4gIAl1MzIJCQlwZW5kaW5nOw0KPj4gKwl1MzIJCQltcjsN
+Cj4+ICAJc3RydWN0IGNvbXBsZXRpb24JY21kX2NvbXBsZXRpb247DQo+PiAgfTsNCj4+ICANCj4+
+IEBAIC0yMzgsNyArMjM5LDkgQEAgc3RhdGljIGludCBhdG1lbF9xc3BpX2V4ZWNfb3Aoc3RydWN0
+IHNwaV9tZW0gKm1lbSwgY29uc3Qgc3RydWN0IHNwaV9tZW1fb3AgKm9wKQ0KPj4gIAlpY3IgPSBR
+U1BJX0lDUl9JTlNUKG9wLT5jbWQub3Bjb2RlKTsNCj4+ICAJaWZyID0gUVNQSV9JRlJfSU5TVEVO
+Ow0KPj4gIA0KPj4gLQlxc3BpX3dyaXRlbChhcSwgUVNQSV9NUiwgUVNQSV9NUl9TTU0pOw0KPj4g
+KwkvKiBTZXQgdGhlIFFTUEkgY29udHJvbGxlciBpbiBTZXJpYWwgTWVtb3J5IE1vZGUgKi8NCj4+
+ICsJaWYgKCEoYXEtPm1yICYgUVNQSV9NUl9TTU0pKQ0KPiANCj4gCWlmIChhcS0+bXIgIT0gUVNQ
+SV9NUl9TTU0pDQoNCnRoZW4gSSBzaG91bGQgcHJvYmFibHkgcmVuYW1lIG1yIHRvIHNtbS4NCg0K
+PiANCj4+ICsJCXFzcGlfd3JpdGVsKGFxLCBRU1BJX01SLCBRU1BJX01SX1NNTSk7DQo+IA0KPiBZ
+b3UgbmVlZCB0byB1cGRhdGUgLT5tciBoZXJlLg0KDQpvZiBjb3Vyc2UsIHRoYW5rcyENCg0KPiAN
+Cj4+ICANCj4+ICAJbW9kZSA9IGZpbmRfbW9kZShvcCk7DQo+PiAgCWlmIChtb2RlIDwgMCkNCj4g
+DQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0K
+PiBsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdA0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3Rz
+LmluZnJhZGVhZC5vcmcNCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9saW51eC1hcm0ta2VybmVsDQo+IA0K

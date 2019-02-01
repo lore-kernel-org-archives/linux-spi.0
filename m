@@ -1,17 +1,14 @@
-From: Stefan Roese <sr@denx.de>
-Subject: [PATCH 9/9 v3] staging: spi: mt7621: Remove superfluous
- pre-declaration of struct mt7621_spi
-Date: Fri,  1 Feb 2019 11:17:15 +0100
-Message-ID: <20190201101715.3760-9-sr@denx.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/9 v3] staging: spi: mt7621: Switch to SPDX identifier
+Date: Fri, 1 Feb 2019 13:03:55 +0000
+Message-ID: <20190201130355.GG20797@sirena.org.uk>
 References: <20190201101715.3760-1-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sankalp Negi <sankalpnegi2310@gmail.com>, Mark Brown <broonie@kernel.org>,
- John Crispin <john@phrozen.org>, NeilBrown <neil@brown.name>
-To: linux-spi@vger.kernel.org,
-	devel@driverdev.osuosl.org
+Content-Type: multipart/mixed; boundary="===============3146212405494790254=="
+Cc: devel@driverdev.osuosl.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ John Crispin <john@phrozen.org>, linux-spi@vger.kernel.org,
+ Sankalp Negi <sankalpnegi2310@gmail.com>, NeilBrown <neil@brown.name>
+To: Stefan Roese <sr@denx.de>
 Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
 In-Reply-To: <20190201101715.3760-1-sr@denx.de>
 List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
@@ -25,34 +22,54 @@ Errors-To: driverdev-devel-bounces@linuxdriverproject.org
 Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-This patch removes the superfluous pre-declaration of struct mt7621_spi.
 
-Signed-off-by: Stefan Roese <sr@denx.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: NeilBrown <neil@brown.name>
-Cc: Sankalp Negi <sankalpnegi2310@gmail.com>
-Cc: Chuanhong Guo <gch981213@gmail.com>
-Cc: John Crispin <john@phrozen.org>
----
-v3:
-- New patch, changes spilt into separate patches
+--===============3146212405494790254==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HB4mHL4PVvkpZAgW"
+Content-Disposition: inline
 
- drivers/staging/mt7621-spi/spi-mt7621.c | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/staging/mt7621-spi/spi-mt7621.c b/drivers/staging/mt7621-spi/spi-mt7621.c
-index d6385220b796..167d0f09823b 100644
---- a/drivers/staging/mt7621-spi/spi-mt7621.c
-+++ b/drivers/staging/mt7621-spi/spi-mt7621.c
-@@ -51,8 +51,6 @@
- #define MT7621_CPOL		BIT(4)
- #define MT7621_LSB_FIRST	BIT(3)
- 
--struct mt7621_spi;
--
- struct mt7621_spi {
- 	struct spi_master	*master;
- 	void __iomem		*base;
--- 
-2.20.1
+--HB4mHL4PVvkpZAgW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Feb 01, 2019 at 11:17:07AM +0100, Stefan Roese wrote:
+
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * spi-mt7621.c -- MediaTek MT7621 SPI controller driver
+>   *
+
+Please convert the entire comment into a C++ comment so it looks more
+intentional.
+
+--HB4mHL4PVvkpZAgW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxUQ7sACgkQJNaLcl1U
+h9CE9wf/TlH4DARc6d62teBFcMNopb0YY11DFxf8h8X0ls4tlEHXFP3kr9WQU8He
+reFIb/ttLo7RV2FxbZHe6mmRQ3dCA/solV/IE+x0+6OKAEVI02KMn/t4q0BdUDyr
+GDAlT0YSY8BGeJ7zYx/YzROQI9RqYImkOjQJDlY1B/C7LdPaiPtQ4RS+AchNiQXR
+egTMHs8XBmZrvikfOwv5SOlV/5F0/pCs1CarnynkhzGfV5EzN1lnH9tqtLu4hNWz
+Ri5dRwfNct3UzrxYV8wi05x0G9rci6tJ1IrtO90H9P4RLlE9mojJ10imelntPV7t
+8Ex/OPRRtYOexK4+dWY/XY+dr6R2bQ==
+=dRIm
+-----END PGP SIGNATURE-----
+
+--HB4mHL4PVvkpZAgW--
+
+--===============3146212405494790254==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devel mailing list
+devel@linuxdriverproject.org
+http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
+
+--===============3146212405494790254==--

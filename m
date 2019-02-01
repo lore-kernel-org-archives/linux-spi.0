@@ -1,7 +1,8 @@
 From: Stefan Roese <sr@denx.de>
-Subject: [PATCH 5/9 v3] staging: spi: mt7621: Minor cosmetic changes
-Date: Fri,  1 Feb 2019 11:17:11 +0100
-Message-ID: <20190201101715.3760-5-sr@denx.de>
+Subject: [PATCH 3/9 v3] staging: spi: mt7621: Add return code check on
+ device_reset()
+Date: Fri,  1 Feb 2019 11:17:09 +0100
+Message-ID: <20190201101715.3760-3-sr@denx.de>
 References: <20190201101715.3760-1-sr@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,8 +25,8 @@ Errors-To: driverdev-devel-bounces@linuxdriverproject.org
 Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-Align  macro definitions and add some empty lines to make the code better
-readable.
+This patch adds a return code check on device_reset() and removes the
+compile warning.
 
 Signed-off-by: Stefan Roese <sr@denx.de>
 Cc: Mark Brown <broonie@kernel.org>
@@ -38,45 +39,33 @@ Cc: John Crispin <john@phrozen.org>
 v3:
 - New patch, changes spilt into separate patches
 
- drivers/staging/mt7621-spi/spi-mt7621.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/staging/mt7621-spi/spi-mt7621.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/staging/mt7621-spi/spi-mt7621.c b/drivers/staging/mt7621-spi/spi-mt7621.c
-index fe9c863af1cc..e548f816ea9e 100644
+index 440c3f77fde8..ca4632740827 100644
 --- a/drivers/staging/mt7621-spi/spi-mt7621.c
 +++ b/drivers/staging/mt7621-spi/spi-mt7621.c
-@@ -19,12 +19,13 @@
- #include <linux/reset.h>
- #include <linux/spi/spi.h>
+@@ -321,6 +321,7 @@ static int mt7621_spi_probe(struct platform_device *pdev)
+ 	int status = 0;
+ 	struct clk *clk;
+ 	struct mt7621_spi_ops *ops;
++	int ret;
  
--#define DRIVER_NAME			"spi-mt7621"
-+#define DRIVER_NAME		"spi-mt7621"
-+
- /* in usec */
--#define RALINK_SPI_WAIT_MAX_LOOP	2000
-+#define RALINK_SPI_WAIT_MAX_LOOP 2000
+ 	match = of_match_device(mt7621_spi_match, &pdev->dev);
+ 	if (!match)
+@@ -368,7 +369,11 @@ static int mt7621_spi_probe(struct platform_device *pdev)
+ 	rs->pending_write = 0;
+ 	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
  
- /* SPISTAT register bit field */
--#define SPISTAT_BUSY			BIT(0)
-+#define SPISTAT_BUSY		BIT(0)
+-	device_reset(&pdev->dev);
++	ret = device_reset(&pdev->dev);
++	if (ret) {
++		dev_err(&pdev->dev, "SPI reset failed!\n");
++		return ret;
++	}
  
- #define MT7621_SPI_TRANS	0x00
- #define SPITRANS_BUSY		BIT(16)
-@@ -186,6 +187,7 @@ static void mt7621_spi_read_half_duplex(struct mt7621_spi *rs,
- 			*buf++ = val & 0xff;
- 			val >>= 8;
- 		}
-+
- 		rx_len -= i;
- 	}
- }
-@@ -279,6 +281,7 @@ static int mt7621_spi_transfer_one_message(struct spi_master *master,
- 	mt7621_spi_flush(rs);
+ 	mt7621_spi_reset(rs);
  
- 	mt7621_spi_set_cs(spi, 0);
-+
- msg_done:
- 	m->status = status;
- 	spi_finalize_current_message(master);
 -- 
 2.20.1

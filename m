@@ -1,83 +1,47 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v2 10/10] spi: atmel-quadspi: add support for sam9x60
- qspi controller
-Date: Fri, 1 Feb 2019 08:57:39 +0100
-Message-ID: <20190201085739.775add3f@bbrezillon>
-References: <20190131161515.21605-1-tudor.ambarus@microchip.com>
-        <20190131161515.21605-11-tudor.ambarus@microchip.com>
-        <20190131173207.56481a42@bbrezillon>
-        <947f148d-3fd8-4e7d-4301-9d67715fbf7d@microchip.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 2/2 v2] staging: spi: mt7621: Minor code cleanup
+Date: Fri, 1 Feb 2019 10:03:11 +0100
+Message-ID: <20190201090311.GA4639@kroah.com>
+References: <20190201085712.32380-1-sr@denx.de>
+ <20190201085712.32380-2-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
-To: <Tudor.Ambarus@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <947f148d-3fd8-4e7d-4301-9d67715fbf7d@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: devel@driverdev.osuosl.org, Sankalp Negi <sankalpnegi2310@gmail.com>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ John Crispin <john@phrozen.org>, NeilBrown <neil@brown.name>
+To: Stefan Roese <sr@denx.de>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+Content-Disposition: inline
+In-Reply-To: <20190201085712.32380-2-sr@denx.de>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 1 Feb 2019 07:07:40 +0000
-<Tudor.Ambarus@microchip.com> wrote:
+On Fri, Feb 01, 2019 at 09:57:12AM +0100, Stefan Roese wrote:
+> This patch cleans up some minor issues with this driver:
+> - Remove unnecessary header includes
+> - Sort header alphabetically
+> - Use correct comment style
+> - Add return code check on device_reset()
+> - Remove SPI_BPW_MASK definition (already available in
+>   include/linux/spi/spi.h)
+> - Use macros instead of hardcoded values for SPI_MASTER register access
+>   as suggested by Neil Brown (in mt7621_spi_reset and mt7621_spi_prepare)
 
-> >   
-> >>  #define QSPI_IFR_TFRTYP_MASK            GENMASK(13, 12)
-> >>  #define QSPI_IFR_TFRTYP_TRSFR_READ      (0 << 12)
-> >>  #define QSPI_IFR_TFRTYP_TRSFR_READ_MEM  (1 << 12)  
-> > 
-> > Looks like the read/write flag is on bit 13. Can we just add  
-> 
-> for sama5d2 only
+When you have to start listing the different things you do in a patch,
+that's a huge sign you need to break this up into different patches :)
 
-Feel free to prefix macros with the SoC name to make it clear:
+Please do that here, it should be a series, each one doing a single type
+of thing.
 
-#define QSPI_IFR_SAMA5D2_WRITE_TRSFR		BIT(13)
+thanks,
 
-> 
-> > 
-> > #define QSPI_IFR_TFRTYP_TRSFR_WRITE	BIT(13)
-> > 
-> > and drop all others def? This way the implementation is consistent
-> > between sam9x60 and sama5d2.  
-> 
-> BIT(13) has no meaning for sam9x60. I can drop the macros with zero value for
-> sama5d2 in a separate patch.
-> >   
-> >> +#define QSPI_IFR_APBTFRTYP_READ		BIT(24)
-
-And this one would be
-
-define QSPI_IFR_SAM9X60_READ_TRSFR		BIT(24)
-
-> >>  
-> >>  /* Bitfields in QSPI_SMR (Scrambling Mode Register) */
-> >>  #define QSPI_SMR_SCREN                  BIT(0)
-> >> @@ -137,16 +144,37 @@
-> >>  #define QSPI_WPSR_WPVSRC(src)           (((src) << 8) & QSPI_WPSR_WPVSRC)
-> >>  
-> >>  
-> >> +/* Describes register values. */
-> >> +struct atmel_qspi_cfg {
-> >> +	u32 icr;
-> >> +	u32 iar;
-> >> +	u32 ifr;
-> >> +};
-> >> +
-> >> +struct atmel_qspi_caps;
-> >> +
-> >>  struct atmel_qspi {
-> >>  	void __iomem		*regs;
-> >>  	void __iomem		*mem;
-> >>  	struct clk		*clk;  
-> > 
-> > Can we rename that on pclk?  
-> 
-> will rename it, together with the support for unnamed clock of sama5d2 in a separate
-> patch. The dt-bindings patch that imposes "pclk" for sama5d2 should be separated too.
-
-Sounds good.
+greg k-h

@@ -1,79 +1,64 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v3 08/13] spi: atmel-quadspi: drop unused and NOP
- transfer macros
-Date: Sat, 2 Feb 2019 14:27:36 +0100
-Message-ID: <20190202142736.5d723ed6@bbrezillon>
+Subject: Re: [PATCH v3 13/13] spi: atmel-quadspi: add support for sam9x60
+ qspi controller
+Date: Sat, 2 Feb 2019 14:30:54 +0100
+Message-ID: <20190202143054.4db7c465@bbrezillon>
 References: <20190202040653.1217-1-tudor.ambarus@microchip.com>
- <20190202040653.1217-9-tudor.ambarus@microchip.com>
- <20190202081338.01056dce@bbrezillon>
- <0e266a16-2f84-e1c3-440f-55105dd0c0be@microchip.com>
+        <20190202040653.1217-14-tudor.ambarus@microchip.com>
+        <20190202082910.0e60a757@bbrezillon>
+        <57d4d4b2-e765-1255-0b89-a4fd61f6c1e0@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
- Cyrille.Pitchen@microchip.com, robh+dt@kernel.org, linux-spi@vger.kernel.org,
- Ludovic.Desroches@microchip.com, broonie@kernel.org,
- linux-mtd@lists.infradead.org, bugalski.piotr@gmail.com,
- linux-arm-kernel@lists.infradead.org
+Cc: <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
+        <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+        <Cyrille.Pitchen@microchip.com>, <Nicolas.Ferre@microchip.com>,
+        <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
+        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
+        <linux-mtd@lists.infradead.org>, <bugalski.piotr@gmail.com>,
+        <linux-arm-kernel@lists.infradead.org>
 To: <Tudor.Ambarus@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <0e266a16-2f84-e1c3-440f-55105dd0c0be@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <57d4d4b2-e765-1255-0b89-a4fd61f6c1e0@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 2 Feb 2019 08:46:38 +0000
+On Sat, 2 Feb 2019 08:58:25 +0000
 <Tudor.Ambarus@microchip.com> wrote:
 
-> On 02/02/2019 09:13 AM, Boris Brezillon wrote:
-> > On Sat, 2 Feb 2019 04:07:33 +0000
-> > <Tudor.Ambarus@microchip.com> wrote:
-> >   
-> >> From: Tudor Ambarus <tudor.ambarus@microchip.com>
-> >>
-> >> Remove NOP when setting read transfer type. Remove useless
-> >> setting of write transfer type when
-> >> op->data.dir == SPI_MEM_DATA_IN && !op->data.nbytes.
-> >>
-> >> QSPI_IFR_TFRTYP_TRSFR_WRITE is specific just to sama5d2 qspi,
-> >> rename it to QSPI_IFR_SAMA5D2_WRITE_TRSFR.
-> >>
-> >> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-> >> ---
-> >> v3: new patch
-> >>
-> >>  drivers/spi/atmel-quadspi.c | 12 +++---------
-> >>  1 file changed, 3 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> >> index d26d4cd0e36b..bfa5f5e92d96 100644
-> >> --- a/drivers/spi/atmel-quadspi.c
-> >> +++ b/drivers/spi/atmel-quadspi.c
-> >> @@ -113,11 +113,7 @@
-> >>  #define QSPI_IFR_OPTL_4BIT              (2 << 8)
-> >>  #define QSPI_IFR_OPTL_8BIT              (3 << 8)
-> >>  #define QSPI_IFR_ADDRL                  BIT(10)
-> >> -#define QSPI_IFR_TFRTYP_MASK            GENMASK(13, 12)
-> >> -#define QSPI_IFR_TFRTYP_TRSFR_READ      (0 << 12)
-> >> -#define QSPI_IFR_TFRTYP_TRSFR_READ_MEM  (1 << 12)
-> >> -#define QSPI_IFR_TFRTYP_TRSFR_WRITE     (2 << 12)
-> >> -#define QSPI_IFR_TFRTYP_TRSFR_WRITE_MEM (3 << 13)
-> >> +#define QSPI_IFR_SAMA5D2_WRITE_TRSFR	BIT(13)  
+> >> @@ -117,6 +120,7 @@
+> >>  #define QSPI_IFR_CRM                    BIT(14)
+> >>  #define QSPI_IFR_NBDUM_MASK             GENMASK(20, 16)
+> >>  #define QSPI_IFR_NBDUM(n)               (((n) << 16) & QSPI_IFR_NBDUM_MASK)
+> >> +#define QSPI_IFR_APBTFRTYP_READ		BIT(24)  
 > > 
-> > Can you define QSPI_IFR_TFRTYP_MEM (bit 12) even if it's not used yet?  
+> > Maybe add a comment saying it's only available on SAM9X60 or prefix it
+> > with SAM9X60.  
 > 
-> Shouldn't be introduced with the dir map support?
+> I'll add a comment. The macro name is more generic how it is now and can be used
+> by future versions of the IP. Hypothetically speaking, if we rename it to
+> QSPI_IFR_SAM9x60_TFSFR_READ and other sam9x will come out, then I'll have to
+> rename this macro again, to make it more generic.	
 
-I like when all regs/reg-fields are defined, even if they're not used.
-In this case, you're cleary splitting the TFRTYP_TRSFR_ bitfields in 2:
-one bit encoding the mem/reg transfer type and one bit encoding the
-direction of the transfer (read/write). Just think it's better to add
-bit 12 definition now.
+Okay.
+
+
+> >> +static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
+> >> +			      const struct spi_mem_op *op,
+> >> +			      struct atmel_qspi_cfg *cfg)
+> >> +{
+> >> +	void __iomem *base = aq->regs;
+> >> +	int ret;
+> >> +
+> >> +	/* Set the QSPI controller in Serial Memory Mode */
+> >> +	if (aq->smm != QSPI_MR_SMM) {
+> >> +		writel_relaxed(QSPI_MR_SMM, base + QSPI_MR);  
+> > 
+> > 					    aq->reqs +
+> > 
+> > and you can get rid of base.  
+> 
+> I will wait your reasons on this, see 3/13
+
+ad->regs is only dereferenced once in this function, so there's even
+less reasons to add a local var. 

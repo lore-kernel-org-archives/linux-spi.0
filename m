@@ -1,71 +1,81 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v3 07/13] spi: atmel-quadspi: switch to SPDX license
- identifiers
-Date: Sat, 2 Feb 2019 04:07:30 +0000
-Message-ID: <20190202040653.1217-8-tudor.ambarus@microchip.com>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v3 01/13] spi: atmel-quadspi: cache MR value to avoid a
+ write access
+Date: Sat, 2 Feb 2019 08:06:50 +0100
+Message-ID: <20190202080650.44becc2d@bbrezillon>
 References: <20190202040653.1217-1-tudor.ambarus@microchip.com>
+ <20190202040653.1217-2-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>,
-        <Cyrille.Pitchen@microchip.com>, <bugalski.piotr@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190202040653.1217-1-tudor.ambarus@microchip.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
+ Cyrille.Pitchen@microchip.com, robh+dt@kernel.org, linux-spi@vger.kernel.org,
+ Ludovic.Desroches@microchip.com, broonie@kernel.org,
+ linux-mtd@lists.infradead.org, bugalski.piotr@gmail.com,
+ linux-arm-kernel@lists.infradead.org
+To: <Tudor.Ambarus@microchip.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190202040653.1217-2-tudor.ambarus@microchip.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+On Sat, 2 Feb 2019 04:07:13 +0000
+<Tudor.Ambarus@microchip.com> wrote:
 
-Adopt the SPDX license identifiers to ease license compliance
-management.
+> From: Tudor Ambarus <tudor.ambarus@microchip.com>
+> 
+> Cache Serial Memory Mode (SMM) value to avoid write access when
+> setting the controller in serial memory mode. SMM is set in
+> exec_op() and not at probe time, to let room for future regular
+> SPI support.
+> 
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> ---
+> v3: update smm value when different. rename mr/smm
+> v2: cache MR value instead of moving the write access at probe
+> 
+>  drivers/spi/atmel-quadspi.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+> index ddc712410812..645284c6ec9a 100644
+> --- a/drivers/spi/atmel-quadspi.c
+> +++ b/drivers/spi/atmel-quadspi.c
+> @@ -155,6 +155,7 @@ struct atmel_qspi {
+>  	struct clk		*clk;
+>  	struct platform_device	*pdev;
+>  	u32			pending;
+> +	u32			smm;
+>  	struct completion	cmd_completion;
+>  };
+>  
+> @@ -238,7 +239,11 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  	icr = QSPI_ICR_INST(op->cmd.opcode);
+>  	ifr = QSPI_IFR_INSTEN;
+>  
+> -	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +	/* Set the QSPI controller in Serial Memory Mode */
+> +	if (aq->smm != QSPI_MR_SMM) {
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
----
-v3: no change
-v2: collect R-b
+Sorry, I think I misunderstood your previous suggestion, I thought the
+reg was called SMM. If the reg is called MR and the value you expect in
+there is SMM, then the field should be named ->mr as it caches the
+whole reg, not only the SMM bit. So it's actually:
 
- drivers/spi/atmel-quadspi.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+	if (aq->mr != QSPI_MR_SMM) {
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 80b77eb4ec5e..d26d4cd0e36b 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Driver for Atmel QSPI Controller
-  *
-@@ -7,18 +8,6 @@
-  * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-  * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
-  *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful, but WIT=
-HOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License f=
-or
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along=
- with
-- * this program.  If not, see <http://www.gnu.org/licenses/>.
-- *
-  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
-e.
-  */
-=20
---=20
-2.9.5
+> +		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +		aq->smm = QSPI_MR_SMM;
+> +	}
+>  
+>  	mode = find_mode(op);
+>  	if (mode < 0)

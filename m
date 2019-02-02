@@ -1,7 +1,7 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v3 05/13] spi: atmel-quadspi: remove unnecessary cast
-Date: Sat, 2 Feb 2019 04:07:25 +0000
-Message-ID: <20190202040653.1217-6-tudor.ambarus@microchip.com>
+Subject: [PATCH v3 06/13] spi: atmel-quadspi: return appropriate error code
+Date: Sat, 2 Feb 2019 04:07:27 +0000
+Message-ID: <20190202040653.1217-7-tudor.ambarus@microchip.com>
 References: <20190202040653.1217-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -22,7 +22,8 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-The cast is done implicitly.
+Return -ENOTSUPP when atmel_qspi_find_mode() fails. Propagate
+the error in atmel_qspi_exec_op().
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
@@ -30,21 +31,32 @@ Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 v3: no change
 v2: collect R-b
 
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 47ed751a91e7..dbc2c65abc86 100644
+index dbc2c65abc86..80b77eb4ec5e 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -385,7 +385,7 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
+@@ -198,7 +198,7 @@ static int atmel_qspi_find_mode(const struct spi_mem_op=
+ *op)
+ 		if (atmel_qspi_is_compatible(op, &sama5d2_qspi_modes[i]))
+ 			return i;
 =20
- static irqreturn_t atmel_qspi_interrupt(int irq, void *dev_id)
- {
--	struct atmel_qspi *aq =3D (struct atmel_qspi *)dev_id;
-+	struct atmel_qspi *aq =3D dev_id;
- 	void __iomem *base =3D aq->regs;
- 	u32 status, mask, pending;
+-	return -1;
++	return -ENOTSUPP;
+ }
+=20
+ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+@@ -236,7 +236,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, cons=
+t struct spi_mem_op *op)
+=20
+ 	mode =3D atmel_qspi_find_mode(op);
+ 	if (mode < 0)
+-		return -ENOTSUPP;
++		return mode;
+=20
+ 	ifr |=3D sama5d2_qspi_modes[mode].config;
 =20
 --=20
 2.9.5

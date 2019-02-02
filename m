@@ -1,53 +1,60 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH v3 08/13] spi: atmel-quadspi: drop unused and NOP transfer
- macros
-Date: Sat, 2 Feb 2019 08:46:38 +0000
-Message-ID: <0e266a16-2f84-e1c3-440f-55105dd0c0be@microchip.com>
+Subject: Re: [PATCH v3 10/13] dt-bindings: spi: atmel-quadspi: make "pclk"
+ mandatory
+Date: Sat, 2 Feb 2019 08:47:00 +0000
+Message-ID: <25ed6e19-4fe6-7b8c-4eeb-5bd5be1075fe@microchip.com>
 References: <20190202040653.1217-1-tudor.ambarus@microchip.com>
- <20190202040653.1217-9-tudor.ambarus@microchip.com>
- <20190202081338.01056dce@bbrezillon>
+ <20190202040653.1217-11-tudor.ambarus@microchip.com>
+ <20190202081502.47ca404d@bbrezillon>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <Cyrille.Pitchen@microchip.com>,
-        <bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+Cc: <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
+        <alexandre.belloni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+        <Cyrille.Pitchen@microchip.com>, <Nicolas.Ferre@microchip.com>,
+        <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
+        <Ludovic.Desroches@microchip.com>, <broonie@kernel.org>,
+        <linux-mtd@lists.infradead.org>, <bugalski.piotr@gmail.com>,
+        <linux-arm-kernel@lists.infradead.org>
 To: <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190202081338.01056dce@bbrezillon>
+In-Reply-To: <20190202081502.47ca404d@bbrezillon>
 Content-Language: en-US
-Content-ID: <5B6E79892AFBFB4DAE576B1B50674CEB@namprd11.prod.outlook.com>
+Content-ID: <99E80F55C8520C429E271364A66E5D0E@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDAyLzAyLzIwMTkgMDk6MTMgQU0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
-U2F0LCAyIEZlYiAyMDE5IDA0OjA3OjMzICswMDAwDQo+IDxUdWRvci5BbWJhcnVzQG1pY3JvY2hp
+DQoNCk9uIDAyLzAyLzIwMTkgMDk6MTUgQU0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
+U2F0LCAyIEZlYiAyMDE5IDA0OjA3OjM5ICswMDAwDQo+IDxUdWRvci5BbWJhcnVzQG1pY3JvY2hp
 cC5jb20+IHdyb3RlOg0KPiANCj4+IEZyb206IFR1ZG9yIEFtYmFydXMgPHR1ZG9yLmFtYmFydXNA
-bWljcm9jaGlwLmNvbT4NCj4+DQo+PiBSZW1vdmUgTk9QIHdoZW4gc2V0dGluZyByZWFkIHRyYW5z
-ZmVyIHR5cGUuIFJlbW92ZSB1c2VsZXNzDQo+PiBzZXR0aW5nIG9mIHdyaXRlIHRyYW5zZmVyIHR5
-cGUgd2hlbg0KPj4gb3AtPmRhdGEuZGlyID09IFNQSV9NRU1fREFUQV9JTiAmJiAhb3AtPmRhdGEu
-bmJ5dGVzLg0KPj4NCj4+IFFTUElfSUZSX1RGUlRZUF9UUlNGUl9XUklURSBpcyBzcGVjaWZpYyBq
-dXN0IHRvIHNhbWE1ZDIgcXNwaSwNCj4+IHJlbmFtZSBpdCB0byBRU1BJX0lGUl9TQU1BNUQyX1dS
-SVRFX1RSU0ZSLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IFR1ZG9yIEFtYmFydXMgPHR1ZG9yLmFt
-YmFydXNAbWljcm9jaGlwLmNvbT4NCj4+IC0tLQ0KPj4gdjM6IG5ldyBwYXRjaA0KPj4NCj4+ICBk
-cml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMgfCAxMiArKystLS0tLS0tLS0NCj4+ICAxIGZpbGUg
-Y2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMgYi9kcml2ZXJzL3NwaS9hdG1lbC1xdWFk
-c3BpLmMNCj4+IGluZGV4IGQyNmQ0Y2QwZTM2Yi4uYmZhNWY1ZTkyZDk2IDEwMDY0NA0KPj4gLS0t
-IGEvZHJpdmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jDQo+PiArKysgYi9kcml2ZXJzL3NwaS9hdG1l
-bC1xdWFkc3BpLmMNCj4+IEBAIC0xMTMsMTEgKzExMyw3IEBADQo+PiAgI2RlZmluZSBRU1BJX0lG
-Ul9PUFRMXzRCSVQgICAgICAgICAgICAgICgyIDw8IDgpDQo+PiAgI2RlZmluZSBRU1BJX0lGUl9P
-UFRMXzhCSVQgICAgICAgICAgICAgICgzIDw8IDgpDQo+PiAgI2RlZmluZSBRU1BJX0lGUl9BRERS
-TCAgICAgICAgICAgICAgICAgIEJJVCgxMCkNCj4+IC0jZGVmaW5lIFFTUElfSUZSX1RGUlRZUF9N
-QVNLICAgICAgICAgICAgR0VOTUFTSygxMywgMTIpDQo+PiAtI2RlZmluZSBRU1BJX0lGUl9URlJU
-WVBfVFJTRlJfUkVBRCAgICAgICgwIDw8IDEyKQ0KPj4gLSNkZWZpbmUgUVNQSV9JRlJfVEZSVFlQ
-X1RSU0ZSX1JFQURfTUVNICAoMSA8PCAxMikNCj4+IC0jZGVmaW5lIFFTUElfSUZSX1RGUlRZUF9U
-UlNGUl9XUklURSAgICAgKDIgPDwgMTIpDQo+PiAtI2RlZmluZSBRU1BJX0lGUl9URlJUWVBfVFJT
-RlJfV1JJVEVfTUVNICgzIDw8IDEzKQ0KPj4gKyNkZWZpbmUgUVNQSV9JRlJfU0FNQTVEMl9XUklU
-RV9UUlNGUglCSVQoMTMpDQo+IA0KPiBDYW4geW91IGRlZmluZSBRU1BJX0lGUl9URlJUWVBfTUVN
-IChiaXQgMTIpIGV2ZW4gaWYgaXQncyBub3QgdXNlZCB5ZXQ/DQoNClNob3VsZG4ndCBiZSBpbnRy
-b2R1Y2VkIHdpdGggdGhlIGRpciBtYXAgc3VwcG9ydD8NCg==
+bWljcm9jaGlwLmNvbT4NCj4+DQo+PiBOYW1pbmcgY2xvY2tzIGlzIGEgZ29vZCBwcmFjdGljZS4g
+TWFrZSAicGNsayIgbWFkYXRvcnkgZXZlbiBpZg0KPj4gd2Ugc3VwcG9ydCB1bm5hbWVkIGNsb2Nr
+IGluIHRoZSBkcml2ZXIsIHRvIGJlIGJhY2t3YXJkIGNvbXBhdGlibGUNCj4+IHdpdGggb2xkIERU
+cy4NCj4+DQo+PiBTdWdnZXN0ZWQtYnk6IEJvcmlzIEJyZXppbGxvbiA8YmJyZXppbGxvbkBrZXJu
+ZWwub3JnPg0KPj4gU2lnbmVkLW9mZi1ieTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0Bt
+aWNyb2NoaXAuY29tPg0KPj4gLS0tDQo+PiB2MzogbmV3IHBhdGNoDQo+Pg0KPj4gIERvY3VtZW50
+YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvYXRtZWwtcXVhZHNwaS50eHQgfCAyICsrDQo+
+PiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2F0bWVsLXF1YWRzcGkudHh0IGIv
+RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9hdG1lbC1xdWFkc3BpLnR4dA0K
+Pj4gaW5kZXggZTlkYWU2MjY0ZDg5Li4xZGU1NGU4N2Y1ZDYgMTAwNjQ0DQo+PiAtLS0gYS9Eb2N1
+bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2F0bWVsLXF1YWRzcGkudHh0DQo+PiAr
+KysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2F0bWVsLXF1YWRzcGku
+dHh0DQo+PiBAQCAtOSw2ICs5LDcgQEAgUmVxdWlyZWQgcHJvcGVydGllczoNCj4+ICAgICAgICAg
+ICAgICAgICAgICAtIHFzcGlfbW1hcDogbWVtb3J5IG1hcHBlZCBhZGRyZXNzIHNwYWNlDQo+PiAg
+LSBpbnRlcnJ1cHRzOiAgICAgU2hvdWxkIGNvbnRhaW4gdGhlIGludGVycnVwdCBmb3IgdGhlIGRl
+dmljZS4NCj4+ICAtIGNsb2NrczogICAgICAgICBUaGUgcGhhbmRsZSBvZiB0aGUgY2xvY2sgbmVl
+ZGVkIGJ5IHRoZSBRU1BJIGNvbnRyb2xsZXIuDQo+PiArLSBjbG9jay1uYW1lczogICAgU2hvdWxk
+IGNvbnRhaW4gInBjbGsiIGZvciB0aGUgcGVyaXBoZXJhbCBjbG9jay4NCj4+ICAtICNhZGRyZXNz
+LWNlbGxzOiBTaG91bGQgYmUgPDE+Lg0KPj4gIC0gI3NpemUtY2VsbHM6ICAgIFNob3VsZCBiZSA8
+MD4uDQo+PiAgDQo+PiBAQCAtMjAsNiArMjEsNyBAQCBzcGlAZjAwMjAwMDAgew0KPj4gIAlyZWct
+bmFtZXMgPSAicXNwaV9iYXNlIiwgInFzcGlfbW1hcCI7DQo+PiAgCWludGVycnVwdHMgPSA8NTIg
+SVJRX1RZUEVfTEVWRUxfSElHSCA3PjsNCj4+ICAJY2xvY2tzID0gPCZwbWMgUE1DX1RZUEVfUEVS
+SVBIRVJBTCA1Mj47DQo+PiArCWNsb2NrLW5hbWVzID0gInBjbGsiDQo+IA0KPiBNaXNzaW5nIHNl
+bWljb2xvbi4gT25jZSBmaXhlZCB5b3UgY2FuIGFkZA0KPiANCj4gUmV2aWV3ZWQtYnk6IEJvcmlz
+IEJyZXppbGxvbiA8YmJyZXppbGxvbkBrZXJuZWwub3JnPg0KDQp3aWxsIGRvLCB0aGFua3MhDQoN
+Cj4gDQo+PiAgCSNhZGRyZXNzLWNlbGxzID0gPDE+Ow0KPj4gIAkjc2l6ZS1jZWxscyA9IDwwPjsN
+Cj4+ICAJcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsNCj4gDQo+IA0KPiBfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gTGludXggTVREIGRp
+c2N1c3Npb24gbWFpbGluZyBsaXN0DQo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vbGludXgtbXRkLw0KPiANCg==

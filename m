@@ -1,72 +1,64 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v3 01/13] spi: atmel-quadspi: cache MR value to avoid a write
- access
-Date: Sat, 2 Feb 2019 04:07:13 +0000
-Message-ID: <20190202040653.1217-2-tudor.ambarus@microchip.com>
+Subject: [PATCH v3 02/13] spi: atmel-quadspi: order header files inclusion
+ alphabetically
+Date: Sat, 2 Feb 2019 04:07:16 +0000
+Message-ID: <20190202040653.1217-3-tudor.ambarus@microchip.com>
 References: <20190202040653.1217-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, Tudor.Ambarus@microchip.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <Tudor.Ambarus@microchip.com>
 To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
- <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
- <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>,
- <Cyrille.Pitchen@microchip.com>, <bugalski.piotr@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>,
+        <Cyrille.Pitchen@microchip.com>, <bugalski.piotr@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20190202040653.1217-1-tudor.ambarus@microchip.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Cache Serial Memory Mode (SMM) value to avoid write access when
-setting the controller in serial memory mode. SMM is set in
-exec_op() and not at probe time, to let room for future regular
-SPI support.
+Cosmetic change, no functional change.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v3: update smm value when different. rename mr/smm
-v2: cache MR value instead of moving the write access at probe
+v3: no change
+v2: collect R-b
 
- drivers/spi/atmel-quadspi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ddc712410812..645284c6ec9a 100644
+index 645284c6ec9a..feeddcb25e1f 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -155,6 +155,7 @@ struct atmel_qspi {
- 	struct clk		*clk;
- 	struct platform_device	*pdev;
- 	u32			pending;
-+	u32			smm;
- 	struct completion	cmd_completion;
- };
- 
-@@ -238,7 +239,11 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	icr = QSPI_ICR_INST(op->cmd.opcode);
- 	ifr = QSPI_IFR_INSTEN;
- 
--	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+	/* Set the QSPI controller in Serial Memory Mode */
-+	if (aq->smm != QSPI_MR_SMM) {
-+		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+		aq->smm = QSPI_MR_SMM;
-+	}
- 
- 	mode = find_mode(op);
- 	if (mode < 0)
--- 
+@@ -22,16 +22,15 @@
+  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
+e.
+  */
+=20
+-#include <linux/kernel.h>
+ #include <linux/clk.h>
+-#include <linux/module.h>
+-#include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+-#include <linux/of.h>
+-
+ #include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ #include <linux/spi/spi-mem.h>
+=20
+ /* QSPI register offsets */
+--=20
 2.9.5

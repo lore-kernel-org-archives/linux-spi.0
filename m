@@ -1,17 +1,19 @@
 From: NeilBrown <neil@brown.name>
-Subject: Re: [PATCH 1/9 v3] staging: spi: mt7621: Switch to SPDX identifier
-Date: Mon, 04 Feb 2019 09:34:56 +1100
-Message-ID: <87muncjyb3.fsf@notabene.neil.brown.name>
+Subject: Re: [PATCH 9/9 v3] staging: spi: mt7621: Remove superfluous
+ pre-declaration of struct mt7621_spi
+Date: Mon, 04 Feb 2019 09:42:07 +1100
+Message-ID: <87k1igjxz4.fsf@notabene.neil.brown.name>
 References: <20190201101715.3760-1-sr@denx.de>
- <20190201130355.GG20797@sirena.org.uk>
+ <20190201101715.3760-9-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1759132811536472613=="
-Cc: devel@driverdev.osuosl.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-spi@vger.kernel.org, Sankalp Negi <sankalpnegi2310@gmail.com>,
- John Crispin <john@phrozen.org>
-To: Mark Brown <broonie@kernel.org>, Stefan Roese <sr@denx.de>
+Content-Type: multipart/mixed; boundary="===============6427590758942016230=="
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ John Crispin <john@phrozen.org>, Mark Brown <broonie@kernel.org>,
+ Sankalp Negi <sankalpnegi2310@gmail.com>
+To: Stefan Roese <sr@denx.de>, linux-spi@vger.kernel.org,
+ devel@driverdev.osuosl.org
 Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20190201130355.GG20797@sirena.org.uk>
+In-Reply-To: <20190201101715.3760-9-sr@denx.de>
 List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
  <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
 List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
@@ -23,44 +25,55 @@ Errors-To: driverdev-devel-bounces@linuxdriverproject.org
 Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
---===============1759132811536472613==
+--===============6427590758942016230==
 Content-Type: multipart/signed; boundary="=-=-=";
 	micalg=pgp-sha256; protocol="application/pgp-signature"
 
 --=-=-=
 Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 01 2019, Mark Brown wrote:
+On Fri, Feb 01 2019, Stefan Roese wrote:
 
-> On Fri, Feb 01, 2019 at 11:17:07AM +0100, Stefan Roese wrote:
+> This patch removes the superfluous pre-declaration of struct mt7621_spi.
 >
->> @@ -1,3 +1,4 @@
->> +// SPDX-License-Identifier: GPL-2.0
->>  /*
->>   * spi-mt7621.c -- MediaTek MT7621 SPI controller driver
->>   *
+> Signed-off-by: Stefan Roese <sr@denx.de>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: NeilBrown <neil@brown.name>
+> Cc: Sankalp Negi <sankalpnegi2310@gmail.com>
+> Cc: Chuanhong Guo <gch981213@gmail.com>
+> Cc: John Crispin <john@phrozen.org>
+> ---
+> v3:
+> - New patch, changes spilt into separate patches
 >
-> Please convert the entire comment into a C++ comment so it looks more
-> intentional.
-
-Hi Mark,
- I don't understand what you mean by this, or possibly I do understand
- and strongly disagree.
-
- It is extremely common in the kernel for a file to start
-   // SPDX-License-Identifier.....
-
- and to have that immediately followed by a comment lile:
-
- /*
-  * .....
-  * ....
-
-
- This patch makes this file match much of the rest of the kernel.  Why
- do you want something different?
+>  drivers/staging/mt7621-spi/spi-mt7621.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/drivers/staging/mt7621-spi/spi-mt7621.c b/drivers/staging/mt=
+7621-spi/spi-mt7621.c
+> index d6385220b796..167d0f09823b 100644
+> --- a/drivers/staging/mt7621-spi/spi-mt7621.c
+> +++ b/drivers/staging/mt7621-spi/spi-mt7621.c
+> @@ -51,8 +51,6 @@
+>  #define MT7621_CPOL		BIT(4)
+>  #define MT7621_LSB_FIRST	BIT(3)
+>=20=20
+> -struct mt7621_spi;
+> -
+>  struct mt7621_spi {
+>  	struct spi_master	*master;
+>  	void __iomem		*base;
+> --=20
+> 2.20.1
 
 Thanks,
+this and all previous patches in the series
+  Review-by: NeilBrown <neil@brown.name>
+
+(compile-tested too :-)
+
 NeilBrown
 
 --=-=-=
@@ -68,23 +81,23 @@ Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlxXbJAACgkQOeye3VZi
-gbltCQ/9FgqVzUormjzJU2X7U0rCNYFWKxgx7qqYVBk4MU0+ULAoimhCTk7rPaIp
-GQCHMiu5dCc6rMzdC1sn1SaW/ooJeSM8r8a/4evFWsiq0a4QGEaJA2F+REnvDQA8
-FqBkk1oa+lM9HoVnpQCzFqo7VET5D9E1qkg2sXCEYTtrM4C/8uLO6C4jev/Vsi2e
-8Xb/tlCRUW6uen75rbBeRdB96Torv7+cEo37L7cHdeGTgQIsWq1ybCGzNkufSrSe
-OfLFB2TtX/P5S4u7O4BgUmlf1md9kv6Ij7ajQMA2TYbvjHPlfvLL7i94mplci2EH
-xwBobm6j/+9tNgTd2JiykLDDMDfp7gJDKglbaj/tZS/KY84XCEMmSzTkdgKIV98x
-2pgbaUZXsluM2nHVRL0QZXPLSYAktMJQsbbddqj4eOdLtUWbJEqvylX3d+R/Irns
-q3FbftoQWZyN7LHAxLQcMlMddpNGORpdERDkowxclilM/Z3YsmM0fsPOKDSx+gNO
-pUXPIhFk8eRrOnS7KaNyAFqGSc95I7LnF4rxC2evWRbMZeMEfY8UXpalia36y6xQ
-iVOYc48l7ITq1irpow38KjXHI/McdQV4Bg1W/i6IfvW+jhPaQYfJk4SOY/05IERz
-xlWgoYQ5zBzz2jYoSkFpSQ/xh2a6+GhAiVuytB1ka+lf3N3uo08=
-=j4U1
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlxXbj8ACgkQOeye3VZi
+gbklVBAAjBjHDnFm3MxRTDytfhYf4tc99tS8fKxHs0XQYdC1vKpVKmub3elGvsZ2
+UqO/khJv+hpVPOOC7ivZaY+5Omj35T9THDeqLP7bY4yzxHusQF+p7qvv6l8GvjBc
+6nCeZ8pQqOKUFM6uToqeo8ErJZv2zfF5WWpnwCpNK7vRQ2zYVfcFMfC79mRRBBvQ
+ee0e1Du+rImZlcvDU7yw+Hr2UGNkhe0G05PMBsfkV5uPwkBRHF6O/fjZ76Qzs9nw
+B3j2aU2tJ6frLSRdgg9Wcy6XDl7lrrGRBKoH6oHcEJlB6RQKjedfi0Ov6djT/hsN
+iNaYHAmoEpcQeEW/4yGdVc7QrHoLZey1pP/yvMP8WlHmqmlskruQuTygu+McecoK
+BUWTWzkv212BXHDdDVEbuHOLoifnZ7YbifIlIRSCZz1xtcURTqHt73e9MMHlJ/Nb
+lhrtdz+uF7m6yiKr5VzYEjL/I93sUyl3GiD4fW8PTBhaw5+QXhmiy44Kl/S/ZaWR
+vChRlKCyWLuISicT7ndSPvLLsYzkesFRUJHQszFbVatRCoT2x2SOL4KPG8TmH7tB
+vMTPKN09SaldYSUN8CxYicweZFbrgolfJbrZTvXXTrTAak3GgV8VR+M/RSQVB9wQ
+Uhah2mtBGscW+ovb4sZ1h4Lj39bHGNGpyJ70MlDMDNTdi995jYc=
+=wae1
 -----END PGP SIGNATURE-----
 --=-=-=--
 
---===============1759132811536472613==
+--===============6427590758942016230==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -95,4 +108,4 @@ devel mailing list
 devel@linuxdriverproject.org
 http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
 
---===============1759132811536472613==--
+--===============6427590758942016230==--

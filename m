@@ -1,58 +1,49 @@
-From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v4 13/13] spi: atmel-quadspi: add support for sam9x60
- qspi controller
-Date: Mon, 4 Feb 2019 15:16:43 +0100
-Message-ID: <20190204151643.0354180d@bbrezillon>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH v4 13/13] spi: atmel-quadspi: add support for sam9x60 qspi
+ controller
+Date: Mon, 4 Feb 2019 14:28:27 +0000
+Message-ID: <25f6ee72-e6e1-7014-6e4b-abe0a1a0eebc@microchip.com>
 References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
  <20190204100910.26701-14-tudor.ambarus@microchip.com>
+ <20190204151643.0354180d@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
- Cyrille.Pitchen@microchip.com, robh+dt@kernel.org, linux-spi@vger.kernel.org,
- Ludovic.Desroches@microchip.com, broonie@kernel.org,
- linux-mtd@lists.infradead.org, bugalski.piotr@gmail.com,
- linux-arm-kernel@lists.infradead.org
-To: <Tudor.Ambarus@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190204100910.26701-14-tudor.ambarus@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <Cyrille.Pitchen@microchip.com>,
+        <bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+To: <bbrezillon@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190204151643.0354180d@bbrezillon>
+Content-Language: en-US
+Content-ID: <76203A191EB89340847F683DC537E571@namprd11.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 4 Feb 2019 10:10:21 +0000
-<Tudor.Ambarus@microchip.com> wrote:
-
-> +
-> +static void atmel_qspi_sam9x60_write_regs(const struct atmel_qspi *aq,
-> +					  const struct spi_mem_op *op,
-> +					  const struct atmel_qspi_cfg *cfg)
-> +{
-> +	/* Clear pending interrupts */
-> +	(void)readl_relaxed(aq->regs + QSPI_SR);
-> +
-> +	/* Set QSPI Instruction Frame registers */
-> +	writel_relaxed(cfg->iar, aq->regs + QSPI_IAR);
-> +	if (op->data.dir == SPI_MEM_DATA_IN)
-> +		writel_relaxed(cfg->icr, aq->regs + QSPI_RICR);
-> +	else
-> +		writel_relaxed(cfg->icr, aq->regs + QSPI_ICR);
-
-Can you use WICR here (even if ICR == WICR)?
-
-> +	writel_relaxed(cfg->ifr, aq->regs + QSPI_IFR);
-> +}
-
-Hm, so the only difference we have is the RICR vs ICR reg and the
-APBTFRTYP_READ vs SAMA5D2_WRITE_TRSFR bit. Not sure it deserves
-creating 2 hooks for that. Can we have something like ->has_ricr in
-the caps and then have an if/else block directly in
-atmel_qspi_set_cfg()?
+DQoNCk9uIDAyLzA0LzIwMTkgMDQ6MTYgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
+TW9uLCA0IEZlYiAyMDE5IDEwOjEwOjIxICswMDAwDQo+IDxUdWRvci5BbWJhcnVzQG1pY3JvY2hp
+cC5jb20+IHdyb3RlOg0KPiANCj4+ICsNCj4+ICtzdGF0aWMgdm9pZCBhdG1lbF9xc3BpX3NhbTl4
+NjBfd3JpdGVfcmVncyhjb25zdCBzdHJ1Y3QgYXRtZWxfcXNwaSAqYXEsDQo+PiArCQkJCQkgIGNv
+bnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCwNCj4+ICsJCQkJCSAgY29uc3Qgc3RydWN0IGF0bWVs
+X3FzcGlfY2ZnICpjZmcpDQo+PiArew0KPj4gKwkvKiBDbGVhciBwZW5kaW5nIGludGVycnVwdHMg
+Ki8NCj4+ICsJKHZvaWQpcmVhZGxfcmVsYXhlZChhcS0+cmVncyArIFFTUElfU1IpOw0KPj4gKw0K
+Pj4gKwkvKiBTZXQgUVNQSSBJbnN0cnVjdGlvbiBGcmFtZSByZWdpc3RlcnMgKi8NCj4+ICsJd3Jp
+dGVsX3JlbGF4ZWQoY2ZnLT5pYXIsIGFxLT5yZWdzICsgUVNQSV9JQVIpOw0KPj4gKwlpZiAob3At
+PmRhdGEuZGlyID09IFNQSV9NRU1fREFUQV9JTikNCj4+ICsJCXdyaXRlbF9yZWxheGVkKGNmZy0+
+aWNyLCBhcS0+cmVncyArIFFTUElfUklDUik7DQo+PiArCWVsc2UNCj4+ICsJCXdyaXRlbF9yZWxh
+eGVkKGNmZy0+aWNyLCBhcS0+cmVncyArIFFTUElfSUNSKTsNCj4gDQo+IENhbiB5b3UgdXNlIFdJ
+Q1IgaGVyZSAoZXZlbiBpZiBJQ1IgPT0gV0lDUik/DQoNCnllcywgZ29vZCBjYXRjaC4NCj4gDQo+
+PiArCXdyaXRlbF9yZWxheGVkKGNmZy0+aWZyLCBhcS0+cmVncyArIFFTUElfSUZSKTsNCj4+ICt9
+DQo+IA0KPiBIbSwgc28gdGhlIG9ubHkgZGlmZmVyZW5jZSB3ZSBoYXZlIGlzIHRoZSBSSUNSIHZz
+IElDUiByZWcgYW5kIHRoZQ0KPiBBUEJURlJUWVBfUkVBRCB2cyBTQU1BNUQyX1dSSVRFX1RSU0ZS
+IGJpdC4gTm90IHN1cmUgaXQgZGVzZXJ2ZXMNCj4gY3JlYXRpbmcgMiBob29rcyBmb3IgdGhhdC4g
+Q2FuIHdlIGhhdmUgc29tZXRoaW5nIGxpa2UgLT5oYXNfcmljciBpbg0KPiB0aGUgY2FwcyBhbmQg
+dGhlbiBoYXZlIGFuIGlmL2Vsc2UgYmxvY2sgZGlyZWN0bHkgaW4NCj4gYXRtZWxfcXNwaV9zZXRf
+Y2ZnKCk/DQo+IA0KDQpDb3JyZWN0LiBJdCBpcyBhIGNvc3Qgb2YgYW4gZXh0cmEgaWYsIEkgdHJp
+ZWQgdG8gYXZvaWQgaXQuIEkgbGlrZSBpdCBiZXR0ZXIgd2l0aA0KdGhlc2UgdHdvIGhvb2tzLCBi
+dXQgaWYgeW91IGhhdmUgYSBzdHJvbmcgb3BpbmlvbiBJJ2xsIGRvIGl0LCBqdXN0IGNvbmZpcm0g
+aXQgYWdhaW4uDQoNClRoYW5rcywNCnRhDQo=

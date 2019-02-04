@@ -1,7 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v4 08/13] spi: atmel-quadspi: rework transfer macros
-Date: Mon, 4 Feb 2019 10:09:53 +0000
-Message-ID: <20190204100910.26701-9-tudor.ambarus@microchip.com>
+Subject: [PATCH v4 09/13] dt-bindings: spi: atmel-quadspi: update example to
+ new clock binding
+Date: Mon, 4 Feb 2019 10:09:56 +0000
+Message-ID: <20190204100910.26701-10-tudor.ambarus@microchip.com>
 References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -22,58 +23,32 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Split the TFRTYP_TRSFR_ bitfields in 2: one bit encoding the
-mem/reg transfer type and one bit encoding the direction of
-the transfer (read/write).
+Introduced in:
+commit b60557876849 ("ARM: dts: at91: sama5d2: switch to new clock binding"=
+)
 
-Remove NOP when setting read transfer type. Remove useless
-setting of write transfer type when
-op->data.dir =3D=3D SPI_MEM_DATA_IN && !op->data.nbytes.
-
-QSPI_IFR_TFRTYP_TRSFR_WRITE is specific just to sama5d2 qspi,
-rename it to QSPI_IFR_SAMA5D2_WRITE_TRSFR.
-
-Suggested-by: Boris Brezillon <bbrezillon@kernel.org>
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v4: introduce QSPI_IFR_TFRTYP_MEM, reword commit
+v4: no change
 v3: new patch
 
- drivers/spi/atmel-quadspi.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ce4f8a648f45..19a3980775ad 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -113,11 +113,8 @@
- #define QSPI_IFR_OPTL_4BIT              (2 << 8)
- #define QSPI_IFR_OPTL_8BIT              (3 << 8)
- #define QSPI_IFR_ADDRL                  BIT(10)
--#define QSPI_IFR_TFRTYP_MASK            GENMASK(13, 12)
--#define QSPI_IFR_TFRTYP_TRSFR_READ      (0 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_READ_MEM  (1 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_WRITE     (2 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_WRITE_MEM (3 << 13)
-+#define QSPI_IFR_TFRTYP_MEM		BIT(12)
-+#define QSPI_IFR_SAMA5D2_WRITE_TRSFR	BIT(13)
- #define QSPI_IFR_CRM                    BIT(14)
- #define QSPI_IFR_NBDUM_MASK             GENMASK(20, 16)
- #define QSPI_IFR_NBDUM(n)               (((n) << 16) & QSPI_IFR_NBDUM_MASK=
-)
-@@ -275,10 +272,8 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, con=
-st struct spi_mem_op *op)
- 	if (op->data.nbytes)
- 		ifr |=3D QSPI_IFR_DATAEN;
-=20
--	if (op->data.dir =3D=3D SPI_MEM_DATA_IN && op->data.nbytes)
--		ifr |=3D QSPI_IFR_TFRTYP_TRSFR_READ;
--	else
--		ifr |=3D QSPI_IFR_TFRTYP_TRSFR_WRITE;
-+	if (op->data.dir =3D=3D SPI_MEM_DATA_OUT)
-+		ifr |=3D QSPI_IFR_SAMA5D2_WRITE_TRSFR;
-=20
- 	/* Clear pending interrupts */
- 	(void)readl_relaxed(aq->regs + QSPI_SR);
+diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
+mentation/devicetree/bindings/spi/atmel-quadspi.txt
+index b93c1e2f25dd..e9dae6264d89 100644
+--- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
++++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
+@@ -19,7 +19,7 @@ spi@f0020000 {
+ 	reg =3D <0xf0020000 0x100>, <0xd0000000 0x8000000>;
+ 	reg-names =3D "qspi_base", "qspi_mmap";
+ 	interrupts =3D <52 IRQ_TYPE_LEVEL_HIGH 7>;
+-	clocks =3D <&spi0_clk>;
++	clocks =3D <&pmc PMC_TYPE_PERIPHERAL 52>;
+ 	#address-cells =3D <1>;
+ 	#size-cells =3D <0>;
+ 	pinctrl-names =3D "default";
 --=20
 2.9.5

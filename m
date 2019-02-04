@@ -1,88 +1,84 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/9 v3] staging: spi: mt7621: Switch to SPDX identifier
-Date: Mon, 4 Feb 2019 09:53:02 +0100
-Message-ID: <20190204085302.GB23441@sirena.org.uk>
-References: <20190201101715.3760-1-sr@denx.de>
- <20190201130355.GG20797@sirena.org.uk>
- <87muncjyb3.fsf@notabene.neil.brown.name>
+From: <Tudor.Ambarus@microchip.com>
+Subject: [PATCH v4 00/13] spi: atmel-quadspi: introduce sam9x60 qspi
+ controller
+Date: Mon, 4 Feb 2019 10:09:19 +0000
+Message-ID: <20190204100910.26701-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3702103701320796336=="
-Cc: devel@driverdev.osuosl.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- John Crispin <john@phrozen.org>, linux-spi@vger.kernel.org,
- Sankalp Negi <sankalpnegi2310@gmail.com>, Stefan Roese <sr@denx.de>
-To: NeilBrown <neil@brown.name>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <87muncjyb3.fsf@notabene.neil.brown.name>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <Tudor.Ambarus@microchip.com>
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>,
+        <Cyrille.Pitchen@microchip.com>, <bugalski.piotr@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
---===============3702103701320796336==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hQiwHBbRI9kgIhsi"
-Content-Disposition: inline
+Patches from 1 to 11 are minor fixes or cosmetics.
+Patches 12 and 13 introduce the sam9x60 qspi controller.
 
+sam9x60 qspi controller tested with sst26vf064b jedec,spi-nor flash.
+Backward compatibility test done on sama5d2 qspi controller and
+mx25l25635e jedec,spi-nor flash.
 
---hQiwHBbRI9kgIhsi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The patches are generated on top of for-next branch.
 
-On Mon, Feb 04, 2019 at 09:34:56AM +1100, NeilBrown wrote:
+v4:
+- s/smm/mr, init controller in serial memory mode by default
+- drop local variables that kept aq->regs and &pdev->dev, the compiler
+  should be smart enough to store them in a register
+- introduce QSPI_IFR_TFRTYP_MEM
+- add comment saying QSPI_IFR_APBTFRTYP_READ is defined in sam9x60
+- s/sama5d2_qspi_modes/atmel_qspi_modes, modes are the same both
+  controllers
+- fix kernel doc header
+- move comment in function body
+- collect R-b tags
 
->  It is extremely common in the kernel for a file to start
->    // SPDX-License-Identifier.....
+v3:
+- update smm value when different.
+- treat just regular spi transfers when introducing sam9x60 qspi IP.
+  Mem transfers will be added together with dirmap support.
+- reorganize the code and change ops functions pointers to avoid code
+  duplication.
+- rename aq->clk to aq->pclk to indicate that it's a peripheral clock.
+- drop unused and NOP transfer macros.
+- add Suggested-by tags, reword some commits.
 
->  and to have that immediately followed by a comment lile:
+v2:
+- cache MR value,
+- drop iomem wrappers,
+- make "pclk" clock-name mandatory even for sama5d2,
+- rework clock handling,
+- reorder setting of register values in set_cfg() calls,
+- collect R-b tags.
 
->  /*
->   * .....
->   * ....
+Tudor Ambarus (13):
+  spi: atmel-quadspi: cache MR value to avoid a write access
+  spi: atmel-quadspi: order header files inclusion alphabetically
+  spi: atmel-quadspi: drop wrappers for iomem accesses
+  spi: atmel-quadspi: fix naming scheme
+  spi: atmel-quadspi: remove unnecessary cast
+  spi: atmel-quadspi: return appropriate error code
+  spi: atmel-quadspi: switch to SPDX license identifiers
+  spi: atmel-quadspi: rework transfer macros
+  dt-bindings: spi: atmel-quadspi: update example to new clock binding
+  dt-bindings: spi: atmel-quadspi: make "pclk" mandatory
+  spi: atmel-quadspi: add support for named peripheral clock
+  dt-bindings: spi: atmel-quadspi: QuadSPI driver for Microchip SAM9X60
+  spi: atmel-quadspi: add support for sam9x60 qspi controller
 
-Yes, there was a lot of automated conversion AFAICT (and a lot of
-confusion with all this stuff only being documented in random mailing
-list posts for a long time).
+ .../devicetree/bindings/spi/atmel-quadspi.txt      |  12 +-
+ drivers/spi/atmel-quadspi.c                        | 389 +++++++++++++++--=
+----
+ 2 files changed, 284 insertions(+), 117 deletions(-)
 
->  This patch makes this file match much of the rest of the kernel.  Why
->  do you want something different?
-
-Like I said because it makes the comments look more like someone
-actually meant to add a C++ comment - it's what the rest of the
-subsystem is doing too.
-
---hQiwHBbRI9kgIhsi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxX/W0ACgkQJNaLcl1U
-h9C17Af9EexTEI0ifnuEDFSCO1K5FHa1ccRqsPjqA2QDBKwdB6P2IgxFfYIhfp3X
-gMS9rMw5d820UNMuMLd5+H/ut0VBHkF2Vh7lwPcKbcnGebemDrxDl6wSpDMqIsED
-w65UmfiOh05ev7F+BFmvavhAEbUXcj5gWgRHW1j4X0wLF0zrTX66mvInW7pL9a/j
-uYaZ7cn0a4TbWjSZQv+bTTYGxkJvfPrBv2aaL/2yTQTOl3BdF5rAyaq1JF2uB2W4
-CteCmW/zzhZ1zTXW2zPpxNuQaXJ+WhWVZaZiPBT19TeNAwvvse8C7IpJZeXeAIJc
-QlWajuOux94RmDa9PziXTjVzzTM6Zw==
-=VwZP
------END PGP SIGNATURE-----
-
---hQiwHBbRI9kgIhsi--
-
---===============3702103701320796336==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devel mailing list
-devel@linuxdriverproject.org
-http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
-
---===============3702103701320796336==--
+--=20
+2.9.5

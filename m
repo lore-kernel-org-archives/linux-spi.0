@@ -1,93 +1,83 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [PATCH v5] ARM: dspi: Provide support for DSPI slave mode
- operation (Vybryd vf610)
-Date: Mon, 4 Feb 2019 14:12:00 +0100
-Message-ID: <20190204141200.05802849@jawa>
-References: <20180927150709.17010-1-lukma@denx.de>
-        <20190109082644.14941-1-lukma@denx.de>
-        <20190204113001.77d59570@jawa>
-        <20190204105737.GE23441@sirena.org.uk>
-        <20190204135242.7112d48c@jawa>
-        <20190204130356.GF23441@sirena.org.uk>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v4 01/13] spi: atmel-quadspi: cache MR value to avoid a
+ write access
+Date: Mon, 4 Feb 2019 15:00:05 +0100
+Message-ID: <20190204150005.3567bf29@bbrezillon>
+References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
+        <20190204100910.26701-2-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/8KVRnqLykGiF8cTbKnYNiRq"; protocol="application/pgp-signature"
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Esben Haabendal <eha@deif.com>,
-        Martin =?UTF-8?B?SHVuZGViw7hsbA==?= <martin@geanix.com>,
-        Andrey Smirnov <andrew.smirnov@gmail.com>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <Ludovic.Desroches@microchip.com>, <Cyrille.Pitchen@microchip.com>,
+        <bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190204130356.GF23441@sirena.org.uk>
+In-Reply-To: <20190204100910.26701-2-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/8KVRnqLykGiF8cTbKnYNiRq
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, 4 Feb 2019 10:09:22 +0000
+<Tudor.Ambarus@microchip.com> wrote:
 
-Hi Mark,
+> From: Tudor Ambarus <tudor.ambarus@microchip.com>
+> 
+> Set the controller by default in Serial Memory Mode (SMM) at probe.
+> Cache Mode Register (MR) value to avoid write access when setting
+> the controller in serial memory mode at exec_op().
+> 
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-> On Mon, Feb 04, 2019 at 01:52:42PM +0100, Lukasz Majewski wrote:
-> > > On Mon, Feb 04, 2019 at 11:30:01AM +0100, Lukasz Majewski wrote: =20
->=20
-> > > You've been sending ARM: patches to me (the SPI maintainer) and
-> > > one of the DT maintainers.  =20
->=20
-> ...
->=20
-> > Moreover, I've CC'ed developers (Esben, Andrey, Martin) involved in
-> > the changes for previous work done in this file/driver. =20
->=20
-> > And those changes are solely related to SPI work in this driver, no
-> > ARM Vybrid. =20
->=20
-> If they're SPI patches they should have a changelog that looks like a
-> SPI patch which means that it should start with "spi" (see other
-> patches on the list or git log for examples).  When your patch
-> subject lines start with ARM: that means they are for arch/arm - I
-> don't 100% know but I suspect I've just not got far enough into the
-> mails to notice that they're for SPI, people do send a lot of patches
-> that just happen to mention buses to maintainers for those buses.  In
-> general you should try to make sure that the subject line for your
-> patch matches the style used in the relevant subsystem.
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 
-I see. Thanks for the detailed explanation.
-
->=20
-> > What else shall I do? =20
->=20
-> You'll need to resend the patch, preferrably with a suitable subject
-> line.
-
-I will resend the patch with more suitable subject, no problem.
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/8KVRnqLykGiF8cTbKnYNiRq
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAlxYOiAACgkQAR8vZIA0
-zr1MUwgA1g32KfI4g0bWQvIMTLGQl+Jp5F79SQbORRROkIuthN+bsLuSKHB1vBTy
-psXYERmEDkKzXnDseu8bPGOJnWX/X+xAjJVJWofNs45CfWVfekdD6/9SEKizi5NZ
-pdalPfUr+91F4RFt05INqh2ZjuH1pGyCfVqvszo3z7DrUAEyon3ADaeedAHVA8Aq
-4woJ+Rnhz40nnqErV8T2rM75jt1UGpJ8/GoX4d5wJYIuR4bnNp3T08A3BWBM4bc1
-5Em7TpzxsGeGL+oYTxG3FvBrY4J1l9tQtY+Ewzkf80Wj9N+EK5hUW43L2h6KwIDK
-aJql+tP6AV37pL1iMcXAHDAS40N9Ug==
-=1VQe
------END PGP SIGNATURE-----
-
---Sig_/8KVRnqLykGiF8cTbKnYNiRq--
+> ---
+> v4: s/smm/mr, init controller in serial memory mode by default
+> v3: update smm value when different. rename mr/smm
+> v2: cache MR value instead of moving the write access at probe
+> 
+>  drivers/spi/atmel-quadspi.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+> index ddc712410812..d6864d29f294 100644
+> --- a/drivers/spi/atmel-quadspi.c
+> +++ b/drivers/spi/atmel-quadspi.c
+> @@ -155,6 +155,7 @@ struct atmel_qspi {
+>  	struct clk		*clk;
+>  	struct platform_device	*pdev;
+>  	u32			pending;
+> +	u32			mr;
+>  	struct completion	cmd_completion;
+>  };
+>  
+> @@ -238,7 +239,14 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>  	icr = QSPI_ICR_INST(op->cmd.opcode);
+>  	ifr = QSPI_IFR_INSTEN;
+>  
+> -	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +	/*
+> +	 * If the QSPI controller is set in regular SPI mode, set it in
+> +	 * Serial Memory Mode (SMM).
+> +	 */
+> +	if (aq->mr != QSPI_MR_SMM) {
+> +		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +		aq->mr = QSPI_MR_SMM;
+> +	}
+>  
+>  	mode = find_mode(op);
+>  	if (mode < 0)
+> @@ -381,6 +389,10 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
+>  	/* Reset the QSPI controller */
+>  	qspi_writel(aq, QSPI_CR, QSPI_CR_SWRST);
+>  
+> +	/* Set the QSPI controller by default in Serial Memory Mode */
+> +	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
+> +	aq->mr = QSPI_MR_SMM;
+> +
+>  	/* Enable the QSPI controller */
+>  	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIEN);
+>  

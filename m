@@ -1,8 +1,9 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v4 00/13] spi: atmel-quadspi: introduce sam9x60 qspi
- controller
-Date: Mon, 4 Feb 2019 10:09:19 +0000
-Message-ID: <20190204100910.26701-1-tudor.ambarus@microchip.com>
+Subject: [PATCH v4 01/13] spi: atmel-quadspi: cache MR value to avoid a write
+ access
+Date: Mon, 4 Feb 2019 10:09:22 +0000
+Message-ID: <20190204100910.26701-2-tudor.ambarus@microchip.com>
+References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -15,70 +16,65 @@ To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <Ludovic.Desroches@microchip.com>, <bbrezillon@kernel.org>,
         <Cyrille.Pitchen@microchip.com>, <bugalski.piotr@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190204100910.26701-1-tudor.ambarus@microchip.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Patches from 1 to 11 are minor fixes or cosmetics.
-Patches 12 and 13 introduce the sam9x60 qspi controller.
+Set the controller by default in Serial Memory Mode (SMM) at probe.
+Cache Mode Register (MR) value to avoid write access when setting
+the controller in serial memory mode at exec_op().
 
-sam9x60 qspi controller tested with sst26vf064b jedec,spi-nor flash.
-Backward compatibility test done on sama5d2 qspi controller and
-mx25l25635e jedec,spi-nor flash.
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+---
+v4: s/smm/mr, init controller in serial memory mode by default
+v3: update smm value when different. rename mr/smm
+v2: cache MR value instead of moving the write access at probe
 
-The patches are generated on top of for-next branch.
+ drivers/spi/atmel-quadspi.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-v4:
-- s/smm/mr, init controller in serial memory mode by default
-- drop local variables that kept aq->regs and &pdev->dev, the compiler
-  should be smart enough to store them in a register
-- introduce QSPI_IFR_TFRTYP_MEM
-- add comment saying QSPI_IFR_APBTFRTYP_READ is defined in sam9x60
-- s/sama5d2_qspi_modes/atmel_qspi_modes, modes are the same both
-  controllers
-- fix kernel doc header
-- move comment in function body
-- collect R-b tags
-
-v3:
-- update smm value when different.
-- treat just regular spi transfers when introducing sam9x60 qspi IP.
-  Mem transfers will be added together with dirmap support.
-- reorganize the code and change ops functions pointers to avoid code
-  duplication.
-- rename aq->clk to aq->pclk to indicate that it's a peripheral clock.
-- drop unused and NOP transfer macros.
-- add Suggested-by tags, reword some commits.
-
-v2:
-- cache MR value,
-- drop iomem wrappers,
-- make "pclk" clock-name mandatory even for sama5d2,
-- rework clock handling,
-- reorder setting of register values in set_cfg() calls,
-- collect R-b tags.
-
-Tudor Ambarus (13):
-  spi: atmel-quadspi: cache MR value to avoid a write access
-  spi: atmel-quadspi: order header files inclusion alphabetically
-  spi: atmel-quadspi: drop wrappers for iomem accesses
-  spi: atmel-quadspi: fix naming scheme
-  spi: atmel-quadspi: remove unnecessary cast
-  spi: atmel-quadspi: return appropriate error code
-  spi: atmel-quadspi: switch to SPDX license identifiers
-  spi: atmel-quadspi: rework transfer macros
-  dt-bindings: spi: atmel-quadspi: update example to new clock binding
-  dt-bindings: spi: atmel-quadspi: make "pclk" mandatory
-  spi: atmel-quadspi: add support for named peripheral clock
-  dt-bindings: spi: atmel-quadspi: QuadSPI driver for Microchip SAM9X60
-  spi: atmel-quadspi: add support for sam9x60 qspi controller
-
- .../devicetree/bindings/spi/atmel-quadspi.txt      |  12 +-
- drivers/spi/atmel-quadspi.c                        | 389 +++++++++++++++--=
-----
- 2 files changed, 284 insertions(+), 117 deletions(-)
-
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index ddc712410812..d6864d29f294 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -155,6 +155,7 @@ struct atmel_qspi {
+ 	struct clk		*clk;
+ 	struct platform_device	*pdev;
+ 	u32			pending;
++	u32			mr;
+ 	struct completion	cmd_completion;
+ };
+=20
+@@ -238,7 +239,14 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, con=
+st struct spi_mem_op *op)
+ 	icr =3D QSPI_ICR_INST(op->cmd.opcode);
+ 	ifr =3D QSPI_IFR_INSTEN;
+=20
+-	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
++	/*
++	 * If the QSPI controller is set in regular SPI mode, set it in
++	 * Serial Memory Mode (SMM).
++	 */
++	if (aq->mr !=3D QSPI_MR_SMM) {
++		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
++		aq->mr =3D QSPI_MR_SMM;
++	}
+=20
+ 	mode =3D find_mode(op);
+ 	if (mode < 0)
+@@ -381,6 +389,10 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
+ 	/* Reset the QSPI controller */
+ 	qspi_writel(aq, QSPI_CR, QSPI_CR_SWRST);
+=20
++	/* Set the QSPI controller by default in Serial Memory Mode */
++	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
++	aq->mr =3D QSPI_MR_SMM;
++
+ 	/* Enable the QSPI controller */
+ 	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIEN);
+=20
 --=20
 2.9.5

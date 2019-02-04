@@ -1,81 +1,58 @@
 From: Boris Brezillon <bbrezillon@kernel.org>
-Subject: Re: [PATCH v4 08/13] spi: atmel-quadspi: rework transfer macros
-Date: Mon, 4 Feb 2019 15:01:36 +0100
-Message-ID: <20190204150136.519060ff@bbrezillon>
+Subject: Re: [PATCH v4 13/13] spi: atmel-quadspi: add support for sam9x60
+ qspi controller
+Date: Mon, 4 Feb 2019 15:16:43 +0100
+Message-ID: <20190204151643.0354180d@bbrezillon>
 References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
-        <20190204100910.26701-9-tudor.ambarus@microchip.com>
+ <20190204100910.26701-14-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <Cyrille.Pitchen@microchip.com>,
-        <bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
+ Cyrille.Pitchen@microchip.com, robh+dt@kernel.org, linux-spi@vger.kernel.org,
+ Ludovic.Desroches@microchip.com, broonie@kernel.org,
+ linux-mtd@lists.infradead.org, bugalski.piotr@gmail.com,
+ linux-arm-kernel@lists.infradead.org
 To: <Tudor.Ambarus@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190204100910.26701-9-tudor.ambarus@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190204100910.26701-14-tudor.ambarus@microchip.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 4 Feb 2019 10:09:53 +0000
+On Mon, 4 Feb 2019 10:10:21 +0000
 <Tudor.Ambarus@microchip.com> wrote:
 
-> From: Tudor Ambarus <tudor.ambarus@microchip.com>
-> 
-> Split the TFRTYP_TRSFR_ bitfields in 2: one bit encoding the
-> mem/reg transfer type and one bit encoding the direction of
-> the transfer (read/write).
-> 
-> Remove NOP when setting read transfer type. Remove useless
-> setting of write transfer type when
-> op->data.dir == SPI_MEM_DATA_IN && !op->data.nbytes.
-> 
-> QSPI_IFR_TFRTYP_TRSFR_WRITE is specific just to sama5d2 qspi,
-> rename it to QSPI_IFR_SAMA5D2_WRITE_TRSFR.
-> 
-> Suggested-by: Boris Brezillon <bbrezillon@kernel.org>
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+> +
+> +static void atmel_qspi_sam9x60_write_regs(const struct atmel_qspi *aq,
+> +					  const struct spi_mem_op *op,
+> +					  const struct atmel_qspi_cfg *cfg)
+> +{
+> +	/* Clear pending interrupts */
+> +	(void)readl_relaxed(aq->regs + QSPI_SR);
+> +
+> +	/* Set QSPI Instruction Frame registers */
+> +	writel_relaxed(cfg->iar, aq->regs + QSPI_IAR);
+> +	if (op->data.dir == SPI_MEM_DATA_IN)
+> +		writel_relaxed(cfg->icr, aq->regs + QSPI_RICR);
+> +	else
+> +		writel_relaxed(cfg->icr, aq->regs + QSPI_ICR);
 
-Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
+Can you use WICR here (even if ICR == WICR)?
 
-> ---
-> v4: introduce QSPI_IFR_TFRTYP_MEM, reword commit
-> v3: new patch
-> 
->  drivers/spi/atmel-quadspi.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> index ce4f8a648f45..19a3980775ad 100644
-> --- a/drivers/spi/atmel-quadspi.c
-> +++ b/drivers/spi/atmel-quadspi.c
-> @@ -113,11 +113,8 @@
->  #define QSPI_IFR_OPTL_4BIT              (2 << 8)
->  #define QSPI_IFR_OPTL_8BIT              (3 << 8)
->  #define QSPI_IFR_ADDRL                  BIT(10)
-> -#define QSPI_IFR_TFRTYP_MASK            GENMASK(13, 12)
-> -#define QSPI_IFR_TFRTYP_TRSFR_READ      (0 << 12)
-> -#define QSPI_IFR_TFRTYP_TRSFR_READ_MEM  (1 << 12)
-> -#define QSPI_IFR_TFRTYP_TRSFR_WRITE     (2 << 12)
-> -#define QSPI_IFR_TFRTYP_TRSFR_WRITE_MEM (3 << 13)
-> +#define QSPI_IFR_TFRTYP_MEM		BIT(12)
-> +#define QSPI_IFR_SAMA5D2_WRITE_TRSFR	BIT(13)
->  #define QSPI_IFR_CRM                    BIT(14)
->  #define QSPI_IFR_NBDUM_MASK             GENMASK(20, 16)
->  #define QSPI_IFR_NBDUM(n)               (((n) << 16) & QSPI_IFR_NBDUM_MASK)
-> @@ -275,10 +272,8 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
->  	if (op->data.nbytes)
->  		ifr |= QSPI_IFR_DATAEN;
->  
-> -	if (op->data.dir == SPI_MEM_DATA_IN && op->data.nbytes)
-> -		ifr |= QSPI_IFR_TFRTYP_TRSFR_READ;
-> -	else
-> -		ifr |= QSPI_IFR_TFRTYP_TRSFR_WRITE;
-> +	if (op->data.dir == SPI_MEM_DATA_OUT)
-> +		ifr |= QSPI_IFR_SAMA5D2_WRITE_TRSFR;
->  
->  	/* Clear pending interrupts */
->  	(void)readl_relaxed(aq->regs + QSPI_SR);
+> +	writel_relaxed(cfg->ifr, aq->regs + QSPI_IFR);
+> +}
+
+Hm, so the only difference we have is the RICR vs ICR reg and the
+APBTFRTYP_READ vs SAMA5D2_WRITE_TRSFR bit. Not sure it deserves
+creating 2 hooks for that. Can we have something like ->has_ricr in
+the caps and then have an if/else block directly in
+atmel_qspi_set_cfg()?

@@ -1,14 +1,15 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH v4 13/13] spi: atmel-quadspi: add support for sam9x60 qspi
- controller
-Date: Mon, 4 Feb 2019 14:28:27 +0000
-Message-ID: <25f6ee72-e6e1-7014-6e4b-abe0a1a0eebc@microchip.com>
+From: Boris Brezillon <bbrezillon@kernel.org>
+Subject: Re: [PATCH v4 13/13] spi: atmel-quadspi: add support for sam9x60
+ qspi controller
+Date: Mon, 4 Feb 2019 15:37:13 +0100
+Message-ID: <20190204153713.2fd02769@bbrezillon>
 References: <20190204100910.26701-1-tudor.ambarus@microchip.com>
- <20190204100910.26701-14-tudor.ambarus@microchip.com>
- <20190204151643.0354180d@bbrezillon>
+        <20190204100910.26701-14-tudor.ambarus@microchip.com>
+        <20190204151643.0354180d@bbrezillon>
+        <25f6ee72-e6e1-7014-6e4b-abe0a1a0eebc@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
         <Ludovic.Desroches@microchip.com>, <Cyrille.Pitchen@microchip.com>,
@@ -16,34 +17,31 @@ Cc: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>
-To: <bbrezillon@kernel.org>
+To: <Tudor.Ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190204151643.0354180d@bbrezillon>
-Content-Language: en-US
-Content-ID: <76203A191EB89340847F683DC537E571@namprd11.prod.outlook.com>
+In-Reply-To: <25f6ee72-e6e1-7014-6e4b-abe0a1a0eebc@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDAyLzA0LzIwMTkgMDQ6MTYgUE0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gT24g
-TW9uLCA0IEZlYiAyMDE5IDEwOjEwOjIxICswMDAwDQo+IDxUdWRvci5BbWJhcnVzQG1pY3JvY2hp
-cC5jb20+IHdyb3RlOg0KPiANCj4+ICsNCj4+ICtzdGF0aWMgdm9pZCBhdG1lbF9xc3BpX3NhbTl4
-NjBfd3JpdGVfcmVncyhjb25zdCBzdHJ1Y3QgYXRtZWxfcXNwaSAqYXEsDQo+PiArCQkJCQkgIGNv
-bnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCwNCj4+ICsJCQkJCSAgY29uc3Qgc3RydWN0IGF0bWVs
-X3FzcGlfY2ZnICpjZmcpDQo+PiArew0KPj4gKwkvKiBDbGVhciBwZW5kaW5nIGludGVycnVwdHMg
-Ki8NCj4+ICsJKHZvaWQpcmVhZGxfcmVsYXhlZChhcS0+cmVncyArIFFTUElfU1IpOw0KPj4gKw0K
-Pj4gKwkvKiBTZXQgUVNQSSBJbnN0cnVjdGlvbiBGcmFtZSByZWdpc3RlcnMgKi8NCj4+ICsJd3Jp
-dGVsX3JlbGF4ZWQoY2ZnLT5pYXIsIGFxLT5yZWdzICsgUVNQSV9JQVIpOw0KPj4gKwlpZiAob3At
-PmRhdGEuZGlyID09IFNQSV9NRU1fREFUQV9JTikNCj4+ICsJCXdyaXRlbF9yZWxheGVkKGNmZy0+
-aWNyLCBhcS0+cmVncyArIFFTUElfUklDUik7DQo+PiArCWVsc2UNCj4+ICsJCXdyaXRlbF9yZWxh
-eGVkKGNmZy0+aWNyLCBhcS0+cmVncyArIFFTUElfSUNSKTsNCj4gDQo+IENhbiB5b3UgdXNlIFdJ
-Q1IgaGVyZSAoZXZlbiBpZiBJQ1IgPT0gV0lDUik/DQoNCnllcywgZ29vZCBjYXRjaC4NCj4gDQo+
-PiArCXdyaXRlbF9yZWxheGVkKGNmZy0+aWZyLCBhcS0+cmVncyArIFFTUElfSUZSKTsNCj4+ICt9
-DQo+IA0KPiBIbSwgc28gdGhlIG9ubHkgZGlmZmVyZW5jZSB3ZSBoYXZlIGlzIHRoZSBSSUNSIHZz
-IElDUiByZWcgYW5kIHRoZQ0KPiBBUEJURlJUWVBfUkVBRCB2cyBTQU1BNUQyX1dSSVRFX1RSU0ZS
-IGJpdC4gTm90IHN1cmUgaXQgZGVzZXJ2ZXMNCj4gY3JlYXRpbmcgMiBob29rcyBmb3IgdGhhdC4g
-Q2FuIHdlIGhhdmUgc29tZXRoaW5nIGxpa2UgLT5oYXNfcmljciBpbg0KPiB0aGUgY2FwcyBhbmQg
-dGhlbiBoYXZlIGFuIGlmL2Vsc2UgYmxvY2sgZGlyZWN0bHkgaW4NCj4gYXRtZWxfcXNwaV9zZXRf
-Y2ZnKCk/DQo+IA0KDQpDb3JyZWN0LiBJdCBpcyBhIGNvc3Qgb2YgYW4gZXh0cmEgaWYsIEkgdHJp
-ZWQgdG8gYXZvaWQgaXQuIEkgbGlrZSBpdCBiZXR0ZXIgd2l0aA0KdGhlc2UgdHdvIGhvb2tzLCBi
-dXQgaWYgeW91IGhhdmUgYSBzdHJvbmcgb3BpbmlvbiBJJ2xsIGRvIGl0LCBqdXN0IGNvbmZpcm0g
-aXQgYWdhaW4uDQoNClRoYW5rcywNCnRhDQo=
+On Mon, 4 Feb 2019 14:28:27 +0000
+<Tudor.Ambarus@microchip.com> wrote:
+
+> >   
+> >> +	writel_relaxed(cfg->ifr, aq->regs + QSPI_IFR);
+> >> +}  
+> > 
+> > Hm, so the only difference we have is the RICR vs ICR reg and the
+> > APBTFRTYP_READ vs SAMA5D2_WRITE_TRSFR bit. Not sure it deserves
+> > creating 2 hooks for that. Can we have something like ->has_ricr in
+> > the caps and then have an if/else block directly in
+> > atmel_qspi_set_cfg()?
+> >   
+> 
+> Correct. It is a cost of an extra if, I tried to avoid it. I like it better with
+> these two hooks, but if you have a strong opinion I'll do it, just confirm it again.
+
+The cost of an indirect call is actually higher than an extra if/else
+block. I'm not against paying this extra cost when implementations are
+completely different, but that does not seem to be the case here.
+Moreover, if you get rid of these hooks, you can also get rid of the
+cfg struct.

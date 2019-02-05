@@ -1,8 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v6 07/13] spi: atmel-quadspi: switch to SPDX license
- identifiers
-Date: Tue, 5 Feb 2019 17:33:22 +0000
-Message-ID: <20190205173254.16388-8-tudor.ambarus@microchip.com>
+Subject: [PATCH v6 09/13] dt-bindings: spi: atmel-quadspi: update example to
+ new clock binding
+Date: Tue, 5 Feb 2019 17:33:27 +0000
+Message-ID: <20190205173254.16388-10-tudor.ambarus@microchip.com>
 References: <20190205173254.16388-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -23,8 +23,9 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Adopt the SPDX license identifiers to ease license compliance
-management.
+Introduced in:
+commit b60557876849 ("ARM: dts: at91: sama5d2: switch to new clock binding"=
+)
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
@@ -32,43 +33,24 @@ Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 v6: no change
 v5: no change
 v4: no change
-v3: no change
-v2: collect R-b
+v3: new patch
 
- drivers/spi/atmel-quadspi.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 06c31830d07b..ce4f8a648f45 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Driver for Atmel QSPI Controller
-  *
-@@ -7,18 +8,6 @@
-  * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-  * Author: Piotr Bugalski <bugalski.piotr@gmail.com>
-  *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful, but WIT=
-HOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License f=
-or
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along=
- with
-- * this program.  If not, see <http://www.gnu.org/licenses/>.
-- *
-  * This driver is based on drivers/mtd/spi-nor/fsl-quadspi.c from Freescal=
-e.
-  */
-=20
+diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
+mentation/devicetree/bindings/spi/atmel-quadspi.txt
+index b93c1e2f25dd..e9dae6264d89 100644
+--- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
++++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
+@@ -19,7 +19,7 @@ spi@f0020000 {
+ 	reg =3D <0xf0020000 0x100>, <0xd0000000 0x8000000>;
+ 	reg-names =3D "qspi_base", "qspi_mmap";
+ 	interrupts =3D <52 IRQ_TYPE_LEVEL_HIGH 7>;
+-	clocks =3D <&spi0_clk>;
++	clocks =3D <&pmc PMC_TYPE_PERIPHERAL 52>;
+ 	#address-cells =3D <1>;
+ 	#size-cells =3D <0>;
+ 	pinctrl-names =3D "default";
 --=20
 2.9.5

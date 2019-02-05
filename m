@@ -1,8 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v5 09/13] dt-bindings: spi: atmel-quadspi: update example to
- new clock binding
-Date: Tue, 5 Feb 2019 15:43:51 +0000
-Message-ID: <20190205154257.29529-10-tudor.ambarus@microchip.com>
+Subject: [PATCH v5 11/13] spi: atmel-quadspi: add support for named peripheral
+ clock
+Date: Tue, 5 Feb 2019 15:43:58 +0000
+Message-ID: <20190205154257.29529-12-tudor.ambarus@microchip.com>
 References: <20190205154257.29529-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -23,33 +23,130 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Introduced in:
-commit b60557876849 ("ARM: dts: at91: sama5d2: switch to new clock binding"=
-)
+Naming clocks is a good practice. Keep supporting unnamed
+peripheral clock, to be backward compatible with old DTs.
+While here, rename clk to pclk, to indicate that it is a
+peripheral clock.
 
+Suggested-by: Boris Brezillon <bbrezillon@kernel.org>
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
 v5: no change
-v4: no change
+v4: collect R-b
 v3: new patch
 
- Documentation/devicetree/bindings/spi/atmel-quadspi.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt b/Docu=
-mentation/devicetree/bindings/spi/atmel-quadspi.txt
-index b93c1e2f25dd..e9dae6264d89 100644
---- a/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-+++ b/Documentation/devicetree/bindings/spi/atmel-quadspi.txt
-@@ -19,7 +19,7 @@ spi@f0020000 {
- 	reg =3D <0xf0020000 0x100>, <0xd0000000 0x8000000>;
- 	reg-names =3D "qspi_base", "qspi_mmap";
- 	interrupts =3D <52 IRQ_TYPE_LEVEL_HIGH 7>;
--	clocks =3D <&spi0_clk>;
-+	clocks =3D <&pmc PMC_TYPE_PERIPHERAL 52>;
- 	#address-cells =3D <1>;
- 	#size-cells =3D <0>;
- 	pinctrl-names =3D "default";
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 19a3980775ad..336501d962e5 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -137,7 +137,7 @@
+ struct atmel_qspi {
+ 	void __iomem		*regs;
+ 	void __iomem		*mem;
+-	struct clk		*clk;
++	struct clk		*pclk;
+ 	struct platform_device	*pdev;
+ 	u32			pending;
+ 	u32			mr;
+@@ -341,7 +341,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	if (!spi->max_speed_hz)
+ 		return -EINVAL;
+=20
+-	src_rate =3D clk_get_rate(aq->clk);
++	src_rate =3D clk_get_rate(aq->pclk);
+ 	if (!src_rate)
+ 		return -EINVAL;
+=20
+@@ -433,15 +433,18 @@ static int atmel_qspi_probe(struct platform_device *p=
+dev)
+ 	}
+=20
+ 	/* Get the peripheral clock */
+-	aq->clk =3D devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(aq->clk)) {
++	aq->pclk =3D devm_clk_get(&pdev->dev, "pclk");
++	if (IS_ERR(aq->pclk))
++		aq->pclk =3D devm_clk_get(&pdev->dev, NULL);
++
++	if (IS_ERR(aq->pclk)) {
+ 		dev_err(&pdev->dev, "missing peripheral clock\n");
+-		err =3D PTR_ERR(aq->clk);
++		err =3D PTR_ERR(aq->pclk);
+ 		goto exit;
+ 	}
+=20
+ 	/* Enable the peripheral clock */
+-	err =3D clk_prepare_enable(aq->clk);
++	err =3D clk_prepare_enable(aq->pclk);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to enable the peripheral clock\n");
+ 		goto exit;
+@@ -452,25 +455,25 @@ static int atmel_qspi_probe(struct platform_device *p=
+dev)
+ 	if (irq < 0) {
+ 		dev_err(&pdev->dev, "missing IRQ\n");
+ 		err =3D irq;
+-		goto disable_clk;
++		goto disable_pclk;
+ 	}
+ 	err =3D devm_request_irq(&pdev->dev, irq, atmel_qspi_interrupt,
+ 			       0, dev_name(&pdev->dev), aq);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	err =3D atmel_qspi_init(aq);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	err =3D spi_register_controller(ctrl);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	return 0;
+=20
+-disable_clk:
+-	clk_disable_unprepare(aq->clk);
++disable_pclk:
++	clk_disable_unprepare(aq->pclk);
+ exit:
+ 	spi_controller_put(ctrl);
+=20
+@@ -484,7 +487,7 @@ static int atmel_qspi_remove(struct platform_device *pd=
+ev)
+=20
+ 	spi_unregister_controller(ctrl);
+ 	writel_relaxed(QSPI_CR_QSPIDIS, aq->regs + QSPI_CR);
+-	clk_disable_unprepare(aq->clk);
++	clk_disable_unprepare(aq->pclk);
+ 	return 0;
+ }
+=20
+@@ -492,7 +495,7 @@ static int __maybe_unused atmel_qspi_suspend(struct dev=
+ice *dev)
+ {
+ 	struct atmel_qspi *aq =3D dev_get_drvdata(dev);
+=20
+-	clk_disable_unprepare(aq->clk);
++	clk_disable_unprepare(aq->pclk);
+=20
+ 	return 0;
+ }
+@@ -501,7 +504,7 @@ static int __maybe_unused atmel_qspi_resume(struct devi=
+ce *dev)
+ {
+ 	struct atmel_qspi *aq =3D dev_get_drvdata(dev);
+=20
+-	clk_prepare_enable(aq->clk);
++	clk_prepare_enable(aq->pclk);
+=20
+ 	return atmel_qspi_init(aq);
+ }
 --=20
 2.9.5

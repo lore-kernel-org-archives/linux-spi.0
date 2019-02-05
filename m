@@ -1,7 +1,8 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v6 08/13] spi: atmel-quadspi: rework transfer macros
-Date: Tue, 5 Feb 2019 17:33:25 +0000
-Message-ID: <20190205173254.16388-9-tudor.ambarus@microchip.com>
+Subject: [PATCH v6 11/13] spi: atmel-quadspi: add support for named peripheral
+ clock
+Date: Tue, 5 Feb 2019 17:33:33 +0000
+Message-ID: <20190205173254.16388-12-tudor.ambarus@microchip.com>
 References: <20190205173254.16388-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -22,59 +23,131 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Split the TFRTYP_TRSFR_ bitfields in 2: one bit encoding the
-mem/reg transfer type and one bit encoding the direction of
-the transfer (read/write).
+Naming clocks is a good practice. Keep supporting unnamed
+peripheral clock, to be backward compatible with old DTs.
+While here, rename clk to pclk, to indicate that it is a
+peripheral clock.
 
-Remove NOP when setting read transfer type. Remove useless
-setting of write transfer type when
-op->data.dir =3D=3D SPI_MEM_DATA_IN && !op->data.nbytes.
-
-QSPI_IFR_TFRTYP_TRSFR_WRITE is specific just to sama5d2 qspi,
-rename it to QSPI_IFR_SAMA5D2_WRITE_TRSFR.
-
+Suggested-by: Boris Brezillon <bbrezillon@kernel.org>
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
 v6: no change
-v5: collect R-b
-v4: introduce QSPI_IFR_TFRTYP_MEM, reword commit
+v5: no change
+v4: collect R-b
 v3: new patch
 
- drivers/spi/atmel-quadspi.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/spi/atmel-quadspi.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ce4f8a648f45..19a3980775ad 100644
+index 19a3980775ad..336501d962e5 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -113,11 +113,8 @@
- #define QSPI_IFR_OPTL_4BIT              (2 << 8)
- #define QSPI_IFR_OPTL_8BIT              (3 << 8)
- #define QSPI_IFR_ADDRL                  BIT(10)
--#define QSPI_IFR_TFRTYP_MASK            GENMASK(13, 12)
--#define QSPI_IFR_TFRTYP_TRSFR_READ      (0 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_READ_MEM  (1 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_WRITE     (2 << 12)
--#define QSPI_IFR_TFRTYP_TRSFR_WRITE_MEM (3 << 13)
-+#define QSPI_IFR_TFRTYP_MEM		BIT(12)
-+#define QSPI_IFR_SAMA5D2_WRITE_TRSFR	BIT(13)
- #define QSPI_IFR_CRM                    BIT(14)
- #define QSPI_IFR_NBDUM_MASK             GENMASK(20, 16)
- #define QSPI_IFR_NBDUM(n)               (((n) << 16) & QSPI_IFR_NBDUM_MASK=
-)
-@@ -275,10 +272,8 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, con=
-st struct spi_mem_op *op)
- 	if (op->data.nbytes)
- 		ifr |=3D QSPI_IFR_DATAEN;
+@@ -137,7 +137,7 @@
+ struct atmel_qspi {
+ 	void __iomem		*regs;
+ 	void __iomem		*mem;
+-	struct clk		*clk;
++	struct clk		*pclk;
+ 	struct platform_device	*pdev;
+ 	u32			pending;
+ 	u32			mr;
+@@ -341,7 +341,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	if (!spi->max_speed_hz)
+ 		return -EINVAL;
 =20
--	if (op->data.dir =3D=3D SPI_MEM_DATA_IN && op->data.nbytes)
--		ifr |=3D QSPI_IFR_TFRTYP_TRSFR_READ;
--	else
--		ifr |=3D QSPI_IFR_TFRTYP_TRSFR_WRITE;
-+	if (op->data.dir =3D=3D SPI_MEM_DATA_OUT)
-+		ifr |=3D QSPI_IFR_SAMA5D2_WRITE_TRSFR;
+-	src_rate =3D clk_get_rate(aq->clk);
++	src_rate =3D clk_get_rate(aq->pclk);
+ 	if (!src_rate)
+ 		return -EINVAL;
 =20
- 	/* Clear pending interrupts */
- 	(void)readl_relaxed(aq->regs + QSPI_SR);
+@@ -433,15 +433,18 @@ static int atmel_qspi_probe(struct platform_device *p=
+dev)
+ 	}
+=20
+ 	/* Get the peripheral clock */
+-	aq->clk =3D devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(aq->clk)) {
++	aq->pclk =3D devm_clk_get(&pdev->dev, "pclk");
++	if (IS_ERR(aq->pclk))
++		aq->pclk =3D devm_clk_get(&pdev->dev, NULL);
++
++	if (IS_ERR(aq->pclk)) {
+ 		dev_err(&pdev->dev, "missing peripheral clock\n");
+-		err =3D PTR_ERR(aq->clk);
++		err =3D PTR_ERR(aq->pclk);
+ 		goto exit;
+ 	}
+=20
+ 	/* Enable the peripheral clock */
+-	err =3D clk_prepare_enable(aq->clk);
++	err =3D clk_prepare_enable(aq->pclk);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to enable the peripheral clock\n");
+ 		goto exit;
+@@ -452,25 +455,25 @@ static int atmel_qspi_probe(struct platform_device *p=
+dev)
+ 	if (irq < 0) {
+ 		dev_err(&pdev->dev, "missing IRQ\n");
+ 		err =3D irq;
+-		goto disable_clk;
++		goto disable_pclk;
+ 	}
+ 	err =3D devm_request_irq(&pdev->dev, irq, atmel_qspi_interrupt,
+ 			       0, dev_name(&pdev->dev), aq);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	err =3D atmel_qspi_init(aq);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	err =3D spi_register_controller(ctrl);
+ 	if (err)
+-		goto disable_clk;
++		goto disable_pclk;
+=20
+ 	return 0;
+=20
+-disable_clk:
+-	clk_disable_unprepare(aq->clk);
++disable_pclk:
++	clk_disable_unprepare(aq->pclk);
+ exit:
+ 	spi_controller_put(ctrl);
+=20
+@@ -484,7 +487,7 @@ static int atmel_qspi_remove(struct platform_device *pd=
+ev)
+=20
+ 	spi_unregister_controller(ctrl);
+ 	writel_relaxed(QSPI_CR_QSPIDIS, aq->regs + QSPI_CR);
+-	clk_disable_unprepare(aq->clk);
++	clk_disable_unprepare(aq->pclk);
+ 	return 0;
+ }
+=20
+@@ -492,7 +495,7 @@ static int __maybe_unused atmel_qspi_suspend(struct dev=
+ice *dev)
+ {
+ 	struct atmel_qspi *aq =3D dev_get_drvdata(dev);
+=20
+-	clk_disable_unprepare(aq->clk);
++	clk_disable_unprepare(aq->pclk);
+=20
+ 	return 0;
+ }
+@@ -501,7 +504,7 @@ static int __maybe_unused atmel_qspi_resume(struct devi=
+ce *dev)
+ {
+ 	struct atmel_qspi *aq =3D dev_get_drvdata(dev);
+=20
+-	clk_prepare_enable(aq->clk);
++	clk_prepare_enable(aq->pclk);
+=20
+ 	return atmel_qspi_init(aq);
+ }
 --=20
 2.9.5

@@ -1,8 +1,7 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH v5 01/13] spi: atmel-quadspi: cache MR value to avoid a write
- access
-Date: Tue, 5 Feb 2019 15:43:10 +0000
-Message-ID: <20190205154257.29529-2-tudor.ambarus@microchip.com>
+Subject: [PATCH v5 04/13] spi: atmel-quadspi: fix naming scheme
+Date: Tue, 5 Feb 2019 15:43:21 +0000
+Message-ID: <20190205154257.29529-5-tudor.ambarus@microchip.com>
 References: <20190205154257.29529-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -23,60 +22,86 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-Set the controller by default in Serial Memory Mode (SMM) at probe.
-Cache Mode Register (MR) value to avoid write access when setting
-the controller in serial memory mode at exec_op().
+Let general names to core drivers.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
 ---
-v5: collect R-b
-v4: s/smm/mr, init controller in serial memory mode by default
-v3: update smm value when different. rename mr/smm
-v2: cache MR value instead of moving the write access at probe
+v5: no changes
+v4: collect R-b
+v3: no change
+v2: update after the removing of iomem access wrappers
 
-drivers/spi/atmel-quadspi.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ddc712410812..d6864d29f294 100644
+index c745e75b755e..be1d1ba7898c 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -155,6 +155,7 @@ struct atmel_qspi {
- 	struct clk		*clk;
- 	struct platform_device	*pdev;
- 	u32			pending;
-+	u32			mr;
+@@ -158,14 +158,14 @@ struct atmel_qspi {
  	struct completion	cmd_completion;
  };
 =20
-@@ -238,7 +239,14 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, con=
-st struct spi_mem_op *op)
- 	icr =3D QSPI_ICR_INST(op->cmd.opcode);
- 	ifr =3D QSPI_IFR_INSTEN;
+-struct qspi_mode {
++struct atmel_qspi_mode {
+ 	u8 cmd_buswidth;
+ 	u8 addr_buswidth;
+ 	u8 data_buswidth;
+ 	u32 config;
+ };
 =20
--	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+	/*
-+	 * If the QSPI controller is set in regular SPI mode, set it in
-+	 * Serial Memory Mode (SMM).
-+	 */
-+	if (aq->mr !=3D QSPI_MR_SMM) {
-+		qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+		aq->mr =3D QSPI_MR_SMM;
-+	}
+-static const struct qspi_mode sama5d2_qspi_modes[] =3D {
++static const struct atmel_qspi_mode sama5d2_qspi_modes[] =3D {
+ 	{ 1, 1, 1, QSPI_IFR_WIDTH_SINGLE_BIT_SPI },
+ 	{ 1, 1, 2, QSPI_IFR_WIDTH_DUAL_OUTPUT },
+ 	{ 1, 1, 4, QSPI_IFR_WIDTH_QUAD_OUTPUT },
+@@ -175,8 +175,8 @@ static const struct qspi_mode sama5d2_qspi_modes[] =3D =
+{
+ 	{ 4, 4, 4, QSPI_IFR_WIDTH_QUAD_CMD },
+ };
 =20
- 	mode =3D find_mode(op);
+-static inline bool is_compatible(const struct spi_mem_op *op,
+-				 const struct qspi_mode *mode)
++static inline bool atmel_qspi_is_compatible(const struct spi_mem_op *op,
++					    const struct atmel_qspi_mode *mode)
+ {
+ 	if (op->cmd.buswidth !=3D mode->cmd_buswidth)
+ 		return false;
+@@ -190,12 +190,12 @@ static inline bool is_compatible(const struct spi_mem=
+_op *op,
+ 	return true;
+ }
+=20
+-static int find_mode(const struct spi_mem_op *op)
++static int atmel_qspi_find_mode(const struct spi_mem_op *op)
+ {
+ 	u32 i;
+=20
+ 	for (i =3D 0; i < ARRAY_SIZE(sama5d2_qspi_modes); i++)
+-		if (is_compatible(op, &sama5d2_qspi_modes[i]))
++		if (atmel_qspi_is_compatible(op, &sama5d2_qspi_modes[i]))
+ 			return i;
+=20
+ 	return -1;
+@@ -204,7 +204,7 @@ static int find_mode(const struct spi_mem_op *op)
+ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 				   const struct spi_mem_op *op)
+ {
+-	if (find_mode(op) < 0)
++	if (atmel_qspi_find_mode(op) < 0)
+ 		return false;
+=20
+ 	/* special case not supported by hardware */
+@@ -236,7 +236,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, cons=
+t struct spi_mem_op *op)
+ 		aq->mr =3D QSPI_MR_SMM;
+ 	}
+=20
+-	mode =3D find_mode(op);
++	mode =3D atmel_qspi_find_mode(op);
  	if (mode < 0)
-@@ -381,6 +389,10 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
- 	/* Reset the QSPI controller */
- 	qspi_writel(aq, QSPI_CR, QSPI_CR_SWRST);
-=20
-+	/* Set the QSPI controller by default in Serial Memory Mode */
-+	qspi_writel(aq, QSPI_MR, QSPI_MR_SMM);
-+	aq->mr =3D QSPI_MR_SMM;
-+
- 	/* Enable the QSPI controller */
- 	qspi_writel(aq, QSPI_CR, QSPI_CR_QSPIEN);
+ 		return -ENOTSUPP;
 =20
 --=20
 2.9.5

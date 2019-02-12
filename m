@@ -1,61 +1,109 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 4.20 103/352] spi: fix spi-at91-usart.c build errors when PINCTRL is not set
-Date: Mon, 11 Feb 2019 15:15:30 +0100
-Message-ID: <20190211141852.347398732@linuxfoundation.org>
-References: <20190211141846.543045703@linuxfoundation.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-        Radu Pirea <radu.pirea@microchip.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller bindings" to the spi tree
+Date: Tue, 12 Feb 2019 14:22:34 +0000 (GMT)
+Message-ID: <20190212142234.0AAEB1128113@debutante.sirena.org.uk>
+References: <1548658158-5460-3-git-send-email-masonccyang@mxic.com.tw>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        sergei.shtylyov@cogentembedded.com, juliensu@mxic.com.tw,
+        Simon Horman <horms@verge.net.au>, zhengxunli@mxic.com.tw,
+        linux-spi@vger.kernel.org
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190211141846.543045703@linuxfoundation.org>
+In-Reply-To: <1548658158-5460-3-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-4.20-stable review patch.  If anyone has any objections, please let me know.
+The patch
 
-------------------
+   dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller bindings
 
-[ Upstream commit c2b142cc3939e932d4fa2210c2a5155df5736590 ]
+has been applied to the spi tree at
 
-Fix build errors when CONFIG_PINCTRL is not enabled.
-The header file <linux/pinctrl/consumer.h> handles both CONFIG_PINCTRL
-enabled and disabled cases.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-  CC [M]  drivers/spi/spi-at91-usart.o
-../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_suspend':
-../drivers/spi/spi-at91-usart.c:409:2: error: implicit declaration of function 'pinctrl_pm_select_sleep_state' [-Werror=implicit-function-declaration]
-  pinctrl_pm_select_sleep_state(dev);
-../drivers/spi/spi-at91-usart.c: In function 'at91_usart_spi_runtime_resume':
-../drivers/spi/spi-at91-usart.c:419:2: error: implicit declaration of function 'pinctrl_pm_select_default_state' [-Werror=implicit-function-declaration]
-  pinctrl_pm_select_default_state(dev);
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Radu Pirea <radu.pirea@microchip.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 06938aef3e9f33760ea384dc74c0f16d6b98b5a0 Mon Sep 17 00:00:00 2001
+From: Mason Yang <masonccyang@mxic.com.tw>
+Date: Mon, 28 Jan 2019 14:49:18 +0800
+Subject: [PATCH] dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF
+ controller bindings
+
+Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-at91-usart.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../bindings/spi/spi-renesas-rpc.txt          | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index a924657642fa..08bcbd1f9aa2 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of_gpio.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- 
- #include <linux/spi/spi.h>
+diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+new file mode 100644
+index 000000000000..7dff7e7bea97
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+@@ -0,0 +1,40 @@
++Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
++--------------------------------------------------------------------
++
++Required properties:
++- compatible: should be an SoC-specific compatible value, followed by
++		"renesas,rcar-gen3-rpc" as a fallback.
++		supported SoC-specific values are:
++		"renesas,r8a77995-rpc"	(R-Car D3)
++- reg: should contain three register areas:
++	first for the base address of rpc-if registers,
++	second for the direct mapping read mode and
++	third for the write buffer area.
++- reg-names: should contain "regs", "dirmap" and "wbuf"
++- clocks: should contain 1 entries for the module's clock
++- clock-names: should contain "rpc"
++- #address-cells: should be 1
++- #size-cells: should be 0
++
++Example:
++
++	rpc: rpc@ee200000 {
++		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
++		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
++		      <0 0xee208000 0 0x100>;
++		reg-names = "regs", "dirmap", "wbuf";
++		clocks = <&cpg CPG_MOD 917>;
++		clock-names = "rpc";
++		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
++		resets = <&cpg 917>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		flash@0 {
++			compatible = "jedec,spi-nor";
++			reg = <0>;
++			spi-max-frequency = <40000000>;
++			spi-tx-bus-width = <1>;
++			spi-rx-bus-width = <1>;
++		};
++	};
 -- 
-2.19.1
+2.20.1

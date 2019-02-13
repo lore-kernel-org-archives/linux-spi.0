@@ -1,63 +1,128 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver" to the spi tree
-Date: Tue, 12 Feb 2019 16:49:40 +0000
-Message-ID: <20190212164940.GI20635@sirena.org.uk>
-References: <20190212142236.2807D1128113@debutante.sirena.org.uk>
- <4f91497a-96ee-4c10-436f-4d011edb3834@gmail.com>
- <20190212144359.GD20635@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="l0l+eSofNeLXHSnY"
-Cc: Mason Yang <masonccyang@mxic.com.tw>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Marek Vasut <marek.vasut@gmail.com>
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: [PATCH v2 1/3] spi: sprd: Add the SPI irq function for the SPI DMA mode
+Date: Wed, 13 Feb 2019 15:36:09 +0800
+Message-ID: <11e55b5f9b0d83649a5b81c7e3fdb667cd3ddc5b.1550043082.git.baolin.wang@linaro.org>
+Cc: orsonzhai@gmail.com, zhang.lyra@gmail.com, lanqing.liu@unisoc.com,
+        baolin.wang@linaro.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190212144359.GD20635@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Lanqing Liu <lanqing.liu@unisoc.com>
 
---l0l+eSofNeLXHSnY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The SPI irq event will use to complete the SPI work in the SPI DMA mode,
+so this patch is a preparation for the following DMA mode support.
 
-On Tue, Feb 12, 2019 at 02:43:59PM +0000, Mark Brown wrote:
+Moreover the SPI interrupt can be fired when removing the SPI controller,
+so we should make sure the SPI controller has stopped the queue in
+remove function before freeing the SPI irq.
 
-> Mason had submitted a new verison a couple of weeks ago and there'd been
-> no replies on the new version so I'd thought that all the prior issues
-> had been addressed.  I guess that's not the case?  The thread on the
-> version before was a bit long but seemed to peter out, though looking at
-> the archives it seems the main issue was that Mason stopped replying.
+Signed-off-by: Lanqing Liu <lanqing.liu@unisoc.com>
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+---
+Changes from v1:
+ - Return IRQ_NONE if detecting incorrect interrupt status.
+ - Add spi_controller_suspend in remove function.
+---
+ drivers/spi/spi-sprd.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-Following some IRC discussion with Marek and Sergei I've dropped these
-for now.  The interaction with the HyperFlash support seems unclear
-still and might be a bit more than a simple refactoring, worst case
-it'll be binding incompatible though hopefully not.  Mason, if you could
-work with them to figure out the MFD that'll be needed the driver looks
-fine from a SPI subsystem point of view.
-
-Sorry about the confusion for everyone here.
-
---l0l+eSofNeLXHSnY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlxi+SMACgkQJNaLcl1U
-h9C84Af/cS7fCpLU+Lf+jhGYKtuIzQ+L2S3hPAMWRwg7OoBXok3jTyMHLs3Tin9e
-ev69K6yi+yIObemPTHA0K74u7LHtNbe3qZhGmuJ864+3FpPecUbgqmnrGd9eBENH
-S28tgG0rORO+IfzwxjvfIFfRdL4Btqra5UbtIyJRvMPM4XXRiIE/iHX4z87XtRkt
-QOS8nYfasrQQsF0tUEi2xSWdXMTIss9uilYc/Y6EXlaPw1BgmLu9dn7i/YI6ox8e
-wi35bMH12U8lDvlgu/izyZOXO3asTCzhIwhtaP+JYMtmd6NX7CjDBSjcDpiOSuEq
-vHOxR7tEKoAn3ZW/5zTy0msgWxf2gQ==
-=ykMc
------END PGP SIGNATURE-----
-
---l0l+eSofNeLXHSnY--
+diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+index fa324ce..d1ddeee 100644
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -133,6 +133,7 @@ struct sprd_spi {
+ 	void __iomem *base;
+ 	struct device *dev;
+ 	struct clk *clk;
++	int irq;
+ 	u32 src_clk;
+ 	u32 hw_mode;
+ 	u32 trans_len;
+@@ -141,6 +142,7 @@ struct sprd_spi {
+ 	u32 hw_speed_hz;
+ 	u32 len;
+ 	int status;
++	struct completion xfer_completion;
+ 	const void *tx_buf;
+ 	void *rx_buf;
+ 	int (*read_bufs)(struct sprd_spi *ss, u32 len);
+@@ -575,6 +577,48 @@ static int sprd_spi_transfer_one(struct spi_controller *sctlr,
+ 	return ret;
+ }
+ 
++static irqreturn_t sprd_spi_handle_irq(int irq, void *data)
++{
++	struct sprd_spi *ss = (struct sprd_spi *)data;
++	u32 val = readl_relaxed(ss->base + SPRD_SPI_INT_MASK_STS);
++
++	if (val & SPRD_SPI_MASK_TX_END) {
++		writel_relaxed(SPRD_SPI_TX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
++		if (!(ss->trans_mode & SPRD_SPI_RX_MODE))
++			complete(&ss->xfer_completion);
++
++		return IRQ_HANDLED;
++	}
++
++	if (val & SPRD_SPI_MASK_RX_END) {
++		writel_relaxed(SPRD_SPI_RX_END_CLR, ss->base + SPRD_SPI_INT_CLR);
++		complete(&ss->xfer_completion);
++
++		return IRQ_HANDLED;
++	}
++
++	return IRQ_NONE;
++}
++
++static int sprd_spi_irq_init(struct platform_device *pdev, struct sprd_spi *ss)
++{
++	int ret;
++
++	ss->irq = platform_get_irq(pdev, 0);
++	if (ss->irq < 0) {
++		dev_err(&pdev->dev, "failed to get irq resource\n");
++		return ss->irq;
++	}
++
++	ret = devm_request_irq(&pdev->dev, ss->irq, sprd_spi_handle_irq,
++				0, pdev->name, ss);
++	if (ret)
++		dev_err(&pdev->dev, "failed to request spi irq %d, ret = %d\n",
++			ss->irq, ret);
++
++	return ret;
++}
++
+ static int sprd_spi_clk_init(struct platform_device *pdev, struct sprd_spi *ss)
+ {
+ 	struct clk *clk_spi, *clk_parent;
+@@ -635,11 +679,16 @@ static int sprd_spi_probe(struct platform_device *pdev)
+ 	sctlr->max_speed_hz = min_t(u32, ss->src_clk >> 1,
+ 				    SPRD_SPI_MAX_SPEED_HZ);
+ 
++	init_completion(&ss->xfer_completion);
+ 	platform_set_drvdata(pdev, sctlr);
+ 	ret = sprd_spi_clk_init(pdev, ss);
+ 	if (ret)
+ 		goto free_controller;
+ 
++	ret = sprd_spi_irq_init(pdev, ss);
++	if (ret)
++		goto free_controller;
++
+ 	ret = clk_prepare_enable(ss->clk);
+ 	if (ret)
+ 		goto free_controller;
+@@ -690,6 +739,8 @@ static int sprd_spi_remove(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	spi_controller_suspend(sctlr);
++
+ 	clk_disable_unprepare(ss->clk);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-- 
+1.7.9.5

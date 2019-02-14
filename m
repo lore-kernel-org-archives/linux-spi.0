@@ -1,150 +1,77 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: Add a prefix for SPI DMA channel macros" to the spi tree
-Date: Wed, 13 Feb 2019 15:57:03 +0000 (GMT)
-Message-ID: <20190213155703.14C9C1128158@debutante.sirena.org.uk>
-References: <94b245cf862bddcbeba065b6adc3e20f4155bdca.1550063176.git.baolin.wang@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        orsonzhai@gmail.com, zhang.lyra@gmail.com, lanqing.liu@unisoc.com,
-        baolin.wang@linaro.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Baolin Wang <baolin.wang@linaro.org>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: Applied "spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver" to the spi tree
+Date: Thu, 14 Feb 2019 11:52:25 +0100
+Message-ID: <0f26ffa5-e517-742f-ebd3-0093eda27145@gmail.com>
+References: <20190212142236.2807D1128113@debutante.sirena.org.uk>
+ <4f91497a-96ee-4c10-436f-4d011edb3834@gmail.com>
+ <20190212144359.GD20635@sirena.org.uk> <20190212164940.GI20635@sirena.org.uk>
+ <OF9C8DA179.15D69C0A-ON482583A0.00283EB5-482583A0.002E45C8@mxic.com.tw>
+ <20190213121635.GD7540@sirena.org.uk>
+ <acb7940e-df38-97a7-8500-4825fb0f6604@gmail.com>
+ <OF9B3A3A20.C0BF34B8-ON482583A1.002D5F3B-482583A1.00329653@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=big5
+Content-Transfer-Encoding: 8bit
+Cc: bbrezillon@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <94b245cf862bddcbeba065b6adc3e20f4155bdca.1550063176.git.baolin.wang@linaro.org>
+In-Reply-To: <OF9B3A3A20.C0BF34B8-ON482583A1.002D5F3B-482583A1.00329653@mxic.com.tw>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 2/14/19 10:12 AM, masonccyang@mxic.com.tw wrote:
+> Hi,
 
-   spi: sprd: Add a prefix for SPI DMA channel macros
+Hi,
 
-has been applied to the spi tree at
+>> "Marek Vasut" <marek.vasut@gmail.com>
+>> 2019/02/13 ¤U¤È 08:37
+>>
+>> On 2/13/19 1:16 PM, Mark Brown wrote:
+>> > On Wed, Feb 13, 2019 at 04:25:32PM +0800, masonccyang@mxic.com.tw wrote:
+>> >
+>> >> From current mainline branch, MFD seems support the device which is on
+>> >> the same hardware bus(i.e, I2C, SPI, MMIO and SPMI)for multi-function
+>> >> by Read/Write the common same registers.
+>> >
+>> > That's most MFDs but there are some that do some level of enumeration
+>> > (even if it's just looking at the device ID that got registered) to
+>> > decide what subdevices get registered, that's what people are suggesting
+>> > here I think.
+>>
+>> Right. Although I think some of the code could be shared between the SPI
+>> and HF modes.
+> 
+> If it is right that MFD is based on the same hardware bus for multi
+> function
+> device,i.e,. based on SPI/I2C/PCI bus to register device by
+> mfd_add_devices().
+> 
+> For a multi function device works on different hardware bus, it has nothing
+> to do with mfd-core.c(MFD framework) even though their driver are in
+> drivers/mfd directory, i.e,. mcp-core.x, sm501.c.
+> 
+> Since RPC-IF works on different hardware bus for SPI bus or CFI
+> HyperFlash bus,
+> is it a good idea to implement MFD framework for RPC-IF ?
+> Or we just separate RPC-IF driver by spi mode and cfi mode ?
+> 
+> any comments/opinions on RPC-IF/MFD-framework is welcome!
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Mark mentioned it before, you can use the MFD for MMIO too.
+The goal here is to have some common code which is shared by the SPI and
+HF part of the driver, and then a separate SPI handling code and HF
+handling code. The common code should determine which part to activate
+based on the DT.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 5e060c48bc52d6e269cd01261cce3b260eba84ba Mon Sep 17 00:00:00 2001
-From: Baolin Wang <baolin.wang@linaro.org>
-Date: Wed, 13 Feb 2019 21:08:16 +0800
-Subject: [PATCH] spi: sprd: Add a prefix for SPI DMA channel macros
-
-Add a prefix for SPI DMA channel macros to avoid namespace conflicts,
-and no functional changes.
-
-Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-sprd.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index a4398e737650..f6c8838f7dc3 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -135,14 +135,14 @@
- #define SPRD_SPI_DMA_STEP		8
- 
- enum sprd_spi_dma_channel {
--	SPI_RX,
--	SPI_TX,
--	SPI_MAX,
-+	SPRD_SPI_RX,
-+	SPRD_SPI_TX,
-+	SPRD_SPI_MAX,
- };
- 
- struct sprd_spi_dma {
- 	bool enable;
--	struct dma_chan *dma_chan[SPI_MAX];
-+	struct dma_chan *dma_chan[SPRD_SPI_MAX];
- 	enum dma_slave_buswidth width;
- 	u32 fragmens_len;
- 	u32 rx_len;
-@@ -514,7 +514,7 @@ static int sprd_spi_dma_submit(struct dma_chan *dma_chan,
- 
- static int sprd_spi_dma_rx_config(struct sprd_spi *ss, struct spi_transfer *t)
- {
--	struct dma_chan *dma_chan = ss->dma.dma_chan[SPI_RX];
-+	struct dma_chan *dma_chan = ss->dma.dma_chan[SPRD_SPI_RX];
- 	struct dma_slave_config config = {
- 		.src_addr = ss->phy_base,
- 		.src_addr_width = ss->dma.width,
-@@ -532,7 +532,7 @@ static int sprd_spi_dma_rx_config(struct sprd_spi *ss, struct spi_transfer *t)
- 
- static int sprd_spi_dma_tx_config(struct sprd_spi *ss, struct spi_transfer *t)
- {
--	struct dma_chan *dma_chan = ss->dma.dma_chan[SPI_TX];
-+	struct dma_chan *dma_chan = ss->dma.dma_chan[SPRD_SPI_TX];
- 	struct dma_slave_config config = {
- 		.dst_addr = ss->phy_base,
- 		.src_addr_width = ss->dma.width,
-@@ -550,23 +550,23 @@ static int sprd_spi_dma_tx_config(struct sprd_spi *ss, struct spi_transfer *t)
- 
- static int sprd_spi_dma_request(struct sprd_spi *ss)
- {
--	ss->dma.dma_chan[SPI_RX] = dma_request_chan(ss->dev, "rx_chn");
--	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPI_RX])) {
--		if (PTR_ERR(ss->dma.dma_chan[SPI_RX]) == -EPROBE_DEFER)
--			return PTR_ERR(ss->dma.dma_chan[SPI_RX]);
-+	ss->dma.dma_chan[SPRD_SPI_RX] = dma_request_chan(ss->dev, "rx_chn");
-+	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPRD_SPI_RX])) {
-+		if (PTR_ERR(ss->dma.dma_chan[SPRD_SPI_RX]) == -EPROBE_DEFER)
-+			return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_RX]);
- 
- 		dev_err(ss->dev, "request RX DMA channel failed!\n");
--		return PTR_ERR(ss->dma.dma_chan[SPI_RX]);
-+		return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_RX]);
- 	}
- 
--	ss->dma.dma_chan[SPI_TX]  = dma_request_chan(ss->dev, "tx_chn");
--	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPI_TX])) {
--		if (PTR_ERR(ss->dma.dma_chan[SPI_TX]) == -EPROBE_DEFER)
--			return PTR_ERR(ss->dma.dma_chan[SPI_TX]);
-+	ss->dma.dma_chan[SPRD_SPI_TX]  = dma_request_chan(ss->dev, "tx_chn");
-+	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPRD_SPI_TX])) {
-+		if (PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]) == -EPROBE_DEFER)
-+			return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
- 
- 		dev_err(ss->dev, "request TX DMA channel failed!\n");
--		dma_release_channel(ss->dma.dma_chan[SPI_RX]);
--		return PTR_ERR(ss->dma.dma_chan[SPI_TX]);
-+		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
-+		return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
- 	}
- 
- 	return 0;
-@@ -574,11 +574,11 @@ static int sprd_spi_dma_request(struct sprd_spi *ss)
- 
- static void sprd_spi_dma_release(struct sprd_spi *ss)
- {
--	if (ss->dma.dma_chan[SPI_RX])
--		dma_release_channel(ss->dma.dma_chan[SPI_RX]);
-+	if (ss->dma.dma_chan[SPRD_SPI_RX])
-+		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
- 
--	if (ss->dma.dma_chan[SPI_TX])
--		dma_release_channel(ss->dma.dma_chan[SPI_TX]);
-+	if (ss->dma.dma_chan[SPRD_SPI_TX])
-+		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_TX]);
- }
- 
- static int sprd_spi_dma_txrx_bufs(struct spi_device *sdev,
 -- 
-2.20.1
+Best regards,
+Marek Vasut

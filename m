@@ -1,7 +1,7 @@
 From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RFC 3/4] clk: samsung: exynos5: Fix kfree() of const memory on setting driver_override
-Date: Mon, 18 Feb 2019 11:15:59 +0100
-Message-ID: <1550484960-2392-4-git-send-email-krzk@kernel.org>
+Subject: [RFC 4/4] slimbus: ngd: Fix kfree() of const memory on setting driver_override
+Date: Mon, 18 Feb 2019 11:16:00 +0100
+Message-ID: <1550484960-2392-5-git-send-email-krzk@kernel.org>
 References: <1550484960-2392-1-git-send-email-krzk@kernel.org>
 To: Russell King <linux@armlinux.org.uk>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
@@ -44,21 +44,21 @@ manually set later through sysfs, kfree() of old value leads to:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/clk/samsung/clk-exynos5-subcmu.c | 2 +-
+ drivers/slimbus/qcom-ngd-ctrl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/samsung/clk-exynos5-subcmu.c b/drivers/clk/samsung/clk-exynos5-subcmu.c
-index d07ef26bd052..880d92ad20e8 100644
---- a/drivers/clk/samsung/clk-exynos5-subcmu.c
-+++ b/drivers/clk/samsung/clk-exynos5-subcmu.c
-@@ -143,7 +143,7 @@ static int __init exynos5_clk_register_subcmu(struct device *parent,
- 		return -ENOMEM;
- 
- 	pdev->dev.parent = parent;
--	pdev->driver_override = "exynos5-subcmu";
-+	platform_set_driver_override(pdev, "exynos5-subcmu");
- 	platform_set_drvdata(pdev, (void *)info);
- 	of_genpd_add_device(&genpdspec, &pdev->dev);
- 	ret = platform_device_add(pdev);
+diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
+index 71f094c9ec68..fc46bf6ec903 100644
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1344,7 +1344,7 @@ static int of_qcom_slim_ngd_register(struct device *parent,
+ 		ngd->pdev = platform_device_alloc(QCOM_SLIM_NGD_DRV_NAME, id);
+ 		ngd->id = id;
+ 		ngd->pdev->dev.parent = parent;
+-		ngd->pdev->driver_override = QCOM_SLIM_NGD_DRV_NAME;
++		platform_set_driver_override(ngd->pdev, QCOM_SLIM_NGD_DRV_NAME);
+ 		ngd->pdev->dev.of_node = node;
+ 		ctrl->ngd = ngd;
+ 		platform_set_drvdata(ngd->pdev, ctrl);
 -- 
 2.7.4

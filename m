@@ -1,7 +1,8 @@
 From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RFC 0/4] clk/driver: platform: Fix kfree() of const memory on setting driver_override
-Date: Mon, 18 Feb 2019 11:15:56 +0100
-Message-ID: <1550484960-2392-1-git-send-email-krzk@kernel.org>
+Subject: [RFC 1/4] clk: samsung: exynos5: Fix possible NULL pointer exception on platform_device_alloc() failure
+Date: Mon, 18 Feb 2019 11:15:57 +0100
+Message-ID: <1550484960-2392-2-git-send-email-krzk@kernel.org>
+References: <1550484960-2392-1-git-send-email-krzk@kernel.org>
 To: Russell King <linux@armlinux.org.uk>,
         Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org,
@@ -20,52 +21,48 @@ To: Russell King <linux@armlinux.org.uk>,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, alsa-devel@alsa-project
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1550484960-2392-1-git-send-email-krzk@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+During initialization of subdevices if platform_device_alloc() failed,
+returned NULL pointer will be later dereferenced.  Add proper error
+paths to exynos5_clk_register_subcmu().  The return value of this
+function is still ignored because at this stage of init there is nothing
+we can do.
 
-The problem
-===========
-Several device types (platform, amba, spi etc.) provide a driver_override
-field.  On sysfs store or during device removal, they kfree() the
-existing value.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/clk/samsung/clk-exynos5-subcmu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-However the users are unaware of this and set the driver_override like:
-
+diff --git a/drivers/clk/samsung/clk-exynos5-subcmu.c b/drivers/clk/samsung/clk-exynos5-subcmu.c
+index 93306283d764..d07ef26bd052 100644
+--- a/drivers/clk/samsung/clk-exynos5-subcmu.c
++++ b/drivers/clk/samsung/clk-exynos5-subcmu.c
+@@ -136,15 +136,21 @@ static int __init exynos5_clk_register_subcmu(struct device *parent,
+ {
+ 	struct of_phandle_args genpdspec = { .np = pd_node };
+ 	struct platform_device *pdev;
++	int ret;
+ 
+ 	pdev = platform_device_alloc(info->pd_name, -1);
++	if (!pdev)
++		return -ENOMEM;
++
+ 	pdev->dev.parent = parent;
  	pdev->driver_override = "exynos5-subcmu";
-
-which obviously leads to error.
-
-Solution
-========
-I provided simple helper for platform device.  If this approach is
-acceptable, I can convert also other buses, like AMBA, SPI.
-
-
-Dependencies and pick up order
-==============================
-Patch 1: please pick it as is through clock tree
-Patch 3: Depends on patch 1 (merge conflict) and 2.
-Patch 4: Depends on patch 2.
-
-Best regards,
-Krzysztof
-
-
-Krzysztof Kozlowski (4):
-  clk: samsung: exynos5: Fix possible NULL pointer exception on
-    platform_device_alloc() failure
-  driver: platform: Provide helper for safer setting of driver_override
-  clk: samsung: exynos5: Fix kfree() of const memory on setting
-    driver_override
-  slimbus: ngd: Fix kfree() of const memory on setting driver_override
-
- drivers/base/platform.c                  | 63 ++++++++++++++++++++++----------
- drivers/clk/samsung/clk-exynos5-subcmu.c | 12 ++++--
- drivers/slimbus/qcom-ngd-ctrl.c          |  2 +-
- include/linux/platform_device.h          |  9 ++++-
- 4 files changed, 61 insertions(+), 25 deletions(-)
-
+ 	platform_set_drvdata(pdev, (void *)info);
+ 	of_genpd_add_device(&genpdspec, &pdev->dev);
+-	platform_device_add(pdev);
++	ret = platform_device_add(pdev);
++	if (ret)
++		platform_device_put(pdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int __init exynos5_clk_probe(struct platform_device *pdev)
 -- 
 2.7.4

@@ -1,86 +1,67 @@
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [RFC 0/4] clk/driver: platform: Fix kfree() of const memory on
- setting driver_override
-Date: Thu, 21 Feb 2019 12:43:29 +0100
-Message-ID: <CAJKOXPc=mKrNuw65qf=vPtRD7b7=5FZWdNcncvwhpDN+tqp0Bw@mail.gmail.com>
-References: <1550484960-2392-1-git-send-email-krzk@kernel.org>
- <CAMuHMdWXy_0zL8FZWapPj4+cXRd0wHy9buLhf0D0txpAHPkK7Q@mail.gmail.com>
- <CAJKOXPe1CW4k4ivbh4QhKEbuVc3RRNmzUwQcL0BsrAn=hCdjZg@mail.gmail.com> <155070010208.77512.17397936280518534534@swboyd.mtv.corp.google.com>
+From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Subject: [BUG] vf610-zii-dev-rev-b SPI fails at boot
+Date: Thu, 21 Feb 2019 15:24:59 +0000
+Message-ID: <20190221152459.axrjce7yqkjmedgl@shell.armlinux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Mark Brown <broonie@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "linux-samsung-soc@vger.kernel.org"
-        <linux-samsung-soc@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux ARM <lin
-To: Stephen Boyd <sboyd@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <155070010208.77512.17397936280518534534@swboyd.mtv.corp.google.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 20 Feb 2019 at 23:01, Stephen Boyd <sboyd@kernel.org> wrote:
->
-> Quoting Krzysztof Kozlowski (2019-02-18 03:14:29)
-> > On Mon, 18 Feb 2019 at 11:40, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > >
-> > > Hi Krzysztof,
-> > >
-> > > On Mon, Feb 18, 2019 at 11:27 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > > The problem
-> > > > ===========
-> > > > Several device types (platform, amba, spi etc.) provide a driver_override
-> > > > field.  On sysfs store or during device removal, they kfree() the
-> > > > existing value.
-> > > >
-> > > > However the users are unaware of this and set the driver_override like:
-> > > >
-> > > >         pdev->driver_override = "exynos5-subcmu";
-> > > >
-> > > > which obviously leads to error.
-> > >
-> > > IMHO driver_override is not meant to be set by a driver, only from userspace,
-> > > for binding the device to vfio (is there another use case?).
-> > >
-> > > >   clk: samsung: exynos5: Fix kfree() of const memory on setting
-> > > >     driver_override
-> > > >   slimbus: ngd: Fix kfree() of const memory on setting driver_override
-> > >
-> > > I see all users set override immediately after allocating a platform device.
-> > > Can't they just allocate a platform device using the override name instead?
-> > > What am I missing?
-> >
-> > For the clk-exynos5-subcmu.c case, driver registers several
-> > sub-devices. Each sub-devices is a clock controller associated with
-> > power domain. I guess the author wanted to have meaningful names of
-> > these sub-devices (DISP, CAM etc. like names of power domains),
-> > instead of just exynos5-subcmu.1, exynos5-subcmu.2 ...
-> >
-> > If driver_override should not be used for such case, then I could
-> > replace it with what you said.
->
-> Looking at the introduction of the code into the platform bus makes it
-> sound like it was all for vfio devices. If the clk driver doesn't need
-> it for that purpose and can get by with more generic names then it seems
-> best to avoid using it entirely. So can you do that and resend the first
-> patch in this series too? Effectively splitting the clk parts from the
-> larger issue of kfree()ing of const memory.
+While booting 4.20 on the ZII development revision B board, I notice 
+this in the kernel logs:
 
-Sure, let me send just the clk parts.
+spi spi0.1: setup: unsupported mode bits 4
+spi_gpio spi0: can't setup spi0.1, status -22
+spi_master spi0: spi_device register error /spi0/at93c46d@1
+spi_master spi0: Failed to create SPI device for /spi0/at93c46d@1
 
-BR,
-Krzysztof
+This is for the at93c46d@1 device attached to spi-gpio (see
+arch/arm/boot/dts/vf610-zii-dev-rev-b.dts around line 330).  This
+is declared with "spi-cs-high;" in DT.  It appears to be complaining
+about the SPI_CS_HIGH flag.
+
+It appears this warning comes from drivers/spi/spi.c around lines
+2828-2847 due to:
+
+	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
+
+and it looks like spi-gpio sets:
+
+	master->mode_bits = SPI_3WIRE | SPI_CPHA | SPI_CPOL;
+
+but then goes on to set:
+
+	spi_gpio->bitbang.flags = SPI_CS_HIGH;
+
+However, this is ignored by bitbang if master->mode_bits has already
+been set:
+
+	if (!master->mode_bits)
+		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
+
+It looks like this commit introduced for v4.19 broke the driver:
+
+commit 4b859db2c60692560afbfef1b030d0ddef57b7ee
+Author: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sat Jul 28 10:19:14 2018 +0200
+
+by setting master->mode_bits - prior to this, bitbang would have set
+the mode bits itself.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up

@@ -1,77 +1,67 @@
-From: kernel@martin.sperl.org
-Subject: [PATCH 3/5] spi: core: allow defining time that cs is deasserted as a
- multiple of SCK
-Date: Sat, 23 Feb 2019 08:49:50 +0000
-Message-ID: <20190223084952.14758-4-kernel@martin.sperl.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH 4/5] spi: bcm2835: support effective_speed_hz
+Date: Sat, 23 Feb 2019 08:49:51 +0000
+Message-ID: <20190223084952.14758-5-kernel@martin.sperl.org>
 References: <20190223084952.14758-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Martin Sperl <kernel@martin.sperl.org>
-To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
- Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190223084952.14758-1-kernel@martin.sperl.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+ Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190223084952.14758-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel@martin.sperl.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Support setting a delay between cs assert and deassert as
-a multiple of spi clock length.
+Setting spi_transfer->effective_speed_hz in transfer_one so that
+it can get used in cs_change_delay configured with delay as a muliple
+of SPI clock cycles.
 
-Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi.c       | 8 ++++++++
- include/linux/spi/spi.h | 1 +
- 2 files changed, 9 insertions(+)
+ drivers/spi/spi-bcm2835.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5a4616894d57..d5259bdd4b88 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1092,6 +1092,7 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 35aebdfd3b4e..c2912c1e09c5 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -777,7 +777,6 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
  {
- 	u32 delay = xfer->cs_change_delay;
- 	u32 unit = xfer->cs_change_delay_unit;
-+	u32 hz;
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, cdiv;
+-	unsigned long spi_used_hz;
+ 	unsigned long long xfer_time_us;
+ 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
 
- 	/* return early on "fast" mode - for everything but USECS */
- 	if (!delay && unit != SPI_DELAY_UNIT_USECS)
-@@ -1107,6 +1108,13 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
- 		break;
- 	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
- 		break;
-+	case SPI_DELAY_UNIT_SCK:
-+		/* if there is no effective speed know, then approximate
-+		 * by underestimating with half the requested hz
-+		 */
-+		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
-+		delay *= DIV_ROUND_UP(1000000000, hz);
-+		break;
- 	default:
- 		dev_err_once(&msg->spi->dev,
- 			     "Use of unsupported delay unit %i, using default of 10us\n",
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f503a712423d..0b1d5e2b8b8b 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -799,6 +799,7 @@ struct spi_transfer {
- 	u8		cs_change_delay_unit;
- #define SPI_DELAY_UNIT_USECS	0
- #define SPI_DELAY_UNIT_NSECS	1
-+#define SPI_DELAY_UNIT_SCK	2
- 	u32		speed_hz;
- 	u16		word_delay;
+@@ -797,7 +796,7 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	} else {
+ 		cdiv = 0; /* 0 is the slowest we can go */
+ 	}
+-	spi_used_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
++	tfr->effective_speed_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
+ 	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
 
+ 	/* handle all the 3-wire mode */
+@@ -823,7 +822,7 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	xfer_time_us = (unsigned long long)tfr->len
+ 		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
+ 		* 1000000;
+-	do_div(xfer_time_us, spi_used_hz);
++	do_div(xfer_time_us, tfr->effective_speed_hz);
+
+ 	/* for short requests run polling*/
+ 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
 --
 2.11.0

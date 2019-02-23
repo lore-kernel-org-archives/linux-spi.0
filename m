@@ -1,68 +1,66 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: Re: [PATCH 3/5] spi: core: allow defining time that cs is deasserted
- as a multiple of SCK
-Date: Sat, 23 Feb 2019 14:15:13 +0100
-Message-ID: <CCC6392E-3189-49BE-B04D-3997434184D0@martin.sperl.org>
-References: <20190223084952.14758-1-kernel@martin.sperl.org>
- <20190223084952.14758-4-kernel@martin.sperl.org>
- <20190223124010.y7lsncknnxoblvgz@wunner.de>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190223124010.y7lsncknnxoblvgz-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: kernel@martin.sperl.org
+Subject: [resend] [PATCH 5/5] spi: bcm2835aux: support effective_speed_hz
+Date: Sat, 23 Feb 2019 15:07:05 +0000
+Message-ID: <20190223150705.10729-1-kernel@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTHVrYXMhCgo+IE9uIDIzLjAyLjIwMTksIGF0IDEzOjQwLCBMdWthcyBXdW5uZXIgPGx1a2Fz
-QHd1bm5lci5kZT4gd3JvdGU6Cj4gCj4gT24gU2F0LCBGZWIgMjMsIDIwMTkgYXQgMDg6NDk6NTBB
-TSArMDAwMCwga2VybmVsQG1hcnRpbi5zcGVybC5vcmcgd3JvdGU6Cj4+IFN1cHBvcnQgc2V0dGlu
-ZyBhIGRlbGF5IGJldHdlZW4gY3MgYXNzZXJ0IGFuZCBkZWFzc2VydCBhcwo+PiBhIG11bHRpcGxl
-IG9mIHNwaSBjbG9jayBsZW5ndGguCj4gCj4gVG8gd2hhdCBlbmQ/Ci4uLgo+IAo+IFRoZSBhYmls
-aXR5IHRvIGRlZmluZSBhIHVuaXQgc2VlbXMgc29tZXdoYXQgb3Zlci1lbmdpbmVlcmVkIHRvIG1l
-Lgo+IFlvdSdyZSBpbnRyb2R1Y2luZyBsb3RzIG9mIGJyYW5jaGluZyBhbmQgaW50ZWdlciBkaXZp
-c2lvbnMgKGJvdGgKPiBjb21wYXJhdGl2ZWx5IGV4cGVuc2l2ZSBvcGVyYXRpb25zKSB3aGljaCBh
-cmUgZXhlY3V0ZWQgZm9yIGV2ZXJ5Cj4gc2luZ2xlIHRyYW5zZmVyIChpLmUuIGluIGEgaG90IHBh
-dGgpLiAgSSdkIHJlY29tbWVuZCBzdGFuZGFyZGl6aW5nCj4gb24gYSBzaW5nbGUgdW5pdC4gIElm
-IDEgdXNlYyBpcyB0b28gY29hcnNlLWdyYWluZWQgZm9yIHlvdXIgdXNlIGNhc2UsCj4gY29udmVy
-dCBldmVyeXRoaW5nIHRvIG5zZWMuCgpXZWxsIC0gYSBzcGlfZGV2aWNlIGRyaXZlciBkb2VzIG5v
-dCBhY3R1YWxseSBrbm93IHdoYXQgaXMgdGhlCmFjdHVhbCBzcGkgY2xvY2sgY29uZmlndXJlZC91
-c2VkIGJ5IHRoZSBzcGktYnVzLWRyaXZlci4KCkFsbCBpdCBrbm93cyBpcyB0aGF0IHRoZSBkZXZp
-Y2UgcmVxdWlyZXMgWCBjbG9jayBjeWNsZXMgb2YgY3MgaGlnaC4KU28gaG93IHdvdWxkIHlvdSBk
-ZWZpbmUgdGhhdCBzbyB0aGF0IGlzIHZhbGlkIGZvciBhbGwgY2FzZXMgd2l0aG91dApyZXBsaWNh
-dGluZyBjb2RlIGluIGV2ZXJ5IGRyaXZlciB0aGF0IG5lZWRzIGl0IChldmVyeXdoZXJlIHNsaWdo
-dGx5CmRpZmZlcmVudGx5KT8KCkFzIGZvciBob3QtcGF0aDogd2UgYXJlIG5vdCBpbiB0aGUgaG90
-IHBhdGggLSB3ZSBuZWVkIHRvIHdhc3RlIHRpbWUKd2hlbiBhbnkgb2YgdGhvc2UgcGFyYW1ldGVy
-cyBhcmUgc2V0IQoKY3NfY2hhbmdlIGlzIG5vdCB0aGF0IGNvbW1vbmx5IHVzZWQgLSBvciBjc19k
-ZWxheV91c2VjIGZvciB0aGF0IG1hdHRlci4KClRoZSBjb3JyZXNwb25kaW5nIGlmcyBpbnQgdGhl
-IGhvdCBwYXRoIGFyZSBpbiB0aGUgY29kZSByaWdodCBub3cgLSAKd29yc3RlZCBjYXNlIHdlIGFy
-ZSBqdW1waW5nIGEgZmV3IG1vcmUgY3B1IGluc3RydWN0aW9ucyBmdXJ0aGVyIHRoYW4gd2UKd291
-bGQgcmlnaHQgbm93LgoKQWxzbyB0aGUgY29kZSBoYXMgYmVlbiBtb3ZlZCBpbnRvIGEgc2VwYXJh
-dGUgZnVuY3Rpb24gYW5kIHNvbWUgb2YgaXQKaXMgdXNlZCBmcm9tIG11bHRpcGxlIGxvY2F0aW9u
-cy4KClRodXMgaXQgaXMgdXAgdG8gdGhlIGNvbXBpbGVyIHRvIGtub3cgYmVzdCBpZiBpdCBpcyB3
-b3J0aCBpbmxpbmluZyB0aGUgCmZ1bmN0aW9uIG9yIGp1c3QgY2FsbGluZyBpdC4KCkZyb20gYSBD
-UFUgdXRpbGl6YXRpb24gcGVyc3BlY3RpdmU6IGZvciBtb3N0IHNpdHVhdGlvbnMgd2Ugd2lsbAoo
-bW9zdCBsaWtlbHkpIGJlIGJ1c3kgd2FpdGluZyB0byBwYXNzIHRoZSByZXF1aXJlZCB0aW1lIGFu
-eXdheS4KU28gdGhvc2UgZGl2aWRlcyBhcmUganVzdCB0YWtpbmcgdGltZSBmcm9tIHRob3NlIGJ1
-c3kgY3ljbGVz4oCmCgpGaW5hbGx5IGlmIHRoZSBjb21wdXRhdGlvbiB5aWVsZHMgYSBzaG9ydGVy
-IHZhbHVlIHRoYW4gYSAoY29uc2VydmF0aXZlKQp0aW1lLXZhbHVlIHRoYXQgd291bGQgaGF2ZSBi
-ZWVuIGdpdmVuIGluc3RlYWQsIHRoZW4gdGhvc2UgY29tcHV0YXRpb25zCihkaXZpZGVzKSAgaGF2
-ZSBoZWxwZWQgc2F2ZSBjcHUgY3ljbGVzIGFuZCBTUEkgYnVzIGJhbmR3aWR0aCwgc28gdGhleQph
-cmUgYmVuZWZpY2lhbC4KCkFzIGZvciB0aGUgcnBpLW1haWxpbmctbGlzdDogaWYgdGhpcyBpcyBh
-biBpc3N1ZSwgdGhlbiB0aGlzIGlzIGEKc2VwYXJhdGUgaXNzdWUgdGhhdCBuZWVkcyB0byBnZXQg
-YWRkcmVzc2VkIHNlcGFyYXRlbHkgYXMgaXQgaXMgbm90CnJlYWxseSBjb2RlLXJlbGF0ZWQuCgpN
-YXJ0aW4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGlu
-dXgtcnBpLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgt
-cnBpLWtlcm5lbAo=
+From: Martin Sperl <kernel@martin.sperl.org>
+
+Setting spi_transfer->effective_speed_hz in transfer_one so that
+it can get used in cs_change_delay configured with delay as a muliple
+of SPI clock cycles.
+
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 671e374e1b01..51ce76706073 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -325,7 +325,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, speed;
+-	unsigned long spi_used_hz;
+
+ 	/* calculate the registers to handle
+ 	 *
+@@ -353,7 +352,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	/* set the new speed */
+ 	bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
+
+-	spi_used_hz = clk_hz / (2 * (speed + 1));
++	tfr->effective_speed_hz = clk_hz / (2 * (speed + 1));
+
+ 	/* set transmit buffers and length */
+ 	bs->tx_buf = tfr->tx_buf;
+@@ -371,7 +370,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	 */
+ #define HZ_PER_BYTE ((9 * 1000000) / BCM2835_AUX_SPI_POLLING_LIMIT_US)
+ 	/* run in polling mode for short transfers */
+-	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
++	if (tfr->len < tfr->effective_speed_hz / HZ_PER_BYTE)
+ 		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr);
+
+ 	/* run in interrupt mode for all others */
+--
+2.11.0

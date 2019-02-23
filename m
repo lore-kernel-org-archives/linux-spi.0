@@ -1,8 +1,8 @@
 From: kernel@martin.sperl.org
-Subject: [PATCH 2/5] spi: core: allow reporting the effectivly used speed_hz
- for a transfer
-Date: Sat, 23 Feb 2019 08:49:49 +0000
-Message-ID: <20190223084952.14758-3-kernel@martin.sperl.org>
+Subject: [PATCH 3/5] spi: core: allow defining time that cs is deasserted as a
+ multiple of SCK
+Date: Sat, 23 Feb 2019 08:49:50 +0000
+Message-ID: <20190223084952.14758-4-kernel@martin.sperl.org>
 References: <20190223084952.14758-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,49 +26,52 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel@martin.sperl.org>
 
-Provide a means for the spi bus driver to report the effectively used
-spi clock frequency used for each spi_transfer.
+Support setting a delay between cs assert and deassert as
+a multiple of spi clock length.
 
 Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
 ---
- drivers/spi/spi.c       | 1 +
- include/linux/spi/spi.h | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/spi/spi.c       | 8 ++++++++
+ include/linux/spi/spi.h | 1 +
+ 2 files changed, 9 insertions(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 90659eb29660..5a4616894d57 100644
+index 5a4616894d57..d5259bdd4b88 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -3004,6 +3004,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 	 */
- 	message->frame_length = 0;
- 	list_for_each_entry(xfer, &message->transfers, transfer_list) {
-+		xfer->effective_speed_hz = 0;
- 		message->frame_length += xfer->len;
- 		if (!xfer->bits_per_word)
- 			xfer->bits_per_word = spi->bits_per_word;
+@@ -1092,6 +1092,7 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ {
+ 	u32 delay = xfer->cs_change_delay;
+ 	u32 unit = xfer->cs_change_delay_unit;
++	u32 hz;
+
+ 	/* return early on "fast" mode - for everything but USECS */
+ 	if (!delay && unit != SPI_DELAY_UNIT_USECS)
+@@ -1107,6 +1108,13 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 		break;
+ 	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
+ 		break;
++	case SPI_DELAY_UNIT_SCK:
++		/* if there is no effective speed know, then approximate
++		 * by underestimating with half the requested hz
++		 */
++		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
++		delay *= DIV_ROUND_UP(1000000000, hz);
++		break;
+ 	default:
+ 		dev_err_once(&msg->spi->dev,
+ 			     "Use of unsupported delay unit %i, using default of 10us\n",
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f2ce1fb403ef..f503a712423d 100644
+index f503a712423d..0b1d5e2b8b8b 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -711,6 +711,9 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  *	the next transfer or completing this @spi_message.
-  * @word_delay: clock cycles to inter word delay after each word size
-  *	(set by bits_per_word) transmission.
-+ * @effective_speed_hz: the effective SCK-speed that was used to
-+ *      transfer this transfer. Set to 0 if the spi bus driver does
-+ *      not support it.
-  * @transfer_list: transfers are sequenced through @spi_message.transfers
-  * @tx_sg: Scatterlist for transmit, currently not for client use
-  * @rx_sg: Scatterlist for receive, currently not for client use
-@@ -799,6 +802,8 @@ struct spi_transfer {
+@@ -799,6 +799,7 @@ struct spi_transfer {
+ 	u8		cs_change_delay_unit;
+ #define SPI_DELAY_UNIT_USECS	0
+ #define SPI_DELAY_UNIT_NSECS	1
++#define SPI_DELAY_UNIT_SCK	2
  	u32		speed_hz;
  	u16		word_delay;
-
-+	u32		effective_speed_hz;
-+
- 	struct list_head transfer_list;
- };
 
 --
 2.11.0

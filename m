@@ -1,8 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH 7/9] spi: bcm2835aux: remove dangerous uncontrolled read of
- fifo
-Date: Sun, 24 Feb 2019 12:54:38 +0000
-Message-ID: <20190224125440.16117-8-kernel@martin.sperl.org>
+Subject: [PATCH 9/9] spi: bcm2835aux: remove dead code
+Date: Sun, 24 Feb 2019 12:54:40 +0000
+Message-ID: <20190224125440.16117-10-kernel@martin.sperl.org>
 References: <20190224125440.16117-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,40 +25,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-This read of the fifo is a potential candidate for a race condition
-as the spi transfer is not necessarily finished and so can lead to
-an early read of the fifo that still misses data.
-
-So it has been removed - an additional loop will read the fifo
-correctly.
-
-Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
-(Note: requires Patch 6)
+Remove dead code that never can get reached, as we limit count to
+a max of 3.
 
 Suggested-by: Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
 ---
- drivers/spi/spi-bcm2835aux.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 9552f5343982..8821fc183ca0 100644
+index 8cd273d0fef2..109eba6308cc 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -246,13 +246,6 @@ static void bcm2835aux_spi_transfer_helper(struct bcm2835aux_spi *bs)
- 		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
- 		bcm2835aux_wr_fifo(bs);
- 	}
--
--	/* and check if we have reached "done" */
--	while (bs->rx_len &&
--	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
--		  BCM2835_AUX_SPI_STAT_BUSY))) {
--		bcm2835aux_rd_fifo(bs);
--	}
- }
-
- static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+@@ -175,9 +175,6 @@ static inline void bcm2835aux_rd_fifo(struct bcm2835aux_spi *bs)
+ 	data = bcm2835aux_rd(bs, BCM2835_AUX_SPI_IO);
+ 	if (bs->rx_buf) {
+ 		switch (count) {
+-		case 4:
+-			*bs->rx_buf++ = (data >> 24) & 0xff;
+-			/* fallthrough */
+ 		case 3:
+ 			*bs->rx_buf++ = (data >> 16) & 0xff;
+ 			/* fallthrough */
 --
 2.11.0

@@ -1,96 +1,77 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: Re: [PATCH 3/5] spi: core: allow defining time that cs is deasserted
- as a multiple of SCK
-Date: Sun, 24 Feb 2019 12:03:33 +0100
-Message-ID: <0CA42E9E-3297-41EC-8E90-FAE937E892DE@martin.sperl.org>
-References: <20190223084952.14758-1-kernel@martin.sperl.org>
- <20190223084952.14758-4-kernel@martin.sperl.org>
- <20190223124010.y7lsncknnxoblvgz@wunner.de>
- <CCC6392E-3189-49BE-B04D-3997434184D0@martin.sperl.org>
- <20190224103913.bjw7g6ievr75iawz@wunner.de>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+From: kernel@martin.sperl.org
+Subject: [PATCH 1/9] spi: bcm2835aux: fix driver to not allow 65535 (=-1)
+ cs-gpios
+Date: Sun, 24 Feb 2019 12:54:32 +0000
+Message-ID: <20190224125440.16117-2-kernel@martin.sperl.org>
+References: <20190224125440.16117-1-kernel@martin.sperl.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190224103913.bjw7g6ievr75iawz-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190224125440.16117-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Martin Sperl <kernel@martin.sperl.org>
 
-> On 24.02.2019, at 11:39, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
-> 
-> On Sat, Feb 23, 2019 at 02:15:13PM +0100, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
->> On 23.02.2019, at 13:40, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
->>> On Sat, Feb 23, 2019 at 08:49:50AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
->>>> Support setting a delay between cs assert and deassert as
->>>> a multiple of spi clock length.
->>> 
->>> The ability to define a unit seems somewhat over-engineered to me.
->>> You're introducing lots of branching and integer divisions (both
->>> comparatively expensive operations) which are executed for every
->>> single transfer (i.e. in a hot path).  I'd recommend standardizing
->>> on a single unit.  If 1 usec is too coarse-grained for your use case,
->>> convert everything to nsec.
->> 
->> Well - a spi_device driver does not actually know what is the
->> actual spi clock configured/used by the spi-bus-driver.
-> 
-> Which slave device and driver are we talking about anyway?
-> Is the driver actually making use of the ability to change the
-> speed per-transfer?  Most slaves I've dealt with so far use a
-> constant speed.  In that case the master driver could set the
-> slave's ->speed_hz member to the effective speed on ->setup()
-> and the slave's driver could then calculate the delay in nsec
-> or usec based on that speed.
+The original driver by default defines num_chipselects as -1.
+This actually allicates an array of 65535 entries in
+of_spi_register_master.
 
-Unfortunately this is not always the case...
+There is a side-effect for buggy device trees that (contrary to
+dt-binding documentation) have no cs-gpio defined.
 
-Some devices - like the mcp2517fd -  have for example an internal PLL
-based on an external clock. So during setup you have to use speed_hz 
-of <clock_hz> / 2 (or 4MHz at most) and only when PLL is in sync we 
-may be using speed_hz from the dt (or less if a module parameter is
-used to limit ourselves further)
+This mode was never supported by the driver due to limitations
+of native cs and additional code complexity and is explicitly
+not stated to be implemented.
 
-So the initial setup would not be able to help here - and every
-bus controller would now be required to implement setup.
+To keep backwards compatibility with such buggy DTs we limit
+the number of chip_selects to 1, as for all practical purposes
+it is only ever realistic to use a single chip select in
+native cs mode without negative side-effects.
 
-It also means open coding the calculations in each driver that 
-needs something like this.
+Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-Thus it is - imo - in the right location to support it in spi core.
-
-This is also the reason why I was asking if the same argument
-for a multiple of SCKs may apply also to delay_us.
-
-An ADC spi-slave would be an example where this could be needed
-to keep the spi bus quiet during sampling - I remember having
-seen one datasheet where cs was required to remain asserted
-during sampling and after X SCK cycles the conversion could get read.
-
-> 
->> All it knows is that the device requires X clock cycles of cs high.
-> 
-> That's what I was driving at with my "to what end?" question.  You've
-> apparently got a slave device that requires a delay of a specific number
-> of clock cycles.  You should make that explicit in the commit messages,
-> ideally by naming the slave that requires it.  Right now your commit
-> messages only explain the "what", not the "why".  For an uninitiated
-> reader it's helpful to understand the specific motivation of your code
-> changes.
-
-I will make that commit message clearer in case a new version of 
-the patchset is needed for other reasons.
-
-Thanks,
-	Martin
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 51ce76706073..2ece25250d86 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -437,7 +437,18 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->num_chipselect = -1;
++	/* even though the driver never officially supported native CS
++	 * allow a single native CS for legacy DT support purposes when
++	 * no cs-gpio is configured.
++	 * Known limitations for native cs are:
++	 * * multiple chip-selects: cs0-cs2 are all simultaniously asserted
++	 *     whenever there is a transfer -  this even includes SPI_NO_CS
++	 * * SPI_CS_HIGH: is ignores - cs are always asserted low
++	 * * cs_change: cs is deasserted after each spi_transfer
++	 * * cs_delay_usec: cs is always deasserted one SCK cycle after
++	 *     a spi_transfer
++	 */
++	master->num_chipselect = 1;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
+ 	master->prepare_message = bcm2835aux_spi_prepare_message;
+--
+2.11.0

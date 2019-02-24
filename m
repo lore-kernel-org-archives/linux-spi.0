@@ -1,83 +1,143 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH 5/9] spi: bcm2835aux: make the polling duration limits
- configurable
-Date: Sun, 24 Feb 2019 12:54:36 +0000
-Message-ID: <20190224125440.16117-6-kernel@martin.sperl.org>
+From: kernel@martin.sperl.org
+Subject: [PATCH 6/9] spi: bcm2835aux: unifying code between polling and
+ interrupt driven code
+Date: Sun, 24 Feb 2019 12:54:37 +0000
+Message-ID: <20190224125440.16117-7-kernel@martin.sperl.org>
 References: <20190224125440.16117-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
- Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
- Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190224125440.16117-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190224125440.16117-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNwZXJsLm9yZz4KClVuZGVyIHNvbWUg
-Y2lyY3Vtc3RhbmNlcyB0aGUgZGVmYXVsdCAzMCB1cyBwb2xsaW5nIGxpbWl0IGlzIG5vdCBvcHRp
-bWFsCmFuZCBtYXkgbGVhZCB0byBsb25nIGRlbGF5cyBiZWNhdXNlIHdlIGFyZSB3YWl0aW5nIG9u
-IHRoZSBpbnRlcnJ1cHQKaGFuZGxlciByZXN1bHRpbmcgaW4gcG9vciBzcGkgYnVzIHV0aWxpemF0
-aW9uLgoKV2l0aCB0aGlzIHBhdGNoIHdlIGhhdmUgdGhlIHBvc3NpYmlsaXR5IHRvIGluZmx1ZW5j
-ZSB0aGlzIHBvbGljeQpieSBtYWtpbmcgdGhpcyBsaW1pdCBjb25maWd1cmFibGUgdmlhIGEgbW9k
-dWxlIHBhcmFtZXRlcnMKClNpZ25lZC1vZmYtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1hcnRp
-bi5zcGVybC5vcmc+Ci0tLQpOb3RlIHRoYXQgdGhpcyBwYXRjaCByZWxpZXMgb24gdGhlIGVmZmVj
-dGl2ZV9zcGVlZF9oeiBwYXRjaCBmb3IgdGhlCmRyaXZlciB0byBiZSBhcHBsaWVkIQoKLS0tCiBk
-cml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jIHwgMjMgKysrKysrKysrKysrKy0tLS0tLS0tLS0K
-IDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkKCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jIGIvZHJpdmVycy9zcGkvc3BpLWJj
-bTI4MzVhdXguYwppbmRleCAwYTVmMjFlYjNiOTkuLmFmNjY4Y2I2YjM4YiAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9zcGkvc3BpLWJjbTI4MzVhdXguYworKysgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgz
-NWF1eC5jCkBAIC0zNyw2ICszNywxMiBAQAogI2luY2x1ZGUgPGxpbnV4L3NwaS9zcGkuaD4KICNp
-bmNsdWRlIDxsaW51eC9zcGlubG9jay5oPgoKKy8qIGRlZmluZSBwb2xsaW5nIGxpbWl0cyAqLwor
-dW5zaWduZWQgaW50IHBvbGxpbmdfbGltaXRfdXMgPSAzMDsKK21vZHVsZV9wYXJhbShwb2xsaW5n
-X2xpbWl0X3VzLCB1aW50LCAwNjY0KTsKK01PRFVMRV9QQVJNX0RFU0MocG9sbGluZ19saW1pdF91
-cywKKwkJICJ0aW1lIGluIHVzIHRvIHJ1biBhIHRyYW5zZmVyIGluIHBvbGxpbmcgbW9kZVxuIik7
-CisKIC8qCiAgKiBzcGkgcmVnaXN0ZXIgZGVmaW5lcwogICoKQEAgLTg5LDEwICs5NSw2IEBACiAj
-ZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9TVEFUX0JVU1kJMHgwMDAwMDA0MAogI2RlZmluZSBCQ00y
-ODM1X0FVWF9TUElfU1RBVF9CSVRDT1VOVAkweDAwMDAwMDNGCgotLyogdGltZW91dCB2YWx1ZXMg
-Ki8KLSNkZWZpbmUgQkNNMjgzNV9BVVhfU1BJX1BPTExJTkdfTElNSVRfVVMJMzAKLSNkZWZpbmUg
-QkNNMjgzNV9BVVhfU1BJX1BPTExJTkdfSklGRklFUwkJMgotCiBzdHJ1Y3QgYmNtMjgzNWF1eF9z
-cGkgewogCXZvaWQgX19pb21lbSAqcmVnczsKIAlzdHJ1Y3QgY2xrICpjbGs7CkBAIC0zMzUsOCAr
-MzM3LDggQEAgc3RhdGljIGludCBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmVfcG9sbChzdHJ1
-Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAogCWJjbTI4MzVhdXhfd3IoYnMsIEJDTTI4MzVfQVVYX1NQ
-SV9DTlRMMSwgYnMtPmNudGxbMV0pOwogCWJjbTI4MzVhdXhfd3IoYnMsIEJDTTI4MzVfQVVYX1NQ
-SV9DTlRMMCwgYnMtPmNudGxbMF0pOwoKLQkvKiBzZXQgdGhlIHRpbWVvdXQgKi8KLQl0aW1lb3V0
-ID0gamlmZmllcyArIEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0pJRkZJRVM7CisJLyogc2V0IHRo
-ZSB0aW1lb3V0IHRvIGF0IGxlYXN0IDIgamlmZmllcyAqLworCXRpbWVvdXQgPSBqaWZmaWVzICsg
-MiArIEhaICogcG9sbGluZ19saW1pdF91cyAvIDEwMDAwMDA7CgogCS8qIGxvb3AgdW50aWwgZmlu
-aXNoZWQgdGhlIHRyYW5zZmVyICovCiAJd2hpbGUgKGJzLT5yeF9sZW4pIHsKQEAgLTM4MSw3ICsz
-ODMsNyBAQCBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3RyYW5zZmVyX29uZShzdHJ1Y3Qgc3Bp
-X21hc3RlciAqbWFzdGVyLAogCQkJCSAgICAgICBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp0ZnIpCiB7
-CiAJc3RydWN0IGJjbTI4MzVhdXhfc3BpICpicyA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEobWFz
-dGVyKTsKLQl1bnNpZ25lZCBsb25nIHNwaV9oeiwgY2xrX2h6LCBzcGVlZDsKKwl1bnNpZ25lZCBs
-b25nIHNwaV9oeiwgY2xrX2h6LCBzcGVlZCwgaHpfcGVyX2J5dGUsIGJ5dGVfbGltaXQ7CgogCS8q
-IGNhbGN1bGF0ZSB0aGUgcmVnaXN0ZXJzIHRvIGhhbmRsZQogCSAqCkBAIC00MjUsMTQgKzQyNywx
-NSBAQCBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3RyYW5zZmVyX29uZShzdHJ1Y3Qgc3BpX21h
-c3RlciAqbWFzdGVyLAogCSAqIG9mIEh6IHBlciBieXRlIHBlciBwb2xsaW5nIGxpbWl0LiAgRS5n
-Liwgd2UgY2FuIHRyYW5zZmVyIDEgYnl0ZSBpbgogCSAqIDMwIMK1cyBwZXIgMzAwLDAwMCBIeiBv
-ZiBidXMgY2xvY2suCiAJICovCi0jZGVmaW5lIEhaX1BFUl9CWVRFICgoOSAqIDEwMDAwMDApIC8g
-QkNNMjgzNV9BVVhfU1BJX1BPTExJTkdfTElNSVRfVVMpCisJaHpfcGVyX2J5dGUgPSBwb2xsaW5n
-X2xpbWl0X3VzID8gKDkgKiAxMDAwMDAwKSAvIHBvbGxpbmdfbGltaXRfdXMgOiAwOworCWJ5dGVf
-bGltaXQgPSBoel9wZXJfYnl0ZSA/IHRmci0+ZWZmZWN0aXZlX3NwZWVkX2h6IC8gaHpfcGVyX2J5
-dGUgOiAxOworCiAJLyogcnVuIGluIHBvbGxpbmcgbW9kZSBmb3Igc2hvcnQgdHJhbnNmZXJzICov
-Ci0JaWYgKHRmci0+bGVuIDwgdGZyLT5lZmZlY3RpdmVfc3BlZWRfaHogLyBIWl9QRVJfQllURSkK
-KwlpZiAodGZyLT5sZW4gPCBieXRlX2xpbWl0KQogCQlyZXR1cm4gYmNtMjgzNWF1eF9zcGlfdHJh
-bnNmZXJfb25lX3BvbGwobWFzdGVyLCBzcGksIHRmcik7CgogCS8qIHJ1biBpbiBpbnRlcnJ1cHQg
-bW9kZSBmb3IgYWxsIG90aGVycyAqLwogCXJldHVybiBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9v
-bmVfaXJxKG1hc3Rlciwgc3BpLCB0ZnIpOwotI3VuZGVmIEhaX1BFUl9CWVRFCiB9Cgogc3RhdGlj
-IGludCBiY20yODM1YXV4X3NwaV9wcmVwYXJlX21lc3NhZ2Uoc3RydWN0IHNwaV9tYXN0ZXIgKm1h
-c3RlciwKLS0KMi4xMS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpsaW51eC1ycGkta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1ycGkta2VybmVsQGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9saW51eC1ycGkta2VybmVsCg==
+From: Martin Sperl <kernel@martin.sperl.org>
+
+Sharing code between polling and interrupt-driven mode.
+
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 51 ++++++++++++++++----------------------------
+ 1 file changed, 18 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index af668cb6b38b..9552f5343982 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -230,23 +230,13 @@ static void bcm2835aux_spi_reset_hw(struct bcm2835aux_spi *bs)
+ 		      BCM2835_AUX_SPI_CNTL0_CLEARFIFO);
+ }
+
+-static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
++static void bcm2835aux_spi_transfer_helper(struct bcm2835aux_spi *bs)
+ {
+-	struct spi_master *master = dev_id;
+-	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+-	irqreturn_t ret = IRQ_NONE;
+-
+-	/* IRQ may be shared, so return if our interrupts are disabled */
+-	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
+-	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
+-		return ret;
+-
+ 	/* check if we have data to read */
+ 	while (bs->rx_len &&
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+ 		  BCM2835_AUX_SPI_STAT_RX_EMPTY))) {
+ 		bcm2835aux_rd_fifo(bs);
+-		ret = IRQ_HANDLED;
+ 	}
+
+ 	/* check if we have data to write */
+@@ -255,7 +245,6 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+ 		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
+ 		bcm2835aux_wr_fifo(bs);
+-		ret = IRQ_HANDLED;
+ 	}
+
+ 	/* and check if we have reached "done" */
+@@ -263,8 +252,21 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+ 		  BCM2835_AUX_SPI_STAT_BUSY))) {
+ 		bcm2835aux_rd_fifo(bs);
+-		ret = IRQ_HANDLED;
+ 	}
++}
++
++static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
++{
++	struct spi_master *master = dev_id;
++	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
++
++	/* IRQ may be shared, so return if our interrupts are disabled */
++	if (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_CNTL1) &
++	      (BCM2835_AUX_SPI_CNTL1_TXEMPTY | BCM2835_AUX_SPI_CNTL1_IDLE)))
++		return IRQ_NONE;
++
++	/* do common fifo handling */
++	bcm2835aux_spi_transfer_helper(bs);
+
+ 	if (!bs->tx_len) {
+ 		/* disable tx fifo empty interrupt */
+@@ -278,8 +280,7 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 		complete(&master->xfer_completion);
+ 	}
+
+-	/* and return */
+-	return ret;
++	return IRQ_HANDLED;
+ }
+
+ static int __bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
+@@ -328,7 +329,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long timeout;
+-	u32 stat;
+
+ 	/* update statistics */
+ 	BCM2835_AUX_INCR(bs->count_transfer_polling);
+@@ -342,24 +342,9 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+
+ 	/* loop until finished the transfer */
+ 	while (bs->rx_len) {
+-		/* read status */
+-		stat = bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT);
+-
+-		/* fill in tx fifo with remaining data */
+-		if ((bs->tx_len) && (!(stat & BCM2835_AUX_SPI_STAT_TX_FULL))) {
+-			bcm2835aux_wr_fifo(bs);
+-			continue;
+-		}
+
+-		/* read data from fifo for both cases */
+-		if (!(stat & BCM2835_AUX_SPI_STAT_RX_EMPTY)) {
+-			bcm2835aux_rd_fifo(bs);
+-			continue;
+-		}
+-		if (!(stat & BCM2835_AUX_SPI_STAT_BUSY)) {
+-			bcm2835aux_rd_fifo(bs);
+-			continue;
+-		}
++		/* do common fifo handling */
++		bcm2835aux_spi_transfer_helper(bs);
+
+ 		/* there is still data pending to read check the timeout */
+ 		if (bs->rx_len && time_after(jiffies, timeout)) {
+--
+2.11.0

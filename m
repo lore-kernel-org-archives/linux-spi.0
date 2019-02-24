@@ -1,7 +1,9 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH 0/9] spi: bcm2835aux: bug fixes and improvements
-Date: Sun, 24 Feb 2019 12:54:31 +0000
-Message-ID: <20190224125440.16117-1-kernel@martin.sperl.org>
+Subject: [PATCH 3/9] spi: bcm2835aux: setup gpio-cs to output and correct
+ level during setup
+Date: Sun, 24 Feb 2019 12:54:34 +0000
+Message-ID: <20190224125440.16117-4-kernel@martin.sperl.org>
+References: <20190224125440.16117-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -10,6 +12,7 @@ To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <e
  Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
  linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190224125440.16117-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -23,47 +26,44 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Set of patches improving the spi-bcm2835aux driver and fixing
-a data read corruption bug.
+Setup gpio-cs to the correct levels during setup and also make the
+gpio definitely an output GPIO.
 
-The main motivation is a rare data corruption fix that is mostly
-observed in polling mode first reported by Hubert Denkmair.
+This is transparently fixing some badly configured DTs in the process
+where cs-gpio is set but the gpios are still configured with native cs.
 
-So this patchset first implements a means to control the parameters
-of when polling mode is used via module parameters and exports
-the corresponding statistics.
+It also makes 100% sure that the initial CS levels are as expected -
+especially on systems with devices on a bus with mixed CS_HIGH/CS_LOW
+settings.
 
-As stated in original patch the driver does not support native CS.
-But when cs-gpios is not configured in the dt (so a buggy dt) it is
-still working with a lot of limitations, but the driver does not report
-this fact.
+Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-So this patchset adds reporting and allows for a single native CS
-(with limited functionality) to continue working with a buggy DT.
-One question here remains: do we need to legacy support DTs
-that are not following specs in the first place?
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 4b6fdcb2cf4b..922fd798508e 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -449,7 +449,17 @@ static int bcm2835aux_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
 
-Then there is the real fix for the data-corruption which is split
-into 3 parts: some code cleanup with code reuse, removing "dangerous"
-fifo read (possibly introducing fifo data corruption) and safe fifo read
+-	return 0;
++	/* with gpio-cs set the GPIO to the correct level
++	 * and as output (in case the dt has the gpio not configured
++	 * as output but native cs)
++	 */
++	ret = gpio_direction_output(spi->cs_gpio,
++				    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
++	if (ret)
++		dev_err(&spi->dev, "could not set gpio %i as output: %i\n",
++			spi->cs_gpio, ret);
++
++	return ret;
+ }
 
-Finally we remove some dead code.
-
-Martin Sperl (9):
-  spi: bcm2835aux: fix driver to not allow 65535 (=-1) cs-gpios
-  spi: bcm2835aux: warn in dmesg that native cs is not really supported
-  spi: bcm2835aux: setup gpio-cs to output and correct level during
-    setup
-  spi: bcm2835aux: add driver specific stats to debugfs
-  spi: bcm2835aux: make the polling duration limits configurable
-  spi: bcm2835aux: unifying code between polling and interrupt driven
-    code
-  spi: bcm2835aux: remove dangerous uncontrolled read of fifo
-  spi: bcm2835aux: use BCM2835_AUX_SPI_STAT_RX_LVL
-  spi: bcm2835aux: remove dead code
-
- drivers/spi/spi-bcm2835aux.c | 205 +++++++++++++++++++++++++++++++------------
- 1 file changed, 149 insertions(+), 56 deletions(-)
-
+ static int bcm2835aux_spi_probe(struct platform_device *pdev)
 --
 2.11.0

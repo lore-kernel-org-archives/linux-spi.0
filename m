@@ -1,57 +1,65 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 2/3] spi: pxa2xx: Introduce dma-burst-sz property
- support
-Date: Tue, 26 Feb 2019 15:02:05 +0200
-Message-ID: <20190226130205.GX9224@smile.fi.intel.com>
-References: <20190226092441.49198-1-andriy.shevchenko@linux.intel.com>
- <20190226092441.49198-2-andriy.shevchenko@linux.intel.com>
- <b845fbcf-d9d9-f682-9604-31c7a9c8c418@linux.intel.com>
+From: Trent Piepho <tpiepho@impinj.com>
+Subject: Bug in spi: imx: Add support for SPI Slave mode
+Date: Tue, 26 Feb 2019 21:41:46 +0000
+Message-ID: <1551217306.3075.188.camel@impinj.com>
+References: <20170905051232.21203-1-jiada_wang@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Daniel Mack <daniel@zonque.org>
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <b845fbcf-d9d9-f682-9604-31c7a9c8c418@linux.intel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stefan@agner.ch" <stefan@agner.ch>
+To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "jiada_wang@mentor.com" <jiada_wang@mentor.com>,
+        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
+        "broonie@kernel.org" <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20170905051232.21203-1-jiada_wang@mentor.com>
+Content-Language: en-US
+Content-ID: <B184B127233CEA42865C0F60340BE728@namprd06.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 26, 2019 at 01:46:49PM +0200, Jarkko Nikula wrote:
-> On 2/26/19 11:24 AM, Andy Shevchenko wrote:
-> > Some masters may have different DMA burst size than hard coded default.
-> > In such case respect the value given by dma-burst-size property.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >   drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
-> >   drivers/spi/spi-pxa2xx-pci.c   | 8 +++++++-
-> >   drivers/spi/spi-pxa2xx.c       | 5 ++++-
-> >   include/linux/spi/pxa2xx_spi.h | 1 +
-> >   4 files changed, 15 insertions(+), 3 deletions(-)
-> ...
-> > @@ -1566,9 +1568,10 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
-> >   	ssp->pdev = pdev;
-> >   	ssp->port_id = pxa2xx_spi_get_port_id(adev);
-> > -	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
-> > +	pdata->is_slave = device_property_read_bool(dev, "spi-slave");
-> 
-> Unrelated change. Not sure is it worth of its own patch.
-
-Fixed in v2.
-
--- 
-With Best Regards,
-Andy Shevchenko
+T24gVHVlLCAyMDE3LTA5LTA1IGF0IDE0OjEyICswOTAwLCBKaWFkYSBXYW5nIHdyb3RlOg0KPiBQ
+cmV2aW91c2x5IGkuTVggU1BJIGNvbnRyb2xsZXIgb25seSB3b3JrcyBpbiBNYXN0ZXIgbW9kZS4N
+Cj4gVGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQgdG8gaS5NWDUxLCBpLk1YNTMgYW5kIGkuTVg2IEVD
+U1BJDQo+IGNvbnRyb2xsZXIgdG8gd29yayBhbHNvIGluIFNsYXZlIG1vZGUuDQoNClJlY2VudGx5
+IERNQSBoYXMgYmVlbiBlbmFibGVkIGZvciBpbXg2Lzcgd2l0aCBTUEkuICBUaGlzIHJlc3VsdHMg
+aW4NCm1lbW9yeSBjb3JydXB0aW9uIGluIHNvbWUgaW5zdGFuY2VzIEkndmUgdHJhY2VkIHRoZSBw
+cm9ibGVtIHRvIHRoaXMNCnBhdGNoLg0KDQoNCj4gIHN0YXRpYyBpbnQgc3BpX2lteF90cmFuc2Zl
+cihzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLA0KPiAgCQkJCXN0cnVjdCBzcGlfdHJhbnNmZXIgKnRy
+YW5zZmVyKQ0KPiAgew0KPiAgCXN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXggPSBzcGlfbWFz
+dGVyX2dldF9kZXZkYXRhKHNwaS0+bWFzdGVyKTsNCj4gIA0KPiArCS8qIGZsdXNoIHJ4ZmlmbyBi
+ZWZvcmUgdHJhbnNmZXIgKi8NCj4gKwl3aGlsZSAoc3BpX2lteC0+ZGV2dHlwZV9kYXRhLT5yeF9h
+dmFpbGFibGUoc3BpX2lteCkpDQo+ICsJCXNwaV9pbXgtPnJ4KHNwaV9pbXgpOw0KPiArDQo+ICsJ
+aWYgKHNwaV9pbXgtPnNsYXZlX21vZGUpDQo+ICsJCXJldHVybiBzcGlfaW14X3Bpb190cmFuc2Zl
+cl9zbGF2ZShzcGksIHRyYW5zZmVyKTsNCj4gKw0KPiAgCWlmIChzcGlfaW14LT51c2VkbWEpDQo+
+ICAJCXJldHVybiBzcGlfaW14X2RtYV90cmFuc2ZlcihzcGlfaW14LCB0cmFuc2Zlcik7DQo+ICAJ
+ZWxzZQ0KDQpUaGlzIGlzIGluIHRoZSBtYWluIHhmZXIgZnVuY3Rpb24gdGhhdCBpcyB1c2VkIGZv
+ciBib3RoIG1hc3RlciBtb2RlIGFuZA0Kc2xhdmUgbW9kZS4gIE5vcm1hbGx5IFJYIGRhdGEgaXMg
+cmVjZWl2ZWQgYWZ0ZXIgdGhlIHhmZXIgaXMgc3RhcnRlZCwgYXMNCnBhcnQgb2YgdGhlIHNwaV9p
+bXhfcGlvL2RtYV90cmFuc2ZlcigpIHByb2Nlc3MuICBCdXQgdGhpcyBwYXRjaCBoYXMNCmFkZGVk
+IGEgImZsdXNoIHJ4ZmlmbyIgY29tbWFuZCBiZWZvcmUgdGhpcy4gIFdoeT8NCg0KSWYgaXQncyBu
+ZWNlc3NhcnkgdG8gZW1wdHkgdGhlIGZpZm8gYmVmb3JlIGFuIHhmZXIsIHRoZW4gaG93IGRpZCB0
+aGlzDQpkcml2ZXIgZXZlciB3b3JrIGJlZm9yZSB0aGlzIGNoYW5nZT8gIEkgc2VlIG5vIGNoYW5n
+ZSBhbnl3aGVyZSBlbHNlDQp0aGF0IHdvdWxkIG1ha2UgdGhpcyBhIG5ldyByZXF1aXJlbWVudC4N
+Cg0KSWYgdGhlIHJ4IGZpZm8gaXMgbm90IGVtcHR5LCBhbmQgdGhpcyBjb2RlIGFjdHVhbGx5IGRv
+ZXMgcnggc29tZXRoaW5nDQpmcm9tIHRoZSBmaWZvLCB0aGVuIGhvdyBjYW4gaXQgcG9zc2libHkg
+d29yayB0byBwbGFjZSBpdCBpbnRvIHRoZQ0KeGZlcidzIFJYIGJ1ZmZlcj8gSG93IGRvIHlvdSBr
+bm93IHRoZSBidWZmZXIgaXMgbGFyZ2UgZW5vdWdoIChpdCdzIG5vdCENCnRoYXQncyBteSBETUEg
+YnVnISk/ICBXb24ndCBpdCBvZmZzZXQgdGhlIGFjdHVhbCByeCBkYXRhIHRoYXQgY29tZXMNCmFm
+dGVyIGl0IGluIHRoZSB4ZmVyJ3MgYnVmZmVyPw0KDQpJbiBteSB0ZXN0LCBzd2l0Y2hpbmcgZnJv
+bSBETUEgdG8gUElPLCB3aGljaCBoYXBwZW5zIGlmIHRoZSAxc3QgeGZlciBpcw0KIGxhcmdlIGVu
+b3VnaCB0byBwYXNzIGEgPmZpZm8vMiBzaXplIHRlc3QsIGFuZCB1c2VzIERNQSwgYW5kIHRoZSAy
+bmQNCnhmZXIgaXMgc21hbGxlciwgYW5kIHdpbGwgdXNlIFBJTywgcmVzdWx0cyBpbiB0aGUgUElP
+IHhmZXIgdHJ5aW5nIHRvDQplbXB0eSB0aGUgcnggYnVmZmVyIGluIHRoaXMgY29kZSBhYm92ZS4g
+IElmIHRoZXJlIGlzIG5vdCBlbm91Z2ggc3BhY2UNCmluIHRoZSB4ZmVyJ3MgcnggYnVmZmVyLCBh
+bmQgdGhlcmUgaXMgbm8gcmVhc29uIGZvciB0aGVyZSB0byBiZSBhbnkNCnNwYWNlIGF0IGFsbCwg
+aXQgY2xvYmJlcnMgbWVtb3J5Lg0KDQpJIHN1c3BlY3QgdGhlIGF1dGhvciBvZiB0aGlzIHdhc24n
+dCBhd2FyZSB0aGF0IHNwaV9pbXgtPnJ4KCkgd2lsbCB3cml0ZQ0KdGhlIGRhdGEgcmVjZWl2ZWQg
+aW50byB0aGUgY3VycmVudCB4ZmVyJ3MgcnggYnVmZmVyIHJhdGhlciB0aGFuIHRocm93DQppdCBh
+d2F5LCBhbmQgbmV2ZXIgdGVzdGVkIHRoaXMgYWN0dWFsbHkgZ2V0dGluZyB1c2VkIGZvciBhIHRy
+YW5zZmVyDQp3aGVyZSB0aGUgcnggZGF0YSBtYXR0ZXJlZC4NCg0KU3RpbGwsIEknZCBsaWtlIHRv
+IGtub3cgd2h5IHRoZSBmbHVzaCByeCB0aGluZyBpcyBldmVuIGhlcmUuICBOb3RoaW5nDQppbiB0
+aGUgY29tbWl0IG1lc3NhZ2Ugb3IgYW55IGRpc2N1c3Npb24gSSBjb3VsZCBmaW5kIGFkZHJlc3Nl
+ZCB0aGlzLg==

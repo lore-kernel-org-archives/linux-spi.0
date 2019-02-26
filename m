@@ -1,19 +1,18 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sifive: Remove spi_master_put in sifive_spi_remove()"
- to the spi tree
-Date: Tue, 26 Feb 2019 12:07:09 +0000 (GMT)
-Message-ID: <20190226120709.3F17E11284E3@debutante.sirena.org.uk>
-References: <20190222054616.4523-1-weiyongjun1@huawei.com>
+Subject: Applied "spi: sifive: Remove redundant dev_err call in
+ sifive_spi_probe()" to the spi tree
+Date: Tue, 26 Feb 2019 12:07:07 +0000 (GMT)
+Message-ID: <20190226120707.0798011284E3@debutante.sirena.org.uk>
+References: <20190222054632.4610-1-weiyongjun1@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Palmer Dabbelt <palmer@sifive.com>, kernel-janitors@vger.kernel.org,
- linux-spi@vger.kernel.org, Yash Shah <yash.shah@sifive.com>,
- Mark Brown <broonie@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-riscv@lists.infradead.org
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org
 To: Wei Yongjun <weiyongjun1@huawei.com>
 Return-path: <linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190222054616.4523-1-weiyongjun1@huawei.com>
+In-Reply-To: <20190222054632.4610-1-weiyongjun1@huawei.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-riscv>,
  <mailto:linux-riscv-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-riscv/>
@@ -27,7 +26,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sifive: Remove spi_master_put in sifive_spi_remove()
+   spi: sifive: Remove redundant dev_err call in sifive_spi_probe()
 
 has been applied to the spi tree at
 
@@ -52,18 +51,16 @@ to this mail.
 Thanks,
 Mark
 
->From 049e5feae18fe07df0687dc14582f338dde3fb56 Mon Sep 17 00:00:00 2001
+>From daad4d2a0a60b0b2879e66194100b43c41e96ca9 Mon Sep 17 00:00:00 2001
 From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 22 Feb 2019 05:46:16 +0000
-Subject: [PATCH] spi: sifive: Remove spi_master_put in sifive_spi_remove()
+Date: Fri, 22 Feb 2019 05:46:32 +0000
+Subject: [PATCH] spi: sifive: Remove redundant dev_err call in
+ sifive_spi_probe()
 
-The call to spi_master_put() in sifive_spi_remove() is redundant since
-the master is registered using devm_spi_register_master() and no
-reference hold by using spi_master_get() in sifive_spi_remove().
+There is a error message within devm_ioremap_resource
+already, so remove the dev_err call to avoid redundant
+error message.
 
-This is detected by Coccinelle semantic patch.
-
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
@@ -71,16 +68,16 @@ Signed-off-by: Mark Brown <broonie@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index 961307c4a613..ebca3fc4d345 100644
+index ebca3fc4d345..93ec2c6cdbfd 100644
 --- a/drivers/spi/spi-sifive.c
 +++ b/drivers/spi/spi-sifive.c
-@@ -424,7 +424,6 @@ static int sifive_spi_remove(struct platform_device *pdev)
- 
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
--	spi_master_put(master);
- 
- 	return 0;
- }
+@@ -310,7 +310,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi->regs = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(spi->regs)) {
+-		dev_err(&pdev->dev, "Unable to map IO resources\n");
+ 		ret = PTR_ERR(spi->regs);
+ 		goto put_master;
+ 	}
 -- 
 2.20.1

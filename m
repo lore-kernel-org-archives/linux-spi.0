@@ -1,83 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sifive: Remove redundant dev_err call in
- sifive_spi_probe()" to the spi tree
-Date: Tue, 26 Feb 2019 12:07:07 +0000 (GMT)
-Message-ID: <20190226120707.0798011284E3@debutante.sirena.org.uk>
-References: <20190222054632.4610-1-weiyongjun1@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 2/3] spi: pxa2xx: Introduce dma-burst-sz property
+ support
+Date: Tue, 26 Feb 2019 15:02:05 +0200
+Message-ID: <20190226130205.GX9224@smile.fi.intel.com>
+References: <20190226092441.49198-1-andriy.shevchenko@linux.intel.com>
+ <20190226092441.49198-2-andriy.shevchenko@linux.intel.com>
+ <b845fbcf-d9d9-f682-9604-31c7a9c8c418@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Palmer Dabbelt <palmer@sifive.com>, kernel-janitors@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org
-To: Wei Yongjun <weiyongjun1@huawei.com>
-Return-path: <linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190222054632.4610-1-weiyongjun1@huawei.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-riscv>,
- <mailto:linux-riscv-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-riscv/>
-List-Post: <mailto:linux-riscv@lists.infradead.org>
-List-Help: <mailto:linux-riscv-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-riscv>,
- <mailto:linux-riscv-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
-Errors-To: linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Daniel Mack <daniel@zonque.org>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <b845fbcf-d9d9-f682-9604-31c7a9c8c418@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Tue, Feb 26, 2019 at 01:46:49PM +0200, Jarkko Nikula wrote:
+> On 2/26/19 11:24 AM, Andy Shevchenko wrote:
+> > Some masters may have different DMA burst size than hard coded default.
+> > In such case respect the value given by dma-burst-size property.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >   drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
+> >   drivers/spi/spi-pxa2xx-pci.c   | 8 +++++++-
+> >   drivers/spi/spi-pxa2xx.c       | 5 ++++-
+> >   include/linux/spi/pxa2xx_spi.h | 1 +
+> >   4 files changed, 15 insertions(+), 3 deletions(-)
+> ...
+> > @@ -1566,9 +1568,10 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+> >   	ssp->pdev = pdev;
+> >   	ssp->port_id = pxa2xx_spi_get_port_id(adev);
+> > -	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+> > +	pdata->is_slave = device_property_read_bool(dev, "spi-slave");
+> 
+> Unrelated change. Not sure is it worth of its own patch.
 
-   spi: sifive: Remove redundant dev_err call in sifive_spi_probe()
+Fixed in v2.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From daad4d2a0a60b0b2879e66194100b43c41e96ca9 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 22 Feb 2019 05:46:32 +0000
-Subject: [PATCH] spi: sifive: Remove redundant dev_err call in
- sifive_spi_probe()
-
-There is a error message within devm_ioremap_resource
-already, so remove the dev_err call to avoid redundant
-error message.
-
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-sifive.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index ebca3fc4d345..93ec2c6cdbfd 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -310,7 +310,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi->regs = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(spi->regs)) {
--		dev_err(&pdev->dev, "Unable to map IO resources\n");
- 		ret = PTR_ERR(spi->regs);
- 		goto put_master;
- 	}
 -- 
-2.20.1
+With Best Regards,
+Andy Shevchenko

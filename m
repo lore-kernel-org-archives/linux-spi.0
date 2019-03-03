@@ -1,78 +1,53 @@
-From: Trent Piepho <tpiepho@impinj.com>
-Subject: Re: Bug in spi: imx: Add support for SPI Slave mode
-Date: Fri, 1 Mar 2019 22:26:41 +0000
-Message-ID: <1551479201.6059.23.camel@impinj.com>
-References: <20170905051232.21203-1-jiada_wang@mentor.com>
-         <1551217306.3075.188.camel@impinj.com>
-         <2ea41684-69b2-e7e8-0d2b-325c799104e1@mentor.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] dt: snps,dw-apb-ssi: Add clock bindings documentation
+Date: Sun, 3 Mar 2019 23:31:45 +0000
+Message-ID: <20190303233145.GN23441@sirena.org.uk>
+References: <1551360342-23981-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1551360342-23981-2-git-send-email-gareth.williams.jx@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stefan@agner.ch" <stefan@agner.ch>
-To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "jiada_wang@mentor.com" <jiada_wang@mentor.com>,
-        "fabio.estevam@nxp.com" <fabio.estevam@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Vxa5joy26gVGOrvU"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Gareth Williams <gareth.williams.jx@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2ea41684-69b2-e7e8-0d2b-325c799104e1@mentor.com>
-Content-Language: en-US
-Content-ID: <7AEFA3561EA4F94980AF8DC493D09C3A@namprd06.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <1551360342-23981-2-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCAyMDE5LTAyLTI3IGF0IDEwOjU1ICswOTAwLCBKaWFkYSBXYW5nIHdyb3RlOg0KPiBI
-aSBUcmVudA0KPiANCj4gVGhhbmtzIGZvciByZXBvcnRpbmcNCg0KVGhhbmtzIGZvciB0aGUgaW5m
-b3JtYXRpb24sIGl0IHdhcyB2ZXJ5IGhlbHBmdWwhDQoNCj4gDQo+IGluIHRoZSBjb21taXQgbWVz
-c2FnZSBvZiBjb21taXQgKCJzcGk6IGlteDogQWRkIHN1cHBvcnQgZm9yIFNQSSBTbGF2ZSANCj4g
-bW9kZSIpLCBpdCBtZW50aW9ucw0KPiANCj4gIlRoZSBzdGFsZSBkYXRhIGluIFJYRklGTyB3aWxs
-IGJlIGRyb3BwZWQgd2hlbiB0aGUgU2xhdmUgZG9lcyBhbnkgbmV3IA0KPiB0cmFuc2ZlciINCg0K
-U29ycnksIHNvbWVob3cgSSB0b3RhbGx5IG1pc3NlZCB0aGF0Lg0KDQo+IA0KPiA+IElmIGl0J3Mg
-bmVjZXNzYXJ5IHRvIGVtcHR5IHRoZSBmaWZvIGJlZm9yZSBhbiB4ZmVyLCB0aGVuIGhvdyBkaWQg
-dGhpcw0KPiA+IGRyaXZlciBldmVyIHdvcmsgYmVmb3JlIHRoaXMgY2hhbmdlPyAgSSBzZWUgbm8g
-Y2hhbmdlIGFueXdoZXJlIGVsc2UNCj4gPiB0aGF0IHdvdWxkIG1ha2UgdGhpcyBhIG5ldyByZXF1
-aXJlbWVudC4NCj4gPiANCj4gDQo+IG9ubHkgc2xhdmUgbW9kZSBuZWVkcyB0byBmbHVzaCBzdGFs
-ZSBkYXRhIGluIFJYRklGTywNCg0KT2ssIHNvIG1heWJlIEkgY2FuIG1vdmUgdGhpcyBpbnRvIGEg
-c2xhdmUgbW9kZSBvbmx5IHBhdGguICBUaGF0IGNvdWxkDQphdm9pZCB0aGUgY2hlY2sgaW4gbWFz
-dGVyIG1vZGUsIGlmIGl0J3Mgbm90IG5lY2Vzc2FyeSB0aGVyZS4NCg0KT2sgY291cnNlLCB0aGF0
-IGRvZXNuJ3QgcmVhbGx5IGZpeCBteSB1bmRlcmx5aW5nICJkbWEgdGhlbiBwaW8iDQpwcm9ibGVt
-LCBhcyBldmVuIGlmIGl0IGF2b2lkcyBjb3JydXB0aW5nIG1lbW9yeSwgYXMgdGhlcmUgaXMgc3Rp
-bGwgZGF0YQ0KaW4gdGhlIFJYIGZpZm8gd2hlcmUgdGhlcmUgc2hvdWxkIG5vdCBiZS4NCg0KPiBD
-dXJyZW50bHkgSSBhbSBub3QgYWJsZSB0byB0ZXN0IGFuZCB0aGlzIHBhdGNoIHdhcyBjcmVhdGVk
-IHNldmVyYWwgeWVhcnMgDQo+IGJlZm9yZSwgYnV0IGFzIEkgY2FuIHJlY2FsbCwgdGhlIHB1cnBv
-c2UgaXMgdG8gZmx1c2ggc3RhbGUgZGF0YSBpbiBSWEZJRk8NCj4gYmVmb3JlIHNwaS0+cnhfYnVm
-IGlzIHNldCwgYnV0IHNlZW1zIHRoZXJlIGlzIGJ1ZywgYWZ0ZXIgdGhlIGZpcnN0IHhmZXIsDQo+
-IHJ4X2J1ZiB3aWxsIGFsd2F5cyBwb2ludCB0byBzb21ld2hlcmUsIHdoaWNoIGNhbiBsZWFkIHRv
-IG1lbW9yeSBjb3JydXB0aW9uLg0KPiANCj4gPiBJbiBteSB0ZXN0LCBzd2l0Y2hpbmcgZnJvbSBE
-TUEgdG8gUElPLCB3aGljaCBoYXBwZW5zIGlmIHRoZSAxc3QgeGZlciBpcw0KPiA+ICAgbGFyZ2Ug
-ZW5vdWdoIHRvIHBhc3MgYSA+Zmlmby8yIHNpemUgdGVzdCwgYW5kIHVzZXMgRE1BLCBhbmQgdGhl
-IDJuZA0KPiA+IHhmZXIgaXMgc21hbGxlciwgYW5kIHdpbGwgdXNlIFBJTywgcmVzdWx0cyBpbiB0
-aGUgUElPIHhmZXIgdHJ5aW5nIHRvDQo+ID4gZW1wdHkgdGhlIHJ4IGJ1ZmZlciBpbiB0aGlzIGNv
-ZGUgYWJvdmUuICBJZiB0aGVyZSBpcyBub3QgZW5vdWdoIHNwYWNlDQo+ID4gaW4gdGhlIHhmZXIn
-cyByeCBidWZmZXIsIGFuZCB0aGVyZSBpcyBubyByZWFzb24gZm9yIHRoZXJlIHRvIGJlIGFueQ0K
-PiA+IHNwYWNlIGF0IGFsbCwgaXQgY2xvYmJlcnMgbWVtb3J5Lg0KPiA+IA0KPiA+IEkgc3VzcGVj
-dCB0aGUgYXV0aG9yIG9mIHRoaXMgd2Fzbid0IGF3YXJlIHRoYXQgc3BpX2lteC0+cngoKSB3aWxs
-IHdyaXRlDQo+ID4gdGhlIGRhdGEgcmVjZWl2ZWQgaW50byB0aGUgY3VycmVudCB4ZmVyJ3Mgcngg
-YnVmZmVyIHJhdGhlciB0aGFuIHRocm93DQo+ID4gaXQgYXdheSwgYW5kIG5ldmVyIHRlc3RlZCB0
-aGlzIGFjdHVhbGx5IGdldHRpbmcgdXNlZCBmb3IgYSB0cmFuc2Zlcg0KPiA+IHdoZXJlIHRoZSBy
-eCBkYXRhIG1hdHRlcmVkLg0KPiA+IA0KPiANCj4geWVzLCB5b3UgYXJlIHJpZ2h0LA0KPiBhcyBJ
-IGRvbid0IGhhdmUgYWNjZXNzIHRvIEhXLCBjYW4geW91IHBsZWFzZSBzdWJtaXQgYSBmaXgNCj4g
-KGZvciBleGFtcGxlIHJlc2V0IHJ4X2J1ZiBhZnRlciBlYWNoIHhmZXI/KQ0KPiA+IFN0aWxsLCBJ
-J2QgbGlrZSB0byBrbm93IHdoeSB0aGUgZmx1c2ggcnggdGhpbmcgaXMgZXZlbiBoZXJlLiAgTm90
-aGluZw0KPiA+IGluIHRoZSBjb21taXQgbWVzc2FnZSBvciBhbnkgZGlzY3Vzc2lvbiBJIGNvdWxk
-IGZpbmQgYWRkcmVzc2VkIHRoaXMuDQo+ID4gDQo+IA0KPiBtYXN0ZXIgc2lkZSBtYXkgeGZlciBk
-YXRhIGxvbmdlciB0aGFuIHNsYXZlIHNpZGUgaXMgZXhwZWN0aW5nLA0KPiB0aGUgZXh0cmEgZGF0
-YSByZWNlaXZlZCBpbiBSWEZJRk8sIG5lZWQgdG8gYmUgZHJvcHBlZCBiZWZvcmUgbmV3IHhmZXIN
-Cg0KWWVzLCB0aGF0IG1ha2VzIGEgbG90IG9mIHNlbnNlIHdoeSB0aGlzIHdvdWxkIGJlIG5lZWRl
-ZC4NCg0KSSB3b25kZXIgaWYgcHV0dGluZyB0aGUgZmx1c2ggYWZ0ZXIgdGhlIHhmZXIgbWlnaHQg
-YmUgdG9vIGVhcmx5LiAgSWYNCnRoZSBtYXN0ZXIgaXMgc2VuZGluZyBtb3JlIGRhdGEgdGhhbiBl
-eHBlY3RlZCwgaG93IGRvIHdlIGtub3dzIGl0IGhhcw0Kc3RvcHBlZCB3aGVuIHdlIGRvIHRoZSBw
-b3N0IHhmZXIgZmx1c2g/ICBQZXJoYXBzIHRoZSBtYXN0ZXIgc2VuZHMgbW9yZQ0KYWZ0ZXIgdGhl
-IGZsdXNoIGlzIGZpbmlzaGVkLiAgSXMgdGhlcmUgc29tZSBwb2ludCB3aGVyZSBhZGRpdGlvbmFs
-IGRhdGENCmludG8gdGhlIFJYIGZpZm8gaXMgZGlzYWJsZWQ/DQoNClVuZm9ydHVuYXRlbHksIEkg
-ZG9uJ3QgaGF2ZSBoYXJkd2FyZSB0byB0ZXN0IHNsYXZlIG1vZGUuICBPciBldmVuDQptYXN0ZXIg
-bW9kZSBSWCwgYXMgbXkgaGFyZHdhcmUgaXMgVFggb25seS4gIFRoZSBpbXggc3BpIGlzIGp1c3QN
-CnJlY2VpdmluZyB6ZXJvcyB0byBwdXQgaW50byBhIHNwaSBjb3JlIHByb3ZpZGVkIGR1bW15IGJ1
-ZmZlci4gIEkgY2FuDQpzdG9wIG92ZXJmbG93IHRoZSBidWZmZXIsIGJ1dCBJIHdvdWxkbid0IGtu
-b3cgaWYgdGhlIGRhdGEgdGhhdCBpcyBpbiBpdA0KaXMgY29ycmVjdC4=
+
+--Vxa5joy26gVGOrvU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Feb 28, 2019 at 01:25:41PM +0000, Gareth Williams wrote:
+> From: Phil Edworthy <phil.edworthy@renesas.com>
+>=20
+> The driver requires a clock property, so detail it in the docs.
+> Fix a typo, 'pis' to 'pins'.
+> Add documentation for a separate, optional, interface clock.
+
+Please use subject lines matching the style for the subsystem.  This
+makes it easier for people to identify relevant patches.
+
+--Vxa5joy26gVGOrvU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlx8Y+AACgkQJNaLcl1U
+h9Axywf5ATfT/UOnBvU8MseRTp4zANwg1TdBhCNVMBtJXhAY8I/beO9iGjeT0XCR
+zDBZI2I1mnhLqoTvQON38XSaZsdDiOZ+uJsQK3T2LIam80sKEn/jTKomj/1exz3D
+f958wKv3vRW4MdzBX3K9A7kFKVrnetZnUL9a1wVETkYlZCFx0E9s9uo+FVLUvo8Y
+nAxF8kl1UCgWfNT44QnNYDbDEDpbaM7cT3rOr5OTJrHq23mwh6bH5AgrjeulJD8J
+b+J3cZOi+UqtowufhzuIhe/d1xxepIeDWGfFtIEfTmmiMrhoMz3kIch3u+t2AJCy
+9wn/BCklmV9jaTs7CAKIKs8C5XzLsQ==
+=OdOn
+-----END PGP SIGNATURE-----
+
+--Vxa5joy26gVGOrvU--

@@ -1,79 +1,52 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] spi: pxa2xx: Introduce DMA burst size support
-Date: Mon, 4 Mar 2019 14:37:23 +0200
-Message-ID: <0ceb5c1f-d4c2-3bd6-5016-d1c579da19b6@linux.intel.com>
-References: <20190226114921.48205-1-andriy.shevchenko@linux.intel.com>
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: RE: [PATCH 2/2] spi: dw: Add support for an optional interface clock
+Date: Mon, 4 Mar 2019 14:46:17 +0000
+Message-ID: <TYAPR01MB401511AAAB1784BB50D9A35BDF710@TYAPR01MB4015.jpnprd01.prod.outlook.com>
+References: <1551360342-23981-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1551360342-23981-3-git-send-email-gareth.williams.jx@renesas.com>
+ <20190304000433.GO23441@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190226114921.48205-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Phil Edworthy <phil.edworthy@renesas.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190304000433.GO23441@sirena.org.uk>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2/26/19 1:49 PM, Andy Shevchenko wrote:
-> Some masters may have different DMA burst size than hard coded default.
-> In such case respect the value given by DMA burst size provided via
-> platform data.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->   drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
->   drivers/spi/spi-pxa2xx-pci.c   | 5 ++++-
->   drivers/spi/spi-pxa2xx.c       | 1 +
->   include/linux/spi/pxa2xx_spi.h | 1 +
->   4 files changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-> index 2fa7f4b43492..3343fff81c7b 100644
-> --- a/drivers/spi/spi-pxa2xx-dma.c
-> +++ b/drivers/spi/spi-pxa2xx-dma.c
-> @@ -239,13 +239,15 @@ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
->   					   u32 *threshold)
->   {
->   	struct pxa2xx_spi_chip *chip_info = spi->controller_data;
-> +	struct driver_data *drv_data = spi_controller_get_devdata(spi->controller);
-> +	u32 dma_burst_size = drv_data->master_info->dma_burst_size;
->   
->   	/*
->   	 * If the DMA burst size is given in chip_info we use that,
->   	 * otherwise we use the default. Also we use the default FIFO
->   	 * thresholds for now.
->   	 */
-> -	*burst_code = chip_info ? chip_info->dma_burst_size : 1;
-> +	*burst_code = chip_info ? chip_info->dma_burst_size : dma_burst_size;
->   	*threshold = SSCR1_RxTresh(RX_THRESH_DFLT)
->   		   | SSCR1_TxTresh(TX_THRESH_DFLT);
->   
-> diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-> index d3de925892cb..3faef7335137 100644
-> --- a/drivers/spi/spi-pxa2xx-pci.c
-> +++ b/drivers/spi/spi-pxa2xx-pci.c
-> @@ -5,7 +5,6 @@
->    */
->   #include <linux/clk-provider.h>
->   #include <linux/module.h>
-> -#include <linux/of_device.h>
-
-Minor note, no need to resend if ok to maintainers:
-Unrelated change. Looks like already commit 0202775bc3a2 
-("spi/pxa2xx-pci: switch to use pcim_* interfaces") made this needless.
-
-Otherwise looks ok to me.
-
--- 
-Jarkko
+SGkgTWFyaywNCg0KPiBPbiBNb24sIE1hciAwNCwgMjAxOSAwMDowNTowMCwgTWFyayBCcm93biB3
+cm90ZToNCj4NCj4gT24gVGh1LCBGZWIgMjgsIDIwMTkgYXQgMDE6MjU6NDJQTSArMDAwMCwgR2Fy
+ZXRoIFdpbGxpYW1zIHdyb3RlOg0KPiA+IEZyb206IFBoaWwgRWR3b3J0aHkgPHBoaWwuZWR3b3J0
+aHlAcmVuZXNhcy5jb20+DQo+ID4NCj4gPiBUaGUgU3lub3BzeXMgU1NJIENvbnRyb2xsZXIgaGFz
+IGFuIGludGVyZmFjZSBjbG9jaywgYnV0IG1vc3QgU29DcyBoaWRlDQo+ID4gdGhpcyBhd2F5LiBI
+b3dldmVyLCBvbiBzb21lIFNvQ3MgeW91IG5lZWQgdG8gZXhwbGljaXR5IGVuYWJsZSB0aGUNCj4g
+PiBpbnRlcmZhY2UgY2xvY2sgaW4gb3JkZXIgdG8gYWNjZXNzIHRoZSByZWdpc3RlcnMuIFRoZXJl
+Zm9yZSwgYWRkDQo+ID4gc3VwcG9ydCBmb3IgYW4gb3B0aW9uYWwgaW50ZXJmYWNlIGNsb2NrLg0K
+Pg0KPiBUaGlzIGRvZXNuJ3QgYnVpbGQgZm9yIG1lOg0KPg0KPiAgIENDICAgICAgZHJpdmVycy9z
+cGkvc3BpLWR3LW1taW8ubw0KPiBkcml2ZXJzL3NwaS9zcGktZHctbW1pby5jOiBJbiBmdW5jdGlv
+biDigJhkd19zcGlfbW1pb19wcm9iZeKAmToNCj4gZHJpdmVycy9zcGkvc3BpLWR3LW1taW8uYzox
+Nzc6MTg6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbg0KPiDigJhkZXZt
+X2Nsa19nZXRfb3B0aW9uYWzigJk7IGRpZCB5b3UgbWVhbiDigJhkZXZtX2dwaW9kX2dldF9vcHRp
+b25hbOKAmT8gWy0NCj4gV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9uLWRlY2xhcmF0aW9uXQ0KPiAg
+IGR3c21taW8tPnBjbGsgPSBkZXZtX2Nsa19nZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgInBjbGsi
+KTsNCj4gICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ICAgICAgICAg
+ICAgICAgICAgIGRldm1fZ3Bpb2RfZ2V0X29wdGlvbmFsDQo+IGRyaXZlcnMvc3BpL3NwaS1kdy1t
+bWlvLmM6MTc3OjE2OiB3YXJuaW5nOiBhc3NpZ25tZW50IHRvIOKAmHN0cnVjdCBjbGsgKuKAmSBm
+cm9tDQo+IOKAmGludOKAmSBtYWtlcyBwb2ludGVyIGZyb20gaW50ZWdlciB3aXRob3V0IGEgY2Fz
+dCBbLVdpbnQtY29udmVyc2lvbl0NCj4gICBkd3NtbWlvLT5wY2xrID0gZGV2bV9jbGtfZ2V0X29w
+dGlvbmFsKCZwZGV2LT5kZXYsICJwY2xrIik7DQo+ICAgICAgICAgICAgICAgICBeDQpTb3JyeSwg
+SSBzaG91bGQgaGF2ZSBub3RlZCB0aGUgZGVwZW5kZW5jeSBmb3IgdGhlIHBhdGNoIGJlbG93LiBJ
+IHdpbGwgYWRkIHRoaXMgaW50byB0aGUgbmV4dCB2ZXJzaW9uLg0KaHR0cHM6Ly9naXQua2VybmVs
+Lm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvbmV4dC9saW51eC1uZXh0LmdpdC9jb21taXQv
+ZHJpdmVycy9jbGsvY2xrLWRldnJlcy5jP2g9bmV4dC0yMDE5MDMwNCZpZD02MGI4ZjBkZGYxYTky
+N2VmMDIxNDFhNjYxMGZkNTI1NzUxMzRmODIxDQoNCktpbmQgUmVnYXJkcywNCg0KR2FyZXRoDQoN
+Cg0KUmVuZXNhcyBFbGVjdHJvbmljcyBFdXJvcGUgR21iSCxHZXNjaGFlZnRzZnVlaHJlci9QcmVz
+aWRlbnQgOiBNaWNoYWVsIEhhbm5hd2FsZCwgU2l0eiBkZXIgR2VzZWxsc2NoYWZ0L1JlZ2lzdGVy
+ZWQgb2ZmaWNlOiBEdWVzc2VsZG9yZiwgQXJjYWRpYXN0cmFzc2UgMTAsIDQwNDcyIER1ZXNzZWxk
+b3JmLCBHZXJtYW55LEhhbmRlbHNyZWdpc3Rlci9Db21tZXJjaWFsIFJlZ2lzdGVyOiBEdWVzc2Vs
+ZG9yZiwgSFJCIDM3MDggVVN0LUlETnIuL1RheCBpZGVudGlmaWNhdGlvbiBuby46IERFIDExOTM1
+MzQwNiBXRUVFLVJlZy4tTnIuL1dFRUUgcmVnLiBuby46IERFIDE0OTc4NjQ3DQo=

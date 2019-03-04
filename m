@@ -1,64 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: dw: Add support for an optional interface clock
-Date: Mon, 4 Mar 2019 00:04:33 +0000
-Message-ID: <20190304000433.GO23441@sirena.org.uk>
-References: <1551360342-23981-1-git-send-email-gareth.williams.jx@renesas.com>
- <1551360342-23981-3-git-send-email-gareth.williams.jx@renesas.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH v2 2/2] spi: pxa2xx: Debug print DMA burst and threshold
+Date: Mon, 4 Mar 2019 14:28:23 +0200
+Message-ID: <fa772fa9-dd01-a7b0-2846-3349de005166@linux.intel.com>
+References: <20190226114921.48205-1-andriy.shevchenko@linux.intel.com>
+ <20190226114921.48205-2-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9DptZICXTlJ7FQ09"
-Cc: Phil Edworthy <phil.edworthy@renesas.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Gareth Williams <gareth.williams.jx@renesas.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1551360342-23981-3-git-send-email-gareth.williams.jx@renesas.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190226114921.48205-2-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On 2/26/19 1:49 PM, Andy Shevchenko wrote:
+> It's useful during debug to see what DMA burst and threshold sizes are.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>   drivers/spi/spi-pxa2xx.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 7a86654045fc..7cc4e85290b0 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1338,6 +1338,9 @@ static int setup(struct spi_device *spi)
+>   			dev_warn(&spi->dev,
+>   				 "in setup: DMA burst size reduced to match bits_per_word\n");
+>   		}
+> +		dev_dbg(&spi->dev,
+> +			"in setup: DMA burst and threshold set to %u, %u\n",
+> +			chip->dma_burst_size, chip->dma_threshold);
 
---9DptZICXTlJ7FQ09
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Printing chip->dma_threshold is not very informal here just after the 
+pxa2xx_spi_set_dma_burst_and_threshold() call which sets it to
+(8 - 1 ) << 10 | (8 - 1) << 6 = 7616.
 
-On Thu, Feb 28, 2019 at 01:25:42PM +0000, Gareth Williams wrote:
-> From: Phil Edworthy <phil.edworthy@renesas.com>
->=20
-> The Synopsys SSI Controller has an interface clock, but most SoCs hide=20
-> this away. However, on some SoCs you need to explicity enable the=20
-> interface clock in order to access the registers. Therefore, add=20
-> support for an optional interface clock.
-
-This doesn't build for me:
-
-  CC      drivers/spi/spi-dw-mmio.o
-drivers/spi/spi-dw-mmio.c: In function =E2=80=98dw_spi_mmio_probe=E2=80=99:
-drivers/spi/spi-dw-mmio.c:177:18: error: implicit declaration of function =
-=E2=80=98devm_clk_get_optional=E2=80=99; did you mean =E2=80=98devm_gpiod_g=
-et_optional=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-  dwsmmio->pclk =3D devm_clk_get_optional(&pdev->dev, "pclk");
-                  ^~~~~~~~~~~~~~~~~~~~~
-                  devm_gpiod_get_optional
-drivers/spi/spi-dw-mmio.c:177:16: warning: assignment to =E2=80=98struct cl=
-k *=E2=80=99 from =E2=80=98int=E2=80=99 makes pointer from integer without =
-a cast [-Wint-conversion]
-  dwsmmio->pclk =3D devm_clk_get_optional(&pdev->dev, "pclk");
-                ^
-
---9DptZICXTlJ7FQ09
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlx8a5EACgkQJNaLcl1U
-h9AIWAf9HDmrXbTnxVnkqRuJ/D4ahaWL1j36TX2EFtbe2UpYA6akgolCZN+NhyaA
-Txy2CXOSJge+9lX+Fv5ocJ13dAQmsE9QONkEZTWNLeLywRfyksIs5oy4ZFxnlMrL
-RWyQWY8XJN2x3JhI0cVkI8FLTGaenAy53DV0ORU9Lr/yfkt3092135Wf5ZCCUWdK
-J3lViFs8ipokb8YrGaJnXA3A8hCcIujOOFGmGgVxiG8N0r3VQ3xDh9VwJBTDeqN6
-gg5RBhH5Mq9YxD+8/wZhGNXB/2LALr9VpchpiUzqwjyLci23o+0lXd/2UhuPg6Sf
-gSmZIBPduryrQNxDAK0H3kvQle8rYA==
-=emC2
------END PGP SIGNATURE-----
-
---9DptZICXTlJ7FQ09--
+-- 
+Jarkko

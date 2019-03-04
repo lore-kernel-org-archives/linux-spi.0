@@ -1,52 +1,329 @@
-From: Gareth Williams <gareth.williams.jx@renesas.com>
-Subject: RE: [PATCH 2/2] spi: dw: Add support for an optional interface clock
-Date: Mon, 4 Mar 2019 14:46:17 +0000
-Message-ID: <TYAPR01MB401511AAAB1784BB50D9A35BDF710@TYAPR01MB4015.jpnprd01.prod.outlook.com>
-References: <1551360342-23981-1-git-send-email-gareth.williams.jx@renesas.com>
- <1551360342-23981-3-git-send-email-gareth.williams.jx@renesas.com>
- <20190304000433.GO23441@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI updates for v5.1
+Date: Mon, 4 Mar 2019 17:07:34 +0000
+Message-ID: <20190304170734.GC8877@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Phil Edworthy <phil.edworthy@renesas.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="69pVuxX8awAiJ7fD"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190304000433.GO23441@sirena.org.uk>
-Content-Language: en-US
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTWFyaywNCg0KPiBPbiBNb24sIE1hciAwNCwgMjAxOSAwMDowNTowMCwgTWFyayBCcm93biB3
-cm90ZToNCj4NCj4gT24gVGh1LCBGZWIgMjgsIDIwMTkgYXQgMDE6MjU6NDJQTSArMDAwMCwgR2Fy
-ZXRoIFdpbGxpYW1zIHdyb3RlOg0KPiA+IEZyb206IFBoaWwgRWR3b3J0aHkgPHBoaWwuZWR3b3J0
-aHlAcmVuZXNhcy5jb20+DQo+ID4NCj4gPiBUaGUgU3lub3BzeXMgU1NJIENvbnRyb2xsZXIgaGFz
-IGFuIGludGVyZmFjZSBjbG9jaywgYnV0IG1vc3QgU29DcyBoaWRlDQo+ID4gdGhpcyBhd2F5LiBI
-b3dldmVyLCBvbiBzb21lIFNvQ3MgeW91IG5lZWQgdG8gZXhwbGljaXR5IGVuYWJsZSB0aGUNCj4g
-PiBpbnRlcmZhY2UgY2xvY2sgaW4gb3JkZXIgdG8gYWNjZXNzIHRoZSByZWdpc3RlcnMuIFRoZXJl
-Zm9yZSwgYWRkDQo+ID4gc3VwcG9ydCBmb3IgYW4gb3B0aW9uYWwgaW50ZXJmYWNlIGNsb2NrLg0K
-Pg0KPiBUaGlzIGRvZXNuJ3QgYnVpbGQgZm9yIG1lOg0KPg0KPiAgIENDICAgICAgZHJpdmVycy9z
-cGkvc3BpLWR3LW1taW8ubw0KPiBkcml2ZXJzL3NwaS9zcGktZHctbW1pby5jOiBJbiBmdW5jdGlv
-biDigJhkd19zcGlfbW1pb19wcm9iZeKAmToNCj4gZHJpdmVycy9zcGkvc3BpLWR3LW1taW8uYzox
-Nzc6MTg6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbg0KPiDigJhkZXZt
-X2Nsa19nZXRfb3B0aW9uYWzigJk7IGRpZCB5b3UgbWVhbiDigJhkZXZtX2dwaW9kX2dldF9vcHRp
-b25hbOKAmT8gWy0NCj4gV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9uLWRlY2xhcmF0aW9uXQ0KPiAg
-IGR3c21taW8tPnBjbGsgPSBkZXZtX2Nsa19nZXRfb3B0aW9uYWwoJnBkZXYtPmRldiwgInBjbGsi
-KTsNCj4gICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ICAgICAgICAg
-ICAgICAgICAgIGRldm1fZ3Bpb2RfZ2V0X29wdGlvbmFsDQo+IGRyaXZlcnMvc3BpL3NwaS1kdy1t
-bWlvLmM6MTc3OjE2OiB3YXJuaW5nOiBhc3NpZ25tZW50IHRvIOKAmHN0cnVjdCBjbGsgKuKAmSBm
-cm9tDQo+IOKAmGludOKAmSBtYWtlcyBwb2ludGVyIGZyb20gaW50ZWdlciB3aXRob3V0IGEgY2Fz
-dCBbLVdpbnQtY29udmVyc2lvbl0NCj4gICBkd3NtbWlvLT5wY2xrID0gZGV2bV9jbGtfZ2V0X29w
-dGlvbmFsKCZwZGV2LT5kZXYsICJwY2xrIik7DQo+ICAgICAgICAgICAgICAgICBeDQpTb3JyeSwg
-SSBzaG91bGQgaGF2ZSBub3RlZCB0aGUgZGVwZW5kZW5jeSBmb3IgdGhlIHBhdGNoIGJlbG93LiBJ
-IHdpbGwgYWRkIHRoaXMgaW50byB0aGUgbmV4dCB2ZXJzaW9uLg0KaHR0cHM6Ly9naXQua2VybmVs
-Lm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvbmV4dC9saW51eC1uZXh0LmdpdC9jb21taXQv
-ZHJpdmVycy9jbGsvY2xrLWRldnJlcy5jP2g9bmV4dC0yMDE5MDMwNCZpZD02MGI4ZjBkZGYxYTky
-N2VmMDIxNDFhNjYxMGZkNTI1NzUxMzRmODIxDQoNCktpbmQgUmVnYXJkcywNCg0KR2FyZXRoDQoN
-Cg0KUmVuZXNhcyBFbGVjdHJvbmljcyBFdXJvcGUgR21iSCxHZXNjaGFlZnRzZnVlaHJlci9QcmVz
-aWRlbnQgOiBNaWNoYWVsIEhhbm5hd2FsZCwgU2l0eiBkZXIgR2VzZWxsc2NoYWZ0L1JlZ2lzdGVy
-ZWQgb2ZmaWNlOiBEdWVzc2VsZG9yZiwgQXJjYWRpYXN0cmFzc2UgMTAsIDQwNDcyIER1ZXNzZWxk
-b3JmLCBHZXJtYW55LEhhbmRlbHNyZWdpc3Rlci9Db21tZXJjaWFsIFJlZ2lzdGVyOiBEdWVzc2Vs
-ZG9yZiwgSFJCIDM3MDggVVN0LUlETnIuL1RheCBpZGVudGlmaWNhdGlvbiBuby46IERFIDExOTM1
-MzQwNiBXRUVFLVJlZy4tTnIuL1dFRUUgcmVnLiBuby46IERFIDE0OTc4NjQ3DQo=
+
+--69pVuxX8awAiJ7fD
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The following changes since commit 1c163f4c7b3f621efff9b28a47abb36f7378d783:
+
+  Linux 5.0 (2019-03-03 15:21:29 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
+v5.1
+
+for you to fetch changes up to 14dbfb417bd80c96ec700c7a8414bb6f5db7ecd2:
+
+  Merge branch 'spi-5.1' into spi-next (2019-03-04 15:32:51 +0000)
+
+----------------------------------------------------------------
+spi: Updates for v5.1
+
+A fairly quiet release for SPI, the biggest thing is the conversion to
+use GPIO descriptors which is now 90% done but still needs some
+stragglers converting.
+
+ - Support for inter-word delays.
+ - Conversion of the core and most drivers to use GPIO descriptors for
+   GPIO controlled chip selects.
+ - New drivers for NXP FlexSPI and QuadSPI, SiFive and Spreadtrum.
+
+----------------------------------------------------------------
+Alban Bedel (4):
+      spi: bitbang: Don't call chipselect() in spi_bitbang_setup()
+      spi: ath79: Simplify ath79_spi_chipselect()
+      spi: ath79: Enable support for compile test
+      spi: ath79: Remove now useless code
+
+Anders Roxell (1):
+      spi: dw: fix warning unused variable 'ret'
+
+Andy Shevchenko (1):
+      spi: pxa2xx: Setup maximum supported DMA transfer length
+
+Angelo Dureghello (2):
+      spi: fix initial SPI_SR value in spi-fsl-dspi
+      spi: add cpu details to fsl-dspi Kconfig help
+
+Axel Lin (1):
+      spi: npcm-pspi: Fix wrong priv pointer
+
+Baolin Wang (1):
+      spi: sprd: Add a prefix for SPI DMA channel macros
+
+Boris Brezillon (3):
+      spi: spi-mem: Fix spi_mem_dirmap_destroy() kerneldoc
+      spi: spi-mem: Fix a memory leak in spi_mem_dirmap_destroy()
+      spi: spi-mem: Add devm_spi_mem_dirmap_{create,destroy}()
+
+Cezary Gapinski (13):
+      spi: stm32: switch to SPDX identifier
+      spi: stm32: use NULL pointer instead of plain integer
+      spi: stm32: fix DMA configuration with only one channel
+      spi: fix typo in SPI_STM32 help text
+      spi: stm32: use explicit CPOL and CPHA mode bits
+      spi: stm32: remove SPI LOOP mode
+      spi: stm32: rename STM32 SPI registers to STM32H7
+      spi: stm32: rename interrupt function
+      spi: stm32: split transfer one setup function
+      spi: stm32: add start dma transfer function
+      spi: stm32: introduce compatible data cfg
+      spi: stm32: add support for STM32F4
+      spi: stm32: add description about STM32F4 bindings
+
+Charles Keepax (1):
+      spi: cadence: Correct initialisation of runtime PM
+
+Clark Wang (3):
+      spi: lpspi: Improve the stability of lpspi data transmission
+      spi: lpspi: Fix wrong transmission when don't use CONT
+      spi: lpspi: Fix CLK pin becomes low before one transfer
+
+Fabio Estevam (2):
+      spi: Kconfig: imx: Update the help text to make it more generic
+      dt-bindings: spi: imx: Add an entry for the i.MX8QM compatible
+
+Felix Fietkau (1):
+      spi: use gpio[d]_set_value_cansleep for setting chipselect GPIO
+
+Frieder Schrempf (5):
+      spi: Add a driver for the Freescale/NXP QuadSPI controller
+      dt-bindings: spi: Move the bindings for the FSL QSPI driver
+      dt-bindings: spi: Adjust the bindings for the FSL QSPI driver
+      mtd: fsl-quadspi: Remove the driver as it was replaced by spi-fsl-qsp=
+i.c
+      MAINTAINERS: Move the Freescale QSPI driver to the SPI framework
+
+Geert Uytterhoeven (5):
+      spi: sh-hspi: Remove error messages on out-of-memory conditions
+      spi: rspi: Replace spi_master by spi_controller
+      spi: sh-hspi: Replace spi_master by spi_controller
+      spi: sh-msiof: Replace spi_master by spi_controller
+      spi: sh-msiof: Restrict bits per word to 8/16/24/32 on R-Car Gen2/3
+
+Hoan Nguyen An (2):
+      spi: sh-msiof: fix *info pointer in request_dma()
+      spi: sh-msiof: Use DMA if possible
+
+Jiwei Sun (1):
+      spi: pl022: add a message state STATE_TIMEOUT for timeout transfer
+
+Jonas Bonn (2):
+      spi: support inter-word delay requirement for devices
+      spi-atmel: support inter-word delay
+
+Jonathan Neusch=E4fer (1):
+      spi: gpio: Advertise support for SPI_CS_HIGH
+
+Lanqing Liu (4):
+      spi: sprd: Fix the error data length in SPI read-only mode
+      spi: sprd: Add the SPI irq function for the SPI DMA mode
+      dt-bindings: spi: Add the DMA properties for the SPI dma mode
+      spi: sprd: spi: sprd: Add DMA mode support
+
+Linus Walleij (12):
+      spi: Optionally use GPIO descriptors for CS GPIOs
+      spi: ath79: Convert to use CS GPIO descriptors
+      spi: atmel: Convert to use CS GPIO descriptors
+      spi: cadence: Convert to use CS GPIO descriptors
+      spi: clps711x: Convert to use CS GPIO descriptors
+      spi: davinci: Convert to use CS GPIO descriptors
+      spi: dw: Convert to use CS GPIO descriptors
+      spi: davinci: Get rid of dangling variable
+      spi: Support high CS when using descriptors
+      spi: dw: Fix default polarity of native chipselect
+      spi: cadence: Fix default polarity of native chipselect
+      gpio: of: Fix logic inversion
+
+Lubomir Rintel (1):
+      pxa2xx: replace spi_master with spi_controller
+
+Lukasz Majewski (1):
+      spi: spi-fsl-dspi: Provide support for DSPI slave mode operation (Vyb=
+ryd vf610)
+
+Mark Brown (5):
+      Merge branch 'spi-4.21' into spi-5.0
+      spi: Go back to immediate teardown
+      Merge branch 'for-5.0' of https://git.kernel.org/.../broonie/spi into=
+ spi-5.1
+      Merge branch 'spi-5.0' into spi-linus
+      Merge branch 'spi-5.1' into spi-next
+
+Martin Sperl (1):
+      spi: core: avoid waking pump thread from spi_sync instead run teardow=
+n delayed
+
+Russell King (1):
+      spi: spi-gpio: fix SPI_CS_HIGH capability
+
+Silvio Cesare (1):
+      spi: dw: change snprintf to scnprintf for possible overflow
+
+Stephen Boyd (2):
+      spi: spi-geni-qcom: Don't initialize completion for normal message
+      spi: spi-geni-qcom: Get rid of forward declaration
+
+Tudor Ambarus (13):
+      spi: atmel-quadspi: cache MR value to avoid a write access
+      spi: atmel-quadspi: order header files inclusion alphabetically
+      spi: atmel-quadspi: drop wrappers for iomem accesses
+      spi: atmel-quadspi: fix naming scheme
+      spi: atmel-quadspi: remove unnecessary cast
+      spi: atmel-quadspi: return appropriate error code
+      spi: atmel-quadspi: switch to SPDX license identifiers
+      spi: atmel-quadspi: rework transfer macros
+      dt-bindings: spi: atmel-quadspi: update example to new clock binding
+      dt-bindings: spi: atmel-quadspi: make "pclk" mandatory
+      spi: atmel-quadspi: add support for named peripheral clock
+      dt-bindings: spi: atmel-quadspi: QuadSPI driver for Microchip SAM9X60
+      spi: atmel-quadspi: add support for sam9x60 qspi controller
+
+Uwe Kleine-K=F6nig (3):
+      spi/trace: drop useless and wrong (but harmless) casts
+      spi/trace: include buffer contents in traces
+      spi: mxs: add tracing to custom .transfer_one_message callback
+
+Vignesh R (2):
+      spi: omap2-mcspi: Fix DMA and FIFO event trigger size mismatch
+      spi: ti-qspi: Fix mmap read when more than one CS in use
+
+Wei Yongjun (2):
+      spi: sifive: Remove spi_master_put in sifive_spi_remove()
+      spi: sifive: Remove redundant dev_err call in sifive_spi_probe()
+
+Yash Shah (2):
+      spi: sifive: Add DT documentation for SiFive SPI controller
+      spi: sifive: Add driver for the SiFive SPI controller
+
+Yogesh Narayan Gaur (6):
+      spi: spi-mem: Add driver for NXP FlexSPI controller
+      dt-bindings: spi: add binding file for NXP FlexSPI controller
+      MAINTAINERS: add maintainers for the NXP FlexSPI driver
+      spi: nxp-fspi: add octal mode flag bit for octal support
+      spi: spi-mem: spi-nxp-fspi: add module license info
+      spi: spi-mem: spi-fsl-qspi: typo fix in author name
+
+YueHaibing (2):
+      spi: bcm2835aux: remove unneeded NULL check of devm_clk_get
+      spi/topcliff_pch: Fix potential NULL dereference on allocation error
+
+shaftarger (1):
+      spi: dw: fix potential variable assignment error
+
+ .../devicetree/bindings/spi/atmel-quadspi.txt      |   12 +-
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |    1 +
+ .../{mtd/fsl-quadspi.txt =3D> spi/spi-fsl-qspi.txt}  |   18 +-
+ .../devicetree/bindings/spi/spi-nxp-fspi.txt       |   39 +
+ .../devicetree/bindings/spi/spi-sifive.txt         |   37 +
+ Documentation/devicetree/bindings/spi/spi-sprd.txt |    7 +
+ .../devicetree/bindings/spi/spi-stm32.txt          |    9 +-
+ Documentation/spi/pxa2xx                           |   10 +-
+ MAINTAINERS                                        |   12 +-
+ arch/arm/mach-pxa/cm-x255.c                        |    2 +-
+ arch/arm/mach-pxa/cm-x270.c                        |    2 +-
+ arch/arm/mach-pxa/corgi.c                          |    2 +-
+ arch/arm/mach-pxa/devices.c                        |    2 +-
+ arch/arm/mach-pxa/em-x270.c                        |    4 +-
+ arch/arm/mach-pxa/hx4700.c                         |    2 +-
+ arch/arm/mach-pxa/icontrol.c                       |    4 +-
+ arch/arm/mach-pxa/littleton.c                      |    2 +-
+ arch/arm/mach-pxa/lubbock.c                        |    2 +-
+ arch/arm/mach-pxa/magician.c                       |    2 +-
+ arch/arm/mach-pxa/pcm027.c                         |    2 +-
+ arch/arm/mach-pxa/poodle.c                         |    2 +-
+ arch/arm/mach-pxa/spitz.c                          |    2 +-
+ arch/arm/mach-pxa/stargate2.c                      |    6 +-
+ arch/arm/mach-pxa/tosa.c                           |    2 +-
+ arch/arm/mach-pxa/z2.c                             |    4 +-
+ arch/arm/mach-pxa/zeus.c                           |    2 +-
+ arch/mips/ath79/dev-spi.h                          |    2 +-
+ drivers/gpio/gpiolib-of.c                          |    2 +-
+ drivers/mtd/spi-nor/Kconfig                        |    9 -
+ drivers/mtd/spi-nor/Makefile                       |    1 -
+ drivers/mtd/spi-nor/fsl-quadspi.c                  | 1224 -----------------
+ drivers/spi/Kconfig                                |   36 +-
+ drivers/spi/Makefile                               |    3 +
+ drivers/spi/atmel-quadspi.c                        |  270 ++--
+ drivers/spi/spi-ath79.c                            |  114 +-
+ drivers/spi/spi-atmel.c                            |  102 +-
+ drivers/spi/spi-bcm2835aux.c                       |    2 +-
+ drivers/spi/spi-bitbang.c                          |   13 -
+ drivers/spi/spi-cadence.c                          |   84 +-
+ drivers/spi/spi-clps711x.c                         |   23 +-
+ drivers/spi/spi-davinci.c                          |   54 +-
+ drivers/spi/spi-dw-mmio.c                          |   22 -
+ drivers/spi/spi-dw.c                               |   54 +-
+ drivers/spi/spi-fsl-dspi.c                         |   42 +-
+ drivers/spi/spi-fsl-lpspi.c                        |   92 +-
+ drivers/spi/spi-fsl-qspi.c                         |  966 ++++++++++++++
+ drivers/spi/spi-geni-qcom.c                        |   56 +-
+ drivers/spi/spi-gpio.c                             |    4 +-
+ drivers/spi/spi-mem.c                              |   72 +-
+ drivers/spi/spi-mxs.c                              |    5 +
+ drivers/spi/spi-npcm-pspi.c                        |    3 +-
+ drivers/spi/spi-nxp-fspi.c                         | 1106 +++++++++++++++
+ drivers/spi/spi-omap2-mcspi.c                      |    4 +-
+ drivers/spi/spi-pl022.c                            |   30 +-
+ drivers/spi/spi-pxa2xx-dma.c                       |   58 +-
+ drivers/spi/spi-pxa2xx-pci.c                       |    4 +-
+ drivers/spi/spi-pxa2xx.c                           |  157 +--
+ drivers/spi/spi-pxa2xx.h                           |    4 +-
+ drivers/spi/spi-rspi.c                             |  170 +--
+ drivers/spi/spi-sh-hspi.c                          |   39 +-
+ drivers/spi/spi-sh-msiof.c                         |  184 +--
+ drivers/spi/spi-sifive.c                           |  448 +++++++
+ drivers/spi/spi-sprd.c                             |  354 ++++-
+ drivers/spi/spi-stm32.c                            | 1403 +++++++++++++++-=
+----
+ drivers/spi/spi-ti-qspi.c                          |    6 +-
+ drivers/spi/spi-topcliff-pch.c                     |    6 +
+ drivers/spi/spi.c                                  |  115 +-
+ .../linux/platform_data/spi-ath79.h                |    0
+ include/linux/spi/pxa2xx_spi.h                     |    4 +-
+ include/linux/spi/spi-mem.h                        |    5 +
+ include/linux/spi/spi.h                            |   29 +-
+ include/trace/events/spi.h                         |   31 +-
+ 72 files changed, 5094 insertions(+), 2507 deletions(-)
+ rename Documentation/devicetree/bindings/{mtd/fsl-quadspi.txt =3D> spi/spi=
+-fsl-qspi.txt} (73%)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
+ delete mode 100644 drivers/mtd/spi-nor/fsl-quadspi.c
+ create mode 100644 drivers/spi/spi-fsl-qspi.c
+ create mode 100644 drivers/spi/spi-nxp-fspi.c
+ create mode 100644 drivers/spi/spi-sifive.c
+ rename arch/mips/include/asm/mach-ath79/ath79_spi_platform.h =3D> include/=
+linux/platform_data/spi-ath79.h (100%)
+
+--69pVuxX8awAiJ7fD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlx9W1UACgkQJNaLcl1U
+h9AsnAf+LC8G4Lr9eODQJo6wS18pGKKcfng/0E0n+hfSscx8wW5YPbhftaYQv0YY
+lAbJIKai5ybRjC/OQTAOqRXLI0Xe4oBAVLuUL79UmKnNFXSacg6HffNf8Ev5SQlt
+0dC0MxOEZ2BPXAYLaIq+ZTx/1b5BHnsmA5QFY8uRB6uUHe/g8kNODk/LYZw/As1J
+XkAmoawNX8FGGBcXJk6MUROrhc/9dNxqPvni/bUYgbnI+20k+U8iXr8rdnopZwzp
+spWQ79X8zdJY7AkidHopSMiKWmJvdljPYb5+3rTliotW6m4/UBB2Ji0BwiupMY0f
+JeDHw6jqw/oZNG/vfY7V0OL4kGlGbQ==
+=/50M
+-----END PGP SIGNATURE-----
+
+--69pVuxX8awAiJ7fD--

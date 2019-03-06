@@ -1,7 +1,7 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 1/8] spi: lpspi: Add i.MX8 boards support for lpspi
-Date: Wed, 6 Mar 2019 06:30:34 +0000
-Message-ID: <20190306063020.793-2-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 2/8] doc: lpspi: Document DT bindings for LPSPI clocks
+Date: Wed, 6 Mar 2019 06:30:36 +0000
+Message-ID: <20190306063020.793-3-xiaoning.wang@nxp.com>
 References: <20190306063020.793-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -15,132 +15,45 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
+Add introductions of clocks and clock-names strings.
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 ---
 V2:
- - No change. But add DT-bindings string at the next patch.
+ - Add this DT-bindings string in this version.
 ---
- drivers/spi/spi-fsl-lpspi.c | 52 +++++++++++++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 11 deletions(-)
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt          | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 391863914043..f363c000d24a 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -84,7 +84,8 @@ struct lpspi_config {
- struct fsl_lpspi_data {
- 	struct device *dev;
- 	void __iomem *base;
--	struct clk *clk;
-+	struct clk *clk_ipg;
-+	struct clk *clk_per;
- 	bool is_slave;
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Docu=
+mentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+index 6cc3c6fe25a3..e71b81a41ac0 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+@@ -7,7 +7,11 @@ Required properties:
+ - reg : address and length of the lpspi master registers
+ - interrupt-parent : core interrupt controller
+ - interrupts : lpspi interrupt
+-- clocks : lpspi clock specifier
++- clocks : lpspi clock specifier. Its number and order need to correspond =
+to the
++	   value in clock-names.
++- clock-names : Corresponding to per clock and ipg clock in "clocks"
++		respectively. In i.MX7ULP, it only has per clk, so use CLK_DUMMY
++		to fill the "ipg" blank.
+ - spi-slave : spi slave mode support. In slave mode, add this attribute wi=
+thout
+ 	      value. In master mode, remove it.
 =20
- 	void *rx_buf;
-@@ -151,8 +152,19 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
-roller *controller)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-+	int ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
-+	if (ret) {
-+		clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+		return ret;
-+	}
-=20
--	return clk_prepare_enable(fsl_lpspi->clk);
-+	return 0;
- }
-=20
- static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
-)
-@@ -160,7 +172,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
-troller *controller)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-=20
- 	return 0;
- }
-@@ -241,7 +254,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
-*fsl_lpspi)
- 	unsigned int perclk_rate, scldiv;
- 	u8 prescale;
-=20
--	perclk_rate =3D clk_get_rate(fsl_lpspi->clk);
-+	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
- 	for (prescale =3D 0; prescale < 8; prescale++) {
- 		scldiv =3D perclk_rate /
- 			 (clkdivs[prescale] * config.speed_hz) - 2;
-@@ -526,15 +539,30 @@ static int fsl_lpspi_probe(struct platform_device *pd=
-ev)
- 		goto out_controller_put;
- 	}
-=20
--	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
--	if (IS_ERR(fsl_lpspi->clk)) {
--		ret =3D PTR_ERR(fsl_lpspi->clk);
-+	fsl_lpspi->clk_per =3D devm_clk_get(&pdev->dev, "per");
-+	if (IS_ERR(fsl_lpspi->clk_per)) {
-+		ret =3D PTR_ERR(fsl_lpspi->clk_per);
-+		goto out_controller_put;
-+	}
-+
-+	fsl_lpspi->clk_ipg =3D devm_clk_get(&pdev->dev, "ipg");
-+	if (IS_ERR(fsl_lpspi->clk_ipg)) {
-+		ret =3D PTR_ERR(fsl_lpspi->clk_ipg);
-+		goto out_controller_put;
-+	}
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
- 		goto out_controller_put;
- 	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk);
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
- 	if (ret) {
--		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
-+		dev_err(&pdev->dev,
-+			"can't enable lpspi per clock, ret=3D%d\n", ret);
-+		clk_disable_unprepare(fsl_lpspi->clk_ipg);
- 		goto out_controller_put;
- 	}
-=20
-@@ -542,7 +570,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
-)
- 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk);
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-=20
- 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
- 	if (ret < 0) {
-@@ -564,7 +593,8 @@ static int fsl_lpspi_remove(struct platform_device *pde=
-v)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk);
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-=20
- 	return 0;
- }
+@@ -18,6 +22,8 @@ lpspi2: lpspi@40290000 {
+ 	reg =3D <0x40290000 0x10000>;
+ 	interrupt-parent =3D <&intc>;
+ 	interrupts =3D <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+-	clocks =3D <&clks IMX7ULP_CLK_LPSPI2>;
++	clocks =3D <&clks IMX7ULP_CLK_LPSPI2>,
++		 <&clks IMX7ULP_CLK_DUMMY>;
++	clock-names =3D "per", "ipg";
+ 	spi-slave;
+ };
 --=20
 2.17.1

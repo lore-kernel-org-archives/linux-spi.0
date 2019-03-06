@@ -1,7 +1,8 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 0/8] spi: lpspi: Fix bugs and Add some functions support
-Date: Wed, 6 Mar 2019 06:30:32 +0000
-Message-ID: <20190306063020.793-1-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 1/8] spi: lpspi: Add i.MX8 boards support for lpspi
+Date: Wed, 6 Mar 2019 06:30:34 +0000
+Message-ID: <20190306063020.793-2-xiaoning.wang@nxp.com>
+References: <20190306063020.793-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -9,61 +10,137 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190306063020.793-1-xiaoning.wang@nxp.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Add both ipg and per clock for lpspi to support i.MX8QM/QXP boards.
 
-Sorry for replying so late. This patchset contains changes based on your an=
-d other
-reviewers' comments.
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+---
+V2:
+ - No change. But add DT-bindings string at the next patch.
+---
+ drivers/spi/spi-fsl-lpspi.c | 52 +++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
-As subject, these fucntions support, including:
- - Support i.MX8 series boards;
- - Support cs-gpio fucntion;
- - Support DMA mode for both master and salve mode.
-
-These are some notes about cs-gpio and DMA:
- - cs-gpio:
-   Because LPSPI driver don't use default implementation of
-   transfer_one_message(), I do the cs-gpio control way as same as the way
-   used in spi core;
-
- - DMA:
-   Any frame length longer than half txfifosize will be sent by DMA mode.
-   For now, there are some limits:
-      1. The maximum transfer speed in master mode depends on the slave dev=
-ice,
-         at least 40MHz on i.MX8 series (tested by spi-nor on 8qm-lpddr4-ar=
-m2
-         base board);
-      2. The maximum transfer speed I test in slave mode is 15MHz(i.MX7ULP)=
-,
-         20MHz(i.MX8 series). In order to reach the maximum speed which is
-         mentioned in datasheet, the load of connect wires between master a=
-nd
-         slave should be less than 15pF.
-
-Each patch in this patchset should base on the previous one when applied.
-
-Thank you!
-
-Clark Wang (7):
-  spi: lpspi: Add i.MX8 boards support for lpspi
-  doc: lpspi: Document DT bindings for LPSPI clocks
-  spi: lpspi: add the error info of transfer speed setting
-  spi: lpspi: use the core way to implement cs-gpio function
-  spi: lpspi: add dma mode support
-  spi: lpspi: Add the missing NULL check
-  spi: lpspi: Code cleanup
-
-Han Xu (1):
-  spi: lpspi: enable runtime pm for lpspi
-
- .../devicetree/bindings/spi/spi-fsl-lpspi.txt |  10 +-
- drivers/spi/spi-fsl-lpspi.c                   | 543 ++++++++++++++++--
- 2 files changed, 495 insertions(+), 58 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 391863914043..f363c000d24a 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -84,7 +84,8 @@ struct lpspi_config {
+ struct fsl_lpspi_data {
+ 	struct device *dev;
+ 	void __iomem *base;
+-	struct clk *clk;
++	struct clk *clk_ipg;
++	struct clk *clk_per;
+ 	bool is_slave;
+=20
+ 	void *rx_buf;
+@@ -151,8 +152,19 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
+roller *controller)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
++	int ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret)
++		return ret;
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
++	if (ret) {
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
++		return ret;
++	}
+=20
+-	return clk_prepare_enable(fsl_lpspi->clk);
++	return 0;
+ }
+=20
+ static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller=
+)
+@@ -160,7 +172,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
+troller *controller)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
+=20
+ 	return 0;
+ }
+@@ -241,7 +254,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	unsigned int perclk_rate, scldiv;
+ 	u8 prescale;
+=20
+-	perclk_rate =3D clk_get_rate(fsl_lpspi->clk);
++	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
+ 	for (prescale =3D 0; prescale < 8; prescale++) {
+ 		scldiv =3D perclk_rate /
+ 			 (clkdivs[prescale] * config.speed_hz) - 2;
+@@ -526,15 +539,30 @@ static int fsl_lpspi_probe(struct platform_device *pd=
+ev)
+ 		goto out_controller_put;
+ 	}
+=20
+-	fsl_lpspi->clk =3D devm_clk_get(&pdev->dev, "ipg");
+-	if (IS_ERR(fsl_lpspi->clk)) {
+-		ret =3D PTR_ERR(fsl_lpspi->clk);
++	fsl_lpspi->clk_per =3D devm_clk_get(&pdev->dev, "per");
++	if (IS_ERR(fsl_lpspi->clk_per)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_per);
++		goto out_controller_put;
++	}
++
++	fsl_lpspi->clk_ipg =3D devm_clk_get(&pdev->dev, "ipg");
++	if (IS_ERR(fsl_lpspi->clk_ipg)) {
++		ret =3D PTR_ERR(fsl_lpspi->clk_ipg);
++		goto out_controller_put;
++	}
++
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
+ 		goto out_controller_put;
+ 	}
+=20
+-	ret =3D clk_prepare_enable(fsl_lpspi->clk);
++	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "can't enable lpspi clock, ret=3D%d\n", ret);
++		dev_err(&pdev->dev,
++			"can't enable lpspi per clock, ret=3D%d\n", ret);
++		clk_disable_unprepare(fsl_lpspi->clk_ipg);
+ 		goto out_controller_put;
+ 	}
+=20
+@@ -542,7 +570,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
+)
+ 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
+ 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
+@@ -564,7 +593,8 @@ static int fsl_lpspi_remove(struct platform_device *pde=
+v)
+ 	struct fsl_lpspi_data *fsl_lpspi =3D
+ 				spi_controller_get_devdata(controller);
+=20
+-	clk_disable_unprepare(fsl_lpspi->clk);
++	clk_disable_unprepare(fsl_lpspi->clk_per);
++	clk_disable_unprepare(fsl_lpspi->clk_ipg);
+=20
+ 	return 0;
+ }
 --=20
 2.17.1

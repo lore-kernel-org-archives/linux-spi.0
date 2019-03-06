@@ -1,235 +1,71 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 3/8] spi: lpspi: enable runtime pm for lpspi
-Date: Wed, 6 Mar 2019 06:30:39 +0000
-Message-ID: <20190306063020.793-4-xiaoning.wang@nxp.com>
-References: <20190306063020.793-1-xiaoning.wang@nxp.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH] spi-pxa2xx.c: modify the chip selection timing when spi
+ transfer
+Date: Wed, 6 Mar 2019 09:52:13 +0200
+Message-ID: <ed09063c-00cc-a1a5-2a93-2b3361d531bf@linux.intel.com>
+References: <20190306030519.10746-1-jin.xiao@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "he, bo" <bo.he@intel.com>
+To: xiao jin <jin.xiao@intel.com>, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        yanmin.zhang@intel.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190306063020.793-1-xiaoning.wang@nxp.com>
+In-Reply-To: <20190306030519.10746-1-jin.xiao@intel.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Han Xu <han.xu@nxp.com>
+Hi
 
-Enable the runtime power management for lpspi module.
+On 3/6/19 5:05 AM, xiao jin wrote:
+> From: "he, bo" <bo.he@intel.com>
+> 
+> We find spi can't work on board. More debug shows it's related
+> to the following patch that changed the chip selection assert and
+> deassert timing.
+> 
+^^ timing caught my attention. More below.
 
-Do some adaptation work from kernel 4.9 to 4.14.
+> @@ -610,6 +596,7 @@ static void int_transfer_complete(struct driver_data *drv_data)
+>   	if (!pxa25x_ssp_comp(drv_data))
+>   		pxa2xx_spi_write(drv_data, SSTO, 0);
+>   
+> +	cs_deassert(drv_data);
+>   	spi_finalize_current_transfer(drv_data->master);
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
----
-V2:
- - Fix the comment format.
----
- drivers/spi/spi-fsl-lpspi.c | 117 ++++++++++++++++++++++++++++--------
- 1 file changed, 92 insertions(+), 25 deletions(-)
+This
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index f363c000d24a..84dcb9e176b8 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -16,7 +16,9 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -24,6 +26,8 @@
-=20
- #define DRIVER_NAME "fsl_lpspi"
-=20
-+#define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
-+
- /* i.MX7ULP LPSPI registers */
- #define IMX7ULP_VERID	0x0
- #define IMX7ULP_PARAM	0x4
-@@ -154,13 +158,9 @@ static int lpspi_prepare_xfer_hardware(struct spi_cont=
-roller *controller)
- 				spi_controller_get_devdata(controller);
- 	int ret;
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
--	if (ret)
--		return ret;
--
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
- 		return ret;
- 	}
-=20
-@@ -172,8 +172,8 @@ static int lpspi_unprepare_xfer_hardware(struct spi_con=
-troller *controller)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
--	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	pm_runtime_mark_last_busy(fsl_lpspi->dev);
-+	pm_runtime_put_autosuspend(fsl_lpspi->dev);
-=20
- 	return 0;
- }
-@@ -480,6 +480,45 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id=
-)
- 	return IRQ_NONE;
- }
-=20
-+int fsl_lpspi_runtime_resume(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
-+	if (ret) {
-+		clk_disable_unprepare(fsl_lpspi->clk_per);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int fsl_lpspi_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =3D dev_get_drvdata(dev);
-+
-+	clk_disable_unprepare(fsl_lpspi->clk_per);
-+	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+
-+	return 0;
-+}
-+
-+static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
-+{
-+	struct device *dev =3D fsl_lpspi->dev;
-+
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, FSL_LPSPI_RPM_TIMEOUT);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi;
-@@ -505,6 +544,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev=
-)
-=20
- 	fsl_lpspi =3D spi_controller_get_devdata(controller);
- 	fsl_lpspi->dev =3D &pdev->dev;
-+	dev_set_drvdata(&pdev->dev, fsl_lpspi);
- 	fsl_lpspi->is_slave =3D of_property_read_bool((&pdev->dev)->of_node,
- 						    "spi-slave");
-=20
-@@ -551,28 +591,21 @@ static int fsl_lpspi_probe(struct platform_device *pd=
-ev)
- 		goto out_controller_put;
- 	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_ipg);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi ipg clock, ret=3D%d\n", ret);
-+	/* enable the clock */
-+	ret =3D fsl_lpspi_init_rpm(fsl_lpspi);
-+	if (ret)
- 		goto out_controller_put;
--	}
-=20
--	ret =3D clk_prepare_enable(fsl_lpspi->clk_per);
--	if (ret) {
--		dev_err(&pdev->dev,
--			"can't enable lpspi per clock, ret=3D%d\n", ret);
--		clk_disable_unprepare(fsl_lpspi->clk_ipg);
--		goto out_controller_put;
-+	ret =3D pm_runtime_get_sync(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
-+		return ret;
- 	}
-=20
- 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
- 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
--
- 	ret =3D devm_spi_register_controller(&pdev->dev, controller);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_controller error.\n");
-@@ -593,16 +626,50 @@ static int fsl_lpspi_remove(struct platform_device *p=
-dev)
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(controller);
-=20
--	clk_disable_unprepare(fsl_lpspi->clk_per);
--	clk_disable_unprepare(fsl_lpspi->clk_ipg);
-+	pm_runtime_disable(fsl_lpspi->dev);
-+
-+	spi_master_put(controller);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int fsl_lpspi_suspend(struct device *dev)
-+{
-+	int ret;
-+
-+	pinctrl_pm_select_sleep_state(dev);
-+	ret =3D pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_lpspi_resume(struct device *dev)
-+{
-+	int ret;
-+
-+	ret =3D pm_runtime_force_resume(dev);
-+	if (ret) {
-+		dev_err(dev, "Error in resume: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pinctrl_pm_select_default_state(dev);
-=20
- 	return 0;
- }
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static const struct dev_pm_ops fsl_lpspi_pm_ops =3D {
-+	SET_RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
-+				fsl_lpspi_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(fsl_lpspi_suspend, fsl_lpspi_resume)
-+};
-=20
- static struct platform_driver fsl_lpspi_driver =3D {
- 	.driver =3D {
- 		.name =3D DRIVER_NAME,
- 		.of_match_table =3D fsl_lpspi_dt_ids,
-+		.pm =3D &fsl_lpspi_pm_ops,
- 	},
- 	.probe =3D fsl_lpspi_probe,
- 	.remove =3D fsl_lpspi_remove,
---=20
-2.17.1
+> @@ -1070,6 +1057,7 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *master,
+>   			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
+>   	}
+>   
+> +	cs_assert(drv_data);
+
+and this is not correct with core message loop. It will cause the chip 
+select is toggled with each transfer in PIO mode. If there is no 
+cs_change flag set then there shouldn't be CS toggling between the 
+transfers if SPI message consists of multiple transfers.
+
+More over this patch also will regress with DMA mode since there won't 
+be CS deassert at all.
+
+Timing reminded me I've seen two cases where there was a timing related 
+glitch in CS output:
+
+d0283eb2dbc1 ("spi: pxa2xx: Add output control for multiple Intel LPSS 
+chip selects")
+7a8d44bc89e5 ("spi: pxa2xx: Fix too early chipselect deassert")
+
+Do you have a possibility to measure with an oscilloscope what goes 
+wrong with the CS after d5898e19c0d7 ("spi: pxa2xx: Use core message 
+processing loop")?
+
+Can you share your setup if I can reproduce it here? E.g. SPI clock 
+frequency, single or multiple CS, frequency of occurrence, etc
+
+-- 
+Jarkko

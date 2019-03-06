@@ -1,7 +1,7 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH V2 7/8] spi: lpspi: Add the missing NULL check
-Date: Wed, 6 Mar 2019 06:30:47 +0000
-Message-ID: <20190306063020.793-8-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 8/8] spi: lpspi: Code cleanup
+Date: Wed, 6 Mar 2019 06:30:49 +0000
+Message-ID: <20190306063020.793-9-xiaoning.wang@nxp.com>
 References: <20190306063020.793-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -15,37 +15,31 @@ Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi_transfer *t will be used in one transfer whatever. If t is NULL,
-there has no need to try sending data, so add an error return here.
+Delete the extra space.
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Acked-by: Fugang Duan <Fugang.duan@nxp.com>
 ---
 V2:
  - add this patch in this version
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 9ff32fb67a29..2ac3ac5ea50a 100644
+index 2ac3ac5ea50a..1860f066f838 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -438,9 +438,12 @@ static int fsl_lpspi_setup_transfer(struct spi_control=
-ler *controller,
- 	struct fsl_lpspi_data *fsl_lpspi =3D
- 				spi_controller_get_devdata(spi->controller);
+@@ -345,7 +345,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data =
+*fsl_lpspi)
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
+ 					fsl_lpspi->base + IMX7ULP_CCR);
 =20
-+	if (t =3D=3D NULL)
-+		return -EINVAL;
-+
- 	fsl_lpspi->config.mode =3D spi->mode;
--	fsl_lpspi->config.bpw =3D t ? t->bits_per_word : spi->bits_per_word;
--	fsl_lpspi->config.speed_hz =3D t ? t->speed_hz : spi->max_speed_hz;
-+	fsl_lpspi->config.bpw =3D t->bits_per_word;
-+	fsl_lpspi->config.speed_hz =3D t->speed_hz;
- 	fsl_lpspi->config.chip_select =3D spi->chip_select;
+-	dev_dbg(fsl_lpspi->dev, "perclk=3D%d, speed=3D%d, prescale =3D%d, scldiv=
+=3D%d\n",
++	dev_dbg(fsl_lpspi->dev, "perclk=3D%d, speed=3D%d, prescale=3D%d, scldiv=
+=3D%d\n",
+ 		perclk_rate, config.speed_hz, prescale, scldiv);
 =20
- 	if (!fsl_lpspi->config.speed_hz)
+ 	return 0;
 --=20
 2.17.1

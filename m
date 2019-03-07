@@ -1,53 +1,82 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] [v3] spi: work around clang bug in SPI_BPW_RANGE_MASK()
-Date: Thu,  7 Mar 2019 16:54:21 +0100
-Message-ID: <20190307155506.2993868-1-arnd@arndb.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] [RFC] spi: pxa2xx: Do cs if restart the SSP during
+ pxa2xx_spi_transfer_one()
+Date: Thu, 7 Mar 2019 16:09:24 +0000
+Message-ID: <20190307160924.GE6529@sirena.org.uk>
+References: <20190307072424.18820-1-jin.xiao@intel.com>
+ <cf5b89b6-e081-5ba2-2837-7d3cfde779ae@linux.intel.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9crTWz/Z+Zyzu20v"
+Cc: xiao jin <jin.xiao@intel.com>, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, yanmin.zhang@intel.com,
+        bo <bo.he@intel.com>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <cf5b89b6-e081-5ba2-2837-7d3cfde779ae@linux.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Clang-8 evaluates both sides of a ?: expression to check for
-valid arithmetic even in the side that is never taken. This
-results in a build warning:
 
-drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
-        .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
-                              ^~~~~~~~~~~~~~~~~~~~~~~~~
+--9crTWz/Z+Zyzu20v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Change the implementation to use the GENMASK() macro that does
-what we want here but does not have a problem with the shift
-count overflow.
+On Thu, Mar 07, 2019 at 05:26:53PM +0200, Jarkko Nikula wrote:
+> On 3/7/19 9:24 AM, xiao jin wrote:
 
-Link: https://bugs.llvm.org/show_bug.cgi?id=38789
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v3: use GENMASK() instead of open-coding it
-v2: add a code comment
----
- include/linux/spi/spi.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> > The patch is to do cs again if spi-pxa2xx restar the SSP during
+> > pxa2xx_spi_transfer_one()
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 662b336aa2e4..b27386450089 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -444,8 +444,7 @@ struct spi_controller {
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
- #define SPI_BPW_MASK(bits) BIT((bits) - 1)
--#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
--#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
-+#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
- 
- 	/* limits on transfer speed */
- 	u32			min_speed_hz;
--- 
-2.20.0
+> Hmm.. please correct me if I'm wrong but pxa2xx_spi_unprepare_transfer() =
+is
+> called always when there is no more messages pending and the spi core sho=
+uld
+> have deasserted the CS already?
+
+Yes.
+
+> > @@ -1056,6 +1057,11 @@ static int pxa2xx_spi_transfer_one(struct spi_co=
+ntroller *master,
+> >   	if ((pxa2xx_spi_read(drv_data, SSCR0) !=3D cr0)
+> >   	    || (pxa2xx_spi_read(drv_data, SSCR1) & change_mask)
+> >   	    !=3D (cr1 & change_mask)) {
+> > +		/* It needs to deassert the chip selection
+> > +		 * firstly before restart the SPP */
+> > +		need_cs_change =3D true;
+> > +		cs_deassert(spi);
+
+> I think code comes here at the beginning of each transfer so will be hit
+> multiple times before pxa2xx_spi_unprepare_transfer() if SPI message
+> consists of multiple transfers.
+
+> This makes me wondering if the device driver setting up the "struct
+> spi_transfer" is maybe missing the cs_change flag set for transfers before
+> last one in case HW needs CS toggling between transfers? For instance what
+> following drivers are doing with the cs_change flag:
+
+> drivers/char/tpm/tpm_tis_spi.c: tpm_tis_spi_transfer()
+> drivers/input/touchscreen/ad7877.c: ad7877_read(), ad7877_read_adc()
+
+Right, this really feels like it's fixing the wrong thing. =20
+
+--9crTWz/Z+Zyzu20v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyBQjMACgkQJNaLcl1U
+h9D+IAf/RPJBHypK+ouTHdrAKEfxDNywJpo2oajUzbpOk+84L90tpxhXxJqmNkfO
+wBqnszhfTMXP/bPgFKBRxni3WdiHW8De4enQ0SrP3MPUEh4t6j1iUsbTTpbocxbl
+SsosvIJKdjFTvz0oE5rUM6OKl5wB6ENyk2AFZffJxY0I3ktHkEgdSYJ1bi006x5X
+uIwEUJwM8I/wwo151dQXsUOGu93b7j92P6p5iTEnPL+gbiE/0X8OxCxe1KVveCbY
+flsc/Sk6IFJ2p4Ll5qKooM6Ef+/fCXiTeFkSIolUXBwnR04R2sC404aelPR2zj7X
+/EQ3J6/PFUg4m9aV/HQNiJCKp6bmXw==
+=7VDL
+-----END PGP SIGNATURE-----
+
+--9crTWz/Z+Zyzu20v--

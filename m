@@ -1,75 +1,55 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v8 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Thu, 7 Mar 2019 20:50:37 +0300
-Message-ID: <0c54ee2c-016a-bc8e-33ae-fbd04191cc49@cogentembedded.com>
-References: <1548658158-5460-1-git-send-email-masonccyang@mxic.com.tw>
- <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH v1 2/3] spi: pxa2xx: Introduce dma-burst-sz property
+ support
+Date: Thu, 07 Mar 2019 20:24:24 +0100
+Message-ID: <87ef7i5vyv.fsf@belgarion.home>
+References: <20190226092441.49198-1-andriy.shevchenko@linux.intel.com>
+ <20190226092441.49198-2-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Daniel Mack <daniel@zonque.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190226092441.49198-2-andriy.shevchenko@linux.intel.com> (Andy
+ Shevchenko's message of "Tue, 26 Feb 2019 12:24:40 +0300")
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
 
-On 01/28/2019 09:49 AM, Mason Yang wrote:
+> @@ -1512,6 +1513,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+>  	const struct acpi_device_id *adev_id = NULL;
+>  	const struct pci_device_id *pcidev_id = NULL;
+>  	const struct of_device_id *of_id = NULL;
+> +	struct device *dev = &pdev->dev;
+>  	enum pxa_ssp_type type;
+>  
+>  	adev = ACPI_COMPANION(&pdev->dev);
+> @@ -1566,9 +1568,10 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+>  	ssp->pdev = pdev;
+>  	ssp->port_id = pxa2xx_spi_get_port_id(adev);
+>  
+> -	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+> +	pdata->is_slave = device_property_read_bool(dev, "spi-slave");
+Isn't this an unrelated change to the introduction of dma-burst-sz ?
 
-> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-[...]
-> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
-> new file mode 100644
-> index 0000000..ea12017
-> --- /dev/null
-> +++ b/drivers/spi/spi-renesas-rpc.c
-> @@ -0,0 +1,804 @@
-[...]
-> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
-> +{
-> +	//
-> +	// NOTE: The 0x260 are undocumented bits, but they must be set.
-> +	//	RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
-> +	//	0x0 : the delay is biggest,
-> +	//	0x1 : the delay is 2nd biggest,
-> +	//	On H3 ES1.x, the value should be 0, while on others,
-> +	//	the value should be 6.
-> +	//
-> +	regmap_write(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
-> +				  RPC_PHYCNT_STRTIM(6) | 0x260);
-> +
-> +	//
-> +	// NOTE: The 0x1511144 are undocumented bits, but they must be set
-> +	//       for RPC_PHYOFFSET1.
-> +	//	 The 0x31 are undocumented bits, but they must be set
-> +	//	 for RPC_PHYOFFSET2.
-> +	//
-> +	regmap_write(rpc->regmap, RPC_PHYOFFSET1, RPC_PHYOFFSET1_DDRTMG(3) |
-> +		     0x1511144);
-> +	regmap_write(rpc->regmap, RPC_PHYOFFSET2, 0x31 |
-> +		     RPC_PHYOFFSET2_OCTTMG(4));
-> +	regmap_write(rpc->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
-> +		     RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
-> +	regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
-> +		     RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
-> +		     RPC_CMNCR_BSZ(0));
-> +}
+Other than this :
+Reviewed-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-   We clearly need runtime PM get/put() calls around this code. Otherwise,
-we're dependant on U-Boot leaving the clocks enabled...
+Cheers.
 
-[...]
-
-MBR, Sergei
+-- 
+Robert

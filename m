@@ -1,82 +1,75 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] [RFC] spi: pxa2xx: Do cs if restart the SSP during
- pxa2xx_spi_transfer_one()
-Date: Thu, 7 Mar 2019 16:09:24 +0000
-Message-ID: <20190307160924.GE6529@sirena.org.uk>
-References: <20190307072424.18820-1-jin.xiao@intel.com>
- <cf5b89b6-e081-5ba2-2837-7d3cfde779ae@linux.intel.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v8 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Thu, 7 Mar 2019 20:50:37 +0300
+Message-ID: <0c54ee2c-016a-bc8e-33ae-fbd04191cc49@cogentembedded.com>
+References: <1548658158-5460-1-git-send-email-masonccyang@mxic.com.tw>
+ <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9crTWz/Z+Zyzu20v"
-Cc: xiao jin <jin.xiao@intel.com>, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yanmin.zhang@intel.com,
-        bo <bo.he@intel.com>
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <cf5b89b6-e081-5ba2-2837-7d3cfde779ae@linux.intel.com>
+In-Reply-To: <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello!
 
---9crTWz/Z+Zyzu20v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 01/28/2019 09:49 AM, Mason Yang wrote:
 
-On Thu, Mar 07, 2019 at 05:26:53PM +0200, Jarkko Nikula wrote:
-> On 3/7/19 9:24 AM, xiao jin wrote:
+> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+[...]
+> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
+> new file mode 100644
+> index 0000000..ea12017
+> --- /dev/null
+> +++ b/drivers/spi/spi-renesas-rpc.c
+> @@ -0,0 +1,804 @@
+[...]
+> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
+> +{
+> +	//
+> +	// NOTE: The 0x260 are undocumented bits, but they must be set.
+> +	//	RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
+> +	//	0x0 : the delay is biggest,
+> +	//	0x1 : the delay is 2nd biggest,
+> +	//	On H3 ES1.x, the value should be 0, while on others,
+> +	//	the value should be 6.
+> +	//
+> +	regmap_write(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
+> +				  RPC_PHYCNT_STRTIM(6) | 0x260);
+> +
+> +	//
+> +	// NOTE: The 0x1511144 are undocumented bits, but they must be set
+> +	//       for RPC_PHYOFFSET1.
+> +	//	 The 0x31 are undocumented bits, but they must be set
+> +	//	 for RPC_PHYOFFSET2.
+> +	//
+> +	regmap_write(rpc->regmap, RPC_PHYOFFSET1, RPC_PHYOFFSET1_DDRTMG(3) |
+> +		     0x1511144);
+> +	regmap_write(rpc->regmap, RPC_PHYOFFSET2, 0x31 |
+> +		     RPC_PHYOFFSET2_OCTTMG(4));
+> +	regmap_write(rpc->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
+> +		     RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
+> +	regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
+> +		     RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
+> +		     RPC_CMNCR_BSZ(0));
+> +}
 
-> > The patch is to do cs again if spi-pxa2xx restar the SSP during
-> > pxa2xx_spi_transfer_one()
+   We clearly need runtime PM get/put() calls around this code. Otherwise,
+we're dependant on U-Boot leaving the clocks enabled...
 
-> Hmm.. please correct me if I'm wrong but pxa2xx_spi_unprepare_transfer() =
-is
-> called always when there is no more messages pending and the spi core sho=
-uld
-> have deasserted the CS already?
+[...]
 
-Yes.
-
-> > @@ -1056,6 +1057,11 @@ static int pxa2xx_spi_transfer_one(struct spi_co=
-ntroller *master,
-> >   	if ((pxa2xx_spi_read(drv_data, SSCR0) !=3D cr0)
-> >   	    || (pxa2xx_spi_read(drv_data, SSCR1) & change_mask)
-> >   	    !=3D (cr1 & change_mask)) {
-> > +		/* It needs to deassert the chip selection
-> > +		 * firstly before restart the SPP */
-> > +		need_cs_change =3D true;
-> > +		cs_deassert(spi);
-
-> I think code comes here at the beginning of each transfer so will be hit
-> multiple times before pxa2xx_spi_unprepare_transfer() if SPI message
-> consists of multiple transfers.
-
-> This makes me wondering if the device driver setting up the "struct
-> spi_transfer" is maybe missing the cs_change flag set for transfers before
-> last one in case HW needs CS toggling between transfers? For instance what
-> following drivers are doing with the cs_change flag:
-
-> drivers/char/tpm/tpm_tis_spi.c: tpm_tis_spi_transfer()
-> drivers/input/touchscreen/ad7877.c: ad7877_read(), ad7877_read_adc()
-
-Right, this really feels like it's fixing the wrong thing. =20
-
---9crTWz/Z+Zyzu20v
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyBQjMACgkQJNaLcl1U
-h9D+IAf/RPJBHypK+ouTHdrAKEfxDNywJpo2oajUzbpOk+84L90tpxhXxJqmNkfO
-wBqnszhfTMXP/bPgFKBRxni3WdiHW8De4enQ0SrP3MPUEh4t6j1iUsbTTpbocxbl
-SsosvIJKdjFTvz0oE5rUM6OKl5wB6ENyk2AFZffJxY0I3ktHkEgdSYJ1bi006x5X
-uIwEUJwM8I/wwo151dQXsUOGu93b7j92P6p5iTEnPL+gbiE/0X8OxCxe1KVveCbY
-flsc/Sk6IFJ2p4Ll5qKooM6Ef+/fCXiTeFkSIolUXBwnR04R2sC404aelPR2zj7X
-/EQ3J6/PFUg4m9aV/HQNiJCKp6bmXw==
-=7VDL
------END PGP SIGNATURE-----
-
---9crTWz/Z+Zyzu20v--
+MBR, Sergei

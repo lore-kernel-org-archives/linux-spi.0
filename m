@@ -1,54 +1,54 @@
-From: Volker Haspel <volker.haspel@linutronix.de>
-Subject: [PATCH] spi: spi-fsl-qspi: call spi_unregister_controller
-Date: Thu,  7 Mar 2019 11:30:08 +0100
-Message-ID: <20190307103008.19841-1-volker.haspel@linutronix.de>
-Cc: linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>,
-        Mark Brown <broonie@kernel.org>, john.ogness@linutronix.de,
-        volker.haspel@linutronix.de
-To: linux-kernel@vger.kernel.org
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] spi: work around clang bug in SPI_BPW_RANGE_MASK()
+Date: Thu,  7 Mar 2019 11:56:07 +0100
+Message-ID: <20190307105619.2780591-1-arnd@arndb.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Frieder Schrempf <frieder.schrempf@exceet.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver does not clearly unregister the spi controller.
-Therefore calling an unbind and bind again will end up in a
-Kernel crash.
-Each driver who calls spi_register_controller() in the probe function
-has to call spi_unregister_controller() too.
+Clang-8 evaluates both sides of a ?: expression to check for
+valid arithmetic even in the side that is never taken. This
+results in a build warning:
 
-Signed-off-by: Volker Haspel <volker.haspel@linutronix.de>
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
+drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
+        .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
+                              ^~~~~~~~~~~~~~~~~~~~~~~~~
+
+Change it to shift one less than we want, and then shift one
+more bit afterwards. This should give the correct result for
+all valid input, since it has to be in the range 1..32 anyway.
+
+Link: https://bugs.llvm.org/show_bug.cgi?id=38789
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/spi/spi-fsl-qspi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/spi/spi.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 6a713f78a62e..373c4a82e8e3 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -248,6 +248,7 @@ struct fsl_qspi {
- 	struct mutex lock;
- 	struct pm_qos_request pm_qos_req;
- 	int selected;
-+	struct spi_controller *ctlr;
- };
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 662b336aa2e4..758b6287cad6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -444,8 +444,8 @@ struct spi_controller {
+ 	/* bitmask of supported bits_per_word for transfers */
+ 	u32			bits_per_word_mask;
+ #define SPI_BPW_MASK(bits) BIT((bits) - 1)
+-#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
+-#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
++#define SPI_BIT_MASK(bits) ((BIT((bits) - 1) << 1) - 1)
++#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - (BIT((min) - 1) - 1))
  
- static inline int needs_swap_endian(struct fsl_qspi *q)
-@@ -812,6 +813,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 			  SPI_TX_DUAL | SPI_TX_QUAD;
- 
- 	q = spi_controller_get_devdata(ctlr);
-+	q->ctlr = ctlr;
- 	q->dev = dev;
- 	q->devtype_data = of_device_get_match_data(dev);
- 	if (!q->devtype_data) {
-@@ -912,6 +914,7 @@ static int fsl_qspi_remove(struct platform_device *pdev)
- 	fsl_qspi_clk_disable_unprep(q);
- 
- 	mutex_destroy(&q->lock);
-+	spi_unregister_controller(q->ctlr);
- 
- 	return 0;
- }
+ 	/* limits on transfer speed */
+ 	u32			min_speed_hz;
 -- 
-2.11.0
+2.20.0

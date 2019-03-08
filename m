@@ -1,69 +1,89 @@
-From: Ludovic Barre <ludovic.Barre@st.com>
-Subject: [PATCH 1/2] spi: spi-mem: stm32-qspi: avoid memory corruption at low
- frequency
-Date: Fri, 8 Mar 2019 14:12:20 +0100
-Message-ID: <1552050741-27739-2-git-send-email-ludovic.Barre@st.com>
-References: <1552050741-27739-1-git-send-email-ludovic.Barre@st.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v8 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Fri, 8 Mar 2019 20:32:31 +0300
+Message-ID: <b469bffe-b5b2-0b03-b6fb-49bfc8ba74ab@cogentembedded.com>
+References: <1548658158-5460-1-git-send-email-masonccyang@mxic.com.tw>
+ <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
+ <0c54ee2c-016a-bc8e-33ae-fbd04191cc49@cogentembedded.com>
+ <CAMuHMdVjgWNw4fnzJV=Qxs6zyNiBPubJUL-4WDOy26N4TkQ4gQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, Alexandre Torgue <alexandre.torgue@st.com>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org, Ludovic Barre <ludovic.barre@st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>, Marek Vasut <marek.vasut@gmail.com>,
- Boris Brezillon <boris.brezillon@bootlin.com>, Rob Herring
- <robh+dt@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1552050741-27739-1-git-send-email-ludovic.Barre@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: Mason Yang <masonccyang@mxic.com.tw>,
+        Mark Brown <broonie@kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdVjgWNw4fnzJV=Qxs6zyNiBPubJUL-4WDOy26N4TkQ4gQ@mail.gmail.com>
+Content-Language: en-MW
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ludovic Barre <ludovic.barre@st.com>
+Hello!
 
-This patch solves a memory corruption seen at 8 MHz.
-To avoid such issue, timeout counter is disabled.
+On 03/08/2019 12:14 PM, Geert Uytterhoeven wrote:
 
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/spi/spi-stm32-qspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+>>> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+>>>
+>>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+>>> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+>> [...]
+>>> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
+>>> new file mode 100644
+>>> index 0000000..ea12017
+>>> --- /dev/null
+>>> +++ b/drivers/spi/spi-renesas-rpc.c
+>>> @@ -0,0 +1,804 @@
+>> [...]
+>>> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
+>>> +{
+>>> +     //
+>>> +     // NOTE: The 0x260 are undocumented bits, but they must be set.
+>>> +     //      RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
+>>> +     //      0x0 : the delay is biggest,
+>>> +     //      0x1 : the delay is 2nd biggest,
+>>> +     //      On H3 ES1.x, the value should be 0, while on others,
+>>> +     //      the value should be 6.
+>>> +     //
+>>> +     regmap_write(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
+>>> +                               RPC_PHYCNT_STRTIM(6) | 0x260);
+>>> +
+>>> +     //
+>>> +     // NOTE: The 0x1511144 are undocumented bits, but they must be set
+>>> +     //       for RPC_PHYOFFSET1.
+>>> +     //       The 0x31 are undocumented bits, but they must be set
+>>> +     //       for RPC_PHYOFFSET2.
+>>> +     //
+>>> +     regmap_write(rpc->regmap, RPC_PHYOFFSET1, RPC_PHYOFFSET1_DDRTMG(3) |
+>>> +                  0x1511144);
+>>> +     regmap_write(rpc->regmap, RPC_PHYOFFSET2, 0x31 |
+>>> +                  RPC_PHYOFFSET2_OCTTMG(4));
+>>> +     regmap_write(rpc->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
+>>> +                  RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
+>>> +     regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
+>>> +                  RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
+>>> +                  RPC_CMNCR_BSZ(0));
+>>> +}
+>>
+>>    We clearly need runtime PM get/put() calls around this code. Otherwise,
+>> we're dependant on U-Boot leaving the clocks enabled...
+> 
+> Even that would be futile, as the common clock framework disables all
+> unused clocks at late boot time.
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 3b2a9a6..7354f9d 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -76,7 +76,6 @@
- #define QSPI_PSMAR		0x28
- #define QSPI_PIR		0x2c
- #define QSPI_LPTR		0x30
--#define LPTR_DFT_TIMEOUT	0x10
- 
- #define STM32_QSPI_MAX_MMAP_SZ	SZ_256M
- #define STM32_QSPI_MAX_NORCHIP	2
-@@ -372,8 +371,7 @@ static int stm32_qspi_setup(struct spi_device *spi)
- 	flash->presc = presc;
- 
- 	mutex_lock(&qspi->lock);
--	writel_relaxed(LPTR_DFT_TIMEOUT, qspi->io_base + QSPI_LPTR);
--	cr = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_TCEN | CR_SSHIFT | CR_EN;
-+	cr = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_SSHIFT | CR_EN;
- 	writel_relaxed(cr, qspi->io_base + QSPI_CR);
- 
- 	/* set dcr fsize to max address */
--- 
-2.7.4
+   This code is executed during the probing time and it indeed works. The clocks seem
+to be disabled somewhat later...
 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+MBR, Sergei

@@ -1,89 +1,107 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v8 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Fri, 8 Mar 2019 20:32:31 +0300
-Message-ID: <b469bffe-b5b2-0b03-b6fb-49bfc8ba74ab@cogentembedded.com>
-References: <1548658158-5460-1-git-send-email-masonccyang@mxic.com.tw>
- <1548658158-5460-2-git-send-email-masonccyang@mxic.com.tw>
- <0c54ee2c-016a-bc8e-33ae-fbd04191cc49@cogentembedded.com>
- <CAMuHMdVjgWNw4fnzJV=Qxs6zyNiBPubJUL-4WDOy26N4TkQ4gQ@mail.gmail.com>
+From: Naga Sureshkumar Relli <nagasure@xilinx.com>
+Subject: RE: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
+Date: Mon, 11 Mar 2019 04:32:58 +0000
+Message-ID: <MWHPR02MB262362EC0116C64B84874740AF480@MWHPR02MB2623.namprd02.prod.outlook.com>
+References: <1551337361-11665-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <48dafcc4-1b9d-9ce2-9228-78e73252781f@ti.com>
+ <MWHPR02MB262310CF8152AE170FE7443CAF760@MWHPR02MB2623.namprd02.prod.outlook.com>
+ <602dd5ed-48b6-2098-fc2a-e36192b6a8e7@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mason Yang <masonccyang@mxic.com.tw>,
-        Mark Brown <broonie@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdVjgWNw4fnzJV=Qxs6zyNiBPubJUL-4WDOy26N4TkQ4gQ@mail.gmail.com>
-Content-Language: en-MW
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: "richard@nod.at" <richard@nod.at>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>,
+ Michal Simek <michals@xilinx.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Vignesh Raghavendra <vigneshr@ti.com>, "broonie@kernel.org"
+ <broonie@kernel.org>, "bbrezillon@kernel.org" <bbrezillon@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <602dd5ed-48b6-2098-fc2a-e36192b6a8e7@ti.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Hi Vignesh,
 
-On 03/08/2019 12:14 PM, Geert Uytterhoeven wrote:
-
->>> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
->>>
->>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->>> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
->> [...]
->>> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
->>> new file mode 100644
->>> index 0000000..ea12017
->>> --- /dev/null
->>> +++ b/drivers/spi/spi-renesas-rpc.c
->>> @@ -0,0 +1,804 @@
->> [...]
->>> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
->>> +{
->>> +     //
->>> +     // NOTE: The 0x260 are undocumented bits, but they must be set.
->>> +     //      RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
->>> +     //      0x0 : the delay is biggest,
->>> +     //      0x1 : the delay is 2nd biggest,
->>> +     //      On H3 ES1.x, the value should be 0, while on others,
->>> +     //      the value should be 6.
->>> +     //
->>> +     regmap_write(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
->>> +                               RPC_PHYCNT_STRTIM(6) | 0x260);
->>> +
->>> +     //
->>> +     // NOTE: The 0x1511144 are undocumented bits, but they must be set
->>> +     //       for RPC_PHYOFFSET1.
->>> +     //       The 0x31 are undocumented bits, but they must be set
->>> +     //       for RPC_PHYOFFSET2.
->>> +     //
->>> +     regmap_write(rpc->regmap, RPC_PHYOFFSET1, RPC_PHYOFFSET1_DDRTMG(3) |
->>> +                  0x1511144);
->>> +     regmap_write(rpc->regmap, RPC_PHYOFFSET2, 0x31 |
->>> +                  RPC_PHYOFFSET2_OCTTMG(4));
->>> +     regmap_write(rpc->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
->>> +                  RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
->>> +     regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE |
->>> +                  RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
->>> +                  RPC_CMNCR_BSZ(0));
->>> +}
->>
->>    We clearly need runtime PM get/put() calls around this code. Otherwise,
->> we're dependant on U-Boot leaving the clocks enabled...
+> -----Original Message-----
+> From: linux-spi-owner@vger.kernel.org <linux-spi-owner@vger.kernel.org> On Behalf Of
+> Vignesh Raghavendra
+> Sent: Friday, March 8, 2019 10:20 AM
+> To: Naga Sureshkumar Relli <nagasure@xilinx.com>; broonie@kernel.org;
+> bbrezillon@kernel.org
+> Cc: linux-spi@vger.kernel.org; dwmw2@infradead.org; marek.vasut@gmail.com;
+> richard@nod.at; linux-mtd@lists.infradead.org; linux-kernel@vger.kernel.org; Michal Simek
+> <michals@xilinx.com>; nagasuresh12@gmail.com
+> Subject: Re: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
 > 
-> Even that would be futile, as the common clock framework disables all
-> unused clocks at late boot time.
-
-   This code is executed during the probing time and it indeed works. The clocks seem
-to be disabled somewhat later...
-
-> Gr{oetje,eeting}s,
 > 
->                         Geert
+> 
+> On 01/03/19 4:32 PM, Naga Sureshkumar Relli wrote:
+> >>> +static bool zynq_qspi_supports_op(struct spi_mem *mem,
+> >>> +				  const struct spi_mem_op *op)
+> >>> +{
+> >>> +	int ret;
+> >>> +
+> >>> +	ret = zynq_qspi_check_buswidth(op->cmd.buswidth);
+> >>> +
+> >>> +	if (op->addr.nbytes)
+> >>> +		ret |= zynq_qspi_check_buswidth(op->addr.buswidth);
+> >>> +
+> >>> +	if (op->dummy.nbytes)
+> >>> +		ret |= zynq_qspi_check_buswidth(op->dummy.buswidth);
+> >>> +
+> >>> +	if (op->data.nbytes)
+> >>> +		ret |= zynq_qspi_check_buswidth(op->data.buswidth);
+> >>> +
+> >>> +	if (ret)
+> >>> +		return false;
+> >>> +
+> >> spi_mem_default_supports_op() already has this code.
+> >> Could you change, spi_mem_supports_op() to call
+> >> spi_mem_default_supports_op() first before controller specific
+> >> ->supports_op()? So that, above code can be dropped.
+> > Ok, I will update it.
+> >>> +	/*
+> >>> +	 * The number of address bytes should be equal to or less than 3 bytes.
+> >>> +	 */
+> >>> +	if (op->addr.nbytes > 3)
+> >>> +		return false;
+> >>> +
+> >> Hmm, how does the driver handle flash devices >16MB in size? Not supported?
+> > Zynq QSPI controller doesn't support 4 byte addressing.
+> > So to support > 16MB size, we have to use EAR(extended address register).
+> > As it is initial version of driver, I haven't added this code. This needs to be added in spi-nor.c.
+> > Previously I have sent an RFC patch to support all these.
+> > But Boris suggested to upstream the basic one first under spi-mem frame work.
+> > Not only this support, there are other features like dual parallel and dual stacked.
+> > All these features require additional support from spi-nor framework.
+> > We have another QSPI controller on ZynqMP SOC, which is also similar(but it supports
+> 4Byte addressing).
+> > So by consolidating all these, I sent this patch.
+> >
+> > Please let me know your suggestion on this.
+> 
+> Sounds fine to me. Support for > 16MB flash using EAR can come later.
+Thanks.
+Shall I wait for others to review or go ahead by addressing your previous comments?
 
-MBR, Sergei
+Thanks,
+Naga Sureshkumar Relli
+> 
+> --
+> Regards
+> Vignesh
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

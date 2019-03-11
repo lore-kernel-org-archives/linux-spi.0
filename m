@@ -1,61 +1,38 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] [v3] spi: work around clang bug in SPI_BPW_RANGE_MASK()
-Date: Mon, 11 Mar 2019 10:11:19 +0100
-Message-ID: <CAMuHMdWv3On3w9hqJUZ7oKNHxphhNZNN8JhN4oUgfyvu7C9XRg@mail.gmail.com>
-References: <20190307155506.2993868-1-arnd@arndb.de>
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: RE: [PATCH 1/2] dt: snps,dw-apb-ssi: Add clock bindings documentation
+Date: Mon, 11 Mar 2019 11:50:55 +0000
+Message-ID: <TYAPR01MB401574D8B0996378DCD5DC97DF480@TYAPR01MB4015.jpnprd01.prod.outlook.com>
+References: <1551360342-23981-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1551360342-23981-2-git-send-email-gareth.williams.jx@renesas.com>
+ <20190303233145.GN23441@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190307155506.2993868-1-arnd@arndb.de>
+In-Reply-To: <20190303233145.GN23441@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Arnd,
+> On Sat, Mar 03, 2019 at 23:32 +0100, Mark Brown wrote:
+> > On Thu, Feb 28, 2019 at 01:25:41PM +0000, Gareth Williams wrote:
+> > From: Phil Edworthy <phil.edworthy@renesas.com>
+> >
+> > The driver requires a clock property, so detail it in the docs.
+> > Fix a typo, 'pis' to 'pins'.
+> > Add documentation for a separate, optional, interface clock.
+>=20
+> Please use subject lines matching the style for the subsystem.  This make=
+s it
+> easier for people to identify relevant patches.
 
-On Thu, Mar 7, 2019 at 4:55 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> Clang-8 evaluates both sides of a ?: expression to check for
-> valid arithmetic even in the side that is never taken. This
-> results in a build warning:
->
-> drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
->         .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
->                               ^~~~~~~~~~~~~~~~~~~~~~~~~
->
-> Change the implementation to use the GENMASK() macro that does
-> what we want here but does not have a problem with the shift
-> count overflow.
->
-> Link: https://bugs.llvm.org/show_bug.cgi?id=38789
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Thanks for your patch!
-
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -444,8 +444,7 @@ struct spi_controller {
->         /* bitmask of supported bits_per_word for transfers */
->         u32                     bits_per_word_mask;
->  #define SPI_BPW_MASK(bits) BIT((bits) - 1)
-> -#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
-> -#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
-> +#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
-
-Shouldn't that be GENMASK((max) - 1, (min) - 1)?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks for the feedback Mark.
+I will wait another week to see if there is any other feedback before sendi=
+ng an updated version of this patch series.

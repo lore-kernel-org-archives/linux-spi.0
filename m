@@ -1,107 +1,61 @@
-From: Naga Sureshkumar Relli <nagasure@xilinx.com>
-Subject: RE: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
-Date: Mon, 11 Mar 2019 04:32:58 +0000
-Message-ID: <MWHPR02MB262362EC0116C64B84874740AF480@MWHPR02MB2623.namprd02.prod.outlook.com>
-References: <1551337361-11665-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
- <48dafcc4-1b9d-9ce2-9228-78e73252781f@ti.com>
- <MWHPR02MB262310CF8152AE170FE7443CAF760@MWHPR02MB2623.namprd02.prod.outlook.com>
- <602dd5ed-48b6-2098-fc2a-e36192b6a8e7@ti.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] [v3] spi: work around clang bug in SPI_BPW_RANGE_MASK()
+Date: Mon, 11 Mar 2019 10:11:19 +0100
+Message-ID: <CAMuHMdWv3On3w9hqJUZ7oKNHxphhNZNN8JhN4oUgfyvu7C9XRg@mail.gmail.com>
+References: <20190307155506.2993868-1-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "richard@nod.at" <richard@nod.at>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>,
- Michal Simek <michals@xilinx.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>
-To: Vignesh Raghavendra <vigneshr@ti.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "bbrezillon@kernel.org" <bbrezillon@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <602dd5ed-48b6-2098-fc2a-e36192b6a8e7@ti.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190307155506.2993868-1-arnd@arndb.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Vignesh,
+Hi Arnd,
 
-> -----Original Message-----
-> From: linux-spi-owner@vger.kernel.org <linux-spi-owner@vger.kernel.org> On Behalf Of
-> Vignesh Raghavendra
-> Sent: Friday, March 8, 2019 10:20 AM
-> To: Naga Sureshkumar Relli <nagasure@xilinx.com>; broonie@kernel.org;
-> bbrezillon@kernel.org
-> Cc: linux-spi@vger.kernel.org; dwmw2@infradead.org; marek.vasut@gmail.com;
-> richard@nod.at; linux-mtd@lists.infradead.org; linux-kernel@vger.kernel.org; Michal Simek
-> <michals@xilinx.com>; nagasuresh12@gmail.com
-> Subject: Re: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
-> 
-> 
-> 
-> On 01/03/19 4:32 PM, Naga Sureshkumar Relli wrote:
-> >>> +static bool zynq_qspi_supports_op(struct spi_mem *mem,
-> >>> +				  const struct spi_mem_op *op)
-> >>> +{
-> >>> +	int ret;
-> >>> +
-> >>> +	ret = zynq_qspi_check_buswidth(op->cmd.buswidth);
-> >>> +
-> >>> +	if (op->addr.nbytes)
-> >>> +		ret |= zynq_qspi_check_buswidth(op->addr.buswidth);
-> >>> +
-> >>> +	if (op->dummy.nbytes)
-> >>> +		ret |= zynq_qspi_check_buswidth(op->dummy.buswidth);
-> >>> +
-> >>> +	if (op->data.nbytes)
-> >>> +		ret |= zynq_qspi_check_buswidth(op->data.buswidth);
-> >>> +
-> >>> +	if (ret)
-> >>> +		return false;
-> >>> +
-> >> spi_mem_default_supports_op() already has this code.
-> >> Could you change, spi_mem_supports_op() to call
-> >> spi_mem_default_supports_op() first before controller specific
-> >> ->supports_op()? So that, above code can be dropped.
-> > Ok, I will update it.
-> >>> +	/*
-> >>> +	 * The number of address bytes should be equal to or less than 3 bytes.
-> >>> +	 */
-> >>> +	if (op->addr.nbytes > 3)
-> >>> +		return false;
-> >>> +
-> >> Hmm, how does the driver handle flash devices >16MB in size? Not supported?
-> > Zynq QSPI controller doesn't support 4 byte addressing.
-> > So to support > 16MB size, we have to use EAR(extended address register).
-> > As it is initial version of driver, I haven't added this code. This needs to be added in spi-nor.c.
-> > Previously I have sent an RFC patch to support all these.
-> > But Boris suggested to upstream the basic one first under spi-mem frame work.
-> > Not only this support, there are other features like dual parallel and dual stacked.
-> > All these features require additional support from spi-nor framework.
-> > We have another QSPI controller on ZynqMP SOC, which is also similar(but it supports
-> 4Byte addressing).
-> > So by consolidating all these, I sent this patch.
-> >
-> > Please let me know your suggestion on this.
-> 
-> Sounds fine to me. Support for > 16MB flash using EAR can come later.
-Thanks.
-Shall I wait for others to review or go ahead by addressing your previous comments?
+On Thu, Mar 7, 2019 at 4:55 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> Clang-8 evaluates both sides of a ?: expression to check for
+> valid arithmetic even in the side that is never taken. This
+> results in a build warning:
+>
+> drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
+>         .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
+>                               ^~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Change the implementation to use the GENMASK() macro that does
+> what we want here but does not have a problem with the shift
+> count overflow.
+>
+> Link: https://bugs.llvm.org/show_bug.cgi?id=38789
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Thanks,
-Naga Sureshkumar Relli
-> 
-> --
-> Regards
-> Vignesh
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Thanks for your patch!
+
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -444,8 +444,7 @@ struct spi_controller {
+>         /* bitmask of supported bits_per_word for transfers */
+>         u32                     bits_per_word_mask;
+>  #define SPI_BPW_MASK(bits) BIT((bits) - 1)
+> -#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
+> -#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
+> +#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
+
+Shouldn't that be GENMASK((max) - 1, (min) - 1)?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

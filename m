@@ -1,84 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: work around clang bug in SPI_BPW_RANGE_MASK()" to the spi tree
-Date: Mon, 11 Mar 2019 17:24:21 +0000 (GMT)
-Message-ID: <20190311172421.275811128896@debutante.sirena.org.uk>
-References: <20190307155506.2993868-1-arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+From: Volker Haspel <volker.haspel@linutronix.de>
+Subject: Re: [PATCH] spi: spi-fsl-qspi: call spi_unregister_controller
+Date: Tue, 12 Mar 2019 09:43:48 +0100
+Message-ID: <20190312094348.177c5dd2@ares.tec.linutronix.de>
+References: <20190307103008.19841-1-volker.haspel@linutronix.de>
+        <20190311170334.GA14368@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/DpBpi6KJDq6E4j_vbdsovl."; protocol="application/pgp-signature"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Han Xu <han.xu@nxp.com>, john.ogness@linutronix.de
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190307155506.2993868-1-arnd@arndb.de>
+In-Reply-To: <20190311170334.GA14368@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+--Sig_/DpBpi6KJDq6E4j_vbdsovl.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-   spi: work around clang bug in SPI_BPW_RANGE_MASK()
+On Mon, 11 Mar 2019 17:03:34 +0000
+Mark Brown <broonie@kernel.org> wrote:
 
-has been applied to the spi tree at
+> On Thu, Mar 07, 2019 at 11:30:08AM +0100, Volker Haspel wrote:
+> > The driver does not clearly unregister the spi controller.
+> > Therefore calling an unbind and bind again will end up in a
+> > Kernel crash.
+> > Each driver who calls spi_register_controller() in the probe function
+> > has to call spi_unregister_controller() too. =20
+>=20
+> Why not change it to use devm?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Hi Mark,
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I agree, this is a much nicer solution! I will test it and send a v2.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Thanks
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--Sig_/DpBpi6KJDq6E4j_vbdsovl.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQIzBAEBCAAdFiEEu6ObeCfmxsAHs47wMVbdr+4FyroFAlyHcUQACgkQMVbdr+4F
+yrr4Aw/9EJaqrDWEpEQ6sFxo+K1cHC8kHEjxdwI7hzH4z3HiaG6+jNz0CN++cpOB
+4MLzMc9gN0TumYHs9ryAxu7CjHLA84MDal8yknzmcg7ejH42NDM+3ZWbPY9QBeMZ
+n7R3VXRy1mPzsYFQLaM0vnulau80Sn86AyCOnCCunU1k5swPdISGSqpwnxp880Y8
+RzNR7tDepbUnslAPwxGJDOs160ZqbLvDlGlFWDrueS9s4Lw/jO5T6Dq70I1DsauZ
+qSvpryTdhkQSLBdc21lmBtNAePrDpgn/n4GTWKqVSjQRbSN86PhfYo1OEb2yCftK
+Z9wrptc7WklrVPPs57q/SOhNe0AsbQ44InSL6qa0J588YSuEfjxkkE0R76LvJPmU
+FfUs9iV7lgDpzAv7E0oUpFKKF7K62kCObhGZAPPibk1l5tAHhJmaYC74Uljy+z9o
+QvDO6NXqfS21Klqvb8Ut8UeVzkkjHBpwIvmRIqFyNI5XCxlyANSmxOTt23IW6iDX
+SCiT5CCi2DsL7FW0W6Qux6zwuKDZy3K2XmZGjbTo2IDiuO3k/zcuuMLXfcNePptp
+/QmgQ3Krmd4kYcaMEeO8uIfg3m+6HPfPIfPYa2CYM/UKTWY6NpSW2Ub9+x77gA41
+n2DGLvRdPSHXH4z9Cj47n9q6lWuhyyxy+LEu+pFZwHd91sRHIRQ=
+=CNXW
+-----END PGP SIGNATURE-----
 
->From eefffb42f6659c9510105f3e4ebf2a8499d56936 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 7 Mar 2019 16:54:21 +0100
-Subject: [PATCH] spi: work around clang bug in SPI_BPW_RANGE_MASK()
-
-Clang-8 evaluates both sides of a ?: expression to check for
-valid arithmetic even in the side that is never taken. This
-results in a build warning:
-
-drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
-        .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
-                              ^~~~~~~~~~~~~~~~~~~~~~~~~
-
-Change the implementation to use the GENMASK() macro that does
-what we want here but does not have a problem with the shift
-count overflow.
-
-Link: https://bugs.llvm.org/show_bug.cgi?id=38789
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- include/linux/spi/spi.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 662b336aa2e4..b27386450089 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -444,8 +444,7 @@ struct spi_controller {
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
- #define SPI_BPW_MASK(bits) BIT((bits) - 1)
--#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
--#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
-+#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
- 
- 	/* limits on transfer speed */
- 	u32			min_speed_hz;
--- 
-2.20.1
+--Sig_/DpBpi6KJDq6E4j_vbdsovl.--

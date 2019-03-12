@@ -1,50 +1,114 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 0/1] spi: spi-fsl-qspi: call spi_unregister_controller
-Date: Tue, 12 Mar 2019 12:24:09 +0000
-Message-ID: <20190312122409.GD6983@sirena.org.uk>
-References: <20190312101203.14207-1-volker.haspel@linutronix.de>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
+Date: Tue, 12 Mar 2019 22:36:43 +0530
+Message-ID: <1f4df1cc-7a2f-1601-0553-1db5d69b492d@ti.com>
+References: <1551337361-11665-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <48dafcc4-1b9d-9ce2-9228-78e73252781f@ti.com>
+ <MWHPR02MB262310CF8152AE170FE7443CAF760@MWHPR02MB2623.namprd02.prod.outlook.com>
+ <602dd5ed-48b6-2098-fc2a-e36192b6a8e7@ti.com>
+ <MWHPR02MB262362EC0116C64B84874740AF480@MWHPR02MB2623.namprd02.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lrZ03NoBR/3+SXJZ"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        han.xu@nxp.com, john.ogness@linutronix.de
-To: Volker Haspel <volker.haspel@linutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190312101203.14207-1-volker.haspel@linutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "richard@nod.at" <richard@nod.at>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>,
+ Michal Simek <michals@xilinx.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>
+To: Naga Sureshkumar Relli <nagasure@xilinx.com>, "broonie@kernel.org"
+ <broonie@kernel.org>, "bbrezillon@kernel.org" <bbrezillon@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <MWHPR02MB262362EC0116C64B84874740AF480@MWHPR02MB2623.namprd02.prod.outlook.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---lrZ03NoBR/3+SXJZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 11/03/19 10:02 AM, Naga Sureshkumar Relli wrote:
+> Hi Vignesh,
+> 
+>> -----Original Message-----
+>> From: linux-spi-owner@vger.kernel.org <linux-spi-owner@vger.kernel.org> On Behalf Of
+>> Vignesh Raghavendra
+>> Sent: Friday, March 8, 2019 10:20 AM
+>> To: Naga Sureshkumar Relli <nagasure@xilinx.com>; broonie@kernel.org;
+>> bbrezillon@kernel.org
+>> Cc: linux-spi@vger.kernel.org; dwmw2@infradead.org; marek.vasut@gmail.com;
+>> richard@nod.at; linux-mtd@lists.infradead.org; linux-kernel@vger.kernel.org; Michal Simek
+>> <michals@xilinx.com>; nagasuresh12@gmail.com
+>> Subject: Re: [RFC PATCH 2/2] spi: spi-mem: Add support for Zynq QSPI controller
+>>
+>>
+>>
+>> On 01/03/19 4:32 PM, Naga Sureshkumar Relli wrote:
+>>>>> +static bool zynq_qspi_supports_op(struct spi_mem *mem,
+>>>>> +				  const struct spi_mem_op *op)
+>>>>> +{
+>>>>> +	int ret;
+>>>>> +
+>>>>> +	ret = zynq_qspi_check_buswidth(op->cmd.buswidth);
+>>>>> +
+>>>>> +	if (op->addr.nbytes)
+>>>>> +		ret |= zynq_qspi_check_buswidth(op->addr.buswidth);
+>>>>> +
+>>>>> +	if (op->dummy.nbytes)
+>>>>> +		ret |= zynq_qspi_check_buswidth(op->dummy.buswidth);
+>>>>> +
+>>>>> +	if (op->data.nbytes)
+>>>>> +		ret |= zynq_qspi_check_buswidth(op->data.buswidth);
+>>>>> +
+>>>>> +	if (ret)
+>>>>> +		return false;
+>>>>> +
+>>>> spi_mem_default_supports_op() already has this code.
+>>>> Could you change, spi_mem_supports_op() to call
+>>>> spi_mem_default_supports_op() first before controller specific
+>>>> ->supports_op()? So that, above code can be dropped.
+>>> Ok, I will update it.
+>>>>> +	/*
+>>>>> +	 * The number of address bytes should be equal to or less than 3 bytes.
+>>>>> +	 */
+>>>>> +	if (op->addr.nbytes > 3)
+>>>>> +		return false;
+>>>>> +
+>>>> Hmm, how does the driver handle flash devices >16MB in size? Not supported?
+>>> Zynq QSPI controller doesn't support 4 byte addressing.
+>>> So to support > 16MB size, we have to use EAR(extended address register).
+>>> As it is initial version of driver, I haven't added this code. This needs to be added in spi-nor.c.
+>>> Previously I have sent an RFC patch to support all these.
+>>> But Boris suggested to upstream the basic one first under spi-mem frame work.
+>>> Not only this support, there are other features like dual parallel and dual stacked.
+>>> All these features require additional support from spi-nor framework.
+>>> We have another QSPI controller on ZynqMP SOC, which is also similar(but it supports
+>> 4Byte addressing).
+>>> So by consolidating all these, I sent this patch.
+>>>
+>>> Please let me know your suggestion on this.
+>>
+>> Sounds fine to me. Support for > 16MB flash using EAR can come later.
+> Thanks.
+> Shall I wait for others to review or go ahead by addressing your previous comments?
+> 
 
-On Tue, Mar 12, 2019 at 11:12:02AM +0100, Volker Haspel wrote:
-> Changes since v1:
->  * use devm_spi_register_controller() instead of calling
->    spi_unregister_controller() in the remove function
+Typically, for a new driver, I would wait at least 2 weeks from date of
+posting so that other reviewers have sufficient time to look into the patch.
 
-Please don't send cover letters for single patches, if there is anything
-that needs saying put it in the changelog of the patch or after the ---
-if it's administrative stuff.  This reduces mail volume and ensures that=20
-any important information is recorded in the changelog rather than being
-lost.=20
 
---lrZ03NoBR/3+SXJZ
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Regards
+Vignesh
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyHpOgACgkQJNaLcl1U
-h9DjtQgAg5eiDB3pBA1vGOD4u4Xy5yMzK8wjQMOqxRAQ73fPQF9KQhm9vS+vdgOA
-UrWrpMUXubQN1SAIDu2WP7XNz5xiAx4U4Clz29xsLeagiGPQ7pvxoK13WNA2iaoy
-8DwgOmx2qpTGNWh3X1NNIKMVVOD7MnAnGNGGT7s1AfnANb3jr10j7iaLDRrR8+o0
-i9K5Cjbh+2JHZ6KNOGBYIV7toLDGC8PX34MhMfeY7EMTxbTGrAhFt/uflOYi5YHY
-cpsjrZ1tyfbpDLYQ+jPGRGfZ0Tk0YO19oguBoUwf4Kd1AirPfUb45XE4cGPQfJ2T
-IlW6mPvjUSvMJc7CLW3dPd3ZE+DQBg==
-=aWMA
------END PGP SIGNATURE-----
-
---lrZ03NoBR/3+SXJZ--
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,44 +1,35 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] spi: fix SPI_BPW_RANGE_MASK() regression
-Date: Wed, 13 Mar 2019 22:00:34 +0100
-Message-ID: <20190313210118.3507256-1-arnd@arndb.de>
+Subject: Re: Applied "spi: work around clang bug in SPI_BPW_RANGE_MASK()" to
+ the spi tree
+Date: Wed, 13 Mar 2019 22:01:46 +0100
+Message-ID: <CAK8P3a3UDhJLh9o1A-EEouP58L9H_uZO=e8L0JZsmGToQH0dAQ@mail.gmail.com>
+References: <20190307155506.2993868-1-arnd@arndb.de> <20190311172421.275811128896@debutante.sirena.org.uk>
+ <CAMuHMdXeuHwF2y1S=bpvQ_qXn+DYacUSS-uP2Zj9yKiHzghhqQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdXeuHwF2y1S=bpvQ_qXn+DYacUSS-uP2Zj9yKiHzghhqQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Geert points out that I confused the min/max arguments that are
-reversed between SPI_BPW_RANGE_MASK() and GENMASK(). This time
-I have verified the result of the macro after fixing the arguments.
+On Wed, Mar 13, 2019 at 8:15 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Fixes: eefffb42f665 ("spi: work around clang bug in SPI_BPW_RANGE_MASK()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-The broken commit is currently in the for-5.2 branch of the spi
-tree. If this is a branch that gets rebased, please just fold this
-fix into the original patch
----
- include/linux/spi/spi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > -#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
+> > -#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
+> > +#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
+>
+> This is not correct: GENMASK() order is from msb to lsb.
+> So it should it:
+>
+> +#define SPI_BPW_RANGE_MASK(min, max) GENMASK((max) - 1, (min) - 1)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index b27386450089..a0975cf76cf6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -444,7 +444,7 @@ struct spi_controller {
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
- #define SPI_BPW_MASK(bits) BIT((bits) - 1)
--#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
-+#define SPI_BPW_RANGE_MASK(min, max) GENMASK((max) - 1, (min) - 1)
- 
- 	/* limits on transfer speed */
- 	u32			min_speed_hz;
--- 
-2.20.0
+Sorry about the mess, I've sent a fixup now.
+
+       Arnd

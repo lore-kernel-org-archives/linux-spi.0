@@ -1,22 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-qspi: use devm_spi_register_controller" to the spi tree
-Date: Thu, 14 Mar 2019 15:54:47 +0000 (GMT)
-Message-ID: <20190314155447.235511126E64@debutante.sirena.org.uk>
-References: <20190312101203.14207-2-volker.haspel@linutronix.de>
-Cc: John Ogness <john.ogness@linutronix.de>,
-        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        han.xu@nxp.com, volker.haspel@linutronix.de,
-        john.ogness@linutronix.de, linux-spi@vger.kernel.org
-To: Volker Haspel <volker.haspel@linutronix.de>
+Subject: Applied "spi: work around clang bug in SPI_BPW_RANGE_MASK()" to the spi tree
+Date: Thu, 14 Mar 2019 15:54:51 +0000 (GMT)
+Message-ID: <20190314155451.7428D1126E64@debutante.sirena.org.uk>
+References: <20190307155506.2993868-1-arnd@arndb.de>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190312101203.14207-2-volker.haspel@linutronix.de>
+In-Reply-To: <20190307155506.2993868-1-arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-qspi: use devm_spi_register_controller
+   spi: work around clang bug in SPI_BPW_RANGE_MASK()
 
 has been applied to the spi tree at
 
@@ -41,37 +42,43 @@ to this mail.
 Thanks,
 Mark
 
->From 8fcb830a00f0980ffe38d223cdd9a4d2d24da476 Mon Sep 17 00:00:00 2001
-From: Volker Haspel <volker.haspel@linutronix.de>
-Date: Tue, 12 Mar 2019 11:12:03 +0100
-Subject: [PATCH] spi: spi-fsl-qspi: use devm_spi_register_controller
+>From eefffb42f6659c9510105f3e4ebf2a8499d56936 Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 7 Mar 2019 16:54:21 +0100
+Subject: [PATCH] spi: work around clang bug in SPI_BPW_RANGE_MASK()
 
-The driver does not clearly unregister the spi controller.
-Therefore calling an unbind and bind again will end up in a
-Kernel crash.
+Clang-8 evaluates both sides of a ?: expression to check for
+valid arithmetic even in the side that is never taken. This
+results in a build warning:
 
-The function devm_spi_register_controller will automatically
-be unregister the SPI device.
+drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
+        .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
+                              ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Volker Haspel <volker.haspel@linutronix.de>
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Change the implementation to use the GENMASK() macro that does
+what we want here but does not have a problem with the shift
+count overflow.
+
+Link: https://bugs.llvm.org/show_bug.cgi?id=38789
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/spi/spi.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 6a713f78a62e..41a49b93ca60 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -882,7 +882,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 662b336aa2e4..b27386450089 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -444,8 +444,7 @@ struct spi_controller {
+ 	/* bitmask of supported bits_per_word for transfers */
+ 	u32			bits_per_word_mask;
+ #define SPI_BPW_MASK(bits) BIT((bits) - 1)
+-#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
+-#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
++#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
  
- 	ctlr->dev.of_node = np;
- 
--	ret = spi_register_controller(ctlr);
-+	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
- 
+ 	/* limits on transfer speed */
+ 	u32			min_speed_hz;
 -- 
 2.20.1

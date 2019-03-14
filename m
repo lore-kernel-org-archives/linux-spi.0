@@ -1,23 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fix SPI_BPW_RANGE_MASK() regression" to the spi tree
-Date: Thu, 14 Mar 2019 15:54:44 +0000 (GMT)
-Message-ID: <20190314155444.EBE3A1126E64@debutante.sirena.org.uk>
-References: <20190313210118.3507256-1-arnd@arndb.de>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+Subject: Applied "spi: spi-fsl-qspi: use devm_spi_register_controller" to the spi tree
+Date: Thu, 14 Mar 2019 15:54:47 +0000 (GMT)
+Message-ID: <20190314155447.235511126E64@debutante.sirena.org.uk>
+References: <20190312101203.14207-2-volker.haspel@linutronix.de>
+Cc: John Ogness <john.ogness@linutronix.de>,
+        Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        han.xu@nxp.com, volker.haspel@linutronix.de,
+        john.ogness@linutronix.de, linux-spi@vger.kernel.org
+To: Volker Haspel <volker.haspel@linutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190313210118.3507256-1-arnd@arndb.de>
+In-Reply-To: <20190312101203.14207-2-volker.haspel@linutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fix SPI_BPW_RANGE_MASK() regression
+   spi: spi-fsl-qspi: use devm_spi_register_controller
 
 has been applied to the spi tree at
 
@@ -42,36 +41,37 @@ to this mail.
 Thanks,
 Mark
 
->From 6d85028134d3f4f946924e2f9f0aaff47d9de840 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 13 Mar 2019 22:00:34 +0100
-Subject: [PATCH] spi: fix SPI_BPW_RANGE_MASK() regression
+>From 8fcb830a00f0980ffe38d223cdd9a4d2d24da476 Mon Sep 17 00:00:00 2001
+From: Volker Haspel <volker.haspel@linutronix.de>
+Date: Tue, 12 Mar 2019 11:12:03 +0100
+Subject: [PATCH] spi: spi-fsl-qspi: use devm_spi_register_controller
 
-Geert points out that I confused the min/max arguments that are
-reversed between SPI_BPW_RANGE_MASK() and GENMASK(). This time
-I have verified the result of the macro after fixing the arguments.
+The driver does not clearly unregister the spi controller.
+Therefore calling an unbind and bind again will end up in a
+Kernel crash.
 
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Fixes: eefffb42f665 ("spi: work around clang bug in SPI_BPW_RANGE_MASK()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The function devm_spi_register_controller will automatically
+be unregister the SPI device.
+
+Signed-off-by: Volker Haspel <volker.haspel@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 2 +-
+ drivers/spi/spi-fsl-qspi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index b27386450089..a0975cf76cf6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -444,7 +444,7 @@ struct spi_controller {
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
- #define SPI_BPW_MASK(bits) BIT((bits) - 1)
--#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
-+#define SPI_BPW_RANGE_MASK(min, max) GENMASK((max) - 1, (min) - 1)
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 6a713f78a62e..41a49b93ca60 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -882,7 +882,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
  
- 	/* limits on transfer speed */
- 	u32			min_speed_hz;
+ 	ctlr->dev.of_node = np;
+ 
+-	ret = spi_register_controller(ctlr);
++	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+ 		goto err_destroy_mutex;
+ 
 -- 
 2.20.1

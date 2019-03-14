@@ -1,37 +1,49 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: fix SPI_BPW_RANGE_MASK() regression
-Date: Wed, 13 Mar 2019 22:59:33 +0100
-Message-ID: <CAMuHMdUBZRxE-E8T03C85B5-UeM+ofLSbZhyRKWHrcmQksQvag@mail.gmail.com>
-References: <20190313210118.3507256-1-arnd@arndb.de>
+From: Kangjie Lu <kjlu@umn.edu>
+Subject: [PATCH] spi: fix NULL pointer dereferences by checking
+ dmaengine_prep_slave_sg
+Date: Thu, 14 Mar 2019 01:42:01 -0500
+Message-ID: <20190314064202.14864-1-kjlu@umn.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190313210118.3507256-1-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzk@kernel.org>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+ Andi Shyti <andi@etezian.org>, pakki001@umn.edu,
+ linux-arm-kernel@lists.infradead.org
+To: kjlu@umn.edu
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 13, 2019 at 10:01 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> Geert points out that I confused the min/max arguments that are
-> reversed between SPI_BPW_RANGE_MASK() and GENMASK(). This time
-> I have verified the result of the macro after fixing the arguments.
->
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Fixes: eefffb42f665 ("spi: work around clang bug in SPI_BPW_RANGE_MASK()")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+In case dmaengine_prep_slave_sg fails, the fix returns to avoid
+NULL pointer dereference.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Kangjie Lu <kjlu@umn.edu>
+---
+ drivers/spi/spi-s3c64xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 7b7151ec14c8..3a5f161ce558 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -293,6 +293,8 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
+ 
+ 	desc = dmaengine_prep_slave_sg(dma->ch, sgt->sgl, sgt->nents,
+ 				       dma->direction, DMA_PREP_INTERRUPT);
++	if (!desc)
++		return;
+ 
+ 	desc->callback = s3c64xx_spi_dmacb;
+ 	desc->callback_param = dma;
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.17.1

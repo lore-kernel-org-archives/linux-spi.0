@@ -1,23 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: work around clang bug in SPI_BPW_RANGE_MASK()" to the spi tree
-Date: Thu, 14 Mar 2019 15:54:51 +0000 (GMT)
-Message-ID: <20190314155451.7428D1126E64@debutante.sirena.org.uk>
-References: <20190307155506.2993868-1-arnd@arndb.de>
+Subject: Applied "spi: spi-mem: stm32-qspi: avoid memory corruption at low frequency" to the spi tree
+Date: Fri, 15 Mar 2019 17:19:36 +0000 (GMT)
+Message-ID: <20190315171936.AFE6C1126E81@debutante.sirena.org.uk>
+References: <1552050741-27739-2-git-send-email-ludovic.Barre@st.com>
 Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+        Marek Vasut <marek.vasut@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+To: Ludovic Barre <ludovic.barre@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190307155506.2993868-1-arnd@arndb.de>
+In-Reply-To: <1552050741-27739-2-git-send-email-ludovic.Barre@st.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: work around clang bug in SPI_BPW_RANGE_MASK()
+   spi: spi-mem: stm32-qspi: avoid memory corruption at low frequency
 
 has been applied to the spi tree at
 
@@ -42,43 +46,42 @@ to this mail.
 Thanks,
 Mark
 
->From eefffb42f6659c9510105f3e4ebf2a8499d56936 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 7 Mar 2019 16:54:21 +0100
-Subject: [PATCH] spi: work around clang bug in SPI_BPW_RANGE_MASK()
+>From 5356c2c70e385198e1a753ee364323f2fc01f759 Mon Sep 17 00:00:00 2001
+From: Ludovic Barre <ludovic.barre@st.com>
+Date: Fri, 8 Mar 2019 14:12:20 +0100
+Subject: [PATCH] spi: spi-mem: stm32-qspi: avoid memory corruption at low
+ frequency
 
-Clang-8 evaluates both sides of a ?: expression to check for
-valid arithmetic even in the side that is never taken. This
-results in a build warning:
+This patch solves a memory corruption seen at 8 MHz.
+To avoid such issue, timeout counter is disabled.
 
-drivers/spi/spi-sh-msiof.c:1052:24: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
-        .bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32),
-                              ^~~~~~~~~~~~~~~~~~~~~~~~~
-
-Change the implementation to use the GENMASK() macro that does
-what we want here but does not have a problem with the shift
-count overflow.
-
-Link: https://bugs.llvm.org/show_bug.cgi?id=38789
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-stm32-qspi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 662b336aa2e4..b27386450089 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -444,8 +444,7 @@ struct spi_controller {
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
- #define SPI_BPW_MASK(bits) BIT((bits) - 1)
--#define SPI_BIT_MASK(bits) (((bits) == 32) ? ~0U : (BIT(bits) - 1))
--#define SPI_BPW_RANGE_MASK(min, max) (SPI_BIT_MASK(max) - SPI_BIT_MASK(min - 1))
-+#define SPI_BPW_RANGE_MASK(min, max) GENMASK((min) - 1, (max) - 1)
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 3b2a9a6b990d..7354f9d68dba 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -76,7 +76,6 @@
+ #define QSPI_PSMAR		0x28
+ #define QSPI_PIR		0x2c
+ #define QSPI_LPTR		0x30
+-#define LPTR_DFT_TIMEOUT	0x10
  
- 	/* limits on transfer speed */
- 	u32			min_speed_hz;
+ #define STM32_QSPI_MAX_MMAP_SZ	SZ_256M
+ #define STM32_QSPI_MAX_NORCHIP	2
+@@ -372,8 +371,7 @@ static int stm32_qspi_setup(struct spi_device *spi)
+ 	flash->presc = presc;
+ 
+ 	mutex_lock(&qspi->lock);
+-	writel_relaxed(LPTR_DFT_TIMEOUT, qspi->io_base + QSPI_LPTR);
+-	cr = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_TCEN | CR_SSHIFT | CR_EN;
++	cr = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_SSHIFT | CR_EN;
+ 	writel_relaxed(cr, qspi->io_base + QSPI_CR);
+ 
+ 	/* set dcr fsize to max address */
 -- 
 2.20.1

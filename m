@@ -1,65 +1,114 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-fsl-spi: support use of the SPISEL_BOOT signal
- on MPC8309
-Date: Mon, 18 Mar 2019 10:22:57 +0000
-Message-ID: <20190318102257.GA6221@sirena.org.uk>
-References: <20190306103156.19897-1-rasmus.villemoes@prevas.dk>
- <3f0313c8-670c-5d70-80e2-210add8e328c@prevas.se>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 1/2] spi: pxa2xx: Introduce DMA burst size support
+Date: Mon, 18 Mar 2019 16:41:43 +0200
+Message-ID: <20190318144144.42367-2-andriy.shevchenko@linux.intel.com>
+References: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="FL5UXtIhxfXey3p5"
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Esben Haabendal <esben@geanix.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Per Christensen <pnc@deif.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Rasmus Villemoes <Rasmus.Villemoes@prevas.se>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <3f0313c8-670c-5d70-80e2-210add8e328c@prevas.se>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Some masters may have different DMA burst size than hard coded default.
+In such case respect the value given by DMA burst size provided via
+platform data.
 
---FL5UXtIhxfXey3p5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
+ drivers/spi/spi-pxa2xx-pci.c   | 4 ++++
+ drivers/spi/spi-pxa2xx.c       | 1 +
+ include/linux/spi/pxa2xx_spi.h | 1 +
+ 4 files changed, 9 insertions(+), 1 deletion(-)
 
-On Mon, Mar 18, 2019 at 07:43:47AM +0000, Rasmus Villemoes wrote:
-> ping
->=20
-> On 06/03/2019 11.32, Rasmus Villemoes wrote:
-
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-
-Sending content free pings adds to the mail volume (if they are seen at
-all) which is often the problem and since they can't be reviewed
-directly if something has gone wrong you'll have to resend the patches
-anyway, so sending again is generally a better approach though there are
-some other maintainers who like them - if in doubt look at how patches
-for the subsystem are normally handled.
-
---FL5UXtIhxfXey3p5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyPcYAACgkQJNaLcl1U
-h9Czxwf/Zi8hNjbwLvG1C60sGV85PLsh4mSzTnWNjr6x8PxqRBadRmrb+i6PQdxh
-yGDP2L8AUhZbQH4kjwH/H6HDHCZrxh0eRuKpbSXFNVkih5YXMmcr7mE1woV1HGZ7
-relo2dVkp5JKP4biS5+rkOIsxiWdBrJo8BbJ1CNLeykQKh/qizqD6X70MSQZwyho
-Y3/3YRkUWVo83Vdm53/pRo3dOGZ+ihPulmVUnx5Nh7jA3C1TdVK1qdJzyLn/gG4i
-dmljnrxj9G2D2C0uAudO9RSgfkhqvAQsWEGAQUwnPlXiZ69rmUMKBz79OkjP4RGL
-LTzz4cXEBqx4XCIznLV9oSrwNowDVQ==
-=Vo2r
------END PGP SIGNATURE-----
-
---FL5UXtIhxfXey3p5--
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 15592598273e..17424cc98006 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -239,13 +239,15 @@ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 					   u32 *threshold)
+ {
+ 	struct pxa2xx_spi_chip *chip_info = spi->controller_data;
++	struct driver_data *drv_data = spi_controller_get_devdata(spi->controller);
++	u32 dma_burst_size = drv_data->master_info->dma_burst_size;
+ 
+ 	/*
+ 	 * If the DMA burst size is given in chip_info we use that,
+ 	 * otherwise we use the default. Also we use the default FIFO
+ 	 * thresholds for now.
+ 	 */
+-	*burst_code = chip_info ? chip_info->dma_burst_size : 1;
++	*burst_code = chip_info ? chip_info->dma_burst_size : dma_burst_size;
+ 	*threshold = SSCR1_RxTresh(RX_THRESH_DFLT)
+ 		   | SSCR1_TxTresh(TX_THRESH_DFLT);
+ 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 1727fdfbac28..33029ca0687a 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -35,6 +35,8 @@ struct pxa_spi_info {
+ 	void *tx_param;
+ 	void *rx_param;
+ 
++	int dma_burst_size;
++
+ 	int (*setup)(struct pci_dev *pdev, struct pxa_spi_info *c);
+ };
+ 
+@@ -133,6 +135,7 @@ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ 	rx->dma_dev = &dma_dev->dev;
+ 
+ 	c->dma_filter = lpss_dma_filter;
++	c->dma_burst_size = 8;
+ 	return 0;
+ }
+ 
+@@ -223,6 +226,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	spi_pdata.tx_param = c->tx_param;
+ 	spi_pdata.rx_param = c->rx_param;
+ 	spi_pdata.enable_dma = c->rx_param && c->tx_param;
++	spi_pdata.dma_burst_size = c->dma_burst_size ? c->dma_burst_size : 1;
+ 
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index b6ddba833d02..461c6b796b8f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1564,6 +1564,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+ 	pdata->num_chipselect = 1;
+ 	pdata->enable_dma = true;
++	pdata->dma_burst_size = 1;
+ 
+ 	return pdata;
+ }
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index c1c59473cef9..6005f0126631 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -25,6 +25,7 @@ struct dma_chan;
+ struct pxa2xx_spi_controller {
+ 	u16 num_chipselect;
+ 	u8 enable_dma;
++	u8 dma_burst_size;
+ 	bool is_slave;
+ 
+ 	/* DMA engine specific config */
+-- 
+2.20.1

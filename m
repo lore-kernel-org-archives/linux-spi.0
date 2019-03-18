@@ -1,512 +1,138 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: add dma mode support" to the spi tree
-Date: Mon, 18 Mar 2019 14:52:10 +0000 (GMT)
-Message-ID: <20190318145210.0F7171128874@debutante.sirena.org.uk>
-References: <20190306063020.793-7-xiaoning.wang@nxp.com>
-Cc: Fugang Duan <Fugang.duan@nxp.com>, Mark Brown <broonie@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Clark Wang <xiaoning.wang@nxp.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] dmaengine: idma64: Use actual device for DMA transfers
+Date: Mon, 18 Mar 2019 18:39:30 +0300
+Message-ID: <20190318153930.25641-1-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-arm-kernel@lists.infradead.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190306063020.793-7-xiaoning.wang@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Intel IOMMU, when enabled, tries to find the domain of the device,
+assuming it's a PCI one, during DMA operations, such as mapping or
+unmapping. Since we are splitting the actual PCI device to couple of
+children via MFD framework (see drivers/mfd/intel-lpss.c for details),
+the DMA device appears to be a platform one, and thus not an actual one
+that performs DMA. In a such situation IOMMU can't find or allocate
+a proper domain for its operations. As a result, all DMA operations are
+failed.
 
-   spi: lpspi: add dma mode support
+In order to fix this, supply parent of the platform device
+to the DMA engine framework and fix filter functions accordingly.
 
-has been applied to the spi tree at
+We may rely on the fact that parent is a real PCI device, because no
+other configuration is present in the wild.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 09c04466ce7ea494993c0635ba5edb6d2222a806 Mon Sep 17 00:00:00 2001
-From: Clark Wang <xiaoning.wang@nxp.com>
-Date: Wed, 6 Mar 2019 06:30:45 +0000
-Subject: [PATCH] spi: lpspi: add dma mode support
-
-Add dma mode support for LPSPI. Any frame longer than half txfifosize will
-be sent by dma mode.
-
-For now, there are some limits:
-1. The maximum transfer speed in master mode depends on the slave device,
-   at least 40MHz(tested by spi-nor on 8qm-lpddr4-arm2 base board);
-2. The maximum transfer speed in slave mode is 15MHz(imx7ulp),
-   22MHz(8qm/qxp). In order to reach the maximum speed which is mentioned
-   in datasheet, the load of connect wires between master and slave
-   should be less than 15pF.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Acked-by: Fugang Duan <Fugang.duan@nxp.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-fsl-lpspi.c | 312 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 301 insertions(+), 11 deletions(-)
+ drivers/dma/idma64.c              | 6 ++++--
+ drivers/dma/idma64.h              | 2 ++
+ drivers/spi/spi-pxa2xx.c          | 7 +------
+ drivers/tty/serial/8250/8250_dw.c | 4 ++--
+ 4 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index a25e0e03f058..9ff32fb67a29 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -8,6 +8,8 @@
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/gpio.h>
- #include <linux/interrupt.h>
-@@ -20,6 +22,7 @@
- #include <linux/of_gpio.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/platform_data/dma-imx.h>
- #include <linux/platform_data/spi-imx.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-@@ -31,6 +34,9 @@
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index 0baf9797cc09..83796a33dc16 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -592,7 +592,7 @@ static int idma64_probe(struct idma64_chip *chip)
+ 	idma64->dma.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
+ 	idma64->dma.residue_granularity = DMA_RESIDUE_GRANULARITY_BURST;
  
- #define FSL_LPSPI_RPM_TIMEOUT 50 /* 50ms */
+-	idma64->dma.dev = chip->dev;
++	idma64->dma.dev = chip->sysdev;
  
-+/* The maximum bytes that edma can transfer once.*/
-+#define FSL_LPSPI_MAX_EDMA_BYTES  ((1 << 15) - 1)
-+
- /* i.MX7ULP LPSPI registers */
- #define IMX7ULP_VERID	0x0
- #define IMX7ULP_PARAM	0x4
-@@ -64,6 +70,8 @@
- #define IER_FCIE	BIT(9)
- #define IER_RDIE	BIT(1)
- #define IER_TDIE	BIT(0)
-+#define DER_RDDE	BIT(1)
-+#define DER_TDDE	BIT(0)
- #define CFGR1_PCSCFG	BIT(27)
- #define CFGR1_PINCFG	(BIT(24)|BIT(25))
- #define CFGR1_PCSPOL	BIT(8)
-@@ -91,6 +99,7 @@ struct lpspi_config {
- struct fsl_lpspi_data {
- 	struct device *dev;
- 	void __iomem *base;
-+	unsigned long base_phys;
- 	struct clk *clk_ipg;
- 	struct clk *clk_per;
- 	bool is_slave;
-@@ -111,6 +120,11 @@ struct fsl_lpspi_data {
+ 	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
  
- 	bool slave_aborted;
- 
-+	/* DMA */
-+	bool usedma;
-+	struct completion dma_rx_completion;
-+	struct completion dma_tx_completion;
-+
- 	int chipselect[0];
- };
- 
-@@ -158,6 +172,35 @@ static void fsl_lpspi_intctrl(struct fsl_lpspi_data *fsl_lpspi,
- 	writel(enable, fsl_lpspi->base + IMX7ULP_IER);
- }
- 
-+static int fsl_lpspi_bytes_per_word(const int bpw)
-+{
-+	return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
-+}
-+
-+static bool fsl_lpspi_can_dma(struct spi_controller *controller,
-+			      struct spi_device *spi,
-+			      struct spi_transfer *transfer)
-+{
-+	unsigned int bytes_per_word;
-+
-+	if (!controller->dma_rx)
-+		return false;
-+
-+	bytes_per_word = fsl_lpspi_bytes_per_word(transfer->bits_per_word);
-+
-+	switch (bytes_per_word)
-+	{
-+		case 1:
-+		case 2:
-+		case 4:
-+			break;
-+		default:
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int lpspi_prepare_xfer_hardware(struct spi_controller *controller)
+@@ -632,6 +632,7 @@ static int idma64_platform_probe(struct platform_device *pdev)
  {
- 	struct fsl_lpspi_data *fsl_lpspi =
-@@ -245,11 +288,13 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi)
- 		 * For the first transfer, clear TCR_CONTC to assert SS.
- 		 * For subsequent transfer, set TCR_CONTC to keep SS asserted.
- 		 */
--		temp |= TCR_CONT;
--		if (fsl_lpspi->is_first_byte)
--			temp &= ~TCR_CONTC;
--		else
--			temp |= TCR_CONTC;
-+		if (!fsl_lpspi->usedma) {
-+			temp |= TCR_CONT;
-+			if (fsl_lpspi->is_first_byte)
-+				temp &= ~TCR_CONTC;
-+			else
-+				temp |= TCR_CONTC;
-+		}
- 	}
- 	writel(temp, fsl_lpspi->base + IMX7ULP_TCR);
- 
-@@ -260,7 +305,11 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u32 temp;
- 
--	temp = fsl_lpspi->watermark >> 1 | (fsl_lpspi->watermark >> 1) << 16;
-+	if (!fsl_lpspi->usedma)
-+		temp = fsl_lpspi->watermark >> 1 |
-+		       (fsl_lpspi->watermark >> 1) << 16;
-+	else
-+		temp = fsl_lpspi->watermark >> 1;
- 
- 	writel(temp, fsl_lpspi->base + IMX7ULP_FCR);
- 
-@@ -302,6 +351,53 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
-+static int fsl_lpspi_dma_configure(struct spi_controller *controller)
-+{
-+	int ret;
-+	enum dma_slave_buswidth buswidth;
-+	struct dma_slave_config rx = {}, tx = {};
-+	struct fsl_lpspi_data *fsl_lpspi =
-+				spi_controller_get_devdata(controller);
-+
-+	switch (fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
-+	case 4:
-+		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		break;
-+	case 2:
-+		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		break;
-+	case 1:
-+		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	tx.direction = DMA_MEM_TO_DEV;
-+	tx.dst_addr = fsl_lpspi->base_phys + IMX7ULP_TDR;
-+	tx.dst_addr_width = buswidth;
-+	tx.dst_maxburst = 1;
-+	ret = dmaengine_slave_config(controller->dma_tx, &tx);
-+	if (ret) {
-+		dev_err(fsl_lpspi->dev, "TX dma configuration failed with %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	rx.direction = DMA_DEV_TO_MEM;
-+	rx.src_addr = fsl_lpspi->base_phys + IMX7ULP_RDR;
-+	rx.src_addr_width = buswidth;
-+	rx.src_maxburst = 1;
-+	ret = dmaengine_slave_config(controller->dma_rx, &rx);
-+	if (ret) {
-+		dev_err(fsl_lpspi->dev, "RX dma configuration failed with %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u32 temp;
-@@ -327,10 +423,16 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 	temp |= CR_RRF | CR_RTF | CR_MEN;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CR);
- 
-+	temp = 0;
-+	if (fsl_lpspi->usedma)
-+		temp = DER_TDDE | DER_RDDE;
-+	writel(temp, fsl_lpspi->base + IMX7ULP_DER);
-+
- 	return 0;
- }
- 
--static int fsl_lpspi_setup_transfer(struct spi_device *spi,
-+static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
-+				     struct spi_device *spi,
- 				     struct spi_transfer *t)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
-@@ -363,6 +465,11 @@ static int fsl_lpspi_setup_transfer(struct spi_device *spi,
- 	else
- 		fsl_lpspi->watermark = fsl_lpspi->txfifosize;
- 
-+	if (fsl_lpspi_can_dma(controller, spi, t))
-+		fsl_lpspi->usedma = 1;
-+	else
-+		fsl_lpspi->usedma = 0;
-+
- 	return fsl_lpspi_config(fsl_lpspi);
- }
- 
-@@ -401,8 +508,10 @@ static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u32 temp;
- 
--	/* Disable all interrupt */
--	fsl_lpspi_intctrl(fsl_lpspi, 0);
-+	if (!fsl_lpspi->usedma) {
-+		/* Disable all interrupt */
-+		fsl_lpspi_intctrl(fsl_lpspi, 0);
-+	}
- 
- 	/* W1C for all flags in SR */
- 	temp = 0x3F << 8;
-@@ -415,6 +524,176 @@ static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
-+static void fsl_lpspi_dma_rx_callback(void *cookie)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = (struct fsl_lpspi_data *)cookie;
-+
-+	complete(&fsl_lpspi->dma_rx_completion);
-+}
-+
-+static void fsl_lpspi_dma_tx_callback(void *cookie)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = (struct fsl_lpspi_data *)cookie;
-+
-+	complete(&fsl_lpspi->dma_tx_completion);
-+}
-+
-+static int fsl_lpspi_calculate_timeout(struct fsl_lpspi_data *fsl_lpspi,
-+				       int size)
-+{
-+	unsigned long timeout = 0;
-+
-+	/* Time with actual data transfer and CS change delay related to HW */
-+	timeout = (8 + 4) * size / fsl_lpspi->config.speed_hz;
-+
-+	/* Add extra second for scheduler related activities */
-+	timeout += 1;
-+
-+	/* Double calculated timeout */
-+	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
-+}
-+
-+static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
-+				struct fsl_lpspi_data *fsl_lpspi,
-+				struct spi_transfer *transfer)
-+{
-+	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
-+	unsigned long transfer_timeout;
-+	unsigned long timeout;
-+	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-+	int ret;
-+
-+	ret = fsl_lpspi_dma_configure(controller);
-+	if (ret)
-+		return ret;
-+
-+	desc_rx = dmaengine_prep_slave_sg(controller->dma_rx,
-+				rx->sgl, rx->nents, DMA_DEV_TO_MEM,
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!desc_rx)
-+		return -EINVAL;
-+
-+	desc_rx->callback = fsl_lpspi_dma_rx_callback;
-+	desc_rx->callback_param = (void *)fsl_lpspi;
-+	dmaengine_submit(desc_rx);
-+	reinit_completion(&fsl_lpspi->dma_rx_completion);
-+	dma_async_issue_pending(controller->dma_rx);
-+
-+	desc_tx = dmaengine_prep_slave_sg(controller->dma_tx,
-+				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!desc_tx) {
-+		dmaengine_terminate_all(controller->dma_tx);
-+		return -EINVAL;
-+	}
-+
-+	desc_tx->callback = fsl_lpspi_dma_tx_callback;
-+	desc_tx->callback_param = (void *)fsl_lpspi;
-+	dmaengine_submit(desc_tx);
-+	reinit_completion(&fsl_lpspi->dma_tx_completion);
-+	dma_async_issue_pending(controller->dma_tx);
-+
-+	fsl_lpspi->slave_aborted = false;
-+
-+	if (!fsl_lpspi->is_slave) {
-+		transfer_timeout = fsl_lpspi_calculate_timeout(fsl_lpspi,
-+							       transfer->len);
-+
-+		/* Wait eDMA to finish the data transfer.*/
-+		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_tx_completion,
-+						      transfer_timeout);
-+		if (!timeout) {
-+			dev_err(fsl_lpspi->dev, "I/O Error in DMA TX\n");
-+			dmaengine_terminate_all(controller->dma_tx);
-+			dmaengine_terminate_all(controller->dma_rx);
-+			fsl_lpspi_reset(fsl_lpspi);
-+			return -ETIMEDOUT;
-+		}
-+
-+		timeout = wait_for_completion_timeout(&fsl_lpspi->dma_rx_completion,
-+						      transfer_timeout);
-+		if (!timeout) {
-+			dev_err(fsl_lpspi->dev, "I/O Error in DMA RX\n");
-+			dmaengine_terminate_all(controller->dma_tx);
-+			dmaengine_terminate_all(controller->dma_rx);
-+			fsl_lpspi_reset(fsl_lpspi);
-+			return -ETIMEDOUT;
-+		}
-+	} else {
-+		if (wait_for_completion_interruptible(&fsl_lpspi->dma_tx_completion) ||
-+			fsl_lpspi->slave_aborted) {
-+			dev_dbg(fsl_lpspi->dev,
-+				"I/O Error in DMA TX interrupted\n");
-+			dmaengine_terminate_all(controller->dma_tx);
-+			dmaengine_terminate_all(controller->dma_rx);
-+			fsl_lpspi_reset(fsl_lpspi);
-+			return -EINTR;
-+		}
-+
-+		if (wait_for_completion_interruptible(&fsl_lpspi->dma_rx_completion) ||
-+			fsl_lpspi->slave_aborted) {
-+			dev_dbg(fsl_lpspi->dev,
-+				"I/O Error in DMA RX interrupted\n");
-+			dmaengine_terminate_all(controller->dma_tx);
-+			dmaengine_terminate_all(controller->dma_rx);
-+			fsl_lpspi_reset(fsl_lpspi);
-+			return -EINTR;
-+		}
-+	}
-+
-+	fsl_lpspi_reset(fsl_lpspi);
-+
-+	return 0;
-+}
-+
-+static void fsl_lpspi_dma_exit(struct spi_controller *controller)
-+{
-+	if (controller->dma_rx) {
-+		dma_release_channel(controller->dma_rx);
-+		controller->dma_rx = NULL;
-+	}
-+
-+	if (controller->dma_tx) {
-+		dma_release_channel(controller->dma_tx);
-+		controller->dma_tx = NULL;
-+	}
-+}
-+
-+static int fsl_lpspi_dma_init(struct device *dev,
-+			      struct fsl_lpspi_data *fsl_lpspi,
-+			      struct spi_controller *controller)
-+{
-+	int ret;
-+
-+	/* Prepare for TX DMA: */
-+	controller->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(controller->dma_tx)) {
-+		ret = PTR_ERR(controller->dma_tx);
-+		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
-+		controller->dma_tx = NULL;
-+		goto err;
-+	}
-+
-+	/* Prepare for RX DMA: */
-+	controller->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(controller->dma_rx)) {
-+		ret = PTR_ERR(controller->dma_rx);
-+		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
-+		controller->dma_rx = NULL;
-+		goto err;
-+	}
-+
-+	init_completion(&fsl_lpspi->dma_rx_completion);
-+	init_completion(&fsl_lpspi->dma_tx_completion);
-+	controller->can_dma = fsl_lpspi_can_dma;
-+	controller->max_dma_len = FSL_LPSPI_MAX_EDMA_BYTES;
-+
-+	return 0;
-+err:
-+	fsl_lpspi_dma_exit(controller);
-+	return ret;
-+}
-+
- static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
- 				  struct spi_transfer *t)
- {
-@@ -449,14 +728,17 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ 	struct idma64_chip *chip;
+ 	struct device *dev = &pdev->dev;
++	struct device *sysdev = dev->parent;
+ 	struct resource *mem;
  	int ret;
  
- 	fsl_lpspi->is_first_byte = true;
--	ret = fsl_lpspi_setup_transfer(spi, t);
-+	ret = fsl_lpspi_setup_transfer(controller, spi, t);
- 	if (ret < 0)
+@@ -648,11 +649,12 @@ static int idma64_platform_probe(struct platform_device *pdev)
+ 	if (IS_ERR(chip->regs))
+ 		return PTR_ERR(chip->regs);
+ 
+-	ret = dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
++	ret = dma_coerce_mask_and_coherent(sysdev, DMA_BIT_MASK(64));
+ 	if (ret)
  		return ret;
  
- 	fsl_lpspi_set_cmd(fsl_lpspi);
- 	fsl_lpspi->is_first_byte = false;
+ 	chip->dev = dev;
++	chip->sysdev = sysdev;
  
--	ret = fsl_lpspi_pio_transfer(controller, t);
-+	if (fsl_lpspi->usedma)
-+		ret = fsl_lpspi_dma_transfer(controller, fsl_lpspi, t);
-+	else
-+		ret = fsl_lpspi_pio_transfer(controller, t);
- 	if (ret < 0)
- 		return ret;
+ 	ret = idma64_probe(chip);
+ 	if (ret)
+diff --git a/drivers/dma/idma64.h b/drivers/dma/idma64.h
+index 6b816878e5e7..baa32e1425de 100644
+--- a/drivers/dma/idma64.h
++++ b/drivers/dma/idma64.h
+@@ -216,12 +216,14 @@ static inline void idma64_writel(struct idma64 *idma64, int offset, u32 value)
+ /**
+  * struct idma64_chip - representation of iDMA 64-bit controller hardware
+  * @dev:		struct device of the DMA controller
++ * @sysdev:		struct device of the physical device that does DMA
+  * @irq:		irq line
+  * @regs:		memory mapped I/O space
+  * @idma64:		struct idma64 that is filed by idma64_probe()
+  */
+ struct idma64_chip {
+ 	struct device	*dev;
++	struct device	*sysdev;
+ 	int		irq;
+ 	void __iomem	*regs;
+ 	struct idma64	*idma64;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index b6ddba833d02..5ea70f7d12e7 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1487,12 +1487,7 @@ static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
  
-@@ -606,6 +888,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(fsl_lpspi->base);
- 		goto out_controller_put;
+ static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
+ {
+-	struct device *dev = param;
+-
+-	if (dev != chan->device->dev->parent)
+-		return false;
+-
+-	return true;
++	return param == chan->device->dev;
+ }
+ 
+ #endif /* CONFIG_PCI */
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index d31b975dd3fd..284e8d052fc3 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -365,7 +365,7 @@ static bool dw8250_fallback_dma_filter(struct dma_chan *chan, void *param)
+ 
+ static bool dw8250_idma_filter(struct dma_chan *chan, void *param)
+ {
+-	return param == chan->device->dev->parent;
++	return param == chan->device->dev;
+ }
+ 
+ /*
+@@ -434,7 +434,7 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+ 		data->uart_16550_compatible = true;
  	}
-+	fsl_lpspi->base_phys = res->start;
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -647,6 +930,13 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
- 
-+	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
-+	if (ret == -EPROBE_DEFER)
-+		goto out_controller_put;
-+
-+	if (ret < 0)
-+		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
-+
- 	ret = devm_spi_register_controller(&pdev->dev, controller);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_controller error.\n");
+-	/* Platforms with iDMA */
++	/* Platforms with iDMA 64-bit */
+ 	if (platform_get_resource_byname(to_platform_device(p->dev),
+ 					 IORESOURCE_MEM, "lpss_priv")) {
+ 		data->dma.rx_param = p->dev->parent;
 -- 
 2.20.1

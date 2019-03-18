@@ -1,7 +1,8 @@
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 0/2] spi: pxa2xx: Adjust DMA burst size per platform
-Date: Mon, 18 Mar 2019 16:41:42 +0200
-Message-ID: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 2/2] spi: pxa2xx: Debug print DMA burst size
+Date: Mon, 18 Mar 2019 16:41:44 +0200
+Message-ID: <20190318144144.42367-3-andriy.shevchenko@linux.intel.com>
+References: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,6 +12,7 @@ To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
  linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
  linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -22,27 +24,26 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On some platforms DMA burst size is not the same as hard coded default.
-Fix the driver to support them.
+It's useful during debug to see what DMA burst size is.
 
-In v3:
-- drop threshold print since it's easy to calculate constant (Jarkko)
-- split one more unrelated change to a separate patch,
-  but independent from this series  (Jarkko)
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-In v2:
-- drop unrelated changes (Jarkko, Robert)
-- don't include Robert's tag due to changes in the patch
-
-Andy Shevchenko (2):
-  spi: pxa2xx: Introduce DMA burst size support
-  spi: pxa2xx: Debug print DMA burst size
-
- drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
- drivers/spi/spi-pxa2xx-pci.c   | 4 ++++
- drivers/spi/spi-pxa2xx.c       | 4 ++++
- include/linux/spi/pxa2xx_spi.h | 1 +
- 4 files changed, 12 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 461c6b796b8f..f008836f7e27 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1333,6 +1333,9 @@ static int setup(struct spi_device *spi)
+ 			dev_warn(&spi->dev,
+ 				 "in setup: DMA burst size reduced to match bits_per_word\n");
+ 		}
++		dev_dbg(&spi->dev,
++			"in setup: DMA burst size set to %u\n",
++			chip->dma_burst_size);
+ 	}
+ 
+ 	switch (drv_data->ssp_type) {
 -- 
 2.20.1

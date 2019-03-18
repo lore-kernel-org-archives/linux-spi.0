@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: Code cleanup" to the spi tree
-Date: Mon, 18 Mar 2019 14:52:05 +0000 (GMT)
-Message-ID: <20190318145205.BBDB01128874@debutante.sirena.org.uk>
-References: <20190306063020.793-9-xiaoning.wang@nxp.com>
+Subject: Applied "doc: lpspi: Document DT bindings for LPSPI clocks" to the spi tree
+Date: Mon, 18 Mar 2019 14:52:18 +0000 (GMT)
+Message-ID: <20190318145218.99E09112887B@debutante.sirena.org.uk>
+References: <20190306063020.793-3-xiaoning.wang@nxp.com>
 Cc: Mark Brown <broonie@kernel.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
@@ -10,13 +10,13 @@ Cc: Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
 To: Clark Wang <xiaoning.wang@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190306063020.793-9-xiaoning.wang@nxp.com>
+In-Reply-To: <20190306063020.793-3-xiaoning.wang@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: lpspi: Code cleanup
+   doc: lpspi: Document DT bindings for LPSPI clocks
 
 has been applied to the spi tree at
 
@@ -41,31 +41,45 @@ to this mail.
 Thanks,
 Mark
 
->From 4e3891a55f671a4e641d2ef4e5ec0e27e56b20d9 Mon Sep 17 00:00:00 2001
+>From addb32866d99068307f8eddb282ebb325d18446f Mon Sep 17 00:00:00 2001
 From: Clark Wang <xiaoning.wang@nxp.com>
-Date: Wed, 6 Mar 2019 06:30:49 +0000
-Subject: [PATCH] spi: lpspi: Code cleanup
+Date: Wed, 6 Mar 2019 06:30:36 +0000
+Subject: [PATCH] doc: lpspi: Document DT bindings for LPSPI clocks
 
-Delete the extra space.
+Add introductions of clocks and clock-names strings.
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt          | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 2ac3ac5ea50a..1860f066f838 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -345,7 +345,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
- 					fsl_lpspi->base + IMX7ULP_CCR);
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+index 6cc3c6fe25a3..e71b81a41ac0 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+@@ -7,7 +7,11 @@ Required properties:
+ - reg : address and length of the lpspi master registers
+ - interrupt-parent : core interrupt controller
+ - interrupts : lpspi interrupt
+-- clocks : lpspi clock specifier
++- clocks : lpspi clock specifier. Its number and order need to correspond to the
++	   value in clock-names.
++- clock-names : Corresponding to per clock and ipg clock in "clocks"
++		respectively. In i.MX7ULP, it only has per clk, so use CLK_DUMMY
++		to fill the "ipg" blank.
+ - spi-slave : spi slave mode support. In slave mode, add this attribute without
+ 	      value. In master mode, remove it.
  
--	dev_dbg(fsl_lpspi->dev, "perclk=%d, speed=%d, prescale =%d, scldiv=%d\n",
-+	dev_dbg(fsl_lpspi->dev, "perclk=%d, speed=%d, prescale=%d, scldiv=%d\n",
- 		perclk_rate, config.speed_hz, prescale, scldiv);
- 
- 	return 0;
+@@ -18,6 +22,8 @@ lpspi2: lpspi@40290000 {
+ 	reg = <0x40290000 0x10000>;
+ 	interrupt-parent = <&intc>;
+ 	interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+-	clocks = <&clks IMX7ULP_CLK_LPSPI2>;
++	clocks = <&clks IMX7ULP_CLK_LPSPI2>,
++		 <&clks IMX7ULP_CLK_DUMMY>;
++	clock-names = "per", "ipg";
+ 	spi-slave;
+ };
 -- 
 2.20.1

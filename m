@@ -1,204 +1,118 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: 4-Byte addressing issue with IS25WP256D nor flash
-Date: Mon, 18 Mar 2019 05:34:38 +0000
-Message-ID: <e1e2f867-8a28-c74b-7f01-5f798e37c81d@microchip.com>
-References: <MWHPR02MB2623388725B13BB7B133B98BAF4A0@MWHPR02MB2623.namprd02.prod.outlook.com>
+From: Rasmus Villemoes <Rasmus.Villemoes@prevas.se>
+Subject: Re: [PATCH] spi: spi-fsl-spi: support use of the SPISEL_BOOT signal
+ on MPC8309
+Date: Mon, 18 Mar 2019 07:43:47 +0000
+Message-ID: <3f0313c8-670c-5d70-80e2-210add8e328c@prevas.se>
+References: <20190306103156.19897-1-rasmus.villemoes@prevas.dk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: <richard@nod.at>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <marek.vasut@gmail.com>,
-        <linux-mtd@lists.infradead.org>, <nagasuresh12@gmail.com>,
-        <dwmw2@infradead.org>, <michals@xilinx.com>,
-        <liu.xiang6@zte.com.cn>
-To: <nagasure@xilinx.com>, <bbrezillon@kernel.org>,
-        <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Esben Haabendal <esben@geanix.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Per Christensen <pnc@deif.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <MWHPR02MB2623388725B13BB7B133B98BAF4A0@MWHPR02MB2623.namprd02.prod.outlook.com>
+In-Reply-To: <20190306103156.19897-1-rasmus.villemoes@prevas.dk>
 Content-Language: en-US
-Content-ID: <1E5CEF06750F3A46B3B3EBB9B732392A@namprd11.prod.outlook.com>
+Content-ID: <4179966A83D55F4B91E29404726DC421@EURPRD10.PROD.OUTLOOK.COM>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi, Naga,
-
-On 03/13/2019 12:30 PM, Naga Sureshkumar Relli wrote:
-> Hi,
->=20
-> =A0
->=20
-> Currently I am facing an issue with is25wp256d part.
->=20
->  1. With u-boot the data integrity is working(erase, write, read and veri=
-fy)
->     with out any issues
->  2. Don=92t probe the qspi at u-boot, and boot Linux and do data integrit=
-y
->     (erase, write, read and verify) =A0and verification done successfully=
-.
->  3. At u-boot, do sf probe and after booting Linux, check for data integr=
-ity
->=20
-> =A0=A0=A0=A0=A0 (erase, write, read and verify) and verify is failing.
->=20
-> And here are my observations.
->=20
-> When we do sf probe at u-boot, as per the device size, u-boot is changing
->=20
-> The flash device addressing mode from 3 byte to 4 byte
->=20
-> =A0
->=20
-> But Linux spi-nor frame work is using 3 byte commands with 3 Byte address=
-ing(because
->=20
-> Of wrong sfdp information from the is25wp256d part). Hence data verificat=
-ion is failing.
->=20
-> i.e. sfdp information is saying that it supports only 3-Byte addressing.
->=20
-> that means, sfdp table for is25wp256d is wrong.
->=20
-
-I couldn't find the sfdp table described in the datasheet. I would like to =
-check
-if bfpt is not entirely wrong. Can you please hexdump the entire sfdp table=
-?
-
-> =A0
->=20
-> Here are the steps that I am running.
->=20
-> Write data using u-boot =A0like below
->=20
-> 1. sf probe 0 0 0
->=20
-> 2. mw.b 0x100000 11 0x100
->=20
-> 3. sf write 0x100000 0x0 0x100
->=20
-> 4. sf read 0x200000 0x0 0x100
->=20
-> 5. md.b 0x200000 0x100
->=20
-> 00200000: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200010: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200020: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200030: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200040: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200050: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200060: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200070: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200080: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 00200090: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000a0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000b0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000c0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000d0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000e0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> 002000f0: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11=A0=A0=A0 ......=
-..........
->=20
-> And in Linux just try reading the data,
->=20
-> root# mtd_debug read /dev/mtd0 0x0 0x100 test.bin
->=20
-> root#hexdump -C -n 50 test.bin
->=20
-> 0000000 ffff ffff =A01111 1111 1111 1111 1111 1111
->=20
-> 0000010 1111 1111 1111 1111 1111 1111 1111
->=20
-> *
->=20
-> 0000100
->=20
-> =A0
->=20
-> I did the below change in spi-nor.c
->=20
-> iff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
->=20
-> index 4216ce0..f8603ff 100644
->=20
-> --- a/drivers/mtd/spi-nor/spi-nor.c
->=20
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
->=20
-> @@ -2890,6 +2890,11 @@ static int spi_nor_init_params(struct spi_nor *nor=
-,
->=20
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 nor=
-->addr_width =3D 0;
->=20
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 nor=
-->mtd.erasesize =3D 0;
->=20
-> =A0 =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0} else {
->=20
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if ((=
-JEDEC_MFR(info) =3D=3D SNOR_MFR_ISSI) &&
-Does all issi flashes have this problem?
-
->=20
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0 params->size >=A0 OFFSET_16_MB) {
->=20
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0 nor->addr_width =3D 4;
->=20
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0 set_4byte(nor, info, 1);
->=20
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
->=20
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 mem=
-cpy(params, &sfdp_params, sizeof(*params));
->=20
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }
->=20
-> =A0=A0=A0=A0=A0=A0=A0 }
->=20
-> Any further suggestions?
-
-We should implement this as a post_bfpt fixup hook.
-
->=20
-> I have gone through https://lkml.org/lkml/2018/11/14/599.
->=20
-> But I didn=92t see any further mails after that.
-
-Sorry, I forgot about it :(
-
-Cheers,
-ta
+cGluZw0KDQpPbiAwNi8wMy8yMDE5IDExLjMyLCBSYXNtdXMgVmlsbGVtb2VzIHdyb3RlOg0KPiBU
+aGUgTVBDODMwOSBoYXMgYSBkZWRpY2F0ZWQgc2lnbmFsLCBTUElTRUxfQk9PVCwgdXN1YWxseSB1
+c2VkIGFzIGNoaXANCj4gc2VsZWN0IGZvciB0aGUgZmxhc2ggZGV2aWNlIGZyb20gd2hpY2ggdGhl
+IGJvb3Rsb2FkZXIgaXMgbG9hZGVkLiBJdCBpcw0KPiBub3QgYW4gb3JkaW5hcnkgZ3BpbywgYnV0
+IGlzIHNpbXBseSBjb250cm9sbGVkIHZpYSB0aGUgU1BJX0NTIHJlZ2lzdGVyDQo+IGluIHRoZSBz
+eXN0ZW0gY29uZmlndXJhdGlvbi4NCj4gDQo+IFRvIGFsbG93IGFjY2Vzc2luZyBzdWNoIGEgc3Bp
+IHNsYXZlLCB3ZSBuZWVkIHRvIHRlYWNoDQo+IGZzbF9zcGlfY3NfY29udHJvbCgpIGhvdyB0byBj
+b250cm9sIHRoZSBTUElTRUxfQk9PVCBzaWduYWwuIFRvDQo+IGRpc3Rpbmd1aXNoIHRoZSBncGlv
+LWNvbnRyb2xsZWQgc2xhdmVzLCBjb250aW51ZSB0byBoYXZlIHRob3NlIHVzZQ0KPiBjaGlwX3Nl
+bGVjdCB2YWx1ZXMgb2YgMC4ubmdwaW9zLTEsIGFuZCB1c2UgY2hpcF9zZWxlY3QgPT0gbmdwaW9z
+IGZvcg0KPiB0aGUgYm9vdCBmbGFzaC4NCj4gDQo+IEknbSBub3QgdG9vIGhhcHB5IHdpdGggYWxs
+IHRoZSBpZmRlZmZlcnksIGJ1dCBpdCBzZWVtcyB0byBiZSBuZWNlc3NhcnkNCj4gZm9yIGd1YXJk
+aW5nIHRoZSBzeXNkZXYvZnNsX3NvYy5oIGFuZCB1c2Ugb2YNCj4gZ2V0X2ltbXJiYXNlKCkgKHNw
+aS1mc2wtbGliLmMgYWxyZWFkeSBjb250YWlucyBzaW1pbGFyIGlmZGVmZmVyeSkuDQo+IA0KPiBH
+b29nbGluZyBzdWdnZXN0cyB0aGF0IHRoZSBNUEM4MzA2IGlzIHNpbWlsYXIsIHdpdGggdGhlIFNQ
+SV9DUw0KPiByZWdpc3RlciBhdCB0aGUgc2FtZSBvZmZzZXQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
+OiBSYXNtdXMgVmlsbGVtb2VzIDxyYXNtdXMudmlsbGVtb2VzQHByZXZhcy5kaz4NCj4gLS0tDQo+
+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvZnNsLXNwaS50eHQgICAgICAgfCAgNCArKw0K
+PiAgZHJpdmVycy9zcGkvc3BpLWZzbC1saWIuaCAgICAgICAgICAgICAgICAgICAgIHwgIDIgKw0K
+PiAgZHJpdmVycy9zcGkvc3BpLWZzbC1zcGkuYyAgICAgICAgICAgICAgICAgICAgIHwgNDAgKysr
+KysrKysrKysrKysrKy0tLQ0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA0MSBpbnNlcnRpb25zKCspLCA1
+IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJl
+ZS9iaW5kaW5ncy9zcGkvZnNsLXNwaS50eHQgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
+ZGluZ3Mvc3BpL2ZzbC1zcGkudHh0DQo+IGluZGV4IDg4NTQwMDRhMWQzYS4uNDExMzc1ZWFjNTRk
+IDEwMDY0NA0KPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2Zz
+bC1zcGkudHh0DQo+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkv
+ZnNsLXNwaS50eHQNCj4gQEAgLTE4LDYgKzE4LDEwIEBAIE9wdGlvbmFsIHByb3BlcnRpZXM6DQo+
+ICAtIGdwaW9zIDogc3BlY2lmaWVzIHRoZSBncGlvIHBpbnMgdG8gYmUgdXNlZCBmb3IgY2hpcHNl
+bGVjdHMuDQo+ICAgIFRoZSBncGlvcyB3aWxsIGJlIHJlZmVycmVkIHRvIGFzIHJlZyA9IDxpbmRl
+eD4gaW4gdGhlIFNQSSBjaGlsZCBub2Rlcy4NCj4gICAgSWYgdW5zcGVjaWZpZWQsIGEgc2luZ2xl
+IFNQSSBkZXZpY2Ugd2l0aG91dCBhIGNoaXAgc2VsZWN0IGNhbiBiZSB1c2VkLg0KPiArLSBmc2ws
+c3Bpc2VsX2Jvb3QgOiBmb3IgdGhlIE1QQzgzMDYgYW5kIE1QQzgzMDksIHNwZWNpZmllcyB0aGF0
+IHRoZQ0KPiArICBTUElTRUxfQk9PVCBzaWduYWwgaXMgdXNlZCBhcyBjaGlwIHNlbGVjdCBmb3Ig
+YSBzbGF2ZSBkZXZpY2UuIFVzZQ0KPiArICByZWcgPSA8bnVtYmVyIG9mIGdwaW9zPiBpbiB0aGUg
+Y29ycmVzcG9uZGluZyBjaGlsZCBub2RlLCBpLmUuIDAgaWYNCj4gKyAgdGhlIGdwaW9zIHByb3Bl
+cnR5IGlzIG5vdCBwcmVzZW50Lg0KPiAgDQo+ICBFeGFtcGxlOg0KPiAgCXNwaUA0YzAgew0KPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWZzbC1saWIuaCBiL2RyaXZlcnMvc3BpL3NwaS1m
+c2wtbGliLmgNCj4gaW5kZXggZjMwM2YzMDZiMzhlLi40ODM3MzRiYzFiMWUgMTAwNjQ0DQo+IC0t
+LSBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtbGliLmgNCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWZz
+bC1saWIuaA0KPiBAQCAtOTUsOCArOTUsMTAgQEAgc3RhdGljIGlubGluZSB1MzIgbXBjOHh4eF9z
+cGlfcmVhZF9yZWcoX19iZTMyIF9faW9tZW0gKnJlZykNCj4gIA0KPiAgc3RydWN0IG1wYzh4eHhf
+c3BpX3Byb2JlX2luZm8gew0KPiAgCXN0cnVjdCBmc2xfc3BpX3BsYXRmb3JtX2RhdGEgcGRhdGE7
+DQo+ICsJaW50IG5ncGlvczsNCj4gIAlpbnQgKmdwaW9zOw0KPiAgCWJvb2wgKmFsb3dfZmxhZ3M7
+DQo+ICsJX19iZTMyIF9faW9tZW0gKmltbXJfc3BpX2NzOw0KPiAgfTsNCj4gIA0KPiAgZXh0ZXJu
+IHUzMiBtcGM4eHh4X3NwaV90eF9idWZfdTgoc3RydWN0IG1wYzh4eHhfc3BpICptcGM4eHh4X3Nw
+aSk7DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLXNwaS5jIGIvZHJpdmVycy9z
+cGkvc3BpLWZzbC1zcGkuYw0KPiBpbmRleCA4ZjJlOTc4NTdlOGIuLjNkN2I1MGM2NWYzNiAxMDA2
+NDQNCj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWZzbC1zcGkuYw0KPiArKysgYi9kcml2ZXJzL3Nw
+aS9zcGktZnNsLXNwaS5jDQo+IEBAIC0zOSw2ICszOSwxNCBAQA0KPiAgI2luY2x1ZGUgPGxpbnV4
+L3NwaS9zcGlfYml0YmFuZy5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4L3R5cGVzLmg+DQo+ICANCj4g
+KyNpZmRlZiBDT05GSUdfRlNMX1NPQw0KPiArI2luY2x1ZGUgPHN5c2Rldi9mc2xfc29jLmg+DQo+
+ICsjZW5kaWYNCj4gKw0KPiArLyogU3BlY2lmaWMgdG8gdGhlIE1QQzgzMDYvTVBDODMwOSAqLw0K
+PiArI2RlZmluZSBJTU1SX1NQSV9DU19PRkZTRVQgMHgxNGMNCj4gKyNkZWZpbmUgU1BJX0JPT1Rf
+U0VMX0JJVCAgIDB4ODAwMDAwMDANCj4gKw0KPiAgI2luY2x1ZGUgInNwaS1mc2wtbGliLmgiDQo+
+ICAjaW5jbHVkZSAic3BpLWZzbC1jcG0uaCINCj4gICNpbmNsdWRlICJzcGktZnNsLXNwaS5oIg0K
+PiBAQCAtNzAxLDEwICs3MDksMTcgQEAgc3RhdGljIHZvaWQgZnNsX3NwaV9jc19jb250cm9sKHN0
+cnVjdCBzcGlfZGV2aWNlICpzcGksIGJvb2wgb24pDQo+ICAJc3RydWN0IGZzbF9zcGlfcGxhdGZv
+cm1fZGF0YSAqcGRhdGEgPSBkZXZfZ2V0X3BsYXRkYXRhKGRldik7DQo+ICAJc3RydWN0IG1wYzh4
+eHhfc3BpX3Byb2JlX2luZm8gKnBpbmZvID0gdG9fb2ZfcGluZm8ocGRhdGEpOw0KPiAgCXUxNiBj
+cyA9IHNwaS0+Y2hpcF9zZWxlY3Q7DQo+IC0JaW50IGdwaW8gPSBwaW5mby0+Z3Bpb3NbY3NdOw0K
+PiAtCWJvb2wgYWxvdyA9IHBpbmZvLT5hbG93X2ZsYWdzW2NzXTsNCj4gIA0KPiAtCWdwaW9fc2V0
+X3ZhbHVlKGdwaW8sIG9uIF4gYWxvdyk7DQo+ICsJaWYgKGNzIDwgcGluZm8tPm5ncGlvcykgew0K
+PiArCQlpbnQgZ3BpbyA9IHBpbmZvLT5ncGlvc1tjc107DQo+ICsJCWJvb2wgYWxvdyA9IHBpbmZv
+LT5hbG93X2ZsYWdzW2NzXTsNCj4gKw0KPiArCQlncGlvX3NldF92YWx1ZShncGlvLCBvbiBeIGFs
+b3cpOw0KPiArCX0gZWxzZSB7DQo+ICsJCWlmIChXQVJOX09OX09OQ0UoY3MgPiBwaW5mby0+bmdw
+aW9zIHx8ICFwaW5mby0+aW1tcl9zcGlfY3MpKQ0KPiArCQkJcmV0dXJuOw0KPiArCQlpb3dyaXRl
+MzJiZShvbiA/IFNQSV9CT09UX1NFTF9CSVQgOiAwLCBwaW5mby0+aW1tcl9zcGlfY3MpOw0KPiAr
+CX0NCj4gIH0NCj4gIA0KPiAgc3RhdGljIGludCBvZl9mc2xfc3BpX2dldF9jaGlwc2VsZWN0cyhz
+dHJ1Y3QgZGV2aWNlICpkZXYpDQo+IEBAIC03MTIsMTIgKzcyNywxNSBAQCBzdGF0aWMgaW50IG9m
+X2ZzbF9zcGlfZ2V0X2NoaXBzZWxlY3RzKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gIAlzdHJ1Y3Qg
+ZGV2aWNlX25vZGUgKm5wID0gZGV2LT5vZl9ub2RlOw0KPiAgCXN0cnVjdCBmc2xfc3BpX3BsYXRm
+b3JtX2RhdGEgKnBkYXRhID0gZGV2X2dldF9wbGF0ZGF0YShkZXYpOw0KPiAgCXN0cnVjdCBtcGM4
+eHh4X3NwaV9wcm9iZV9pbmZvICpwaW5mbyA9IHRvX29mX3BpbmZvKHBkYXRhKTsNCj4gKwlib29s
+IHNwaXNlbF9ib290ID0gSVNfRU5BQkxFRChDT05GSUdfRlNMX1NPQykgJiYNCj4gKwkJb2ZfcHJv
+cGVydHlfcmVhZF9ib29sKG5wLCAiZnNsLHNwaXNlbF9ib290Iik7DQo+ICAJaW50IG5ncGlvczsN
+Cj4gIAlpbnQgaSA9IDA7DQo+ICAJaW50IHJldDsNCj4gIA0KPiAgCW5ncGlvcyA9IG9mX2dwaW9f
+Y291bnQobnApOw0KPiAtCWlmIChuZ3Bpb3MgPD0gMCkgew0KPiArCW5ncGlvcyA9IG1heChuZ3Bp
+b3MsIDApOw0KPiArCWlmIChuZ3Bpb3MgPT0gMCAmJiAhc3Bpc2VsX2Jvb3QpIHsNCj4gIAkJLyoN
+Cj4gIAkJICogU1BJIHcvbyBjaGlwLXNlbGVjdCBsaW5lLiBPbmUgU1BJIGRldmljZSBpcyBzdGls
+bCBwZXJtaXR0ZWQNCj4gIAkJICogdGhvdWdoLg0KPiBAQCAtNzI2LDYgKzc0NCw3IEBAIHN0YXRp
+YyBpbnQgb2ZfZnNsX3NwaV9nZXRfY2hpcHNlbGVjdHMoc3RydWN0IGRldmljZSAqZGV2KQ0KPiAg
+CQlyZXR1cm4gMDsNCj4gIAl9DQo+ICANCj4gKwlwaW5mby0+bmdwaW9zID0gbmdwaW9zOw0KPiAg
+CXBpbmZvLT5ncGlvcyA9IGttYWxsb2NfYXJyYXkobmdwaW9zLCBzaXplb2YoKnBpbmZvLT5ncGlv
+cyksDQo+ICAJCQkJICAgICBHRlBfS0VSTkVMKTsNCj4gIAlpZiAoIXBpbmZvLT5ncGlvcykNCj4g
+QEAgLTc2OSw3ICs3ODgsMTggQEAgc3RhdGljIGludCBvZl9mc2xfc3BpX2dldF9jaGlwc2VsZWN0
+cyhzdHJ1Y3QgZGV2aWNlICpkZXYpDQo+ICAJCX0NCj4gIAl9DQo+ICANCj4gLQlwZGF0YS0+bWF4
+X2NoaXBzZWxlY3QgPSBuZ3Bpb3M7DQo+ICsjaWYgSVNfRU5BQkxFRChDT05GSUdfRlNMX1NPQykN
+Cj4gKwlpZiAoc3Bpc2VsX2Jvb3QpIHsNCj4gKwkJcGluZm8tPmltbXJfc3BpX2NzID0gaW9yZW1h
+cChnZXRfaW1tcmJhc2UoKSArIElNTVJfU1BJX0NTX09GRlNFVCwgNCk7DQo+ICsJCWlmICghcGlu
+Zm8tPmltbXJfc3BpX2NzKSB7DQo+ICsJCQlyZXQgPSAtRU5PTUVNOw0KPiArCQkJaSA9IG5ncGlv
+cyAtIDE7DQo+ICsJCQlnb3RvIGVycl9sb29wOw0KPiArCQl9DQo+ICsJfQ0KPiArI2VuZGlmDQo+
+ICsNCj4gKwlwZGF0YS0+bWF4X2NoaXBzZWxlY3QgPSBuZ3Bpb3MgKyBzcGlzZWxfYm9vdDsNCj4g
+IAlwZGF0YS0+Y3NfY29udHJvbCA9IGZzbF9zcGlfY3NfY29udHJvbDsNCj4gIA0KPiAgCXJldHVy
+biAwOw0KPiANCg0K

@@ -1,22 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: use the core way to implement cs-gpio function" to the spi tree
-Date: Mon, 18 Mar 2019 14:52:12 +0000 (GMT)
-Message-ID: <20190318145212.32ADB1128874@debutante.sirena.org.uk>
-References: <20190306063020.793-6-xiaoning.wang@nxp.com>
-Cc: Fugang Duan <Fugang.duan@nxp.com>, Mark Brown <broonie@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Clark Wang <xiaoning.wang@nxp.com>
+Subject: Applied "spi : spi-topcliff-pch: Fix to handle empty DMA buffers" to the spi tree
+Date: Mon, 18 Mar 2019 14:52:22 +0000 (GMT)
+Message-ID: <20190318145222.DA4431128874@debutante.sirena.org.uk>
+References: <20190313165541.22548-1-pakki001@umn.edu>
+Cc: Mark Brown <broonie@kernel.org>, pakki001@umn.edu, kjlu@umn.edu,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Aditya Pakki <pakki001@umn.edu>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190306063020.793-6-xiaoning.wang@nxp.com>
+In-Reply-To: <20190313165541.22548-1-pakki001@umn.edu>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: lpspi: use the core way to implement cs-gpio function
+   spi : spi-topcliff-pch: Fix to handle empty DMA buffers
 
 has been applied to the spi tree at
 
@@ -41,214 +39,64 @@ to this mail.
 Thanks,
 Mark
 
->From c7a402599504384efe0e5232a4c78cb8eb7cb3d0 Mon Sep 17 00:00:00 2001
-From: Clark Wang <xiaoning.wang@nxp.com>
-Date: Wed, 6 Mar 2019 06:30:43 +0000
-Subject: [PATCH] spi: lpspi: use the core way to implement cs-gpio function
+>From f37d8e67f39e6d3eaf4cc5471e8a3d21209843c6 Mon Sep 17 00:00:00 2001
+From: Aditya Pakki <pakki001@umn.edu>
+Date: Wed, 13 Mar 2019 11:55:41 -0500
+Subject: [PATCH] spi : spi-topcliff-pch: Fix to handle empty DMA buffers
 
-Use the default implementation of transfer_one_msg/chipselect/setup
-functions in spi core to implement cs-gpio control.
-Use fsl_lpspi_prepare_message to init the cs_gpio pin.
+pch_alloc_dma_buf allocated tx, rx DMA buffers which can fail. Further,
+these buffers are used without a check. The patch checks for these
+failures and sends the error upstream.
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Acked-by: Fugang Duan <Fugang.duan@nxp.com>
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 101 +++++++++++++++++++++++-------------
- 1 file changed, 66 insertions(+), 35 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 69635cde0e22..a25e0e03f058 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -9,6 +9,7 @@
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-+#include <linux/gpio.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-@@ -16,8 +17,10 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/of_gpio.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/platform_data/spi-imx.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
-@@ -91,6 +94,7 @@ struct fsl_lpspi_data {
- 	struct clk *clk_ipg;
- 	struct clk *clk_per;
- 	bool is_slave;
-+	bool is_first_byte;
- 
- 	void *rx_buf;
- 	const void *tx_buf;
-@@ -106,6 +110,8 @@ struct fsl_lpspi_data {
- 	struct completion xfer_done;
- 
- 	bool slave_aborted;
-+
-+	int chipselect[0];
- };
- 
- static const struct of_device_id fsl_lpspi_dt_ids[] = {
-@@ -178,6 +184,20 @@ static int lpspi_unprepare_xfer_hardware(struct spi_controller *controller)
- 	return 0;
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index e7e8ea1edcce..fa730a871d25 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1300,18 +1300,27 @@ static void pch_free_dma_buf(struct pch_spi_board_data *board_dat,
+ 				  dma->rx_buf_virt, dma->rx_buf_dma);
  }
  
-+static int fsl_lpspi_prepare_message(struct spi_controller *controller,
-+				     struct spi_message *msg)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi =
-+					spi_controller_get_devdata(controller);
-+	struct spi_device *spi = msg->spi;
-+	int gpio = fsl_lpspi->chipselect[spi->chip_select];
-+
-+	if (gpio_is_valid(gpio))
-+		gpio_direction_output(gpio, spi->mode & SPI_CS_HIGH ? 0 : 1);
-+
-+	return 0;
-+}
-+
- static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+-static void pch_alloc_dma_buf(struct pch_spi_board_data *board_dat,
++static int pch_alloc_dma_buf(struct pch_spi_board_data *board_dat,
+ 			      struct pch_spi_data *data)
  {
- 	u8 txfifo_cnt;
-@@ -210,8 +230,7 @@ static void fsl_lpspi_read_rx_fifo(struct fsl_lpspi_data *fsl_lpspi)
- 		fsl_lpspi->rx(fsl_lpspi);
- }
- 
--static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi,
--			      bool is_first_xfer)
-+static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u32 temp = 0;
- 
-@@ -227,7 +246,7 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi,
- 		 * For subsequent transfer, set TCR_CONTC to keep SS asserted.
- 		 */
- 		temp |= TCR_CONT;
--		if (is_first_xfer)
-+		if (fsl_lpspi->is_first_byte)
- 			temp &= ~TCR_CONTC;
- 		else
- 			temp |= TCR_CONTC;
-@@ -396,8 +415,7 @@ static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
--static int fsl_lpspi_transfer_one(struct spi_controller *controller,
--				  struct spi_device *spi,
-+static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
- 				  struct spi_transfer *t)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
-@@ -422,40 +440,27 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
- 	return 0;
- }
- 
--static int fsl_lpspi_transfer_one_msg(struct spi_controller *controller,
--				      struct spi_message *msg)
-+static int fsl_lpspi_transfer_one(struct spi_controller *controller,
-+				  struct spi_device *spi,
-+				  struct spi_transfer *t)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
--				spi_controller_get_devdata(controller);
--	struct spi_device *spi = msg->spi;
--	struct spi_transfer *xfer;
--	bool is_first_xfer = true;
--	int ret = 0;
--
--	msg->status = 0;
--	msg->actual_length = 0;
--
--	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		ret = fsl_lpspi_setup_transfer(spi, xfer);
--		if (ret < 0)
--			goto complete;
--
--		fsl_lpspi_set_cmd(fsl_lpspi, is_first_xfer);
--
--		is_first_xfer = false;
-+					spi_controller_get_devdata(controller);
+ 	struct pch_spi_dma_ctrl *dma;
 +	int ret;
  
--		ret = fsl_lpspi_transfer_one(controller, spi, xfer);
--		if (ret < 0)
--			goto complete;
-+	fsl_lpspi->is_first_byte = true;
-+	ret = fsl_lpspi_setup_transfer(spi, t);
-+	if (ret < 0)
-+		return ret;
- 
--		msg->actual_length += xfer->len;
--	}
-+	fsl_lpspi_set_cmd(fsl_lpspi);
-+	fsl_lpspi->is_first_byte = false;
- 
--complete:
--	msg->status = ret;
--	spi_finalize_current_message(controller);
-+	ret = fsl_lpspi_pio_transfer(controller, t);
-+	if (ret < 0)
-+		return ret;
- 
--	return ret;
-+	return 0;
+ 	dma = &data->dma;
++	ret = 0;
+ 	/* Get Consistent memory for Tx DMA */
+ 	dma->tx_buf_virt = dma_alloc_coherent(&board_dat->pdev->dev,
+ 				PCH_BUF_SIZE, &dma->tx_buf_dma, GFP_KERNEL);
++	if (!dma->tx_buf_virt)
++		ret = -ENOMEM;
++
+ 	/* Get Consistent memory for Rx DMA */
+ 	dma->rx_buf_virt = dma_alloc_coherent(&board_dat->pdev->dev,
+ 				PCH_BUF_SIZE, &dma->rx_buf_dma, GFP_KERNEL);
++	if (!dma->rx_buf_virt)
++		ret = -ENOMEM;
++
++	return ret;
  }
  
- static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
-@@ -531,10 +536,13 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
+ static int pch_spi_pd_probe(struct platform_device *plat_dev)
+@@ -1388,7 +1397,9 @@ static int pch_spi_pd_probe(struct platform_device *plat_dev)
  
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
-+	struct device_node *np = pdev->dev.of_node;
- 	struct fsl_lpspi_data *fsl_lpspi;
- 	struct spi_controller *controller;
-+	struct spi_imx_master *lpspi_platform_info =
-+		dev_get_platdata(&pdev->dev);
- 	struct resource *res;
--	int ret, irq;
-+	int i, ret, irq;
- 	u32 temp;
+ 	if (use_dma) {
+ 		dev_info(&plat_dev->dev, "Use DMA for data transfers\n");
+-		pch_alloc_dma_buf(board_dat, data);
++		ret = pch_alloc_dma_buf(board_dat, data);
++		if (ret)
++			goto err_spi_register_master;
+ 	}
  
- 	if (of_property_read_bool((&pdev->dev)->of_node, "spi-slave"))
-@@ -558,7 +566,30 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->is_slave = of_property_read_bool((&pdev->dev)->of_node,
- 						    "spi-slave");
- 
--	controller->transfer_one_message = fsl_lpspi_transfer_one_msg;
-+	if (!fsl_lpspi->is_slave) {
-+		for (i = 0; i < controller->num_chipselect; i++) {
-+			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-+
-+			if (!gpio_is_valid(cs_gpio) && lpspi_platform_info)
-+				cs_gpio = lpspi_platform_info->chipselect[i];
-+
-+			fsl_lpspi->chipselect[i] = cs_gpio;
-+			if (!gpio_is_valid(cs_gpio))
-+				continue;
-+
-+			ret = devm_gpio_request(&pdev->dev,
-+						fsl_lpspi->chipselect[i],
-+						DRIVER_NAME);
-+			if (ret) {
-+				dev_err(&pdev->dev, "can't get cs gpios\n");
-+				goto out_controller_put;
-+			}
-+		}
-+		controller->cs_gpios = fsl_lpspi->chipselect;
-+		controller->prepare_message = fsl_lpspi_prepare_message;
-+	}
-+
-+	controller->transfer_one = fsl_lpspi_transfer_one;
- 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
- 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	ret = spi_register_master(master);
 -- 
 2.20.1

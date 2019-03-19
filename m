@@ -1,7 +1,8 @@
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 0/2] spi: pxa2xx: Adjust DMA burst size per platform
-Date: Tue, 19 Mar 2019 16:43:50 +0200
-Message-ID: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 2/2] spi: pxa2xx-pci: Drop unused header inclusion
+Date: Tue, 19 Mar 2019 16:43:52 +0200
+Message-ID: <20190319144352.2293-3-andriy.shevchenko@linux.intel.com>
+References: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,6 +12,7 @@ To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
  linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
  linux-spi@vger.kernel.org, Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -22,28 +24,27 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On some platforms DMA burst size is not the same as hard coded default
-Fix the driver to support them.
+There is nothing in the driver which requires OF specific header
+to be included.
 
-In v4:
-- fix s/master/controller/g
+Remove it for good.
 
-In v3:
-- drop threshold print since it's easy to calculate constant (Jarkko)
-- split one more unrelated change to a separate patch,
-  but independent from this series (Jarkko)
-
-In v2:
-- drop unrelated changes (Jarkko, Robert)
-- don't include Robert's tag due to changes in the patch
-
-Andy Shevchenko (2):
-  spi: pxa2xx: Debug print DMA burst size
-  spi: pxa2xx-pci: Drop unused header inclusion
-
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
  drivers/spi/spi-pxa2xx-pci.c | 1 -
- drivers/spi/spi-pxa2xx.c     | 3 +++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 33029ca0687a..d456c5251b5d 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -5,7 +5,6 @@
+  */
+ #include <linux/clk-provider.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/pxa2xx_spi.h>
 -- 
 2.20.1

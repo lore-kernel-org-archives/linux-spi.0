@@ -1,64 +1,37 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 0/2] spi: pxa2xx: Adjust DMA burst size per platform
-Date: Tue, 19 Mar 2019 17:49:34 +0200
-Message-ID: <20190319154934.GJ9224@smile.fi.intel.com>
-References: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel@lists.infradead.org,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: [PATCH v2 0/3] spi: dw: Add support for an optional interface clock
+Date: Tue, 19 Mar 2019 15:52:04 +0000
+Message-ID: <1553010727-23157-1-git-send-email-gareth.williams.jx@renesas.com>
+Cc: Gareth Williams <gareth.williams.jx@renesas.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 19, 2019 at 04:43:50PM +0200, Andy Shevchenko wrote:
-> On some platforms DMA burst size is not the same as hard coded default
-> Fix the driver to support them.
+v2:
+ - Separated mandatory clock documentation and spelling correction from 
+   optional clock property documentation.
+ - Subject line for dt-bindings patches changed to match subsystem 
+   convention.
+ - Dependancy information added to driver patch notes.
+ - Optional clock comment in code expanded for clarity.
 
-Oops, nor subject nor patches are correct in this series. I have sent v5
-corrected.
+Gareth Williams (1):
+  dt-bindings: snps,dw-apb-ssi: Add optional clock bindings
+    documentation
 
-Sorry for the noise.
+Phil Edworthy (2):
+  dt-bindings: snps,dw-apb-ssi: Add mandatory clock bindings
+    documentation
+  spi: dw: Add support for an optional interface clock
 
-> 
-> In v4:
-> - fix s/master/controller/g
-> 
-> In v3:
-> - drop threshold print since it's easy to calculate constant (Jarkko)
-> - split one more unrelated change to a separate patch,
->   but independent from this series (Jarkko)
-> 
-> In v2:
-> - drop unrelated changes (Jarkko, Robert)
-> - don't include Robert's tag due to changes in the patch
-> 
-> Andy Shevchenko (2):
->   spi: pxa2xx: Debug print DMA burst size
->   spi: pxa2xx-pci: Drop unused header inclusion
-> 
->  drivers/spi/spi-pxa2xx-pci.c | 1 -
->  drivers/spi/spi-pxa2xx.c     | 3 +++
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 2.20.1
-> 
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 10 +++++++++-
+ drivers/spi/spi-dw-mmio.c                                 | 12 ++++++++++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.7.4

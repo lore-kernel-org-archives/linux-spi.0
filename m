@@ -1,23 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: fsl_lpspi_runtime_resume() can be static" to the spi tree
-Date: Tue, 19 Mar 2019 13:14:00 +0000 (GMT)
-Message-ID: <20190319131400.6D59711288DF@debutante.sirena.org.uk>
-References: <20190319014633.GA8434@ivb42>
-Cc: Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>,
-        kbuild-all@01.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        Frank Li <frank.li@nxp.com>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: kbuild test robot <lkp@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190319014633.GA8434@ivb42>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: pxa2xx-pci: Drop unused header inclusion" to the spi
+ tree
+Date: Tue, 19 Mar 2019 13:13:58 +0000 (GMT)
+Message-ID: <20190319131358.4F48911288DF@debutante.sirena.org.uk>
+References: <20190318144237.42447-1-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190318144237.42447-1-andriy.shevchenko@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: lpspi: fsl_lpspi_runtime_resume() can be static
+   spi: pxa2xx-pci: Drop unused header inclusion
 
 has been applied to the spi tree at
 
@@ -42,39 +52,34 @@ to this mail.
 Thanks,
 Mark
 
->From 809b169abbfe2b916f70c957b08dfaaaad0d7c02 Mon Sep 17 00:00:00 2001
-From: kbuild test robot <lkp@intel.com>
-Date: Tue, 19 Mar 2019 09:46:33 +0800
-Subject: [PATCH] spi: lpspi: fsl_lpspi_runtime_resume() can be static
+>From 9384d0e6facc9f5b325a2d401e9ed6bb49507a2a Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Mon, 18 Mar 2019 16:42:37 +0200
+Subject: [PATCH] spi: pxa2xx-pci: Drop unused header inclusion
 
-Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
-Signed-off-by: kbuild test robot <lkp@intel.com>
+There is nothing in the driver which requires OF specific header
+to be included.
+
+Remove it for good.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx-pci.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 1860f066f838..4de8eb378752 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
--int fsl_lpspi_runtime_resume(struct device *dev)
-+static int fsl_lpspi_runtime_resume(struct device *dev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
- 	int ret;
-@@ -798,7 +798,7 @@ int fsl_lpspi_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
--int fsl_lpspi_runtime_suspend(struct device *dev)
-+static int fsl_lpspi_runtime_suspend(struct device *dev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
- 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 1727fdfbac28..4b162fdca35f 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -5,7 +5,6 @@
+  */
+ #include <linux/clk-provider.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/pxa2xx_spi.h>
 -- 
 2.20.1

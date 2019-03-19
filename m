@@ -1,61 +1,47 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 0/2] spi: pxa2xx: Adjust DMA burst size per platform
-Date: Mon, 18 Mar 2019 18:33:41 +0200
-Message-ID: <20190318163341.GY9224@smile.fi.intel.com>
-References: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
+From: kbuild test robot <lkp@intel.com>
+Subject: [RFC PATCH spi] spi: lpspi: fsl_lpspi_runtime_resume() can be static
+Date: Tue, 19 Mar 2019 09:46:33 +0800
+Message-ID: <20190319014633.GA8434@ivb42>
+References: <201903190907.mIc3klXH%lkp@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel@lists.infradead.org,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: kbuild-all@01.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        Frank Li <frank.li@nxp.com>, linux-kernel@vger.kernel.org
+To: Han Xu <han.xu@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190318144144.42367-1-andriy.shevchenko@linux.intel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <201903190907.mIc3klXH%lkp@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 18, 2019 at 04:41:42PM +0200, Andy Shevchenko wrote:
-> On some platforms DMA burst size is not the same as hard coded default.
-> Fix the driver to support them.
-> 
-> In v3:
-> - drop threshold print since it's easy to calculate constant (Jarkko)
-> - split one more unrelated change to a separate patch,
->   but independent from this series  (Jarkko)
 
-Forgot to rebase.
-It will not compile on v5.1-rc1 due to s/master/controller/g changes.
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
+Signed-off-by: kbuild test robot <lkp@intel.com>
+---
+ spi-fsl-lpspi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> In v2:
-> - drop unrelated changes (Jarkko, Robert)
-> - don't include Robert's tag due to changes in the patch
-> 
-> Andy Shevchenko (2):
->   spi: pxa2xx: Introduce DMA burst size support
->   spi: pxa2xx: Debug print DMA burst size
-> 
->  drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
->  drivers/spi/spi-pxa2xx-pci.c   | 4 ++++
->  drivers/spi/spi-pxa2xx.c       | 4 ++++
->  include/linux/spi/pxa2xx_spi.h | 1 +
->  4 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 2.20.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 1860f06..4de8eb3 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	return IRQ_NONE;
+ }
+ 
+-int fsl_lpspi_runtime_resume(struct device *dev)
++static int fsl_lpspi_runtime_resume(struct device *dev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
+ 	int ret;
+@@ -798,7 +798,7 @@ int fsl_lpspi_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-int fsl_lpspi_runtime_suspend(struct device *dev)
++static int fsl_lpspi_runtime_suspend(struct device *dev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
+ 

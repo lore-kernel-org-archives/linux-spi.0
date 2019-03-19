@@ -1,50 +1,80 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1] dmaengine: idma64: Use actual device for DMA transfers
-Date: Tue, 19 Mar 2019 12:57:47 +0000
-Message-ID: <20190319125747.GC5514@sirena.org.uk>
-References: <20190318153930.25641-1-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Pk6IbRAofICFmK5e"
-Cc: Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: lpspi: fsl_lpspi_runtime_resume() can be static" to the spi tree
+Date: Tue, 19 Mar 2019 13:14:00 +0000 (GMT)
+Message-ID: <20190319131400.6D59711288DF@debutante.sirena.org.uk>
+References: <20190319014633.GA8434@ivb42>
+Cc: Mark Brown <broonie@kernel.org>, Han Xu <han.xu@nxp.com>,
+        kbuild-all@01.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        Frank Li <frank.li@nxp.com>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: kbuild test robot <lkp@intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190318153930.25641-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20190319014633.GA8434@ivb42>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---Pk6IbRAofICFmK5e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: lpspi: fsl_lpspi_runtime_resume() can be static
 
-On Mon, Mar 18, 2019 at 06:39:30PM +0300, Andy Shevchenko wrote:
-> Intel IOMMU, when enabled, tries to find the domain of the device,
-> assuming it's a PCI one, during DMA operations, such as mapping or
-> unmapping. Since we are splitting the actual PCI device to couple of
+has been applied to the spi tree at
 
-Acked-by: Mark Brown <broonie@kernel.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---Pk6IbRAofICFmK5e
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyQ50oACgkQJNaLcl1U
-h9BWoQf6AikcRK0ln1GJY2lTfUMdPnWYgLla9DdKl8DY9TMEK8UIvOJLkOPFkkgZ
-8MBJdiL+2II3x3nDJmkz+LgVghlFukCuHRTEHjcY4fKeFX5Dbqcm0/KQhgJTD0NW
-XrHhGP7Bm1FIyC9q5fSsTnpmiKyVsizCmShnC0/rqPfihoC69a7KQJ7L9PxTyQkT
-Sg7nq+Qo2JqE18YiI4YRrqOlnfQ7Ref1yf5zxViZwH2UEFFhnjJT/PcBrun2o2zc
-rlBbnNRpHo/8qJEvhjwG9A8ulx5Ofvvj3v8pa9AR5R2iFU4EzVSeVCZhQXEBk5ak
-gvQD1TxaTtRxk33YEyZBR7RElp3wZg==
-=yBp4
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---Pk6IbRAofICFmK5e--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 809b169abbfe2b916f70c957b08dfaaaad0d7c02 Mon Sep 17 00:00:00 2001
+From: kbuild test robot <lkp@intel.com>
+Date: Tue, 19 Mar 2019 09:46:33 +0800
+Subject: [PATCH] spi: lpspi: fsl_lpspi_runtime_resume() can be static
+
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
+Signed-off-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 1860f066f838..4de8eb378752 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	return IRQ_NONE;
+ }
+ 
+-int fsl_lpspi_runtime_resume(struct device *dev)
++static int fsl_lpspi_runtime_resume(struct device *dev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
+ 	int ret;
+@@ -798,7 +798,7 @@ int fsl_lpspi_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-int fsl_lpspi_runtime_suspend(struct device *dev)
++static int fsl_lpspi_runtime_suspend(struct device *dev)
+ {
+ 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
+ 
+-- 
+2.20.1

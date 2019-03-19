@@ -1,7 +1,7 @@
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v4 2/2] spi: pxa2xx-pci: Drop unused header inclusion
-Date: Tue, 19 Mar 2019 16:43:52 +0200
-Message-ID: <20190319144352.2293-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 1/2] spi: pxa2xx: Debug print DMA burst size
+Date: Tue, 19 Mar 2019 16:43:51 +0200
+Message-ID: <20190319144352.2293-2-andriy.shevchenko@linux.intel.com>
 References: <20190319144352.2293-1-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,27 +24,26 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-There is nothing in the driver which requires OF specific header
-to be included.
-
-Remove it for good.
+It's useful during debug to see what DMA burst size is.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 33029ca0687a..d456c5251b5d 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -5,7 +5,6 @@
-  */
- #include <linux/clk-provider.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <linux/spi/pxa2xx_spi.h>
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 461c6b796b8f..f008836f7e27 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1333,6 +1333,9 @@ static int setup(struct spi_device *spi)
+ 			dev_warn(&spi->dev,
+ 				 "in setup: DMA burst size reduced to match bits_per_word\n");
+ 		}
++		dev_dbg(&spi->dev,
++			"in setup: DMA burst size set to %u\n",
++			chip->dma_burst_size);
+ 	}
+ 
+ 	switch (drv_data->ssp_type) {
 -- 
 2.20.1

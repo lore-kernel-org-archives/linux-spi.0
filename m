@@ -1,8 +1,8 @@
 From: kbuild test robot <lkp@intel.com>
-Subject: [RFC PATCH spi] spi: lpspi: fsl_lpspi_runtime_resume() can be static
+Subject: [spi:for-5.2 11/19] drivers/spi/spi-fsl-lpspi.c:483:5: sparse:
+ symbol 'fsl_lpspi_runtime_resume' was not declared. Should it be static?
 Date: Tue, 19 Mar 2019 09:46:33 +0800
-Message-ID: <20190319014633.GA8434@ivb42>
-References: <201903190907.mIc3klXH%lkp@intel.com>
+Message-ID: <201903190907.mIc3klXH%lkp@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: kbuild-all@01.org, linux-spi@vger.kernel.org,
@@ -12,36 +12,26 @@ Cc: kbuild-all@01.org, linux-spi@vger.kernel.org,
 To: Han Xu <han.xu@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201903190907.mIc3klXH%lkp@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
+head:   69b921acae8a5b7feef03921d9b42c3634f3b9d1
+commit: 944c01a889d97dc08e1b71f4ed868f4023fd6034 [11/19] spi: lpspi: enable runtime pm for lpspi
+reproduce:
+        # apt-get install sparse
+        git checkout 944c01a889d97dc08e1b71f4ed868f4023fd6034
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
-Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
-Signed-off-by: kbuild test robot <lkp@intel.com>
+
+sparse warnings: (new ones prefixed by >>)
+
+>> drivers/spi/spi-fsl-lpspi.c:483:5: sparse: symbol 'fsl_lpspi_runtime_resume' was not declared. Should it be static?
+>> drivers/spi/spi-fsl-lpspi.c:501:5: sparse: symbol 'fsl_lpspi_runtime_suspend' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
 ---
- spi-fsl-lpspi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 1860f06..4de8eb3 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
--int fsl_lpspi_runtime_resume(struct device *dev)
-+static int fsl_lpspi_runtime_resume(struct device *dev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
- 	int ret;
-@@ -798,7 +798,7 @@ int fsl_lpspi_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
--int fsl_lpspi_runtime_suspend(struct device *dev)
-+static int fsl_lpspi_runtime_suspend(struct device *dev)
- {
- 	struct fsl_lpspi_data *fsl_lpspi = dev_get_drvdata(dev);
- 
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation

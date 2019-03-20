@@ -1,23 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: Add support for an optional interface clock" to the spi tree
-Date: Wed, 20 Mar 2019 17:30:05 +0000 (GMT)
-Message-ID: <20190320173005.8B0771126E4C@debutante.sirena.org.uk>
-References: <1553010727-23157-4-git-send-email-gareth.williams.jx@renesas.com>
-Cc: Gareth Williams <gareth.williams.jx@renesas.com>,
+Subject: Applied "dt-bindings: snps,dw-apb-ssi: Add optional clock bindings documentation" to the spi tree
+Date: Wed, 20 Mar 2019 17:30:07 +0000 (GMT)
+Message-ID: <20190320173007.BD6281126E4C@debutante.sirena.org.uk>
+References: <1553010727-23157-3-git-send-email-gareth.williams.jx@renesas.com>
+Cc: Phil Edworthy <phil.edworthy@renesas.com>,
         Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
-        linux-spi@vger.kernel.org
-To: Phil Edworthy <phil.edworthy@renesas.com>
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Gareth Williams <gareth.williams.jx@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553010727-23157-4-git-send-email-gareth.williams.jx@renesas.com>
+In-Reply-To: <1553010727-23157-3-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: dw: Add support for an optional interface clock
+   dt-bindings: snps,dw-apb-ssi: Add optional clock bindings documentation
 
 has been applied to the spi tree at
 
@@ -42,66 +44,42 @@ to this mail.
 Thanks,
 Mark
 
->From 560ee7e9100916e30e126a53d127ca54745b2a8e Mon Sep 17 00:00:00 2001
-From: Phil Edworthy <phil.edworthy@renesas.com>
-Date: Tue, 19 Mar 2019 15:52:07 +0000
-Subject: [PATCH] spi: dw: Add support for an optional interface clock
+>From 2f324ac7cf8c50aa079cf30445b99a1b98ea2728 Mon Sep 17 00:00:00 2001
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Date: Tue, 19 Mar 2019 15:52:06 +0000
+Subject: [PATCH] dt-bindings: snps,dw-apb-ssi: Add optional clock bindings
+ documentation
 
-The Synopsys SSI Controller has an interface clock, but most SoCs hide
-this away. However, on some SoCs you need to explicitly enable the
-interface clock in order to access the registers. Therefore, add support
-for an optional interface clock.
+Add documentation to the Synopsys SPI dt-bindings to support an
+optional interface clock that may be used for register access.
 
 Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
 Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-dw-mmio.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 4bd59a93d988..de952b17bc10 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -30,6 +30,7 @@
- struct dw_spi_mmio {
- 	struct dw_spi  dws;
- 	struct clk     *clk;
-+	struct clk     *pclk;
- 	void           *priv;
- };
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+index bcd8f960afb9..f54c8c36395e 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+@@ -8,9 +8,15 @@ Required properties:
+ - interrupts : One interrupt, used by the controller.
+ - #address-cells : <1>, as required by generic SPI binding.
+ - #size-cells : <0>, also as required by generic SPI binding.
+-- clocks : phandle for the core clock used to generate the external SPI clock.
++- clocks : phandles for the clocks, see the description of clock-names below.
++   The phandle for the "ssi_clk" is required. The phandle for the "pclk" clock
++   is optional. If a single clock is specified but no clock-name, it is the
++   "ssi_clk" clock. If both clocks are listed, the "ssi_clk" must be first.
  
-@@ -172,6 +173,14 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	/* Optional clock needed to access the registers */
-+	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
-+	if (IS_ERR(dwsmmio->pclk))
-+		return PTR_ERR(dwsmmio->pclk);
-+	ret = clk_prepare_enable(dwsmmio->pclk);
-+	if (ret)
-+		goto out_clk;
-+
- 	dws->bus_num = pdev->id;
- 
- 	dws->max_freq = clk_get_rate(dwsmmio->clk);
-@@ -199,6 +208,8 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	return 0;
- 
- out:
-+	clk_disable_unprepare(dwsmmio->pclk);
-+out_clk:
- 	clk_disable_unprepare(dwsmmio->clk);
- 	return ret;
- }
-@@ -208,6 +219,7 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
- 
- 	dw_spi_remove_host(&dwsmmio->dws);
-+	clk_disable_unprepare(dwsmmio->pclk);
- 	clk_disable_unprepare(dwsmmio->clk);
- 
- 	return 0;
+ Optional properties:
++- clock-names : Contains the names of the clocks:
++    "ssi_clk", for the core clock used to generate the external SPI clock.
++    "pclk", the interface clock, required for register access.
+ - cs-gpios : Specifies the gpio pins to be used for chipselects.
+ - num-cs : The number of chipselects. If omitted, this will default to 4.
+ - reg-io-width : The I/O register width (in bytes) implemented by this
 -- 
 2.20.1

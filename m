@@ -1,49 +1,43 @@
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 1/1] spi: mxic: simplify getting .driver_data
-Date: Tue, 19 Mar 2019 17:36:37 +0100
-Message-ID: <20190319163637.30949-1-wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH v5 1/2] spi: pxa2xx: Introduce DMA burst size support
+Date: Wed, 20 Mar 2019 09:19:01 +0200
+Message-ID: <0166e3e0-bfe3-610b-9d93-b77e1f9b3e90@linux.intel.com>
+References: <20190319154843.74684-1-andriy.shevchenko@linux.intel.com>
+ <20190319154843.74684-2-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190319154843.74684-2-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-We should get 'driver_data' from 'struct device' directly. Going via
-platform_device is an unneeded step back and forth.
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
-
-Build tested only. buildbot is happy.
-
- drivers/spi/spi-mxic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index e41ae6ef0f8a..f48563c09b97 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -492,8 +492,7 @@ static int mxic_spi_transfer_one(struct spi_master *master,
- 
- static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 
- 	mxic_spi_clk_disable(mxic);
-@@ -504,8 +503,7 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- 
- static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 	int ret;
- 
--- 
-2.11.0
+On 3/19/19 5:48 PM, Andy Shevchenko wrote:
+> Some masters may have different DMA burst size than hard coded default.
+> In such case respect the value given by DMA burst size provided via
+> platform data.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>   drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
+>   drivers/spi/spi-pxa2xx-pci.c   | 4 ++++
+>   drivers/spi/spi-pxa2xx.c       | 1 +
+>   include/linux/spi/pxa2xx_spi.h | 1 +
+>   4 files changed, 9 insertions(+), 1 deletion(-)
+> 
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>

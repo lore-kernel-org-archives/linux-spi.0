@@ -1,25 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: stm32-qspi: stm32_qspi_pm_ops can be static" to the spi tree
-Date: Wed, 20 Mar 2019 17:30:14 +0000 (GMT)
-Message-ID: <20190320173014.45ACA1126E4C@debutante.sirena.org.uk>
-References: <20190316073341.GA132987@lkp-hsx03>
-Cc: Mark Brown <broonie@kernel.org>,
-        Ludovic Barre <ludovic.barre@st.com>, kbuild-all@01.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: kbuild test robot <lkp@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190316073341.GA132987@lkp-hsx03>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: pxa2xx: Introduce DMA burst size support" to the spi
+ tree
+Date: Wed, 20 Mar 2019 17:30:02 +0000 (GMT)
+Message-ID: <20190320173002.5A3A91126E4C@debutante.sirena.org.uk>
+References: <20190319154843.74684-2-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190319154843.74684-2-andriy.shevchenko@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: stm32-qspi: stm32_qspi_pm_ops can be static
+   spi: pxa2xx: Introduce DMA burst size support
 
 has been applied to the spi tree at
 
@@ -44,30 +52,99 @@ to this mail.
 Thanks,
 Mark
 
->From 43a8d240eee4f523c7120f47a4c9469f5abfb308 Mon Sep 17 00:00:00 2001
-From: kbuild test robot <lkp@intel.com>
-Date: Sat, 16 Mar 2019 15:33:41 +0800
-Subject: [PATCH] spi: spi-mem: stm32-qspi: stm32_qspi_pm_ops can be static
+>From 37821a82e6789eaaa81dd32a67edc3511ebfd5aa Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Tue, 19 Mar 2019 17:48:42 +0200
+Subject: [PATCH] spi: pxa2xx: Introduce DMA burst size support
 
-Fixes: 2e541b64ee52 ("spi: spi-mem: stm32-qspi: add suspend/resume support")
-Signed-off-by: kbuild test robot <lkp@intel.com>
+Some masters may have different DMA burst size than hard coded default.
+In such case respect the value given by DMA burst size provided via
+platform data.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx-dma.c   | 4 +++-
+ drivers/spi/spi-pxa2xx-pci.c   | 4 ++++
+ drivers/spi/spi-pxa2xx.c       | 1 +
+ include/linux/spi/pxa2xx_spi.h | 1 +
+ 4 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 3e8ca10011cc..7879a523583c 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -517,7 +517,7 @@ static int __maybe_unused stm32_qspi_resume(struct device *dev)
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 15592598273e..e5c26c1779ab 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -239,13 +239,15 @@ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 					   u32 *threshold)
+ {
+ 	struct pxa2xx_spi_chip *chip_info = spi->controller_data;
++	struct driver_data *drv_data = spi_controller_get_devdata(spi->controller);
++	u32 dma_burst_size = drv_data->controller_info->dma_burst_size;
+ 
+ 	/*
+ 	 * If the DMA burst size is given in chip_info we use that,
+ 	 * otherwise we use the default. Also we use the default FIFO
+ 	 * thresholds for now.
+ 	 */
+-	*burst_code = chip_info ? chip_info->dma_burst_size : 1;
++	*burst_code = chip_info ? chip_info->dma_burst_size : dma_burst_size;
+ 	*threshold = SSCR1_RxTresh(RX_THRESH_DFLT)
+ 		   | SSCR1_TxTresh(TX_THRESH_DFLT);
+ 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 4b162fdca35f..d456c5251b5d 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -34,6 +34,8 @@ struct pxa_spi_info {
+ 	void *tx_param;
+ 	void *rx_param;
+ 
++	int dma_burst_size;
++
+ 	int (*setup)(struct pci_dev *pdev, struct pxa_spi_info *c);
+ };
+ 
+@@ -132,6 +134,7 @@ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
+ 	rx->dma_dev = &dma_dev->dev;
+ 
+ 	c->dma_filter = lpss_dma_filter;
++	c->dma_burst_size = 8;
  	return 0;
  }
  
--SIMPLE_DEV_PM_OPS(stm32_qspi_pm_ops, stm32_qspi_suspend, stm32_qspi_resume);
-+static SIMPLE_DEV_PM_OPS(stm32_qspi_pm_ops, stm32_qspi_suspend, stm32_qspi_resume);
+@@ -222,6 +225,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	spi_pdata.tx_param = c->tx_param;
+ 	spi_pdata.rx_param = c->rx_param;
+ 	spi_pdata.enable_dma = c->rx_param && c->tx_param;
++	spi_pdata.dma_burst_size = c->dma_burst_size ? c->dma_burst_size : 1;
  
- static const struct of_device_id stm32_qspi_match[] = {
- 	{.compatible = "st,stm32f469-qspi"},
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index b6ddba833d02..461c6b796b8f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1564,6 +1564,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+ 	pdata->num_chipselect = 1;
+ 	pdata->enable_dma = true;
++	pdata->dma_burst_size = 1;
+ 
+ 	return pdata;
+ }
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index c1c59473cef9..6005f0126631 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -25,6 +25,7 @@ struct dma_chan;
+ struct pxa2xx_spi_controller {
+ 	u16 num_chipselect;
+ 	u8 enable_dma;
++	u8 dma_burst_size;
+ 	bool is_slave;
+ 
+ 	/* DMA engine specific config */
 -- 
 2.20.1

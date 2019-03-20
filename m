@@ -1,20 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mxic: simplify getting .driver_data" to the spi tree
-Date: Wed, 20 Mar 2019 17:30:12 +0000 (GMT)
-Message-ID: <20190320173012.1F8EF1126E4C@debutante.sirena.org.uk>
-References: <20190319163637.30949-1-wsa+renesas@sang-engineering.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Applied "dt-bindings: snps,dw-apb-ssi: Add mandatory clock bindings documentation" to the spi tree
+Date: Wed, 20 Mar 2019 17:30:09 +0000 (GMT)
+Message-ID: <20190320173009.E92E61126E4C@debutante.sirena.org.uk>
+References: <1553010727-23157-2-git-send-email-gareth.williams.jx@renesas.com>
+Cc: Gareth Williams <gareth.williams.jx@renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gareth Williams <gareth.williams.jx@renesas.com>,
+        linux-spi@vger.kernel.org
+To: Phil Edworthy <phil.edworthy@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190319163637.30949-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <1553010727-23157-2-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: mxic: simplify getting .driver_data
+   dt-bindings: snps,dw-apb-ssi: Add mandatory clock bindings documentation
 
 has been applied to the spi tree at
 
@@ -39,43 +44,46 @@ to this mail.
 Thanks,
 Mark
 
->From f457cb707836e79a88b64ab22230edc2aa8ce0af Mon Sep 17 00:00:00 2001
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Date: Tue, 19 Mar 2019 17:36:37 +0100
-Subject: [PATCH] spi: mxic: simplify getting .driver_data
+>From 57a9f6e7eefa697349ff4823f178fd56abe27345 Mon Sep 17 00:00:00 2001
+From: Phil Edworthy <phil.edworthy@renesas.com>
+Date: Tue, 19 Mar 2019 15:52:05 +0000
+Subject: [PATCH] dt-bindings: snps,dw-apb-ssi: Add mandatory clock bindings
+ documentation
 
-We should get 'driver_data' from 'struct device' directly. Going via
-platform_device is an unneeded step back and forth.
+The Synopsys SSI driver uses a mandatory clock that is not documented,
+so detail it in the device tree bindings. Also correct the spelling of
+"pins" in the "Optional Properties" section for the driver.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mxic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index e41ae6ef0f8a..f48563c09b97 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -492,8 +492,7 @@ static int mxic_spi_transfer_one(struct spi_master *master,
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+index 2864bc6b659c..bcd8f960afb9 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+@@ -8,9 +8,10 @@ Required properties:
+ - interrupts : One interrupt, used by the controller.
+ - #address-cells : <1>, as required by generic SPI binding.
+ - #size-cells : <0>, also as required by generic SPI binding.
++- clocks : phandle for the core clock used to generate the external SPI clock.
  
- static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 
- 	mxic_spi_clk_disable(mxic);
-@@ -504,8 +503,7 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- 
- static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
- {
--	struct platform_device *pdev = to_platform_device(dev);
--	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 	int ret;
- 
+ Optional properties:
+-- cs-gpios : Specifies the gpio pis to be used for chipselects.
++- cs-gpios : Specifies the gpio pins to be used for chipselects.
+ - num-cs : The number of chipselects. If omitted, this will default to 4.
+ - reg-io-width : The I/O register width (in bytes) implemented by this
+   device.  Supported values are 2 or 4 (the default).
+@@ -25,6 +26,7 @@ Example:
+ 		interrupts = <0 154 4>;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
++		clocks = <&spi_m_clk>;
+ 		num-cs = <2>;
+ 		cs-gpios = <&gpio0 13 0>,
+ 			   <&gpio0 14 0>;
 -- 
 2.20.1

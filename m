@@ -1,23 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: export tracepoint symbols to modules" to the spi tree
-Date: Thu, 21 Mar 2019 15:07:36 +0000 (GMT)
-Message-ID: <20190321150736.910B511288EC@debutante.sirena.org.uk>
-References: <20190321124240.901884-1-arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: lpspi: fix dataloss when SS is inactivated between every words" to the spi tree
+Date: Thu, 21 Mar 2019 15:07:38 +0000 (GMT)
+Message-ID: <20190321150738.9683711288EC@debutante.sirena.org.uk>
+References: <20190321095720.14438-1-xiaoning.wang@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+To: Clark Wang <xiaoning.wang@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190321124240.901884-1-arnd@arndb.de>
+In-Reply-To: <20190321095720.14438-1-xiaoning.wang@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: export tracepoint symbols to modules
+   spi: lpspi: fix dataloss when SS is inactivated between every words
 
 has been applied to the spi tree at
 
@@ -42,40 +41,48 @@ to this mail.
 Thanks,
 Mark
 
->From ca1438dcb34c7fcad63b6ce14ea63a870b92a69b Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 21 Mar 2019 13:42:25 +0100
-Subject: [PATCH] spi: export tracepoint symbols to modules
+>From 69c8a9bcb03222ad3b949064ac05de463c7c9aa3 Mon Sep 17 00:00:00 2001
+From: Clark Wang <xiaoning.wang@nxp.com>
+Date: Thu, 21 Mar 2019 09:57:12 +0000
+Subject: [PATCH] spi: lpspi: fix dataloss when SS is inactivated between every
+ words
 
-The newly added tracepoints in the spi-mxs driver cause a link
-error when the driver is a loadable module:
+If we don't use CONT to keep SS activated or use DMA mode without
+cs-gpio, SS will be inactivated between every words. The word here
+means the data sent once which length can be set as 1/2/4 bytes.
 
-ERROR: "__tracepoint_spi_transfer_stop" [drivers/spi/spi-mxs.ko] undefined!
-ERROR: "__tracepoint_spi_transfer_start" [drivers/spi/spi-mxs.ko] undefined!
+In the isr function, we read the FSR_RXCOUNT just behind the
+fsl_lpspi_read_rx_fifo. This causes the value of FSR_RXCOUNT cannot
+reflect whether there is still data not sent timely. So do this
+judgement by FSR_TXCOUNT.
 
-I'm not quite sure where to put the export statements, but
-directly after the inclusion of the header seems as good as
-any other place.
-
-Fixes: f3fdea3af405 ("spi: mxs: add tracing to custom .transfer_one_message callback")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2be394d3bc59..bd2a424672df 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -36,6 +36,8 @@
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 391863914043..9e117c4635d8 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -62,7 +62,7 @@
+ #define CFGR1_PCSPOL	BIT(8)
+ #define CFGR1_NOSTALL	BIT(3)
+ #define CFGR1_MASTER	BIT(0)
+-#define FSR_RXCOUNT	(BIT(16)|BIT(17)|BIT(18))
++#define FSR_TXCOUNT	(0xFF)
+ #define RSR_RXEMPTY	BIT(1)
+ #define TCR_CPOL	BIT(31)
+ #define TCR_CPHA	BIT(30)
+@@ -452,7 +452,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	}
  
- #define CREATE_TRACE_POINTS
- #include <trace/events/spi.h>
-+EXPORT_TRACEPOINT_SYMBOL(spi_transfer_start);
-+EXPORT_TRACEPOINT_SYMBOL(spi_transfer_stop);
- 
- #include "internals.h"
- 
+ 	if (temp_SR & SR_MBF ||
+-	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_RXCOUNT) {
++	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+ 		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
+ 		return IRQ_HANDLED;
 -- 
 2.20.1

@@ -1,48 +1,126 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] spi: export tracepoint symbols to modules
-Date: Thu, 21 Mar 2019 16:49:24 +0100
-Message-ID: <20190321154924.e5naj2bpdxp7krjb@pengutronix.de>
-References: <20190321124240.901884-1-arnd@arndb.de>
+From: Stefan Roese <sr@denx.de>
+Subject: Re: [PATCH] spi: mt7621: Move SPI driver out of staging
+Date: Fri, 22 Mar 2019 15:02:54 +0100
+Message-ID: <2e3a6928-b086-920c-be6f-9f508af4dc5f@denx.de>
+References: <20190314115212.2396-1-sr@denx.de>
+ <20190321142550.GG5684@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie@kernel.org>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190321124240.901884-1-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: devel@driverdev.osuosl.org, Rob Herring <robh@kernel.org>,
+ Sankalp Negi <sankalpnegi2310@gmail.com>, John Crispin <john@phrozen.org>,
+ linux-spi@vger.kernel.org, Armando Miraglia <arma2ff0@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, NeilBrown <neil@brown.name>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <20190321142550.GG5684@sirena.org.uk>
+Content-Language: en-US
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 21, 2019 at 01:42:25PM +0100, Arnd Bergmann wrote:
-> The newly added tracepoints in the spi-mxs driver cause a link
-> error when the driver is a loadable module:
+On 21.03.19 15:25, Mark Brown wrote:
+> On Thu, Mar 14, 2019 at 12:52:12PM +0100, Stefan Roese wrote:
 > 
-> ERROR: "__tracepoint_spi_transfer_stop" [drivers/spi/spi-mxs.ko] undefined!
-> ERROR: "__tracepoint_spi_transfer_start" [drivers/spi/spi-mxs.ko] undefined!
+> This looks pretty good, a few trivial issues below but nothing major I
+> think.
 > 
-> I'm not quite sure where to put the export statements, but
-> directly after the inclusion of the header seems as good as
-> any other place.
-
-I agree it looks a bit ugly, but I don't have a better idea either.
+>> +config SPI_MT7621
+>> +	tristate "MediaTek MT7621 SPI Controller"
+>> +	depends on RALINK
+>> +	help
+>> +	  This selects a driver for the MediaTek MT7621 SPI Controller.
+>> +
 > 
-> Fixes: f3fdea3af405 ("spi: mxs: add tracing to custom .transfer_one_message callback")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> I'm not seeing any build time dependency on this, please add an ||
+> COMPILE_TEST to help with build testing.
 
-Looks right:
+Okay, will add in v2.
+  
+>> @@ -0,0 +1,422 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * spi-mt7621.c -- MediaTek MT7621 SPI controller driver
+>> + *
+> 
+> Please make the entire comment a C++ one to
 
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Will change in v2.
+  
+>> + * Some parts are based on spi-orion.c:
+>> + *   Author: Shadi Ammouri <shadi@marvell.com>
+>> + *   Copyright (C) 2007-2008 Marvell Ltd.
+> 
+> That driver dates from 2008 AFAICT, and had some changes after then?
 
-Thanks for finding and fixing that.
+The spi-orion driver? I didn't check. That's what in the header of
+this driver since quite some time. And I didn't want to change any
+copyright notices.
 
-Best regards
-Uwe
+BTW: spi-orion still has the same copyright message.
+  
+>> +static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
+>> +{
+>> +	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
+>> +	int cs = spi->chip_select;
+>> +	u32 polar = 0;
+>> +
+>> +	mt7621_spi_reset(rs);
+>> +	if (enable)
+>> +		polar = BIT(cs);
+>> +	mt7621_spi_write(rs, MT7621_SPI_POLAR, polar);
+>> +}
+> 
+> Will doing a reset mess up the rate configuration and stuff that's done
+> in _prepare(), or is _reset() perhaps not an entirely accurate name?
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+You are correct. The function name is not really matching its
+implementation. Will change in v2.
+  
+>> +	list_for_each_entry(t, &m->transfers, transfer_list)
+>> +		if (t->speed_hz < speed)
+>> +			speed = t->speed_hz;
+> 
+> This should be in the core if it's needed, it's going to be the same for
+> all drivers.
+
+I'm not sure here, other drivers might set the speed individually for
+each "spi_transfer" entry. In this driver its set only once: before
+beginning to transfer all entries. So should I really move this into
+the core and set all speed_hz values to the minimum one of the list?
+  
+>> +	master->setup = mt7621_spi_setup;
+>> +	master->transfer_one_message = mt7621_spi_transfer_one_message;
+>> +	master->bits_per_word_mask = SPI_BPW_MASK(8);
+>> +	master->dev.of_node = pdev->dev.of_node;
+>> +	master->num_chipselect = 2;
+> 
+> The driver should set SPI_CONTROLLER_HALF_DUPLEX in flags.
+
+Will update in v2.
+  
+>> +	clk_disable(rs->clk);
+> 
+> This needs to be clk_disable_unprepare() to ensure the clock is
+> unprepared as well as disabled.
+
+Okay, will change in v2.
+  
+>> +	spi_unregister_master(master);
+> 
+> Just use devm_spi_register_controller()?  The _master() name is legacy
+> and devm_ would make life easier.
+
+Yes, will change in v2.
+
+Thanks for the review.
+
+Thanks,
+Stefan

@@ -1,65 +1,77 @@
-From: Fabien Parent <fparent@baylibre.com>
-Subject: Re: [PATCH 09/24] mmc: mtk-sd: check for valid optional memory resource
-Date: Sun, 24 Mar 2019 16:18:45 +0100
-Message-ID: <CAOwMV_zkHMZv8y_8C9kRCUsPtSbm+vPkJUNzU-_LK5=OhTkiPw@mail.gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-10-fparent@baylibre.com>
- <1553398466.26628.0.camel@mtksdaap41>
+From: kernel@martin.sperl.org
+Subject: [PATCH V2 0/9] spi: bcm2835aux: bug fixes and improvements
+Date: Sun, 24 Mar 2019 17:49:53 +0000
+Message-ID: <20190324175002.28969-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Matthias Brugger <matthias.bgg@gmail.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, ryder.lee@mediatek.com,
-        linux-watchdog@vger.kernel.org, jjian.zhou@mediatek.com,
-        wenzhen.yu@mediatek.com,
-        Stephane Le Provost <stephane.leprovost@mediatek.com>,
-        sean.wang@kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yong.mao@mediatek.com,
-        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, hsin-hsiung.wang@mediatek.com,
-        linux-serial@vger.kernel.org, linux-clk@vger.kernel.org,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        linux-i2c@vger.kernel.org
-To: Yingjoe Chen <yingjoe.chen@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553398466.26628.0.camel@mtksdaap41>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 24, 2019 at 4:34 AM Yingjoe Chen <yingjoe.chen@mediatek.com> wrote:
->
-> On Sat, 2019-03-23 at 22:15 +0100, Fabien Parent wrote:
-> > 'top_base' memory region is optional. Check that the resource is valid
-> > before using it. This avoid getting a "invalid resource" error message
-> > printed by the kernel.
-> >
-> > Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> > ---
-> >  drivers/mmc/host/mtk-sd.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-> > index 833ef0590af8..573aa127d00b 100644
-> > --- a/drivers/mmc/host/mtk-sd.c
-> > +++ b/drivers/mmc/host/mtk-sd.c
-> > @@ -2123,9 +2123,11 @@ static int msdc_drv_probe(struct platform_device *pdev)
-> >       }
-> >
-> >       res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> > -     host->top_base = devm_ioremap_resource(&pdev->dev, res);
-> > -     if (IS_ERR(host->top_base))
-> > -             host->top_base = NULL;
-> > +     if (ret) {
->
-> This should be res?
+From: Martin Sperl <kernel@martin.sperl.org>
 
-Indeed. Thanks, I will fix it in v2.
+Set of patches improving the spi-bcm2835aux driver and fixing
+a data read corruption bug.
 
-> > +             host->top_base = devm_ioremap_resource(&pdev->dev, res);
-> > +             if (IS_ERR(host->top_base))
-> > +                     host->top_base = NULL;
-> > +     }
-> >
-> >       ret = mmc_regulator_get_supply(mmc);
-> >       if (ret)
->
->
+The main motivation is a rare data corruption fix that is mostly
+observed in polling mode first reported by Hubert Denkmair.
+
+So this patchset first implements a means to control the parameters
+of when polling mode is used via module parameters and exports
+the corresponding statistics.
+
+As stated in original patch the driver does not support native CS.
+But when cs-gpios is not configured in the dt (so a buggy dt) it is
+still working with a lot of limitations, but the driver does not report
+this fact.
+
+So this patchset adds reporting and allows for a single native CS
+(with limited functionality) to continue working with a buggy DT.
+One question here remains: do we need to legacy support DTs
+that are not following specs in the first place?
+
+Then there is the real fix for the data-corruption which is split
+into 3 parts: some code cleanup with code reuse, removing "dangerous"
+fifo read (possibly introducing fifo data corruption) and safe fifo read.
+
+Also we remove some dead code.
+
+---
+Changelog:
+  V1 -> V2: reordering commits as per request of Stefan Wahren
+            to help backporting the "essential" bugfixes go in first
+	    remove the dependency on a different patchset focused on
+	    making cs_change delay configurable
+
+Martin Sperl (9):
+  spi: bcm2835aux: unifying code between polling and interrupt driven
+    code
+  spi: bcm2835aux: remove dangerous uncontrolled read of fifo
+  spi: bcm2835aux: use BCM2835_AUX_SPI_STAT_RX_LVL
+  spi: bcm2835aux: remove dead code
+  spi: bcm2835aux: fix driver to not allow 65535 (=-1) cs-gpios
+  spi: bcm2835aux: warn in dmesg that native cs is not really supported
+  spi: bcm2835aux: setup gpio-cs to output and correct level during
+    setup
+  spi: bcm2835aux: add driver stats to debugfs
+  spi: bcm2835aux: make the polling duration limits configurable
+
+ drivers/spi/spi-bcm2835aux.c | 207 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 150 insertions(+), 57 deletions(-)
+
+--
+2.11.0

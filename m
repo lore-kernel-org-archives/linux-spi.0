@@ -1,11 +1,12 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 8/9] spi: bcm2835aux: add driver stats to debugfs
-Date: Sun, 24 Mar 2019 17:50:01 +0000
-Message-ID: <20190324175002.28969-9-kernel@martin.sperl.org>
+Subject: [PATCH V2 9/9] spi: bcm2835aux: make the polling duration limits
+ configurable
+Date: Sun, 24 Mar 2019 17:50:02 +0000
+Message-ID: <20190324175002.28969-10-kernel@martin.sperl.org>
 References: <20190324175002.28969-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
  Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
  Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -23,131 +24,61 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-To estimate efficiency add statistics on transfer types
-(polling and interrupt) used to debugfs.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-bcm2835aux.c | 61 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
-
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index dd0446968da6..d2b58060b333 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -21,6 +21,7 @@
-
- #include <linux/clk.h>
- #include <linux/completion.h>
-+#include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
-@@ -102,8 +103,57 @@ struct bcm2835aux_spi {
- 	int tx_len;
- 	int rx_len;
- 	int pending;
-+
-+#if defined(CONFIG_DEBUG_FS)
-+#define BCM2835_AUX_INCR(field) ((field)++)
-+	u64 count_transfer_polling;
-+	u64 count_transfer_irq;
-+	u64 count_transfer_irq_after_poll;
-+
-+	struct dentry *debugfs_dir;
-+#else
-+#define BCM2835_AUX_INCR(field)
-+#endif /* CONFIG_DEBUG_FS */
- };
-
-+#if defined(CONFIG_DEBUG_FS)
-+static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs,
-+				      const char *dname)
-+{
-+	char name[64];
-+	struct dentry *dir;
-+
-+	/* get full name */
-+	snprintf(name, sizeof(name), "spi-bcm2835aux-%s", dname);
-+
-+	/* the base directory */
-+	dir = debugfs_create_dir(name, NULL);
-+	bs->debugfs_dir = dir;
-+
-+	/* the counters */
-+	debugfs_create_u64("count_transfer_polling", 0444, dir,
-+			   &bs->count_transfer_polling);
-+	debugfs_create_u64("count_transfer_irq", 0444, dir,
-+			   &bs->count_transfer_irq);
-+	debugfs_create_u64("count_transfer_irq_after_poll", 0444, dir,
-+			   &bs->count_transfer_irq_after_poll);
-+}
-+
-+static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
-+{
-+	debugfs_remove_recursive(bs->debugfs_dir);
-+	bs->debugfs_dir = NULL;
-+}
-+#else
-+static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
-+{
-+}
-+
-+static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
-+{
-+}
-+#endif /* CONFIG_DEBUG_FS */
-+
- static inline u32 bcm2835aux_rd(struct bcm2835aux_spi *bs, unsigned reg)
- {
- 	return readl(bs->regs + reg);
-@@ -242,6 +292,9 @@ static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
- {
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-
-+	/* update statistics */
-+	BCM2835_AUX_INCR(bs->count_transfer_irq);
-+
- 	/* fill in registers and fifos before enabling interrupts */
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
-@@ -265,6 +318,9 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
-
-+	/* update statistics */
-+	BCM2835_AUX_INCR(bs->count_transfer_polling);
-+
- 	/* configure spi */
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
-@@ -285,6 +341,7 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
- 					    jiffies - timeout,
- 					    bs->tx_len, bs->rx_len);
- 			/* forward to interrupt handler */
-+			BCM2835_AUX_INCR(bs->count_transfer_irq_after_poll);
- 			return __bcm2835aux_spi_transfer_one_irq(master,
- 							       spi, tfr);
- 		}
-@@ -531,6 +588,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
- 	}
-
-+	bcm2835aux_debugfs_create(bs, dev_name(&pdev->dev));
-+
- 	return 0;
-
- out_clk_disable:
-@@ -545,6 +604,8 @@ static int bcm2835aux_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-
-+	bcm2835aux_debugfs_remove(bs);
-+
- 	bcm2835aux_spi_reset_hw(bs);
-
- 	/* disable the HW block by releasing the clock */
---
-2.11.0
+RnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNwZXJsLm9yZz4KClVuZGVyIHNvbWUg
+Y2lyY3Vtc3RhbmNlcyB0aGUgZGVmYXVsdCAzMCB1cyBwb2xsaW5nIGxpbWl0IGlzIG5vdCBvcHRp
+bWFsCmFuZCBtYXkgbGVhZCB0byBsb25nIGRlbGF5cyBiZWNhdXNlIHdlIGFyZSB3YWl0aW5nIG9u
+IGFuIGludGVycnVwdC4Kd2l0aCB0aGlzIHBhdGNoIHdlIGhhdmUgdGhlIHBvc3NpYmlsaXR5IHRv
+IGluZmx1ZW5jZSB0aGlzIHBvbGljeS4KClNvIG1ha2UgdGhpcyBsaW1pdCAoaW4gdXMpIGNvbmZp
+Z3VyYWJsZSB2aWEgYSBtb2R1bGUgcGFyYW1ldGVycwooYnV0IGFsc28gbW9kaWZ5YWJsZSB2aWEg
+L3N5cy9tb2R1bGVzLy4uLikKClNpZ25lZC1vZmYtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1h
+cnRpbi5zcGVybC5vcmc+CgotLS0KQ2hhbmdlbG9nOgogIFYxIC0+IFYyOiByZW1vdmUgdGhlIGRl
+cGVuZGVuY3kgb24gYSBkaWZmZXJlbnQgcGF0Y2hzZXQgZm9jdXNlZCBvbgoJICAgIG1ha2luZyBj
+c19jaGFuZ2UgZGVsYXkgY29uZmlndXJhYmxlCgotLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1
+YXV4LmMgfCAyNSArKysrKysrKysrKysrKy0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTQg
+aW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkv
+c3BpLWJjbTI4MzVhdXguYyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMKaW5kZXggZDJi
+NTgwNjBiMzMzLi5kZjA2NTEwODEyMmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1iY20y
+ODM1YXV4LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzVhdXguYwpAQCAtMzcsNiArMzcs
+MTIgQEAKICNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+CiAjaW5jbHVkZSA8bGludXgvc3Bpbmxv
+Y2suaD4KCisvKiBkZWZpbmUgcG9sbGluZyBsaW1pdHMgKi8KK3Vuc2lnbmVkIGludCBwb2xsaW5n
+X2xpbWl0X3VzID0gMzA7Cittb2R1bGVfcGFyYW0ocG9sbGluZ19saW1pdF91cywgdWludCwgMDY2
+NCk7CitNT0RVTEVfUEFSTV9ERVNDKHBvbGxpbmdfbGltaXRfdXMsCisJCSAidGltZSBpbiB1cyB0
+byBydW4gYSB0cmFuc2ZlciBpbiBwb2xsaW5nIG1vZGVcbiIpOworCiAvKgogICogc3BpIHJlZ2lz
+dGVyIGRlZmluZXMKICAqCkBAIC04OSwxMCArOTUsNiBAQAogI2RlZmluZSBCQ00yODM1X0FVWF9T
+UElfU1RBVF9CVVNZCTB4MDAwMDAwNDAKICNkZWZpbmUgQkNNMjgzNV9BVVhfU1BJX1NUQVRfQklU
+Q09VTlQJMHgwMDAwMDAzRgoKLS8qIHRpbWVvdXQgdmFsdWVzICovCi0jZGVmaW5lIEJDTTI4MzVf
+QVVYX1NQSV9QT0xMSU5HX0xJTUlUX1VTCTMwCi0jZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xM
+SU5HX0pJRkZJRVMJCTIKLQogc3RydWN0IGJjbTI4MzVhdXhfc3BpIHsKIAl2b2lkIF9faW9tZW0g
+KnJlZ3M7CiAJc3RydWN0IGNsayAqY2xrOwpAQCAtMzI1LDggKzMyNyw4IEBAIHN0YXRpYyBpbnQg
+YmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lX3BvbGwoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3Rl
+ciwKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1X0FVWF9TUElfQ05UTDEsIGJzLT5jbnRsWzFd
+KTsKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1X0FVWF9TUElfQ05UTDAsIGJzLT5jbnRsWzBd
+KTsKCi0JLyogc2V0IHRoZSB0aW1lb3V0ICovCi0JdGltZW91dCA9IGppZmZpZXMgKyBCQ00yODM1
+X0FVWF9TUElfUE9MTElOR19KSUZGSUVTOworCS8qIHNldCB0aGUgdGltZW91dCB0byBhdCBsZWFz
+dCAyIGppZmZpZXMgKi8KKwl0aW1lb3V0ID0gamlmZmllcyArIDIgKyBIWiAqIHBvbGxpbmdfbGlt
+aXRfdXMgLyAxMDAwMDAwOwoKIAkvKiBsb29wIHVudGlsIGZpbmlzaGVkIHRoZSB0cmFuc2ZlciAq
+LwogCXdoaWxlIChicy0+cnhfbGVuKSB7CkBAIC0zNTYsOCArMzU4LDggQEAgc3RhdGljIGludCBi
+Y20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmUoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAkJ
+CQkgICAgICAgc3RydWN0IHNwaV90cmFuc2ZlciAqdGZyKQogewogCXN0cnVjdCBiY20yODM1YXV4
+X3NwaSAqYnMgPSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7Ci0JdW5zaWduZWQgbG9u
+ZyBzcGlfaHosIGNsa19oeiwgc3BlZWQ7Ci0JdW5zaWduZWQgbG9uZyBzcGlfdXNlZF9oejsKKwl1
+bnNpZ25lZCBsb25nIHNwaV9oeiwgY2xrX2h6LCBzcGVlZCwgc3BpX3VzZWRfaHo7CisJdW5zaWdu
+ZWQgbG9uZyBoel9wZXJfYnl0ZSwgYnl0ZV9saW1pdDsKCiAJLyogY2FsY3VsYXRlIHRoZSByZWdp
+c3RlcnMgdG8gaGFuZGxlCiAJICoKQEAgLTQwMSwxNCArNDAzLDE1IEBAIHN0YXRpYyBpbnQgYmNt
+MjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIsCiAJICog
+b2YgSHogcGVyIGJ5dGUgcGVyIHBvbGxpbmcgbGltaXQuICBFLmcuLCB3ZSBjYW4gdHJhbnNmZXIg
+MSBieXRlIGluCiAJICogMzAgwrVzIHBlciAzMDAsMDAwIEh6IG9mIGJ1cyBjbG9jay4KIAkgKi8K
+LSNkZWZpbmUgSFpfUEVSX0JZVEUgKCg5ICogMTAwMDAwMCkgLyBCQ00yODM1X0FVWF9TUElfUE9M
+TElOR19MSU1JVF9VUykKKwloel9wZXJfYnl0ZSA9IHBvbGxpbmdfbGltaXRfdXMgPyAoOSAqIDEw
+MDAwMDApIC8gcG9sbGluZ19saW1pdF91cyA6IDA7CisJYnl0ZV9saW1pdCA9IGh6X3Blcl9ieXRl
+ID8gc3BpX3VzZWRfaHogLyBoel9wZXJfYnl0ZSA6IDE7CisKIAkvKiBydW4gaW4gcG9sbGluZyBt
+b2RlIGZvciBzaG9ydCB0cmFuc2ZlcnMgKi8KLQlpZiAodGZyLT5sZW4gPCBzcGlfdXNlZF9oeiAv
+IEhaX1BFUl9CWVRFKQorCWlmICh0ZnItPmxlbiA8IGJ5dGVfbGltaXQpCiAJCXJldHVybiBiY20y
+ODM1YXV4X3NwaV90cmFuc2Zlcl9vbmVfcG9sbChtYXN0ZXIsIHNwaSwgdGZyKTsKCiAJLyogcnVu
+IGluIGludGVycnVwdCBtb2RlIGZvciBhbGwgb3RoZXJzICovCiAJcmV0dXJuIGJjbTI4MzVhdXhf
+c3BpX3RyYW5zZmVyX29uZV9pcnEobWFzdGVyLCBzcGksIHRmcik7Ci0jdW5kZWYgSFpfUEVSX0JZ
+VEUKIH0KCiBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3ByZXBhcmVfbWVzc2FnZShzdHJ1Y3Qg
+c3BpX21hc3RlciAqbWFzdGVyLAotLQoyLjExLjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4
+LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1rZXJuZWwK

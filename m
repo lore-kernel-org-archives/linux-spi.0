@@ -1,8 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 7/9] spi: bcm2835aux: setup gpio-cs to output and correct
- level during setup
-Date: Sun, 24 Mar 2019 17:50:00 +0000
-Message-ID: <20190324175002.28969-8-kernel@martin.sperl.org>
+Subject: [PATCH V2 8/9] spi: bcm2835aux: add driver stats to debugfs
+Date: Sun, 24 Mar 2019 17:50:01 +0000
+Message-ID: <20190324175002.28969-9-kernel@martin.sperl.org>
 References: <20190324175002.28969-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,44 +25,129 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Setup gpio-cs to the correct levels during setup and also make the
-gpio definitely an output GPIO.
+To estimate efficiency add statistics on transfer types
+(polling and interrupt) used to debugfs.
 
-This is transparently fixing some badly configured DTs in the process
-where cs-gpio is set but the gpios are still configured with native cs.
-
-It also makes 100% sure that the initial CS levels are as expected -
-especially on systems with devices on a bus with mixed CS_HIGH/CS_LOW
-settings.
-
-Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm2835aux.c | 61 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 6af07dec5fdc..dd0446968da6 100644
+index dd0446968da6..d2b58060b333 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -425,7 +425,17 @@ static int bcm2835aux_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
+@@ -21,6 +21,7 @@
+
+ #include <linux/clk.h>
+ #include <linux/completion.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+@@ -102,8 +103,57 @@ struct bcm2835aux_spi {
+ 	int tx_len;
+ 	int rx_len;
+ 	int pending;
++
++#if defined(CONFIG_DEBUG_FS)
++#define BCM2835_AUX_INCR(field) ((field)++)
++	u64 count_transfer_polling;
++	u64 count_transfer_irq;
++	u64 count_transfer_irq_after_poll;
++
++	struct dentry *debugfs_dir;
++#else
++#define BCM2835_AUX_INCR(field)
++#endif /* CONFIG_DEBUG_FS */
+ };
+
++#if defined(CONFIG_DEBUG_FS)
++static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs,
++				      const char *dname)
++{
++	char name[64];
++	struct dentry *dir;
++
++	/* get full name */
++	snprintf(name, sizeof(name), "spi-bcm2835aux-%s", dname);
++
++	/* the base directory */
++	dir = debugfs_create_dir(name, NULL);
++	bs->debugfs_dir = dir;
++
++	/* the counters */
++	debugfs_create_u64("count_transfer_polling", 0444, dir,
++			   &bs->count_transfer_polling);
++	debugfs_create_u64("count_transfer_irq", 0444, dir,
++			   &bs->count_transfer_irq);
++	debugfs_create_u64("count_transfer_irq_after_poll", 0444, dir,
++			   &bs->count_transfer_irq_after_poll);
++}
++
++static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
++{
++	debugfs_remove_recursive(bs->debugfs_dir);
++	bs->debugfs_dir = NULL;
++}
++#else
++static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
++{
++}
++
++static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
++{
++}
++#endif /* CONFIG_DEBUG_FS */
++
+ static inline u32 bcm2835aux_rd(struct bcm2835aux_spi *bs, unsigned reg)
+ {
+ 	return readl(bs->regs + reg);
+@@ -242,6 +292,9 @@ static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+
++	/* update statistics */
++	BCM2835_AUX_INCR(bs->count_transfer_irq);
++
+ 	/* fill in registers and fifos before enabling interrupts */
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
+@@ -265,6 +318,9 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long timeout;
+
++	/* update statistics */
++	BCM2835_AUX_INCR(bs->count_transfer_polling);
++
+ 	/* configure spi */
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
+@@ -285,6 +341,7 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 					    jiffies - timeout,
+ 					    bs->tx_len, bs->rx_len);
+ 			/* forward to interrupt handler */
++			BCM2835_AUX_INCR(bs->count_transfer_irq_after_poll);
+ 			return __bcm2835aux_spi_transfer_one_irq(master,
+ 							       spi, tfr);
+ 		}
+@@ -531,6 +588,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
  	}
 
--	return 0;
-+	/* with gpio-cs set the GPIO to the correct level
-+	 * and as output (in case the dt has the gpio not configured
-+	 * as output but native cs)
-+	 */
-+	ret = gpio_direction_output(spi->cs_gpio,
-+				    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
-+	if (ret)
-+		dev_err(&spi->dev, "could not set gpio %i as output: %i\n",
-+			spi->cs_gpio, ret);
++	bcm2835aux_debugfs_create(bs, dev_name(&pdev->dev));
 +
-+	return ret;
- }
+ 	return 0;
 
- static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ out_clk_disable:
+@@ -545,6 +604,8 @@ static int bcm2835aux_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+
++	bcm2835aux_debugfs_remove(bs);
++
+ 	bcm2835aux_spi_reset_hw(bs);
+
+ 	/* disable the HW block by releasing the clock */
 --
 2.11.0

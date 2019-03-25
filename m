@@ -1,21 +1,20 @@
 From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH V2 9/9] spi: bcm2835aux: make the polling duration limits
- configurable
-Date: Mon, 25 Mar 2019 10:59:02 +0100
-Message-ID: <d08ce3d4-ec90-6981-bf39-1320a1643e6f@i2se.com>
+Subject: Re: [PATCH V2 8/9] spi: bcm2835aux: add driver stats to debugfs
+Date: Mon, 25 Mar 2019 11:06:56 +0100
+Message-ID: <719f7607-4941-04d3-c05a-c9797cccc8ec@i2se.com>
 References: <20190324175002.28969-1-kernel@martin.sperl.org>
- <20190324175002.28969-10-kernel@martin.sperl.org>
- <4da737f4-acf2-c70d-59cd-0efdf2ec21d4@i2se.com>
- <63AAA1F6-25FB-4C58-9F9B-9377E94CB3B2@martin.sperl.org>
+ <20190324175002.28969-9-kernel@martin.sperl.org>
+ <c2601fdb-3a5d-0a6c-eaea-54a332ec2027@i2se.com>
+ <5AE813DD-9A2F-453D-B334-997FCEF72C31@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
  Mark Brown <broonie@kernel.org>, linux-rpi-kernel@lists.infradead.org,
  Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
 To: kernel@martin.sperl.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <63AAA1F6-25FB-4C58-9F9B-9377E94CB3B2@martin.sperl.org>
+In-Reply-To: <5AE813DD-9A2F-453D-B334-997FCEF72C31@martin.sperl.org>
 Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -28,28 +27,21 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 25.03.19 um 10:49 schrieb kernel@martin.sperl.org:
->> On 25.03.2019, at 10:44, Stefan Wahren <stefan.wahren@i2se.com> wrote:
->>
->> Hi Martin,
->>
->> Am 24.03.19 um 18:50 schrieb kernel@martin.sperl.org:
->>> From: Martin Sperl <kernel@martin.sperl.org>
->>>
->>> +/* define polling limits */
->>> +unsigned int polling_limit_us = 30;
->>> +module_param(polling_limit_us, uint, 0664);
->>> +MODULE_PARM_DESC(polling_limit_us,
->>> +		 "time in us to run a transfer in polling mode\n");
->>> +
->> could you please document the case polling_limit_us = 0 ?
-> Means no polling under any circumstances - I can add it as a comment in V3.
-I meant the parameter description, because users shouldn't be forced to
-look at the source code.
->
-> martin
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+QW0gMjUuMDMuMTkgdW0gMTA6NTIgc2NocmllYiBrZXJuZWxAbWFydGluLnNwZXJsLm9yZzoKPj4g
+T24gMjUuMDMuMjAxOSwgYXQgMTA6MjgsIFN0ZWZhbiBXYWhyZW4gPHN0ZWZhbi53YWhyZW5AaTJz
+ZS5jb20+IHdyb3RlOgo+Pgo+PiBIaSBNYXJ0aW4sCj4+Cj4+IEFtIDI0LjAzLjE5IHVtIDE4OjUw
+IHNjaHJpZWIga2VybmVsQG1hcnRpbi5zcGVybC5vcmc6Cj4+PiArCj4+PiArI2lmIGRlZmluZWQo
+Q09ORklHX0RFQlVHX0ZTKQo+Pj4gKyNkZWZpbmUgQkNNMjgzNV9BVVhfSU5DUihmaWVsZCkgKChm
+aWVsZCkrKykKPj4+ICsJdTY0IGNvdW50X3RyYW5zZmVyX3BvbGxpbmc7Cj4+PiArCXU2NCBjb3Vu
+dF90cmFuc2Zlcl9pcnE7Cj4+PiArCXU2NCBjb3VudF90cmFuc2Zlcl9pcnFfYWZ0ZXJfcG9sbDsK
+Pj4+ICsKPj4+ICsJc3RydWN0IGRlbnRyeSAqZGVidWdmc19kaXI7Cj4+PiArI2Vsc2UKPj4+ICsj
+ZGVmaW5lIEJDTTI4MzVfQVVYX0lOQ1IoZmllbGQpCj4+PiArI2VuZGlmIC8qIENPTkZJR19ERUJV
+R19GUyAqLwo+Pj4gfTsKPj4+Cj4+IGlzIHRoZXJlIGEgY2hhbmNlIHRvIGF2b2lkIHRoZXNlIGlm
+ZGVmcyBDT05GSUdfREVCVUdfRlM/Cj4+Cj4gVGhlIGlkZWEgd2FzIG5vdCB0byBhZGQgdGhvc2Ug
+c3RhdHMgYXQgYWxsIHdoZW4gZGVidWdmcyBpcyBkaXNhYmxlZC4KPiBPdGhlciBncm91cHMgKGUu
+ZyBuZXQvY2FuKSBwcmVmZXIgaXQgdGhpcyB3YXnigKYKClllcywgdGhpcyBpcyBhbHdheXMgYSBi
+YWxhbmNlIGJldHdlZW4gc2l6ZSByZWR1Y3Rpb24gYW5kIGNvZGUgcmVhZGFiaWxpdHkuCgpNeSBi
+aWdnZXN0IGNvbmNlcm4gd2FzIGFib3V0IEJDTTI4MzVfQVVYX0lOQ1IKCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxp
+bmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

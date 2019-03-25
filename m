@@ -1,84 +1,1052 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 9/9] spi: bcm2835aux: make the polling duration limits
- configurable
-Date: Sun, 24 Mar 2019 17:50:02 +0000
-Message-ID: <20190324175002.28969-10-kernel@martin.sperl.org>
-References: <20190324175002.28969-1-kernel@martin.sperl.org>
+From: Stefan Roese <sr@denx.de>
+Subject: [PATCH v2] spi: mt7621: Move SPI driver out of staging
+Date: Mon, 25 Mar 2019 09:29:25 +0100
+Message-ID: <20190325082925.14837-1-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
- Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
- Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190324175002.28969-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh@kernel.org>, Sankalp Negi <sankalpnegi2310@gmail.com>,
+ John Crispin <john@phrozen.org>, Armando Miraglia <arma2ff0@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, NeilBrown <neil@brown.name>
+To: linux-spi@vger.kernel.org,
+	devel@driverdev.osuosl.org
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNwZXJsLm9yZz4KClVuZGVyIHNvbWUg
-Y2lyY3Vtc3RhbmNlcyB0aGUgZGVmYXVsdCAzMCB1cyBwb2xsaW5nIGxpbWl0IGlzIG5vdCBvcHRp
-bWFsCmFuZCBtYXkgbGVhZCB0byBsb25nIGRlbGF5cyBiZWNhdXNlIHdlIGFyZSB3YWl0aW5nIG9u
-IGFuIGludGVycnVwdC4Kd2l0aCB0aGlzIHBhdGNoIHdlIGhhdmUgdGhlIHBvc3NpYmlsaXR5IHRv
-IGluZmx1ZW5jZSB0aGlzIHBvbGljeS4KClNvIG1ha2UgdGhpcyBsaW1pdCAoaW4gdXMpIGNvbmZp
-Z3VyYWJsZSB2aWEgYSBtb2R1bGUgcGFyYW1ldGVycwooYnV0IGFsc28gbW9kaWZ5YWJsZSB2aWEg
-L3N5cy9tb2R1bGVzLy4uLikKClNpZ25lZC1vZmYtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1h
-cnRpbi5zcGVybC5vcmc+CgotLS0KQ2hhbmdlbG9nOgogIFYxIC0+IFYyOiByZW1vdmUgdGhlIGRl
-cGVuZGVuY3kgb24gYSBkaWZmZXJlbnQgcGF0Y2hzZXQgZm9jdXNlZCBvbgoJICAgIG1ha2luZyBj
-c19jaGFuZ2UgZGVsYXkgY29uZmlndXJhYmxlCgotLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1
-YXV4LmMgfCAyNSArKysrKysrKysrKysrKy0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTQg
-aW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkv
-c3BpLWJjbTI4MzVhdXguYyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMKaW5kZXggZDJi
-NTgwNjBiMzMzLi5kZjA2NTEwODEyMmIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1iY20y
-ODM1YXV4LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzVhdXguYwpAQCAtMzcsNiArMzcs
-MTIgQEAKICNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+CiAjaW5jbHVkZSA8bGludXgvc3Bpbmxv
-Y2suaD4KCisvKiBkZWZpbmUgcG9sbGluZyBsaW1pdHMgKi8KK3Vuc2lnbmVkIGludCBwb2xsaW5n
-X2xpbWl0X3VzID0gMzA7Cittb2R1bGVfcGFyYW0ocG9sbGluZ19saW1pdF91cywgdWludCwgMDY2
-NCk7CitNT0RVTEVfUEFSTV9ERVNDKHBvbGxpbmdfbGltaXRfdXMsCisJCSAidGltZSBpbiB1cyB0
-byBydW4gYSB0cmFuc2ZlciBpbiBwb2xsaW5nIG1vZGVcbiIpOworCiAvKgogICogc3BpIHJlZ2lz
-dGVyIGRlZmluZXMKICAqCkBAIC04OSwxMCArOTUsNiBAQAogI2RlZmluZSBCQ00yODM1X0FVWF9T
-UElfU1RBVF9CVVNZCTB4MDAwMDAwNDAKICNkZWZpbmUgQkNNMjgzNV9BVVhfU1BJX1NUQVRfQklU
-Q09VTlQJMHgwMDAwMDAzRgoKLS8qIHRpbWVvdXQgdmFsdWVzICovCi0jZGVmaW5lIEJDTTI4MzVf
-QVVYX1NQSV9QT0xMSU5HX0xJTUlUX1VTCTMwCi0jZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xM
-SU5HX0pJRkZJRVMJCTIKLQogc3RydWN0IGJjbTI4MzVhdXhfc3BpIHsKIAl2b2lkIF9faW9tZW0g
-KnJlZ3M7CiAJc3RydWN0IGNsayAqY2xrOwpAQCAtMzI1LDggKzMyNyw4IEBAIHN0YXRpYyBpbnQg
-YmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lX3BvbGwoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3Rl
-ciwKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1X0FVWF9TUElfQ05UTDEsIGJzLT5jbnRsWzFd
-KTsKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1X0FVWF9TUElfQ05UTDAsIGJzLT5jbnRsWzBd
-KTsKCi0JLyogc2V0IHRoZSB0aW1lb3V0ICovCi0JdGltZW91dCA9IGppZmZpZXMgKyBCQ00yODM1
-X0FVWF9TUElfUE9MTElOR19KSUZGSUVTOworCS8qIHNldCB0aGUgdGltZW91dCB0byBhdCBsZWFz
-dCAyIGppZmZpZXMgKi8KKwl0aW1lb3V0ID0gamlmZmllcyArIDIgKyBIWiAqIHBvbGxpbmdfbGlt
-aXRfdXMgLyAxMDAwMDAwOwoKIAkvKiBsb29wIHVudGlsIGZpbmlzaGVkIHRoZSB0cmFuc2ZlciAq
-LwogCXdoaWxlIChicy0+cnhfbGVuKSB7CkBAIC0zNTYsOCArMzU4LDggQEAgc3RhdGljIGludCBi
-Y20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmUoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAkJ
-CQkgICAgICAgc3RydWN0IHNwaV90cmFuc2ZlciAqdGZyKQogewogCXN0cnVjdCBiY20yODM1YXV4
-X3NwaSAqYnMgPSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7Ci0JdW5zaWduZWQgbG9u
-ZyBzcGlfaHosIGNsa19oeiwgc3BlZWQ7Ci0JdW5zaWduZWQgbG9uZyBzcGlfdXNlZF9oejsKKwl1
-bnNpZ25lZCBsb25nIHNwaV9oeiwgY2xrX2h6LCBzcGVlZCwgc3BpX3VzZWRfaHo7CisJdW5zaWdu
-ZWQgbG9uZyBoel9wZXJfYnl0ZSwgYnl0ZV9saW1pdDsKCiAJLyogY2FsY3VsYXRlIHRoZSByZWdp
-c3RlcnMgdG8gaGFuZGxlCiAJICoKQEAgLTQwMSwxNCArNDAzLDE1IEBAIHN0YXRpYyBpbnQgYmNt
-MjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIsCiAJICog
-b2YgSHogcGVyIGJ5dGUgcGVyIHBvbGxpbmcgbGltaXQuICBFLmcuLCB3ZSBjYW4gdHJhbnNmZXIg
-MSBieXRlIGluCiAJICogMzAgwrVzIHBlciAzMDAsMDAwIEh6IG9mIGJ1cyBjbG9jay4KIAkgKi8K
-LSNkZWZpbmUgSFpfUEVSX0JZVEUgKCg5ICogMTAwMDAwMCkgLyBCQ00yODM1X0FVWF9TUElfUE9M
-TElOR19MSU1JVF9VUykKKwloel9wZXJfYnl0ZSA9IHBvbGxpbmdfbGltaXRfdXMgPyAoOSAqIDEw
-MDAwMDApIC8gcG9sbGluZ19saW1pdF91cyA6IDA7CisJYnl0ZV9saW1pdCA9IGh6X3Blcl9ieXRl
-ID8gc3BpX3VzZWRfaHogLyBoel9wZXJfYnl0ZSA6IDE7CisKIAkvKiBydW4gaW4gcG9sbGluZyBt
-b2RlIGZvciBzaG9ydCB0cmFuc2ZlcnMgKi8KLQlpZiAodGZyLT5sZW4gPCBzcGlfdXNlZF9oeiAv
-IEhaX1BFUl9CWVRFKQorCWlmICh0ZnItPmxlbiA8IGJ5dGVfbGltaXQpCiAJCXJldHVybiBiY20y
-ODM1YXV4X3NwaV90cmFuc2Zlcl9vbmVfcG9sbChtYXN0ZXIsIHNwaSwgdGZyKTsKCiAJLyogcnVu
-IGluIGludGVycnVwdCBtb2RlIGZvciBhbGwgb3RoZXJzICovCiAJcmV0dXJuIGJjbTI4MzVhdXhf
-c3BpX3RyYW5zZmVyX29uZV9pcnEobWFzdGVyLCBzcGksIHRmcik7Ci0jdW5kZWYgSFpfUEVSX0JZ
-VEUKIH0KCiBzdGF0aWMgaW50IGJjbTI4MzVhdXhfc3BpX3ByZXBhcmVfbWVzc2FnZShzdHJ1Y3Qg
-c3BpX21hc3RlciAqbWFzdGVyLAotLQoyLjExLjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4
-LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1rZXJuZWwK
+This patch moves the MT7621 SPI driver, which is used on some Ralink /
+MediaTek MT76xx MIPS SoC's, out of the staging directory. No changes to
+the source code are done in this patch.
+
+This driver version was tested successfully on an MT7688 based platform
+with an SPI NOR on CS0 and an SPI NAND on CS1 without any issues (so
+far).
+
+This patch also documents the devicetree bindings for the MT7621 SPI
+device driver.
+
+Signed-off-by: Stefan Roese <sr@denx.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: NeilBrown <neil@brown.name>
+Cc: Sankalp Negi <sankalpnegi2310@gmail.com>
+Cc: Chuanhong Guo <gch981213@gmail.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Armando Miraglia <arma2ff0@gmail.com>
+---
+v2:
+- Add COMPILE_TEST in Kconfig entry
+- Header comment style changed to C++ style
+- Removed mt7621_spi_reset() as its name was misleading. Its content
+  is now inlined in mt7621_spi_set_cs() and the superfluous call from
+  mt7621_spi_probe() is removed
+- Set SPI_CONTROLLER_HALF_DUPLEX in flags
+- Use clk_disable_unprepare() instead of clk_disable()
+- Use devm_spi_register_controller() instead of spi_register_master()
+  (spi_unregister_master() removed)
+- General move to xxx_controller() API from the deprecated xxx_master()
+  API
+- Minor cosmetic coding style changes (add empty lines, fix comment
+  style)
+
+ .../devicetree/bindings/spi/spi-mt7621.txt    |  26 ++
+ drivers/spi/Kconfig                           |   6 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-mt7621.c                      | 421 +++++++++++++++++
+ drivers/staging/Kconfig                       |   2 -
+ drivers/staging/Makefile                      |   1 -
+ drivers/staging/mt7621-spi/Kconfig            |   6 -
+ drivers/staging/mt7621-spi/Makefile           |   1 -
+ drivers/staging/mt7621-spi/TODO               |   5 -
+ drivers/staging/mt7621-spi/spi-mt7621.c       | 422 ------------------
+ 10 files changed, 454 insertions(+), 437 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mt7621.txt
+ create mode 100644 drivers/spi/spi-mt7621.c
+ delete mode 100644 drivers/staging/mt7621-spi/Kconfig
+ delete mode 100644 drivers/staging/mt7621-spi/Makefile
+ delete mode 100644 drivers/staging/mt7621-spi/TODO
+ delete mode 100644 drivers/staging/mt7621-spi/spi-mt7621.c
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt7621.txt b/Documentation/devicetree/bindings/spi/spi-mt7621.txt
+new file mode 100644
+index 000000000000..d5baec0fa56e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-mt7621.txt
+@@ -0,0 +1,26 @@
++Binding for MTK SPI controller (MT7621 MIPS)
++
++Required properties:
++- compatible: Should be one of the following:
++  - "ralink,mt7621-spi": for mt7621/mt7628/mt7688 platforms
++- #address-cells: should be 1.
++- #size-cells: should be 0.
++- reg: Address and length of the register set for the device
++- resets: phandle to the reset controller asserting this device in
++          reset
++  See ../reset/reset.txt for details.
++
++Optional properties:
++- cs-gpios: see spi-bus.txt.
++
++Example:
++
++- SoC Specific Portion:
++spi0: spi@b00 {
++	compatible = "ralink,mt7621-spi";
++	reg = <0xb00 0x100>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	resets = <&rstctrl 18>;
++	reset-names = "spi";
++};
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index f761655e2a36..8ce4f7df0ef2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -426,6 +426,12 @@ config SPI_MT65XX
+ 	  say Y or M here.If you are not sure, say N.
+ 	  SPI drivers for Mediatek MT65XX and MT81XX series ARM SoCs.
+ 
++config SPI_MT7621
++	tristate "MediaTek MT7621 SPI Controller"
++	depends on RALINK || COMPILE_TEST
++	help
++	  This selects a driver for the MediaTek MT7621 SPI Controller.
++
+ config SPI_NPCM_PSPI
+ 	tristate "Nuvoton NPCM PSPI Controller"
+ 	depends on ARCH_NPCM || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index d8fc03c9faa2..369f29a8a6af 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -60,6 +60,7 @@ obj-$(CONFIG_SPI_MPC512x_PSC)		+= spi-mpc512x-psc.o
+ obj-$(CONFIG_SPI_MPC52xx_PSC)		+= spi-mpc52xx-psc.o
+ obj-$(CONFIG_SPI_MPC52xx)		+= spi-mpc52xx.o
+ obj-$(CONFIG_SPI_MT65XX)                += spi-mt65xx.o
++obj-$(CONFIG_SPI_MT7621)		+= spi-mt7621.o
+ obj-$(CONFIG_SPI_MXIC)			+= spi-mxic.o
+ obj-$(CONFIG_SPI_MXS)			+= spi-mxs.o
+ obj-$(CONFIG_SPI_NPCM_PSPI)		+= spi-npcm-pspi.o
+diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
+new file mode 100644
+index 000000000000..ae836114ee3d
+--- /dev/null
++++ b/drivers/spi/spi-mt7621.c
+@@ -0,0 +1,421 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// spi-mt7621.c -- MediaTek MT7621 SPI controller driver
++//
++// Copyright (C) 2011 Sergiy <piratfm@gmail.com>
++// Copyright (C) 2011-2013 Gabor Juhos <juhosg@openwrt.org>
++// Copyright (C) 2014-2015 Felix Fietkau <nbd@nbd.name>
++//
++// Some parts are based on spi-orion.c:
++//   Author: Shadi Ammouri <shadi@marvell.com>
++//   Copyright (C) 2007-2008 Marvell Ltd.
++
++#include <linux/clk.h>
++#include <linux/delay.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/of_device.h>
++#include <linux/reset.h>
++#include <linux/spi/spi.h>
++
++#define DRIVER_NAME		"spi-mt7621"
++
++/* in usec */
++#define RALINK_SPI_WAIT_MAX_LOOP 2000
++
++/* SPISTAT register bit field */
++#define SPISTAT_BUSY		BIT(0)
++
++#define MT7621_SPI_TRANS	0x00
++#define SPITRANS_BUSY		BIT(16)
++
++#define MT7621_SPI_OPCODE	0x04
++#define MT7621_SPI_DATA0	0x08
++#define MT7621_SPI_DATA4	0x18
++#define SPI_CTL_TX_RX_CNT_MASK	0xff
++#define SPI_CTL_START		BIT(8)
++
++#define MT7621_SPI_MASTER	0x28
++#define MASTER_MORE_BUFMODE	BIT(2)
++#define MASTER_FULL_DUPLEX	BIT(10)
++#define MASTER_RS_CLK_SEL	GENMASK(27, 16)
++#define MASTER_RS_CLK_SEL_SHIFT	16
++#define MASTER_RS_SLAVE_SEL	GENMASK(31, 29)
++
++#define MT7621_SPI_MOREBUF	0x2c
++#define MT7621_SPI_POLAR	0x38
++#define MT7621_SPI_SPACE	0x3c
++
++#define MT7621_CPHA		BIT(5)
++#define MT7621_CPOL		BIT(4)
++#define MT7621_LSB_FIRST	BIT(3)
++
++struct mt7621_spi {
++	struct spi_controller	*master;
++	void __iomem		*base;
++	unsigned int		sys_freq;
++	unsigned int		speed;
++	struct clk		*clk;
++	int			pending_write;
++
++	struct mt7621_spi_ops	*ops;
++};
++
++static inline struct mt7621_spi *spidev_to_mt7621_spi(struct spi_device *spi)
++{
++	return spi_controller_get_devdata(spi->master);
++}
++
++static inline u32 mt7621_spi_read(struct mt7621_spi *rs, u32 reg)
++{
++	return ioread32(rs->base + reg);
++}
++
++static inline void mt7621_spi_write(struct mt7621_spi *rs, u32 reg, u32 val)
++{
++	iowrite32(val, rs->base + reg);
++}
++
++static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
++{
++	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
++	int cs = spi->chip_select;
++	u32 polar = 0;
++	u32 master;
++
++	/*
++	 * Select SPI device 7, enable "more buffer mode" and disable
++	 * full-duplex (only half-duplex really works on this chip
++	 * reliably)
++	 */
++	master = mt7621_spi_read(rs, MT7621_SPI_MASTER);
++	master |= MASTER_RS_SLAVE_SEL | MASTER_MORE_BUFMODE;
++	master &= ~MASTER_FULL_DUPLEX;
++	mt7621_spi_write(rs, MT7621_SPI_MASTER, master);
++
++	rs->pending_write = 0;
++
++	if (enable)
++		polar = BIT(cs);
++	mt7621_spi_write(rs, MT7621_SPI_POLAR, polar);
++}
++
++static int mt7621_spi_prepare(struct spi_device *spi, unsigned int speed)
++{
++	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
++	u32 rate;
++	u32 reg;
++
++	dev_dbg(&spi->dev, "speed:%u\n", speed);
++
++	rate = DIV_ROUND_UP(rs->sys_freq, speed);
++	dev_dbg(&spi->dev, "rate-1:%u\n", rate);
++
++	if (rate > 4097)
++		return -EINVAL;
++
++	if (rate < 2)
++		rate = 2;
++
++	reg = mt7621_spi_read(rs, MT7621_SPI_MASTER);
++	reg &= ~MASTER_RS_CLK_SEL;
++	reg |= (rate - 2) << MASTER_RS_CLK_SEL_SHIFT;
++	rs->speed = speed;
++
++	reg &= ~MT7621_LSB_FIRST;
++	if (spi->mode & SPI_LSB_FIRST)
++		reg |= MT7621_LSB_FIRST;
++
++	/*
++	 * This SPI controller seems to be tested on SPI flash only and some
++	 * bits are swizzled under other SPI modes probably due to incorrect
++	 * wiring inside the silicon. Only mode 0 works correctly.
++	 */
++	reg &= ~(MT7621_CPHA | MT7621_CPOL);
++
++	mt7621_spi_write(rs, MT7621_SPI_MASTER, reg);
++
++	return 0;
++}
++
++static inline int mt7621_spi_wait_till_ready(struct mt7621_spi *rs)
++{
++	int i;
++
++	for (i = 0; i < RALINK_SPI_WAIT_MAX_LOOP; i++) {
++		u32 status;
++
++		status = mt7621_spi_read(rs, MT7621_SPI_TRANS);
++		if ((status & SPITRANS_BUSY) == 0)
++			return 0;
++		cpu_relax();
++		udelay(1);
++	}
++
++	return -ETIMEDOUT;
++}
++
++static void mt7621_spi_read_half_duplex(struct mt7621_spi *rs,
++					int rx_len, u8 *buf)
++{
++	int tx_len;
++
++	/*
++	 * Combine with any pending write, and perform one or more half-duplex
++	 * transactions reading 'len' bytes. Data to be written is already in
++	 * MT7621_SPI_DATA.
++	 */
++	tx_len = rs->pending_write;
++	rs->pending_write = 0;
++
++	while (rx_len || tx_len) {
++		int i;
++		u32 val = (min(tx_len, 4) * 8) << 24;
++		int rx = min(rx_len, 32);
++
++		if (tx_len > 4)
++			val |= (tx_len - 4) * 8;
++		val |= (rx * 8) << 12;
++		mt7621_spi_write(rs, MT7621_SPI_MOREBUF, val);
++
++		tx_len = 0;
++
++		val = mt7621_spi_read(rs, MT7621_SPI_TRANS);
++		val |= SPI_CTL_START;
++		mt7621_spi_write(rs, MT7621_SPI_TRANS, val);
++
++		mt7621_spi_wait_till_ready(rs);
++
++		for (i = 0; i < rx; i++) {
++			if ((i % 4) == 0)
++				val = mt7621_spi_read(rs, MT7621_SPI_DATA0 + i);
++			*buf++ = val & 0xff;
++			val >>= 8;
++		}
++
++		rx_len -= i;
++	}
++}
++
++static inline void mt7621_spi_flush(struct mt7621_spi *rs)
++{
++	mt7621_spi_read_half_duplex(rs, 0, NULL);
++}
++
++static void mt7621_spi_write_half_duplex(struct mt7621_spi *rs,
++					 int tx_len, const u8 *buf)
++{
++	int len = rs->pending_write;
++	int val = 0;
++
++	if (len & 3) {
++		val = mt7621_spi_read(rs, MT7621_SPI_OPCODE + (len & ~3));
++		if (len < 4) {
++			val <<= (4 - len) * 8;
++			val = swab32(val);
++		}
++	}
++
++	while (tx_len > 0) {
++		if (len >= 36) {
++			rs->pending_write = len;
++			mt7621_spi_flush(rs);
++			len = 0;
++		}
++
++		val |= *buf++ << (8 * (len & 3));
++		len++;
++		if ((len & 3) == 0) {
++			if (len == 4)
++				/* The byte-order of the opcode is weird! */
++				val = swab32(val);
++			mt7621_spi_write(rs, MT7621_SPI_OPCODE + len - 4, val);
++			val = 0;
++		}
++		tx_len -= 1;
++	}
++
++	if (len & 3) {
++		if (len < 4) {
++			val = swab32(val);
++			val >>= (4 - len) * 8;
++		}
++		mt7621_spi_write(rs, MT7621_SPI_OPCODE + (len & ~3), val);
++	}
++
++	rs->pending_write = len;
++}
++
++static int mt7621_spi_transfer_one_message(struct spi_controller *master,
++					   struct spi_message *m)
++{
++	struct mt7621_spi *rs = spi_controller_get_devdata(master);
++	struct spi_device *spi = m->spi;
++	unsigned int speed = spi->max_speed_hz;
++	struct spi_transfer *t = NULL;
++	int status = 0;
++
++	mt7621_spi_wait_till_ready(rs);
++
++	list_for_each_entry(t, &m->transfers, transfer_list)
++		if (t->speed_hz < speed)
++			speed = t->speed_hz;
++
++	if (mt7621_spi_prepare(spi, speed)) {
++		status = -EIO;
++		goto msg_done;
++	}
++
++	/* Assert CS */
++	mt7621_spi_set_cs(spi, 1);
++
++	m->actual_length = 0;
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if ((t->rx_buf) && (t->tx_buf)) {
++			/*
++			 * This controller will shift some extra data out
++			 * of spi_opcode if (mosi_bit_cnt > 0) &&
++			 * (cmd_bit_cnt == 0). So the claimed full-duplex
++			 * support is broken since we have no way to read
++			 * the MISO value during that bit.
++			 */
++			status = -EIO;
++			goto msg_done;
++		} else if (t->rx_buf) {
++			mt7621_spi_read_half_duplex(rs, t->len, t->rx_buf);
++		} else if (t->tx_buf) {
++			mt7621_spi_write_half_duplex(rs, t->len, t->tx_buf);
++		}
++		m->actual_length += t->len;
++	}
++
++	/* Flush data and deassert CS */
++	mt7621_spi_flush(rs);
++	mt7621_spi_set_cs(spi, 0);
++
++msg_done:
++	m->status = status;
++	spi_finalize_current_message(master);
++
++	return 0;
++}
++
++static int mt7621_spi_setup(struct spi_device *spi)
++{
++	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
++
++	if ((spi->max_speed_hz == 0) ||
++	    (spi->max_speed_hz > (rs->sys_freq / 2)))
++		spi->max_speed_hz = (rs->sys_freq / 2);
++
++	if (spi->max_speed_hz < (rs->sys_freq / 4097)) {
++		dev_err(&spi->dev, "setup: requested speed is too low %d Hz\n",
++			spi->max_speed_hz);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static const struct of_device_id mt7621_spi_match[] = {
++	{ .compatible = "ralink,mt7621-spi" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, mt7621_spi_match);
++
++static int mt7621_spi_probe(struct platform_device *pdev)
++{
++	const struct of_device_id *match;
++	struct spi_controller *master;
++	struct mt7621_spi *rs;
++	void __iomem *base;
++	struct resource *r;
++	int status = 0;
++	struct clk *clk;
++	struct mt7621_spi_ops *ops;
++	int ret;
++
++	match = of_match_device(mt7621_spi_match, &pdev->dev);
++	if (!match)
++		return -EINVAL;
++	ops = (struct mt7621_spi_ops *)match->data;
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	base = devm_ioremap_resource(&pdev->dev, r);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "unable to get SYS clock, err=%d\n",
++			status);
++		return PTR_ERR(clk);
++	}
++
++	status = clk_prepare_enable(clk);
++	if (status)
++		return status;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*rs));
++	if (!master) {
++		dev_info(&pdev->dev, "master allocation failed\n");
++		return -ENOMEM;
++	}
++
++	master->mode_bits = SPI_LSB_FIRST;
++	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	master->setup = mt7621_spi_setup;
++	master->transfer_one_message = mt7621_spi_transfer_one_message;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
++	master->dev.of_node = pdev->dev.of_node;
++	master->num_chipselect = 2;
++
++	dev_set_drvdata(&pdev->dev, master);
++
++	rs = spi_controller_get_devdata(master);
++	rs->base = base;
++	rs->clk = clk;
++	rs->master = master;
++	rs->sys_freq = clk_get_rate(rs->clk);
++	rs->ops = ops;
++	rs->pending_write = 0;
++	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
++
++	ret = device_reset(&pdev->dev);
++	if (ret) {
++		dev_err(&pdev->dev, "SPI reset failed!\n");
++		return ret;
++	}
++
++	return devm_spi_register_controller(&pdev->dev, master);
++}
++
++static int mt7621_spi_remove(struct platform_device *pdev)
++{
++	struct spi_controller *master;
++	struct mt7621_spi *rs;
++
++	master = dev_get_drvdata(&pdev->dev);
++	rs = spi_controller_get_devdata(master);
++
++	clk_disable_unprepare(rs->clk);
++
++	return 0;
++}
++
++MODULE_ALIAS("platform:" DRIVER_NAME);
++
++static struct platform_driver mt7621_spi_driver = {
++	.driver = {
++		.name = DRIVER_NAME,
++		.of_match_table = mt7621_spi_match,
++	},
++	.probe = mt7621_spi_probe,
++	.remove = mt7621_spi_remove,
++};
++
++module_platform_driver(mt7621_spi_driver);
++
++MODULE_DESCRIPTION("MT7621 SPI driver");
++MODULE_AUTHOR("Felix Fietkau <nbd@nbd.name>");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index c0901b96cfe4..3241bd50d139 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -106,8 +106,6 @@ source "drivers/staging/mt7621-pci-phy/Kconfig"
+ 
+ source "drivers/staging/mt7621-pinctrl/Kconfig"
+ 
+-source "drivers/staging/mt7621-spi/Kconfig"
+-
+ source "drivers/staging/mt7621-dma/Kconfig"
+ 
+ source "drivers/staging/ralink-gdma/Kconfig"
+diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
+index 57c6bce13ff4..296ff11ecfae 100644
+--- a/drivers/staging/Makefile
++++ b/drivers/staging/Makefile
+@@ -43,7 +43,6 @@ obj-$(CONFIG_PI433)		+= pi433/
+ obj-$(CONFIG_PCI_MT7621)	+= mt7621-pci/
+ obj-$(CONFIG_PCI_MT7621_PHY)	+= mt7621-pci-phy/
+ obj-$(CONFIG_PINCTRL_RT2880)	+= mt7621-pinctrl/
+-obj-$(CONFIG_SPI_MT7621)	+= mt7621-spi/
+ obj-$(CONFIG_SOC_MT7621)	+= mt7621-dma/
+ obj-$(CONFIG_DMA_RALINK)	+= ralink-gdma/
+ obj-$(CONFIG_MTK_MMC)		+= mt7621-mmc/
+diff --git a/drivers/staging/mt7621-spi/Kconfig b/drivers/staging/mt7621-spi/Kconfig
+deleted file mode 100644
+index 0b90f4cfa426..000000000000
+--- a/drivers/staging/mt7621-spi/Kconfig
++++ /dev/null
+@@ -1,6 +0,0 @@
+-config SPI_MT7621
+-	tristate "MediaTek MT7621 SPI Controller"
+-	depends on RALINK
+-	help
+-	  This selects a driver for the MediaTek MT7621 SPI Controller.
+-
+diff --git a/drivers/staging/mt7621-spi/Makefile b/drivers/staging/mt7621-spi/Makefile
+deleted file mode 100644
+index 3be508f63bac..000000000000
+--- a/drivers/staging/mt7621-spi/Makefile
++++ /dev/null
+@@ -1 +0,0 @@
+-obj-$(CONFIG_SPI_MT7621)		+= spi-mt7621.o
+diff --git a/drivers/staging/mt7621-spi/TODO b/drivers/staging/mt7621-spi/TODO
+deleted file mode 100644
+index fdbc5002c32a..000000000000
+--- a/drivers/staging/mt7621-spi/TODO
++++ /dev/null
+@@ -1,5 +0,0 @@
+-
+-- general code review and clean up
+-- ensure device-tree requirements are documented
+-
+-Cc: NeilBrown <neil@brown.name>
+diff --git a/drivers/staging/mt7621-spi/spi-mt7621.c b/drivers/staging/mt7621-spi/spi-mt7621.c
+deleted file mode 100644
+index b509f9fe3346..000000000000
+--- a/drivers/staging/mt7621-spi/spi-mt7621.c
++++ /dev/null
+@@ -1,422 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * spi-mt7621.c -- MediaTek MT7621 SPI controller driver
+- *
+- * Copyright (C) 2011 Sergiy <piratfm@gmail.com>
+- * Copyright (C) 2011-2013 Gabor Juhos <juhosg@openwrt.org>
+- * Copyright (C) 2014-2015 Felix Fietkau <nbd@nbd.name>
+- *
+- * Some parts are based on spi-orion.c:
+- *   Author: Shadi Ammouri <shadi@marvell.com>
+- *   Copyright (C) 2007-2008 Marvell Ltd.
+- */
+-
+-#include <linux/clk.h>
+-#include <linux/delay.h>
+-#include <linux/io.h>
+-#include <linux/module.h>
+-#include <linux/of_device.h>
+-#include <linux/reset.h>
+-#include <linux/spi/spi.h>
+-
+-#define DRIVER_NAME		"spi-mt7621"
+-
+-/* in usec */
+-#define RALINK_SPI_WAIT_MAX_LOOP 2000
+-
+-/* SPISTAT register bit field */
+-#define SPISTAT_BUSY		BIT(0)
+-
+-#define MT7621_SPI_TRANS	0x00
+-#define SPITRANS_BUSY		BIT(16)
+-
+-#define MT7621_SPI_OPCODE	0x04
+-#define MT7621_SPI_DATA0	0x08
+-#define MT7621_SPI_DATA4	0x18
+-#define SPI_CTL_TX_RX_CNT_MASK	0xff
+-#define SPI_CTL_START		BIT(8)
+-
+-#define MT7621_SPI_MASTER	0x28
+-#define MASTER_MORE_BUFMODE	BIT(2)
+-#define MASTER_FULL_DUPLEX	BIT(10)
+-#define MASTER_RS_CLK_SEL	GENMASK(27, 16)
+-#define MASTER_RS_CLK_SEL_SHIFT	16
+-#define MASTER_RS_SLAVE_SEL	GENMASK(31, 29)
+-
+-#define MT7621_SPI_MOREBUF	0x2c
+-#define MT7621_SPI_POLAR	0x38
+-#define MT7621_SPI_SPACE	0x3c
+-
+-#define MT7621_CPHA		BIT(5)
+-#define MT7621_CPOL		BIT(4)
+-#define MT7621_LSB_FIRST	BIT(3)
+-
+-struct mt7621_spi {
+-	struct spi_master	*master;
+-	void __iomem		*base;
+-	unsigned int		sys_freq;
+-	unsigned int		speed;
+-	struct clk		*clk;
+-	int			pending_write;
+-
+-	struct mt7621_spi_ops	*ops;
+-};
+-
+-static inline struct mt7621_spi *spidev_to_mt7621_spi(struct spi_device *spi)
+-{
+-	return spi_master_get_devdata(spi->master);
+-}
+-
+-static inline u32 mt7621_spi_read(struct mt7621_spi *rs, u32 reg)
+-{
+-	return ioread32(rs->base + reg);
+-}
+-
+-static inline void mt7621_spi_write(struct mt7621_spi *rs, u32 reg, u32 val)
+-{
+-	iowrite32(val, rs->base + reg);
+-}
+-
+-static void mt7621_spi_reset(struct mt7621_spi *rs)
+-{
+-	u32 master = mt7621_spi_read(rs, MT7621_SPI_MASTER);
+-
+-	/*
+-	 * Select SPI device 7, enable "more buffer mode" and disable
+-	 * full-duplex (only half-duplex really works on this chip
+-	 * reliably)
+-	 */
+-	master |= MASTER_RS_SLAVE_SEL | MASTER_MORE_BUFMODE;
+-	master &= ~MASTER_FULL_DUPLEX;
+-
+-	mt7621_spi_write(rs, MT7621_SPI_MASTER, master);
+-	rs->pending_write = 0;
+-}
+-
+-static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
+-{
+-	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
+-	int cs = spi->chip_select;
+-	u32 polar = 0;
+-
+-	mt7621_spi_reset(rs);
+-	if (enable)
+-		polar = BIT(cs);
+-	mt7621_spi_write(rs, MT7621_SPI_POLAR, polar);
+-}
+-
+-static int mt7621_spi_prepare(struct spi_device *spi, unsigned int speed)
+-{
+-	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
+-	u32 rate;
+-	u32 reg;
+-
+-	dev_dbg(&spi->dev, "speed:%u\n", speed);
+-
+-	rate = DIV_ROUND_UP(rs->sys_freq, speed);
+-	dev_dbg(&spi->dev, "rate-1:%u\n", rate);
+-
+-	if (rate > 4097)
+-		return -EINVAL;
+-
+-	if (rate < 2)
+-		rate = 2;
+-
+-	reg = mt7621_spi_read(rs, MT7621_SPI_MASTER);
+-	reg &= ~MASTER_RS_CLK_SEL;
+-	reg |= (rate - 2) << MASTER_RS_CLK_SEL_SHIFT;
+-	rs->speed = speed;
+-
+-	reg &= ~MT7621_LSB_FIRST;
+-	if (spi->mode & SPI_LSB_FIRST)
+-		reg |= MT7621_LSB_FIRST;
+-
+-	/*
+-	 * This SPI controller seems to be tested on SPI flash only and some
+-	 * bits are swizzled under other SPI modes probably due to incorrect
+-	 * wiring inside the silicon. Only mode 0 works correctly.
+-	 */
+-	reg &= ~(MT7621_CPHA | MT7621_CPOL);
+-
+-	mt7621_spi_write(rs, MT7621_SPI_MASTER, reg);
+-
+-	return 0;
+-}
+-
+-static inline int mt7621_spi_wait_till_ready(struct mt7621_spi *rs)
+-{
+-	int i;
+-
+-	for (i = 0; i < RALINK_SPI_WAIT_MAX_LOOP; i++) {
+-		u32 status;
+-
+-		status = mt7621_spi_read(rs, MT7621_SPI_TRANS);
+-		if ((status & SPITRANS_BUSY) == 0)
+-			return 0;
+-		cpu_relax();
+-		udelay(1);
+-	}
+-
+-	return -ETIMEDOUT;
+-}
+-
+-static void mt7621_spi_read_half_duplex(struct mt7621_spi *rs,
+-					int rx_len, u8 *buf)
+-{
+-	/*
+-	 * Combine with any pending write, and perform one or more half-duplex
+-	 * transactions reading 'len' bytes. Data to be written is already in
+-	 * MT7621_SPI_DATA.
+-	 */
+-	int tx_len = rs->pending_write;
+-
+-	rs->pending_write = 0;
+-
+-	while (rx_len || tx_len) {
+-		int i;
+-		u32 val = (min(tx_len, 4) * 8) << 24;
+-		int rx = min(rx_len, 32);
+-
+-		if (tx_len > 4)
+-			val |= (tx_len - 4) * 8;
+-		val |= (rx * 8) << 12;
+-		mt7621_spi_write(rs, MT7621_SPI_MOREBUF, val);
+-
+-		tx_len = 0;
+-
+-		val = mt7621_spi_read(rs, MT7621_SPI_TRANS);
+-		val |= SPI_CTL_START;
+-		mt7621_spi_write(rs, MT7621_SPI_TRANS, val);
+-
+-		mt7621_spi_wait_till_ready(rs);
+-
+-		for (i = 0; i < rx; i++) {
+-			if ((i % 4) == 0)
+-				val = mt7621_spi_read(rs, MT7621_SPI_DATA0 + i);
+-			*buf++ = val & 0xff;
+-			val >>= 8;
+-		}
+-
+-		rx_len -= i;
+-	}
+-}
+-
+-static inline void mt7621_spi_flush(struct mt7621_spi *rs)
+-{
+-	mt7621_spi_read_half_duplex(rs, 0, NULL);
+-}
+-
+-static void mt7621_spi_write_half_duplex(struct mt7621_spi *rs,
+-					 int tx_len, const u8 *buf)
+-{
+-	int val = 0;
+-	int len = rs->pending_write;
+-
+-	if (len & 3) {
+-		val = mt7621_spi_read(rs, MT7621_SPI_OPCODE + (len & ~3));
+-		if (len < 4) {
+-			val <<= (4 - len) * 8;
+-			val = swab32(val);
+-		}
+-	}
+-
+-	while (tx_len > 0) {
+-		if (len >= 36) {
+-			rs->pending_write = len;
+-			mt7621_spi_flush(rs);
+-			len = 0;
+-		}
+-
+-		val |= *buf++ << (8 * (len & 3));
+-		len++;
+-		if ((len & 3) == 0) {
+-			if (len == 4)
+-				/* The byte-order of the opcode is weird! */
+-				val = swab32(val);
+-			mt7621_spi_write(rs, MT7621_SPI_OPCODE + len - 4, val);
+-			val = 0;
+-		}
+-		tx_len -= 1;
+-	}
+-	if (len & 3) {
+-		if (len < 4) {
+-			val = swab32(val);
+-			val >>= (4 - len) * 8;
+-		}
+-		mt7621_spi_write(rs, MT7621_SPI_OPCODE + (len & ~3), val);
+-	}
+-	rs->pending_write = len;
+-}
+-
+-static int mt7621_spi_transfer_one_message(struct spi_master *master,
+-					   struct spi_message *m)
+-{
+-	struct mt7621_spi *rs = spi_master_get_devdata(master);
+-	struct spi_device *spi = m->spi;
+-	unsigned int speed = spi->max_speed_hz;
+-	struct spi_transfer *t = NULL;
+-	int status = 0;
+-
+-	mt7621_spi_wait_till_ready(rs);
+-
+-	list_for_each_entry(t, &m->transfers, transfer_list)
+-		if (t->speed_hz < speed)
+-			speed = t->speed_hz;
+-
+-	if (mt7621_spi_prepare(spi, speed)) {
+-		status = -EIO;
+-		goto msg_done;
+-	}
+-
+-	mt7621_spi_set_cs(spi, 1);
+-	m->actual_length = 0;
+-	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if ((t->rx_buf) && (t->tx_buf)) {
+-			/* This controller will shift some extra data out
+-			 * of spi_opcode if (mosi_bit_cnt > 0) &&
+-			 * (cmd_bit_cnt == 0). So the claimed full-duplex
+-			 * support is broken since we have no way to read
+-			 * the MISO value during that bit.
+-			 */
+-			status = -EIO;
+-			goto msg_done;
+-		} else if (t->rx_buf) {
+-			mt7621_spi_read_half_duplex(rs, t->len, t->rx_buf);
+-		} else if (t->tx_buf) {
+-			mt7621_spi_write_half_duplex(rs, t->len, t->tx_buf);
+-		}
+-		m->actual_length += t->len;
+-	}
+-	mt7621_spi_flush(rs);
+-
+-	mt7621_spi_set_cs(spi, 0);
+-
+-msg_done:
+-	m->status = status;
+-	spi_finalize_current_message(master);
+-
+-	return 0;
+-}
+-
+-static int mt7621_spi_setup(struct spi_device *spi)
+-{
+-	struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
+-
+-	if ((spi->max_speed_hz == 0) ||
+-		(spi->max_speed_hz > (rs->sys_freq / 2)))
+-		spi->max_speed_hz = (rs->sys_freq / 2);
+-
+-	if (spi->max_speed_hz < (rs->sys_freq / 4097)) {
+-		dev_err(&spi->dev, "setup: requested speed is too low %d Hz\n",
+-			spi->max_speed_hz);
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-static const struct of_device_id mt7621_spi_match[] = {
+-	{ .compatible = "ralink,mt7621-spi" },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(of, mt7621_spi_match);
+-
+-static int mt7621_spi_probe(struct platform_device *pdev)
+-{
+-	const struct of_device_id *match;
+-	struct spi_master *master;
+-	struct mt7621_spi *rs;
+-	void __iomem *base;
+-	struct resource *r;
+-	int status = 0;
+-	struct clk *clk;
+-	struct mt7621_spi_ops *ops;
+-	int ret;
+-
+-	match = of_match_device(mt7621_spi_match, &pdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-	ops = (struct mt7621_spi_ops *)match->data;
+-
+-	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	base = devm_ioremap_resource(&pdev->dev, r);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
+-
+-	clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "unable to get SYS clock, err=%d\n",
+-			status);
+-		return PTR_ERR(clk);
+-	}
+-
+-	status = clk_prepare_enable(clk);
+-	if (status)
+-		return status;
+-
+-	master = spi_alloc_master(&pdev->dev, sizeof(*rs));
+-	if (!master) {
+-		dev_info(&pdev->dev, "master allocation failed\n");
+-		return -ENOMEM;
+-	}
+-
+-	master->mode_bits = SPI_LSB_FIRST;
+-
+-	master->setup = mt7621_spi_setup;
+-	master->transfer_one_message = mt7621_spi_transfer_one_message;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->num_chipselect = 2;
+-
+-	dev_set_drvdata(&pdev->dev, master);
+-
+-	rs = spi_master_get_devdata(master);
+-	rs->base = base;
+-	rs->clk = clk;
+-	rs->master = master;
+-	rs->sys_freq = clk_get_rate(rs->clk);
+-	rs->ops = ops;
+-	rs->pending_write = 0;
+-	dev_info(&pdev->dev, "sys_freq: %u\n", rs->sys_freq);
+-
+-	ret = device_reset(&pdev->dev);
+-	if (ret) {
+-		dev_err(&pdev->dev, "SPI reset failed!\n");
+-		return ret;
+-	}
+-
+-	mt7621_spi_reset(rs);
+-
+-	return spi_register_master(master);
+-}
+-
+-static int mt7621_spi_remove(struct platform_device *pdev)
+-{
+-	struct spi_master *master;
+-	struct mt7621_spi *rs;
+-
+-	master = dev_get_drvdata(&pdev->dev);
+-	rs = spi_master_get_devdata(master);
+-
+-	clk_disable(rs->clk);
+-	spi_unregister_master(master);
+-
+-	return 0;
+-}
+-
+-MODULE_ALIAS("platform:" DRIVER_NAME);
+-
+-static struct platform_driver mt7621_spi_driver = {
+-	.driver = {
+-		.name = DRIVER_NAME,
+-		.of_match_table = mt7621_spi_match,
+-	},
+-	.probe = mt7621_spi_probe,
+-	.remove = mt7621_spi_remove,
+-};
+-
+-module_platform_driver(mt7621_spi_driver);
+-
+-MODULE_DESCRIPTION("MT7621 SPI driver");
+-MODULE_AUTHOR("Felix Fietkau <nbd@nbd.name>");
+-MODULE_LICENSE("GPL");
+-- 
+2.21.0

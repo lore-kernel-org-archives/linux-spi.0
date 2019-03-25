@@ -1,18 +1,21 @@
 From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH V2 3/9] spi: bcm2835aux: use BCM2835_AUX_SPI_STAT_RX_LVL
-Date: Mon, 25 Mar 2019 10:52:35 +0100
-Message-ID: <a032aeb1-7c08-2159-87ab-eaabedf6def8@i2se.com>
+Subject: Re: [PATCH V2 9/9] spi: bcm2835aux: make the polling duration limits
+ configurable
+Date: Mon, 25 Mar 2019 10:59:02 +0100
+Message-ID: <d08ce3d4-ec90-6981-bf39-1320a1643e6f@i2se.com>
 References: <20190324175002.28969-1-kernel@martin.sperl.org>
- <20190324175002.28969-4-kernel@martin.sperl.org>
+ <20190324175002.28969-10-kernel@martin.sperl.org>
+ <4da737f4-acf2-c70d-59cd-0efdf2ec21d4@i2se.com>
+ <63AAA1F6-25FB-4C58-9F9B-9377E94CB3B2@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: kernel@martin.sperl.org, Mark Brown <broonie@kernel.org>,
- Eric Anholt <eric@anholt.net>, Hubert Denkmair <h.denkmair@intence.de>,
- linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ Mark Brown <broonie@kernel.org>, linux-rpi-kernel@lists.infradead.org,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
+To: kernel@martin.sperl.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190324175002.28969-4-kernel@martin.sperl.org>
+In-Reply-To: <63AAA1F6-25FB-4C58-9F9B-9377E94CB3B2@martin.sperl.org>
 Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +28,28 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Martin,
-
-here is my suggestion for a subject:
-
-spi: bcm2835aux: fix corruptions for longer spi transfers
-
-Am 24.03.19 um 18:49 schrieb kernel@martin.sperl.org:
-> From: Martin Sperl <kernel@martin.sperl.org>
+Am 25.03.19 um 10:49 schrieb kernel@martin.sperl.org:
+>> On 25.03.2019, at 10:44, Stefan Wahren <stefan.wahren@i2se.com> wrote:
+>>
+>> Hi Martin,
+>>
+>> Am 24.03.19 um 18:50 schrieb kernel@martin.sperl.org:
+>>> From: Martin Sperl <kernel@martin.sperl.org>
+>>>
+>>> +/* define polling limits */
+>>> +unsigned int polling_limit_us = 30;
+>>> +module_param(polling_limit_us, uint, 0664);
+>>> +MODULE_PARM_DESC(polling_limit_us,
+>>> +		 "time in us to run a transfer in polling mode\n");
+>>> +
+>> could you please document the case polling_limit_us = 0 ?
+> Means no polling under any circumstances - I can add it as a comment in V3.
+I meant the parameter description, because users shouldn't be forced to
+look at the source code.
 >
-> On long running tests with a mcp2517fd can controller it showed that
-> on rare occations the data read shows corruptions for longer spi transfers.
+> martin
 >
-> Example of a 22 byte transfer:
->
-> expected (as captured on logic analyzer):
-> FF FF 78 00 00 00 08 06 00 00 91 20 77 56 84 85 86 87 88 89 8a 8b
->
-> read by the driver:
-> FF FF 78 00 00 00 08 06 00 00 91 20 77 56 84 88 89 8a 00 00 8b 9b
->
-> To fix this use BCM2835_AUX_SPI_STAT_RX_LVL to determine when we may
-> read data from the fifo reliably without any corruption.
->
-> Surprisingly the only values ever empirically read in
-> BCM2835_AUX_SPI_STAT_RX_LVL are 0x00, 0x10, 0x20 and 0x30.
-> So whenever the mask is not 0 we can read from the fifo in a safe manner.
->
-> The patch has now been tested intensively and we are no longer
-> able to reproduce the "RX" issue any longer.
->
-> Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
-
-Please use a proper fixes tages in all of your patches. Doesn't
-checkpatch.pl complain about it?
-
-Thanks Stefan
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

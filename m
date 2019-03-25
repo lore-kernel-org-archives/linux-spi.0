@@ -1,74 +1,66 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel-quadspi: Make atmel_qspi_get_name static" to the spi tree
-Date: Mon, 25 Mar 2019 12:22:34 +0000 (GMT)
-Message-ID: <20190325122234.3BA8011288F1@debutante.sirena.org.uk>
-References: <20190321151656.16816-1-yuehaibing@huawei.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        ludovic.desroches@microchip.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH 1/2] spi: stm32-qspi: add spi_master_put in release
+ function
+Date: Mon, 25 Mar 2019 16:03:13 +0000
+Message-ID: <20190325160313.GJ7284@sirena.org.uk>
+References: <1553265354-16433-1-git-send-email-ludovic.Barre@st.com>
+ <1553265354-16433-2-git-send-email-ludovic.Barre@st.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tAmVnWIZ6lqEAvSf"
+Cc: Marek Vasut <marek.vasut@gmail.com>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        devicetree@vger.kernel.org
+To: Ludovic Barre <ludovic.Barre@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190321151656.16816-1-yuehaibing@huawei.com>
+Content-Disposition: inline
+In-Reply-To: <1553265354-16433-2-git-send-email-ludovic.Barre@st.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: atmel-quadspi: Make atmel_qspi_get_name static
+--tAmVnWIZ6lqEAvSf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Fri, Mar 22, 2019 at 03:35:53PM +0100, Ludovic Barre wrote:
+> From: Ludovic Barre <ludovic.barre@st.com>
+>=20
+> This patch adds spi_master_put in release function
+> to drop the controller's refcount.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+I'm getting build errors with this:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+  CC      drivers/spi/spi-stm32-qspi.o
+drivers/spi/spi-stm32-qspi.c: In function =E2=80=98stm32_qspi_probe=E2=80=
+=99:
+drivers/spi/spi-stm32-qspi.c:430:8: error: =E2=80=98struct stm32_qspi=E2=80=
+=99 has no member named =E2=80=98phys_base=E2=80=99; did you mean =E2=80=98=
+io_base=E2=80=99?
+  qspi->phys_base =3D res->start;
+        ^~~~~~~~~
+        io_base
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--tAmVnWIZ6lqEAvSf
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyY+8AACgkQJNaLcl1U
+h9B0aQf/fdWpPjnowIBjcy1bnS1nYt1V/UZopHw918CDYM0j/ws6gqcZ6hliRlSB
+2WhwMUaq4th49OQOitBHw/kDyQAS7gkfvHhg9LyEL0B5nkVnQDTN8pfnsRj7b/5N
+fjG2AM6bMKjeiyUl97ObpJrDPvNUi6Gp/RwAXVlFLEXMKrN5vnnzaQYEfpctAFp5
+JBMc6n9Qp2Ao5jAHb6Kw0yGqnrFvDDz/Rnp03ofXJJI4T+lvtwp+rUz2R3ZzyRlC
+SHP68Lapg/Jk+AQ3EQexlyR3SpOezzpiDRH4iECxNH98nNX3WmUQJ5u8WjMTGU75
+0eNyyzqbd0DM8wXYWOd0QSHCV0JCaA==
+=T4u8
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From 55e3dacaf538745b7d57dce43b9950687ff878ab Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Thu, 21 Mar 2019 23:16:56 +0800
-Subject: [PATCH] spi: atmel-quadspi: Make atmel_qspi_get_name static
-
-Fix sparse warning:
-
-drivers/spi/atmel-quadspi.c:369:12: warning:
- symbol 'atmel_qspi_get_name' was not declared. Should it be static?
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index fffc21cd5f79..e54109759d34 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -366,7 +366,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	return err;
- }
- 
--const char *atmel_qspi_get_name(struct spi_mem *spimem)
-+static const char *atmel_qspi_get_name(struct spi_mem *spimem)
- {
- 	return dev_name(spimem->spi->dev.parent);
- }
--- 
-2.20.1
+--tAmVnWIZ6lqEAvSf--

@@ -1,86 +1,74 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: mt7621: Move SPI driver out of staging
-Date: Mon, 25 Mar 2019 12:15:26 +0000
-Message-ID: <20190325121526.GG7284@sirena.org.uk>
-References: <20190314115212.2396-1-sr@denx.de>
- <20190321142550.GG5684@sirena.org.uk>
- <2e3a6928-b086-920c-be6f-9f508af4dc5f@denx.de>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1329886455439994686=="
-Cc: devel@driverdev.osuosl.org, Rob Herring <robh@kernel.org>,
- Sankalp Negi <sankalpnegi2310@gmail.com>, John Crispin <john@phrozen.org>,
- linux-spi@vger.kernel.org, Armando Miraglia <arma2ff0@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, NeilBrown <neil@brown.name>
-To: Stefan Roese <sr@denx.de>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <2e3a6928-b086-920c-be6f-9f508af4dc5f@denx.de>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+Subject: Applied "spi: atmel-quadspi: Make atmel_qspi_get_name static" to the spi tree
+Date: Mon, 25 Mar 2019 12:22:34 +0000 (GMT)
+Message-ID: <20190325122234.3BA8011288F1@debutante.sirena.org.uk>
+References: <20190321151656.16816-1-yuehaibing@huawei.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+        ludovic.desroches@microchip.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: YueHaibing <yuehaibing@huawei.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190321151656.16816-1-yuehaibing@huawei.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============1329886455439994686==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="m0vRWufqUC70IDnR"
-Content-Disposition: inline
+   spi: atmel-quadspi: Make atmel_qspi_get_name static
 
+has been applied to the spi tree at
 
---m0vRWufqUC70IDnR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Fri, Mar 22, 2019 at 03:02:54PM +0100, Stefan Roese wrote:
-> On 21.03.19 15:25, Mark Brown wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> > > +	list_for_each_entry(t, &m->transfers, transfer_list)
-> > > +		if (t->speed_hz < speed)
-> > > +			speed = t->speed_hz;
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> > This should be in the core if it's needed, it's going to be the same for
-> > all drivers.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> I'm not sure here, other drivers might set the speed individually for
-> each "spi_transfer" entry. In this driver its set only once: before
-> beginning to transfer all entries. So should I really move this into
-> the core and set all speed_hz values to the minimum one of the list?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Oh, I see what it's doing...  the driver should really be setting the
-speed per transfer, though in practice I'm not convinced that anything
-ever varies within a single message.
+Thanks,
+Mark
 
---m0vRWufqUC70IDnR
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 55e3dacaf538745b7d57dce43b9950687ff878ab Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Thu, 21 Mar 2019 23:16:56 +0800
+Subject: [PATCH] spi: atmel-quadspi: Make atmel_qspi_get_name static
 
------BEGIN PGP SIGNATURE-----
+Fix sparse warning:
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyYxl4ACgkQJNaLcl1U
-h9C2Jgf9Gzfb7OdM56Gr+AWqOX8Oa0hCbaoCU6dbBl309Y6ReEaakMWm2EQTe1QC
-vsdcizApaDuL0KPu7H0VzO9COUiRsgh4YuZPzdi5HXU4WocWLycP61WHDO5oSlmc
-oxnENHWQpJ8CGUYJkLPeGV/3RSOuKVzY/Y9pgz0lOSn1a/KKU/KMQRXmIm+Pvavh
-IJDlGHuLiu0vALflZdLl9OHpbV4RoxeWinMD2kaKL+NvTLCUS080Fo5kBZqoeqzP
-ZsZymSqmQjevnWqAtS2SluI7ReQv3jDu64URBU0jUS8IsSW0EY8tT91Mz5/8YPcX
-weqP4JEhEd93gVt9AbfjkhG+duANkg==
-=78U1
------END PGP SIGNATURE-----
+drivers/spi/atmel-quadspi.c:369:12: warning:
+ symbol 'atmel_qspi_get_name' was not declared. Should it be static?
 
---m0vRWufqUC70IDnR--
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/atmel-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---===============1329886455439994686==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devel mailing list
-devel@linuxdriverproject.org
-http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
-
---===============1329886455439994686==--
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index fffc21cd5f79..e54109759d34 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -366,7 +366,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	return err;
+ }
+ 
+-const char *atmel_qspi_get_name(struct spi_mem *spimem)
++static const char *atmel_qspi_get_name(struct spi_mem *spimem)
+ {
+ 	return dev_name(spimem->spi->dev.parent);
+ }
+-- 
+2.20.1

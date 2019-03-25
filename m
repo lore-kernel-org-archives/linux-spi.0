@@ -1,58 +1,86 @@
-From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH V2 8/9] spi: bcm2835aux: add driver stats to debugfs
-Date: Mon, 25 Mar 2019 11:45:01 +0100
-Message-ID: <95e494c6-194e-36c5-6dd7-71ca42909c48@i2se.com>
-References: <20190324175002.28969-1-kernel@martin.sperl.org>
- <20190324175002.28969-9-kernel@martin.sperl.org>
- <c2601fdb-3a5d-0a6c-eaea-54a332ec2027@i2se.com>
- <5AE813DD-9A2F-453D-B334-997FCEF72C31@martin.sperl.org>
- <719f7607-4941-04d3-c05a-c9797cccc8ec@i2se.com>
- <E1B24527-4297-4347-9B41-4A3A73024A11@martin.sperl.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: mt7621: Move SPI driver out of staging
+Date: Mon, 25 Mar 2019 12:15:26 +0000
+Message-ID: <20190325121526.GG7284@sirena.org.uk>
+References: <20190314115212.2396-1-sr@denx.de>
+ <20190321142550.GG5684@sirena.org.uk>
+ <2e3a6928-b086-920c-be6f-9f508af4dc5f@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
- Mark Brown <broonie@kernel.org>, linux-rpi-kernel@lists.infradead.org,
- Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
-To: kernel@martin.sperl.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <E1B24527-4297-4347-9B41-4A3A73024A11@martin.sperl.org>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="===============1329886455439994686=="
+Cc: devel@driverdev.osuosl.org, Rob Herring <robh@kernel.org>,
+ Sankalp Negi <sankalpnegi2310@gmail.com>, John Crispin <john@phrozen.org>,
+ linux-spi@vger.kernel.org, Armando Miraglia <arma2ff0@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, NeilBrown <neil@brown.name>
+To: Stefan Roese <sr@denx.de>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <2e3a6928-b086-920c-be6f-9f508af4dc5f@denx.de>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-QW0gMjUuMDMuMTkgdW0gMTE6MTEgc2NocmllYiBrZXJuZWxAbWFydGluLnNwZXJsLm9yZzoKPj4g
-T24gMjUuMDMuMjAxOSwgYXQgMTE6MDYsIFN0ZWZhbiBXYWhyZW4gPHN0ZWZhbi53YWhyZW5AaTJz
-ZS5jb20+IHdyb3RlOgo+Pgo+PiBBbSAyNS4wMy4xOSB1bSAxMDo1MiBzY2hyaWViIGtlcm5lbEBt
-YXJ0aW4uc3Blcmwub3JnOgo+Pj4+IE9uIDI1LjAzLjIwMTksIGF0IDEwOjI4LCBTdGVmYW4gV2Fo
-cmVuIDxzdGVmYW4ud2FocmVuQGkyc2UuY29tPiB3cm90ZToKPj4+Pgo+Pj4+IEhpIE1hcnRpbiwK
-Pj4+Pgo+Pj4+IEFtIDI0LjAzLjE5IHVtIDE4OjUwIHNjaHJpZWIga2VybmVsQG1hcnRpbi5zcGVy
-bC5vcmc6Cj4+Pj4+ICsKPj4+Pj4gKyNpZiBkZWZpbmVkKENPTkZJR19ERUJVR19GUykKPj4+Pj4g
-KyNkZWZpbmUgQkNNMjgzNV9BVVhfSU5DUihmaWVsZCkgKChmaWVsZCkrKykKPj4+Pj4gKwl1NjQg
-Y291bnRfdHJhbnNmZXJfcG9sbGluZzsKPj4+Pj4gKwl1NjQgY291bnRfdHJhbnNmZXJfaXJxOwo+
-Pj4+PiArCXU2NCBjb3VudF90cmFuc2Zlcl9pcnFfYWZ0ZXJfcG9sbDsKPj4+Pj4gKwo+Pj4+PiAr
-CXN0cnVjdCBkZW50cnkgKmRlYnVnZnNfZGlyOwo+Pj4+PiArI2Vsc2UKPj4+Pj4gKyNkZWZpbmUg
-QkNNMjgzNV9BVVhfSU5DUihmaWVsZCkKPj4+Pj4gKyNlbmRpZiAvKiBDT05GSUdfREVCVUdfRlMg
-Ki8KPj4+Pj4gfTsKPj4+Pj4KPj4+PiBpcyB0aGVyZSBhIGNoYW5jZSB0byBhdm9pZCB0aGVzZSBp
-ZmRlZnMgQ09ORklHX0RFQlVHX0ZTPwo+Pj4+Cj4+PiBUaGUgaWRlYSB3YXMgbm90IHRvIGFkZCB0
-aG9zZSBzdGF0cyBhdCBhbGwgd2hlbiBkZWJ1Z2ZzIGlzIGRpc2FibGVkLgo+Pj4gT3RoZXIgZ3Jv
-dXBzIChlLmcgbmV0L2NhbikgcHJlZmVyIGl0IHRoaXMgd2F54oCmCj4+IFllcywgdGhpcyBpcyBh
-bHdheXMgYSBiYWxhbmNlIGJldHdlZW4gc2l6ZSByZWR1Y3Rpb24gYW5kIGNvZGUgcmVhZGFiaWxp
-dHkuCj4+Cj4+IE15IGJpZ2dlc3QgY29uY2VybiB3YXMgYWJvdXQgQkNNMjgzNV9BVVhfSU5DUgo+
-Pgo+IGp1c3QgdGVsbCBtZSB3aGljaCB3YXkgeW91IHByZWZlciBpdCAtIGFueXdheTogZGlzYWJs
-aW5nIERFQlVHIGlzIHF1aXRlIGhhcmQKPiB0byBkbyBpbiB0aGUgZmlyc3QgcGxhY2UgKHRvbyBt
-YW55IGNvbXBvbmVudHMgc2VsZWN0IGl0IGF1dG9tYXRpY2FsbHkpCj4gc28gSSBhbSBhbHdheXMg
-d29uZGVyaW5nIHdoeSBJIG5lZWQgdG8gaG9wIHRodHUgdGhvc2UgbG9vcHMuCj4KPiBJZiB5b3Ug
-YWdyZWUgSSB3aWxsIHJlbW92ZSB0aG9zZSBzcGVjaWZpYyBpZmRlZnMgYW5kIG1hY3Jvcy4KUGxl
-YXNlIHJlbW92ZSBpdCBmb3IgdGhlIHF1b3RlZCBwYXJ0IGFib3ZlCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcg
-bGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==
+
+--===============1329886455439994686==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m0vRWufqUC70IDnR"
+Content-Disposition: inline
+
+
+--m0vRWufqUC70IDnR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Mar 22, 2019 at 03:02:54PM +0100, Stefan Roese wrote:
+> On 21.03.19 15:25, Mark Brown wrote:
+
+> > > +	list_for_each_entry(t, &m->transfers, transfer_list)
+> > > +		if (t->speed_hz < speed)
+> > > +			speed = t->speed_hz;
+
+> > This should be in the core if it's needed, it's going to be the same for
+> > all drivers.
+
+> I'm not sure here, other drivers might set the speed individually for
+> each "spi_transfer" entry. In this driver its set only once: before
+> beginning to transfer all entries. So should I really move this into
+> the core and set all speed_hz values to the minimum one of the list?
+
+Oh, I see what it's doing...  the driver should really be setting the
+speed per transfer, though in practice I'm not convinced that anything
+ever varies within a single message.
+
+--m0vRWufqUC70IDnR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyYxl4ACgkQJNaLcl1U
+h9C2Jgf9Gzfb7OdM56Gr+AWqOX8Oa0hCbaoCU6dbBl309Y6ReEaakMWm2EQTe1QC
+vsdcizApaDuL0KPu7H0VzO9COUiRsgh4YuZPzdi5HXU4WocWLycP61WHDO5oSlmc
+oxnENHWQpJ8CGUYJkLPeGV/3RSOuKVzY/Y9pgz0lOSn1a/KKU/KMQRXmIm+Pvavh
+IJDlGHuLiu0vALflZdLl9OHpbV4RoxeWinMD2kaKL+NvTLCUS080Fo5kBZqoeqzP
+ZsZymSqmQjevnWqAtS2SluI7ReQv3jDu64URBU0jUS8IsSW0EY8tT91Mz5/8YPcX
+weqP4JEhEd93gVt9AbfjkhG+duANkg==
+=78U1
+-----END PGP SIGNATURE-----
+
+--m0vRWufqUC70IDnR--
+
+--===============1329886455439994686==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devel mailing list
+devel@linuxdriverproject.org
+http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel
+
+--===============1329886455439994686==--

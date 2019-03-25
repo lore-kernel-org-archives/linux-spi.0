@@ -1,19 +1,22 @@
 From: Stefan Wahren <stefan.wahren@i2se.com>
-Subject: Re: [PATCH V2 6/9] spi: bcm2835aux: warn in dmesg that native cs is
- not really supported
-Date: Mon, 25 Mar 2019 11:28:01 +0100
-Message-ID: <1e83f4f4-f9ae-2d77-3729-2343a4975e20@i2se.com>
+Subject: Re: [PATCH V2 8/9] spi: bcm2835aux: add driver stats to debugfs
+Date: Mon, 25 Mar 2019 11:45:01 +0100
+Message-ID: <95e494c6-194e-36c5-6dd7-71ca42909c48@i2se.com>
 References: <20190324175002.28969-1-kernel@martin.sperl.org>
- <20190324175002.28969-7-kernel@martin.sperl.org>
+ <20190324175002.28969-9-kernel@martin.sperl.org>
+ <c2601fdb-3a5d-0a6c-eaea-54a332ec2027@i2se.com>
+ <5AE813DD-9A2F-453D-B334-997FCEF72C31@martin.sperl.org>
+ <719f7607-4941-04d3-c05a-c9797cccc8ec@i2se.com>
+ <E1B24527-4297-4347-9B41-4A3A73024A11@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: kernel@martin.sperl.org, Mark Brown <broonie@kernel.org>,
- Eric Anholt <eric@anholt.net>, Hubert Denkmair <h.denkmair@intence.de>,
- linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ Mark Brown <broonie@kernel.org>, linux-rpi-kernel@lists.infradead.org,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
+To: kernel@martin.sperl.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190324175002.28969-7-kernel@martin.sperl.org>
+In-Reply-To: <E1B24527-4297-4347-9B41-4A3A73024A11@martin.sperl.org>
 Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -26,72 +29,30 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Martin,
-
-Am 24.03.19 um 18:49 schrieb kernel@martin.sperl.org:
-> From: Martin Sperl <kernel@martin.sperl.org>
->
-> From personal bad experience (even as the author of the original driver)
-> it shows that native-cs is "somewhat" supported by the spi bus driver
-> when using a buggy device tree.
->
-> So make sure that the driver is warning in dmesg about this fact
-> that we are running in a not supported mode that may have surprizing
-> limitations.
->
-> Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
-> Fixes: 1ea29b39f4c812ece2f936065a0a3d6fe44a263e
-please use a proper fixes tag.
-> ---
->  drivers/spi/spi-bcm2835aux.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> index c8acde017b6a..6af07dec5fdc 100644
-> --- a/drivers/spi/spi-bcm2835aux.c
-> +++ b/drivers/spi/spi-bcm2835aux.c
-> @@ -396,6 +396,38 @@ static void bcm2835aux_spi_handle_err(struct spi_master *master,
->  	bcm2835aux_spi_reset_hw(bs);
->  }
->
-> +static int bcm2835aux_spi_setup(struct spi_device *spi)
-> +{
-> +	int ret;
-> +
-> +	if (spi->mode & SPI_NO_CS)
-> +		return 0;
-> +	/* sanity check for native cs */
-> +	if (!gpio_is_valid(spi->cs_gpio)) {
-> +		/* for dt-backwards compatibility: only support native on CS0
-> +		 * known things not supported with broken native CS:
-> +		 * * multiple chip-selects: cs0-cs2 are all
-> +		 *     simultaniously asserted whenever there is a transfer
-> +		 *     this even includes SPI_NO_CS
-> +		 * * SPI_CS_HIGH: cs are always asserted low
-> +		 * * cs_change: cs is deasserted after each spi_transfer
-> +		 * * cs_delay_usec: cs is always deasserted one SCK cycle
-> +		 *     after the last transfer
-> +		 * probably more...
-> +		 */
-> +		if (spi->chip_select == 0) {
-> +			dev_err(&spi->dev,
-> +				"native CS is not supported but may work for some use-cases for cs = 0 -  please define a valid value cs-gpios in DT for complete feature set\n");
-> +			return 0;
-
-These messages are rather too long, please keep it in the ~ 80 char
-limit (in source code and dmesg).
-Or make it two lines ...
-
-Since we return with 0, i prefer to use dev_warn instead of dev_err.
-
-Thanks
-
-> +		}
-> +		dev_err(&spi->dev,
-> +			"native CS is not supported for cs > 0 -  please define a valid value cs-gpios in DT to enable multiple cs\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
+QW0gMjUuMDMuMTkgdW0gMTE6MTEgc2NocmllYiBrZXJuZWxAbWFydGluLnNwZXJsLm9yZzoKPj4g
+T24gMjUuMDMuMjAxOSwgYXQgMTE6MDYsIFN0ZWZhbiBXYWhyZW4gPHN0ZWZhbi53YWhyZW5AaTJz
+ZS5jb20+IHdyb3RlOgo+Pgo+PiBBbSAyNS4wMy4xOSB1bSAxMDo1MiBzY2hyaWViIGtlcm5lbEBt
+YXJ0aW4uc3Blcmwub3JnOgo+Pj4+IE9uIDI1LjAzLjIwMTksIGF0IDEwOjI4LCBTdGVmYW4gV2Fo
+cmVuIDxzdGVmYW4ud2FocmVuQGkyc2UuY29tPiB3cm90ZToKPj4+Pgo+Pj4+IEhpIE1hcnRpbiwK
+Pj4+Pgo+Pj4+IEFtIDI0LjAzLjE5IHVtIDE4OjUwIHNjaHJpZWIga2VybmVsQG1hcnRpbi5zcGVy
+bC5vcmc6Cj4+Pj4+ICsKPj4+Pj4gKyNpZiBkZWZpbmVkKENPTkZJR19ERUJVR19GUykKPj4+Pj4g
+KyNkZWZpbmUgQkNNMjgzNV9BVVhfSU5DUihmaWVsZCkgKChmaWVsZCkrKykKPj4+Pj4gKwl1NjQg
+Y291bnRfdHJhbnNmZXJfcG9sbGluZzsKPj4+Pj4gKwl1NjQgY291bnRfdHJhbnNmZXJfaXJxOwo+
+Pj4+PiArCXU2NCBjb3VudF90cmFuc2Zlcl9pcnFfYWZ0ZXJfcG9sbDsKPj4+Pj4gKwo+Pj4+PiAr
+CXN0cnVjdCBkZW50cnkgKmRlYnVnZnNfZGlyOwo+Pj4+PiArI2Vsc2UKPj4+Pj4gKyNkZWZpbmUg
+QkNNMjgzNV9BVVhfSU5DUihmaWVsZCkKPj4+Pj4gKyNlbmRpZiAvKiBDT05GSUdfREVCVUdfRlMg
+Ki8KPj4+Pj4gfTsKPj4+Pj4KPj4+PiBpcyB0aGVyZSBhIGNoYW5jZSB0byBhdm9pZCB0aGVzZSBp
+ZmRlZnMgQ09ORklHX0RFQlVHX0ZTPwo+Pj4+Cj4+PiBUaGUgaWRlYSB3YXMgbm90IHRvIGFkZCB0
+aG9zZSBzdGF0cyBhdCBhbGwgd2hlbiBkZWJ1Z2ZzIGlzIGRpc2FibGVkLgo+Pj4gT3RoZXIgZ3Jv
+dXBzIChlLmcgbmV0L2NhbikgcHJlZmVyIGl0IHRoaXMgd2F54oCmCj4+IFllcywgdGhpcyBpcyBh
+bHdheXMgYSBiYWxhbmNlIGJldHdlZW4gc2l6ZSByZWR1Y3Rpb24gYW5kIGNvZGUgcmVhZGFiaWxp
+dHkuCj4+Cj4+IE15IGJpZ2dlc3QgY29uY2VybiB3YXMgYWJvdXQgQkNNMjgzNV9BVVhfSU5DUgo+
+Pgo+IGp1c3QgdGVsbCBtZSB3aGljaCB3YXkgeW91IHByZWZlciBpdCAtIGFueXdheTogZGlzYWJs
+aW5nIERFQlVHIGlzIHF1aXRlIGhhcmQKPiB0byBkbyBpbiB0aGUgZmlyc3QgcGxhY2UgKHRvbyBt
+YW55IGNvbXBvbmVudHMgc2VsZWN0IGl0IGF1dG9tYXRpY2FsbHkpCj4gc28gSSBhbSBhbHdheXMg
+d29uZGVyaW5nIHdoeSBJIG5lZWQgdG8gaG9wIHRodHUgdGhvc2UgbG9vcHMuCj4KPiBJZiB5b3Ug
+YWdyZWUgSSB3aWxsIHJlbW92ZSB0aG9zZSBzcGVjaWZpYyBpZmRlZnMgYW5kIG1hY3Jvcy4KUGxl
+YXNlIHJlbW92ZSBpdCBmb3IgdGhlIHF1b3RlZCBwYXJ0IGFib3ZlCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcg
+bGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

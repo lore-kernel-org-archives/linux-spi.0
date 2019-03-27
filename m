@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V1 13/26] spi: tegra114: add dual mode support
-Date: Tue, 26 Mar 2019 22:56:34 -0700
-Message-ID: <1553666207-11414-13-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V1 15/26] spi: tegra114: set supported bits_per_word
+Date: Tue, 26 Mar 2019 22:56:36 -0700
+Message-ID: <1553666207-11414-15-git-send-email-skomatineni@nvidia.com>
 References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,44 +17,25 @@ In-Reply-To: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds support for dual mode SPI transfer.
+Tegra SPI supports 4 through 32 bits per word.
 
-Dual mode uses both MOSI and MISO lines in parallel where the data
-is interleaved on MOSI and MISO lines increasing the throughput.
-
-Packet from Tx FIFO is transmitted on both MOSI and MISO lines and
-packet to Rx FIFO is received from both MOSI and MISO lines. Even
-bits are transmitted or received on the MOSI data line and odd bits
-are transmitted or received on the MISO data line.
+This patch sets bits_per_word_mask accordingly to support transfer
+with these bits per word.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-tegra114.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index d39f7b05b824..335c594d5b74 100644
+index 01efb615a196..94acef0f5ea5 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -787,6 +787,11 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 
- 	total_fifo_words = tegra_spi_calculate_curr_xfer_param(spi, tspi, t);
- 
-+	if (t->rx_nbits == SPI_NBITS_DUAL || t->tx_nbits == SPI_NBITS_DUAL)
-+		command1 |= SPI_BOTH_EN_BIT;
-+	else
-+		command1 &= ~SPI_BOTH_EN_BIT;
-+
- 	if (tspi->is_packed)
- 		command1 |= SPI_PACKED;
- 	else
-@@ -1142,7 +1147,8 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 		master->max_speed_hz = 25000000; /* 25MHz */
- 
+@@ -1154,6 +1154,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
  	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			    SPI_TX_DUAL | SPI_RX_DUAL;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
+ 			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE;
++	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
  	master->setup = tegra_spi_setup;
  	master->transfer_one_message = tegra_spi_transfer_one_message;
  	master->num_chipselect = MAX_CHIP_SELECT;

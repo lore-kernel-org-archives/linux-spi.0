@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V1 21/26] DT bindings: spi: add tx/rx clock delay SPI client properties
-Date: Tue, 26 Mar 2019 22:56:42 -0700
-Message-ID: <1553666207-11414-21-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V1 19/26] DT bindings: spi: add spi client device properties
+Date: Tue, 26 Mar 2019 22:56:40 -0700
+Message-ID: <1553666207-11414-19-git-send-email-skomatineni@nvidia.com>
 References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,48 +17,46 @@ In-Reply-To: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds Tegra SPI master tx and rx clock delay properties.
-
-TX/RX clock delays may vary depending on the platform design trace lengths
-for each client on the Tegra SPI bus. These properties helps to tune the
-clock delays.
+This patch adds below cs timing properties to allow SPI master configuring
+setup, hold and time interval between two SPI transactions to meet specific
+SPI client device requirements.
+ CS setup time
+ CS hold time
+ CS inactive delay
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+	t=1553666253; bh=TbJVgRAIkjok3TkKNkfcvYc4WGyZhOpiH6sUZvadGrQ=;
+	h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:X-NVConfidentiality:MIME-Version:
+	 Content-Type;
+	b=Tud9guY5XCzkjKA2k2n0+xO/vTfMTNhH1e0viAyYmlgoG/j+uSBAAmOeZucVUlmEa
+	 rwqxlSm+rkYMUfgSWqmJXqEjgRIAqMhA32FOJmhgpblGwYUR22hnbdhbk4TcqMNsIO
+	 mXBgiIq3sOB7dKCDIv4+YSUreRrnXrvrDN0NE9zN7D+AQWYLF5dI4v+UDalNYJU2hz
+	 TusNrURxuHgtpModvYVQRPgPDv+nJ2QE6L7yZH/M6XP7jYprtQHWnHAiMwqqSXBcrf
+	 8vlhV96anQSaGkioOUTp8ThlHSwBKLRFHRofVlrhT53K0xvTCvVst4aHvA1aq3QPw0
+	 sVr25yohIPq7w==
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- .../devicetree/bindings/spi/nvidia,tegra114-spi.txt      | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt b/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
-index 6167c5234b64..2b84b7b726ce 100644
+index 9ba7c5a273b4..6167c5234b64 100644
 --- a/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
 +++ b/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
-@@ -29,6 +29,12 @@ spi-client device controller properties:
- - nvidia,cs-hold-clk-count: CS hold timing parameter.
- - nvidia,cs-inactive-cycles: CS inactive delay in terms of clock between
-   transfers.
-+- nvidia,tx-clk-tap-delay: Delays the clock going out to the external device
-+  with this tap value. This property is used to tune the outgoing data from
-+  Tegra SPI master with respect to outgoing Tegra SPI master clock.
-+- nvidia,rx-clk-tap-delay: Delays the clock coming in from the external device
-+  with this tap value. This property is used to adjust the Tegra SPI master
-+  clock with respect to the data from the SPI slave device.
- 
+@@ -23,6 +23,13 @@ Required properties:
+ Recommended properties:
+ - spi-max-frequency: Definition as per
+                      Documentation/devicetree/bindings/spi/spi-bus.txt
++
++spi-client device controller properties:
++- nvidia,cs-setup-clk-count: CS setup timing parameter.
++- nvidia,cs-hold-clk-count: CS hold timing parameter.
++- nvidia,cs-inactive-cycles: CS inactive delay in terms of clock between
++  transfers.
++
  Example:
  
-@@ -45,4 +51,14 @@ spi@7000d600 {
- 	reset-names = "spi";
- 	dmas = <&apbdma 16>, <&apbdma 16>;
- 	dma-names = "rx", "tx";
-+
-+	<spi-client>@<bus_num> {
-+		...
-+		...
-+		nvidia,cs-setup-clk-count = <10>;
-+		nvidia,cs-hold-clk-count = <10>;
-+		nvidia,rx-clk-tap-delay = <0>;
-+		nvidia,tx-clk-tap-delay = <16>;
-+		...
-+	};
- };
+ spi@7000d600 {
 -- 
 2.7.4

@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V1 08/26] spi: tegra114: configure dma burst size to fifo trig level
-Date: Tue, 26 Mar 2019 22:56:29 -0700
-Message-ID: <1553666207-11414-8-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V1 12/26] spi: tegra114: add SPI_LSB_FIRST support
+Date: Tue, 26 Mar 2019 22:56:33 -0700
+Message-ID: <1553666207-11414-12-git-send-email-skomatineni@nvidia.com>
 References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,126 +17,42 @@ In-Reply-To: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Fixes: Configure DMA burst size to be same as SPI TX/RX trigger levels
-to avoid mismatch.
+Tegra SPI controller supports lsb first mode. Default is MSB bit first
+and on selection of SPI_LSB_FIRST through SPI mode transmission happens
+with LSB bit first.
 
-SPI FIFO trigger levels are calculated based on the transfer length.
-So this patch moves DMA slave configuration to happen before start
-of DMAs.
+This patch adds SPI_LSB_FIRST flag to mode_bits and also configures it
+on request.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 52 ++++++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
+ drivers/spi/spi-tegra114.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 477828051aba..b7e71676a506 100644
+index 0e228f1e910e..d39f7b05b824 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -530,6 +530,8 @@ static int tegra_spi_start_dma_based_transfer(
- 	u32 val;
- 	unsigned int len;
- 	int ret = 0;
-+	u8 dma_burst;
-+	struct dma_slave_config dma_sconfig = {0};
+@@ -750,6 +750,11 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+ 		else if (req_mode == SPI_MODE_3)
+ 			command1 |= SPI_CONTROL_MODE_3;
  
- 	val = SPI_DMA_BLK_SET(tspi->curr_dma_words - 1);
- 	tegra_spi_writel(tspi, val, SPI_DMA_BLK);
-@@ -541,12 +543,16 @@ static int tegra_spi_start_dma_based_transfer(
- 		len = tspi->curr_dma_words * 4;
- 
- 	/* Set attention level based on length of transfer */
--	if (len & 0xF)
-+	if (len & 0xF) {
- 		val |= SPI_TX_TRIG_1 | SPI_RX_TRIG_1;
--	else if (((len) >> 4) & 0x1)
-+		dma_burst = 1;
-+	} else if (((len) >> 4) & 0x1) {
- 		val |= SPI_TX_TRIG_4 | SPI_RX_TRIG_4;
--	else
-+		dma_burst = 4;
-+	} else {
- 		val |= SPI_TX_TRIG_8 | SPI_RX_TRIG_8;
-+		dma_burst = 8;
-+	}
- 
- 	if (tspi->cur_direction & DATA_DIR_TX)
- 		val |= SPI_IE_TX;
-@@ -557,7 +563,18 @@ static int tegra_spi_start_dma_based_transfer(
- 	tegra_spi_writel(tspi, val, SPI_DMA_CTL);
- 	tspi->dma_control_reg = val;
- 
-+	dma_sconfig.device_fc = true;
- 	if (tspi->cur_direction & DATA_DIR_TX) {
-+		dma_sconfig.dst_addr = tspi->phys + SPI_TX_FIFO;
-+		dma_sconfig.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		dma_sconfig.dst_maxburst = dma_burst;
-+		ret = dmaengine_slave_config(tspi->tx_dma_chan, &dma_sconfig);
-+		if (ret < 0) {
-+			dev_err(tspi->dev,
-+				"DMA slave config failed: %d\n", ret);
-+			return ret;
-+		}
++		if (spi->mode & SPI_LSB_FIRST)
++			command1 |= SPI_LSBIT_FE;
++		else
++			command1 &= ~SPI_LSBIT_FE;
 +
- 		tegra_spi_copy_client_txbuf_to_spi_txbuf(tspi, t);
- 		ret = tegra_spi_start_tx_dma(tspi, len);
- 		if (ret < 0) {
-@@ -568,6 +585,16 @@ static int tegra_spi_start_dma_based_transfer(
- 	}
+ 		if (tspi->cs_control) {
+ 			if (tspi->cs_control != spi)
+ 				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+@@ -1137,7 +1142,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 		master->max_speed_hz = 25000000; /* 25MHz */
  
- 	if (tspi->cur_direction & DATA_DIR_RX) {
-+		dma_sconfig.src_addr = tspi->phys + SPI_RX_FIFO;
-+		dma_sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		dma_sconfig.src_maxburst = dma_burst;
-+		ret = dmaengine_slave_config(tspi->rx_dma_chan, &dma_sconfig);
-+		if (ret < 0) {
-+			dev_err(tspi->dev,
-+				"DMA slave config failed: %d\n", ret);
-+			return ret;
-+		}
-+
- 		/* Make the dma buffer to read by dma */
- 		dma_sync_single_for_device(tspi->dev, tspi->rx_dma_phys,
- 				tspi->dma_buf_size, DMA_FROM_DEVICE);
-@@ -628,7 +655,6 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
- 	u32 *dma_buf;
- 	dma_addr_t dma_phys;
- 	int ret;
--	struct dma_slave_config dma_sconfig;
- 
- 	dma_chan = dma_request_slave_channel_reason(tspi->dev,
- 					dma_to_memory ? "rx" : "tx");
-@@ -649,19 +675,6 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
- 	}
- 
- 	if (dma_to_memory) {
--		dma_sconfig.src_addr = tspi->phys + SPI_RX_FIFO;
--		dma_sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--		dma_sconfig.src_maxburst = 0;
--	} else {
--		dma_sconfig.dst_addr = tspi->phys + SPI_TX_FIFO;
--		dma_sconfig.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--		dma_sconfig.dst_maxburst = 0;
--	}
--
--	ret = dmaengine_slave_config(dma_chan, &dma_sconfig);
--	if (ret)
--		goto scrub;
--	if (dma_to_memory) {
- 		tspi->rx_dma_chan = dma_chan;
- 		tspi->rx_dma_buf = dma_buf;
- 		tspi->rx_dma_phys = dma_phys;
-@@ -671,11 +684,6 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
- 		tspi->tx_dma_phys = dma_phys;
- 	}
- 	return 0;
--
--scrub:
--	dma_free_coherent(tspi->dev, tspi->dma_buf_size, dma_buf, dma_phys);
--	dma_release_channel(dma_chan);
--	return ret;
- }
- 
- static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+ 	master->setup = tegra_spi_setup;
+ 	master->transfer_one_message = tegra_spi_transfer_one_message;
+ 	master->num_chipselect = MAX_CHIP_SELECT;
 -- 
 2.7.4
